@@ -32,42 +32,42 @@ class QMediaPlaylistProvider;
 
 class Q_MULTIMEDIA_EXPORT QMediaPlaylistControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QMediaPlaylistControl)
+    MULTI_LSCS_OBJECT( QMediaPlaylistControl )
 
- public:
-   virtual ~QMediaPlaylistControl();
+public:
+    virtual ~QMediaPlaylistControl();
 
-   virtual QMediaPlaylistProvider *playlistProvider() const = 0;
-   virtual bool setPlaylistProvider(QMediaPlaylistProvider *playlist) = 0;
+    virtual QMediaPlaylistProvider *playlistProvider() const = 0;
+    virtual bool setPlaylistProvider( QMediaPlaylistProvider *playlist ) = 0;
 
-   virtual int currentIndex() const = 0;
-   virtual void setCurrentIndex(int position) = 0;
-   virtual int nextIndex(int steps) const = 0;
-   virtual int previousIndex(int steps) const = 0;
+    virtual int currentIndex() const = 0;
+    virtual void setCurrentIndex( int position ) = 0;
+    virtual int nextIndex( int steps ) const = 0;
+    virtual int previousIndex( int steps ) const = 0;
 
-   virtual void next() = 0;
-   virtual void previous() = 0;
+    virtual void next() = 0;
+    virtual void previous() = 0;
 
-   virtual QMediaPlaylist::PlaybackMode playbackMode() const = 0;
-   virtual void setPlaybackMode(QMediaPlaylist::PlaybackMode mode) = 0;
+    virtual QMediaPlaylist::PlaybackMode playbackMode() const = 0;
+    virtual void setPlaybackMode( QMediaPlaylist::PlaybackMode mode ) = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void playlistProviderChanged())
-   MULTI_CS_SIGNAL_2(playlistProviderChanged)
+    MULTI_LSCS_SIGNAL_1( Public, void playlistProviderChanged() )
+    MULTI_LSCS_SIGNAL_2( playlistProviderChanged )
 
-   MULTI_CS_SIGNAL_1(Public, void currentIndexChanged(int index))
-   MULTI_CS_SIGNAL_2(currentIndexChanged, index)
+    MULTI_LSCS_SIGNAL_1( Public, void currentIndexChanged( int index ) )
+    MULTI_LSCS_SIGNAL_2( currentIndexChanged, index )
 
-   MULTI_CS_SIGNAL_1(Public, void currentMediaChanged(const QMediaContent &content))
-   MULTI_CS_SIGNAL_2(currentMediaChanged, content)
+    MULTI_LSCS_SIGNAL_1( Public, void currentMediaChanged( const QMediaContent &content ) )
+    MULTI_LSCS_SIGNAL_2( currentMediaChanged, content )
 
-   MULTI_CS_SIGNAL_1(Public, void playbackModeChanged(QMediaPlaylist::PlaybackMode mode))
-   MULTI_CS_SIGNAL_2(playbackModeChanged, mode)
+    MULTI_LSCS_SIGNAL_1( Public, void playbackModeChanged( QMediaPlaylist::PlaybackMode mode ) )
+    MULTI_LSCS_SIGNAL_2( playbackModeChanged, mode )
 
- protected:
-   QMediaPlaylistControl(QObject *parent = nullptr);
+protected:
+    QMediaPlaylistControl( QObject *parent = nullptr );
 };
 
 #define QMediaPlaylistControl_iid "com.copperspice.CS.mediaPlayListControl/1.0"
-CS_DECLARE_INTERFACE(QMediaPlaylistControl, QMediaPlaylistControl_iid)
+LSCS_DECLARE_INTERFACE( QMediaPlaylistControl, QMediaPlaylistControl_iid )
 
 #endif

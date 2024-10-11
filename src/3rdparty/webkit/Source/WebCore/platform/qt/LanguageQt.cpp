@@ -30,12 +30,13 @@
 #include "PlatformString.h"
 #include <QLocale>
 
-namespace WebCore {
+namespace WebCore
+{
 
 String platformDefaultLanguage()
 {
     QLocale locale;
-    return locale.name().replace(QLatin1Char('_'), QLatin1Char('-'));
+    return locale.name().replace( QLatin1Char( '_' ), QLatin1Char( '-' ) );
 }
 
 }

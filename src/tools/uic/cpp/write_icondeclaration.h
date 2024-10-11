@@ -33,21 +33,22 @@ class Uic;
 
 struct Option;
 
-namespace CPP {
+namespace CPP
+{
 
 class WriteIconDeclaration : public TreeWalker
 {
- public:
-   WriteIconDeclaration(Uic *uic);
+public:
+    WriteIconDeclaration( Uic *uic );
 
-   void acceptUI(DomUI *node) override;
-   void acceptImages(DomImages *images) override;
-   void acceptImage(DomImage *image) override;
+    void acceptUI( DomUI *node ) override;
+    void acceptImages( DomImages *images ) override;
+    void acceptImage( DomImage *image ) override;
 
- private:
-   Driver *driver;
-   QTextStream &output;
-   const Option &option;
+private:
+    Driver *driver;
+    QTextStream &output;
+    const Option &option;
 };
 
 } // namespace CPP

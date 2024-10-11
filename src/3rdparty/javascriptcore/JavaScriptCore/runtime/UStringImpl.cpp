@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,49 +33,65 @@
 using namespace WTF::Unicode;
 using namespace std;
 
-namespace JSC {
- 
-SharedUChar* UStringImpl::baseSharedBuffer()
+namespace JSC
 {
-    ASSERT((bufferOwnership() == BufferShared)
-        || ((bufferOwnership() == BufferOwned) && !m_buffer));
 
-    if (bufferOwnership() != BufferShared) {
-        m_refCountAndFlags = (m_refCountAndFlags & ~s_refCountMaskBufferOwnership) | BufferShared;
-        m_bufferShared = SharedUChar::create(new OwnFastMallocPtr<UChar>(m_data)).releaseRef();
+SharedUChar *UStringImpl::baseSharedBuffer()
+{
+    ASSERT( ( bufferOwnership() == BufferShared )
+            || ( ( bufferOwnership() == BufferOwned ) && !m_buffer ) );
+
+    if ( bufferOwnership() != BufferShared )
+    {
+        m_refCountAndFlags = ( m_refCountAndFlags & ~s_refCountMaskBufferOwnership ) | BufferShared;
+        m_bufferShared = SharedUChar::create( new OwnFastMallocPtr<UChar>( m_data ) ).releaseRef();
     }
 
     return m_bufferShared;
 }
 
-SharedUChar* UStringImpl::sharedBuffer()
+SharedUChar *UStringImpl::sharedBuffer()
 {
-    if (m_length < s_minLengthToShare)
+    if ( m_length < s_minLengthToShare )
+    {
         return 0;
-    ASSERT(!isStatic());
+    }
 
-    UStringImpl* owner = bufferOwnerString();
-    if (owner->bufferOwnership() == BufferInternal)
+    ASSERT( !isStatic() );
+
+    UStringImpl *owner = bufferOwnerString();
+
+    if ( owner->bufferOwnership() == BufferInternal )
+    {
         return 0;
+    }
 
     return owner->baseSharedBuffer();
 }
 
 UStringImpl::~UStringImpl()
 {
-    ASSERT(!isStatic());
+    ASSERT( !isStatic() );
     checkConsistency();
 
-    if (isIdentifier())
-        Identifier::remove(this);
+    if ( isIdentifier() )
+    {
+        Identifier::remove( this );
+    }
 
-    if (bufferOwnership() != BufferInternal) {
-        if (bufferOwnership() == BufferOwned)
-            fastFree(m_data);
-        else if (bufferOwnership() == BufferSubstring)
+    if ( bufferOwnership() != BufferInternal )
+    {
+        if ( bufferOwnership() == BufferOwned )
+        {
+            fastFree( m_data );
+        }
+        else if ( bufferOwnership() == BufferSubstring )
+        {
             m_bufferSubstring->deref();
-        else {
-            ASSERT(bufferOwnership() == BufferShared);
+        }
+        else
+        {
+            ASSERT( bufferOwnership() == BufferShared );
             m_bufferShared->deref();
         }
     }

@@ -23,12 +23,12 @@
 
 #include "qmediaresourceset_p.h"
 
-QMediaPlayerResourceSetInterface::QMediaPlayerResourceSetInterface(QObject *parent)
-   : QObject(parent)
+QMediaPlayerResourceSetInterface::QMediaPlayerResourceSetInterface( QObject *parent )
+    : QObject( parent )
 {
 }
 
 QString QMediaPlayerResourceSetInterface::iid()
 {
-   return QString(QMediaPlayerResourceSetInterface_iid);
+    return QString( QMediaPlayerResourceSetInterface_iid );
 }

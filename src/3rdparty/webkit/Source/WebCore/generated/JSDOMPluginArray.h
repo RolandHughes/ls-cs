@@ -26,83 +26,94 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMPluginArray;
 
-class JSDOMPluginArray : public JSDOMWrapper {
+class JSDOMPluginArray : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSDOMPluginArray(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DOMPluginArray>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, unsigned propertyName, JSC::PropertySlot&);
+    JSDOMPluginArray( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DOMPluginArray> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, unsigned propertyName, JSC::PropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    DOMPluginArray* impl() const { return m_impl.get(); }
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    DOMPluginArray *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<DOMPluginArray> m_impl;
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
-    static JSC::JSValue indexGetter(JSC::ExecState*, JSC::JSValue, unsigned);
+    static JSC::JSValue indexGetter( JSC::ExecState *, JSC::JSValue, unsigned );
 private:
-    static bool canGetItemsForName(JSC::ExecState*, DOMPluginArray*, const JSC::Identifier&);
-    static JSC::JSValue nameGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+    static bool canGetItemsForName( JSC::ExecState *, DOMPluginArray *, const JSC::Identifier & );
+    static JSC::JSValue nameGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 };
 
-class JSDOMPluginArrayOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
-};
-
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, DOMPluginArray*)
+class JSDOMPluginArrayOwner : public JSC::WeakHandleOwner
 {
-    DEFINE_STATIC_LOCAL(JSDOMPluginArrayOwner, jsDOMPluginArrayOwner, ());
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
+};
+
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, DOMPluginArray * )
+{
+    DEFINE_STATIC_LOCAL( JSDOMPluginArrayOwner, jsDOMPluginArrayOwner, () );
     return &jsDOMPluginArrayOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, DOMPluginArray*)
+inline void *wrapperContext( DOMWrapperWorld *world, DOMPluginArray * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DOMPluginArray*);
-DOMPluginArray* toDOMPluginArray(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DOMPluginArray * );
+DOMPluginArray *toDOMPluginArray( JSC::JSValue );
 
-class JSDOMPluginArrayPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDOMPluginArrayPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDOMPluginArrayPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDOMPluginArrayPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                               JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsDOMPluginArrayPrototypeFunctionItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDOMPluginArrayPrototypeFunctionNamedItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDOMPluginArrayPrototypeFunctionRefresh(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsDOMPluginArrayPrototypeFunctionItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDOMPluginArrayPrototypeFunctionNamedItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDOMPluginArrayPrototypeFunctionRefresh( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsDOMPluginArrayLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMPluginArrayConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDOMPluginArrayLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMPluginArrayConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

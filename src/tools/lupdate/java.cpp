@@ -47,19 +47,21 @@ enum { Tok_Eof, Tok_class, Tok_return, Tok_tr,
 
 class Scope
 {
- public:
-   enum Type {Clazz, Function, Other};
+public:
+    enum Type {Clazz, Function, Other};
 
-   Scope(const QString &name, Type type, int line)
-      : name(name), type(type), line(line) {
-   }
+    Scope( const QString &name, Type type, int line )
+        : name( name ), type( type ), line( line )
+    {
+    }
 
-   ~Scope() {
-   }
+    ~Scope()
+    {
+    }
 
-   QString name;
-   Type type;
-   int line;
+    QString name;
+    Type type;
+    int line;
 };
 
 /*
@@ -88,339 +90,428 @@ static int yyInPos;
 static QString yyPackage;
 static QStack<Scope *> yyScope;
 
-std::ostream &yyMsg(int line = 0)
+std::ostream &yyMsg( int line = 0 )
 {
-   return std::cerr << csPrintable(yyFileName) << ':' << (line ? line : yyLineNo) << ": ";
+    return std::cerr << lscsPrintable( yyFileName ) << ':' << ( line ? line : yyLineNo ) << ": ";
 }
 
 static QChar getChar()
 {
-   if (yyInPos >= yyInStr.size()) {
-      return EOF;
-   }
+    if ( yyInPos >= yyInStr.size() )
+    {
+        return EOF;
+    }
 
-   QChar c = yyInStr[yyInPos++];
+    QChar c = yyInStr[yyInPos++];
 
-   if (c == '\n') {
-      ++yyCurLineNo;
-   }
+    if ( c == '\n' )
+    {
+        ++yyCurLineNo;
+    }
 
-   return c;
+    return c;
 }
 
 static int getToken()
 {
-   const char tab[]     = "bfnrt\"\'\\";
-   const char backTab[] = "\b\f\n\r\t\"\'\\";
+    const char tab[]     = "bfnrt\"\'\\";
+    const char backTab[] = "\b\f\n\r\t\"\'\\";
 
-   yyIdent.clear();
-   yyComment.clear();
-   yyString.clear();
+    yyIdent.clear();
+    yyComment.clear();
+    yyString.clear();
 
-   while ( yyCh != EOF ) {
-      yyLineNo = yyCurLineNo;
+    while ( yyCh != EOF )
+    {
+        yyLineNo = yyCurLineNo;
 
-      if ( yyCh.isLetter() || yyCh.toLatin1() == '_' ) {
-         do {
-            yyIdent.append(yyCh);
-            yyCh = getChar();
-         } while ( yyCh.isLetterOrNumber() || yyCh.toLatin1() == '_' );
-
-         if (yyTok != Tok_Dot) {
-            switch ( yyIdent.at(0).toLatin1() ) {
-               case 'r':
-                  if (yyIdent == "return") {
-                     return Tok_return;
-                  }
-                  break;
-
-               case 'c':
-                  if (yyIdent == "class") {
-                     return Tok_class;
-                  }
-                  break;
-
-               case 'n':
-                  if (yyIdent == "null") {
-                     return Tok_null;
-                  }
-                  break;
+        if ( yyCh.isLetter() || yyCh.toLatin1() == '_' )
+        {
+            do
+            {
+                yyIdent.append( yyCh );
+                yyCh = getChar();
             }
-         }
+            while ( yyCh.isLetterOrNumber() || yyCh.toLatin1() == '_' );
 
-         switch ( yyIdent.at(0).toLatin1() ) {
-            case 'p':
-               if ( yyIdent == "package") {
-                  return Tok_Package;
-               }
-               break;
-
-            case 't':
-               if ( yyIdent == "tr") {
-                  return Tok_tr;
-               }
-
-               if ( yyIdent == "translate") {
-                  return Tok_translate;
-               }
-         }
-         return Tok_Ident;
-
-      } else {
-         switch ( yyCh.toLatin1() ) {
-
-            case '/':
-               yyCh = getChar();
-               if ( yyCh == '/' ) {
-                  do {
-                     yyCh = getChar();
-                     if (yyCh == EOF) {
-                        break;
-                     }
-                     yyComment.append(yyCh);
-                  } while (yyCh != '\n');
-
-                  return Tok_Comment;
-
-               } else if ( yyCh == '*' ) {
-                  bool metAster = false;
-                  bool metAsterSlash = false;
-
-                  while (! metAsterSlash ) {
-                     yyCh = getChar();
-
-                     if ( yyCh == EOF ) {
-                        yyMsg() << "Unterminated Java comment.\n";
-                        return Tok_Comment;
-                     }
-
-                     yyComment.append( yyCh );
-
-                     if ( yyCh == '*') {
-                        metAster = true;
-
-                     } else if ( metAster && yyCh == '/' ) {
-                        metAsterSlash = true;
-
-                     } else {
-                        metAster = false;
-                     }
-                  }
-
-                  yyComment.chop(2);
-                  yyCh = getChar();
-
-                  return Tok_Comment;
-               }
-               break;
-
-            case '"':
-               yyCh = getChar();
-
-               while ( yyCh != EOF && yyCh != '\n' && yyCh != '"') {
-                  if ( yyCh == '\\' ) {
-                     yyCh = getChar();
-
-                     if ( yyCh == 'u') {
-                        yyCh = getChar();
-
-                        char32_t unicode(0);
-
-                        for (int i = 4; i > 0; --i) {
-                           unicode = unicode << 4;
-
-                           if ( yyCh.isDigit() ) {
-                              unicode += yyCh.digitValue();
-
-                           } else {
-                              int sub(yyCh.toLower()[0].toLatin1() - 87);
-
-                              if ( sub > 15 || sub < 10) {
-                                 yyMsg() << "Invalid Unicode value.\n";
-                                 break;
-                              }
-                              unicode += sub;
-                           }
-                           yyCh = getChar();
+            if ( yyTok != Tok_Dot )
+            {
+                switch ( yyIdent.at( 0 ).toLatin1() )
+                {
+                    case 'r':
+                        if ( yyIdent == "return" )
+                        {
+                            return Tok_return;
                         }
 
-                        yyString.append(QChar(char32_t(unicode)));
+                        break;
 
-                     } else if (yyCh == '\n') {
-                        yyCh = getChar();
+                    case 'c':
+                        if ( yyIdent == "class" )
+                        {
+                            return Tok_class;
+                        }
 
-                     } else {
-                        yyString.append( QChar(backTab[strchr( tab, yyCh.toLatin1() ) - tab]) );
-                        yyCh = getChar();
-                     }
+                        break;
 
-                  } else {
-                     yyString.append(yyCh);
-                     yyCh = getChar();
-                  }
-               }
+                    case 'n':
+                        if ( yyIdent == "null" )
+                        {
+                            return Tok_null;
+                        }
 
-               if ( yyCh != '"') {
-                  yyMsg() << "Unterminated string.\n";
-               }
-
-               yyCh = getChar();
-
-               return Tok_String;
-
-            case ':':
-               yyCh = getChar();
-               return Tok_Colon;
-            case '\'':
-               yyCh = getChar();
-
-               if ( yyCh == '\\') {
-                  yyCh = getChar();
-               }
-               do {
-                  yyCh = getChar();
-               } while ( yyCh != EOF && yyCh != '\'');
-               yyCh = getChar();
-               break;
-
-            case '{':
-               yyCh = getChar();
-               return Tok_LeftBrace;
-
-            case '}':
-               yyCh = getChar();
-               return Tok_RightBrace;
-
-            case '(':
-               if (yyParenDepth == 0) {
-                  yyParenLineNo = yyCurLineNo;
-               }
-               yyParenDepth++;
-               yyCh = getChar();
-               return Tok_LeftParen;
-
-            case ')':
-               if (yyParenDepth == 0) {
-                  yyParenLineNo = yyCurLineNo;
-               }
-               yyParenDepth--;
-               yyCh = getChar();
-               return Tok_RightParen;
-
-            case ',':
-               yyCh = getChar();
-               return Tok_Comma;
-
-            case '.':
-               yyCh = getChar();
-               return Tok_Dot;
-
-            case ';':
-               yyCh = getChar();
-               return Tok_Semicolon;
-
-            case '+':
-               yyCh = getChar();
-               if (yyCh == '+') {
-                  yyCh = getChar();
-                  return Tok_PlusPlus;
-               }
-
-               if ( yyCh == '=') {
-                  yyCh = getChar();
-                  return Tok_PlusEq;
-               }
-               return Tok_Plus;
-
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9': {
-               QByteArray ba;
-               ba += yyCh.toLatin1();
-               yyCh = getChar();
-               bool hex = yyCh == 'x';
-
-               if ( hex ) {
-                  ba += yyCh.toLatin1();
-                  yyCh = getChar();
-               }
-
-               while ( hex ? isxdigit(yyCh.toLatin1()) : yyCh.isDigit() ) {
-                  ba += yyCh.toLatin1();
-                  yyCh = getChar();
-               }
-
-               bool ok;
-               yyInteger = ba.toLongLong(&ok);
-
-               if (ok) {
-                  return Tok_Integer;
-               }
-               break;
+                        break;
+                }
             }
 
-            default:
-               yyCh = getChar();
-         }
-      }
-   }
-   return Tok_Eof;
+            switch ( yyIdent.at( 0 ).toLatin1() )
+            {
+                case 'p':
+                    if ( yyIdent == "package" )
+                    {
+                        return Tok_Package;
+                    }
+
+                    break;
+
+                case 't':
+                    if ( yyIdent == "tr" )
+                    {
+                        return Tok_tr;
+                    }
+
+                    if ( yyIdent == "translate" )
+                    {
+                        return Tok_translate;
+                    }
+            }
+
+            return Tok_Ident;
+
+        }
+        else
+        {
+            switch ( yyCh.toLatin1() )
+            {
+
+                case '/':
+                    yyCh = getChar();
+
+                    if ( yyCh == '/' )
+                    {
+                        do
+                        {
+                            yyCh = getChar();
+
+                            if ( yyCh == EOF )
+                            {
+                                break;
+                            }
+
+                            yyComment.append( yyCh );
+                        }
+                        while ( yyCh != '\n' );
+
+                        return Tok_Comment;
+
+                    }
+                    else if ( yyCh == '*' )
+                    {
+                        bool metAster = false;
+                        bool metAsterSlash = false;
+
+                        while ( ! metAsterSlash )
+                        {
+                            yyCh = getChar();
+
+                            if ( yyCh == EOF )
+                            {
+                                yyMsg() << "Unterminated Java comment.\n";
+                                return Tok_Comment;
+                            }
+
+                            yyComment.append( yyCh );
+
+                            if ( yyCh == '*' )
+                            {
+                                metAster = true;
+
+                            }
+                            else if ( metAster && yyCh == '/' )
+                            {
+                                metAsterSlash = true;
+
+                            }
+                            else
+                            {
+                                metAster = false;
+                            }
+                        }
+
+                        yyComment.chop( 2 );
+                        yyCh = getChar();
+
+                        return Tok_Comment;
+                    }
+
+                    break;
+
+                case '"':
+                    yyCh = getChar();
+
+                    while ( yyCh != EOF && yyCh != '\n' && yyCh != '"' )
+                    {
+                        if ( yyCh == '\\' )
+                        {
+                            yyCh = getChar();
+
+                            if ( yyCh == 'u' )
+                            {
+                                yyCh = getChar();
+
+                                char32_t unicode( 0 );
+
+                                for ( int i = 4; i > 0; --i )
+                                {
+                                    unicode = unicode << 4;
+
+                                    if ( yyCh.isDigit() )
+                                    {
+                                        unicode += yyCh.digitValue();
+
+                                    }
+                                    else
+                                    {
+                                        int sub( yyCh.toLower()[0].toLatin1() - 87 );
+
+                                        if ( sub > 15 || sub < 10 )
+                                        {
+                                            yyMsg() << "Invalid Unicode value.\n";
+                                            break;
+                                        }
+
+                                        unicode += sub;
+                                    }
+
+                                    yyCh = getChar();
+                                }
+
+                                yyString.append( QChar( char32_t( unicode ) ) );
+
+                            }
+                            else if ( yyCh == '\n' )
+                            {
+                                yyCh = getChar();
+
+                            }
+                            else
+                            {
+                                yyString.append( QChar( backTab[strchr( tab, yyCh.toLatin1() ) - tab] ) );
+                                yyCh = getChar();
+                            }
+
+                        }
+                        else
+                        {
+                            yyString.append( yyCh );
+                            yyCh = getChar();
+                        }
+                    }
+
+                    if ( yyCh != '"' )
+                    {
+                        yyMsg() << "Unterminated string.\n";
+                    }
+
+                    yyCh = getChar();
+
+                    return Tok_String;
+
+                case ':':
+                    yyCh = getChar();
+                    return Tok_Colon;
+
+                case '\'':
+                    yyCh = getChar();
+
+                    if ( yyCh == '\\' )
+                    {
+                        yyCh = getChar();
+                    }
+
+                    do
+                    {
+                        yyCh = getChar();
+                    }
+                    while ( yyCh != EOF && yyCh != '\'' );
+
+                    yyCh = getChar();
+                    break;
+
+                case '{':
+                    yyCh = getChar();
+                    return Tok_LeftBrace;
+
+                case '}':
+                    yyCh = getChar();
+                    return Tok_RightBrace;
+
+                case '(':
+                    if ( yyParenDepth == 0 )
+                    {
+                        yyParenLineNo = yyCurLineNo;
+                    }
+
+                    yyParenDepth++;
+                    yyCh = getChar();
+                    return Tok_LeftParen;
+
+                case ')':
+                    if ( yyParenDepth == 0 )
+                    {
+                        yyParenLineNo = yyCurLineNo;
+                    }
+
+                    yyParenDepth--;
+                    yyCh = getChar();
+                    return Tok_RightParen;
+
+                case ',':
+                    yyCh = getChar();
+                    return Tok_Comma;
+
+                case '.':
+                    yyCh = getChar();
+                    return Tok_Dot;
+
+                case ';':
+                    yyCh = getChar();
+                    return Tok_Semicolon;
+
+                case '+':
+                    yyCh = getChar();
+
+                    if ( yyCh == '+' )
+                    {
+                        yyCh = getChar();
+                        return Tok_PlusPlus;
+                    }
+
+                    if ( yyCh == '=' )
+                    {
+                        yyCh = getChar();
+                        return Tok_PlusEq;
+                    }
+
+                    return Tok_Plus;
+
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                {
+                    QByteArray ba;
+                    ba += yyCh.toLatin1();
+                    yyCh = getChar();
+                    bool hex = yyCh == 'x';
+
+                    if ( hex )
+                    {
+                        ba += yyCh.toLatin1();
+                        yyCh = getChar();
+                    }
+
+                    while ( hex ? isxdigit( yyCh.toLatin1() ) : yyCh.isDigit() )
+                    {
+                        ba += yyCh.toLatin1();
+                        yyCh = getChar();
+                    }
+
+                    bool ok;
+                    yyInteger = ba.toLongLong( &ok );
+
+                    if ( ok )
+                    {
+                        return Tok_Integer;
+                    }
+
+                    break;
+                }
+
+                default:
+                    yyCh = getChar();
+            }
+        }
+    }
+
+    return Tok_Eof;
 }
 
 static bool match( int t )
 {
-   bool matches = ( yyTok == t );
-   if ( matches ) {
-      yyTok = getToken();
-   }
-   return matches;
+    bool matches = ( yyTok == t );
+
+    if ( matches )
+    {
+        yyTok = getToken();
+    }
+
+    return matches;
 }
 
 static bool matchString( QString &s )
 {
-   if ( yyTok != Tok_String ) {
-      return false;
-   }
+    if ( yyTok != Tok_String )
+    {
+        return false;
+    }
 
-   s = yyString;
-   yyTok = getToken();
+    s = yyString;
+    yyTok = getToken();
 
-   while ( yyTok == Tok_Plus ) {
-      yyTok = getToken();
+    while ( yyTok == Tok_Plus )
+    {
+        yyTok = getToken();
 
-      if (yyTok == Tok_String) {
-         s += yyString;
-      } else {
-         yyMsg() << "String used in translation can contain only literals"
+        if ( yyTok == Tok_String )
+        {
+            s += yyString;
+        }
+        else
+        {
+            yyMsg() << "String used in translation can contain only literals"
                     " concatenated with other literals, not expressions or numbers.\n";
 
-         return false;
-      }
+            return false;
+        }
 
-      yyTok = getToken();
-   }
+        yyTok = getToken();
+    }
 
-   return true;
+    return true;
 }
 
-static bool matchStringOrNull(QString &s)
+static bool matchStringOrNull( QString &s )
 {
-   bool matches = matchString(s);
+    bool matches = matchString( s );
 
-   if (!matches) {
-      matches = (yyTok == Tok_null);
-      if (matches) {
-         yyTok = getToken();
-      }
-   }
-   return matches;
+    if ( !matches )
+    {
+        matches = ( yyTok == Tok_null );
+
+        if ( matches )
+        {
+            yyTok = getToken();
+        }
+    }
+
+    return matches;
 }
 
 /*
@@ -439,249 +530,311 @@ static bool matchStringOrNull(QString &s)
  */
 static bool matchExpression()
 {
-   if (match(Tok_Integer)) {
-      return true;
-   }
+    if ( match( Tok_Integer ) )
+    {
+        return true;
+    }
 
-   int parenlevel = 0;
-   while (match(Tok_Ident) || parenlevel > 0) {
-      if (yyTok == Tok_RightParen) {
-         if (parenlevel == 0) {
-            break;
-         }
-         --parenlevel;
-         yyTok = getToken();
-      } else if (yyTok == Tok_LeftParen) {
-         yyTok = getToken();
-         if (yyTok == Tok_RightParen) {
+    int parenlevel = 0;
+
+    while ( match( Tok_Ident ) || parenlevel > 0 )
+    {
+        if ( yyTok == Tok_RightParen )
+        {
+            if ( parenlevel == 0 )
+            {
+                break;
+            }
+
+            --parenlevel;
             yyTok = getToken();
-         } else {
-            ++parenlevel;
-         }
-      } else if (yyTok == Tok_Ident) {
-         continue;
-      } else if (parenlevel == 0) {
-         return false;
-      }
-   }
-   return true;
+        }
+        else if ( yyTok == Tok_LeftParen )
+        {
+            yyTok = getToken();
+
+            if ( yyTok == Tok_RightParen )
+            {
+                yyTok = getToken();
+            }
+            else
+            {
+                ++parenlevel;
+            }
+        }
+        else if ( yyTok == Tok_Ident )
+        {
+            continue;
+        }
+        else if ( parenlevel == 0 )
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 static const QString context()
 {
-   QString context(yyPackage);
-   bool innerClass = false;
+    QString context( yyPackage );
+    bool innerClass = false;
 
-   for (int i = 0; i < yyScope.size(); ++i) {
-      if (yyScope.at(i)->type == Scope::Clazz) {
-         if (innerClass) {
-            context.append("$");
-         } else {
-            context.append(".");
-         }
+    for ( int i = 0; i < yyScope.size(); ++i )
+    {
+        if ( yyScope.at( i )->type == Scope::Clazz )
+        {
+            if ( innerClass )
+            {
+                context.append( "$" );
+            }
+            else
+            {
+                context.append( "." );
+            }
 
-         context.append(yyScope.at(i)->name);
-         innerClass = true;
-      }
-   }
+            context.append( yyScope.at( i )->name );
+            innerClass = true;
+        }
+    }
 
-   return context;
+    return context;
 }
 
-static void recordMessage(Translator *tor, const QString &context, const QString &text, const QString &comment,
-   const QString &extracomment, bool plural, ConversionData &cd)
+static void recordMessage( Translator *tor, const QString &context, const QString &text, const QString &comment,
+                           const QString &extracomment, bool plural, ConversionData &cd )
 {
-   TranslatorMessage msg(context, text, comment, QString(), yyFileName, yyLineNo, QStringList(),
-            TranslatorMessage::Type::Unfinished, plural);
+    TranslatorMessage msg( context, text, comment, QString(), yyFileName, yyLineNo, QStringList(),
+                           TranslatorMessage::Type::Unfinished, plural );
 
-   msg.setExtraComment(extracomment.simplified());
-   tor->extend(msg, cd);
+    msg.setExtraComment( extracomment.simplified() );
+    tor->extend( msg, cd );
 }
 
-static void parse(Translator *tor, ConversionData &cd)
+static void parse( Translator *tor, ConversionData &cd )
 {
-   QString text;
-   QString com;
-   QString extracomment;
+    QString text;
+    QString com;
+    QString extracomment;
 
-   yyCh  = getChar();
-   yyTok = getToken();
+    yyCh  = getChar();
+    yyTok = getToken();
 
-   while ( yyTok != Tok_Eof ) {
-      switch ( yyTok ) {
-         case Tok_class:
-            yyTok = getToken();
+    while ( yyTok != Tok_Eof )
+    {
+        switch ( yyTok )
+        {
+            case Tok_class:
+                yyTok = getToken();
 
-            if (yyTok == Tok_Ident) {
-               yyScope.push(new Scope(yyIdent, Scope::Clazz, yyLineNo));
+                if ( yyTok == Tok_Ident )
+                {
+                    yyScope.push( new Scope( yyIdent, Scope::Clazz, yyLineNo ) );
 
-            } else {
-               yyMsg() << "'class' must be followed by a class name.\n";
-               break;
-            }
+                }
+                else
+                {
+                    yyMsg() << "'class' must be followed by a class name.\n";
+                    break;
+                }
 
-            while (! match(Tok_LeftBrace)) {
-               yyTok = getToken();
-            }
-            break;
+                while ( ! match( Tok_LeftBrace ) )
+                {
+                    yyTok = getToken();
+                }
 
-         case Tok_tr:
-            yyTok = getToken();
+                break;
 
-            if ( match(Tok_LeftParen) && matchString(text) ) {
-               com.clear();
-               bool plural = false;
+            case Tok_tr:
+                yyTok = getToken();
 
-               if ( match(Tok_RightParen) ) {
-                  // no comment
+                if ( match( Tok_LeftParen ) && matchString( text ) )
+                {
+                    com.clear();
+                    bool plural = false;
 
-               } else if (match(Tok_Comma) && matchStringOrNull(com)) {
-                  // comment
-                  if ( match(Tok_RightParen)) {
-                     // ok
+                    if ( match( Tok_RightParen ) )
+                    {
+                        // no comment
 
-                  } else if (match(Tok_Comma)) {
-                     plural = true;
-                  }
-               }
+                    }
+                    else if ( match( Tok_Comma ) && matchStringOrNull( com ) )
+                    {
+                        // comment
+                        if ( match( Tok_RightParen ) )
+                        {
+                            // ok
 
-               if (! text.isEmpty()) {
-                  recordMessage(tor, context(), text, com, extracomment, plural, cd);
-               }
-            }
-            break;
-
-         case Tok_translate: {
-            QString contextOverride;
-            yyTok = getToken();
-
-            if ( match(Tok_LeftParen) &&
-                  matchString(contextOverride) &&
-                  match(Tok_Comma) &&
-                  matchString(text) ) {
-
-               com.clear();
-               bool plural = false;
-
-               if (! match(Tok_RightParen)) {
-                  // look for comment
-                  if ( match(Tok_Comma) && matchStringOrNull(com)) {
-                     if (! match(Tok_RightParen)) {
-                        if (match(Tok_Comma) && matchExpression() && match(Tok_RightParen)) {
-                           plural = true;
-                        } else {
-                           break;
                         }
-                     }
+                        else if ( match( Tok_Comma ) )
+                        {
+                            plural = true;
+                        }
+                    }
 
-                  } else {
-                     break;
-                  }
-               }
+                    if ( ! text.isEmpty() )
+                    {
+                        recordMessage( tor, context(), text, com, extracomment, plural, cd );
+                    }
+                }
 
-               if (! text.isEmpty()) {
-                  recordMessage(tor, contextOverride, text, com, extracomment, plural, cd);
-               }
-            }
-         }
-         break;
+                break;
 
-         case Tok_Ident:
-            yyTok = getToken();
-            break;
+            case Tok_translate:
+            {
+                QString contextOverride;
+                yyTok = getToken();
 
-         case Tok_Comment:
-            if (yyComment.startsWith(':')) {
-               yyComment.remove(0, 1);
-               extracomment.append(yyComment);
-            }
+                if ( match( Tok_LeftParen ) &&
+                        matchString( contextOverride ) &&
+                        match( Tok_Comma ) &&
+                        matchString( text ) )
+                {
 
-            yyTok = getToken();
-            break;
+                    com.clear();
+                    bool plural = false;
 
-         case Tok_RightBrace:
-            if ( yyScope.isEmpty() ) {
-               yyMsg() << "Excess closing brace.\n";
-            } else {
-               delete (yyScope.pop());
-            }
+                    if ( ! match( Tok_RightParen ) )
+                    {
+                        // look for comment
+                        if ( match( Tok_Comma ) && matchStringOrNull( com ) )
+                        {
+                            if ( ! match( Tok_RightParen ) )
+                            {
+                                if ( match( Tok_Comma ) && matchExpression() && match( Tok_RightParen ) )
+                                {
+                                    plural = true;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
 
-            extracomment.clear();
-            yyTok = getToken();
-            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
-         case Tok_LeftBrace:
-            yyScope.push(new Scope(QString(), Scope::Other, yyLineNo));
-            yyTok = getToken();
-            break;
-
-         case Tok_Semicolon:
-            extracomment.clear();
-            yyTok = getToken();
-            break;
-
-         case Tok_Package:
-            yyTok = getToken();
-            while (! match(Tok_Semicolon)) {
-               switch (yyTok) {
-                  case Tok_Ident:
-                     yyPackage.append(yyIdent);
-                     break;
-
-                  case Tok_Dot:
-                     yyPackage.append(".");
-                     break;
-
-                  default:
-                     yyMsg() << "'package' must be followed by package name.\n";
-                     break;
-               }
-               yyTok = getToken();
+                    if ( ! text.isEmpty() )
+                    {
+                        recordMessage( tor, contextOverride, text, com, extracomment, plural, cd );
+                    }
+                }
             }
             break;
 
-         default:
-            yyTok = getToken();
-      }
-   }
+            case Tok_Ident:
+                yyTok = getToken();
+                break;
 
-   if (! yyScope.isEmpty() ) {
-      yyMsg(yyScope.top()->line) << "Unbalanced opening brace.\n";
+            case Tok_Comment:
+                if ( yyComment.startsWith( ':' ) )
+                {
+                    yyComment.remove( 0, 1 );
+                    extracomment.append( yyComment );
+                }
 
-   } else if ( yyParenDepth != 0 ) {
-      yyMsg(yyParenLineNo) << "Unbalanced opening parenthesis.\n";
-   }
+                yyTok = getToken();
+                break;
+
+            case Tok_RightBrace:
+                if ( yyScope.isEmpty() )
+                {
+                    yyMsg() << "Excess closing brace.\n";
+                }
+                else
+                {
+                    delete ( yyScope.pop() );
+                }
+
+                extracomment.clear();
+                yyTok = getToken();
+                break;
+
+            case Tok_LeftBrace:
+                yyScope.push( new Scope( QString(), Scope::Other, yyLineNo ) );
+                yyTok = getToken();
+                break;
+
+            case Tok_Semicolon:
+                extracomment.clear();
+                yyTok = getToken();
+                break;
+
+            case Tok_Package:
+                yyTok = getToken();
+
+                while ( ! match( Tok_Semicolon ) )
+                {
+                    switch ( yyTok )
+                    {
+                        case Tok_Ident:
+                            yyPackage.append( yyIdent );
+                            break;
+
+                        case Tok_Dot:
+                            yyPackage.append( "." );
+                            break;
+
+                        default:
+                            yyMsg() << "'package' must be followed by package name.\n";
+                            break;
+                    }
+
+                    yyTok = getToken();
+                }
+
+                break;
+
+            default:
+                yyTok = getToken();
+        }
+    }
+
+    if ( ! yyScope.isEmpty() )
+    {
+        yyMsg( yyScope.top()->line ) << "Unbalanced opening brace.\n";
+
+    }
+    else if ( yyParenDepth != 0 )
+    {
+        yyMsg( yyParenLineNo ) << "Unbalanced opening parenthesis.\n";
+    }
 }
 
-bool loadJava(Translator &translator, const QString &filename, ConversionData &cd)
+bool loadJava( Translator &translator, const QString &filename, ConversionData &cd )
 {
-   QFile file(filename);
+    QFile file( filename );
 
-   if (! file.open(QIODevice::ReadOnly)) {
-      cd.appendError(QString("Unable to open %1: %2").formatArgs(filename, file.errorString()));
-      return false;
-   }
+    if ( ! file.open( QIODevice::ReadOnly ) )
+    {
+        cd.appendError( QString( "Unable to open %1: %2" ).formatArgs( filename, file.errorString() ) );
+        return false;
+    }
 
-   yyInPos = -1;
-   yyFileName = filename;
-   yyPackage.clear();
-   yyScope.clear();
-   yyTok = -1;
-   yyParenDepth = 0;
-   yyCurLineNo = 0;
-   yyParenLineNo = 1;
+    yyInPos = -1;
+    yyFileName = filename;
+    yyPackage.clear();
+    yyScope.clear();
+    yyTok = -1;
+    yyParenDepth = 0;
+    yyCurLineNo = 0;
+    yyParenLineNo = 1;
 
-   QTextStream ts(&file);
+    QTextStream ts( &file );
 
-   ts.setCodec(QTextCodec::codecForName("UTF-8"));
-   ts.setAutoDetectUnicode(true);
-   yyInStr = ts.readAll();
-   yyInPos = 0;
-   yyFileName = filename;
-   yyCurLineNo = 1;
-   yyParenLineNo = 1;
+    ts.setCodec( QTextCodec::codecForName( "UTF-8" ) );
+    ts.setAutoDetectUnicode( true );
+    yyInStr = ts.readAll();
+    yyInPos = 0;
+    yyFileName = filename;
+    yyCurLineNo = 1;
+    yyParenLineNo = 1;
 
-   parse(&translator, cd);
+    parse( &translator, cd );
 
-   return true;
+    return true;
 }

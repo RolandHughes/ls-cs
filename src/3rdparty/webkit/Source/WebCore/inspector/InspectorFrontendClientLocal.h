@@ -36,54 +36,58 @@
 #include <wtf/Forward.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorController;
 class InspectorFrontendHost;
 class Page;
 
-class InspectorFrontendClientLocal : public InspectorFrontendClient {
-    WTF_MAKE_NONCOPYABLE(InspectorFrontendClientLocal); WTF_MAKE_FAST_ALLOCATED;
+class InspectorFrontendClientLocal : public InspectorFrontendClient
+{
+    WTF_MAKE_NONCOPYABLE( InspectorFrontendClientLocal );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    class Settings {
+    class Settings
+    {
     public:
         Settings() { }
         virtual ~Settings() { }
-        virtual String getProperty(const String& name);
-        virtual void setProperty(const String& name, const String& value);
+        virtual String getProperty( const String &name );
+        virtual void setProperty( const String &name, const String &value );
     };
 
-    InspectorFrontendClientLocal(InspectorController*, Page*, PassOwnPtr<Settings>);
+    InspectorFrontendClientLocal( InspectorController *, Page *, PassOwnPtr<Settings> );
     virtual ~InspectorFrontendClientLocal();
-    
+
     virtual void windowObjectCleared();
     virtual void frontendLoaded();
 
-    virtual void moveWindowBy(float x, float y);
+    virtual void moveWindowBy( float x, float y );
 
     virtual void requestAttachWindow();
     virtual void requestDetachWindow();
-    virtual void changeAttachedWindowHeight(unsigned);
-    virtual void saveAs(const String&, const String&) { }
+    virtual void changeAttachedWindowHeight( unsigned );
+    virtual void saveAs( const String &, const String & ) { }
 
     virtual void attachWindow() = 0;
     virtual void detachWindow() = 0;
     bool canAttachWindow();
 
-    virtual void sendMessageToBackend(const String& message);
+    virtual void sendMessageToBackend( const String &message );
 
 protected:
-    virtual void setAttachedWindowHeight(unsigned) = 0;
-    void setAttachedWindow(bool);
+    virtual void setAttachedWindowHeight( unsigned ) = 0;
+    void setAttachedWindow( bool );
     void restoreAttachedWindowHeight();
 
 private:
-    static unsigned constrainedAttachedWindowHeight(unsigned preferredHeight, unsigned totalWindowHeight);
+    static unsigned constrainedAttachedWindowHeight( unsigned preferredHeight, unsigned totalWindowHeight );
 
     friend class FrontendMenuProvider;
-    InspectorController* m_inspectorController;
-    Page* m_frontendPage;
-    ScriptState* m_frontendScriptState;
+    InspectorController *m_inspectorController;
+    Page *m_frontendPage;
+    ScriptState *m_frontendScriptState;
     // TODO(yurys): this ref shouldn't be needed.
     RefPtr<InspectorFrontendHost> m_frontendHost;
     OwnPtr<InspectorFrontendClientLocal::Settings> m_settings;

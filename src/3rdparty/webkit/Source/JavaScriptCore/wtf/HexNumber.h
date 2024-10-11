@@ -22,16 +22,19 @@
 
 #include <wtf/text/StringConcatenate.h>
 
-namespace WTF {
+namespace WTF
+{
 
-enum HexConversionMode {
+enum HexConversionMode
+{
     Lowercase,
     Uppercase
 };
 
-namespace Internal {
+namespace Internal
+{
 
-static const char* hexDigitsForMode(HexConversionMode mode)
+static const char *hexDigitsForMode( HexConversionMode mode )
 {
     static const char lowerHexDigits[17] = "0123456789abcdef";
     static const char upperHexDigits[17] = "0123456789ABCDEF";
@@ -41,58 +44,70 @@ static const char* hexDigitsForMode(HexConversionMode mode)
 }; // namespace Internal
 
 template<typename T>
-inline void appendByteAsHex(unsigned char byte, T& destination, HexConversionMode mode = Uppercase)
+inline void appendByteAsHex( unsigned char byte, T &destination, HexConversionMode mode = Uppercase )
 {
-    const char* hexDigits = Internal::hexDigitsForMode(mode);
-    destination.append(hexDigits[byte >> 4]);
-    destination.append(hexDigits[byte & 0xF]);
+    const char *hexDigits = Internal::hexDigitsForMode( mode );
+    destination.append( hexDigits[byte >> 4] );
+    destination.append( hexDigits[byte & 0xF] );
 }
 
 template<typename T>
-inline void placeByteAsHexCompressIfPossible(unsigned char byte, T& destination, unsigned& index, HexConversionMode mode = Uppercase)
+inline void placeByteAsHexCompressIfPossible( unsigned char byte, T &destination, unsigned &index,
+        HexConversionMode mode = Uppercase )
 {
-    const char* hexDigits = Internal::hexDigitsForMode(mode);
-    if (byte >= 0x10)
+    const char *hexDigits = Internal::hexDigitsForMode( mode );
+
+    if ( byte >= 0x10 )
+    {
         destination[index++] = hexDigits[byte >> 4];
+    }
+
     destination[index++] = hexDigits[byte & 0xF];
 }
 
 template<typename T>
-inline void placeByteAsHex(unsigned char byte, T& destination, HexConversionMode mode = Uppercase)
+inline void placeByteAsHex( unsigned char byte, T &destination, HexConversionMode mode = Uppercase )
 {
-    const char* hexDigits = Internal::hexDigitsForMode(mode);
+    const char *hexDigits = Internal::hexDigitsForMode( mode );
     *destination++ = hexDigits[byte >> 4];
     *destination++ = hexDigits[byte & 0xF];
 }
 
 template<typename T>
-inline void appendUnsignedAsHex(unsigned number, T& destination, HexConversionMode mode = Uppercase)
+inline void appendUnsignedAsHex( unsigned number, T &destination, HexConversionMode mode = Uppercase )
 {
-    const char* hexDigits = Internal::hexDigitsForMode(mode);
+    const char *hexDigits = Internal::hexDigitsForMode( mode );
     Vector<UChar, 8> result;
-    do {
-        result.prepend(hexDigits[number % 16]);
-        number >>= 4;
-    } while (number > 0);
 
-    destination.append(result.data(), result.size());
+    do
+    {
+        result.prepend( hexDigits[number % 16] );
+        number >>= 4;
+    }
+    while ( number > 0 );
+
+    destination.append( result.data(), result.size() );
 }
 
 // Same as appendUnsignedAsHex, but using exactly 'desiredDigits' for the conversion.
 template<typename T>
-inline void appendUnsignedAsHexFixedSize(unsigned number, T& destination, unsigned desiredDigits, HexConversionMode mode = Uppercase)
+inline void appendUnsignedAsHexFixedSize( unsigned number, T &destination, unsigned desiredDigits,
+        HexConversionMode mode = Uppercase )
 {
-    ASSERT(desiredDigits);
+    ASSERT( desiredDigits );
 
-    const char* hexDigits = Internal::hexDigitsForMode(mode);
+    const char *hexDigits = Internal::hexDigitsForMode( mode );
     Vector<UChar, 8> result;
-    do {
-        result.prepend(hexDigits[number % 16]);
-        number >>= 4;
-    } while (result.size() < desiredDigits);
 
-    ASSERT(result.size() == desiredDigits);
-    destination.append(result.data(), result.size());
+    do
+    {
+        result.prepend( hexDigits[number % 16] );
+        number >>= 4;
+    }
+    while ( result.size() < desiredDigits );
+
+    ASSERT( result.size() == desiredDigits );
+    destination.append( result.data(), result.size() );
 }
 
 } // namespace WTF

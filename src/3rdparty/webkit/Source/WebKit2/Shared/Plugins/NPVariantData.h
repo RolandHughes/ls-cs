@@ -30,18 +30,22 @@
 
 #include <wtf/text/CString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 // The CoreIPC representation of an NPVariant.
 
-class NPVariantData {
+class NPVariantData
+{
 public:
-    enum Type {
+    enum Type
+    {
         Void,
         Null,
         Bool,
@@ -55,53 +59,56 @@ public:
 
     static NPVariantData makeVoid();
     static NPVariantData makeNull();
-    static NPVariantData makeBool(bool value);
-    static NPVariantData makeInt32(int32_t value);
-    static NPVariantData makeDouble(double value);
-    static NPVariantData makeString(const char* string, unsigned length);
-    static NPVariantData makeLocalNPObjectID(uint64_t value);
-    static NPVariantData makeRemoteNPObjectID(uint64_t value);
+    static NPVariantData makeBool( bool value );
+    static NPVariantData makeInt32( int32_t value );
+    static NPVariantData makeDouble( double value );
+    static NPVariantData makeString( const char *string, unsigned length );
+    static NPVariantData makeLocalNPObjectID( uint64_t value );
+    static NPVariantData makeRemoteNPObjectID( uint64_t value );
 
-    Type type() const { return static_cast<Type>(m_type); }
+    Type type() const
+    {
+        return static_cast<Type>( m_type );
+    }
 
     bool boolValue() const
     {
-        ASSERT(type() == NPVariantData::Bool);
+        ASSERT( type() == NPVariantData::Bool );
         return m_boolValue;
     }
 
     int32_t int32Value() const
     {
-        ASSERT(type() == NPVariantData::Int32);
+        ASSERT( type() == NPVariantData::Int32 );
         return m_int32Value;
     }
 
     double doubleValue() const
     {
-        ASSERT(type() == NPVariantData::Double);
+        ASSERT( type() == NPVariantData::Double );
         return m_doubleValue;
     }
 
-    const CString& stringValue() const
+    const CString &stringValue() const
     {
-        ASSERT(type() == NPVariantData::String);
+        ASSERT( type() == NPVariantData::String );
         return m_stringValue;
     }
 
     uint64_t localNPObjectIDValue() const
     {
-        ASSERT(type() == NPVariantData::LocalNPObjectID);
+        ASSERT( type() == NPVariantData::LocalNPObjectID );
         return m_localNPObjectIDValue;
     }
 
     uint64_t remoteNPObjectIDValue() const
     {
-        ASSERT(type() == NPVariantData::RemoteNPObjectID);
+        ASSERT( type() == NPVariantData::RemoteNPObjectID );
         return m_remoteNPObjectIDValue;
     }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, NPVariantData&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, NPVariantData & );
 
 private:
     uint32_t m_type;
@@ -116,5 +123,5 @@ private:
 } // namespace WebKit
 
 #endif // ENABLE(PLUGIN_PROCESS)
-    
+
 #endif // NPVariantData_h

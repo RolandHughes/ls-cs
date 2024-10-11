@@ -36,22 +36,30 @@
 
 #if ENABLE(SHARED_WORKERS)
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class SharedWorker : public AbstractWorker {
-    public:
-        static PassRefPtr<SharedWorker> create(const String& url, const String& name, ScriptExecutionContext*, ExceptionCode&);
-        virtual ~SharedWorker();
+class SharedWorker : public AbstractWorker
+{
+public:
+    static PassRefPtr<SharedWorker> create( const String &url, const String &name, ScriptExecutionContext *, ExceptionCode & );
+    virtual ~SharedWorker();
 
-        MessagePort* port() const { return m_port.get(); }
+    MessagePort *port() const
+    {
+        return m_port.get();
+    }
 
-    private:
-        SharedWorker(ScriptExecutionContext*);
+private:
+    SharedWorker( ScriptExecutionContext * );
 
-        virtual SharedWorker* toSharedWorker() { return this; }
+    virtual SharedWorker *toSharedWorker()
+    {
+        return this;
+    }
 
-        RefPtr<MessagePort> m_port;
-    };
+    RefPtr<MessagePort> m_port;
+};
 
 } // namespace WebCore
 

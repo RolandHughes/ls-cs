@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,54 +34,61 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-static void* collect(void*)
+namespace WebCore
 {
-    JSLock lock(SilenceAssertionsOnly);
+
+static void *collect( void * )
+{
+    JSLock lock( SilenceAssertionsOnly );
     JSDOMWindow::commonJSGlobalData()->heap.collectAllGarbage();
     return 0;
 }
 
-GCController& gcController()
+GCController &gcController()
 {
-    DEFINE_STATIC_LOCAL(GCController, staticGCController, ());
+    DEFINE_STATIC_LOCAL( GCController, staticGCController, () );
     return staticGCController;
 }
 
 GCController::GCController()
-    : m_GCTimer(this, &GCController::gcTimerFired)
+    : m_GCTimer( this, &GCController::gcTimerFired )
 {
 }
 
 void GCController::garbageCollectSoon()
 {
-    if (!m_GCTimer.isActive())
-        m_GCTimer.startOneShot(0);
+    if ( !m_GCTimer.isActive() )
+    {
+        m_GCTimer.startOneShot( 0 );
+    }
 }
 
-void GCController::gcTimerFired(Timer<GCController>*)
+void GCController::gcTimerFired( Timer<GCController> * )
 {
-    collect(0);
+    collect( 0 );
 }
 
 void GCController::garbageCollectNow()
 {
-    JSLock lock(SilenceAssertionsOnly);
-    if (!JSDOMWindow::commonJSGlobalData()->heap.isBusy())
-        collect(0);
+    JSLock lock( SilenceAssertionsOnly );
+
+    if ( !JSDOMWindow::commonJSGlobalData()->heap.isBusy() )
+    {
+        collect( 0 );
+    }
 }
 
-void GCController::garbageCollectOnAlternateThreadForDebugging(bool waitUntilDone)
+void GCController::garbageCollectOnAlternateThreadForDebugging( bool waitUntilDone )
 {
-    ThreadIdentifier threadID = createThread(collect, 0, "WebCore: GCController");
+    ThreadIdentifier threadID = createThread( collect, 0, "WebCore: GCController" );
 
-    if (waitUntilDone) {
-        waitForThreadCompletion(threadID, 0);
+    if ( waitUntilDone )
+    {
+        waitForThreadCompletion( threadID, 0 );
         return;
     }
 
-    detachThread(threadID);
+    detachThread( threadID );
 }
 
 } // namespace WebCore

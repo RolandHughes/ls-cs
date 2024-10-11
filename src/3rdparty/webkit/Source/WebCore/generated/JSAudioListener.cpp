@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSAudioListener);
+ASSERT_CLASS_FITS_IN_CELL( JSAudioListener );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,10 +46,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSAudioListener);
 
 static const HashTableValue JSAudioListenerTableValues[4] =
 {
-    { "dopplerFactor", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioListenerDopplerFactor), (intptr_t)setJSAudioListenerDopplerFactor THUNK_GENERATOR(0) },
-    { "speedOfSound", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioListenerSpeedOfSound), (intptr_t)setJSAudioListenerSpeedOfSound THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsAudioListenerConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "dopplerFactor", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioListenerDopplerFactor ), ( intptr_t )setJSAudioListenerDopplerFactor THUNK_GENERATOR( 0 ) },
+    { "speedOfSound", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioListenerSpeedOfSound ), ( intptr_t )setJSAudioListenerSpeedOfSound THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsAudioListenerConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -62,43 +63,50 @@ static JSC_CONST_HASHTABLE HashTable JSAudioListenerTable = { 8, 7, JSAudioListe
 
 static const HashTableValue JSAudioListenerConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioListenerConstructorTable = { 1, 0, JSAudioListenerConstructorTableValues, 0 };
-class JSAudioListenerConstructor : public DOMConstructorObject {
+class JSAudioListenerConstructor : public DOMConstructorObject
+{
 public:
-    JSAudioListenerConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSAudioListenerConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSAudioListenerConstructor::s_info = { "AudioListenerConstructor", &DOMConstructorObject::s_info, &JSAudioListenerConstructorTable, 0 };
 
-JSAudioListenerConstructor::JSAudioListenerConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSAudioListenerConstructor::JSAudioListenerConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSAudioListenerPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSAudioListenerPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSAudioListenerConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioListenerConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioListenerConstructor, JSDOMWrapper>(exec, &JSAudioListenerConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioListenerConstructor, JSDOMWrapper>( exec, &JSAudioListenerConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSAudioListenerConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioListenerConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioListenerConstructor, JSDOMWrapper>(exec, &JSAudioListenerConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioListenerConstructor, JSDOMWrapper>( exec, &JSAudioListenerConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -110,187 +118,246 @@ bool JSAudioListenerConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSAudioListenerPrototypeTableValues[4] =
 {
-    { "setPosition", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsAudioListenerPrototypeFunctionSetPosition), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "setOrientation", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsAudioListenerPrototypeFunctionSetOrientation), (intptr_t)6 THUNK_GENERATOR(0) },
-    { "setVelocity", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsAudioListenerPrototypeFunctionSetVelocity), (intptr_t)3 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "setPosition", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsAudioListenerPrototypeFunctionSetPosition ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "setOrientation", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsAudioListenerPrototypeFunctionSetOrientation ), ( intptr_t )6 THUNK_GENERATOR( 0 ) },
+    { "setVelocity", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsAudioListenerPrototypeFunctionSetVelocity ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSAudioListenerPrototypeTable = { 8, 7, JSAudioListenerPrototypeTableValues, 0 };
 const ClassInfo JSAudioListenerPrototype::s_info = { "AudioListenerPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSAudioListenerPrototypeTable, 0 };
 
-JSObject* JSAudioListenerPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioListenerPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSAudioListener>(exec, globalObject);
+    return getDOMPrototype<JSAudioListener>( exec, globalObject );
 }
 
-bool JSAudioListenerPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioListenerPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSAudioListenerPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSAudioListenerPrototypeTable, this, propertyName, slot );
 }
 
-bool JSAudioListenerPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioListenerPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSAudioListenerPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSAudioListenerPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSAudioListener::s_info = { "AudioListener", &JSDOMWrapper::s_info, &JSAudioListenerTable, 0 };
 
-JSAudioListener::JSAudioListener(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<AudioListener> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSAudioListener::JSAudioListener( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<AudioListener> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSAudioListener::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSAudioListener::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSAudioListenerPrototype(exec->globalData(), globalObject, JSAudioListenerPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSAudioListenerPrototype( exec->globalData(), globalObject,
+            JSAudioListenerPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSAudioListener::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSAudioListener::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSAudioListener, Base>(exec, &JSAudioListenerTable, this, propertyName, slot);
+    return getStaticValueSlot<JSAudioListener, Base>( exec, &JSAudioListenerTable, this, propertyName, slot );
 }
 
-bool JSAudioListener::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSAudioListener::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSAudioListener, Base>(exec, &JSAudioListenerTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSAudioListener, Base>( exec, &JSAudioListenerTable, this, propertyName, descriptor );
 }
 
-JSValue jsAudioListenerDopplerFactor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioListenerDopplerFactor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioListener* castedThis = static_cast<JSAudioListener*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioListener* imp = static_cast<AudioListener*>(castedThis->impl());
-    JSValue result = jsNumber(imp->dopplerFactor());
+    JSAudioListener *castedThis = static_cast<JSAudioListener *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioListener *imp = static_cast<AudioListener *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->dopplerFactor() );
     return result;
 }
 
 
-JSValue jsAudioListenerSpeedOfSound(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioListenerSpeedOfSound( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioListener* castedThis = static_cast<JSAudioListener*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    AudioListener* imp = static_cast<AudioListener*>(castedThis->impl());
-    JSValue result = jsNumber(imp->speedOfSound());
+    JSAudioListener *castedThis = static_cast<JSAudioListener *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    AudioListener *imp = static_cast<AudioListener *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->speedOfSound() );
     return result;
 }
 
 
-JSValue jsAudioListenerConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsAudioListenerConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSAudioListener* domObject = static_cast<JSAudioListener*>(asObject(slotBase));
-    return JSAudioListener::getConstructor(exec, domObject->globalObject());
+    JSAudioListener *domObject = static_cast<JSAudioListener *>( asObject( slotBase ) );
+    return JSAudioListener::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSAudioListener::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSAudioListener::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSAudioListener, Base>(exec, propertyName, value, &JSAudioListenerTable, this, slot);
+    lookupPut<JSAudioListener, Base>( exec, propertyName, value, &JSAudioListenerTable, this, slot );
 }
 
-void setJSAudioListenerDopplerFactor(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSAudioListenerDopplerFactor( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSAudioListener* castedThis = static_cast<JSAudioListener*>(thisObject);
-    AudioListener* imp = static_cast<AudioListener*>(castedThis->impl());
-    imp->setDopplerFactor(value.toFloat(exec));
-}
-
-
-void setJSAudioListenerSpeedOfSound(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSAudioListener* castedThis = static_cast<JSAudioListener*>(thisObject);
-    AudioListener* imp = static_cast<AudioListener*>(castedThis->impl());
-    imp->setSpeedOfSound(value.toFloat(exec));
+    JSAudioListener *castedThis = static_cast<JSAudioListener *>( thisObject );
+    AudioListener *imp = static_cast<AudioListener *>( castedThis->impl() );
+    imp->setDopplerFactor( value.toFloat( exec ) );
 }
 
 
-JSValue JSAudioListener::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSAudioListenerSpeedOfSound( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSAudioListenerConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSAudioListener *castedThis = static_cast<JSAudioListener *>( thisObject );
+    AudioListener *imp = static_cast<AudioListener *>( castedThis->impl() );
+    imp->setSpeedOfSound( value.toFloat( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetPosition(ExecState* exec)
+
+JSValue JSAudioListener::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSAudioListenerConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetPosition( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSAudioListener::s_info))
-        return throwVMTypeError(exec);
-    JSAudioListener* castedThis = static_cast<JSAudioListener*>(asObject(thisValue));
-    AudioListener* imp = static_cast<AudioListener*>(castedThis->impl());
-    float x(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float y(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float z(exec->argument(2).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setPosition(x, y, z);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSAudioListener::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSAudioListener *castedThis = static_cast<JSAudioListener *>( asObject( thisValue ) );
+    AudioListener *imp = static_cast<AudioListener *>( castedThis->impl() );
+    float x( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float y( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float z( exec->argument( 2 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setPosition( x, y, z );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetOrientation(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetOrientation( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSAudioListener::s_info))
-        return throwVMTypeError(exec);
-    JSAudioListener* castedThis = static_cast<JSAudioListener*>(asObject(thisValue));
-    AudioListener* imp = static_cast<AudioListener*>(castedThis->impl());
-    float x(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float y(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float z(exec->argument(2).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float xUp(exec->argument(3).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float yUp(exec->argument(4).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float zUp(exec->argument(5).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setOrientation(x, y, z, xUp, yUp, zUp);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSAudioListener::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSAudioListener *castedThis = static_cast<JSAudioListener *>( asObject( thisValue ) );
+    AudioListener *imp = static_cast<AudioListener *>( castedThis->impl() );
+    float x( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float y( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float z( exec->argument( 2 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float xUp( exec->argument( 3 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float yUp( exec->argument( 4 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float zUp( exec->argument( 5 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setOrientation( x, y, z, xUp, yUp, zUp );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetVelocity(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsAudioListenerPrototypeFunctionSetVelocity( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSAudioListener::s_info))
-        return throwVMTypeError(exec);
-    JSAudioListener* castedThis = static_cast<JSAudioListener*>(asObject(thisValue));
-    AudioListener* imp = static_cast<AudioListener*>(castedThis->impl());
-    float x(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float y(exec->argument(1).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    float z(exec->argument(2).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setVelocity(x, y, z);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSAudioListener::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSAudioListener *castedThis = static_cast<JSAudioListener *>( asObject( thisValue ) );
+    AudioListener *imp = static_cast<AudioListener *>( castedThis->impl() );
+    float x( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float y( exec->argument( 1 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    float z( exec->argument( 2 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setVelocity( x, y, z );
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, AudioListener* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, AudioListener *impl )
 {
-    return wrap<JSAudioListener>(exec, globalObject, impl);
+    return wrap<JSAudioListener>( exec, globalObject, impl );
 }
 
-AudioListener* toAudioListener(JSC::JSValue value)
+AudioListener *toAudioListener( JSC::JSValue value )
 {
-    return value.inherits(&JSAudioListener::s_info) ? static_cast<JSAudioListener*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSAudioListener::s_info ) ? static_cast<JSAudioListener *>( asObject( value ) )->impl() : 0;
 }
 
 }

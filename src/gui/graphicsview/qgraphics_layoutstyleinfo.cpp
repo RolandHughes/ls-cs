@@ -31,68 +31,73 @@
 
 #include <qgraphics_layout_p.h>
 
-QGraphicsLayoutStyleInfo::QGraphicsLayoutStyleInfo(const QGraphicsLayoutPrivate *layout)
-   : m_layout(layout), m_style(nullptr)
+QGraphicsLayoutStyleInfo::QGraphicsLayoutStyleInfo( const QGraphicsLayoutPrivate *layout )
+    : m_layout( layout ), m_style( nullptr )
 {
-   m_widget = new QWidget; // pixelMetric might need a widget ptr
+    m_widget = new QWidget; // pixelMetric might need a widget ptr
 
-   if (m_widget) {
-      m_styleOption.initFrom(m_widget);
-   }
+    if ( m_widget )
+    {
+        m_styleOption.initFrom( m_widget );
+    }
 
-   m_isWindow = m_styleOption.state & QStyle::State_Window;
+    m_isWindow = m_styleOption.state & QStyle::State_Window;
 }
 
 QGraphicsLayoutStyleInfo::~QGraphicsLayoutStyleInfo()
 {
-   delete m_widget;
+    delete m_widget;
 }
 
-qreal QGraphicsLayoutStyleInfo::combinedLayoutSpacing(QLayoutPolicy::ControlTypes controls1,
-   QLayoutPolicy::ControlTypes controls2,
-   Qt::Orientation orientation) const
+qreal QGraphicsLayoutStyleInfo::combinedLayoutSpacing( QLayoutPolicy::ControlTypes controls1,
+        QLayoutPolicy::ControlTypes controls2,
+        Qt::Orientation orientation ) const
 {
-   Q_ASSERT(style());
-   return style()->combinedLayoutSpacing(QSizePolicy::ControlTypes(int(controls1)), QSizePolicy::ControlTypes(int(controls2)),
-         orientation, const_cast<QStyleOption *>(&m_styleOption), widget());
+    Q_ASSERT( style() );
+    return style()->combinedLayoutSpacing( QSizePolicy::ControlTypes( int( controls1 ) ),
+                                           QSizePolicy::ControlTypes( int( controls2 ) ),
+                                           orientation, const_cast<QStyleOption *>( &m_styleOption ), widget() );
 }
 
-qreal QGraphicsLayoutStyleInfo::perItemSpacing(QLayoutPolicy::ControlType control1,
-   QLayoutPolicy::ControlType control2,
-   Qt::Orientation orientation) const
+qreal QGraphicsLayoutStyleInfo::perItemSpacing( QLayoutPolicy::ControlType control1,
+        QLayoutPolicy::ControlType control2,
+        Qt::Orientation orientation ) const
 {
-   Q_ASSERT(style());
-   return style()->layoutSpacing(QSizePolicy::ControlType(control1), QSizePolicy::ControlType(control2),
-         orientation, const_cast<QStyleOption *>(&m_styleOption), widget());
+    Q_ASSERT( style() );
+    return style()->layoutSpacing( QSizePolicy::ControlType( control1 ), QSizePolicy::ControlType( control2 ),
+                                   orientation, const_cast<QStyleOption *>( &m_styleOption ), widget() );
 }
 
-qreal QGraphicsLayoutStyleInfo::spacing(Qt::Orientation orientation) const
+qreal QGraphicsLayoutStyleInfo::spacing( Qt::Orientation orientation ) const
 {
-   Q_ASSERT(style());
-   return style()->pixelMetric(orientation == Qt::Horizontal ? QStyle::PM_LayoutHorizontalSpacing : QStyle::PM_LayoutVerticalSpacing);
+    Q_ASSERT( style() );
+    return style()->pixelMetric( orientation == Qt::Horizontal ? QStyle::PM_LayoutHorizontalSpacing :
+                                 QStyle::PM_LayoutVerticalSpacing );
 }
 
-qreal QGraphicsLayoutStyleInfo::windowMargin(Qt::Orientation orientation) const
+qreal QGraphicsLayoutStyleInfo::windowMargin( Qt::Orientation orientation ) const
 {
-   return style()->pixelMetric(orientation == Qt::Vertical
-         ? QStyle::PM_LayoutBottomMargin
-         : QStyle::PM_LayoutRightMargin,
-         const_cast<QStyleOption *>(&m_styleOption), widget());
+    return style()->pixelMetric( orientation == Qt::Vertical
+                                 ? QStyle::PM_LayoutBottomMargin
+                                 : QStyle::PM_LayoutRightMargin,
+                                 const_cast<QStyleOption *>( &m_styleOption ), widget() );
 }
 
 QWidget *QGraphicsLayoutStyleInfo::widget() const
 {
-   return m_widget;
+    return m_widget;
 }
 
 QStyle *QGraphicsLayoutStyleInfo::style() const
 {
-   if (!m_style) {
-      Q_ASSERT(m_layout);
-      QGraphicsItem *item = m_layout->parentItem();
-      m_style = (item && item->isWidget()) ? static_cast<QGraphicsWidget *>(item)->style() : QApplication::style();
-   }
-   return m_style;
+    if ( !m_style )
+    {
+        Q_ASSERT( m_layout );
+        QGraphicsItem *item = m_layout->parentItem();
+        m_style = ( item && item->isWidget() ) ? static_cast<QGraphicsWidget *>( item )->style() : QApplication::style();
+    }
+
+    return m_style;
 }
 
 #endif // QT_NO_GRAPHICSVIEW

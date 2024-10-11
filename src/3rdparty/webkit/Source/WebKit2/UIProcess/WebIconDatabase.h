@@ -37,74 +37,86 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class DataReference;
 class MessageID;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 class IconDatabase;
 class Image;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
 
-class WebIconDatabase : public APIObject, public WebCore::IconDatabaseClient {
+class WebIconDatabase : public APIObject, public WebCore::IconDatabaseClient
+{
 public:
     static const Type APIType = TypeIconDatabase;
 
-    static PassRefPtr<WebIconDatabase> create(WebContext*);
+    static PassRefPtr<WebIconDatabase> create( WebContext * );
     virtual ~WebIconDatabase();
 
     void invalidate();
-    void clearContext() { m_webContext = 0; }
-    void setDatabasePath(const String&);
+    void clearContext()
+    {
+        m_webContext = 0;
+    }
+    void setDatabasePath( const String & );
     void enableDatabaseCleanup();
 
-    void retainIconForPageURL(const String&);
-    void releaseIconForPageURL(const String&);
-    void setIconURLForPageURL(const String&, const String&);
-    void setIconDataForIconURL(const CoreIPC::DataReference&, const String&);
-    
-    void synchronousIconDataForPageURL(const String&, CoreIPC::DataReference&);
-    void synchronousIconURLForPageURL(const String&, String&);
-    void synchronousIconDataKnownForIconURL(const String&, bool&) const;
-    void synchronousLoadDecisionForIconURL(const String&, int&) const;
-    
-    void getLoadDecisionForIconURL(const String&, uint64_t callbackID);
+    void retainIconForPageURL( const String & );
+    void releaseIconForPageURL( const String & );
+    void setIconURLForPageURL( const String &, const String & );
+    void setIconDataForIconURL( const CoreIPC::DataReference &, const String & );
 
-    WebCore::Image* imageForPageURL(const String&);
-    
+    void synchronousIconDataForPageURL( const String &, CoreIPC::DataReference & );
+    void synchronousIconURLForPageURL( const String &, String & );
+    void synchronousIconDataKnownForIconURL( const String &, bool & ) const;
+    void synchronousLoadDecisionForIconURL( const String &, int & ) const;
+
+    void getLoadDecisionForIconURL( const String &, uint64_t callbackID );
+
+    WebCore::Image *imageForPageURL( const String & );
+
     void removeAllIcons();
     void checkIntegrityBeforeOpening();
     void close();
 
-    void initializeIconDatabaseClient(const WKIconDatabaseClient*);
+    void initializeIconDatabaseClient( const WKIconDatabaseClient * );
 
     // WebCore::IconDatabaseClient
     virtual bool performImport();
-    virtual void didImportIconURLForPageURL(const String&);
-    virtual void didImportIconDataForPageURL(const String&);
-    virtual void didChangeIconForPageURL(const String&);
+    virtual void didImportIconURLForPageURL( const String & );
+    virtual void didImportIconDataForPageURL( const String & );
+    virtual void didChangeIconForPageURL( const String & );
     virtual void didRemoveAllIcons();
     virtual void didFinishURLImport();
-    
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
+
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
 
 private:
-    WebIconDatabase(WebContext*);
+    WebIconDatabase( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    void didReceiveWebIconDatabaseMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncWebIconDatabaseMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
+    void didReceiveWebIconDatabaseMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncWebIconDatabaseMessage( CoreIPC::Connection *, CoreIPC::MessageID,
+            CoreIPC::ArgumentDecoder *, CoreIPC::ArgumentEncoder * );
 
-    WebContext* m_webContext;
-    
+    WebContext *m_webContext;
+
     OwnPtr<WebCore::IconDatabase> m_iconDatabaseImpl;
     bool m_urlImportCompleted;
     bool m_databaseCleanupDisabled;

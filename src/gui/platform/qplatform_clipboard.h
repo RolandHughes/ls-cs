@@ -32,14 +32,14 @@
 
 class Q_GUI_EXPORT QPlatformClipboard
 {
- public:
-   virtual ~QPlatformClipboard();
+public:
+    virtual ~QPlatformClipboard();
 
-   virtual QMimeData *mimeData(QClipboard::Mode mode = QClipboard::Clipboard);
-   virtual void setMimeData(QMimeData *data, QClipboard::Mode mode = QClipboard::Clipboard);
-   virtual bool supportsMode(QClipboard::Mode mode) const;
-   virtual bool ownsMode(QClipboard::Mode mode) const;
-   void emitChanged(QClipboard::Mode mode);
+    virtual QMimeData *mimeData( QClipboard::Mode mode = QClipboard::Clipboard );
+    virtual void setMimeData( QMimeData *data, QClipboard::Mode mode = QClipboard::Clipboard );
+    virtual bool supportsMode( QClipboard::Mode mode ) const;
+    virtual bool ownsMode( QClipboard::Mode mode ) const;
+    void emitChanged( QClipboard::Mode mode );
 };
 
 #endif // QT_NO_CLIPBOARD

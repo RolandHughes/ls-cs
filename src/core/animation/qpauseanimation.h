@@ -32,29 +32,29 @@ class QPauseAnimationPrivate;
 
 class Q_CORE_EXPORT QPauseAnimation : public QAbstractAnimation
 {
-   CORE_CS_OBJECT(QPauseAnimation)
+    CORE_LSCS_OBJECT( QPauseAnimation )
 
-   CORE_CS_PROPERTY_READ(duration, duration)
-   CORE_CS_PROPERTY_WRITE(duration, setDuration)
+    CORE_LSCS_PROPERTY_READ( duration, duration )
+    CORE_LSCS_PROPERTY_WRITE( duration, setDuration )
 
- public:
-   QPauseAnimation(QObject *parent = nullptr);
-   QPauseAnimation(int msecs, QObject *parent = nullptr);
+public:
+    QPauseAnimation( QObject *parent = nullptr );
+    QPauseAnimation( int msecs, QObject *parent = nullptr );
 
-   QPauseAnimation(const QPauseAnimation &) = delete;
-   QPauseAnimation &operator=(const QPauseAnimation &) = delete;
+    QPauseAnimation( const QPauseAnimation & ) = delete;
+    QPauseAnimation &operator=( const QPauseAnimation & ) = delete;
 
-   ~QPauseAnimation();
+    ~QPauseAnimation();
 
-   int duration() const override;
-   void setDuration(int msecs);
+    int duration() const override;
+    void setDuration( int msecs );
 
- protected:
-   bool event(QEvent *event) override;
-   void updateCurrentTime(int) override;
+protected:
+    bool event( QEvent *event ) override;
+    void updateCurrentTime( int ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QPauseAnimation)
+private:
+    Q_DECLARE_PRIVATE( QPauseAnimation )
 };
 
 #endif //QT_NO_ANIMATION

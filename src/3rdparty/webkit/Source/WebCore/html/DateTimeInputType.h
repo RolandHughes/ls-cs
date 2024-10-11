@@ -33,15 +33,17 @@
 
 #include "BaseDateAndTimeInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DateTimeInputType : public BaseDateAndTimeInputType {
+class DateTimeInputType : public BaseDateAndTimeInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    DateTimeInputType(HTMLInputElement* element) : BaseDateAndTimeInputType(element) { }
-    virtual const AtomicString& formControlType() const;
+    DateTimeInputType( HTMLInputElement *element ) : BaseDateAndTimeInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
     virtual DateComponents::Type dateType() const;
     virtual double defaultValueForStepUp() const;
     virtual double minimum() const;
@@ -49,8 +51,8 @@ private:
     virtual double defaultStep() const;
     virtual double stepScaleFactor() const;
     virtual bool scaledStepValueShouldBeInteger() const;
-    virtual bool parseToDateComponentsInternal(const UChar*, unsigned length, DateComponents*) const;
-    virtual bool setMillisecondToDateComponents(double, DateComponents*) const;
+    virtual bool parseToDateComponentsInternal( const UChar *, unsigned length, DateComponents * ) const;
+    virtual bool setMillisecondToDateComponents( double, DateComponents * ) const;
 };
 
 } // namespace WebCore

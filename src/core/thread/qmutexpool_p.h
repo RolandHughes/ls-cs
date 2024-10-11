@@ -30,30 +30,34 @@
 
 class Q_CORE_EXPORT QMutexPool
 {
- public:
-   explicit QMutexPool(int size = DEFAULT_SIZE);
+public:
+    explicit QMutexPool( int size = DEFAULT_SIZE );
 
-   ~QMutexPool();
+    ~QMutexPool();
 
-   QRecursiveMutex *get(const void *address) {
-      int index = uint(quintptr(address)) % m_mutexArray.count();
-      QRecursiveMutex *mutex = m_mutexArray[index].load();
+    QRecursiveMutex *get( const void *address )
+    {
+        int index = uint( quintptr( address ) ) % m_mutexArray.count();
+        QRecursiveMutex *mutex = m_mutexArray[index].load();
 
-      if (mutex != nullptr) {
-         return mutex;
-      } else {
-         return createMutex(index);
-      }
-   }
+        if ( mutex != nullptr )
+        {
+            return mutex;
+        }
+        else
+        {
+            return createMutex( index );
+        }
+    }
 
-   static QMutexPool *instance();
-   static QRecursiveMutex *globalInstanceGet(const void *address);
+    static QMutexPool *instance();
+    static QRecursiveMutex *globalInstanceGet( const void *address );
 
-   static constexpr const int DEFAULT_SIZE = 131;
+    static constexpr const int DEFAULT_SIZE = 131;
 
- private:
-   QRecursiveMutex *createMutex(int index);
-   QVarLengthArray<QAtomicPointer<QRecursiveMutex>, DEFAULT_SIZE> m_mutexArray;
+private:
+    QRecursiveMutex *createMutex( int index );
+    QVarLengthArray<QAtomicPointer<QRecursiveMutex>, DEFAULT_SIZE> m_mutexArray;
 };
 
 extern Q_CORE_EXPORT QMutexPool *qt_global_mutexpool;

@@ -32,12 +32,14 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-void IDBKeyPathBackendImpl::createIDBKeysFromSerializedValuesAndKeyPath(const Vector<RefPtr<SerializedScriptValue>&, 0> values, const String& keyPath, Vector<RefPtr<IDBKey>, 0>& keys)
+void IDBKeyPathBackendImpl::createIDBKeysFromSerializedValuesAndKeyPath( const Vector<RefPtr<SerializedScriptValue>&, 0> values,
+        const String &keyPath, Vector<RefPtr<IDBKey>, 0> &keys )
 {
     // FIXME: Implement this method once JSC supports WireFormat for SerializedScriptValue.
 }
 
-PassRefPtr<SerializedScriptValue> IDBKeyPathBackendImpl::injectIDBKeyIntoSerializedValue(PassRefPtr<IDBKey> key, PassRefPtr<SerializedScriptValue> value, const String& keyPath)
+PassRefPtr<SerializedScriptValue> IDBKeyPathBackendImpl::injectIDBKeyIntoSerializedValue( PassRefPtr<IDBKey> key,
+        PassRefPtr<SerializedScriptValue> value, const String &keyPath )
 {
     // FIXME: Implement this method once JSC supports WireFormat for SerializedScriptValue.
     return 0;

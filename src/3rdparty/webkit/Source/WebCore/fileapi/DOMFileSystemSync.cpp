@@ -47,17 +47,19 @@
 #include "FileWriterBaseCallback.h"
 #include "FileWriterSync.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FileWriterBase;
 
-PassRefPtr<DOMFileSystemSync> DOMFileSystemSync::create(DOMFileSystemBase* fileSystem)
+PassRefPtr<DOMFileSystemSync> DOMFileSystemSync::create( DOMFileSystemBase *fileSystem )
 {
-    return adoptRef(new DOMFileSystemSync(fileSystem->m_context, fileSystem->m_name, fileSystem->m_asyncFileSystem.release()));
+    return adoptRef( new DOMFileSystemSync( fileSystem->m_context, fileSystem->m_name, fileSystem->m_asyncFileSystem.release() ) );
 }
 
-DOMFileSystemSync::DOMFileSystemSync(ScriptExecutionContext* context, const String& name, PassOwnPtr<AsyncFileSystem> asyncFileSystem)
-    : DOMFileSystemBase(context, name, asyncFileSystem)
+DOMFileSystemSync::DOMFileSystemSync( ScriptExecutionContext *context, const String &name,
+                                      PassOwnPtr<AsyncFileSystem> asyncFileSystem )
+    : DOMFileSystemBase( context, name, asyncFileSystem )
 {
 }
 
@@ -67,28 +69,31 @@ DOMFileSystemSync::~DOMFileSystemSync()
 
 PassRefPtr<DirectoryEntrySync> DOMFileSystemSync::root()
 {
-    return DirectoryEntrySync::create(this, DOMFilePath::root);
+    return DirectoryEntrySync::create( this, DOMFilePath::root );
 }
 
-namespace {
+namespace
+{
 
-class GetPathHelper : public AsyncFileSystemCallbacks {
+class GetPathHelper : public AsyncFileSystemCallbacks
+{
 public:
-    class GetPathResult : public RefCounted<GetPathResult> {
-      public:
+    class GetPathResult : public RefCounted<GetPathResult>
+    {
+    public:
         static PassRefPtr<GetPathResult> create()
         {
-            return adoptRef(new GetPathResult());
+            return adoptRef( new GetPathResult() );
         }
 
         bool m_failed;
         int m_code;
         String m_path;
 
-      private:
+    private:
         GetPathResult()
-            : m_failed(false)
-            , m_code(0)
+            : m_failed( false )
+            , m_code( 0 )
         {
         }
 
@@ -98,9 +103,9 @@ public:
         friend class WTF::RefCounted<GetPathResult>;
     };
 
-    static PassOwnPtr<GetPathHelper> create(PassRefPtr<GetPathResult> result)
+    static PassOwnPtr<GetPathHelper> create( PassRefPtr<GetPathResult> result )
     {
-        return adoptPtr(new GetPathHelper(result));
+        return adoptPtr( new GetPathHelper( result ) );
     }
 
     virtual void didSucceed()
@@ -108,27 +113,27 @@ public:
         ASSERT_NOT_REACHED();
     }
 
-    virtual void didOpenFileSystem(const String&, PassOwnPtr<AsyncFileSystem>)
+    virtual void didOpenFileSystem( const String &, PassOwnPtr<AsyncFileSystem> )
     {
         ASSERT_NOT_REACHED();
     }
 
-    virtual void didReadDirectoryEntry(const String&, bool)
+    virtual void didReadDirectoryEntry( const String &, bool )
     {
         ASSERT_NOT_REACHED();
     }
 
-    virtual void didReadDirectoryEntries(bool)
+    virtual void didReadDirectoryEntries( bool )
     {
         ASSERT_NOT_REACHED();
     }
 
-    virtual void didCreateFileWriter(PassOwnPtr<AsyncFileWriter>, long long)
+    virtual void didCreateFileWriter( PassOwnPtr<AsyncFileWriter>, long long )
     {
         ASSERT_NOT_REACHED();
     }
 
-    virtual void didFail(int code)
+    virtual void didFail( int code )
     {
         m_result->m_failed = true;
         m_result->m_code = code;
@@ -138,13 +143,13 @@ public:
     {
     }
 
-    void didReadMetadata(const FileMetadata& metadata)
+    void didReadMetadata( const FileMetadata &metadata )
     {
         m_result->m_path = metadata.platformPath;
     }
 private:
-    GetPathHelper(PassRefPtr<GetPathResult> result)
-        : m_result(result)
+    GetPathHelper( PassRefPtr<GetPathResult> result )
+        : m_result( result )
     {
     }
 
@@ -153,46 +158,56 @@ private:
 
 } // namespace
 
-PassRefPtr<File> DOMFileSystemSync::createFile(const FileEntrySync* fileEntry, ExceptionCode& ec)
+PassRefPtr<File> DOMFileSystemSync::createFile( const FileEntrySync *fileEntry, ExceptionCode &ec )
 {
     ec = 0;
-    String platformPath = m_asyncFileSystem->virtualToPlatformPath(fileEntry->fullPath());
-    RefPtr<GetPathHelper::GetPathResult> result(GetPathHelper::GetPathResult::create());
-    m_asyncFileSystem->readMetadata(platformPath, GetPathHelper::create(result));
-    if (!m_asyncFileSystem->waitForOperationToComplete()) {
+    String platformPath = m_asyncFileSystem->virtualToPlatformPath( fileEntry->fullPath() );
+    RefPtr<GetPathHelper::GetPathResult> result( GetPathHelper::GetPathResult::create() );
+    m_asyncFileSystem->readMetadata( platformPath, GetPathHelper::create( result ) );
+
+    if ( !m_asyncFileSystem->waitForOperationToComplete() )
+    {
         ec = FileException::ABORT_ERR;
         return 0;
     }
-    if (result->m_failed) {
+
+    if ( result->m_failed )
+    {
         ec = result->m_code;
         return 0;
     }
-    if (!result->m_path.isEmpty())
+
+    if ( !result->m_path.isEmpty() )
+    {
         platformPath = result->m_path;
-    return File::create(platformPath);
+    }
+
+    return File::create( platformPath );
 }
 
-namespace {
+namespace
+{
 
-class ReceiveFileWriterCallback : public FileWriterBaseCallback {
+class ReceiveFileWriterCallback : public FileWriterBaseCallback
+{
 public:
     static PassRefPtr<ReceiveFileWriterCallback> create()
     {
-        return adoptRef(new ReceiveFileWriterCallback());
+        return adoptRef( new ReceiveFileWriterCallback() );
     }
 
-    bool handleEvent(FileWriterBase* fileWriterBase)
+    bool handleEvent( FileWriterBase *fileWriterBase )
     {
 #ifndef NDEBUG
         m_fileWriterBase = fileWriterBase;
 #else
-        ASSERT_UNUSED(fileWriterBase, fileWriterBase);
+        ASSERT_UNUSED( fileWriterBase, fileWriterBase );
 #endif
         return true;
     }
 
 #ifndef NDEBUG
-    FileWriterBase* fileWriterBase()
+    FileWriterBase *fileWriterBase()
     {
         return m_fileWriterBase;
     }
@@ -201,30 +216,31 @@ public:
 private:
     ReceiveFileWriterCallback()
 #ifndef NDEBUG
-        : m_fileWriterBase(0)
+        : m_fileWriterBase( 0 )
 #endif
     {
     }
 
 #ifndef NDEBUG
-    FileWriterBase* m_fileWriterBase;
+    FileWriterBase *m_fileWriterBase;
 #endif
 };
 
-class LocalErrorCallback : public ErrorCallback {
+class LocalErrorCallback : public ErrorCallback
+{
 public:
     static PassRefPtr<LocalErrorCallback> create()
     {
-        return adoptRef(new LocalErrorCallback());
+        return adoptRef( new LocalErrorCallback() );
     }
 
-    bool handleEvent(FileError* error)
+    bool handleEvent( FileError *error )
     {
         m_error = error;
         return true;
     }
 
-    FileError* error()
+    FileError *error()
     {
         return m_error.get();
     }
@@ -238,30 +254,35 @@ private:
 
 }
 
-PassRefPtr<FileWriterSync> DOMFileSystemSync::createWriter(const FileEntrySync* fileEntry, ExceptionCode& ec)
+PassRefPtr<FileWriterSync> DOMFileSystemSync::createWriter( const FileEntrySync *fileEntry, ExceptionCode &ec )
 {
-    ASSERT(fileEntry);
+    ASSERT( fileEntry );
     ec = 0;
 
-    String platformPath = m_asyncFileSystem->virtualToPlatformPath(fileEntry->fullPath());
+    String platformPath = m_asyncFileSystem->virtualToPlatformPath( fileEntry->fullPath() );
 
     RefPtr<FileWriterSync> fileWriter = FileWriterSync::create();
     RefPtr<ReceiveFileWriterCallback> successCallback = ReceiveFileWriterCallback::create();
     RefPtr<LocalErrorCallback> errorCallback = LocalErrorCallback::create();
 
-    OwnPtr<FileWriterBaseCallbacks> callbacks = FileWriterBaseCallbacks::create(fileWriter, successCallback, errorCallback);
-    m_asyncFileSystem->createWriter(fileWriter.get(), platformPath, callbacks.release());
-    if (!m_asyncFileSystem->waitForOperationToComplete()) {
+    OwnPtr<FileWriterBaseCallbacks> callbacks = FileWriterBaseCallbacks::create( fileWriter, successCallback, errorCallback );
+    m_asyncFileSystem->createWriter( fileWriter.get(), platformPath, callbacks.release() );
+
+    if ( !m_asyncFileSystem->waitForOperationToComplete() )
+    {
         ec = FileException::ABORT_ERR;
         return 0;
     }
-    if (errorCallback->error()) {
-        ASSERT(!successCallback->fileWriterBase());
-        ec = FileException::ErrorCodeToExceptionCode(errorCallback->error()->code());
+
+    if ( errorCallback->error() )
+    {
+        ASSERT( !successCallback->fileWriterBase() );
+        ec = FileException::ErrorCodeToExceptionCode( errorCallback->error()->code() );
         return 0;
     }
-    ASSERT(successCallback->fileWriterBase());
-    ASSERT(static_cast<FileWriterSync*>(successCallback->fileWriterBase()) == fileWriter.get());
+
+    ASSERT( successCallback->fileWriterBase() );
+    ASSERT( static_cast<FileWriterSync *>( successCallback->fileWriterBase() ) == fileWriter.get() );
     return fileWriter;
 }
 

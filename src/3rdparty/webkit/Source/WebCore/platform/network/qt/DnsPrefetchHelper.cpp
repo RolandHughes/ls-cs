@@ -22,37 +22,43 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
-// this is called on mouse over a href and on page loading
-void prefetchDNS(const String& hostname)
+namespace WebCore
 {
-    if (QWebSettings::globalSettings()->testAttribute(QWebSettings::DnsPrefetchEnabled)) {
+// this is called on mouse over a href and on page loading
+void prefetchDNS( const String &hostname )
+{
+    if ( QWebSettings::globalSettings()->testAttribute( QWebSettings::DnsPrefetchEnabled ) )
+    {
         static DnsPrefetchHelper dnsPrefetchHelper;
-        dnsPrefetchHelper.lookup(QString(hostname));
+        dnsPrefetchHelper.lookup( QString( hostname ) );
     }
 }
 
-void DnsPrefetchHelper::lookup(QString hostname)
+void DnsPrefetchHelper::lookup( QString hostname )
 {
-   if (hostname.isEmpty())
-       return; // this actually happens
+    if ( hostname.isEmpty() )
+    {
+        return;    // this actually happens
+    }
 
-   if (currentLookups >= 10)
-       return; // do not launch more than 10 lookups at the same time
+    if ( currentLookups >= 10 )
+    {
+        return;    // do not launch more than 10 lookups at the same time
+    }
 
-   currentLookups++;
-   QHostInfo::lookupHost(hostname, this, SLOT(lookedUp(QHostInfo)));
+    currentLookups++;
+    QHostInfo::lookupHost( hostname, this, SLOT( lookedUp( QHostInfo ) ) );
 }
 
-void DnsPrefetchHelper::lookedUp(const QHostInfo &hostInfo)
+void DnsPrefetchHelper::lookedUp( const QHostInfo &hostInfo )
 {
-   // we do not cache the result, we throw it away.
-   // we currently rely on the OS to cache the results. If it does not do that
-   // then at least the ISP nameserver did it.
+    // we do not cache the result, we throw it away.
+    // we currently rely on the OS to cache the results. If it does not do that
+    // then at least the ISP nameserver did it.
 
-   (void) hostInfo;
+    ( void ) hostInfo;
 
-   currentLookups--;
+    currentLookups--;
 }
 
 }

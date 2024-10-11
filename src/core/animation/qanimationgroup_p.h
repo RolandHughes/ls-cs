@@ -34,25 +34,28 @@
 
 class QAnimationGroupPrivate : public QAbstractAnimationPrivate
 {
-   Q_DECLARE_PUBLIC(QAnimationGroup)
+    Q_DECLARE_PUBLIC( QAnimationGroup )
 
- public:
-   QAnimationGroupPrivate() {
-      isGroup = true;
-   }
+public:
+    QAnimationGroupPrivate()
+    {
+        isGroup = true;
+    }
 
-   virtual void animationInsertedAt(int) { }
-   virtual void animationRemoved(int, QAbstractAnimation *);
+    virtual void animationInsertedAt( int ) { }
+    virtual void animationRemoved( int, QAbstractAnimation * );
 
-   void disconnectUncontrolledAnimation(QAbstractAnimation *anim) {
-      QObject::disconnect(anim, &QAbstractAnimation::finished, q_func(), &QAnimationGroup::_q_uncontrolledAnimationFinished);
-   }
+    void disconnectUncontrolledAnimation( QAbstractAnimation *anim )
+    {
+        QObject::disconnect( anim, &QAbstractAnimation::finished, q_func(), &QAnimationGroup::_q_uncontrolledAnimationFinished );
+    }
 
-   void connectUncontrolledAnimation(QAbstractAnimation *anim) {
-      QObject::connect(anim, &QAbstractAnimation::finished, q_func(), &QAnimationGroup::_q_uncontrolledAnimationFinished);
-   }
+    void connectUncontrolledAnimation( QAbstractAnimation *anim )
+    {
+        QObject::connect( anim, &QAbstractAnimation::finished, q_func(), &QAnimationGroup::_q_uncontrolledAnimationFinished );
+    }
 
-   QList<QAbstractAnimation *> animations;
+    QList<QAbstractAnimation *> animations;
 };
 
 #endif //QT_NO_ANIMATION

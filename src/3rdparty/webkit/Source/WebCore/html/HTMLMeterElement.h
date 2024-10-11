@@ -24,49 +24,55 @@
 #if ENABLE(METER_TAG)
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MeterValueElement;
 
-class HTMLMeterElement : public HTMLFormControlElement {
+class HTMLMeterElement : public HTMLFormControlElement
+{
 public:
-    static PassRefPtr<HTMLMeterElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLMeterElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
-    enum GaugeRegion {
+    enum GaugeRegion
+    {
         GaugeRegionOptimum,
         GaugeRegionSuboptimal,
         GaugeRegionEvenLessGood
     };
 
     double min() const;
-    void setMin(double, ExceptionCode&);
+    void setMin( double, ExceptionCode & );
 
     double max() const;
-    void setMax(double, ExceptionCode&);
+    void setMax( double, ExceptionCode & );
 
     double value() const;
-    void setValue(double, ExceptionCode&);
+    void setValue( double, ExceptionCode & );
 
     double low() const;
-    void setLow(double, ExceptionCode&);
+    void setLow( double, ExceptionCode & );
 
     double high() const;
-    void setHigh(double, ExceptionCode&);
+    void setHigh( double, ExceptionCode & );
 
     double optimum() const;
-    void setOptimum(double, ExceptionCode&);
+    void setOptimum( double, ExceptionCode & );
 
     double valueRatio() const;
     GaugeRegion gaugeRegion() const;
 
 private:
-    HTMLMeterElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLMeterElement( const QualifiedName &, Document *, HTMLFormElement * );
     virtual ~HTMLMeterElement();
 
-    virtual bool recalcWillValidate() const { return false; }
-    virtual const AtomicString& formControlType() const;
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool recalcWillValidate() const
+    {
+        return false;
+    }
+    virtual const AtomicString &formControlType() const;
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual void parseMappedAttribute( Attribute * );
     virtual void attach();
 
     void didElementStateChange();

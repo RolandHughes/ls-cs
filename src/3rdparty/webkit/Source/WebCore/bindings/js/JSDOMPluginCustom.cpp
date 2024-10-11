@@ -23,19 +23,20 @@
 #include "JSDOMMimeType.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-bool JSDOMPlugin::canGetItemsForName(ExecState*, DOMPlugin* plugin, const Identifier& propertyName)
+bool JSDOMPlugin::canGetItemsForName( ExecState *, DOMPlugin *plugin, const Identifier &propertyName )
 {
-    return plugin->canGetItemsForName(identifierToAtomicString(propertyName));
+    return plugin->canGetItemsForName( identifierToAtomicString( propertyName ) );
 }
 
-JSValue JSDOMPlugin::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSDOMPlugin::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSDOMPlugin* thisObj = static_cast<JSDOMPlugin*>(asObject(slotBase));
-    return toJS(exec, thisObj->globalObject(), thisObj->impl()->namedItem(identifierToAtomicString(propertyName)));
+    JSDOMPlugin *thisObj = static_cast<JSDOMPlugin *>( asObject( slotBase ) );
+    return toJS( exec, thisObj->globalObject(), thisObj->impl()->namedItem( identifierToAtomicString( propertyName ) ) );
 }
 
 } // namespace WebCore

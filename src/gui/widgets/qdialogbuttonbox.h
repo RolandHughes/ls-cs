@@ -32,132 +32,135 @@ class QDialogButtonBoxPrivate;
 
 class Q_GUI_EXPORT QDialogButtonBox : public QWidget
 {
-   GUI_CS_OBJECT(QDialogButtonBox)
+    GUI_LSCS_OBJECT( QDialogButtonBox )
 
-   GUI_CS_ENUM(StandardButton)
-   GUI_CS_FLAG(StandardButton, StandardButtons)
+    GUI_LSCS_ENUM( StandardButton )
+    GUI_LSCS_FLAG( StandardButton, StandardButtons )
 
-   GUI_CS_PROPERTY_READ(orientation, orientation)
-   GUI_CS_PROPERTY_WRITE(orientation, setOrientation)
+    GUI_LSCS_PROPERTY_READ( orientation, orientation )
+    GUI_LSCS_PROPERTY_WRITE( orientation, setOrientation )
 
-   GUI_CS_PROPERTY_READ(standardButtons, standardButtons)
-   GUI_CS_PROPERTY_WRITE(standardButtons, setStandardButtons)
+    GUI_LSCS_PROPERTY_READ( standardButtons, standardButtons )
+    GUI_LSCS_PROPERTY_WRITE( standardButtons, setStandardButtons )
 
-   GUI_CS_PROPERTY_READ(centerButtons, centerButtons)
-   GUI_CS_PROPERTY_WRITE(centerButtons, setCenterButtons)
+    GUI_LSCS_PROPERTY_READ( centerButtons, centerButtons )
+    GUI_LSCS_PROPERTY_WRITE( centerButtons, setCenterButtons )
 
- public:
-   enum ButtonRole {
-      // keep QDialogButtonBox::ButtonRole, QMessageBox::ButtonRole, QPlatformDialogHelper ALL in sync
+public:
+    enum ButtonRole
+    {
+        // keep QDialogButtonBox::ButtonRole, QMessageBox::ButtonRole, QPlatformDialogHelper ALL in sync
 
-      InvalidRole = -1,
-      AcceptRole,
-      RejectRole,
-      DestructiveRole,
-      ActionRole,
-      HelpRole,
-      YesRole,
-      NoRole,
-      ResetRole,
-      ApplyRole,
-      NRoles
-   };
+        InvalidRole = -1,
+        AcceptRole,
+        RejectRole,
+        DestructiveRole,
+        ActionRole,
+        HelpRole,
+        YesRole,
+        NoRole,
+        ResetRole,
+        ApplyRole,
+        NRoles
+    };
 
-   GUI_CS_REGISTER_ENUM(
-      enum StandardButton {
-         // keep this in sync with QMessageBox::StandardButton
-         NoButton           = 0x00000000,
-         Ok                 = 0x00000400,
-         Save               = 0x00000800,
-         SaveAll            = 0x00001000,
-         Open               = 0x00002000,
-         Yes                = 0x00004000,
-         YesToAll           = 0x00008000,
-         No                 = 0x00010000,
-         NoToAll            = 0x00020000,
-         Abort              = 0x00040000,
-         Retry              = 0x00080000,
-         Ignore             = 0x00100000,
-         Close              = 0x00200000,
-         Cancel             = 0x00400000,
-         Discard            = 0x00800000,
-         Help               = 0x01000000,
-         Apply              = 0x02000000,
-         Reset              = 0x04000000,
-         RestoreDefaults    = 0x08000000
-      };
-   )
+    GUI_LSCS_REGISTER_ENUM(
+        enum StandardButton
+    {
+        // keep this in sync with QMessageBox::StandardButton
+        NoButton           = 0x00000000,
+        Ok                 = 0x00000400,
+        Save               = 0x00000800,
+        SaveAll            = 0x00001000,
+        Open               = 0x00002000,
+        Yes                = 0x00004000,
+        YesToAll           = 0x00008000,
+        No                 = 0x00010000,
+        NoToAll            = 0x00020000,
+        Abort              = 0x00040000,
+        Retry              = 0x00080000,
+        Ignore             = 0x00100000,
+        Close              = 0x00200000,
+        Cancel             = 0x00400000,
+        Discard            = 0x00800000,
+        Help               = 0x01000000,
+        Apply              = 0x02000000,
+        Reset              = 0x04000000,
+        RestoreDefaults    = 0x08000000
+    };
+    )
 
-   // internal values
-   static constexpr const auto FirstButton = StandardButton::Ok;
-   static constexpr const auto LastButton  = StandardButton::RestoreDefaults;
+    // internal values
+    static constexpr const auto FirstButton = StandardButton::Ok;
+    static constexpr const auto LastButton  = StandardButton::RestoreDefaults;
 
-   using StandardButtons = QFlags<StandardButton>;
+    using StandardButtons = QFlags<StandardButton>;
 
-   enum ButtonLayout {
-      WinLayout,
-      MacLayout,
-      KdeLayout,
-      GnomeLayout
-   };
+    enum ButtonLayout
+    {
+        WinLayout,
+        MacLayout,
+        KdeLayout,
+        GnomeLayout
+    };
 
-   QDialogButtonBox(QWidget *parent = nullptr);
-   QDialogButtonBox(Qt::Orientation orientation, QWidget *parent = nullptr);
-   QDialogButtonBox(StandardButtons buttons, Qt::Orientation orientation, QWidget *parent = nullptr);
+    QDialogButtonBox( QWidget *parent = nullptr );
+    QDialogButtonBox( Qt::Orientation orientation, QWidget *parent = nullptr );
+    QDialogButtonBox( StandardButtons buttons, Qt::Orientation orientation, QWidget *parent = nullptr );
 
-   explicit QDialogButtonBox(StandardButtons buttons, QWidget *parent = nullptr);
+    explicit QDialogButtonBox( StandardButtons buttons, QWidget *parent = nullptr );
 
-   QDialogButtonBox(const QDialogButtonBox &) = delete;
-   QDialogButtonBox &operator=(const QDialogButtonBox &) = delete;
+    QDialogButtonBox( const QDialogButtonBox & ) = delete;
+    QDialogButtonBox &operator=( const QDialogButtonBox & ) = delete;
 
-   ~QDialogButtonBox();
+    ~QDialogButtonBox();
 
-   void setOrientation(Qt::Orientation orientation);
-   Qt::Orientation orientation() const;
+    void setOrientation( Qt::Orientation orientation );
+    Qt::Orientation orientation() const;
 
-   void addButton(QAbstractButton *button, ButtonRole role);
-   QPushButton *addButton(const QString &text, ButtonRole role);
-   QPushButton *addButton(StandardButton button);
-   void removeButton(QAbstractButton *button);
-   void clear();
+    void addButton( QAbstractButton *button, ButtonRole role );
+    QPushButton *addButton( const QString &text, ButtonRole role );
+    QPushButton *addButton( StandardButton button );
+    void removeButton( QAbstractButton *button );
+    void clear();
 
-   QList<QAbstractButton *> buttons() const;
-   ButtonRole buttonRole(QAbstractButton *button) const;
+    QList<QAbstractButton *> buttons() const;
+    ButtonRole buttonRole( QAbstractButton *button ) const;
 
-   void setStandardButtons(StandardButtons buttons);
-   StandardButtons standardButtons() const;
-   StandardButton standardButton(QAbstractButton *button) const;
-   QPushButton *button(StandardButton which) const;
+    void setStandardButtons( StandardButtons buttons );
+    StandardButtons standardButtons() const;
+    StandardButton standardButton( QAbstractButton *button ) const;
+    QPushButton *button( StandardButton which ) const;
 
-   void setCenterButtons(bool center);
-   bool centerButtons() const;
+    void setCenterButtons( bool center );
+    bool centerButtons() const;
 
-   GUI_CS_SIGNAL_1(Public, void clicked(QAbstractButton *button))
-   GUI_CS_SIGNAL_2(clicked, button)
+    GUI_LSCS_SIGNAL_1( Public, void clicked( QAbstractButton *button ) )
+    GUI_LSCS_SIGNAL_2( clicked, button )
 
-   GUI_CS_SIGNAL_1(Public, void accepted())
-   GUI_CS_SIGNAL_2(accepted)
+    GUI_LSCS_SIGNAL_1( Public, void accepted() )
+    GUI_LSCS_SIGNAL_2( accepted )
 
-   GUI_CS_SIGNAL_1(Public, void helpRequested())
-   GUI_CS_SIGNAL_2(helpRequested)
+    GUI_LSCS_SIGNAL_1( Public, void helpRequested() )
+    GUI_LSCS_SIGNAL_2( helpRequested )
 
-   GUI_CS_SIGNAL_1(Public, void rejected())
-   GUI_CS_SIGNAL_2(rejected)
+    GUI_LSCS_SIGNAL_1( Public, void rejected() )
+    GUI_LSCS_SIGNAL_2( rejected )
 
- protected:
-   void changeEvent(QEvent *event) override;
-   bool event(QEvent *event) override;
+protected:
+    void changeEvent( QEvent *event ) override;
+    bool event( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QDialogButtonBox)
+private:
+    Q_DECLARE_PRIVATE( QDialogButtonBox )
 
-   GUI_CS_SLOT_1(Private, void _q_handleButtonClicked())
-   GUI_CS_SLOT_2(_q_handleButtonClicked)
+    GUI_LSCS_SLOT_1( Private, void _q_handleButtonClicked() )
+    GUI_LSCS_SLOT_2( _q_handleButtonClicked )
 
-   GUI_CS_SLOT_1(Private, void _q_handleButtonDestroyed())
-   GUI_CS_SLOT_2(_q_handleButtonDestroyed)
+    GUI_LSCS_SLOT_1( Private, void _q_handleButtonDestroyed() )
+    GUI_LSCS_SLOT_2( _q_handleButtonDestroyed )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QDialogButtonBox::StandardButtons)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QDialogButtonBox::StandardButtons )
 
 #endif // QDIALOGBUTTONBOX_H

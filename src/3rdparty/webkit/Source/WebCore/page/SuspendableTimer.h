@@ -30,18 +30,20 @@
 #include "ActiveDOMObject.h"
 #include "Timer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SuspendableTimer : public TimerBase, public ActiveDOMObject {
+class SuspendableTimer : public TimerBase, public ActiveDOMObject
+{
 public:
-    explicit SuspendableTimer(ScriptExecutionContext*);
+    explicit SuspendableTimer( ScriptExecutionContext * );
     virtual ~SuspendableTimer();
 
     // ActiveDOMObject
     virtual bool hasPendingActivity() const;
     virtual void stop();
     virtual bool canSuspend() const;
-    virtual void suspend(ReasonForSuspension);
+    virtual void suspend( ReasonForSuspension );
     virtual void resume();
 
 private:

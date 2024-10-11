@@ -31,27 +31,29 @@ class QXcbEglIntegration;
 
 class QXcbEglWindow : public QXcbWindow
 {
- public:
-   QXcbEglWindow(QWindow *window, QXcbEglIntegration *glIntegration);
-   ~QXcbEglWindow();
+public:
+    QXcbEglWindow( QWindow *window, QXcbEglIntegration *glIntegration );
+    ~QXcbEglWindow();
 
-   EGLSurface eglSurface() const {
-      return m_surface;
-   }
+    EGLSurface eglSurface() const
+    {
+        return m_surface;
+    }
 
-   QXcbEglIntegration *glIntegration() const {
-      return m_glIntegration;
-   }
+    QXcbEglIntegration *glIntegration() const
+    {
+        return m_glIntegration;
+    }
 
- protected:
-   void create() override;
-   void resolveFormat() override;
-   void *createVisual() override;
+protected:
+    void create() override;
+    void resolveFormat() override;
+    void *createVisual() override;
 
- private:
-   QXcbEglIntegration *m_glIntegration;
-   EGLConfig m_config;
-   EGLSurface m_surface;
+private:
+    QXcbEglIntegration *m_glIntegration;
+    EGLConfig m_config;
+    EGLSurface m_surface;
 };
 
 #endif

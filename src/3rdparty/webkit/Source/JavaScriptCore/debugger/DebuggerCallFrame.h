@@ -25,42 +25,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef DebuggerCallFrame_h
 #define DebuggerCallFrame_h
 
 #include "CallFrame.h"
 
-namespace JSC {
-    
-    class DebuggerCallFrame {
-    public:
-        enum Type { ProgramType, FunctionType };
+namespace JSC
+{
 
-        DebuggerCallFrame(CallFrame* callFrame)
-            : m_callFrame(callFrame)
-        {
-        }
+class DebuggerCallFrame
+{
+public:
+    enum Type { ProgramType, FunctionType };
 
-        DebuggerCallFrame(CallFrame* callFrame, JSValue exception)
-            : m_callFrame(callFrame)
-            , m_exception(exception)
-        {
-        }
+    DebuggerCallFrame( CallFrame *callFrame )
+        : m_callFrame( callFrame )
+    {
+    }
 
-        JSGlobalObject* dynamicGlobalObject() const { return m_callFrame->dynamicGlobalObject(); }
-        ScopeChainNode* scopeChain() const { return m_callFrame->scopeChain(); }
-        const UString* functionName() const;
-        UString calculatedFunctionName() const;
-        Type type() const;
-        JSObject* thisObject() const;
-        JSValue evaluate(const UString&, JSValue& exception) const;
-        JSValue exception() const { return m_exception; }
+    DebuggerCallFrame( CallFrame *callFrame, JSValue exception )
+        : m_callFrame( callFrame )
+        , m_exception( exception )
+    {
+    }
 
-    private:
-        CallFrame* m_callFrame;
-        JSValue m_exception;
-    };
+    JSGlobalObject *dynamicGlobalObject() const
+    {
+        return m_callFrame->dynamicGlobalObject();
+    }
+    ScopeChainNode *scopeChain() const
+    {
+        return m_callFrame->scopeChain();
+    }
+    const UString *functionName() const;
+    UString calculatedFunctionName() const;
+    Type type() const;
+    JSObject *thisObject() const;
+    JSValue evaluate( const UString &, JSValue &exception ) const;
+    JSValue exception() const
+    {
+        return m_exception;
+    }
+
+private:
+    CallFrame *m_callFrame;
+    JSValue m_exception;
+};
 
 } // namespace JSC
 

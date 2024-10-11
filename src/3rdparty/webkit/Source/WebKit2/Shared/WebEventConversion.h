@@ -39,7 +39,8 @@
 #include <WebCore/PlatformTouchPoint.h>
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebMouseEvent;
 class WebWheelEvent;
@@ -54,17 +55,17 @@ class WebTouchEvent;
 class WebTouchPoint;
 #endif
 
-WebCore::PlatformMouseEvent platform(const WebMouseEvent&);
-WebCore::PlatformWheelEvent platform(const WebWheelEvent&);
-WebCore::PlatformKeyboardEvent platform(const WebKeyboardEvent&);
+WebCore::PlatformMouseEvent platform( const WebMouseEvent & );
+WebCore::PlatformWheelEvent platform( const WebWheelEvent & );
+WebCore::PlatformKeyboardEvent platform( const WebKeyboardEvent & );
 
 #if ENABLE(GESTURE_EVENTS)
-WebCore::PlatformGestureEvent platform(const WebGestureEvent&);
+WebCore::PlatformGestureEvent platform( const WebGestureEvent & );
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-WebCore::PlatformTouchEvent platform(const WebTouchEvent&);
-WebCore::PlatformTouchPoint platform(const WebTouchPoint&);
+WebCore::PlatformTouchEvent platform( const WebTouchEvent & );
+WebCore::PlatformTouchPoint platform( const WebTouchPoint & );
 #endif
 
 } // namespace WebKit

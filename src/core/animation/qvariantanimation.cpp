@@ -36,220 +36,248 @@
 
 libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>> &QVariantAnimation::getFormulas()
 {
-   static libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>> retval;
-   return retval;
+    static libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>> retval;
+    return retval;
 }
 
-static bool animationValueLessThan(const QVariantAnimation::ValuePair &p1, const QVariantAnimation::ValuePair &p2)
+static bool animationValueLessThan( const QVariantAnimation::ValuePair &p1, const QVariantAnimation::ValuePair &p2 )
 {
-   return p1.first < p2.first;
+    return p1.first < p2.first;
 }
 
-static QVariant cs_defaultFormula(const QVariant &, const QVariant &, double)
+static QVariant lscs_defaultFormula( const QVariant &, const QVariant &, double )
 {
-   return QVariant();
-}
-
-template <>
-inline QRect cs_genericFormula(const QRect &from, const QRect &to, double progress)
-{
-   QRect retval;
-
-   retval.setCoords(cs_genericFormula(from.left(), to.left(), progress),
-         cs_genericFormula(from.top(),    to.top(),    progress),
-         cs_genericFormula(from.right(),  to.right(),  progress),
-         cs_genericFormula(from.bottom(), to.bottom(), progress));
-
-   return retval;
+    return QVariant();
 }
 
 template <>
-inline QRectF cs_genericFormula(const QRectF &from, const QRectF &to, double progress)
+inline QRect lscs_genericFormula( const QRect &from, const QRect &to, double progress )
 {
-   double x1, y1, w1, h1;
-   from.getRect(&x1, &y1, &w1, &h1);
+    QRect retval;
 
-   double x2, y2, w2, h2;
-   to.getRect(&x2, &y2, &w2, &h2);
+    retval.setCoords( lscs_genericFormula( from.left(), to.left(), progress ),
+                      lscs_genericFormula( from.top(),    to.top(),    progress ),
+                      lscs_genericFormula( from.right(),  to.right(),  progress ),
+                      lscs_genericFormula( from.bottom(), to.bottom(), progress ) );
 
-   return QRectF(cs_genericFormula(x1, x2, progress), cs_genericFormula(y1, y2, progress),
-         cs_genericFormula(w1, w2, progress), cs_genericFormula(h1, h2, progress));
+    return retval;
 }
 
 template <>
-inline QLine cs_genericFormula(const QLine &from, const QLine &to, double progress)
+inline QRectF lscs_genericFormula( const QRectF &from, const QRectF &to, double progress )
 {
-   return QLine( cs_genericFormula(from.p1(), to.p1(), progress), cs_genericFormula(from.p2(), to.p2(), progress));
+    double x1, y1, w1, h1;
+    from.getRect( &x1, &y1, &w1, &h1 );
+
+    double x2, y2, w2, h2;
+    to.getRect( &x2, &y2, &w2, &h2 );
+
+    return QRectF( lscs_genericFormula( x1, x2, progress ), lscs_genericFormula( y1, y2, progress ),
+                   lscs_genericFormula( w1, w2, progress ), lscs_genericFormula( h1, h2, progress ) );
 }
 
 template <>
-inline QLineF cs_genericFormula(const QLineF &from, const QLineF &to, double progress)
+inline QLine lscs_genericFormula( const QLine &from, const QLine &to, double progress )
 {
-   return QLineF(cs_genericFormula(from.p1(), to.p1(), progress), cs_genericFormula(from.p2(), to.p2(), progress));
+    return QLine( lscs_genericFormula( from.p1(), to.p1(), progress ), lscs_genericFormula( from.p2(), to.p2(), progress ) );
+}
+
+template <>
+inline QLineF lscs_genericFormula( const QLineF &from, const QLineF &to, double progress )
+{
+    return QLineF( lscs_genericFormula( from.p1(), to.p1(), progress ), lscs_genericFormula( from.p2(), to.p2(), progress ) );
 }
 
 QVariantAnimationPrivate::QVariantAnimationPrivate()
-   : m_duration(250), m_callBack(&cs_defaultFormula)
+    : m_duration( 250 ), m_callBack( &lscs_defaultFormula )
 { }
 
-void QVariantAnimationPrivate::convertValues(uint typeId)
+void QVariantAnimationPrivate::convertValues( uint typeId )
 {
-   // ensures all the values are of typeId
-   for (auto &item : m_keyValues) {
-      item.second.convert(static_cast<QVariant::Type>(typeId));
-   }
+    // ensures all the values are of typeId
+    for ( auto &item : m_keyValues )
+    {
+        item.second.convert( static_cast<QVariant::Type>( typeId ) );
+    }
 
-   // also need update to the current interval if needed
-   m_currentInterval.start.second.convert(static_cast<QVariant::Type>(typeId));
-   m_currentInterval.end.second.convert(static_cast<QVariant::Type>(typeId));
+    // also need update to the current interval if needed
+    m_currentInterval.start.second.convert( static_cast<QVariant::Type>( typeId ) );
+    m_currentInterval.end.second.convert( static_cast<QVariant::Type>( typeId ) );
 
-   cs_updateCustomType();
+    lscs_updateCustomType();
 }
 
-void QVariantAnimationPrivate::cs_updateCustomType()
+void QVariantAnimationPrivate::lscs_updateCustomType()
 {
-   uint type = m_currentInterval.start.second.userType();
+    uint type = m_currentInterval.start.second.userType();
 
-   if (type == m_currentInterval.end.second.userType()) {
-      m_callBack = cs_getCustomType(type);
-   } else {
-      m_callBack = nullptr;
-   }
+    if ( type == m_currentInterval.end.second.userType() )
+    {
+        m_callBack = lscs_getCustomType( type );
+    }
+    else
+    {
+        m_callBack = nullptr;
+    }
 
-   if (m_callBack == nullptr) {
-      m_callBack = &cs_defaultFormula;
-   }
+    if ( m_callBack == nullptr )
+    {
+        m_callBack = &lscs_defaultFormula;
+    }
 }
 
-void QVariantAnimationPrivate::recalculateCurrentInterval(bool force)
+void QVariantAnimationPrivate::recalculateCurrentInterval( bool force )
 {
-   // must have at least 2 values
-   int tmp = 0;
+    // must have at least 2 values
+    int tmp = 0;
 
-   if (m_defaultValue.isValid()) {
-      tmp = 1;
-   }
+    if ( m_defaultValue.isValid() )
+    {
+        tmp = 1;
+    }
 
-   if ((m_keyValues.count() + tmp) < 2) {
-      return;
-   }
+    if ( ( m_keyValues.count() + tmp ) < 2 )
+    {
+        return;
+    }
 
-   const double endProgress = (direction == QAbstractAnimation::Forward) ? double(1) : double(0);
-   const double progress    = m_easing.valueForProgress(((m_duration == 0) ? endProgress : double(currentTime) / double(m_duration)));
+    const double endProgress = ( direction == QAbstractAnimation::Forward ) ? double( 1 ) : double( 0 );
+    const double progress    = m_easing.valueForProgress( ( ( m_duration == 0 ) ? endProgress : double( currentTime ) / double(
+                                   m_duration ) ) );
 
-   // 0 and 1 are still the boundaries
-   if (force || (m_currentInterval.start.first > 0 && progress < m_currentInterval.start.first)
-         || (m_currentInterval.end.first < 1 && progress > m_currentInterval.end.first)) {
+    // 0 and 1 are still the boundaries
+    if ( force || ( m_currentInterval.start.first > 0 && progress < m_currentInterval.start.first )
+            || ( m_currentInterval.end.first < 1 && progress > m_currentInterval.end.first ) )
+    {
 
-      // update currentInterval
-      auto iter = std::lower_bound(m_keyValues.constBegin(),
-            m_keyValues.constEnd(), qMakePair(progress, QVariant()), animationValueLessThan);
+        // update currentInterval
+        auto iter = std::lower_bound( m_keyValues.constBegin(),
+                                      m_keyValues.constEnd(), qMakePair( progress, QVariant() ), animationValueLessThan );
 
-      if (iter == m_keyValues.constBegin()) {
-         // the item pointed to by it is the start element in the range
+        if ( iter == m_keyValues.constBegin() )
+        {
+            // the item pointed to by it is the start element in the range
 
-         if (iter->first == 0 && m_keyValues.count() > 1) {
-            m_currentInterval.start = *iter;
-            m_currentInterval.end   = *(iter + 1);
+            if ( iter->first == 0 && m_keyValues.count() > 1 )
+            {
+                m_currentInterval.start = *iter;
+                m_currentInterval.end   = *( iter + 1 );
 
-         } else {
-            m_currentInterval.start = qMakePair(double(0), m_defaultValue);
-            m_currentInterval.end = *iter;
-         }
+            }
+            else
+            {
+                m_currentInterval.start = qMakePair( double( 0 ), m_defaultValue );
+                m_currentInterval.end = *iter;
+            }
 
-      } else if (iter == m_keyValues.constEnd()) {
-         // position the iterator on the last item
+        }
+        else if ( iter == m_keyValues.constEnd() )
+        {
+            // position the iterator on the last item
 
-         --iter;
+            --iter;
 
-         if (iter->first == 1 && m_keyValues.count() > 1) {
-            // have an end value (item with progress = 1)
-            m_currentInterval.start = *(iter - 1);
+            if ( iter->first == 1 && m_keyValues.count() > 1 )
+            {
+                // have an end value (item with progress = 1)
+                m_currentInterval.start = *( iter - 1 );
+                m_currentInterval.end   = *iter;
+
+            }
+            else
+            {
+                // use the default end value here
+                m_currentInterval.start = *iter;
+                m_currentInterval.end   = qMakePair( double( 1 ), m_defaultValue );
+            }
+
+        }
+        else
+        {
+            m_currentInterval.start = *( iter - 1 );
             m_currentInterval.end   = *iter;
+        }
 
-         } else {
-            // use the default end value here
-            m_currentInterval.start = *iter;
-            m_currentInterval.end   = qMakePair(double(1), m_defaultValue);
-         }
+        // update all the values of the currentInterval
+        lscs_updateCustomType();
+    }
 
-      } else {
-         m_currentInterval.start = *(iter - 1);
-         m_currentInterval.end   = *iter;
-      }
-
-      // update all the values of the currentInterval
-      cs_updateCustomType();
-   }
-
-   setCurrentValueForProgress(progress);
+    setCurrentValueForProgress( progress );
 }
 
-void QVariantAnimationPrivate::setCurrentValueForProgress(const double progress)
+void QVariantAnimationPrivate::setCurrentValueForProgress( const double progress )
 {
-   Q_Q(QVariantAnimation);
+    Q_Q( QVariantAnimation );
 
-   const auto & [startProgress, startValue] = m_currentInterval.start;
-   const auto & [endProgress, endValue]     = m_currentInterval.end;
+    const auto & [startProgress, startValue] = m_currentInterval.start;
+    const auto & [endProgress, endValue]     = m_currentInterval.end;
 
-   const double localProgress = (progress - startProgress) / (endProgress - startProgress);
-   QVariant retval = q->interpolated(startValue, endValue, localProgress);
+    const double localProgress = ( progress - startProgress ) / ( endProgress - startProgress );
+    QVariant retval = q->interpolated( startValue, endValue, localProgress );
 
-   qSwap(m_currentValue, retval);
-   q->updateCurrentValue(m_currentValue);
+    qSwap( m_currentValue, retval );
+    q->updateCurrentValue( m_currentValue );
 
-   emit q->valueChanged(m_currentValue);
+    emit q->valueChanged( m_currentValue );
 }
 
-QVariant QVariantAnimationPrivate::valueAt(double step) const
+QVariant QVariantAnimationPrivate::valueAt( double step ) const
 {
-   auto iter = std::lower_bound(m_keyValues.constBegin(), m_keyValues.constEnd(),
-         qMakePair(step, QVariant()), animationValueLessThan);
+    auto iter = std::lower_bound( m_keyValues.constBegin(), m_keyValues.constEnd(),
+                                  qMakePair( step, QVariant() ), animationValueLessThan );
 
-   if (iter != m_keyValues.constEnd() && ! animationValueLessThan(qMakePair(step, QVariant()), *iter)) {
-      return iter->second;
-   }
+    if ( iter != m_keyValues.constEnd() && ! animationValueLessThan( qMakePair( step, QVariant() ), *iter ) )
+    {
+        return iter->second;
+    }
 
-   return QVariant();
+    return QVariant();
 }
 
-void QVariantAnimationPrivate::setValueAt(double step, const QVariant &value)
+void QVariantAnimationPrivate::setValueAt( double step, const QVariant &value )
 {
-   if (step < double(0.0) || step > double(1.0)) {
-      qWarning("QVariantAnimation::setValueAt() Invalid step = %f", step);
-      return;
-   }
+    if ( step < double( 0.0 ) || step > double( 1.0 ) )
+    {
+        qWarning( "QVariantAnimation::setValueAt() Invalid step = %f", step );
+        return;
+    }
 
-   QVariantAnimation::ValuePair pair(step, value);
+    QVariantAnimation::ValuePair pair( step, value );
 
-   auto iter = std::lower_bound(m_keyValues.begin(), m_keyValues.end(),
-         pair, animationValueLessThan);
+    auto iter = std::lower_bound( m_keyValues.begin(), m_keyValues.end(),
+                                  pair, animationValueLessThan );
 
-   if (iter == m_keyValues.end() || iter->first != step) {
-      m_keyValues.insert(iter, pair);
+    if ( iter == m_keyValues.end() || iter->first != step )
+    {
+        m_keyValues.insert( iter, pair );
 
-   } else {
-      if (value.isValid()) {
-         iter->second = value;      // replaces the previous value
-      } else {
-         m_keyValues.erase(iter);   // removes the previous value
-      }
-   }
+    }
+    else
+    {
+        if ( value.isValid() )
+        {
+            iter->second = value;      // replaces the previous value
+        }
+        else
+        {
+            m_keyValues.erase( iter ); // removes the previous value
+        }
+    }
 
-   recalculateCurrentInterval(true);
+    recalculateCurrentInterval( true );
 }
 
-void QVariantAnimationPrivate::setDefaultStartEndValue(const QVariant &value)
+void QVariantAnimationPrivate::setDefaultStartEndValue( const QVariant &value )
 {
-   m_defaultValue = value;
-   recalculateCurrentInterval(true);
+    m_defaultValue = value;
+    recalculateCurrentInterval( true );
 }
 
-QVariantAnimation::QVariantAnimation(QObject *parent) : QAbstractAnimation(*new QVariantAnimationPrivate, parent)
+QVariantAnimation::QVariantAnimation( QObject *parent ) : QAbstractAnimation( *new QVariantAnimationPrivate, parent )
 {
 }
 
-QVariantAnimation::QVariantAnimation(QVariantAnimationPrivate &dd, QObject *parent) : QAbstractAnimation(dd, parent)
+QVariantAnimation::QVariantAnimation( QVariantAnimationPrivate &dd, QObject *parent ) : QAbstractAnimation( dd, parent )
 {
 }
 
@@ -259,160 +287,165 @@ QVariantAnimation::~QVariantAnimation()
 
 QEasingCurve QVariantAnimation::easingCurve() const
 {
-   Q_D(const QVariantAnimation);
-   return d->m_easing;
+    Q_D( const QVariantAnimation );
+    return d->m_easing;
 }
 
-void QVariantAnimation::setEasingCurve(const QEasingCurve &easing)
+void QVariantAnimation::setEasingCurve( const QEasingCurve &easing )
 {
-   Q_D(QVariantAnimation);
-   d->m_easing = easing;
-   d->recalculateCurrentInterval();
+    Q_D( QVariantAnimation );
+    d->m_easing = easing;
+    d->recalculateCurrentInterval();
 }
 
-QVariantAnimation::CustomFormula QVariantAnimationPrivate::cs_getCustomType(uint typeId)
+QVariantAnimation::CustomFormula QVariantAnimationPrivate::lscs_getCustomType( uint typeId )
 {
-   switch (typeId) {
-      case QVariant::Int:
-         return cs_variantFormula<int>;
+    switch ( typeId )
+    {
+        case QVariant::Int:
+            return lscs_variantFormula<int>;
 
-      case QVariant::UInt:
-         return cs_variantFormula<uint>;
+        case QVariant::UInt:
+            return lscs_variantFormula<uint>;
 
-      case QVariant::Double:
-         return cs_variantFormula<double>;
+        case QVariant::Double:
+            return lscs_variantFormula<double>;
 
-      case QVariant::Float:
-         return cs_variantFormula<float>;
+        case QVariant::Float:
+            return lscs_variantFormula<float>;
 
-      case QVariant::Line:
-         return cs_variantFormula<QLine>;
+        case QVariant::Line:
+            return lscs_variantFormula<QLine>;
 
-      case QVariant::LineF:
-         return cs_variantFormula<QLineF>;
+        case QVariant::LineF:
+            return lscs_variantFormula<QLineF>;
 
-      case QVariant::Point:
-         return cs_variantFormula<QPoint>;
+        case QVariant::Point:
+            return lscs_variantFormula<QPoint>;
 
-      case QVariant::PointF:
-         return cs_variantFormula<QPointF>;
+        case QVariant::PointF:
+            return lscs_variantFormula<QPointF>;
 
-      case QVariant::Size:
-         return cs_variantFormula<QSize>;
+        case QVariant::Size:
+            return lscs_variantFormula<QSize>;
 
-      case QVariant::SizeF:
-         return cs_variantFormula<QSizeF>;
+        case QVariant::SizeF:
+            return lscs_variantFormula<QSizeF>;
 
-      case QVariant::Rect:
-         return cs_variantFormula<QRect>;
+        case QVariant::Rect:
+            return lscs_variantFormula<QRect>;
 
-      case QVariant::RectF:
-         return cs_variantFormula<QRectF>;
+        case QVariant::RectF:
+            return lscs_variantFormula<QRectF>;
 
-      default:
-         break;
-   }
+        default:
+            break;
+    }
 
-   libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>>::shared_handle hash =
-         QVariantAnimation::getFormulas().lock_shared();
+    libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>>::shared_handle hash =
+                QVariantAnimation::getFormulas().lock_shared();
 
-   return hash->value(typeId, nullptr);
+    return hash->value( typeId, nullptr );
 }
 
 int QVariantAnimation::duration() const
 {
-   Q_D(const QVariantAnimation);
-   return d->m_duration;
+    Q_D( const QVariantAnimation );
+    return d->m_duration;
 }
 
-void QVariantAnimation::setDuration(int msecs)
+void QVariantAnimation::setDuration( int msecs )
 {
-   Q_D(QVariantAnimation);
+    Q_D( QVariantAnimation );
 
-   if (msecs < 0) {
-      qWarning("QVariantAnimation::setDuration() Duration can not be negative");
-      return;
+    if ( msecs < 0 )
+    {
+        qWarning( "QVariantAnimation::setDuration() Duration can not be negative" );
+        return;
 
-   } else if (d->m_duration == msecs) {
-      return;
-   }
+    }
+    else if ( d->m_duration == msecs )
+    {
+        return;
+    }
 
-   d->m_duration = msecs;
-   d->recalculateCurrentInterval();
+    d->m_duration = msecs;
+    d->recalculateCurrentInterval();
 }
 
 QVariant QVariantAnimation::startValue() const
 {
-   return keyValueAt(0);
+    return keyValueAt( 0 );
 }
 
-void QVariantAnimation::setStartValue(const QVariant &value)
+void QVariantAnimation::setStartValue( const QVariant &value )
 {
-   setKeyValueAt(0, value);
+    setKeyValueAt( 0, value );
 }
 
 QVariant QVariantAnimation::endValue() const
 {
-   return keyValueAt(1);
+    return keyValueAt( 1 );
 }
 
-void QVariantAnimation::setEndValue(const QVariant &value)
+void QVariantAnimation::setEndValue( const QVariant &value )
 {
-   setKeyValueAt(1, value);
+    setKeyValueAt( 1, value );
 }
 
-QVariant QVariantAnimation::keyValueAt(double step) const
+QVariant QVariantAnimation::keyValueAt( double step ) const
 {
-   return d_func()->valueAt(step);
+    return d_func()->valueAt( step );
 }
 
-void QVariantAnimation::setKeyValueAt(double step, const QVariant &value)
+void QVariantAnimation::setKeyValueAt( double step, const QVariant &value )
 {
-   d_func()->setValueAt(step, value);
+    d_func()->setValueAt( step, value );
 }
 
 QVector<QVariantAnimation::ValuePair> QVariantAnimation::keyValues() const
 {
-   return d_func()->m_keyValues;
+    return d_func()->m_keyValues;
 }
 
-void QVariantAnimation::setKeyValues(const QVector<QVariantAnimation::ValuePair> &values)
+void QVariantAnimation::setKeyValues( const QVector<QVariantAnimation::ValuePair> &values )
 {
-   Q_D(QVariantAnimation);
+    Q_D( QVariantAnimation );
 
-   d->m_keyValues = values;
-   std::sort(d->m_keyValues.begin(), d->m_keyValues.end(), animationValueLessThan);
-   d->recalculateCurrentInterval(true);
+    d->m_keyValues = values;
+    std::sort( d->m_keyValues.begin(), d->m_keyValues.end(), animationValueLessThan );
+    d->recalculateCurrentInterval( true );
 }
 
 QVariant QVariantAnimation::currentValue() const
 {
-   Q_D(const QVariantAnimation);
+    Q_D( const QVariantAnimation );
 
-   if (! d->m_currentValue.isValid()) {
-      const_cast<QVariantAnimationPrivate *>(d)->recalculateCurrentInterval();
-   }
+    if ( ! d->m_currentValue.isValid() )
+    {
+        const_cast<QVariantAnimationPrivate *>( d )->recalculateCurrentInterval();
+    }
 
-   return d->m_currentValue;
+    return d->m_currentValue;
 }
 
-bool QVariantAnimation::event(QEvent *event)
+bool QVariantAnimation::event( QEvent *event )
 {
-   return QAbstractAnimation::event(event);
+    return QAbstractAnimation::event( event );
 }
 
-void QVariantAnimation::updateState(QAbstractAnimation::State, QAbstractAnimation::State)
+void QVariantAnimation::updateState( QAbstractAnimation::State, QAbstractAnimation::State )
 {
 }
 
-QVariant QVariantAnimation::interpolated(const QVariant &from, const QVariant &to, double progress) const
+QVariant QVariantAnimation::interpolated( const QVariant &from, const QVariant &to, double progress ) const
 {
-   return d_func()->m_callBack(from, to, progress);
+    return d_func()->m_callBack( from, to, progress );
 }
 
-void QVariantAnimation::updateCurrentTime(int)
+void QVariantAnimation::updateCurrentTime( int )
 {
-   d_func()->recalculateCurrentInterval();
+    d_func()->recalculateCurrentInterval();
 }
 
 #endif

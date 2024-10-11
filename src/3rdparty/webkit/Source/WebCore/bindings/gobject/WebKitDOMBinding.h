@@ -27,18 +27,20 @@
 #include "webkit/webkitdomdefines.h"
 #include <glib.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class Node;
 class Element;
 class Event;
 class EventTarget;
 } // namespace WebCore
 
-namespace WebKit {
-WebKitDOMNode* kit(WebCore::Node* node);
-WebKitDOMElement* kit(WebCore::Element* element);
-WebKitDOMEvent* kit(WebCore::Event* event);
-WebKitDOMEventTarget* kit(WebCore::EventTarget* target);
+namespace WebKit
+{
+WebKitDOMNode *kit( WebCore::Node *node );
+WebKitDOMElement *kit( WebCore::Element *element );
+WebKitDOMEvent *kit( WebCore::Event *event );
+WebKitDOMEventTarget *kit( WebCore::EventTarget *target );
 } // namespace WebKit
 
 #endif // WebKitDOMBinding_h

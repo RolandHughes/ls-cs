@@ -39,13 +39,15 @@
 #include <runtime/JSArray.h>
 #include <runtime/JSLock.h>
 
-namespace JSC {
-
-namespace Bindings {
-
-static jobject convertArrayInstanceToJavaArray(ExecState* exec, JSArray* jsArray, const char* javaClassName)
+namespace JSC
 {
-    JNIEnv* env = getJNIEnv();
+
+namespace Bindings
+{
+
+static jobject convertArrayInstanceToJavaArray( ExecState *exec, JSArray *jsArray, const char *javaClassName )
+{
+    JNIEnv *env = getJNIEnv();
     // As JS Arrays can contain a mixture of objects, assume we can convert to
     // the requested Java Array type requested, unless the array type is some object array
     // other than a string.
@@ -53,263 +55,323 @@ static jobject convertArrayInstanceToJavaArray(ExecState* exec, JSArray* jsArray
     jobjectArray jarray = 0;
 
     // Build the correct array type
-    switch (javaTypeFromPrimitiveType(javaClassName[1])) {
-    case JavaTypeObject:
-            {
+    switch ( javaTypeFromPrimitiveType( javaClassName[1] ) )
+    {
+        case JavaTypeObject:
+        {
             // Only support string object types
-            if (!strcmp("[Ljava.lang.String;", javaClassName)) {
-                jarray = (jobjectArray)env->NewObjectArray(length,
-                    env->FindClass("java/lang/String"),
-                    env->NewStringUTF(""));
-                for (unsigned i = 0; i < length; i++) {
-                    JSValue item = jsArray->get(exec, i);
-                    UString stringValue = item.toString(exec);
-                    env->SetObjectArrayElement(jarray, i,
-                        env->functions->NewString(env, (const jchar *)stringValue.characters(), stringValue.length()));
+            if ( !strcmp( "[Ljava.lang.String;", javaClassName ) )
+            {
+                jarray = ( jobjectArray )env->NewObjectArray( length,
+                         env->FindClass( "java/lang/String" ),
+                         env->NewStringUTF( "" ) );
+
+                for ( unsigned i = 0; i < length; i++ )
+                {
+                    JSValue item = jsArray->get( exec, i );
+                    UString stringValue = item.toString( exec );
+                    env->SetObjectArrayElement( jarray, i,
+                                                env->functions->NewString( env, ( const jchar * )stringValue.characters(), stringValue.length() ) );
                 }
             }
+
             break;
         }
 
-    case JavaTypeBoolean:
+        case JavaTypeBoolean:
         {
-            jarray = (jobjectArray)env->NewBooleanArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                jboolean value = (jboolean)item.toNumber(exec);
-                env->SetBooleanArrayRegion((jbooleanArray)jarray, (jsize)i, (jsize)1, &value);
+            jarray = ( jobjectArray )env->NewBooleanArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                jboolean value = ( jboolean )item.toNumber( exec );
+                env->SetBooleanArrayRegion( ( jbooleanArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeByte:
+        case JavaTypeByte:
         {
-            jarray = (jobjectArray)env->NewByteArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                jbyte value = (jbyte)item.toNumber(exec);
-                env->SetByteArrayRegion((jbyteArray)jarray, (jsize)i, (jsize)1, &value);
+            jarray = ( jobjectArray )env->NewByteArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                jbyte value = ( jbyte )item.toNumber( exec );
+                env->SetByteArrayRegion( ( jbyteArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeChar:
+        case JavaTypeChar:
         {
-            jarray = (jobjectArray)env->NewCharArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                UString stringValue = item.toString(exec);
+            jarray = ( jobjectArray )env->NewCharArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                UString stringValue = item.toString( exec );
                 jchar value = 0;
-                if (stringValue.length() > 0)
-                    value = ((const jchar*)stringValue.characters())[0];
-                env->SetCharArrayRegion((jcharArray)jarray, (jsize)i, (jsize)1, &value);
+
+                if ( stringValue.length() > 0 )
+                {
+                    value = ( ( const jchar * )stringValue.characters() )[0];
+                }
+
+                env->SetCharArrayRegion( ( jcharArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeShort:
+        case JavaTypeShort:
         {
-            jarray = (jobjectArray)env->NewShortArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                jshort value = (jshort)item.toNumber(exec);
-                env->SetShortArrayRegion((jshortArray)jarray, (jsize)i, (jsize)1, &value);
+            jarray = ( jobjectArray )env->NewShortArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                jshort value = ( jshort )item.toNumber( exec );
+                env->SetShortArrayRegion( ( jshortArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeInt:
+        case JavaTypeInt:
         {
-            jarray = (jobjectArray)env->NewIntArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                jint value = (jint)item.toNumber(exec);
-                env->SetIntArrayRegion((jintArray)jarray, (jsize)i, (jsize)1, &value);
+            jarray = ( jobjectArray )env->NewIntArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                jint value = ( jint )item.toNumber( exec );
+                env->SetIntArrayRegion( ( jintArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeLong:
+        case JavaTypeLong:
         {
-            jarray = (jobjectArray)env->NewLongArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                jlong value = (jlong)item.toNumber(exec);
-                env->SetLongArrayRegion((jlongArray)jarray, (jsize)i, (jsize)1, &value);
+            jarray = ( jobjectArray )env->NewLongArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                jlong value = ( jlong )item.toNumber( exec );
+                env->SetLongArrayRegion( ( jlongArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeFloat:
+        case JavaTypeFloat:
         {
-            jarray = (jobjectArray)env->NewFloatArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                jfloat value = (jfloat)item.toNumber(exec);
-                env->SetFloatArrayRegion((jfloatArray)jarray, (jsize)i, (jsize)1, &value);
+            jarray = ( jobjectArray )env->NewFloatArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                jfloat value = ( jfloat )item.toNumber( exec );
+                env->SetFloatArrayRegion( ( jfloatArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeDouble:
+        case JavaTypeDouble:
         {
-            jarray = (jobjectArray)env->NewDoubleArray(length);
-            for (unsigned i = 0; i < length; i++) {
-                JSValue item = jsArray->get(exec, i);
-                jdouble value = (jdouble)item.toNumber(exec);
-                env->SetDoubleArrayRegion((jdoubleArray)jarray, (jsize)i, (jsize)1, &value);
+            jarray = ( jobjectArray )env->NewDoubleArray( length );
+
+            for ( unsigned i = 0; i < length; i++ )
+            {
+                JSValue item = jsArray->get( exec, i );
+                jdouble value = ( jdouble )item.toNumber( exec );
+                env->SetDoubleArrayRegion( ( jdoubleArray )jarray, ( jsize )i, ( jsize )1, &value );
             }
+
             break;
         }
 
-    case JavaTypeArray: // don't handle embedded arrays
-    case JavaTypeVoid: // Don't expect arrays of void objects
-    case JavaTypeInvalid: // Array of unknown objects
-        break;
+        case JavaTypeArray: // don't handle embedded arrays
+        case JavaTypeVoid: // Don't expect arrays of void objects
+        case JavaTypeInvalid: // Array of unknown objects
+            break;
     }
 
     // if it was not one of the cases handled, then null is returned
     return jarray;
 }
 
-jvalue convertValueToJValue(ExecState* exec, RootObject* rootObject, JSValue value, JavaType javaType, const char* javaClassName)
+jvalue convertValueToJValue( ExecState *exec, RootObject *rootObject, JSValue value, JavaType javaType,
+                             const char *javaClassName )
 {
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
     jvalue result;
-    memset(&result, 0, sizeof(jvalue));
+    memset( &result, 0, sizeof( jvalue ) );
 
-    switch (javaType) {
-    case JavaTypeArray:
-    case JavaTypeObject:
+    switch ( javaType )
+    {
+        case JavaTypeArray:
+        case JavaTypeObject:
         {
             // FIXME: JavaJSObject::convertValueToJObject functionality is almost exactly the same,
             // these functions should use common code.
 
-            if (value.isObject()) {
-                JSObject* object = asObject(value);
-                if (object->inherits(&JavaRuntimeObject::s_info)) {
+            if ( value.isObject() )
+            {
+                JSObject *object = asObject( value );
+
+                if ( object->inherits( &JavaRuntimeObject::s_info ) )
+                {
                     // Unwrap a Java instance.
-                    JavaRuntimeObject* runtimeObject = static_cast<JavaRuntimeObject*>(object);
-                    JavaInstance* instance = runtimeObject->getInternalJavaInstance();
-                    if (instance)
+                    JavaRuntimeObject *runtimeObject = static_cast<JavaRuntimeObject *>( object );
+                    JavaInstance *instance = runtimeObject->getInternalJavaInstance();
+
+                    if ( instance )
+                    {
                         result.l = instance->javaInstance();
-                } else if (object->classInfo() == &RuntimeArray::s_info) {
+                    }
+                }
+                else if ( object->classInfo() == &RuntimeArray::s_info )
+                {
                     // Input is a JavaScript Array that was originally created from a Java Array
-                    RuntimeArray* imp = static_cast<RuntimeArray*>(object);
-                    JavaArray* array = static_cast<JavaArray*>(imp->getConcreteArray());
+                    RuntimeArray *imp = static_cast<RuntimeArray *>( object );
+                    JavaArray *array = static_cast<JavaArray *>( imp->getConcreteArray() );
                     result.l = array->javaArray();
-                } else if (object->classInfo() == &JSArray::s_info) {
+                }
+                else if ( object->classInfo() == &JSArray::s_info )
+                {
                     // Input is a Javascript Array. We need to create it to a Java Array.
-                    result.l = convertArrayInstanceToJavaArray(exec, asArray(value), javaClassName);
-                } else if ((!result.l && (!strcmp(javaClassName, "java.lang.Object")))
-                           || (!strcmp(javaClassName, "netscape.javascript.JSObject"))) {
+                    result.l = convertArrayInstanceToJavaArray( exec, asArray( value ), javaClassName );
+                }
+                else if ( ( !result.l && ( !strcmp( javaClassName, "java.lang.Object" ) ) )
+                          || ( !strcmp( javaClassName, "netscape.javascript.JSObject" ) ) )
+                {
                     // Wrap objects in JSObject instances.
-                    JNIEnv* env = getJNIEnv();
-                    jclass jsObjectClass = env->FindClass("sun/plugin/javascript/webkit/JSObject");
-                    jmethodID constructorID = env->GetMethodID(jsObjectClass, "<init>", "(J)V");
-                    if (constructorID) {
-                        jlong nativeHandle = ptr_to_jlong(object);
-                        rootObject->gcProtect(object);
-                        result.l = env->NewObject(jsObjectClass, constructorID, nativeHandle);
+                    JNIEnv *env = getJNIEnv();
+                    jclass jsObjectClass = env->FindClass( "sun/plugin/javascript/webkit/JSObject" );
+                    jmethodID constructorID = env->GetMethodID( jsObjectClass, "<init>", "(J)V" );
+
+                    if ( constructorID )
+                    {
+                        jlong nativeHandle = ptr_to_jlong( object );
+                        rootObject->gcProtect( object );
+                        result.l = env->NewObject( jsObjectClass, constructorID, nativeHandle );
                     }
                 }
             }
 
             // Create an appropriate Java object if target type is java.lang.Object.
-            if (!result.l && !strcmp(javaClassName, "java.lang.Object")) {
-                if (value.isString()) {
-                    UString stringValue = asString(value)->value(exec);
-                    JNIEnv* env = getJNIEnv();
-                    jobject javaString = env->functions->NewString(env, (const jchar*)stringValue.characters(), stringValue.length());
+            if ( !result.l && !strcmp( javaClassName, "java.lang.Object" ) )
+            {
+                if ( value.isString() )
+                {
+                    UString stringValue = asString( value )->value( exec );
+                    JNIEnv *env = getJNIEnv();
+                    jobject javaString = env->functions->NewString( env, ( const jchar * )stringValue.characters(), stringValue.length() );
                     result.l = javaString;
-                } else if (value.isNumber()) {
+                }
+                else if ( value.isNumber() )
+                {
                     double doubleValue = value.uncheckedGetNumber();
-                    JNIEnv* env = getJNIEnv();
-                    jclass clazz = env->FindClass("java/lang/Double");
-                    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(D)V");
-                    jobject javaDouble = env->functions->NewObject(env, clazz, constructor, doubleValue);
+                    JNIEnv *env = getJNIEnv();
+                    jclass clazz = env->FindClass( "java/lang/Double" );
+                    jmethodID constructor = env->GetMethodID( clazz, "<init>", "(D)V" );
+                    jobject javaDouble = env->functions->NewObject( env, clazz, constructor, doubleValue );
                     result.l = javaDouble;
-                } else if (value.isBoolean()) {
+                }
+                else if ( value.isBoolean() )
+                {
                     bool boolValue = value.getBoolean();
-                    JNIEnv* env = getJNIEnv();
-                    jclass clazz = env->FindClass("java/lang/Boolean");
-                    jmethodID constructor = env->GetMethodID(clazz, "<init>", "(Z)V");
-                    jobject javaBoolean = env->functions->NewObject(env, clazz, constructor, boolValue);
+                    JNIEnv *env = getJNIEnv();
+                    jclass clazz = env->FindClass( "java/lang/Boolean" );
+                    jmethodID constructor = env->GetMethodID( clazz, "<init>", "(Z)V" );
+                    jobject javaBoolean = env->functions->NewObject( env, clazz, constructor, boolValue );
                     result.l = javaBoolean;
-                } else if (value.isUndefined()) {
+                }
+                else if ( value.isUndefined() )
+                {
                     UString stringValue = "undefined";
-                    JNIEnv* env = getJNIEnv();
-                    jobject javaString = env->functions->NewString(env, (const jchar*)stringValue.characters(), stringValue.length());
+                    JNIEnv *env = getJNIEnv();
+                    jobject javaString = env->functions->NewString( env, ( const jchar * )stringValue.characters(), stringValue.length() );
                     result.l = javaString;
                 }
             }
 
             // Convert value to a string if the target type is a java.lang.String, and we're not
             // converting from a null.
-            if (!result.l && !strcmp(javaClassName, "java.lang.String")) {
-                if (!value.isNull()) {
-                    UString stringValue = value.toString(exec);
-                    JNIEnv* env = getJNIEnv();
-                    jobject javaString = env->functions->NewString(env, (const jchar*)stringValue.characters(), stringValue.length());
+            if ( !result.l && !strcmp( javaClassName, "java.lang.String" ) )
+            {
+                if ( !value.isNull() )
+                {
+                    UString stringValue = value.toString( exec );
+                    JNIEnv *env = getJNIEnv();
+                    jobject javaString = env->functions->NewString( env, ( const jchar * )stringValue.characters(), stringValue.length() );
                     result.l = javaString;
                 }
             }
         }
         break;
 
-    case JavaTypeBoolean:
+        case JavaTypeBoolean:
         {
-            result.z = (jboolean)value.toNumber(exec);
+            result.z = ( jboolean )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeByte:
+        case JavaTypeByte:
         {
-            result.b = (jbyte)value.toNumber(exec);
+            result.b = ( jbyte )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeChar:
+        case JavaTypeChar:
         {
-            result.c = (jchar)value.toNumber(exec);
+            result.c = ( jchar )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeShort:
+        case JavaTypeShort:
         {
-            result.s = (jshort)value.toNumber(exec);
+            result.s = ( jshort )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeInt:
+        case JavaTypeInt:
         {
-            result.i = (jint)value.toNumber(exec);
+            result.i = ( jint )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeLong:
+        case JavaTypeLong:
         {
-            result.j = (jlong)value.toNumber(exec);
+            result.j = ( jlong )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeFloat:
+        case JavaTypeFloat:
         {
-            result.f = (jfloat)value.toNumber(exec);
+            result.f = ( jfloat )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeDouble:
+        case JavaTypeDouble:
         {
-            result.d = (jdouble)value.toNumber(exec);
+            result.d = ( jdouble )value.toNumber( exec );
         }
         break;
 
-    case JavaTypeInvalid:
-    case JavaTypeVoid:
-        break;
+        case JavaTypeInvalid:
+        case JavaTypeVoid:
+            break;
     }
+
     return result;
 }
 

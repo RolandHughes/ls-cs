@@ -34,7 +34,8 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBBackingStore;
 class IDBDatabase;
@@ -42,46 +43,68 @@ class IDBFactoryBackendImpl;
 class IDBObjectStoreBackendImpl;
 class IDBTransactionCoordinator;
 
-class IDBDatabaseBackendImpl : public IDBDatabaseBackendInterface {
+class IDBDatabaseBackendImpl : public IDBDatabaseBackendInterface
+{
 public:
-    static PassRefPtr<IDBDatabaseBackendImpl> create(const String& name, IDBBackingStore* database, IDBTransactionCoordinator* coordinator, IDBFactoryBackendImpl* factory, const String& uniqueIdentifier)
+    static PassRefPtr<IDBDatabaseBackendImpl> create( const String &name, IDBBackingStore *database,
+            IDBTransactionCoordinator *coordinator, IDBFactoryBackendImpl *factory, const String &uniqueIdentifier )
     {
-        return adoptRef(new IDBDatabaseBackendImpl(name, database, coordinator, factory, uniqueIdentifier));
+        return adoptRef( new IDBDatabaseBackendImpl( name, database, coordinator, factory, uniqueIdentifier ) );
     }
     virtual ~IDBDatabaseBackendImpl();
 
     PassRefPtr<IDBBackingStore> backingStore() const;
 
     static const int64_t InvalidId = 0;
-    int64_t id() const { return m_id; }
-    void open(PassRefPtr<IDBDatabaseCallbacks>);
+    int64_t id() const
+    {
+        return m_id;
+    }
+    void open( PassRefPtr<IDBDatabaseCallbacks> );
 
-    virtual String name() const { return m_name; }
-    virtual String version() const { return m_version; }
+    virtual String name() const
+    {
+        return m_name;
+    }
+    virtual String version() const
+    {
+        return m_version;
+    }
     virtual PassRefPtr<DOMStringList> objectStoreNames() const;
 
-    virtual PassRefPtr<IDBObjectStoreBackendInterface> createObjectStore(const String& name, const String& keyPath, bool autoIncrement, IDBTransactionBackendInterface*, ExceptionCode&);
-    virtual void deleteObjectStore(const String& name, IDBTransactionBackendInterface*, ExceptionCode&);
-    virtual void setVersion(const String& version, PassRefPtr<IDBCallbacks>, PassRefPtr<IDBDatabaseCallbacks>, ExceptionCode&);
-    virtual PassRefPtr<IDBTransactionBackendInterface> transaction(DOMStringList* objectStoreNames, unsigned short mode, ExceptionCode&);
-    virtual void close(PassRefPtr<IDBDatabaseCallbacks>);
+    virtual PassRefPtr<IDBObjectStoreBackendInterface> createObjectStore( const String &name, const String &keyPath,
+            bool autoIncrement, IDBTransactionBackendInterface *, ExceptionCode & );
+    virtual void deleteObjectStore( const String &name, IDBTransactionBackendInterface *, ExceptionCode & );
+    virtual void setVersion( const String &version, PassRefPtr<IDBCallbacks>, PassRefPtr<IDBDatabaseCallbacks>, ExceptionCode & );
+    virtual PassRefPtr<IDBTransactionBackendInterface> transaction( DOMStringList *objectStoreNames, unsigned short mode,
+            ExceptionCode & );
+    virtual void close( PassRefPtr<IDBDatabaseCallbacks> );
 
-    PassRefPtr<IDBObjectStoreBackendInterface> objectStore(const String& name);
-    IDBTransactionCoordinator* transactionCoordinator() const { return m_transactionCoordinator.get(); }
+    PassRefPtr<IDBObjectStoreBackendInterface> objectStore( const String &name );
+    IDBTransactionCoordinator *transactionCoordinator() const
+    {
+        return m_transactionCoordinator.get();
+    }
 
 private:
-    IDBDatabaseBackendImpl(const String& name, IDBBackingStore* database, IDBTransactionCoordinator*, IDBFactoryBackendImpl*, const String& uniqueIdentifier);
+    IDBDatabaseBackendImpl( const String &name, IDBBackingStore *database, IDBTransactionCoordinator *, IDBFactoryBackendImpl *,
+                            const String &uniqueIdentifier );
 
     void loadObjectStores();
 
-    static void createObjectStoreInternal(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendImpl>, PassRefPtr<IDBObjectStoreBackendImpl>, PassRefPtr<IDBTransactionBackendInterface>);
-    static void deleteObjectStoreInternal(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendImpl>, PassRefPtr<IDBObjectStoreBackendImpl>, PassRefPtr<IDBTransactionBackendInterface>);
-    static void setVersionInternal(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendImpl>, const String& version, PassRefPtr<IDBCallbacks>, PassRefPtr<IDBTransactionBackendInterface>);
+    static void createObjectStoreInternal( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendImpl>,
+                                           PassRefPtr<IDBObjectStoreBackendImpl>, PassRefPtr<IDBTransactionBackendInterface> );
+    static void deleteObjectStoreInternal( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendImpl>,
+                                           PassRefPtr<IDBObjectStoreBackendImpl>, PassRefPtr<IDBTransactionBackendInterface> );
+    static void setVersionInternal( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendImpl>, const String &version,
+                                    PassRefPtr<IDBCallbacks>, PassRefPtr<IDBTransactionBackendInterface> );
 
     // These are used as setVersion transaction abort tasks.
-    static void removeObjectStoreFromMap(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendImpl>, PassRefPtr<IDBObjectStoreBackendImpl>);
-    static void addObjectStoreToMap(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendImpl>, PassRefPtr<IDBObjectStoreBackendImpl>);
-    static void resetVersion(ScriptExecutionContext*, PassRefPtr<IDBDatabaseBackendImpl>, const String& version);
+    static void removeObjectStoreFromMap( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendImpl>,
+                                          PassRefPtr<IDBObjectStoreBackendImpl> );
+    static void addObjectStoreToMap( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendImpl>,
+                                     PassRefPtr<IDBObjectStoreBackendImpl> );
+    static void resetVersion( ScriptExecutionContext *, PassRefPtr<IDBDatabaseBackendImpl>, const String &version );
 
     RefPtr<IDBBackingStore> m_backingStore;
     int64 m_id;

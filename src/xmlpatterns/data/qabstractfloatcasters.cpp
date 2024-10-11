@@ -27,31 +27,35 @@
  */
 
 template <const bool isDouble>
-Item NumericToAbstractFloatCaster<isDouble>::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item NumericToAbstractFloatCaster<isDouble>::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   // toDouble() returns same thing than toFloat()
-   return toItem(AbstractFloat<isDouble>::fromValue(from.template as<Numeric>()->toDouble()));
+    // toDouble() returns same thing than toFloat()
+    return toItem( AbstractFloat<isDouble>::fromValue( from.template as<Numeric>()->toDouble() ) );
 }
 
 template <const bool isDouble>
-Item StringToAbstractFloatCaster<isDouble>::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &) const
+Item StringToAbstractFloatCaster<isDouble>::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return toItem(AbstractFloat<isDouble>::fromLexical(from.stringValue()));
+    return toItem( AbstractFloat<isDouble>::fromLexical( from.stringValue() ) );
 }
 
 template <const bool isDouble>
-Item BooleanToAbstractFloatCaster<isDouble>::castFrom(const Item &from,
-      const QExplicitlySharedDataPointer<DynamicContext> &context) const
+Item BooleanToAbstractFloatCaster<isDouble>::castFrom( const Item &from,
+        const QExplicitlySharedDataPointer<DynamicContext> &context ) const
 {
-   // RVCT doesn't like using template parameter in trinary operator when the trinary operator result is
-   // passed directly into another constructor.
-   bool tempDouble = isDouble;
-   if (from.template as<AtomicValue>()->evaluateEBV(context)) {
-      return tempDouble ? toItem(CommonValues::DoubleOne) : toItem(CommonValues::FloatOne);
-   } else {
-      return tempDouble ? toItem(CommonValues::DoubleZero) : toItem(CommonValues::FloatZero);
-   }
+    // RVCT doesn't like using template parameter in trinary operator when the trinary operator result is
+    // passed directly into another constructor.
+    bool tempDouble = isDouble;
+
+    if ( from.template as<AtomicValue>()->evaluateEBV( context ) )
+    {
+        return tempDouble ? toItem( CommonValues::DoubleOne ) : toItem( CommonValues::FloatOne );
+    }
+    else
+    {
+        return tempDouble ? toItem( CommonValues::DoubleZero ) : toItem( CommonValues::FloatZero );
+    }
 }
 

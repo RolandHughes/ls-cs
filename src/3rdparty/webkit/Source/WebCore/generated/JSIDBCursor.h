@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBCursor;
 
-class JSIDBCursor : public JSDOMWrapper {
+class JSIDBCursor : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSIDBCursor(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<IDBCursor>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSIDBCursor( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<IDBCursor> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    IDBCursor* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    IDBCursor *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<IDBCursor> m_impl;
@@ -55,43 +61,46 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, IDBCursor*);
-IDBCursor* toIDBCursor(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, IDBCursor * );
+IDBCursor *toIDBCursor( JSC::JSValue );
 
-class JSIDBCursorPrototype : public JSC::JSObjectWithGlobalObject {
+class JSIDBCursorPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSIDBCursorPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSIDBCursorPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                          JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBCursorPrototypeFunctionUpdate(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBCursorPrototypeFunctionContinue(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBCursorPrototypeFunctionDelete(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBCursorPrototypeFunctionUpdate( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBCursorPrototypeFunctionContinue( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBCursorPrototypeFunctionDelete( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsIDBCursorDirection(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBCursorKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBCursorPrimaryKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBCursorSource(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBCursorConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBCursorDirection( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBCursorKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBCursorPrimaryKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBCursorSource( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBCursorConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsIDBCursorNEXT(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBCursorNEXT_NO_DUPLICATE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBCursorPREV(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBCursorPREV_NO_DUPLICATE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBCursorNEXT( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBCursorNEXT_NO_DUPLICATE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBCursorPREV( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBCursorPREV_NO_DUPLICATE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

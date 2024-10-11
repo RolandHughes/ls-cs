@@ -36,18 +36,19 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 FileStream::FileStream()
-    : m_handle(invalidPlatformFileHandle)
-    , m_bytesProcessed(0)
-    , m_totalBytesToRead(0)
+    : m_handle( invalidPlatformFileHandle )
+    , m_bytesProcessed( 0 )
+    , m_totalBytesToRead( 0 )
 {
 }
 
 FileStream::~FileStream()
 {
-    ASSERT(!isHandleValid(m_handle));
+    ASSERT( !isHandleValid( m_handle ) );
 }
 
 // FIXME: To be removed when we switch to using BlobData.
@@ -60,39 +61,57 @@ void FileStream::stop()
     close();
 }
 
-long long FileStream::getSize(const String& path, double expectedModificationTime)
+long long FileStream::getSize( const String &path, double expectedModificationTime )
 {
     // Check the modification time for the possible file change.
     time_t modificationTime;
-    if (!getFileModificationTime(path, modificationTime))
+
+    if ( !getFileModificationTime( path, modificationTime ) )
+    {
         return -1;
-    if (expectedModificationTime) {
-        if (static_cast<time_t>(expectedModificationTime) != modificationTime)
+    }
+
+    if ( expectedModificationTime )
+    {
+        if ( static_cast<time_t>( expectedModificationTime ) != modificationTime )
+        {
             return -1;
+        }
     }
 
     // Now get the file size.
     long long length;
-    if (!getFileSize(path, length))
+
+    if ( !getFileSize( path, length ) )
+    {
         return -1;
+    }
 
     return length;
 }
 
-bool FileStream::openForRead(const String& path, long long offset, long long length)
+bool FileStream::openForRead( const String &path, long long offset, long long length )
 {
-    if (isHandleValid(m_handle))
+    if ( isHandleValid( m_handle ) )
+    {
         return true;
+    }
 
     // Open the file.
-    m_handle = openFile(path, OpenForRead);
-    if (!isHandleValid(m_handle))
+    m_handle = openFile( path, OpenForRead );
+
+    if ( !isHandleValid( m_handle ) )
+    {
         return false;
+    }
 
     // Jump to the beginning position if the file has been sliced.
-    if (offset > 0) {
-        if (seekFile(m_handle, offset, SeekFromBeginning) < 0)
+    if ( offset > 0 )
+    {
+        if ( seekFile( m_handle, offset, SeekFromBeginning ) < 0 )
+        {
             return false;
+        }
     }
 
     m_totalBytesToRead = length;
@@ -101,7 +120,7 @@ bool FileStream::openForRead(const String& path, long long offset, long long len
     return true;
 }
 
-bool FileStream::openForWrite(const String&)
+bool FileStream::openForWrite( const String & )
 {
     // FIXME: to be implemented.
     return false;
@@ -109,37 +128,49 @@ bool FileStream::openForWrite(const String&)
 
 void FileStream::close()
 {
-    if (isHandleValid(m_handle)) {
-        closeFile(m_handle);
+    if ( isHandleValid( m_handle ) )
+    {
+        closeFile( m_handle );
         m_handle = invalidPlatformFileHandle;
     }
 }
 
-int FileStream::read(char* buffer, int bufferSize)
+int FileStream::read( char *buffer, int bufferSize )
 {
-    if (!isHandleValid(m_handle))
+    if ( !isHandleValid( m_handle ) )
+    {
         return -1;
+    }
 
     long long remaining = m_totalBytesToRead - m_bytesProcessed;
-    int bytesToRead = (remaining < bufferSize) ? static_cast<int>(remaining) : bufferSize;
+    int bytesToRead = ( remaining < bufferSize ) ? static_cast<int>( remaining ) : bufferSize;
     int bytesRead = 0;
-    if (bytesToRead > 0)
-        bytesRead = readFromFile(m_handle, buffer, bytesToRead);
-    if (bytesRead < 0)
+
+    if ( bytesToRead > 0 )
+    {
+        bytesRead = readFromFile( m_handle, buffer, bytesToRead );
+    }
+
+    if ( bytesRead < 0 )
+    {
         return -1;
-    if (bytesRead > 0)
+    }
+
+    if ( bytesRead > 0 )
+    {
         m_bytesProcessed += bytesRead;
+    }
 
     return bytesRead;
 }
 
-int FileStream::write(const KURL&, long long, int)
+int FileStream::write( const KURL &, long long, int )
 {
     // FIXME: to be implemented.
     return -1;
 }
 
-bool FileStream::truncate(long long)
+bool FileStream::truncate( long long )
 {
     // FIXME: to be implemented.
     return false;

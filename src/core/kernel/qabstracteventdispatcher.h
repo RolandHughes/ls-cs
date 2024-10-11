@@ -38,56 +38,56 @@ class QWinEventNotifier;
 
 class Q_CORE_EXPORT QAbstractEventDispatcher : public QObject
 {
-   CORE_CS_OBJECT(QAbstractEventDispatcher)
-   Q_DECLARE_PRIVATE(QAbstractEventDispatcher)
+    CORE_LSCS_OBJECT( QAbstractEventDispatcher )
+    Q_DECLARE_PRIVATE( QAbstractEventDispatcher )
 
- public:
-   explicit QAbstractEventDispatcher(QObject *parent = nullptr);
-   ~QAbstractEventDispatcher();
+public:
+    explicit QAbstractEventDispatcher( QObject *parent = nullptr );
+    ~QAbstractEventDispatcher();
 
-   static QAbstractEventDispatcher *instance(QThread *thread = nullptr);
+    static QAbstractEventDispatcher *instance( QThread *thread = nullptr );
 
-   virtual bool processEvents(QEventLoop::ProcessEventsFlags flags) = 0;
-   virtual bool hasPendingEvents() = 0;
+    virtual bool processEvents( QEventLoop::ProcessEventsFlags flags ) = 0;
+    virtual bool hasPendingEvents() = 0;
 
-   virtual void registerSocketNotifier(QSocketNotifier *notifier) = 0;
-   virtual void unregisterSocketNotifier(QSocketNotifier *notifier) = 0;
+    virtual void registerSocketNotifier( QSocketNotifier *notifier ) = 0;
+    virtual void unregisterSocketNotifier( QSocketNotifier *notifier ) = 0;
 
-   int registerTimer(int interval, Qt::TimerType timerType, QObject *object);
+    int registerTimer( int interval, Qt::TimerType timerType, QObject *object );
 
-   virtual void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object) = 0;
-   virtual bool unregisterTimer(int timerId) = 0;
-   virtual bool unregisterTimers(QObject *object) = 0;
-   virtual QList<QTimerInfo> registeredTimers(QObject *object) const = 0;
+    virtual void registerTimer( int timerId, int interval, Qt::TimerType timerType, QObject *object ) = 0;
+    virtual bool unregisterTimer( int timerId ) = 0;
+    virtual bool unregisterTimers( QObject *object ) = 0;
+    virtual QList<QTimerInfo> registeredTimers( QObject *object ) const = 0;
 
-   virtual int remainingTime(int timerId) = 0;
+    virtual int remainingTime( int timerId ) = 0;
 
 #ifdef Q_OS_WIN
-   virtual bool registerEventNotifier(QWinEventNotifier *notifier)   = 0;
-   virtual void unregisterEventNotifier(QWinEventNotifier *notifier) = 0;
+    virtual bool registerEventNotifier( QWinEventNotifier *notifier )   = 0;
+    virtual void unregisterEventNotifier( QWinEventNotifier *notifier ) = 0;
 #endif
 
-   virtual void wakeUp() = 0;
-   virtual void interrupt() = 0;
-   virtual void flush() = 0;
+    virtual void wakeUp() = 0;
+    virtual void interrupt() = 0;
+    virtual void flush() = 0;
 
-   virtual void startingUp();
-   virtual void closingDown();
+    virtual void startingUp();
+    virtual void closingDown();
 
-   void installNativeEventFilter(QAbstractNativeEventFilter *filterObj);
-   void removeNativeEventFilter(QAbstractNativeEventFilter *filterObj);
-   bool filterNativeEvent(const QByteArray &eventType, void *message, long *result);
+    void installNativeEventFilter( QAbstractNativeEventFilter *filterObj );
+    void removeNativeEventFilter( QAbstractNativeEventFilter *filterObj );
+    bool filterNativeEvent( const QByteArray &eventType, void *message, long *result );
 
-   CORE_CS_SIGNAL_1(Public, void aboutToBlock())
-   CORE_CS_SIGNAL_2(aboutToBlock)
+    CORE_LSCS_SIGNAL_1( Public, void aboutToBlock() )
+    CORE_LSCS_SIGNAL_2( aboutToBlock )
 
-   CORE_CS_SIGNAL_1(Public, void awake())
-   CORE_CS_SIGNAL_2(awake)
+    CORE_LSCS_SIGNAL_1( Public, void awake() )
+    CORE_LSCS_SIGNAL_2( awake )
 
- protected:
-   QAbstractEventDispatcher(QAbstractEventDispatcherPrivate &, QObject *parent);
+protected:
+    QAbstractEventDispatcher( QAbstractEventDispatcherPrivate &, QObject *parent );
 
-   QScopedPointer<QAbstractEventDispatcherPrivate> d_ptr;
+    QScopedPointer<QAbstractEventDispatcherPrivate> d_ptr;
 };
 
 #endif

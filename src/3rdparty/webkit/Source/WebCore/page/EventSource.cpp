@@ -53,46 +53,51 @@
 #include "TextResourceDecoder.h"
 #include "ThreadableLoader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 const unsigned long long EventSource::defaultReconnectDelay = 3000;
 
-inline EventSource::EventSource(const KURL& url, ScriptExecutionContext* context)
-    : ActiveDOMObject(context, this)
-    , m_url(url)
-    , m_state(CONNECTING)
-    , m_decoder(TextResourceDecoder::create("text/plain", "UTF-8"))
-    , m_reconnectTimer(this, &EventSource::reconnectTimerFired)
-    , m_discardTrailingNewline(false)
-    , m_failSilently(false)
-    , m_requestInFlight(false)
-    , m_reconnectDelay(defaultReconnectDelay)
-    , m_origin(context->securityOrigin()->toString())
+inline EventSource::EventSource( const KURL &url, ScriptExecutionContext *context )
+    : ActiveDOMObject( context, this )
+    , m_url( url )
+    , m_state( CONNECTING )
+    , m_decoder( TextResourceDecoder::create( "text/plain", "UTF-8" ) )
+    , m_reconnectTimer( this, &EventSource::reconnectTimerFired )
+    , m_discardTrailingNewline( false )
+    , m_failSilently( false )
+    , m_requestInFlight( false )
+    , m_reconnectDelay( defaultReconnectDelay )
+    , m_origin( context->securityOrigin()->toString() )
 {
 }
 
-PassRefPtr<EventSource> EventSource::create(const String& url, ScriptExecutionContext* context, ExceptionCode& ec)
+PassRefPtr<EventSource> EventSource::create( const String &url, ScriptExecutionContext *context, ExceptionCode &ec )
 {
-    if (url.isEmpty()) {
+    if ( url.isEmpty() )
+    {
         ec = SYNTAX_ERR;
         return 0;
     }
 
-    KURL fullURL = context->completeURL(url);
-    if (!fullURL.isValid()) {
+    KURL fullURL = context->completeURL( url );
+
+    if ( !fullURL.isValid() )
+    {
         ec = SYNTAX_ERR;
         return 0;
     }
 
     // FIXME: Should support at least some cross-origin requests.
-    if (!context->securityOrigin()->canRequest(fullURL)) {
+    if ( !context->securityOrigin()->canRequest( fullURL ) )
+    {
         ec = SECURITY_ERR;
         return 0;
     }
 
-    RefPtr<EventSource> source = adoptRef(new EventSource(fullURL, context));
+    RefPtr<EventSource> source = adoptRef( new EventSource( fullURL, context ) );
 
-    source->setPendingActivity(source.get());
+    source->setPendingActivity( source.get() );
     source->connect();
 
     return source.release();
@@ -104,46 +109,57 @@ EventSource::~EventSource()
 
 void EventSource::connect()
 {
-    ResourceRequest request(m_url);
-    request.setHTTPMethod("GET");
-    request.setHTTPHeaderField("Accept", "text/event-stream");
-    request.setHTTPHeaderField("Cache-Control", "no-cache");
-    if (!m_lastEventId.isEmpty())
-        request.setHTTPHeaderField("Last-Event-ID", m_lastEventId);
+    ResourceRequest request( m_url );
+    request.setHTTPMethod( "GET" );
+    request.setHTTPHeaderField( "Accept", "text/event-stream" );
+    request.setHTTPHeaderField( "Cache-Control", "no-cache" );
+
+    if ( !m_lastEventId.isEmpty() )
+    {
+        request.setHTTPHeaderField( "Last-Event-ID", m_lastEventId );
+    }
 
     ThreadableLoaderOptions options;
     options.sendLoadCallbacks = true;
     options.sniffContent = false;
     options.allowCredentials = true;
 
-    m_loader = ThreadableLoader::create(scriptExecutionContext(), this, request, options);
+    m_loader = ThreadableLoader::create( scriptExecutionContext(), this, request, options );
 
     m_requestInFlight = true;
 }
 
 void EventSource::endRequest()
 {
-    if (!m_requestInFlight)
+    if ( !m_requestInFlight )
+    {
         return;
+    }
 
     m_requestInFlight = false;
 
-    if (!m_failSilently)
-        dispatchEvent(Event::create(eventNames().errorEvent, false, false));
+    if ( !m_failSilently )
+    {
+        dispatchEvent( Event::create( eventNames().errorEvent, false, false ) );
+    }
 
-    if (m_state != CLOSED)
+    if ( m_state != CLOSED )
+    {
         scheduleReconnect();
+    }
     else
-        unsetPendingActivity(this);
+    {
+        unsetPendingActivity( this );
+    }
 }
 
 void EventSource::scheduleReconnect()
 {
     m_state = CONNECTING;
-    m_reconnectTimer.startOneShot(m_reconnectDelay / 1000);
+    m_reconnectTimer.startOneShot( m_reconnectDelay / 1000 );
 }
 
-void EventSource::reconnectTimerFired(Timer<EventSource>*)
+void EventSource::reconnectTimerFired( Timer<EventSource> * )
 {
     connect();
 }
@@ -160,85 +176,109 @@ EventSource::State EventSource::readyState() const
 
 void EventSource::close()
 {
-    if (m_state == CLOSED)
+    if ( m_state == CLOSED )
+    {
         return;
+    }
 
-    if (m_reconnectTimer.isActive()) {
+    if ( m_reconnectTimer.isActive() )
+    {
         m_reconnectTimer.stop();
-        unsetPendingActivity(this);
+        unsetPendingActivity( this );
     }
 
     m_state = CLOSED;
     m_failSilently = true;
 
-    if (m_requestInFlight)
+    if ( m_requestInFlight )
+    {
         m_loader->cancel();
+    }
 }
 
-ScriptExecutionContext* EventSource::scriptExecutionContext() const
+ScriptExecutionContext *EventSource::scriptExecutionContext() const
 {
     return ActiveDOMObject::scriptExecutionContext();
 }
 
-void EventSource::didReceiveResponse(const ResourceResponse& response)
+void EventSource::didReceiveResponse( const ResourceResponse &response )
 {
     int statusCode = response.httpStatusCode();
     bool mimeTypeIsValid = response.mimeType() == "text/event-stream";
     bool responseIsValid = statusCode == 200 && mimeTypeIsValid;
-    if (responseIsValid) {
-        const String& charset = response.textEncodingName();
+
+    if ( responseIsValid )
+    {
+        const String &charset = response.textEncodingName();
         // If we have a charset, the only allowed value is UTF-8 (case-insensitive). This should match
         // the updated EventSource standard.
-        responseIsValid = charset.isEmpty() || equalIgnoringCase(charset, "UTF-8");
-        if (!responseIsValid) {
+        responseIsValid = charset.isEmpty() || equalIgnoringCase( charset, "UTF-8" );
+
+        if ( !responseIsValid )
+        {
             String message = "EventSource's response has a charset (\"";
             message += charset;
             message += "\") that is not UTF-8. Aborting the connection.";
             // FIXME: We are missing the source line.
-            scriptExecutionContext()->addMessage(JSMessageSource, LogMessageType, ErrorMessageLevel, message, 1, String(), 0);
+            scriptExecutionContext()->addMessage( JSMessageSource, LogMessageType, ErrorMessageLevel, message, 1, String(), 0 );
         }
-    } else {
+    }
+    else
+    {
         // To keep the signal-to-noise ratio low, we only log 200-response with an invalid MIME type.
-        if (statusCode == 200 && !mimeTypeIsValid) {
+        if ( statusCode == 200 && !mimeTypeIsValid )
+        {
             String message = "EventSource's response has a MIME type (\"";
             message += response.mimeType();
             message += "\") that is not \"text/event-stream\". Aborting the connection.";
             // FIXME: We are missing the source line.
-            scriptExecutionContext()->addMessage(JSMessageSource, LogMessageType, ErrorMessageLevel, message, 1, String(), 0);
+            scriptExecutionContext()->addMessage( JSMessageSource, LogMessageType, ErrorMessageLevel, message, 1, String(), 0 );
         }
     }
 
-    if (responseIsValid) {
+    if ( responseIsValid )
+    {
         m_state = OPEN;
-        dispatchEvent(Event::create(eventNames().openEvent, false, false));
-    } else {
-        if (statusCode <= 200 || statusCode > 299)
+        dispatchEvent( Event::create( eventNames().openEvent, false, false ) );
+    }
+    else
+    {
+        if ( statusCode <= 200 || statusCode > 299 )
+        {
             m_state = CLOSED;
+        }
+
         m_loader->cancel();
     }
 }
 
-void EventSource::didReceiveData(const char* data, int length)
+void EventSource::didReceiveData( const char *data, int length )
 {
-    append(m_receiveBuf, m_decoder->decode(data, length));
+    append( m_receiveBuf, m_decoder->decode( data, length ) );
     parseEventStream();
 }
 
-void EventSource::didFinishLoading(unsigned long, double)
+void EventSource::didFinishLoading( unsigned long, double )
 {
-    if (m_receiveBuf.size() > 0 || m_data.size() > 0) {
-        append(m_receiveBuf, "\n\n");
+    if ( m_receiveBuf.size() > 0 || m_data.size() > 0 )
+    {
+        append( m_receiveBuf, "\n\n" );
         parseEventStream();
     }
+
     m_state = CONNECTING;
     endRequest();
 }
 
-void EventSource::didFail(const ResourceError& error)
+void EventSource::didFail( const ResourceError &error )
 {
     int canceled = error.isCancellation();
-    if (((m_state == CONNECTING) && !canceled) || ((m_state == OPEN) && canceled))
+
+    if ( ( ( m_state == CONNECTING ) && !canceled ) || ( ( m_state == OPEN ) && canceled ) )
+    {
         m_state = CLOSED;
+    }
+
     endRequest();
 }
 
@@ -252,82 +292,133 @@ void EventSource::parseEventStream()
 {
     unsigned int bufPos = 0;
     unsigned int bufSize = m_receiveBuf.size();
-    while (bufPos < bufSize) {
-        if (m_discardTrailingNewline) {
-            if (m_receiveBuf[bufPos] == '\n')
+
+    while ( bufPos < bufSize )
+    {
+        if ( m_discardTrailingNewline )
+        {
+            if ( m_receiveBuf[bufPos] == '\n' )
+            {
                 bufPos++;
+            }
+
             m_discardTrailingNewline = false;
         }
 
         int lineLength = -1;
         int fieldLength = -1;
-        for (unsigned int i = bufPos; lineLength < 0 && i < bufSize; i++) {
-            switch (m_receiveBuf[i]) {
-            case ':':
-                if (fieldLength < 0)
-                    fieldLength = i - bufPos;
-                break;
-            case '\r':
-                m_discardTrailingNewline = true;
-            case '\n':
-                lineLength = i - bufPos;
-                break;
+
+        for ( unsigned int i = bufPos; lineLength < 0 && i < bufSize; i++ )
+        {
+            switch ( m_receiveBuf[i] )
+            {
+                case ':':
+                    if ( fieldLength < 0 )
+                    {
+                        fieldLength = i - bufPos;
+                    }
+
+                    break;
+
+                case '\r':
+                    m_discardTrailingNewline = true;
+
+                case '\n':
+                    lineLength = i - bufPos;
+                    break;
             }
         }
 
-        if (lineLength < 0)
+        if ( lineLength < 0 )
+        {
             break;
+        }
 
-        parseEventStreamLine(bufPos, fieldLength, lineLength);
+        parseEventStreamLine( bufPos, fieldLength, lineLength );
         bufPos += lineLength + 1;
     }
 
-    if (bufPos == bufSize)
+    if ( bufPos == bufSize )
+    {
         m_receiveBuf.clear();
-    else if (bufPos)
-        m_receiveBuf.remove(0, bufPos);
+    }
+    else if ( bufPos )
+    {
+        m_receiveBuf.remove( 0, bufPos );
+    }
 }
 
-void EventSource::parseEventStreamLine(unsigned int bufPos, int fieldLength, int lineLength)
+void EventSource::parseEventStreamLine( unsigned int bufPos, int fieldLength, int lineLength )
 {
-    if (!lineLength) {
-        if (!m_data.isEmpty()) {
+    if ( !lineLength )
+    {
+        if ( !m_data.isEmpty() )
+        {
             m_data.removeLast();
-            dispatchEvent(createMessageEvent());
+            dispatchEvent( createMessageEvent() );
         }
-        if (!m_eventName.isEmpty())
+
+        if ( !m_eventName.isEmpty() )
+        {
             m_eventName = "";
-    } else if (fieldLength) {
+        }
+    }
+    else if ( fieldLength )
+    {
         bool noValue = fieldLength < 0;
 
-        String field(&m_receiveBuf[bufPos], noValue ? lineLength : fieldLength);
+        String field( &m_receiveBuf[bufPos], noValue ? lineLength : fieldLength );
         int step;
-        if (noValue)
+
+        if ( noValue )
+        {
             step = lineLength;
-        else if (m_receiveBuf[bufPos + fieldLength + 1] != ' ')
+        }
+        else if ( m_receiveBuf[bufPos + fieldLength + 1] != ' ' )
+        {
             step = fieldLength + 1;
+        }
         else
+        {
             step = fieldLength + 2;
+        }
+
         bufPos += step;
         int valueLength = lineLength - step;
 
-        if (field == "data") {
-            if (valueLength)
-                m_data.append(&m_receiveBuf[bufPos], valueLength);
-            m_data.append('\n');
-        } else if (field == "event")
-            m_eventName = valueLength ? String(&m_receiveBuf[bufPos], valueLength) : "";
-        else if (field == "id")
-            m_lastEventId = valueLength ? String(&m_receiveBuf[bufPos], valueLength) : "";
-        else if (field == "retry") {
-            if (!valueLength)
+        if ( field == "data" )
+        {
+            if ( valueLength )
+            {
+                m_data.append( &m_receiveBuf[bufPos], valueLength );
+            }
+
+            m_data.append( '\n' );
+        }
+        else if ( field == "event" )
+        {
+            m_eventName = valueLength ? String( &m_receiveBuf[bufPos], valueLength ) : "";
+        }
+        else if ( field == "id" )
+        {
+            m_lastEventId = valueLength ? String( &m_receiveBuf[bufPos], valueLength ) : "";
+        }
+        else if ( field == "retry" )
+        {
+            if ( !valueLength )
+            {
                 m_reconnectDelay = defaultReconnectDelay;
-            else {
-                String value(&m_receiveBuf[bufPos], valueLength);
+            }
+            else
+            {
+                String value( &m_receiveBuf[bufPos], valueLength );
                 bool ok;
-                unsigned long long retry = value.toUInt64(&ok);
-                if (ok)
+                unsigned long long retry = value.toUInt64( &ok );
+
+                if ( ok )
+                {
                     m_reconnectDelay = retry;
+                }
             }
         }
     }
@@ -341,16 +432,17 @@ void EventSource::stop()
 PassRefPtr<MessageEvent> EventSource::createMessageEvent()
 {
     RefPtr<MessageEvent> event = MessageEvent::create();
-    event->initMessageEvent(m_eventName.isEmpty() ? eventNames().messageEvent : AtomicString(m_eventName), false, false, SerializedScriptValue::create(String::adopt(m_data)), m_origin, m_lastEventId, 0, 0);
+    event->initMessageEvent( m_eventName.isEmpty() ? eventNames().messageEvent : AtomicString( m_eventName ), false, false,
+                             SerializedScriptValue::create( String::adopt( m_data ) ), m_origin, m_lastEventId, 0, 0 );
     return event.release();
 }
 
-EventTargetData* EventSource::eventTargetData()
+EventTargetData *EventSource::eventTargetData()
 {
     return &m_eventTargetData;
 }
 
-EventTargetData* EventSource::ensureEventTargetData()
+EventTargetData *EventSource::ensureEventTargetData()
 {
     return &m_eventTargetData;
 }

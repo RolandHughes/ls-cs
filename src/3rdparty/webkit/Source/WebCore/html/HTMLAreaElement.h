@@ -27,40 +27,45 @@
 #include "IntSize.h"
 #include <wtf/OwnArrayPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HitTestResult;
 class HTMLImageElement;
 class Path;
 
-class HTMLAreaElement : public HTMLAnchorElement {
+class HTMLAreaElement : public HTMLAnchorElement
+{
 public:
-    static PassRefPtr<HTMLAreaElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLAreaElement> create( const QualifiedName &, Document * );
 
-    bool isDefault() const { return m_shape == Default; }
+    bool isDefault() const
+    {
+        return m_shape == Default;
+    }
 
-    bool mapMouseEvent(int x, int y, const IntSize&, HitTestResult&);
+    bool mapMouseEvent( int x, int y, const IntSize &, HitTestResult & );
 
-    IntRect computeRect(RenderObject*) const;
-    Path computePath(RenderObject*) const;
+    IntRect computeRect( RenderObject * ) const;
+    Path computePath( RenderObject * ) const;
 
     // The parent map's image.
-    HTMLImageElement* imageElement() const;
-    
-private:
-    HTMLAreaElement(const QualifiedName&, Document*);
+    HTMLImageElement *imageElement() const;
 
-    virtual void parseMappedAttribute(Attribute*);
+private:
+    HTMLAreaElement( const QualifiedName &, Document * );
+
+    virtual void parseMappedAttribute( Attribute * );
     virtual bool supportsFocus() const;
     virtual String target() const;
-    virtual bool isKeyboardFocusable(KeyboardEvent*) const;
+    virtual bool isKeyboardFocusable( KeyboardEvent * ) const;
     virtual bool isMouseFocusable() const;
     virtual bool isFocusable() const;
-    virtual void updateFocusAppearance(bool /*restorePreviousSelection*/);
-    virtual void setFocus(bool);
-    
+    virtual void updateFocusAppearance( bool /*restorePreviousSelection*/ );
+    virtual void setFocus( bool );
+
     enum Shape { Default, Poly, Rect, Circle, Unknown };
-    Path getRegion(const IntSize&) const;
+    Path getRegion( const IntSize & ) const;
 
     OwnPtr<Path> m_region;
     OwnArrayPtr<Length> m_coords;

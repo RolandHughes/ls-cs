@@ -26,11 +26,12 @@
 #ifndef DataURL_h
 #define DataURL_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ResourceHandle;
 
-void handleDataURL(ResourceHandle*);
+void handleDataURL( ResourceHandle * );
 
 }
 

@@ -29,7 +29,8 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Event;
 class EventContext;
@@ -41,29 +42,31 @@ class PlatformKeyboardEvent;
 class PlatformMouseEvent;
 class PlatformWheelEvent;
 
-enum EventDispatchBehavior {
+enum EventDispatchBehavior
+{
     RetargetEvent,
     StayInsideShadowDOM
 };
 
-class EventDispatcher {
+class EventDispatcher
+{
 public:
-    static bool dispatchEvent(Node*, const EventDispatchMediator&);
-    static void dispatchScopedEvent(Node*, PassRefPtr<Event>);
+    static bool dispatchEvent( Node *, const EventDispatchMediator & );
+    static void dispatchScopedEvent( Node *, PassRefPtr<Event> );
 
-    static void dispatchSimulatedClick(Node*, PassRefPtr<Event> underlyingEvent, bool sendMouseEvents, bool showPressedLook);
+    static void dispatchSimulatedClick( Node *, PassRefPtr<Event> underlyingEvent, bool sendMouseEvents, bool showPressedLook );
 
-    bool dispatchEvent(PassRefPtr<Event>);
-    PassRefPtr<EventTarget> adjustRelatedTarget(Event*, PassRefPtr<EventTarget>);
-    Node* node() const;
+    bool dispatchEvent( PassRefPtr<Event> );
+    PassRefPtr<EventTarget> adjustRelatedTarget( Event *, PassRefPtr<EventTarget> );
+    Node *node() const;
 
 private:
-    EventDispatcher(Node*);
+    EventDispatcher( Node * );
 
-    PassRefPtr<EventTarget> adjustToShadowBoundaries(PassRefPtr<Node> relatedTarget, const Vector<Node*> relatedTargetAncestors);
-    EventDispatchBehavior determineDispatchBehavior(Event*, Node* shadowRoot);
-    void ensureEventAncestors(Event*);
-    const EventContext* topEventContext();
+    PassRefPtr<EventTarget> adjustToShadowBoundaries( PassRefPtr<Node> relatedTarget, const Vector<Node *> relatedTargetAncestors );
+    EventDispatchBehavior determineDispatchBehavior( Event *, Node *shadowRoot );
+    void ensureEventAncestors( Event * );
+    const EventContext *topEventContext();
 
     Vector<EventContext> m_ancestors;
     RefPtr<Node> m_node;
@@ -72,7 +75,7 @@ private:
     bool m_ancestorsInitialized;
 };
 
-inline Node* EventDispatcher::node() const
+inline Node *EventDispatcher::node() const
 {
     return m_node.get();
 }

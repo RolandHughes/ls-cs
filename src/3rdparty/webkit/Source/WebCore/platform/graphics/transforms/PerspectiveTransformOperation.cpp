@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,36 +30,43 @@
 
 using namespace std;
 
-namespace WebCore {
-
-PassRefPtr<TransformOperation> PerspectiveTransformOperation::blend(const TransformOperation* from, double progress, bool blendToIdentity)
+namespace WebCore
 {
-    if (from && !from->isSameType(*this))
+
+PassRefPtr<TransformOperation> PerspectiveTransformOperation::blend( const TransformOperation *from, double progress,
+        bool blendToIdentity )
+{
+    if ( from && !from->isSameType( *this ) )
+    {
         return this;
-    
-    if (blendToIdentity) {
-        double p = m_p.calcFloatValue(1);
-        p = p + (1. - p) * progress; // FIXME: this seems wrong. https://bugs.webkit.org/show_bug.cgi?id=52700
-        return PerspectiveTransformOperation::create(Length(clampToPositiveInteger(p), Fixed));
     }
-    
-    const PerspectiveTransformOperation* fromOp = static_cast<const PerspectiveTransformOperation*>(from);
-    Length fromP = fromOp ? fromOp->m_p : Length(m_p.type());
+
+    if ( blendToIdentity )
+    {
+        double p = m_p.calcFloatValue( 1 );
+        p = p + ( 1. - p ) * progress; // FIXME: this seems wrong. https://bugs.webkit.org/show_bug.cgi?id=52700
+        return PerspectiveTransformOperation::create( Length( clampToPositiveInteger( p ), Fixed ) );
+    }
+
+    const PerspectiveTransformOperation *fromOp = static_cast<const PerspectiveTransformOperation *>( from );
+    Length fromP = fromOp ? fromOp->m_p : Length( m_p.type() );
     Length toP = m_p;
 
     TransformationMatrix fromT;
     TransformationMatrix toT;
-    fromT.applyPerspective(fromP.calcFloatValue(1));
-    toT.applyPerspective(toP.calcFloatValue(1));
-    toT.blend(fromT, progress);
+    fromT.applyPerspective( fromP.calcFloatValue( 1 ) );
+    toT.applyPerspective( toP.calcFloatValue( 1 ) );
+    toT.blend( fromT, progress );
     TransformationMatrix::DecomposedType decomp;
-    toT.decompose(decomp);
+    toT.decompose( decomp );
 
-    if (decomp.perspectiveZ) {
+    if ( decomp.perspectiveZ )
+    {
         double val = -1.0 / decomp.perspectiveZ;
-        return PerspectiveTransformOperation::create(Length(clampToPositiveInteger(val), Fixed));
+        return PerspectiveTransformOperation::create( Length( clampToPositiveInteger( val ), Fixed ) );
     }
-    return PerspectiveTransformOperation::create(Length(0, Fixed));
+
+    return PerspectiveTransformOperation::create( Length( 0, Fixed ) );
 }
 
 } // namespace WebCore

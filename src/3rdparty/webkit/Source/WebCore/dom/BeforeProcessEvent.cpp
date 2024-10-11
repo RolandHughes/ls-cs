@@ -20,14 +20,15 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
 #include "config.h"
 #include "BeforeProcessEvent.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 String BeforeProcessEvent::text() const
 {
@@ -35,9 +36,9 @@ String BeforeProcessEvent::text() const
     return String();
 }
 
-void BeforeProcessEvent::setText(const String&)
+void BeforeProcessEvent::setText( const String & )
 {
-    // FIXME - Replace innerText for <style> elements and inline <script> elements, and remove the src attribute on 
+    // FIXME - Replace innerText for <style> elements and inline <script> elements, and remove the src attribute on
     // remote <script> elements, replacing it with an innerText property.
 }
 

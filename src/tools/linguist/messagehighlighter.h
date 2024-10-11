@@ -30,33 +30,35 @@
 // Message highlighter based on HtmlSyntaxHighlighter from designer
 class MessageHighlighter : public QSyntaxHighlighter
 {
-   CS_OBJECT(MessageHighlighter)
+    LSCS_OBJECT( MessageHighlighter )
 
- public:
-   MessageHighlighter(QTextEdit *textEdit);
+public:
+    MessageHighlighter( QTextEdit *textEdit );
 
- protected:
-   void highlightBlock(const QString &text) override;
+protected:
+    void highlightBlock( const QString &text ) override;
 
- private:
-   enum Construct {
-      Entity,
-      Tag,
-      Comment,
-      Attribute,
-      Value,
-      Accelerator, // "Open &File"
-      Variable,    // "Opening %1"
-      LastConstruct = Variable
-   };
+private:
+    enum Construct
+    {
+        Entity,
+        Tag,
+        Comment,
+        Attribute,
+        Value,
+        Accelerator, // "Open &File"
+        Variable,    // "Opening %1"
+        LastConstruct = Variable
+    };
 
-   enum State {
-      NormalState = -1,
-      InComment,
-      InTag
-   };
+    enum State
+    {
+        NormalState = -1,
+        InComment,
+        InTag
+    };
 
-   QTextCharFormat m_formats[LastConstruct + 1];
+    QTextCharFormat m_formats[LastConstruct + 1];
 };
 
 #endif

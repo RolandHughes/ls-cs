@@ -33,13 +33,15 @@
 #include <wtf/Forward.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
-    class FloatRect;
-    class IntSize;
-    struct WindowFeatures;
+namespace WebCore
+{
+class FloatRect;
+class IntSize;
+struct WindowFeatures;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class GeolocationPermissionRequestProxy;
@@ -50,65 +52,71 @@ class WebPageProxy;
 class WebSecurityOrigin;
 class WebOpenPanelResultListenerProxy;
 
-class WebUIClient : public APIClient<WKPageUIClient> {
+class WebUIClient : public APIClient<WKPageUIClient>
+{
 public:
-    PassRefPtr<WebPageProxy> createNewPage(WebPageProxy*, const WebCore::WindowFeatures&, WebEvent::Modifiers, WebMouseEvent::Button);
-    void showPage(WebPageProxy*);
-    void close(WebPageProxy*);
+    PassRefPtr<WebPageProxy> createNewPage( WebPageProxy *, const WebCore::WindowFeatures &, WebEvent::Modifiers,
+                                            WebMouseEvent::Button );
+    void showPage( WebPageProxy * );
+    void close( WebPageProxy * );
 
-    void takeFocus(WebPageProxy*, WKFocusDirection);
-    void focus(WebPageProxy*);
-    void unfocus(WebPageProxy*);
+    void takeFocus( WebPageProxy *, WKFocusDirection );
+    void focus( WebPageProxy * );
+    void unfocus( WebPageProxy * );
 
-    void runJavaScriptAlert(WebPageProxy*, const String&, WebFrameProxy*);
-    bool runJavaScriptConfirm(WebPageProxy*, const String&, WebFrameProxy*);
-    String runJavaScriptPrompt(WebPageProxy*, const String&, const String&, WebFrameProxy*);
+    void runJavaScriptAlert( WebPageProxy *, const String &, WebFrameProxy * );
+    bool runJavaScriptConfirm( WebPageProxy *, const String &, WebFrameProxy * );
+    String runJavaScriptPrompt( WebPageProxy *, const String &, const String &, WebFrameProxy * );
 
-    void setStatusText(WebPageProxy*, const String&);
-    void mouseDidMoveOverElement(WebPageProxy*, WebEvent::Modifiers, APIObject*);
-    void missingPluginButtonClicked(WebPageProxy*, const String& mimeType, const String& url, const String& pluginsPageURL);
-    
+    void setStatusText( WebPageProxy *, const String & );
+    void mouseDidMoveOverElement( WebPageProxy *, WebEvent::Modifiers, APIObject * );
+    void missingPluginButtonClicked( WebPageProxy *, const String &mimeType, const String &url, const String &pluginsPageURL );
+
     bool implementsDidNotHandleKeyEvent() const;
-    void didNotHandleKeyEvent(WebPageProxy*, const NativeWebKeyboardEvent&);
+    void didNotHandleKeyEvent( WebPageProxy *, const NativeWebKeyboardEvent & );
 
-    bool toolbarsAreVisible(WebPageProxy*);
-    void setToolbarsAreVisible(WebPageProxy*, bool);
-    bool menuBarIsVisible(WebPageProxy*);
-    void setMenuBarIsVisible(WebPageProxy*, bool);
-    bool statusBarIsVisible(WebPageProxy*);
-    void setStatusBarIsVisible(WebPageProxy*, bool);
-    bool isResizable(WebPageProxy*);
-    void setIsResizable(WebPageProxy*, bool);
+    bool toolbarsAreVisible( WebPageProxy * );
+    void setToolbarsAreVisible( WebPageProxy *, bool );
+    bool menuBarIsVisible( WebPageProxy * );
+    void setMenuBarIsVisible( WebPageProxy *, bool );
+    bool statusBarIsVisible( WebPageProxy * );
+    void setStatusBarIsVisible( WebPageProxy *, bool );
+    bool isResizable( WebPageProxy * );
+    void setIsResizable( WebPageProxy *, bool );
 
-    void setWindowFrame(WebPageProxy*, const WebCore::FloatRect&);
-    WebCore::FloatRect windowFrame(WebPageProxy*);
+    void setWindowFrame( WebPageProxy *, const WebCore::FloatRect & );
+    WebCore::FloatRect windowFrame( WebPageProxy * );
 
     bool canRunBeforeUnloadConfirmPanel() const;
-    bool runBeforeUnloadConfirmPanel(WebPageProxy*, const String&, WebFrameProxy*);
+    bool runBeforeUnloadConfirmPanel( WebPageProxy *, const String &, WebFrameProxy * );
 
-    void didDraw(WebPageProxy*);
-    void pageDidScroll(WebPageProxy*);
+    void didDraw( WebPageProxy * );
+    void pageDidScroll( WebPageProxy * );
 
-    unsigned long long exceededDatabaseQuota(WebPageProxy*, WebFrameProxy*, WebSecurityOrigin*, const String& databaseName, const String& databaseDisplayName, unsigned long long currentQuota, unsigned long long currentUsage, unsigned long long expectedUsage);
+    unsigned long long exceededDatabaseQuota( WebPageProxy *, WebFrameProxy *, WebSecurityOrigin *, const String &databaseName,
+            const String &databaseDisplayName, unsigned long long currentQuota, unsigned long long currentUsage,
+            unsigned long long expectedUsage );
 
-    bool runOpenPanel(WebPageProxy*, WebFrameProxy*, const WebOpenPanelParameters::Data&, WebOpenPanelResultListenerProxy*);
-    bool decidePolicyForGeolocationPermissionRequest(WebPageProxy*, WebFrameProxy*, WebSecurityOrigin*, GeolocationPermissionRequestProxy*);
+    bool runOpenPanel( WebPageProxy *, WebFrameProxy *, const WebOpenPanelParameters::Data &, WebOpenPanelResultListenerProxy * );
+    bool decidePolicyForGeolocationPermissionRequest( WebPageProxy *, WebFrameProxy *, WebSecurityOrigin *,
+            GeolocationPermissionRequestProxy * );
 
     // Printing.
-    float headerHeight(WebPageProxy*, WebFrameProxy*);
-    float footerHeight(WebPageProxy*, WebFrameProxy*);
-    void drawHeader(WebPageProxy*, WebFrameProxy*, const WebCore::FloatRect&);
-    void drawFooter(WebPageProxy*, WebFrameProxy*, const WebCore::FloatRect&);
-    void printFrame(WebPageProxy*, WebFrameProxy*);
+    float headerHeight( WebPageProxy *, WebFrameProxy * );
+    float footerHeight( WebPageProxy *, WebFrameProxy * );
+    void drawHeader( WebPageProxy *, WebFrameProxy *, const WebCore::FloatRect & );
+    void drawFooter( WebPageProxy *, WebFrameProxy *, const WebCore::FloatRect & );
+    void printFrame( WebPageProxy *, WebFrameProxy * );
 
     bool canRunModal() const;
-    void runModal(WebPageProxy*);
+    void runModal( WebPageProxy * );
 
-    void didCompleteRubberBandForMainFrame(WebPageProxy*, const WebCore::IntSize&);
+    void didCompleteRubberBandForMainFrame( WebPageProxy *, const WebCore::IntSize & );
 
-    void saveDataToFileInDownloadsFolder(WebPageProxy*, const String& suggestedFilename, const String& mimeType, const String& originatingURLString, WebData*);
+    void saveDataToFileInDownloadsFolder( WebPageProxy *, const String &suggestedFilename, const String &mimeType,
+                                          const String &originatingURLString, WebData * );
 
-    bool shouldInterruptJavaScript(WebPageProxy*);
+    bool shouldInterruptJavaScript( WebPageProxy * );
 };
 
 } // namespace WebKit

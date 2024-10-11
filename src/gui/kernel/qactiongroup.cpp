@@ -32,174 +32,195 @@
 
 class QActionGroupPrivate
 {
-   Q_DECLARE_PUBLIC(QActionGroup)
+    Q_DECLARE_PUBLIC( QActionGroup )
 
- public:
-   QActionGroupPrivate() : exclusive(1), enabled(1), visible(1)  { }
-   virtual ~QActionGroupPrivate() {}
+public:
+    QActionGroupPrivate() : exclusive( 1 ), enabled( 1 ), visible( 1 )  { }
+    virtual ~QActionGroupPrivate() {}
 
-   QList<QAction *> actions;
-   QPointer<QAction> current;
-   uint exclusive : 1;
-   uint enabled : 1;
-   uint visible : 1;
+    QList<QAction *> actions;
+    QPointer<QAction> current;
+    uint exclusive : 1;
+    uint enabled : 1;
+    uint visible : 1;
 
- protected:
-   QActionGroup *q_ptr;
+protected:
+    QActionGroup *q_ptr;
 
- private:
-   void _q_actionTriggered();  //private slot
-   void _q_actionChanged();    //private slot
-   void _q_actionHovered();    //private slot
+private:
+    void _q_actionTriggered();  //private slot
+    void _q_actionChanged();    //private slot
+    void _q_actionHovered();    //private slot
 };
 
 void QActionGroupPrivate::_q_actionChanged()
 {
-   Q_Q(QActionGroup);
-   QAction *action = qobject_cast<QAction *>(q->sender());
-   Q_ASSERT_X(action != nullptr, "QWidgetGroup::_q_actionChanged", "internal error");
+    Q_Q( QActionGroup );
+    QAction *action = qobject_cast<QAction *>( q->sender() );
+    Q_ASSERT_X( action != nullptr, "QWidgetGroup::_q_actionChanged", "internal error" );
 
-   if (exclusive) {
-      if (action->isChecked()) {
-         if (action != current) {
-            if (current) {
-               current->setChecked(false);
+    if ( exclusive )
+    {
+        if ( action->isChecked() )
+        {
+            if ( action != current )
+            {
+                if ( current )
+                {
+                    current->setChecked( false );
+                }
+
+                current = action;
             }
-            current = action;
-         }
 
-      } else if (action == current) {
-         current = nullptr;
-      }
-   }
+        }
+        else if ( action == current )
+        {
+            current = nullptr;
+        }
+    }
 }
 
 void QActionGroupPrivate::_q_actionTriggered()
 {
-   Q_Q(QActionGroup);
+    Q_Q( QActionGroup );
 
-   QAction *action = qobject_cast<QAction *>(q->sender());
-   Q_ASSERT_X(action != nullptr, "QWidgetGroup::_q_actionTriggered", "internal error");
+    QAction *action = qobject_cast<QAction *>( q->sender() );
+    Q_ASSERT_X( action != nullptr, "QWidgetGroup::_q_actionTriggered", "internal error" );
 
-   emit q->triggered(action);
+    emit q->triggered( action );
 }
 
 void QActionGroupPrivate::_q_actionHovered()
 {
-   Q_Q(QActionGroup);
+    Q_Q( QActionGroup );
 
-   QAction *action = qobject_cast<QAction *>(q->sender());
-   Q_ASSERT_X(action != nullptr, "QWidgetGroup::_q_actionHovered", "internal error");
+    QAction *action = qobject_cast<QAction *>( q->sender() );
+    Q_ASSERT_X( action != nullptr, "QWidgetGroup::_q_actionHovered", "internal error" );
 
-   emit q->hovered(action);
+    emit q->hovered( action );
 }
 
-QActionGroup::QActionGroup(QObject *parent)
-   : QObject(parent), d_ptr(new QActionGroupPrivate)
+QActionGroup::QActionGroup( QObject *parent )
+    : QObject( parent ), d_ptr( new QActionGroupPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QActionGroup::~QActionGroup()
 {
 }
 
-QAction *QActionGroup::addAction(QAction *a)
+QAction *QActionGroup::addAction( QAction *a )
 {
-   Q_D(QActionGroup);
+    Q_D( QActionGroup );
 
-   if (! d->actions.contains(a)) {
-      d->actions.append(a);
+    if ( ! d->actions.contains( a ) )
+    {
+        d->actions.append( a );
 
-      QObject::connect(a, &QAction::triggered, this, &QActionGroup::_q_actionTriggered);
-      QObject::connect(a, &QAction::changed,   this, &QActionGroup::_q_actionChanged);
-      QObject::connect(a, &QAction::hovered,   this, &QActionGroup::_q_actionHovered);
-   }
+        QObject::connect( a, &QAction::triggered, this, &QActionGroup::_q_actionTriggered );
+        QObject::connect( a, &QAction::changed,   this, &QActionGroup::_q_actionChanged );
+        QObject::connect( a, &QAction::hovered,   this, &QActionGroup::_q_actionHovered );
+    }
 
-   if (! a->d_func()->forceDisabled) {
-      a->setEnabled(d->enabled);
-      a->d_func()->forceDisabled = false;
-   }
+    if ( ! a->d_func()->forceDisabled )
+    {
+        a->setEnabled( d->enabled );
+        a->d_func()->forceDisabled = false;
+    }
 
-   if (!a->d_func()->forceInvisible) {
-      a->setVisible(d->visible);
-      a->d_func()->forceInvisible = false;
-   }
+    if ( !a->d_func()->forceInvisible )
+    {
+        a->setVisible( d->visible );
+        a->d_func()->forceInvisible = false;
+    }
 
-   if (a->isChecked()) {
-      d->current = a;
-   }
+    if ( a->isChecked() )
+    {
+        d->current = a;
+    }
 
-   QActionGroup *oldGroup = a->d_func()->group;
-   if (oldGroup != this) {
-      if (oldGroup) {
-         oldGroup->removeAction(a);
-      }
-      a->d_func()->group = this;
-   }
-   return a;
+    QActionGroup *oldGroup = a->d_func()->group;
+
+    if ( oldGroup != this )
+    {
+        if ( oldGroup )
+        {
+            oldGroup->removeAction( a );
+        }
+
+        a->d_func()->group = this;
+    }
+
+    return a;
 }
 
-QAction *QActionGroup::addAction(const QString &text)
+QAction *QActionGroup::addAction( const QString &text )
 {
-   return new QAction(text, this);
+    return new QAction( text, this );
 }
 
-QAction *QActionGroup::addAction(const QIcon &icon, const QString &text)
+QAction *QActionGroup::addAction( const QIcon &icon, const QString &text )
 {
-   return new QAction(icon, text, this);
+    return new QAction( icon, text, this );
 }
 
-void QActionGroup::removeAction(QAction *action)
+void QActionGroup::removeAction( QAction *action )
 {
-   Q_D(QActionGroup);
+    Q_D( QActionGroup );
 
-   if (d->actions.removeAll(action)) {
-      if (action == d->current) {
-         d->current = nullptr;
-      }
+    if ( d->actions.removeAll( action ) )
+    {
+        if ( action == d->current )
+        {
+            d->current = nullptr;
+        }
 
-      QObject::disconnect(action, &QAction::triggered, this, &QActionGroup::_q_actionTriggered);
-      QObject::disconnect(action, &QAction::changed,   this, &QActionGroup::_q_actionChanged);
-      QObject::disconnect(action, &QAction::hovered,   this, &QActionGroup::_q_actionHovered);
-      action->d_func()->group = nullptr;
-   }
+        QObject::disconnect( action, &QAction::triggered, this, &QActionGroup::_q_actionTriggered );
+        QObject::disconnect( action, &QAction::changed,   this, &QActionGroup::_q_actionChanged );
+        QObject::disconnect( action, &QAction::hovered,   this, &QActionGroup::_q_actionHovered );
+        action->d_func()->group = nullptr;
+    }
 }
 
 QList<QAction *> QActionGroup::actions() const
 {
-   Q_D(const QActionGroup);
-   return d->actions;
+    Q_D( const QActionGroup );
+    return d->actions;
 }
 
-void QActionGroup::setExclusive(bool b)
+void QActionGroup::setExclusive( bool b )
 {
-   Q_D(QActionGroup);
-   d->exclusive = b;
+    Q_D( QActionGroup );
+    d->exclusive = b;
 }
 
 bool QActionGroup::isExclusive() const
 {
-   Q_D(const QActionGroup);
-   return d->exclusive;
+    Q_D( const QActionGroup );
+    return d->exclusive;
 }
 
-void QActionGroup::setEnabled(bool b)
+void QActionGroup::setEnabled( bool b )
 {
-   Q_D(QActionGroup);
-   d->enabled = b;
-   for (QList<QAction *>::const_iterator it = d->actions.constBegin(); it != d->actions.constEnd(); ++it) {
-      if (!(*it)->d_func()->forceDisabled) {
-         (*it)->setEnabled(b);
-         (*it)->d_func()->forceDisabled = false;
-      }
-   }
+    Q_D( QActionGroup );
+    d->enabled = b;
+
+    for ( QList<QAction *>::const_iterator it = d->actions.constBegin(); it != d->actions.constEnd(); ++it )
+    {
+        if ( !( *it )->d_func()->forceDisabled )
+        {
+            ( *it )->setEnabled( b );
+            ( *it )->d_func()->forceDisabled = false;
+        }
+    }
 }
 
 bool QActionGroup::isEnabled() const
 {
-   Q_D(const QActionGroup);
-   return d->enabled;
+    Q_D( const QActionGroup );
+    return d->enabled;
 }
 
 /*!
@@ -208,45 +229,47 @@ bool QActionGroup::isEnabled() const
 */
 QAction *QActionGroup::checkedAction() const
 {
-   Q_D(const QActionGroup);
-   return d->current;
+    Q_D( const QActionGroup );
+    return d->current;
 }
 
-void QActionGroup::setVisible(bool b)
+void QActionGroup::setVisible( bool b )
 {
-   Q_D(QActionGroup);
-   d->visible = b;
+    Q_D( QActionGroup );
+    d->visible = b;
 
-   for (QList<QAction *>::iterator it = d->actions.begin(); it != d->actions.end(); ++it) {
-      if (!(*it)->d_func()->forceInvisible) {
-         (*it)->setVisible(b);
-         (*it)->d_func()->forceInvisible = false;
-      }
-   }
+    for ( QList<QAction *>::iterator it = d->actions.begin(); it != d->actions.end(); ++it )
+    {
+        if ( !( *it )->d_func()->forceInvisible )
+        {
+            ( *it )->setVisible( b );
+            ( *it )->d_func()->forceInvisible = false;
+        }
+    }
 }
 
 bool QActionGroup::isVisible() const
 {
-   Q_D(const QActionGroup);
-   return d->visible;
+    Q_D( const QActionGroup );
+    return d->visible;
 }
 
 void QActionGroup::_q_actionTriggered()
 {
-   Q_D(QActionGroup);
-   d->_q_actionTriggered();
+    Q_D( QActionGroup );
+    d->_q_actionTriggered();
 }
 
 void QActionGroup::_q_actionChanged()
 {
-   Q_D(QActionGroup);
-   d->_q_actionChanged();
+    Q_D( QActionGroup );
+    d->_q_actionChanged();
 }
 
 void QActionGroup::_q_actionHovered()
 {
-   Q_D(QActionGroup);
-   d->_q_actionHovered();
+    Q_D( QActionGroup );
+    d->_q_actionHovered();
 }
 
 #endif // QT_NO_ACTION

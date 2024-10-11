@@ -34,29 +34,29 @@ class QScriptBreakpointsWidgetInterfacePrivate;
 
 class QScriptBreakpointsWidgetInterface : public QWidget
 {
-   SCRIPT_T_CS_OBJECT(QScriptBreakpointsWidgetInterface)
+    SCRIPT_T_LSCS_OBJECT( QScriptBreakpointsWidgetInterface )
 
- public:
-   ~QScriptBreakpointsWidgetInterface();
+public:
+    ~QScriptBreakpointsWidgetInterface();
 
-   virtual QScriptBreakpointsModel *breakpointsModel() const = 0;
-   virtual void setBreakpointsModel(QScriptBreakpointsModel *model) = 0;
+    virtual QScriptBreakpointsModel *breakpointsModel() const = 0;
+    virtual void setBreakpointsModel( QScriptBreakpointsModel *model ) = 0;
 
-   virtual QScriptDebuggerScriptsModel *scriptsModel() const = 0;
-   virtual void setScriptsModel(QScriptDebuggerScriptsModel *model) = 0;
+    virtual QScriptDebuggerScriptsModel *scriptsModel() const = 0;
+    virtual void setScriptsModel( QScriptDebuggerScriptsModel *model ) = 0;
 
- public:
-   CS_SIGNAL_1(Public, void currentScriptChanged(qint64 scriptId))
-   CS_SIGNAL_2(currentScriptChanged, scriptId)
+public:
+    LSCS_SIGNAL_1( Public, void currentScriptChanged( qint64 scriptId ) )
+    LSCS_SIGNAL_2( currentScriptChanged, scriptId )
 
- protected:
-   QScriptBreakpointsWidgetInterface(
-      QScriptBreakpointsWidgetInterfacePrivate &dd,
-      QWidget *parent, Qt::WindowFlags flags);
+protected:
+    QScriptBreakpointsWidgetInterface(
+        QScriptBreakpointsWidgetInterfacePrivate &dd,
+        QWidget *parent, Qt::WindowFlags flags );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptBreakpointsWidgetInterface)
-   Q_DISABLE_COPY(QScriptBreakpointsWidgetInterface)
+private:
+    Q_DECLARE_PRIVATE( QScriptBreakpointsWidgetInterface )
+    Q_DISABLE_COPY( QScriptBreakpointsWidgetInterface )
 };
 
 QT_END_NAMESPACE

@@ -46,64 +46,85 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-ScriptObject InjectedScriptManager::createInjectedScript(const String& source, ScriptState* scriptState, long id)
+namespace WebCore
 {
-    SourceCode sourceCode = makeSource(stringToUString(source));
-    JSLock lock(SilenceAssertionsOnly);
-    JSDOMGlobalObject* globalObject = static_cast<JSDOMGlobalObject*>(scriptState->lexicalGlobalObject());
+
+ScriptObject InjectedScriptManager::createInjectedScript( const String &source, ScriptState *scriptState, long id )
+{
+    SourceCode sourceCode = makeSource( stringToUString( source ) );
+    JSLock lock( SilenceAssertionsOnly );
+    JSDOMGlobalObject *globalObject = static_cast<JSDOMGlobalObject *>( scriptState->lexicalGlobalObject() );
     JSValue globalThisValue = scriptState->globalThisValue();
-    Completion comp = JSMainThreadExecState::evaluate(scriptState, globalObject->globalScopeChain(), sourceCode, globalThisValue);
-    if (comp.complType() != JSC::Normal && comp.complType() != JSC::ReturnValue)
+    Completion comp = JSMainThreadExecState::evaluate( scriptState, globalObject->globalScopeChain(), sourceCode, globalThisValue );
+
+    if ( comp.complType() != JSC::Normal && comp.complType() != JSC::ReturnValue )
+    {
         return ScriptObject();
+    }
+
     JSValue functionValue = comp.value();
     CallData callData;
-    CallType callType = getCallData(functionValue, callData);
-    if (callType == CallTypeNone)
+    CallType callType = getCallData( functionValue, callData );
+
+    if ( callType == CallTypeNone )
+    {
         return ScriptObject();
+    }
 
     MarkedArgumentBuffer args;
-    args.append(toJS(scriptState, globalObject, m_injectedScriptHost.get()));
-    args.append(globalThisValue);
-    args.append(jsNumber(id));
-    JSValue result = JSC::call(scriptState, functionValue, callType, callData, globalThisValue, args);
-    if (result.isObject())
-        return ScriptObject(scriptState, result.getObject());
+    args.append( toJS( scriptState, globalObject, m_injectedScriptHost.get() ) );
+    args.append( globalThisValue );
+    args.append( jsNumber( id ) );
+    JSValue result = JSC::call( scriptState, functionValue, callType, callData, globalThisValue, args );
+
+    if ( result.isObject() )
+    {
+        return ScriptObject( scriptState, result.getObject() );
+    }
+
     return ScriptObject();
 }
 
-void InjectedScriptManager::discardInjectedScript(ScriptState* scriptState)
+void InjectedScriptManager::discardInjectedScript( ScriptState *scriptState )
 {
-    JSDOMGlobalObject* globalObject = static_cast<JSDOMGlobalObject*>(scriptState->lexicalGlobalObject());
-    globalObject->setInjectedScript(0);
+    JSDOMGlobalObject *globalObject = static_cast<JSDOMGlobalObject *>( scriptState->lexicalGlobalObject() );
+    globalObject->setInjectedScript( 0 );
 }
 
-InjectedScript InjectedScriptManager::injectedScriptFor(ScriptState* scriptState)
+InjectedScript InjectedScriptManager::injectedScriptFor( ScriptState *scriptState )
 {
-    JSLock lock(SilenceAssertionsOnly);
-    JSDOMGlobalObject* globalObject = static_cast<JSDOMGlobalObject*>(scriptState->lexicalGlobalObject());
-    JSObject* injectedScript = globalObject->injectedScript();
-    if (injectedScript)
-        return InjectedScript(ScriptObject(scriptState, injectedScript), m_inspectedStateAccessCheck);
+    JSLock lock( SilenceAssertionsOnly );
+    JSDOMGlobalObject *globalObject = static_cast<JSDOMGlobalObject *>( scriptState->lexicalGlobalObject() );
+    JSObject *injectedScript = globalObject->injectedScript();
 
-    if (!m_inspectedStateAccessCheck(scriptState))
+    if ( injectedScript )
+    {
+        return InjectedScript( ScriptObject( scriptState, injectedScript ), m_inspectedStateAccessCheck );
+    }
+
+    if ( !m_inspectedStateAccessCheck( scriptState ) )
+    {
         return InjectedScript();
+    }
 
-    pair<long, ScriptObject> injectedScriptObject = injectScript(injectedScriptSource(), scriptState);
-    globalObject->setInjectedScript(injectedScriptObject.second.jsObject());
-    InjectedScript result(injectedScriptObject.second, m_inspectedStateAccessCheck);
-    m_idToInjectedScript.set(injectedScriptObject.first, result);
+    pair<long, ScriptObject> injectedScriptObject = injectScript( injectedScriptSource(), scriptState );
+    globalObject->setInjectedScript( injectedScriptObject.second.jsObject() );
+    InjectedScript result( injectedScriptObject.second, m_inspectedStateAccessCheck );
+    m_idToInjectedScript.set( injectedScriptObject.first, result );
     return result;
 }
 
-bool InjectedScriptManager::canAccessInspectedWindow(ScriptState* scriptState)
+bool InjectedScriptManager::canAccessInspectedWindow( ScriptState *scriptState )
 {
-    JSLock lock(SilenceAssertionsOnly);
-    JSDOMWindow* inspectedWindow = toJSDOMWindow(scriptState->lexicalGlobalObject());
-    if (!inspectedWindow)
+    JSLock lock( SilenceAssertionsOnly );
+    JSDOMWindow *inspectedWindow = toJSDOMWindow( scriptState->lexicalGlobalObject() );
+
+    if ( !inspectedWindow )
+    {
         return false;
-    return inspectedWindow->allowsAccessFromNoErrorMessage(scriptState);
+    }
+
+    return inspectedWindow->allowsAccessFromNoErrorMessage( scriptState );
 }
 
 } // namespace WebCore

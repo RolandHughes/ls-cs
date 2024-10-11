@@ -22,33 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef GroupSettings_h
 #define GroupSettings_h
 
 #include "PlatformString.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class PageGroup;
 
-class GroupSettings {
-    WTF_MAKE_NONCOPYABLE(GroupSettings); WTF_MAKE_FAST_ALLOCATED;
+class GroupSettings
+{
+    WTF_MAKE_NONCOPYABLE( GroupSettings );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     static PassOwnPtr<GroupSettings> create()
     {
-        return adoptPtr(new GroupSettings());
+        return adoptPtr( new GroupSettings() );
     }
 
-    void setLocalStorageQuotaBytes(unsigned);
-    unsigned localStorageQuotaBytes() const { return m_localStorageQuotaBytes; }
+    void setLocalStorageQuotaBytes( unsigned );
+    unsigned localStorageQuotaBytes() const
+    {
+        return m_localStorageQuotaBytes;
+    }
 
-    void setIndexedDBQuotaBytes(int64_t);
-    int64_t indexedDBQuotaBytes() const { return m_indexedDBQuotaBytes; }
+    void setIndexedDBQuotaBytes( int64_t );
+    int64_t indexedDBQuotaBytes() const
+    {
+        return m_indexedDBQuotaBytes;
+    }
 
-    void setIndexedDBDatabasePath(const String&);
-    const String& indexedDBDatabasePath() const { return m_indexedDBDatabasePath; }
+    void setIndexedDBDatabasePath( const String & );
+    const String &indexedDBDatabasePath() const
+    {
+        return m_indexedDBDatabasePath;
+    }
 
 private:
     GroupSettings();

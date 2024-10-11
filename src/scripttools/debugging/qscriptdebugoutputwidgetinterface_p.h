@@ -33,19 +33,19 @@ class QScriptDebugOutputWidgetInterfacePrivate;
 
 class QScriptDebugOutputWidgetInterface: public QWidget, public QScriptMessageHandlerInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebugOutputWidgetInterface)
+    SCRIPT_T_LSCS_OBJECT( QScriptDebugOutputWidgetInterface )
 
- public:
-   ~QScriptDebugOutputWidgetInterface();
+public:
+    ~QScriptDebugOutputWidgetInterface();
 
-   virtual void clear() = 0;
+    virtual void clear() = 0;
 
- protected:
-   QScriptDebugOutputWidgetInterface(QScriptDebugOutputWidgetInterfacePrivate &dd, QWidget *parent, Qt::WindowFlags flags);
+protected:
+    QScriptDebugOutputWidgetInterface( QScriptDebugOutputWidgetInterfacePrivate &dd, QWidget *parent, Qt::WindowFlags flags );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebugOutputWidgetInterface)
-   Q_DISABLE_COPY(QScriptDebugOutputWidgetInterface)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebugOutputWidgetInterface )
+    Q_DISABLE_COPY( QScriptDebugOutputWidgetInterface )
 };
 
 QT_END_NAMESPACE

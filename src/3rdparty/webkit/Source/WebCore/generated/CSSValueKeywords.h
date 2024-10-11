@@ -5,7 +5,8 @@
 
 #include <string.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int CSSValueInvalid = 0;
 const int CSSValueInherit = 1;
@@ -679,7 +680,7 @@ const int CSSValueNonScalingStroke = 668;
 const int numCSSValueKeywords = 669;
 const size_t maxCSSValueKeywordLength = 36;
 
-const char* getValueName(unsigned short id);
+const char *getValueName( unsigned short id );
 
 } // namespace WebCore
 

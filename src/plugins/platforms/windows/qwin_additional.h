@@ -77,12 +77,13 @@
 #ifndef SHGFI_ADDOVERLAYS
 
 // Shell structures for icons
-typedef struct _SHSTOCKICONINFO {
-   DWORD cbSize;
-   HICON hIcon;
-   int   iSysImageIndex;
-   int   iIcon;
-   WCHAR szPath[MAX_PATH];
+typedef struct _SHSTOCKICONINFO
+{
+    DWORD cbSize;
+    HICON hIcon;
+    int   iSysImageIndex;
+    int   iIcon;
+    WCHAR szPath[MAX_PATH];
 } SHSTOCKICONINFO;
 
 #  define SIID_SHIELD 77
@@ -96,17 +97,18 @@ typedef struct _SHSTOCKICONINFO {
 #define STATE_SYSTEM_HASPOPUP  0x40000000
 #define STATE_SYSTEM_PROTECTED 0x20000000
 
-typedef struct tagUPDATELAYEREDWINDOWINFO {
-   DWORD                cbSize;
-   HDC                  hdcDst;
-   const POINT         *pptDst;
-   const SIZE          *psize;
-   HDC                  hdcSrc;
-   const POINT         *pptSrc;
-   COLORREF             crKey;
-   const BLENDFUNCTION *pblend;
-   DWORD                dwFlags;
-   const RECT          *prcDirty;
+typedef struct tagUPDATELAYEREDWINDOWINFO
+{
+    DWORD                cbSize;
+    HDC                  hdcDst;
+    const POINT         *pptDst;
+    const SIZE          *psize;
+    HDC                  hdcSrc;
+    const POINT         *pptSrc;
+    COLORREF             crKey;
+    const BLENDFUNCTION *pblend;
+    DWORD                dwFlags;
+    const RECT          *prcDirty;
 } UPDATELAYEREDWINDOWINFO, *PUPDATELAYEREDWINDOWINFO;
 
 #endif // if ! defined(__MINGW64_VERSION_MAJOR)

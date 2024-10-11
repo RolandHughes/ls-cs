@@ -28,9 +28,11 @@
 #include "Filter.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ColorMatrixType {
+enum ColorMatrixType
+{
     FECOLORMATRIX_TYPE_UNKNOWN          = 0,
     FECOLORMATRIX_TYPE_MATRIX           = 1,
     FECOLORMATRIX_TYPE_SATURATE         = 2,
@@ -38,23 +40,24 @@ enum ColorMatrixType {
     FECOLORMATRIX_TYPE_LUMINANCETOALPHA = 4
 };
 
-class FEColorMatrix : public FilterEffect {
+class FEColorMatrix : public FilterEffect
+{
 public:
-    static PassRefPtr<FEColorMatrix> create(Filter*, ColorMatrixType, const Vector<float>&);
+    static PassRefPtr<FEColorMatrix> create( Filter *, ColorMatrixType, const Vector<float> & );
 
     ColorMatrixType type() const;
-    bool setType(ColorMatrixType);
+    bool setType( ColorMatrixType );
 
-    const Vector<float>& values() const;
-    bool setValues(const Vector<float>&);
+    const Vector<float> &values() const;
+    bool setValues( const Vector<float> & );
 
     virtual void apply();
     virtual void dump();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEColorMatrix(Filter*, ColorMatrixType, const Vector<float>&);
+    FEColorMatrix( Filter *, ColorMatrixType, const Vector<float> & );
 
     ColorMatrixType m_type;
     Vector<float> m_values;

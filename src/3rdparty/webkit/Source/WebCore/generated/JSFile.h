@@ -25,57 +25,63 @@
 #include "JSBlob.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class File;
 
-class JSFile : public JSBlob {
+class JSFile : public JSBlob
+{
     typedef JSBlob Base;
 public:
-    JSFile(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<File>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSFile( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<File> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    File* impl() const
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    File *impl() const
     {
-        return static_cast<File*>(Base::impl());
+        return static_cast<File *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, File*);
-File* toFile(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, File * );
+File *toFile( JSC::JSValue );
 
-class JSFilePrototype : public JSC::JSObjectWithGlobalObject {
+class JSFilePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSFilePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSFilePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                     JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsFileName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileLastModifiedDate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileFileName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileFileSize(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsFileConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsFileName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileLastModifiedDate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileFileName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileFileSize( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsFileConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

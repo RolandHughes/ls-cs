@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedEnumeration);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAnimatedEnumeration );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,10 +43,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedEnumeration);
 
 static const HashTableValue JSSVGAnimatedEnumerationTableValues[4] =
 {
-    { "baseVal", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedEnumerationBaseVal), (intptr_t)setJSSVGAnimatedEnumerationBaseVal THUNK_GENERATOR(0) },
-    { "animVal", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedEnumerationAnimVal), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedEnumerationConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "baseVal", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedEnumerationBaseVal ), ( intptr_t )setJSSVGAnimatedEnumerationBaseVal THUNK_GENERATOR( 0 ) },
+    { "animVal", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedEnumerationAnimVal ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedEnumerationConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,43 +60,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedEnumerationTable = { 8, 7, JSS
 
 static const HashTableValue JSSVGAnimatedEnumerationConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedEnumerationConstructorTable = { 1, 0, JSSVGAnimatedEnumerationConstructorTableValues, 0 };
-class JSSVGAnimatedEnumerationConstructor : public DOMConstructorObject {
+class JSSVGAnimatedEnumerationConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGAnimatedEnumerationConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGAnimatedEnumerationConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGAnimatedEnumerationConstructor::s_info = { "SVGAnimatedEnumerationConstructor", &DOMConstructorObject::s_info, &JSSVGAnimatedEnumerationConstructorTable, 0 };
 
-JSSVGAnimatedEnumerationConstructor::JSSVGAnimatedEnumerationConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGAnimatedEnumerationConstructor::JSSVGAnimatedEnumerationConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedEnumerationPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedEnumerationPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGAnimatedEnumerationConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedEnumerationConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedEnumerationConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedEnumerationConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedEnumerationConstructor, JSDOMWrapper>( exec, &JSSVGAnimatedEnumerationConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSSVGAnimatedEnumerationConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedEnumerationConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedEnumerationConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedEnumerationConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedEnumerationConstructor, JSDOMWrapper>( exec,
+            &JSSVGAnimatedEnumerationConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -107,94 +117,99 @@ bool JSSVGAnimatedEnumerationConstructor::getOwnPropertyDescriptor(ExecState* ex
 
 static const HashTableValue JSSVGAnimatedEnumerationPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedEnumerationPrototypeTable = { 1, 0, JSSVGAnimatedEnumerationPrototypeTableValues, 0 };
 const ClassInfo JSSVGAnimatedEnumerationPrototype::s_info = { "SVGAnimatedEnumerationPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAnimatedEnumerationPrototypeTable, 0 };
 
-JSObject* JSSVGAnimatedEnumerationPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedEnumerationPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAnimatedEnumeration>(exec, globalObject);
+    return getDOMPrototype<JSSVGAnimatedEnumeration>( exec, globalObject );
 }
 
 const ClassInfo JSSVGAnimatedEnumeration::s_info = { "SVGAnimatedEnumeration", &JSDOMWrapper::s_info, &JSSVGAnimatedEnumerationTable, 0 };
 
-JSSVGAnimatedEnumeration::JSSVGAnimatedEnumeration(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAnimatedEnumeration> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSVGAnimatedEnumeration::JSSVGAnimatedEnumeration( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGAnimatedEnumeration> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAnimatedEnumeration::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedEnumeration::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAnimatedEnumerationPrototype(exec->globalData(), globalObject, JSSVGAnimatedEnumerationPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSVGAnimatedEnumerationPrototype( exec->globalData(), globalObject,
+            JSSVGAnimatedEnumerationPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSVGAnimatedEnumeration::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedEnumeration::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedEnumeration, Base>(exec, &JSSVGAnimatedEnumerationTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedEnumeration, Base>( exec, &JSSVGAnimatedEnumerationTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimatedEnumeration::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedEnumeration::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedEnumeration, Base>(exec, &JSSVGAnimatedEnumerationTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedEnumeration, Base>( exec, &JSSVGAnimatedEnumerationTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsSVGAnimatedEnumerationBaseVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedEnumerationBaseVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedEnumeration* castedThis = static_cast<JSSVGAnimatedEnumeration*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedEnumeration* imp = static_cast<SVGAnimatedEnumeration*>(castedThis->impl());
-    JSValue result = jsNumber(imp->baseVal());
+    JSSVGAnimatedEnumeration *castedThis = static_cast<JSSVGAnimatedEnumeration *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedEnumeration *imp = static_cast<SVGAnimatedEnumeration *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->baseVal() );
     return result;
 }
 
 
-JSValue jsSVGAnimatedEnumerationAnimVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedEnumerationAnimVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedEnumeration* castedThis = static_cast<JSSVGAnimatedEnumeration*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedEnumeration* imp = static_cast<SVGAnimatedEnumeration*>(castedThis->impl());
-    JSValue result = jsNumber(imp->animVal());
+    JSSVGAnimatedEnumeration *castedThis = static_cast<JSSVGAnimatedEnumeration *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedEnumeration *imp = static_cast<SVGAnimatedEnumeration *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->animVal() );
     return result;
 }
 
 
-JSValue jsSVGAnimatedEnumerationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedEnumerationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedEnumeration* domObject = static_cast<JSSVGAnimatedEnumeration*>(asObject(slotBase));
-    return JSSVGAnimatedEnumeration::getConstructor(exec, domObject->globalObject());
+    JSSVGAnimatedEnumeration *domObject = static_cast<JSSVGAnimatedEnumeration *>( asObject( slotBase ) );
+    return JSSVGAnimatedEnumeration::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGAnimatedEnumeration::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGAnimatedEnumeration::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGAnimatedEnumeration, Base>(exec, propertyName, value, &JSSVGAnimatedEnumerationTable, this, slot);
+    lookupPut<JSSVGAnimatedEnumeration, Base>( exec, propertyName, value, &JSSVGAnimatedEnumerationTable, this, slot );
 }
 
-void setJSSVGAnimatedEnumerationBaseVal(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGAnimatedEnumerationBaseVal( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGAnimatedEnumeration* castedThis = static_cast<JSSVGAnimatedEnumeration*>(thisObject);
-    SVGAnimatedEnumeration* imp = static_cast<SVGAnimatedEnumeration*>(castedThis->impl());
-    imp->setBaseVal(value.toUInt32(exec));
+    JSSVGAnimatedEnumeration *castedThis = static_cast<JSSVGAnimatedEnumeration *>( thisObject );
+    SVGAnimatedEnumeration *imp = static_cast<SVGAnimatedEnumeration *>( castedThis->impl() );
+    imp->setBaseVal( value.toUInt32( exec ) );
 }
 
 
-JSValue JSSVGAnimatedEnumeration::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGAnimatedEnumeration::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGAnimatedEnumerationConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGAnimatedEnumerationConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SVGAnimatedEnumeration* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SVGAnimatedEnumeration *impl )
 {
-    return wrap<JSSVGAnimatedEnumeration>(exec, globalObject, impl);
+    return wrap<JSSVGAnimatedEnumeration>( exec, globalObject, impl );
 }
 
-SVGAnimatedEnumeration* toSVGAnimatedEnumeration(JSC::JSValue value)
+SVGAnimatedEnumeration *toSVGAnimatedEnumeration( JSC::JSValue value )
 {
-    return value.inherits(&JSSVGAnimatedEnumeration::s_info) ? static_cast<JSSVGAnimatedEnumeration*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSVGAnimatedEnumeration::s_info ) ? static_cast<JSSVGAnimatedEnumeration *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

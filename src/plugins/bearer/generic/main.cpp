@@ -36,7 +36,7 @@ public:
     ~QGenericEnginePlugin();
 
     QStringList keys() const;
-    QBearerEngine *create(const QString &key) const;
+    QBearerEngine *create( const QString &key ) const;
 };
 
 QGenericEnginePlugin::QGenericEnginePlugin()
@@ -49,19 +49,23 @@ QGenericEnginePlugin::~QGenericEnginePlugin()
 
 QStringList QGenericEnginePlugin::keys() const
 {
-    return QStringList() << QLatin1String("generic");
+    return QStringList() << QLatin1String( "generic" );
 }
 
-QBearerEngine *QGenericEnginePlugin::create(const QString &key) const
+QBearerEngine *QGenericEnginePlugin::create( const QString &key ) const
 {
-    if (key == QLatin1String("generic"))
+    if ( key == QLatin1String( "generic" ) )
+    {
         return new QGenericEngine;
+    }
     else
+    {
         return 0;
+    }
 }
 
-Q_EXPORT_STATIC_PLUGIN(QGenericEnginePlugin)
-Q_EXPORT_PLUGIN2(qgenericbearer, QGenericEnginePlugin)
+Q_EXPORT_STATIC_PLUGIN( QGenericEnginePlugin )
+Q_EXPORT_PLUGIN2( qgenericbearer, QGenericEnginePlugin )
 
 QT_END_NAMESPACE
 

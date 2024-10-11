@@ -32,9 +32,11 @@
 
 #include "QualifiedName.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
- namespace MathMLNames {
+namespace MathMLNames
+{
 
 #ifndef DOM_MathMLNAMES_HIDE_GLOBALS
 // Namespace
@@ -83,12 +85,13 @@ extern const WebCore::QualifiedName separatorsAttr;
 extern const WebCore::QualifiedName stretchyAttr;
 #endif
 
-WebCore::QualifiedName** getMathMLTags(size_t* size);
-WebCore::QualifiedName** getMathMLAttrs(size_t* size);
+WebCore::QualifiedName **getMathMLTags( size_t *size );
+WebCore::QualifiedName **getMathMLAttrs( size_t *size );
 
 void init();
 
-} }
+}
+}
 
 #endif
 

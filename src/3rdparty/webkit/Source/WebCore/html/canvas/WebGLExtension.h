@@ -28,28 +28,40 @@
 
 #include "WebGLRenderingContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLExtension {
+class WebGLExtension
+{
 public:
     // Extension names are needed to properly wrap instances in JavaScript objects.
-    enum ExtensionName {
+    enum ExtensionName
+    {
         WebKitLoseContextName,
         OESTextureFloatName,
         OESStandardDerivativesName,
         OESVertexArrayObjectName,
     };
 
-    void ref() { m_context->ref(); }
-    void deref() { m_context->deref(); }
-    WebGLRenderingContext* context() { return m_context; }
+    void ref()
+    {
+        m_context->ref();
+    }
+    void deref()
+    {
+        m_context->deref();
+    }
+    WebGLRenderingContext *context()
+    {
+        return m_context;
+    }
 
     virtual ~WebGLExtension();
     virtual ExtensionName getName() const = 0;
 
 protected:
-    WebGLExtension(WebGLRenderingContext*);
-    WebGLRenderingContext* m_context;
+    WebGLExtension( WebGLRenderingContext * );
+    WebGLRenderingContext *m_context;
 };
 
 } // namespace WebCore

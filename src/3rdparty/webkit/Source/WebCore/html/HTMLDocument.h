@@ -28,16 +28,18 @@
 #include <wtf/HashCountedSet.h>
 #include <wtf/text/AtomicStringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FrameView;
 class HTMLElement;
 
-class HTMLDocument : public Document, public CachedResourceClient {
+class HTMLDocument : public Document, public CachedResourceClient
+{
 public:
-    static PassRefPtr<HTMLDocument> create(Frame* frame, const KURL& url)
+    static PassRefPtr<HTMLDocument> create( Frame *frame, const KURL &url )
     {
-        return adoptRef(new HTMLDocument(frame, url));
+        return adoptRef( new HTMLDocument( frame, url ) );
     }
     virtual ~HTMLDocument();
 
@@ -45,66 +47,66 @@ public:
     int height();
 
     String dir();
-    void setDir(const String&);
+    void setDir( const String & );
 
     String designMode() const;
-    void setDesignMode(const String&);
+    void setDesignMode( const String & );
 
     virtual void setCompatibilityModeFromDoctype();
 
-    Element* activeElement();
+    Element *activeElement();
     bool hasFocus();
 
     String bgColor();
-    void setBgColor(const String&);
+    void setBgColor( const String & );
     String fgColor();
-    void setFgColor(const String&);
+    void setFgColor( const String & );
     String alinkColor();
-    void setAlinkColor(const String&);
+    void setAlinkColor( const String & );
     String linkColor();
-    void setLinkColor(const String&);
+    void setLinkColor( const String & );
     String vlinkColor();
-    void setVlinkColor(const String&);
+    void setVlinkColor( const String & );
 
     void clear();
 
     void captureEvents();
     void releaseEvents();
 
-    void addNamedItem(const AtomicString& name);
-    void removeNamedItem(const AtomicString& name);
-    bool hasNamedItem(AtomicStringImpl* name);
+    void addNamedItem( const AtomicString &name );
+    void removeNamedItem( const AtomicString &name );
+    bool hasNamedItem( AtomicStringImpl *name );
 
-    void addExtraNamedItem(const AtomicString& name);
-    void removeExtraNamedItem(const AtomicString& name);
-    bool hasExtraNamedItem(AtomicStringImpl* name);
+    void addExtraNamedItem( const AtomicString &name );
+    void removeExtraNamedItem( const AtomicString &name );
+    bool hasExtraNamedItem( AtomicStringImpl *name );
 
 protected:
-    HTMLDocument(Frame*, const KURL&);
+    HTMLDocument( Frame *, const KURL & );
 
 private:
-    virtual PassRefPtr<Element> createElement(const AtomicString& tagName, ExceptionCode&);
+    virtual PassRefPtr<Element> createElement( const AtomicString &tagName, ExceptionCode & );
 
     virtual bool isFrameSet() const;
     virtual PassRefPtr<DocumentParser> createParser();
 
-    void addItemToMap(HashCountedSet<AtomicStringImpl*>&, const AtomicString&);
-    void removeItemFromMap(HashCountedSet<AtomicStringImpl*>&, const AtomicString&);
+    void addItemToMap( HashCountedSet<AtomicStringImpl *> &, const AtomicString & );
+    void removeItemFromMap( HashCountedSet<AtomicStringImpl *> &, const AtomicString & );
 
-    HashCountedSet<AtomicStringImpl*> m_namedItemCounts;
-    HashCountedSet<AtomicStringImpl*> m_extraNamedItemCounts;
+    HashCountedSet<AtomicStringImpl *> m_namedItemCounts;
+    HashCountedSet<AtomicStringImpl *> m_extraNamedItemCounts;
 };
 
-inline bool HTMLDocument::hasNamedItem(AtomicStringImpl* name)
+inline bool HTMLDocument::hasNamedItem( AtomicStringImpl *name )
 {
-    ASSERT(name);
-    return m_namedItemCounts.contains(name);
+    ASSERT( name );
+    return m_namedItemCounts.contains( name );
 }
 
-inline bool HTMLDocument::hasExtraNamedItem(AtomicStringImpl* name)
+inline bool HTMLDocument::hasExtraNamedItem( AtomicStringImpl *name )
 {
-    ASSERT(name);
-    return m_extraNamedItemCounts.contains(name);
+    ASSERT( name );
+    return m_extraNamedItemCounts.contains( name );
 }
 
 } // namespace WebCore

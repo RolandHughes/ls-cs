@@ -33,15 +33,17 @@
 
 #include "BaseTextInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TextInputType : public BaseTextInputType {
+class TextInputType : public BaseTextInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    TextInputType(HTMLInputElement* element) : BaseTextInputType(element) { }
-    virtual const AtomicString& formControlType() const;
+    TextInputType( HTMLInputElement *element ) : BaseTextInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
     virtual bool shouldRespectSpeechAttribute();
 };
 

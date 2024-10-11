@@ -26,77 +26,95 @@
 #include "SVGElement.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGElement;
 class SVGProperty;
 
-class SVGAnimatedProperty : public RefCounted<SVGAnimatedProperty> {
+class SVGAnimatedProperty : public RefCounted<SVGAnimatedProperty>
+{
 public:
-    SVGElement* contextElement() const { return m_contextElement.get(); }
-    const QualifiedName& attributeName() const { return m_attributeName; }
+    SVGElement *contextElement() const
+    {
+        return m_contextElement.get();
+    }
+    const QualifiedName &attributeName() const
+    {
+        return m_attributeName;
+    }
 
     void commitChange()
     {
-        ASSERT(m_contextElement);
+        ASSERT( m_contextElement );
         m_contextElement->invalidateSVGAttributes();
-        m_contextElement->svgAttributeChanged(m_attributeName);
+        m_contextElement->svgAttributeChanged( m_attributeName );
     }
 
-    virtual bool isAnimatedListTearOff() const { return false; }
+    virtual bool isAnimatedListTearOff() const
+    {
+        return false;
+    }
 
     // Caching facilities.
-    typedef HashMap<SVGAnimatedPropertyDescription, RefPtr<SVGAnimatedProperty>, SVGAnimatedPropertyDescriptionHash, SVGAnimatedPropertyDescriptionHashTraits> Cache;
+    typedef HashMap<SVGAnimatedPropertyDescription, RefPtr<SVGAnimatedProperty>, SVGAnimatedPropertyDescriptionHash, SVGAnimatedPropertyDescriptionHashTraits>
+    Cache;
 
     virtual ~SVGAnimatedProperty()
     {
         // Remove wrapper from cache.
-        Cache* cache = animatedPropertyCache();
+        Cache *cache = animatedPropertyCache();
         const Cache::const_iterator end = cache->end();
-        for (Cache::const_iterator it = cache->begin(); it != end; ++it) {
-            if (it->second == this) {
-                cache->remove(it->first);
+
+        for ( Cache::const_iterator it = cache->begin(); it != end; ++it )
+        {
+            if ( it->second == this )
+            {
+                cache->remove( it->first );
                 break;
             }
         }
     }
 
     template<typename TearOffType, typename PropertyType>
-    static PassRefPtr<TearOffType> lookupOrCreateWrapper(SVGElement* element, const QualifiedName& attributeName, const AtomicString& attributeIdentifier, PropertyType& property)
+    static PassRefPtr<TearOffType> lookupOrCreateWrapper( SVGElement *element, const QualifiedName &attributeName,
+            const AtomicString &attributeIdentifier, PropertyType &property )
     {
-        SVGAnimatedPropertyDescription key(element, attributeIdentifier);
-        RefPtr<SVGAnimatedProperty> wrapper = animatedPropertyCache()->get(key);
-        if (!wrapper) {
-            wrapper = TearOffType::create(element, attributeName, property);
-            animatedPropertyCache()->set(key, wrapper);
+        SVGAnimatedPropertyDescription key( element, attributeIdentifier );
+        RefPtr<SVGAnimatedProperty> wrapper = animatedPropertyCache()->get( key );
+
+        if ( !wrapper )
+        {
+            wrapper = TearOffType::create( element, attributeName, property );
+            animatedPropertyCache()->set( key, wrapper );
         }
 
-        return static_pointer_cast<TearOffType>(wrapper).release();
+        return static_pointer_cast<TearOffType>( wrapper ).release();
     }
 
     template<typename TearOffType>
-    static TearOffType* lookupWrapper(SVGElement* element, const AtomicString& attributeIdentifier)
+    static TearOffType *lookupWrapper( SVGElement *element, const AtomicString &attributeIdentifier )
     {
-        SVGAnimatedPropertyDescription key(element, attributeIdentifier);
-        return static_pointer_cast<TearOffType>(animatedPropertyCache()->get(key)).get();
+        SVGAnimatedPropertyDescription key( element, attributeIdentifier );
+        return static_pointer_cast<TearOffType>( animatedPropertyCache()->get( key ) ).get();
     }
 
 protected:
-    SVGAnimatedProperty(SVGElement* contextElement, const QualifiedName& attributeName)
-        : m_contextElement(contextElement)
-        , m_attributeName(attributeName)
+    SVGAnimatedProperty( SVGElement *contextElement, const QualifiedName &attributeName )
+        : m_contextElement( contextElement )
+        , m_attributeName( attributeName )
     {
     }
 
 private:
-    static Cache* animatedPropertyCache()
+    static Cache *animatedPropertyCache()
     {
-        static Cache* s_cache = new Cache;                
+        static Cache *s_cache = new Cache;
         return s_cache;
     }
 
     RefPtr<SVGElement> m_contextElement;
-    const QualifiedName& m_attributeName;
+    const QualifiedName &m_attributeName;
 };
 
 }

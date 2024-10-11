@@ -32,23 +32,30 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSSQLStatementCallback::JSSQLStatementCallback(JSObject* callback, JSDOMGlobalObject* globalObject)
-    : ActiveDOMCallback(globalObject->scriptExecutionContext())
-    , m_data(new JSCallbackData(callback, globalObject))
+JSSQLStatementCallback::JSSQLStatementCallback( JSObject *callback, JSDOMGlobalObject *globalObject )
+    : ActiveDOMCallback( globalObject->scriptExecutionContext() )
+    , m_data( new JSCallbackData( callback, globalObject ) )
 {
 }
 
 JSSQLStatementCallback::~JSSQLStatementCallback()
 {
-    ScriptExecutionContext* context = scriptExecutionContext();
+    ScriptExecutionContext *context = scriptExecutionContext();
+
     // When the context is destroyed, all tasks with a reference to a callback
     // should be deleted. So if the context is 0, we are on the context thread.
-    if (!context || context->isContextThread())
+    if ( !context || context->isContextThread() )
+    {
         delete m_data;
+    }
     else
-        context->postTask(DeleteCallbackDataTask::create(m_data));
+    {
+        context->postTask( DeleteCallbackDataTask::create( m_data ) );
+    }
+
 #ifndef NDEBUG
     m_data = 0;
 #endif
@@ -56,22 +63,24 @@ JSSQLStatementCallback::~JSSQLStatementCallback()
 
 // Functions
 
-bool JSSQLStatementCallback::handleEvent(SQLTransaction* transaction, SQLResultSet* resultSet)
+bool JSSQLStatementCallback::handleEvent( SQLTransaction *transaction, SQLResultSet *resultSet )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
-    RefPtr<JSSQLStatementCallback> protect(this);
+    RefPtr<JSSQLStatementCallback> protect( this );
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    ExecState* exec = m_data->globalObject()->globalExec();
+    ExecState *exec = m_data->globalObject()->globalExec();
     MarkedArgumentBuffer args;
-    args.append(toJS(exec, m_data->globalObject(), transaction));
-    args.append(toJS(exec, m_data->globalObject(), resultSet));
+    args.append( toJS( exec, m_data->globalObject(), transaction ) );
+    args.append( toJS( exec, m_data->globalObject(), resultSet ) );
 
     bool raisedException = false;
-    m_data->invokeCallback(args, &raisedException);
+    m_data->invokeCallback( args, &raisedException );
     return !raisedException;
 }
 

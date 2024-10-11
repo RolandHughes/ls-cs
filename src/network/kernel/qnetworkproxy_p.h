@@ -28,22 +28,23 @@
 
 class QSystemConfigurationProxyFactory : public QNetworkProxyFactory
 {
- public:
-   QSystemConfigurationProxyFactory()
-      : QNetworkProxyFactory()
-   { }
+public:
+    QSystemConfigurationProxyFactory()
+        : QNetworkProxyFactory()
+    { }
 
-   QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery &query) override {
-      QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
+    QList<QNetworkProxy> queryProxy( const QNetworkProxyQuery &query ) override
+    {
+        QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery( query );
 
-      // Make sure NoProxy is in the list, so that QTcpServer can work:
-      // it searches for the first proxy that can has the ListeningCapability capability
-      // if none have (as is the case with HTTP proxies), it fails to bind.
-      // NoProxy allows it to fallback to the 'no proxy' case and bind.
-      proxies.append(QNetworkProxy::NoProxy);
+        // Make sure NoProxy is in the list, so that QTcpServer can work:
+        // it searches for the first proxy that can has the ListeningCapability capability
+        // if none have (as is the case with HTTP proxies), it fails to bind.
+        // NoProxy allows it to fallback to the 'no proxy' case and bind.
+        proxies.append( QNetworkProxy::NoProxy );
 
-      return proxies;
-   }
+        return proxies;
+    }
 };
 
 #endif

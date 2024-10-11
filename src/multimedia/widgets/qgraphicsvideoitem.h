@@ -34,73 +34,74 @@ class QVideoSurfaceFormat;
 
 class Q_MULTIMEDIA_EXPORT QGraphicsVideoItem : public QGraphicsObject, public QMediaBindableInterface
 {
-   MULTI_CS_OBJECT_MULTIPLE(QGraphicsVideoItem, QGraphicsObject)
+    MULTI_LSCS_OBJECT_MULTIPLE( QGraphicsVideoItem, QGraphicsObject )
 
-   CS_INTERFACES(QMediaBindableInterface)
+    LSCS_INTERFACES( QMediaBindableInterface )
 
-   MULTI_CS_PROPERTY_READ(mediaObject, mediaObject)
-   MULTI_CS_PROPERTY_WRITE(mediaObject, cs_setMediaObject)
+    MULTI_LSCS_PROPERTY_READ( mediaObject, mediaObject )
+    MULTI_LSCS_PROPERTY_WRITE( mediaObject, lscs_setMediaObject )
 
-   MULTI_CS_PROPERTY_READ(aspectRatioMode, aspectRatioMode)
-   MULTI_CS_PROPERTY_WRITE(aspectRatioMode, setAspectRatioMode)
+    MULTI_LSCS_PROPERTY_READ( aspectRatioMode, aspectRatioMode )
+    MULTI_LSCS_PROPERTY_WRITE( aspectRatioMode, setAspectRatioMode )
 
-   MULTI_CS_PROPERTY_READ(offset, offset)
-   MULTI_CS_PROPERTY_WRITE(offset, setOffset)
+    MULTI_LSCS_PROPERTY_READ( offset, offset )
+    MULTI_LSCS_PROPERTY_WRITE( offset, setOffset )
 
-   MULTI_CS_PROPERTY_READ(size, size)
-   MULTI_CS_PROPERTY_WRITE(size, setSize)
+    MULTI_LSCS_PROPERTY_READ( size, size )
+    MULTI_LSCS_PROPERTY_WRITE( size, setSize )
 
-   MULTI_CS_PROPERTY_READ(nativeSize, nativeSize)
-   MULTI_CS_PROPERTY_NOTIFY(nativeSize, nativeSizeChanged)
+    MULTI_LSCS_PROPERTY_READ( nativeSize, nativeSize )
+    MULTI_LSCS_PROPERTY_NOTIFY( nativeSize, nativeSizeChanged )
 
- public:
-   explicit QGraphicsVideoItem(QGraphicsItem *parent = nullptr);
-   ~QGraphicsVideoItem();
+public:
+    explicit QGraphicsVideoItem( QGraphicsItem *parent = nullptr );
+    ~QGraphicsVideoItem();
 
-   QMediaObject *mediaObject() const override;
+    QMediaObject *mediaObject() const override;
 
-   Qt::AspectRatioMode aspectRatioMode() const;
-   void setAspectRatioMode(Qt::AspectRatioMode mode);
+    Qt::AspectRatioMode aspectRatioMode() const;
+    void setAspectRatioMode( Qt::AspectRatioMode mode );
 
-   QPointF offset() const;
-   void setOffset(const QPointF &offset);
+    QPointF offset() const;
+    void setOffset( const QPointF &offset );
 
-   QSizeF size() const;
-   void setSize(const QSizeF &size);
+    QSizeF size() const;
+    void setSize( const QSizeF &size );
 
-   QSizeF nativeSize() const;
+    QSizeF nativeSize() const;
 
-   QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
 
-   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr ) override;
 
-   MULTI_CS_SIGNAL_1(Public, void nativeSizeChanged(const QSizeF &size))
-   MULTI_CS_SIGNAL_2(nativeSizeChanged, size)
+    MULTI_LSCS_SIGNAL_1( Public, void nativeSizeChanged( const QSizeF &size ) )
+    MULTI_LSCS_SIGNAL_2( nativeSizeChanged, size )
 
- protected:
-   void timerEvent(QTimerEvent *event) override;
-   QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+protected:
+    void timerEvent( QTimerEvent *event ) override;
+    QVariant itemChange( GraphicsItemChange change, const QVariant &value ) override;
 
-   bool setMediaObject(QMediaObject *object) override;
+    bool setMediaObject( QMediaObject *object ) override;
 
-   QGraphicsVideoItemPrivate *d_ptr;
+    QGraphicsVideoItemPrivate *d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QGraphicsVideoItem)
+private:
+    Q_DECLARE_PRIVATE( QGraphicsVideoItem )
 
-   // wrapper
-   void cs_setMediaObject(QMediaObject *object) {
-      setMediaObject(object);
-   }
+    // wrapper
+    void lscs_setMediaObject( QMediaObject *object )
+    {
+        setMediaObject( object );
+    }
 
-   MULTI_CS_SLOT_1(Private, void _q_present())
-   MULTI_CS_SLOT_2(_q_present)
+    MULTI_LSCS_SLOT_1( Private, void _q_present() )
+    MULTI_LSCS_SLOT_2( _q_present )
 
-   MULTI_CS_SLOT_1(Private, void _q_updateNativeSize())
-   MULTI_CS_SLOT_2(_q_updateNativeSize)
+    MULTI_LSCS_SLOT_1( Private, void _q_updateNativeSize() )
+    MULTI_LSCS_SLOT_2( _q_updateNativeSize )
 
-   MULTI_CS_SLOT_1(Private, void _q_serviceDestroyed())
-   MULTI_CS_SLOT_2(_q_serviceDestroyed)
+    MULTI_LSCS_SLOT_1( Private, void _q_serviceDestroyed() )
+    MULTI_LSCS_SLOT_2( _q_serviceDestroyed )
 };
 
 #endif

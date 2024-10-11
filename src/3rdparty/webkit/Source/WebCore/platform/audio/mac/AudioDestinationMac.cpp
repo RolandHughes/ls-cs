@@ -35,44 +35,52 @@
 #include "AudioSourceProvider.h"
 #include <CoreAudio/AudioHardware.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int kBufferSize = 128;
 
 // Factory method: Mac-implementation
-PassOwnPtr<AudioDestination> AudioDestination::create(AudioSourceProvider& provider, double sampleRate)
+PassOwnPtr<AudioDestination> AudioDestination::create( AudioSourceProvider &provider, double sampleRate )
 {
-    return adoptPtr(new AudioDestinationMac(provider, sampleRate));
+    return adoptPtr( new AudioDestinationMac( provider, sampleRate ) );
 }
 
 double AudioDestination::hardwareSampleRate()
 {
     // Determine the default output device's sample-rate.
     AudioDeviceID deviceID = kAudioDeviceUnknown;
-    UInt32 infoSize = sizeof(deviceID);
+    UInt32 infoSize = sizeof( deviceID );
 
     AudioObjectPropertyAddress defaultOutputDeviceAddress = { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
-    OSStatus result = AudioObjectGetPropertyData(kAudioObjectSystemObject, &defaultOutputDeviceAddress, 0, 0, &infoSize, (void*)&deviceID);
-    if (result)
-        return 0.0; // error
+    OSStatus result = AudioObjectGetPropertyData( kAudioObjectSystemObject, &defaultOutputDeviceAddress, 0, 0, &infoSize,
+                      ( void * )&deviceID );
+
+    if ( result )
+    {
+        return 0.0;    // error
+    }
 
     Float64 nominalSampleRate;
-    infoSize = sizeof(Float64);
+    infoSize = sizeof( Float64 );
 
     AudioObjectPropertyAddress nominalSampleRateAddress = { kAudioDevicePropertyNominalSampleRate, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
-    result = AudioObjectGetPropertyData(deviceID, &nominalSampleRateAddress, 0, 0, &infoSize, (void*)&nominalSampleRate);
-    if (result)
-        return 0.0; // error
+    result = AudioObjectGetPropertyData( deviceID, &nominalSampleRateAddress, 0, 0, &infoSize, ( void * )&nominalSampleRate );
+
+    if ( result )
+    {
+        return 0.0;    // error
+    }
 
     return nominalSampleRate;
 }
 
-AudioDestinationMac::AudioDestinationMac(AudioSourceProvider& provider, double sampleRate)
-    : m_outputUnit(0)
-    , m_provider(provider)
-    , m_renderBus(2, kBufferSize, false)
-    , m_sampleRate(sampleRate)
-    , m_isPlaying(false)
+AudioDestinationMac::AudioDestinationMac( AudioSourceProvider &provider, double sampleRate )
+    : m_outputUnit( 0 )
+    , m_provider( provider )
+    , m_renderBus( 2, kBufferSize, false )
+    , m_sampleRate( sampleRate )
+    , m_isPlaying( false )
 {
     // Open and initialize DefaultOutputUnit
     Component comp;
@@ -83,23 +91,25 @@ AudioDestinationMac::AudioDestinationMac(AudioSourceProvider& provider, double s
     desc.componentManufacturer = kAudioUnitManufacturer_Apple;
     desc.componentFlags = 0;
     desc.componentFlagsMask = 0;
-    comp = FindNextComponent(0, &desc);
+    comp = FindNextComponent( 0, &desc );
 
-    ASSERT(comp);
+    ASSERT( comp );
 
-    OSStatus result = OpenAComponent(comp, &m_outputUnit);
-    ASSERT(!result);
+    OSStatus result = OpenAComponent( comp, &m_outputUnit );
+    ASSERT( !result );
 
-    result = AudioUnitInitialize(m_outputUnit);
-    ASSERT(!result);
+    result = AudioUnitInitialize( m_outputUnit );
+    ASSERT( !result );
 
     configure();
 }
 
 AudioDestinationMac::~AudioDestinationMac()
 {
-    if (m_outputUnit)
-        CloseComponent(m_outputUnit);
+    if ( m_outputUnit )
+    {
+        CloseComponent( m_outputUnit );
+    }
 }
 
 void AudioDestinationMac::configure()
@@ -108,62 +118,70 @@ void AudioDestinationMac::configure()
     AURenderCallbackStruct input;
     input.inputProc = inputProc;
     input.inputProcRefCon = this;
-    OSStatus result = AudioUnitSetProperty(m_outputUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Global, 0, &input, sizeof(input));
-    ASSERT(!result);
+    OSStatus result = AudioUnitSetProperty( m_outputUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Global, 0, &input,
+                                            sizeof( input ) );
+    ASSERT( !result );
 
     // Set stream format
     AudioStreamBasicDescription streamFormat;
     streamFormat.mSampleRate = m_sampleRate;
     streamFormat.mFormatID = kAudioFormatLinearPCM;
     streamFormat.mFormatFlags = kAudioFormatFlagsCanonical | kAudioFormatFlagIsNonInterleaved;
-    streamFormat.mBitsPerChannel = 8 * sizeof(AudioSampleType);
+    streamFormat.mBitsPerChannel = 8 * sizeof( AudioSampleType );
     streamFormat.mChannelsPerFrame = 2;
     streamFormat.mFramesPerPacket = 1;
-    streamFormat.mBytesPerPacket = sizeof(AudioSampleType);
-    streamFormat.mBytesPerFrame = sizeof(AudioSampleType);
+    streamFormat.mBytesPerPacket = sizeof( AudioSampleType );
+    streamFormat.mBytesPerFrame = sizeof( AudioSampleType );
 
-    result = AudioUnitSetProperty(m_outputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, (void*)&streamFormat, sizeof(AudioStreamBasicDescription));
-    ASSERT(!result);
+    result = AudioUnitSetProperty( m_outputUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, ( void * )&streamFormat,
+                                   sizeof( AudioStreamBasicDescription ) );
+    ASSERT( !result );
 
     // Set the buffer frame size.
     UInt32 bufferSize = kBufferSize;
-    result = AudioUnitSetProperty(m_outputUnit, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Output, 0, (void*)&bufferSize, sizeof(bufferSize));
-    ASSERT(!result);
+    result = AudioUnitSetProperty( m_outputUnit, kAudioDevicePropertyBufferFrameSize, kAudioUnitScope_Output, 0,
+                                   ( void * )&bufferSize, sizeof( bufferSize ) );
+    ASSERT( !result );
 }
 
 void AudioDestinationMac::start()
 {
-    OSStatus result = AudioOutputUnitStart(m_outputUnit);
+    OSStatus result = AudioOutputUnitStart( m_outputUnit );
 
-    if (!result)
+    if ( !result )
+    {
         m_isPlaying = true;
+    }
 }
 
 void AudioDestinationMac::stop()
 {
-    OSStatus result = AudioOutputUnitStop(m_outputUnit);
+    OSStatus result = AudioOutputUnitStop( m_outputUnit );
 
-    if (!result)
+    if ( !result )
+    {
         m_isPlaying = false;
+    }
 }
 
 // Pulls on our provider to get rendered audio stream.
-OSStatus AudioDestinationMac::render(UInt32 numberOfFrames, AudioBufferList* ioData)
+OSStatus AudioDestinationMac::render( UInt32 numberOfFrames, AudioBufferList *ioData )
 {
-    AudioBuffer* buffers = ioData->mBuffers;
-    m_renderBus.setChannelMemory(0, (float*)buffers[0].mData, numberOfFrames);
-    m_renderBus.setChannelMemory(1, (float*)buffers[1].mData, numberOfFrames);
+    AudioBuffer *buffers = ioData->mBuffers;
+    m_renderBus.setChannelMemory( 0, ( float * )buffers[0].mData, numberOfFrames );
+    m_renderBus.setChannelMemory( 1, ( float * )buffers[1].mData, numberOfFrames );
 
-    m_provider.provideInput(&m_renderBus, numberOfFrames);
+    m_provider.provideInput( &m_renderBus, numberOfFrames );
 
     return noErr;
 }
 
 // DefaultOutputUnit callback
-OSStatus AudioDestinationMac::inputProc(void* userData, AudioUnitRenderActionFlags*, const AudioTimeStamp*, UInt32 /*busNumber*/, UInt32 numberOfFrames, AudioBufferList* ioData)
+OSStatus AudioDestinationMac::inputProc( void *userData, AudioUnitRenderActionFlags *, const AudioTimeStamp *,
+        UInt32 /*busNumber*/, UInt32 numberOfFrames, AudioBufferList *ioData )
 {
-    AudioDestinationMac* audioOutput = static_cast<AudioDestinationMac*>(userData);
-    return audioOutput->render(numberOfFrames, ioData);
+    AudioDestinationMac *audioOutput = static_cast<AudioDestinationMac *>( userData );
+    return audioOutput->render( numberOfFrames, ioData );
 }
 
 } // namespace WebCore

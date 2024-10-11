@@ -28,29 +28,41 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 void Download::platformDidFinish()
 {
-    ASSERT(!m_bundlePath.isEmpty());
-    ASSERT(!m_destination.isEmpty());
+    ASSERT( !m_bundlePath.isEmpty() );
+    ASSERT( !m_destination.isEmpty() );
 
     // Try to move the bundle to the final filename.
-    DWORD flags = MOVEFILE_COPY_ALLOWED | (m_allowOverwrite ? MOVEFILE_REPLACE_EXISTING : 0);
-    if (::MoveFileExW(m_bundlePath.charactersWithNullTermination(), m_destination.charactersWithNullTermination(), flags))
+    DWORD flags = MOVEFILE_COPY_ALLOWED | ( m_allowOverwrite ? MOVEFILE_REPLACE_EXISTING : 0 );
+
+    if ( ::MoveFileExW( m_bundlePath.charactersWithNullTermination(), m_destination.charactersWithNullTermination(), flags ) )
+    {
         return;
+    }
 
     // The move failed. Give the client one more chance to choose the final filename.
-    m_destination = retrieveDestinationWithSuggestedFilename(m_destination, m_allowOverwrite);
-    if (m_destination.isEmpty())
+    m_destination = retrieveDestinationWithSuggestedFilename( m_destination, m_allowOverwrite );
+
+    if ( m_destination.isEmpty() )
+    {
         return;
+    }
 
     // We either need to report our final filename as the bundle filename or the updated destination filename.
-    flags = MOVEFILE_COPY_ALLOWED | (m_allowOverwrite ? MOVEFILE_REPLACE_EXISTING : 0);
-    if (::MoveFileExW(m_bundlePath.charactersWithNullTermination(), m_destination.charactersWithNullTermination(), flags))
-        didCreateDestination(m_destination);
+    flags = MOVEFILE_COPY_ALLOWED | ( m_allowOverwrite ? MOVEFILE_REPLACE_EXISTING : 0 );
+
+    if ( ::MoveFileExW( m_bundlePath.charactersWithNullTermination(), m_destination.charactersWithNullTermination(), flags ) )
+    {
+        didCreateDestination( m_destination );
+    }
     else
-        didCreateDestination(m_bundlePath);
+    {
+        didCreateDestination( m_bundlePath );
+    }
 }
 
 } // namespace WebKit

@@ -24,27 +24,29 @@
 #include "PlatformString.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class TextEncoding;
 
-class FormDataBuilder {
-    WTF_MAKE_NONCOPYABLE(FormDataBuilder);
+class FormDataBuilder
+{
+    WTF_MAKE_NONCOPYABLE( FormDataBuilder );
 public:
-    static TextEncoding encodingFromAcceptCharset(const String& acceptCharset, Document* document);
+    static TextEncoding encodingFromAcceptCharset( const String &acceptCharset, Document *document );
 
     // Helper functions used by HTMLFormElement for multi-part form data
     static Vector<char> generateUniqueBoundaryString();
-    static void beginMultiPartHeader(Vector<char>&, const CString& boundary, const CString& name);
-    static void addBoundaryToMultiPartHeader(Vector<char>&, const CString& boundary, bool isLastBoundary = false);
-    static void addFilenameToMultiPartHeader(Vector<char>&, const TextEncoding&, const String& filename);
-    static void addContentTypeToMultiPartHeader(Vector<char>&, const CString& mimeType);
-    static void finishMultiPartHeader(Vector<char>&);
+    static void beginMultiPartHeader( Vector<char> &, const CString &boundary, const CString &name );
+    static void addBoundaryToMultiPartHeader( Vector<char> &, const CString &boundary, bool isLastBoundary = false );
+    static void addFilenameToMultiPartHeader( Vector<char> &, const TextEncoding &, const String &filename );
+    static void addContentTypeToMultiPartHeader( Vector<char> &, const CString &mimeType );
+    static void finishMultiPartHeader( Vector<char> & );
 
     // Helper functions used by HTMLFormElement for non multi-part form data
-    static void addKeyValuePairAsFormData(Vector<char>&, const CString& key, const CString& value);
-    static void encodeStringAsFormData(Vector<char>&, const CString&);
+    static void addKeyValuePairAsFormData( Vector<char> &, const CString &key, const CString &value );
+    static void encodeStringAsFormData( Vector<char> &, const CString & );
 
 private:
     FormDataBuilder() {}

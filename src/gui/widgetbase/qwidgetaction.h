@@ -32,36 +32,36 @@ class QWidgetActionPrivate;
 
 class Q_GUI_EXPORT QWidgetAction : public QAction
 {
-   GUI_CS_OBJECT(QWidgetAction)
-   Q_DECLARE_PRIVATE(QWidgetAction)
+    GUI_LSCS_OBJECT( QWidgetAction )
+    Q_DECLARE_PRIVATE( QWidgetAction )
 
- public:
-   explicit QWidgetAction(QObject *parent);
+public:
+    explicit QWidgetAction( QObject *parent );
 
-   QWidgetAction(const QWidgetAction &) = delete;
-   QWidgetAction &operator=(const QWidgetAction &) = delete;
+    QWidgetAction( const QWidgetAction & ) = delete;
+    QWidgetAction &operator=( const QWidgetAction & ) = delete;
 
-   virtual ~QWidgetAction();
+    virtual ~QWidgetAction();
 
-   void setDefaultWidget(QWidget *widget);
-   QWidget *defaultWidget() const;
+    void setDefaultWidget( QWidget *widget );
+    QWidget *defaultWidget() const;
 
-   QWidget *requestWidget(QWidget *parent);
-   void releaseWidget(QWidget *widget);
+    QWidget *requestWidget( QWidget *parent );
+    void releaseWidget( QWidget *widget );
 
- protected:
-   bool event(QEvent *event) override;
-   bool eventFilter(QObject *object, QEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
+    bool eventFilter( QObject *object, QEvent *event ) override;
 
-   virtual QWidget *createWidget(QWidget *parent);
-   virtual void deleteWidget(QWidget *widget);
-   QList<QWidget *> createdWidgets() const;
+    virtual QWidget *createWidget( QWidget *parent );
+    virtual void deleteWidget( QWidget *widget );
+    QList<QWidget *> createdWidgets() const;
 
- private:
-   GUI_CS_SLOT_1(Private, void _q_widgetDestroyed(QObject *object))
-   GUI_CS_SLOT_2(_q_widgetDestroyed)
+private:
+    GUI_LSCS_SLOT_1( Private, void _q_widgetDestroyed( QObject *object ) )
+    GUI_LSCS_SLOT_2( _q_widgetDestroyed )
 
-   friend class QToolBar;
+    friend class QToolBar;
 };
 
 #endif

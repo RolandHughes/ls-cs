@@ -41,12 +41,13 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-EntryBase::EntryBase(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : m_fileSystem(fileSystem)
-    , m_fullPath(fullPath)
-    , m_name(DOMFilePath::getName(fullPath))
+EntryBase::EntryBase( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : m_fileSystem( fileSystem )
+    , m_fullPath( fullPath )
+    , m_name( DOMFilePath::getName( fullPath ) )
 {
 }
 
@@ -57,25 +58,34 @@ EntryBase::~EntryBase()
 String EntryBase::toURL()
 {
     String originString = m_fileSystem->securityOrigin()->toString();
-    ASSERT(!originString.isEmpty());
-    if (originString == "null")
+    ASSERT( !originString.isEmpty() );
+
+    if ( originString == "null" )
+    {
         return String();
-    StringBuilder result;
-    result.append("filesystem:");
-    result.append(originString);
-    result.append("/");
-    switch (m_fileSystem->asyncFileSystem()->type()) {
-    case AsyncFileSystem::Temporary:
-        result.append(DOMFileSystemBase::kTemporaryPathPrefix);
-        break;
-    case AsyncFileSystem::Persistent:
-        result.append(DOMFileSystemBase::kPersistentPathPrefix);
-        break;
-    case AsyncFileSystem::External:
-        result.append(DOMFileSystemBase::kExternalPathPrefix);
-        break;
     }
-    result.append(m_fullPath);
+
+    StringBuilder result;
+    result.append( "filesystem:" );
+    result.append( originString );
+    result.append( "/" );
+
+    switch ( m_fileSystem->asyncFileSystem()->type() )
+    {
+        case AsyncFileSystem::Temporary:
+            result.append( DOMFileSystemBase::kTemporaryPathPrefix );
+            break;
+
+        case AsyncFileSystem::Persistent:
+            result.append( DOMFileSystemBase::kPersistentPathPrefix );
+            break;
+
+        case AsyncFileSystem::External:
+            result.append( DOMFileSystemBase::kExternalPathPrefix );
+            break;
+    }
+
+    result.append( m_fullPath );
     return result.toString();
 }
 

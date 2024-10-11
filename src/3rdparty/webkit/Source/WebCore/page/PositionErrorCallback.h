@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PositionErrorCallback_h
@@ -29,17 +29,19 @@
 #include "ActiveDOMObject.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class PositionError;
+class PositionError;
 
-    class PositionErrorCallback : public RefCounted<PositionErrorCallback>, public ActiveDOMObject {
-    public:
-        PositionErrorCallback(ScriptExecutionContext* context) : ActiveDOMObject(context, this) { }
-        virtual ~PositionErrorCallback() { }
-        virtual void handleEvent(PositionError*) = 0;
-    };
-    
+class PositionErrorCallback : public RefCounted<PositionErrorCallback>, public ActiveDOMObject
+{
+public:
+    PositionErrorCallback( ScriptExecutionContext *context ) : ActiveDOMObject( context, this ) { }
+    virtual ~PositionErrorCallback() { }
+    virtual void handleEvent( PositionError * ) = 0;
+};
+
 } // namespace WebCore
 
 #endif // PositionErrorCallback_h

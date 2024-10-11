@@ -23,16 +23,18 @@
 
 #include <OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLVideoElement;
 
-class QTKitFullScreenVideoHandler {
+class QTKitFullScreenVideoHandler
+{
     class QTKitFullScreenVideoHandlerPrivate;
 public:
     QTKitFullScreenVideoHandler();
     ~QTKitFullScreenVideoHandler();
-    void enterFullScreen(HTMLVideoElement*);
+    void enterFullScreen( HTMLVideoElement * );
     void exitFullScreen();
 
 private:

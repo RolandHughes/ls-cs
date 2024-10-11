@@ -37,72 +37,85 @@ class QGraphicsLayoutPrivate;
 
 class QGraphicsGridLayoutEngineItem : public QGridLayoutItem
 {
- public:
-   QGraphicsGridLayoutEngineItem(QGraphicsLayoutItem *item, int row, int columns, int rowSpan = 1, int columnSpan = 1,
-      Qt::Alignment alignment = Qt::EmptyFlag)
-      : QGridLayoutItem(row, columns, rowSpan, columnSpan, alignment), q_layoutItem(item)
-   { }
+public:
+    QGraphicsGridLayoutEngineItem( QGraphicsLayoutItem *item, int row, int columns, int rowSpan = 1, int columnSpan = 1,
+                                   Qt::Alignment alignment = Qt::EmptyFlag )
+        : QGridLayoutItem( row, columns, rowSpan, columnSpan, alignment ), q_layoutItem( item )
+    { }
 
-   QLayoutPolicy::Policy sizePolicy(Qt::Orientation orientation) const override {
-      QSizePolicy sizePolicy(q_layoutItem->sizePolicy());
-      return (QLayoutPolicy::Policy)((orientation == Qt::Horizontal)
-            ? sizePolicy.horizontalPolicy() : sizePolicy.verticalPolicy());
-   }
+    QLayoutPolicy::Policy sizePolicy( Qt::Orientation orientation ) const override
+    {
+        QSizePolicy sizePolicy( q_layoutItem->sizePolicy() );
+        return ( QLayoutPolicy::Policy )( ( orientation == Qt::Horizontal )
+                                          ? sizePolicy.horizontalPolicy() : sizePolicy.verticalPolicy() );
+    }
 
-   QLayoutPolicy::ControlTypes controlTypes(LayoutSide) const override {
-      const QSizePolicy::ControlType ct = q_layoutItem->sizePolicy().controlType();
-      return (QLayoutPolicy::ControlTypes)ct;
-   }
+    QLayoutPolicy::ControlTypes controlTypes( LayoutSide ) const override
+    {
+        const QSizePolicy::ControlType ct = q_layoutItem->sizePolicy().controlType();
+        return ( QLayoutPolicy::ControlTypes )ct;
+    }
 
-   QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint) const override {
-      return q_layoutItem->effectiveSizeHint(which, constraint);
-   }
+    QSizeF sizeHint( Qt::SizeHint which, const QSizeF &constraint ) const override
+    {
+        return q_layoutItem->effectiveSizeHint( which, constraint );
+    }
 
-   bool isHidden() const;
+    bool isHidden() const;
 
-   bool isIgnored() const override;
+    bool isIgnored() const override;
 
-   void setGeometry(const QRectF &rect) override {
-      q_layoutItem->setGeometry(rect);
-   }
+    void setGeometry( const QRectF &rect ) override
+    {
+        q_layoutItem->setGeometry( rect );
+    }
 
-   bool hasDynamicConstraint() const override;
-   Qt::Orientation dynamicConstraintOrientation() const override;
+    bool hasDynamicConstraint() const override;
+    Qt::Orientation dynamicConstraintOrientation() const override;
 
-   QGraphicsLayoutItem *layoutItem() const {
-      return q_layoutItem;
-   }
+    QGraphicsLayoutItem *layoutItem() const
+    {
+        return q_layoutItem;
+    }
 
- protected:
-   QGraphicsLayoutItem *q_layoutItem;
+protected:
+    QGraphicsLayoutItem *q_layoutItem;
 };
 
 
 class QGraphicsGridLayoutEngine : public QGridLayoutEngine
 {
- public:
-   QGraphicsGridLayoutEngineItem *findLayoutItem(QGraphicsLayoutItem *layoutItem) const {
-      const int index = indexOf(layoutItem);
-      if (index < 0) {
-         return nullptr;
-      }
-      return static_cast<QGraphicsGridLayoutEngineItem *>(q_items.at(index));
-   }
+public:
+    QGraphicsGridLayoutEngineItem *findLayoutItem( QGraphicsLayoutItem *layoutItem ) const
+    {
+        const int index = indexOf( layoutItem );
 
-   int indexOf(QGraphicsLayoutItem *item) const {
-      for (int i = 0; i < q_items.count(); ++i) {
-         if (item == static_cast<QGraphicsGridLayoutEngineItem *>(q_items.at(i))->layoutItem()) {
-            return i;
-         }
-      }
-      return -1;
-   }
+        if ( index < 0 )
+        {
+            return nullptr;
+        }
 
-   void setAlignment(QGraphicsLayoutItem *graphicsLayoutItem, Qt::Alignment alignment);
-   Qt::Alignment alignment(QGraphicsLayoutItem *graphicsLayoutItem) const;
+        return static_cast<QGraphicsGridLayoutEngineItem *>( q_items.at( index ) );
+    }
 
-   void setStretchFactor(QGraphicsLayoutItem *layoutItem, int stretch, Qt::Orientation orientation);
-   int stretchFactor(QGraphicsLayoutItem *layoutItem, Qt::Orientation orientation) const;
+    int indexOf( QGraphicsLayoutItem *item ) const
+    {
+        for ( int i = 0; i < q_items.count(); ++i )
+        {
+            if ( item == static_cast<QGraphicsGridLayoutEngineItem *>( q_items.at( i ) )->layoutItem() )
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    void setAlignment( QGraphicsLayoutItem *graphicsLayoutItem, Qt::Alignment alignment );
+    Qt::Alignment alignment( QGraphicsLayoutItem *graphicsLayoutItem ) const;
+
+    void setStretchFactor( QGraphicsLayoutItem *layoutItem, int stretch, Qt::Orientation orientation );
+    int stretchFactor( QGraphicsLayoutItem *layoutItem, Qt::Orientation orientation ) const;
 
 };
 

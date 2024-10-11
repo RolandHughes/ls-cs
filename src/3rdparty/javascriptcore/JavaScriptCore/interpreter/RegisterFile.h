@@ -45,7 +45,8 @@
 #include <wtf/symbian/RegisterFileAllocatorSymbian.h>
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
 /*
     A register file is a stack of register frames. We represent a register
@@ -94,223 +95,306 @@ namespace JSC {
     "base", not "buffer".
 */
 
-    class JSGlobalObject;
+class JSGlobalObject;
 
-    class RegisterFile : public Noncopyable {
-        friend class JIT;
-    public:
-        enum CallFrameHeaderEntry {
-            CallFrameHeaderSize = 8,
+class RegisterFile : public Noncopyable
+{
+    friend class JIT;
+public:
+    enum CallFrameHeaderEntry
+    {
+        CallFrameHeaderSize = 8,
 
-            CodeBlock = -8,
-            ScopeChain = -7,
-            CallerFrame = -6,
-            ReturnPC = -5, // This is either an Instruction* or a pointer into JIT generated code stored as an Instruction*.
-            ReturnValueRegister = -4,
-            ArgumentCount = -3,
-            Callee = -2,
-            OptionalCalleeArguments = -1
-        };
-
-        enum { ProgramCodeThisRegister = -CallFrameHeaderSize - 1 };
-        enum { ArgumentsRegister = 0 };
-
-        static const size_t defaultCapacity = 524288;
-        static const size_t defaultMaxGlobals = 8192;
-        static const size_t commitSize = 1 << 14;
-        // Allow 8k of excess registers before we start trying to reap the registerfile
-        static const ptrdiff_t maxExcessCapacity = 8 * 1024;
-
-        RegisterFile(size_t capacity = defaultCapacity, size_t maxGlobals = defaultMaxGlobals);
-        ~RegisterFile();
-
-        Register* start() const { return m_start; }
-        Register* end() const { return m_end; }
-        size_t size() const { return m_end - m_start; }
-
-        void setGlobalObject(JSGlobalObject* globalObject) { m_globalObject = globalObject; }
-        JSGlobalObject* globalObject() { return m_globalObject; }
-
-        bool grow(Register* newEnd);
-        void shrink(Register* newEnd);
-        
-        void setNumGlobals(size_t numGlobals) { m_numGlobals = numGlobals; }
-        int numGlobals() const { return m_numGlobals; }
-        size_t maxGlobals() const { return m_maxGlobals; }
-
-        Register* lastGlobal() const { return m_start - m_numGlobals; }
-        
-        void markGlobals(MarkStack& markStack, Heap* heap) { heap->markConservatively(markStack, lastGlobal(), m_start); }
-        void markCallFrames(MarkStack& markStack, Heap* heap) { heap->markConservatively(markStack, m_start, m_end); }
-
-    private:
-        void releaseExcessCapacity();
-        size_t m_numGlobals;
-        const size_t m_maxGlobals;
-        Register* m_start;
-        Register* m_end;
-        Register* m_max;
-        Register* m_buffer;
-        Register* m_maxUsed;
-
-#if HAVE(VIRTUALALLOC) || OS(QNX)
-        Register* m_commitEnd;
-#endif
-#if OS(SYMBIAN)
-        // Commits and frees a continguous chunk of memory as required
-        WTF::RegisterFileAllocator* m_registerFileAllocator;
-#endif
-
-        JSGlobalObject* m_globalObject; // The global object whose vars are currently stored in the register file.
+        CodeBlock = -8,
+        ScopeChain = -7,
+        CallerFrame = -6,
+        ReturnPC = -5, // This is either an Instruction* or a pointer into JIT generated code stored as an Instruction*.
+        ReturnValueRegister = -4,
+        ArgumentCount = -3,
+        Callee = -2,
+        OptionalCalleeArguments = -1
     };
 
-    // FIXME: Add a generic getpagesize() to WTF, then move this function to WTF as well.
-    // This is still a hack that should be fixed later. We know that a Symbian page size is 4K.
-    #if OS(SYMBIAN)
-    inline bool isPageAligned(size_t size) { return size && !(size % (4 * 1024)); }
-    #else
-    inline bool isPageAligned(size_t size) { return size && !(size % (8 * 1024)); }
-    #endif
+    enum { ProgramCodeThisRegister = -CallFrameHeaderSize - 1 };
+    enum { ArgumentsRegister = 0 };
 
-    inline RegisterFile::RegisterFile(size_t capacity, size_t maxGlobals)
-        : m_numGlobals(0)
-        , m_maxGlobals(maxGlobals)
-        , m_start(0)
-        , m_end(0)
-        , m_max(0)
-        , m_buffer(0)
-        , m_globalObject(0)
+    static const size_t defaultCapacity = 524288;
+    static const size_t defaultMaxGlobals = 8192;
+    static const size_t commitSize = 1 << 14;
+    // Allow 8k of excess registers before we start trying to reap the registerfile
+    static const ptrdiff_t maxExcessCapacity = 8 * 1024;
+
+    RegisterFile( size_t capacity = defaultCapacity, size_t maxGlobals = defaultMaxGlobals );
+    ~RegisterFile();
+
+    Register *start() const
     {
-        // Verify that our values will play nice with mmap and VirtualAlloc.
-        ASSERT(isPageAligned(maxGlobals));
-        ASSERT(isPageAligned(capacity));
-
-        size_t bufferLength = (capacity + maxGlobals) * sizeof(Register);
-    #if OS(QNX)
-        // First, reserve uncommitted memory
-        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_NONE, MAP_LAZY|MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
-        if (m_buffer == MAP_FAILED) {
-            fprintf(stderr, "Could not reserve register file memory: %d\n", errno);
-            CRASH();
-        }
-
-        // Now, commit as much as we need for the globals
-        size_t committedSize = roundUpAllocationSize(maxGlobals * sizeof(Register), commitSize);
-        if (mmap(m_buffer, committedSize, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0) == MAP_FAILED) {
-            fprintf(stderr, "Could not commit register file memory: %d\n", errno);
-            CRASH();
-        }
-        m_commitEnd = reinterpret_cast<Register*>(reinterpret_cast<char*>(m_buffer) + committedSize);
-
-    #elif HAVE(MMAP)
-        m_buffer = reinterpret_cast<Register*>(mmap(0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0));
-        if (m_buffer == MAP_FAILED) {
-#if OS(WINCE)
-            fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
-#else
-            fprintf(stderr, "Could not allocate register file: %d\n", errno);
-#endif
-            CRASH();
-        }
-    #elif HAVE(VIRTUALALLOC)
-        m_buffer = static_cast<Register*>(VirtualAlloc(0, roundUpAllocationSize(bufferLength, commitSize), MEM_RESERVE, PAGE_READWRITE));
-        if (!m_buffer) {
-#if OS(WINCE)
-            fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
-#else
-            fprintf(stderr, "Could not allocate register file: %d\n", errno);
-#endif
-            CRASH();
-        }
-        size_t committedSize = roundUpAllocationSize(maxGlobals * sizeof(Register), commitSize);
-        void* commitCheck = VirtualAlloc(m_buffer, committedSize, MEM_COMMIT, PAGE_READWRITE);
-        if (commitCheck != m_buffer) {
-#if OS(WINCE)
-            fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
-#else
-            fprintf(stderr, "Could not allocate register file: %d\n", errno);
-#endif
-            CRASH();
-        }
-        m_commitEnd = reinterpret_cast<Register*>(reinterpret_cast<char*>(m_buffer) + committedSize);
-    #elif OS(SYMBIAN)
-        m_registerFileAllocator = new WTF::RegisterFileAllocator(bufferLength);
-        m_buffer = (Register*)(m_registerFileAllocator->buffer());
-        // start by committing enough space to hold maxGlobals
-        void* newEnd = (void*)((int)m_buffer + (maxGlobals * sizeof(Register)));
-        m_registerFileAllocator->grow(newEnd);
-    #else
-        /* 
-         * If neither MMAP nor VIRTUALALLOC are available - use fastMalloc instead.
-         *
-         * Please note that this is the fallback case, which is non-optimal.
-         * If any possible, the platform should provide for a better memory
-         * allocation mechanism that allows for "lazy commit" or dynamic
-         * pre-allocation, similar to mmap or VirtualAlloc, to avoid waste of memory.
-         */
-        m_buffer = static_cast<Register*>(fastMalloc(bufferLength));
-    #endif
-        m_start = m_buffer + maxGlobals;
-        m_end = m_start;
-        m_maxUsed = m_end;
-        m_max = m_start + capacity;
+        return m_start;
+    }
+    Register *end() const
+    {
+        return m_end;
+    }
+    size_t size() const
+    {
+        return m_end - m_start;
     }
 
-    inline void RegisterFile::shrink(Register* newEnd)
+    void setGlobalObject( JSGlobalObject *globalObject )
     {
-        if (newEnd >= m_end)
-            return;
-        m_end = newEnd;
-        if (m_end == m_start && (m_maxUsed - m_start) > maxExcessCapacity) {
+        m_globalObject = globalObject;
+    }
+    JSGlobalObject *globalObject()
+    {
+        return m_globalObject;
+    }
+
+    bool grow( Register *newEnd );
+    void shrink( Register *newEnd );
+
+    void setNumGlobals( size_t numGlobals )
+    {
+        m_numGlobals = numGlobals;
+    }
+    int numGlobals() const
+    {
+        return m_numGlobals;
+    }
+    size_t maxGlobals() const
+    {
+        return m_maxGlobals;
+    }
+
+    Register *lastGlobal() const
+    {
+        return m_start - m_numGlobals;
+    }
+
+    void markGlobals( MarkStack &markStack, Heap *heap )
+    {
+        heap->markConservatively( markStack, lastGlobal(), m_start );
+    }
+    void markCallFrames( MarkStack &markStack, Heap *heap )
+    {
+        heap->markConservatively( markStack, m_start, m_end );
+    }
+
+private:
+    void releaseExcessCapacity();
+    size_t m_numGlobals;
+    const size_t m_maxGlobals;
+    Register *m_start;
+    Register *m_end;
+    Register *m_max;
+    Register *m_buffer;
+    Register *m_maxUsed;
+
+#if HAVE(VIRTUALALLOC) || OS(QNX)
+    Register *m_commitEnd;
+#endif
 #if OS(SYMBIAN)
-            m_registerFileAllocator->shrink(newEnd);
+    // Commits and frees a continguous chunk of memory as required
+    WTF::RegisterFileAllocator *m_registerFileAllocator;
 #endif
 
-            releaseExcessCapacity();
-        }
-    }
+    JSGlobalObject *m_globalObject; // The global object whose vars are currently stored in the register file.
+};
 
-    inline bool RegisterFile::grow(Register* newEnd)
-    {
-        if (newEnd < m_end)
-            return true;
+// FIXME: Add a generic getpagesize() to WTF, then move this function to WTF as well.
+// This is still a hack that should be fixed later. We know that a Symbian page size is 4K.
+#if OS(SYMBIAN)
+inline bool isPageAligned( size_t size )
+{
+    return size && !( size % ( 4 * 1024 ) );
+}
+#else
+inline bool isPageAligned( size_t size )
+{
+    return size && !( size % ( 8 * 1024 ) );
+}
+#endif
 
-        if (newEnd > m_max)
-            return false;
+inline RegisterFile::RegisterFile( size_t capacity, size_t maxGlobals )
+    : m_numGlobals( 0 )
+    , m_maxGlobals( maxGlobals )
+    , m_start( 0 )
+    , m_end( 0 )
+    , m_max( 0 )
+    , m_buffer( 0 )
+    , m_globalObject( 0 )
+{
+    // Verify that our values will play nice with mmap and VirtualAlloc.
+    ASSERT( isPageAligned( maxGlobals ) );
+    ASSERT( isPageAligned( capacity ) );
 
+    size_t bufferLength = ( capacity + maxGlobals ) * sizeof( Register );
 #if OS(QNX)
-        if (newEnd > m_commitEnd) {
-            size_t size = roundUpAllocationSize(reinterpret_cast<char*>(newEnd) - reinterpret_cast<char*>(m_commitEnd), commitSize);
-            if (mmap(m_commitEnd, size, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY, 0) == MAP_FAILED) {
-                fprintf(stderr, "Could not grow committed register file memory: %d\n", errno);
-                CRASH();
-            }
-            m_commitEnd = reinterpret_cast<Register*>(reinterpret_cast<char*>(m_commitEnd) + size);
-        }
-#elif !HAVE(MMAP) && HAVE(VIRTUALALLOC)
-        if (newEnd > m_commitEnd) {
-            size_t size = roundUpAllocationSize(reinterpret_cast<char*>(newEnd) - reinterpret_cast<char*>(m_commitEnd), commitSize);
-            if (!VirtualAlloc(m_commitEnd, size, MEM_COMMIT, PAGE_READWRITE)) {
+    // First, reserve uncommitted memory
+    m_buffer = reinterpret_cast<Register *>( mmap( 0, bufferLength, PROT_NONE, MAP_LAZY|MAP_PRIVATE|MAP_ANON,
+               VM_TAG_FOR_REGISTERFILE_MEMORY, 0 ) );
+
+    if ( m_buffer == MAP_FAILED )
+    {
+        fprintf( stderr, "Could not reserve register file memory: %d\n", errno );
+        CRASH();
+    }
+
+    // Now, commit as much as we need for the globals
+    size_t committedSize = roundUpAllocationSize( maxGlobals * sizeof( Register ), commitSize );
+
+    if ( mmap( m_buffer, committedSize, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY,
+               0 ) == MAP_FAILED )
+    {
+        fprintf( stderr, "Could not commit register file memory: %d\n", errno );
+        CRASH();
+    }
+
+    m_commitEnd = reinterpret_cast<Register *>( reinterpret_cast<char *>( m_buffer ) + committedSize );
+
+#elif HAVE(MMAP)
+    m_buffer = reinterpret_cast<Register *>( mmap( 0, bufferLength, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON,
+               VM_TAG_FOR_REGISTERFILE_MEMORY, 0 ) );
+
+    if ( m_buffer == MAP_FAILED )
+    {
 #if OS(WINCE)
-                fprintf(stderr, "Could not allocate register file: %d\n", GetLastError());
+        fprintf( stderr, "Could not allocate register file: %d\n", GetLastError() );
 #else
-                fprintf(stderr, "Could not allocate register file: %d\n", errno);
+        fprintf( stderr, "Could not allocate register file: %d\n", errno );
 #endif
-                CRASH();
-            }
-            m_commitEnd = reinterpret_cast<Register*>(reinterpret_cast<char*>(m_commitEnd) + size);
-        }
+        CRASH();
+    }
+
+#elif HAVE(VIRTUALALLOC)
+    m_buffer = static_cast<Register *>( VirtualAlloc( 0, roundUpAllocationSize( bufferLength, commitSize ), MEM_RESERVE,
+                                        PAGE_READWRITE ) );
+
+    if ( !m_buffer )
+    {
+#if OS(WINCE)
+        fprintf( stderr, "Could not allocate register file: %d\n", GetLastError() );
+#else
+        fprintf( stderr, "Could not allocate register file: %d\n", errno );
 #endif
+        CRASH();
+    }
+
+    size_t committedSize = roundUpAllocationSize( maxGlobals * sizeof( Register ), commitSize );
+    void *commitCheck = VirtualAlloc( m_buffer, committedSize, MEM_COMMIT, PAGE_READWRITE );
+
+    if ( commitCheck != m_buffer )
+    {
+#if OS(WINCE)
+        fprintf( stderr, "Could not allocate register file: %d\n", GetLastError() );
+#else
+        fprintf( stderr, "Could not allocate register file: %d\n", errno );
+#endif
+        CRASH();
+    }
+
+    m_commitEnd = reinterpret_cast<Register *>( reinterpret_cast<char *>( m_buffer ) + committedSize );
+#elif OS(SYMBIAN)
+    m_registerFileAllocator = new WTF::RegisterFileAllocator( bufferLength );
+    m_buffer = ( Register * )( m_registerFileAllocator->buffer() );
+    // start by committing enough space to hold maxGlobals
+    void *newEnd = ( void * )( ( int )m_buffer + ( maxGlobals * sizeof( Register ) ) );
+    m_registerFileAllocator->grow( newEnd );
+#else
+    /*
+     * If neither MMAP nor VIRTUALALLOC are available - use fastMalloc instead.
+     *
+     * Please note that this is the fallback case, which is non-optimal.
+     * If any possible, the platform should provide for a better memory
+     * allocation mechanism that allows for "lazy commit" or dynamic
+     * pre-allocation, similar to mmap or VirtualAlloc, to avoid waste of memory.
+     */
+    m_buffer = static_cast<Register *>( fastMalloc( bufferLength ) );
+#endif
+    m_start = m_buffer + maxGlobals;
+    m_end = m_start;
+    m_maxUsed = m_end;
+    m_max = m_start + capacity;
+}
+
+inline void RegisterFile::shrink( Register *newEnd )
+{
+    if ( newEnd >= m_end )
+    {
+        return;
+    }
+
+    m_end = newEnd;
+
+    if ( m_end == m_start && ( m_maxUsed - m_start ) > maxExcessCapacity )
+    {
 #if OS(SYMBIAN)
-        m_registerFileAllocator->grow((void*)newEnd);
+        m_registerFileAllocator->shrink( newEnd );
 #endif
 
-        if (newEnd > m_maxUsed)
-            m_maxUsed = newEnd;
+        releaseExcessCapacity();
+    }
+}
 
-        m_end = newEnd;
+inline bool RegisterFile::grow( Register *newEnd )
+{
+    if ( newEnd < m_end )
+    {
         return true;
     }
+
+    if ( newEnd > m_max )
+    {
+        return false;
+    }
+
+#if OS(QNX)
+
+    if ( newEnd > m_commitEnd )
+    {
+        size_t size = roundUpAllocationSize( reinterpret_cast<char *>( newEnd ) - reinterpret_cast<char *>( m_commitEnd ), commitSize );
+
+        if ( mmap( m_commitEnd, size, PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANON, VM_TAG_FOR_REGISTERFILE_MEMORY,
+                   0 ) == MAP_FAILED )
+        {
+            fprintf( stderr, "Could not grow committed register file memory: %d\n", errno );
+            CRASH();
+        }
+
+        m_commitEnd = reinterpret_cast<Register *>( reinterpret_cast<char *>( m_commitEnd ) + size );
+    }
+
+#elif !HAVE(MMAP) && HAVE(VIRTUALALLOC)
+
+    if ( newEnd > m_commitEnd )
+    {
+        size_t size = roundUpAllocationSize( reinterpret_cast<char *>( newEnd ) - reinterpret_cast<char *>( m_commitEnd ), commitSize );
+
+        if ( !VirtualAlloc( m_commitEnd, size, MEM_COMMIT, PAGE_READWRITE ) )
+        {
+#if OS(WINCE)
+            fprintf( stderr, "Could not allocate register file: %d\n", GetLastError() );
+#else
+            fprintf( stderr, "Could not allocate register file: %d\n", errno );
+#endif
+            CRASH();
+        }
+
+        m_commitEnd = reinterpret_cast<Register *>( reinterpret_cast<char *>( m_commitEnd ) + size );
+    }
+
+#endif
+#if OS(SYMBIAN)
+    m_registerFileAllocator->grow( ( void * )newEnd );
+#endif
+
+    if ( newEnd > m_maxUsed )
+    {
+        m_maxUsed = newEnd;
+    }
+
+    m_end = newEnd;
+    return true;
+}
 
 } // namespace JSC
 

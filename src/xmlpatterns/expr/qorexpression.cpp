@@ -29,35 +29,41 @@
 
 using namespace QPatternist;
 
-OrExpression::OrExpression(const Expression::Ptr &operand1,
-                           const Expression::Ptr &operand2) : AndExpression(operand1, operand2)
+OrExpression::OrExpression( const Expression::Ptr &operand1,
+                            const Expression::Ptr &operand2 ) : AndExpression( operand1, operand2 )
 {
 }
 
-bool OrExpression::evaluateEBV(const DynamicContext::Ptr &context) const
+bool OrExpression::evaluateEBV( const DynamicContext::Ptr &context ) const
 {
-   return m_operand1->evaluateEBV(context) || m_operand2->evaluateEBV(context);
+    return m_operand1->evaluateEBV( context ) || m_operand2->evaluateEBV( context );
 }
 
-Expression::Ptr OrExpression::compress(const StaticContext::Ptr &context)
+Expression::Ptr OrExpression::compress( const StaticContext::Ptr &context )
 {
-   const Expression::Ptr newMe(PairContainer::compress(context));
+    const Expression::Ptr newMe( PairContainer::compress( context ) );
 
-   if (newMe != this) {
-      return newMe;
-   }
+    if ( newMe != this )
+    {
+        return newMe;
+    }
 
-   /* Both operands mustn't be evaluated in order to be able to compress. */
-   if (m_operand1->isEvaluated() && m_operand1->evaluateEBV(context->dynamicContext())) {
-      return wrapLiteral(CommonValues::BooleanTrue, context, this);
-   } else if (m_operand2->isEvaluated() && m_operand2->evaluateEBV(context->dynamicContext())) {
-      return wrapLiteral(CommonValues::BooleanTrue, context, this);
-   } else {
-      return Expression::Ptr(this);
-   }
+    /* Both operands mustn't be evaluated in order to be able to compress. */
+    if ( m_operand1->isEvaluated() && m_operand1->evaluateEBV( context->dynamicContext() ) )
+    {
+        return wrapLiteral( CommonValues::BooleanTrue, context, this );
+    }
+    else if ( m_operand2->isEvaluated() && m_operand2->evaluateEBV( context->dynamicContext() ) )
+    {
+        return wrapLiteral( CommonValues::BooleanTrue, context, this );
+    }
+    else
+    {
+        return Expression::Ptr( this );
+    }
 }
 
-ExpressionVisitorResult::Ptr OrExpression::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr OrExpression::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

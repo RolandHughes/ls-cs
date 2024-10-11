@@ -39,33 +39,45 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-static HTMLFormElement* toHTMLFormElement(JSC::JSValue value)
+namespace WebCore
 {
-    return value.inherits(&JSHTMLFormElement::s_info) ? static_cast<HTMLFormElement*>(static_cast<JSHTMLFormElement*>(asObject(value))->impl()) : 0;
+
+static HTMLFormElement *toHTMLFormElement( JSC::JSValue value )
+{
+    return value.inherits( &JSHTMLFormElement::s_info ) ? static_cast<HTMLFormElement *>( static_cast<JSHTMLFormElement *>( asObject(
+                value ) )->impl() ) : 0;
 }
 
-EncodedJSValue JSC_HOST_CALL JSDOMFormDataConstructor::constructJSDOMFormData(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSDOMFormDataConstructor::constructJSDOMFormData( ExecState *exec )
 {
-    JSDOMFormDataConstructor* jsConstructor = static_cast<JSDOMFormDataConstructor*>(exec->callee());
+    JSDOMFormDataConstructor *jsConstructor = static_cast<JSDOMFormDataConstructor *>( exec->callee() );
 
-    HTMLFormElement* form = 0;
-    if (exec->argumentCount() > 0)
-        form = toHTMLFormElement(exec->argument(0));
-    RefPtr<DOMFormData> domFormData = DOMFormData::create(form);
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), domFormData.get())));
+    HTMLFormElement *form = 0;
+
+    if ( exec->argumentCount() > 0 )
+    {
+        form = toHTMLFormElement( exec->argument( 0 ) );
+    }
+
+    RefPtr<DOMFormData> domFormData = DOMFormData::create( form );
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), domFormData.get() ) ) );
 }
 
-JSValue JSDOMFormData::append(ExecState* exec)
+JSValue JSDOMFormData::append( ExecState *exec )
 {
-    if (exec->argumentCount() >= 2) {
-        String name = ustringToString(exec->argument(0).toString(exec));
-        JSValue value = exec->argument(1);
-        if (value.inherits(&JSBlob::s_info))
-            impl()->append(name, toBlob(value));
+    if ( exec->argumentCount() >= 2 )
+    {
+        String name = ustringToString( exec->argument( 0 ).toString( exec ) );
+        JSValue value = exec->argument( 1 );
+
+        if ( value.inherits( &JSBlob::s_info ) )
+        {
+            impl()->append( name, toBlob( value ) );
+        }
         else
-            impl()->append(name, ustringToString(value.toString(exec)));
+        {
+            impl()->append( name, ustringToString( value.toString( exec ) ) );
+        }
     }
 
     return jsUndefined();

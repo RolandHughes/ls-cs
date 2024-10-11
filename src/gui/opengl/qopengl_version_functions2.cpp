@@ -37,37 +37,57 @@
 #include "qopenglfunctions_1_0.h"
 #endif
 
-QAbstractOpenGLFunctions *QOpenGLVersionFunctionsFactory::createNoProfile(const int major, const int minor)
+QAbstractOpenGLFunctions *QOpenGLVersionFunctionsFactory::createNoProfile( const int major, const int minor )
 {
-   if (major == 3 && minor == 1)
-      return new QOpenGLFunctions_3_1;
+    if ( major == 3 && minor == 1 )
+    {
+        return new QOpenGLFunctions_3_1;
+    }
 
-   else if (major == 3 && minor == 0)
-      return new QOpenGLFunctions_3_0;
+    else if ( major == 3 && minor == 0 )
+    {
+        return new QOpenGLFunctions_3_0;
+    }
 
-   else if (major == 2 && minor == 1)
-      return new QOpenGLFunctions_2_1;
+    else if ( major == 2 && minor == 1 )
+    {
+        return new QOpenGLFunctions_2_1;
+    }
 
-   else if (major == 2 && minor == 0)
-      return new QOpenGLFunctions_2_0;
+    else if ( major == 2 && minor == 0 )
+    {
+        return new QOpenGLFunctions_2_0;
+    }
 
-   else if (major == 1 && minor == 5)
-      return new QOpenGLFunctions_1_5;
+    else if ( major == 1 && minor == 5 )
+    {
+        return new QOpenGLFunctions_1_5;
+    }
 
-   else if (major == 1 && minor == 4)
-      return new QOpenGLFunctions_1_4;
+    else if ( major == 1 && minor == 4 )
+    {
+        return new QOpenGLFunctions_1_4;
+    }
 
-   else if (major == 1 && minor == 3)
-      return new QOpenGLFunctions_1_3;
+    else if ( major == 1 && minor == 3 )
+    {
+        return new QOpenGLFunctions_1_3;
+    }
 
-   else if (major == 1 && minor == 2)
-      return new QOpenGLFunctions_1_2;
+    else if ( major == 1 && minor == 2 )
+    {
+        return new QOpenGLFunctions_1_2;
+    }
 
-   else if (major == 1 && minor == 1)
-      return new QOpenGLFunctions_1_1;
+    else if ( major == 1 && minor == 1 )
+    {
+        return new QOpenGLFunctions_1_1;
+    }
 
-   else if (major == 1 && minor == 0)
-      return new QOpenGLFunctions_1_0;
+    else if ( major == 1 && minor == 0 )
+    {
+        return new QOpenGLFunctions_1_0;
+    }
 
-   return nullptr;
+    return nullptr;
 }

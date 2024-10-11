@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ThemeMac_h
@@ -28,30 +28,35 @@
 
 #include "Theme.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ThemeMac : public Theme {
+class ThemeMac : public Theme
+{
 public:
     ThemeMac() { }
     virtual ~ThemeMac() { }
-    
-    virtual int baselinePositionAdjustment(ControlPart) const;
 
-    virtual FontDescription controlFont(ControlPart, const Font&, float zoomFactor) const;
-    
-    virtual LengthSize controlSize(ControlPart, const Font&, const LengthSize&, float zoomFactor) const;
-    virtual LengthSize minimumControlSize(ControlPart, const Font&, float zoomFactor) const;
+    virtual int baselinePositionAdjustment( ControlPart ) const;
 
-    virtual LengthBox controlPadding(ControlPart, const Font&, const LengthBox& zoomedBox, float zoomFactor) const;
-    virtual LengthBox controlBorder(ControlPart, const Font&, const LengthBox& zoomedBox, float zoomFactor) const;
+    virtual FontDescription controlFont( ControlPart, const Font &, float zoomFactor ) const;
 
-    virtual bool controlRequiresPreWhiteSpace(ControlPart part) const { return part == PushButtonPart; }
+    virtual LengthSize controlSize( ControlPart, const Font &, const LengthSize &, float zoomFactor ) const;
+    virtual LengthSize minimumControlSize( ControlPart, const Font &, float zoomFactor ) const;
 
-    virtual void paint(ControlPart, ControlStates, GraphicsContext*, const IntRect&, float zoomFactor, ScrollView*) const;
-    virtual void inflateControlPaintRect(ControlPart, ControlStates, IntRect&, float zoomFactor) const;
+    virtual LengthBox controlPadding( ControlPart, const Font &, const LengthBox &zoomedBox, float zoomFactor ) const;
+    virtual LengthBox controlBorder( ControlPart, const Font &, const LengthBox &zoomedBox, float zoomFactor ) const;
+
+    virtual bool controlRequiresPreWhiteSpace( ControlPart part ) const
+    {
+        return part == PushButtonPart;
+    }
+
+    virtual void paint( ControlPart, ControlStates, GraphicsContext *, const IntRect &, float zoomFactor, ScrollView * ) const;
+    virtual void inflateControlPaintRect( ControlPart, ControlStates, IntRect &, float zoomFactor ) const;
 
     // FIXME: Once RenderThemeMac is converted over to use Theme then this can be internal to ThemeMac.
-    static NSView* ensuredView(ScrollView*);
+    static NSView *ensuredView( ScrollView * );
 };
 
 } // namespace WebCore

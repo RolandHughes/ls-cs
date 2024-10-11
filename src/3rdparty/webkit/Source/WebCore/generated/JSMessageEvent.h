@@ -24,34 +24,37 @@
 #include "JSEvent.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MessageEvent;
 
-class JSMessageEvent : public JSEvent {
+class JSMessageEvent : public JSEvent
+{
     typedef JSEvent Base;
 public:
-    JSMessageEvent(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<MessageEvent>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSMessageEvent( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<MessageEvent> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
     static const unsigned dataSlot = 0 + Base::AnonymousSlotCount;
     using JSEvent::putAnonymousValue;
     using JSEvent::getAnonymousValue;
 
     // Custom attributes
-    JSC::JSValue ports(JSC::ExecState*) const;
+    JSC::JSValue ports( JSC::ExecState * ) const;
 
     // Custom functions
-    JSC::JSValue initMessageEvent(JSC::ExecState*);
+    JSC::JSValue initMessageEvent( JSC::ExecState * );
 public:
     static const unsigned AnonymousSlotCount = 1 + Base::AnonymousSlotCount;
 protected:
@@ -59,33 +62,36 @@ protected:
 };
 
 
-class JSMessageEventPrototype : public JSC::JSObjectWithGlobalObject {
+class JSMessageEventPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSMessageEventPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSMessageEventPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                             JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsMessageEventPrototypeFunctionInitMessageEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsMessageEventPrototypeFunctionInitMessageEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsMessageEventData(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsMessageEventOrigin(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsMessageEventLastEventId(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsMessageEventSource(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsMessageEventPorts(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsMessageEventConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsMessageEventData( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsMessageEventOrigin( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsMessageEventLastEventId( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsMessageEventSource( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsMessageEventPorts( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsMessageEventConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

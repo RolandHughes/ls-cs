@@ -34,106 +34,107 @@ class QDirModelPrivate;
 
 class Q_GUI_EXPORT QDirModel : public QAbstractItemModel
 {
-   GUI_CS_OBJECT(QDirModel)
+    GUI_LSCS_OBJECT( QDirModel )
 
-   GUI_CS_PROPERTY_READ(resolveSymlinks, resolveSymlinks)
-   GUI_CS_PROPERTY_WRITE(resolveSymlinks, setResolveSymlinks)
+    GUI_LSCS_PROPERTY_READ( resolveSymlinks, resolveSymlinks )
+    GUI_LSCS_PROPERTY_WRITE( resolveSymlinks, setResolveSymlinks )
 
-   GUI_CS_PROPERTY_READ(readOnly, isReadOnly)
-   GUI_CS_PROPERTY_WRITE(readOnly, setReadOnly)
+    GUI_LSCS_PROPERTY_READ( readOnly, isReadOnly )
+    GUI_LSCS_PROPERTY_WRITE( readOnly, setReadOnly )
 
-   GUI_CS_PROPERTY_READ(lazyChildCount, lazyChildCount)
-   GUI_CS_PROPERTY_WRITE(lazyChildCount, setLazyChildCount)
+    GUI_LSCS_PROPERTY_READ( lazyChildCount, lazyChildCount )
+    GUI_LSCS_PROPERTY_WRITE( lazyChildCount, setLazyChildCount )
 
- public:
-   enum Roles {
-      FileIconRole = Qt::DecorationRole,
-      FilePathRole = Qt::UserRole + 1,
-      FileNameRole
-   };
+public:
+    enum Roles
+    {
+        FileIconRole = Qt::DecorationRole,
+        FilePathRole = Qt::UserRole + 1,
+        FileNameRole
+    };
 
-   QDirModel(const QStringList &nameFilters, QDir::Filters filters,
-      QDir::SortFlags sort, QObject *parent = nullptr);
-   explicit QDirModel(QObject *parent = nullptr);
+    QDirModel( const QStringList &nameFilters, QDir::Filters filters,
+               QDir::SortFlags sort, QObject *parent = nullptr );
+    explicit QDirModel( QObject *parent = nullptr );
 
-   QDirModel(const QDirModel &) = delete;
-   QDirModel &operator=(const QDirModel &) = delete;
+    QDirModel( const QDirModel & ) = delete;
+    QDirModel &operator=( const QDirModel & ) = delete;
 
-   ~QDirModel();
+    ~QDirModel();
 
-   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-   QModelIndex parent(const QModelIndex &child) const override;
+    QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const override;
+    QModelIndex parent( const QModelIndex &child ) const override;
 
-   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    int rowCount( const QModelIndex &parent = QModelIndex() ) const override;
+    int columnCount( const QModelIndex &parent = QModelIndex() ) const override;
 
-   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const override;
+    bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::EditRole ) override;
 
-   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    QVariant headerData( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const override;
 
-   bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
-   Qt::ItemFlags flags(const QModelIndex &index) const override;
+    bool hasChildren( const QModelIndex &parent = QModelIndex() ) const override;
+    Qt::ItemFlags flags( const QModelIndex &index ) const override;
 
-   void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    void sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) override;
 
-   QStringList mimeTypes() const override;
-   QMimeData *mimeData(const QModelIndexList &indexes) const override;
+    QStringList mimeTypes() const override;
+    QMimeData *mimeData( const QModelIndexList &indexes ) const override;
 
-   bool dropMimeData(const QMimeData *data, Qt::DropAction action,
-      int row, int column, const QModelIndex &parent) override;
+    bool dropMimeData( const QMimeData *data, Qt::DropAction action,
+                       int row, int column, const QModelIndex &parent ) override;
 
-   Qt::DropActions supportedDropActions() const override;
+    Qt::DropActions supportedDropActions() const override;
 
-   // QDirModel specific API
+    // QDirModel specific API
 
-   void setIconProvider(QFileIconProvider *provider);
-   QFileIconProvider *iconProvider() const;
+    void setIconProvider( QFileIconProvider *provider );
+    QFileIconProvider *iconProvider() const;
 
-   void setNameFilters(const QStringList &filters);
-   QStringList nameFilters() const;
+    void setNameFilters( const QStringList &filters );
+    QStringList nameFilters() const;
 
-   void setFilter(QDir::Filters filters);
-   QDir::Filters filter() const;
+    void setFilter( QDir::Filters filters );
+    QDir::Filters filter() const;
 
-   void setSorting(QDir::SortFlags sort);
-   QDir::SortFlags sorting() const;
+    void setSorting( QDir::SortFlags sort );
+    QDir::SortFlags sorting() const;
 
-   void setResolveSymlinks(bool enable);
-   bool resolveSymlinks() const;
+    void setResolveSymlinks( bool enable );
+    bool resolveSymlinks() const;
 
-   void setReadOnly(bool enable);
-   bool isReadOnly() const;
+    void setReadOnly( bool enable );
+    bool isReadOnly() const;
 
-   void setLazyChildCount(bool enable);
-   bool lazyChildCount() const;
+    void setLazyChildCount( bool enable );
+    bool lazyChildCount() const;
 
-   QModelIndex index(const QString &path, int column = 0) const;
+    QModelIndex index( const QString &path, int column = 0 ) const;
 
-   bool isDir(const QModelIndex &index) const;
-   QModelIndex mkdir(const QModelIndex &parent, const QString &name);
-   bool rmdir(const QModelIndex &index);
-   bool remove(const QModelIndex &index);
+    bool isDir( const QModelIndex &index ) const;
+    QModelIndex mkdir( const QModelIndex &parent, const QString &name );
+    bool rmdir( const QModelIndex &index );
+    bool remove( const QModelIndex &index );
 
-   QString filePath(const QModelIndex &index) const;
-   QString fileName(const QModelIndex &index) const;
-   QIcon fileIcon(const QModelIndex &index) const;
-   QFileInfo fileInfo(const QModelIndex &index) const;
+    QString filePath( const QModelIndex &index ) const;
+    QString fileName( const QModelIndex &index ) const;
+    QIcon fileIcon( const QModelIndex &index ) const;
+    QFileInfo fileInfo( const QModelIndex &index ) const;
 
-   using QObject::parent;
+    using QObject::parent;
 
-   GUI_CS_SLOT_1(Public, void refresh(const QModelIndex &parent = QModelIndex()))
-   GUI_CS_SLOT_2(refresh)
+    GUI_LSCS_SLOT_1( Public, void refresh( const QModelIndex &parent = QModelIndex() ) )
+    GUI_LSCS_SLOT_2( refresh )
 
- protected:
-   QDirModel(QDirModelPrivate &, QObject *parent = nullptr);
-   friend class QFileDialogPrivate;
+protected:
+    QDirModel( QDirModelPrivate &, QObject *parent = nullptr );
+    friend class QFileDialogPrivate;
 
- private:
-   Q_DECLARE_PRIVATE(QDirModel)
+private:
+    Q_DECLARE_PRIVATE( QDirModel )
 
-   GUI_CS_SLOT_1(Private, void _q_refresh())
-   GUI_CS_SLOT_2(_q_refresh)
+    GUI_LSCS_SLOT_1( Private, void _q_refresh() )
+    GUI_LSCS_SLOT_2( _q_refresh )
 };
 
 #endif // QT_NO_DIRMODEL

@@ -25,10 +25,10 @@
 
 QT_BEGIN_NAMESPACE
 
-int qmlRegisterTypeNotAvailable(const char *uri, int versionMajor, int versionMinor, const char *qmlName,
-                                const QString &message)
+int qmlRegisterTypeNotAvailable( const char *uri, int versionMajor, int versionMinor, const char *qmlName,
+                                 const QString &message )
 {
-   return qmlRegisterUncreatableType<QDeclarativeTypeNotAvailable>(uri, versionMajor, versionMinor, qmlName, message);
+    return qmlRegisterUncreatableType<QDeclarativeTypeNotAvailable>( uri, versionMajor, versionMinor, qmlName, message );
 }
 
 QDeclarativeTypeNotAvailable::QDeclarativeTypeNotAvailable() { }

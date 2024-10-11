@@ -33,40 +33,40 @@ class QEventTransitionPrivate;
 
 class Q_CORE_EXPORT QEventTransition : public QAbstractTransition
 {
-   CORE_CS_OBJECT(QEventTransition)
+    CORE_LSCS_OBJECT( QEventTransition )
 
-   CORE_CS_PROPERTY_READ(eventSource,  eventSource)
-   CORE_CS_PROPERTY_WRITE(eventSource, setEventSource)
+    CORE_LSCS_PROPERTY_READ( eventSource,  eventSource )
+    CORE_LSCS_PROPERTY_WRITE( eventSource, setEventSource )
 
-   CORE_CS_PROPERTY_READ(eventType,  eventType)
-   CORE_CS_PROPERTY_WRITE(eventType, setEventType)
+    CORE_LSCS_PROPERTY_READ( eventType,  eventType )
+    CORE_LSCS_PROPERTY_WRITE( eventType, setEventType )
 
- public:
-   QEventTransition(QState *sourceState = nullptr);
-   QEventTransition(QObject *object, QEvent::Type type, QState *sourceState = nullptr);
+public:
+    QEventTransition( QState *sourceState = nullptr );
+    QEventTransition( QObject *object, QEvent::Type type, QState *sourceState = nullptr );
 
-   QEventTransition(const QEventTransition &) = delete;
-   QEventTransition &operator=(const QEventTransition &) = delete;
+    QEventTransition( const QEventTransition & ) = delete;
+    QEventTransition &operator=( const QEventTransition & ) = delete;
 
-   ~QEventTransition();
+    ~QEventTransition();
 
-   QObject *eventSource() const;
-   void setEventSource(QObject *object);
+    QObject *eventSource() const;
+    void setEventSource( QObject *object );
 
-   QEvent::Type eventType() const;
-   void setEventType(QEvent::Type type);
+    QEvent::Type eventType() const;
+    void setEventType( QEvent::Type type );
 
- protected:
-   bool eventTest(QEvent *event) override;
-   void onTransition(QEvent *event) override;
+protected:
+    bool eventTest( QEvent *event ) override;
+    void onTransition( QEvent *event ) override;
 
-   bool event(QEvent *event) override;
+    bool event( QEvent *event ) override;
 
-   QEventTransition(QEventTransitionPrivate &dd, QState *parent);
-   QEventTransition(QEventTransitionPrivate &dd, QObject *object, QEvent::Type type, QState *parent);
+    QEventTransition( QEventTransitionPrivate &dd, QState *parent );
+    QEventTransition( QEventTransitionPrivate &dd, QObject *object, QEvent::Type type, QState *parent );
 
- private:
-   Q_DECLARE_PRIVATE(QEventTransition)
+private:
+    Q_DECLARE_PRIVATE( QEventTransition )
 };
 
 #endif //QT_NO_STATEMACHINE

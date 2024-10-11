@@ -38,131 +38,134 @@ class QCameraFocusZoneData;
 
 class Q_MULTIMEDIA_EXPORT QCameraFocusZone
 {
- public:
-   enum FocusZoneStatus {
-      Invalid,
-      Unused,
-      Selected,
-      Focused
-   };
+public:
+    enum FocusZoneStatus
+    {
+        Invalid,
+        Unused,
+        Selected,
+        Focused
+    };
 
-   QCameraFocusZone();
-   QCameraFocusZone(const QRectF &area, FocusZoneStatus status = Selected);
-   QCameraFocusZone(const QCameraFocusZone &other);
+    QCameraFocusZone();
+    QCameraFocusZone( const QRectF &area, FocusZoneStatus status = Selected );
+    QCameraFocusZone( const QCameraFocusZone &other );
 
-   QCameraFocusZone &operator=(const QCameraFocusZone &other);
-   bool operator==(const QCameraFocusZone &other) const;
-   bool operator!=(const QCameraFocusZone &other) const;
+    QCameraFocusZone &operator=( const QCameraFocusZone &other );
+    bool operator==( const QCameraFocusZone &other ) const;
+    bool operator!=( const QCameraFocusZone &other ) const;
 
-   ~QCameraFocusZone();
+    ~QCameraFocusZone();
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QRectF area() const;
+    QRectF area() const;
 
-   FocusZoneStatus status() const;
-   void setStatus(FocusZoneStatus status);
+    FocusZoneStatus status() const;
+    void setStatus( FocusZoneStatus status );
 
- private:
-   QSharedDataPointer<QCameraFocusZoneData> d;
+private:
+    QSharedDataPointer<QCameraFocusZoneData> d;
 };
 
 using QCameraFocusZoneList = QList<QCameraFocusZone>;
 
 class Q_MULTIMEDIA_EXPORT QCameraFocus : public QObject
 {
-   MULTI_CS_OBJECT(QCameraFocus)
+    MULTI_LSCS_OBJECT( QCameraFocus )
 
-   MULTI_CS_PROPERTY_READ(focusMode, focusMode)
-   MULTI_CS_PROPERTY_WRITE(focusMode, setFocusMode)
+    MULTI_LSCS_PROPERTY_READ( focusMode, focusMode )
+    MULTI_LSCS_PROPERTY_WRITE( focusMode, setFocusMode )
 
-   MULTI_CS_PROPERTY_READ(focusPointMode, focusPointMode)
-   MULTI_CS_PROPERTY_WRITE(focusPointMode, setFocusPointMode)
+    MULTI_LSCS_PROPERTY_READ( focusPointMode, focusPointMode )
+    MULTI_LSCS_PROPERTY_WRITE( focusPointMode, setFocusPointMode )
 
-   MULTI_CS_PROPERTY_READ(customFocusPoint, customFocusPoint)
-   MULTI_CS_PROPERTY_WRITE(customFocusPoint, setCustomFocusPoint)
+    MULTI_LSCS_PROPERTY_READ( customFocusPoint, customFocusPoint )
+    MULTI_LSCS_PROPERTY_WRITE( customFocusPoint, setCustomFocusPoint )
 
-   MULTI_CS_PROPERTY_READ(focusZones, focusZones)
-   MULTI_CS_PROPERTY_NOTIFY(focusZones, focusZonesChanged)
+    MULTI_LSCS_PROPERTY_READ( focusZones, focusZones )
+    MULTI_LSCS_PROPERTY_NOTIFY( focusZones, focusZonesChanged )
 
-   MULTI_CS_PROPERTY_READ(opticalZoom, opticalZoom)
-   MULTI_CS_PROPERTY_NOTIFY(opticalZoom, opticalZoomChanged)
+    MULTI_LSCS_PROPERTY_READ( opticalZoom, opticalZoom )
+    MULTI_LSCS_PROPERTY_NOTIFY( opticalZoom, opticalZoomChanged )
 
-   MULTI_CS_PROPERTY_READ(digitalZoom, digitalZoom)
-   MULTI_CS_PROPERTY_NOTIFY(digitalZoom, digitalZoomChanged)
+    MULTI_LSCS_PROPERTY_READ( digitalZoom, digitalZoom )
+    MULTI_LSCS_PROPERTY_NOTIFY( digitalZoom, digitalZoomChanged )
 
-   MULTI_CS_ENUM(FocusMode)
-   MULTI_CS_ENUM(FocusPointMode)
+    MULTI_LSCS_ENUM( FocusMode )
+    MULTI_LSCS_ENUM( FocusPointMode )
 
- public:
-   enum FocusMode {
-      ManualFocus     = 0x1,
-      HyperfocalFocus = 0x02,
-      InfinityFocus   = 0x04,
-      AutoFocus       = 0x8,
-      ContinuousFocus = 0x10,
-      MacroFocus      = 0x20
-   };
-   using FocusModes = QFlags<FocusMode>;
+public:
+    enum FocusMode
+    {
+        ManualFocus     = 0x1,
+        HyperfocalFocus = 0x02,
+        InfinityFocus   = 0x04,
+        AutoFocus       = 0x8,
+        ContinuousFocus = 0x10,
+        MacroFocus      = 0x20
+    };
+    using FocusModes = QFlags<FocusMode>;
 
-   enum FocusPointMode {
-      FocusPointAuto,
-      FocusPointCenter,
-      FocusPointFaceDetection,
-      FocusPointCustom
-   };
+    enum FocusPointMode
+    {
+        FocusPointAuto,
+        FocusPointCenter,
+        FocusPointFaceDetection,
+        FocusPointCustom
+    };
 
-   QCameraFocus(const QCameraFocus &) = delete;
-   QCameraFocus &operator=(const QCameraFocus &) = delete;
+    QCameraFocus( const QCameraFocus & ) = delete;
+    QCameraFocus &operator=( const QCameraFocus & ) = delete;
 
-   bool isAvailable() const;
+    bool isAvailable() const;
 
-   FocusModes focusMode() const;
-   void setFocusMode(FocusModes mode);
-   bool isFocusModeSupported(FocusModes mode) const;
+    FocusModes focusMode() const;
+    void setFocusMode( FocusModes mode );
+    bool isFocusModeSupported( FocusModes mode ) const;
 
-   QCameraFocus::FocusPointMode focusPointMode() const;
-   void setFocusPointMode(QCameraFocus::FocusPointMode mode);
-   bool isFocusPointModeSupported(QCameraFocus::FocusPointMode mode) const;
-   QPointF customFocusPoint() const;
-   void setCustomFocusPoint(const QPointF &point);
+    QCameraFocus::FocusPointMode focusPointMode() const;
+    void setFocusPointMode( QCameraFocus::FocusPointMode mode );
+    bool isFocusPointModeSupported( QCameraFocus::FocusPointMode mode ) const;
+    QPointF customFocusPoint() const;
+    void setCustomFocusPoint( const QPointF &point );
 
-   QCameraFocusZoneList focusZones() const;
+    QCameraFocusZoneList focusZones() const;
 
-   double maximumOpticalZoom() const;
-   double maximumDigitalZoom() const;
-   double opticalZoom() const;
-   double digitalZoom() const;
+    double maximumOpticalZoom() const;
+    double maximumDigitalZoom() const;
+    double opticalZoom() const;
+    double digitalZoom() const;
 
-   void zoomTo(double opticalZoom, double digitalZoom);
+    void zoomTo( double opticalZoom, double digitalZoom );
 
-   MULTI_CS_SIGNAL_1(Public, void opticalZoomChanged(double value))
-   MULTI_CS_SIGNAL_2(opticalZoomChanged, value)
-   MULTI_CS_SIGNAL_1(Public, void digitalZoomChanged(double value))
-   MULTI_CS_SIGNAL_2(digitalZoomChanged, value)
+    MULTI_LSCS_SIGNAL_1( Public, void opticalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( opticalZoomChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void digitalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( digitalZoomChanged, value )
 
-   MULTI_CS_SIGNAL_1(Public, void focusZonesChanged())
-   MULTI_CS_SIGNAL_2(focusZonesChanged)
+    MULTI_LSCS_SIGNAL_1( Public, void focusZonesChanged() )
+    MULTI_LSCS_SIGNAL_2( focusZonesChanged )
 
-   MULTI_CS_SIGNAL_1(Public, void maximumOpticalZoomChanged(double value))
-   MULTI_CS_SIGNAL_2(maximumOpticalZoomChanged, value)
-   MULTI_CS_SIGNAL_1(Public, void maximumDigitalZoomChanged(double value))
-   MULTI_CS_SIGNAL_2(maximumDigitalZoomChanged, value)
+    MULTI_LSCS_SIGNAL_1( Public, void maximumOpticalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( maximumOpticalZoomChanged, value )
+    MULTI_LSCS_SIGNAL_1( Public, void maximumDigitalZoomChanged( double value ) )
+    MULTI_LSCS_SIGNAL_2( maximumDigitalZoomChanged, value )
 
- private:
-   QCameraFocus(QCamera *camera);
-   ~QCameraFocus();
+private:
+    QCameraFocus( QCamera *camera );
+    ~QCameraFocus();
 
-   Q_DECLARE_PRIVATE(QCameraFocus)
+    Q_DECLARE_PRIVATE( QCameraFocus )
 
-   QCameraFocusPrivate *d_ptr;
+    QCameraFocusPrivate *d_ptr;
 
-   friend class QCamera;
-   friend class QCameraPrivate;
+    friend class QCamera;
+    friend class QCameraPrivate;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QCameraFocus::FocusModes)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QCameraFocus::FocusModes )
 
-CS_DECLARE_METATYPE(QCameraFocusZone)
+LSCS_DECLARE_METATYPE( QCameraFocusZone )
 
 #endif

@@ -34,58 +34,59 @@ class QLocalSocket;
 
 class Q_NETWORK_EXPORT QLocalServer : public QObject
 {
-   NET_CS_OBJECT(QLocalServer)
+    NET_LSCS_OBJECT( QLocalServer )
 
-   NET_CS_PROPERTY_READ(socketOptions,  socketOptions)
-   NET_CS_PROPERTY_WRITE(socketOptions, setSocketOptions)
+    NET_LSCS_PROPERTY_READ( socketOptions,  socketOptions )
+    NET_LSCS_PROPERTY_WRITE( socketOptions, setSocketOptions )
 
- public:
-   enum SocketOption {
-      NoOptions = 0x00,
-      UserAccessOption  = 0x01,
-      GroupAccessOption = 0x02,
-      OtherAccessOption = 0x04,
-      WorldAccessOption = 0x07
-   };
-   using SocketOptions = QFlags<SocketOption>;
+public:
+    enum SocketOption
+    {
+        NoOptions = 0x00,
+        UserAccessOption  = 0x01,
+        GroupAccessOption = 0x02,
+        OtherAccessOption = 0x04,
+        WorldAccessOption = 0x07
+    };
+    using SocketOptions = QFlags<SocketOption>;
 
-   explicit QLocalServer(QObject *parent = nullptr);
+    explicit QLocalServer( QObject *parent = nullptr );
 
-   QLocalServer(const QLocalServer &) = delete;
-   QLocalServer &operator=(const QLocalServer &) = delete;
+    QLocalServer( const QLocalServer & ) = delete;
+    QLocalServer &operator=( const QLocalServer & ) = delete;
 
-   ~QLocalServer();
+    ~QLocalServer();
 
-   void close();
-   QString errorString() const;
-   virtual bool hasPendingConnections() const;
-   bool isListening() const;
-   bool listen(const QString &name);
-   bool listen(qintptr socketDescriptor);
-   int maxPendingConnections() const;
-   virtual QLocalSocket *nextPendingConnection();
-   QString serverName() const;
-   QString fullServerName() const;
-   static bool removeServer(const QString &name);
-   QAbstractSocket::SocketError serverError() const;
-   void setMaxPendingConnections(int numConnections);
-   bool waitForNewConnection(int msec = 0, bool *timedOut = nullptr);
+    void close();
+    QString errorString() const;
+    virtual bool hasPendingConnections() const;
+    bool isListening() const;
+    bool listen( const QString &name );
+    bool listen( qintptr socketDescriptor );
+    int maxPendingConnections() const;
+    virtual QLocalSocket *nextPendingConnection();
+    QString serverName() const;
+    QString fullServerName() const;
+    static bool removeServer( const QString &name );
+    QAbstractSocket::SocketError serverError() const;
+    void setMaxPendingConnections( int numConnections );
+    bool waitForNewConnection( int msec = 0, bool *timedOut = nullptr );
 
-   void setSocketOptions(SocketOptions options);
-   SocketOptions socketOptions() const;
+    void setSocketOptions( SocketOptions options );
+    SocketOptions socketOptions() const;
 
-   NET_CS_SIGNAL_1(Public, void newConnection())
-   NET_CS_SIGNAL_2(newConnection)
+    NET_LSCS_SIGNAL_1( Public, void newConnection() )
+    NET_LSCS_SIGNAL_2( newConnection )
 
- protected:
-   virtual void incomingConnection(qintptr socketDescriptor);
-   QScopedPointer<QLocalServerPrivate> d_ptr;
+protected:
+    virtual void incomingConnection( qintptr socketDescriptor );
+    QScopedPointer<QLocalServerPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QLocalServer)
+private:
+    Q_DECLARE_PRIVATE( QLocalServer )
 
-   NET_CS_SLOT_1(Private, void _q_onNewConnection())
-   NET_CS_SLOT_2(_q_onNewConnection)
+    NET_LSCS_SLOT_1( Private, void _q_onNewConnection() )
+    NET_LSCS_SLOT_2( _q_onNewConnection )
 };
 
 #endif // QT_NO_LOCALSERVER

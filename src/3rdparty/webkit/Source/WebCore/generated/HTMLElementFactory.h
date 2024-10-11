@@ -33,23 +33,27 @@
 #include <wtf/Forward.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
-    class Element;
-    class Document;
-    class QualifiedName;
+namespace WebCore
+{
+class Element;
+class Document;
+class QualifiedName;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class HTMLElement;
-     class HTMLFormElement;
-    // The idea behind this class is that there will eventually be a mapping from namespace URIs to ElementFactories that can dispense
-    // elements. In a compound document world, the generic createElement function (will end up being virtual) will be called.
-    class HTMLElementFactory {
-    public:
-        PassRefPtr<Element> createElement(const WebCore::QualifiedName&, WebCore::Document*, bool createdByParser = true);
-        static PassRefPtr<HTMLElement> createHTMLElement(const WebCore::QualifiedName&, WebCore::Document*, HTMLFormElement* = 0, bool createdByParser = true);
-    };
+class HTMLElement;
+class HTMLFormElement;
+// The idea behind this class is that there will eventually be a mapping from namespace URIs to ElementFactories that can dispense
+// elements. In a compound document world, the generic createElement function (will end up being virtual) will be called.
+class HTMLElementFactory
+{
+public:
+    PassRefPtr<Element> createElement( const WebCore::QualifiedName &, WebCore::Document *, bool createdByParser = true );
+    static PassRefPtr<HTMLElement> createHTMLElement( const WebCore::QualifiedName &, WebCore::Document *, HTMLFormElement * = 0,
+            bool createdByParser = true );
+};
 }
 
 #endif // HTMLElementFactory_h

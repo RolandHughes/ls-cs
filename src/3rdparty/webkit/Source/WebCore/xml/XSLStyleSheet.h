@@ -35,74 +35,91 @@
 
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class XSLImportRule;
-    
-class XSLStyleSheet : public StyleSheet {
+
+class XSLStyleSheet : public StyleSheet
+{
 public:
 #if !USE(QXMLQUERY)
-    static PassRefPtr<XSLStyleSheet> create(XSLImportRule* parentImport, const String& originalURL, const KURL& finalURL)
+    static PassRefPtr<XSLStyleSheet> create( XSLImportRule *parentImport, const String &originalURL, const KURL &finalURL )
     {
-        return adoptRef(new XSLStyleSheet(parentImport, originalURL, finalURL));
+        return adoptRef( new XSLStyleSheet( parentImport, originalURL, finalURL ) );
     }
 #endif
-    static PassRefPtr<XSLStyleSheet> create(ProcessingInstruction* parentNode, const String& originalURL, const KURL& finalURL)
+    static PassRefPtr<XSLStyleSheet> create( ProcessingInstruction *parentNode, const String &originalURL, const KURL &finalURL )
     {
-        return adoptRef(new XSLStyleSheet(parentNode, originalURL, finalURL, false));
+        return adoptRef( new XSLStyleSheet( parentNode, originalURL, finalURL, false ) );
     }
-    static PassRefPtr<XSLStyleSheet> createEmbedded(ProcessingInstruction* parentNode, const KURL& finalURL)
+    static PassRefPtr<XSLStyleSheet> createEmbedded( ProcessingInstruction *parentNode, const KURL &finalURL )
     {
-        return adoptRef(new XSLStyleSheet(parentNode, finalURL.string(), finalURL, true));
+        return adoptRef( new XSLStyleSheet( parentNode, finalURL.string(), finalURL, true ) );
     }
 
     // Taking an arbitrary node is unsafe, because owner node pointer can become stale.
     // XSLTProcessor ensures that the stylesheet doesn't outlive its parent, in part by not exposing it to JavaScript.
-    static PassRefPtr<XSLStyleSheet> createForXSLTProcessor(Node* parentNode, const String& originalURL, const KURL& finalURL)
+    static PassRefPtr<XSLStyleSheet> createForXSLTProcessor( Node *parentNode, const String &originalURL, const KURL &finalURL )
     {
-        return adoptRef(new XSLStyleSheet(parentNode, originalURL, finalURL, false));
+        return adoptRef( new XSLStyleSheet( parentNode, originalURL, finalURL, false ) );
     }
 
     virtual ~XSLStyleSheet();
-    
-    virtual bool isXSLStyleSheet() const { return true; }
 
-    virtual String type() const { return "text/xml"; }
+    virtual bool isXSLStyleSheet() const
+    {
+        return true;
+    }
 
-    virtual bool parseString(const String &string, bool strict = true);
-    
+    virtual String type() const
+    {
+        return "text/xml";
+    }
+
+    virtual bool parseString( const String &string, bool strict = true );
+
     virtual bool isLoading();
     virtual void checkLoaded();
 
     void loadChildSheets();
-    void loadChildSheet(const String& href);
+    void loadChildSheet( const String &href );
 
-    CachedResourceLoader* cachedResourceLoader();
+    CachedResourceLoader *cachedResourceLoader();
 
-    Document* ownerDocument();
-    XSLStyleSheet* parentStyleSheet() const { return m_parentStyleSheet; }
-    void setParentStyleSheet(XSLStyleSheet* parent);
+    Document *ownerDocument();
+    XSLStyleSheet *parentStyleSheet() const
+    {
+        return m_parentStyleSheet;
+    }
+    void setParentStyleSheet( XSLStyleSheet *parent );
 
 #if USE(QXMLQUERY)
-    String sheetString() const { return m_sheetString; }
+    String sheetString() const
+    {
+        return m_sheetString;
+    }
 #else
     xmlDocPtr document();
     xsltStylesheetPtr compileStyleSheet();
-    xmlDocPtr locateStylesheetSubResource(xmlDocPtr parentDoc, const xmlChar* uri);
+    xmlDocPtr locateStylesheetSubResource( xmlDocPtr parentDoc, const xmlChar *uri );
 #endif
 
     void clearDocuments();
 
     void markAsProcessed();
-    bool processed() const { return m_processed; }
+    bool processed() const
+    {
+        return m_processed;
+    }
 
 private:
-    XSLStyleSheet(Node* parentNode, const String& originalURL, const KURL& finalURL, bool embedded);
+    XSLStyleSheet( Node *parentNode, const String &originalURL, const KURL &finalURL, bool embedded );
 #if !USE(QXMLQUERY)
-    XSLStyleSheet(XSLImportRule* parentImport, const String& originalURL, const KURL& finalURL);
+    XSLStyleSheet( XSLImportRule *parentImport, const String &originalURL, const KURL &finalURL );
 #endif
 
-    Document* m_ownerDocument;
+    Document *m_ownerDocument;
     bool m_embedded;
     bool m_processed;
 
@@ -112,8 +129,8 @@ private:
     xmlDocPtr m_stylesheetDoc;
     bool m_stylesheetDocTaken;
 #endif
-    
-    XSLStyleSheet* m_parentStyleSheet;
+
+    XSLStyleSheet *m_parentStyleSheet;
 };
 
 } // namespace WebCore

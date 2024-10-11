@@ -33,5 +33,5 @@ using namespace WebKit;
 
 WKTypeID WKGraphicsContextGetTypeID()
 {
-    return toAPI(WebGraphicsContext::APIType);
+    return toAPI( WebGraphicsContext::APIType );
 }

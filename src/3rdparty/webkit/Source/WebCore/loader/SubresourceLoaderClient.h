@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -29,31 +29,36 @@
 #ifndef SubresourceLoaderClient_h
 #define SubresourceLoaderClient_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AuthenticationChallenge;
 class ResourceError;
 class ResourceRequest;
 class ResourceResponse;
 class SubresourceLoader;
-    
-class SubresourceLoaderClient {
+
+class SubresourceLoaderClient
+{
 public:
-    virtual ~SubresourceLoaderClient() { } 
+    virtual ~SubresourceLoaderClient() { }
 
     // request may be modified
-    virtual void willSendRequest(SubresourceLoader*, ResourceRequest&, const ResourceResponse& /*redirectResponse*/) { }
-    virtual void didSendData(SubresourceLoader*, unsigned long long /*bytesSent*/, unsigned long long /*totalBytesToBeSent*/) { }
+    virtual void willSendRequest( SubresourceLoader *, ResourceRequest &, const ResourceResponse & /*redirectResponse*/ ) { }
+    virtual void didSendData( SubresourceLoader *, unsigned long long /*bytesSent*/, unsigned long long /*totalBytesToBeSent*/ ) { }
 
-    virtual void didReceiveResponse(SubresourceLoader*, const ResourceResponse&) { }
-    virtual void didReceiveData(SubresourceLoader*, const char*, int /*dataLength*/) { }
-    virtual void didReceiveCachedMetadata(SubresourceLoader*, const char*, int /*dataLength*/) { }
-    virtual void didFinishLoading(SubresourceLoader*, double /*finishTime*/) { }
-    virtual void didFail(SubresourceLoader*, const ResourceError&) { }
-    
-    virtual bool getShouldUseCredentialStorage(SubresourceLoader*, bool& /*shouldUseCredentialStorage*/) { return false; }
-    virtual void didReceiveAuthenticationChallenge(SubresourceLoader*, const AuthenticationChallenge&) { }
-    virtual void receivedCancellation(SubresourceLoader*, const AuthenticationChallenge&) { }
+    virtual void didReceiveResponse( SubresourceLoader *, const ResourceResponse & ) { }
+    virtual void didReceiveData( SubresourceLoader *, const char *, int /*dataLength*/ ) { }
+    virtual void didReceiveCachedMetadata( SubresourceLoader *, const char *, int /*dataLength*/ ) { }
+    virtual void didFinishLoading( SubresourceLoader *, double /*finishTime*/ ) { }
+    virtual void didFail( SubresourceLoader *, const ResourceError & ) { }
+
+    virtual bool getShouldUseCredentialStorage( SubresourceLoader *, bool & /*shouldUseCredentialStorage*/ )
+    {
+        return false;
+    }
+    virtual void didReceiveAuthenticationChallenge( SubresourceLoader *, const AuthenticationChallenge & ) { }
+    virtual void receivedCancellation( SubresourceLoader *, const AuthenticationChallenge & ) { }
 
 };
 

@@ -32,53 +32,55 @@ class QDebug;
 class QSslEllipticCurve;
 
 // qHash is a friend, but we can not use default arguments for friends
-uint qHash(QSslEllipticCurve curve, uint seed = 0);
+uint qHash( QSslEllipticCurve curve, uint seed = 0 );
 
-class Q_NETWORK_EXPORT QSslEllipticCurve {
+class Q_NETWORK_EXPORT QSslEllipticCurve
+{
 
 public:
-   constexpr QSslEllipticCurve()
-      : id(0)
-   {
-   }
+    constexpr QSslEllipticCurve()
+        : id( 0 )
+    {
+    }
 
-   static QSslEllipticCurve fromShortName(const QString &name);
-   static QSslEllipticCurve fromLongName(const QString &name);
+    static QSslEllipticCurve fromShortName( const QString &name );
+    static QSslEllipticCurve fromLongName( const QString &name );
 
-   [[nodiscard]] QString shortName() const;
-   [[nodiscard]] QString longName() const;
+    [[nodiscard]] QString shortName() const;
+    [[nodiscard]] QString longName() const;
 
-   constexpr bool isValid() const {
-      return id != 0;
-   }
+    constexpr bool isValid() const
+    {
+        return id != 0;
+    }
 
-   bool isTlsNamedCurve() const;
+    bool isTlsNamedCurve() const;
 
 private:
-   int id;
+    int id;
 
-   friend constexpr bool operator==(QSslEllipticCurve lhs, QSslEllipticCurve rhs);
-   friend uint qHash(QSslEllipticCurve curve, uint seed);
+    friend constexpr bool operator==( QSslEllipticCurve lhs, QSslEllipticCurve rhs );
+    friend uint qHash( QSslEllipticCurve curve, uint seed );
 
-   friend class QSslSocketPrivate;
-   friend class QSslSocketBackendPrivate;
+    friend class QSslSocketPrivate;
+    friend class QSslSocketBackendPrivate;
 };
 
-inline uint qHash(QSslEllipticCurve curve, uint seed)
+inline uint qHash( QSslEllipticCurve curve, uint seed )
 {
-   return qHash(curve.id, seed);
+    return qHash( curve.id, seed );
 }
 
-constexpr inline bool operator==(QSslEllipticCurve lhs, QSslEllipticCurve rhs)
+constexpr inline bool operator==( QSslEllipticCurve lhs, QSslEllipticCurve rhs )
 {
-   return lhs.id == rhs.id;
+    return lhs.id == rhs.id;
 }
 
-constexpr inline bool operator!=(QSslEllipticCurve lhs, QSslEllipticCurve rhs)
+constexpr inline bool operator!=( QSslEllipticCurve lhs, QSslEllipticCurve rhs )
 {
-   return !operator==(lhs, rhs);
+    return !operator==( lhs, rhs );
 }
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, QSslEllipticCurve curve);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, QSslEllipticCurve curve );
 
 #endif

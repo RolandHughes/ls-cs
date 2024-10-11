@@ -32,142 +32,143 @@
 
 class QStyleAnimation : public QAbstractAnimation
 {
-   GUI_CS_OBJECT(QStyleAnimation)
+    GUI_LSCS_OBJECT( QStyleAnimation )
 
- public:
-   QStyleAnimation(QObject *target);
-   virtual ~QStyleAnimation();
+public:
+    QStyleAnimation( QObject *target );
+    virtual ~QStyleAnimation();
 
-   QObject *target() const;
+    QObject *target() const;
 
-   int duration() const override;
-   void setDuration(int duration);
+    int duration() const override;
+    void setDuration( int duration );
 
-   int delay() const;
-   void setDelay(int delay);
+    int delay() const;
+    void setDelay( int delay );
 
-   QTime startTime() const;
-   void setStartTime(const QTime &time);
+    QTime startTime() const;
+    void setStartTime( const QTime &time );
 
-   enum FrameRate {
-      DefaultFps,
-      SixtyFps,
-      ThirtyFps,
-      TwentyFps
-   };
+    enum FrameRate
+    {
+        DefaultFps,
+        SixtyFps,
+        ThirtyFps,
+        TwentyFps
+    };
 
-   FrameRate frameRate() const;
-   void setFrameRate(FrameRate fps);
+    FrameRate frameRate() const;
+    void setFrameRate( FrameRate fps );
 
-   void updateTarget();
+    void updateTarget();
 
-   GUI_CS_SLOT_1(Public, void start())
-   GUI_CS_SLOT_2(start)
+    GUI_LSCS_SLOT_1( Public, void start() )
+    GUI_LSCS_SLOT_2( start )
 
- protected:
-   virtual bool isUpdateNeeded() const;
-   void updateCurrentTime(int time) override;
+protected:
+    virtual bool isUpdateNeeded() const;
+    void updateCurrentTime( int time ) override;
 
- private:
-   int _delay;
-   int _duration;
-   QTime _startTime;
-   FrameRate _fps;
-   int _skip;
+private:
+    int _delay;
+    int _duration;
+    QTime _startTime;
+    FrameRate _fps;
+    int _skip;
 };
 
 class QProgressStyleAnimation : public QStyleAnimation
 {
-   GUI_CS_OBJECT(QProgressStyleAnimation)
+    GUI_LSCS_OBJECT( QProgressStyleAnimation )
 
- public:
-   QProgressStyleAnimation(int speed, QObject *target);
+public:
+    QProgressStyleAnimation( int speed, QObject *target );
 
-   int animationStep() const;
-   int progressStep(int width) const;
+    int animationStep() const;
+    int progressStep( int width ) const;
 
-   int speed() const;
-   void setSpeed(int speed);
+    int speed() const;
+    void setSpeed( int speed );
 
- protected:
-   bool isUpdateNeeded() const override;
+protected:
+    bool isUpdateNeeded() const override;
 
- private:
-   int _speed;
-   mutable int _step;
+private:
+    int _speed;
+    mutable int _step;
 };
 
 class QNumberStyleAnimation : public QStyleAnimation
 {
-   GUI_CS_OBJECT(QNumberStyleAnimation)
+    GUI_LSCS_OBJECT( QNumberStyleAnimation )
 
- public:
-   QNumberStyleAnimation(QObject *target);
+public:
+    QNumberStyleAnimation( QObject *target );
 
-   qreal startValue() const;
-   void setStartValue(qreal value);
+    qreal startValue() const;
+    void setStartValue( qreal value );
 
-   qreal endValue() const;
-   void setEndValue(qreal value);
+    qreal endValue() const;
+    void setEndValue( qreal value );
 
-   qreal currentValue() const;
+    qreal currentValue() const;
 
- protected:
-   bool isUpdateNeeded() const override;
+protected:
+    bool isUpdateNeeded() const override;
 
- private:
-   qreal _start;
-   qreal _end;
-   mutable qreal _prev;
+private:
+    qreal _start;
+    qreal _end;
+    mutable qreal _prev;
 };
 
 class QBlendStyleAnimation : public QStyleAnimation
 {
-   GUI_CS_OBJECT(QBlendStyleAnimation)
+    GUI_LSCS_OBJECT( QBlendStyleAnimation )
 
- public:
-   enum Type { Transition, Pulse };
+public:
+    enum Type { Transition, Pulse };
 
-   QBlendStyleAnimation(Type type, QObject *target);
+    QBlendStyleAnimation( Type type, QObject *target );
 
-   QImage startImage() const;
-   void setStartImage(const QImage &image);
+    QImage startImage() const;
+    void setStartImage( const QImage &image );
 
-   QImage endImage() const;
-   void setEndImage(const QImage &image);
+    QImage endImage() const;
+    void setEndImage( const QImage &image );
 
-   QImage currentImage() const;
+    QImage currentImage() const;
 
- protected:
-   void updateCurrentTime(int time) override;
+protected:
+    void updateCurrentTime( int time ) override;
 
- private:
-   Type _type;
-   QImage _start;
-   QImage _end;
-   QImage _current;
+private:
+    Type _type;
+    QImage _start;
+    QImage _end;
+    QImage _current;
 };
 
 class QScrollbarStyleAnimation : public QNumberStyleAnimation
 {
-   GUI_CS_OBJECT(QScrollbarStyleAnimation)
+    GUI_LSCS_OBJECT( QScrollbarStyleAnimation )
 
- public:
-   enum Mode { Activating, Deactivating };
+public:
+    enum Mode { Activating, Deactivating };
 
-   QScrollbarStyleAnimation(Mode mode, QObject *target);
+    QScrollbarStyleAnimation( Mode mode, QObject *target );
 
-   Mode mode() const;
+    Mode mode() const;
 
-   bool wasActive() const;
-   void setActive(bool active);
+    bool wasActive() const;
+    void setActive( bool active );
 
- private:
-   GUI_CS_SLOT_1(Private, void updateCurrentTime(int time) override)
-   GUI_CS_SLOT_2(updateCurrentTime)
+private:
+    GUI_LSCS_SLOT_1( Private, void updateCurrentTime( int time ) override )
+    GUI_LSCS_SLOT_2( updateCurrentTime )
 
-   Mode _mode;
-   bool _active;
+    Mode _mode;
+    bool _active;
 };
 
 #endif // QT_NO_ANIMATION

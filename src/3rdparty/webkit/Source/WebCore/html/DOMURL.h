@@ -32,26 +32,34 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Blob;
 class ScriptExecutionContext;
 
-class DOMURL : public RefCounted<DOMURL> {
+class DOMURL : public RefCounted<DOMURL>
+{
 public:
-    static PassRefPtr<DOMURL> create(ScriptExecutionContext* scriptExecutionContext) { return adoptRef(new DOMURL(scriptExecutionContext)); }
+    static PassRefPtr<DOMURL> create( ScriptExecutionContext *scriptExecutionContext )
+    {
+        return adoptRef( new DOMURL( scriptExecutionContext ) );
+    }
     ~DOMURL();
 
-    String createObjectURL(Blob*);
-    void revokeObjectURL(const String&);
+    String createObjectURL( Blob * );
+    void revokeObjectURL( const String & );
 
     void contextDestroyed();
-    ScriptExecutionContext* scriptExecutionContext() const { return m_scriptExecutionContext; }
+    ScriptExecutionContext *scriptExecutionContext() const
+    {
+        return m_scriptExecutionContext;
+    }
 
 private:
-    explicit DOMURL(ScriptExecutionContext*);
+    explicit DOMURL( ScriptExecutionContext * );
 
-    ScriptExecutionContext* m_scriptExecutionContext;
+    ScriptExecutionContext *m_scriptExecutionContext;
 };
 
 } // namespace WebCore

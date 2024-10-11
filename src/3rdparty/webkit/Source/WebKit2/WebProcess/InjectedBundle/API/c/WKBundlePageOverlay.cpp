@@ -35,110 +35,136 @@
 using namespace WebCore;
 using namespace WebKit;
 
-class PageOverlayClientImpl : public PageOverlay::Client {
+class PageOverlayClientImpl : public PageOverlay::Client
+{
 public:
-    static PassOwnPtr<PageOverlayClientImpl> create(WKBundlePageOverlayClient* client)
+    static PassOwnPtr<PageOverlayClientImpl> create( WKBundlePageOverlayClient *client )
     {
-        return adoptPtr(new PageOverlayClientImpl(client));
+        return adoptPtr( new PageOverlayClientImpl( client ) );
     }
 
 private:
-    explicit PageOverlayClientImpl(WKBundlePageOverlayClient* client)
+    explicit PageOverlayClientImpl( WKBundlePageOverlayClient *client )
         : m_client()
     {
-        if (client)
+        if ( client )
+        {
             m_client = *client;
+        }
     }
 
     // PageOverlay::Client.
-    virtual void pageOverlayDestroyed(PageOverlay*)
+    virtual void pageOverlayDestroyed( PageOverlay * )
     {
         delete this;
     }
 
-    virtual void willMoveToWebPage(PageOverlay* pageOverlay, WebPage* page)
+    virtual void willMoveToWebPage( PageOverlay *pageOverlay, WebPage *page )
     {
-        if (!m_client.willMoveToPage)
+        if ( !m_client.willMoveToPage )
+        {
             return;
-
-        m_client.willMoveToPage(toAPI(pageOverlay), toAPI(page), m_client.clientInfo);
-    }
-    
-    virtual void didMoveToWebPage(PageOverlay* pageOverlay, WebPage* page)
-    {
-        if (!m_client.didMoveToPage)
-            return;
-
-        m_client.didMoveToPage(toAPI(pageOverlay), toAPI(page), m_client.clientInfo);
-    }
-
-    virtual void drawRect(PageOverlay* pageOverlay, GraphicsContext& graphicsContext, const IntRect& dirtyRect)
-    {
-        if (!m_client.drawRect)
-            return;
-
-        m_client.drawRect(toAPI(pageOverlay), graphicsContext.platformContext(), toAPI(dirtyRect), m_client.clientInfo);
-    }
-    
-    virtual bool mouseEvent(PageOverlay* pageOverlay, const WebMouseEvent& event)
-    {
-        switch (event.type()) {
-        case WebEvent::MouseDown: {
-            if (!m_client.mouseDown)
-                return false;
-
-            return m_client.mouseDown(toAPI(pageOverlay), toAPI(event.position()), toAPI(event.button()), m_client.clientInfo);
         }
-        case WebEvent::MouseUp: {
-            if (!m_client.mouseUp)
-                return false;
 
-            return m_client.mouseUp(toAPI(pageOverlay), toAPI(event.position()), toAPI(event.button()), m_client.clientInfo);
+        m_client.willMoveToPage( toAPI( pageOverlay ), toAPI( page ), m_client.clientInfo );
+    }
+
+    virtual void didMoveToWebPage( PageOverlay *pageOverlay, WebPage *page )
+    {
+        if ( !m_client.didMoveToPage )
+        {
+            return;
         }
-        case WebEvent::MouseMove: {
-            if (event.button() == WebMouseEvent::NoButton) {
-                if (!m_client.mouseMoved)
+
+        m_client.didMoveToPage( toAPI( pageOverlay ), toAPI( page ), m_client.clientInfo );
+    }
+
+    virtual void drawRect( PageOverlay *pageOverlay, GraphicsContext &graphicsContext, const IntRect &dirtyRect )
+    {
+        if ( !m_client.drawRect )
+        {
+            return;
+        }
+
+        m_client.drawRect( toAPI( pageOverlay ), graphicsContext.platformContext(), toAPI( dirtyRect ), m_client.clientInfo );
+    }
+
+    virtual bool mouseEvent( PageOverlay *pageOverlay, const WebMouseEvent &event )
+    {
+        switch ( event.type() )
+        {
+            case WebEvent::MouseDown:
+            {
+                if ( !m_client.mouseDown )
+                {
                     return false;
+                }
 
-                return m_client.mouseMoved(toAPI(pageOverlay), toAPI(event.position()), m_client.clientInfo);
+                return m_client.mouseDown( toAPI( pageOverlay ), toAPI( event.position() ), toAPI( event.button() ), m_client.clientInfo );
             }
 
-            // This is a MouseMove event with a mouse button pressed. Call mouseDragged.
-            if (!m_client.mouseDragged)
+            case WebEvent::MouseUp:
+            {
+                if ( !m_client.mouseUp )
+                {
+                    return false;
+                }
+
+                return m_client.mouseUp( toAPI( pageOverlay ), toAPI( event.position() ), toAPI( event.button() ), m_client.clientInfo );
+            }
+
+            case WebEvent::MouseMove:
+            {
+                if ( event.button() == WebMouseEvent::NoButton )
+                {
+                    if ( !m_client.mouseMoved )
+                    {
+                        return false;
+                    }
+
+                    return m_client.mouseMoved( toAPI( pageOverlay ), toAPI( event.position() ), m_client.clientInfo );
+                }
+
+                // This is a MouseMove event with a mouse button pressed. Call mouseDragged.
+                if ( !m_client.mouseDragged )
+                {
+                    return false;
+                }
+
+                return m_client.mouseDragged( toAPI( pageOverlay ), toAPI( event.position() ), toAPI( event.button() ), m_client.clientInfo );
+            }
+
+            default:
                 return false;
-
-            return m_client.mouseDragged(toAPI(pageOverlay), toAPI(event.position()), toAPI(event.button()), m_client.clientInfo);
-        }
-
-        default:
-            return false;
         }
     }
-    
+
     WKBundlePageOverlayClient m_client;
 };
 
 WKTypeID WKBundlePageOverlayGetTypeID()
 {
-    return toAPI(PageOverlay::APIType);
+    return toAPI( PageOverlay::APIType );
 }
 
-WKBundlePageOverlayRef WKBundlePageOverlayCreate(WKBundlePageOverlayClient* wkClient)
+WKBundlePageOverlayRef WKBundlePageOverlayCreate( WKBundlePageOverlayClient *wkClient )
 {
-    if (wkClient && wkClient->version)
+    if ( wkClient && wkClient->version )
+    {
         return 0;
+    }
 
-    OwnPtr<PageOverlayClientImpl> clientImpl = PageOverlayClientImpl::create(wkClient);
+    OwnPtr<PageOverlayClientImpl> clientImpl = PageOverlayClientImpl::create( wkClient );
 
-    return toAPI(PageOverlay::create(clientImpl.leakPtr()).leakRef());
+    return toAPI( PageOverlay::create( clientImpl.leakPtr() ).leakRef() );
 }
 
-void WKBundlePageOverlaySetNeedsDisplay(WKBundlePageOverlayRef bundlePageOverlayRef, WKRect rect)
+void WKBundlePageOverlaySetNeedsDisplay( WKBundlePageOverlayRef bundlePageOverlayRef, WKRect rect )
 {
-    toImpl(bundlePageOverlayRef)->setNeedsDisplay(enclosingIntRect(toFloatRect(rect)));
+    toImpl( bundlePageOverlayRef )->setNeedsDisplay( enclosingIntRect( toFloatRect( rect ) ) );
 }
 
-float WKBundlePageOverlayFractionFadedIn(WKBundlePageOverlayRef bundlePageOverlayRef)
+float WKBundlePageOverlayFractionFadedIn( WKBundlePageOverlayRef bundlePageOverlayRef )
 {
-    return toImpl(bundlePageOverlayRef)->fractionFadedIn();
+    return toImpl( bundlePageOverlayRef )->fractionFadedIn();
 }

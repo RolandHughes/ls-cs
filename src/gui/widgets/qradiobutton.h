@@ -31,31 +31,31 @@ class QStyleOptionButton;
 
 class Q_GUI_EXPORT QRadioButton : public QAbstractButton
 {
-   GUI_CS_OBJECT(QRadioButton)
+    GUI_LSCS_OBJECT( QRadioButton )
 
- public:
-   explicit QRadioButton(QWidget *parent = nullptr);
-   explicit QRadioButton(const QString &text, QWidget *parent = nullptr);
+public:
+    explicit QRadioButton( QWidget *parent = nullptr );
+    explicit QRadioButton( const QString &text, QWidget *parent = nullptr );
 
-   QRadioButton(const QRadioButton &) = delete;
-   QRadioButton &operator=(const QRadioButton &) = delete;
+    QRadioButton( const QRadioButton & ) = delete;
+    QRadioButton &operator=( const QRadioButton & ) = delete;
 
-   ~QRadioButton();
+    ~QRadioButton();
 
-   QSize sizeHint() const override;
-   QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
- protected:
-   bool event(QEvent *event) override;
-   bool hitButton(const QPoint &point) const override;
-   void paintEvent(QPaintEvent *event) override;
-   void mouseMoveEvent(QMouseEvent *event) override;
-   void initStyleOption(QStyleOptionButton *button) const;
+protected:
+    bool event( QEvent *event ) override;
+    bool hitButton( const QPoint &point ) const override;
+    void paintEvent( QPaintEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
+    void initStyleOption( QStyleOptionButton *button ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QRadioButton)
+private:
+    Q_DECLARE_PRIVATE( QRadioButton )
 
-   friend class QAccessibleButton;
+    friend class QAccessibleButton;
 };
 
 #endif

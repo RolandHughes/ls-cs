@@ -32,21 +32,24 @@
 #include "HTMLNames.h"
 #include "NodeRareData.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-TreeScope::TreeScope(Document* document)
-    : ContainerNode(document)
-    , m_parentTreeScope(0)
-    , m_numNodeListCaches(0)
+TreeScope::TreeScope( Document *document )
+    : ContainerNode( document )
+    , m_parentTreeScope( 0 )
+    , m_numNodeListCaches( 0 )
 {
 }
 
 TreeScope::~TreeScope()
 {
-    if (hasRareData())
-        rareData()->setTreeScope(0);
+    if ( hasRareData() )
+    {
+        rareData()->setTreeScope( 0 );
+    }
 }
 
 void TreeScope::destroyTreeScopeData()
@@ -55,80 +58,116 @@ void TreeScope::destroyTreeScopeData()
     m_imageMapsByName.clear();
 }
 
-void TreeScope::setParentTreeScope(TreeScope* newParentScope)
+void TreeScope::setParentTreeScope( TreeScope *newParentScope )
 {
     // A document node cannot be re-parented.
-    ASSERT(!isDocumentNode());
+    ASSERT( !isDocumentNode() );
     // Every scope other than document needs a parent scope.
-    ASSERT(newParentScope);
+    ASSERT( newParentScope );
 
     m_parentTreeScope = newParentScope;
 }
 
-Element* TreeScope::getElementById(const AtomicString& elementId) const
+Element *TreeScope::getElementById( const AtomicString &elementId ) const
 {
-    if (elementId.isEmpty())
+    if ( elementId.isEmpty() )
+    {
         return 0;
-    return m_elementsById.getElementById(elementId.impl(), this);
+    }
+
+    return m_elementsById.getElementById( elementId.impl(), this );
 }
 
-void TreeScope::addElementById(const AtomicString& elementId, Element* element)
+void TreeScope::addElementById( const AtomicString &elementId, Element *element )
 {
-    m_elementsById.add(elementId.impl(), element);
+    m_elementsById.add( elementId.impl(), element );
 }
 
-void TreeScope::removeElementById(const AtomicString& elementId, Element* element)
+void TreeScope::removeElementById( const AtomicString &elementId, Element *element )
 {
-    m_elementsById.remove(elementId.impl(), element);
+    m_elementsById.remove( elementId.impl(), element );
 }
 
-void TreeScope::addImageMap(HTMLMapElement* imageMap)
+void TreeScope::addImageMap( HTMLMapElement *imageMap )
 {
-    AtomicStringImpl* name = imageMap->getName().impl();
-    if (!name)
+    AtomicStringImpl *name = imageMap->getName().impl();
+
+    if ( !name )
+    {
         return;
-    m_imageMapsByName.add(name, imageMap);
+    }
+
+    m_imageMapsByName.add( name, imageMap );
 }
 
-void TreeScope::removeImageMap(HTMLMapElement* imageMap)
+void TreeScope::removeImageMap( HTMLMapElement *imageMap )
 {
-    AtomicStringImpl* name = imageMap->getName().impl();
-    if (!name)
+    AtomicStringImpl *name = imageMap->getName().impl();
+
+    if ( !name )
+    {
         return;
-    m_imageMapsByName.remove(name, imageMap);
+    }
+
+    m_imageMapsByName.remove( name, imageMap );
 }
 
-HTMLMapElement* TreeScope::getImageMap(const String& url) const
+HTMLMapElement *TreeScope::getImageMap( const String &url ) const
 {
-    if (url.isNull())
+    if ( url.isNull() )
+    {
         return 0;
-    size_t hashPos = url.find('#');
-    String name = (hashPos == notFound ? url : url.substring(hashPos + 1)).impl();
-    if (document()->isHTMLDocument())
-        return static_cast<HTMLMapElement*>(m_imageMapsByName.getElementByLowercasedMapName(AtomicString(name.lower()).impl(), this));
-    return static_cast<HTMLMapElement*>(m_imageMapsByName.getElementByMapName(AtomicString(name).impl(), this));
+    }
+
+    size_t hashPos = url.find( '#' );
+    String name = ( hashPos == notFound ? url : url.substring( hashPos + 1 ) ).impl();
+
+    if ( document()->isHTMLDocument() )
+    {
+        return static_cast<HTMLMapElement *>( m_imageMapsByName.getElementByLowercasedMapName( AtomicString( name.lower() ).impl(),
+                                              this ) );
+    }
+
+    return static_cast<HTMLMapElement *>( m_imageMapsByName.getElementByMapName( AtomicString( name ).impl(), this ) );
 }
 
-Element* TreeScope::findAnchor(const String& name)
+Element *TreeScope::findAnchor( const String &name )
 {
-    if (name.isEmpty())
+    if ( name.isEmpty() )
+    {
         return 0;
-    if (Element* element = getElementById(name))
+    }
+
+    if ( Element *element = getElementById( name ) )
+    {
         return element;
-    for (Node* node = this; node; node = node->traverseNextNode()) {
-        if (node->hasTagName(aTag)) {
-            HTMLAnchorElement* anchor = static_cast<HTMLAnchorElement*>(node);
-            if (document()->inQuirksMode()) {
+    }
+
+    for ( Node *node = this; node; node = node->traverseNextNode() )
+    {
+        if ( node->hasTagName( aTag ) )
+        {
+            HTMLAnchorElement *anchor = static_cast<HTMLAnchorElement *>( node );
+
+            if ( document()->inQuirksMode() )
+            {
                 // Quirks mode, case insensitive comparison of names.
-                if (equalIgnoringCase(anchor->name(), name))
+                if ( equalIgnoringCase( anchor->name(), name ) )
+                {
                     return anchor;
-            } else {
+                }
+            }
+            else
+            {
                 // Strict mode, names need to match exactly.
-                if (anchor->name() == name)
+                if ( anchor->name() == name )
+                {
                     return anchor;
+                }
             }
         }
     }
+
     return 0;
 }
 

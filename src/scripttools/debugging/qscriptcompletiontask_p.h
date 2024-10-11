@@ -37,22 +37,22 @@ class QScriptCompletionTaskPrivate;
 
 class QScriptCompletionTask : public QScriptCompletionTaskInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptCompletionTask)
+    SCRIPT_T_LSCS_OBJECT( QScriptCompletionTask )
 
- public:
-   QScriptCompletionTask(
-      const QString &contents, int cursorPosition, int frameIndex,
-      QScriptDebuggerCommandSchedulerInterface *commandScheduler,
-      QScriptDebuggerJobSchedulerInterface *jobScheduler,
-      QScriptDebuggerConsole *console,
-      QObject *parent = nullptr);
-   ~QScriptCompletionTask();
+public:
+    QScriptCompletionTask(
+        const QString &contents, int cursorPosition, int frameIndex,
+        QScriptDebuggerCommandSchedulerInterface *commandScheduler,
+        QScriptDebuggerJobSchedulerInterface *jobScheduler,
+        QScriptDebuggerConsole *console,
+        QObject *parent = nullptr );
+    ~QScriptCompletionTask();
 
-   void start();
+    void start();
 
- private:
-   Q_DECLARE_PRIVATE(QScriptCompletionTask)
-   Q_DISABLE_COPY(QScriptCompletionTask)
+private:
+    Q_DECLARE_PRIVATE( QScriptCompletionTask )
+    Q_DISABLE_COPY( QScriptCompletionTask )
 };
 
 QT_END_NAMESPACE

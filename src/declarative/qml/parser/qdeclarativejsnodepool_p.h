@@ -31,9 +31,11 @@
 
 QT_QML_BEGIN_NAMESPACE
 
-namespace QDeclarativeJS {
+namespace QDeclarativeJS
+{
 
-namespace AST {
+namespace AST
+{
 class Node;
 } // namespace AST
 
@@ -42,70 +44,73 @@ class CompilationUnit;
 class Engine;
 
 template <typename NodeType>
-inline NodeType *makeAstNode(MemoryPool *storage)
+inline NodeType *makeAstNode( MemoryPool *storage )
 {
-   NodeType *node = new (storage->allocate(sizeof(NodeType))) NodeType();
-   return node;
+    NodeType *node = new ( storage->allocate( sizeof( NodeType ) ) ) NodeType();
+    return node;
 }
 
 template <typename NodeType, typename Arg1>
-inline NodeType *makeAstNode(MemoryPool *storage, Arg1 arg1)
+inline NodeType *makeAstNode( MemoryPool *storage, Arg1 arg1 )
 {
-   NodeType *node = new (storage->allocate(sizeof(NodeType))) NodeType(arg1);
-   return node;
+    NodeType *node = new ( storage->allocate( sizeof( NodeType ) ) ) NodeType( arg1 );
+    return node;
 }
 
 template <typename NodeType, typename Arg1, typename Arg2>
-inline NodeType *makeAstNode(MemoryPool *storage, Arg1 arg1, Arg2 arg2)
+inline NodeType *makeAstNode( MemoryPool *storage, Arg1 arg1, Arg2 arg2 )
 {
-   NodeType *node = new (storage->allocate(sizeof(NodeType))) NodeType(arg1, arg2);
-   return node;
+    NodeType *node = new ( storage->allocate( sizeof( NodeType ) ) ) NodeType( arg1, arg2 );
+    return node;
 }
 
 template <typename NodeType, typename Arg1, typename Arg2, typename Arg3>
-inline NodeType *makeAstNode(MemoryPool *storage, Arg1 arg1, Arg2 arg2, Arg3 arg3)
+inline NodeType *makeAstNode( MemoryPool *storage, Arg1 arg1, Arg2 arg2, Arg3 arg3 )
 {
-   NodeType *node = new (storage->allocate(sizeof(NodeType))) NodeType(arg1, arg2, arg3);
-   return node;
+    NodeType *node = new ( storage->allocate( sizeof( NodeType ) ) ) NodeType( arg1, arg2, arg3 );
+    return node;
 }
 
 template <typename NodeType, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
-inline NodeType *makeAstNode(MemoryPool *storage, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4)
+inline NodeType *makeAstNode( MemoryPool *storage, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4 )
 {
-   NodeType *node = new (storage->allocate(sizeof(NodeType))) NodeType(arg1, arg2, arg3, arg4);
-   return node;
+    NodeType *node = new ( storage->allocate( sizeof( NodeType ) ) ) NodeType( arg1, arg2, arg3, arg4 );
+    return node;
 }
 
 class QML_PARSER_EXPORT NodePool : public MemoryPool
 {
- public:
-   NodePool(const QString &fileName, Engine *engine);
-   virtual ~NodePool();
+public:
+    NodePool( const QString &fileName, Engine *engine );
+    virtual ~NodePool();
 
-   Code *createCompiledCode(AST::Node *node, CompilationUnit &compilation);
+    Code *createCompiledCode( AST::Node *node, CompilationUnit &compilation );
 
-   inline QString fileName() const {
-      return m_fileName;
-   }
-   inline Engine *engine() const {
-      return m_engine;
-   }
+    inline QString fileName() const
+    {
+        return m_fileName;
+    }
+    inline Engine *engine() const
+    {
+        return m_engine;
+    }
 #ifndef J_SCRIPT_NO_EVENT_NOTIFY
-   inline qint64 id() const {
-      return m_id;
-   }
+    inline qint64 id() const
+    {
+        return m_id;
+    }
 #endif
 
- private:
-   QHash<AST::Node *, Code *> m_codeCache;
-   QString m_fileName;
-   Engine *m_engine;
+private:
+    QHash<AST::Node *, Code *> m_codeCache;
+    QString m_fileName;
+    Engine *m_engine;
 #ifndef J_SCRIPT_NO_EVENT_NOTIFY
-   qint64 m_id;
+    qint64 m_id;
 #endif
 
- private:
-   Q_DISABLE_COPY(NodePool)
+private:
+    Q_DISABLE_COPY( NodePool )
 };
 
 } // namespace QDeclarativeJS

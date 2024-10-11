@@ -43,128 +43,143 @@
 #include <QThread>
 #include <QWaitCondition>
 
-namespace WTF {
+namespace WTF
+{
 
-class ThreadPrivate : public QThread {
+class ThreadPrivate : public QThread
+{
 
 public:
-    ThreadPrivate(ThreadFunction entryPoint, void* data);
+    ThreadPrivate( ThreadFunction entryPoint, void *data );
     void run();
-    void *getReturnValue() { return m_returnValue; }
+    void *getReturnValue()
+    {
+        return m_returnValue;
+    }
 
 private:
-    void* m_data;
+    void *m_data;
     ThreadFunction m_entryPoint;
-    void* m_returnValue;
+    void *m_returnValue;
 };
 
-ThreadPrivate::ThreadPrivate(ThreadFunction entryPoint, void* data)
-    : m_data(data)
-    , m_entryPoint(entryPoint)
-    , m_returnValue(0)
+ThreadPrivate::ThreadPrivate( ThreadFunction entryPoint, void *data )
+    : m_data( data )
+    , m_entryPoint( entryPoint )
+    , m_returnValue( 0 )
 {
 }
 
 void ThreadPrivate::run()
 {
-    m_returnValue = m_entryPoint(m_data);
+    m_returnValue = m_entryPoint( m_data );
 }
 
-class ThreadMonitor : public QObject {
-    SCRIPT_CS_OBJECT(ThreadMonitor)
+class ThreadMonitor : public QObject
+{
+    SCRIPT_LSCS_OBJECT( ThreadMonitor )
 
 public:
-    static ThreadMonitor * instance()
+    static ThreadMonitor *instance()
     {
         static ThreadMonitor *instance = new ThreadMonitor();
         return instance;
     }
 
-    SCRIPT_CS_SLOT_1(Public,void threadFinished())
-    SCRIPT_CS_SLOT_2(threadFinished)
+    SCRIPT_LSCS_SLOT_1( Public,void threadFinished() )
+    SCRIPT_LSCS_SLOT_2( threadFinished )
 };
 
 void ThreadMonitor::threadFinished()
 {
-   sender()->deleteLater();
+    sender()->deleteLater();
 }
 
 
-static Mutex* atomicallyInitializedStaticMutex;
+static Mutex *atomicallyInitializedStaticMutex;
 
 static ThreadIdentifier mainThreadIdentifier;
 
-static Mutex& threadMapMutex()
+static Mutex &threadMapMutex()
 {
     static Mutex mutex;
     return mutex;
 }
 
-static HashMap<ThreadIdentifier, QThread*>& threadMap()
+static HashMap<ThreadIdentifier, QThread *> &threadMap()
 {
-    static HashMap<ThreadIdentifier, QThread*> map;
+    static HashMap<ThreadIdentifier, QThread *> map;
     return map;
 }
 
-static ThreadIdentifier identifierByQthreadHandle(QThread*& thread)
+static ThreadIdentifier identifierByQthreadHandle( QThread *&thread )
 {
-    MutexLocker locker(threadMapMutex());
+    MutexLocker locker( threadMapMutex() );
 
-    HashMap<ThreadIdentifier, QThread*>::iterator i = threadMap().begin();
-    for (; i != threadMap().end(); ++i) {
-        if (i->second == thread)
+    HashMap<ThreadIdentifier, QThread *>::iterator i = threadMap().begin();
+
+    for ( ; i != threadMap().end(); ++i )
+    {
+        if ( i->second == thread )
+        {
             return i->first;
+        }
     }
 
     return 0;
 }
 
-static ThreadIdentifier establishIdentifierForThread(QThread*& thread)
+static ThreadIdentifier establishIdentifierForThread( QThread *&thread )
 {
-    ASSERT(!identifierByQthreadHandle(thread));
+    ASSERT( !identifierByQthreadHandle( thread ) );
 
-    MutexLocker locker(threadMapMutex());
+    MutexLocker locker( threadMapMutex() );
 
     static ThreadIdentifier identifierCount = 1;
 
-    threadMap().add(identifierCount, thread);
+    threadMap().add( identifierCount, thread );
 
     return identifierCount++;
 }
 
-static void clearThreadForIdentifier(ThreadIdentifier id)
+static void clearThreadForIdentifier( ThreadIdentifier id )
 {
-    MutexLocker locker(threadMapMutex());
+    MutexLocker locker( threadMapMutex() );
 
-    ASSERT(threadMap().contains(id));
+    ASSERT( threadMap().contains( id ) );
 
-    threadMap().remove(id);
+    threadMap().remove( id );
 }
 
-static QThread* threadForIdentifier(ThreadIdentifier id)
+static QThread *threadForIdentifier( ThreadIdentifier id )
 {
-    MutexLocker locker(threadMapMutex());
+    MutexLocker locker( threadMapMutex() );
 
-    return threadMap().get(id);
+    return threadMap().get( id );
 }
 
 void initializeThreading()
 {
-    if (!atomicallyInitializedStaticMutex) {
+    if ( !atomicallyInitializedStaticMutex )
+    {
         atomicallyInitializedStaticMutex = new Mutex;
         threadMapMutex();
         initializeRandomNumberGenerator();
-        QThread* mainThread = QCoreApplication::instance()->thread();
-        mainThreadIdentifier = identifierByQthreadHandle(mainThread);
-        if (!mainThreadIdentifier)
-            mainThreadIdentifier = establishIdentifierForThread(mainThread);
+        QThread *mainThread = QCoreApplication::instance()->thread();
+        mainThreadIdentifier = identifierByQthreadHandle( mainThread );
+
+        if ( !mainThreadIdentifier )
+        {
+            mainThreadIdentifier = establishIdentifierForThread( mainThread );
+        }
+
         initializeMainThread();
     }
 }
 
 void lockAtomicallyInitializedStaticMutex()
 {
-    ASSERT(atomicallyInitializedStaticMutex);
+    ASSERT( atomicallyInitializedStaticMutex );
     atomicallyInitializedStaticMutex->lock();
 }
 
@@ -173,54 +188,63 @@ void unlockAtomicallyInitializedStaticMutex()
     atomicallyInitializedStaticMutex->unlock();
 }
 
-ThreadIdentifier createThreadInternal(ThreadFunction entryPoint, void* data, const char*)
+ThreadIdentifier createThreadInternal( ThreadFunction entryPoint, void *data, const char * )
 {
-    ThreadPrivate* thread = new ThreadPrivate(entryPoint, data);
-    if (!thread) {
-        LOG_ERROR("Failed to create thread at entry point %p with data %p", entryPoint, data);
+    ThreadPrivate *thread = new ThreadPrivate( entryPoint, data );
+
+    if ( !thread )
+    {
+        LOG_ERROR( "Failed to create thread at entry point %p with data %p", entryPoint, data );
         return 0;
     }
 
-    QObject::connect(thread, SIGNAL(finished()), ThreadMonitor::instance(), SLOT(threadFinished()));
+    QObject::connect( thread, SIGNAL( finished() ), ThreadMonitor::instance(), SLOT( threadFinished() ) );
 
     thread->start();
 
-    QThread* threadRef = static_cast<QThread*>(thread);
+    QThread *threadRef = static_cast<QThread *>( thread );
 
-    return establishIdentifierForThread(threadRef);
+    return establishIdentifierForThread( threadRef );
 }
 
-void initializeCurrentThreadInternal(const char*)
+void initializeCurrentThreadInternal( const char * )
 {
 }
 
-int waitForThreadCompletion(ThreadIdentifier threadID, void** result)
+int waitForThreadCompletion( ThreadIdentifier threadID, void **result )
 {
-    ASSERT(threadID);
+    ASSERT( threadID );
 
-    QThread* thread = threadForIdentifier(threadID);
+    QThread *thread = threadForIdentifier( threadID );
 
     bool res = thread->wait();
 
-    clearThreadForIdentifier(threadID);
-    if (result)
-        *result = static_cast<ThreadPrivate*>(thread)->getReturnValue();
+    clearThreadForIdentifier( threadID );
+
+    if ( result )
+    {
+        *result = static_cast<ThreadPrivate *>( thread )->getReturnValue();
+    }
 
     return !res;
 }
 
-void detachThread(ThreadIdentifier threadID)
+void detachThread( ThreadIdentifier threadID )
 {
-    ASSERT(threadID);
-    clearThreadForIdentifier(threadID);
+    ASSERT( threadID );
+    clearThreadForIdentifier( threadID );
 }
 
 ThreadIdentifier currentThread()
 {
-    QThread* currentThread = QThread::currentThread();
-    if (ThreadIdentifier id = identifierByQthreadHandle(currentThread))
+    QThread *currentThread = QThread::currentThread();
+
+    if ( ThreadIdentifier id = identifierByQthreadHandle( currentThread ) )
+    {
         return id;
-    return establishIdentifierForThread(currentThread);
+    }
+
+    return establishIdentifierForThread( currentThread );
 }
 
 bool isMainThread()
@@ -229,7 +253,7 @@ bool isMainThread()
 }
 
 Mutex::Mutex()
-    : m_mutex(new QMutex())
+    : m_mutex( new QMutex() )
 {
 }
 
@@ -254,7 +278,7 @@ void Mutex::unlock()
 }
 
 ThreadCondition::ThreadCondition()
-    : m_condition(new QWaitCondition())
+    : m_condition( new QWaitCondition() )
 {
 }
 
@@ -263,27 +287,30 @@ ThreadCondition::~ThreadCondition()
     delete m_condition;
 }
 
-void ThreadCondition::wait(Mutex& mutex)
+void ThreadCondition::wait( Mutex &mutex )
 {
-    m_condition->wait(mutex.impl());
+    m_condition->wait( mutex.impl() );
 }
 
-bool ThreadCondition::timedWait(Mutex& mutex, double absoluteTime)
+bool ThreadCondition::timedWait( Mutex &mutex, double absoluteTime )
 {
     double currentTime = WTF::currentTime();
 
     // Time is in the past - return immediately.
-    if (absoluteTime < currentTime)
+    if ( absoluteTime < currentTime )
+    {
         return false;
+    }
 
     // Time is too far in the future (and would overflow unsigned long) - wait forever.
-    if (absoluteTime - currentTime > static_cast<double>(INT_MAX) / 1000.0) {
-        wait(mutex);
+    if ( absoluteTime - currentTime > static_cast<double>( INT_MAX ) / 1000.0 )
+    {
+        wait( mutex );
         return true;
     }
 
-    double intervalMilliseconds = (absoluteTime - currentTime) * 1000.0;
-    return m_condition->wait(mutex.impl(), static_cast<unsigned long>(intervalMilliseconds));
+    double intervalMilliseconds = ( absoluteTime - currentTime ) * 1000.0;
+    return m_condition->wait( mutex.impl(), static_cast<unsigned long>( intervalMilliseconds ) );
 }
 
 void ThreadCondition::signal()

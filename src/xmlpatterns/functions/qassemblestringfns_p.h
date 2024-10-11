@@ -26,18 +26,19 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CodepointsToStringFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class StringToCodepointsFN : public FunctionCall
 {
- public:
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+public:
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 };
 
 }

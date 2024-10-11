@@ -30,11 +30,12 @@
 #include "HTMLNames.h"
 #include "HTMLViewSourceDocument.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-HTMLViewSourceParser::HTMLViewSourceParser(HTMLViewSourceDocument* document)
-    : DecodedDataDocumentParser(document)
-    , m_tokenizer(HTMLTokenizer::create(HTMLDocumentParser::usePreHTML5ParserQuirks(document)))
+HTMLViewSourceParser::HTMLViewSourceParser( HTMLViewSourceDocument *document )
+    : DecodedDataDocumentParser( document )
+    , m_tokenizer( HTMLTokenizer::create( HTMLDocumentParser::usePreHTML5ParserQuirks( document ) ) )
 {
 }
 
@@ -42,50 +43,60 @@ HTMLViewSourceParser::~HTMLViewSourceParser()
 {
 }
 
-void HTMLViewSourceParser::insert(const SegmentedString&)
+void HTMLViewSourceParser::insert( const SegmentedString & )
 {
     ASSERT_NOT_REACHED();
 }
 
 void HTMLViewSourceParser::pumpTokenizer()
 {
-    while (true) {
-        m_sourceTracker.start(m_input, m_token);
-        if (!m_tokenizer->nextToken(m_input.current(), m_token))
-            break;
-        m_sourceTracker.end(m_input, m_token);
+    while ( true )
+    {
+        m_sourceTracker.start( m_input, m_token );
 
-        document()->addSource(sourceForToken(), m_token);
+        if ( !m_tokenizer->nextToken( m_input.current(), m_token ) )
+        {
+            break;
+        }
+
+        m_sourceTracker.end( m_input, m_token );
+
+        document()->addSource( sourceForToken(), m_token );
         updateTokenizerState();
         m_token.clear();
     }
 }
 
-void HTMLViewSourceParser::append(const SegmentedString& input)
+void HTMLViewSourceParser::append( const SegmentedString &input )
 {
-    m_input.appendToEnd(input);
+    m_input.appendToEnd( input );
     pumpTokenizer();
 }
 
 String HTMLViewSourceParser::sourceForToken()
 {
-    return m_sourceTracker.sourceForToken(m_token);
+    return m_sourceTracker.sourceForToken( m_token );
 }
 
 void HTMLViewSourceParser::updateTokenizerState()
 {
     // FIXME: The tokenizer should do this work for us.
-    if (m_token.type() != HTMLToken::StartTag)
+    if ( m_token.type() != HTMLToken::StartTag )
+    {
         return;
+    }
 
-    AtomicString tagName(m_token.name().data(), m_token.name().size());
-    m_tokenizer->updateStateFor(tagName, document()->frame());
+    AtomicString tagName( m_token.name().data(), m_token.name().size() );
+    m_tokenizer->updateStateFor( tagName, document()->frame() );
 }
 
 void HTMLViewSourceParser::finish()
 {
-    if (!m_input.haveSeenEndOfFile())
+    if ( !m_input.haveSeenEndOfFile() )
+    {
         m_input.markEndOfFile();
+    }
+
     pumpTokenizer();
     document()->finishedParsing();
 }

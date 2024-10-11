@@ -24,44 +24,46 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_PROTECTED_CALL_H
-#define CS_PROTECTED_CALL_H
+#ifndef LSCS_PROTECTED_CALL_H
+#define LSCS_PROTECTED_CALL_H
 
-namespace cs_regex_ns {
-
-namespace cs_regex_detail_ns {
-
-class LIB_CS_STRING_EXPORT abstract_protected_call
+namespace lscs_regex_ns
 {
- public:
-   bool execute() const;
 
-   virtual ~abstract_protected_call() {}
+namespace lscs_regex_detail_ns
+{
 
- private:
-   virtual bool call()const = 0;
+class LIB_LSCS_STRING_EXPORT abstract_protected_call
+{
+public:
+    bool execute() const;
+
+    virtual ~abstract_protected_call() {}
+
+private:
+    virtual bool call()const = 0;
 };
 
 template <class T>
 class concrete_protected_call : public abstract_protected_call
 {
- public:
-   using  proc_type = bool (T::*)();
+public:
+    using  proc_type = bool ( T::* )();
 
-   concrete_protected_call(T *o, proc_type p)
-      : obj(o), proc(p) {}
+    concrete_protected_call( T *o, proc_type p )
+        : obj( o ), proc( p ) {}
 
- private:
-   virtual bool call()const;
+private:
+    virtual bool call()const;
 
-   T *obj;
-   proc_type proc;
+    T *obj;
+    proc_type proc;
 };
 
 template <class T>
 bool concrete_protected_call<T>::call()const
 {
-   return (obj->*proc)();
+    return ( obj->*proc )();
 }
 
 }   // end namespace

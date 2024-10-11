@@ -29,42 +29,45 @@
 #include <wtf/Assertions.h>
 #include "Connection.h"
 
-namespace CoreIPC {
-    
-template<typename T> class MessageSender {
+namespace CoreIPC
+{
+
+template<typename T> class MessageSender
+{
 public:
-    template<typename U> bool send(const U& message)
+    template<typename U> bool send( const U &message )
     {
-        return send(message, static_cast<T*>(this)->destinationID());
+        return send( message, static_cast<T *>( this )->destinationID() );
     }
 
-    template<typename U> bool send(const U& message, uint64_t destinationID)
+    template<typename U> bool send( const U &message, uint64_t destinationID )
     {
-        OwnPtr<ArgumentEncoder> argumentEncoder = ArgumentEncoder::create(destinationID);
-        argumentEncoder->encode(message);
-        
-        return static_cast<T*>(this)->sendMessage(MessageID(U::messageID), argumentEncoder.release());
-    }
-    
-    bool sendMessage(MessageID messageID, PassOwnPtr<ArgumentEncoder> argumentEncoder)
-    {
-        Connection* connection = static_cast<T*>(this)->connection();
-        ASSERT(connection);
+        OwnPtr<ArgumentEncoder> argumentEncoder = ArgumentEncoder::create( destinationID );
+        argumentEncoder->encode( message );
 
-        return connection->sendMessage(messageID, argumentEncoder);
+        return static_cast<T *>( this )->sendMessage( MessageID( U::messageID ), argumentEncoder.release() );
     }
 
-    template<typename U> bool sendSync(const U& message, const typename U::Reply& reply, double timeout = Connection::NoTimeout)
+    bool sendMessage( MessageID messageID, PassOwnPtr<ArgumentEncoder> argumentEncoder )
     {
-        return sendSync(message, reply, static_cast<T*>(this)->destinationID(), timeout);
-    }
-    
-    template<typename U> bool sendSync(const U& message, const typename U::Reply& reply, uint64_t destinationID, double timeout = Connection::NoTimeout)
-    {
-        Connection* connection = static_cast<T*>(this)->connection();
-        ASSERT(connection);
+        Connection *connection = static_cast<T *>( this )->connection();
+        ASSERT( connection );
 
-        return connection->sendSync(message, reply, destinationID, timeout);
+        return connection->sendMessage( messageID, argumentEncoder );
+    }
+
+    template<typename U> bool sendSync( const U &message, const typename U::Reply &reply, double timeout = Connection::NoTimeout )
+    {
+        return sendSync( message, reply, static_cast<T *>( this )->destinationID(), timeout );
+    }
+
+    template<typename U> bool sendSync( const U &message, const typename U::Reply &reply, uint64_t destinationID,
+                                        double timeout = Connection::NoTimeout )
+    {
+        Connection *connection = static_cast<T *>( this )->connection();
+        ASSERT( connection );
+
+        return connection->sendSync( message, reply, destinationID, timeout );
     }
 };
 

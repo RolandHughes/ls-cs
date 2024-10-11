@@ -30,7 +30,8 @@
 #if ENABLE(JAVASCRIPT_DEBUGGER)
 #include <profiler/ProfileNode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef JSC::ProfileNode ScriptProfileNode;
 

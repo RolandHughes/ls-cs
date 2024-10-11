@@ -28,32 +28,32 @@
 #include <qhistorystate_p.h>
 
 QHistoryStatePrivate::QHistoryStatePrivate()
-   : QAbstractStatePrivate(HistoryState), defaultTransition(nullptr), historyType(QHistoryState::ShallowHistory)
+    : QAbstractStatePrivate( HistoryState ), defaultTransition( nullptr ), historyType( QHistoryState::ShallowHistory )
 {
 }
 
-DefaultStateTransition::DefaultStateTransition(QHistoryState *source, QAbstractState *target)
-   : QAbstractTransition()
+DefaultStateTransition::DefaultStateTransition( QHistoryState *source, QAbstractState *target )
+    : QAbstractTransition()
 {
-   setParent(source);
-   setTargetState(target);
+    setParent( source );
+    setTargetState( target );
 }
 
-QHistoryStatePrivate *QHistoryStatePrivate::get(QHistoryState *q)
+QHistoryStatePrivate *QHistoryStatePrivate::get( QHistoryState *q )
 {
-   return q->d_func();
+    return q->d_func();
 }
 
-QHistoryState::QHistoryState(QState *parent)
-   : QAbstractState(*new QHistoryStatePrivate, parent)
+QHistoryState::QHistoryState( QState *parent )
+    : QAbstractState( *new QHistoryStatePrivate, parent )
 {
 }
 
-QHistoryState::QHistoryState(HistoryType type, QState *parent)
-   : QAbstractState(*new QHistoryStatePrivate, parent)
+QHistoryState::QHistoryState( HistoryType type, QState *parent )
+    : QAbstractState( *new QHistoryStatePrivate, parent )
 {
-   Q_D(QHistoryState);
-   d->historyType = type;
+    Q_D( QHistoryState );
+    d->historyType = type;
 }
 
 QHistoryState::~QHistoryState()
@@ -62,81 +62,88 @@ QHistoryState::~QHistoryState()
 
 QAbstractTransition *QHistoryState::defaultTransition() const
 {
-   Q_D(const QHistoryState);
-   return d->defaultTransition;
+    Q_D( const QHistoryState );
+    return d->defaultTransition;
 }
 
-void QHistoryState::setDefaultTransition(QAbstractTransition *transition)
+void QHistoryState::setDefaultTransition( QAbstractTransition *transition )
 {
-   Q_D(QHistoryState);
+    Q_D( QHistoryState );
 
-   if (d->defaultTransition != transition) {
-      d->defaultTransition = transition;
-      transition->setParent(this);
-      emit defaultTransitionChanged();
-   }
+    if ( d->defaultTransition != transition )
+    {
+        d->defaultTransition = transition;
+        transition->setParent( this );
+        emit defaultTransitionChanged();
+    }
 }
 
 QAbstractState *QHistoryState::defaultState() const
 {
-   Q_D(const QHistoryState);
-   return d->defaultTransition ? d->defaultTransition->targetState() : nullptr;
+    Q_D( const QHistoryState );
+    return d->defaultTransition ? d->defaultTransition->targetState() : nullptr;
 }
 
-void QHistoryState::setDefaultState(QAbstractState *state)
+void QHistoryState::setDefaultState( QAbstractState *state )
 {
-   Q_D(QHistoryState);
+    Q_D( QHistoryState );
 
-   if (state && state->parentState() != parentState()) {
-      qWarning("QHistoryState::setDefaultState() State %p does not belong "
-            "to this history state group (%p)", static_cast<void *>(state), static_cast<void *>(parentState()) );
-      return;
-   }
+    if ( state && state->parentState() != parentState() )
+    {
+        qWarning( "QHistoryState::setDefaultState() State %p does not belong "
+                  "to this history state group (%p)", static_cast<void *>( state ), static_cast<void *>( parentState() ) );
+        return;
+    }
 
-   if (! d->defaultTransition || d->defaultTransition->targetStates().size() != 1
-         || d->defaultTransition->targetStates().first() != state) {
+    if ( ! d->defaultTransition || d->defaultTransition->targetStates().size() != 1
+            || d->defaultTransition->targetStates().first() != state )
+    {
 
-      if (! d->defaultTransition || ! dynamic_cast<DefaultStateTransition *>(d->defaultTransition)) {
-         d->defaultTransition = new DefaultStateTransition(this, state);
-         emit defaultTransitionChanged();
+        if ( ! d->defaultTransition || ! dynamic_cast<DefaultStateTransition *>( d->defaultTransition ) )
+        {
+            d->defaultTransition = new DefaultStateTransition( this, state );
+            emit defaultTransitionChanged();
 
-      } else {
-         d->defaultTransition->setTargetState(state);
-      }
+        }
+        else
+        {
+            d->defaultTransition->setTargetState( state );
+        }
 
-      emit defaultStateChanged();
-   }
+        emit defaultStateChanged();
+    }
 }
 
 QHistoryState::HistoryType QHistoryState::historyType() const
 {
-   Q_D(const QHistoryState);
-   return d->historyType;
+    Q_D( const QHistoryState );
+    return d->historyType;
 }
 
-void QHistoryState::setHistoryType(HistoryType type)
+void QHistoryState::setHistoryType( HistoryType type )
 {
-   Q_D(QHistoryState);
+    Q_D( QHistoryState );
 
-   if (d->historyType != type) {
-      d->historyType = type;
-      emit historyTypeChanged();
-   }
+    if ( d->historyType != type )
+    {
+        d->historyType = type;
+        emit historyTypeChanged();
+    }
 }
 
-void QHistoryState::onEntry(QEvent *event)
+void QHistoryState::onEntry( QEvent *event )
 {
-   (void) event;
+    ( void ) event;
 }
 
-void QHistoryState::onExit(QEvent *event)
+void QHistoryState::onExit( QEvent *event )
 {
-   (void) event;
+    ( void ) event;
 }
 
-bool QHistoryState::event(QEvent *e)
+bool QHistoryState::event( QEvent *e )
 {
-   return QAbstractState::event(e);
+    return QAbstractState::event( e );
 }
 
 #endif //QT_NO_STATEMACHINE

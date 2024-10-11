@@ -35,35 +35,41 @@
 class QLocalSocket;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class ThreadLauncher : public ThreadSafeRefCounted<ThreadLauncher> {
+class ThreadLauncher : public ThreadSafeRefCounted<ThreadLauncher>
+{
 public:
-    class Client {
+    class Client
+    {
     public:
         virtual ~Client() { }
-        virtual void didFinishLaunching(ThreadLauncher*, CoreIPC::Connection::Identifier) = 0;
+        virtual void didFinishLaunching( ThreadLauncher *, CoreIPC::Connection::Identifier ) = 0;
     };
-    
-    static PassRefPtr<ThreadLauncher> create(Client* client)
+
+    static PassRefPtr<ThreadLauncher> create( Client *client )
     {
-        return adoptRef(new ThreadLauncher(client));
+        return adoptRef( new ThreadLauncher( client ) );
     }
 
-    bool isLaunching() const { return m_isLaunching; }
+    bool isLaunching() const
+    {
+        return m_isLaunching;
+    }
 
     void invalidate();
 
 private:
-    explicit ThreadLauncher(Client*);
+    explicit ThreadLauncher( Client * );
 
     void launchThread();
-    void didFinishLaunchingThread(CoreIPC::Connection::Identifier);
+    void didFinishLaunchingThread( CoreIPC::Connection::Identifier );
 
     static CoreIPC::Connection::Identifier createWebThread();
 
     bool m_isLaunching;
-    Client* m_client;
+    Client *m_client;
 };
 
 } // namespace WebKit

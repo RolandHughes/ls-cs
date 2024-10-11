@@ -32,48 +32,48 @@ EmptySequenceType::EmptySequenceType()
 {
 }
 
-bool EmptySequenceType::xdtTypeMatches(const ItemType::Ptr &other) const
+bool EmptySequenceType::xdtTypeMatches( const ItemType::Ptr &other ) const
 {
-   return *other == *this ||
-          CommonSequenceTypes::None->xdtTypeMatches(other);
+    return *other == *this ||
+           CommonSequenceTypes::None->xdtTypeMatches( other );
 }
 
-bool EmptySequenceType::itemMatches(const Item &) const
+bool EmptySequenceType::itemMatches( const Item & ) const
 {
-   return false;
+    return false;
 }
 
-QString EmptySequenceType::displayName(const NamePool::Ptr &) const
+QString EmptySequenceType::displayName( const NamePool::Ptr & ) const
 {
-   return QLatin1String("empty-sequence()");
+    return QLatin1String( "empty-sequence()" );
 }
 
 ItemType::Ptr EmptySequenceType::xdtSuperType() const
 {
-   return BuiltinTypes::item;
+    return BuiltinTypes::item;
 }
 
 Cardinality EmptySequenceType::cardinality() const
 {
-   return Cardinality::empty();
+    return Cardinality::empty();
 }
 
 ItemType::Ptr EmptySequenceType::itemType() const
 {
-   return ItemType::Ptr(const_cast<EmptySequenceType *>(this));
+    return ItemType::Ptr( const_cast<EmptySequenceType *>( this ) );
 }
 
 bool EmptySequenceType::isNodeType() const
 {
-   return false;
+    return false;
 }
 
 bool EmptySequenceType::isAtomicType() const
 {
-   return false;
+    return false;
 }
 
 ItemType::Ptr EmptySequenceType::atomizedType() const
 {
-   return BuiltinTypes::xsAnyAtomicType;
+    return BuiltinTypes::xsAnyAtomicType;
 }

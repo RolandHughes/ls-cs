@@ -28,12 +28,13 @@
 
 #if ENABLE(PLUGIN_PROCESS)
 
-namespace WebKit {
-    
+namespace WebKit
+{
+
 class CommandLine;
 
-int PluginProcessMain(const CommandLine&);
-    
+int PluginProcessMain( const CommandLine & );
+
 } // namespace WebKit
 
 #endif // ENABLE(PLUGIN_PROCESS)

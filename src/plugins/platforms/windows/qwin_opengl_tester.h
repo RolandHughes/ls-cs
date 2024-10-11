@@ -31,52 +31,54 @@
 class QDebug;
 class QVariant;
 
-struct GpuDescription {
-   GpuDescription() :  vendorId(0), deviceId(0), revision(0), subSysId(0) {}
+struct GpuDescription
+{
+    GpuDescription() :  vendorId( 0 ), deviceId( 0 ), revision( 0 ), subSysId( 0 ) {}
 
-   static GpuDescription detect();
-   QString toString() const;
-   QVariant toVariant() const;
+    static GpuDescription detect();
+    QString toString() const;
+    QVariant toVariant() const;
 
-   uint vendorId;
-   uint deviceId;
-   uint revision;
-   uint subSysId;
-   QVersionNumber driverVersion;
-   QByteArray driverName;
-   QByteArray description;
+    uint vendorId;
+    uint deviceId;
+    uint revision;
+    uint subSysId;
+    QVersionNumber driverVersion;
+    QByteArray driverName;
+    QByteArray description;
 };
 
 class QWindowsOpenGLTester
 {
- public:
-   enum Renderer {
-      InvalidRenderer         = 0x0000,
-      DesktopGl               = 0x0001,
-      AngleRendererD3d11      = 0x0002,
-      AngleRendererD3d9       = 0x0004,
-      AngleRendererD3d11Warp  = 0x0008, // "Windows Advanced Rasterization Platform"
-      AngleBackendMask        = AngleRendererD3d11 | AngleRendererD3d9 | AngleRendererD3d11Warp,
-      Gles                    = 0x0010, // ANGLE/unspecified or Generic GLES for Windows CE.
-      GlesMask                = Gles | AngleBackendMask,
-      SoftwareRasterizer      = 0x0020,
-      RendererMask            = 0x00FF,
-      DisableRotationFlag     = 0x0100
-   };
+public:
+    enum Renderer
+    {
+        InvalidRenderer         = 0x0000,
+        DesktopGl               = 0x0001,
+        AngleRendererD3d11      = 0x0002,
+        AngleRendererD3d9       = 0x0004,
+        AngleRendererD3d11Warp  = 0x0008, // "Windows Advanced Rasterization Platform"
+        AngleBackendMask        = AngleRendererD3d11 | AngleRendererD3d9 | AngleRendererD3d11Warp,
+        Gles                    = 0x0010, // ANGLE/unspecified or Generic GLES for Windows CE.
+        GlesMask                = Gles | AngleBackendMask,
+        SoftwareRasterizer      = 0x0020,
+        RendererMask            = 0x00FF,
+        DisableRotationFlag     = 0x0100
+    };
 
-   using Renderers = QFlags<Renderer>;
+    using Renderers = QFlags<Renderer>;
 
-   static Renderer requestedGlesRenderer();
-   static Renderer requestedRenderer();
+    static Renderer requestedGlesRenderer();
+    static Renderer requestedRenderer();
 
-   static Renderers supportedGlesRenderers();
-   static Renderers supportedRenderers();
+    static Renderers supportedGlesRenderers();
+    static Renderers supportedRenderers();
 
- private:
-   static QWindowsOpenGLTester::Renderers detectSupportedRenderers(const GpuDescription &gpu, bool glesOnly);
-   static bool testDesktopGL();
+private:
+    static QWindowsOpenGLTester::Renderers detectSupportedRenderers( const GpuDescription &gpu, bool glesOnly );
+    static bool testDesktopGL();
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QWindowsOpenGLTester::Renderers)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QWindowsOpenGLTester::Renderers )
 
 #endif

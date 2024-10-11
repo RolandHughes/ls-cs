@@ -26,7 +26,8 @@
 
 #include <QSharedData>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AndExpression;
 class ApplyTemplate;
@@ -104,86 +105,86 @@ template<bool IsForGlobal> class EvaluationCache;
 
 class ExpressionVisitorResult : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<ExpressionVisitorResult> Ptr;
-   ExpressionVisitorResult() {}
-   virtual ~ExpressionVisitorResult() {}
+public:
+    typedef QExplicitlySharedDataPointer<ExpressionVisitorResult> Ptr;
+    ExpressionVisitorResult() {}
+    virtual ~ExpressionVisitorResult() {}
 };
 
 class ExpressionVisitor : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<ExpressionVisitor> Ptr;
-   virtual ~ExpressionVisitor() {}
+public:
+    typedef QExplicitlySharedDataPointer<ExpressionVisitor> Ptr;
+    virtual ~ExpressionVisitor() {}
 
-   virtual ExpressionVisitorResult::Ptr visit(const AndExpression *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ApplyTemplate *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ArgumentConverter *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ArgumentReference *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ArithmeticExpression *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const Atomizer *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const AttributeConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const AttributeNameValidator *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const AxisStep *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CallTemplate *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CardinalityVerifier *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CastableAs *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CastAs *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CollationChecker *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CombineNodes *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CommentConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ComputedNamespaceConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ContextItem *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CopyOf *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const CurrentItemStore *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const DocumentConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const DynamicContextStore *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const EBVExtractor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ElementConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const EmptySequence *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const EvaluationCache<false> *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const EvaluationCache<true> *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ExpressionSequence *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ExpressionVariableReference *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ExternalVariableReference *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const FirstItemPredicate *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ForClause *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const FunctionCall *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const GeneralComparison *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const GenericPredicate *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const IfThenClause *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const InstanceOf *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ItemVerifier *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const LetClause *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const Literal *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const LiteralSequence *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const NamespaceConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const NCNameConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const NodeComparison *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const NodeSortExpression *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const OrderBy *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const OrExpression *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ParentNodeAxis *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const Path *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const PositionalVariableReference *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ProcessingInstructionConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const QNameConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const QuantifiedExpression *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const RangeExpression *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const RangeVariableReference *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ReturnOrderBy *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const SimpleContentConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const StaticBaseURIStore *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const StaticCompatibilityStore *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const TemplateParameterReference *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const TextNodeConstructor *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const TreatAs *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const TruthPredicate *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const UnresolvedVariableReference *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const UntypedAtomicConverter *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const UserFunctionCallsite *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ValidationError *) const = 0;
-   virtual ExpressionVisitorResult::Ptr visit(const ValueComparison *) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const AndExpression * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ApplyTemplate * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ArgumentConverter * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ArgumentReference * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ArithmeticExpression * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const Atomizer * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const AttributeConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const AttributeNameValidator * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const AxisStep * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CallTemplate * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CardinalityVerifier * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CastableAs * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CastAs * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CollationChecker * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CombineNodes * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CommentConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ComputedNamespaceConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ContextItem * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CopyOf * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const CurrentItemStore * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const DocumentConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const DynamicContextStore * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const EBVExtractor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ElementConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const EmptySequence * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const EvaluationCache<false> * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const EvaluationCache<true> * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ExpressionSequence * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ExpressionVariableReference * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ExternalVariableReference * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const FirstItemPredicate * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ForClause * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const FunctionCall * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const GeneralComparison * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const GenericPredicate * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const IfThenClause * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const InstanceOf * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ItemVerifier * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const LetClause * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const Literal * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const LiteralSequence * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const NamespaceConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const NCNameConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const NodeComparison * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const NodeSortExpression * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const OrderBy * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const OrExpression * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ParentNodeAxis * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const Path * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const PositionalVariableReference * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ProcessingInstructionConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const QNameConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const QuantifiedExpression * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const RangeExpression * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const RangeVariableReference * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ReturnOrderBy * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const SimpleContentConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const StaticBaseURIStore * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const StaticCompatibilityStore * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const TemplateParameterReference * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const TextNodeConstructor * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const TreatAs * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const TruthPredicate * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const UnresolvedVariableReference * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const UntypedAtomicConverter * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const UserFunctionCallsite * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ValidationError * ) const = 0;
+    virtual ExpressionVisitorResult::Ptr visit( const ValueComparison * ) const = 0;
 };
 
 }

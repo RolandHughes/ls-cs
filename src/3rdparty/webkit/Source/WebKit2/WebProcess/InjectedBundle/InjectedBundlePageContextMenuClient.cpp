@@ -37,40 +37,55 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-bool InjectedBundlePageContextMenuClient::getCustomMenuFromDefaultItems(WebPage* page, InjectedBundleHitTestResult* hitTestResult, const Vector<WebContextMenuItemData>& defaultMenu, Vector<WebContextMenuItemData>& newMenu, RefPtr<APIObject>& userData)
+namespace WebKit
 {
-    if (!m_client.getContextMenuFromDefaultMenu)
+
+bool InjectedBundlePageContextMenuClient::getCustomMenuFromDefaultItems( WebPage *page,
+        InjectedBundleHitTestResult *hitTestResult, const Vector<WebContextMenuItemData> &defaultMenu,
+        Vector<WebContextMenuItemData> &newMenu, RefPtr<APIObject> &userData )
+{
+    if ( !m_client.getContextMenuFromDefaultMenu )
+    {
         return false;
+    }
 
     RefPtr<MutableArray> defaultMenuArray = MutableArray::create();
-    defaultMenuArray->reserveCapacity(defaultMenu.size());
-    for (unsigned i = 0; i < defaultMenu.size(); ++i)
-        defaultMenuArray->append(WebContextMenuItem::create(defaultMenu[i]).get());
+    defaultMenuArray->reserveCapacity( defaultMenu.size() );
+
+    for ( unsigned i = 0; i < defaultMenu.size(); ++i )
+    {
+        defaultMenuArray->append( WebContextMenuItem::create( defaultMenu[i] ).get() );
+    }
 
     WKArrayRef newMenuWK = 0;
     WKTypeRef userDataToPass = 0;
-    m_client.getContextMenuFromDefaultMenu(toAPI(page), toAPI(hitTestResult), toAPI(defaultMenuArray.get()), &newMenuWK, &userDataToPass, m_client.clientInfo);
-    RefPtr<ImmutableArray> array = adoptRef(toImpl(newMenuWK));
-    userData = adoptRef(toImpl(userDataToPass));
-    
+    m_client.getContextMenuFromDefaultMenu( toAPI( page ), toAPI( hitTestResult ), toAPI( defaultMenuArray.get() ), &newMenuWK,
+                                            &userDataToPass, m_client.clientInfo );
+    RefPtr<ImmutableArray> array = adoptRef( toImpl( newMenuWK ) );
+    userData = adoptRef( toImpl( userDataToPass ) );
+
     newMenu.clear();
-    
-    if (!array || !array->size())
+
+    if ( !array || !array->size() )
+    {
         return true;
-    
+    }
+
     size_t size = array->size();
-    for (size_t i = 0; i < size; ++i) {
-        WebContextMenuItem* item = array->at<WebContextMenuItem>(i);
-        if (!item) {
-            LOG(ContextMenu, "New menu entry at index %i is not a WebContextMenuItem", (int)i);
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        WebContextMenuItem *item = array->at<WebContextMenuItem>( i );
+
+        if ( !item )
+        {
+            LOG( ContextMenu, "New menu entry at index %i is not a WebContextMenuItem", ( int )i );
             continue;
         }
-        
-        newMenu.append(*item->data());
+
+        newMenu.append( *item->data() );
     }
-    
+
     return true;
 }
 

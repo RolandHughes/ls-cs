@@ -41,49 +41,49 @@ class CameraBinSession;
 
 class CameraBinVideoEncoder : public QVideoEncoderSettingsControl
 {
-   CS_OBJECT(CameraBinVideoEncoder)
+    LSCS_OBJECT( CameraBinVideoEncoder )
 
- public:
-   CameraBinVideoEncoder(CameraBinSession *session);
-   virtual ~CameraBinVideoEncoder();
+public:
+    CameraBinVideoEncoder( CameraBinSession *session );
+    virtual ~CameraBinVideoEncoder();
 
-   QList<QSize> supportedResolutions(const QVideoEncoderSettings &settings = QVideoEncoderSettings(),
-         bool *continuous = nullptr) const override;
+    QList<QSize> supportedResolutions( const QVideoEncoderSettings &settings = QVideoEncoderSettings(),
+                                       bool *continuous = nullptr ) const override;
 
-   QList< qreal > supportedFrameRates(const QVideoEncoderSettings &settings = QVideoEncoderSettings(),
-         bool *continuous = nullptr) const override;
+    QList< qreal > supportedFrameRates( const QVideoEncoderSettings &settings = QVideoEncoderSettings(),
+                                        bool *continuous = nullptr ) const override;
 
-   QPair<int, int> rateAsRational(qreal) const;
+    QPair<int, int> rateAsRational( qreal ) const;
 
-   QStringList supportedVideoCodecs() const override;
-   QString videoCodecDescription(const QString &codecName) const override;
+    QStringList supportedVideoCodecs() const override;
+    QString videoCodecDescription( const QString &codecName ) const override;
 
-   QVideoEncoderSettings videoSettings() const override;
-   void setVideoSettings(const QVideoEncoderSettings &settings) override;
+    QVideoEncoderSettings videoSettings() const override;
+    void setVideoSettings( const QVideoEncoderSettings &settings ) override;
 
-   QVideoEncoderSettings actualVideoSettings() const;
-   void setActualVideoSettings(const QVideoEncoderSettings &);
-   void resetActualSettings();
-
-#ifdef HAVE_GST_ENCODING_PROFILES
-   GstEncodingProfile *createProfile();
-#endif
-
-   void applySettings(GstElement *encoder);
-
- public:
-   CS_SIGNAL_1(Public, void settingsChanged())
-   CS_SIGNAL_2(settingsChanged)
-
- private:
-   CameraBinSession *m_session;
+    QVideoEncoderSettings actualVideoSettings() const;
+    void setActualVideoSettings( const QVideoEncoderSettings & );
+    void resetActualSettings();
 
 #ifdef HAVE_GST_ENCODING_PROFILES
-   QGstCodecsInfo m_codecs;
+    GstEncodingProfile *createProfile();
 #endif
 
-   QVideoEncoderSettings m_actualVideoSettings;
-   QVideoEncoderSettings m_videoSettings;
+    void applySettings( GstElement *encoder );
+
+public:
+    LSCS_SIGNAL_1( Public, void settingsChanged() )
+    LSCS_SIGNAL_2( settingsChanged )
+
+private:
+    CameraBinSession *m_session;
+
+#ifdef HAVE_GST_ENCODING_PROFILES
+    QGstCodecsInfo m_codecs;
+#endif
+
+    QVideoEncoderSettings m_actualVideoSettings;
+    QVideoEncoderSettings m_videoSettings;
 };
 
 #endif

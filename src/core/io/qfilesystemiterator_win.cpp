@@ -33,119 +33,144 @@
 
 bool done = true;
 
-QFileSystemIterator::QFileSystemIterator(const QFileSystemEntry &entry, QDir::Filters filters,
-      const QStringList &nameFilters, QDirIterator::IteratorFlags flags)
-   : nativePath(entry.nativeFilePath()), dirPath(entry.filePath()), findFileHandle(INVALID_HANDLE_VALUE), uncFallback(false),
-     uncShareIndex(0), onlyDirs(false)
+QFileSystemIterator::QFileSystemIterator( const QFileSystemEntry &entry, QDir::Filters filters,
+        const QStringList &nameFilters, QDirIterator::IteratorFlags flags )
+    : nativePath( entry.nativeFilePath() ), dirPath( entry.filePath() ), findFileHandle( INVALID_HANDLE_VALUE ), uncFallback( false ),
+      uncShareIndex( 0 ), onlyDirs( false )
 {
-   (void) nameFilters;
-   (void) flags;
+    ( void ) nameFilters;
+    ( void ) flags;
 
-   if (nativePath.endsWith(".lnk")) {
-      QFileSystemMetaData metaData;
-      QFileSystemEntry link = QFileSystemEngine::getLinkTarget(entry, metaData);
-      nativePath = link.nativeFilePath();
-   }
+    if ( nativePath.endsWith( ".lnk" ) )
+    {
+        QFileSystemMetaData metaData;
+        QFileSystemEntry link = QFileSystemEngine::getLinkTarget( entry, metaData );
+        nativePath = link.nativeFilePath();
+    }
 
-   if (! nativePath.endsWith('\\')) {
-      nativePath.append('\\');
-   }
+    if ( ! nativePath.endsWith( '\\' ) )
+    {
+        nativePath.append( '\\' );
+    }
 
-   nativePath.append('*');
+    nativePath.append( '*' );
 
-   if (!dirPath.endsWith('/')) {
-      dirPath.append('/');
-   }
+    if ( !dirPath.endsWith( '/' ) )
+    {
+        dirPath.append( '/' );
+    }
 
-   if ((filters & (QDir::Dirs | QDir::Drives)) && (! (filters & (QDir::Files)))) {
-      onlyDirs = true;
-   }
+    if ( ( filters & ( QDir::Dirs | QDir::Drives ) ) && ( ! ( filters & ( QDir::Files ) ) ) )
+    {
+        onlyDirs = true;
+    }
 }
 
 QFileSystemIterator::~QFileSystemIterator()
 {
-   if (findFileHandle != INVALID_HANDLE_VALUE) {
-      FindClose(findFileHandle);
-   }
+    if ( findFileHandle != INVALID_HANDLE_VALUE )
+    {
+        FindClose( findFileHandle );
+    }
 }
 
-bool QFileSystemIterator::advance(QFileSystemEntry &fileEntry, QFileSystemMetaData &metaData)
+bool QFileSystemIterator::advance( QFileSystemEntry &fileEntry, QFileSystemMetaData &metaData )
 {
-   bool haveData = false;
-   WIN32_FIND_DATA findData;
+    bool haveData = false;
+    WIN32_FIND_DATA findData;
 
-   if (findFileHandle == INVALID_HANDLE_VALUE && !uncFallback) {
-      haveData = true;
-      int infoLevel = 0 ;         // FindExInfoStandard;
-      DWORD dwAdditionalFlags  = 0;
+    if ( findFileHandle == INVALID_HANDLE_VALUE && !uncFallback )
+    {
+        haveData = true;
+        int infoLevel = 0 ;         // FindExInfoStandard;
+        DWORD dwAdditionalFlags  = 0;
 
-      if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS7) {
-         dwAdditionalFlags = 2;        // FIND_FIRST_EX_LARGE_FETCH
-         infoLevel = 1 ;               // FindExInfoBasic;
-      }
+        if ( QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS7 )
+        {
+            dwAdditionalFlags = 2;        // FIND_FIRST_EX_LARGE_FETCH
+            infoLevel = 1 ;               // FindExInfoBasic;
+        }
 
-      int searchOps =  0;              // FindExSearchNameMatch
+        int searchOps =  0;              // FindExSearchNameMatch
 
-      if (onlyDirs) {
-         searchOps = 1 ;               // FindExSearchLimitToDirectories
-      }
+        if ( onlyDirs )
+        {
+            searchOps = 1 ;               // FindExSearchLimitToDirectories
+        }
 
-      findFileHandle = FindFirstFileEx(&nativePath.toStdWString()[0], FINDEX_INFO_LEVELS(infoLevel), &findData,
-            FINDEX_SEARCH_OPS(searchOps), nullptr, dwAdditionalFlags);
+        findFileHandle = FindFirstFileEx( &nativePath.toStdWString()[0], FINDEX_INFO_LEVELS( infoLevel ), &findData,
+                                          FINDEX_SEARCH_OPS( searchOps ), nullptr, dwAdditionalFlags );
 
-      if (findFileHandle == INVALID_HANDLE_VALUE) {
+        if ( findFileHandle == INVALID_HANDLE_VALUE )
+        {
 
-         if (nativePath.startsWith("\\\\?\\UNC\\")) {
-            QStringList parts = nativePath.split('\\', QStringParser::SkipEmptyParts);
+            if ( nativePath.startsWith( "\\\\?\\UNC\\" ) )
+            {
+                QStringList parts = nativePath.split( '\\', QStringParser::SkipEmptyParts );
 
-            if (parts.count() == 4 && QFileSystemEngine::uncListSharesOnServer("\\\\" + parts.at(2), &uncShares)) {
-               if (uncShares.isEmpty()) {
-                  return false;   // No shares found in the server
-               } else {
-                  uncFallback = true;
-               }
+                if ( parts.count() == 4 && QFileSystemEngine::uncListSharesOnServer( "\\\\" + parts.at( 2 ), &uncShares ) )
+                {
+                    if ( uncShares.isEmpty() )
+                    {
+                        return false;   // No shares found in the server
+                    }
+                    else
+                    {
+                        uncFallback = true;
+                    }
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   if (findFileHandle == INVALID_HANDLE_VALUE && !uncFallback) {
-      return false;
-   }
+    if ( findFileHandle == INVALID_HANDLE_VALUE && !uncFallback )
+    {
+        return false;
+    }
 
-   // Retrieve the new file information.
-   if (!haveData) {
-      if (uncFallback) {
-         if (++uncShareIndex >= uncShares.count()) {
-            return false;
-         }
-      } else {
-         if (!FindNextFile(findFileHandle, &findData)) {
-            return false;
-         }
-      }
-   }
+    // Retrieve the new file information.
+    if ( !haveData )
+    {
+        if ( uncFallback )
+        {
+            if ( ++uncShareIndex >= uncShares.count() )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if ( !FindNextFile( findFileHandle, &findData ) )
+            {
+                return false;
+            }
+        }
+    }
 
-   // Create the new file system entry & meta data.
-   if (uncFallback) {
-      fileEntry = QFileSystemEntry(dirPath + uncShares.at(uncShareIndex));
-      metaData.fillFromFileAttribute(FILE_ATTRIBUTE_DIRECTORY);
-      return true;
+    // Create the new file system entry & meta data.
+    if ( uncFallback )
+    {
+        fileEntry = QFileSystemEntry( dirPath + uncShares.at( uncShareIndex ) );
+        metaData.fillFromFileAttribute( FILE_ATTRIBUTE_DIRECTORY );
+        return true;
 
-   } else {
-      QString fileName = QString::fromStdWString(std::wstring(findData.cFileName));
+    }
+    else
+    {
+        QString fileName = QString::fromStdWString( std::wstring( findData.cFileName ) );
 
-      fileEntry = QFileSystemEntry(dirPath + fileName);
-      metaData  = QFileSystemMetaData();
+        fileEntry = QFileSystemEntry( dirPath + fileName );
+        metaData  = QFileSystemMetaData();
 
-      if (! fileName.endsWith(QLatin1String(".lnk"))) {
-         metaData.fillFromFindData(findData, true);
-      }
+        if ( ! fileName.endsWith( QLatin1String( ".lnk" ) ) )
+        {
+            metaData.fillFromFindData( findData, true );
+        }
 
-      return true;
-   }
+        return true;
+    }
 
-   return false;
+    return false;
 }
 
 #endif //  QT_NO_FILESYSTEMITERATOR

@@ -32,34 +32,34 @@ class QPaintEvent;
 
 class Q_GUI_EXPORT QPaintDeviceWindow : public QWindow, public QPaintDevice
 {
-   GUI_CS_OBJECT(QPaintDeviceWindow)
+    GUI_LSCS_OBJECT( QPaintDeviceWindow )
 
- public:
-   QPaintDeviceWindow(const QPaintDeviceWindow &) = delete;
-   QPaintDeviceWindow &operator=(const QPaintDeviceWindow &) = delete;
+public:
+    QPaintDeviceWindow( const QPaintDeviceWindow & ) = delete;
+    QPaintDeviceWindow &operator=( const QPaintDeviceWindow & ) = delete;
 
-   void update(const QRect &rect);
-   void update(const QRegion &region);
+    void update( const QRect &rect );
+    void update( const QRegion &region );
 
-   using QWindow::width;
-   using QWindow::height;
-   using QWindow::devicePixelRatio;
+    using QWindow::width;
+    using QWindow::height;
+    using QWindow::devicePixelRatio;
 
-   GUI_CS_SLOT_1(Public, void update())
-   GUI_CS_SLOT_OVERLOAD(update, ())
+    GUI_LSCS_SLOT_1( Public, void update() )
+    GUI_LSCS_SLOT_OVERLOAD( update, () )
 
- protected:
-   virtual void paintEvent(QPaintEvent *event);
+protected:
+    virtual void paintEvent( QPaintEvent *event );
 
-   int metric(PaintDeviceMetric metric) const override;
-   void exposeEvent(QExposeEvent *event) override;
-   bool event(QEvent *event) override;
+    int metric( PaintDeviceMetric metric ) const override;
+    void exposeEvent( QExposeEvent *event ) override;
+    bool event( QEvent *event ) override;
 
-   QPaintDeviceWindow(QPaintDeviceWindowPrivate &dd, QWindow *parent);
+    QPaintDeviceWindow( QPaintDeviceWindowPrivate &dd, QWindow *parent );
 
- private:
-   Q_DECLARE_PRIVATE(QPaintDeviceWindow)
-   QPaintEngine *paintEngine() const override;
+private:
+    Q_DECLARE_PRIVATE( QPaintDeviceWindow )
+    QPaintEngine *paintEngine() const override;
 };
 
 #endif

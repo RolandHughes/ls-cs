@@ -26,26 +26,27 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CollationChecker : public SingleContainer
 {
- public:
-   CollationChecker(const Expression::Ptr &source);
+public:
+    CollationChecker( const Expression::Ptr &source );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
 
-   /**
-    * Expects exactly one string.
-    */
-   SequenceType::List expectedOperandTypes() const override;
+    /**
+     * Expects exactly one string.
+     */
+    SequenceType::List expectedOperandTypes() const override;
 
-   /**
-    * @returns its operand's static type.
-    */
-   SequenceType::Ptr staticType() const override;
+    /**
+     * @returns its operand's static type.
+     */
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 };
 
 }

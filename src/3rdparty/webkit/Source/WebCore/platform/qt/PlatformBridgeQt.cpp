@@ -26,25 +26,32 @@
 #include "PluginView.h"
 #include "Widget.h"
 
-namespace WebCore {
-
-bool PlatformBridge::popupsAllowed(NPP npp)
+namespace WebCore
 {
-    if (npp && npp->ndata)
-        return static_cast<PluginView*>(npp->ndata)->arePopupsAllowed();
+
+bool PlatformBridge::popupsAllowed( NPP npp )
+{
+    if ( npp && npp->ndata )
+    {
+        return static_cast<PluginView *>( npp->ndata )->arePopupsAllowed();
+    }
 
     return false;
 }
 
-NPObject* PlatformBridge::pluginScriptableObject(Widget* widget)
+NPObject *PlatformBridge::pluginScriptableObject( Widget *widget )
 {
-    if (!widget)
+    if ( !widget )
+    {
         return 0;
+    }
 
-    if (!widget->isPluginView())
+    if ( !widget->isPluginView() )
+    {
         return 0;
+    }
 
-    PluginView* pluginView = static_cast<PluginView*>(widget);
+    PluginView *pluginView = static_cast<PluginView *>( widget );
     return pluginView->npObject();
 }
 

@@ -34,7 +34,8 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMStringList;
 
@@ -42,34 +43,36 @@ class IDBBackingStore;
 class IDBDatabaseBackendImpl;
 class IDBTransactionCoordinator;
 
-class IDBFactoryBackendImpl : public IDBFactoryBackendInterface {
+class IDBFactoryBackendImpl : public IDBFactoryBackendInterface
+{
 public:
     static PassRefPtr<IDBFactoryBackendImpl> create()
     {
-        return adoptRef(new IDBFactoryBackendImpl());
+        return adoptRef( new IDBFactoryBackendImpl() );
     }
     virtual ~IDBFactoryBackendImpl();
 
     // Notifications from weak pointers.
-    void removeIDBDatabaseBackend(const String& uniqueIdentifier);
-    void addIDBBackingStore(const String& uniqueIdentifier, IDBBackingStore*);
-    void removeIDBBackingStore(const String& uniqueIdentifier);
+    void removeIDBDatabaseBackend( const String &uniqueIdentifier );
+    void addIDBBackingStore( const String &uniqueIdentifier, IDBBackingStore * );
+    void removeIDBBackingStore( const String &uniqueIdentifier );
 
-    virtual void open(const String& name, PassRefPtr<IDBCallbacks>, PassRefPtr<SecurityOrigin>, Frame*, const String& dataDir, int64_t maximumSize, BackingStoreType);
+    virtual void open( const String &name, PassRefPtr<IDBCallbacks>, PassRefPtr<SecurityOrigin>, Frame *, const String &dataDir,
+                       int64_t maximumSize, BackingStoreType );
 
 private:
     IDBFactoryBackendImpl();
 
-    typedef HashMap<String, IDBDatabaseBackendImpl*> IDBDatabaseBackendMap;
+    typedef HashMap<String, IDBDatabaseBackendImpl *> IDBDatabaseBackendMap;
     IDBDatabaseBackendMap m_databaseBackendMap;
 
-    typedef HashMap<String, IDBBackingStore*> IDBBackingStoreMap;
+    typedef HashMap<String, IDBBackingStore *> IDBBackingStoreMap;
     IDBBackingStoreMap m_backingStoreMap;
 
     RefPtr<IDBTransactionCoordinator> m_transactionCoordinator;
 
     // Only one instance of the factory should exist at any given time.
-    static IDBFactoryBackendImpl* idbFactoryBackendImpl;
+    static IDBFactoryBackendImpl *idbFactoryBackendImpl;
 };
 
 } // namespace WebCore

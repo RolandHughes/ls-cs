@@ -36,20 +36,31 @@
 #include <wtf/Forward.h>
 #include <wtf/ThreadSafeRefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RawData : public ThreadSafeRefCounted<RawData> {
+class RawData : public ThreadSafeRefCounted<RawData>
+{
 public:
     static PassRefPtr<RawData> create()
     {
-        return adoptRef(new RawData());
+        return adoptRef( new RawData() );
     }
 
     void detachFromCurrentThread();
 
-    const char* data() const { return m_data.data(); }
-    size_t length() const { return m_data.size(); }
-    Vector<char>* mutableData() { return &m_data; }
+    const char *data() const
+    {
+        return m_data.data();
+    }
+    size_t length() const
+    {
+        return m_data.size();
+    }
+    Vector<char> *mutableData()
+    {
+        return &m_data;
+    }
 
 private:
     RawData();
@@ -57,56 +68,57 @@ private:
     Vector<char> m_data;
 };
 
-struct BlobDataItem {
+struct BlobDataItem
+{
     static const long long toEndOfFile;
     static const double doNotCheckFileChange;
 
     // Default constructor.
     BlobDataItem()
-        : type(Data)
-        , offset(0)
-        , length(toEndOfFile)
-        , expectedModificationTime(doNotCheckFileChange)
+        : type( Data )
+        , offset( 0 )
+        , length( toEndOfFile )
+        , expectedModificationTime( doNotCheckFileChange )
     {
     }
 
     // Constructor for String type (complete string).
-    explicit BlobDataItem(PassRefPtr<RawData> data)
-        : type(Data)
-        , data(data)
-        , offset(0)
-        , length(toEndOfFile)
-        , expectedModificationTime(doNotCheckFileChange)
+    explicit BlobDataItem( PassRefPtr<RawData> data )
+        : type( Data )
+        , data( data )
+        , offset( 0 )
+        , length( toEndOfFile )
+        , expectedModificationTime( doNotCheckFileChange )
     {
     }
 
     // Constructor for File type (complete file).
-    explicit BlobDataItem(const String& path)
-        : type(File)
-        , path(path)
-        , offset(0)
-        , length(toEndOfFile)
-        , expectedModificationTime(doNotCheckFileChange)
+    explicit BlobDataItem( const String &path )
+        : type( File )
+        , path( path )
+        , offset( 0 )
+        , length( toEndOfFile )
+        , expectedModificationTime( doNotCheckFileChange )
     {
     }
 
     // Constructor for File type (partial file).
-    BlobDataItem(const String& path, long long offset, long long length, double expectedModificationTime)
-        : type(File)
-        , path(path)
-        , offset(offset)
-        , length(length)
-        , expectedModificationTime(expectedModificationTime)
+    BlobDataItem( const String &path, long long offset, long long length, double expectedModificationTime )
+        : type( File )
+        , path( path )
+        , offset( offset )
+        , length( length )
+        , expectedModificationTime( expectedModificationTime )
     {
     }
-    
+
     // Constructor for Blob type.
-    BlobDataItem(const KURL& url, long long offset, long long length)
-        : type(Blob)
-        , url(url)
-        , offset(offset)
-        , length(length)
-        , expectedModificationTime(doNotCheckFileChange)
+    BlobDataItem( const KURL &url, long long offset, long long length )
+        : type( Blob )
+        , url( url )
+        , offset( offset )
+        , length( length )
+        , expectedModificationTime( doNotCheckFileChange )
     {
     }
 
@@ -114,7 +126,7 @@ struct BlobDataItem {
     void detachFromCurrentThread();
 
     enum { Data, File, Blob } type;
-    
+
     // For Data type.
     RefPtr<RawData> data;
 
@@ -132,19 +144,20 @@ private:
     friend class BlobData;
 
     // Constructor for String type (partial string).
-    BlobDataItem(PassRefPtr<RawData> data, long long offset, long long length)
-        : type(Data)
-        , data(data)
-        , offset(offset)
-        , length(length)
-        , expectedModificationTime(doNotCheckFileChange)
+    BlobDataItem( PassRefPtr<RawData> data, long long offset, long long length )
+        : type( Data )
+        , data( data )
+        , offset( offset )
+        , length( length )
+        , expectedModificationTime( doNotCheckFileChange )
     {
     }
 };
 
 typedef Vector<BlobDataItem> BlobDataItemList;
 
-class BlobData {
+class BlobData
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
     static PassOwnPtr<BlobData> create();
@@ -152,19 +165,34 @@ public:
     // Detaches from current thread so that it can be passed to another thread.
     void detachFromCurrentThread();
 
-    const String& contentType() const { return m_contentType; }
-    void setContentType(const String& contentType) { m_contentType = contentType; }
+    const String &contentType() const
+    {
+        return m_contentType;
+    }
+    void setContentType( const String &contentType )
+    {
+        m_contentType = contentType;
+    }
 
-    const String& contentDisposition() const { return m_contentDisposition; }
-    void setContentDisposition(const String& contentDisposition) { m_contentDisposition = contentDisposition; }
+    const String &contentDisposition() const
+    {
+        return m_contentDisposition;
+    }
+    void setContentDisposition( const String &contentDisposition )
+    {
+        m_contentDisposition = contentDisposition;
+    }
 
-    const BlobDataItemList& items() const { return m_items; }
-    void swapItems(BlobDataItemList&);
+    const BlobDataItemList &items() const
+    {
+        return m_items;
+    }
+    void swapItems( BlobDataItemList & );
 
-    void appendData(PassRefPtr<RawData>, long long offset, long long length);
-    void appendFile(const String& path);
-    void appendFile(const String& path, long long offset, long long length, double expectedModificationTime);
-    void appendBlob(const KURL&, long long offset, long long length);
+    void appendData( PassRefPtr<RawData>, long long offset, long long length );
+    void appendFile( const String &path );
+    void appendFile( const String &path, long long offset, long long length, double expectedModificationTime );
+    void appendBlob( const KURL &, long long offset, long long length );
 
 private:
     friend class BlobRegistryImpl;
@@ -173,7 +201,7 @@ private:
     BlobData() { }
 
     // This is only exposed to BlobStorageData.
-    void appendData(const RawData&, long long offset, long long length);
+    void appendData( const RawData &, long long offset, long long length );
 
     String m_contentType;
     String m_contentDisposition;

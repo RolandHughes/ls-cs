@@ -33,35 +33,44 @@
 #include "SimpleFontData.h"
 #include "XMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace SVGNames;
 
-inline SVGGlyphElement::SVGGlyphElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
+inline SVGGlyphElement::SVGGlyphElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGGlyphElement> SVGGlyphElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGGlyphElement> SVGGlyphElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGGlyphElement(tagName, document));
+    return adoptRef( new SVGGlyphElement( tagName, document ) );
 }
 
 void SVGGlyphElement::invalidateGlyphCache()
 {
-    ContainerNode* fontNode = parentNode();
-    if (fontNode && fontNode->hasTagName(SVGNames::fontTag)) {
-        if (SVGFontElement* element = static_cast<SVGFontElement*>(fontNode))
+    ContainerNode *fontNode = parentNode();
+
+    if ( fontNode && fontNode->hasTagName( SVGNames::fontTag ) )
+    {
+        if ( SVGFontElement *element = static_cast<SVGFontElement *>( fontNode ) )
+        {
             element->invalidateGlyphCache();
+        }
     }
 }
 
-void SVGGlyphElement::parseMappedAttribute(Attribute* attr)
+void SVGGlyphElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == SVGNames::dAttr)
+    if ( attr->name() == SVGNames::dAttr )
+    {
         invalidateGlyphCache();
+    }
     else
-        SVGStyledElement::parseMappedAttribute(attr);
+    {
+        SVGStyledElement::parseMappedAttribute( attr );
+    }
 }
 
 void SVGGlyphElement::insertedIntoDocument()
@@ -76,115 +85,145 @@ void SVGGlyphElement::removedFromDocument()
     SVGStyledElement::removedFromDocument();
 }
 
-static inline SVGGlyph::ArabicForm parseArabicForm(const AtomicString& value)
+static inline SVGGlyph::ArabicForm parseArabicForm( const AtomicString &value )
 {
-    if (value == "medial")
+    if ( value == "medial" )
+    {
         return SVGGlyph::Medial;
-    if (value == "terminal")
+    }
+
+    if ( value == "terminal" )
+    {
         return SVGGlyph::Terminal;
-    if (value == "isolated")
+    }
+
+    if ( value == "isolated" )
+    {
         return SVGGlyph::Isolated;
-    if (value == "initial")
+    }
+
+    if ( value == "initial" )
+    {
         return SVGGlyph::Initial;
+    }
 
     return SVGGlyph::None;
 }
 
-static inline SVGGlyph::Orientation parseOrientation(const AtomicString& value)
+static inline SVGGlyph::Orientation parseOrientation( const AtomicString &value )
 {
-    if (value == "h")
+    if ( value == "h" )
+    {
         return SVGGlyph::Horizontal;
-    if (value == "v")
+    }
+
+    if ( value == "v" )
+    {
         return SVGGlyph::Vertical;
+    }
 
     return SVGGlyph::Both;
 }
 
-static inline Path parsePathData(const AtomicString& value)
+static inline Path parsePathData( const AtomicString &value )
 {
     Path result;
-    SVGPathParserFactory* factory = SVGPathParserFactory::self();
-    factory->buildPathFromString(value, result);
+    SVGPathParserFactory *factory = SVGPathParserFactory::self();
+    factory->buildPathFromString( value, result );
     return result;
 }
 
-void SVGGlyphElement::inheritUnspecifiedAttributes(SVGGlyph& identifier, const SVGFontData* svgFontData)
+void SVGGlyphElement::inheritUnspecifiedAttributes( SVGGlyph &identifier, const SVGFontData *svgFontData )
 {
-    if (identifier.horizontalAdvanceX == SVGGlyph::inheritedValue())
+    if ( identifier.horizontalAdvanceX == SVGGlyph::inheritedValue() )
+    {
         identifier.horizontalAdvanceX = svgFontData->horizontalAdvanceX();
+    }
 
-    if (identifier.verticalOriginX == SVGGlyph::inheritedValue())
+    if ( identifier.verticalOriginX == SVGGlyph::inheritedValue() )
+    {
         identifier.verticalOriginX = svgFontData->verticalOriginX();
+    }
 
-    if (identifier.verticalOriginY == SVGGlyph::inheritedValue())
+    if ( identifier.verticalOriginY == SVGGlyph::inheritedValue() )
+    {
         identifier.verticalOriginY = svgFontData->verticalOriginY();
+    }
 
-    if (identifier.verticalAdvanceY == SVGGlyph::inheritedValue())
+    if ( identifier.verticalAdvanceY == SVGGlyph::inheritedValue() )
+    {
         identifier.verticalAdvanceY = svgFontData->verticalAdvanceY();
+    }
 }
 
-static inline float parseSVGGlyphAttribute(const SVGElement* element, const WebCore::QualifiedName& name)
+static inline float parseSVGGlyphAttribute( const SVGElement *element, const WebCore::QualifiedName &name )
 {
-    AtomicString value(element->getAttribute(name));
-    if (value.isEmpty())
+    AtomicString value( element->getAttribute( name ) );
+
+    if ( value.isEmpty() )
+    {
         return SVGGlyph::inheritedValue();
+    }
 
     return value.toFloat();
 }
 
-AttributeToPropertyTypeMap& SVGGlyphElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGGlyphElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGGlyphElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::dAttr, AnimatedPath);
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::dAttr, AnimatedPath );
 }
 
-SVGGlyph SVGGlyphElement::buildGenericGlyphIdentifier(const SVGElement* element)
+SVGGlyph SVGGlyphElement::buildGenericGlyphIdentifier( const SVGElement *element )
 {
     SVGGlyph identifier;
-    identifier.pathData = parsePathData(element->getAttribute(dAttr));
- 
+    identifier.pathData = parsePathData( element->getAttribute( dAttr ) );
+
     // Spec: The horizontal advance after rendering the glyph in horizontal orientation.
     // If the attribute is not specified, the effect is as if the attribute were set to the
     // value of the font's horiz-adv-x attribute. Glyph widths are required to be non-negative,
     // even if the glyph is typically rendered right-to-left, as in Hebrew and Arabic scripts.
-    identifier.horizontalAdvanceX = parseSVGGlyphAttribute(element, horiz_adv_xAttr);
+    identifier.horizontalAdvanceX = parseSVGGlyphAttribute( element, horiz_adv_xAttr );
 
     // Spec: The X-coordinate in the font coordinate system of the origin of the glyph to be
     // used when drawing vertically oriented text. If the attribute is not specified, the effect
     // is as if the attribute were set to the value of the font's vert-origin-x attribute.
-    identifier.verticalOriginX = parseSVGGlyphAttribute(element, vert_origin_xAttr);
+    identifier.verticalOriginX = parseSVGGlyphAttribute( element, vert_origin_xAttr );
 
     // Spec: The Y-coordinate in the font coordinate system of the origin of a glyph to be
     // used when drawing vertically oriented text. If the attribute is not specified, the effect
     // is as if the attribute were set to the value of the font's vert-origin-y attribute.
-    identifier.verticalOriginY = parseSVGGlyphAttribute(element, vert_origin_yAttr);
+    identifier.verticalOriginY = parseSVGGlyphAttribute( element, vert_origin_yAttr );
 
     // Spec: The vertical advance after rendering a glyph in vertical orientation.
     // If the attribute is not specified, the effect is as if the attribute were set to the
     // value of the font's vert-adv-y attribute.
-    identifier.verticalAdvanceY = parseSVGGlyphAttribute(element, vert_adv_yAttr);
+    identifier.verticalAdvanceY = parseSVGGlyphAttribute( element, vert_adv_yAttr );
 
     return identifier;
 }
 
 SVGGlyph SVGGlyphElement::buildGlyphIdentifier() const
 {
-    SVGGlyph identifier(buildGenericGlyphIdentifier(this));
-    identifier.glyphName = getAttribute(glyph_nameAttr);
-    identifier.orientation = parseOrientation(getAttribute(orientationAttr));
-    identifier.arabicForm = parseArabicForm(getAttribute(arabic_formAttr));
+    SVGGlyph identifier( buildGenericGlyphIdentifier( this ) );
+    identifier.glyphName = getAttribute( glyph_nameAttr );
+    identifier.orientation = parseOrientation( getAttribute( orientationAttr ) );
+    identifier.arabicForm = parseArabicForm( getAttribute( arabic_formAttr ) );
 
-    String language = getAttribute(SVGNames::langAttr);
-    if (!language.isEmpty())
-        identifier.languages = parseDelimitedString(language, ',');
+    String language = getAttribute( SVGNames::langAttr );
+
+    if ( !language.isEmpty() )
+    {
+        identifier.languages = parseDelimitedString( language, ',' );
+    }
 
     return identifier;
 }

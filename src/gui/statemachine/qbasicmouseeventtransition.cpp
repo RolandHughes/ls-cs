@@ -33,43 +33,43 @@
 
 class QBasicMouseEventTransitionPrivate : public QAbstractTransitionPrivate
 {
-   Q_DECLARE_PUBLIC(QBasicMouseEventTransition)
+    Q_DECLARE_PUBLIC( QBasicMouseEventTransition )
 
- public:
-   QBasicMouseEventTransitionPrivate();
+public:
+    QBasicMouseEventTransitionPrivate();
 
-   static QBasicMouseEventTransitionPrivate *get(QBasicMouseEventTransition *q);
+    static QBasicMouseEventTransitionPrivate *get( QBasicMouseEventTransition *q );
 
-   QEvent::Type eventType;
-   Qt::MouseButton button;
-   Qt::KeyboardModifiers modifierMask;
-   QPainterPath path;
+    QEvent::Type eventType;
+    Qt::MouseButton button;
+    Qt::KeyboardModifiers modifierMask;
+    QPainterPath path;
 };
 
 QBasicMouseEventTransitionPrivate::QBasicMouseEventTransitionPrivate()
 {
-   eventType = QEvent::None;
-   button = Qt::NoButton;
+    eventType = QEvent::None;
+    button = Qt::NoButton;
 }
 
-QBasicMouseEventTransitionPrivate *QBasicMouseEventTransitionPrivate::get(QBasicMouseEventTransition *q)
+QBasicMouseEventTransitionPrivate *QBasicMouseEventTransitionPrivate::get( QBasicMouseEventTransition *q )
 {
-   return q->d_func();
+    return q->d_func();
 }
 
-QBasicMouseEventTransition::QBasicMouseEventTransition(QState *sourceState)
-   : QAbstractTransition(*new QBasicMouseEventTransitionPrivate, sourceState)
+QBasicMouseEventTransition::QBasicMouseEventTransition( QState *sourceState )
+    : QAbstractTransition( *new QBasicMouseEventTransitionPrivate, sourceState )
 {
 }
 
-QBasicMouseEventTransition::QBasicMouseEventTransition(QEvent::Type type,
-      Qt::MouseButton button,
-      QState *sourceState)
-   : QAbstractTransition(*new QBasicMouseEventTransitionPrivate, sourceState)
+QBasicMouseEventTransition::QBasicMouseEventTransition( QEvent::Type type,
+        Qt::MouseButton button,
+        QState *sourceState )
+    : QAbstractTransition( *new QBasicMouseEventTransitionPrivate, sourceState )
 {
-   Q_D(QBasicMouseEventTransition);
-   d->eventType = type;
-   d->button = button;
+    Q_D( QBasicMouseEventTransition );
+    d->eventType = type;
+    d->button = button;
 }
 
 QBasicMouseEventTransition::~QBasicMouseEventTransition()
@@ -78,65 +78,68 @@ QBasicMouseEventTransition::~QBasicMouseEventTransition()
 
 QEvent::Type QBasicMouseEventTransition::eventType() const
 {
-   Q_D(const QBasicMouseEventTransition);
-   return d->eventType;
+    Q_D( const QBasicMouseEventTransition );
+    return d->eventType;
 }
 
-void QBasicMouseEventTransition::setEventType(QEvent::Type type)
+void QBasicMouseEventTransition::setEventType( QEvent::Type type )
 {
-   Q_D(QBasicMouseEventTransition);
-   d->eventType = type;
+    Q_D( QBasicMouseEventTransition );
+    d->eventType = type;
 }
 
 Qt::MouseButton QBasicMouseEventTransition::button() const
 {
-   Q_D(const QBasicMouseEventTransition);
-   return d->button;
+    Q_D( const QBasicMouseEventTransition );
+    return d->button;
 }
 
-void QBasicMouseEventTransition::setButton(Qt::MouseButton button)
+void QBasicMouseEventTransition::setButton( Qt::MouseButton button )
 {
-   Q_D(QBasicMouseEventTransition);
-   d->button = button;
+    Q_D( QBasicMouseEventTransition );
+    d->button = button;
 }
 
 Qt::KeyboardModifiers QBasicMouseEventTransition::modifierMask() const
 {
-   Q_D(const QBasicMouseEventTransition);
-   return d->modifierMask;
+    Q_D( const QBasicMouseEventTransition );
+    return d->modifierMask;
 }
 
-void QBasicMouseEventTransition::setModifierMask(Qt::KeyboardModifiers modifierMask)
+void QBasicMouseEventTransition::setModifierMask( Qt::KeyboardModifiers modifierMask )
 {
-   Q_D(QBasicMouseEventTransition);
-   d->modifierMask = modifierMask;
+    Q_D( QBasicMouseEventTransition );
+    d->modifierMask = modifierMask;
 }
 
 QPainterPath QBasicMouseEventTransition::hitTestPath() const
 {
-   Q_D(const QBasicMouseEventTransition);
-   return d->path;
+    Q_D( const QBasicMouseEventTransition );
+    return d->path;
 }
 
-void QBasicMouseEventTransition::setHitTestPath(const QPainterPath &path)
+void QBasicMouseEventTransition::setHitTestPath( const QPainterPath &path )
 {
-   Q_D(QBasicMouseEventTransition);
-   d->path = path;
+    Q_D( QBasicMouseEventTransition );
+    d->path = path;
 }
 
-bool QBasicMouseEventTransition::eventTest(QEvent *event)
+bool QBasicMouseEventTransition::eventTest( QEvent *event )
 {
-   Q_D(const QBasicMouseEventTransition);
-   if (event->type() == d->eventType) {
-      QMouseEvent *me = static_cast<QMouseEvent *>(event);
-      return (me->button() == d->button)
-             && ((me->modifiers() & d->modifierMask) == d->modifierMask)
-             && (d->path.isEmpty() || d->path.contains(me->pos()));
-   }
-   return false;
+    Q_D( const QBasicMouseEventTransition );
+
+    if ( event->type() == d->eventType )
+    {
+        QMouseEvent *me = static_cast<QMouseEvent *>( event );
+        return ( me->button() == d->button )
+               && ( ( me->modifiers() & d->modifierMask ) == d->modifierMask )
+               && ( d->path.isEmpty() || d->path.contains( me->pos() ) );
+    }
+
+    return false;
 }
 
-void QBasicMouseEventTransition::onTransition(QEvent *)
+void QBasicMouseEventTransition::onTransition( QEvent * )
 {
 }
 

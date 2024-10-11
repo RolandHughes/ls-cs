@@ -30,7 +30,7 @@
 #include <ocidl.h>
 #include <olectl.h>
 
-inline uint QColorToOLEColor(const QColor &col)
+inline uint QColorToOLEColor( const QColor &col )
 {
-   return qRgba(col.blue(), col.green(), col.red(), 0x00);
+    return qRgba( col.blue(), col.green(), col.red(), 0x00 );
 }

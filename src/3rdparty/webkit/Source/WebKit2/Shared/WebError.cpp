@@ -28,11 +28,12 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
-
-const String& WebError::webKitErrorDomain()
+namespace WebKit
 {
-    DEFINE_STATIC_LOCAL(String, webKitErrorDomainString, ("WebKitErrorDomain"));
+
+const String &WebError::webKitErrorDomain()
+{
+    DEFINE_STATIC_LOCAL( String, webKitErrorDomainString, ( "WebKitErrorDomain" ) );
     return webKitErrorDomainString;
 }
 

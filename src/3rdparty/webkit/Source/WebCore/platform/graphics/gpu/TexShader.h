@@ -33,15 +33,17 @@
 
 #include "Shader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TexShader : public Shader {
+class TexShader : public Shader
+{
 public:
-    static PassOwnPtr<TexShader> create(GraphicsContext3D* context);
-    void use(const AffineTransform& transform, const AffineTransform& texTransform, int sampler, float alpha);
+    static PassOwnPtr<TexShader> create( GraphicsContext3D *context );
+    void use( const AffineTransform &transform, const AffineTransform &texTransform, int sampler, float alpha );
 
 private:
-    TexShader(GraphicsContext3D* context, unsigned program);
+    TexShader( GraphicsContext3D *context, unsigned program );
 
     int m_matrixLocation;
     int m_texMatrixLocation;

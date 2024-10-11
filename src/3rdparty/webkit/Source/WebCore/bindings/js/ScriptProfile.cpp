@@ -33,17 +33,21 @@
 #include <profiler/Profile.h>
 #include <profiler/ProfileNode.h>
 
-namespace WebCore {
-
-PassRefPtr<ScriptProfile> ScriptProfile::create(PassRefPtr<JSC::Profile> profile)
+namespace WebCore
 {
-    if (!profile)
+
+PassRefPtr<ScriptProfile> ScriptProfile::create( PassRefPtr<JSC::Profile> profile )
+{
+    if ( !profile )
+    {
         return 0;
-    return adoptRef(new ScriptProfile(profile));
+    }
+
+    return adoptRef( new ScriptProfile( profile ) );
 }
 
-ScriptProfile::ScriptProfile(PassRefPtr<JSC::Profile> profile)
-    : m_profile(profile)
+ScriptProfile::ScriptProfile( PassRefPtr<JSC::Profile> profile )
+    : m_profile( profile )
 {
 }
 
@@ -53,7 +57,7 @@ ScriptProfile::~ScriptProfile()
 
 String ScriptProfile::title() const
 {
-    return ustringToString(m_profile->title());
+    return ustringToString( m_profile->title() );
 }
 
 unsigned int ScriptProfile::uid() const
@@ -61,39 +65,43 @@ unsigned int ScriptProfile::uid() const
     return m_profile->uid();
 }
 
-ScriptProfileNode* ScriptProfile::head() const
+ScriptProfileNode *ScriptProfile::head() const
 {
     return m_profile->head();
 }
 
 #if ENABLE(INSPECTOR)
-static PassRefPtr<InspectorObject> buildInspectorObjectFor(const JSC::ProfileNode* node)
+static PassRefPtr<InspectorObject> buildInspectorObjectFor( const JSC::ProfileNode *node )
 {
     RefPtr<InspectorObject> result = InspectorObject::create();
 
-    result->setString("functionName", ustringToString(node->functionName()));
-    result->setString("url", ustringToString(node->url()));
-    result->setNumber("lineNumber", node->lineNumber());
-    result->setNumber("totalTime", node->totalTime());
-    result->setNumber("selfTime", node->selfTime());
-    result->setNumber("numberOfCalls", node->numberOfCalls());
-    result->setBoolean("visible", node->visible());
-    result->setNumber("callUID", node->callIdentifier().hash());
+    result->setString( "functionName", ustringToString( node->functionName() ) );
+    result->setString( "url", ustringToString( node->url() ) );
+    result->setNumber( "lineNumber", node->lineNumber() );
+    result->setNumber( "totalTime", node->totalTime() );
+    result->setNumber( "selfTime", node->selfTime() );
+    result->setNumber( "numberOfCalls", node->numberOfCalls() );
+    result->setBoolean( "visible", node->visible() );
+    result->setNumber( "callUID", node->callIdentifier().hash() );
 
     RefPtr<InspectorArray> childrenArray = InspectorArray::create();
     typedef Vector<RefPtr<JSC::ProfileNode> > ProfileNodesList;
-    const ProfileNodesList& children = node->children();
+    const ProfileNodesList &children = node->children();
     ProfileNodesList::const_iterator end = children.end();
-    for (ProfileNodesList::const_iterator iter = children.begin(); iter != end; ++iter)
-        childrenArray->pushObject(buildInspectorObjectFor(iter->get()));
-    result->setArray("children", childrenArray);
+
+    for ( ProfileNodesList::const_iterator iter = children.begin(); iter != end; ++iter )
+    {
+        childrenArray->pushObject( buildInspectorObjectFor( iter->get() ) );
+    }
+
+    result->setArray( "children", childrenArray );
 
     return result;
 }
 
 PassRefPtr<InspectorObject> ScriptProfile::buildInspectorObjectForHead() const
 {
-    return buildInspectorObjectFor(m_profile->head());
+    return buildInspectorObjectFor( m_profile->head() );
 }
 #endif
 

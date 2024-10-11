@@ -35,37 +35,39 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AsyncFileSystem;
 class AsyncFileWriter;
 struct FileMetadata;
 
-class AsyncFileSystemCallbacks {
-    WTF_MAKE_NONCOPYABLE(AsyncFileSystemCallbacks);
+class AsyncFileSystemCallbacks
+{
+    WTF_MAKE_NONCOPYABLE( AsyncFileSystemCallbacks );
 public:
-    AsyncFileSystemCallbacks() { }    
+    AsyncFileSystemCallbacks() { }
 
     // Called when a requested operation is completed successfully.
     virtual void didSucceed() = 0;
 
     // Called when a requested file system is opened.
-    virtual void didOpenFileSystem(const String& name, PassOwnPtr<AsyncFileSystem>) = 0;
+    virtual void didOpenFileSystem( const String &name, PassOwnPtr<AsyncFileSystem> ) = 0;
 
     // Called when a file metadata is read successfully.
-    virtual void didReadMetadata(const FileMetadata&) = 0;
+    virtual void didReadMetadata( const FileMetadata & ) = 0;
 
     // Called when a directory entry is read.
-    virtual void didReadDirectoryEntry(const String& name, bool isDirectory) = 0;
+    virtual void didReadDirectoryEntry( const String &name, bool isDirectory ) = 0;
 
     // Called after a chunk of directory entries have been read (i.e. indicates it's good time to call back to the application).  If hasMore is true there can be more chunks.
-    virtual void didReadDirectoryEntries(bool hasMore) = 0;
+    virtual void didReadDirectoryEntries( bool hasMore ) = 0;
 
     // Called when an AsyncFileWrter has been created successfully.
-    virtual void didCreateFileWriter(PassOwnPtr<AsyncFileWriter> writer, long long length) = 0;
+    virtual void didCreateFileWriter( PassOwnPtr<AsyncFileWriter> writer, long long length ) = 0;
 
     // Called when there was an error.
-    virtual void didFail(int code) = 0;
+    virtual void didFail( int code ) = 0;
 
     virtual ~AsyncFileSystemCallbacks() { }
 };

@@ -21,108 +21,120 @@
 *
 ***********************************************************************/
 
-template <const QXmlNodeModelIndex::NodeKind kind>
-BuiltinNodeType<kind>::BuiltinNodeType()
+template <const QXmlNodeModelIndex::NodeKind kind> BuiltinNodeType<kind>::BuiltinNodeType()
 {
 }
 
 template <const QXmlNodeModelIndex::NodeKind kind>
-bool BuiltinNodeType<kind>::xdtTypeMatches(const ItemType::Ptr &other) const
+bool BuiltinNodeType<kind>::xdtTypeMatches( const ItemType::Ptr &other ) const
 {
-   if (!other->isNodeType()) {
-      return false;
-   }
+    if ( !other->isNodeType() )
+    {
+        return false;
+    }
 
-   return *static_cast<const BuiltinNodeType *>(other.data()) == *this
-          ? true
-          : xdtTypeMatches(other->xdtSuperType());
+    return *static_cast<const BuiltinNodeType *>( other.data() ) == *this
+           ? true
+           : xdtTypeMatches( other->xdtSuperType() );
 }
 
 template <const QXmlNodeModelIndex::NodeKind kind>
-bool BuiltinNodeType<kind>::itemMatches(const Item &item) const
+bool BuiltinNodeType<kind>::itemMatches( const Item &item ) const
 {
-   Q_ASSERT(item);
+    Q_ASSERT( item );
 
-   return item.isNode() &&
-          item.asNode().kind() == kind;
+    return item.isNode() &&
+           item.asNode().kind() == kind;
 }
 
 template <const QXmlNodeModelIndex::NodeKind kind>
 ItemType::Ptr BuiltinNodeType<kind>::atomizedType() const
 {
-   switch (kind) {
-      case QXmlNodeModelIndex::Attribute:
-      case QXmlNodeModelIndex::Document:
-      case QXmlNodeModelIndex::Element:
-      case QXmlNodeModelIndex::Text:
-         return BuiltinTypes::xsUntypedAtomic;
+    switch ( kind )
+    {
+        case QXmlNodeModelIndex::Attribute:
+        case QXmlNodeModelIndex::Document:
+        case QXmlNodeModelIndex::Element:
+        case QXmlNodeModelIndex::Text:
+            return BuiltinTypes::xsUntypedAtomic;
 
-      case QXmlNodeModelIndex::ProcessingInstruction:
-      case QXmlNodeModelIndex::Comment:
-         return BuiltinTypes::xsString;
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        case QXmlNodeModelIndex::Comment:
+            return BuiltinTypes::xsString;
 
-      default: {
-         Q_ASSERT_X(false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type.");
-         return BuiltinTypes::xsUntypedAtomic;
-      }
-   }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type." );
+            return BuiltinTypes::xsUntypedAtomic;
+        }
+    }
 }
 
 template <const QXmlNodeModelIndex::NodeKind kind>
-QString BuiltinNodeType<kind>::displayName(const NamePool::Ptr &) const
+QString BuiltinNodeType<kind>::displayName( const NamePool::Ptr & ) const
 {
-   switch (kind) {
-      case QXmlNodeModelIndex::Element:
-         return QLatin1String("element()");
-      case QXmlNodeModelIndex::Document:
-         return QLatin1String("document()");
-      case QXmlNodeModelIndex::Attribute:
-         return QLatin1String("attribute()");
-      case QXmlNodeModelIndex::Text:
-         return QLatin1String("text()");
-      case QXmlNodeModelIndex::ProcessingInstruction:
-         return QLatin1String("processing-instruction()");
-      case QXmlNodeModelIndex::Comment:
-         return QLatin1String("comment()");
-      default: {
-         Q_ASSERT_X(false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type.");
-         return QString();
-      }
-   }
+    switch ( kind )
+    {
+        case QXmlNodeModelIndex::Element:
+            return QLatin1String( "element()" );
+
+        case QXmlNodeModelIndex::Document:
+            return QLatin1String( "document()" );
+
+        case QXmlNodeModelIndex::Attribute:
+            return QLatin1String( "attribute()" );
+
+        case QXmlNodeModelIndex::Text:
+            return QLatin1String( "text()" );
+
+        case QXmlNodeModelIndex::ProcessingInstruction:
+            return QLatin1String( "processing-instruction()" );
+
+        case QXmlNodeModelIndex::Comment:
+            return QLatin1String( "comment()" );
+
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Encountered invalid XPath Data Model node type." );
+            return QString();
+        }
+    }
 }
 
 template <const QXmlNodeModelIndex::NodeKind kind>
 ItemType::Ptr BuiltinNodeType<kind>::xdtSuperType() const
 {
-   return BuiltinTypes::node;
+    return BuiltinTypes::node;
 }
 
 template <const QXmlNodeModelIndex::NodeKind kind>
 QXmlNodeModelIndex::NodeKind BuiltinNodeType<kind>::nodeKind() const
 {
-   return kind;
+    return kind;
 }
 
 template <const QXmlNodeModelIndex::NodeKind kind>
 PatternPriority BuiltinNodeType<kind>::patternPriority() const
 {
-   /* See XSL Transformations (XSLT) Version 2.0, 6.4 Conflict Resolution for
-    * Template Rules */
+    /* See XSL Transformations (XSLT) Version 2.0, 6.4 Conflict Resolution for
+     * Template Rules */
 
-   switch (kind) {
-      case QXmlNodeModelIndex::Text:
-      case QXmlNodeModelIndex::ProcessingInstruction:
-      case QXmlNodeModelIndex::Comment:
-      case QXmlNodeModelIndex::Attribute:
-      case QXmlNodeModelIndex::Element:
-      case QXmlNodeModelIndex::Document:
-         return -0.5;
+    switch ( kind )
+    {
+        case QXmlNodeModelIndex::Text:
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        case QXmlNodeModelIndex::Comment:
+        case QXmlNodeModelIndex::Attribute:
+        case QXmlNodeModelIndex::Element:
+        case QXmlNodeModelIndex::Document:
+            return -0.5;
 
-      default: {
-         Q_ASSERT_X(false, Q_FUNC_INFO, "Unknown node type");
-         return 0;
-      }
-   }
+        default:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown node type" );
+            return 0;
+        }
+    }
 
 }
 

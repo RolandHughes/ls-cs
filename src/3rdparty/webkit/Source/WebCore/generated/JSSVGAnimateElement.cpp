@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimateElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAnimateElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimateElement);
 
 static const HashTableValue JSSVGAnimateElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimateElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimateElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAnimateElementTable = { 2, 1, JSSVGAni
 
 static const HashTableValue JSSVGAnimateElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimateElementConstructorTable = { 1, 0, JSSVGAnimateElementConstructorTableValues, 0 };
-class JSSVGAnimateElementConstructor : public DOMConstructorObject {
+class JSSVGAnimateElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGAnimateElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGAnimateElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGAnimateElementConstructor::s_info = { "SVGAnimateElementConstructor", &DOMConstructorObject::s_info, &JSSVGAnimateElementConstructorTable, 0 };
 
-JSSVGAnimateElementConstructor::JSSVGAnimateElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGAnimateElementConstructor::JSSVGAnimateElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGAnimateElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGAnimateElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGAnimateElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimateElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimateElementConstructor, JSDOMWrapper>(exec, &JSSVGAnimateElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimateElementConstructor, JSDOMWrapper>( exec, &JSSVGAnimateElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGAnimateElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimateElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimateElementConstructor, JSDOMWrapper>(exec, &JSSVGAnimateElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimateElementConstructor, JSDOMWrapper>( exec, &JSSVGAnimateElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,53 @@ bool JSSVGAnimateElementConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSSVGAnimateElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimateElementPrototypeTable = { 1, 0, JSSVGAnimateElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGAnimateElementPrototype::s_info = { "SVGAnimateElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAnimateElementPrototypeTable, 0 };
 
-JSObject* JSSVGAnimateElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimateElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAnimateElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGAnimateElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGAnimateElement::s_info = { "SVGAnimateElement", &JSSVGAnimationElement::s_info, &JSSVGAnimateElementTable, 0 };
 
-JSSVGAnimateElement::JSSVGAnimateElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAnimateElement> impl)
-    : JSSVGAnimationElement(structure, globalObject, impl)
+JSSVGAnimateElement::JSSVGAnimateElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGAnimateElement> impl )
+    : JSSVGAnimationElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAnimateElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimateElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAnimateElementPrototype(exec->globalData(), globalObject, JSSVGAnimateElementPrototype::createStructure(exec->globalData(), JSSVGAnimationElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGAnimateElementPrototype( exec->globalData(), globalObject,
+            JSSVGAnimateElementPrototype::createStructure( exec->globalData(), JSSVGAnimationElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGAnimateElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimateElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimateElement, Base>(exec, &JSSVGAnimateElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimateElement, Base>( exec, &JSSVGAnimateElementTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimateElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimateElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimateElement, Base>(exec, &JSSVGAnimateElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimateElement, Base>( exec, &JSSVGAnimateElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGAnimateElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimateElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimateElement* domObject = static_cast<JSSVGAnimateElement*>(asObject(slotBase));
-    return JSSVGAnimateElement::getConstructor(exec, domObject->globalObject());
+    JSSVGAnimateElement *domObject = static_cast<JSSVGAnimateElement *>( asObject( slotBase ) );
+    return JSSVGAnimateElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGAnimateElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGAnimateElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGAnimateElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGAnimateElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

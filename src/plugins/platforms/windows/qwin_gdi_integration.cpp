@@ -31,12 +31,12 @@
 
 class QWindowsGdiIntegrationPrivate
 {
- public:
-   QWindowsGdiNativeInterface m_nativeInterface;
+public:
+    QWindowsGdiNativeInterface m_nativeInterface;
 };
 
-QWindowsGdiIntegration::QWindowsGdiIntegration(const QStringList &paramList)
-   : QWindowsIntegration(paramList), d(new QWindowsGdiIntegrationPrivate)
+QWindowsGdiIntegration::QWindowsGdiIntegration( const QStringList &paramList )
+    : QWindowsIntegration( paramList ), d( new QWindowsGdiIntegrationPrivate )
 {
 }
 
@@ -46,16 +46,16 @@ QWindowsGdiIntegration::~QWindowsGdiIntegration()
 
 QPlatformNativeInterface *QWindowsGdiIntegration::nativeInterface() const
 {
-   return &d->m_nativeInterface;
+    return &d->m_nativeInterface;
 }
 
-QPlatformPixmap *QWindowsGdiIntegration::createPlatformPixmap(QPlatformPixmap::PixelType type) const
+QPlatformPixmap *QWindowsGdiIntegration::createPlatformPixmap( QPlatformPixmap::PixelType type ) const
 {
-   return new QRasterPlatformPixmap(type);
+    return new QRasterPlatformPixmap( type );
 }
 
-QPlatformBackingStore *QWindowsGdiIntegration::createPlatformBackingStore(QWindow *window) const
+QPlatformBackingStore *QWindowsGdiIntegration::createPlatformBackingStore( QWindow *window ) const
 {
-   return new QWindowsBackingStore(window);
+    return new QWindowsBackingStore( window );
 }
 

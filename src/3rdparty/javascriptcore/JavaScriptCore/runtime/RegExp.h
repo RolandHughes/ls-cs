@@ -32,55 +32,78 @@
 
 struct JSRegExp;
 
-namespace JSC {
+namespace JSC
+{
 
-    class JSGlobalData;
+class JSGlobalData;
 
-    class RegExp : public RefCounted<RegExp> {
-    public:
-        static PassRefPtr<RegExp> create(JSGlobalData* globalData, const UString& pattern);
-        static PassRefPtr<RegExp> create(JSGlobalData* globalData, const UString& pattern, const UString& flags);
+class RegExp : public RefCounted<RegExp>
+{
+public:
+    static PassRefPtr<RegExp> create( JSGlobalData *globalData, const UString &pattern );
+    static PassRefPtr<RegExp> create( JSGlobalData *globalData, const UString &pattern, const UString &flags );
 #if !ENABLE(YARR)
-        ~RegExp();
+    ~RegExp();
 #endif
 
-        bool global() const { return m_flagBits & Global; }
-        bool ignoreCase() const { return m_flagBits & IgnoreCase; }
-        bool multiline() const { return m_flagBits & Multiline; }
+    bool global() const
+    {
+        return m_flagBits & Global;
+    }
+    bool ignoreCase() const
+    {
+        return m_flagBits & IgnoreCase;
+    }
+    bool multiline() const
+    {
+        return m_flagBits & Multiline;
+    }
 
-        const UString& pattern() const { return m_pattern; }
+    const UString &pattern() const
+    {
+        return m_pattern;
+    }
 
-        bool isValid() const { return !m_constructionError; }
-        const char* errorMessage() const { return m_constructionError; }
+    bool isValid() const
+    {
+        return !m_constructionError;
+    }
+    const char *errorMessage() const
+    {
+        return m_constructionError;
+    }
 
-        int match(const UString&, int startOffset, Vector<int, 32>* ovector = nullptr);
-        unsigned numSubpatterns() const { return m_numSubpatterns; }
+    int match( const UString &, int startOffset, Vector<int, 32> *ovector = nullptr );
+    unsigned numSubpatterns() const
+    {
+        return m_numSubpatterns;
+    }
 
-    private:
-        RegExp(JSGlobalData* globalData, const UString& pattern);
-        RegExp(JSGlobalData* globalData, const UString& pattern, const UString& flags);
+private:
+    RegExp( JSGlobalData *globalData, const UString &pattern );
+    RegExp( JSGlobalData *globalData, const UString &pattern, const UString &flags );
 
-        void compile(JSGlobalData*);
+    void compile( JSGlobalData * );
 
-        enum FlagBits { Global = 1, IgnoreCase = 2, Multiline = 4 };
+    enum FlagBits { Global = 1, IgnoreCase = 2, Multiline = 4 };
 
-        UString m_pattern; // FIXME: Just decompile m_regExp instead of storing this.
-        int m_flagBits;
-        const char* m_constructionError;
-        unsigned m_numSubpatterns;
+    UString m_pattern; // FIXME: Just decompile m_regExp instead of storing this.
+    int m_flagBits;
+    const char *m_constructionError;
+    unsigned m_numSubpatterns;
 
 #if ENABLE(YARR_JIT)
-        Yarr::RegexCodeBlock m_regExpJITCode;
+    Yarr::RegexCodeBlock m_regExpJITCode;
 #elif ENABLE(YARR)
-        OwnPtr<Yarr::BytecodePattern> m_regExpBytecode;
+    OwnPtr<Yarr::BytecodePattern> m_regExpBytecode;
 #else
 #if ENABLE(WREC)
-        WREC::CompiledRegExp m_wrecFunction;
-        RefPtr<ExecutablePool> m_executablePool;
+    WREC::CompiledRegExp m_wrecFunction;
+    RefPtr<ExecutablePool> m_executablePool;
 #endif
-        JSRegExp* m_regExp;
+    JSRegExp *m_regExp;
 #endif
-    };
+};
 
 } // namespace JSC
 

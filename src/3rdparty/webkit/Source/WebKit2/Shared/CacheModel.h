@@ -26,9 +26,11 @@
 #ifndef CacheModel_h
 #define CacheModel_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum CacheModel {
+enum CacheModel
+{
     CacheModelDocumentViewer,
     CacheModelDocumentBrowser,
     CacheModelPrimaryWebBrowser

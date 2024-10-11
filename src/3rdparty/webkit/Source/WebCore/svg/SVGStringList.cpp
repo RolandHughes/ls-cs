@@ -27,39 +27,51 @@
 #include "SVGParserUtilities.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
-
-void SVGStringList::commitChange(SVGElement* contextElement)
+namespace WebCore
 {
-    ASSERT(contextElement);
+
+void SVGStringList::commitChange( SVGElement *contextElement )
+{
+    ASSERT( contextElement );
     contextElement->invalidateSVGAttributes();
-    contextElement->svgAttributeChanged(m_attributeName);
+    contextElement->svgAttributeChanged( m_attributeName );
 }
 
-void SVGStringList::reset(const String& string)
+void SVGStringList::reset( const String &string )
 {
-    parse(string, ' ');
+    parse( string, ' ' );
 
     // Add empty string, if list is empty.
-    if (isEmpty())
-        append(String(""));
+    if ( isEmpty() )
+    {
+        append( String( "" ) );
+    }
 }
 
-void SVGStringList::parse(const String& data, UChar delimiter)
+void SVGStringList::parse( const String &data, UChar delimiter )
 {
     // TODO : more error checking/reporting
     clear();
 
-    const UChar* ptr = data.characters();
-    const UChar* end = ptr + data.length();
-    while (ptr < end) {
-        const UChar* start = ptr;
-        while (ptr < end && *ptr != delimiter && !isWhitespace(*ptr))
+    const UChar *ptr = data.characters();
+    const UChar *end = ptr + data.length();
+
+    while ( ptr < end )
+    {
+        const UChar *start = ptr;
+
+        while ( ptr < end && *ptr != delimiter && !isWhitespace( *ptr ) )
+        {
             ptr++;
-        if (ptr == start)
+        }
+
+        if ( ptr == start )
+        {
             break;
-        append(String(start, ptr - start));
-        skipOptionalSpacesOrDelimiter(ptr, end, delimiter);
+        }
+
+        append( String( start, ptr - start ) );
+        skipOptionalSpacesOrDelimiter( ptr, end, delimiter );
     }
 }
 
@@ -68,11 +80,15 @@ String SVGStringList::valueAsString() const
     StringBuilder builder;
 
     unsigned size = this->size();
-    for (unsigned i = 0; i < size; ++i) {
-        if (i > 0)
-            builder.append(' ');
 
-        builder.append(at(i));
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        if ( i > 0 )
+        {
+            builder.append( ' ' );
+        }
+
+        builder.append( at( i ) );
     }
 
     return builder.toString();

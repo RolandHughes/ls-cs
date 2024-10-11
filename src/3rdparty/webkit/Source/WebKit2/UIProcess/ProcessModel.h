@@ -26,9 +26,11 @@
 #ifndef ProcessModel_h
 #define ProcessModel_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum ProcessModel {
+enum ProcessModel
+{
     ProcessModelSharedSecondaryProcess,
     ProcessModelSharedSecondaryThread,
     ProcessModelSecondaryProcess

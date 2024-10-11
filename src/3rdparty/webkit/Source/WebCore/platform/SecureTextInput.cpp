@@ -31,19 +31,26 @@
 
 #import <Carbon/Carbon.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void enableSecureTextInput()
 {
-    if (IsSecureEventInputEnabled())
+    if ( IsSecureEventInputEnabled() )
+    {
         return;
+    }
+
     EnableSecureEventInput();
 }
 
 void disableSecureTextInput()
 {
-    if (!IsSecureEventInputEnabled())
+    if ( !IsSecureEventInputEnabled() )
+    {
         return;
+    }
+
     DisableSecureEventInput();
 }
 

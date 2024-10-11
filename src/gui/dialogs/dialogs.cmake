@@ -37,7 +37,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/dialogs/qwizard_win_p.h
 )
 
-target_sources(CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/dialogs/qcolordialog.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/dialogs/qdialog.cpp
@@ -59,7 +59,7 @@ target_sources(CsGui
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/dialogs/qwizard_win.cpp
    )

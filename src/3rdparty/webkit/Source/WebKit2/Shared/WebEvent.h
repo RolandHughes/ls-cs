@@ -33,18 +33,22 @@
 #include <WebCore/IntPoint.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebEvent {
+class WebEvent
+{
 public:
-    enum Type {
+    enum Type
+    {
         NoType = -1,
-        
+
         // WebMouseEvent
         MouseDown,
         MouseUp,
@@ -74,7 +78,8 @@ public:
 #endif
     };
 
-    enum Modifiers {
+    enum Modifiers
+    {
         ShiftKey    = 1 << 0,
         ControlKey  = 1 << 1,
         AltKey      = 1 << 2,
@@ -82,25 +87,49 @@ public:
         CapsLockKey = 1 << 4,
     };
 
-    Type type() const { return static_cast<Type>(m_type); }
+    Type type() const
+    {
+        return static_cast<Type>( m_type );
+    }
 
-    bool shiftKey() const { return m_modifiers & ShiftKey; }
-    bool controlKey() const { return m_modifiers & ControlKey; }
-    bool altKey() const { return m_modifiers & AltKey; }
-    bool metaKey() const { return m_modifiers & MetaKey; }
-    bool capsLockKey() const { return m_modifiers & CapsLockKey; }
+    bool shiftKey() const
+    {
+        return m_modifiers & ShiftKey;
+    }
+    bool controlKey() const
+    {
+        return m_modifiers & ControlKey;
+    }
+    bool altKey() const
+    {
+        return m_modifiers & AltKey;
+    }
+    bool metaKey() const
+    {
+        return m_modifiers & MetaKey;
+    }
+    bool capsLockKey() const
+    {
+        return m_modifiers & CapsLockKey;
+    }
 
-    Modifiers modifiers() const { return static_cast<Modifiers>(m_modifiers); }
+    Modifiers modifiers() const
+    {
+        return static_cast<Modifiers>( m_modifiers );
+    }
 
-    double timestamp() const { return m_timestamp; }
+    double timestamp() const
+    {
+        return m_timestamp;
+    }
 
 protected:
     WebEvent();
 
-    WebEvent(Type, Modifiers, double timestamp);
+    WebEvent( Type, Modifiers, double timestamp );
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebEvent&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebEvent & );
 
 private:
     uint32_t m_type; // Type
@@ -109,9 +138,11 @@ private:
 };
 
 // FIXME: Move this class to its own header file.
-class WebMouseEvent : public WebEvent {
+class WebMouseEvent : public WebEvent
+{
 public:
-    enum Button {
+    enum Button
+    {
         NoButton = -1,
         LeftButton,
         MiddleButton,
@@ -120,27 +151,53 @@ public:
 
     WebMouseEvent();
 
-    WebMouseEvent(Type, Button, const WebCore::IntPoint& position, const WebCore::IntPoint& globalPosition, float deltaX, float deltaY, float deltaZ, int clickCount, Modifiers, double timestamp);
+    WebMouseEvent( Type, Button, const WebCore::IntPoint &position, const WebCore::IntPoint &globalPosition, float deltaX,
+                   float deltaY, float deltaZ, int clickCount, Modifiers, double timestamp );
 #if PLATFORM(WIN)
-    WebMouseEvent(Type, Button, const WebCore::IntPoint& position, const WebCore::IntPoint& globalPosition, float deltaX, float deltaY, float deltaZ, int clickCount, Modifiers, double timestamp, bool didActivateWebView);
+    WebMouseEvent( Type, Button, const WebCore::IntPoint &position, const WebCore::IntPoint &globalPosition, float deltaX,
+                   float deltaY, float deltaZ, int clickCount, Modifiers, double timestamp, bool didActivateWebView );
 #endif
 
-    Button button() const { return static_cast<Button>(m_button); }
-    const WebCore::IntPoint& position() const { return m_position; }
-    const WebCore::IntPoint& globalPosition() const { return m_globalPosition; }
-    float deltaX() const { return m_deltaX; }
-    float deltaY() const { return m_deltaY; }
-    float deltaZ() const { return m_deltaZ; }
-    int32_t clickCount() const { return m_clickCount; }
+    Button button() const
+    {
+        return static_cast<Button>( m_button );
+    }
+    const WebCore::IntPoint &position() const
+    {
+        return m_position;
+    }
+    const WebCore::IntPoint &globalPosition() const
+    {
+        return m_globalPosition;
+    }
+    float deltaX() const
+    {
+        return m_deltaX;
+    }
+    float deltaY() const
+    {
+        return m_deltaY;
+    }
+    float deltaZ() const
+    {
+        return m_deltaZ;
+    }
+    int32_t clickCount() const
+    {
+        return m_clickCount;
+    }
 #if PLATFORM(WIN)
-    bool didActivateWebView() const { return m_didActivateWebView; }
+    bool didActivateWebView() const
+    {
+        return m_didActivateWebView;
+    }
 #endif
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebMouseEvent&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebMouseEvent & );
 
 private:
-    static bool isMouseEventType(Type);
+    static bool isMouseEventType( Type );
 
     uint32_t m_button;
     WebCore::IntPoint m_position;
@@ -155,15 +212,18 @@ private:
 };
 
 // FIXME: Move this class to its own header file.
-class WebWheelEvent : public WebEvent {
+class WebWheelEvent : public WebEvent
+{
 public:
-    enum Granularity {
+    enum Granularity
+    {
         ScrollByPageWheelEvent,
         ScrollByPixelWheelEvent
     };
 
 #if PLATFORM(MAC)
-    enum Phase {
+    enum Phase
+    {
         PhaseNone        = 0,
         PhaseBegan       = 1 << 1,
         PhaseStationary  = 1 << 2,
@@ -175,27 +235,54 @@ public:
 
     WebWheelEvent() { }
 
-    WebWheelEvent(Type, const WebCore::IntPoint& position, const WebCore::IntPoint& globalPosition, const WebCore::FloatSize& delta, const WebCore::FloatSize& wheelTicks, Granularity, Modifiers, double timestamp);
+    WebWheelEvent( Type, const WebCore::IntPoint &position, const WebCore::IntPoint &globalPosition, const WebCore::FloatSize &delta,
+                   const WebCore::FloatSize &wheelTicks, Granularity, Modifiers, double timestamp );
 #if PLATFORM(MAC)
-    WebWheelEvent(Type, const WebCore::IntPoint& position, const WebCore::IntPoint& globalPosition, const WebCore::FloatSize& delta, const WebCore::FloatSize& wheelTicks, Granularity, Phase phase, Phase momentumPhase,bool hasPreciseScrollingDeltas, Modifiers, double timestamp);
+    WebWheelEvent( Type, const WebCore::IntPoint &position, const WebCore::IntPoint &globalPosition, const WebCore::FloatSize &delta,
+                   const WebCore::FloatSize &wheelTicks, Granularity, Phase phase, Phase momentumPhase,bool hasPreciseScrollingDeltas, Modifiers,
+                   double timestamp );
 #endif
 
-    const WebCore::IntPoint position() const { return m_position; }
-    const WebCore::IntPoint globalPosition() const { return m_globalPosition; }
-    const WebCore::FloatSize delta() const { return m_delta; }
-    const WebCore::FloatSize wheelTicks() const { return m_wheelTicks; }
-    Granularity granularity() const { return static_cast<Granularity>(m_granularity); }
+    const WebCore::IntPoint position() const
+    {
+        return m_position;
+    }
+    const WebCore::IntPoint globalPosition() const
+    {
+        return m_globalPosition;
+    }
+    const WebCore::FloatSize delta() const
+    {
+        return m_delta;
+    }
+    const WebCore::FloatSize wheelTicks() const
+    {
+        return m_wheelTicks;
+    }
+    Granularity granularity() const
+    {
+        return static_cast<Granularity>( m_granularity );
+    }
 #if PLATFORM(MAC)
-    Phase phase() const { return static_cast<Phase>(m_phase); }
-    Phase momentumPhase() const { return static_cast<Phase>(m_momentumPhase); }
-    bool hasPreciseScrollingDeltas() const { return m_hasPreciseScrollingDeltas; }
+    Phase phase() const
+    {
+        return static_cast<Phase>( m_phase );
+    }
+    Phase momentumPhase() const
+    {
+        return static_cast<Phase>( m_momentumPhase );
+    }
+    bool hasPreciseScrollingDeltas() const
+    {
+        return m_hasPreciseScrollingDeltas;
+    }
 #endif
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebWheelEvent&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebWheelEvent & );
 
 private:
-    static bool isWheelEventType(Type);
+    static bool isWheelEventType( Type );
 
     WebCore::IntPoint m_position;
     WebCore::IntPoint m_globalPosition;
@@ -210,26 +297,55 @@ private:
 };
 
 // FIXME: Move this class to its own header file.
-class WebKeyboardEvent : public WebEvent {
+class WebKeyboardEvent : public WebEvent
+{
 public:
     WebKeyboardEvent() { }
 
-    WebKeyboardEvent(Type, const String& text, const String& unmodifiedText, const String& keyIdentifier, int windowsVirtualKeyCode, int nativeVirtualKeyCode, int macCharCode, bool isAutoRepeat, bool isKeypad, bool isSystemKey, Modifiers, double timestamp);
+    WebKeyboardEvent( Type, const String &text, const String &unmodifiedText, const String &keyIdentifier, int windowsVirtualKeyCode,
+                      int nativeVirtualKeyCode, int macCharCode, bool isAutoRepeat, bool isKeypad, bool isSystemKey, Modifiers, double timestamp );
 
-    const String& text() const { return m_text; }
-    const String& unmodifiedText() const { return m_unmodifiedText; }
-    const String& keyIdentifier() const { return m_keyIdentifier; }
-    int32_t windowsVirtualKeyCode() const { return m_windowsVirtualKeyCode; }
-    int32_t nativeVirtualKeyCode() const { return m_nativeVirtualKeyCode; }
-    int32_t macCharCode() const { return m_macCharCode; }
-    bool isAutoRepeat() const { return m_isAutoRepeat; }
-    bool isKeypad() const { return m_isKeypad; }
-    bool isSystemKey() const { return m_isSystemKey; }
+    const String &text() const
+    {
+        return m_text;
+    }
+    const String &unmodifiedText() const
+    {
+        return m_unmodifiedText;
+    }
+    const String &keyIdentifier() const
+    {
+        return m_keyIdentifier;
+    }
+    int32_t windowsVirtualKeyCode() const
+    {
+        return m_windowsVirtualKeyCode;
+    }
+    int32_t nativeVirtualKeyCode() const
+    {
+        return m_nativeVirtualKeyCode;
+    }
+    int32_t macCharCode() const
+    {
+        return m_macCharCode;
+    }
+    bool isAutoRepeat() const
+    {
+        return m_isAutoRepeat;
+    }
+    bool isKeypad() const
+    {
+        return m_isKeypad;
+    }
+    bool isSystemKey() const
+    {
+        return m_isSystemKey;
+    }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebKeyboardEvent&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebKeyboardEvent & );
 
-    static bool isKeyboardEventType(Type);
+    static bool isKeyboardEventType( Type );
 
 private:
     String m_text;
@@ -246,19 +362,26 @@ private:
 
 #if ENABLE(GESTURE_EVENTS)
 // FIXME: Move this class to its own header file.
-class WebGestureEvent : public WebEvent {
+class WebGestureEvent : public WebEvent
+{
 public:
     WebGestureEvent() { }
-    WebGestureEvent(Type, const WebCore::IntPoint& position, const WebCore::IntPoint& globalPosition, Modifiers, double timestamp);
+    WebGestureEvent( Type, const WebCore::IntPoint &position, const WebCore::IntPoint &globalPosition, Modifiers, double timestamp );
 
-    const WebCore::IntPoint position() const { return m_position; }
-    const WebCore::IntPoint globalPosition() const { return m_globalPosition; }
+    const WebCore::IntPoint position() const
+    {
+        return m_position;
+    }
+    const WebCore::IntPoint globalPosition() const
+    {
+        return m_globalPosition;
+    }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebGestureEvent&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebGestureEvent & );
 
 private:
-    static bool isGestureEventType(Type);
+    static bool isGestureEventType( Type );
 
     WebCore::IntPoint m_position;
     WebCore::IntPoint m_globalPosition;
@@ -270,9 +393,11 @@ private:
 // FIXME: Move this class to its own header file.
 // FIXME: Having "Platform" in the name makes it sound like this event is platform-specific or low-
 // level in some way. That doesn't seem to be the case.
-class WebPlatformTouchPoint {
+class WebPlatformTouchPoint
+{
 public:
-    enum TouchPointState {
+    enum TouchPointState
+    {
         TouchReleased,
         TouchPressed,
         TouchMoved,
@@ -282,18 +407,33 @@ public:
 
     WebPlatformTouchPoint() { }
 
-    WebPlatformTouchPoint(uint32_t id, TouchPointState, const WebCore::IntPoint& screenPosition, const WebCore::IntPoint& position);
+    WebPlatformTouchPoint( uint32_t id, TouchPointState, const WebCore::IntPoint &screenPosition, const WebCore::IntPoint &position );
 
-    uint32_t id() const { return m_id; }
-    TouchPointState state() const { return static_cast<TouchPointState>(m_state); }
+    uint32_t id() const
+    {
+        return m_id;
+    }
+    TouchPointState state() const
+    {
+        return static_cast<TouchPointState>( m_state );
+    }
 
-    const WebCore::IntPoint& screenPosition() const { return m_screenPosition; }
-    const WebCore::IntPoint& position() const { return m_position; }
-          
-    void setState(TouchPointState state) { m_state = state; }
+    const WebCore::IntPoint &screenPosition() const
+    {
+        return m_screenPosition;
+    }
+    const WebCore::IntPoint &position() const
+    {
+        return m_position;
+    }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebPlatformTouchPoint&);
+    void setState( TouchPointState state )
+    {
+        m_state = state;
+    }
+
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebPlatformTouchPoint & );
 
 private:
     uint32_t m_id;
@@ -304,20 +444,25 @@ private:
 };
 
 // FIXME: Move this class to its own header file.
-class WebTouchEvent : public WebEvent {
+class WebTouchEvent : public WebEvent
+{
 public:
     WebTouchEvent() { }
- 
+
     // FIXME: It would be nice not to have to copy the Vector here.
-    WebTouchEvent(Type, Vector<WebPlatformTouchPoint>, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, Modifiers, double timestamp);
+    WebTouchEvent( Type, Vector<WebPlatformTouchPoint>, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, Modifiers,
+                   double timestamp );
 
-    const Vector<WebPlatformTouchPoint>& touchPoints() const { return m_touchPoints; }
+    const Vector<WebPlatformTouchPoint> &touchPoints() const
+    {
+        return m_touchPoints;
+    }
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebTouchEvent&);
-  
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebTouchEvent & );
+
 private:
-    static bool isTouchEventType(Type);
+    static bool isTouchEventType( Type );
 
     Vector<WebPlatformTouchPoint> m_touchPoints;
     bool m_ctrlKey;

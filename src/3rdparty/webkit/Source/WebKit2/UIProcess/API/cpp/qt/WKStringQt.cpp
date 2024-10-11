@@ -28,16 +28,19 @@
 
 using namespace WebKit;
 
-WKStringRef WKStringCreateWithQString(const QString& qString)
+WKStringRef WKStringCreateWithQString( const QString &qString )
 {
-    WTF::String string(qString);
-    return toCopiedAPI(string);
+    WTF::String string( qString );
+    return toCopiedAPI( string );
 }
 
-QString WKStringCopyQString(WKStringRef stringRef)
+QString WKStringCopyQString( WKStringRef stringRef )
 {
-    if (!stringRef)
+    if ( !stringRef )
+    {
         return QString();
-    const WTF::String& string = toImpl(stringRef)->string();
-    return QString(reinterpret_cast<const QChar*>(string.characters()), string.length());
+    }
+
+    const WTF::String &string = toImpl( stringRef )->string();
+    return QString( reinterpret_cast<const QChar *>( string.characters() ), string.length() );
 }

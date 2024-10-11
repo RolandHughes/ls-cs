@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef QTDecompressionSession_h
@@ -37,21 +37,22 @@
 #include <WTF/PassOwnPtr.h>
 
 class QTDecompressionSessionClient;
-typedef struct OpaqueICMDecompressionSession*  ICMDecompressionSessionRef;
+typedef struct OpaqueICMDecompressionSession  *ICMDecompressionSessionRef;
 
-class QTMOVIEWIN_API QTDecompressionSession {
+class QTMOVIEWIN_API QTDecompressionSession
+{
 public:
-    static PassOwnPtr<QTDecompressionSession> create(unsigned long pixelFormat, size_t width, size_t height);
+    static PassOwnPtr<QTDecompressionSession> create( unsigned long pixelFormat, size_t width, size_t height );
     ~QTDecompressionSession();
 
-    bool canDecompress(QTPixelBuffer);
+    bool canDecompress( QTPixelBuffer );
 
     // The resulting QTPixelBuffer will be a CG compatable ARGB pixel buffer.
-    QTPixelBuffer decompress(QTPixelBuffer);
+    QTPixelBuffer decompress( QTPixelBuffer );
 
 private:
     friend class QTDecompressionSessionClient;
-    QTDecompressionSession(unsigned long pixelFormat, size_t width, size_t height);
+    QTDecompressionSession( unsigned long pixelFormat, size_t width, size_t height );
     void initializeSession();
 
     unsigned long m_pixelFormat;

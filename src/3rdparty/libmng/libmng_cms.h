@@ -46,41 +46,41 @@
 /* ************************************************************************** */
 
 #ifdef MNG_INCLUDE_LCMS
-void        mnglcms_initlibrary       (void);
-mng_cmsprof mnglcms_createfileprofile (mng_pchar    zFilename);
-mng_cmsprof mnglcms_creatememprofile  (mng_uint32   iProfilesize,
-                                       mng_ptr      pProfile );
-mng_cmsprof mnglcms_createsrgbprofile (void);
-void        mnglcms_freeprofile       (mng_cmsprof  hProf    );
-void        mnglcms_freetransform     (mng_cmstrans hTrans   );
+void        mnglcms_initlibrary       ( void );
+mng_cmsprof mnglcms_createfileprofile ( mng_pchar    zFilename );
+mng_cmsprof mnglcms_creatememprofile  ( mng_uint32   iProfilesize,
+                                        mng_ptr      pProfile );
+mng_cmsprof mnglcms_createsrgbprofile ( void );
+void        mnglcms_freeprofile       ( mng_cmsprof  hProf    );
+void        mnglcms_freetransform     ( mng_cmstrans hTrans   );
 
-mng_retcode mng_clear_cms             (mng_datap    pData    );
+mng_retcode mng_clear_cms             ( mng_datap    pData    );
 #endif
 
 /* ************************************************************************** */
 
 #ifdef MNG_FULL_CMS
-mng_retcode mng_init_full_cms          (mng_datap pData,
-                                        mng_bool  bGlobal,
-                                        mng_bool  bObject,
-                                        mng_bool  bRetrobj);
-mng_retcode mng_correct_full_cms       (mng_datap pData);
+mng_retcode mng_init_full_cms          ( mng_datap pData,
+        mng_bool  bGlobal,
+        mng_bool  bObject,
+        mng_bool  bRetrobj );
+mng_retcode mng_correct_full_cms       ( mng_datap pData );
 #endif
 
 #if defined(MNG_FULL_CMS) || defined(MNG_GAMMA_ONLY) || defined(MNG_APP_CMS)
-mng_retcode mng_init_gamma_only        (mng_datap pData,
-                                        mng_bool  bGlobal,
-                                        mng_bool  bObject,
-                                        mng_bool  bRetrobj);
-mng_retcode mng_correct_gamma_only     (mng_datap pData);
+mng_retcode mng_init_gamma_only        ( mng_datap pData,
+        mng_bool  bGlobal,
+        mng_bool  bObject,
+        mng_bool  bRetrobj );
+mng_retcode mng_correct_gamma_only     ( mng_datap pData );
 #endif
 
 #ifdef MNG_APP_CMS
-mng_retcode mng_init_app_cms           (mng_datap pData,
-                                        mng_bool  bGlobal,
-                                        mng_bool  bObject,
-                                        mng_bool  bRetrobj);
-mng_retcode mng_correct_app_cms        (mng_datap pData);
+mng_retcode mng_init_app_cms           ( mng_datap pData,
+        mng_bool  bGlobal,
+        mng_bool  bObject,
+        mng_bool  bRetrobj );
+mng_retcode mng_correct_app_cms        ( mng_datap pData );
 #endif
 
 /* ************************************************************************** */

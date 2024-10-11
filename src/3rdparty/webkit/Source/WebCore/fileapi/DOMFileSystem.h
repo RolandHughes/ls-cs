@@ -37,7 +37,8 @@
 #include "DOMFileSystemBase.h"
 #include "ScriptExecutionContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DirectoryEntry;
 class File;
@@ -45,11 +46,13 @@ class FileCallback;
 class FileEntry;
 class FileWriterCallback;
 
-class DOMFileSystem : public DOMFileSystemBase, public ActiveDOMObject {
+class DOMFileSystem : public DOMFileSystemBase, public ActiveDOMObject
+{
 public:
-    static PassRefPtr<DOMFileSystem> create(ScriptExecutionContext* context, const String& name, PassOwnPtr<AsyncFileSystem> asyncFileSystem)
+    static PassRefPtr<DOMFileSystem> create( ScriptExecutionContext *context, const String &name,
+            PassOwnPtr<AsyncFileSystem> asyncFileSystem )
     {
-        return adoptRef(new DOMFileSystem(context, name, asyncFileSystem));
+        return adoptRef( new DOMFileSystem( context, name, asyncFileSystem ) );
     }
 
     PassRefPtr<DirectoryEntry> root();
@@ -59,36 +62,37 @@ public:
     virtual bool hasPendingActivity() const;
     virtual void contextDestroyed();
 
-    void createWriter(const FileEntry*, PassRefPtr<FileWriterCallback>, PassRefPtr<ErrorCallback>);
-    void createFile(const FileEntry*, PassRefPtr<FileCallback>, PassRefPtr<ErrorCallback>);
+    void createWriter( const FileEntry *, PassRefPtr<FileWriterCallback>, PassRefPtr<ErrorCallback> );
+    void createFile( const FileEntry *, PassRefPtr<FileCallback>, PassRefPtr<ErrorCallback> );
 
     // Schedule a callback. This should not cross threads (should be called on the same context thread).
     // FIXME: move this to a more generic place.
     template <typename CB, typename CBArg>
-    static void scheduleCallback(ScriptExecutionContext*, PassRefPtr<CB>, PassRefPtr<CBArg>);
+    static void scheduleCallback( ScriptExecutionContext *, PassRefPtr<CB>, PassRefPtr<CBArg> );
 
     template <typename CB, typename CBArg>
-    void scheduleCallback(PassRefPtr<CB> callback, PassRefPtr<CBArg> callbackArg)
+    void scheduleCallback( PassRefPtr<CB> callback, PassRefPtr<CBArg> callbackArg )
     {
-        scheduleCallback(scriptExecutionContext(), callback, callbackArg);
+        scheduleCallback( scriptExecutionContext(), callback, callbackArg );
     }
 
 private:
-    DOMFileSystem(ScriptExecutionContext*, const String& name, PassOwnPtr<AsyncFileSystem>);
+    DOMFileSystem( ScriptExecutionContext *, const String &name, PassOwnPtr<AsyncFileSystem> );
 
     // A helper template to schedule a callback task.
     template <typename CB, typename CBArg>
-    class DispatchCallbackTask : public ScriptExecutionContext::Task {
+    class DispatchCallbackTask : public ScriptExecutionContext::Task
+    {
     public:
-        DispatchCallbackTask(PassRefPtr<CB> callback, PassRefPtr<CBArg> arg)
-            : m_callback(callback)
-            , m_callbackArg(arg)
+        DispatchCallbackTask( PassRefPtr<CB> callback, PassRefPtr<CBArg> arg )
+            : m_callback( callback )
+            , m_callbackArg( arg )
         {
         }
 
-        virtual void performTask(ScriptExecutionContext*)
+        virtual void performTask( ScriptExecutionContext * )
         {
-            m_callback->handleEvent(m_callbackArg.get());
+            m_callback->handleEvent( m_callbackArg.get() );
         }
 
     private:
@@ -98,11 +102,15 @@ private:
 };
 
 template <typename CB, typename CBArg>
-void DOMFileSystem::scheduleCallback(ScriptExecutionContext* scriptExecutionContext, PassRefPtr<CB> callback, PassRefPtr<CBArg> arg)
+void DOMFileSystem::scheduleCallback( ScriptExecutionContext *scriptExecutionContext, PassRefPtr<CB> callback,
+                                      PassRefPtr<CBArg> arg )
 {
-    ASSERT(scriptExecutionContext->isContextThread());
-    if (callback)
-        scriptExecutionContext->postTask(new DispatchCallbackTask<CB, CBArg>(callback, arg));
+    ASSERT( scriptExecutionContext->isContextThread() );
+
+    if ( callback )
+    {
+        scriptExecutionContext->postTask( new DispatchCallbackTask<CB, CBArg>( callback, arg ) );
+    }
 }
 
 } // namespace

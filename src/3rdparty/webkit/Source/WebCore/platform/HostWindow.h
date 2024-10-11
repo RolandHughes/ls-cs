@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HostWindow_h
@@ -28,45 +28,48 @@
 
 #include "Widget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Cursor;
 
-class HostWindow {
-    WTF_MAKE_NONCOPYABLE(HostWindow); WTF_MAKE_FAST_ALLOCATED;
+class HostWindow
+{
+    WTF_MAKE_NONCOPYABLE( HostWindow );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     HostWindow() { }
     virtual ~HostWindow() { }
 
     // Requests the host invalidate the window, not the contents.  If immediate is true do so synchronously, otherwise async.
-    virtual void invalidateWindow(const IntRect& updateRect, bool immediate) = 0;
+    virtual void invalidateWindow( const IntRect &updateRect, bool immediate ) = 0;
 
     // Requests the host invalidate the contents and the window.  If immediate is true do so synchronously, otherwise async.
-    virtual void invalidateContentsAndWindow(const IntRect& updateRect, bool immediate) = 0;
+    virtual void invalidateContentsAndWindow( const IntRect &updateRect, bool immediate ) = 0;
 
     // Requests the host scroll backingstore by the specified delta, rect to scroll, and clip rect.
-    virtual void scroll(const IntSize& scrollDelta, const IntRect& rectToScroll, const IntRect& clipRect) = 0;
+    virtual void scroll( const IntSize &scrollDelta, const IntRect &rectToScroll, const IntRect &clipRect ) = 0;
 
     // Requests the host invalidate the contents, not the window.  This is the slow path for scrolling.
-    virtual void invalidateContentsForSlowScroll(const IntRect& updateRect, bool immediate) = 0;
+    virtual void invalidateContentsForSlowScroll( const IntRect &updateRect, bool immediate ) = 0;
 
 #if ENABLE(TILED_BACKING_STORE)
     // Requests the host to do the actual scrolling. This is only used in combination with a tiled backing store.
-    virtual void delegatedScrollRequested(const IntPoint& scrollPoint) = 0;
+    virtual void delegatedScrollRequested( const IntPoint &scrollPoint ) = 0;
 #endif
 
     // Methods for doing coordinate conversions to and from screen coordinates.
-    virtual IntPoint screenToWindow(const IntPoint&) const = 0;
-    virtual IntRect windowToScreen(const IntRect&) const = 0;
+    virtual IntPoint screenToWindow( const IntPoint & ) const = 0;
+    virtual IntRect windowToScreen( const IntRect & ) const = 0;
 
     // Method for retrieving the native client of the page.
     virtual PlatformPageClient platformPageClient() const = 0;
-    
+
     // To notify WebKit of scrollbar mode changes.
     virtual void scrollbarsModeDidChange() const = 0;
 
     // Request that the cursor change.
-    virtual void setCursor(const Cursor&) = 0;
+    virtual void setCursor( const Cursor & ) = 0;
 
 #if ENABLE(REQUEST_ANIMATION_FRAME)
     virtual void scheduleAnimation() = 0;

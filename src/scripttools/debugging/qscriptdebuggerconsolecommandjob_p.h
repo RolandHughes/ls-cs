@@ -34,21 +34,21 @@ class QScriptDebuggerConsoleCommandJobPrivate;
 
 class QScriptDebuggerConsoleCommandJob : public QScriptDebuggerCommandSchedulerJob
 {
- public:
-   QScriptDebuggerConsoleCommandJob(QScriptDebuggerConsole *console,
-                                    QScriptMessageHandlerInterface *messageHandler,
-                                    QScriptDebuggerCommandSchedulerInterface *scheduler);
-   ~QScriptDebuggerConsoleCommandJob();
+public:
+    QScriptDebuggerConsoleCommandJob( QScriptDebuggerConsole *console,
+                                      QScriptMessageHandlerInterface *messageHandler,
+                                      QScriptDebuggerCommandSchedulerInterface *scheduler );
+    ~QScriptDebuggerConsoleCommandJob();
 
- protected:
-   QScriptDebuggerConsoleCommandJob(QScriptDebuggerConsoleCommandJobPrivate &dd,
-                                    QScriptDebuggerConsole *console,
-                                    QScriptMessageHandlerInterface *messageHandler,
-                                    QScriptDebuggerCommandSchedulerInterface *scheduler);
+protected:
+    QScriptDebuggerConsoleCommandJob( QScriptDebuggerConsoleCommandJobPrivate &dd,
+                                      QScriptDebuggerConsole *console,
+                                      QScriptMessageHandlerInterface *messageHandler,
+                                      QScriptDebuggerCommandSchedulerInterface *scheduler );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerConsoleCommandJob)
-   Q_DISABLE_COPY(QScriptDebuggerConsoleCommandJob)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerConsoleCommandJob )
+    Q_DISABLE_COPY( QScriptDebuggerConsoleCommandJob )
 };
 
 QT_END_NAMESPACE

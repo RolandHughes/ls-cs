@@ -31,48 +31,50 @@
 #include <qsinglecontainer_p.h>
 #include <qvariabledeclaration_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template<bool IsForGlobal>
 class EvaluationCache : public SingleContainer
 {
- public:
-   EvaluationCache(const Expression::Ptr &operand, const VariableDeclaration *varDecl, const VariableSlotID slot);
+public:
+    EvaluationCache( const Expression::Ptr &operand, const VariableDeclaration *varDecl, const VariableSlotID slot );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   /**
-    * The first operand must be exactly one @c xs:string.
-    */
-   SequenceType::List expectedOperandTypes() const override;
+    /**
+     * The first operand must be exactly one @c xs:string.
+     */
+    SequenceType::List expectedOperandTypes() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Expression::Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Expression::Properties properties() const override;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   const SourceLocationReflection *actualReflection() const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    const SourceLocationReflection *actualReflection() const override;
 
-   VariableSlotID slot() const {
-      return m_varSlot;
-   }
+    VariableSlotID slot() const
+    {
+        return m_varSlot;
+    }
 
- private:
-   static DynamicContext::Ptr topFocusContext(const DynamicContext::Ptr &context);
-   const VariableDeclaration *m_declaration;
-   bool m_declarationUsedByMany;
-   /**
-    * This variable must not be called m_slot. If it so, a compiler bug on
-    * HP-UX-aCC-64 is triggered in the constructor initializor. See the
-    * preprocessor output.
-    *
-    * Note that this is the cache slot, and is disjoint to any variable's
-    * regular slot.
-    */
-   const VariableSlotID m_varSlot;
+private:
+    static DynamicContext::Ptr topFocusContext( const DynamicContext::Ptr &context );
+    const VariableDeclaration *m_declaration;
+    bool m_declarationUsedByMany;
+    /**
+     * This variable must not be called m_slot. If it so, a compiler bug on
+     * HP-UX-aCC-64 is triggered in the constructor initializor. See the
+     * preprocessor output.
+     *
+     * Note that this is the cache slot, and is disjoint to any variable's
+     * regular slot.
+     */
+    const VariableSlotID m_varSlot;
 };
 
 #include "qevaluationcache.cpp"

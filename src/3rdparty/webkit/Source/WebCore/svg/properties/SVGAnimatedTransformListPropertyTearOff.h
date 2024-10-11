@@ -25,35 +25,45 @@
 #include "SVGTransformList.h"
 #include "SVGTransformListPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGAnimatedTransformListPropertyTearOff : public SVGAnimatedListPropertyTearOff<SVGTransformList> {
+class SVGAnimatedTransformListPropertyTearOff : public SVGAnimatedListPropertyTearOff<SVGTransformList>
+{
 public:
-    SVGProperty* baseVal()
+    SVGProperty *baseVal()
     {
-        if (!m_baseVal)
-            m_baseVal = SVGTransformListPropertyTearOff::create(this, BaseValRole);
+        if ( !m_baseVal )
+        {
+            m_baseVal = SVGTransformListPropertyTearOff::create( this, BaseValRole );
+        }
+
         return m_baseVal.get();
     }
 
-    SVGProperty* animVal()
+    SVGProperty *animVal()
     {
-        if (!m_animVal)
-            m_animVal = SVGTransformListPropertyTearOff::create(this, AnimValRole);
+        if ( !m_animVal )
+        {
+            m_animVal = SVGTransformListPropertyTearOff::create( this, AnimValRole );
+        }
+
         return m_animVal.get();
     }
 
 private:
     friend class SVGAnimatedProperty;
 
-    static PassRefPtr<SVGAnimatedTransformListPropertyTearOff> create(SVGElement* contextElement, const QualifiedName& attributeName, SVGTransformList& values)
+    static PassRefPtr<SVGAnimatedTransformListPropertyTearOff> create( SVGElement *contextElement, const QualifiedName &attributeName,
+            SVGTransformList &values )
     {
-        ASSERT(contextElement);
-        return adoptRef(new SVGAnimatedTransformListPropertyTearOff(contextElement, attributeName, values));
+        ASSERT( contextElement );
+        return adoptRef( new SVGAnimatedTransformListPropertyTearOff( contextElement, attributeName, values ) );
     }
 
-    SVGAnimatedTransformListPropertyTearOff(SVGElement* contextElement, const QualifiedName& attributeName, SVGTransformList& values)
-        : SVGAnimatedListPropertyTearOff<SVGTransformList>(contextElement, attributeName, values)
+    SVGAnimatedTransformListPropertyTearOff( SVGElement *contextElement, const QualifiedName &attributeName,
+            SVGTransformList &values )
+        : SVGAnimatedListPropertyTearOff<SVGTransformList>( contextElement, attributeName, values )
     {
     }
 };

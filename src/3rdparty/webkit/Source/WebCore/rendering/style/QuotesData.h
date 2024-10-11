@@ -24,19 +24,30 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class QuotesData : public RefCounted<QuotesData> {
+class QuotesData : public RefCounted<QuotesData>
+{
 public:
     virtual ~QuotesData();
-    static QuotesData* create(int stringCount);
-    String* data() { return reinterpret_cast<String*>(this+1); }
-    const String* data() const { return reinterpret_cast<const String*>(this+1); }
+    static QuotesData *create( int stringCount );
+    String *data()
+    {
+        return reinterpret_cast<String *>( this+1 );
+    }
+    const String *data() const
+    {
+        return reinterpret_cast<const String *>( this+1 );
+    }
     int length;
-    bool operator==(const QuotesData&) const;
-    void operator delete(void* p) { delete[] static_cast<char*>(p); }
+    bool operator==( const QuotesData & ) const;
+    void operator delete ( void *p )
+    {
+        delete[] static_cast<char *>( p );
+    }
 private:
-    QuotesData(int stringCount) : length(stringCount) {}
+    QuotesData( int stringCount ) : length( stringCount ) {}
 };
 
 }

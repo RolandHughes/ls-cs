@@ -36,9 +36,7 @@ QT_BEGIN_NAMESPACE
   \brief The QScriptDebuggerConsoleCommand class is the base class of console commands.
 
   \sa QScriptDebuggerConsoleCommandManager
-*/
-
-QScriptDebuggerConsoleCommandPrivate::QScriptDebuggerConsoleCommandPrivate()
+*/ QScriptDebuggerConsoleCommandPrivate::QScriptDebuggerConsoleCommandPrivate()
 {
 }
 
@@ -47,19 +45,19 @@ QScriptDebuggerConsoleCommandPrivate::~QScriptDebuggerConsoleCommandPrivate()
 }
 
 QScriptDebuggerConsoleCommand::QScriptDebuggerConsoleCommand()
-   : d_ptr(new QScriptDebuggerConsoleCommandPrivate)
+    : d_ptr( new QScriptDebuggerConsoleCommandPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QScriptDebuggerConsoleCommand::~QScriptDebuggerConsoleCommand()
 {
 }
 
-QScriptDebuggerConsoleCommand::QScriptDebuggerConsoleCommand(QScriptDebuggerConsoleCommandPrivate &dd)
-   : d_ptr(&dd)
+QScriptDebuggerConsoleCommand::QScriptDebuggerConsoleCommand( QScriptDebuggerConsoleCommandPrivate &dd )
+    : d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 /*!
@@ -105,7 +103,7 @@ QScriptDebuggerConsoleCommand::QScriptDebuggerConsoleCommand(QScriptDebuggerCons
 */
 QStringList QScriptDebuggerConsoleCommand::seeAlso() const
 {
-   return QStringList();
+    return QStringList();
 }
 
 /*!
@@ -113,17 +111,17 @@ QStringList QScriptDebuggerConsoleCommand::seeAlso() const
 */
 QStringList QScriptDebuggerConsoleCommand::aliases() const
 {
-   return QStringList();
+    return QStringList();
 }
 
 QStringList QScriptDebuggerConsoleCommand::argumentTypes() const
 {
-   return QStringList();
+    return QStringList();
 }
 
 QStringList QScriptDebuggerConsoleCommand::subCommands() const
 {
-   return QStringList();
+    return QStringList();
 }
 
 QT_END_NAMESPACE

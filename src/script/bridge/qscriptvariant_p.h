@@ -27,30 +27,31 @@
 #include <qvariant.h>
 #include "qscriptobject_p.h"
 
-namespace QScript {
+namespace QScript
+{
 
 class QVariantDelegate : public QScriptObjectDelegate
 {
- public:
-   QVariantDelegate(const QVariant &value);
-   ~QVariantDelegate();
+public:
+    QVariantDelegate( const QVariant &value );
+    ~QVariantDelegate();
 
-   virtual bool compareToObject(QScriptObject *, JSC::ExecState *, JSC::JSObject *);
+    virtual bool compareToObject( QScriptObject *, JSC::ExecState *, JSC::JSObject * );
 
-   QVariant &value();
-   void setValue(const QVariant &value);
+    QVariant &value();
+    void setValue( const QVariant &value );
 
-   Type type() const;
+    Type type() const;
 
- private:
-   QVariant m_value;
+private:
+    QVariant m_value;
 };
 
 class QVariantPrototype : public QScriptObject
 {
- public:
-   QVariantPrototype(JSC::ExecState *, WTF::PassRefPtr<JSC::Structure>,
-      JSC::Structure *prototypeFunctionStructure);
+public:
+    QVariantPrototype( JSC::ExecState *, WTF::PassRefPtr<JSC::Structure>,
+                       JSC::Structure *prototypeFunctionStructure );
 };
 
 } // namespace QScript

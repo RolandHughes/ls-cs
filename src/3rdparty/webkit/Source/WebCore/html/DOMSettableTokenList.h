@@ -32,36 +32,53 @@
 #include <wtf/RefCounted.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DOMSettableTokenList : public DOMTokenList, public RefCounted<DOMSettableTokenList> {
+class DOMSettableTokenList : public DOMTokenList, public RefCounted<DOMSettableTokenList>
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
     static PassRefPtr<DOMSettableTokenList> create()
     {
-        return adoptRef(new DOMSettableTokenList());
+        return adoptRef( new DOMSettableTokenList() );
     }
     virtual ~DOMSettableTokenList();
 
-    virtual void ref() { RefCounted<DOMSettableTokenList>::ref(); }
-    virtual void deref() { RefCounted<DOMSettableTokenList>::deref(); }
+    virtual void ref()
+    {
+        RefCounted<DOMSettableTokenList>::ref();
+    }
+    virtual void deref()
+    {
+        RefCounted<DOMSettableTokenList>::deref();
+    }
 
-    virtual unsigned length() const { return m_tokens.size(); }
-    virtual const AtomicString item(unsigned index) const;
-    virtual bool contains(const AtomicString&, ExceptionCode&) const;
-    virtual void add(const AtomicString&, ExceptionCode&);
-    virtual void remove(const AtomicString&, ExceptionCode&);
-    virtual bool toggle(const AtomicString&, ExceptionCode&);
-    virtual String toString() const { return value(); }
+    virtual unsigned length() const
+    {
+        return m_tokens.size();
+    }
+    virtual const AtomicString item( unsigned index ) const;
+    virtual bool contains( const AtomicString &, ExceptionCode & ) const;
+    virtual void add( const AtomicString &, ExceptionCode & );
+    virtual void remove( const AtomicString &, ExceptionCode & );
+    virtual bool toggle( const AtomicString &, ExceptionCode & );
+    virtual String toString() const
+    {
+        return value();
+    }
 
-    String value() const { return m_value; }
-    void setValue(const String&);
+    String value() const
+    {
+        return m_value;
+    }
+    void setValue( const String & );
 
 private:
     DOMSettableTokenList();
 
-    void removeInternal(const AtomicString&);
-    void addInternal(const AtomicString&);
+    void removeInternal( const AtomicString & );
+    void addInternal( const AtomicString & );
 
     String m_value;
     SpaceSplitString m_tokens;

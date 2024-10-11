@@ -31,44 +31,55 @@
 #include <wtf/Forward.h>
 
 #if PLATFORM(MAC)
-typedef NSURLRequest* PlatformRequest;
+typedef NSURLRequest *PlatformRequest;
 #elif PLATFORM(WIN)
 typedef CFURLRequestRef PlatformRequest;
 #else
-typedef void* PlatformRequest;
+typedef void *PlatformRequest;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebURLRequest : public APIObject {
+class WebURLRequest : public APIObject
+{
 public:
     static const Type APIType = TypeURLRequest;
 
-    static PassRefPtr<WebURLRequest> create(const WebCore::KURL&);
+    static PassRefPtr<WebURLRequest> create( const WebCore::KURL & );
 
-    static PassRefPtr<WebURLRequest> create(const WebCore::ResourceRequest& request)
+    static PassRefPtr<WebURLRequest> create( const WebCore::ResourceRequest &request )
     {
-        return adoptRef(new WebURLRequest(request));
+        return adoptRef( new WebURLRequest( request ) );
     }
 
-    static PassRefPtr<WebURLRequest> create(PlatformRequest platformRequest)
+    static PassRefPtr<WebURLRequest> create( PlatformRequest platformRequest )
     {
-        return adoptRef(new WebURLRequest(platformRequest));
+        return adoptRef( new WebURLRequest( platformRequest ) );
     }
 
     PlatformRequest platformRequest() const;
-    const WebCore::ResourceRequest& resourceRequest() const { return m_request; }
+    const WebCore::ResourceRequest &resourceRequest() const
+    {
+        return m_request;
+    }
 
-    const String& url() const { return m_request.url(); }
+    const String &url() const
+    {
+        return m_request.url();
+    }
 
     static double defaultTimeoutInterval(); // May return 0 when using platform default.
-    static void setDefaultTimeoutInterval(double);
+    static void setDefaultTimeoutInterval( double );
 
 private:
-    explicit WebURLRequest(const WebCore::ResourceRequest&);
-    explicit WebURLRequest(PlatformRequest);
+    explicit WebURLRequest( const WebCore::ResourceRequest & );
+    explicit WebURLRequest( PlatformRequest );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::ResourceRequest m_request;
 };

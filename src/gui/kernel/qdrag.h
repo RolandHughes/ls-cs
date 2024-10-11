@@ -37,49 +37,49 @@ class QDragManager;
 
 class Q_GUI_EXPORT QDrag : public QObject
 {
-   GUI_CS_OBJECT(QDrag)
+    GUI_LSCS_OBJECT( QDrag )
 
- public:
-   explicit QDrag(QObject *dragSource);
+public:
+    explicit QDrag( QObject *dragSource );
 
-   QDrag(const QDrag &) = delete;
-   QDrag &operator=(const QDrag &) = delete;
+    QDrag( const QDrag & ) = delete;
+    QDrag &operator=( const QDrag & ) = delete;
 
-   ~QDrag();
+    ~QDrag();
 
-   void setMimeData(QMimeData *data);
-   QMimeData *mimeData() const;
+    void setMimeData( QMimeData *data );
+    QMimeData *mimeData() const;
 
-   void setPixmap(const QPixmap &pixmap);
-   QPixmap pixmap() const;
+    void setPixmap( const QPixmap &pixmap );
+    QPixmap pixmap() const;
 
-   void setHotSpot(const QPoint &hotspot);
-   QPoint hotSpot() const;
+    void setHotSpot( const QPoint &hotspot );
+    QPoint hotSpot() const;
 
-   QObject *source() const;
-   QObject *target() const;
+    QObject *source() const;
+    QObject *target() const;
 
-   Qt::DropAction start(Qt::DropActions supportedActions = Qt::CopyAction);
-   Qt::DropAction exec(Qt::DropActions supportedActions = Qt::MoveAction);
-   Qt::DropAction exec(Qt::DropActions supportedActions, Qt::DropAction defaultAction);
+    Qt::DropAction start( Qt::DropActions supportedActions = Qt::CopyAction );
+    Qt::DropAction exec( Qt::DropActions supportedActions = Qt::MoveAction );
+    Qt::DropAction exec( Qt::DropActions supportedActions, Qt::DropAction defaultAction );
 
-   void setDragCursor(const QPixmap &cursor, Qt::DropAction action);
-   QPixmap dragCursor(Qt::DropAction action) const;
-   Qt::DropActions supportedActions() const;
-   Qt::DropAction defaultAction() const;
+    void setDragCursor( const QPixmap &cursor, Qt::DropAction action );
+    QPixmap dragCursor( Qt::DropAction action ) const;
+    Qt::DropActions supportedActions() const;
+    Qt::DropAction defaultAction() const;
 
-   GUI_CS_SIGNAL_1(Public, void actionChanged(Qt::DropAction action))
-   GUI_CS_SIGNAL_2(actionChanged, action)
+    GUI_LSCS_SIGNAL_1( Public, void actionChanged( Qt::DropAction action ) )
+    GUI_LSCS_SIGNAL_2( actionChanged, action )
 
-   GUI_CS_SIGNAL_1(Public, void targetChanged(QObject *newTarget))
-   GUI_CS_SIGNAL_2(targetChanged, newTarget)
+    GUI_LSCS_SIGNAL_1( Public, void targetChanged( QObject *newTarget ) )
+    GUI_LSCS_SIGNAL_2( targetChanged, newTarget )
 
- protected:
-   QScopedPointer<QDragPrivate> d_ptr;
+protected:
+    QScopedPointer<QDragPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QDrag)
-   friend class QDragManager;
+private:
+    Q_DECLARE_PRIVATE( QDrag )
+    friend class QDragManager;
 };
 
 #endif // QT_NO_DRAGANDDROP

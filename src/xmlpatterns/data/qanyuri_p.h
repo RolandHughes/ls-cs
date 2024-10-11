@@ -31,74 +31,84 @@
 #include <qpatternistlocale_p.h>
 #include <qreportcontext_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AnyURI : public AtomicString
 {
- public:
-   typedef QExplicitlySharedDataPointer<AnyURI> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<AnyURI> Ptr;
 
-   static AnyURI::Ptr fromValue(const QString &value);
-   static AnyURI::Ptr fromValue(const QUrl &uri);
+    static AnyURI::Ptr fromValue( const QString &value );
+    static AnyURI::Ptr fromValue( const QUrl &uri );
 
-   template<const ReportContext::ErrorCode code, typename TReportContext>
-   static inline QUrl toQUrl(const QString &value, const TReportContext &context,
-               const SourceLocationReflection *const r, bool *const isValid = nullptr, const bool issueError = true) {
+    template<const ReportContext::ErrorCode code, typename TReportContext>
+    static inline QUrl toQUrl( const QString &value, const TReportContext &context,
+                               const SourceLocationReflection *const r, bool *const isValid = nullptr, const bool issueError = true )
+    {
 
-      /* QUrl doesn't flag ":/..." so we workaround it. */
-      const QString simplified(value.simplified());
-      const QUrl uri(simplified, QUrl::StrictMode);
+        /* QUrl doesn't flag ":/..." so we workaround it. */
+        const QString simplified( value.simplified() );
+        const QUrl uri( simplified, QUrl::StrictMode );
 
-      if (uri.isEmpty() || (uri.isValid() && (! simplified.startsWith(':') || ! uri.isRelative()))) {
+        if ( uri.isEmpty() || ( uri.isValid() && ( ! simplified.startsWith( ':' ) || ! uri.isRelative() ) ) )
+        {
 
-         if (isValid) {
-            *isValid = true;
-         }
+            if ( isValid )
+            {
+                *isValid = true;
+            }
 
-         return uri;
+            return uri;
 
-      } else {
-         if (isValid) {
-            *isValid = false;
-         }
+        }
+        else
+        {
+            if ( isValid )
+            {
+                *isValid = false;
+            }
 
-         if (issueError) {
-            context->error(QtXmlPatterns::tr("%1 is not a valid value of type %2").
-                  formatArgs(formatURI(value), formatType(context->namePool(), BuiltinTypes::xsAnyURI)), code, r);
-         }
+            if ( issueError )
+            {
+                context->error( QtXmlPatterns::tr( "%1 is not a valid value of type %2" ).
+                                formatArgs( formatURI( value ), formatType( context->namePool(), BuiltinTypes::xsAnyURI ) ), code, r );
+            }
 
-         return QUrl();
-      }
-   }
+            return QUrl();
+        }
+    }
 
-   static bool isValid(const QString &candidate);
+    static bool isValid( const QString &candidate );
 
-   template<const ReportContext::ErrorCode code, typename TReportContext>
-   static inline AnyURI::Ptr fromLexical(const QString &value, const TReportContext &context,
-                  const SourceLocationReflection *const r) {
+    template<const ReportContext::ErrorCode code, typename TReportContext>
+    static inline AnyURI::Ptr fromLexical( const QString &value, const TReportContext &context,
+                                           const SourceLocationReflection *const r )
+    {
 
-      return AnyURI::Ptr(new AnyURI(toQUrl<code>(value, context, r).toString()));
-   }
+        return AnyURI::Ptr( new AnyURI( toQUrl<code>( value, context, r ).toString() ) );
+    }
 
-   static AnyURI::Ptr fromLexical(const QString &value);
-   static AnyURI::Ptr resolveURI(const QString &relative, const QString &base);
+    static AnyURI::Ptr fromLexical( const QString &value );
+    static AnyURI::Ptr resolveURI( const QString &relative, const QString &base );
 
-   ItemType::Ptr type() const override;
+    ItemType::Ptr type() const override;
 
-   inline QUrl toQUrl() const {
-      Q_ASSERT_X(QUrl(m_value).isValid(), Q_FUNC_INFO, csPrintable(QString("%1 is not a valid QUrl").formatArg(m_value)));
-      return QUrl(m_value);
-   }
+    inline QUrl toQUrl() const
+    {
+        Q_ASSERT_X( QUrl( m_value ).isValid(), Q_FUNC_INFO, lscsPrintable( QString( "%1 is not a valid QUrl" ).formatArg( m_value ) ) );
+        return QUrl( m_value );
+    }
 
- protected:
-   friend class CommonValues;
+protected:
+    friend class CommonValues;
 
-   AnyURI(const QString &value);
+    AnyURI( const QString &value );
 };
 
-static inline QString formatURI(const NamePool::Ptr &np, const QXmlName::NamespaceCode &uri)
+static inline QString formatURI( const NamePool::Ptr &np, const QXmlName::NamespaceCode &uri )
 {
-   return formatURI(np->stringForNamespace(uri));
+    return formatURI( np->stringForNamespace( uri ) );
 }
 
 } // namespace

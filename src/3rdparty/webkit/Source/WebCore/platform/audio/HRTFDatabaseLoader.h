@@ -35,55 +35,66 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // HRTFDatabaseLoader will asynchronously load the default HRTFDatabase in a new thread.
 
-class HRTFDatabaseLoader : public RefCounted<HRTFDatabaseLoader> {
+class HRTFDatabaseLoader : public RefCounted<HRTFDatabaseLoader>
+{
 public:
     // Lazily creates the singleton HRTFDatabaseLoader (if not already created) and starts loading asynchronously (when created the first time).
     // Returns the singleton HRTFDatabaseLoader.
     // Must be called from the main thread.
-    static PassRefPtr<HRTFDatabaseLoader> createAndLoadAsynchronouslyIfNecessary(double sampleRate);
+    static PassRefPtr<HRTFDatabaseLoader> createAndLoadAsynchronouslyIfNecessary( double sampleRate );
 
     // Returns the singleton HRTFDatabaseLoader.
-    static HRTFDatabaseLoader* loader() { return s_loader; }
-    
+    static HRTFDatabaseLoader *loader()
+    {
+        return s_loader;
+    }
+
     // Both constructor and destructor must be called from the main thread.
     ~HRTFDatabaseLoader();
-    
+
     // Returns true once the default database has been completely loaded.
     bool isLoaded() const;
 
     // May not be called on the main thread.
     // This is so a different background thread may synchronize with the loader thread.
     void waitForLoaderThreadCompletion();
-    
-    HRTFDatabase* database() { return m_hrtfDatabase.get(); }
-    
+
+    HRTFDatabase *database()
+    {
+        return m_hrtfDatabase.get();
+    }
+
     // Called in asynchronous loading thread.
     void load();
 
     // defaultHRTFDatabase() gives access to the loaded database.
     // This can be called from any thread, but it is the callers responsibilty to call this while the context (and thus HRTFDatabaseLoader)
     // is still alive.  Otherwise this will return 0.
-    static HRTFDatabase* defaultHRTFDatabase();
+    static HRTFDatabase *defaultHRTFDatabase();
 
 private:
     // Both constructor and destructor must be called from the main thread.
-    explicit HRTFDatabaseLoader(double sampleRate);    
-    
+    explicit HRTFDatabaseLoader( double sampleRate );
+
     // If it hasn't already been loaded, creates a new thread and initiates asynchronous loading of the default database.
     // This must be called from the main thread.
     void loadAsynchronously();
 
-    double databaseSampleRate() const { return m_databaseSampleRate; }
+    double databaseSampleRate() const
+    {
+        return m_databaseSampleRate;
+    }
 
-    static HRTFDatabaseLoader* s_loader; // singleton
+    static HRTFDatabaseLoader *s_loader; // singleton
     OwnPtr<HRTFDatabase> m_hrtfDatabase;
     ThreadIdentifier m_databaseLoaderThread;
     bool m_startedLoadingDatabase;
-    double m_databaseSampleRate;    
+    double m_databaseSampleRate;
 };
 
 

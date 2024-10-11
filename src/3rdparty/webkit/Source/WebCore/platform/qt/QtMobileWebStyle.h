@@ -23,25 +23,26 @@
 
 #include <QWindowsStyle>
 
-class QtMobileWebStyle : public QWindowsStyle {
+class QtMobileWebStyle : public QWindowsStyle
+{
 public:
     QtMobileWebStyle();
 
-    void drawControl(ControlElement, const QStyleOption*, QPainter*, const QWidget*) const;
-    void drawComplexControl(ComplexControl, const QStyleOptionComplex*, QPainter*, const QWidget*) const;
-    void drawPrimitive(PrimitiveElement, const QStyleOption*, QPainter*, const QWidget*) const;
+    void drawControl( ControlElement, const QStyleOption *, QPainter *, const QWidget * ) const;
+    void drawComplexControl( ComplexControl, const QStyleOptionComplex *, QPainter *, const QWidget * ) const;
+    void drawPrimitive( PrimitiveElement, const QStyleOption *, QPainter *, const QWidget * ) const;
 
 private:
-    void drawChecker(QPainter* painter, int size, QColor color) const;
-    QPixmap findChecker(const QRect& rect, bool disabled) const;
+    void drawChecker( QPainter *painter, int size, QColor color ) const;
+    QPixmap findChecker( const QRect &rect, bool disabled ) const;
 
-    void drawRadio(QPainter* painter, const QSize& size, bool checked, QColor color) const;
-    QPixmap findRadio(const QSize& size, bool checked, bool disabled) const;
+    void drawRadio( QPainter *painter, const QSize &size, bool checked, QColor color ) const;
+    QPixmap findRadio( const QSize &size, bool checked, bool disabled ) const;
 
-    QSize getButtonImageSize(const QSize& buttonSize) const;
-    void drawSimpleComboButton(QPainter* painter, const QSize& size, QColor color) const;
-    void drawMultipleComboButton(QPainter* painter, const QSize& size, QColor color) const;
-    QPixmap findComboButton(const QSize& size, bool multiple, bool disabled) const;
+    QSize getButtonImageSize( const QSize &buttonSize ) const;
+    void drawSimpleComboButton( QPainter *painter, const QSize &size, QColor color ) const;
+    void drawMultipleComboButton( QPainter *painter, const QSize &size, QColor color ) const;
+    QPixmap findComboButton( const QSize &size, bool multiple, bool disabled ) const;
 
 };
 

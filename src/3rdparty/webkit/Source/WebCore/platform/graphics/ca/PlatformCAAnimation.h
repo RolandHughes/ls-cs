@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PlatformCAAnimation_h
@@ -41,112 +41,119 @@
 #else
 class CAPropertyAnimation;
 #endif
-typedef CAPropertyAnimation* PlatformAnimationRef;
+typedef CAPropertyAnimation *PlatformAnimationRef;
 #elif PLATFORM(WIN)
-typedef struct _CACFAnimation* CACFAnimationRef;
+typedef struct _CACFAnimation *CACFAnimationRef;
 typedef CACFAnimationRef PlatformAnimationRef;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatRect;
 class PlatformCAAnimation;
 class TimingFunction;
 
-class PlatformCAAnimation : public RefCounted<PlatformCAAnimation> {
+class PlatformCAAnimation : public RefCounted<PlatformCAAnimation>
+{
 public:
     friend class PlatformCALayer;
-    
+
     enum AnimationType { Basic, Keyframe };
     enum FillModeType { NoFillMode, Forwards, Backwards, Both };
     enum ValueFunctionType { NoValueFunction, RotateX, RotateY, RotateZ, ScaleX, ScaleY, ScaleZ, Scale, TranslateX, TranslateY, TranslateZ, Translate };
 
-    static PassRefPtr<PlatformCAAnimation> create(AnimationType, const String& keyPath);
-    static PassRefPtr<PlatformCAAnimation> create(PlatformAnimationRef);
+    static PassRefPtr<PlatformCAAnimation> create( AnimationType, const String &keyPath );
+    static PassRefPtr<PlatformCAAnimation> create( PlatformAnimationRef );
 
     ~PlatformCAAnimation();
-    
+
     static bool supportsValueFunction();
-    
+
     PassRefPtr<PlatformCAAnimation> copy() const;
 
     PlatformAnimationRef platformAnimation() const;
-    
-    AnimationType animationType() const { return m_type; }
+
+    AnimationType animationType() const
+    {
+        return m_type;
+    }
     String keyPath() const;
-    
+
     CFTimeInterval beginTime() const;
-    void setBeginTime(CFTimeInterval);
-    
+    void setBeginTime( CFTimeInterval );
+
     CFTimeInterval duration() const;
-    void setDuration(CFTimeInterval);
-    
+    void setDuration( CFTimeInterval );
+
     float speed() const;
-    void setSpeed(float);
+    void setSpeed( float );
 
     CFTimeInterval timeOffset() const;
-    void setTimeOffset(CFTimeInterval);
+    void setTimeOffset( CFTimeInterval );
 
     float repeatCount() const;
-    void setRepeatCount(float);
+    void setRepeatCount( float );
 
     bool autoreverses() const;
-    void setAutoreverses(bool);
+    void setAutoreverses( bool );
 
     FillModeType fillMode() const;
-    void setFillMode(FillModeType);
-    
-    void setTimingFunction(const TimingFunction*);
-    void copyTimingFunctionFrom(const PlatformCAAnimation*);
+    void setFillMode( FillModeType );
+
+    void setTimingFunction( const TimingFunction * );
+    void copyTimingFunctionFrom( const PlatformCAAnimation * );
 
     bool isRemovedOnCompletion() const;
-    void setRemovedOnCompletion(bool);
+    void setRemovedOnCompletion( bool );
 
     bool isAdditive() const;
-    void setAdditive(bool);
+    void setAdditive( bool );
 
     ValueFunctionType valueFunction() const;
-    void setValueFunction(ValueFunctionType);
+    void setValueFunction( ValueFunctionType );
 
     // Basic-animation properties.
-    void setFromValue(float);
-    void setFromValue(const WebCore::TransformationMatrix&);
-    void setFromValue(const FloatPoint3D&);
-    void setFromValue(const WebCore::Color&);
-    void copyFromValueFrom(const PlatformCAAnimation*);
+    void setFromValue( float );
+    void setFromValue( const WebCore::TransformationMatrix & );
+    void setFromValue( const FloatPoint3D & );
+    void setFromValue( const WebCore::Color & );
+    void copyFromValueFrom( const PlatformCAAnimation * );
 
-    void setToValue(float);
-    void setToValue(const WebCore::TransformationMatrix&);
-    void setToValue(const FloatPoint3D&);
-    void setToValue(const WebCore::Color&);
-    void copyToValueFrom(const PlatformCAAnimation*);
+    void setToValue( float );
+    void setToValue( const WebCore::TransformationMatrix & );
+    void setToValue( const FloatPoint3D & );
+    void setToValue( const WebCore::Color & );
+    void copyToValueFrom( const PlatformCAAnimation * );
 
     // Keyframe-animation properties.
-    void setValues(const Vector<float>&);
-    void setValues(const Vector<WebCore::TransformationMatrix>&);
-    void setValues(const Vector<FloatPoint3D>&);
-    void setValues(const Vector<WebCore::Color>&);
-    void copyValuesFrom(const PlatformCAAnimation*);
+    void setValues( const Vector<float> & );
+    void setValues( const Vector<WebCore::TransformationMatrix> & );
+    void setValues( const Vector<FloatPoint3D> & );
+    void setValues( const Vector<WebCore::Color> & );
+    void copyValuesFrom( const PlatformCAAnimation * );
 
-    void setKeyTimes(const Vector<float>&);
-    void copyKeyTimesFrom(const PlatformCAAnimation*);
+    void setKeyTimes( const Vector<float> & );
+    void copyKeyTimesFrom( const PlatformCAAnimation * );
 
-    void setTimingFunctions(const Vector<const TimingFunction*>&);
-    void copyTimingFunctionsFrom(const PlatformCAAnimation*);
-    
+    void setTimingFunctions( const Vector<const TimingFunction *> & );
+    void copyTimingFunctionsFrom( const PlatformCAAnimation * );
+
 protected:
-    PlatformCAAnimation(AnimationType, const String& keyPath);
-    PlatformCAAnimation(PlatformAnimationRef);
+    PlatformCAAnimation( AnimationType, const String &keyPath );
+    PlatformCAAnimation( PlatformAnimationRef );
 
-    void setActualStartTimeIfNeeded(CFTimeInterval t)
+    void setActualStartTimeIfNeeded( CFTimeInterval t )
     {
-        if (beginTime() <= 0)
-            setBeginTime(t);
+        if ( beginTime() <= 0 )
+        {
+            setBeginTime( t );
+        }
     }
-    
+
 private:
     AnimationType m_type;
-    
+
 #if PLATFORM(MAC)
     RetainPtr<CAPropertyAnimation> m_animation;
 #elif PLATFORM(WIN)

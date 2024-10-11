@@ -28,11 +28,9 @@
 #include <QDebug>
 #include <QImage>
 
-QT_BEGIN_NAMESPACE
-
-QTgaHandler::QTgaHandler()
+QT_BEGIN_NAMESPACE QTgaHandler::QTgaHandler()
     : QImageIOHandler()
-    , tga(0)
+    , tga( 0 )
 {
 }
 
@@ -43,30 +41,39 @@ QTgaHandler::~QTgaHandler()
 
 bool QTgaHandler::canRead() const
 {
-    if (!tga)
-        tga = new QTgaFile(device());
-    if (tga->isValid())
+    if ( !tga )
     {
-        setFormat("tga");
+        tga = new QTgaFile( device() );
+    }
+
+    if ( tga->isValid() )
+    {
+        setFormat( "tga" );
         return true;
     }
+
     return false;
 }
 
-bool QTgaHandler::canRead(QIODevice *device)
+bool QTgaHandler::canRead( QIODevice *device )
 {
-    if (!device) {
-        qWarning("QTgaHandler::canRead() called with no device");
+    if ( !device )
+    {
+        qWarning( "QTgaHandler::canRead() called with no device" );
         return false;
     }
-    QTgaFile tga(device);
+
+    QTgaFile tga( device );
     return tga.isValid();
 }
 
-bool QTgaHandler::read(QImage *image)
+bool QTgaHandler::read( QImage *image )
 {
-    if (!canRead())
+    if ( !canRead() )
+    {
         return false;
+    }
+
     *image = tga->readImage();
     return !image->isNull();
 }
@@ -76,29 +83,35 @@ QByteArray QTgaHandler::name() const
     return "tga";
 }
 
-QVariant QTgaHandler::option(ImageOption option) const
+QVariant QTgaHandler::option( ImageOption option ) const
 {
-    if (option == Size && canRead()) {
+    if ( option == Size && canRead() )
+    {
         return tga->size();
-    } else if (option == CompressionRatio) {
+    }
+    else if ( option == CompressionRatio )
+    {
         return tga->compression();
-    } else if (option == ImageFormat) {
+    }
+    else if ( option == ImageFormat )
+    {
         return QImage::Format_ARGB32;
     }
+
     return QVariant();
 }
 
-void QTgaHandler::setOption(ImageOption option, const QVariant &value)
+void QTgaHandler::setOption( ImageOption option, const QVariant &value )
 {
-    Q_UNUSED(option);
-    Q_UNUSED(value);
+    Q_UNUSED( option );
+    Q_UNUSED( value );
 }
 
-bool QTgaHandler::supportsOption(ImageOption option) const
+bool QTgaHandler::supportsOption( ImageOption option ) const
 {
     return option == CompressionRatio
-            || option == Size
-            || option == ImageFormat;
+           || option == Size
+           || option == ImageFormat;
 }
 
 QT_END_NAMESPACE

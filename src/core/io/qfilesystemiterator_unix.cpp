@@ -30,47 +30,54 @@
 #include <stdlib.h>
 #include <errno.h>
 
-QFileSystemIterator::QFileSystemIterator(const QFileSystemEntry &entry, QDir::Filters filters,
-      const QStringList &nameFilters, QDirIterator::IteratorFlags flags)
-   : nativePath(entry.nativeFilePath()), dir(nullptr), dirEntry(nullptr), lastError(0)
+QFileSystemIterator::QFileSystemIterator( const QFileSystemEntry &entry, QDir::Filters filters,
+        const QStringList &nameFilters, QDirIterator::IteratorFlags flags )
+    : nativePath( entry.nativeFilePath() ), dir( nullptr ), dirEntry( nullptr ), lastError( 0 )
 {
-   (void) filters;
-   (void) nameFilters;
-   (void) flags;
+    ( void ) filters;
+    ( void ) nameFilters;
+    ( void ) flags;
 
-   if ((dir = ::opendir(nativePath.constData())) == nullptr) {
-      lastError = errno;
-   } else {
+    if ( ( dir = ::opendir( nativePath.constData() ) ) == nullptr )
+    {
+        lastError = errno;
+    }
+    else
+    {
 
-      if (! nativePath.endsWith('/')) {
-         nativePath.append('/');
-      }
-   }
+        if ( ! nativePath.endsWith( '/' ) )
+        {
+            nativePath.append( '/' );
+        }
+    }
 }
 
 QFileSystemIterator::~QFileSystemIterator()
 {
-   if (dir) {
-      ::closedir(dir);
-   }
+    if ( dir )
+    {
+        ::closedir( dir );
+    }
 }
 
-bool QFileSystemIterator::advance(QFileSystemEntry &fileEntry, QFileSystemMetaData &metaData)
+bool QFileSystemIterator::advance( QFileSystemEntry &fileEntry, QFileSystemMetaData &metaData )
 {
-   if (! dir) {
-      return false;
-   }
+    if ( ! dir )
+    {
+        return false;
+    }
 
-   dirEntry = QT_READDIR(dir);
+    dirEntry = QT_READDIR( dir );
 
-   if (dirEntry) {
-      fileEntry = QFileSystemEntry(nativePath + QByteArray(dirEntry->d_name), QFileSystemEntry::FromNativePath());
-      metaData.fillFromDirEnt(*dirEntry);
-      return true;
-   }
+    if ( dirEntry )
+    {
+        fileEntry = QFileSystemEntry( nativePath + QByteArray( dirEntry->d_name ), QFileSystemEntry::FromNativePath() );
+        metaData.fillFromDirEnt( *dirEntry );
+        return true;
+    }
 
-   lastError = errno;
-   return false;
+    lastError = errno;
+    return false;
 }
 
 #endif // QT_NO_FILESYSTEMITERATOR

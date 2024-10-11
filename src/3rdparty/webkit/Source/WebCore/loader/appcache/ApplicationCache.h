@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ApplicationCache_h
@@ -35,7 +35,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ApplicationCacheGroup;
 class ApplicationCacheResource;
@@ -46,60 +47,98 @@ class SecurityOrigin;
 
 typedef Vector<std::pair<KURL, KURL> > FallbackURLVector;
 
-class ApplicationCache : public RefCounted<ApplicationCache> {
+class ApplicationCache : public RefCounted<ApplicationCache>
+{
 public:
-    static PassRefPtr<ApplicationCache> create() { return adoptRef(new ApplicationCache); }
-    
-    static void deleteCacheForOrigin(SecurityOrigin*);
-    
+    static PassRefPtr<ApplicationCache> create()
+    {
+        return adoptRef( new ApplicationCache );
+    }
+
+    static void deleteCacheForOrigin( SecurityOrigin * );
+
     ~ApplicationCache();
 
-    void addResource(PassRefPtr<ApplicationCacheResource> resource);
-    unsigned removeResource(const String& url);
-    
-    void setManifestResource(PassRefPtr<ApplicationCacheResource> manifest);
-    ApplicationCacheResource* manifestResource() const { return m_manifest; }
-    
-    void setGroup(ApplicationCacheGroup*);
-    ApplicationCacheGroup* group() const { return m_group; }
+    void addResource( PassRefPtr<ApplicationCacheResource> resource );
+    unsigned removeResource( const String &url );
+
+    void setManifestResource( PassRefPtr<ApplicationCacheResource> manifest );
+    ApplicationCacheResource *manifestResource() const
+    {
+        return m_manifest;
+    }
+
+    void setGroup( ApplicationCacheGroup * );
+    ApplicationCacheGroup *group() const
+    {
+        return m_group;
+    }
 
     bool isComplete() const;
 
-    ApplicationCacheResource* resourceForRequest(const ResourceRequest&);
-    ApplicationCacheResource* resourceForURL(const String& url);
+    ApplicationCacheResource *resourceForRequest( const ResourceRequest & );
+    ApplicationCacheResource *resourceForURL( const String &url );
 
-    void setAllowsAllNetworkRequests(bool value) { m_allowAllNetworkRequests = value; }
-    bool allowsAllNetworkRequests() const { return m_allowAllNetworkRequests; }
-    void setOnlineWhitelist(const Vector<KURL>& onlineWhitelist);
-    const Vector<KURL>& onlineWhitelist() const { return m_onlineWhitelist; }
-    bool isURLInOnlineWhitelist(const KURL&); // There is an entry in online whitelist that has the same origin as the resource's URL and that is a prefix match for the resource's URL.
+    void setAllowsAllNetworkRequests( bool value )
+    {
+        m_allowAllNetworkRequests = value;
+    }
+    bool allowsAllNetworkRequests() const
+    {
+        return m_allowAllNetworkRequests;
+    }
+    void setOnlineWhitelist( const Vector<KURL> &onlineWhitelist );
+    const Vector<KURL> &onlineWhitelist() const
+    {
+        return m_onlineWhitelist;
+    }
+    bool isURLInOnlineWhitelist( const KURL
+                                 & ); // There is an entry in online whitelist that has the same origin as the resource's URL and that is a prefix match for the resource's URL.
 
-    void setFallbackURLs(const FallbackURLVector&);
-    const FallbackURLVector& fallbackURLs() const { return m_fallbackURLs; }
-    bool urlMatchesFallbackNamespace(const KURL&, KURL* fallbackURL = 0);
-    
+    void setFallbackURLs( const FallbackURLVector & );
+    const FallbackURLVector &fallbackURLs() const
+    {
+        return m_fallbackURLs;
+    }
+    bool urlMatchesFallbackNamespace( const KURL &, KURL *fallbackURL = 0 );
+
 #ifndef NDEBUG
     void dump();
 #endif
 
     typedef HashMap<String, RefPtr<ApplicationCacheResource> > ResourceMap;
-    ResourceMap::const_iterator begin() const { return m_resources.begin(); }
-    ResourceMap::const_iterator end() const { return m_resources.end(); }
-    
-    void setStorageID(unsigned storageID) { m_storageID = storageID; }
-    unsigned storageID() const { return m_storageID; }
-    void clearStorageID();
-    
-    static bool requestIsHTTPOrHTTPSGet(const ResourceRequest&);
+    ResourceMap::const_iterator begin() const
+    {
+        return m_resources.begin();
+    }
+    ResourceMap::const_iterator end() const
+    {
+        return m_resources.end();
+    }
 
-    int64_t estimatedSizeInStorage() const { return m_estimatedSizeInStorage; }
+    void setStorageID( unsigned storageID )
+    {
+        m_storageID = storageID;
+    }
+    unsigned storageID() const
+    {
+        return m_storageID;
+    }
+    void clearStorageID();
+
+    static bool requestIsHTTPOrHTTPSGet( const ResourceRequest & );
+
+    int64_t estimatedSizeInStorage() const
+    {
+        return m_estimatedSizeInStorage;
+    }
 
 private:
     ApplicationCache();
-    
-    ApplicationCacheGroup* m_group;
+
+    ApplicationCacheGroup *m_group;
     ResourceMap m_resources;
-    ApplicationCacheResource* m_manifest;
+    ApplicationCacheResource *m_manifest;
 
     bool m_allowAllNetworkRequests;
     Vector<KURL> m_onlineWhitelist;

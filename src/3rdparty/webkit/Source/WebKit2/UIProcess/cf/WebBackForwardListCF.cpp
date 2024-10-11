@@ -31,7 +31,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static uint64_t generateWebBackForwardItemID()
 {
@@ -43,118 +44,154 @@ static uint64_t generateWebBackForwardItemID()
     return uniqueHistoryItemID;
 }
 
-DEFINE_STATIC_GETTER(CFStringRef, SessionHistoryCurrentIndexKey, (CFSTR("SessionHistoryCurrentIndex")));
-DEFINE_STATIC_GETTER(CFStringRef, SessionHistoryEntriesKey, (CFSTR("SessionHistoryEntries")));
-DEFINE_STATIC_GETTER(CFStringRef, SessionHistoryEntryTitleKey, (CFSTR("SessionHistoryEntryTitle")));
-DEFINE_STATIC_GETTER(CFStringRef, SessionHistoryEntryURLKey, (CFSTR("SessionHistoryEntryURL")));
-DEFINE_STATIC_GETTER(CFStringRef, SessionHistoryEntryOriginalURLKey, (CFSTR("SessionHistoryEntryOriginalURL")));
-DEFINE_STATIC_GETTER(CFStringRef, SessionHistoryEntryDataKey, (CFSTR("SessionHistoryEntryData")));
+DEFINE_STATIC_GETTER( CFStringRef, SessionHistoryCurrentIndexKey, ( CFSTR( "SessionHistoryCurrentIndex" ) ) );
+DEFINE_STATIC_GETTER( CFStringRef, SessionHistoryEntriesKey, ( CFSTR( "SessionHistoryEntries" ) ) );
+DEFINE_STATIC_GETTER( CFStringRef, SessionHistoryEntryTitleKey, ( CFSTR( "SessionHistoryEntryTitle" ) ) );
+DEFINE_STATIC_GETTER( CFStringRef, SessionHistoryEntryURLKey, ( CFSTR( "SessionHistoryEntryURL" ) ) );
+DEFINE_STATIC_GETTER( CFStringRef, SessionHistoryEntryOriginalURLKey, ( CFSTR( "SessionHistoryEntryOriginalURL" ) ) );
+DEFINE_STATIC_GETTER( CFStringRef, SessionHistoryEntryDataKey, ( CFSTR( "SessionHistoryEntryData" ) ) );
 
-CFDictionaryRef WebBackForwardList::createCFDictionaryRepresentation(WebPageProxy::WebPageProxySessionStateFilterCallback filter, void* context) const
+CFDictionaryRef WebBackForwardList::createCFDictionaryRepresentation( WebPageProxy::WebPageProxySessionStateFilterCallback filter,
+        void *context ) const
 {
-    ASSERT(m_current == NoCurrentItemIndex || m_current < m_entries.size());
+    ASSERT( m_current == NoCurrentItemIndex || m_current < m_entries.size() );
 
-    RetainPtr<CFMutableArrayRef> entries(AdoptCF, CFArrayCreateMutable(0, m_entries.size(), &kCFTypeArrayCallBacks));
+    RetainPtr<CFMutableArrayRef> entries( AdoptCF, CFArrayCreateMutable( 0, m_entries.size(), &kCFTypeArrayCallBacks ) );
 
     // We may need to update the current index to account for entries that are filtered by the callback.
     int currentIndex = m_current;
 
-    for (size_t i = 0; i < m_entries.size(); ++i) {
-        RefPtr<WebURL> webURL = WebURL::create(m_entries[i]->url());
-        if (filter && !filter(toAPI(m_page), WKPageGetSessionHistoryURLValueType(), toURLRef(m_entries[i]->originalURL().impl()), context)) {
-            if (i <= static_cast<size_t>(m_current))
+    for ( size_t i = 0; i < m_entries.size(); ++i )
+    {
+        RefPtr<WebURL> webURL = WebURL::create( m_entries[i]->url() );
+
+        if ( filter
+                && !filter( toAPI( m_page ), WKPageGetSessionHistoryURLValueType(), toURLRef( m_entries[i]->originalURL().impl() ), context ) )
+        {
+            if ( i <= static_cast<size_t>( m_current ) )
+            {
                 currentIndex--;
+            }
+
             continue;
         }
-        
-        RetainPtr<CFStringRef> url(AdoptCF, m_entries[i]->url().createCFString());
-        RetainPtr<CFStringRef> title(AdoptCF, m_entries[i]->title().createCFString());
-        RetainPtr<CFStringRef> originalURL(AdoptCF, m_entries[i]->originalURL().createCFString());
-        RetainPtr<CFDataRef> entryData(AdoptCF, CFDataCreate(kCFAllocatorDefault, m_entries[i]->backForwardData().data(), m_entries[i]->backForwardData().size()));
-        
-        const void* keys[4] = { SessionHistoryEntryURLKey(), SessionHistoryEntryTitleKey(), SessionHistoryEntryOriginalURLKey(), SessionHistoryEntryDataKey() };
-        const void* values[4] = { url.get(), title.get(), originalURL.get(), entryData.get() };
 
-        RetainPtr<CFDictionaryRef> entryDictionary(AdoptCF, CFDictionaryCreate(0, keys, values, 4, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks));
-        CFArrayAppendValue(entries.get(), entryDictionary.get());
+        RetainPtr<CFStringRef> url( AdoptCF, m_entries[i]->url().createCFString() );
+        RetainPtr<CFStringRef> title( AdoptCF, m_entries[i]->title().createCFString() );
+        RetainPtr<CFStringRef> originalURL( AdoptCF, m_entries[i]->originalURL().createCFString() );
+        RetainPtr<CFDataRef> entryData( AdoptCF, CFDataCreate( kCFAllocatorDefault, m_entries[i]->backForwardData().data(),
+                                        m_entries[i]->backForwardData().size() ) );
+
+        const void *keys[4] = { SessionHistoryEntryURLKey(), SessionHistoryEntryTitleKey(), SessionHistoryEntryOriginalURLKey(), SessionHistoryEntryDataKey() };
+        const void *values[4] = { url.get(), title.get(), originalURL.get(), entryData.get() };
+
+        RetainPtr<CFDictionaryRef> entryDictionary( AdoptCF, CFDictionaryCreate( 0, keys, values, 4, &kCFTypeDictionaryKeyCallBacks,
+                &kCFTypeDictionaryValueCallBacks ) );
+        CFArrayAppendValue( entries.get(), entryDictionary.get() );
     }
 
-    ASSERT(currentIndex < CFArrayGetCount(entries.get()));
-    RetainPtr<CFNumberRef> currentIndexNumber(AdoptCF, CFNumberCreate(0, kCFNumberIntType, &currentIndex));
+    ASSERT( currentIndex < CFArrayGetCount( entries.get() ) );
+    RetainPtr<CFNumberRef> currentIndexNumber( AdoptCF, CFNumberCreate( 0, kCFNumberIntType, &currentIndex ) );
 
-    const void* keys[2] = { SessionHistoryCurrentIndexKey(), SessionHistoryEntriesKey() };
-    const void* values[2] = { currentIndexNumber.get(), entries.get() };
+    const void *keys[2] = { SessionHistoryCurrentIndexKey(), SessionHistoryEntriesKey() };
+    const void *values[2] = { currentIndexNumber.get(), entries.get() };
 
-    return CFDictionaryCreate(0, keys, values, 2, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    return CFDictionaryCreate( 0, keys, values, 2, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );
 }
 
-bool WebBackForwardList::restoreFromCFDictionaryRepresentation(CFDictionaryRef dictionary)
+bool WebBackForwardList::restoreFromCFDictionaryRepresentation( CFDictionaryRef dictionary )
 {
-    CFNumberRef cfIndex = (CFNumberRef)CFDictionaryGetValue(dictionary, SessionHistoryCurrentIndexKey());
-    if (!cfIndex || CFGetTypeID(cfIndex) != CFNumberGetTypeID()) {
-        LOG(SessionState, "WebBackForwardList dictionary representation does not have a valid current index");
+    CFNumberRef cfIndex = ( CFNumberRef )CFDictionaryGetValue( dictionary, SessionHistoryCurrentIndexKey() );
+
+    if ( !cfIndex || CFGetTypeID( cfIndex ) != CFNumberGetTypeID() )
+    {
+        LOG( SessionState, "WebBackForwardList dictionary representation does not have a valid current index" );
         return false;
     }
 
     CFIndex currentIndex;
-    if (!CFNumberGetValue(cfIndex, kCFNumberCFIndexType, &currentIndex)) {
-        LOG(SessionState, "WebBackForwardList dictionary representation does not have a valid integer current index");
+
+    if ( !CFNumberGetValue( cfIndex, kCFNumberCFIndexType, &currentIndex ) )
+    {
+        LOG( SessionState, "WebBackForwardList dictionary representation does not have a valid integer current index" );
         return false;
     }
 
-    CFArrayRef cfEntries = (CFArrayRef)CFDictionaryGetValue(dictionary, SessionHistoryEntriesKey());
-    if (!cfEntries || CFGetTypeID(cfEntries) != CFArrayGetTypeID()) {
-        LOG(SessionState, "WebBackForwardList dictionary representation does not have a valid list of entries");
+    CFArrayRef cfEntries = ( CFArrayRef )CFDictionaryGetValue( dictionary, SessionHistoryEntriesKey() );
+
+    if ( !cfEntries || CFGetTypeID( cfEntries ) != CFArrayGetTypeID() )
+    {
+        LOG( SessionState, "WebBackForwardList dictionary representation does not have a valid list of entries" );
         return false;
     }
 
-    CFIndex size = CFArrayGetCount(cfEntries);
-    if (currentIndex != static_cast<CFIndex>(NoCurrentItemIndex) && currentIndex >= size) {
-        LOG(SessionState, "WebBackForwardList dictionary representation contains an invalid current index (%ld) for the number of entries (%ld)", currentIndex, size);
+    CFIndex size = CFArrayGetCount( cfEntries );
+
+    if ( currentIndex != static_cast<CFIndex>( NoCurrentItemIndex ) && currentIndex >= size )
+    {
+        LOG( SessionState,
+             "WebBackForwardList dictionary representation contains an invalid current index (%ld) for the number of entries (%ld)",
+             currentIndex, size );
         return false;
     }
 
-    if (currentIndex == static_cast<CFIndex>(NoCurrentItemIndex) && size) {
-        LOG(SessionState, "WebBackForwardList dictionary representation says there is no current item index, but there is a list of %ld entries - this is bogus", size);
+    if ( currentIndex == static_cast<CFIndex>( NoCurrentItemIndex ) && size )
+    {
+        LOG( SessionState,
+             "WebBackForwardList dictionary representation says there is no current item index, but there is a list of %ld entries - this is bogus",
+             size );
         return false;
     }
-    
+
     BackForwardListItemVector newEntries;
-    newEntries.reserveCapacity(size);
-    for (CFIndex i = 0; i < size; ++i) {
-        CFDictionaryRef entryDictionary = (CFDictionaryRef)CFArrayGetValueAtIndex(cfEntries, i);
-        if (!entryDictionary || CFGetTypeID(entryDictionary) != CFDictionaryGetTypeID()) {
-            LOG(SessionState, "WebBackForwardList entry array does not have a valid entry at index %i", (int)i);
-            return false;
-        }
-        
-        CFStringRef entryURL = (CFStringRef)CFDictionaryGetValue(entryDictionary, SessionHistoryEntryURLKey());
-        if (!entryURL || CFGetTypeID(entryURL) != CFStringGetTypeID()) {
-            LOG(SessionState, "WebBackForwardList entry at index %i does not have a valid URL", (int)i);
+    newEntries.reserveCapacity( size );
+
+    for ( CFIndex i = 0; i < size; ++i )
+    {
+        CFDictionaryRef entryDictionary = ( CFDictionaryRef )CFArrayGetValueAtIndex( cfEntries, i );
+
+        if ( !entryDictionary || CFGetTypeID( entryDictionary ) != CFDictionaryGetTypeID() )
+        {
+            LOG( SessionState, "WebBackForwardList entry array does not have a valid entry at index %i", ( int )i );
             return false;
         }
 
-        CFStringRef entryTitle = (CFStringRef)CFDictionaryGetValue(entryDictionary, SessionHistoryEntryTitleKey());
-        if (!entryTitle || CFGetTypeID(entryTitle) != CFStringGetTypeID()) {
-            LOG(SessionState, "WebBackForwardList entry at index %i does not have a valid title", (int)i);
+        CFStringRef entryURL = ( CFStringRef )CFDictionaryGetValue( entryDictionary, SessionHistoryEntryURLKey() );
+
+        if ( !entryURL || CFGetTypeID( entryURL ) != CFStringGetTypeID() )
+        {
+            LOG( SessionState, "WebBackForwardList entry at index %i does not have a valid URL", ( int )i );
             return false;
         }
 
-        CFStringRef originalURL = (CFStringRef)CFDictionaryGetValue(entryDictionary, SessionHistoryEntryOriginalURLKey());
-        if (!originalURL || CFGetTypeID(originalURL) != CFStringGetTypeID()) {
-            LOG(SessionState, "WebBackForwardList entry at index %i does not have a valid original URL", (int)i);
+        CFStringRef entryTitle = ( CFStringRef )CFDictionaryGetValue( entryDictionary, SessionHistoryEntryTitleKey() );
+
+        if ( !entryTitle || CFGetTypeID( entryTitle ) != CFStringGetTypeID() )
+        {
+            LOG( SessionState, "WebBackForwardList entry at index %i does not have a valid title", ( int )i );
             return false;
         }
 
-        CFDataRef backForwardData = (CFDataRef)CFDictionaryGetValue(entryDictionary, SessionHistoryEntryDataKey());
-        if (!backForwardData || CFGetTypeID(backForwardData) != CFDataGetTypeID()) {
-            LOG(SessionState, "WebBackForwardList entry at index %i does not have back/forward data", (int)i);
+        CFStringRef originalURL = ( CFStringRef )CFDictionaryGetValue( entryDictionary, SessionHistoryEntryOriginalURLKey() );
+
+        if ( !originalURL || CFGetTypeID( originalURL ) != CFStringGetTypeID() )
+        {
+            LOG( SessionState, "WebBackForwardList entry at index %i does not have a valid original URL", ( int )i );
             return false;
         }
-        
-        newEntries.append(WebBackForwardListItem::create(originalURL, entryURL, entryTitle, CFDataGetBytePtr(backForwardData), CFDataGetLength(backForwardData), generateWebBackForwardItemID()));
+
+        CFDataRef backForwardData = ( CFDataRef )CFDictionaryGetValue( entryDictionary, SessionHistoryEntryDataKey() );
+
+        if ( !backForwardData || CFGetTypeID( backForwardData ) != CFDataGetTypeID() )
+        {
+            LOG( SessionState, "WebBackForwardList entry at index %i does not have back/forward data", ( int )i );
+            return false;
+        }
+
+        newEntries.append( WebBackForwardListItem::create( originalURL, entryURL, entryTitle, CFDataGetBytePtr( backForwardData ),
+                           CFDataGetLength( backForwardData ), generateWebBackForwardItemID() ) );
     }
-    
+
     m_current = currentIndex;
     m_entries = newEntries;
 

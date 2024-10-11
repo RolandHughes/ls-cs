@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WREC_h
@@ -38,16 +38,21 @@
 #define WREC_CALL
 #endif
 
-namespace JSC {
-    class Interpreter;
-    class UString;
+namespace JSC
+{
+class Interpreter;
+class UString;
 }
 
-namespace JSC { namespace WREC {
+namespace JSC
+{
+namespace WREC
+{
 
-    typedef int (*CompiledRegExp)(const UChar* input, unsigned start, unsigned length, int* output) WREC_CALL;
+typedef int ( *CompiledRegExp )( const UChar *input, unsigned start, unsigned length, int *output ) WREC_CALL;
 
-} } // namespace JSC::WREC
+}
+} // namespace JSC::WREC
 
 #endif // ENABLE(WREC)
 

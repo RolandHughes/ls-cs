@@ -35,109 +35,135 @@ class QTouchDevice;
 
 class QWindowsMouseHandler
 {
- public:
-   QWindowsMouseHandler();
+public:
+    QWindowsMouseHandler();
 
-   QWindowsMouseHandler(const QWindowsMouseHandler &) = delete;
-   QWindowsMouseHandler &operator=(const QWindowsMouseHandler &) = delete;
+    QWindowsMouseHandler( const QWindowsMouseHandler & ) = delete;
+    QWindowsMouseHandler &operator=( const QWindowsMouseHandler & ) = delete;
 
-   QTouchDevice *touchDevice() const {
-      return m_touchDevice;
-   }
+    QTouchDevice *touchDevice() const
+    {
+        return m_touchDevice;
+    }
 
-   QTouchDevice *ensureTouchDevice();
+    QTouchDevice *ensureTouchDevice();
 
-   bool translateMouseEvent(QWindow *widget, HWND hwnd, QtWindows::WindowsEventType t, MSG msg, LRESULT *result);
-   bool translateTouchEvent(QWindow *widget, HWND hwnd, QtWindows::WindowsEventType t, MSG msg, LRESULT *result);
-   bool translateGestureEvent(QWindow *window, HWND hwnd, QtWindows::WindowsEventType, MSG msg, LRESULT *);
-   bool translateScrollEvent(QWindow *window, HWND hwnd, MSG msg, LRESULT *result);
+    bool translateMouseEvent( QWindow *widget, HWND hwnd, QtWindows::WindowsEventType t, MSG msg, LRESULT *result );
+    bool translateTouchEvent( QWindow *widget, HWND hwnd, QtWindows::WindowsEventType t, MSG msg, LRESULT *result );
+    bool translateGestureEvent( QWindow *window, HWND hwnd, QtWindows::WindowsEventType, MSG msg, LRESULT * );
+    bool translateScrollEvent( QWindow *window, HWND hwnd, MSG msg, LRESULT *result );
 
-   static inline Qt::MouseButtons keyStateToMouseButtons(int);
-   static inline Qt::KeyboardModifiers keyStateToModifiers(int);
-   static inline int mouseButtonsToKeyState(Qt::MouseButtons);
+    static inline Qt::MouseButtons keyStateToMouseButtons( int );
+    static inline Qt::KeyboardModifiers keyStateToModifiers( int );
+    static inline int mouseButtonsToKeyState( Qt::MouseButtons );
 
-   static Qt::MouseButtons queryMouseButtons();
-   QWindow *windowUnderMouse() const {
-      return m_windowUnderMouse.data();
-   }
+    static Qt::MouseButtons queryMouseButtons();
+    QWindow *windowUnderMouse() const
+    {
+        return m_windowUnderMouse.data();
+    }
 
-   void clearWindowUnderMouse() {
-      m_windowUnderMouse = nullptr;
-   }
+    void clearWindowUnderMouse()
+    {
+        m_windowUnderMouse = nullptr;
+    }
 
- private:
-   inline bool translateMouseWheelEvent(QWindow *window, HWND hwnd, MSG msg, LRESULT *result);
+private:
+    inline bool translateMouseWheelEvent( QWindow *window, HWND hwnd, MSG msg, LRESULT *result );
 
-   QPointer<QWindow> m_windowUnderMouse;
-   QPointer<QWindow> m_trackedWindow;
-   QHash<DWORD, int> m_touchInputIDToTouchPointID;
-   QHash<int, QPointF> m_lastTouchPositions;
-   QTouchDevice *m_touchDevice;
-   bool m_leftButtonDown;
-   QWindow *m_previousCaptureWindow;
+    QPointer<QWindow> m_windowUnderMouse;
+    QPointer<QWindow> m_trackedWindow;
+    QHash<DWORD, int> m_touchInputIDToTouchPointID;
+    QHash<int, QPointF> m_lastTouchPositions;
+    QTouchDevice *m_touchDevice;
+    bool m_leftButtonDown;
+    QWindow *m_previousCaptureWindow;
 };
 
-Qt::MouseButtons QWindowsMouseHandler::keyStateToMouseButtons(int wParam)
+Qt::MouseButtons QWindowsMouseHandler::keyStateToMouseButtons( int wParam )
 {
-   Qt::MouseButtons mb(Qt::NoButton);
+    Qt::MouseButtons mb( Qt::NoButton );
 
-   if (wParam & MK_LBUTTON) {
-      mb |= Qt::LeftButton;
-   }
+    if ( wParam & MK_LBUTTON )
+    {
+        mb |= Qt::LeftButton;
+    }
 
-   if (wParam & MK_MBUTTON) {
-      mb |= Qt::MiddleButton;
-   }
+    if ( wParam & MK_MBUTTON )
+    {
+        mb |= Qt::MiddleButton;
+    }
 
-   if (wParam & MK_RBUTTON) {
-      mb |= Qt::RightButton;
-   }
+    if ( wParam & MK_RBUTTON )
+    {
+        mb |= Qt::RightButton;
+    }
 
-   if (wParam & MK_XBUTTON1) {
-      mb |= Qt::XButton1;
-   }
+    if ( wParam & MK_XBUTTON1 )
+    {
+        mb |= Qt::XButton1;
+    }
 
-   if (wParam & MK_XBUTTON2) {
-      mb |= Qt::XButton2;
-   }
+    if ( wParam & MK_XBUTTON2 )
+    {
+        mb |= Qt::XButton2;
+    }
 
-   return mb;
+    return mb;
 }
 
-Qt::KeyboardModifiers QWindowsMouseHandler::keyStateToModifiers(int wParam)
+Qt::KeyboardModifiers QWindowsMouseHandler::keyStateToModifiers( int wParam )
 {
-   Qt::KeyboardModifiers mods(Qt::NoModifier);
-   if (wParam & MK_CONTROL) {
-      mods |= Qt::ControlModifier;
-   }
-   if (wParam & MK_SHIFT) {
-      mods |= Qt::ShiftModifier;
-   }
-   if (GetKeyState(VK_MENU) < 0) {
-      mods |= Qt::AltModifier;
-   }
-   return mods;
+    Qt::KeyboardModifiers mods( Qt::NoModifier );
+
+    if ( wParam & MK_CONTROL )
+    {
+        mods |= Qt::ControlModifier;
+    }
+
+    if ( wParam & MK_SHIFT )
+    {
+        mods |= Qt::ShiftModifier;
+    }
+
+    if ( GetKeyState( VK_MENU ) < 0 )
+    {
+        mods |= Qt::AltModifier;
+    }
+
+    return mods;
 }
 
-int QWindowsMouseHandler::mouseButtonsToKeyState(Qt::MouseButtons mb)
+int QWindowsMouseHandler::mouseButtonsToKeyState( Qt::MouseButtons mb )
 {
-   int result = 0;
-   if (mb & Qt::LeftButton) {
-      result |= MK_LBUTTON;
-   }
-   if (mb & Qt::MiddleButton) {
-      result |= MK_MBUTTON;
-   }
-   if (mb & Qt::RightButton) {
-      result |= MK_RBUTTON;
-   }
-   if (mb & Qt::XButton1) {
-      result |= MK_XBUTTON1;
-   }
-   if (mb & Qt::XButton2) {
-      result |= MK_XBUTTON2;
-   }
-   return result;
+    int result = 0;
+
+    if ( mb & Qt::LeftButton )
+    {
+        result |= MK_LBUTTON;
+    }
+
+    if ( mb & Qt::MiddleButton )
+    {
+        result |= MK_MBUTTON;
+    }
+
+    if ( mb & Qt::RightButton )
+    {
+        result |= MK_RBUTTON;
+    }
+
+    if ( mb & Qt::XButton1 )
+    {
+        result |= MK_XBUTTON1;
+    }
+
+    if ( mb & Qt::XButton2 )
+    {
+        result |= MK_XBUTTON2;
+    }
+
+    return result;
 }
 
 #endif

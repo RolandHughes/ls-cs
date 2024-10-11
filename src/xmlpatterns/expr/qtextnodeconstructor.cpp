@@ -30,66 +30,72 @@
 
 using namespace QPatternist;
 
-TextNodeConstructor::TextNodeConstructor(const Expression::Ptr &op) : SingleContainer(op)
+TextNodeConstructor::TextNodeConstructor( const Expression::Ptr &op ) : SingleContainer( op )
 {
 }
 
-Item TextNodeConstructor::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item TextNodeConstructor::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item chars(m_operand->evaluateSingleton(context));
+    const Item chars( m_operand->evaluateSingleton( context ) );
 
-   if (!chars) {
-      return Item();
-   }
+    if ( !chars )
+    {
+        return Item();
+    }
 
-   const NodeBuilder::Ptr nodeBuilder(context->nodeBuilder(QUrl()));
-   const QString &v = chars.stringValue();
-   nodeBuilder->characters(QStringView(v));
+    const NodeBuilder::Ptr nodeBuilder( context->nodeBuilder( QUrl() ) );
+    const QString &v = chars.stringValue();
+    nodeBuilder->characters( QStringView( v ) );
 
-   const QAbstractXmlNodeModel::Ptr nm(nodeBuilder->builtDocument());
-   context->addNodeModel(nm);
+    const QAbstractXmlNodeModel::Ptr nm( nodeBuilder->builtDocument() );
+    context->addNodeModel( nm );
 
-   return nm->root(QXmlNodeModelIndex());
+    return nm->root( QXmlNodeModelIndex() );
 }
 
-void TextNodeConstructor::evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const
+void TextNodeConstructor::evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const
 {
-   const Item item(m_operand->evaluateSingleton(context));
+    const Item item( m_operand->evaluateSingleton( context ) );
 
-   QAbstractXmlReceiver *const receiver = context->outputReceiver();
+    QAbstractXmlReceiver *const receiver = context->outputReceiver();
 
-   if (item) {
-      const QString &v = item.stringValue();
-      receiver->characters(QStringView(v));
+    if ( item )
+    {
+        const QString &v = item.stringValue();
+        receiver->characters( QStringView( v ) );
 
-   } else {
-      receiver->characters(QStringView());
-   }
+    }
+    else
+    {
+        receiver->characters( QStringView() );
+    }
 }
 
 SequenceType::Ptr TextNodeConstructor::staticType() const
 {
-   if (m_operand->staticType()->cardinality().allowsEmpty()) {
-      return CommonSequenceTypes::ZeroOrOneTextNode;
-   } else {
-      return CommonSequenceTypes::ExactlyOneTextNode;
-   }
+    if ( m_operand->staticType()->cardinality().allowsEmpty() )
+    {
+        return CommonSequenceTypes::ZeroOrOneTextNode;
+    }
+    else
+    {
+        return CommonSequenceTypes::ExactlyOneTextNode;
+    }
 }
 
 SequenceType::List TextNodeConstructor::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrOneString);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrOneString );
+    return result;
 }
 
 Expression::Properties TextNodeConstructor::properties() const
 {
-   return DisableElimination | IsNodeConstructor;
+    return DisableElimination | IsNodeConstructor;
 }
 
-ExpressionVisitorResult::Ptr
-TextNodeConstructor::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr TextNodeConstructor::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

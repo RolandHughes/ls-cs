@@ -30,34 +30,40 @@
 #include "Color.h"
 #include "GraphicsContext3D.h"
 
-namespace WebCore {
-
-PassOwnPtr<LoopBlinnSolidFillShader> LoopBlinnSolidFillShader::create(GraphicsContext3D* context,
-                                                                      LoopBlinnShader::Region region,
-                                                                      Shader::AntialiasType antialiasType)
+namespace WebCore
 {
-    VertexType type = (region == Interior) ? LoopBlinnInterior : LoopBlinnExterior;
-    unsigned program = loadProgram(context,
-                                   generateVertex(type, SolidFill),
-                                   generateFragment(type, SolidFill, antialiasType));
-    if (!program)
+
+PassOwnPtr<LoopBlinnSolidFillShader> LoopBlinnSolidFillShader::create( GraphicsContext3D *context,
+        LoopBlinnShader::Region region,
+        Shader::AntialiasType antialiasType )
+{
+    VertexType type = ( region == Interior ) ? LoopBlinnInterior : LoopBlinnExterior;
+    unsigned program = loadProgram( context,
+                                    generateVertex( type, SolidFill ),
+                                    generateFragment( type, SolidFill, antialiasType ) );
+
+    if ( !program )
+    {
         return nullptr;
-    return new LoopBlinnSolidFillShader(context, program);
+    }
+
+    return new LoopBlinnSolidFillShader( context, program );
 }
 
-LoopBlinnSolidFillShader::LoopBlinnSolidFillShader(GraphicsContext3D* context, unsigned program)
-    : LoopBlinnShader(context, program)
+LoopBlinnSolidFillShader::LoopBlinnSolidFillShader( GraphicsContext3D *context, unsigned program )
+    : LoopBlinnShader( context, program )
 {
-    m_colorLocation = context->getUniformLocation(program, "color");
+    m_colorLocation = context->getUniformLocation( program, "color" );
 }
 
-void LoopBlinnSolidFillShader::use(unsigned vertexOffset, unsigned klmOffset, const AffineTransform& transform, const Color& color)
+void LoopBlinnSolidFillShader::use( unsigned vertexOffset, unsigned klmOffset, const AffineTransform &transform,
+                                    const Color &color )
 {
-    LoopBlinnShader::use(vertexOffset, klmOffset, transform);
+    LoopBlinnShader::use( vertexOffset, klmOffset, transform );
 
     float rgba[4];
-    color.getRGBA(rgba[0], rgba[1], rgba[2], rgba[3]);
-    m_context->uniform4f(m_colorLocation, rgba[0] * rgba[3], rgba[1] * rgba[3], rgba[2] * rgba[3], rgba[3]);
+    color.getRGBA( rgba[0], rgba[1], rgba[2], rgba[3] );
+    m_context->uniform4f( m_colorLocation, rgba[0] * rgba[3], rgba[1] * rgba[3], rgba[2] * rgba[3], rgba[3] );
 }
 
 } // namespace WebCore

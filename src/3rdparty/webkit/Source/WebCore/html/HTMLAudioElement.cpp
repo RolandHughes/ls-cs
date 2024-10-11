@@ -31,29 +31,33 @@
 
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLAudioElement::HTMLAudioElement(const QualifiedName& tagName, Document* document)
-    : HTMLMediaElement(tagName, document)
+HTMLAudioElement::HTMLAudioElement( const QualifiedName &tagName, Document *document )
+    : HTMLMediaElement( tagName, document )
 {
-    ASSERT(hasTagName(audioTag));
+    ASSERT( hasTagName( audioTag ) );
 }
 
-PassRefPtr<HTMLAudioElement> HTMLAudioElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLAudioElement> HTMLAudioElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLAudioElement(tagName, document));
+    return adoptRef( new HTMLAudioElement( tagName, document ) );
 }
 
-PassRefPtr<HTMLAudioElement> HTMLAudioElement::createForJSConstructor(Document* document, const String& src)
+PassRefPtr<HTMLAudioElement> HTMLAudioElement::createForJSConstructor( Document *document, const String &src )
 {
-    RefPtr<HTMLAudioElement> audio = adoptRef(new HTMLAudioElement(audioTag, document));
-    audio->setPreload("auto");
-    if (!src.isNull()) {
-        audio->setSrc(src);
+    RefPtr<HTMLAudioElement> audio = adoptRef( new HTMLAudioElement( audioTag, document ) );
+    audio->setPreload( "auto" );
+
+    if ( !src.isNull() )
+    {
+        audio->setSrc( src );
         audio->scheduleLoad();
     }
+
     return audio.release();
 }
 

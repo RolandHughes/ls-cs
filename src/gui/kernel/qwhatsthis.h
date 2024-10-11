@@ -35,17 +35,17 @@ class QAction;
 
 class Q_GUI_EXPORT QWhatsThis
 {
-   QWhatsThis() = delete;
+    QWhatsThis() = delete;
 
- public:
-   static void enterWhatsThisMode();
-   static bool inWhatsThisMode();
-   static void leaveWhatsThisMode();
+public:
+    static void enterWhatsThisMode();
+    static bool inWhatsThisMode();
+    static void leaveWhatsThisMode();
 
-   static void showText(const QPoint &pos, const QString &text, QWidget *w = nullptr);
-   static void hideText();
+    static void showText( const QPoint &pos, const QString &text, QWidget *w = nullptr );
+    static void hideText();
 
-   static QAction *createAction(QObject *parent = nullptr);
+    static QAction *createAction( QObject *parent = nullptr );
 };
 
 #endif // QT_NO_WHATSTHIS

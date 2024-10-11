@@ -28,37 +28,45 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGGElement : public SVGStyledTransformableElement,
-                    public SVGTests,
-                    public SVGLangSpace,
-                    public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGGElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGGElement> create( const QualifiedName &, Document * );
 
-    virtual bool isShadowTreeContainerElement() const { return false; }
+    virtual bool isShadowTreeContainerElement() const
+    {
+        return false;
+    }
 
 protected:
-    SVGGElement(const QualifiedName&, Document*);
+    SVGGElement( const QualifiedName &, Document * );
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
 private:
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
 
     // Animated property declarations
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

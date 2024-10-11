@@ -31,81 +31,113 @@
 
 using namespace WebCore;
 
-namespace WebKit {    
+namespace WebKit
+{
 
-WebWheelEvent::WebWheelEvent(Type type, const IntPoint& position, const IntPoint& globalPosition, const FloatSize& delta, const FloatSize& wheelTicks, Granularity granularity, Modifiers modifiers, double timestamp)
-    : WebEvent(type, modifiers, timestamp)
-    , m_position(position)
-    , m_globalPosition(globalPosition)
-    , m_delta(delta)
-    , m_wheelTicks(wheelTicks)
-    , m_granularity(granularity)
+WebWheelEvent::WebWheelEvent( Type type, const IntPoint &position, const IntPoint &globalPosition, const FloatSize &delta,
+                              const FloatSize &wheelTicks, Granularity granularity, Modifiers modifiers, double timestamp )
+    : WebEvent( type, modifiers, timestamp )
+    , m_position( position )
+    , m_globalPosition( globalPosition )
+    , m_delta( delta )
+    , m_wheelTicks( wheelTicks )
+    , m_granularity( granularity )
 #if PLATFORM(MAC)
-    , m_phase(PhaseNone)
-    , m_hasPreciseScrollingDeltas(false)
+    , m_phase( PhaseNone )
+    , m_hasPreciseScrollingDeltas( false )
 #endif
 {
-    ASSERT(isWheelEventType(type));
+    ASSERT( isWheelEventType( type ) );
 }
 
 #if PLATFORM(MAC)
-WebWheelEvent::WebWheelEvent(Type type, const IntPoint& position, const IntPoint& globalPosition, const FloatSize& delta, const FloatSize& wheelTicks, Granularity granularity, Phase phase, Phase momentumPhase, bool hasPreciseScrollingDeltas, Modifiers modifiers, double timestamp)
-    : WebEvent(type, modifiers, timestamp)
-    , m_position(position)
-    , m_globalPosition(globalPosition)
-    , m_delta(delta)
-    , m_wheelTicks(wheelTicks)
-    , m_granularity(granularity)
-    , m_phase(phase)
-    , m_momentumPhase(momentumPhase)
-    , m_hasPreciseScrollingDeltas(hasPreciseScrollingDeltas)
+WebWheelEvent::WebWheelEvent( Type type, const IntPoint &position, const IntPoint &globalPosition, const FloatSize &delta,
+                              const FloatSize &wheelTicks, Granularity granularity, Phase phase, Phase momentumPhase, bool hasPreciseScrollingDeltas,
+                              Modifiers modifiers, double timestamp )
+    : WebEvent( type, modifiers, timestamp )
+    , m_position( position )
+    , m_globalPosition( globalPosition )
+    , m_delta( delta )
+    , m_wheelTicks( wheelTicks )
+    , m_granularity( granularity )
+    , m_phase( phase )
+    , m_momentumPhase( momentumPhase )
+    , m_hasPreciseScrollingDeltas( hasPreciseScrollingDeltas )
 {
-    ASSERT(isWheelEventType(type));
+    ASSERT( isWheelEventType( type ) );
 }
 #endif
 
-void WebWheelEvent::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebWheelEvent::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    WebEvent::encode(encoder);
+    WebEvent::encode( encoder );
 
-    encoder->encode(m_position);
-    encoder->encode(m_globalPosition);
-    encoder->encode(m_delta);
-    encoder->encode(m_wheelTicks);
-    encoder->encode(m_granularity);
+    encoder->encode( m_position );
+    encoder->encode( m_globalPosition );
+    encoder->encode( m_delta );
+    encoder->encode( m_wheelTicks );
+    encoder->encode( m_granularity );
 #if PLATFORM(MAC)
-    encoder->encode(m_phase);
-    encoder->encode(m_momentumPhase);
-    encoder->encode(m_hasPreciseScrollingDeltas);
+    encoder->encode( m_phase );
+    encoder->encode( m_momentumPhase );
+    encoder->encode( m_hasPreciseScrollingDeltas );
 #endif
 }
 
-bool WebWheelEvent::decode(CoreIPC::ArgumentDecoder* decoder, WebWheelEvent& t)
+bool WebWheelEvent::decode( CoreIPC::ArgumentDecoder *decoder, WebWheelEvent &t )
 {
-    if (!WebEvent::decode(decoder, t))
+    if ( !WebEvent::decode( decoder, t ) )
+    {
         return false;
-    if (!decoder->decode(t.m_position))
+    }
+
+    if ( !decoder->decode( t.m_position ) )
+    {
         return false;
-    if (!decoder->decode(t.m_globalPosition))
+    }
+
+    if ( !decoder->decode( t.m_globalPosition ) )
+    {
         return false;
-    if (!decoder->decode(t.m_delta))
+    }
+
+    if ( !decoder->decode( t.m_delta ) )
+    {
         return false;
-    if (!decoder->decode(t.m_wheelTicks))
+    }
+
+    if ( !decoder->decode( t.m_wheelTicks ) )
+    {
         return false;
-    if (!decoder->decode(t.m_granularity))
+    }
+
+    if ( !decoder->decode( t.m_granularity ) )
+    {
         return false;
+    }
+
 #if PLATFORM(MAC)
-    if (!decoder->decode(t.m_phase))
+
+    if ( !decoder->decode( t.m_phase ) )
+    {
         return false;
-    if (!decoder->decode(t.m_momentumPhase))
+    }
+
+    if ( !decoder->decode( t.m_momentumPhase ) )
+    {
         return false;
-    if (!decoder->decode(t.m_hasPreciseScrollingDeltas))
+    }
+
+    if ( !decoder->decode( t.m_hasPreciseScrollingDeltas ) )
+    {
         return false;
+    }
+
 #endif
     return true;
 }
 
-bool WebWheelEvent::isWheelEventType(Type type)
+bool WebWheelEvent::isWheelEventType( Type type )
 {
     return type == Wheel;
 }

@@ -28,24 +28,26 @@
 #include "SQLStatementCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSQLStatementCallback : public SQLStatementCallback, public ActiveDOMCallback {
+class JSSQLStatementCallback : public SQLStatementCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSSQLStatementCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSSQLStatementCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSSQLStatementCallback(callback, globalObject));
+        return adoptRef( new JSSQLStatementCallback( callback, globalObject ) );
     }
 
     virtual ~JSSQLStatementCallback();
 
     // Functions
-    virtual bool handleEvent(SQLTransaction* transaction, SQLResultSet* resultSet);
+    virtual bool handleEvent( SQLTransaction *transaction, SQLResultSet *resultSet );
 
 private:
-    JSSQLStatementCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSSQLStatementCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

@@ -28,17 +28,19 @@
 
 #include "HTMLTablePartElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLTableCaptionElement : public HTMLTablePartElement {
+class HTMLTableCaptionElement : public HTMLTablePartElement
+{
 public:
-    static PassRefPtr<HTMLTableCaptionElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLTableCaptionElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLTableCaptionElement(const QualifiedName&, Document*);
-    
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    HTMLTableCaptionElement( const QualifiedName &, Document * );
+
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 };
 
 } // namespace

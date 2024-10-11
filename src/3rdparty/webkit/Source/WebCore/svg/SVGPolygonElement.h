@@ -24,16 +24,18 @@
 #if ENABLE(SVG)
 #include "SVGPolyElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPolygonElement : public SVGPolyElement {
+class SVGPolygonElement : public SVGPolyElement
+{
 public:
-    static PassRefPtr<SVGPolygonElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGPolygonElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGPolygonElement(const QualifiedName&, Document*);
+    SVGPolygonElement( const QualifiedName &, Document * );
 
-    virtual void toPathData(Path&) const;
+    virtual void toPathData( Path & ) const;
 };
 
 } // namespace WebCore

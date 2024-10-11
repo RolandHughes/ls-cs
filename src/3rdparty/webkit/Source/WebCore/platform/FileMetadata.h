@@ -35,9 +35,11 @@
 
 #if ENABLE(FILE_SYSTEM)
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct FileMetadata {
+struct FileMetadata
+{
     // The last modification time of the file, in seconds.
     // The value 0.0 means that the time is not set.
     double modificationTime;
@@ -46,7 +48,8 @@ struct FileMetadata {
     // The value -1 means that the length is not set.
     long long length;
 
-    enum Type {
+    enum Type
+    {
         TypeUnknown = 0,
         TypeFile,
         TypeDirectory
@@ -56,7 +59,7 @@ struct FileMetadata {
 
     String platformPath;
 
-    FileMetadata() : modificationTime(0.0), length(-1), type(TypeUnknown) { }
+    FileMetadata() : modificationTime( 0.0 ), length( -1 ), type( TypeUnknown ) { }
 };
 
 } // namespace WebCore

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef GraphicsLayerCACF_h
@@ -32,69 +32,74 @@
 #include "GraphicsContext.h"
 #include <wtf/RetainPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WKCACFLayer;
 
-class GraphicsLayerCACF : public GraphicsLayer {
+class GraphicsLayerCACF : public GraphicsLayer
+{
 public:
 
-    GraphicsLayerCACF(GraphicsLayerClient*);
+    GraphicsLayerCACF( GraphicsLayerClient * );
     virtual ~GraphicsLayerCACF();
 
-    virtual void setName(const String& inName);
+    virtual void setName( const String &inName );
 
-    virtual bool setChildren(const Vector<GraphicsLayer*>&);
-    virtual void addChild(GraphicsLayer *layer);
-    virtual void addChildAtIndex(GraphicsLayer *layer, int index);
-    virtual void addChildAbove(GraphicsLayer *layer, GraphicsLayer *sibling);
-    virtual void addChildBelow(GraphicsLayer *layer, GraphicsLayer *sibling);
-    virtual bool replaceChild(GraphicsLayer *oldChild, GraphicsLayer *newChild);
+    virtual bool setChildren( const Vector<GraphicsLayer *> & );
+    virtual void addChild( GraphicsLayer *layer );
+    virtual void addChildAtIndex( GraphicsLayer *layer, int index );
+    virtual void addChildAbove( GraphicsLayer *layer, GraphicsLayer *sibling );
+    virtual void addChildBelow( GraphicsLayer *layer, GraphicsLayer *sibling );
+    virtual bool replaceChild( GraphicsLayer *oldChild, GraphicsLayer *newChild );
 
     virtual void removeFromParent();
 
-    virtual void setPosition(const FloatPoint& inPoint);
-    virtual void setAnchorPoint(const FloatPoint3D& inPoint);
-    virtual void setSize(const FloatSize& inSize);
+    virtual void setPosition( const FloatPoint &inPoint );
+    virtual void setAnchorPoint( const FloatPoint3D &inPoint );
+    virtual void setSize( const FloatSize &inSize );
 
-    virtual void setTransform(const TransformationMatrix&);
+    virtual void setTransform( const TransformationMatrix & );
 
-    virtual void setChildrenTransform(const TransformationMatrix&);
+    virtual void setChildrenTransform( const TransformationMatrix & );
 
-    virtual void setPreserves3D(bool);
-    virtual void setMasksToBounds(bool);
-    virtual void setDrawsContent(bool);
+    virtual void setPreserves3D( bool );
+    virtual void setMasksToBounds( bool );
+    virtual void setDrawsContent( bool );
 
-    virtual void setBackgroundColor(const Color&);
+    virtual void setBackgroundColor( const Color & );
     virtual void clearBackgroundColor();
 
-    virtual void setContentsOpaque(bool);
-    virtual void setBackfaceVisibility(bool);
+    virtual void setContentsOpaque( bool );
+    virtual void setBackfaceVisibility( bool );
 
-    virtual void setOpacity(float opacity);
+    virtual void setOpacity( float opacity );
 
     virtual void setNeedsDisplay();
-    virtual void setNeedsDisplayInRect(const FloatRect&);
+    virtual void setNeedsDisplayInRect( const FloatRect & );
 
-    virtual void setContentsRect(const IntRect&);
+    virtual void setContentsRect( const IntRect & );
 
-    virtual void setContentsToImage(Image*);
-    virtual void setContentsToMedia(PlatformLayer*);
-    
-    virtual PlatformLayer* platformLayer() const;
+    virtual void setContentsToImage( Image * );
+    virtual void setContentsToMedia( PlatformLayer * );
 
-    virtual void setDebugBackgroundColor(const Color&);
-    virtual void setDebugBorder(const Color&, float borderWidth);
+    virtual PlatformLayer *platformLayer() const;
+
+    virtual void setDebugBackgroundColor( const Color & );
+    virtual void setDebugBorder( const Color &, float borderWidth );
 
 private:
     void updateOpacityOnLayer();
 
-    WKCACFLayer* primaryLayer() const  { return m_transformLayer.get() ? m_transformLayer.get() : m_layer.get(); }
-    WKCACFLayer* hostLayerForSublayers() const;
-    WKCACFLayer* layerForSuperlayer() const;
+    WKCACFLayer *primaryLayer() const
+    {
+        return m_transformLayer.get() ? m_transformLayer.get() : m_layer.get();
+    }
+    WKCACFLayer *hostLayerForSublayers() const;
+    WKCACFLayer *layerForSuperlayer() const;
 
-    bool requiresTiledLayer(const FloatSize&) const;
-    void swapFromOrToTiledLayer(bool useTiledLayer);
+    bool requiresTiledLayer( const FloatSize & ) const;
+    void swapFromOrToTiledLayer( bool useTiledLayer );
 
     CompositingCoordinatesOrientation defaultContentsOrientation() const;
     void updateSublayerList();
@@ -113,20 +118,24 @@ private:
     void updateContentsImage();
     void updateContentsMedia();
     void updateContentsRect();
-    
-    void setupContentsLayer(WKCACFLayer*);
-    WKCACFLayer* contentsLayer() const { return m_contentsLayer.get(); }
-    
+
+    void setupContentsLayer( WKCACFLayer * );
+    WKCACFLayer *contentsLayer() const
+    {
+        return m_contentsLayer.get();
+    }
+
     RefPtr<WKCACFLayer> m_layer;
     RefPtr<WKCACFLayer> m_transformLayer;
     RefPtr<WKCACFLayer> m_contentsLayer;
 
-    enum ContentsLayerPurpose {
+    enum ContentsLayerPurpose
+    {
         NoContentsLayer = 0,
         ContentsLayerForImage,
         ContentsLayerForMedia
     };
-    
+
     ContentsLayerPurpose m_contentsLayerPurpose;
     bool m_contentsLayerHasBackgroundColor : 1;
     RetainPtr<CGImageRef> m_pendingContentsImage;

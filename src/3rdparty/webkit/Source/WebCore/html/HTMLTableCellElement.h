@@ -28,41 +28,52 @@
 
 #include "HTMLTablePartElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLTableCellElement : public HTMLTablePartElement {
+class HTMLTableCellElement : public HTMLTablePartElement
+{
 public:
-    static PassRefPtr<HTMLTableCellElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLTableCellElement> create( const QualifiedName &, Document * );
 
     int cellIndex() const;
 
-    int colSpan() const { return m_colSpan; }
-    int rowSpan() const { return m_rowSpan; }
+    int colSpan() const
+    {
+        return m_colSpan;
+    }
+    int rowSpan() const
+    {
+        return m_rowSpan;
+    }
 
-    void setCellIndex(int);
+    void setCellIndex( int );
 
     String abbr() const;
     String axis() const;
-    void setColSpan(int);
+    void setColSpan( int );
     String headers() const;
-    void setRowSpan(int);
+    void setRowSpan( int );
     String scope() const;
 
-    HTMLTableCellElement* cellAbove() const;
+    HTMLTableCellElement *cellAbove() const;
 
 private:
-    HTMLTableCellElement(const QualifiedName&, Document*);
+    HTMLTableCellElement( const QualifiedName &, Document * );
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
     // used by table cells to share style decls created by the enclosing table.
-    virtual bool canHaveAdditionalAttributeStyleDecls() const { return true; }
-    virtual void additionalAttributeStyleDecls(Vector<CSSMutableStyleDeclaration*>&);
-    
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool canHaveAdditionalAttributeStyleDecls() const
+    {
+        return true;
+    }
+    virtual void additionalAttributeStyleDecls( Vector<CSSMutableStyleDeclaration *> & );
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual bool isURLAttribute( Attribute * ) const;
+
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     int m_rowSpan;
     int m_colSpan;

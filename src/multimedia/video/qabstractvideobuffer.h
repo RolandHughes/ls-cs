@@ -33,70 +33,72 @@ class QAbstractPlanarVideoBufferPrivate;
 
 class Q_MULTIMEDIA_EXPORT QAbstractVideoBuffer
 {
- public:
-   enum HandleType {
-      NoHandle,
-      GLTextureHandle,
-      XvShmImageHandle,
-      CoreImageHandle,
-      QPixmapHandle,
-      UserHandle = 1000
-   };
+public:
+    enum HandleType
+    {
+        NoHandle,
+        GLTextureHandle,
+        XvShmImageHandle,
+        CoreImageHandle,
+        QPixmapHandle,
+        UserHandle = 1000
+    };
 
-   enum MapMode {
-      NotMapped = 0x00,
-      ReadOnly  = 0x01,
-      WriteOnly = 0x02,
-      ReadWrite = ReadOnly | WriteOnly
-   };
+    enum MapMode
+    {
+        NotMapped = 0x00,
+        ReadOnly  = 0x01,
+        WriteOnly = 0x02,
+        ReadWrite = ReadOnly | WriteOnly
+    };
 
-   QAbstractVideoBuffer(HandleType type);
+    QAbstractVideoBuffer( HandleType type );
 
-   QAbstractVideoBuffer(const QAbstractVideoBuffer &) = delete;
-   QAbstractVideoBuffer &operator=(const QAbstractVideoBuffer &) = delete;
+    QAbstractVideoBuffer( const QAbstractVideoBuffer & ) = delete;
+    QAbstractVideoBuffer &operator=( const QAbstractVideoBuffer & ) = delete;
 
-   virtual ~QAbstractVideoBuffer();
+    virtual ~QAbstractVideoBuffer();
 
-   virtual void release();
+    virtual void release();
 
-   HandleType handleType() const;
+    HandleType handleType() const;
 
-   virtual MapMode mapMode() const = 0;
+    virtual MapMode mapMode() const = 0;
 
-   virtual uchar *map(MapMode mode, int *numBytes, int *bytesPerLine) = 0;
-   int mapPlanes(MapMode mode, int *numBytes, int bytesPerLine[4], uchar *data[4]);
-   virtual void unmap() = 0;
+    virtual uchar *map( MapMode mode, int *numBytes, int *bytesPerLine ) = 0;
+    int mapPlanes( MapMode mode, int *numBytes, int bytesPerLine[4], uchar *data[4] );
+    virtual void unmap() = 0;
 
-   virtual QVariant handle() const;
+    virtual QVariant handle() const;
 
- protected:
-   QAbstractVideoBuffer(QAbstractVideoBufferPrivate &dd, HandleType type);
+protected:
+    QAbstractVideoBuffer( QAbstractVideoBufferPrivate &dd, HandleType type );
 
-   QAbstractVideoBufferPrivate *d_ptr;
-   HandleType m_type;
+    QAbstractVideoBufferPrivate *d_ptr;
+    HandleType m_type;
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractVideoBuffer)
+private:
+    Q_DECLARE_PRIVATE( QAbstractVideoBuffer )
 };
 
 class Q_MULTIMEDIA_EXPORT QAbstractPlanarVideoBuffer : public QAbstractVideoBuffer
 {
- public:
-   QAbstractPlanarVideoBuffer(HandleType type);
+public:
+    QAbstractPlanarVideoBuffer( HandleType type );
 
-   QAbstractPlanarVideoBuffer(const QAbstractPlanarVideoBuffer &) = delete;
-   QAbstractPlanarVideoBuffer &operator=(const QAbstractPlanarVideoBuffer &) = delete;
+    QAbstractPlanarVideoBuffer( const QAbstractPlanarVideoBuffer & ) = delete;
+    QAbstractPlanarVideoBuffer &operator=( const QAbstractPlanarVideoBuffer & ) = delete;
 
-   virtual ~QAbstractPlanarVideoBuffer();
+    virtual ~QAbstractPlanarVideoBuffer();
 
-   uchar *map(MapMode mode, int *numBytes, int *bytesPerLine) override;
-   virtual int map(MapMode mode, int *numBytes, int bytesPerLine[4], uchar *data[4]) = 0;
+    uchar *map( MapMode mode, int *numBytes, int *bytesPerLine ) override;
+    virtual int map( MapMode mode, int *numBytes, int bytesPerLine[4], uchar *data[4] ) = 0;
 
- protected:
-   QAbstractPlanarVideoBuffer(QAbstractPlanarVideoBufferPrivate &dd, HandleType type);
+protected:
+    QAbstractPlanarVideoBuffer( QAbstractPlanarVideoBufferPrivate &dd, HandleType type );
 };
 
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, QAbstractVideoBuffer::HandleType);
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, QAbstractVideoBuffer::MapMode);
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, QAbstractVideoBuffer::HandleType );
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, QAbstractVideoBuffer::MapMode );
 
 #endif

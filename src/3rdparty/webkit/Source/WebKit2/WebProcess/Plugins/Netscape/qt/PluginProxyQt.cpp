@@ -30,7 +30,8 @@
 
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 bool PluginProxy::needsBackingStore() const
 {

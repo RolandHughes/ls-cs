@@ -38,54 +38,59 @@ class Q_DBUS_EXPORT QDBusPendingReplyData: public QDBusPendingCall
 protected:
     QDBusPendingReplyData();
     ~QDBusPendingReplyData();
-    void assign(const QDBusPendingCall &call);
-    void assign(const QDBusMessage &message);
+    void assign( const QDBusPendingCall &call );
+    void assign( const QDBusMessage &message );
 
-    QVariant argumentAt(int index) const;
-    void setMetaTypes(int count, const int *metaTypes);
+    QVariant argumentAt( int index ) const;
+    void setMetaTypes( int count, const int *metaTypes );
 };
 
-namespace QDBusPendingReplyTypes {
-    template<int Index,
-             typename T1, typename T2, typename T3, typename T4,
-             typename T5, typename T6, typename T7, typename T8>
-    struct Select
-    {
-        typedef Select<Index - 1, T2, T3, T4, T5, T6, T7, T8, void> Next;
-        typedef typename Next::Type Type;
-    };
-    template<typename T1, typename T2, typename T3, typename T4,
-             typename T5, typename T6, typename T7, typename T8>
-    struct Select<0, T1, T2, T3, T4, T5, T6, T7, T8>
-    {
-        typedef T1 Type;
-    };
+namespace QDBusPendingReplyTypes
+{
+template<int Index,
+         typename T1, typename T2, typename T3, typename T4,
+         typename T5, typename T6, typename T7, typename T8>
+struct Select
+{
+    typedef Select<Index - 1, T2, T3, T4, T5, T6, T7, T8, void> Next;
+    typedef typename Next::Type Type;
+};
+template<typename T1, typename T2, typename T3, typename T4,
+         typename T5, typename T6, typename T7, typename T8>
+struct Select<0, T1, T2, T3, T4, T5, T6, T7, T8>
+{
+    typedef T1 Type;
+};
 
-    template<typename T1> inline int metaTypeFor(T1 * = 0)
-    { return qMetaTypeId<T1>(); }
-    // specialize for QVariant, allowing it to be used in place of QDBusVariant
-    template<> inline int metaTypeFor<QVariant>(QVariant *)
-    { return qMetaTypeId<QDBusVariant>(); }
+template<typename T1> inline int metaTypeFor( T1 * = 0 )
+{
+    return qMetaTypeId<T1>();
+}
+// specialize for QVariant, allowing it to be used in place of QDBusVariant
+template<> inline int metaTypeFor<QVariant>( QVariant * )
+{
+    return qMetaTypeId<QDBusVariant>();
+}
 
-    template<typename T1, typename T2, typename T3, typename T4,
-             typename T5, typename T6, typename T7, typename T8>
-    struct ForEach
+template<typename T1, typename T2, typename T3, typename T4,
+         typename T5, typename T6, typename T7, typename T8>
+struct ForEach
+{
+    typedef ForEach<T2, T3, T4, T5, T6, T7, T8, void> Next;
+    enum { Total = Next::Total + 1 };
+    static inline void fillMetaTypes( int *p )
     {
-        typedef ForEach<T2, T3, T4, T5, T6, T7, T8, void> Next;
-        enum { Total = Next::Total + 1 };
-        static inline void fillMetaTypes(int *p)
-        {
-            *p = metaTypeFor<T1>(0);
-            Next::fillMetaTypes(++p);
-        }
-    };
-    template<>
-    struct ForEach<void, void, void, void,   void, void, void, void>
-    {
-        enum { Total = 0 };
-        static inline void fillMetaTypes(int *)
-        { }
-    };
+        *p = metaTypeFor<T1>( 0 );
+        Next::fillMetaTypes( ++p );
+    }
+};
+template<>
+struct ForEach<void, void, void, void,   void, void, void, void>
+{
+    enum { Total = 0 };
+    static inline void fillMetaTypes( int * )
+    { }
+};
 } // namespace QDBusPendingReplyTypes
 
 template<typename T1 = void, typename T2 = void, typename T3 = void, typename T4 = void,
@@ -97,7 +102,7 @@ class QDBusPendingReply:
 {
     typedef QDBusPendingReplyTypes::ForEach<T1, T2, T3, T4, T5, T6, T7, T8> ForEach;
     template<int Index> struct Select :
-    QDBusPendingReplyTypes::Select<Index, T1, T2, T3, T4, T5, T6, T7, T8>
+        QDBusPendingReplyTypes::Select<Index, T1, T2, T3, T4, T5, T6, T7, T8>
     {
     };
 
@@ -106,21 +111,37 @@ public:
 
     inline QDBusPendingReply()
     { }
-    inline QDBusPendingReply(const QDBusPendingReply &other)
-        : QDBusPendingReplyData(other)
+    inline QDBusPendingReply( const QDBusPendingReply &other )
+        : QDBusPendingReplyData( other )
     { }
-    inline QDBusPendingReply(const QDBusPendingCall &call)
-    { *this = call; }
-    inline QDBusPendingReply(const QDBusMessage &message)
-    { *this = message; }
-    inline QDBusPendingReply &operator=(const QDBusPendingReply &other)
-    { assign(other); return *this; }
-    inline QDBusPendingReply &operator=(const QDBusPendingCall &call)
-    { assign(call); return *this; }
-    inline QDBusPendingReply &operator=(const QDBusMessage &message)
-    { assign(message); return *this; }
+    inline QDBusPendingReply( const QDBusPendingCall &call )
+    {
+        *this = call;
+    }
+    inline QDBusPendingReply( const QDBusMessage &message )
+    {
+        *this = message;
+    }
+    inline QDBusPendingReply &operator=( const QDBusPendingReply &other )
+    {
+        assign( other );
+        return *this;
+    }
+    inline QDBusPendingReply &operator=( const QDBusPendingCall &call )
+    {
+        assign( call );
+        return *this;
+    }
+    inline QDBusPendingReply &operator=( const QDBusMessage &message )
+    {
+        assign( message );
+        return *this;
+    }
 
-    inline int count() const { return Count; }
+    inline int count() const
+    {
+        return Count;
+    }
 
     using QDBusPendingReplyData::argumentAt;
 
@@ -128,10 +149,10 @@ public:
     const typename Select<Index>::Type argumentAt() const
     {
         // static assert?
-        Q_ASSERT_X(Index < count() && Index >= 0, "QDBusPendingReply::argumentAt",
-                   "Index out of bounds");
+        Q_ASSERT_X( Index < count() && Index >= 0, "QDBusPendingReply::argumentAt",
+                    "Index out of bounds" );
         typedef typename Select<Index>::Type ResultType;
-        return qdbus_cast<ResultType>(argumentAt(Index), 0);
+        return qdbus_cast<ResultType>( argumentAt( Index ), 0 );
     }
 
     inline typename Select<0>::Type value() const
@@ -147,21 +168,25 @@ public:
 private:
     inline void calculateMetaTypes()
     {
-        if (!d) return;
+        if ( !d )
+        {
+            return;
+        }
+
         int typeIds[Count > 0 ? Count : 1]; // use at least one since zero-sized arrays aren't valid
-        ForEach::fillMetaTypes(typeIds);
-        setMetaTypes(Count, typeIds);
+        ForEach::fillMetaTypes( typeIds );
+        setMetaTypes( Count, typeIds );
     }
 
-    inline void assign(const QDBusPendingCall &call)
+    inline void assign( const QDBusPendingCall &call )
     {
-        QDBusPendingReplyData::assign(call);
+        QDBusPendingReplyData::assign( call );
         calculateMetaTypes();
     }
 
-    inline void assign(const QDBusMessage &message)
+    inline void assign( const QDBusMessage &message )
     {
-        QDBusPendingReplyData::assign(message);
+        QDBusPendingReplyData::assign( message );
         calculateMetaTypes();
     }
 };

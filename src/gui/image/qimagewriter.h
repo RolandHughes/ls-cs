@@ -35,65 +35,66 @@ class QImageWriterPrivate;
 
 class Q_GUI_EXPORT QImageWriter
 {
- public:
-   enum ImageWriterError {
-      UnknownError,
-      DeviceError,
-      UnsupportedFormatError
-   };
+public:
+    enum ImageWriterError
+    {
+        UnknownError,
+        DeviceError,
+        UnsupportedFormatError
+    };
 
-   QImageWriter();
-   explicit QImageWriter(QIODevice *device, const QString &format);
-   explicit QImageWriter(const QString &fileName, const QString &format = QString());
+    QImageWriter();
+    explicit QImageWriter( QIODevice *device, const QString &format );
+    explicit QImageWriter( const QString &fileName, const QString &format = QString() );
 
-   QImageWriter(const QImageWriter &) = delete;
-   QImageWriter &operator=(const QImageWriter &) = delete;
+    QImageWriter( const QImageWriter & ) = delete;
+    QImageWriter &operator=( const QImageWriter & ) = delete;
 
-   ~QImageWriter();
+    ~QImageWriter();
 
-   void setFormat(const QString &format);
-   QString format() const;
+    void setFormat( const QString &format );
+    QString format() const;
 
-   void setDevice(QIODevice *device);
-   QIODevice *device() const;
+    void setDevice( QIODevice *device );
+    QIODevice *device() const;
 
-   void setFileName(const QString &fileName);
-   QString fileName() const;
+    void setFileName( const QString &fileName );
+    QString fileName() const;
 
-   void setQuality(int quality);
-   int quality() const;
+    void setQuality( int quality );
+    int quality() const;
 
-   void setCompression(int compression);
-   int compression() const;
+    void setCompression( int compression );
+    int compression() const;
 
-   void setGamma(float gamma);
-   float gamma() const;
+    void setGamma( float gamma );
+    float gamma() const;
 
-   void setSubType(const QByteArray &type);
-   QByteArray subType() const;
-   QList<QByteArray> supportedSubTypes() const;
-   void setOptimizedWrite(bool optimize);
-   bool optimizedWrite() const;
-   void setProgressiveScanWrite(bool progressive);
-   bool progressiveScanWrite() const;
-   QImageIOHandler::Transformations transformation() const;
-   void setTransformation(QImageIOHandler::Transformations transform);
+    void setSubType( const QByteArray &type );
+    QByteArray subType() const;
+    QList<QByteArray> supportedSubTypes() const;
+    void setOptimizedWrite( bool optimize );
+    bool optimizedWrite() const;
+    void setProgressiveScanWrite( bool progressive );
+    bool progressiveScanWrite() const;
+    QImageIOHandler::Transformations transformation() const;
+    void setTransformation( QImageIOHandler::Transformations transform );
 
-   void setText(const QString &key, const QString &text);
-   bool canWrite() const;
-   bool write(const QImage &image);
+    void setText( const QString &key, const QString &text );
+    bool canWrite() const;
+    bool write( const QImage &image );
 
-   ImageWriterError error() const;
-   QString errorString() const;
+    ImageWriterError error() const;
+    QString errorString() const;
 
-   bool supportsOption(QImageIOHandler::ImageOption option) const;
+    bool supportsOption( QImageIOHandler::ImageOption option ) const;
 
-   static QList<QString> supportedImageFormats();
-   static QList<QString> supportedMimeTypes();
+    static QList<QString> supportedImageFormats();
+    static QList<QString> supportedMimeTypes();
 
- private:
-   Q_DECLARE_TR_FUNCTIONS(QImageWriter)
-   QImageWriterPrivate *d;
+private:
+    Q_DECLARE_TR_FUNCTIONS( QImageWriter )
+    QImageWriterPrivate *d;
 };
 
 #endif

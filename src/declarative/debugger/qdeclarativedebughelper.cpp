@@ -31,25 +31,28 @@
 
 QT_BEGIN_NAMESPACE
 
-QScriptEngine *QDeclarativeDebugHelper::getScriptEngine(QDeclarativeEngine *engine)
+QScriptEngine *QDeclarativeDebugHelper::getScriptEngine( QDeclarativeEngine *engine )
 {
-   return QDeclarativeEnginePrivate::getScriptEngine(engine);
+    return QDeclarativeEnginePrivate::getScriptEngine( engine );
 }
 
-void QDeclarativeDebugHelper::setAnimationSlowDownFactor(qreal factor)
+void QDeclarativeDebugHelper::setAnimationSlowDownFactor( qreal factor )
 {
-   QUnifiedTimer *timer = QUnifiedTimer::instance();
-   timer->setSlowModeEnabled(factor != 1.0);
-   timer->setSlowdownFactor(factor);
+    QUnifiedTimer *timer = QUnifiedTimer::instance();
+    timer->setSlowModeEnabled( factor != 1.0 );
+    timer->setSlowdownFactor( factor );
 }
 
 void QDeclarativeDebugHelper::enableDebugging()
 {
 #ifndef QDECLARATIVE_NO_DEBUG_PROTOCOL
-   if (!QDeclarativeEnginePrivate::qml_debugging_enabled) {
-      qWarning("Qml debugging is enabled. Only use this in a safe environment!");
-   }
-   QDeclarativeEnginePrivate::qml_debugging_enabled = true;
+
+    if ( !QDeclarativeEnginePrivate::qml_debugging_enabled )
+    {
+        qWarning( "Qml debugging is enabled. Only use this in a safe environment!" );
+    }
+
+    QDeclarativeEnginePrivate::qml_debugging_enabled = true;
 #endif
 }
 

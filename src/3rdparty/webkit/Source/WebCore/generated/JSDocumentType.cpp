@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDocumentType);
+ASSERT_CLASS_FITS_IN_CELL( JSDocumentType );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,14 +44,14 @@ ASSERT_CLASS_FITS_IN_CELL(JSDocumentType);
 
 static const HashTableValue JSDocumentTypeTableValues[8] =
 {
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentTypeName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "entities", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentTypeEntities), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "notations", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentTypeNotations), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "publicId", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentTypePublicId), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "systemId", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentTypeSystemId), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "internalSubset", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentTypeInternalSubset), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDocumentTypeConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentTypeName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "entities", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentTypeEntities ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "notations", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentTypeNotations ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "publicId", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentTypePublicId ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "systemId", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentTypeSystemId ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "internalSubset", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentTypeInternalSubset ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDocumentTypeConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,43 +65,50 @@ static JSC_CONST_HASHTABLE HashTable JSDocumentTypeTable = { 18, 15, JSDocumentT
 
 static const HashTableValue JSDocumentTypeConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDocumentTypeConstructorTable = { 1, 0, JSDocumentTypeConstructorTableValues, 0 };
-class JSDocumentTypeConstructor : public DOMConstructorObject {
+class JSDocumentTypeConstructor : public DOMConstructorObject
+{
 public:
-    JSDocumentTypeConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDocumentTypeConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDocumentTypeConstructor::s_info = { "DocumentTypeConstructor", &DOMConstructorObject::s_info, &JSDocumentTypeConstructorTable, 0 };
 
-JSDocumentTypeConstructor::JSDocumentTypeConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDocumentTypeConstructor::JSDocumentTypeConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDocumentTypePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDocumentTypePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDocumentTypeConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDocumentTypeConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDocumentTypeConstructor, JSDOMWrapper>(exec, &JSDocumentTypeConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDocumentTypeConstructor, JSDOMWrapper>( exec, &JSDocumentTypeConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSDocumentTypeConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDocumentTypeConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDocumentTypeConstructor, JSDOMWrapper>(exec, &JSDocumentTypeConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDocumentTypeConstructor, JSDOMWrapper>( exec, &JSDocumentTypeConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -112,115 +120,116 @@ bool JSDocumentTypeConstructor::getOwnPropertyDescriptor(ExecState* exec, const 
 
 static const HashTableValue JSDocumentTypePrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDocumentTypePrototypeTable = { 1, 0, JSDocumentTypePrototypeTableValues, 0 };
 const ClassInfo JSDocumentTypePrototype::s_info = { "DocumentTypePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSDocumentTypePrototypeTable, 0 };
 
-JSObject* JSDocumentTypePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDocumentTypePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDocumentType>(exec, globalObject);
+    return getDOMPrototype<JSDocumentType>( exec, globalObject );
 }
 
 const ClassInfo JSDocumentType::s_info = { "DocumentType", &JSNode::s_info, &JSDocumentTypeTable, 0 };
 
-JSDocumentType::JSDocumentType(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DocumentType> impl)
-    : JSNode(structure, globalObject, impl)
+JSDocumentType::JSDocumentType( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DocumentType> impl )
+    : JSNode( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDocumentType::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDocumentType::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDocumentTypePrototype(exec->globalData(), globalObject, JSDocumentTypePrototype::createStructure(exec->globalData(), JSNodePrototype::self(exec, globalObject)));
+    return new ( exec ) JSDocumentTypePrototype( exec->globalData(), globalObject,
+            JSDocumentTypePrototype::createStructure( exec->globalData(), JSNodePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSDocumentType::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDocumentType::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDocumentType, Base>(exec, &JSDocumentTypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDocumentType, Base>( exec, &JSDocumentTypeTable, this, propertyName, slot );
 }
 
-bool JSDocumentType::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDocumentType::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDocumentType, Base>(exec, &JSDocumentTypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDocumentType, Base>( exec, &JSDocumentTypeTable, this, propertyName, descriptor );
 }
 
-JSValue jsDocumentTypeName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentTypeName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentType* castedThis = static_cast<JSDocumentType*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DocumentType* imp = static_cast<DocumentType*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSDocumentType *castedThis = static_cast<JSDocumentType *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DocumentType *imp = static_cast<DocumentType *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsDocumentTypeEntities(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentTypeEntities( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentType* castedThis = static_cast<JSDocumentType*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DocumentType* imp = static_cast<DocumentType*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->entities()));
+    JSDocumentType *castedThis = static_cast<JSDocumentType *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DocumentType *imp = static_cast<DocumentType *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->entities() ) );
     return result;
 }
 
 
-JSValue jsDocumentTypeNotations(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentTypeNotations( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentType* castedThis = static_cast<JSDocumentType*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DocumentType* imp = static_cast<DocumentType*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->notations()));
+    JSDocumentType *castedThis = static_cast<JSDocumentType *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DocumentType *imp = static_cast<DocumentType *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->notations() ) );
     return result;
 }
 
 
-JSValue jsDocumentTypePublicId(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentTypePublicId( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentType* castedThis = static_cast<JSDocumentType*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DocumentType* imp = static_cast<DocumentType*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->publicId());
+    JSDocumentType *castedThis = static_cast<JSDocumentType *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DocumentType *imp = static_cast<DocumentType *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->publicId() );
     return result;
 }
 
 
-JSValue jsDocumentTypeSystemId(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentTypeSystemId( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentType* castedThis = static_cast<JSDocumentType*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DocumentType* imp = static_cast<DocumentType*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->systemId());
+    JSDocumentType *castedThis = static_cast<JSDocumentType *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DocumentType *imp = static_cast<DocumentType *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->systemId() );
     return result;
 }
 
 
-JSValue jsDocumentTypeInternalSubset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentTypeInternalSubset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentType* castedThis = static_cast<JSDocumentType*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    DocumentType* imp = static_cast<DocumentType*>(castedThis->impl());
-    JSValue result = jsStringOrNull(exec, imp->internalSubset());
+    JSDocumentType *castedThis = static_cast<JSDocumentType *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    DocumentType *imp = static_cast<DocumentType *>( castedThis->impl() );
+    JSValue result = jsStringOrNull( exec, imp->internalSubset() );
     return result;
 }
 
 
-JSValue jsDocumentTypeConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDocumentTypeConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDocumentType* domObject = static_cast<JSDocumentType*>(asObject(slotBase));
-    return JSDocumentType::getConstructor(exec, domObject->globalObject());
+    JSDocumentType *domObject = static_cast<JSDocumentType *>( asObject( slotBase ) );
+    return JSDocumentType::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDocumentType::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDocumentType::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDocumentTypeConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDocumentTypeConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-DocumentType* toDocumentType(JSC::JSValue value)
+DocumentType *toDocumentType( JSC::JSValue value )
 {
-    return value.inherits(&JSDocumentType::s_info) ? static_cast<JSDocumentType*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSDocumentType::s_info ) ? static_cast<JSDocumentType *>( asObject( value ) )->impl() : 0;
 }
 
 }

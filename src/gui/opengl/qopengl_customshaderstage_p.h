@@ -33,31 +33,31 @@ class QOpenGLCustomShaderStagePrivate;
 
 class Q_GUI_EXPORT QOpenGLCustomShaderStage
 {
-    Q_DECLARE_PRIVATE(QOpenGLCustomShaderStage)
+    Q_DECLARE_PRIVATE( QOpenGLCustomShaderStage )
 
- public:
+public:
     QOpenGLCustomShaderStage();
 
-    QOpenGLCustomShaderStage(const QOpenGLCustomShaderStage &) = delete;
-    QOpenGLCustomShaderStage &operator=(const QOpenGLCustomShaderStage &) = delete;
+    QOpenGLCustomShaderStage( const QOpenGLCustomShaderStage & ) = delete;
+    QOpenGLCustomShaderStage &operator=( const QOpenGLCustomShaderStage & ) = delete;
 
     virtual ~QOpenGLCustomShaderStage();
-    virtual void setUniforms(QOpenGLShaderProgram*)
+    virtual void setUniforms( QOpenGLShaderProgram * )
     { }
 
     void setUniformsDirty();
 
-    bool setOnPainter(QPainter*);
-    void removeFromPainter(QPainter*);
+    bool setOnPainter( QPainter * );
+    void removeFromPainter( QPainter * );
     QByteArray source() const;
 
     void setInactive();
 
- protected:
-    void setSource(const QByteArray&);
+protected:
+    void setSource( const QByteArray & );
 
- private:
-    QOpenGLCustomShaderStagePrivate* d_ptr;
+private:
+    QOpenGLCustomShaderStagePrivate *d_ptr;
 };
 
 #endif

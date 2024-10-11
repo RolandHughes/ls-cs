@@ -26,29 +26,30 @@
 #include "Document.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLQuoteElement::HTMLQuoteElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLQuoteElement::HTMLQuoteElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(qTag));
+    ASSERT( hasTagName( qTag ) );
 }
 
-PassRefPtr<HTMLQuoteElement> HTMLQuoteElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLQuoteElement> HTMLQuoteElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLQuoteElement(tagName, document));
+    return adoptRef( new HTMLQuoteElement( tagName, document ) );
 }
 
 void HTMLQuoteElement::insertedIntoDocument()
 {
-    document()->setUsesBeforeAfterRules(true);
+    document()->setUsesBeforeAfterRules( true );
 
     HTMLElement::insertedIntoDocument();
 }
 
-bool HTMLQuoteElement::isURLAttribute(Attribute* attribute) const
+bool HTMLQuoteElement::isURLAttribute( Attribute *attribute ) const
 {
     return attribute->name() == citeAttr;
 }

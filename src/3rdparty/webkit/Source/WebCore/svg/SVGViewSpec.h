@@ -27,39 +27,50 @@
 #include "SVGTransformList.h"
 #include "SVGZoomAndPan.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGElement;
 
 class SVGViewSpec : public SVGFitToViewBox,
-                    public SVGZoomAndPan {
-    WTF_MAKE_NONCOPYABLE(SVGViewSpec);
+    public SVGZoomAndPan
+{
+    WTF_MAKE_NONCOPYABLE( SVGViewSpec );
 public:
-    SVGViewSpec(SVGElement*);
+    SVGViewSpec( SVGElement * );
 
-    bool parseViewSpec(const String&);
+    bool parseViewSpec( const String & );
 
-    void setTransform(const String&);
-    SVGTransformList transform() const { return m_transform; }
+    void setTransform( const String & );
+    SVGTransformList transform() const
+    {
+        return m_transform;
+    }
 
-    void setViewBoxString(const String&);
+    void setViewBoxString( const String & );
 
-    void setPreserveAspectRatioString(const String&);
+    void setPreserveAspectRatioString( const String & );
 
-    void setViewTargetString(const String&);
-    String viewTargetString() const { return m_viewTargetString; }
-    SVGElement* viewTarget() const;
+    void setViewTargetString( const String & );
+    String viewTargetString() const
+    {
+        return m_viewTargetString;
+    }
+    SVGElement *viewTarget() const;
 
-    SVGElement* contextElement() const { return const_cast<SVGElement*>(m_contextElement); }
+    SVGElement *contextElement() const
+    {
+        return const_cast<SVGElement *>( m_contextElement );
+    }
 
 private:
-    SVGElement* m_contextElement;
+    SVGElement *m_contextElement;
 
     // Animated property declarations
 
     // SVGFitToViewBox
-    DECLARE_ANIMATED_RECT(ViewBox, viewBox)
-    DECLARE_ANIMATED_PRESERVEASPECTRATIO(PreserveAspectRatio, preserveAspectRatio)
+    DECLARE_ANIMATED_RECT( ViewBox, viewBox )
+    DECLARE_ANIMATED_PRESERVEASPECTRATIO( PreserveAspectRatio, preserveAspectRatio )
 
     SVGTransformList m_transform;
     String m_viewTargetString;

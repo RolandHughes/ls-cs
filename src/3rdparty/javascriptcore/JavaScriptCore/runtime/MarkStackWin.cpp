@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,24 +30,25 @@
 
 #include "windows.h"
 
-namespace JSC {
+namespace JSC
+{
 
 void MarkStack::initializePagesize()
 {
     SYSTEM_INFO system_info;
-    GetSystemInfo(&system_info);
+    GetSystemInfo( &system_info );
     MarkStack::s_pageSize = system_info.dwPageSize;
 }
 
-void* MarkStack::allocateStack(size_t size)
+void *MarkStack::allocateStack( size_t size )
 {
-    return VirtualAlloc(0, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    return VirtualAlloc( 0, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE );
 }
-void MarkStack::releaseStack(void* addr, size_t)
+void MarkStack::releaseStack( void *addr, size_t )
 {
     // According to http://msdn.microsoft.com/en-us/library/aa366892(VS.85).aspx,
     // dwSize must be 0 if dwFreeType is MEM_RELEASE.
-    VirtualFree(addr, 0, MEM_RELEASE);
+    VirtualFree( addr, 0, MEM_RELEASE );
 }
 
 }

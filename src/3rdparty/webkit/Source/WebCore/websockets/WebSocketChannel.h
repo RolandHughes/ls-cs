@@ -41,65 +41,77 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ScriptExecutionContext;
-    class SocketStreamHandle;
-    class SocketStreamError;
-    class WebSocketChannelClient;
+class ScriptExecutionContext;
+class SocketStreamHandle;
+class SocketStreamError;
+class WebSocketChannelClient;
 
-    class WebSocketChannel : public RefCounted<WebSocketChannel>, public SocketStreamHandleClient, public ThreadableWebSocketChannel {
-        WTF_MAKE_FAST_ALLOCATED;
-    public:
-        static PassRefPtr<WebSocketChannel> create(ScriptExecutionContext* context, WebSocketChannelClient* client, const KURL& url, const String& protocol) { return adoptRef(new WebSocketChannel(context, client, url, protocol)); }
-        virtual ~WebSocketChannel();
+class WebSocketChannel : public RefCounted<WebSocketChannel>, public SocketStreamHandleClient, public ThreadableWebSocketChannel
+{
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    static PassRefPtr<WebSocketChannel> create( ScriptExecutionContext *context, WebSocketChannelClient *client, const KURL &url,
+            const String &protocol )
+    {
+        return adoptRef( new WebSocketChannel( context, client, url, protocol ) );
+    }
+    virtual ~WebSocketChannel();
 
-        virtual void connect();
-        virtual bool send(const String& message);
-        virtual unsigned long bufferedAmount() const;
-        virtual void close();
-        virtual void disconnect(); // Will suppress didClose().
+    virtual void connect();
+    virtual bool send( const String &message );
+    virtual unsigned long bufferedAmount() const;
+    virtual void close();
+    virtual void disconnect(); // Will suppress didClose().
 
-        virtual void suspend();
-        virtual void resume();
+    virtual void suspend();
+    virtual void resume();
 
-        virtual void didOpen(SocketStreamHandle*);
-        virtual void didClose(SocketStreamHandle*);
-        virtual void didReceiveData(SocketStreamHandle*, const char*, int);
-        virtual void didFail(SocketStreamHandle*, const SocketStreamError&);
-        virtual void didReceiveAuthenticationChallenge(SocketStreamHandle*, const AuthenticationChallenge&);
-        virtual void didCancelAuthenticationChallenge(SocketStreamHandle*, const AuthenticationChallenge&);
+    virtual void didOpen( SocketStreamHandle * );
+    virtual void didClose( SocketStreamHandle * );
+    virtual void didReceiveData( SocketStreamHandle *, const char *, int );
+    virtual void didFail( SocketStreamHandle *, const SocketStreamError & );
+    virtual void didReceiveAuthenticationChallenge( SocketStreamHandle *, const AuthenticationChallenge & );
+    virtual void didCancelAuthenticationChallenge( SocketStreamHandle *, const AuthenticationChallenge & );
 
-        using RefCounted<WebSocketChannel>::ref;
-        using RefCounted<WebSocketChannel>::deref;
+    using RefCounted<WebSocketChannel>::ref;
+    using RefCounted<WebSocketChannel>::deref;
 
-    protected:
-        virtual void refThreadableWebSocketChannel() { ref(); }
-        virtual void derefThreadableWebSocketChannel() { deref(); }
+protected:
+    virtual void refThreadableWebSocketChannel()
+    {
+        ref();
+    }
+    virtual void derefThreadableWebSocketChannel()
+    {
+        deref();
+    }
 
-    private:
-        WebSocketChannel(ScriptExecutionContext*, WebSocketChannelClient*, const KURL&, const String& protocol);
+private:
+    WebSocketChannel( ScriptExecutionContext *, WebSocketChannelClient *, const KURL &, const String &protocol );
 
-        bool appendToBuffer(const char* data, size_t len);
-        void skipBuffer(size_t len);
-        bool processBuffer();
-        void resumeTimerFired(Timer<WebSocketChannel>* timer);
+    bool appendToBuffer( const char *data, size_t len );
+    void skipBuffer( size_t len );
+    bool processBuffer();
+    void resumeTimerFired( Timer<WebSocketChannel> *timer );
 
-        ScriptExecutionContext* m_context;
-        WebSocketChannelClient* m_client;
-        WebSocketHandshake m_handshake;
-        RefPtr<SocketStreamHandle> m_handle;
-        char* m_buffer;
-        size_t m_bufferSize;
+    ScriptExecutionContext *m_context;
+    WebSocketChannelClient *m_client;
+    WebSocketHandshake m_handshake;
+    RefPtr<SocketStreamHandle> m_handle;
+    char *m_buffer;
+    size_t m_bufferSize;
 
-        Timer<WebSocketChannel> m_resumeTimer;
-        bool m_suspended;
-        bool m_closed;
-        bool m_shouldDiscardReceivedData;
-        unsigned long m_unhandledBufferedAmount;
+    Timer<WebSocketChannel> m_resumeTimer;
+    bool m_suspended;
+    bool m_closed;
+    bool m_shouldDiscardReceivedData;
+    unsigned long m_unhandledBufferedAmount;
 
-        unsigned long m_identifier; // m_identifier == 0 means that we could not obtain a valid identifier.
-    };
+    unsigned long m_identifier; // m_identifier == 0 means that we could not obtain a valid identifier.
+};
 
 } // namespace WebCore
 

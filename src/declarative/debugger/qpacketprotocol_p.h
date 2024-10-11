@@ -38,66 +38,66 @@ class QPacketProtocolPrivate;
 
 class Q_DECLARATIVE_EXPORT QPacketProtocol : public QObject
 {
-   DECL_CS_OBJECT(QPacketProtocol)
- public:
-   explicit QPacketProtocol(QIODevice *dev, QObject *parent = nullptr);
-   virtual ~QPacketProtocol();
+    DECL_LSCS_OBJECT( QPacketProtocol )
+public:
+    explicit QPacketProtocol( QIODevice *dev, QObject *parent = nullptr );
+    virtual ~QPacketProtocol();
 
-   qint32 maximumPacketSize() const;
-   qint32 setMaximumPacketSize(qint32);
+    qint32 maximumPacketSize() const;
+    qint32 setMaximumPacketSize( qint32 );
 
-   QPacketAutoSend send();
-   void send(const QPacket &);
+    QPacketAutoSend send();
+    void send( const QPacket & );
 
-   qint64 packetsAvailable() const;
-   QPacket read();
+    qint64 packetsAvailable() const;
+    QPacket read();
 
-   bool waitForReadyRead(int msecs = 3000);
+    bool waitForReadyRead( int msecs = 3000 );
 
-   void clear();
+    void clear();
 
-   QIODevice *device();
+    QIODevice *device();
 
- public:
-   DECL_CS_SIGNAL_1(Public, void readyRead())
-   DECL_CS_SIGNAL_2(readyRead)
-   DECL_CS_SIGNAL_1(Public, void invalidPacket())
-   DECL_CS_SIGNAL_2(invalidPacket)
-   DECL_CS_SIGNAL_1(Public, void packetWritten())
-   DECL_CS_SIGNAL_2(packetWritten)
+public:
+    DECL_LSCS_SIGNAL_1( Public, void readyRead() )
+    DECL_LSCS_SIGNAL_2( readyRead )
+    DECL_LSCS_SIGNAL_1( Public, void invalidPacket() )
+    DECL_LSCS_SIGNAL_2( invalidPacket )
+    DECL_LSCS_SIGNAL_1( Public, void packetWritten() )
+    DECL_LSCS_SIGNAL_2( packetWritten )
 
- private:
-   QPacketProtocolPrivate *d;
+private:
+    QPacketProtocolPrivate *d;
 };
 
 
 class Q_DECLARATIVE_EXPORT QPacket : public QDataStream
 {
- public:
-   QPacket();
-   QPacket(const QPacket &);
-   virtual ~QPacket();
+public:
+    QPacket();
+    QPacket( const QPacket & );
+    virtual ~QPacket();
 
-   void clear();
-   bool isEmpty() const;
-   QByteArray data() const;
+    void clear();
+    bool isEmpty() const;
+    QByteArray data() const;
 
- protected:
-   friend class QPacketProtocol;
-   QPacket(const QByteArray &ba);
-   QByteArray b;
-   QBuffer *buf;
+protected:
+    friend class QPacketProtocol;
+    QPacket( const QByteArray &ba );
+    QByteArray b;
+    QBuffer *buf;
 };
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QPacketAutoSend : public QPacket
 {
- public:
-   virtual ~QPacketAutoSend();
+public:
+    virtual ~QPacketAutoSend();
 
- private:
-   friend class QPacketProtocol;
-   QPacketAutoSend(QPacketProtocol *);
-   QPacketProtocol *p;
+private:
+    friend class QPacketProtocol;
+    QPacketAutoSend( QPacketProtocol * );
+    QPacketProtocol *p;
 };
 
 QT_END_NAMESPACE

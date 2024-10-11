@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSStringRef_h
@@ -43,9 +43,9 @@ extern "C" {
 @typedef JSChar
 @abstract A Unicode character.
 */
-    typedef unsigned short JSChar;
+typedef unsigned short JSChar;
 #else
-    typedef wchar_t JSChar;
+typedef wchar_t JSChar;
 #endif
 
 /*
@@ -55,14 +55,14 @@ extern "C" {
 @param numChars   The number of characters to copy from the buffer pointed to by chars.
 @result           A JSString containing chars. Ownership follows the Create Rule.
 */
-JS_EXPORT JSStringRef JSStringCreateWithCharacters(const JSChar* chars, size_t numChars);
+JS_EXPORT JSStringRef JSStringCreateWithCharacters( const JSChar *chars, size_t numChars );
 /*
 @function
 @abstract         Creates a JavaScript string from a null-terminated UTF8 string.
 @param string     The null-terminated UTF8 string to copy into the new JSString.
 @result           A JSString containing string. Ownership follows the Create Rule.
 */
-JS_EXPORT JSStringRef JSStringCreateWithUTF8CString(const char* string);
+JS_EXPORT JSStringRef JSStringCreateWithUTF8CString( const char *string );
 
 /*
 @function
@@ -70,13 +70,13 @@ JS_EXPORT JSStringRef JSStringCreateWithUTF8CString(const char* string);
 @param string     The JSString to retain.
 @result           A JSString that is the same as string.
 */
-JS_EXPORT JSStringRef JSStringRetain(JSStringRef string);
+JS_EXPORT JSStringRef JSStringRetain( JSStringRef string );
 /*
 @function
 @abstract         Releases a JavaScript string.
 @param string     The JSString to release.
 */
-JS_EXPORT void JSStringRelease(JSStringRef string);
+JS_EXPORT void JSStringRelease( JSStringRef string );
 
 /*
 @function
@@ -84,42 +84,42 @@ JS_EXPORT void JSStringRelease(JSStringRef string);
 @param string     The JSString whose length (in Unicode characters) you want to know.
 @result           The number of Unicode characters stored in string.
 */
-JS_EXPORT size_t JSStringGetLength(JSStringRef string);
+JS_EXPORT size_t JSStringGetLength( JSStringRef string );
 /*
 @function
-@abstract         Returns a pointer to the Unicode character buffer that 
+@abstract         Returns a pointer to the Unicode character buffer that
  serves as the backing store for a JavaScript string.
 @param string     The JSString whose backing store you want to access.
-@result           A pointer to the Unicode character buffer that serves as string's 
+@result           A pointer to the Unicode character buffer that serves as string's
  backing store, which will be deallocated when string is deallocated.
 */
-JS_EXPORT const JSChar* JSStringGetCharactersPtr(JSStringRef string);
+JS_EXPORT const JSChar *JSStringGetCharactersPtr( JSStringRef string );
 
 /*
 @function
-@abstract Returns the maximum number of bytes a JavaScript string will 
+@abstract Returns the maximum number of bytes a JavaScript string will
  take up if converted into a null-terminated UTF8 string.
-@param string The JSString whose maximum converted size (in bytes) you 
+@param string The JSString whose maximum converted size (in bytes) you
  want to know.
-@result The maximum number of bytes that could be required to convert string into a 
- null-terminated UTF8 string. The number of bytes that the conversion actually ends 
+@result The maximum number of bytes that could be required to convert string into a
+ null-terminated UTF8 string. The number of bytes that the conversion actually ends
  up requiring could be less than this, but never more.
 */
-JS_EXPORT size_t JSStringGetMaximumUTF8CStringSize(JSStringRef string);
+JS_EXPORT size_t JSStringGetMaximumUTF8CStringSize( JSStringRef string );
 /*
 @function
-@abstract Converts a JavaScript string into a null-terminated UTF8 string, 
+@abstract Converts a JavaScript string into a null-terminated UTF8 string,
  and copies the result into an external byte buffer.
 @param string The source JSString.
-@param buffer The destination byte buffer into which to copy a null-terminated 
- UTF8 representation of string. On return, buffer contains a UTF8 string 
- representation of string. If bufferSize is too small, buffer will contain only 
- partial results. If buffer is not at least bufferSize bytes in size, 
- behavior is undefined. 
+@param buffer The destination byte buffer into which to copy a null-terminated
+ UTF8 representation of string. On return, buffer contains a UTF8 string
+ representation of string. If bufferSize is too small, buffer will contain only
+ partial results. If buffer is not at least bufferSize bytes in size,
+ behavior is undefined.
 @param bufferSize The size of the external buffer in bytes.
 @result The number of bytes written into buffer (including the null-terminator byte).
 */
-JS_EXPORT size_t JSStringGetUTF8CString(JSStringRef string, char* buffer, size_t bufferSize);
+JS_EXPORT size_t JSStringGetUTF8CString( JSStringRef string, char *buffer, size_t bufferSize );
 
 /*
 @function
@@ -128,7 +128,7 @@ JS_EXPORT size_t JSStringGetUTF8CString(JSStringRef string, char* buffer, size_t
 @param b      The second JSString to test.
 @result       true if the two strings match, otherwise false.
 */
-JS_EXPORT bool JSStringIsEqual(JSStringRef a, JSStringRef b);
+JS_EXPORT bool JSStringIsEqual( JSStringRef a, JSStringRef b );
 /*
 @function
 @abstract     Tests whether a JavaScript string matches a null-terminated UTF8 string.
@@ -136,7 +136,7 @@ JS_EXPORT bool JSStringIsEqual(JSStringRef a, JSStringRef b);
 @param b      The null-terminated UTF8 string to test.
 @result       true if the two strings match, otherwise false.
 */
-JS_EXPORT bool JSStringIsEqualToUTF8CString(JSStringRef a, const char* b);
+JS_EXPORT bool JSStringIsEqualToUTF8CString( JSStringRef a, const char *b );
 
 #ifdef __cplusplus
 }

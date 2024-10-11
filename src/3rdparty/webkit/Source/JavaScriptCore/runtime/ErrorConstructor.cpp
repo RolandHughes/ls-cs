@@ -25,41 +25,44 @@
 #include "JSGlobalObject.h"
 #include "JSString.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(ErrorConstructor);
+ASSERT_CLASS_FITS_IN_CELL( ErrorConstructor );
 
-ErrorConstructor::ErrorConstructor(ExecState* exec, JSGlobalObject* globalObject, Structure* structure, ErrorPrototype* errorPrototype)
-    : InternalFunction(&exec->globalData(), globalObject, structure, Identifier(exec, errorPrototype->classInfo()->className))
+ErrorConstructor::ErrorConstructor( ExecState *exec, JSGlobalObject *globalObject, Structure *structure,
+                                    ErrorPrototype *errorPrototype )
+    : InternalFunction( &exec->globalData(), globalObject, structure, Identifier( exec, errorPrototype->classInfo()->className ) )
 {
     // ECMA 15.11.3.1 Error.prototype
-    putDirectWithoutTransition(exec->globalData(), exec->propertyNames().prototype, errorPrototype, DontEnum | DontDelete | ReadOnly);
-    putDirectWithoutTransition(exec->globalData(), exec->propertyNames().length, jsNumber(1), DontDelete | ReadOnly | DontEnum);
+    putDirectWithoutTransition( exec->globalData(), exec->propertyNames().prototype, errorPrototype,
+                                DontEnum | DontDelete | ReadOnly );
+    putDirectWithoutTransition( exec->globalData(), exec->propertyNames().length, jsNumber( 1 ), DontDelete | ReadOnly | DontEnum );
 }
 
 // ECMA 15.9.3
 
-static EncodedJSValue JSC_HOST_CALL constructWithErrorConstructor(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL constructWithErrorConstructor( ExecState *exec )
 {
-    JSValue message = exec->argumentCount() ? exec->argument(0) : jsUndefined();
-    Structure* errorStructure = asInternalFunction(exec->callee())->globalObject()->errorStructure();
-    return JSValue::encode(ErrorInstance::create(exec, errorStructure, message));
+    JSValue message = exec->argumentCount() ? exec->argument( 0 ) : jsUndefined();
+    Structure *errorStructure = asInternalFunction( exec->callee() )->globalObject()->errorStructure();
+    return JSValue::encode( ErrorInstance::create( exec, errorStructure, message ) );
 }
 
-ConstructType ErrorConstructor::getConstructData(ConstructData& constructData)
+ConstructType ErrorConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructWithErrorConstructor;
     return ConstructTypeHost;
 }
 
-static EncodedJSValue JSC_HOST_CALL callErrorConstructor(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL callErrorConstructor( ExecState *exec )
 {
-    JSValue message = exec->argumentCount() ? exec->argument(0) : jsUndefined();
-    Structure* errorStructure = asInternalFunction(exec->callee())->globalObject()->errorStructure();
-    return JSValue::encode(ErrorInstance::create(exec, errorStructure, message));
+    JSValue message = exec->argumentCount() ? exec->argument( 0 ) : jsUndefined();
+    Structure *errorStructure = asInternalFunction( exec->callee() )->globalObject()->errorStructure();
+    return JSValue::encode( ErrorInstance::create( exec, errorStructure, message ) );
 }
 
-CallType ErrorConstructor::getCallData(CallData& callData)
+CallType ErrorConstructor::getCallData( CallData &callData )
 {
     callData.native.function = callErrorConstructor;
     return CallTypeHost;

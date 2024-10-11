@@ -30,26 +30,29 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 typedef int ExceptionCode;
 
-class DOMStringMap {
-    WTF_MAKE_NONCOPYABLE(DOMStringMap); WTF_MAKE_FAST_ALLOCATED;
+class DOMStringMap
+{
+    WTF_MAKE_NONCOPYABLE( DOMStringMap );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     virtual ~DOMStringMap();
 
     virtual void ref() = 0;
     virtual void deref() = 0;
 
-    virtual void getNames(Vector<String>&) = 0;
-    virtual String item(const String& name) = 0;
-    virtual bool contains(const String& name) = 0;
-    virtual void setItem(const String& name, const String& value, ExceptionCode&) = 0;
-    virtual void deleteItem(const String& name, ExceptionCode&) = 0;
+    virtual void getNames( Vector<String> & ) = 0;
+    virtual String item( const String &name ) = 0;
+    virtual bool contains( const String &name ) = 0;
+    virtual void setItem( const String &name, const String &value, ExceptionCode & ) = 0;
+    virtual void deleteItem( const String &name, ExceptionCode & ) = 0;
 
-    virtual Element* element() = 0;
+    virtual Element *element() = 0;
 
 protected:
     DOMStringMap()

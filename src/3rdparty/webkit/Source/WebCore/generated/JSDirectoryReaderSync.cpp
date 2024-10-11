@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDirectoryReaderSync);
+ASSERT_CLASS_FITS_IN_CELL( JSDirectoryReaderSync );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,8 +48,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSDirectoryReaderSync);
 
 static const HashTableValue JSDirectoryReaderSyncTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDirectoryReaderSyncConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDirectoryReaderSyncConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -62,43 +63,51 @@ static JSC_CONST_HASHTABLE HashTable JSDirectoryReaderSyncTable = { 2, 1, JSDire
 
 static const HashTableValue JSDirectoryReaderSyncConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDirectoryReaderSyncConstructorTable = { 1, 0, JSDirectoryReaderSyncConstructorTableValues, 0 };
-class JSDirectoryReaderSyncConstructor : public DOMConstructorObject {
+class JSDirectoryReaderSyncConstructor : public DOMConstructorObject
+{
 public:
-    JSDirectoryReaderSyncConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDirectoryReaderSyncConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDirectoryReaderSyncConstructor::s_info = { "DirectoryReaderSyncConstructor", &DOMConstructorObject::s_info, &JSDirectoryReaderSyncConstructorTable, 0 };
 
-JSDirectoryReaderSyncConstructor::JSDirectoryReaderSyncConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDirectoryReaderSyncConstructor::JSDirectoryReaderSyncConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDirectoryReaderSyncPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDirectoryReaderSyncPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDirectoryReaderSyncConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDirectoryReaderSyncConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDirectoryReaderSyncConstructor, JSDOMWrapper>(exec, &JSDirectoryReaderSyncConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDirectoryReaderSyncConstructor, JSDOMWrapper>( exec, &JSDirectoryReaderSyncConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSDirectoryReaderSyncConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDirectoryReaderSyncConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDirectoryReaderSyncConstructor, JSDOMWrapper>(exec, &JSDirectoryReaderSyncConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDirectoryReaderSyncConstructor, JSDOMWrapper>( exec, &JSDirectoryReaderSyncConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -110,97 +119,107 @@ bool JSDirectoryReaderSyncConstructor::getOwnPropertyDescriptor(ExecState* exec,
 
 static const HashTableValue JSDirectoryReaderSyncPrototypeTableValues[2] =
 {
-    { "readEntries", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDirectoryReaderSyncPrototypeFunctionReadEntries), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "readEntries", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDirectoryReaderSyncPrototypeFunctionReadEntries ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDirectoryReaderSyncPrototypeTable = { 2, 1, JSDirectoryReaderSyncPrototypeTableValues, 0 };
-static const HashTable* getJSDirectoryReaderSyncPrototypeTable(ExecState* exec)
+static const HashTable *getJSDirectoryReaderSyncPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDirectoryReaderSyncPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDirectoryReaderSyncPrototypeTable );
 }
 
 const ClassInfo JSDirectoryReaderSyncPrototype::s_info = { "DirectoryReaderSyncPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSDirectoryReaderSyncPrototypeTable };
 
-JSObject* JSDirectoryReaderSyncPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDirectoryReaderSyncPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDirectoryReaderSync>(exec, globalObject);
+    return getDOMPrototype<JSDirectoryReaderSync>( exec, globalObject );
 }
 
-bool JSDirectoryReaderSyncPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDirectoryReaderSyncPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSDirectoryReaderSyncPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSDirectoryReaderSyncPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSDirectoryReaderSyncPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDirectoryReaderSyncPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSDirectoryReaderSyncPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSDirectoryReaderSyncPrototypeTable( exec ), this, propertyName,
+            descriptor );
 }
 
-static const HashTable* getJSDirectoryReaderSyncTable(ExecState* exec)
+static const HashTable *getJSDirectoryReaderSyncTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDirectoryReaderSyncTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDirectoryReaderSyncTable );
 }
 
 const ClassInfo JSDirectoryReaderSync::s_info = { "DirectoryReaderSync", &JSDOMWrapper::s_info, 0, getJSDirectoryReaderSyncTable };
 
-JSDirectoryReaderSync::JSDirectoryReaderSync(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DirectoryReaderSync> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSDirectoryReaderSync::JSDirectoryReaderSync( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<DirectoryReaderSync> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDirectoryReaderSync::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDirectoryReaderSync::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDirectoryReaderSyncPrototype(exec->globalData(), globalObject, JSDirectoryReaderSyncPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSDirectoryReaderSyncPrototype( exec->globalData(), globalObject,
+            JSDirectoryReaderSyncPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSDirectoryReaderSync::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDirectoryReaderSync::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDirectoryReaderSync, Base>(exec, getJSDirectoryReaderSyncTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSDirectoryReaderSync, Base>( exec, getJSDirectoryReaderSyncTable( exec ), this, propertyName, slot );
 }
 
-bool JSDirectoryReaderSync::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDirectoryReaderSync::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDirectoryReaderSync, Base>(exec, getJSDirectoryReaderSyncTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDirectoryReaderSync, Base>( exec, getJSDirectoryReaderSyncTable( exec ), this, propertyName,
+            descriptor );
 }
 
-JSValue jsDirectoryReaderSyncConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDirectoryReaderSyncConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDirectoryReaderSync* domObject = static_cast<JSDirectoryReaderSync*>(asObject(slotBase));
-    return JSDirectoryReaderSync::getConstructor(exec, domObject->globalObject());
+    JSDirectoryReaderSync *domObject = static_cast<JSDirectoryReaderSync *>( asObject( slotBase ) );
+    return JSDirectoryReaderSync::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDirectoryReaderSync::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDirectoryReaderSync::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDirectoryReaderSyncConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDirectoryReaderSyncConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDirectoryReaderSyncPrototypeFunctionReadEntries(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDirectoryReaderSyncPrototypeFunctionReadEntries( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDirectoryReaderSync::s_info))
-        return throwVMTypeError(exec);
-    JSDirectoryReaderSync* castedThis = static_cast<JSDirectoryReaderSync*>(asObject(thisValue));
-    DirectoryReaderSync* imp = static_cast<DirectoryReaderSync*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSDirectoryReaderSync::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDirectoryReaderSync *castedThis = static_cast<JSDirectoryReaderSync *>( asObject( thisValue ) );
+    DirectoryReaderSync *imp = static_cast<DirectoryReaderSync *>( castedThis->impl() );
     ExceptionCode ec = 0;
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->readEntries(ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->readEntries( ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, DirectoryReaderSync* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, DirectoryReaderSync *impl )
 {
-    return wrap<JSDirectoryReaderSync>(exec, globalObject, impl);
+    return wrap<JSDirectoryReaderSync>( exec, globalObject, impl );
 }
 
-DirectoryReaderSync* toDirectoryReaderSync(JSC::JSValue value)
+DirectoryReaderSync *toDirectoryReaderSync( JSC::JSValue value )
 {
-    return value.inherits(&JSDirectoryReaderSync::s_info) ? static_cast<JSDirectoryReaderSync*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSDirectoryReaderSync::s_info ) ? static_cast<JSDirectoryReaderSync *>( asObject( value ) )->impl() : 0;
 }
 
 }

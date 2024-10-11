@@ -28,10 +28,11 @@
 
 #include "WebEventFactory.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebKeyboardEvent::NativeWebKeyboardEvent(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-    : WebKeyboardEvent(WebEventFactory::createWebKeyboardEvent(hwnd, message, wParam, lParam))
+NativeWebKeyboardEvent::NativeWebKeyboardEvent( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
+    : WebKeyboardEvent( WebEventFactory::createWebKeyboardEvent( hwnd, message, wParam, lParam ) )
     , m_nativeEvent()
 {
     m_nativeEvent.hwnd = hwnd;

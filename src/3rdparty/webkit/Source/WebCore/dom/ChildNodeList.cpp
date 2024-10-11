@@ -25,21 +25,27 @@
 
 #include "Element.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-ChildNodeList::ChildNodeList(PassRefPtr<Node> rootNode, DynamicNodeList::Caches* info)
-    : DynamicNodeList(rootNode, info)
+ChildNodeList::ChildNodeList( PassRefPtr<Node> rootNode, DynamicNodeList::Caches *info )
+    : DynamicNodeList( rootNode, info )
 {
 }
 
 unsigned ChildNodeList::length() const
 {
-    if (m_caches->isLengthCacheValid)
+    if ( m_caches->isLengthCacheValid )
+    {
         return m_caches->cachedLength;
+    }
 
     unsigned len = 0;
-    for (Node* n = m_rootNode->firstChild(); n; n = n->nextSibling())
+
+    for ( Node *n = m_rootNode->firstChild(); n; n = n->nextSibling() )
+    {
         len++;
+    }
 
     m_caches->cachedLength = len;
     m_caches->isLengthCacheValid = true;
@@ -47,48 +53,64 @@ unsigned ChildNodeList::length() const
     return len;
 }
 
-Node* ChildNodeList::item(unsigned index) const
+Node *ChildNodeList::item( unsigned index ) const
 {
     unsigned int pos = 0;
-    Node* n = m_rootNode->firstChild();
+    Node *n = m_rootNode->firstChild();
 
-    if (m_caches->isItemCacheValid) {
-        if (index == m_caches->lastItemOffset)
+    if ( m_caches->isItemCacheValid )
+    {
+        if ( index == m_caches->lastItemOffset )
+        {
             return m_caches->lastItem;
-        
+        }
+
         int diff = index - m_caches->lastItemOffset;
-        unsigned dist = abs(diff);
-        if (dist < index) {
+        unsigned dist = abs( diff );
+
+        if ( dist < index )
+        {
             n = m_caches->lastItem;
             pos = m_caches->lastItemOffset;
         }
     }
 
-    if (m_caches->isLengthCacheValid) {
-        if (index >= m_caches->cachedLength)
+    if ( m_caches->isLengthCacheValid )
+    {
+        if ( index >= m_caches->cachedLength )
+        {
             return 0;
+        }
 
         int diff = index - pos;
-        unsigned dist = abs(diff);
-        if (dist > m_caches->cachedLength - 1 - index) {
+        unsigned dist = abs( diff );
+
+        if ( dist > m_caches->cachedLength - 1 - index )
+        {
             n = m_rootNode->lastChild();
             pos = m_caches->cachedLength - 1;
         }
     }
 
-    if (pos <= index) {
-        while (n && pos < index) {
+    if ( pos <= index )
+    {
+        while ( n && pos < index )
+        {
             n = n->nextSibling();
             ++pos;
         }
-    } else {
-        while (n && pos > index) {
+    }
+    else
+    {
+        while ( n && pos > index )
+        {
             n = n->previousSibling();
             --pos;
         }
     }
 
-    if (n) {
+    if ( n )
+    {
         m_caches->lastItem = n;
         m_caches->lastItemOffset = pos;
         m_caches->isItemCacheValid = true;
@@ -98,7 +120,7 @@ Node* ChildNodeList::item(unsigned index) const
     return 0;
 }
 
-bool ChildNodeList::nodeMatches(Element* testNode) const
+bool ChildNodeList::nodeMatches( Element *testNode ) const
 {
     // Note: Due to the overrides of the length and item functions above,
     // this function will be called only by DynamicNodeList::itemWithName,

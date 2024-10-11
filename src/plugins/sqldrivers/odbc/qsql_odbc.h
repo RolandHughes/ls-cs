@@ -51,78 +51,78 @@ class QSqlRecordInfo;
 
 class QODBCResult : public QSqlResult
 {
- public:
-   QODBCResult(const QODBCDriver *db, QODBCDriverPrivate *p);
-   virtual ~QODBCResult();
+public:
+    QODBCResult( const QODBCDriver *db, QODBCDriverPrivate *p );
+    virtual ~QODBCResult();
 
-   bool prepare(const QString &query) override;
-   bool exec() override;
+    bool prepare( const QString &query ) override;
+    bool exec() override;
 
-   QVariant handle() const override;
-   QVariant lastInsertId() const override;
+    QVariant handle() const override;
+    QVariant lastInsertId() const override;
 
-   void setForwardOnly(bool forward) override;
+    void setForwardOnly( bool forward ) override;
 
- protected:
-   bool fetchNext() override;
-   bool fetchFirst() override;
-   bool fetchLast() override;
-   bool fetchPrevious() override;
-   bool fetch(int i) override;
-   bool reset (const QString &query) override;
-   QVariant data(int field) override;
-   bool isNull(int field) override;
-   int size() override;
-   int numRowsAffected() override;
-   QSqlRecord record() const override;
+protected:
+    bool fetchNext() override;
+    bool fetchFirst() override;
+    bool fetchLast() override;
+    bool fetchPrevious() override;
+    bool fetch( int i ) override;
+    bool reset ( const QString &query ) override;
+    QVariant data( int field ) override;
+    bool isNull( int field ) override;
+    int size() override;
+    int numRowsAffected() override;
+    QSqlRecord record() const override;
 
-   void virtual_hook(int id, void *data) override;
-   void detachFromResultSet() override;
-   bool nextResult() override;
+    void virtual_hook( int id, void *data ) override;
+    void detachFromResultSet() override;
+    bool nextResult() override;
 
- private:
-   Q_DECLARE_PRIVATE(QODBCResult)
+private:
+    Q_DECLARE_PRIVATE( QODBCResult )
 };
 
 class Q_EXPORT_SQLDRIVER_ODBC QODBCDriver : public QSqlDriver
 {
-   CS_OBJECT(QODBCDriver)
+    LSCS_OBJECT( QODBCDriver )
 
- public:
-   explicit QODBCDriver(QObject *parent = nullptr);
-   QODBCDriver(SQLHANDLE env, SQLHANDLE con, QObject *parent = nullptr);
+public:
+    explicit QODBCDriver( QObject *parent = nullptr );
+    QODBCDriver( SQLHANDLE env, SQLHANDLE con, QObject *parent = nullptr );
 
-   ~QODBCDriver();
+    ~QODBCDriver();
 
-   bool hasFeature(DriverFeature f) const override;
-   void close() override;
-   QSqlResult *createResult() const override;
-   QStringList tables(QSql::TableType) const override;
-   QSqlRecord record(const QString &tablename) const override;
-   QSqlIndex primaryIndex(const QString &tablename) const override;
-   QVariant handle() const override;
-   QString formatValue(const QSqlField &field, bool trimStrings) const override;
+    bool hasFeature( DriverFeature f ) const override;
+    void close() override;
+    QSqlResult *createResult() const override;
+    QStringList tables( QSql::TableType ) const override;
+    QSqlRecord record( const QString &tablename ) const override;
+    QSqlIndex primaryIndex( const QString &tablename ) const override;
+    QVariant handle() const override;
+    QString formatValue( const QSqlField &field, bool trimStrings ) const override;
 
-   bool open(const QString &db, const QString &user, const QString &password, const QString &host,
-         int port, const QString &connOpts) override;
+    bool open( const QString &db, const QString &user, const QString &password, const QString &host,
+               int port, const QString &connOpts ) override;
 
-   QString escapeIdentifier(const QString &identifier, IdentifierType type) const override;
+    QString escapeIdentifier( const QString &identifier, IdentifierType type ) const override;
 
- protected:
-   bool isIdentifierEscapedImplementation(const QString &identifier, IdentifierType type) const;
+protected:
+    bool isIdentifierEscapedImplementation( const QString &identifier, IdentifierType type ) const;
 
-   bool beginTransaction() override;
-   bool commitTransaction() override;
-   bool rollbackTransaction() override;
+    bool beginTransaction() override;
+    bool commitTransaction() override;
+    bool rollbackTransaction() override;
 
- private:
-   void init();
-   bool endTrans();
-   void cleanup();
+private:
+    void init();
+    bool endTrans();
+    void cleanup();
 
-   Q_DECLARE_PRIVATE(QODBCDriver)
+    Q_DECLARE_PRIVATE( QODBCDriver )
 
-   friend class QODBCResultPrivate;
+    friend class QODBCResultPrivate;
 };
 
 #endif

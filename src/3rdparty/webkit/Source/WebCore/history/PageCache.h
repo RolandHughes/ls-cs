@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PageCache_h
@@ -32,64 +32,73 @@
 #include <wtf/HashSet.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CachedPage;
-    class Frame;
-    class HistoryItem;
-    class Page;
-    
-    class PageCache {
-        WTF_MAKE_NONCOPYABLE(PageCache); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        friend PageCache* pageCache();
-        
-        static bool canCache(Page*);
+class CachedPage;
+class Frame;
+class HistoryItem;
+class Page;
 
-        void setCapacity(int); // number of pages to cache
-        int capacity() { return m_capacity; }
-        
-        void add(PassRefPtr<HistoryItem>, Page*); // Prunes if capacity() is exceeded.
-        void remove(HistoryItem*);
-        CachedPage* get(HistoryItem* item);
+class PageCache
+{
+    WTF_MAKE_NONCOPYABLE( PageCache );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    friend PageCache *pageCache();
 
-        void releaseAutoreleasedPagesNow();
-        
-        int pageCount() const { return m_size; }
-        int frameCount() const;
-        int autoreleasedPageCount() const;
+    static bool canCache( Page * );
 
-        void markPagesForVistedLinkStyleRecalc();
+    void setCapacity( int ); // number of pages to cache
+    int capacity()
+    {
+        return m_capacity;
+    }
 
-    private:
-        typedef HashSet<RefPtr<CachedPage> > CachedPageSet;
+    void add( PassRefPtr<HistoryItem>, Page * ); // Prunes if capacity() is exceeded.
+    void remove( HistoryItem * );
+    CachedPage *get( HistoryItem *item );
 
-        PageCache(); // Use pageCache() instead.
-        ~PageCache(); // Not implemented to make sure nobody accidentally calls delete -- WebCore does not delete singletons.
-        
-        static bool canCachePageContainingThisFrame(Frame*);
+    void releaseAutoreleasedPagesNow();
 
-        void addToLRUList(HistoryItem*); // Adds to the head of the list.
-        void removeFromLRUList(HistoryItem*);
+    int pageCount() const
+    {
+        return m_size;
+    }
+    int frameCount() const;
+    int autoreleasedPageCount() const;
 
-        void prune();
+    void markPagesForVistedLinkStyleRecalc();
 
-        void autorelease(PassRefPtr<CachedPage>);
-        void releaseAutoreleasedPagesNowOrReschedule(Timer<PageCache>*);
+private:
+    typedef HashSet<RefPtr<CachedPage> > CachedPageSet;
 
-        int m_capacity;
-        int m_size;
+    PageCache(); // Use pageCache() instead.
+    ~PageCache(); // Not implemented to make sure nobody accidentally calls delete -- WebCore does not delete singletons.
 
-        // LRU List
-        HistoryItem* m_head;
-        HistoryItem* m_tail;
-        
-        Timer<PageCache> m_autoreleaseTimer;
-        CachedPageSet m_autoreleaseSet;
-     };
+    static bool canCachePageContainingThisFrame( Frame * );
 
-    // Function to obtain the global page cache.
-    PageCache* pageCache();
+    void addToLRUList( HistoryItem * ); // Adds to the head of the list.
+    void removeFromLRUList( HistoryItem * );
+
+    void prune();
+
+    void autorelease( PassRefPtr<CachedPage> );
+    void releaseAutoreleasedPagesNowOrReschedule( Timer<PageCache> * );
+
+    int m_capacity;
+    int m_size;
+
+    // LRU List
+    HistoryItem *m_head;
+    HistoryItem *m_tail;
+
+    Timer<PageCache> m_autoreleaseTimer;
+    CachedPageSet m_autoreleaseSet;
+};
+
+// Function to obtain the global page cache.
+PageCache *pageCache();
 
 } // namespace WebCore
 

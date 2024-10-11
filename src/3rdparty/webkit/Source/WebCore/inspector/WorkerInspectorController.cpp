@@ -46,98 +46,105 @@
 #include "WorkerDebuggerAgent.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-namespace {
+namespace
+{
 
-class WorkerRuntimeAgent : public InspectorRuntimeAgent {
+class WorkerRuntimeAgent : public InspectorRuntimeAgent
+{
 public:
-    WorkerRuntimeAgent(InjectedScriptManager* injectedScriptManager, WorkerContext* workerContext)
-        : InspectorRuntimeAgent(injectedScriptManager)
-        , m_workerContext(workerContext) { }
+    WorkerRuntimeAgent( InjectedScriptManager *injectedScriptManager, WorkerContext *workerContext )
+        : InspectorRuntimeAgent( injectedScriptManager )
+        , m_workerContext( workerContext ) { }
     virtual ~WorkerRuntimeAgent() { }
 
 private:
-    virtual ScriptState* getDefaultInspectedState()
+    virtual ScriptState *getDefaultInspectedState()
     {
-        return scriptStateFromWorkerContext(m_workerContext);
+        return scriptStateFromWorkerContext( m_workerContext );
     }
 
-    WorkerContext* m_workerContext;
+    WorkerContext *m_workerContext;
 };
 
 }
 
-WorkerInspectorController::WorkerInspectorController(WorkerContext* workerContext)
-    : m_workerContext(workerContext)
-    , m_state(adoptPtr(new InspectorState(0)))
-    , m_instrumentingAgents(adoptPtr(new InstrumentingAgents()))
-    , m_injectedScriptManager(InjectedScriptManager::createForWorker())
+WorkerInspectorController::WorkerInspectorController( WorkerContext *workerContext )
+    : m_workerContext( workerContext )
+    , m_state( adoptPtr( new InspectorState( 0 ) ) )
+    , m_instrumentingAgents( adoptPtr( new InstrumentingAgents() ) )
+    , m_injectedScriptManager( InjectedScriptManager::createForWorker() )
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    , m_debuggerAgent(WorkerDebuggerAgent::create(m_instrumentingAgents.get(), m_state.get(), workerContext, m_injectedScriptManager.get()))
+    , m_debuggerAgent( WorkerDebuggerAgent::create( m_instrumentingAgents.get(), m_state.get(), workerContext,
+                       m_injectedScriptManager.get() ) )
 #endif
-    , m_runtimeAgent(adoptPtr(new WorkerRuntimeAgent(m_injectedScriptManager.get(), workerContext)))
+    , m_runtimeAgent( adoptPtr( new WorkerRuntimeAgent( m_injectedScriptManager.get(), workerContext ) ) )
 {
-    m_injectedScriptManager->injectedScriptHost()->init(0
-        , 0
+    m_injectedScriptManager->injectedScriptHost()->init( 0
+            , 0
 #if ENABLE(DATABASE)
-        , 0
+            , 0
 #endif
 #if ENABLE(DOM_STORAGE)
-        , 0
+            , 0
 #endif
-    );
+                                                       );
 }
- 
+
 WorkerInspectorController::~WorkerInspectorController()
 {
 }
 
-void WorkerInspectorController::connectFrontend(InspectorFrontendChannel* channel)
+void WorkerInspectorController::connectFrontend( InspectorFrontendChannel *channel )
 {
-    ASSERT(!m_frontend);
+    ASSERT( !m_frontend );
     m_state->unmute();
-    m_frontend = adoptPtr(new InspectorFrontend(channel));
-    m_backendDispatcher = adoptPtr(new InspectorBackendDispatcher(
-        channel,
+    m_frontend = adoptPtr( new InspectorFrontend( channel ) );
+    m_backendDispatcher = adoptPtr( new InspectorBackendDispatcher(
+                                        channel,
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-        0, // InspectorApplicationCacheAgent
+                                        0, // InspectorApplicationCacheAgent
 #endif
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-        0, // InspectorDOMDebuggerAgent
+                                        0, // InspectorDOMDebuggerAgent
 #endif
-        0, // InspectorCSSAgent
-        0, // InspectorConsoleAgent
-        0, // InspectorDOMAgent
+                                        0, // InspectorCSSAgent
+                                        0, // InspectorConsoleAgent
+                                        0, // InspectorDOMAgent
 #if ENABLE(DOM_STORAGE)
-        0, // InspectorDOMStorageAgent
+                                        0, // InspectorDOMStorageAgent
 #endif
 #if ENABLE(DATABASE)
-        0, // InspectorDatabaseAgent
+                                        0, // InspectorDatabaseAgent
 #endif
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-        m_debuggerAgent.get(),
+                                        m_debuggerAgent.get(),
 #endif
-        0, // InspectorResourceAgent
-        0, // InspectorPageAgent
+                                        0, // InspectorResourceAgent
+                                        0, // InspectorPageAgent
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-        0, // InspectorProfilerAgent
+                                        0, // InspectorProfilerAgent
 #endif
-        m_runtimeAgent.get(),
-        0, // InspectorTimelineAgent
-        0 // InspectorWorkerAgent
-    ));
+                                        m_runtimeAgent.get(),
+                                        0, // InspectorTimelineAgent
+                                        0 // InspectorWorkerAgent
+                                    ) );
 
-    m_injectedScriptManager->injectedScriptHost()->setFrontend(m_frontend.get());
+    m_injectedScriptManager->injectedScriptHost()->setFrontend( m_frontend.get() );
 #if ENABLE(JAVASCRIPT_DEBUGGER)
-    m_debuggerAgent->setFrontend(m_frontend.get());
+    m_debuggerAgent->setFrontend( m_frontend.get() );
 #endif
 }
 
 void WorkerInspectorController::disconnectFrontend()
 {
-    if (!m_frontend)
+    if ( !m_frontend )
+    {
         return;
+    }
+
     m_backendDispatcher.clear();
     // Destroying agents would change the state, but we don't want that.
     // Pre-disconnect state will be used to restore inspector agents.
@@ -150,10 +157,12 @@ void WorkerInspectorController::disconnectFrontend()
     m_frontend.clear();
 }
 
-void WorkerInspectorController::dispatchMessageFromFrontend(const String& message)
+void WorkerInspectorController::dispatchMessageFromFrontend( const String &message )
 {
-    if (m_backendDispatcher)
-        m_backendDispatcher->dispatch(message);
+    if ( m_backendDispatcher )
+    {
+        m_backendDispatcher->dispatch( message );
+    }
 }
 
 }

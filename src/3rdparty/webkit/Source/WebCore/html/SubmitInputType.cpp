@@ -39,23 +39,27 @@
 #include "LocalizedStrings.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<InputType> SubmitInputType::create(HTMLInputElement* element)
+namespace WebCore
 {
-    return adoptPtr(new SubmitInputType(element));
+
+PassOwnPtr<InputType> SubmitInputType::create( HTMLInputElement *element )
+{
+    return adoptPtr( new SubmitInputType( element ) );
 }
 
-const AtomicString& SubmitInputType::formControlType() const
+const AtomicString &SubmitInputType::formControlType() const
 {
     return InputTypeNames::submit();
 }
 
-bool SubmitInputType::appendFormData(FormDataList& encoding, bool) const
+bool SubmitInputType::appendFormData( FormDataList &encoding, bool ) const
 {
-    if (!element()->isActivatedSubmit())
+    if ( !element()->isActivatedSubmit() )
+    {
         return false;
-    encoding.appendData(element()->name(), element()->valueWithDefault());
+    }
+
+    encoding.appendData( element()->name(), element()->valueWithDefault() );
     return true;
 }
 
@@ -64,14 +68,18 @@ bool SubmitInputType::supportsRequired() const
     return false;
 }
 
-void SubmitInputType::handleDOMActivateEvent(Event* event)
+void SubmitInputType::handleDOMActivateEvent( Event *event )
 {
     RefPtr<HTMLInputElement> element = this->element();
-    if (element->disabled() || !element->form())
+
+    if ( element->disabled() || !element->form() )
+    {
         return;
-    element->setActivatedSubmit(true);
-    element->form()->prepareForSubmission(event); // Event handlers can run.
-    element->setActivatedSubmit(false);
+    }
+
+    element->setActivatedSubmit( true );
+    element->form()->prepareForSubmission( event ); // Event handlers can run.
+    element->setActivatedSubmit( false );
     event->setDefaultHandled();
 }
 

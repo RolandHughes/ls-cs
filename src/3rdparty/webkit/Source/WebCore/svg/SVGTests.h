@@ -25,34 +25,36 @@
 #include "SVGAnimatedPropertyMacros.h"
 #include "SVGStringList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Attribute;
 class QualifiedName;
 class SVGElement;
 
-class SVGTests {
+class SVGTests
+{
 public:
-    SVGStringList& requiredFeatures();
-    SVGStringList& requiredExtensions();
-    SVGStringList& systemLanguage();
+    SVGStringList &requiredFeatures();
+    SVGStringList &requiredExtensions();
+    SVGStringList &systemLanguage();
 
-    bool hasExtension(const String&) const;
+    bool hasExtension( const String & ) const;
     bool isValid() const;
 
-    bool parseMappedAttribute(Attribute*);
-    bool isKnownAttribute(const QualifiedName&);
+    bool parseMappedAttribute( Attribute * );
+    bool isKnownAttribute( const QualifiedName & );
 
-    bool handleAttributeChange(const SVGElement*, const QualifiedName&);
-    void synchronizeProperties(SVGElement*, const QualifiedName&);
+    bool handleAttributeChange( const SVGElement *, const QualifiedName & );
+    void synchronizeProperties( SVGElement *, const QualifiedName & );
 
 protected:
     SVGTests();
 
 private:
-    void synchronizeRequiredFeatures(SVGElement*);
-    void synchronizeRequiredExtensions(SVGElement*);
-    void synchronizeSystemLanguage(SVGElement*);
+    void synchronizeRequiredFeatures( SVGElement * );
+    void synchronizeRequiredExtensions( SVGElement * );
+    void synchronizeSystemLanguage( SVGElement * );
 
     SVGSynchronizableAnimatedProperty<SVGStringList> m_requiredFeatures;
     SVGSynchronizableAnimatedProperty<SVGStringList> m_requiredExtensions;

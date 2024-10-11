@@ -27,94 +27,122 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TimingFunction : public RefCounted<TimingFunction> {
+class TimingFunction : public RefCounted<TimingFunction>
+{
 public:
 
-    enum TimingFunctionType {
+    enum TimingFunctionType
+    {
         LinearFunction, CubicBezierFunction, StepsFunction
     };
-    
+
     virtual ~TimingFunction() { }
-    
-    bool isLinearTimingFunction() const { return m_type == LinearFunction; }
-    bool isCubicBezierTimingFunction() const { return m_type == CubicBezierFunction; }
-    bool isStepsTimingFunction() const { return m_type == StepsFunction; }
-    
-    virtual bool operator==(const TimingFunction& other) = 0;
+
+    bool isLinearTimingFunction() const
+    {
+        return m_type == LinearFunction;
+    }
+    bool isCubicBezierTimingFunction() const
+    {
+        return m_type == CubicBezierFunction;
+    }
+    bool isStepsTimingFunction() const
+    {
+        return m_type == StepsFunction;
+    }
+
+    virtual bool operator==( const TimingFunction &other ) = 0;
 
 protected:
-    TimingFunction(TimingFunctionType type)
-        : m_type(type)
+    TimingFunction( TimingFunctionType type )
+        : m_type( type )
     {
     }
-    
+
     TimingFunctionType m_type;
 };
 
-class LinearTimingFunction : public TimingFunction {
+class LinearTimingFunction : public TimingFunction
+{
 public:
     static PassRefPtr<LinearTimingFunction> create()
     {
-        return adoptRef(new LinearTimingFunction);
+        return adoptRef( new LinearTimingFunction );
     }
-    
+
     ~LinearTimingFunction() { }
-    
-    virtual bool operator==(const TimingFunction& other)
+
+    virtual bool operator==( const TimingFunction &other )
     {
         return other.isLinearTimingFunction();
     }
-    
+
 private:
     LinearTimingFunction()
-        : TimingFunction(LinearFunction)
+        : TimingFunction( LinearFunction )
     {
     }
 };
-    
-class CubicBezierTimingFunction : public TimingFunction {
+
+class CubicBezierTimingFunction : public TimingFunction
+{
 public:
-    static PassRefPtr<CubicBezierTimingFunction> create(double x1, double y1, double x2, double y2)
+    static PassRefPtr<CubicBezierTimingFunction> create( double x1, double y1, double x2, double y2 )
     {
-        return adoptRef(new CubicBezierTimingFunction(x1, y1, x2, y2));
+        return adoptRef( new CubicBezierTimingFunction( x1, y1, x2, y2 ) );
     }
 
     static PassRefPtr<CubicBezierTimingFunction> create()
     {
-        return adoptRef(new CubicBezierTimingFunction());
+        return adoptRef( new CubicBezierTimingFunction() );
     }
 
     ~CubicBezierTimingFunction() { }
-    
-    virtual bool operator==(const TimingFunction& other)
+
+    virtual bool operator==( const TimingFunction &other )
     {
-        if (other.isCubicBezierTimingFunction()) {
-            const CubicBezierTimingFunction* ctf = static_cast<const CubicBezierTimingFunction*>(&other);
+        if ( other.isCubicBezierTimingFunction() )
+        {
+            const CubicBezierTimingFunction *ctf = static_cast<const CubicBezierTimingFunction *>( &other );
             return m_x1 == ctf->m_x1 && m_y1 == ctf->m_y1 && m_x2 == ctf->m_x2 && m_y2 == ctf->m_y2;
         }
+
         return false;
     }
 
-    double x1() const { return m_x1; }
-    double y1() const { return m_y1; }
-    double x2() const { return m_x2; }
-    double y2() const { return m_y2; }
-    
-    static const CubicBezierTimingFunction* defaultTimingFunction()
+    double x1() const
     {
-        static const CubicBezierTimingFunction* dtf = create().leakRef();
+        return m_x1;
+    }
+    double y1() const
+    {
+        return m_y1;
+    }
+    double x2() const
+    {
+        return m_x2;
+    }
+    double y2() const
+    {
+        return m_y2;
+    }
+
+    static const CubicBezierTimingFunction *defaultTimingFunction()
+    {
+        static const CubicBezierTimingFunction *dtf = create().leakRef();
         return dtf;
     }
-    
+
 private:
-    CubicBezierTimingFunction(double x1 = 0.25, double y1 = 0.1, double x2 = 0.25, double y2 = 1.0)
-        : TimingFunction(CubicBezierFunction)
-        , m_x1(x1)
-        , m_y1(y1)
-        , m_x2(x2)
-        , m_y2(y2)
+    CubicBezierTimingFunction( double x1 = 0.25, double y1 = 0.1, double x2 = 0.25, double y2 = 1.0 )
+        : TimingFunction( CubicBezierFunction )
+        , m_x1( x1 )
+        , m_y1( y1 )
+        , m_x2( x2 )
+        , m_y2( y2 )
     {
     }
 
@@ -124,39 +152,48 @@ private:
     double m_y2;
 };
 
-class StepsTimingFunction : public TimingFunction {
+class StepsTimingFunction : public TimingFunction
+{
 public:
-    static PassRefPtr<StepsTimingFunction> create(int steps, bool stepAtStart)
+    static PassRefPtr<StepsTimingFunction> create( int steps, bool stepAtStart )
     {
-        return adoptRef(new StepsTimingFunction(steps, stepAtStart));
+        return adoptRef( new StepsTimingFunction( steps, stepAtStart ) );
     }
-    
+
     ~StepsTimingFunction() { }
-    
-    virtual bool operator==(const TimingFunction& other)
+
+    virtual bool operator==( const TimingFunction &other )
     {
-        if (other.isStepsTimingFunction()) {
-            const StepsTimingFunction* stf = static_cast<const StepsTimingFunction*>(&other);
+        if ( other.isStepsTimingFunction() )
+        {
+            const StepsTimingFunction *stf = static_cast<const StepsTimingFunction *>( &other );
             return m_steps == stf->m_steps && m_stepAtStart == stf->m_stepAtStart;
         }
+
         return false;
     }
-    
-    int numberOfSteps() const { return m_steps; }
-    bool stepAtStart() const { return m_stepAtStart; }
-    
+
+    int numberOfSteps() const
+    {
+        return m_steps;
+    }
+    bool stepAtStart() const
+    {
+        return m_stepAtStart;
+    }
+
 private:
-    StepsTimingFunction(int steps, bool stepAtStart)
-        : TimingFunction(StepsFunction)
-        , m_steps(steps)
-        , m_stepAtStart(stepAtStart)
+    StepsTimingFunction( int steps, bool stepAtStart )
+        : TimingFunction( StepsFunction )
+        , m_steps( steps )
+        , m_stepAtStart( stepAtStart )
     {
     }
-    
+
     int m_steps;
     bool m_stepAtStart;
 };
-    
+
 } // namespace WebCore
 
 #endif // TimingFunction_h

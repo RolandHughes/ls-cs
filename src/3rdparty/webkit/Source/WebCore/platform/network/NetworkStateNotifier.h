@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef NetworkStateNotifier_h
@@ -34,8 +34,8 @@
 #include <wtf/RetainPtr.h>
 #include "Timer.h"
 
-typedef const struct __CFArray * CFArrayRef;
-typedef const struct __SCDynamicStore * SCDynamicStoreRef;
+typedef const struct __CFArray *CFArrayRef;
+typedef const struct __SCDynamicStore *SCDynamicStoreRef;
 
 #elif PLATFORM(WIN)
 
@@ -52,47 +52,56 @@ typedef const struct __SCDynamicStore * SCDynamicStoreRef;
 
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if (PLATFORM(QT) && USE(QT_BEARER))
 class NetworkStateNotifierPrivate;
 #endif
 
-class NetworkStateNotifier {
-    WTF_MAKE_NONCOPYABLE(NetworkStateNotifier); WTF_MAKE_FAST_ALLOCATED;
+class NetworkStateNotifier
+{
+    WTF_MAKE_NONCOPYABLE( NetworkStateNotifier );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     NetworkStateNotifier();
-    void setNetworkStateChangedFunction(void (*)());
+    void setNetworkStateChangedFunction( void ( * )() );
 
-    bool onLine() const { return m_isOnLine; }
+    bool onLine() const
+    {
+        return m_isOnLine;
+    }
 
 #if (PLATFORM(QT) && USE(QT_BEARER))
-    void setNetworkAccessAllowed(bool);
+    void setNetworkAccessAllowed( bool );
 #elif PLATFORM(ANDROID) || PLATFORM(CHROMIUM)
-    void setOnLine(bool);
+    void setOnLine( bool );
 #endif
 
 #if PLATFORM(ANDROID)
-    void networkStateChange(bool online) { setOnLine(online); }
+    void networkStateChange( bool online )
+    {
+        setOnLine( online );
+    }
 #endif
 
 private:
     bool m_isOnLine;
-    void (*m_networkStateChangedFunction)();
+    void ( *m_networkStateChangedFunction )();
 
     void updateState();
 
 #if PLATFORM(MAC)
-    void networkStateChangeTimerFired(Timer<NetworkStateNotifier>*);
+    void networkStateChangeTimerFired( Timer<NetworkStateNotifier> * );
 
-    static void dynamicStoreCallback(SCDynamicStoreRef, CFArrayRef changedKeys, void *info); 
+    static void dynamicStoreCallback( SCDynamicStoreRef, CFArrayRef changedKeys, void *info );
 
     RetainPtr<SCDynamicStoreRef> m_store;
     Timer<NetworkStateNotifier> m_networkStateChangeTimer;
 
 #elif PLATFORM(WIN)
-    static void CALLBACK addrChangeCallback(void*, BOOLEAN timedOut);
-    static void callAddressChanged(void*);
+    static void CALLBACK addrChangeCallback( void *, BOOLEAN timedOut );
+    static void callAddressChanged( void * );
     void addressChanged();
 
     void registerForAddressChange();
@@ -101,15 +110,15 @@ private:
 
 #elif PLATFORM(QT) && USE(QT_BEARER)
     friend class NetworkStateNotifierPrivate;
-    NetworkStateNotifierPrivate* p;
+    NetworkStateNotifierPrivate *p;
 #endif
 };
 
 #if !PLATFORM(MAC) && !PLATFORM(WIN) && !(PLATFORM(QT) && USE(QT_BEARER))
 
 inline NetworkStateNotifier::NetworkStateNotifier()
-    : m_isOnLine(true)
-    , m_networkStateChangedFunction(0)
+    : m_isOnLine( true )
+    , m_networkStateChangedFunction( 0 )
 {
 }
 
@@ -117,7 +126,7 @@ inline void NetworkStateNotifier::updateState() { }
 
 #endif
 
-NetworkStateNotifier& networkStateNotifier();
+NetworkStateNotifier &networkStateNotifier();
 
 };
 

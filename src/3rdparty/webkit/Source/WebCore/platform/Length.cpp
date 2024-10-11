@@ -33,118 +33,174 @@
 
 using namespace WTF;
 
-namespace WebCore {
-
-static Length parseLength(const UChar* data, unsigned length)
+namespace WebCore
 {
-    if (length == 0)
-        return Length(1, Relative);
+
+static Length parseLength( const UChar *data, unsigned length )
+{
+    if ( length == 0 )
+    {
+        return Length( 1, Relative );
+    }
 
     unsigned i = 0;
-    while (i < length && isSpaceOrNewline(data[i]))
+
+    while ( i < length && isSpaceOrNewline( data[i] ) )
+    {
         ++i;
-    if (i < length && (data[i] == '+' || data[i] == '-'))
+    }
+
+    if ( i < length && ( data[i] == '+' || data[i] == '-' ) )
+    {
         ++i;
-    while (i < length && isASCIIDigit(data[i]))
+    }
+
+    while ( i < length && isASCIIDigit( data[i] ) )
+    {
         ++i;
+    }
+
     unsigned intLength = i;
-    while (i < length && (isASCIIDigit(data[i]) || data[i] == '.'))
+
+    while ( i < length && ( isASCIIDigit( data[i] ) || data[i] == '.' ) )
+    {
         ++i;
+    }
+
     unsigned doubleLength = i;
 
     // IE quirk: Skip whitespace between the number and the % character (20 % => 20%).
-    while (i < length && isSpaceOrNewline(data[i]))
+    while ( i < length && isSpaceOrNewline( data[i] ) )
+    {
         ++i;
+    }
 
     bool ok;
-    UChar next = (i < length) ? data[i] : ' ';
-    if (next == '%') {
+    UChar next = ( i < length ) ? data[i] : ' ';
+
+    if ( next == '%' )
+    {
         // IE quirk: accept decimal fractions for percentages.
-        double r = charactersToDouble(data, doubleLength, &ok);
-        if (ok)
-            return Length(r, Percent);
-        return Length(1, Relative);
+        double r = charactersToDouble( data, doubleLength, &ok );
+
+        if ( ok )
+        {
+            return Length( r, Percent );
+        }
+
+        return Length( 1, Relative );
     }
-    int r = charactersToIntStrict(data, intLength, &ok);
-    if (next == '*') {
-        if (ok)
-            return Length(r, Relative);
-        return Length(1, Relative);
+
+    int r = charactersToIntStrict( data, intLength, &ok );
+
+    if ( next == '*' )
+    {
+        if ( ok )
+        {
+            return Length( r, Relative );
+        }
+
+        return Length( 1, Relative );
     }
-    if (ok)
-        return Length(r, Fixed);
-    return Length(0, Relative);
+
+    if ( ok )
+    {
+        return Length( r, Fixed );
+    }
+
+    return Length( 0, Relative );
 }
 
-static int countCharacter(const UChar* data, unsigned length, UChar character)
+static int countCharacter( const UChar *data, unsigned length, UChar character )
 {
     int count = 0;
-    for (int i = 0; i < static_cast<int>(length); ++i)
+
+    for ( int i = 0; i < static_cast<int>( length ); ++i )
+    {
         count += data[i] == character;
+    }
+
     return count;
 }
 
-PassOwnArrayPtr<Length> newCoordsArray(const String& string, int& len)
+PassOwnArrayPtr<Length> newCoordsArray( const String &string, int &len )
 {
     unsigned length = string.length();
-    const UChar* data = string.characters();
-    StringBuffer spacified(length);
-    for (unsigned i = 0; i < length; i++) {
+    const UChar *data = string.characters();
+    StringBuffer spacified( length );
+
+    for ( unsigned i = 0; i < length; i++ )
+    {
         UChar cc = data[i];
-        if (cc > '9' || (cc < '0' && cc != '-' && cc != '*' && cc != '.'))
+
+        if ( cc > '9' || ( cc < '0' && cc != '-' && cc != '*' && cc != '.' ) )
+        {
             spacified[i] = ' ';
+        }
         else
+        {
             spacified[i] = cc;
+        }
     }
-    RefPtr<StringImpl> str = StringImpl::adopt(spacified);
+
+    RefPtr<StringImpl> str = StringImpl::adopt( spacified );
 
     str = str->simplifyWhiteSpace();
 
-    len = countCharacter(str->characters(), str->length(), ' ') + 1;
-    OwnArrayPtr<Length> r = adoptArrayPtr(new Length[len]);
+    len = countCharacter( str->characters(), str->length(), ' ' ) + 1;
+    OwnArrayPtr<Length> r = adoptArrayPtr( new Length[len] );
 
     int i = 0;
     unsigned pos = 0;
     size_t pos2;
 
-    while ((pos2 = str->find(' ', pos)) != notFound) {
-        r[i++] = parseLength(str->characters() + pos, pos2 - pos);
+    while ( ( pos2 = str->find( ' ', pos ) ) != notFound )
+    {
+        r[i++] = parseLength( str->characters() + pos, pos2 - pos );
         pos = pos2+1;
     }
-    r[i] = parseLength(str->characters() + pos, str->length() - pos);
 
-    ASSERT(i == len - 1);
+    r[i] = parseLength( str->characters() + pos, str->length() - pos );
+
+    ASSERT( i == len - 1 );
 
     return r.release();
 }
 
-PassOwnArrayPtr<Length> newLengthArray(const String& string, int& len)
+PassOwnArrayPtr<Length> newLengthArray( const String &string, int &len )
 {
     RefPtr<StringImpl> str = string.impl()->simplifyWhiteSpace();
-    if (!str->length()) {
+
+    if ( !str->length() )
+    {
         len = 1;
         return nullptr;
     }
 
-    len = countCharacter(str->characters(), str->length(), ',') + 1;
-    OwnArrayPtr<Length> r = adoptArrayPtr(new Length[len]);
+    len = countCharacter( str->characters(), str->length(), ',' ) + 1;
+    OwnArrayPtr<Length> r = adoptArrayPtr( new Length[len] );
 
     int i = 0;
     unsigned pos = 0;
     size_t pos2;
 
-    while ((pos2 = str->find(',', pos)) != notFound) {
-        r[i++] = parseLength(str->characters() + pos, pos2 - pos);
+    while ( ( pos2 = str->find( ',', pos ) ) != notFound )
+    {
+        r[i++] = parseLength( str->characters() + pos, pos2 - pos );
         pos = pos2+1;
     }
 
-    ASSERT(i == len - 1);
+    ASSERT( i == len - 1 );
 
     // IE Quirk: If the last comma is the last char skip it and reduce len by one.
-    if (str->length()-pos > 0)
-        r[i] = parseLength(str->characters() + pos, str->length() - pos);
+    if ( str->length()-pos > 0 )
+    {
+        r[i] = parseLength( str->characters() + pos, str->length() - pos );
+    }
     else
+    {
         len--;
+    }
 
     return r.release();
 }

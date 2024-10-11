@@ -25,33 +25,42 @@
 #include <runtime/Lookup.h>
 #include <wtf/HashMap.h>
 
-namespace JSC {
-    class JSGlobalData;
+namespace JSC
+{
+class JSGlobalData;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Map from static HashTable instances to per-GlobalData ones.
-class DOMObjectHashTableMap {
+class DOMObjectHashTableMap
+{
 public:
-    static DOMObjectHashTableMap& mapFor(JSC::JSGlobalData&);
+    static DOMObjectHashTableMap &mapFor( JSC::JSGlobalData & );
 
     ~DOMObjectHashTableMap()
     {
-        for (HashMap<const JSC::HashTable*, JSC::HashTable>::iterator iter = m_map.begin(); iter != m_map.end(); ++iter)
+        for ( HashMap<const JSC::HashTable *, JSC::HashTable>::iterator iter = m_map.begin(); iter != m_map.end(); ++iter )
+        {
             iter->second.deleteTable();
+        }
     }
 
-    const JSC::HashTable* get(const JSC::HashTable* staticTable)
+    const JSC::HashTable *get( const JSC::HashTable *staticTable )
     {
-        HashMap<const JSC::HashTable*, JSC::HashTable>::iterator iter = m_map.find(staticTable);
-        if (iter != m_map.end())
+        HashMap<const JSC::HashTable *, JSC::HashTable>::iterator iter = m_map.find( staticTable );
+
+        if ( iter != m_map.end() )
+        {
             return &iter->second;
-        return &m_map.set(staticTable, JSC::HashTable(*staticTable)).first->second;
+        }
+
+        return &m_map.set( staticTable, JSC::HashTable( *staticTable ) ).first->second;
     }
 
 private:
-    HashMap<const JSC::HashTable*, JSC::HashTable> m_map;
+    HashMap<const JSC::HashTable *, JSC::HashTable> m_map;
 };
 
 } // namespace WebCore

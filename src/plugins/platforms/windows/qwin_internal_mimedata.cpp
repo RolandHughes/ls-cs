@@ -26,57 +26,64 @@
 #include <qwin_context.h>
 #include <qwin_mime.h>
 
-bool QWindowsInternalMimeData::hasFormat_sys(const QString &mime) const
+bool QWindowsInternalMimeData::hasFormat_sys( const QString &mime ) const
 {
-   IDataObject *pDataObj = retrieveDataObject();
-   if (! pDataObj) {
-      return false;
-   }
+    IDataObject *pDataObj = retrieveDataObject();
 
-   const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
-   const bool has = mc.converterToMime(mime, pDataObj) != nullptr;
-   releaseDataObject(pDataObj);
+    if ( ! pDataObj )
+    {
+        return false;
+    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-   qDebug() << "QWindowsInternalMimeData::hasFormat_sys:" <<  mime << has;
+    const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
+    const bool has = mc.converterToMime( mime, pDataObj ) != nullptr;
+    releaseDataObject( pDataObj );
+
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+    qDebug() << "QWindowsInternalMimeData::hasFormat_sys:" <<  mime << has;
 #endif
 
-   return has;
+    return has;
 }
 
 QStringList QWindowsInternalMimeData::formats_sys() const
 {
-   IDataObject *pDataObj = retrieveDataObject();
-   if (! pDataObj) {
-      return QStringList();
-   }
+    IDataObject *pDataObj = retrieveDataObject();
 
-   const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
-   const QStringList fmts = mc.allMimesForFormats(pDataObj);
-   releaseDataObject(pDataObj);
+    if ( ! pDataObj )
+    {
+        return QStringList();
+    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-   qDebug() << "QWindowsInternalMimeData::formats_sys:" <<  fmts;
+    const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
+    const QStringList fmts = mc.allMimesForFormats( pDataObj );
+    releaseDataObject( pDataObj );
+
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+    qDebug() << "QWindowsInternalMimeData::formats_sys:" <<  fmts;
 #endif
 
-   return fmts;
+    return fmts;
 }
 
-QVariant QWindowsInternalMimeData::retrieveData_sys(const QString &mimeType, QVariant::Type type) const
+QVariant QWindowsInternalMimeData::retrieveData_sys( const QString &mimeType, QVariant::Type type ) const
 {
-   IDataObject *pDataObj = retrieveDataObject();
-   if (! pDataObj) {
-      return QVariant();
-   }
+    IDataObject *pDataObj = retrieveDataObject();
 
-   QVariant result;
-   const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
+    if ( ! pDataObj )
+    {
+        return QVariant();
+    }
 
-   if (const QWindowsMime *converter = mc.converterToMime(mimeType, pDataObj)) {
-      result = converter->convertToMime(mimeType, pDataObj, type);
-   }
+    QVariant result;
+    const QWindowsMimeConverter &mc = QWindowsContext::instance()->mimeConverter();
 
-   releaseDataObject(pDataObj);
+    if ( const QWindowsMime *converter = mc.converterToMime( mimeType, pDataObj ) )
+    {
+        result = converter->convertToMime( mimeType, pDataObj, type );
+    }
 
-   return result;
+    releaseDataObject( pDataObj );
+
+    return result;
 }

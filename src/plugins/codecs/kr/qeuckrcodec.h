@@ -56,32 +56,58 @@ QT_BEGIN_NAMESPACE
 
 #ifndef QT_NO_TEXTCODEC
 
-class QEucKrCodec : public QTextCodec {
+class QEucKrCodec : public QTextCodec
+{
 public:
     static QByteArray _name();
-    static QList<QByteArray> _aliases() { return QList<QByteArray>(); }
+    static QList<QByteArray> _aliases()
+    {
+        return QList<QByteArray>();
+    }
     static int _mibEnum();
 
-    QByteArray name() const { return _name(); }
-    QList<QByteArray> aliases() const { return _aliases(); }
-    int mibEnum() const { return _mibEnum(); }
+    QByteArray name() const
+    {
+        return _name();
+    }
+    QList<QByteArray> aliases() const
+    {
+        return _aliases();
+    }
+    int mibEnum() const
+    {
+        return _mibEnum();
+    }
 
-    QString convertToUnicode(const char *, int, ConverterState *) const;
-    QByteArray convertFromUnicode(const QChar *, int, ConverterState *) const;
+    QString convertToUnicode( const char *, int, ConverterState * ) const;
+    QByteArray convertFromUnicode( const QChar *, int, ConverterState * ) const;
 };
 
-class QCP949Codec : public QTextCodec {
+class QCP949Codec : public QTextCodec
+{
 public:
     static QByteArray _name();
-    static QList<QByteArray> _aliases() { return QList<QByteArray>(); }
+    static QList<QByteArray> _aliases()
+    {
+        return QList<QByteArray>();
+    }
     static int _mibEnum();
 
-    QByteArray name() const { return _name(); }
-    QList<QByteArray> aliases() const { return _aliases(); }
-    int mibEnum() const { return _mibEnum(); }
+    QByteArray name() const
+    {
+        return _name();
+    }
+    QList<QByteArray> aliases() const
+    {
+        return _aliases();
+    }
+    int mibEnum() const
+    {
+        return _mibEnum();
+    }
 
-    QString convertToUnicode(const char *, int, ConverterState *) const;
-    QByteArray convertFromUnicode(const QChar *, int, ConverterState *) const;
+    QString convertToUnicode( const char *, int, ConverterState * ) const;
+    QByteArray convertFromUnicode( const QChar *, int, ConverterState * ) const;
 };
 
 #ifdef Q_WS_X11
@@ -91,15 +117,27 @@ public:
     QFontKsc5601Codec();
 
     static QByteArray _name();
-    static QList<QByteArray> _aliases() { return QList<QByteArray>(); }
+    static QList<QByteArray> _aliases()
+    {
+        return QList<QByteArray>();
+    }
     static int _mibEnum();
 
-    QByteArray name() const { return _name(); }
-    QList<QByteArray> aliases() const { return _aliases(); }
-    int mibEnum() const { return _mibEnum(); }
+    QByteArray name() const
+    {
+        return _name();
+    }
+    QList<QByteArray> aliases() const
+    {
+        return _aliases();
+    }
+    int mibEnum() const
+    {
+        return _mibEnum();
+    }
 
-    QString convertToUnicode(const char *, int, ConverterState *) const;
-    QByteArray convertFromUnicode(const QChar *, int, ConverterState *) const;
+    QString convertToUnicode( const char *, int, ConverterState * ) const;
+    QByteArray convertFromUnicode( const QChar *, int, ConverterState * ) const;
 
 };
 #endif

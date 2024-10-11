@@ -26,32 +26,46 @@
 
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLSelectElement;
 
-class HTMLKeygenElement : public HTMLFormControlElementWithState {
+class HTMLKeygenElement : public HTMLFormControlElementWithState
+{
 public:
-    static PassRefPtr<HTMLKeygenElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLKeygenElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
-    virtual bool willValidate() const { return false; }
+    virtual bool willValidate() const
+    {
+        return false;
+    }
 
 private:
-    HTMLKeygenElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLKeygenElement( const QualifiedName &, Document *, HTMLFormElement * );
 
-    virtual bool canStartSelection() const { return false; }
+    virtual bool canStartSelection() const
+    {
+        return false;
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual bool appendFormData(FormDataList&, bool);
-    virtual const AtomicString& formControlType() const;
-    virtual bool isOptionalFormControl() const { return false; }
+    virtual bool appendFormData( FormDataList &, bool );
+    virtual const AtomicString &formControlType() const;
+    virtual bool isOptionalFormControl() const
+    {
+        return false;
+    }
 
-    virtual bool isEnumeratable() const { return true; }
+    virtual bool isEnumeratable() const
+    {
+        return true;
+    }
 
     virtual void reset();
 
-    HTMLSelectElement* shadowSelect() const;
+    HTMLSelectElement *shadowSelect() const;
 
     AtomicString m_challenge;
     AtomicString m_keyType;

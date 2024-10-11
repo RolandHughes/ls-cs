@@ -44,86 +44,114 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-JSValue JSClipboard::types(ExecState* exec) const
+JSValue JSClipboard::types( ExecState *exec ) const
 {
-    Clipboard* clipboard = impl();
+    Clipboard *clipboard = impl();
 
     HashSet<String> types = clipboard->types();
-    if (types.isEmpty())
+
+    if ( types.isEmpty() )
+    {
         return jsNull();
+    }
 
     MarkedArgumentBuffer list;
     HashSet<String>::const_iterator end = types.end();
-    for (HashSet<String>::const_iterator it = types.begin(); it != end; ++it)
-        list.append(jsString(exec, stringToUString(*it)));
-    return constructArray(exec, globalObject(), list);
+
+    for ( HashSet<String>::const_iterator it = types.begin(); it != end; ++it )
+    {
+        list.append( jsString( exec, stringToUString( *it ) ) );
+    }
+
+    return constructArray( exec, globalObject(), list );
 }
 
-JSValue JSClipboard::clearData(ExecState* exec)
+JSValue JSClipboard::clearData( ExecState *exec )
 {
-    Clipboard* clipboard = impl();
+    Clipboard *clipboard = impl();
 
-    if (!exec->argumentCount()) {
+    if ( !exec->argumentCount() )
+    {
         clipboard->clearAllData();
         return jsUndefined();
     }
 
-    if (exec->argumentCount() == 1) {
-        clipboard->clearData(ustringToString(exec->argument(0).toString(exec)));
+    if ( exec->argumentCount() == 1 )
+    {
+        clipboard->clearData( ustringToString( exec->argument( 0 ).toString( exec ) ) );
         return jsUndefined();
     }
 
-    // FIXME: It does not match the rest of the JS bindings to throw on invalid number of arguments. 
-    return throwError(exec, createSyntaxError(exec, "clearData: Invalid number of arguments"));
+    // FIXME: It does not match the rest of the JS bindings to throw on invalid number of arguments.
+    return throwError( exec, createSyntaxError( exec, "clearData: Invalid number of arguments" ) );
 }
 
-JSValue JSClipboard::getData(ExecState* exec)
+JSValue JSClipboard::getData( ExecState *exec )
 {
     // FIXME: It does not match the rest of the JS bindings to throw on invalid number of arguments.
-    if (exec->argumentCount() != 1)
-        return throwError(exec, createSyntaxError(exec, "getData: Invalid number of arguments"));
+    if ( exec->argumentCount() != 1 )
+    {
+        return throwError( exec, createSyntaxError( exec, "getData: Invalid number of arguments" ) );
+    }
 
-    Clipboard* clipboard = impl();
+    Clipboard *clipboard = impl();
 
     bool success;
-    String result = clipboard->getData(ustringToString(exec->argument(0).toString(exec)), success);
-    if (!success)
-        return jsUndefined();
+    String result = clipboard->getData( ustringToString( exec->argument( 0 ).toString( exec ) ), success );
 
-    return jsString(exec, result);
+    if ( !success )
+    {
+        return jsUndefined();
+    }
+
+    return jsString( exec, result );
 }
 
-JSValue JSClipboard::setDragImage(ExecState* exec)
+JSValue JSClipboard::setDragImage( ExecState *exec )
 {
-    Clipboard* clipboard = impl();
+    Clipboard *clipboard = impl();
 
-    if (!clipboard->isForDragAndDrop())
+    if ( !clipboard->isForDragAndDrop() )
+    {
         return jsUndefined();
+    }
 
-    // FIXME: It does not match the rest of the JS bindings to throw on invalid number of arguments. 
-    if (exec->argumentCount() != 3)
-        return throwError(exec, createSyntaxError(exec, "setDragImage: Invalid number of arguments"));
+    // FIXME: It does not match the rest of the JS bindings to throw on invalid number of arguments.
+    if ( exec->argumentCount() != 3 )
+    {
+        return throwError( exec, createSyntaxError( exec, "setDragImage: Invalid number of arguments" ) );
+    }
 
-    int x = exec->argument(1).toInt32(exec);
-    int y = exec->argument(2).toInt32(exec);
+    int x = exec->argument( 1 ).toInt32( exec );
+    int y = exec->argument( 2 ).toInt32( exec );
 
     // See if they passed us a node
-    Node* node = toNode(exec->argument(0));
-    if (!node)
-        return throwTypeError(exec);
+    Node *node = toNode( exec->argument( 0 ) );
 
-    // FIXME: This should probably be a TypeError. 
-    if (!node->isElementNode())
-        return throwError(exec, createSyntaxError(exec, "setDragImageFromElement: Invalid first argument"));
+    if ( !node )
+    {
+        return throwTypeError( exec );
+    }
 
-    if (static_cast<Element*>(node)->hasLocalName(imgTag) && !node->inDocument())
-        clipboard->setDragImage(static_cast<HTMLImageElement*>(node)->cachedImage(), IntPoint(x, y));
+    // FIXME: This should probably be a TypeError.
+    if ( !node->isElementNode() )
+    {
+        return throwError( exec, createSyntaxError( exec, "setDragImageFromElement: Invalid first argument" ) );
+    }
+
+    if ( static_cast<Element *>( node )->hasLocalName( imgTag ) && !node->inDocument() )
+    {
+        clipboard->setDragImage( static_cast<HTMLImageElement *>( node )->cachedImage(), IntPoint( x, y ) );
+    }
     else
-        clipboard->setDragImageElement(node, IntPoint(x, y));
+    {
+        clipboard->setDragImageElement( node, IntPoint( x, y ) );
+    }
 
     return jsUndefined();
 }

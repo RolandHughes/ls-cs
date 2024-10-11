@@ -29,9 +29,11 @@
 #include <wtf/OSAllocator.h>
 #include <wtf/PageReservation.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class PageAllocationAligned : private PageBlock {
+class PageAllocationAligned : private PageBlock
+{
 public:
     PageAllocationAligned()
     {
@@ -41,20 +43,21 @@ public:
     using PageBlock::size;
     using PageBlock::base;
 
-    static PageAllocationAligned allocate(size_t size, size_t alignment, OSAllocator::Usage usage = OSAllocator::UnknownUsage, bool writable = true, bool executable = false);
+    static PageAllocationAligned allocate( size_t size, size_t alignment, OSAllocator::Usage usage = OSAllocator::UnknownUsage,
+                                           bool writable = true, bool executable = false );
 
     void deallocate();
 
 private:
 #if OS(DARWIN)
-    PageAllocationAligned(void* base, size_t size)
-        : PageBlock(base, size)
+    PageAllocationAligned( void *base, size_t size )
+        : PageBlock( base, size )
     {
     }
 #else
-    PageAllocationAligned(void* base, size_t size, void* reservationBase, size_t reservationSize)
-        : PageBlock(base, size)
-        , m_reservation(reservationBase, reservationSize)
+    PageAllocationAligned( void *base, size_t size, void *reservationBase, size_t reservationSize )
+        : PageBlock( base, size )
+        , m_reservation( reservationBase, reservationSize )
     {
     }
 

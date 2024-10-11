@@ -29,83 +29,84 @@
 class QXmlName;
 class QXmlNamePool;
 
-Q_XMLPATTERNS_EXPORT uint qHash(const QXmlName &name);
+Q_XMLPATTERNS_EXPORT uint qHash( const QXmlName &name );
 
 class Q_XMLPATTERNS_EXPORT QXmlName
 {
- public:
-   typedef qint16 NamespaceCode;
-   typedef NamespaceCode PrefixCode;
-   typedef NamespaceCode LocalNameCode;
+public:
+    typedef qint16 NamespaceCode;
+    typedef NamespaceCode PrefixCode;
+    typedef NamespaceCode LocalNameCode;
 
-   QXmlName();
+    QXmlName();
 
-   QXmlName(QXmlNamePool &namePool, const QString &localName, const QString &namespaceURI = QString(),
-            const QString &prefix = QString());
+    QXmlName( QXmlNamePool &namePool, const QString &localName, const QString &namespaceURI = QString(),
+              const QString &prefix = QString() );
 
-   QXmlName(const QXmlName &other) = default;
-   QXmlName &operator=(const QXmlName &other) = default;
+    QXmlName( const QXmlName &other ) = default;
+    QXmlName &operator=( const QXmlName &other ) = default;
 
-   QString namespaceUri(const QXmlNamePool &namePool) const;
-   QString prefix(const QXmlNamePool &namePool) const;
-   QString localName(const QXmlNamePool &namePool) const;
-   QString toClarkName(const QXmlNamePool &namePool) const;
+    QString namespaceUri( const QXmlNamePool &namePool ) const;
+    QString prefix( const QXmlNamePool &namePool ) const;
+    QString localName( const QXmlNamePool &namePool ) const;
+    QString toClarkName( const QXmlNamePool &namePool ) const;
 
-   bool operator==(const QXmlName &other) const;
-   bool operator!=(const QXmlName &other) const;
-   bool isNull() const;
+    bool operator==( const QXmlName &other ) const;
+    bool operator!=( const QXmlName &other ) const;
+    bool isNull() const;
 
-   static bool isNCName(const QString &candidate);
-   static QXmlName fromClarkName(const QString &clarkName, const QXmlNamePool &namePool);
+    static bool isNCName( const QString &candidate );
+    static QXmlName fromClarkName( const QString &clarkName, const QXmlNamePool &namePool );
 
-   /* The members below are internal, not part of the public API, and
-    * unsupported. Using them is undefined behavior. */
-   typedef qint64 Code;
+    /* The members below are internal, not part of the public API, and
+     * unsupported. Using them is undefined behavior. */
+    typedef qint64 Code;
 
-   inline QXmlName(const NamespaceCode uri, const LocalNameCode ln, const PrefixCode p = 0);
+    inline QXmlName( const NamespaceCode uri, const LocalNameCode ln, const PrefixCode p = 0 );
 
-   /* implementations are in utils/qnamepool_p.h. */
-   inline LocalNameCode localName() const;
-   inline PrefixCode prefix() const;
-   inline bool hasPrefix() const;
-   inline bool hasNamespace() const;
-   inline NamespaceCode namespaceURI() const;
-   inline bool isLexicallyEqual(const QXmlName &other) const;
-   inline void setPrefix(const PrefixCode c);
-   inline void setNamespaceURI(const NamespaceCode c);
-   inline void setLocalName(const LocalNameCode c);
-   inline Code code() const;
+    /* implementations are in utils/qnamepool_p.h. */
+    inline LocalNameCode localName() const;
+    inline PrefixCode prefix() const;
+    inline bool hasPrefix() const;
+    inline bool hasNamespace() const;
+    inline NamespaceCode namespaceURI() const;
+    inline bool isLexicallyEqual( const QXmlName &other ) const;
+    inline void setPrefix( const PrefixCode c );
+    inline void setNamespaceURI( const NamespaceCode c );
+    inline void setLocalName( const LocalNameCode c );
+    inline Code code() const;
 
-   friend Q_XMLPATTERNS_EXPORT uint qHash(const QXmlName &name);
+    friend Q_XMLPATTERNS_EXPORT uint qHash( const QXmlName &name );
 
- private:
+private:
 
-  enum Constant {
-      LocalNameOffset     = 0,
-      LocalNameLength     = 12,
-      NamespaceOffset     = LocalNameLength,
-      NamespaceLength     = 9,
-      PrefixLength        = 9,
-      InvalidCode         = 1 << 31,
-      NamespaceMask       = ((1 << ((NamespaceOffset + NamespaceLength) - NamespaceOffset)) - 1) << NamespaceOffset,
-      LocalNameMask       = ((1 << ((LocalNameOffset + LocalNameLength) - LocalNameOffset)) - 1) << LocalNameOffset,
-      PrefixOffset        = LocalNameLength + NamespaceLength,
-      PrefixMask          = ((1 << ((PrefixOffset + PrefixLength) - PrefixOffset)) - 1) << PrefixOffset,
-      MaximumPrefixes     = (PrefixMask >> PrefixOffset) - 1,
-      MaximumLocalNames   = (LocalNameMask >> LocalNameOffset) - 1,
-      MaximumNamespaces   = (NamespaceMask >> NamespaceOffset) - 1,
-      ExpandedNameMask    = LocalNameMask | NamespaceMask,
-      LexicalQNameMask    = LocalNameMask | PrefixMask
-   };
+    enum Constant
+    {
+        LocalNameOffset     = 0,
+        LocalNameLength     = 12,
+        NamespaceOffset     = LocalNameLength,
+        NamespaceLength     = 9,
+        PrefixLength        = 9,
+        InvalidCode         = 1 << 31,
+        NamespaceMask       = ( ( 1 << ( ( NamespaceOffset + NamespaceLength ) - NamespaceOffset ) ) - 1 ) << NamespaceOffset,
+        LocalNameMask       = ( ( 1 << ( ( LocalNameOffset + LocalNameLength ) - LocalNameOffset ) ) - 1 ) << LocalNameOffset,
+        PrefixOffset        = LocalNameLength + NamespaceLength,
+        PrefixMask          = ( ( 1 << ( ( PrefixOffset + PrefixLength ) - PrefixOffset ) ) - 1 ) << PrefixOffset,
+        MaximumPrefixes     = ( PrefixMask >> PrefixOffset ) - 1,
+        MaximumLocalNames   = ( LocalNameMask >> LocalNameOffset ) - 1,
+        MaximumNamespaces   = ( NamespaceMask >> NamespaceOffset ) - 1,
+        ExpandedNameMask    = LocalNameMask | NamespaceMask,
+        LexicalQNameMask    = LocalNameMask | PrefixMask
+    };
 
-   inline QXmlName(const int c)
-      : m_qNameCode(c)
-   {
-   }
+    inline QXmlName( const int c )
+        : m_qNameCode( c )
+    {
+    }
 
-   Code m_qNameCode;
+    Code m_qNameCode;
 };
 
-CS_DECLARE_METATYPE(QXmlName)
+LSCS_DECLARE_METATYPE( QXmlName )
 
 #endif

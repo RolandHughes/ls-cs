@@ -55,90 +55,108 @@ class AVFMediaContainerControl;
 
 class AVFCameraService : public QMediaService
 {
-   CS_OBJECT(AVFCameraService)
+    LSCS_OBJECT( AVFCameraService )
 
- public:
-   AVFCameraService(QObject *parent = nullptr);
-   ~AVFCameraService();
+public:
+    AVFCameraService( QObject *parent = nullptr );
+    ~AVFCameraService();
 
-   QMediaControl *requestControl(const QString &name) override;
-   void releaseControl(QMediaControl *control) override;
+    QMediaControl *requestControl( const QString &name ) override;
+    void releaseControl( QMediaControl *control ) override;
 
-   AVFCameraSession *session() const {
-      return m_session;
-   }
-   AVFCameraControl *cameraControl() const {
-      return m_cameraControl;
-   }
-   AVFCameraDeviceControl *videoDeviceControl() const {
-      return m_videoDeviceControl;
-   }
-   AVFAudioInputSelectorControl *audioInputSelectorControl() const {
-      return m_audioInputSelectorControl;
-   }
-   AVFCameraMetaDataControl *metaDataControl() const {
-      return m_metaDataControl;
-   }
-   QMediaRecorderControl *recorderControl() const {
-      return m_recorderControl;
-   }
-   AVFImageCaptureControl *imageCaptureControl() const {
-      return m_imageCaptureControl;
-   }
-   AVFCameraFocusControl *cameraFocusControl() const {
-      return m_cameraFocusControl;
-   }
-   AVFCameraExposureControl *cameraExposureControl() const {
-      return m_cameraExposureControl;
-   }
-   AVFCameraZoomControl *cameraZoomControl() const {
-      return m_cameraZoomControl;
-   }
-   AVFCameraRendererControl *videoOutput() const {
-      return m_videoOutput;
-   }
-   AVFCameraViewfinderSettingsControl2 *viewfinderSettingsControl2() const {
-      return m_viewfinderSettingsControl2;
-   }
-   AVFCameraViewfinderSettingsControl *viewfinderSettingsControl() const {
-      return m_viewfinderSettingsControl;
-   }
-   AVFImageEncoderControl *imageEncoderControl() const {
-      return m_imageEncoderControl;
-   }
-   AVFCameraFlashControl *flashControl() const {
-      return m_flashControl;
-   }
-   AVFAudioEncoderSettingsControl *audioEncoderSettingsControl() const {
-      return m_audioEncoderSettingsControl;
-   }
-   AVFVideoEncoderSettingsControl *videoEncoderSettingsControl() const {
-      return m_videoEncoderSettingsControl;
-   }
-   AVFMediaContainerControl *mediaContainerControl() const {
-      return m_mediaContainerControl;
-   }
+    AVFCameraSession *session() const
+    {
+        return m_session;
+    }
+    AVFCameraControl *cameraControl() const
+    {
+        return m_cameraControl;
+    }
+    AVFCameraDeviceControl *videoDeviceControl() const
+    {
+        return m_videoDeviceControl;
+    }
+    AVFAudioInputSelectorControl *audioInputSelectorControl() const
+    {
+        return m_audioInputSelectorControl;
+    }
+    AVFCameraMetaDataControl *metaDataControl() const
+    {
+        return m_metaDataControl;
+    }
+    QMediaRecorderControl *recorderControl() const
+    {
+        return m_recorderControl;
+    }
+    AVFImageCaptureControl *imageCaptureControl() const
+    {
+        return m_imageCaptureControl;
+    }
+    AVFCameraFocusControl *cameraFocusControl() const
+    {
+        return m_cameraFocusControl;
+    }
+    AVFCameraExposureControl *cameraExposureControl() const
+    {
+        return m_cameraExposureControl;
+    }
+    AVFCameraZoomControl *cameraZoomControl() const
+    {
+        return m_cameraZoomControl;
+    }
+    AVFCameraRendererControl *videoOutput() const
+    {
+        return m_videoOutput;
+    }
+    AVFCameraViewfinderSettingsControl2 *viewfinderSettingsControl2() const
+    {
+        return m_viewfinderSettingsControl2;
+    }
+    AVFCameraViewfinderSettingsControl *viewfinderSettingsControl() const
+    {
+        return m_viewfinderSettingsControl;
+    }
+    AVFImageEncoderControl *imageEncoderControl() const
+    {
+        return m_imageEncoderControl;
+    }
+    AVFCameraFlashControl *flashControl() const
+    {
+        return m_flashControl;
+    }
+    AVFAudioEncoderSettingsControl *audioEncoderSettingsControl() const
+    {
+        return m_audioEncoderSettingsControl;
+    }
+    AVFVideoEncoderSettingsControl *videoEncoderSettingsControl() const
+    {
+        return m_videoEncoderSettingsControl;
+    }
+    AVFMediaContainerControl *mediaContainerControl() const
+    {
+        return m_mediaContainerControl;
+    }
 
- private:
-   AVFCameraSession *m_session;
-   AVFCameraControl *m_cameraControl;
-   AVFCameraInfoControl *m_cameraInfoControl;
-   AVFCameraDeviceControl *m_videoDeviceControl;
-   AVFAudioInputSelectorControl *m_audioInputSelectorControl;
-   AVFCameraRendererControl *m_videoOutput;
-   AVFCameraMetaDataControl *m_metaDataControl;
-   QMediaRecorderControl *m_recorderControl;
-   AVFImageCaptureControl *m_imageCaptureControl;
-   AVFCameraFocusControl *m_cameraFocusControl;
-   AVFCameraExposureControl *m_cameraExposureControl;
-   AVFCameraZoomControl *m_cameraZoomControl;
-   AVFCameraViewfinderSettingsControl2 *m_viewfinderSettingsControl2;
-   AVFCameraViewfinderSettingsControl *m_viewfinderSettingsControl;
-   AVFImageEncoderControl *m_imageEncoderControl;
-   AVFCameraFlashControl *m_flashControl;
-   AVFAudioEncoderSettingsControl *m_audioEncoderSettingsControl;
-   AVFVideoEncoderSettingsControl *m_videoEncoderSettingsControl;
-   AVFMediaContainerControl *m_mediaContainerControl;
+private:
+    AVFCameraSession *m_session;
+    AVFCameraControl *m_cameraControl;
+    AVFCameraInfoControl *m_cameraInfoControl;
+    AVFCameraDeviceControl *m_videoDeviceControl;
+    AVFAudioInputSelectorControl *m_audioInputSelectorControl;
+    AVFCameraRendererControl *m_videoOutput;
+    AVFCameraMetaDataControl *m_metaDataControl;
+    QMediaRecorderControl *m_recorderControl;
+    AVFImageCaptureControl *m_imageCaptureControl;
+    AVFCameraFocusControl *m_cameraFocusControl;
+    AVFCameraExposureControl *m_cameraExposureControl;
+    AVFCameraZoomControl *m_cameraZoomControl;
+    AVFCameraViewfinderSettingsControl2 *m_viewfinderSettingsControl2;
+    AVFCameraViewfinderSettingsControl *m_viewfinderSettingsControl;
+    AVFImageEncoderControl *m_imageEncoderControl;
+    AVFCameraFlashControl *m_flashControl;
+    AVFAudioEncoderSettingsControl *m_audioEncoderSettingsControl;
+    AVFVideoEncoderSettingsControl *m_videoEncoderSettingsControl;
+    AVFMediaContainerControl *m_mediaContainerControl;
 };
 
 #endif

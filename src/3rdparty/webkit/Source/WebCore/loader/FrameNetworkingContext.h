@@ -23,9 +23,11 @@
 #include "Frame.h"
 #include "NetworkingContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FrameNetworkingContext : public NetworkingContext {
+class FrameNetworkingContext : public NetworkingContext
+{
 public:
     void invalidate()
     {
@@ -33,17 +35,23 @@ public:
     }
 
 protected:
-    FrameNetworkingContext(Frame* frame)
-        : m_frame(frame)
+    FrameNetworkingContext( Frame *frame )
+        : m_frame( frame )
     {
     }
 
-    Frame* frame() const { return m_frame; }
+    Frame *frame() const
+    {
+        return m_frame;
+    }
 
 private:
-    virtual bool isValid() const { return m_frame; }
+    virtual bool isValid() const
+    {
+        return m_frame;
+    }
 
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 }

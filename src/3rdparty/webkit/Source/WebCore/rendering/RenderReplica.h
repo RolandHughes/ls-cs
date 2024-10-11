@@ -31,24 +31,35 @@
 
 #include "RenderBox.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderReplica : public RenderBox {
+class RenderReplica : public RenderBox
+{
 public:
-    RenderReplica(Node*);
+    RenderReplica( Node * );
     virtual ~RenderReplica();
 
-    virtual const char* renderName() const { return "RenderReplica"; }
-    
-    virtual bool requiresLayer() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderReplica";
+    }
+
+    virtual bool requiresLayer() const
+    {
+        return true;
+    }
 
     virtual void layout();
     virtual void computePreferredLogicalWidths();
-    
-    virtual void paint(PaintInfo&, int tx, int ty);
+
+    virtual void paint( PaintInfo &, int tx, int ty );
 
 private:
-    virtual bool isReplica() const { return true; }
+    virtual bool isReplica() const
+    {
+        return true;
+    }
 
 };
 

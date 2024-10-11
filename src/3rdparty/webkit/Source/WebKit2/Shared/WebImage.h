@@ -30,32 +30,41 @@
 #include "ImageOptions.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
-    class IntSize;
+namespace WebCore
+{
+class IntSize;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ShareableBitmap;
 
 // WebImage - An image type suitable for vending to an API.
 
-class WebImage : public APIObject {
+class WebImage : public APIObject
+{
 public:
     static const Type APIType = TypeImage;
 
-    static PassRefPtr<WebImage> create(const WebCore::IntSize&, ImageOptions);
-    static PassRefPtr<WebImage> create(PassRefPtr<ShareableBitmap>);
+    static PassRefPtr<WebImage> create( const WebCore::IntSize &, ImageOptions );
+    static PassRefPtr<WebImage> create( PassRefPtr<ShareableBitmap> );
     ~WebImage();
-    
-    const WebCore::IntSize& size() const;
 
-    ShareableBitmap* bitmap() const { return m_bitmap.get(); }
+    const WebCore::IntSize &size() const;
+
+    ShareableBitmap *bitmap() const
+    {
+        return m_bitmap.get();
+    }
 
 private:
-    WebImage(PassRefPtr<ShareableBitmap>);
+    WebImage( PassRefPtr<ShareableBitmap> );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     RefPtr<ShareableBitmap> m_bitmap;
 };

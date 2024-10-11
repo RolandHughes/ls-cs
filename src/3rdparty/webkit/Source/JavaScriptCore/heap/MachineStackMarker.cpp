@@ -91,17 +91,22 @@
 
 using namespace WTF;
 
-namespace JSC {
+namespace JSC
+{
 
-static inline void swapIfBackwards(void*& begin, void*& end)
+static inline void swapIfBackwards( void *&begin, void *&end )
 {
 #if OS(WINCE)
-    if (begin <= end)
+
+    if ( begin <= end )
+    {
         return;
-    std::swap(begin, end);
+    }
+
+    std::swap( begin, end );
 #else
-UNUSED_PARAM(begin);
-UNUSED_PARAM(end);
+    UNUSED_PARAM( begin );
+    UNUSED_PARAM( end );
 #endif
 }
 
@@ -117,49 +122,50 @@ typedef HANDLE PlatformThread;
 typedef pthread_t PlatformThread;
 static const int SigThreadSuspendResume = SIGUSR2;
 
-static void pthreadSignalHandlerSuspendResume(int signo)
+static void pthreadSignalHandlerSuspendResume( int signo )
 {
     sigset_t signalSet;
-    sigemptyset(&signalSet);
-    sigaddset(&signalSet, SigThreadSuspendResume);
-    sigsuspend(&signalSet);
+    sigemptyset( &signalSet );
+    sigaddset( &signalSet, SigThreadSuspendResume );
+    sigsuspend( &signalSet );
 }
 #endif
 
-class MachineThreads::Thread {
+class MachineThreads::Thread
+{
 public:
-    Thread(pthread_t pthread, const PlatformThread& platThread, void* base)
-        : posixThread(pthread)
-        , platformThread(platThread)
-        , stackBase(base)
+    Thread( pthread_t pthread, const PlatformThread &platThread, void *base )
+        : posixThread( pthread )
+        , platformThread( platThread )
+        , stackBase( base )
     {
 #if USE(PTHREADS) && !OS(WINDOWS) && !OS(DARWIN) && !OS(QNX)
         struct sigaction action;
         action.sa_handler = pthreadSignalHandlerSuspendResume;
-        sigemptyset(&action.sa_mask);
+        sigemptyset( &action.sa_mask );
         action.sa_flags = SA_RESTART;
-        sigaction(SigThreadSuspendResume, &action, 0);
+        sigaction( SigThreadSuspendResume, &action, 0 );
 
         sigset_t mask;
-        sigemptyset(&mask);
-        sigaddset(&mask, SigThreadSuspendResume);
-        pthread_sigmask(SIG_UNBLOCK, &mask, 0);
+        sigemptyset( &mask );
+        sigaddset( &mask, SigThreadSuspendResume );
+        pthread_sigmask( SIG_UNBLOCK, &mask, 0 );
 #endif
     }
 
-    Thread* next;
+    Thread *next;
     pthread_t posixThread;
     PlatformThread platformThread;
-    void* stackBase;
+    void *stackBase;
 };
 
 #endif
 
-MachineThreads::MachineThreads(Heap* heap)
-    : m_heap(heap)
+MachineThreads::MachineThreads( Heap *heap )
+    : m_heap( heap )
 #if ENABLE(JSC_MULTIPLE_THREADS)
-    , m_registeredThreads(0)
-    , m_threadSpecific(0)
+    , m_registeredThreads( 0 )
+    , m_threadSpecific( 0 )
 #endif
 {
 }
@@ -167,17 +173,22 @@ MachineThreads::MachineThreads(Heap* heap)
 MachineThreads::~MachineThreads()
 {
 #if ENABLE(JSC_MULTIPLE_THREADS)
-    if (m_threadSpecific) {
-        int error = pthread_key_delete(m_threadSpecific);
-        ASSERT_UNUSED(error, !error);
+
+    if ( m_threadSpecific )
+    {
+        int error = pthread_key_delete( m_threadSpecific );
+        ASSERT_UNUSED( error, !error );
     }
 
-    MutexLocker registeredThreadsLock(m_registeredThreadsMutex);
-    for (Thread* t = m_registeredThreads; t;) {
-        Thread* next = t->next;
+    MutexLocker registeredThreadsLock( m_registeredThreadsMutex );
+
+    for ( Thread *t = m_registeredThreads; t; )
+    {
+        Thread *next = t->next;
         delete t;
         t = next;
     }
+
 #endif
 }
 
@@ -186,9 +197,9 @@ MachineThreads::~MachineThreads()
 static inline PlatformThread getCurrentPlatformThread()
 {
 #if OS(DARWIN)
-    return pthread_mach_thread_np(pthread_self());
+    return pthread_mach_thread_np( pthread_self() );
 #elif OS(WINDOWS)
-    return pthread_getw32threadhandle_np(pthread_self());
+    return pthread_getw32threadhandle_np( pthread_self() );
 #elif USE(PTHREADS)
     return pthread_self();
 #endif
@@ -196,57 +207,74 @@ static inline PlatformThread getCurrentPlatformThread()
 
 void MachineThreads::makeUsableFromMultipleThreads()
 {
-    if (m_threadSpecific)
+    if ( m_threadSpecific )
+    {
         return;
+    }
 
-    int error = pthread_key_create(&m_threadSpecific, removeThread);
-    if (error)
+    int error = pthread_key_create( &m_threadSpecific, removeThread );
+
+    if ( error )
+    {
         CRASH();
+    }
 }
 
 void MachineThreads::addCurrentThread()
 {
-    ASSERT(!m_heap->globalData()->exclusiveThread || m_heap->globalData()->exclusiveThread == currentThread());
+    ASSERT( !m_heap->globalData()->exclusiveThread || m_heap->globalData()->exclusiveThread == currentThread() );
 
-    if (!m_threadSpecific || pthread_getspecific(m_threadSpecific))
+    if ( !m_threadSpecific || pthread_getspecific( m_threadSpecific ) )
+    {
         return;
+    }
 
-    pthread_setspecific(m_threadSpecific, this);
-    Thread* thread = new Thread(pthread_self(), getCurrentPlatformThread(), m_heap->globalData()->stack().origin());
+    pthread_setspecific( m_threadSpecific, this );
+    Thread *thread = new Thread( pthread_self(), getCurrentPlatformThread(), m_heap->globalData()->stack().origin() );
 
-    MutexLocker lock(m_registeredThreadsMutex);
+    MutexLocker lock( m_registeredThreadsMutex );
 
     thread->next = m_registeredThreads;
     m_registeredThreads = thread;
 }
 
-void MachineThreads::removeThread(void* p)
+void MachineThreads::removeThread( void *p )
 {
-    if (p)
-        static_cast<MachineThreads*>(p)->removeCurrentThread();
+    if ( p )
+    {
+        static_cast<MachineThreads *>( p )->removeCurrentThread();
+    }
 }
 
 void MachineThreads::removeCurrentThread()
 {
     pthread_t currentPosixThread = pthread_self();
 
-    MutexLocker lock(m_registeredThreadsMutex);
+    MutexLocker lock( m_registeredThreadsMutex );
 
-    if (pthread_equal(currentPosixThread, m_registeredThreads->posixThread)) {
-        Thread* t = m_registeredThreads;
+    if ( pthread_equal( currentPosixThread, m_registeredThreads->posixThread ) )
+    {
+        Thread *t = m_registeredThreads;
         m_registeredThreads = m_registeredThreads->next;
         delete t;
-    } else {
-        Thread* last = m_registeredThreads;
-        Thread* t;
-        for (t = m_registeredThreads->next; t; t = t->next) {
-            if (pthread_equal(t->posixThread, currentPosixThread)) {
+    }
+    else
+    {
+        Thread *last = m_registeredThreads;
+        Thread *t;
+
+        for ( t = m_registeredThreads->next; t; t = t->next )
+        {
+            if ( pthread_equal( t->posixThread, currentPosixThread ) )
+            {
                 last->next = t->next;
                 break;
             }
+
             last = t;
         }
-        ASSERT(t); // If t is NULL, we never found ourselves in the list.
+
+        ASSERT( t ); // If t is NULL, we never found ourselves in the list.
         delete t;
     }
 }
@@ -259,7 +287,7 @@ void MachineThreads::removeCurrentThread()
 #define REGISTER_BUFFER_ALIGNMENT
 #endif
 
-void MachineThreads::gatherFromCurrentThread(ConservativeRoots& conservativeRoots, void* stackCurrent)
+void MachineThreads::gatherFromCurrentThread( ConservativeRoots &conservativeRoots, void *stackCurrent )
 {
     // setjmp forces volatile registers onto the stack
     jmp_buf registers REGISTER_BUFFER_ALIGNMENT;
@@ -267,49 +295,50 @@ void MachineThreads::gatherFromCurrentThread(ConservativeRoots& conservativeRoot
 #pragma warning(push)
 #pragma warning(disable: 4611)
 #endif
-    setjmp(registers);
+    setjmp( registers );
 #if COMPILER(MSVC)
 #pragma warning(pop)
 #endif
 
-    void* registersBegin = &registers;
-    void* registersEnd = reinterpret_cast<void*>(roundUpToMultipleOf<sizeof(void*)>(reinterpret_cast<uintptr_t>(&registers + 1)));
-    swapIfBackwards(registersBegin, registersEnd);
-    conservativeRoots.add(registersBegin, registersEnd);
+    void *registersBegin = &registers;
+    void *registersEnd = reinterpret_cast<void *>( roundUpToMultipleOf<sizeof( void * )>( reinterpret_cast<uintptr_t>
+                         ( &registers + 1 ) ) );
+    swapIfBackwards( registersBegin, registersEnd );
+    conservativeRoots.add( registersBegin, registersEnd );
 
-    void* stackBegin = stackCurrent;
-    void* stackEnd = m_heap->globalData()->stack().origin();
-    swapIfBackwards(stackBegin, stackEnd);
-    conservativeRoots.add(stackBegin, stackEnd);
+    void *stackBegin = stackCurrent;
+    void *stackEnd = m_heap->globalData()->stack().origin();
+    swapIfBackwards( stackBegin, stackEnd );
+    conservativeRoots.add( stackBegin, stackEnd );
 }
 
 #if ENABLE(JSC_MULTIPLE_THREADS)
 
-static inline void suspendThread(const PlatformThread& platformThread)
+static inline void suspendThread( const PlatformThread &platformThread )
 {
 #if OS(DARWIN)
-    thread_suspend(platformThread);
+    thread_suspend( platformThread );
 #elif OS(QNX)
-    ThreadCtl(_NTO_TCTL_ONE_THREAD_HOLD, static_cast<void*>(platformThread));
+    ThreadCtl( _NTO_TCTL_ONE_THREAD_HOLD, static_cast<void *>( platformThread ) );
 #elif OS(WINDOWS)
-    SuspendThread(platformThread);
+    SuspendThread( platformThread );
 #elif USE(PTHREADS)
-    pthread_kill(platformThread, SigThreadSuspendResume);
+    pthread_kill( platformThread, SigThreadSuspendResume );
 #else
 #error Need a way to suspend threads on this platform
 #endif
 }
 
-static inline void resumeThread(const PlatformThread& platformThread)
+static inline void resumeThread( const PlatformThread &platformThread )
 {
 #if OS(DARWIN)
-    thread_resume(platformThread);
+    thread_resume( platformThread );
 #elif OS(QNX)
-    ThreadCtl(_NTO_TCTL_ONE_THREAD_CONT, static_cast<void*>(platformThread));
+    ThreadCtl( _NTO_TCTL_ONE_THREAD_CONT, static_cast<void *>( platformThread ) );
 #elif OS(WINDOWS)
-    ResumeThread(platformThread);
+    ResumeThread( platformThread );
 #elif USE(PTHREADS)
-    pthread_kill(platformThread, SigThreadSuspendResume);
+    pthread_kill( platformThread, SigThreadSuspendResume );
 #else
 #error Need a way to resume threads on this platform
 #endif
@@ -350,12 +379,12 @@ typedef pthread_attr_t PlatformThreadRegisters;
 #error Need a thread register struct for this platform
 #endif
 
-static size_t getPlatformThreadRegisters(const PlatformThread& platformThread, PlatformThreadRegisters& regs)
+static size_t getPlatformThreadRegisters( const PlatformThread &platformThread, PlatformThreadRegisters &regs )
 {
 #if OS(DARWIN)
 
 #if CPU(X86)
-    unsigned user_count = sizeof(regs)/sizeof(int);
+    unsigned user_count = sizeof( regs )/sizeof( int );
     thread_state_flavor_t flavor = i386_THREAD_STATE;
 
 #elif CPU(X86_64)
@@ -382,27 +411,31 @@ static size_t getPlatformThreadRegisters(const PlatformThread& platformThread, P
 #error Unknown Architecture
 #endif
 
-    kern_return_t result = thread_get_state(platformThread, flavor, (thread_state_t)&regs, &user_count);
-    if (result != KERN_SUCCESS) {
-        WTFReportFatalError(__FILE__, __LINE__, WTF_PRETTY_FUNCTION,
-                            "JavaScript garbage collection failed because thread_get_state returned an error (%d). This is probably the result of running inside Rosetta, which is not supported.", result);
+    kern_return_t result = thread_get_state( platformThread, flavor, ( thread_state_t )&regs, &user_count );
+
+    if ( result != KERN_SUCCESS )
+    {
+        WTFReportFatalError( __FILE__, __LINE__, WTF_PRETTY_FUNCTION,
+                             "JavaScript garbage collection failed because thread_get_state returned an error (%d). This is probably the result of running inside Rosetta, which is not supported.",
+                             result );
         CRASH();
     }
-    return user_count * sizeof(usword_t);
+
+    return user_count * sizeof( usword_t );
 // end OS(DARWIN)
 
 #elif OS(WINDOWS)
     regs.ContextFlags = CONTEXT_INTEGER | CONTEXT_CONTROL | CONTEXT_SEGMENTS;
-    GetThreadContext(platformThread, &regs);
-    return sizeof(CONTEXT);
+    GetThreadContext( platformThread, &regs );
+    return sizeof( CONTEXT );
 #elif USE(PTHREADS)
-    pthread_attr_init(&regs);
+    pthread_attr_init( &regs );
 #if HAVE(PTHREAD_NP_H) || OS(NETBSD)
     // e.g. on FreeBSD 5.4, neundorf@kde.org
-    pthread_attr_get_np(platformThread, &regs);
+    pthread_attr_get_np( platformThread, &regs );
 #else
     // FIXME: this function is non-portable; other POSIX systems may have different np alternatives
-    pthread_getattr_np(platformThread, &regs);
+    pthread_getattr_np( platformThread, &regs );
 #endif
     return 0;
 #else
@@ -410,26 +443,26 @@ static size_t getPlatformThreadRegisters(const PlatformThread& platformThread, P
 #endif
 }
 
-static inline void* otherThreadStackPointer(const PlatformThreadRegisters& regs)
+static inline void *otherThreadStackPointer( const PlatformThreadRegisters &regs )
 {
 #if OS(DARWIN)
 
 #if __DARWIN_UNIX03
 
 #if CPU(X86)
-    return reinterpret_cast<void*>(regs.__esp);
+    return reinterpret_cast<void *>( regs.__esp );
 
 #elif CPU(X86_64)
-    return reinterpret_cast<void*>(regs.__rsp);
+    return reinterpret_cast<void *>( regs.__rsp );
 
 #elif CPU(PPC) || CPU(PPC64)
-    return reinterpret_cast<void*>(regs.__r1);
+    return reinterpret_cast<void *>( regs.__r1 );
 
 #elif CPU(ARM64)
-    return reinterpret_cast<void*>(regs.__sp);
+    return reinterpret_cast<void *>( regs.__sp );
 
 #elif CPU(ARM)
-    return reinterpret_cast<void*>(regs.__sp);
+    return reinterpret_cast<void *>( regs.__sp );
 
 #else
 #error Unknown Architecture
@@ -439,11 +472,11 @@ static inline void* otherThreadStackPointer(const PlatformThreadRegisters& regs)
 #else // !__DARWIN_UNIX03
 
 #if CPU(X86)
-    return reinterpret_cast<void*>(regs.esp);
+    return reinterpret_cast<void *>( regs.esp );
 #elif CPU(X86_64)
-    return reinterpret_cast<void*>(regs.rsp);
+    return reinterpret_cast<void *>( regs.rsp );
 #elif CPU(PPC) || CPU(PPC64)
-    return reinterpret_cast<void*>(regs.r1);
+    return reinterpret_cast<void *>( regs.r1 );
 #else
 #error Unknown Architecture
 #endif
@@ -452,60 +485,61 @@ static inline void* otherThreadStackPointer(const PlatformThreadRegisters& regs)
 
 // end OS(DARWIN)
 #elif CPU(X86) && OS(WINDOWS)
-    return reinterpret_cast<void*>((uintptr_t) regs.Esp);
+    return reinterpret_cast<void *>( ( uintptr_t ) regs.Esp );
 #elif CPU(X86_64) && OS(WINDOWS)
-    return reinterpret_cast<void*>((uintptr_t) regs.Rsp);
+    return reinterpret_cast<void *>( ( uintptr_t ) regs.Rsp );
 #elif USE(PTHREADS)
-    void* stackBase = 0;
+    void *stackBase = 0;
     size_t stackSize = 0;
-    int rc = pthread_attr_getstack(&regs, &stackBase, &stackSize);
-    (void)rc; // FIXME: Deal with error code somehow? Seems fatal.
-    ASSERT(stackBase);
-    return static_cast<char*>(stackBase) + stackSize;
+    int rc = pthread_attr_getstack( &regs, &stackBase, &stackSize );
+    ( void )rc; // FIXME: Deal with error code somehow? Seems fatal.
+    ASSERT( stackBase );
+    return static_cast<char *>( stackBase ) + stackSize;
 #else
 #error Need a way to get the stack pointer for another thread on this platform
 #endif
 }
 
-static void freePlatformThreadRegisters(PlatformThreadRegisters& regs)
+static void freePlatformThreadRegisters( PlatformThreadRegisters &regs )
 {
 #if USE(PTHREADS) && !OS(WINDOWS) && !OS(DARWIN)
-    pthread_attr_destroy(&regs);
+    pthread_attr_destroy( &regs );
 #else
-    UNUSED_PARAM(regs);
+    UNUSED_PARAM( regs );
 #endif
 }
 
-void MachineThreads::gatherFromOtherThread(ConservativeRoots& conservativeRoots, Thread* thread)
+void MachineThreads::gatherFromOtherThread( ConservativeRoots &conservativeRoots, Thread *thread )
 {
-    suspendThread(thread->platformThread);
+    suspendThread( thread->platformThread );
 
     PlatformThreadRegisters regs;
-    size_t regSize = getPlatformThreadRegisters(thread->platformThread, regs);
+    size_t regSize = getPlatformThreadRegisters( thread->platformThread, regs );
 
-    conservativeRoots.add(static_cast<void*>(&regs), static_cast<void*>(reinterpret_cast<char*>(&regs) + regSize));
+    conservativeRoots.add( static_cast<void *>( &regs ), static_cast<void *>( reinterpret_cast<char *>( &regs ) + regSize ) );
 
-    void* stackPointer = otherThreadStackPointer(regs);
-    void* stackBase = thread->stackBase;
-    swapIfBackwards(stackPointer, stackBase);
-    conservativeRoots.add(stackPointer, stackBase);
+    void *stackPointer = otherThreadStackPointer( regs );
+    void *stackBase = thread->stackBase;
+    swapIfBackwards( stackPointer, stackBase );
+    conservativeRoots.add( stackPointer, stackBase );
 
-    resumeThread(thread->platformThread);
+    resumeThread( thread->platformThread );
 
-    freePlatformThreadRegisters(regs);
+    freePlatformThreadRegisters( regs );
 }
 
 #endif
 
-void MachineThreads::gatherConservativeRoots(ConservativeRoots& conservativeRoots, void* stackCurrent)
+void MachineThreads::gatherConservativeRoots( ConservativeRoots &conservativeRoots, void *stackCurrent )
 {
-    gatherFromCurrentThread(conservativeRoots, stackCurrent);
+    gatherFromCurrentThread( conservativeRoots, stackCurrent );
 
 #if ENABLE(JSC_MULTIPLE_THREADS)
 
-    if (m_threadSpecific) {
+    if ( m_threadSpecific )
+    {
 
-        MutexLocker lock(m_registeredThreadsMutex);
+        MutexLocker lock( m_registeredThreadsMutex );
 
 #ifndef NDEBUG
         // Forbid malloc during the gather phase. The gather phase suspends
@@ -513,16 +547,22 @@ void MachineThreads::gatherConservativeRoots(ConservativeRoots& conservativeRoot
         // thread that had been suspended while holding the malloc lock.
         fastMallocForbid();
 #endif
+
         // It is safe to access the registeredThreads list, because we earlier asserted that locks are being held,
         // and since this is a shared heap, they are real locks.
-        for (Thread* thread = m_registeredThreads; thread; thread = thread->next) {
-            if (!pthread_equal(thread->posixThread, pthread_self()))
-                gatherFromOtherThread(conservativeRoots, thread);
+        for ( Thread *thread = m_registeredThreads; thread; thread = thread->next )
+        {
+            if ( !pthread_equal( thread->posixThread, pthread_self() ) )
+            {
+                gatherFromOtherThread( conservativeRoots, thread );
+            }
         }
+
 #ifndef NDEBUG
         fastMallocAllow();
 #endif
     }
+
 #endif
 }
 

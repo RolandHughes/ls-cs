@@ -33,27 +33,27 @@ using DSVideoDeviceInfo = QPair<QString, QString>;
 
 class DSVideoDeviceControl : public QVideoDeviceSelectorControl
 {
-   CS_OBJECT(DSVideoDeviceControl)
+    LSCS_OBJECT( DSVideoDeviceControl )
 
- public:
-   DSVideoDeviceControl(QObject *parent = nullptr);
+public:
+    DSVideoDeviceControl( QObject *parent = nullptr );
 
-   int deviceCount() const override;
-   QString deviceName(int index) const override;
-   QString deviceDescription(int index) const override;
-   int defaultDevice() const override;
-   int selectedDevice() const override;
+    int deviceCount() const override;
+    QString deviceName( int index ) const override;
+    QString deviceDescription( int index ) const override;
+    int defaultDevice() const override;
+    int selectedDevice() const override;
 
-   static const QList<DSVideoDeviceInfo> &availableDevices();
+    static const QList<DSVideoDeviceInfo> &availableDevices();
 
-   CS_SLOT_1(Public, void setSelectedDevice(int index) override)
-   CS_SLOT_2(setSelectedDevice)
+    LSCS_SLOT_1( Public, void setSelectedDevice( int index ) override )
+    LSCS_SLOT_2( setSelectedDevice )
 
- private:
-   static void updateDevices();
+private:
+    static void updateDevices();
 
-   DSCameraSession *m_session;
-   int selected;
+    DSCameraSession *m_session;
+    int selected;
 };
 
 #endif

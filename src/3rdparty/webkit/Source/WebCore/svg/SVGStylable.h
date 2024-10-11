@@ -25,17 +25,19 @@
 #include <wtf/Forward.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSValue;
 class CSSStyleDeclaration;
 
-class SVGStylable {
+class SVGStylable
+{
 public:
     virtual ~SVGStylable() { }
 
-    virtual CSSStyleDeclaration* style() = 0;
-    virtual PassRefPtr<CSSValue> getPresentationAttribute(const String&) = 0;
+    virtual CSSStyleDeclaration *style() = 0;
+    virtual PassRefPtr<CSSValue> getPresentationAttribute( const String & ) = 0;
 };
 
 } // namespace WebCore

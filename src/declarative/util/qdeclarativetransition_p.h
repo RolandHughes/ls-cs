@@ -36,55 +36,55 @@ class QDeclarativeTransitionManager;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeTransition : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeTransition)
-   Q_DECLARE_PRIVATE(QDeclarativeTransition)
+    DECL_LSCS_OBJECT( QDeclarativeTransition )
+    Q_DECLARE_PRIVATE( QDeclarativeTransition )
 
-   DECL_CS_PROPERTY_READ(from, fromState)
-   DECL_CS_PROPERTY_WRITE(from, setFromState)
-   DECL_CS_PROPERTY_NOTIFY(from, fromChanged)
-   DECL_CS_PROPERTY_READ(to, toState)
-   DECL_CS_PROPERTY_WRITE(to, setToState)
-   DECL_CS_PROPERTY_NOTIFY(to, toChanged)
-   DECL_CS_PROPERTY_READ(reversible, reversible)
-   DECL_CS_PROPERTY_WRITE(reversible, setReversible)
-   DECL_CS_PROPERTY_NOTIFY(reversible, reversibleChanged)
-   DECL_CS_PROPERTY_READ(animations, animations)
-   DECL_CS_CLASSINFO("DefaultProperty", "animations")
-   DECL_CS_CLASSINFO("DeferredPropertyNames", "animations")
+    DECL_LSCS_PROPERTY_READ( from, fromState )
+    DECL_LSCS_PROPERTY_WRITE( from, setFromState )
+    DECL_LSCS_PROPERTY_NOTIFY( from, fromChanged )
+    DECL_LSCS_PROPERTY_READ( to, toState )
+    DECL_LSCS_PROPERTY_WRITE( to, setToState )
+    DECL_LSCS_PROPERTY_NOTIFY( to, toChanged )
+    DECL_LSCS_PROPERTY_READ( reversible, reversible )
+    DECL_LSCS_PROPERTY_WRITE( reversible, setReversible )
+    DECL_LSCS_PROPERTY_NOTIFY( reversible, reversibleChanged )
+    DECL_LSCS_PROPERTY_READ( animations, animations )
+    DECL_LSCS_CLASSINFO( "DefaultProperty", "animations" )
+    DECL_LSCS_CLASSINFO( "DeferredPropertyNames", "animations" )
 
- public:
-   QDeclarativeTransition(QObject *parent = nullptr);
-   ~QDeclarativeTransition();
+public:
+    QDeclarativeTransition( QObject *parent = nullptr );
+    ~QDeclarativeTransition();
 
-   QString fromState() const;
-   void setFromState(const QString &);
+    QString fromState() const;
+    void setFromState( const QString & );
 
-   QString toState() const;
-   void setToState(const QString &);
+    QString toState() const;
+    void setToState( const QString & );
 
-   bool reversible() const;
-   void setReversible(bool);
+    bool reversible() const;
+    void setReversible( bool );
 
-   QDeclarativeListProperty<QDeclarativeAbstractAnimation> animations();
+    QDeclarativeListProperty<QDeclarativeAbstractAnimation> animations();
 
-   void prepare(QDeclarativeStateOperation::ActionList &actions,
-                QList<QDeclarativeProperty> &after,
-                QDeclarativeTransitionManager *end);
+    void prepare( QDeclarativeStateOperation::ActionList &actions,
+                  QList<QDeclarativeProperty> &after,
+                  QDeclarativeTransitionManager *end );
 
-   void setReversed(bool r);
-   void stop();
+    void setReversed( bool r );
+    void stop();
 
- public:
-   DECL_CS_SIGNAL_1(Public, void fromChanged())
-   DECL_CS_SIGNAL_2(fromChanged)
-   DECL_CS_SIGNAL_1(Public, void toChanged())
-   DECL_CS_SIGNAL_2(toChanged)
-   DECL_CS_SIGNAL_1(Public, void reversibleChanged())
-   DECL_CS_SIGNAL_2(reversibleChanged)
+public:
+    DECL_LSCS_SIGNAL_1( Public, void fromChanged() )
+    DECL_LSCS_SIGNAL_2( fromChanged )
+    DECL_LSCS_SIGNAL_1( Public, void toChanged() )
+    DECL_LSCS_SIGNAL_2( toChanged )
+    DECL_LSCS_SIGNAL_1( Public, void reversibleChanged() )
+    DECL_LSCS_SIGNAL_2( reversibleChanged )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeTransition)
+QML_DECLARE_TYPE( QDeclarativeTransition )
 
 #endif // QDECLARATIVETRANSITION_H

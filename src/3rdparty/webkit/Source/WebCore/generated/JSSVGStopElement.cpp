@@ -39,9 +39,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGStopElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGStopElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -52,11 +53,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGStopElement);
 
 static const HashTableValue JSSVGStopElementTableValues[5] =
 {
-    { "offset", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGStopElementOffset), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGStopElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGStopElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGStopElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "offset", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGStopElementOffset ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGStopElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGStopElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGStopElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -70,43 +71,50 @@ static JSC_CONST_HASHTABLE HashTable JSSVGStopElementTable = { 8, 7, JSSVGStopEl
 
 static const HashTableValue JSSVGStopElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGStopElementConstructorTable = { 1, 0, JSSVGStopElementConstructorTableValues, 0 };
-class JSSVGStopElementConstructor : public DOMConstructorObject {
+class JSSVGStopElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGStopElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGStopElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGStopElementConstructor::s_info = { "SVGStopElementConstructor", &DOMConstructorObject::s_info, &JSSVGStopElementConstructorTable, 0 };
 
-JSSVGStopElementConstructor::JSSVGStopElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGStopElementConstructor::JSSVGStopElementConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGStopElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGStopElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGStopElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGStopElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGStopElementConstructor, JSDOMWrapper>(exec, &JSSVGStopElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGStopElementConstructor, JSDOMWrapper>( exec, &JSSVGStopElementConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGStopElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGStopElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGStopElementConstructor, JSDOMWrapper>(exec, &JSSVGStopElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGStopElementConstructor, JSDOMWrapper>( exec, &JSSVGStopElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -118,109 +126,118 @@ bool JSSVGStopElementConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSSVGStopElementPrototypeTableValues[2] =
 {
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGStopElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGStopElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGStopElementPrototypeTable = { 2, 1, JSSVGStopElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGStopElementPrototype::s_info = { "SVGStopElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGStopElementPrototypeTable, 0 };
 
-JSObject* JSSVGStopElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGStopElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGStopElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGStopElement>( exec, globalObject );
 }
 
-bool JSSVGStopElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGStopElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGStopElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGStopElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGStopElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGStopElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGStopElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGStopElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGStopElement::s_info = { "SVGStopElement", &JSSVGElement::s_info, &JSSVGStopElementTable, 0 };
 
-JSSVGStopElement::JSSVGStopElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGStopElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGStopElement::JSSVGStopElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGStopElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGStopElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGStopElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGStopElementPrototype(exec->globalData(), globalObject, JSSVGStopElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGStopElementPrototype( exec->globalData(), globalObject,
+            JSSVGStopElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGStopElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGStopElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGStopElement, Base>(exec, &JSSVGStopElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGStopElement, Base>( exec, &JSSVGStopElementTable, this, propertyName, slot );
 }
 
-bool JSSVGStopElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGStopElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGStopElement, Base>(exec, &JSSVGStopElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGStopElement, Base>( exec, &JSSVGStopElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGStopElementOffset(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGStopElementOffset( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGStopElement* castedThis = static_cast<JSSVGStopElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGStopElement* imp = static_cast<SVGStopElement*>(castedThis->impl());
+    JSSVGStopElement *castedThis = static_cast<JSSVGStopElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGStopElement *imp = static_cast<SVGStopElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedNumber> obj = imp->offsetAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGStopElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGStopElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGStopElement* castedThis = static_cast<JSSVGStopElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGStopElement* imp = static_cast<SVGStopElement*>(castedThis->impl());
+    JSSVGStopElement *castedThis = static_cast<JSSVGStopElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGStopElement *imp = static_cast<SVGStopElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGStopElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGStopElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGStopElement* castedThis = static_cast<JSSVGStopElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGStopElement* imp = static_cast<SVGStopElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGStopElement *castedThis = static_cast<JSSVGStopElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGStopElement *imp = static_cast<SVGStopElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGStopElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGStopElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGStopElement* domObject = static_cast<JSSVGStopElement*>(asObject(slotBase));
-    return JSSVGStopElement::getConstructor(exec, domObject->globalObject());
+    JSSVGStopElement *domObject = static_cast<JSSVGStopElement *>( asObject( slotBase ) );
+    return JSSVGStopElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGStopElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGStopElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGStopElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGStopElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGStopElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGStopElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGStopElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGStopElement* castedThis = static_cast<JSSVGStopElement*>(asObject(thisValue));
-    SVGStopElement* imp = static_cast<SVGStopElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGStopElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGStopElement *castedThis = static_cast<JSSVGStopElement *>( asObject( thisValue ) );
+    SVGStopElement *imp = static_cast<SVGStopElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
 

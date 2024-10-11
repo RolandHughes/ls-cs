@@ -39,68 +39,69 @@ class QVideoDeviceSelectorControl;
 
 class QCameraPrivate : public QMediaObjectPrivate
 {
- public:
-   QCameraPrivate()
-      : QMediaObjectPrivate(), provider(nullptr), control(nullptr), deviceControl(nullptr),
-        locksControl(nullptr), infoControl(nullptr), viewfinderSettingsControl(nullptr),
-        viewfinderSettingsControl2(nullptr), cameraExposure(nullptr), cameraFocus(nullptr),
-        imageProcessing(nullptr), viewfinder(nullptr), capture(nullptr), state(QCamera::UnloadedState),
-        error(QCamera::NoError), requestedLocks(QCamera::NoLock), lockStatus(QCamera::Unlocked),
-        lockChangeReason(QCamera::UserRequest), supressLockChangedSignal(false), restartPending(false)
-   {
-   }
+public:
+    QCameraPrivate()
+        : QMediaObjectPrivate(), provider( nullptr ), control( nullptr ), deviceControl( nullptr ),
+          locksControl( nullptr ), infoControl( nullptr ), viewfinderSettingsControl( nullptr ),
+          viewfinderSettingsControl2( nullptr ), cameraExposure( nullptr ), cameraFocus( nullptr ),
+          imageProcessing( nullptr ), viewfinder( nullptr ), capture( nullptr ), state( QCamera::UnloadedState ),
+          error( QCamera::NoError ), requestedLocks( QCamera::NoLock ), lockStatus( QCamera::Unlocked ),
+          lockChangeReason( QCamera::UserRequest ), supressLockChangedSignal( false ), restartPending( false )
+    {
+    }
 
-   void clear();
-   void init();
-   void initControls();
+    void clear();
+    void init();
+    void initControls();
 
-   QMediaServiceProvider *provider;
+    QMediaServiceProvider *provider;
 
-   QCameraControl *control;
-   QVideoDeviceSelectorControl *deviceControl;
-   QCameraLocksControl *locksControl;
-   QCameraInfoControl *infoControl;
-   QCameraViewfinderSettingsControl *viewfinderSettingsControl;
-   QCameraViewfinderSettingsControl2 *viewfinderSettingsControl2;
+    QCameraControl *control;
+    QVideoDeviceSelectorControl *deviceControl;
+    QCameraLocksControl *locksControl;
+    QCameraInfoControl *infoControl;
+    QCameraViewfinderSettingsControl *viewfinderSettingsControl;
+    QCameraViewfinderSettingsControl2 *viewfinderSettingsControl2;
 
-   QCameraExposure *cameraExposure;
-   QCameraFocus *cameraFocus;
-   QCameraImageProcessing *imageProcessing;
+    QCameraExposure *cameraExposure;
+    QCameraFocus *cameraFocus;
+    QCameraImageProcessing *imageProcessing;
 
-   QObject *viewfinder;
-   QObject *capture;
+    QObject *viewfinder;
+    QObject *capture;
 
-   QCamera::State state;
+    QCamera::State state;
 
-   QCamera::Error error;
-   QString errorString;
+    QCamera::Error error;
+    QString errorString;
 
-   QCamera::LockTypes requestedLocks;
+    QCamera::LockTypes requestedLocks;
 
-   QCamera::LockStatus lockStatus;
-   QCamera::LockChangeReason lockChangeReason;
-   bool supressLockChangedSignal;
+    QCamera::LockStatus lockStatus;
+    QCamera::LockChangeReason lockChangeReason;
+    bool supressLockChangedSignal;
 
-   bool restartPending;
+    bool restartPending;
 
-   QVideoSurfaceOutput surfaceViewfinder;
+    QVideoSurfaceOutput surfaceViewfinder;
 
-   void _q_error(int error, const QString &errorString);
-   void unsetError() {
-      error = QCamera::NoError;
-      errorString.clear();
-   }
+    void _q_error( int error, const QString &errorString );
+    void unsetError()
+    {
+        error = QCamera::NoError;
+        errorString.clear();
+    }
 
-   void setState(QCamera::State);
+    void setState( QCamera::State );
 
-   void _q_updateLockStatus(QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason);
-   void _q_updateState(QCamera::State newState);
-   void _q_preparePropertyChange(int changeType);
-   void _q_restartCamera();
-   void updateLockStatus();
+    void _q_updateLockStatus( QCamera::LockType, QCamera::LockStatus, QCamera::LockChangeReason );
+    void _q_updateState( QCamera::State newState );
+    void _q_preparePropertyChange( int changeType );
+    void _q_restartCamera();
+    void updateLockStatus();
 
- private:
-   Q_DECLARE_NON_CONST_PUBLIC(QCamera)
+private:
+    Q_DECLARE_NON_CONST_PUBLIC( QCamera )
 };
 
 #endif

@@ -38,95 +38,96 @@ class QImageReaderPrivate;
 
 class Q_GUI_EXPORT QImageReader
 {
- public:
-   enum ImageReaderError {
-      UnknownError,
-      FileNotFoundError,
-      DeviceError,
-      UnsupportedFormatError,
-      InvalidDataError
-   };
+public:
+    enum ImageReaderError
+    {
+        UnknownError,
+        FileNotFoundError,
+        DeviceError,
+        UnsupportedFormatError,
+        InvalidDataError
+    };
 
-   QImageReader();
-   explicit QImageReader(QIODevice *device, const QString &format = QString());
-   explicit QImageReader(const QString &fileName, const QString &format = QString());
+    QImageReader();
+    explicit QImageReader( QIODevice *device, const QString &format = QString() );
+    explicit QImageReader( const QString &fileName, const QString &format = QString() );
 
-   QImageReader(const QImageReader &) = delete;
-   QImageReader &operator=(const QImageReader &) = delete;
+    QImageReader( const QImageReader & ) = delete;
+    QImageReader &operator=( const QImageReader & ) = delete;
 
-   ~QImageReader();
+    ~QImageReader();
 
-   void setFormat(const QString &format);
-   QString format() const;
+    void setFormat( const QString &format );
+    QString format() const;
 
-   void setAutoDetectImageFormat(bool enabled);
-   bool autoDetectImageFormat() const;
+    void setAutoDetectImageFormat( bool enabled );
+    bool autoDetectImageFormat() const;
 
-   void setDecideFormatFromContent(bool ignored);
-   bool decideFormatFromContent() const;
+    void setDecideFormatFromContent( bool ignored );
+    bool decideFormatFromContent() const;
 
-   void setDevice(QIODevice *device);
-   QIODevice *device() const;
+    void setDevice( QIODevice *device );
+    QIODevice *device() const;
 
-   void setFileName(const QString &fileName);
-   QString fileName() const;
+    void setFileName( const QString &fileName );
+    QString fileName() const;
 
-   QSize size() const;
+    QSize size() const;
 
-   QImage::Format imageFormat() const;
+    QImage::Format imageFormat() const;
 
-   QStringList textKeys() const;
-   QString text(const QString &key) const;
+    QStringList textKeys() const;
+    QString text( const QString &key ) const;
 
-   void setClipRect(const QRect &rect);
-   QRect clipRect() const;
+    void setClipRect( const QRect &rect );
+    QRect clipRect() const;
 
-   void setScaledSize(const QSize &size);
-   QSize scaledSize() const;
+    void setScaledSize( const QSize &size );
+    QSize scaledSize() const;
 
-   void setQuality(int quality);
-   int quality() const;
+    void setQuality( int quality );
+    int quality() const;
 
-   void setScaledClipRect(const QRect &rect);
-   QRect scaledClipRect() const;
+    void setScaledClipRect( const QRect &rect );
+    QRect scaledClipRect() const;
 
-   void setBackgroundColor(const QColor &color);
-   QColor backgroundColor() const;
+    void setBackgroundColor( const QColor &color );
+    QColor backgroundColor() const;
 
-   bool supportsAnimation() const;
+    bool supportsAnimation() const;
 
-   QImageIOHandler::Transformations transformation() const;
-   void setAutoTransform(bool enabled);
-   bool autoTransform() const;
-   void setGamma(float gamma);
-   float gamma() const;
-   QByteArray subType() const;
-   QList<QByteArray> supportedSubTypes() const;
-   bool canRead() const;
-   QImage read();
-   bool read(QImage *image);
+    QImageIOHandler::Transformations transformation() const;
+    void setAutoTransform( bool enabled );
+    bool autoTransform() const;
+    void setGamma( float gamma );
+    float gamma() const;
+    QByteArray subType() const;
+    QList<QByteArray> supportedSubTypes() const;
+    bool canRead() const;
+    QImage read();
+    bool read( QImage *image );
 
-   bool jumpToNextImage();
-   bool jumpToImage(int imageNumber);
-   int loopCount() const;
-   int imageCount() const;
-   int nextImageDelay() const;
-   int currentImageNumber() const;
-   QRect currentImageRect() const;
+    bool jumpToNextImage();
+    bool jumpToImage( int imageNumber );
+    int loopCount() const;
+    int imageCount() const;
+    int nextImageDelay() const;
+    int currentImageNumber() const;
+    QRect currentImageRect() const;
 
-   ImageReaderError error() const;
-   QString errorString() const;
+    ImageReaderError error() const;
+    QString errorString() const;
 
-   bool supportsOption(QImageIOHandler::ImageOption option) const;
+    bool supportsOption( QImageIOHandler::ImageOption option ) const;
 
-   static QString imageFormat(const QString &fileName);
-   static QString imageFormat(QIODevice *device);
-   static QList<QString> supportedImageFormats();
-   static QList<QString> supportedMimeTypes();
+    static QString imageFormat( const QString &fileName );
+    static QString imageFormat( QIODevice *device );
+    static QList<QString> supportedImageFormats();
+    static QList<QString> supportedMimeTypes();
 
- private:
-   Q_DECLARE_TR_FUNCTIONS(QImageReader)
-   QImageReaderPrivate *d;
+private:
+    Q_DECLARE_TR_FUNCTIONS( QImageReader )
+    QImageReaderPrivate *d;
 };
 
 #endif

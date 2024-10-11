@@ -26,11 +26,13 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Link relation bitmask values.
 // FIXME: Uncomment as the various link relations are implemented.
-enum {
+enum
+{
 //     RelationAlternate   = 0x00000001,
 //     RelationArchives    = 0x00000002,
 //     RelationAuthor      = 0x00000004,
@@ -51,40 +53,41 @@ enum {
 //     RelationUp          = 0x00020000,
 };
 
-class HTMLAnchorElement : public HTMLElement {
+class HTMLAnchorElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLAnchorElement> create(Document*);
-    static PassRefPtr<HTMLAnchorElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLAnchorElement> create( Document * );
+    static PassRefPtr<HTMLAnchorElement> create( const QualifiedName &, Document * );
 
     KURL href() const;
-    void setHref(const AtomicString&);
+    void setHref( const AtomicString & );
 
-    const AtomicString& name() const;
+    const AtomicString &name() const;
 
     String hash() const;
-    void setHash(const String&);
+    void setHash( const String & );
 
     String host() const;
-    void setHost(const String&);
+    void setHost( const String & );
 
     String hostname() const;
-    void setHostname(const String&);
+    void setHostname( const String & );
 
     String pathname() const;
-    void setPathname(const String&);
+    void setPathname( const String & );
 
     String port() const;
-    void setPort(const String&);
+    void setPort( const String & );
 
     String protocol() const;
-    void setProtocol(const String&);
+    void setProtocol( const String & );
 
     String search() const;
-    void setSearch(const String&);
+    void setSearch( const String & );
 
     String origin() const;
 
-    String getParameter(const String&) const;
+    String getParameter( const String & ) const;
 
     String text() const;
 
@@ -92,36 +95,37 @@ public:
 
     bool isLiveLink() const;
 
-    bool hasRel(uint32_t relation) const;
-    void setRel(const String&);
+    bool hasRel( uint32_t relation ) const;
+    void setRel( const String & );
 
 protected:
-    HTMLAnchorElement(const QualifiedName&, Document*);
+    HTMLAnchorElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
 private:
     virtual bool supportsFocus() const;
     virtual bool isMouseFocusable() const;
-    virtual bool isKeyboardFocusable(KeyboardEvent*) const;
-    virtual void defaultEventHandler(Event*);
-    virtual void setActive(bool active = true, bool pause = false);
-    virtual void accessKeyAction(bool fullAction);
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isKeyboardFocusable( KeyboardEvent * ) const;
+    virtual void defaultEventHandler( Event * );
+    virtual void setActive( bool active = true, bool pause = false );
+    virtual void accessKeyAction( bool fullAction );
+    virtual bool isURLAttribute( Attribute * ) const;
     virtual bool canStartSelection() const;
     virtual String target() const;
     virtual short tabIndex() const;
     virtual bool draggable() const;
 
-    void sendPings(const KURL& destinationURL);
+    void sendPings( const KURL &destinationURL );
 
-    enum EventType {
+    enum EventType
+    {
         MouseEventWithoutShiftKey,
         MouseEventWithShiftKey,
         NonMouseEvent,
     };
-    static EventType eventType(Event*);
-    bool treatLinkAsLiveForEventType(EventType) const;
+    static EventType eventType( Event * );
+    bool treatLinkAsLiveForEventType( EventType ) const;
 
     RefPtr<Element> m_rootEditableElementForSelectionOnMouseDown;
     bool m_wasShiftKeyDownOnMouseDown;
@@ -130,10 +134,10 @@ private:
 
 // Functions shared with the other anchor elements (i.e., SVG).
 
-bool isEnterKeyKeydownEvent(Event*);
-bool isMiddleMouseButtonEvent(Event*);
-bool isLinkClick(Event*);
-void handleLinkClick(Event*, Document*, const String& url, const String& target, bool hideReferrer = false);
+bool isEnterKeyKeydownEvent( Event * );
+bool isMiddleMouseButtonEvent( Event * );
+bool isLinkClick( Event * );
+void handleLinkClick( Event *, Document *, const String &url, const String &target, bool hideReferrer = false );
 
 } // namespace WebCore
 

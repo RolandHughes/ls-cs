@@ -35,57 +35,61 @@ class QDialog;
 class QThread;
 class QWindowsNativeDialogBase;
 
-namespace QWindowsDialogs {
+namespace QWindowsDialogs
+{
 
 void eatMouseMove();
 
-bool useHelper(QPlatformTheme::DialogType type);
-QPlatformDialogHelper *createHelper(QPlatformTheme::DialogType type);
+bool useHelper( QPlatformTheme::DialogType type );
+QPlatformDialogHelper *createHelper( QPlatformTheme::DialogType type );
 } // namespace
 
 template <class BaseClass>
 class QWindowsDialogHelperBase : public BaseClass
 {
- public:
-   typedef QSharedPointer<QWindowsNativeDialogBase> QWindowsNativeDialogBasePtr;
+public:
+    typedef QSharedPointer<QWindowsNativeDialogBase> QWindowsNativeDialogBasePtr;
 
-   QWindowsDialogHelperBase(const QWindowsDialogHelperBase &) = delete;
-   QWindowsDialogHelperBase &operator=(const QWindowsDialogHelperBase &) = delete;
+    QWindowsDialogHelperBase( const QWindowsDialogHelperBase & ) = delete;
+    QWindowsDialogHelperBase &operator=( const QWindowsDialogHelperBase & ) = delete;
 
-   ~QWindowsDialogHelperBase() {
-      cleanupThread();
-   }
+    ~QWindowsDialogHelperBase()
+    {
+        cleanupThread();
+    }
 
-   void exec() override;
-   bool show(Qt::WindowFlags windowFlags, Qt::WindowModality windowModality, QWindow *parent) override;
-   void hide() override;
+    void exec() override;
+    bool show( Qt::WindowFlags windowFlags, Qt::WindowModality windowModality, QWindow *parent ) override;
+    void hide() override;
 
-   virtual bool supportsNonModalDialog(const QWindow *parent = nullptr) const {
-      (void) parent;
-      return true;
-   }
+    virtual bool supportsNonModalDialog( const QWindow *parent = nullptr ) const
+    {
+        ( void ) parent;
+        return true;
+    }
 
- protected:
-   QWindowsDialogHelperBase();
-   QWindowsNativeDialogBase *nativeDialog() const;
+protected:
+    QWindowsDialogHelperBase();
+    QWindowsNativeDialogBase *nativeDialog() const;
 
-   bool hasNativeDialog() const {
-      return m_nativeDialog != nullptr;
-   }
+    bool hasNativeDialog() const
+    {
+        return m_nativeDialog != nullptr;
+    }
 
-   void timerEvent(QTimerEvent *) override;
+    void timerEvent( QTimerEvent * ) override;
 
- private:
-   virtual QWindowsNativeDialogBase *createNativeDialog() = 0;
-   inline QWindowsNativeDialogBase *ensureNativeDialog();
-   inline void startDialogThread();
-   inline void stopTimer();
-   void cleanupThread();
+private:
+    virtual QWindowsNativeDialogBase *createNativeDialog() = 0;
+    inline QWindowsNativeDialogBase *ensureNativeDialog();
+    inline void startDialogThread();
+    inline void stopTimer();
+    void cleanupThread();
 
-   QWindowsNativeDialogBasePtr m_nativeDialog;
-   HWND m_ownerWindow;
-   int m_timerId;
-   QThread *m_thread;
+    QWindowsNativeDialogBasePtr m_nativeDialog;
+    HWND m_ownerWindow;
+    int m_timerId;
+    QThread *m_thread;
 };
 
 #endif

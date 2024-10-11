@@ -25,28 +25,31 @@
 
 #include <dsplayer_global.h>
 
-DirectShowEvrVideoWindowControl::DirectShowEvrVideoWindowControl(QObject *parent)
-   : EvrVideoWindowControl(parent), m_evrFilter(NULL)
+DirectShowEvrVideoWindowControl::DirectShowEvrVideoWindowControl( QObject *parent )
+    : EvrVideoWindowControl( parent ), m_evrFilter( NULL )
 {
 }
 
 DirectShowEvrVideoWindowControl::~DirectShowEvrVideoWindowControl()
 {
-   if (m_evrFilter) {
-      m_evrFilter->Release();
-   }
+    if ( m_evrFilter )
+    {
+        m_evrFilter->Release();
+    }
 }
 
 IBaseFilter *DirectShowEvrVideoWindowControl::filter()
 {
-   if (!m_evrFilter) {
-      m_evrFilter = com_new<IBaseFilter>(clsid_EnhancedVideoRenderer);
+    if ( !m_evrFilter )
+    {
+        m_evrFilter = com_new<IBaseFilter>( clsid_EnhancedVideoRenderer );
 
-      if (! setEvr(m_evrFilter)) {
-         m_evrFilter->Release();
-         m_evrFilter = NULL;
-      }
-   }
+        if ( ! setEvr( m_evrFilter ) )
+        {
+            m_evrFilter->Release();
+            m_evrFilter = NULL;
+        }
+    }
 
-   return m_evrFilter;
+    return m_evrFilter;
 }

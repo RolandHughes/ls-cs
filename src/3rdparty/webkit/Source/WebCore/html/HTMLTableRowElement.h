@@ -28,27 +28,29 @@
 
 #include "HTMLTablePartElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLTableRowElement : public HTMLTablePartElement {
+class HTMLTableRowElement : public HTMLTablePartElement
+{
 public:
-    static PassRefPtr<HTMLTableRowElement> create(Document*);
-    static PassRefPtr<HTMLTableRowElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLTableRowElement> create( Document * );
+    static PassRefPtr<HTMLTableRowElement> create( const QualifiedName &, Document * );
 
     int rowIndex() const;
-    void setRowIndex(int);
+    void setRowIndex( int );
 
     int sectionRowIndex() const;
-    void setSectionRowIndex(int);
+    void setSectionRowIndex( int );
 
-    PassRefPtr<HTMLElement> insertCell(int index, ExceptionCode&);
-    void deleteCell(int index, ExceptionCode&);
+    PassRefPtr<HTMLElement> insertCell( int index, ExceptionCode & );
+    void deleteCell( int index, ExceptionCode & );
 
     PassRefPtr<HTMLCollection> cells();
-    void setCells(HTMLCollection *, ExceptionCode&);
+    void setCells( HTMLCollection *, ExceptionCode & );
 
 private:
-    HTMLTableRowElement(const QualifiedName&, Document*);
+    HTMLTableRowElement( const QualifiedName &, Document * );
 };
 
 } // namespace

@@ -23,16 +23,17 @@
 #if ENABLE(SVG) && ENABLE(FILTERS)
 #include "SVGFEFuncAElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGFEFuncAElement::SVGFEFuncAElement(const QualifiedName& tagName, Document* document)
-    : SVGComponentTransferFunctionElement(tagName, document)
+inline SVGFEFuncAElement::SVGFEFuncAElement( const QualifiedName &tagName, Document *document )
+    : SVGComponentTransferFunctionElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEFuncAElement> SVGFEFuncAElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEFuncAElement> SVGFEFuncAElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEFuncAElement(tagName, document));
+    return adoptRef( new SVGFEFuncAElement( tagName, document ) );
 }
 
 }

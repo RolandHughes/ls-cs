@@ -23,7 +23,8 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 unsigned short CSSInheritedValue::cssValueType() const
 {

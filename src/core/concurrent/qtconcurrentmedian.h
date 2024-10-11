@@ -29,69 +29,77 @@
 
 #include <algorithm>
 
-namespace QtConcurrent {
+namespace QtConcurrent
+{
 
 template <typename T>
 class Median
 {
- public:
-   Median(int _bufferSize)
-      : currentMedian(), bufferSize(_bufferSize), currentIndex(0), valid(false), dirty(true)
-   {
-      values.resize(bufferSize);
-   }
+public:
+    Median( int _bufferSize )
+        : currentMedian(), bufferSize( _bufferSize ), currentIndex( 0 ), valid( false ), dirty( true )
+    {
+        values.resize( bufferSize );
+    }
 
-   void reset() {
-      values.fill(0);
-      currentIndex = 0;
-      valid = false;
-      dirty = true;
-   }
+    void reset()
+    {
+        values.fill( 0 );
+        currentIndex = 0;
+        valid = false;
+        dirty = true;
+    }
 
-   void addValue(T value) {
-      currentIndex = ((currentIndex + 1) % bufferSize);
+    void addValue( T value )
+    {
+        currentIndex = ( ( currentIndex + 1 ) % bufferSize );
 
-      if (valid == false && currentIndex % bufferSize == 0) {
-         valid = true;
-      }
+        if ( valid == false && currentIndex % bufferSize == 0 )
+        {
+            valid = true;
+        }
 
-      // Only update the cached median value when we have to, that
-      // is when the new value is on then other side of the median
-      // compared to the current value at the index.
-      const T currentIndexValue = values[currentIndex];
+        // Only update the cached median value when we have to, that
+        // is when the new value is on then other side of the median
+        // compared to the current value at the index.
+        const T currentIndexValue = values[currentIndex];
 
-      if ((currentIndexValue > currentMedian && currentMedian > value)
-            || (currentMedian > currentIndexValue && value > currentMedian)) {
-         dirty = true;
-      }
+        if ( ( currentIndexValue > currentMedian && currentMedian > value )
+                || ( currentMedian > currentIndexValue && value > currentMedian ) )
+        {
+            dirty = true;
+        }
 
-      values[currentIndex] = value;
-   }
+        values[currentIndex] = value;
+    }
 
-   bool isMedianValid() const {
-      return valid;
-   }
+    bool isMedianValid() const
+    {
+        return valid;
+    }
 
-   T median() {
-      if (dirty) {
-         dirty = false;
+    T median()
+    {
+        if ( dirty )
+        {
+            dirty = false;
 
-         QVector<T> sorted = values;
-         std::sort(sorted.begin(), sorted.end());
+            QVector<T> sorted = values;
+            std::sort( sorted.begin(), sorted.end() );
 
-         currentMedian = sorted.at(bufferSize / 2 + 1);
-      }
+            currentMedian = sorted.at( bufferSize / 2 + 1 );
+        }
 
-      return currentMedian;
-   }
+        return currentMedian;
+    }
 
- private:
-   QVector<T> values;
-   T currentMedian;
-   int bufferSize;
-   int currentIndex;
-   bool valid;
-   bool dirty;
+private:
+    QVector<T> values;
+    T currentMedian;
+    int bufferSize;
+    int currentIndex;
+    bool valid;
+    bool dirty;
 };
 
 } // namespace QtConcurrent

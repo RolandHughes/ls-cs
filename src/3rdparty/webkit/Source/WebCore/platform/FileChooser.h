@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,13 +33,15 @@
 #include "PlatformString.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FileChooser;
 class Font;
 class Icon;
 
-class FileChooserClient {
+class FileChooserClient
+{
 public:
     virtual void valueChanged() = 0;
     virtual void repaint() = 0;
@@ -48,43 +50,65 @@ public:
     virtual bool allowsDirectoryUpload() = 0;
 #endif
     virtual String acceptTypes() = 0;
-    virtual void chooseIconForFiles(FileChooser*, const Vector<String>&) = 0;
+    virtual void chooseIconForFiles( FileChooser *, const Vector<String> & ) = 0;
     virtual ~FileChooserClient();
 };
 
-class FileChooser : public RefCounted<FileChooser> {
+class FileChooser : public RefCounted<FileChooser>
+{
 public:
-    static PassRefPtr<FileChooser> create(FileChooserClient*, const Vector<String>& initialFilenames);
+    static PassRefPtr<FileChooser> create( FileChooserClient *, const Vector<String> &initialFilenames );
     ~FileChooser();
 
-    void disconnectClient() { m_client = 0; }
-    bool disconnected() { return !m_client; }
+    void disconnectClient()
+    {
+        m_client = 0;
+    }
+    bool disconnected()
+    {
+        return !m_client;
+    }
 
-    const Vector<String>& filenames() const { return m_filenames; }
-    String basenameForWidth(const Font&, int width) const;
+    const Vector<String> &filenames() const
+    {
+        return m_filenames;
+    }
+    String basenameForWidth( const Font &, int width ) const;
 
-    Icon* icon() const { return m_icon.get(); }
+    Icon *icon() const
+    {
+        return m_icon.get();
+    }
 
     void clear(); // for use by client; does not call valueChanged
 
-    void chooseFile(const String& path);
-    void chooseFiles(const Vector<String>& paths);
+    void chooseFile( const String &path );
+    void chooseFiles( const Vector<String> &paths );
     // Called when FileChooserClient finishes to load an icon requested by iconForFiles().
-    void iconLoaded(PassRefPtr<Icon>);
+    void iconLoaded( PassRefPtr<Icon> );
 
-    bool allowsMultipleFiles() const { return m_client ? m_client->allowsMultipleFiles() : false; }
+    bool allowsMultipleFiles() const
+    {
+        return m_client ? m_client->allowsMultipleFiles() : false;
+    }
 #if ENABLE(DIRECTORY_UPLOAD)
-    bool allowsDirectoryUpload() const { return m_client ? m_client->allowsDirectoryUpload() : false; }
+    bool allowsDirectoryUpload() const
+    {
+        return m_client ? m_client->allowsDirectoryUpload() : false;
+    }
 #endif
     // Acceptable MIME types.  It's an 'accept' attribute value of the corresponding INPUT element.
-    String acceptTypes() const { return m_client ? m_client->acceptTypes() : String(); }
+    String acceptTypes() const
+    {
+        return m_client ? m_client->acceptTypes() : String();
+    }
 
 private:
-    FileChooser(FileChooserClient*, const Vector<String>& initialFilenames);
+    FileChooser( FileChooserClient *, const Vector<String> &initialFilenames );
     void initialize();
     void loadIcon();
 
-    FileChooserClient* m_client;
+    FileChooserClient *m_client;
     Vector<String> m_filenames;
     RefPtr<Icon> m_icon;
     bool m_isInitializing;

@@ -29,15 +29,17 @@
 
 class QAbstractXmlNodeModelPrivate
 {
- public:
-   virtual ~QAbstractXmlNodeModelPrivate() {
-   }
+public:
+    virtual ~QAbstractXmlNodeModelPrivate()
+    {
+    }
 
-   virtual QSourceLocation sourceLocation(const QXmlNodeModelIndex &index) const {
-      (void) index;
+    virtual QSourceLocation sourceLocation( const QXmlNodeModelIndex &index ) const
+    {
+        ( void ) index;
 
-      return QSourceLocation();
-   }
+        return QSourceLocation();
+    }
 };
 
 #endif

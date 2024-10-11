@@ -25,35 +25,38 @@
 #include "TableLayout.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderTable;
 class RenderTableCell;
 
-class AutoTableLayout : public TableLayout {
+class AutoTableLayout : public TableLayout
+{
 public:
-    AutoTableLayout(RenderTable*);
+    AutoTableLayout( RenderTable * );
     ~AutoTableLayout();
 
-    virtual void computePreferredLogicalWidths(int& minWidth, int& maxWidth);
+    virtual void computePreferredLogicalWidths( int &minWidth, int &maxWidth );
     virtual void layout();
 
 private:
     void fullRecalc();
-    void recalcColumn(int effCol);
+    void recalcColumn( int effCol );
 
     int calcEffectiveLogicalWidth();
 
-    void insertSpanCell(RenderTableCell*);
+    void insertSpanCell( RenderTableCell * );
 
-    struct Layout {
+    struct Layout
+    {
         Layout()
-            : minLogicalWidth(0)
-            , maxLogicalWidth(0)
-            , effectiveMinLogicalWidth(0)
-            , effectiveMaxLogicalWidth(0)
-            , computedLogicalWidth(0)
-            , emptyCellsOnly(true)
+            : minLogicalWidth( 0 )
+            , maxLogicalWidth( 0 )
+            , effectiveMinLogicalWidth( 0 )
+            , effectiveMaxLogicalWidth( 0 )
+            , computedLogicalWidth( 0 )
+            , emptyCellsOnly( true )
         {
         }
 
@@ -68,7 +71,7 @@ private:
     };
 
     Vector<Layout, 4> m_layoutStruct;
-    Vector<RenderTableCell*, 4> m_spanCells;
+    Vector<RenderTableCell *, 4> m_spanCells;
     bool m_hasPercent : 1;
     mutable bool m_effectiveLogicalWidthDirty : 1;
 };

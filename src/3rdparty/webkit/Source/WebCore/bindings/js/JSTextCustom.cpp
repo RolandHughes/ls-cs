@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,14 +30,17 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue toJSNewlyCreated(ExecState* exec, JSDOMGlobalObject* globalObject, Text* text)
+namespace WebCore
 {
-    if (!text)
+
+JSValue toJSNewlyCreated( ExecState *exec, JSDOMGlobalObject *globalObject, Text *text )
+{
+    if ( !text )
+    {
         return jsNull();
-    
-    return CREATE_DOM_WRAPPER(exec, globalObject, Text, text);
+    }
+
+    return CREATE_DOM_WRAPPER( exec, globalObject, Text, text );
 }
 
 } // namespace WebCore

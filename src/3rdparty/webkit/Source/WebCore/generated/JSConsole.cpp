@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSConsole);
+ASSERT_CLASS_FITS_IN_CELL( JSConsole );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,9 +48,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSConsole);
 
 static const HashTableValue JSConsoleTableValues[3] =
 {
-    { "profiles", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsConsoleProfiles), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "memory", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsConsoleMemory), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "profiles", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsConsoleProfiles ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "memory", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsConsoleMemory ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,381 +64,475 @@ static JSC_CONST_HASHTABLE HashTable JSConsoleTable = { 4, 3, JSConsoleTableValu
 
 static const HashTableValue JSConsolePrototypeTableValues[19] =
 {
-    { "debug", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionDebug), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "error", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionError), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "info", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionInfo), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "log", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionLog), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "warn", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionWarn), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "dir", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionDir), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "dirxml", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionDirxml), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "trace", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionTrace), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "assert", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionAssert), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "count", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionCount), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "markTimeline", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionMarkTimeline), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "profile", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionProfile), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "profileEnd", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionProfileEnd), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "time", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionTime), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "timeEnd", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionTimeEnd), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "group", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionGroup), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "groupCollapsed", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionGroupCollapsed), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "groupEnd", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsConsolePrototypeFunctionGroupEnd), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "debug", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionDebug ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "error", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionError ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "info", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionInfo ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "log", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionLog ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "warn", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionWarn ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "dir", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionDir ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "dirxml", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionDirxml ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "trace", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionTrace ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "assert", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionAssert ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "count", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionCount ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "markTimeline", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionMarkTimeline ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "profile", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionProfile ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "profileEnd", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionProfileEnd ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "time", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionTime ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "timeEnd", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionTimeEnd ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "group", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionGroup ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "groupCollapsed", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionGroupCollapsed ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "groupEnd", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsConsolePrototypeFunctionGroupEnd ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSConsolePrototypeTable = { 65, 63, JSConsolePrototypeTableValues, 0 };
 const ClassInfo JSConsolePrototype::s_info = { "ConsolePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSConsolePrototypeTable, 0 };
 
-JSObject* JSConsolePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSConsolePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSConsole>(exec, globalObject);
+    return getDOMPrototype<JSConsole>( exec, globalObject );
 }
 
-bool JSConsolePrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSConsolePrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSConsolePrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSConsolePrototypeTable, this, propertyName, slot );
 }
 
-bool JSConsolePrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSConsolePrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSConsolePrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSConsolePrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSConsole::s_info = { "Console", &JSDOMWrapper::s_info, &JSConsoleTable, 0 };
 
-JSConsole::JSConsole(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Console> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSConsole::JSConsole( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Console> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSConsole::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSConsole::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSConsolePrototype(exec->globalData(), globalObject, JSConsolePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSConsolePrototype( exec->globalData(), globalObject,
+                                            JSConsolePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSConsole::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSConsole::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSConsole, Base>(exec, &JSConsoleTable, this, propertyName, slot);
+    return getStaticValueSlot<JSConsole, Base>( exec, &JSConsoleTable, this, propertyName, slot );
 }
 
-bool JSConsole::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSConsole::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSConsole, Base>(exec, &JSConsoleTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSConsole, Base>( exec, &JSConsoleTable, this, propertyName, descriptor );
 }
 
-JSValue jsConsoleProfiles(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsConsoleProfiles( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(slotBase));
-    return castedThis->profiles(exec);
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( slotBase ) );
+    return castedThis->profiles( exec );
 }
 
 
-JSValue jsConsoleMemory(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsConsoleMemory( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->memory()));
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->memory() ) );
     return result;
 }
 
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDebug(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDebug( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->debug(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->debug( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionError(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionError( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->error(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->error( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionInfo(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionInfo( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->info(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->info( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionLog(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionLog( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->log(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->log( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionWarn(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionWarn( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->warn(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->warn( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDir(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDir( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->dir(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->dir( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDirxml(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionDirxml( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->dirxml(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->dirxml( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTrace(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTrace( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->trace(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->trace( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionAssert(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionAssert( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 1));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 1 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
-    bool condition(exec->argument(0).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
+    bool condition( exec->argument( 0 ).toBoolean( exec ) );
 
-    imp->assertCondition(condition, scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->assertCondition( condition, scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionCount(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionCount( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->count(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->count( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionMarkTimeline(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionMarkTimeline( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->markTimeline(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->markTimeline( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfile(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfile( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    return JSValue::encode(castedThis->profile(exec));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->profile( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfileEnd(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionProfileEnd( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    return JSValue::encode(castedThis->profileEnd(exec));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->profileEnd( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTime(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTime( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    const String& title(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->time(title);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    const String &title( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->time( title );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTimeEnd(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionTimeEnd( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 1));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 1 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
-    const String& title(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
+    const String &title( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) ) );
 
-    imp->timeEnd(title, scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->timeEnd( title, scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroup(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroup( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->group(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->group( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupCollapsed(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupCollapsed( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
-    RefPtr<ScriptArguments> scriptArguments(createScriptArguments(exec, 0));
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
+    RefPtr<ScriptArguments> scriptArguments( createScriptArguments( exec, 0 ) );
     size_t maxStackSize = imp->shouldCaptureFullStackTrace() ? ScriptCallStack::maxCallStackSizeToCapture : 1;
-    RefPtr<ScriptCallStack> callStack(createScriptCallStack(exec, maxStackSize));
+    RefPtr<ScriptCallStack> callStack( createScriptCallStack( exec, maxStackSize ) );
 
-    imp->groupCollapsed(scriptArguments, callStack);
-    return JSValue::encode(jsUndefined());
+    imp->groupCollapsed( scriptArguments, callStack );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupEnd(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsConsolePrototypeFunctionGroupEnd( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSConsole::s_info))
-        return throwVMTypeError(exec);
-    JSConsole* castedThis = static_cast<JSConsole*>(asObject(thisValue));
-    Console* imp = static_cast<Console*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSConsole::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSConsole *castedThis = static_cast<JSConsole *>( asObject( thisValue ) );
+    Console *imp = static_cast<Console *>( castedThis->impl() );
 
     imp->groupEnd();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-static inline bool isObservable(JSConsole* jsConsole)
+static inline bool isObservable( JSConsole *jsConsole )
 {
-    if (jsConsole->hasCustomProperties())
+    if ( jsConsole->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSConsoleOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSConsoleOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSConsole* jsConsole = static_cast<JSConsole*>(handle.get().asCell());
-    if (!isObservable(jsConsole))
+    JSConsole *jsConsole = static_cast<JSConsole *>( handle.get().asCell() );
+
+    if ( !isObservable( jsConsole ) )
+    {
         return false;
-    Frame* root = jsConsole->impl()->frame();
-    if (!root)
+    }
+
+    Frame *root = jsConsole->impl()->frame();
+
+    if ( !root )
+    {
         return false;
-    return visitor.containsOpaqueRoot(root);
+    }
+
+    return visitor.containsOpaqueRoot( root );
 }
 
-void JSConsoleOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSConsoleOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSConsole* jsConsole = static_cast<JSConsole*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsConsole->impl(), jsConsole);
+    JSConsole *jsConsole = static_cast<JSConsole *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsConsole->impl(), jsConsole );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Console* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Console *impl )
 {
-    return wrap<JSConsole>(exec, globalObject, impl);
+    return wrap<JSConsole>( exec, globalObject, impl );
 }
 
-Console* toConsole(JSC::JSValue value)
+Console *toConsole( JSC::JSValue value )
 {
-    return value.inherits(&JSConsole::s_info) ? static_cast<JSConsole*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSConsole::s_info ) ? static_cast<JSConsole *>( asObject( value ) )->impl() : 0;
 }
 
 }

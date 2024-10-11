@@ -24,40 +24,41 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_MERGE_H
-#define CS_REGEX_MERGE_H
+#ifndef LSCS_REGEX_MERGE_H
+#define LSCS_REGEX_MERGE_H
 
-namespace cs_regex_ns {
+namespace lscs_regex_ns
+{
 
 template <class OutputIterator, class Iterator, class traits, class charT>
-inline OutputIterator regex_merge(OutputIterator out, Iterator first, Iterator last,
-      const basic_regex<charT, traits> &e, const charT *fmt, match_flag_type flags = match_default)
+inline OutputIterator regex_merge( OutputIterator out, Iterator first, Iterator last,
+                                   const basic_regex<charT, traits> &e, const charT *fmt, match_flag_type flags = match_default )
 {
-   return regex_replace(out, first, last, e, fmt, flags);
+    return regex_replace( out, first, last, e, fmt, flags );
 }
 
 template <class OutputIterator, class Iterator, class traits, class charT>
-inline OutputIterator regex_merge(OutputIterator out, Iterator first, Iterator last,
-      const basic_regex<charT, traits> &e, const std::basic_string<charT> &fmt,
-      match_flag_type flags = match_default)
+inline OutputIterator regex_merge( OutputIterator out, Iterator first, Iterator last,
+                                   const basic_regex<charT, traits> &e, const std::basic_string<charT> &fmt,
+                                   match_flag_type flags = match_default )
 {
-   return regex_merge(out, first, last, e, fmt.c_str(), flags);
+    return regex_merge( out, first, last, e, fmt.c_str(), flags );
 }
 
 template <class traits, class charT>
-inline std::basic_string<charT> regex_merge(const std::basic_string<charT> &s,
-      const basic_regex<charT, traits> &e, const charT *fmt,
-      match_flag_type flags = match_default)
+inline std::basic_string<charT> regex_merge( const std::basic_string<charT> &s,
+        const basic_regex<charT, traits> &e, const charT *fmt,
+        match_flag_type flags = match_default )
 {
-   return regex_replace(s, e, fmt, flags);
+    return regex_replace( s, e, fmt, flags );
 }
 
 template <class traits, class charT>
-inline std::basic_string<charT> regex_merge(const std::basic_string<charT> &s,
-      const basic_regex<charT, traits> &e, const std::basic_string<charT> &fmt,
-      match_flag_type flags = match_default)
+inline std::basic_string<charT> regex_merge( const std::basic_string<charT> &s,
+        const basic_regex<charT, traits> &e, const std::basic_string<charT> &fmt,
+        match_flag_type flags = match_default )
 {
-   return regex_replace(s, e, fmt, flags);
+    return regex_replace( s, e, fmt, flags );
 }
 
 }   // end namespace

@@ -34,49 +34,49 @@ class QDeclarativeDebugConnectionPrivate;
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugConnection : public QTcpSocket
 {
-   DECL_CS_OBJECT(QDeclarativeDebugConnection)
-   Q_DISABLE_COPY(QDeclarativeDebugConnection)
+    DECL_LSCS_OBJECT( QDeclarativeDebugConnection )
+    Q_DISABLE_COPY( QDeclarativeDebugConnection )
 
- public:
-   QDeclarativeDebugConnection(QObject * = 0);
-   ~QDeclarativeDebugConnection();
+public:
+    QDeclarativeDebugConnection( QObject * = 0 );
+    ~QDeclarativeDebugConnection();
 
-   bool isConnected() const;
- private:
-   QDeclarativeDebugConnectionPrivate *d;
-   friend class QDeclarativeDebugClient;
-   friend class QDeclarativeDebugClientPrivate;
+    bool isConnected() const;
+private:
+    QDeclarativeDebugConnectionPrivate *d;
+    friend class QDeclarativeDebugClient;
+    friend class QDeclarativeDebugClientPrivate;
 };
 
 class QDeclarativeDebugClientPrivate;
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeDebugClient : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeDebugClient)
-   Q_DECLARE_PRIVATE(QDeclarativeDebugClient)
-   Q_DISABLE_COPY(QDeclarativeDebugClient)
+    DECL_LSCS_OBJECT( QDeclarativeDebugClient )
+    Q_DECLARE_PRIVATE( QDeclarativeDebugClient )
+    Q_DISABLE_COPY( QDeclarativeDebugClient )
 
- public:
-   enum Status { NotConnected, Unavailable, Enabled };
+public:
+    enum Status { NotConnected, Unavailable, Enabled };
 
-   QDeclarativeDebugClient(const QString &, QDeclarativeDebugConnection *parent);
-   ~QDeclarativeDebugClient();
+    QDeclarativeDebugClient( const QString &, QDeclarativeDebugConnection *parent );
+    ~QDeclarativeDebugClient();
 
-   QString name() const;
+    QString name() const;
 
-   Status status() const;
+    Status status() const;
 
-   void sendMessage(const QByteArray &);
+    void sendMessage( const QByteArray & );
 
- protected:
-   virtual void statusChanged(Status);
-   virtual void messageReceived(const QByteArray &);
+protected:
+    virtual void statusChanged( Status );
+    virtual void messageReceived( const QByteArray & );
 
-   QScopedPointer<QDeclarativeDebugClientPrivate> d_ptr;
+    QScopedPointer<QDeclarativeDebugClientPrivate> d_ptr;
 
- private:
-   friend class QDeclarativeDebugConnection;
-   friend class QDeclarativeDebugConnectionPrivate;
+private:
+    friend class QDeclarativeDebugConnection;
+    friend class QDeclarativeDebugConnectionPrivate;
 };
 
 QT_END_NAMESPACE

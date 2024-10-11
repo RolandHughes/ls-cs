@@ -44,82 +44,97 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/TextPosition.h>
 
-namespace JSC {
+namespace JSC
+{
 class DebuggerCallFrame;
 class JSGlobalObject;
 }
-namespace WebCore {
+namespace WebCore
+{
 
 class JavaScriptCallFrame;
 class ScriptDebugListener;
 class ScriptValue;
 
-class ScriptDebugServer : protected JSC::Debugger {
-    WTF_MAKE_NONCOPYABLE(ScriptDebugServer); WTF_MAKE_FAST_ALLOCATED;
+class ScriptDebugServer : protected JSC::Debugger
+{
+    WTF_MAKE_NONCOPYABLE( ScriptDebugServer );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    String setBreakpoint(const String& sourceID, const ScriptBreakpoint&, int* actualLineNumber, int* actualColumnNumber);
-    void removeBreakpoint(const String& breakpointId);
+    String setBreakpoint( const String &sourceID, const ScriptBreakpoint &, int *actualLineNumber, int *actualColumnNumber );
+    void removeBreakpoint( const String &breakpointId );
     void clearBreakpoints();
-    void setBreakpointsActivated(bool activated);
-    void activateBreakpoints() { setBreakpointsActivated(true); }
-    void deactivateBreakpoints() { setBreakpointsActivated(false); }
+    void setBreakpointsActivated( bool activated );
+    void activateBreakpoints()
+    {
+        setBreakpointsActivated( true );
+    }
+    void deactivateBreakpoints()
+    {
+        setBreakpointsActivated( false );
+    }
 
-    enum PauseOnExceptionsState {
+    enum PauseOnExceptionsState
+    {
         DontPauseOnExceptions,
         PauseOnAllExceptions,
         PauseOnUncaughtExceptions
     };
-    PauseOnExceptionsState pauseOnExceptionsState() const { return m_pauseOnExceptionsState; }
-    void setPauseOnExceptionsState(PauseOnExceptionsState);
+    PauseOnExceptionsState pauseOnExceptionsState() const
+    {
+        return m_pauseOnExceptionsState;
+    }
+    void setPauseOnExceptionsState( PauseOnExceptionsState );
 
-    void setPauseOnNextStatement(bool pause);
+    void setPauseOnNextStatement( bool pause );
     void breakProgram();
     void continueProgram();
     void stepIntoStatement();
     void stepOverStatement();
     void stepOutOfFunction();
 
-    bool editScriptSource(const String& sourceID, const String& newContent, String* error, ScriptValue* newCallFrames);
+    bool editScriptSource( const String &sourceID, const String &newContent, String *error, ScriptValue *newCallFrames );
 
     void recompileAllJSFunctionsSoon();
-    virtual void recompileAllJSFunctions(Timer<ScriptDebugServer>* = 0) = 0;
+    virtual void recompileAllJSFunctions( Timer<ScriptDebugServer> * = 0 ) = 0;
 
 protected:
-    typedef HashSet<ScriptDebugListener*> ListenerSet;
-    typedef void (ScriptDebugServer::*JavaScriptExecutionCallback)(ScriptDebugListener*);
+    typedef HashSet<ScriptDebugListener *> ListenerSet;
+    typedef void ( ScriptDebugServer::*JavaScriptExecutionCallback )( ScriptDebugListener * );
 
     ScriptDebugServer();
     ~ScriptDebugServer();
 
-    virtual ListenerSet* getListenersForGlobalObject(JSC::JSGlobalObject*) = 0;
-    virtual void didPause(JSC::JSGlobalObject*) = 0;
-    virtual void didContinue(JSC::JSGlobalObject*) = 0;
+    virtual ListenerSet *getListenersForGlobalObject( JSC::JSGlobalObject * ) = 0;
+    virtual void didPause( JSC::JSGlobalObject * ) = 0;
+    virtual void didContinue( JSC::JSGlobalObject * ) = 0;
 
-    bool hasBreakpoint(intptr_t sourceID, const TextPosition0&) const;
+    bool hasBreakpoint( intptr_t sourceID, const TextPosition0 & ) const;
 
-    void dispatchFunctionToListeners(JavaScriptExecutionCallback, JSC::JSGlobalObject*);
-    void dispatchFunctionToListeners(const ListenerSet& listeners, JavaScriptExecutionCallback callback);
-    void dispatchDidPause(ScriptDebugListener*);
-    void dispatchDidContinue(ScriptDebugListener*);
-    void dispatchDidParseSource(const ListenerSet& listeners, JSC::SourceProvider*, bool isContentScript);
-    void dispatchFailedToParseSource(const ListenerSet& listeners, JSC::SourceProvider*, int errorLine, const String& errorMessage);
+    void dispatchFunctionToListeners( JavaScriptExecutionCallback, JSC::JSGlobalObject * );
+    void dispatchFunctionToListeners( const ListenerSet &listeners, JavaScriptExecutionCallback callback );
+    void dispatchDidPause( ScriptDebugListener * );
+    void dispatchDidContinue( ScriptDebugListener * );
+    void dispatchDidParseSource( const ListenerSet &listeners, JSC::SourceProvider *, bool isContentScript );
+    void dispatchFailedToParseSource( const ListenerSet &listeners, JSC::SourceProvider *, int errorLine,
+                                      const String &errorMessage );
 
-    void createCallFrameAndPauseIfNeeded(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineNumber);
-    void updateCallFrameAndPauseIfNeeded(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineNumber);
-    void pauseIfNeeded(JSC::JSGlobalObject* dynamicGlobalObject);
+    void createCallFrameAndPauseIfNeeded( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineNumber );
+    void updateCallFrameAndPauseIfNeeded( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineNumber );
+    void pauseIfNeeded( JSC::JSGlobalObject *dynamicGlobalObject );
 
-    virtual void detach(JSC::JSGlobalObject*);
+    virtual void detach( JSC::JSGlobalObject * );
 
-    virtual void sourceParsed(JSC::ExecState*, JSC::SourceProvider*, int errorLine, const JSC::UString& errorMsg);
-    virtual void callEvent(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineNumber);
-    virtual void atStatement(const JSC::DebuggerCallFrame&, intptr_t sourceID, int firstLine);
-    virtual void returnEvent(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineNumber);
-    virtual void exception(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineNumber, bool hasHandler);
-    virtual void willExecuteProgram(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineno);
-    virtual void didExecuteProgram(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineno);
-    virtual void didReachBreakpoint(const JSC::DebuggerCallFrame&, intptr_t sourceID, int lineno);
+    virtual void sourceParsed( JSC::ExecState *, JSC::SourceProvider *, int errorLine, const JSC::UString &errorMsg );
+    virtual void callEvent( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineNumber );
+    virtual void atStatement( const JSC::DebuggerCallFrame &, intptr_t sourceID, int firstLine );
+    virtual void returnEvent( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineNumber );
+    virtual void exception( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineNumber, bool hasHandler );
+    virtual void willExecuteProgram( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineno );
+    virtual void didExecuteProgram( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineno );
+    virtual void didReachBreakpoint( const JSC::DebuggerCallFrame &, intptr_t sourceID, int lineno );
 
-    typedef HashMap<Page*, ListenerSet*> PageListenersMap;
+    typedef HashMap<Page *, ListenerSet *> PageListenersMap;
     typedef HashMap<long, ScriptBreakpoint> LineToBreakpointMap;
     typedef HashMap<intptr_t, LineToBreakpointMap> SourceIdToBreakpointsMap;
 
@@ -130,7 +145,7 @@ protected:
     bool m_paused;
     bool m_doneProcessingDebuggerEvents;
     bool m_breakpointsActivated;
-    JavaScriptCallFrame* m_pauseOnCallFrame;
+    JavaScriptCallFrame *m_pauseOnCallFrame;
     RefPtr<JavaScriptCallFrame> m_currentCallFrame;
     SourceIdToBreakpointsMap m_sourceIdToBreakpoints;
     Timer<ScriptDebugServer> m_recompileTimer;

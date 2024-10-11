@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DragClientQt_h
@@ -30,19 +30,22 @@
 
 class QWebPage;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DragClientQt : public DragClient {
+class DragClientQt : public DragClient
+{
 public:
-    DragClientQt(QWebPage* webPage) : m_webPage(webPage) {};
-    virtual void willPerformDragDestinationAction(DragDestinationAction, DragData*);
-    virtual DragDestinationAction actionMaskForDrag(DragData*);
+    DragClientQt( QWebPage *webPage ) : m_webPage( webPage ) {};
+    virtual void willPerformDragDestinationAction( DragDestinationAction, DragData * );
+    virtual DragDestinationAction actionMaskForDrag( DragData * );
     virtual void dragControllerDestroyed();
-    virtual DragSourceAction dragSourceActionMaskForPoint(const IntPoint&);
-    virtual void willPerformDragSourceAction(DragSourceAction, const IntPoint&, Clipboard*);    
-    virtual void startDrag(DragImageRef, const IntPoint& dragImageOrigin, const IntPoint& eventPos, Clipboard*, Frame*, bool linkDrag = false);
+    virtual DragSourceAction dragSourceActionMaskForPoint( const IntPoint & );
+    virtual void willPerformDragSourceAction( DragSourceAction, const IntPoint &, Clipboard * );
+    virtual void startDrag( DragImageRef, const IntPoint &dragImageOrigin, const IntPoint &eventPos, Clipboard *, Frame *,
+                            bool linkDrag = false );
 private:
-    QWebPage* m_webPage;
+    QWebPage *m_webPage;
 };
 
 }

@@ -40,99 +40,122 @@
 #include "Page.h"
 #include "ResourceResponse.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-InspectorApplicationCacheAgent::InspectorApplicationCacheAgent(InstrumentingAgents* instrumentingAgents, Page* inspectedPage)
-    : m_instrumentingAgents(instrumentingAgents)
-    , m_inspectedPage(inspectedPage)
-    , m_frontend(0)
+InspectorApplicationCacheAgent::InspectorApplicationCacheAgent( InstrumentingAgents *instrumentingAgents, Page *inspectedPage )
+    : m_instrumentingAgents( instrumentingAgents )
+    , m_inspectedPage( inspectedPage )
+    , m_frontend( 0 )
 {
 }
 
-void InspectorApplicationCacheAgent::setFrontend(InspectorFrontend* frontend)
+void InspectorApplicationCacheAgent::setFrontend( InspectorFrontend *frontend )
 {
     m_frontend = frontend->applicationcache();
-    m_instrumentingAgents->setInspectorApplicationCacheAgent(this);
+    m_instrumentingAgents->setInspectorApplicationCacheAgent( this );
 }
 
 void InspectorApplicationCacheAgent::clearFrontend()
 {
-    m_instrumentingAgents->setInspectorApplicationCacheAgent(0);
+    m_instrumentingAgents->setInspectorApplicationCacheAgent( 0 );
     m_frontend = 0;
 }
 
-void InspectorApplicationCacheAgent::updateApplicationCacheStatus(Frame* frame)
+void InspectorApplicationCacheAgent::updateApplicationCacheStatus( Frame *frame )
 {
     ApplicationCacheHost::Status status = frame->loader()->documentLoader()->applicationCacheHost()->status();
-    m_frontend->updateApplicationCacheStatus(status);
+    m_frontend->updateApplicationCacheStatus( status );
 }
 
 void InspectorApplicationCacheAgent::networkStateChanged()
 {
     bool isNowOnline = networkStateNotifier().onLine();
-    m_frontend->updateNetworkState(isNowOnline);
+    m_frontend->updateNetworkState( isNowOnline );
 }
 
-void InspectorApplicationCacheAgent::getApplicationCaches(ErrorString*, RefPtr<InspectorObject>* applicationCaches)
+void InspectorApplicationCacheAgent::getApplicationCaches( ErrorString *, RefPtr<InspectorObject> *applicationCaches )
 {
-    DocumentLoader* documentLoader = m_inspectedPage->mainFrame()->loader()->documentLoader();
-    if (!documentLoader)
+    DocumentLoader *documentLoader = m_inspectedPage->mainFrame()->loader()->documentLoader();
+
+    if ( !documentLoader )
+    {
         return;
-    ApplicationCacheHost* host = documentLoader->applicationCacheHost();
+    }
+
+    ApplicationCacheHost *host = documentLoader->applicationCacheHost();
     ApplicationCacheHost::CacheInfo info = host->applicationCacheInfo();
 
     ApplicationCacheHost::ResourceInfoList resources;
-    host->fillResourceList(&resources);
-    *applicationCaches = buildObjectForApplicationCache(resources, info);
+    host->fillResourceList( &resources );
+    *applicationCaches = buildObjectForApplicationCache( resources, info );
 }
 
-PassRefPtr<InspectorObject> InspectorApplicationCacheAgent::buildObjectForApplicationCache(const ApplicationCacheHost::ResourceInfoList& applicationCacheResources, const ApplicationCacheHost::CacheInfo& applicationCacheInfo)
+PassRefPtr<InspectorObject> InspectorApplicationCacheAgent::buildObjectForApplicationCache(
+    const ApplicationCacheHost::ResourceInfoList &applicationCacheResources,
+    const ApplicationCacheHost::CacheInfo &applicationCacheInfo )
 {
     RefPtr<InspectorObject> value = InspectorObject::create();
-    value->setNumber("size", applicationCacheInfo.m_size);
-    value->setString("manifest", applicationCacheInfo.m_manifest.string());
-    value->setString("lastPathComponent", applicationCacheInfo.m_manifest.lastPathComponent());
-    value->setNumber("creationTime", applicationCacheInfo.m_creationTime);
-    value->setNumber("updateTime", applicationCacheInfo.m_updateTime);
-    value->setArray("resources", buildArrayForApplicationCacheResources(applicationCacheResources));
+    value->setNumber( "size", applicationCacheInfo.m_size );
+    value->setString( "manifest", applicationCacheInfo.m_manifest.string() );
+    value->setString( "lastPathComponent", applicationCacheInfo.m_manifest.lastPathComponent() );
+    value->setNumber( "creationTime", applicationCacheInfo.m_creationTime );
+    value->setNumber( "updateTime", applicationCacheInfo.m_updateTime );
+    value->setArray( "resources", buildArrayForApplicationCacheResources( applicationCacheResources ) );
     return value;
 }
 
-PassRefPtr<InspectorArray> InspectorApplicationCacheAgent::buildArrayForApplicationCacheResources(const ApplicationCacheHost::ResourceInfoList& applicationCacheResources)
+PassRefPtr<InspectorArray> InspectorApplicationCacheAgent::buildArrayForApplicationCacheResources(
+    const ApplicationCacheHost::ResourceInfoList &applicationCacheResources )
 {
     RefPtr<InspectorArray> resources = InspectorArray::create();
 
     ApplicationCacheHost::ResourceInfoList::const_iterator end = applicationCacheResources.end();
     ApplicationCacheHost::ResourceInfoList::const_iterator it = applicationCacheResources.begin();
-    for (int i = 0; it != end; ++it, i++)
-        resources->pushObject(buildObjectForApplicationCacheResource(*it));
+
+    for ( int i = 0; it != end; ++it, i++ )
+    {
+        resources->pushObject( buildObjectForApplicationCacheResource( *it ) );
+    }
 
     return resources;
 }
 
-PassRefPtr<InspectorObject> InspectorApplicationCacheAgent::buildObjectForApplicationCacheResource(const ApplicationCacheHost::ResourceInfo& resourceInfo)
+PassRefPtr<InspectorObject> InspectorApplicationCacheAgent::buildObjectForApplicationCacheResource(
+    const ApplicationCacheHost::ResourceInfo &resourceInfo )
 {
     RefPtr<InspectorObject> value = InspectorObject::create();
-    value->setString("name", resourceInfo.m_resource.string());
-    value->setNumber("size", resourceInfo.m_size);
+    value->setString( "name", resourceInfo.m_resource.string() );
+    value->setNumber( "size", resourceInfo.m_size );
 
     String types;
-    if (resourceInfo.m_isMaster)
-        types.append("Master ");
 
-    if (resourceInfo.m_isManifest)
-        types.append("Manifest ");
+    if ( resourceInfo.m_isMaster )
+    {
+        types.append( "Master " );
+    }
 
-    if (resourceInfo.m_isFallback)
-        types.append("Fallback ");
+    if ( resourceInfo.m_isManifest )
+    {
+        types.append( "Manifest " );
+    }
 
-    if (resourceInfo.m_isForeign)
-        types.append("Foreign ");
+    if ( resourceInfo.m_isFallback )
+    {
+        types.append( "Fallback " );
+    }
 
-    if (resourceInfo.m_isExplicit)
-        types.append("Explicit ");
+    if ( resourceInfo.m_isForeign )
+    {
+        types.append( "Foreign " );
+    }
 
-    value->setString("type", types);
+    if ( resourceInfo.m_isExplicit )
+    {
+        types.append( "Explicit " );
+    }
+
+    value->setString( "type", types );
     return value;
 }
 

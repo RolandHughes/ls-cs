@@ -34,66 +34,69 @@ class QWindowsWindow;
 
 class QWindowsInputContext : public QPlatformInputContext
 {
-   CS_OBJECT(QWindowsInputContext)
+    LSCS_OBJECT( QWindowsInputContext )
 
-   struct CompositionContext {
-      CompositionContext();
+    struct CompositionContext
+    {
+        CompositionContext();
 
-      HWND hwnd;
-      bool haveCaret;
-      QString composition;
-      int position;
-      bool isComposing;
-      QPointer<QObject> focusObject;
-      qreal factor;
-   };
+        HWND hwnd;
+        bool haveCaret;
+        QString composition;
+        int position;
+        bool isComposing;
+        QPointer<QObject> focusObject;
+        qreal factor;
+    };
 
- public:
-   explicit QWindowsInputContext();
-   ~QWindowsInputContext();
+public:
+    explicit QWindowsInputContext();
+    ~QWindowsInputContext();
 
-   static void setWindowsImeEnabled(QWindowsWindow *platformWindow, bool enabled);
+    static void setWindowsImeEnabled( QWindowsWindow *platformWindow, bool enabled );
 
-   bool hasCapability(Capability capability) const override;
-   QLocale locale() const override {
-      return m_locale;
-   }
+    bool hasCapability( Capability capability ) const override;
+    QLocale locale() const override
+    {
+        return m_locale;
+    }
 
-   void reset() override;
-   void update(Qt::InputMethodQueries) override;
-   void invokeAction(QInputMethod::Action, int cursorPosition) override;
-   void setFocusObject(QObject *object) override;
+    void reset() override;
+    void update( Qt::InputMethodQueries ) override;
+    void invokeAction( QInputMethod::Action, int cursorPosition ) override;
+    void setFocusObject( QObject *object ) override;
 
-   bool startComposition(HWND hwnd);
-   bool composition(HWND hwnd, LPARAM lParam);
-   bool endComposition(HWND hwnd);
+    bool startComposition( HWND hwnd );
+    bool composition( HWND hwnd, LPARAM lParam );
+    bool endComposition( HWND hwnd );
 
-   inline bool isComposing() const {
-      return m_compositionContext.isComposing;
-   }
+    inline bool isComposing() const
+    {
+        return m_compositionContext.isComposing;
+    }
 
-   int reconvertString(RECONVERTSTRING *reconv);
+    int reconvertString( RECONVERTSTRING *reconv );
 
-   bool handleIME_Request(WPARAM wparam, LPARAM lparam, LRESULT *result);
-   void handleInputLanguageChanged(WPARAM wparam, LPARAM lparam);
+    bool handleIME_Request( WPARAM wparam, LPARAM lparam, LRESULT *result );
+    void handleInputLanguageChanged( WPARAM wparam, LPARAM lparam );
 
- private :
-   CS_SLOT_1(Private, void cursorRectChanged())
-   CS_SLOT_2(cursorRectChanged)
+private :
+    LSCS_SLOT_1( Private, void cursorRectChanged() )
+    LSCS_SLOT_2( cursorRectChanged )
 
- private:
-   void initContext(HWND hwnd, qreal factor, QObject *focusObject);
-   void doneContext();
-   void startContextComposition();
-   void endContextComposition();
-   void updateEnabled();
+private:
+    void initContext( HWND hwnd, qreal factor, QObject *focusObject );
+    void doneContext();
+    void startContextComposition();
+    void endContextComposition();
+    void updateEnabled();
 
-   const DWORD m_WM_MSIME_MOUSE;
-   static HIMC m_defaultContext;
-   CompositionContext m_compositionContext;
-   bool m_endCompositionRecursionGuard;
-   LCID m_languageId;
-   QLocale m_locale;
+    const DWORD m_WM_MSIME_MOUSE;
+    static HIMC m_defaultContext;
+    CompositionContext m_compositionContext;
+    bool m_endCompositionRecursionGuard;
+    LCID m_languageId;
+    QLocale m_locale;
 };
 
 #endif

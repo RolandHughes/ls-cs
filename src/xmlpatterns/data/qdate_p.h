@@ -26,27 +26,28 @@
 
 #include <qabstractdatetime_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Date : public AbstractDateTime
 {
- public:
-   typedef AtomicValue::Ptr Ptr;
+public:
+    typedef AtomicValue::Ptr Ptr;
 
-   /**
-    * Creates an instance from the lexical representation @p string.
-    */
-   static Date::Ptr fromLexical(const QString &string);
-   static Date::Ptr fromDateTime(const QDateTime &date);
+    /**
+     * Creates an instance from the lexical representation @p string.
+     */
+    static Date::Ptr fromLexical( const QString &string );
+    static Date::Ptr fromDateTime( const QDateTime &date );
 
-   ItemType::Ptr type() const override;
-   QString stringValue() const override;
-   Item fromValue(const QDateTime &dt) const override;
+    ItemType::Ptr type() const override;
+    QString stringValue() const override;
+    Item fromValue( const QDateTime &dt ) const override;
 
- protected:
-   friend class CommonValues;
+protected:
+    friend class CommonValues;
 
-   Date(const QDateTime &dateTime);
+    Date( const QDateTime &dateTime );
 };
 }
 

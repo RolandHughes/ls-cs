@@ -29,7 +29,7 @@
 #include "DynamicAnnotations.h"
 
 #if USE(DYNAMIC_ANNOTATIONS)
-void WTFAnnotateBenignRaceSized(const char*, int, const volatile void*, long, const char*) { }
-void WTFAnnotateHappensBefore(const char*, int, const volatile void*) { }
-void WTFAnnotateHappensAfter(const char*, int, const volatile void*) { }
+void WTFAnnotateBenignRaceSized( const char *, int, const volatile void *, long, const char * ) { }
+void WTFAnnotateHappensBefore( const char *, int, const volatile void * ) { }
+void WTFAnnotateHappensAfter( const char *, int, const volatile void * ) { }
 #endif // USE(DYNAMIC_ANNOTATIONS)

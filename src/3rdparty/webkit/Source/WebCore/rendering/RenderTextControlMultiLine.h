@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/) 
+ * Copyright (C) 2008 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/)
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
@@ -24,45 +24,51 @@
 
 #include "RenderTextControl.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderTextControlMultiLine : public RenderTextControl {
+class RenderTextControlMultiLine : public RenderTextControl
+{
 public:
-    RenderTextControlMultiLine(Node*, bool);
+    RenderTextControlMultiLine( Node *, bool );
     virtual ~RenderTextControlMultiLine();
 
-    void forwardEvent(Event*);
+    void forwardEvent( Event * );
 
 private:
-    virtual bool isTextArea() const { return true; }
+    virtual bool isTextArea() const
+    {
+        return true;
+    }
 
     virtual void subtreeHasChanged();
 
-    virtual bool nodeAtPoint(const HitTestRequest&, HitTestResult&, int x, int y, int tx, int ty, HitTestAction);
+    virtual bool nodeAtPoint( const HitTestRequest &, HitTestResult &, int x, int y, int tx, int ty, HitTestAction );
 
-    virtual float getAvgCharWidth(AtomicString family);
-    virtual int preferredContentWidth(float charWidth) const;
-    virtual void adjustControlHeightBasedOnLineHeight(int lineHeight);
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const;
+    virtual float getAvgCharWidth( AtomicString family );
+    virtual int preferredContentWidth( float charWidth ) const;
+    virtual void adjustControlHeightBasedOnLineHeight( int lineHeight );
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
 
     virtual void updateFromElement();
-    virtual void cacheSelection(int start, int end);
+    virtual void cacheSelection( int start, int end );
 
-    virtual RenderStyle* textBaseStyle() const;
-    virtual PassRefPtr<RenderStyle> createInnerTextStyle(const RenderStyle* startStyle) const;
+    virtual RenderStyle *textBaseStyle() const;
+    virtual PassRefPtr<RenderStyle> createInnerTextStyle( const RenderStyle *startStyle ) const;
     virtual int textBlockInsetLeft() const;
     virtual int textBlockInsetRight() const;
     virtual int textBlockInsetTop() const;
 };
 
-inline RenderTextControlMultiLine* toRenderTextControlMultiLine(RenderObject* object)
-{ 
-    ASSERT(!object || object->isTextArea());
-    return static_cast<RenderTextControlMultiLine*>(object);
+inline RenderTextControlMultiLine *toRenderTextControlMultiLine( RenderObject *object )
+{
+    ASSERT( !object || object->isTextArea() );
+    return static_cast<RenderTextControlMultiLine *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderTextControlMultiLine(const RenderTextControlMultiLine*);
+void toRenderTextControlMultiLine( const RenderTextControlMultiLine * );
 
 }
 

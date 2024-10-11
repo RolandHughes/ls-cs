@@ -32,45 +32,56 @@
 #include "Plugin.h"
 #include <wtf/RefCounted.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NPRemoteObjectMap;
 class PluginControllerProxy;
-    
+
 // A connection from a plug-in process to a web process.
 
-class WebProcessConnection : public RefCounted<WebProcessConnection>, CoreIPC::Connection::Client {
+class WebProcessConnection : public RefCounted<WebProcessConnection>, CoreIPC::Connection::Client
+{
 public:
-    static PassRefPtr<WebProcessConnection> create(CoreIPC::Connection::Identifier);
+    static PassRefPtr<WebProcessConnection> create( CoreIPC::Connection::Identifier );
     virtual ~WebProcessConnection();
 
-    CoreIPC::Connection* connection() const { return m_connection.get(); }
-    NPRemoteObjectMap* npRemoteObjectMap() const { return m_npRemoteObjectMap.get(); }
+    CoreIPC::Connection *connection() const
+    {
+        return m_connection.get();
+    }
+    NPRemoteObjectMap *npRemoteObjectMap() const
+    {
+        return m_npRemoteObjectMap.get();
+    }
 
-    void removePluginControllerProxy(PluginControllerProxy*, Plugin*);
+    void removePluginControllerProxy( PluginControllerProxy *, Plugin * );
 
 private:
-    WebProcessConnection(CoreIPC::Connection::Identifier);
+    WebProcessConnection( CoreIPC::Connection::Identifier );
 
-    void addPluginControllerProxy(PassOwnPtr<PluginControllerProxy>);
+    void addPluginControllerProxy( PassOwnPtr<PluginControllerProxy> );
 
-    void destroyPluginControllerProxy(PluginControllerProxy*);
+    void destroyPluginControllerProxy( PluginControllerProxy * );
 
     // CoreIPC::Connection::Client
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual CoreIPC::SyncReplyMode didReceiveSyncMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
-    virtual void didClose(CoreIPC::Connection*);
-    virtual void didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID);
-    virtual void syncMessageSendTimedOut(CoreIPC::Connection*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual CoreIPC::SyncReplyMode didReceiveSyncMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
+    virtual void didClose( CoreIPC::Connection * );
+    virtual void didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID );
+    virtual void syncMessageSendTimedOut( CoreIPC::Connection * );
 
     // Message handlers.
-    CoreIPC::SyncReplyMode didReceiveSyncWebProcessConnectionMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
-    void createPlugin(uint64_t pluginInstanceID, const Plugin::Parameters&, const String& userAgent, bool isPrivateBrowsingEnabled, bool isAcceleratedCompositingEnabled, bool& result, uint32_t& remoteLayerClientID);
-    void destroyPlugin(uint64_t pluginInstanceID);
+    CoreIPC::SyncReplyMode didReceiveSyncWebProcessConnectionMessage( CoreIPC::Connection *, CoreIPC::MessageID,
+            CoreIPC::ArgumentDecoder *, CoreIPC::ArgumentEncoder * );
+    void createPlugin( uint64_t pluginInstanceID, const Plugin::Parameters &, const String &userAgent, bool isPrivateBrowsingEnabled,
+                       bool isAcceleratedCompositingEnabled, bool &result, uint32_t &remoteLayerClientID );
+    void destroyPlugin( uint64_t pluginInstanceID );
 
     RefPtr<CoreIPC::Connection> m_connection;
 
-    HashMap<uint64_t, PluginControllerProxy*> m_pluginControllers;
+    HashMap<uint64_t, PluginControllerProxy *> m_pluginControllers;
     RefPtr<NPRemoteObjectMap> m_npRemoteObjectMap;
 };
 

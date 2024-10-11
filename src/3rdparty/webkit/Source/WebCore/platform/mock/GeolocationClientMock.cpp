@@ -37,43 +37,44 @@
 #include "GeolocationError.h"
 #include "GeolocationPosition.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 GeolocationClientMock::GeolocationClientMock()
-    : m_controller(0)
-    , m_controllerTimer(this, &GeolocationClientMock::controllerTimerFired)
-    , m_permissionTimer(this, &GeolocationClientMock::permissionTimerFired)
-    , m_isActive(false)
-    , m_permissionState(PermissionStateUnset)
+    : m_controller( 0 )
+    , m_controllerTimer( this, &GeolocationClientMock::controllerTimerFired )
+    , m_permissionTimer( this, &GeolocationClientMock::permissionTimerFired )
+    , m_isActive( false )
+    , m_permissionState( PermissionStateUnset )
 {
 }
 
 GeolocationClientMock::~GeolocationClientMock()
 {
-    ASSERT(!m_isActive);
+    ASSERT( !m_isActive );
 }
 
-void GeolocationClientMock::setController(GeolocationController *controller)
+void GeolocationClientMock::setController( GeolocationController *controller )
 {
-    ASSERT(controller && !m_controller);
+    ASSERT( controller && !m_controller );
     m_controller = controller;
 }
 
-void GeolocationClientMock::setPosition(PassRefPtr<GeolocationPosition> position)
+void GeolocationClientMock::setPosition( PassRefPtr<GeolocationPosition> position )
 {
     m_lastPosition = position;
     m_lastError = 0;
     asyncUpdateController();
 }
 
-void GeolocationClientMock::setError(PassRefPtr<GeolocationError> error)
+void GeolocationClientMock::setError( PassRefPtr<GeolocationError> error )
 {
     m_lastError = error;
     m_lastPosition = 0;
     asyncUpdateController();
 }
 
-void GeolocationClientMock::setPermission(bool allowed)
+void GeolocationClientMock::setPermission( bool allowed )
 {
     m_permissionState = allowed ? PermissionStateAllowed : PermissionStateDenied;
     asyncUpdatePermission();
@@ -84,32 +85,41 @@ int GeolocationClientMock::numberOfPendingPermissionRequests() const
     return m_pendingPermission.size();
 }
 
-void GeolocationClientMock::requestPermission(Geolocation* geolocation)
+void GeolocationClientMock::requestPermission( Geolocation *geolocation )
 {
-    m_pendingPermission.add(geolocation);
-    if (m_permissionState != PermissionStateUnset)
+    m_pendingPermission.add( geolocation );
+
+    if ( m_permissionState != PermissionStateUnset )
+    {
         asyncUpdatePermission();
+    }
 }
 
-void GeolocationClientMock::cancelPermissionRequest(Geolocation* geolocation)
+void GeolocationClientMock::cancelPermissionRequest( Geolocation *geolocation )
 {
     // Called from Geolocation::disconnectFrame() in response to Frame destruction.
-    m_pendingPermission.remove(geolocation);
-    if (m_pendingPermission.isEmpty() && m_permissionTimer.isActive())
+    m_pendingPermission.remove( geolocation );
+
+    if ( m_pendingPermission.isEmpty() && m_permissionTimer.isActive() )
+    {
         m_permissionTimer.stop();
+    }
 }
 
 void GeolocationClientMock::asyncUpdatePermission()
 {
-    ASSERT(m_permissionState != PermissionStateUnset);
-    if (!m_permissionTimer.isActive())
-        m_permissionTimer.startOneShot(0);
+    ASSERT( m_permissionState != PermissionStateUnset );
+
+    if ( !m_permissionTimer.isActive() )
+    {
+        m_permissionTimer.startOneShot( 0 );
+    }
 }
 
-void GeolocationClientMock::permissionTimerFired(WebCore::Timer<GeolocationClientMock>* timer)
+void GeolocationClientMock::permissionTimerFired( WebCore::Timer<GeolocationClientMock> *timer )
 {
-    ASSERT_UNUSED(timer, timer == &m_permissionTimer);
-    ASSERT(m_permissionState != PermissionStateUnset);
+    ASSERT_UNUSED( timer, timer == &m_permissionTimer );
+    ASSERT( m_permissionState != PermissionStateUnset );
     bool allowed = m_permissionState == PermissionStateAllowed;
     GeolocationSet::iterator end = m_pendingPermission.end();
 
@@ -117,8 +127,11 @@ void GeolocationClientMock::permissionTimerFired(WebCore::Timer<GeolocationClien
     // no further requests for permission to the mock. Consequently the callbacks
     // which fire synchronously from Geolocation::setIsAllowed() cannot reentrantly modify
     // m_pendingPermission.
-    for (GeolocationSet::iterator it = m_pendingPermission.begin(); it != end; ++it)
-        (*it)->setIsAllowed(allowed);
+    for ( GeolocationSet::iterator it = m_pendingPermission.begin(); it != end; ++it )
+    {
+        ( *it )->setIsAllowed( allowed );
+    }
+
     m_pendingPermission.clear();
 }
 
@@ -131,50 +144,57 @@ void GeolocationClientMock::reset()
 
 void GeolocationClientMock::geolocationDestroyed()
 {
-    ASSERT(!m_isActive);
+    ASSERT( !m_isActive );
 }
 
 void GeolocationClientMock::startUpdating()
 {
-    ASSERT(!m_isActive);
+    ASSERT( !m_isActive );
     m_isActive = true;
     asyncUpdateController();
 }
 
 void GeolocationClientMock::stopUpdating()
 {
-    ASSERT(m_isActive);
+    ASSERT( m_isActive );
     m_isActive = false;
     m_controllerTimer.stop();
 }
 
-void GeolocationClientMock::setEnableHighAccuracy(bool)
+void GeolocationClientMock::setEnableHighAccuracy( bool )
 {
     // FIXME: We need to add some tests regarding "high accuracy" mode.
     // See https://bugs.webkit.org/show_bug.cgi?id=49438
 }
 
-GeolocationPosition* GeolocationClientMock::lastPosition()
+GeolocationPosition *GeolocationClientMock::lastPosition()
 {
     return m_lastPosition.get();
 }
 
 void GeolocationClientMock::asyncUpdateController()
 {
-    ASSERT(m_controller);
-    if (m_isActive && !m_controllerTimer.isActive())
-        m_controllerTimer.startOneShot(0);
+    ASSERT( m_controller );
+
+    if ( m_isActive && !m_controllerTimer.isActive() )
+    {
+        m_controllerTimer.startOneShot( 0 );
+    }
 }
 
-void GeolocationClientMock::controllerTimerFired(Timer<GeolocationClientMock>* timer)
+void GeolocationClientMock::controllerTimerFired( Timer<GeolocationClientMock> *timer )
 {
-    ASSERT_UNUSED(timer, timer == &m_controllerTimer);
-    ASSERT(m_controller);
+    ASSERT_UNUSED( timer, timer == &m_controllerTimer );
+    ASSERT( m_controller );
 
-    if (m_lastPosition.get())
-        m_controller->positionChanged(m_lastPosition.get());
-    else if (m_lastError.get())
-        m_controller->errorOccurred(m_lastError.get());
+    if ( m_lastPosition.get() )
+    {
+        m_controller->positionChanged( m_lastPosition.get() );
+    }
+    else if ( m_lastError.get() )
+    {
+        m_controller->errorOccurred( m_lastError.get() );
+    }
 }
 
 } // WebCore

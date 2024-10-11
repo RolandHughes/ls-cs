@@ -33,33 +33,38 @@
 #include <wtf/text/WTFString.h>
 
 #if ENABLE(WEB_PROCESS_SANDBOX)
-typedef struct __WKSandboxExtension* WKSandboxExtensionRef;
+typedef struct __WKSandboxExtension *WKSandboxExtensionRef;
 #endif
 
-namespace CoreIPC {
-    class ArgumentEncoder;
-    class ArgumentDecoder;
+namespace CoreIPC
+{
+class ArgumentEncoder;
+class ArgumentDecoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class SandboxExtension : public RefCounted<SandboxExtension> {
+class SandboxExtension : public RefCounted<SandboxExtension>
+{
 public:
-    enum Type {
+    enum Type
+    {
         ReadOnly,
         WriteOnly,
         ReadWrite,
     };
 
-    class Handle {
-        WTF_MAKE_NONCOPYABLE(Handle);
-    
+    class Handle
+    {
+        WTF_MAKE_NONCOPYABLE( Handle );
+
     public:
         Handle();
         ~Handle();
 
-        void encode(CoreIPC::ArgumentEncoder*) const;
-        static bool decode(CoreIPC::ArgumentDecoder*, Handle&);
+        void encode( CoreIPC::ArgumentEncoder * ) const;
+        static bool decode( CoreIPC::ArgumentDecoder *, Handle & );
 
     private:
         friend class SandboxExtension;
@@ -68,9 +73,9 @@ public:
 #endif
     };
 
-    static PassRefPtr<SandboxExtension> create(const Handle&);
-    static void createHandle(const String& path, Type type, Handle&);
-    static String createHandleForTemporaryFile(const String& prefix, Type type, Handle&);
+    static PassRefPtr<SandboxExtension> create( const Handle & );
+    static void createHandle( const String &path, Type type, Handle & );
+    static String createHandleForTemporaryFile( const String &prefix, Type type, Handle & );
     ~SandboxExtension();
 
     bool invalidate();
@@ -78,8 +83,8 @@ public:
     bool consumePermanently();
 
 private:
-    explicit SandboxExtension(const Handle&);
-                     
+    explicit SandboxExtension( const Handle & );
+
 #if ENABLE(WEB_PROCESS_SANDBOX)
     mutable WKSandboxExtensionRef m_sandboxExtension;
 #endif
@@ -88,15 +93,33 @@ private:
 #if !ENABLE(WEB_PROCESS_SANDBOX)
 inline SandboxExtension::Handle::Handle() { }
 inline SandboxExtension::Handle::~Handle() { }
-inline void SandboxExtension::Handle::encode(CoreIPC::ArgumentEncoder*) const { }
-inline bool SandboxExtension::Handle::decode(CoreIPC::ArgumentDecoder*, Handle&) { return true; }
-inline PassRefPtr<SandboxExtension> SandboxExtension::create(const Handle&) { return 0; }
-inline void SandboxExtension::createHandle(const String& path, Type type, Handle&) { }
-inline String SandboxExtension::createHandleForTemporaryFile(const String& prefix, Type type, Handle&) {return String();}
+inline void SandboxExtension::Handle::encode( CoreIPC::ArgumentEncoder * ) const { }
+inline bool SandboxExtension::Handle::decode( CoreIPC::ArgumentDecoder *, Handle & )
+{
+    return true;
+}
+inline PassRefPtr<SandboxExtension> SandboxExtension::create( const Handle & )
+{
+    return 0;
+}
+inline void SandboxExtension::createHandle( const String &path, Type type, Handle & ) { }
+inline String SandboxExtension::createHandleForTemporaryFile( const String &prefix, Type type, Handle & )
+{
+    return String();
+}
 inline SandboxExtension::~SandboxExtension() { }
-inline bool SandboxExtension::invalidate() { return true; }
-inline bool SandboxExtension::consume() { return true; }
-inline bool SandboxExtension::consumePermanently() { return true; }
+inline bool SandboxExtension::invalidate()
+{
+    return true;
+}
+inline bool SandboxExtension::consume()
+{
+    return true;
+}
+inline bool SandboxExtension::consumePermanently()
+{
+    return true;
+}
 #endif
 
 } // namespace WebKit

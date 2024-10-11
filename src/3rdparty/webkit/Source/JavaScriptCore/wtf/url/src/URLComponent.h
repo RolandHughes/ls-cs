@@ -29,27 +29,38 @@
 #ifndef URLComponent_h
 #define URLComponent_h
 
-namespace WTF {
+namespace WTF
+{
 
 // Represents a substring for URL parsing.
-class URLComponent {
+class URLComponent
+{
 public:
-    URLComponent() : m_begin(0), m_length(-1) { }
-    URLComponent(int begin, int length) : m_begin(begin), m_length(length) { }
+    URLComponent() : m_begin( 0 ), m_length( -1 ) { }
+    URLComponent( int begin, int length ) : m_begin( begin ), m_length( length ) { }
 
     // Helper that returns a component created with the given begin and ending
     // points. The ending point is non-inclusive.
-    static inline URLComponent fromRange(int begin, int end)
+    static inline URLComponent fromRange( int begin, int end )
     {
-        return URLComponent(begin, end - begin);
+        return URLComponent( begin, end - begin );
     }
 
     // Returns true if this component is valid, meaning the length is given. Even
     // valid components may be empty to record the fact that they exist.
-    bool isValid() const { return m_length != -1; }
+    bool isValid() const
+    {
+        return m_length != -1;
+    }
 
-    bool isNonEmpty() const { return m_length > 0; }
-    bool isEmptyOrInvalid() const { return m_length <= 0; }
+    bool isNonEmpty() const
+    {
+        return m_length > 0;
+    }
+    bool isEmptyOrInvalid() const
+    {
+        return m_length <= 0;
+    }
 
     void reset()
     {
@@ -57,15 +68,33 @@ public:
         m_length = -1;
     }
 
-    bool operator==(const URLComponent& other) const { return m_begin == other.m_begin && m_length == other.m_length; }
+    bool operator==( const URLComponent &other ) const
+    {
+        return m_begin == other.m_begin && m_length == other.m_length;
+    }
 
-    int begin() const { return m_begin; }
-    void setBegin(int begin) { m_begin = begin; }
+    int begin() const
+    {
+        return m_begin;
+    }
+    void setBegin( int begin )
+    {
+        m_begin = begin;
+    }
 
-    int length() const { return m_length; }
-    void setLength(int length) { m_length = length; }
+    int length() const
+    {
+        return m_length;
+    }
+    void setLength( int length )
+    {
+        m_length = length;
+    }
 
-    int end() const { return m_begin + m_length; }
+    int end() const
+    {
+        return m_begin + m_length;
+    }
 
 private:
     int m_begin; // Byte offset in the string of this component.

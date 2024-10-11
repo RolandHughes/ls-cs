@@ -30,53 +30,61 @@
 #include "SVGTests.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGAElement : public SVGStyledTransformableElement,
-                    public SVGURIReference,
-                    public SVGTests,
-                    public SVGLangSpace,
-                    public SVGExternalResourcesRequired {
+    public SVGURIReference,
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGAElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGAElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGAElement(const QualifiedName&, Document*);
+    SVGAElement( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
-    
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
+
     virtual String title() const;
-    virtual String target() const { return svgTarget(); }
+    virtual String target() const
+    {
+        return svgTarget();
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
 
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
-    virtual void defaultEventHandler(Event*);
-    
+    virtual void defaultEventHandler( Event * );
+
     virtual bool supportsFocus() const;
     virtual bool isMouseFocusable() const;
-    virtual bool isKeyboardFocusable(KeyboardEvent*) const;
+    virtual bool isKeyboardFocusable( KeyboardEvent * ) const;
     virtual bool isFocusable() const;
 
-    virtual bool childShouldCreateRenderer(Node*) const;
+    virtual bool childShouldCreateRenderer( Node * ) const;
 
     // Animated property declarations
 
     // This declaration used to define a non-virtual "String& target() const" method, that clashes with "virtual String Element::target() const".
     // That's why it has been renamed to "svgTarget", the CodeGenerators take care of calling svgTargetAnimated() instead of targetAnimated(), see CodeGenerator.pm.
-    DECLARE_ANIMATED_STRING(SVGTarget, svgTarget)
+    DECLARE_ANIMATED_STRING( SVGTarget, svgTarget )
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

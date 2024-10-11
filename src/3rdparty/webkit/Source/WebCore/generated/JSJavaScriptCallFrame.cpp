@@ -33,9 +33,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSJavaScriptCallFrame);
+ASSERT_CLASS_FITS_IN_CELL( JSJavaScriptCallFrame );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -46,15 +47,15 @@ ASSERT_CLASS_FITS_IN_CELL(JSJavaScriptCallFrame);
 
 static const HashTableValue JSJavaScriptCallFrameTableValues[9] =
 {
-    { "caller", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameCaller), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "sourceID", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameSourceID), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "line", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameLine), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "column", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameColumn), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "scopeChain", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameScopeChain), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "thisObject", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameThisObject), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "functionName", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameFunctionName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "type", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameType), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "caller", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameCaller ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "sourceID", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameSourceID ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "line", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameLine ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "column", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameColumn ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "scopeChain", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameScopeChain ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "thisObject", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameThisObject ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "functionName", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameFunctionName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "type", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameType ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -68,188 +69,202 @@ static JSC_CONST_HASHTABLE HashTable JSJavaScriptCallFrameTable = { 17, 15, JSJa
 
 static const HashTableValue JSJavaScriptCallFramePrototypeTableValues[8] =
 {
-    { "GLOBAL_SCOPE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameGLOBAL_SCOPE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "LOCAL_SCOPE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameLOCAL_SCOPE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "WITH_SCOPE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameWITH_SCOPE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CLOSURE_SCOPE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameCLOSURE_SCOPE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CATCH_SCOPE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsJavaScriptCallFrameCATCH_SCOPE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "evaluate", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsJavaScriptCallFramePrototypeFunctionEvaluate), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "scopeType", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsJavaScriptCallFramePrototypeFunctionScopeType), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "GLOBAL_SCOPE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameGLOBAL_SCOPE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "LOCAL_SCOPE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameLOCAL_SCOPE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "WITH_SCOPE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameWITH_SCOPE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CLOSURE_SCOPE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameCLOSURE_SCOPE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CATCH_SCOPE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsJavaScriptCallFrameCATCH_SCOPE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "evaluate", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsJavaScriptCallFramePrototypeFunctionEvaluate ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "scopeType", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsJavaScriptCallFramePrototypeFunctionScopeType ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSJavaScriptCallFramePrototypeTable = { 17, 15, JSJavaScriptCallFramePrototypeTableValues, 0 };
 const ClassInfo JSJavaScriptCallFramePrototype::s_info = { "JavaScriptCallFramePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSJavaScriptCallFramePrototypeTable, 0 };
 
-JSObject* JSJavaScriptCallFramePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSJavaScriptCallFramePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSJavaScriptCallFrame>(exec, globalObject);
+    return getDOMPrototype<JSJavaScriptCallFrame>( exec, globalObject );
 }
 
-bool JSJavaScriptCallFramePrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSJavaScriptCallFramePrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSJavaScriptCallFramePrototype, JSObject>(exec, &JSJavaScriptCallFramePrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSJavaScriptCallFramePrototype, JSObject>( exec, &JSJavaScriptCallFramePrototypeTable, this,
+            propertyName, slot );
 }
 
-bool JSJavaScriptCallFramePrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSJavaScriptCallFramePrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSJavaScriptCallFramePrototype, JSObject>(exec, &JSJavaScriptCallFramePrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSJavaScriptCallFramePrototype, JSObject>( exec, &JSJavaScriptCallFramePrototypeTable, this,
+            propertyName, descriptor );
 }
 
 const ClassInfo JSJavaScriptCallFrame::s_info = { "JavaScriptCallFrame", &JSDOMWrapper::s_info, &JSJavaScriptCallFrameTable, 0 };
 
-JSJavaScriptCallFrame::JSJavaScriptCallFrame(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<JavaScriptCallFrame> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSJavaScriptCallFrame::JSJavaScriptCallFrame( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<JavaScriptCallFrame> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSJavaScriptCallFrame::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSJavaScriptCallFrame::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSJavaScriptCallFramePrototype(exec->globalData(), globalObject, JSJavaScriptCallFramePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSJavaScriptCallFramePrototype( exec->globalData(), globalObject,
+            JSJavaScriptCallFramePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSJavaScriptCallFrame::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSJavaScriptCallFrame::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSJavaScriptCallFrame, Base>(exec, &JSJavaScriptCallFrameTable, this, propertyName, slot);
+    return getStaticValueSlot<JSJavaScriptCallFrame, Base>( exec, &JSJavaScriptCallFrameTable, this, propertyName, slot );
 }
 
-bool JSJavaScriptCallFrame::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSJavaScriptCallFrame::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSJavaScriptCallFrame, Base>(exec, &JSJavaScriptCallFrameTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSJavaScriptCallFrame, Base>( exec, &JSJavaScriptCallFrameTable, this, propertyName, descriptor );
 }
 
-JSValue jsJavaScriptCallFrameCaller(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameCaller( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    JavaScriptCallFrame* imp = static_cast<JavaScriptCallFrame*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->caller()));
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    JavaScriptCallFrame *imp = static_cast<JavaScriptCallFrame *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->caller() ) );
     return result;
 }
 
 
-JSValue jsJavaScriptCallFrameSourceID(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameSourceID( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    JavaScriptCallFrame* imp = static_cast<JavaScriptCallFrame*>(castedThis->impl());
-    JSValue result = jsNumber(imp->sourceID());
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    JavaScriptCallFrame *imp = static_cast<JavaScriptCallFrame *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->sourceID() );
     return result;
 }
 
 
-JSValue jsJavaScriptCallFrameLine(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameLine( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    JavaScriptCallFrame* imp = static_cast<JavaScriptCallFrame*>(castedThis->impl());
-    JSValue result = jsNumber(imp->line());
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    JavaScriptCallFrame *imp = static_cast<JavaScriptCallFrame *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->line() );
     return result;
 }
 
 
-JSValue jsJavaScriptCallFrameColumn(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameColumn( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    JavaScriptCallFrame* imp = static_cast<JavaScriptCallFrame*>(castedThis->impl());
-    JSValue result = jsNumber(imp->column());
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    JavaScriptCallFrame *imp = static_cast<JavaScriptCallFrame *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->column() );
     return result;
 }
 
 
-JSValue jsJavaScriptCallFrameScopeChain(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameScopeChain( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    return castedThis->scopeChain(exec);
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    return castedThis->scopeChain( exec );
 }
 
 
-JSValue jsJavaScriptCallFrameThisObject(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameThisObject( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    return castedThis->thisObject(exec);
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    return castedThis->thisObject( exec );
 }
 
 
-JSValue jsJavaScriptCallFrameFunctionName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameFunctionName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    JavaScriptCallFrame* imp = static_cast<JavaScriptCallFrame*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->functionName());
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    JavaScriptCallFrame *imp = static_cast<JavaScriptCallFrame *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->functionName() );
     return result;
 }
 
 
-JSValue jsJavaScriptCallFrameType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsJavaScriptCallFrameType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(slotBase));
-    return castedThis->type(exec);
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( slotBase ) );
+    return castedThis->type( exec );
 }
 
 
-EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionEvaluate(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionEvaluate( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSJavaScriptCallFrame::s_info))
-        return throwVMTypeError(exec);
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(thisValue));
-    return JSValue::encode(castedThis->evaluate(exec));
+
+    if ( !thisValue.inherits( &JSJavaScriptCallFrame::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->evaluate( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionScopeType(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionScopeType( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSJavaScriptCallFrame::s_info))
-        return throwVMTypeError(exec);
-    JSJavaScriptCallFrame* castedThis = static_cast<JSJavaScriptCallFrame*>(asObject(thisValue));
-    return JSValue::encode(castedThis->scopeType(exec));
+
+    if ( !thisValue.inherits( &JSJavaScriptCallFrame::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSJavaScriptCallFrame *castedThis = static_cast<JSJavaScriptCallFrame *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->scopeType( exec ) );
 }
 
 // Constant getters
 
-JSValue jsJavaScriptCallFrameGLOBAL_SCOPE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsJavaScriptCallFrameGLOBAL_SCOPE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsJavaScriptCallFrameLOCAL_SCOPE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsJavaScriptCallFrameLOCAL_SCOPE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsJavaScriptCallFrameWITH_SCOPE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsJavaScriptCallFrameWITH_SCOPE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsJavaScriptCallFrameCLOSURE_SCOPE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsJavaScriptCallFrameCLOSURE_SCOPE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
-JSValue jsJavaScriptCallFrameCATCH_SCOPE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsJavaScriptCallFrameCATCH_SCOPE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(4));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 4 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, JavaScriptCallFrame* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, JavaScriptCallFrame *impl )
 {
-    return wrap<JSJavaScriptCallFrame>(exec, globalObject, impl);
+    return wrap<JSJavaScriptCallFrame>( exec, globalObject, impl );
 }
 
-JavaScriptCallFrame* toJavaScriptCallFrame(JSC::JSValue value)
+JavaScriptCallFrame *toJavaScriptCallFrame( JSC::JSValue value )
 {
-    return value.inherits(&JSJavaScriptCallFrame::s_info) ? static_cast<JSJavaScriptCallFrame*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSJavaScriptCallFrame::s_info ) ? static_cast<JSJavaScriptCallFrame *>( asObject( value ) )->impl() : 0;
 }
 
 }

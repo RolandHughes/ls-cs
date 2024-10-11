@@ -30,62 +30,63 @@ class QLibraryHandle;
 
 class Q_CORE_EXPORT QLibrary : public QObject
 {
-   CORE_CS_OBJECT(QLibrary)
+    CORE_LSCS_OBJECT( QLibrary )
 
-   CORE_CS_PROPERTY_READ(fileName, fileName)
-   CORE_CS_PROPERTY_WRITE(fileName, setFileName)
+    CORE_LSCS_PROPERTY_READ( fileName, fileName )
+    CORE_LSCS_PROPERTY_WRITE( fileName, setFileName )
 
-   CORE_CS_PROPERTY_READ(loadHints, loadHints)
-   CORE_CS_PROPERTY_WRITE(loadHints, setLoadHints)
+    CORE_LSCS_PROPERTY_READ( loadHints, loadHints )
+    CORE_LSCS_PROPERTY_WRITE( loadHints, setLoadHints )
 
- public:
-   enum LoadHint {
-      ResolveAllSymbolsHint     = 0x01,
-      ExportExternalSymbolsHint = 0x02,
-      LoadArchiveMemberHint     = 0x04,
-      PreventUnloadHint = 0x08,
-      DeepBindHint = 0x10
-   };
-   using LoadHints = QFlags<LoadHint>;
+public:
+    enum LoadHint
+    {
+        ResolveAllSymbolsHint     = 0x01,
+        ExportExternalSymbolsHint = 0x02,
+        LoadArchiveMemberHint     = 0x04,
+        PreventUnloadHint = 0x08,
+        DeepBindHint = 0x10
+    };
+    using LoadHints = QFlags<LoadHint>;
 
-   CORE_CS_FLAG(LoadHint, LoadHints)
+    CORE_LSCS_FLAG( LoadHint, LoadHints )
 
-   explicit QLibrary(QObject *parent = nullptr);
-   explicit QLibrary(const QString &fileName, QObject *parent = nullptr);
-   explicit QLibrary(const QString &fileName, int verNum, QObject *parent = nullptr);
-   explicit QLibrary(const QString &fileName, const QString &version, QObject *parent = nullptr);
+    explicit QLibrary( QObject *parent = nullptr );
+    explicit QLibrary( const QString &fileName, QObject *parent = nullptr );
+    explicit QLibrary( const QString &fileName, int verNum, QObject *parent = nullptr );
+    explicit QLibrary( const QString &fileName, const QString &version, QObject *parent = nullptr );
 
-   QLibrary(const QLibrary &) = delete;
-   QLibrary &operator=(const QLibrary &) = delete;
+    QLibrary( const QLibrary & ) = delete;
+    QLibrary &operator=( const QLibrary & ) = delete;
 
-   ~QLibrary();
+    ~QLibrary();
 
-   void *resolve(const QString &symbol);
-   static void *resolve(const QString &fileName, const QString &symbol);
-   static void *resolve(const QString &fileName, int verNum, const QString &symbol);
-   static void *resolve(const QString &fileName, const QString &version, const QString &symbol);
+    void *resolve( const QString &symbol );
+    static void *resolve( const QString &fileName, const QString &symbol );
+    static void *resolve( const QString &fileName, int verNum, const QString &symbol );
+    static void *resolve( const QString &fileName, const QString &version, const QString &symbol );
 
-   static bool isLibrary(const QString &fileName);
+    static bool isLibrary( const QString &fileName );
 
-   bool load();
-   bool unload();
-   bool isLoaded() const;
+    bool load();
+    bool unload();
+    bool isLoaded() const;
 
-   void setFileName(const QString &fileName);
-   QString fileName() const;
+    void setFileName( const QString &fileName );
+    QString fileName() const;
 
-   void setFileNameAndVersion(const QString &fileName, int versionNumber);
-   void setFileNameAndVersion(const QString &fileName, const QString &version);
-   QString errorString() const;
+    void setFileNameAndVersion( const QString &fileName, int versionNumber );
+    void setFileNameAndVersion( const QString &fileName, const QString &version );
+    QString errorString() const;
 
-   void setLoadHints(LoadHints hints);
-   LoadHints loadHints() const;
+    void setLoadHints( LoadHints hints );
+    LoadHints loadHints() const;
 
- private:
-   QLibraryHandle *m_handle;
-   bool m_loaded;
+private:
+    QLibraryHandle *m_handle;
+    bool m_loaded;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QLibrary::LoadHints)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QLibrary::LoadHints )
 
 #endif

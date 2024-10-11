@@ -28,30 +28,33 @@
 
 class CameraBinMetaData : public QMetaDataWriterControl
 {
-   CS_OBJECT(CameraBinMetaData)
+    LSCS_OBJECT( CameraBinMetaData )
 
- public:
-   CameraBinMetaData(QObject *parent);
-   virtual ~CameraBinMetaData() {
-   }
+public:
+    CameraBinMetaData( QObject *parent );
+    virtual ~CameraBinMetaData()
+    {
+    }
 
-   bool isMetaDataAvailable() const override {
-      return true;
-   }
+    bool isMetaDataAvailable() const override
+    {
+        return true;
+    }
 
-   bool isWritable() const override {
-      return true;
-   }
+    bool isWritable() const override
+    {
+        return true;
+    }
 
-   QVariant metaData(const QString &key) const override;
-   void setMetaData(const QString &key, const QVariant &value) override;
-   QStringList availableMetaData() const override;
+    QVariant metaData( const QString &key ) const override;
+    void setMetaData( const QString &key, const QVariant &value ) override;
+    QStringList availableMetaData() const override;
 
-   CS_SIGNAL_1(Public, void metaDataChanged(const QMap <QByteArray, QVariant> &metaData))
-   CS_SIGNAL_2(metaDataChanged, metaData)
+    LSCS_SIGNAL_1( Public, void metaDataChanged( const QMap <QByteArray, QVariant> &metaData ) )
+    LSCS_SIGNAL_2( metaDataChanged, metaData )
 
- private:
-   QMap<QByteArray, QVariant> m_values;
+private:
+    QMap<QByteArray, QVariant> m_values;
 };
 
 #endif

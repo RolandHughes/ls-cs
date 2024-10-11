@@ -35,9 +35,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSEntryArray);
+ASSERT_CLASS_FITS_IN_CELL( JSEntryArray );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -48,9 +49,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSEntryArray);
 
 static const HashTableValue JSEntryArrayTableValues[3] =
 {
-    { "length", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryArrayLength), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEntryArrayConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "length", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryArrayLength ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEntryArrayConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,43 +65,49 @@ static JSC_CONST_HASHTABLE HashTable JSEntryArrayTable = { 5, 3, JSEntryArrayTab
 
 static const HashTableValue JSEntryArrayConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEntryArrayConstructorTable = { 1, 0, JSEntryArrayConstructorTableValues, 0 };
-class JSEntryArrayConstructor : public DOMConstructorObject {
+class JSEntryArrayConstructor : public DOMConstructorObject
+{
 public:
-    JSEntryArrayConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSEntryArrayConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSEntryArrayConstructor::s_info = { "EntryArrayConstructor", &DOMConstructorObject::s_info, &JSEntryArrayConstructorTable, 0 };
 
-JSEntryArrayConstructor::JSEntryArrayConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSEntryArrayConstructor::JSEntryArrayConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSEntryArrayPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSEntryArrayPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSEntryArrayConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntryArrayConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSEntryArrayConstructor, JSDOMWrapper>(exec, &JSEntryArrayConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSEntryArrayConstructor, JSDOMWrapper>( exec, &JSEntryArrayConstructorTable, this, propertyName, slot );
 }
 
-bool JSEntryArrayConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntryArrayConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSEntryArrayConstructor, JSDOMWrapper>(exec, &JSEntryArrayConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSEntryArrayConstructor, JSDOMWrapper>( exec, &JSEntryArrayConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -112,161 +119,189 @@ bool JSEntryArrayConstructor::getOwnPropertyDescriptor(ExecState* exec, const Id
 
 static const HashTableValue JSEntryArrayPrototypeTableValues[2] =
 {
-    { "item", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEntryArrayPrototypeFunctionItem), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "item", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEntryArrayPrototypeFunctionItem ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEntryArrayPrototypeTable = { 2, 1, JSEntryArrayPrototypeTableValues, 0 };
-static const HashTable* getJSEntryArrayPrototypeTable(ExecState* exec)
+static const HashTable *getJSEntryArrayPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSEntryArrayPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSEntryArrayPrototypeTable );
 }
 
 const ClassInfo JSEntryArrayPrototype::s_info = { "EntryArrayPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSEntryArrayPrototypeTable };
 
-JSObject* JSEntryArrayPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEntryArrayPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSEntryArray>(exec, globalObject);
+    return getDOMPrototype<JSEntryArray>( exec, globalObject );
 }
 
-bool JSEntryArrayPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntryArrayPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSEntryArrayPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSEntryArrayPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSEntryArrayPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntryArrayPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSEntryArrayPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSEntryArrayPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
-static const HashTable* getJSEntryArrayTable(ExecState* exec)
+static const HashTable *getJSEntryArrayTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSEntryArrayTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSEntryArrayTable );
 }
 
 const ClassInfo JSEntryArray::s_info = { "EntryArray", &JSDOMWrapper::s_info, 0, getJSEntryArrayTable };
 
-JSEntryArray::JSEntryArray(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<EntryArray> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSEntryArray::JSEntryArray( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<EntryArray> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSEntryArray::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEntryArray::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSEntryArrayPrototype(exec->globalData(), globalObject, JSEntryArrayPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSEntryArrayPrototype( exec->globalData(), globalObject,
+            JSEntryArrayPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSEntryArray::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEntryArray::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    const HashEntry* entry = JSEntryArrayTable.entry(exec, propertyName);
-    if (entry) {
-        slot.setCustom(this, entry->propertyGetter());
+    const HashEntry *entry = JSEntryArrayTable.entry( exec, propertyName );
+
+    if ( entry )
+    {
+        slot.setCustom( this, entry->propertyGetter() );
         return true;
     }
+
     bool ok;
-    unsigned index = propertyName.toUInt32(ok);
-    if (ok && index < static_cast<EntryArray*>(impl())->length()) {
-        slot.setCustomIndex(this, index, indexGetter);
+    unsigned index = propertyName.toUInt32( ok );
+
+    if ( ok && index < static_cast<EntryArray *>( impl() )->length() )
+    {
+        slot.setCustomIndex( this, index, indexGetter );
         return true;
     }
-    return getStaticValueSlot<JSEntryArray, Base>(exec, getJSEntryArrayTable(exec), this, propertyName, slot);
+
+    return getStaticValueSlot<JSEntryArray, Base>( exec, getJSEntryArrayTable( exec ), this, propertyName, slot );
 }
 
-bool JSEntryArray::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEntryArray::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    const HashEntry* entry = JSEntryArrayTable.entry(exec, propertyName);
-    if (entry) {
+    const HashEntry *entry = JSEntryArrayTable.entry( exec, propertyName );
+
+    if ( entry )
+    {
         PropertySlot slot;
-        slot.setCustom(this, entry->propertyGetter());
-        descriptor.setDescriptor(slot.getValue(exec, propertyName), entry->attributes());
+        slot.setCustom( this, entry->propertyGetter() );
+        descriptor.setDescriptor( slot.getValue( exec, propertyName ), entry->attributes() );
         return true;
     }
+
     bool ok;
-    unsigned index = propertyName.toUInt32(ok);
-    if (ok && index < static_cast<EntryArray*>(impl())->length()) {
+    unsigned index = propertyName.toUInt32( ok );
+
+    if ( ok && index < static_cast<EntryArray *>( impl() )->length() )
+    {
         PropertySlot slot;
-        slot.setCustomIndex(this, index, indexGetter);
-        descriptor.setDescriptor(slot.getValue(exec, propertyName), DontDelete | ReadOnly);
+        slot.setCustomIndex( this, index, indexGetter );
+        descriptor.setDescriptor( slot.getValue( exec, propertyName ), DontDelete | ReadOnly );
         return true;
     }
-    return getStaticValueDescriptor<JSEntryArray, Base>(exec, getJSEntryArrayTable(exec), this, propertyName, descriptor);
+
+    return getStaticValueDescriptor<JSEntryArray, Base>( exec, getJSEntryArrayTable( exec ), this, propertyName, descriptor );
 }
 
-bool JSEntryArray::getOwnPropertySlot(ExecState* exec, unsigned propertyName, PropertySlot& slot)
+bool JSEntryArray::getOwnPropertySlot( ExecState *exec, unsigned propertyName, PropertySlot &slot )
 {
-    if (propertyName < static_cast<EntryArray*>(impl())->length()) {
-        slot.setCustomIndex(this, propertyName, indexGetter);
+    if ( propertyName < static_cast<EntryArray *>( impl() )->length() )
+    {
+        slot.setCustomIndex( this, propertyName, indexGetter );
         return true;
     }
-    return getOwnPropertySlot(exec, Identifier::from(exec, propertyName), slot);
+
+    return getOwnPropertySlot( exec, Identifier::from( exec, propertyName ), slot );
 }
 
-JSValue jsEntryArrayLength(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryArrayLength( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntryArray* castedThis = static_cast<JSEntryArray*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    EntryArray* imp = static_cast<EntryArray*>(castedThis->impl());
-    JSValue result = jsNumber(imp->length());
+    JSEntryArray *castedThis = static_cast<JSEntryArray *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    EntryArray *imp = static_cast<EntryArray *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->length() );
     return result;
 }
 
 
-JSValue jsEntryArrayConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEntryArrayConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEntryArray* domObject = static_cast<JSEntryArray*>(asObject(slotBase));
-    return JSEntryArray::getConstructor(exec, domObject->globalObject());
+    JSEntryArray *domObject = static_cast<JSEntryArray *>( asObject( slotBase ) );
+    return JSEntryArray::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSEntryArray::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void JSEntryArray::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
-    for (unsigned i = 0; i < static_cast<EntryArray*>(impl())->length(); ++i)
-        propertyNames.add(Identifier::from(exec, i));
-     Base::getOwnPropertyNames(exec, propertyNames, mode);
+    for ( unsigned i = 0; i < static_cast<EntryArray *>( impl() )->length(); ++i )
+    {
+        propertyNames.add( Identifier::from( exec, i ) );
+    }
+
+    Base::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
-JSValue JSEntryArray::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSEntryArray::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSEntryArrayConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSEntryArrayConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEntryArrayPrototypeFunctionItem(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEntryArrayPrototypeFunctionItem( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEntryArray::s_info))
-        return throwVMTypeError(exec);
-    JSEntryArray* castedThis = static_cast<JSEntryArray*>(asObject(thisValue));
-    EntryArray* imp = static_cast<EntryArray*>(castedThis->impl());
-    int index(exec->argument(0).toUInt32(exec));
-    if (index < 0) {
-        setDOMException(exec, INDEX_SIZE_ERR);
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSEntryArray::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    JSEntryArray *castedThis = static_cast<JSEntryArray *>( asObject( thisValue ) );
+    EntryArray *imp = static_cast<EntryArray *>( castedThis->impl() );
+    int index( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( index < 0 )
+    {
+        setDOMException( exec, INDEX_SIZE_ERR );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->item(index)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->item( index ) ) );
+    return JSValue::encode( result );
 }
 
 
-JSValue JSEntryArray::indexGetter(ExecState* exec, JSValue slotBase, unsigned index)
+JSValue JSEntryArray::indexGetter( ExecState *exec, JSValue slotBase, unsigned index )
 {
-    JSEntryArray* thisObj = static_cast<JSEntryArray*>(asObject(slotBase));
-    return toJS(exec, thisObj->globalObject(), static_cast<EntryArray*>(thisObj->impl())->item(index));
+    JSEntryArray *thisObj = static_cast<JSEntryArray *>( asObject( slotBase ) );
+    return toJS( exec, thisObj->globalObject(), static_cast<EntryArray *>( thisObj->impl() )->item( index ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, EntryArray* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, EntryArray *impl )
 {
-    return wrap<JSEntryArray>(exec, globalObject, impl);
+    return wrap<JSEntryArray>( exec, globalObject, impl );
 }
 
-EntryArray* toEntryArray(JSC::JSValue value)
+EntryArray *toEntryArray( JSC::JSValue value )
 {
-    return value.inherits(&JSEntryArray::s_info) ? static_cast<JSEntryArray*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSEntryArray::s_info ) ? static_cast<JSEntryArray *>( asObject( value ) )->impl() : 0;
 }
 
 }

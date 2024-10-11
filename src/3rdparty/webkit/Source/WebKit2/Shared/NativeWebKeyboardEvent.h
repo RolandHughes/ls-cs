@@ -40,29 +40,43 @@ OBJC_CLASS NSView;
 typedef union _GdkEvent GdkEvent;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class NativeWebKeyboardEvent : public WebKeyboardEvent {
+class NativeWebKeyboardEvent : public WebKeyboardEvent
+{
 public:
 #if PLATFORM(MAC)
-    NativeWebKeyboardEvent(NSEvent *, NSView *);
+    NativeWebKeyboardEvent( NSEvent *, NSView * );
 #elif PLATFORM(WIN)
-    NativeWebKeyboardEvent(HWND, UINT message, WPARAM, LPARAM);
+    NativeWebKeyboardEvent( HWND, UINT message, WPARAM, LPARAM );
 #elif PLATFORM(QT)
-    explicit NativeWebKeyboardEvent(QKeyEvent*);
+    explicit NativeWebKeyboardEvent( QKeyEvent * );
 #elif PLATFORM(GTK)
-    NativeWebKeyboardEvent(const NativeWebKeyboardEvent&);
-    NativeWebKeyboardEvent(GdkEvent*);
+    NativeWebKeyboardEvent( const NativeWebKeyboardEvent & );
+    NativeWebKeyboardEvent( GdkEvent * );
 #endif
 
 #if PLATFORM(MAC)
-    NSEvent *nativeEvent() const { return m_nativeEvent.get(); }
+    NSEvent *nativeEvent() const
+    {
+        return m_nativeEvent.get();
+    }
 #elif PLATFORM(WIN)
-    const MSG* nativeEvent() const { return &m_nativeEvent; }
+    const MSG *nativeEvent() const
+    {
+        return &m_nativeEvent;
+    }
 #elif PLATFORM(QT)
-    const QKeyEvent* nativeEvent() const { return &m_nativeEvent; }
+    const QKeyEvent *nativeEvent() const
+    {
+        return &m_nativeEvent;
+    }
 #elif PLATFORM(GTK)
-    const GdkEvent* nativeEvent() const { return m_nativeEvent.get(); }
+    const GdkEvent *nativeEvent() const
+    {
+        return m_nativeEvent.get();
+    }
 #endif
 
 private:

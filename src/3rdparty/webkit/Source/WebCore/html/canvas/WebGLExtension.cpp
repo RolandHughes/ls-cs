@@ -29,10 +29,11 @@
 
 #include "WebGLExtension.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-WebGLExtension::WebGLExtension(WebGLRenderingContext* context)
-    : m_context(context)
+WebGLExtension::WebGLExtension( WebGLRenderingContext *context )
+    : m_context( context )
 {
 }
 

@@ -33,58 +33,97 @@
 
 #include "qwebkitplatformplugin.h"
 
-class SelectData : public QWebSelectData {
+class SelectData : public QWebSelectData
+{
 public:
-    SelectData(WebCore::PopupMenuClient*& data) : d(data) {}
+    SelectData( WebCore::PopupMenuClient *&data ) : d( data ) {}
 
-    virtual ItemType itemType(int) const;
-    virtual QString itemText(int idx) const { return QString(d ? d->itemText(idx) : ""); }
-    virtual QString itemToolTip(int idx) const { return QString(d ? d->itemToolTip(idx) : ""); }
-    virtual bool itemIsEnabled(int idx) const { return d ? d->itemIsEnabled(idx) : false; }
-    virtual int itemCount() const { return d ? d->listSize() : 0; }
-    virtual bool itemIsSelected(int idx) const { return d ? d->itemIsSelected(idx) : false; }
+    virtual ItemType itemType( int ) const;
+    virtual QString itemText( int idx ) const
+    {
+        return QString( d ? d->itemText( idx ) : "" );
+    }
+    virtual QString itemToolTip( int idx ) const
+    {
+        return QString( d ? d->itemToolTip( idx ) : "" );
+    }
+    virtual bool itemIsEnabled( int idx ) const
+    {
+        return d ? d->itemIsEnabled( idx ) : false;
+    }
+    virtual int itemCount() const
+    {
+        return d ? d->listSize() : 0;
+    }
+    virtual bool itemIsSelected( int idx ) const
+    {
+        return d ? d->itemIsSelected( idx ) : false;
+    }
     virtual bool multiple() const;
-    virtual QColor backgroundColor() const { return d ? QColor(d->menuStyle().backgroundColor()) : QColor(); }
-    virtual QColor foregroundColor() const { return d ? QColor(d->menuStyle().foregroundColor()) : QColor(); }
-    virtual QColor itemBackgroundColor(int idx) const { return d ? QColor(d->itemStyle(idx).backgroundColor()) : QColor(); }
-    virtual QColor itemForegroundColor(int idx) const { return d ? QColor(d->itemStyle(idx).foregroundColor()) : QColor(); }
+    virtual QColor backgroundColor() const
+    {
+        return d ? QColor( d->menuStyle().backgroundColor() ) : QColor();
+    }
+    virtual QColor foregroundColor() const
+    {
+        return d ? QColor( d->menuStyle().foregroundColor() ) : QColor();
+    }
+    virtual QColor itemBackgroundColor( int idx ) const
+    {
+        return d ? QColor( d->itemStyle( idx ).backgroundColor() ) : QColor();
+    }
+    virtual QColor itemForegroundColor( int idx ) const
+    {
+        return d ? QColor( d->itemStyle( idx ).foregroundColor() ) : QColor();
+    }
 
 private:
-    WebCore::PopupMenuClient*& d;
+    WebCore::PopupMenuClient *&d;
 };
 
 bool SelectData::multiple() const
 {
-    if (!d)
+    if ( !d )
+    {
         return false;
+    }
 
 #if ENABLE(NO_LISTBOX_RENDERING)
-    WebCore::ListPopupMenuClient* client = static_cast<WebCore::ListPopupMenuClient*>(d);
+    WebCore::ListPopupMenuClient *client = static_cast<WebCore::ListPopupMenuClient *>( d );
     return client && client->multiple();
 #else
     return false;
 #endif
 }
 
-SelectData::ItemType SelectData::itemType(int idx) const
+SelectData::ItemType SelectData::itemType( int idx ) const
 {
-    if (!d)
+    if ( !d )
+    {
         return SelectData::Option;
+    }
 
-    if (d->itemIsSeparator(idx))
+    if ( d->itemIsSeparator( idx ) )
+    {
         return SelectData::Separator;
-    if (d->itemIsLabel(idx))
+    }
+
+    if ( d->itemIsLabel( idx ) )
+    {
         return SelectData::Group;
+    }
+
     return SelectData::Option;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
-PopupMenuQt::PopupMenuQt(PopupMenuClient* client, const ChromeClientQt* chromeClient)
-    : m_popupClient(client)
-    , m_popup(0)
-    , m_selectData(0)
-    , m_chromeClient(chromeClient)
+PopupMenuQt::PopupMenuQt( PopupMenuClient *client, const ChromeClientQt *chromeClient )
+    : m_popupClient( client )
+    , m_popup( 0 )
+    , m_selectData( 0 )
+    , m_chromeClient( chromeClient )
 {
 }
 
@@ -99,64 +138,83 @@ void PopupMenuQt::disconnectClient()
     m_popupClient = 0;
 }
 
-void PopupMenuQt::show(const IntRect& rect, FrameView* view, int index)
+void PopupMenuQt::show( const IntRect &rect, FrameView *view, int index )
 {
 #ifndef QT_NO_COMBOBOX
-    if (!m_popupClient)
+
+    if ( !m_popupClient )
+    {
         return;
+    }
 
-    if (!m_popup) {
+    if ( !m_popup )
+    {
         m_popup = m_chromeClient->createSelectPopup();
-        connect(m_popup, SIGNAL(didHide()), this, SLOT(didHide()));
-        connect(m_popup, SIGNAL(selectItem(int, bool, bool)), this, SLOT(selectItem(int, bool, bool)));
+        connect( m_popup, SIGNAL( didHide() ), this, SLOT( didHide() ) );
+        connect( m_popup, SIGNAL( selectItem( int, bool, bool ) ), this, SLOT( selectItem( int, bool, bool ) ) );
     }
 
-    if (QtFallbackWebPopup* fallback = qobject_cast<QtFallbackWebPopup*>(m_popup)) {
-        QRect geometry(rect);
-        geometry.moveTopLeft(view->contentsToWindow(rect.location()));
-        fallback->setGeometry(geometry);
-        fallback->setFont(m_popupClient->menuStyle().font().font());
+    if ( QtFallbackWebPopup *fallback = qobject_cast<QtFallbackWebPopup *>( m_popup ) )
+    {
+        QRect geometry( rect );
+        geometry.moveTopLeft( view->contentsToWindow( rect.location() ) );
+        fallback->setGeometry( geometry );
+        fallback->setFont( m_popupClient->menuStyle().font().font() );
     }
 
-    if (m_selectData)
+    if ( m_selectData )
+    {
         delete m_selectData;
-    m_selectData = new SelectData(m_popupClient);
-    m_popup->show(*m_selectData);
+    }
+
+    m_selectData = new SelectData( m_popupClient );
+    m_popup->show( *m_selectData );
 #endif
 }
 
 void PopupMenuQt::didHide()
 {
-    if (m_popupClient)
+    if ( m_popupClient )
+    {
         m_popupClient->popupDidHide();
+    }
 }
 
 void PopupMenuQt::hide()
 {
-    if (m_popup)
+    if ( m_popup )
+    {
         m_popup->hide();
+    }
 }
 
 void PopupMenuQt::updateFromElement()
 {
-    if (m_popupClient)
-        m_popupClient->setTextFromItem(m_popupClient->selectedIndex());
+    if ( m_popupClient )
+    {
+        m_popupClient->setTextFromItem( m_popupClient->selectedIndex() );
+    }
 }
 
-void PopupMenuQt::selectItem(int index, bool ctrl, bool shift)
+void PopupMenuQt::selectItem( int index, bool ctrl, bool shift )
 {
-    if (!m_popupClient)
-        return;
-
-#if ENABLE(NO_LISTBOX_RENDERING)
-    ListPopupMenuClient* client = static_cast<ListPopupMenuClient*>(m_popupClient);
-    if (client) {
-        client->listBoxSelectItem(index, ctrl, shift);
+    if ( !m_popupClient )
+    {
         return;
     }
+
+#if ENABLE(NO_LISTBOX_RENDERING)
+    ListPopupMenuClient *client = static_cast<ListPopupMenuClient *>( m_popupClient );
+
+    if ( client )
+    {
+        client->listBoxSelectItem( index, ctrl, shift );
+        return;
+    }
+
 #endif
 
-    m_popupClient->valueChanged(index);
+    m_popupClient->valueChanged( index );
 }
 
 }

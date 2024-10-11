@@ -38,66 +38,70 @@ class QNetworkCookiePrivate;
 
 class Q_NETWORK_EXPORT QNetworkCookie
 {
- public:
-   enum RawForm {
-      NameAndValueOnly,
-      Full
-   };
+public:
+    enum RawForm
+    {
+        NameAndValueOnly,
+        Full
+    };
 
-   explicit QNetworkCookie(const QByteArray &name = QByteArray(), const QByteArray &value = QByteArray());
-   QNetworkCookie(const QNetworkCookie &other);
-   ~QNetworkCookie();
+    explicit QNetworkCookie( const QByteArray &name = QByteArray(), const QByteArray &value = QByteArray() );
+    QNetworkCookie( const QNetworkCookie &other );
+    ~QNetworkCookie();
 
-   QNetworkCookie &operator=(QNetworkCookie &&other)  {
-      swap(other);
-      return *this;
-   }
+    QNetworkCookie &operator=( QNetworkCookie &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QNetworkCookie &operator=(const QNetworkCookie &other);
+    QNetworkCookie &operator=( const QNetworkCookie &other );
 
-   bool operator==(const QNetworkCookie &other) const;
-   bool operator!=(const QNetworkCookie &other) const {
-      return !(*this == other);
-   }
+    bool operator==( const QNetworkCookie &other ) const;
+    bool operator!=( const QNetworkCookie &other ) const
+    {
+        return !( *this == other );
+    }
 
-   void swap(QNetworkCookie &other)  {
-      qSwap(d, other.d);
-   }
+    void swap( QNetworkCookie &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   bool isSecure() const;
-   void setSecure(bool enable);
-   bool isHttpOnly() const;
-   void setHttpOnly(bool enable);
+    bool isSecure() const;
+    void setSecure( bool enable );
+    bool isHttpOnly() const;
+    void setHttpOnly( bool enable );
 
-   bool isSessionCookie() const;
-   QDateTime expirationDate() const;
-   void setExpirationDate(const QDateTime &date);
+    bool isSessionCookie() const;
+    QDateTime expirationDate() const;
+    void setExpirationDate( const QDateTime &date );
 
-   QString domain() const;
-   void setDomain(const QString &domain);
+    QString domain() const;
+    void setDomain( const QString &domain );
 
-   QString path() const;
-   void setPath(const QString &path);
+    QString path() const;
+    void setPath( const QString &path );
 
-   QByteArray name() const;
-   void setName(const QByteArray &cookieName);
+    QByteArray name() const;
+    void setName( const QByteArray &cookieName );
 
-   QByteArray value() const;
-   void setValue(const QByteArray &value);
+    QByteArray value() const;
+    void setValue( const QByteArray &value );
 
-   QByteArray toRawForm(RawForm form = Full) const;
+    QByteArray toRawForm( RawForm form = Full ) const;
 
-   bool hasSameIdentifier(const QNetworkCookie &other) const;
-   void normalize(const QUrl &url);
-   static QList<QNetworkCookie> parseCookies(const QByteArray &cookieString);
+    bool hasSameIdentifier( const QNetworkCookie &other ) const;
+    void normalize( const QUrl &url );
+    static QList<QNetworkCookie> parseCookies( const QByteArray &cookieString );
 
- private:
-   QSharedDataPointer<QNetworkCookiePrivate> d;
-   friend class QNetworkCookiePrivate;
+private:
+    QSharedDataPointer<QNetworkCookiePrivate> d;
+    friend class QNetworkCookiePrivate;
 };
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug, const QNetworkCookie &);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug, const QNetworkCookie & );
 
-CS_DECLARE_METATYPE(QNetworkCookie)
+LSCS_DECLARE_METATYPE( QNetworkCookie )
 
 #endif

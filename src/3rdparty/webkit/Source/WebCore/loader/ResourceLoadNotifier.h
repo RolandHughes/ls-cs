@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,7 +32,8 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AuthenticationChallenge;
 class DocumentLoader;
@@ -43,31 +44,34 @@ class ResourceLoader;
 class ResourceResponse;
 class ResourceRequest;
 
-class ResourceLoadNotifier {
-    WTF_MAKE_NONCOPYABLE(ResourceLoadNotifier);
+class ResourceLoadNotifier
+{
+    WTF_MAKE_NONCOPYABLE( ResourceLoadNotifier );
 public:
-    ResourceLoadNotifier(Frame*);
+    ResourceLoadNotifier( Frame * );
 
-    void didReceiveAuthenticationChallenge(ResourceLoader*, const AuthenticationChallenge&);
-    void didCancelAuthenticationChallenge(ResourceLoader*, const AuthenticationChallenge&);
+    void didReceiveAuthenticationChallenge( ResourceLoader *, const AuthenticationChallenge & );
+    void didCancelAuthenticationChallenge( ResourceLoader *, const AuthenticationChallenge & );
 
-    void willSendRequest(ResourceLoader*, ResourceRequest&, const ResourceResponse& redirectResponse);
-    void didReceiveResponse(ResourceLoader*, const ResourceResponse&);
-    void didReceiveData(ResourceLoader*, const char*, int dataLength, int encodedDataLength);
-    void didFinishLoad(ResourceLoader*, double finishTime);
-    void didFailToLoad(ResourceLoader*, const ResourceError&);
+    void willSendRequest( ResourceLoader *, ResourceRequest &, const ResourceResponse &redirectResponse );
+    void didReceiveResponse( ResourceLoader *, const ResourceResponse & );
+    void didReceiveData( ResourceLoader *, const char *, int dataLength, int encodedDataLength );
+    void didFinishLoad( ResourceLoader *, double finishTime );
+    void didFailToLoad( ResourceLoader *, const ResourceError & );
 
-    void assignIdentifierToInitialRequest(unsigned long identifier, DocumentLoader*, const ResourceRequest&);
-    void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse);
-    void dispatchDidReceiveResponse(DocumentLoader*, unsigned long identifier, const ResourceResponse&);
-    void dispatchDidReceiveContentLength(DocumentLoader*, unsigned long identifier, int dataLength, int encodedDataLength);
-    void dispatchDidFinishLoading(DocumentLoader*, unsigned long identifier, double finishTime);
-    void dispatchTransferLoadingResourceFromPage(unsigned long, DocumentLoader*, const ResourceRequest&, Page*);
+    void assignIdentifierToInitialRequest( unsigned long identifier, DocumentLoader *, const ResourceRequest & );
+    void dispatchWillSendRequest( DocumentLoader *, unsigned long identifier, ResourceRequest &,
+                                  const ResourceResponse &redirectResponse );
+    void dispatchDidReceiveResponse( DocumentLoader *, unsigned long identifier, const ResourceResponse & );
+    void dispatchDidReceiveContentLength( DocumentLoader *, unsigned long identifier, int dataLength, int encodedDataLength );
+    void dispatchDidFinishLoading( DocumentLoader *, unsigned long identifier, double finishTime );
+    void dispatchTransferLoadingResourceFromPage( unsigned long, DocumentLoader *, const ResourceRequest &, Page * );
 
-    void sendRemainingDelegateMessages(DocumentLoader*, unsigned long identifier, const ResourceResponse&, int dataLength, int encodedDataLength, const ResourceError&);
+    void sendRemainingDelegateMessages( DocumentLoader *, unsigned long identifier, const ResourceResponse &, int dataLength,
+                                        int encodedDataLength, const ResourceError & );
 
 private:
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 } // namespace WebCore

@@ -30,19 +30,22 @@
 #include "HTTPParsers.h"
 #include "SuffixTree.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLDocumentParser;
 
-class XSSFilter {
-    WTF_MAKE_NONCOPYABLE(XSSFilter);
+class XSSFilter
+{
+    WTF_MAKE_NONCOPYABLE( XSSFilter );
 public:
-    explicit XSSFilter(HTMLDocumentParser*);
+    explicit XSSFilter( HTMLDocumentParser * );
 
-    void filterToken(HTMLToken&);
+    void filterToken( HTMLToken & );
 
 private:
-    enum State {
+    enum State
+    {
         Uninitialized,
         Initial,
         AfterScriptStartTag,
@@ -50,29 +53,29 @@ private:
 
     void init();
 
-    bool filterTokenInitial(HTMLToken&);
-    bool filterTokenAfterScriptStartTag(HTMLToken&);
+    bool filterTokenInitial( HTMLToken & );
+    bool filterTokenAfterScriptStartTag( HTMLToken & );
 
-    bool filterScriptToken(HTMLToken&);
-    bool filterObjectToken(HTMLToken&);
-    bool filterParamToken(HTMLToken&);
-    bool filterEmbedToken(HTMLToken&);
-    bool filterAppletToken(HTMLToken&);
-    bool filterIframeToken(HTMLToken&);
-    bool filterMetaToken(HTMLToken&);
-    bool filterBaseToken(HTMLToken&);
-    bool filterFormToken(HTMLToken&);
+    bool filterScriptToken( HTMLToken & );
+    bool filterObjectToken( HTMLToken & );
+    bool filterParamToken( HTMLToken & );
+    bool filterEmbedToken( HTMLToken & );
+    bool filterAppletToken( HTMLToken & );
+    bool filterIframeToken( HTMLToken & );
+    bool filterMetaToken( HTMLToken & );
+    bool filterBaseToken( HTMLToken & );
+    bool filterFormToken( HTMLToken & );
 
-    bool eraseDangerousAttributesIfInjected(HTMLToken&);
-    bool eraseAttributeIfInjected(HTMLToken&, const QualifiedName&, const String& replacementValue = String());
+    bool eraseDangerousAttributesIfInjected( HTMLToken & );
+    bool eraseAttributeIfInjected( HTMLToken &, const QualifiedName &, const String &replacementValue = String() );
 
-    String snippetForRange(const HTMLToken&, int start, int end);
-    String snippetForAttribute(const HTMLToken&, const HTMLToken::Attribute&);
+    String snippetForRange( const HTMLToken &, int start, int end );
+    String snippetForAttribute( const HTMLToken &, const HTMLToken::Attribute & );
 
-    bool isContainedInRequest(const String&);
-    bool isSameOriginResource(const String& url);
+    bool isContainedInRequest( const String & );
+    bool isSameOriginResource( const String &url );
 
-    HTMLDocumentParser* m_parser;
+    HTMLDocumentParser *m_parser;
     bool m_isEnabled;
     XSSProtectionDisposition m_xssProtection;
 

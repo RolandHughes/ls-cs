@@ -30,98 +30,114 @@
 #include "Text.h"
 #include "XLinkNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_STRING(SVGTRefElement, XLinkNames::hrefAttr, Href, href)
+DEFINE_ANIMATED_STRING( SVGTRefElement, XLinkNames::hrefAttr, Href, href )
 
-inline SVGTRefElement::SVGTRefElement(const QualifiedName& tagName, Document* document)
-    : SVGTextPositioningElement(tagName, document)
+inline SVGTRefElement::SVGTRefElement( const QualifiedName &tagName, Document *document )
+    : SVGTextPositioningElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGTRefElement> SVGTRefElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGTRefElement> SVGTRefElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGTRefElement(tagName, document));
+    return adoptRef( new SVGTRefElement( tagName, document ) );
 }
 
 void SVGTRefElement::updateReferencedText()
 {
-    Element* target = treeScope()->getElementById(SVGURIReference::getTarget(href()));
+    Element *target = treeScope()->getElementById( SVGURIReference::getTarget( href() ) );
     String textContent;
-    if (target && target->isSVGElement())
-        textContent = static_cast<SVGElement*>(target)->textContent();
+
+    if ( target && target->isSVGElement() )
+    {
+        textContent = static_cast<SVGElement *>( target )->textContent();
+    }
+
     ExceptionCode ignore = 0;
-    setTextContent(textContent, ignore);
+    setTextContent( textContent, ignore );
 }
 
-void SVGTRefElement::parseMappedAttribute(Attribute* attr)
+void SVGTRefElement::parseMappedAttribute( Attribute *attr )
 {
-    if (SVGURIReference::parseMappedAttribute(attr)) {
+    if ( SVGURIReference::parseMappedAttribute( attr ) )
+    {
         updateReferencedText();
         return;
     }
 
-    SVGTextPositioningElement::parseMappedAttribute(attr);
+    SVGTextPositioningElement::parseMappedAttribute( attr );
 }
 
-void SVGTRefElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGTRefElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGTextPositioningElement::svgAttributeChanged(attrName);
+    SVGTextPositioningElement::svgAttributeChanged( attrName );
 
-    if (!renderer())
+    if ( !renderer() )
+    {
         return;
+    }
 
-    if (SVGURIReference::isKnownAttribute(attrName))
-        RenderSVGResource::markForLayoutAndParentResourceInvalidation(renderer());
+    if ( SVGURIReference::isKnownAttribute( attrName ) )
+    {
+        RenderSVGResource::markForLayoutAndParentResourceInvalidation( renderer() );
+    }
 }
 
-void SVGTRefElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGTRefElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGTextPositioningElement::synchronizeProperty(attrName);
+    SVGTextPositioningElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || SVGURIReference::isKnownAttribute(attrName))
+    if ( attrName == anyQName() || SVGURIReference::isKnownAttribute( attrName ) )
+    {
         synchronizeHref();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGTRefElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGTRefElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGTRefElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGTextPositioningElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(XLinkNames::hrefAttr, AnimatedString);
+    SVGTextPositioningElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( XLinkNames::hrefAttr, AnimatedString );
 }
 
-RenderObject* SVGTRefElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGTRefElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSVGInline(this);
+    return new ( arena ) RenderSVGInline( this );
 }
 
-bool SVGTRefElement::childShouldCreateRenderer(Node* child) const
+bool SVGTRefElement::childShouldCreateRenderer( Node *child ) const
 {
-    if (child->isTextNode())
+    if ( child->isTextNode() )
+    {
         return true;
+    }
 
     return false;
 }
 
-bool SVGTRefElement::rendererIsNeeded(RenderStyle* style)
+bool SVGTRefElement::rendererIsNeeded( RenderStyle *style )
 {
-    if (parentNode()
-        && (parentNode()->hasTagName(SVGNames::aTag)
+    if ( parentNode()
+            && ( parentNode()->hasTagName( SVGNames::aTag )
 #if ENABLE(SVG_FONTS)
-            || parentNode()->hasTagName(SVGNames::altGlyphTag)
+                 || parentNode()->hasTagName( SVGNames::altGlyphTag )
 #endif
-            || parentNode()->hasTagName(SVGNames::textTag)
-            || parentNode()->hasTagName(SVGNames::textPathTag)
-            || parentNode()->hasTagName(SVGNames::tspanTag)))
-        return StyledElement::rendererIsNeeded(style);
+                 || parentNode()->hasTagName( SVGNames::textTag )
+                 || parentNode()->hasTagName( SVGNames::textPathTag )
+                 || parentNode()->hasTagName( SVGNames::tspanTag ) ) )
+    {
+        return StyledElement::rendererIsNeeded( style );
+    }
 
     return false;
 }

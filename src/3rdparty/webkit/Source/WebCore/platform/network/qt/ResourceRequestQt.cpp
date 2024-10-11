@@ -24,7 +24,8 @@
 #include <qnetwork_request.h>
 #include <qurl.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Currently Qt allows three connections per host on symbian and six
 // for everyone else. The limit can be found in qhttpnetworkconnection.cpp.
@@ -35,53 +36,68 @@ namespace WebCore {
 // and 2 ready to re-fill the pipeline.
 unsigned initializeMaximumHTTPConnectionCountPerHost()
 {
-    return 6 * (1 + 3 + 2);
+    return 6 * ( 1 + 3 + 2 );
 }
 
-QNetworkRequest ResourceRequest::toNetworkRequest(QObject* originatingFrame) const
+QNetworkRequest ResourceRequest::toNetworkRequest( QObject *originatingFrame ) const
 {
     QNetworkRequest request;
-    request.setUrl(url());
-    request.setOriginatingObject(originatingFrame);
+    request.setUrl( url() );
+    request.setOriginatingObject( originatingFrame );
 
     const HTTPHeaderMap &headers = httpHeaderFields();
-    for (HTTPHeaderMap::const_iterator it = headers.begin(), end = headers.end();
-         it != end; ++it) {
-        QByteArray name = QString(it->first).toLatin1();
-        QByteArray value = QString(it->second).toLatin1();
+
+    for ( HTTPHeaderMap::const_iterator it = headers.begin(), end = headers.end();
+            it != end; ++it )
+    {
+        QByteArray name = QString( it->first ).toLatin1();
+        QByteArray value = QString( it->second ).toLatin1();
+
         // QNetworkRequest::setRawHeader() would remove the header if the value is null
         // Make sure to set an empty header instead of null header.
-        if (!value.isNull())
-            request.setRawHeader(name, value);
+        if ( !value.isNull() )
+        {
+            request.setRawHeader( name, value );
+        }
         else
-            request.setRawHeader(name, "");
+        {
+            request.setRawHeader( name, "" );
+        }
     }
 
     // Make sure we always have an Accept header; some sites require this to
     // serve subresources
-    if (!request.hasRawHeader("Accept"))
-        request.setRawHeader("Accept", "*/*");
-
-    switch (cachePolicy()) {
-    case ReloadIgnoringCacheData:
-        request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
-        break;
-    case ReturnCacheDataElseLoad:
-        request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
-        break;
-    case ReturnCacheDataDontLoad:
-        request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysCache);
-        break;
-    case UseProtocolCachePolicy:
-        // QNetworkRequest::PreferNetwork
-    default:
-        break;
+    if ( !request.hasRawHeader( "Accept" ) )
+    {
+        request.setRawHeader( "Accept", "*/*" );
     }
 
-    if (!allowCookies()) {
-        request.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
-        request.setAttribute(QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual);
-        request.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
+    switch ( cachePolicy() )
+    {
+        case ReloadIgnoringCacheData:
+            request.setAttribute( QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork );
+            break;
+
+        case ReturnCacheDataElseLoad:
+            request.setAttribute( QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache );
+            break;
+
+        case ReturnCacheDataDontLoad:
+            request.setAttribute( QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysCache );
+            break;
+
+        case UseProtocolCachePolicy:
+
+        // QNetworkRequest::PreferNetwork
+        default:
+            break;
+    }
+
+    if ( !allowCookies() )
+    {
+        request.setAttribute( QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual );
+        request.setAttribute( QNetworkRequest::CookieSaveControlAttribute, QNetworkRequest::Manual );
+        request.setAttribute( QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual );
     }
 
     return request;

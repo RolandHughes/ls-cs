@@ -26,7 +26,7 @@
 FT_BEGIN_HEADER
 
 
-  FT_DECLARE_MODULE( pshinter_module_class )
+FT_DECLARE_MODULE( pshinter_module_class )
 
 
 FT_END_HEADER

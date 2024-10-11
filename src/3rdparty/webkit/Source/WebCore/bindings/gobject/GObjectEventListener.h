@@ -26,55 +26,60 @@
 #include <wtf/text/CString.h>
 
 typedef struct _GObject GObject;
-typedef void (*GCallback) (void);
+typedef void ( *GCallback ) ( void );
 
-namespace WebCore {
+namespace WebCore
+{
 
-class GObjectEventListener : public EventListener {
+class GObjectEventListener : public EventListener
+{
 public:
 
-    static bool addEventListener(GObject* object, EventTarget* target, const char* domEventName, GCallback handler, bool useCapture, void* userData)
+    static bool addEventListener( GObject *object, EventTarget *target, const char *domEventName, GCallback handler, bool useCapture,
+                                  void *userData )
     {
-        RefPtr<GObjectEventListener> listener(adoptRef(new GObjectEventListener(object, target, domEventName, handler, useCapture, userData)));
-        return target->addEventListener(domEventName, listener.release(), useCapture);
+        RefPtr<GObjectEventListener> listener( adoptRef( new GObjectEventListener( object, target, domEventName, handler, useCapture,
+                                               userData ) ) );
+        return target->addEventListener( domEventName, listener.release(), useCapture );
     }
 
-    static bool removeEventListener(GObject* object, EventTarget* target, const char* domEventName, GCallback handler, bool useCapture)
+    static bool removeEventListener( GObject *object, EventTarget *target, const char *domEventName, GCallback handler,
+                                     bool useCapture )
     {
-        GObjectEventListener key(object, target, domEventName, handler, useCapture, 0);
-        return target->removeEventListener(domEventName, &key, useCapture);
+        GObjectEventListener key( object, target, domEventName, handler, useCapture, 0 );
+        return target->removeEventListener( domEventName, &key, useCapture );
     }
 
-    static void gobjectDestroyedCallback(GObjectEventListener* listener, GObject*)
+    static void gobjectDestroyedCallback( GObjectEventListener *listener, GObject * )
     {
         listener->gobjectDestroyed();
     }
 
-    static const GObjectEventListener* cast(const EventListener* listener)
+    static const GObjectEventListener *cast( const EventListener *listener )
     {
         return listener->type() == GObjectEventListenerType
-            ? static_cast<const GObjectEventListener*>(listener)
-            : 0;
+               ? static_cast<const GObjectEventListener *>( listener )
+               : 0;
     }
 
-    virtual bool operator==(const EventListener& other);
+    virtual bool operator==( const EventListener &other );
 
 private:
-    GObjectEventListener(GObject*, EventTarget*, const char* domEventName, GCallback handler, bool capture, void* userData);
+    GObjectEventListener( GObject *, EventTarget *, const char *domEventName, GCallback handler, bool capture, void *userData );
     ~GObjectEventListener();
     void gobjectDestroyed();
 
-    virtual void handleEvent(ScriptExecutionContext*, Event*);
+    virtual void handleEvent( ScriptExecutionContext *, Event * );
 
-    GObject* m_object;
+    GObject *m_object;
 
     // We do not need to keep a reference to the m_coreTarget, because
     // we only use it when the GObject and thus the m_coreTarget object is alive.
-    EventTarget* m_coreTarget;
+    EventTarget *m_coreTarget;
     CString m_domEventName;
     GCallback m_handler;
     bool m_capture;
-    void* m_userData;
+    void *m_userData;
 };
 } // namespace WebCore
 

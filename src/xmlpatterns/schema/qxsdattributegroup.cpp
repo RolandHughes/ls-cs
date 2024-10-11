@@ -25,28 +25,28 @@
 
 using namespace QPatternist;
 
-void XsdAttributeGroup::setAttributeUses(const XsdAttributeUse::List &attributeUses)
+void XsdAttributeGroup::setAttributeUses( const XsdAttributeUse::List &attributeUses )
 {
-   m_attributeUses = attributeUses;
+    m_attributeUses = attributeUses;
 }
 
-void XsdAttributeGroup::addAttributeUse(const XsdAttributeUse::Ptr &attributeUse)
+void XsdAttributeGroup::addAttributeUse( const XsdAttributeUse::Ptr &attributeUse )
 {
-   m_attributeUses.append(attributeUse);
+    m_attributeUses.append( attributeUse );
 }
 
 XsdAttributeUse::List XsdAttributeGroup::attributeUses() const
 {
-   return m_attributeUses;
+    return m_attributeUses;
 }
 
-void XsdAttributeGroup::setWildcard(const XsdWildcard::Ptr &wildcard)
+void XsdAttributeGroup::setWildcard( const XsdWildcard::Ptr &wildcard )
 {
-   m_wildcard = wildcard;
+    m_wildcard = wildcard;
 }
 
 XsdWildcard::Ptr XsdAttributeGroup::wildcard() const
 {
-   return m_wildcard;
+    return m_wildcard;
 }
 

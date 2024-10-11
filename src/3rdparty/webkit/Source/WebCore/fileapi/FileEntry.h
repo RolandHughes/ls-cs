@@ -37,24 +37,29 @@
 #include "FileCallback.h"
 #include "FileWriterCallback.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMFileSystemBase;
 
-class FileEntry : public Entry {
+class FileEntry : public Entry
+{
 public:
-    static PassRefPtr<FileEntry> create(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
+    static PassRefPtr<FileEntry> create( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
     {
-        return adoptRef(new FileEntry(fileSystem, fullPath));
+        return adoptRef( new FileEntry( fileSystem, fullPath ) );
     }
 
-    void createWriter(PassRefPtr<FileWriterCallback>, PassRefPtr<ErrorCallback> = 0);
-    void file(PassRefPtr<FileCallback>, PassRefPtr<ErrorCallback> = 0);
+    void createWriter( PassRefPtr<FileWriterCallback>, PassRefPtr<ErrorCallback> = 0 );
+    void file( PassRefPtr<FileCallback>, PassRefPtr<ErrorCallback> = 0 );
 
-    virtual bool isFile() const { return true; }
+    virtual bool isFile() const
+    {
+        return true;
+    }
 
 private:
-    FileEntry(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath);
+    FileEntry( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath );
 };
 
 } // namespace

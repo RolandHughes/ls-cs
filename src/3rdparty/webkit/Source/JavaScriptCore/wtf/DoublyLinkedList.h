@@ -26,26 +26,28 @@
 #ifndef DoublyLinkedList_h
 #define DoublyLinkedList_h
 
-namespace WTF {
+namespace WTF
+{
 
-template <typename Node> class DoublyLinkedList {
+template <typename Node> class DoublyLinkedList
+{
 public:
     DoublyLinkedList();
 
     bool isEmpty();
 
-    Node* head();
+    Node *head();
 
-    void append(Node*);
-    void remove(Node*);
+    void append( Node * );
+    void remove( Node * );
 
 private:
-    Node* m_head;
-    Node* m_tail;
+    Node *m_head;
+    Node *m_tail;
 };
 
 template <typename Node> inline DoublyLinkedList<Node>::DoublyLinkedList()
-    : m_head(nullptr), m_tail(nullptr)
+    : m_head( nullptr ), m_tail( nullptr )
 {
 }
 
@@ -54,44 +56,51 @@ template <typename Node> inline bool DoublyLinkedList<Node>::isEmpty()
     return !m_head;
 }
 
-template <typename Node> inline Node* DoublyLinkedList<Node>::head()
+template <typename Node> inline Node *DoublyLinkedList<Node>::head()
 {
     return m_head;
 }
 
-template <typename Node> inline void DoublyLinkedList<Node>::append(Node* node)
+template <typename Node> inline void DoublyLinkedList<Node>::append( Node *node )
 {
-    if (!m_tail) {
-        ASSERT(!m_head);
+    if ( !m_tail )
+    {
+        ASSERT( !m_head );
         m_head = node;
         m_tail = node;
-        node->setPrev(0);
-        node->setNext(0);
+        node->setPrev( 0 );
+        node->setNext( 0 );
         return;
     }
 
-    ASSERT(m_head);
-    m_tail->setNext(node);
-    node->setPrev(m_tail);
-    node->setNext(0);
+    ASSERT( m_head );
+    m_tail->setNext( node );
+    node->setPrev( m_tail );
+    node->setNext( 0 );
     m_tail = node;
 }
 
-template <typename Node> inline void DoublyLinkedList<Node>::remove(Node* node)
+template <typename Node> inline void DoublyLinkedList<Node>::remove( Node *node )
 {
-    if (node->prev()) {
-        ASSERT(node != m_head);
-        node->prev()->setNext(node->next());
-    } else {
-        ASSERT(node == m_head);
+    if ( node->prev() )
+    {
+        ASSERT( node != m_head );
+        node->prev()->setNext( node->next() );
+    }
+    else
+    {
+        ASSERT( node == m_head );
         m_head = node->next();
     }
 
-    if (node->next()) {
-        ASSERT(node != m_tail);
-        node->next()->setPrev(node->prev());
-    } else {
-        ASSERT(node == m_tail);
+    if ( node->next() )
+    {
+        ASSERT( node != m_tail );
+        node->next()->setPrev( node->prev() );
+    }
+    else
+    {
+        ASSERT( node == m_tail );
         m_tail = node->prev();
     }
 }

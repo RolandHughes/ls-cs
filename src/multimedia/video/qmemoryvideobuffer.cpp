@@ -29,24 +29,24 @@
 
 class QMemoryVideoBufferPrivate : public QAbstractVideoBufferPrivate
 {
- public:
-   QMemoryVideoBufferPrivate()
-      : bytesPerLine(0), mapMode(QAbstractVideoBuffer::NotMapped)
-   {
-   }
+public:
+    QMemoryVideoBufferPrivate()
+        : bytesPerLine( 0 ), mapMode( QAbstractVideoBuffer::NotMapped )
+    {
+    }
 
-   int bytesPerLine;
-   QAbstractVideoBuffer::MapMode mapMode;
-   QByteArray data;
+    int bytesPerLine;
+    QAbstractVideoBuffer::MapMode mapMode;
+    QByteArray data;
 };
 
-QMemoryVideoBuffer::QMemoryVideoBuffer(const QByteArray &array, int bytesPerLine)
-   : QAbstractVideoBuffer(*new QMemoryVideoBufferPrivate, NoHandle)
+QMemoryVideoBuffer::QMemoryVideoBuffer( const QByteArray &array, int bytesPerLine )
+    : QAbstractVideoBuffer( *new QMemoryVideoBufferPrivate, NoHandle )
 {
-   Q_D(QMemoryVideoBuffer);
+    Q_D( QMemoryVideoBuffer );
 
-   d->data = array;
-   d->bytesPerLine = bytesPerLine;
+    d->data = array;
+    d->bytesPerLine = bytesPerLine;
 }
 
 QMemoryVideoBuffer::~QMemoryVideoBuffer()
@@ -55,33 +55,38 @@ QMemoryVideoBuffer::~QMemoryVideoBuffer()
 
 QAbstractVideoBuffer::MapMode QMemoryVideoBuffer::mapMode() const
 {
-   return d_func()->mapMode;
+    return d_func()->mapMode;
 }
 
-uchar *QMemoryVideoBuffer::map(MapMode mode, int *numBytes, int *bytesPerLine)
+uchar *QMemoryVideoBuffer::map( MapMode mode, int *numBytes, int *bytesPerLine )
 {
-   Q_D(QMemoryVideoBuffer);
+    Q_D( QMemoryVideoBuffer );
 
-   if (d->mapMode == NotMapped && d->data.data() && mode != NotMapped) {
-      d->mapMode = mode;
+    if ( d->mapMode == NotMapped && d->data.data() && mode != NotMapped )
+    {
+        d->mapMode = mode;
 
-      if (numBytes) {
-         *numBytes = d->data.size();
-      }
+        if ( numBytes )
+        {
+            *numBytes = d->data.size();
+        }
 
-      if (bytesPerLine) {
-         *bytesPerLine = d->bytesPerLine;
-      }
+        if ( bytesPerLine )
+        {
+            *bytesPerLine = d->bytesPerLine;
+        }
 
-      return reinterpret_cast<uchar *>(d->data.data());
+        return reinterpret_cast<uchar *>( d->data.data() );
 
-   } else {
-      return nullptr;
-   }
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 void QMemoryVideoBuffer::unmap()
 {
-   d_func()->mapMode = NotMapped;
+    d_func()->mapMode = NotMapped;
 }
 

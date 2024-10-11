@@ -28,29 +28,30 @@
 #include <qgstreameraudiodecodercontrol.h>
 #include <qgstreameraudiodecodersession.h>
 
-QGstreamerAudioDecoderService::QGstreamerAudioDecoderService(QObject *parent)
-   : QMediaService(parent)
+QGstreamerAudioDecoderService::QGstreamerAudioDecoderService( QObject *parent )
+    : QMediaService( parent )
 {
-   m_session = new QGstreamerAudioDecoderSession(this);
-   m_control = new QGstreamerAudioDecoderControl(m_session, this);
+    m_session = new QGstreamerAudioDecoderSession( this );
+    m_control = new QGstreamerAudioDecoderControl( m_session, this );
 }
 
 QGstreamerAudioDecoderService::~QGstreamerAudioDecoderService()
 {
 }
 
-QMediaControl *QGstreamerAudioDecoderService::requestControl(const QString &name)
+QMediaControl *QGstreamerAudioDecoderService::requestControl( const QString &name )
 {
-   if (name == QAudioDecoderControl_Key) {
-      return m_control;
-   }
+    if ( name == QAudioDecoderControl_Key )
+    {
+        return m_control;
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-void QGstreamerAudioDecoderService::releaseControl(QMediaControl *control)
+void QGstreamerAudioDecoderService::releaseControl( QMediaControl *control )
 {
-   (void) control;
+    ( void ) control;
 }
 
 

@@ -30,22 +30,22 @@ class QMediaPlaylist;
 
 class Q_MULTIMEDIA_EXPORT QMediaPlaylistSourceControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QMediaPlaylistSourceControl)
+    MULTI_LSCS_OBJECT( QMediaPlaylistSourceControl )
 
- public:
-   virtual ~QMediaPlaylistSourceControl();
+public:
+    virtual ~QMediaPlaylistSourceControl();
 
-   virtual QMediaPlaylist *playlist() const = 0;
-   virtual void setPlaylist(QMediaPlaylist *) = 0;
+    virtual QMediaPlaylist *playlist() const = 0;
+    virtual void setPlaylist( QMediaPlaylist * ) = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void playlistChanged(QMediaPlaylist *playlist))
-   MULTI_CS_SIGNAL_2(playlistChanged, playlist)
+    MULTI_LSCS_SIGNAL_1( Public, void playlistChanged( QMediaPlaylist *playlist ) )
+    MULTI_LSCS_SIGNAL_2( playlistChanged, playlist )
 
- protected:
-   QMediaPlaylistSourceControl(QObject *parent = nullptr);
+protected:
+    QMediaPlaylistSourceControl( QObject *parent = nullptr );
 };
 
 #define QMediaPlaylistSourceControl_iid "com.copperspice.CS.mediaPlayListSourceControl/1.0"
-CS_DECLARE_INTERFACE(QMediaPlaylistSourceControl, QMediaPlaylistSourceControl_iid)
+LSCS_DECLARE_INTERFACE( QMediaPlaylistSourceControl, QMediaPlaylistSourceControl_iid )
 
 #endif

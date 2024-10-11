@@ -28,43 +28,57 @@
 #include "StringRecursionChecker.h"
 #include "UString.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(ErrorPrototype);
+ASSERT_CLASS_FITS_IN_CELL( ErrorPrototype );
 
-static EncodedJSValue JSC_HOST_CALL errorProtoFuncToString(ExecState*);
+static EncodedJSValue JSC_HOST_CALL errorProtoFuncToString( ExecState * );
 
 // ECMA 15.9.4
-ErrorPrototype::ErrorPrototype(ExecState* exec, JSGlobalObject* globalObject, Structure* structure, Structure* functionStructure)
-    : ErrorInstance(&exec->globalData(), structure)
+ErrorPrototype::ErrorPrototype( ExecState *exec, JSGlobalObject *globalObject, Structure *structure,
+                                Structure *functionStructure )
+    : ErrorInstance( &exec->globalData(), structure )
 {
     // The constructor will be added later in ErrorConstructor's constructor
 
-    putDirectWithoutTransition(exec->globalData(), exec->propertyNames().name, jsNontrivialString(exec, "Error"), DontEnum);
-    putDirectFunctionWithoutTransition(exec, new (exec) JSFunction(exec, globalObject, functionStructure, 0, exec->propertyNames().toString, errorProtoFuncToString), DontEnum);
+    putDirectWithoutTransition( exec->globalData(), exec->propertyNames().name, jsNontrivialString( exec, "Error" ), DontEnum );
+    putDirectFunctionWithoutTransition( exec, new ( exec ) JSFunction( exec, globalObject, functionStructure, 0,
+                                        exec->propertyNames().toString, errorProtoFuncToString ), DontEnum );
 }
 
-EncodedJSValue JSC_HOST_CALL errorProtoFuncToString(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL errorProtoFuncToString( ExecState *exec )
 {
-    JSObject* thisObj = exec->hostThisValue().toThisObject(exec);
+    JSObject *thisObj = exec->hostThisValue().toThisObject( exec );
 
-    StringRecursionChecker checker(exec, thisObj);
-    if (EncodedJSValue earlyReturnValue = checker.earlyReturnValue())
+    StringRecursionChecker checker( exec, thisObj );
+
+    if ( EncodedJSValue earlyReturnValue = checker.earlyReturnValue() )
+    {
         return earlyReturnValue;
+    }
 
-    JSValue name = thisObj->get(exec, exec->propertyNames().name);
-    JSValue message = thisObj->get(exec, exec->propertyNames().message);
+    JSValue name = thisObj->get( exec, exec->propertyNames().name );
+    JSValue message = thisObj->get( exec, exec->propertyNames().message );
 
     // Mozilla-compatible format.
 
-    if (!name.isUndefined()) {
-        if (!message.isUndefined())
-            return JSValue::encode(jsMakeNontrivialString(exec, name.toString(exec), ": ", message.toString(exec)));
-        return JSValue::encode(jsNontrivialString(exec, name.toString(exec)));
+    if ( !name.isUndefined() )
+    {
+        if ( !message.isUndefined() )
+        {
+            return JSValue::encode( jsMakeNontrivialString( exec, name.toString( exec ), ": ", message.toString( exec ) ) );
+        }
+
+        return JSValue::encode( jsNontrivialString( exec, name.toString( exec ) ) );
     }
-    if (!message.isUndefined())
-        return JSValue::encode(jsMakeNontrivialString(exec, "Error: ", message.toString(exec)));
-    return JSValue::encode(jsNontrivialString(exec, "Error"));
+
+    if ( !message.isUndefined() )
+    {
+        return JSValue::encode( jsMakeNontrivialString( exec, "Error: ", message.toString( exec ) ) );
+    }
+
+    return JSValue::encode( jsNontrivialString( exec, "Error" ) );
 }
 
 } // namespace JSC

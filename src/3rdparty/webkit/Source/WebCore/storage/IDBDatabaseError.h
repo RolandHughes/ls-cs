@@ -33,33 +33,47 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IDBDatabaseError : public RefCounted<IDBDatabaseError> {
+class IDBDatabaseError : public RefCounted<IDBDatabaseError>
+{
 public:
-    static PassRefPtr<IDBDatabaseError> create(unsigned short code, const String& message)
+    static PassRefPtr<IDBDatabaseError> create( unsigned short code, const String &message )
     {
-        ASSERT(code >= IDBDatabaseException::IDBDatabaseExceptionOffset);
-        ASSERT(code < IDBDatabaseException::IDBDatabaseExceptionMax);
-        return adoptRef(new IDBDatabaseError(code - IDBDatabaseException::IDBDatabaseExceptionOffset, message));
+        ASSERT( code >= IDBDatabaseException::IDBDatabaseExceptionOffset );
+        ASSERT( code < IDBDatabaseException::IDBDatabaseExceptionMax );
+        return adoptRef( new IDBDatabaseError( code - IDBDatabaseException::IDBDatabaseExceptionOffset, message ) );
     }
 
-    static PassRefPtr<IDBDatabaseError> createWithoutOffset(unsigned short code, const String& message)
+    static PassRefPtr<IDBDatabaseError> createWithoutOffset( unsigned short code, const String &message )
     {
-        ASSERT(code < IDBDatabaseException::IDBDatabaseExceptionOffset);
-        return adoptRef(new IDBDatabaseError(code, message));
+        ASSERT( code < IDBDatabaseException::IDBDatabaseExceptionOffset );
+        return adoptRef( new IDBDatabaseError( code, message ) );
     }
 
     ~IDBDatabaseError() { }
 
-    unsigned short code() const { return m_code; }
-    void setCode(unsigned short value) { m_code = value; }
-    const String& message() const { return m_message; }
-    void setMessage(const String& value) { m_message = value; }
+    unsigned short code() const
+    {
+        return m_code;
+    }
+    void setCode( unsigned short value )
+    {
+        m_code = value;
+    }
+    const String &message() const
+    {
+        return m_message;
+    }
+    void setMessage( const String &value )
+    {
+        m_message = value;
+    }
 
 private:
-    IDBDatabaseError(unsigned short code, const String& message)
-        : m_code(code), m_message(message) { }
+    IDBDatabaseError( unsigned short code, const String &message )
+        : m_code( code ), m_message( message ) { }
 
     unsigned short m_code;
     String m_message;

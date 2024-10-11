@@ -32,40 +32,40 @@ class QDeclarativeTranslatePrivate;
 
 class QDeclarativeTranslate : public QGraphicsTransform
 {
-   DECL_CS_OBJECT(QDeclarativeTranslate)
+    DECL_LSCS_OBJECT( QDeclarativeTranslate )
 
-   DECL_CS_PROPERTY_READ(x, x)
-   DECL_CS_PROPERTY_WRITE(x, setX)
-   DECL_CS_PROPERTY_NOTIFY(x, xChanged)
-   DECL_CS_PROPERTY_READ(y, y)
-   DECL_CS_PROPERTY_WRITE(y, setY)
-   DECL_CS_PROPERTY_NOTIFY(y, yChanged)
+    DECL_LSCS_PROPERTY_READ( x, x )
+    DECL_LSCS_PROPERTY_WRITE( x, setX )
+    DECL_LSCS_PROPERTY_NOTIFY( x, xChanged )
+    DECL_LSCS_PROPERTY_READ( y, y )
+    DECL_LSCS_PROPERTY_WRITE( y, setY )
+    DECL_LSCS_PROPERTY_NOTIFY( y, yChanged )
 
- public:
-   QDeclarativeTranslate(QObject *parent = nullptr);
-   ~QDeclarativeTranslate();
+public:
+    QDeclarativeTranslate( QObject *parent = nullptr );
+    ~QDeclarativeTranslate();
 
-   qreal x() const;
-   void setX(qreal);
+    qreal x() const;
+    void setX( qreal );
 
-   qreal y() const;
-   void setY(qreal);
+    qreal y() const;
+    void setY( qreal );
 
-   void applyTo(QMatrix4x4 *matrix) const;
+    void applyTo( QMatrix4x4 *matrix ) const;
 
-   DECL_CS_SIGNAL_1(Public, void xChanged())
-   DECL_CS_SIGNAL_2(xChanged)
-   DECL_CS_SIGNAL_1(Public, void yChanged())
-   DECL_CS_SIGNAL_2(yChanged)
+    DECL_LSCS_SIGNAL_1( Public, void xChanged() )
+    DECL_LSCS_SIGNAL_2( xChanged )
+    DECL_LSCS_SIGNAL_1( Public, void yChanged() )
+    DECL_LSCS_SIGNAL_2( yChanged )
 
- private:
-   Q_DECLARE_PRIVATE(QDeclarativeTranslate)
-   Q_DISABLE_COPY(QDeclarativeTranslate)
+private:
+    Q_DECLARE_PRIVATE( QDeclarativeTranslate )
+    Q_DISABLE_COPY( QDeclarativeTranslate )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeTranslate)
+QML_DECLARE_TYPE( QDeclarativeTranslate )
 
 
 #endif

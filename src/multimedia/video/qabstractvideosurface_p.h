@@ -32,15 +32,15 @@
 class QAbstractVideoSurfacePrivate
 {
 
- public:
-   QAbstractVideoSurfacePrivate()
-      : error(QAbstractVideoSurface::NoError), active(false)
-   { }
+public:
+    QAbstractVideoSurfacePrivate()
+        : error( QAbstractVideoSurface::NoError ), active( false )
+    { }
 
-   QVideoSurfaceFormat surfaceFormat;
-   QAbstractVideoSurface::Error error;
-   QSize nativeResolution;
-   bool active;
+    QVideoSurfaceFormat surfaceFormat;
+    QAbstractVideoSurface::Error error;
+    QSize nativeResolution;
+    bool active;
 };
 
 #endif

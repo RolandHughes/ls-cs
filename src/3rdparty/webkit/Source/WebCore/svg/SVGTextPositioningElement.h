@@ -26,26 +26,28 @@
 #include "SVGAnimatedNumberList.h"
 #include "SVGTextContentElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGTextPositioningElement : public SVGTextContentElement {
+class SVGTextPositioningElement : public SVGTextContentElement
+{
 public:
-    static SVGTextPositioningElement* elementFromRenderer(RenderObject*);
+    static SVGTextPositioningElement *elementFromRenderer( RenderObject * );
 
 protected:
-    SVGTextPositioningElement(const QualifiedName&, Document*);
+    SVGTextPositioningElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
-    void fillPassedAttributeToPropertyTypeMap(AttributeToPropertyTypeMap&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
+    void fillPassedAttributeToPropertyTypeMap( AttributeToPropertyTypeMap & );
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH_LIST(X, x)
-    DECLARE_ANIMATED_LENGTH_LIST(Y, y)
-    DECLARE_ANIMATED_LENGTH_LIST(Dx, dx)
-    DECLARE_ANIMATED_LENGTH_LIST(Dy, dy)
-    DECLARE_ANIMATED_NUMBER_LIST(Rotate, rotate)
+    DECLARE_ANIMATED_LENGTH_LIST( X, x )
+    DECLARE_ANIMATED_LENGTH_LIST( Y, y )
+    DECLARE_ANIMATED_LENGTH_LIST( Dx, dx )
+    DECLARE_ANIMATED_LENGTH_LIST( Dy, dy )
+    DECLARE_ANIMATED_NUMBER_LIST( Rotate, rotate )
 };
 
 } // namespace WebCore

@@ -32,24 +32,24 @@ QT_BEGIN_NAMESPACE
 class QDeclarativeEngine;
 class QDeclarativeListScriptClass : public QScriptDeclarativeClass
 {
- public:
-   QDeclarativeListScriptClass(QDeclarativeEngine *);
-   ~QDeclarativeListScriptClass();
+public:
+    QDeclarativeListScriptClass( QDeclarativeEngine * );
+    ~QDeclarativeListScriptClass();
 
-   QScriptValue newList(QObject *, int, int);
-   QScriptValue newList(const QDeclarativeListProperty<QObject> &, int);
+    QScriptValue newList( QObject *, int, int );
+    QScriptValue newList( const QDeclarativeListProperty<QObject> &, int );
 
- protected:
-   virtual QScriptClass::QueryFlags queryProperty(Object *, const Identifier &,
-         QScriptClass::QueryFlags flags);
-   virtual Value property(Object *, const Identifier &);
-   virtual QVariant toVariant(Object *, bool *ok);
+protected:
+    virtual QScriptClass::QueryFlags queryProperty( Object *, const Identifier &,
+            QScriptClass::QueryFlags flags );
+    virtual Value property( Object *, const Identifier & );
+    virtual QVariant toVariant( Object *, bool *ok );
 
- private:
-   PersistentIdentifier m_lengthId;
-   QDeclarativeEngine *engine;
+private:
+    PersistentIdentifier m_lengthId;
+    QDeclarativeEngine *engine;
 
-   quint32 lastIndex;
+    quint32 lastIndex;
 };
 
 QT_END_NAMESPACE

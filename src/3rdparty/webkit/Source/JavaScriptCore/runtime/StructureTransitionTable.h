@@ -33,21 +33,24 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class Structure;
 
-class StructureTransitionTable {
+class StructureTransitionTable
+{
     static const intptr_t UsingSingleSlotFlag = 1;
 
-    struct Hash {
+    struct Hash
+    {
         typedef std::pair<RefPtr<StringImpl>, unsigned> Key;
-        static unsigned hash(const Key& p)
+        static unsigned hash( const Key &p )
         {
             return p.first->existingHash();
         }
 
-        static bool equal(const Key& a, const Key& b)
+        static bool equal( const Key &a, const Key &b )
         {
             return a == b;
         }
@@ -55,54 +58,69 @@ class StructureTransitionTable {
         static const bool safeToCompareToEmptyOrDeleted = true;
     };
 
-    struct HashTraits {
+    struct HashTraits
+    {
         typedef WTF::HashTraits<RefPtr<StringImpl> > FirstTraits;
         typedef WTF::GenericHashTraits<unsigned> SecondTraits;
         typedef std::pair<FirstTraits::TraitType, SecondTraits::TraitType > TraitType;
 
         static const bool emptyValueIsZero = FirstTraits::emptyValueIsZero && SecondTraits::emptyValueIsZero;
-        static TraitType emptyValue() { return std::make_pair(FirstTraits::emptyValue(), SecondTraits::emptyValue()); }
+        static TraitType emptyValue()
+        {
+            return std::make_pair( FirstTraits::emptyValue(), SecondTraits::emptyValue() );
+        }
 
         static const bool needsDestruction = FirstTraits::needsDestruction || SecondTraits::needsDestruction;
 
-        static void constructDeletedValue(TraitType& slot) { FirstTraits::constructDeletedValue(slot.first); }
-        static bool isDeletedValue(const TraitType& value) { return FirstTraits::isDeletedValue(value.first); }
+        static void constructDeletedValue( TraitType &slot )
+        {
+            FirstTraits::constructDeletedValue( slot.first );
+        }
+        static bool isDeletedValue( const TraitType &value )
+        {
+            return FirstTraits::isDeletedValue( value.first );
+        }
     };
 
-    struct WeakGCMapFinalizerCallback {
-        static void* finalizerContextFor(Hash::Key)
+    struct WeakGCMapFinalizerCallback
+    {
+        static void *finalizerContextFor( Hash::Key )
         {
             return nullptr;
         }
 
-        static inline Hash::Key keyForFinalizer(void* context, Structure* structure)
+        static inline Hash::Key keyForFinalizer( void *context, Structure *structure )
         {
-            return keyForWeakGCMapFinalizer(context, structure);
+            return keyForWeakGCMapFinalizer( context, structure );
         }
     };
 
     typedef WeakGCMap<Hash::Key, Structure, WeakGCMapFinalizerCallback, Hash, HashTraits> TransitionMap;
 
-    static Hash::Key keyForWeakGCMapFinalizer(void* context, Structure*);
+    static Hash::Key keyForWeakGCMapFinalizer( void *context, Structure * );
 
 public:
     StructureTransitionTable()
-        : m_data(UsingSingleSlotFlag)
+        : m_data( UsingSingleSlotFlag )
     {
     }
 
     ~StructureTransitionTable()
     {
-        if (!isUsingSingleSlot())
+        if ( !isUsingSingleSlot() )
+        {
             delete map();
+        }
         else
+        {
             clearSingleTransition();
+        }
     }
 
-    inline void add(JSGlobalData&, Structure*);
-    inline void remove(Structure*);
-    inline bool contains(StringImpl* rep, unsigned attributes) const;
-    inline Structure* get(StringImpl* rep, unsigned attributes) const;
+    inline void add( JSGlobalData &, Structure * );
+    inline void remove( Structure * );
+    inline bool contains( StringImpl *rep, unsigned attributes ) const;
+    inline Structure *get( StringImpl *rep, unsigned attributes ) const;
 
 private:
     bool isUsingSingleSlot() const
@@ -110,59 +128,72 @@ private:
         return m_data & UsingSingleSlotFlag;
     }
 
-    TransitionMap* map() const
+    TransitionMap *map() const
     {
-        ASSERT(!isUsingSingleSlot());
-        return reinterpret_cast<TransitionMap*>(m_data);
+        ASSERT( !isUsingSingleSlot() );
+        return reinterpret_cast<TransitionMap *>( m_data );
     }
 
     HandleSlot slot() const
     {
-        ASSERT(isUsingSingleSlot());
-        return reinterpret_cast<HandleSlot>(m_data & ~UsingSingleSlotFlag);
+        ASSERT( isUsingSingleSlot() );
+        return reinterpret_cast<HandleSlot>( m_data & ~UsingSingleSlotFlag );
     }
 
-    void setMap(TransitionMap* map)
+    void setMap( TransitionMap *map )
     {
-        ASSERT(isUsingSingleSlot());
+        ASSERT( isUsingSingleSlot() );
 
-        if (HandleSlot slot = this->slot())
-            HandleHeap::heapFor(slot)->deallocate(slot);
+        if ( HandleSlot slot = this->slot() )
+        {
+            HandleHeap::heapFor( slot )->deallocate( slot );
+        }
 
         // This implicitly clears the flag that indicates we're using a single transition
-        m_data = reinterpret_cast<intptr_t>(map);
+        m_data = reinterpret_cast<intptr_t>( map );
 
-        ASSERT(!isUsingSingleSlot());
+        ASSERT( !isUsingSingleSlot() );
     }
 
-    Structure* singleTransition() const
+    Structure *singleTransition() const
     {
-        ASSERT(isUsingSingleSlot());
-        if (HandleSlot slot = this->slot()) {
-            if (*slot)
-                return reinterpret_cast<Structure*>(slot->asCell());
+        ASSERT( isUsingSingleSlot() );
+
+        if ( HandleSlot slot = this->slot() )
+        {
+            if ( *slot )
+            {
+                return reinterpret_cast<Structure *>( slot->asCell() );
+            }
         }
+
         return nullptr;
     }
 
     void clearSingleTransition()
     {
-        ASSERT(isUsingSingleSlot());
-        if (HandleSlot slot = this->slot())
-            HandleHeap::heapFor(slot)->deallocate(slot);
+        ASSERT( isUsingSingleSlot() );
+
+        if ( HandleSlot slot = this->slot() )
+        {
+            HandleHeap::heapFor( slot )->deallocate( slot );
+        }
     }
 
-    void setSingleTransition(JSGlobalData& globalData, Structure* structure)
+    void setSingleTransition( JSGlobalData &globalData, Structure *structure )
     {
-        ASSERT(isUsingSingleSlot());
+        ASSERT( isUsingSingleSlot() );
         HandleSlot slot = this->slot();
-        if (!slot) {
+
+        if ( !slot )
+        {
             slot = globalData.allocateGlobalHandle();
-            HandleHeap::heapFor(slot)->makeWeak(slot, nullptr, nullptr);
-            m_data = reinterpret_cast<intptr_t>(slot) | UsingSingleSlotFlag;
+            HandleHeap::heapFor( slot )->makeWeak( slot, nullptr, nullptr );
+            m_data = reinterpret_cast<intptr_t>( slot ) | UsingSingleSlotFlag;
         }
-        HandleHeap::heapFor(slot)->writeBarrier(slot, reinterpret_cast<JSCell*>(structure));
-        *slot = reinterpret_cast<JSCell*>(structure);
+
+        HandleHeap::heapFor( slot )->writeBarrier( slot, reinterpret_cast<JSCell *>( structure ) );
+        *slot = reinterpret_cast<JSCell *>( structure );
     }
 
     intptr_t m_data;

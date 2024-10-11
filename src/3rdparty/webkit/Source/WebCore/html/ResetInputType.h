@@ -33,17 +33,19 @@
 
 #include "BaseButtonInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ResetInputType : public BaseButtonInputType {
+class ResetInputType : public BaseButtonInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    ResetInputType(HTMLInputElement* element) : BaseButtonInputType(element) { }
-    virtual const AtomicString& formControlType() const;
+    ResetInputType( HTMLInputElement *element ) : BaseButtonInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
     virtual bool supportsValidation() const;
-    virtual void handleDOMActivateEvent(Event*);
+    virtual void handleDOMActivateEvent( Event * );
     virtual String defaultValue();
     virtual bool isTextButton() const;
 };

@@ -37,19 +37,22 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-WebPageProxy* ChunkedUpdateDrawingAreaProxy::page()
+namespace WebKit
 {
-    return toImpl(m_webView->page()->pageRef());
+
+WebPageProxy *ChunkedUpdateDrawingAreaProxy::page()
+{
+    return toImpl( m_webView->page()->pageRef() );
 }
 
 void ChunkedUpdateDrawingAreaProxy::ensureBackingStore()
 {
-    if (!m_backingStoreImage.isNull())
+    if ( !m_backingStoreImage.isNull() )
+    {
         return;
+    }
 
-    m_backingStoreImage = QImage(size().width(), size().height(), QImage::Format_RGB32);
+    m_backingStoreImage = QImage( size().width(), size().height(), QImage::Format_RGB32 );
 }
 
 void ChunkedUpdateDrawingAreaProxy::invalidateBackingStore()
@@ -57,26 +60,28 @@ void ChunkedUpdateDrawingAreaProxy::invalidateBackingStore()
     m_backingStoreImage = QImage();
 }
 
-bool ChunkedUpdateDrawingAreaProxy::platformPaint(const IntRect& rect, QPainter* painter)
+bool ChunkedUpdateDrawingAreaProxy::platformPaint( const IntRect &rect, QPainter *painter )
 {
-    if (m_backingStoreImage.isNull())
+    if ( m_backingStoreImage.isNull() )
+    {
         return false;
+    }
 
-    painter->drawImage(QPoint(0, 0), m_backingStoreImage);
+    painter->drawImage( QPoint( 0, 0 ), m_backingStoreImage );
     return true;
 }
 
-void ChunkedUpdateDrawingAreaProxy::drawUpdateChunkIntoBackingStore(UpdateChunk* updateChunk)
+void ChunkedUpdateDrawingAreaProxy::drawUpdateChunkIntoBackingStore( UpdateChunk *updateChunk )
 {
     ensureBackingStore();
 
-    QImage image(updateChunk->createImage());
-    const IntRect& updateChunkRect = updateChunk->rect();
+    QImage image( updateChunk->createImage() );
+    const IntRect &updateChunkRect = updateChunk->rect();
 
-    QPainter painter(&m_backingStoreImage);
-    painter.drawImage(updateChunkRect.location(), image);
+    QPainter painter( &m_backingStoreImage );
+    painter.drawImage( updateChunkRect.location(), image );
 
-    m_webView->update(QRect(updateChunkRect));
+    m_webView->update( QRect( updateChunkRect ) );
 }
 
 } // namespace WebKit

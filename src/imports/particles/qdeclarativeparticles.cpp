@@ -43,30 +43,33 @@
 QT_BEGIN_NAMESPACE
 #define PI_SQR 9.8696044
 // parabolic approximation
-inline qreal fastSin(qreal theta)
+inline qreal fastSin( qreal theta )
 {
     const qreal b = 4 / M_PI;
     const qreal c = -4 / PI_SQR;
 
-    qreal y = b * theta + c * theta * qAbs(theta);
+    qreal y = b * theta + c * theta * qAbs( theta );
     return y;
 }
 
-inline qreal fastCos(qreal theta)
+inline qreal fastCos( qreal theta )
 {
     theta += M_PI_2;
-    if (theta > M_PI)
-        theta -= 2 * M_PI;
 
-    return fastSin(theta);
+    if ( theta > M_PI )
+    {
+        theta -= 2 * M_PI;
+    }
+
+    return fastSin( theta );
 }
 
 class QDeclarativeParticle
 {
 public:
-    QDeclarativeParticle(int time) : lifeSpan(1000), fadeOutAge(800)
-        , opacity(0), birthTime(time), x_velocity(0), y_velocity(0)
-        , state(FadeIn), data(0)
+    QDeclarativeParticle( int time ) : lifeSpan( 1000 ), fadeOutAge( 800 )
+        , opacity( 0 ), birthTime( time ), x_velocity( 0 ), y_velocity( 0 )
+        , state( FadeIn ), data( 0 )
     {
     }
 
@@ -97,8 +100,8 @@ public:
 /*!
     Constructs a QDeclarativeParticleMotion with parent object \a parent.
 */
-QDeclarativeParticleMotion::QDeclarativeParticleMotion(QObject *parent) :
-    QObject(parent)
+QDeclarativeParticleMotion::QDeclarativeParticleMotion( QObject *parent ) :
+    QObject( parent )
 {
 }
 
@@ -106,28 +109,28 @@ QDeclarativeParticleMotion::QDeclarativeParticleMotion(QObject *parent) :
     Move the \a particle to its new position.  \a interval is the number of
     milliseconds elapsed since it was last moved.
 */
-void QDeclarativeParticleMotion::advance(QDeclarativeParticle &particle, int interval)
+void QDeclarativeParticleMotion::advance( QDeclarativeParticle &particle, int interval )
 {
-    Q_UNUSED(particle);
-    Q_UNUSED(interval);
+    Q_UNUSED( particle );
+    Q_UNUSED( interval );
 }
 
 /*!
     The \a particle has just been created.  Some motion strategies require
     additional state information.  This can be allocated by this function.
 */
-void QDeclarativeParticleMotion::created(QDeclarativeParticle &particle)
+void QDeclarativeParticleMotion::created( QDeclarativeParticle &particle )
 {
-    Q_UNUSED(particle);
+    Q_UNUSED( particle );
 }
 
 /*!
     The \a particle is about to be destroyed.  Any additional memory
     that has been allocated for the particle should be freed.
 */
-void QDeclarativeParticleMotion::destroy(QDeclarativeParticle &particle)
+void QDeclarativeParticleMotion::destroy( QDeclarativeParticle &particle )
 {
-    Q_UNUSED(particle);
+    Q_UNUSED( particle );
 }
 
 /*!
@@ -143,7 +146,7 @@ void QDeclarativeParticleMotion::destroy(QDeclarativeParticle &particle)
 
     It has no further properties.
 */
-void QDeclarativeParticleMotionLinear::advance(QDeclarativeParticle &p, int interval)
+void QDeclarativeParticleMotionLinear::advance( QDeclarativeParticle &p, int interval )
 {
     p.x += interval * p.x_velocity;
     p.y += interval * p.y_velocity;
@@ -191,40 +194,50 @@ void QDeclarativeParticleMotionLinear::advance(QDeclarativeParticle &p, int inte
     \brief the acceleration to apply to the particles.
 */
 
-void QDeclarativeParticleMotionGravity::setXAttractor(qreal x)
+void QDeclarativeParticleMotionGravity::setXAttractor( qreal x )
 {
-    if (qFuzzyCompare(x, _xAttr))
+    if ( qFuzzyCompare( x, _xAttr ) )
+    {
         return;
+    }
+
     _xAttr = x;
     emit xattractorChanged();
 }
 
-void QDeclarativeParticleMotionGravity::setYAttractor(qreal y)
+void QDeclarativeParticleMotionGravity::setYAttractor( qreal y )
 {
-    if (qFuzzyCompare(y, _yAttr))
+    if ( qFuzzyCompare( y, _yAttr ) )
+    {
         return;
+    }
+
     _yAttr = y;
     emit yattractorChanged();
 }
 
-void QDeclarativeParticleMotionGravity::setAcceleration(qreal accel)
+void QDeclarativeParticleMotionGravity::setAcceleration( qreal accel )
 {
     qreal scaledAccel = accel/1000000.0;
-    if (qFuzzyCompare(scaledAccel, _accel))
+
+    if ( qFuzzyCompare( scaledAccel, _accel ) )
+    {
         return;
+    }
+
     _accel = scaledAccel;
     emit accelerationChanged();
 }
 
-void QDeclarativeParticleMotionGravity::advance(QDeclarativeParticle &p, int interval)
+void QDeclarativeParticleMotionGravity::advance( QDeclarativeParticle &p, int interval )
 {
     qreal xdiff = _xAttr - p.x;
     qreal ydiff = _yAttr - p.y;
-    qreal absXdiff = qAbs(xdiff);
-    qreal absYdiff = qAbs(ydiff);
+    qreal absXdiff = qAbs( xdiff );
+    qreal absYdiff = qAbs( ydiff );
 
-    qreal xcomp = xdiff / (absXdiff + absYdiff);
-    qreal ycomp = ydiff / (absXdiff + absYdiff);
+    qreal xcomp = xdiff / ( absXdiff + absYdiff );
+    qreal ycomp = ydiff / ( absXdiff + absYdiff );
 
     p.x_velocity += xcomp * _accel * interval;
     p.y_velocity += ycomp * _accel * interval;
@@ -284,77 +297,107 @@ Rectangle {
     This property holds how quickly the paricles will move from side to side.
 */
 
-void QDeclarativeParticleMotionWander::advance(QDeclarativeParticle &p, int interval)
+void QDeclarativeParticleMotionWander::advance( QDeclarativeParticle &p, int interval )
 {
-    if (!particles)
-        particles = qobject_cast<QDeclarativeParticles*>(parent());
-    if (particles) {
-        Data *d = (Data*)p.data;
-        if (_xvariance != 0.) {
+    if ( !particles )
+    {
+        particles = qobject_cast<QDeclarativeParticles *>( parent() );
+    }
+
+    if ( particles )
+    {
+        Data *d = ( Data * )p.data;
+
+        if ( _xvariance != 0. )
+        {
             qreal xdiff = p.x_velocity - d->x_targetV;
-            if ((xdiff > d->x_peak && d->x_var > 0.0) || (xdiff < -d->x_peak && d->x_var < 0.0)) {
+
+            if ( ( xdiff > d->x_peak && d->x_var > 0.0 ) || ( xdiff < -d->x_peak && d->x_var < 0.0 ) )
+            {
                 d->x_var = -d->x_var;
-                d->x_peak = _xvariance + _xvariance * qreal(qrand()) / RAND_MAX;
+                d->x_peak = _xvariance + _xvariance * qreal( qrand() ) / RAND_MAX;
             }
+
             p.x_velocity += d->x_var * interval;
         }
+
         p.x += interval * p.x_velocity;
 
-        if (_yvariance != 0.) {
+        if ( _yvariance != 0. )
+        {
             qreal ydiff = p.y_velocity - d->y_targetV;
-            if ((ydiff > d->y_peak && d->y_var > 0.0) || (ydiff < -d->y_peak && d->y_var < 0.0)) {
+
+            if ( ( ydiff > d->y_peak && d->y_var > 0.0 ) || ( ydiff < -d->y_peak && d->y_var < 0.0 ) )
+            {
                 d->y_var = -d->y_var;
-                d->y_peak = _yvariance + _yvariance * qreal(qrand()) / RAND_MAX;
+                d->y_peak = _yvariance + _yvariance * qreal( qrand() ) / RAND_MAX;
             }
+
             p.y_velocity += d->y_var * interval;
         }
+
         p.y += interval * p.y_velocity;
     }
 }
 
-void QDeclarativeParticleMotionWander::created(QDeclarativeParticle &p)
+void QDeclarativeParticleMotionWander::created( QDeclarativeParticle &p )
 {
-    if (!p.data) {
+    if ( !p.data )
+    {
         Data *d = new Data;
-        p.data = (void*)d;
+        p.data = ( void * )d;
         d->x_targetV = p.x_velocity;
         d->y_targetV = p.y_velocity;
         d->x_peak = _xvariance;
         d->y_peak = _yvariance;
-        d->x_var = _pace * qreal(qrand()) / RAND_MAX / 1000.0;
-        d->y_var = _pace * qreal(qrand()) / RAND_MAX / 1000.0;
+        d->x_var = _pace * qreal( qrand() ) / RAND_MAX / 1000.0;
+        d->y_var = _pace * qreal( qrand() ) / RAND_MAX / 1000.0;
     }
 }
 
-void QDeclarativeParticleMotionWander::destroy(QDeclarativeParticle &p)
+void QDeclarativeParticleMotionWander::destroy( QDeclarativeParticle &p )
 {
-    if (p.data)
-        delete (Data*)p.data;
+    if ( p.data )
+    {
+        delete ( Data * )p.data;
+    }
 }
 
-void QDeclarativeParticleMotionWander::setXVariance(qreal var)
+void QDeclarativeParticleMotionWander::setXVariance( qreal var )
 {
     qreal scaledVar = var / 1000.0;
-    if (qFuzzyCompare(scaledVar, _xvariance))
+
+    if ( qFuzzyCompare( scaledVar, _xvariance ) )
+    {
         return;
+    }
+
     _xvariance = scaledVar;
     emit xvarianceChanged();
 }
 
-void QDeclarativeParticleMotionWander::setYVariance(qreal var)
+void QDeclarativeParticleMotionWander::setYVariance( qreal var )
 {
     qreal scaledVar = var / 1000.0;
-    if (qFuzzyCompare(scaledVar, _yvariance))
+
+    if ( qFuzzyCompare( scaledVar, _yvariance ) )
+    {
         return;
+    }
+
     _yvariance = scaledVar;
     emit yvarianceChanged();
 }
 
-void QDeclarativeParticleMotionWander::setPace(qreal pace)
+void QDeclarativeParticleMotionWander::setPace( qreal pace )
 {
     qreal scaledPace = pace / 1000.0;
-    if (qFuzzyCompare(scaledPace, _pace))
+
+    if ( qFuzzyCompare( scaledPace, _pace ) )
+    {
         return;
+    }
+
     _pace = scaledPace;
     emit paceChanged();
 }
@@ -363,14 +406,14 @@ void QDeclarativeParticleMotionWander::setPace(qreal pace)
 class QDeclarativeParticlesPainter : public QDeclarativeItem
 {
 public:
-    QDeclarativeParticlesPainter(QDeclarativeParticlesPrivate *p, QDeclarativeItem* parent)
-        : QDeclarativeItem(parent), d(p)
+    QDeclarativeParticlesPainter( QDeclarativeParticlesPrivate *p, QDeclarativeItem *parent )
+        : QDeclarativeItem( parent ), d( p )
     {
-        setFlag(QGraphicsItem::ItemHasNoContents, false);
+        setFlag( QGraphicsItem::ItemHasNoContents, false );
         maxX = minX = maxY = minY = 0;
     }
 
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+    void paint( QPainter *, const QStyleOptionGraphicsItem *, QWidget * );
 
     void updateSize();
 
@@ -378,18 +421,24 @@ public:
     qreal minX;
     qreal maxY;
     qreal minY;
-    QDeclarativeParticlesPrivate* d;
+    QDeclarativeParticlesPrivate *d;
 };
 
 //an animation that just gives a tick
-template<class T, void (T::*method)(int)>
+template<class T, void ( T::*method )( int )>
 class TickAnimationProxy : public QAbstractAnimation
 {
 public:
-    TickAnimationProxy(T *p, QObject *parent = nullptr) : QAbstractAnimation(parent), m_p(p) {}
-    virtual int duration() const { return -1; }
+    TickAnimationProxy( T *p, QObject *parent = nullptr ) : QAbstractAnimation( parent ), m_p( p ) {}
+    virtual int duration() const
+    {
+        return -1;
+    }
 protected:
-    virtual void updateCurrentTime(int msec) { (m_p->*method)(msec); }
+    virtual void updateCurrentTime( int msec )
+    {
+        ( m_p->*method )( msec );
+    }
 
 private:
     T *m_p;
@@ -398,14 +447,14 @@ private:
 //---------------------------------------------------------------------------
 class QDeclarativeParticlesPrivate : public QDeclarativeItemPrivate
 {
-    Q_DECLARE_PUBLIC(QDeclarativeParticles)
+    Q_DECLARE_PUBLIC( QDeclarativeParticles )
 public:
     QDeclarativeParticlesPrivate()
-        : count(1), emissionRate(-1), emissionVariance(0.5), lifeSpan(1000)
-        , lifeSpanDev(1000), fadeInDur(200), fadeOutDur(300)
-        , angle(0), angleDev(0), velocity(0), velocityDev(0), emissionCarry(0.)
-        , addParticleTime(0), addParticleCount(0), lastAdvTime(0)
-        , motion(0), clock(this)
+        : count( 1 ), emissionRate( -1 ), emissionVariance( 0.5 ), lifeSpan( 1000 )
+        , lifeSpanDev( 1000 ), fadeInDur( 200 ), fadeOutDur( 300 )
+        , angle( 0 ), angleDev( 0 ), velocity( 0 ), velocityDev( 0 ), emissionCarry( 0. )
+        , addParticleTime( 0 ), addParticleCount( 0 ), lastAdvTime( 0 )
+        , motion( 0 ), clock( this )
     {
     }
 
@@ -415,13 +464,13 @@ public:
 
     void init()
     {
-        Q_Q(QDeclarativeParticles);
-        paintItem = new QDeclarativeParticlesPainter(this, q);
+        Q_Q( QDeclarativeParticles );
+        paintItem = new QDeclarativeParticlesPainter( this, q );
     }
 
-    void tick(int time);
-    void createParticle(int time);
-    void updateOpacity(QDeclarativeParticle &p, int age);
+    void tick( int time );
+    void createParticle( int time );
+    void updateOpacity( QDeclarativeParticle &p, int age );
 
     QUrl url;
     QDeclarativePixmap image;
@@ -450,140 +499,206 @@ public:
 
 };
 
-void QDeclarativeParticlesPrivate::tick(int time)
+void QDeclarativeParticlesPrivate::tick( int time )
 {
-    Q_Q(QDeclarativeParticles);
-    if (!motion)
-        motion = new QDeclarativeParticleMotionLinear(q);
+    Q_Q( QDeclarativeParticles );
+
+    if ( !motion )
+    {
+        motion = new QDeclarativeParticleMotionLinear( q );
+    }
 
     int oldCount = particles.count();
     int removed = 0;
     int interval = time - lastAdvTime;
-    for (int i = 0; i < particles.count(); ) {
+
+    for ( int i = 0; i < particles.count(); )
+    {
         QDeclarativeParticle &particle = particles[i];
         int age = time - particle.birthTime;
-        if (age >= particle.lifeSpan)  {
-            QDeclarativeParticle part = particles.takeAt(i);
-            motion->destroy(part);
+
+        if ( age >= particle.lifeSpan )
+        {
+            QDeclarativeParticle part = particles.takeAt( i );
+            motion->destroy( part );
             ++removed;
-        } else {
-            updateOpacity(particle, age);
-            motion->advance(particle, interval);
+        }
+        else
+        {
+            updateOpacity( particle, age );
+            motion->advance( particle, interval );
             ++i;
         }
     }
 
-    if(emissionRate == -1)//Otherwise leave emission to the emission rate
-        while(removed-- && ((count == -1) || particles.count() < count))
-            createParticle(time);
+    if ( emissionRate == -1 ) //Otherwise leave emission to the emission rate
+        while ( removed-- && ( ( count == -1 ) || particles.count() < count ) )
+        {
+            createParticle( time );
+        }
 
-    if (!addParticleTime)
+    if ( !addParticleTime )
+    {
         addParticleTime = time;
+    }
 
     //Possibly emit new particles
-    if (((count == -1) || particles.count() < count) && emissionRate
-            && !(count==-1 && emissionRate==-1)) {
+    if ( ( ( count == -1 ) || particles.count() < count ) && emissionRate
+            && !( count==-1 && emissionRate==-1 ) )
+    {
         int emissionCount = -1;
-        if (emissionRate != -1){
+
+        if ( emissionRate != -1 )
+        {
             qreal variance = 1.;
-            if (emissionVariance > 0.){
-                variance += (qreal(qrand())/RAND_MAX) * emissionVariance * (qrand()%2?-1.:1.);
+
+            if ( emissionVariance > 0. )
+            {
+                variance += ( qreal( qrand() )/RAND_MAX ) * emissionVariance * ( qrand()%2?-1.:1. );
             }
-            qreal emission = emissionRate * (qreal(interval)/1000.);
+
+            qreal emission = emissionRate * ( qreal( interval )/1000. );
             emission = emission * variance + emissionCarry;
             double tmpDbl;
-            emissionCarry = modf(emission, &tmpDbl);
-            emissionCount = (int)tmpDbl;
-            emissionCount = qMax(0,emissionCount);
+            emissionCarry = modf( emission, &tmpDbl );
+            emissionCount = ( int )tmpDbl;
+            emissionCount = qMax( 0,emissionCount );
         }
-        while(((count == -1) || particles.count() < count) &&
-                (emissionRate==-1 || emissionCount--))
-            createParticle(time);
+
+        while ( ( ( count == -1 ) || particles.count() < count ) &&
+                ( emissionRate==-1 || emissionCount-- ) )
+        {
+            createParticle( time );
+        }
     }
 
     //Deal with emissions from requested bursts
-    for(int i=0; i<bursts.size(); i++){
+    for ( int i=0; i<bursts.size(); i++ )
+    {
         int emission = 0;
-        if(bursts[i].second == -1){
+
+        if ( bursts[i].second == -1 )
+        {
             emission = bursts[i].first;
-        }else{
-            qreal variance = 1.;
-            if (emissionVariance > 0.){
-                variance += (qreal(qrand())/RAND_MAX) * emissionVariance * (qrand()%2?-1.:1.);
-            }
-            qreal workingEmission = bursts[i].second * (qreal(interval)/1000.);
-            workingEmission *= variance;
-            emission = (int)workingEmission;
-            emission = qMax(emission, 0);
         }
-        emission = qMin(emission, bursts[i].first);
+        else
+        {
+            qreal variance = 1.;
+
+            if ( emissionVariance > 0. )
+            {
+                variance += ( qreal( qrand() )/RAND_MAX ) * emissionVariance * ( qrand()%2?-1.:1. );
+            }
+
+            qreal workingEmission = bursts[i].second * ( qreal( interval )/1000. );
+            workingEmission *= variance;
+            emission = ( int )workingEmission;
+            emission = qMax( emission, 0 );
+        }
+
+        emission = qMin( emission, bursts[i].first );
         bursts[i].first -= emission;
-        while(emission--)
-            createParticle(time);
+
+        while ( emission-- )
+        {
+            createParticle( time );
+        }
     }
-    for(int i=bursts.size()-1; i>=0; i--)
-        if(bursts[i].first <= 0)
-            bursts.removeAt(i);
+
+    for ( int i=bursts.size()-1; i>=0; i-- )
+        if ( bursts[i].first <= 0 )
+        {
+            bursts.removeAt( i );
+        }
 
     lastAdvTime = time;
     paintItem->updateSize();
     paintItem->update();
-    if (!(oldCount || particles.count()) && (!count || !emissionRate) && bursts.isEmpty()) {
+
+    if ( !( oldCount || particles.count() ) && ( !count || !emissionRate ) && bursts.isEmpty() )
+    {
         lastAdvTime = 0;
         clock.stop();
     }
 }
 
-void QDeclarativeParticlesPrivate::createParticle(int time)
+void QDeclarativeParticlesPrivate::createParticle( int time )
 {
-    Q_Q(QDeclarativeParticles);
-    QDeclarativeParticle p(time);
-    p.x = q->x() + q->width() * qreal(qrand()) / RAND_MAX - image.width()/2.0;
-    p.y = q->y() + q->height() * qreal(qrand()) / RAND_MAX - image.height()/2.0;
+    Q_Q( QDeclarativeParticles );
+    QDeclarativeParticle p( time );
+    p.x = q->x() + q->width() * qreal( qrand() ) / RAND_MAX - image.width()/2.0;
+    p.y = q->y() + q->height() * qreal( qrand() ) / RAND_MAX - image.height()/2.0;
     p.lifeSpan = lifeSpan;
-    if (lifeSpanDev)
-        p.lifeSpan += int(lifeSpanDev/2 - lifeSpanDev * qreal(qrand()) / RAND_MAX);
+
+    if ( lifeSpanDev )
+    {
+        p.lifeSpan += int( lifeSpanDev/2 - lifeSpanDev * qreal( qrand() ) / RAND_MAX );
+    }
+
     p.fadeOutAge = p.lifeSpan - fadeOutDur;
-    if (fadeInDur == 0.) {
+
+    if ( fadeInDur == 0. )
+    {
         p.state= QDeclarativeParticle::Solid;
         p.opacity = 1.0;
     }
+
     qreal a = angle;
-    if (angleDev)
-        a += angleDev/2 - angleDev * qreal(qrand()) / RAND_MAX;
-    if (a > M_PI)
+
+    if ( angleDev )
+    {
+        a += angleDev/2 - angleDev * qreal( qrand() ) / RAND_MAX;
+    }
+
+    if ( a > M_PI )
+    {
         a = a - 2 * M_PI;
+    }
+
     qreal v = velocity;
-    if (velocityDev)
-        v += velocityDev/2 - velocityDev * qreal(qrand()) / RAND_MAX;
-    p.x_velocity = v * fastCos(a);
-    p.y_velocity = v * fastSin(a);
-    particles.append(p);
-    motion->created(particles.last());
+
+    if ( velocityDev )
+    {
+        v += velocityDev/2 - velocityDev * qreal( qrand() ) / RAND_MAX;
+    }
+
+    p.x_velocity = v * fastCos( a );
+    p.y_velocity = v * fastSin( a );
+    particles.append( p );
+    motion->created( particles.last() );
 }
 
-void QDeclarativeParticlesPrivate::updateOpacity(QDeclarativeParticle &p, int age)
+void QDeclarativeParticlesPrivate::updateOpacity( QDeclarativeParticle &p, int age )
 {
-    switch (p.state) {
-    case QDeclarativeParticle::FadeIn:
-        if (age <= fadeInDur) {
-            p.opacity = qreal(age) / fadeInDur;
+    switch ( p.state )
+    {
+        case QDeclarativeParticle::FadeIn:
+            if ( age <= fadeInDur )
+            {
+                p.opacity = qreal( age ) / fadeInDur;
+                break;
+            }
+            else
+            {
+                p.opacity = 1.0;
+                p.state = QDeclarativeParticle::Solid;
+                // Fall through
+            }
+
+        case QDeclarativeParticle::Solid:
+            if ( age <= p.fadeOutAge )
+            {
+                break;
+            }
+            else
+            {
+                p.state = QDeclarativeParticle::FadeOut;
+                // Fall through
+            }
+
+        case QDeclarativeParticle::FadeOut:
+            p.opacity = qreal( p.lifeSpan - age ) / fadeOutDur;
             break;
-        } else {
-            p.opacity = 1.0;
-            p.state = QDeclarativeParticle::Solid;
-            // Fall through
-        }
-    case QDeclarativeParticle::Solid:
-        if (age <= p.fadeOutAge) {
-            break;
-        } else {
-            p.state = QDeclarativeParticle::FadeOut;
-            // Fall through
-        }
-    case QDeclarativeParticle::FadeOut:
-        p.opacity = qreal(p.lifeSpan - age) / fadeOutDur;
-        break;
     }
 }
 
@@ -661,10 +776,10 @@ Rectangle {
     \image particles.gif
 */
 
-QDeclarativeParticles::QDeclarativeParticles(QDeclarativeItem *parent)
-    : QDeclarativeItem(*(new QDeclarativeParticlesPrivate), parent)
+QDeclarativeParticles::QDeclarativeParticles( QDeclarativeItem *parent )
+    : QDeclarativeItem( *( new QDeclarativeParticlesPrivate ), parent )
 {
-    Q_D(QDeclarativeParticles);
+    Q_D( QDeclarativeParticles );
     d->init();
 }
 
@@ -683,45 +798,62 @@ QDeclarativeParticles::~QDeclarativeParticles()
 */
 QUrl QDeclarativeParticles::source() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->url;
 }
 
 void QDeclarativeParticles::imageLoaded()
 {
-    Q_D(QDeclarativeParticles);
-    if (d->image.isError())
-        qmlInfo(this) << d->image.error();
+    Q_D( QDeclarativeParticles );
+
+    if ( d->image.isError() )
+    {
+        qmlInfo( this ) << d->image.error();
+    }
+
     d->paintItem->updateSize();
     d->paintItem->update();
 }
 
-void QDeclarativeParticles::setSource(const QUrl &name)
+void QDeclarativeParticles::setSource( const QUrl &name )
 {
-    Q_D(QDeclarativeParticles);
+    Q_D( QDeclarativeParticles );
 
-    if ((d->url.isEmpty() == name.isEmpty()) && name == d->url)
+    if ( ( d->url.isEmpty() == name.isEmpty() ) && name == d->url )
+    {
         return;
+    }
 
-    if (name.isEmpty()) {
+    if ( name.isEmpty() )
+    {
         d->url = name;
-        d->image.clear(this);
+        d->image.clear( this );
         d->paintItem->updateSize();
         d->paintItem->update();
-    } else {
+    }
+    else
+    {
         d->url = name;
-        Q_ASSERT(!name.isRelative());
-        d->image.load(qmlEngine(this), d->url);
-        if (d->image.isLoading()) {
-            d->image.connectFinished(this, SLOT(imageLoaded()));
-        } else {
-            if (d->image.isError()) 
-                qmlInfo(this) << d->image.error();
+        Q_ASSERT( !name.isRelative() );
+        d->image.load( qmlEngine( this ), d->url );
+
+        if ( d->image.isLoading() )
+        {
+            d->image.connectFinished( this, SLOT( imageLoaded() ) );
+        }
+        else
+        {
+            if ( d->image.isError() )
+            {
+                qmlInfo( this ) << d->image.error();
+            }
+
             //### unify with imageLoaded
             d->paintItem->updateSize();
             d->paintItem->update();
         }
     }
+
     emit sourceChanged();
 }
 
@@ -748,23 +880,29 @@ void QDeclarativeParticles::setSource(const QUrl &name)
 */
 int QDeclarativeParticles::count() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->count;
 }
 
-void QDeclarativeParticles::setCount(int cnt)
+void QDeclarativeParticles::setCount( int cnt )
 {
-    Q_D(QDeclarativeParticles);
-    if (cnt == d->count)
+    Q_D( QDeclarativeParticles );
+
+    if ( cnt == d->count )
+    {
         return;
+    }
 
     int oldCount = d->count;
     d->count = cnt;
     d->addParticleTime = 0;
     d->addParticleCount = d->particles.count();
-    if (!oldCount && d->clock.state() != QAbstractAnimation::Running && d->count && d->emissionRate) {
+
+    if ( !oldCount && d->clock.state() != QAbstractAnimation::Running && d->count && d->emissionRate )
+    {
         d->clock.start();
     }
+
     d->paintItem->updateSize();
     d->paintItem->update();
     emit countChanged();
@@ -794,18 +932,25 @@ void QDeclarativeParticles::setCount(int cnt)
 */
 int QDeclarativeParticles::emissionRate() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->emissionRate;
 }
-void QDeclarativeParticles::setEmissionRate(int er)
+void QDeclarativeParticles::setEmissionRate( int er )
 {
-    Q_D(QDeclarativeParticles);
-    if(er == d->emissionRate)
+    Q_D( QDeclarativeParticles );
+
+    if ( er == d->emissionRate )
+    {
         return;
-    d->emissionRate = er;
-    if (d->clock.state() != QAbstractAnimation::Running && d->count && d->emissionRate) {
-            d->clock.start();
     }
+
+    d->emissionRate = er;
+
+    if ( d->clock.state() != QAbstractAnimation::Running && d->count && d->emissionRate )
+    {
+        d->clock.start();
+    }
+
     emit emissionRateChanged();
 }
 
@@ -841,15 +986,19 @@ void QDeclarativeParticles::setEmissionRate(int er)
 
 qreal QDeclarativeParticles::emissionVariance() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->emissionVariance;
 }
 
-void QDeclarativeParticles::setEmissionVariance(qreal ev)
+void QDeclarativeParticles::setEmissionVariance( qreal ev )
 {
-    Q_D(QDeclarativeParticles);
-    if(d->emissionVariance == ev)
+    Q_D( QDeclarativeParticles );
+
+    if ( d->emissionVariance == ev )
+    {
         return;
+    }
+
     d->emissionVariance = ev;
     emit emissionVarianceChanged();
 }
@@ -885,15 +1034,19 @@ Particles {
 */
 int QDeclarativeParticles::lifeSpan() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->lifeSpan;
 }
 
-void QDeclarativeParticles::setLifeSpan(int ls)
+void QDeclarativeParticles::setLifeSpan( int ls )
 {
-    Q_D(QDeclarativeParticles);
-    if(d->lifeSpan == ls)
+    Q_D( QDeclarativeParticles );
+
+    if ( d->lifeSpan == ls )
+    {
         return;
+    }
+
     d->lifeSpan = ls;
     emit lifeSpanChanged();
 }
@@ -918,15 +1071,19 @@ Particles {
 */
 int QDeclarativeParticles::lifeSpanDeviation() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->lifeSpanDev;
 }
 
-void QDeclarativeParticles::setLifeSpanDeviation(int dev)
+void QDeclarativeParticles::setLifeSpanDeviation( int dev )
 {
-    Q_D(QDeclarativeParticles);
-    if(d->lifeSpanDev == dev)
+    Q_D( QDeclarativeParticles );
+
+    if ( d->lifeSpanDev == dev )
+    {
         return;
+    }
+
     d->lifeSpanDev = dev;
     emit lifeSpanDeviationChanged();
 }
@@ -947,15 +1104,19 @@ void QDeclarativeParticles::setLifeSpanDeviation(int dev)
 */
 int QDeclarativeParticles::fadeInDuration() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->fadeInDur;
 }
 
-void QDeclarativeParticles::setFadeInDuration(int dur)
+void QDeclarativeParticles::setFadeInDuration( int dur )
 {
-    Q_D(QDeclarativeParticles);
-    if (dur < 0.0 || dur == d->fadeInDur)
+    Q_D( QDeclarativeParticles );
+
+    if ( dur < 0.0 || dur == d->fadeInDur )
+    {
         return;
+    }
+
     d->fadeInDur = dur;
     emit fadeInDurationChanged();
 }
@@ -968,15 +1129,19 @@ void QDeclarativeParticles::setFadeInDuration(int dur)
 */
 int QDeclarativeParticles::fadeOutDuration() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->fadeOutDur;
 }
 
-void QDeclarativeParticles::setFadeOutDuration(int dur)
+void QDeclarativeParticles::setFadeOutDuration( int dur )
 {
-    Q_D(QDeclarativeParticles);
-    if (dur < 0.0 || d->fadeOutDur == dur)
+    Q_D( QDeclarativeParticles );
+
+    if ( dur < 0.0 || d->fadeOutDur == dur )
+    {
         return;
+    }
+
     d->fadeOutDur = dur;
     emit fadeOutDurationChanged();
 }
@@ -1008,16 +1173,20 @@ Particles {
 */
 qreal QDeclarativeParticles::angle() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->angle * 180.0 / M_PI;
 }
 
-void QDeclarativeParticles::setAngle(qreal angle)
+void QDeclarativeParticles::setAngle( qreal angle )
 {
-    Q_D(QDeclarativeParticles);
+    Q_D( QDeclarativeParticles );
     qreal radAngle = angle * M_PI / 180.0;
-    if(radAngle == d->angle)
+
+    if ( radAngle == d->angle )
+    {
         return;
+    }
+
     d->angle = radAngle;
     emit angleChanged();
 }
@@ -1042,16 +1211,20 @@ Particles {
 */
 qreal QDeclarativeParticles::angleDeviation() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->angleDev * 180.0 / M_PI;
 }
 
-void QDeclarativeParticles::setAngleDeviation(qreal dev)
+void QDeclarativeParticles::setAngleDeviation( qreal dev )
 {
-    Q_D(QDeclarativeParticles);
+    Q_D( QDeclarativeParticles );
     qreal radDev = dev * M_PI / 180.0;
-    if(radDev == d->angleDev)
+
+    if ( radDev == d->angleDev )
+    {
         return;
+    }
+
     d->angleDev = radDev;
     emit angleDeviationChanged();
 }
@@ -1083,16 +1256,20 @@ Particles {
 */
 qreal QDeclarativeParticles::velocity() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->velocity * 1000.0;
 }
 
-void QDeclarativeParticles::setVelocity(qreal velocity)
+void QDeclarativeParticles::setVelocity( qreal velocity )
 {
-    Q_D(QDeclarativeParticles);
+    Q_D( QDeclarativeParticles );
     qreal realVel = velocity / 1000.0;
-    if(realVel == d->velocity)
+
+    if ( realVel == d->velocity )
+    {
         return;
+    }
+
     d->velocity = realVel;
     emit velocityChanged();
 }
@@ -1117,16 +1294,20 @@ Particles {
 */
 qreal QDeclarativeParticles::velocityDeviation() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->velocityDev * 1000.0;
 }
 
-void QDeclarativeParticles::setVelocityDeviation(qreal velocity)
+void QDeclarativeParticles::setVelocityDeviation( qreal velocity )
 {
-    Q_D(QDeclarativeParticles);
+    Q_D( QDeclarativeParticles );
     qreal realDev = velocity / 1000.0;
-    if(realDev == d->velocityDev)
+
+    if ( realDev == d->velocityDev )
+    {
         return;
+    }
+
     d->velocityDev = realDev;
     emit velocityDeviationChanged();
 }
@@ -1154,15 +1335,19 @@ void QDeclarativeParticles::setVelocityDeviation(qreal velocity)
 */
 QDeclarativeParticleMotion *QDeclarativeParticles::motion() const
 {
-    Q_D(const QDeclarativeParticles);
+    Q_D( const QDeclarativeParticles );
     return d->motion;
 }
 
-void QDeclarativeParticles::setMotion(QDeclarativeParticleMotion *motion)
+void QDeclarativeParticles::setMotion( QDeclarativeParticleMotion *motion )
 {
-    Q_D(QDeclarativeParticles);
-    if (motion == d->motion)
+    Q_D( QDeclarativeParticles );
+
+    if ( motion == d->motion )
+    {
         return;
+    }
+
     d->motion = motion;
     emit motionChanged();
 }
@@ -1184,65 +1369,88 @@ void QDeclarativeParticles::setMotion(QDeclarativeParticleMotion *motion)
     normal emission. To avoid this behavior, use two Particles elements.
 
 */
-void QDeclarativeParticles::burst(int count, int emissionRate)
+void QDeclarativeParticles::burst( int count, int emissionRate )
 {
-    Q_D(QDeclarativeParticles);
-    d->bursts << qMakePair(count, emissionRate);
-    if (d->clock.state() != QAbstractAnimation::Running)
+    Q_D( QDeclarativeParticles );
+    d->bursts << qMakePair( count, emissionRate );
+
+    if ( d->clock.state() != QAbstractAnimation::Running )
+    {
         d->clock.start();
+    }
 }
 
 void QDeclarativeParticlesPainter::updateSize()
 {
-    if (!d->componentComplete)
+    if ( !d->componentComplete )
+    {
         return;
+    }
 
     const int parentX = parentItem()->x();
     const int parentY = parentItem()->y();
-    for (int i = 0; i < d->particles.count(); ++i) {
-        const QDeclarativeParticle &particle = d->particles.at(i);
-        if(particle.x > maxX)
+
+    for ( int i = 0; i < d->particles.count(); ++i )
+    {
+        const QDeclarativeParticle &particle = d->particles.at( i );
+
+        if ( particle.x > maxX )
+        {
             maxX = particle.x;
-        if(particle.x < minX)
+        }
+
+        if ( particle.x < minX )
+        {
             minX = particle.x;
-        if(particle.y > maxY)
+        }
+
+        if ( particle.y > maxY )
+        {
             maxY = particle.y;
-        if(particle.y < minY)
+        }
+
+        if ( particle.y < minY )
+        {
             minY = particle.y;
+        }
     }
 
-    int myWidth = (int)(maxX-minX+0.5)+d->image.width();
-    int myX = (int)(minX - parentX);
-    int myHeight = (int)(maxY-minY+0.5)+d->image.height();
-    int myY = (int)(minY - parentY);
-    setWidth(myWidth);
-    setHeight(myHeight);
-    setX(myX);
-    setY(myY);
+    int myWidth = ( int )( maxX-minX+0.5 )+d->image.width();
+    int myX = ( int )( minX - parentX );
+    int myHeight = ( int )( maxY-minY+0.5 )+d->image.height();
+    int myY = ( int )( minY - parentY );
+    setWidth( myWidth );
+    setHeight( myHeight );
+    setX( myX );
+    setY( myY );
 }
 
-void QDeclarativeParticles::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *)
+void QDeclarativeParticles::paint( QPainter *p, const QStyleOptionGraphicsItem *, QWidget * )
 {
-    Q_UNUSED(p);
+    Q_UNUSED( p );
     //painting is done by the ParticlesPainter, so it can have the right size
 }
 
-void QDeclarativeParticlesPainter::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *)
+void QDeclarativeParticlesPainter::paint( QPainter *p, const QStyleOptionGraphicsItem *, QWidget * )
 {
-    if (d->image.isNull() || d->particles.isEmpty())
+    if ( d->image.isNull() || d->particles.isEmpty() )
+    {
         return;
+    }
 
     const int myX = x() + parentItem()->x();
     const int myY = y() + parentItem()->y();
 
     QVarLengthArray<QPainter::PixmapFragment, 256> pixmapData;
-    pixmapData.resize(d->particles.count());
+    pixmapData.resize( d->particles.count() );
 
     const QRectF sourceRect = d->image.rect();
     qreal halfPWidth = sourceRect.width()/2.;
     qreal halfPHeight = sourceRect.height()/2.;
-    for (int i = 0; i < d->particles.count(); ++i) {
-        const QDeclarativeParticle &particle = d->particles.at(i);
+
+    for ( int i = 0; i < d->particles.count(); ++i )
+    {
+        const QDeclarativeParticle &particle = d->particles.at( i );
         pixmapData[i].x = particle.x - myX + halfPWidth;
         pixmapData[i].y = particle.y - myY + halfPHeight;
         pixmapData[i].opacity = particle.opacity;
@@ -1256,19 +1464,25 @@ void QDeclarativeParticlesPainter::paint(QPainter *p, const QStyleOptionGraphics
         pixmapData[i].width = sourceRect.width();
         pixmapData[i].height = sourceRect.height();
     }
-    p->drawPixmapFragments(pixmapData.data(), d->particles.count(), d->image);
+
+    p->drawPixmapFragments( pixmapData.data(), d->particles.count(), d->image );
 }
 
 void QDeclarativeParticles::componentComplete()
 {
-    Q_D(QDeclarativeParticles);
+    Q_D( QDeclarativeParticles );
     QDeclarativeItem::componentComplete();
-    if (d->count && d->emissionRate) {
+
+    if ( d->count && d->emissionRate )
+    {
         d->paintItem->updateSize();
         d->clock.start();
     }
-    if (d->lifeSpanDev > d->lifeSpan)
+
+    if ( d->lifeSpanDev > d->lifeSpan )
+    {
         d->lifeSpanDev = d->lifeSpan;
+    }
 }
 
 QT_END_NAMESPACE

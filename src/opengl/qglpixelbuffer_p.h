@@ -34,57 +34,60 @@ class QOpenGLFramebufferObject;
 
 class QGLPBufferGLPaintDevice : public QGLPaintDevice
 {
- public:
-   QPaintEngine *paintEngine() const override {
-      return pbuf->paintEngine();
-   }
+public:
+    QPaintEngine *paintEngine() const override
+    {
+        return pbuf->paintEngine();
+    }
 
-   QSize size() const override {
-      return pbuf->size();
-   }
+    QSize size() const override
+    {
+        return pbuf->size();
+    }
 
-   QGLContext *context() const override;
-   void beginPaint() override;
-   void endPaint() override;
-   void setPBuffer(QGLPixelBuffer *pb);
-   void setFbo(GLuint fbo);
+    QGLContext *context() const override;
+    void beginPaint() override;
+    void endPaint() override;
+    void setPBuffer( QGLPixelBuffer *pb );
+    void setFbo( GLuint fbo );
 
- private:
-   QGLPixelBuffer *pbuf;
+private:
+    QGLPixelBuffer *pbuf;
 };
 
 class QGLPixelBufferPrivate
 {
-   Q_DECLARE_PUBLIC(QGLPixelBuffer)
+    Q_DECLARE_PUBLIC( QGLPixelBuffer )
 
- public:
-   QGLPixelBufferPrivate(QGLPixelBuffer *q)
-      : q_ptr(q), invalid(true), qctx(nullptr), widget(nullptr), fbo(nullptr), blit_fbo(nullptr), pbuf(nullptr), ctx(nullptr)
-   {
-   }
+public:
+    QGLPixelBufferPrivate( QGLPixelBuffer *q )
+        : q_ptr( q ), invalid( true ), qctx( nullptr ), widget( nullptr ), fbo( nullptr ), blit_fbo( nullptr ), pbuf( nullptr ),
+          ctx( nullptr )
+    {
+    }
 
-   bool init(const QSize &size, const QGLFormat &f, QGLWidget *shareWidget);
-   void common_init(const QSize &size, const QGLFormat &f, QGLWidget *shareWidget);
-   bool cleanup();
+    bool init( const QSize &size, const QGLFormat &f, QGLWidget *shareWidget );
+    void common_init( const QSize &size, const QGLFormat &f, QGLWidget *shareWidget );
+    bool cleanup();
 
-   QGLPixelBuffer *q_ptr;
-   bool invalid;
-   QGLContext *qctx;
-   QGLPBufferGLPaintDevice glDevice;
+    QGLPixelBuffer *q_ptr;
+    bool invalid;
+    QGLContext *qctx;
+    QGLPBufferGLPaintDevice glDevice;
 
-   QGLWidget *widget;
-   QOpenGLFramebufferObject *fbo;
-   QOpenGLFramebufferObject *blit_fbo;
+    QGLWidget *widget;
+    QOpenGLFramebufferObject *fbo;
+    QOpenGLFramebufferObject *blit_fbo;
 
-   QGLFormat format;
+    QGLFormat format;
 
-   QGLFormat req_format;
-   QPointer<QGLWidget> req_shareWidget;
-   QSize req_size;
+    QGLFormat req_format;
+    QPointer<QGLWidget> req_shareWidget;
+    QSize req_size;
 
-   //stubs
-   void *pbuf;
-   void *ctx;
+    //stubs
+    void *pbuf;
+    void *ctx;
 };
 
 #endif

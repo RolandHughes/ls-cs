@@ -32,19 +32,19 @@ class QDeclarativeTextLayoutPrivate;
 
 class QDeclarativeTextLayout : public QTextLayout
 {
- public:
-   QDeclarativeTextLayout();
-   QDeclarativeTextLayout(const QString &);
-   ~QDeclarativeTextLayout();
+public:
+    QDeclarativeTextLayout();
+    QDeclarativeTextLayout( const QString & );
+    ~QDeclarativeTextLayout();
 
-   void beginLayout();
-   void clearLayout();
+    void beginLayout();
+    void clearLayout();
 
-   void prepare();
-   void draw(QPainter *, const QPointF & = QPointF());
+    void prepare();
+    void draw( QPainter *, const QPointF & = QPointF() );
 
- private:
-   QDeclarativeTextLayoutPrivate *d;
+private:
+    QDeclarativeTextLayoutPrivate *d;
 };
 
 QT_END_NAMESPACE

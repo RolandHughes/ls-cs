@@ -29,27 +29,28 @@
 
 class QShapedPixmapWindow : public QRasterWindow
 {
-   GUI_CS_OBJECT(QShapedPixmapWindow)
+    GUI_LSCS_OBJECT( QShapedPixmapWindow )
 
- public:
-   explicit QShapedPixmapWindow(QScreen *screen = nullptr);
-   ~QShapedPixmapWindow();
+public:
+    explicit QShapedPixmapWindow( QScreen *screen = nullptr );
+    ~QShapedPixmapWindow();
 
-   void setUseCompositing(bool on) {
-      m_useCompositing = on;
-   }
-   void setPixmap(const QPixmap &pixmap);
-   void setHotspot(const QPoint &hotspot);
+    void setUseCompositing( bool on )
+    {
+        m_useCompositing = on;
+    }
+    void setPixmap( const QPixmap &pixmap );
+    void setHotspot( const QPoint &hotspot );
 
-   void updateGeometry(const QPoint &pos);
+    void updateGeometry( const QPoint &pos );
 
- protected:
-   void paintEvent(QPaintEvent *) override;
+protected:
+    void paintEvent( QPaintEvent * ) override;
 
- private:
-   QPixmap m_pixmap;
-   QPoint m_hotSpot;
-   bool m_useCompositing;
+private:
+    QPixmap m_pixmap;
+    QPoint m_hotSpot;
+    bool m_useCompositing;
 };
 
 

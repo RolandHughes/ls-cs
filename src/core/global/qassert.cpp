@@ -24,12 +24,12 @@
 #include <qassert.h>
 #include <qlog.h>
 
-void qt_assert(const char *assertion, const char *file, int line)
+void qt_assert( const char *assertion, const char *file, int line )
 {
-   qFatal("ASSERT: \"%s\" in file %s, line %d", assertion, file, line);
+    qFatal( "ASSERT: \"%s\" in file %s, line %d", assertion, file, line );
 }
 
-void qt_assert_x(const char *where, const char *what, const char *file, int line)
+void qt_assert_x( const char *where, const char *what, const char *file, int line )
 {
-   qFatal("ASSERT failure in %s \n\"%s\", file %s, line %d", where, what, file, line);
+    qFatal( "ASSERT failure in %s \n\"%s\", file %s, line %d", where, what, file, line );
 }

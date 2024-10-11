@@ -30,48 +30,66 @@
 using namespace WTF;
 using namespace WTF::Unicode;
 
-namespace WebCore {
+namespace WebCore
+{
 
-PassRefPtr<SharedBuffer> utf8Buffer(const String& string)
+PassRefPtr<SharedBuffer> utf8Buffer( const String &string )
 {
     // Allocate a buffer big enough to hold all the characters.
     const int length = string.length();
-    Vector<char> buffer(length * 3);
+    Vector<char> buffer( length * 3 );
 
     // Convert to runs of 8-bit characters.
-    char* p = buffer.data();
-    const UChar* d = string.characters();
-    ConversionResult result = convertUTF16ToUTF8(&d, d + length, &p, p + buffer.size(), true);
-    if (result != conversionOK)
-        return 0;
+    char *p = buffer.data();
+    const UChar *d = string.characters();
+    ConversionResult result = convertUTF16ToUTF8( &d, d + length, &p, p + buffer.size(), true );
 
-    buffer.shrink(p - buffer.data());
-    return SharedBuffer::adoptVector(buffer);
+    if ( result != conversionOK )
+    {
+        return 0;
+    }
+
+    buffer.shrink( p - buffer.data() );
+    return SharedBuffer::adoptVector( buffer );
 }
 
-unsigned numGraphemeClusters(const String& s)
+unsigned numGraphemeClusters( const String &s )
 {
-    TextBreakIterator* it = characterBreakIterator(s.characters(), s.length());
-    if (!it)
+    TextBreakIterator *it = characterBreakIterator( s.characters(), s.length() );
+
+    if ( !it )
+    {
         return s.length();
+    }
 
     unsigned num = 0;
-    while (textBreakNext(it) != TextBreakDone)
+
+    while ( textBreakNext( it ) != TextBreakDone )
+    {
         ++num;
+    }
+
     return num;
 }
 
-unsigned numCharactersInGraphemeClusters(const String& s, unsigned numGraphemeClusters)
+unsigned numCharactersInGraphemeClusters( const String &s, unsigned numGraphemeClusters )
 {
-    TextBreakIterator* it = characterBreakIterator(s.characters(), s.length());
-    if (!it)
-        return min(s.length(), numGraphemeClusters);
+    TextBreakIterator *it = characterBreakIterator( s.characters(), s.length() );
 
-    for (unsigned i = 0; i < numGraphemeClusters; ++i) {
-        if (textBreakNext(it) == TextBreakDone)
-            return s.length();
+    if ( !it )
+    {
+        return min( s.length(), numGraphemeClusters );
     }
-    return textBreakCurrent(it);
+
+    for ( unsigned i = 0; i < numGraphemeClusters; ++i )
+    {
+        if ( textBreakNext( it ) == TextBreakDone )
+        {
+            return s.length();
+        }
+    }
+
+    return textBreakCurrent( it );
 }
 
 } // namespace WebCore

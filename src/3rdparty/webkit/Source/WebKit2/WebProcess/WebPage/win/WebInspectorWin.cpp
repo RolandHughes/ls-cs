@@ -32,15 +32,20 @@
 #include <wtf/RetainPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 String WebInspector::localizedStringsURL() const
 {
-    RetainPtr<CFURLRef> localizedStringsURLRef(AdoptCF, CFBundleCopyResourceURL(webKitBundle(), CFSTR("localizedStrings"), CFSTR("js"), 0));
-    if (!localizedStringsURLRef)
-        return String();
+    RetainPtr<CFURLRef> localizedStringsURLRef( AdoptCF, CFBundleCopyResourceURL( webKitBundle(), CFSTR( "localizedStrings" ),
+            CFSTR( "js" ), 0 ) );
 
-    return String(CFURLGetString(localizedStringsURLRef.get()));
+    if ( !localizedStringsURLRef )
+    {
+        return String();
+    }
+
+    return String( CFURLGetString( localizedStringsURLRef.get() ) );
 }
 
 } // namespace WebKit

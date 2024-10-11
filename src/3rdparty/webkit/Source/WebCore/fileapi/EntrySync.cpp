@@ -42,68 +42,84 @@
 #include "Metadata.h"
 #include "SyncCallbackHelper.h"
 
-namespace WebCore {
-
-PassRefPtr<EntrySync> EntrySync::create(EntryBase* entry)
+namespace WebCore
 {
-    if (entry->isFile())
-        return adoptRef(new FileEntrySync(entry->m_fileSystem, entry->m_fullPath));
-    return adoptRef(new DirectoryEntrySync(entry->m_fileSystem, entry->m_fullPath));
+
+PassRefPtr<EntrySync> EntrySync::create( EntryBase *entry )
+{
+    if ( entry->isFile() )
+    {
+        return adoptRef( new FileEntrySync( entry->m_fileSystem, entry->m_fullPath ) );
+    }
+
+    return adoptRef( new DirectoryEntrySync( entry->m_fileSystem, entry->m_fullPath ) );
 }
 
-PassRefPtr<Metadata> EntrySync::getMetadata(ExceptionCode& ec)
+PassRefPtr<Metadata> EntrySync::getMetadata( ExceptionCode &ec )
 {
     ec = 0;
-    MetadataSyncCallbackHelper helper(m_fileSystem->asyncFileSystem());
-    if (!m_fileSystem->getMetadata(this, helper.successCallback(), helper.errorCallback())) {
+    MetadataSyncCallbackHelper helper( m_fileSystem->asyncFileSystem() );
+
+    if ( !m_fileSystem->getMetadata( this, helper.successCallback(), helper.errorCallback() ) )
+    {
         ec = FileException::INVALID_MODIFICATION_ERR;
         return 0;
     }
-    return helper.getResult(ec);
+
+    return helper.getResult( ec );
 }
 
-PassRefPtr<EntrySync> EntrySync::moveTo(PassRefPtr<DirectoryEntrySync> parent, const String& name, ExceptionCode& ec) const
+PassRefPtr<EntrySync> EntrySync::moveTo( PassRefPtr<DirectoryEntrySync> parent, const String &name, ExceptionCode &ec ) const
 {
     ec = 0;
-    EntrySyncCallbackHelper helper(m_fileSystem->asyncFileSystem());
-    if (!m_fileSystem->move(this, parent.get(), name, helper.successCallback(), helper.errorCallback())) {
+    EntrySyncCallbackHelper helper( m_fileSystem->asyncFileSystem() );
+
+    if ( !m_fileSystem->move( this, parent.get(), name, helper.successCallback(), helper.errorCallback() ) )
+    {
         ec = FileException::INVALID_MODIFICATION_ERR;
         return 0;
     }
-    return helper.getResult(ec);
+
+    return helper.getResult( ec );
 }
 
-PassRefPtr<EntrySync> EntrySync::copyTo(PassRefPtr<DirectoryEntrySync> parent, const String& name, ExceptionCode& ec) const
+PassRefPtr<EntrySync> EntrySync::copyTo( PassRefPtr<DirectoryEntrySync> parent, const String &name, ExceptionCode &ec ) const
 {
     ec = 0;
-    EntrySyncCallbackHelper helper(m_fileSystem->asyncFileSystem());
-    if (!m_fileSystem->copy(this, parent.get(), name, helper.successCallback(), helper.errorCallback())) {
+    EntrySyncCallbackHelper helper( m_fileSystem->asyncFileSystem() );
+
+    if ( !m_fileSystem->copy( this, parent.get(), name, helper.successCallback(), helper.errorCallback() ) )
+    {
         ec = FileException::INVALID_MODIFICATION_ERR;
         return 0;
     }
-    return helper.getResult(ec);
+
+    return helper.getResult( ec );
 }
 
-void EntrySync::remove(ExceptionCode& ec) const
+void EntrySync::remove( ExceptionCode &ec ) const
 {
     ec = 0;
-    VoidSyncCallbackHelper helper(m_fileSystem->asyncFileSystem());
-    if (!m_fileSystem->remove(this, helper.successCallback(), helper.errorCallback())) {
+    VoidSyncCallbackHelper helper( m_fileSystem->asyncFileSystem() );
+
+    if ( !m_fileSystem->remove( this, helper.successCallback(), helper.errorCallback() ) )
+    {
         ec = FileException::INVALID_MODIFICATION_ERR;
         return;
     }
-    helper.getResult(ec);
+
+    helper.getResult( ec );
 }
 
 PassRefPtr<EntrySync> EntrySync::getParent() const
 {
     // Sync verion of getParent doesn't throw exceptions.
-    String parentPath = DOMFilePath::getDirectory(fullPath());
-    return DirectoryEntrySync::create(m_fileSystem, parentPath);
+    String parentPath = DOMFilePath::getDirectory( fullPath() );
+    return DirectoryEntrySync::create( m_fileSystem, parentPath );
 }
 
-EntrySync::EntrySync(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : EntryBase(fileSystem, fullPath)
+EntrySync::EntrySync( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : EntryBase( fileSystem, fullPath )
 {
 }
 

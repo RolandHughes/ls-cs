@@ -28,31 +28,42 @@
 #include "IntPoint.h"
 #include "StyleImage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CursorData {
+class CursorData
+{
 public:
-    CursorData(PassRefPtr<StyleImage> image, const IntPoint& hotSpot)
-        : m_image(image)
-        , m_hotSpot(hotSpot)
+    CursorData( PassRefPtr<StyleImage> image, const IntPoint &hotSpot )
+        : m_image( image )
+        , m_hotSpot( hotSpot )
     {
     }
 
-    bool operator==(const CursorData& o) const
+    bool operator==( const CursorData &o ) const
     {
         return m_hotSpot == o.m_hotSpot && m_image == o.m_image;
     }
 
-    bool operator!=(const CursorData& o) const
+    bool operator!=( const CursorData &o ) const
     {
-        return !(*this == o);
+        return !( *this == o );
     }
 
-    StyleImage* image() const { return m_image.get(); }    
-    void setImage(PassRefPtr<StyleImage> image) { m_image = image; }    
+    StyleImage *image() const
+    {
+        return m_image.get();
+    }
+    void setImage( PassRefPtr<StyleImage> image )
+    {
+        m_image = image;
+    }
 
-    const IntPoint& hotSpot() const { return m_hotSpot; }
-    
+    const IntPoint &hotSpot() const
+    {
+        return m_hotSpot;
+    }
+
 private:
     RefPtr<StyleImage> m_image;
     IntPoint m_hotSpot; // for CSS3 support

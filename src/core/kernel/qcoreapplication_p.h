@@ -34,95 +34,100 @@ class QAbstractEventDispatcher;
 
 class Q_CORE_EXPORT QCoreApplicationPrivate
 {
-   Q_DECLARE_PUBLIC(QCoreApplication)
+    Q_DECLARE_PUBLIC( QCoreApplication )
 
- public:
-   enum Type {
-      Tty,
-      Gui
-   };
+public:
+    enum Type
+    {
+        Tty,
+        Gui
+    };
 
-   QCoreApplicationPrivate(int &aargc,  char **aargv, uint flags);
-   virtual ~QCoreApplicationPrivate();
+    QCoreApplicationPrivate( int &aargc,  char **aargv, uint flags );
+    virtual ~QCoreApplicationPrivate();
 
-   void init();
-   static void initLocale();
-   bool sendThroughApplicationEventFilters(QObject *, QEvent *);
-   bool sendThroughObjectEventFilters(QObject *, QEvent *);
-   bool notify_helper(QObject *, QEvent *);
+    void init();
+    static void initLocale();
+    bool sendThroughApplicationEventFilters( QObject *, QEvent * );
+    bool sendThroughObjectEventFilters( QObject *, QEvent * );
+    bool notify_helper( QObject *, QEvent * );
 
-   static void setEventSpontaneous(QEvent *e, bool spontaneous) {
-      e->spont = spontaneous;
-   }
+    static void setEventSpontaneous( QEvent *e, bool spontaneous )
+    {
+        e->spont = spontaneous;
+    }
 
-   virtual QString appName() const;
-   mutable QString applicationName;
+    virtual QString appName() const;
+    mutable QString applicationName;
 
-   virtual void createEventDispatcher();
-   virtual void eventDispatcherReady();
-   static void removePostedEvent(QEvent *);
+    virtual void createEventDispatcher();
+    virtual void eventDispatcherReady();
+    static void removePostedEvent( QEvent * );
 
 #ifdef Q_OS_WIN
-   static void removePostedTimerEvent(QObject *object, int timerId);
+    static void removePostedTimerEvent( QObject *object, int timerId );
 #endif
 
 #ifdef Q_OS_DARWIN
-   static QString macMenuBarName();
+    static QString macMenuBarName();
 #endif
 
-   QAtomicInt quitLockRef;
+    QAtomicInt quitLockRef;
 
-   virtual bool shouldQuit() {
-      return true;
-   }
+    virtual bool shouldQuit()
+    {
+        return true;
+    }
 
-   void maybeQuit();
+    void maybeQuit();
 
-   static QThread *mainThread();
+    static QThread *mainThread();
 
-   static bool checkInstance(const char *method);
-   static void sendPostedEvents(QObject *receiver, int event_type, QThreadData *data);
+    static bool checkInstance( const char *method );
+    static void sendPostedEvents( QObject *receiver, int event_type, QThreadData *data );
 
-   void checkReceiverThread(QObject *receiver);
+    void checkReceiverThread( QObject *receiver );
 
-   QThreadData *getThreadData() {
-      return CSInternalThreadData::get_m_ThreadData(q_ptr);
-   }
+    QThreadData *getThreadData()
+    {
+        return LSCSInternalThreadData::get_m_ThreadData( q_ptr );
+    }
 
-   int &argc;
-   char **argv;
-   void appendApplicationPathToLibraryPaths(void);
-   void processCommandLineArguments();
+    int &argc;
+    char **argv;
+    void appendApplicationPathToLibraryPaths( void );
+    void processCommandLineArguments();
 
-   static QString qmljsDebugArguments();          // access arguments from other libraries
+    static QString qmljsDebugArguments();          // access arguments from other libraries
 
-   QTranslatorList translators;
-   static bool isTranslatorInstalled(QTranslator *translator);
+    QTranslatorList translators;
+    static bool isTranslatorInstalled( QTranslator *translator );
 
-   QCoreApplicationPrivate::Type application_type;
+    QCoreApplicationPrivate::Type application_type;
 
-   bool in_exec;
-   bool aboutToQuitEmitted;
+    bool in_exec;
+    bool aboutToQuitEmitted;
 
-   QString cachedApplicationDirPath;
-   QString cachedApplicationFilePath;
+    QString cachedApplicationDirPath;
+    QString cachedApplicationFilePath;
 
-   static QThread *theMainThread;
-   static QAbstractEventDispatcher *eventDispatcher;  // points to the platform dispatcher
-   static bool is_app_running;
-   static bool is_app_closing;
+    static QThread *theMainThread;
+    static QAbstractEventDispatcher *eventDispatcher;  // points to the platform dispatcher
+    static bool is_app_running;
+    static bool is_app_closing;
 
-   static bool setuidAllowed;
-   static uint attribs;
+    static bool setuidAllowed;
+    static uint attribs;
 
-   static bool testAttribute(uint flag) {
-      return attribs & (1 << flag);
-   }
+    static bool testAttribute( uint flag )
+    {
+        return attribs & ( 1 << flag );
+    }
 
-   static QSettings *copperspiceConf();
+    static QSettings *copperspiceConf();
 
- protected:
-   QCoreApplication *q_ptr;
+protected:
+    QCoreApplication *q_ptr;
 
 };
 

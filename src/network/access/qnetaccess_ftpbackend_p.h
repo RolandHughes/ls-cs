@@ -39,63 +39,65 @@ class QNetworkAccessCachedFtpConnection;
 
 class QNetworkAccessFtpBackend: public QNetworkAccessBackend
 {
-   NET_CS_OBJECT(QNetworkAccessFtpBackend)
+    NET_LSCS_OBJECT( QNetworkAccessFtpBackend )
 
- public:
-   enum State {
-      Idle,
-      //Connecting,
-      LoggingIn,
-      CheckingFeatures,
-      Statting,
-      Transferring,
-      Disconnecting
-   };
+public:
+    enum State
+    {
+        Idle,
+        //Connecting,
+        LoggingIn,
+        CheckingFeatures,
+        Statting,
+        Transferring,
+        Disconnecting
+    };
 
-   QNetworkAccessFtpBackend();
-   virtual ~QNetworkAccessFtpBackend();
+    QNetworkAccessFtpBackend();
+    virtual ~QNetworkAccessFtpBackend();
 
-   void open() override;
-   void closeDownstreamChannel() override;
+    void open() override;
+    void closeDownstreamChannel() override;
 
-   void downstreamReadyWrite() override;
+    void downstreamReadyWrite() override;
 
-   enum CacheCleanupMode {
-       ReleaseCachedConnection,
-       RemoveCachedConnection
-   };
+    enum CacheCleanupMode
+    {
+        ReleaseCachedConnection,
+        RemoveCachedConnection
+    };
 
-   void disconnectFromFtp(CacheCleanupMode mode = ReleaseCachedConnection);
+    void disconnectFromFtp( CacheCleanupMode mode = ReleaseCachedConnection );
 
-   NET_CS_SLOT_1(Public, void ftpConnectionReady(QNetworkAccessCache::CacheableObject *object))
-   NET_CS_SLOT_2(ftpConnectionReady)
+    NET_LSCS_SLOT_1( Public, void ftpConnectionReady( QNetworkAccessCache::CacheableObject *object ) )
+    NET_LSCS_SLOT_2( ftpConnectionReady )
 
-   NET_CS_SLOT_1(Public, void ftpDone())
-   NET_CS_SLOT_2(ftpDone)
+    NET_LSCS_SLOT_1( Public, void ftpDone() )
+    NET_LSCS_SLOT_2( ftpDone )
 
-   NET_CS_SLOT_1(Public, void ftpReadyRead())
-   NET_CS_SLOT_2(ftpReadyRead)
+    NET_LSCS_SLOT_1( Public, void ftpReadyRead() )
+    NET_LSCS_SLOT_2( ftpReadyRead )
 
-   NET_CS_SLOT_1(Public, void ftpRawCommandReply(int code, const QString &text))
-   NET_CS_SLOT_2(ftpRawCommandReply)
+    NET_LSCS_SLOT_1( Public, void ftpRawCommandReply( int code, const QString &text ) )
+    NET_LSCS_SLOT_2( ftpRawCommandReply )
 
- private:
-   QPointer<QNetworkAccessCachedFtpConnection> ftp;
+private:
+    QPointer<QNetworkAccessCachedFtpConnection> ftp;
 
-   QIODevice *uploadDevice;
-   qint64 totalBytes;
-   int helpId, sizeId, mdtmId;
-   bool supportsSize, supportsMdtm;
-   State state;
+    QIODevice *uploadDevice;
+    qint64 totalBytes;
+    int helpId, sizeId, mdtmId;
+    bool supportsSize, supportsMdtm;
+    State state;
 
-   friend class QNetworkAccessFtpIODevice;
+    friend class QNetworkAccessFtpIODevice;
 };
 
 class QNetworkAccessFtpBackendFactory: public QNetworkAccessBackendFactory
 {
- public:
-   QStringList supportedSchemes() const override;
-   QNetworkAccessBackend *create(QNetworkAccessManager::Operation op, const QNetworkRequest &request) const override;
+public:
+    QStringList supportedSchemes() const override;
+    QNetworkAccessBackend *create( QNetworkAccessManager::Operation op, const QNetworkRequest &request ) const override;
 };
 
 #endif // QT_NO_FTP

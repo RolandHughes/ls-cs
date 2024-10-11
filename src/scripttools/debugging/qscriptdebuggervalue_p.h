@@ -37,52 +37,53 @@ class QDataStream;
 class QScriptDebuggerValuePrivate;
 class QScriptDebuggerValue
 {
- public:
-   enum ValueType {
-      NoValue,
-      UndefinedValue,
-      NullValue,
-      BooleanValue,
-      StringValue,
-      NumberValue,
-      ObjectValue
-   };
+public:
+    enum ValueType
+    {
+        NoValue,
+        UndefinedValue,
+        NullValue,
+        BooleanValue,
+        StringValue,
+        NumberValue,
+        ObjectValue
+    };
 
-   QScriptDebuggerValue();
-   QScriptDebuggerValue(const QScriptValue &value);
-   QScriptDebuggerValue(double value);
-   QScriptDebuggerValue(bool value);
-   QScriptDebuggerValue(const QString &value);
-   QScriptDebuggerValue(qint64 objectId);
-   QScriptDebuggerValue(ValueType type);
-   QScriptDebuggerValue(const QScriptDebuggerValue &other);
-   ~QScriptDebuggerValue();
+    QScriptDebuggerValue();
+    QScriptDebuggerValue( const QScriptValue &value );
+    QScriptDebuggerValue( double value );
+    QScriptDebuggerValue( bool value );
+    QScriptDebuggerValue( const QString &value );
+    QScriptDebuggerValue( qint64 objectId );
+    QScriptDebuggerValue( ValueType type );
+    QScriptDebuggerValue( const QScriptDebuggerValue &other );
+    ~QScriptDebuggerValue();
 
-   QScriptDebuggerValue &operator=(const QScriptDebuggerValue &other);
+    QScriptDebuggerValue &operator=( const QScriptDebuggerValue &other );
 
-   ValueType type() const;
+    ValueType type() const;
 
-   double numberValue() const;
-   bool booleanValue() const;
-   QString stringValue() const;
-   qint64 objectId() const;
+    double numberValue() const;
+    bool booleanValue() const;
+    QString stringValue() const;
+    qint64 objectId() const;
 
-   QScriptValue toScriptValue(QScriptEngine *engine) const;
-   QString toString() const;
+    QScriptValue toScriptValue( QScriptEngine *engine ) const;
+    QString toString() const;
 
-   bool operator==(const QScriptDebuggerValue &other) const;
-   bool operator!=(const QScriptDebuggerValue &other) const;
+    bool operator==( const QScriptDebuggerValue &other ) const;
+    bool operator!=( const QScriptDebuggerValue &other ) const;
 
- private:
-   QScopedSharedPointer<QScriptDebuggerValuePrivate> d_ptr;
+private:
+    QScopedSharedPointer<QScriptDebuggerValuePrivate> d_ptr;
 
-   Q_DECLARE_PRIVATE(QScriptDebuggerValue)
+    Q_DECLARE_PRIVATE( QScriptDebuggerValue )
 };
 
 typedef QList<QScriptDebuggerValue> QScriptDebuggerValueList;
 
-QDataStream &operator<<(QDataStream &, const QScriptDebuggerValue &);
-QDataStream &operator>>(QDataStream &, QScriptDebuggerValue &);
+QDataStream &operator<<( QDataStream &, const QScriptDebuggerValue & );
+QDataStream &operator>>( QDataStream &, QScriptDebuggerValue & );
 
 QT_END_NAMESPACE
 

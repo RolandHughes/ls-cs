@@ -38,72 +38,87 @@
 #include <QMimeData>
 #include <QTextCodec>
 
-namespace WebCore {
-
-PassRefPtr<DataTransferItem> DataTransferItem::create(PassRefPtr<Clipboard> owner,
-                                                      ScriptExecutionContext* context,
-                                                      const String& data,
-                                                      const String& type)
+namespace WebCore
 {
-    return DataTransferItemQt::create(owner, context, type, data);
+
+PassRefPtr<DataTransferItem> DataTransferItem::create( PassRefPtr<Clipboard> owner,
+        ScriptExecutionContext *context,
+        const String &data,
+        const String &type )
+{
+    return DataTransferItemQt::create( owner, context, type, data );
 }
 
-PassRefPtr<DataTransferItemQt> DataTransferItemQt::createFromPasteboard(PassRefPtr<Clipboard> owner,
-                                                                        ScriptExecutionContext* context,
-                                                                        const String& type)
+PassRefPtr<DataTransferItemQt> DataTransferItemQt::createFromPasteboard( PassRefPtr<Clipboard> owner,
+        ScriptExecutionContext *context,
+        const String &type )
 {
-    if (type == "text/plain" || type == "text/html")
-        return adoptRef(new DataTransferItemQt(owner, context, PasteboardSource, DataTransferItem::kindString, type, ""));
+    if ( type == "text/plain" || type == "text/html" )
+    {
+        return adoptRef( new DataTransferItemQt( owner, context, PasteboardSource, DataTransferItem::kindString, type, "" ) );
+    }
 
-    return adoptRef(new DataTransferItemQt(owner, context, PasteboardSource, DataTransferItem::kindFile, type, ""));
+    return adoptRef( new DataTransferItemQt( owner, context, PasteboardSource, DataTransferItem::kindFile, type, "" ) );
 }
 
-PassRefPtr<DataTransferItemQt> DataTransferItemQt::create(PassRefPtr<Clipboard> owner,
-                                                          ScriptExecutionContext* context,
-                                                          const String& type,
-                                                          const String& data)
+PassRefPtr<DataTransferItemQt> DataTransferItemQt::create( PassRefPtr<Clipboard> owner,
+        ScriptExecutionContext *context,
+        const String &type,
+        const String &data )
 {
-    return adoptRef(new DataTransferItemQt(owner, context, InternalSource, DataTransferItem::kindString, type, data));
+    return adoptRef( new DataTransferItemQt( owner, context, InternalSource, DataTransferItem::kindString, type, data ) );
 }
 
-DataTransferItemQt::DataTransferItemQt(PassRefPtr<Clipboard> owner,
-                                       ScriptExecutionContext* context,
-                                       DataSource source,
-                                       const String& kind, const String& type,
-                                       const String& data)
-    : DataTransferItem(owner, kind, type)
-    , m_context(context)
-    , m_dataSource(source)
-    , m_data(data)
+DataTransferItemQt::DataTransferItemQt( PassRefPtr<Clipboard> owner,
+                                        ScriptExecutionContext *context,
+                                        DataSource source,
+                                        const String &kind, const String &type,
+                                        const String &data )
+    : DataTransferItem( owner, kind, type )
+    , m_context( context )
+    , m_dataSource( source )
+    , m_data( data )
 {
 }
 
-void DataTransferItemQt::getAsString(PassRefPtr<StringCallback> callback)
+void DataTransferItemQt::getAsString( PassRefPtr<StringCallback> callback )
 {
-    if ((owner()->policy() != ClipboardReadable && owner()->policy() != ClipboardWritable)
-        || kind() != kindString)
-        return;
-
-    if (m_dataSource == InternalSource) {
-        callback->scheduleCallback(m_context, m_data);
+    if ( ( owner()->policy() != ClipboardReadable && owner()->policy() != ClipboardWritable )
+            || kind() != kindString )
+    {
         return;
     }
 
-    const QMimeData* mimeData = QApplication::clipboard()->mimeData(QClipboard::Clipboard);
-    if (!mimeData)
+    if ( m_dataSource == InternalSource )
+    {
+        callback->scheduleCallback( m_context, m_data );
         return;
+    }
+
+    const QMimeData *mimeData = QApplication::clipboard()->mimeData( QClipboard::Clipboard );
+
+    if ( !mimeData )
+    {
+        return;
+    }
 
     QString data;
-    if (type() == "text/plain")
+
+    if ( type() == "text/plain" )
+    {
         data = mimeData->text();
-    else if (type() == "text/html")
+    }
+    else if ( type() == "text/html" )
+    {
         data = mimeData->html();
-    else {
-        QByteArray rawData = mimeData->data(type());
-        data = QTextCodec::codecForName("UTF-16")->toUnicode(rawData);
+    }
+    else
+    {
+        QByteArray rawData = mimeData->data( type() );
+        data = QTextCodec::codecForName( "UTF-16" )->toUnicode( rawData );
     }
 
-    callback->scheduleCallback(m_context, data);
+    callback->scheduleCallback( m_context, data );
 }
 
 PassRefPtr<Blob> DataTransferItemQt::getAsFile()

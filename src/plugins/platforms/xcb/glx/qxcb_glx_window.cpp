@@ -26,8 +26,8 @@
 #include <qxcb_screen.h>
 #include <qglx_convenience_p.h>
 
-QXcbGlxWindow::QXcbGlxWindow(QWindow *window)
-   : QXcbWindow(window)
+QXcbGlxWindow::QXcbGlxWindow( QWindow *window )
+    : QXcbWindow( window )
 {
 }
 
@@ -37,17 +37,18 @@ QXcbGlxWindow::~QXcbGlxWindow()
 
 void QXcbGlxWindow::resolveFormat()
 {
-   m_format = window()->requestedFormat(); // qglx_findVisualInfo sets the resovled format
+    m_format = window()->requestedFormat(); // qglx_findVisualInfo sets the resovled format
 }
 
 void *QXcbGlxWindow::createVisual()
 {
-   QXcbScreen *scr = xcbScreen();
+    QXcbScreen *scr = xcbScreen();
 
-   if (! scr) {
-      return nullptr;
-   }
+    if ( ! scr )
+    {
+        return nullptr;
+    }
 
-   return qglx_findVisualInfo(DISPLAY_FROM_XCB(scr), scr->screenNumber(), &m_format);
+    return qglx_findVisualInfo( DISPLAY_FROM_XCB( scr ), scr->screenNumber(), &m_format );
 }
 

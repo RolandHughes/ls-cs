@@ -35,11 +35,11 @@ using namespace WebKit;
 
 G_BEGIN_DECLS
 
-WebKitWebViewBase* webkitWebViewBaseCreate(WebContext*, WebPageGroup*);
+WebKitWebViewBase *webkitWebViewBaseCreate( WebContext *, WebPageGroup * );
 
-GtkIMContext* webkitWebViewBaseGetIMContext(WebKitWebViewBase*);
+GtkIMContext *webkitWebViewBaseGetIMContext( WebKitWebViewBase * );
 
-WebPageProxy* webkitWebViewBaseGetPage(WebKitWebViewBase*);
+WebPageProxy *webkitWebViewBaseGetPage( WebKitWebViewBase * );
 
 G_END_DECLS
 

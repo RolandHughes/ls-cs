@@ -31,12 +31,12 @@ QXcbGlIntegration::~QXcbGlIntegration()
 {
 }
 
-bool QXcbGlIntegration::handleXcbEvent(xcb_generic_event_t *event, uint responseType)
+bool QXcbGlIntegration::handleXcbEvent( xcb_generic_event_t *event, uint responseType )
 {
-   (void) event;
-   (void) responseType;
+    ( void ) event;
+    ( void ) responseType;
 
-   return false;
+    return false;
 }
 
 

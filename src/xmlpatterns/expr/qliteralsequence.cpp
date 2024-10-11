@@ -28,43 +28,44 @@
 
 using namespace QPatternist;
 
-LiteralSequence::LiteralSequence(const Item::List &list) : m_list(list)
+LiteralSequence::LiteralSequence( const Item::List &list ) : m_list( list )
 {
-   Q_ASSERT(list.size() >= 2);
+    Q_ASSERT( list.size() >= 2 );
 }
 
-Item::Iterator::Ptr LiteralSequence::evaluateSequence(const DynamicContext::Ptr &) const
+Item::Iterator::Ptr LiteralSequence::evaluateSequence( const DynamicContext::Ptr & ) const
 {
-   return makeListIterator(m_list);
+    return makeListIterator( m_list );
 }
 
 SequenceType::Ptr LiteralSequence::staticType() const
 {
-   const Item::List::const_iterator end(m_list.constEnd());
-   Item::List::const_iterator it(m_list.constBegin());
+    const Item::List::const_iterator end( m_list.constEnd() );
+    Item::List::const_iterator it( m_list.constBegin() );
 
-   /* Load the first item. */
-   ItemType::Ptr t((*it).type());
-   ++it;
+    /* Load the first item. */
+    ItemType::Ptr t( ( *it ).type() );
+    ++it;
 
-   for (; end != it; ++it) {
-      t |= (*it).type();
-   }
+    for ( ; end != it; ++it )
+    {
+        t |= ( *it ).type();
+    }
 
-   return makeGenericSequenceType(t, Cardinality::fromCount(m_list.size()));
+    return makeGenericSequenceType( t, Cardinality::fromCount( m_list.size() ) );
 }
 
-ExpressionVisitorResult::Ptr LiteralSequence::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr LiteralSequence::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }
 
 Expression::ID LiteralSequence::id() const
 {
-   return IDExpressionSequence;
+    return IDExpressionSequence;
 }
 
 Expression::Properties LiteralSequence::properties() const
 {
-   return IsEvaluated;
+    return IsEvaluated;
 }

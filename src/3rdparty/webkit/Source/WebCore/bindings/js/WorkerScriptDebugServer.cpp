@@ -35,18 +35,19 @@
 
 #include "WorkerContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 WorkerScriptDebugServer::WorkerScriptDebugServer()
     : ScriptDebugServer()
 {
 }
 
-void WorkerScriptDebugServer::addListener(ScriptDebugListener*, WorkerContext*)
+void WorkerScriptDebugServer::addListener( ScriptDebugListener *, WorkerContext * )
 {
 }
 
-void WorkerScriptDebugServer::removeListener(ScriptDebugListener*, WorkerContext*)
+void WorkerScriptDebugServer::removeListener( ScriptDebugListener *, WorkerContext * )
 {
 }
 

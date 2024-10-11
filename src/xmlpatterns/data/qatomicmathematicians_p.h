@@ -27,104 +27,105 @@
 #include <qatomicmathematician_p.h>
 #include <qsourcelocationreflection_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DecimalMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
 {
- public:
-   inline DecimalMathematician(const SourceLocationReflection *const r)
-      : DelegatingSourceLocationReflection(r)
-   { }
+public:
+    inline DecimalMathematician( const SourceLocationReflection *const r )
+        : DelegatingSourceLocationReflection( r )
+    { }
 
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-         const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
 class IntegerMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
 {
- public:
-   inline IntegerMathematician(const SourceLocationReflection *const r)
-      : DelegatingSourceLocationReflection(r)
-   { }
+public:
+    inline IntegerMathematician( const SourceLocationReflection *const r )
+        : DelegatingSourceLocationReflection( r )
+    { }
 
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-         const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
 class DurationNumericMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
 {
- public:
-   inline DurationNumericMathematician(const SourceLocationReflection *const r)
-      : DelegatingSourceLocationReflection(r)
-   { }
+public:
+    inline DurationNumericMathematician( const SourceLocationReflection *const r )
+        : DelegatingSourceLocationReflection( r )
+    { }
 
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-      const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
 class DurationDurationDivisor : public AtomicMathematician
 {
- public:
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-         const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+public:
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
 class DurationDurationMathematician : public AtomicMathematician
 {
- public:
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-         const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+public:
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
 class OperandSwitcherMathematician : public AtomicMathematician
 {
- public:
-   /**
-    * Creates an OperandSwitcherMathematician.
-    *
-    * @param mathematician the AtomicMathematician this OperandSwitcherMathematician
-    * should switch the operands for. Must be a non @c null, valid pointer.
-    */
-   OperandSwitcherMathematician(const AtomicMathematician::Ptr &mathematician);
+public:
+    /**
+     * Creates an OperandSwitcherMathematician.
+     *
+     * @param mathematician the AtomicMathematician this OperandSwitcherMathematician
+     * should switch the operands for. Must be a non @c null, valid pointer.
+     */
+    OperandSwitcherMathematician( const AtomicMathematician::Ptr &mathematician );
 
-   /**
-    * Switch @p o1 and @p o2, and returns the value from the AtomicMathematician
-    * this OperandSwitcherMathematician represents.
-    */
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-         const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+    /**
+     * Switch @p o1 and @p o2, and returns the value from the AtomicMathematician
+     * this OperandSwitcherMathematician represents.
+     */
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 
- private:
-   const AtomicMathematician::Ptr m_mather;
+private:
+    const AtomicMathematician::Ptr m_mather;
 };
 
 class DateTimeDurationMathematician : public AtomicMathematician, public DelegatingSourceLocationReflection
 {
- public:
+public:
 
-   inline DateTimeDurationMathematician(const SourceLocationReflection *const r)
-      : DelegatingSourceLocationReflection(r)
-   { }
+    inline DateTimeDurationMathematician( const SourceLocationReflection *const r )
+        : DelegatingSourceLocationReflection( r )
+    { }
 
-   /**
-    * @p o1 is an AbstractDateTime and @p o2 is an AbstractDuration.
-    *
-    */
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-         const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+    /**
+     * @p o1 is an AbstractDateTime and @p o2 is an AbstractDuration.
+     *
+     */
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 
 class AbstractDateTimeMathematician : public AtomicMathematician
 {
- public:
-   Item calculate(const Item &o1, const Operator op, const Item &o2,
-         const QExplicitlySharedDataPointer<DynamicContext> &context) const override;
+public:
+    Item calculate( const Item &o1, const Operator op, const Item &o2,
+                    const QExplicitlySharedDataPointer<DynamicContext> &context ) const override;
 };
 
 }

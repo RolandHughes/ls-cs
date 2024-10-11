@@ -28,12 +28,12 @@ class QMediaControl;
 
 class QMediaControlPrivate
 {
- public:
-   virtual ~QMediaControlPrivate()
-   {
-   }
+public:
+    virtual ~QMediaControlPrivate()
+    {
+    }
 
-   QMediaControl *q_ptr;
+    QMediaControl *q_ptr;
 };
 
 #endif

@@ -240,25 +240,25 @@ NSCursor *QCocoaCursor::createCursorData(QCursor *cursor)
       }
 
       case Qt::WaitCursor: {
-         QPixmap pixmap = QPixmap(QLatin1String(":/copperspice/mac/cursors/images/spincursor.png"));
+         QPixmap pixmap = QPixmap(QLatin1String("/LsCs/mac/cursors/images/spincursor.png"));
          return createCursorFromPixmap(pixmap, hotspot);
          break;
       }
 
       case Qt::SizeAllCursor: {
-         QPixmap pixmap = QPixmap(QLatin1String(":/copperspice/mac/cursors/images/sizeallcursor.png"));
+         QPixmap pixmap = QPixmap(QLatin1String("/LsCs/mac/cursors/images/sizeallcursor.png"));
          return createCursorFromPixmap(pixmap, QPoint(8, 8));
          break;
       }
 
       case Qt::BusyCursor: {
-         QPixmap pixmap = QPixmap(QLatin1String(":/copperspice/mac/cursors/images/waitcursor.png"));
+         QPixmap pixmap = QPixmap(QLatin1String("/LsCs/mac/cursors/images/waitcursor.png"));
          return createCursorFromPixmap(pixmap, hotspot);
          break;
       }
 
       case Qt::ForbiddenCursor: {
-         QPixmap pixmap = QPixmap(QLatin1String(":/copperspice/mac/cursors/images/forbiddencursor.png"));
+         QPixmap pixmap = QPixmap(QLatin1String("/LsCs/mac/cursors/images/forbiddencursor.png"));
          return createCursorFromPixmap(pixmap, hotspot);
          break;
       }

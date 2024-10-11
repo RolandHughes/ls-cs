@@ -38,9 +38,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSEventSource);
+ASSERT_CLASS_FITS_IN_CELL( JSEventSource );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -51,13 +52,13 @@ ASSERT_CLASS_FITS_IN_CELL(JSEventSource);
 
 static const HashTableValue JSEventSourceTableValues[7] =
 {
-    { "URL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceURL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "readyState", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceReadyState), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "onopen", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceOnopen), (intptr_t)setJSEventSourceOnopen THUNK_GENERATOR(0) },
-    { "onmessage", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceOnmessage), (intptr_t)setJSEventSourceOnmessage THUNK_GENERATOR(0) },
-    { "onerror", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceOnerror), (intptr_t)setJSEventSourceOnerror THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "URL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceURL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "readyState", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceReadyState ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "onopen", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceOnopen ), ( intptr_t )setJSEventSourceOnopen THUNK_GENERATOR( 0 ) },
+    { "onmessage", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceOnmessage ), ( intptr_t )setJSEventSourceOnmessage THUNK_GENERATOR( 0 ) },
+    { "onerror", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceOnerror ), ( intptr_t )setJSEventSourceOnerror THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -71,40 +72,44 @@ static JSC_CONST_HASHTABLE HashTable JSEventSourceTable = { 17, 15, JSEventSourc
 
 static const HashTableValue JSEventSourceConstructorTableValues[4] =
 {
-    { "CONNECTING", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceCONNECTING), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "OPEN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceOPEN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CLOSED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceCLOSED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "CONNECTING", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceCONNECTING ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "OPEN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceOPEN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CLOSED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceCLOSED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEventSourceConstructorTable = { 8, 7, JSEventSourceConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == EventSource::CONNECTING, EventSourceEnumCONNECTINGIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == EventSource::OPEN, EventSourceEnumOPENIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == EventSource::CLOSED, EventSourceEnumCLOSEDIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == EventSource::CONNECTING, EventSourceEnumCONNECTINGIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == EventSource::OPEN, EventSourceEnumOPENIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == EventSource::CLOSED, EventSourceEnumCLOSEDIsWrongUseDontCheckEnums );
 
 const ClassInfo JSEventSourceConstructor::s_info = { "EventSourceConstructor", &DOMConstructorObject::s_info, &JSEventSourceConstructorTable, 0 };
 
-JSEventSourceConstructor::JSEventSourceConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSEventSourceConstructor::JSEventSourceConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSEventSourcePrototype::self(exec, globalObject), DontDelete | ReadOnly);
-    putDirect(exec->globalData(), exec->propertyNames().length, jsNumber(1), ReadOnly | DontDelete | DontEnum);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSEventSourcePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
+    putDirect( exec->globalData(), exec->propertyNames().length, jsNumber( 1 ), ReadOnly | DontDelete | DontEnum );
 }
 
-bool JSEventSourceConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEventSourceConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSEventSourceConstructor, JSDOMWrapper>(exec, &JSEventSourceConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSEventSourceConstructor, JSDOMWrapper>( exec, &JSEventSourceConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSEventSourceConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEventSourceConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSEventSourceConstructor, JSDOMWrapper>(exec, &JSEventSourceConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSEventSourceConstructor, JSDOMWrapper>( exec, &JSEventSourceConstructorTable, this, propertyName,
+            descriptor );
 }
 
-ConstructType JSEventSourceConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSEventSourceConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSEventSource;
     return ConstructTypeHost;
@@ -119,296 +124,361 @@ ConstructType JSEventSourceConstructor::getConstructData(ConstructData& construc
 
 static const HashTableValue JSEventSourcePrototypeTableValues[8] =
 {
-    { "CONNECTING", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceCONNECTING), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "OPEN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceOPEN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "CLOSED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsEventSourceCLOSED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "close", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEventSourcePrototypeFunctionClose), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "addEventListener", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEventSourcePrototypeFunctionAddEventListener), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "removeEventListener", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEventSourcePrototypeFunctionRemoveEventListener), (intptr_t)3 THUNK_GENERATOR(0) },
-    { "dispatchEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsEventSourcePrototypeFunctionDispatchEvent), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "CONNECTING", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceCONNECTING ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "OPEN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceOPEN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "CLOSED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsEventSourceCLOSED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "close", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEventSourcePrototypeFunctionClose ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "addEventListener", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEventSourcePrototypeFunctionAddEventListener ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "removeEventListener", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEventSourcePrototypeFunctionRemoveEventListener ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { "dispatchEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsEventSourcePrototypeFunctionDispatchEvent ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSEventSourcePrototypeTable = { 17, 15, JSEventSourcePrototypeTableValues, 0 };
-static const HashTable* getJSEventSourcePrototypeTable(ExecState* exec)
+static const HashTable *getJSEventSourcePrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSEventSourcePrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSEventSourcePrototypeTable );
 }
 
 const ClassInfo JSEventSourcePrototype::s_info = { "EventSourcePrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSEventSourcePrototypeTable };
 
-JSObject* JSEventSourcePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEventSourcePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSEventSource>(exec, globalObject);
+    return getDOMPrototype<JSEventSource>( exec, globalObject );
 }
 
-bool JSEventSourcePrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEventSourcePrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSEventSourcePrototype, JSObject>(exec, getJSEventSourcePrototypeTable(exec), this, propertyName, slot);
+    return getStaticPropertySlot<JSEventSourcePrototype, JSObject>( exec, getJSEventSourcePrototypeTable( exec ), this, propertyName,
+            slot );
 }
 
-bool JSEventSourcePrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEventSourcePrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSEventSourcePrototype, JSObject>(exec, getJSEventSourcePrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSEventSourcePrototype, JSObject>( exec, getJSEventSourcePrototypeTable( exec ), this,
+            propertyName, descriptor );
 }
 
-static const HashTable* getJSEventSourceTable(ExecState* exec)
+static const HashTable *getJSEventSourceTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSEventSourceTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSEventSourceTable );
 }
 
 const ClassInfo JSEventSource::s_info = { "EventSource", &JSDOMWrapper::s_info, 0, getJSEventSourceTable };
 
-JSEventSource::JSEventSource(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<EventSource> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSEventSource::JSEventSource( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<EventSource> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-void JSEventSource::visitChildren(SlotVisitor& visitor)
+void JSEventSource::visitChildren( SlotVisitor &visitor )
 {
-    Base::visitChildren(visitor);
-    impl()->visitJSEventListeners(visitor);
+    Base::visitChildren( visitor );
+    impl()->visitJSEventListeners( visitor );
 }
 
-JSObject* JSEventSource::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSEventSource::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSEventSourcePrototype(exec->globalData(), globalObject, JSEventSourcePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSEventSourcePrototype( exec->globalData(), globalObject,
+            JSEventSourcePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSEventSource::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSEventSource::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSEventSource, Base>(exec, getJSEventSourceTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSEventSource, Base>( exec, getJSEventSourceTable( exec ), this, propertyName, slot );
 }
 
-bool JSEventSource::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSEventSource::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSEventSource, Base>(exec, getJSEventSourceTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSEventSource, Base>( exec, getJSEventSourceTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsEventSourceURL(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEventSourceURL( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->url());
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->url() );
     return result;
 }
 
 
-JSValue jsEventSourceReadyState(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEventSourceReadyState( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    JSValue result = jsNumber(imp->readyState());
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->readyState() );
     return result;
 }
 
 
-JSValue jsEventSourceOnopen(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEventSourceOnopen( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    if (EventListener* listener = imp->onopen()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onopen() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsEventSourceOnmessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEventSourceOnmessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    if (EventListener* listener = imp->onmessage()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onmessage() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsEventSourceOnerror(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEventSourceOnerror( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    if (EventListener* listener = imp->onerror()) {
-        if (const JSEventListener* jsListener = JSEventListener::cast(listener)) {
-            if (JSObject* jsFunction = jsListener->jsFunction(imp->scriptExecutionContext()))
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+
+    if ( EventListener *listener = imp->onerror() )
+    {
+        if ( const JSEventListener *jsListener = JSEventListener::cast( listener ) )
+        {
+            if ( JSObject *jsFunction = jsListener->jsFunction( imp->scriptExecutionContext() ) )
+            {
                 return jsFunction;
+            }
         }
     }
+
     return jsNull();
 }
 
 
-JSValue jsEventSourceConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsEventSourceConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSEventSource* domObject = static_cast<JSEventSource*>(asObject(slotBase));
-    return JSEventSource::getConstructor(exec, domObject->globalObject());
+    JSEventSource *domObject = static_cast<JSEventSource *>( asObject( slotBase ) );
+    return JSEventSource::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSEventSource::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSEventSource::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSEventSource, Base>(exec, propertyName, value, getJSEventSourceTable(exec), this, slot);
+    lookupPut<JSEventSource, Base>( exec, propertyName, value, getJSEventSourceTable( exec ), this, slot );
 }
 
-void setJSEventSourceOnopen(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSEventSourceOnopen( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSEventSource* castedThis = static_cast<JSEventSource*>(thisObject);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    imp->setOnopen(createJSAttributeEventListener(exec, value, thisObject));
-}
-
-
-void setJSEventSourceOnmessage(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    UNUSED_PARAM(exec);
-    JSEventSource* castedThis = static_cast<JSEventSource*>(thisObject);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    imp->setOnmessage(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSEventSource *castedThis = static_cast<JSEventSource *>( thisObject );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+    imp->setOnopen( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-void setJSEventSourceOnerror(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSEventSourceOnmessage( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    UNUSED_PARAM(exec);
-    JSEventSource* castedThis = static_cast<JSEventSource*>(thisObject);
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    imp->setOnerror(createJSAttributeEventListener(exec, value, thisObject));
+    UNUSED_PARAM( exec );
+    JSEventSource *castedThis = static_cast<JSEventSource *>( thisObject );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+    imp->setOnmessage( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
 
-JSValue JSEventSource::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSEventSourceOnerror( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSEventSourceConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    UNUSED_PARAM( exec );
+    JSEventSource *castedThis = static_cast<JSEventSource *>( thisObject );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+    imp->setOnerror( createJSAttributeEventListener( exec, value, thisObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionClose(ExecState* exec)
+
+JSValue JSEventSource::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSEventSourceConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionClose( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEventSource::s_info))
-        return throwVMTypeError(exec);
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(thisValue));
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSEventSource::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( thisValue ) );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
 
     imp->close();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionAddEventListener(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionAddEventListener( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEventSource::s_info))
-        return throwVMTypeError(exec);
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(thisValue));
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    JSValue listener = exec->argument(1);
-    if (!listener.isObject())
-        return JSValue::encode(jsUndefined());
-    imp->addEventListener(ustringToAtomicString(exec->argument(0).toString(exec)), JSEventListener::create(asObject(listener), castedThis, false, currentWorld(exec)), exec->argument(2).toBoolean(exec));
-    return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSEventSource::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( thisValue ) );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+    JSValue listener = exec->argument( 1 );
+
+    if ( !listener.isObject() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->addEventListener( ustringToAtomicString( exec->argument( 0 ).toString( exec ) ),
+                           JSEventListener::create( asObject( listener ), castedThis, false, currentWorld( exec ) ), exec->argument( 2 ).toBoolean( exec ) );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionRemoveEventListener(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionRemoveEventListener( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEventSource::s_info))
-        return throwVMTypeError(exec);
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(thisValue));
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
-    JSValue listener = exec->argument(1);
-    if (!listener.isObject())
-        return JSValue::encode(jsUndefined());
-    imp->removeEventListener(ustringToAtomicString(exec->argument(0).toString(exec)), JSEventListener::create(asObject(listener), castedThis, false, currentWorld(exec)).get(), exec->argument(2).toBoolean(exec));
-    return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSEventSource::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( thisValue ) );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
+    JSValue listener = exec->argument( 1 );
+
+    if ( !listener.isObject() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->removeEventListener( ustringToAtomicString( exec->argument( 0 ).toString( exec ) ),
+                              JSEventListener::create( asObject( listener ), castedThis, false, currentWorld( exec ) ).get(),
+                              exec->argument( 2 ).toBoolean( exec ) );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionDispatchEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsEventSourcePrototypeFunctionDispatchEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSEventSource::s_info))
-        return throwVMTypeError(exec);
-    JSEventSource* castedThis = static_cast<JSEventSource*>(asObject(thisValue));
-    EventSource* imp = static_cast<EventSource*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSEventSource::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSEventSource *castedThis = static_cast<JSEventSource *>( asObject( thisValue ) );
+    EventSource *imp = static_cast<EventSource *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    Event* evt(toEvent(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    Event *evt( toEvent( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->dispatchEvent(evt, ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->dispatchEvent( evt, ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
 // Constant getters
 
-JSValue jsEventSourceCONNECTING(ExecState* exec, JSValue, const Identifier&)
+JSValue jsEventSourceCONNECTING( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsEventSourceOPEN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsEventSourceOPEN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsEventSourceCLOSED(ExecState* exec, JSValue, const Identifier&)
+JSValue jsEventSourceCLOSED( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-static inline bool isObservable(JSEventSource* jsEventSource)
+static inline bool isObservable( JSEventSource *jsEventSource )
 {
-    if (jsEventSource->hasCustomProperties())
+    if ( jsEventSource->hasCustomProperties() )
+    {
         return true;
-    if (jsEventSource->impl()->hasEventListeners())
+    }
+
+    if ( jsEventSource->impl()->hasEventListeners() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSEventSourceOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSEventSourceOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSEventSource* jsEventSource = static_cast<JSEventSource*>(handle.get().asCell());
-    if (jsEventSource->impl()->hasPendingActivity())
+    JSEventSource *jsEventSource = static_cast<JSEventSource *>( handle.get().asCell() );
+
+    if ( jsEventSource->impl()->hasPendingActivity() )
+    {
         return true;
-    if (!isObservable(jsEventSource))
+    }
+
+    if ( !isObservable( jsEventSource ) )
+    {
         return false;
-    UNUSED_PARAM(visitor);
+    }
+
+    UNUSED_PARAM( visitor );
     return false;
 }
 
-void JSEventSourceOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSEventSourceOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSEventSource* jsEventSource = static_cast<JSEventSource*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsEventSource->impl(), jsEventSource);
+    JSEventSource *jsEventSource = static_cast<JSEventSource *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsEventSource->impl(), jsEventSource );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, EventSource* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, EventSource *impl )
 {
-    return wrap<JSEventSource>(exec, globalObject, impl);
+    return wrap<JSEventSource>( exec, globalObject, impl );
 }
 
-EventSource* toEventSource(JSC::JSValue value)
+EventSource *toEventSource( JSC::JSValue value )
 {
-    return value.inherits(&JSEventSource::s_info) ? static_cast<JSEventSource*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSEventSource::s_info ) ? static_cast<JSEventSource *>( asObject( value ) )->impl() : 0;
 }
 
 }

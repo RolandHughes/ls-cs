@@ -27,74 +27,88 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLAllCollection;
 
-class JSHTMLAllCollection : public JSDOMWrapper {
+class JSHTMLAllCollection : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSHTMLAllCollection(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLAllCollection>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, unsigned propertyName, JSC::PropertySlot&);
+    JSHTMLAllCollection( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLAllCollection> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, unsigned propertyName, JSC::PropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual JSC::CallType getCallData(JSC::CallData&);
+    virtual JSC::CallType getCallData( JSC::CallData & );
 
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    virtual bool toBoolean(JSC::ExecState*) const { return false; };
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    virtual bool toBoolean( JSC::ExecState * ) const
+    {
+        return false;
+    };
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue item(JSC::ExecState*);
-    JSC::JSValue namedItem(JSC::ExecState*);
-    HTMLAllCollection* impl() const { return m_impl.get(); }
+    JSC::JSValue item( JSC::ExecState * );
+    JSC::JSValue namedItem( JSC::ExecState * );
+    HTMLAllCollection *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<HTMLAllCollection> m_impl;
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | JSC::MasqueradesAsUndefined | Base::StructureFlags;
-    static JSC::JSValue indexGetter(JSC::ExecState*, JSC::JSValue, unsigned);
+    static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot |
+                                           JSC::MasqueradesAsUndefined | Base::StructureFlags;
+    static JSC::JSValue indexGetter( JSC::ExecState *, JSC::JSValue, unsigned );
 private:
-    static bool canGetItemsForName(JSC::ExecState*, HTMLAllCollection*, const JSC::Identifier&);
-    static JSC::JSValue nameGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+    static bool canGetItemsForName( JSC::ExecState *, HTMLAllCollection *, const JSC::Identifier & );
+    static JSC::JSValue nameGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, HTMLAllCollection*);
-HTMLAllCollection* toHTMLAllCollection(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, HTMLAllCollection * );
+HTMLAllCollection *toHTMLAllCollection( JSC::JSValue );
 
-class JSHTMLAllCollectionPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLAllCollectionPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLAllCollectionPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLAllCollectionPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAllCollectionPrototypeFunctionItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAllCollectionPrototypeFunctionNamedItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAllCollectionPrototypeFunctionTags(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAllCollectionPrototypeFunctionItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAllCollectionPrototypeFunctionNamedItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLAllCollectionPrototypeFunctionTags( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLAllCollectionLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLAllCollectionConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLAllCollectionLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLAllCollectionConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

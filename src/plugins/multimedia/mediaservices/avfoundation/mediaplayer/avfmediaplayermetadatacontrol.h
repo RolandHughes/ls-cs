@@ -30,27 +30,27 @@ class AVFMediaPlayerSession;
 
 class AVFMediaPlayerMetaDataControl : public QMetaDataReaderControl
 {
-   CS_OBJECT(AVFMediaPlayerMetaDataControl)
+    LSCS_OBJECT( AVFMediaPlayerMetaDataControl )
 
- public:
-   explicit AVFMediaPlayerMetaDataControl(AVFMediaPlayerSession *session, QObject *parent = nullptr);
-   virtual ~AVFMediaPlayerMetaDataControl();
+public:
+    explicit AVFMediaPlayerMetaDataControl( AVFMediaPlayerSession *session, QObject *parent = nullptr );
+    virtual ~AVFMediaPlayerMetaDataControl();
 
-   bool isMetaDataAvailable() const override;
-   bool isWritable() const;
+    bool isMetaDataAvailable() const override;
+    bool isWritable() const;
 
-   QVariant metaData(const QString &key) const override;
-   QStringList availableMetaData() const override;
+    QVariant metaData( const QString &key ) const override;
+    QStringList availableMetaData() const override;
 
- private:
-   AVFMediaPlayerSession *m_session;
-   QVariantMap m_tags;
-   void *m_asset;
+private:
+    AVFMediaPlayerSession *m_session;
+    QVariantMap m_tags;
+    void *m_asset;
 
-   friend class AVFMediaPlayerService;
+    friend class AVFMediaPlayerService;
 
-   CS_SLOT_1(Private, void updateTags())
-   CS_SLOT_2(updateTags)
+    LSCS_SLOT_1( Private, void updateTags() )
+    LSCS_SLOT_2( updateTags )
 };
 
 #endif

@@ -29,38 +29,46 @@
 #include "CSSPropertyNames.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLTableCaptionElement::HTMLTableCaptionElement(const QualifiedName& tagName, Document* document)
-    : HTMLTablePartElement(tagName, document)
+inline HTMLTableCaptionElement::HTMLTableCaptionElement( const QualifiedName &tagName, Document *document )
+    : HTMLTablePartElement( tagName, document )
 {
-    ASSERT(hasTagName(captionTag));
+    ASSERT( hasTagName( captionTag ) );
 }
 
-PassRefPtr<HTMLTableCaptionElement> HTMLTableCaptionElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLTableCaptionElement> HTMLTableCaptionElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLTableCaptionElement(tagName, document));
+    return adoptRef( new HTMLTableCaptionElement( tagName, document ) );
 }
 
-bool HTMLTableCaptionElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLTableCaptionElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == alignAttr) {
+    if ( attrName == alignAttr )
+    {
         result = eCaption;
         return false;
     }
 
-    return HTMLElement::mapToEntry(attrName, result);
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-void HTMLTableCaptionElement::parseMappedAttribute(Attribute* attr)
+void HTMLTableCaptionElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == alignAttr) {
-        if (!attr->value().isEmpty())
-            addCSSProperty(attr, CSSPropertyCaptionSide, attr->value());
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+    if ( attr->name() == alignAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
+            addCSSProperty( attr, CSSPropertyCaptionSide, attr->value() );
+        }
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 }

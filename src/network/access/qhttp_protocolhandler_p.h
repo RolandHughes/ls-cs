@@ -26,11 +26,12 @@
 
 #include <qabstract_protocolhandler_p.h>
 
-class QHttpProtocolHandler : public QAbstractProtocolHandler {
- public:
-    QHttpProtocolHandler(QHttpNetworkConnectionChannel *channel);
+class QHttpProtocolHandler : public QAbstractProtocolHandler
+{
+public:
+    QHttpProtocolHandler( QHttpNetworkConnectionChannel *channel );
 
- private:
+private:
     void _q_receiveReply() override;
     void _q_readyRead() override;
     bool sendRequest() override;

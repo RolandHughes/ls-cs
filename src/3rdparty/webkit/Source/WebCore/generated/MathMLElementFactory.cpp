@@ -44,76 +44,91 @@
 #include "Settings.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace MathMLNames;
 
-typedef PassRefPtr<MathMLElement> (*ConstructorFunction)(const QualifiedName&, Document*, bool createdByParser);
-typedef HashMap<AtomicStringImpl*, ConstructorFunction> FunctionMap;
+typedef PassRefPtr<MathMLElement> ( *ConstructorFunction )( const QualifiedName &, Document *, bool createdByParser );
+typedef HashMap<AtomicStringImpl *, ConstructorFunction> FunctionMap;
 
-static FunctionMap* gFunctionMap = 0;
+static FunctionMap *gFunctionMap = 0;
 
-static PassRefPtr<MathMLElement> mathConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<MathMLElement> mathConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return MathMLMathElement::create(tagName, document);
+    return MathMLMathElement::create( tagName, document );
 }
 
-static PassRefPtr<MathMLElement> inlinecontainerConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<MathMLElement> inlinecontainerConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return MathMLInlineContainerElement::create(tagName, document);
+    return MathMLInlineContainerElement::create( tagName, document );
 }
 
-static PassRefPtr<MathMLElement> textConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<MathMLElement> textConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return MathMLTextElement::create(tagName, document);
+    return MathMLTextElement::create( tagName, document );
 }
 
-static void addTag(const QualifiedName& tag, ConstructorFunction func)
+static void addTag( const QualifiedName &tag, ConstructorFunction func )
 {
-    gFunctionMap->set(tag.localName().impl(), func);
+    gFunctionMap->set( tag.localName().impl(), func );
 }
 
 static void createFunctionMap()
 {
-    ASSERT(!gFunctionMap);
+    ASSERT( !gFunctionMap );
 
     // Create the table.
     gFunctionMap = new FunctionMap;
-    
+
     // Populate it with constructor functions.
-    addTag(mathTag, mathConstructor);
-    addTag(mfencedTag, inlinecontainerConstructor);
-    addTag(mfracTag, inlinecontainerConstructor);
-    addTag(miTag, textConstructor);
-    addTag(mnTag, textConstructor);
-    addTag(moTag, textConstructor);
-    addTag(moverTag, inlinecontainerConstructor);
-    addTag(mrootTag, inlinecontainerConstructor);
-    addTag(mrowTag, inlinecontainerConstructor);
-    addTag(msqrtTag, inlinecontainerConstructor);
-    addTag(msubTag, inlinecontainerConstructor);
-    addTag(msubsupTag, inlinecontainerConstructor);
-    addTag(msupTag, inlinecontainerConstructor);
-    addTag(mtextTag, textConstructor);
-    addTag(munderTag, inlinecontainerConstructor);
-    addTag(munderoverTag, inlinecontainerConstructor);
+    addTag( mathTag, mathConstructor );
+    addTag( mfencedTag, inlinecontainerConstructor );
+    addTag( mfracTag, inlinecontainerConstructor );
+    addTag( miTag, textConstructor );
+    addTag( mnTag, textConstructor );
+    addTag( moTag, textConstructor );
+    addTag( moverTag, inlinecontainerConstructor );
+    addTag( mrootTag, inlinecontainerConstructor );
+    addTag( mrowTag, inlinecontainerConstructor );
+    addTag( msqrtTag, inlinecontainerConstructor );
+    addTag( msubTag, inlinecontainerConstructor );
+    addTag( msubsupTag, inlinecontainerConstructor );
+    addTag( msupTag, inlinecontainerConstructor );
+    addTag( mtextTag, textConstructor );
+    addTag( munderTag, inlinecontainerConstructor );
+    addTag( munderoverTag, inlinecontainerConstructor );
 }
 
-PassRefPtr<MathMLElement> MathMLElementFactory::createMathMLElement(const QualifiedName& qName, Document* document, bool createdByParser)
+PassRefPtr<MathMLElement> MathMLElementFactory::createMathMLElement( const QualifiedName &qName, Document *document,
+        bool createdByParser )
 {
-    if (!document)
+    if ( !document )
+    {
         return 0;
+    }
 
 #if ENABLE(DASHBOARD_SUPPORT)
-    Settings* settings = document->settings();
-    if (settings && settings->usesDashboardBackwardCompatibilityMode())
+    Settings *settings = document->settings();
+
+    if ( settings && settings->usesDashboardBackwardCompatibilityMode() )
+    {
         return 0;
+    }
+
 #endif
-    if (!gFunctionMap)
+
+    if ( !gFunctionMap )
+    {
         createFunctionMap();
-    if (ConstructorFunction function = gFunctionMap->get(qName.localName().impl()))
-        return function(qName, document, createdByParser);
-    return MathMLElement::create(qName, document);
+    }
+
+    if ( ConstructorFunction function = gFunctionMap->get( qName.localName().impl() ) )
+    {
+        return function( qName, document, createdByParser );
+    }
+
+    return MathMLElement::create( qName, document );
 }
 
 } // namespace WebCore

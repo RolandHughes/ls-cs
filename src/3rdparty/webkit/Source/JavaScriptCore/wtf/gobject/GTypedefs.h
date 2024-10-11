@@ -34,13 +34,13 @@ typedef unsigned char guchar;
 typedef unsigned int guint;
 typedef unsigned long gulong;
 typedef unsigned short gushort;
-typedef void* gpointer;
+typedef void *gpointer;
 
 typedef struct _GAsyncResult GAsyncResult;
 typedef struct _GCancellable GCancellable;
 typedef struct _GCharsetConverter GCharsetConverter;
 typedef struct _GDir GDir;
-typedef struct _GdkAtom* GdkAtom;
+typedef struct _GdkAtom *GdkAtom;
 typedef struct _GdkCursor GdkCursor;
 typedef struct _GdkDragContext GdkDragContext;
 typedef struct _GdkEventConfigure GdkEventConfigure;

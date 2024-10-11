@@ -34,34 +34,35 @@ class AVFCameraService;
 
 class AVFCameraDeviceControl : public QVideoDeviceSelectorControl
 {
-   CS_OBJECT(AVFCameraDeviceControl)
+    LSCS_OBJECT( AVFCameraDeviceControl )
 
- public:
-   AVFCameraDeviceControl(AVFCameraService *service, QObject *parent = nullptr);
-   ~AVFCameraDeviceControl();
+public:
+    AVFCameraDeviceControl( AVFCameraService *service, QObject *parent = nullptr );
+    ~AVFCameraDeviceControl();
 
-   int deviceCount() const override;
+    int deviceCount() const override;
 
-   QString deviceName(int index) const override;
-   QString deviceDescription(int index) const override;
+    QString deviceName( int index ) const override;
+    QString deviceDescription( int index ) const override;
 
-   int defaultDevice() const override;
-   int selectedDevice() const override;
+    int defaultDevice() const override;
+    int selectedDevice() const override;
 
-   CS_SLOT_1(Public, void setSelectedDevice(int index) override)
-   CS_SLOT_2(setSelectedDevice)
+    LSCS_SLOT_1( Public, void setSelectedDevice( int index ) override )
+    LSCS_SLOT_2( setSelectedDevice )
 
-   //device changed since the last createCaptureDevice()
-   bool isDirty() const {
-      return m_dirty;
-   }
-   AVCaptureDevice *createCaptureDevice();
+    //device changed since the last createCaptureDevice()
+    bool isDirty() const
+    {
+        return m_dirty;
+    }
+    AVCaptureDevice *createCaptureDevice();
 
- private:
-   AVFCameraService *m_service;
+private:
+    AVFCameraService *m_service;
 
-   int m_selectedDevice;
-   bool m_dirty;
+    int m_selectedDevice;
+    bool m_dirty;
 };
 
 #endif

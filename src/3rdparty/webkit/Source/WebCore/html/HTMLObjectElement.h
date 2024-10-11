@@ -26,81 +26,114 @@
 #include "FormAssociatedElement.h"
 #include "HTMLPlugInImageElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLFormElement;
 
-class HTMLObjectElement : public HTMLPlugInImageElement, public FormAssociatedElement {
+class HTMLObjectElement : public HTMLPlugInImageElement, public FormAssociatedElement
+{
 public:
-    static PassRefPtr<HTMLObjectElement> create(const QualifiedName&, Document*, HTMLFormElement*, bool createdByParser);
+    static PassRefPtr<HTMLObjectElement> create( const QualifiedName &, Document *, HTMLFormElement *, bool createdByParser );
     virtual ~HTMLObjectElement();
 
-    bool isDocNamedItem() const { return m_docNamedItem; }
+    bool isDocNamedItem() const
+    {
+        return m_docNamedItem;
+    }
 
-    const String& classId() const { return m_classId; }
+    const String &classId() const
+    {
+        return m_classId;
+    }
 
     bool containsJavaApplet() const;
 
-    virtual bool useFallbackContent() const { return m_useFallbackContent; }
+    virtual bool useFallbackContent() const
+    {
+        return m_useFallbackContent;
+    }
     void renderFallbackContent();
 
     // Implementations of FormAssociatedElement
-    HTMLFormElement* form() const { return FormAssociatedElement::form(); }
+    HTMLFormElement *form() const
+    {
+        return FormAssociatedElement::form();
+    }
 
-    virtual bool isFormControlElement() const { return false; }
+    virtual bool isFormControlElement() const
+    {
+        return false;
+    }
 
-    virtual bool isEnumeratable() const { return true; }
-    virtual bool appendFormData(FormDataList&, bool);
+    virtual bool isEnumeratable() const
+    {
+        return true;
+    }
+    virtual bool appendFormData( FormDataList &, bool );
 
     // Implementations of constraint validation API.
     // Note that the object elements are always barred from constraint validation.
-    String validationMessage() { return String(); }
-    bool checkValidity() { return true; }
-    void setCustomValidity(const String&) { }
+    String validationMessage()
+    {
+        return String();
+    }
+    bool checkValidity()
+    {
+        return true;
+    }
+    void setCustomValidity( const String & ) { }
 
-    virtual void attributeChanged(Attribute*, bool preserveDecls = false);
+    virtual void attributeChanged( Attribute *, bool preserveDecls = false );
 
     using TreeShared<ContainerNode>::ref;
     using TreeShared<ContainerNode>::deref;
 
 private:
-    HTMLObjectElement(const QualifiedName&, Document*, HTMLFormElement*, bool createdByParser);
+    HTMLObjectElement( const QualifiedName &, Document *, HTMLFormElement *, bool createdByParser );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void insertedIntoTree(bool deep);
-    virtual void removedFromTree(bool deep);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void insertedIntoTree( bool deep );
+    virtual void removedFromTree( bool deep );
 
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
     virtual void willMoveToNewOwnerDocument();
-    
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
 
-    virtual bool isURLAttribute(Attribute*) const;
-    virtual const QualifiedName& imageSourceAttributeName() const;
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    virtual RenderWidget* renderWidgetForJSBindings() const;
+    virtual bool isURLAttribute( Attribute * ) const;
+    virtual const QualifiedName &imageSourceAttributeName() const;
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual RenderWidget *renderWidgetForJSBindings() const;
 
-    virtual void updateWidget(PluginCreationOption);
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
+
+    virtual void updateWidget( PluginCreationOption );
     void updateDocNamedItem();
 
     bool hasFallbackContent() const;
-    
+
     // FIXME: This function should not deal with url or serviceType
     // so that we can better share code between <object> and <embed>.
-    void parametersForPlugin(Vector<String>& paramNames, Vector<String>& paramValues, String& url, String& serviceType);
-    
+    void parametersForPlugin( Vector<String> &paramNames, Vector<String> &paramValues, String &url, String &serviceType );
+
     bool shouldAllowQuickTimeClassIdQuirk();
     bool hasValidClassId();
 
-    virtual void refFormAssociatedElement() { ref(); }
-    virtual void derefFormAssociatedElement() { deref(); }
-    virtual HTMLFormElement* virtualForm() const;
+    virtual void refFormAssociatedElement()
+    {
+        ref();
+    }
+    virtual void derefFormAssociatedElement()
+    {
+        deref();
+    }
+    virtual HTMLFormElement *virtualForm() const;
 
-    virtual const AtomicString& formControlName() const;
+    virtual const AtomicString &formControlName() const;
 
     AtomicString m_id;
     String m_classId;

@@ -42,74 +42,75 @@ class QAbstractAnimation;
 
 class Q_CORE_EXPORT QAbstractTransition : public QObject
 {
-   CORE_CS_OBJECT(QAbstractTransition)
+    CORE_LSCS_OBJECT( QAbstractTransition )
 
-   CORE_CS_PROPERTY_READ(sourceState, sourceState)
+    CORE_LSCS_PROPERTY_READ( sourceState, sourceState )
 
-   CORE_CS_PROPERTY_READ(targetState,   targetState)
-   CORE_CS_PROPERTY_WRITE(targetState,  setTargetState)
-   CORE_CS_PROPERTY_NOTIFY(targetState, targetStateChanged)
+    CORE_LSCS_PROPERTY_READ( targetState,   targetState )
+    CORE_LSCS_PROPERTY_WRITE( targetState,  setTargetState )
+    CORE_LSCS_PROPERTY_NOTIFY( targetState, targetStateChanged )
 
-   CORE_CS_PROPERTY_READ(targetStates,   targetStates)
-   CORE_CS_PROPERTY_WRITE(targetStates,  setTargetStates)
-   CORE_CS_PROPERTY_NOTIFY(targetStates, targetStatesChanged)
+    CORE_LSCS_PROPERTY_READ( targetStates,   targetStates )
+    CORE_LSCS_PROPERTY_WRITE( targetStates,  setTargetStates )
+    CORE_LSCS_PROPERTY_NOTIFY( targetStates, targetStatesChanged )
 
-   CORE_CS_PROPERTY_READ(transitionType,      transitionType)
-   CORE_CS_PROPERTY_WRITE(transitionType,     setTransitionType)
-   CORE_CS_PROPERTY_REVISION(transitionType,  1)
+    CORE_LSCS_PROPERTY_READ( transitionType,      transitionType )
+    CORE_LSCS_PROPERTY_WRITE( transitionType,     setTransitionType )
+    CORE_LSCS_PROPERTY_REVISION( transitionType,  1 )
 
- public:
-   enum TransitionType {
-      ExternalTransition,
-      InternalTransition
-   };
+public:
+    enum TransitionType
+    {
+        ExternalTransition,
+        InternalTransition
+    };
 
-   CORE_CS_ENUM(TransitionType)
+    CORE_LSCS_ENUM( TransitionType )
 
-   QAbstractTransition(QState *sourceState = nullptr);
+    QAbstractTransition( QState *sourceState = nullptr );
 
-   QAbstractTransition(const QAbstractTransition &) = delete;
-   QAbstractTransition &operator=(const QAbstractTransition &) = delete;
+    QAbstractTransition( const QAbstractTransition & ) = delete;
+    QAbstractTransition &operator=( const QAbstractTransition & ) = delete;
 
-   virtual ~QAbstractTransition();
+    virtual ~QAbstractTransition();
 
-   QState *sourceState() const;
-   QAbstractState *targetState() const;
-   void setTargetState(QAbstractState *target);
-   QList<QAbstractState *> targetStates() const;
-   void setTargetStates(const QList<QAbstractState *> &targets);
+    QState *sourceState() const;
+    QAbstractState *targetState() const;
+    void setTargetState( QAbstractState *target );
+    QList<QAbstractState *> targetStates() const;
+    void setTargetStates( const QList<QAbstractState *> &targets );
 
-   TransitionType transitionType() const;
-   void setTransitionType(TransitionType type);
-   QStateMachine *machine() const;
+    TransitionType transitionType() const;
+    void setTransitionType( TransitionType type );
+    QStateMachine *machine() const;
 
 #ifndef QT_NO_ANIMATION
-   void addAnimation(QAbstractAnimation *animation);
-   void removeAnimation(QAbstractAnimation *animation);
-   QList<QAbstractAnimation *> animations() const;
+    void addAnimation( QAbstractAnimation *animation );
+    void removeAnimation( QAbstractAnimation *animation );
+    QList<QAbstractAnimation *> animations() const;
 #endif
 
-   CORE_CS_SIGNAL_1(Public, void triggered())
-   CORE_CS_SIGNAL_2(triggered)
+    CORE_LSCS_SIGNAL_1( Public, void triggered() )
+    CORE_LSCS_SIGNAL_2( triggered )
 
-   CORE_CS_SIGNAL_1(Public, void targetStateChanged())
-   CORE_CS_SIGNAL_2(targetStateChanged)
+    CORE_LSCS_SIGNAL_1( Public, void targetStateChanged() )
+    CORE_LSCS_SIGNAL_2( targetStateChanged )
 
-   CORE_CS_SIGNAL_1(Public, void targetStatesChanged())
-   CORE_CS_SIGNAL_2(targetStatesChanged)
+    CORE_LSCS_SIGNAL_1( Public, void targetStatesChanged() )
+    CORE_LSCS_SIGNAL_2( targetStatesChanged )
 
- protected:
-   virtual bool eventTest(QEvent *event) = 0;
-   virtual void onTransition(QEvent *event) = 0;
+protected:
+    virtual bool eventTest( QEvent *event ) = 0;
+    virtual void onTransition( QEvent *event ) = 0;
 
-   bool event(QEvent *event) override;
+    bool event( QEvent *event ) override;
 
-   QAbstractTransition(QAbstractTransitionPrivate &dd, QState *parent);
+    QAbstractTransition( QAbstractTransitionPrivate &dd, QState *parent );
 
-   QScopedPointer<QAbstractTransitionPrivate> d_ptr;
+    QScopedPointer<QAbstractTransitionPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractTransition)
+private:
+    Q_DECLARE_PRIVATE( QAbstractTransition )
 };
 
 #endif // QT_NO_STATEMACHINE

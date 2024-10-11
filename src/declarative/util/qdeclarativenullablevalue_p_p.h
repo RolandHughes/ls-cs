@@ -27,35 +27,41 @@
 QT_BEGIN_NAMESPACE
 
 template<typename T>
-struct QDeclarativeNullableValue {
-   QDeclarativeNullableValue()
-      : isNull(true), value(T()) {}
-   QDeclarativeNullableValue(const QDeclarativeNullableValue<T> &o)
-      : isNull(o.isNull), value(o.value) {}
-   QDeclarativeNullableValue(const T &t)
-      : isNull(false), value(t) {}
-   QDeclarativeNullableValue<T> &operator=(const T &t) {
-      isNull = false;
-      value = t;
-      return *this;
-   }
-   QDeclarativeNullableValue<T> &operator=(const QDeclarativeNullableValue<T> &o) {
-      isNull = o.isNull;
-      value = o.value;
-      return *this;
-   }
-   operator T() const {
-      return value;
-   }
+struct QDeclarativeNullableValue
+{
+    QDeclarativeNullableValue()
+        : isNull( true ), value( T() ) {}
+    QDeclarativeNullableValue( const QDeclarativeNullableValue<T> &o )
+        : isNull( o.isNull ), value( o.value ) {}
+    QDeclarativeNullableValue( const T &t )
+        : isNull( false ), value( t ) {}
+    QDeclarativeNullableValue<T> &operator=( const T &t )
+    {
+        isNull = false;
+        value = t;
+        return *this;
+    }
+    QDeclarativeNullableValue<T> &operator=( const QDeclarativeNullableValue<T> &o )
+    {
+        isNull = o.isNull;
+        value = o.value;
+        return *this;
+    }
+    operator T() const
+    {
+        return value;
+    }
 
-   void invalidate() {
-      isNull = true;
-   }
-   bool isValid() const {
-      return !isNull;
-   }
-   bool isNull;
-   T value;
+    void invalidate()
+    {
+        isNull = true;
+    }
+    bool isValid() const
+    {
+        return !isNull;
+    }
+    bool isNull;
+    T value;
 };
 
 QT_END_NAMESPACE

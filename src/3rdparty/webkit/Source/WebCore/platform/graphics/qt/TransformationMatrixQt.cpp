@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,16 +30,17 @@
 #include "IntRect.h"
 #include "FloatRect.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 TransformationMatrix::operator QTransform() const
 {
-    return QTransform(m11(), m12(), m14(), m21(), m22(), m24(), m41(), m42(), m44());
+    return QTransform( m11(), m12(), m14(), m21(), m22(), m24(), m41(), m42(), m44() );
 }
 
 AffineTransform::operator QTransform() const
 {
-    return QTransform(a(), b(), c(), d(), e(), f());
+    return QTransform( a(), b(), c(), d(), e(), f() );
 }
 
 }

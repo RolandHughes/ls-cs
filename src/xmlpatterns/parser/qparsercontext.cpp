@@ -31,46 +31,50 @@
 
 using namespace QPatternist;
 
-ParserContext::ParserContext(const StaticContext::Ptr &context,
-                             const QXmlQuery::QueryLanguage lang,
-                             Tokenizer *const tokener) : staticContext(context)
-   , tokenizer(tokener)
-   , languageAccent(lang)
-   , nodeTestSource(BuiltinTypes::element)
-   , moduleNamespace(StandardNamespaces::empty)
-   , isPreviousEnclosedExpr(false)
-   , elementConstructorDepth(0)
-   , hasSecondPrologPart(false)
-   , preserveNamespacesMode(true)
-   , inheritNamespacesMode(true)
-   , isParsingPattern(false)
-   , currentImportPrecedence(1)
-   , m_evaluationCacheSlot(-1)
-   , m_expressionSlot(0)
-   , m_positionSlot(-1)
-   , m_globalVariableSlot(-1)
-   , m_currentTemplateID(InitialTemplateID)
+ParserContext::ParserContext( const StaticContext::Ptr &context,
+                              const QXmlQuery::QueryLanguage lang,
+                              Tokenizer *const tokener ) : staticContext( context )
+    , tokenizer( tokener )
+    , languageAccent( lang )
+    , nodeTestSource( BuiltinTypes::element )
+    , moduleNamespace( StandardNamespaces::empty )
+    , isPreviousEnclosedExpr( false )
+    , elementConstructorDepth( 0 )
+    , hasSecondPrologPart( false )
+    , preserveNamespacesMode( true )
+    , inheritNamespacesMode( true )
+    , isParsingPattern( false )
+    , currentImportPrecedence( 1 )
+    , m_evaluationCacheSlot( -1 )
+    , m_expressionSlot( 0 )
+    , m_positionSlot( -1 )
+    , m_globalVariableSlot( -1 )
+    , m_currentTemplateID( InitialTemplateID )
 {
-   resolvers.push(context->namespaceBindings());
-   Q_ASSERT(tokenizer);
-   Q_ASSERT(context);
-   m_isParsingWithParam.push(false);
-   isBackwardsCompat.push(false);
+    resolvers.push( context->namespaceBindings() );
+    Q_ASSERT( tokenizer );
+    Q_ASSERT( context );
+    m_isParsingWithParam.push( false );
+    isBackwardsCompat.push( false );
 }
 
-void ParserContext::finalizePushedVariable(const int amount,
-      const bool shouldPop)
+void ParserContext::finalizePushedVariable( const int amount,
+        const bool shouldPop )
 {
-   for (int i = 0; i < amount; ++i) {
-      const VariableDeclaration::Ptr var(shouldPop ? variables.pop() : variables.top());
-      Q_ASSERT(var);
+    for ( int i = 0; i < amount; ++i )
+    {
+        const VariableDeclaration::Ptr var( shouldPop ? variables.pop() : variables.top() );
+        Q_ASSERT( var );
 
-      if (var->isUsed()) {
-         continue;
-      } else {
-         staticContext->warning(QtXmlPatterns::tr("The variable %1 is unused")
-                                .formatArg(formatKeyword(var, staticContext->namePool())));
-      }
-   }
+        if ( var->isUsed() )
+        {
+            continue;
+        }
+        else
+        {
+            staticContext->warning( QtXmlPatterns::tr( "The variable %1 is unused" )
+                                    .formatArg( formatKeyword( var, staticContext->namePool() ) ) );
+        }
+    }
 }
 

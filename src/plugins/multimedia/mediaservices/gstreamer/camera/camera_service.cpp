@@ -58,202 +58,246 @@
 #include <qgstreamervideorenderer_p.h>
 #include <qmediaserviceprovider_p.h>
 
-CameraBinService::CameraBinService(GstElementFactory *sourceFactory, QObject *parent)
-   : QMediaService(parent), m_cameraInfoControl(nullptr), m_viewfinderSettingsControl(nullptr),
-     m_viewfinderSettingsControl2(nullptr)
+CameraBinService::CameraBinService( GstElementFactory *sourceFactory, QObject *parent )
+    : QMediaService( parent ), m_cameraInfoControl( nullptr ), m_viewfinderSettingsControl( nullptr ),
+      m_viewfinderSettingsControl2( nullptr )
 {
-   m_captureSession      = nullptr;
-   m_metaDataControl     = nullptr;
-   m_audioInputSelector  = nullptr;
-   m_videoInputDevice    = nullptr;
-   m_videoOutput         = nullptr;
-   m_videoRenderer       = nullptr;
-   m_videoWindow         = nullptr;
-   m_videoWidgetControl  = nullptr;
-   m_imageCaptureControl = nullptr;
+    m_captureSession      = nullptr;
+    m_metaDataControl     = nullptr;
+    m_audioInputSelector  = nullptr;
+    m_videoInputDevice    = nullptr;
+    m_videoOutput         = nullptr;
+    m_videoRenderer       = nullptr;
+    m_videoWindow         = nullptr;
+    m_videoWidgetControl  = nullptr;
+    m_imageCaptureControl = nullptr;
 
-   m_captureSession      = new CameraBinSession(sourceFactory, this);
-   m_videoInputDevice    = new QGstreamerVideoInputDeviceControl(sourceFactory, m_captureSession);
-   m_imageCaptureControl = new CameraBinImageCapture(m_captureSession);
+    m_captureSession      = new CameraBinSession( sourceFactory, this );
+    m_videoInputDevice    = new QGstreamerVideoInputDeviceControl( sourceFactory, m_captureSession );
+    m_imageCaptureControl = new CameraBinImageCapture( m_captureSession );
 
-   connect(m_videoInputDevice, cs_mp_cast<const QString &>(&QVideoDeviceSelectorControl::selectedDeviceChanged),
-            m_captureSession, &CameraBinSession::setDevice);
+    connect( m_videoInputDevice, lscs_mp_cast<const QString &>( &QVideoDeviceSelectorControl::selectedDeviceChanged ),
+             m_captureSession, &CameraBinSession::setDevice );
 
-   if (m_videoInputDevice->deviceCount()) {
-      m_captureSession->setDevice(m_videoInputDevice->deviceName(m_videoInputDevice->selectedDevice()));
-   }
+    if ( m_videoInputDevice->deviceCount() )
+    {
+        m_captureSession->setDevice( m_videoInputDevice->deviceName( m_videoInputDevice->selectedDevice() ) );
+    }
 
-   m_videoRenderer = new QGstreamerVideoRenderer(this);
-   m_videoWindow   = new QGstreamerVideoWindow(this);
+    m_videoRenderer = new QGstreamerVideoRenderer( this );
+    m_videoWindow   = new QGstreamerVideoWindow( this );
 
-   // if the GStreamer video sink is not available, don't provide the video window control since it will not work
-   if (! m_videoWindow->videoSink()) {
-      delete m_videoWindow;
-      m_videoWindow = nullptr;
-   }
+    // if the GStreamer video sink is not available, don't provide the video window control since it will not work
+    if ( ! m_videoWindow->videoSink() )
+    {
+        delete m_videoWindow;
+        m_videoWindow = nullptr;
+    }
 
-   m_videoWidgetControl = new QGstreamerVideoWidgetControl(this);
+    m_videoWidgetControl = new QGstreamerVideoWidgetControl( this );
 
-   // if the GStreamer video sink is not available, do not provide the video widget control since
-   // it will not work. QVideoWidget will fall back to QVideoRendererControl in that case.
-   if (! m_videoWidgetControl->videoSink()) {
-      delete m_videoWidgetControl;
-      m_videoWidgetControl = nullptr;
-   }
+    // if the GStreamer video sink is not available, do not provide the video widget control since
+    // it will not work. QVideoWidget will fall back to QVideoRendererControl in that case.
+    if ( ! m_videoWidgetControl->videoSink() )
+    {
+        delete m_videoWidgetControl;
+        m_videoWidgetControl = nullptr;
+    }
 
-   m_audioInputSelector = new QGstreamerAudioInputSelector(this);
-   connect(m_audioInputSelector, &QGstreamerAudioInputSelector::activeInputChanged,
-            m_captureSession, &CameraBinSession::setCaptureDevice);
+    m_audioInputSelector = new QGstreamerAudioInputSelector( this );
+    connect( m_audioInputSelector, &QGstreamerAudioInputSelector::activeInputChanged,
+             m_captureSession, &CameraBinSession::setCaptureDevice );
 
-   if (m_captureSession && m_audioInputSelector->availableInputs().size() > 0) {
-      m_captureSession->setCaptureDevice(m_audioInputSelector->defaultInput());
-   }
+    if ( m_captureSession && m_audioInputSelector->availableInputs().size() > 0 )
+    {
+        m_captureSession->setCaptureDevice( m_audioInputSelector->defaultInput() );
+    }
 
-   m_metaDataControl = new CameraBinMetaData(this);
-   connect(m_metaDataControl, &CameraBinMetaData::metaDataChanged, m_captureSession, &CameraBinSession::setMetaData);
+    m_metaDataControl = new CameraBinMetaData( this );
+    connect( m_metaDataControl, &CameraBinMetaData::metaDataChanged, m_captureSession, &CameraBinSession::setMetaData );
 }
 
 CameraBinService::~CameraBinService()
 {
 }
 
-QMediaControl *CameraBinService::requestControl(const QString &name)
+QMediaControl *CameraBinService::requestControl( const QString &name )
 {
-   if (! m_captureSession) {
-      return nullptr;
-   }
+    if ( ! m_captureSession )
+    {
+        return nullptr;
+    }
 
-   if (! m_videoOutput) {
-      if (name == QVideoRendererControl_iid) {
-         m_videoOutput = m_videoRenderer;
+    if ( ! m_videoOutput )
+    {
+        if ( name == QVideoRendererControl_iid )
+        {
+            m_videoOutput = m_videoRenderer;
 
-      } else if (name == QVideoWindowControl_iid) {
-         m_videoOutput = m_videoWindow;
+        }
+        else if ( name == QVideoWindowControl_iid )
+        {
+            m_videoOutput = m_videoWindow;
 
-      } else if (name == QVideoWidgetControl_iid) {
-         m_videoOutput = m_videoWidgetControl;
-      }
+        }
+        else if ( name == QVideoWidgetControl_iid )
+        {
+            m_videoOutput = m_videoWidgetControl;
+        }
 
-      if (m_videoOutput) {
-         m_captureSession->setViewfinder(m_videoOutput);
-         return m_videoOutput;
-      }
-   }
+        if ( m_videoOutput )
+        {
+            m_captureSession->setViewfinder( m_videoOutput );
+            return m_videoOutput;
+        }
+    }
 
-   if (name == QAudioInputSelectorControl_iid) {
-      return m_audioInputSelector;
-   }
+    if ( name == QAudioInputSelectorControl_iid )
+    {
+        return m_audioInputSelector;
+    }
 
-   if (name == QVideoDeviceSelectorControl_iid) {
-      return m_videoInputDevice;
-   }
+    if ( name == QVideoDeviceSelectorControl_iid )
+    {
+        return m_videoInputDevice;
+    }
 
-   if (name == QMediaRecorderControl_iid) {
-      return m_captureSession->recorderControl();
-   }
+    if ( name == QMediaRecorderControl_iid )
+    {
+        return m_captureSession->recorderControl();
+    }
 
-   if (name == QAudioEncoderSettingsControl_iid) {
-      return m_captureSession->audioEncodeControl();
-   }
+    if ( name == QAudioEncoderSettingsControl_iid )
+    {
+        return m_captureSession->audioEncodeControl();
+    }
 
-   if (name == QVideoEncoderSettingsControl_iid) {
-      return m_captureSession->videoEncodeControl();
-   }
+    if ( name == QVideoEncoderSettingsControl_iid )
+    {
+        return m_captureSession->videoEncodeControl();
+    }
 
-   if (name == QImageEncoderControl_iid) {
-      return m_captureSession->imageEncodeControl();
-   }
+    if ( name == QImageEncoderControl_iid )
+    {
+        return m_captureSession->imageEncodeControl();
+    }
 
-   if (name == QMediaContainerControl_iid) {
-      return m_captureSession->mediaContainerControl();
-   }
+    if ( name == QMediaContainerControl_iid )
+    {
+        return m_captureSession->mediaContainerControl();
+    }
 
-   if (name == QCameraControl_iid) {
-      return m_captureSession->cameraControl();
-   }
+    if ( name == QCameraControl_iid )
+    {
+        return m_captureSession->cameraControl();
+    }
 
-   if (name == QMetaDataWriterControl_iid) {
-      return m_metaDataControl;
-   }
+    if ( name == QMetaDataWriterControl_iid )
+    {
+        return m_metaDataControl;
+    }
 
-   if (name == QCameraImageCaptureControl_iid) {
-      return m_imageCaptureControl;
-   }
+    if ( name == QCameraImageCaptureControl_iid )
+    {
+        return m_imageCaptureControl;
+    }
 
 #ifdef HAVE_GST_PHOTOGRAPHY
-   if (name == QCameraExposureControl_iid) {
-      return m_captureSession->cameraExposureControl();
-   }
 
-   if (name == QCameraFlashControl_iid) {
-      return m_captureSession->cameraFlashControl();
-   }
+    if ( name == QCameraExposureControl_iid )
+    {
+        return m_captureSession->cameraExposureControl();
+    }
 
-   if (name ==  QCameraFocusControl_iid) {
-      return m_captureSession->cameraFocusControl();
-   }
+    if ( name == QCameraFlashControl_iid )
+    {
+        return m_captureSession->cameraFlashControl();
+    }
 
-   if (name == QCameraLocksControl_iid) {
-      return m_captureSession->cameraLocksControl();
-   }
+    if ( name ==  QCameraFocusControl_iid )
+    {
+        return m_captureSession->cameraFocusControl();
+    }
+
+    if ( name == QCameraLocksControl_iid )
+    {
+        return m_captureSession->cameraLocksControl();
+    }
+
 #endif
 
-   if (name == QCameraZoomControl_iid) {
-      return m_captureSession->cameraZoomControl();
-   }
+    if ( name == QCameraZoomControl_iid )
+    {
+        return m_captureSession->cameraZoomControl();
+    }
 
-   if (name == QCameraImageProcessingControl_iid) {
-      return m_captureSession->imageProcessingControl();
-   }
+    if ( name == QCameraImageProcessingControl_iid )
+    {
+        return m_captureSession->imageProcessingControl();
+    }
 
-   if (name == QCameraCaptureDestinationControl_iid) {
-      return m_captureSession->captureDestinationControl();
-   }
+    if ( name == QCameraCaptureDestinationControl_iid )
+    {
+        return m_captureSession->captureDestinationControl();
+    }
 
-   if (name == QCameraCaptureBufferFormatControl_iid) {
-      return m_captureSession->captureBufferFormatControl();
-   }
+    if ( name == QCameraCaptureBufferFormatControl_iid )
+    {
+        return m_captureSession->captureBufferFormatControl();
+    }
 
-   if (name == QCameraViewfinderSettingsControl_iid) {
-      if (! m_viewfinderSettingsControl) {
-         m_viewfinderSettingsControl = new CameraBinViewfinderSettings(m_captureSession);
-      }
-      return m_viewfinderSettingsControl;
-   }
+    if ( name == QCameraViewfinderSettingsControl_iid )
+    {
+        if ( ! m_viewfinderSettingsControl )
+        {
+            m_viewfinderSettingsControl = new CameraBinViewfinderSettings( m_captureSession );
+        }
 
-   if (name == QCameraViewfinderSettingsControl2_iid) {
-      if (! m_viewfinderSettingsControl2) {
-         m_viewfinderSettingsControl2 = new CameraBinViewfinderSettings2(m_captureSession);
-      }
-      return m_viewfinderSettingsControl2;
-   }
+        return m_viewfinderSettingsControl;
+    }
 
-   if (name == QCameraInfoControl_iid){
-      if (!m_cameraInfoControl) {
-         m_cameraInfoControl = new CameraBinInfoControl(m_captureSession->sourceFactory(), this);
-      }
-      return m_cameraInfoControl;
-   }
+    if ( name == QCameraViewfinderSettingsControl2_iid )
+    {
+        if ( ! m_viewfinderSettingsControl2 )
+        {
+            m_viewfinderSettingsControl2 = new CameraBinViewfinderSettings2( m_captureSession );
+        }
 
-   return nullptr;
+        return m_viewfinderSettingsControl2;
+    }
+
+    if ( name == QCameraInfoControl_iid )
+    {
+        if ( !m_cameraInfoControl )
+        {
+            m_cameraInfoControl = new CameraBinInfoControl( m_captureSession->sourceFactory(), this );
+        }
+
+        return m_cameraInfoControl;
+    }
+
+    return nullptr;
 }
 
-void CameraBinService::releaseControl(QMediaControl *control)
+void CameraBinService::releaseControl( QMediaControl *control )
 {
-   if (control && control == m_videoOutput) {
-      m_videoOutput = nullptr;
-      m_captureSession->setViewfinder(nullptr);
-   }
+    if ( control && control == m_videoOutput )
+    {
+        m_videoOutput = nullptr;
+        m_captureSession->setViewfinder( nullptr );
+    }
 }
 
 bool CameraBinService::isCameraBinAvailable()
 {
-   GstElementFactory *factory = gst_element_factory_find(QT_GSTREAMER_CAMERABIN_ELEMENT_NAME);
-   if (factory) {
-      gst_object_unref(GST_OBJECT(factory));
-      return true;
-   }
+    GstElementFactory *factory = gst_element_factory_find( QT_GSTREAMER_CAMERABIN_ELEMENT_NAME );
 
-   return false;
+    if ( factory )
+    {
+        gst_object_unref( GST_OBJECT( factory ) );
+        return true;
+    }
+
+    return false;
 }
 

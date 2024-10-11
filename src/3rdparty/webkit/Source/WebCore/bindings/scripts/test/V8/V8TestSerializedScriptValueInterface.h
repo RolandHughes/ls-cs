@@ -30,44 +30,53 @@
 #include <v8.h>
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class V8TestSerializedScriptValueInterface {
+class V8TestSerializedScriptValueInterface
+{
 
 public:
-    static bool HasInstance(v8::Handle<v8::Value> value);
+    static bool HasInstance( v8::Handle<v8::Value> value );
     static v8::Persistent<v8::FunctionTemplate> GetRawTemplate();
     static v8::Persistent<v8::FunctionTemplate> GetTemplate();
-    static TestSerializedScriptValueInterface* toNative(v8::Handle<v8::Object> object)
+    static TestSerializedScriptValueInterface *toNative( v8::Handle<v8::Object> object )
     {
-        return reinterpret_cast<TestSerializedScriptValueInterface*>(object->GetPointerFromInternalField(v8DOMWrapperObjectIndex));
+        return reinterpret_cast<TestSerializedScriptValueInterface *>( object->GetPointerFromInternalField( v8DOMWrapperObjectIndex ) );
     }
-    inline static v8::Handle<v8::Object> wrap(TestSerializedScriptValueInterface*);
-    static void derefObject(void*);
+    inline static v8::Handle<v8::Object> wrap( TestSerializedScriptValueInterface * );
+    static void derefObject( void * );
     static WrapperTypeInfo info;
     static const int internalFieldCount = v8DefaultWrapperInternalFieldCount + 0;
 private:
-    static v8::Handle<v8::Object> wrapSlow(TestSerializedScriptValueInterface*);
+    static v8::Handle<v8::Object> wrapSlow( TestSerializedScriptValueInterface * );
 };
 
 
-v8::Handle<v8::Object> V8TestSerializedScriptValueInterface::wrap(TestSerializedScriptValueInterface* impl)
+v8::Handle<v8::Object> V8TestSerializedScriptValueInterface::wrap( TestSerializedScriptValueInterface *impl )
 {
-        v8::Handle<v8::Object> wrapper = getDOMObjectMap().get(impl);
-        if (!wrapper.IsEmpty())
-            return wrapper;
-    return V8TestSerializedScriptValueInterface::wrapSlow(impl);
+    v8::Handle<v8::Object> wrapper = getDOMObjectMap().get( impl );
+
+    if ( !wrapper.IsEmpty() )
+    {
+        return wrapper;
+    }
+
+    return V8TestSerializedScriptValueInterface::wrapSlow( impl );
 }
 
-inline v8::Handle<v8::Value> toV8(TestSerializedScriptValueInterface* impl)
+inline v8::Handle<v8::Value> toV8( TestSerializedScriptValueInterface *impl )
 {
-    if (!impl)
+    if ( !impl )
+    {
         return v8::Null();
-    return V8TestSerializedScriptValueInterface::wrap(impl);
+    }
+
+    return V8TestSerializedScriptValueInterface::wrap( impl );
 }
-inline v8::Handle<v8::Value> toV8(PassRefPtr< TestSerializedScriptValueInterface > impl)
+inline v8::Handle<v8::Value> toV8( PassRefPtr< TestSerializedScriptValueInterface > impl )
 {
-    return toV8(impl.get());
+    return toV8( impl.get() );
 }
 }
 

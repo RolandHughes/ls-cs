@@ -38,8 +38,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     Constructs a QDeclarativePropertyValueInterceptor.
-*/
-QDeclarativePropertyValueInterceptor::QDeclarativePropertyValueInterceptor()
+*/ QDeclarativePropertyValueInterceptor::QDeclarativePropertyValueInterceptor()
 {
 }
 

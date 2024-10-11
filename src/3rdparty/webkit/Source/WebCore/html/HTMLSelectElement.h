@@ -30,117 +30,146 @@
 #include "HTMLFormControlElement.h"
 #include "SelectElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLOptionElement;
 class HTMLOptionsCollection;
 
-class HTMLSelectElement : public HTMLFormControlElementWithState, public SelectElement {
+class HTMLSelectElement : public HTMLFormControlElementWithState, public SelectElement
+{
 public:
-    static PassRefPtr<HTMLSelectElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLSelectElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
     virtual int selectedIndex() const;
-    virtual void setSelectedIndex(int index, bool deselect = true);
-    virtual void setSelectedIndexByUser(int index, bool deselect = true, bool fireOnChangeNow = false, bool allowMultipleSelection = false);
+    virtual void setSelectedIndex( int index, bool deselect = true );
+    virtual void setSelectedIndexByUser( int index, bool deselect = true, bool fireOnChangeNow = false,
+                                         bool allowMultipleSelection = false );
 
     // For ValidityState
     bool valueMissing() const;
 
     unsigned length() const;
 
-    virtual int size() const { return m_data.size(); }
-    virtual bool multiple() const { return m_data.multiple(); }
+    virtual int size() const
+    {
+        return m_data.size();
+    }
+    virtual bool multiple() const
+    {
+        return m_data.multiple();
+    }
 
-    void add(HTMLElement*, HTMLElement* beforeElement, ExceptionCode&);
-    void remove(int index);
-    void remove(HTMLOptionElement*);
+    void add( HTMLElement *, HTMLElement *beforeElement, ExceptionCode & );
+    void remove( int index );
+    void remove( HTMLOptionElement * );
 
     String value() const;
-    void setValue(const String&);
+    void setValue( const String & );
 
     PassRefPtr<HTMLOptionsCollection> options();
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     void setRecalcListItems();
     void recalcListItemsIfNeeded();
 
-    virtual const Vector<Element*>& listItems() const { return m_data.listItems(this); }
+    virtual const Vector<Element *> &listItems() const
+    {
+        return m_data.listItems( this );
+    }
 
-    virtual void accessKeyAction(bool sendToAnyElement);
-    void accessKeySetSelectedIndex(int);
+    virtual void accessKeyAction( bool sendToAnyElement );
+    void accessKeySetSelectedIndex( int );
 
-    void setMultiple(bool);
+    void setMultiple( bool );
 
-    void setSize(int);
+    void setSize( int );
 
-    void setOption(unsigned index, HTMLOptionElement*, ExceptionCode&);
-    void setLength(unsigned, ExceptionCode&);
+    void setOption( unsigned index, HTMLOptionElement *, ExceptionCode & );
+    void setLength( unsigned, ExceptionCode & );
 
-    Node* namedItem(const AtomicString& name);
-    Node* item(unsigned index);
+    Node *namedItem( const AtomicString &name );
+    Node *item( unsigned index );
 
-    CollectionCache* collectionInfo() { m_collectionInfo.checkConsistency(); return &m_collectionInfo; }
+    CollectionCache *collectionInfo()
+    {
+        m_collectionInfo.checkConsistency();
+        return &m_collectionInfo;
+    }
 
     void scrollToSelection();
 
-    void listBoxSelectItem(int listIndex, bool allowMultiplySelections, bool shift, bool fireOnChangeNow = true);
+    void listBoxSelectItem( int listIndex, bool allowMultiplySelections, bool shift, bool fireOnChangeNow = true );
 
-    virtual void updateValidity() { setNeedsValidityCheck(); }
+    virtual void updateValidity()
+    {
+        setNeedsValidityCheck();
+    }
 
 protected:
-    HTMLSelectElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLSelectElement( const QualifiedName &, Document *, HTMLFormElement * );
 
 private:
-    virtual const AtomicString& formControlType() const;
-    
-    virtual bool isKeyboardFocusable(KeyboardEvent*) const;
+    virtual const AtomicString &formControlType() const;
+
+    virtual bool isKeyboardFocusable( KeyboardEvent * ) const;
     virtual bool isMouseFocusable() const;
     virtual bool canSelectAll() const;
     virtual void selectAll();
 
-    virtual void recalcStyle(StyleChange);
+    virtual void recalcStyle( StyleChange );
 
     virtual void dispatchFocusEvent();
     virtual void dispatchBlurEvent();
-    
-    virtual bool canStartSelection() const { return false; }
 
-    virtual bool isEnumeratable() const { return true; }
+    virtual bool canStartSelection() const
+    {
+        return false;
+    }
 
-    virtual bool saveFormControlState(String& value) const;
-    virtual void restoreFormControlState(const String&);
+    virtual bool isEnumeratable() const
+    {
+        return true;
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool saveFormControlState( String &value ) const;
+    virtual void restoreFormControlState( const String & );
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle *);
-    virtual bool appendFormData(FormDataList&, bool);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual int optionToListIndex(int optionIndex) const;
-    virtual int listToOptionIndex(int listIndex) const;
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool appendFormData( FormDataList &, bool );
+
+    virtual int optionToListIndex( int optionIndex ) const;
+    virtual int listToOptionIndex( int listIndex ) const;
 
     virtual void reset();
 
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 
-    virtual void setActiveSelectionAnchorIndex(int index);
-    virtual void setActiveSelectionEndIndex(int index);
-    virtual void updateListBoxSelection(bool deselectOtherOptions);
+    virtual void setActiveSelectionAnchorIndex( int index );
+    virtual void setActiveSelectionEndIndex( int index );
+    virtual void updateListBoxSelection( bool deselectOtherOptions );
     virtual void listBoxOnChange();
     virtual void menuListOnChange();
-    
+
     virtual int activeSelectionStartListIndex() const;
     virtual int activeSelectionEndListIndex() const;
-    
-    void recalcListItems(bool updateSelectedStates = true) const;
 
-    void deselectItems(HTMLOptionElement* excludeElement = 0);
-    void typeAheadFind(KeyboardEvent*);
+    void recalcListItems( bool updateSelectedStates = true ) const;
+
+    void deselectItems( HTMLOptionElement *excludeElement = 0 );
+    void typeAheadFind( KeyboardEvent * );
     void saveLastSelection();
 
-    virtual void insertedIntoTree(bool);
+    virtual void insertedIntoTree( bool );
 
-    virtual bool isOptionalFormControl() const { return !isRequiredFormControl(); }
+    virtual bool isOptionalFormControl() const
+    {
+        return !isRequiredFormControl();
+    }
     virtual bool isRequiredFormControl() const;
 
     bool hasPlaceholderLabelOption() const;

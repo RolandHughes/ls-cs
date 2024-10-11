@@ -37,7 +37,7 @@ FT_BEGIN_HEADER
 
 #include "afscript.h"
 
- /* */
+/* */
 
 FT_END_HEADER
 

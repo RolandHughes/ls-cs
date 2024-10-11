@@ -37,42 +37,55 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<InjectedBundleHitTestResult> InjectedBundleHitTestResult::create(const WebCore::HitTestResult& hitTestResult)
+namespace WebKit
 {
-    return adoptRef(new InjectedBundleHitTestResult(hitTestResult));
+
+PassRefPtr<InjectedBundleHitTestResult> InjectedBundleHitTestResult::create( const WebCore::HitTestResult &hitTestResult )
+{
+    return adoptRef( new InjectedBundleHitTestResult( hitTestResult ) );
 }
 
 PassRefPtr<InjectedBundleNodeHandle> InjectedBundleHitTestResult::nodeHandle() const
 {
-    return InjectedBundleNodeHandle::getOrCreate(m_hitTestResult.innerNonSharedNode());
+    return InjectedBundleNodeHandle::getOrCreate( m_hitTestResult.innerNonSharedNode() );
 }
 
-WebFrame* InjectedBundleHitTestResult::frame() const
+WebFrame *InjectedBundleHitTestResult::frame() const
 {
-    Node* node = m_hitTestResult.innerNonSharedNode();
-    if (!node)
-        return 0;
+    Node *node = m_hitTestResult.innerNonSharedNode();
 
-    Document* document = node->document();
-    if (!document)
+    if ( !node )
+    {
         return 0;
+    }
 
-    Frame* frame = document->frame();
-    if (!frame)
+    Document *document = node->document();
+
+    if ( !document )
+    {
         return 0;
+    }
 
-    return static_cast<WebFrameLoaderClient*>(frame->loader()->client())->webFrame();
+    Frame *frame = document->frame();
+
+    if ( !frame )
+    {
+        return 0;
+    }
+
+    return static_cast<WebFrameLoaderClient *>( frame->loader()->client() )->webFrame();
 }
 
-WebFrame* InjectedBundleHitTestResult::targetFrame() const
+WebFrame *InjectedBundleHitTestResult::targetFrame() const
 {
-    Frame* frame = m_hitTestResult.targetFrame();
-    if (!frame)
-        return 0;
+    Frame *frame = m_hitTestResult.targetFrame();
 
-    return static_cast<WebFrameLoaderClient*>(frame->loader()->client())->webFrame();
+    if ( !frame )
+    {
+        return 0;
+    }
+
+    return static_cast<WebFrameLoaderClient *>( frame->loader()->client() )->webFrame();
 }
 
 String InjectedBundleHitTestResult::absoluteImageURL() const

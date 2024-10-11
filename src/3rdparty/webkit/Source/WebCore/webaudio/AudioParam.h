@@ -34,53 +34,83 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class AudioParam : public RefCounted<AudioParam> {
+class AudioParam : public RefCounted<AudioParam>
+{
 public:
     static const double DefaultSmoothingConstant;
     static const double SnapThreshold;
 
-    static PassRefPtr<AudioParam> create(const String& name, double defaultValue, double minValue, double maxValue, unsigned units = 0)
+    static PassRefPtr<AudioParam> create( const String &name, double defaultValue, double minValue, double maxValue,
+                                          unsigned units = 0 )
     {
-        return adoptRef(new AudioParam(name, defaultValue, minValue, maxValue, units));
+        return adoptRef( new AudioParam( name, defaultValue, minValue, maxValue, units ) );
     }
 
-    AudioParam(const String& name, double defaultValue, double minValue, double maxValue, unsigned units = 0)
-        : m_name(name)
-        , m_value(defaultValue)
-        , m_defaultValue(defaultValue)
-        , m_minValue(minValue)
-        , m_maxValue(maxValue)
-        , m_units(units)
-        , m_smoothedValue(defaultValue)
-        , m_smoothingConstant(DefaultSmoothingConstant)
+    AudioParam( const String &name, double defaultValue, double minValue, double maxValue, unsigned units = 0 )
+        : m_name( name )
+        , m_value( defaultValue )
+        , m_defaultValue( defaultValue )
+        , m_minValue( minValue )
+        , m_maxValue( maxValue )
+        , m_units( units )
+        , m_smoothedValue( defaultValue )
+        , m_smoothingConstant( DefaultSmoothingConstant )
     {
     }
 
-    float value() const { return static_cast<float>(m_value); }
-    
-    void setValue(float);
+    float value() const
+    {
+        return static_cast<float>( m_value );
+    }
 
-    String name() const { return m_name; }
+    void setValue( float );
 
-    float minValue() const { return static_cast<float>(m_minValue); }
-    float maxValue() const { return static_cast<float>(m_maxValue); }
-    float defaultValue() const { return static_cast<float>(m_defaultValue); }
-    unsigned units() const { return m_units; }
+    String name() const
+    {
+        return m_name;
+    }
+
+    float minValue() const
+    {
+        return static_cast<float>( m_minValue );
+    }
+    float maxValue() const
+    {
+        return static_cast<float>( m_maxValue );
+    }
+    float defaultValue() const
+    {
+        return static_cast<float>( m_defaultValue );
+    }
+    unsigned units() const
+    {
+        return m_units;
+    }
 
     // Value smoothing:
 
     // When a new value is set with setValue(), in our internal use of the parameter we don't immediately jump to it.
     // Instead we smoothly approach this value to avoid glitching.
-    float smoothedValue() const { return static_cast<float>(m_smoothedValue); }
+    float smoothedValue() const
+    {
+        return static_cast<float>( m_smoothedValue );
+    }
 
     // Smoothly exponentially approaches to (de-zippers) the desired value.
     // Returns true if smoothed value has already snapped exactly to value.
     bool smooth();
 
-    void resetSmoothedValue() { m_smoothedValue = m_value; }
-    void setSmoothingConstant(double k) { m_smoothingConstant = k; }
+    void resetSmoothedValue()
+    {
+        m_smoothedValue = m_value;
+    }
+    void setSmoothingConstant( double k )
+    {
+        m_smoothingConstant = k;
+    }
 
 private:
     String m_name;

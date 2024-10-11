@@ -34,69 +34,72 @@ class QPlatformScreen;
 
 class QWindowsDropMimeData : public QWindowsInternalMimeData
 {
- public:
-   QWindowsDropMimeData() {}
-   IDataObject *retrieveDataObject() const override;
+public:
+    QWindowsDropMimeData() {}
+    IDataObject *retrieveDataObject() const override;
 };
 
 class QWindowsOleDropTarget : public IDropTarget
 {
- public:
-   explicit QWindowsOleDropTarget(QWindow *w);
-   virtual ~QWindowsOleDropTarget();
+public:
+    explicit QWindowsOleDropTarget( QWindow *w );
+    virtual ~QWindowsOleDropTarget();
 
-   // IUnknown methods
-   STDMETHOD(QueryInterface)(REFIID riid, void FAR *FAR *ppvObj) override;
-   STDMETHOD_(ULONG, AddRef)(void) override;
-   STDMETHOD_(ULONG, Release)(void) override;
+    // IUnknown methods
+    STDMETHOD( QueryInterface )( REFIID riid, void FAR *FAR *ppvObj ) override;
+    STDMETHOD_( ULONG, AddRef )( void ) override;
+    STDMETHOD_( ULONG, Release )( void ) override;
 
-   // IDropTarget methods
-   STDMETHOD(DragEnter)(LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect) override;
-   STDMETHOD(DragOver)(DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect) override;
-   STDMETHOD(DragLeave)() override;
-   STDMETHOD(Drop)(LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect) override;
+    // IDropTarget methods
+    STDMETHOD( DragEnter )( LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect ) override;
+    STDMETHOD( DragOver )( DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect ) override;
+    STDMETHOD( DragLeave )() override;
+    STDMETHOD( Drop )( LPDATAOBJECT pDataObj, DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect ) override;
 
- private:
-   void handleDrag(QWindow *window, DWORD grfKeyState, const QPoint &, LPDWORD pdwEffect);
+private:
+    void handleDrag( QWindow *window, DWORD grfKeyState, const QPoint &, LPDWORD pdwEffect );
 
-   ULONG m_refs;
-   QWindow *const m_window;
-   QRect m_answerRect;
-   QPoint m_lastPoint;
-   DWORD m_chosenEffect;
-   DWORD m_lastKeyState;
+    ULONG m_refs;
+    QWindow *const m_window;
+    QRect m_answerRect;
+    QPoint m_lastPoint;
+    DWORD m_chosenEffect;
+    DWORD m_lastKeyState;
 };
 
 class QWindowsDrag : public QPlatformDrag
 {
- public:
-   QWindowsDrag();
-   virtual ~QWindowsDrag();
+public:
+    QWindowsDrag();
+    virtual ~QWindowsDrag();
 
-   QMimeData *platformDropData() override {
-      return &m_dropData;
-   }
+    QMimeData *platformDropData() override
+    {
+        return &m_dropData;
+    }
 
-   Qt::DropAction drag(QDrag *drag) override;
+    Qt::DropAction drag( QDrag *drag ) override;
 
-   static QWindowsDrag *instance();
+    static QWindowsDrag *instance();
 
-   IDataObject *dropDataObject() const             {
-      return m_dropDataObject;
-   }
-   void setDropDataObject(IDataObject *dataObject) {
-      m_dropDataObject = dataObject;
-   }
-   void releaseDropDataObject();
-   QMimeData *dropData();
+    IDataObject *dropDataObject() const
+    {
+        return m_dropDataObject;
+    }
+    void setDropDataObject( IDataObject *dataObject )
+    {
+        m_dropDataObject = dataObject;
+    }
+    void releaseDropDataObject();
+    QMimeData *dropData();
 
-   IDropTargetHelper *dropHelper();
+    IDropTargetHelper *dropHelper();
 
- private:
-   QWindowsDropMimeData m_dropData;
-   IDataObject *m_dropDataObject;
+private:
+    QWindowsDropMimeData m_dropData;
+    IDataObject *m_dropDataObject;
 
-   IDropTargetHelper *m_cachedDropTargetHelper;
+    IDropTargetHelper *m_cachedDropTargetHelper;
 };
 
 #endif

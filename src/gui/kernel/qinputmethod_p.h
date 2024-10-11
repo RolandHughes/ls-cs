@@ -34,36 +34,41 @@
 
 class QInputMethodPrivate
 {
-   Q_DECLARE_PUBLIC(QInputMethod)
+    Q_DECLARE_PUBLIC( QInputMethod )
 
- public:
-   inline QInputMethodPrivate()
-      : testContext(nullptr)
-   {
-   }
+public:
+    inline QInputMethodPrivate()
+        : testContext( nullptr )
+    {
+    }
 
-   QPlatformInputContext *platformInputContext() const {
-      if (testContext == nullptr) {
-         return QGuiApplicationPrivate::platformIntegration()->inputContext();
-      } else {
-         return testContext;
-      }
-   }
+    QPlatformInputContext *platformInputContext() const
+    {
+        if ( testContext == nullptr )
+        {
+            return QGuiApplicationPrivate::platformIntegration()->inputContext();
+        }
+        else
+        {
+            return testContext;
+        }
+    }
 
-   static inline QInputMethodPrivate *get(QInputMethod *inputMethod) {
-      return inputMethod->d_func();
-   }
+    static inline QInputMethodPrivate *get( QInputMethod *inputMethod )
+    {
+        return inputMethod->d_func();
+    }
 
-   void _q_connectFocusObject();
-   void _q_checkFocusObject(QObject *object);
-   bool objectAcceptsInputMethod(QObject *object);
+    void _q_connectFocusObject();
+    void _q_checkFocusObject( QObject *object );
+    bool objectAcceptsInputMethod( QObject *object );
 
-   QTransform inputItemTransform;
-   QRectF inputRectangle;
-   QPlatformInputContext *testContext;
+    QTransform inputItemTransform;
+    QRectF inputRectangle;
+    QPlatformInputContext *testContext;
 
- protected:
-   QInputMethod *q_ptr;
+protected:
+    QInputMethod *q_ptr;
 
 };
 

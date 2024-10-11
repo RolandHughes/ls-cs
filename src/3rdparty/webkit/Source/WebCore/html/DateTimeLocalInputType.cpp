@@ -36,19 +36,20 @@
 #include "HTMLNames.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 static const double dateTimeLocalDefaultStep = 60.0;
 static const double dateTimeLocalStepScaleFactor = 1000.0;
 
-PassOwnPtr<InputType> DateTimeLocalInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> DateTimeLocalInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new DateTimeLocalInputType(element));
+    return adoptPtr( new DateTimeLocalInputType( element ) );
 }
 
-const AtomicString& DateTimeLocalInputType::formControlType() const
+const AtomicString &DateTimeLocalInputType::formControlType() const
 {
     return InputTypeNames::datetimelocal();
 }
@@ -64,20 +65,20 @@ double DateTimeLocalInputType::valueAsDate() const
     return DateComponents::invalidMilliseconds();
 }
 
-void DateTimeLocalInputType::setValueAsDate(double value, ExceptionCode& ec) const
+void DateTimeLocalInputType::setValueAsDate( double value, ExceptionCode &ec ) const
 {
     // valueAsDate doesn't work for the datetime-local type according to the standard.
-    InputType::setValueAsDate(value, ec);
+    InputType::setValueAsDate( value, ec );
 }
 
 double DateTimeLocalInputType::minimum() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), DateComponents::minimumDateTime());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), DateComponents::minimumDateTime() );
 }
 
 double DateTimeLocalInputType::maximum() const
 {
-    return parseToDouble(element()->fastGetAttribute(maxAttr), DateComponents::maximumDateTime());
+    return parseToDouble( element()->fastGetAttribute( maxAttr ), DateComponents::maximumDateTime() );
 }
 
 double DateTimeLocalInputType::defaultStep() const
@@ -95,17 +96,17 @@ bool DateTimeLocalInputType::scaledStepValueShouldBeInteger() const
     return true;
 }
 
-bool DateTimeLocalInputType::parseToDateComponentsInternal(const UChar* characters, unsigned length, DateComponents* out) const
+bool DateTimeLocalInputType::parseToDateComponentsInternal( const UChar *characters, unsigned length, DateComponents *out ) const
 {
-    ASSERT(out);
+    ASSERT( out );
     unsigned end;
-    return out->parseDateTimeLocal(characters, length, 0, end) && end == length;
+    return out->parseDateTimeLocal( characters, length, 0, end ) && end == length;
 }
 
-bool DateTimeLocalInputType::setMillisecondToDateComponents(double value, DateComponents* date) const
+bool DateTimeLocalInputType::setMillisecondToDateComponents( double value, DateComponents *date ) const
 {
-    ASSERT(date);
-    return date->setMillisecondsSinceEpochForDateTimeLocal(value);
+    ASSERT( date );
+    return date->setMillisecondsSinceEpochForDateTimeLocal( value );
 }
 
 } // namespace WebCore

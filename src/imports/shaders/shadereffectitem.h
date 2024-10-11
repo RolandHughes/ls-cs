@@ -34,30 +34,42 @@ QT_BEGIN_NAMESPACE
 class ShaderEffectItem : public QDeclarativeItem
 {
     Q_OBJECT
-    Q_INTERFACES(QDeclarativeParserStatus)
-    Q_PROPERTY(QString fragmentShader READ fragmentShader WRITE setFragmentShader NOTIFY fragmentShaderChanged)
-    Q_PROPERTY(QString vertexShader READ vertexShader WRITE setVertexShader NOTIFY vertexShaderChanged)
-    Q_PROPERTY(bool blending READ blending WRITE setBlending NOTIFY blendingChanged)
-    Q_PROPERTY(QSize meshResolution READ meshResolution WRITE setMeshResolution NOTIFY meshResolutionChanged)
+    Q_INTERFACES( QDeclarativeParserStatus )
+    Q_PROPERTY( QString fragmentShader READ fragmentShader WRITE setFragmentShader NOTIFY fragmentShaderChanged )
+    Q_PROPERTY( QString vertexShader READ vertexShader WRITE setVertexShader NOTIFY vertexShaderChanged )
+    Q_PROPERTY( bool blending READ blending WRITE setBlending NOTIFY blendingChanged )
+    Q_PROPERTY( QSize meshResolution READ meshResolution WRITE setMeshResolution NOTIFY meshResolutionChanged )
 
 public:
-    ShaderEffectItem(QDeclarativeItem* parent = 0);
+    ShaderEffectItem( QDeclarativeItem *parent = 0 );
     ~ShaderEffectItem();
 
     virtual void componentComplete();
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0 );
 
-    QString fragmentShader() const { return m_fragment_code; }
-    void setFragmentShader(const QString &code);
+    QString fragmentShader() const
+    {
+        return m_fragment_code;
+    }
+    void setFragmentShader( const QString &code );
 
-    QString vertexShader() const { return m_vertex_code; }
-    void setVertexShader(const QString &code);
+    QString vertexShader() const
+    {
+        return m_vertex_code;
+    }
+    void setVertexShader( const QString &code );
 
-    bool blending() const { return m_blending; }
-    void setBlending(bool enable);
+    bool blending() const
+    {
+        return m_blending;
+    }
+    void setBlending( bool enable );
 
-    QSize meshResolution() const { return m_meshResolution; }
-    void setMeshResolution(const QSize &size);
+    QSize meshResolution() const
+    {
+        return m_meshResolution;
+    }
+    void setMeshResolution( const QSize &size );
 
     void preprocess();
 
@@ -69,33 +81,36 @@ Q_SIGNALS:
     void meshResolutionChanged();
 
 protected:
-    virtual void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    virtual void geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry );
 
 private Q_SLOTS:
-    void changeSource(int index);
+    void changeSource( int index );
     void handleVisibilityChange();
     void markDirty();
 
 private:
     void checkViewportUpdateMode();
-    void renderEffect(QPainter *painter, const QMatrix4x4 &matrix);
-    void updateEffectState(const QMatrix4x4 &matrix);
+    void renderEffect( QPainter *painter, const QMatrix4x4 &matrix );
+    void updateEffectState( const QMatrix4x4 &matrix );
     void updateGeometry();
     void bindGeometry();
-    void setSource(const QVariant &var, int index);
+    void setSource( const QVariant &var, int index );
     void disconnectPropertySignals();
     void connectPropertySignals();
     void reset();
     void updateProperties();
     void updateShaderProgram();
-    void lookThroughShaderCode(const QString &code);
-    bool active() const { return m_active; }
-    void setActive(bool enable);
+    void lookThroughShaderCode( const QString &code );
+    bool active() const
+    {
+        return m_active;
+    }
+    void setActive( bool enable );
 
 private:
     QString m_fragment_code;
     QString m_vertex_code;
-    QGLShaderProgram* m_program;
+    QGLShaderProgram *m_program;
     QVector<const char *> m_attributeNames;
     QSet<QByteArray> m_uniformNames;
     QSize m_meshResolution;

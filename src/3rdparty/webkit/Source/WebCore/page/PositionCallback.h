@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PositionCallback_h
@@ -29,17 +29,19 @@
 #include "ActiveDOMObject.h"
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
-    
-    class Geoposition;
-    
-    class PositionCallback : public RefCounted<PositionCallback>, public ActiveDOMObject {
-    public:
-        PositionCallback(ScriptExecutionContext* context) : ActiveDOMObject(context, this) { }
-        virtual ~PositionCallback() { }
-        virtual void handleEvent(Geoposition*) = 0;
-    };
-    
+namespace WebCore
+{
+
+class Geoposition;
+
+class PositionCallback : public RefCounted<PositionCallback>, public ActiveDOMObject
+{
+public:
+    PositionCallback( ScriptExecutionContext *context ) : ActiveDOMObject( context, this ) { }
+    virtual ~PositionCallback() { }
+    virtual void handleEvent( Geoposition * ) = 0;
+};
+
 } // namespace WebCore
 
 #endif // PositionCallback_h

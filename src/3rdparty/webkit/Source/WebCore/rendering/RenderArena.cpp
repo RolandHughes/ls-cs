@@ -42,97 +42,105 @@
 
 #define ROUNDUP(x, y) ((((x)+((y)-1))/(y))*(y))
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifndef NDEBUG
 
 const int signature = 0xDBA00AEA;
 const int signatureDead = 0xDBA00AED;
 
-typedef struct {
-    RenderArena* arena;
+typedef struct
+{
+    RenderArena *arena;
     size_t size;
     int signature;
 } RenderArenaDebugHeader;
 
-static const size_t debugHeaderSize = ARENA_ALIGN(sizeof(RenderArenaDebugHeader));
+static const size_t debugHeaderSize = ARENA_ALIGN( sizeof( RenderArenaDebugHeader ) );
 
 #endif
 
-RenderArena::RenderArena(unsigned arenaSize)
+RenderArena::RenderArena( unsigned arenaSize )
 {
     // Initialize the arena pool
-    INIT_ARENA_POOL(&m_pool, "RenderArena", arenaSize);
+    INIT_ARENA_POOL( &m_pool, "RenderArena", arenaSize );
 
     // Zero out the recyclers array
-    memset(m_recyclers, 0, sizeof(m_recyclers));
+    memset( m_recyclers, 0, sizeof( m_recyclers ) );
 }
 
 RenderArena::~RenderArena()
 {
-    FinishArenaPool(&m_pool);
+    FinishArenaPool( &m_pool );
 }
 
-void* RenderArena::allocate(size_t size)
+void *RenderArena::allocate( size_t size )
 {
 #ifndef NDEBUG
     // Use standard malloc so that memory debugging tools work.
-    ASSERT(this);
-    void* block = ::malloc(debugHeaderSize + size);
-    RenderArenaDebugHeader* header = static_cast<RenderArenaDebugHeader*>(block);
+    ASSERT( this );
+    void *block = ::malloc( debugHeaderSize + size );
+    RenderArenaDebugHeader *header = static_cast<RenderArenaDebugHeader *>( block );
     header->arena = this;
     header->size = size;
     header->signature = signature;
-    return static_cast<char*>(block) + debugHeaderSize;
+    return static_cast<char *>( block ) + debugHeaderSize;
 #else
-    void* result = 0;
+    void *result = 0;
 
     // Ensure we have correct alignment for pointers.  Important for Tru64
-    size = ROUNDUP(size, sizeof(void*));
+    size = ROUNDUP( size, sizeof( void * ) );
 
     // Check recyclers first
-    if (size < gMaxRecycledSize) {
+    if ( size < gMaxRecycledSize )
+    {
         const int index = size >> 2;
 
         result = m_recyclers[index];
-        if (result) {
+
+        if ( result )
+        {
             // Need to move to the next object
-            void* next = *((void**)result);
+            void *next = *( ( void ** )result );
             m_recyclers[index] = next;
         }
     }
 
-    if (!result) {
+    if ( !result )
+    {
         // Allocate a new chunk from the arena
-        ARENA_ALLOCATE(result, &m_pool, size);
+        ARENA_ALLOCATE( result, &m_pool, size );
     }
 
     return result;
 #endif
 }
 
-void RenderArena::free(size_t size, void* ptr)
+void RenderArena::free( size_t size, void *ptr )
 {
 #ifndef NDEBUG
     // Use standard free so that memory debugging tools work.
-    void* block = static_cast<char*>(ptr) - debugHeaderSize;
-    RenderArenaDebugHeader* header = static_cast<RenderArenaDebugHeader*>(block);
-    ASSERT(header->signature == signature);
-    ASSERT_UNUSED(size, header->size == size);
-    ASSERT(header->arena == this);
+    void *block = static_cast<char *>( ptr ) - debugHeaderSize;
+    RenderArenaDebugHeader *header = static_cast<RenderArenaDebugHeader *>( block );
+    ASSERT( header->signature == signature );
+    ASSERT_UNUSED( size, header->size == size );
+    ASSERT( header->arena == this );
     header->signature = signatureDead;
-    ::free(block);
+    ::free( block );
 #else
     // Ensure we have correct alignment for pointers.  Important for Tru64
-    size = ROUNDUP(size, sizeof(void*));
+    size = ROUNDUP( size, sizeof( void * ) );
 
     // See if it's a size that we recycle
-    if (size < gMaxRecycledSize) {
+    if ( size < gMaxRecycledSize )
+    {
         const int index = size >> 2;
-        void* currentTop = m_recyclers[index];
+        void *currentTop = m_recyclers[index];
         m_recyclers[index] = ptr;
-        *((void**)ptr) = currentTop;
+        *( ( void ** )ptr ) = currentTop;
     }
+
 #endif
 }
 

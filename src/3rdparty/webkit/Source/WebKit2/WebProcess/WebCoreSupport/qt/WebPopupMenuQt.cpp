@@ -30,9 +30,10 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-void WebPopupMenu::setUpPlatformData(const IntRect&, PlatformPopupMenuData&)
+void WebPopupMenu::setUpPlatformData( const IntRect &, PlatformPopupMenuData & )
 {
 }
 

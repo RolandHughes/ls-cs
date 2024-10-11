@@ -31,36 +31,36 @@ class QPalette;
 
 class QCocoaTheme : public QPlatformTheme
 {
- public:
-   QCocoaTheme();
-   ~QCocoaTheme();
+public:
+    QCocoaTheme();
+    ~QCocoaTheme();
 
-   QPlatformMenuItem *createPlatformMenuItem() const override;
-   QPlatformMenu *createPlatformMenu() const override;
-   QPlatformMenuBar *createPlatformMenuBar() const override;
+    QPlatformMenuItem *createPlatformMenuItem() const override;
+    QPlatformMenu *createPlatformMenu() const override;
+    QPlatformMenuBar *createPlatformMenuBar() const override;
 
 #ifndef QT_NO_SYSTEMTRAYICON
-   QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
+    QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 
-   bool usePlatformNativeDialog(DialogType dialogType) const override;
-   QPlatformDialogHelper *createPlatformDialogHelper(DialogType dialogType) const override;
+    bool usePlatformNativeDialog( DialogType dialogType ) const override;
+    QPlatformDialogHelper *createPlatformDialogHelper( DialogType dialogType ) const override;
 
-   const QPalette *palette(Palette type = SystemPalette) const override;
-   const QFont *font(Font type = SystemFont) const override;
-   QPixmap standardPixmap(StandardPixmap sp, const QSizeF &size) const override;
-   QPixmap fileIconPixmap(const QFileInfo &fileInfo, const QSizeF &size,
-            QPlatformTheme::IconOptions options = Qt::EmptyFlag) const override;
+    const QPalette *palette( Palette type = SystemPalette ) const override;
+    const QFont *font( Font type = SystemFont ) const override;
+    QPixmap standardPixmap( StandardPixmap sp, const QSizeF &size ) const override;
+    QPixmap fileIconPixmap( const QFileInfo &fileInfo, const QSizeF &size,
+                            QPlatformTheme::IconOptions options = Qt::EmptyFlag ) const override;
 
-   QVariant themeHint(ThemeHint hint) const override;
-   QString standardButtonText(int button) const override;
+    QVariant themeHint( ThemeHint hint ) const override;
+    QString standardButtonText( int button ) const override;
 
-   static QString name;
+    static QString name;
 
- private:
-   mutable QPalette *m_systemPalette;
-   mutable QHash<QPlatformTheme::Palette, QPalette *> m_palettes;
-   mutable QHash<QPlatformTheme::Font, QFont *> m_fonts;
+private:
+    mutable QPalette *m_systemPalette;
+    mutable QHash<QPlatformTheme::Palette, QPalette *> m_palettes;
+    mutable QHash<QPlatformTheme::Font, QFont *> m_fonts;
 };
 
 #endif

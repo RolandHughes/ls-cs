@@ -27,14 +27,15 @@
 
 class QXcbEglIntegrationPlugin : public QXcbGlIntegrationPlugin
 {
-   CS_OBJECT(QXcbEglIntegrationPlugin)
+    LSCS_OBJECT( QXcbEglIntegrationPlugin )
 
-   CS_PLUGIN_IID(QXcbGlIntegrationInterface_ID)
+    LSCS_PLUGIN_IID( QXcbGlIntegrationInterface_ID )
 
- public:
-   QXcbGlIntegration *create() {
-      return new QXcbEglIntegration();
-   }
+public:
+    QXcbGlIntegration *create()
+    {
+        return new QXcbEglIntegration();
+    }
 };
 
-CS_PLUGIN_REGISTER(QXcbEglIntegrationPlugin)
+LSCS_PLUGIN_REGISTER( QXcbEglIntegrationPlugin )

@@ -31,26 +31,27 @@
 
 class QPropertyAnimationPrivate : public QVariantAnimationPrivate
 {
-   Q_DECLARE_PUBLIC(QPropertyAnimation)
+    Q_DECLARE_PUBLIC( QPropertyAnimation )
 
- public:
-   QPropertyAnimationPrivate()
-      : targetValue(nullptr), propertyType(0), propertyIndex(-1) {
-   }
+public:
+    QPropertyAnimationPrivate()
+        : targetValue( nullptr ), propertyType( 0 ), propertyIndex( -1 )
+    {
+    }
 
-   void updateProperty(const QVariant &);
-   void updateMetaProperty();
+    void updateProperty( const QVariant & );
+    void updateMetaProperty();
 
-   QWeakPointer<QObject> target;
+    QWeakPointer<QObject> target;
 
-   //use targetValue to be able to unregister the target from the global hash
-   QObject *targetValue;
+    //use targetValue to be able to unregister the target from the global hash
+    QObject *targetValue;
 
-   // for the QProperty
-   int propertyType;
-   int propertyIndex;
+    // for the QProperty
+    int propertyType;
+    int propertyIndex;
 
-   QString propertyName;
+    QString propertyName;
 };
 
 #endif //QT_NO_ANIMATION

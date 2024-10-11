@@ -30,37 +30,42 @@
 #include "TextEncoding.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CachedResourceLoader;
-    class TextResourceDecoder;
+class CachedResourceLoader;
+class TextResourceDecoder;
 
-    class CachedCSSStyleSheet : public CachedResource {
-    public:
-        CachedCSSStyleSheet(const String& URL, const String& charset);
-        virtual ~CachedCSSStyleSheet();
+class CachedCSSStyleSheet : public CachedResource
+{
+public:
+    CachedCSSStyleSheet( const String &URL, const String &charset );
+    virtual ~CachedCSSStyleSheet();
 
-        const String sheetText(bool enforceMIMEType = true, bool* hasValidMIMEType = 0) const;
+    const String sheetText( bool enforceMIMEType = true, bool *hasValidMIMEType = 0 ) const;
 
-        virtual void didAddClient(CachedResourceClient*);
-        
-        virtual void allClientsRemoved();
+    virtual void didAddClient( CachedResourceClient * );
 
-        virtual void setEncoding(const String&);
-        virtual String encoding() const;
-        virtual void data(PassRefPtr<SharedBuffer> data, bool allDataReceived);
-        virtual void error(CachedResource::Status);
+    virtual void allClientsRemoved();
 
-        void checkNotify();
-    
-    private:
-        bool canUseSheet(bool enforceMIMEType, bool* hasValidMIMEType) const;
-        virtual PurgePriority purgePriority() const { return PurgeLast; }
+    virtual void setEncoding( const String & );
+    virtual String encoding() const;
+    virtual void data( PassRefPtr<SharedBuffer> data, bool allDataReceived );
+    virtual void error( CachedResource::Status );
 
-    protected:
-        RefPtr<TextResourceDecoder> m_decoder;
-        String m_decodedSheetText;
-    };
+    void checkNotify();
+
+private:
+    bool canUseSheet( bool enforceMIMEType, bool *hasValidMIMEType ) const;
+    virtual PurgePriority purgePriority() const
+    {
+        return PurgeLast;
+    }
+
+protected:
+    RefPtr<TextResourceDecoder> m_decoder;
+    String m_decodedSheetText;
+};
 
 }
 

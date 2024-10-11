@@ -24,67 +24,73 @@
 #include "JSUIEvent.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WheelEvent;
 
-class JSWheelEvent : public JSUIEvent {
+class JSWheelEvent : public JSUIEvent
+{
     typedef JSUIEvent Base;
 public:
-    JSWheelEvent(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<WheelEvent>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSWheelEvent( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<WheelEvent> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSWheelEventPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWheelEventPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWheelEventPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWheelEventPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                           JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsWheelEventPrototypeFunctionInitWebKitWheelEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsWheelEventPrototypeFunctionInitWebKitWheelEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsWheelEventScreenX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventScreenY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventClientX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventClientY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventCtrlKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventShiftKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventAltKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventMetaKey(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventWheelDelta(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventWheelDeltaX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventWheelDeltaY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventOffsetX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventOffsetY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWheelEventConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWheelEventScreenX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventScreenY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventClientX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventClientY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventCtrlKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventShiftKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventAltKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventMetaKey( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventWheelDelta( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventWheelDeltaX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventWheelDeltaY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventOffsetX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventOffsetY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWheelEventConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

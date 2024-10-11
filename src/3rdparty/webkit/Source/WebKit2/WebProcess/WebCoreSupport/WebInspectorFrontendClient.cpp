@@ -37,11 +37,12 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebInspectorFrontendClient::WebInspectorFrontendClient(WebPage* page, WebPage* inspectorPage)
-    : InspectorFrontendClientLocal(page->corePage()->inspectorController(), inspectorPage->corePage(), adoptPtr(new Settings()))
-    , m_page(page)
+WebInspectorFrontendClient::WebInspectorFrontendClient( WebPage *page, WebPage *inspectorPage )
+    : InspectorFrontendClientLocal( page->corePage()->inspectorController(), inspectorPage->corePage(), adoptPtr( new Settings() ) )
+    , m_page( page )
 {
 }
 
@@ -89,14 +90,14 @@ void WebInspectorFrontendClient::detachWindow()
     m_page->inspector()->detach();
 }
 
-void WebInspectorFrontendClient::setAttachedWindowHeight(unsigned height)
+void WebInspectorFrontendClient::setAttachedWindowHeight( unsigned height )
 {
-    m_page->inspector()->setAttachedWindowHeight(height);
+    m_page->inspector()->setAttachedWindowHeight( height );
 }
 
-void WebInspectorFrontendClient::inspectedURLChanged(const String& urlString)
+void WebInspectorFrontendClient::inspectedURLChanged( const String &urlString )
 {
-    m_page->inspector()->inspectedURLChanged(urlString);
+    m_page->inspector()->inspectedURLChanged( urlString );
 }
 
 } // namespace WebKit

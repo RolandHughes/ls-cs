@@ -24,21 +24,22 @@
 
 #include "DistantLightSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGFEDistantLightElement::SVGFEDistantLightElement(const QualifiedName& tagName, Document* document)
-    : SVGFELightElement(tagName, document)
+inline SVGFEDistantLightElement::SVGFEDistantLightElement( const QualifiedName &tagName, Document *document )
+    : SVGFELightElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEDistantLightElement> SVGFEDistantLightElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEDistantLightElement> SVGFEDistantLightElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEDistantLightElement(tagName, document));
+    return adoptRef( new SVGFEDistantLightElement( tagName, document ) );
 }
 
 PassRefPtr<LightSource> SVGFEDistantLightElement::lightSource() const
 {
-    return DistantLightSource::create(azimuth(), elevation());
+    return DistantLightSource::create( azimuth(), elevation() );
 }
 
 }

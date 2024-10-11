@@ -22,99 +22,109 @@
 ***********************************************************************/
 
 template<typename TSubClass>
-Item ExtractFromDurationFN<TSubClass>::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ExtractFromDurationFN<TSubClass>::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item item(m_operands.first()->evaluateSingleton(context));
+    const Item item( m_operands.first()->evaluateSingleton( context ) );
 
-   if (item) {
-      return static_cast<const TSubClass *>(this)->extract(item.as<AbstractDuration>());
-   } else {
-      return Item();
-   }
+    if ( item )
+    {
+        return static_cast<const TSubClass *>( this )->extract( item.as<AbstractDuration>() );
+    }
+    else
+    {
+        return Item();
+    }
 }
 
-Item YearsFromDurationFN::extract(const AbstractDuration *const duration) const
+Item YearsFromDurationFN::extract( const AbstractDuration *const duration ) const
 {
-   return Integer::fromValue(duration->years() * (duration->isPositive() ? 1 : -1));
+    return Integer::fromValue( duration->years() * ( duration->isPositive() ? 1 : -1 ) );
 }
 
-Item MonthsFromDurationFN::extract(const AbstractDuration *const duration) const
+Item MonthsFromDurationFN::extract( const AbstractDuration *const duration ) const
 {
-   return Integer::fromValue(duration->months() * (duration->isPositive() ? 1 : -1));
+    return Integer::fromValue( duration->months() * ( duration->isPositive() ? 1 : -1 ) );
 }
 
-Item DaysFromDurationFN::extract(const AbstractDuration *const duration) const
+Item DaysFromDurationFN::extract( const AbstractDuration *const duration ) const
 {
-   return Integer::fromValue(duration->days() * (duration->isPositive() ? 1 : -1));
+    return Integer::fromValue( duration->days() * ( duration->isPositive() ? 1 : -1 ) );
 }
 
-Item HoursFromDurationFN::extract(const AbstractDuration *const duration) const
+Item HoursFromDurationFN::extract( const AbstractDuration *const duration ) const
 {
-   return Integer::fromValue(duration->hours() * (duration->isPositive() ? 1 : -1));
+    return Integer::fromValue( duration->hours() * ( duration->isPositive() ? 1 : -1 ) );
 }
 
-Item MinutesFromDurationFN::extract(const AbstractDuration *const duration) const
+Item MinutesFromDurationFN::extract( const AbstractDuration *const duration ) const
 {
-   return Integer::fromValue(duration->minutes() * (duration->isPositive() ? 1 : -1));
+    return Integer::fromValue( duration->minutes() * ( duration->isPositive() ? 1 : -1 ) );
 }
 
-Item SecondsFromDurationFN::extract(const AbstractDuration *const duration) const
+Item SecondsFromDurationFN::extract( const AbstractDuration *const duration ) const
 {
-   return toItem(Decimal::fromValue((duration->seconds() + duration->mseconds() / 1000.0) *
-                                    (duration->isPositive() ? 1 : -1)));
+    return toItem( Decimal::fromValue( ( duration->seconds() + duration->mseconds() / 1000.0 ) *
+                                       ( duration->isPositive() ? 1 : -1 ) ) );
 }
 
 template<typename TSubClass>
-Item ExtractFromDateTimeFN<TSubClass>::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item ExtractFromDateTimeFN<TSubClass>::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item item(m_operands.first()->evaluateSingleton(context));
-   if (item) {
-      return static_cast<const TSubClass *>(this)->
-             extract(item.as<AbstractDateTime>()->toDateTime());
-   } else {
-      return Item();
-   }
+    const Item item( m_operands.first()->evaluateSingleton( context ) );
+
+    if ( item )
+    {
+        return static_cast<const TSubClass *>( this )->
+               extract( item.as<AbstractDateTime>()->toDateTime() );
+    }
+    else
+    {
+        return Item();
+    }
 }
 
-Item YearFromAbstractDateTimeFN::extract(const QDateTime &dt) const
+Item YearFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-   return Integer::fromValue(dt.date().year());
+    return Integer::fromValue( dt.date().year() );
 }
 
-Item DayFromAbstractDateTimeFN::extract(const QDateTime &dt) const
+Item DayFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-   return Integer::fromValue(dt.date().day());
+    return Integer::fromValue( dt.date().day() );
 }
 
-Item MinutesFromAbstractDateTimeFN::extract(const QDateTime &dt) const
+Item MinutesFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-   return Integer::fromValue(dt.time().minute());
+    return Integer::fromValue( dt.time().minute() );
 }
 
-Item SecondsFromAbstractDateTimeFN::extract(const QDateTime &dt) const
+Item SecondsFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-   const QTime time(dt.time());
-   return toItem(Decimal::fromValue(time.second() + time.msec() / 1000.0));
+    const QTime time( dt.time() );
+    return toItem( Decimal::fromValue( time.second() + time.msec() / 1000.0 ) );
 }
 
-Item TimezoneFromAbstractDateTimeFN::extract(const QDateTime &dt) const
+Item TimezoneFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-   if (dt.timeZone() == QTimeZone::utc()) {
-      return toItem(CommonValues::DayTimeDurationZero);
+    if ( dt.timeZone() == QTimeZone::utc() )
+    {
+        return toItem( CommonValues::DayTimeDurationZero );
 
-   } else {
-      return toItem(DayTimeDuration::fromSeconds(dt.offsetFromUtc()));
+    }
+    else
+    {
+        return toItem( DayTimeDuration::fromSeconds( dt.offsetFromUtc() ) );
 
-   }
+    }
 }
 
-Item MonthFromAbstractDateTimeFN::extract(const QDateTime &dt) const
+Item MonthFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-   return Integer::fromValue(dt.date().month());
+    return Integer::fromValue( dt.date().month() );
 }
 
-Item HoursFromAbstractDateTimeFN::extract(const QDateTime &dt) const
+Item HoursFromAbstractDateTimeFN::extract( const QDateTime &dt ) const
 {
-   return Integer::fromValue(dt.time().hour());
+    return Integer::fromValue( dt.time().hour() );
 }
 

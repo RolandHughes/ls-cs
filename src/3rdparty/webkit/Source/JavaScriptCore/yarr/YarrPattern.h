@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef YarrPattern_h
@@ -31,45 +31,51 @@
 #include <wtf/Vector.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace JSC { namespace Yarr {
+namespace JSC
+{
+namespace Yarr
+{
 
 struct PatternDisjunction;
 
-struct CharacterRange {
+struct CharacterRange
+{
     UChar begin;
     UChar end;
 
-    CharacterRange(UChar begin, UChar end)
-        : begin(begin)
-        , end(end)
+    CharacterRange( UChar begin, UChar end )
+        : begin( begin )
+        , end( end )
     {
     }
 };
 
-struct CharacterClassTable : RefCounted<CharacterClassTable> {
-    const char* m_table;
+struct CharacterClassTable : RefCounted<CharacterClassTable>
+{
+    const char *m_table;
     bool m_inverted;
-    static PassRefPtr<CharacterClassTable> create(const char* table, bool inverted)
+    static PassRefPtr<CharacterClassTable> create( const char *table, bool inverted )
     {
-        return adoptRef(new CharacterClassTable(table, inverted));
+        return adoptRef( new CharacterClassTable( table, inverted ) );
     }
 
 private:
-    CharacterClassTable(const char* table, bool inverted)
-        : m_table(table)
-        , m_inverted(inverted)
+    CharacterClassTable( const char *table, bool inverted )
+        : m_table( table )
+        , m_inverted( inverted )
     {
     }
 };
 
-struct CharacterClass {
+struct CharacterClass
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
     // All CharacterClass instances have to have the full set of matches and ranges,
     // they may have an optional table for faster lookups (which must match the
     // specified matches and ranges)
-    CharacterClass(PassRefPtr<CharacterClassTable> table)
-        : m_table(table)
+    CharacterClass( PassRefPtr<CharacterClassTable> table )
+        : m_table( table )
     {
     }
     Vector<UChar> m_matches;
@@ -79,14 +85,17 @@ public:
     RefPtr<CharacterClassTable> m_table;
 };
 
-enum QuantifierType {
+enum QuantifierType
+{
     QuantifierFixedCount,
     QuantifierGreedy,
     QuantifierNonGreedy,
 };
 
-struct PatternTerm {
-    enum Type {
+struct PatternTerm
+{
+    enum Type
+    {
         TypeAssertionBOL,
         TypeAssertionEOL,
         TypeAssertionWordBoundary,
@@ -99,12 +108,14 @@ struct PatternTerm {
     } type;
     bool m_capture :1;
     bool m_invert :1;
-    union {
+    union
+    {
         UChar patternCharacter;
-        CharacterClass* characterClass;
+        CharacterClass *characterClass;
         unsigned backReferenceSubpatternId;
-        struct {
-            PatternDisjunction* disjunction;
+        struct
+        {
+            PatternDisjunction *disjunction;
             unsigned subpatternId;
             unsigned lastSubpatternId;
             bool isCopy;
@@ -116,30 +127,30 @@ struct PatternTerm {
     int inputPosition;
     unsigned frameLocation;
 
-    PatternTerm(UChar ch)
-        : type(PatternTerm::TypePatternCharacter)
-        , m_capture(false)
-        , m_invert(false)
+    PatternTerm( UChar ch )
+        : type( PatternTerm::TypePatternCharacter )
+        , m_capture( false )
+        , m_invert( false )
     {
         patternCharacter = ch;
         quantityType = QuantifierFixedCount;
         quantityCount = 1;
     }
 
-    PatternTerm(CharacterClass* charClass, bool invert)
-        : type(PatternTerm::TypeCharacterClass)
-        , m_capture(false)
-        , m_invert(invert)
+    PatternTerm( CharacterClass *charClass, bool invert )
+        : type( PatternTerm::TypeCharacterClass )
+        , m_capture( false )
+        , m_invert( invert )
     {
         characterClass = charClass;
         quantityType = QuantifierFixedCount;
         quantityCount = 1;
     }
 
-    PatternTerm(Type type, unsigned subpatternId, PatternDisjunction* disjunction, bool capture = false, bool invert = false)
-        : type(type)
-        , m_capture(capture)
-        , m_invert(invert)
+    PatternTerm( Type type, unsigned subpatternId, PatternDisjunction *disjunction, bool capture = false, bool invert = false )
+        : type( type )
+        , m_capture( capture )
+        , m_invert( invert )
     {
         parentheses.disjunction = disjunction;
         parentheses.subpatternId = subpatternId;
@@ -148,20 +159,20 @@ struct PatternTerm {
         quantityType = QuantifierFixedCount;
         quantityCount = 1;
     }
-    
-    PatternTerm(Type type, bool invert = false)
-        : type(type)
-        , m_capture(false)
-        , m_invert(invert)
+
+    PatternTerm( Type type, bool invert = false )
+        : type( type )
+        , m_capture( false )
+        , m_invert( invert )
     {
         quantityType = QuantifierFixedCount;
         quantityCount = 1;
     }
 
-    PatternTerm(unsigned spatternId)
-        : type(TypeBackReference)
-        , m_capture(false)
-        , m_invert(false)
+    PatternTerm( unsigned spatternId )
+        : type( TypeBackReference )
+        , m_capture( false )
+        , m_invert( false )
     {
         backReferenceSubpatternId = spatternId;
         quantityType = QuantifierFixedCount;
@@ -170,24 +181,24 @@ struct PatternTerm {
 
     static PatternTerm ForwardReference()
     {
-        return PatternTerm(TypeForwardReference);
+        return PatternTerm( TypeForwardReference );
     }
 
     static PatternTerm BOL()
     {
-        return PatternTerm(TypeAssertionBOL);
+        return PatternTerm( TypeAssertionBOL );
     }
 
     static PatternTerm EOL()
     {
-        return PatternTerm(TypeAssertionEOL);
+        return PatternTerm( TypeAssertionEOL );
     }
 
-    static PatternTerm WordBoundary(bool invert)
+    static PatternTerm WordBoundary( bool invert )
     {
-        return PatternTerm(TypeAssertionWordBoundary, invert);
+        return PatternTerm( TypeAssertionWordBoundary, invert );
     }
-    
+
     bool invert()
     {
         return m_invert;
@@ -197,50 +208,51 @@ struct PatternTerm {
     {
         return m_capture;
     }
-    
-    void quantify(unsigned count, QuantifierType type)
+
+    void quantify( unsigned count, QuantifierType type )
     {
         quantityCount = count;
         quantityType = type;
     }
 };
 
-struct PatternAlternative {
+struct PatternAlternative
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    PatternAlternative(PatternDisjunction* disjunction)
-        : m_parent(disjunction)
-        , m_onceThrough(false)
-        , m_hasFixedSize(false)
-        , m_startsWithBOL(false)
-        , m_containsBOL(false)
+    PatternAlternative( PatternDisjunction *disjunction )
+        : m_parent( disjunction )
+        , m_onceThrough( false )
+        , m_hasFixedSize( false )
+        , m_startsWithBOL( false )
+        , m_containsBOL( false )
     {
     }
 
-    PatternTerm& lastTerm()
+    PatternTerm &lastTerm()
     {
-        ASSERT(m_terms.size());
+        ASSERT( m_terms.size() );
         return m_terms[m_terms.size() - 1];
     }
-    
+
     void removeLastTerm()
     {
-        ASSERT(m_terms.size());
-        m_terms.shrink(m_terms.size() - 1);
+        ASSERT( m_terms.size() );
+        m_terms.shrink( m_terms.size() - 1 );
     }
-    
+
     void setOnceThrough()
     {
         m_onceThrough = true;
     }
-    
+
     bool onceThrough()
     {
         return m_onceThrough;
     }
 
     Vector<PatternTerm> m_terms;
-    PatternDisjunction* m_parent;
+    PatternDisjunction *m_parent;
     unsigned m_minimumSize;
     bool m_onceThrough : 1;
     bool m_hasFixedSize : 1;
@@ -248,29 +260,30 @@ public:
     bool m_containsBOL : 1;
 };
 
-struct PatternDisjunction {
+struct PatternDisjunction
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    PatternDisjunction(PatternAlternative* parent = 0)
-        : m_parent(parent)
-        , m_hasFixedSize(false)
+    PatternDisjunction( PatternAlternative *parent = 0 )
+        : m_parent( parent )
+        , m_hasFixedSize( false )
     {
-    }
-    
-    ~PatternDisjunction()
-    {
-        deleteAllValues(m_alternatives);
     }
 
-    PatternAlternative* addNewAlternative()
+    ~PatternDisjunction()
     {
-        PatternAlternative* alternative = new PatternAlternative(this);
-        m_alternatives.append(alternative);
+        deleteAllValues( m_alternatives );
+    }
+
+    PatternAlternative *addNewAlternative()
+    {
+        PatternAlternative *alternative = new PatternAlternative( this );
+        m_alternatives.append( alternative );
         return alternative;
     }
 
-    Vector<PatternAlternative*> m_alternatives;
-    PatternAlternative* m_parent;
+    Vector<PatternAlternative *> m_alternatives;
+    PatternAlternative *m_parent;
     unsigned m_minimumSize;
     unsigned m_callFrameSize;
     bool m_hasFixedSize;
@@ -280,45 +293,48 @@ public:
 // (please to be calling newlineCharacterClass() et al on your
 // friendly neighborhood YarrPattern instance to get nicely
 // cached copies).
-CharacterClass* newlineCreate();
-CharacterClass* digitsCreate();
-CharacterClass* spacesCreate();
-CharacterClass* wordcharCreate();
-CharacterClass* nondigitsCreate();
-CharacterClass* nonspacesCreate();
-CharacterClass* nonwordcharCreate();
+CharacterClass *newlineCreate();
+CharacterClass *digitsCreate();
+CharacterClass *spacesCreate();
+CharacterClass *wordcharCreate();
+CharacterClass *nondigitsCreate();
+CharacterClass *nonspacesCreate();
+CharacterClass *nonwordcharCreate();
 
-struct TermChain {
-    TermChain(PatternTerm term)
-        : term(term)
+struct TermChain
+{
+    TermChain( PatternTerm term )
+        : term( term )
     {}
 
     PatternTerm term;
     Vector<TermChain> hotTerms;
 };
 
-struct BeginChar {
+struct BeginChar
+{
     BeginChar()
-        : value(0)
-        , mask(0)
+        : value( 0 )
+        , mask( 0 )
     {}
 
-    BeginChar(unsigned value, unsigned mask)
-        : value(value)
-        , mask(mask)
+    BeginChar( unsigned value, unsigned mask )
+        : value( value )
+        , mask( mask )
     {}
 
     unsigned value;
     unsigned mask;
 };
 
-struct YarrPattern {
-    YarrPattern(const UString& pattern, bool ignoreCase, bool multiline, const char** error);
+struct YarrPattern
+{
+    YarrPattern( const UString &pattern, bool ignoreCase, bool multiline, const char **error );
 
     ~YarrPattern()
     {
-        deleteAllValues(m_disjunctions);
-        deleteAllValues(m_userCharacterClasses);
+        deleteAllValues( m_disjunctions );
+        deleteAllValues( m_userCharacterClasses );
     }
 
     void reset()
@@ -338,9 +354,9 @@ struct YarrPattern {
         nonspacesCached = 0;
         nonwordcharCached = 0;
 
-        deleteAllValues(m_disjunctions);
+        deleteAllValues( m_disjunctions );
         m_disjunctions.clear();
-        deleteAllValues(m_userCharacterClasses);
+        deleteAllValues( m_userCharacterClasses );
         m_userCharacterClasses.clear();
         m_beginChars.clear();
     }
@@ -350,46 +366,67 @@ struct YarrPattern {
         return m_maxBackReference > m_numSubpatterns;
     }
 
-    CharacterClass* newlineCharacterClass()
+    CharacterClass *newlineCharacterClass()
     {
-        if (!newlineCached)
-            m_userCharacterClasses.append(newlineCached = newlineCreate());
+        if ( !newlineCached )
+        {
+            m_userCharacterClasses.append( newlineCached = newlineCreate() );
+        }
+
         return newlineCached;
     }
-    CharacterClass* digitsCharacterClass()
+    CharacterClass *digitsCharacterClass()
     {
-        if (!digitsCached)
-            m_userCharacterClasses.append(digitsCached = digitsCreate());
+        if ( !digitsCached )
+        {
+            m_userCharacterClasses.append( digitsCached = digitsCreate() );
+        }
+
         return digitsCached;
     }
-    CharacterClass* spacesCharacterClass()
+    CharacterClass *spacesCharacterClass()
     {
-        if (!spacesCached)
-            m_userCharacterClasses.append(spacesCached = spacesCreate());
+        if ( !spacesCached )
+        {
+            m_userCharacterClasses.append( spacesCached = spacesCreate() );
+        }
+
         return spacesCached;
     }
-    CharacterClass* wordcharCharacterClass()
+    CharacterClass *wordcharCharacterClass()
     {
-        if (!wordcharCached)
-            m_userCharacterClasses.append(wordcharCached = wordcharCreate());
+        if ( !wordcharCached )
+        {
+            m_userCharacterClasses.append( wordcharCached = wordcharCreate() );
+        }
+
         return wordcharCached;
     }
-    CharacterClass* nondigitsCharacterClass()
+    CharacterClass *nondigitsCharacterClass()
     {
-        if (!nondigitsCached)
-            m_userCharacterClasses.append(nondigitsCached = nondigitsCreate());
+        if ( !nondigitsCached )
+        {
+            m_userCharacterClasses.append( nondigitsCached = nondigitsCreate() );
+        }
+
         return nondigitsCached;
     }
-    CharacterClass* nonspacesCharacterClass()
+    CharacterClass *nonspacesCharacterClass()
     {
-        if (!nonspacesCached)
-            m_userCharacterClasses.append(nonspacesCached = nonspacesCreate());
+        if ( !nonspacesCached )
+        {
+            m_userCharacterClasses.append( nonspacesCached = nonspacesCreate() );
+        }
+
         return nonspacesCached;
     }
-    CharacterClass* nonwordcharCharacterClass()
+    CharacterClass *nonwordcharCharacterClass()
     {
-        if (!nonwordcharCached)
-            m_userCharacterClasses.append(nonwordcharCached = nonwordcharCreate());
+        if ( !nonwordcharCached )
+        {
+            m_userCharacterClasses.append( nonwordcharCached = nonwordcharCreate() );
+        }
+
         return nonwordcharCached;
     }
 
@@ -400,23 +437,24 @@ struct YarrPattern {
     bool m_containsBOL : 1;
     unsigned m_numSubpatterns;
     unsigned m_maxBackReference;
-    PatternDisjunction* m_body;
-    Vector<PatternDisjunction*, 4> m_disjunctions;
-    Vector<CharacterClass*> m_userCharacterClasses;
+    PatternDisjunction *m_body;
+    Vector<PatternDisjunction *, 4> m_disjunctions;
+    Vector<CharacterClass *> m_userCharacterClasses;
     Vector<BeginChar> m_beginChars;
 
 private:
-    const char* compile(const UString& patternString);
+    const char *compile( const UString &patternString );
 
-    CharacterClass* newlineCached;
-    CharacterClass* digitsCached;
-    CharacterClass* spacesCached;
-    CharacterClass* wordcharCached;
-    CharacterClass* nondigitsCached;
-    CharacterClass* nonspacesCached;
-    CharacterClass* nonwordcharCached;
+    CharacterClass *newlineCached;
+    CharacterClass *digitsCached;
+    CharacterClass *spacesCached;
+    CharacterClass *wordcharCached;
+    CharacterClass *nondigitsCached;
+    CharacterClass *nonspacesCached;
+    CharacterClass *nonwordcharCached;
 };
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif // YarrPattern_h

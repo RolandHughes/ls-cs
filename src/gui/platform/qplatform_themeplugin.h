@@ -33,13 +33,13 @@ class QPlatformTheme;
 
 class Q_GUI_EXPORT QPlatformThemePlugin : public QObject
 {
-    GUI_CS_OBJECT(QPlatformThemePlugin)
+    GUI_LSCS_OBJECT( QPlatformThemePlugin )
 
 public:
-    explicit QPlatformThemePlugin(QObject *parent = nullptr);
+    explicit QPlatformThemePlugin( QObject *parent = nullptr );
     ~QPlatformThemePlugin();
 
-    virtual QPlatformTheme *create(const QString &key, const QStringList &paramList) = 0;
+    virtual QPlatformTheme *create( const QString &key, const QStringList &paramList ) = 0;
 };
 
 #endif

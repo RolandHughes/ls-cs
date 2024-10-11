@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -32,7 +32,8 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 String WorkerLocation::href() const
 {
@@ -46,7 +47,7 @@ String WorkerLocation::protocol() const
 
 String WorkerLocation::host() const
 {
-    return m_url.port() ? m_url.host() + ":" + String::number(m_url.port()) : m_url.host();
+    return m_url.port() ? m_url.host() + ":" + String::number( m_url.port() ) : m_url.host();
 }
 
 String WorkerLocation::hostname() const
@@ -56,7 +57,7 @@ String WorkerLocation::hostname() const
 
 String WorkerLocation::port() const
 {
-    return m_url.port() ? String::number(m_url.port()) : "";
+    return m_url.port() ? String::number( m_url.port() ) : "";
 }
 
 String WorkerLocation::pathname() const

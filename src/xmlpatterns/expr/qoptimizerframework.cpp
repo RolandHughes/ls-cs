@@ -33,17 +33,17 @@ ExpressionCreator::~ExpressionCreator()
 {
 }
 
-OptimizationPass::OptimizationPass(const ExpressionIdentifier::Ptr &startID,
-                                   const ExpressionIdentifier::List &opIDs,
-                                   const ExpressionMarker &sourceExpr,
-                                   const ExpressionCreator::Ptr &resultCtor,
-                                   const OperandsMatchMethod mMethod) : startIdentifier(startID),
-   operandIdentifiers(opIDs),
-   sourceExpression(sourceExpr),
-   resultCreator(resultCtor),
-   operandsMatchMethod(mMethod)
+OptimizationPass::OptimizationPass( const ExpressionIdentifier::Ptr &startID,
+                                    const ExpressionIdentifier::List &opIDs,
+                                    const ExpressionMarker &sourceExpr,
+                                    const ExpressionCreator::Ptr &resultCtor,
+                                    const OperandsMatchMethod mMethod ) : startIdentifier( startID ),
+    operandIdentifiers( opIDs ),
+    sourceExpression( sourceExpr ),
+    resultCreator( resultCtor ),
+    operandsMatchMethod( mMethod )
 {
-   Q_ASSERT_X(resultCtor || !sourceExpr.isEmpty(), Q_FUNC_INFO,
-              "Either resultCreator or sourceExpression must be set, otherwise there's "
-              "nothing to rewrite to.");
+    Q_ASSERT_X( resultCtor || !sourceExpr.isEmpty(), Q_FUNC_INFO,
+                "Either resultCreator or sourceExpression must be set, otherwise there's "
+                "nothing to rewrite to." );
 }

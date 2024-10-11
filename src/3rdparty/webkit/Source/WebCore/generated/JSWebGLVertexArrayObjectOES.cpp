@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebGLVertexArrayObjectOES);
+ASSERT_CLASS_FITS_IN_CELL( JSWebGLVertexArrayObjectOES );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebGLVertexArrayObjectOES);
 
 static const HashTableValue JSWebGLVertexArrayObjectOESTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebGLVertexArrayObjectOESConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebGLVertexArrayObjectOESConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,52 @@ static JSC_CONST_HASHTABLE HashTable JSWebGLVertexArrayObjectOESTable = { 2, 1, 
 
 static const HashTableValue JSWebGLVertexArrayObjectOESConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLVertexArrayObjectOESConstructorTable = { 1, 0, JSWebGLVertexArrayObjectOESConstructorTableValues, 0 };
-class JSWebGLVertexArrayObjectOESConstructor : public DOMConstructorObject {
+class JSWebGLVertexArrayObjectOESConstructor : public DOMConstructorObject
+{
 public:
-    JSWebGLVertexArrayObjectOESConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebGLVertexArrayObjectOESConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSWebGLVertexArrayObjectOESConstructor::s_info = { "WebGLVertexArrayObjectOESConstructor", &DOMConstructorObject::s_info, &JSWebGLVertexArrayObjectOESConstructorTable, 0 };
 
-JSWebGLVertexArrayObjectOESConstructor::JSWebGLVertexArrayObjectOESConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebGLVertexArrayObjectOESConstructor::JSWebGLVertexArrayObjectOESConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebGLVertexArrayObjectOESPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebGLVertexArrayObjectOESPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebGLVertexArrayObjectOESConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLVertexArrayObjectOESConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLVertexArrayObjectOESConstructor, JSDOMWrapper>(exec, &JSWebGLVertexArrayObjectOESConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLVertexArrayObjectOESConstructor, JSDOMWrapper>( exec,
+            &JSWebGLVertexArrayObjectOESConstructorTable, this, propertyName, slot );
 }
 
-bool JSWebGLVertexArrayObjectOESConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLVertexArrayObjectOESConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLVertexArrayObjectOESConstructor, JSDOMWrapper>(exec, &JSWebGLVertexArrayObjectOESConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLVertexArrayObjectOESConstructor, JSDOMWrapper>( exec,
+            &JSWebGLVertexArrayObjectOESConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,61 +115,66 @@ bool JSWebGLVertexArrayObjectOESConstructor::getOwnPropertyDescriptor(ExecState*
 
 static const HashTableValue JSWebGLVertexArrayObjectOESPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLVertexArrayObjectOESPrototypeTable = { 1, 0, JSWebGLVertexArrayObjectOESPrototypeTableValues, 0 };
 const ClassInfo JSWebGLVertexArrayObjectOESPrototype::s_info = { "WebGLVertexArrayObjectOESPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebGLVertexArrayObjectOESPrototypeTable, 0 };
 
-JSObject* JSWebGLVertexArrayObjectOESPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLVertexArrayObjectOESPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebGLVertexArrayObjectOES>(exec, globalObject);
+    return getDOMPrototype<JSWebGLVertexArrayObjectOES>( exec, globalObject );
 }
 
 const ClassInfo JSWebGLVertexArrayObjectOES::s_info = { "WebGLVertexArrayObjectOES", &JSDOMWrapper::s_info, &JSWebGLVertexArrayObjectOESTable, 0 };
 
-JSWebGLVertexArrayObjectOES::JSWebGLVertexArrayObjectOES(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebGLVertexArrayObjectOES> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebGLVertexArrayObjectOES::JSWebGLVertexArrayObjectOES( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<WebGLVertexArrayObjectOES> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebGLVertexArrayObjectOES::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLVertexArrayObjectOES::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebGLVertexArrayObjectOESPrototype(exec->globalData(), globalObject, JSWebGLVertexArrayObjectOESPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebGLVertexArrayObjectOESPrototype( exec->globalData(), globalObject,
+            JSWebGLVertexArrayObjectOESPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebGLVertexArrayObjectOES::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLVertexArrayObjectOES::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLVertexArrayObjectOES, Base>(exec, &JSWebGLVertexArrayObjectOESTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLVertexArrayObjectOES, Base>( exec, &JSWebGLVertexArrayObjectOESTable, this, propertyName, slot );
 }
 
-bool JSWebGLVertexArrayObjectOES::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLVertexArrayObjectOES::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLVertexArrayObjectOES, Base>(exec, &JSWebGLVertexArrayObjectOESTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLVertexArrayObjectOES, Base>( exec, &JSWebGLVertexArrayObjectOESTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsWebGLVertexArrayObjectOESConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebGLVertexArrayObjectOESConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebGLVertexArrayObjectOES* domObject = static_cast<JSWebGLVertexArrayObjectOES*>(asObject(slotBase));
-    return JSWebGLVertexArrayObjectOES::getConstructor(exec, domObject->globalObject());
+    JSWebGLVertexArrayObjectOES *domObject = static_cast<JSWebGLVertexArrayObjectOES *>( asObject( slotBase ) );
+    return JSWebGLVertexArrayObjectOES::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSWebGLVertexArrayObjectOES::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebGLVertexArrayObjectOES::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebGLVertexArrayObjectOESConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebGLVertexArrayObjectOESConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebGLVertexArrayObjectOES* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebGLVertexArrayObjectOES *impl )
 {
-    return wrap<JSWebGLVertexArrayObjectOES>(exec, globalObject, impl);
+    return wrap<JSWebGLVertexArrayObjectOES>( exec, globalObject, impl );
 }
 
-WebGLVertexArrayObjectOES* toWebGLVertexArrayObjectOES(JSC::JSValue value)
+WebGLVertexArrayObjectOES *toWebGLVertexArrayObjectOES( JSC::JSValue value )
 {
-    return value.inherits(&JSWebGLVertexArrayObjectOES::s_info) ? static_cast<JSWebGLVertexArrayObjectOES*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebGLVertexArrayObjectOES::s_info ) ? static_cast<JSWebGLVertexArrayObjectOES *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

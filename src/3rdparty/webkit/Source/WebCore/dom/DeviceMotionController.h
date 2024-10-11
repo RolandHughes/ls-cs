@@ -30,28 +30,33 @@
 #include "Timer.h"
 #include <wtf/HashCountedSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceMotionData;
 class DeviceMotionClient;
 
-class DeviceMotionController {
+class DeviceMotionController
+{
 public:
-    DeviceMotionController(DeviceMotionClient*);
+    DeviceMotionController( DeviceMotionClient * );
     ~DeviceMotionController();
 
-    void addListener(DOMWindow*);
-    void removeListener(DOMWindow*);
-    void removeAllListeners(DOMWindow*);
+    void addListener( DOMWindow * );
+    void removeListener( DOMWindow * );
+    void removeAllListeners( DOMWindow * );
 
-    void didChangeDeviceMotion(DeviceMotionData*);
+    void didChangeDeviceMotion( DeviceMotionData * );
 
-    bool isActive() { return !m_listeners.isEmpty(); }
+    bool isActive()
+    {
+        return !m_listeners.isEmpty();
+    }
 
 private:
-    void timerFired(Timer<DeviceMotionController>*);
-    
-    DeviceMotionClient* m_client;
+    void timerFired( Timer<DeviceMotionController> * );
+
+    DeviceMotionClient *m_client;
     typedef HashCountedSet<RefPtr<DOMWindow> > ListenersCountedSet;
     ListenersCountedSet m_listeners;
     typedef HashSet<RefPtr<DOMWindow> > ListenersSet;

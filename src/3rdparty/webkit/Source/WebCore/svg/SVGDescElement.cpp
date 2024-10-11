@@ -22,16 +22,17 @@
 #if ENABLE(SVG)
 #include "SVGDescElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGDescElement::SVGDescElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
+inline SVGDescElement::SVGDescElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGDescElement> SVGDescElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGDescElement> SVGDescElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGDescElement(tagName, document));
+    return adoptRef( new SVGDescElement( tagName, document ) );
 }
 
 String SVGDescElement::description() const

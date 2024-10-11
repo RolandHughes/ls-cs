@@ -26,12 +26,13 @@
 #include "LinearGradientAttributes.h"
 #include "SVGLinearGradientElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 RenderSVGResourceType RenderSVGResourceLinearGradient::s_resourceType = LinearGradientResourceType;
 
-RenderSVGResourceLinearGradient::RenderSVGResourceLinearGradient(SVGLinearGradientElement* node)
-    : RenderSVGResourceGradient(node)
+RenderSVGResourceLinearGradient::RenderSVGResourceLinearGradient( SVGLinearGradientElement *node )
+    : RenderSVGResourceGradient( node )
 {
 }
 
@@ -39,26 +40,26 @@ RenderSVGResourceLinearGradient::~RenderSVGResourceLinearGradient()
 {
 }
 
-void RenderSVGResourceLinearGradient::collectGradientAttributes(SVGGradientElement* gradientElement)
+void RenderSVGResourceLinearGradient::collectGradientAttributes( SVGGradientElement *gradientElement )
 {
     m_attributes = LinearGradientAttributes();
-    static_cast<SVGLinearGradientElement*>(gradientElement)->collectGradientAttributes(m_attributes);
+    static_cast<SVGLinearGradientElement *>( gradientElement )->collectGradientAttributes( m_attributes );
 }
 
-void RenderSVGResourceLinearGradient::buildGradient(GradientData* gradientData, SVGGradientElement* gradientElement) const
+void RenderSVGResourceLinearGradient::buildGradient( GradientData *gradientData, SVGGradientElement *gradientElement ) const
 {
-    SVGLinearGradientElement* linearGradientElement = static_cast<SVGLinearGradientElement*>(gradientElement);
+    SVGLinearGradientElement *linearGradientElement = static_cast<SVGLinearGradientElement *>( gradientElement );
 
     // Determine gradient start/end points
     FloatPoint startPoint;
     FloatPoint endPoint;
-    linearGradientElement->calculateStartEndPoints(m_attributes, startPoint, endPoint);
+    linearGradientElement->calculateStartEndPoints( m_attributes, startPoint, endPoint );
 
-    gradientData->gradient = Gradient::create(startPoint, endPoint);
-    gradientData->gradient->setSpreadMethod(m_attributes.spreadMethod());
+    gradientData->gradient = Gradient::create( startPoint, endPoint );
+    gradientData->gradient->setSpreadMethod( m_attributes.spreadMethod() );
 
     // Add stops
-    addStops(gradientData, m_attributes.stops());
+    addStops( gradientData, m_attributes.stops() );
 }
 
 }

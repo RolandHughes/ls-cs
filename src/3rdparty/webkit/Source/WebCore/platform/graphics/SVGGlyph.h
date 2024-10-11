@@ -30,18 +30,22 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Describe a glyph from a SVG Font.
-struct SVGGlyph {
-    enum Orientation {
+struct SVGGlyph
+{
+    enum Orientation
+    {
         Vertical,
         Horizontal,
         Both
     };
 
     // SVG Font depends on exactly this order.
-    enum ArabicForm {
+    enum ArabicForm
+    {
         None = 0,
         Isolated,
         Terminal,
@@ -50,15 +54,15 @@ struct SVGGlyph {
     };
 
     SVGGlyph()
-        : isValid(false)
-        , orientation(Both)
-        , arabicForm(None)
-        , priority(0)
-        , unicodeStringLength(0)
-        , horizontalAdvanceX(0)
-        , verticalOriginX(0)
-        , verticalOriginY(0)
-        , verticalAdvanceY(0)
+        : isValid( false )
+        , orientation( Both )
+        , arabicForm( None )
+        , priority( 0 )
+        , unicodeStringLength( 0 )
+        , horizontalAdvanceX( 0 )
+        , verticalOriginX( 0 )
+        , verticalOriginY( 0 )
+        , verticalAdvanceY( 0 )
     {
     }
 
@@ -69,18 +73,18 @@ struct SVGGlyph {
         return s_inheritedValue;
     }
 
-    bool operator==(const SVGGlyph& other) const
+    bool operator==( const SVGGlyph &other ) const
     {
         return isValid == other.isValid
-            && orientation == other.orientation
-            && arabicForm == other.arabicForm
-            && unicodeStringLength == other.unicodeStringLength
-            && glyphName == other.glyphName
-            && horizontalAdvanceX == other.horizontalAdvanceX
-            && verticalOriginX == other.verticalOriginX
-            && verticalOriginY == other.verticalOriginY
-            && verticalAdvanceY == other.verticalAdvanceY
-            && languages == other.languages;
+               && orientation == other.orientation
+               && arabicForm == other.arabicForm
+               && unicodeStringLength == other.unicodeStringLength
+               && glyphName == other.glyphName
+               && horizontalAdvanceX == other.horizontalAdvanceX
+               && verticalOriginX == other.verticalOriginX
+               && verticalOriginY == other.verticalOriginY
+               && verticalAdvanceY == other.verticalAdvanceY
+               && languages == other.languages;
     }
 
     bool isValid : 1;
@@ -100,8 +104,9 @@ struct SVGGlyph {
     Vector<String> languages;
 };
 
-Vector<SVGGlyph::ArabicForm> charactersWithArabicForm(const String& input, bool rtl);
-bool isCompatibleGlyph(const SVGGlyph&, bool isVerticalText, const String& language, const Vector<SVGGlyph::ArabicForm>&, unsigned startPosition, unsigned endPosition);
+Vector<SVGGlyph::ArabicForm> charactersWithArabicForm( const String &input, bool rtl );
+bool isCompatibleGlyph( const SVGGlyph &, bool isVerticalText, const String &language, const Vector<SVGGlyph::ArabicForm> &,
+                        unsigned startPosition, unsigned endPosition );
 
 } // namespace WebCore
 

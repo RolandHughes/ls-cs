@@ -27,21 +27,21 @@ using namespace QPatternist;
 
 bool XsdTerm::isElement() const
 {
-   return false;
+    return false;
 }
 
 bool XsdTerm::isModelGroup() const
 {
-   return false;
+    return false;
 }
 
 bool XsdTerm::isWildcard() const
 {
-   return false;
+    return false;
 }
 
 bool XsdTerm::isReference() const
 {
-   return false;
+    return false;
 }
 

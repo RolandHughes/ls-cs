@@ -41,7 +41,8 @@ class QDBusMessagePrivate;
 class Q_DBUS_EXPORT QDBusMessage
 {
 public:
-    enum MessageType {
+    enum MessageType
+    {
         InvalidMessage,
         MethodCallMessage,
         ReplyMessage,
@@ -50,28 +51,36 @@ public:
     };
 
     QDBusMessage();
-    QDBusMessage(const QDBusMessage &other);
-    QDBusMessage &operator=(const QDBusMessage &other);
+    QDBusMessage( const QDBusMessage &other );
+    QDBusMessage &operator=( const QDBusMessage &other );
     ~QDBusMessage();
 
-    static QDBusMessage createSignal(const QString &path, const QString &interface,
-                                     const QString &name);
-    static QDBusMessage createMethodCall(const QString &destination, const QString &path,
-                                         const QString &interface, const QString &method);
-    static QDBusMessage createError(const QString &name, const QString &msg);
-    static inline QDBusMessage createError(const QDBusError &err)
-    { return createError(err.name(), err.message()); }
-    static inline QDBusMessage createError(QDBusError::ErrorType type, const QString &msg)
-    { return createError(QDBusError::errorString(type), msg); }
+    static QDBusMessage createSignal( const QString &path, const QString &interface,
+                                      const QString &name );
+    static QDBusMessage createMethodCall( const QString &destination, const QString &path,
+                                          const QString &interface, const QString &method );
+    static QDBusMessage createError( const QString &name, const QString &msg );
+    static inline QDBusMessage createError( const QDBusError &err )
+    {
+        return createError( err.name(), err.message() );
+    }
+    static inline QDBusMessage createError( QDBusError::ErrorType type, const QString &msg )
+    {
+        return createError( QDBusError::errorString( type ), msg );
+    }
 
-    QDBusMessage createReply(const QList<QVariant> &arguments = QList<QVariant>()) const;
-    inline QDBusMessage createReply(const QVariant &argument) const
-    { return createReply(QList<QVariant>() << argument); }
+    QDBusMessage createReply( const QList<QVariant> &arguments = QList<QVariant>() ) const;
+    inline QDBusMessage createReply( const QVariant &argument ) const
+    {
+        return createReply( QList<QVariant>() << argument );
+    }
 
-    QDBusMessage createErrorReply(const QString name, const QString &msg) const;
-    inline QDBusMessage createErrorReply(const QDBusError &err) const
-    { return createErrorReply(err.name(), err.message()); }
-    QDBusMessage createErrorReply(QDBusError::ErrorType type, const QString &msg) const;
+    QDBusMessage createErrorReply( const QString name, const QString &msg ) const;
+    inline QDBusMessage createErrorReply( const QDBusError &err ) const
+    {
+        return createErrorReply( err.name(), err.message() );
+    }
+    QDBusMessage createErrorReply( QDBusError::ErrorType type, const QString &msg ) const;
 
     // there are no setters; if this changes, see qdbusmessage_p.h
     QString service() const;
@@ -85,23 +94,23 @@ public:
 
     bool isReplyRequired() const;
 
-    void setDelayedReply(bool enable) const;
+    void setDelayedReply( bool enable ) const;
     bool isDelayedReply() const;
 
-    void setAutoStartService(bool enable);
+    void setAutoStartService( bool enable );
     bool autoStartService() const;
 
-    void setArguments(const QList<QVariant> &arguments);
+    void setArguments( const QList<QVariant> &arguments );
     QList<QVariant> arguments() const;
 
-    QDBusMessage &operator<<(const QVariant &arg);
+    QDBusMessage &operator<<( const QVariant &arg );
 
 private:
     friend class QDBusMessagePrivate;
     QDBusMessagePrivate *d_ptr;
 };
 
-Q_DBUS_EXPORT QDebug operator<<(QDebug, const QDBusMessage &);
+Q_DBUS_EXPORT QDebug operator<<( QDebug, const QDBusMessage & );
 
 
 QT_END_NAMESPACE

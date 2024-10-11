@@ -31,15 +31,18 @@
 
 #include "RenderMathMLBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderMathMLFraction : public RenderMathMLBlock {
+class RenderMathMLFraction : public RenderMathMLBlock
+{
 public:
-    RenderMathMLFraction(Element* fraction);
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
+    RenderMathMLFraction( Element *fraction );
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
     virtual void updateFromElement();
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const; 
-    virtual void paint(PaintInfo&, int tx, int ty);
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
+    virtual void paint( PaintInfo &, int tx, int ty );
 protected:
     virtual void layout();
 private:

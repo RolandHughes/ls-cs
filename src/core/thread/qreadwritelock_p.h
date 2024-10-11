@@ -27,23 +27,25 @@
 #include <qglobal.h>
 #include <qhash.h>
 
-struct QReadWriteLockPrivate {
-   QReadWriteLockPrivate(QReadWriteLock::RecursionMode recursionMode)
-      : accessCount(0), waitingReaders(0), waitingWriters(0),
-        recursive(recursionMode == QReadWriteLock::Recursive), currentWriter(nullptr) {
-   }
+struct QReadWriteLockPrivate
+{
+    QReadWriteLockPrivate( QReadWriteLock::RecursionMode recursionMode )
+        : accessCount( 0 ), waitingReaders( 0 ), waitingWriters( 0 ),
+          recursive( recursionMode == QReadWriteLock::Recursive ), currentWriter( nullptr )
+    {
+    }
 
-   QMutex mutex;
-   QWaitCondition readerWait;
-   QWaitCondition writerWait;
+    QMutex mutex;
+    QWaitCondition readerWait;
+    QWaitCondition writerWait;
 
-   int accessCount;
-   int waitingReaders;
-   int waitingWriters;
+    int accessCount;
+    int waitingReaders;
+    int waitingWriters;
 
-   bool recursive;
-   Qt::HANDLE currentWriter;
-   QHash<Qt::HANDLE, int> currentReaders;
+    bool recursive;
+    Qt::HANDLE currentWriter;
+    QHash<Qt::HANDLE, int> currentReaders;
 };
 
 #endif

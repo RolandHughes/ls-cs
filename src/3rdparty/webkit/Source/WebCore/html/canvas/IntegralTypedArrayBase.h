@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef IntegralTypedArrayBase_h
@@ -34,33 +34,41 @@
 // Base class for all WebGL<T>Array types holding integral
 // (non-floating-point) values.
 
-namespace WebCore {
+namespace WebCore
+{
 
 template <typename T>
-class IntegralTypedArrayBase : public TypedArrayBase<T> {
-  public:
-    void set(unsigned index, double value)
+class IntegralTypedArrayBase : public TypedArrayBase<T>
+{
+public:
+    void set( unsigned index, double value )
     {
-        if (index >= TypedArrayBase<T>::m_length)
+        if ( index >= TypedArrayBase<T>::m_length )
+        {
             return;
-        if (std::isnan(value)) // Clamp NaN to 0
+        }
+
+        if ( std::isnan( value ) ) // Clamp NaN to 0
+        {
             value = 0;
+        }
+
         // The double cast is necessary to get the correct wrapping
         // for out-of-range values with Int32Array and Uint32Array.
-        TypedArrayBase<T>::data()[index] = static_cast<T>(static_cast<int64_t>(value));
+        TypedArrayBase<T>::data()[index] = static_cast<T>( static_cast<int64_t>( value ) );
     }
 
     // Invoked by the indexed getter. Does not perform range checks; caller
     // is responsible for doing so and returning undefined as necessary.
-    T item(unsigned index) const
+    T item( unsigned index ) const
     {
-        ASSERT(index < TypedArrayBase<T>::m_length);
+        ASSERT( index < TypedArrayBase<T>::m_length );
         return TypedArrayBase<T>::data()[index];
     }
 
-  protected:
-    IntegralTypedArrayBase(PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length)
-        : TypedArrayBase<T>(buffer, byteOffset, length)
+protected:
+    IntegralTypedArrayBase( PassRefPtr<ArrayBuffer> buffer, unsigned byteOffset, unsigned length )
+        : TypedArrayBase<T>( buffer, byteOffset, length )
     {
     }
 };

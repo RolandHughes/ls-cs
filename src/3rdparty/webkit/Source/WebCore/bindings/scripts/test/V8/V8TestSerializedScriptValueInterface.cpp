@@ -32,26 +32,30 @@
 #include "V8Proxy.h"
 #include <wtf/UnusedParam.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 WrapperTypeInfo V8TestSerializedScriptValueInterface::info = { V8TestSerializedScriptValueInterface::GetTemplate, V8TestSerializedScriptValueInterface::derefObject, 0, 0 };
 
-namespace TestSerializedScriptValueInterfaceInternal {
+namespace TestSerializedScriptValueInterfaceInternal
+{
 
-template <typename T> void V8_USE(T) { }
+template <typename T> void V8_USE( T ) { }
 
 } // namespace TestSerializedScriptValueInterfaceInternal
 
-static v8::Persistent<v8::FunctionTemplate> ConfigureV8TestSerializedScriptValueInterfaceTemplate(v8::Persistent<v8::FunctionTemplate> desc)
+static v8::Persistent<v8::FunctionTemplate> ConfigureV8TestSerializedScriptValueInterfaceTemplate(
+    v8::Persistent<v8::FunctionTemplate> desc )
 {
-    v8::Local<v8::Signature> defaultSignature = configureTemplate(desc, "TestSerializedScriptValueInterface", v8::Persistent<v8::FunctionTemplate>(), V8TestSerializedScriptValueInterface::internalFieldCount,
-        0, 0,
-        0, 0);
-    UNUSED_PARAM(defaultSignature); // In some cases, it will not be used.
-    
+    v8::Local<v8::Signature> defaultSignature = configureTemplate( desc, "TestSerializedScriptValueInterface",
+            v8::Persistent<v8::FunctionTemplate>(), V8TestSerializedScriptValueInterface::internalFieldCount,
+            0, 0,
+            0, 0 );
+    UNUSED_PARAM( defaultSignature ); // In some cases, it will not be used.
+
 
     // Custom toString template
-    desc->Set(getToStringName(), getToStringTemplate());
+    desc->Set( getToStringName(), getToStringTemplate() );
     return desc;
 }
 
@@ -63,34 +67,39 @@ v8::Persistent<v8::FunctionTemplate> V8TestSerializedScriptValueInterface::GetRa
 
 v8::Persistent<v8::FunctionTemplate> V8TestSerializedScriptValueInterface::GetTemplate()
 {
-    static v8::Persistent<v8::FunctionTemplate> V8TestSerializedScriptValueInterfaceCache = ConfigureV8TestSerializedScriptValueInterfaceTemplate(GetRawTemplate());
+    static v8::Persistent<v8::FunctionTemplate> V8TestSerializedScriptValueInterfaceCache =
+        ConfigureV8TestSerializedScriptValueInterfaceTemplate( GetRawTemplate() );
     return V8TestSerializedScriptValueInterfaceCache;
 }
 
-bool V8TestSerializedScriptValueInterface::HasInstance(v8::Handle<v8::Value> value)
+bool V8TestSerializedScriptValueInterface::HasInstance( v8::Handle<v8::Value> value )
 {
-    return GetRawTemplate()->HasInstance(value);
+    return GetRawTemplate()->HasInstance( value );
 }
 
 
-v8::Handle<v8::Object> V8TestSerializedScriptValueInterface::wrapSlow(TestSerializedScriptValueInterface* impl)
+v8::Handle<v8::Object> V8TestSerializedScriptValueInterface::wrapSlow( TestSerializedScriptValueInterface *impl )
 {
     v8::Handle<v8::Object> wrapper;
-    V8Proxy* proxy = 0;
-    wrapper = V8DOMWrapper::instantiateV8Object(proxy, &info, impl);
-    if (wrapper.IsEmpty())
+    V8Proxy *proxy = 0;
+    wrapper = V8DOMWrapper::instantiateV8Object( proxy, &info, impl );
+
+    if ( wrapper.IsEmpty() )
+    {
         return wrapper;
+    }
 
     impl->ref();
-    SerializedScriptValue::deserializeAndSetProperty(wrapper, "value", static_cast<v8::PropertyAttribute>(v8::DontDelete | v8::ReadOnly), impl->value());
-    v8::Persistent<v8::Object> wrapperHandle = v8::Persistent<v8::Object>::New(wrapper);
-    getDOMObjectMap().set(impl, wrapperHandle);
+    SerializedScriptValue::deserializeAndSetProperty( wrapper, "value",
+            static_cast<v8::PropertyAttribute>( v8::DontDelete | v8::ReadOnly ), impl->value() );
+    v8::Persistent<v8::Object> wrapperHandle = v8::Persistent<v8::Object>::New( wrapper );
+    getDOMObjectMap().set( impl, wrapperHandle );
     return wrapper;
 }
 
-void V8TestSerializedScriptValueInterface::derefObject(void* object)
+void V8TestSerializedScriptValueInterface::derefObject( void *object )
 {
-    static_cast<TestSerializedScriptValueInterface*>(object)->deref();
+    static_cast<TestSerializedScriptValueInterface *>( object )->deref();
 }
 
 } // namespace WebCore

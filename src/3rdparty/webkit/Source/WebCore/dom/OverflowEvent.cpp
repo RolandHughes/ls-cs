@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,29 +28,37 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
-        
+namespace WebCore
+{
+
 OverflowEvent::OverflowEvent()
-    : Event(eventNames().overflowchangedEvent, false, false)
-    , m_orient(VERTICAL)
-    , m_horizontalOverflow(false)
-    , m_verticalOverflow(false)
+    : Event( eventNames().overflowchangedEvent, false, false )
+    , m_orient( VERTICAL )
+    , m_horizontalOverflow( false )
+    , m_verticalOverflow( false )
 {
 }
 
-OverflowEvent::OverflowEvent(bool horizontalOverflowChanged, bool horizontalOverflow, bool verticalOverflowChanged, bool verticalOverflow)
-    : Event(eventNames().overflowchangedEvent, false, false)
-    , m_horizontalOverflow(horizontalOverflow)
-    , m_verticalOverflow(verticalOverflow)
+OverflowEvent::OverflowEvent( bool horizontalOverflowChanged, bool horizontalOverflow, bool verticalOverflowChanged,
+                              bool verticalOverflow )
+    : Event( eventNames().overflowchangedEvent, false, false )
+    , m_horizontalOverflow( horizontalOverflow )
+    , m_verticalOverflow( verticalOverflow )
 {
-    ASSERT(horizontalOverflowChanged || verticalOverflowChanged);
+    ASSERT( horizontalOverflowChanged || verticalOverflowChanged );
 
-    if (horizontalOverflowChanged && verticalOverflowChanged)
+    if ( horizontalOverflowChanged && verticalOverflowChanged )
+    {
         m_orient = BOTH;
-    else if (horizontalOverflowChanged)
+    }
+    else if ( horizontalOverflowChanged )
+    {
         m_orient = HORIZONTAL;
+    }
     else
+    {
         m_orient = VERTICAL;
+    }
 }
 
 bool OverflowEvent::isOverflowEvent() const
@@ -58,11 +66,13 @@ bool OverflowEvent::isOverflowEvent() const
     return true;
 }
 
-void OverflowEvent::initOverflowEvent(unsigned short orient, bool horizontalOverflow, bool verticalOverflow)
+void OverflowEvent::initOverflowEvent( unsigned short orient, bool horizontalOverflow, bool verticalOverflow )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
-    
+    }
+
     m_orient = orient;
     m_horizontalOverflow = horizontalOverflow;
     m_verticalOverflow = verticalOverflow;

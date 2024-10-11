@@ -31,24 +31,30 @@
 #include "WKBundlePage.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    class ResourceError;
-    class ResourceRequest;
-    class ResourceResponse;
+namespace WebCore
+{
+class ResourceError;
+class ResourceRequest;
+class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class InjectedBundleNavigationAction;
 class WebFrame;
 class WebPage;
 
-class InjectedBundlePagePolicyClient : public APIClient<WKBundlePagePolicyClient> {
+class InjectedBundlePagePolicyClient : public APIClient<WKBundlePagePolicyClient>
+{
 public:
-    WKBundlePagePolicyAction decidePolicyForNavigationAction(WebPage*, WebFrame*, InjectedBundleNavigationAction*, const WebCore::ResourceRequest&, RefPtr<APIObject>& userData);
-    WKBundlePagePolicyAction decidePolicyForNewWindowAction(WebPage*, WebFrame*, InjectedBundleNavigationAction*, const WebCore::ResourceRequest&, const String& frameName, RefPtr<APIObject>& userData);
-    WKBundlePagePolicyAction decidePolicyForResponse(WebPage*, WebFrame*, const WebCore::ResourceResponse&, const WebCore::ResourceRequest&, RefPtr<APIObject>& userData);
-    void unableToImplementPolicy(WebPage*, WebFrame*, const WebCore::ResourceError&, RefPtr<APIObject>& userData);
+    WKBundlePagePolicyAction decidePolicyForNavigationAction( WebPage *, WebFrame *, InjectedBundleNavigationAction *,
+            const WebCore::ResourceRequest &, RefPtr<APIObject> &userData );
+    WKBundlePagePolicyAction decidePolicyForNewWindowAction( WebPage *, WebFrame *, InjectedBundleNavigationAction *,
+            const WebCore::ResourceRequest &, const String &frameName, RefPtr<APIObject> &userData );
+    WKBundlePagePolicyAction decidePolicyForResponse( WebPage *, WebFrame *, const WebCore::ResourceResponse &,
+            const WebCore::ResourceRequest &, RefPtr<APIObject> &userData );
+    void unableToImplementPolicy( WebPage *, WebFrame *, const WebCore::ResourceError &, RefPtr<APIObject> &userData );
 };
 
 } // namespace WebKit

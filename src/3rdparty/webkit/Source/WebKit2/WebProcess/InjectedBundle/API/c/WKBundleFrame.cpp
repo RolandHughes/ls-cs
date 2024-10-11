@@ -38,190 +38,206 @@ using namespace WebKit;
 
 WKTypeID WKBundleFrameGetTypeID()
 {
-    return toAPI(WebFrame::APIType);
+    return toAPI( WebFrame::APIType );
 }
 
-bool WKBundleFrameIsMainFrame(WKBundleFrameRef frameRef)
+bool WKBundleFrameIsMainFrame( WKBundleFrameRef frameRef )
 {
-    return toImpl(frameRef)->isMainFrame();
+    return toImpl( frameRef )->isMainFrame();
 }
 
-WKURLRef WKBundleFrameCopyURL(WKBundleFrameRef frameRef)
+WKURLRef WKBundleFrameCopyURL( WKBundleFrameRef frameRef )
 {
-    return toCopiedURLAPI(toImpl(frameRef)->url());
+    return toCopiedURLAPI( toImpl( frameRef )->url() );
 }
 
-WKURLRef WKBundleFrameCopyProvisionalURL(WKBundleFrameRef frameRef)
+WKURLRef WKBundleFrameCopyProvisionalURL( WKBundleFrameRef frameRef )
 {
-    return toCopiedURLAPI(toImpl(frameRef)->provisionalURL());
+    return toCopiedURLAPI( toImpl( frameRef )->provisionalURL() );
 }
 
-WKFrameLoadState WKBundleFrameGetFrameLoadState(WKBundleFrameRef frameRef)
+WKFrameLoadState WKBundleFrameGetFrameLoadState( WKBundleFrameRef frameRef )
 {
-    Frame* coreFrame = toImpl(frameRef)->coreFrame();
-    if (!coreFrame)
+    Frame *coreFrame = toImpl( frameRef )->coreFrame();
+
+    if ( !coreFrame )
+    {
         return kWKFrameLoadStateFinished;
+    }
 
-    FrameLoader* loader = coreFrame->loader();
-    if (!loader)
-        return kWKFrameLoadStateFinished;
+    FrameLoader *loader = coreFrame->loader();
 
-    switch (loader->state()) {
-    case FrameStateProvisional:
-        return kWKFrameLoadStateProvisional;
-    case FrameStateCommittedPage:
-        return kWKFrameLoadStateCommitted;
-    case FrameStateComplete:
+    if ( !loader )
+    {
         return kWKFrameLoadStateFinished;
+    }
+
+    switch ( loader->state() )
+    {
+        case FrameStateProvisional:
+            return kWKFrameLoadStateProvisional;
+
+        case FrameStateCommittedPage:
+            return kWKFrameLoadStateCommitted;
+
+        case FrameStateComplete:
+            return kWKFrameLoadStateFinished;
     }
 
     ASSERT_NOT_REACHED();
     return kWKFrameLoadStateFinished;
 }
 
-WKArrayRef WKBundleFrameCopyChildFrames(WKBundleFrameRef frameRef)
+WKArrayRef WKBundleFrameCopyChildFrames( WKBundleFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->childFrames().releaseRef());    
+    return toAPI( toImpl( frameRef )->childFrames().releaseRef() );
 }
 
-unsigned WKBundleFrameGetNumberOfActiveAnimations(WKBundleFrameRef frameRef)
+unsigned WKBundleFrameGetNumberOfActiveAnimations( WKBundleFrameRef frameRef )
 {
-    return toImpl(frameRef)->numberOfActiveAnimations();
+    return toImpl( frameRef )->numberOfActiveAnimations();
 }
 
-bool WKBundleFramePauseAnimationOnElementWithId(WKBundleFrameRef frameRef, WKStringRef name, WKStringRef elementID, double time)
+bool WKBundleFramePauseAnimationOnElementWithId( WKBundleFrameRef frameRef, WKStringRef name, WKStringRef elementID, double time )
 {
-    return toImpl(frameRef)->pauseAnimationOnElementWithId(toImpl(name)->string(), toImpl(elementID)->string(), time);
+    return toImpl( frameRef )->pauseAnimationOnElementWithId( toImpl( name )->string(), toImpl( elementID )->string(), time );
 }
 
-void WKBundleFrameSuspendAnimations(WKBundleFrameRef frameRef)
+void WKBundleFrameSuspendAnimations( WKBundleFrameRef frameRef )
 {
-    toImpl(frameRef)->suspendAnimations();
+    toImpl( frameRef )->suspendAnimations();
 }
 
-void WKBundleFrameResumeAnimations(WKBundleFrameRef frameRef)
+void WKBundleFrameResumeAnimations( WKBundleFrameRef frameRef )
 {
-    toImpl(frameRef)->resumeAnimations();
+    toImpl( frameRef )->resumeAnimations();
 }
 
-JSGlobalContextRef WKBundleFrameGetJavaScriptContext(WKBundleFrameRef frameRef)
+JSGlobalContextRef WKBundleFrameGetJavaScriptContext( WKBundleFrameRef frameRef )
 {
-    return toImpl(frameRef)->jsContext();
+    return toImpl( frameRef )->jsContext();
 }
 
-WKBundleFrameRef WKBundleFrameForJavaScriptContext(JSContextRef context)
+WKBundleFrameRef WKBundleFrameForJavaScriptContext( JSContextRef context )
 {
-    return toAPI(WebFrame::frameForContext(context));
+    return toAPI( WebFrame::frameForContext( context ) );
 }
 
-JSGlobalContextRef WKBundleFrameGetJavaScriptContextForWorld(WKBundleFrameRef frameRef, WKBundleScriptWorldRef worldRef)
+JSGlobalContextRef WKBundleFrameGetJavaScriptContextForWorld( WKBundleFrameRef frameRef, WKBundleScriptWorldRef worldRef )
 {
-    return toImpl(frameRef)->jsContextForWorld(toImpl(worldRef));
+    return toImpl( frameRef )->jsContextForWorld( toImpl( worldRef ) );
 }
 
-JSValueRef WKBundleFrameGetJavaScriptWrapperForNodeForWorld(WKBundleFrameRef frameRef, WKBundleNodeHandleRef nodeHandleRef, WKBundleScriptWorldRef worldRef)
+JSValueRef WKBundleFrameGetJavaScriptWrapperForNodeForWorld( WKBundleFrameRef frameRef, WKBundleNodeHandleRef nodeHandleRef,
+        WKBundleScriptWorldRef worldRef )
 {
-    return toImpl(frameRef)->jsWrapperForWorld(toImpl(nodeHandleRef), toImpl(worldRef));
+    return toImpl( frameRef )->jsWrapperForWorld( toImpl( nodeHandleRef ), toImpl( worldRef ) );
 }
 
-JSValueRef WKBundleFrameGetJavaScriptWrapperForRangeForWorld(WKBundleFrameRef frameRef, WKBundleRangeHandleRef rangeHandleRef, WKBundleScriptWorldRef worldRef)
+JSValueRef WKBundleFrameGetJavaScriptWrapperForRangeForWorld( WKBundleFrameRef frameRef, WKBundleRangeHandleRef rangeHandleRef,
+        WKBundleScriptWorldRef worldRef )
 {
-    return toImpl(frameRef)->jsWrapperForWorld(toImpl(rangeHandleRef), toImpl(worldRef));
+    return toImpl( frameRef )->jsWrapperForWorld( toImpl( rangeHandleRef ), toImpl( worldRef ) );
 }
 
-WKStringRef WKBundleFrameCopyName(WKBundleFrameRef frameRef)
+WKStringRef WKBundleFrameCopyName( WKBundleFrameRef frameRef )
 {
-    return toCopiedAPI(toImpl(frameRef)->name());
+    return toCopiedAPI( toImpl( frameRef )->name() );
 }
 
-JSValueRef WKBundleFrameGetComputedStyleIncludingVisitedInfo(WKBundleFrameRef frameRef, JSObjectRef element)
+JSValueRef WKBundleFrameGetComputedStyleIncludingVisitedInfo( WKBundleFrameRef frameRef, JSObjectRef element )
 {
-    return toImpl(frameRef)->computedStyleIncludingVisitedInfo(element);
+    return toImpl( frameRef )->computedStyleIncludingVisitedInfo( element );
 }
 
-WKStringRef WKBundleFrameCopyCounterValue(WKBundleFrameRef frameRef, JSObjectRef element)
+WKStringRef WKBundleFrameCopyCounterValue( WKBundleFrameRef frameRef, JSObjectRef element )
 {
-    return toCopiedAPI(toImpl(frameRef)->counterValue(element));
+    return toCopiedAPI( toImpl( frameRef )->counterValue( element ) );
 }
 
-WKStringRef WKBundleFrameCopyMarkerText(WKBundleFrameRef frameRef, JSObjectRef element)
+WKStringRef WKBundleFrameCopyMarkerText( WKBundleFrameRef frameRef, JSObjectRef element )
 {
-    return toCopiedAPI(toImpl(frameRef)->markerText(element));
+    return toCopiedAPI( toImpl( frameRef )->markerText( element ) );
 }
 
-WKStringRef WKBundleFrameCopyInnerText(WKBundleFrameRef frameRef)
+WKStringRef WKBundleFrameCopyInnerText( WKBundleFrameRef frameRef )
 {
-    return toCopiedAPI(toImpl(frameRef)->innerText());
+    return toCopiedAPI( toImpl( frameRef )->innerText() );
 }
 
-unsigned WKBundleFrameGetPendingUnloadCount(WKBundleFrameRef frameRef)
+unsigned WKBundleFrameGetPendingUnloadCount( WKBundleFrameRef frameRef )
 {
-    return toImpl(frameRef)->pendingUnloadCount();
+    return toImpl( frameRef )->pendingUnloadCount();
 }
 
-WKBundlePageRef WKBundleFrameGetPage(WKBundleFrameRef frameRef)
+WKBundlePageRef WKBundleFrameGetPage( WKBundleFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->page());
+    return toAPI( toImpl( frameRef )->page() );
 }
 
-void WKBundleFrameClearOpener(WKBundleFrameRef frameRef)
+void WKBundleFrameClearOpener( WKBundleFrameRef frameRef )
 {
-    Frame* coreFrame = toImpl(frameRef)->coreFrame();
-    if (coreFrame)
-        coreFrame->loader()->setOpener(0);
+    Frame *coreFrame = toImpl( frameRef )->coreFrame();
+
+    if ( coreFrame )
+    {
+        coreFrame->loader()->setOpener( 0 );
+    }
 }
 
-WKStringRef WKBundleFrameCopyLayerTreeAsText(WKBundleFrameRef frameRef)
+WKStringRef WKBundleFrameCopyLayerTreeAsText( WKBundleFrameRef frameRef )
 {
-    return toCopiedAPI(toImpl(frameRef)->layerTreeAsText());
+    return toCopiedAPI( toImpl( frameRef )->layerTreeAsText() );
 }
 
-bool WKBundleFrameAllowsFollowingLink(WKBundleFrameRef frameRef, WKURLRef urlRef)
+bool WKBundleFrameAllowsFollowingLink( WKBundleFrameRef frameRef, WKURLRef urlRef )
 {
-    return toImpl(frameRef)->allowsFollowingLink(WebCore::KURL(WebCore::KURL(), toImpl(urlRef)->string()));
+    return toImpl( frameRef )->allowsFollowingLink( WebCore::KURL( WebCore::KURL(), toImpl( urlRef )->string() ) );
 }
 
-WKRect WKBundleFrameGetContentBounds(WKBundleFrameRef frameRef)
+WKRect WKBundleFrameGetContentBounds( WKBundleFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->contentBounds());
+    return toAPI( toImpl( frameRef )->contentBounds() );
 }
 
-WKRect WKBundleFrameGetVisibleContentBounds(WKBundleFrameRef frameRef)
+WKRect WKBundleFrameGetVisibleContentBounds( WKBundleFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->visibleContentBounds());
+    return toAPI( toImpl( frameRef )->visibleContentBounds() );
 }
 
-WKRect WKBundleFrameGetVisibleContentBoundsExcludingScrollbars(WKBundleFrameRef frameRef)
+WKRect WKBundleFrameGetVisibleContentBoundsExcludingScrollbars( WKBundleFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->visibleContentBoundsExcludingScrollbars());
+    return toAPI( toImpl( frameRef )->visibleContentBoundsExcludingScrollbars() );
 }
 
-WKSize WKBundleFrameGetScrollOffset(WKBundleFrameRef frameRef)
+WKSize WKBundleFrameGetScrollOffset( WKBundleFrameRef frameRef )
 {
-    return toAPI(toImpl(frameRef)->scrollOffset());
+    return toAPI( toImpl( frameRef )->scrollOffset() );
 }
 
-bool WKBundleFrameHasHorizontalScrollbar(WKBundleFrameRef frameRef)
+bool WKBundleFrameHasHorizontalScrollbar( WKBundleFrameRef frameRef )
 {
-    return toImpl(frameRef)->hasHorizontalScrollbar();
+    return toImpl( frameRef )->hasHorizontalScrollbar();
 }
 
-bool WKBundleFrameHasVerticalScrollbar(WKBundleFrameRef frameRef)
+bool WKBundleFrameHasVerticalScrollbar( WKBundleFrameRef frameRef )
 {
-    return toImpl(frameRef)->hasVerticalScrollbar();
+    return toImpl( frameRef )->hasVerticalScrollbar();
 }
 
-bool WKBundleFrameGetDocumentBackgroundColor(WKBundleFrameRef frameRef, double* red, double* green, double* blue, double* alpha)
+bool WKBundleFrameGetDocumentBackgroundColor( WKBundleFrameRef frameRef, double *red, double *green, double *blue, double *alpha )
 {
-    return toImpl(frameRef)->getDocumentBackgroundColor(red, green, blue, alpha);
+    return toImpl( frameRef )->getDocumentBackgroundColor( red, green, blue, alpha );
 }
 
-WKStringRef WKBundleFrameCopySuggestedFilenameForResourceWithURL(WKBundleFrameRef frameRef, WKURLRef urlRef)
+WKStringRef WKBundleFrameCopySuggestedFilenameForResourceWithURL( WKBundleFrameRef frameRef, WKURLRef urlRef )
 {
-    return toCopiedAPI(toImpl(frameRef)->suggestedFilenameForResourceWithURL(WebCore::KURL(WebCore::KURL(), toImpl(urlRef)->string())));
+    return toCopiedAPI( toImpl( frameRef )->suggestedFilenameForResourceWithURL( WebCore::KURL( WebCore::KURL(),
+                        toImpl( urlRef )->string() ) ) );
 }
 
-WKStringRef WKBundleFrameCopyMIMETypeForResourceWithURL(WKBundleFrameRef frameRef, WKURLRef urlRef)
+WKStringRef WKBundleFrameCopyMIMETypeForResourceWithURL( WKBundleFrameRef frameRef, WKURLRef urlRef )
 {
-    return toCopiedAPI(toImpl(frameRef)->mimeTypeForResourceWithURL(WebCore::KURL(WebCore::KURL(), toImpl(urlRef)->string())));
+    return toCopiedAPI( toImpl( frameRef )->mimeTypeForResourceWithURL( WebCore::KURL( WebCore::KURL(),
+                        toImpl( urlRef )->string() ) ) );
 }

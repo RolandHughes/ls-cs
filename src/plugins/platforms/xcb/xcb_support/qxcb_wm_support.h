@@ -30,21 +30,22 @@
 
 class QXcbWMSupport : public QXcbObject
 {
- public:
-   QXcbWMSupport(QXcbConnection *c);
+public:
+    QXcbWMSupport( QXcbConnection *c );
 
-   bool isSupportedByWM(xcb_atom_t atom) const;
-   const QVector<xcb_window_t> &virtualRoots() const {
-      return net_virtual_roots;
-   }
+    bool isSupportedByWM( xcb_atom_t atom ) const;
+    const QVector<xcb_window_t> &virtualRoots() const
+    {
+        return net_virtual_roots;
+    }
 
- private:
-   friend class QXcbConnection;
-   void updateNetWMAtoms();
-   void updateVirtualRoots();
+private:
+    friend class QXcbConnection;
+    void updateNetWMAtoms();
+    void updateVirtualRoots();
 
-   QVector<xcb_atom_t> net_wm_atoms;
-   QVector<xcb_window_t> net_virtual_roots;
+    QVector<xcb_atom_t> net_wm_atoms;
+    QVector<xcb_window_t> net_virtual_roots;
 };
 
 #endif

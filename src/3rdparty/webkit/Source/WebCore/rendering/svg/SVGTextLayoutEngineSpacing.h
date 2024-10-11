@@ -23,24 +23,26 @@
 #if ENABLE(SVG)
 #include "SVGTextMetrics.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Font;
 class SVGRenderStyle;
 class SVGElement;
 
 // Helper class used by SVGTextLayoutEngine to handle 'kerning' / 'letter-spacing' and 'word-spacing'.
-class SVGTextLayoutEngineSpacing {
-    WTF_MAKE_NONCOPYABLE(SVGTextLayoutEngineSpacing);
+class SVGTextLayoutEngineSpacing
+{
+    WTF_MAKE_NONCOPYABLE( SVGTextLayoutEngineSpacing );
 public:
-    SVGTextLayoutEngineSpacing(const Font&);
+    SVGTextLayoutEngineSpacing( const Font & );
 
-    float calculateSVGKerning(bool isVerticalText, const SVGTextMetrics::Glyph& currentGlyph);
-    float calculateCSSKerningAndSpacing(const SVGRenderStyle*, SVGElement* lengthContext, const UChar* currentCharacter);
+    float calculateSVGKerning( bool isVerticalText, const SVGTextMetrics::Glyph &currentGlyph );
+    float calculateCSSKerningAndSpacing( const SVGRenderStyle *, SVGElement *lengthContext, const UChar *currentCharacter );
 
 private:
-    const Font& m_font;
-    const UChar* m_lastCharacter;
+    const Font &m_font;
+    const UChar *m_lastCharacter;
 
 #if ENABLE(SVG_FONTS)
     SVGTextMetrics::Glyph m_lastGlyph;

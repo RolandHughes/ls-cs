@@ -33,12 +33,14 @@ class QAbstractEventDispatcher *createUnixEventDispatcher()
 {
 #if ! defined(QT_NO_GLIB) && ! defined(Q_OS_WIN)
 
-   if (qgetenv("QT_NO_GLIB").isEmpty() && QEventDispatcherGlib::versionSupported()) {
-      return new QXcbEventDispatcherGlib();
-   } else
+    if ( qgetenv( "QT_NO_GLIB" ).isEmpty() && QEventDispatcherGlib::versionSupported() )
+    {
+        return new QXcbEventDispatcherGlib();
+    }
+    else
 
 #endif
 
-      return new QUnixEventDispatcher();
+        return new QUnixEventDispatcher();
 }
 

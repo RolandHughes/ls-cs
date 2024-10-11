@@ -38,29 +38,34 @@
 #include "IDBKeyRange.h"
 #include "IDBObjectStoreBackendImpl.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-IDBIndexBackendImpl::IDBIndexBackendImpl(IDBBackingStore* backingStore, int64_t databaseId, const IDBObjectStoreBackendImpl* objectStoreBackend, int64_t id, const String& name, const String& storeName, const String& keyPath, bool unique)
-    : m_backingStore(backingStore)
-    , m_databaseId(databaseId)
-    , m_objectStoreBackend(objectStoreBackend)
-    , m_id(id)
-    , m_name(name)
-    , m_storeName(storeName)
-    , m_keyPath(keyPath)
-    , m_unique(unique)
+IDBIndexBackendImpl::IDBIndexBackendImpl( IDBBackingStore *backingStore, int64_t databaseId,
+        const IDBObjectStoreBackendImpl *objectStoreBackend, int64_t id, const String &name, const String &storeName,
+        const String &keyPath, bool unique )
+    : m_backingStore( backingStore )
+    , m_databaseId( databaseId )
+    , m_objectStoreBackend( objectStoreBackend )
+    , m_id( id )
+    , m_name( name )
+    , m_storeName( storeName )
+    , m_keyPath( keyPath )
+    , m_unique( unique )
 {
 }
 
-IDBIndexBackendImpl::IDBIndexBackendImpl(IDBBackingStore* backingStore, int64_t databaseId, const IDBObjectStoreBackendImpl* objectStoreBackend, const String& name, const String& storeName, const String& keyPath, bool unique)
-    : m_backingStore(backingStore)
-    , m_databaseId(databaseId)
-    , m_objectStoreBackend(objectStoreBackend)
-    , m_id(InvalidId)
-    , m_name(name)
-    , m_storeName(storeName)
-    , m_keyPath(keyPath)
-    , m_unique(unique)
+IDBIndexBackendImpl::IDBIndexBackendImpl( IDBBackingStore *backingStore, int64_t databaseId,
+        const IDBObjectStoreBackendImpl *objectStoreBackend, const String &name, const String &storeName, const String &keyPath,
+        bool unique )
+    : m_backingStore( backingStore )
+    , m_databaseId( databaseId )
+    , m_objectStoreBackend( objectStoreBackend )
+    , m_id( InvalidId )
+    , m_name( name )
+    , m_storeName( storeName )
+    , m_keyPath( keyPath )
+    , m_unique( unique )
 {
 }
 
@@ -68,102 +73,143 @@ IDBIndexBackendImpl::~IDBIndexBackendImpl()
 {
 }
 
-void IDBIndexBackendImpl::openCursorInternal(ScriptExecutionContext*, PassRefPtr<IDBIndexBackendImpl> index, PassRefPtr<IDBKeyRange> range, unsigned short untypedDirection, IDBCursorBackendInterface::CursorType cursorType, PassRefPtr<IDBCallbacks> callbacks, PassRefPtr<IDBTransactionBackendInterface> transaction)
+void IDBIndexBackendImpl::openCursorInternal( ScriptExecutionContext *, PassRefPtr<IDBIndexBackendImpl> index,
+        PassRefPtr<IDBKeyRange> range, unsigned short untypedDirection, IDBCursorBackendInterface::CursorType cursorType,
+        PassRefPtr<IDBCallbacks> callbacks, PassRefPtr<IDBTransactionBackendInterface> transaction )
 {
-    IDBCursor::Direction direction = static_cast<IDBCursor::Direction>(untypedDirection);
+    IDBCursor::Direction direction = static_cast<IDBCursor::Direction>( untypedDirection );
 
     RefPtr<IDBBackingStore::Cursor> backingStoreCursor;
 
-    switch (cursorType) {
-    case IDBCursorBackendInterface::IndexKeyCursor:
-        backingStoreCursor = index->m_backingStore->openIndexKeyCursor(index->m_databaseId, index->m_objectStoreBackend->id(), index->id(), range.get(), direction);
-        break;
-    case IDBCursorBackendInterface::IndexCursor:
-        backingStoreCursor = index->m_backingStore->openIndexCursor(index->m_databaseId, index->m_objectStoreBackend->id(), index->id(), range.get(), direction);
-        break;
-    case IDBCursorBackendInterface::ObjectStoreCursor:
-    case IDBCursorBackendInterface::InvalidCursorType:
-        ASSERT_NOT_REACHED();
-        break;
+    switch ( cursorType )
+    {
+        case IDBCursorBackendInterface::IndexKeyCursor:
+            backingStoreCursor = index->m_backingStore->openIndexKeyCursor( index->m_databaseId, index->m_objectStoreBackend->id(),
+                                 index->id(), range.get(), direction );
+            break;
+
+        case IDBCursorBackendInterface::IndexCursor:
+            backingStoreCursor = index->m_backingStore->openIndexCursor( index->m_databaseId, index->m_objectStoreBackend->id(), index->id(),
+                                 range.get(), direction );
+            break;
+
+        case IDBCursorBackendInterface::ObjectStoreCursor:
+        case IDBCursorBackendInterface::InvalidCursorType:
+            ASSERT_NOT_REACHED();
+            break;
     }
 
-    if (!backingStoreCursor) {
-        callbacks->onSuccess(SerializedScriptValue::nullValue());
+    if ( !backingStoreCursor )
+    {
+        callbacks->onSuccess( SerializedScriptValue::nullValue() );
         return;
     }
 
     ExceptionCode ec = 0;
-    RefPtr<IDBObjectStoreBackendInterface> objectStore = transaction->objectStore(index->m_storeName, ec);
-    ASSERT(objectStore && !ec);
+    RefPtr<IDBObjectStoreBackendInterface> objectStore = transaction->objectStore( index->m_storeName, ec );
+    ASSERT( objectStore && !ec );
 
-    RefPtr<IDBCursorBackendInterface> cursor = IDBCursorBackendImpl::create(backingStoreCursor.get(), direction, cursorType, transaction.get(), objectStore.get());
-    callbacks->onSuccess(cursor.release());
+    RefPtr<IDBCursorBackendInterface> cursor = IDBCursorBackendImpl::create( backingStoreCursor.get(), direction, cursorType,
+            transaction.get(), objectStore.get() );
+    callbacks->onSuccess( cursor.release() );
 }
 
-void IDBIndexBackendImpl::openCursor(PassRefPtr<IDBKeyRange> prpKeyRange, unsigned short direction, PassRefPtr<IDBCallbacks> prpCallbacks, IDBTransactionBackendInterface* transactionPtr, ExceptionCode& ec)
+void IDBIndexBackendImpl::openCursor( PassRefPtr<IDBKeyRange> prpKeyRange, unsigned short direction,
+                                      PassRefPtr<IDBCallbacks> prpCallbacks, IDBTransactionBackendInterface *transactionPtr, ExceptionCode &ec )
 {
     RefPtr<IDBIndexBackendImpl> index = this;
     RefPtr<IDBKeyRange> keyRange = prpKeyRange;
     RefPtr<IDBCallbacks> callbacks = prpCallbacks;
     RefPtr<IDBTransactionBackendInterface> transaction = transactionPtr;
-    if (!transaction->scheduleTask(createCallbackTask(&openCursorInternal, index, keyRange, direction, IDBCursorBackendInterface::IndexCursor, callbacks, transaction)))
-        ec = IDBDatabaseException::NOT_ALLOWED_ERR;
-}
 
-void IDBIndexBackendImpl::openKeyCursor(PassRefPtr<IDBKeyRange> prpKeyRange, unsigned short direction, PassRefPtr<IDBCallbacks> prpCallbacks, IDBTransactionBackendInterface* transactionPtr, ExceptionCode& ec)
-{
-    RefPtr<IDBIndexBackendImpl> index = this;
-    RefPtr<IDBKeyRange> keyRange = prpKeyRange;
-    RefPtr<IDBCallbacks> callbacks = prpCallbacks;
-    RefPtr<IDBTransactionBackendInterface> transaction = transactionPtr;
-    if (!transaction->scheduleTask(createCallbackTask(&openCursorInternal, index, keyRange, direction, IDBCursorBackendInterface::IndexKeyCursor, callbacks, transaction)))
+    if ( !transaction->scheduleTask( createCallbackTask( &openCursorInternal, index, keyRange, direction,
+                                     IDBCursorBackendInterface::IndexCursor, callbacks, transaction ) ) )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
-}
-
-void IDBIndexBackendImpl::getInternal(ScriptExecutionContext*, PassRefPtr<IDBIndexBackendImpl> index, PassRefPtr<IDBKey> key, bool getObject, PassRefPtr<IDBCallbacks> callbacks)
-{
-    // FIXME: Split getInternal into two functions, getting rid off |getObject|.
-    if (getObject) {
-        String value = index->m_backingStore->getObjectViaIndex(index->m_databaseId, index->m_objectStoreBackend->id(), index->id(), *key);
-        if (value.isNull()) {
-            callbacks->onError(IDBDatabaseError::create(IDBDatabaseException::NOT_FOUND_ERR, "Key does not exist in the index."));
-            return;
-        }
-        callbacks->onSuccess(SerializedScriptValue::createFromWire(value));
-    } else {
-        RefPtr<IDBKey> keyResult = index->m_backingStore->getPrimaryKeyViaIndex(index->m_databaseId, index->m_objectStoreBackend->id(), index->id(), *key);
-        if (!keyResult) {
-            callbacks->onError(IDBDatabaseError::create(IDBDatabaseException::NOT_FOUND_ERR, "Key does not exist in the index."));
-            return;
-        }
-        callbacks->onSuccess(keyResult.get());
     }
 }
 
-void IDBIndexBackendImpl::get(PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> prpCallbacks, IDBTransactionBackendInterface* transaction, ExceptionCode& ec)
+void IDBIndexBackendImpl::openKeyCursor( PassRefPtr<IDBKeyRange> prpKeyRange, unsigned short direction,
+        PassRefPtr<IDBCallbacks> prpCallbacks, IDBTransactionBackendInterface *transactionPtr, ExceptionCode &ec )
+{
+    RefPtr<IDBIndexBackendImpl> index = this;
+    RefPtr<IDBKeyRange> keyRange = prpKeyRange;
+    RefPtr<IDBCallbacks> callbacks = prpCallbacks;
+    RefPtr<IDBTransactionBackendInterface> transaction = transactionPtr;
+
+    if ( !transaction->scheduleTask( createCallbackTask( &openCursorInternal, index, keyRange, direction,
+                                     IDBCursorBackendInterface::IndexKeyCursor, callbacks, transaction ) ) )
+    {
+        ec = IDBDatabaseException::NOT_ALLOWED_ERR;
+    }
+}
+
+void IDBIndexBackendImpl::getInternal( ScriptExecutionContext *, PassRefPtr<IDBIndexBackendImpl> index, PassRefPtr<IDBKey> key,
+                                       bool getObject, PassRefPtr<IDBCallbacks> callbacks )
+{
+    // FIXME: Split getInternal into two functions, getting rid off |getObject|.
+    if ( getObject )
+    {
+        String value = index->m_backingStore->getObjectViaIndex( index->m_databaseId, index->m_objectStoreBackend->id(), index->id(),
+                       *key );
+
+        if ( value.isNull() )
+        {
+            callbacks->onError( IDBDatabaseError::create( IDBDatabaseException::NOT_FOUND_ERR, "Key does not exist in the index." ) );
+            return;
+        }
+
+        callbacks->onSuccess( SerializedScriptValue::createFromWire( value ) );
+    }
+    else
+    {
+        RefPtr<IDBKey> keyResult = index->m_backingStore->getPrimaryKeyViaIndex( index->m_databaseId, index->m_objectStoreBackend->id(),
+                                   index->id(), *key );
+
+        if ( !keyResult )
+        {
+            callbacks->onError( IDBDatabaseError::create( IDBDatabaseException::NOT_FOUND_ERR, "Key does not exist in the index." ) );
+            return;
+        }
+
+        callbacks->onSuccess( keyResult.get() );
+    }
+}
+
+void IDBIndexBackendImpl::get( PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> prpCallbacks,
+                               IDBTransactionBackendInterface *transaction, ExceptionCode &ec )
 {
     RefPtr<IDBIndexBackendImpl> index = this;
     RefPtr<IDBKey> key = prpKey;
     RefPtr<IDBCallbacks> callbacks = prpCallbacks;
-    if (!transaction->scheduleTask(createCallbackTask(&getInternal, index, key, true, callbacks)))
+
+    if ( !transaction->scheduleTask( createCallbackTask( &getInternal, index, key, true, callbacks ) ) )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
+    }
 }
 
-void IDBIndexBackendImpl::getKey(PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> prpCallbacks, IDBTransactionBackendInterface* transaction, ExceptionCode& ec)
+void IDBIndexBackendImpl::getKey( PassRefPtr<IDBKey> prpKey, PassRefPtr<IDBCallbacks> prpCallbacks,
+                                  IDBTransactionBackendInterface *transaction, ExceptionCode &ec )
 {
     RefPtr<IDBIndexBackendImpl> index = this;
     RefPtr<IDBKey> key = prpKey;
     RefPtr<IDBCallbacks> callbacks = prpCallbacks;
-    if (!transaction->scheduleTask(createCallbackTask(&getInternal, index, key, false, callbacks)))
+
+    if ( !transaction->scheduleTask( createCallbackTask( &getInternal, index, key, false, callbacks ) ) )
+    {
         ec = IDBDatabaseException::NOT_ALLOWED_ERR;
+    }
 }
 
-bool IDBIndexBackendImpl::addingKeyAllowed(IDBKey* key)
+bool IDBIndexBackendImpl::addingKeyAllowed( IDBKey *key )
 {
-    if (!m_unique)
+    if ( !m_unique )
+    {
         return true;
+    }
 
-    return !m_backingStore->keyExistsInIndex(m_databaseId, m_objectStoreBackend->id(), m_id, *key);
+    return !m_backingStore->keyExistsInIndex( m_databaseId, m_objectStoreBackend->id(), m_id, *key );
 }
 
 } // namespace WebCore

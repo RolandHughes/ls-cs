@@ -26,20 +26,21 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class ComputedNamespaceConstructor : public PairContainer
 {
- public:
-   ComputedNamespaceConstructor(const Expression::Ptr &prefix, const Expression::Ptr &namespaceURI);
+public:
+    ComputedNamespaceConstructor( const Expression::Ptr &prefix, const Expression::Ptr &namespaceURI );
 
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
-   SequenceType::List expectedOperandTypes() const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
+    SequenceType::List expectedOperandTypes() const override;
 
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Expression::Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Expression::Properties properties() const override;
 };
 }
 

@@ -32,129 +32,145 @@
 #include <wtf/TypeTraits.h>
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 class DataReference;
-    
-class ArgumentDecoder {
+
+class ArgumentDecoder
+{
 public:
-    ArgumentDecoder(const uint8_t* buffer, size_t bufferSize);
-    ArgumentDecoder(const uint8_t* buffer, size_t bufferSize, Deque<Attachment>&);
+    ArgumentDecoder( const uint8_t *buffer, size_t bufferSize );
+    ArgumentDecoder( const uint8_t *buffer, size_t bufferSize, Deque<Attachment> & );
     ~ArgumentDecoder();
 
-    uint64_t destinationID() const { return m_destinationID; }
+    uint64_t destinationID() const
+    {
+        return m_destinationID;
+    }
 
-    bool isInvalid() const { return m_bufferPos > m_bufferEnd; }
-    void markInvalid() { m_bufferPos = m_bufferEnd + 1; }
+    bool isInvalid() const
+    {
+        return m_bufferPos > m_bufferEnd;
+    }
+    void markInvalid()
+    {
+        m_bufferPos = m_bufferEnd + 1;
+    }
 
-    bool decodeBytes(Vector<uint8_t>&);
-    bool decodeBytes(uint8_t*, size_t);
+    bool decodeBytes( Vector<uint8_t> & );
+    bool decodeBytes( uint8_t *, size_t );
 
     // The data in the data reference here will only be valid for the lifetime of the ArgumentDecoder object.
-    bool decodeBytes(DataReference&);
+    bool decodeBytes( DataReference & );
 
-    bool decodeBool(bool&);
-    bool decodeUInt32(uint32_t&);
-    bool decodeUInt64(uint64_t&);
-    bool decodeInt32(int32_t&);
-    bool decodeInt64(int64_t&);
-    bool decodeFloat(float&);
-    bool decodeDouble(double&);
+    bool decodeBool( bool & );
+    bool decodeUInt32( uint32_t & );
+    bool decodeUInt64( uint64_t & );
+    bool decodeInt32( int32_t & );
+    bool decodeInt64( int64_t & );
+    bool decodeFloat( float & );
+    bool decodeDouble( double & );
 
-    template<typename T> bool decodeEnum(T& result)
+    template<typename T> bool decodeEnum( T &result )
     {
-        COMPILE_ASSERT(sizeof(T) <= sizeof(uint64_t), enum_type_must_not_be_larger_than_64_bits);
+        COMPILE_ASSERT( sizeof( T ) <= sizeof( uint64_t ), enum_type_must_not_be_larger_than_64_bits );
 
         uint64_t value;
-        if (!decodeUInt64(value))
+
+        if ( !decodeUInt64( value ) )
+        {
             return false;
-        
-        result = static_cast<T>(value);
+        }
+
+        result = static_cast<T>( value );
         return true;
     }
 
     template<typename T>
-    bool bufferIsLargeEnoughToContain(size_t numElements) const
+    bool bufferIsLargeEnoughToContain( size_t numElements ) const
     {
-        COMPILE_ASSERT(WTF::IsArithmetic<T>::value, type_must_have_known_encoded_size);
-      
-        if (numElements > std::numeric_limits<size_t>::max() / sizeof(T))
-            return false;
+        COMPILE_ASSERT( WTF::IsArithmetic<T>::value, type_must_have_known_encoded_size );
 
-        return bufferIsLargeEnoughToContain(__alignof(T), numElements * sizeof(T));
+        if ( numElements > std::numeric_limits<size_t>::max() / sizeof( T ) )
+        {
+            return false;
+        }
+
+        return bufferIsLargeEnoughToContain( __alignof( T ), numElements * sizeof( T ) );
     }
 
     // Generic type decode function.
-    template<typename T> bool decode(T& t)
+    template<typename T> bool decode( T &t )
     {
-        return ArgumentCoder<T>::decode(this, t);
+        return ArgumentCoder<T>::decode( this, t );
     }
 
-    // This overload exists so we can pass temporaries to decode. In the Star Trek future, it 
+    // This overload exists so we can pass temporaries to decode. In the Star Trek future, it
     // can take an rvalue reference instead.
-    template<typename T> bool decode(const T& t)
+    template<typename T> bool decode( const T &t )
     {
-        return decode(const_cast<T&>(t));
+        return decode( const_cast<T &>( t ) );
     }
 
-    bool removeAttachment(Attachment&);
+    bool removeAttachment( Attachment & );
 
 #ifndef NDEBUG
     void debug();
 #endif
 
 private:
-    ArgumentDecoder(const ArgumentDecoder*);
-    ArgumentDecoder* operator=(const ArgumentDecoder*);
+    ArgumentDecoder( const ArgumentDecoder * );
+    ArgumentDecoder *operator=( const ArgumentDecoder * );
 
-    void initialize(const uint8_t* buffer, size_t bufferSize);
+    void initialize( const uint8_t *buffer, size_t bufferSize );
 
-    bool alignBufferPosition(unsigned alignment, size_t size);
-    bool bufferIsLargeEnoughToContain(unsigned alignment, size_t size) const;
+    bool alignBufferPosition( unsigned alignment, size_t size );
+    bool bufferIsLargeEnoughToContain( unsigned alignment, size_t size ) const;
 
     uint64_t m_destinationID;
 
-    uint8_t* m_allocatedBase;
-    uint8_t* m_buffer;
-    uint8_t* m_bufferPos;
-    uint8_t* m_bufferEnd;
+    uint8_t *m_allocatedBase;
+    uint8_t *m_buffer;
+    uint8_t *m_bufferPos;
+    uint8_t *m_bufferEnd;
 
     Deque<Attachment> m_attachments;
 };
 
-template<> inline bool ArgumentDecoder::decode(bool& n)
+template<> inline bool ArgumentDecoder::decode( bool &n )
 {
-    return decodeBool(n);
+    return decodeBool( n );
 }
 
-template<> inline bool ArgumentDecoder::decode(uint32_t& n)
+template<> inline bool ArgumentDecoder::decode( uint32_t &n )
 {
-    return decodeUInt32(n);
+    return decodeUInt32( n );
 }
 
-template<> inline bool ArgumentDecoder::decode(uint64_t& n)
+template<> inline bool ArgumentDecoder::decode( uint64_t &n )
 {
-    return decodeUInt64(n);
+    return decodeUInt64( n );
 }
 
-template<> inline bool ArgumentDecoder::decode(int32_t& n)
+template<> inline bool ArgumentDecoder::decode( int32_t &n )
 {
-    return decodeInt32(n);
+    return decodeInt32( n );
 }
 
-template<> inline bool ArgumentDecoder::decode(int64_t& n)
+template<> inline bool ArgumentDecoder::decode( int64_t &n )
 {
-    return decodeInt64(n);
+    return decodeInt64( n );
 }
 
-template<> inline bool ArgumentDecoder::decode(float& n)
+template<> inline bool ArgumentDecoder::decode( float &n )
 {
-    return decodeFloat(n);
+    return decodeFloat( n );
 }
 
-template<> inline bool ArgumentDecoder::decode(double& n)
+template<> inline bool ArgumentDecoder::decode( double &n )
 {
-    return decodeDouble(n);
+    return decodeDouble( n );
 }
 
 } // namespace CoreIPC

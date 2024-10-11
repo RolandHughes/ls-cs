@@ -25,16 +25,18 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSPrimitiveValue;
 class CSSValueList;
 
-class FontValue : public CSSValue {
+class FontValue : public CSSValue
+{
 public:
     static PassRefPtr<FontValue> create()
     {
-        return adoptRef(new FontValue);
+        return adoptRef( new FontValue );
     }
 
     virtual String cssText() const;
@@ -49,7 +51,10 @@ public:
 private:
     FontValue() { }
 
-    virtual bool isFontValue() const { return true; }
+    virtual bool isFontValue() const
+    {
+        return true;
+    }
 };
 
 } // namespace

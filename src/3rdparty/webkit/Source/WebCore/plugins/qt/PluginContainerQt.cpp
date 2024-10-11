@@ -35,8 +35,8 @@
 
 using namespace WebCore;
 
-PluginClientWrapper::PluginClientWrapper(QWidget* parent, WId client)
-    : QWidget(0, Qt::Popup)
+PluginClientWrapper::PluginClientWrapper( QWidget *parent, WId client )
+    : QWidget( 0, Qt::Popup )
 {
     // create a QWidget that adopts the plugin window id, do not give it
     // a parent so that we don't end up handling events supposed to be
@@ -47,36 +47,36 @@ PluginClientWrapper::PluginClientWrapper(QWidget* parent, WId client)
     // has been closed. In order to work around this, we set the window
     // type to Qt::Popup.
 
-    create(client, false, true);
+    create( client, false, true );
     m_parent = parent;
 }
 
 PluginClientWrapper::~PluginClientWrapper()
 {
-    destroy(false, false);
+    destroy( false, false );
 }
 
-bool PluginClientWrapper::x11Event(XEvent* event)
+bool PluginClientWrapper::x11Event( XEvent *event )
 {
     // modify the event window id and insert it into the Qt event system.
     event->xany.window = m_parent->effectiveWinId();
-    static_cast<QApplication*>(QApplication::instance())->x11ProcessEvent(event);
+    static_cast<QApplication *>( QApplication::instance() )->x11ProcessEvent( event );
     return true;
 }
 
-PluginContainerQt::PluginContainerQt(PluginView* view, QWidget* parent)
-    : QX11EmbedContainer(parent)
-    , m_pluginView(view)
-    , m_clientWrapper(0)
+PluginContainerQt::PluginContainerQt( PluginView *view, QWidget *parent )
+    : QX11EmbedContainer( parent )
+    , m_pluginView( view )
+    , m_clientWrapper( 0 )
 {
-    connect(this, SIGNAL(clientClosed()), this, SLOT(on_clientClosed()));
-    connect(this, SIGNAL(clientIsEmbedded()), this, SLOT(on_clientIsEmbedded()));
+    connect( this, SIGNAL( clientClosed() ), this, SLOT( on_clientClosed() ) );
+    connect( this, SIGNAL( clientIsEmbedded() ), this, SLOT( on_clientIsEmbedded() ) );
 }
 
 PluginContainerQt::~PluginContainerQt()
 {
     delete m_clientWrapper;
-    m_pluginView->setPlatformPluginWidget(0);
+    m_pluginView->setPlatformPluginWidget( 0 );
 }
 
 void PluginContainerQt::on_clientClosed()
@@ -96,11 +96,13 @@ void PluginContainerQt::on_clientIsEmbedded()
     // them to the parent. NOTICE: Native Qt based plugins running in process,
     // will already be in the window mapper, and thus creating a wrapper, stops
     // them from getting events from Qt, as they are redirected to the wrapper.
-    if (! QWidget::find(clientWinId()))
-        m_clientWrapper = new PluginClientWrapper(this, clientWinId());
+    if ( ! QWidget::find( clientWinId() ) )
+    {
+        m_clientWrapper = new PluginClientWrapper( this, clientWinId() );
+    }
 }
 
-void PluginContainerQt::redirectWheelEventsToParent(bool enable)
+void PluginContainerQt::redirectWheelEventsToParent( bool enable )
 {
     // steal wheel events from the plugin as we want to handle it. When doing this
     // all button 4, 5, 6, and 7, ButtonPress and ButtonRelease events are passed
@@ -108,47 +110,55 @@ void PluginContainerQt::redirectWheelEventsToParent(bool enable)
     // window id of the event to the parent of PluginContainer and puts the event
     // back into the Qt event loop, so that we will actually scroll the parent
     // frame.
-    for (int buttonNo = 4; buttonNo < 8; buttonNo++) {
-        if (enable)
-            XGrabButton(x11Info().display(), buttonNo, AnyModifier, clientWinId(),
-                false, ButtonPressMask, GrabModeAsync, GrabModeAsync, 0L, 0L);
+    for ( int buttonNo = 4; buttonNo < 8; buttonNo++ )
+    {
+        if ( enable )
+            XGrabButton( x11Info().display(), buttonNo, AnyModifier, clientWinId(),
+                         false, ButtonPressMask, GrabModeAsync, GrabModeAsync, 0L, 0L );
         else
-            XUngrabButton(x11Info().display(), buttonNo, AnyModifier, clientWinId());
+        {
+            XUngrabButton( x11Info().display(), buttonNo, AnyModifier, clientWinId() );
+        }
     }
 }
 
-bool PluginContainerQt::x11Event(XEvent* event)
+bool PluginContainerQt::x11Event( XEvent *event )
 {
-    switch (event->type) {
-    case EnterNotify:
-        // if the plugin window doesn't have focus we do not want to send wheel
-        // events to it, but to the parent frame, so let's redirect here.
-        redirectWheelEventsToParent(!hasFocus());
-        break;
+    switch ( event->type )
+    {
+        case EnterNotify:
+            // if the plugin window doesn't have focus we do not want to send wheel
+            // events to it, but to the parent frame, so let's redirect here.
+            redirectWheelEventsToParent( !hasFocus() );
+            break;
 
-    case LeaveNotify:
-        // it is always safe to ungrab wheel events when the mouse leaves the
-        // plugin window.
-        redirectWheelEventsToParent(false);
-        break;
+        case LeaveNotify:
+            // it is always safe to ungrab wheel events when the mouse leaves the
+            // plugin window.
+            redirectWheelEventsToParent( false );
+            break;
     }
 
-    return QX11EmbedContainer::x11Event(event);
+    return QX11EmbedContainer::x11Event( event );
 }
 
-void PluginContainerQt::focusInEvent(QFocusEvent* event)
+void PluginContainerQt::focusInEvent( QFocusEvent *event )
 {
     // we got focus, stop redirecting the wheel events
-    redirectWheelEventsToParent(false);
+    redirectWheelEventsToParent( false );
 
-    if (Page* page = m_pluginView->parentFrame()->page())
-        page->focusController()->setActive(true);
+    if ( Page *page = m_pluginView->parentFrame()->page() )
+    {
+        page->focusController()->setActive( true );
+    }
 
     m_pluginView->focusPluginElement();
 }
 
-void PluginContainerQt::focusOutEvent(QFocusEvent*)
+void PluginContainerQt::focusOutEvent( QFocusEvent * )
 {
-    if (Page* page = m_pluginView->parentFrame()->page())
-        page->focusController()->setActive(false);
+    if ( Page *page = m_pluginView->parentFrame()->page() )
+    {
+        page->focusController()->setActive( false );
+    }
 }

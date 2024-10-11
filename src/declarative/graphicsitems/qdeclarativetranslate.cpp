@@ -30,18 +30,18 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeTranslatePrivate : public QGraphicsTransformPrivate
 {
- public:
-   QDeclarativeTranslatePrivate()
-      : x(0), y(0) {}
-   qreal x;
-   qreal y;
+public:
+    QDeclarativeTranslatePrivate()
+        : x( 0 ), y( 0 ) {}
+    qreal x;
+    qreal y;
 };
 
 /*!
     Constructs an empty QDeclarativeTranslate object with the given \a parent.
 */
-QDeclarativeTranslate::QDeclarativeTranslate(QObject *parent)
-   : QGraphicsTransform(*new QDeclarativeTranslatePrivate, parent)
+QDeclarativeTranslate::QDeclarativeTranslate( QObject *parent )
+    : QGraphicsTransform( *new QDeclarativeTranslatePrivate, parent )
 {
 }
 
@@ -62,18 +62,21 @@ QDeclarativeTranslate::~QDeclarativeTranslate()
 */
 qreal QDeclarativeTranslate::x() const
 {
-   Q_D(const QDeclarativeTranslate);
-   return d->x;
+    Q_D( const QDeclarativeTranslate );
+    return d->x;
 }
-void QDeclarativeTranslate::setX(qreal x)
+void QDeclarativeTranslate::setX( qreal x )
 {
-   Q_D(QDeclarativeTranslate);
-   if (d->x == x) {
-      return;
-   }
-   d->x = x;
-   update();
-   emit xChanged();
+    Q_D( QDeclarativeTranslate );
+
+    if ( d->x == x )
+    {
+        return;
+    }
+
+    d->x = x;
+    update();
+    emit xChanged();
 }
 
 /*!
@@ -86,24 +89,27 @@ void QDeclarativeTranslate::setX(qreal x)
 */
 qreal QDeclarativeTranslate::y() const
 {
-   Q_D(const QDeclarativeTranslate);
-   return d->y;
+    Q_D( const QDeclarativeTranslate );
+    return d->y;
 }
-void QDeclarativeTranslate::setY(qreal y)
+void QDeclarativeTranslate::setY( qreal y )
 {
-   Q_D(QDeclarativeTranslate);
-   if (d->y == y) {
-      return;
-   }
-   d->y = y;
-   update();
-   emit yChanged();
+    Q_D( QDeclarativeTranslate );
+
+    if ( d->y == y )
+    {
+        return;
+    }
+
+    d->y = y;
+    update();
+    emit yChanged();
 }
 
-void QDeclarativeTranslate::applyTo(QMatrix4x4 *matrix) const
+void QDeclarativeTranslate::applyTo( QMatrix4x4 *matrix ) const
 {
-   Q_D(const QDeclarativeTranslate);
-   matrix->translate(d->x, d->y, 0);
+    Q_D( const QDeclarativeTranslate );
+    matrix->translate( d->x, d->y, 0 );
 }
 
 QT_END_NAMESPACE

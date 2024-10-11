@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -39,7 +39,8 @@
 #include <wtf/Vector.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AnimationBase;
 class CompositeAnimation;
@@ -51,79 +52,88 @@ class RenderObject;
 class RenderStyle;
 class WebKitAnimationList;
 
-class AnimationControllerPrivate {
-    WTF_MAKE_NONCOPYABLE(AnimationControllerPrivate); WTF_MAKE_FAST_ALLOCATED;
+class AnimationControllerPrivate
+{
+    WTF_MAKE_NONCOPYABLE( AnimationControllerPrivate );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    AnimationControllerPrivate(Frame*);
+    AnimationControllerPrivate( Frame * );
     ~AnimationControllerPrivate();
 
-    void updateAnimationTimer(bool callSetChanged = false);
+    void updateAnimationTimer( bool callSetChanged = false );
 
-    PassRefPtr<CompositeAnimation> accessCompositeAnimation(RenderObject*);
-    bool clear(RenderObject*);
+    PassRefPtr<CompositeAnimation> accessCompositeAnimation( RenderObject * );
+    bool clear( RenderObject * );
 
-    void updateStyleIfNeededDispatcherFired(Timer<AnimationControllerPrivate>*);
+    void updateStyleIfNeededDispatcherFired( Timer<AnimationControllerPrivate> * );
     void startUpdateStyleIfNeededDispatcher();
-    void addEventToDispatch(PassRefPtr<Element> element, const AtomicString& eventType, const String& name, double elapsedTime);
-    void addNodeChangeToDispatch(PassRefPtr<Node>);
+    void addEventToDispatch( PassRefPtr<Element> element, const AtomicString &eventType, const String &name, double elapsedTime );
+    void addNodeChangeToDispatch( PassRefPtr<Node> );
 
-    bool hasAnimations() const { return !m_compositeAnimations.isEmpty(); }
+    bool hasAnimations() const
+    {
+        return !m_compositeAnimations.isEmpty();
+    }
 
     void suspendAnimations();
     void resumeAnimations();
 
-    void suspendAnimationsForDocument(Document*);
-    void resumeAnimationsForDocument(Document*);
+    void suspendAnimationsForDocument( Document * );
+    void resumeAnimationsForDocument( Document * );
 
-    bool isRunningAnimationOnRenderer(RenderObject*, CSSPropertyID, bool isRunningNow) const;
-    bool isRunningAcceleratedAnimationOnRenderer(RenderObject*, CSSPropertyID, bool isRunningNow) const;
+    bool isRunningAnimationOnRenderer( RenderObject *, CSSPropertyID, bool isRunningNow ) const;
+    bool isRunningAcceleratedAnimationOnRenderer( RenderObject *, CSSPropertyID, bool isRunningNow ) const;
 
-    bool pauseAnimationAtTime(RenderObject*, const String& name, double t);
-    bool pauseTransitionAtTime(RenderObject*, const String& property, double t);
+    bool pauseAnimationAtTime( RenderObject *, const String &name, double t );
+    bool pauseTransitionAtTime( RenderObject *, const String &property, double t );
     unsigned numberOfActiveAnimations() const;
 
-    PassRefPtr<RenderStyle> getAnimatedStyleForRenderer(RenderObject* renderer);
+    PassRefPtr<RenderStyle> getAnimatedStyleForRenderer( RenderObject *renderer );
 
     double beginAnimationUpdateTime();
-    void setBeginAnimationUpdateTime(double t) { m_beginAnimationUpdateTime = t; }
+    void setBeginAnimationUpdateTime( double t )
+    {
+        m_beginAnimationUpdateTime = t;
+    }
     void endAnimationUpdate();
-    void receivedStartTimeResponse(double);
-    
-    void addToAnimationsWaitingForStyle(AnimationBase*);
-    void removeFromAnimationsWaitingForStyle(AnimationBase*);
+    void receivedStartTimeResponse( double );
 
-    void addToAnimationsWaitingForStartTimeResponse(AnimationBase*, bool willGetResponse);
-    void removeFromAnimationsWaitingForStartTimeResponse(AnimationBase*);
+    void addToAnimationsWaitingForStyle( AnimationBase * );
+    void removeFromAnimationsWaitingForStyle( AnimationBase * );
 
-    void animationWillBeRemoved(AnimationBase*);
+    void addToAnimationsWaitingForStartTimeResponse( AnimationBase *, bool willGetResponse );
+    void removeFromAnimationsWaitingForStartTimeResponse( AnimationBase * );
 
-    PassRefPtr<WebKitAnimationList> animationsForRenderer(RenderObject*) const;
-    
+    void animationWillBeRemoved( AnimationBase * );
+
+    PassRefPtr<WebKitAnimationList> animationsForRenderer( RenderObject * ) const;
+
 private:
-    void animationTimerFired(Timer<AnimationControllerPrivate>*);
+    void animationTimerFired( Timer<AnimationControllerPrivate> * );
 
     void styleAvailable();
     void fireEventsAndUpdateStyle();
-    void startTimeResponse(double t);
+    void startTimeResponse( double t );
 
-    typedef HashMap<RenderObject*, RefPtr<CompositeAnimation> > RenderObjectAnimationMap;
+    typedef HashMap<RenderObject *, RefPtr<CompositeAnimation> > RenderObjectAnimationMap;
 
     RenderObjectAnimationMap m_compositeAnimations;
     Timer<AnimationControllerPrivate> m_animationTimer;
     Timer<AnimationControllerPrivate> m_updateStyleIfNeededDispatcher;
-    Frame* m_frame;
-    
-    class EventToDispatch {
+    Frame *m_frame;
+
+    class EventToDispatch
+    {
     public:
         RefPtr<Element> element;
         AtomicString eventType;
         String name;
         double elapsedTime;
     };
-    
+
     Vector<EventToDispatch> m_eventsToDispatch;
     Vector<RefPtr<Node> > m_nodeChangesToDispatch;
-    
+
     double m_beginAnimationUpdateTime;
 
     typedef HashSet<RefPtr<AnimationBase> > WaitingAnimationsSet;

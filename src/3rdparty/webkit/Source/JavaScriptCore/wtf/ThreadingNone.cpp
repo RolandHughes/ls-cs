@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,26 +32,45 @@
 
 #if ENABLE(SINGLE_THREADED)
 
-namespace WTF {
+namespace WTF
+{
 
 void initializeThreading() { }
-ThreadIdentifier createThreadInternal(ThreadFunction, void*, const char*) { return ThreadIdentifier(); }
-void initializeCurrentThreadInternal(const char*) { }
-int waitForThreadCompletion(ThreadIdentifier, void**) { return 0; }
-void detachThread(ThreadIdentifier) { }
-ThreadIdentifier currentThread() { return ThreadIdentifier(); }
-bool isMainThread() { return true; }
+ThreadIdentifier createThreadInternal( ThreadFunction, void *, const char * )
+{
+    return ThreadIdentifier();
+}
+void initializeCurrentThreadInternal( const char * ) { }
+int waitForThreadCompletion( ThreadIdentifier, void ** )
+{
+    return 0;
+}
+void detachThread( ThreadIdentifier ) { }
+ThreadIdentifier currentThread()
+{
+    return ThreadIdentifier();
+}
+bool isMainThread()
+{
+    return true;
+}
 
 Mutex::Mutex() { }
 Mutex::~Mutex() { }
 void Mutex::lock() { }
-bool Mutex::tryLock() { return false; }
+bool Mutex::tryLock()
+{
+    return false;
+}
 void Mutex::unlock() { }
 
 ThreadCondition::ThreadCondition() { }
 ThreadCondition::~ThreadCondition() { }
-void ThreadCondition::wait(Mutex&) { }
-bool ThreadCondition::timedWait(Mutex&, double) { return false; }
+void ThreadCondition::wait( Mutex & ) { }
+bool ThreadCondition::timedWait( Mutex &, double )
+{
+    return false;
+}
 void ThreadCondition::signal() { }
 void ThreadCondition::broadcast() { }
 

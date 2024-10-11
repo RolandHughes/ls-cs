@@ -37,44 +37,45 @@
 
 class QLockFilePrivate
 {
- public:
-   QLockFilePrivate(const QString &fn)
-      : fileName(fn),
+public:
+    QLockFilePrivate( const QString &fn )
+        : fileName( fn ),
 #ifdef Q_OS_WIN
-        fileHandle(INVALID_HANDLE_VALUE),
+          fileHandle( INVALID_HANDLE_VALUE ),
 #else
-        fileHandle(-1),
+          fileHandle( -1 ),
 #endif
-        staleLockTime(30 * 1000), // 30 seconds
-        lockError(QLockFile::NoError), isLocked(false) {
-   }
+          staleLockTime( 30 * 1000 ), // 30 seconds
+          lockError( QLockFile::NoError ), isLocked( false )
+    {
+    }
 
-   QLockFile::LockError tryLock_sys();
-   bool removeStaleLock();
-   bool getLockInfo(qint64 *pid, QString *hostname, QString *appname) const;
+    QLockFile::LockError tryLock_sys();
+    bool removeStaleLock();
+    bool getLockInfo( qint64 *pid, QString *hostname, QString *appname ) const;
 
-   // Returns \c true if the lock belongs to dead PID, or is old.
-   // The attempt to delete it will tell us if it was really stale or not, though.
-   bool isApparentlyStale() const;
+    // Returns \c true if the lock belongs to dead PID, or is old.
+    // The attempt to delete it will tell us if it was really stale or not, though.
+    bool isApparentlyStale() const;
 
-   // used in dbusmenu
-   Q_CORE_EXPORT static QString processNameByPid(qint64 pid);
+    // used in dbusmenu
+    Q_CORE_EXPORT static QString processNameByPid( qint64 pid );
 
 #ifdef Q_OS_UNIX
-   static int checkFcntlWorksAfterFlock(const QString &fn);
+    static int checkFcntlWorksAfterFlock( const QString &fn );
 #endif
 
-   QString fileName;
+    QString fileName;
 
 #ifdef Q_OS_WIN
-   Qt::HANDLE fileHandle;
+    Qt::HANDLE fileHandle;
 #else
-   int fileHandle;
+    int fileHandle;
 #endif
 
-   int staleLockTime; // "int milliseconds" is big enough for 24 days
-   QLockFile::LockError lockError;
-   bool isLocked;
+    int staleLockTime; // "int milliseconds" is big enough for 24 days
+    QLockFile::LockError lockError;
+    bool isLocked;
 };
 
 #endif

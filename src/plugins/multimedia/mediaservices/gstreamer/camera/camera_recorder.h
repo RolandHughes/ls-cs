@@ -33,45 +33,45 @@
 
 class CameraBinRecorder : public QMediaRecorderControl
 {
-   CS_OBJECT(CameraBinRecorder)
+    LSCS_OBJECT( CameraBinRecorder )
 
- public:
-   CameraBinRecorder(CameraBinSession *session);
-   virtual ~CameraBinRecorder();
+public:
+    CameraBinRecorder( CameraBinSession *session );
+    virtual ~CameraBinRecorder();
 
-   QUrl outputLocation() const override;
-   bool setOutputLocation(const QUrl &sink) override;
+    QUrl outputLocation() const override;
+    bool setOutputLocation( const QUrl &sink ) override;
 
-   QMediaRecorder::State state() const override;
-   QMediaRecorder::Status status() const override;
+    QMediaRecorder::State state() const override;
+    QMediaRecorder::Status status() const override;
 
-   qint64 duration() const override;
+    qint64 duration() const override;
 
-   bool isMuted() const override;
-   qreal volume() const override;
+    bool isMuted() const override;
+    qreal volume() const override;
 
-   void applySettings() override;
+    void applySettings() override;
 
 #ifdef HAVE_GST_ENCODING_PROFILES
-   GstEncodingContainerProfile *videoProfile();
+    GstEncodingContainerProfile *videoProfile();
 #endif
 
-   CS_SLOT_1(Public, void setState(QMediaRecorder::State state) override)
-   CS_SLOT_2(setState)
+    LSCS_SLOT_1( Public, void setState( QMediaRecorder::State state ) override )
+    LSCS_SLOT_2( setState )
 
-   CS_SLOT_1(Public, void setMuted(bool muted) override)
-   CS_SLOT_2(setMuted)
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) override )
+    LSCS_SLOT_2( setMuted )
 
-   CS_SLOT_1(Public, void setVolume(qreal volume) override)
-   CS_SLOT_2(setVolume)
+    LSCS_SLOT_1( Public, void setVolume( qreal volume ) override )
+    LSCS_SLOT_2( setVolume )
 
-   CS_SLOT_1(Public, void updateStatus())
-   CS_SLOT_2(updateStatus)
+    LSCS_SLOT_1( Public, void updateStatus() )
+    LSCS_SLOT_2( updateStatus )
 
- private:
-   CameraBinSession *m_session;
-   QMediaRecorder::State m_state;
-   QMediaRecorder::Status m_status;
+private:
+    CameraBinSession *m_session;
+    QMediaRecorder::State m_state;
+    QMediaRecorder::Status m_status;
 };
 
 #endif

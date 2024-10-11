@@ -29,8 +29,8 @@
 
 
 
-QAccessiblePlugin::QAccessiblePlugin(QObject *parent)
-   : QObject(parent)
+QAccessiblePlugin::QAccessiblePlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

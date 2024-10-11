@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSFileException);
+ASSERT_CLASS_FITS_IN_CELL( JSFileException );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,11 +48,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSFileException);
 
 static const HashTableValue JSFileExceptionTableValues[5] =
 {
-    { "code", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionCode), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "message", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionMessage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "code", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionCode ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "message", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionMessage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -65,55 +66,62 @@ static JSC_CONST_HASHTABLE HashTable JSFileExceptionTable = { 10, 7, JSFileExcep
 
 static const HashTableValue JSFileExceptionConstructorTableValues[13] =
 {
-    { "NOT_FOUND_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionNOT_FOUND_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SECURITY_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionSECURITY_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "ABORT_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionABORT_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "NOT_READABLE_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionNOT_READABLE_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "ENCODING_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionENCODING_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "NO_MODIFICATION_ALLOWED_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionNO_MODIFICATION_ALLOWED_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "INVALID_STATE_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionINVALID_STATE_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SYNTAX_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionSYNTAX_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "INVALID_MODIFICATION_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionINVALID_MODIFICATION_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "QUOTA_EXCEEDED_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionQUOTA_EXCEEDED_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TYPE_MISMATCH_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionTYPE_MISMATCH_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "PATH_EXISTS_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionPATH_EXISTS_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "NOT_FOUND_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionNOT_FOUND_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SECURITY_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionSECURITY_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "ABORT_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionABORT_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "NOT_READABLE_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionNOT_READABLE_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "ENCODING_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionENCODING_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "NO_MODIFICATION_ALLOWED_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionNO_MODIFICATION_ALLOWED_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "INVALID_STATE_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionINVALID_STATE_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SYNTAX_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionSYNTAX_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "INVALID_MODIFICATION_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionINVALID_MODIFICATION_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "QUOTA_EXCEEDED_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionQUOTA_EXCEEDED_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TYPE_MISMATCH_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionTYPE_MISMATCH_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "PATH_EXISTS_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionPATH_EXISTS_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileExceptionConstructorTable = { 34, 31, JSFileExceptionConstructorTableValues, 0 };
-class JSFileExceptionConstructor : public DOMConstructorObject {
+class JSFileExceptionConstructor : public DOMConstructorObject
+{
 public:
-    JSFileExceptionConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSFileExceptionConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSFileExceptionConstructor::s_info = { "FileExceptionConstructor", &DOMConstructorObject::s_info, &JSFileExceptionConstructorTable, 0 };
 
-JSFileExceptionConstructor::JSFileExceptionConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSFileExceptionConstructor::JSFileExceptionConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSFileExceptionPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSFileExceptionPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSFileExceptionConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileExceptionConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileExceptionConstructor, JSDOMWrapper>(exec, &JSFileExceptionConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSFileExceptionConstructor, JSDOMWrapper>( exec, &JSFileExceptionConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSFileExceptionConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileExceptionConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileExceptionConstructor, JSDOMWrapper>(exec, &JSFileExceptionConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileExceptionConstructor, JSDOMWrapper>( exec, &JSFileExceptionConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -125,211 +133,219 @@ bool JSFileExceptionConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSFileExceptionPrototypeTableValues[14] =
 {
-    { "NOT_FOUND_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionNOT_FOUND_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SECURITY_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionSECURITY_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "ABORT_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionABORT_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "NOT_READABLE_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionNOT_READABLE_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "ENCODING_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionENCODING_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "NO_MODIFICATION_ALLOWED_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionNO_MODIFICATION_ALLOWED_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "INVALID_STATE_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionINVALID_STATE_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SYNTAX_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionSYNTAX_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "INVALID_MODIFICATION_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionINVALID_MODIFICATION_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "QUOTA_EXCEEDED_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionQUOTA_EXCEEDED_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TYPE_MISMATCH_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionTYPE_MISMATCH_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "PATH_EXISTS_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileExceptionPATH_EXISTS_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "toString", DontDelete | DontEnum | Function, (intptr_t)static_cast<NativeFunction>(jsFileExceptionPrototypeFunctionToString), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "NOT_FOUND_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionNOT_FOUND_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SECURITY_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionSECURITY_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "ABORT_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionABORT_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "NOT_READABLE_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionNOT_READABLE_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "ENCODING_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionENCODING_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "NO_MODIFICATION_ALLOWED_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionNO_MODIFICATION_ALLOWED_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "INVALID_STATE_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionINVALID_STATE_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SYNTAX_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionSYNTAX_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "INVALID_MODIFICATION_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionINVALID_MODIFICATION_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "QUOTA_EXCEEDED_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionQUOTA_EXCEEDED_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TYPE_MISMATCH_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionTYPE_MISMATCH_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "PATH_EXISTS_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileExceptionPATH_EXISTS_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "toString", DontDelete | DontEnum | Function, ( intptr_t )static_cast<NativeFunction>( jsFileExceptionPrototypeFunctionToString ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileExceptionPrototypeTable = { 35, 31, JSFileExceptionPrototypeTableValues, 0 };
-static const HashTable* getJSFileExceptionPrototypeTable(ExecState* exec)
+static const HashTable *getJSFileExceptionPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileExceptionPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileExceptionPrototypeTable );
 }
 
 const ClassInfo JSFileExceptionPrototype::s_info = { "FileExceptionPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSFileExceptionPrototypeTable };
 
-JSObject* JSFileExceptionPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileExceptionPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSFileException>(exec, globalObject);
+    return getDOMPrototype<JSFileException>( exec, globalObject );
 }
 
-bool JSFileExceptionPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileExceptionPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSFileExceptionPrototype, JSObject>(exec, getJSFileExceptionPrototypeTable(exec), this, propertyName, slot);
+    return getStaticPropertySlot<JSFileExceptionPrototype, JSObject>( exec, getJSFileExceptionPrototypeTable( exec ), this,
+            propertyName, slot );
 }
 
-bool JSFileExceptionPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileExceptionPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSFileExceptionPrototype, JSObject>(exec, getJSFileExceptionPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSFileExceptionPrototype, JSObject>( exec, getJSFileExceptionPrototypeTable( exec ), this,
+            propertyName, descriptor );
 }
 
-static const HashTable* getJSFileExceptionTable(ExecState* exec)
+static const HashTable *getJSFileExceptionTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileExceptionTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileExceptionTable );
 }
 
 const ClassInfo JSFileException::s_info = { "FileException", &JSDOMWrapper::s_info, 0, getJSFileExceptionTable };
 
-JSFileException::JSFileException(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<FileException> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSFileException::JSFileException( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<FileException> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSFileException::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileException::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSFileExceptionPrototype(exec->globalData(), globalObject, JSFileExceptionPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSFileExceptionPrototype( exec->globalData(), globalObject,
+            JSFileExceptionPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSFileException::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileException::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileException, Base>(exec, getJSFileExceptionTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSFileException, Base>( exec, getJSFileExceptionTable( exec ), this, propertyName, slot );
 }
 
-bool JSFileException::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileException::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileException, Base>(exec, getJSFileExceptionTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileException, Base>( exec, getJSFileExceptionTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsFileExceptionCode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileExceptionCode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileException* castedThis = static_cast<JSFileException*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileException* imp = static_cast<FileException*>(castedThis->impl());
-    JSValue result = jsNumber(imp->code());
+    JSFileException *castedThis = static_cast<JSFileException *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileException *imp = static_cast<FileException *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->code() );
     return result;
 }
 
 
-JSValue jsFileExceptionName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileExceptionName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileException* castedThis = static_cast<JSFileException*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileException* imp = static_cast<FileException*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSFileException *castedThis = static_cast<JSFileException *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileException *imp = static_cast<FileException *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsFileExceptionMessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileExceptionMessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileException* castedThis = static_cast<JSFileException*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    FileException* imp = static_cast<FileException*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->message());
+    JSFileException *castedThis = static_cast<JSFileException *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    FileException *imp = static_cast<FileException *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->message() );
     return result;
 }
 
 
-JSValue jsFileExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileException* domObject = static_cast<JSFileException*>(asObject(slotBase));
-    return JSFileException::getConstructor(exec, domObject->globalObject());
+    JSFileException *domObject = static_cast<JSFileException *>( asObject( slotBase ) );
+    return JSFileException::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSFileException::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSFileException::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSFileExceptionConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSFileExceptionConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileExceptionPrototypeFunctionToString(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileExceptionPrototypeFunctionToString( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileException::s_info))
-        return throwVMTypeError(exec);
-    JSFileException* castedThis = static_cast<JSFileException*>(asObject(thisValue));
-    FileException* imp = static_cast<FileException*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSFileException::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileException *castedThis = static_cast<JSFileException *>( asObject( thisValue ) );
+    FileException *imp = static_cast<FileException *>( castedThis->impl() );
 
 
-    JSC::JSValue result = jsString(exec, imp->toString());
-    return JSValue::encode(result);
+    JSC::JSValue result = jsString( exec, imp->toString() );
+    return JSValue::encode( result );
 }
 
 // Constant getters
 
-JSValue jsFileExceptionNOT_FOUND_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionNOT_FOUND_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsFileExceptionSECURITY_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionSECURITY_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsFileExceptionABORT_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionABORT_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
-JSValue jsFileExceptionNOT_READABLE_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionNOT_READABLE_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(4));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 4 ) );
 }
 
-JSValue jsFileExceptionENCODING_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionENCODING_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(5));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 5 ) );
 }
 
-JSValue jsFileExceptionNO_MODIFICATION_ALLOWED_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionNO_MODIFICATION_ALLOWED_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(6));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 6 ) );
 }
 
-JSValue jsFileExceptionINVALID_STATE_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionINVALID_STATE_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(7));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 7 ) );
 }
 
-JSValue jsFileExceptionSYNTAX_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionSYNTAX_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(8));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 8 ) );
 }
 
-JSValue jsFileExceptionINVALID_MODIFICATION_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionINVALID_MODIFICATION_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(9));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 9 ) );
 }
 
-JSValue jsFileExceptionQUOTA_EXCEEDED_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionQUOTA_EXCEEDED_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(10));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 10 ) );
 }
 
-JSValue jsFileExceptionTYPE_MISMATCH_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionTYPE_MISMATCH_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(11));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 11 ) );
 }
 
-JSValue jsFileExceptionPATH_EXISTS_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsFileExceptionPATH_EXISTS_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(12));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 12 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, FileException* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, FileException *impl )
 {
-    return wrap<JSFileException>(exec, globalObject, impl);
+    return wrap<JSFileException>( exec, globalObject, impl );
 }
 
-FileException* toFileException(JSC::JSValue value)
+FileException *toFileException( JSC::JSValue value )
 {
-    return value.inherits(&JSFileException::s_info) ? static_cast<JSFileException*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSFileException::s_info ) ? static_cast<JSFileException *>( asObject( value ) )->impl() : 0;
 }
 
 }

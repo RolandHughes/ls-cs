@@ -40,18 +40,20 @@
 #include "NotImplemented.h"
 #include "SharedWorkerThread.h"
 
-namespace WebCore {
-
-PassRefPtr<MessageEvent> createConnectEvent(PassRefPtr<MessagePort> port)
+namespace WebCore
 {
-    RefPtr<MessageEvent> event = MessageEvent::create(adoptPtr(new MessagePortArray(1, port)));
-    event->initEvent(eventNames().connectEvent, false, false);
+
+PassRefPtr<MessageEvent> createConnectEvent( PassRefPtr<MessagePort> port )
+{
+    RefPtr<MessageEvent> event = MessageEvent::create( adoptPtr( new MessagePortArray( 1, port ) ) );
+    event->initEvent( eventNames().connectEvent, false, false );
     return event;
 }
 
-SharedWorkerContext::SharedWorkerContext(const String& name, const KURL& url, const String& userAgent, SharedWorkerThread* thread)
-    : WorkerContext(url, userAgent, thread)
-    , m_name(name)
+SharedWorkerContext::SharedWorkerContext( const String &name, const KURL &url, const String &userAgent,
+        SharedWorkerThread *thread )
+    : WorkerContext( url, userAgent, thread )
+    , m_name( name )
 {
 }
 
@@ -59,9 +61,9 @@ SharedWorkerContext::~SharedWorkerContext()
 {
 }
 
-SharedWorkerThread* SharedWorkerContext::thread()
+SharedWorkerThread *SharedWorkerContext::thread()
 {
-    return static_cast<SharedWorkerThread*>(Base::thread());
+    return static_cast<SharedWorkerThread *>( Base::thread() );
 }
 
 } // namespace WebCore

@@ -35,14 +35,16 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMCoreException;
 
-class StorageInfoErrorCallback : public RefCounted<StorageInfoErrorCallback> {
+class StorageInfoErrorCallback : public RefCounted<StorageInfoErrorCallback>
+{
 public:
     virtual ~StorageInfoErrorCallback() { }
-    virtual bool handleEvent(DOMCoreException*) = 0;
+    virtual bool handleEvent( DOMCoreException * ) = 0;
 };
 
 } // namespace WebCore

@@ -34,16 +34,18 @@
 #ifndef RegExpCache_h
 #define RegExpCache_h
 
-namespace JSC {
+namespace JSC
+{
 
-class RegExpCache {
+class RegExpCache
+{
 
-typedef HashMap<RegExpKey, RefPtr<RegExp> > RegExpCacheMap;
+    typedef HashMap<RegExpKey, RefPtr<RegExp> > RegExpCacheMap;
 
 public:
-    PassRefPtr<RegExp> lookupOrCreate(const UString& patternString, RegExpFlags);
-    PassRefPtr<RegExp> create(const UString& patternString, RegExpFlags, RegExpCacheMap::iterator);
-    RegExpCache(JSGlobalData* globalData);
+    PassRefPtr<RegExp> lookupOrCreate( const UString &patternString, RegExpFlags );
+    PassRefPtr<RegExp> create( const UString &patternString, RegExpFlags, RegExpCacheMap::iterator );
+    RegExpCache( JSGlobalData *globalData );
 
 private:
     static const unsigned maxCacheablePatternLength = 256;
@@ -58,7 +60,7 @@ private:
 
     FixedArray<RegExpKey, maxCacheableEntries> patternKeyArray;
     RegExpCacheMap m_cacheMap;
-    JSGlobalData* m_globalData;
+    JSGlobalData *m_globalData;
     int m_nextKeyToEvict;
     bool m_isFull;
 };

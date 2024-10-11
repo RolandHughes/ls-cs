@@ -26,21 +26,22 @@
 
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class SimpleContentConstructor : public SingleContainer
 {
- public:
-   SimpleContentConstructor(const Expression::Ptr &operand);
+public:
+    SimpleContentConstructor( const Expression::Ptr &operand );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 };
 
 }

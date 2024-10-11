@@ -24,23 +24,24 @@
 
 QT_BEGIN_NAMESPACE
 
-class WebKitQmlPlugin : public QDeclarativeExtensionPlugin {
+class WebKitQmlPlugin : public QDeclarativeExtensionPlugin
+{
     Q_OBJECT
 
 public:
-    virtual void registerTypes(const char* uri)
+    virtual void registerTypes( const char *uri )
     {
-        Q_ASSERT(QLatin1String(uri) == QLatin1String("QtWebKit"));
+        Q_ASSERT( QLatin1String( uri ) == QLatin1String( "QtWebKit" ) );
         qmlRegisterType<QDeclarativeWebSettings>();
-        qmlRegisterType<QDeclarativeWebView>(uri, 1, 0, "WebView");
+        qmlRegisterType<QDeclarativeWebView>( uri, 1, 0, "WebView" );
 
-        qmlRegisterType<QDeclarativeWebView>(uri, 1, 1, "WebView");
-        qmlRegisterRevision<QDeclarativeWebView, 0>("QtWebKit", 1, 0);
-        qmlRegisterRevision<QDeclarativeWebView, 1>("QtWebKit", 1, 1);
+        qmlRegisterType<QDeclarativeWebView>( uri, 1, 1, "WebView" );
+        qmlRegisterRevision<QDeclarativeWebView, 0>( "QtWebKit", 1, 0 );
+        qmlRegisterRevision<QDeclarativeWebView, 1>( "QtWebKit", 1, 1 );
     }
 };
 
 QT_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2(qmlwebkitplugin, QT_PREPEND_NAMESPACE(WebKitQmlPlugin));
+Q_EXPORT_PLUGIN2( qmlwebkitplugin, QT_PREPEND_NAMESPACE( WebKitQmlPlugin ) );
 

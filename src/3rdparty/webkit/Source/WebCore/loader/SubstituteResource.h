@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SubstituteResource_h
@@ -34,31 +34,42 @@
 
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SubstituteResource : public RefCounted<SubstituteResource> {
+class SubstituteResource : public RefCounted<SubstituteResource>
+{
 public:
     virtual ~SubstituteResource() { }
 
-    const KURL& url() const { return m_url; }
-    const ResourceResponse& response() const { return m_response; }
-    SharedBuffer* data() const { return m_data.get(); }
+    const KURL &url() const
+    {
+        return m_url;
+    }
+    const ResourceResponse &response() const
+    {
+        return m_response;
+    }
+    SharedBuffer *data() const
+    {
+        return m_data.get();
+    }
 
 protected:
-    SubstituteResource(const KURL& url, const ResourceResponse& response, PassRefPtr<SharedBuffer> data)
-        : m_url(url)
-        , m_response(response)
-        , m_data(data)
+    SubstituteResource( const KURL &url, const ResourceResponse &response, PassRefPtr<SharedBuffer> data )
+        : m_url( url )
+        , m_response( response )
+        , m_data( data )
     {
-        ASSERT(m_data);
+        ASSERT( m_data );
     }
-    
+
 private:
     KURL m_url;
     ResourceResponse m_response;
     RefPtr<SharedBuffer> m_data;
 };
-    
+
 }
 
 #endif // SubstituteResource_h

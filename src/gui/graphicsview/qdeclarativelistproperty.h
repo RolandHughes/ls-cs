@@ -31,70 +31,75 @@ class QObject;
 template <typename T>
 class QDeclarativeListProperty
 {
- public:
-   typedef void (*AppendFunction)(QDeclarativeListProperty<T> *, T *);
-   typedef int (*CountFunction)(QDeclarativeListProperty<T> *);
-   typedef T *(*AtFunction)(QDeclarativeListProperty<T> *, int);
-   typedef void (*ClearFunction)(QDeclarativeListProperty<T> *);
+public:
+    typedef void ( *AppendFunction )( QDeclarativeListProperty<T> *, T * );
+    typedef int ( *CountFunction )( QDeclarativeListProperty<T> * );
+    typedef T *( *AtFunction )( QDeclarativeListProperty<T> *, int );
+    typedef void ( *ClearFunction )( QDeclarativeListProperty<T> * );
 
-   QDeclarativeListProperty()
-      : object(nullptr), data(nullptr), append(nullptr), count(nullptr), at(nullptr),
-        clear(nullptr), dummy1(nullptr), dummy2(nullptr)
-   {
-   }
+    QDeclarativeListProperty()
+        : object( nullptr ), data( nullptr ), append( nullptr ), count( nullptr ), at( nullptr ),
+          clear( nullptr ), dummy1( nullptr ), dummy2( nullptr )
+    {
+    }
 
-   QDeclarativeListProperty(QObject *o, QList<T *> &list)
-      : object(o), data(&list), append(qlist_append), count(qlist_count), at(qlist_at),
-        clear(qlist_clear), dummy1(nullptr), dummy2(nullptr)
-   {
-   }
+    QDeclarativeListProperty( QObject *o, QList<T *> &list )
+        : object( o ), data( &list ), append( qlist_append ), count( qlist_count ), at( qlist_at ),
+          clear( qlist_clear ), dummy1( nullptr ), dummy2( nullptr )
+    {
+    }
 
-   QDeclarativeListProperty(QObject *o, void *d, AppendFunction a, CountFunction c = nullptr,
-               AtFunction t = nullptr, ClearFunction r = nullptr)
-      : object(o), data(d), append(a), count(c), at(t), clear(r), dummy1(nullptr), dummy2(nullptr)
-   {
-   }
+    QDeclarativeListProperty( QObject *o, void *d, AppendFunction a, CountFunction c = nullptr,
+                              AtFunction t = nullptr, ClearFunction r = nullptr )
+        : object( o ), data( d ), append( a ), count( c ), at( t ), clear( r ), dummy1( nullptr ), dummy2( nullptr )
+    {
+    }
 
-   bool operator==(const QDeclarativeListProperty &o) const {
-      return object == o.object &&
-         data   == o.data &&
-         append == o.append &&
-         count  == o.count &&
-         at     == o.at &&
-         clear  == o.clear;
-   }
+    bool operator==( const QDeclarativeListProperty &o ) const
+    {
+        return object == o.object &&
+               data   == o.data &&
+               append == o.append &&
+               count  == o.count &&
+               at     == o.at &&
+               clear  == o.clear;
+    }
 
-   QObject *object;
-   void *data;
+    QObject *object;
+    void *data;
 
-   AppendFunction append;
+    AppendFunction append;
 
-   CountFunction count;
-   AtFunction at;
+    CountFunction count;
+    AtFunction at;
 
-   ClearFunction clear;
+    ClearFunction clear;
 
-   void *dummy1;
-   void *dummy2;
+    void *dummy1;
+    void *dummy2;
 
- private:
-   static void qlist_append(QDeclarativeListProperty *p, T *v) {
-      ((QList<T *> *)p->data)->append(v);
-   }
+private:
+    static void qlist_append( QDeclarativeListProperty *p, T *v )
+    {
+        ( ( QList<T *> * )p->data )->append( v );
+    }
 
-   static int qlist_count(QDeclarativeListProperty *p) {
-      return ((QList<T *> *)p->data)->count();
-   }
+    static int qlist_count( QDeclarativeListProperty *p )
+    {
+        return ( ( QList<T *> * )p->data )->count();
+    }
 
-   static T *qlist_at(QDeclarativeListProperty *p, int idx) {
-      return ((QList<T *> *)p->data)->at(idx);
-   }
+    static T *qlist_at( QDeclarativeListProperty *p, int idx )
+    {
+        return ( ( QList<T *> * )p->data )->at( idx );
+    }
 
-   static void qlist_clear(QDeclarativeListProperty *p) {
-      return ((QList<T *> *)p->data)->clear();
-   }
+    static void qlist_clear( QDeclarativeListProperty *p )
+    {
+        return ( ( QList<T *> * )p->data )->clear();
+    }
 };
 
-CS_REGISTER_TEMPLATE(QDeclarativeListProperty)
+LSCS_REGISTER_TEMPLATE( QDeclarativeListProperty )
 
 #endif

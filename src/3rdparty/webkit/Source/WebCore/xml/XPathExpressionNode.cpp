@@ -5,13 +5,13 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -32,25 +32,27 @@
 #include "Node.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
-namespace XPath {
-    
-EvaluationContext& Expression::evaluationContext()
+namespace WebCore
 {
-    DEFINE_STATIC_LOCAL(EvaluationContext, evaluationContext, ());
+namespace XPath
+{
+
+EvaluationContext &Expression::evaluationContext()
+{
+    DEFINE_STATIC_LOCAL( EvaluationContext, evaluationContext, () );
     return evaluationContext;
 }
 
 Expression::Expression()
-    : m_isContextNodeSensitive(false)
-    , m_isContextPositionSensitive(false)
-    , m_isContextSizeSensitive(false)
+    : m_isContextNodeSensitive( false )
+    , m_isContextPositionSensitive( false )
+    , m_isContextSizeSensitive( false )
 {
 }
 
 Expression::~Expression()
 {
-    deleteAllValues(m_subExpressions);
+    deleteAllValues( m_subExpressions );
 }
 
 }

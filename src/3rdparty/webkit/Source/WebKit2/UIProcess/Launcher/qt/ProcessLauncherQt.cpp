@@ -57,14 +57,15 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class QtWebProcess : public QProcess
 {
     Q_OBJECT
 public:
-    QtWebProcess(QObject* parent = 0)
-        : QProcess(parent)
+    QtWebProcess( QObject *parent = 0 )
+        : QProcess( parent )
     {
     }
 
@@ -76,10 +77,14 @@ void QtWebProcess::setupChildProcess()
 {
 #if defined Q_OS_LINUX
 #ifndef NDEBUG
-    if (getenv("QT_WEBKIT_KEEP_ALIVE_WEB_PROCESS"))
+
+    if ( getenv( "QT_WEBKIT_KEEP_ALIVE_WEB_PROCESS" ) )
+    {
         return;
+    }
+
 #endif
-    prctl(PR_SET_PDEATHSIG, SIGKILL);
+    prctl( PR_SET_PDEATHSIG, SIGKILL );
 #endif
 }
 
@@ -87,7 +92,7 @@ void QtWebProcess::setupChildProcess()
 // FIXME: Symbian's POSIX layer doesn't have a socketpair(), so
 // the following is just to fix the build until a pure Symbian
 // IPC implementation lands on trunk
-static int socketpair(int, int, int , int[2])
+static int socketpair( int, int, int, int[2] )
 {
     return -1;
 }
@@ -95,64 +100,81 @@ static int socketpair(int, int, int , int[2])
 
 void ProcessLauncher::launchProcess()
 {
-    QString applicationPath = QLatin1String("%1 %2");
+    QString applicationPath = QLatin1String( "%1 %2" );
 
-    if (QFile::exists(QCoreApplication::applicationDirPath() + QLatin1String("/QtWebProcess"))) {
-        applicationPath = applicationPath.arg(QCoreApplication::applicationDirPath() + QLatin1String("/QtWebProcess"));
-    } else {
-        applicationPath = applicationPath.arg(QLatin1String("QtWebProcess"));
+    if ( QFile::exists( QCoreApplication::applicationDirPath() + QLatin1String( "/QtWebProcess" ) ) )
+    {
+        applicationPath = applicationPath.arg( QCoreApplication::applicationDirPath() + QLatin1String( "/QtWebProcess" ) );
+    }
+    else
+    {
+        applicationPath = applicationPath.arg( QLatin1String( "QtWebProcess" ) );
     }
 
     int sockets[2];
-    if (socketpair(AF_UNIX, SOCK_DGRAM, 0, sockets) == -1) {
+
+    if ( socketpair( AF_UNIX, SOCK_DGRAM, 0, sockets ) == -1 )
+    {
         qDebug() << "Creation of socket failed with errno:" << errno;
         ASSERT_NOT_REACHED();
         return;
     }
 
     // Don't expose the ui socket to the web process
-    while (fcntl(sockets[1], F_SETFD, FD_CLOEXEC)  == -1) {
-        if (errno != EINTR) {
+    while ( fcntl( sockets[1], F_SETFD, FD_CLOEXEC )  == -1 )
+    {
+        if ( errno != EINTR )
+        {
             ASSERT_NOT_REACHED();
-            while (close(sockets[0]) == -1 && errno == EINTR) { }
-            while (close(sockets[1]) == -1 && errno == EINTR) { }
+
+            while ( close( sockets[0] ) == -1 && errno == EINTR ) { }
+
+            while ( close( sockets[1] ) == -1 && errno == EINTR ) { }
+
             return;
         }
     }
 
-    QString program(applicationPath.arg(sockets[0]));
+    QString program( applicationPath.arg( sockets[0] ) );
 
-    QProcess* webProcess = new QtWebProcess();
-    webProcess->setProcessChannelMode(QProcess::ForwardedChannels);
-    webProcess->start(program);
+    QProcess *webProcess = new QtWebProcess();
+    webProcess->setProcessChannelMode( QProcess::ForwardedChannels );
+    webProcess->start( program );
 
     // Don't expose the web socket to possible future web processes
-    while (fcntl(sockets[0], F_SETFD, FD_CLOEXEC) == -1) {
-        if (errno != EINTR) {
+    while ( fcntl( sockets[0], F_SETFD, FD_CLOEXEC ) == -1 )
+    {
+        if ( errno != EINTR )
+        {
             ASSERT_NOT_REACHED();
             delete webProcess;
             return;
         }
     }
 
-    if (!webProcess->waitForStarted()) {
+    if ( !webProcess->waitForStarted() )
+    {
         qDebug() << "Failed to start" << program;
         ASSERT_NOT_REACHED();
         delete webProcess;
         return;
     }
 
-    setpriority(PRIO_PROCESS, webProcess->pid(), 10);
+    setpriority( PRIO_PROCESS, webProcess->pid(), 10 );
 
-    RunLoop::main()->scheduleWork(WorkItem::create(this, &WebKit::ProcessLauncher::didFinishLaunchingProcess, webProcess, sockets[1]));
+    RunLoop::main()->scheduleWork( WorkItem::create( this, &WebKit::ProcessLauncher::didFinishLaunchingProcess, webProcess,
+                                   sockets[1] ) );
 }
 
 void ProcessLauncher::terminateProcess()
 {
-    if (!m_processIdentifier)
+    if ( !m_processIdentifier )
+    {
         return;
+    }
 
-    QObject::connect(m_processIdentifier, SIGNAL(finished(int)), m_processIdentifier, SLOT(deleteLater()), Qt::QueuedConnection);
+    QObject::connect( m_processIdentifier, SIGNAL( finished( int ) ), m_processIdentifier, SLOT( deleteLater() ),
+                      Qt::QueuedConnection );
     m_processIdentifier->terminate();
 }
 

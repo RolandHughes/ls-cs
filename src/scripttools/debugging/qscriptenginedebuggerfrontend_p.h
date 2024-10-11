@@ -34,25 +34,25 @@ class QScriptDebuggerBackend;
 
 class QScriptEngineDebuggerFrontendPrivate;
 class QScriptEngineDebuggerFrontend
-   : public QScriptDebuggerFrontend
+    : public QScriptDebuggerFrontend
 {
- public:
-   QScriptEngineDebuggerFrontend();
-   ~QScriptEngineDebuggerFrontend();
+public:
+    QScriptEngineDebuggerFrontend();
+    ~QScriptEngineDebuggerFrontend();
 
-   void attachTo(QScriptEngine *engine);
-   void detach();
+    void attachTo( QScriptEngine *engine );
+    void detach();
 
-   QScriptValue traceFunction() const;
+    QScriptValue traceFunction() const;
 
-   QScriptDebuggerBackend *backend() const;
+    QScriptDebuggerBackend *backend() const;
 
- protected:
-   void processCommand(int id, const QScriptDebuggerCommand &command);
+protected:
+    void processCommand( int id, const QScriptDebuggerCommand &command );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptEngineDebuggerFrontend)
-   Q_DISABLE_COPY(QScriptEngineDebuggerFrontend)
+private:
+    Q_DECLARE_PRIVATE( QScriptEngineDebuggerFrontend )
+    Q_DISABLE_COPY( QScriptEngineDebuggerFrontend )
 };
 
 QT_END_NAMESPACE

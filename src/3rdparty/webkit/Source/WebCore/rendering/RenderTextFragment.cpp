@@ -26,22 +26,23 @@
 #include "RenderBlock.h"
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderTextFragment::RenderTextFragment(Node* node, StringImpl* str, int startOffset, int length)
-    : RenderText(node, str ? str->substring(startOffset, length) : PassRefPtr<StringImpl>(0))
-    , m_start(startOffset)
-    , m_end(length)
-    , m_firstLetter(0)
+RenderTextFragment::RenderTextFragment( Node *node, StringImpl *str, int startOffset, int length )
+    : RenderText( node, str ? str->substring( startOffset, length ) : PassRefPtr<StringImpl>( 0 ) )
+    , m_start( startOffset )
+    , m_end( length )
+    , m_firstLetter( 0 )
 {
 }
 
-RenderTextFragment::RenderTextFragment(Node* node, StringImpl* str)
-    : RenderText(node, str)
-    , m_start(0)
-    , m_end(str ? str->length() : 0)
-    , m_contentString(str)
-    , m_firstLetter(0)
+RenderTextFragment::RenderTextFragment( Node *node, StringImpl *str )
+    : RenderText( node, str )
+    , m_start( 0 )
+    , m_end( str ? str->length() : 0 )
+    , m_contentString( str )
+    , m_firstLetter( 0 )
 {
 }
 
@@ -51,66 +52,89 @@ RenderTextFragment::~RenderTextFragment()
 
 PassRefPtr<StringImpl> RenderTextFragment::originalText() const
 {
-    Node* e = node();
-    RefPtr<StringImpl> result = ((e && e->isTextNode()) ? static_cast<Text*>(e)->dataImpl() : contentString());
-    if (!result)
+    Node *e = node();
+    RefPtr<StringImpl> result = ( ( e && e->isTextNode() ) ? static_cast<Text *>( e )->dataImpl() : contentString() );
+
+    if ( !result )
+    {
         return 0;
-    return result->substring(start(), end());
+    }
+
+    return result->substring( start(), end() );
 }
 
-void RenderTextFragment::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderTextFragment::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderText::styleDidChange(diff, oldStyle);
+    RenderText::styleDidChange( diff, oldStyle );
 
-    if (RenderBlock* block = blockForAccompanyingFirstLetter()) {
-        block->style()->removeCachedPseudoStyle(FIRST_LETTER);
+    if ( RenderBlock *block = blockForAccompanyingFirstLetter() )
+    {
+        block->style()->removeCachedPseudoStyle( FIRST_LETTER );
         block->updateFirstLetter();
     }
 }
 
 void RenderTextFragment::destroy()
 {
-    if (m_firstLetter)
+    if ( m_firstLetter )
+    {
         m_firstLetter->destroy();
+    }
+
     RenderText::destroy();
 }
 
-void RenderTextFragment::setTextInternal(PassRefPtr<StringImpl> text)
+void RenderTextFragment::setTextInternal( PassRefPtr<StringImpl> text )
 {
-    RenderText::setTextInternal(text);
-    if (m_firstLetter) {
-        ASSERT(!m_contentString);
+    RenderText::setTextInternal( text );
+
+    if ( m_firstLetter )
+    {
+        ASSERT( !m_contentString );
         m_firstLetter->destroy();
         m_firstLetter = 0;
         m_start = 0;
         m_end = textLength();
-        if (Node* t = node()) {
-            ASSERT(!t->renderer());
-            t->setRenderer(this);
+
+        if ( Node *t = node() )
+        {
+            ASSERT( !t->renderer() );
+            t->setRenderer( this );
         }
     }
 }
 
 UChar RenderTextFragment::previousCharacter() const
 {
-    if (start()) {
-        Node* e = node();
-        StringImpl*  original = ((e && e->isTextNode()) ? static_cast<Text*>(e)->dataImpl() : contentString());
-        if (original && start() <= original->length())
-            return (*original)[start() - 1];
+    if ( start() )
+    {
+        Node *e = node();
+        StringImpl  *original = ( ( e && e->isTextNode() ) ? static_cast<Text *>( e )->dataImpl() : contentString() );
+
+        if ( original && start() <= original->length() )
+        {
+            return ( *original )[start() - 1];
+        }
     }
 
     return RenderText::previousCharacter();
 }
 
-RenderBlock* RenderTextFragment::blockForAccompanyingFirstLetter() const
+RenderBlock *RenderTextFragment::blockForAccompanyingFirstLetter() const
 {
-    if (!m_firstLetter)
+    if ( !m_firstLetter )
+    {
         return 0;
-    for (RenderObject* block = m_firstLetter->parent(); block; block = block->parent()) {
-        if (block->style()->hasPseudoStyle(FIRST_LETTER) && block->canHaveChildren() && block->isRenderBlock())
-            return toRenderBlock(block);
     }
+
+    for ( RenderObject *block = m_firstLetter->parent(); block; block = block->parent() )
+    {
+        if ( block->style()->hasPseudoStyle( FIRST_LETTER ) && block->canHaveChildren() && block->isRenderBlock() )
+        {
+            return toRenderBlock( block );
+        }
+    }
+
     return 0;
 }
 

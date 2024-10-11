@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CreateLinkCommand_h
@@ -28,22 +28,30 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CreateLinkCommand : public CompositeEditCommand {
+class CreateLinkCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<CreateLinkCommand> create(Document* document, const String& linkURL)
+    static PassRefPtr<CreateLinkCommand> create( Document *document, const String &linkURL )
     {
-        return adoptRef(new CreateLinkCommand(document, linkURL));
+        return adoptRef( new CreateLinkCommand( document, linkURL ) );
     }
 
-    bool isCreateLinkCommand() const { return true; }
+    bool isCreateLinkCommand() const
+    {
+        return true;
+    }
 
 private:
-    CreateLinkCommand(Document*, const String& linkURL);
+    CreateLinkCommand( Document *, const String &linkURL );
 
     virtual void doApply();
-    virtual EditAction editingAction() const { return EditActionCreateLink; }
+    virtual EditAction editingAction() const
+    {
+        return EditActionCreateLink;
+    }
 
     String m_url;
 };

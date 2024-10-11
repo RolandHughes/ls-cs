@@ -35,16 +35,17 @@ class QNetworkProxy;
 
 class QIpPacketHeader
 {
- public:
-    QIpPacketHeader(const QHostAddress &dstAddr = QHostAddress(), quint16 port = 0)
-        : destinationAddress(dstAddr), ifindex(0), hopLimit(-1), destinationPort(port)
+public:
+    QIpPacketHeader( const QHostAddress &dstAddr = QHostAddress(), quint16 port = 0 )
+        : destinationAddress( dstAddr ), ifindex( 0 ), hopLimit( -1 ), destinationPort( port )
     {}
 
-    void clear() {
-      senderAddress.clear();
-      destinationAddress.clear();
-      ifindex = 0;
-      hopLimit = -1;
+    void clear()
+    {
+        senderAddress.clear();
+        destinationAddress.clear();
+        ifindex = 0;
+        hopLimit = -1;
     }
 
     QHostAddress senderAddress;
@@ -58,28 +59,29 @@ class QIpPacketHeader
 
 class QAbstractSocketEngineReceiver
 {
- public:
-   virtual ~QAbstractSocketEngineReceiver() {}
+public:
+    virtual ~QAbstractSocketEngineReceiver() {}
 
-   virtual void readNotification()  = 0;
-   virtual void writeNotification() = 0;
-   virtual void closeNotification() = 0;
+    virtual void readNotification()  = 0;
+    virtual void writeNotification() = 0;
+    virtual void closeNotification() = 0;
 
-   virtual void exceptionNotification()  = 0;
-   virtual void connectionNotification() = 0;
+    virtual void exceptionNotification()  = 0;
+    virtual void connectionNotification() = 0;
 
 #ifndef QT_NO_NETWORKPROXY
-   virtual void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator) = 0;
+    virtual void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) = 0;
 #endif
 
 };
 
 class QAbstractSocketEngine : public QObject
 {
-   NET_CS_OBJECT(QAbstractSocketEngine)
+    NET_LSCS_OBJECT( QAbstractSocketEngine )
 
- public:
-   enum SocketOption {
+public:
+    enum SocketOption
+    {
         NonBlockingSocketOption,
         BroadcastSocketOption,
         ReceiveBufferSocketOption,
@@ -96,172 +98,174 @@ class QAbstractSocketEngine : public QObject
         ReceiveHopLimit
     };
 
-    enum PacketHeaderOption {
+    enum PacketHeaderOption
+    {
         WantNone = 0,
         WantDatagramSender = 0x01,
         WantDatagramDestination = 0x02,
         WantDatagramHopLimit = 0x04,
         WantAll = 0xff
-   };
-   using PacketHeaderOptions = QFlags<PacketHeaderOption>;
+    };
+    using PacketHeaderOptions = QFlags<PacketHeaderOption>;
 
-   QAbstractSocketEngine(QObject *parent = nullptr);
+    QAbstractSocketEngine( QObject *parent = nullptr );
 
-   QAbstractSocketEngine(const QAbstractSocketEngine &) = delete;
-   QAbstractSocketEngine &operator=(const QAbstractSocketEngine &) = delete;
+    QAbstractSocketEngine( const QAbstractSocketEngine & ) = delete;
+    QAbstractSocketEngine &operator=( const QAbstractSocketEngine & ) = delete;
 
-   ~QAbstractSocketEngine();
+    ~QAbstractSocketEngine();
 
-   static QAbstractSocketEngine *createSocketEngine(QAbstractSocket::SocketType socketType, const QNetworkProxy &, QObject *parent);
-   static QAbstractSocketEngine *createSocketEngine(qintptr socketDescriptor, QObject *parent);
+    static QAbstractSocketEngine *createSocketEngine( QAbstractSocket::SocketType socketType, const QNetworkProxy &,
+            QObject *parent );
+    static QAbstractSocketEngine *createSocketEngine( qintptr socketDescriptor, QObject *parent );
 
-   virtual bool initialize(QAbstractSocket::SocketType type,
-                  QAbstractSocket::NetworkLayerProtocol protocol = QAbstractSocket::IPv4Protocol) = 0;
+    virtual bool initialize( QAbstractSocket::SocketType type,
+                             QAbstractSocket::NetworkLayerProtocol protocol = QAbstractSocket::IPv4Protocol ) = 0;
 
-   virtual bool initialize(qintptr socketDescriptor,
-                  QAbstractSocket::SocketState socketState = QAbstractSocket::ConnectedState) = 0;
+    virtual bool initialize( qintptr socketDescriptor,
+                             QAbstractSocket::SocketState socketState = QAbstractSocket::ConnectedState ) = 0;
 
-   virtual qintptr socketDescriptor() const = 0;
+    virtual qintptr socketDescriptor() const = 0;
 
-   virtual bool isValid() const = 0;
+    virtual bool isValid() const = 0;
 
-   virtual bool connectToHost(const QHostAddress &address, quint16 port) = 0;
-   virtual bool connectToHostByName(const QString &name, quint16 port) = 0;
-   virtual bool bind(const QHostAddress &address, quint16 port) = 0;
+    virtual bool connectToHost( const QHostAddress &address, quint16 port ) = 0;
+    virtual bool connectToHostByName( const QString &name, quint16 port ) = 0;
+    virtual bool bind( const QHostAddress &address, quint16 port ) = 0;
 
-   virtual bool listen() = 0;
-   virtual int accept()  = 0;
-   virtual void close()  = 0;
+    virtual bool listen() = 0;
+    virtual int accept()  = 0;
+    virtual void close()  = 0;
 
-   virtual qint64 bytesAvailable() const = 0;
+    virtual qint64 bytesAvailable() const = 0;
 
-   virtual qint64 read(char *data, qint64 maxlen) = 0;
-   virtual qint64 write(const char *data, qint64 len) = 0;
+    virtual qint64 read( char *data, qint64 maxlen ) = 0;
+    virtual qint64 write( const char *data, qint64 len ) = 0;
 
 #ifndef QT_NO_UDPSOCKET
 #ifndef QT_NO_NETWORKINTERFACE
-   virtual bool joinMulticastGroup(const QHostAddress &groupAddress, const QNetworkInterface &iface) = 0;
-   virtual bool leaveMulticastGroup(const QHostAddress &groupAddress, const QNetworkInterface &iface) = 0;
+    virtual bool joinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface ) = 0;
+    virtual bool leaveMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &iface ) = 0;
 
-   virtual QNetworkInterface multicastInterface() const = 0;
-   virtual bool setMulticastInterface(const QNetworkInterface &iface) = 0;
+    virtual QNetworkInterface multicastInterface() const = 0;
+    virtual bool setMulticastInterface( const QNetworkInterface &iface ) = 0;
 #endif
 
-   virtual qint64 readDatagram(char *data, qint64 maxlen, QIpPacketHeader *header = nullptr, PacketHeaderOptions = WantNone) = 0;
-   virtual qint64 writeDatagram(const char *data, qint64 len, const QIpPacketHeader &header) = 0;
+    virtual qint64 readDatagram( char *data, qint64 maxlen, QIpPacketHeader *header = nullptr, PacketHeaderOptions = WantNone ) = 0;
+    virtual qint64 writeDatagram( const char *data, qint64 len, const QIpPacketHeader &header ) = 0;
 
-   virtual bool hasPendingDatagrams() const = 0;
-   virtual qint64 pendingDatagramSize() const = 0;
+    virtual bool hasPendingDatagrams() const = 0;
+    virtual qint64 pendingDatagramSize() const = 0;
 #endif
 
-   virtual qint64 bytesToWrite() const = 0;
+    virtual qint64 bytesToWrite() const = 0;
 
-   virtual int option(SocketOption option) const = 0;
-   virtual bool setOption(SocketOption option, int value) = 0;
+    virtual int option( SocketOption option ) const = 0;
+    virtual bool setOption( SocketOption option, int value ) = 0;
 
-   virtual bool waitForRead(int msecs = 30000, bool *timedOut = nullptr)  = 0;
-   virtual bool waitForWrite(int msecs = 30000, bool *timedOut = nullptr) = 0;
+    virtual bool waitForRead( int msecs = 30000, bool *timedOut = nullptr )  = 0;
+    virtual bool waitForWrite( int msecs = 30000, bool *timedOut = nullptr ) = 0;
 
-   virtual bool waitForReadOrWrite(bool *readyToRead, bool *readyToWrite, bool checkRead, bool checkWrite,
-                                   int msecs = 30000, bool *timedOut = nullptr) = 0;
+    virtual bool waitForReadOrWrite( bool *readyToRead, bool *readyToWrite, bool checkRead, bool checkWrite,
+                                     int msecs = 30000, bool *timedOut = nullptr ) = 0;
 
-   QAbstractSocket::SocketError error() const;
-   QString errorString() const;
-   QAbstractSocket::SocketState state() const;
-   QAbstractSocket::SocketType socketType() const;
-   QAbstractSocket::NetworkLayerProtocol protocol() const;
+    QAbstractSocket::SocketError error() const;
+    QString errorString() const;
+    QAbstractSocket::SocketState state() const;
+    QAbstractSocket::SocketType socketType() const;
+    QAbstractSocket::NetworkLayerProtocol protocol() const;
 
-   QHostAddress localAddress() const;
-   quint16 localPort() const;
-   QHostAddress peerAddress() const;
-   quint16 peerPort() const;
+    QHostAddress localAddress() const;
+    quint16 localPort() const;
+    QHostAddress peerAddress() const;
+    quint16 peerPort() const;
 
-   void setReceiver(QAbstractSocketEngineReceiver *receiver);
+    void setReceiver( QAbstractSocketEngineReceiver *receiver );
 
-   virtual bool isReadNotificationEnabled() const = 0;
-   virtual void setReadNotificationEnabled(bool enable) = 0;
-   virtual bool isWriteNotificationEnabled() const = 0;
-   virtual void setWriteNotificationEnabled(bool enable) = 0;
-   virtual bool isExceptionNotificationEnabled() const = 0;
-   virtual void setExceptionNotificationEnabled(bool enable) = 0;
+    virtual bool isReadNotificationEnabled() const = 0;
+    virtual void setReadNotificationEnabled( bool enable ) = 0;
+    virtual bool isWriteNotificationEnabled() const = 0;
+    virtual void setWriteNotificationEnabled( bool enable ) = 0;
+    virtual bool isExceptionNotificationEnabled() const = 0;
+    virtual void setExceptionNotificationEnabled( bool enable ) = 0;
 
-   NET_CS_SLOT_1(Public, void readNotification())
-   NET_CS_SLOT_2(readNotification)
+    NET_LSCS_SLOT_1( Public, void readNotification() )
+    NET_LSCS_SLOT_2( readNotification )
 
-   NET_CS_SLOT_1(Public, void writeNotification())
-   NET_CS_SLOT_2(writeNotification)
+    NET_LSCS_SLOT_1( Public, void writeNotification() )
+    NET_LSCS_SLOT_2( writeNotification )
 
-   NET_CS_SLOT_1(Public, void closeNotification())
-   NET_CS_SLOT_2(closeNotification)
+    NET_LSCS_SLOT_1( Public, void closeNotification() )
+    NET_LSCS_SLOT_2( closeNotification )
 
-   NET_CS_SLOT_1(Public, void exceptionNotification())
-   NET_CS_SLOT_2(exceptionNotification)
+    NET_LSCS_SLOT_1( Public, void exceptionNotification() )
+    NET_LSCS_SLOT_2( exceptionNotification )
 
-   NET_CS_SLOT_1(Public, void connectionNotification())
-   NET_CS_SLOT_2(connectionNotification)
+    NET_LSCS_SLOT_1( Public, void connectionNotification() )
+    NET_LSCS_SLOT_2( connectionNotification )
 
 #ifndef QT_NO_NETWORKPROXY
-   NET_CS_SLOT_1(Public, void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator))
-   NET_CS_SLOT_2(proxyAuthenticationRequired)
+    NET_LSCS_SLOT_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
+    NET_LSCS_SLOT_2( proxyAuthenticationRequired )
 #endif
 
- protected:
-   QAbstractSocketEngine(QAbstractSocketEnginePrivate &dd, QObject *parent = nullptr);
+protected:
+    QAbstractSocketEngine( QAbstractSocketEnginePrivate &dd, QObject *parent = nullptr );
 
-   void setError(QAbstractSocket::SocketError error, const QString &errorString) const;
-   void setState(QAbstractSocket::SocketState state);
-   void setSocketType(QAbstractSocket::SocketType socketType);
-   void setProtocol(QAbstractSocket::NetworkLayerProtocol protocol);
-   void setLocalAddress(const QHostAddress &address);
-   void setLocalPort(quint16 port);
-   void setPeerAddress(const QHostAddress &address);
-   void setPeerPort(quint16 port);
+    void setError( QAbstractSocket::SocketError error, const QString &errorString ) const;
+    void setState( QAbstractSocket::SocketState state );
+    void setSocketType( QAbstractSocket::SocketType socketType );
+    void setProtocol( QAbstractSocket::NetworkLayerProtocol protocol );
+    void setLocalAddress( const QHostAddress &address );
+    void setLocalPort( quint16 port );
+    void setPeerAddress( const QHostAddress &address );
+    void setPeerPort( quint16 port );
 
-   QScopedPointer<QAbstractSocketEnginePrivate> d_ptr;
+    QScopedPointer<QAbstractSocketEnginePrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractSocketEngine)
+private:
+    Q_DECLARE_PRIVATE( QAbstractSocketEngine )
 };
 
 class QAbstractSocketEnginePrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractSocketEngine)
+    Q_DECLARE_PUBLIC( QAbstractSocketEngine )
 
- public:
-   QAbstractSocketEnginePrivate();
-   virtual ~QAbstractSocketEnginePrivate() {}
+public:
+    QAbstractSocketEnginePrivate();
+    virtual ~QAbstractSocketEnginePrivate() {}
 
-   mutable QAbstractSocket::SocketError socketError;
-   mutable bool hasSetSocketError;
-   mutable QString socketErrorString;
+    mutable QAbstractSocket::SocketError socketError;
+    mutable bool hasSetSocketError;
+    mutable QString socketErrorString;
 
-   QAbstractSocket::SocketState socketState;
-   QAbstractSocket::SocketType socketType;
-   QAbstractSocket::NetworkLayerProtocol socketProtocol;
-   QHostAddress localAddress;
-   quint16 localPort;
-   QHostAddress peerAddress;
-   quint16 peerPort;
-   QAbstractSocketEngineReceiver *receiver;
+    QAbstractSocket::SocketState socketState;
+    QAbstractSocket::SocketType socketType;
+    QAbstractSocket::NetworkLayerProtocol socketProtocol;
+    QHostAddress localAddress;
+    quint16 localPort;
+    QHostAddress peerAddress;
+    quint16 peerPort;
+    QAbstractSocketEngineReceiver *receiver;
 
- protected:
-   QAbstractSocketEngine *q_ptr;
+protected:
+    QAbstractSocketEngine *q_ptr;
 };
 
 class QSocketEngineHandler
 {
- protected:
-   QSocketEngineHandler();
-   virtual ~QSocketEngineHandler();
+protected:
+    QSocketEngineHandler();
+    virtual ~QSocketEngineHandler();
 
-   virtual QAbstractSocketEngine *createSocketEngine(QAbstractSocket::SocketType socketType,
-         const QNetworkProxy &, QObject *parent) = 0;
-   virtual QAbstractSocketEngine *createSocketEngine(qintptr socketDescriptor, QObject *parent) = 0;
+    virtual QAbstractSocketEngine *createSocketEngine( QAbstractSocket::SocketType socketType,
+            const QNetworkProxy &, QObject *parent ) = 0;
+    virtual QAbstractSocketEngine *createSocketEngine( qintptr socketDescriptor, QObject *parent ) = 0;
 
- private:
-   friend class QAbstractSocketEngine;
+private:
+    friend class QAbstractSocketEngine;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QAbstractSocketEngine::PacketHeaderOptions)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractSocketEngine::PacketHeaderOptions )
 
 #endif

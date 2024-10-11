@@ -23,13 +23,15 @@
 
 #include "JSObjectWithGlobalObject.h"
 
-namespace JSC {
-    class NativeErrorConstructor;
+namespace JSC
+{
+class NativeErrorConstructor;
 
-    class NativeErrorPrototype : public JSObjectWithGlobalObject {
-    public:
-        NativeErrorPrototype(ExecState*, JSGlobalObject*, Structure*, const UString&, NativeErrorConstructor*);
-    };
+class NativeErrorPrototype : public JSObjectWithGlobalObject
+{
+public:
+    NativeErrorPrototype( ExecState *, JSGlobalObject *, Structure *, const UString &, NativeErrorConstructor * );
+};
 
 } // namespace JSC
 

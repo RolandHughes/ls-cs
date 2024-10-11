@@ -25,24 +25,38 @@
 #include "RadialGradientAttributes.h"
 #include "RenderSVGResourceGradient.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGRadialGradientElement;
 
-class RenderSVGResourceRadialGradient : public RenderSVGResourceGradient {
+class RenderSVGResourceRadialGradient : public RenderSVGResourceGradient
+{
 public:
-    RenderSVGResourceRadialGradient(SVGRadialGradientElement*);
+    RenderSVGResourceRadialGradient( SVGRadialGradientElement * );
     virtual ~RenderSVGResourceRadialGradient();
 
-    virtual const char* renderName() const { return "RenderSVGResourceRadialGradient"; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGResourceRadialGradient";
+    }
 
-    virtual RenderSVGResourceType resourceType() const { return s_resourceType; }
+    virtual RenderSVGResourceType resourceType() const
+    {
+        return s_resourceType;
+    }
     static RenderSVGResourceType s_resourceType;
 
-    virtual bool boundingBoxMode() const { return m_attributes.boundingBoxMode(); }
-    virtual void calculateGradientTransform(AffineTransform& transform) { transform = m_attributes.gradientTransform(); }
-    virtual void collectGradientAttributes(SVGGradientElement*);
-    virtual void buildGradient(GradientData*, SVGGradientElement*) const;
+    virtual bool boundingBoxMode() const
+    {
+        return m_attributes.boundingBoxMode();
+    }
+    virtual void calculateGradientTransform( AffineTransform &transform )
+    {
+        transform = m_attributes.gradientTransform();
+    }
+    virtual void collectGradientAttributes( SVGGradientElement * );
+    virtual void buildGradient( GradientData *, SVGGradientElement * ) const;
 
 private:
     RadialGradientAttributes m_attributes;

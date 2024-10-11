@@ -26,7 +26,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMMimeTypeArray;
 class DOMPluginArray;
@@ -38,25 +39,32 @@ class PluginData;
 
 typedef int ExceptionCode;
 
-class Navigator : public NavigatorBase, public RefCounted<Navigator> {
+class Navigator : public NavigatorBase, public RefCounted<Navigator>
+{
 public:
-    static PassRefPtr<Navigator> create(Frame* frame) { return adoptRef(new Navigator(frame)); }
+    static PassRefPtr<Navigator> create( Frame *frame )
+    {
+        return adoptRef( new Navigator( frame ) );
+    }
     virtual ~Navigator();
 
     void resetGeolocation();
     void disconnectFrame();
-    Frame* frame() const { return m_frame; }
+    Frame *frame() const
+    {
+        return m_frame;
+    }
 
     String appVersion() const;
     String language() const;
-    DOMPluginArray* plugins() const;
-    DOMMimeTypeArray* mimeTypes() const;
+    DOMPluginArray *plugins() const;
+    DOMMimeTypeArray *mimeTypes() const;
     bool cookieEnabled() const;
     bool javaEnabled() const;
 
     virtual String userAgent() const;
 
-    Geolocation* geolocation() const;
+    Geolocation *geolocation() const;
 
 #if ENABLE(DOM_STORAGE)
     // Relinquishes the storage lock, if one exists.
@@ -64,17 +72,17 @@ public:
 #endif
 
 #if ENABLE(REGISTER_PROTOCOL_HANDLER)
-    void registerProtocolHandler(const String& scheme, const String& url, const String& title, ExceptionCode&);
+    void registerProtocolHandler( const String &scheme, const String &url, const String &title, ExceptionCode & );
 #endif
 
 #if ENABLE(MEDIA_STREAM)
-    virtual void webkitGetUserMedia(const String& options, PassRefPtr<NavigatorUserMediaSuccessCallback>,
-                                    PassRefPtr<NavigatorUserMediaErrorCallback> = 0);
+    virtual void webkitGetUserMedia( const String &options, PassRefPtr<NavigatorUserMediaSuccessCallback>,
+                                     PassRefPtr<NavigatorUserMediaErrorCallback> = 0 );
 #endif
 
 private:
-    Navigator(Frame*);
-    Frame* m_frame;
+    Navigator( Frame * );
+    Frame *m_frame;
     mutable RefPtr<DOMPluginArray> m_plugins;
     mutable RefPtr<DOMMimeTypeArray> m_mimeTypes;
     mutable RefPtr<Geolocation> m_geolocation;

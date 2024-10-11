@@ -32,30 +32,44 @@
 #include "ArgumentCodersCF.h"
 #endif
 
-namespace WebKit {
-
-void DictionaryPopupInfo::encode(CoreIPC::ArgumentEncoder* encoder) const
+namespace WebKit
 {
-    encoder->encode(origin);
-    encoder->encode(fontInfo);
-    encoder->encodeEnum(type);
+
+void DictionaryPopupInfo::encode( CoreIPC::ArgumentEncoder *encoder ) const
+{
+    encoder->encode( origin );
+    encoder->encode( fontInfo );
+    encoder->encodeEnum( type );
 
 #if PLATFORM(MAC) && !defined(BUILDING_ON_SNOW_LEOPARD)
-    CoreIPC::encode(encoder, options.get());
+    CoreIPC::encode( encoder, options.get() );
 #endif
 }
 
-bool DictionaryPopupInfo::decode(CoreIPC::ArgumentDecoder* decoder, DictionaryPopupInfo& result)
+bool DictionaryPopupInfo::decode( CoreIPC::ArgumentDecoder *decoder, DictionaryPopupInfo &result )
 {
-    if (!decoder->decode(result.origin))
+    if ( !decoder->decode( result.origin ) )
+    {
         return false;
-    if (!decoder->decode(result.fontInfo))
+    }
+
+    if ( !decoder->decode( result.fontInfo ) )
+    {
         return false;
-    if (!decoder->decodeEnum(result.type))
+    }
+
+    if ( !decoder->decodeEnum( result.type ) )
+    {
         return false;
+    }
+
 #if PLATFORM(MAC) && !defined(BUILDING_ON_SNOW_LEOPARD)
-    if (!CoreIPC::decode(decoder, result.options))
+
+    if ( !CoreIPC::decode( decoder, result.options ) )
+    {
         return false;
+    }
+
 #endif
     return true;
 }

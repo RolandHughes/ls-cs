@@ -32,7 +32,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKCacheModelDocumentViewer = 0,
     kWKCacheModelDocumentBrowser = 1,
     kWKCacheModelPrimaryWebBrowser = 2
@@ -40,27 +41,35 @@ enum {
 typedef uint32_t WKCacheModel;
 
 // Injected Bundle Client
-typedef void (*WKContextDidReceiveMessageFromInjectedBundleCallback)(WKContextRef page, WKStringRef messageName, WKTypeRef messageBody, const void *clientInfo);
-typedef void (*WKContextDidReceiveSynchronousMessageFromInjectedBundleCallback)(WKContextRef page, WKStringRef messageName, WKTypeRef messageBody, WKTypeRef* returnData, const void *clientInfo);
+typedef void ( *WKContextDidReceiveMessageFromInjectedBundleCallback )( WKContextRef page, WKStringRef messageName,
+        WKTypeRef messageBody, const void *clientInfo );
+typedef void ( *WKContextDidReceiveSynchronousMessageFromInjectedBundleCallback )( WKContextRef page, WKStringRef messageName,
+        WKTypeRef messageBody, WKTypeRef *returnData, const void *clientInfo );
 
-struct WKContextInjectedBundleClient {
+struct WKContextInjectedBundleClient
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKContextDidReceiveMessageFromInjectedBundleCallback                didReceiveMessageFromInjectedBundle;
     WKContextDidReceiveSynchronousMessageFromInjectedBundleCallback     didReceiveSynchronousMessageFromInjectedBundle;
 };
 typedef struct WKContextInjectedBundleClient WKContextInjectedBundleClient;
 
 // History Client
-typedef void (*WKContextDidNavigateWithNavigationDataCallback)(WKContextRef context, WKPageRef page, WKNavigationDataRef navigationData, WKFrameRef frame, const void *clientInfo);
-typedef void (*WKContextDidPerformClientRedirectCallback)(WKContextRef context, WKPageRef page, WKURLRef sourceURL, WKURLRef destinationURL, WKFrameRef frame, const void *clientInfo);
-typedef void (*WKContextDidPerformServerRedirectCallback)(WKContextRef context, WKPageRef page, WKURLRef sourceURL, WKURLRef destinationURL, WKFrameRef frame, const void *clientInfo);
-typedef void (*WKContextDidUpdateHistoryTitleCallback)(WKContextRef context, WKPageRef page, WKStringRef title, WKURLRef URL, WKFrameRef frame, const void *clientInfo);
-typedef void (*WKContextPopulateVisitedLinksCallback)(WKContextRef context, const void *clientInfo);
+typedef void ( *WKContextDidNavigateWithNavigationDataCallback )( WKContextRef context, WKPageRef page,
+        WKNavigationDataRef navigationData, WKFrameRef frame, const void *clientInfo );
+typedef void ( *WKContextDidPerformClientRedirectCallback )( WKContextRef context, WKPageRef page, WKURLRef sourceURL,
+        WKURLRef destinationURL, WKFrameRef frame, const void *clientInfo );
+typedef void ( *WKContextDidPerformServerRedirectCallback )( WKContextRef context, WKPageRef page, WKURLRef sourceURL,
+        WKURLRef destinationURL, WKFrameRef frame, const void *clientInfo );
+typedef void ( *WKContextDidUpdateHistoryTitleCallback )( WKContextRef context, WKPageRef page, WKStringRef title, WKURLRef URL,
+        WKFrameRef frame, const void *clientInfo );
+typedef void ( *WKContextPopulateVisitedLinksCallback )( WKContextRef context, const void *clientInfo );
 
-struct WKContextHistoryClient {
+struct WKContextHistoryClient
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKContextDidNavigateWithNavigationDataCallback                      didNavigateWithNavigationData;
     WKContextDidPerformClientRedirectCallback                           didPerformClientRedirect;
     WKContextDidPerformServerRedirectCallback                           didPerformServerRedirect;
@@ -70,21 +79,30 @@ struct WKContextHistoryClient {
 typedef struct WKContextHistoryClient WKContextHistoryClient;
 
 // Download Client
-typedef void (*WKContextDownloadDidStartCallback)(WKContextRef context, WKDownloadRef download, const void *clientInfo);
-typedef void (*WKContextDownloadDidReceiveAuthenticationChallengeCallback)(WKContextRef context, WKDownloadRef download, WKAuthenticationChallengeRef authenticationChallenge, const void *clientInfo);
-typedef void (*WKContextDownloadDidReceiveResponseCallback)(WKContextRef context, WKDownloadRef download, WKURLResponseRef response, const void *clientInfo);
-typedef void (*WKContextDownloadDidReceiveDataCallback)(WKContextRef context, WKDownloadRef download, uint64_t length, const void *clientInfo);
-typedef bool (*WKContextDownloadShouldDecodeSourceDataOfMIMETypeCallback)(WKContextRef context, WKDownloadRef download, WKStringRef mimeType, const void *clientInfo);
-typedef WKStringRef (*WKContextDownloadDecideDestinationWithSuggestedFilenameCallback)(WKContextRef context, WKDownloadRef download, WKStringRef filename, bool* allowOverwrite, const void *clientInfo);
-typedef void (*WKContextDownloadDidCreateDestinationCallback)(WKContextRef context, WKDownloadRef download, WKStringRef path, const void *clientInfo);
-typedef void (*WKContextDownloadDidFinishCallback)(WKContextRef context, WKDownloadRef download, const void *clientInfo);
-typedef void (*WKContextDownloadDidFailCallback)(WKContextRef context, WKDownloadRef download, WKErrorRef error, const void *clientInfo);
-typedef void (*WKContextDownloadDidCancel)(WKContextRef context, WKDownloadRef download, const void *clientInfo);
-typedef void (*WKContextDownloadProcessDidCrashCallback)(WKContextRef context, WKDownloadRef download, const void *clientInfo);
+typedef void ( *WKContextDownloadDidStartCallback )( WKContextRef context, WKDownloadRef download, const void *clientInfo );
+typedef void ( *WKContextDownloadDidReceiveAuthenticationChallengeCallback )( WKContextRef context, WKDownloadRef download,
+        WKAuthenticationChallengeRef authenticationChallenge, const void *clientInfo );
+typedef void ( *WKContextDownloadDidReceiveResponseCallback )( WKContextRef context, WKDownloadRef download,
+        WKURLResponseRef response, const void *clientInfo );
+typedef void ( *WKContextDownloadDidReceiveDataCallback )( WKContextRef context, WKDownloadRef download, uint64_t length,
+        const void *clientInfo );
+typedef bool ( *WKContextDownloadShouldDecodeSourceDataOfMIMETypeCallback )( WKContextRef context, WKDownloadRef download,
+        WKStringRef mimeType, const void *clientInfo );
+typedef WKStringRef ( *WKContextDownloadDecideDestinationWithSuggestedFilenameCallback )( WKContextRef context,
+        WKDownloadRef download, WKStringRef filename, bool *allowOverwrite, const void *clientInfo );
+typedef void ( *WKContextDownloadDidCreateDestinationCallback )( WKContextRef context, WKDownloadRef download, WKStringRef path,
+        const void *clientInfo );
+typedef void ( *WKContextDownloadDidFinishCallback )( WKContextRef context, WKDownloadRef download, const void *clientInfo );
+typedef void ( *WKContextDownloadDidFailCallback )( WKContextRef context, WKDownloadRef download, WKErrorRef error,
+        const void *clientInfo );
+typedef void ( *WKContextDownloadDidCancel )( WKContextRef context, WKDownloadRef download, const void *clientInfo );
+typedef void ( *WKContextDownloadProcessDidCrashCallback )( WKContextRef context, WKDownloadRef download,
+        const void *clientInfo );
 
-struct WKContextDownloadClient {
+struct WKContextDownloadClient
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKContextDownloadDidStartCallback                                   didStart;
     WKContextDownloadDidReceiveAuthenticationChallengeCallback          didReceiveAuthenticationChallenge;
     WKContextDownloadDidReceiveResponseCallback                         didReceiveResponse;
@@ -102,35 +120,35 @@ typedef struct WKContextDownloadClient WKContextDownloadClient;
 WK_EXPORT WKTypeID WKContextGetTypeID();
 
 WK_EXPORT WKContextRef WKContextCreate();
-WK_EXPORT WKContextRef WKContextCreateWithInjectedBundlePath(WKStringRef path);
+WK_EXPORT WKContextRef WKContextCreateWithInjectedBundlePath( WKStringRef path );
 WK_EXPORT WKContextRef WKContextGetSharedProcessContext();
 
-WK_EXPORT void WKContextSetInjectedBundleClient(WKContextRef context, const WKContextInjectedBundleClient* client);
-WK_EXPORT void WKContextSetHistoryClient(WKContextRef context, const WKContextHistoryClient* client);
-WK_EXPORT void WKContextSetDownloadClient(WKContextRef context, const WKContextDownloadClient* client);
+WK_EXPORT void WKContextSetInjectedBundleClient( WKContextRef context, const WKContextInjectedBundleClient *client );
+WK_EXPORT void WKContextSetHistoryClient( WKContextRef context, const WKContextHistoryClient *client );
+WK_EXPORT void WKContextSetDownloadClient( WKContextRef context, const WKContextDownloadClient *client );
 
-WK_EXPORT WKDownloadRef WKContextDownloadURLRequest(WKContextRef context, const WKURLRequestRef request);
+WK_EXPORT WKDownloadRef WKContextDownloadURLRequest( WKContextRef context, const WKURLRequestRef request );
 
-WK_EXPORT void WKContextSetInitializationUserDataForInjectedBundle(WKContextRef context, WKTypeRef userData);
-WK_EXPORT void WKContextPostMessageToInjectedBundle(WKContextRef context, WKStringRef messageName, WKTypeRef messageBody);
+WK_EXPORT void WKContextSetInitializationUserDataForInjectedBundle( WKContextRef context, WKTypeRef userData );
+WK_EXPORT void WKContextPostMessageToInjectedBundle( WKContextRef context, WKStringRef messageName, WKTypeRef messageBody );
 
-WK_EXPORT void WKContextAddVisitedLink(WKContextRef context, WKStringRef visitedURL);
+WK_EXPORT void WKContextAddVisitedLink( WKContextRef context, WKStringRef visitedURL );
 
-WK_EXPORT void WKContextSetCacheModel(WKContextRef context, WKCacheModel cacheModel);
-WK_EXPORT WKCacheModel WKContextGetCacheModel(WKContextRef context);
+WK_EXPORT void WKContextSetCacheModel( WKContextRef context, WKCacheModel cacheModel );
+WK_EXPORT WKCacheModel WKContextGetCacheModel( WKContextRef context );
 
-WK_EXPORT void WKContextStartMemorySampler(WKContextRef context, WKDoubleRef interval);
-WK_EXPORT void WKContextStopMemorySampler(WKContextRef context);
+WK_EXPORT void WKContextStartMemorySampler( WKContextRef context, WKDoubleRef interval );
+WK_EXPORT void WKContextStopMemorySampler( WKContextRef context );
 
-WK_EXPORT WKApplicationCacheManagerRef WKContextGetApplicationCacheManager(WKContextRef context);
-WK_EXPORT WKCookieManagerRef WKContextGetCookieManager(WKContextRef context);
-WK_EXPORT WKDatabaseManagerRef WKContextGetDatabaseManager(WKContextRef context);
-WK_EXPORT WKGeolocationManagerRef WKContextGetGeolocationManager(WKContextRef context);
-WK_EXPORT WKIconDatabaseRef WKContextGetIconDatabase(WKContextRef context);
-WK_EXPORT WKKeyValueStorageManagerRef WKContextGetKeyValueStorageManager(WKContextRef context);
-WK_EXPORT WKMediaCacheManagerRef WKContextGetMediaCacheManager(WKContextRef context);
-WK_EXPORT WKPluginSiteDataManagerRef WKContextGetPluginSiteDataManager(WKContextRef context);
-WK_EXPORT WKResourceCacheManagerRef WKContextGetResourceCacheManager(WKContextRef context);
+WK_EXPORT WKApplicationCacheManagerRef WKContextGetApplicationCacheManager( WKContextRef context );
+WK_EXPORT WKCookieManagerRef WKContextGetCookieManager( WKContextRef context );
+WK_EXPORT WKDatabaseManagerRef WKContextGetDatabaseManager( WKContextRef context );
+WK_EXPORT WKGeolocationManagerRef WKContextGetGeolocationManager( WKContextRef context );
+WK_EXPORT WKIconDatabaseRef WKContextGetIconDatabase( WKContextRef context );
+WK_EXPORT WKKeyValueStorageManagerRef WKContextGetKeyValueStorageManager( WKContextRef context );
+WK_EXPORT WKMediaCacheManagerRef WKContextGetMediaCacheManager( WKContextRef context );
+WK_EXPORT WKPluginSiteDataManagerRef WKContextGetPluginSiteDataManager( WKContextRef context );
+WK_EXPORT WKResourceCacheManagerRef WKContextGetResourceCacheManager( WKContextRef context );
 
 #ifdef __cplusplus
 }

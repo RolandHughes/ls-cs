@@ -35,7 +35,7 @@ PlatformVideoWindow::~PlatformVideoWindow()
     notImplemented();
 }
 
-void PlatformVideoWindow::prepareForOverlay(GstMessage*)
+void PlatformVideoWindow::prepareForOverlay( GstMessage * )
 {
 }
 

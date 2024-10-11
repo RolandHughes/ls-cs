@@ -28,107 +28,111 @@
 #include <qdebug.h>
 
 QSslCipher::QSslCipher()
-   : d(new QSslCipherPrivate)
+    : d( new QSslCipherPrivate )
 {
 }
 
-QSslCipher::QSslCipher(const QString &name)
-   : d(new QSslCipherPrivate)
+QSslCipher::QSslCipher( const QString &name )
+    : d( new QSslCipherPrivate )
 {
-   for (const QSslCipher &cipher : QSslConfiguration::supportedCiphers()) {
-      if (cipher.name() == name) {
-         *this = cipher;
-         return;
-      }
-   }
+    for ( const QSslCipher &cipher : QSslConfiguration::supportedCiphers() )
+    {
+        if ( cipher.name() == name )
+        {
+            *this = cipher;
+            return;
+        }
+    }
 }
 
-QSslCipher::QSslCipher(const QString &name, QSsl::SslProtocol protocol)
-   : d(new QSslCipherPrivate)
+QSslCipher::QSslCipher( const QString &name, QSsl::SslProtocol protocol )
+    : d( new QSslCipherPrivate )
 {
-   for (const QSslCipher &cipher : QSslConfiguration::supportedCiphers()) {
-      if (cipher.name() == name && cipher.protocol() == protocol) {
-         *this = cipher;
-         return;
-      }
-   }
+    for ( const QSslCipher &cipher : QSslConfiguration::supportedCiphers() )
+    {
+        if ( cipher.name() == name && cipher.protocol() == protocol )
+        {
+            *this = cipher;
+            return;
+        }
+    }
 }
 
-QSslCipher::QSslCipher(const QSslCipher &other)
-   : d(new QSslCipherPrivate)
+QSslCipher::QSslCipher( const QSslCipher &other )
+    : d( new QSslCipherPrivate )
 {
-   *d.data() = *other.d.data();
+    *d.data() = *other.d.data();
 }
 
 QSslCipher::~QSslCipher()
 {
 }
 
-QSslCipher &QSslCipher::operator=(const QSslCipher &other)
+QSslCipher &QSslCipher::operator=( const QSslCipher &other )
 {
-   *d.data() = *other.d.data();
-   return *this;
+    *d.data() = *other.d.data();
+    return *this;
 }
 
-bool QSslCipher::operator==(const QSslCipher &other) const
+bool QSslCipher::operator==( const QSslCipher &other ) const
 {
-   return d->name == other.d->name && d->protocol == other.d->protocol;
+    return d->name == other.d->name && d->protocol == other.d->protocol;
 }
 
 bool QSslCipher::isNull() const
 {
-   return d->isNull;
+    return d->isNull;
 }
 
 QString QSslCipher::name() const
 {
-   return d->name;
+    return d->name;
 }
 
 int QSslCipher::supportedBits() const
 {
-   return d->supportedBits;
+    return d->supportedBits;
 }
 
 int QSslCipher::usedBits() const
 {
-   return d->bits;
+    return d->bits;
 }
 
 QString QSslCipher::keyExchangeMethod() const
 {
-   return d->keyExchangeMethod;
+    return d->keyExchangeMethod;
 }
 
 QString QSslCipher::authenticationMethod() const
 {
-   return d->authenticationMethod;
+    return d->authenticationMethod;
 }
 
 QString QSslCipher::encryptionMethod() const
 {
-   return d->encryptionMethod;
+    return d->encryptionMethod;
 }
 
 QString QSslCipher::protocolString() const
 {
-   return d->protocolString;
+    return d->protocolString;
 }
 
 QSsl::SslProtocol QSslCipher::protocol() const
 {
-   return d->protocol;
+    return d->protocol;
 }
 
-QDebug operator<<(QDebug debug, const QSslCipher &cipher)
+QDebug operator<<( QDebug debug, const QSslCipher &cipher )
 {
-   // QDebugStateSaver saver(debug);
-   // debug.resetFormat().nospace().noquote();
+    // QDebugStateSaver saver(debug);
+    // debug.resetFormat().nospace().noquote();
 
-   debug << "QSslCipher(name=" << cipher.name()
-         << ", bits="  << cipher.usedBits()
-         << ", proto=" << cipher.protocolString()
-         << ')';
-   return debug;
+    debug << "QSslCipher(name=" << cipher.name()
+          << ", bits="  << cipher.usedBits()
+          << ", proto=" << cipher.protocolString()
+          << ')';
+    return debug;
 }
 

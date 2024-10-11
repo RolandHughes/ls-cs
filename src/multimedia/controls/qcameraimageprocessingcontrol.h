@@ -31,41 +31,42 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraImageProcessingControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraImageProcessingControl)
+    MULTI_LSCS_OBJECT( QCameraImageProcessingControl )
 
-   MULTI_CS_ENUM(ProcessingParameter)
+    MULTI_LSCS_ENUM( ProcessingParameter )
 
- public:
-   ~QCameraImageProcessingControl();
+public:
+    ~QCameraImageProcessingControl();
 
-   enum ProcessingParameter {
-      WhiteBalancePreset,
-      ColorTemperature,
-      Contrast,
-      Saturation,
-      Brightness,
-      Sharpening,
-      Denoising,
-      ContrastAdjustment,
-      SaturationAdjustment,
-      BrightnessAdjustment,
-      SharpeningAdjustment,
-      DenoisingAdjustment,
-      ColorFilter,
-      ExtendedParameter = 1000
-   };
+    enum ProcessingParameter
+    {
+        WhiteBalancePreset,
+        ColorTemperature,
+        Contrast,
+        Saturation,
+        Brightness,
+        Sharpening,
+        Denoising,
+        ContrastAdjustment,
+        SaturationAdjustment,
+        BrightnessAdjustment,
+        SharpeningAdjustment,
+        DenoisingAdjustment,
+        ColorFilter,
+        ExtendedParameter = 1000
+    };
 
-   virtual bool isParameterSupported(ProcessingParameter) const = 0;
-   virtual bool isParameterValueSupported(ProcessingParameter parameter, const QVariant &value) const = 0;
-   virtual QVariant parameter(ProcessingParameter parameter) const = 0;
-   virtual void setParameter(ProcessingParameter parameter, const QVariant &value) = 0;
+    virtual bool isParameterSupported( ProcessingParameter ) const = 0;
+    virtual bool isParameterValueSupported( ProcessingParameter parameter, const QVariant &value ) const = 0;
+    virtual QVariant parameter( ProcessingParameter parameter ) const = 0;
+    virtual void setParameter( ProcessingParameter parameter, const QVariant &value ) = 0;
 
- protected:
-   explicit QCameraImageProcessingControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraImageProcessingControl( QObject *parent = nullptr );
 };
 
 #define QCameraImageProcessingControl_iid "com.copperspice.CS.cameraImageProcessingControl/1.0"
-CS_DECLARE_INTERFACE(QCameraImageProcessingControl, QCameraImageProcessingControl_iid)
+LSCS_DECLARE_INTERFACE( QCameraImageProcessingControl, QCameraImageProcessingControl_iid )
 
 #endif
 

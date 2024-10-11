@@ -46,10 +46,10 @@
     void Q_GUI_EXPORT qt_memrotate180(const type*, int, int, int, type*, int); \
     void Q_GUI_EXPORT qt_memrotate270(const type*, int, int, int, type*, int)
 
-QT_DECL_MEMROTATE(quint32);
-QT_DECL_MEMROTATE(quint16);
-QT_DECL_MEMROTATE(quint24);
-QT_DECL_MEMROTATE(quint8);
+QT_DECL_MEMROTATE( quint32 );
+QT_DECL_MEMROTATE( quint16 );
+QT_DECL_MEMROTATE( quint24 );
+QT_DECL_MEMROTATE( quint8 );
 
 #undef QT_DECL_MEMROTATE
 

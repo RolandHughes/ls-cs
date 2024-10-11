@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Adam Barth. ("Adam Barth") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,54 +32,65 @@
 #include "KURL.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Frame;
 class SecurityOrigin;
 class TextResourceDecoder;
 
-class DocumentWriter {
-    WTF_MAKE_NONCOPYABLE(DocumentWriter);
+class DocumentWriter
+{
+    WTF_MAKE_NONCOPYABLE( DocumentWriter );
 public:
-    DocumentWriter(Frame*);
+    DocumentWriter( Frame * );
 
     // This is only called by ScriptController::executeIfJavaScriptURL
     // and always contains the result of evaluating a javascript: url.
-    void replaceDocument(const String&);
+    void replaceDocument( const String & );
 
     void begin();
-    void begin(const KURL&, bool dispatchWindowObjectAvailable = true, SecurityOrigin* forcedSecurityOrigin = 0);
-    void addData(const char* string, int length = -1, bool flush = false);
+    void begin( const KURL &, bool dispatchWindowObjectAvailable = true, SecurityOrigin *forcedSecurityOrigin = 0 );
+    void addData( const char *string, int length = -1, bool flush = false );
     void end();
     void endIfNotLoadingMainResource();
-    
-    void setFrame(Frame* frame) { m_frame = frame; }
+
+    void setFrame( Frame *frame )
+    {
+        m_frame = frame;
+    }
 
     String encoding() const;
-    void setEncoding(const String& encoding, bool userChosen);
+    void setEncoding( const String &encoding, bool userChosen );
 
     // FIXME: It's really unforunate to need to expose this piece of state.
     // I suspect a better design is to disentangle user-provided encodings,
     // default encodings, and the decoding we're currently using.
     String deprecatedFrameEncoding() const;
 
-    const String& mimeType() const { return m_mimeType; }
-    void setMIMEType(const String& type) { m_mimeType = type; }
+    const String &mimeType() const
+    {
+        return m_mimeType;
+    }
+    void setMIMEType( const String &type )
+    {
+        m_mimeType = type;
+    }
 
-    void setDecoder(TextResourceDecoder*);
+    void setDecoder( TextResourceDecoder * );
 
     // Exposed for DoucmentParser::appendBytes
-    TextResourceDecoder* createDecoderIfNeeded();
+    TextResourceDecoder *createDecoderIfNeeded();
     void reportDataReceived();
 
     void setDocumentWasLoadedAsPartOfNavigation();
 
 private:
-    PassRefPtr<Document> createDocument(const KURL&);
+    PassRefPtr<Document> createDocument( const KURL & );
     void clear();
 
-    Frame* m_frame;
+    Frame *m_frame;
 
     bool m_receivedData;
     String m_mimeType;

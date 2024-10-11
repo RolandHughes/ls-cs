@@ -36,15 +36,16 @@ using namespace QPatternist;
 
 class QSimpleXmlNodeModelPrivate : public QAbstractXmlNodeModelPrivate
 {
- public:
-   QSimpleXmlNodeModelPrivate(const QXmlNamePool &np) : namePool(np) {
-   }
+public:
+    QSimpleXmlNodeModelPrivate( const QXmlNamePool &np ) : namePool( np )
+    {
+    }
 
-   mutable QXmlNamePool namePool;
+    mutable QXmlNamePool namePool;
 };
 
-QSimpleXmlNodeModel::QSimpleXmlNodeModel(const QXmlNamePool &namePool)
-   : QAbstractXmlNodeModel(new QSimpleXmlNodeModelPrivate(namePool))
+QSimpleXmlNodeModel::QSimpleXmlNodeModel( const QXmlNamePool &namePool )
+    : QAbstractXmlNodeModel( new QSimpleXmlNodeModelPrivate( namePool ) )
 {
 }
 
@@ -52,44 +53,50 @@ QSimpleXmlNodeModel::~QSimpleXmlNodeModel()
 {
 }
 
-QString QSimpleXmlNodeModel::stringValue(const QXmlNodeModelIndex &node) const
+QString QSimpleXmlNodeModel::stringValue( const QXmlNodeModelIndex &node ) const
 {
-   const QXmlNodeModelIndex::NodeKind k = kind(node);
+    const QXmlNodeModelIndex::NodeKind k = kind( node );
 
-   if (k == QXmlNodeModelIndex::Element || k == QXmlNodeModelIndex::Attribute) {
-      const QVariant &candidate = typedValue(node);
+    if ( k == QXmlNodeModelIndex::Element || k == QXmlNodeModelIndex::Attribute )
+    {
+        const QVariant &candidate = typedValue( node );
 
-      if (! candidate.isValid()) {
-         return QString();
-      } else {
-         return AtomicValue::toXDM(candidate).stringValue();
-      }
+        if ( ! candidate.isValid() )
+        {
+            return QString();
+        }
+        else
+        {
+            return AtomicValue::toXDM( candidate ).stringValue();
+        }
 
-   } else {
-      return QString();
-   }
+    }
+    else
+    {
+        return QString();
+    }
 }
 
-QUrl QSimpleXmlNodeModel::baseUri(const QXmlNodeModelIndex &node) const
+QUrl QSimpleXmlNodeModel::baseUri( const QXmlNodeModelIndex &node ) const
 {
-   return documentUri(node);
+    return documentUri( node );
 }
 
 QXmlNamePool &QSimpleXmlNodeModel::namePool() const
 {
-   Q_D(const QSimpleXmlNodeModel);
+    Q_D( const QSimpleXmlNodeModel );
 
-   return d->namePool;
+    return d->namePool;
 }
 
 /*!
   Always returns an empty QVector. This signals that no namespace
   bindings are in scope for \a node.
  */
-QVector<QXmlName> QSimpleXmlNodeModel::namespaceBindings(const QXmlNodeModelIndex &node) const
+QVector<QXmlName> QSimpleXmlNodeModel::namespaceBindings( const QXmlNodeModelIndex &node ) const
 {
-   (void) node;
-   return QVector<QXmlName>();
+    ( void ) node;
+    return QVector<QXmlName>();
 }
 
 /*!
@@ -98,10 +105,10 @@ QVector<QXmlName> QSimpleXmlNodeModel::namespaceBindings(const QXmlNodeModelInde
 
   This effectively means the model has no elements that have an id.
  */
-QXmlNodeModelIndex QSimpleXmlNodeModel::elementById(const QXmlName &id) const
+QXmlNodeModelIndex QSimpleXmlNodeModel::elementById( const QXmlName &id ) const
 {
-   (void) id;
-   return QXmlNodeModelIndex();
+    ( void ) id;
+    return QXmlNodeModelIndex();
 }
 
 /*!
@@ -110,9 +117,9 @@ QXmlNodeModelIndex QSimpleXmlNodeModel::elementById(const QXmlName &id) const
   This effectively means the model has no elements or attributes of
   type \c IDREF.
  */
-QVector<QXmlNodeModelIndex> QSimpleXmlNodeModel::nodesByIdref(const QXmlName &idref) const
+QVector<QXmlNodeModelIndex> QSimpleXmlNodeModel::nodesByIdref( const QXmlName &idref ) const
 {
-   (void) idref;
-   return QVector<QXmlNodeModelIndex>();
+    ( void ) idref;
+    return QVector<QXmlNodeModelIndex>();
 }
 

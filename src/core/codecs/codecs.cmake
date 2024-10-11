@@ -24,7 +24,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/codecs/qfontlaocodec_p.h
 )
 
-target_sources(CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/codecs/qisciicodec.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/codecs/qlatincodec.cpp
@@ -36,19 +36,19 @@ target_sources(CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "(Linux|Darwin|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/codecs/qiconvcodec.cpp
    )
 
    if(NOT CMAKE_SYSTEM_NAME MATCHES "Linux")
-      target_link_libraries(CsCore
+      target_link_libraries(LsCsCore
          PRIVATE
          ${ICONV_LIBRARIES}
          ${CMAKE_THREAD_LIBS_INIT}
       )
 
-      target_include_directories(CsCore
+      target_include_directories(LsCsCore
          PRIVATE
          ${ICONV_INCLUDE_DIR}
       )

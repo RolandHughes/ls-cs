@@ -175,8 +175,8 @@ static void initializeSandbox(const WebProcessCreationParameters& parameters)
     appendReadonlySandboxDirectory(sandboxParameters, "UI_PROCESS_BUNDLE_RESOURCE_DIR", parameters.uiProcessBundleResourcePath);
 
     // These are read-write getconf paths.
-    appendReadwriteConfDirectory(sandboxParameters, "DARWIN_USER_TEMP_DIR", _CS_DARWIN_USER_TEMP_DIR);
-    appendReadwriteConfDirectory(sandboxParameters, "DARWIN_USER_CACHE_DIR", _CS_DARWIN_USER_CACHE_DIR);
+    appendReadwriteConfDirectory(sandboxParameters, "DARWIN_USER_TEMP_DIR", _LSCS_DARWIN_USER_TEMP_DIR);
+    appendReadwriteConfDirectory(sandboxParameters, "DARWIN_USER_CACHE_DIR", _LSCS_DARWIN_USER_CACHE_DIR);
 
     // These are read-write paths.
     appendReadwriteSandboxDirectory(sandboxParameters, "HOME_DIR", NSHomeDirectory());

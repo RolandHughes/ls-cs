@@ -45,118 +45,121 @@ struct ModelNode;
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeListModel : public QListModelInterface
 {
-   DECL_CS_OBJECT(QDeclarativeListModel)
-   DECL_CS_PROPERTY_READ(count, count)
-   DECL_CS_PROPERTY_NOTIFY(count, countChanged)
+    DECL_LSCS_OBJECT( QDeclarativeListModel )
+    DECL_LSCS_PROPERTY_READ( count, count )
+    DECL_LSCS_PROPERTY_NOTIFY( count, countChanged )
 
- public:
-   QDeclarativeListModel(QObject *parent = nullptr);
-   ~QDeclarativeListModel();
+public:
+    QDeclarativeListModel( QObject *parent = nullptr );
+    ~QDeclarativeListModel();
 
-   virtual QList<int> roles() const;
-   virtual QString toString(int role) const;
-   virtual int count() const;
-   virtual QVariant data(int index, int role) const;
+    virtual QList<int> roles() const;
+    virtual QString toString( int role ) const;
+    virtual int count() const;
+    virtual QVariant data( int index, int role ) const;
 
-   Q_INVOKABLE void clear();
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void clear();
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE void remove(int index);
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void remove( int index );
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE void append(const QScriptValue &);
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void append( const QScriptValue & );
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE void insert(int index, const QScriptValue &);
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void insert( int index, const QScriptValue & );
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE QScriptValue get(int index) const;
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE QScriptValue get( int index ) const;
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE void set(int index, const QScriptValue &);
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void set( int index, const QScriptValue & );
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE void setProperty(int index, const QString &property, const QVariant &value);
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void setProperty( int index, const QString &property, const QVariant &value );
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE void move(int from, int to, int count);
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void move( int from, int to, int count );
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   Q_INVOKABLE void sync();
-   DECL_CS_INVOKABLE_METHOD_1(Public, )
-   DECL_CS_INVOKABLE_METHOD_2()
+    Q_INVOKABLE void sync();
+    DECL_LSCS_INVOKABLE_METHOD_1( Public, )
+    DECL_LSCS_INVOKABLE_METHOD_2()
 
-   QDeclarativeListModelWorkerAgent *agent();
+    QDeclarativeListModelWorkerAgent *agent();
 
-   DECL_CS_SIGNAL_1(Public, void countChanged())
-   DECL_CS_SIGNAL_2(countChanged)
+    DECL_LSCS_SIGNAL_1( Public, void countChanged() )
+    DECL_LSCS_SIGNAL_2( countChanged )
 
- private:
-   friend class QDeclarativeListModelParser;
-   friend class QDeclarativeListModelWorkerAgent;
-   friend class FlatListModel;
-   friend class FlatListScriptClass;
-   friend struct ModelNode;
+private:
+    friend class QDeclarativeListModelParser;
+    friend class QDeclarativeListModelWorkerAgent;
+    friend class FlatListModel;
+    friend class FlatListScriptClass;
+    friend struct ModelNode;
 
-   // Constructs a flat list model for a worker agent
-   QDeclarativeListModel(const QDeclarativeListModel *orig, QDeclarativeListModelWorkerAgent *parent);
+    // Constructs a flat list model for a worker agent
+    QDeclarativeListModel( const QDeclarativeListModel *orig, QDeclarativeListModelWorkerAgent *parent );
 
-   void set(int index, const QScriptValue &, QList<int> *roles);
-   void setProperty(int index, const QString &property, const QVariant &value, QList<int> *roles);
+    void set( int index, const QScriptValue &, QList<int> *roles );
+    void setProperty( int index, const QString &property, const QVariant &value, QList<int> *roles );
 
-   bool flatten();
-   bool inWorkerThread() const;
+    bool flatten();
+    bool inWorkerThread() const;
 
-   inline bool canMove(int from, int to, int n) const {
-      return !(from + n > count() || to + n > count() || from < 0 || to < 0 || n < 0);
-   }
+    inline bool canMove( int from, int to, int n ) const
+    {
+        return !( from + n > count() || to + n > count() || from < 0 || to < 0 || n < 0 );
+    }
 
-   QDeclarativeListModelWorkerAgent *m_agent;
-   NestedListModel *m_nested;
-   FlatListModel *m_flat;
+    QDeclarativeListModelWorkerAgent *m_agent;
+    NestedListModel *m_nested;
+    FlatListModel *m_flat;
 };
 
 // ### FIXME
 class QDeclarativeListElement : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeListElement)
+    DECL_LSCS_OBJECT( QDeclarativeListElement )
 };
 
 class QDeclarativeListModelParser : public QDeclarativeCustomParser
 {
- public:
-   QByteArray compile(const QList<QDeclarativeCustomParserProperty> &);
-   void setCustomData(QObject *, const QByteArray &);
+public:
+    QByteArray compile( const QList<QDeclarativeCustomParserProperty> & );
+    void setCustomData( QObject *, const QByteArray & );
 
- private:
-   struct ListInstruction {
-      enum { Push, Pop, Value, Set } type;
-      int dataIdx;
-   };
-   struct ListModelData {
-      int dataOffset;
-      int instrCount;
-      ListInstruction *instructions() const;
-   };
-   bool compileProperty(const QDeclarativeCustomParserProperty &prop, QList<ListInstruction> &instr, QByteArray &data);
+private:
+    struct ListInstruction
+    {
+        enum { Push, Pop, Value, Set } type;
+        int dataIdx;
+    };
+    struct ListModelData
+    {
+        int dataOffset;
+        int instrCount;
+        ListInstruction *instructions() const;
+    };
+    bool compileProperty( const QDeclarativeCustomParserProperty &prop, QList<ListInstruction> &instr, QByteArray &data );
 
-   bool definesEmptyList(const QString &);
+    bool definesEmptyList( const QString & );
 
-   QByteArray listElementTypeName;
+    QByteArray listElementTypeName;
 };
 
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeListModel)
-QML_DECLARE_TYPE(QDeclarativeListElement)
+QML_DECLARE_TYPE( QDeclarativeListModel )
+QML_DECLARE_TYPE( QDeclarativeListElement )
 
 #endif // QDECLARATIVELISTMODEL_H

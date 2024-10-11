@@ -26,9 +26,10 @@
 #include "config.h"
 #include "WebURLRequest.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebURLRequest::WebURLRequest(PlatformRequest)
+WebURLRequest::WebURLRequest( PlatformRequest )
 {
     ASSERT_NOT_REACHED();
 }

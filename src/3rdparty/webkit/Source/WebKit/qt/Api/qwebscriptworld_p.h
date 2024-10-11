@@ -22,15 +22,17 @@
 
 #include "RefPtr.h"
 
-namespace WebCore {
-    class DOMWrapperWorld;
+namespace WebCore
+{
+class DOMWrapperWorld;
 }
 
-class QWebScriptWorldPrivate : public QSharedData {
+class QWebScriptWorldPrivate : public QSharedData
+{
 public:
-    QWebScriptWorldPrivate(WTF::PassRefPtr<WebCore::DOMWrapperWorld> o)
+    QWebScriptWorldPrivate( WTF::PassRefPtr<WebCore::DOMWrapperWorld> o )
     {
-        Q_ASSERT(o);
+        Q_ASSERT( o );
         world = o;
     }
 

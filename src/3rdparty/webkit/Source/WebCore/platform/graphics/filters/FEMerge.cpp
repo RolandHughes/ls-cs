@@ -29,39 +29,53 @@
 #include "RenderTreeAsText.h"
 #include "TextStream.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FEMerge::FEMerge(Filter* filter) 
-    : FilterEffect(filter)
+FEMerge::FEMerge( Filter *filter )
+    : FilterEffect( filter )
 {
 }
 
-PassRefPtr<FEMerge> FEMerge::create(Filter* filter)
+PassRefPtr<FEMerge> FEMerge::create( Filter *filter )
 {
-    return adoptRef(new FEMerge(filter));
+    return adoptRef( new FEMerge( filter ) );
 }
 
 void FEMerge::apply()
 {
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    unsigned size = numberOfEffectInputs();
-    ASSERT(size > 0);
-    for (unsigned i = 0; i < size; ++i) {
-        FilterEffect* in = inputEffect(i);
-        in->apply();
-        if (!in->hasResult())
-            return;
     }
 
-    ImageBuffer* resultImage = createImageBufferResult();
-    if (!resultImage)
-        return;
+    unsigned size = numberOfEffectInputs();
+    ASSERT( size > 0 );
 
-    GraphicsContext* filterContext = resultImage->context();
-    for (unsigned i = 0; i < size; ++i) {
-        FilterEffect* in = inputEffect(i);
-        filterContext->drawImageBuffer(in->asImageBuffer(), ColorSpaceDeviceRGB, drawingRegionOfInputImage(in->absolutePaintRect()));
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        FilterEffect *in = inputEffect( i );
+        in->apply();
+
+        if ( !in->hasResult() )
+        {
+            return;
+        }
+    }
+
+    ImageBuffer *resultImage = createImageBufferResult();
+
+    if ( !resultImage )
+    {
+        return;
+    }
+
+    GraphicsContext *filterContext = resultImage->context();
+
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        FilterEffect *in = inputEffect( i );
+        filterContext->drawImageBuffer( in->asImageBuffer(), ColorSpaceDeviceRGB, drawingRegionOfInputImage( in->absolutePaintRect() ) );
     }
 }
 
@@ -69,16 +83,20 @@ void FEMerge::dump()
 {
 }
 
-TextStream& FEMerge::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FEMerge::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[feMerge";
-    FilterEffect::externalRepresentation(ts);
+    FilterEffect::externalRepresentation( ts );
     unsigned size = numberOfEffectInputs();
-    ASSERT(size > 0);
+    ASSERT( size > 0 );
     ts << " mergeNodes=\"" << size << "\"]\n";
-    for (unsigned i = 0; i < size; ++i)
-        inputEffect(i)->externalRepresentation(ts, indent + 1);
+
+    for ( unsigned i = 0; i < size; ++i )
+    {
+        inputEffect( i )->externalRepresentation( ts, indent + 1 );
+    }
+
     return ts;
 }
 

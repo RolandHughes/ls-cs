@@ -30,28 +30,51 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 class RenderStyle;
 
-class KeyframeValue {
+class KeyframeValue
+{
 public:
-    KeyframeValue(float key, PassRefPtr<RenderStyle> style)
-        : m_key(key)
-        , m_style(style)
+    KeyframeValue( float key, PassRefPtr<RenderStyle> style )
+        : m_key( key )
+        , m_style( style )
     {
     }
 
-    void addProperty(int prop) { m_properties.add(prop); }
-    bool containsProperty(int prop) const { return m_properties.contains(prop); }
-    const HashSet<int>& properties() const { return m_properties; }
+    void addProperty( int prop )
+    {
+        m_properties.add( prop );
+    }
+    bool containsProperty( int prop ) const
+    {
+        return m_properties.contains( prop );
+    }
+    const HashSet<int> &properties() const
+    {
+        return m_properties;
+    }
 
-    float key() const { return m_key; }
-    void setKey(float key) { m_key = key; }
+    float key() const
+    {
+        return m_key;
+    }
+    void setKey( float key )
+    {
+        m_key = key;
+    }
 
-    const RenderStyle* style() const { return m_style.get(); }
-    void setStyle(PassRefPtr<RenderStyle> style) { m_style = style; }
+    const RenderStyle *style() const
+    {
+        return m_style.get();
+    }
+    void setStyle( PassRefPtr<RenderStyle> style )
+    {
+        m_style = style;
+    }
 
 private:
     float m_key;
@@ -59,39 +82,67 @@ private:
     RefPtr<RenderStyle> m_style;
 };
 
-class KeyframeList {
+class KeyframeList
+{
 public:
-    KeyframeList(RenderObject* renderer, const AtomicString& animationName)
-        : m_animationName(animationName)
-        , m_renderer(renderer)
+    KeyframeList( RenderObject *renderer, const AtomicString &animationName )
+        : m_animationName( animationName )
+        , m_renderer( renderer )
     {
-        insert(KeyframeValue(0, 0));
-        insert(KeyframeValue(1, 0));
+        insert( KeyframeValue( 0, 0 ) );
+        insert( KeyframeValue( 1, 0 ) );
     }
     ~KeyframeList();
-        
-    bool operator==(const KeyframeList& o) const;
-    bool operator!=(const KeyframeList& o) const { return !(*this == o); }
-    
-    const AtomicString& animationName() const { return m_animationName; }
-    
-    void insert(const KeyframeValue& keyframe);
-    
-    void addProperty(int prop) { m_properties.add(prop); }
-    bool containsProperty(int prop) const { return m_properties.contains(prop); }
-    HashSet<int>::const_iterator beginProperties() const { return m_properties.begin(); }
-    HashSet<int>::const_iterator endProperties() const { return m_properties.end(); }
-    
+
+    bool operator==( const KeyframeList &o ) const;
+    bool operator!=( const KeyframeList &o ) const
+    {
+        return !( *this == o );
+    }
+
+    const AtomicString &animationName() const
+    {
+        return m_animationName;
+    }
+
+    void insert( const KeyframeValue &keyframe );
+
+    void addProperty( int prop )
+    {
+        m_properties.add( prop );
+    }
+    bool containsProperty( int prop ) const
+    {
+        return m_properties.contains( prop );
+    }
+    HashSet<int>::const_iterator beginProperties() const
+    {
+        return m_properties.begin();
+    }
+    HashSet<int>::const_iterator endProperties() const
+    {
+        return m_properties.end();
+    }
+
     void clear();
-    bool isEmpty() const { return m_keyframes.isEmpty(); }
-    size_t size() const { return m_keyframes.size(); }
-    const KeyframeValue& operator[](size_t index) const { return m_keyframes[index]; }
+    bool isEmpty() const
+    {
+        return m_keyframes.isEmpty();
+    }
+    size_t size() const
+    {
+        return m_keyframes.size();
+    }
+    const KeyframeValue &operator[]( size_t index ) const
+    {
+        return m_keyframes[index];
+    }
 
 private:
     AtomicString m_animationName;
     Vector<KeyframeValue> m_keyframes; // kept sorted by key
     HashSet<int> m_properties; // the properties being animated
-    RenderObject* m_renderer;
+    RenderObject *m_renderer;
 };
 
 } // namespace WebCore

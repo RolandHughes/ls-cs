@@ -28,9 +28,11 @@
 
 #if USE(ACCELERATED_COMPOSITING)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CACFLayerTreeHostClient {
+class CACFLayerTreeHostClient
+{
 public:
     virtual ~CACFLayerTreeHostClient() { }
     virtual void flushPendingGraphicsLayerChanges() { }

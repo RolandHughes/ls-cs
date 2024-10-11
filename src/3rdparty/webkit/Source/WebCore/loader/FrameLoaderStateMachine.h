@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Google, Inc. nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,19 +31,22 @@
 
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Encapsulates a state machine for FrameLoader. Note that this is different from FrameState,
 // which stores the state of the current load that FrameLoader is executing.
-class FrameLoaderStateMachine {
-    WTF_MAKE_NONCOPYABLE(FrameLoaderStateMachine);
+class FrameLoaderStateMachine
+{
+    WTF_MAKE_NONCOPYABLE( FrameLoaderStateMachine );
 public:
     FrameLoaderStateMachine();
 
     // Once a load has been committed, the state may
     // alternate between CommittedFirstRealLoad and FirstLayoutDone.
     // Otherwise, the states only go down the list.
-    enum State {
+    enum State
+    {
         Uninitialized,
         CreatingInitialEmptyDocument,
         DisplayingInitialEmptyDocument,
@@ -57,7 +60,7 @@ public:
     bool creatingInitialEmptyDocument() const;
     bool isDisplayingInitialEmptyDocument() const;
     bool firstLayoutDone() const;
-    void advanceTo(State);
+    void advanceTo( State );
 
 private:
     State m_state;

@@ -30,26 +30,34 @@
 #include "PlatformCertificateInfo.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebCertificateInfo : public APIObject {
+class WebCertificateInfo : public APIObject
+{
 public:
     static const Type APIType = TypeCertificateInfo;
 
-    static PassRefPtr<WebCertificateInfo> create(const PlatformCertificateInfo& info)
+    static PassRefPtr<WebCertificateInfo> create( const PlatformCertificateInfo &info )
     {
-        return adoptRef(new WebCertificateInfo(info));
+        return adoptRef( new WebCertificateInfo( info ) );
     }
 
-    const PlatformCertificateInfo& platformCertificateInfo() const { return m_platformCertificateInfo; }
+    const PlatformCertificateInfo &platformCertificateInfo() const
+    {
+        return m_platformCertificateInfo;
+    }
 
 private:
-    explicit WebCertificateInfo(const PlatformCertificateInfo& info)
-        : m_platformCertificateInfo(info)
+    explicit WebCertificateInfo( const PlatformCertificateInfo &info )
+        : m_platformCertificateInfo( info )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     PlatformCertificateInfo m_platformCertificateInfo;
 };

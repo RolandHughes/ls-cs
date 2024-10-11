@@ -36,74 +36,86 @@
 #include <wtf/HashMap.h>
 #include <wtf/ListHashSet.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class OverlapTestRequestClient;
 class RenderInline;
 class RenderObject;
 
-typedef HashMap<OverlapTestRequestClient*, IntRect> OverlapTestRequestMap;
+typedef HashMap<OverlapTestRequestClient *, IntRect> OverlapTestRequestMap;
 
 /*
  * Paint the object and its children, clipped by (x|y|w|h).
  * (tx|ty) is the calculated position of the parent
  */
-struct PaintInfo {
-    PaintInfo(GraphicsContext* newContext, const IntRect& newRect, PaintPhase newPhase, bool newForceBlackText,
-              RenderObject* newPaintingRoot, ListHashSet<RenderInline*>* newOutlineObjects,
-              OverlapTestRequestMap* overlapTestRequests = 0)
-        : context(newContext)
-        , rect(newRect)
-        , phase(newPhase)
-        , forceBlackText(newForceBlackText)
-        , paintingRoot(newPaintingRoot)
-        , outlineObjects(newOutlineObjects)
-        , overlapTestRequests(overlapTestRequests)
+struct PaintInfo
+{
+    PaintInfo( GraphicsContext *newContext, const IntRect &newRect, PaintPhase newPhase, bool newForceBlackText,
+               RenderObject *newPaintingRoot, ListHashSet<RenderInline *> *newOutlineObjects,
+               OverlapTestRequestMap *overlapTestRequests = 0 )
+        : context( newContext )
+        , rect( newRect )
+        , phase( newPhase )
+        , forceBlackText( newForceBlackText )
+        , paintingRoot( newPaintingRoot )
+        , outlineObjects( newOutlineObjects )
+        , overlapTestRequests( overlapTestRequests )
     {
     }
 
-    void updatePaintingRootForChildren(const RenderObject* renderer)
+    void updatePaintingRootForChildren( const RenderObject *renderer )
     {
-        if (!paintingRoot)
+        if ( !paintingRoot )
+        {
             return;
+        }
 
         // If we're the painting root, kids draw normally, and see root of 0.
-        if (paintingRoot == renderer) {
-            paintingRoot = 0; 
+        if ( paintingRoot == renderer )
+        {
+            paintingRoot = 0;
             return;
         }
     }
 
-    bool shouldPaintWithinRoot(const RenderObject* renderer) const
+    bool shouldPaintWithinRoot( const RenderObject *renderer ) const
     {
         return !paintingRoot || paintingRoot == renderer;
     }
 
 #if ENABLE(SVG)
-    void applyTransform(const AffineTransform& localToAncestorTransform)
+    void applyTransform( const AffineTransform &localToAncestorTransform )
     {
-        if (localToAncestorTransform.isIdentity())
+        if ( localToAncestorTransform.isIdentity() )
+        {
             return;
+        }
 
-        context->concatCTM(localToAncestorTransform);
+        context->concatCTM( localToAncestorTransform );
 
-        if (rect == infiniteRect())
+        if ( rect == infiniteRect() )
+        {
             return;
+        }
 
-        rect = localToAncestorTransform.inverse().mapRect(rect);
+        rect = localToAncestorTransform.inverse().mapRect( rect );
     }
 #endif
 
-    static IntRect infiniteRect() { return IntRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX); }
+    static IntRect infiniteRect()
+    {
+        return IntRect( INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX );
+    }
 
     // FIXME: Introduce setters/getters at some point. Requires a lot of changes throughout rendering/.
-    GraphicsContext* context;
+    GraphicsContext *context;
     IntRect rect;
     PaintPhase phase;
     bool forceBlackText;
-    RenderObject* paintingRoot; // used to draw just one element and its visual kids
-    ListHashSet<RenderInline*>* outlineObjects; // used to list outlines that should be painted by a block with inline children
-    OverlapTestRequestMap* overlapTestRequests;
+    RenderObject *paintingRoot; // used to draw just one element and its visual kids
+    ListHashSet<RenderInline *> *outlineObjects; // used to list outlines that should be painted by a block with inline children
+    OverlapTestRequestMap *overlapTestRequests;
 };
 
 } // namespace WebCore

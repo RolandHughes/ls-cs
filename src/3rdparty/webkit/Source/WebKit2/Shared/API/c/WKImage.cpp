@@ -33,16 +33,16 @@ using namespace WebKit;
 
 WKTypeID WKImageGetTypeID()
 {
-    return toAPI(WebImage::APIType);
+    return toAPI( WebImage::APIType );
 }
 
-WKImageRef WKImageCreate(WKSize size, WKImageOptions options)
+WKImageRef WKImageCreate( WKSize size, WKImageOptions options )
 {
-    RefPtr<WebImage> webImage = WebImage::create(toIntSize(size), toImageOptions(options));
-    return toAPI(webImage.release().leakRef());
+    RefPtr<WebImage> webImage = WebImage::create( toIntSize( size ), toImageOptions( options ) );
+    return toAPI( webImage.release().leakRef() );
 }
 
-WKSize WKImageGetSize(WKImageRef imageRef)
+WKSize WKImageGetSize( WKImageRef imageRef )
 {
-    return toAPI(toImpl(imageRef)->size());
+    return toAPI( toImpl( imageRef )->size() );
 }

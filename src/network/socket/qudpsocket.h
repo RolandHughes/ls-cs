@@ -34,37 +34,38 @@ class QUdpSocketPrivate;
 
 class Q_NETWORK_EXPORT QUdpSocket : public QAbstractSocket
 {
-   NET_CS_OBJECT(QUdpSocket)
+    NET_LSCS_OBJECT( QUdpSocket )
 
- public:
-   explicit QUdpSocket(QObject *parent = nullptr);
+public:
+    explicit QUdpSocket( QObject *parent = nullptr );
 
-   QUdpSocket(const QUdpSocket &) = delete;
-   QUdpSocket &operator=(const QUdpSocket &) = delete;
+    QUdpSocket( const QUdpSocket & ) = delete;
+    QUdpSocket &operator=( const QUdpSocket & ) = delete;
 
-   virtual ~QUdpSocket();
+    virtual ~QUdpSocket();
 
 #ifndef QT_NO_NETWORKINTERFACE
-   bool joinMulticastGroup(const QHostAddress &groupAddress);
-   bool joinMulticastGroup(const QHostAddress &groupAddress, const QNetworkInterface &interfaceId);
-   bool leaveMulticastGroup(const QHostAddress &groupAddress);
-   bool leaveMulticastGroup(const QHostAddress &groupAddress, const QNetworkInterface &interfaceId);
+    bool joinMulticastGroup( const QHostAddress &groupAddress );
+    bool joinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &interfaceId );
+    bool leaveMulticastGroup( const QHostAddress &groupAddress );
+    bool leaveMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &interfaceId );
 
-   QNetworkInterface multicastInterface() const;
-   void setMulticastInterface(const QNetworkInterface &interfaceId);
+    QNetworkInterface multicastInterface() const;
+    void setMulticastInterface( const QNetworkInterface &interfaceId );
 #endif
 
-   bool hasPendingDatagrams() const;
-   qint64 pendingDatagramSize() const;
-   qint64 readDatagram(char *data, qint64 maxlen, QHostAddress *address = nullptr, quint16 *port = nullptr);
-   qint64 writeDatagram(const char *data, qint64 len, const QHostAddress &address, quint16 port);
+    bool hasPendingDatagrams() const;
+    qint64 pendingDatagramSize() const;
+    qint64 readDatagram( char *data, qint64 maxlen, QHostAddress *address = nullptr, quint16 *port = nullptr );
+    qint64 writeDatagram( const char *data, qint64 len, const QHostAddress &address, quint16 port );
 
-   qint64 writeDatagram(const QByteArray &datagram, const QHostAddress &address, quint16 port) {
-      return writeDatagram(datagram.constData(), datagram.size(), address, port);
-   }
+    qint64 writeDatagram( const QByteArray &datagram, const QHostAddress &address, quint16 port )
+    {
+        return writeDatagram( datagram.constData(), datagram.size(), address, port );
+    }
 
- private:
-   Q_DECLARE_PRIVATE(QUdpSocket)
+private:
+    Q_DECLARE_PRIVATE( QUdpSocket )
 };
 
 #endif // QT_NO_UDPSOCKET

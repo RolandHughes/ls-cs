@@ -29,36 +29,36 @@
 
 class Q_MULTIMEDIA_EXPORT QVideoDeviceSelectorControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QVideoDeviceSelectorControl)
+    MULTI_LSCS_OBJECT( QVideoDeviceSelectorControl )
 
- public:
-   virtual ~QVideoDeviceSelectorControl();
+public:
+    virtual ~QVideoDeviceSelectorControl();
 
-   virtual int deviceCount() const = 0;
+    virtual int deviceCount() const = 0;
 
-   virtual QString deviceName(int index) const = 0;
-   virtual QString deviceDescription(int index) const = 0;
+    virtual QString deviceName( int index ) const = 0;
+    virtual QString deviceDescription( int index ) const = 0;
 
-   virtual int defaultDevice() const = 0;
-   virtual int selectedDevice() const = 0;
+    virtual int defaultDevice() const = 0;
+    virtual int selectedDevice() const = 0;
 
-   MULTI_CS_SLOT_1(Public, virtual void setSelectedDevice(int index) = 0)
-   MULTI_CS_SLOT_2(setSelectedDevice)
+    MULTI_LSCS_SLOT_1( Public, virtual void setSelectedDevice( int index ) = 0 )
+    MULTI_LSCS_SLOT_2( setSelectedDevice )
 
-   MULTI_CS_SIGNAL_1(Public, void selectedDeviceChanged(int index))
-   MULTI_CS_SIGNAL_OVERLOAD(selectedDeviceChanged, (int), index)
+    MULTI_LSCS_SIGNAL_1( Public, void selectedDeviceChanged( int index ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( selectedDeviceChanged, ( int ), index )
 
-   MULTI_CS_SIGNAL_1(Public, void selectedDeviceChanged(const QString &deviceName))
-   MULTI_CS_SIGNAL_OVERLOAD(selectedDeviceChanged, (const QString &), deviceName)
+    MULTI_LSCS_SIGNAL_1( Public, void selectedDeviceChanged( const QString &deviceName ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( selectedDeviceChanged, ( const QString & ), deviceName )
 
-   MULTI_CS_SIGNAL_1(Public, void devicesChanged())
-   MULTI_CS_SIGNAL_2(devicesChanged)
+    MULTI_LSCS_SIGNAL_1( Public, void devicesChanged() )
+    MULTI_LSCS_SIGNAL_2( devicesChanged )
 
- protected:
-   explicit QVideoDeviceSelectorControl(QObject *parent = nullptr);
+protected:
+    explicit QVideoDeviceSelectorControl( QObject *parent = nullptr );
 };
 
 #define QVideoDeviceSelectorControl_iid "com.copperspice.CS.videoDeviceSelectorControl/1.0"
-CS_DECLARE_INTERFACE(QVideoDeviceSelectorControl, QVideoDeviceSelectorControl_iid)
+LSCS_DECLARE_INTERFACE( QVideoDeviceSelectorControl, QVideoDeviceSelectorControl_iid )
 
 #endif

@@ -28,53 +28,86 @@
 #include "RenderSVGBlock.h"
 #include "SVGTextLayoutAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGTextElement;
 
-class RenderSVGText : public RenderSVGBlock {
+class RenderSVGText : public RenderSVGBlock
+{
 public:
-    RenderSVGText(SVGTextElement*);
+    RenderSVGText( SVGTextElement * );
 
-    virtual bool isChildAllowed(RenderObject*, RenderStyle*) const;
+    virtual bool isChildAllowed( RenderObject *, RenderStyle * ) const;
 
-    void setNeedsPositioningValuesUpdate() { m_needsPositioningValuesUpdate = true; }
-    virtual void setNeedsTransformUpdate() { m_needsTransformUpdate = true; }
+    void setNeedsPositioningValuesUpdate()
+    {
+        m_needsPositioningValuesUpdate = true;
+    }
+    virtual void setNeedsTransformUpdate()
+    {
+        m_needsTransformUpdate = true;
+    }
     virtual FloatRect repaintRectInLocalCoordinates() const;
 
-    static RenderSVGText* locateRenderSVGTextAncestor(RenderObject*);
-    static const RenderSVGText* locateRenderSVGTextAncestor(const RenderObject*);
+    static RenderSVGText *locateRenderSVGTextAncestor( RenderObject * );
+    static const RenderSVGText *locateRenderSVGTextAncestor( const RenderObject * );
 
-    Vector<SVGTextLayoutAttributes>& layoutAttributes() { return m_layoutAttributes; }
-    bool needsReordering() const { return m_needsReordering; }
+    Vector<SVGTextLayoutAttributes> &layoutAttributes()
+    {
+        return m_layoutAttributes;
+    }
+    bool needsReordering() const
+    {
+        return m_needsReordering;
+    }
 
 private:
-    virtual const char* renderName() const { return "RenderSVGText"; }
-    virtual bool isSVGText() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGText";
+    }
+    virtual bool isSVGText() const
+    {
+        return true;
+    }
 
-    virtual void paint(PaintInfo&, int tx, int ty);
-    virtual bool nodeAtPoint(const HitTestRequest&, HitTestResult&, int x, int y, int tx, int ty, HitTestAction);
-    virtual bool nodeAtFloatPoint(const HitTestRequest&, HitTestResult&, const FloatPoint& pointInParent, HitTestAction);
-    virtual VisiblePosition positionForPoint(const IntPoint&);
+    virtual void paint( PaintInfo &, int tx, int ty );
+    virtual bool nodeAtPoint( const HitTestRequest &, HitTestResult &, int x, int y, int tx, int ty, HitTestAction );
+    virtual bool nodeAtFloatPoint( const HitTestRequest &, HitTestResult &, const FloatPoint &pointInParent, HitTestAction );
+    virtual VisiblePosition positionForPoint( const IntPoint & );
 
-    virtual bool requiresLayer() const { return false; }
+    virtual bool requiresLayer() const
+    {
+        return false;
+    }
     virtual void layout();
 
-    virtual void absoluteQuads(Vector<FloatQuad>&);
+    virtual void absoluteQuads( Vector<FloatQuad> & );
 
-    virtual IntRect clippedOverflowRectForRepaint(RenderBoxModelObject* repaintContainer);
-    virtual void computeRectForRepaint(RenderBoxModelObject* repaintContainer, IntRect&, bool fixed = false);
+    virtual IntRect clippedOverflowRectForRepaint( RenderBoxModelObject *repaintContainer );
+    virtual void computeRectForRepaint( RenderBoxModelObject *repaintContainer, IntRect &, bool fixed = false );
 
-    virtual void mapLocalToContainer(RenderBoxModelObject* repaintContainer, bool useTransforms, bool fixed, TransformState&) const;
+    virtual void mapLocalToContainer( RenderBoxModelObject *repaintContainer, bool useTransforms, bool fixed,
+                                      TransformState & ) const;
 
-    virtual FloatRect objectBoundingBox() const { return frameRect(); }
+    virtual FloatRect objectBoundingBox() const
+    {
+        return frameRect();
+    }
     virtual FloatRect strokeBoundingBox() const;
 
-    virtual const AffineTransform& localToParentTransform() const { return m_localTransform; }
-    virtual AffineTransform localTransform() const { return m_localTransform; }
-    virtual RootInlineBox* createRootInlineBox();
+    virtual const AffineTransform &localToParentTransform() const
+    {
+        return m_localTransform;
+    }
+    virtual AffineTransform localTransform() const
+    {
+        return m_localTransform;
+    }
+    virtual RootInlineBox *createRootInlineBox();
 
-    virtual RenderBlock* firstLineBlock() const;
+    virtual RenderBlock *firstLineBlock() const;
     virtual void updateFirstLetter();
 
     bool m_needsReordering : 1;
@@ -84,20 +117,20 @@ private:
     Vector<SVGTextLayoutAttributes> m_layoutAttributes;
 };
 
-inline RenderSVGText* toRenderSVGText(RenderObject* object)
+inline RenderSVGText *toRenderSVGText( RenderObject *object )
 {
-    ASSERT(!object || object->isSVGText());
-    return static_cast<RenderSVGText*>(object);
+    ASSERT( !object || object->isSVGText() );
+    return static_cast<RenderSVGText *>( object );
 }
 
-inline const RenderSVGText* toRenderSVGText(const RenderObject* object)
+inline const RenderSVGText *toRenderSVGText( const RenderObject *object )
 {
-    ASSERT(!object || object->isSVGText());
-    return static_cast<const RenderSVGText*>(object);
+    ASSERT( !object || object->isSVGText() );
+    return static_cast<const RenderSVGText *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderSVGText(const RenderSVGText*);
+void toRenderSVGText( const RenderSVGText * );
 
 }
 

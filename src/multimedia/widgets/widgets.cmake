@@ -15,7 +15,7 @@ list(APPEND MULTIMEDIA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qvideowidget_p.h
 )
 
-target_sources(CsMultimedia
+target_sources(LsCsMultimedia
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qcameraviewfinder.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/widgets/qgraphicsvideoitem.cpp

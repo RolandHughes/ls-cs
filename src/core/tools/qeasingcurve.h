@@ -31,69 +31,71 @@ class QEasingCurvePrivate;
 
 class Q_CORE_EXPORT QEasingCurve
 {
-   CORE_CS_GADGET(QEasingCurve)
+    CORE_LSCS_GADGET( QEasingCurve )
 
- public:
-   using EasingFunction = qreal (*)(qreal progress);
+public:
+    using EasingFunction = qreal ( * )( qreal progress );
 
-   enum Type {
-      Linear,
-      InQuad, OutQuad, InOutQuad, OutInQuad,
-      InCubic, OutCubic, InOutCubic, OutInCubic,
-      InQuart, OutQuart, InOutQuart, OutInQuart,
-      InQuint, OutQuint, InOutQuint, OutInQuint,
-      InSine, OutSine, InOutSine, OutInSine,
-      InExpo, OutExpo, InOutExpo, OutInExpo,
-      InCirc, OutCirc, InOutCirc, OutInCirc,
-      InElastic, OutElastic, InOutElastic, OutInElastic,
-      InBack, OutBack, InOutBack, OutInBack,
-      InBounce, OutBounce, InOutBounce, OutInBounce,
-      InCurve, OutCurve, SineCurve, CosineCurve,
-      Custom, NCurveTypes
-   };
+    enum Type
+    {
+        Linear,
+        InQuad, OutQuad, InOutQuad, OutInQuad,
+        InCubic, OutCubic, InOutCubic, OutInCubic,
+        InQuart, OutQuart, InOutQuart, OutInQuart,
+        InQuint, OutQuint, InOutQuint, OutInQuint,
+        InSine, OutSine, InOutSine, OutInSine,
+        InExpo, OutExpo, InOutExpo, OutInExpo,
+        InCirc, OutCirc, InOutCirc, OutInCirc,
+        InElastic, OutElastic, InOutElastic, OutInElastic,
+        InBack, OutBack, InOutBack, OutInBack,
+        InBounce, OutBounce, InOutBounce, OutInBounce,
+        InCurve, OutCurve, SineCurve, CosineCurve,
+        Custom, NCurveTypes
+    };
 
-   CORE_CS_ENUM(Type)
+    CORE_LSCS_ENUM( Type )
 
-   QEasingCurve(Type type = Linear);
-   QEasingCurve(const QEasingCurve &other);
+    QEasingCurve( Type type = Linear );
+    QEasingCurve( const QEasingCurve &other );
 
-   ~QEasingCurve();
+    ~QEasingCurve();
 
-   QEasingCurve &operator=(const QEasingCurve &other);
+    QEasingCurve &operator=( const QEasingCurve &other );
 
-   bool operator==(const QEasingCurve &other) const;
-   bool operator!=(const QEasingCurve &other) const {
-      return !(this->operator==(other));
-   }
+    bool operator==( const QEasingCurve &other ) const;
+    bool operator!=( const QEasingCurve &other ) const
+    {
+        return !( this->operator==( other ) );
+    }
 
-   qreal amplitude() const;
-   void setAmplitude(qreal amplitude);
+    qreal amplitude() const;
+    void setAmplitude( qreal amplitude );
 
-   qreal period() const;
-   void setPeriod(qreal period);
+    qreal period() const;
+    void setPeriod( qreal period );
 
-   qreal overshoot() const;
-   void setOvershoot(qreal overshoot);
+    qreal overshoot() const;
+    void setOvershoot( qreal overshoot );
 
-   Type type() const;
-   void setType(Type type);
+    Type type() const;
+    void setType( Type type );
 
-   void setCustomType(EasingFunction func);
-   EasingFunction customType() const;
+    void setCustomType( EasingFunction func );
+    EasingFunction customType() const;
 
-   qreal valueForProgress(qreal progress) const;
+    qreal valueForProgress( qreal progress ) const;
 
- private:
-   QEasingCurvePrivate *d_ptr;
+private:
+    QEasingCurvePrivate *d_ptr;
 
-   friend Q_CORE_EXPORT QDataStream &operator<<(QDataStream &stream, const QEasingCurve &easing);
-   friend Q_CORE_EXPORT QDataStream &operator>>(QDataStream &stream, QEasingCurve &easing);
-   friend Q_CORE_EXPORT QDebug operator<<(QDebug debug, const QEasingCurve &easing);
+    friend Q_CORE_EXPORT QDataStream &operator<<( QDataStream &stream, const QEasingCurve &easing );
+    friend Q_CORE_EXPORT QDataStream &operator>>( QDataStream &stream, QEasingCurve &easing );
+    friend Q_CORE_EXPORT QDebug operator<<( QDebug debug, const QEasingCurve &easing );
 };
 
-Q_CORE_EXPORT QDataStream &operator<<(QDataStream &stream, const QEasingCurve &easing);
-Q_CORE_EXPORT QDataStream &operator>>(QDataStream &stream, QEasingCurve &easing);
+Q_CORE_EXPORT QDataStream &operator<<( QDataStream &stream, const QEasingCurve &easing );
+Q_CORE_EXPORT QDataStream &operator>>( QDataStream &stream, QEasingCurve &easing );
 
-Q_CORE_EXPORT QDebug operator<<(QDebug debug, const QEasingCurve &easing);
+Q_CORE_EXPORT QDebug operator<<( QDebug debug, const QEasingCurve &easing );
 
 #endif

@@ -30,12 +30,12 @@ QT_BEGIN_NAMESPACE
 
 class QScriptDebuggerScriptsWidgetInterface;
 class QScriptDebuggerScriptsWidgetInterfacePrivate
-   : public QWidgetPrivate
+    : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerScriptsWidgetInterface)
- public:
-   QScriptDebuggerScriptsWidgetInterfacePrivate();
-   ~QScriptDebuggerScriptsWidgetInterfacePrivate();
+    Q_DECLARE_PUBLIC( QScriptDebuggerScriptsWidgetInterface )
+public:
+    QScriptDebuggerScriptsWidgetInterfacePrivate();
+    ~QScriptDebuggerScriptsWidgetInterfacePrivate();
 };
 
 QT_END_NAMESPACE

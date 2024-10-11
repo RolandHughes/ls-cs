@@ -40,7 +40,8 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class Event;
 class InspectorFrontend;
 class InspectorState;
@@ -51,33 +52,37 @@ class ResourceResponse;
 
 typedef String ErrorString;
 
-class InspectorTimelineAgent : ScriptGCEventListener {
-    WTF_MAKE_NONCOPYABLE(InspectorTimelineAgent);
+class InspectorTimelineAgent : ScriptGCEventListener
+{
+    WTF_MAKE_NONCOPYABLE( InspectorTimelineAgent );
 public:
-    static PassOwnPtr<InspectorTimelineAgent> create(InstrumentingAgents* instrumentingAgents, InspectorState* state)
+    static PassOwnPtr<InspectorTimelineAgent> create( InstrumentingAgents *instrumentingAgents, InspectorState *state )
     {
-        return adoptPtr(new InspectorTimelineAgent(instrumentingAgents, state));
+        return adoptPtr( new InspectorTimelineAgent( instrumentingAgents, state ) );
     }
 
     ~InspectorTimelineAgent();
 
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
     void restore();
 
-    void start(ErrorString* error);
-    void stop(ErrorString* error);
+    void start( ErrorString *error );
+    void stop( ErrorString *error );
     bool started() const;
 
-    int id() const { return m_id; }
+    int id() const
+    {
+        return m_id;
+    }
 
     void didCommitLoad();
 
     // Methods called from WebCore.
-    void willCallFunction(const String& scriptName, int scriptLine);
+    void willCallFunction( const String &scriptName, int scriptLine );
     void didCallFunction();
 
-    void willDispatchEvent(const Event&);
+    void willDispatchEvent( const Event & );
     void didDispatchEvent();
 
     void willLayout();
@@ -86,45 +91,47 @@ public:
     void willRecalculateStyle();
     void didRecalculateStyle();
 
-    void willPaint(const IntRect&);
+    void willPaint( const IntRect & );
     void didPaint();
 
     // FIXME: |length| should be passed in didWrite instead willWrite
     // as the parser can not know how much it will process until it tries.
-    void willWriteHTML(unsigned int length, unsigned int startLine);
-    void didWriteHTML(unsigned int endLine);
+    void willWriteHTML( unsigned int length, unsigned int startLine );
+    void didWriteHTML( unsigned int endLine );
 
-    void didInstallTimer(int timerId, int timeout, bool singleShot);
-    void didRemoveTimer(int timerId);
-    void willFireTimer(int timerId);
+    void didInstallTimer( int timerId, int timeout, bool singleShot );
+    void didRemoveTimer( int timerId );
+    void willFireTimer( int timerId );
     void didFireTimer();
 
-    void willChangeXHRReadyState(const String&, int);
+    void willChangeXHRReadyState( const String &, int );
     void didChangeXHRReadyState();
-    void willLoadXHR(const String&);
+    void willLoadXHR( const String & );
     void didLoadXHR();
 
-    void willEvaluateScript(const String&, int);
+    void willEvaluateScript( const String &, int );
     void didEvaluateScript();
 
-    void didMarkTimeline(const String&);
+    void didMarkTimeline( const String & );
     void didMarkDOMContentEvent();
     void didMarkLoadEvent();
 
-    void didScheduleResourceRequest(const String& url);
-    void willSendResourceRequest(unsigned long, const ResourceRequest&);
-    void willReceiveResourceResponse(unsigned long, const ResourceResponse&);
+    void didScheduleResourceRequest( const String &url );
+    void willSendResourceRequest( unsigned long, const ResourceRequest & );
+    void willReceiveResourceResponse( unsigned long, const ResourceResponse & );
     void didReceiveResourceResponse();
-    void didFinishLoadingResource(unsigned long, bool didFail, double finishTime);
-    void willReceiveResourceData(unsigned long identifier);
+    void didFinishLoadingResource( unsigned long, bool didFail, double finishTime );
+    void willReceiveResourceData( unsigned long identifier );
     void didReceiveResourceData();
-        
-    virtual void didGC(double, double, size_t);
+
+    virtual void didGC( double, double, size_t );
 
 private:
-    struct TimelineRecordEntry {
-        TimelineRecordEntry(PassRefPtr<InspectorObject> record, PassRefPtr<InspectorObject> data, PassRefPtr<InspectorArray> children, const String& type)
-            : record(record), data(data), children(children), type(type)
+    struct TimelineRecordEntry
+    {
+        TimelineRecordEntry( PassRefPtr<InspectorObject> record, PassRefPtr<InspectorObject> data, PassRefPtr<InspectorArray> children,
+                             const String &type )
+            : record( record ), data( data ), children( children ), type( type )
         {
         }
         RefPtr<InspectorObject> record;
@@ -132,29 +139,30 @@ private:
         RefPtr<InspectorArray> children;
         String type;
     };
-        
-    InspectorTimelineAgent(InstrumentingAgents*, InspectorState*);
 
-    void pushCurrentRecord(PassRefPtr<InspectorObject>, const String& type);
-    void setHeapSizeStatistic(InspectorObject* record);
-        
-    void didCompleteCurrentRecord(const String& type);
+    InspectorTimelineAgent( InstrumentingAgents *, InspectorState * );
 
-    void addRecordToTimeline(PassRefPtr<InspectorObject>, const String& type);
+    void pushCurrentRecord( PassRefPtr<InspectorObject>, const String &type );
+    void setHeapSizeStatistic( InspectorObject *record );
+
+    void didCompleteCurrentRecord( const String &type );
+
+    void addRecordToTimeline( PassRefPtr<InspectorObject>, const String &type );
 
     void pushGCEventRecords();
     void clearRecordStack();
 
-    InstrumentingAgents* m_instrumentingAgents;
-    InspectorState* m_state;
-    InspectorFrontend::Timeline* m_frontend;
+    InstrumentingAgents *m_instrumentingAgents;
+    InspectorState *m_state;
+    InspectorFrontend::Timeline *m_frontend;
 
     Vector<TimelineRecordEntry> m_recordStack;
 
     int m_id;
-    struct GCEvent {
-        GCEvent(double startTime, double endTime, size_t collectedBytes)
-            : startTime(startTime), endTime(endTime), collectedBytes(collectedBytes)
+    struct GCEvent
+    {
+        GCEvent( double startTime, double endTime, size_t collectedBytes )
+            : startTime( startTime ), endTime( endTime ), collectedBytes( collectedBytes )
         {
         }
         double startTime;

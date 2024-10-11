@@ -29,29 +29,30 @@
 
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebPreferences::platformInitializeStore()
 {
     notImplemented();
 }
 
-void WebPreferences::platformUpdateStringValueForKey(const String&, const String&)
+void WebPreferences::platformUpdateStringValueForKey( const String &, const String & )
 {
     notImplemented();
 }
 
-void WebPreferences::platformUpdateBoolValueForKey(const String&, bool)
+void WebPreferences::platformUpdateBoolValueForKey( const String &, bool )
 {
     notImplemented();
 }
 
-void WebPreferences::platformUpdateUInt32ValueForKey(const String&, uint32_t)
+void WebPreferences::platformUpdateUInt32ValueForKey( const String &, uint32_t )
 {
     notImplemented();
 }
 
-void WebPreferences::platformUpdateDoubleValueForKey(const String&, double)
+void WebPreferences::platformUpdateDoubleValueForKey( const String &, double )
 {
     notImplemented();
 }

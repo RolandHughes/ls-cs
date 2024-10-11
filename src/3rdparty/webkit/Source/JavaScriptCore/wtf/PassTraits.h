@@ -36,24 +36,37 @@
 // of WTF data structures with WTF smart pointers that have a Pass
 // variant for transfer of ownership
 
-namespace WTF {
+namespace WTF
+{
 
-template<typename T> struct PassTraits {
+template<typename T> struct PassTraits
+{
     typedef T Type;
     typedef T PassType;
-    static PassType transfer(Type& value) { return value; }
+    static PassType transfer( Type &value )
+    {
+        return value;
+    }
 };
 
-template<typename T> struct PassTraits<OwnPtr<T> > {
+template<typename T> struct PassTraits<OwnPtr<T> >
+{
     typedef OwnPtr<T> Type;
     typedef PassOwnPtr<T> PassType;
-    static PassType transfer(Type& value) { return value.release(); }
+    static PassType transfer( Type &value )
+    {
+        return value.release();
+    }
 };
 
-template<typename T> struct PassTraits<RefPtr<T> > {
+template<typename T> struct PassTraits<RefPtr<T> >
+{
     typedef RefPtr<T> Type;
     typedef PassRefPtr<T> PassType;
-    static PassType transfer(Type& value) { return value.release(); }
+    static PassType transfer( Type &value )
+    {
+        return value.release();
+    }
 };
 
 } // namespace WTF

@@ -53,27 +53,30 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(CONTEXT_MENUS)
-class FrontendMenuProvider : public ContextMenuProvider {
+class FrontendMenuProvider : public ContextMenuProvider
+{
 public:
-    static PassRefPtr<FrontendMenuProvider> create(InspectorFrontendHost* frontendHost, ScriptObject webInspector, const Vector<ContextMenuItem*>& items)
+    static PassRefPtr<FrontendMenuProvider> create( InspectorFrontendHost *frontendHost, ScriptObject webInspector,
+            const Vector<ContextMenuItem *> &items )
     {
-        return adoptRef(new FrontendMenuProvider(frontendHost, webInspector, items));
+        return adoptRef( new FrontendMenuProvider( frontendHost, webInspector, items ) );
     }
-    
+
     void disconnect()
     {
         m_webInspector = ScriptObject();
         m_frontendHost = 0;
     }
-    
+
 private:
-    FrontendMenuProvider(InspectorFrontendHost* frontendHost, ScriptObject webInspector,  const Vector<ContextMenuItem*>& items)
-        : m_frontendHost(frontendHost)
-        , m_webInspector(webInspector)
-        , m_items(items)
+    FrontendMenuProvider( InspectorFrontendHost *frontendHost, ScriptObject webInspector,  const Vector<ContextMenuItem *> &items )
+        : m_frontendHost( frontendHost )
+        , m_webInspector( webInspector )
+        , m_items( items )
     {
     }
 
@@ -81,87 +84,103 @@ private:
     {
         contextMenuCleared();
     }
-    
-    virtual void populateContextMenu(ContextMenu* menu)
+
+    virtual void populateContextMenu( ContextMenu *menu )
     {
-        for (size_t i = 0; i < m_items.size(); ++i)
-            menu->appendItem(*m_items[i]);
+        for ( size_t i = 0; i < m_items.size(); ++i )
+        {
+            menu->appendItem( *m_items[i] );
+        }
     }
-    
-    virtual void contextMenuItemSelected(ContextMenuItem* item)
+
+    virtual void contextMenuItemSelected( ContextMenuItem *item )
     {
-        if (m_frontendHost) {
+        if ( m_frontendHost )
+        {
             int itemNumber = item->action() - ContextMenuItemBaseCustomTag;
 
-            ScriptFunctionCall function(m_webInspector, "contextMenuItemSelected");
-            function.appendArgument(itemNumber);
+            ScriptFunctionCall function( m_webInspector, "contextMenuItemSelected" );
+            function.appendArgument( itemNumber );
             function.call();
         }
     }
-    
+
     virtual void contextMenuCleared()
     {
-        if (m_frontendHost) {
-            ScriptFunctionCall function(m_webInspector, "contextMenuCleared");
+        if ( m_frontendHost )
+        {
+            ScriptFunctionCall function( m_webInspector, "contextMenuCleared" );
             function.call();
 
             m_frontendHost->m_menuProvider = 0;
         }
-        deleteAllValues(m_items);
+
+        deleteAllValues( m_items );
         m_items.clear();
     }
 
-    InspectorFrontendHost* m_frontendHost;
+    InspectorFrontendHost *m_frontendHost;
     ScriptObject m_webInspector;
-    Vector<ContextMenuItem*> m_items;
+    Vector<ContextMenuItem *> m_items;
 };
 #endif
 
-InspectorFrontendHost::InspectorFrontendHost(InspectorFrontendClient* client, Page* frontendPage)
-    : m_client(client)
-    , m_frontendPage(frontendPage)
+InspectorFrontendHost::InspectorFrontendHost( InspectorFrontendClient *client, Page *frontendPage )
+    : m_client( client )
+    , m_frontendPage( frontendPage )
 #if ENABLE(CONTEXT_MENUS)
-    , m_menuProvider(0)
+    , m_menuProvider( 0 )
 #endif
 {
 }
 
 InspectorFrontendHost::~InspectorFrontendHost()
 {
-    ASSERT(!m_client);
+    ASSERT( !m_client );
 }
 
 void InspectorFrontendHost::disconnectClient()
 {
     m_client = 0;
 #if ENABLE(CONTEXT_MENUS)
-    if (m_menuProvider)
+
+    if ( m_menuProvider )
+    {
         m_menuProvider->disconnect();
+    }
+
 #endif
     m_frontendPage = 0;
 }
 
 void InspectorFrontendHost::loaded()
 {
-    if (m_client)
+    if ( m_client )
+    {
         m_client->frontendLoaded();
+    }
 }
 
 void InspectorFrontendHost::requestAttachWindow()
 {
-    if (m_client)
+    if ( m_client )
+    {
         m_client->requestAttachWindow();
+    }
 }
 
 void InspectorFrontendHost::requestDetachWindow()
 {
-    if (m_client)
+    if ( m_client )
+    {
         m_client->requestDetachWindow();
+    }
 }
 
 void InspectorFrontendHost::closeWindow()
 {
-    if (m_client) {
+    if ( m_client )
+    {
         m_client->closeWindow();
         disconnectClient(); // Disconnect from client.
     }
@@ -169,7 +188,8 @@ void InspectorFrontendHost::closeWindow()
 
 void InspectorFrontendHost::disconnectFromBackend()
 {
-    if (m_client) {
+    if ( m_client )
+    {
         m_client->disconnectFromBackend();
         disconnectClient(); // Disconnect from client.
     }
@@ -177,32 +197,40 @@ void InspectorFrontendHost::disconnectFromBackend()
 
 void InspectorFrontendHost::bringToFront()
 {
-    if (m_client)
+    if ( m_client )
+    {
         m_client->bringToFront();
+    }
 }
 
-void InspectorFrontendHost::inspectedURLChanged(const String& newURL)
+void InspectorFrontendHost::inspectedURLChanged( const String &newURL )
 {
-    if (m_client)
-        m_client->inspectedURLChanged(newURL);
+    if ( m_client )
+    {
+        m_client->inspectedURLChanged( newURL );
+    }
 }
 
-void InspectorFrontendHost::setAttachedWindowHeight(unsigned height)
+void InspectorFrontendHost::setAttachedWindowHeight( unsigned height )
 {
-    if (m_client)
-        m_client->changeAttachedWindowHeight(height);
+    if ( m_client )
+    {
+        m_client->changeAttachedWindowHeight( height );
+    }
 }
 
-void InspectorFrontendHost::moveWindowBy(float x, float y) const
+void InspectorFrontendHost::moveWindowBy( float x, float y ) const
 {
-    if (m_client)
-        m_client->moveWindowBy(x, y);
+    if ( m_client )
+    {
+        m_client->moveWindowBy( x, y );
+    }
 }
 
-void InspectorFrontendHost::setExtensionAPI(const String& script)
+void InspectorFrontendHost::setExtensionAPI( const String &script )
 {
-    ASSERT(m_frontendPage->inspectorController());
-    m_frontendPage->inspectorController()->setInspectorExtensionAPI(script);
+    ASSERT( m_frontendPage->inspectorController() );
+    m_frontendPage->inspectorController()->setInspectorExtensionAPI( script );
 }
 
 String InspectorFrontendHost::localizedStringsURL()
@@ -215,49 +243,60 @@ String InspectorFrontendHost::hiddenPanels()
     return m_client->hiddenPanels();
 }
 
-void InspectorFrontendHost::copyText(const String& text)
+void InspectorFrontendHost::copyText( const String &text )
 {
-    Pasteboard::generalPasteboard()->writePlainText(text);
+    Pasteboard::generalPasteboard()->writePlainText( text );
 }
 
-void InspectorFrontendHost::saveAs(const String& fileName, const String& content)
+void InspectorFrontendHost::saveAs( const String &fileName, const String &content )
 {
-    if (m_client)
-        m_client->saveAs(fileName, content);
+    if ( m_client )
+    {
+        m_client->saveAs( fileName, content );
+    }
 }
 
-void InspectorFrontendHost::saveSessionSetting(const String& key, const String& value)
+void InspectorFrontendHost::saveSessionSetting( const String &key, const String &value )
 {
-    if (m_client)
-        m_client->saveSessionSetting(key, value);
+    if ( m_client )
+    {
+        m_client->saveSessionSetting( key, value );
+    }
 }
 
-String InspectorFrontendHost::loadSessionSetting(const String& key)
+String InspectorFrontendHost::loadSessionSetting( const String &key )
 {
     String value;
-    if (m_client)
-        m_client->loadSessionSetting(key, &value);
+
+    if ( m_client )
+    {
+        m_client->loadSessionSetting( key, &value );
+    }
+
     return value;
 }
 
-void InspectorFrontendHost::sendMessageToBackend(const String& message)
+void InspectorFrontendHost::sendMessageToBackend( const String &message )
 {
-    m_client->sendMessageToBackend(message);
+    m_client->sendMessageToBackend( message );
 }
 
 #if ENABLE(CONTEXT_MENUS)
-void InspectorFrontendHost::showContextMenu(Event* event, const Vector<ContextMenuItem*>& items)
+void InspectorFrontendHost::showContextMenu( Event *event, const Vector<ContextMenuItem *> &items )
 {
-    ASSERT(m_frontendPage);
-    ScriptState* frontendScriptState = scriptStateFromPage(debuggerWorld(), m_frontendPage);
+    ASSERT( m_frontendPage );
+    ScriptState *frontendScriptState = scriptStateFromPage( debuggerWorld(), m_frontendPage );
     ScriptObject webInspectorObj;
-    if (!ScriptGlobalObject::get(frontendScriptState, "WebInspector", webInspectorObj)) {
+
+    if ( !ScriptGlobalObject::get( frontendScriptState, "WebInspector", webInspectorObj ) )
+    {
         ASSERT_NOT_REACHED();
         return;
     }
-    RefPtr<FrontendMenuProvider> menuProvider = FrontendMenuProvider::create(this, webInspectorObj, items);
-    ContextMenuController* menuController = m_frontendPage->contextMenuController();
-    menuController->showContextMenu(event, menuProvider);
+
+    RefPtr<FrontendMenuProvider> menuProvider = FrontendMenuProvider::create( this, webInspectorObj, items );
+    ContextMenuController *menuController = m_frontendPage->contextMenuController();
+    menuController->showContextMenu( event, menuProvider );
     m_menuProvider = menuProvider.get();
 }
 #endif

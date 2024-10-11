@@ -19,7 +19,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextDocument_h
@@ -27,18 +27,20 @@
 
 #include "HTMLDocument.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TextDocument : public HTMLDocument {
+class TextDocument : public HTMLDocument
+{
 public:
-    static PassRefPtr<TextDocument> create(Frame* frame, const KURL& url)
+    static PassRefPtr<TextDocument> create( Frame *frame, const KURL &url )
     {
-        return adoptRef(new TextDocument(frame, url));
+        return adoptRef( new TextDocument( frame, url ) );
     }
 
 private:
-    TextDocument(Frame*, const KURL&);
-    
+    TextDocument( Frame *, const KURL & );
+
     virtual PassRefPtr<DocumentParser> createParser();
 };
 

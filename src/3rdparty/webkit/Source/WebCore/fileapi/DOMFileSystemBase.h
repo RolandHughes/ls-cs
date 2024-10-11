@@ -39,7 +39,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DirectoryEntry;
 class DirectoryReaderBase;
@@ -54,11 +55,13 @@ class SecurityOrigin;
 class VoidCallback;
 
 // A common base class for DOMFileSystem and DOMFileSystemSync.
-class DOMFileSystemBase : public RefCounted<DOMFileSystemBase> {
+class DOMFileSystemBase : public RefCounted<DOMFileSystemBase>
+{
 public:
-    static PassRefPtr<DOMFileSystemBase> create(ScriptExecutionContext* context, const String& name, PassOwnPtr<AsyncFileSystem> asyncFileSystem)
+    static PassRefPtr<DOMFileSystemBase> create( ScriptExecutionContext *context, const String &name,
+            PassOwnPtr<AsyncFileSystem> asyncFileSystem )
     {
-        return adoptRef(new DOMFileSystemBase(context, name, asyncFileSystem));
+        return adoptRef( new DOMFileSystemBase( context, name, asyncFileSystem ) );
     }
     virtual ~DOMFileSystemBase();
 
@@ -68,29 +71,37 @@ public:
     static const size_t kTemporaryPathPrefixLength;
     static const char kExternalPathPrefix[];
     static const size_t kExternalPathPrefixLength;
-    static bool crackFileSystemURL(const KURL&, AsyncFileSystem::Type&, String& filePath);
+    static bool crackFileSystemURL( const KURL &, AsyncFileSystem::Type &, String &filePath );
 
-    const String& name() const { return m_name; }
-    AsyncFileSystem* asyncFileSystem() const { return m_asyncFileSystem.get(); }
-    SecurityOrigin* securityOrigin() const;
+    const String &name() const
+    {
+        return m_name;
+    }
+    AsyncFileSystem *asyncFileSystem() const
+    {
+        return m_asyncFileSystem.get();
+    }
+    SecurityOrigin *securityOrigin() const;
 
     // Actual FileSystem API implementations.  All the validity checks on virtual paths are done at this level.
     // They return false for immediate errors that don't involve lower AsyncFileSystem layer (e.g. for name validation errors).  Otherwise they return true (but later may call back with an runtime error).
-    bool getMetadata(const EntryBase*, PassRefPtr<MetadataCallback>, PassRefPtr<ErrorCallback>);
-    bool move(const EntryBase* source, EntryBase* parent, const String& name, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback>);
-    bool copy(const EntryBase* source, EntryBase* parent, const String& name, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback>);
-    bool remove(const EntryBase*, PassRefPtr<VoidCallback>, PassRefPtr<ErrorCallback>);
-    bool removeRecursively(const EntryBase*, PassRefPtr<VoidCallback>, PassRefPtr<ErrorCallback>);
-    bool getParent(const EntryBase*, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback>);
-    bool getFile(const EntryBase*, const String& path, PassRefPtr<WebKitFlags>, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback>);
-    bool getDirectory(const EntryBase*, const String& path, PassRefPtr<WebKitFlags>, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback>);
-    bool readDirectory(PassRefPtr<DirectoryReaderBase>, const String& path, PassRefPtr<EntriesCallback>, PassRefPtr<ErrorCallback>);
+    bool getMetadata( const EntryBase *, PassRefPtr<MetadataCallback>, PassRefPtr<ErrorCallback> );
+    bool move( const EntryBase *source, EntryBase *parent, const String &name, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback> );
+    bool copy( const EntryBase *source, EntryBase *parent, const String &name, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback> );
+    bool remove( const EntryBase *, PassRefPtr<VoidCallback>, PassRefPtr<ErrorCallback> );
+    bool removeRecursively( const EntryBase *, PassRefPtr<VoidCallback>, PassRefPtr<ErrorCallback> );
+    bool getParent( const EntryBase *, PassRefPtr<EntryCallback>, PassRefPtr<ErrorCallback> );
+    bool getFile( const EntryBase *, const String &path, PassRefPtr<WebKitFlags>, PassRefPtr<EntryCallback>,
+                  PassRefPtr<ErrorCallback> );
+    bool getDirectory( const EntryBase *, const String &path, PassRefPtr<WebKitFlags>, PassRefPtr<EntryCallback>,
+                       PassRefPtr<ErrorCallback> );
+    bool readDirectory( PassRefPtr<DirectoryReaderBase>, const String &path, PassRefPtr<EntriesCallback>, PassRefPtr<ErrorCallback> );
 
 protected:
-    DOMFileSystemBase(ScriptExecutionContext*, const String& name, PassOwnPtr<AsyncFileSystem>);
+    DOMFileSystemBase( ScriptExecutionContext *, const String &name, PassOwnPtr<AsyncFileSystem> );
     friend class DOMFileSystemSync;
 
-    ScriptExecutionContext* m_context;
+    ScriptExecutionContext *m_context;
     String m_name;
     mutable OwnPtr<AsyncFileSystem> m_asyncFileSystem;
 };

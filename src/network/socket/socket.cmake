@@ -29,7 +29,7 @@ list(APPEND NETWORK_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/socket/qtcpsocket_p.h
 )
 
-target_sources(CsNetwork
+target_sources(LsCsNetwork
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/socket/qabstractsocketengine.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/socket/qhttpsocketengine.cpp
@@ -44,7 +44,7 @@ target_sources(CsNetwork
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsNetwork
+   target_sources(LsCsNetwork
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/socket/qnativesocketengine_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/socket/qlocalsocket_unix.cpp
@@ -52,7 +52,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(CsNetwork
+   target_sources(LsCsNetwork
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/socket/qnativesocketengine_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/socket/qlocalsocket_unix.cpp
@@ -60,7 +60,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsNetwork
+   target_sources(LsCsNetwork
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/socket/qnativesocketengine_win.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/socket/qlocalsocket_win.cpp

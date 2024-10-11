@@ -25,19 +25,21 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLDivElement : public HTMLElement {
+class HTMLDivElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLDivElement> create(Document*);
-    static PassRefPtr<HTMLDivElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLDivElement> create( Document * );
+    static PassRefPtr<HTMLDivElement> create( const QualifiedName &, Document * );
 
 protected:
-    HTMLDivElement(const QualifiedName&, Document*);
+    HTMLDivElement( const QualifiedName &, Document * );
 
 private:
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 };
 
 } // namespace WebCore

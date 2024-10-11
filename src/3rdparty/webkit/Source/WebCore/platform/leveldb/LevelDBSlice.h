@@ -31,34 +31,42 @@
 #include "PlatformString.h"
 #include <Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class LevelDBSlice {
+class LevelDBSlice
+{
 public:
-    LevelDBSlice(const char* begin, const char* end)
-        : m_begin(begin)
-        , m_end(end)
+    LevelDBSlice( const char *begin, const char *end )
+        : m_begin( begin )
+        , m_end( end )
     {
-        ASSERT(m_end >= m_begin);
+        ASSERT( m_end >= m_begin );
     }
 
-    LevelDBSlice(const Vector<char>& v)
-        : m_begin(v.data())
-        , m_end(m_begin + v.size())
+    LevelDBSlice( const Vector<char> &v )
+        : m_begin( v.data() )
+        , m_end( m_begin + v.size() )
     {
-        ASSERT(m_end >= m_begin);
+        ASSERT( m_end >= m_begin );
     }
 
     ~LevelDBSlice()
     {
     }
 
-    const char* begin() const { return m_begin; }
-    const char* end() const { return m_end; }
+    const char *begin() const
+    {
+        return m_begin;
+    }
+    const char *end() const
+    {
+        return m_end;
+    }
 
 private:
-    const char* m_begin;
-    const char* m_end;
+    const char *m_begin;
+    const char *m_end;
 };
 
 } // namespace WebCore

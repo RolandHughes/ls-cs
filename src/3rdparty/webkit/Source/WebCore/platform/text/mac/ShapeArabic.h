@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ShapeArabic_h
@@ -34,7 +34,8 @@
 extern "C" {
 #endif
 
-int32_t shapeArabic(const UChar *source, int32_t sourceLength, UChar *dest, int32_t destCapacity, uint32_t options, UErrorCode *pErrorCode);
+int32_t shapeArabic( const UChar *source, int32_t sourceLength, UChar *dest, int32_t destCapacity, uint32_t options,
+                     UErrorCode *pErrorCode );
 
 #ifdef __cplusplus
 }

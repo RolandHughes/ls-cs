@@ -32,42 +32,44 @@ class QFileIconProviderPrivate;
 
 class Q_GUI_EXPORT QFileIconProvider
 {
- public:
-   enum Option {
-      DontUseCustomDirectoryIcons = 0x00000001
-   };
-   using Options = QFlags<Option>;
+public:
+    enum Option
+    {
+        DontUseCustomDirectoryIcons = 0x00000001
+    };
+    using Options = QFlags<Option>;
 
-   enum IconType {
-      Computer,
-      Desktop,
-      Trashcan,
-      Network,
-      Drive,
-      Folder,
-      File
-   };
+    enum IconType
+    {
+        Computer,
+        Desktop,
+        Trashcan,
+        Network,
+        Drive,
+        Folder,
+        File
+    };
 
-   QFileIconProvider();
+    QFileIconProvider();
 
-   QFileIconProvider(const QFileIconProvider &) = delete;
-   QFileIconProvider &operator=(const QFileIconProvider &) = delete;
+    QFileIconProvider( const QFileIconProvider & ) = delete;
+    QFileIconProvider &operator=( const QFileIconProvider & ) = delete;
 
-   virtual ~QFileIconProvider();
+    virtual ~QFileIconProvider();
 
-   virtual QIcon icon(IconType type) const;
-   virtual QIcon icon(const QFileInfo &info) const;
-   virtual QString type(const QFileInfo &info) const;
+    virtual QIcon icon( IconType type ) const;
+    virtual QIcon icon( const QFileInfo &info ) const;
+    virtual QString type( const QFileInfo &info ) const;
 
-   void setOptions(Options options);
-   Options options() const;
+    void setOptions( Options options );
+    Options options() const;
 
- private:
-   Q_DECLARE_PRIVATE(QFileIconProvider)
-   QScopedPointer<QFileIconProviderPrivate> d_ptr;
+private:
+    Q_DECLARE_PRIVATE( QFileIconProvider )
+    QScopedPointer<QFileIconProviderPrivate> d_ptr;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QFileIconProvider::Options)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QFileIconProvider::Options )
 
 #endif
 

@@ -30,39 +30,41 @@ class QEventLoop;
 
 class QXcbSessionManager : public QPlatformSessionManager
 {
- public:
-   QXcbSessionManager(const QString &id, const QString &key);
+public:
+    QXcbSessionManager( const QString &id, const QString &key );
 
-   QXcbSessionManager(const QXcbSessionManager &) = delete;
-   QXcbSessionManager &operator=(const QXcbSessionManager &) = delete;
+    QXcbSessionManager( const QXcbSessionManager & ) = delete;
+    QXcbSessionManager &operator=( const QXcbSessionManager & ) = delete;
 
-   virtual ~QXcbSessionManager();
+    virtual ~QXcbSessionManager();
 
-   void *handle() const;
+    void *handle() const;
 
-   void setSessionId(const QString &id) {
-      m_sessionId = id;
-   }
-   void setSessionKey(const QString &key) {
-      m_sessionKey = key;
-   }
+    void setSessionId( const QString &id )
+    {
+        m_sessionId = id;
+    }
+    void setSessionKey( const QString &key )
+    {
+        m_sessionKey = key;
+    }
 
-   bool allowsInteraction() override;
-   bool allowsErrorInteraction() override;
-   void release() override;
+    bool allowsInteraction() override;
+    bool allowsErrorInteraction() override;
+    void release() override;
 
-   void cancel() override;
+    void cancel() override;
 
-   void setManagerProperty(const QString &name, const QString &value) override;
-   void setManagerProperty(const QString &name, const QStringList &value) override;
+    void setManagerProperty( const QString &name, const QString &value ) override;
+    void setManagerProperty( const QString &name, const QStringList &value ) override;
 
-   bool isPhase2() const override;
-   void requestPhase2() override;
+    bool isPhase2() const override;
+    void requestPhase2() override;
 
-   void exitEventLoop();
+    void exitEventLoop();
 
- private:
-   QEventLoop *m_eventLoop;
+private:
+    QEventLoop *m_eventLoop;
 };
 
 #endif

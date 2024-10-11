@@ -32,16 +32,17 @@
 #include "WebFullScreenManagerMessages.h"
 #include "WebFullScreenManagerProxyMessages.h"
 
-namespace WebKit {
-
-PassRefPtr<WebFullScreenManagerProxy> WebFullScreenManagerProxy::create(WebPageProxy* page)
+namespace WebKit
 {
-    return adoptRef(new WebFullScreenManagerProxy(page));
+
+PassRefPtr<WebFullScreenManagerProxy> WebFullScreenManagerProxy::create( WebPageProxy *page )
+{
+    return adoptRef( new WebFullScreenManagerProxy( page ) );
 }
 
-WebFullScreenManagerProxy::WebFullScreenManagerProxy(WebPageProxy* page)
-    : m_page(page)
-    , m_webView(0)
+WebFullScreenManagerProxy::WebFullScreenManagerProxy( WebPageProxy *page )
+    : m_page( page )
+    , m_webView( 0 )
 {
 }
 
@@ -54,57 +55,63 @@ void WebFullScreenManagerProxy::invalidate()
     m_webView = 0;
 }
 
-void WebFullScreenManagerProxy::setWebView(PlatformWebView* webView)
+void WebFullScreenManagerProxy::setWebView( PlatformWebView *webView )
 {
     m_webView = webView;
 }
 
-void WebFullScreenManagerProxy::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebFullScreenManagerProxy::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebFullScreenManagerProxyMessage(connection, messageID, arguments);
+    didReceiveWebFullScreenManagerProxyMessage( connection, messageID, arguments );
 }
 
-CoreIPC::SyncReplyMode WebFullScreenManagerProxy::didReceiveSyncMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply)
+CoreIPC::SyncReplyMode WebFullScreenManagerProxy::didReceiveSyncMessage( CoreIPC::Connection *connection,
+        CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder *arguments, CoreIPC::ArgumentEncoder *reply )
 {
-    return didReceiveSyncWebFullScreenManagerProxyMessage(connection, messageID, arguments, reply);
+    return didReceiveSyncWebFullScreenManagerProxyMessage( connection, messageID, arguments, reply );
 }
 
 void WebFullScreenManagerProxy::willEnterFullScreen()
 {
-    m_page->process()->send(Messages::WebFullScreenManager::WillEnterFullScreen(), m_page->pageID());
+    m_page->process()->send( Messages::WebFullScreenManager::WillEnterFullScreen(), m_page->pageID() );
 }
 
 void WebFullScreenManagerProxy::didEnterFullScreen()
 {
-    m_page->process()->send(Messages::WebFullScreenManager::DidEnterFullScreen(), m_page->pageID());
+    m_page->process()->send( Messages::WebFullScreenManager::DidEnterFullScreen(), m_page->pageID() );
 }
 
 void WebFullScreenManagerProxy::willExitFullScreen()
 {
-    m_page->process()->send(Messages::WebFullScreenManager::WillExitFullScreen(), m_page->pageID());
+    m_page->process()->send( Messages::WebFullScreenManager::WillExitFullScreen(), m_page->pageID() );
 }
 
 void WebFullScreenManagerProxy::didExitFullScreen()
 {
-    m_page->process()->send(Messages::WebFullScreenManager::DidExitFullScreen(), m_page->pageID());
+    m_page->process()->send( Messages::WebFullScreenManager::DidExitFullScreen(), m_page->pageID() );
 }
 
-void WebFullScreenManagerProxy::beginEnterFullScreenAnimation(float duration)
+void WebFullScreenManagerProxy::beginEnterFullScreenAnimation( float duration )
 {
-    m_page->process()->send(Messages::WebFullScreenManager::BeginEnterFullScreenAnimation(duration), m_page->pageID());
+    m_page->process()->send( Messages::WebFullScreenManager::BeginEnterFullScreenAnimation( duration ), m_page->pageID() );
 }
 
-void WebFullScreenManagerProxy::beginExitFullScreenAnimation(float duration)
+void WebFullScreenManagerProxy::beginExitFullScreenAnimation( float duration )
 {
-    m_page->process()->send(Messages::WebFullScreenManager::BeginExitFullScreenAnimation(duration), m_page->pageID());
+    m_page->process()->send( Messages::WebFullScreenManager::BeginExitFullScreenAnimation( duration ), m_page->pageID() );
 }
 
-void WebFullScreenManagerProxy::supportsFullScreen(bool withKeyboard, bool& supports)
+void WebFullScreenManagerProxy::supportsFullScreen( bool withKeyboard, bool &supports )
 {
-    if (withKeyboard)
+    if ( withKeyboard )
+    {
         supports = false;
+    }
     else
+    {
         supports = true;
+    }
 }
 
 } // namespace WebKit

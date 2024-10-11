@@ -23,18 +23,18 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-@interface WKView (Private)
+@interface WKView ( Private )
 
 // Stops updating the size of the page as the WKView frame size updates.
 // This should always be followed by enableFrameSizeUpdates. Calls can be nested.
-- (void)disableFrameSizeUpdates;
+- ( void )disableFrameSizeUpdates;
 // Immediately updates the size of the page to match WKView's frame size
 // and allows subsequent updates as the frame size is set. Calls can be nested.
-- (void)enableFrameSizeUpdates;
-- (BOOL)frameSizeUpdatesDisabled;
+- ( void )enableFrameSizeUpdates;
+- ( BOOL )frameSizeUpdatesDisabled;
 
-- (void)performDictionaryLookupAtCurrentMouseLocation;
+- ( void )performDictionaryLookupAtCurrentMouseLocation;
 
-- (NSInteger)spellCheckerDocumentTag;
-- (void)handleCorrectionPanelResult:(NSString*)result;
+- ( NSInteger )spellCheckerDocumentTag;
+- ( void )handleCorrectionPanelResult:( NSString * )result;
 @end

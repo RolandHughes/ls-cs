@@ -42,39 +42,53 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/AtomicStringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class KURL;
-    class ScriptExecutionContext;
+class KURL;
+class ScriptExecutionContext;
 
-    class AbstractWorker : public RefCounted<AbstractWorker>, public ActiveDOMObject, public EventTarget {
-    public:
-        // EventTarget APIs
-        virtual ScriptExecutionContext* scriptExecutionContext() const { return ActiveDOMObject::scriptExecutionContext(); }
+class AbstractWorker : public RefCounted<AbstractWorker>, public ActiveDOMObject, public EventTarget
+{
+public:
+    // EventTarget APIs
+    virtual ScriptExecutionContext *scriptExecutionContext() const
+    {
+        return ActiveDOMObject::scriptExecutionContext();
+    }
 
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
 
-        using RefCounted<AbstractWorker>::ref;
-        using RefCounted<AbstractWorker>::deref;
+    using RefCounted<AbstractWorker>::ref;
+    using RefCounted<AbstractWorker>::deref;
 
-        virtual void contextDestroyed();
-        AbstractWorker(ScriptExecutionContext*);
-        virtual ~AbstractWorker();
+    virtual void contextDestroyed();
+    AbstractWorker( ScriptExecutionContext * );
+    virtual ~AbstractWorker();
 
-    protected:
-        // Helper function that converts a URL to an absolute URL and checks the result for validity.
-        KURL resolveURL(const String& url, ExceptionCode& ec);
-        intptr_t asID() const { return reinterpret_cast<intptr_t>(this); }
+protected:
+    // Helper function that converts a URL to an absolute URL and checks the result for validity.
+    KURL resolveURL( const String &url, ExceptionCode &ec );
+    intptr_t asID() const
+    {
+        return reinterpret_cast<intptr_t>( this );
+    }
 
-    private:
-        virtual void refEventTarget() { ref(); }
-        virtual void derefEventTarget() { deref(); }
-        virtual EventTargetData* eventTargetData();
-        virtual EventTargetData* ensureEventTargetData();
-        void onDestroyWorker();
-        
-        EventTargetData m_eventTargetData;
-    };
+private:
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData();
+    virtual EventTargetData *ensureEventTargetData();
+    void onDestroyWorker();
+
+    EventTargetData m_eventTargetData;
+};
 
 } // namespace WebCore
 

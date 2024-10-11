@@ -33,25 +33,25 @@
 #include <gst/gst.h>
 
 class QGstreamerAudioProbeControl
-   : public QMediaAudioProbeControl, public QGstreamerBufferProbe, public QSharedData
+    : public QMediaAudioProbeControl, public QGstreamerBufferProbe, public QSharedData
 {
-   CS_OBJECT_MULTIPLE(QGstreamerAudioProbeControl, QMediaAudioProbeControl)
+    LSCS_OBJECT_MULTIPLE( QGstreamerAudioProbeControl, QMediaAudioProbeControl )
 
- public:
-   explicit QGstreamerAudioProbeControl(QObject *parent);
-   virtual ~QGstreamerAudioProbeControl();
+public:
+    explicit QGstreamerAudioProbeControl( QObject *parent );
+    virtual ~QGstreamerAudioProbeControl();
 
- protected:
-   void probeCaps(GstCaps *caps) override;
-   bool probeBuffer(GstBuffer *buffer) override;
+protected:
+    void probeCaps( GstCaps *caps ) override;
+    bool probeBuffer( GstBuffer *buffer ) override;
 
- private:
-   QAudioBuffer m_pendingBuffer;
-   QAudioFormat m_format;
-   QMutex m_bufferMutex;
+private:
+    QAudioBuffer m_pendingBuffer;
+    QAudioFormat m_format;
+    QMutex m_bufferMutex;
 
-   CS_SLOT_1(Private, void bufferProbed())
-   CS_SLOT_2(bufferProbed)
+    LSCS_SLOT_1( Private, void bufferProbed() )
+    LSCS_SLOT_2( bufferProbed )
 };
 
 #endif

@@ -47,16 +47,17 @@
 #include <QPainter>
 #include <QWidget>
 
-namespace WebCore {
-
-Widget::Widget(QWidget* widget)
+namespace WebCore
 {
-    init(widget);
+
+Widget::Widget( QWidget *widget )
+{
+    init( widget );
 }
 
 Widget::~Widget()
 {
-    Q_ASSERT(!parent());
+    Q_ASSERT( !parent() );
 }
 
 IntRect Widget::frameRect() const
@@ -64,58 +65,66 @@ IntRect Widget::frameRect() const
     return m_frame;
 }
 
-void Widget::setFrameRect(const IntRect& rect)
+void Widget::setFrameRect( const IntRect &rect )
 {
     m_frame = rect;
 
     frameRectsChanged();
 }
 
-void Widget::setFocus(bool focused)
+void Widget::setFocus( bool focused )
 {
 }
 
-void Widget::setCursor(const Cursor& cursor)
+void Widget::setCursor( const Cursor &cursor )
 {
 #ifndef QT_NO_CURSOR
-    ScrollView* view = root();
-    if (!view)
+    ScrollView *view = root();
+
+    if ( !view )
+    {
         return;
-    view->hostWindow()->setCursor(cursor);
+    }
+
+    view->hostWindow()->setCursor( cursor );
 #endif
 }
 
 void Widget::show()
 {
-    setSelfVisible(true);
+    setSelfVisible( true );
 
-    if (isParentVisible() && platformWidget())
+    if ( isParentVisible() && platformWidget() )
+    {
         platformWidget()->show();
+    }
 }
 
 void Widget::hide()
 {
-    setSelfVisible(false);
+    setSelfVisible( false );
 
-    if (isParentVisible() && platformWidget())
+    if ( isParentVisible() && platformWidget() )
+    {
         platformWidget()->hide();
+    }
 }
 
-void Widget::paint(GraphicsContext*, const IntRect&)
+void Widget::paint( GraphicsContext *, const IntRect & )
 {
 }
 
-void Widget::setIsSelected(bool)
+void Widget::setIsSelected( bool )
 {
     notImplemented();
 }
 
-void Widget::setBindingObject(QObject* object)
+void Widget::setBindingObject( QObject *object )
 {
     m_bindingObject = object;
 }
 
-QObject* Widget::bindingObject() const
+QObject *Widget::bindingObject() const
 {
     return m_bindingObject.data();
 }

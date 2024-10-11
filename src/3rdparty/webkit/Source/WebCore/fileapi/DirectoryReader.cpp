@@ -38,20 +38,23 @@
 #include "ErrorCallback.h"
 #include "FileError.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DirectoryReader::DirectoryReader(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : DirectoryReaderBase(fileSystem, fullPath)
+DirectoryReader::DirectoryReader( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : DirectoryReaderBase( fileSystem, fullPath )
 {
 }
 
-void DirectoryReader::readEntries(PassRefPtr<EntriesCallback> entriesCallback, PassRefPtr<ErrorCallback> errorCallback)
+void DirectoryReader::readEntries( PassRefPtr<EntriesCallback> entriesCallback, PassRefPtr<ErrorCallback> errorCallback )
 {
-    if (!m_hasMoreEntries) {
-        filesystem()->scheduleCallback(entriesCallback, EntryArray::create());
+    if ( !m_hasMoreEntries )
+    {
+        filesystem()->scheduleCallback( entriesCallback, EntryArray::create() );
         return;
     }
-    filesystem()->readDirectory(this, m_fullPath, entriesCallback, errorCallback);
+
+    filesystem()->readDirectory( this, m_fullPath, entriesCallback, errorCallback );
 }
 
 }

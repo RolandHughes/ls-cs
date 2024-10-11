@@ -35,63 +35,65 @@ class QPrinterInfoPrivate;
 class QPrinterInfoPrivateDeleter;
 class QDebug;
 
-namespace cs_internal {
-   struct QPrinterInfoPrivateDeleter {
-      void operator()(QPrinterInfoPrivate *d) const;
-   };
+namespace lscs_internal
+{
+struct QPrinterInfoPrivateDeleter
+{
+    void operator()( QPrinterInfoPrivate *d ) const;
+};
 }
 
 class Q_GUI_EXPORT QPrinterInfo
 {
- public:
-   QPrinterInfo();
-   QPrinterInfo(const QPrinterInfo &other);
-   explicit QPrinterInfo(const QPrinter &printer);
+public:
+    QPrinterInfo();
+    QPrinterInfo( const QPrinterInfo &other );
+    explicit QPrinterInfo( const QPrinter &printer );
 
-   ~QPrinterInfo();
+    ~QPrinterInfo();
 
-   QPrinterInfo &operator=(const QPrinterInfo &other);
+    QPrinterInfo &operator=( const QPrinterInfo &other );
 
-   QString printerName() const;
-   QString description() const;
-   QString location() const;
-   QString makeAndModel() const;
-   bool isNull() const;
-   bool isDefault() const;
-   bool isRemote() const;
+    QString printerName() const;
+    QString description() const;
+    QString location() const;
+    QString makeAndModel() const;
+    bool isNull() const;
+    bool isDefault() const;
+    bool isRemote() const;
 
-   QPrinter::PrinterState state() const;
+    QPrinter::PrinterState state() const;
 
-   QList<QPageSize> supportedPageSizes() const;
-   QPageSize defaultPageSize() const;
+    QList<QPageSize> supportedPageSizes() const;
+    QPageSize defaultPageSize() const;
 
-   bool supportsCustomPageSizes() const;
+    bool supportsCustomPageSizes() const;
 
-   QPageSize minimumPhysicalPageSize() const;
-   QPageSize maximumPhysicalPageSize() const;
+    QPageSize minimumPhysicalPageSize() const;
+    QPageSize maximumPhysicalPageSize() const;
 
 
-   QList<int> supportedResolutions() const;
+    QList<int> supportedResolutions() const;
 
-   QPrinter::DuplexMode defaultDuplexMode() const;
-   QList<QPrinter::DuplexMode> supportedDuplexModes() const;
+    QPrinter::DuplexMode defaultDuplexMode() const;
+    QList<QPrinter::DuplexMode> supportedDuplexModes() const;
 
-   static QStringList availablePrinterNames();
-   static QList<QPrinterInfo> availablePrinters();
+    static QStringList availablePrinterNames();
+    static QList<QPrinterInfo> availablePrinters();
 
-   static QString defaultPrinterName();
-   static QPrinterInfo defaultPrinter();
+    static QString defaultPrinterName();
+    static QPrinterInfo defaultPrinter();
 
-   static QPrinterInfo printerInfo(const QString &printerName);
+    static QPrinterInfo printerInfo( const QString &printerName );
 
- private:
-   explicit QPrinterInfo(const QString &name);
+private:
+    explicit QPrinterInfo( const QString &name );
 
-   friend class QPlatformPrinterSupport;
-   friend Q_GUI_EXPORT QDebug operator<<(QDebug debug, const QPrinterInfo &);
-   Q_DECLARE_PRIVATE(QPrinterInfo)
+    friend class QPlatformPrinterSupport;
+    friend Q_GUI_EXPORT QDebug operator<<( QDebug debug, const QPrinterInfo & );
+    Q_DECLARE_PRIVATE( QPrinterInfo )
 
-   QScopedPointer<QPrinterInfoPrivate, cs_internal::QPrinterInfoPrivateDeleter> d_ptr;
+    QScopedPointer<QPrinterInfoPrivate, lscs_internal::QPrinterInfoPrivateDeleter> d_ptr;
 };
 
 #endif // QT_NO_PRINTER

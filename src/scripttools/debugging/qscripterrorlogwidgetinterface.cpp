@@ -24,9 +24,7 @@
 #include "qscripterrorlogwidgetinterface_p.h"
 #include "qscripterrorlogwidgetinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE
-
-QScriptErrorLogWidgetInterfacePrivate::QScriptErrorLogWidgetInterfacePrivate()
+QT_BEGIN_NAMESPACE QScriptErrorLogWidgetInterfacePrivate::QScriptErrorLogWidgetInterfacePrivate()
 {
 }
 
@@ -39,9 +37,9 @@ QScriptErrorLogWidgetInterface::~QScriptErrorLogWidgetInterface()
 }
 
 QScriptErrorLogWidgetInterface::QScriptErrorLogWidgetInterface(
-   QScriptErrorLogWidgetInterfacePrivate &dd,
-   QWidget *parent, Qt::WindowFlags flags)
-   : QWidget(dd, parent, flags)
+    QScriptErrorLogWidgetInterfacePrivate &dd,
+    QWidget *parent, Qt::WindowFlags flags )
+    : QWidget( dd, parent, flags )
 {
 }
 

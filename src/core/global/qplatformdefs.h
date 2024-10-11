@@ -27,7 +27,7 @@
 #include <qglobal.h>
 
 // configure generates the following h file and it contains the defines for have_x_h
-#include <cs-config.h>
+#include <lscs_config.h>
 
 #ifdef HAVE_FEATURES_H
 #include <features.h>
@@ -132,7 +132,8 @@
 
 #if ! defined(_WIN32_WINNT) || (_WIN32_WINNT-0 < 0x0500)
 
-enum EXTENDED_NAME_FORMAT {
+enum EXTENDED_NAME_FORMAT
+{
     NameUnknown           = 0,
     NameFullyQualifiedDN  = 1,
     NameSamCompatible     = 2,

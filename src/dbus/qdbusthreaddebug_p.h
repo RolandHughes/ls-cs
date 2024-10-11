@@ -31,14 +31,15 @@
 #if QDBUS_THREAD_DEBUG
 
 QT_BEGIN_NAMESPACE
-typedef void (*qdbusThreadDebugFunc)(int, int, QDBusConnectionPrivate *);
-Q_DBUS_EXPORT void qdbusDefaultThreadDebug(int, int, QDBusConnectionPrivate *);
+typedef void ( *qdbusThreadDebugFunc )( int, int, QDBusConnectionPrivate * );
+Q_DBUS_EXPORT void qdbusDefaultThreadDebug( int, int, QDBusConnectionPrivate * );
 extern Q_DBUS_EXPORT qdbusThreadDebugFunc qdbusThreadDebug;
 QT_END_NAMESPACE
 
 #endif
 
-enum ThreadAction {
+enum ThreadAction
+{
     ConnectAction = 0,
     DisconnectAction = 1,
     RegisterObjectAction = 2,
@@ -98,10 +99,15 @@ struct QDBusLockerBase
     };
 
 #if QDBUS_THREAD_DEBUG
-    static inline void reportThreadAction(int action, int condition, QDBusConnectionPrivate *ptr)
-    { if (qdbusThreadDebug) qdbusThreadDebug(action, condition, ptr); }
+    static inline void reportThreadAction( int action, int condition, QDBusConnectionPrivate *ptr )
+    {
+        if ( qdbusThreadDebug )
+        {
+            qdbusThreadDebug( action, condition, ptr );
+        }
+    }
 #else
-    static inline void reportThreadAction(int, int, QDBusConnectionPrivate *) { }
+    static inline void reportThreadAction( int, int, QDBusConnectionPrivate * ) { }
 #endif
 };
 
@@ -109,19 +115,19 @@ struct QDBusReadLocker: QDBusLockerBase
 {
     QDBusConnectionPrivate *self;
     ThreadAction action;
-    inline QDBusReadLocker(ThreadAction a, QDBusConnectionPrivate *s)
-        : self(s), action(a)
+    inline QDBusReadLocker( ThreadAction a, QDBusConnectionPrivate *s )
+        : self( s ), action( a )
     {
-        reportThreadAction(action, BeforeLock, self);
+        reportThreadAction( action, BeforeLock, self );
         self->lock.lockForRead();
-        reportThreadAction(action, AfterLock, self);
+        reportThreadAction( action, AfterLock, self );
     }
 
     inline ~QDBusReadLocker()
     {
-        reportThreadAction(action, BeforeUnlock, self);
+        reportThreadAction( action, BeforeUnlock, self );
         self->lock.unlock();
-        reportThreadAction(action, AfterUnlock, self);
+        reportThreadAction( action, AfterUnlock, self );
     }
 };
 
@@ -129,19 +135,19 @@ struct QDBusWriteLocker: QDBusLockerBase
 {
     QDBusConnectionPrivate *self;
     ThreadAction action;
-    inline QDBusWriteLocker(ThreadAction a, QDBusConnectionPrivate *s)
-        : self(s), action(a)
+    inline QDBusWriteLocker( ThreadAction a, QDBusConnectionPrivate *s )
+        : self( s ), action( a )
     {
-        reportThreadAction(action, BeforeLock, self);
+        reportThreadAction( action, BeforeLock, self );
         self->lock.lockForWrite();
-        reportThreadAction(action, AfterLock, self);
+        reportThreadAction( action, AfterLock, self );
     }
 
     inline ~QDBusWriteLocker()
     {
-        reportThreadAction(action, BeforeUnlock, self);
+        reportThreadAction( action, BeforeUnlock, self );
         self->lock.unlock();
-        reportThreadAction(action, AfterUnlock, self);
+        reportThreadAction( action, AfterUnlock, self );
     }
 };
 
@@ -150,34 +156,34 @@ struct QDBusMutexLocker: QDBusLockerBase
     QDBusConnectionPrivate *self;
     QMutex *mutex;
     ThreadAction action;
-    inline QDBusMutexLocker(ThreadAction a, QDBusConnectionPrivate *s,
-                            QMutex *m)
-        : self(s), mutex(m), action(a)
+    inline QDBusMutexLocker( ThreadAction a, QDBusConnectionPrivate *s,
+                             QMutex *m )
+        : self( s ), mutex( m ), action( a )
     {
-        reportThreadAction(action, BeforeLock, self);
+        reportThreadAction( action, BeforeLock, self );
         mutex->lock();
-        reportThreadAction(action, AfterLock, self);
+        reportThreadAction( action, AfterLock, self );
     }
 
     inline ~QDBusMutexLocker()
     {
-        reportThreadAction(action, BeforeUnlock, self);
+        reportThreadAction( action, BeforeUnlock, self );
         mutex->unlock();
-        reportThreadAction(action, AfterUnlock, self);
+        reportThreadAction( action, AfterUnlock, self );
     }
 };
 
 struct QDBusDispatchLocker: QDBusMutexLocker
 {
-    inline QDBusDispatchLocker(ThreadAction a, QDBusConnectionPrivate *s)
-        : QDBusMutexLocker(a, s, &s->dispatchLock)
+    inline QDBusDispatchLocker( ThreadAction a, QDBusConnectionPrivate *s )
+        : QDBusMutexLocker( a, s, &s->dispatchLock )
     { }
 };
 
 struct QDBusWatchAndTimeoutLocker: QDBusMutexLocker
 {
-    inline QDBusWatchAndTimeoutLocker(ThreadAction a, QDBusConnectionPrivate *s)
-        : QDBusMutexLocker(a, s, &s->watchAndTimeoutLock)
+    inline QDBusWatchAndTimeoutLocker( ThreadAction a, QDBusConnectionPrivate *s )
+        : QDBusMutexLocker( a, s, &s->watchAndTimeoutLock )
     { }
 };
 

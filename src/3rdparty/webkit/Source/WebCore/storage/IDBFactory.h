@@ -39,25 +39,27 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBKey;
 class IDBKeyRange;
 class IDBFactoryBackendInterface;
 class ScriptExecutionContext;
 
-class IDBFactory : public RefCounted<IDBFactory> {
+class IDBFactory : public RefCounted<IDBFactory>
+{
 public:
-    static PassRefPtr<IDBFactory> create(IDBFactoryBackendInterface* factory)
+    static PassRefPtr<IDBFactory> create( IDBFactoryBackendInterface *factory )
     {
-        return adoptRef(new IDBFactory(factory));
+        return adoptRef( new IDBFactory( factory ) );
     }
     ~IDBFactory();
 
-    PassRefPtr<IDBRequest> open(ScriptExecutionContext*, const String& name, ExceptionCode&);
+    PassRefPtr<IDBRequest> open( ScriptExecutionContext *, const String &name, ExceptionCode & );
 
 private:
-    IDBFactory(IDBFactoryBackendInterface*);
+    IDBFactory( IDBFactoryBackendInterface * );
 
     RefPtr<IDBFactoryBackendInterface> m_factoryBackend;
 };

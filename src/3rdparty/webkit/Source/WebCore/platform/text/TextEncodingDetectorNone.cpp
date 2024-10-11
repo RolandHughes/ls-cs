@@ -33,9 +33,10 @@
 
 #include "TextEncoding.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-bool detectTextEncoding(const char*, size_t, const char*, TextEncoding* detectedEncoding)
+bool detectTextEncoding( const char *, size_t, const char *, TextEncoding *detectedEncoding )
 {
     *detectedEncoding = TextEncoding();
     return false;

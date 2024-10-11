@@ -38,23 +38,23 @@ class QDBusConnection;
 
 class Q_DBUS_EXPORT QDBusServer: public QObject
 {
-   CS_OBJECT(QDBusServer)
+    LSCS_OBJECT( QDBusServer )
 
-   public:
-       QDBusServer(const QString &address = QLatin1String("unix:tmpdir=/tmp"), QObject *parent = nullptr);
-       virtual ~QDBusServer();
-   
-       bool isConnected() const;
-       QDBusError lastError() const;
-       QString address() const;
-   
-   public:
-       CS_SIGNAL_1(Public, void newConnection(const QDBusConnection & connection))
-       CS_SIGNAL_2(newConnection,connection) 
-   
-   private:
-       Q_DISABLE_COPY(QDBusServer)
-       QDBusConnectionPrivate *d;
+public:
+    QDBusServer( const QString &address = QLatin1String( "unix:tmpdir=/tmp" ), QObject *parent = nullptr );
+    virtual ~QDBusServer();
+
+    bool isConnected() const;
+    QDBusError lastError() const;
+    QString address() const;
+
+public:
+    LSCS_SIGNAL_1( Public, void newConnection( const QDBusConnection &connection ) )
+    LSCS_SIGNAL_2( newConnection,connection )
+
+private:
+    Q_DISABLE_COPY( QDBusServer )
+    QDBusConnectionPrivate *d;
 };
 
 QT_END_NAMESPACE

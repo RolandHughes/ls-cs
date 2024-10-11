@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "config.h"
 
@@ -33,9 +33,9 @@
 #include <wtf/StdLibExtras.h>
 #include <wtf/Vector.h>
 
-QTMovieTask::QTMovieTask() 
-    : m_setTaskTimerDelay(0)
-    , m_stopTaskTimer(0)
+QTMovieTask::QTMovieTask()
+    : m_setTaskTimerDelay( 0 )
+    , m_stopTaskTimer( 0 )
 {
 }
 
@@ -43,61 +43,82 @@ QTMovieTask::~QTMovieTask()
 {
 }
 
-QTMovieTask* QTMovieTask::sharedTask()
+QTMovieTask *QTMovieTask::sharedTask()
 {
-    static QTMovieTask* s_sharedTask = new QTMovieTask;
+    static QTMovieTask *s_sharedTask = new QTMovieTask;
     return s_sharedTask;
 }
 
-void QTMovieTask::updateTaskTimer(double maxInterval, double minInterval)
+void QTMovieTask::updateTaskTimer( double maxInterval, double minInterval )
 {
-    ASSERT(m_setTaskTimerDelay);
-    if (!m_setTaskTimerDelay)
-        return;
+    ASSERT( m_setTaskTimerDelay );
 
-    ASSERT(m_stopTaskTimer);
-    if (!m_taskList.size() && m_stopTaskTimer) {
+    if ( !m_setTaskTimerDelay )
+    {
+        return;
+    }
+
+    ASSERT( m_stopTaskTimer );
+
+    if ( !m_taskList.size() && m_stopTaskTimer )
+    {
         m_stopTaskTimer();
         return;
     }
-    
+
     long intervalInMS;
-    OSStatus status = QTGetTimeUntilNextTask(&intervalInMS, 1000);
+    OSStatus status = QTGetTimeUntilNextTask( &intervalInMS, 1000 );
     double interval = intervalInMS / 1000.0;
-    if (interval < minInterval)
+
+    if ( interval < minInterval )
+    {
         interval = minInterval;
-    if (interval > maxInterval)
+    }
+
+    if ( interval > maxInterval )
+    {
         interval = maxInterval;
-    m_setTaskTimerDelay(interval);
+    }
+
+    m_setTaskTimerDelay( interval );
 }
 
 void QTMovieTask::fireTaskClients()
 {
-    Vector<QTMovieTaskClient*> clients;
-    copyToVector(m_taskList, clients);
-    for (Vector<QTMovieTaskClient*>::iterator i = clients.begin(); i != clients.end(); ++i)
-        (*i)->task();
+    Vector<QTMovieTaskClient *> clients;
+    copyToVector( m_taskList, clients );
+
+    for ( Vector<QTMovieTaskClient *>::iterator i = clients.begin(); i != clients.end(); ++i )
+    {
+        ( *i )->task();
+    }
 }
 
-void QTMovieTask::addTaskClient(QTMovieTaskClient* client) 
+void QTMovieTask::addTaskClient( QTMovieTaskClient *client )
 {
-    ASSERT(client);
-    if (!client)
-        return;
+    ASSERT( client );
 
-    m_taskList.add(client);
+    if ( !client )
+    {
+        return;
+    }
+
+    m_taskList.add( client );
 }
 
-void QTMovieTask::removeTaskClient(QTMovieTaskClient* client)
+void QTMovieTask::removeTaskClient( QTMovieTaskClient *client )
 {
-    ASSERT(client);
-    if (!client)
-        return;
+    ASSERT( client );
 
-    m_taskList.remove(client);
+    if ( !client )
+    {
+        return;
+    }
+
+    m_taskList.remove( client );
 }
 
-void QTMovieTask::setTaskTimerFuncs(SetTaskTimerDelayFunc setTaskTimerDelay, StopTaskTimerFunc stopTaskTimer)
+void QTMovieTask::setTaskTimerFuncs( SetTaskTimerDelayFunc setTaskTimerDelay, StopTaskTimerFunc stopTaskTimer )
 {
     m_setTaskTimerDelay = setTaskTimerDelay;
     m_stopTaskTimer = stopTaskTimer;

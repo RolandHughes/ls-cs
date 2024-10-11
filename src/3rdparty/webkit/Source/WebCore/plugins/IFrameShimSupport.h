@@ -22,12 +22,13 @@
 
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class Element;
 class Widget;
 class IntRect;
 
-void getPluginOcclusions(Element*, Widget* parentWidget, const IntRect& frameRect, Vector<IntRect>& occlusions);
+void getPluginOcclusions( Element *, Widget *parentWidget, const IntRect &frameRect, Vector<IntRect> &occlusions );
 
 } // namespace WebCore
 

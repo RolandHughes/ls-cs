@@ -27,31 +27,33 @@
 
 class QWebPage;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceMotionProviderQt;
 
-class DeviceMotionClientQt : public QObject, public DeviceMotionClient {
-    WEB_CS_OBJECT(DeviceMotionClientQt)
+class DeviceMotionClientQt : public QObject, public DeviceMotionClient
+{
+    WEB_LSCS_OBJECT( DeviceMotionClientQt )
 
 public:
-    DeviceMotionClientQt(QWebPage*);
+    DeviceMotionClientQt( QWebPage * );
     virtual ~DeviceMotionClientQt();
 
-    virtual void setController(DeviceMotionController*);
+    virtual void setController( DeviceMotionController * );
     virtual void startUpdating();
     virtual void stopUpdating();
-    virtual DeviceMotionData* currentDeviceMotion() const;
+    virtual DeviceMotionData *currentDeviceMotion() const;
     virtual void deviceMotionControllerDestroyed();
 
 public :
-    WEB_CS_SLOT_1(Public, void changeDeviceMotion())
-    WEB_CS_SLOT_2(changeDeviceMotion) 
+    WEB_LSCS_SLOT_1( Public, void changeDeviceMotion() )
+    WEB_LSCS_SLOT_2( changeDeviceMotion )
 
 private:
-    QWebPage* m_page;
-    DeviceMotionController* m_controller;
-    DeviceMotionProviderQt* m_provider;
+    QWebPage *m_page;
+    DeviceMotionController *m_controller;
+    DeviceMotionProviderQt *m_provider;
 };
 
 } // namespece WebCore

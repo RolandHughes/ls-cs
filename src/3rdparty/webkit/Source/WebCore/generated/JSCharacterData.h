@@ -24,60 +24,66 @@
 #include "JSNode.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CharacterData;
 
-class JSCharacterData : public JSNode {
+class JSCharacterData : public JSNode
+{
     typedef JSNode Base;
 public:
-    JSCharacterData(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<CharacterData>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSCharacterData( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<CharacterData> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSCharacterDataPrototype : public JSC::JSObjectWithGlobalObject {
+class JSCharacterDataPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCharacterDataPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCharacterDataPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                              JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionSubstringData(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionAppendData(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionInsertData(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionDeleteData(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionReplaceData(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionSubstringData( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionAppendData( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionInsertData( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionDeleteData( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCharacterDataPrototypeFunctionReplaceData( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsCharacterDataData(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSCharacterDataData(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsCharacterDataLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCharacterDataConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCharacterDataData( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSCharacterDataData( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsCharacterDataLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCharacterDataConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

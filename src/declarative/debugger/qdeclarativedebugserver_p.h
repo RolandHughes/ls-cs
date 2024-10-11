@@ -35,42 +35,42 @@ class QDeclarativeDebugServerPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeDebugServer : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeDebugServer)
+    DECL_LSCS_OBJECT( QDeclarativeDebugServer )
 
-   Q_DECLARE_PRIVATE(QDeclarativeDebugServer)
-   Q_DISABLE_COPY(QDeclarativeDebugServer)
+    Q_DECLARE_PRIVATE( QDeclarativeDebugServer )
+    Q_DISABLE_COPY( QDeclarativeDebugServer )
 
- public:
-   virtual ~QDeclarativeDebugServer();
+public:
+    virtual ~QDeclarativeDebugServer();
 
-   static QDeclarativeDebugServer *instance();
+    static QDeclarativeDebugServer *instance();
 
-   void setConnection(QDeclarativeDebugServerConnection *connection);
+    void setConnection( QDeclarativeDebugServerConnection *connection );
 
-   bool hasDebuggingClient() const;
+    bool hasDebuggingClient() const;
 
-   QList<QDeclarativeDebugService *> services() const;
-   QStringList serviceNames() const;
+    QList<QDeclarativeDebugService *> services() const;
+    QStringList serviceNames() const;
 
-   bool addService(QDeclarativeDebugService *service);
-   bool removeService(QDeclarativeDebugService *service);
+    bool addService( QDeclarativeDebugService *service );
+    bool removeService( QDeclarativeDebugService *service );
 
-   void sendMessage(QDeclarativeDebugService *service, const QByteArray &message);
-   void receiveMessage(const QByteArray &message);
+    void sendMessage( QDeclarativeDebugService *service, const QByteArray &message );
+    void receiveMessage( const QByteArray &message );
 
-   bool waitForMessage(QDeclarativeDebugService *service);
+    bool waitForMessage( QDeclarativeDebugService *service );
 
- private:
-   friend class QDeclarativeDebugService;
-   friend class QDeclarativeDebugServicePrivate;
+private:
+    friend class QDeclarativeDebugService;
+    friend class QDeclarativeDebugServicePrivate;
 
-   QDeclarativeDebugServer();
+    QDeclarativeDebugServer();
 
-   DECL_CS_SLOT_1(Private, void _q_deliverMessage(QString un_named_arg1, QByteArray un_named_arg2))
-   DECL_CS_SLOT_2(_q_deliverMessage)
+    DECL_LSCS_SLOT_1( Private, void _q_deliverMessage( QString un_named_arg1, QByteArray un_named_arg2 ) )
+    DECL_LSCS_SLOT_2( _q_deliverMessage )
 
- protected:
-   QScopedPointer<QDeclarativeDebugServerPrivate> d_ptr;
+protected:
+    QScopedPointer<QDeclarativeDebugServerPrivate> d_ptr;
 
 };
 

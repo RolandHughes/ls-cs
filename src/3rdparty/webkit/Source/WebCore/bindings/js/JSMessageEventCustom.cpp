@@ -40,41 +40,59 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSMessageEvent::ports(ExecState* exec) const
+namespace WebCore
 {
-    MessagePortArray* ports = static_cast<MessageEvent*>(impl())->ports();
-    if (!ports || ports->isEmpty())
+
+JSValue JSMessageEvent::ports( ExecState *exec ) const
+{
+    MessagePortArray *ports = static_cast<MessageEvent *>( impl() )->ports();
+
+    if ( !ports || ports->isEmpty() )
+    {
         return jsNull();
-
-    MarkedArgumentBuffer list;
-    for (size_t i = 0; i < ports->size(); i++)
-        list.append(toJS(exec, globalObject(), (*ports)[i].get()));
-    return constructArray(exec, globalObject(), list);
-}
-
-JSC::JSValue JSMessageEvent::initMessageEvent(JSC::ExecState* exec)
-{
-    const UString& typeArg = exec->argument(0).toString(exec);
-    bool canBubbleArg = exec->argument(1).toBoolean(exec);
-    bool cancelableArg = exec->argument(2).toBoolean(exec);
-    PassRefPtr<SerializedScriptValue> dataArg = SerializedScriptValue::create(exec, exec->argument(3));
-    if (exec->hadException())
-        return jsUndefined();
-    const UString& originArg = exec->argument(4).toString(exec);
-    const UString& lastEventIdArg = exec->argument(5).toString(exec);
-    DOMWindow* sourceArg = toDOMWindow(exec->argument(6));
-    OwnPtr<MessagePortArray> messagePorts;
-    if (!exec->argument(7).isUndefinedOrNull()) {
-        messagePorts = adoptPtr(new MessagePortArray);
-        fillMessagePortArray(exec, exec->argument(7), *messagePorts);
-        if (exec->hadException())
-            return jsUndefined();
     }
 
-    MessageEvent* event = static_cast<MessageEvent*>(this->impl());
-    event->initMessageEvent(ustringToAtomicString(typeArg), canBubbleArg, cancelableArg, dataArg, ustringToString(originArg), ustringToString(lastEventIdArg), sourceArg, messagePorts.release());
+    MarkedArgumentBuffer list;
+
+    for ( size_t i = 0; i < ports->size(); i++ )
+    {
+        list.append( toJS( exec, globalObject(), ( *ports )[i].get() ) );
+    }
+
+    return constructArray( exec, globalObject(), list );
+}
+
+JSC::JSValue JSMessageEvent::initMessageEvent( JSC::ExecState *exec )
+{
+    const UString &typeArg = exec->argument( 0 ).toString( exec );
+    bool canBubbleArg = exec->argument( 1 ).toBoolean( exec );
+    bool cancelableArg = exec->argument( 2 ).toBoolean( exec );
+    PassRefPtr<SerializedScriptValue> dataArg = SerializedScriptValue::create( exec, exec->argument( 3 ) );
+
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
+
+    const UString &originArg = exec->argument( 4 ).toString( exec );
+    const UString &lastEventIdArg = exec->argument( 5 ).toString( exec );
+    DOMWindow *sourceArg = toDOMWindow( exec->argument( 6 ) );
+    OwnPtr<MessagePortArray> messagePorts;
+
+    if ( !exec->argument( 7 ).isUndefinedOrNull() )
+    {
+        messagePorts = adoptPtr( new MessagePortArray );
+        fillMessagePortArray( exec, exec->argument( 7 ), *messagePorts );
+
+        if ( exec->hadException() )
+        {
+            return jsUndefined();
+        }
+    }
+
+    MessageEvent *event = static_cast<MessageEvent *>( this->impl() );
+    event->initMessageEvent( ustringToAtomicString( typeArg ), canBubbleArg, cancelableArg, dataArg, ustringToString( originArg ),
+                             ustringToString( lastEventIdArg ), sourceArg, messagePorts.release() );
     return jsUndefined();
 }
 

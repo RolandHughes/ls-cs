@@ -29,164 +29,190 @@
 
 class QSqlTableModelPrivate: public QSqlQueryModelPrivate
 {
-   Q_DECLARE_PUBLIC(QSqlTableModel)
+    Q_DECLARE_PUBLIC( QSqlTableModel )
 
- public:
-   QSqlTableModelPrivate()
-      : sortColumn(-1), sortOrder(Qt::AscendingOrder),
-        strategy(QSqlTableModel::OnRowChange), busyInsertingRows(false)
-   { }
+public:
+    QSqlTableModelPrivate()
+        : sortColumn( -1 ), sortOrder( Qt::AscendingOrder ),
+          strategy( QSqlTableModel::OnRowChange ), busyInsertingRows( false )
+    { }
 
-   ~QSqlTableModelPrivate();
-   void clear();
+    ~QSqlTableModelPrivate();
+    void clear();
 
-   virtual void clearCache();
+    virtual void clearCache();
 
-   QSqlRecord record(const QVector<QVariant> &values) const;
+    QSqlRecord record( const QVector<QVariant> &values ) const;
 
-   bool exec(const QString &stmt, bool prepStatement, const QSqlRecord &rec, const QSqlRecord &whereValues);
-   virtual void revertCachedRow(int row);
+    bool exec( const QString &stmt, bool prepStatement, const QSqlRecord &rec, const QSqlRecord &whereValues );
+    virtual void revertCachedRow( int row );
 
-   virtual int nameToIndex(const QString &name) const;
-   QString strippedFieldName(const QString &name) const;
-   int insertCount(int maxRow = -1) const;
-   void initRecordAndPrimaryIndex();
+    virtual int nameToIndex( const QString &name ) const;
+    QString strippedFieldName( const QString &name ) const;
+    int insertCount( int maxRow = -1 ) const;
+    void initRecordAndPrimaryIndex();
 
-   QSqlDatabase db;
+    QSqlDatabase db;
 
-   int sortColumn;
-   Qt::SortOrder sortOrder;
+    int sortColumn;
+    Qt::SortOrder sortOrder;
 
-   QSqlTableModel::EditStrategy strategy;
-   bool busyInsertingRows;
+    QSqlTableModel::EditStrategy strategy;
+    bool busyInsertingRows;
 
-   QSqlQuery editQuery;
-   QSqlIndex primaryIndex;
-   QString tableName;
-   QString filter;
-   QString autoColumn;
+    QSqlQuery editQuery;
+    QSqlIndex primaryIndex;
+    QString tableName;
+    QString filter;
+    QString autoColumn;
 
-   enum Op { None, Insert, Update, Delete };
+    enum Op { None, Insert, Update, Delete };
 
-   class ModifiedRow
-   {
+    class ModifiedRow
+    {
     public:
-      ModifiedRow(Op o = None, const QSqlRecord &r = QSqlRecord())
-         : m_op(None), m_db_values(r), m_insert(o == Insert)
-      {
-         setOp(o);
-      }
+        ModifiedRow( Op o = None, const QSqlRecord &r = QSqlRecord() )
+            : m_op( None ), m_db_values( r ), m_insert( o == Insert )
+        {
+            setOp( o );
+        }
 
-      Op op() const {
-         return m_op;
-      }
+        Op op() const
+        {
+            return m_op;
+        }
 
-      void setOp(Op o) {
-         if (o == None) {
+        void setOp( Op o )
+        {
+            if ( o == None )
+            {
+                m_submitted = true;
+            }
+
+            if ( o == m_op )
+            {
+                return;
+            }
+
+            m_submitted = ( o != Insert && o != Delete );
+            m_op = o;
+            m_rec = m_db_values;
+            setGenerated( m_rec, m_op == Delete );
+        }
+
+        QSqlRecord rec() const
+        {
+            return m_rec;
+        }
+
+        QSqlRecord &recRef()
+        {
+            return m_rec;
+        }
+
+        void setValue( int c, const QVariant &v )
+        {
+            m_submitted = false;
+            m_rec.setValue( c, v );
+            m_rec.setGenerated( c, true );
+        }
+
+        bool submitted() const
+        {
+            return m_submitted;
+        }
+
+        void setSubmitted()
+        {
             m_submitted = true;
-         }
+            setGenerated( m_rec, false );
 
-         if (o == m_op) {
-            return;
-         }
+            if ( m_op == Delete )
+            {
+                m_rec.clearValues();
+            }
+            else
+            {
+                m_op = Update;
+                m_db_values = m_rec;
+                setGenerated( m_db_values, true );
+            }
+        }
 
-         m_submitted = (o != Insert && o != Delete);
-         m_op = o;
-         m_rec = m_db_values;
-         setGenerated(m_rec, m_op == Delete);
-      }
+        void refresh( bool exists, const QSqlRecord &newvals )
+        {
+            m_submitted = true;
 
-      QSqlRecord rec() const {
-         return m_rec;
-      }
+            if ( exists )
+            {
+                m_op = Update;
+                m_db_values = newvals;
+                m_rec = newvals;
+                setGenerated( m_rec, false );
+            }
+            else
+            {
+                m_op = Delete;
+                m_rec.clear();
+                m_db_values.clear();
+            }
+        }
 
-      QSqlRecord &recRef() {
-         return m_rec;
-      }
+        bool insert() const
+        {
+            return m_insert;
+        }
 
-      void setValue(int c, const QVariant &v) {
-         m_submitted = false;
-         m_rec.setValue(c, v);
-         m_rec.setGenerated(c, true);
-      }
+        void revert()
+        {
+            if ( m_submitted )
+            {
+                return;
+            }
 
-      bool submitted() const {
-         return m_submitted;
-      }
+            if ( m_op == Delete )
+            {
+                m_op = Update;
+            }
 
-      void setSubmitted() {
-         m_submitted = true;
-         setGenerated(m_rec, false);
+            m_rec = m_db_values;
+            setGenerated( m_rec, false );
+            m_submitted = true;
+        }
 
-         if (m_op == Delete) {
-            m_rec.clearValues();
-         } else {
-            m_op = Update;
-            m_db_values = m_rec;
-            setGenerated(m_db_values, true);
-         }
-      }
+        QSqlRecord primaryValues( const QSqlRecord &pi ) const
+        {
+            if ( m_op == None || m_op == Insert )
+            {
+                return QSqlRecord();
+            }
 
-      void refresh(bool exists, const QSqlRecord &newvals) {
-         m_submitted = true;
-
-         if (exists) {
-            m_op = Update;
-            m_db_values = newvals;
-            m_rec = newvals;
-            setGenerated(m_rec, false);
-         } else {
-            m_op = Delete;
-            m_rec.clear();
-            m_db_values.clear();
-         }
-      }
-
-      bool insert() const {
-         return m_insert;
-      }
-
-      void revert() {
-         if (m_submitted) {
-            return;
-         }
-         if (m_op == Delete) {
-            m_op = Update;
-         }
-         m_rec = m_db_values;
-         setGenerated(m_rec, false);
-         m_submitted = true;
-      }
-
-      QSqlRecord primaryValues(const QSqlRecord &pi) const {
-         if (m_op == None || m_op == Insert) {
-            return QSqlRecord();
-         }
-
-         return m_db_values.keyValues(pi);
-      }
+            return m_db_values.keyValues( pi );
+        }
 
     private:
-      static void setGenerated(QSqlRecord &r, bool g) {
-         for (int i = r.count() - 1; i >= 0; --i) {
-            r.setGenerated(i, g);
-         }
-      }
+        static void setGenerated( QSqlRecord &r, bool g )
+        {
+            for ( int i = r.count() - 1; i >= 0; --i )
+            {
+                r.setGenerated( i, g );
+            }
+        }
 
-      Op m_op;
-      QSqlRecord m_rec;
-      QSqlRecord m_db_values;
-      bool m_submitted;
-      bool m_insert;
-   };
+        Op m_op;
+        QSqlRecord m_rec;
+        QSqlRecord m_db_values;
+        bool m_submitted;
+        bool m_insert;
+    };
 
-   using CacheMap = QMap<int, ModifiedRow>;
-   CacheMap cache;
+    using CacheMap = QMap<int, ModifiedRow>;
+    CacheMap cache;
 };
 
 class QSqlTableModelSql: public QSqlQueryModelSql
 {
- public:
+public:
 };
 
 #endif

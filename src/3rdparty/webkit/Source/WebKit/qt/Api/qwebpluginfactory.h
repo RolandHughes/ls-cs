@@ -33,32 +33,38 @@
 class QUrl;
 class QWebPluginFactoryPrivate;
 
-class QWEBKIT_EXPORT QWebPluginFactory : public QObject {
-    WEB_CS_OBJECT(QWebPluginFactory)
+class QWEBKIT_EXPORT QWebPluginFactory : public QObject
+{
+    WEB_LSCS_OBJECT( QWebPluginFactory )
 
 public:
-    struct QWEBKIT_EXPORT MimeType {
+    struct QWEBKIT_EXPORT MimeType
+    {
         QString name;
         QString description;
         QStringList fileExtensions;
-        bool operator==(const MimeType& other) const;
-        inline bool operator!=(const MimeType& other) const { return !operator==(other); }
+        bool operator==( const MimeType &other ) const;
+        inline bool operator!=( const MimeType &other ) const
+        {
+            return !operator==( other );
+        }
     };
 
-    struct Plugin {
+    struct Plugin
+    {
         QString name;
         QString description;
         QList<MimeType> mimeTypes;
     };
 
-    explicit QWebPluginFactory(QObject* parent = 0);
+    explicit QWebPluginFactory( QObject *parent = 0 );
     virtual ~QWebPluginFactory();
 
     virtual QList<Plugin> plugins() const = 0;
     virtual void refreshPlugins();
 
-    virtual QObject *create(const QString &mimeType, const QUrl &url, const QStringList& argumentNames,
-          const QStringList &argumentValues) const = 0;
+    virtual QObject *create( const QString &mimeType, const QUrl &url, const QStringList &argumentNames,
+                             const QStringList &argumentValues ) const = 0;
 
     enum Extension
     {};
@@ -69,11 +75,11 @@ public:
     class ExtensionReturn
     {};
 
-    virtual bool extension(Extension extension, const ExtensionOption* option = 0, ExtensionReturn* output = 0);
-    virtual bool supportsExtension(Extension extension) const;
+    virtual bool extension( Extension extension, const ExtensionOption *option = 0, ExtensionReturn *output = 0 );
+    virtual bool supportsExtension( Extension extension ) const;
 
 private:
-    QWebPluginFactoryPrivate* d;
+    QWebPluginFactoryPrivate *d;
 };
 
 #endif

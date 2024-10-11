@@ -28,10 +28,12 @@
 #include "PlatformString.h"
 #include "Filter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum CompositeOperationType {
-    FECOMPOSITE_OPERATOR_UNKNOWN    = 0, 
+enum CompositeOperationType
+{
+    FECOMPOSITE_OPERATOR_UNKNOWN    = 0,
     FECOMPOSITE_OPERATOR_OVER       = 1,
     FECOMPOSITE_OPERATOR_IN         = 2,
     FECOMPOSITE_OPERATOR_OUT        = 3,
@@ -40,34 +42,35 @@ enum CompositeOperationType {
     FECOMPOSITE_OPERATOR_ARITHMETIC = 6
 };
 
-class FEComposite : public FilterEffect {
+class FEComposite : public FilterEffect
+{
 public:
-    static PassRefPtr<FEComposite> create(Filter*, const CompositeOperationType&, float, float, float, float);
+    static PassRefPtr<FEComposite> create( Filter *, const CompositeOperationType &, float, float, float, float );
 
     CompositeOperationType operation() const;
-    bool setOperation(CompositeOperationType);
+    bool setOperation( CompositeOperationType );
 
     float k1() const;
-    bool setK1(float);
+    bool setK1( float );
 
     float k2() const;
-    bool setK2(float);
+    bool setK2( float );
 
     float k3() const;
-    bool setK3(float);
+    bool setK3( float );
 
     float k4() const;
-    bool setK4(float);
+    bool setK4( float );
 
     virtual void apply();
     virtual void dump();
-    
+
     virtual void determineAbsolutePaintRect();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEComposite(Filter*, const CompositeOperationType&, float, float, float, float);
+    FEComposite( Filter *, const CompositeOperationType &, float, float, float, float );
 
     CompositeOperationType m_type;
     float m_k1;

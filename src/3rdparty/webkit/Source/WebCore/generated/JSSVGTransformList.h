@@ -31,24 +31,30 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSVGTransformList : public JSDOMWrapper {
+class JSSVGTransformList : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSSVGTransformList(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGTransformListPropertyTearOff >);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSSVGTransformList( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGTransformListPropertyTearOff > );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    SVGTransformListPropertyTearOff * impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    SVGTransformListPropertyTearOff *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<SVGTransformListPropertyTearOff > m_impl;
@@ -56,40 +62,43 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, SVGTransformListPropertyTearOff *);
-SVGTransformListPropertyTearOff * toSVGTransformList(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, SVGTransformListPropertyTearOff * );
+SVGTransformListPropertyTearOff *toSVGTransformList( JSC::JSValue );
 
-class JSSVGTransformListPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGTransformListPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGTransformListPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGTransformListPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                 JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionClear(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionInitialize(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionGetItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionInsertItemBefore(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionReplaceItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionRemoveItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionAppendItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionCreateSVGTransformFromMatrix(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionConsolidate(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionClear( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionInitialize( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionGetItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionInsertItemBefore( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionReplaceItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionRemoveItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionAppendItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionCreateSVGTransformFromMatrix( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformListPrototypeFunctionConsolidate( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGTransformListNumberOfItems(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformListConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGTransformListNumberOfItems( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformListConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

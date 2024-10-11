@@ -30,26 +30,26 @@ class CameraBinSession;
 
 class CameraBinZoom  : public QCameraZoomControl
 {
-   CS_OBJECT(CameraBinZoom)
+    LSCS_OBJECT( CameraBinZoom )
 
- public:
-   CameraBinZoom(CameraBinSession *session);
-   virtual ~CameraBinZoom();
+public:
+    CameraBinZoom( CameraBinSession *session );
+    virtual ~CameraBinZoom();
 
-   qreal maximumOpticalZoom() const override;
-   qreal maximumDigitalZoom() const override;
+    qreal maximumOpticalZoom() const override;
+    qreal maximumDigitalZoom() const override;
 
-   qreal requestedOpticalZoom() const override;
-   qreal requestedDigitalZoom() const override;
-   qreal currentOpticalZoom() const override;
-   qreal currentDigitalZoom() const override;
+    qreal requestedOpticalZoom() const override;
+    qreal requestedDigitalZoom() const override;
+    qreal currentOpticalZoom() const override;
+    qreal currentDigitalZoom() const override;
 
-   void zoomTo(qreal optical, qreal digital) override;
+    void zoomTo( qreal optical, qreal digital ) override;
 
- private:
-   CameraBinSession *m_session;
-   qreal m_requestedOpticalZoom;
-   qreal m_requestedDigitalZoom;
+private:
+    CameraBinSession *m_session;
+    qreal m_requestedOpticalZoom;
+    qreal m_requestedDigitalZoom;
 };
 
 #endif

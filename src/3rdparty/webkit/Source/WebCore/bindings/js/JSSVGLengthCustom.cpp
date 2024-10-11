@@ -28,66 +28,81 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSSVGLength::value(ExecState* exec) const
+namespace WebCore
 {
-    SVGLength& podImp = impl()->propertyReference();
+
+JSValue JSSVGLength::value( ExecState *exec ) const
+{
+    SVGLength &podImp = impl()->propertyReference();
     ExceptionCode ec = 0;
-    float value = podImp.value(impl()->contextElement(), ec);
-    if (ec) {
-        setDOMException(exec, ec);
+    float value = podImp.value( impl()->contextElement(), ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
         return jsUndefined();
     }
 
-    return jsNumber(value);
+    return jsNumber( value );
 }
 
-void JSSVGLength::setValue(ExecState* exec, JSValue value)
+void JSSVGLength::setValue( ExecState *exec, JSValue value )
 {
-    if (impl()->role() == AnimValRole) {
-        setDOMException(exec, NO_MODIFICATION_ALLOWED_ERR);
+    if ( impl()->role() == AnimValRole )
+    {
+        setDOMException( exec, NO_MODIFICATION_ALLOWED_ERR );
         return;
     }
 
-    if (!value.isUndefinedOrNull() && !value.isNumber() && !value.isBoolean()) {
-        throwVMTypeError(exec);
+    if ( !value.isUndefinedOrNull() && !value.isNumber() && !value.isBoolean() )
+    {
+        throwVMTypeError( exec );
         return;
     }
 
-    SVGLength& podImp = impl()->propertyReference();
+    SVGLength &podImp = impl()->propertyReference();
 
     ExceptionCode ec = 0;
-    podImp.setValue(value.toFloat(exec), impl()->contextElement(), ec);
-    if (ec) {
-        setDOMException(exec, ec);
+    podImp.setValue( value.toFloat( exec ), impl()->contextElement(), ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
         return;
     }
 
     impl()->commitChange();
 }
 
-JSValue JSSVGLength::convertToSpecifiedUnits(ExecState* exec)
+JSValue JSSVGLength::convertToSpecifiedUnits( ExecState *exec )
 {
-    if (impl()->role() == AnimValRole) {
-        setDOMException(exec, NO_MODIFICATION_ALLOWED_ERR);
+    if ( impl()->role() == AnimValRole )
+    {
+        setDOMException( exec, NO_MODIFICATION_ALLOWED_ERR );
         return jsUndefined();
     }
 
-    SVGLength& podImp = impl()->propertyReference();
+    SVGLength &podImp = impl()->propertyReference();
 
     // Mimic the behaviour of RequiresAllArguments=Raise.
-    if (exec->argumentCount() < 1)
-        return throwError(exec, createSyntaxError(exec, "Not enough arguments"));
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
 
-    unsigned short unitType = exec->argument(0).toUInt32(exec);
-    if (exec->hadException())
+    unsigned short unitType = exec->argument( 0 ).toUInt32( exec );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
     ExceptionCode ec = 0;
-    podImp.convertToSpecifiedUnits(unitType, impl()->contextElement(), ec);
-    if (ec) {
-        setDOMException(exec, ec);
+    podImp.convertToSpecifiedUnits( unitType, impl()->contextElement(), ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
         return jsUndefined();
     }
 

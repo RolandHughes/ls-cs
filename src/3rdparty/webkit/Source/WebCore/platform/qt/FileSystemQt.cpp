@@ -41,46 +41,47 @@
 #include <QTemporaryFile>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-bool fileExists(const String& path)
+namespace WebCore
 {
-    return QFile::exists(path);
+
+bool fileExists( const String &path )
+{
+    return QFile::exists( path );
 }
 
 
-bool deleteFile(const String& path)
+bool deleteFile( const String &path )
 {
-    return QFile::remove(path);
+    return QFile::remove( path );
 }
 
-bool deleteEmptyDirectory(const String& path)
+bool deleteEmptyDirectory( const String &path )
 {
-    return QDir::root().rmdir(path);
+    return QDir::root().rmdir( path );
 }
 
-bool getFileSize(const String& path, long long& result)
+bool getFileSize( const String &path, long long &result )
 {
-    QFileInfo info(path);
+    QFileInfo info( path );
     result = info.size();
     return info.exists();
 }
 
-bool getFileModificationTime(const String& path, time_t& result)
+bool getFileModificationTime( const String &path, time_t &result )
 {
-    QFileInfo info(path);
+    QFileInfo info( path );
     result = info.lastModified().toTime_t();
     return info.exists();
 }
 
-bool makeAllDirectories(const String& path)
+bool makeAllDirectories( const String &path )
 {
-    return QDir::root().mkpath(path);
+    return QDir::root().mkpath( path );
 }
 
-String pathByAppendingComponent(const String& path, const String& component)
+String pathByAppendingComponent( const String &path, const String &component )
 {
-    return QDir::toNativeSeparators(QDir(path).filePath(component));
+    return QDir::toNativeSeparators( QDir( path ).filePath( component ) );
 }
 
 String homeDirectoryPath()
@@ -88,128 +89,162 @@ String homeDirectoryPath()
     return QDir::homePath();
 }
 
-String pathGetFileName(const String& path)
+String pathGetFileName( const String &path )
 {
-    return QFileInfo(path).fileName();
+    return QFileInfo( path ).fileName();
 }
 
-String directoryName(const String& path)
+String directoryName( const String &path )
 {
-    return QFileInfo(path).absolutePath();
+    return QFileInfo( path ).absolutePath();
 }
 
-Vector<String> listDirectory(const String& path, const String& filter)
+Vector<String> listDirectory( const String &path, const String &filter )
 {
     Vector<String> entries;
 
     QStringList nameFilters;
-    if (!filter.isEmpty())
-        nameFilters.append(filter);
-    QFileInfoList fileInfoList = QDir(path).entryInfoList(nameFilters, QDir::AllEntries | QDir::NoDotAndDotDot);
-    for (const QFileInfo fileInfo : fileInfoList) {
-        String entry = String(fileInfo.canonicalFilePath());
-        entries.append(entry);
+
+    if ( !filter.isEmpty() )
+    {
+        nameFilters.append( filter );
+    }
+
+    QFileInfoList fileInfoList = QDir( path ).entryInfoList( nameFilters, QDir::AllEntries | QDir::NoDotAndDotDot );
+
+    for ( const QFileInfo fileInfo : fileInfoList )
+    {
+        String entry = String( fileInfo.canonicalFilePath() );
+        entries.append( entry );
     }
 
     return entries;
 }
 
-String openTemporaryFile(const String& prefix, PlatformFileHandle& handle)
+String openTemporaryFile( const String &prefix, PlatformFileHandle &handle )
 {
 #ifndef QT_NO_TEMPORARYFILE
-    QTemporaryFile* tempFile = new QTemporaryFile(QDir::tempPath() + QLatin1Char('/') + QString(prefix));
-    tempFile->setAutoRemove(false);
-    QFile* temp = tempFile;
-    if (temp->open(QIODevice::ReadWrite)) {
+    QTemporaryFile *tempFile = new QTemporaryFile( QDir::tempPath() + QLatin1Char( '/' ) + QString( prefix ) );
+    tempFile->setAutoRemove( false );
+    QFile *temp = tempFile;
+
+    if ( temp->open( QIODevice::ReadWrite ) )
+    {
         handle = temp;
         return temp->fileName();
     }
+
 #endif
     handle = invalidPlatformFileHandle;
     return String();
 }
 
-PlatformFileHandle openFile(const String& path, FileOpenMode mode)
+PlatformFileHandle openFile( const String &path, FileOpenMode mode )
 {
     QIODevice::OpenMode platformMode;
 
-    if (mode == OpenForRead)
+    if ( mode == OpenForRead )
+    {
         platformMode = QIODevice::ReadOnly;
-    else if (mode == OpenForWrite)
-        platformMode = (QIODevice::WriteOnly | QIODevice::Truncate);
+    }
+    else if ( mode == OpenForWrite )
+    {
+        platformMode = ( QIODevice::WriteOnly | QIODevice::Truncate );
+    }
     else
+    {
         return invalidPlatformFileHandle;
+    }
 
-    QFile* file = new QFile(path);
-    if (file->open(platformMode))
+    QFile *file = new QFile( path );
+
+    if ( file->open( platformMode ) )
+    {
         return file;
+    }
 
     return invalidPlatformFileHandle;
 }
 
-int readFromFile(PlatformFileHandle handle, char* data, int length)
+int readFromFile( PlatformFileHandle handle, char *data, int length )
 {
-    if (handle && handle->exists() && handle->isReadable())
-        return handle->read(data, length);
+    if ( handle && handle->exists() && handle->isReadable() )
+    {
+        return handle->read( data, length );
+    }
+
     return 0;
 }
 
-void closeFile(PlatformFileHandle& handle)
+void closeFile( PlatformFileHandle &handle )
 {
-    if (handle) {
+    if ( handle )
+    {
         handle->close();
         delete handle;
     }
 }
 
-long long seekFile(PlatformFileHandle handle, long long offset, FileSeekOrigin origin)
+long long seekFile( PlatformFileHandle handle, long long offset, FileSeekOrigin origin )
 {
-    if (handle) {
+    if ( handle )
+    {
         long long current = 0;
 
-        switch (origin) {
-        case SeekFromBeginning:
-            break;
-        case SeekFromCurrent:
-            current = handle->pos();
-            break;
-        case SeekFromEnd:
-            current = handle->size();
-            break;
+        switch ( origin )
+        {
+            case SeekFromBeginning:
+                break;
+
+            case SeekFromCurrent:
+                current = handle->pos();
+                break;
+
+            case SeekFromEnd:
+                current = handle->size();
+                break;
         }
 
         // Add the offset to the current position and seek to the new position
         // Return our new position if the seek is successful
         current += offset;
-        if (handle->seek(current))
+
+        if ( handle->seek( current ) )
+        {
             return current;
+        }
         else
+        {
             return -1;
+        }
     }
 
     return -1;
 }
 
-int writeToFile(PlatformFileHandle handle, const char* data, int length)
+int writeToFile( PlatformFileHandle handle, const char *data, int length )
 {
-    if (handle && handle->exists() && handle->isWritable())
-        return handle->write(data, length);
+    if ( handle && handle->exists() && handle->isWritable() )
+    {
+        return handle->write( data, length );
+    }
 
     return 0;
 }
 
-bool unloadModule(PlatformModule module)
+bool unloadModule( PlatformModule module )
 {
 #if defined(Q_OS_DARWIN)
-    CFRelease(module);
+    CFRelease( module );
     return true;
 
 #elif defined(Q_OS_WIN)
-    return ::FreeLibrary(module);
+    return ::FreeLibrary( module );
 
 #else
 
-    if (module->unload()) {
+    if ( module->unload() )
+    {
         delete module;
         return true;
     }

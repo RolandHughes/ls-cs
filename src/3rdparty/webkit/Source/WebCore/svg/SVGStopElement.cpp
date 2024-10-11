@@ -30,79 +30,95 @@
 #include "SVGGradientElement.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Animated property definitions
-DEFINE_ANIMATED_NUMBER(SVGStopElement, SVGNames::offsetAttr, Offset, offset)
+DEFINE_ANIMATED_NUMBER( SVGStopElement, SVGNames::offsetAttr, Offset, offset )
 
-inline SVGStopElement::SVGStopElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
-    , m_offset(0)
+inline SVGStopElement::SVGStopElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
+    , m_offset( 0 )
 {
 }
 
-PassRefPtr<SVGStopElement> SVGStopElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGStopElement> SVGStopElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGStopElement(tagName, document));
+    return adoptRef( new SVGStopElement( tagName, document ) );
 }
 
-void SVGStopElement::parseMappedAttribute(Attribute* attr)
+void SVGStopElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == SVGNames::offsetAttr) {
-        const String& value = attr->value();
-        if (value.endsWith("%"))
-            setOffsetBaseValue(value.left(value.length() - 1).toFloat() / 100.0f);
+    if ( attr->name() == SVGNames::offsetAttr )
+    {
+        const String &value = attr->value();
+
+        if ( value.endsWith( "%" ) )
+        {
+            setOffsetBaseValue( value.left( value.length() - 1 ).toFloat() / 100.0f );
+        }
         else
-            setOffsetBaseValue(value.toFloat());
-    } else
-        SVGStyledElement::parseMappedAttribute(attr);
+        {
+            setOffsetBaseValue( value.toFloat() );
+        }
+    }
+    else
+    {
+        SVGStyledElement::parseMappedAttribute( attr );
+    }
 }
 
-void SVGStopElement::svgAttributeChanged(const QualifiedName& attrName)
+void SVGStopElement::svgAttributeChanged( const QualifiedName &attrName )
 {
-    SVGStyledElement::svgAttributeChanged(attrName);
+    SVGStyledElement::svgAttributeChanged( attrName );
 
-    if (!renderer())
+    if ( !renderer() )
+    {
         return;
+    }
 
-    if (attrName == SVGNames::offsetAttr)
-        RenderSVGResource::markForLayoutAndParentResourceInvalidation(renderer());
+    if ( attrName == SVGNames::offsetAttr )
+    {
+        RenderSVGResource::markForLayoutAndParentResourceInvalidation( renderer() );
+    }
 }
 
-void SVGStopElement::synchronizeProperty(const QualifiedName& attrName)
+void SVGStopElement::synchronizeProperty( const QualifiedName &attrName )
 {
-    SVGStyledElement::synchronizeProperty(attrName);
+    SVGStyledElement::synchronizeProperty( attrName );
 
-    if (attrName == anyQName() || attrName == SVGNames::offsetAttr)
+    if ( attrName == anyQName() || attrName == SVGNames::offsetAttr )
+    {
         synchronizeOffset();
+    }
 }
 
-AttributeToPropertyTypeMap& SVGStopElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGStopElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGStopElement::fillAttributeToPropertyTypeMap()
 {
-    AttributeToPropertyTypeMap& attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
+    AttributeToPropertyTypeMap &attributeToPropertyTypeMap = this->attributeToPropertyTypeMap();
 
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap);
-    attributeToPropertyTypeMap.set(SVGNames::offsetAttr, AnimatedLength);
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap );
+    attributeToPropertyTypeMap.set( SVGNames::offsetAttr, AnimatedLength );
 }
 
-RenderObject* SVGStopElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *SVGStopElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSVGGradientStop(this);
+    return new ( arena ) RenderSVGGradientStop( this );
 }
 
 Color SVGStopElement::stopColorIncludingOpacity() const
 {
-    ASSERT(renderer());
-    ASSERT(renderer()->style());
+    ASSERT( renderer() );
+    ASSERT( renderer()->style() );
 
-    const SVGRenderStyle* svgStyle = renderer()->style()->svgStyle();
-    return colorWithOverrideAlpha(svgStyle->stopColor().rgb(), svgStyle->stopOpacity());
+    const SVGRenderStyle *svgStyle = renderer()->style()->svgStyle();
+    return colorWithOverrideAlpha( svgStyle->stopColor().rgb(), svgStyle->stopOpacity() );
 }
 
 }

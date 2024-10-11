@@ -28,27 +28,33 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Geolocation;
 
-class JSGeolocation : public JSDOMWrapper {
+class JSGeolocation : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSGeolocation(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Geolocation>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
+    JSGeolocation( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Geolocation> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 
     // Custom functions
-    JSC::JSValue getCurrentPosition(JSC::ExecState*);
-    JSC::JSValue watchPosition(JSC::ExecState*);
-    Geolocation* impl() const { return m_impl.get(); }
+    JSC::JSValue getCurrentPosition( JSC::ExecState * );
+    JSC::JSValue watchPosition( JSC::ExecState * );
+    Geolocation *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Geolocation> m_impl;
@@ -56,46 +62,50 @@ protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
-class JSGeolocationOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSGeolocationOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, Geolocation*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, Geolocation * )
 {
-    DEFINE_STATIC_LOCAL(JSGeolocationOwner, jsGeolocationOwner, ());
+    DEFINE_STATIC_LOCAL( JSGeolocationOwner, jsGeolocationOwner, () );
     return &jsGeolocationOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, Geolocation*)
+inline void *wrapperContext( DOMWrapperWorld *world, Geolocation * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Geolocation*);
-Geolocation* toGeolocation(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Geolocation * );
+Geolocation *toGeolocation( JSC::JSValue );
 
-class JSGeolocationPrototype : public JSC::JSObjectWithGlobalObject {
+class JSGeolocationPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSGeolocationPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSGeolocationPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsGeolocationPrototypeFunctionGetCurrentPosition(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsGeolocationPrototypeFunctionWatchPosition(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsGeolocationPrototypeFunctionClearWatch(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsGeolocationPrototypeFunctionGetCurrentPosition( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsGeolocationPrototypeFunctionWatchPosition( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsGeolocationPrototypeFunctionClearWatch( JSC::ExecState * );
 
 } // namespace WebCore
 

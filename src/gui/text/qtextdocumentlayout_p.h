@@ -35,61 +35,61 @@ class QTextDocumentLayoutPrivate;
 
 class QTextDocumentLayout : public QAbstractTextDocumentLayout
 {
-   GUI_CS_OBJECT(QTextDocumentLayout)
-   Q_DECLARE_PRIVATE(QTextDocumentLayout)
+    GUI_LSCS_OBJECT( QTextDocumentLayout )
+    Q_DECLARE_PRIVATE( QTextDocumentLayout )
 
-   GUI_CS_PROPERTY_READ(cursorWidth, cursorWidth)
-   GUI_CS_PROPERTY_WRITE(cursorWidth, setCursorWidth)
-   GUI_CS_PROPERTY_READ(idealWidth, idealWidth)
-   GUI_CS_PROPERTY_READ(contentHasAlignment, contentHasAlignment)
+    GUI_LSCS_PROPERTY_READ( cursorWidth, cursorWidth )
+    GUI_LSCS_PROPERTY_WRITE( cursorWidth, setCursorWidth )
+    GUI_LSCS_PROPERTY_READ( idealWidth, idealWidth )
+    GUI_LSCS_PROPERTY_READ( contentHasAlignment, contentHasAlignment )
 
- public:
-   explicit QTextDocumentLayout(QTextDocument *doc);
+public:
+    explicit QTextDocumentLayout( QTextDocument *doc );
 
-   // from the abstract layout
-   void draw(QPainter *painter, const PaintContext &context) override;
-   int hitTest(const QPointF &point, Qt::HitTestAccuracy accuracy) const override;
+    // from the abstract layout
+    void draw( QPainter *painter, const PaintContext &context ) override;
+    int hitTest( const QPointF &point, Qt::HitTestAccuracy accuracy ) const override;
 
-   int pageCount() const override;
-   QSizeF documentSize() const override;
+    int pageCount() const override;
+    QSizeF documentSize() const override;
 
-   void setCursorWidth(int width);
-   int cursorWidth() const;
+    void setCursorWidth( int width );
+    int cursorWidth() const;
 
-   // internal, to support the ugly FixedColumnWidth wordwrap mode in QTextEdit
-   void setFixedColumnWidth(int width);
+    // internal, to support the ugly FixedColumnWidth wordwrap mode in QTextEdit
+    void setFixedColumnWidth( int width );
 
-   // internal for QTextEdit's NoWrap mode
-   void setViewport(const QRectF &viewport);
+    // internal for QTextEdit's NoWrap mode
+    void setViewport( const QRectF &viewport );
 
-   QRectF frameBoundingRect(QTextFrame *frame) const override;
-   QRectF blockBoundingRect(const QTextBlock &block) const override;
-   QRectF tableBoundingRect(QTextTable *table) const;
-   QRectF tableCellBoundingRect(QTextTable *table, const QTextTableCell &cell) const;
+    QRectF frameBoundingRect( QTextFrame *frame ) const override;
+    QRectF blockBoundingRect( const QTextBlock &block ) const override;
+    QRectF tableBoundingRect( QTextTable *table ) const;
+    QRectF tableCellBoundingRect( QTextTable *table, const QTextTableCell &cell ) const;
 
-   // ####
-   int layoutStatus() const;
-   int dynamicPageCount() const;
-   QSizeF dynamicDocumentSize() const;
-   void ensureLayouted(qreal);
+    // ####
+    int layoutStatus() const;
+    int dynamicPageCount() const;
+    QSizeF dynamicDocumentSize() const;
+    void ensureLayouted( qreal );
 
-   qreal idealWidth() const;
+    qreal idealWidth() const;
 
-   bool contentHasAlignment() const;
+    bool contentHasAlignment() const;
 
- protected:
-   void documentChanged(int from, int oldLength, int length) override;
-   void resizeInlineObject(QTextInlineObject item, int posInDocument, const QTextFormat &format) override;
-   void positionInlineObject(QTextInlineObject item, int posInDocument, const QTextFormat &format) override;
+protected:
+    void documentChanged( int from, int oldLength, int length ) override;
+    void resizeInlineObject( QTextInlineObject item, int posInDocument, const QTextFormat &format ) override;
+    void positionInlineObject( QTextInlineObject item, int posInDocument, const QTextFormat &format ) override;
 
-   void drawInlineObject(QPainter *p, const QRectF &rect, QTextInlineObject item,
-      int posInDocument, const QTextFormat &format) override;
+    void drawInlineObject( QPainter *p, const QRectF &rect, QTextInlineObject item,
+                           int posInDocument, const QTextFormat &format ) override;
 
-   void timerEvent(QTimerEvent *e) override;
+    void timerEvent( QTimerEvent *e ) override;
 
- private:
-   QRectF doLayout(int from, int oldLength, int length);
-   void layoutFinished();
+private:
+    QRectF doLayout( int from, int oldLength, int length );
+    void layoutFinished();
 };
 
 

@@ -38,30 +38,33 @@
 struct UCollator;
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
-    class Collator {
-        WTF_MAKE_NONCOPYABLE(Collator); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        enum Result { Equal = 0, Greater = 1, Less = -1 };
+class Collator
+{
+    WTF_MAKE_NONCOPYABLE( Collator );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    enum Result { Equal = 0, Greater = 1, Less = -1 };
 
-        Collator(const char* locale); // Parsing is lenient; e.g. language identifiers (such as "en-US") are accepted, too.
-        ~Collator();
-        void setOrderLowerFirst(bool);
+    Collator( const char *locale ); // Parsing is lenient; e.g. language identifiers (such as "en-US") are accepted, too.
+    ~Collator();
+    void setOrderLowerFirst( bool );
 
-        static PassOwnPtr<Collator> userDefault();
+    static PassOwnPtr<Collator> userDefault();
 
-        Result collate(const ::UChar*, size_t, const ::UChar*, size_t) const;
+    Result collate( const ::UChar *, size_t, const ::UChar *, size_t ) const;
 
-    private:
+private:
 #if USE(ICU_UNICODE) && !UCONFIG_NO_COLLATION
-        void createCollator() const;
-        void releaseCollator();
-        mutable UCollator* m_collator;
+    void createCollator() const;
+    void releaseCollator();
+    mutable UCollator *m_collator;
 #endif
-        char* m_locale;
-        bool m_lowerFirst;
-    };
+    char *m_locale;
+    bool m_lowerFirst;
+};
 }
 
 using WTF::Collator;

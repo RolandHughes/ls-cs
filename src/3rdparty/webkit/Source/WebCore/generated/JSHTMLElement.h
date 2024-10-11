@@ -25,93 +25,99 @@
 #include "JSElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLElement;
 
-class JSHTMLElement : public JSElement {
+class JSHTMLElement : public JSElement
+{
     typedef JSElement Base;
 public:
-    JSHTMLElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual JSC::ScopeChainNode* pushEventHandlerScope(JSC::ExecState*, JSC::ScopeChainNode*) const;
+    virtual JSC::ScopeChainNode *pushEventHandlerScope( JSC::ExecState *, JSC::ScopeChainNode * ) const;
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    HTMLElement* impl() const
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    HTMLElement *impl() const
     {
-        return static_cast<HTMLElement*>(Base::impl());
+        return static_cast<HTMLElement *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-HTMLElement* toHTMLElement(JSC::JSValue);
+HTMLElement *toHTMLElement( JSC::JSValue );
 
-class JSHTMLElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLElementPrototypeFunctionInsertAdjacentElement(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLElementPrototypeFunctionInsertAdjacentHTML(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLElementPrototypeFunctionInsertAdjacentText(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLElementPrototypeFunctionInsertAdjacentElement( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLElementPrototypeFunctionInsertAdjacentHTML( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLElementPrototypeFunctionInsertAdjacentText( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLElementId(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementId(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementTitle(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementTitle(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementLang(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementLang(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementDir(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementDir(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementClassName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementClassName(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementClassList(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLElementTabIndex(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementTabIndex(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementDraggable(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementDraggable(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementHidden(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementHidden(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementInnerHTML(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementInnerHTML(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementInnerText(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementInnerText(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementOuterHTML(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementOuterHTML(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementOuterText(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementOuterText(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementChildren(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLElementContentEditable(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementContentEditable(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementIsContentEditable(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLElementSpellcheck(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLElementSpellcheck(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLElementId( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementId( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementTitle( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementTitle( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementLang( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementLang( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementDir( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementDir( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementClassName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementClassName( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementClassList( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLElementTabIndex( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementTabIndex( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementDraggable( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementDraggable( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementHidden( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementHidden( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementInnerHTML( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementInnerHTML( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementInnerText( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementInnerText( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementOuterHTML( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementOuterHTML( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementOuterText( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementOuterText( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementChildren( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLElementContentEditable( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementContentEditable( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementIsContentEditable( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLElementSpellcheck( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLElementSpellcheck( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

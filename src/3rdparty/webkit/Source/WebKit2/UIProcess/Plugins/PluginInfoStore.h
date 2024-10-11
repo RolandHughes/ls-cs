@@ -28,26 +28,30 @@
 
 #include <WebCore/PluginData.h>
 
-namespace WebCore {
-    class KURL;
+namespace WebCore
+{
+class KURL;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class PluginInfoStore {
-    WTF_MAKE_NONCOPYABLE(PluginInfoStore);
+class PluginInfoStore
+{
+    WTF_MAKE_NONCOPYABLE( PluginInfoStore );
 
 public:
     PluginInfoStore();
 
-    void setAdditionalPluginsDirectories(const Vector<String>&);
+    void setAdditionalPluginsDirectories( const Vector<String> & );
 
     void refresh();
-    void getPlugins(Vector<WebCore::PluginInfo>&);
-    void getPluginPaths(Vector<String>&);
+    void getPlugins( Vector<WebCore::PluginInfo> & );
+    void getPluginPaths( Vector<String> & );
 
     // Represents a single plug-in.
-    struct Plugin {
+    struct Plugin
+    {
         String path;
         WebCore::PluginInfo info;
 #if PLATFORM(MAC)
@@ -59,41 +63,41 @@ public:
 #endif
     };
 
-    const Vector<Plugin>& plugins();
+    const Vector<Plugin> &plugins();
 
     // Returns the info for a plug-in that can handle the given MIME type.
     // If the MIME type is null, the file extension of the given url will be used to infer the
     // plug-in type. In that case, mimeType will be filled in with the right MIME type.
-    Plugin findPlugin(String& mimeType, const WebCore::KURL& url);
-    
+    Plugin findPlugin( String &mimeType, const WebCore::KURL &url );
+
     // Returns the info for the plug-in with the given path.
-    Plugin infoForPluginWithPath(const String& pluginPath);
+    Plugin infoForPluginWithPath( const String &pluginPath );
 
 private:
 
-    Plugin findPluginForMIMEType(const String& mimeType);
-    Plugin findPluginForExtension(const String& extension, String& mimeType);
+    Plugin findPluginForMIMEType( const String &mimeType );
+    Plugin findPluginForExtension( const String &extension, String &mimeType );
 
     void loadPluginsIfNecessary();
-    void loadPlugin(const String& pluginPath);
-    
+    void loadPlugin( const String &pluginPath );
+
     // Platform-specific member functions
 
     // Returns paths to directories that should be searched for plug-ins (via pluginPathsInDirectory).
     static Vector<String> pluginsDirectories();
     // Returns paths to all plug-ins in the specified directory.
-    static Vector<String> pluginPathsInDirectory(const String& directory);
+    static Vector<String> pluginPathsInDirectory( const String &directory );
     // Returns paths to individual plug-ins that won't be found via pluginsDirectories/pluginPathsInDirectory.
     static Vector<String> individualPluginPaths();
-    static bool getPluginInfo(const String& pluginPath, Plugin& plugin);
-    bool shouldUsePlugin(const Plugin& plugin);
-    static String getMIMETypeForExtension(const String& extension);
+    static bool getPluginInfo( const String &pluginPath, Plugin &plugin );
+    bool shouldUsePlugin( const Plugin &plugin );
+    static String getMIMETypeForExtension( const String &extension );
 
     Vector<String> m_additionalPluginsDirectories;
     Vector<Plugin> m_plugins;
     bool m_pluginListIsUpToDate;
 };
-    
+
 } // namespace WebKit
 
 #endif // PluginInfoStore_h

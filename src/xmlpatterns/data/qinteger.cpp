@@ -29,115 +29,121 @@
 
 using namespace QPatternist;
 
-Item Integer::fromValue(const xsInteger num)
+Item Integer::fromValue( const xsInteger num )
 {
-   return toItem(Integer::Ptr(new Integer(num)));
+    return toItem( Integer::Ptr( new Integer( num ) ) );
 }
 
-AtomicValue::Ptr Integer::fromLexical(const QString &strNumeric)
+AtomicValue::Ptr Integer::fromLexical( const QString &strNumeric )
 {
-   bool conversionOk = false;
-   const xsInteger num = strNumeric.toInteger<qint64>(&conversionOk);
+    bool conversionOk = false;
+    const xsInteger num = strNumeric.toInteger<qint64>( &conversionOk );
 
-   if (conversionOk) {
-      return AtomicValue::Ptr(new Integer(num));
-   } else {
-      return ValidationError::createError();
-   }
+    if ( conversionOk )
+    {
+        return AtomicValue::Ptr( new Integer( num ) );
+    }
+    else
+    {
+        return ValidationError::createError();
+    }
 }
 
-Integer::Integer(const xsInteger num) : m_value(num)
+Integer::Integer( const xsInteger num ) : m_value( num )
 {
 }
 
-bool Integer::evaluateEBV(const QExplicitlySharedDataPointer<DynamicContext> &) const
+bool Integer::evaluateEBV( const QExplicitlySharedDataPointer<DynamicContext> & ) const
 {
-   return m_value != 0;
+    return m_value != 0;
 }
 
 QString Integer::stringValue() const
 {
-   return QString::number(m_value);
+    return QString::number( m_value );
 }
 
 ItemType::Ptr Integer::type() const
 {
-   return BuiltinTypes::xsInteger;
+    return BuiltinTypes::xsInteger;
 }
 
 xsDouble Integer::toDouble() const
 {
-   return static_cast<xsDouble>(m_value);
+    return static_cast<xsDouble>( m_value );
 }
 
 xsInteger Integer::toInteger() const
 {
-   return m_value;
+    return m_value;
 }
 
 xsFloat Integer::toFloat() const
 {
-   return static_cast<xsFloat>(m_value);
+    return static_cast<xsFloat>( m_value );
 }
 
 xsDecimal Integer::toDecimal() const
 {
-   return static_cast<xsDecimal>(m_value);
+    return static_cast<xsDecimal>( m_value );
 }
 
 Numeric::Ptr Integer::round() const
 {
-   /* xs:integerS never has a mantissa. */
-   return Numeric::Ptr(const_cast<Integer *>(this));
+    /* xs:integerS never has a mantissa. */
+    return Numeric::Ptr( const_cast<Integer *>( this ) );
 }
 
-Numeric::Ptr Integer::roundHalfToEven(const xsInteger /*scale*/) const
+Numeric::Ptr Integer::roundHalfToEven( const xsInteger /*scale*/ ) const
 {
-   return Numeric::Ptr(const_cast<Integer *>(this));
+    return Numeric::Ptr( const_cast<Integer *>( this ) );
 }
 
 Numeric::Ptr Integer::floor() const
 {
-   return Numeric::Ptr(const_cast<Integer *>(this));
+    return Numeric::Ptr( const_cast<Integer *>( this ) );
 }
 
 Numeric::Ptr Integer::ceiling() const
 {
-   return Numeric::Ptr(const_cast<Integer *>(this));
+    return Numeric::Ptr( const_cast<Integer *>( this ) );
 }
 
 Numeric::Ptr Integer::abs() const
 {
-   /* No reason to allocate an Integer if we're already absolute. */
-   if (m_value < 0) {
-      return Numeric::Ptr(new Integer(qAbs(m_value)));
-   } else {
-      return Numeric::Ptr(const_cast<Integer *>(this));
-   }
+    /* No reason to allocate an Integer if we're already absolute. */
+    if ( m_value < 0 )
+    {
+        return Numeric::Ptr( new Integer( qAbs( m_value ) ) );
+    }
+    else
+    {
+        return Numeric::Ptr( const_cast<Integer *>( this ) );
+    }
 }
 
 bool Integer::isNaN() const
 {
-   return false;
+    return false;
 }
 
 bool Integer::isInf() const
 {
-   return false;
+    return false;
 }
 
 Item Integer::toNegated() const
 {
-   return fromValue(-m_value);
+    return fromValue( -m_value );
 }
 
 bool Integer::isSigned() const
 {
-   return true;
+    return true;
 }
 
 quint64 Integer::toUnsignedInteger() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return 0;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return 0;
 }

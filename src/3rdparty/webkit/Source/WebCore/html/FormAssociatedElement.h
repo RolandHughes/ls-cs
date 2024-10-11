@@ -26,7 +26,8 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FormDataList;
 class HTMLFormElement;
@@ -34,31 +35,50 @@ class ValidationMessage;
 class ValidityState;
 class VisibleSelection;
 
-class FormAssociatedElement {
+class FormAssociatedElement
+{
 public:
     virtual ~FormAssociatedElement();
 
-    void ref() { refFormAssociatedElement(); }
-    void deref() { derefFormAssociatedElement(); }
+    void ref()
+    {
+        refFormAssociatedElement();
+    }
+    void deref()
+    {
+        derefFormAssociatedElement();
+    }
 
-    HTMLFormElement* form() const { return m_form; }
-    ValidityState* validity();
+    HTMLFormElement *form() const
+    {
+        return m_form;
+    }
+    ValidityState *validity();
 
     virtual bool isFormControlElement() const = 0;
     virtual bool isEnumeratable() const = 0;
 
-    const AtomicString& name() const { return formControlName(); }
+    const AtomicString &name() const
+    {
+        return formControlName();
+    }
 
     // Override in derived classes to get the encoded name=value pair for submitting.
     // Return true for a successful control (see HTML4-17.13.2).
-    virtual bool appendFormData(FormDataList&, bool) { return false; }
+    virtual bool appendFormData( FormDataList &, bool )
+    {
+        return false;
+    }
 
-    virtual void formDestroyed() { m_form = 0; }
+    virtual void formDestroyed()
+    {
+        m_form = 0;
+    }
 
-    void resetFormOwner(HTMLFormElement*);
+    void resetFormOwner( HTMLFormElement * );
 
 protected:
-    FormAssociatedElement(HTMLFormElement*);
+    FormAssociatedElement( HTMLFormElement * );
 
     void insertedIntoTree();
     void removedFromTree();
@@ -66,22 +86,25 @@ protected:
     void removedFromDocument();
     void willMoveToNewOwnerDocument();
 
-    void setForm(HTMLFormElement* form) { m_form = form; }
+    void setForm( HTMLFormElement *form )
+    {
+        m_form = form;
+    }
     void removeFromForm();
     void formAttributeChanged();
 
 private:
-    virtual const AtomicString& formControlName() const = 0;
+    virtual const AtomicString &formControlName() const = 0;
 
     virtual void refFormAssociatedElement() = 0;
     virtual void derefFormAssociatedElement() = 0;
 
-    HTMLFormElement* m_form;
+    HTMLFormElement *m_form;
     OwnPtr<ValidityState> m_validityState;
 };
 
-HTMLElement* toHTMLElement(FormAssociatedElement*);
-const HTMLElement* toHTMLElement(const FormAssociatedElement*);
+HTMLElement *toHTMLElement( FormAssociatedElement * );
+const HTMLElement *toHTMLElement( const FormAssociatedElement * );
 
 } // namespace
 

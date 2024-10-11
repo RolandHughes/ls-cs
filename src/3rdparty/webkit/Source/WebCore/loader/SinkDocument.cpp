@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,35 +28,37 @@
 
 #include "RawDataDocumentParser.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SinkDocumentParser : public RawDataDocumentParser {
+class SinkDocumentParser : public RawDataDocumentParser
+{
 public:
-    static PassRefPtr<SinkDocumentParser> create(SinkDocument* document)
+    static PassRefPtr<SinkDocumentParser> create( SinkDocument *document )
     {
-        return adoptRef(new SinkDocumentParser(document));
+        return adoptRef( new SinkDocumentParser( document ) );
     }
-    
+
 private:
-    SinkDocumentParser(SinkDocument* document)
-        : RawDataDocumentParser(document)
+    SinkDocumentParser( SinkDocument *document )
+        : RawDataDocumentParser( document )
     {
     }
 
     // Ignore all data.
-    virtual void appendBytes(DocumentWriter*, const char*, int, bool) { }
+    virtual void appendBytes( DocumentWriter *, const char *, int, bool ) { }
 };
 
-SinkDocument::SinkDocument(Frame* frame, const KURL& url)
-    : HTMLDocument(frame, url)
+SinkDocument::SinkDocument( Frame *frame, const KURL &url )
+    : HTMLDocument( frame, url )
 {
-    setCompatibilityMode(QuirksMode);
+    setCompatibilityMode( QuirksMode );
     lockCompatibilityMode();
 }
 
 PassRefPtr<DocumentParser> SinkDocument::createParser()
 {
-    return SinkDocumentParser::create(this);
+    return SinkDocumentParser::create( this );
 }
 
 } // namespace WebCore

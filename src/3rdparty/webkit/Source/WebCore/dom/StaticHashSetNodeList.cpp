@@ -32,11 +32,12 @@
 
 #include "Element.h"
 
-namespace WebCore {
-
-StaticHashSetNodeList::StaticHashSetNodeList(ListHashSet<RefPtr<Node> >& nodes)
+namespace WebCore
 {
-    m_nodes.swap(nodes);
+
+StaticHashSetNodeList::StaticHashSetNodeList( ListHashSet<RefPtr<Node> > &nodes )
+{
+    m_nodes.swap( nodes );
 }
 
 StaticHashSetNodeList::StaticHashSetNodeList()
@@ -52,25 +53,33 @@ unsigned StaticHashSetNodeList::length() const
     return m_nodes.size();
 }
 
-Node* StaticHashSetNodeList::item(unsigned index) const
+Node *StaticHashSetNodeList::item( unsigned index ) const
 {
-    if (index < (unsigned) m_nodes.size()) {
+    if ( index < ( unsigned ) m_nodes.size() )
+    {
         ListHashSet<RefPtr<Node> >::const_iterator it = m_nodes.begin();
-        for (unsigned count = 0; count < index; ++it, ++count) { }
-        return (*it).get();
+
+        for ( unsigned count = 0; count < index; ++it, ++count ) { }
+
+        return ( *it ).get();
     }
 
     return 0;
 }
 
-Node* StaticHashSetNodeList::itemWithName(const AtomicString& elementId) const
+Node *StaticHashSetNodeList::itemWithName( const AtomicString &elementId ) const
 {
     ListHashSet<RefPtr<Node> >::const_iterator it = m_nodes.begin();
     ListHashSet<RefPtr<Node> >::const_iterator end = m_nodes.end();
-    for ( ; it != end ; ++it) {
-        Node* node = (*it).get();
-        if (node->hasID() && static_cast<Element*>(node)->getIdAttribute() == elementId)
+
+    for ( ; it != end ; ++it )
+    {
+        Node *node = ( *it ).get();
+
+        if ( node->hasID() && static_cast<Element *>( node )->getIdAttribute() == elementId )
+        {
             return node;
+        }
     }
 
     return 0;

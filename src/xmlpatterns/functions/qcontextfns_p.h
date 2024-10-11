@@ -26,58 +26,59 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class PositionFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class LastFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class ImplicitTimezoneFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 
 class CurrentDateTimeFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class CurrentDateFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 
 class CurrentTimeFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 
 class DefaultCollationFN : public FunctionCall
 {
- public:
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+public:
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 };
 
 
 class StaticBaseURIFN : public FunctionCall
 {
- public:
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+public:
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 };
 
 }

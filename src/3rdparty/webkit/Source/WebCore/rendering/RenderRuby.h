@@ -34,7 +34,8 @@
 #include "RenderBlock.h"
 #include "RenderInline.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Following the HTML 5 spec, the box object model for a <ruby> element allows several runs of ruby
 // bases with their respective ruby texts looks as follows:
@@ -51,41 +52,67 @@ namespace WebCore {
 // Generated :before/:after content is shunted into anonymous inline blocks
 
 // <ruby> when used as 'display:inline'
-class RenderRubyAsInline : public RenderInline {
+class RenderRubyAsInline : public RenderInline
+{
 public:
-    RenderRubyAsInline(Node*);
+    RenderRubyAsInline( Node * );
     virtual ~RenderRubyAsInline();
 
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
-    virtual void removeChild(RenderObject* child);
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
+    virtual void removeChild( RenderObject *child );
 
 protected:
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
 private:
-    virtual bool isRuby() const { return true; }
-    virtual const char* renderName() const { return "RenderRuby (inline)"; }
-    virtual bool createsAnonymousWrapper() const { return true; }
-    virtual void removeLeftoverAnonymousBlock(RenderBlock*) { ASSERT_NOT_REACHED(); }
+    virtual bool isRuby() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderRuby (inline)";
+    }
+    virtual bool createsAnonymousWrapper() const
+    {
+        return true;
+    }
+    virtual void removeLeftoverAnonymousBlock( RenderBlock * )
+    {
+        ASSERT_NOT_REACHED();
+    }
 };
 
 // <ruby> when used as 'display:block' or 'display:inline-block'
-class RenderRubyAsBlock : public RenderBlock {
+class RenderRubyAsBlock : public RenderBlock
+{
 public:
-    RenderRubyAsBlock(Node*);
+    RenderRubyAsBlock( Node * );
     virtual ~RenderRubyAsBlock();
 
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
-    virtual void removeChild(RenderObject* child);
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
+    virtual void removeChild( RenderObject *child );
 
 protected:
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
 
 private:
-    virtual bool isRuby() const { return true; }
-    virtual const char* renderName() const { return "RenderRuby (block)"; }
-    virtual bool createsAnonymousWrapper() const { return true; }
-    virtual void removeLeftoverAnonymousBlock(RenderBlock*) { ASSERT_NOT_REACHED(); }
+    virtual bool isRuby() const
+    {
+        return true;
+    }
+    virtual const char *renderName() const
+    {
+        return "RenderRuby (block)";
+    }
+    virtual bool createsAnonymousWrapper() const
+    {
+        return true;
+    }
+    virtual void removeLeftoverAnonymousBlock( RenderBlock * )
+    {
+        ASSERT_NOT_REACHED();
+    }
 };
 
 } // namespace WebCore

@@ -32,50 +32,64 @@ class QDeclarativeGradient;
 class QDeclarativeRectangle;
 class QDeclarativeRectanglePrivate : public QDeclarativeItemPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeRectangle)
+    Q_DECLARE_PUBLIC( QDeclarativeRectangle )
 
- public:
-   QDeclarativeRectanglePrivate() :
-      color(Qt::white), gradient(0), pen(0), radius(0), paintmargin(0) {
-      QGraphicsItemPrivate::flags = QGraphicsItemPrivate::flags & ~QGraphicsItem::ItemHasNoContents;
-   }
+public:
+    QDeclarativeRectanglePrivate() :
+        color( Qt::white ), gradient( 0 ), pen( 0 ), radius( 0 ), paintmargin( 0 )
+    {
+        QGraphicsItemPrivate::flags = QGraphicsItemPrivate::flags & ~QGraphicsItem::ItemHasNoContents;
+    }
 
-   ~QDeclarativeRectanglePrivate() {
-      delete pen;
-   }
+    ~QDeclarativeRectanglePrivate()
+    {
+        delete pen;
+    }
 
-   QColor color;
-   QDeclarativeGradient *gradient;
-   QDeclarativePen *pen;
-   qreal radius;
-   qreal paintmargin;
-   QPixmap rectImage;
-   static int doUpdateSlotIdx;
+    QColor color;
+    QDeclarativeGradient *gradient;
+    QDeclarativePen *pen;
+    qreal radius;
+    qreal paintmargin;
+    QPixmap rectImage;
+    static int doUpdateSlotIdx;
 
-   QDeclarativePen *getPen() {
-      if (!pen) {
-         Q_Q(QDeclarativeRectangle);
-         pen = new QDeclarativePen;
-         static int penChangedSignalIdx = -1;
-         if (penChangedSignalIdx < 0) {
-            penChangedSignalIdx = QDeclarativePen::staticMetaObject.indexOfSignal("penChanged()");
-         }
-         if (doUpdateSlotIdx < 0) {
-            doUpdateSlotIdx = QDeclarativeRectangle::staticMetaObject.indexOfSlot("doUpdate()");
-         }
-         QMetaObject::connect(pen, penChangedSignalIdx, q, doUpdateSlotIdx);
-      }
-      return pen;
-   }
+    QDeclarativePen *getPen()
+    {
+        if ( !pen )
+        {
+            Q_Q( QDeclarativeRectangle );
+            pen = new QDeclarativePen;
+            static int penChangedSignalIdx = -1;
 
-   void setPaintMargin(qreal margin) {
-      Q_Q(QDeclarativeRectangle);
-      if (margin == paintmargin) {
-         return;
-      }
-      q->prepareGeometryChange();
-      paintmargin = margin;
-   }
+            if ( penChangedSignalIdx < 0 )
+            {
+                penChangedSignalIdx = QDeclarativePen::staticMetaObject.indexOfSignal( "penChanged()" );
+            }
+
+            if ( doUpdateSlotIdx < 0 )
+            {
+                doUpdateSlotIdx = QDeclarativeRectangle::staticMetaObject.indexOfSlot( "doUpdate()" );
+            }
+
+            QMetaObject::connect( pen, penChangedSignalIdx, q, doUpdateSlotIdx );
+        }
+
+        return pen;
+    }
+
+    void setPaintMargin( qreal margin )
+    {
+        Q_Q( QDeclarativeRectangle );
+
+        if ( margin == paintmargin )
+        {
+            return;
+        }
+
+        q->prepareGeometryChange();
+        paintmargin = margin;
+    }
 };
 
 QT_END_NAMESPACE

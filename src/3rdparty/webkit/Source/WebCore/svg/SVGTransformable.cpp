@@ -31,54 +31,87 @@
 #include "SVGStyledElement.h"
 #include "SVGTransformList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-static int parseTransformParamList(const UChar*& ptr, const UChar* end, float* values, int required, int optional)
+static int parseTransformParamList( const UChar *&ptr, const UChar *end, float *values, int required, int optional )
 {
     int optionalParams = 0, requiredParams = 0;
-    
-    if (!skipOptionalSpaces(ptr, end) || *ptr != '(')
-        return -1;
-    
-    ptr++;
-   
-    skipOptionalSpaces(ptr, end);
 
-    while (requiredParams < required) {
-        if (ptr >= end || !parseNumber(ptr, end, values[requiredParams], false))
-            return -1;
-        requiredParams++;
-        if (requiredParams < required)
-            skipOptionalSpacesOrDelimiter(ptr, end);
+    if ( !skipOptionalSpaces( ptr, end ) || *ptr != '(' )
+    {
+        return -1;
     }
-    if (!skipOptionalSpaces(ptr, end))
-        return -1;
-    
-    bool delimParsed = skipOptionalSpacesOrDelimiter(ptr, end);
 
-    if (ptr >= end)
-        return -1;
-    
-    if (*ptr == ')') { // skip optionals
-        ptr++;
-        if (delimParsed)
+    ptr++;
+
+    skipOptionalSpaces( ptr, end );
+
+    while ( requiredParams < required )
+    {
+        if ( ptr >= end || !parseNumber( ptr, end, values[requiredParams], false ) )
+        {
             return -1;
-    } else {
-        while (optionalParams < optional) {
-            if (ptr >= end || !parseNumber(ptr, end, values[requiredParams + optionalParams], false))
-                return -1;
-            optionalParams++;
-            if (optionalParams < optional)
-                skipOptionalSpacesOrDelimiter(ptr, end);
         }
-        
-        if (!skipOptionalSpaces(ptr, end))
+
+        requiredParams++;
+
+        if ( requiredParams < required )
+        {
+            skipOptionalSpacesOrDelimiter( ptr, end );
+        }
+    }
+
+    if ( !skipOptionalSpaces( ptr, end ) )
+    {
+        return -1;
+    }
+
+    bool delimParsed = skipOptionalSpacesOrDelimiter( ptr, end );
+
+    if ( ptr >= end )
+    {
+        return -1;
+    }
+
+    if ( *ptr == ')' ) // skip optionals
+    {
+        ptr++;
+
+        if ( delimParsed )
+        {
             return -1;
-        
-        delimParsed = skipOptionalSpacesOrDelimiter(ptr, end);
-        
-        if (ptr >= end || *ptr != ')' || delimParsed)
+        }
+    }
+    else
+    {
+        while ( optionalParams < optional )
+        {
+            if ( ptr >= end || !parseNumber( ptr, end, values[requiredParams + optionalParams], false ) )
+            {
+                return -1;
+            }
+
+            optionalParams++;
+
+            if ( optionalParams < optional )
+            {
+                skipOptionalSpacesOrDelimiter( ptr, end );
+            }
+        }
+
+        if ( !skipOptionalSpaces( ptr, end ) )
+        {
             return -1;
+        }
+
+        delimParsed = skipOptionalSpacesOrDelimiter( ptr, end );
+
+        if ( ptr >= end || *ptr != ')' || delimParsed )
+        {
+            return -1;
+        }
+
         ptr++;
     }
 
@@ -94,44 +127,70 @@ SVGTransformable::~SVGTransformable()
 {
 }
 
-bool SVGTransformable::parseTransformValue(unsigned type, const UChar*& ptr, const UChar* end, SVGTransform& transform)
+bool SVGTransformable::parseTransformValue( unsigned type, const UChar *&ptr, const UChar *end, SVGTransform &transform )
 {
-    if (type == SVGTransform::SVG_TRANSFORM_UNKNOWN)
+    if ( type == SVGTransform::SVG_TRANSFORM_UNKNOWN )
+    {
         return false;
+    }
 
     int valueCount = 0;
     float values[] = {0, 0, 0, 0, 0, 0};
-    if ((valueCount = parseTransformParamList(ptr, end, values, requiredValuesForType[type], optionalValuesForType[type])) < 0)
-        return false;
 
-    switch (type) {
-    case SVGTransform::SVG_TRANSFORM_SKEWX:
-        transform.setSkewX(values[0]);
-        break;
-    case SVGTransform::SVG_TRANSFORM_SKEWY:
-        transform.setSkewY(values[0]);
-        break;
-    case SVGTransform::SVG_TRANSFORM_SCALE:
-        if (valueCount == 1) // Spec: if only one param given, assume uniform scaling
-            transform.setScale(values[0], values[0]);
-        else
-            transform.setScale(values[0], values[1]);
-        break;
-    case SVGTransform::SVG_TRANSFORM_TRANSLATE:
-        if (valueCount == 1) // Spec: if only one param given, assume 2nd param to be 0
-            transform.setTranslate(values[0], 0);
-        else
-            transform.setTranslate(values[0], values[1]);
-        break;
-    case SVGTransform::SVG_TRANSFORM_ROTATE:
-        if (valueCount == 1)
-            transform.setRotate(values[0], 0, 0);
-        else
-            transform.setRotate(values[0], values[1], values[2]);
-        break;
-    case SVGTransform::SVG_TRANSFORM_MATRIX:
-        transform.setMatrix(AffineTransform(values[0], values[1], values[2], values[3], values[4], values[5]));
-        break;
+    if ( ( valueCount = parseTransformParamList( ptr, end, values, requiredValuesForType[type], optionalValuesForType[type] ) ) < 0 )
+    {
+        return false;
+    }
+
+    switch ( type )
+    {
+        case SVGTransform::SVG_TRANSFORM_SKEWX:
+            transform.setSkewX( values[0] );
+            break;
+
+        case SVGTransform::SVG_TRANSFORM_SKEWY:
+            transform.setSkewY( values[0] );
+            break;
+
+        case SVGTransform::SVG_TRANSFORM_SCALE:
+            if ( valueCount == 1 ) // Spec: if only one param given, assume uniform scaling
+            {
+                transform.setScale( values[0], values[0] );
+            }
+            else
+            {
+                transform.setScale( values[0], values[1] );
+            }
+
+            break;
+
+        case SVGTransform::SVG_TRANSFORM_TRANSLATE:
+            if ( valueCount == 1 ) // Spec: if only one param given, assume 2nd param to be 0
+            {
+                transform.setTranslate( values[0], 0 );
+            }
+            else
+            {
+                transform.setTranslate( values[0], values[1] );
+            }
+
+            break;
+
+        case SVGTransform::SVG_TRANSFORM_ROTATE:
+            if ( valueCount == 1 )
+            {
+                transform.setRotate( values[0], 0, 0 );
+            }
+            else
+            {
+                transform.setRotate( values[0], values[1], values[2] );
+            }
+
+            break;
+
+        case SVGTransform::SVG_TRANSFORM_MATRIX:
+            transform.setMatrix( AffineTransform( values[0], values[1], values[2], values[3], values[4], values[5] ) );
+            break;
     }
 
     return true;
@@ -144,69 +203,102 @@ static const UChar translateDesc[] =  {'t', 'r', 'a', 'n', 's', 'l', 'a', 't', '
 static const UChar rotateDesc[] =  {'r', 'o', 't', 'a', 't', 'e'};
 static const UChar matrixDesc[] =  {'m', 'a', 't', 'r', 'i', 'x'};
 
-static inline bool parseAndSkipType(const UChar*& currTransform, const UChar* end, unsigned short& type)
+static inline bool parseAndSkipType( const UChar *&currTransform, const UChar *end, unsigned short &type )
 {
-    if (currTransform >= end)
+    if ( currTransform >= end )
+    {
         return false;
+    }
 
-    if (*currTransform == 's') {
-        if (skipString(currTransform, end, skewXDesc, WTF_ARRAY_LENGTH(skewXDesc)))
+    if ( *currTransform == 's' )
+    {
+        if ( skipString( currTransform, end, skewXDesc, WTF_ARRAY_LENGTH( skewXDesc ) ) )
+        {
             type = SVGTransform::SVG_TRANSFORM_SKEWX;
-        else if (skipString(currTransform, end, skewYDesc, WTF_ARRAY_LENGTH(skewYDesc)))
+        }
+        else if ( skipString( currTransform, end, skewYDesc, WTF_ARRAY_LENGTH( skewYDesc ) ) )
+        {
             type = SVGTransform::SVG_TRANSFORM_SKEWY;
-        else if (skipString(currTransform, end, scaleDesc, WTF_ARRAY_LENGTH(scaleDesc)))
+        }
+        else if ( skipString( currTransform, end, scaleDesc, WTF_ARRAY_LENGTH( scaleDesc ) ) )
+        {
             type = SVGTransform::SVG_TRANSFORM_SCALE;
+        }
         else
+        {
             return false;
-    } else if (skipString(currTransform, end, translateDesc, WTF_ARRAY_LENGTH(translateDesc)))
+        }
+    }
+    else if ( skipString( currTransform, end, translateDesc, WTF_ARRAY_LENGTH( translateDesc ) ) )
+    {
         type = SVGTransform::SVG_TRANSFORM_TRANSLATE;
-    else if (skipString(currTransform, end, rotateDesc, WTF_ARRAY_LENGTH(rotateDesc)))
+    }
+    else if ( skipString( currTransform, end, rotateDesc, WTF_ARRAY_LENGTH( rotateDesc ) ) )
+    {
         type = SVGTransform::SVG_TRANSFORM_ROTATE;
-    else if (skipString(currTransform, end, matrixDesc, WTF_ARRAY_LENGTH(matrixDesc)))
+    }
+    else if ( skipString( currTransform, end, matrixDesc, WTF_ARRAY_LENGTH( matrixDesc ) ) )
+    {
         type = SVGTransform::SVG_TRANSFORM_MATRIX;
+    }
     else
+    {
         return false;
+    }
 
     return true;
 }
 
-bool SVGTransformable::parseTransformAttribute(SVGTransformList& list, const AtomicString& transform)
+bool SVGTransformable::parseTransformAttribute( SVGTransformList &list, const AtomicString &transform )
 {
-    const UChar* start = transform.characters();
-    return parseTransformAttribute(list, start, start + transform.length());
+    const UChar *start = transform.characters();
+    return parseTransformAttribute( list, start, start + transform.length() );
 }
 
-bool SVGTransformable::parseTransformAttribute(SVGTransformList& list, const UChar*& currTransform, const UChar* end, TransformParsingMode mode)
+bool SVGTransformable::parseTransformAttribute( SVGTransformList &list, const UChar *&currTransform, const UChar *end,
+        TransformParsingMode mode )
 {
-    if (mode == ClearList)
+    if ( mode == ClearList )
+    {
         list.clear();
+    }
 
     bool delimParsed = false;
-    while (currTransform < end) {
+
+    while ( currTransform < end )
+    {
         delimParsed = false;
         unsigned short type = SVGTransform::SVG_TRANSFORM_UNKNOWN;
-        skipOptionalSpaces(currTransform, end);
+        skipOptionalSpaces( currTransform, end );
 
-        if (!parseAndSkipType(currTransform, end, type))
+        if ( !parseAndSkipType( currTransform, end, type ) )
+        {
             return false;
+        }
 
         SVGTransform transform;
-        if (!parseTransformValue(type, currTransform, end, transform))
-            return false;
 
-        list.append(transform);
-        skipOptionalSpaces(currTransform, end);
-        if (currTransform < end && *currTransform == ',') {
+        if ( !parseTransformValue( type, currTransform, end, transform ) )
+        {
+            return false;
+        }
+
+        list.append( transform );
+        skipOptionalSpaces( currTransform, end );
+
+        if ( currTransform < end && *currTransform == ',' )
+        {
             delimParsed = true;
             ++currTransform;
         }
-        skipOptionalSpaces(currTransform, end);
+
+        skipOptionalSpaces( currTransform, end );
     }
 
     return !delimParsed;
 }
 
-bool SVGTransformable::isKnownAttribute(const QualifiedName& attrName)
+bool SVGTransformable::isKnownAttribute( const QualifiedName &attrName )
 {
     return attrName == SVGNames::transformAttr;
 }

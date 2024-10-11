@@ -25,19 +25,24 @@
 #include "SVGLangSpace.h"
 #include "SVGStyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGDescElement : public SVGStyledElement,
-                       public SVGLangSpace {
+    public SVGLangSpace
+{
 public:
-    static PassRefPtr<SVGDescElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGDescElement> create( const QualifiedName &, Document * );
 
     String description() const;
 
 private:
-    SVGDescElement(const QualifiedName&, Document*);
+    SVGDescElement( const QualifiedName &, Document * );
 
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
 };
 
 } // namespace WebCore

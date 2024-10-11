@@ -25,50 +25,71 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Type definitions for the byte stream data
-typedef union {
+typedef union
+{
     bool value;
-    unsigned char bytes[sizeof(bool)];
+    unsigned char bytes[sizeof( bool )];
 } BoolByte;
 
-typedef union {
+typedef union
+{
     float value;
-    unsigned char bytes[sizeof(float)];
+    unsigned char bytes[sizeof( float )];
 } FloatByte;
 
-typedef union {
+typedef union
+{
     unsigned short value;
-    unsigned char bytes[sizeof(unsigned short)];
+    unsigned char bytes[sizeof( unsigned short )];
 } UnsignedShortByte;
 
-class SVGPathByteStream {
-    WTF_MAKE_NONCOPYABLE(SVGPathByteStream); WTF_MAKE_FAST_ALLOCATED;
+class SVGPathByteStream
+{
+    WTF_MAKE_NONCOPYABLE( SVGPathByteStream );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     static PassOwnPtr<SVGPathByteStream> create()
     {
-        return adoptPtr(new SVGPathByteStream);
+        return adoptPtr( new SVGPathByteStream );
     }
 
     PassOwnPtr<SVGPathByteStream> copy()
     {
-        return adoptPtr(new SVGPathByteStream(m_data));
+        return adoptPtr( new SVGPathByteStream( m_data ) );
     }
 
     typedef Vector<unsigned char> Data;
     typedef Data::const_iterator DataIterator;
 
-    DataIterator begin() { return m_data.begin(); }
-    DataIterator end() { return m_data.end(); }
-    void append(unsigned char byte) { m_data.append(byte); }
-    void clear() { m_data.clear(); }
-    bool isEmpty() const { return !m_data.size(); }
+    DataIterator begin()
+    {
+        return m_data.begin();
+    }
+    DataIterator end()
+    {
+        return m_data.end();
+    }
+    void append( unsigned char byte )
+    {
+        m_data.append( byte );
+    }
+    void clear()
+    {
+        m_data.clear();
+    }
+    bool isEmpty() const
+    {
+        return !m_data.size();
+    }
 
 private:
     SVGPathByteStream() { }
-    SVGPathByteStream(Data& data)
-        : m_data(data)
+    SVGPathByteStream( Data &data )
+        : m_data( data )
     {
     }
 

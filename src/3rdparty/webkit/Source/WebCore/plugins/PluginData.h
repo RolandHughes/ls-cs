@@ -24,23 +24,26 @@
 #include <wtf/Vector.h>
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Page;
 struct PluginInfo;
 
-struct MimeClassInfo {
+struct MimeClassInfo
+{
     String type;
     String desc;
     Vector<String> extensions;
 };
 
-inline bool operator==(const MimeClassInfo& a, const MimeClassInfo& b)
+inline bool operator==( const MimeClassInfo &a, const MimeClassInfo &b )
 {
     return a.type == b.type && a.desc == b.desc && a.extensions == b.extensions;
 }
 
-struct PluginInfo {
+struct PluginInfo
+{
     String name;
     String file;
     String desc;
@@ -48,22 +51,35 @@ struct PluginInfo {
 };
 
 // FIXME: merge with PluginDatabase in the future
-class PluginData : public RefCounted<PluginData> {
+class PluginData : public RefCounted<PluginData>
+{
 public:
-    static PassRefPtr<PluginData> create(const Page* page) { return adoptRef(new PluginData(page)); }
+    static PassRefPtr<PluginData> create( const Page *page )
+    {
+        return adoptRef( new PluginData( page ) );
+    }
 
-    const Vector<PluginInfo>& plugins() const { return m_plugins; }
-    const Vector<MimeClassInfo>& mimes() const { return m_mimes; }
-    const Vector<size_t>& mimePluginIndices() const { return m_mimePluginIndices; }
-    
-    bool supportsMimeType(const String& mimeType) const;
-    String pluginNameForMimeType(const String& mimeType) const;
+    const Vector<PluginInfo> &plugins() const
+    {
+        return m_plugins;
+    }
+    const Vector<MimeClassInfo> &mimes() const
+    {
+        return m_mimes;
+    }
+    const Vector<size_t> &mimePluginIndices() const
+    {
+        return m_mimePluginIndices;
+    }
+
+    bool supportsMimeType( const String &mimeType ) const;
+    String pluginNameForMimeType( const String &mimeType ) const;
 
     static void refresh();
 
 private:
-    PluginData(const Page*);
-    void initPlugins(const Page*);
+    PluginData( const Page * );
+    void initPlugins( const Page * );
 
     Vector<PluginInfo> m_plugins;
     Vector<MimeClassInfo> m_mimes;

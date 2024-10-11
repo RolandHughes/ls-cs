@@ -24,8 +24,8 @@
 #include <qdebug.h>
 #include <dsvideo_renderer.h>
 
-DSVideoRendererControl::DSVideoRendererControl(DSCameraSession *session, QObject *parent)
-   : QVideoRendererControl(parent), m_surface(nullptr), m_session(session)
+DSVideoRendererControl::DSVideoRendererControl( DSCameraSession *session, QObject *parent )
+    : QVideoRendererControl( parent ), m_surface( nullptr ), m_session( session )
 {
 }
 
@@ -35,16 +35,17 @@ DSVideoRendererControl::~DSVideoRendererControl()
 
 QAbstractVideoSurface *DSVideoRendererControl::surface() const
 {
-   return m_surface;
+    return m_surface;
 }
 
-void DSVideoRendererControl::setSurface(QAbstractVideoSurface *surface)
+void DSVideoRendererControl::setSurface( QAbstractVideoSurface *surface )
 {
-   m_surface = surface;
+    m_surface = surface;
 
-   if (m_session) {
-      m_session->setSurface(m_surface);
-   }
+    if ( m_session )
+    {
+        m_session->setSurface( m_surface );
+    }
 }
 
 

@@ -25,14 +25,14 @@
 
 using namespace QPatternist;
 
-StaticCurrentContext::StaticCurrentContext(const ItemType::Ptr &t,
-      const StaticContext::Ptr &context) : DelegatingStaticContext(context)
-   , m_currentItemType(t)
+StaticCurrentContext::StaticCurrentContext( const ItemType::Ptr &t,
+        const StaticContext::Ptr &context ) : DelegatingStaticContext( context )
+    , m_currentItemType( t )
 {
-   Q_ASSERT(m_currentItemType);
+    Q_ASSERT( m_currentItemType );
 }
 
 ItemType::Ptr StaticCurrentContext::currentItemType() const
 {
-   return m_currentItemType;
+    return m_currentItemType;
 }

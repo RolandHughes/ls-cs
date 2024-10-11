@@ -23,27 +23,36 @@
 #include <openvg.h>
 #include <wtf/Assertions.h>
 
-static inline const char* toVGErrorConstant(VGErrorCode error)
+static inline const char *toVGErrorConstant( VGErrorCode error )
 {
-    switch (error) {
-    case VG_BAD_HANDLE_ERROR:
-        return "VG_BAD_HANDLE_ERROR";
-    case VG_ILLEGAL_ARGUMENT_ERROR:
-        return "VG_ILLEGAL_ARGUMENT_ERROR";
-    case VG_OUT_OF_MEMORY_ERROR:
-        return "VG_OUT_OF_MEMORY_ERROR";
-    case VG_PATH_CAPABILITY_ERROR:
-        return "VG_PATH_CAPABILITY_ERROR";
-    case VG_UNSUPPORTED_IMAGE_FORMAT_ERROR:
-        return "VG_UNSUPPORTED_IMAGE_FORMAT_ERROR";
-    case VG_UNSUPPORTED_PATH_FORMAT_ERROR:
-        return "VG_UNSUPPORTED_PATH_FORMAT_ERROR";
-    case VG_IMAGE_IN_USE_ERROR:
-        return "VG_IMAGE_IN_USE_ERROR";
-    case VG_NO_CONTEXT_ERROR:
-        return "VG_NO_CONTEXT_ERROR";
-    default:
-        return "UNKNOWN_ERROR";
+    switch ( error )
+    {
+        case VG_BAD_HANDLE_ERROR:
+            return "VG_BAD_HANDLE_ERROR";
+
+        case VG_ILLEGAL_ARGUMENT_ERROR:
+            return "VG_ILLEGAL_ARGUMENT_ERROR";
+
+        case VG_OUT_OF_MEMORY_ERROR:
+            return "VG_OUT_OF_MEMORY_ERROR";
+
+        case VG_PATH_CAPABILITY_ERROR:
+            return "VG_PATH_CAPABILITY_ERROR";
+
+        case VG_UNSUPPORTED_IMAGE_FORMAT_ERROR:
+            return "VG_UNSUPPORTED_IMAGE_FORMAT_ERROR";
+
+        case VG_UNSUPPORTED_PATH_FORMAT_ERROR:
+            return "VG_UNSUPPORTED_PATH_FORMAT_ERROR";
+
+        case VG_IMAGE_IN_USE_ERROR:
+            return "VG_IMAGE_IN_USE_ERROR";
+
+        case VG_NO_CONTEXT_ERROR:
+            return "VG_NO_CONTEXT_ERROR";
+
+        default:
+            return "UNKNOWN_ERROR";
     }
 }
 
@@ -57,39 +66,49 @@ static inline const char* toVGErrorConstant(VGErrorCode error)
 #endif
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 class FloatRect;
 class TransformationMatrix;
 
-class VGMatrix {
+class VGMatrix
+{
 public:
-    VGMatrix(const VGfloat data[9]);
-    VGMatrix(const AffineTransform&);
-    VGMatrix(const TransformationMatrix&);
-    const VGfloat* toVGfloat() const { return m_data; }
+    VGMatrix( const VGfloat data[9] );
+    VGMatrix( const AffineTransform & );
+    VGMatrix( const TransformationMatrix & );
+    const VGfloat *toVGfloat() const
+    {
+        return m_data;
+    }
     operator AffineTransform() const;
     operator TransformationMatrix() const;
 private:
     VGfloat m_data[9];
 };
 
-class VGRect {
+class VGRect
+{
 public:
-    VGRect(const VGfloat data[4]);
-    VGRect(const FloatRect&);
-    const VGfloat* toVGfloat() const { return m_data; }
+    VGRect( const VGfloat data[4] );
+    VGRect( const FloatRect & );
+    const VGfloat *toVGfloat() const
+    {
+        return m_data;
+    }
     operator FloatRect() const;
 private:
     VGfloat m_data[4];
 };
 
-class VGUtils {
+class VGUtils
+{
 public:
-    static int bytesForImage(VGImageFormat, VGint width, VGint height);
-    static int bytesForImageScanline(VGImageFormat, VGint width);
-    static int imageFormatBitsPerPixel(VGImageFormat);
+    static int bytesForImage( VGImageFormat, VGint width, VGint height );
+    static int bytesForImageScanline( VGImageFormat, VGint width );
+    static int imageFormatBitsPerPixel( VGImageFormat );
 
     /**
      * Return a flipped VGImageFormat if the platform is little endian
@@ -107,7 +126,7 @@ public:
      * to be swapped depending on endianness). So, use this function when
      * interfacing with byte arrays, and don't use it otherwise.
      */
-    static VGImageFormat endianAwareImageFormat(VGImageFormat bigEndianFormat);
+    static VGImageFormat endianAwareImageFormat( VGImageFormat bigEndianFormat );
 };
 
 }

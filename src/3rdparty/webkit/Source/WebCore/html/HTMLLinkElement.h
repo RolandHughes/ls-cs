@@ -30,15 +30,18 @@
 #include "IconURL.h"
 #include "Timer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedCSSStyleSheet;
 class CachedResource;
 class KURL;
 
-class HTMLLinkElement : public HTMLElement, public CachedResourceClient {
+class HTMLLinkElement : public HTMLElement, public CachedResourceClient
+{
 public:
-    struct RelAttribute {
+    struct RelAttribute
+    {
         bool m_isStyleSheet;
         IconType m_iconType;
         bool m_isAlternate;
@@ -49,19 +52,19 @@ public:
 #endif
 
         RelAttribute()
-            : m_isStyleSheet(false)
-            , m_iconType(InvalidIcon)
-            , m_isAlternate(false)
-            , m_isDNSPrefetch(false)
+            : m_isStyleSheet( false )
+            , m_iconType( InvalidIcon )
+            , m_isAlternate( false )
+            , m_isDNSPrefetch( false )
 #if ENABLE(LINK_PREFETCH)
-            , m_isLinkPrefetch(false)
-            , m_isLinkSubresource(false)
+            , m_isLinkPrefetch( false )
+            , m_isLinkSubresource( false )
 #endif
-            { 
-            }
+        {
+        }
     };
 
-    static PassRefPtr<HTMLLinkElement> create(const QualifiedName&, Document*, bool createdByParser);
+    static PassRefPtr<HTMLLinkElement> create( const QualifiedName &, Document *, bool createdByParser );
     virtual ~HTMLLinkElement();
 
     KURL href() const;
@@ -71,52 +74,58 @@ public:
 
     String type() const;
 
-    StyleSheet* sheet() const;
+    StyleSheet *sheet() const;
 
     // FIXME: This should be remaned isStyleSheetLoading as this is only used for stylesheets.
     bool isLoading() const;
-    bool isEnabledViaScript() const { return m_isEnabledViaScript; }
+    bool isEnabledViaScript() const
+    {
+        return m_isEnabledViaScript;
+    }
     bool disabled() const;
-    void setDisabled(bool);
+    void setDisabled( bool );
 
 private:
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
 #if ENABLE(LINK_PREFETCH)
-    void onloadTimerFired(Timer<HTMLLinkElement>*);
+    void onloadTimerFired( Timer<HTMLLinkElement> * );
 #endif
     bool checkBeforeLoadEvent();
     void process();
-    static void processCallback(Node*);
+    static void processCallback( Node * );
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 
     // from CachedResourceClient
-    virtual void setCSSStyleSheet(const String& href, const KURL& baseURL, const String& charset, const CachedCSSStyleSheet* sheet);
+    virtual void setCSSStyleSheet( const String &href, const KURL &baseURL, const String &charset, const CachedCSSStyleSheet *sheet );
 #if ENABLE(LINK_PREFETCH)
-    virtual void notifyFinished(CachedResource*);
+    virtual void notifyFinished( CachedResource * );
 #endif
     virtual bool sheetLoaded();
 
-    bool isAlternate() const { return m_relAttribute.m_isAlternate; }
-    
-    virtual bool isURLAttribute(Attribute*) const;
+    bool isAlternate() const
+    {
+        return m_relAttribute.m_isAlternate;
+    }
+
+    virtual bool isURLAttribute( Attribute * ) const;
 
 public:
-    static void tokenizeRelAttribute(const AtomicString& value, RelAttribute&);
+    static void tokenizeRelAttribute( const AtomicString &value, RelAttribute & );
 
 private:
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     virtual void finishParsingChildren();
-    
+
     enum PendingSheetType { None, NonBlocking, Blocking };
-    void addPendingSheet(PendingSheetType);
+    void addPendingSheet( PendingSheetType );
     void removePendingSheet();
 
 private:
-    HTMLLinkElement(const QualifiedName&, Document*, bool createdByParser);
+    HTMLLinkElement( const QualifiedName &, Document *, bool createdByParser );
 
     CachedResourceHandle<CachedCSSStyleSheet> m_cachedSheet;
     RefPtr<CSSStyleSheet> m_sheet;
@@ -132,7 +141,7 @@ private:
     bool m_isEnabledViaScript;
     bool m_createdByParser;
     bool m_isInShadowTree;
-    
+
     PendingSheetType m_pendingSheetType;
 };
 

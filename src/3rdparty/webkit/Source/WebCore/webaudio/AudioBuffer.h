@@ -35,39 +35,59 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
-    
-class AudioBuffer : public RefCounted<AudioBuffer> {
-public:   
-    static PassRefPtr<AudioBuffer> create(unsigned numberOfChannels, size_t numberOfFrames, double sampleRate);
+
+class AudioBuffer : public RefCounted<AudioBuffer>
+{
+public:
+    static PassRefPtr<AudioBuffer> create( unsigned numberOfChannels, size_t numberOfFrames, double sampleRate );
 
     // Returns 0 if data is not a valid audio file.
-    static PassRefPtr<AudioBuffer> createFromAudioFileData(const void* data, size_t dataSize, bool mixToMono, double sampleRate);
+    static PassRefPtr<AudioBuffer> createFromAudioFileData( const void *data, size_t dataSize, bool mixToMono, double sampleRate );
 
     // Format
-    size_t length() const { return m_length; }
-    double duration() const { return length() / sampleRate(); }
-    double sampleRate() const { return m_sampleRate; }
+    size_t length() const
+    {
+        return m_length;
+    }
+    double duration() const
+    {
+        return length() / sampleRate();
+    }
+    double sampleRate() const
+    {
+        return m_sampleRate;
+    }
 
     // Channel data access
-    unsigned numberOfChannels() const { return m_channels.size(); }
-    Float32Array* getChannelData(unsigned channelIndex);
+    unsigned numberOfChannels() const
+    {
+        return m_channels.size();
+    }
+    Float32Array *getChannelData( unsigned channelIndex );
     void zero();
 
     // Scalar gain
-    double gain() const { return m_gain; }
-    void setGain(double gain) { m_gain = gain; }
+    double gain() const
+    {
+        return m_gain;
+    }
+    void setGain( double gain )
+    {
+        m_gain = gain;
+    }
 
     // Because an AudioBuffer has a JavaScript wrapper, which will be garbage collected, it may take awhile for this object to be deleted.
     // releaseMemory() can be called when the AudioContext goes away, so we can release the memory earlier than when the garbage collection happens.
     // Careful! Only call this when the page unloads, after the AudioContext is no longer processing.
     void releaseMemory();
-    
+
 protected:
-    AudioBuffer(unsigned numberOfChannels, size_t numberOfFrames, double sampleRate);
-    AudioBuffer(AudioBus* bus);
+    AudioBuffer( unsigned numberOfChannels, size_t numberOfFrames, double sampleRate );
+    AudioBuffer( AudioBus *bus );
 
     double m_gain; // scalar gain
     double m_sampleRate;

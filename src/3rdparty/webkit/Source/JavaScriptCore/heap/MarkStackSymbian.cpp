@@ -24,12 +24,13 @@
 
 #include <e32hal.h>
 
-namespace JSC {
+namespace JSC
+{
 
 void MarkStack::initializePagesize()
 {
     TInt page_size;
-    UserHal::PageSizeInBytes(page_size);
+    UserHal::PageSizeInBytes( page_size );
     MarkStack::s_pageSize = page_size;
 }
 

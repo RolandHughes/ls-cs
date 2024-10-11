@@ -26,40 +26,41 @@
 
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class RemovalIterator : public Item::Iterator
 {
- public:
+public:
 
-   /**
-    * Creates an RemovalIterator.
-    *
-    * @param target the QAbstractXmlForwardIterator containing the sequence of items
-    * which the item at position @p position should be removed from.
-    * @param position the position of the item to remove. Must be
-    * 1 or larger.
-    */
-   RemovalIterator(const Item::Iterator::Ptr &target,
-                   const xsInteger position);
+    /**
+     * Creates an RemovalIterator.
+     *
+     * @param target the QAbstractXmlForwardIterator containing the sequence of items
+     * which the item at position @p position should be removed from.
+     * @param position the position of the item to remove. Must be
+     * 1 or larger.
+     */
+    RemovalIterator( const Item::Iterator::Ptr &target,
+                     const xsInteger position );
 
-   Item next() override;
-   Item current() const override;
-   xsInteger position() const override;
+    Item next() override;
+    Item current() const override;
+    xsInteger position() const override;
 
-   /**
-    * The QAbstractXmlForwardIterator's count is computed by subtracting one from the source
-    * QAbstractXmlForwardIterator's count.
-    */
-   xsInteger count() override;
+    /**
+     * The QAbstractXmlForwardIterator's count is computed by subtracting one from the source
+     * QAbstractXmlForwardIterator's count.
+     */
+    xsInteger count() override;
 
-   Item::Iterator::Ptr copy() const override;
+    Item::Iterator::Ptr copy() const override;
 
- private:
-   const Item::Iterator::Ptr m_target;
-   const xsInteger m_removalPos;
-   Item m_current;
-   xsInteger m_position;
+private:
+    const Item::Iterator::Ptr m_target;
+    const xsInteger m_removalPos;
+    Item m_current;
+    xsInteger m_position;
 };
 
 }

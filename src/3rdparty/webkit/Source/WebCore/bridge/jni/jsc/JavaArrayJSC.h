@@ -33,29 +33,35 @@
 #include "JNIUtility.h"
 #include "JobjectWrapper.h"
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class JavaArray : public Array {
+class JavaArray : public Array
+{
 public:
-    JavaArray(jobject array, const char* type, PassRefPtr<RootObject>);
+    JavaArray( jobject array, const char *type, PassRefPtr<RootObject> );
     virtual ~JavaArray();
 
-    RootObject* rootObject() const;
+    RootObject *rootObject() const;
 
-    virtual void setValueAt(ExecState*, unsigned int index, JSValue) const;
-    virtual JSValue valueAt(ExecState*, unsigned int index) const;
+    virtual void setValueAt( ExecState *, unsigned int index, JSValue ) const;
+    virtual JSValue valueAt( ExecState *, unsigned int index ) const;
     virtual unsigned int getLength() const;
 
-    jobject javaArray() const { return m_array->m_instance; }
+    jobject javaArray() const
+    {
+        return m_array->m_instance;
+    }
 
-    static JSValue convertJObjectToArray(ExecState*, jobject, const char* type, PassRefPtr<RootObject>);
+    static JSValue convertJObjectToArray( ExecState *, jobject, const char *type, PassRefPtr<RootObject> );
 
 private:
     RefPtr<JobjectWrapper> m_array;
     unsigned int m_length;
-    const char* m_type;
+    const char *m_type;
 };
 
 } // namespace Bindings

@@ -29,37 +29,46 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 
 class SVGClipPathElement : public SVGStyledTransformableElement,
-                           public SVGTests,
-                           public SVGLangSpace,
-                           public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGClipPathElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGClipPathElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGClipPathElement(const QualifiedName&, Document*);
+    SVGClipPathElement( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
-    virtual bool needsPendingResourceHandling() const { return false; }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
+    virtual bool needsPendingResourceHandling() const
+    {
+        return false;
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
     // Animated property declarations
-    DECLARE_ANIMATED_ENUMERATION(ClipPathUnits, clipPathUnits)
+    DECLARE_ANIMATED_ENUMERATION( ClipPathUnits, clipPathUnits )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 }

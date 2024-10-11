@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PDFDocumentImage_h
@@ -34,46 +34,55 @@
 
 typedef struct CGPDFDocument *CGPDFDocumentRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class GraphicsContext;
+class GraphicsContext;
 
-    class PDFDocumentImage : public Image {
-    public:
-        static PassRefPtr<PDFDocumentImage> create()
-        {
-            return adoptRef(new PDFDocumentImage);
-        }
+class PDFDocumentImage : public Image
+{
+public:
+    static PassRefPtr<PDFDocumentImage> create()
+    {
+        return adoptRef( new PDFDocumentImage );
+    }
 
-    private:
-        virtual ~PDFDocumentImage();
+private:
+    virtual ~PDFDocumentImage();
 
-        virtual String filenameExtension() const;
+    virtual String filenameExtension() const;
 
-        virtual bool hasSingleSecurityOrigin() const { return true; }
+    virtual bool hasSingleSecurityOrigin() const
+    {
+        return true;
+    }
 
-        virtual bool dataChanged(bool allDataReceived);
+    virtual bool dataChanged( bool allDataReceived );
 
-        // FIXME: PDF Images are underreporting decoded sizes and will be unable
-        // to prune because these functions are not implemented yet.
-        virtual void destroyDecodedData(bool /*destroyAll*/ = true) { }
-        virtual unsigned decodedSize() const { return 0; }
+    // FIXME: PDF Images are underreporting decoded sizes and will be unable
+    // to prune because these functions are not implemented yet.
+    virtual void destroyDecodedData( bool /*destroyAll*/ = true ) { }
+    virtual unsigned decodedSize() const
+    {
+        return 0;
+    }
 
-        virtual IntSize size() const;
+    virtual IntSize size() const;
 
-        PDFDocumentImage();
-        virtual void draw(GraphicsContext*, const FloatRect& dstRect, const FloatRect& srcRect, ColorSpace styleColorSpace, CompositeOperator);
-        
-        void setCurrentPage(int);
-        int pageCount() const;
-        void adjustCTM(GraphicsContext*) const;
+    PDFDocumentImage();
+    virtual void draw( GraphicsContext *, const FloatRect &dstRect, const FloatRect &srcRect, ColorSpace styleColorSpace,
+                       CompositeOperator );
 
-        CGPDFDocumentRef m_document;
-        FloatRect m_mediaBox;
-        FloatRect m_cropBox;
-        float m_rotation;
-        int m_currentPage;
-    };
+    void setCurrentPage( int );
+    int pageCount() const;
+    void adjustCTM( GraphicsContext * ) const;
+
+    CGPDFDocumentRef m_document;
+    FloatRect m_mediaBox;
+    FloatRect m_cropBox;
+    float m_rotation;
+    int m_currentPage;
+};
 
 }
 

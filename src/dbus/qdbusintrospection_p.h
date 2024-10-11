@@ -63,10 +63,12 @@ public:
         QString type;
         QString name;
 
-        inline bool operator==(const Argument& other) const
-        { return name == other.name && type == other.type; }
+        inline bool operator==( const Argument &other ) const
+        {
+            return name == other.name && type == other.type;
+        }
     };
-    
+
     struct Method
     {
         QString name;
@@ -74,9 +76,11 @@ public:
         Arguments outputArgs;
         Annotations annotations;
 
-        inline bool operator==(const Method& other) const
-        { return name == other.name && annotations == other.annotations &&
-                inputArgs == other.inputArgs && outputArgs == other.outputArgs; }
+        inline bool operator==( const Method &other ) const
+        {
+            return name == other.name && annotations == other.annotations &&
+                   inputArgs == other.inputArgs && outputArgs == other.outputArgs;
+        }
     };
 
     struct Signal
@@ -85,9 +89,11 @@ public:
         Arguments outputArgs;
         Annotations annotations;
 
-        inline bool operator==(const Signal& other) const
-        { return name == other.name && annotations == other.annotations &&
-                outputArgs == other.outputArgs; }
+        inline bool operator==( const Signal &other ) const
+        {
+            return name == other.name && annotations == other.annotations &&
+                   outputArgs == other.outputArgs;
+        }
     };
 
     struct Property
@@ -98,9 +104,11 @@ public:
         Access access;
         Annotations annotations;
 
-        inline bool operator==(const Property& other) const
-        { return access == other.access && name == other.name &&
-                annotations == other.annotations && type == other.type; }
+        inline bool operator==( const Property &other ) const
+        {
+            return access == other.access && name == other.name &&
+                   annotations == other.annotations && type == other.type;
+        }
     };
 
     struct Interface: public QSharedData
@@ -113,8 +121,10 @@ public:
         Signals signals_;
         Properties properties;
 
-        inline bool operator==(const Interface &other) const
-        { return !name.isEmpty() && name == other.name; }
+        inline bool operator==( const Interface &other ) const
+        {
+            return !name.isEmpty() && name == other.name;
+        }
     };
 
     struct Object: public QSharedData
@@ -134,13 +144,13 @@ public:
     };
 
 public:
-    static Interface parseInterface(const QString &xml);
-    static Interfaces parseInterfaces(const QString &xml);
-    static Object parseObject(const QString &xml, const QString &service = QString(),
-                              const QString &path = QString());
-    static ObjectTree parseObjectTree(const QString &xml,
-                                      const QString &service,
-                                      const QString &path);
+    static Interface parseInterface( const QString &xml );
+    static Interfaces parseInterfaces( const QString &xml );
+    static Object parseObject( const QString &xml, const QString &service = QString(),
+                               const QString &path = QString() );
+    static ObjectTree parseObjectTree( const QString &xml,
+                                       const QString &service,
+                                       const QString &path );
 
 private:
     QDBusIntrospection();

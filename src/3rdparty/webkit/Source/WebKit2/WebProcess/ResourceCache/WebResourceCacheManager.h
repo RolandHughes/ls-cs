@@ -32,37 +32,40 @@
 #include <wtf/RetainPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 class ArgumentDecoder;
 class Connection;
 class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 struct SecurityOriginData;
 
-class WebResourceCacheManager {
-    WTF_MAKE_NONCOPYABLE(WebResourceCacheManager);
+class WebResourceCacheManager
+{
+    WTF_MAKE_NONCOPYABLE( WebResourceCacheManager );
 public:
-    static WebResourceCacheManager& shared();
+    static WebResourceCacheManager &shared();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
 private:
     WebResourceCacheManager();
     virtual ~WebResourceCacheManager();
 
     // Implemented in generated WebResourceCacheManagerMessageReceiver.cpp
-    void didReceiveWebResourceCacheManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebResourceCacheManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    void getCacheOrigins(uint64_t callbackID) const;
-    void clearCacheForOrigin(SecurityOriginData, uint32_t cachesToClear) const;
-    void clearCacheForAllOrigins(uint32_t cachesToClear) const;
+    void getCacheOrigins( uint64_t callbackID ) const;
+    void clearCacheForOrigin( SecurityOriginData, uint32_t cachesToClear ) const;
+    void clearCacheForAllOrigins( uint32_t cachesToClear ) const;
 
 #if USE(CFURLCACHE)
     static RetainPtr<CFArrayRef> cfURLCacheHostNames();
-    static void clearCFURLCacheForHostNames(CFArrayRef);
+    static void clearCFURLCacheForHostNames( CFArrayRef );
 #endif
 };
 

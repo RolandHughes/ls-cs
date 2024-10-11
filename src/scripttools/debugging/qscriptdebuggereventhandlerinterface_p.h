@@ -32,10 +32,10 @@ class QScriptDebuggerEvent;
 
 class QScriptDebuggerEventHandlerInterface
 {
- public:
-   virtual ~QScriptDebuggerEventHandlerInterface() {}
+public:
+    virtual ~QScriptDebuggerEventHandlerInterface() {}
 
-   virtual bool debuggerEvent(const QScriptDebuggerEvent &event) = 0;
+    virtual bool debuggerEvent( const QScriptDebuggerEvent &event ) = 0;
 };
 
 QT_END_NAMESPACE

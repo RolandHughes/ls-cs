@@ -26,33 +26,35 @@
 #include "SVGExternalResourcesRequired.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class SVGPathElement;
 
 class SVGMPathElement : public SVGElement,
-                        public SVGURIReference,
-                        public SVGExternalResourcesRequired {
+    public SVGURIReference,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGMPathElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGMPathElement> create( const QualifiedName &, Document * );
 
-    SVGPathElement* pathElement();
-    
+    SVGPathElement *pathElement();
+
 private:
-    SVGMPathElement(const QualifiedName&, Document*);
-    
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void synchronizeProperty(const QualifiedName&);
+    SVGMPathElement( const QualifiedName &, Document * );
+
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
     // Animated property declarations
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

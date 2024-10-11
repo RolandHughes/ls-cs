@@ -26,38 +26,47 @@
 #include "config.h"
 #include "CommandLine.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-bool CommandLine::parse(LPTSTR commandLineString)
+bool CommandLine::parse( LPTSTR commandLineString )
 {
     m_args.clear();
 
     // Check if this is an empty command line.
-    if (!commandLineString || !commandLineString[0])
+    if ( !commandLineString || !commandLineString[0] )
+    {
         return true;
+    }
 
     int argumentCount;
-    LPWSTR* commandLineArgs = ::CommandLineToArgvW(commandLineString, &argumentCount);
-    if (!commandLineArgs)
-        return false;
+    LPWSTR *commandLineArgs = ::CommandLineToArgvW( commandLineString, &argumentCount );
 
-    if (argumentCount % 2) {
-        ::LocalFree(commandLineArgs);
+    if ( !commandLineArgs )
+    {
         return false;
     }
 
-    for (int i = 0; i < argumentCount ; i += 2) {
+    if ( argumentCount % 2 )
+    {
+        ::LocalFree( commandLineArgs );
+        return false;
+    }
+
+    for ( int i = 0; i < argumentCount ; i += 2 )
+    {
         LPWSTR key = commandLineArgs[i];
 
-        if (key[0] != '-') {
-            ::LocalFree(commandLineArgs);
+        if ( key[0] != '-' )
+        {
+            ::LocalFree( commandLineArgs );
             return false;
         }
 
-        m_args.set(&key[1], commandLineArgs[i + 1]);
+        m_args.set( &key[1], commandLineArgs[i + 1] );
     }
 
-    ::LocalFree(commandLineArgs);
+    ::LocalFree( commandLineArgs );
     return true;
 }
 

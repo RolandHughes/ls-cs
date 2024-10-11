@@ -32,7 +32,7 @@
 
 using namespace WebKit;
 
-CGContextRef WKGraphicsContextGetCGContext(WKGraphicsContextRef graphicsContextRef)
+CGContextRef WKGraphicsContextGetCGContext( WKGraphicsContextRef graphicsContextRef )
 {
-    return toImpl(graphicsContextRef)->platformContext();
+    return toImpl( graphicsContextRef )->platformContext();
 }

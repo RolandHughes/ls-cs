@@ -38,24 +38,27 @@ typedef struct CGColorSpace *CGColorSpaceRef;
 typedef struct CGDataProvider *CGDataProviderRef;
 typedef uint32_t CGBitmapInfo;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntSize;
 
-class ImageBufferData {
+class ImageBufferData
+{
 public:
-    ImageBufferData(const IntSize&);
+    ImageBufferData( const IntSize & );
 
-    void* m_data;
-    
+    void *m_data;
+
     RetainPtr<CGDataProviderRef> m_dataProvider;
     CGBitmapInfo m_bitmapInfo;
     unsigned m_bytesPerRow;
     CGColorSpaceRef m_colorSpace;
     RetainPtr<IOSurfaceRef> m_surface;
 
-    PassRefPtr<ByteArray> getData(const IntRect& rect, const IntSize& size, bool accelerateRendering, bool unmultiplied) const;
-    void putData(ByteArray*& source, const IntSize& sourceSize, const IntRect& sourceRect, const IntPoint& destPoint, const IntSize& size, bool accelerateRendering, bool unmultiplied);
+    PassRefPtr<ByteArray> getData( const IntRect &rect, const IntSize &size, bool accelerateRendering, bool unmultiplied ) const;
+    void putData( ByteArray *&source, const IntSize &sourceSize, const IntRect &sourceRect, const IntPoint &destPoint,
+                  const IntSize &size, bool accelerateRendering, bool unmultiplied );
 };
 
 } // namespace WebCore

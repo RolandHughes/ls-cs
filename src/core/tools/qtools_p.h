@@ -28,24 +28,25 @@
 
 #include <limits>
 
-namespace QtMiscUtils {
-
-constexpr inline char toHexUpper(uint value)
+namespace QtMiscUtils
 {
-   return "0123456789ABCDEF"[value & 0xF];
+
+constexpr inline char toHexUpper( uint value )
+{
+    return "0123456789ABCDEF"[value & 0xF];
 }
 
-constexpr inline char toHexLower(uint value)
+constexpr inline char toHexLower( uint value )
 {
-   return "0123456789abcdef"[value & 0xF];
+    return "0123456789abcdef"[value & 0xF];
 }
 
 }   // end namespace
 
 // typically need an extra bit for qNextPowerOfTwo when determining the next allocation size.
-constexpr int MaxAllocSize = (1 << (std::numeric_limits<int>::digits - 1)) - 1;
+constexpr int MaxAllocSize = ( 1 << ( std::numeric_limits<int>::digits - 1 ) ) - 1;
 
 // implemented in qbytearray.cpp
-int Q_CORE_EXPORT qAllocMore(int alloc, int extra);
+int Q_CORE_EXPORT qAllocMore( int alloc, int extra );
 
 #endif

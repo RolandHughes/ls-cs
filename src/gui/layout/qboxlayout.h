@@ -31,92 +31,93 @@ class QBoxLayoutPrivate;
 
 class Q_GUI_EXPORT QBoxLayout : public QLayout
 {
-   GUI_CS_OBJECT(QBoxLayout)
+    GUI_LSCS_OBJECT( QBoxLayout )
 
- public:
-   enum Direction {
-      LeftToRight, RightToLeft, TopToBottom, BottomToTop,
-      Down = TopToBottom, Up = BottomToTop
-   };
+public:
+    enum Direction
+    {
+        LeftToRight, RightToLeft, TopToBottom, BottomToTop,
+        Down = TopToBottom, Up = BottomToTop
+    };
 
-   explicit QBoxLayout(Direction direction, QWidget *parent = nullptr);
+    explicit QBoxLayout( Direction direction, QWidget *parent = nullptr );
 
-   QBoxLayout(const QBoxLayout &) = delete;
-   QBoxLayout &operator=(const QBoxLayout &) = delete;
+    QBoxLayout( const QBoxLayout & ) = delete;
+    QBoxLayout &operator=( const QBoxLayout & ) = delete;
 
-   ~QBoxLayout();
+    ~QBoxLayout();
 
-   Direction direction() const;
-   void setDirection(Direction direction);
+    Direction direction() const;
+    void setDirection( Direction direction );
 
-   void addSpacing(int size);
-   void addStretch(int stretch = 0);
-   void addSpacerItem(QSpacerItem *spacerItem);
-   void addWidget(QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment());
-   void addLayout(QLayout *layout, int stretch = 0);
-   void addStrut(int size);
-   void addItem(QLayoutItem *item) override;
+    void addSpacing( int size );
+    void addStretch( int stretch = 0 );
+    void addSpacerItem( QSpacerItem *spacerItem );
+    void addWidget( QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment() );
+    void addLayout( QLayout *layout, int stretch = 0 );
+    void addStrut( int size );
+    void addItem( QLayoutItem *item ) override;
 
-   void insertSpacing(int index, int size);
-   void insertStretch(int index, int stretch = 0);
-   void insertSpacerItem(int index, QSpacerItem *spacerItem);
-   void insertWidget(int index, QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment());
-   void insertLayout(int index, QLayout *layout, int stretch = 0);
-   void insertItem(int index, QLayoutItem *item);
+    void insertSpacing( int index, int size );
+    void insertStretch( int index, int stretch = 0 );
+    void insertSpacerItem( int index, QSpacerItem *spacerItem );
+    void insertWidget( int index, QWidget *widget, int stretch = 0, Qt::Alignment alignment = Qt::Alignment() );
+    void insertLayout( int index, QLayout *layout, int stretch = 0 );
+    void insertItem( int index, QLayoutItem *item );
 
-   int spacing() const;
-   void setSpacing(int spacing);
+    int spacing() const;
+    void setSpacing( int spacing );
 
-   bool setStretchFactor(QWidget *widget, int stretch);
-   bool setStretchFactor(QLayout *layout, int stretch);
-   void setStretch(int index, int stretch);
-   int stretch(int index) const;
+    bool setStretchFactor( QWidget *widget, int stretch );
+    bool setStretchFactor( QLayout *layout, int stretch );
+    void setStretch( int index, int stretch );
+    int stretch( int index ) const;
 
-   QSize sizeHint() const override;
-   QSize minimumSize() const override;
-   QSize maximumSize() const override;
+    QSize sizeHint() const override;
+    QSize minimumSize() const override;
+    QSize maximumSize() const override;
 
-   bool hasHeightForWidth() const override;
-   int heightForWidth(int width) const override;
-   int minimumHeightForWidth(int width) const override;
+    bool hasHeightForWidth() const override;
+    int heightForWidth( int width ) const override;
+    int minimumHeightForWidth( int width ) const override;
 
-   Qt::Orientations expandingDirections() const override;
-   void invalidate() override;
-   QLayoutItem *itemAt(int index) const override;
-   QLayoutItem *takeAt(int index) override;
-   int count() const override;
-   void setGeometry(const QRect &rect) override;
+    Qt::Orientations expandingDirections() const override;
+    void invalidate() override;
+    QLayoutItem *itemAt( int index ) const override;
+    QLayoutItem *takeAt( int index ) override;
+    int count() const override;
+    void setGeometry( const QRect &rect ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QBoxLayout)
+private:
+    Q_DECLARE_PRIVATE( QBoxLayout )
 };
 
 class Q_GUI_EXPORT QHBoxLayout : public QBoxLayout
 {
-   GUI_CS_OBJECT(QHBoxLayout)
+    GUI_LSCS_OBJECT( QHBoxLayout )
 
- public:
-   QHBoxLayout();
-   explicit QHBoxLayout(QWidget *parent);
+public:
+    QHBoxLayout();
+    explicit QHBoxLayout( QWidget *parent );
 
-   QHBoxLayout(const QHBoxLayout &) = delete;
-   QHBoxLayout &operator=(const QHBoxLayout &) = delete;
+    QHBoxLayout( const QHBoxLayout & ) = delete;
+    QHBoxLayout &operator=( const QHBoxLayout & ) = delete;
 
-   ~QHBoxLayout();
+    ~QHBoxLayout();
 };
 
 class Q_GUI_EXPORT QVBoxLayout : public QBoxLayout
 {
-   GUI_CS_OBJECT(QVBoxLayout)
+    GUI_LSCS_OBJECT( QVBoxLayout )
 
- public:
-   QVBoxLayout();
-   explicit QVBoxLayout(QWidget *parent);
+public:
+    QVBoxLayout();
+    explicit QVBoxLayout( QWidget *parent );
 
-   QVBoxLayout(const QVBoxLayout &) = delete;
-   QVBoxLayout &operator=(const QVBoxLayout &) = delete;
+    QVBoxLayout( const QVBoxLayout & ) = delete;
+    QVBoxLayout &operator=( const QVBoxLayout & ) = delete;
 
-   ~QVBoxLayout();
+    ~QVBoxLayout();
 };
 
 #endif

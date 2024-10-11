@@ -34,19 +34,23 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKPluginSiteDataManagerGetTypeID();
 
-typedef void (*WKPluginSiteDataManagerGetSitesWithDataFunction)(WKArrayRef, WKErrorRef, void*);
-WK_EXPORT void WKPluginSiteDataManagerGetSitesWithData(WKPluginSiteDataManagerRef manager, void* context, WKPluginSiteDataManagerGetSitesWithDataFunction function);
+typedef void ( *WKPluginSiteDataManagerGetSitesWithDataFunction )( WKArrayRef, WKErrorRef, void * );
+WK_EXPORT void WKPluginSiteDataManagerGetSitesWithData( WKPluginSiteDataManagerRef manager, void *context,
+        WKPluginSiteDataManagerGetSitesWithDataFunction function );
 
-enum {
+enum
+{
     kWKClearSiteDataFlagsClearAll = 0,
     kWKClearSiteDataFlagsClearCache = 1 << 0,
 };
 typedef uint64_t WKClearSiteDataFlags;
 
-typedef void (*WKPluginSiteDataManagerClearSiteDataFunction)(WKErrorRef, void*);
+typedef void ( *WKPluginSiteDataManagerClearSiteDataFunction )( WKErrorRef, void * );
 
-WK_EXPORT void WKPluginSiteDataManagerClearSiteData(WKPluginSiteDataManagerRef manager, WKArrayRef sites, WKClearSiteDataFlags flags, uint64_t maxAgeInSeconds, void* context, WKPluginSiteDataManagerClearSiteDataFunction function);
-WK_EXPORT void WKPluginSiteDataManagerClearAllSiteData(WKPluginSiteDataManagerRef manager, void* context, WKPluginSiteDataManagerClearSiteDataFunction function);
+WK_EXPORT void WKPluginSiteDataManagerClearSiteData( WKPluginSiteDataManagerRef manager, WKArrayRef sites,
+        WKClearSiteDataFlags flags, uint64_t maxAgeInSeconds, void *context, WKPluginSiteDataManagerClearSiteDataFunction function );
+WK_EXPORT void WKPluginSiteDataManagerClearAllSiteData( WKPluginSiteDataManagerRef manager, void *context,
+        WKPluginSiteDataManagerClearSiteDataFunction function );
 
 #ifdef __cplusplus
 }

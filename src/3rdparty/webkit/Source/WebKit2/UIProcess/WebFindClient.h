@@ -30,15 +30,17 @@
 #include "WKPage.h"
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageProxy;
 
-class WebFindClient : public APIClient<WKPageFindClient> {
+class WebFindClient : public APIClient<WKPageFindClient>
+{
 public:
-    void didFindString(WebPageProxy*, const String&, uint32_t matchCount);
-    void didFailToFindString(WebPageProxy*, const String&);
-    void didCountStringMatches(WebPageProxy*, const String&, uint32_t matchCount);
+    void didFindString( WebPageProxy *, const String &, uint32_t matchCount );
+    void didFailToFindString( WebPageProxy *, const String & );
+    void didCountStringMatches( WebPageProxy *, const String &, uint32_t matchCount );
 };
 
 } // namespace WebKit

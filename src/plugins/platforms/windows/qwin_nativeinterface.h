@@ -29,57 +29,58 @@
 
 class QWindowsNativeInterface : public QPlatformNativeInterface
 {
-   CS_OBJECT(QWindowsNativeInterface)
+    LSCS_OBJECT( QWindowsNativeInterface )
 
-   CS_PROPERTY_READ(asyncExpose, asyncExpose)
-   CS_PROPERTY_WRITE(asyncExpose, setAsyncExpose)
+    LSCS_PROPERTY_READ( asyncExpose, asyncExpose )
+    LSCS_PROPERTY_WRITE( asyncExpose, setAsyncExpose )
 
-   CS_PROPERTY_READ(gpu, gpu)
-   CS_PROPERTY_STORED(gpu, false)
+    LSCS_PROPERTY_READ( gpu, gpu )
+    LSCS_PROPERTY_STORED( gpu, false )
 
- public:
-   using FP_Void = void(*)();
+public:
+    using FP_Void = void( * )();
 
-   void *nativeResourceForIntegration(const QByteArray &resource) override;
+    void *nativeResourceForIntegration( const QByteArray &resource ) override;
 
 #ifndef QT_NO_OPENGL
-   void *nativeResourceForContext(const QByteArray &resource, QOpenGLContext *context) override;
+    void *nativeResourceForContext( const QByteArray &resource, QOpenGLContext *context ) override;
 #endif
 
-   void *nativeResourceForWindow(const QByteArray &resource, QWindow *window) override;
+    void *nativeResourceForWindow( const QByteArray &resource, QWindow *window ) override;
 
-   CS_INVOKABLE_METHOD_1(Public, void *createMessageWindow(const QString &classNameTemplate, const QString &windowName, void *eventProc) const )
-   CS_INVOKABLE_METHOD_2(createMessageWindow)
+    LSCS_INVOKABLE_METHOD_1( Public, void *createMessageWindow( const QString &classNameTemplate, const QString &windowName,
+                           void *eventProc ) const )
+    LSCS_INVOKABLE_METHOD_2( createMessageWindow )
 
-   CS_INVOKABLE_METHOD_1(Public, QString registerWindowClass(const QString &classNameIn, void *eventProc) const)
-   CS_INVOKABLE_METHOD_2(registerWindowClass)
+    LSCS_INVOKABLE_METHOD_1( Public, QString registerWindowClass( const QString &classNameIn, void *eventProc ) const )
+    LSCS_INVOKABLE_METHOD_2( registerWindowClass )
 
-   CS_INVOKABLE_METHOD_1(Public, void beep())
-   CS_INVOKABLE_METHOD_2(beep)
+    LSCS_INVOKABLE_METHOD_1( Public, void beep() )
+    LSCS_INVOKABLE_METHOD_2( beep )
 
-   CS_INVOKABLE_METHOD_1(Public, void registerWindowsMime(void *mimeIn))
-   CS_INVOKABLE_METHOD_2(registerWindowsMime)
+    LSCS_INVOKABLE_METHOD_1( Public, void registerWindowsMime( void *mimeIn ) )
+    LSCS_INVOKABLE_METHOD_2( registerWindowsMime )
 
-   CS_INVOKABLE_METHOD_1(Public, void unregisterWindowsMime(void *mime))
-   CS_INVOKABLE_METHOD_2(unregisterWindowsMime)
+    LSCS_INVOKABLE_METHOD_1( Public, void unregisterWindowsMime( void *mime ) )
+    LSCS_INVOKABLE_METHOD_2( unregisterWindowsMime )
 
-   CS_INVOKABLE_METHOD_1(Public, int registerMimeType(const QString &mimeType))
-   CS_INVOKABLE_METHOD_2(registerMimeType)
+    LSCS_INVOKABLE_METHOD_1( Public, int registerMimeType( const QString &mimeType ) )
+    LSCS_INVOKABLE_METHOD_2( registerMimeType )
 
-   CS_INVOKABLE_METHOD_1(Public, QFont logFontToQFont(const void *logFont, int verticalDpi))
-   CS_INVOKABLE_METHOD_2(logFontToQFont)
+    LSCS_INVOKABLE_METHOD_1( Public, QFont logFontToQFont( const void *logFont, int verticalDpi ) )
+    LSCS_INVOKABLE_METHOD_2( logFontToQFont )
 
-   bool asyncExpose() const;
-   void setAsyncExpose(bool value);
+    bool asyncExpose() const;
+    void setAsyncExpose( bool value );
 
-   QVariant gpu() const;
+    QVariant gpu() const;
 
-   QVariantMap windowProperties(QPlatformWindow *window) const override;
-   QVariant windowProperty(QPlatformWindow *window, const QString &name) const override;
-   QVariant windowProperty(QPlatformWindow *window, const QString &name, const QVariant &defaultValue) const override;
-   void setWindowProperty(QPlatformWindow *window, const QString &name, const QVariant &value) override;
+    QVariantMap windowProperties( QPlatformWindow *window ) const override;
+    QVariant windowProperty( QPlatformWindow *window, const QString &name ) const override;
+    QVariant windowProperty( QPlatformWindow *window, const QString &name, const QVariant &defaultValue ) const override;
+    void setWindowProperty( QPlatformWindow *window, const QString &name, const QVariant &value ) override;
 
-   FP_Void platformFunction(const QByteArray &function) const override;
+    FP_Void platformFunction( const QByteArray &function ) const override;
 };
 
 #endif

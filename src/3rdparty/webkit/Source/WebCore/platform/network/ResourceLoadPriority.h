@@ -26,9 +26,11 @@
 #ifndef ResourceLoadPriority_h
 #define ResourceLoadPriority_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ResourceLoadPriority {
+enum ResourceLoadPriority
+{
     // The unresolved priority is here for the convenience of the clients. It should not be passed to the ResourceLoadScheduler.
     ResourceLoadPriorityUnresolved = -1,
     ResourceLoadPriorityVeryLow = 0,

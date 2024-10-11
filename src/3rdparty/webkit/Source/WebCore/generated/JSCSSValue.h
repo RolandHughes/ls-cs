@@ -26,27 +26,33 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSValue;
 
-class JSCSSValue : public JSDOMWrapper {
+class JSCSSValue : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSCSSValue(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<CSSValue>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSCSSValue( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<CSSValue> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    CSSValue* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    CSSValue *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<CSSValue> m_impl;
@@ -54,53 +60,57 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSCSSValueOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSCSSValueOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, CSSValue*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, CSSValue * )
 {
-    DEFINE_STATIC_LOCAL(JSCSSValueOwner, jsCSSValueOwner, ());
+    DEFINE_STATIC_LOCAL( JSCSSValueOwner, jsCSSValueOwner, () );
     return &jsCSSValueOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, CSSValue*)
+inline void *wrapperContext( DOMWrapperWorld *world, CSSValue * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, CSSValue*);
-CSSValue* toCSSValue(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, CSSValue * );
+CSSValue *toCSSValue( JSC::JSValue );
 
-class JSCSSValuePrototype : public JSC::JSObjectWithGlobalObject {
+class JSCSSValuePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCSSValuePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCSSValuePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                         JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsCSSValueCssText(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSCSSValueCssText(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsCSSValueCssValueType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSValueConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCSSValueCssText( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSCSSValueCssText( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsCSSValueCssValueType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSValueConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsCSSValueCSS_INHERIT(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSValueCSS_PRIMITIVE_VALUE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSValueCSS_VALUE_LIST(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSValueCSS_CUSTOM(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCSSValueCSS_INHERIT( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSValueCSS_PRIMITIVE_VALUE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSValueCSS_VALUE_LIST( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSValueCSS_CUSTOM( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

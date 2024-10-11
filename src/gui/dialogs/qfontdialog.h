@@ -34,90 +34,91 @@ class QFontDialogPrivate;
 
 class Q_GUI_EXPORT QFontDialog : public QDialog
 {
-   GUI_CS_OBJECT(QFontDialog)
-   Q_DECLARE_PRIVATE(QFontDialog)
+    GUI_LSCS_OBJECT( QFontDialog )
+    Q_DECLARE_PRIVATE( QFontDialog )
 
-   GUI_CS_ENUM(FontDialogOption)
+    GUI_LSCS_ENUM( FontDialogOption )
 
-   GUI_CS_PROPERTY_READ(currentFont, currentFont)
-   GUI_CS_PROPERTY_WRITE(currentFont, setCurrentFont)
-   GUI_CS_PROPERTY_NOTIFY(currentFont, currentFontChanged)
+    GUI_LSCS_PROPERTY_READ( currentFont, currentFont )
+    GUI_LSCS_PROPERTY_WRITE( currentFont, setCurrentFont )
+    GUI_LSCS_PROPERTY_NOTIFY( currentFont, currentFontChanged )
 
-   GUI_CS_PROPERTY_READ(options, options)
-   GUI_CS_PROPERTY_WRITE(options, setOptions)
+    GUI_LSCS_PROPERTY_READ( options, options )
+    GUI_LSCS_PROPERTY_WRITE( options, setOptions )
 
- public:
-   enum FontDialogOption {
-      NoButtons           = 0x00000001,
-      DontUseNativeDialog = 0x00000002,
-      ScalableFonts       = 0x00000004,
-      NonScalableFonts    = 0x00000008,
-      MonospacedFonts     = 0x00000010,
-      ProportionalFonts   = 0x00000020
-   };
-   using FontDialogOptions = QFlags<FontDialogOption>;
+public:
+    enum FontDialogOption
+    {
+        NoButtons           = 0x00000001,
+        DontUseNativeDialog = 0x00000002,
+        ScalableFonts       = 0x00000004,
+        NonScalableFonts    = 0x00000008,
+        MonospacedFonts     = 0x00000010,
+        ProportionalFonts   = 0x00000020
+    };
+    using FontDialogOptions = QFlags<FontDialogOption>;
 
-   explicit QFontDialog(QWidget *parent = nullptr);
-   explicit QFontDialog(const QFont &initial, QWidget *parent = nullptr);
+    explicit QFontDialog( QWidget *parent = nullptr );
+    explicit QFontDialog( const QFont &initial, QWidget *parent = nullptr );
 
-   QFontDialog(const QFontDialog &) = delete;
-   QFontDialog &operator=(const QFontDialog &) = delete;
+    QFontDialog( const QFontDialog & ) = delete;
+    QFontDialog &operator=( const QFontDialog & ) = delete;
 
-   ~QFontDialog();
+    ~QFontDialog();
 
-   void setCurrentFont(const QFont &font);
-   QFont currentFont() const;
+    void setCurrentFont( const QFont &font );
+    QFont currentFont() const;
 
-   QFont selectedFont() const;
+    QFont selectedFont() const;
 
-   void setOption(FontDialogOption option, bool on = true);
-   bool testOption(FontDialogOption option) const;
-   void setOptions(FontDialogOptions options);
-   FontDialogOptions options() const;
+    void setOption( FontDialogOption option, bool on = true );
+    bool testOption( FontDialogOption option ) const;
+    void setOptions( FontDialogOptions options );
+    FontDialogOptions options() const;
 
-   using QDialog::open;
-   void open(QObject *receiver, const QString &member);
+    using QDialog::open;
+    void open( QObject *receiver, const QString &member );
 
-   void setVisible(bool visible) override;
+    void setVisible( bool visible ) override;
 
-   static QFont getFont(bool *ok, const QFont &initial, QWidget *parent = nullptr, const QString &title = QString(),
-      FontDialogOptions options = FontDialogOptions());
+    static QFont getFont( bool *ok, const QFont &initial, QWidget *parent = nullptr, const QString &title = QString(),
+                          FontDialogOptions options = FontDialogOptions() );
 
-   static QFont getFont(bool *ok, QWidget *parent = nullptr);
+    static QFont getFont( bool *ok, QWidget *parent = nullptr );
 
-   GUI_CS_SIGNAL_1(Public, void currentFontChanged(const QFont &font))
-   GUI_CS_SIGNAL_2(currentFontChanged, font)
+    GUI_LSCS_SIGNAL_1( Public, void currentFontChanged( const QFont &font ) )
+    GUI_LSCS_SIGNAL_2( currentFontChanged, font )
 
-   GUI_CS_SIGNAL_1(Public, void fontSelected(const QFont &font))
-   GUI_CS_SIGNAL_2(fontSelected, font)
+    GUI_LSCS_SIGNAL_1( Public, void fontSelected( const QFont &font ) )
+    GUI_LSCS_SIGNAL_2( fontSelected, font )
 
- protected:
-   void changeEvent(QEvent *event) override;
-   void done(int result) override;
+protected:
+    void changeEvent( QEvent *event ) override;
+    void done( int result ) override;
 
-   bool eventFilter(QObject *object, QEvent *event) override;
+    bool eventFilter( QObject *object, QEvent *event ) override;
 
- private:
-   GUI_CS_SLOT_1(Private, void _q_sizeChanged(const QString &data))
-   GUI_CS_SLOT_2(_q_sizeChanged)
+private:
+    GUI_LSCS_SLOT_1( Private, void _q_sizeChanged( const QString &data ) )
+    GUI_LSCS_SLOT_2( _q_sizeChanged )
 
-   GUI_CS_SLOT_1(Private, void _q_familyHighlighted(int data))
-   GUI_CS_SLOT_2(_q_familyHighlighted)
+    GUI_LSCS_SLOT_1( Private, void _q_familyHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_familyHighlighted )
 
-   GUI_CS_SLOT_1(Private, void _q_writingSystemHighlighted(int data))
-   GUI_CS_SLOT_2(_q_writingSystemHighlighted)
+    GUI_LSCS_SLOT_1( Private, void _q_writingSystemHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_writingSystemHighlighted )
 
-   GUI_CS_SLOT_1(Private, void _q_styleHighlighted(int data))
-   GUI_CS_SLOT_2(_q_styleHighlighted)
+    GUI_LSCS_SLOT_1( Private, void _q_styleHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_styleHighlighted )
 
-   GUI_CS_SLOT_1(Private, void _q_sizeHighlighted(int data))
-   GUI_CS_SLOT_2(_q_sizeHighlighted)
+    GUI_LSCS_SLOT_1( Private, void _q_sizeHighlighted( int data ) )
+    GUI_LSCS_SLOT_2( _q_sizeHighlighted )
 
-   GUI_CS_SLOT_1(Private, void _q_updateSample())
-   GUI_CS_SLOT_2(_q_updateSample)
+    GUI_LSCS_SLOT_1( Private, void _q_updateSample() )
+    GUI_LSCS_SLOT_2( _q_updateSample )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QFontDialog::FontDialogOptions)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QFontDialog::FontDialogOptions )
 
 #endif // QT_NO_FONTDIALOG
 

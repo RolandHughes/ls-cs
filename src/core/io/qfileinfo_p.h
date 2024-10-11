@@ -36,121 +36,134 @@
 
 class QFileInfoPrivate : public QSharedData
 {
- public:
-   enum CachedFlags {
-      CachedFileFlags      = 0x01,
-      CachedLinkTypeFlag   = 0x02,
-      CachedBundleTypeFlag = 0x04,
-      CachedMTime          = 0x10,
-      CachedCTime          = 0x20,
-      CachedATime          = 0x40,
-      CachedSize           = 0x08,
-      CachedPerms          = 0x80
-   };
+public:
+    enum CachedFlags
+    {
+        CachedFileFlags      = 0x01,
+        CachedLinkTypeFlag   = 0x02,
+        CachedBundleTypeFlag = 0x04,
+        CachedMTime          = 0x10,
+        CachedCTime          = 0x20,
+        CachedATime          = 0x40,
+        CachedSize           = 0x08,
+        CachedPerms          = 0x80
+    };
 
-   QFileInfoPrivate()
-      : QSharedData(), fileEngine(nullptr), cachedFlags(0), isDefaultConstructed(true),
-        cache_enabled(true), fileFlags(0), fileSize(0)
-   {
-   }
+    QFileInfoPrivate()
+        : QSharedData(), fileEngine( nullptr ), cachedFlags( 0 ), isDefaultConstructed( true ),
+          cache_enabled( true ), fileFlags( 0 ), fileSize( 0 )
+    {
+    }
 
-   QFileInfoPrivate(const QFileInfoPrivate &copy)
-      : QSharedData(copy), fileEntry(copy.fileEntry), metaData(copy.metaData),
-        fileEngine(QFileSystemEngine::resolveEntryAndCreateLegacyEngine(fileEntry, metaData)),
-        cachedFlags(0),
-
-#ifndef QT_NO_FSFILEENGINE
-        isDefaultConstructed(false),
-#else
-        isDefaultConstructed(! fileEngine),
-#endif
-
-        cache_enabled(copy.cache_enabled), fileFlags(0), fileSize(0) {
-   }
-
-   QFileInfoPrivate(const QString &file)
-      : fileEntry(QDir::fromNativeSeparators(file)),
-        fileEngine(QFileSystemEngine::resolveEntryAndCreateLegacyEngine(fileEntry, metaData)),
-        cachedFlags(0),
+    QFileInfoPrivate( const QFileInfoPrivate &copy )
+        : QSharedData( copy ), fileEntry( copy.fileEntry ), metaData( copy.metaData ),
+          fileEngine( QFileSystemEngine::resolveEntryAndCreateLegacyEngine( fileEntry, metaData ) ),
+          cachedFlags( 0 ),
 
 #ifndef QT_NO_FSFILEENGINE
-        isDefaultConstructed(false),
+          isDefaultConstructed( false ),
 #else
-        isDefaultConstructed(! fileEngine),
+          isDefaultConstructed( ! fileEngine ),
 #endif
 
-        cache_enabled(true), fileFlags(0), fileSize(0)
-   {  }
+          cache_enabled( copy.cache_enabled ), fileFlags( 0 ), fileSize( 0 )
+    {
+    }
 
-   QFileInfoPrivate(const QFileSystemEntry &file, const QFileSystemMetaData &data)
-      : QSharedData(), fileEntry(file), metaData(data),
-        fileEngine(QFileSystemEngine::resolveEntryAndCreateLegacyEngine(fileEntry, metaData)),
-        cachedFlags(0), isDefaultConstructed(false), cache_enabled(true), fileFlags(0), fileSize(0)
+    QFileInfoPrivate( const QString &file )
+        : fileEntry( QDir::fromNativeSeparators( file ) ),
+          fileEngine( QFileSystemEngine::resolveEntryAndCreateLegacyEngine( fileEntry, metaData ) ),
+          cachedFlags( 0 ),
+
+#ifndef QT_NO_FSFILEENGINE
+          isDefaultConstructed( false ),
+#else
+          isDefaultConstructed( ! fileEngine ),
+#endif
+
+          cache_enabled( true ), fileFlags( 0 ), fileSize( 0 )
+    {  }
+
+    QFileInfoPrivate( const QFileSystemEntry &file, const QFileSystemMetaData &data )
+        : QSharedData(), fileEntry( file ), metaData( data ),
+          fileEngine( QFileSystemEngine::resolveEntryAndCreateLegacyEngine( fileEntry, metaData ) ),
+          cachedFlags( 0 ), isDefaultConstructed( false ), cache_enabled( true ), fileFlags( 0 ), fileSize( 0 )
     {
 
-      // If the file engine is not null, this maybe a "mount point" for a custom file engine
-      // in which case we can not trust the metadata
-      if (fileEngine) {
-         metaData = QFileSystemMetaData();
-      }
-   }
+        // If the file engine is not null, this maybe a "mount point" for a custom file engine
+        // in which case we can not trust the metadata
+        if ( fileEngine )
+        {
+            metaData = QFileSystemMetaData();
+        }
+    }
 
-   void clearFlags() const {
-      fileFlags   = 0;
-      cachedFlags = 0;
+    void clearFlags() const
+    {
+        fileFlags   = 0;
+        cachedFlags = 0;
 
-      if (fileEngine) {
-         (void)fileEngine->fileFlags(QAbstractFileEngine::Refresh);
-      }
-   }
+        if ( fileEngine )
+        {
+            ( void )fileEngine->fileFlags( QAbstractFileEngine::Refresh );
+        }
+    }
 
-   void clear() {
-      metaData.clear();
-      clearFlags();
+    void clear()
+    {
+        metaData.clear();
+        clearFlags();
 
-      for (int i = QAbstractFileEngine::NFileNames - 1 ; i >= 0 ; --i) {
-         fileNames[i].clear();
-      }
+        for ( int i = QAbstractFileEngine::NFileNames - 1 ; i >= 0 ; --i )
+        {
+            fileNames[i].clear();
+        }
 
-      fileOwners[1].clear();
-      fileOwners[0].clear();
-   }
+        fileOwners[1].clear();
+        fileOwners[0].clear();
+    }
 
-   uint getFileFlags(QAbstractFileEngine::FileFlags) const;
-   QDateTime &getFileTime(QAbstractFileEngine::FileTime) const;
-   QString getFileName(QAbstractFileEngine::FileName) const;
-   QString getFileOwner(QAbstractFileEngine::FileOwner own) const;
+    uint getFileFlags( QAbstractFileEngine::FileFlags ) const;
+    QDateTime &getFileTime( QAbstractFileEngine::FileTime ) const;
+    QString getFileName( QAbstractFileEngine::FileName ) const;
+    QString getFileOwner( QAbstractFileEngine::FileOwner own ) const;
 
-   QFileSystemEntry fileEntry;
-   mutable QFileSystemMetaData metaData;
+    QFileSystemEntry fileEntry;
+    mutable QFileSystemMetaData metaData;
 
-   QScopedPointer<QAbstractFileEngine> const fileEngine;
+    QScopedPointer<QAbstractFileEngine> const fileEngine;
 
-   mutable QString fileNames[QAbstractFileEngine::NFileNames];
-   mutable QString fileOwners[2];
+    mutable QString fileNames[QAbstractFileEngine::NFileNames];
+    mutable QString fileOwners[2];
 
-   mutable uint cachedFlags;
+    mutable uint cachedFlags;
 
-   bool const isDefaultConstructed : 1;
-   bool cache_enabled : 1;
+    bool const isDefaultConstructed : 1;
+    bool cache_enabled : 1;
 
-   mutable uint fileFlags;
-   mutable qint64 fileSize;
-   mutable QDateTime fileTimes[3];
+    mutable uint fileFlags;
+    mutable qint64 fileSize;
+    mutable QDateTime fileTimes[3];
 
-   bool getCachedFlag(uint c) const {
-      if (cache_enabled) {
-         return (cachedFlags & c);
-      } else {
-         return false;
-      }
-   }
+    bool getCachedFlag( uint c ) const
+    {
+        if ( cache_enabled )
+        {
+            return ( cachedFlags & c );
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-   void setCachedFlag(uint c) const {
-      if (cache_enabled) {
-         cachedFlags |= c;
-      }
-   }
+    void setCachedFlag( uint c ) const
+    {
+        if ( cache_enabled )
+        {
+            cachedFlags |= c;
+        }
+    }
 };
 
 #endif

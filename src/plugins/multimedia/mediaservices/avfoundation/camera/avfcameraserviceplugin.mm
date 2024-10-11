@@ -28,7 +28,7 @@
 #include <qmediaservice_provider_plugin.h>
 #include <string.h>
 
-CS_PLUGIN_REGISTER(AVFServicePlugin)
+LSCS_PLUGIN_REGISTER(AVFServicePlugin)
 
 AVFServicePlugin::AVFServicePlugin()
 {

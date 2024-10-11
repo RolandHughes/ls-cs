@@ -31,42 +31,45 @@
 
 class QDesktopScreenWidget : public QWidget
 {
-   GUI_CS_OBJECT(QDesktopScreenWidget)
+    GUI_LSCS_OBJECT( QDesktopScreenWidget )
 
- public:
-   explicit QDesktopScreenWidget(QScreen *screen, const QRect &geometry);
+public:
+    explicit QDesktopScreenWidget( QScreen *screen, const QRect &geometry );
 
-   int screenNumber() const;
-   void setScreenGeometry(const QRect &geometry);
+    int screenNumber() const;
+    void setScreenGeometry( const QRect &geometry );
 
-   QScreen *screen() const {
-      return m_screen.data();
-   }
-   QRect screenGeometry() const {
-      return m_geometry;
-   }
+    QScreen *screen() const
+    {
+        return m_screen.data();
+    }
+    QRect screenGeometry() const
+    {
+        return m_geometry;
+    }
 
- private:
-   // The widget updates its screen and geometry automatically. We need to save them separately
-   // to detect changes, and trigger the appropriate signals.
-   const QPointer<QScreen> m_screen;
-   QRect m_geometry;
+private:
+    // The widget updates its screen and geometry automatically. We need to save them separately
+    // to detect changes, and trigger the appropriate signals.
+    const QPointer<QScreen> m_screen;
+    QRect m_geometry;
 };
 
 class QDesktopWidgetPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QDesktopWidget)
+    Q_DECLARE_PUBLIC( QDesktopWidget )
 
- public:
-   ~QDesktopWidgetPrivate() {
-      qDeleteAll(screens);
-   }
+public:
+    ~QDesktopWidgetPrivate()
+    {
+        qDeleteAll( screens );
+    }
 
-   void _q_updateScreens();
-   void _q_availableGeometryChanged();
-   QDesktopScreenWidget *widgetForScreen(QScreen *qScreen) const;
+    void _q_updateScreens();
+    void _q_availableGeometryChanged();
+    QDesktopScreenWidget *widgetForScreen( QScreen *qScreen ) const;
 
-   QList<QDesktopScreenWidget *> screens;
+    QList<QDesktopScreenWidget *> screens;
 };
 
 #endif

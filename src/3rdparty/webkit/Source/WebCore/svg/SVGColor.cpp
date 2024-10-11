@@ -28,22 +28,25 @@
 #include "RGBColor.h"
 #include "SVGException.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SVGColor::SVGColor(const SVGColorType& colorType)
-    : m_colorType(colorType)
+SVGColor::SVGColor( const SVGColorType &colorType )
+    : m_colorType( colorType )
 {
 }
 
 PassRefPtr<RGBColor> SVGColor::rgbColor() const
 {
-    return RGBColor::create(m_color.rgb());
+    return RGBColor::create( m_color.rgb() );
 }
 
-void SVGColor::setRGBColor(const String& rgbColor, ExceptionCode& ec)
+void SVGColor::setRGBColor( const String &rgbColor, ExceptionCode &ec )
 {
-    Color color = SVGColor::colorFromRGBColorString(rgbColor);
-    if (!color.isValid()) {
+    Color color = SVGColor::colorFromRGBColorString( rgbColor );
+
+    if ( !color.isValid() )
+    {
         ec = SVGException::SVG_INVALID_VALUE_ERR;
         return;
     }
@@ -53,34 +56,43 @@ void SVGColor::setRGBColor(const String& rgbColor, ExceptionCode& ec)
     setNeedsStyleRecalc();
 }
 
-Color SVGColor::colorFromRGBColorString(const String& colorString)
+Color SVGColor::colorFromRGBColorString( const String &colorString )
 {
     // FIXME: Rework css parser so it is more SVG aware.
     RGBA32 color;
-    if (CSSParser::parseColor(color, colorString.stripWhiteSpace()))
+
+    if ( CSSParser::parseColor( color, colorString.stripWhiteSpace() ) )
+    {
         return color;
+    }
+
     return Color();
 }
 
-void SVGColor::setRGBColorICCColor(const String& rgbColor, const String& iccColor, ExceptionCode& ec)
+void SVGColor::setRGBColorICCColor( const String &rgbColor, const String &iccColor, ExceptionCode &ec )
 {
-    if (rgbColor.isEmpty() || iccColor.isEmpty()) {
+    if ( rgbColor.isEmpty() || iccColor.isEmpty() )
+    {
         ec = SVGException::SVG_INVALID_VALUE_ERR;
         return;
     }
 
     // FIXME: No support for ICC colors. We're just ignoring it.
-    setRGBColor(rgbColor, ec);
-    if (ec)
+    setRGBColor( rgbColor, ec );
+
+    if ( ec )
+    {
         return;
+    }
 
     m_colorType = SVG_COLORTYPE_RGBCOLOR_ICCCOLOR;
     setNeedsStyleRecalc();
 }
 
-void SVGColor::setColor(unsigned short colorType, const String& rgbColor, const String& iccColor, ExceptionCode& ec)
+void SVGColor::setColor( unsigned short colorType, const String &rgbColor, const String &iccColor, ExceptionCode &ec )
 {
-    if (colorType > SVG_COLORTYPE_CURRENTCOLOR) {
+    if ( colorType > SVG_COLORTYPE_CURRENTCOLOR )
+    {
         ec = SVGException::SVG_WRONG_TYPE_ERR;
         return;
     }
@@ -88,60 +100,79 @@ void SVGColor::setColor(unsigned short colorType, const String& rgbColor, const 
     bool requiresRGBColor = false;
     bool requiresICCColor = false;
 
-    SVGColorType type = static_cast<SVGColorType>(colorType);
-    switch (type) {
-    case SVG_COLORTYPE_UNKNOWN:
-        // Spec: It is invalid to attempt to define a new value of this type or to attempt to switch an existing value to this type.
-        ec = SVGException::SVG_INVALID_VALUE_ERR;
-        return;
-    case SVG_COLORTYPE_RGBCOLOR_ICCCOLOR:
-        requiresICCColor = true;
-    case SVG_COLORTYPE_RGBCOLOR:
-        requiresRGBColor = true;
-        break;
-    case SVG_COLORTYPE_CURRENTCOLOR:
-        break;
+    SVGColorType type = static_cast<SVGColorType>( colorType );
+
+    switch ( type )
+    {
+        case SVG_COLORTYPE_UNKNOWN:
+            // Spec: It is invalid to attempt to define a new value of this type or to attempt to switch an existing value to this type.
+            ec = SVGException::SVG_INVALID_VALUE_ERR;
+            return;
+
+        case SVG_COLORTYPE_RGBCOLOR_ICCCOLOR:
+            requiresICCColor = true;
+
+        case SVG_COLORTYPE_RGBCOLOR:
+            requiresRGBColor = true;
+            break;
+
+        case SVG_COLORTYPE_CURRENTCOLOR:
+            break;
     }
 
     // Spec: If colorType requires an RGBColor, then rgbColor must be a string that matches <color>; otherwise, rgbColor must be null.
-    if (requiresRGBColor && rgbColor.isEmpty()) {
+    if ( requiresRGBColor && rgbColor.isEmpty() )
+    {
         ec = SVGException::SVG_INVALID_VALUE_ERR;
         return;
     }
 
     // Spec: If colorType requires an SVGICCColor, then iccColor must be a string that matches <icccolor>; otherwise, iccColor must be null.
-    if (requiresICCColor && iccColor.isEmpty()) {
+    if ( requiresICCColor && iccColor.isEmpty() )
+    {
         ec = SVGException::SVG_INVALID_VALUE_ERR;
         return;
     }
 
     setNeedsStyleRecalc();
     m_colorType = type;
-    if (!requiresRGBColor) {
-        ASSERT(!requiresICCColor);
+
+    if ( !requiresRGBColor )
+    {
+        ASSERT( !requiresICCColor );
         m_color = Color();
         return;
     }
 
-    if (requiresICCColor)
-        setRGBColorICCColor(rgbColor, iccColor, ec);
+    if ( requiresICCColor )
+    {
+        setRGBColorICCColor( rgbColor, iccColor, ec );
+    }
     else
-        setRGBColor(rgbColor, ec);
+    {
+        setRGBColor( rgbColor, ec );
+    }
 }
 
 String SVGColor::cssText() const
 {
-    switch (m_colorType) {
-    case SVG_COLORTYPE_UNKNOWN:
-        return String();
-    case SVG_COLORTYPE_RGBCOLOR_ICCCOLOR:
-    case SVG_COLORTYPE_RGBCOLOR:
-        // FIXME: No ICC color support.
-        return m_color.serialized();
-    case SVG_COLORTYPE_CURRENTCOLOR:
-        if (m_color.isValid())
+    switch ( m_colorType )
+    {
+        case SVG_COLORTYPE_UNKNOWN:
+            return String();
+
+        case SVG_COLORTYPE_RGBCOLOR_ICCCOLOR:
+        case SVG_COLORTYPE_RGBCOLOR:
+            // FIXME: No ICC color support.
             return m_color.serialized();
-        return "currentColor";
+
+        case SVG_COLORTYPE_CURRENTCOLOR:
+            if ( m_color.isValid() )
+            {
+                return m_color.serialized();
+            }
+
+            return "currentColor";
     }
 
     ASSERT_NOT_REACHED();

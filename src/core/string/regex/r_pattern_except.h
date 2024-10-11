@@ -24,57 +24,66 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_PATTERN_EXCEPT_H
-#define CS_PATTERN_EXCEPT_H
+#ifndef LSCS_PATTERN_EXCEPT_H
+#define LSCS_PATTERN_EXCEPT_H
 
 #include <regex/r_config.h>
 
 #include <stdexcept>
 #include <cstddef>
 
-namespace cs_regex_ns {
-
-class LIB_CS_STRING_EXPORT regex_error : public std::runtime_error
+namespace lscs_regex_ns
 {
- public:
-   explicit regex_error(const std::string &s, regex_constants::error_type err = regex_constants::error_unknown, std::ptrdiff_t pos = 0)
-      : std::runtime_error(s), m_error_code(err), m_position(pos) {
-   }
 
-   explicit regex_error(regex_constants::error_type err)
-      : std::runtime_error(cs_regex_ns::cs_regex_detail_ns::get_default_error_string(err)), m_error_code(err), m_position(0) {
-   }
+class LIB_LSCS_STRING_EXPORT regex_error : public std::runtime_error
+{
+public:
+    explicit regex_error( const std::string &s, regex_constants::error_type err = regex_constants::error_unknown,
+                          std::ptrdiff_t pos = 0 )
+        : std::runtime_error( s ), m_error_code( err ), m_position( pos )
+    {
+    }
 
-   ~regex_error() noexcept {
-   }
+    explicit regex_error( regex_constants::error_type err )
+        : std::runtime_error( lscs_regex_ns::lscs_regex_detail_ns::get_default_error_string( err ) ), m_error_code( err ), m_position( 0 )
+    {
+    }
 
-   regex_constants::error_type code() const {
-      return m_error_code;
-   }
+    ~regex_error() noexcept
+    {
+    }
 
-   std::ptrdiff_t position() const {
-      return m_position;
-   }
+    regex_constants::error_type code() const
+    {
+        return m_error_code;
+    }
 
-   void raise() const {
-      throw *this;
-   }
+    std::ptrdiff_t position() const
+    {
+        return m_position;
+    }
 
- private:
-   regex_constants::error_type m_error_code;
-   std::ptrdiff_t m_position;
+    void raise() const
+    {
+        throw *this;
+    }
+
+private:
+    regex_constants::error_type m_error_code;
+    std::ptrdiff_t m_position;
 };
 
 using bad_pattern    = regex_error;
 using bad_expression = regex_error;
 
-namespace cs_regex_detail_ns {
+namespace lscs_regex_detail_ns
+{
 
 template <class traits>
-void raise_error(const traits &t, regex_constants::error_type code)
+void raise_error( const traits &t, regex_constants::error_type code )
 {
-   std::runtime_error err(t.error_string(code));
-   throw (err);
+    std::runtime_error err( t.error_string( code ) );
+    throw ( err );
 }
 
 }   // end namespace

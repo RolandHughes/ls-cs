@@ -25,17 +25,19 @@
 
 #include "DOMWindow.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 UIEvent::UIEvent()
-    : m_detail(0)
+    : m_detail( 0 )
 {
 }
 
-UIEvent::UIEvent(const AtomicString& eventType, bool canBubbleArg, bool cancelableArg, PassRefPtr<AbstractView> viewArg, int detailArg)
-    : Event(eventType, canBubbleArg, cancelableArg)
-    , m_view(viewArg)
-    , m_detail(detailArg)
+UIEvent::UIEvent( const AtomicString &eventType, bool canBubbleArg, bool cancelableArg, PassRefPtr<AbstractView> viewArg,
+                  int detailArg )
+    : Event( eventType, canBubbleArg, cancelableArg )
+    , m_view( viewArg )
+    , m_detail( detailArg )
 {
 }
 
@@ -43,12 +45,15 @@ UIEvent::~UIEvent()
 {
 }
 
-void UIEvent::initUIEvent(const AtomicString& typeArg, bool canBubbleArg, bool cancelableArg, PassRefPtr<AbstractView> viewArg, int detailArg)
+void UIEvent::initUIEvent( const AtomicString &typeArg, bool canBubbleArg, bool cancelableArg, PassRefPtr<AbstractView> viewArg,
+                           int detailArg )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
+    }
 
-    initEvent(typeArg, canBubbleArg, cancelableArg);
+    initEvent( typeArg, canBubbleArg, cancelableArg );
 
     m_view = viewArg;
     m_detail = detailArg;

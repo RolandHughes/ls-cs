@@ -8,13 +8,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -108,13 +108,15 @@
 #include <errno.h>
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 // MS_VC_EXCEPTION, THREADNAME_INFO, and setThreadNameInternal all come from <http://msdn.microsoft.com/en-us/library/xcb2z8hs.aspx>.
 static const DWORD MS_VC_EXCEPTION = 0x406D1388;
 
 #pragma pack(push, 8)
-typedef struct tagTHREADNAME_INFO {
+typedef struct tagTHREADNAME_INFO
+{
     DWORD dwType; // must be 0x1000
     LPCSTR szName; // pointer to name (in user addr space)
     DWORD dwThreadID; // thread ID (-1=caller thread)
@@ -122,7 +124,7 @@ typedef struct tagTHREADNAME_INFO {
 } THREADNAME_INFO;
 #pragma pack(pop)
 
-void initializeCurrentThreadInternal(const char* szThreadName)
+void initializeCurrentThreadInternal( const char *szThreadName )
 {
     THREADNAME_INFO info;
     info.dwType = 0x1000;
@@ -130,17 +132,20 @@ void initializeCurrentThreadInternal(const char* szThreadName)
     info.dwThreadID = GetCurrentThreadId();
     info.dwFlags = 0;
 
-    __try {
-        RaiseException(MS_VC_EXCEPTION, 0, sizeof(info)/sizeof(ULONG_PTR), reinterpret_cast<ULONG_PTR*>(&info));
-    } __except (EXCEPTION_CONTINUE_EXECUTION) {
+    __try
+    {
+        RaiseException( MS_VC_EXCEPTION, 0, sizeof( info )/sizeof( ULONG_PTR ), reinterpret_cast<ULONG_PTR *>( &info ) );
+    }
+    __except ( EXCEPTION_CONTINUE_EXECUTION )
+    {
     }
 }
 
-static Mutex* atomicallyInitializedStaticMutex;
+static Mutex *atomicallyInitializedStaticMutex;
 
 void lockAtomicallyInitializedStaticMutex()
 {
-    ASSERT(atomicallyInitializedStaticMutex);
+    ASSERT( atomicallyInitializedStaticMutex );
     atomicallyInitializedStaticMutex->lock();
 }
 
@@ -149,7 +154,7 @@ void unlockAtomicallyInitializedStaticMutex()
     atomicallyInitializedStaticMutex->unlock();
 }
 
-static Mutex& threadMapMutex()
+static Mutex &threadMapMutex()
 {
     static Mutex mutex;
     return mutex;
@@ -157,72 +162,78 @@ static Mutex& threadMapMutex()
 
 void initializeThreading()
 {
-    if (atomicallyInitializedStaticMutex)
+    if ( atomicallyInitializedStaticMutex )
+    {
         return;
+    }
 
     atomicallyInitializedStaticMutex = new Mutex;
     threadMapMutex();
     initializeRandomNumberGenerator();
 }
 
-static HashMap<DWORD, HANDLE>& threadMap()
+static HashMap<DWORD, HANDLE> &threadMap()
 {
     static HashMap<DWORD, HANDLE> map;
     return map;
 }
 
-static void storeThreadHandleByIdentifier(DWORD threadID, HANDLE threadHandle)
+static void storeThreadHandleByIdentifier( DWORD threadID, HANDLE threadHandle )
 {
-    MutexLocker locker(threadMapMutex());
-    ASSERT(!threadMap().contains(threadID));
-    threadMap().add(threadID, threadHandle);
+    MutexLocker locker( threadMapMutex() );
+    ASSERT( !threadMap().contains( threadID ) );
+    threadMap().add( threadID, threadHandle );
 }
 
-static HANDLE threadHandleForIdentifier(ThreadIdentifier id)
+static HANDLE threadHandleForIdentifier( ThreadIdentifier id )
 {
-    MutexLocker locker(threadMapMutex());
-    return threadMap().get(id);
+    MutexLocker locker( threadMapMutex() );
+    return threadMap().get( id );
 }
 
-static void clearThreadHandleForIdentifier(ThreadIdentifier id)
+static void clearThreadHandleForIdentifier( ThreadIdentifier id )
 {
-    MutexLocker locker(threadMapMutex());
-    ASSERT(threadMap().contains(id));
-    threadMap().remove(id);
+    MutexLocker locker( threadMapMutex() );
+    ASSERT( threadMap().contains( id ) );
+    threadMap().remove( id );
 }
 
-static unsigned __stdcall wtfThreadEntryPoint(void* param)
+static unsigned __stdcall wtfThreadEntryPoint( void *param )
 {
-    OwnPtr<ThreadFunctionInvocation> invocation = adoptPtr(static_cast<ThreadFunctionInvocation*>(param));
-    void* result = invocation->function(invocation->data);
+    OwnPtr<ThreadFunctionInvocation> invocation = adoptPtr( static_cast<ThreadFunctionInvocation *>( param ) );
+    void *result = invocation->function( invocation->data );
 
 #if !USE(PTHREADS) && OS(WINDOWS)
     // Do the TLS cleanup.
     ThreadSpecificThreadExit();
 #endif
 
-    return reinterpret_cast<unsigned>(result);
+    return reinterpret_cast<unsigned>( result );
 }
 
-ThreadIdentifier createThreadInternal(ThreadFunction entryPoint, void* data, const char* threadName)
+ThreadIdentifier createThreadInternal( ThreadFunction entryPoint, void *data, const char *threadName )
 {
     unsigned threadIdentifier = 0;
     ThreadIdentifier threadID = 0;
-    OwnPtr<ThreadFunctionInvocation> invocation = adoptPtr(new ThreadFunctionInvocation(entryPoint, data));
+    OwnPtr<ThreadFunctionInvocation> invocation = adoptPtr( new ThreadFunctionInvocation( entryPoint, data ) );
 #if OS(WINCE)
     // This is safe on WINCE, since CRT is in the core and innately multithreaded.
     // On desktop Windows, need to use _beginthreadex (not available on WinCE) if using any CRT functions
-    HANDLE threadHandle = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)wtfThreadEntryPoint, invocation.get(), 0, (LPDWORD)&threadIdentifier);
+    HANDLE threadHandle = CreateThread( 0, 0, ( LPTHREAD_START_ROUTINE )wtfThreadEntryPoint, invocation.get(), 0,
+                                        ( LPDWORD )&threadIdentifier );
 #else
-    HANDLE threadHandle = reinterpret_cast<HANDLE>(_beginthreadex(0, 0, wtfThreadEntryPoint, invocation.get(), 0, &threadIdentifier));
+    HANDLE threadHandle = reinterpret_cast<HANDLE>( _beginthreadex( 0, 0, wtfThreadEntryPoint, invocation.get(), 0,
+                          &threadIdentifier ) );
 #endif
-    if (!threadHandle) {
+
+    if ( !threadHandle )
+    {
 #if OS(WINCE)
-        LOG_ERROR("Failed to create thread at entry point %p with data %p: %ld", entryPoint, data, ::GetLastError());
+        LOG_ERROR( "Failed to create thread at entry point %p with data %p: %ld", entryPoint, data, ::GetLastError() );
 #elif !HAVE(ERRNO_H)
-        LOG_ERROR("Failed to create thread at entry point %p with data %p.", entryPoint, data);
+        LOG_ERROR( "Failed to create thread at entry point %p with data %p.", entryPoint, data );
 #else
-        LOG_ERROR("Failed to create thread at entry point %p with data %p: %ld", entryPoint, data, errno);
+        LOG_ERROR( "Failed to create thread at entry point %p with data %p: %ld", entryPoint, data, errno );
 #endif
         return 0;
     }
@@ -230,67 +241,77 @@ ThreadIdentifier createThreadInternal(ThreadFunction entryPoint, void* data, con
     // The thread will take ownership of invocation.
     invocation.leakPtr();
 
-    threadID = static_cast<ThreadIdentifier>(threadIdentifier);
-    storeThreadHandleByIdentifier(threadIdentifier, threadHandle);
+    threadID = static_cast<ThreadIdentifier>( threadIdentifier );
+    storeThreadHandleByIdentifier( threadIdentifier, threadHandle );
 
     return threadID;
 }
 
-int waitForThreadCompletion(ThreadIdentifier threadID, void** result)
+int waitForThreadCompletion( ThreadIdentifier threadID, void **result )
 {
-    ASSERT(threadID);
-    
-    HANDLE threadHandle = threadHandleForIdentifier(threadID);
-    if (!threadHandle)
-        LOG_ERROR("ThreadIdentifier %u did not correspond to an active thread when trying to quit", threadID);
- 
-    DWORD joinResult = WaitForSingleObject(threadHandle, INFINITE);
-    if (joinResult == WAIT_FAILED)
-        LOG_ERROR("ThreadIdentifier %u was found to be deadlocked trying to quit", threadID);
+    ASSERT( threadID );
 
-    CloseHandle(threadHandle);
-    clearThreadHandleForIdentifier(threadID);
+    HANDLE threadHandle = threadHandleForIdentifier( threadID );
+
+    if ( !threadHandle )
+    {
+        LOG_ERROR( "ThreadIdentifier %u did not correspond to an active thread when trying to quit", threadID );
+    }
+
+    DWORD joinResult = WaitForSingleObject( threadHandle, INFINITE );
+
+    if ( joinResult == WAIT_FAILED )
+    {
+        LOG_ERROR( "ThreadIdentifier %u was found to be deadlocked trying to quit", threadID );
+    }
+
+    CloseHandle( threadHandle );
+    clearThreadHandleForIdentifier( threadID );
 
     return joinResult;
 }
 
-void detachThread(ThreadIdentifier threadID)
+void detachThread( ThreadIdentifier threadID )
 {
-    ASSERT(threadID);
+    ASSERT( threadID );
 
-    HANDLE threadHandle = threadHandleForIdentifier(threadID);
-    if (threadHandle)
-        CloseHandle(threadHandle);
-    clearThreadHandleForIdentifier(threadID);
+    HANDLE threadHandle = threadHandleForIdentifier( threadID );
+
+    if ( threadHandle )
+    {
+        CloseHandle( threadHandle );
+    }
+
+    clearThreadHandleForIdentifier( threadID );
 }
 
 void yield()
 {
-    ::Sleep(1);
+    ::Sleep( 1 );
 }
 
 ThreadIdentifier currentThread()
 {
-    return static_cast<ThreadIdentifier>(GetCurrentThreadId());
+    return static_cast<ThreadIdentifier>( GetCurrentThreadId() );
 }
 
 Mutex::Mutex()
 {
     m_mutex.m_recursionCount = 0;
-    InitializeCriticalSection(&m_mutex.m_internalMutex);
+    InitializeCriticalSection( &m_mutex.m_internalMutex );
 }
 
 Mutex::~Mutex()
 {
-    DeleteCriticalSection(&m_mutex.m_internalMutex);
+    DeleteCriticalSection( &m_mutex.m_internalMutex );
 }
 
 void Mutex::lock()
 {
-    EnterCriticalSection(&m_mutex.m_internalMutex);
+    EnterCriticalSection( &m_mutex.m_internalMutex );
     ++m_mutex.m_recursionCount;
 }
-    
+
 bool Mutex::tryLock()
 {
     // This method is modeled after the behavior of pthread_mutex_trylock,
@@ -299,14 +320,16 @@ bool Mutex::tryLock()
     // treats this as a successful case, it changes the behavior of several
     // tests in WebKit that check to see if the current thread already
     // owned this mutex (see e.g., IconDatabase::getOrCreateIconRecord)
-    DWORD result = TryEnterCriticalSection(&m_mutex.m_internalMutex);
-    
-    if (result != 0) {       // We got the lock
+    DWORD result = TryEnterCriticalSection( &m_mutex.m_internalMutex );
+
+    if ( result != 0 )       // We got the lock
+    {
         // If this thread already had the lock, we must unlock and
         // return false so that we mimic the behavior of POSIX's
         // pthread_mutex_trylock:
-        if (m_mutex.m_recursionCount > 0) {
-            LeaveCriticalSection(&m_mutex.m_internalMutex);
+        if ( m_mutex.m_recursionCount > 0 )
+        {
+            LeaveCriticalSection( &m_mutex.m_internalMutex );
             return false;
         }
 
@@ -320,180 +343,214 @@ bool Mutex::tryLock()
 void Mutex::unlock()
 {
     --m_mutex.m_recursionCount;
-    LeaveCriticalSection(&m_mutex.m_internalMutex);
+    LeaveCriticalSection( &m_mutex.m_internalMutex );
 }
 
-bool PlatformCondition::timedWait(PlatformMutex& mutex, DWORD durationMilliseconds)
+bool PlatformCondition::timedWait( PlatformMutex &mutex, DWORD durationMilliseconds )
 {
     // Enter the wait state.
-    DWORD res = WaitForSingleObject(m_blockLock, INFINITE);
-    ASSERT(res == WAIT_OBJECT_0);
+    DWORD res = WaitForSingleObject( m_blockLock, INFINITE );
+    ASSERT( res == WAIT_OBJECT_0 );
     ++m_waitersBlocked;
-    res = ReleaseSemaphore(m_blockLock, 1, 0);
-    ASSERT(res);
+    res = ReleaseSemaphore( m_blockLock, 1, 0 );
+    ASSERT( res );
 
     --mutex.m_recursionCount;
-    LeaveCriticalSection(&mutex.m_internalMutex);
+    LeaveCriticalSection( &mutex.m_internalMutex );
 
     // Main wait - use timeout.
-    bool timedOut = (WaitForSingleObject(m_blockQueue, durationMilliseconds) == WAIT_TIMEOUT);
+    bool timedOut = ( WaitForSingleObject( m_blockQueue, durationMilliseconds ) == WAIT_TIMEOUT );
 
-    res = WaitForSingleObject(m_unblockLock, INFINITE);
-    ASSERT(res == WAIT_OBJECT_0);
+    res = WaitForSingleObject( m_unblockLock, INFINITE );
+    ASSERT( res == WAIT_OBJECT_0 );
 
     int signalsLeft = m_waitersToUnblock;
 
-    if (m_waitersToUnblock)
+    if ( m_waitersToUnblock )
+    {
         --m_waitersToUnblock;
-    else if (++m_waitersGone == (INT_MAX / 2)) { // timeout/canceled or spurious semaphore
+    }
+    else if ( ++m_waitersGone == ( INT_MAX / 2 ) ) // timeout/canceled or spurious semaphore
+    {
         // timeout or spurious wakeup occured, normalize the m_waitersGone count
         // this may occur if many calls to wait with a timeout are made and
         // no call to notify_* is made
-        res = WaitForSingleObject(m_blockLock, INFINITE);
-        ASSERT(res == WAIT_OBJECT_0);
+        res = WaitForSingleObject( m_blockLock, INFINITE );
+        ASSERT( res == WAIT_OBJECT_0 );
         m_waitersBlocked -= m_waitersGone;
-        res = ReleaseSemaphore(m_blockLock, 1, 0);
-        ASSERT(res);
+        res = ReleaseSemaphore( m_blockLock, 1, 0 );
+        ASSERT( res );
         m_waitersGone = 0;
     }
 
-    res = ReleaseMutex(m_unblockLock);
-    ASSERT(res);
+    res = ReleaseMutex( m_unblockLock );
+    ASSERT( res );
 
-    if (signalsLeft == 1) {
-        res = ReleaseSemaphore(m_blockLock, 1, 0); // Open the gate.
-        ASSERT(res);
+    if ( signalsLeft == 1 )
+    {
+        res = ReleaseSemaphore( m_blockLock, 1, 0 ); // Open the gate.
+        ASSERT( res );
     }
 
-    EnterCriticalSection (&mutex.m_internalMutex);
+    EnterCriticalSection ( &mutex.m_internalMutex );
     ++mutex.m_recursionCount;
 
     return !timedOut;
 }
 
-void PlatformCondition::signal(bool unblockAll)
+void PlatformCondition::signal( bool unblockAll )
 {
     unsigned signalsToIssue = 0;
 
-    DWORD res = WaitForSingleObject(m_unblockLock, INFINITE);
-    ASSERT(res == WAIT_OBJECT_0);
+    DWORD res = WaitForSingleObject( m_unblockLock, INFINITE );
+    ASSERT( res == WAIT_OBJECT_0 );
 
-    if (m_waitersToUnblock) { // the gate is already closed
-        if (!m_waitersBlocked) { // no-op
-            res = ReleaseMutex(m_unblockLock);
-            ASSERT(res);
+    if ( m_waitersToUnblock ) // the gate is already closed
+    {
+        if ( !m_waitersBlocked ) // no-op
+        {
+            res = ReleaseMutex( m_unblockLock );
+            ASSERT( res );
             return;
         }
 
-        if (unblockAll) {
+        if ( unblockAll )
+        {
             signalsToIssue = m_waitersBlocked;
             m_waitersToUnblock += m_waitersBlocked;
             m_waitersBlocked = 0;
-        } else {
+        }
+        else
+        {
             signalsToIssue = 1;
             ++m_waitersToUnblock;
             --m_waitersBlocked;
         }
-    } else if (m_waitersBlocked > m_waitersGone) {
-        res = WaitForSingleObject(m_blockLock, INFINITE); // Close the gate.
-        ASSERT(res == WAIT_OBJECT_0);
-        if (m_waitersGone != 0) {
+    }
+    else if ( m_waitersBlocked > m_waitersGone )
+    {
+        res = WaitForSingleObject( m_blockLock, INFINITE ); // Close the gate.
+        ASSERT( res == WAIT_OBJECT_0 );
+
+        if ( m_waitersGone != 0 )
+        {
             m_waitersBlocked -= m_waitersGone;
             m_waitersGone = 0;
         }
-        if (unblockAll) {
+
+        if ( unblockAll )
+        {
             signalsToIssue = m_waitersBlocked;
             m_waitersToUnblock = m_waitersBlocked;
             m_waitersBlocked = 0;
-        } else {
+        }
+        else
+        {
             signalsToIssue = 1;
             m_waitersToUnblock = 1;
             --m_waitersBlocked;
         }
-    } else { // No-op.
-        res = ReleaseMutex(m_unblockLock);
-        ASSERT(res);
+    }
+    else     // No-op.
+    {
+        res = ReleaseMutex( m_unblockLock );
+        ASSERT( res );
         return;
     }
 
-    res = ReleaseMutex(m_unblockLock);
-    ASSERT(res);
+    res = ReleaseMutex( m_unblockLock );
+    ASSERT( res );
 
-    if (signalsToIssue) {
-        res = ReleaseSemaphore(m_blockQueue, signalsToIssue, 0);
-        ASSERT(res);
+    if ( signalsToIssue )
+    {
+        res = ReleaseSemaphore( m_blockQueue, signalsToIssue, 0 );
+        ASSERT( res );
     }
 }
 
-static const long MaxSemaphoreCount = static_cast<long>(~0UL >> 1);
+static const long MaxSemaphoreCount = static_cast<long>( ~0UL >> 1 );
 
 ThreadCondition::ThreadCondition()
 {
     m_condition.m_waitersGone = 0;
     m_condition.m_waitersBlocked = 0;
     m_condition.m_waitersToUnblock = 0;
-    m_condition.m_blockLock = CreateSemaphore(0, 1, 1, 0);
-    m_condition.m_blockQueue = CreateSemaphore(0, 0, MaxSemaphoreCount, 0);
-    m_condition.m_unblockLock = CreateMutex(0, 0, 0);
+    m_condition.m_blockLock = CreateSemaphore( 0, 1, 1, 0 );
+    m_condition.m_blockQueue = CreateSemaphore( 0, 0, MaxSemaphoreCount, 0 );
+    m_condition.m_unblockLock = CreateMutex( 0, 0, 0 );
 
-    if (!m_condition.m_blockLock || !m_condition.m_blockQueue || !m_condition.m_unblockLock) {
-        if (m_condition.m_blockLock)
-            CloseHandle(m_condition.m_blockLock);
-        if (m_condition.m_blockQueue)
-            CloseHandle(m_condition.m_blockQueue);
-        if (m_condition.m_unblockLock)
-            CloseHandle(m_condition.m_unblockLock);
+    if ( !m_condition.m_blockLock || !m_condition.m_blockQueue || !m_condition.m_unblockLock )
+    {
+        if ( m_condition.m_blockLock )
+        {
+            CloseHandle( m_condition.m_blockLock );
+        }
+
+        if ( m_condition.m_blockQueue )
+        {
+            CloseHandle( m_condition.m_blockQueue );
+        }
+
+        if ( m_condition.m_unblockLock )
+        {
+            CloseHandle( m_condition.m_unblockLock );
+        }
     }
 }
 
 ThreadCondition::~ThreadCondition()
 {
-    CloseHandle(m_condition.m_blockLock);
-    CloseHandle(m_condition.m_blockQueue);
-    CloseHandle(m_condition.m_unblockLock);
+    CloseHandle( m_condition.m_blockLock );
+    CloseHandle( m_condition.m_blockQueue );
+    CloseHandle( m_condition.m_unblockLock );
 }
 
-void ThreadCondition::wait(Mutex& mutex)
+void ThreadCondition::wait( Mutex &mutex )
 {
-    m_condition.timedWait(mutex.impl(), INFINITE);
+    m_condition.timedWait( mutex.impl(), INFINITE );
 }
 
-bool ThreadCondition::timedWait(Mutex& mutex, double absoluteTime)
+bool ThreadCondition::timedWait( Mutex &mutex, double absoluteTime )
 {
-    DWORD interval = absoluteTimeToWaitTimeoutInterval(absoluteTime);
+    DWORD interval = absoluteTimeToWaitTimeoutInterval( absoluteTime );
 
-    if (!interval) {
+    if ( !interval )
+    {
         // Consider the wait to have timed out, even if our condition has already been signaled, to
         // match the pthreads implementation.
         return false;
     }
 
-    return m_condition.timedWait(mutex.impl(), interval);
+    return m_condition.timedWait( mutex.impl(), interval );
 }
 
 void ThreadCondition::signal()
 {
-    m_condition.signal(false); // Unblock only 1 thread.
+    m_condition.signal( false ); // Unblock only 1 thread.
 }
 
 void ThreadCondition::broadcast()
 {
-    m_condition.signal(true); // Unblock all threads.
+    m_condition.signal( true ); // Unblock all threads.
 }
 
-DWORD absoluteTimeToWaitTimeoutInterval(double absoluteTime)
+DWORD absoluteTimeToWaitTimeoutInterval( double absoluteTime )
 {
     double currentTime = WTF::currentTime();
 
     // Time is in the past - return immediately.
-    if (absoluteTime < currentTime)
+    if ( absoluteTime < currentTime )
+    {
         return 0;
+    }
 
     // Time is too far in the future (and would overflow unsigned long) - wait forever.
-    if (absoluteTime - currentTime > static_cast<double>(INT_MAX) / 1000.0)
+    if ( absoluteTime - currentTime > static_cast<double>( INT_MAX ) / 1000.0 )
+    {
         return INFINITE;
+    }
 
-    return static_cast<DWORD>((absoluteTime - currentTime) * 1000.0);
+    return static_cast<DWORD>( ( absoluteTime - currentTime ) * 1000.0 );
 }
 
 } // namespace WTF

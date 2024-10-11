@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ResourceResponseBase_h
@@ -39,58 +39,66 @@
 #include <sys/time.h> // For time_t structure.
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ResourceResponse;
 struct CrossThreadResourceResponseData;
 
 // Do not use this class directly, use the class ResponseResponse instead
-class ResourceResponseBase {
+class ResourceResponseBase
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassOwnPtr<ResourceResponse> adopt(PassOwnPtr<CrossThreadResourceResponseData>);
+    static PassOwnPtr<ResourceResponse> adopt( PassOwnPtr<CrossThreadResourceResponseData> );
 
     // Gets a copy of the data suitable for passing to another thread.
     PassOwnPtr<CrossThreadResourceResponseData> copyData() const;
 
-    bool isNull() const { return m_isNull; }
+    bool isNull() const
+    {
+        return m_isNull;
+    }
     bool isHTTP() const;
 
-    const KURL& url() const;
-    void setURL(const KURL& url);
+    const KURL &url() const;
+    void setURL( const KURL &url );
 
-    const String& mimeType() const;
-    void setMimeType(const String& mimeType);
+    const String &mimeType() const;
+    void setMimeType( const String &mimeType );
 
     long long expectedContentLength() const;
-    void setExpectedContentLength(long long expectedContentLength);
+    void setExpectedContentLength( long long expectedContentLength );
 
-    const String& textEncodingName() const;
-    void setTextEncodingName(const String& name);
+    const String &textEncodingName() const;
+    void setTextEncodingName( const String &name );
 
     // FIXME should compute this on the fly
-    const String& suggestedFilename() const;
-    void setSuggestedFilename(const String&);
+    const String &suggestedFilename() const;
+    void setSuggestedFilename( const String & );
 
     int httpStatusCode() const;
-    void setHTTPStatusCode(int);
-    
-    const String& httpStatusText() const;
-    void setHTTPStatusText(const String&);
-    
-    String httpHeaderField(const AtomicString& name) const;
-    String httpHeaderField(const char* name) const;
-    void setHTTPHeaderField(const AtomicString& name, const String& value);
-    const HTTPHeaderMap& httpHeaderFields() const;
+    void setHTTPStatusCode( int );
 
-    bool isMultipart() const { return mimeType() == "multipart/x-mixed-replace"; }
+    const String &httpStatusText() const;
+    void setHTTPStatusText( const String & );
+
+    String httpHeaderField( const AtomicString &name ) const;
+    String httpHeaderField( const char *name ) const;
+    void setHTTPHeaderField( const AtomicString &name, const String &value );
+    const HTTPHeaderMap &httpHeaderFields() const;
+
+    bool isMultipart() const
+    {
+        return mimeType() == "multipart/x-mixed-replace";
+    }
 
     bool isAttachment() const;
-    
+
     // FIXME: These are used by PluginStream on some platforms. Calculations may differ from just returning plain Last-odified header.
     // Leaving it for now but this should go away in favor of generic solution.
-    void setLastModifiedDate(time_t);
-    time_t lastModifiedDate() const; 
+    void setLastModifiedDate( time_t );
+    time_t lastModifiedDate() const;
 
     // These functions return parsed values of the corresponding response headers.
     // NaN means that the header was not present or had invalid value.
@@ -105,19 +113,19 @@ public:
     double lastModified() const;
 
     unsigned connectionID() const;
-    void setConnectionID(unsigned);
+    void setConnectionID( unsigned );
 
     bool connectionReused() const;
-    void setConnectionReused(bool);
+    void setConnectionReused( bool );
 
     bool wasCached() const;
-    void setWasCached(bool);
+    void setWasCached( bool );
 
-    ResourceLoadTiming* resourceLoadTiming() const;
-    void setResourceLoadTiming(PassRefPtr<ResourceLoadTiming>);
+    ResourceLoadTiming *resourceLoadTiming() const;
+    void setResourceLoadTiming( PassRefPtr<ResourceLoadTiming> );
 
     PassRefPtr<ResourceLoadInfo> resourceLoadInfo() const;
-    void setResourceLoadInfo(PassRefPtr<ResourceLoadInfo>);
+    void setResourceLoadInfo( PassRefPtr<ResourceLoadInfo> );
 
     // The ResourceResponse subclass may "shadow" this method to provide platform-specific memory usage information
     unsigned memoryUsage() const
@@ -126,25 +134,30 @@ public:
         return 1280;
     }
 
-    static bool compare(const ResourceResponse&, const ResourceResponse&);
+    static bool compare( const ResourceResponse &, const ResourceResponse & );
 
 protected:
-    enum InitLevel {
+    enum InitLevel
+    {
         Uninitialized,
         CommonFieldsOnly,
         AllFields
     };
 
     ResourceResponseBase();
-    ResourceResponseBase(const KURL& url, const String& mimeType, long long expectedLength, const String& textEncodingName, const String& filename);
+    ResourceResponseBase( const KURL &url, const String &mimeType, long long expectedLength, const String &textEncodingName,
+                          const String &filename );
 
-    void lazyInit(InitLevel) const;
+    void lazyInit( InitLevel ) const;
 
     // The ResourceResponse subclass may "shadow" this method to lazily initialize platform specific fields
-    void platformLazyInit(InitLevel) { }
+    void platformLazyInit( InitLevel ) { }
 
     // The ResourceResponse subclass may "shadow" this method to compare platform specific fields
-    static bool platformCompare(const ResourceResponse&, const ResourceResponse&) { return true; }
+    static bool platformCompare( const ResourceResponse &, const ResourceResponse & )
+    {
+        return true;
+    }
 
     KURL m_url;
     String m_mimeType;
@@ -162,9 +175,9 @@ protected:
     RefPtr<ResourceLoadInfo> m_resourceLoadInfo;
 
     bool m_isNull : 1;
-    
+
 private:
-    const ResourceResponse& asResourceResponse() const;
+    const ResourceResponse &asResourceResponse() const;
     void parseCacheControlDirectives() const;
 
     mutable bool m_haveParsedCacheControlHeader : 1;
@@ -184,11 +197,18 @@ private:
     mutable double m_lastModified;
 };
 
-inline bool operator==(const ResourceResponse& a, const ResourceResponse& b) { return ResourceResponseBase::compare(a, b); }
-inline bool operator!=(const ResourceResponse& a, const ResourceResponse& b) { return !(a == b); }
+inline bool operator==( const ResourceResponse &a, const ResourceResponse &b )
+{
+    return ResourceResponseBase::compare( a, b );
+}
+inline bool operator!=( const ResourceResponse &a, const ResourceResponse &b )
+{
+    return !( a == b );
+}
 
-struct CrossThreadResourceResponseDataBase {
-    WTF_MAKE_NONCOPYABLE(CrossThreadResourceResponseDataBase);
+struct CrossThreadResourceResponseDataBase
+{
+    WTF_MAKE_NONCOPYABLE( CrossThreadResourceResponseDataBase );
 public:
     CrossThreadResourceResponseDataBase() { }
     KURL m_url;

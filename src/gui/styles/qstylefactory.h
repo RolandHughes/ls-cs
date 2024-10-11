@@ -30,9 +30,9 @@ class QStyle;
 
 class Q_GUI_EXPORT QStyleFactory
 {
- public:
-   static QStringList keys();
-   static QStyle *create(const QString &key);
+public:
+    static QStringList keys();
+    static QStyle *create( const QString &key );
 };
 
 #endif

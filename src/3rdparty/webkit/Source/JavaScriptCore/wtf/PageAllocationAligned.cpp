@@ -26,43 +26,56 @@
 #include "config.h"
 #include "PageAllocationAligned.h"
 
-namespace WTF {
-
-PageAllocationAligned PageAllocationAligned::allocate(size_t size, size_t alignment, OSAllocator::Usage usage, bool writable, bool executable)
+namespace WTF
 {
-    ASSERT(isPageAligned(size));
-    ASSERT(isPageAligned(alignment));
-    ASSERT(isPowerOfTwo(alignment));
-    ASSERT(size >= alignment);
+
+PageAllocationAligned PageAllocationAligned::allocate( size_t size, size_t alignment, OSAllocator::Usage usage, bool writable,
+        bool executable )
+{
+    ASSERT( isPageAligned( size ) );
+    ASSERT( isPageAligned( alignment ) );
+    ASSERT( isPowerOfTwo( alignment ) );
+    ASSERT( size >= alignment );
     size_t alignmentMask = alignment - 1;
 
 #if OS(DARWIN)
     int flags = VM_FLAGS_ANYWHERE;
-    if (usage != OSAllocator::UnknownUsage)
+
+    if ( usage != OSAllocator::UnknownUsage )
+    {
         flags |= usage;
+    }
+
     int protection = PROT_READ;
-    if (writable)
+
+    if ( writable )
+    {
         protection |= PROT_WRITE;
-    if (executable)
+    }
+
+    if ( executable )
+    {
         protection |= PROT_EXEC;
+    }
 
     vm_address_t address = 0;
-    vm_map(current_task(), &address, size, alignmentMask, flags, MEMORY_OBJECT_NULL, 0, FALSE, protection, PROT_READ | PROT_WRITE | PROT_EXEC, VM_INHERIT_DEFAULT);
-    return PageAllocationAligned(reinterpret_cast<void*>(address), size);
+    vm_map( current_task(), &address, size, alignmentMask, flags, MEMORY_OBJECT_NULL, 0, FALSE, protection,
+            PROT_READ | PROT_WRITE | PROT_EXEC, VM_INHERIT_DEFAULT );
+    return PageAllocationAligned( reinterpret_cast<void *>( address ), size );
 #else
     size_t alignmentDelta = alignment - pageSize();
 
     // Resererve with suffcient additional VM to correctly align.
     size_t reservationSize = size + alignmentDelta;
-    void* reservationBase = OSAllocator::reserveUncommitted(reservationSize, usage, writable, executable);
+    void *reservationBase = OSAllocator::reserveUncommitted( reservationSize, usage, writable, executable );
 
     // Select an aligned region within the reservation and commit.
-    void* alignedBase = reinterpret_cast<uintptr_t>(reservationBase) & alignmentMask
-        ? reinterpret_cast<void*>((reinterpret_cast<uintptr_t>(reservationBase) & ~alignmentMask) + alignment)
-        : reservationBase;
-    OSAllocator::commit(alignedBase, size, writable, executable);
+    void *alignedBase = reinterpret_cast<uintptr_t>( reservationBase ) & alignmentMask
+                        ? reinterpret_cast<void *>( ( reinterpret_cast<uintptr_t>( reservationBase ) & ~alignmentMask ) + alignment )
+                        : reservationBase;
+    OSAllocator::commit( alignedBase, size, writable, executable );
 
-    return PageAllocationAligned(alignedBase, size, reservationBase, reservationSize);
+    return PageAllocationAligned( alignedBase, size, reservationBase, reservationSize );
 #endif
 }
 
@@ -71,16 +84,16 @@ void PageAllocationAligned::deallocate()
     // Clear base & size before calling release; if this is *inside* allocation
     // then we won't be able to clear then after deallocating the memory.
     PageAllocationAligned tmp;
-    std::swap(tmp, *this);
+    std::swap( tmp, *this );
 
-    ASSERT(tmp);
-    ASSERT(!*this);
+    ASSERT( tmp );
+    ASSERT( !*this );
 
 #if OS(DARWIN)
-    vm_deallocate(current_task(), reinterpret_cast<vm_address_t>(tmp.base()), tmp.size());
+    vm_deallocate( current_task(), reinterpret_cast<vm_address_t>( tmp.base() ), tmp.size() );
 #else
-    ASSERT(tmp.m_reservation.contains(tmp.base(), tmp.size()));
-    OSAllocator::decommitAndRelease(tmp.m_reservation.base(), tmp.m_reservation.size(), tmp.base(), tmp.size());
+    ASSERT( tmp.m_reservation.contains( tmp.base(), tmp.size() ) );
+    OSAllocator::decommitAndRelease( tmp.m_reservation.base(), tmp.m_reservation.size(), tmp.base(), tmp.size() );
 #endif
 }
 

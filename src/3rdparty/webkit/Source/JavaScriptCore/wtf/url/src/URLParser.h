@@ -40,31 +40,36 @@
 #include "URLComponent.h"
 #include "URLSegments.h"
 
-namespace WTF {
+namespace WTF
+{
 
 template<typename CHAR>
-class URLParser {
+class URLParser
+{
 public:
-    enum SpecialPort {
+    enum SpecialPort
+    {
         UnspecifiedPort = -1,
         InvalidPort = -2,
     };
 
     // This handles everything that may be an authority terminator, including
     // backslash. For special backslash handling see parseAfterScheme.
-    static bool isPossibleAuthorityTerminator(CHAR ch)
+    static bool isPossibleAuthorityTerminator( CHAR ch )
     {
-        return isURLSlash(ch) || ch == '?' || ch == '#' || ch == ';';
+        return isURLSlash( ch ) || ch == '?' || ch == '#' || ch == ';';
     }
 
     // Given an already-identified auth section, breaks it into its constituent
     // parts. The port number will be parsed and the resulting integer will be
     // filled into the given *port variable, or -1 if there is no port number
     // or it is invalid.
-    static void parseAuthority(const CHAR* spec, const URLComponent& auth, URLComponent& username, URLComponent& password, URLComponent& host, URLComponent& port)
+    static void parseAuthority( const CHAR *spec, const URLComponent &auth, URLComponent &username, URLComponent &password,
+                                URLComponent &host, URLComponent &port )
     {
         // FIXME: add ASSERT(auth.isValid()); // We should always get an authority.
-        if (!auth.length()) {
+        if ( !auth.length() )
+        {
             username.reset();
             password.reset();
             host.reset();
@@ -76,37 +81,52 @@ public:
         // and the server info.  RFC 3986 forbids @ from occuring in auth, but
         // someone might include it in a password unescaped.
         int i = auth.begin() + auth.length() - 1;
-        while (i > auth.begin() && spec[i] != '@')
-            --i;
 
-        if (spec[i] == '@') {
+        while ( i > auth.begin() && spec[i] != '@' )
+        {
+            --i;
+        }
+
+        if ( spec[i] == '@' )
+        {
             // Found user info: <user-info>@<server-info>
-            parseUserInfo(spec, URLComponent(auth.begin(), i - auth.begin()), username, password);
-            parseServerInfo(spec, URLComponent::fromRange(i + 1, auth.begin() + auth.length()), host, port);
-        } else {
+            parseUserInfo( spec, URLComponent( auth.begin(), i - auth.begin() ), username, password );
+            parseServerInfo( spec, URLComponent::fromRange( i + 1, auth.begin() + auth.length() ), host, port );
+        }
+        else
+        {
             // No user info, everything is server info.
             username.reset();
             password.reset();
-            parseServerInfo(spec, auth, host, port);
+            parseServerInfo( spec, auth, host, port );
         }
     }
 
-    static bool extractScheme(const CHAR* spec, int specLength, URLComponent& scheme)
+    static bool extractScheme( const CHAR *spec, int specLength, URLComponent &scheme )
     {
         // Skip leading whitespace and control characters.
         int begin = 0;
-        while (begin < specLength && shouldTrimFromURL(spec[begin]))
+
+        while ( begin < specLength && shouldTrimFromURL( spec[begin] ) )
+        {
             begin++;
-        if (begin == specLength)
-            return false; // Input is empty or all whitespace.
+        }
+
+        if ( begin == specLength )
+        {
+            return false;    // Input is empty or all whitespace.
+        }
 
         // Find the first colon character.
-        for (int i = begin; i < specLength; i++) {
-            if (spec[i] == ':') {
-                scheme = URLComponent::fromRange(begin, i);
+        for ( int i = begin; i < specLength; i++ )
+        {
+            if ( spec[i] == ':' )
+            {
+                scheme = URLComponent::fromRange( begin, i );
                 return true;
             }
         }
+
         return false; // No colon found: no scheme
     }
 
@@ -116,9 +136,9 @@ public:
     // |spec| is the full spec being parsed, of length |specLength|.
     // |afterScheme| is the character immediately following the scheme (after
     // the colon) where we'll begin parsing.
-    static void parseAfterScheme(const CHAR* spec, int specLength, int afterScheme, URLSegments& parsed)
+    static void parseAfterScheme( const CHAR *spec, int specLength, int afterScheme, URLSegments &parsed )
     {
-        int numberOfSlashes = consecutiveSlashes(spec, afterScheme, specLength);
+        int numberOfSlashes = consecutiveSlashes( spec, afterScheme, specLength );
         int afterSlashes = afterScheme + numberOfSlashes;
 
         // First split into two main parts, the authority (username, password,
@@ -130,53 +150,65 @@ public:
         // everything from there to the next slash (or end of spec) to be the
         // authority. Note that we ignore the number of slashes and treat it as
         // the authority.
-        int authEnd = nextAuthorityTerminator(spec, afterSlashes, specLength);
-        authority = URLComponent(afterSlashes, authEnd - afterSlashes);
+        int authEnd = nextAuthorityTerminator( spec, afterSlashes, specLength );
+        authority = URLComponent( afterSlashes, authEnd - afterSlashes );
 
-        if (authEnd == specLength) // No beginning of path found.
+        if ( authEnd == specLength ) // No beginning of path found.
+        {
             fullPath = URLComponent();
+        }
         else // Everything starting from the slash to the end is the path.
-            fullPath = URLComponent(authEnd, specLength - authEnd);
+        {
+            fullPath = URLComponent( authEnd, specLength - authEnd );
+        }
 
         // Now parse those two sub-parts.
-        parseAuthority(spec, authority, parsed.username, parsed.password, parsed.host, parsed.port);
-        parsePath(spec, fullPath, parsed.path, parsed.query, parsed.fragment);
+        parseAuthority( spec, authority, parsed.username, parsed.password, parsed.host, parsed.port );
+        parsePath( spec, fullPath, parsed.path, parsed.query, parsed.fragment );
     }
 
     // The main parsing function for standard URLs. Standard URLs have a scheme,
     // host, path, etc.
-    static void parseStandardURL(const CHAR* spec, int specLength, URLSegments& parsed)
+    static void parseStandardURL( const CHAR *spec, int specLength, URLSegments &parsed )
     {
         // FIXME: add ASSERT(specLength >= 0);
 
         // Strip leading & trailing spaces and control characters.
         int begin = 0;
-        trimURL(spec, begin, specLength);
+        trimURL( spec, begin, specLength );
 
         int afterScheme;
-        if (extractScheme(spec, specLength, parsed.scheme))
-            afterScheme = parsed.scheme.end() + 1; // Skip past the colon.
-        else {
+
+        if ( extractScheme( spec, specLength, parsed.scheme ) )
+        {
+            afterScheme = parsed.scheme.end() + 1;    // Skip past the colon.
+        }
+        else
+        {
             // Say there's no scheme when there is a colon. We could also say
             // that everything is the scheme. Both would produce an invalid
             // URL, but this way seems less wrong in more cases.
             parsed.scheme.reset();
             afterScheme = begin;
         }
-        parseAfterScheme(spec, specLength, afterScheme, parsed);
+
+        parseAfterScheme( spec, specLength, afterScheme, parsed );
     }
 
-    static void parsePath(const CHAR* spec, const URLComponent& path, URLComponent& filepath, URLComponent& query, URLComponent& fragment)
+    static void parsePath( const CHAR *spec, const URLComponent &path, URLComponent &filepath, URLComponent &query,
+                           URLComponent &fragment )
     {
         // path = [/]<segment1>/<segment2>/<...>/<segmentN>;<param>?<query>#<fragment>
 
         // Special case when there is no path.
-        if (!path.isValid()) {
+        if ( !path.isValid() )
+        {
             filepath.reset();
             query.reset();
             fragment.reset();
             return;
         }
+
         // FIXME: add ASSERT(path.length() > 0); // We should never have 0 length paths.
 
         // Search for first occurrence of either ? or #.
@@ -184,18 +216,26 @@ public:
 
         int querySeparator = -1; // Index of the '?'
         int refSeparator = -1; // Index of the '#'
-        for (int i = path.begin(); i < pathEnd; i++) {
-            switch (spec[i]) {
-            case '?':
-                if (querySeparator < 0)
-                    querySeparator = i;
-                break;
-            case '#':
-                refSeparator = i;
-                i = pathEnd; // Break out of the loop.
-                break;
-            default:
-                break;
+
+        for ( int i = path.begin(); i < pathEnd; i++ )
+        {
+            switch ( spec[i] )
+            {
+                case '?':
+                    if ( querySeparator < 0 )
+                    {
+                        querySeparator = i;
+                    }
+
+                    break;
+
+                case '#':
+                    refSeparator = i;
+                    i = pathEnd; // Break out of the loop.
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -205,11 +245,14 @@ public:
         int fileEnd, queryEnd;
 
         // Fragment: from the # to the end of the path.
-        if (refSeparator >= 0) {
+        if ( refSeparator >= 0 )
+        {
             fileEnd = refSeparator;
             queryEnd = refSeparator;
-            fragment = URLComponent::fromRange(refSeparator + 1, pathEnd);
-        } else {
+            fragment = URLComponent::fromRange( refSeparator + 1, pathEnd );
+        }
+        else
+        {
             fileEnd = pathEnd;
             queryEnd = pathEnd;
             fragment.reset();
@@ -217,22 +260,30 @@ public:
 
         // Query fragment: everything from the ? to the next boundary (either
         // the end of the path or the fragment fragment).
-        if (querySeparator >= 0) {
+        if ( querySeparator >= 0 )
+        {
             fileEnd = querySeparator;
-            query = URLComponent::fromRange(querySeparator + 1, queryEnd);
-        } else
+            query = URLComponent::fromRange( querySeparator + 1, queryEnd );
+        }
+        else
+        {
             query.reset();
+        }
 
         // File path: treat an empty file path as no file path.
-        if (fileEnd != path.begin())
-            filepath = URLComponent::fromRange(path.begin(), fileEnd);
+        if ( fileEnd != path.begin() )
+        {
+            filepath = URLComponent::fromRange( path.begin(), fileEnd );
+        }
         else
+        {
             filepath.reset();
+        }
     }
 
     // Initializes a path URL which is merely a scheme followed by a path.
     // Examples include "about:foo" and "javascript:alert('bar');"
-    static void parsePathURL(const CHAR* spec, int specLength, URLSegments& parsed)
+    static void parsePathURL( const CHAR *spec, int specLength, URLSegments &parsed )
     {
         // Get the non-path and non-scheme parts of the URL out of the way, we
         // never use them.
@@ -246,11 +297,12 @@ public:
         // Strip leading & trailing spaces and control characters.
         // FIXME: Perhaps this is unnecessary?
         int begin = 0;
-        trimURL(spec, begin, specLength);
+        trimURL( spec, begin, specLength );
 
         // Handle empty specs or ones that contain only whitespace or control
         // chars.
-        if (begin == specLength) {
+        if ( begin == specLength )
+        {
             parsed.scheme.reset();
             parsed.path.reset();
             return;
@@ -258,25 +310,32 @@ public:
 
         // Extract the scheme, with the path being everything following. We also
         // handle the case where there is no scheme.
-        if (extractScheme(&spec[begin], specLength - begin, parsed.scheme)) {
+        if ( extractScheme( &spec[begin], specLength - begin, parsed.scheme ) )
+        {
             // Offset the results since we gave extractScheme a substring.
-            parsed.scheme.setBegin(parsed.scheme.begin() + begin);
+            parsed.scheme.setBegin( parsed.scheme.begin() + begin );
 
             // For compatibility with the standard URL parser, we treat no path
             // as -1, rather than having a length of 0 (we normally wouldn't
             // care so much for these non-standard URLs).
-            if (parsed.scheme.end() == specLength - 1)
+            if ( parsed.scheme.end() == specLength - 1 )
+            {
                 parsed.path.reset();
+            }
             else
-                parsed.path = URLComponent::fromRange(parsed.scheme.end() + 1, specLength);
-        } else {
+            {
+                parsed.path = URLComponent::fromRange( parsed.scheme.end() + 1, specLength );
+            }
+        }
+        else
+        {
             // No scheme found, just path.
             parsed.scheme.reset();
-            parsed.path = URLComponent::fromRange(begin, specLength);
+            parsed.path = URLComponent::fromRange( begin, specLength );
         }
     }
 
-    static void parseMailtoURL(const CHAR* spec, int specLength, URLSegments& parsed)
+    static void parseMailtoURL( const CHAR *spec, int specLength, URLSegments &parsed )
     {
         // FIXME: add ASSERT(specLength >= 0);
 
@@ -291,11 +350,12 @@ public:
 
         // Strip leading & trailing spaces and control characters.
         int begin = 0;
-        trimURL(spec, begin, specLength);
+        trimURL( spec, begin, specLength );
 
         // Handle empty specs or ones that contain only whitespace or control
         // chars.
-        if (begin == specLength) {
+        if ( begin == specLength )
+        {
             parsed.scheme.reset();
             parsed.path.reset();
             return;
@@ -306,15 +366,19 @@ public:
 
         // Extract the scheme, with the path being everything following. We also
         // handle the case where there is no scheme.
-        if (extractScheme(&spec[begin], specLength - begin, parsed.scheme)) {
+        if ( extractScheme( &spec[begin], specLength - begin, parsed.scheme ) )
+        {
             // Offset the results since we gave extractScheme a substring.
-            parsed.scheme.setBegin(parsed.scheme.begin() + begin);
+            parsed.scheme.setBegin( parsed.scheme.begin() + begin );
 
-            if (parsed.scheme.end() != specLength - 1) {
+            if ( parsed.scheme.end() != specLength - 1 )
+            {
                 pathBegin = parsed.scheme.end() + 1;
                 pathEnd = specLength;
             }
-        } else {
+        }
+        else
+        {
             // No scheme found, just path.
             parsed.scheme.reset();
             pathBegin = begin;
@@ -322,9 +386,11 @@ public:
         }
 
         // Split [pathBegin, pathEnd) into a path + query.
-        for (int i = pathBegin; i < pathEnd; ++i) {
-            if (spec[i] == '?') {
-                parsed.query = URLComponent::fromRange(i + 1, pathEnd);
+        for ( int i = pathBegin; i < pathEnd; ++i )
+        {
+            if ( spec[i] == '?' )
+            {
+                parsed.query = URLComponent::fromRange( i + 1, pathEnd );
                 pathEnd = i;
                 break;
             }
@@ -332,49 +398,75 @@ public:
 
         // For compatibility with the standard URL parser, treat no path as
         // -1, rather than having a length of 0
-        if (pathBegin == pathEnd)
+        if ( pathBegin == pathEnd )
+        {
             parsed.path.reset();
+        }
         else
-            parsed.path = URLComponent::fromRange(pathBegin, pathEnd);
+        {
+            parsed.path = URLComponent::fromRange( pathBegin, pathEnd );
+        }
     }
 
-    static int parsePort(const CHAR* spec, const URLComponent& component)
+    static int parsePort( const CHAR *spec, const URLComponent &component )
     {
         // Easy success case when there is no port.
         const int maxDigits = 5;
-        if (component.isEmptyOrInvalid())
-            return UnspecifiedPort;
 
-        URLComponent nonZeroDigits(component.end(), 0);
-        for (int i = 0; i < component.length(); ++i) {
-            if (spec[component.begin() + i] != '0') {
-                nonZeroDigits = URLComponent::fromRange(component.begin() + i, component.end());
+        if ( component.isEmptyOrInvalid() )
+        {
+            return UnspecifiedPort;
+        }
+
+        URLComponent nonZeroDigits( component.end(), 0 );
+
+        for ( int i = 0; i < component.length(); ++i )
+        {
+            if ( spec[component.begin() + i] != '0' )
+            {
+                nonZeroDigits = URLComponent::fromRange( component.begin() + i, component.end() );
                 break;
             }
         }
-        if (!nonZeroDigits.length())
-            return 0; // All digits were 0.
 
-        if (nonZeroDigits.length() > maxDigits)
+        if ( !nonZeroDigits.length() )
+        {
+            return 0;    // All digits were 0.
+        }
+
+        if ( nonZeroDigits.length() > maxDigits )
+        {
             return InvalidPort;
+        }
 
         int port = 0;
-        for (int i = 0; i < nonZeroDigits.length(); ++i) {
+
+        for ( int i = 0; i < nonZeroDigits.length(); ++i )
+        {
             CHAR ch = spec[nonZeroDigits.begin() + i];
-            if (!isPortDigit(ch))
+
+            if ( !isPortDigit( ch ) )
+            {
                 return InvalidPort;
+            }
+
             port *= 10;
-            port += static_cast<char>(ch) - '0';
+            port += static_cast<char>( ch ) - '0';
         }
-        if (port > 65535)
+
+        if ( port > 65535 )
+        {
             return InvalidPort;
+        }
+
         return port;
     }
 
-    static void extractFileName(const CHAR* spec, const URLComponent& path, URLComponent& fileName)
+    static void extractFileName( const CHAR *spec, const URLComponent &path, URLComponent &fileName )
     {
         // Handle empty paths: they have no file names.
-        if (path.isEmptyOrInvalid()) {
+        if ( path.isEmptyOrInvalid() )
+        {
             fileName.reset();
             return;
         }
@@ -384,8 +476,11 @@ public:
         // the path, but here, we don't want to count it. The last semicolon is
         // the parameter.
         int fileEnd = path.end();
-        for (int i = path.end() - 1; i > path.begin(); --i) {
-            if (spec[i] == ';') {
+
+        for ( int i = path.end() - 1; i > path.begin(); --i )
+        {
+            if ( spec[i] == ';' )
+            {
                 fileEnd = i;
                 break;
             }
@@ -393,23 +488,27 @@ public:
 
         // Now search backwards from the filename end to the previous slash
         // to find the beginning of the filename.
-        for (int i = fileEnd - 1; i >= path.begin(); --i) {
-            if (isURLSlash(spec[i])) {
+        for ( int i = fileEnd - 1; i >= path.begin(); --i )
+        {
+            if ( isURLSlash( spec[i] ) )
+            {
                 // File name is everything following this character to the end
-                fileName = URLComponent::fromRange(i + 1, fileEnd);
+                fileName = URLComponent::fromRange( i + 1, fileEnd );
                 return;
             }
         }
 
         // No slash found, this means the input was degenerate (generally paths
         // will start with a slash). Let's call everything the file name.
-        fileName = URLComponent::fromRange(path.begin(), fileEnd);
+        fileName = URLComponent::fromRange( path.begin(), fileEnd );
     }
 
-    static bool extractQueryKeyValue(const CHAR* spec, URLComponent& query, URLComponent& key, URLComponent& value)
+    static bool extractQueryKeyValue( const CHAR *spec, URLComponent &query, URLComponent &key, URLComponent &value )
     {
-        if (query.isEmptyOrInvalid())
+        if ( query.isEmptyOrInvalid() )
+        {
             return false;
+        }
 
         int start = query.begin();
         int current = start;
@@ -417,41 +516,53 @@ public:
 
         // We assume the beginning of the input is the beginning of the "key"
         // and we skip to the end of it.
-        key.setBegin(current);
-        while (current < end && spec[current] != '&' && spec[current] != '=')
+        key.setBegin( current );
+
+        while ( current < end && spec[current] != '&' && spec[current] != '=' )
+        {
             ++current;
-        key.setLength(current - key.begin());
+        }
+
+        key.setLength( current - key.begin() );
 
         // Skip the separator after the key (if any).
-        if (current < end && spec[current] == '=')
+        if ( current < end && spec[current] == '=' )
+        {
             ++current;
+        }
 
         // Find the value part.
-        value.setBegin(current);
-        while (current < end && spec[current] != '&')
+        value.setBegin( current );
+
+        while ( current < end && spec[current] != '&' )
+        {
             ++current;
-        value.setLength(current - value.begin());
+        }
+
+        value.setLength( current - value.begin() );
 
         // Finally skip the next separator if any
-        if (current < end && spec[current] == '&')
+        if ( current < end && spec[current] == '&' )
+        {
             ++current;
+        }
 
         // Save the new query
-        query = URLComponent::fromRange(current, end);
+        query = URLComponent::fromRange( current, end );
         return true;
     }
 
 // FIXME: This should be protected or private.
 public:
     // We treat slashes and backslashes the same for IE compatibility.
-    static inline bool isURLSlash(CHAR ch)
+    static inline bool isURLSlash( CHAR ch )
     {
         return ch == '/' || ch == '\\';
     }
 
     // Returns true if we should trim this character from the URL because it is
     // a space or a control character.
-    static inline bool shouldTrimFromURL(CHAR ch)
+    static inline bool shouldTrimFromURL( CHAR ch )
     {
         return ch <= ' ';
     }
@@ -459,26 +570,34 @@ public:
     // Given an already-initialized begin index and end index (the index after
     // the last CHAR in spec), this shrinks the range to eliminate
     // "should-be-trimmed" characters.
-    static inline void trimURL(const CHAR* spec, int& begin, int& end)
+    static inline void trimURL( const CHAR *spec, int &begin, int &end )
     {
         // Strip leading whitespace and control characters.
-        while (begin < end && shouldTrimFromURL(spec[begin]))
+        while ( begin < end && shouldTrimFromURL( spec[begin] ) )
+        {
             ++begin;
+        }
 
         // Strip trailing whitespace and control characters. We need the >i
         // test for when the input string is all blanks; we don't want to back
         // past the input.
-        while (end > begin && shouldTrimFromURL(spec[end - 1]))
+        while ( end > begin && shouldTrimFromURL( spec[end - 1] ) )
+        {
             --end;
+        }
     }
 
     // Counts the number of consecutive slashes starting at the given offset
     // in the given string of the given length.
-    static inline int consecutiveSlashes(const CHAR *string, int beginOffset, int stringLength)
+    static inline int consecutiveSlashes( const CHAR *string, int beginOffset, int stringLength )
     {
         int count = 0;
-        while (beginOffset + count < stringLength && isURLSlash(string[beginOffset + count]))
+
+        while ( beginOffset + count < stringLength && isURLSlash( string[beginOffset + count] ) )
+        {
             ++count;
+        }
+
         return count;
     }
 
@@ -487,7 +606,7 @@ private:
     URLParser();
 
     // Returns true if the given character is a valid digit to use in a port.
-    static inline bool isPortDigit(CHAR ch)
+    static inline bool isPortDigit( CHAR ch )
     {
         return ch >= '0' && ch <= '9';
     }
@@ -495,37 +614,48 @@ private:
     // Returns the offset of the next authority terminator in the input starting
     // from startOffset. If no terminator is found, the return value will be equal
     // to specLength.
-    static int nextAuthorityTerminator(const CHAR* spec, int startOffset, int specLength)
+    static int nextAuthorityTerminator( const CHAR *spec, int startOffset, int specLength )
     {
-        for (int i = startOffset; i < specLength; i++) {
-            if (isPossibleAuthorityTerminator(spec[i]))
+        for ( int i = startOffset; i < specLength; i++ )
+        {
+            if ( isPossibleAuthorityTerminator( spec[i] ) )
+            {
                 return i;
+            }
         }
+
         return specLength; // Not found.
     }
 
-    static void parseUserInfo(const CHAR* spec, const URLComponent& user, URLComponent& username, URLComponent& password)
+    static void parseUserInfo( const CHAR *spec, const URLComponent &user, URLComponent &username, URLComponent &password )
     {
         // Find the first colon in the user section, which separates the
         // username and password.
         int colonOffset = 0;
-        while (colonOffset < user.length() && spec[user.begin() + colonOffset] != ':')
-            ++colonOffset;
 
-        if (colonOffset < user.length()) {
+        while ( colonOffset < user.length() && spec[user.begin() + colonOffset] != ':' )
+        {
+            ++colonOffset;
+        }
+
+        if ( colonOffset < user.length() )
+        {
             // Found separator: <username>:<password>
-            username = URLComponent(user.begin(), colonOffset);
-            password = URLComponent::fromRange(user.begin() + colonOffset + 1, user.begin() + user.length());
-        } else {
+            username = URLComponent( user.begin(), colonOffset );
+            password = URLComponent::fromRange( user.begin() + colonOffset + 1, user.begin() + user.length() );
+        }
+        else
+        {
             // No separator, treat everything as the username
             username = user;
             password = URLComponent();
         }
     }
 
-    static void parseServerInfo(const CHAR* spec, const URLComponent& serverInfo, URLComponent& host, URLComponent& port)
+    static void parseServerInfo( const CHAR *spec, const URLComponent &serverInfo, URLComponent &host, URLComponent &port )
     {
-        if (!serverInfo.length()) {
+        if ( !serverInfo.length() )
+        {
             // No server info, host name is empty.
             host.reset();
             port.reset();
@@ -543,26 +673,37 @@ private:
         int colon = -1;
 
         // Find the last right-bracket, and the last colon.
-        for (int i = serverInfo.begin(); i < serverInfo.end(); i++) {
-            switch (spec[i]) {
-            case ']':
-                ipv6Terminator = i;
-                break;
-            case ':':
-                colon = i;
-                break;
-            default:
-                break;
+        for ( int i = serverInfo.begin(); i < serverInfo.end(); i++ )
+        {
+            switch ( spec[i] )
+            {
+                case ']':
+                    ipv6Terminator = i;
+                    break;
+
+                case ':':
+                    colon = i;
+                    break;
+
+                default:
+                    break;
             }
         }
 
-        if (colon > ipv6Terminator) {
+        if ( colon > ipv6Terminator )
+        {
             // Found a port number: <hostname>:<port>
-            host = URLComponent::fromRange(serverInfo.begin(), colon);
-            if (!host.length())
+            host = URLComponent::fromRange( serverInfo.begin(), colon );
+
+            if ( !host.length() )
+            {
                 host.reset();
-            port = URLComponent::fromRange(colon + 1, serverInfo.end());
-        } else {
+            }
+
+            port = URLComponent::fromRange( colon + 1, serverInfo.end() );
+        }
+        else
+        {
             // No port: <hostname>
             host = serverInfo;
             port.reset();

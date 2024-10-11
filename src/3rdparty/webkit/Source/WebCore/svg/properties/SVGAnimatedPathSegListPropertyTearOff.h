@@ -25,43 +25,52 @@
 #include "SVGPathSegList.h"
 #include "SVGPathSegListPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGPathSegListPropertyTearOff;
 
-class SVGAnimatedPathSegListPropertyTearOff : public SVGAnimatedListPropertyTearOff<SVGPathSegList> {
+class SVGAnimatedPathSegListPropertyTearOff : public SVGAnimatedListPropertyTearOff<SVGPathSegList>
+{
 public:
-    SVGProperty* baseVal(SVGPathSegRole role)
+    SVGProperty *baseVal( SVGPathSegRole role )
     {
-        if (!m_baseVal)
-            m_baseVal = SVGPathSegListPropertyTearOff::create(this, BaseValRole, role);
+        if ( !m_baseVal )
+        {
+            m_baseVal = SVGPathSegListPropertyTearOff::create( this, BaseValRole, role );
+        }
+
         return m_baseVal.get();
     }
 
-    SVGProperty* animVal(SVGPathSegRole role)
+    SVGProperty *animVal( SVGPathSegRole role )
     {
-        if (!m_animVal)
-            m_animVal = SVGPathSegListPropertyTearOff::create(this, AnimValRole, role);
+        if ( !m_animVal )
+        {
+            m_animVal = SVGPathSegListPropertyTearOff::create( this, AnimValRole, role );
+        }
+
         return m_animVal.get();
     }
 
-    int removeItemFromList(const RefPtr<SVGPathSeg>& segment, bool shouldSynchronizeWrappers)
+    int removeItemFromList( const RefPtr<SVGPathSeg> &segment, bool shouldSynchronizeWrappers )
     {
         // This should ever be called for our baseVal, as animVal can't modify the list.
-        return static_pointer_cast<SVGPathSegListPropertyTearOff>(m_baseVal)->removeItemFromList(segment, shouldSynchronizeWrappers);
+        return static_pointer_cast<SVGPathSegListPropertyTearOff>( m_baseVal )->removeItemFromList( segment, shouldSynchronizeWrappers );
     }
 
 private:
     friend class SVGAnimatedProperty;
 
-    static PassRefPtr<SVGAnimatedPathSegListPropertyTearOff> create(SVGElement* contextElement, const QualifiedName& attributeName, SVGPathSegList& values)
+    static PassRefPtr<SVGAnimatedPathSegListPropertyTearOff> create( SVGElement *contextElement, const QualifiedName &attributeName,
+            SVGPathSegList &values )
     {
-        ASSERT(contextElement);
-        return adoptRef(new SVGAnimatedPathSegListPropertyTearOff(contextElement, attributeName, values));
+        ASSERT( contextElement );
+        return adoptRef( new SVGAnimatedPathSegListPropertyTearOff( contextElement, attributeName, values ) );
     }
 
-    SVGAnimatedPathSegListPropertyTearOff(SVGElement* contextElement, const QualifiedName& attributeName, SVGPathSegList& values)
-        : SVGAnimatedListPropertyTearOff<SVGPathSegList>(contextElement, attributeName, values)
+    SVGAnimatedPathSegListPropertyTearOff( SVGElement *contextElement, const QualifiedName &attributeName, SVGPathSegList &values )
+        : SVGAnimatedListPropertyTearOff<SVGPathSegList>( contextElement, attributeName, values )
     {
     }
 };

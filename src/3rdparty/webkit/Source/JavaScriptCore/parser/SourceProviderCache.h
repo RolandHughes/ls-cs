@@ -26,22 +26,27 @@
 #include <wtf/HashMap.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class SourceProviderCacheItem;
 
-class SourceProviderCache {
+class SourceProviderCache
+{
 public:
-    SourceProviderCache() : m_contentByteSize(0) {}
+    SourceProviderCache() : m_contentByteSize( 0 ) {}
     ~SourceProviderCache();
 
     void clear();
     unsigned byteSize() const;
-    void add(int sourcePosition, PassOwnPtr<SourceProviderCacheItem>, unsigned size);
-    const SourceProviderCacheItem* get(int sourcePosition) const { return m_map.get(sourcePosition); }
+    void add( int sourcePosition, PassOwnPtr<SourceProviderCacheItem>, unsigned size );
+    const SourceProviderCacheItem *get( int sourcePosition ) const
+    {
+        return m_map.get( sourcePosition );
+    }
 
 private:
-    HashMap<int, SourceProviderCacheItem*> m_map;
+    HashMap<int, SourceProviderCacheItem *> m_map;
     unsigned m_contentByteSize;
 };
 

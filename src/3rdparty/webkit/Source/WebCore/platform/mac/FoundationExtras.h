@@ -31,10 +31,13 @@
 // object. CF objects need to be "made collectable" for autorelease to work
 // properly under GC.
 
-static inline id HardAutorelease(CFTypeRef object)
+static inline id HardAutorelease( CFTypeRef object )
 {
-    if (object)
-        CFMakeCollectable(object);
-    [(id)object autorelease];
-    return (id)object;
+    if ( object )
+    {
+        CFMakeCollectable( object );
+    }
+
+    [( id )object autorelease];
+    return ( id )object;
 }

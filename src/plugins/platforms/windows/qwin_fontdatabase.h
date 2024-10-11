@@ -30,81 +30,84 @@
 
 class QWindowsFontEngineData
 {
- public:
-   QWindowsFontEngineData();
+public:
+    QWindowsFontEngineData();
 
-   QWindowsFontEngineData(const QWindowsFontEngineData &) = delete;
-   QWindowsFontEngineData &operator=(const QWindowsFontEngineData &) = delete;
+    QWindowsFontEngineData( const QWindowsFontEngineData & ) = delete;
+    QWindowsFontEngineData &operator=( const QWindowsFontEngineData & ) = delete;
 
-   ~QWindowsFontEngineData();
+    ~QWindowsFontEngineData();
 
-   uint pow_gamma[256];
+    uint pow_gamma[256];
 
-   bool clearTypeEnabled;
-   qreal fontSmoothingGamma;
-   HDC hdc;
+    bool clearTypeEnabled;
+    qreal fontSmoothingGamma;
+    HDC hdc;
 };
 
 class QWindowsFontDatabase : public QPlatformFontDatabase
 {
- public:
-   QWindowsFontDatabase();
-   ~QWindowsFontDatabase();
+public:
+    QWindowsFontDatabase();
+    ~QWindowsFontDatabase();
 
-   void populateFontDatabase() override;
-   void populateFamily(const QString &familyName) override;
+    void populateFontDatabase() override;
+    void populateFamily( const QString &familyName ) override;
 
-   // emerald (multi)
-   QFontEngineMulti *fontEngineMulti(QFontEngine *fontEngine, QChar::Script script) override;
+    // emerald (multi)
+    QFontEngineMulti *fontEngineMulti( QFontEngine *fontEngine, QChar::Script script ) override;
 
-   QFontEngine *fontEngine(const QFontDef &fontDef, void *handle) override;
-   QFontEngine *fontEngine(const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference) override;
-   QStringList fallbacksForFamily(const QString &family, QFont::Style style, QFont::StyleHint styleHint,
-      QChar::Script script) const override;
-   QStringList addApplicationFont(const QByteArray &fontData, const QString &fileName) override;
-   void releaseHandle(void *handle) override;
-   QString fontDir() const override;
+    QFontEngine *fontEngine( const QFontDef &fontDef, void *handle ) override;
+    QFontEngine *fontEngine( const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference ) override;
+    QStringList fallbacksForFamily( const QString &family, QFont::Style style, QFont::StyleHint styleHint,
+                                    QChar::Script script ) const override;
+    QStringList addApplicationFont( const QByteArray &fontData, const QString &fileName ) override;
+    void releaseHandle( void *handle ) override;
+    QString fontDir() const override;
 
-   QFont defaultFont() const  override {
-      return systemDefaultFont();
-   }
+    QFont defaultFont() const  override
+    {
+        return systemDefaultFont();
+    }
 
-   bool fontsAlwaysScalable() const override;
-   void derefUniqueFont(const QString &uniqueFont);
-   void refUniqueFont(const QString &uniqueFont);
+    bool fontsAlwaysScalable() const override;
+    void derefUniqueFont( const QString &uniqueFont );
+    void refUniqueFont( const QString &uniqueFont );
 
-   static QFont systemDefaultFont();
+    static QFont systemDefaultFont();
 
-   static QFontEngine *createEngine(const QFontDef &request, int dpi, const QSharedPointer<QWindowsFontEngineData> &data);
+    static QFontEngine *createEngine( const QFontDef &request, int dpi, const QSharedPointer<QWindowsFontEngineData> &data );
 
-   static HFONT systemFont();
-   static QFont LOGFONT_to_QFont(const LOGFONT &lf, int verticalDPI = 0);
+    static HFONT systemFont();
+    static QFont LOGFONT_to_QFont( const LOGFONT &lf, int verticalDPI = 0 );
 
-   static qreal fontSmoothingGamma();
-   static LOGFONT fontDefToLOGFONT(const QFontDef &fontDef);
+    static qreal fontSmoothingGamma();
+    static LOGFONT fontDefToLOGFONT( const QFontDef &fontDef );
 
-   static QStringList extraTryFontsForFamily(const QString &family);
-   static QString familyForStyleHint(QFont::StyleHint styleHint);
+    static QStringList extraTryFontsForFamily( const QString &family );
+    static QString familyForStyleHint( QFont::StyleHint styleHint );
 
- private:
-   void populateFamily(const QString &familyName, bool registerAlias);
-   void removeApplicationFonts();
+private:
+    void populateFamily( const QString &familyName, bool registerAlias );
+    void removeApplicationFonts();
 
-   struct WinApplicationFont {
-      HANDLE handle;
-      QString fileName;
-   };
+    struct WinApplicationFont
+    {
+        HANDLE handle;
+        QString fileName;
+    };
 
-   QList<WinApplicationFont> m_applicationFonts;
+    QList<WinApplicationFont> m_applicationFonts;
 
-   struct UniqueFontData {
-      HANDLE handle;
-      QAtomicInt refCount;
-   };
+    struct UniqueFontData
+    {
+        HANDLE handle;
+        QAtomicInt refCount;
+    };
 
-   QMap<QString, UniqueFontData> m_uniqueFontData;
+    QMap<QString, UniqueFontData> m_uniqueFontData;
 };
 
-QDebug operator<<(QDebug debug, const QFontDef &def);
+QDebug operator<<( QDebug debug, const QFontDef &def );
 
 #endif

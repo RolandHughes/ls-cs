@@ -25,23 +25,23 @@
 
 #include <qgstutils_p.h>
 
-CameraBinInfoControl::CameraBinInfoControl(GstElementFactory *sourceFactory, QObject *parent)
-   : QCameraInfoControl(parent), m_sourceFactory(sourceFactory)
+CameraBinInfoControl::CameraBinInfoControl( GstElementFactory *sourceFactory, QObject *parent )
+    : QCameraInfoControl( parent ), m_sourceFactory( sourceFactory )
 {
-   gst_object_ref(GST_OBJECT(m_sourceFactory));
+    gst_object_ref( GST_OBJECT( m_sourceFactory ) );
 }
 
 CameraBinInfoControl::~CameraBinInfoControl()
 {
-   gst_object_unref(GST_OBJECT(m_sourceFactory));
+    gst_object_unref( GST_OBJECT( m_sourceFactory ) );
 }
 
-QCamera::Position CameraBinInfoControl::cameraPosition(const QString &device) const
+QCamera::Position CameraBinInfoControl::cameraPosition( const QString &device ) const
 {
-   return QGstUtils::cameraPosition(device, m_sourceFactory);
+    return QGstUtils::cameraPosition( device, m_sourceFactory );
 }
 
-int CameraBinInfoControl::cameraOrientation(const QString &device) const
+int CameraBinInfoControl::cameraOrientation( const QString &device ) const
 {
-   return QGstUtils::cameraOrientation(device, m_sourceFactory);
+    return QGstUtils::cameraOrientation( device, m_sourceFactory );
 }

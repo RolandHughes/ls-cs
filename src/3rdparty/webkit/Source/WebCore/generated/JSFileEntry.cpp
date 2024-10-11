@@ -35,9 +35,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSFileEntry);
+ASSERT_CLASS_FITS_IN_CELL( JSFileEntry );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -48,8 +49,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSFileEntry);
 
 static const HashTableValue JSFileEntryTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileEntryConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileEntryConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,43 +64,49 @@ static JSC_CONST_HASHTABLE HashTable JSFileEntryTable = { 2, 1, JSFileEntryTable
 
 static const HashTableValue JSFileEntryConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileEntryConstructorTable = { 1, 0, JSFileEntryConstructorTableValues, 0 };
-class JSFileEntryConstructor : public DOMConstructorObject {
+class JSFileEntryConstructor : public DOMConstructorObject
+{
 public:
-    JSFileEntryConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSFileEntryConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSFileEntryConstructor::s_info = { "FileEntryConstructor", &DOMConstructorObject::s_info, &JSFileEntryConstructorTable, 0 };
 
-JSFileEntryConstructor::JSFileEntryConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSFileEntryConstructor::JSFileEntryConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSFileEntryPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSFileEntryPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSFileEntryConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileEntryConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileEntryConstructor, JSDOMWrapper>(exec, &JSFileEntryConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSFileEntryConstructor, JSDOMWrapper>( exec, &JSFileEntryConstructorTable, this, propertyName, slot );
 }
 
-bool JSFileEntryConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileEntryConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileEntryConstructor, JSDOMWrapper>(exec, &JSFileEntryConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileEntryConstructor, JSDOMWrapper>( exec, &JSFileEntryConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -111,132 +118,157 @@ bool JSFileEntryConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ide
 
 static const HashTableValue JSFileEntryPrototypeTableValues[3] =
 {
-    { "createWriter", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileEntryPrototypeFunctionCreateWriter), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "file", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileEntryPrototypeFunctionFile), (intptr_t)2 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "createWriter", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileEntryPrototypeFunctionCreateWriter ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "file", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileEntryPrototypeFunctionFile ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileEntryPrototypeTable = { 5, 3, JSFileEntryPrototypeTableValues, 0 };
-static const HashTable* getJSFileEntryPrototypeTable(ExecState* exec)
+static const HashTable *getJSFileEntryPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileEntryPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileEntryPrototypeTable );
 }
 
 const ClassInfo JSFileEntryPrototype::s_info = { "FileEntryPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSFileEntryPrototypeTable };
 
-JSObject* JSFileEntryPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileEntryPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSFileEntry>(exec, globalObject);
+    return getDOMPrototype<JSFileEntry>( exec, globalObject );
 }
 
-bool JSFileEntryPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileEntryPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSFileEntryPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSFileEntryPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSFileEntryPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileEntryPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSFileEntryPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSFileEntryPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
-static const HashTable* getJSFileEntryTable(ExecState* exec)
+static const HashTable *getJSFileEntryTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileEntryTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileEntryTable );
 }
 
 const ClassInfo JSFileEntry::s_info = { "FileEntry", &JSEntry::s_info, 0, getJSFileEntryTable };
 
-JSFileEntry::JSFileEntry(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<FileEntry> impl)
-    : JSEntry(structure, globalObject, impl)
+JSFileEntry::JSFileEntry( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<FileEntry> impl )
+    : JSEntry( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSFileEntry::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileEntry::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSFileEntryPrototype(exec->globalData(), globalObject, JSFileEntryPrototype::createStructure(exec->globalData(), JSEntryPrototype::self(exec, globalObject)));
+    return new ( exec ) JSFileEntryPrototype( exec->globalData(), globalObject,
+            JSFileEntryPrototype::createStructure( exec->globalData(), JSEntryPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSFileEntry::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileEntry::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileEntry, Base>(exec, getJSFileEntryTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSFileEntry, Base>( exec, getJSFileEntryTable( exec ), this, propertyName, slot );
 }
 
-bool JSFileEntry::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileEntry::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileEntry, Base>(exec, getJSFileEntryTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileEntry, Base>( exec, getJSFileEntryTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsFileEntryConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileEntryConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileEntry* domObject = static_cast<JSFileEntry*>(asObject(slotBase));
-    return JSFileEntry::getConstructor(exec, domObject->globalObject());
+    JSFileEntry *domObject = static_cast<JSFileEntry *>( asObject( slotBase ) );
+    return JSFileEntry::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSFileEntry::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSFileEntry::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSFileEntryConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSFileEntryConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileEntryPrototypeFunctionCreateWriter(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileEntryPrototypeFunctionCreateWriter( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileEntry::s_info))
-        return throwVMTypeError(exec);
-    JSFileEntry* castedThis = static_cast<JSFileEntry*>(asObject(thisValue));
-    FileEntry* imp = static_cast<FileEntry*>(castedThis->impl());
-    if (exec->argumentCount() <= 0 || !exec->argument(0).isObject()) {
-        setDOMException(exec, TYPE_MISMATCH_ERR);
-        return JSValue::encode(jsUndefined());
-    }
-    RefPtr<FileWriterCallback> successCallback = JSFileWriterCallback::create(asObject(exec->argument(0)), castedThis->globalObject());
-    RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 1 && !exec->argument(1).isNull() && !exec->argument(1).isUndefined()) {
-        if (!exec->argument(1).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
-        }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(1)), castedThis->globalObject());
+
+    if ( !thisValue.inherits( &JSFileEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    imp->createWriter(successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    JSFileEntry *castedThis = static_cast<JSFileEntry *>( asObject( thisValue ) );
+    FileEntry *imp = static_cast<FileEntry *>( castedThis->impl() );
+
+    if ( exec->argumentCount() <= 0 || !exec->argument( 0 ).isObject() )
+    {
+        setDOMException( exec, TYPE_MISMATCH_ERR );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    RefPtr<FileWriterCallback> successCallback = JSFileWriterCallback::create( asObject( exec->argument( 0 ) ),
+            castedThis->globalObject() );
+    RefPtr<ErrorCallback> errorCallback;
+
+    if ( exec->argumentCount() > 1 && !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() )
+    {
+        if ( !exec->argument( 1 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
+        }
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 1 ) ), castedThis->globalObject() );
+    }
+
+    imp->createWriter( successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileEntryPrototypeFunctionFile(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileEntryPrototypeFunctionFile( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileEntry::s_info))
-        return throwVMTypeError(exec);
-    JSFileEntry* castedThis = static_cast<JSFileEntry*>(asObject(thisValue));
-    FileEntry* imp = static_cast<FileEntry*>(castedThis->impl());
-    if (exec->argumentCount() <= 0 || !exec->argument(0).isObject()) {
-        setDOMException(exec, TYPE_MISMATCH_ERR);
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSFileEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
-    RefPtr<FileCallback> successCallback = JSFileCallback::create(asObject(exec->argument(0)), castedThis->globalObject());
+
+    JSFileEntry *castedThis = static_cast<JSFileEntry *>( asObject( thisValue ) );
+    FileEntry *imp = static_cast<FileEntry *>( castedThis->impl() );
+
+    if ( exec->argumentCount() <= 0 || !exec->argument( 0 ).isObject() )
+    {
+        setDOMException( exec, TYPE_MISMATCH_ERR );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    RefPtr<FileCallback> successCallback = JSFileCallback::create( asObject( exec->argument( 0 ) ), castedThis->globalObject() );
     RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 1 && !exec->argument(1).isNull() && !exec->argument(1).isUndefined()) {
-        if (!exec->argument(1).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 1 && !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() )
+    {
+        if ( !exec->argument( 1 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(1)), castedThis->globalObject());
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 1 ) ), castedThis->globalObject() );
     }
 
-    imp->file(successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    imp->file( successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, FileEntry* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, FileEntry *impl )
 {
-    return wrap<JSFileEntry>(exec, globalObject, impl);
+    return wrap<JSFileEntry>( exec, globalObject, impl );
 }
 
-FileEntry* toFileEntry(JSC::JSValue value)
+FileEntry *toFileEntry( JSC::JSValue value )
 {
-    return value.inherits(&JSFileEntry::s_info) ? static_cast<JSFileEntry*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSFileEntry::s_info ) ? static_cast<JSFileEntry *>( asObject( value ) )->impl() : 0;
 }
 
 }

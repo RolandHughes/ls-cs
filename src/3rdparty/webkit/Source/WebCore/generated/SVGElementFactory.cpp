@@ -118,507 +118,521 @@
 #include "Settings.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace SVGNames;
 
-typedef PassRefPtr<SVGElement> (*ConstructorFunction)(const QualifiedName&, Document*, bool createdByParser);
-typedef HashMap<AtomicStringImpl*, ConstructorFunction> FunctionMap;
+typedef PassRefPtr<SVGElement> ( *ConstructorFunction )( const QualifiedName &, Document *, bool createdByParser );
+typedef HashMap<AtomicStringImpl *, ConstructorFunction> FunctionMap;
 
-static FunctionMap* gFunctionMap = 0;
+static FunctionMap *gFunctionMap = 0;
 
-static PassRefPtr<SVGElement> aConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> aConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGAElement::create(tagName, document);
+    return SVGAElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> altglyphConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> altglyphConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGAltGlyphElement::create(tagName, document);
+    return SVGAltGlyphElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> animateConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> animateConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGAnimateElement::create(tagName, document);
+    return SVGAnimateElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> animatecolorConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> animatecolorConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGAnimateColorElement::create(tagName, document);
+    return SVGAnimateColorElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> animatemotionConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> animatemotionConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGAnimateMotionElement::create(tagName, document);
+    return SVGAnimateMotionElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> animatetransformConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> animatetransformConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGAnimateTransformElement::create(tagName, document);
+    return SVGAnimateTransformElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> circleConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> circleConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGCircleElement::create(tagName, document);
+    return SVGCircleElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> clippathConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> clippathConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGClipPathElement::create(tagName, document);
+    return SVGClipPathElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> cursorConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> cursorConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGCursorElement::create(tagName, document);
+    return SVGCursorElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> defsConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> defsConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGDefsElement::create(tagName, document);
+    return SVGDefsElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> descConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> descConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGDescElement::create(tagName, document);
+    return SVGDescElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> ellipseConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> ellipseConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGEllipseElement::create(tagName, document);
+    return SVGEllipseElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> feblendConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> feblendConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEBlendElement::create(tagName, document);
+    return SVGFEBlendElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fecolormatrixConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fecolormatrixConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEColorMatrixElement::create(tagName, document);
+    return SVGFEColorMatrixElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fecomponenttransferConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fecomponenttransferConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEComponentTransferElement::create(tagName, document);
+    return SVGFEComponentTransferElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fecompositeConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fecompositeConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFECompositeElement::create(tagName, document);
+    return SVGFECompositeElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> feconvolvematrixConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> feconvolvematrixConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEConvolveMatrixElement::create(tagName, document);
+    return SVGFEConvolveMatrixElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fediffuselightingConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fediffuselightingConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEDiffuseLightingElement::create(tagName, document);
+    return SVGFEDiffuseLightingElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fedisplacementmapConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fedisplacementmapConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEDisplacementMapElement::create(tagName, document);
+    return SVGFEDisplacementMapElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fedistantlightConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fedistantlightConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEDistantLightElement::create(tagName, document);
+    return SVGFEDistantLightElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fedropshadowConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fedropshadowConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEDropShadowElement::create(tagName, document);
+    return SVGFEDropShadowElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fefloodConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fefloodConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEFloodElement::create(tagName, document);
+    return SVGFEFloodElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fefuncaConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fefuncaConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEFuncAElement::create(tagName, document);
+    return SVGFEFuncAElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fefuncbConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fefuncbConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEFuncBElement::create(tagName, document);
+    return SVGFEFuncBElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fefuncgConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fefuncgConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEFuncGElement::create(tagName, document);
+    return SVGFEFuncGElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fefuncrConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fefuncrConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEFuncRElement::create(tagName, document);
+    return SVGFEFuncRElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fegaussianblurConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fegaussianblurConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEGaussianBlurElement::create(tagName, document);
+    return SVGFEGaussianBlurElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> feimageConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> feimageConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEImageElement::create(tagName, document);
+    return SVGFEImageElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> femergeConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> femergeConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEMergeElement::create(tagName, document);
+    return SVGFEMergeElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> femergenodeConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> femergenodeConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEMergeNodeElement::create(tagName, document);
+    return SVGFEMergeNodeElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> femorphologyConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> femorphologyConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEMorphologyElement::create(tagName, document);
+    return SVGFEMorphologyElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> feoffsetConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> feoffsetConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEOffsetElement::create(tagName, document);
+    return SVGFEOffsetElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fepointlightConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fepointlightConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFEPointLightElement::create(tagName, document);
+    return SVGFEPointLightElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fespecularlightingConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fespecularlightingConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFESpecularLightingElement::create(tagName, document);
+    return SVGFESpecularLightingElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fespotlightConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fespotlightConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFESpotLightElement::create(tagName, document);
+    return SVGFESpotLightElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fetileConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fetileConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFETileElement::create(tagName, document);
+    return SVGFETileElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> feturbulenceConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> feturbulenceConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFETurbulenceElement::create(tagName, document);
+    return SVGFETurbulenceElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> filterConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> filterConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFilterElement::create(tagName, document);
+    return SVGFilterElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fontConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fontConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFontElement::create(tagName, document);
+    return SVGFontElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fontfaceConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fontfaceConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFontFaceElement::create(tagName, document);
+    return SVGFontFaceElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fontfaceformatConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fontfaceformatConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFontFaceFormatElement::create(tagName, document);
+    return SVGFontFaceFormatElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fontfacenameConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fontfacenameConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFontFaceNameElement::create(tagName, document);
+    return SVGFontFaceNameElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fontfacesrcConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fontfacesrcConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFontFaceSrcElement::create(tagName, document);
+    return SVGFontFaceSrcElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> fontfaceuriConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> fontfaceuriConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGFontFaceUriElement::create(tagName, document);
+    return SVGFontFaceUriElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> foreignobjectConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> foreignobjectConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGForeignObjectElement::create(tagName, document);
+    return SVGForeignObjectElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> gConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> gConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGGElement::create(tagName, document);
+    return SVGGElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> glyphConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> glyphConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGGlyphElement::create(tagName, document);
+    return SVGGlyphElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> hkernConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> hkernConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGHKernElement::create(tagName, document);
+    return SVGHKernElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> imageConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> imageConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGImageElement::create(tagName, document);
+    return SVGImageElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> lineConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> lineConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGLineElement::create(tagName, document);
+    return SVGLineElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> lineargradientConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> lineargradientConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGLinearGradientElement::create(tagName, document);
+    return SVGLinearGradientElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> markerConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> markerConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGMarkerElement::create(tagName, document);
+    return SVGMarkerElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> maskConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> maskConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGMaskElement::create(tagName, document);
+    return SVGMaskElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> metadataConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> metadataConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGMetadataElement::create(tagName, document);
+    return SVGMetadataElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> missingglyphConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> missingglyphConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGMissingGlyphElement::create(tagName, document);
+    return SVGMissingGlyphElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> mpathConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> mpathConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGMPathElement::create(tagName, document);
+    return SVGMPathElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> pathConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> pathConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGPathElement::create(tagName, document);
+    return SVGPathElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> patternConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> patternConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGPatternElement::create(tagName, document);
+    return SVGPatternElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> polygonConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> polygonConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGPolygonElement::create(tagName, document);
+    return SVGPolygonElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> polylineConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> polylineConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGPolylineElement::create(tagName, document);
+    return SVGPolylineElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> radialgradientConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> radialgradientConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGRadialGradientElement::create(tagName, document);
+    return SVGRadialGradientElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> rectConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> rectConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGRectElement::create(tagName, document);
+    return SVGRectElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> scriptConstructor(const QualifiedName& tagName, Document* document, bool createdByParser)
+static PassRefPtr<SVGElement> scriptConstructor( const QualifiedName &tagName, Document *document, bool createdByParser )
 {
-    return SVGScriptElement::create(tagName, document, createdByParser);
+    return SVGScriptElement::create( tagName, document, createdByParser );
 }
 
-static PassRefPtr<SVGElement> setConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> setConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGSetElement::create(tagName, document);
+    return SVGSetElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> stopConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> stopConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGStopElement::create(tagName, document);
+    return SVGStopElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> styleConstructor(const QualifiedName& tagName, Document* document, bool createdByParser)
+static PassRefPtr<SVGElement> styleConstructor( const QualifiedName &tagName, Document *document, bool createdByParser )
 {
-    return SVGStyleElement::create(tagName, document, createdByParser);
+    return SVGStyleElement::create( tagName, document, createdByParser );
 }
 
-static PassRefPtr<SVGElement> svgConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> svgConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGSVGElement::create(tagName, document);
+    return SVGSVGElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> switchConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> switchConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGSwitchElement::create(tagName, document);
+    return SVGSwitchElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> symbolConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> symbolConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGSymbolElement::create(tagName, document);
+    return SVGSymbolElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> textConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> textConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGTextElement::create(tagName, document);
+    return SVGTextElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> textpathConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> textpathConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGTextPathElement::create(tagName, document);
+    return SVGTextPathElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> titleConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> titleConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGTitleElement::create(tagName, document);
+    return SVGTitleElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> trefConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> trefConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGTRefElement::create(tagName, document);
+    return SVGTRefElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> tspanConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> tspanConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGTSpanElement::create(tagName, document);
+    return SVGTSpanElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> useConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> useConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGUseElement::create(tagName, document);
+    return SVGUseElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> viewConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> viewConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGViewElement::create(tagName, document);
+    return SVGViewElement::create( tagName, document );
 }
 
-static PassRefPtr<SVGElement> vkernConstructor(const QualifiedName& tagName, Document* document, bool)
+static PassRefPtr<SVGElement> vkernConstructor( const QualifiedName &tagName, Document *document, bool )
 {
-    return SVGVKernElement::create(tagName, document);
+    return SVGVKernElement::create( tagName, document );
 }
 
-static void addTag(const QualifiedName& tag, ConstructorFunction func)
+static void addTag( const QualifiedName &tag, ConstructorFunction func )
 {
-    gFunctionMap->set(tag.localName().impl(), func);
+    gFunctionMap->set( tag.localName().impl(), func );
 }
 
 static void createFunctionMap()
 {
-    ASSERT(!gFunctionMap);
+    ASSERT( !gFunctionMap );
 
     // Create the table.
     gFunctionMap = new FunctionMap;
-    
+
     // Populate it with constructor functions.
-    addTag(aTag, aConstructor);
-    addTag(altGlyphTag, altglyphConstructor);
-    addTag(animateTag, animateConstructor);
-    addTag(animateColorTag, animatecolorConstructor);
-    addTag(animateMotionTag, animatemotionConstructor);
-    addTag(animateTransformTag, animatetransformConstructor);
-    addTag(circleTag, circleConstructor);
-    addTag(clipPathTag, clippathConstructor);
-    addTag(cursorTag, cursorConstructor);
-    addTag(defsTag, defsConstructor);
-    addTag(descTag, descConstructor);
-    addTag(ellipseTag, ellipseConstructor);
-    addTag(feBlendTag, feblendConstructor);
-    addTag(feColorMatrixTag, fecolormatrixConstructor);
-    addTag(feComponentTransferTag, fecomponenttransferConstructor);
-    addTag(feCompositeTag, fecompositeConstructor);
-    addTag(feConvolveMatrixTag, feconvolvematrixConstructor);
-    addTag(feDiffuseLightingTag, fediffuselightingConstructor);
-    addTag(feDisplacementMapTag, fedisplacementmapConstructor);
-    addTag(feDistantLightTag, fedistantlightConstructor);
-    addTag(feDropShadowTag, fedropshadowConstructor);
-    addTag(feFloodTag, fefloodConstructor);
-    addTag(feFuncATag, fefuncaConstructor);
-    addTag(feFuncBTag, fefuncbConstructor);
-    addTag(feFuncGTag, fefuncgConstructor);
-    addTag(feFuncRTag, fefuncrConstructor);
-    addTag(feGaussianBlurTag, fegaussianblurConstructor);
-    addTag(feImageTag, feimageConstructor);
-    addTag(feMergeTag, femergeConstructor);
-    addTag(feMergeNodeTag, femergenodeConstructor);
-    addTag(feMorphologyTag, femorphologyConstructor);
-    addTag(feOffsetTag, feoffsetConstructor);
-    addTag(fePointLightTag, fepointlightConstructor);
-    addTag(feSpecularLightingTag, fespecularlightingConstructor);
-    addTag(feSpotLightTag, fespotlightConstructor);
-    addTag(feTileTag, fetileConstructor);
-    addTag(feTurbulenceTag, feturbulenceConstructor);
-    addTag(filterTag, filterConstructor);
-    addTag(fontTag, fontConstructor);
-    addTag(font_faceTag, fontfaceConstructor);
-    addTag(font_face_formatTag, fontfaceformatConstructor);
-    addTag(font_face_nameTag, fontfacenameConstructor);
-    addTag(font_face_srcTag, fontfacesrcConstructor);
-    addTag(font_face_uriTag, fontfaceuriConstructor);
-    addTag(foreignObjectTag, foreignobjectConstructor);
-    addTag(gTag, gConstructor);
-    addTag(glyphTag, glyphConstructor);
-    addTag(hkernTag, hkernConstructor);
-    addTag(imageTag, imageConstructor);
-    addTag(lineTag, lineConstructor);
-    addTag(linearGradientTag, lineargradientConstructor);
-    addTag(markerTag, markerConstructor);
-    addTag(maskTag, maskConstructor);
-    addTag(metadataTag, metadataConstructor);
-    addTag(missing_glyphTag, missingglyphConstructor);
-    addTag(mpathTag, mpathConstructor);
-    addTag(pathTag, pathConstructor);
-    addTag(patternTag, patternConstructor);
-    addTag(polygonTag, polygonConstructor);
-    addTag(polylineTag, polylineConstructor);
-    addTag(radialGradientTag, radialgradientConstructor);
-    addTag(rectTag, rectConstructor);
-    addTag(scriptTag, scriptConstructor);
-    addTag(setTag, setConstructor);
-    addTag(stopTag, stopConstructor);
-    addTag(styleTag, styleConstructor);
-    addTag(svgTag, svgConstructor);
-    addTag(switchTag, switchConstructor);
-    addTag(symbolTag, symbolConstructor);
-    addTag(textTag, textConstructor);
-    addTag(textPathTag, textpathConstructor);
-    addTag(titleTag, titleConstructor);
-    addTag(trefTag, trefConstructor);
-    addTag(tspanTag, tspanConstructor);
-    addTag(useTag, useConstructor);
-    addTag(viewTag, viewConstructor);
-    addTag(vkernTag, vkernConstructor);
+    addTag( aTag, aConstructor );
+    addTag( altGlyphTag, altglyphConstructor );
+    addTag( animateTag, animateConstructor );
+    addTag( animateColorTag, animatecolorConstructor );
+    addTag( animateMotionTag, animatemotionConstructor );
+    addTag( animateTransformTag, animatetransformConstructor );
+    addTag( circleTag, circleConstructor );
+    addTag( clipPathTag, clippathConstructor );
+    addTag( cursorTag, cursorConstructor );
+    addTag( defsTag, defsConstructor );
+    addTag( descTag, descConstructor );
+    addTag( ellipseTag, ellipseConstructor );
+    addTag( feBlendTag, feblendConstructor );
+    addTag( feColorMatrixTag, fecolormatrixConstructor );
+    addTag( feComponentTransferTag, fecomponenttransferConstructor );
+    addTag( feCompositeTag, fecompositeConstructor );
+    addTag( feConvolveMatrixTag, feconvolvematrixConstructor );
+    addTag( feDiffuseLightingTag, fediffuselightingConstructor );
+    addTag( feDisplacementMapTag, fedisplacementmapConstructor );
+    addTag( feDistantLightTag, fedistantlightConstructor );
+    addTag( feDropShadowTag, fedropshadowConstructor );
+    addTag( feFloodTag, fefloodConstructor );
+    addTag( feFuncATag, fefuncaConstructor );
+    addTag( feFuncBTag, fefuncbConstructor );
+    addTag( feFuncGTag, fefuncgConstructor );
+    addTag( feFuncRTag, fefuncrConstructor );
+    addTag( feGaussianBlurTag, fegaussianblurConstructor );
+    addTag( feImageTag, feimageConstructor );
+    addTag( feMergeTag, femergeConstructor );
+    addTag( feMergeNodeTag, femergenodeConstructor );
+    addTag( feMorphologyTag, femorphologyConstructor );
+    addTag( feOffsetTag, feoffsetConstructor );
+    addTag( fePointLightTag, fepointlightConstructor );
+    addTag( feSpecularLightingTag, fespecularlightingConstructor );
+    addTag( feSpotLightTag, fespotlightConstructor );
+    addTag( feTileTag, fetileConstructor );
+    addTag( feTurbulenceTag, feturbulenceConstructor );
+    addTag( filterTag, filterConstructor );
+    addTag( fontTag, fontConstructor );
+    addTag( font_faceTag, fontfaceConstructor );
+    addTag( font_face_formatTag, fontfaceformatConstructor );
+    addTag( font_face_nameTag, fontfacenameConstructor );
+    addTag( font_face_srcTag, fontfacesrcConstructor );
+    addTag( font_face_uriTag, fontfaceuriConstructor );
+    addTag( foreignObjectTag, foreignobjectConstructor );
+    addTag( gTag, gConstructor );
+    addTag( glyphTag, glyphConstructor );
+    addTag( hkernTag, hkernConstructor );
+    addTag( imageTag, imageConstructor );
+    addTag( lineTag, lineConstructor );
+    addTag( linearGradientTag, lineargradientConstructor );
+    addTag( markerTag, markerConstructor );
+    addTag( maskTag, maskConstructor );
+    addTag( metadataTag, metadataConstructor );
+    addTag( missing_glyphTag, missingglyphConstructor );
+    addTag( mpathTag, mpathConstructor );
+    addTag( pathTag, pathConstructor );
+    addTag( patternTag, patternConstructor );
+    addTag( polygonTag, polygonConstructor );
+    addTag( polylineTag, polylineConstructor );
+    addTag( radialGradientTag, radialgradientConstructor );
+    addTag( rectTag, rectConstructor );
+    addTag( scriptTag, scriptConstructor );
+    addTag( setTag, setConstructor );
+    addTag( stopTag, stopConstructor );
+    addTag( styleTag, styleConstructor );
+    addTag( svgTag, svgConstructor );
+    addTag( switchTag, switchConstructor );
+    addTag( symbolTag, symbolConstructor );
+    addTag( textTag, textConstructor );
+    addTag( textPathTag, textpathConstructor );
+    addTag( titleTag, titleConstructor );
+    addTag( trefTag, trefConstructor );
+    addTag( tspanTag, tspanConstructor );
+    addTag( useTag, useConstructor );
+    addTag( viewTag, viewConstructor );
+    addTag( vkernTag, vkernConstructor );
 }
 
-PassRefPtr<SVGElement> SVGElementFactory::createSVGElement(const QualifiedName& qName, Document* document, bool createdByParser)
+PassRefPtr<SVGElement> SVGElementFactory::createSVGElement( const QualifiedName &qName, Document *document, bool createdByParser )
 {
-    if (!document)
+    if ( !document )
+    {
         return 0;
+    }
 
 #if ENABLE(DASHBOARD_SUPPORT)
-    Settings* settings = document->settings();
-    if (settings && settings->usesDashboardBackwardCompatibilityMode())
+    Settings *settings = document->settings();
+
+    if ( settings && settings->usesDashboardBackwardCompatibilityMode() )
+    {
         return 0;
+    }
+
 #endif
-    if (!gFunctionMap)
+
+    if ( !gFunctionMap )
+    {
         createFunctionMap();
-    if (ConstructorFunction function = gFunctionMap->get(qName.localName().impl()))
-        return function(qName, document, createdByParser);
-    return SVGElement::create(qName, document);
+    }
+
+    if ( ConstructorFunction function = gFunctionMap->get( qName.localName().impl() ) )
+    {
+        return function( qName, document, createdByParser );
+    }
+
+    return SVGElement::create( qName, document );
 }
 
 } // namespace WebCore

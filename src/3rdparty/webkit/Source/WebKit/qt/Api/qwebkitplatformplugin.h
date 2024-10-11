@@ -33,41 +33,44 @@
 #include <QUrl>
 #include <QColor>
 
-class QWebSelectData {
+class QWebSelectData
+{
 public:
     virtual ~QWebSelectData() {}
 
     enum ItemType { Option, Group, Separator };
 
-    virtual ItemType itemType(int) const = 0;
-    virtual QString itemText(int index) const = 0;
-    virtual QString itemToolTip(int index) const = 0;
-    virtual bool itemIsEnabled(int index) const = 0;
-    virtual bool itemIsSelected(int index) const = 0;
+    virtual ItemType itemType( int ) const = 0;
+    virtual QString itemText( int index ) const = 0;
+    virtual QString itemToolTip( int index ) const = 0;
+    virtual bool itemIsEnabled( int index ) const = 0;
+    virtual bool itemIsSelected( int index ) const = 0;
     virtual int itemCount() const = 0;
     virtual bool multiple() const = 0;
     virtual QColor backgroundColor() const = 0;
     virtual QColor foregroundColor() const = 0;
-    virtual QColor itemBackgroundColor(int index) const = 0;
-    virtual QColor itemForegroundColor(int index) const = 0;
+    virtual QColor itemBackgroundColor( int index ) const = 0;
+    virtual QColor itemForegroundColor( int index ) const = 0;
 };
 
-class QWebSelectMethod : public QObject {
-    WEB_CS_OBJECT(QWebSelectMethod)
+class QWebSelectMethod : public QObject
+{
+    WEB_LSCS_OBJECT( QWebSelectMethod )
 public:
     virtual ~QWebSelectMethod() {}
 
-    virtual void show(const QWebSelectData&) = 0;
+    virtual void show( const QWebSelectData & ) = 0;
     virtual void hide() = 0;
 
 public:
-    WEB_CS_SIGNAL_1(Public, void selectItem(int index,bool allowMultiplySelections,bool shift))
-    WEB_CS_SIGNAL_2(selectItem,index,allowMultiplySelections,shift)
-    WEB_CS_SIGNAL_1(Public, void didHide())
-    WEB_CS_SIGNAL_2(didHide)
+    WEB_LSCS_SIGNAL_1( Public, void selectItem( int index,bool allowMultiplySelections,bool shift ) )
+    WEB_LSCS_SIGNAL_2( selectItem,index,allowMultiplySelections,shift )
+    WEB_LSCS_SIGNAL_1( Public, void didHide() )
+    WEB_LSCS_SIGNAL_2( didHide )
 };
 
-class QWebNotificationData {
+class QWebNotificationData
+{
 public:
     virtual ~QWebNotificationData() {}
 
@@ -77,75 +80,84 @@ public:
     virtual const QUrl openerPageUrl() const = 0;
 };
 
-class QWebNotificationPresenter : public QObject {
-    WEB_CS_OBJECT(QWebNotificationPresenter)
+class QWebNotificationPresenter : public QObject
+{
+    WEB_LSCS_OBJECT( QWebNotificationPresenter )
 
 public:
     QWebNotificationPresenter() {}
     virtual ~QWebNotificationPresenter() {}
 
-    virtual void showNotification(const QWebNotificationData*) = 0;
+    virtual void showNotification( const QWebNotificationData * ) = 0;
 
-    WEB_CS_SIGNAL_1(Public, void notificationClosed())
-    WEB_CS_SIGNAL_2(notificationClosed)
-    WEB_CS_SIGNAL_1(Public, void notificationClicked())
-    WEB_CS_SIGNAL_2(notificationClicked)
+    WEB_LSCS_SIGNAL_1( Public, void notificationClosed() )
+    WEB_LSCS_SIGNAL_2( notificationClosed )
+    WEB_LSCS_SIGNAL_1( Public, void notificationClicked() )
+    WEB_LSCS_SIGNAL_2( notificationClicked )
 };
 
-class QWebHapticFeedbackPlayer: public QObject {
-    WEB_CS_OBJECT(QWebHapticFeedbackPlayer)
+class QWebHapticFeedbackPlayer: public QObject
+{
+    WEB_LSCS_OBJECT( QWebHapticFeedbackPlayer )
 
 public:
     QWebHapticFeedbackPlayer() {}
     virtual ~QWebHapticFeedbackPlayer() {}
 
-    enum HapticStrength {
+    enum HapticStrength
+    {
         None, Weak, Medium, Strong
     };
 
-    enum HapticEvent {
+    enum HapticEvent
+    {
         Press, Release
     };
 
-    virtual void playHapticFeedback(const HapticEvent, const QString& hapticType, const HapticStrength) = 0;
+    virtual void playHapticFeedback( const HapticEvent, const QString &hapticType, const HapticStrength ) = 0;
 };
 
-class QWebTouchModifier : public QObject {
-    WEB_CS_OBJECT(QWebTouchModifier)
+class QWebTouchModifier : public QObject
+{
+    WEB_LSCS_OBJECT( QWebTouchModifier )
 public:
     virtual ~QWebTouchModifier() {}
 
-    enum PaddingDirection {
+    enum PaddingDirection
+    {
         Up, Right, Down, Left
     };
 
-    virtual unsigned hitTestPaddingForTouch(const PaddingDirection) const = 0;
+    virtual unsigned hitTestPaddingForTouch( const PaddingDirection ) const = 0;
 };
 
 #if defined(WTF_USE_QT_MULTIMEDIA) && WTF_USE_QT_MULTIMEDIA
-class QWebFullScreenVideoHandler : public QObject {
-    WEB_CS_OBJECT(QWebFullScreenVideoHandler)
+class QWebFullScreenVideoHandler : public QObject
+{
+    WEB_LSCS_OBJECT( QWebFullScreenVideoHandler )
 public:
     QWebFullScreenVideoHandler() {}
     virtual ~QWebFullScreenVideoHandler() {}
     virtual bool requiresFullScreenForVideoPlayback() const = 0;
 
 public:
-    WEB_CS_SIGNAL_1(Public, void fullScreenClosed())
-    WEB_CS_SIGNAL_2(fullScreenClosed)
+    WEB_LSCS_SIGNAL_1( Public, void fullScreenClosed() )
+    WEB_LSCS_SIGNAL_2( fullScreenClosed )
 
-    WEB_CS_SLOT_1(Public, virtual void enterFullScreen(QMediaPlayer *player)=0)
-    WEB_CS_SLOT_2(enterFullScreen)
-    WEB_CS_SLOT_1(Public, virtual void exitFullScreen())
-    WEB_CS_SLOT_2(exitFullScreen)
+    WEB_LSCS_SLOT_1( Public, virtual void enterFullScreen( QMediaPlayer *player )=0 )
+    WEB_LSCS_SLOT_2( enterFullScreen )
+    WEB_LSCS_SLOT_1( Public, virtual void exitFullScreen() )
+    WEB_LSCS_SLOT_2( exitFullScreen )
 };
 #endif
 
-class QWebKitPlatformPlugin {
+class QWebKitPlatformPlugin
+{
 public:
     virtual ~QWebKitPlatformPlugin() {}
 
-    enum Extension {
+    enum Extension
+    {
         MultipleSelections,
         Notifications,
         Haptics,
@@ -153,10 +165,10 @@ public:
         FullScreenVideoPlayer
     };
 
-    virtual bool supportsExtension(Extension) const = 0;
-    virtual QObject* createExtension(Extension) const = 0;
+    virtual bool supportsExtension( Extension ) const = 0;
+    virtual QObject *createExtension( Extension ) const = 0;
 };
 
-CS_DECLARE_INTERFACE(QWebKitPlatformPlugin, "com.nokia.Qt.WebKit.PlatformPlugin/1.7");
+LSCS_DECLARE_INTERFACE( QWebKitPlatformPlugin, "com.nokia.Qt.WebKit.PlatformPlugin/1.7" );
 
 #endif // QWEBKITPLATFORMPLUGIN_H

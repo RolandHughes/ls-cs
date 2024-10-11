@@ -25,21 +25,23 @@
 class NSGraphicsContext;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
-    
+
 // This class automatically saves and restores the current NSGraphicsContext for
 // functions which call out into AppKit and rely on the currentContext being set
-class LocalCurrentGraphicsContext {
-    WTF_MAKE_NONCOPYABLE(LocalCurrentGraphicsContext);
+class LocalCurrentGraphicsContext
+{
+    WTF_MAKE_NONCOPYABLE( LocalCurrentGraphicsContext );
 public:
-    LocalCurrentGraphicsContext(GraphicsContext* graphicsContext);
+    LocalCurrentGraphicsContext( GraphicsContext *graphicsContext );
     ~LocalCurrentGraphicsContext();
 
 private:
-    GraphicsContext* m_savedGraphicsContext;
-    NSGraphicsContext* m_savedNSGraphicsContext;
+    GraphicsContext *m_savedGraphicsContext;
+    NSGraphicsContext *m_savedNSGraphicsContext;
 };
 
 }

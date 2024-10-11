@@ -29,23 +29,28 @@
 #include "DelayProcessor.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioParam;
 
-class DelayNode : public AudioBasicProcessorNode {
+class DelayNode : public AudioBasicProcessorNode
+{
 public:
-    static PassRefPtr<DelayNode> create(AudioContext* context, double sampleRate)
+    static PassRefPtr<DelayNode> create( AudioContext *context, double sampleRate )
     {
-        return adoptRef(new DelayNode(context, sampleRate));      
+        return adoptRef( new DelayNode( context, sampleRate ) );
     }
 
-    AudioParam* delayTime();
+    AudioParam *delayTime();
 
 private:
-    DelayNode(AudioContext*, double sampleRate);
+    DelayNode( AudioContext *, double sampleRate );
 
-    DelayProcessor* delayProcessor() { return static_cast<DelayProcessor*>(processor()); }
+    DelayProcessor *delayProcessor()
+    {
+        return static_cast<DelayProcessor *>( processor() );
+    }
 };
 
 } // namespace WebCore

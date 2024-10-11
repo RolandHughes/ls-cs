@@ -25,25 +25,30 @@
 
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum SVGTextPathMethodType {
+enum SVGTextPathMethodType
+{
     SVG_TEXTPATH_METHODTYPE_UNKNOWN = 0,
     SVG_TEXTPATH_METHODTYPE_ALIGN = 1,
     SVG_TEXTPATH_METHODTYPE_STRETCH = 2
 };
 
-enum SVGTextPathSpacingType {
+enum SVGTextPathSpacingType
+{
     SVG_TEXTPATH_SPACINGTYPE_UNKNOWN = 0,
     SVG_TEXTPATH_SPACINGTYPE_AUTO = 1,
     SVG_TEXTPATH_SPACINGTYPE_EXACT = 2
 };
 
 class SVGTextPathElement : public SVGTextContentElement,
-                           public SVGURIReference {
+    public SVGURIReference
+{
 public:
     // Forward declare these enums in the w3c naming scheme, for IDL generation
-    enum {
+    enum
+    {
         TEXTPATH_METHODTYPE_UNKNOWN = SVG_TEXTPATH_METHODTYPE_UNKNOWN,
         TEXTPATH_METHODTYPE_ALIGN = SVG_TEXTPATH_METHODTYPE_ALIGN,
         TEXTPATH_METHODTYPE_STRETCH = SVG_TEXTPATH_METHODTYPE_STRETCH,
@@ -52,32 +57,32 @@ public:
         TEXTPATH_SPACINGTYPE_EXACT = SVG_TEXTPATH_SPACINGTYPE_EXACT
     };
 
-    static PassRefPtr<SVGTextPathElement> create(const QualifiedName&, Document*);
- 
+    static PassRefPtr<SVGTextPathElement> create( const QualifiedName &, Document * );
+
 private:
-    SVGTextPathElement(const QualifiedName&, Document*);
+    SVGTextPathElement( const QualifiedName &, Document * );
 
     virtual void insertedIntoDocument();
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual bool childShouldCreateRenderer(Node*) const;
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool childShouldCreateRenderer( Node * ) const;
+    virtual bool rendererIsNeeded( RenderStyle * );
 
     virtual bool selfHasRelativeLengths() const;
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(StartOffset, startOffset)
-    DECLARE_ANIMATED_ENUMERATION(Method, method)
-    DECLARE_ANIMATED_ENUMERATION(Spacing, spacing)
+    DECLARE_ANIMATED_LENGTH( StartOffset, startOffset )
+    DECLARE_ANIMATED_ENUMERATION( Method, method )
+    DECLARE_ANIMATED_ENUMERATION( Spacing, spacing )
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 };
 
 } // namespace WebCore

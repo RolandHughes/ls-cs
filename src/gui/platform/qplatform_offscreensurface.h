@@ -33,26 +33,26 @@ class QPlatformOffscreenSurfacePrivate;
 
 class Q_GUI_EXPORT QPlatformOffscreenSurface : public QPlatformSurface
 {
- public:
-   explicit QPlatformOffscreenSurface(QOffscreenSurface *offscreenSurface);
+public:
+    explicit QPlatformOffscreenSurface( QOffscreenSurface *offscreenSurface );
 
-   QPlatformOffscreenSurface(const QPlatformOffscreenSurface &) = delete;
-   QPlatformOffscreenSurface &operator=(const QPlatformOffscreenSurface &) = delete;
+    QPlatformOffscreenSurface( const QPlatformOffscreenSurface & ) = delete;
+    QPlatformOffscreenSurface &operator=( const QPlatformOffscreenSurface & ) = delete;
 
-   virtual ~QPlatformOffscreenSurface();
+    virtual ~QPlatformOffscreenSurface();
 
-   QOffscreenSurface *offscreenSurface() const;
+    QOffscreenSurface *offscreenSurface() const;
 
-   QPlatformScreen *screen() const;
+    QPlatformScreen *screen() const;
 
-   QSurfaceFormat format() const override;
-   virtual bool isValid() const;
+    QSurfaceFormat format() const override;
+    virtual bool isValid() const;
 
- protected:
-   QScopedPointer<QPlatformOffscreenSurfacePrivate> d_ptr;
+protected:
+    QScopedPointer<QPlatformOffscreenSurfacePrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QPlatformOffscreenSurface)
+private:
+    Q_DECLARE_PRIVATE( QPlatformOffscreenSurface )
 };
 
 #endif

@@ -30,23 +30,30 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSSQLStatementErrorCallback::JSSQLStatementErrorCallback(JSObject* callback, JSDOMGlobalObject* globalObject)
-    : ActiveDOMCallback(globalObject->scriptExecutionContext())
-    , m_data(new JSCallbackData(callback, globalObject))
+JSSQLStatementErrorCallback::JSSQLStatementErrorCallback( JSObject *callback, JSDOMGlobalObject *globalObject )
+    : ActiveDOMCallback( globalObject->scriptExecutionContext() )
+    , m_data( new JSCallbackData( callback, globalObject ) )
 {
 }
 
 JSSQLStatementErrorCallback::~JSSQLStatementErrorCallback()
 {
-    ScriptExecutionContext* context = scriptExecutionContext();
+    ScriptExecutionContext *context = scriptExecutionContext();
+
     // When the context is destroyed, all tasks with a reference to a callback
     // should be deleted. So if the context is 0, we are on the context thread.
-    if (!context || context->isContextThread())
+    if ( !context || context->isContextThread() )
+    {
         delete m_data;
+    }
     else
-        context->postTask(DeleteCallbackDataTask::create(m_data));
+    {
+        context->postTask( DeleteCallbackDataTask::create( m_data ) );
+    }
+
 #ifndef NDEBUG
     m_data = 0;
 #endif

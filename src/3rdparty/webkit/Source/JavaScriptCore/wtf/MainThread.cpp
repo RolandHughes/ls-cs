@@ -38,31 +38,37 @@
 #error Chromium uses a different main thread implementation
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
-struct FunctionWithContext {
-    MainThreadFunction* function;
-    void* context;
-    ThreadCondition* syncFlag;
+struct FunctionWithContext
+{
+    MainThreadFunction *function;
+    void *context;
+    ThreadCondition *syncFlag;
 
-    FunctionWithContext(MainThreadFunction* function = 0, void* context = 0, ThreadCondition* syncFlag = 0)
-        : function(function)
-        , context(context)
-        , syncFlag(syncFlag)
-    { 
+    FunctionWithContext( MainThreadFunction *function = 0, void *context = 0, ThreadCondition *syncFlag = 0 )
+        : function( function )
+        , context( context )
+        , syncFlag( syncFlag )
+    {
     }
-    bool operator == (const FunctionWithContext& o)
+    bool operator == ( const FunctionWithContext &o )
     {
         return function == o.function
-            && context == o.context
-            && syncFlag == o.syncFlag;
+               && context == o.context
+               && syncFlag == o.syncFlag;
     }
 };
 
-class FunctionWithContextFinder {
+class FunctionWithContextFinder
+{
 public:
-    FunctionWithContextFinder(const FunctionWithContext& m) : m(m) {}
-    bool operator() (FunctionWithContext& o) { return o == m; }
+    FunctionWithContextFinder( const FunctionWithContext &m ) : m( m ) {}
+    bool operator() ( FunctionWithContext &o )
+    {
+        return o == m;
+    }
     FunctionWithContext m;
 };
 
@@ -74,15 +80,15 @@ static bool callbacksPaused; // This global variable is only accessed from main 
 static ThreadIdentifier mainThreadIdentifier;
 #endif
 
-static Mutex& mainThreadFunctionQueueMutex()
+static Mutex &mainThreadFunctionQueueMutex()
 {
-    DEFINE_STATIC_LOCAL(Mutex, staticMutex, ());
+    DEFINE_STATIC_LOCAL( Mutex, staticMutex, () );
     return staticMutex;
 }
 
-static FunctionQueue& functionQueue()
+static FunctionQueue &functionQueue()
 {
-    DEFINE_STATIC_LOCAL(FunctionQueue, staticFunctionQueue, ());
+    DEFINE_STATIC_LOCAL( FunctionQueue, staticFunctionQueue, () );
     return staticFunctionQueue;
 }
 
@@ -92,8 +98,12 @@ static FunctionQueue& functionQueue()
 void initializeMainThread()
 {
     static bool initializedMainThread;
-    if (initializedMainThread)
+
+    if ( initializedMainThread )
+    {
         return;
+    }
+
     initializedMainThread = true;
 
 #if !PLATFORM(QT)
@@ -116,7 +126,7 @@ static void initializeMainThreadOnce()
 
 void initializeMainThread()
 {
-    pthread_once(&initializeMainThreadKeyOnce, initializeMainThreadOnce);
+    pthread_once( &initializeMainThreadKeyOnce, initializeMainThreadOnce );
 }
 
 static void initializeMainThreadToProcessMainThreadOnce()
@@ -127,7 +137,7 @@ static void initializeMainThreadToProcessMainThreadOnce()
 
 void initializeMainThreadToProcessMainThread()
 {
-    pthread_once(&initializeMainThreadKeyOnce, initializeMainThreadToProcessMainThreadOnce);
+    pthread_once( &initializeMainThreadKeyOnce, initializeMainThreadToProcessMainThreadOnce );
 }
 #endif
 
@@ -136,25 +146,35 @@ static const double maxRunLoopSuspensionTime = 0.05;
 
 void dispatchFunctionsFromMainThread()
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
-    if (callbacksPaused)
+    if ( callbacksPaused )
+    {
         return;
+    }
 
     double startTime = currentTime();
 
     FunctionWithContext invocation;
-    while (true) {
+
+    while ( true )
+    {
         {
-            MutexLocker locker(mainThreadFunctionQueueMutex());
-            if (!functionQueue().size())
+            MutexLocker locker( mainThreadFunctionQueueMutex() );
+
+            if ( !functionQueue().size() )
+            {
                 break;
+            }
+
             invocation = functionQueue().takeFirst();
         }
 
-        invocation.function(invocation.context);
-        if (invocation.syncFlag) {
-            MutexLocker locker(mainThreadFunctionQueueMutex());
+        invocation.function( invocation.context );
+
+        if ( invocation.syncFlag )
+        {
+            MutexLocker locker( mainThreadFunctionQueueMutex() );
             invocation.syncFlag->signal();
         }
 
@@ -162,73 +182,91 @@ void dispatchFunctionsFromMainThread()
         // yield so the user input can be processed. Otherwise user may not be able to even close the window.
         // This code has effect only in case the scheduleDispatchFunctionsOnMainThread() is implemented in a way that
         // allows input events to be processed before we are back here.
-        if (currentTime() - startTime > maxRunLoopSuspensionTime) {
+        if ( currentTime() - startTime > maxRunLoopSuspensionTime )
+        {
             scheduleDispatchFunctionsOnMainThread();
             break;
         }
     }
 }
 
-void callOnMainThread(MainThreadFunction* function, void* context)
+void callOnMainThread( MainThreadFunction *function, void *context )
 {
-    ASSERT(function);
+    ASSERT( function );
     bool needToSchedule = false;
     {
-        MutexLocker locker(mainThreadFunctionQueueMutex());
+        MutexLocker locker( mainThreadFunctionQueueMutex() );
         needToSchedule = functionQueue().size() == 0;
-        functionQueue().append(FunctionWithContext(function, context));
+        functionQueue().append( FunctionWithContext( function, context ) );
     }
-    if (needToSchedule)
+
+    if ( needToSchedule )
+    {
         scheduleDispatchFunctionsOnMainThread();
+    }
 }
 
-void callOnMainThreadAndWait(MainThreadFunction* function, void* context)
+void callOnMainThreadAndWait( MainThreadFunction *function, void *context )
 {
-    ASSERT(function);
+    ASSERT( function );
 
-    if (isMainThread()) {
-        function(context);
+    if ( isMainThread() )
+    {
+        function( context );
         return;
     }
 
     ThreadCondition syncFlag;
-    Mutex& functionQueueMutex = mainThreadFunctionQueueMutex();
-    MutexLocker locker(functionQueueMutex);
-    functionQueue().append(FunctionWithContext(function, context, &syncFlag));
-    if (functionQueue().size() == 1)
+    Mutex &functionQueueMutex = mainThreadFunctionQueueMutex();
+    MutexLocker locker( functionQueueMutex );
+    functionQueue().append( FunctionWithContext( function, context, &syncFlag ) );
+
+    if ( functionQueue().size() == 1 )
+    {
         scheduleDispatchFunctionsOnMainThread();
-    syncFlag.wait(functionQueueMutex);
+    }
+
+    syncFlag.wait( functionQueueMutex );
 }
 
-void cancelCallOnMainThread(MainThreadFunction* function, void* context)
+void cancelCallOnMainThread( MainThreadFunction *function, void *context )
 {
-    ASSERT(function);
+    ASSERT( function );
 
-    MutexLocker locker(mainThreadFunctionQueueMutex());
+    MutexLocker locker( mainThreadFunctionQueueMutex() );
 
-    FunctionWithContextFinder pred(FunctionWithContext(function, context));
+    FunctionWithContextFinder pred( FunctionWithContext( function, context ) );
 
-    while (true) {
-        // We must redefine 'i' each pass, because the itererator's operator= 
+    while ( true )
+    {
+        // We must redefine 'i' each pass, because the itererator's operator=
         // requires 'this' to be valid, and remove() invalidates all iterators
-        FunctionQueue::iterator i(functionQueue().findIf(pred));
-        if (i == functionQueue().end())
+        FunctionQueue::iterator i( functionQueue().findIf( pred ) );
+
+        if ( i == functionQueue().end() )
+        {
             break;
-        functionQueue().remove(i);
+        }
+
+        functionQueue().remove( i );
     }
 }
 
-void setMainThreadCallbacksPaused(bool paused)
+void setMainThreadCallbacksPaused( bool paused )
 {
-    ASSERT(isMainThread());
+    ASSERT( isMainThread() );
 
-    if (callbacksPaused == paused)
+    if ( callbacksPaused == paused )
+    {
         return;
+    }
 
     callbacksPaused = paused;
 
-    if (!callbacksPaused)
+    if ( !callbacksPaused )
+    {
         scheduleDispatchFunctionsOnMainThread();
+    }
 }
 
 #if !PLATFORM(MAC) && !PLATFORM(QT) && !PLATFORM(BREWMP)

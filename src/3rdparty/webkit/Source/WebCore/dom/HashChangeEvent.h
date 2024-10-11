@@ -24,36 +24,50 @@
 #include "Event.h"
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HashChangeEvent : public Event {
+class HashChangeEvent : public Event
+{
 public:
-    virtual bool isHashChangeEvent() const { return true; }
-
-    static PassRefPtr<HashChangeEvent> create(const String& oldURL, const String& newURL)
+    virtual bool isHashChangeEvent() const
     {
-        return adoptRef(new HashChangeEvent(oldURL, newURL));
+        return true;
     }
 
-    void initHashChangeEvent(const AtomicString& eventType, bool canBubble, bool cancelable, const String& oldURL, const String& newURL)
+    static PassRefPtr<HashChangeEvent> create( const String &oldURL, const String &newURL )
     {
-        if (dispatched())
-            return;
+        return adoptRef( new HashChangeEvent( oldURL, newURL ) );
+    }
 
-        initEvent(eventType, canBubble, cancelable);
+    void initHashChangeEvent( const AtomicString &eventType, bool canBubble, bool cancelable, const String &oldURL,
+                              const String &newURL )
+    {
+        if ( dispatched() )
+        {
+            return;
+        }
+
+        initEvent( eventType, canBubble, cancelable );
 
         m_oldURL = oldURL;
         m_newURL = newURL;
     }
 
-    const String& oldURL() const { return m_oldURL; }
-    const String& newURL() const { return m_newURL; }
+    const String &oldURL() const
+    {
+        return m_oldURL;
+    }
+    const String &newURL() const
+    {
+        return m_newURL;
+    }
 
 private:
-    HashChangeEvent(const String& oldURL, const String& newURL)
-        : Event(eventNames().hashchangeEvent, false, false)
-        , m_oldURL(oldURL)
-        , m_newURL(newURL)
+    HashChangeEvent( const String &oldURL, const String &newURL )
+        : Event( eventNames().hashchangeEvent, false, false )
+        , m_oldURL( oldURL )
+        , m_newURL( newURL )
     {}
 
     String m_oldURL;

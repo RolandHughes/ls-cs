@@ -28,21 +28,21 @@
 
 using namespace QPatternist;
 
-TruthPredicate::TruthPredicate(const Expression::Ptr &sourceExpression,
-                               const Expression::Ptr &predicate) : GenericPredicate(sourceExpression,
-                                        predicate)
+TruthPredicate::TruthPredicate( const Expression::Ptr &sourceExpression,
+                                const Expression::Ptr &predicate ) : GenericPredicate( sourceExpression,
+                                            predicate )
 {
 }
 
 SequenceType::List TruthPredicate::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrMoreItems);
-   result.append(CommonSequenceTypes::EBV);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrMoreItems );
+    result.append( CommonSequenceTypes::EBV );
+    return result;
 }
 
-ExpressionVisitorResult::Ptr TruthPredicate::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr TruthPredicate::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

@@ -25,41 +25,41 @@
 
 using namespace QPatternist;
 
-ValidationError::ValidationError(const QString &msg,
-                                 const ReportContext::ErrorCode code) : m_message(msg),
-   m_code(code)
+ValidationError::ValidationError( const QString &msg,
+                                  const ReportContext::ErrorCode code ) : m_message( msg ),
+    m_code( code )
 {
 }
 
-AtomicValue::Ptr ValidationError::createError(const QString &description,
-      const ReportContext::ErrorCode code)
+AtomicValue::Ptr ValidationError::createError( const QString &description,
+        const ReportContext::ErrorCode code )
 {
-   return ValidationError::Ptr(new ValidationError(description, code));
+    return ValidationError::Ptr( new ValidationError( description, code ) );
 }
 
 bool ValidationError::hasError() const
 {
-   return true;
+    return true;
 }
 
 QString ValidationError::stringValue() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return QString();
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return QString();
 }
 
 QString ValidationError::message() const
 {
-   return m_message;
+    return m_message;
 }
 
 ItemType::Ptr ValidationError::type() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return ItemType::Ptr();
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return ItemType::Ptr();
 }
 
 ReportContext::ErrorCode ValidationError::errorCode() const
 {
-   return m_code;
+    return m_code;
 }

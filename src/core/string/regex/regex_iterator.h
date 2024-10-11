@@ -24,145 +24,171 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_ITERATOR_H
-#define CS_REGEX_ITERATOR_H
+#ifndef LSCS_REGEX_ITERATOR_H
+#define LSCS_REGEX_ITERATOR_H
 
-namespace cs_regex_ns {
+namespace lscs_regex_ns
+{
 
 template <class BidirectionalIterator, class charT, class traits>
 class regex_iterator_implementation
 {
-   using regex_type = basic_regex<charT, traits>;
+    using regex_type = basic_regex<charT, traits>;
 
-   match_results<BidirectionalIterator> what;  // current match
-   BidirectionalIterator                base;  // start of sequence
-   BidirectionalIterator                end;   // end of sequence
-   const regex_type                     re;    // the expression
-   match_flag_type                      flags; // flags for matching
+    match_results<BidirectionalIterator> what;  // current match
+    BidirectionalIterator                base;  // start of sequence
+    BidirectionalIterator                end;   // end of sequence
+    const regex_type                     re;    // the expression
+    match_flag_type                      flags; // flags for matching
 
- public:
-   regex_iterator_implementation(const regex_type *p, BidirectionalIterator last, match_flag_type f)
-      : base(), end(last), re(*p), flags(f) {}
+public:
+    regex_iterator_implementation( const regex_type *p, BidirectionalIterator last, match_flag_type f )
+        : base(), end( last ), re( *p ), flags( f ) {}
 
-   bool init(BidirectionalIterator first) {
-      base = first;
-      return regex_search(first, end, what, re, flags);
-   }
+    bool init( BidirectionalIterator first )
+    {
+        base = first;
+        return regex_search( first, end, what, re, flags );
+    }
 
-   bool compare(const regex_iterator_implementation &that) {
-      if (this == &that) {
-         return true;
-      }
+    bool compare( const regex_iterator_implementation &that )
+    {
+        if ( this == &that )
+        {
+            return true;
+        }
 
-      return (&re.get_data() == &that.re.get_data()) && (end == that.end) && (flags == that.flags) && (what[0].first == that.what[0].first) &&
-             (what[0].second == that.what[0].second);
-   }
+        return ( &re.get_data() == &that.re.get_data() ) && ( end == that.end ) && ( flags == that.flags )
+               && ( what[0].first == that.what[0].first ) &&
+               ( what[0].second == that.what[0].second );
+    }
 
-   const match_results<BidirectionalIterator> &get() {
-      return what;
-   }
+    const match_results<BidirectionalIterator> &get()
+    {
+        return what;
+    }
 
-   bool next() {
+    bool next()
+    {
 
-      BidirectionalIterator next_start = what[0].second;
-      match_flag_type f(flags);
+        BidirectionalIterator next_start = what[0].second;
+        match_flag_type f( flags );
 
-      if (!what.length() || (f & regex_constants::match_posix)) {
-         f |= regex_constants::match_not_initial_null;
-      }
+        if ( !what.length() || ( f & regex_constants::match_posix ) )
+        {
+            f |= regex_constants::match_not_initial_null;
+        }
 
-      bool result = regex_search(next_start, end, what, re, f, base);
-      if (result) {
-         what.set_base(base);
-      }
-      return result;
-   }
+        bool result = regex_search( next_start, end, what, re, f, base );
 
- private:
-   regex_iterator_implementation &operator=(const regex_iterator_implementation &);
+        if ( result )
+        {
+            what.set_base( base );
+        }
+
+        return result;
+    }
+
+private:
+    regex_iterator_implementation &operator=( const regex_iterator_implementation & );
 };
 
 template <class BidirectionalIterator, class charT, class traits>
 class regex_iterator
 {
- private:
-   using impl  = regex_iterator_implementation<BidirectionalIterator, charT, traits>;
-   using pimpl = std::shared_ptr<impl>;
+private:
+    using impl  = regex_iterator_implementation<BidirectionalIterator, charT, traits>;
+    using pimpl = std::shared_ptr<impl>;
 
- public:
-   using regex_type        = basic_regex<charT, traits>;
-   using difference_type   = typename cs_regex_detail_ns::regex_iterator_traits<BidirectionalIterator>::difference_type;
-   using value_type        = match_results<BidirectionalIterator>;
-   using iterator_category = std::forward_iterator_tag;
-   using pointer           = const value_type *;
-   using reference         = const value_type &;
+public:
+    using regex_type        = basic_regex<charT, traits>;
+    using difference_type   = typename lscs_regex_detail_ns::regex_iterator_traits<BidirectionalIterator>::difference_type;
+    using value_type        = match_results<BidirectionalIterator>;
+    using iterator_category = std::forward_iterator_tag;
+    using pointer           = const value_type *;
+    using reference         = const value_type &;
 
-   regex_iterator() {
-   }
+    regex_iterator()
+    {
+    }
 
-   regex_iterator(BidirectionalIterator a, BidirectionalIterator b,
-                  const regex_type &re, match_flag_type m = match_default)
-      : pdata(new impl(&re, b, m)) {
-      if (! pdata->init(a)) {
-         pdata.reset();
-      }
-   }
+    regex_iterator( BidirectionalIterator a, BidirectionalIterator b,
+                    const regex_type &re, match_flag_type m = match_default )
+        : pdata( new impl( &re, b, m ) )
+    {
+        if ( ! pdata->init( a ) )
+        {
+            pdata.reset();
+        }
+    }
 
-   regex_iterator(const regex_iterator &that)
-      : pdata(that.pdata)
-   {
-   }
+    regex_iterator( const regex_iterator &that )
+        : pdata( that.pdata )
+    {
+    }
 
-   regex_iterator &operator=(const regex_iterator &that) {
-      pdata = that.pdata;
-      return *this;
-   }
+    regex_iterator &operator=( const regex_iterator &that )
+    {
+        pdata = that.pdata;
+        return *this;
+    }
 
-   bool operator==(const regex_iterator &that) const {
-      if ((pdata.get() == nullptr) || (that.pdata.get() == nullptr)) {
-         return pdata.get() == that.pdata.get();
-      }
-      return pdata->compare(*(that.pdata.get()));
-   }
+    bool operator==( const regex_iterator &that ) const
+    {
+        if ( ( pdata.get() == nullptr ) || ( that.pdata.get() == nullptr ) )
+        {
+            return pdata.get() == that.pdata.get();
+        }
 
-   bool operator!=(const regex_iterator &that) const {
-      return !(*this == that);
-   }
+        return pdata->compare( *( that.pdata.get() ) );
+    }
 
-   const value_type &operator*() const {
-      return pdata->get();
-   }
+    bool operator!=( const regex_iterator &that ) const
+    {
+        return !( *this == that );
+    }
 
-   const value_type *operator->() const {
-      return &(pdata->get());
-   }
+    const value_type &operator*() const
+    {
+        return pdata->get();
+    }
 
-   regex_iterator &operator++() {
-      cow();
+    const value_type *operator->() const
+    {
+        return &( pdata->get() );
+    }
 
-      if (pdata->next() == nullptr) {
-         pdata.reset();
-      }
+    regex_iterator &operator++()
+    {
+        cow();
 
-      return *this;
-   }
+        if ( pdata->next() == nullptr )
+        {
+            pdata.reset();
+        }
 
-   regex_iterator operator++(int) {
-      regex_iterator result(*this);
-      ++(*this);
+        return *this;
+    }
 
-      return result;
-   }
+    regex_iterator operator++( int )
+    {
+        regex_iterator result( *this );
+        ++( *this );
 
- private:
-   pimpl pdata;
+        return result;
+    }
 
-   void cow() {
-      // copy-on-write
-      if (pdata.get() && ! pdata.unique()) {
-         pdata.reset(new impl(*(pdata.get())));
-      }
-   }
+private:
+    pimpl pdata;
+
+    void cow()
+    {
+        // copy-on-write
+        if ( pdata.get() && ! pdata.unique() )
+        {
+            pdata.reset( new impl( *( pdata.get() ) ) );
+        }
+    }
 };
 
 } // namespace

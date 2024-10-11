@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebKitBlobBuilder);
+ASSERT_CLASS_FITS_IN_CELL( JSWebKitBlobBuilder );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,8 +46,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebKitBlobBuilder);
 
 static const HashTableValue JSWebKitBlobBuilderTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitBlobBuilderConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitBlobBuilderConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,53 +61,62 @@ static JSC_CONST_HASHTABLE HashTable JSWebKitBlobBuilderTable = { 2, 1, JSWebKit
 
 static const HashTableValue JSWebKitBlobBuilderConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitBlobBuilderConstructorTable = { 1, 0, JSWebKitBlobBuilderConstructorTableValues, 0 };
-class JSWebKitBlobBuilderConstructor : public DOMConstructorObject {
+class JSWebKitBlobBuilderConstructor : public DOMConstructorObject
+{
 public:
-    JSWebKitBlobBuilderConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebKitBlobBuilderConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWebKitBlobBuilder(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWebKitBlobBuilder( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 const ClassInfo JSWebKitBlobBuilderConstructor::s_info = { "WebKitBlobBuilderConstructor", &DOMConstructorObject::s_info, &JSWebKitBlobBuilderConstructorTable, 0 };
 
-JSWebKitBlobBuilderConstructor::JSWebKitBlobBuilderConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebKitBlobBuilderConstructor::JSWebKitBlobBuilderConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebKitBlobBuilderPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebKitBlobBuilderPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebKitBlobBuilderConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitBlobBuilderConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebKitBlobBuilderConstructor, JSDOMWrapper>(exec, &JSWebKitBlobBuilderConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebKitBlobBuilderConstructor, JSDOMWrapper>( exec, &JSWebKitBlobBuilderConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSWebKitBlobBuilderConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitBlobBuilderConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebKitBlobBuilderConstructor, JSDOMWrapper>(exec, &JSWebKitBlobBuilderConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebKitBlobBuilderConstructor, JSDOMWrapper>( exec, &JSWebKitBlobBuilderConstructorTable, this,
+            propertyName, descriptor );
 }
 
-EncodedJSValue JSC_HOST_CALL JSWebKitBlobBuilderConstructor::constructJSWebKitBlobBuilder(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSWebKitBlobBuilderConstructor::constructJSWebKitBlobBuilder( ExecState *exec )
 {
-    return JSValue::encode(asObject(toJS(exec, static_cast<JSWebKitBlobBuilderConstructor*>(exec->callee())->globalObject(), WebKitBlobBuilder::create())));
+    return JSValue::encode( asObject( toJS( exec, static_cast<JSWebKitBlobBuilderConstructor *>( exec->callee() )->globalObject(),
+                                            WebKitBlobBuilder::create() ) ) );
 }
 
-ConstructType JSWebKitBlobBuilderConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSWebKitBlobBuilderConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSWebKitBlobBuilder;
     return ConstructTypeHost;
@@ -121,176 +131,232 @@ ConstructType JSWebKitBlobBuilderConstructor::getConstructData(ConstructData& co
 
 static const HashTableValue JSWebKitBlobBuilderPrototypeTableValues[3] =
 {
-    { "getBlob", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWebKitBlobBuilderPrototypeFunctionGetBlob), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "append", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWebKitBlobBuilderPrototypeFunctionAppend), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getBlob", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWebKitBlobBuilderPrototypeFunctionGetBlob ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "append", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWebKitBlobBuilderPrototypeFunctionAppend ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitBlobBuilderPrototypeTable = { 8, 7, JSWebKitBlobBuilderPrototypeTableValues, 0 };
-static const HashTable* getJSWebKitBlobBuilderPrototypeTable(ExecState* exec)
+static const HashTable *getJSWebKitBlobBuilderPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSWebKitBlobBuilderPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSWebKitBlobBuilderPrototypeTable );
 }
 
 const ClassInfo JSWebKitBlobBuilderPrototype::s_info = { "WebKitBlobBuilderPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSWebKitBlobBuilderPrototypeTable };
 
-JSObject* JSWebKitBlobBuilderPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitBlobBuilderPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebKitBlobBuilder>(exec, globalObject);
+    return getDOMPrototype<JSWebKitBlobBuilder>( exec, globalObject );
 }
 
-bool JSWebKitBlobBuilderPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitBlobBuilderPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSWebKitBlobBuilderPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSWebKitBlobBuilderPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSWebKitBlobBuilderPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitBlobBuilderPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSWebKitBlobBuilderPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSWebKitBlobBuilderPrototypeTable( exec ), this, propertyName,
+            descriptor );
 }
 
-static const HashTable* getJSWebKitBlobBuilderTable(ExecState* exec)
+static const HashTable *getJSWebKitBlobBuilderTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSWebKitBlobBuilderTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSWebKitBlobBuilderTable );
 }
 
 const ClassInfo JSWebKitBlobBuilder::s_info = { "WebKitBlobBuilder", &JSDOMWrapper::s_info, 0, getJSWebKitBlobBuilderTable };
 
-JSWebKitBlobBuilder::JSWebKitBlobBuilder(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebKitBlobBuilder> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebKitBlobBuilder::JSWebKitBlobBuilder( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<WebKitBlobBuilder> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebKitBlobBuilder::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitBlobBuilder::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebKitBlobBuilderPrototype(exec->globalData(), globalObject, JSWebKitBlobBuilderPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebKitBlobBuilderPrototype( exec->globalData(), globalObject,
+            JSWebKitBlobBuilderPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebKitBlobBuilder::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitBlobBuilder::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebKitBlobBuilder, Base>(exec, getJSWebKitBlobBuilderTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSWebKitBlobBuilder, Base>( exec, getJSWebKitBlobBuilderTable( exec ), this, propertyName, slot );
 }
 
-bool JSWebKitBlobBuilder::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitBlobBuilder::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebKitBlobBuilder, Base>(exec, getJSWebKitBlobBuilderTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebKitBlobBuilder, Base>( exec, getJSWebKitBlobBuilderTable( exec ), this, propertyName,
+            descriptor );
 }
 
-JSValue jsWebKitBlobBuilderConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitBlobBuilderConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitBlobBuilder* domObject = static_cast<JSWebKitBlobBuilder*>(asObject(slotBase));
-    return JSWebKitBlobBuilder::getConstructor(exec, domObject->globalObject());
+    JSWebKitBlobBuilder *domObject = static_cast<JSWebKitBlobBuilder *>( asObject( slotBase ) );
+    return JSWebKitBlobBuilder::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSWebKitBlobBuilder::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebKitBlobBuilder::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebKitBlobBuilderConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebKitBlobBuilderConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionGetBlob(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionGetBlob( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitBlobBuilder::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitBlobBuilder* castedThis = static_cast<JSWebKitBlobBuilder*>(asObject(thisValue));
-    WebKitBlobBuilder* imp = static_cast<WebKitBlobBuilder*>(castedThis->impl());
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 0) {
-
-        JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getBlob()));
-        return JSValue::encode(result);
+    if ( !thisValue.inherits( &JSWebKitBlobBuilder::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
 
-    const String& contentType(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    JSWebKitBlobBuilder *castedThis = static_cast<JSWebKitBlobBuilder *>( asObject( thisValue ) );
+    WebKitBlobBuilder *imp = static_cast<WebKitBlobBuilder *>( castedThis->impl() );
+
+    int argsCount = exec->argumentCount();
+
+    if ( argsCount <= 0 )
+    {
+
+        JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getBlob() ) );
+        return JSValue::encode( result );
+    }
+
+    const String &contentType( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getBlob(contentType)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getBlob( contentType ) ) );
+    return JSValue::encode( result );
 }
 
-static EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend1(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend1( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitBlobBuilder::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitBlobBuilder* castedThis = static_cast<JSWebKitBlobBuilder*>(asObject(thisValue));
-    WebKitBlobBuilder* imp = static_cast<WebKitBlobBuilder*>(castedThis->impl());
-    Blob* blob(toBlob(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->append(blob);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSWebKitBlobBuilder::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWebKitBlobBuilder *castedThis = static_cast<JSWebKitBlobBuilder *>( asObject( thisValue ) );
+    WebKitBlobBuilder *imp = static_cast<WebKitBlobBuilder *>( castedThis->impl() );
+    Blob *blob( toBlob( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->append( blob );
+    return JSValue::encode( jsUndefined() );
 }
 
-static EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend2(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend2( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitBlobBuilder::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitBlobBuilder* castedThis = static_cast<JSWebKitBlobBuilder*>(asObject(thisValue));
-    WebKitBlobBuilder* imp = static_cast<WebKitBlobBuilder*>(castedThis->impl());
-    ArrayBuffer* arrayBuffer(toArrayBuffer(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->append(arrayBuffer);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSWebKitBlobBuilder::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWebKitBlobBuilder *castedThis = static_cast<JSWebKitBlobBuilder *>( asObject( thisValue ) );
+    WebKitBlobBuilder *imp = static_cast<WebKitBlobBuilder *>( castedThis->impl() );
+    ArrayBuffer *arrayBuffer( toArrayBuffer( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->append( arrayBuffer );
+    return JSValue::encode( jsUndefined() );
 }
 
-static EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend3(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend3( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitBlobBuilder::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitBlobBuilder* castedThis = static_cast<JSWebKitBlobBuilder*>(asObject(thisValue));
-    WebKitBlobBuilder* imp = static_cast<WebKitBlobBuilder*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSWebKitBlobBuilder::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWebKitBlobBuilder *castedThis = static_cast<JSWebKitBlobBuilder *>( asObject( thisValue ) );
+    WebKitBlobBuilder *imp = static_cast<WebKitBlobBuilder *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    const String& value(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &value( ustringToString( exec->argument( 0 ).toString( exec ) ) );
 
-    int argsCount = exec->argumentCount();
-    if (argsCount <= 1) {
-        imp->append(value, ec);
-        setDOMException(exec, ec);
-        return JSValue::encode(jsUndefined());
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
     }
 
-    const String& endings(valueToStringWithUndefinedOrNullCheck(exec, exec->argument(1)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    int argsCount = exec->argumentCount();
 
-    imp->append(value, endings, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( argsCount <= 1 )
+    {
+        imp->append( value, ec );
+        setDOMException( exec, ec );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &endings( valueToStringWithUndefinedOrNullCheck( exec, exec->argument( 1 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->append( value, endings, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWebKitBlobBuilderPrototypeFunctionAppend( ExecState *exec )
 {
-    if ((exec->argumentCount() == 1 && (exec->argument(0).isNull() || (exec->argument(0).isObject() && asObject(exec->argument(0))->inherits(&JSBlob::s_info)))))
-        return jsWebKitBlobBuilderPrototypeFunctionAppend1(exec);
-    if ((exec->argumentCount() == 1 && (exec->argument(0).isNull() || (exec->argument(0).isObject() && asObject(exec->argument(0))->inherits(&JSArrayBuffer::s_info)))))
-        return jsWebKitBlobBuilderPrototypeFunctionAppend2(exec);
-    if ((exec->argumentCount() == 1 && (exec->argument(0).isNull() || exec->argument(0).isUndefined() || exec->argument(0).isString() || exec->argument(0).isObject())) || (exec->argumentCount() == 2 && (exec->argument(0).isNull() || exec->argument(0).isUndefined() || exec->argument(0).isString() || exec->argument(0).isObject()) && (exec->argument(1).isNull() || exec->argument(1).isUndefined() || exec->argument(1).isString() || exec->argument(1).isObject())))
-        return jsWebKitBlobBuilderPrototypeFunctionAppend3(exec);
-    return throwVMTypeError(exec);
+    if ( ( exec->argumentCount() == 1 && ( exec->argument( 0 ).isNull() || ( exec->argument( 0 ).isObject()
+                                           && asObject( exec->argument( 0 ) )->inherits( &JSBlob::s_info ) ) ) ) )
+    {
+        return jsWebKitBlobBuilderPrototypeFunctionAppend1( exec );
+    }
+
+    if ( ( exec->argumentCount() == 1 && ( exec->argument( 0 ).isNull() || ( exec->argument( 0 ).isObject()
+                                           && asObject( exec->argument( 0 ) )->inherits( &JSArrayBuffer::s_info ) ) ) ) )
+    {
+        return jsWebKitBlobBuilderPrototypeFunctionAppend2( exec );
+    }
+
+    if ( ( exec->argumentCount() == 1 && ( exec->argument( 0 ).isNull() || exec->argument( 0 ).isUndefined()
+                                           || exec->argument( 0 ).isString() || exec->argument( 0 ).isObject() ) ) || ( exec->argumentCount() == 2
+                                                   && ( exec->argument( 0 ).isNull() || exec->argument( 0 ).isUndefined() || exec->argument( 0 ).isString()
+                                                           || exec->argument( 0 ).isObject() ) && ( exec->argument( 1 ).isNull() || exec->argument( 1 ).isUndefined()
+                                                                   || exec->argument( 1 ).isString() || exec->argument( 1 ).isObject() ) ) )
+    {
+        return jsWebKitBlobBuilderPrototypeFunctionAppend3( exec );
+    }
+
+    return throwVMTypeError( exec );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebKitBlobBuilder* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebKitBlobBuilder *impl )
 {
-    return wrap<JSWebKitBlobBuilder>(exec, globalObject, impl);
+    return wrap<JSWebKitBlobBuilder>( exec, globalObject, impl );
 }
 
-WebKitBlobBuilder* toWebKitBlobBuilder(JSC::JSValue value)
+WebKitBlobBuilder *toWebKitBlobBuilder( JSC::JSValue value )
 {
-    return value.inherits(&JSWebKitBlobBuilder::s_info) ? static_cast<JSWebKitBlobBuilder*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebKitBlobBuilder::s_info ) ? static_cast<JSWebKitBlobBuilder *>( asObject( value ) )->impl() : 0;
 }
 
 }

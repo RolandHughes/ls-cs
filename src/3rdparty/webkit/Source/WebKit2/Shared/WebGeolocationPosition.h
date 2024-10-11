@@ -31,15 +31,18 @@
 #include "ArgumentDecoder.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebGeolocationPosition : public APIObject {
+class WebGeolocationPosition : public APIObject
+{
 public:
     static const Type APIType = TypeGeolocationPosition;
 
-    struct Data {
-        void encode(CoreIPC::ArgumentEncoder*) const;
-        static bool decode(CoreIPC::ArgumentDecoder*, Data&);
+    struct Data
+    {
+        void encode( CoreIPC::ArgumentEncoder * ) const;
+        static bool decode( CoreIPC::ArgumentDecoder *, Data & );
 
         double timestamp;
         double latitude;
@@ -47,24 +50,42 @@ public:
         double accuracy;
     };
 
-    static PassRefPtr<WebGeolocationPosition> create(double timestamp, double latitude, double longitude, double accuracy)
+    static PassRefPtr<WebGeolocationPosition> create( double timestamp, double latitude, double longitude, double accuracy )
     {
-        return adoptRef(new WebGeolocationPosition(timestamp, latitude, longitude, accuracy));
+        return adoptRef( new WebGeolocationPosition( timestamp, latitude, longitude, accuracy ) );
     }
 
     virtual ~WebGeolocationPosition();
 
-    double timestamp() const { return m_data.timestamp; }
-    double latitude() const { return m_data.latitude; }
-    double longitude() const { return m_data.longitude; }
-    double accuracy() const { return m_data.accuracy; }
+    double timestamp() const
+    {
+        return m_data.timestamp;
+    }
+    double latitude() const
+    {
+        return m_data.latitude;
+    }
+    double longitude() const
+    {
+        return m_data.longitude;
+    }
+    double accuracy() const
+    {
+        return m_data.accuracy;
+    }
 
-    const Data& data() const { return m_data; }
+    const Data &data() const
+    {
+        return m_data;
+    }
 
 private:
-    WebGeolocationPosition(double timestamp, double latitude, double longitude, double accuracy);
+    WebGeolocationPosition( double timestamp, double latitude, double longitude, double accuracy );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     Data m_data;
 };

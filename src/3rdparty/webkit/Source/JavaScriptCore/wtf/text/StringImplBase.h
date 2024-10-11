@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef StringImplBase_h
@@ -28,17 +28,30 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class StringImplBase {
-    WTF_MAKE_NONCOPYABLE(StringImplBase); WTF_MAKE_FAST_ALLOCATED;
+class StringImplBase
+{
+    WTF_MAKE_NONCOPYABLE( StringImplBase );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    bool isStringImpl() { return (m_refCountAndFlags & s_refCountInvalidForStringImpl) != s_refCountInvalidForStringImpl; }
-    unsigned length() const { return m_length; }
-    void ref() { m_refCountAndFlags += s_refCountIncrement; }
+    bool isStringImpl()
+    {
+        return ( m_refCountAndFlags & s_refCountInvalidForStringImpl ) != s_refCountInvalidForStringImpl;
+    }
+    unsigned length() const
+    {
+        return m_length;
+    }
+    void ref()
+    {
+        m_refCountAndFlags += s_refCountIncrement;
+    }
 
 protected:
-    enum BufferOwnership {
+    enum BufferOwnership
+    {
         BufferInternal,
         BufferOwned,
         BufferSubstring,
@@ -48,29 +61,29 @@ protected:
     // For SmallStringStorage, which allocates an array and uses an in-place new.
     StringImplBase() { }
 
-    StringImplBase(unsigned length, BufferOwnership ownership)
-        : m_refCountAndFlags(s_refCountIncrement | s_refCountFlagShouldReportedCost | ownership)
-        , m_length(length)
+    StringImplBase( unsigned length, BufferOwnership ownership )
+        : m_refCountAndFlags( s_refCountIncrement | s_refCountFlagShouldReportedCost | ownership )
+        , m_length( length )
     {
-        ASSERT(isStringImpl());
+        ASSERT( isStringImpl() );
     }
 
     enum StaticStringConstructType { ConstructStaticString };
-    StringImplBase(unsigned length, StaticStringConstructType)
-        : m_refCountAndFlags(s_refCountFlagStatic | s_refCountFlagIsIdentifier | BufferOwned)
-        , m_length(length)
+    StringImplBase( unsigned length, StaticStringConstructType )
+        : m_refCountAndFlags( s_refCountFlagStatic | s_refCountFlagIsIdentifier | BufferOwned )
+        , m_length( length )
     {
-        ASSERT(isStringImpl());
+        ASSERT( isStringImpl() );
     }
 
     // This constructor is not used when creating StringImpl objects,
     // and sets the flags into a state marking the object as such.
     enum NonStringImplConstructType { ConstructNonStringImpl };
-    StringImplBase(NonStringImplConstructType)
-        : m_refCountAndFlags(s_refCountIncrement | s_refCountInvalidForStringImpl)
-        , m_length(0)
+    StringImplBase( NonStringImplConstructType )
+        : m_refCountAndFlags( s_refCountIncrement | s_refCountInvalidForStringImpl )
+        , m_length( 0 )
     {
-        ASSERT(!isStringImpl());
+        ASSERT( !isStringImpl() );
     }
 
     // The bottom 7 bits hold flags, the top 25 bits hold the ref count.

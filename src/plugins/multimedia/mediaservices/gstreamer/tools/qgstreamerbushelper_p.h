@@ -31,45 +31,45 @@
 
 class QGstreamerSyncMessageFilter
 {
- public:
-   //returns true if message was processed and should be dropped, false otherwise
-   virtual bool processSyncMessage(const QGstreamerMessage &message) = 0;
+public:
+    //returns true if message was processed and should be dropped, false otherwise
+    virtual bool processSyncMessage( const QGstreamerMessage &message ) = 0;
 };
 
 #define QGstreamerSyncMessageFilter_iid "com.copperspice.CS.gstreamerSyncMessageFilter/1.0"
-CS_DECLARE_INTERFACE(QGstreamerSyncMessageFilter, QGstreamerSyncMessageFilter_iid)
+LSCS_DECLARE_INTERFACE( QGstreamerSyncMessageFilter, QGstreamerSyncMessageFilter_iid )
 
 
 class QGstreamerBusMessageFilter
 {
- public:
-   //returns true if message was processed and should be dropped, false otherwise
-   virtual bool processBusMessage(const QGstreamerMessage &message) = 0;
+public:
+    //returns true if message was processed and should be dropped, false otherwise
+    virtual bool processBusMessage( const QGstreamerMessage &message ) = 0;
 };
 
 #define QGstreamerBusMessageFilter_iid "com.copperspice.CS.gstreamerBusMessagefilter/1.0"
-CS_DECLARE_INTERFACE(QGstreamerBusMessageFilter, QGstreamerBusMessageFilter_iid)
+LSCS_DECLARE_INTERFACE( QGstreamerBusMessageFilter, QGstreamerBusMessageFilter_iid )
 
 
 class QGstreamerBusHelperPrivate;
 
 class QGstreamerBusHelper : public QObject
 {
-   CS_OBJECT(QGstreamerBusHelper)
-   friend class QGstreamerBusHelperPrivate;
+    LSCS_OBJECT( QGstreamerBusHelper )
+    friend class QGstreamerBusHelperPrivate;
 
- public:
-   QGstreamerBusHelper(GstBus *bus, QObject *parent = nullptr);
-   ~QGstreamerBusHelper();
+public:
+    QGstreamerBusHelper( GstBus *bus, QObject *parent = nullptr );
+    ~QGstreamerBusHelper();
 
-   void installMessageFilter(QObject *filter);
-   void removeMessageFilter(QObject *filter);
+    void installMessageFilter( QObject *filter );
+    void removeMessageFilter( QObject *filter );
 
-   CS_SIGNAL_1(Public, void message(QGstreamerMessage const &msg))
-   CS_SIGNAL_2(message, msg)
+    LSCS_SIGNAL_1( Public, void message( QGstreamerMessage const &msg ) )
+    LSCS_SIGNAL_2( message, msg )
 
- private:
-   QGstreamerBusHelperPrivate *d;
+private:
+    QGstreamerBusHelperPrivate *d;
 };
 
 #endif

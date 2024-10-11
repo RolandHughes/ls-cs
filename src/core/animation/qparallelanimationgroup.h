@@ -32,31 +32,31 @@ class QParallelAnimationGroupPrivate;
 
 class Q_CORE_EXPORT QParallelAnimationGroup : public QAnimationGroup
 {
-   CORE_CS_OBJECT(QParallelAnimationGroup)
+    CORE_LSCS_OBJECT( QParallelAnimationGroup )
 
- public:
-   QParallelAnimationGroup(QObject *parent = nullptr);
+public:
+    QParallelAnimationGroup( QObject *parent = nullptr );
 
-   QParallelAnimationGroup(const QParallelAnimationGroup &) = delete;
-   QParallelAnimationGroup &operator=(const QParallelAnimationGroup &) = delete;
+    QParallelAnimationGroup( const QParallelAnimationGroup & ) = delete;
+    QParallelAnimationGroup &operator=( const QParallelAnimationGroup & ) = delete;
 
-   ~QParallelAnimationGroup();
+    ~QParallelAnimationGroup();
 
-   int duration() const override;
+    int duration() const override;
 
- protected:
-   QParallelAnimationGroup(QParallelAnimationGroupPrivate &dd, QObject *parent);
+protected:
+    QParallelAnimationGroup( QParallelAnimationGroupPrivate &dd, QObject *parent );
 
-   bool event(QEvent *event) override;
-   void updateCurrentTime(int currentTime) override;
-   void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState) override;
-   void updateDirection(QAbstractAnimation::Direction direction) override;
+    bool event( QEvent *event ) override;
+    void updateCurrentTime( int currentTime ) override;
+    void updateState( QAbstractAnimation::State newState, QAbstractAnimation::State oldState ) override;
+    void updateDirection( QAbstractAnimation::Direction direction ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QParallelAnimationGroup)
+private:
+    Q_DECLARE_PRIVATE( QParallelAnimationGroup )
 
-   // slot
-   void _q_uncontrolledAnimationFinished() override;
+    // slot
+    void _q_uncontrolledAnimationFinished() override;
 };
 
 #endif // QT_NO_ANIMATION

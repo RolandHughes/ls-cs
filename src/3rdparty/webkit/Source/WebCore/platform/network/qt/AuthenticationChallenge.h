@@ -20,29 +20,35 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef AuthenticationChallenge_h
 #define AuthenticationChallenge_h
 
 #include "AuthenticationChallengeBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AuthenticationClient;
 
-class AuthenticationChallenge : public AuthenticationChallengeBase {
+class AuthenticationChallenge : public AuthenticationChallengeBase
+{
 public:
     AuthenticationChallenge()
     {
     }
 
-    AuthenticationChallenge(const ProtectionSpace& protectionSpace, const Credential& proposedCredential, unsigned previousFailureCount, const ResourceResponse& response, const ResourceError& error)
-        : AuthenticationChallengeBase(protectionSpace, proposedCredential, previousFailureCount, response, error)
+    AuthenticationChallenge( const ProtectionSpace &protectionSpace, const Credential &proposedCredential,
+                             unsigned previousFailureCount, const ResourceResponse &response, const ResourceError &error )
+        : AuthenticationChallengeBase( protectionSpace, proposedCredential, previousFailureCount, response, error )
     {
     }
 
-    AuthenticationClient* authenticationClient() const { return 0; } // FIXME: Implement!
+    AuthenticationClient *authenticationClient() const
+    {
+        return 0;    // FIXME: Implement!
+    }
 
 };
 

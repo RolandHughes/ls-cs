@@ -31,46 +31,46 @@
 
 using namespace QPatternist;
 
-LocalNameTest::LocalNameTest(const ItemType::Ptr &primaryType,
-                             const QXmlName::LocalNameCode &ncName) : AbstractNodeTest(primaryType),
-   m_ncName(ncName)
+LocalNameTest::LocalNameTest( const ItemType::Ptr &primaryType,
+                              const QXmlName::LocalNameCode &ncName ) : AbstractNodeTest( primaryType ),
+    m_ncName( ncName )
 {
 }
 
-ItemType::Ptr LocalNameTest::create(const ItemType::Ptr &primaryType, const QXmlName::LocalNameCode localName)
+ItemType::Ptr LocalNameTest::create( const ItemType::Ptr &primaryType, const QXmlName::LocalNameCode localName )
 {
-   Q_ASSERT(primaryType);
+    Q_ASSERT( primaryType );
 
-   return ItemType::Ptr(new LocalNameTest(primaryType, localName));
+    return ItemType::Ptr( new LocalNameTest( primaryType, localName ) );
 }
 
-bool LocalNameTest::itemMatches(const Item &item) const
+bool LocalNameTest::itemMatches( const Item &item ) const
 {
-   Q_ASSERT(item.isNode());
-   return m_primaryType->itemMatches(item) &&
-          item.asNode().name().localName() == m_ncName;
+    Q_ASSERT( item.isNode() );
+    return m_primaryType->itemMatches( item ) &&
+           item.asNode().name().localName() == m_ncName;
 }
 
-QString LocalNameTest::displayName(const NamePool::Ptr &np) const
+QString LocalNameTest::displayName( const NamePool::Ptr &np ) const
 {
-   QString displayOther(m_primaryType->displayName(np));
+    QString displayOther( m_primaryType->displayName( np ) );
 
-   return displayOther.insert(displayOther.size() - 1,
-                              QString::fromLatin1("*:") + np->stringForLocalName(m_ncName));
+    return displayOther.insert( displayOther.size() - 1,
+                                QString::fromLatin1( "*:" ) + np->stringForLocalName( m_ncName ) );
 }
 
 ItemType::InstanceOf LocalNameTest::instanceOf() const
 {
-   return ClassLocalNameTest;
+    return ClassLocalNameTest;
 }
 
-bool LocalNameTest::operator==(const ItemType &other) const
+bool LocalNameTest::operator==( const ItemType &other ) const
 {
-   return other.instanceOf() == ClassLocalNameTest &&
-          static_cast<const LocalNameTest &>(other).m_ncName == m_ncName;
+    return other.instanceOf() == ClassLocalNameTest &&
+           static_cast<const LocalNameTest &>( other ).m_ncName == m_ncName;
 }
 
 PatternPriority LocalNameTest::patternPriority() const
 {
-   return -0.25;
+    return -0.25;
 }

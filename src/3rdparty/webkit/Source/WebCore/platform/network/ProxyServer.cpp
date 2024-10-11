@@ -28,44 +28,54 @@
 
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
-
-static void appendProxyServerString(StringBuilder& builder, const ProxyServer& proxyServer)
+namespace WebCore
 {
-    switch (proxyServer.type()) {
-    case ProxyServer::Direct:
-        builder.append("DIRECT");
-        return;
-    case ProxyServer::HTTP:
-    case ProxyServer::HTTPS:
-        builder.append("PROXY");
-        break;
-    case ProxyServer::SOCKS:
-        builder.append("SOCKS");
-        break;
+
+static void appendProxyServerString( StringBuilder &builder, const ProxyServer &proxyServer )
+{
+    switch ( proxyServer.type() )
+    {
+        case ProxyServer::Direct:
+            builder.append( "DIRECT" );
+            return;
+
+        case ProxyServer::HTTP:
+        case ProxyServer::HTTPS:
+            builder.append( "PROXY" );
+            break;
+
+        case ProxyServer::SOCKS:
+            builder.append( "SOCKS" );
+            break;
     }
-    
-    builder.append(' ');
 
-    ASSERT(!proxyServer.hostName().isNull());
-    builder.append(proxyServer.hostName());
+    builder.append( ' ' );
 
-    builder.append(':');
-    ASSERT(proxyServer.port() != -1);
-    builder.append(String::number(proxyServer.port()));
+    ASSERT( !proxyServer.hostName().isNull() );
+    builder.append( proxyServer.hostName() );
+
+    builder.append( ':' );
+    ASSERT( proxyServer.port() != -1 );
+    builder.append( String::number( proxyServer.port() ) );
 }
 
-String toString(const Vector<ProxyServer>& proxyServers)
+String toString( const Vector<ProxyServer> &proxyServers )
 {
-    if (proxyServers.isEmpty())
+    if ( proxyServers.isEmpty() )
+    {
         return "DIRECT";
+    }
 
     StringBuilder stringBuilder;
-    for (size_t i = 0; i < proxyServers.size(); ++i) {
-        if (i)
-            stringBuilder.append("; ");
 
-        appendProxyServerString(stringBuilder, proxyServers[i]);
+    for ( size_t i = 0; i < proxyServers.size(); ++i )
+    {
+        if ( i )
+        {
+            stringBuilder.append( "; " );
+        }
+
+        appendProxyServerString( stringBuilder, proxyServers[i] );
     }
 
     return stringBuilder.toString();

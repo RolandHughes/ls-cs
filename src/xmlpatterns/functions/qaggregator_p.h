@@ -26,11 +26,12 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class Aggregator : public FunctionCall
 {
- public:
-   SequenceType::Ptr staticType() const override;
+public:
+    SequenceType::Ptr staticType() const override;
 };
 
 }

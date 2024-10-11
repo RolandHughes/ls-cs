@@ -27,31 +27,42 @@
 
 #include "TransformOperation.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IdentityTransformOperation : public TransformOperation {
+class IdentityTransformOperation : public TransformOperation
+{
 public:
     static PassRefPtr<IdentityTransformOperation> create()
     {
-        return adoptRef(new IdentityTransformOperation());
+        return adoptRef( new IdentityTransformOperation() );
     }
-        
+
 private:
-    virtual bool isIdentity() const { return true; }
-    virtual OperationType getOperationType() const { return IDENTITY; }
-    virtual bool isSameType(const TransformOperation& o) const { return o.getOperationType() == IDENTITY; }
-
-    virtual bool operator==(const TransformOperation& o) const
+    virtual bool isIdentity() const
     {
-        return isSameType(o);
+        return true;
+    }
+    virtual OperationType getOperationType() const
+    {
+        return IDENTITY;
+    }
+    virtual bool isSameType( const TransformOperation &o ) const
+    {
+        return o.getOperationType() == IDENTITY;
     }
 
-    virtual bool apply(TransformationMatrix&, const IntSize&) const
+    virtual bool operator==( const TransformOperation &o ) const
+    {
+        return isSameType( o );
+    }
+
+    virtual bool apply( TransformationMatrix &, const IntSize & ) const
     {
         return false;
     }
 
-    virtual PassRefPtr<TransformOperation> blend(const TransformOperation*, double, bool = false)
+    virtual PassRefPtr<TransformOperation> blend( const TransformOperation *, double, bool = false )
     {
         return this;
     }

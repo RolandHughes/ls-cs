@@ -31,26 +31,27 @@
 
 #include <qschemacomponent_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XsdIdCache : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<XsdIdCache> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<XsdIdCache> Ptr;
 
-   /**
-    * Adds an @p id to the id cache.
-    */
-   void addId(const QString &id);
+    /**
+     * Adds an @p id to the id cache.
+     */
+    void addId( const QString &id );
 
-   /**
-    * Returns whether the id cache contains the given @p id already.
-    */
-   bool hasId(const QString &id) const;
+    /**
+     * Returns whether the id cache contains the given @p id already.
+     */
+    bool hasId( const QString &id ) const;
 
- private:
-   QSet<QString>          m_ids;
-   mutable QReadWriteLock m_lock;
+private:
+    QSet<QString>          m_ids;
+    mutable QReadWriteLock m_lock;
 };
 
 }

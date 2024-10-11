@@ -35,39 +35,39 @@ class QScriptDebuggerLocalsModelPrivate;
 
 class QScriptDebuggerLocalsModel : public QAbstractItemModel
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerLocalsModel)
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerLocalsModel )
 
- public:
-   QScriptDebuggerLocalsModel(QScriptDebuggerJobSchedulerInterface *jobScheduler,
-                              QScriptDebuggerCommandSchedulerInterface *commandScheduler,
-                              QObject *parent = nullptr);
+public:
+    QScriptDebuggerLocalsModel( QScriptDebuggerJobSchedulerInterface *jobScheduler,
+                                QScriptDebuggerCommandSchedulerInterface *commandScheduler,
+                                QObject *parent = nullptr );
 
-   ~QScriptDebuggerLocalsModel();
+    ~QScriptDebuggerLocalsModel();
 
-   void init(int frameIndex);
-   void sync(int frameIndex);
+    void init( int frameIndex );
+    void sync( int frameIndex );
 
-   int frameIndex() const;
+    int frameIndex() const;
 
-   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-   QModelIndex parent(const QModelIndex &child) const;
-   int columnCount(const QModelIndex &parent) const;
-   int rowCount(const QModelIndex &parent) const;
-   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-   QVariant headerData(int section, Qt::Orientation, int role = Qt::DisplayRole) const;
-   Qt::ItemFlags flags(const QModelIndex &index) const;
-   bool hasChildren(const QModelIndex &parent) const;
-   bool canFetchMore(const QModelIndex &parent) const;
-   void fetchMore(const QModelIndex &parent);
+    QModelIndex index( int row, int column, const QModelIndex &parent = QModelIndex() ) const;
+    QModelIndex parent( const QModelIndex &child ) const;
+    int columnCount( const QModelIndex &parent ) const;
+    int rowCount( const QModelIndex &parent ) const;
+    QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const;
+    bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::EditRole );
+    QVariant headerData( int section, Qt::Orientation, int role = Qt::DisplayRole ) const;
+    Qt::ItemFlags flags( const QModelIndex &index ) const;
+    bool hasChildren( const QModelIndex &parent ) const;
+    bool canFetchMore( const QModelIndex &parent ) const;
+    void fetchMore( const QModelIndex &parent );
 
- public:
-   CS_SIGNAL_1(Public, void scopeObjectAvailable(const QModelIndex &index))
-   CS_SIGNAL_2(scopeObjectAvailable, index)
+public:
+    LSCS_SIGNAL_1( Public, void scopeObjectAvailable( const QModelIndex &index ) )
+    LSCS_SIGNAL_2( scopeObjectAvailable, index )
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerLocalsModel)
-   Q_DISABLE_COPY(QScriptDebuggerLocalsModel)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerLocalsModel )
+    Q_DISABLE_COPY( QScriptDebuggerLocalsModel )
 };
 
 QT_END_NAMESPACE

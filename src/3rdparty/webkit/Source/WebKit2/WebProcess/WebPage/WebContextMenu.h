@@ -26,26 +26,28 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebContextMenu : public RefCounted<WebContextMenu> {
+class WebContextMenu : public RefCounted<WebContextMenu>
+{
 public:
-    static PassRefPtr<WebContextMenu> create(WebPage* page) 
+    static PassRefPtr<WebContextMenu> create( WebPage *page )
     {
-        return adoptRef(new WebContextMenu(page));
+        return adoptRef( new WebContextMenu( page ) );
     }
-    
+
     ~WebContextMenu();
 
     void show();
-    void itemSelected(const WebContextMenuItemData&);
+    void itemSelected( const WebContextMenuItemData & );
 
 private:
-    WebContextMenu(WebPage*);
-    
-    WebPage* m_page;
+    WebContextMenu( WebPage * );
+
+    WebPage *m_page;
 };
 
 } // namespace WebKit

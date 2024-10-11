@@ -26,25 +26,26 @@
 #include "config.h"
 #include "WebPreferences.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebPreferences::platformInitializeStore()
 {
 }
 
-void WebPreferences::platformUpdateStringValueForKey(const String&, const String&)
+void WebPreferences::platformUpdateStringValueForKey( const String &, const String & )
 {
 }
 
-void WebPreferences::platformUpdateBoolValueForKey(const String&, bool)
+void WebPreferences::platformUpdateBoolValueForKey( const String &, bool )
 {
 }
 
-void WebPreferences::platformUpdateUInt32ValueForKey(const String&, uint32_t)
+void WebPreferences::platformUpdateUInt32ValueForKey( const String &, uint32_t )
 {
 }
 
-void WebPreferences::platformUpdateDoubleValueForKey(const String&, double)
+void WebPreferences::platformUpdateDoubleValueForKey( const String &, double )
 {
 }
 

@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebKitAnimationList);
+ASSERT_CLASS_FITS_IN_CELL( JSWebKitAnimationList );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,9 +46,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebKitAnimationList);
 
 static const HashTableValue JSWebKitAnimationListTableValues[3] =
 {
-    { "length", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationListLength), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitAnimationListConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "length", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationListLength ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitAnimationListConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,43 +62,51 @@ static JSC_CONST_HASHTABLE HashTable JSWebKitAnimationListTable = { 5, 3, JSWebK
 
 static const HashTableValue JSWebKitAnimationListConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitAnimationListConstructorTable = { 1, 0, JSWebKitAnimationListConstructorTableValues, 0 };
-class JSWebKitAnimationListConstructor : public DOMConstructorObject {
+class JSWebKitAnimationListConstructor : public DOMConstructorObject
+{
 public:
-    JSWebKitAnimationListConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebKitAnimationListConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSWebKitAnimationListConstructor::s_info = { "WebKitAnimationListConstructor", &DOMConstructorObject::s_info, &JSWebKitAnimationListConstructorTable, 0 };
 
-JSWebKitAnimationListConstructor::JSWebKitAnimationListConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebKitAnimationListConstructor::JSWebKitAnimationListConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebKitAnimationListPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebKitAnimationListPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebKitAnimationListConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitAnimationListConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebKitAnimationListConstructor, JSDOMWrapper>(exec, &JSWebKitAnimationListConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebKitAnimationListConstructor, JSDOMWrapper>( exec, &JSWebKitAnimationListConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSWebKitAnimationListConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitAnimationListConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebKitAnimationListConstructor, JSDOMWrapper>(exec, &JSWebKitAnimationListConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebKitAnimationListConstructor, JSDOMWrapper>( exec, &JSWebKitAnimationListConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -109,147 +118,175 @@ bool JSWebKitAnimationListConstructor::getOwnPropertyDescriptor(ExecState* exec,
 
 static const HashTableValue JSWebKitAnimationListPrototypeTableValues[2] =
 {
-    { "item", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsWebKitAnimationListPrototypeFunctionItem), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "item", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsWebKitAnimationListPrototypeFunctionItem ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitAnimationListPrototypeTable = { 2, 1, JSWebKitAnimationListPrototypeTableValues, 0 };
 const ClassInfo JSWebKitAnimationListPrototype::s_info = { "WebKitAnimationListPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebKitAnimationListPrototypeTable, 0 };
 
-JSObject* JSWebKitAnimationListPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitAnimationListPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebKitAnimationList>(exec, globalObject);
+    return getDOMPrototype<JSWebKitAnimationList>( exec, globalObject );
 }
 
-bool JSWebKitAnimationListPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitAnimationListPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSWebKitAnimationListPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSWebKitAnimationListPrototypeTable, this, propertyName, slot );
 }
 
-bool JSWebKitAnimationListPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitAnimationListPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSWebKitAnimationListPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSWebKitAnimationListPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSWebKitAnimationList::s_info = { "WebKitAnimationList", &JSDOMWrapper::s_info, &JSWebKitAnimationListTable, 0 };
 
-JSWebKitAnimationList::JSWebKitAnimationList(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebKitAnimationList> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebKitAnimationList::JSWebKitAnimationList( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<WebKitAnimationList> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebKitAnimationList::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitAnimationList::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebKitAnimationListPrototype(exec->globalData(), globalObject, JSWebKitAnimationListPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebKitAnimationListPrototype( exec->globalData(), globalObject,
+            JSWebKitAnimationListPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebKitAnimationList::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitAnimationList::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    const HashEntry* entry = JSWebKitAnimationListTable.entry(exec, propertyName);
-    if (entry) {
-        slot.setCustom(this, entry->propertyGetter());
+    const HashEntry *entry = JSWebKitAnimationListTable.entry( exec, propertyName );
+
+    if ( entry )
+    {
+        slot.setCustom( this, entry->propertyGetter() );
         return true;
     }
+
     bool ok;
-    unsigned index = propertyName.toUInt32(ok);
-    if (ok && index < static_cast<WebKitAnimationList*>(impl())->length()) {
-        slot.setCustomIndex(this, index, indexGetter);
+    unsigned index = propertyName.toUInt32( ok );
+
+    if ( ok && index < static_cast<WebKitAnimationList *>( impl() )->length() )
+    {
+        slot.setCustomIndex( this, index, indexGetter );
         return true;
     }
-    return getStaticValueSlot<JSWebKitAnimationList, Base>(exec, &JSWebKitAnimationListTable, this, propertyName, slot);
+
+    return getStaticValueSlot<JSWebKitAnimationList, Base>( exec, &JSWebKitAnimationListTable, this, propertyName, slot );
 }
 
-bool JSWebKitAnimationList::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitAnimationList::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    const HashEntry* entry = JSWebKitAnimationListTable.entry(exec, propertyName);
-    if (entry) {
+    const HashEntry *entry = JSWebKitAnimationListTable.entry( exec, propertyName );
+
+    if ( entry )
+    {
         PropertySlot slot;
-        slot.setCustom(this, entry->propertyGetter());
-        descriptor.setDescriptor(slot.getValue(exec, propertyName), entry->attributes());
+        slot.setCustom( this, entry->propertyGetter() );
+        descriptor.setDescriptor( slot.getValue( exec, propertyName ), entry->attributes() );
         return true;
     }
+
     bool ok;
-    unsigned index = propertyName.toUInt32(ok);
-    if (ok && index < static_cast<WebKitAnimationList*>(impl())->length()) {
+    unsigned index = propertyName.toUInt32( ok );
+
+    if ( ok && index < static_cast<WebKitAnimationList *>( impl() )->length() )
+    {
         PropertySlot slot;
-        slot.setCustomIndex(this, index, indexGetter);
-        descriptor.setDescriptor(slot.getValue(exec, propertyName), DontDelete | ReadOnly);
+        slot.setCustomIndex( this, index, indexGetter );
+        descriptor.setDescriptor( slot.getValue( exec, propertyName ), DontDelete | ReadOnly );
         return true;
     }
-    return getStaticValueDescriptor<JSWebKitAnimationList, Base>(exec, &JSWebKitAnimationListTable, this, propertyName, descriptor);
+
+    return getStaticValueDescriptor<JSWebKitAnimationList, Base>( exec, &JSWebKitAnimationListTable, this, propertyName, descriptor );
 }
 
-bool JSWebKitAnimationList::getOwnPropertySlot(ExecState* exec, unsigned propertyName, PropertySlot& slot)
+bool JSWebKitAnimationList::getOwnPropertySlot( ExecState *exec, unsigned propertyName, PropertySlot &slot )
 {
-    if (propertyName < static_cast<WebKitAnimationList*>(impl())->length()) {
-        slot.setCustomIndex(this, propertyName, indexGetter);
+    if ( propertyName < static_cast<WebKitAnimationList *>( impl() )->length() )
+    {
+        slot.setCustomIndex( this, propertyName, indexGetter );
         return true;
     }
-    return getOwnPropertySlot(exec, Identifier::from(exec, propertyName), slot);
+
+    return getOwnPropertySlot( exec, Identifier::from( exec, propertyName ), slot );
 }
 
-JSValue jsWebKitAnimationListLength(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationListLength( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimationList* castedThis = static_cast<JSWebKitAnimationList*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitAnimationList* imp = static_cast<WebKitAnimationList*>(castedThis->impl());
-    JSValue result = jsNumber(imp->length());
+    JSWebKitAnimationList *castedThis = static_cast<JSWebKitAnimationList *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitAnimationList *imp = static_cast<WebKitAnimationList *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->length() );
     return result;
 }
 
 
-JSValue jsWebKitAnimationListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitAnimationListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitAnimationList* domObject = static_cast<JSWebKitAnimationList*>(asObject(slotBase));
-    return JSWebKitAnimationList::getConstructor(exec, domObject->globalObject());
+    JSWebKitAnimationList *domObject = static_cast<JSWebKitAnimationList *>( asObject( slotBase ) );
+    return JSWebKitAnimationList::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSWebKitAnimationList::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void JSWebKitAnimationList::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
-    for (unsigned i = 0; i < static_cast<WebKitAnimationList*>(impl())->length(); ++i)
-        propertyNames.add(Identifier::from(exec, i));
-     Base::getOwnPropertyNames(exec, propertyNames, mode);
+    for ( unsigned i = 0; i < static_cast<WebKitAnimationList *>( impl() )->length(); ++i )
+    {
+        propertyNames.add( Identifier::from( exec, i ) );
+    }
+
+    Base::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
-JSValue JSWebKitAnimationList::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebKitAnimationList::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebKitAnimationListConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebKitAnimationListConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsWebKitAnimationListPrototypeFunctionItem(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsWebKitAnimationListPrototypeFunctionItem( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSWebKitAnimationList::s_info))
-        return throwVMTypeError(exec);
-    JSWebKitAnimationList* castedThis = static_cast<JSWebKitAnimationList*>(asObject(thisValue));
-    WebKitAnimationList* imp = static_cast<WebKitAnimationList*>(castedThis->impl());
-    unsigned index(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSWebKitAnimationList::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSWebKitAnimationList *castedThis = static_cast<JSWebKitAnimationList *>( asObject( thisValue ) );
+    WebKitAnimationList *imp = static_cast<WebKitAnimationList *>( castedThis->impl() );
+    unsigned index( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->item(index)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->item( index ) ) );
+    return JSValue::encode( result );
 }
 
 
-JSValue JSWebKitAnimationList::indexGetter(ExecState* exec, JSValue slotBase, unsigned index)
+JSValue JSWebKitAnimationList::indexGetter( ExecState *exec, JSValue slotBase, unsigned index )
 {
-    JSWebKitAnimationList* thisObj = static_cast<JSWebKitAnimationList*>(asObject(slotBase));
-    return toJS(exec, thisObj->globalObject(), static_cast<WebKitAnimationList*>(thisObj->impl())->item(index));
+    JSWebKitAnimationList *thisObj = static_cast<JSWebKitAnimationList *>( asObject( slotBase ) );
+    return toJS( exec, thisObj->globalObject(), static_cast<WebKitAnimationList *>( thisObj->impl() )->item( index ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebKitAnimationList* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebKitAnimationList *impl )
 {
-    return wrap<JSWebKitAnimationList>(exec, globalObject, impl);
+    return wrap<JSWebKitAnimationList>( exec, globalObject, impl );
 }
 
-WebKitAnimationList* toWebKitAnimationList(JSC::JSValue value)
+WebKitAnimationList *toWebKitAnimationList( JSC::JSValue value )
 {
-    return value.inherits(&JSWebKitAnimationList::s_info) ? static_cast<JSWebKitAnimationList*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebKitAnimationList::s_info ) ? static_cast<JSWebKitAnimationList *>( asObject( value ) )->impl() : 0;
 }
 
 }

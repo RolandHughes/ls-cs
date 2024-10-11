@@ -28,30 +28,31 @@
 #include <wtf/Forward.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Space characters as defined by the HTML specification.
-bool isHTMLSpace(UChar);
-bool isNotHTMLSpace(UChar);
+bool isHTMLSpace( UChar );
+bool isNotHTMLSpace( UChar );
 
-// Strip leading and trailing whitespace as defined by the HTML specification. 
-String stripLeadingAndTrailingHTMLSpaces(const String&);
+// Strip leading and trailing whitespace as defined by the HTML specification.
+String stripLeadingAndTrailingHTMLSpaces( const String & );
 
 // An implementation of the HTML specification's algorithm to convert a number to a string for number and range types.
-String serializeForNumberType(double);
+String serializeForNumberType( double );
 
 // Convert the specified string to a double. If the conversion fails, the return value is false.
 // Leading or trailing illegal characters cause failure, as does passing an empty string.
 // The double* parameter may be 0 to check if the string can be parsed without getting the result.
-bool parseToDoubleForNumberType(const String&, double*);
-bool parseToDoubleForNumberTypeWithDecimalPlaces(const String&, double*, unsigned*);
+bool parseToDoubleForNumberType( const String &, double * );
+bool parseToDoubleForNumberTypeWithDecimalPlaces( const String &, double *, unsigned * );
 
 // http://www.whatwg.org/specs/web-apps/current-work/#rules-for-parsing-integers
-bool parseHTMLInteger(const String&, int&);
+bool parseHTMLInteger( const String &, int & );
 
 // Inline implementations of some of the functions declared above.
 
-inline bool isHTMLSpace(UChar character)
+inline bool isHTMLSpace( UChar character )
 {
     // Histogram from Apple's page load test combined with some ad hoc browsing some other test suites.
     //
@@ -63,12 +64,13 @@ inline bool isHTMLSpace(UChar character)
     // No other characters seen. No U+000C or U+000D, and no other control characters.
     // Accordingly, we check for non-spaces first, then space, then newline, then tab, then the other characters.
 
-    return character <= ' ' && (character == ' ' || character == '\n' || character == '\t' || character == '\r' || character == '\f');
+    return character <= ' ' && ( character == ' ' || character == '\n' || character == '\t' || character == '\r'
+                                 || character == '\f' );
 }
 
-inline bool isNotHTMLSpace(UChar character)
+inline bool isNotHTMLSpace( UChar character )
 {
-    return !isHTMLSpace(character);
+    return !isHTMLSpace( character );
 }
 
 }

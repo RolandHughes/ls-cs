@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSMediaError);
+ASSERT_CLASS_FITS_IN_CELL( JSMediaError );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,9 +43,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSMediaError);
 
 static const HashTableValue JSMediaErrorTableValues[3] =
 {
-    { "code", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorCode), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "code", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorCode ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -58,53 +59,59 @@ static JSC_CONST_HASHTABLE HashTable JSMediaErrorTable = { 5, 3, JSMediaErrorTab
 
 static const HashTableValue JSMediaErrorConstructorTableValues[5] =
 {
-    { "MEDIA_ERR_ABORTED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_ABORTED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "MEDIA_ERR_NETWORK", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_NETWORK), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "MEDIA_ERR_DECODE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_DECODE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "MEDIA_ERR_SRC_NOT_SUPPORTED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_SRC_NOT_SUPPORTED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "MEDIA_ERR_ABORTED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_ABORTED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "MEDIA_ERR_NETWORK", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_NETWORK ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "MEDIA_ERR_DECODE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_DECODE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "MEDIA_ERR_SRC_NOT_SUPPORTED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_SRC_NOT_SUPPORTED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSMediaErrorConstructorTable = { 9, 7, JSMediaErrorConstructorTableValues, 0 };
 
-COMPILE_ASSERT(1 == MediaError::MEDIA_ERR_ABORTED, MediaErrorEnumMEDIA_ERR_ABORTEDIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == MediaError::MEDIA_ERR_NETWORK, MediaErrorEnumMEDIA_ERR_NETWORKIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(3 == MediaError::MEDIA_ERR_DECODE, MediaErrorEnumMEDIA_ERR_DECODEIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(4 == MediaError::MEDIA_ERR_SRC_NOT_SUPPORTED, MediaErrorEnumMEDIA_ERR_SRC_NOT_SUPPORTEDIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 1 == MediaError::MEDIA_ERR_ABORTED, MediaErrorEnumMEDIA_ERR_ABORTEDIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == MediaError::MEDIA_ERR_NETWORK, MediaErrorEnumMEDIA_ERR_NETWORKIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 3 == MediaError::MEDIA_ERR_DECODE, MediaErrorEnumMEDIA_ERR_DECODEIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 4 == MediaError::MEDIA_ERR_SRC_NOT_SUPPORTED, MediaErrorEnumMEDIA_ERR_SRC_NOT_SUPPORTEDIsWrongUseDontCheckEnums );
 
-class JSMediaErrorConstructor : public DOMConstructorObject {
+class JSMediaErrorConstructor : public DOMConstructorObject
+{
 public:
-    JSMediaErrorConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSMediaErrorConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSMediaErrorConstructor::s_info = { "MediaErrorConstructor", &DOMConstructorObject::s_info, &JSMediaErrorConstructorTable, 0 };
 
-JSMediaErrorConstructor::JSMediaErrorConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSMediaErrorConstructor::JSMediaErrorConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSMediaErrorPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSMediaErrorPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSMediaErrorConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMediaErrorConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMediaErrorConstructor, JSDOMWrapper>(exec, &JSMediaErrorConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSMediaErrorConstructor, JSDOMWrapper>( exec, &JSMediaErrorConstructorTable, this, propertyName, slot );
 }
 
-bool JSMediaErrorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMediaErrorConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMediaErrorConstructor, JSDOMWrapper>(exec, &JSMediaErrorConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMediaErrorConstructor, JSDOMWrapper>( exec, &JSMediaErrorConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -116,111 +123,114 @@ bool JSMediaErrorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Id
 
 static const HashTableValue JSMediaErrorPrototypeTableValues[5] =
 {
-    { "MEDIA_ERR_ABORTED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_ABORTED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "MEDIA_ERR_NETWORK", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_NETWORK), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "MEDIA_ERR_DECODE", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_DECODE), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "MEDIA_ERR_SRC_NOT_SUPPORTED", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsMediaErrorMEDIA_ERR_SRC_NOT_SUPPORTED), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "MEDIA_ERR_ABORTED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_ABORTED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "MEDIA_ERR_NETWORK", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_NETWORK ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "MEDIA_ERR_DECODE", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_DECODE ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "MEDIA_ERR_SRC_NOT_SUPPORTED", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsMediaErrorMEDIA_ERR_SRC_NOT_SUPPORTED ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSMediaErrorPrototypeTable = { 9, 7, JSMediaErrorPrototypeTableValues, 0 };
 const ClassInfo JSMediaErrorPrototype::s_info = { "MediaErrorPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSMediaErrorPrototypeTable, 0 };
 
-JSObject* JSMediaErrorPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMediaErrorPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSMediaError>(exec, globalObject);
+    return getDOMPrototype<JSMediaError>( exec, globalObject );
 }
 
-bool JSMediaErrorPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMediaErrorPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMediaErrorPrototype, JSObject>(exec, &JSMediaErrorPrototypeTable, this, propertyName, slot);
+    return getStaticValueSlot<JSMediaErrorPrototype, JSObject>( exec, &JSMediaErrorPrototypeTable, this, propertyName, slot );
 }
 
-bool JSMediaErrorPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMediaErrorPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMediaErrorPrototype, JSObject>(exec, &JSMediaErrorPrototypeTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMediaErrorPrototype, JSObject>( exec, &JSMediaErrorPrototypeTable, this, propertyName,
+            descriptor );
 }
 
 const ClassInfo JSMediaError::s_info = { "MediaError", &JSDOMWrapper::s_info, &JSMediaErrorTable, 0 };
 
-JSMediaError::JSMediaError(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<MediaError> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSMediaError::JSMediaError( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<MediaError> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSMediaError::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSMediaError::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSMediaErrorPrototype(exec->globalData(), globalObject, JSMediaErrorPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSMediaErrorPrototype( exec->globalData(), globalObject,
+            JSMediaErrorPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSMediaError::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSMediaError::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSMediaError, Base>(exec, &JSMediaErrorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSMediaError, Base>( exec, &JSMediaErrorTable, this, propertyName, slot );
 }
 
-bool JSMediaError::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSMediaError::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSMediaError, Base>(exec, &JSMediaErrorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSMediaError, Base>( exec, &JSMediaErrorTable, this, propertyName, descriptor );
 }
 
-JSValue jsMediaErrorCode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMediaErrorCode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMediaError* castedThis = static_cast<JSMediaError*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    MediaError* imp = static_cast<MediaError*>(castedThis->impl());
-    JSValue result = jsNumber(imp->code());
+    JSMediaError *castedThis = static_cast<JSMediaError *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    MediaError *imp = static_cast<MediaError *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->code() );
     return result;
 }
 
 
-JSValue jsMediaErrorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsMediaErrorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSMediaError* domObject = static_cast<JSMediaError*>(asObject(slotBase));
-    return JSMediaError::getConstructor(exec, domObject->globalObject());
+    JSMediaError *domObject = static_cast<JSMediaError *>( asObject( slotBase ) );
+    return JSMediaError::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSMediaError::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSMediaError::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSMediaErrorConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSMediaErrorConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 // Constant getters
 
-JSValue jsMediaErrorMEDIA_ERR_ABORTED(ExecState* exec, JSValue, const Identifier&)
+JSValue jsMediaErrorMEDIA_ERR_ABORTED( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsMediaErrorMEDIA_ERR_NETWORK(ExecState* exec, JSValue, const Identifier&)
+JSValue jsMediaErrorMEDIA_ERR_NETWORK( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsMediaErrorMEDIA_ERR_DECODE(ExecState* exec, JSValue, const Identifier&)
+JSValue jsMediaErrorMEDIA_ERR_DECODE( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
-JSValue jsMediaErrorMEDIA_ERR_SRC_NOT_SUPPORTED(ExecState* exec, JSValue, const Identifier&)
+JSValue jsMediaErrorMEDIA_ERR_SRC_NOT_SUPPORTED( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(4));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 4 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, MediaError* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, MediaError *impl )
 {
-    return wrap<JSMediaError>(exec, globalObject, impl);
+    return wrap<JSMediaError>( exec, globalObject, impl );
 }
 
-MediaError* toMediaError(JSC::JSValue value)
+MediaError *toMediaError( JSC::JSValue value )
 {
-    return value.inherits(&JSMediaError::s_info) ? static_cast<JSMediaError*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSMediaError::s_info ) ? static_cast<JSMediaError *>( asObject( value ) )->impl() : 0;
 }
 
 }

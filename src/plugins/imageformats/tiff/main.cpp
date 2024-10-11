@@ -34,45 +34,56 @@
 
 class QTiffPlugin : public QImageIOPlugin
 {
-   CS_OBJECT(QTiffPlugin)
+    LSCS_OBJECT( QTiffPlugin )
 
-   CS_PLUGIN_IID(QImageIOHandlerInterface_ID)
-   CS_PLUGIN_KEY("tiff, tif")
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "tiff, tif" )
 
 public:
-    Capabilities capabilities(QIODevice * device, const QByteArray & format) const;
-    QImageIOHandler * create(QIODevice * device, const QByteArray & format = QByteArray()) const;
+    Capabilities capabilities( QIODevice *device, const QByteArray &format ) const;
+    QImageIOHandler *create( QIODevice *device, const QByteArray &format = QByteArray() ) const;
     QStringList keys() const;
 };
 
-CS_PLUGIN_REGISTER(QTiffPlugin)
+LSCS_PLUGIN_REGISTER( QTiffPlugin )
 
-QImageIOPlugin::Capabilities QTiffPlugin::capabilities(QIODevice *device, const QByteArray &format) const
+QImageIOPlugin::Capabilities QTiffPlugin::capabilities( QIODevice *device, const QByteArray &format ) const
 {
-    if (format == "tiff" || format == "tif")
-        return Capabilities(CanRead | CanWrite);
+    if ( format == "tiff" || format == "tif" )
+    {
+        return Capabilities( CanRead | CanWrite );
+    }
 
-    if (!format.isEmpty())
+    if ( !format.isEmpty() )
+    {
         return 0;
+    }
 
-    if (!device->isOpen())
+    if ( !device->isOpen() )
+    {
         return 0;
+    }
 
     Capabilities cap;
-    if (device->isReadable() && QTiffHandler::canRead(device))
-        cap |= CanRead;
 
-    if (device->isWritable())
+    if ( device->isReadable() && QTiffHandler::canRead( device ) )
+    {
+        cap |= CanRead;
+    }
+
+    if ( device->isWritable() )
+    {
         cap |= CanWrite;
+    }
 
     return cap;
 }
 
-QImageIOHandler* QTiffPlugin::create(QIODevice *device, const QByteArray &format) const
+QImageIOHandler *QTiffPlugin::create( QIODevice *device, const QByteArray &format ) const
 {
     QImageIOHandler *tiffHandler = new QTiffHandler();
-    tiffHandler->setDevice(device);
-    tiffHandler->setFormat(format);
+    tiffHandler->setDevice( device );
+    tiffHandler->setFormat( format );
 
     return tiffHandler;
 }

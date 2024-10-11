@@ -55,25 +55,29 @@ using namespace WebCore;
     Constructs a null QWebPluginInfo.
 */
 QWebPluginInfo::QWebPluginInfo()
-    : m_package(0)
+    : m_package( 0 )
 {
 }
 
-QWebPluginInfo::QWebPluginInfo(PluginPackage* package)
-    : m_package(package)
+QWebPluginInfo::QWebPluginInfo( PluginPackage *package )
+    : m_package( package )
 {
-    if (m_package)
+    if ( m_package )
+    {
         m_package->ref();
+    }
 }
 
 /*!
     Contructs a copy of \a other.
 */
-QWebPluginInfo::QWebPluginInfo(const QWebPluginInfo& other)
-    : m_package(other.m_package)
+QWebPluginInfo::QWebPluginInfo( const QWebPluginInfo &other )
+    : m_package( other.m_package )
 {
-    if (m_package)
+    if ( m_package )
+    {
         m_package->ref();
+    }
 }
 
 /*!
@@ -81,8 +85,10 @@ QWebPluginInfo::QWebPluginInfo(const QWebPluginInfo& other)
 */
 QWebPluginInfo::~QWebPluginInfo()
 {
-    if (m_package)
+    if ( m_package )
+    {
         m_package->deref();
+    }
 }
 
 /*!
@@ -92,8 +98,11 @@ QWebPluginInfo::~QWebPluginInfo()
 */
 QString QWebPluginInfo::name() const
 {
-    if (!m_package)
+    if ( !m_package )
+    {
         return QString();
+    }
+
     return m_package->name();
 }
 
@@ -104,8 +113,11 @@ QString QWebPluginInfo::name() const
 */
 QString QWebPluginInfo::description() const
 {
-    if (!m_package)
+    if ( !m_package )
+    {
         return QString();
+    }
+
     return m_package->description();
 }
 
@@ -116,23 +128,27 @@ QString QWebPluginInfo::description() const
 */
 QList<QWebPluginInfo::MimeType> QWebPluginInfo::mimeTypes() const
 {
-    if (m_package && m_mimeTypes.isEmpty()) {
-        const MIMEToDescriptionsMap& mimeToDescriptions = m_package->mimeToDescriptions();
+    if ( m_package && m_mimeTypes.isEmpty() )
+    {
+        const MIMEToDescriptionsMap &mimeToDescriptions = m_package->mimeToDescriptions();
         MIMEToDescriptionsMap::const_iterator end = mimeToDescriptions.end();
 
-        for (MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it) {
+        for ( MIMEToDescriptionsMap::const_iterator it = mimeToDescriptions.begin(); it != end; ++it )
+        {
             MimeType mimeType;
             mimeType.name = it->first;
             mimeType.description = it->second;
 
             QStringList fileExtensions;
-            Vector<String> extensions = m_package->mimeToExtensions().get(mimeType.name);
+            Vector<String> extensions = m_package->mimeToExtensions().get( mimeType.name );
 
-            for (unsigned i = 0; i < extensions.size(); ++i)
-                fileExtensions.append(extensions[i]);
+            for ( unsigned i = 0; i < extensions.size(); ++i )
+            {
+                fileExtensions.append( extensions[i] );
+            }
 
             mimeType.fileExtensions = fileExtensions;
-            m_mimeTypes.append(mimeType);
+            m_mimeTypes.append( mimeType );
         }
     }
 
@@ -145,11 +161,14 @@ QList<QWebPluginInfo::MimeType> QWebPluginInfo::mimeTypes() const
 
     \sa mimeTypes()
 */
-bool QWebPluginInfo::supportsMimeType(const QString& mimeType) const
+bool QWebPluginInfo::supportsMimeType( const QString &mimeType ) const
 {
-    if (!m_package)
+    if ( !m_package )
+    {
         return false;
-    return m_package->mimeToDescriptions().contains(mimeType);
+    }
+
+    return m_package->mimeToDescriptions().contains( mimeType );
 }
 
 /*!
@@ -157,8 +176,11 @@ bool QWebPluginInfo::supportsMimeType(const QString& mimeType) const
 */
 QString QWebPluginInfo::path() const
 {
-    if (!m_package)
+    if ( !m_package )
+    {
         return QString();
+    }
+
     return m_package->path();
 }
 
@@ -178,11 +200,14 @@ bool QWebPluginInfo::isNull() const
 
     \sa isEnabled()
 */
-void QWebPluginInfo::setEnabled(bool enabled)
+void QWebPluginInfo::setEnabled( bool enabled )
 {
-    if (!m_package)
+    if ( !m_package )
+    {
         return;
-    m_package->setEnabled(enabled);
+    }
+
+    m_package->setEnabled( enabled );
 }
 
 /*!
@@ -192,15 +217,18 @@ void QWebPluginInfo::setEnabled(bool enabled)
 */
 bool QWebPluginInfo::isEnabled() const
 {
-    if (!m_package)
+    if ( !m_package )
+    {
         return false;
+    }
+
     return m_package->isEnabled();
 }
 
 /*!
     Returns true if this plugin info is the same as the \a other plugin info.
 */
-bool QWebPluginInfo::operator==(const QWebPluginInfo& other) const
+bool QWebPluginInfo::operator==( const QWebPluginInfo &other ) const
 {
     return m_package == other.m_package;
 }
@@ -208,7 +236,7 @@ bool QWebPluginInfo::operator==(const QWebPluginInfo& other) const
 /*!
     Returns true if this plugin info is different from the \a other plugin info.
 */
-bool QWebPluginInfo::operator!=(const QWebPluginInfo& other) const
+bool QWebPluginInfo::operator!=( const QWebPluginInfo &other ) const
 {
     return m_package != other.m_package;
 }
@@ -217,16 +245,25 @@ bool QWebPluginInfo::operator!=(const QWebPluginInfo& other) const
     Assigns the \a other plugin info to this plugin info, and returns a reference
     to this plugin info.
 */
-QWebPluginInfo &QWebPluginInfo::operator=(const QWebPluginInfo& other)
+QWebPluginInfo &QWebPluginInfo::operator=( const QWebPluginInfo &other )
 {
-    if (this == &other)
+    if ( this == &other )
+    {
         return *this;
+    }
 
-    if (m_package)
+    if ( m_package )
+    {
         m_package->deref();
+    }
+
     m_package = other.m_package;
-    if (m_package)
+
+    if ( m_package )
+    {
         m_package->ref();
+    }
+
     m_mimeTypes = other.m_mimeTypes;
 
     return *this;
@@ -259,9 +296,9 @@ QWebPluginInfo &QWebPluginInfo::operator=(const QWebPluginInfo& other)
     \sa QWebPluginInfo, QWebSettings::pluginDatabase()
 */
 
-QWebPluginDatabase::QWebPluginDatabase(QObject* parent)
-    : QObject(parent)
-    , m_database(PluginDatabase::installedPlugins())
+QWebPluginDatabase::QWebPluginDatabase( QObject *parent )
+    : QObject( parent )
+    , m_database( PluginDatabase::installedPlugins() )
 {
 }
 
@@ -280,15 +317,20 @@ QWebPluginDatabase::~QWebPluginDatabase()
 QList<QWebPluginInfo> QWebPluginDatabase::plugins() const
 {
     QList<QWebPluginInfo> qwebplugins;
-    const Vector<PluginPackage*>& plugins = m_database->plugins();
+    const Vector<PluginPackage *> &plugins = m_database->plugins();
 
-    for (unsigned int i = 0; i < plugins.size(); ++i) {
-        PluginPackage* plugin = plugins[i];
-#if ENABLE(NETSCAPE_PLUGIN_METADATA_CACHE) 
-        if (!plugin->ensurePluginLoaded())
+    for ( unsigned int i = 0; i < plugins.size(); ++i )
+    {
+        PluginPackage *plugin = plugins[i];
+#if ENABLE(NETSCAPE_PLUGIN_METADATA_CACHE)
+
+        if ( !plugin->ensurePluginLoaded() )
+        {
             continue;
+        }
+
 #endif
-        qwebplugins.append(QWebPluginInfo(plugin));
+        qwebplugins.append( QWebPluginInfo( plugin ) );
     }
 
     return qwebplugins;
@@ -303,9 +345,12 @@ QStringList QWebPluginDatabase::defaultSearchPaths()
 {
     QStringList paths;
 
-    const Vector<String>& directories = PluginDatabase::defaultPluginDirectories();
-    for (unsigned int i = 0; i < directories.size(); ++i)
-        paths.append(directories[i]);
+    const Vector<String> &directories = PluginDatabase::defaultPluginDirectories();
+
+    for ( unsigned int i = 0; i < directories.size(); ++i )
+    {
+        paths.append( directories[i] );
+    }
 
     return paths;
 }
@@ -319,9 +364,12 @@ QStringList QWebPluginDatabase::searchPaths() const
 {
     QStringList paths;
 
-    const Vector<String>& directories = m_database->pluginDirectories();
-    for (unsigned int i = 0; i < directories.size(); ++i)
-        paths.append(directories[i]);
+    const Vector<String> &directories = m_database->pluginDirectories();
+
+    for ( unsigned int i = 0; i < directories.size(); ++i )
+    {
+        paths.append( directories[i] );
+    }
 
     return paths;
 }
@@ -332,14 +380,16 @@ QStringList QWebPluginDatabase::searchPaths() const
 
     \sa searchPaths(), defaultSearchPaths()
 */
-void QWebPluginDatabase::setSearchPaths(const QStringList& paths)
+void QWebPluginDatabase::setSearchPaths( const QStringList &paths )
 {
     Vector<String> directories;
 
-    for (int i = 0; i < paths.count(); ++i)
-        directories.append(paths.at(i));
+    for ( int i = 0; i < paths.count(); ++i )
+    {
+        directories.append( paths.at( i ) );
+    }
 
-    m_database->setPluginDirectories(directories);
+    m_database->setPluginDirectories( directories );
     // PluginDatabase::setPluginDirectories() does not refresh the database.
     m_database->refresh();
 }
@@ -350,9 +400,9 @@ void QWebPluginDatabase::setSearchPaths(const QStringList& paths)
 
     \sa searchPaths(), setSearchPaths()
 */
-void QWebPluginDatabase::addSearchPath(const QString& path)
+void QWebPluginDatabase::addSearchPath( const QString &path )
 {
-    m_database->addExtraPluginDirectory(path);
+    m_database->addExtraPluginDirectory( path );
     // PluginDatabase::addExtraPluginDirectory() does refresh the database.
 }
 
@@ -374,9 +424,9 @@ void QWebPluginDatabase::refresh()
 
     \sa setPreferredPluginForMimeType()
 */
-QWebPluginInfo QWebPluginDatabase::pluginForMimeType(const QString& mimeType)
+QWebPluginInfo QWebPluginDatabase::pluginForMimeType( const QString &mimeType )
 {
-    return QWebPluginInfo(m_database->pluginForMIMEType(mimeType));
+    return QWebPluginInfo( m_database->pluginForMIMEType( mimeType ) );
 }
 
 /*!
@@ -387,7 +437,7 @@ QWebPluginInfo QWebPluginDatabase::pluginForMimeType(const QString& mimeType)
 
     \sa pluginForMimeType()
 */
-void QWebPluginDatabase::setPreferredPluginForMimeType(const QString& mimeType, const QWebPluginInfo& plugin)
+void QWebPluginDatabase::setPreferredPluginForMimeType( const QString &mimeType, const QWebPluginInfo &plugin )
 {
-    m_database->setPreferredPluginForMIMEType(mimeType, plugin.m_package);
+    m_database->setPreferredPluginForMIMEType( mimeType, plugin.m_package );
 }

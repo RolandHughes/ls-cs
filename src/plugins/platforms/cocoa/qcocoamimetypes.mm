@@ -82,7 +82,7 @@ QVariant QMacPasteboardMimeTraditionalMacPlainText::convertToMime(const QString 
       return tmp.toQString();
 
    } else {
-      qWarning("QMime::convertToMime: unhandled mimetype: %s", csPrintable(mimetype));
+      qWarning("QMime::convertToMime: unhandled mimetype: %s", lscsPrintable(mimetype));
    }
 
    return ret;

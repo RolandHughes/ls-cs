@@ -28,27 +28,33 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioParam;
 
-class JSAudioParam : public JSDOMWrapper {
+class JSAudioParam : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSAudioParam(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<AudioParam>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSAudioParam( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<AudioParam> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    AudioParam* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    AudioParam *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<AudioParam> m_impl;
@@ -56,33 +62,36 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, AudioParam*);
-AudioParam* toAudioParam(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, AudioParam * );
+AudioParam *toAudioParam( JSC::JSValue );
 
-class JSAudioParamPrototype : public JSC::JSObjectWithGlobalObject {
+class JSAudioParamPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSAudioParamPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSAudioParamPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                           JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsAudioParamValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSAudioParamValue(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsAudioParamMinValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsAudioParamMaxValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsAudioParamDefaultValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsAudioParamName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsAudioParamUnits(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsAudioParamConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsAudioParamValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSAudioParamValue( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsAudioParamMinValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsAudioParamMaxValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsAudioParamDefaultValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsAudioParamName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsAudioParamUnits( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsAudioParamConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

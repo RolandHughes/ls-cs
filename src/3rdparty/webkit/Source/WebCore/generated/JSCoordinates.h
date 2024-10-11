@@ -26,31 +26,37 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Coordinates;
 
-class JSCoordinates : public JSDOMWrapper {
+class JSCoordinates : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSCoordinates(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Coordinates>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSCoordinates( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Coordinates> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 
     // Custom attributes
-    JSC::JSValue altitude(JSC::ExecState*) const;
-    JSC::JSValue altitudeAccuracy(JSC::ExecState*) const;
-    JSC::JSValue heading(JSC::ExecState*) const;
-    JSC::JSValue speed(JSC::ExecState*) const;
-    Coordinates* impl() const { return m_impl.get(); }
+    JSC::JSValue altitude( JSC::ExecState * ) const;
+    JSC::JSValue altitudeAccuracy( JSC::ExecState * ) const;
+    JSC::JSValue heading( JSC::ExecState * ) const;
+    JSC::JSValue speed( JSC::ExecState * ) const;
+    Coordinates *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Coordinates> m_impl;
@@ -58,32 +64,35 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Coordinates*);
-Coordinates* toCoordinates(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Coordinates * );
+Coordinates *toCoordinates( JSC::JSValue );
 
-class JSCoordinatesPrototype : public JSC::JSObjectWithGlobalObject {
+class JSCoordinatesPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCoordinatesPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCoordinatesPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsCoordinatesLatitude(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCoordinatesLongitude(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCoordinatesAltitude(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCoordinatesAccuracy(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCoordinatesAltitudeAccuracy(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCoordinatesHeading(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCoordinatesSpeed(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCoordinatesLatitude( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCoordinatesLongitude( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCoordinatesAltitude( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCoordinatesAccuracy( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCoordinatesAltitudeAccuracy( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCoordinatesHeading( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCoordinatesSpeed( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

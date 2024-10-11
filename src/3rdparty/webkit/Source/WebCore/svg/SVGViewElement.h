@@ -31,35 +31,43 @@
 #include "SVGStyledElement.h"
 #include "SVGZoomAndPan.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGViewElement : public SVGStyledElement,
-                       public SVGExternalResourcesRequired,
-                       public SVGFitToViewBox,
-                       public SVGZoomAndPan {
+    public SVGExternalResourcesRequired,
+    public SVGFitToViewBox,
+    public SVGZoomAndPan
+{
 public:
-    static PassRefPtr<SVGViewElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGViewElement> create( const QualifiedName &, Document * );
 
-    SVGStringList& viewTarget() { return m_viewTarget; }
+    SVGStringList &viewTarget()
+    {
+        return m_viewTarget;
+    }
 
 private:
-    SVGViewElement(const QualifiedName&, Document*);
+    SVGViewElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
 
     // Animated property declarations
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
- 
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
+
     // SVGFitToViewBox
-    DECLARE_ANIMATED_RECT(ViewBox, viewBox)
-    DECLARE_ANIMATED_PRESERVEASPECTRATIO(PreserveAspectRatio, preserveAspectRatio)
+    DECLARE_ANIMATED_RECT( ViewBox, viewBox )
+    DECLARE_ANIMATED_PRESERVEASPECTRATIO( PreserveAspectRatio, preserveAspectRatio )
 
     SVGStringList m_viewTarget;
 };

@@ -43,92 +43,111 @@
 #include <wtf/text/AtomicString.h>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 WebKitBlobBuilder::WebKitBlobBuilder()
-    : m_size(0)
+    : m_size( 0 )
 {
 }
 
-Vector<char>& WebKitBlobBuilder::getBuffer()
+Vector<char> &WebKitBlobBuilder::getBuffer()
 {
     // If the last item is not a data item, create one. Otherwise, we simply append the new string to the last data item.
-    if (m_items.isEmpty() || m_items[m_items.size() - 1].type != BlobDataItem::Data)
-        m_items.append(BlobDataItem(RawData::create()));
+    if ( m_items.isEmpty() || m_items[m_items.size() - 1].type != BlobDataItem::Data )
+    {
+        m_items.append( BlobDataItem( RawData::create() ) );
+    }
 
     return *m_items[m_items.size() - 1].data->mutableData();
 }
 
-void WebKitBlobBuilder::append(const String& text, const String& endingType, ExceptionCode& ec)
+void WebKitBlobBuilder::append( const String &text, const String &endingType, ExceptionCode &ec )
 {
     bool isEndingTypeTransparent = endingType == "transparent";
     bool isEndingTypeNative = endingType == "native";
-    if (!endingType.isEmpty() && !isEndingTypeTransparent && !isEndingTypeNative) {
+
+    if ( !endingType.isEmpty() && !isEndingTypeTransparent && !isEndingTypeNative )
+    {
         ec = SYNTAX_ERR;
         return;
     }
 
-    CString utf8Text = UTF8Encoding().encode(text.characters(), text.length(), EntitiesForUnencodables);
+    CString utf8Text = UTF8Encoding().encode( text.characters(), text.length(), EntitiesForUnencodables );
 
-    Vector<char>& buffer = getBuffer();
+    Vector<char> &buffer = getBuffer();
     size_t oldSize = buffer.size();
 
-    if (isEndingTypeNative)
-        normalizeLineEndingsToNative(utf8Text, buffer);
+    if ( isEndingTypeNative )
+    {
+        normalizeLineEndingsToNative( utf8Text, buffer );
+    }
     else
-        buffer.append(utf8Text.data(), utf8Text.length());
+    {
+        buffer.append( utf8Text.data(), utf8Text.length() );
+    }
+
     m_size += buffer.size() - oldSize;
 }
 
-void WebKitBlobBuilder::append(const String& text, ExceptionCode& ec)
+void WebKitBlobBuilder::append( const String &text, ExceptionCode &ec )
 {
-    append(text, String(), ec);
+    append( text, String(), ec );
 }
 
 #if ENABLE(BLOB)
-void WebKitBlobBuilder::append(ArrayBuffer* arrayBuffer)
+void WebKitBlobBuilder::append( ArrayBuffer *arrayBuffer )
 {
-    if (!arrayBuffer)
+    if ( !arrayBuffer )
+    {
         return;
-    Vector<char>& buffer = getBuffer();
+    }
+
+    Vector<char> &buffer = getBuffer();
     size_t oldSize = buffer.size();
-    buffer.append(static_cast<const char*>(arrayBuffer->data()), arrayBuffer->byteLength());
+    buffer.append( static_cast<const char *>( arrayBuffer->data() ), arrayBuffer->byteLength() );
     m_size += buffer.size() - oldSize;
 }
 #endif
 
-void WebKitBlobBuilder::append(Blob* blob)
+void WebKitBlobBuilder::append( Blob *blob )
 {
-    if (!blob)
+    if ( !blob )
+    {
         return;
-    if (blob->isFile()) {
+    }
+
+    if ( blob->isFile() )
+    {
         // If the blob is file that is not snapshoted, capture the snapshot now.
         // FIXME: This involves synchronous file operation. We need to figure out how to make it asynchronous.
-        File* file = static_cast<File*>(blob);
+        File *file = static_cast<File *>( blob );
         long long snapshotSize;
         double snapshotModificationTime;
-        file->captureSnapshot(snapshotSize, snapshotModificationTime);
+        file->captureSnapshot( snapshotSize, snapshotModificationTime );
 
         m_size += snapshotSize;
-        m_items.append(BlobDataItem(file->path(), 0, snapshotSize, snapshotModificationTime));
-    } else {
-        long long blobSize = static_cast<long long>(blob->size());
+        m_items.append( BlobDataItem( file->path(), 0, snapshotSize, snapshotModificationTime ) );
+    }
+    else
+    {
+        long long blobSize = static_cast<long long>( blob->size() );
         m_size += blobSize;
-        m_items.append(BlobDataItem(blob->url(), 0, blobSize));
+        m_items.append( BlobDataItem( blob->url(), 0, blobSize ) );
     }
 }
 
-PassRefPtr<Blob> WebKitBlobBuilder::getBlob(const String& contentType)
+PassRefPtr<Blob> WebKitBlobBuilder::getBlob( const String &contentType )
 {
     OwnPtr<BlobData> blobData = BlobData::create();
-    blobData->setContentType(contentType);
-    blobData->swapItems(m_items);
+    blobData->setContentType( contentType );
+    blobData->swapItems( m_items );
 
-    RefPtr<Blob> blob = Blob::create(blobData.release(), m_size);
+    RefPtr<Blob> blob = Blob::create( blobData.release(), m_size );
 
     // After creating a blob from the current blob data, we do not need to keep the data around any more. Instead, we only
     // need to keep a reference to the URL of the blob just created.
-    m_items.append(BlobDataItem(blob->url(), 0, m_size));
+    m_items.append( BlobDataItem( blob->url(), 0, m_size ) );
 
     return blob;
 }

@@ -26,9 +26,11 @@
 #ifndef MessageID_h
 #define MessageID_h
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-enum MessageClass {
+enum MessageClass
+{
     MessageClassReserved = 0,
 
     // Messages sent by Core IPC.
@@ -104,37 +106,39 @@ template<typename> struct MessageKindTraits { };
     ---------
 */
 
-class MessageID {
+class MessageID
+{
 public:
-    enum Flags {
+    enum Flags
+    {
         SyncMessage = 1 << 0,
         DispatchMessageWhenWaitingForSyncReply = 1 << 1,
     };
 
     MessageID()
-        : m_messageID(0)
+        : m_messageID( 0 )
     {
     }
 
     template <typename EnumType>
-    explicit MessageID(EnumType messageKind, unsigned char flags = 0)
-        : m_messageID(stripMostSignificantBit(flags << 24 | (MessageKindTraits<EnumType>::messageClass) << 16 | messageKind))
+    explicit MessageID( EnumType messageKind, unsigned char flags = 0 )
+        : m_messageID( stripMostSignificantBit( flags << 24 | ( MessageKindTraits<EnumType>::messageClass ) << 16 | messageKind ) )
     {
     }
 
-    MessageID messageIDWithAddedFlags(unsigned char flags)
+    MessageID messageIDWithAddedFlags( unsigned char flags )
     {
         MessageID messageID;
 
-        messageID.m_messageID = stripMostSignificantBit(m_messageID | (flags << 24));
+        messageID.m_messageID = stripMostSignificantBit( m_messageID | ( flags << 24 ) );
         return messageID;
     }
 
     template <typename EnumType>
     EnumType get() const
     {
-        ASSERT(getClass() == MessageKindTraits<EnumType>::messageClass);
-        return static_cast<EnumType>(m_messageID & 0xffff);
+        ASSERT( getClass() == MessageKindTraits<EnumType>::messageClass );
+        return static_cast<EnumType>( m_messageID & 0xffff );
     }
 
     template <MessageClass K>
@@ -142,38 +146,53 @@ public:
     {
         return getClass() == K;
     }
-    
+
     template <typename EnumType>
-    bool operator==(EnumType messageKind) const
+    bool operator==( EnumType messageKind ) const
     {
-        return m_messageID == MessageID(messageKind).m_messageID;
+        return m_messageID == MessageID( messageKind ).m_messageID;
     }
 
-    static MessageID fromInt(unsigned i)
+    static MessageID fromInt( unsigned i )
     {
         MessageID messageID;
-        messageID.m_messageID = stripMostSignificantBit(i);
-        
+        messageID.m_messageID = stripMostSignificantBit( i );
+
         return messageID;
     }
-    
-    unsigned toInt() const { return m_messageID; }
 
-    bool shouldDispatchMessageWhenWaitingForSyncReply() const { return getFlags() & DispatchMessageWhenWaitingForSyncReply; }
-    bool isSync() const { return getFlags() & SyncMessage; }
+    unsigned toInt() const
+    {
+        return m_messageID;
+    }
+
+    bool shouldDispatchMessageWhenWaitingForSyncReply() const
+    {
+        return getFlags() & DispatchMessageWhenWaitingForSyncReply;
+    }
+    bool isSync() const
+    {
+        return getFlags() & SyncMessage;
+    }
 
 private:
-    static inline unsigned stripMostSignificantBit(unsigned value)
+    static inline unsigned stripMostSignificantBit( unsigned value )
     {
         return value & 0x7fffffff;
     }
 
-    unsigned char getFlags() const { return (m_messageID & 0xff000000) >> 24; }
-    unsigned char getClass() const { return (m_messageID & 0x00ff0000) >> 16; }
+    unsigned char getFlags() const
+    {
+        return ( m_messageID & 0xff000000 ) >> 24;
+    }
+    unsigned char getClass() const
+    {
+        return ( m_messageID & 0x00ff0000 ) >> 16;
+    }
 
     unsigned m_messageID;
 };
 
 } // namespace CoreIPC
-    
+
 #endif // MessageID_h

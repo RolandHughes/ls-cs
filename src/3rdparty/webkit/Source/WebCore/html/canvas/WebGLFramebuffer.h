@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLFramebuffer_h
@@ -31,22 +31,27 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WebGLRenderbuffer;
 class WebGLTexture;
 
-class WebGLFramebuffer : public WebGLObject {
+class WebGLFramebuffer : public WebGLObject
+{
 public:
-    virtual ~WebGLFramebuffer() { deleteObject(); }
+    virtual ~WebGLFramebuffer()
+    {
+        deleteObject();
+    }
 
-    static PassRefPtr<WebGLFramebuffer> create(WebGLRenderingContext*);
+    static PassRefPtr<WebGLFramebuffer> create( WebGLRenderingContext * );
 
-    void setAttachment(GC3Denum attachment, GC3Denum texTarget, WebGLTexture*, GC3Dint level);
-    void setAttachment(GC3Denum attachment, WebGLRenderbuffer*);
+    void setAttachment( GC3Denum attachment, GC3Denum texTarget, WebGLTexture *, GC3Dint level );
+    void setAttachment( GC3Denum attachment, WebGLRenderbuffer * );
     // If an object is attached to the framebuffer, remove it.
-    void removeAttachment(WebGLObject*);
-    WebGLObject* getAttachment(GC3Denum) const;
+    void removeAttachment( WebGLObject * );
+    WebGLObject *getAttachment( GC3Denum ) const;
 
     GC3Denum getColorBufferFormat() const;
     GC3Dsizei getWidth() const;
@@ -58,30 +63,51 @@ public:
     // Return false if the framebuffer is incomplete; otherwise initialize
     // the buffers if they haven't been initialized and
     // needToInitializeRenderbuffers is true.
-    bool onAccess(bool needToInitializeRenderbuffers);
+    bool onAccess( bool needToInitializeRenderbuffers );
 
     // Return false does not mean COMPLETE, might still be INCOMPLETE.
-    bool isIncomplete(bool checkInternalFormat) const;
+    bool isIncomplete( bool checkInternalFormat ) const;
 
-    bool hasEverBeenBound() const { return object() && m_hasEverBeenBound; }
+    bool hasEverBeenBound() const
+    {
+        return object() && m_hasEverBeenBound;
+    }
 
-    void setHasEverBeenBound() { m_hasEverBeenBound = true; }
+    void setHasEverBeenBound()
+    {
+        m_hasEverBeenBound = true;
+    }
 
 protected:
-    WebGLFramebuffer(WebGLRenderingContext*);
+    WebGLFramebuffer( WebGLRenderingContext * );
 
-    virtual void deleteObjectImpl(Platform3DObject);
+    virtual void deleteObjectImpl( Platform3DObject );
 
 private:
-    virtual bool isFramebuffer() const { return true; }
+    virtual bool isFramebuffer() const
+    {
+        return true;
+    }
 
     // Return false if framebuffer is incomplete.
     bool initializeRenderbuffers();
 
-    bool isColorAttached() const { return (m_colorAttachment && m_colorAttachment->object()); }
-    bool isDepthAttached() const { return (m_depthAttachment && m_depthAttachment->object()); }
-    bool isStencilAttached() const { return (m_stencilAttachment && m_stencilAttachment->object()); }
-    bool isDepthStencilAttached() const { return (m_depthStencilAttachment && m_depthStencilAttachment->object()); }
+    bool isColorAttached() const
+    {
+        return ( m_colorAttachment && m_colorAttachment->object() );
+    }
+    bool isDepthAttached() const
+    {
+        return ( m_depthAttachment && m_depthAttachment->object() );
+    }
+    bool isStencilAttached() const
+    {
+        return ( m_stencilAttachment && m_stencilAttachment->object() );
+    }
+    bool isDepthStencilAttached() const
+    {
+        return ( m_depthStencilAttachment && m_depthStencilAttachment->object() );
+    }
 
     RefPtr<WebGLObject> m_colorAttachment;
     RefPtr<WebGLObject> m_depthAttachment;

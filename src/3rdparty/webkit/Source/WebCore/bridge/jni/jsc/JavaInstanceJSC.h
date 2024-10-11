@@ -33,45 +33,51 @@
 #include "JobjectWrapper.h"
 #include "runtime_root.h"
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
 class JavaClass;
 
-class JavaInstance : public Instance {
+class JavaInstance : public Instance
+{
 public:
-    static PassRefPtr<JavaInstance> create(jobject instance, PassRefPtr<RootObject> rootObject)
+    static PassRefPtr<JavaInstance> create( jobject instance, PassRefPtr<RootObject> rootObject )
     {
-        return adoptRef(new JavaInstance(instance, rootObject));
+        return adoptRef( new JavaInstance( instance, rootObject ) );
     }
 
     ~JavaInstance();
 
-    virtual Class* getClass() const;
+    virtual Class *getClass() const;
 
-    virtual JSValue valueOf(ExecState*) const;
-    virtual JSValue defaultValue(ExecState*, PreferredPrimitiveType) const;
+    virtual JSValue valueOf( ExecState * ) const;
+    virtual JSValue defaultValue( ExecState *, PreferredPrimitiveType ) const;
 
-    virtual JSValue getMethod(ExecState* exec, const Identifier& propertyName);
-    virtual JSValue invokeMethod(ExecState* exec, RuntimeMethod* method);
+    virtual JSValue getMethod( ExecState *exec, const Identifier &propertyName );
+    virtual JSValue invokeMethod( ExecState *exec, RuntimeMethod *method );
 
-    jobject javaInstance() const { return m_instance->m_instance; }
+    jobject javaInstance() const
+    {
+        return m_instance->m_instance;
+    }
 
-    JSValue stringValue(ExecState*) const;
-    JSValue numberValue(ExecState*) const;
+    JSValue stringValue( ExecState * ) const;
+    JSValue numberValue( ExecState * ) const;
     JSValue booleanValue() const;
 
 protected:
-    JavaInstance(jobject instance, PassRefPtr<RootObject>);
+    JavaInstance( jobject instance, PassRefPtr<RootObject> );
 
-    virtual RuntimeObject* newRuntimeObject(ExecState*);
+    virtual RuntimeObject *newRuntimeObject( ExecState * );
 
     virtual void virtualBegin();
     virtual void virtualEnd();
 
     RefPtr<JobjectWrapper> m_instance;
-    mutable JavaClass* m_class;
+    mutable JavaClass *m_class;
 };
 
 } // namespace Bindings

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -35,30 +35,36 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-bool JSHTMLFormElement::canGetItemsForName(ExecState*, HTMLFormElement* form, const Identifier& propertyName)
+bool JSHTMLFormElement::canGetItemsForName( ExecState *, HTMLFormElement *form, const Identifier &propertyName )
 {
     Vector<RefPtr<Node> > namedItems;
-    form->getNamedElements(identifierToAtomicString(propertyName), namedItems);
+    form->getNamedElements( identifierToAtomicString( propertyName ), namedItems );
     return namedItems.size();
 }
 
-JSValue JSHTMLFormElement::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSHTMLFormElement::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSHTMLElement* jsForm = static_cast<JSHTMLFormElement*>(asObject(slotBase));
-    HTMLFormElement* form = static_cast<HTMLFormElement*>(jsForm->impl());
+    JSHTMLElement *jsForm = static_cast<JSHTMLFormElement *>( asObject( slotBase ) );
+    HTMLFormElement *form = static_cast<HTMLFormElement *>( jsForm->impl() );
 
     Vector<RefPtr<Node> > namedItems;
-    form->getNamedElements(identifierToAtomicString(propertyName), namedItems);
-    
-    if (namedItems.isEmpty())
+    form->getNamedElements( identifierToAtomicString( propertyName ), namedItems );
+
+    if ( namedItems.isEmpty() )
+    {
         return jsUndefined();
-    if (namedItems.size() == 1)
-        return toJS(exec, jsForm->globalObject(), namedItems[0].get());
+    }
+
+    if ( namedItems.size() == 1 )
+    {
+        return toJS( exec, jsForm->globalObject(), namedItems[0].get() );
+    }
 
     // FIXME: HTML5 specifies that this should be a RadioNodeList.
-    return toJS(exec, jsForm->globalObject(), StaticNodeList::adopt(namedItems).get());
+    return toJS( exec, jsForm->globalObject(), StaticNodeList::adopt( namedItems ).get() );
 }
 
 }

@@ -25,13 +25,14 @@
 
 using namespace JSC;
 
-namespace WebCore{
-
-DOMObjectHashTableMap& DOMObjectHashTableMap::mapFor(JSGlobalData& globalData)
+namespace WebCore
 {
-    JSGlobalData::ClientData* clientData = globalData.clientData;
-    ASSERT(clientData);
-    return static_cast<WebCoreJSClientData*>(clientData)->hashTableMap;
+
+DOMObjectHashTableMap &DOMObjectHashTableMap::mapFor( JSGlobalData &globalData )
+{
+    JSGlobalData::ClientData *clientData = globalData.clientData;
+    ASSERT( clientData );
+    return static_cast<WebCoreJSClientData *>( clientData )->hashTableMap;
 }
 
 } // namespace WebCore

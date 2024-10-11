@@ -32,42 +32,50 @@
 #include <wtf/TypeTraits.h>
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
 class ArgumentEncoder;
 
-class ArgumentEncoder {
+class ArgumentEncoder
+{
 public:
-    static PassOwnPtr<ArgumentEncoder> create(uint64_t destinationID);
+    static PassOwnPtr<ArgumentEncoder> create( uint64_t destinationID );
     ~ArgumentEncoder();
 
-    void encodeBytes(const uint8_t*, size_t);
+    void encodeBytes( const uint8_t *, size_t );
 
-    void encodeBool(bool);
-    void encodeUInt32(uint32_t);
-    void encodeUInt64(uint64_t);
-    void encodeInt32(int32_t);
-    void encodeInt64(int64_t);
-    void encodeFloat(float);
-    void encodeDouble(double);
+    void encodeBool( bool );
+    void encodeUInt32( uint32_t );
+    void encodeUInt64( uint64_t );
+    void encodeInt32( int32_t );
+    void encodeInt64( int64_t );
+    void encodeFloat( float );
+    void encodeDouble( double );
 
-    template<typename T> void encodeEnum(T t)
+    template<typename T> void encodeEnum( T t )
     {
-        COMPILE_ASSERT(sizeof(T) <= sizeof(uint64_t), enum_type_must_not_be_larger_than_64_bits);
+        COMPILE_ASSERT( sizeof( T ) <= sizeof( uint64_t ), enum_type_must_not_be_larger_than_64_bits );
 
-        encodeUInt64(static_cast<uint64_t>(t));
+        encodeUInt64( static_cast<uint64_t>( t ) );
     }
-    
+
     // Generic type encode function.
-    template<typename T> void encode(const T& t)
+    template<typename T> void encode( const T &t )
     {
-        ArgumentCoder<T>::encode(this, t);
+        ArgumentCoder<T>::encode( this, t );
     }
 
-    uint8_t* buffer() const { return m_buffer; }
-    size_t bufferSize() const { return m_bufferSize; }
+    uint8_t *buffer() const
+    {
+        return m_buffer;
+    }
+    size_t bufferSize() const
+    {
+        return m_bufferSize;
+    }
 
-    void addAttachment(const Attachment&);
+    void addAttachment( const Attachment & );
     Vector<Attachment> releaseAttachments();
 
 #ifndef NDEBUG
@@ -75,51 +83,51 @@ public:
 #endif
 
 private:
-    explicit ArgumentEncoder(uint64_t destinationID);
-    uint8_t* grow(unsigned alignment, size_t size);
-    
-    uint8_t* m_buffer;
-    uint8_t* m_bufferPointer;
-    
+    explicit ArgumentEncoder( uint64_t destinationID );
+    uint8_t *grow( unsigned alignment, size_t size );
+
+    uint8_t *m_buffer;
+    uint8_t *m_bufferPointer;
+
     size_t m_bufferSize;
     size_t m_bufferCapacity;
 
     Vector<Attachment> m_attachments;
 };
 
-template<> inline void ArgumentEncoder::encode(const bool& n)
+template<> inline void ArgumentEncoder::encode( const bool &n )
 {
-    encodeBool(n);
+    encodeBool( n );
 }
 
-template<> inline void ArgumentEncoder::encode(const uint32_t& n)
+template<> inline void ArgumentEncoder::encode( const uint32_t &n )
 {
-    encodeUInt32(n);
+    encodeUInt32( n );
 }
 
-template<> inline void ArgumentEncoder::encode(const uint64_t& n)
+template<> inline void ArgumentEncoder::encode( const uint64_t &n )
 {
-    encodeUInt64(n);
+    encodeUInt64( n );
 }
 
-template<> inline void ArgumentEncoder::encode(const int32_t& n)
+template<> inline void ArgumentEncoder::encode( const int32_t &n )
 {
-    encodeInt32(n);
+    encodeInt32( n );
 }
 
-template<> inline void ArgumentEncoder::encode(const int64_t& n)
+template<> inline void ArgumentEncoder::encode( const int64_t &n )
 {
-    encodeInt64(n);
+    encodeInt64( n );
 }
 
-template<> inline void ArgumentEncoder::encode(const float& n)
+template<> inline void ArgumentEncoder::encode( const float &n )
 {
-    encodeFloat(n);
+    encodeFloat( n );
 }
 
-template<> inline void ArgumentEncoder::encode(const double& n)
+template<> inline void ArgumentEncoder::encode( const double &n )
 {
-    encodeDouble(n);
+    encodeDouble( n );
 }
 
 } // namespace CoreIPC

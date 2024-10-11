@@ -26,104 +26,110 @@
 #include "JSHTMLElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLMediaElement;
 
-class JSHTMLMediaElement : public JSHTMLElement {
+class JSHTMLMediaElement : public JSHTMLElement
+{
     typedef JSHTMLElement Base;
 public:
-    JSHTMLMediaElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<HTMLMediaElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHTMLMediaElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<HTMLMediaElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSHTMLMediaElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHTMLMediaElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHTMLMediaElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHTMLMediaElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                 JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionLoad(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionCanPlayType(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionPlay(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionPause(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionLoad( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionCanPlayType( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionPlay( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHTMLMediaElementPrototypeFunctionPause( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHTMLMediaElementError(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementSrc(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementSrc(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementCurrentSrc(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementNetworkState(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementPreload(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementPreload(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementBuffered(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementReadyState(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementSeeking(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementCurrentTime(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementCurrentTime(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementStartTime(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementDuration(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementPaused(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementDefaultPlaybackRate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementDefaultPlaybackRate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementPlaybackRate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementPlaybackRate(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementPlayed(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementSeekable(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementEnded(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementAutoplay(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementAutoplay(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementLoop(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementLoop(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementControls(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementControls(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementVolume(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementVolume(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementMuted(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementMuted(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementWebkitPreservesPitch(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementWebkitPreservesPitch(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementWebkitHasClosedCaptions(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementWebkitClosedCaptionsVisible(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSHTMLMediaElementWebkitClosedCaptionsVisible(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsHTMLMediaElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLMediaElementError( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementSrc( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementSrc( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementCurrentSrc( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementNetworkState( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementPreload( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementPreload( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementBuffered( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementReadyState( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementSeeking( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementCurrentTime( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementCurrentTime( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementStartTime( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementDuration( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementPaused( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementDefaultPlaybackRate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementDefaultPlaybackRate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementPlaybackRate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementPlaybackRate( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementPlayed( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementSeekable( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementEnded( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementAutoplay( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementAutoplay( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementLoop( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementLoop( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementControls( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementControls( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementVolume( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementVolume( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementMuted( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementMuted( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementWebkitPreservesPitch( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementWebkitPreservesPitch( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementWebkitHasClosedCaptions( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementWebkitClosedCaptionsVisible( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSHTMLMediaElementWebkitClosedCaptionsVisible( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsHTMLMediaElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsHTMLMediaElementNETWORK_EMPTY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementNETWORK_IDLE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementNETWORK_LOADING(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementNETWORK_NO_SOURCE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementHAVE_NOTHING(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementHAVE_METADATA(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementHAVE_CURRENT_DATA(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementHAVE_FUTURE_DATA(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsHTMLMediaElementHAVE_ENOUGH_DATA(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHTMLMediaElementNETWORK_EMPTY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementNETWORK_IDLE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementNETWORK_LOADING( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementNETWORK_NO_SOURCE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementHAVE_NOTHING( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementHAVE_METADATA( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementHAVE_CURRENT_DATA( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementHAVE_FUTURE_DATA( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsHTMLMediaElementHAVE_ENOUGH_DATA( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

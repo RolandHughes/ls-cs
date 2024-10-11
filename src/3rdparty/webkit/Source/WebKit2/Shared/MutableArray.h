@@ -28,24 +28,29 @@
 
 #include "ImmutableArray.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 // MutableArray - A mutable array type suitable for vending to an API.
 
-class MutableArray : public ImmutableArray {
+class MutableArray : public ImmutableArray
+{
 public:
     static PassRefPtr<MutableArray> create()
     {
-        return adoptRef(new MutableArray);
+        return adoptRef( new MutableArray );
     }
 
     ~MutableArray();
 
-    void append(APIObject*);
-    void reserveCapacity(unsigned);
-    void removeItemAtIndex(unsigned);
+    void append( APIObject * );
+    void reserveCapacity( unsigned );
+    void removeItemAtIndex( unsigned );
 
-    virtual bool isMutable() { return true; }
+    virtual bool isMutable()
+    {
+        return true;
+    }
 
 private:
     MutableArray();

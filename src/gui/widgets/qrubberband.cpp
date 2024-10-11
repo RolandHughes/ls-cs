@@ -40,40 +40,42 @@
 
 class QRubberBandPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QRubberBand)
+    Q_DECLARE_PUBLIC( QRubberBand )
 
- public:
-   QRect rect;
-   QRubberBand::Shape shape;
-   QRegion clipping;
-   void updateMask();
+public:
+    QRect rect;
+    QRubberBand::Shape shape;
+    QRegion clipping;
+    void updateMask();
 };
 
-void QRubberBand::initStyleOption(QStyleOptionRubberBand *option) const
+void QRubberBand::initStyleOption( QStyleOptionRubberBand *option ) const
 {
-   if (!option) {
-      return;
-   }
-   option->initFrom(this);
-   option->shape = d_func()->shape;
+    if ( !option )
+    {
+        return;
+    }
+
+    option->initFrom( this );
+    option->shape = d_func()->shape;
 
 #ifndef Q_OS_DARWIN
-   option->opaque = true;
+    option->opaque = true;
 #else
-   option->opaque = windowFlags() & RUBBERBAND_WINDOW_TYPE;
+    option->opaque = windowFlags() & RUBBERBAND_WINDOW_TYPE;
 #endif
 }
 
-QRubberBand::QRubberBand(Shape s, QWidget *p)
-   : QWidget(*new QRubberBandPrivate, p, (p  && p->windowType() != Qt::Desktop) ? Qt::Widget : RUBBERBAND_WINDOW_TYPE)
+QRubberBand::QRubberBand( Shape s, QWidget *p )
+    : QWidget( *new QRubberBandPrivate, p, ( p  && p->windowType() != Qt::Desktop ) ? Qt::Widget : RUBBERBAND_WINDOW_TYPE )
 {
-   Q_D(QRubberBand);
-   d->shape = s;
-   setAttribute(Qt::WA_TransparentForMouseEvents);
-   setAttribute(Qt::WA_NoSystemBackground);
+    Q_D( QRubberBand );
+    d->shape = s;
+    setAttribute( Qt::WA_TransparentForMouseEvents );
+    setAttribute( Qt::WA_NoSystemBackground );
 
-   setAttribute(Qt::WA_WState_ExplicitShowHide);
-   setVisible(false);
+    setAttribute( Qt::WA_WState_ExplicitShowHide );
+    setVisible( false );
 }
 
 
@@ -84,81 +86,91 @@ QRubberBand::~QRubberBand()
 
 QRubberBand::Shape QRubberBand::shape() const
 {
-   Q_D(const QRubberBand);
-   return d->shape;
+    Q_D( const QRubberBand );
+    return d->shape;
 }
 
 void QRubberBandPrivate::updateMask()
 {
-   Q_Q(QRubberBand);
+    Q_Q( QRubberBand );
 
-   QStyleHintReturnMask mask;
-   QStyleOptionRubberBand opt;
+    QStyleHintReturnMask mask;
+    QStyleOptionRubberBand opt;
 
-   q->initStyleOption(&opt);
+    q->initStyleOption( &opt );
 
-   if (q->style()->styleHint(QStyle::SH_RubberBand_Mask, &opt, q, &mask)) {
-      q->setMask(mask.region);
-   } else {
-      q->clearMask();
-   }
+    if ( q->style()->styleHint( QStyle::SH_RubberBand_Mask, &opt, q, &mask ) )
+    {
+        q->setMask( mask.region );
+    }
+    else
+    {
+        q->clearMask();
+    }
 }
 
-void QRubberBand::paintEvent(QPaintEvent *)
+void QRubberBand::paintEvent( QPaintEvent * )
 {
-   QStylePainter painter(this);
-   QStyleOptionRubberBand option;
-   initStyleOption(&option);
-   painter.drawControl(QStyle::CE_RubberBand, option);
+    QStylePainter painter( this );
+    QStyleOptionRubberBand option;
+    initStyleOption( &option );
+    painter.drawControl( QStyle::CE_RubberBand, option );
 }
 
-void QRubberBand::changeEvent(QEvent *e)
+void QRubberBand::changeEvent( QEvent *e )
 {
-   QWidget::changeEvent(e);
-   switch (e->type()) {
-      case QEvent::ParentChange:
-         if (parent()) {
-            setWindowFlags(windowFlags() & ~RUBBERBAND_WINDOW_TYPE);
-         } else {
-            setWindowFlags(windowFlags() | RUBBERBAND_WINDOW_TYPE);
-         }
-         break;
+    QWidget::changeEvent( e );
 
-      default:
-         break;
-   }
+    switch ( e->type() )
+    {
+        case QEvent::ParentChange:
+            if ( parent() )
+            {
+                setWindowFlags( windowFlags() & ~RUBBERBAND_WINDOW_TYPE );
+            }
+            else
+            {
+                setWindowFlags( windowFlags() | RUBBERBAND_WINDOW_TYPE );
+            }
 
-   if (e->type() == QEvent::ZOrderChange) {
-      raise();
-   }
+            break;
+
+        default:
+            break;
+    }
+
+    if ( e->type() == QEvent::ZOrderChange )
+    {
+        raise();
+    }
 }
 
-void QRubberBand::showEvent(QShowEvent *e)
+void QRubberBand::showEvent( QShowEvent *e )
 {
-   raise();
-   e->ignore();
+    raise();
+    e->ignore();
 }
 
-void QRubberBand::resizeEvent(QResizeEvent *)
+void QRubberBand::resizeEvent( QResizeEvent * )
 {
-   Q_D(QRubberBand);
-   d->updateMask();
+    Q_D( QRubberBand );
+    d->updateMask();
 }
 
-void QRubberBand::moveEvent(QMoveEvent *)
+void QRubberBand::moveEvent( QMoveEvent * )
 {
-   Q_D(QRubberBand);
-   d->updateMask();
+    Q_D( QRubberBand );
+    d->updateMask();
 }
 
-void QRubberBand::setGeometry(const QRect &geom)
+void QRubberBand::setGeometry( const QRect &geom )
 {
-   QWidget::setGeometry(geom);
+    QWidget::setGeometry( geom );
 }
 
-bool QRubberBand::event(QEvent *e)
+bool QRubberBand::event( QEvent *e )
 {
-   return QWidget::event(e);
+    return QWidget::event( e );
 }
 
 

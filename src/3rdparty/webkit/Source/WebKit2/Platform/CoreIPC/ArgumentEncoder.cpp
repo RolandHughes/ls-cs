@@ -29,139 +29,154 @@
 #include <algorithm>
 #include <stdio.h>
 
-namespace CoreIPC {
-
-PassOwnPtr<ArgumentEncoder> ArgumentEncoder::create(uint64_t destinationID)
+namespace CoreIPC
 {
-    return adoptPtr(new ArgumentEncoder(destinationID));
+
+PassOwnPtr<ArgumentEncoder> ArgumentEncoder::create( uint64_t destinationID )
+{
+    return adoptPtr( new ArgumentEncoder( destinationID ) );
 }
 
-ArgumentEncoder::ArgumentEncoder(uint64_t destinationID)
-    : m_buffer(0)
-    , m_bufferPointer(0)
-    , m_bufferSize(0)
-    , m_bufferCapacity(0)
+ArgumentEncoder::ArgumentEncoder( uint64_t destinationID )
+    : m_buffer( 0 )
+    , m_bufferPointer( 0 )
+    , m_bufferSize( 0 )
+    , m_bufferCapacity( 0 )
 {
     // Encode the destination ID.
-    encodeUInt64(destinationID);
+    encodeUInt64( destinationID );
 }
 
 ArgumentEncoder::~ArgumentEncoder()
 {
-    if (m_buffer)
-        fastFree(m_buffer);
+    if ( m_buffer )
+    {
+        fastFree( m_buffer );
+    }
+
 #if !PLATFORM(QT) && !PLATFORM(GTK)
     // FIXME: We need to dispose of the attachments in cases of failure.
 #else
-    for (int i = 0; i < m_attachments.size(); ++i)
+
+    for ( int i = 0; i < m_attachments.size(); ++i )
+    {
         m_attachments[i].dispose();
+    }
+
 #endif
 }
 
-static inline size_t roundUpToAlignment(size_t value, unsigned alignment)
+static inline size_t roundUpToAlignment( size_t value, unsigned alignment )
 {
-    return ((value + alignment - 1) / alignment) * alignment;
+    return ( ( value + alignment - 1 ) / alignment ) * alignment;
 }
 
-uint8_t* ArgumentEncoder::grow(unsigned alignment, size_t size)
+uint8_t *ArgumentEncoder::grow( unsigned alignment, size_t size )
 {
-    size_t alignedSize = roundUpToAlignment(m_bufferSize, alignment);
-    
-    if (alignedSize + size > m_bufferCapacity) {
-        size_t newCapacity = std::max(alignedSize + size, std::max(static_cast<size_t>(32), m_bufferCapacity + m_bufferCapacity / 4 + 1));
-        if (!m_buffer)
-            m_buffer = static_cast<uint8_t*>(fastMalloc(newCapacity));
+    size_t alignedSize = roundUpToAlignment( m_bufferSize, alignment );
+
+    if ( alignedSize + size > m_bufferCapacity )
+    {
+        size_t newCapacity = std::max( alignedSize + size, std::max( static_cast<size_t>( 32 ),
+                                       m_bufferCapacity + m_bufferCapacity / 4 + 1 ) );
+
+        if ( !m_buffer )
+        {
+            m_buffer = static_cast<uint8_t *>( fastMalloc( newCapacity ) );
+        }
         else
-            m_buffer = static_cast<uint8_t*>(fastRealloc(m_buffer, newCapacity));
-        
+        {
+            m_buffer = static_cast<uint8_t *>( fastRealloc( m_buffer, newCapacity ) );
+        }
+
         // FIXME: What should we do if allocating memory fails?
 
-        m_bufferCapacity = newCapacity;        
+        m_bufferCapacity = newCapacity;
     }
 
     m_bufferSize = alignedSize + size;
     m_bufferPointer = m_buffer + alignedSize + size;
-    
+
     return m_buffer + alignedSize;
 }
 
-void ArgumentEncoder::encodeBytes(const uint8_t* bytes, size_t size)
+void ArgumentEncoder::encodeBytes( const uint8_t *bytes, size_t size )
 {
     // Encode the size.
-    encodeUInt64(static_cast<uint64_t>(size));
-    
-    uint8_t* buffer = grow(1, size);
-    
-    memcpy(buffer, bytes, size);
+    encodeUInt64( static_cast<uint64_t>( size ) );
+
+    uint8_t *buffer = grow( 1, size );
+
+    memcpy( buffer, bytes, size );
 }
 
-void ArgumentEncoder::encodeBool(bool n)
+void ArgumentEncoder::encodeBool( bool n )
 {
-    uint8_t* buffer = grow(sizeof(n), sizeof(n));
-    
-    *reinterpret_cast<bool*>(buffer) = n;
+    uint8_t *buffer = grow( sizeof( n ), sizeof( n ) );
+
+    *reinterpret_cast<bool *>( buffer ) = n;
 }
 
-void ArgumentEncoder::encodeUInt32(uint32_t n)
+void ArgumentEncoder::encodeUInt32( uint32_t n )
 {
-    uint8_t* buffer = grow(sizeof(n), sizeof(n));
-    
-    *reinterpret_cast<uint32_t*>(buffer) = n;
+    uint8_t *buffer = grow( sizeof( n ), sizeof( n ) );
+
+    *reinterpret_cast<uint32_t *>( buffer ) = n;
 }
 
-void ArgumentEncoder::encodeUInt64(uint64_t n)
+void ArgumentEncoder::encodeUInt64( uint64_t n )
 {
-    uint8_t* buffer = grow(sizeof(n), sizeof(n));
-    
-    *reinterpret_cast<uint64_t*>(buffer) = n;
+    uint8_t *buffer = grow( sizeof( n ), sizeof( n ) );
+
+    *reinterpret_cast<uint64_t *>( buffer ) = n;
 }
 
-void ArgumentEncoder::encodeInt32(int32_t n)
+void ArgumentEncoder::encodeInt32( int32_t n )
 {
-    uint8_t* buffer = grow(sizeof(n), sizeof(n));
-    
-    *reinterpret_cast<int32_t*>(buffer) = n;
+    uint8_t *buffer = grow( sizeof( n ), sizeof( n ) );
+
+    *reinterpret_cast<int32_t *>( buffer ) = n;
 }
 
-void ArgumentEncoder::encodeInt64(int64_t n)
+void ArgumentEncoder::encodeInt64( int64_t n )
 {
-    uint8_t* buffer = grow(sizeof(n), sizeof(n));
-    
-    *reinterpret_cast<int64_t*>(buffer) = n;
+    uint8_t *buffer = grow( sizeof( n ), sizeof( n ) );
+
+    *reinterpret_cast<int64_t *>( buffer ) = n;
 }
 
-void ArgumentEncoder::encodeFloat(float n)
+void ArgumentEncoder::encodeFloat( float n )
 {
-    uint8_t* buffer = grow(sizeof(n), sizeof(n));
+    uint8_t *buffer = grow( sizeof( n ), sizeof( n ) );
 
-    *reinterpret_cast<float*>(buffer) = n;
+    *reinterpret_cast<float *>( buffer ) = n;
 }
 
-void ArgumentEncoder::encodeDouble(double n)
+void ArgumentEncoder::encodeDouble( double n )
 {
-    uint8_t* buffer = grow(sizeof(n), sizeof(n));
+    uint8_t *buffer = grow( sizeof( n ), sizeof( n ) );
 
-    *reinterpret_cast<double*>(buffer) = n;
+    *reinterpret_cast<double *>( buffer ) = n;
 }
 
-void ArgumentEncoder::addAttachment(const Attachment& attachment)
+void ArgumentEncoder::addAttachment( const Attachment &attachment )
 {
-    m_attachments.append(attachment);
+    m_attachments.append( attachment );
 }
 
 Vector<Attachment> ArgumentEncoder::releaseAttachments()
 {
     Vector<Attachment> newList;
-    newList.swap(m_attachments);
+    newList.swap( m_attachments );
     return newList;
 }
 
 #ifndef NDEBUG
 void ArgumentEncoder::debug()
 {
-    printf("ArgumentEncoder::debug()\n");
-    printf("Number of Attachments: %d\n", (int)m_attachments.size());
-    printf("Size of buffer: %d\n", (int)m_bufferSize);
+    printf( "ArgumentEncoder::debug()\n" );
+    printf( "Number of Attachments: %d\n", ( int )m_attachments.size() );
+    printf( "Size of buffer: %d\n", ( int )m_bufferSize );
 }
 #endif
 

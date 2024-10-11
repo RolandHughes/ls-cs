@@ -39,35 +39,49 @@
 #include <wtf/HashMap.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorClient;
 
-class InspectorState {
+class InspectorState
+{
 public:
-    InspectorState(InspectorClient*);
+    InspectorState( InspectorClient * );
     virtual ~InspectorState() {}
 
-    void loadFromCookie(const String& inspectorStateCookie);
+    void loadFromCookie( const String &inspectorStateCookie );
 
     void mute();
     void unmute();
 
-    bool getBoolean(const String& propertyName);
-    String getString(const String& propertyName);
-    long getLong(const String& propertyName);
-    PassRefPtr<InspectorObject> getObject(const String& propertyName);
+    bool getBoolean( const String &propertyName );
+    String getString( const String &propertyName );
+    long getLong( const String &propertyName );
+    PassRefPtr<InspectorObject> getObject( const String &propertyName );
 
-    void setBoolean(const String& propertyName, bool value) { setValue(propertyName, InspectorBasicValue::create(value)); }
-    void setString(const String& propertyName, const String& value) { setValue(propertyName, InspectorString::create(value)); }
-    void setLong(const String& propertyName, long value) { setValue(propertyName, InspectorBasicValue::create((double)value)); }
-    void setObject(const String& propertyName, PassRefPtr<InspectorObject> value) { setValue(propertyName, value); }
+    void setBoolean( const String &propertyName, bool value )
+    {
+        setValue( propertyName, InspectorBasicValue::create( value ) );
+    }
+    void setString( const String &propertyName, const String &value )
+    {
+        setValue( propertyName, InspectorString::create( value ) );
+    }
+    void setLong( const String &propertyName, long value )
+    {
+        setValue( propertyName, InspectorBasicValue::create( ( double )value ) );
+    }
+    void setObject( const String &propertyName, PassRefPtr<InspectorObject> value )
+    {
+        setValue( propertyName, value );
+    }
 
 private:
     void updateCookie();
-    void setValue(const String& propertyName, PassRefPtr<InspectorValue>);
+    void setValue( const String &propertyName, PassRefPtr<InspectorValue> );
 
-    InspectorClient* m_client;
+    InspectorClient *m_client;
     RefPtr<InspectorObject> m_properties;
     bool m_isOnMute;
 };

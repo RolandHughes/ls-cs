@@ -484,7 +484,7 @@ struct op_str_t
 {
   /* This used to have a hb_ubytes_t. Using a pointer and length
    * in a particular order, saves 8 bytes in this struct and more
-   * in our parsed_cs_op_t subclass. */
+   * in our parsed_lscs_op_t subclass. */
 
   const unsigned char *ptr = nullptr;
 

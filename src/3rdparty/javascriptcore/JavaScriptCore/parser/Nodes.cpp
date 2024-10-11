@@ -47,12 +47,13 @@
 
 using namespace WTF;
 
-namespace JSC {
+namespace JSC
+{
 
 
 // ------------------------------ StatementNode --------------------------------
 
-void StatementNode::setLoc(int firstLine, int lastLine)
+void StatementNode::setLoc( int firstLine, int lastLine )
 {
     m_line = firstLine;
     m_lastLine = lastLine;
@@ -60,14 +61,17 @@ void StatementNode::setLoc(int firstLine, int lastLine)
 
 // ------------------------------ SourceElements --------------------------------
 
-void SourceElements::append(StatementNode* statement)
+void SourceElements::append( StatementNode *statement )
 {
-    if (statement->isEmptyStatement())
+    if ( statement->isEmptyStatement() )
+    {
         return;
-    m_statements.append(statement);
+    }
+
+    m_statements.append( statement );
 }
 
-inline StatementNode* SourceElements::singleStatement() const
+inline StatementNode *SourceElements::singleStatement() const
 {
     size_t size = m_statements.size();
     return size == 1 ? m_statements[0] : 0;
@@ -75,119 +79,136 @@ inline StatementNode* SourceElements::singleStatement() const
 
 // -----------------------------ScopeNodeData ---------------------------
 
-ScopeNodeData::ScopeNodeData(ParserArena& arena, SourceElements* statements, VarStack* varStack, FunctionStack* funcStack, int numConstants)
-    : m_numConstants(numConstants)
-    , m_statements(statements)
+ScopeNodeData::ScopeNodeData( ParserArena &arena, SourceElements *statements, VarStack *varStack, FunctionStack *funcStack,
+                              int numConstants )
+    : m_numConstants( numConstants )
+    , m_statements( statements )
 {
-    m_arena.swap(arena);
-    if (varStack)
-        m_varStack.swap(*varStack);
-    if (funcStack)
-        m_functionStack.swap(*funcStack);
+    m_arena.swap( arena );
+
+    if ( varStack )
+    {
+        m_varStack.swap( *varStack );
+    }
+
+    if ( funcStack )
+    {
+        m_functionStack.swap( *funcStack );
+    }
 }
 
 // ------------------------------ ScopeNode -----------------------------
 
-ScopeNode::ScopeNode(JSGlobalData* globalData)
-    : StatementNode(globalData)
-    , ParserArenaRefCounted(globalData)
-    , m_features(NoFeatures)
+ScopeNode::ScopeNode( JSGlobalData *globalData )
+    : StatementNode( globalData )
+    , ParserArenaRefCounted( globalData )
+    , m_features( NoFeatures )
 {
 }
 
-ScopeNode::ScopeNode(JSGlobalData* globalData, const SourceCode& source, SourceElements* children, VarStack* varStack, FunctionStack* funcStack, CodeFeatures features, int numConstants)
-    : StatementNode(globalData)
-    , ParserArenaRefCounted(globalData)
-    , m_data(new ScopeNodeData(globalData->parser->arena(), children, varStack, funcStack, numConstants))
-    , m_features(features)
-    , m_source(source)
+ScopeNode::ScopeNode( JSGlobalData *globalData, const SourceCode &source, SourceElements *children, VarStack *varStack,
+                      FunctionStack *funcStack, CodeFeatures features, int numConstants )
+    : StatementNode( globalData )
+    , ParserArenaRefCounted( globalData )
+    , m_data( new ScopeNodeData( globalData->parser->arena(), children, varStack, funcStack, numConstants ) )
+    , m_features( features )
+    , m_source( source )
 {
 }
 
-StatementNode* ScopeNode::singleStatement() const
+StatementNode *ScopeNode::singleStatement() const
 {
     return m_data->m_statements ? m_data->m_statements->singleStatement() : 0;
 }
 
 // ------------------------------ ProgramNode -----------------------------
 
-inline ProgramNode::ProgramNode(JSGlobalData* globalData, SourceElements* children, VarStack* varStack, FunctionStack* funcStack, const SourceCode& source, CodeFeatures features, int numConstants)
-    : ScopeNode(globalData, source, children, varStack, funcStack, features, numConstants)
+inline ProgramNode::ProgramNode( JSGlobalData *globalData, SourceElements *children, VarStack *varStack, FunctionStack *funcStack,
+                                 const SourceCode &source, CodeFeatures features, int numConstants )
+    : ScopeNode( globalData, source, children, varStack, funcStack, features, numConstants )
 {
 }
 
-PassRefPtr<ProgramNode> ProgramNode::create(JSGlobalData* globalData, SourceElements* children, VarStack* varStack, FunctionStack* funcStack, const SourceCode& source, CodeFeatures features, int numConstants)
+PassRefPtr<ProgramNode> ProgramNode::create( JSGlobalData *globalData, SourceElements *children, VarStack *varStack,
+        FunctionStack *funcStack, const SourceCode &source, CodeFeatures features, int numConstants )
 {
-    RefPtr<ProgramNode> node = new ProgramNode(globalData, children, varStack, funcStack, source, features, numConstants);
+    RefPtr<ProgramNode> node = new ProgramNode( globalData, children, varStack, funcStack, source, features, numConstants );
 
-    ASSERT(node->data()->m_arena.last() == node);
+    ASSERT( node->data()->m_arena.last() == node );
     node->data()->m_arena.removeLast();
-    ASSERT(!node->data()->m_arena.contains(node.get()));
+    ASSERT( !node->data()->m_arena.contains( node.get() ) );
 
     return node.release();
 }
 
 // ------------------------------ EvalNode -----------------------------
 
-inline EvalNode::EvalNode(JSGlobalData* globalData, SourceElements* children, VarStack* varStack, FunctionStack* funcStack, const SourceCode& source, CodeFeatures features, int numConstants)
-    : ScopeNode(globalData, source, children, varStack, funcStack, features, numConstants)
+inline EvalNode::EvalNode( JSGlobalData *globalData, SourceElements *children, VarStack *varStack, FunctionStack *funcStack,
+                           const SourceCode &source, CodeFeatures features, int numConstants )
+    : ScopeNode( globalData, source, children, varStack, funcStack, features, numConstants )
 {
 }
 
-PassRefPtr<EvalNode> EvalNode::create(JSGlobalData* globalData, SourceElements* children, VarStack* varStack, FunctionStack* funcStack, const SourceCode& source, CodeFeatures features, int numConstants)
+PassRefPtr<EvalNode> EvalNode::create( JSGlobalData *globalData, SourceElements *children, VarStack *varStack,
+                                       FunctionStack *funcStack, const SourceCode &source, CodeFeatures features, int numConstants )
 {
-    RefPtr<EvalNode> node = new EvalNode(globalData, children, varStack, funcStack, source, features, numConstants);
+    RefPtr<EvalNode> node = new EvalNode( globalData, children, varStack, funcStack, source, features, numConstants );
 
-    ASSERT(node->data()->m_arena.last() == node);
+    ASSERT( node->data()->m_arena.last() == node );
     node->data()->m_arena.removeLast();
-    ASSERT(!node->data()->m_arena.contains(node.get()));
+    ASSERT( !node->data()->m_arena.contains( node.get() ) );
 
     return node.release();
 }
 
 // ------------------------------ FunctionBodyNode -----------------------------
 
-FunctionParameters::FunctionParameters(ParameterNode* firstParameter)
+FunctionParameters::FunctionParameters( ParameterNode *firstParameter )
 {
-    for (ParameterNode* parameter = firstParameter; parameter; parameter = parameter->nextParam())
-        append(parameter->ident());
+    for ( ParameterNode *parameter = firstParameter; parameter; parameter = parameter->nextParam() )
+    {
+        append( parameter->ident() );
+    }
 }
 
-inline FunctionBodyNode::FunctionBodyNode(JSGlobalData* globalData)
-    : ScopeNode(globalData)
-{
-}
-
-inline FunctionBodyNode::FunctionBodyNode(JSGlobalData* globalData, SourceElements* children, VarStack* varStack, FunctionStack* funcStack, const SourceCode& sourceCode, CodeFeatures features, int numConstants)
-    : ScopeNode(globalData, sourceCode, children, varStack, funcStack, features, numConstants)
+inline FunctionBodyNode::FunctionBodyNode( JSGlobalData *globalData )
+    : ScopeNode( globalData )
 {
 }
 
-void FunctionBodyNode::finishParsing(const SourceCode& source, ParameterNode* firstParameter, const Identifier& ident)
+inline FunctionBodyNode::FunctionBodyNode( JSGlobalData *globalData, SourceElements *children, VarStack *varStack,
+        FunctionStack *funcStack, const SourceCode &sourceCode, CodeFeatures features, int numConstants )
+    : ScopeNode( globalData, sourceCode, children, varStack, funcStack, features, numConstants )
 {
-    setSource(source);
-    finishParsing(FunctionParameters::create(firstParameter), ident);
 }
 
-void FunctionBodyNode::finishParsing(PassRefPtr<FunctionParameters> parameters, const Identifier& ident)
+void FunctionBodyNode::finishParsing( const SourceCode &source, ParameterNode *firstParameter, const Identifier &ident )
 {
-    ASSERT(!source().isNull());
+    setSource( source );
+    finishParsing( FunctionParameters::create( firstParameter ), ident );
+}
+
+void FunctionBodyNode::finishParsing( PassRefPtr<FunctionParameters> parameters, const Identifier &ident )
+{
+    ASSERT( !source().isNull() );
     m_parameters = parameters;
     m_ident = ident;
 }
 
-FunctionBodyNode* FunctionBodyNode::create(JSGlobalData* globalData)
+FunctionBodyNode *FunctionBodyNode::create( JSGlobalData *globalData )
 {
-    return new FunctionBodyNode(globalData);
+    return new FunctionBodyNode( globalData );
 }
 
-PassRefPtr<FunctionBodyNode> FunctionBodyNode::create(JSGlobalData* globalData, SourceElements* children, VarStack* varStack, FunctionStack* funcStack, const SourceCode& sourceCode, CodeFeatures features, int numConstants)
+PassRefPtr<FunctionBodyNode> FunctionBodyNode::create( JSGlobalData *globalData, SourceElements *children, VarStack *varStack,
+        FunctionStack *funcStack, const SourceCode &sourceCode, CodeFeatures features, int numConstants )
 {
-    RefPtr<FunctionBodyNode> node = new FunctionBodyNode(globalData, children, varStack, funcStack, sourceCode, features, numConstants);
+    RefPtr<FunctionBodyNode> node = new FunctionBodyNode( globalData, children, varStack, funcStack, sourceCode, features,
+            numConstants );
 
-    ASSERT(node->data()->m_arena.last() == node);
+    ASSERT( node->data()->m_arena.last() == node );
     node->data()->m_arena.removeLast();
-    ASSERT(!node->data()->m_arena.contains(node.get()));
+    ASSERT( !node->data()->m_arena.contains( node.get() ) );
 
     return node.release();
 }

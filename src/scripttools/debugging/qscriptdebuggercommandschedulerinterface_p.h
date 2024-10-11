@@ -33,12 +33,12 @@ class QScriptDebuggerResponseHandlerInterface;
 
 class QScriptDebuggerCommandSchedulerInterface
 {
- public:
-   virtual ~QScriptDebuggerCommandSchedulerInterface() {}
+public:
+    virtual ~QScriptDebuggerCommandSchedulerInterface() {}
 
-   virtual int scheduleCommand(
-      const QScriptDebuggerCommand &command,
-      QScriptDebuggerResponseHandlerInterface *responseHandler) = 0;
+    virtual int scheduleCommand(
+        const QScriptDebuggerCommand &command,
+        QScriptDebuggerResponseHandlerInterface *responseHandler ) = 0;
 };
 
 QT_END_NAMESPACE

@@ -67,55 +67,60 @@
 #include <wtf/HashMap.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace std;
 
-typedef PassOwnPtr<InputType> (*InputTypeFactoryFunction)(HTMLInputElement*);
+typedef PassOwnPtr<InputType> ( *InputTypeFactoryFunction )( HTMLInputElement * );
 typedef HashMap<String, InputTypeFactoryFunction, CaseFoldingHash> InputTypeFactoryMap;
 
 static PassOwnPtr<InputTypeFactoryMap> createInputTypeFactoryMap()
 {
-    OwnPtr<InputTypeFactoryMap> map = adoptPtr(new InputTypeFactoryMap);
-    map->add(InputTypeNames::button(), ButtonInputType::create);
-    map->add(InputTypeNames::checkbox(), CheckboxInputType::create);
-    map->add(InputTypeNames::color(), ColorInputType::create);
-    map->add(InputTypeNames::date(), DateInputType::create);
-    map->add(InputTypeNames::datetime(), DateTimeInputType::create);
-    map->add(InputTypeNames::datetimelocal(), DateTimeLocalInputType::create);
-    map->add(InputTypeNames::email(), EmailInputType::create);
-    map->add(InputTypeNames::file(), FileInputType::create);
-    map->add(InputTypeNames::hidden(), HiddenInputType::create);
-    map->add(InputTypeNames::image(), ImageInputType::create);
-    map->add(InputTypeNames::isindex(), IsIndexInputType::create);
-    map->add(InputTypeNames::month(), MonthInputType::create);
-    map->add(InputTypeNames::number(), NumberInputType::create);
-    map->add(InputTypeNames::password(), PasswordInputType::create);
-    map->add(InputTypeNames::radio(), RadioInputType::create);
-    map->add(InputTypeNames::range(), RangeInputType::create);
-    map->add(InputTypeNames::reset(), ResetInputType::create);
-    map->add(InputTypeNames::search(), SearchInputType::create);
-    map->add(InputTypeNames::submit(), SubmitInputType::create);
-    map->add(InputTypeNames::telephone(), TelephoneInputType::create);
-    map->add(InputTypeNames::time(), TimeInputType::create);
-    map->add(InputTypeNames::url(), URLInputType::create);
-    map->add(InputTypeNames::week(), WeekInputType::create);
+    OwnPtr<InputTypeFactoryMap> map = adoptPtr( new InputTypeFactoryMap );
+    map->add( InputTypeNames::button(), ButtonInputType::create );
+    map->add( InputTypeNames::checkbox(), CheckboxInputType::create );
+    map->add( InputTypeNames::color(), ColorInputType::create );
+    map->add( InputTypeNames::date(), DateInputType::create );
+    map->add( InputTypeNames::datetime(), DateTimeInputType::create );
+    map->add( InputTypeNames::datetimelocal(), DateTimeLocalInputType::create );
+    map->add( InputTypeNames::email(), EmailInputType::create );
+    map->add( InputTypeNames::file(), FileInputType::create );
+    map->add( InputTypeNames::hidden(), HiddenInputType::create );
+    map->add( InputTypeNames::image(), ImageInputType::create );
+    map->add( InputTypeNames::isindex(), IsIndexInputType::create );
+    map->add( InputTypeNames::month(), MonthInputType::create );
+    map->add( InputTypeNames::number(), NumberInputType::create );
+    map->add( InputTypeNames::password(), PasswordInputType::create );
+    map->add( InputTypeNames::radio(), RadioInputType::create );
+    map->add( InputTypeNames::range(), RangeInputType::create );
+    map->add( InputTypeNames::reset(), ResetInputType::create );
+    map->add( InputTypeNames::search(), SearchInputType::create );
+    map->add( InputTypeNames::submit(), SubmitInputType::create );
+    map->add( InputTypeNames::telephone(), TelephoneInputType::create );
+    map->add( InputTypeNames::time(), TimeInputType::create );
+    map->add( InputTypeNames::url(), URLInputType::create );
+    map->add( InputTypeNames::week(), WeekInputType::create );
     // No need to register "text" because it is the default type.
     return map.release();
 }
 
-PassOwnPtr<InputType> InputType::create(HTMLInputElement* element, const String& typeName)
+PassOwnPtr<InputType> InputType::create( HTMLInputElement *element, const String &typeName )
 {
-    static const InputTypeFactoryMap* factoryMap = createInputTypeFactoryMap().leakPtr();
-    PassOwnPtr<InputType> (*factory)(HTMLInputElement*) = typeName.isEmpty() ? 0 : factoryMap->get(typeName);
-    if (!factory)
+    static const InputTypeFactoryMap *factoryMap = createInputTypeFactoryMap().leakPtr();
+    PassOwnPtr<InputType> ( *factory )( HTMLInputElement * ) = typeName.isEmpty() ? 0 : factoryMap->get( typeName );
+
+    if ( !factory )
+    {
         factory = TextInputType::create;
-    return factory(element);
+    }
+
+    return factory( element );
 }
 
-PassOwnPtr<InputType> InputType::createText(HTMLInputElement* element)
+PassOwnPtr<InputType> InputType::createText( HTMLInputElement *element )
 {
-    return TextInputType::create(element);
+    return TextInputType::create( element );
 }
 
 InputType::~InputType()
@@ -137,18 +142,22 @@ bool InputType::isRangeControl() const
     return false;
 }
 
-bool InputType::saveFormControlState(String& result) const
+bool InputType::saveFormControlState( String &result ) const
 {
     String currentValue = element()->value();
-    if (currentValue == element()->defaultValue())
+
+    if ( currentValue == element()->defaultValue() )
+    {
         return false;
+    }
+
     result = currentValue;
     return true;
 }
 
-void InputType::restoreFormControlState(const String& state) const
+void InputType::restoreFormControlState( const String &state ) const
 {
-    element()->setValue(state);
+    element()->setValue( state );
 }
 
 bool InputType::isFormDataAppendable() const
@@ -157,10 +166,10 @@ bool InputType::isFormDataAppendable() const
     return !element()->name().isEmpty();
 }
 
-bool InputType::appendFormData(FormDataList& encoding, bool) const
+bool InputType::appendFormData( FormDataList &encoding, bool ) const
 {
     // Always successful.
-    encoding.appendData(element()->name(), element()->value());
+    encoding.appendData( element()->name(), element()->value() );
     return true;
 }
 
@@ -169,7 +178,7 @@ double InputType::valueAsDate() const
     return DateComponents::invalidMilliseconds();
 }
 
-void InputType::setValueAsDate(double, ExceptionCode& ec) const
+void InputType::setValueAsDate( double, ExceptionCode &ec ) const
 {
     ec = INVALID_STATE_ERR;
 }
@@ -179,7 +188,7 @@ double InputType::valueAsNumber() const
     return numeric_limits<double>::quiet_NaN();
 }
 
-void InputType::setValueAsNumber(double, ExceptionCode& ec) const
+void InputType::setValueAsNumber( double, ExceptionCode &ec ) const
 {
     ec = INVALID_STATE_ERR;
 }
@@ -189,7 +198,7 @@ bool InputType::supportsValidation() const
     return true;
 }
 
-bool InputType::typeMismatchFor(const String&) const
+bool InputType::typeMismatchFor( const String & ) const
 {
     return false;
 }
@@ -205,22 +214,22 @@ bool InputType::supportsRequired() const
     return supportsValidation();
 }
 
-bool InputType::valueMissing(const String&) const
+bool InputType::valueMissing( const String & ) const
 {
     return false;
 }
 
-bool InputType::patternMismatch(const String&) const
+bool InputType::patternMismatch( const String & ) const
 {
     return false;
 }
 
-bool InputType::rangeUnderflow(const String&) const
+bool InputType::rangeUnderflow( const String & ) const
 {
     return false;
 }
 
-bool InputType::rangeOverflow(const String&) const
+bool InputType::rangeOverflow( const String & ) const
 {
     return false;
 }
@@ -247,7 +256,7 @@ double InputType::maximum() const
     return 0;
 }
 
-bool InputType::stepMismatch(const String&, double) const
+bool InputType::stepMismatch( const String &, double ) const
 {
     // Non-supported types should be rejected by HTMLInputElement::getAllowedValueStep().
     ASSERT_NOT_REACHED();
@@ -260,10 +269,13 @@ double InputType::stepBase() const
     return 0;
 }
 
-double InputType::stepBaseWithDecimalPlaces(unsigned* decimalPlaces) const
+double InputType::stepBaseWithDecimalPlaces( unsigned *decimalPlaces ) const
 {
-    if (decimalPlaces)
+    if ( decimalPlaces )
+    {
         *decimalPlaces = 0;
+    }
+
     return stepBase();
 }
 
@@ -287,7 +299,7 @@ bool InputType::scaledStepValueShouldBeInteger() const
     return false;
 }
 
-double InputType::acceptableError(double) const
+double InputType::acceptableError( double ) const
 {
     return 0;
 }
@@ -302,46 +314,47 @@ String InputType::valueMissingText() const
     return validationMessageValueMissingText();
 }
 
-void InputType::handleClickEvent(MouseEvent*)
+void InputType::handleClickEvent( MouseEvent * )
 {
 }
 
-void InputType::handleMouseDownEvent(MouseEvent*)
+void InputType::handleMouseDownEvent( MouseEvent * )
 {
 }
 
-void InputType::handleDOMActivateEvent(Event*)
+void InputType::handleDOMActivateEvent( Event * )
 {
 }
 
-void InputType::handleKeydownEvent(KeyboardEvent*)
+void InputType::handleKeydownEvent( KeyboardEvent * )
 {
 }
 
-void InputType::handleKeypressEvent(KeyboardEvent*)
+void InputType::handleKeypressEvent( KeyboardEvent * )
 {
 }
 
-void InputType::handleKeyupEvent(KeyboardEvent*)
+void InputType::handleKeyupEvent( KeyboardEvent * )
 {
 }
 
-void InputType::handleBeforeTextInsertedEvent(BeforeTextInsertedEvent* event)
+void InputType::handleBeforeTextInsertedEvent( BeforeTextInsertedEvent *event )
 {
-    element()->handleBeforeTextInsertedEvent(event);
+    element()->handleBeforeTextInsertedEvent( event );
 }
 
-void InputType::handleWheelEvent(WheelEvent*)
-{
-}
-
-void InputType::forwardEvent(Event*)
+void InputType::handleWheelEvent( WheelEvent * )
 {
 }
 
-bool InputType::shouldSubmitImplicitly(Event* event)
+void InputType::forwardEvent( Event * )
 {
-    return event->isKeyboardEvent() && event->type() == eventNames().keypressEvent && static_cast<KeyboardEvent*>(event)->charCode() == '\r';
+}
+
+bool InputType::shouldSubmitImplicitly( Event *event )
+{
+    return event->isKeyboardEvent() && event->type() == eventNames().keypressEvent
+           && static_cast<KeyboardEvent *>( event )->charCode() == '\r';
 }
 
 PassRefPtr<HTMLFormElement> InputType::formForSubmission() const
@@ -349,9 +362,9 @@ PassRefPtr<HTMLFormElement> InputType::formForSubmission() const
     return element()->form();
 }
 
-RenderObject* InputType::createRenderer(RenderArena*, RenderStyle* style) const
+RenderObject *InputType::createRenderer( RenderArena *, RenderStyle *style ) const
 {
-    return RenderObject::createObject(element(), style);
+    return RenderObject::createObject( element(), style );
 }
 
 void InputType::createShadowSubtree()
@@ -363,34 +376,40 @@ void InputType::destroyShadowSubtree()
     element()->removeShadowRoot();
 }
 
-double InputType::parseToDouble(const String&, double defaultValue) const
+double InputType::parseToDouble( const String &, double defaultValue ) const
 {
     return defaultValue;
 }
 
-double InputType::parseToDoubleWithDecimalPlaces(const String& src, double defaultValue, unsigned *decimalPlaces) const
+double InputType::parseToDoubleWithDecimalPlaces( const String &src, double defaultValue, unsigned *decimalPlaces ) const
 {
-    if (decimalPlaces)
+    if ( decimalPlaces )
+    {
         *decimalPlaces = 0;
-    return parseToDouble(src, defaultValue);
+    }
+
+    return parseToDouble( src, defaultValue );
 }
 
-bool InputType::parseToDateComponents(const String&, DateComponents*) const
+bool InputType::parseToDateComponents( const String &, DateComponents * ) const
 {
     ASSERT_NOT_REACHED();
     return false;
 }
 
-String InputType::serialize(double) const
+String InputType::serialize( double ) const
 {
     ASSERT_NOT_REACHED();
     return String();
 }
 
-void InputType::dispatchSimulatedClickIfActive(KeyboardEvent* event) const
+void InputType::dispatchSimulatedClickIfActive( KeyboardEvent *event ) const
 {
-    if (element()->active())
-        element()->dispatchSimulatedClick(event);
+    if ( element()->active() )
+    {
+        element()->dispatchSimulatedClick( event );
+    }
+
     event->setDefaultHandled();
 }
 
@@ -413,9 +432,9 @@ void InputType::handleBlurEvent()
 {
 }
 
-void InputType::accessKeyAction(bool)
+void InputType::accessKeyAction( bool )
 {
-    element()->focus(false);
+    element()->focus( false );
 }
 
 void InputType::attach()
@@ -462,12 +481,12 @@ bool InputType::rendererIsNeeded()
     return true;
 }
 
-FileList* InputType::files()
+FileList *InputType::files()
 {
     return 0;
 }
 
-bool InputType::getTypeSpecificValue(String&)
+bool InputType::getTypeSpecificValue( String & )
 {
     return false;
 }
@@ -497,7 +516,7 @@ bool InputType::storesValueSeparateFromAttribute()
     return true;
 }
 
-bool InputType::canSetValue(const String&)
+bool InputType::canSetValue( const String & )
 {
     return true;
 }
@@ -507,7 +526,7 @@ PassOwnPtr<ClickHandlingState> InputType::willDispatchClick()
     return nullptr;
 }
 
-void InputType::didDispatchClick(Event*, const ClickHandlingState&)
+void InputType::didDispatchClick( Event *, const ClickHandlingState & )
 {
 }
 
@@ -516,17 +535,17 @@ String InputType::visibleValue() const
     return element()->value();
 }
 
-String InputType::convertFromVisibleValue(const String& visibleValue) const
+String InputType::convertFromVisibleValue( const String &visibleValue ) const
 {
     return visibleValue;
 }
 
-bool InputType::isAcceptableValue(const String&)
+bool InputType::isAcceptableValue( const String & )
 {
     return true;
 }
 
-String InputType::sanitizeValue(const String& proposedValue)
+String InputType::sanitizeValue( const String &proposedValue )
 {
     return proposedValue;
 }
@@ -536,7 +555,7 @@ bool InputType::hasUnacceptableValue()
     return false;
 }
 
-void InputType::setFileList(const Vector<String>&)
+void InputType::setFileList( const Vector<String> & )
 {
     ASSERT_NOT_REACHED();
 }
@@ -641,152 +660,153 @@ bool InputType::shouldRespectHeightAndWidthAttributes()
     return false;
 }
 
-namespace InputTypeNames {
+namespace InputTypeNames
+{
 
 // The type names must be lowercased because they will be the return values of
 // input.type and input.type must be lowercase according to DOM Level 2.
 
-const AtomicString& button()
+const AtomicString &button()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("button"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "button" ) );
     return name;
 }
 
-const AtomicString& checkbox()
+const AtomicString &checkbox()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("checkbox"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "checkbox" ) );
     return name;
 }
 
-const AtomicString& color()
+const AtomicString &color()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("color"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "color" ) );
     return name;
 }
 
-const AtomicString& date()
+const AtomicString &date()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("date"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "date" ) );
     return name;
 }
 
-const AtomicString& datetime()
+const AtomicString &datetime()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("datetime"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "datetime" ) );
     return name;
 }
 
-const AtomicString& datetimelocal()
+const AtomicString &datetimelocal()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("datetime-local"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "datetime-local" ) );
     return name;
 }
 
-const AtomicString& email()
+const AtomicString &email()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("email"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "email" ) );
     return name;
 }
 
-const AtomicString& file()
+const AtomicString &file()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("file"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "file" ) );
     return name;
 }
 
-const AtomicString& hidden()
+const AtomicString &hidden()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("hidden"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "hidden" ) );
     return name;
 }
 
-const AtomicString& image()
+const AtomicString &image()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("image"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "image" ) );
     return name;
 }
 
-const AtomicString& isindex()
+const AtomicString &isindex()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("khtml_isindex"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "khtml_isindex" ) );
     return name;
 }
 
-const AtomicString& month()
+const AtomicString &month()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("month"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "month" ) );
     return name;
 }
 
-const AtomicString& number()
+const AtomicString &number()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("number"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "number" ) );
     return name;
 }
 
-const AtomicString& password()
+const AtomicString &password()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("password"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "password" ) );
     return name;
 }
 
-const AtomicString& radio()
+const AtomicString &radio()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("radio"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "radio" ) );
     return name;
 }
 
-const AtomicString& range()
+const AtomicString &range()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("range"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "range" ) );
     return name;
 }
 
-const AtomicString& reset()
+const AtomicString &reset()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("reset"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "reset" ) );
     return name;
 }
 
-const AtomicString& search()
+const AtomicString &search()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("search"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "search" ) );
     return name;
 }
 
-const AtomicString& submit()
+const AtomicString &submit()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("submit"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "submit" ) );
     return name;
 }
 
-const AtomicString& telephone()
+const AtomicString &telephone()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("tel"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "tel" ) );
     return name;
 }
 
-const AtomicString& text()
+const AtomicString &text()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("text"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "text" ) );
     return name;
 }
 
-const AtomicString& time()
+const AtomicString &time()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("time"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "time" ) );
     return name;
 }
 
-const AtomicString& url()
+const AtomicString &url()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("url"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "url" ) );
     return name;
 }
 
-const AtomicString& week()
+const AtomicString &week()
 {
-    DEFINE_STATIC_LOCAL(AtomicString, name, ("week"));
+    DEFINE_STATIC_LOCAL( AtomicString, name, ( "week" ) );
     return name;
 }
 

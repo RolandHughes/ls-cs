@@ -56,50 +56,51 @@ typedef NSView *PlatformWidget;
 #endif
 
 #if PLATFORM(WIN)
-typedef struct HWND__* HWND;
+typedef struct HWND__ *HWND;
 typedef HWND PlatformWidget;
 #endif
 
 #if PLATFORM(GTK)
 typedef struct _GtkWidget GtkWidget;
 typedef struct _GtkContainer GtkContainer;
-typedef GtkWidget* PlatformWidget;
+typedef GtkWidget *PlatformWidget;
 #endif
 
 #if PLATFORM(QT)
 class QWidget;
-typedef QWidget* PlatformWidget;
+typedef QWidget *PlatformWidget;
 #endif
 
 #if PLATFORM(WX)
 class wxWindow;
-typedef wxWindow* PlatformWidget;
+typedef wxWindow *PlatformWidget;
 #endif
 
 #if PLATFORM(HAIKU)
 class BView;
-typedef BView* PlatformWidget;
+typedef BView *PlatformWidget;
 #endif
 
 #if PLATFORM(BREWMP)
-typedef void* PlatformWidget;
+typedef void *PlatformWidget;
 #endif
 
 #if PLATFORM(EFL)
 typedef struct _Evas_Object Evas_Object;
 typedef struct _Evas Evas;
 typedef struct _Ecore_Evas Ecore_Evas;
-typedef Evas_Object* PlatformWidget;
+typedef Evas_Object *PlatformWidget;
 #endif
 
 #if PLATFORM(QT)
 class QWebPageClient;
-typedef QWebPageClient* PlatformPageClient;
+typedef QWebPageClient *PlatformPageClient;
 #else
 typedef PlatformWidget PlatformPageClient;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AXObjectCache;
 class Cursor;
@@ -127,81 +128,153 @@ enum WidgetNotification { WillPaintFlattened, DidPaintFlattened };
 // Scrollbar - Mac, Gtk
 // Plugin - Mac, Windows (windowed only), Qt (windowed only, widget is an HWND on windows), Gtk (windowed only)
 //
-class Widget : public RefCounted<Widget> {
+class Widget : public RefCounted<Widget>
+{
 public:
-    Widget(PlatformWidget = 0);
+    Widget( PlatformWidget = 0 );
     virtual ~Widget();
 
     PlatformWidget platformWidget() const;
-    void setPlatformWidget(PlatformWidget);
+    void setPlatformWidget( PlatformWidget );
 
 #if PLATFORM(HAIKU)
-    PlatformWidget topLevelPlatformWidget() const { return m_topLevelPlatformWidget; }
-    void setTopLevelPlatformWidget(PlatformWidget widget)
+    PlatformWidget topLevelPlatformWidget() const
+    {
+        return m_topLevelPlatformWidget;
+    }
+    void setTopLevelPlatformWidget( PlatformWidget widget )
     {
         m_topLevelPlatformWidget = widget;
     }
 #endif
 
-    int x() const { return frameRect().x(); }
-    int y() const { return frameRect().y(); }
-    int width() const { return frameRect().width(); }
-    int height() const { return frameRect().height(); }
-    IntSize size() const { return frameRect().size(); }
-    IntPoint pos() const { return frameRect().location(); }
+    int x() const
+    {
+        return frameRect().x();
+    }
+    int y() const
+    {
+        return frameRect().y();
+    }
+    int width() const
+    {
+        return frameRect().width();
+    }
+    int height() const
+    {
+        return frameRect().height();
+    }
+    IntSize size() const
+    {
+        return frameRect().size();
+    }
+    IntPoint pos() const
+    {
+        return frameRect().location();
+    }
 
-    virtual void setFrameRect(const IntRect&);
-    virtual void setBoundsSize(const IntSize&);
+    virtual void setFrameRect( const IntRect & );
+    virtual void setBoundsSize( const IntSize & );
     virtual IntRect frameRect() const;
-    IntRect boundsRect() const { return IntRect(0, 0, width(),  height()); }
+    IntRect boundsRect() const
+    {
+        return IntRect( 0, 0, width(),  height() );
+    }
 
-    void resize(int w, int h) { setFrameRect(IntRect(x(), y(), w, h)); setBoundsSize(IntSize(w, h)); }
-    void resize(const IntSize& s) { setFrameRect(IntRect(pos(), s)); setBoundsSize(s); }
-    void move(int x, int y) { setFrameRect(IntRect(x, y, width(), height())); }
-    void move(const IntPoint& p) { setFrameRect(IntRect(p, size())); }
+    void resize( int w, int h )
+    {
+        setFrameRect( IntRect( x(), y(), w, h ) );
+        setBoundsSize( IntSize( w, h ) );
+    }
+    void resize( const IntSize &s )
+    {
+        setFrameRect( IntRect( pos(), s ) );
+        setBoundsSize( s );
+    }
+    void move( int x, int y )
+    {
+        setFrameRect( IntRect( x, y, width(), height() ) );
+    }
+    void move( const IntPoint &p )
+    {
+        setFrameRect( IntRect( p, size() ) );
+    }
 
-    virtual void paint(GraphicsContext*, const IntRect&);
-    void invalidate() { invalidateRect(boundsRect()); }
-    virtual void invalidateRect(const IntRect&) = 0;
+    virtual void paint( GraphicsContext *, const IntRect & );
+    void invalidate()
+    {
+        invalidateRect( boundsRect() );
+    }
+    virtual void invalidateRect( const IntRect & ) = 0;
 
-    virtual void setFocus(bool);
+    virtual void setFocus( bool );
 
-    void setCursor(const Cursor&);
+    void setCursor( const Cursor & );
 
     virtual void show();
     virtual void hide();
-    bool isSelfVisible() const { return m_selfVisible; } // Whether or not we have been explicitly marked as visible or not.
-    bool isParentVisible() const { return m_parentVisible; } // Whether or not our parent is visible.
-    bool isVisible() const { return m_selfVisible && m_parentVisible; } // Whether or not we are actually visible.
-    virtual void setParentVisible(bool visible) { m_parentVisible = visible; }
-    void setSelfVisible(bool v) { m_selfVisible = v; }
+    bool isSelfVisible() const
+    {
+        return m_selfVisible;    // Whether or not we have been explicitly marked as visible or not.
+    }
+    bool isParentVisible() const
+    {
+        return m_parentVisible;    // Whether or not our parent is visible.
+    }
+    bool isVisible() const
+    {
+        return m_selfVisible && m_parentVisible;    // Whether or not we are actually visible.
+    }
+    virtual void setParentVisible( bool visible )
+    {
+        m_parentVisible = visible;
+    }
+    void setSelfVisible( bool v )
+    {
+        m_selfVisible = v;
+    }
 
-    void setIsSelected(bool);
+    void setIsSelected( bool );
 
-    virtual bool isFrameView() const { return false; }
-    virtual bool isPluginView() const { return false; }
+    virtual bool isFrameView() const
+    {
+        return false;
+    }
+    virtual bool isPluginView() const
+    {
+        return false;
+    }
     // FIXME: The Mac plug-in code should inherit from PluginView. When this happens PluginViewBase and PluginView can become one class.
-    virtual bool isPluginViewBase() const { return false; }
-    virtual bool isScrollbar() const { return false; }
+    virtual bool isPluginViewBase() const
+    {
+        return false;
+    }
+    virtual bool isScrollbar() const
+    {
+        return false;
+    }
 
     void removeFromParent();
-    virtual void setParent(ScrollView* view);
-    ScrollView* parent() const { return m_parent; }
-    ScrollView* root() const;
+    virtual void setParent( ScrollView *view );
+    ScrollView *parent() const
+    {
+        return m_parent;
+    }
+    ScrollView *root() const;
 
-    virtual void handleEvent(Event*) { }
+    virtual void handleEvent( Event * ) { }
 
-    virtual void notifyWidget(WidgetNotification) { }
+    virtual void notifyWidget( WidgetNotification ) { }
 
     // It is important for cross-platform code to realize that Mac has flipped coordinates.  Therefore any code
     // that tries to convert the location of a rect using the point-based convertFromContainingWindow will end
     // up with an inaccurate rect.  Always make sure to use the rect-based convertFromContainingWindow method
     // when converting window rects.
-    IntRect convertToContainingWindow(const IntRect&) const;
-    IntRect convertFromContainingWindow(const IntRect&) const;
+    IntRect convertToContainingWindow( const IntRect & ) const;
+    IntRect convertFromContainingWindow( const IntRect & ) const;
 
-    IntPoint convertToContainingWindow(const IntPoint&) const;
-    IntPoint convertFromContainingWindow(const IntPoint&) const;
+    IntPoint convertToContainingWindow( const IntPoint & ) const;
+    IntPoint convertFromContainingWindow( const IntPoint & ) const;
 
     virtual void frameRectsChanged();
 
@@ -209,10 +282,10 @@ public:
     virtual void widgetPositionsUpdated() {}
 
 #if PLATFORM(MAC)
-    NSView* getOuterView() const;
+    NSView *getOuterView() const;
 
-    static void beforeMouseDown(NSView*, Widget*);
-    static void afterMouseDown(NSView*, Widget*);
+    static void beforeMouseDown( NSView *, Widget * );
+    static void afterMouseDown( NSView *, Widget * );
 
     void removeFromSuperview();
 #endif
@@ -221,50 +294,56 @@ public:
     // FIXME: These should really go to PlatformWidget. They're here currently since
     // the EFL port considers that Evas_Object (a C object) is a PlatformWidget, but
     // encapsulating that into a C++ class will make this header clean as it should be.
-    Evas* evas() const;
+    Evas *evas() const;
 
-    void setEvasObject(Evas_Object*);
-    Evas_Object* evasObject() const;
+    void setEvasObject( Evas_Object * );
+    Evas_Object *evasObject() const;
 
     const String edjeTheme() const;
-    void setEdjeTheme(const String &);
+    void setEdjeTheme( const String & );
     const String edjeThemeRecursive() const;
 #endif
 
 #if PLATFORM(CHROMIUM)
-    virtual bool isPluginContainer() const { return false; }
+    virtual bool isPluginContainer() const
+    {
+        return false;
+    }
 #endif
 
 #if PLATFORM(QT)
-    QObject* bindingObject() const;
-    void setBindingObject(QObject*);
+    QObject *bindingObject() const;
+    void setBindingObject( QObject * );
 #endif
 
     // Virtual methods to convert points to/from the containing ScrollView
-    virtual IntRect convertToContainingView(const IntRect&) const;
-    virtual IntRect convertFromContainingView(const IntRect&) const;
-    virtual IntPoint convertToContainingView(const IntPoint&) const;
-    virtual IntPoint convertFromContainingView(const IntPoint&) const;
+    virtual IntRect convertToContainingView( const IntRect & ) const;
+    virtual IntRect convertFromContainingView( const IntRect & ) const;
+    virtual IntPoint convertToContainingView( const IntPoint & ) const;
+    virtual IntPoint convertFromContainingView( const IntPoint & ) const;
 
     // A means to access the AX cache when this object can get a pointer to it.
-    virtual AXObjectCache* axObjectCache() const { return 0; }
+    virtual AXObjectCache *axObjectCache() const
+    {
+        return 0;
+    }
 
 private:
-    void init(PlatformWidget); // Must be called by all Widget constructors to initialize cross-platform data.
+    void init( PlatformWidget ); // Must be called by all Widget constructors to initialize cross-platform data.
 
     void releasePlatformWidget();
     void retainPlatformWidget();
 
     // These methods are used to convert from the root widget to the containing window,
     // which has behavior that may differ between platforms (e.g. Mac uses flipped window coordinates).
-    static IntRect convertFromRootToContainingWindow(const Widget* rootWidget, const IntRect&);
-    static IntRect convertFromContainingWindowToRoot(const Widget* rootWidget, const IntRect&);
+    static IntRect convertFromRootToContainingWindow( const Widget *rootWidget, const IntRect & );
+    static IntRect convertFromContainingWindowToRoot( const Widget *rootWidget, const IntRect & );
 
-    static IntPoint convertFromRootToContainingWindow(const Widget* rootWidget, const IntPoint&);
-    static IntPoint convertFromContainingWindowToRoot(const Widget* rootWidget, const IntPoint&);
+    static IntPoint convertFromRootToContainingWindow( const Widget *rootWidget, const IntPoint & );
+    static IntPoint convertFromContainingWindowToRoot( const Widget *rootWidget, const IntPoint & );
 
 private:
-    ScrollView* m_parent;
+    ScrollView *m_parent;
 #if !PLATFORM(MAC)
     PlatformWidget m_widget;
 #else
@@ -277,14 +356,14 @@ private:
 
 #if PLATFORM(EFL)
     // FIXME: Please see the previous #if PLATFORM(EFL) block.
-    Ecore_Evas* ecoreEvas() const;
+    Ecore_Evas *ecoreEvas() const;
 
     void applyFallbackCursor();
     void applyCursor();
 #endif
 
 #if PLATFORM(MAC) || PLATFORM(EFL)
-    WidgetPrivate* m_data;
+    WidgetPrivate *m_data;
 #endif
 
 #if PLATFORM(QT)
@@ -303,9 +382,10 @@ inline PlatformWidget Widget::platformWidget() const
     return m_widget;
 }
 
-inline void Widget::setPlatformWidget(PlatformWidget widget)
+inline void Widget::setPlatformWidget( PlatformWidget widget )
 {
-    if (widget != m_widget) {
+    if ( widget != m_widget )
+    {
         releasePlatformWidget();
         m_widget = widget;
         retainPlatformWidget();

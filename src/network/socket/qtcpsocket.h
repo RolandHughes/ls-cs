@@ -31,22 +31,22 @@ class QTcpSocketPrivate;
 
 class Q_NETWORK_EXPORT QTcpSocket : public QAbstractSocket
 {
-   NET_CS_OBJECT(QTcpSocket)
+    NET_LSCS_OBJECT( QTcpSocket )
 
- public:
-   explicit QTcpSocket(QObject *parent = nullptr);
+public:
+    explicit QTcpSocket( QObject *parent = nullptr );
 
-   QTcpSocket(const QTcpSocket &) = delete;
-   QTcpSocket &operator=(const QTcpSocket &) = delete;
+    QTcpSocket( const QTcpSocket & ) = delete;
+    QTcpSocket &operator=( const QTcpSocket & ) = delete;
 
-   virtual ~QTcpSocket();
+    virtual ~QTcpSocket();
 
- protected:
-   QTcpSocket(QTcpSocketPrivate &dd, QObject *parent = nullptr);
-   QTcpSocket(QAbstractSocket::SocketType socketType, QTcpSocketPrivate &dd, QObject *parent = nullptr);
+protected:
+    QTcpSocket( QTcpSocketPrivate &dd, QObject *parent = nullptr );
+    QTcpSocket( QAbstractSocket::SocketType socketType, QTcpSocketPrivate &dd, QObject *parent = nullptr );
 
- private:
-   Q_DECLARE_PRIVATE(QTcpSocket)
+private:
+    Q_DECLARE_PRIVATE( QTcpSocket )
 };
 
 #endif

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PlatformCALayerWinInternal_h
@@ -35,47 +35,52 @@
 typedef struct _CACFLayer *CACFLayerRef;
 typedef struct CGContext *CGContextRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatRect;
 class PlatformCALayer;
 
 typedef Vector<RefPtr<PlatformCALayer> > PlatformCALayerList;
 
-class PlatformCALayerWinInternal {
+class PlatformCALayerWinInternal
+{
 public:
-    PlatformCALayerWinInternal(PlatformCALayer*);
+    PlatformCALayerWinInternal( PlatformCALayer * );
     ~PlatformCALayerWinInternal();
 
-    void displayCallback(CACFLayerRef, CGContextRef);
-    void setNeedsDisplay(const FloatRect*);
-    PlatformCALayer* owner() const { return m_owner; }
+    void displayCallback( CACFLayerRef, CGContextRef );
+    void setNeedsDisplay( const FloatRect * );
+    PlatformCALayer *owner() const
+    {
+        return m_owner;
+    }
 
-    void setSublayers(const PlatformCALayerList&);
-    void getSublayers(PlatformCALayerList&) const;
+    void setSublayers( const PlatformCALayerList & );
+    void getSublayers( PlatformCALayerList & ) const;
     void removeAllSublayers();
-    void insertSublayer(PlatformCALayer*, size_t);
+    void insertSublayer( PlatformCALayer *, size_t );
     size_t sublayerCount() const;
-    int indexOfSublayer(const PlatformCALayer* reference);
+    int indexOfSublayer( const PlatformCALayer *reference );
 
-    void setBounds(const FloatRect&);
-    void setFrame(const FloatRect&);
+    void setBounds( const FloatRect & );
+    void setFrame( const FloatRect & );
 
 private:
-    void internalSetNeedsDisplay(const FloatRect*);
-    PlatformCALayer* sublayerAtIndex(int) const;
+    void internalSetNeedsDisplay( const FloatRect * );
+    PlatformCALayer *sublayerAtIndex( int ) const;
 
-    static void tileDisplayCallback(CACFLayerRef, CGContextRef);
+    static void tileDisplayCallback( CACFLayerRef, CGContextRef );
 
-    void drawTile(CACFLayerRef, CGContextRef);
-    CGSize constrainedSize(const CGSize&) const;
+    void drawTile( CACFLayerRef, CGContextRef );
+    CGSize constrainedSize( const CGSize & ) const;
     void addTile();
     void removeTile();
-    CACFLayerRef tileAtIndex(int);
+    CACFLayerRef tileAtIndex( int );
     int tileCount() const;
     void updateTiles();
 
-    PlatformCALayer* m_owner;
+    PlatformCALayer *m_owner;
 
     CGSize m_tileSize;
     CGSize m_constrainedSize;

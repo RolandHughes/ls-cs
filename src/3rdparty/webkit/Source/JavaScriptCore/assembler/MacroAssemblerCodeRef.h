@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef MacroAssemblerCodeRef_h
@@ -52,70 +52,75 @@
 #define ASSERT_VALID_CODE_OFFSET(offset) // Anything goes!
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
 // FunctionPtr:
 //
 // FunctionPtr should be used to wrap pointers to C/C++ functions in JSC
 // (particularly, the stub functions).
-class FunctionPtr {
+class FunctionPtr
+{
 public:
     FunctionPtr()
-        : m_value(0)
+        : m_value( 0 )
     {
     }
 
-    template<typename returnType>
-    FunctionPtr(returnType(*value)())
-        : m_value((void*)value)
+    template<typename returnType> FunctionPtr( returnType( *value )() )
+        : m_value( ( void * )value )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    template<typename returnType, typename argType1>
-    FunctionPtr(returnType(*value)(argType1))
-        : m_value((void*)value)
+    template<typename returnType, typename argType1> FunctionPtr( returnType( *value )( argType1 ) )
+        : m_value( ( void * )value )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    template<typename returnType, typename argType1, typename argType2>
-    FunctionPtr(returnType(*value)(argType1, argType2))
-        : m_value((void*)value)
+    template<typename returnType, typename argType1, typename argType2> FunctionPtr( returnType( *value )( argType1, argType2 ) )
+        : m_value( ( void * )value )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    template<typename returnType, typename argType1, typename argType2, typename argType3>
-    FunctionPtr(returnType(*value)(argType1, argType2, argType3))
-        : m_value((void*)value)
+    template<typename returnType, typename argType1, typename argType2, typename argType3> FunctionPtr( returnType( *value )(
+                argType1, argType2, argType3 ) )
+        : m_value( ( void * )value )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    template<typename returnType, typename argType1, typename argType2, typename argType3, typename argType4>
-    FunctionPtr(returnType(*value)(argType1, argType2, argType3, argType4))
-        : m_value((void*)value)
+    template<typename returnType, typename argType1, typename argType2, typename argType3, typename argType4> FunctionPtr( returnType(
+                *value )( argType1, argType2, argType3, argType4 ) )
+        : m_value( ( void * )value )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
     template<typename FunctionType>
-    explicit FunctionPtr(FunctionType* value)
-        // Using a C-ctyle cast here to avoid compiler error on RVTC:
-        // Error:  #694: reinterpret_cast cannot cast away const or other type qualifiers
-        // (I guess on RVTC function pointers have a different constness to GCC/MSVC?)
-        : m_value((void*)value)
+    explicit FunctionPtr( FunctionType *value )
+    // Using a C-ctyle cast here to avoid compiler error on RVTC:
+    // Error:  #694: reinterpret_cast cannot cast away const or other type qualifiers
+    // (I guess on RVTC function pointers have a different constness to GCC/MSVC?)
+        : m_value( ( void * )value )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    void* value() const { return m_value; }
-    void* executableAddress() const { return m_value; }
+    void *value() const
+    {
+        return m_value;
+    }
+    void *executableAddress() const
+    {
+        return m_value;
+    }
 
 
 private:
-    void* m_value;
+    void *m_value;
 };
 
 // ReturnAddressPtr:
@@ -124,64 +129,80 @@ private:
 // 'call' instructions exectued in JIT code.  We use return addresses to look up
 // exception and optimization information, and to repatch the call instruction
 // that is the source of the return address.
-class ReturnAddressPtr {
+class ReturnAddressPtr
+{
 public:
     ReturnAddressPtr()
-        : m_value(0)
+        : m_value( 0 )
     {
     }
 
-    explicit ReturnAddressPtr(void* value)
-        : m_value(value)
+    explicit ReturnAddressPtr( void *value )
+        : m_value( value )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    explicit ReturnAddressPtr(FunctionPtr function)
-        : m_value(function.value())
+    explicit ReturnAddressPtr( FunctionPtr function )
+        : m_value( function.value() )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    void* value() const { return m_value; }
+    void *value() const
+    {
+        return m_value;
+    }
 
 private:
-    void* m_value;
+    void *m_value;
 };
 
 // MacroAssemblerCodePtr:
 //
 // MacroAssemblerCodePtr should be used to wrap pointers to JIT generated code.
-class MacroAssemblerCodePtr {
+class MacroAssemblerCodePtr
+{
 public:
     MacroAssemblerCodePtr()
-        : m_value(0)
+        : m_value( 0 )
     {
     }
 
-    explicit MacroAssemblerCodePtr(void* value)
+    explicit MacroAssemblerCodePtr( void *value )
 #if CPU(ARM_THUMB2)
-        // Decorate the pointer as a thumb code pointer.
-        : m_value(reinterpret_cast<char*>(value) + 1)
+    // Decorate the pointer as a thumb code pointer.
+        : m_value( reinterpret_cast<char *>( value ) + 1 )
 #else
-        : m_value(value)
+        : m_value( value )
 #endif
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    explicit MacroAssemblerCodePtr(ReturnAddressPtr ra)
-        : m_value(ra.value())
+    explicit MacroAssemblerCodePtr( ReturnAddressPtr ra )
+        : m_value( ra.value() )
     {
-        ASSERT_VALID_CODE_POINTER(m_value);
+        ASSERT_VALID_CODE_POINTER( m_value );
     }
 
-    void* executableAddress() const { return m_value; }
+    void *executableAddress() const
+    {
+        return m_value;
+    }
 #if CPU(ARM_THUMB2)
     // To use this pointer as a data address remove the decoration.
-    void* dataLocation() const { ASSERT_VALID_CODE_POINTER(m_value); return reinterpret_cast<char*>(m_value) - 1; }
+    void *dataLocation() const
+    {
+        ASSERT_VALID_CODE_POINTER( m_value );
+        return reinterpret_cast<char *>( m_value ) - 1;
+    }
 #else
-    void* dataLocation() const { ASSERT_VALID_CODE_POINTER(m_value); return m_value; }
+    void *dataLocation() const
+    {
+        ASSERT_VALID_CODE_POINTER( m_value );
+        return m_value;
+    }
 #endif
 
     bool operator!()
@@ -190,7 +211,7 @@ public:
     }
 
 private:
-    void* m_value;
+    void *m_value;
 };
 
 // MacroAssemblerCodeRef:
@@ -198,17 +219,18 @@ private:
 // A reference to a section of JIT generated code.  A CodeRef consists of a
 // pointer to the code, and a ref pointer to the pool from within which it
 // was allocated.
-class MacroAssemblerCodeRef {
+class MacroAssemblerCodeRef
+{
 public:
     MacroAssemblerCodeRef()
-        : m_size(0)
+        : m_size( 0 )
     {
     }
 
-    MacroAssemblerCodeRef(void* code, PassRefPtr<ExecutablePool> executablePool, size_t size)
-        : m_code(code)
-        , m_executablePool(executablePool)
-        , m_size(size)
+    MacroAssemblerCodeRef( void *code, PassRefPtr<ExecutablePool> executablePool, size_t size )
+        : m_code( code )
+        , m_executablePool( executablePool )
+        , m_size( size )
     {
     }
 

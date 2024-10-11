@@ -28,23 +28,25 @@
 #include "AudioNode.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioContext;
-    
-class AudioChannelSplitter : public AudioNode {
+
+class AudioChannelSplitter : public AudioNode
+{
 public:
-    static PassRefPtr<AudioChannelSplitter> create(AudioContext* context, double sampleRate)
+    static PassRefPtr<AudioChannelSplitter> create( AudioContext *context, double sampleRate )
     {
-        return adoptRef(new AudioChannelSplitter(context, sampleRate));      
+        return adoptRef( new AudioChannelSplitter( context, sampleRate ) );
     }
 
     // AudioNode
-    virtual void process(size_t framesToProcess);
+    virtual void process( size_t framesToProcess );
     virtual void reset();
 
 private:
-    AudioChannelSplitter(AudioContext*, double sampleRate);
+    AudioChannelSplitter( AudioContext *, double sampleRate );
 };
 
 } // namespace WebCore

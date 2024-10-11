@@ -30,22 +30,29 @@
 #include "WKContext.h"
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
 class WebFrameProxy;
 class WebPageProxy;
 struct WebNavigationDataStore;
 
-class WebHistoryClient : public APIClient<WKContextHistoryClient> {
+class WebHistoryClient : public APIClient<WKContextHistoryClient>
+{
 public:
-    void didNavigateWithNavigationData(WebContext*, WebPageProxy*, const WebNavigationDataStore&, WebFrameProxy*);
-    void didPerformClientRedirect(WebContext*, WebPageProxy*, const String& sourceURL, const String& destinationURL, WebFrameProxy*);
-    void didPerformServerRedirect(WebContext*, WebPageProxy*, const String& sourceURL, const String& destinationURL, WebFrameProxy*);
-    void didUpdateHistoryTitle(WebContext*, WebPageProxy*, const String& title, const String& url, WebFrameProxy*);
-    void populateVisitedLinks(WebContext*);
+    void didNavigateWithNavigationData( WebContext *, WebPageProxy *, const WebNavigationDataStore &, WebFrameProxy * );
+    void didPerformClientRedirect( WebContext *, WebPageProxy *, const String &sourceURL, const String &destinationURL,
+                                   WebFrameProxy * );
+    void didPerformServerRedirect( WebContext *, WebPageProxy *, const String &sourceURL, const String &destinationURL,
+                                   WebFrameProxy * );
+    void didUpdateHistoryTitle( WebContext *, WebPageProxy *, const String &title, const String &url, WebFrameProxy * );
+    void populateVisitedLinks( WebContext * );
 
-    bool shouldTrackVisitedLinks() const { return m_client.populateVisitedLinks; }
+    bool shouldTrackVisitedLinks() const
+    {
+        return m_client.populateVisitedLinks;
+    }
 };
 
 } // namespace WebKit

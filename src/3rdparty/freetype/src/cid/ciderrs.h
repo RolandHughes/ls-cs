@@ -16,11 +16,11 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the CID error enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the CID error enumeration constants.
+ *
+ */
 
 #ifndef CIDERRS_H_
 #define CIDERRS_H_

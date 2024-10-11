@@ -29,20 +29,25 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/ThreadingPrimitives.h>
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-class BinarySemaphore {
-    WTF_MAKE_NONCOPYABLE(BinarySemaphore);
+class BinarySemaphore
+{
+    WTF_MAKE_NONCOPYABLE( BinarySemaphore );
 
 public:
     BinarySemaphore();
     ~BinarySemaphore();
 
     void signal();
-    bool wait(double absoluteTime);
+    bool wait( double absoluteTime );
 
 #if PLATFORM(WIN)
-    HANDLE event() const { return m_event; }
+    HANDLE event() const
+    {
+        return m_event;
+    }
 #endif
 
 private:

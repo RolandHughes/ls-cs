@@ -26,27 +26,29 @@
 #include "SVGAnimatedEnumeration.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEBlendElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEBlendElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEBlendElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEBlendElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFEBlendElement(const QualifiedName&, Document*);
+    SVGFEBlendElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool setFilterEffectAttribute(FilterEffect*, const QualifiedName& attrName);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool setFilterEffectAttribute( FilterEffect *, const QualifiedName &attrName );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
-    DECLARE_ANIMATED_STRING(In2, in2)
-    DECLARE_ANIMATED_ENUMERATION(Mode, mode)
+    DECLARE_ANIMATED_STRING( In1, in1 )
+    DECLARE_ANIMATED_STRING( In2, in2 )
+    DECLARE_ANIMATED_ENUMERATION( Mode, mode )
 };
 
 } // namespace WebCore

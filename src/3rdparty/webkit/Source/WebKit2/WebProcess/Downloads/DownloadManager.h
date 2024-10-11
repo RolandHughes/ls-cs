@@ -29,35 +29,42 @@
 #include <wtf/HashMap.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
-    class ResourceHandle;
-    class ResourceRequest;
-    class ResourceResponse;
+namespace WebCore
+{
+class ResourceHandle;
+class ResourceRequest;
+class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class Download;
 class WebPage;
 
-class DownloadManager {
-    WTF_MAKE_NONCOPYABLE(DownloadManager);
+class DownloadManager
+{
+    WTF_MAKE_NONCOPYABLE( DownloadManager );
 
 public:
-    static DownloadManager& shared();
+    static DownloadManager &shared();
 
-    void startDownload(uint64_t downloadID, WebPage* initiatingPage, const WebCore::ResourceRequest&);
-    void convertHandleToDownload(uint64_t downloadID, WebPage* initiatingPage, WebCore::ResourceHandle*, const WebCore::ResourceRequest&, const WebCore::ResourceRequest& initialRequest, const WebCore::ResourceResponse&);
+    void startDownload( uint64_t downloadID, WebPage *initiatingPage, const WebCore::ResourceRequest & );
+    void convertHandleToDownload( uint64_t downloadID, WebPage *initiatingPage, WebCore::ResourceHandle *,
+                                  const WebCore::ResourceRequest &, const WebCore::ResourceRequest &initialRequest, const WebCore::ResourceResponse & );
 
-    void cancelDownload(uint64_t downloadID);
+    void cancelDownload( uint64_t downloadID );
 
-    void downloadFinished(Download*);
-    bool isDownloading() const { return !m_downloads.isEmpty(); }
+    void downloadFinished( Download * );
+    bool isDownloading() const
+    {
+        return !m_downloads.isEmpty();
+    }
 
 private:
     DownloadManager();
 
-    HashMap<uint64_t, Download*> m_downloads;
+    HashMap<uint64_t, Download *> m_downloads;
 };
 
 } // namespace WebKit

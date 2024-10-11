@@ -35,74 +35,78 @@ class QHttpPartPrivate;
 
 class Q_NETWORK_EXPORT QHttpPart
 {
- public:
-   QHttpPart();
-   QHttpPart(const QHttpPart &other);
-   ~QHttpPart();
+public:
+    QHttpPart();
+    QHttpPart( const QHttpPart &other );
+    ~QHttpPart();
 
-   QHttpPart &operator=(QHttpPart &&other)  {
-      swap(other);
-      return *this;
-   }
+    QHttpPart &operator=( QHttpPart &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QHttpPart &operator=(const QHttpPart &other);
-   bool operator==(const QHttpPart &other) const;
+    QHttpPart &operator=( const QHttpPart &other );
+    bool operator==( const QHttpPart &other ) const;
 
-   bool operator!=(const QHttpPart &other) const {
-      return !operator==(other);
-   }
+    bool operator!=( const QHttpPart &other ) const
+    {
+        return !operator==( other );
+    }
 
-   void setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value);
-   void setRawHeader(const QByteArray &headerName, const QByteArray &headerValue);
+    void setHeader( QNetworkRequest::KnownHeaders header, const QVariant &value );
+    void setRawHeader( const QByteArray &headerName, const QByteArray &headerValue );
 
-   void setBody(const QByteArray &body);
-   void setBodyDevice(QIODevice *device);
+    void setBody( const QByteArray &body );
+    void setBodyDevice( QIODevice *device );
 
-   void swap(QHttpPart &other)  {
-      qSwap(d, other.d);
-   }
+    void swap( QHttpPart &other )
+    {
+        qSwap( d, other.d );
+    }
 
- private:
-   QSharedDataPointer<QHttpPartPrivate> d;
+private:
+    QSharedDataPointer<QHttpPartPrivate> d;
 
-   friend class QHttpMultiPartIODevice;
+    friend class QHttpMultiPartIODevice;
 };
 
 class Q_NETWORK_EXPORT QHttpMultiPart : public QObject
 {
-   NET_CS_OBJECT(QHttpMultiPart)
+    NET_LSCS_OBJECT( QHttpMultiPart )
 
- public:
-   enum ContentType {
-      MixedType,
-      RelatedType,
-      FormDataType,
-      AlternativeType
-   };
+public:
+    enum ContentType
+    {
+        MixedType,
+        RelatedType,
+        FormDataType,
+        AlternativeType
+    };
 
-   explicit QHttpMultiPart(QObject *parent = nullptr);
-   explicit QHttpMultiPart(ContentType contentType, QObject *parent = nullptr);
+    explicit QHttpMultiPart( QObject *parent = nullptr );
+    explicit QHttpMultiPart( ContentType contentType, QObject *parent = nullptr );
 
-   QHttpMultiPart(const QHttpMultiPart &) = delete;
-   QHttpMultiPart &operator=(const QHttpMultiPart &) = delete;
+    QHttpMultiPart( const QHttpMultiPart & ) = delete;
+    QHttpMultiPart &operator=( const QHttpMultiPart & ) = delete;
 
-   ~QHttpMultiPart();
+    ~QHttpMultiPart();
 
-   void append(const QHttpPart &httpPart);
+    void append( const QHttpPart &httpPart );
 
-   void setContentType(ContentType contentType);
+    void setContentType( ContentType contentType );
 
-   QByteArray boundary() const;
-   void setBoundary(const QByteArray &boundary);
+    QByteArray boundary() const;
+    void setBoundary( const QByteArray &boundary );
 
- protected:
-   QScopedPointer<QHttpMultiPartPrivate> d_ptr;
+protected:
+    QScopedPointer<QHttpMultiPartPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QHttpMultiPart)
+private:
+    Q_DECLARE_PRIVATE( QHttpMultiPart )
 
-   friend class QNetworkAccessManager;
-   friend class QNetworkAccessManagerPrivate;
+    friend class QNetworkAccessManager;
+    friend class QNetworkAccessManagerPrivate;
 };
 
 #endif

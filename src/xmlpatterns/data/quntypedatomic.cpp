@@ -27,17 +27,17 @@
 
 using namespace QPatternist;
 
-UntypedAtomic::UntypedAtomic(const QString &s) : AtomicString(s)
+UntypedAtomic::UntypedAtomic( const QString &s ) : AtomicString( s )
 {
 }
 
-UntypedAtomic::Ptr UntypedAtomic::fromValue(const QString &value)
+UntypedAtomic::Ptr UntypedAtomic::fromValue( const QString &value )
 {
-   return UntypedAtomic::Ptr(new UntypedAtomic(value));
+    return UntypedAtomic::Ptr( new UntypedAtomic( value ) );
 }
 
 ItemType::Ptr UntypedAtomic::type() const
 {
-   return BuiltinTypes::xsUntypedAtomic;
+    return BuiltinTypes::xsUntypedAtomic;
 }
 

@@ -34,9 +34,9 @@
 extern "C" {
 #endif
 
-WK_EXPORT WKViewRef WKViewCreate(WKContextRef context, WKPageGroupRef pageGroup);
+WK_EXPORT WKViewRef WKViewCreate( WKContextRef context, WKPageGroupRef pageGroup );
 
-WK_EXPORT WKPageRef WKViewGetPage(WKViewRef view);
+WK_EXPORT WKPageRef WKViewGetPage( WKViewRef view );
 
 #ifdef __cplusplus
 }

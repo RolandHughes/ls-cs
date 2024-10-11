@@ -38,7 +38,7 @@
 
 #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='" PROCESSORARCHITECTURE "' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpstrCmdLine, int nCmdShow)
+int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpstrCmdLine, int nCmdShow )
 {
 #ifndef DEBUG_ALL
     LPCWSTR webKitDLLName = L"WebKit.dll";
@@ -47,21 +47,24 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpstrCm
 #endif
 
     WCHAR webKitPath[MAX_PATH];
-    ::GetModuleFileNameW(0, webKitPath, ARRAYSIZE(webKitPath));
-    ::PathRemoveFileSpecW(webKitPath);
+    ::GetModuleFileNameW( 0, webKitPath, ARRAYSIZE( webKitPath ) );
+    ::PathRemoveFileSpecW( webKitPath );
 
     // Look for DLLs in the same directory as WebKit2WebProcess.exe. This is not in the search
     // path already, since we launch WebKit2WebProcess.exe via CreateProcess with lpCurrentDirectory
     // set to 0. We want both the WebKit client app DLL path and the WebKit directory DLL path in
     // the DLL search order, and we want the current directory set to the WebKit client app path.
-    ::SetDllDirectoryW(webKitPath);
+    ::SetDllDirectoryW( webKitPath );
 
-    ::PathAppendW(webKitPath, webKitDLLName);
-    HMODULE module = ::LoadLibraryW(webKitPath);
-    typedef int (__cdecl* WebKitMainProcPtr)(HINSTANCE, HINSTANCE, LPTSTR, int);
-    WebKitMainProcPtr mainProc = reinterpret_cast<WebKitMainProcPtr>(GetProcAddress(module, "WebKitMain"));
-    if (!mainProc)
+    ::PathAppendW( webKitPath, webKitDLLName );
+    HMODULE module = ::LoadLibraryW( webKitPath );
+    typedef int ( __cdecl* WebKitMainProcPtr )( HINSTANCE, HINSTANCE, LPTSTR, int );
+    WebKitMainProcPtr mainProc = reinterpret_cast<WebKitMainProcPtr>( GetProcAddress( module, "WebKitMain" ) );
+
+    if ( !mainProc )
+    {
         return 0;
+    }
 
-    return mainProc(hInstance, hPrevInstance, lpstrCmdLine, nCmdShow);
+    return mainProc( hInstance, hPrevInstance, lpstrCmdLine, nCmdShow );
 }

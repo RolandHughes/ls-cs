@@ -465,22 +465,22 @@ def main():
         print("Missing CopperSpice path parameter")
         usage()
 
-    cs_source  = sys.argv[1]
+    lscs_source  = sys.argv[1]
     locale_xml = "output/cldr_output.xml"
 
-    if not os.path.exists(cs_source) or not os.path.exists(cs_source):
+    if not os.path.exists(lscs_source) or not os.path.exists(lscs_source):
         print("Issue: Path to source does not exist")
         usage()
-    if not os.path.isfile(cs_source + "/src/core/locale/qlocale_data_p.h"):
+    if not os.path.isfile(lscs_source + "/src/core/locale/qlocale_data_p.h"):
         print("Issue: qlocale_data_p.h is missing")
         usage()
-    if not os.path.isfile(cs_source + "/src/core/locale/qlocale.h"):
+    if not os.path.isfile(lscs_source + "/src/core/locale/qlocale.h"):
         print("Issue: qlocale.h is missing")
         usage()
 
     (data_temp_file, data_temp_file_path) = tempfile.mkstemp("_qlocale_data_p.h", dir="output")
     data_temp_file = os.fdopen(data_temp_file, "w")
-    qlocaledata_file = open(cs_source + "/src/core/locale/qlocale_data_p.h", "r")
+    qlocaledata_file = open(lscs_source + "/src/core/locale/qlocale_data_p.h", "r")
     s = qlocaledata_file.readline()
     while s and s != GENERATED_BLOCK_START:
         data_temp_file.write(s)
@@ -858,7 +858,7 @@ def main():
 
     (qlocaleh_temp_file, qlocaleh_temp_file_path) = tempfile.mkstemp("_qlocale.h", dir="output")
     qlocaleh_temp_file = os.fdopen(qlocaleh_temp_file, "w")
-    qlocaleh_file = open(cs_source + "/src/core/locale/qlocale.h", "r")
+    qlocaleh_file = open(lscs_source + "/src/core/locale/qlocale.h", "r")
     s = qlocaleh_file.readline()
     while s and s != GENERATED_BLOCK_START:
         qlocaleh_temp_file.write(s)

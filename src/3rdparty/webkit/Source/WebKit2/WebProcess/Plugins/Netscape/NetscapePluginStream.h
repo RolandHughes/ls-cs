@@ -35,54 +35,64 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-    class KURL;
+namespace WebCore
+{
+class KURL;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NetscapePlugin;
 
-class NetscapePluginStream : public RefCounted<NetscapePluginStream> {
+class NetscapePluginStream : public RefCounted<NetscapePluginStream>
+{
 public:
-    static PassRefPtr<NetscapePluginStream> create(PassRefPtr<NetscapePlugin> plugin, uint64_t streamID, bool sendNotification, void* notificationData)
+    static PassRefPtr<NetscapePluginStream> create( PassRefPtr<NetscapePlugin> plugin, uint64_t streamID, bool sendNotification,
+            void *notificationData )
     {
-        return adoptRef(new NetscapePluginStream(plugin, streamID, sendNotification, notificationData));
+        return adoptRef( new NetscapePluginStream( plugin, streamID, sendNotification, notificationData ) );
     }
     ~NetscapePluginStream();
 
-    uint64_t streamID() const { return m_streamID; }
-    const NPStream* npStream() const { return &m_npStream; }
+    uint64_t streamID() const
+    {
+        return m_streamID;
+    }
+    const NPStream *npStream() const
+    {
+        return &m_npStream;
+    }
 
-    void didReceiveResponse(const WebCore::KURL& responseURL, uint32_t streamLength,
-                            uint32_t lastModifiedTime, const String& mimeType, const String& headers);
-    void didReceiveData(const char* bytes, int length);
+    void didReceiveResponse( const WebCore::KURL &responseURL, uint32_t streamLength,
+                             uint32_t lastModifiedTime, const String &mimeType, const String &headers );
+    void didReceiveData( const char *bytes, int length );
     void didFinishLoading();
-    void didFail(bool wasCancelled);
+    void didFail( bool wasCancelled );
 
-    void sendJavaScriptStream(const String& requestURLString, const String& result);
+    void sendJavaScriptStream( const String &requestURLString, const String &result );
 
-    void stop(NPReason);
-    NPError destroy(NPReason);
+    void stop( NPReason );
+    NPError destroy( NPReason );
 
 private:
-    NetscapePluginStream(PassRefPtr<NetscapePlugin>, uint64_t streamID, bool sendNotification, void* notificationData);
+    NetscapePluginStream( PassRefPtr<NetscapePlugin>, uint64_t streamID, bool sendNotification, void *notificationData );
 
-    bool start(const String& responseURLString, uint32_t streamLength, 
-               uint32_t lastModifiedTime, const String& mimeType, const String& headers);
+    bool start( const String &responseURLString, uint32_t streamLength,
+                uint32_t lastModifiedTime, const String &mimeType, const String &headers );
 
     void cancel();
-    void notifyAndDestroyStream(NPReason);
+    void notifyAndDestroyStream( NPReason );
 
-    void deliverData(const char* bytes, int length);
+    void deliverData( const char *bytes, int length );
     void deliverDataToPlugin();
-    void deliverDataToFile(const char* bytes, int length);
+    void deliverDataToFile( const char *bytes, int length );
 
     RefPtr<NetscapePlugin> m_plugin;
     uint64_t m_streamID;
-    
+
     bool m_sendNotification;
-    void* m_notificationData;
+    void *m_notificationData;
 
     NPStream m_npStream;
     uint16_t m_transferMode;
@@ -90,7 +100,7 @@ private:
 
     String m_filePath;
     WebCore::PlatformFileHandle m_fileHandle;
-    
+
     // Whether NPP_NewStream has successfully been called.
     bool m_isStarted;
 

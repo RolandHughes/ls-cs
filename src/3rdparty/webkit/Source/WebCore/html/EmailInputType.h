@@ -33,16 +33,18 @@
 
 #include "BaseTextInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class EmailInputType : public BaseTextInputType {
+class EmailInputType : public BaseTextInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    EmailInputType(HTMLInputElement* element) : BaseTextInputType(element) { }
-    virtual const AtomicString& formControlType() const;
-    virtual bool typeMismatchFor(const String&) const;
+    EmailInputType( HTMLInputElement *element ) : BaseTextInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
+    virtual bool typeMismatchFor( const String & ) const;
     virtual bool typeMismatch() const;
     virtual String typeMismatchText() const;
     virtual bool isEmailField() const;

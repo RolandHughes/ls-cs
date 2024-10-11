@@ -33,44 +33,44 @@ class QDeclarativeBindPrivate;
 
 class QDeclarativeBind : public QObject, public QDeclarativeParserStatus
 {
-   DECL_CS_OBJECT(QDeclarativeBind)
-   Q_DECLARE_PRIVATE(QDeclarativeBind)
-   CS_INTERFACES(QDeclarativeParserStatus)
-   DECL_CS_PROPERTY_READ(*target, object)
-   DECL_CS_PROPERTY_WRITE(*target, setObject)
-   DECL_CS_PROPERTY_READ(property, property)
-   DECL_CS_PROPERTY_WRITE(property, setProperty)
-   DECL_CS_PROPERTY_READ(value, value)
-   DECL_CS_PROPERTY_WRITE(value, setValue)
-   DECL_CS_PROPERTY_READ(when, when)
-   DECL_CS_PROPERTY_WRITE(when, setWhen)
+    DECL_LSCS_OBJECT( QDeclarativeBind )
+    Q_DECLARE_PRIVATE( QDeclarativeBind )
+    LSCS_INTERFACES( QDeclarativeParserStatus )
+    DECL_LSCS_PROPERTY_READ( *target, object )
+    DECL_LSCS_PROPERTY_WRITE( *target, setObject )
+    DECL_LSCS_PROPERTY_READ( property, property )
+    DECL_LSCS_PROPERTY_WRITE( property, setProperty )
+    DECL_LSCS_PROPERTY_READ( value, value )
+    DECL_LSCS_PROPERTY_WRITE( value, setValue )
+    DECL_LSCS_PROPERTY_READ( when, when )
+    DECL_LSCS_PROPERTY_WRITE( when, setWhen )
 
- public:
-   QDeclarativeBind(QObject *parent = nullptr);
-   ~QDeclarativeBind();
+public:
+    QDeclarativeBind( QObject *parent = nullptr );
+    ~QDeclarativeBind();
 
-   bool when() const;
-   void setWhen(bool);
+    bool when() const;
+    void setWhen( bool );
 
-   QObject *object();
-   void setObject(QObject *);
+    QObject *object();
+    void setObject( QObject * );
 
-   QString property() const;
-   void setProperty(const QString &);
+    QString property() const;
+    void setProperty( const QString & );
 
-   QVariant value() const;
-   void setValue(const QVariant &);
+    QVariant value() const;
+    void setValue( const QVariant & );
 
- protected:
-   virtual void classBegin();
-   virtual void componentComplete();
+protected:
+    virtual void classBegin();
+    virtual void componentComplete();
 
- private:
-   void eval();
+private:
+    void eval();
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeBind)
+QML_DECLARE_TYPE( QDeclarativeBind )
 
 #endif

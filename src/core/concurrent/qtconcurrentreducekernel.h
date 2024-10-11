@@ -33,7 +33,8 @@
 #include <qthreadpool.h>
 #include <qvector.h>
 
-namespace QtConcurrent {
+namespace QtConcurrent
+{
 
 /*
     The ReduceQueueStartLimit and ReduceQueueThrottleLimit constants
@@ -53,147 +54,167 @@ static constexpr const int ReduceQueueThrottleLimit = 30;
 template <typename T>
 class IntermediateResults
 {
- public:
-   int begin, end;
-   QVector<T> vector;
+public:
+    int begin, end;
+    QVector<T> vector;
 };
 
-enum ReduceOption {
-   UnorderedReduce   = 0x1,
-   OrderedReduce     = 0x2,
-   SequentialReduce  = 0x4,
-   // ParallelReduce = 0x8
+enum ReduceOption
+{
+    UnorderedReduce   = 0x1,
+    OrderedReduce     = 0x2,
+    SequentialReduce  = 0x4,
+    // ParallelReduce = 0x8
 };
 
 using ReduceOptions = QFlags<ReduceOption>;
-Q_DECLARE_OPERATORS_FOR_FLAGS(ReduceOptions)
+Q_DECLARE_OPERATORS_FOR_FLAGS( ReduceOptions )
 
 // supports both ordered and out-of-order reduction
 template <typename ReduceFunctor, typename ReduceResultType, typename T>
 class ReduceKernel
 {
-   using ResultsMap = QMap<int, IntermediateResults<T>>;
+    using ResultsMap = QMap<int, IntermediateResults<T>>;
 
-   const ReduceOptions reduceOptions;
+    const ReduceOptions reduceOptions;
 
-   QMutex mutex;
-   int progress, resultsMapSize, threadCount;
-   ResultsMap resultsMap;
+    QMutex mutex;
+    int progress, resultsMapSize, threadCount;
+    ResultsMap resultsMap;
 
-   bool canReduce(int begin) const {
-      return (((reduceOptions & UnorderedReduce) && progress == 0) || ((reduceOptions & OrderedReduce) && progress == begin));
-   }
+    bool canReduce( int begin ) const
+    {
+        return ( ( ( reduceOptions & UnorderedReduce ) && progress == 0 ) || ( ( reduceOptions & OrderedReduce ) && progress == begin ) );
+    }
 
-   void reduceResult(ReduceFunctor &reduce, ReduceResultType &r, const IntermediateResults<T> &result) {
-      for (int i = 0; i < result.vector.size(); ++i) {
-         reduce(r, result.vector.at(i));
-      }
-   }
+    void reduceResult( ReduceFunctor &reduce, ReduceResultType &r, const IntermediateResults<T> &result )
+    {
+        for ( int i = 0; i < result.vector.size(); ++i )
+        {
+            reduce( r, result.vector.at( i ) );
+        }
+    }
 
-   void reduceResults(ReduceFunctor &reduce, ReduceResultType &r, ResultsMap &map) {
-      typename ResultsMap::iterator it = map.begin();
+    void reduceResults( ReduceFunctor &reduce, ReduceResultType &r, ResultsMap &map )
+    {
+        typename ResultsMap::iterator it = map.begin();
 
-      while (it != map.end()) {
-         reduceResult(reduce, r, it.value());
-         ++it;
-      }
-   }
+        while ( it != map.end() )
+        {
+            reduceResult( reduce, r, it.value() );
+            ++it;
+        }
+    }
 
- public:
-   ReduceKernel(ReduceOptions _reduceOptions)
-      : reduceOptions(_reduceOptions), progress(0), resultsMapSize(0),
-        threadCount(QThreadPool::globalInstance()->maxThreadCount()) {
-   }
+public:
+    ReduceKernel( ReduceOptions _reduceOptions )
+        : reduceOptions( _reduceOptions ), progress( 0 ), resultsMapSize( 0 ),
+          threadCount( QThreadPool::globalInstance()->maxThreadCount() )
+    {
+    }
 
-   void runReduce(ReduceFunctor &reduce, ReduceResultType &r, const IntermediateResults<T> &result) {
-      QMutexLocker locker(&mutex);
+    void runReduce( ReduceFunctor &reduce, ReduceResultType &r, const IntermediateResults<T> &result )
+    {
+        QMutexLocker locker( &mutex );
 
-      if (!canReduce(result.begin)) {
-         ++resultsMapSize;
-         resultsMap.insert(result.begin, result);
-         return;
-      }
+        if ( !canReduce( result.begin ) )
+        {
+            ++resultsMapSize;
+            resultsMap.insert( result.begin, result );
+            return;
+        }
 
-      if (reduceOptions & UnorderedReduce) {
-         // UnorderedReduce
-         progress = -1;
+        if ( reduceOptions & UnorderedReduce )
+        {
+            // UnorderedReduce
+            progress = -1;
 
-         // reduce this result
-         locker.unlock();
-         reduceResult(reduce, r, result);
-         locker.relock();
-
-         // reduce all stored results as well
-         while (!resultsMap.isEmpty()) {
-            ResultsMap resultsMapCopy = resultsMap;
-            resultsMap.clear();
-
+            // reduce this result
             locker.unlock();
-            reduceResults(reduce, r, resultsMapCopy);
+            reduceResult( reduce, r, result );
             locker.relock();
 
-            resultsMapSize -= resultsMapCopy.size();
-         }
+            // reduce all stored results as well
+            while ( !resultsMap.isEmpty() )
+            {
+                ResultsMap resultsMapCopy = resultsMap;
+                resultsMap.clear();
 
-         progress = 0;
+                locker.unlock();
+                reduceResults( reduce, r, resultsMapCopy );
+                locker.relock();
 
-      } else {
-         // reduce this result
-         locker.unlock();
-         reduceResult(reduce, r, result);
-         locker.relock();
-
-         // OrderedReduce
-         progress += result.end - result.begin;
-
-         // reduce as many other results as possible
-         typename ResultsMap::iterator it = resultsMap.begin();
-
-         while (it != resultsMap.end()) {
-            if (it.value().begin != progress) {
-               break;
+                resultsMapSize -= resultsMapCopy.size();
             }
 
+            progress = 0;
+
+        }
+        else
+        {
+            // reduce this result
             locker.unlock();
-            reduceResult(reduce, r, it.value());
+            reduceResult( reduce, r, result );
             locker.relock();
 
-            --resultsMapSize;
-            progress += it.value().end - it.value().begin;
-            it = resultsMap.erase(it);
-         }
-      }
-   }
+            // OrderedReduce
+            progress += result.end - result.begin;
 
-   // final reduction
-   void finish(ReduceFunctor &reduce, ReduceResultType &r) {
-      reduceResults(reduce, r, resultsMap);
-   }
+            // reduce as many other results as possible
+            typename ResultsMap::iterator it = resultsMap.begin();
 
-   bool shouldThrottle() {
-      return (resultsMapSize > (ReduceQueueThrottleLimit * threadCount));
-   }
+            while ( it != resultsMap.end() )
+            {
+                if ( it.value().begin != progress )
+                {
+                    break;
+                }
 
-   bool shouldStartThread() {
-      return (resultsMapSize <= (ReduceQueueStartLimit * threadCount));
-   }
+                locker.unlock();
+                reduceResult( reduce, r, it.value() );
+                locker.relock();
+
+                --resultsMapSize;
+                progress += it.value().end - it.value().begin;
+                it = resultsMap.erase( it );
+            }
+        }
+    }
+
+    // final reduction
+    void finish( ReduceFunctor &reduce, ReduceResultType &r )
+    {
+        reduceResults( reduce, r, resultsMap );
+    }
+
+    bool shouldThrottle()
+    {
+        return ( resultsMapSize > ( ReduceQueueThrottleLimit * threadCount ) );
+    }
+
+    bool shouldStartThread()
+    {
+        return ( resultsMapSize <= ( ReduceQueueStartLimit * threadCount ) );
+    }
 };
 
 template <typename Sequence, typename Base, typename Functor1, typename Functor2>
-struct SequenceHolder2 : public Base {
-   SequenceHolder2(const Sequence &_sequence, Functor1 functor1, Functor2 functor2, ReduceOptions reduceOptions)
-      : Base(_sequence.begin(), _sequence.end(), functor1, functor2, reduceOptions), sequence(_sequence)
-   {
-   }
+struct SequenceHolder2 : public Base
+{
+    SequenceHolder2( const Sequence &_sequence, Functor1 functor1, Functor2 functor2, ReduceOptions reduceOptions )
+        : Base( _sequence.begin(), _sequence.end(), functor1, functor2, reduceOptions ), sequence( _sequence )
+    {
+    }
 
-   Sequence sequence;
+    Sequence sequence;
 
-   void finish() {
-      Base::finish();
-      // Clear the sequence to make sure all temporaries are destroyed
-      // before finished is signaled.
-      sequence = Sequence();
-   }
+    void finish()
+    {
+        Base::finish();
+        // Clear the sequence to make sure all temporaries are destroyed
+        // before finished is signaled.
+        sequence = Sequence();
+    }
 };
 
 } // namespace QtConcurrent

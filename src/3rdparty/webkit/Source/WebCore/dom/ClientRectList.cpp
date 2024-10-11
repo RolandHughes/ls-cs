@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -30,17 +30,21 @@
 #include "ExceptionCode.h"
 #include "ClientRect.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 ClientRectList::ClientRectList()
 {
 }
 
-ClientRectList::ClientRectList(const Vector<FloatQuad>& quads)
+ClientRectList::ClientRectList( const Vector<FloatQuad> &quads )
 {
-    m_list.reserveInitialCapacity(quads.size());
-    for (size_t i = 0; i < quads.size(); ++i)
-        m_list.append(ClientRect::create(quads[i].enclosingBoundingBox()));
+    m_list.reserveInitialCapacity( quads.size() );
+
+    for ( size_t i = 0; i < quads.size(); ++i )
+    {
+        m_list.append( ClientRect::create( quads[i].enclosingBoundingBox() ) );
+    }
 }
 
 ClientRectList::~ClientRectList()
@@ -52,9 +56,10 @@ unsigned ClientRectList::length() const
     return m_list.size();
 }
 
-ClientRect* ClientRectList::item(unsigned index)
+ClientRect *ClientRectList::item( unsigned index )
 {
-    if (index >= m_list.size()) {
+    if ( index >= m_list.size() )
+    {
         // FIXME: this should throw an exception.
         // ec = INDEX_SIZE_ERR;
         return 0;

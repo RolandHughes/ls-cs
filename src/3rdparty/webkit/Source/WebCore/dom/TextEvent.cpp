@@ -9,7 +9,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -29,58 +29,61 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PassRefPtr<TextEvent> TextEvent::create()
 {
-    return adoptRef(new TextEvent);
+    return adoptRef( new TextEvent );
 }
 
-PassRefPtr<TextEvent> TextEvent::create(PassRefPtr<AbstractView> view, const String& data, TextEventInputType inputType)
+PassRefPtr<TextEvent> TextEvent::create( PassRefPtr<AbstractView> view, const String &data, TextEventInputType inputType )
 {
-    return adoptRef(new TextEvent(view, data, inputType));
+    return adoptRef( new TextEvent( view, data, inputType ) );
 }
 
-PassRefPtr<TextEvent> TextEvent::createForPlainTextPaste(PassRefPtr<AbstractView> view, const String& data, bool shouldSmartReplace)
+PassRefPtr<TextEvent> TextEvent::createForPlainTextPaste( PassRefPtr<AbstractView> view, const String &data,
+        bool shouldSmartReplace )
 {
-    return adoptRef(new TextEvent(view, data, 0, shouldSmartReplace, false));
+    return adoptRef( new TextEvent( view, data, 0, shouldSmartReplace, false ) );
 }
 
-PassRefPtr<TextEvent> TextEvent::createForFragmentPaste(PassRefPtr<AbstractView> view, PassRefPtr<DocumentFragment> data, bool shouldSmartReplace, bool shouldMatchStyle)
+PassRefPtr<TextEvent> TextEvent::createForFragmentPaste( PassRefPtr<AbstractView> view, PassRefPtr<DocumentFragment> data,
+        bool shouldSmartReplace, bool shouldMatchStyle )
 {
-    return adoptRef(new TextEvent(view, "", data, shouldSmartReplace, shouldMatchStyle));
+    return adoptRef( new TextEvent( view, "", data, shouldSmartReplace, shouldMatchStyle ) );
 }
 
-PassRefPtr<TextEvent> TextEvent::createForDrop(PassRefPtr<AbstractView> view, const String& data)
+PassRefPtr<TextEvent> TextEvent::createForDrop( PassRefPtr<AbstractView> view, const String &data )
 {
-    return adoptRef(new TextEvent(view, data, TextEventInputDrop));
+    return adoptRef( new TextEvent( view, data, TextEventInputDrop ) );
 }
 
 TextEvent::TextEvent()
-    : m_inputType(TextEventInputKeyboard)
-    , m_shouldSmartReplace(false)
-    , m_shouldMatchStyle(false)
+    : m_inputType( TextEventInputKeyboard )
+    , m_shouldSmartReplace( false )
+    , m_shouldMatchStyle( false )
 {
 }
 
-TextEvent::TextEvent(PassRefPtr<AbstractView> view, const String& data, TextEventInputType inputType)
-    : UIEvent(eventNames().textInputEvent, true, true, view, 0)
-    , m_inputType(inputType)
-    , m_data(data)
-    , m_pastingFragment(0)
-    , m_shouldSmartReplace(false)
-    , m_shouldMatchStyle(false)
+TextEvent::TextEvent( PassRefPtr<AbstractView> view, const String &data, TextEventInputType inputType )
+    : UIEvent( eventNames().textInputEvent, true, true, view, 0 )
+    , m_inputType( inputType )
+    , m_data( data )
+    , m_pastingFragment( 0 )
+    , m_shouldSmartReplace( false )
+    , m_shouldMatchStyle( false )
 {
 }
 
-TextEvent::TextEvent(PassRefPtr<AbstractView> view, const String& data, PassRefPtr<DocumentFragment> pastingFragment,
-                     bool shouldSmartReplace, bool shouldMatchStyle)
-    : UIEvent(eventNames().textInputEvent, true, true, view, 0)
-    , m_inputType(TextEventInputPaste)
-    , m_data(data)
-    , m_pastingFragment(pastingFragment)
-    , m_shouldSmartReplace(shouldSmartReplace)
-    , m_shouldMatchStyle(shouldMatchStyle)
+TextEvent::TextEvent( PassRefPtr<AbstractView> view, const String &data, PassRefPtr<DocumentFragment> pastingFragment,
+                      bool shouldSmartReplace, bool shouldMatchStyle )
+    : UIEvent( eventNames().textInputEvent, true, true, view, 0 )
+    , m_inputType( TextEventInputPaste )
+    , m_data( data )
+    , m_pastingFragment( pastingFragment )
+    , m_shouldSmartReplace( shouldSmartReplace )
+    , m_shouldMatchStyle( shouldMatchStyle )
 {
 }
 
@@ -88,12 +91,15 @@ TextEvent::~TextEvent()
 {
 }
 
-void TextEvent::initTextEvent(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtr<AbstractView> view, const String& data)
+void TextEvent::initTextEvent( const AtomicString &type, bool canBubble, bool cancelable, PassRefPtr<AbstractView> view,
+                               const String &data )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
+    }
 
-    initUIEvent(type, canBubble, cancelable, view, 0);
+    initUIEvent( type, canBubble, cancelable, view, 0 );
 
     m_data = data;
 }

@@ -29,20 +29,20 @@ class EditCommandQt
     : public QUndoCommand
 #endif
 {
-    public:
+public:
 #ifndef QT_NO_UNDOCOMMAND
-        EditCommandQt(WTF::RefPtr<WebCore::EditCommand> cmd, QUndoCommand *parent = 0);
+    EditCommandQt( WTF::RefPtr<WebCore::EditCommand> cmd, QUndoCommand *parent = 0 );
 #else
-        EditCommandQt(WTF::RefPtr<WebCore::EditCommand> cmd);
+    EditCommandQt( WTF::RefPtr<WebCore::EditCommand> cmd );
 #endif
-        ~EditCommandQt();
+    ~EditCommandQt();
 
-        void redo();
-        void undo();
+    void redo();
+    void undo();
 
-    private:
-        WTF::RefPtr<WebCore::EditCommand> m_cmd;
-        bool m_first;
+private:
+    WTF::RefPtr<WebCore::EditCommand> m_cmd;
+    bool m_first;
 };
 
 #endif

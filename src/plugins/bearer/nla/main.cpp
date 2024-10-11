@@ -34,7 +34,7 @@ public:
     ~QNlaEnginePlugin();
 
     QStringList keys() const;
-    QBearerEngine *create(const QString &key) const;
+    QBearerEngine *create( const QString &key ) const;
 };
 
 QNlaEnginePlugin::QNlaEnginePlugin()
@@ -47,18 +47,22 @@ QNlaEnginePlugin::~QNlaEnginePlugin()
 
 QStringList QNlaEnginePlugin::keys() const
 {
-    return QStringList() << QLatin1String("nla");
+    return QStringList() << QLatin1String( "nla" );
 }
 
-QBearerEngine *QNlaEnginePlugin::create(const QString &key) const
+QBearerEngine *QNlaEnginePlugin::create( const QString &key ) const
 {
-    if (key == QLatin1String("nla"))
+    if ( key == QLatin1String( "nla" ) )
+    {
         return new QNlaEngine;
+    }
     else
+    {
         return 0;
+    }
 }
 
-Q_EXPORT_STATIC_PLUGIN(QNlaEnginePlugin)
-Q_EXPORT_PLUGIN2(qnlabearer, QNlaEnginePlugin)
+Q_EXPORT_STATIC_PLUGIN( QNlaEnginePlugin )
+Q_EXPORT_PLUGIN2( qnlabearer, QNlaEnginePlugin )
 
 QT_END_NAMESPACE

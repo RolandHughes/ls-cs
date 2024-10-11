@@ -26,31 +26,39 @@
 #include "RenderFrameBase.h"
 #include "RenderFrameSet.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLFrameElement;
 
-class RenderFrame : public RenderFrameBase {
+class RenderFrame : public RenderFrameBase
+{
 public:
-    explicit RenderFrame(HTMLFrameElement*);
+    explicit RenderFrame( HTMLFrameElement * );
 
     FrameEdgeInfo edgeInfo() const;
 
 private:
-    virtual const char* renderName() const { return "RenderFrame"; }
-    virtual bool isFrame() const { return true; }
+    virtual const char *renderName() const
+    {
+        return "RenderFrame";
+    }
+    virtual bool isFrame() const
+    {
+        return true;
+    }
 
     virtual void viewCleared();
 };
 
-inline RenderFrame* toRenderFrame(RenderObject* object)
+inline RenderFrame *toRenderFrame( RenderObject *object )
 {
-    ASSERT(!object || object->isFrame());
-    return static_cast<RenderFrame*>(object);
+    ASSERT( !object || object->isFrame() );
+    return static_cast<RenderFrame *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderFrame(const RenderFrame*);
+void toRenderFrame( const RenderFrame * );
 
 } // namespace WebCore
 

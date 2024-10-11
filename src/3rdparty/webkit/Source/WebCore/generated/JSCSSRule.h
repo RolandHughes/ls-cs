@@ -26,29 +26,35 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSRule;
 
-class JSCSSRule : public JSDOMWrapper {
+class JSCSSRule : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSCSSRule(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<CSSRule>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSCSSRule( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<CSSRule> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    CSSRule* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    CSSRule *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<CSSRule> m_impl;
@@ -56,60 +62,64 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSCSSRuleOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSCSSRuleOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, CSSRule*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, CSSRule * )
 {
-    DEFINE_STATIC_LOCAL(JSCSSRuleOwner, jsCSSRuleOwner, ());
+    DEFINE_STATIC_LOCAL( JSCSSRuleOwner, jsCSSRuleOwner, () );
     return &jsCSSRuleOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, CSSRule*)
+inline void *wrapperContext( DOMWrapperWorld *world, CSSRule * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, CSSRule*);
-CSSRule* toCSSRule(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, CSSRule * );
+CSSRule *toCSSRule( JSC::JSValue );
 
-class JSCSSRulePrototype : public JSC::JSObjectWithGlobalObject {
+class JSCSSRulePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCSSRulePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCSSRulePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                        JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsCSSRuleType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleCssText(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSCSSRuleCssText(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsCSSRuleParentStyleSheet(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleParentRule(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCSSRuleType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleCssText( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSCSSRuleCssText( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsCSSRuleParentStyleSheet( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleParentRule( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsCSSRuleUNKNOWN_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleSTYLE_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleCHARSET_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleIMPORT_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleMEDIA_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleFONT_FACE_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRulePAGE_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleWEBKIT_KEYFRAMES_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSRuleWEBKIT_KEYFRAME_RULE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCSSRuleUNKNOWN_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleSTYLE_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleCHARSET_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleIMPORT_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleMEDIA_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleFONT_FACE_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRulePAGE_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleWEBKIT_KEYFRAMES_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSRuleWEBKIT_KEYFRAME_RULE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

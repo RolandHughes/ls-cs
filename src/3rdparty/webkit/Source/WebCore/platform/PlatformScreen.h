@@ -32,33 +32,34 @@
 
 #if PLATFORM(MAC)
 #ifdef __OBJC__
-    @class NSScreen;
-    @class NSWindow;
+@class NSScreen;
+@class NSWindow;
 #else
-    class NSScreen;
-    class NSWindow;
+class NSScreen;
+class NSWindow;
 #endif
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class FloatRect;
-    class Widget;
+class FloatRect;
+class Widget;
 
-    int screenDepth(Widget*);
-    int screenDepthPerComponent(Widget*);
-    bool screenIsMonochrome(Widget*);
+int screenDepth( Widget * );
+int screenDepthPerComponent( Widget * );
+bool screenIsMonochrome( Widget * );
 
-    FloatRect screenRect(Widget*);
-    FloatRect screenAvailableRect(Widget*);
+FloatRect screenRect( Widget * );
+FloatRect screenAvailableRect( Widget * );
 
 #if PLATFORM(MAC)
-    NSScreen *screenForWindow(NSWindow *);
+NSScreen *screenForWindow( NSWindow * );
 
-    FloatRect toUserSpace(const NSRect&, NSWindow *destination);
-    NSRect toDeviceSpace(const FloatRect&, NSWindow *source);
+FloatRect toUserSpace( const NSRect &, NSWindow *destination );
+NSRect toDeviceSpace( const FloatRect &, NSWindow *source );
 
-    NSPoint flipScreenPoint(const NSPoint&, NSScreen *);
+NSPoint flipScreenPoint( const NSPoint &, NSScreen * );
 #endif
 
 } // namespace WebCore

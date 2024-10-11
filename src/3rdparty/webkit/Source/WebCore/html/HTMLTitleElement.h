@@ -25,23 +25,26 @@
 #include "HTMLElement.h"
 #include "StringWithDirection.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLTitleElement : public HTMLElement {
+class HTMLTitleElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLTitleElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLTitleElement> create( const QualifiedName &, Document * );
 
     String text() const;
-    void setText(const String&);
+    void setText( const String & );
 
     StringWithDirection textWithDirection();
 
 private:
-    HTMLTitleElement(const QualifiedName&, Document*);
+    HTMLTitleElement( const QualifiedName &, Document * );
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     StringWithDirection m_title;
 };

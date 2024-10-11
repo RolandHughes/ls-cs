@@ -24,44 +24,48 @@
 #include <wtf/Forward.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLInputElement;
 
-class StepRange {
-    WTF_MAKE_NONCOPYABLE(StepRange);
+class StepRange
+{
+    WTF_MAKE_NONCOPYABLE( StepRange );
 public:
     bool hasStep;
     double step;
     double minimum;
     double maximum; // maximum must be >= minimum.
 
-    explicit StepRange(const HTMLInputElement*);
-    double clampValue(double value);
-    double clampValue(const String& stringValue);
+    explicit StepRange( const HTMLInputElement * );
+    double clampValue( double value );
+    double clampValue( const String &stringValue );
 
     // Clamp the middle value according to the step
     double defaultValue()
     {
-        return clampValue((minimum + maximum) / 2);
+        return clampValue( ( minimum + maximum ) / 2 );
     }
 
     // Map value into 0-1 range
-    double proportionFromValue(double value)
+    double proportionFromValue( double value )
     {
-        if (minimum == maximum)
+        if ( minimum == maximum )
+        {
             return 0;
+        }
 
-        return (value - minimum) / (maximum - minimum);
+        return ( value - minimum ) / ( maximum - minimum );
     }
 
     // Map from 0-1 range to value
-    double valueFromProportion(double proportion)
+    double valueFromProportion( double proportion )
     {
-        return minimum + proportion * (maximum - minimum);
+        return minimum + proportion * ( maximum - minimum );
     }
 
-    double valueFromElement(HTMLInputElement*, bool* wasClamped = 0);
+    double valueFromElement( HTMLInputElement *, bool *wasClamped = 0 );
 };
 
 }

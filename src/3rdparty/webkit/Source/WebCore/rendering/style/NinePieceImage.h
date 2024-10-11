@@ -27,44 +27,77 @@
 #include "LengthBox.h"
 #include "StyleImage.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ENinePieceImageRule {
+enum ENinePieceImageRule
+{
     StretchImageRule, RoundImageRule, RepeatImageRule
 };
 
-class NinePieceImage {
+class NinePieceImage
+{
 public:
     NinePieceImage()
-        : m_image(0)
-        , m_horizontalRule(StretchImageRule)
-        , m_verticalRule(StretchImageRule)
+        : m_image( 0 )
+        , m_horizontalRule( StretchImageRule )
+        , m_verticalRule( StretchImageRule )
     {
     }
 
-    NinePieceImage(StyleImage* image, LengthBox slices, ENinePieceImageRule h, ENinePieceImageRule v) 
-      : m_image(image)
-      , m_slices(slices)
-      , m_horizontalRule(h)
-      , m_verticalRule(v)
+    NinePieceImage( StyleImage *image, LengthBox slices, ENinePieceImageRule h, ENinePieceImageRule v )
+        : m_image( image )
+        , m_slices( slices )
+        , m_horizontalRule( h )
+        , m_verticalRule( v )
     {
     }
 
-    bool operator==(const NinePieceImage& o) const;
-    bool operator!=(const NinePieceImage& o) const { return !(*this == o); }
+    bool operator==( const NinePieceImage &o ) const;
+    bool operator!=( const NinePieceImage &o ) const
+    {
+        return !( *this == o );
+    }
 
-    bool hasImage() const { return m_image != 0; }
-    StyleImage* image() const { return m_image.get(); }
-    void setImage(StyleImage* image) { m_image = image; }
-    
-    const LengthBox& slices() const { return m_slices; }
-    void setSlices(const LengthBox& l) { m_slices = l; }
+    bool hasImage() const
+    {
+        return m_image != 0;
+    }
+    StyleImage *image() const
+    {
+        return m_image.get();
+    }
+    void setImage( StyleImage *image )
+    {
+        m_image = image;
+    }
 
-    ENinePieceImageRule horizontalRule() const { return static_cast<ENinePieceImageRule>(m_horizontalRule); }
-    void setHorizontalRule(ENinePieceImageRule rule) { m_horizontalRule = rule; }
-    
-    ENinePieceImageRule verticalRule() const { return static_cast<ENinePieceImageRule>(m_verticalRule); }
-    void setVerticalRule(ENinePieceImageRule rule) { m_verticalRule = rule; }
+    const LengthBox &slices() const
+    {
+        return m_slices;
+    }
+    void setSlices( const LengthBox &l )
+    {
+        m_slices = l;
+    }
+
+    ENinePieceImageRule horizontalRule() const
+    {
+        return static_cast<ENinePieceImageRule>( m_horizontalRule );
+    }
+    void setHorizontalRule( ENinePieceImageRule rule )
+    {
+        m_horizontalRule = rule;
+    }
+
+    ENinePieceImageRule verticalRule() const
+    {
+        return static_cast<ENinePieceImageRule>( m_verticalRule );
+    }
+    void setVerticalRule( ENinePieceImageRule rule )
+    {
+        m_verticalRule = rule;
+    }
 
 private:
     RefPtr<StyleImage> m_image;

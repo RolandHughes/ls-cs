@@ -28,23 +28,24 @@
 #include "HTMLLabelElement.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-LabelsNodeList::LabelsNodeList(Node* forNode )
-    : DynamicNodeList(forNode->document()) , m_forNode(forNode)
+LabelsNodeList::LabelsNodeList( Node *forNode )
+    : DynamicNodeList( forNode->document() ), m_forNode( forNode )
 {
 }
 
 LabelsNodeList::~LabelsNodeList()
 {
-    m_forNode->removeCachedLabelsNodeList(this);
-} 
-    
-bool LabelsNodeList::nodeMatches(Element* testNode) const
+    m_forNode->removeCachedLabelsNodeList( this );
+}
+
+bool LabelsNodeList::nodeMatches( Element *testNode ) const
 {
-    return testNode->hasTagName(labelTag) && static_cast<HTMLLabelElement*>(testNode)->control() == m_forNode;
+    return testNode->hasTagName( labelTag ) && static_cast<HTMLLabelElement *>( testNode )->control() == m_forNode;
 }
 
 } // namespace WebCore

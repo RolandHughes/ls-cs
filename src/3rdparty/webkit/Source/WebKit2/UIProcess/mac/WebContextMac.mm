@@ -57,7 +57,7 @@ String WebContext::applicationCacheDirectory()
 
     if (!cacheDir || ![cacheDir isKindOfClass:[NSString class]]) {
         char cacheDirectory[MAXPATHLEN];
-        size_t cacheDirectoryLen = confstr(_CS_DARWIN_USER_CACHE_DIR, cacheDirectory, MAXPATHLEN);
+        size_t cacheDirectoryLen = confstr(_LSCS_DARWIN_USER_CACHE_DIR, cacheDirectory, MAXPATHLEN);
     
         if (cacheDirectoryLen)
             cacheDir = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:cacheDirectory length:cacheDirectoryLen - 1];

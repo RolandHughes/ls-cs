@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CachedPage_h
@@ -28,32 +28,49 @@
 
 #include "CachedFrame.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class Document;
 class DocumentLoader;
 class Page;
 
-class CachedPage : public RefCounted<CachedPage> {
+class CachedPage : public RefCounted<CachedPage>
+{
 public:
-    static PassRefPtr<CachedPage> create(Page*);
+    static PassRefPtr<CachedPage> create( Page * );
     ~CachedPage();
 
-    void restore(Page*);
+    void restore( Page * );
     void clear();
     void destroy();
 
-    Document* document() const { return m_cachedMainFrame->document(); }
-    DocumentLoader* documentLoader() const { return m_cachedMainFrame->documentLoader(); }
+    Document *document() const
+    {
+        return m_cachedMainFrame->document();
+    }
+    DocumentLoader *documentLoader() const
+    {
+        return m_cachedMainFrame->documentLoader();
+    }
 
-    double timeStamp() const { return m_timeStamp; }
-    
-    CachedFrame* cachedMainFrame() { return m_cachedMainFrame.get(); }
+    double timeStamp() const
+    {
+        return m_timeStamp;
+    }
 
-    void markForVistedLinkStyleRecalc() { m_needStyleRecalcForVisitedLinks = true; }
+    CachedFrame *cachedMainFrame()
+    {
+        return m_cachedMainFrame.get();
+    }
+
+    void markForVistedLinkStyleRecalc()
+    {
+        m_needStyleRecalcForVisitedLinks = true;
+    }
 
 private:
-    CachedPage(Page*);
+    CachedPage( Page * );
 
     double m_timeStamp;
     RefPtr<CachedFrame> m_cachedMainFrame;

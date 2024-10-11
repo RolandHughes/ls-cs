@@ -31,14 +31,14 @@ class QScriptValue;
 
 class Q_SCRIPT_EXPORT QScriptExtensionPlugin : public QObject, public QScriptExtensionInterface
 {
-   SCRIPT_CS_OBJECT_MULTIPLE(QScriptExtensionPlugin, QObject)
-   CS_INTERFACES(QScriptExtensionInterface, QFactoryInterface)
+    SCRIPT_LSCS_OBJECT_MULTIPLE( QScriptExtensionPlugin, QObject )
+    LSCS_INTERFACES( QScriptExtensionInterface, QFactoryInterface )
 
- public:
-   explicit QScriptExtensionPlugin(QObject *parent = nullptr);
-   ~QScriptExtensionPlugin();
+public:
+    explicit QScriptExtensionPlugin( QObject *parent = nullptr );
+    ~QScriptExtensionPlugin();
 
-   QScriptValue setupPackage(const QString &key, QScriptEngine *engine) const;
+    QScriptValue setupPackage( const QString &key, QScriptEngine *engine ) const;
 };
 
 #endif

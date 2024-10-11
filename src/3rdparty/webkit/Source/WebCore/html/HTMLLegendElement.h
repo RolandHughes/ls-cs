@@ -26,22 +26,24 @@
 
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLLegendElement : public HTMLFormControlElement {
+class HTMLLegendElement : public HTMLFormControlElement
+{
 public:
-    static PassRefPtr<HTMLLegendElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLLegendElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
 private:
-    HTMLLegendElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLLegendElement( const QualifiedName &, Document *, HTMLFormElement * );
 
     // Control in the legend's fieldset that gets focus and access key.
-    HTMLFormControlElement* associatedControl();
+    HTMLFormControlElement *associatedControl();
 
     virtual bool supportsFocus() const;
-    virtual const AtomicString& formControlType() const;
-    virtual void accessKeyAction(bool sendToAnyElement);
-    virtual void focus(bool restorePreviousSelection = true);
+    virtual const AtomicString &formControlType() const;
+    virtual void accessKeyAction( bool sendToAnyElement );
+    virtual void focus( bool restorePreviousSelection = true );
 };
 
 } //namespace

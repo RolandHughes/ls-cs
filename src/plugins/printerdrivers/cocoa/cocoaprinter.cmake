@@ -1,11 +1,11 @@
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
-   add_library(CsPrinterDriverCocoa MODULE "")
-   add_library(CopperSpice::CsPrinterDriverCocoa ALIAS CsPrinterDriverCocoa)
+   add_library(LsCsPrinterDriverCocoa MODULE "")
+   add_library(LsCs::LsCsPrinterDriverCocoa ALIAS LsCsPrinterDriverCocoa)
 
-   set_target_properties(CsPrinterDriverCocoa PROPERTIES OUTPUT_NAME CsPrinterDriverCocoa${BUILD_ABI})
+   set_target_properties(LsCsPrinterDriverCocoa PROPERTIES OUTPUT_NAME LsCsPrinterDriverCocoa${BUILD_ABI})
 
-   target_sources(CsPrinterDriverCocoa
+   target_sources(LsCsPrinterDriverCocoa
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/main.cpp
    )
@@ -14,16 +14,16 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
       -framework Cocoa
    )
 
-   target_link_libraries(CsPrinterDriverCocoa
+   target_link_libraries(LsCsPrinterDriverCocoa
       PRIVATE
-      CsCore
-      CsGui
+      LsCsCore
+      LsCsGui
    )
 
-   target_compile_definitions(CsPrinterDriverCocoa
+   target_compile_definitions(LsCsPrinterDriverCocoa
       PRIVATE
       -DQT_PLUGIN
    )
 
-   install(TARGETS CsPrinterDriverCocoa DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(TARGETS LsCsPrinterDriverCocoa DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()

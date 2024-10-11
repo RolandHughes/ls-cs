@@ -30,18 +30,22 @@
 
 #include "MessageID.h"
 
-namespace WebContextLegacyMessage {
+namespace WebContextLegacyMessage
+{
 
-enum Kind {
+enum Kind
+{
     PostMessage,
     PostSynchronousMessage
 };
 
 }
 
-namespace CoreIPC {
+namespace CoreIPC
+{
 
-template<> struct MessageKindTraits<WebContextLegacyMessage::Kind> {
+template<> struct MessageKindTraits<WebContextLegacyMessage::Kind>
+{
     static const MessageClass messageClass = MessageClassWebContextLegacy;
 };
 

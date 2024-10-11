@@ -29,10 +29,11 @@
 
 #include "OESTextureFloat.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-OESTextureFloat::OESTextureFloat(WebGLRenderingContext* context)
-    : WebGLExtension(context)
+OESTextureFloat::OESTextureFloat( WebGLRenderingContext *context )
+    : WebGLExtension( context )
 {
 }
 
@@ -45,9 +46,9 @@ WebGLExtension::ExtensionName OESTextureFloat::getName() const
     return OESTextureFloatName;
 }
 
-PassOwnPtr<OESTextureFloat> OESTextureFloat::create(WebGLRenderingContext* context)
+PassOwnPtr<OESTextureFloat> OESTextureFloat::create( WebGLRenderingContext *context )
 {
-    return adoptPtr(new OESTextureFloat(context));
+    return adoptPtr( new OESTextureFloat( context ) );
 }
 
 } // namespace WebCore

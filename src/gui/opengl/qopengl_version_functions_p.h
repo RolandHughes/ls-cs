@@ -35,8 +35,8 @@ class QAbstractOpenGLFunctions;
 class QOpenGLVersionFunctionsFactory
 {
 public:
-    static QAbstractOpenGLFunctions *create(const QOpenGLVersionProfile &versionProfile);
-    static QAbstractOpenGLFunctions *createNoProfile(const int major, const int minor);
+    static QAbstractOpenGLFunctions *create( const QOpenGLVersionProfile &versionProfile );
+    static QAbstractOpenGLFunctions *createNoProfile( const int major, const int minor );
 };
 
 #endif // QT_NO_OPENGL

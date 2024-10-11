@@ -47,82 +47,97 @@
 #include "texmap/TextureMapperPlatformLayer.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PageClientQWidget : public QWebPageClient {
+class PageClientQWidget : public QWebPageClient
+{
 public:
-    PageClientQWidget(QWidget* newView, QWebPage* newPage)
-        : view(newView)
-        , page(newPage)
+    PageClientQWidget( QWidget *newView, QWebPage *newPage )
+        : view( newView )
+        , page( newPage )
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-        , syncTimer(this, &PageClientQWidget::syncLayers)
-        , platformLayerProxy(0)
+        , syncTimer( this, &PageClientQWidget::syncLayers )
+        , platformLayerProxy( 0 )
 #endif
     {
-        Q_ASSERT(view);
+        Q_ASSERT( view );
     }
     virtual ~PageClientQWidget();
 
-    virtual bool isQWidgetClient() const { return true; }
+    virtual bool isQWidgetClient() const
+    {
+        return true;
+    }
 
-    virtual void scroll(int dx, int dy, const QRect&);
-    virtual void update(const QRect& dirtyRect);
-    virtual void setInputMethodEnabled(bool enable);
+    virtual void scroll( int dx, int dy, const QRect & );
+    virtual void update( const QRect &dirtyRect );
+    virtual void setInputMethodEnabled( bool enable );
     virtual bool inputMethodEnabled() const;
-    virtual void setInputMethodHints(Qt::InputMethodHints hints);
+    virtual void setInputMethodHints( Qt::InputMethodHints hints );
 
 #ifndef QT_NO_CURSOR
     virtual QCursor cursor() const;
-    virtual void updateCursor(const QCursor& cursor);
+    virtual void updateCursor( const QCursor &cursor );
 #endif
 
     virtual QPalette palette() const;
     virtual int screenNumber() const;
-    virtual QWidget* ownerWidget() const;
+    virtual QWidget *ownerWidget() const;
     virtual QRect geometryRelativeToOwnerWidget() const;
 
-    virtual QObject* pluginParent() const;
+    virtual QObject *pluginParent() const;
 
-    virtual QStyle* style() const;
+    virtual QStyle *style() const;
 
-    virtual bool viewResizesToContentsEnabled() const { return false; }
+    virtual bool viewResizesToContentsEnabled() const
+    {
+        return false;
+    }
 
     virtual QRectF windowRect() const;
 
-    QWidget* view;
-    QWebPage* page;
+    QWidget *view;
+    QWebPage *page;
 
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-    virtual void setRootGraphicsLayer(TextureMapperPlatformLayer* layer);
-    virtual void markForSync(bool scheduleSync);
-    void syncLayers(Timer<PageClientQWidget>*);
+    virtual void setRootGraphicsLayer( TextureMapperPlatformLayer *layer );
+    virtual void markForSync( bool scheduleSync );
+    void syncLayers( Timer<PageClientQWidget> * );
 #endif
 
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-    virtual bool allowsAcceleratedCompositing() const { return true; }
+    virtual bool allowsAcceleratedCompositing() const
+    {
+        return true;
+    }
 #else
-    virtual bool allowsAcceleratedCompositing() const { return false; }
+    virtual bool allowsAcceleratedCompositing() const
+    {
+        return false;
+    }
 #endif
 
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
     Timer<PageClientQWidget> syncTimer;
-    PlatformLayerProxyQt* platformLayerProxy;
+    PlatformLayerProxyQt *platformLayerProxy;
 #endif
 };
 
 #if !defined(QT_NO_GRAPHICSVIEW)
 // the overlay is here for one reason only: to have the scroll-bars and other
 // extra UI elements appear on top of any QGraphicsItems created by CSS compositing layers
-class QGraphicsItemOverlay : public QGraphicsObject {
-    public:
-    QGraphicsItemOverlay(QGraphicsWidget* view, QWebPage* p)
-            :QGraphicsObject(view)
-            , q(view)
-            , page(p)
+class QGraphicsItemOverlay : public QGraphicsObject
+{
+public:
+    QGraphicsItemOverlay( QGraphicsWidget *view, QWebPage *p )
+        :QGraphicsObject( view )
+        , q( view )
+        , page( p )
     {
-        setPos(0, 0);
-        setFlag(QGraphicsItem::ItemUsesExtendedStyleOption, true);
-        setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+        setPos( 0, 0 );
+        setFlag( QGraphicsItem::ItemUsesExtendedStyleOption, true );
+        setCacheMode( QGraphicsItem::DeviceCoordinateCache );
     }
 
     QRectF boundingRect() const
@@ -130,9 +145,10 @@ class QGraphicsItemOverlay : public QGraphicsObject {
         return q->boundingRect();
     }
 
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* options, QWidget*)
+    void paint( QPainter *painter, const QStyleOptionGraphicsItem *options, QWidget * )
     {
-        page->mainFrame()->render(painter, static_cast<QWebFrame::RenderLayer>(QWebFrame::AllLayers&(~QWebFrame::ContentsLayer)), options->exposedRect.toRect());
+        page->mainFrame()->render( painter, static_cast<QWebFrame::RenderLayer>( QWebFrame::AllLayers&( ~QWebFrame::ContentsLayer ) ),
+                                   options->exposedRect.toRect() );
     }
 
     void prepareGraphicsItemGeometryChange()
@@ -140,59 +156,66 @@ class QGraphicsItemOverlay : public QGraphicsObject {
         prepareGeometryChange();
     }
 
-    QGraphicsWidget* q;
-    QWebPage* page;
+    QGraphicsWidget *q;
+    QWebPage *page;
 };
 
 
-class PageClientQGraphicsWidget : public QWebPageClient {
+class PageClientQGraphicsWidget : public QWebPageClient
+{
 public:
-    PageClientQGraphicsWidget(QGraphicsWebView* newView, QWebPage* newPage)
-        : view(newView)
-        , page(newPage)
-        , viewResizesToContents(false)
+    PageClientQGraphicsWidget( QGraphicsWebView *newView, QWebPage *newPage )
+        : view( newView )
+        , page( newPage )
+        , viewResizesToContents( false )
 #if USE(ACCELERATED_COMPOSITING)
 #if USE(TEXTURE_MAPPER)
-        , platformLayerProxy(0)
+        , platformLayerProxy( 0 )
 #endif
-        , shouldSync(false)
+        , shouldSync( false )
 #endif
-        , overlay(0)
+        , overlay( 0 )
     {
-       Q_ASSERT(view);
+        Q_ASSERT( view );
 #if USE(ACCELERATED_COMPOSITING)
         // the overlay and stays alive for the lifetime of
         // this QGraphicsWebView as the scrollbars are needed when there's no compositing
-        view->setFlag(QGraphicsItem::ItemUsesExtendedStyleOption);
-        syncMetaMethod = view->metaObject()->method(view->metaObject()->indexOfMethod("syncLayers()"));
+        view->setFlag( QGraphicsItem::ItemUsesExtendedStyleOption );
+        syncMetaMethod = view->metaObject()->method( view->metaObject()->indexOfMethod( "syncLayers()" ) );
 #endif
     }
 
     virtual ~PageClientQGraphicsWidget();
 
-    virtual bool isQWidgetClient() const { return false; }
+    virtual bool isQWidgetClient() const
+    {
+        return false;
+    }
 
-    virtual void scroll(int dx, int dy, const QRect&);
-    virtual void update(const QRect& dirtyRect);
-    virtual void setInputMethodEnabled(bool enable);
+    virtual void scroll( int dx, int dy, const QRect & );
+    virtual void update( const QRect &dirtyRect );
+    virtual void setInputMethodEnabled( bool enable );
     virtual bool inputMethodEnabled() const;
-    virtual void setInputMethodHints(Qt::InputMethodHints hints);
+    virtual void setInputMethodHints( Qt::InputMethodHints hints );
 
 #ifndef QT_NO_CURSOR
     virtual QCursor cursor() const;
-    virtual void updateCursor(const QCursor& cursor);
+    virtual void updateCursor( const QCursor &cursor );
 #endif
 
     virtual QPalette palette() const;
     virtual int screenNumber() const;
-    virtual QWidget* ownerWidget() const;
+    virtual QWidget *ownerWidget() const;
     virtual QRect geometryRelativeToOwnerWidget() const;
 
-    virtual QObject* pluginParent() const;
+    virtual QObject *pluginParent() const;
 
-    virtual QStyle* style() const;
+    virtual QStyle *style() const;
 
-    virtual bool viewResizesToContentsEnabled() const { return viewResizesToContents; }
+    virtual bool viewResizesToContentsEnabled() const
+    {
+        return viewResizesToContents;
+    }
 
     void createOrDeleteOverlay();
 
@@ -202,23 +225,26 @@ public:
 #endif
 
 #if USE(ACCELERATED_COMPOSITING)
-    virtual void setRootGraphicsLayer(PlatformLayer* layer);
-    virtual void markForSync(bool scheduleSync);
+    virtual void setRootGraphicsLayer( PlatformLayer *layer );
+    virtual void markForSync( bool scheduleSync );
     void syncLayers();
 
     // QGraphicsWebView can render composited layers
-    virtual bool allowsAcceleratedCompositing() const { return true; }
+    virtual bool allowsAcceleratedCompositing() const
+    {
+        return true;
+    }
 #endif
 
     virtual QRectF windowRect() const;
 
-    QGraphicsWebView* view;
-    QWebPage* page;
+    QGraphicsWebView *view;
+    QWebPage *page;
     bool viewResizesToContents;
 
 #if USE(ACCELERATED_COMPOSITING)
 #if USE(TEXTURE_MAPPER)
-    PlatformLayerProxyQt* platformLayerProxy;
+    PlatformLayerProxyQt *platformLayerProxy;
 #else
     QWeakPointer<QGraphicsObject> rootGraphicsLayer;
 #endif
@@ -230,7 +256,7 @@ public:
     bool shouldSync;
 #endif
     // the overlay gets instantiated when the root layer is attached, and get deleted when it's detached
-    QGraphicsItemOverlay* overlay;
+    QGraphicsItemOverlay *overlay;
 
     // we need to put the root graphics layer behind the overlay (which contains the scrollbar)
     enum { RootGraphicsLayerZValue, OverlayZValue };

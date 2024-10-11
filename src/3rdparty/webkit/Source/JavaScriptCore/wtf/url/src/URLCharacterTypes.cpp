@@ -29,9 +29,11 @@
 #include "config.h"
 #include "URLCharacterTypes.h"
 
-namespace WTF {
+namespace WTF
+{
 
-const unsigned char URLCharacterTypes::characterTypeTable[0x100] = {
+const unsigned char URLCharacterTypes::characterTypeTable[0x100] =
+{
     InvalidCharacter, InvalidCharacter, InvalidCharacter, InvalidCharacter,
     InvalidCharacter, InvalidCharacter, InvalidCharacter, InvalidCharacter,
     InvalidCharacter, InvalidCharacter, InvalidCharacter, InvalidCharacter,

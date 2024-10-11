@@ -12,7 +12,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/qnodenamespaceresolver_p.h
 )
 
-target_sources(CsXmlPatterns
+target_sources(LsCsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/qgenericnamespaceresolver.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/qpatternistlocale.cpp

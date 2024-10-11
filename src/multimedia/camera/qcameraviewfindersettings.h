@@ -33,61 +33,66 @@ class QCameraViewfinderSettingsPrivate;
 
 class Q_MULTIMEDIA_EXPORT QCameraViewfinderSettings
 {
- public:
-   QCameraViewfinderSettings();
-   QCameraViewfinderSettings(const QCameraViewfinderSettings &other);
+public:
+    QCameraViewfinderSettings();
+    QCameraViewfinderSettings( const QCameraViewfinderSettings &other );
 
-   ~QCameraViewfinderSettings();
+    ~QCameraViewfinderSettings();
 
-   QCameraViewfinderSettings &operator=(const QCameraViewfinderSettings &other);
+    QCameraViewfinderSettings &operator=( const QCameraViewfinderSettings &other );
 
-   QCameraViewfinderSettings &operator=(QCameraViewfinderSettings &&other) {
-      swap(other);
-      return *this;
-   }
+    QCameraViewfinderSettings &operator=( QCameraViewfinderSettings &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   void swap(QCameraViewfinderSettings &other) {
-      d.swap(other.d);
-   }
+    void swap( QCameraViewfinderSettings &other )
+    {
+        d.swap( other.d );
+    }
 
-   bool isNull() const;
+    bool isNull() const;
 
-   QSize resolution() const;
-   void setResolution(const QSize &resolution);
+    QSize resolution() const;
+    void setResolution( const QSize &resolution );
 
-   void setResolution(int width, int height) {
-      setResolution(QSize(width, height));
-   }
+    void setResolution( int width, int height )
+    {
+        setResolution( QSize( width, height ) );
+    }
 
-   qreal minimumFrameRate() const;
-   void setMinimumFrameRate(qreal rate);
+    qreal minimumFrameRate() const;
+    void setMinimumFrameRate( qreal rate );
 
-   qreal maximumFrameRate() const;
-   void setMaximumFrameRate(qreal rate);
+    qreal maximumFrameRate() const;
+    void setMaximumFrameRate( qreal rate );
 
-   QVideoFrame::PixelFormat pixelFormat() const;
-   void setPixelFormat(QVideoFrame::PixelFormat format);
+    QVideoFrame::PixelFormat pixelFormat() const;
+    void setPixelFormat( QVideoFrame::PixelFormat format );
 
-   QSize pixelAspectRatio() const;
-   void setPixelAspectRatio(const QSize &ratio);
+    QSize pixelAspectRatio() const;
+    void setPixelAspectRatio( const QSize &ratio );
 
-   void setPixelAspectRatio(int horizontal, int vertical) {
-      setPixelAspectRatio(QSize(horizontal, vertical));
-   }
+    void setPixelAspectRatio( int horizontal, int vertical )
+    {
+        setPixelAspectRatio( QSize( horizontal, vertical ) );
+    }
 
-   bool operator==(const QCameraViewfinderSettings &other) const;
+    bool operator==( const QCameraViewfinderSettings &other ) const;
 
-   bool operator!=(const QCameraViewfinderSettings &other) const {
-      return ! operator==(other);
-   }
+    bool operator!=( const QCameraViewfinderSettings &other ) const
+    {
+        return ! operator==( other );
+    }
 
- private:
-   QSharedDataPointer<QCameraViewfinderSettingsPrivate> d;
+private:
+    QSharedDataPointer<QCameraViewfinderSettingsPrivate> d;
 };
 
-inline void swap(QCameraViewfinderSettings &a, QCameraViewfinderSettings &b)
+inline void swap( QCameraViewfinderSettings &a, QCameraViewfinderSettings &b )
 {
-   a.swap(b);
+    a.swap( b );
 }
 
 #endif

@@ -93,58 +93,59 @@ QT_BEGIN_NAMESPACE
 
 class QPacketProtocolPrivate : public QObject
 {
-   DECL_CS_OBJECT(QPacketProtocolPrivate)
+    DECL_LSCS_OBJECT( QPacketProtocolPrivate )
 
- public:
-   QPacketProtocolPrivate(QPacketProtocol *parent, QIODevice *_dev)
-      : QObject(parent), inProgressSize(-1), maxPacketSize(MAX_PACKET_SIZE),
-        waitingForPacket(false), dev(_dev) {
-      Q_ASSERT(4 == sizeof(qint32));
+public:
+    QPacketProtocolPrivate( QPacketProtocol *parent, QIODevice *_dev )
+        : QObject( parent ), inProgressSize( -1 ), maxPacketSize( MAX_PACKET_SIZE ),
+          waitingForPacket( false ), dev( _dev )
+    {
+        Q_ASSERT( 4 == sizeof( qint32 ) );
 
-      QObject::connect(this, SIGNAL(readyRead()), parent, SLOT(readyRead()));
-      QObject::connect(this, SIGNAL(packetWritten()), parent, SLOT(packetWritten()));
-      QObject::connect(this, SIGNAL(invalidPacket()), parent, SLOT(invalidPacket()));
-      QObject::connect(dev,  SIGNAL(readyRead()), this, SLOT(readyToRead()));
-      QObject::connect(dev,  SIGNAL(aboutToClose()), this, SLOT(aboutToClose()));
-      QObject::connect(dev,  SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
-   }
+        QObject::connect( this, SIGNAL( readyRead() ), parent, SLOT( readyRead() ) );
+        QObject::connect( this, SIGNAL( packetWritten() ), parent, SLOT( packetWritten() ) );
+        QObject::connect( this, SIGNAL( invalidPacket() ), parent, SLOT( invalidPacket() ) );
+        QObject::connect( dev,  SIGNAL( readyRead() ), this, SLOT( readyToRead() ) );
+        QObject::connect( dev,  SIGNAL( aboutToClose() ), this, SLOT( aboutToClose() ) );
+        QObject::connect( dev,  SIGNAL( bytesWritten( qint64 ) ), this, SLOT( bytesWritten( qint64 ) ) );
+    }
 
-   DECL_CS_SIGNAL_1(Public, void readyRead())
-   DECL_CS_SIGNAL_2(readyRead)
+    DECL_LSCS_SIGNAL_1( Public, void readyRead() )
+    DECL_LSCS_SIGNAL_2( readyRead )
 
-   DECL_CS_SIGNAL_1(Public, void packetWritten())
-   DECL_CS_SIGNAL_2(packetWritten)
+    DECL_LSCS_SIGNAL_1( Public, void packetWritten() )
+    DECL_LSCS_SIGNAL_2( packetWritten )
 
-   DECL_CS_SIGNAL_1(Public, void invalidPacket())
-   DECL_CS_SIGNAL_2(invalidPacket)
+    DECL_LSCS_SIGNAL_1( Public, void invalidPacket() )
+    DECL_LSCS_SIGNAL_2( invalidPacket )
 
-   DECL_CS_SLOT_1(Public, void aboutToClose())
-   DECL_CS_SLOT_2(aboutToClose)
+    DECL_LSCS_SLOT_1( Public, void aboutToClose() )
+    DECL_LSCS_SLOT_2( aboutToClose )
 
-   DECL_CS_SLOT_1(Public, void bytesWritten(qint64 bytes))
-   DECL_CS_SLOT_2(bytesWritten)
+    DECL_LSCS_SLOT_1( Public, void bytesWritten( qint64 bytes ) )
+    DECL_LSCS_SLOT_2( bytesWritten )
 
-   DECL_CS_SLOT_1(Public, void readyToRead())
-   DECL_CS_SLOT_2(readyToRead)
+    DECL_LSCS_SLOT_1( Public, void readyToRead() )
+    DECL_LSCS_SLOT_2( readyToRead )
 
- public:
-   QList<qint64> sendingPackets;
-   QList<QByteArray> packets;
-   QByteArray inProgress;
-   qint32 inProgressSize;
-   qint32 maxPacketSize;
-   bool waitingForPacket;
-   QIODevice *dev;
+public:
+    QList<qint64> sendingPackets;
+    QList<QByteArray> packets;
+    QByteArray inProgress;
+    qint32 inProgressSize;
+    qint32 maxPacketSize;
+    bool waitingForPacket;
+    QIODevice *dev;
 };
 
 /*!
   Construct a QPacketProtocol instance that works on \a dev with the
   specified \a parent.
  */
-QPacketProtocol::QPacketProtocol(QIODevice *dev, QObject *parent)
-   : QObject(parent), d(new QPacketProtocolPrivate(this, dev))
+QPacketProtocol::QPacketProtocol( QIODevice *dev, QObject *parent )
+    : QObject( parent ), d( new QPacketProtocolPrivate( this, dev ) )
 {
-   Q_ASSERT(dev);
+    Q_ASSERT( dev );
 }
 
 /*!
@@ -165,7 +166,7 @@ QPacketProtocol::~QPacketProtocol()
  */
 qint32 QPacketProtocol::maximumPacketSize() const
 {
-   return d->maxPacketSize;
+    return d->maxPacketSize;
 }
 
 /*!
@@ -173,12 +174,14 @@ qint32 QPacketProtocol::maximumPacketSize() const
 
   \sa QPacketProtocol::maximumPacketSize()
  */
-qint32 QPacketProtocol::setMaximumPacketSize(qint32 max)
+qint32 QPacketProtocol::setMaximumPacketSize( qint32 max )
 {
-   if (max > (signed)sizeof(qint32)) {
-      d->maxPacketSize = max;
-   }
-   return d->maxPacketSize;
+    if ( max > ( signed )sizeof( qint32 ) )
+    {
+        d->maxPacketSize = max;
+    }
+
+    return d->maxPacketSize;
 }
 
 /*!
@@ -193,7 +196,7 @@ qint32 QPacketProtocol::setMaximumPacketSize(qint32 max)
  */
 QPacketAutoSend QPacketProtocol::send()
 {
-   return QPacketAutoSend(this);
+    return QPacketAutoSend( this );
 }
 
 /*!
@@ -201,20 +204,21 @@ QPacketAutoSend QPacketProtocol::send()
 
   Transmit the \a packet.
  */
-void QPacketProtocol::send(const QPacket &p)
+void QPacketProtocol::send( const QPacket &p )
 {
-   if (p.b.isEmpty()) {
-      return;   // We don't send empty packets
-   }
+    if ( p.b.isEmpty() )
+    {
+        return;   // We don't send empty packets
+    }
 
-   qint64 sendSize = p.b.size() + sizeof(qint32);
+    qint64 sendSize = p.b.size() + sizeof( qint32 );
 
-   d->sendingPackets.append(sendSize);
-   qint32 sendSize32 = sendSize;
-   qint64 writeBytes = d->dev->write((char *)&sendSize32, sizeof(qint32));
-   Q_ASSERT(writeBytes == sizeof(qint32));
-   writeBytes = d->dev->write(p.b);
-   Q_ASSERT(writeBytes == p.b.size());
+    d->sendingPackets.append( sendSize );
+    qint32 sendSize32 = sendSize;
+    qint64 writeBytes = d->dev->write( ( char * )&sendSize32, sizeof( qint32 ) );
+    Q_ASSERT( writeBytes == sizeof( qint32 ) );
+    writeBytes = d->dev->write( p.b );
+    Q_ASSERT( writeBytes == p.b.size() );
 }
 
 /*!
@@ -222,7 +226,7 @@ void QPacketProtocol::send(const QPacket &p)
   */
 qint64 QPacketProtocol::packetsAvailable() const
 {
-   return d->packets.count();
+    return d->packets.count();
 }
 
 /*!
@@ -230,7 +234,7 @@ qint64 QPacketProtocol::packetsAvailable() const
   */
 void QPacketProtocol::clear()
 {
-   d->packets.clear();
+    d->packets.clear();
 }
 
 /*!
@@ -239,27 +243,29 @@ void QPacketProtocol::clear()
   */
 QPacket QPacketProtocol::read()
 {
-   if (0 == d->packets.count()) {
-      return QPacket();
-   }
+    if ( 0 == d->packets.count() )
+    {
+        return QPacket();
+    }
 
-   QPacket rv(d->packets.at(0));
-   d->packets.removeFirst();
-   return rv;
+    QPacket rv( d->packets.at( 0 ) );
+    d->packets.removeFirst();
+    return rv;
 }
 
 /*
    Returns the difference between msecs and elapsed. If msecs is -1,
    however, -1 is returned.
 */
-static int qt_timeout_value(int msecs, int elapsed)
+static int qt_timeout_value( int msecs, int elapsed )
 {
-   if (msecs == -1) {
-      return -1;
-   }
+    if ( msecs == -1 )
+    {
+        return -1;
+    }
 
-   int timeout = msecs - elapsed;
-   return timeout < 0 ? 0 : timeout;
+    int timeout = msecs - elapsed;
+    return timeout < 0 ? 0 : timeout;
 }
 
 /*!
@@ -273,25 +279,33 @@ static int qt_timeout_value(int msecs, int elapsed)
   (if an error occurred or the operation timed out).
   */
 
-bool QPacketProtocol::waitForReadyRead(int msecs)
+bool QPacketProtocol::waitForReadyRead( int msecs )
 {
-   if (!d->packets.isEmpty()) {
-      return true;
-   }
+    if ( !d->packets.isEmpty() )
+    {
+        return true;
+    }
 
-   QElapsedTimer stopWatch;
-   stopWatch.start();
+    QElapsedTimer stopWatch;
+    stopWatch.start();
 
-   d->waitingForPacket = true;
-   do {
-      if (!d->dev->waitForReadyRead(msecs)) {
-         return false;
-      }
-      if (!d->waitingForPacket) {
-         return true;
-      }
-      msecs = qt_timeout_value(msecs, stopWatch.elapsed());
-   } while (true);
+    d->waitingForPacket = true;
+
+    do
+    {
+        if ( !d->dev->waitForReadyRead( msecs ) )
+        {
+            return false;
+        }
+
+        if ( !d->waitingForPacket )
+        {
+            return true;
+        }
+
+        msecs = qt_timeout_value( msecs, stopWatch.elapsed() );
+    }
+    while ( true );
 }
 
 /*!
@@ -299,7 +313,7 @@ bool QPacketProtocol::waitForReadyRead(int msecs)
 */
 QIODevice *QPacketProtocol::device()
 {
-   return d->dev;
+    return d->dev;
 }
 
 /*!
@@ -372,12 +386,12 @@ QIODevice *QPacketProtocol::device()
   Constructs an empty write-only packet.
   */
 QPacket::QPacket()
-   : QDataStream(), buf(0)
+    : QDataStream(), buf( 0 )
 {
-   buf = new QBuffer(&b);
-   buf->open(QIODevice::WriteOnly);
-   setDevice(buf);
-   setVersion(QDataStream::CS_1_7);
+    buf = new QBuffer( &b );
+    buf->open( QIODevice::WriteOnly );
+    setDevice( buf );
+    setVersion( QDataStream::CS_1_7 );
 }
 
 /*!
@@ -385,33 +399,34 @@ QPacket::QPacket()
   */
 QPacket::~QPacket()
 {
-   if (buf) {
-      delete buf;
-      buf = 0;
-   }
+    if ( buf )
+    {
+        delete buf;
+        buf = 0;
+    }
 }
 
 /*!
   Creates a copy of \a other.  The initial stream positions are shared, but the
   two packets are otherwise independent.
  */
-QPacket::QPacket(const QPacket &other)
-   : QDataStream(), b(other.b), buf(0)
+QPacket::QPacket( const QPacket &other )
+    : QDataStream(), b( other.b ), buf( 0 )
 {
-   buf = new QBuffer(&b);
-   buf->open(other.buf->openMode());
-   setDevice(buf);
+    buf = new QBuffer( &b );
+    buf->open( other.buf->openMode() );
+    setDevice( buf );
 }
 
 /*!
   \internal
   */
-QPacket::QPacket(const QByteArray &ba)
-   : QDataStream(), b(ba), buf(0)
+QPacket::QPacket( const QByteArray &ba )
+    : QDataStream(), b( ba ), buf( 0 )
 {
-   buf = new QBuffer(&b);
-   buf->open(QIODevice::ReadOnly);
-   setDevice(buf);
+    buf = new QBuffer( &b );
+    buf->open( QIODevice::ReadOnly );
+    setDevice( buf );
 }
 
 /*!
@@ -419,7 +434,7 @@ QPacket::QPacket(const QByteArray &ba)
   */
 bool QPacket::isEmpty() const
 {
-   return b.isEmpty();
+    return b.isEmpty();
 }
 
 /*!
@@ -427,7 +442,7 @@ bool QPacket::isEmpty() const
   */
 QByteArray QPacket::data() const
 {
-   return b;
+    return b;
 }
 
 /*!
@@ -448,11 +463,11 @@ QByteArray QPacket::data() const
  */
 void QPacket::clear()
 {
-   QBuffer::OpenMode oldMode = buf->openMode();
-   buf->close();
-   b.clear();
-   buf->setBuffer(&b); // reset QBuffer internals with new size of b.
-   buf->open(oldMode);
+    QBuffer::OpenMode oldMode = buf->openMode();
+    buf->close();
+    b.clear();
+    buf->setBuffer( &b ); // reset QBuffer internals with new size of b.
+    buf->open( oldMode );
 }
 
 /*!
@@ -461,90 +476,110 @@ void QPacket::clear()
 
   \internal
   */
-QPacketAutoSend::QPacketAutoSend(QPacketProtocol *_p)
-   : QPacket(), p(_p)
+QPacketAutoSend::QPacketAutoSend( QPacketProtocol *_p )
+    : QPacket(), p( _p )
 {
 }
 
 QPacketAutoSend::~QPacketAutoSend()
 {
-   if (!b.isEmpty()) {
-      p->send(*this);
-   }
+    if ( !b.isEmpty() )
+    {
+        p->send( *this );
+    }
 }
 
 void QPacketProtocolPrivate::aboutToClose()
 {
-   inProgress.clear();
-   sendingPackets.clear();
-   inProgressSize = -1;
+    inProgress.clear();
+    sendingPackets.clear();
+    inProgressSize = -1;
 }
 
-void QPacketProtocolPrivate::bytesWritten(qint64 bytes)
+void QPacketProtocolPrivate::bytesWritten( qint64 bytes )
 {
-   Q_ASSERT(!sendingPackets.isEmpty());
+    Q_ASSERT( !sendingPackets.isEmpty() );
 
-   while (bytes) {
-      if (sendingPackets.at(0) > bytes) {
-         sendingPackets[0] -= bytes;
-         bytes = 0;
+    while ( bytes )
+    {
+        if ( sendingPackets.at( 0 ) > bytes )
+        {
+            sendingPackets[0] -= bytes;
+            bytes = 0;
 
-      } else {
-         bytes -= sendingPackets.at(0);
-         sendingPackets.removeFirst();
-         emit packetWritten();
-      }
-   }
+        }
+        else
+        {
+            bytes -= sendingPackets.at( 0 );
+            sendingPackets.removeFirst();
+            emit packetWritten();
+        }
+    }
 }
 
 void QPacketProtocolPrivate::readyToRead()
 {
-   bool gotPackets = false;
+    bool gotPackets = false;
 
-   while (true) {
-      // Get size header (if not in progress)
-      if (-1 == inProgressSize) {
-         // We need a size header of sizeof(qint32)
-         if (sizeof(qint32) > (uint)dev->bytesAvailable()) {
-            if (gotPackets) {
-               emit readyRead();
+    while ( true )
+    {
+        // Get size header (if not in progress)
+        if ( -1 == inProgressSize )
+        {
+            // We need a size header of sizeof(qint32)
+            if ( sizeof( qint32 ) > ( uint )dev->bytesAvailable() )
+            {
+                if ( gotPackets )
+                {
+                    emit readyRead();
+                }
+
+                return; // no more data available
             }
-            return; // no more data available
-         }
 
-         // Read size header
-         int read = dev->read((char *)&inProgressSize, sizeof(qint32));
-         Q_ASSERT(read == sizeof(qint32));
-         Q_UNUSED(read);
+            // Read size header
+            int read = dev->read( ( char * )&inProgressSize, sizeof( qint32 ) );
+            Q_ASSERT( read == sizeof( qint32 ) );
+            Q_UNUSED( read );
 
-         // Check sizing constraints
-         if (inProgressSize > maxPacketSize) {
-            QObject::disconnect(dev, SIGNAL(readyRead()), this, SLOT(readyToRead()));
-            QObject::disconnect(dev, SIGNAL(aboutToClose()), this, SLOT(aboutToClose()));
-            QObject::disconnect(dev, SIGNAL(bytesWritten(qint64)), this, SLOT(bytesWritten(qint64)));
-            dev = 0;
-            emit invalidPacket();
-            return;
-         }
-         inProgressSize -= sizeof(qint32);
-
-      } else {
-         inProgress.append(dev->read(inProgressSize - inProgress.size()));
-         if (inProgressSize == inProgress.size()) {
-            // Packet has arrived!
-            packets.append(inProgress);
-            inProgressSize = -1;
-            inProgress.clear();
-            waitingForPacket = false;
-            gotPackets = true;
-         } else {
-            if (gotPackets) {
-               emit readyRead();
+            // Check sizing constraints
+            if ( inProgressSize > maxPacketSize )
+            {
+                QObject::disconnect( dev, SIGNAL( readyRead() ), this, SLOT( readyToRead() ) );
+                QObject::disconnect( dev, SIGNAL( aboutToClose() ), this, SLOT( aboutToClose() ) );
+                QObject::disconnect( dev, SIGNAL( bytesWritten( qint64 ) ), this, SLOT( bytesWritten( qint64 ) ) );
+                dev = 0;
+                emit invalidPacket();
+                return;
             }
-            return; // packet in progress is not yet complete
-         }
-      }
-   }
+
+            inProgressSize -= sizeof( qint32 );
+
+        }
+        else
+        {
+            inProgress.append( dev->read( inProgressSize - inProgress.size() ) );
+
+            if ( inProgressSize == inProgress.size() )
+            {
+                // Packet has arrived!
+                packets.append( inProgress );
+                inProgressSize = -1;
+                inProgress.clear();
+                waitingForPacket = false;
+                gotPackets = true;
+            }
+            else
+            {
+                if ( gotPackets )
+                {
+                    emit readyRead();
+                }
+
+                return; // packet in progress is not yet complete
+            }
+        }
+    }
 }
 
 QT_END_NAMESPACE

@@ -26,20 +26,22 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLBRElement : public HTMLElement {
+class HTMLBRElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLBRElement> create(Document*);
-    static PassRefPtr<HTMLBRElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLBRElement> create( Document * );
+    static PassRefPtr<HTMLBRElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLBRElement(const QualifiedName&, Document*);
+    HTMLBRElement( const QualifiedName &, Document * );
 
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
-    
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
+
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 };
 
 } // namespace

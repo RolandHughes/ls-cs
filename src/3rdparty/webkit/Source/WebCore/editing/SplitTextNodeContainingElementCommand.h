@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SplitTextNodeContainingElementCommand_h
@@ -28,17 +28,19 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SplitTextNodeContainingElementCommand : public CompositeEditCommand {
+class SplitTextNodeContainingElementCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<SplitTextNodeContainingElementCommand> create(PassRefPtr<Text> node, int offset)
+    static PassRefPtr<SplitTextNodeContainingElementCommand> create( PassRefPtr<Text> node, int offset )
     {
-        return adoptRef(new SplitTextNodeContainingElementCommand(node, offset));
+        return adoptRef( new SplitTextNodeContainingElementCommand( node, offset ) );
     }
 
 private:
-    SplitTextNodeContainingElementCommand(PassRefPtr<Text>, int offset);
+    SplitTextNodeContainingElementCommand( PassRefPtr<Text>, int offset );
 
     virtual void doApply();
 

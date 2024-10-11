@@ -27,12 +27,14 @@
 
 #include "SoftLinking.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if OS(WINCE)
-SOFT_LINK_LIBRARY(coredll)
-SOFT_LINK_OPTIONAL(coredll, AlphaBlend, BOOL, APIENTRY, (HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, HDC hdcSrc,
-                                                         int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction))
+SOFT_LINK_LIBRARY( coredll )
+SOFT_LINK_OPTIONAL( coredll, AlphaBlend, BOOL, APIENTRY, ( HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest,
+                    int nHeightDest, HDC hdcSrc,
+                    int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction ) )
 
 AlphaBlendPointerType AlphaBlendPointer()
 {

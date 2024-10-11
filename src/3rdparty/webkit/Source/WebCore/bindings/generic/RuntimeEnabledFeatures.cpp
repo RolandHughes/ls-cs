@@ -40,7 +40,8 @@
 #include "AsyncFileSystem.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 bool RuntimeEnabledFeatures::isLocalStorageEnabled = true;
 bool RuntimeEnabledFeatures::isSessionStorageEnabled = true;

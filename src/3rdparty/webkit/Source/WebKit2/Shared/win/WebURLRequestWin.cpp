@@ -26,10 +26,11 @@
 #include "config.h"
 #include "WebURLRequest.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebURLRequest::WebURLRequest(PlatformRequest platformRequest)
-    : m_request(platformRequest)
+WebURLRequest::WebURLRequest( PlatformRequest platformRequest )
+    : m_request( platformRequest )
 {
 }
 

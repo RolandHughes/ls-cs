@@ -33,94 +33,97 @@ class QPageLayoutPrivate;
 
 class Q_GUI_EXPORT QPageLayout
 {
- public:
-   using Unit = QPageSize::Unit;
+public:
+    using Unit = QPageSize::Unit;
 
-   enum Orientation  { Portrait, Landscape };
+    enum Orientation  { Portrait, Landscape };
 
-   enum Mode {
-      StandardMode,  // Paint Rect includes margins
-      FullPageMode   // Paint Rect excludes margins
-   };
+    enum Mode
+    {
+        StandardMode,  // Paint Rect includes margins
+        FullPageMode   // Paint Rect excludes margins
+    };
 
-   QPageLayout();
-   QPageLayout(const QPageSize &pageSize, Orientation orientation, const QMarginsF &margins, Unit units = QPageSize::Unit::Point,
-                  const QMarginsF &minMargins = QMarginsF(0, 0, 0, 0));
+    QPageLayout();
+    QPageLayout( const QPageSize &pageSize, Orientation orientation, const QMarginsF &margins, Unit units = QPageSize::Unit::Point,
+                 const QMarginsF &minMargins = QMarginsF( 0, 0, 0, 0 ) );
 
-   QPageLayout(const QPageLayout &other);
+    QPageLayout( const QPageLayout &other );
 
-   ~QPageLayout();
+    ~QPageLayout();
 
-   QPageLayout &operator=(QPageLayout &&other) {
-      swap(other);
-      return *this;
-   }
+    QPageLayout &operator=( QPageLayout &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QPageLayout &operator=(const QPageLayout &other);
+    QPageLayout &operator=( const QPageLayout &other );
 
-   friend Q_GUI_EXPORT bool operator==(const QPageLayout &lhs, const QPageLayout &rhs);
+    friend Q_GUI_EXPORT bool operator==( const QPageLayout &lhs, const QPageLayout &rhs );
 
-   bool isEquivalentTo(const QPageLayout &other) const;
+    bool isEquivalentTo( const QPageLayout &other ) const;
 
-   bool isValid() const;
+    bool isValid() const;
 
-   void swap(QPageLayout &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QPageLayout &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   void setMode(Mode mode);
-   Mode mode() const;
+    void setMode( Mode mode );
+    Mode mode() const;
 
-   void setPageSize(const QPageSize &pageSize, const QMarginsF &minMargins = QMarginsF(0, 0, 0, 0));
-   QPageSize pageSize() const;
+    void setPageSize( const QPageSize &pageSize, const QMarginsF &minMargins = QMarginsF( 0, 0, 0, 0 ) );
+    QPageSize pageSize() const;
 
-   void setOrientation(Orientation orientation);
-   Orientation orientation() const;
+    void setOrientation( Orientation orientation );
+    Orientation orientation() const;
 
-   void setUnits(QPageSize::Unit units);
-   QPageSize::Unit units() const;
+    void setUnits( QPageSize::Unit units );
+    QPageSize::Unit units() const;
 
-   bool setMargins(const QMarginsF &margins);
-   bool setLeftMargin(qreal leftMargin);
-   bool setRightMargin(qreal rightMargin);
-   bool setTopMargin(qreal topMargin);
-   bool setBottomMargin(qreal bottomMargin);
+    bool setMargins( const QMarginsF &margins );
+    bool setLeftMargin( qreal leftMargin );
+    bool setRightMargin( qreal rightMargin );
+    bool setTopMargin( qreal topMargin );
+    bool setBottomMargin( qreal bottomMargin );
 
-   QMarginsF margins() const;
-   QMarginsF margins(Unit units) const;
+    QMarginsF margins() const;
+    QMarginsF margins( Unit units ) const;
 
-   QMargins marginsPoints() const;
-   QMargins marginsPixels(int resolution) const;
+    QMargins marginsPoints() const;
+    QMargins marginsPixels( int resolution ) const;
 
-   void setMinimumMargins(const QMarginsF &minMargins);
-   QMarginsF minimumMargins() const;
-   QMarginsF maximumMargins() const;
+    void setMinimumMargins( const QMarginsF &minMargins );
+    QMarginsF minimumMargins() const;
+    QMarginsF maximumMargins() const;
 
-   QRectF fullRect() const;
-   QRectF fullRect(Unit units) const;
-   QRect fullRectPoints() const;
-   QRect fullRectPixels(int resolution) const;
+    QRectF fullRect() const;
+    QRectF fullRect( Unit units ) const;
+    QRect fullRectPoints() const;
+    QRect fullRectPixels( int resolution ) const;
 
-   QRectF paintRect() const;
-   QRectF paintRect(Unit units) const;
-   QRect paintRectPoints() const;
-   QRect paintRectPixels(int resolution) const;
+    QRectF paintRect() const;
+    QRectF paintRect( Unit units ) const;
+    QRect paintRectPoints() const;
+    QRect paintRectPixels( int resolution ) const;
 
- private:
-   QExplicitlySharedDataPointer<QPageLayoutPrivate> d;
+private:
+    QExplicitlySharedDataPointer<QPageLayoutPrivate> d;
 
-   friend class QPageLayoutPrivate;
+    friend class QPageLayoutPrivate;
 };
 
-Q_GUI_EXPORT bool operator==(const QPageLayout &lhs, const QPageLayout &rhs);
+Q_GUI_EXPORT bool operator==( const QPageLayout &lhs, const QPageLayout &rhs );
 
-inline bool operator!=(const QPageLayout &lhs, const QPageLayout &rhs)
+inline bool operator!=( const QPageLayout &lhs, const QPageLayout &rhs )
 {
-   return !operator==(lhs, rhs);
+    return !operator==( lhs, rhs );
 }
 
-Q_GUI_EXPORT QDebug operator<<(QDebug dbg, const QPageLayout &pageLayout);
+Q_GUI_EXPORT QDebug operator<<( QDebug dbg, const QPageLayout &pageLayout );
 
-CS_DECLARE_METATYPE(QPageLayout)
+LSCS_DECLARE_METATYPE( QPageLayout )
 
 #endif

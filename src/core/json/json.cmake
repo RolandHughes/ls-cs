@@ -20,7 +20,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/json/qjsonwriter_p.h
 )
 
-target_sources(CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/json/qjson.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/json/qjsonarray.cpp

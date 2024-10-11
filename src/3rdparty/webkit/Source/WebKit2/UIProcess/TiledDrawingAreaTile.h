@@ -38,39 +38,56 @@
 #include <QRegion>
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
 class TiledDrawingAreaProxy;
 class UpdateChunk;
 
-class TiledDrawingAreaTile : public RefCounted<TiledDrawingAreaTile> {
+class TiledDrawingAreaTile : public RefCounted<TiledDrawingAreaTile>
+{
 public:
     typedef WebCore::IntPoint Coordinate;
 
-    static PassRefPtr<TiledDrawingAreaTile> create(TiledDrawingAreaProxy* proxy, const Coordinate& tileCoordinate) { return adoptRef(new TiledDrawingAreaTile(proxy, tileCoordinate)); }
+    static PassRefPtr<TiledDrawingAreaTile> create( TiledDrawingAreaProxy *proxy, const Coordinate &tileCoordinate )
+    {
+        return adoptRef( new TiledDrawingAreaTile( proxy, tileCoordinate ) );
+    }
     ~TiledDrawingAreaTile();
 
     bool isDirty() const;
-    void invalidate(const WebCore::IntRect&);
+    void invalidate( const WebCore::IntRect & );
     void updateBackBuffer();
     bool hasReadyBackBuffer() const;
     void swapBackBufferToFront();
     bool isReadyToPaint() const;
-    void paint(WebCore::GraphicsContext*, const WebCore::IntRect&);
-    bool hasBackBufferUpdatePending() const { return m_hasUpdatePending; }
+    void paint( WebCore::GraphicsContext *, const WebCore::IntRect & );
+    bool hasBackBufferUpdatePending() const
+    {
+        return m_hasUpdatePending;
+    }
 
-    const TiledDrawingAreaTile::Coordinate& coordinate() const { return m_coordinate; }
-    const WebCore::IntRect& rect() const { return m_rect; }
-    void resize(const WebCore::IntSize&);
+    const TiledDrawingAreaTile::Coordinate &coordinate() const
+    {
+        return m_coordinate;
+    }
+    const WebCore::IntRect &rect() const
+    {
+        return m_rect;
+    }
+    void resize( const WebCore::IntSize & );
 
-    void updateFromChunk(UpdateChunk* updateChunk, float);
+    void updateFromChunk( UpdateChunk *updateChunk, float );
 
-    int ID() const { return m_ID; }
+    int ID() const
+    {
+        return m_ID;
+    }
 
 private:
-    TiledDrawingAreaTile(TiledDrawingAreaProxy* proxy, const TiledDrawingAreaTile::Coordinate& tileCoordinate);
+    TiledDrawingAreaTile( TiledDrawingAreaProxy *proxy, const TiledDrawingAreaTile::Coordinate &tileCoordinate );
 
-    TiledDrawingAreaProxy* m_proxy;
+    TiledDrawingAreaProxy *m_proxy;
     Coordinate m_coordinate;
     WebCore::IntRect m_rect;
 

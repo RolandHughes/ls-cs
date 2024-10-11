@@ -29,7 +29,8 @@
 #ifndef URLBuffer_h
 #define URLBuffer_h
 
-namespace WTF {
+namespace WTF
+{
 
 // Base class for the canonicalizer output, this maintains a buffer and
 // supports simple resizing and append operations on it.
@@ -40,9 +41,10 @@ namespace WTF {
 // The derived class is then in charge of setting up our buffer which we will
 // manage.
 template<typename CHAR>
-class URLBuffer {
+class URLBuffer
+{
 public:
-    URLBuffer() : m_buffer(0), m_capacity(0), m_length(0) { }
+    URLBuffer() : m_buffer( 0 ), m_capacity( 0 ), m_length( 0 ) { }
     virtual ~URLBuffer() { }
 
     // Implemented to resize the buffer. This function should update the buffer
@@ -50,10 +52,13 @@ public:
     // the buffer must be copied over.
     //
     // The new size must be larger than m_capacity.
-    virtual void resize(int) = 0;
+    virtual void resize( int ) = 0;
 
-    inline char at(int offset) const { return m_buffer[offset]; }
-    inline void set(int offset, CHAR ch)
+    inline char at( int offset ) const
+    {
+        return m_buffer[offset];
+    }
+    inline void set( int offset, CHAR ch )
     {
         // FIXME: Add ASSERT(offset < length());
         m_buffer[offset] = ch;
@@ -64,18 +69,30 @@ public:
     // the number that can be written without reallocation. If the caller must
     // write many characters at once, it can make sure there is enough capacity,
     // write the data, then use setLength() to declare the new length().
-    int capacity() const { return m_capacity; }
-    int length() const { return m_length; }
+    int capacity() const
+    {
+        return m_capacity;
+    }
+    int length() const
+    {
+        return m_length;
+    }
 
     // The output will NOT be 0-terminated. Call length() to get the length.
-    const CHAR* data() const { return m_buffer; }
-    CHAR* data() { return m_buffer; }
+    const CHAR *data() const
+    {
+        return m_buffer;
+    }
+    CHAR *data()
+    {
+        return m_buffer;
+    }
 
     // Shortens the URL to the new length. Used for "backing up" when processing
     // relative paths. This can also be used if an external function writes a lot
     // of data to the buffer (when using the "Raw" version below) beyond the end,
     // to declare the new length.
-    void setLength(int length)
+    void setLength( int length )
     {
         // FIXME: Add ASSERT(length < capacity());
         m_length = length;
@@ -83,50 +100,67 @@ public:
 
     // This is the most performance critical function, since it is called for
     // every character.
-    void append(CHAR ch)
+    void append( CHAR ch )
     {
         // In VC2005, putting this common case first speeds up execution
         // dramatically because this branch is predicted as taken.
-        if (m_length < m_capacity) {
+        if ( m_length < m_capacity )
+        {
             m_buffer[m_length] = ch;
             ++m_length;
             return;
         }
 
-        if (!grow(1))
+        if ( !grow( 1 ) )
+        {
             return;
+        }
 
         m_buffer[m_length] = ch;
         ++m_length;
     }
 
-    void append(const CHAR* str, int strLength)
+    void append( const CHAR *str, int strLength )
     {
-        if (m_length + strLength > m_capacity) {
-            if (!grow(m_length + strLength - m_capacity))
+        if ( m_length + strLength > m_capacity )
+        {
+            if ( !grow( m_length + strLength - m_capacity ) )
+            {
                 return;
+            }
         }
-        for (int i = 0; i < strLength; i++)
+
+        for ( int i = 0; i < strLength; i++ )
+        {
             m_buffer[m_length + i] = str[i];
+        }
+
         m_length += strLength;
     }
 
 protected:
     // Returns true if the buffer could be resized, false on OOM.
-    bool grow(int minimumAdditionalCapacity)
+    bool grow( int minimumAdditionalCapacity )
     {
         static const int minimumCapacity = 16;
         int newCapacity = m_capacity ? m_capacity : minimumCapacity;
-        do {
-            if (newCapacity >= (1 << 30)) // Prevent overflow below.
+
+        do
+        {
+            if ( newCapacity >= ( 1 << 30 ) ) // Prevent overflow below.
+            {
                 return false;
+            }
+
             newCapacity *= 2;
-        } while (newCapacity < m_capacity + minimumAdditionalCapacity);
-        resize(newCapacity);
+        }
+        while ( newCapacity < m_capacity + minimumAdditionalCapacity );
+
+        resize( newCapacity );
         return true;
     }
 
-    CHAR* m_buffer;
+    CHAR *m_buffer;
     int m_capacity;
     int m_length; // Used characters in the buffer.
 };

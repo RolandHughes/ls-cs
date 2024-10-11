@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WTF_StdLibExtras_h
@@ -52,30 +52,32 @@
 #define STRINGIZE(exp) #exp
 #define STRINGIZE_VALUE_OF(exp) STRINGIZE(exp)
 
-namespace WTF {
+namespace WTF
+{
 
-    /*
-     * C++'s idea of a reinterpret_cast lacks sufficient cojones.
-     */
-    template<typename TO, typename FROM>
-    TO bitwise_cast(FROM from)
+/*
+ * C++'s idea of a reinterpret_cast lacks sufficient cojones.
+ */
+template<typename TO, typename FROM>
+TO bitwise_cast( FROM from )
+{
+    COMPILE_ASSERT( sizeof( TO ) == sizeof( FROM ), WTF_bitwise_cast_sizeof_casted_types_is_equal );
+    union
     {
-        COMPILE_ASSERT(sizeof(TO) == sizeof(FROM), WTF_bitwise_cast_sizeof_casted_types_is_equal);
-        union {
-            FROM from;
-            TO to;
-        } u;
-        u.from = from;
-        return u.to;
-    }
+        FROM from;
+        TO to;
+    } u;
+    u.from = from;
+    return u.to;
+}
 
-    // Returns a count of the number of bits set in 'bits'.
-    inline size_t bitCount(unsigned bits)
-    {
-        bits = bits - ((bits >> 1) & 0x55555555);
-        bits = (bits & 0x33333333) + ((bits >> 2) & 0x33333333);
-        return (((bits + (bits >> 4)) & 0xF0F0F0F) * 0x1010101) >> 24;
-    }
+// Returns a count of the number of bits set in 'bits'.
+inline size_t bitCount( unsigned bits )
+{
+    bits = bits - ( ( bits >> 1 ) & 0x55555555 );
+    bits = ( bits & 0x33333333 ) + ( ( bits >> 2 ) & 0x33333333 );
+    return ( ( ( bits + ( bits >> 4 ) ) & 0xF0F0F0F ) * 0x1010101 ) >> 24;
+}
 
 } // namespace WTF
 

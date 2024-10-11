@@ -31,24 +31,27 @@
 #include <WebCore/npruntime_internal.h>
 #include <wtf/text/CString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 // The CoreIPC representation of an NPIdentifier.
 
-class NPIdentifierData {
+class NPIdentifierData
+{
 public:
     NPIdentifierData();
-    
-    static NPIdentifierData fromNPIdentifier(NPIdentifier);
+
+    static NPIdentifierData fromNPIdentifier( NPIdentifier );
     NPIdentifier createNPIdentifier() const;
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, NPIdentifierData&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, NPIdentifierData & );
 
 private:
     bool m_isString;
@@ -59,5 +62,5 @@ private:
 } // namespace WebKit
 
 #endif // ENABLE(PLUGIN_PROCESS)
-    
+
 #endif // NPIdentifierData_h

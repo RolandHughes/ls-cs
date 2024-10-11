@@ -30,32 +30,33 @@
 
 class QWidgetItemData
 {
- public:
-   inline QWidgetItemData() : role(-1) {}
-   inline QWidgetItemData(int r, QVariant v) : role(r), value(v) {}
+public:
+    inline QWidgetItemData() : role( -1 ) {}
+    inline QWidgetItemData( int r, QVariant v ) : role( r ), value( v ) {}
 
-   int role;
-   QVariant value;
+    int role;
+    QVariant value;
 
-   bool operator==(const QWidgetItemData &other) const {
-      return role == other.role && value == other.value;
-   }
+    bool operator==( const QWidgetItemData &other ) const
+    {
+        return role == other.role && value == other.value;
+    }
 };
 
 
 
-inline QDataStream &operator>>(QDataStream &in, QWidgetItemData &data)
+inline QDataStream &operator>>( QDataStream &in, QWidgetItemData &data )
 {
-   in >> data.role;
-   in >> data.value;
-   return in;
+    in >> data.role;
+    in >> data.value;
+    return in;
 }
 
-inline QDataStream &operator<<(QDataStream &out, const QWidgetItemData &data)
+inline QDataStream &operator<<( QDataStream &out, const QWidgetItemData &data )
 {
-   out << data.role;
-   out << data.value;
-   return out;
+    out << data.role;
+    out << data.value;
+    return out;
 }
 
 

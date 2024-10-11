@@ -28,17 +28,17 @@ class QAudioDeviceControl;
 
 class QMediaServicePrivate
 {
- public:
-   QMediaServicePrivate()
-      : q_ptr(nullptr)
-   {
-   }
+public:
+    QMediaServicePrivate()
+        : q_ptr( nullptr )
+    {
+    }
 
-   virtual ~QMediaServicePrivate()
-   {
-   }
+    virtual ~QMediaServicePrivate()
+    {
+    }
 
-   QMediaService *q_ptr;
+    QMediaService *q_ptr;
 };
 
 #endif

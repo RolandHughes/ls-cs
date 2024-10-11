@@ -32,19 +32,20 @@
 //  QCompleter which can deal with QFileSystemModel
 class QFSCompleter :  public QCompleter
 {
- public:
-   explicit QFSCompleter(QFileSystemModel *model, QObject *parent = nullptr)
-      : QCompleter(model, parent), proxyModel(nullptr), sourceModel(model) {
+public:
+    explicit QFSCompleter( QFileSystemModel *model, QObject *parent = nullptr )
+        : QCompleter( model, parent ), proxyModel( nullptr ), sourceModel( model )
+    {
 #if defined(Q_OS_WIN)
-      setCaseSensitivity(Qt::CaseInsensitive);
+        setCaseSensitivity( Qt::CaseInsensitive );
 #endif
-   }
+    }
 
-   QString pathFromIndex(const QModelIndex &index) const override;
-   QStringList splitPath(const QString &path) const override;
+    QString pathFromIndex( const QModelIndex &index ) const override;
+    QStringList splitPath( const QString &path ) const override;
 
-   QAbstractProxyModel *proxyModel;
-   QFileSystemModel *sourceModel;
+    QAbstractProxyModel *proxyModel;
+    QFileSystemModel *sourceModel;
 };
 
 #endif // QT_NO_FSCOMPLETER

@@ -34,73 +34,102 @@
 #include "Interpreter.h"
 #include "Parser.h"
 
-namespace JSC {
-
-const UString* DebuggerCallFrame::functionName() const
+namespace JSC
 {
-    if (!m_callFrame->codeBlock())
-        return 0;
 
-    if (!m_callFrame->callee())
+const UString *DebuggerCallFrame::functionName() const
+{
+    if ( !m_callFrame->codeBlock() )
+    {
         return 0;
+    }
 
-    JSObject* function = m_callFrame->callee();
-    if (!function || !function->inherits(&JSFunction::s_info))
+    if ( !m_callFrame->callee() )
+    {
         return 0;
-    return &asFunction(function)->name(m_callFrame);
+    }
+
+    JSObject *function = m_callFrame->callee();
+
+    if ( !function || !function->inherits( &JSFunction::s_info ) )
+    {
+        return 0;
+    }
+
+    return &asFunction( function )->name( m_callFrame );
 }
-    
+
 UString DebuggerCallFrame::calculatedFunctionName() const
 {
-    if (!m_callFrame->codeBlock())
+    if ( !m_callFrame->codeBlock() )
+    {
         return UString();
+    }
 
-    JSObject* function = m_callFrame->callee();
-    if (!function || !function->inherits(&JSFunction::s_info))
+    JSObject *function = m_callFrame->callee();
+
+    if ( !function || !function->inherits( &JSFunction::s_info ) )
+    {
         return UString();
+    }
 
-    return asFunction(function)->calculatedDisplayName(m_callFrame);
+    return asFunction( function )->calculatedDisplayName( m_callFrame );
 }
 
 DebuggerCallFrame::Type DebuggerCallFrame::type() const
 {
-    if (m_callFrame->callee())
+    if ( m_callFrame->callee() )
+    {
         return FunctionType;
+    }
 
     return ProgramType;
 }
 
-JSObject* DebuggerCallFrame::thisObject() const
+JSObject *DebuggerCallFrame::thisObject() const
 {
-    CodeBlock* codeBlock = m_callFrame->codeBlock();
-    if (!codeBlock)
-        return 0;
+    CodeBlock *codeBlock = m_callFrame->codeBlock();
 
-    JSValue thisValue = m_callFrame->uncheckedR(codeBlock->thisRegister()).jsValue();
-    if (!thisValue.isObject())
+    if ( !codeBlock )
+    {
         return 0;
+    }
 
-    return asObject(thisValue);
+    JSValue thisValue = m_callFrame->uncheckedR( codeBlock->thisRegister() ).jsValue();
+
+    if ( !thisValue.isObject() )
+    {
+        return 0;
+    }
+
+    return asObject( thisValue );
 }
 
-JSValue DebuggerCallFrame::evaluate(const UString& script, JSValue& exception) const
+JSValue DebuggerCallFrame::evaluate( const UString &script, JSValue &exception ) const
 {
-    if (!m_callFrame->codeBlock())
+    if ( !m_callFrame->codeBlock() )
+    {
         return JSValue();
-    
-    JSGlobalData& globalData = m_callFrame->globalData();
-    EvalExecutable* eval = EvalExecutable::create(m_callFrame, makeSource(script), m_callFrame->codeBlock()->isStrictMode());
-    if (globalData.exception) {
+    }
+
+    JSGlobalData &globalData = m_callFrame->globalData();
+    EvalExecutable *eval = EvalExecutable::create( m_callFrame, makeSource( script ), m_callFrame->codeBlock()->isStrictMode() );
+
+    if ( globalData.exception )
+    {
         exception = globalData.exception;
         globalData.exception = JSValue();
     }
 
-    JSValue result = globalData.interpreter->execute(eval, m_callFrame, thisObject(), m_callFrame->scopeChain());
-    if (globalData.exception) {
+    JSValue result = globalData.interpreter->execute( eval, m_callFrame, thisObject(), m_callFrame->scopeChain() );
+
+    if ( globalData.exception )
+    {
         exception = globalData.exception;
         globalData.exception = JSValue();
     }
-    ASSERT(result);
+
+    ASSERT( result );
     return result;
 }
 

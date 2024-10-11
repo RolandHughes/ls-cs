@@ -27,14 +27,14 @@
 
 class QScriptClassPropertyIteratorPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptClassPropertyIterator)
- public:
-   QScriptClassPropertyIteratorPrivate() {}
-   virtual ~QScriptClassPropertyIteratorPrivate() {}
+    Q_DECLARE_PUBLIC( QScriptClassPropertyIterator )
+public:
+    QScriptClassPropertyIteratorPrivate() {}
+    virtual ~QScriptClassPropertyIteratorPrivate() {}
 
-   QScriptValue object;
+    QScriptValue object;
 
-   QScriptClassPropertyIterator *q_ptr;
+    QScriptClassPropertyIterator *q_ptr;
 };
 
 /*!
@@ -43,22 +43,22 @@ class QScriptClassPropertyIteratorPrivate
   Subclasses should ensure that the iterator is set to the front of the
   sequence of properties (before the first property).
 */
-QScriptClassPropertyIterator::QScriptClassPropertyIterator(const QScriptValue &object)
-   : d_ptr(new QScriptClassPropertyIteratorPrivate)
+QScriptClassPropertyIterator::QScriptClassPropertyIterator( const QScriptValue &object )
+    : d_ptr( new QScriptClassPropertyIteratorPrivate )
 {
-   d_ptr->q_ptr = this;
-   d_ptr->object = object;
+    d_ptr->q_ptr = this;
+    d_ptr->object = object;
 }
 
 /*!
   \internal
 */
-QScriptClassPropertyIterator::QScriptClassPropertyIterator(const QScriptValue &object,
-   QScriptClassPropertyIteratorPrivate &dd)
-   : d_ptr(&dd)
+QScriptClassPropertyIterator::QScriptClassPropertyIterator( const QScriptValue &object,
+        QScriptClassPropertyIteratorPrivate &dd )
+    : d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
-   d_ptr->object = object;
+    d_ptr->q_ptr = this;
+    d_ptr->object = object;
 }
 
 /*!
@@ -73,8 +73,8 @@ QScriptClassPropertyIterator::~QScriptClassPropertyIterator()
 */
 QScriptValue QScriptClassPropertyIterator::object() const
 {
-   Q_D(const QScriptClassPropertyIterator);
-   return d->object;
+    Q_D( const QScriptClassPropertyIterator );
+    return d->object;
 }
 
 /*!
@@ -158,7 +158,7 @@ QScriptValue QScriptClassPropertyIterator::object() const
 */
 uint QScriptClassPropertyIterator::id() const
 {
-   return 0;
+    return 0;
 }
 
 /*!
@@ -170,6 +170,6 @@ uint QScriptClassPropertyIterator::id() const
 */
 QScriptValue::PropertyFlags QScriptClassPropertyIterator::flags() const
 {
-   return object().propertyFlags(name());
+    return object().propertyFlags( name() );
 }
 

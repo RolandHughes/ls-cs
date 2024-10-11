@@ -36,44 +36,45 @@ class QDeclarativeEngine;
 
 class QDeclarativeIntegerCache : public QDeclarativeRefCount, public QDeclarativeCleanup
 {
- public:
-   QDeclarativeIntegerCache(QDeclarativeEngine *);
-   virtual ~QDeclarativeIntegerCache();
+public:
+    QDeclarativeIntegerCache( QDeclarativeEngine * );
+    virtual ~QDeclarativeIntegerCache();
 
-   inline int count() const;
-   void add(const QString &, int);
-   int value(const QString &);
-   QString findId(int value) const;
-   inline int value(const QScriptDeclarativeClass::Identifier &id) const;
+    inline int count() const;
+    void add( const QString &, int );
+    int value( const QString & );
+    QString findId( int value ) const;
+    inline int value( const QScriptDeclarativeClass::Identifier &id ) const;
 
- protected:
-   virtual void clear();
+protected:
+    virtual void clear();
 
- private:
-   struct Data : public QScriptDeclarativeClass::PersistentIdentifier {
-      Data(const QScriptDeclarativeClass::PersistentIdentifier &i, int v)
-         : QScriptDeclarativeClass::PersistentIdentifier(i), value(v) {}
+private:
+    struct Data : public QScriptDeclarativeClass::PersistentIdentifier
+    {
+        Data( const QScriptDeclarativeClass::PersistentIdentifier &i, int v )
+            : QScriptDeclarativeClass::PersistentIdentifier( i ), value( v ) {}
 
-      int value;
-   };
+        int value;
+    };
 
-   typedef QHash<QString, Data *> StringCache;
-   typedef QHash<QScriptDeclarativeClass::Identifier, Data *> IdentifierCache;
+    typedef QHash<QString, Data *> StringCache;
+    typedef QHash<QScriptDeclarativeClass::Identifier, Data *> IdentifierCache;
 
-   StringCache stringCache;
-   IdentifierCache identifierCache;
-   QDeclarativeEngine *engine;
+    StringCache stringCache;
+    IdentifierCache identifierCache;
+    QDeclarativeEngine *engine;
 };
 
-int QDeclarativeIntegerCache::value(const QScriptDeclarativeClass::Identifier &id) const
+int QDeclarativeIntegerCache::value( const QScriptDeclarativeClass::Identifier &id ) const
 {
-   Data *d = identifierCache.value(id);
-   return d ? d->value : -1;
+    Data *d = identifierCache.value( id );
+    return d ? d->value : -1;
 }
 
 int QDeclarativeIntegerCache::count() const
 {
-   return stringCache.count();
+    return stringCache.count();
 }
 
 QT_END_NAMESPACE

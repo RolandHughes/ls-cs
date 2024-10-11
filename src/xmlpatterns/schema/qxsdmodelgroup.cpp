@@ -26,31 +26,31 @@
 using namespace QPatternist;
 
 XsdModelGroup::XsdModelGroup()
-   : m_compositor(SequenceCompositor)
+    : m_compositor( SequenceCompositor )
 {
 }
 
 bool XsdModelGroup::isModelGroup() const
 {
-   return true;
+    return true;
 }
 
-void XsdModelGroup::setCompositor(ModelCompositor compositor)
+void XsdModelGroup::setCompositor( ModelCompositor compositor )
 {
-   m_compositor = compositor;
+    m_compositor = compositor;
 }
 
 XsdModelGroup::ModelCompositor XsdModelGroup::compositor() const
 {
-   return m_compositor;
+    return m_compositor;
 }
 
-void XsdModelGroup::setParticles(const XsdParticle::List &particles)
+void XsdModelGroup::setParticles( const XsdParticle::List &particles )
 {
-   m_particles = particles;
+    m_particles = particles;
 }
 
 XsdParticle::List XsdModelGroup::particles() const
 {
-   return m_particles;
+    return m_particles;
 }

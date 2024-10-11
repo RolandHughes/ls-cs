@@ -32,36 +32,51 @@
 #include <wtf/HashMap.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct MaskerData {
+struct MaskerData
+{
     OwnPtr<ImageBuffer> maskImage;
 };
 
-class RenderSVGResourceMasker : public RenderSVGResourceContainer {
+class RenderSVGResourceMasker : public RenderSVGResourceContainer
+{
 public:
-    RenderSVGResourceMasker(SVGMaskElement*);
+    RenderSVGResourceMasker( SVGMaskElement * );
     virtual ~RenderSVGResourceMasker();
 
-    virtual const char* renderName() const { return "RenderSVGResourceMasker"; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGResourceMasker";
+    }
 
-    virtual void removeAllClientsFromCache(bool markForInvalidation = true);
-    virtual void removeClientFromCache(RenderObject*, bool markForInvalidation = true);
-    virtual bool applyResource(RenderObject*, RenderStyle*, GraphicsContext*&, unsigned short resourceMode);
-    virtual FloatRect resourceBoundingBox(RenderObject*);
+    virtual void removeAllClientsFromCache( bool markForInvalidation = true );
+    virtual void removeClientFromCache( RenderObject *, bool markForInvalidation = true );
+    virtual bool applyResource( RenderObject *, RenderStyle *, GraphicsContext *&, unsigned short resourceMode );
+    virtual FloatRect resourceBoundingBox( RenderObject * );
 
-    SVGUnitTypes::SVGUnitType maskUnits() const { return toUnitType(static_cast<SVGMaskElement*>(node())->maskUnits()); }
-    SVGUnitTypes::SVGUnitType maskContentUnits() const { return toUnitType(static_cast<SVGMaskElement*>(node())->maskContentUnits()); }
+    SVGUnitTypes::SVGUnitType maskUnits() const
+    {
+        return toUnitType( static_cast<SVGMaskElement *>( node() )->maskUnits() );
+    }
+    SVGUnitTypes::SVGUnitType maskContentUnits() const
+    {
+        return toUnitType( static_cast<SVGMaskElement *>( node() )->maskContentUnits() );
+    }
 
-    virtual RenderSVGResourceType resourceType() const { return s_resourceType; }
+    virtual RenderSVGResourceType resourceType() const
+    {
+        return s_resourceType;
+    }
     static RenderSVGResourceType s_resourceType;
 
 private:
-    void drawContentIntoMaskImage(MaskerData*, const SVGMaskElement*, RenderObject*);
+    void drawContentIntoMaskImage( MaskerData *, const SVGMaskElement *, RenderObject * );
     void calculateMaskContentRepaintRect();
 
     FloatRect m_maskContentBoundaries;
-    HashMap<RenderObject*, MaskerData*> m_masker;
+    HashMap<RenderObject *, MaskerData *> m_masker;
 };
 
 }

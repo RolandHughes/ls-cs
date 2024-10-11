@@ -26,65 +26,71 @@
 #include "JSAudioSourceNode.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBufferSourceNode;
 
-class JSAudioBufferSourceNode : public JSAudioSourceNode {
+class JSAudioBufferSourceNode : public JSAudioSourceNode
+{
     typedef JSAudioSourceNode Base;
 public:
-    JSAudioBufferSourceNode(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<AudioBufferSourceNode>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSAudioBufferSourceNode( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<AudioBufferSourceNode> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom attributes
-    void setBuffer(JSC::ExecState*, JSC::JSValue);
+    void setBuffer( JSC::ExecState *, JSC::JSValue );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, AudioBufferSourceNode*);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, AudioBufferSourceNode * );
 
-class JSAudioBufferSourceNodePrototype : public JSC::JSObjectWithGlobalObject {
+class JSAudioBufferSourceNodePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSAudioBufferSourceNodePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSAudioBufferSourceNodePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                      JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsAudioBufferSourceNodePrototypeFunctionNoteOn(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsAudioBufferSourceNodePrototypeFunctionNoteGrainOn(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsAudioBufferSourceNodePrototypeFunctionNoteOff(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsAudioBufferSourceNodePrototypeFunctionNoteOn( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsAudioBufferSourceNodePrototypeFunctionNoteGrainOn( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsAudioBufferSourceNodePrototypeFunctionNoteOff( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsAudioBufferSourceNodeBuffer(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSAudioBufferSourceNodeBuffer(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsAudioBufferSourceNodeGain(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsAudioBufferSourceNodePlaybackRate(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsAudioBufferSourceNodeLooping(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSAudioBufferSourceNodeLooping(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsAudioBufferSourceNodeConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsAudioBufferSourceNodeBuffer( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSAudioBufferSourceNodeBuffer( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsAudioBufferSourceNodeGain( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsAudioBufferSourceNodePlaybackRate( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsAudioBufferSourceNodeLooping( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSAudioBufferSourceNodeLooping( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsAudioBufferSourceNodeConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

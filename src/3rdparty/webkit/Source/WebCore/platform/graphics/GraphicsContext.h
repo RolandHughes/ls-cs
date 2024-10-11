@@ -40,19 +40,22 @@
 #if USE(CG)
 typedef struct CGContext PlatformGraphicsContext;
 #elif USE(CAIRO)
-namespace WebCore {
+namespace WebCore
+{
 class ContextShadow;
 class PlatformContextCairo;
 }
 typedef WebCore::PlatformContextCairo PlatformGraphicsContext;
 #elif PLATFORM(OPENVG)
-namespace WebCore {
+namespace WebCore
+{
 class SurfaceOpenVG;
 }
 typedef class WebCore::SurfaceOpenVG PlatformGraphicsContext;
 #elif PLATFORM(QT)
 #include <QPainter>
-namespace WebCore {
+namespace WebCore
+{
 class ContextShadow;
 }
 typedef QPainter PlatformGraphicsContext;
@@ -67,16 +70,17 @@ class wxWindowDC;
 // On OS X, wxGCDC is just a typedef for wxDC, so use wxDC explicitly to make
 // the linker happy.
 #ifdef __APPLE__
-    class wxDC;
-    typedef wxDC PlatformGraphicsContext;
+class wxDC;
+typedef wxDC PlatformGraphicsContext;
 #else
-    typedef wxGCDC PlatformGraphicsContext;
+typedef wxGCDC PlatformGraphicsContext;
 #endif
 #else
-    typedef wxWindowDC PlatformGraphicsContext;
+typedef wxWindowDC PlatformGraphicsContext;
 #endif
 #elif USE(SKIA)
-namespace WebCore {
+namespace WebCore
+{
 class PlatformContextSkia;
 }
 typedef WebCore::PlatformContextSkia PlatformGraphicsContext;
@@ -92,7 +96,7 @@ typedef void PlatformGraphicsContext;
 
 #if PLATFORM(WIN)
 #include "DIBPixelData.h"
-typedef struct HDC__* HDC;
+typedef struct HDC__ *HDC;
 #if !USE(CG)
 // UInt8 is defined in CoreFoundation/CFBase.h
 typedef unsigned char UInt8;
@@ -103,490 +107,553 @@ typedef unsigned char UInt8;
 #include <windows.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if OS(WINCE) && !PLATFORM(QT)
-    class SharedBitmap;
-    class SimpleFontData;
-    class GlyphBuffer;
+class SharedBitmap;
+class SimpleFontData;
+class GlyphBuffer;
 #endif
 
-    const int cMisspellingLineThickness = 3;
-    const int cMisspellingLinePatternWidth = 4;
-    const int cMisspellingLinePatternGapWidth = 1;
+const int cMisspellingLineThickness = 3;
+const int cMisspellingLinePatternWidth = 4;
+const int cMisspellingLinePatternGapWidth = 1;
 
-    class AffineTransform;
-    class DrawingBuffer;
-    class Font;
-    class Generator;
-    class GraphicsContextPlatformPrivate;
-    class ImageBuffer;
-    class IntRect;
-    class RoundedIntRect;
-    class KURL;
-    class SharedGraphicsContext3D;
-    class TextRun;
+class AffineTransform;
+class DrawingBuffer;
+class Font;
+class Generator;
+class GraphicsContextPlatformPrivate;
+class ImageBuffer;
+class IntRect;
+class RoundedIntRect;
+class KURL;
+class SharedGraphicsContext3D;
+class TextRun;
 
-    enum TextDrawingMode {
-        TextModeInvisible = 0,
-        TextModeFill      = 1 << 0,
-        TextModeStroke    = 1 << 1,
-        TextModeClip      = 1 << 2
-    };
-    typedef unsigned TextDrawingModeFlags;
+enum TextDrawingMode
+{
+    TextModeInvisible = 0,
+    TextModeFill      = 1 << 0,
+    TextModeStroke    = 1 << 1,
+    TextModeClip      = 1 << 2
+};
+typedef unsigned TextDrawingModeFlags;
 
-    enum StrokeStyle {
-        NoStroke,
-        SolidStroke,
-        DottedStroke,
-        DashedStroke
-    };
+enum StrokeStyle
+{
+    NoStroke,
+    SolidStroke,
+    DottedStroke,
+    DashedStroke
+};
 
-    enum InterpolationQuality {
-        InterpolationDefault,
-        InterpolationNone,
-        InterpolationLow,
-        InterpolationMedium,
-        InterpolationHigh
-    };
+enum InterpolationQuality
+{
+    InterpolationDefault,
+    InterpolationNone,
+    InterpolationLow,
+    InterpolationMedium,
+    InterpolationHigh
+};
 
-    struct GraphicsContextState {
-        GraphicsContextState()
-            : strokeThickness(0)
-            , shadowBlur(0)
+struct GraphicsContextState
+{
+    GraphicsContextState()
+        : strokeThickness( 0 )
+        , shadowBlur( 0 )
 #if USE(CAIRO)
-            , globalAlpha(1)
+        , globalAlpha( 1 )
 #endif
-            , textDrawingMode(TextModeFill)
-            , strokeColor(Color::black)
-            , fillColor(Color::black)
-            , strokeStyle(SolidStroke)
-            , fillRule(RULE_NONZERO)
-            , strokeColorSpace(ColorSpaceDeviceRGB)
-            , fillColorSpace(ColorSpaceDeviceRGB)
-            , shadowColorSpace(ColorSpaceDeviceRGB)
-            , compositeOperator(CompositeSourceOver)
-            , shouldAntialias(true)
-            , shouldSmoothFonts(true)
-            , paintingDisabled(false)
-            , shadowsIgnoreTransforms(false)
+        , textDrawingMode( TextModeFill )
+        , strokeColor( Color::black )
+        , fillColor( Color::black )
+        , strokeStyle( SolidStroke )
+        , fillRule( RULE_NONZERO )
+        , strokeColorSpace( ColorSpaceDeviceRGB )
+        , fillColorSpace( ColorSpaceDeviceRGB )
+        , shadowColorSpace( ColorSpaceDeviceRGB )
+        , compositeOperator( CompositeSourceOver )
+        , shouldAntialias( true )
+        , shouldSmoothFonts( true )
+        , paintingDisabled( false )
+        , shadowsIgnoreTransforms( false )
 #if USE(CG)
-            // Core Graphics incorrectly renders shadows with radius > 8px (<rdar://problem/8103442>),
-            // but we need to preserve this buggy behavior for canvas and -webkit-box-shadow.
-            , shadowsUseLegacyRadius(false)
+          // Core Graphics incorrectly renders shadows with radius > 8px (<rdar://problem/8103442>),
+          // but we need to preserve this buggy behavior for canvas and -webkit-box-shadow.
+        , shadowsUseLegacyRadius( false )
 #endif
-        {
-        }
+    {
+    }
 
-        RefPtr<Gradient> strokeGradient;
-        RefPtr<Pattern> strokePattern;
-        
-        RefPtr<Gradient> fillGradient;
-        RefPtr<Pattern> fillPattern;
+    RefPtr<Gradient> strokeGradient;
+    RefPtr<Pattern> strokePattern;
 
-        FloatSize shadowOffset;
+    RefPtr<Gradient> fillGradient;
+    RefPtr<Pattern> fillPattern;
 
-        float strokeThickness;
-        float shadowBlur;
+    FloatSize shadowOffset;
+
+    float strokeThickness;
+    float shadowBlur;
 
 #if USE(CAIRO)
-        float globalAlpha;
+    float globalAlpha;
 #endif
-        TextDrawingModeFlags textDrawingMode;
+    TextDrawingModeFlags textDrawingMode;
 
-        Color strokeColor;
-        Color fillColor;
-        Color shadowColor;
+    Color strokeColor;
+    Color fillColor;
+    Color shadowColor;
 
-        StrokeStyle strokeStyle;
-        WindRule fillRule;
+    StrokeStyle strokeStyle;
+    WindRule fillRule;
 
-        ColorSpace strokeColorSpace;
-        ColorSpace fillColorSpace;
-        ColorSpace shadowColorSpace;
+    ColorSpace strokeColorSpace;
+    ColorSpace fillColorSpace;
+    ColorSpace shadowColorSpace;
 
-        CompositeOperator compositeOperator;
+    CompositeOperator compositeOperator;
 
-        bool shouldAntialias : 1;
-        bool shouldSmoothFonts : 1;
-        bool paintingDisabled : 1;
-        bool shadowsIgnoreTransforms : 1;
+    bool shouldAntialias : 1;
+    bool shouldSmoothFonts : 1;
+    bool paintingDisabled : 1;
+    bool shadowsIgnoreTransforms : 1;
 #if USE(CG)
-        bool shadowsUseLegacyRadius : 1;
+    bool shadowsUseLegacyRadius : 1;
 #endif
-    };
+};
 
-    class GraphicsContext {
-        WTF_MAKE_NONCOPYABLE(GraphicsContext); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        GraphicsContext(PlatformGraphicsContext*);
-        ~GraphicsContext();
+class GraphicsContext
+{
+    WTF_MAKE_NONCOPYABLE( GraphicsContext );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    GraphicsContext( PlatformGraphicsContext * );
+    ~GraphicsContext();
 
 #if !OS(WINCE) || PLATFORM(QT)
-        PlatformGraphicsContext* platformContext() const;
+    PlatformGraphicsContext *platformContext() const;
 #endif
 
-        float strokeThickness() const;
-        void setStrokeThickness(float);
-        StrokeStyle strokeStyle() const;
-        void setStrokeStyle(StrokeStyle);
-        Color strokeColor() const;
-        ColorSpace strokeColorSpace() const;
-        void setStrokeColor(const Color&, ColorSpace);
+    float strokeThickness() const;
+    void setStrokeThickness( float );
+    StrokeStyle strokeStyle() const;
+    void setStrokeStyle( StrokeStyle );
+    Color strokeColor() const;
+    ColorSpace strokeColorSpace() const;
+    void setStrokeColor( const Color &, ColorSpace );
 
-        void setStrokePattern(PassRefPtr<Pattern>);
-        Pattern* strokePattern() const;
+    void setStrokePattern( PassRefPtr<Pattern> );
+    Pattern *strokePattern() const;
 
-        void setStrokeGradient(PassRefPtr<Gradient>);
-        Gradient* strokeGradient() const;
+    void setStrokeGradient( PassRefPtr<Gradient> );
+    Gradient *strokeGradient() const;
 
-        WindRule fillRule() const;
-        void setFillRule(WindRule);
-        Color fillColor() const;
-        ColorSpace fillColorSpace() const;
-        void setFillColor(const Color&, ColorSpace);
+    WindRule fillRule() const;
+    void setFillRule( WindRule );
+    Color fillColor() const;
+    ColorSpace fillColorSpace() const;
+    void setFillColor( const Color &, ColorSpace );
 
-        void setFillPattern(PassRefPtr<Pattern>);
-        Pattern* fillPattern() const;
+    void setFillPattern( PassRefPtr<Pattern> );
+    Pattern *fillPattern() const;
 
-        void setFillGradient(PassRefPtr<Gradient>);
-        Gradient* fillGradient() const;
+    void setFillGradient( PassRefPtr<Gradient> );
+    Gradient *fillGradient() const;
 
-        void setShadowsIgnoreTransforms(bool);
-        bool shadowsIgnoreTransforms() const;
+    void setShadowsIgnoreTransforms( bool );
+    bool shadowsIgnoreTransforms() const;
 
-        void setShouldAntialias(bool);
-        bool shouldAntialias() const;
+    void setShouldAntialias( bool );
+    bool shouldAntialias() const;
 
-        void setShouldSmoothFonts(bool);
-        bool shouldSmoothFonts() const;
+    void setShouldSmoothFonts( bool );
+    bool shouldSmoothFonts() const;
 
-        const GraphicsContextState& state() const;
+    const GraphicsContextState &state() const;
 
 #if USE(CG)
-        void applyStrokePattern();
-        void applyFillPattern();
-        void drawPath(const Path&);
-        
-        // Allow font smoothing (LCD antialiasing). Not part of the graphics state.
-        void setAllowsFontSmoothing(bool);
-        
-        void setIsCALayerContext(bool);
-        bool isCALayerContext() const;
+    void applyStrokePattern();
+    void applyFillPattern();
+    void drawPath( const Path & );
 
-        void setIsAcceleratedContext(bool);
-        bool isAcceleratedContext() const;
+    // Allow font smoothing (LCD antialiasing). Not part of the graphics state.
+    void setAllowsFontSmoothing( bool );
+
+    void setIsCALayerContext( bool );
+    bool isCALayerContext() const;
+
+    void setIsAcceleratedContext( bool );
+    bool isAcceleratedContext() const;
 #endif
 
-        void save();
-        void restore();
+    void save();
+    void restore();
 
-        // These draw methods will do both stroking and filling.
-        // FIXME: ...except drawRect(), which fills properly but always strokes
-        // using a 1-pixel stroke inset from the rect borders (of the correct
-        // stroke color).
-        void drawRect(const IntRect&);
-        void drawLine(const IntPoint&, const IntPoint&);
-        void drawEllipse(const IntRect&);
-        void drawConvexPolygon(size_t numPoints, const FloatPoint*, bool shouldAntialias = false);
+    // These draw methods will do both stroking and filling.
+    // FIXME: ...except drawRect(), which fills properly but always strokes
+    // using a 1-pixel stroke inset from the rect borders (of the correct
+    // stroke color).
+    void drawRect( const IntRect & );
+    void drawLine( const IntPoint &, const IntPoint & );
+    void drawEllipse( const IntRect & );
+    void drawConvexPolygon( size_t numPoints, const FloatPoint *, bool shouldAntialias = false );
 
-        void fillPath(const Path&);
-        void strokePath(const Path&);
+    void fillPath( const Path & );
+    void strokePath( const Path & );
 
-        // Arc drawing (used by border-radius in CSS) just supports stroking at the moment.
-        void strokeArc(const IntRect&, int startAngle, int angleSpan);
+    // Arc drawing (used by border-radius in CSS) just supports stroking at the moment.
+    void strokeArc( const IntRect &, int startAngle, int angleSpan );
 
-        void fillRect(const FloatRect&);
-        void fillRect(const FloatRect&, const Color&, ColorSpace);
-        void fillRect(const FloatRect&, Generator&);
-        void fillRoundedRect(const IntRect&, const IntSize& topLeft, const IntSize& topRight, const IntSize& bottomLeft, const IntSize& bottomRight, const Color&, ColorSpace);
-        void fillRoundedRect(const RoundedIntRect&, const Color&, ColorSpace);
-        void fillRectWithRoundedHole(const IntRect&, const RoundedIntRect& roundedHoleRect, const Color&, ColorSpace);
+    void fillRect( const FloatRect & );
+    void fillRect( const FloatRect &, const Color &, ColorSpace );
+    void fillRect( const FloatRect &, Generator & );
+    void fillRoundedRect( const IntRect &, const IntSize &topLeft, const IntSize &topRight, const IntSize &bottomLeft,
+                          const IntSize &bottomRight, const Color &, ColorSpace );
+    void fillRoundedRect( const RoundedIntRect &, const Color &, ColorSpace );
+    void fillRectWithRoundedHole( const IntRect &, const RoundedIntRect &roundedHoleRect, const Color &, ColorSpace );
 
-        void clearRect(const FloatRect&);
+    void clearRect( const FloatRect & );
 
-        void strokeRect(const FloatRect&, float lineWidth);
+    void strokeRect( const FloatRect &, float lineWidth );
 
-        void drawImage(Image*, ColorSpace styleColorSpace, const IntPoint&, CompositeOperator = CompositeSourceOver);
-        void drawImage(Image*, ColorSpace styleColorSpace, const IntRect&, CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
-        void drawImage(Image*, ColorSpace styleColorSpace, const IntPoint& destPoint, const IntRect& srcRect, CompositeOperator = CompositeSourceOver);
-        void drawImage(Image*, ColorSpace styleColorSpace, const IntRect& destRect, const IntRect& srcRect, CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
-        void drawImage(Image*, ColorSpace styleColorSpace, const FloatRect& destRect, const FloatRect& srcRect = FloatRect(0, 0, -1, -1),
-                       CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
-        void drawTiledImage(Image*, ColorSpace styleColorSpace, const IntRect& destRect, const IntPoint& srcPoint, const IntSize& tileSize,
-                       CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
-        void drawTiledImage(Image*, ColorSpace styleColorSpace, const IntRect& destRect, const IntRect& srcRect,
-                            Image::TileRule hRule = Image::StretchTile, Image::TileRule vRule = Image::StretchTile,
-                            CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
+    void drawImage( Image *, ColorSpace styleColorSpace, const IntPoint &, CompositeOperator = CompositeSourceOver );
+    void drawImage( Image *, ColorSpace styleColorSpace, const IntRect &, CompositeOperator = CompositeSourceOver,
+                    bool useLowQualityScale = false );
+    void drawImage( Image *, ColorSpace styleColorSpace, const IntPoint &destPoint, const IntRect &srcRect,
+                    CompositeOperator = CompositeSourceOver );
+    void drawImage( Image *, ColorSpace styleColorSpace, const IntRect &destRect, const IntRect &srcRect,
+                    CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false );
+    void drawImage( Image *, ColorSpace styleColorSpace, const FloatRect &destRect, const FloatRect &srcRect = FloatRect( 0, 0, -1,
+                    -1 ),
+                    CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false );
+    void drawTiledImage( Image *, ColorSpace styleColorSpace, const IntRect &destRect, const IntPoint &srcPoint,
+                         const IntSize &tileSize,
+                         CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false );
+    void drawTiledImage( Image *, ColorSpace styleColorSpace, const IntRect &destRect, const IntRect &srcRect,
+                         Image::TileRule hRule = Image::StretchTile, Image::TileRule vRule = Image::StretchTile,
+                         CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false );
 
-        void drawImageBuffer(ImageBuffer*, ColorSpace styleColorSpace, const IntPoint&, CompositeOperator = CompositeSourceOver);
-        void drawImageBuffer(ImageBuffer*, ColorSpace styleColorSpace, const IntRect&, CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
-        void drawImageBuffer(ImageBuffer*, ColorSpace styleColorSpace, const IntPoint& destPoint, const IntRect& srcRect, CompositeOperator = CompositeSourceOver);
-        void drawImageBuffer(ImageBuffer*, ColorSpace styleColorSpace, const IntRect& destRect, const IntRect& srcRect, CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
-        void drawImageBuffer(ImageBuffer*, ColorSpace styleColorSpace, const FloatRect& destRect, const FloatRect& srcRect = FloatRect(0, 0, -1, -1),
-                             CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false);
+    void drawImageBuffer( ImageBuffer *, ColorSpace styleColorSpace, const IntPoint &, CompositeOperator = CompositeSourceOver );
+    void drawImageBuffer( ImageBuffer *, ColorSpace styleColorSpace, const IntRect &, CompositeOperator = CompositeSourceOver,
+                          bool useLowQualityScale = false );
+    void drawImageBuffer( ImageBuffer *, ColorSpace styleColorSpace, const IntPoint &destPoint, const IntRect &srcRect,
+                          CompositeOperator = CompositeSourceOver );
+    void drawImageBuffer( ImageBuffer *, ColorSpace styleColorSpace, const IntRect &destRect, const IntRect &srcRect,
+                          CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false );
+    void drawImageBuffer( ImageBuffer *, ColorSpace styleColorSpace, const FloatRect &destRect,
+                          const FloatRect &srcRect = FloatRect( 0, 0, -1, -1 ),
+                          CompositeOperator = CompositeSourceOver, bool useLowQualityScale = false );
 
-        void setImageInterpolationQuality(InterpolationQuality);
-        InterpolationQuality imageInterpolationQuality() const;
+    void setImageInterpolationQuality( InterpolationQuality );
+    InterpolationQuality imageInterpolationQuality() const;
 
-        void clip(const IntRect&);
-        void clip(const FloatRect&);
-        void addRoundedRectClip(const RoundedIntRect&);
-        void addInnerRoundedRectClip(const IntRect&, int thickness);
-        void clipOut(const IntRect&);
-        void clipOutRoundedRect(const RoundedIntRect&);
-        void clipPath(const Path&, WindRule);
-        void clipConvexPolygon(size_t numPoints, const FloatPoint*, bool antialias = true);
-        void clipToImageBuffer(ImageBuffer*, const FloatRect&);
-        
-        IntRect clipBounds() const;
+    void clip( const IntRect & );
+    void clip( const FloatRect & );
+    void addRoundedRectClip( const RoundedIntRect & );
+    void addInnerRoundedRectClip( const IntRect &, int thickness );
+    void clipOut( const IntRect & );
+    void clipOutRoundedRect( const RoundedIntRect & );
+    void clipPath( const Path &, WindRule );
+    void clipConvexPolygon( size_t numPoints, const FloatPoint *, bool antialias = true );
+    void clipToImageBuffer( ImageBuffer *, const FloatRect & );
 
-        TextDrawingModeFlags textDrawingMode() const;
-        void setTextDrawingMode(TextDrawingModeFlags);
+    IntRect clipBounds() const;
 
-        void drawText(const Font&, const TextRun&, const FloatPoint&, int from = 0, int to = -1);
-        void drawEmphasisMarks(const Font&, const TextRun& , const AtomicString& mark, const FloatPoint&, int from = 0, int to = -1);
-        void drawBidiText(const Font&, const TextRun&, const FloatPoint&);
-        void drawHighlightForText(const Font&, const TextRun&, const FloatPoint&, int h, const Color& backgroundColor, ColorSpace, int from = 0, int to = -1);
+    TextDrawingModeFlags textDrawingMode() const;
+    void setTextDrawingMode( TextDrawingModeFlags );
 
-        enum RoundingMode {
-            RoundAllSides,
-            RoundOriginAndDimensions
-        };
-        FloatRect roundToDevicePixels(const FloatRect&, RoundingMode = RoundAllSides);
+    void drawText( const Font &, const TextRun &, const FloatPoint &, int from = 0, int to = -1 );
+    void drawEmphasisMarks( const Font &, const TextRun &, const AtomicString &mark, const FloatPoint &, int from = 0, int to = -1 );
+    void drawBidiText( const Font &, const TextRun &, const FloatPoint & );
+    void drawHighlightForText( const Font &, const TextRun &, const FloatPoint &, int h, const Color &backgroundColor, ColorSpace,
+                               int from = 0, int to = -1 );
 
-        void drawLineForText(const FloatPoint&, float width, bool printing);
-        enum TextCheckingLineStyle {
-            TextCheckingSpellingLineStyle,
-            TextCheckingGrammarLineStyle,
-            TextCheckingReplacementLineStyle
-        };
-        void drawLineForTextChecking(const FloatPoint&, float width, TextCheckingLineStyle);
+    enum RoundingMode
+    {
+        RoundAllSides,
+        RoundOriginAndDimensions
+    };
+    FloatRect roundToDevicePixels( const FloatRect &, RoundingMode = RoundAllSides );
 
-        bool paintingDisabled() const;
-        void setPaintingDisabled(bool);
+    void drawLineForText( const FloatPoint &, float width, bool printing );
+    enum TextCheckingLineStyle
+    {
+        TextCheckingSpellingLineStyle,
+        TextCheckingGrammarLineStyle,
+        TextCheckingReplacementLineStyle
+    };
+    void drawLineForTextChecking( const FloatPoint &, float width, TextCheckingLineStyle );
 
-        bool updatingControlTints() const;
-        void setUpdatingControlTints(bool);
+    bool paintingDisabled() const;
+    void setPaintingDisabled( bool );
 
-        void beginTransparencyLayer(float opacity);
-        void endTransparencyLayer();
+    bool updatingControlTints() const;
+    void setUpdatingControlTints( bool );
 
-        bool hasShadow() const;
-        void setShadow(const FloatSize&, float blur, const Color&, ColorSpace);
-        // Legacy shadow blur radius is used for canvas, and -webkit-box-shadow.
-        // It has different treatment of radii > 8px.
-        void setLegacyShadow(const FloatSize&, float blur, const Color&, ColorSpace);
+    void beginTransparencyLayer( float opacity );
+    void endTransparencyLayer();
 
-        bool getShadow(FloatSize&, float&, Color&, ColorSpace&) const;
-        void clearShadow();
+    bool hasShadow() const;
+    void setShadow( const FloatSize &, float blur, const Color &, ColorSpace );
+    // Legacy shadow blur radius is used for canvas, and -webkit-box-shadow.
+    // It has different treatment of radii > 8px.
+    void setLegacyShadow( const FloatSize &, float blur, const Color &, ColorSpace );
 
-        void drawFocusRing(const Vector<IntRect>&, int width, int offset, const Color&);
-        void drawFocusRing(const Path&, int width, int offset, const Color&);
+    bool getShadow( FloatSize &, float &, Color &, ColorSpace & ) const;
+    void clearShadow();
 
-        void setLineCap(LineCap);
-        void setLineDash(const DashArray&, float dashOffset);
-        void setLineJoin(LineJoin);
-        void setMiterLimit(float);
+    void drawFocusRing( const Vector<IntRect> &, int width, int offset, const Color & );
+    void drawFocusRing( const Path &, int width, int offset, const Color & );
 
-        void setAlpha(float);
+    void setLineCap( LineCap );
+    void setLineDash( const DashArray &, float dashOffset );
+    void setLineJoin( LineJoin );
+    void setMiterLimit( float );
+
+    void setAlpha( float );
 #if USE(CAIRO)
-        float getAlpha();
+    float getAlpha();
 #endif
 
-        void setCompositeOperation(CompositeOperator);
-        CompositeOperator compositeOperation() const;
+    void setCompositeOperation( CompositeOperator );
+    CompositeOperator compositeOperation() const;
 
-        void clip(const Path&);
+    void clip( const Path & );
 
-        // This clip function is used only by <canvas> code. It allows
-        // implementations to handle clipping on the canvas differently since
-        // the discipline is different.
-        void canvasClip(const Path&);
-        void clipOut(const Path&);
+    // This clip function is used only by <canvas> code. It allows
+    // implementations to handle clipping on the canvas differently since
+    // the discipline is different.
+    void canvasClip( const Path & );
+    void clipOut( const Path & );
 
-        void scale(const FloatSize&);
-        void rotate(float angleInRadians);
-        void translate(const FloatSize& size) { translate(size.width(), size.height()); }
-        void translate(float x, float y);
+    void scale( const FloatSize & );
+    void rotate( float angleInRadians );
+    void translate( const FloatSize &size )
+    {
+        translate( size.width(), size.height() );
+    }
+    void translate( float x, float y );
 
-        void setURLForRect(const KURL&, const IntRect&);
+    void setURLForRect( const KURL &, const IntRect & );
 
-        void concatCTM(const AffineTransform&);
-        void setCTM(const AffineTransform&);
-        AffineTransform getCTM() const;
+    void concatCTM( const AffineTransform & );
+    void setCTM( const AffineTransform & );
+    AffineTransform getCTM() const;
 
 #if OS(WINCE) && !PLATFORM(QT)
-        void setBitmap(PassRefPtr<SharedBitmap>);
-        const AffineTransform& affineTransform() const;
-        AffineTransform& affineTransform();
-        void resetAffineTransform();
-        void fillRect(const FloatRect&, const Gradient*);
-        void drawText(const SimpleFontData* fontData, const GlyphBuffer& glyphBuffer, int from, int numGlyphs, const FloatPoint& point);
-        void drawFrameControl(const IntRect& rect, unsigned type, unsigned state);
-        void drawFocusRect(const IntRect& rect);
-        void paintTextField(const IntRect& rect, unsigned state);
-        void drawBitmap(SharedBitmap*, const IntRect& dstRect, const IntRect& srcRect, ColorSpace styleColorSpace, CompositeOperator compositeOp);
-        void drawBitmapPattern(SharedBitmap*, const FloatRect& tileRectIn, const AffineTransform& patternTransform, const FloatPoint& phase, ColorSpace styleColorSpace, CompositeOperator op, const FloatRect& destRect, const IntSize& origSourceSize);
-        void drawIcon(HICON icon, const IntRect& dstRect, UINT flags);
-        HDC getWindowsContext(const IntRect&, bool supportAlphaBlend = false, bool mayCreateBitmap = true); // The passed in rect is used to create a bitmap for compositing inside transparency layers.
-        void releaseWindowsContext(HDC, const IntRect&, bool supportAlphaBlend = false, bool mayCreateBitmap = true);    // The passed in HDC should be the one handed back by getWindowsContext.
-        void drawRoundCorner(bool newClip, RECT clipRect, RECT rectWin, HDC dc, int width, int height);
+    void setBitmap( PassRefPtr<SharedBitmap> );
+    const AffineTransform &affineTransform() const;
+    AffineTransform &affineTransform();
+    void resetAffineTransform();
+    void fillRect( const FloatRect &, const Gradient * );
+    void drawText( const SimpleFontData *fontData, const GlyphBuffer &glyphBuffer, int from, int numGlyphs, const FloatPoint &point );
+    void drawFrameControl( const IntRect &rect, unsigned type, unsigned state );
+    void drawFocusRect( const IntRect &rect );
+    void paintTextField( const IntRect &rect, unsigned state );
+    void drawBitmap( SharedBitmap *, const IntRect &dstRect, const IntRect &srcRect, ColorSpace styleColorSpace,
+                     CompositeOperator compositeOp );
+    void drawBitmapPattern( SharedBitmap *, const FloatRect &tileRectIn, const AffineTransform &patternTransform,
+                            const FloatPoint &phase, ColorSpace styleColorSpace, CompositeOperator op, const FloatRect &destRect,
+                            const IntSize &origSourceSize );
+    void drawIcon( HICON icon, const IntRect &dstRect, UINT flags );
+    HDC getWindowsContext( const IntRect &, bool supportAlphaBlend = false,
+                           bool mayCreateBitmap = true ); // The passed in rect is used to create a bitmap for compositing inside transparency layers.
+    void releaseWindowsContext( HDC, const IntRect &, bool supportAlphaBlend = false,
+                                bool mayCreateBitmap = true ); // The passed in HDC should be the one handed back by getWindowsContext.
+    void drawRoundCorner( bool newClip, RECT clipRect, RECT rectWin, HDC dc, int width, int height );
 #elif PLATFORM(WIN)
-        GraphicsContext(HDC, bool hasAlpha = false); // FIXME: To be removed.
-        bool inTransparencyLayer() const;
-        HDC getWindowsContext(const IntRect&, bool supportAlphaBlend = true, bool mayCreateBitmap = true); // The passed in rect is used to create a bitmap for compositing inside transparency layers.
-        void releaseWindowsContext(HDC, const IntRect&, bool supportAlphaBlend = true, bool mayCreateBitmap = true);    // The passed in HDC should be the one handed back by getWindowsContext.
+    GraphicsContext( HDC, bool hasAlpha = false ); // FIXME: To be removed.
+    bool inTransparencyLayer() const;
+    HDC getWindowsContext( const IntRect &, bool supportAlphaBlend = true,
+                           bool mayCreateBitmap = true ); // The passed in rect is used to create a bitmap for compositing inside transparency layers.
+    void releaseWindowsContext( HDC, const IntRect &, bool supportAlphaBlend = true,
+                                bool mayCreateBitmap = true ); // The passed in HDC should be the one handed back by getWindowsContext.
 
-        // When set to true, child windows should be rendered into this context
-        // rather than allowing them just to render to the screen. Defaults to
-        // false.
-        // FIXME: This is a layering violation. GraphicsContext shouldn't know
-        // what a "window" is. It would be much more appropriate for this flag
-        // to be passed as a parameter alongside the GraphicsContext, but doing
-        // that would require lots of changes in cross-platform code that we
-        // aren't sure we want to make.
-        void setShouldIncludeChildWindows(bool);
-        bool shouldIncludeChildWindows() const;
+    // When set to true, child windows should be rendered into this context
+    // rather than allowing them just to render to the screen. Defaults to
+    // false.
+    // FIXME: This is a layering violation. GraphicsContext shouldn't know
+    // what a "window" is. It would be much more appropriate for this flag
+    // to be passed as a parameter alongside the GraphicsContext, but doing
+    // that would require lots of changes in cross-platform code that we
+    // aren't sure we want to make.
+    void setShouldIncludeChildWindows( bool );
+    bool shouldIncludeChildWindows() const;
 
-        class WindowsBitmap {
-            WTF_MAKE_NONCOPYABLE(WindowsBitmap);
-        public:
-            WindowsBitmap(HDC, const IntSize&);
-            ~WindowsBitmap();
+    class WindowsBitmap
+    {
+        WTF_MAKE_NONCOPYABLE( WindowsBitmap );
+    public:
+        WindowsBitmap( HDC, const IntSize & );
+        ~WindowsBitmap();
 
-            HDC hdc() const { return m_hdc; }
-            UInt8* buffer() const { return m_pixelData.buffer(); }
-            unsigned bufferLength() const { return m_pixelData.bufferLength(); }
-            const IntSize& size() const { return m_pixelData.size(); }
-            unsigned bytesPerRow() const { return m_pixelData.bytesPerRow(); }
-            unsigned short bitsPerPixel() const { return m_pixelData.bitsPerPixel(); }
-            const DIBPixelData& windowsDIB() const { return m_pixelData; }
+        HDC hdc() const
+        {
+            return m_hdc;
+        }
+        UInt8 *buffer() const
+        {
+            return m_pixelData.buffer();
+        }
+        unsigned bufferLength() const
+        {
+            return m_pixelData.bufferLength();
+        }
+        const IntSize &size() const
+        {
+            return m_pixelData.size();
+        }
+        unsigned bytesPerRow() const
+        {
+            return m_pixelData.bytesPerRow();
+        }
+        unsigned short bitsPerPixel() const
+        {
+            return m_pixelData.bitsPerPixel();
+        }
+        const DIBPixelData &windowsDIB() const
+        {
+            return m_pixelData;
+        }
 
-        private:
-            HDC m_hdc;
-            HBITMAP m_bitmap;
-            DIBPixelData m_pixelData;
-        };
+    private:
+        HDC m_hdc;
+        HBITMAP m_bitmap;
+        DIBPixelData m_pixelData;
+    };
 
-        PassOwnPtr<WindowsBitmap> createWindowsBitmap(const IntSize&);
-        // The bitmap should be non-premultiplied.
-        void drawWindowsBitmap(WindowsBitmap*, const IntPoint&);
+    PassOwnPtr<WindowsBitmap> createWindowsBitmap( const IntSize & );
+    // The bitmap should be non-premultiplied.
+    void drawWindowsBitmap( WindowsBitmap *, const IntPoint & );
 #endif
 
 #if (PLATFORM(QT) && defined(Q_OS_WIN)) || (PLATFORM(WX) && OS(WINDOWS))
-        HDC getWindowsContext(const IntRect&, bool supportAlphaBlend = true, bool mayCreateBitmap = true);
-        void releaseWindowsContext(HDC, const IntRect&, bool supportAlphaBlend = true, bool mayCreateBitmap = true);
-        bool shouldIncludeChildWindows() const { return false; }
+    HDC getWindowsContext( const IntRect &, bool supportAlphaBlend = true, bool mayCreateBitmap = true );
+    void releaseWindowsContext( HDC, const IntRect &, bool supportAlphaBlend = true, bool mayCreateBitmap = true );
+    bool shouldIncludeChildWindows() const
+    {
+        return false;
+    }
 #endif
 
 #if PLATFORM(WX)
-        bool inTransparencyLayer() const { return false; }
+    bool inTransparencyLayer() const
+    {
+        return false;
+    }
 #endif
 
 #if PLATFORM(QT)
-        bool inTransparencyLayer() const;
-        void pushTransparencyLayerInternal(const QRect &rect, qreal opacity, QPixmap& alphaMask);
-        void takeOwnershipOfPlatformContext();
+    bool inTransparencyLayer() const;
+    void pushTransparencyLayerInternal( const QRect &rect, qreal opacity, QPixmap &alphaMask );
+    void takeOwnershipOfPlatformContext();
 #endif
 
 #if PLATFORM(QT) || USE(CAIRO)
-        ContextShadow* contextShadow();
+    ContextShadow *contextShadow();
 #endif
 
 #if USE(CAIRO)
-        GraphicsContext(cairo_t*);
+    GraphicsContext( cairo_t * );
 #endif
 
 #if PLATFORM(GTK)
-        void setGdkExposeEvent(GdkEventExpose*);
-        GdkWindow* gdkWindow() const;
-        GdkEventExpose* gdkExposeEvent() const;
+    void setGdkExposeEvent( GdkEventExpose * );
+    GdkWindow *gdkWindow() const;
+    GdkEventExpose *gdkExposeEvent() const;
 #endif
 
 #if PLATFORM(HAIKU)
-        pattern getHaikuStrokeStyle();
+    pattern getHaikuStrokeStyle();
 #endif
 
-        void setSharedGraphicsContext3D(SharedGraphicsContext3D*, DrawingBuffer*, const IntSize&);
-        void syncSoftwareCanvas();
-        void markDirtyRect(const IntRect&); // Hints that a portion of the backing store is dirty.
+    void setSharedGraphicsContext3D( SharedGraphicsContext3D *, DrawingBuffer *, const IntSize & );
+    void syncSoftwareCanvas();
+    void markDirtyRect( const IntRect & ); // Hints that a portion of the backing store is dirty.
 
-        static void adjustLineToPixelBoundaries(FloatPoint& p1, FloatPoint& p2, float strokeWidth, StrokeStyle);
+    static void adjustLineToPixelBoundaries( FloatPoint &p1, FloatPoint &p2, float strokeWidth, StrokeStyle );
 
-    private:
-        void platformInit(PlatformGraphicsContext*);
-        void platformDestroy();
+private:
+    void platformInit( PlatformGraphicsContext * );
+    void platformDestroy();
 
 #if PLATFORM(WIN) && !OS(WINCE)
-        void platformInit(HDC, bool hasAlpha = false);
+    void platformInit( HDC, bool hasAlpha = false );
 #endif
 
-        void savePlatformState();
-        void restorePlatformState();
+    void savePlatformState();
+    void restorePlatformState();
 
-        void setPlatformTextDrawingMode(TextDrawingModeFlags);
-        void setPlatformFont(const Font& font);
+    void setPlatformTextDrawingMode( TextDrawingModeFlags );
+    void setPlatformFont( const Font &font );
 
-        void setPlatformStrokeColor(const Color&, ColorSpace);
-        void setPlatformStrokeStyle(StrokeStyle);
-        void setPlatformStrokeThickness(float);
-        void setPlatformStrokeGradient(Gradient*);
-        void setPlatformStrokePattern(Pattern*);
+    void setPlatformStrokeColor( const Color &, ColorSpace );
+    void setPlatformStrokeStyle( StrokeStyle );
+    void setPlatformStrokeThickness( float );
+    void setPlatformStrokeGradient( Gradient * );
+    void setPlatformStrokePattern( Pattern * );
 
-        void setPlatformFillColor(const Color&, ColorSpace);
-        void setPlatformFillGradient(Gradient*);
-        void setPlatformFillPattern(Pattern*);
+    void setPlatformFillColor( const Color &, ColorSpace );
+    void setPlatformFillGradient( Gradient * );
+    void setPlatformFillPattern( Pattern * );
 
-        void setPlatformShouldAntialias(bool);
-        void setPlatformShouldSmoothFonts(bool);
+    void setPlatformShouldAntialias( bool );
+    void setPlatformShouldSmoothFonts( bool );
 
-        void setPlatformShadow(const FloatSize&, float blur, const Color&, ColorSpace);
-        void clearPlatformShadow();
+    void setPlatformShadow( const FloatSize &, float blur, const Color &, ColorSpace );
+    void clearPlatformShadow();
 
-        void setPlatformCompositeOperation(CompositeOperator);
+    void setPlatformCompositeOperation( CompositeOperator );
 
-        GraphicsContextPlatformPrivate* m_data;
+    GraphicsContextPlatformPrivate *m_data;
 
-        GraphicsContextState m_state;
-        Vector<GraphicsContextState> m_stack;
-        bool m_updatingControlTints;
-    };
+    GraphicsContextState m_state;
+    Vector<GraphicsContextState> m_stack;
+    bool m_updatingControlTints;
+};
 
-    class GraphicsContextStateSaver {
-    public:
-        GraphicsContextStateSaver(GraphicsContext& context, bool saveAndRestore = true)
-        : m_context(context)
-        , m_saveAndRestore(saveAndRestore)
+class GraphicsContextStateSaver
+{
+public:
+    GraphicsContextStateSaver( GraphicsContext &context, bool saveAndRestore = true )
+        : m_context( context )
+        , m_saveAndRestore( saveAndRestore )
+    {
+        if ( m_saveAndRestore )
         {
-            if (m_saveAndRestore)
-                m_context.save();
-        }
-        
-        ~GraphicsContextStateSaver()
-        {
-            if (m_saveAndRestore)
-                m_context.restore();
-        }
-        
-        void save()
-        {
-            ASSERT(!m_saveAndRestore);
             m_context.save();
-            m_saveAndRestore = true;
         }
+    }
 
-        void restore()
+    ~GraphicsContextStateSaver()
+    {
+        if ( m_saveAndRestore )
         {
-            ASSERT(m_saveAndRestore);
             m_context.restore();
-            m_saveAndRestore = false;
         }
-        
-    private:
-        GraphicsContext& m_context;
-        bool m_saveAndRestore;
-    };
+    }
+
+    void save()
+    {
+        ASSERT( !m_saveAndRestore );
+        m_context.save();
+        m_saveAndRestore = true;
+    }
+
+    void restore()
+    {
+        ASSERT( m_saveAndRestore );
+        m_context.restore();
+        m_saveAndRestore = false;
+    }
+
+private:
+    GraphicsContext &m_context;
+    bool m_saveAndRestore;
+};
 
 } // namespace WebCore
 

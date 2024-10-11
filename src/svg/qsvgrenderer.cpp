@@ -33,54 +33,54 @@
 
 class QSvgRendererPrivate
 {
-   Q_DECLARE_PUBLIC(QSvgRenderer)
+    Q_DECLARE_PUBLIC( QSvgRenderer )
 
- public:
-   explicit QSvgRendererPrivate()
-      : render(nullptr), timer(nullptr), fps(30)
-   {
-   }
+public:
+    explicit QSvgRendererPrivate()
+        : render( nullptr ), timer( nullptr ), fps( 30 )
+    {
+    }
 
-   virtual ~QSvgRendererPrivate()
-   {
-      delete render;
-   }
+    virtual ~QSvgRendererPrivate()
+    {
+        delete render;
+    }
 
-   static void callRepaintNeeded(QSvgRenderer *const q);
+    static void callRepaintNeeded( QSvgRenderer *const q );
 
-   QSvgTinyDocument *render;
-   QTimer *timer;
-   int fps;
+    QSvgTinyDocument *render;
+    QTimer *timer;
+    int fps;
 
- protected:
-   QSvgRenderer *q_ptr;
+protected:
+    QSvgRenderer *q_ptr;
 };
 
-QSvgRenderer::QSvgRenderer(QObject *parent)
-   : QObject(parent), d_ptr(new QSvgRendererPrivate)
+QSvgRenderer::QSvgRenderer( QObject *parent )
+    : QObject( parent ), d_ptr( new QSvgRendererPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-QSvgRenderer::QSvgRenderer(const QString &filename, QObject *parent)
-   : QObject(parent), d_ptr(new QSvgRendererPrivate)
+QSvgRenderer::QSvgRenderer( const QString &filename, QObject *parent )
+    : QObject( parent ), d_ptr( new QSvgRendererPrivate )
 {
-   d_ptr->q_ptr = this;
-   load(filename);
+    d_ptr->q_ptr = this;
+    load( filename );
 }
 
-QSvgRenderer::QSvgRenderer(const QByteArray &contents, QObject *parent)
-   : QObject(parent), d_ptr(new QSvgRendererPrivate)
+QSvgRenderer::QSvgRenderer( const QByteArray &contents, QObject *parent )
+    : QObject( parent ), d_ptr( new QSvgRendererPrivate )
 {
-   d_ptr->q_ptr = this;
-   load(contents);
+    d_ptr->q_ptr = this;
+    load( contents );
 }
 
-QSvgRenderer::QSvgRenderer(QXmlStreamReader *contents, QObject *parent)
-   : QObject(parent), d_ptr(new QSvgRendererPrivate)
+QSvgRenderer::QSvgRenderer( QXmlStreamReader *contents, QObject *parent )
+    : QObject( parent ), d_ptr( new QSvgRendererPrivate )
 {
-   d_ptr->q_ptr = this;
-   load(contents);
+    d_ptr->q_ptr = this;
+    load( contents );
 }
 
 QSvgRenderer::~QSvgRenderer()
@@ -89,201 +89,245 @@ QSvgRenderer::~QSvgRenderer()
 
 bool QSvgRenderer::isValid() const
 {
-   Q_D(const QSvgRenderer);
-   return d->render;
+    Q_D( const QSvgRenderer );
+    return d->render;
 }
 
 QSize QSvgRenderer::defaultSize() const
 {
-   Q_D(const QSvgRenderer);
-   if (d->render) {
-      return d->render->size();
-   } else {
-      return QSize();
-   }
+    Q_D( const QSvgRenderer );
+
+    if ( d->render )
+    {
+        return d->render->size();
+    }
+    else
+    {
+        return QSize();
+    }
 }
 
 QRect QSvgRenderer::viewBox() const
 {
-   Q_D(const QSvgRenderer);
-   if (d->render) {
-      return d->render->viewBox().toRect();
-   } else {
-      return QRect();
-   }
+    Q_D( const QSvgRenderer );
+
+    if ( d->render )
+    {
+        return d->render->viewBox().toRect();
+    }
+    else
+    {
+        return QRect();
+    }
 }
 
-void QSvgRenderer::setViewBox(const QRect &viewbox)
+void QSvgRenderer::setViewBox( const QRect &viewbox )
 {
-   Q_D(QSvgRenderer);
-   if (d->render) {
-      d->render->setViewBox(viewbox);
-   }
+    Q_D( QSvgRenderer );
+
+    if ( d->render )
+    {
+        d->render->setViewBox( viewbox );
+    }
 }
 
 bool QSvgRenderer::animated() const
 {
-   Q_D(const QSvgRenderer);
-   if (d->render) {
-      return d->render->animated();
-   } else {
-      return false;
-   }
+    Q_D( const QSvgRenderer );
+
+    if ( d->render )
+    {
+        return d->render->animated();
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int QSvgRenderer::framesPerSecond() const
 {
-   Q_D(const QSvgRenderer);
-   return d->fps;
+    Q_D( const QSvgRenderer );
+    return d->fps;
 }
 
-void QSvgRenderer::setFramesPerSecond(int num)
+void QSvgRenderer::setFramesPerSecond( int num )
 {
-   Q_D(QSvgRenderer);
-   if (num < 0) {
-      qWarning("QSvgRenderer::setFramesPerSecond: Cannot set negative value %d", num);
-      return;
-   }
-   d->fps = num;
+    Q_D( QSvgRenderer );
+
+    if ( num < 0 )
+    {
+        qWarning( "QSvgRenderer::setFramesPerSecond: Cannot set negative value %d", num );
+        return;
+    }
+
+    d->fps = num;
 }
 
 int QSvgRenderer::currentFrame() const
 {
-   Q_D(const QSvgRenderer);
-   return d->render->currentFrame();
+    Q_D( const QSvgRenderer );
+    return d->render->currentFrame();
 }
 
-void QSvgRenderer::setCurrentFrame(int frame)
+void QSvgRenderer::setCurrentFrame( int frame )
 {
-   Q_D(QSvgRenderer);
-   d->render->setCurrentFrame(frame);
+    Q_D( QSvgRenderer );
+    d->render->setCurrentFrame( frame );
 }
 
 int QSvgRenderer::animationDuration() const
 {
-   Q_D(const QSvgRenderer);
-   return d->render->animationDuration();
+    Q_D( const QSvgRenderer );
+    return d->render->animationDuration();
 }
 
-void QSvgRendererPrivate::callRepaintNeeded(QSvgRenderer *const q)
+void QSvgRendererPrivate::callRepaintNeeded( QSvgRenderer *const q )
 {
-   q->repaintNeeded();
+    q->repaintNeeded();
 }
 
 template <typename TInputType>
-static bool loadDocument(QSvgRenderer *const q, QSvgRendererPrivate *const d, const TInputType &in)
+static bool loadDocument( QSvgRenderer *const q, QSvgRendererPrivate *const d, const TInputType &in )
 {
-   delete d->render;
-   d->render = QSvgTinyDocument::load(in);
+    delete d->render;
+    d->render = QSvgTinyDocument::load( in );
 
-   if (d->render && d->render->animated() && d->fps > 0) {
-      if (! d->timer) {
-         d->timer = new QTimer(q);
-      } else {
-         d->timer->stop();
-      }
+    if ( d->render && d->render->animated() && d->fps > 0 )
+    {
+        if ( ! d->timer )
+        {
+            d->timer = new QTimer( q );
+        }
+        else
+        {
+            d->timer->stop();
+        }
 
-      q->connect(d->timer, SIGNAL(timeout()), q, SLOT(repaintNeeded()));
-      d->timer->start(1000 / d->fps);
+        q->connect( d->timer, SIGNAL( timeout() ), q, SLOT( repaintNeeded() ) );
+        d->timer->start( 1000 / d->fps );
 
-   } else if (d->timer) {
-      d->timer->stop();
-   }
+    }
+    else if ( d->timer )
+    {
+        d->timer->stop();
+    }
 
-   // force first update
-   QSvgRendererPrivate::callRepaintNeeded(q);
+    // force first update
+    QSvgRendererPrivate::callRepaintNeeded( q );
 
-   return d->render;
+    return d->render;
 }
 
-bool QSvgRenderer::load(const QString &filename)
+bool QSvgRenderer::load( const QString &filename )
 {
-   Q_D(QSvgRenderer);
-   return loadDocument(this, d, filename);
+    Q_D( QSvgRenderer );
+    return loadDocument( this, d, filename );
 }
 
-bool QSvgRenderer::load(const QByteArray &contents)
+bool QSvgRenderer::load( const QByteArray &contents )
 {
-   Q_D(QSvgRenderer);
-   return loadDocument(this, d, contents);
+    Q_D( QSvgRenderer );
+    return loadDocument( this, d, contents );
 }
 
-bool QSvgRenderer::load(QXmlStreamReader *contents)
+bool QSvgRenderer::load( QXmlStreamReader *contents )
 {
-   Q_D(QSvgRenderer);
-   return loadDocument(this, d, contents);
+    Q_D( QSvgRenderer );
+    return loadDocument( this, d, contents );
 }
 
-void QSvgRenderer::render(QPainter *painter)
+void QSvgRenderer::render( QPainter *painter )
 {
-   Q_D(QSvgRenderer);
-   if (d->render) {
-      d->render->draw(painter);
-   }
+    Q_D( QSvgRenderer );
+
+    if ( d->render )
+    {
+        d->render->draw( painter );
+    }
 }
 
-void QSvgRenderer::render(QPainter *painter, const QString &elementId, const QRectF &bounds)
+void QSvgRenderer::render( QPainter *painter, const QString &elementId, const QRectF &bounds )
 {
-   Q_D(QSvgRenderer);
-   if (d->render) {
-      d->render->draw(painter, elementId, bounds);
-   }
+    Q_D( QSvgRenderer );
+
+    if ( d->render )
+    {
+        d->render->draw( painter, elementId, bounds );
+    }
 }
 
-void QSvgRenderer::render(QPainter *painter, const QRectF &bounds)
+void QSvgRenderer::render( QPainter *painter, const QRectF &bounds )
 {
-   Q_D(QSvgRenderer);
-   if (d->render) {
-      d->render->draw(painter, bounds);
-   }
+    Q_D( QSvgRenderer );
+
+    if ( d->render )
+    {
+        d->render->draw( painter, bounds );
+    }
 }
 
 QRectF QSvgRenderer::viewBoxF() const
 {
-   Q_D(const QSvgRenderer);
-   if (d->render) {
-      return d->render->viewBox();
-   } else {
-      return QRect();
-   }
+    Q_D( const QSvgRenderer );
+
+    if ( d->render )
+    {
+        return d->render->viewBox();
+    }
+    else
+    {
+        return QRect();
+    }
 }
 
-void QSvgRenderer::setViewBox(const QRectF &viewbox)
+void QSvgRenderer::setViewBox( const QRectF &viewbox )
 {
-   Q_D(QSvgRenderer);
-   if (d->render) {
-      d->render->setViewBox(viewbox);
-   }
+    Q_D( QSvgRenderer );
+
+    if ( d->render )
+    {
+        d->render->setViewBox( viewbox );
+    }
 }
 
-QRectF QSvgRenderer::boundsOnElement(const QString &id) const
+QRectF QSvgRenderer::boundsOnElement( const QString &id ) const
 {
-   Q_D(const QSvgRenderer);
-   QRectF bounds;
-   if (d->render) {
-      bounds = d->render->boundsOnElement(id);
-   }
-   return bounds;
+    Q_D( const QSvgRenderer );
+    QRectF bounds;
+
+    if ( d->render )
+    {
+        bounds = d->render->boundsOnElement( id );
+    }
+
+    return bounds;
 }
 
-bool QSvgRenderer::elementExists(const QString &id) const
+bool QSvgRenderer::elementExists( const QString &id ) const
 {
-   Q_D(const QSvgRenderer);
-   bool exists = false;
-   if (d->render) {
-      exists = d->render->elementExists(id);
-   }
-   return exists;
+    Q_D( const QSvgRenderer );
+    bool exists = false;
+
+    if ( d->render )
+    {
+        exists = d->render->elementExists( id );
+    }
+
+    return exists;
 }
 
-QMatrix QSvgRenderer::matrixForElement(const QString &id) const
+QMatrix QSvgRenderer::matrixForElement( const QString &id ) const
 {
-   Q_D(const QSvgRenderer);
-   QMatrix mat;
-   if (d->render) {
-      mat = d->render->matrixForElement(id);
-   }
-   return mat;
+    Q_D( const QSvgRenderer );
+    QMatrix mat;
+
+    if ( d->render )
+    {
+        mat = d->render->matrixForElement( id );
+    }
+
+    return mat;
 }
 
 #endif // QT_NO_SVGRENDERER

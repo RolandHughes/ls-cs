@@ -40,23 +40,23 @@ using namespace QPatternist;
 typedef QExplicitlySharedDataPointer<QAbstractXmlForwardIterator<QXmlNodeModelIndex> >
 QXmlNodeModelIndexIteratorPointer;
 
-bool QAbstractXmlNodeModel::isIgnorableInDeepEqual(const QXmlNodeModelIndex &n)
+bool QAbstractXmlNodeModel::isIgnorableInDeepEqual( const QXmlNodeModelIndex &n )
 {
-   Q_ASSERT(! n.isNull());
+    Q_ASSERT( ! n.isNull() );
 
-   const QXmlNodeModelIndex::NodeKind nk = n.kind();
-   return nk == QXmlNodeModelIndex::ProcessingInstruction || nk == QXmlNodeModelIndex::Comment;
+    const QXmlNodeModelIndex::NodeKind nk = n.kind();
+    return nk == QXmlNodeModelIndex::ProcessingInstruction || nk == QXmlNodeModelIndex::Comment;
 }
 
 using namespace QPatternist;
 
 QAbstractXmlNodeModel::QAbstractXmlNodeModel()
-   : d_ptr(nullptr)
+    : d_ptr( nullptr )
 {
 }
 
-QAbstractXmlNodeModel::QAbstractXmlNodeModel(QAbstractXmlNodeModelPrivate *d)
-   : d_ptr(d)
+QAbstractXmlNodeModel::QAbstractXmlNodeModel( QAbstractXmlNodeModelPrivate *d )
+    : d_ptr( d )
 {
 }
 
@@ -69,47 +69,52 @@ TODO: Add : virtual QSourceLocation sourceLocation(const QXmlNodeModelIndex &nod
 Such that the data model can communicate back source locations.
 */
 
-namespace QPatternist {
+namespace QPatternist
+{
 class MergeIterator
 {
- public:
-   inline MergeIterator() {
-   }
+public:
+    inline MergeIterator()
+    {
+    }
 
-   inline
-   QXmlNodeModelIndexIteratorPointer
-   mapToSequence(const QXmlNodeModelIndexIteratorPointer &it,
-                 const DynamicContext::Ptr &) const {
-      return it;
-   }
+    inline
+    QXmlNodeModelIndexIteratorPointer mapToSequence( const QXmlNodeModelIndexIteratorPointer &it,
+            const DynamicContext::Ptr & ) const
+    {
+        return it;
+    }
 
- private:
-   MergeIterator(const MergeIterator &) = delete;
-   MergeIterator &operator=(const MergeIterator &) = delete;
+private:
+    MergeIterator( const MergeIterator & ) = delete;
+    MergeIterator &operator=( const MergeIterator & ) = delete;
 };
 
 static const MergeIterator mergeIterator;
 
 class IteratorVector : public
-   ListIterator<QXmlNodeModelIndexIteratorPointer, QVector<QXmlNodeModelIndexIteratorPointer> >
+    ListIterator<QXmlNodeModelIndexIteratorPointer, QVector<QXmlNodeModelIndexIteratorPointer> >
 {
-   typedef QVector<QXmlNodeModelIndexIteratorPointer> ItVector;
- public:
-   typedef QAbstractXmlForwardIterator<QXmlNodeModelIndexIteratorPointer>::Ptr Ptr;
+    typedef QVector<QXmlNodeModelIndexIteratorPointer> ItVector;
+public:
+    typedef QAbstractXmlForwardIterator<QXmlNodeModelIndexIteratorPointer>::Ptr Ptr;
 
-   IteratorVector(const ItVector &in) :
-      ListIterator<QXmlNodeModelIndexIteratorPointer, QVector<QXmlNodeModelIndexIteratorPointer> >(in) {
-   }
+    IteratorVector( const ItVector &in ) :
+        ListIterator<QXmlNodeModelIndexIteratorPointer, QVector<QXmlNodeModelIndexIteratorPointer> >( in )
+    {
+    }
 
-   QAbstractXmlForwardIterator<QXmlNodeModelIndexIteratorPointer>::Ptr copy() const override {
-      ItVector result;
+    QAbstractXmlForwardIterator<QXmlNodeModelIndexIteratorPointer>::Ptr copy() const override
+    {
+        ItVector result;
 
-      for (int i = 0; i < m_list.count(); ++i) {
-         result.append(m_list.at(i)->copy());
-      }
+        for ( int i = 0; i < m_list.count(); ++i )
+        {
+            result.append( m_list.at( i )->copy() );
+        }
 
-      return Ptr(new IteratorVector(result));
-   }
+        return Ptr( new IteratorVector( result ) );
+    }
 };
 }
 
@@ -118,27 +123,27 @@ class IteratorVector : public
  This function is not a private member of QAbstractXmlNodeModel
  because it would be messy to forward declare the required types.
 */
-static inline QXmlNodeModelIndexIteratorPointer mergeIterators(const QXmlNodeModelIndex &node,
-      const QXmlNodeModelIndexIteratorPointer &it2)
+static inline QXmlNodeModelIndexIteratorPointer mergeIterators( const QXmlNodeModelIndex &node,
+        const QXmlNodeModelIndexIteratorPointer &it2 )
 {
-   QVector<QXmlNodeModelIndexIteratorPointer> iterators;
-   iterators.append(makeSingletonIterator(node));
-   iterators.append(it2);
+    QVector<QXmlNodeModelIndexIteratorPointer> iterators;
+    iterators.append( makeSingletonIterator( node ) );
+    iterators.append( it2 );
 
-   return makeSequenceMappingIterator<QXmlNodeModelIndex>(&mergeIterator,
-          IteratorVector::Ptr(new IteratorVector(iterators)),
-          DynamicContext::Ptr());
+    return makeSequenceMappingIterator<QXmlNodeModelIndex>( &mergeIterator,
+            IteratorVector::Ptr( new IteratorVector( iterators ) ),
+            DynamicContext::Ptr() );
 }
 
-inline QAbstractXmlForwardIterator<QXmlNodeModelIndex>::Ptr
-QAbstractXmlNodeModel::mapToSequence(const QXmlNodeModelIndex &ni, const DynamicContext::Ptr &) const
+inline QAbstractXmlForwardIterator<QXmlNodeModelIndex>::Ptr QAbstractXmlNodeModel::mapToSequence( const QXmlNodeModelIndex &ni,
+        const DynamicContext::Ptr & ) const
 {
-   Q_ASSERT(! ni.isNull());
+    Q_ASSERT( ! ni.isNull() );
 
-   /* Since we pass in this here, mapToSequence is used recursively. */
-   return mergeIterators(ni, makeSequenceMappingIterator<QXmlNodeModelIndex>(this,
-                         ni.iterate(QXmlNodeModelIndex::AxisChild),
-                         DynamicContext::Ptr()));
+    /* Since we pass in this here, mapToSequence is used recursively. */
+    return mergeIterators( ni, makeSequenceMappingIterator<QXmlNodeModelIndex>( this,
+                           ni.iterate( QXmlNodeModelIndex::AxisChild ),
+                           DynamicContext::Ptr() ) );
 }
 
 /*!
@@ -188,208 +193,246 @@ QAbstractXmlNodeModel::mapToSequence(const QXmlNodeModelIndex &ni, const Dynamic
   \sa {http://www.w3.org/TR/xpath-datamodel/}{W3CXQuery 1.0 and XPath 2.0 Data Model (XDM)}
  */
 
-QExplicitlySharedDataPointer<QAbstractXmlForwardIterator<QXmlNodeModelIndex> >
-
-QAbstractXmlNodeModel::iterate(const QXmlNodeModelIndex &ni, QXmlNodeModelIndex::Axis axis) const
+QExplicitlySharedDataPointer<QAbstractXmlForwardIterator<QXmlNodeModelIndex> > QAbstractXmlNodeModel::iterate(
+    const QXmlNodeModelIndex &ni, QXmlNodeModelIndex::Axis axis ) const
 {
-   /* Returns iterators that track state and calls nextFromSimpleAxis()
-    * iteratively. Typically, when sub-classing QSimpleXmlNodeModel,
-    * you don't reimplement this function, but instead implement
-    * nextFromSimpleAxis(). */
+    /* Returns iterators that track state and calls nextFromSimpleAxis()
+     * iteratively. Typically, when sub-classing QSimpleXmlNodeModel,
+     * you don't reimplement this function, but instead implement
+     * nextFromSimpleAxis(). */
 
-   switch (axis) {
-      case QXmlNodeModelIndex::AxisSelf:
-         return makeSingletonIterator(ni);
+    switch ( axis )
+    {
+        case QXmlNodeModelIndex::AxisSelf:
+            return makeSingletonIterator( ni );
 
-      case QXmlNodeModelIndex::AxisParent: {
-         if (kind(ni) == QXmlNodeModelIndex::Document) {
+        case QXmlNodeModelIndex::AxisParent:
+        {
+            if ( kind( ni ) == QXmlNodeModelIndex::Document )
+            {
+                return makeEmptyIterator<QXmlNodeModelIndex>();
+            }
+            else
+            {
+                return makeSingletonIterator( nextFromSimpleAxis( Parent, ni ) );
+            }
+        }
+
+        case QXmlNodeModelIndex::AxisNamespace:
             return makeEmptyIterator<QXmlNodeModelIndex>();
-         } else {
-            return makeSingletonIterator(nextFromSimpleAxis(Parent, ni));
-         }
-      }
 
-      case QXmlNodeModelIndex::AxisNamespace:
-         return makeEmptyIterator<QXmlNodeModelIndex>();
-      case QXmlNodeModelIndex::AxisAncestor: {
-         QList<QXmlNodeModelIndex> ancestors;
-         QXmlNodeModelIndex ancestor = nextFromSimpleAxis(Parent, ni);
+        case QXmlNodeModelIndex::AxisAncestor:
+        {
+            QList<QXmlNodeModelIndex> ancestors;
+            QXmlNodeModelIndex ancestor = nextFromSimpleAxis( Parent, ni );
 
-         while (! ancestor.isNull()) {
-            ancestors.append(ancestor);
-            ancestor = nextFromSimpleAxis(Parent, ancestor);
-         }
-
-         return makeListIterator(ancestors);
-      }
-
-      case QXmlNodeModelIndex::AxisAncestorOrSelf: {
-         QList<QXmlNodeModelIndex> ancestors;
-         ancestors.append(ni);
-         QXmlNodeModelIndex ancestor = nextFromSimpleAxis(Parent, ni);
-
-         while (!ancestor.isNull()) {
-            ancestors.append(ancestor);
-            ancestor = nextFromSimpleAxis(Parent, ancestor);
-         }
-
-         return makeListIterator(ancestors);
-      }
-      case QXmlNodeModelIndex::AxisPrecedingSibling: {
-         QList<QXmlNodeModelIndex> preceding;
-         QXmlNodeModelIndex sibling = nextFromSimpleAxis(PreviousSibling, ni);
-
-         while (!sibling.isNull()) {
-            preceding.append(sibling);
-            sibling = nextFromSimpleAxis(PreviousSibling, sibling);
-         }
-
-         return makeListIterator(preceding);
-      }
-
-      case QXmlNodeModelIndex::AxisFollowingSibling: {
-         QList<QXmlNodeModelIndex> preceding;
-         QXmlNodeModelIndex sibling = nextFromSimpleAxis(NextSibling, ni);
-
-         while (!sibling.isNull()) {
-            preceding.append(sibling);
-            sibling = nextFromSimpleAxis(NextSibling, sibling);
-         }
-
-         return makeListIterator(preceding);
-      }
-
-      case QXmlNodeModelIndex::AxisChildOrTop: {
-         if (nextFromSimpleAxis(Parent, ni).isNull()) {
-            switch (kind(ni)) {
-               case QXmlNodeModelIndex::Comment:
-               case QXmlNodeModelIndex::ProcessingInstruction:
-               case QXmlNodeModelIndex::Element:
-               case QXmlNodeModelIndex::Text:
-                  return makeSingletonIterator(ni);
-
-               case QXmlNodeModelIndex::Attribute:
-               case QXmlNodeModelIndex::Document:
-               case QXmlNodeModelIndex::Namespace:
-                  // do nothing
-                  ;
+            while ( ! ancestor.isNull() )
+            {
+                ancestors.append( ancestor );
+                ancestor = nextFromSimpleAxis( Parent, ancestor );
             }
-         }
-      }
-      [[fallthrough]];
 
-      case QXmlNodeModelIndex::AxisChild: {
-         QList<QXmlNodeModelIndex> children;
-         QXmlNodeModelIndex child = nextFromSimpleAxis(FirstChild, ni);
+            return makeListIterator( ancestors );
+        }
 
-         while (!child.isNull()) {
-            children.append(child);
-            child = nextFromSimpleAxis(NextSibling, child);
-         }
+        case QXmlNodeModelIndex::AxisAncestorOrSelf:
+        {
+            QList<QXmlNodeModelIndex> ancestors;
+            ancestors.append( ni );
+            QXmlNodeModelIndex ancestor = nextFromSimpleAxis( Parent, ni );
 
-         return makeListIterator(children);
-      }
-
-      case QXmlNodeModelIndex::AxisDescendant: {
-         return makeSequenceMappingIterator<QXmlNodeModelIndex>(this,
-                ni.iterate(QXmlNodeModelIndex::AxisChild),
-                DynamicContext::Ptr());
-      }
-
-      case QXmlNodeModelIndex::AxisAttributeOrTop: {
-         if (kind(ni) == QXmlNodeModelIndex::Attribute && nextFromSimpleAxis(Parent, ni).isNull()) {
-            return makeSingletonIterator(ni);
-         }
-      }
-      [[fallthrough]];
-
-      case QXmlNodeModelIndex::AxisAttribute:
-         return makeVectorIterator(attributes(ni));
-
-      case QXmlNodeModelIndex::AxisDescendantOrSelf:
-         return mergeIterators(ni, iterate(ni, QXmlNodeModelIndex::AxisDescendant));
-
-      case QXmlNodeModelIndex::AxisFollowing:
-      case QXmlNodeModelIndex::AxisPreceding: {
-         /* We walk up along the ancestors, and for each parent, we grab its preceding/following
-          * siblings, and evaluate the descendant axis. The descendant axes gets added
-          * to a list and we then merge those iterators. */
-         QVector<QXmlNodeModelIndexIteratorPointer> descendantIterators;
-
-         QXmlNodeModelIndex current(ni);
-
-         while (!current.isNull()) {
-            QXmlNodeModelIndex candidate(nextFromSimpleAxis(axis == QXmlNodeModelIndex::AxisPreceding ? PreviousSibling :
-                                         NextSibling, current));
-            if (candidate.isNull()) {
-               /* current is an ancestor. We don't want it, so next iteration we
-                * will grab its preceding sibling. */
-               current = nextFromSimpleAxis(Parent, current);
-            } else {
-               current = candidate;
-               descendantIterators.append(iterate(current, QXmlNodeModelIndex::AxisDescendantOrSelf)->toReversed());
+            while ( !ancestor.isNull() )
+            {
+                ancestors.append( ancestor );
+                ancestor = nextFromSimpleAxis( Parent, ancestor );
             }
-         }
 
-         return makeSequenceMappingIterator<QXmlNodeModelIndex>(&mergeIterator,
-                IteratorVector::Ptr(new IteratorVector(descendantIterators)),
-                DynamicContext::Ptr());
-      }
-   }
+            return makeListIterator( ancestors );
+        }
 
-   Q_ASSERT_X(false, Q_FUNC_INFO, "Unknown axis, internal error.");
+        case QXmlNodeModelIndex::AxisPrecedingSibling:
+        {
+            QList<QXmlNodeModelIndex> preceding;
+            QXmlNodeModelIndex sibling = nextFromSimpleAxis( PreviousSibling, ni );
 
-   return makeEmptyIterator<QXmlNodeModelIndex>();
+            while ( !sibling.isNull() )
+            {
+                preceding.append( sibling );
+                sibling = nextFromSimpleAxis( PreviousSibling, sibling );
+            }
+
+            return makeListIterator( preceding );
+        }
+
+        case QXmlNodeModelIndex::AxisFollowingSibling:
+        {
+            QList<QXmlNodeModelIndex> preceding;
+            QXmlNodeModelIndex sibling = nextFromSimpleAxis( NextSibling, ni );
+
+            while ( !sibling.isNull() )
+            {
+                preceding.append( sibling );
+                sibling = nextFromSimpleAxis( NextSibling, sibling );
+            }
+
+            return makeListIterator( preceding );
+        }
+
+        case QXmlNodeModelIndex::AxisChildOrTop:
+        {
+            if ( nextFromSimpleAxis( Parent, ni ).isNull() )
+            {
+                switch ( kind( ni ) )
+                {
+                    case QXmlNodeModelIndex::Comment:
+                    case QXmlNodeModelIndex::ProcessingInstruction:
+                    case QXmlNodeModelIndex::Element:
+                    case QXmlNodeModelIndex::Text:
+                        return makeSingletonIterator( ni );
+
+                    case QXmlNodeModelIndex::Attribute:
+                    case QXmlNodeModelIndex::Document:
+                    case QXmlNodeModelIndex::Namespace:
+                        // do nothing
+                        ;
+                }
+            }
+        }
+
+        [[fallthrough]];
+
+        case QXmlNodeModelIndex::AxisChild:
+        {
+            QList<QXmlNodeModelIndex> children;
+            QXmlNodeModelIndex child = nextFromSimpleAxis( FirstChild, ni );
+
+            while ( !child.isNull() )
+            {
+                children.append( child );
+                child = nextFromSimpleAxis( NextSibling, child );
+            }
+
+            return makeListIterator( children );
+        }
+
+        case QXmlNodeModelIndex::AxisDescendant:
+        {
+            return makeSequenceMappingIterator<QXmlNodeModelIndex>( this,
+                    ni.iterate( QXmlNodeModelIndex::AxisChild ),
+                    DynamicContext::Ptr() );
+        }
+
+        case QXmlNodeModelIndex::AxisAttributeOrTop:
+        {
+            if ( kind( ni ) == QXmlNodeModelIndex::Attribute && nextFromSimpleAxis( Parent, ni ).isNull() )
+            {
+                return makeSingletonIterator( ni );
+            }
+        }
+
+        [[fallthrough]];
+
+        case QXmlNodeModelIndex::AxisAttribute:
+            return makeVectorIterator( attributes( ni ) );
+
+        case QXmlNodeModelIndex::AxisDescendantOrSelf:
+            return mergeIterators( ni, iterate( ni, QXmlNodeModelIndex::AxisDescendant ) );
+
+        case QXmlNodeModelIndex::AxisFollowing:
+        case QXmlNodeModelIndex::AxisPreceding:
+        {
+            /* We walk up along the ancestors, and for each parent, we grab its preceding/following
+             * siblings, and evaluate the descendant axis. The descendant axes gets added
+             * to a list and we then merge those iterators. */
+            QVector<QXmlNodeModelIndexIteratorPointer> descendantIterators;
+
+            QXmlNodeModelIndex current( ni );
+
+            while ( !current.isNull() )
+            {
+                QXmlNodeModelIndex candidate( nextFromSimpleAxis( axis == QXmlNodeModelIndex::AxisPreceding ? PreviousSibling :
+                                              NextSibling, current ) );
+
+                if ( candidate.isNull() )
+                {
+                    /* current is an ancestor. We don't want it, so next iteration we
+                     * will grab its preceding sibling. */
+                    current = nextFromSimpleAxis( Parent, current );
+                }
+                else
+                {
+                    current = candidate;
+                    descendantIterators.append( iterate( current, QXmlNodeModelIndex::AxisDescendantOrSelf )->toReversed() );
+                }
+            }
+
+            return makeSequenceMappingIterator<QXmlNodeModelIndex>( &mergeIterator,
+                    IteratorVector::Ptr( new IteratorVector( descendantIterators ) ),
+                    DynamicContext::Ptr() );
+        }
+    }
+
+    Q_ASSERT_X( false, Q_FUNC_INFO, "Unknown axis, internal error." );
+
+    return makeEmptyIterator<QXmlNodeModelIndex>();
 }
 
-void QAbstractXmlNodeModel::sendNamespaces(const QXmlNodeModelIndex &n, QAbstractXmlReceiver *const receiver) const
+void QAbstractXmlNodeModel::sendNamespaces( const QXmlNodeModelIndex &n, QAbstractXmlReceiver *const receiver ) const
 {
-   Q_ASSERT(receiver);
-   const QVector<QXmlName> nss(namespaceBindings(n));
+    Q_ASSERT( receiver );
+    const QVector<QXmlName> nss( namespaceBindings( n ) );
 
-   /* This is by far the most common case. */
-   if (nss.isEmpty()) {
-      return;
-   }
+    /* This is by far the most common case. */
+    if ( nss.isEmpty() )
+    {
+        return;
+    }
 
-   const int len = nss.size();
-   for (int i = 0; i < len; ++i) {
-      receiver->namespaceBinding(nss.at(i));
-   }
+    const int len = nss.size();
+
+    for ( int i = 0; i < len; ++i )
+    {
+        receiver->namespaceBinding( nss.at( i ) );
+    }
 }
 
-QPatternist::ItemIteratorPtr QAbstractXmlNodeModel::sequencedTypedValue(const QXmlNodeModelIndex &ni) const
+QPatternist::ItemIteratorPtr QAbstractXmlNodeModel::sequencedTypedValue( const QXmlNodeModelIndex &ni ) const
 {
-   const QVariant &candidate = typedValue(ni);
+    const QVariant &candidate = typedValue( ni );
 
-   if (! candidate.isValid()) {
-      return QPatternist::CommonValues::emptyIterator;
-   } else {
-      return makeSingletonIterator(AtomicValue::toXDM(candidate));
-   }
+    if ( ! candidate.isValid() )
+    {
+        return QPatternist::CommonValues::emptyIterator;
+    }
+    else
+    {
+        return makeSingletonIterator( AtomicValue::toXDM( candidate ) );
+    }
 }
 
-QExplicitlySharedDataPointer<QPatternist::ItemType> QAbstractXmlNodeModel::type(const QXmlNodeModelIndex &) const
+QExplicitlySharedDataPointer<QPatternist::ItemType> QAbstractXmlNodeModel::type( const QXmlNodeModelIndex & ) const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function is internal, unsupported, and should never be called.");
-   return QPatternist::ItemType::Ptr();
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function is internal, unsupported, and should never be called." );
+    return QPatternist::ItemType::Ptr();
 }
 
-QXmlName::NamespaceCode QAbstractXmlNodeModel::namespaceForPrefix(const QXmlNodeModelIndex &ni,
-      const QXmlName::PrefixCode prefix) const
+QXmlName::NamespaceCode QAbstractXmlNodeModel::namespaceForPrefix( const QXmlNodeModelIndex &ni,
+        const QXmlName::PrefixCode prefix ) const
 {
-   Q_ASSERT(kind(ni) == QXmlNodeModelIndex::Element);
+    Q_ASSERT( kind( ni ) == QXmlNodeModelIndex::Element );
 
-   const QVector<QXmlName> nbs(namespaceBindings(ni));
-   const int len = nbs.size();
+    const QVector<QXmlName> nbs( namespaceBindings( ni ) );
+    const int len = nbs.size();
 
-   for (int i = 0; i < len; ++i) {
-      if (nbs.at(i).prefix() == prefix) {
-         return nbs.at(i).namespaceURI();
-      }
-   }
+    for ( int i = 0; i < len; ++i )
+    {
+        if ( nbs.at( i ).prefix() == prefix )
+        {
+            return nbs.at( i ).namespaceURI();
+        }
+    }
 
-   return NamespaceResolver::NoBinding;
+    return NamespaceResolver::NoBinding;
 }
 
 
@@ -409,230 +452,268 @@ QXmlName::NamespaceCode QAbstractXmlNodeModel::namespaceForPrefix(const QXmlNode
 
   \sa {"http://www.w3.org/TR/xpath-functions/#func-deep-equal"}{XQuery 1.0 and XPath 2.0 Functions and Operators, 15.3.1 fn:deep-equal}
  */
-bool QAbstractXmlNodeModel::isDeepEqual(const QXmlNodeModelIndex &n1, const QXmlNodeModelIndex &n2) const
+bool QAbstractXmlNodeModel::isDeepEqual( const QXmlNodeModelIndex &n1, const QXmlNodeModelIndex &n2 ) const
 {
-   Q_ASSERT(!n1.isNull());
-   Q_ASSERT(!n2.isNull());
+    Q_ASSERT( !n1.isNull() );
+    Q_ASSERT( !n2.isNull() );
 
-   const QXmlNodeModelIndex::NodeKind nk = n1.kind();
+    const QXmlNodeModelIndex::NodeKind nk = n1.kind();
 
-   if (nk != n2.kind()) {
-      return false;
-   }
+    if ( nk != n2.kind() )
+    {
+        return false;
+    }
 
-   if (n1.name() != n2.name()) {
-      return false;
-   }
+    if ( n1.name() != n2.name() )
+    {
+        return false;
+    }
 
-   switch (nk) {
-      case QXmlNodeModelIndex::Element: {
-         QXmlNodeModelIndexIteratorPointer atts1(n1.iterate(QXmlNodeModelIndex::AxisAttribute));
-         QXmlNodeModelIndex node(atts1->next());
+    switch ( nk )
+    {
+        case QXmlNodeModelIndex::Element:
+        {
+            QXmlNodeModelIndexIteratorPointer atts1( n1.iterate( QXmlNodeModelIndex::AxisAttribute ) );
+            QXmlNodeModelIndex node( atts1->next() );
 
-         const QXmlNodeModelIndex::List atts2(n2.iterate(QXmlNodeModelIndex::AxisAttribute)->toList());
-         const QXmlNodeModelIndex::List::const_iterator end(atts2.constEnd());
+            const QXmlNodeModelIndex::List atts2( n2.iterate( QXmlNodeModelIndex::AxisAttribute )->toList() );
+            const QXmlNodeModelIndex::List::const_iterator end( atts2.constEnd() );
 
-         while (!node.isNull()) {
-            bool equal = false;
-            for (QXmlNodeModelIndex::List::const_iterator it = atts2.constBegin(); it != end; ++it) {
-               if (isDeepEqual(node, (*it))) {
-                  equal = true;
-               }
+            while ( !node.isNull() )
+            {
+                bool equal = false;
+
+                for ( QXmlNodeModelIndex::List::const_iterator it = atts2.constBegin(); it != end; ++it )
+                {
+                    if ( isDeepEqual( node, ( *it ) ) )
+                    {
+                        equal = true;
+                    }
+                }
+
+                if ( !equal )
+                {
+                    return false;
+                }
+
+                node = atts1->next();
+            }
+        }
+
+        [[fallthrough]];
+
+        case QXmlNodeModelIndex::Document:
+        {
+            QXmlNodeModelIndexIteratorPointer itn1( n1.iterate( QXmlNodeModelIndex::AxisChild ) );
+            QXmlNodeModelIndexIteratorPointer itn2( n2.iterate( QXmlNodeModelIndex::AxisChild ) );
+
+            while ( true )
+            {
+                QXmlNodeModelIndex no1( itn1->next() );
+                QXmlNodeModelIndex no2( itn2->next() );
+
+                while ( !no1.isNull() && isIgnorableInDeepEqual( no1 ) )
+                {
+                    no1 = itn1->next();
+                }
+
+                while ( !no2.isNull() && isIgnorableInDeepEqual( no2 ) )
+                {
+                    no2 = itn2->next();
+                }
+
+                if ( !no1.isNull() && !no2.isNull() )
+                {
+                    if ( !isDeepEqual( no1, no2 ) )
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return no1.isNull() && no2.isNull();
+                }
             }
 
-            if (!equal) {
-               return false;
-            }
+            return true;
+        }
 
-            node = atts1->next();
-         }
-      }
-      [[fallthrough]];
+        case QXmlNodeModelIndex::Attribute:
+        case QXmlNodeModelIndex::ProcessingInstruction:
+        case QXmlNodeModelIndex::Text:
+        case QXmlNodeModelIndex::Comment:
+            return n1.stringValue() == n2.stringValue();
 
-      case QXmlNodeModelIndex::Document: {
-         QXmlNodeModelIndexIteratorPointer itn1(n1.iterate(QXmlNodeModelIndex::AxisChild));
-         QXmlNodeModelIndexIteratorPointer itn2(n2.iterate(QXmlNodeModelIndex::AxisChild));
+        case QXmlNodeModelIndex::Namespace:
+        {
+            Q_ASSERT_X( false, Q_FUNC_INFO, "QXmlNodeModelIndex::Namespace was not implemented" );
+            return false;
+        }
+    }
 
-         while (true) {
-            QXmlNodeModelIndex no1(itn1->next());
-            QXmlNodeModelIndex no2(itn2->next());
-
-            while (!no1.isNull() && isIgnorableInDeepEqual(no1)) {
-               no1 = itn1->next();
-            }
-
-            while (!no2.isNull() && isIgnorableInDeepEqual(no2)) {
-               no2 = itn2->next();
-            }
-
-            if (!no1.isNull() && !no2.isNull()) {
-               if (!isDeepEqual(no1, no2)) {
-                  return false;
-               }
-            } else {
-               return no1.isNull() && no2.isNull();
-            }
-         }
-
-         return true;
-      }
-
-      case QXmlNodeModelIndex::Attribute:
-      case QXmlNodeModelIndex::ProcessingInstruction:
-      case QXmlNodeModelIndex::Text:
-      case QXmlNodeModelIndex::Comment:
-         return n1.stringValue() == n2.stringValue();
-
-      case QXmlNodeModelIndex::Namespace: {
-         Q_ASSERT_X(false, Q_FUNC_INFO, "QXmlNodeModelIndex::Namespace was not implemented");
-         return false;
-      }
-   }
-
-   return false;
+    return false;
 }
 
 QXmlItem::QXmlItem()
 {
-   m_node.reset();
+    m_node.reset();
 }
 
 bool QXmlItem::internalIsAtomicValue() const
 {
-   return m_node.model == reinterpret_cast<QAbstractXmlNodeModel *>(~0);
+    return m_node.model == reinterpret_cast<QAbstractXmlNodeModel *>( ~0 );
 }
 
-QXmlItem::QXmlItem(const QXmlItem &other) : m_node(other.m_node)
+QXmlItem::QXmlItem( const QXmlItem &other ) : m_node( other.m_node )
 {
-   if (internalIsAtomicValue()) {
-      m_atomicValue->ref.ref();
-   }
+    if ( internalIsAtomicValue() )
+    {
+        m_atomicValue->ref.ref();
+    }
 }
 
-QXmlItem::QXmlItem(const QVariant &atomicValue)
+QXmlItem::QXmlItem( const QVariant &atomicValue )
 {
-   m_node.reset();
-   if (! atomicValue.isValid()) {
-      /* Then we behave just like the default constructor. */
-      return;
-   }
+    m_node.reset();
 
-   /*
-     can not assign directly to m_atomicValue, because the
-     temporary will self-destruct before we've ref'd it.
-   */
-   const QPatternist::Item temp(QPatternist::AtomicValue::toXDM(atomicValue));
+    if ( ! atomicValue.isValid() )
+    {
+        /* Then we behave just like the default constructor. */
+        return;
+    }
 
-   if (temp) {
-      temp.asAtomicValue()->ref.ref();
-      m_node.model = reinterpret_cast<const QAbstractXmlNodeModel *>(~0);
-      m_atomicValue = temp.asAtomicValue();
+    /*
+      can not assign directly to m_atomicValue, because the
+      temporary will self-destruct before we've ref'd it.
+    */
+    const QPatternist::Item temp( QPatternist::AtomicValue::toXDM( atomicValue ) );
 
-   } else {
-      m_atomicValue = nullptr;
-   }
+    if ( temp )
+    {
+        temp.asAtomicValue()->ref.ref();
+        m_node.model = reinterpret_cast<const QAbstractXmlNodeModel *>( ~0 );
+        m_atomicValue = temp.asAtomicValue();
+
+    }
+    else
+    {
+        m_atomicValue = nullptr;
+    }
 }
 
-QXmlItem::QXmlItem(const QXmlNodeModelIndex &node) : m_node(node.m_storage)
+QXmlItem::QXmlItem( const QXmlNodeModelIndex &node ) : m_node( node.m_storage )
 {
 }
 
 QXmlItem::~QXmlItem()
 {
-   if (internalIsAtomicValue() && !m_atomicValue->ref.deref()) {
-      delete m_atomicValue;
-   }
+    if ( internalIsAtomicValue() && !m_atomicValue->ref.deref() )
+    {
+        delete m_atomicValue;
+    }
 }
 
-bool QPatternist::NodeIndexStorage::operator!=(const NodeIndexStorage &other) const
+bool QPatternist::NodeIndexStorage::operator!=( const NodeIndexStorage &other ) const
 {
-   return data != other.data
-          || additionalData != other.additionalData
-          || model != other.model;
+    return data != other.data
+           || additionalData != other.additionalData
+           || model != other.model;
 }
 
-QXmlItem &QXmlItem::operator=(const QXmlItem &other)
+QXmlItem &QXmlItem::operator=( const QXmlItem &other )
 {
-   if (m_node != other.m_node) {
-      if (internalIsAtomicValue() && !m_atomicValue->ref.deref()) {
-         delete m_atomicValue;
-      }
+    if ( m_node != other.m_node )
+    {
+        if ( internalIsAtomicValue() && !m_atomicValue->ref.deref() )
+        {
+            delete m_atomicValue;
+        }
 
-      m_node = other.m_node;
+        m_node = other.m_node;
 
-      if (internalIsAtomicValue()) {
-         m_atomicValue->ref.ref();
-      }
-   }
+        if ( internalIsAtomicValue() )
+        {
+            m_atomicValue->ref.ref();
+        }
+    }
 
-   return *this;
+    return *this;
 }
 
 bool QXmlItem::isNode() const
 {
-   return QPatternist::Item::fromPublic(*this).isNode();
+    return QPatternist::Item::fromPublic( *this ).isNode();
 }
 
 bool QXmlItem::isAtomicValue() const
 {
-   return internalIsAtomicValue();
+    return internalIsAtomicValue();
 }
 
 QVariant QXmlItem::toAtomicValue() const
 {
-   if (isAtomicValue()) {
-      return QPatternist::AtomicValue::toQt(m_atomicValue);
-   } else {
-      return QVariant();
-   }
+    if ( isAtomicValue() )
+    {
+        return QPatternist::AtomicValue::toQt( m_atomicValue );
+    }
+    else
+    {
+        return QVariant();
+    }
 }
 
 QXmlNodeModelIndex QXmlItem::toNodeModelIndex() const
 {
-   if (isNode()) {
-      return reinterpret_cast<const QXmlNodeModelIndex &>(m_node);
-   } else {
-      return QXmlNodeModelIndex();
-   }
+    if ( isNode() )
+    {
+        return reinterpret_cast<const QXmlNodeModelIndex &>( m_node );
+    }
+    else
+    {
+        return QXmlNodeModelIndex();
+    }
 }
 
 bool QXmlItem::isNull() const
 {
-   return !m_node.model;
+    return !m_node.model;
 }
 
-uint qHash(const QXmlNodeModelIndex &index)
+uint qHash( const QXmlNodeModelIndex &index )
 {
-   return uint(index.data() + index.additionalData() + quintptr(index.model()));
+    return uint( index.data() + index.additionalData() + quintptr( index.model() ) );
 }
 
-bool QXmlNodeModelIndex::operator==(const QXmlNodeModelIndex &other) const
+bool QXmlNodeModelIndex::operator==( const QXmlNodeModelIndex &other ) const
 {
-   return !(m_storage != other.m_storage);
+    return !( m_storage != other.m_storage );
 }
 
-bool QXmlNodeModelIndex::operator!=(const QXmlNodeModelIndex &other) const
+bool QXmlNodeModelIndex::operator!=( const QXmlNodeModelIndex &other ) const
 {
-   return !(operator==(other));
+    return !( operator==( other ) );
 }
 
-void QAbstractXmlNodeModel::copyNodeTo(const QXmlNodeModelIndex &node,
-                  QAbstractXmlReceiver *const receiver, const NodeCopySettings &copySettings) const
+void QAbstractXmlNodeModel::copyNodeTo( const QXmlNodeModelIndex &node,
+                                        QAbstractXmlReceiver *const receiver, const NodeCopySettings &copySettings ) const
 {
-   (void) node;
-   (void) receiver;
-   (void) copySettings;
+    ( void ) node;
+    ( void ) receiver;
+    ( void ) copySettings;
 
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
 }
 
-QSourceLocation QAbstractXmlNodeModel::sourceLocation(const QXmlNodeModelIndex &index) const
+QSourceLocation QAbstractXmlNodeModel::sourceLocation( const QXmlNodeModelIndex &index ) const
 {
-   // TODO: make this method virtual to allow source location support in custom models
+    // TODO: make this method virtual to allow source location support in custom models
 
-   if (d_ptr) {
-      return d_ptr->sourceLocation(index);
-   } else {
-      return QSourceLocation();
-   }
+    if ( d_ptr )
+    {
+        return d_ptr->sourceLocation( index );
+    }
+    else
+    {
+        return QSourceLocation();
+    }
 }

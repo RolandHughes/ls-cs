@@ -127,47 +127,73 @@ using namespace WebCore;
 // from text/qfont.cpp
 extern Q_GUI_EXPORT int qt_defaultDpi();
 
-bool QWEBKIT_EXPORT qtwebkit_webframe_scrollOverflow(QWebFrame* qFrame, int dx, int dy, const QPoint& pos)
+bool QWEBKIT_EXPORT qtwebkit_webframe_scrollOverflow( QWebFrame *qFrame, int dx, int dy, const QPoint &pos )
 {
-    WebCore::Frame* frame = QWebFramePrivate::core(qFrame);
-    if (!frame || !frame->document() || !frame->view() || !frame->eventHandler())
-        return false;
+    WebCore::Frame *frame = QWebFramePrivate::core( qFrame );
 
-    QPoint contentsPos = frame->view()->windowToContents(pos);
-    Node* node = frame->document()->elementFromPoint(contentsPos.x(), contentsPos.y());
-    if (!node)
+    if ( !frame || !frame->document() || !frame->view() || !frame->eventHandler() )
+    {
         return false;
+    }
 
-    RenderObject* renderer = node->renderer();
-    if (!renderer)
-        return false;
+    QPoint contentsPos = frame->view()->windowToContents( pos );
+    Node *node = frame->document()->elementFromPoint( contentsPos.x(), contentsPos.y() );
 
-    if (renderer->isListBox())
+    if ( !node )
+    {
         return false;
+    }
 
-    RenderLayer* renderLayer = renderer->enclosingLayer();
-    if (!renderLayer)
+    RenderObject *renderer = node->renderer();
+
+    if ( !renderer )
+    {
         return false;
+    }
+
+    if ( renderer->isListBox() )
+    {
+        return false;
+    }
+
+    RenderLayer *renderLayer = renderer->enclosingLayer();
+
+    if ( !renderLayer )
+    {
+        return false;
+    }
 
     bool scrolledHorizontal = false;
     bool scrolledVertical = false;
 
-    do {
-        if (dx > 0)
-            scrolledHorizontal = renderLayer->scroll(ScrollRight, ScrollByPixel, dx);
-        else if (dx < 0)
-            scrolledHorizontal = renderLayer->scroll(ScrollLeft, ScrollByPixel, qAbs(dx));
+    do
+    {
+        if ( dx > 0 )
+        {
+            scrolledHorizontal = renderLayer->scroll( ScrollRight, ScrollByPixel, dx );
+        }
+        else if ( dx < 0 )
+        {
+            scrolledHorizontal = renderLayer->scroll( ScrollLeft, ScrollByPixel, qAbs( dx ) );
+        }
 
-        if (dy > 0)
-            scrolledVertical = renderLayer->scroll(ScrollDown, ScrollByPixel, dy);
-        else if (dy < 0)
-            scrolledVertical = renderLayer->scroll(ScrollUp, ScrollByPixel, qAbs(dy));
+        if ( dy > 0 )
+        {
+            scrolledVertical = renderLayer->scroll( ScrollDown, ScrollByPixel, dy );
+        }
+        else if ( dy < 0 )
+        {
+            scrolledVertical = renderLayer->scroll( ScrollUp, ScrollByPixel, qAbs( dy ) );
+        }
 
-        if (scrolledHorizontal || scrolledVertical)
+        if ( scrolledHorizontal || scrolledVertical )
+        {
             return true;
+        }
 
         renderLayer = renderLayer->parent();
-    } while (renderLayer);
+    }
+    while ( renderLayer );
 
     return false;
 }
@@ -180,72 +206,95 @@ bool QWEBKIT_EXPORT qtwebkit_webframe_scrollOverflow(QWebFrame* qFrame, int dx, 
   to scroll elements with CSS overflow at position pos, followed by this frame. If this
   frame doesn't scroll, attempts to scroll the parent
 */
-void QWEBKIT_EXPORT qtwebkit_webframe_scrollRecursively(QWebFrame* qFrame, int dx, int dy, const QPoint& pos)
+void QWEBKIT_EXPORT qtwebkit_webframe_scrollRecursively( QWebFrame *qFrame, int dx, int dy, const QPoint &pos )
 {
-    if (!qFrame)
+    if ( !qFrame )
+    {
         return;
+    }
 
-    if (qtwebkit_webframe_scrollOverflow(qFrame, dx, dy, pos))
+    if ( qtwebkit_webframe_scrollOverflow( qFrame, dx, dy, pos ) )
+    {
         return;
+    }
 
     bool scrollHorizontal = false;
     bool scrollVertical = false;
 
-    do {
-        if (dx > 0)  // scroll right
-            scrollHorizontal = qFrame->scrollBarValue(Qt::Horizontal) < qFrame->scrollBarMaximum(Qt::Horizontal);
-        else if (dx < 0)  // scroll left
-            scrollHorizontal = qFrame->scrollBarValue(Qt::Horizontal) > qFrame->scrollBarMinimum(Qt::Horizontal);
+    do
+    {
+        if ( dx > 0 ) // scroll right
+        {
+            scrollHorizontal = qFrame->scrollBarValue( Qt::Horizontal ) < qFrame->scrollBarMaximum( Qt::Horizontal );
+        }
+        else if ( dx < 0 ) // scroll left
+        {
+            scrollHorizontal = qFrame->scrollBarValue( Qt::Horizontal ) > qFrame->scrollBarMinimum( Qt::Horizontal );
+        }
 
-        if (dy > 0)  // scroll down
-            scrollVertical = qFrame->scrollBarValue(Qt::Vertical) < qFrame->scrollBarMaximum(Qt::Vertical);
-        else if (dy < 0) //scroll up
-            scrollVertical = qFrame->scrollBarValue(Qt::Vertical) > qFrame->scrollBarMinimum(Qt::Vertical);
+        if ( dy > 0 ) // scroll down
+        {
+            scrollVertical = qFrame->scrollBarValue( Qt::Vertical ) < qFrame->scrollBarMaximum( Qt::Vertical );
+        }
+        else if ( dy < 0 ) //scroll up
+        {
+            scrollVertical = qFrame->scrollBarValue( Qt::Vertical ) > qFrame->scrollBarMinimum( Qt::Vertical );
+        }
 
-        if (scrollHorizontal || scrollVertical) {
-            qFrame->scroll(dx, dy);
+        if ( scrollHorizontal || scrollVertical )
+        {
+            qFrame->scroll( dx, dy );
             return;
         }
 
         qFrame = qFrame->parentFrame();
-    } while (qFrame);
+    }
+    while ( qFrame );
 }
 
-static inline ResourceRequestCachePolicy cacheLoadControlToCachePolicy(uint cacheLoadControl)
+static inline ResourceRequestCachePolicy cacheLoadControlToCachePolicy( uint cacheLoadControl )
 {
-    switch (cacheLoadControl) {
-    case QNetworkRequest::AlwaysNetwork:
-        return WebCore::ReloadIgnoringCacheData;
-    case QNetworkRequest::PreferCache:
-        return WebCore::ReturnCacheDataElseLoad;
-    case QNetworkRequest::AlwaysCache:
-        return WebCore::ReturnCacheDataDontLoad;
-    default:
-        break;
+    switch ( cacheLoadControl )
+    {
+        case QNetworkRequest::AlwaysNetwork:
+            return WebCore::ReloadIgnoringCacheData;
+
+        case QNetworkRequest::PreferCache:
+            return WebCore::ReturnCacheDataElseLoad;
+
+        case QNetworkRequest::AlwaysCache:
+            return WebCore::ReturnCacheDataDontLoad;
+
+        default:
+            break;
     }
+
     return WebCore::UseProtocolCachePolicy;
 }
 
-QWebFrameData::QWebFrameData(WebCore::Page* parentPage, WebCore::Frame* parentFrame,
-                             WebCore::HTMLFrameOwnerElement* ownerFrameElement,
-                             const WTF::String& frameName)
-    : name(frameName)
-    , ownerElement(ownerFrameElement)
-    , page(parentPage)
-    , allowsScrolling(true)
-    , marginWidth(0)
-    , marginHeight(0)
+QWebFrameData::QWebFrameData( WebCore::Page *parentPage, WebCore::Frame *parentFrame,
+                              WebCore::HTMLFrameOwnerElement *ownerFrameElement,
+                              const WTF::String &frameName )
+    : name( frameName )
+    , ownerElement( ownerFrameElement )
+    , page( parentPage )
+    , allowsScrolling( true )
+    , marginWidth( 0 )
+    , marginHeight( 0 )
 {
     frameLoaderClient = new FrameLoaderClientQt();
-    frame = Frame::create(page, ownerElement, frameLoaderClient);
+    frame = Frame::create( page, ownerElement, frameLoaderClient );
 
     // FIXME: All of the below should probably be moved over into WebCore
-    frame->tree()->setName(name);
-    if (parentFrame)
-        parentFrame->tree()->appendChild(frame);
+    frame->tree()->setName( name );
+
+    if ( parentFrame )
+    {
+        parentFrame->tree()->appendChild( frame );
+    }
 }
 
-void QWebFramePrivate::init(QWebFrame *qframe, QWebFrameData *frameData)
+void QWebFramePrivate::init( QWebFrame *qframe, QWebFrameData *frameData )
 {
     q = qframe;
 
@@ -254,91 +303,109 @@ void QWebFramePrivate::init(QWebFrame *qframe, QWebFrameData *frameData)
     marginHeight = frameData->marginHeight;
     frame = frameData->frame.get();
     frameLoaderClient = frameData->frameLoaderClient;
-    frameLoaderClient->setFrame(qframe, frame);
+    frameLoaderClient->setFrame( qframe, frame );
 
     frame->init();
 }
 
-void QWebFramePrivate::setPage(QWebPage* newPage)
+void QWebFramePrivate::setPage( QWebPage *newPage )
 {
-    if (page == newPage)
+    if ( page == newPage )
+    {
         return;
+    }
 
     // The QWebFrame is created as a child of QWebPage or a parent QWebFrame.
     // That adds it to QObject's internal children list and ensures it will be
     // deleted when parent QWebPage is deleted. Reparent if needed.
-    if (q->parent() == qobject_cast<QObject*>(page))
-        q->setParent(newPage);
+    if ( q->parent() == qobject_cast<QObject *>( page ) )
+    {
+        q->setParent( newPage );
+    }
 
     page = newPage;
     emit q->pageChanged();
 }
 
-WebCore::Scrollbar* QWebFramePrivate::horizontalScrollBar() const
+WebCore::Scrollbar *QWebFramePrivate::horizontalScrollBar() const
 {
-    if (!frame->view())
+    if ( !frame->view() )
+    {
         return 0;
+    }
+
     return frame->view()->horizontalScrollbar();
 }
 
-WebCore::Scrollbar* QWebFramePrivate::verticalScrollBar() const
+WebCore::Scrollbar *QWebFramePrivate::verticalScrollBar() const
 {
-    if (!frame->view())
+    if ( !frame->view() )
+    {
         return 0;
+    }
+
     return frame->view()->verticalScrollbar();
 }
 
 #if ENABLE(TILED_BACKING_STORE)
-void QWebFramePrivate::renderFromTiledBackingStore(GraphicsContext* context, const QRegion& clip)
+void QWebFramePrivate::renderFromTiledBackingStore( GraphicsContext *context, const QRegion &clip )
 {
-    ASSERT(frame->tiledBackingStore());
+    ASSERT( frame->tiledBackingStore() );
 
-    if (!frame->view() || !frame->contentRenderer())
+    if ( !frame->view() || !frame->contentRenderer() )
+    {
         return;
+    }
 
     QVector<QRect> vector = clip.rects();
-    if (vector.isEmpty())
+
+    if ( vector.isEmpty() )
+    {
         return;
+    }
 
-    QPainter* painter = context->platformContext();
+    QPainter *painter = context->platformContext();
 
-    WebCore::FrameView* view = frame->view();
+    WebCore::FrameView *view = frame->view();
 
     int scrollX = view->scrollX();
     int scrollY = view->scrollY();
-    context->translate(-scrollX, -scrollY);
+    context->translate( -scrollX, -scrollY );
 
-    for (int i = 0; i < vector.size(); ++i) {
-        const QRect& clipRect = vector.at(i);
+    for ( int i = 0; i < vector.size(); ++i )
+    {
+        const QRect &clipRect = vector.at( i );
 
         painter->save();
 
-        QRect rect = clipRect.translated(scrollX, scrollY);
-        painter->setClipRect(rect, Qt::IntersectClip);
+        QRect rect = clipRect.translated( scrollX, scrollY );
+        painter->setClipRect( rect, Qt::IntersectClip );
 
-        frame->tiledBackingStore()->paint(context, rect);
+        frame->tiledBackingStore()->paint( context, rect );
 
         painter->restore();
     }
 
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-    renderCompositedLayers(context, IntRect(clip.boundingRect()));
-    renderFrameExtras(context, QFlags<QWebFrame::RenderLayer>(QWebFrame::ScrollBarLayer) | QWebFrame::PanIconLayer, clip);
+    renderCompositedLayers( context, IntRect( clip.boundingRect() ) );
+    renderFrameExtras( context, QFlags<QWebFrame::RenderLayer>( QWebFrame::ScrollBarLayer ) | QWebFrame::PanIconLayer, clip );
 #endif
 }
 #endif
 
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-void QWebFramePrivate::renderCompositedLayers(GraphicsContext* context, const IntRect& clip)
+void QWebFramePrivate::renderCompositedLayers( GraphicsContext *context, const IntRect &clip )
 {
-    if (!rootGraphicsLayer)
+    if ( !rootGraphicsLayer )
+    {
         return;
+    }
 
-    textureMapper->setGraphicsContext(context);
-    textureMapper->setImageInterpolationQuality(context->imageInterpolationQuality());
-    textureMapper->setTextDrawingMode(context->textDrawingMode());
-    QPainter* painter = context->platformContext();
-    FrameView* view = frame->view();
+    textureMapper->setGraphicsContext( context );
+    textureMapper->setImageInterpolationQuality( context->imageInterpolationQuality() );
+    textureMapper->setTextDrawingMode( context->textDrawingMode() );
+    QPainter *painter = context->platformContext();
+    FrameView *view = frame->view();
     painter->save();
     painter->beginNativePainting();
     TextureMapperContentLayer::PaintOptions options;
@@ -346,34 +413,42 @@ void QWebFramePrivate::renderCompositedLayers(GraphicsContext* context, const In
     options.targetRect = view->frameRect();
     options.viewportSize = view->size();
     options.opacity = painter->opacity();
-    rootGraphicsLayer->paint(textureMapper.get(), options);
+    rootGraphicsLayer->paint( textureMapper.get(), options );
     painter->endNativePainting();
     painter->restore();
 }
 #endif
 
-void QWebFramePrivate::renderRelativeCoords(GraphicsContext* context, QFlags<QWebFrame::RenderLayer> layers, const QRegion& clip)
+void QWebFramePrivate::renderRelativeCoords( GraphicsContext *context, QFlags<QWebFrame::RenderLayer> layers,
+        const QRegion &clip )
 {
-    if (!frame->view() || !frame->contentRenderer())
+    if ( !frame->view() || !frame->contentRenderer() )
+    {
         return;
+    }
 
     QVector<QRect> vector = clip.rects();
-    if (vector.isEmpty())
+
+    if ( vector.isEmpty() )
+    {
         return;
+    }
 
-    QPainter* painter = context->platformContext();
+    QPainter *painter = context->platformContext();
 
-    WebCore::FrameView* view = frame->view();
+    WebCore::FrameView *view = frame->view();
     view->updateLayoutAndStyleIfNeededRecursive();
 
-    if (layers & QWebFrame::ContentsLayer) {
-        for (int i = 0; i < vector.size(); ++i) {
-            const QRect& clipRect = vector.at(i);
+    if ( layers & QWebFrame::ContentsLayer )
+    {
+        for ( int i = 0; i < vector.size(); ++i )
+        {
+            const QRect &clipRect = vector.at( i );
 
-            QRect rect = clipRect.intersected(view->frameRect());
+            QRect rect = clipRect.intersected( view->frameRect() );
 
             context->save();
-            painter->setClipRect(clipRect, Qt::IntersectClip);
+            painter->setClipRect( clipRect, Qt::IntersectClip );
 
             int x = view->x();
             int y = view->y();
@@ -381,62 +456,77 @@ void QWebFramePrivate::renderRelativeCoords(GraphicsContext* context, QFlags<QWe
             int scrollX = view->scrollX();
             int scrollY = view->scrollY();
 
-            context->translate(x, y);
-            rect.translate(-x, -y);
-            context->translate(-scrollX, -scrollY);
-            rect.translate(scrollX, scrollY);
-            context->clip(view->visibleContentRect());
+            context->translate( x, y );
+            rect.translate( -x, -y );
+            context->translate( -scrollX, -scrollY );
+            rect.translate( scrollX, scrollY );
+            context->clip( view->visibleContentRect() );
 
-            view->paintContents(context, rect);
+            view->paintContents( context, rect );
 
             context->restore();
         }
+
 #if USE(ACCELERATED_COMPOSITING) && USE(TEXTURE_MAPPER)
-        renderCompositedLayers(context, IntRect(clip.boundingRect()));
+        renderCompositedLayers( context, IntRect( clip.boundingRect() ) );
 #endif
     }
-    renderFrameExtras(context, layers, clip);
+
+    renderFrameExtras( context, layers, clip );
 #if ENABLE(INSPECTOR)
-    if (frame->page()->inspectorController()->highlightedNode()) {
+
+    if ( frame->page()->inspectorController()->highlightedNode() )
+    {
         context->save();
-        frame->page()->inspectorController()->drawNodeHighlight(*context);
+        frame->page()->inspectorController()->drawNodeHighlight( *context );
         context->restore();
     }
+
 #endif
 }
 
-void QWebFramePrivate::renderFrameExtras(GraphicsContext* context, QFlags<QWebFrame::RenderLayer> layers, const QRegion& clip)
+void QWebFramePrivate::renderFrameExtras( GraphicsContext *context, QFlags<QWebFrame::RenderLayer> layers, const QRegion &clip )
 {
-    if (!(layers & (QWebFrame::PanIconLayer | QWebFrame::ScrollBarLayer)))
+    if ( !( layers & ( QWebFrame::PanIconLayer | QWebFrame::ScrollBarLayer ) ) )
+    {
         return;
-    QPainter* painter = context->platformContext();
-    WebCore::FrameView* view = frame->view();
-    QVector<QRect> vector = clip.rects();
-    for (int i = 0; i < vector.size(); ++i) {
-        const QRect& clipRect = vector.at(i);
+    }
 
-        QRect intersectedRect = clipRect.intersected(view->frameRect());
+    QPainter *painter = context->platformContext();
+    WebCore::FrameView *view = frame->view();
+    QVector<QRect> vector = clip.rects();
+
+    for ( int i = 0; i < vector.size(); ++i )
+    {
+        const QRect &clipRect = vector.at( i );
+
+        QRect intersectedRect = clipRect.intersected( view->frameRect() );
 
         painter->save();
-        painter->setClipRect(clipRect, Qt::IntersectClip);
+        painter->setClipRect( clipRect, Qt::IntersectClip );
 
         int x = view->x();
         int y = view->y();
 
-        if (layers & QWebFrame::ScrollBarLayer
-            && !view->scrollbarsSuppressed()
-            && (view->horizontalScrollbar() || view->verticalScrollbar())) {
+        if ( layers & QWebFrame::ScrollBarLayer
+                && !view->scrollbarsSuppressed()
+                && ( view->horizontalScrollbar() || view->verticalScrollbar() ) )
+        {
 
             QRect rect = intersectedRect;
-            context->translate(x, y);
-            rect.translate(-x, -y);
-            view->paintScrollbars(context, rect);
-            context->translate(-x, -y);
+            context->translate( x, y );
+            rect.translate( -x, -y );
+            view->paintScrollbars( context, rect );
+            context->translate( -x, -y );
         }
 
 #if ENABLE(PAN_SCROLLING)
-        if (layers & QWebFrame::PanIconLayer)
-            view->paintPanScrollIcon(context);
+
+        if ( layers & QWebFrame::PanIconLayer )
+        {
+            view->paintPanScrollIcon( context );
+        }
+
 #endif
 
         painter->restore();
@@ -446,35 +536,42 @@ void QWebFramePrivate::renderFrameExtras(GraphicsContext* context, QFlags<QWebFr
 void QWebFramePrivate::emitUrlChanged()
 {
     url = frame->document()->url();
-    emit q->urlChanged(url);
+    emit q->urlChanged( url );
 }
 
 void QWebFramePrivate::_q_orientationChanged()
 {
 #if ENABLE(ORIENTATION_EVENTS) && ENABLE(DEVICE_ORIENTATION)
     int orientation;
-    WebCore::Frame* frame = core(q);
+    WebCore::Frame *frame = core( q );
 
-    switch (m_orientation.reading()->orientation()) {
-    case QtMobility::QOrientationReading::TopUp:
-        orientation = 0;
-        break;
-    case QtMobility::QOrientationReading::TopDown:
-        orientation = 180;
-        break;
-    case QtMobility::QOrientationReading::LeftUp:
-        orientation = -90;
-        break;
-    case QtMobility::QOrientationReading::RightUp:
-        orientation = 90;
-        break;
-    case QtMobility::QOrientationReading::FaceUp:
-    case QtMobility::QOrientationReading::FaceDown:
+    switch ( m_orientation.reading()->orientation() )
+    {
+        case QtMobility::QOrientationReading::TopUp:
+            orientation = 0;
+            break;
+
+        case QtMobility::QOrientationReading::TopDown:
+            orientation = 180;
+            break;
+
+        case QtMobility::QOrientationReading::LeftUp:
+            orientation = -90;
+            break;
+
+        case QtMobility::QOrientationReading::RightUp:
+            orientation = 90;
+            break;
+
+        case QtMobility::QOrientationReading::FaceUp:
+        case QtMobility::QOrientationReading::FaceDown:
+
         // WebCore unable to handle it
-    default:
-        return;
+        default:
+            return;
     }
-    frame->sendOrientationChangeEvent(orientation);
+
+    frame->sendOrientationChangeEvent( orientation );
 #endif
 }
 /*
@@ -540,37 +637,41 @@ void QWebFramePrivate::_q_orientationChanged()
     \value AllLayers Includes all the above layers
 */
 
-QWebFrame::QWebFrame(QWebPage *parent, QWebFrameData *frameData)
-    : QObject(parent), d(new QWebFramePrivate)
+QWebFrame::QWebFrame( QWebPage *parent, QWebFrameData *frameData )
+    : QObject( parent ), d( new QWebFramePrivate )
 {
     d->page = parent;
-    d->init(this, frameData);
+    d->init( this, frameData );
 
-    if (!frameData->url.isEmpty()) {
-        WebCore::ResourceRequest request(frameData->url, frameData->referrer);
-        d->frame->loader()->load(request, frameData->name, false);
+    if ( !frameData->url.isEmpty() )
+    {
+        WebCore::ResourceRequest request( frameData->url, frameData->referrer );
+        d->frame->loader()->load( request, frameData->name, false );
     }
+
 #if ENABLE(ORIENTATION_EVENTS) && ENABLE(DEVICE_ORIENTATION)
-    connect(&d->m_orientation, SIGNAL(readingChanged()), this, SLOT(_q_orientationChanged()));
+    connect( &d->m_orientation, SIGNAL( readingChanged() ), this, SLOT( _q_orientationChanged() ) );
     d->m_orientation.start();
 #endif
 }
 
-QWebFrame::QWebFrame(QWebFrame *parent, QWebFrameData *frameData)
-    : QObject(parent), d(new QWebFramePrivate)
+QWebFrame::QWebFrame( QWebFrame *parent, QWebFrameData *frameData )
+    : QObject( parent ), d( new QWebFramePrivate )
 {
     d->page = parent->d->page;
-    d->init(this, frameData);
+    d->init( this, frameData );
 #if ENABLE(ORIENTATION_EVENTS) && ENABLE(DEVICE_ORIENTATION)
-    connect(&d->m_orientation, SIGNAL(readingChanged()), this, SLOT(_q_orientationChanged()));
+    connect( &d->m_orientation, SIGNAL( readingChanged() ), this, SLOT( _q_orientationChanged() ) );
     d->m_orientation.start();
 #endif
 }
 
 QWebFrame::~QWebFrame()
 {
-    if (d->frame && d->frame->loader() && d->frame->loader()->client())
-        static_cast<FrameLoaderClientQt*>(d->frame->loader()->client())->m_webFrame = 0;
+    if ( d->frame && d->frame->loader() && d->frame->loader()->client() )
+    {
+        static_cast<FrameLoaderClientQt *>( d->frame->loader()->client() )->m_webFrame = 0;
+    }
 
     delete d;
 }
@@ -592,9 +693,9 @@ QWebFrame::~QWebFrame()
 
     The \a object will never be explicitly deleted by QtWebKit.
 */
-void QWebFrame::addToJavaScriptWindowObject(const QString &name, QObject *object)
+void QWebFrame::addToJavaScriptWindowObject( const QString &name, QObject *object )
 {
-    addToJavaScriptWindowObject(name, object, QScriptEngine::QtOwnership);
+    addToJavaScriptWindowObject( name, object, QScriptEngine::QtOwnership );
 }
 
 /*
@@ -617,41 +718,57 @@ void QWebFrame::addToJavaScriptWindowObject(const QString &name, QObject *object
 
     The ownership of \a object is specified using \a own.
 */
-void QWebFrame::addToJavaScriptWindowObject(const QString &name, QObject *object, QScriptEngine::ValueOwnership ownership)
+void QWebFrame::addToJavaScriptWindowObject( const QString &name, QObject *object, QScriptEngine::ValueOwnership ownership )
 {
-    if (!page()->settings()->testAttribute(QWebSettings::JavascriptEnabled))
+    if ( !page()->settings()->testAttribute( QWebSettings::JavascriptEnabled ) )
+    {
         return;
-#if USE(JSC)
-    JSC::JSLock lock(JSC::SilenceAssertionsOnly);
-    JSDOMWindow* window = toJSDOMWindow(d->frame, mainThreadNormalWorld());
-    JSC::Bindings::RootObject* root;
-    if (ownership == QScriptEngine::QtOwnership)
-        root = d->frame->script()->cacheableBindingRootObject();
-    else
-        root = d->frame->script()->bindingRootObject();
+    }
 
-    if (!window) {
+#if USE(JSC)
+    JSC::JSLock lock( JSC::SilenceAssertionsOnly );
+    JSDOMWindow *window = toJSDOMWindow( d->frame, mainThreadNormalWorld() );
+    JSC::Bindings::RootObject *root;
+
+    if ( ownership == QScriptEngine::QtOwnership )
+    {
+        root = d->frame->script()->cacheableBindingRootObject();
+    }
+    else
+    {
+        root = d->frame->script()->bindingRootObject();
+    }
+
+    if ( !window )
+    {
         qDebug() << "Warning: could not get window object";
         return;
     }
-    if (!root) {
+
+    if ( !root )
+    {
         qDebug() << "Warning: could not get root object";
         return;
     }
 
-    JSC::ExecState* exec = window->globalExec();
+    JSC::ExecState *exec = window->globalExec();
 
-    JSC::JSObject* runtimeObject =
-            JSC::Bindings::QtInstance::getQtInstance(object, root, ownership)->createRuntimeObject(exec);
+    JSC::JSObject *runtimeObject =
+        JSC::Bindings::QtInstance::getQtInstance( object, root, ownership )->createRuntimeObject( exec );
 
     JSC::PutPropertySlot slot;
-    window->put(exec, JSC::Identifier(exec, reinterpret_cast_ptr<const UChar*>(name.constData()), name.length()), runtimeObject, slot);
+    window->put( exec, JSC::Identifier( exec, reinterpret_cast_ptr<const UChar *>( name.constData() ), name.length() ), runtimeObject,
+                 slot );
 #elif USE(V8)
-    QScriptEngine* engine = d->frame->script()->qtScriptEngine();
-    if (!engine)
+    QScriptEngine *engine = d->frame->script()->qtScriptEngine();
+
+    if ( !engine )
+    {
         return;
-    QScriptValue v = engine->newQObject(object, ownership);
-    engine->globalObject().property("window").setProperty(name, v);
+    }
+
+    QScriptValue v = engine->newQObject( object, ownership );
+    engine->globalObject().property( "window" ).setProperty( name, v );
 #endif
 }
 
@@ -662,9 +779,12 @@ void QWebFrame::addToJavaScriptWindowObject(const QString &name, QObject *object
 */
 QString QWebFrame::toHtml() const
 {
-    if (!d->frame->document())
+    if ( !d->frame->document() )
+    {
         return QString();
-    return createMarkup(d->frame->document());
+    }
+
+    return createMarkup( d->frame->document() );
 }
 
 /*
@@ -675,12 +795,18 @@ QString QWebFrame::toHtml() const
 */
 QString QWebFrame::toPlainText() const
 {
-    if (d->frame->view() && d->frame->view()->layoutPending())
+    if ( d->frame->view() && d->frame->view()->layoutPending() )
+    {
         d->frame->view()->layout();
+    }
 
     Element *documentElement = d->frame->document()->documentElement();
-    if (documentElement)
+
+    if ( documentElement )
+    {
         return documentElement->innerText();
+    }
+
     return QString();
 }
 
@@ -690,10 +816,12 @@ QString QWebFrame::toPlainText() const
 */
 QString QWebFrame::renderTreeDump() const
 {
-    if (d->frame->view() && d->frame->view()->layoutPending())
+    if ( d->frame->view() && d->frame->view()->layoutPending() )
+    {
         d->frame->view()->layout();
+    }
 
-    return externalRepresentation(d->frame);
+    return externalRepresentation( d->frame );
 }
 
 /*
@@ -705,59 +833,66 @@ QString QWebFrame::renderTreeDump() const
 
 QString QWebFrame::title() const
 {
-    if (d->frame->document())
+    if ( d->frame->document() )
+    {
         return d->frame->loader()->documentLoader()->title().string();
+    }
+
     return QString();
 }
 
 QMultiMap<QString, QString> QWebFrame::metaData() const
 {
-    if (! d->frame->document()) {
-       return QMultiMap<QString, QString>();
+    if ( ! d->frame->document() )
+    {
+        return QMultiMap<QString, QString>();
     }
 
     QMultiMap<QString, QString> map;
 
-    Document* doc = d->frame->document();
-    RefPtr<NodeList> list = doc->getElementsByTagName("meta");
+    Document *doc = d->frame->document();
+    RefPtr<NodeList> list = doc->getElementsByTagName( "meta" );
 
     unsigned len = list->length();
 
-    for (unsigned i = 0; i < len; i++) {
-        HTMLMetaElement* meta = static_cast<HTMLMetaElement*>(list->item(i));
-        map.insert(meta->name(), meta->content());
+    for ( unsigned i = 0; i < len; i++ )
+    {
+        HTMLMetaElement *meta = static_cast<HTMLMetaElement *>( list->item( i ) );
+        map.insert( meta->name(), meta->content() );
     }
 
     return map;
 }
 
-static inline void clearCoreFrame(WebCore::Frame* frame)
+static inline void clearCoreFrame( WebCore::Frame *frame )
 {
-    WebCore::DocumentLoader* documentLoader = frame->loader()->activeDocumentLoader();
-    Q_ASSERT(documentLoader);
+    WebCore::DocumentLoader *documentLoader = frame->loader()->activeDocumentLoader();
+    Q_ASSERT( documentLoader );
     documentLoader->writer()->begin();
     documentLoader->writer()->end();
 }
 
-static inline bool isCoreFrameClear(WebCore::Frame* frame)
+static inline bool isCoreFrameClear( WebCore::Frame *frame )
 {
     return frame->document()->url().isEmpty();
 }
 
-static inline QUrl ensureAbsoluteUrl(const QUrl &url)
+static inline QUrl ensureAbsoluteUrl( const QUrl &url )
 {
-    if (!url.isValid() || !url.isRelative())
+    if ( !url.isValid() || !url.isRelative() )
+    {
         return url;
+    }
 
     // This contains the URL with absolute path but without
     // the query and the fragment part.
-    QUrl baseUrl = QUrl::fromLocalFile(QFileInfo(url.toLocalFile()).absoluteFilePath());
+    QUrl baseUrl = QUrl::fromLocalFile( QFileInfo( url.toLocalFile() ).absoluteFilePath() );
 
     // The path is removed so the query and the fragment parts are there.
-    QString pathRemoved = url.toString(QUrl::RemovePath);
-    QUrl toResolve(pathRemoved);
+    QString pathRemoved = url.toString( QUrl::RemovePath );
+    QUrl toResolve( pathRemoved );
 
-    return baseUrl.resolved(toResolve);
+    return baseUrl.resolved( toResolve );
 }
 
 /*
@@ -771,12 +906,12 @@ static inline QUrl ensureAbsoluteUrl(const QUrl &url)
     \sa urlChanged()
 */
 
-void QWebFrame::setUrl(const QUrl &url)
+void QWebFrame::setUrl( const QUrl &url )
 {
-    clearCoreFrame(d->frame);
-    const QUrl absolute = ensureAbsoluteUrl(url);
+    clearCoreFrame( d->frame );
+    const QUrl absolute = ensureAbsoluteUrl( url );
     d->url = absolute;
-    load(absolute);
+    load( absolute );
 }
 
 QUrl QWebFrame::url() const
@@ -806,8 +941,11 @@ QUrl QWebFrame::requestedUrl() const
 
 QUrl QWebFrame::baseUrl() const
 {
-    if (isCoreFrameClear(d->frame))
-        return QUrl(d->url).resolved(QUrl());
+    if ( isCoreFrameClear( d->frame ) )
+    {
+        return QUrl( d->url ).resolved( QUrl() );
+    }
+
     return d->frame->document()->baseURL();
 }
 
@@ -820,7 +958,7 @@ QUrl QWebFrame::baseUrl() const
 
 QIcon QWebFrame::icon() const
 {
-    return QWebSettings::iconForUrl(d->frame->document()->url());
+    return QWebSettings::iconForUrl( d->frame->document()->url() );
 }
 
 /*
@@ -848,10 +986,10 @@ QWebPage *QWebFrame::page() const
 
   \sa setUrl(), setHtml(), setContent()
 */
-void QWebFrame::load(const QUrl &url)
+void QWebFrame::load( const QUrl &url )
 {
     // The load() overload ensures that the url is absolute.
-    load(QNetworkRequest(url));
+    load( QNetworkRequest( url ) );
 }
 
 /*
@@ -864,61 +1002,80 @@ void QWebFrame::load(const QUrl &url)
 
   \sa setUrl()
 */
-void QWebFrame::load(const QNetworkRequest &req, QNetworkAccessManager::Operation operation,const QByteArray &body)
+void QWebFrame::load( const QNetworkRequest &req, QNetworkAccessManager::Operation operation,const QByteArray &body )
 {
-    if (d->parentFrame())
+    if ( d->parentFrame() )
+    {
         d->page->d->insideOpenCall = true;
+    }
 
-    QUrl url = ensureAbsoluteUrl(req.url());
+    QUrl url = ensureAbsoluteUrl( req.url() );
 
-    WebCore::ResourceRequest request(url);
+    WebCore::ResourceRequest request( url );
 
-    switch (operation) {
+    switch ( operation )
+    {
         case QNetworkAccessManager::HeadOperation:
-            request.setHTTPMethod("HEAD");
+            request.setHTTPMethod( "HEAD" );
             break;
+
         case QNetworkAccessManager::GetOperation:
-            request.setHTTPMethod("GET");
+            request.setHTTPMethod( "GET" );
             break;
+
         case QNetworkAccessManager::PutOperation:
-            request.setHTTPMethod("PUT");
+            request.setHTTPMethod( "PUT" );
             break;
+
         case QNetworkAccessManager::PostOperation:
-            request.setHTTPMethod("POST");
+            request.setHTTPMethod( "POST" );
             break;
+
         case QNetworkAccessManager::DeleteOperation:
-            request.setHTTPMethod("DELETE");
+            request.setHTTPMethod( "DELETE" );
             break;
+
         case QNetworkAccessManager::CustomOperation:
-            request.setHTTPMethod(req.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray().constData());
+            request.setHTTPMethod( req.attribute( QNetworkRequest::CustomVerbAttribute ).toByteArray().constData() );
             break;
+
         case QNetworkAccessManager::UnknownOperation:
             // eh?
             break;
     }
 
-    QVariant cacheLoad = req.attribute(QNetworkRequest::CacheLoadControlAttribute);
-    if (cacheLoad.isValid()) {
+    QVariant cacheLoad = req.attribute( QNetworkRequest::CacheLoadControlAttribute );
+
+    if ( cacheLoad.isValid() )
+    {
         bool ok;
-        uint cacheLoadValue = cacheLoad.toUInt(&ok);
-        if (ok)
-            request.setCachePolicy(cacheLoadControlToCachePolicy(cacheLoadValue));
+        uint cacheLoadValue = cacheLoad.toUInt( &ok );
+
+        if ( ok )
+        {
+            request.setCachePolicy( cacheLoadControlToCachePolicy( cacheLoadValue ) );
+        }
     }
 
     QList<QByteArray> httpHeaders = req.rawHeaderList();
-    for (int i = 0; i < httpHeaders.size(); ++i) {
-        const QByteArray &headerName = httpHeaders.at(i);
-        request.addHTTPHeaderField(QString::fromLatin1(headerName), QString::fromLatin1(req.rawHeader(headerName)));
+
+    for ( int i = 0; i < httpHeaders.size(); ++i )
+    {
+        const QByteArray &headerName = httpHeaders.at( i );
+        request.addHTTPHeaderField( QString::fromLatin1( headerName ), QString::fromLatin1( req.rawHeader( headerName ) ) );
     }
 
-    if (! body.isEmpty()) {
-        request.setHTTPBody(WebCore::FormData::create(body.constData(), body.size()));
+    if ( ! body.isEmpty() )
+    {
+        request.setHTTPBody( WebCore::FormData::create( body.constData(), body.size() ) );
     }
 
-    d->frame->loader()->load(request, false);
+    d->frame->loader()->load( request, false );
 
-    if (d->parentFrame())
+    if ( d->parentFrame() )
+    {
         d->page->d->insideOpenCall = false;
+    }
 }
 
 /*
@@ -945,14 +1102,14 @@ void QWebFrame::load(const QNetworkRequest &req, QNetworkAccessManager::Operatio
 
   \sa toHtml(), setContent(), load()
 */
-void QWebFrame::setHtml(const QString &html, const QUrl &baseUrl)
+void QWebFrame::setHtml( const QString &html, const QUrl &baseUrl )
 {
-    KURL kurl(baseUrl);
-    WebCore::ResourceRequest request(kurl);
+    KURL kurl( baseUrl );
+    WebCore::ResourceRequest request( kurl );
     const QByteArray utf8 = html.toUtf8();
-    WTF::RefPtr<WebCore::SharedBuffer> data = WebCore::SharedBuffer::create(utf8.constData(), utf8.length());
-    WebCore::SubstituteData substituteData(data, WTF::String("text/html"), WTF::String("utf-8"), KURL());
-    d->frame->loader()->load(request, substituteData, false);
+    WTF::RefPtr<WebCore::SharedBuffer> data = WebCore::SharedBuffer::create( utf8.constData(), utf8.length() );
+    WebCore::SubstituteData substituteData( data, WTF::String( "text/html" ), WTF::String( "utf-8" ), KURL() );
+    d->frame->loader()->load( request, substituteData, false );
 }
 
 /*
@@ -968,21 +1125,26 @@ void QWebFrame::setHtml(const QString &html, const QUrl &baseUrl)
 
   \sa toHtml(), setHtml()
 */
-void QWebFrame::setContent(const QByteArray &data, const QString &mimeType, const QUrl &baseUrl)
+void QWebFrame::setContent( const QByteArray &data, const QString &mimeType, const QUrl &baseUrl )
 {
-    KURL kurl(baseUrl);
-    WebCore::ResourceRequest request(kurl);
-    WTF::RefPtr<WebCore::SharedBuffer> buffer = WebCore::SharedBuffer::create(data.constData(), data.length());
+    KURL kurl( baseUrl );
+    WebCore::ResourceRequest request( kurl );
+    WTF::RefPtr<WebCore::SharedBuffer> buffer = WebCore::SharedBuffer::create( data.constData(), data.length() );
     QString actualMimeType;
     WTF::String encoding;
-    if (mimeType.isEmpty())
-        actualMimeType = QLatin1String("text/html");
-    else {
-        actualMimeType = extractMIMETypeFromMediaType(mimeType);
-        encoding = extractCharsetFromMediaType(mimeType);
+
+    if ( mimeType.isEmpty() )
+    {
+        actualMimeType = QLatin1String( "text/html" );
     }
-    WebCore::SubstituteData substituteData(buffer, WTF::String(actualMimeType), encoding, KURL());
-    d->frame->loader()->load(request, substituteData, false);
+    else
+    {
+        actualMimeType = extractMIMETypeFromMediaType( mimeType );
+        encoding = extractCharsetFromMediaType( mimeType );
+    }
+
+    WebCore::SubstituteData substituteData( buffer, WTF::String( actualMimeType ), encoding, KURL() );
+    d->frame->loader()->load( request, substituteData, false );
 }
 
 /*
@@ -1003,51 +1165,69 @@ QWebFrame *QWebFrame::parentFrame() const
 
   \sa parentFrame()
 */
-QList<QWebFrame*> QWebFrame::childFrames() const
+QList<QWebFrame *> QWebFrame::childFrames() const
 {
-    QList<QWebFrame*> rc;
-    if (d->frame) {
+    QList<QWebFrame *> rc;
+
+    if ( d->frame )
+    {
         FrameTree *tree = d->frame->tree();
-        for (Frame *child = tree->firstChild(); child; child = child->tree()->nextSibling()) {
+
+        for ( Frame *child = tree->firstChild(); child; child = child->tree()->nextSibling() )
+        {
             FrameLoader *loader = child->loader();
-            QWebFrame* webFrame = qobject_cast<QWebFrame*>(loader->networkingContext()->originatingObject());
-            if (webFrame)
-                rc.append(webFrame);
+            QWebFrame *webFrame = qobject_cast<QWebFrame *>( loader->networkingContext()->originatingObject() );
+
+            if ( webFrame )
+            {
+                rc.append( webFrame );
+            }
         }
 
     }
+
     return rc;
 }
 
 /*
     Returns the scrollbar policy for the scrollbar defined by \a orientation.
 */
-Qt::ScrollBarPolicy QWebFrame::scrollBarPolicy(Qt::Orientation orientation) const
+Qt::ScrollBarPolicy QWebFrame::scrollBarPolicy( Qt::Orientation orientation ) const
 {
-    if (orientation == Qt::Horizontal)
+    if ( orientation == Qt::Horizontal )
+    {
         return d->horizontalScrollBarPolicy;
+    }
+
     return d->verticalScrollBarPolicy;
 }
 
 /*
     Sets the scrollbar policy for the scrollbar defined by \a orientation to \a policy.
 */
-void QWebFrame::setScrollBarPolicy(Qt::Orientation orientation, Qt::ScrollBarPolicy policy)
+void QWebFrame::setScrollBarPolicy( Qt::Orientation orientation, Qt::ScrollBarPolicy policy )
 {
-    Q_ASSERT((int)ScrollbarAuto == (int)Qt::ScrollBarAsNeeded);
-    Q_ASSERT((int)ScrollbarAlwaysOff == (int)Qt::ScrollBarAlwaysOff);
-    Q_ASSERT((int)ScrollbarAlwaysOn == (int)Qt::ScrollBarAlwaysOn);
+    Q_ASSERT( ( int )ScrollbarAuto == ( int )Qt::ScrollBarAsNeeded );
+    Q_ASSERT( ( int )ScrollbarAlwaysOff == ( int )Qt::ScrollBarAlwaysOff );
+    Q_ASSERT( ( int )ScrollbarAlwaysOn == ( int )Qt::ScrollBarAlwaysOn );
 
-    if (orientation == Qt::Horizontal) {
+    if ( orientation == Qt::Horizontal )
+    {
         d->horizontalScrollBarPolicy = policy;
-        if (d->frame->view()) {
-            d->frame->view()->setHorizontalScrollbarMode((ScrollbarMode)policy, policy != Qt::ScrollBarAsNeeded /* lock */);
+
+        if ( d->frame->view() )
+        {
+            d->frame->view()->setHorizontalScrollbarMode( ( ScrollbarMode )policy, policy != Qt::ScrollBarAsNeeded /* lock */ );
             d->frame->view()->updateCanHaveScrollbars();
         }
-    } else {
+    }
+    else
+    {
         d->verticalScrollBarPolicy = policy;
-        if (d->frame->view()) {
-            d->frame->view()->setVerticalScrollbarMode((ScrollbarMode)policy, policy != Qt::ScrollBarAsNeeded /* lock */);
+
+        if ( d->frame->view() )
+        {
+            d->frame->view()->setVerticalScrollbarMode( ( ScrollbarMode )policy, policy != Qt::ScrollBarAsNeeded /* lock */ );
             d->frame->view()->updateCanHaveScrollbars();
         }
     }
@@ -1062,16 +1242,24 @@ void QWebFrame::setScrollBarPolicy(Qt::Orientation orientation, Qt::ScrollBarPol
 
   \sa scrollBarMinimum(), scrollBarMaximum()
 */
-void QWebFrame::setScrollBarValue(Qt::Orientation orientation, int value)
+void QWebFrame::setScrollBarValue( Qt::Orientation orientation, int value )
 {
     Scrollbar *sb;
-    sb = (orientation == Qt::Horizontal) ? d->horizontalScrollBar() : d->verticalScrollBar();
-    if (sb) {
-        if (value < 0)
+    sb = ( orientation == Qt::Horizontal ) ? d->horizontalScrollBar() : d->verticalScrollBar();
+
+    if ( sb )
+    {
+        if ( value < 0 )
+        {
             value = 0;
-        else if (value > scrollBarMaximum(orientation))
-            value = scrollBarMaximum(orientation);
-        sb->scrollableArea()->scrollToOffsetWithoutAnimation(orientation == Qt::Horizontal ? HorizontalScrollbar : VerticalScrollbar, value);
+        }
+        else if ( value > scrollBarMaximum( orientation ) )
+        {
+            value = scrollBarMaximum( orientation );
+        }
+
+        sb->scrollableArea()->scrollToOffsetWithoutAnimation( orientation == Qt::Horizontal ? HorizontalScrollbar : VerticalScrollbar,
+                value );
     }
 }
 
@@ -1081,12 +1269,16 @@ void QWebFrame::setScrollBarValue(Qt::Orientation orientation, int value)
 
   \sa scrollBarMinimum(), scrollBarMaximum()
 */
-int QWebFrame::scrollBarValue(Qt::Orientation orientation) const
+int QWebFrame::scrollBarValue( Qt::Orientation orientation ) const
 {
     Scrollbar *sb;
-    sb = (orientation == Qt::Horizontal) ? d->horizontalScrollBar() : d->verticalScrollBar();
-    if (sb)
+    sb = ( orientation == Qt::Horizontal ) ? d->horizontalScrollBar() : d->verticalScrollBar();
+
+    if ( sb )
+    {
         return sb->value();
+    }
+
     return 0;
 }
 
@@ -1096,12 +1288,16 @@ int QWebFrame::scrollBarValue(Qt::Orientation orientation) const
 
   \sa scrollBarMinimum()
 */
-int QWebFrame::scrollBarMaximum(Qt::Orientation orientation) const
+int QWebFrame::scrollBarMaximum( Qt::Orientation orientation ) const
 {
     Scrollbar *sb;
-    sb = (orientation == Qt::Horizontal) ? d->horizontalScrollBar() : d->verticalScrollBar();
-    if (sb)
+    sb = ( orientation == Qt::Horizontal ) ? d->horizontalScrollBar() : d->verticalScrollBar();
+
+    if ( sb )
+    {
         return sb->maximum();
+    }
+
     return 0;
 }
 
@@ -1112,9 +1308,9 @@ int QWebFrame::scrollBarMaximum(Qt::Orientation orientation) const
 
   \sa scrollBarMaximum()
 */
-int QWebFrame::scrollBarMinimum(Qt::Orientation orientation) const
+int QWebFrame::scrollBarMinimum( Qt::Orientation orientation ) const
 {
-    Q_UNUSED(orientation)
+    Q_UNUSED( orientation )
     return 0;
 }
 
@@ -1124,12 +1320,16 @@ int QWebFrame::scrollBarMinimum(Qt::Orientation orientation) const
 
   If the scrollbar does not exist an empty rect is returned.
 */
-QRect QWebFrame::scrollBarGeometry(Qt::Orientation orientation) const
+QRect QWebFrame::scrollBarGeometry( Qt::Orientation orientation ) const
 {
     Scrollbar *sb;
-    sb = (orientation == Qt::Horizontal) ? d->horizontalScrollBar() : d->verticalScrollBar();
-    if (sb)
+    sb = ( orientation == Qt::Horizontal ) ? d->horizontalScrollBar() : d->verticalScrollBar();
+
+    if ( sb )
+    {
         return sb->frameRect();
+    }
+
     return QRect();
 }
 
@@ -1141,12 +1341,14 @@ QRect QWebFrame::scrollBarGeometry(Qt::Orientation orientation) const
   \sa QWebFrame::scrollPosition
 */
 
-void QWebFrame::scroll(int dx, int dy)
+void QWebFrame::scroll( int dx, int dy )
 {
-    if (!d->frame->view())
+    if ( !d->frame->view() )
+    {
         return;
+    }
 
-    d->frame->view()->scrollBy(IntSize(dx, dy));
+    d->frame->view()->scrollBy( IntSize( dx, dy ) );
 }
 
 /*
@@ -1157,30 +1359,35 @@ void QWebFrame::scroll(int dx, int dy)
 
 QPoint QWebFrame::scrollPosition() const
 {
-    if (!d->frame->view())
-        return QPoint(0, 0);
+    if ( !d->frame->view() )
+    {
+        return QPoint( 0, 0 );
+    }
 
     IntSize ofs = d->frame->view()->scrollOffset();
-    return QPoint(ofs.width(), ofs.height());
+    return QPoint( ofs.width(), ofs.height() );
 }
 
-void QWebFrame::setScrollPosition(const QPoint &pos)
+void QWebFrame::setScrollPosition( const QPoint &pos )
 {
     QPoint current = scrollPosition();
     int dx = pos.x() - current.x();
     int dy = pos.y() - current.y();
-    scroll(dx, dy);
+    scroll( dx, dy );
 }
 
 /*
   \since 4.7
   Scrolls the frame to the given \a anchor name.
 */
-void QWebFrame::scrollToAnchor(const QString& anchor)
+void QWebFrame::scrollToAnchor( const QString &anchor )
 {
     FrameView *view = d->frame->view();
-    if (view)
-        view->scrollToAnchor(anchor);
+
+    if ( view )
+    {
+        view->scrollToAnchor( anchor );
+    }
 }
 
 /*
@@ -1190,43 +1397,58 @@ void QWebFrame::scrollToAnchor(const QString& anchor)
   \sa print()
 */
 
-void QWebFrame::render(QPainter* painter, RenderLayer layer, const QRegion& clip)
+void QWebFrame::render( QPainter *painter, RenderLayer layer, const QRegion &clip )
 {
-    GraphicsContext context(painter);
-    if (context.paintingDisabled() && !context.updatingControlTints())
-        return;
+    GraphicsContext context( painter );
 
-    if (!clip.isEmpty())
-        d->renderRelativeCoords(&context, layer, clip);
-    else if (d->frame->view())
-        d->renderRelativeCoords(&context, layer, QRegion(d->frame->view()->frameRect()));
+    if ( context.paintingDisabled() && !context.updatingControlTints() )
+    {
+        return;
+    }
+
+    if ( !clip.isEmpty() )
+    {
+        d->renderRelativeCoords( &context, layer, clip );
+    }
+    else if ( d->frame->view() )
+    {
+        d->renderRelativeCoords( &context, layer, QRegion( d->frame->view()->frameRect() ) );
+    }
 }
 
 /*
   Render the frame into \a painter clipping to \a clip.
 */
-void QWebFrame::render(QPainter* painter, const QRegion& clip)
+void QWebFrame::render( QPainter *painter, const QRegion &clip )
 {
-    GraphicsContext context(painter);
-    if (context.paintingDisabled() && !context.updatingControlTints())
-        return;
+    GraphicsContext context( painter );
 
-    d->renderRelativeCoords(&context, AllLayers, clip);
+    if ( context.paintingDisabled() && !context.updatingControlTints() )
+    {
+        return;
+    }
+
+    d->renderRelativeCoords( &context, AllLayers, clip );
 }
 
 /*
   Render the frame into \a painter.
 */
-void QWebFrame::render(QPainter* painter)
+void QWebFrame::render( QPainter *painter )
 {
-    if (!d->frame->view())
+    if ( !d->frame->view() )
+    {
         return;
+    }
 
-    GraphicsContext context(painter);
-    if (context.paintingDisabled() && !context.updatingControlTints())
+    GraphicsContext context( painter );
+
+    if ( context.paintingDisabled() && !context.updatingControlTints() )
+    {
         return;
+    }
 
-    d->renderRelativeCoords(&context, AllLayers, QRegion(d->frame->view()->frameRect()));
+    d->renderRelativeCoords( &context, AllLayers, QRegion( d->frame->view()->frameRect() ) );
 }
 
 /*
@@ -1245,11 +1467,11 @@ void QWebFrame::render(QPainter* painter)
     Sets the value of the multiplier used to scale the text in a Web frame to
     the \a factor specified.
 */
-void QWebFrame::setTextSizeMultiplier(qreal factor)
+void QWebFrame::setTextSizeMultiplier( qreal factor )
 {
-    page()->settings()->setAttribute(QWebSettings::ZoomTextOnly, true);
+    page()->settings()->setAttribute( QWebSettings::ZoomTextOnly, true );
 
-    d->frame->setPageAndTextZoomFactors(1, factor);
+    d->frame->setPageAndTextZoomFactors( 1, factor );
 }
 
 /*
@@ -1257,7 +1479,7 @@ void QWebFrame::setTextSizeMultiplier(qreal factor)
 */
 qreal QWebFrame::textSizeMultiplier() const
 {
-    return page()->settings()->testAttribute(QWebSettings::ZoomTextOnly) ? d->frame->textZoomFactor() : d->frame->pageZoomFactor();
+    return page()->settings()->testAttribute( QWebSettings::ZoomTextOnly ) ? d->frame->textZoomFactor() : d->frame->pageZoomFactor();
 }
 
 /*
@@ -1266,17 +1488,21 @@ qreal QWebFrame::textSizeMultiplier() const
     \brief the zoom factor for the frame
 */
 
-void QWebFrame::setZoomFactor(qreal factor)
+void QWebFrame::setZoomFactor( qreal factor )
 {
-    if (page()->settings()->testAttribute(QWebSettings::ZoomTextOnly))
-        d->frame->setTextZoomFactor(factor);
+    if ( page()->settings()->testAttribute( QWebSettings::ZoomTextOnly ) )
+    {
+        d->frame->setTextZoomFactor( factor );
+    }
     else
-        d->frame->setPageZoomFactor(factor);
+    {
+        d->frame->setPageZoomFactor( factor );
+    }
 }
 
 qreal QWebFrame::zoomFactor() const
 {
-    return page()->settings()->testAttribute(QWebSettings::ZoomTextOnly) ? d->frame->textZoomFactor() : d->frame->pageZoomFactor();
+    return page()->settings()->testAttribute( QWebSettings::ZoomTextOnly ) ? d->frame->textZoomFactor() : d->frame->pageZoomFactor();
 }
 
 /*
@@ -1287,8 +1513,8 @@ qreal QWebFrame::zoomFactor() const
 */
 bool QWebFrame::hasFocus() const
 {
-    WebCore::Frame* ff = d->frame->page()->focusController()->focusedFrame();
-    return ff && QWebFramePrivate::kit(ff) == this;
+    WebCore::Frame *ff = d->frame->page()->focusController()->focusedFrame();
+    return ff && QWebFramePrivate::kit( ff ) == this;
 }
 
 /*
@@ -1298,7 +1524,7 @@ bool QWebFrame::hasFocus() const
 */
 void QWebFrame::setFocus()
 {
-    QWebFramePrivate::core(this)->page()->focusController()->setFocusedFrame(QWebFramePrivate::core(this));
+    QWebFramePrivate::core( this )->page()->focusController()->setFocusedFrame( QWebFramePrivate::core( this ) );
 }
 
 /*
@@ -1306,8 +1532,10 @@ void QWebFrame::setFocus()
 */
 QPoint QWebFrame::pos() const
 {
-    if (!d->frame->view())
+    if ( !d->frame->view() )
+    {
         return QPoint();
+    }
 
     return d->frame->view()->frameRect().location();
 }
@@ -1317,8 +1545,11 @@ QPoint QWebFrame::pos() const
 */
 QRect QWebFrame::geometry() const
 {
-    if (!d->frame->view())
+    if ( !d->frame->view() )
+    {
         return QRect();
+    }
+
     return d->frame->view()->frameRect();
 }
 
@@ -1331,9 +1562,13 @@ QRect QWebFrame::geometry() const
 QSize QWebFrame::contentsSize() const
 {
     FrameView *view = d->frame->view();
-    if (!view)
+
+    if ( !view )
+    {
         return QSize();
-    return QSize(view->contentsWidth(), view->contentsHeight());
+    }
+
+    return QSize( view->contentsWidth(), view->contentsHeight() );
 }
 
 /*
@@ -1347,9 +1582,13 @@ QSize QWebFrame::contentsSize() const
 QWebElement QWebFrame::documentElement() const
 {
     WebCore::Document *doc = d->frame->document();
-    if (!doc)
+
+    if ( !doc )
+    {
         return QWebElement();
-    return QWebElement(doc->documentElement());
+    }
+
+    return QWebElement( doc->documentElement() );
 }
 
 /*
@@ -1362,9 +1601,9 @@ QWebElement QWebFrame::documentElement() const
 
     \sa QWebElement::findAll()
 */
-QWebElementCollection QWebFrame::findAllElements(const QString &selectorQuery) const
+QWebElementCollection QWebFrame::findAllElements( const QString &selectorQuery ) const
 {
-    return documentElement().findAll(selectorQuery);
+    return documentElement().findAll( selectorQuery );
 }
 
 /*
@@ -1378,32 +1617,37 @@ QWebElementCollection QWebFrame::findAllElements(const QString &selectorQuery) c
 
     \sa QWebElement::findFirst()
 */
-QWebElement QWebFrame::findFirstElement(const QString &selectorQuery) const
+QWebElement QWebFrame::findFirstElement( const QString &selectorQuery ) const
 {
-    return documentElement().findFirst(selectorQuery);
+    return documentElement().findFirst( selectorQuery );
 }
 
 /*
     Performs a hit test on the frame contents at the given position \a pos and returns the hit test result.
 */
-QWebHitTestResult QWebFrame::hitTestContent(const QPoint &pos) const
+QWebHitTestResult QWebFrame::hitTestContent( const QPoint &pos ) const
 {
-    if (!d->frame->view() || !d->frame->contentRenderer())
+    if ( !d->frame->view() || !d->frame->contentRenderer() )
+    {
         return QWebHitTestResult();
+    }
 
-    HitTestResult result = d->frame->eventHandler()->hitTestResultAtPoint(d->frame->view()->windowToContents(pos), /*allowShadowContent*/ false, /*ignoreClipping*/ true);
+    HitTestResult result = d->frame->eventHandler()->hitTestResultAtPoint( d->frame->view()->windowToContents(
+                               pos ), /*allowShadowContent*/ false, /*ignoreClipping*/ true );
 
-    if (result.scrollbar())
+    if ( result.scrollbar() )
+    {
         return QWebHitTestResult();
+    }
 
-    return QWebHitTestResult(new QWebHitTestResultPrivate(result));
+    return QWebHitTestResult( new QWebHitTestResultPrivate( result ) );
 }
 
 /* \reimp
 */
-bool QWebFrame::event(QEvent *e)
+bool QWebFrame::event( QEvent *e )
 {
-    return QObject::event(e);
+    return QObject::event( e );
 }
 
 #ifndef QT_NO_PRINTER
@@ -1412,34 +1656,41 @@ bool QWebFrame::event(QEvent *e)
 
     \sa render()
 */
-void QWebFrame::print(QPrinter *printer)
+void QWebFrame::print( QPrinter *printer )
 {
     QPainter painter;
-    if (!painter.begin(printer))
+
+    if ( !painter.begin( printer ) )
+    {
         return;
+    }
 
-    const qreal zoomFactorX = (qreal)printer->logicalDpiX() / qt_defaultDpi();
-    const qreal zoomFactorY = (qreal)printer->logicalDpiY() / qt_defaultDpi();
+    const qreal zoomFactorX = ( qreal )printer->logicalDpiX() / qt_defaultDpi();
+    const qreal zoomFactorY = ( qreal )printer->logicalDpiY() / qt_defaultDpi();
 
-    PrintContext printContext(d->frame);
+    PrintContext printContext( d->frame );
     float pageHeight = 0;
 
     QRect qprinterRect = printer->pageRect();
 
-    IntRect pageRect(0, 0,
-                     int(qprinterRect.width() / zoomFactorX),
-                     int(qprinterRect.height() / zoomFactorY));
+    IntRect pageRect( 0, 0,
+                      int( qprinterRect.width() / zoomFactorX ),
+                      int( qprinterRect.height() / zoomFactorY ) );
 
-    printContext.begin(pageRect.width());
+    printContext.begin( pageRect.width() );
 
-    printContext.computePageRects(pageRect, /* headerHeight */ 0, /* footerHeight */ 0, /* userScaleFactor */ 1.0, pageHeight);
+    printContext.computePageRects( pageRect, /* headerHeight */ 0, /* footerHeight */ 0, /* userScaleFactor */ 1.0, pageHeight );
 
     int docCopies;
     int pageCopies;
-    if (printer->collateCopies()) {
+
+    if ( printer->collateCopies() )
+    {
         docCopies = 1;
         pageCopies = printer->numCopies();
-    } else {
+    }
+    else
+    {
         docCopies = printer->numCopies();
         pageCopies = 1;
     }
@@ -1448,56 +1699,78 @@ void QWebFrame::print(QPrinter *printer)
     int toPage = printer->toPage();
     bool ascending = true;
 
-    if (fromPage == 0 && toPage == 0) {
+    if ( fromPage == 0 && toPage == 0 )
+    {
         fromPage = 1;
         toPage = printContext.pageCount();
     }
+
     // paranoia check
-    fromPage = qMax(1, fromPage);
-    toPage = qMin(static_cast<int>(printContext.pageCount()), toPage);
-    if (toPage < fromPage) {
+    fromPage = qMax( 1, fromPage );
+    toPage = qMin( static_cast<int>( printContext.pageCount() ), toPage );
+
+    if ( toPage < fromPage )
+    {
         // if the user entered a page range outside the actual number
         // of printable pages, just return
         return;
     }
 
-    if (printer->pageOrder() == QPrinter::LastPageFirst) {
+    if ( printer->pageOrder() == QPrinter::LastPageFirst )
+    {
         int tmp = fromPage;
         fromPage = toPage;
         toPage = tmp;
         ascending = false;
     }
 
-    painter.scale(zoomFactorX, zoomFactorY);
-    GraphicsContext ctx(&painter);
+    painter.scale( zoomFactorX, zoomFactorY );
+    GraphicsContext ctx( &painter );
 
-    for (int i = 0; i < docCopies; ++i) {
+    for ( int i = 0; i < docCopies; ++i )
+    {
         int page = fromPage;
-        while (true) {
-            for (int j = 0; j < pageCopies; ++j) {
-                if (printer->printerState() == QPrinter::Aborted
-                    || printer->printerState() == QPrinter::Error) {
+
+        while ( true )
+        {
+            for ( int j = 0; j < pageCopies; ++j )
+            {
+                if ( printer->printerState() == QPrinter::Aborted
+                        || printer->printerState() == QPrinter::Error )
+                {
                     printContext.end();
                     return;
                 }
-                printContext.spoolPage(ctx, page - 1, pageRect.width());
-                if (j < pageCopies - 1)
+
+                printContext.spoolPage( ctx, page - 1, pageRect.width() );
+
+                if ( j < pageCopies - 1 )
+                {
                     printer->newPage();
+                }
             }
 
-            if (page == toPage)
+            if ( page == toPage )
+            {
                 break;
+            }
 
-            if (ascending)
+            if ( ascending )
+            {
                 ++page;
+            }
             else
+            {
                 --page;
+            }
 
             printer->newPage();
         }
 
-        if ( i < docCopies - 1)
+        if ( i < docCopies - 1 )
+        {
             printer->newPage();
+        }
     }
 
     printContext.end();
@@ -1510,23 +1783,31 @@ void QWebFrame::print(QPrinter *printer)
 
     \sa addToJavaScriptWindowObject(), javaScriptWindowObjectCleared()
 */
-QVariant QWebFrame::evaluateJavaScript(const QString& scriptSource)
+QVariant QWebFrame::evaluateJavaScript( const QString &scriptSource )
 {
     ScriptController *proxy = d->frame->script();
     QVariant rc;
-    if (proxy) {
+
+    if ( proxy )
+    {
 #if USE(JSC)
         int distance = 0;
-        JSC::JSValue v = d->frame->script()->executeScript(ScriptSourceCode(scriptSource)).jsValue();
+        JSC::JSValue v = d->frame->script()->executeScript( ScriptSourceCode( scriptSource ) ).jsValue();
 
-        rc = JSC::Bindings::convertValueToQVariant(proxy->globalObject(mainThreadNormalWorld())->globalExec(), v, QVariant::Void, &distance);
+        rc = JSC::Bindings::convertValueToQVariant( proxy->globalObject( mainThreadNormalWorld() )->globalExec(), v, QVariant::Void,
+                &distance );
 #elif USE(V8)
-        QScriptEngine* engine = d->frame->script()->qtScriptEngine();
-        if (!engine)
+        QScriptEngine *engine = d->frame->script()->qtScriptEngine();
+
+        if ( !engine )
+        {
             return rc;
-        rc = engine->evaluate(scriptSource).toVariant();
+        }
+
+        rc = engine->evaluate( scriptSource ).toVariant();
 #endif
     }
+
     return rc;
 }
 
@@ -1537,19 +1818,19 @@ QVariant QWebFrame::evaluateJavaScript(const QString& scriptSource)
 */
 QWebSecurityOrigin QWebFrame::securityOrigin() const
 {
-    QWebFrame* that = const_cast<QWebFrame*>(this);
-    QWebSecurityOriginPrivate* priv = new QWebSecurityOriginPrivate(QWebFramePrivate::core(that)->document()->securityOrigin());
-    return QWebSecurityOrigin(priv);
+    QWebFrame *that = const_cast<QWebFrame *>( this );
+    QWebSecurityOriginPrivate *priv = new QWebSecurityOriginPrivate( QWebFramePrivate::core( that )->document()->securityOrigin() );
+    return QWebSecurityOrigin( priv );
 }
 
-WebCore::Frame* QWebFramePrivate::core(const QWebFrame* webFrame)
+WebCore::Frame *QWebFramePrivate::core( const QWebFrame *webFrame )
 {
     return webFrame->d->frame;
 }
 
-QWebFrame* QWebFramePrivate::kit(const WebCore::Frame* coreFrame)
+QWebFrame *QWebFramePrivate::kit( const WebCore::Frame *coreFrame )
 {
-    return qobject_cast<QWebFrame*>(coreFrame->loader()->networkingContext()->originatingObject());
+    return qobject_cast<QWebFrame *>( coreFrame->loader()->networkingContext()->originatingObject() );
 }
 
 
@@ -1659,21 +1940,24 @@ QWebFrame* QWebFramePrivate::kit(const WebCore::Frame* coreFrame)
 /*
     \internal
 */
-QWebHitTestResult::QWebHitTestResult(QWebHitTestResultPrivate *priv)
-    : d(priv)
+QWebHitTestResult::QWebHitTestResult( QWebHitTestResultPrivate *priv )
+    : d( priv )
 {
 }
 
-QWebHitTestResultPrivate::QWebHitTestResultPrivate(const WebCore::HitTestResult &hitTest)
-    : isContentEditable(false)
-    , isContentSelected(false)
-    , isScrollBar(false)
+QWebHitTestResultPrivate::QWebHitTestResultPrivate( const WebCore::HitTestResult &hitTest )
+    : isContentEditable( false )
+    , isContentSelected( false )
+    , isScrollBar( false )
 {
-    if (!hitTest.innerNode())
+    if ( !hitTest.innerNode() )
+    {
         return;
+    }
+
     pos = hitTest.point();
     WebCore::TextDirection dir;
-    title = hitTest.title(dir);
+    title = hitTest.title( dir );
     linkText = hitTest.textContent();
     linkUrl = hitTest.absoluteLinkURL();
     linkTitle = hitTest.titleDisplayString();
@@ -1681,62 +1965,84 @@ QWebHitTestResultPrivate::QWebHitTestResultPrivate(const WebCore::HitTestResult 
     imageUrl = hitTest.absoluteImageURL();
     innerNode = hitTest.innerNode();
     innerNonSharedNode = hitTest.innerNonSharedNode();
-    boundingRect = innerNonSharedNode ? innerNonSharedNode->renderer()->absoluteBoundingBoxRect(true) : IntRect();
+    boundingRect = innerNonSharedNode ? innerNonSharedNode->renderer()->absoluteBoundingBoxRect( true ) : IntRect();
     WebCore::Image *img = hitTest.image();
-    if (img) {
+
+    if ( img )
+    {
         QPixmap *pix = img->nativeImageForCurrentFrame();
-        if (pix)
+
+        if ( pix )
+        {
             pixmap = *pix;
+        }
     }
+
     WebCore::Frame *wframe = hitTest.targetFrame();
-    if (wframe)
-        linkTargetFrame = QWebFramePrivate::kit(wframe);
-    linkElement = QWebElement(hitTest.URLElement());
+
+    if ( wframe )
+    {
+        linkTargetFrame = QWebFramePrivate::kit( wframe );
+    }
+
+    linkElement = QWebElement( hitTest.URLElement() );
 
     isContentEditable = hitTest.isContentEditable();
     isContentSelected = hitTest.isSelected();
     isScrollBar = hitTest.scrollbar();
 
-    if (innerNonSharedNode && innerNonSharedNode->document()
-        && innerNonSharedNode->document()->frame())
-        frame = QWebFramePrivate::kit(innerNonSharedNode->document()->frame());
+    if ( innerNonSharedNode && innerNonSharedNode->document()
+            && innerNonSharedNode->document()->frame() )
+    {
+        frame = QWebFramePrivate::kit( innerNonSharedNode->document()->frame() );
+    }
 
-    enclosingBlock = QWebElement(WebCore::enclosingBlock(innerNode.get()));
+    enclosingBlock = QWebElement( WebCore::enclosingBlock( innerNode.get() ) );
 }
 
 /*
     Constructs a null hit test result.
 */
 QWebHitTestResult::QWebHitTestResult()
-    : d(0)
+    : d( 0 )
 {
 }
 
 /*
     Constructs a hit test result from \a other.
 */
-QWebHitTestResult::QWebHitTestResult(const QWebHitTestResult &other)
-    : d(0)
+QWebHitTestResult::QWebHitTestResult( const QWebHitTestResult &other )
+    : d( 0 )
 {
-    if (other.d)
-        d = new QWebHitTestResultPrivate(*other.d);
+    if ( other.d )
+    {
+        d = new QWebHitTestResultPrivate( *other.d );
+    }
 }
 
 /*
     Assigns the \a other hit test result to this.
 */
-QWebHitTestResult &QWebHitTestResult::operator=(const QWebHitTestResult &other)
+QWebHitTestResult &QWebHitTestResult::operator=( const QWebHitTestResult &other )
 {
-    if (this != &other) {
-        if (other.d) {
-            if (!d)
+    if ( this != &other )
+    {
+        if ( other.d )
+        {
+            if ( !d )
+            {
                 d = new QWebHitTestResultPrivate;
+            }
+
             *d = *other.d;
-        } else {
+        }
+        else
+        {
             delete d;
             d = 0;
         }
     }
+
     return *this;
 }
 
@@ -1761,8 +2067,11 @@ bool QWebHitTestResult::isNull() const
 */
 QPoint QWebHitTestResult::pos() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QPoint();
+    }
+
     return d->pos;
 }
 
@@ -1772,8 +2081,11 @@ QPoint QWebHitTestResult::pos() const
 */
 QRect QWebHitTestResult::boundingRect() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QRect();
+    }
+
     return d->boundingRect;
 }
 
@@ -1787,8 +2099,11 @@ QRect QWebHitTestResult::boundingRect() const
 */
 QWebElement QWebHitTestResult::enclosingBlockElement() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QWebElement();
+    }
+
     return d->enclosingBlock;
 }
 
@@ -1797,8 +2112,11 @@ QWebElement QWebHitTestResult::enclosingBlockElement() const
 */
 QString QWebHitTestResult::title() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QString();
+    }
+
     return d->title;
 }
 
@@ -1807,8 +2125,11 @@ QString QWebHitTestResult::title() const
 */
 QString QWebHitTestResult::linkText() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QString();
+    }
+
     return d->linkText;
 }
 
@@ -1817,7 +2138,8 @@ QString QWebHitTestResult::linkText() const
 */
 QUrl QWebHitTestResult::linkUrl() const
 {
-    if (! d) {
+    if ( ! d )
+    {
         return QUrl();
     }
 
@@ -1829,11 +2151,12 @@ QUrl QWebHitTestResult::linkUrl() const
 */
 QUrl QWebHitTestResult::linkTitle() const
 {
-    if (! d) {
-       return QUrl();
+    if ( ! d )
+    {
+        return QUrl();
     }
 
-    return QUrl(d->linkTitle);
+    return QUrl( d->linkTitle );
 }
 
 /*
@@ -1844,7 +2167,8 @@ QUrl QWebHitTestResult::linkTitle() const
 */
 QWebElement QWebHitTestResult::linkElement() const
 {
-    if (! d) {
+    if ( ! d )
+    {
         return QWebElement();
     }
 
@@ -1858,8 +2182,11 @@ QWebElement QWebHitTestResult::linkElement() const
 */
 QWebFrame *QWebHitTestResult::linkTargetFrame() const
 {
-    if (!d)
+    if ( !d )
+    {
         return 0;
+    }
+
     return d->linkTargetFrame;
 }
 
@@ -1868,8 +2195,11 @@ QWebFrame *QWebHitTestResult::linkTargetFrame() const
 */
 QString QWebHitTestResult::alternateText() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QString();
+    }
+
     return d->alternateText;
 }
 
@@ -1878,8 +2208,11 @@ QString QWebHitTestResult::alternateText() const
 */
 QUrl QWebHitTestResult::imageUrl() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QUrl();
+    }
+
     return d->imageUrl;
 }
 
@@ -1889,8 +2222,11 @@ QUrl QWebHitTestResult::imageUrl() const
 */
 QPixmap QWebHitTestResult::pixmap() const
 {
-    if (!d)
+    if ( !d )
+    {
         return QPixmap();
+    }
+
     return d->pixmap;
 }
 
@@ -1899,8 +2235,11 @@ QPixmap QWebHitTestResult::pixmap() const
 */
 bool QWebHitTestResult::isContentEditable() const
 {
-    if (!d)
+    if ( !d )
+    {
         return false;
+    }
+
     return d->isContentEditable;
 }
 
@@ -1909,8 +2248,11 @@ bool QWebHitTestResult::isContentEditable() const
 */
 bool QWebHitTestResult::isContentSelected() const
 {
-    if (!d)
+    if ( !d )
+    {
         return false;
+    }
+
     return d->isContentSelected;
 }
 
@@ -1920,10 +2262,12 @@ bool QWebHitTestResult::isContentSelected() const
 */
 QWebElement QWebHitTestResult::element() const
 {
-    if (!d || !d->innerNonSharedNode || !d->innerNonSharedNode->isElementNode())
+    if ( !d || !d->innerNonSharedNode || !d->innerNonSharedNode->isElementNode() )
+    {
         return QWebElement();
+    }
 
-    return QWebElement(static_cast<WebCore::Element*>(d->innerNonSharedNode.get()));
+    return QWebElement( static_cast<WebCore::Element *>( d->innerNonSharedNode.get() ) );
 }
 
 /*
@@ -1931,13 +2275,16 @@ QWebElement QWebHitTestResult::element() const
 */
 QWebFrame *QWebHitTestResult::frame() const
 {
-    if (!d)
+    if ( !d )
+    {
         return 0;
+    }
+
     return d->frame;
 }
 
 void QWebFrame::_q_orientationChanged()
 {
-	d->_q_orientationChanged();
+    d->_q_orientationChanged();
 }
 

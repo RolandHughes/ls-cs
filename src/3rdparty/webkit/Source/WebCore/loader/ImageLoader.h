@@ -27,15 +27,17 @@
 #include "CachedResourceHandle.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 class ImageLoadEventSender;
 class RenderImageResource;
 
-class ImageLoader : public CachedResourceClient {
+class ImageLoader : public CachedResourceClient
+{
 public:
-    ImageLoader(Element*);
+    ImageLoader( Element * );
     virtual ~ImageLoader();
 
     // This function should be called when the element is attached to a document; starts
@@ -48,35 +50,53 @@ public:
 
     void elementWillMoveToNewOwnerDocument();
 
-    Element* element() const { return m_element; }
-    bool imageComplete() const { return m_imageComplete; }
+    Element *element() const
+    {
+        return m_element;
+    }
+    bool imageComplete() const
+    {
+        return m_imageComplete;
+    }
 
-    CachedImage* image() const { return m_image.get(); }
-    void setImage(CachedImage*); // Cancels pending beforeload and load events, and doesn't dispatch new ones.
+    CachedImage *image() const
+    {
+        return m_image.get();
+    }
+    void setImage( CachedImage * ); // Cancels pending beforeload and load events, and doesn't dispatch new ones.
 
-    void setLoadManually(bool loadManually) { m_loadManually = loadManually; }
+    void setLoadManually( bool loadManually )
+    {
+        m_loadManually = loadManually;
+    }
 
-    bool haveFiredBeforeLoadEvent() const { return m_firedBeforeLoad; }
-    bool haveFiredLoadEvent() const { return m_firedLoad; }
+    bool haveFiredBeforeLoadEvent() const
+    {
+        return m_firedBeforeLoad;
+    }
+    bool haveFiredLoadEvent() const
+    {
+        return m_firedLoad;
+    }
 
     static void dispatchPendingBeforeLoadEvents();
     static void dispatchPendingLoadEvents();
 
 protected:
-    virtual void notifyFinished(CachedResource*);
+    virtual void notifyFinished( CachedResource * );
 
 private:
     virtual void dispatchLoadEvent() = 0;
-    virtual String sourceURI(const AtomicString&) const = 0;
+    virtual String sourceURI( const AtomicString & ) const = 0;
 
     friend class ImageEventSender;
     void dispatchPendingBeforeLoadEvent();
     void dispatchPendingLoadEvent();
 
-    RenderImageResource* renderImageResource();
+    RenderImageResource *renderImageResource();
     void updateRenderer();
 
-    Element* m_element;
+    Element *m_element;
     CachedResourceHandle<CachedImage> m_image;
     AtomicString m_failedLoadURL;
     bool m_firedBeforeLoad : 1;

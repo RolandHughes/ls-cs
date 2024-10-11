@@ -33,31 +33,36 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientationController;
 
 // A mock implementation of DeviceOrientationClient used to test the feature in
 // DumpRenderTree. Embedders should should configure the Page object to use this
 // client when running DumpRenderTree.
-class DeviceOrientationClientMock : public DeviceOrientationClient {
+class DeviceOrientationClientMock : public DeviceOrientationClient
+{
 public:
     DeviceOrientationClientMock();
 
     // DeviceOrientationClient
-    virtual void setController(DeviceOrientationController*);
+    virtual void setController( DeviceOrientationController * );
     virtual void startUpdating();
     virtual void stopUpdating();
-    virtual DeviceOrientation* lastOrientation() const { return m_orientation.get(); }
+    virtual DeviceOrientation *lastOrientation() const
+    {
+        return m_orientation.get();
+    }
     virtual void deviceOrientationControllerDestroyed() { }
 
-    void setOrientation(PassRefPtr<DeviceOrientation>);
+    void setOrientation( PassRefPtr<DeviceOrientation> );
 
 private:
-    void timerFired(Timer<DeviceOrientationClientMock>*);
+    void timerFired( Timer<DeviceOrientationClientMock> * );
 
     RefPtr<DeviceOrientation> m_orientation;
-    DeviceOrientationController* m_controller;
+    DeviceOrientationController *m_controller;
     Timer<DeviceOrientationClientMock> m_timer;
     bool m_isUpdating;
 };

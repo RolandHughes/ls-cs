@@ -30,9 +30,10 @@
 #include "JSGlobalData.h"
 #include "RegisterFile.h"
 
-namespace JSC {
+namespace JSC
+{
 
-GlobalMemoryStatistics globalMemoryStatistics() 
+GlobalMemoryStatistics globalMemoryStatistics()
 {
     GlobalMemoryStatistics stats;
 

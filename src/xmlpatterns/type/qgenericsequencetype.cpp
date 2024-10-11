@@ -27,23 +27,23 @@
 
 using namespace QPatternist;
 
-GenericSequenceType::GenericSequenceType(const ItemType::Ptr &iType, const Cardinality &card)
-   : m_itemType(iType), m_cardinality(card)
+GenericSequenceType::GenericSequenceType( const ItemType::Ptr &iType, const Cardinality &card )
+    : m_itemType( iType ), m_cardinality( card )
 {
-   Q_ASSERT(m_itemType);
+    Q_ASSERT( m_itemType );
 }
 
-QString GenericSequenceType::displayName(const NamePool::Ptr &np) const
+QString GenericSequenceType::displayName( const NamePool::Ptr &np ) const
 {
-   return m_itemType->displayName(np) + m_cardinality.displayName(Cardinality::ExcludeExplanation);
+    return m_itemType->displayName( np ) + m_cardinality.displayName( Cardinality::ExcludeExplanation );
 }
 
 Cardinality GenericSequenceType::cardinality() const
 {
-   return m_cardinality;
+    return m_cardinality;
 }
 
 ItemType::Ptr GenericSequenceType::itemType() const
 {
-   return m_itemType;
+    return m_itemType;
 }

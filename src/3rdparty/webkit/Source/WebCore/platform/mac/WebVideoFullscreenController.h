@@ -28,8 +28,9 @@
 #import <Cocoa/Cocoa.h>
 #import <wtf/RefPtr.h>
 
-namespace WebCore {
-    class HTMLMediaElement;
+namespace WebCore
+{
+class HTMLMediaElement;
 }
 
 @protocol WebVideoFullscreenControllerDelegate;
@@ -37,7 +38,8 @@ namespace WebCore {
 @class WebWindowFadeAnimation;
 @class QTMovieLayer;
 
-@interface WebVideoFullscreenController : NSWindowController {
+@interface WebVideoFullscreenController : NSWindowController
+{
 @private
     RefPtr<WebCore::HTMLMediaElement> _mediaElement; // (retain)
     id <WebVideoFullscreenControllerDelegate> _delegate; // (assign)
@@ -57,15 +59,15 @@ namespace WebCore {
     uint32_t _savedUIOptions;
 }
 
-- (id <WebVideoFullscreenControllerDelegate>)delegate;
-- (void)setDelegate:(id <WebVideoFullscreenControllerDelegate>)delegate;
+- ( id <WebVideoFullscreenControllerDelegate> )delegate;
+- ( void )setDelegate:( id <WebVideoFullscreenControllerDelegate> )delegate;
 
-- (void)setupVideoOverlay:(QTMovieLayer*)layer;
-- (void)setMediaElement:(WebCore::HTMLMediaElement*)mediaElement;
-- (WebCore::HTMLMediaElement*)mediaElement;
+- ( void )setupVideoOverlay:( QTMovieLayer * )layer;
+- ( void )setMediaElement:( WebCore::HTMLMediaElement * )mediaElement;
+- ( WebCore::HTMLMediaElement * )mediaElement;
 
-- (void)enterFullscreen:(NSScreen *)screen;
-- (void)exitFullscreen;
+- ( void )enterFullscreen:( NSScreen * )screen;
+- ( void )exitFullscreen;
 
 @end
 

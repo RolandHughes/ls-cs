@@ -24,93 +24,102 @@
 #include "JSArrayBufferView.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DataView;
 
-class JSDataView : public JSArrayBufferView {
+class JSDataView : public JSArrayBufferView
+{
     typedef JSArrayBufferView Base;
 public:
-    JSDataView(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DataView>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDataView( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DataView> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue getInt8(JSC::ExecState*);
-    JSC::JSValue getUint8(JSC::ExecState*);
-    JSC::JSValue getFloat32(JSC::ExecState*);
-    JSC::JSValue getFloat64(JSC::ExecState*);
-    JSC::JSValue setInt8(JSC::ExecState*);
-    JSC::JSValue setUint8(JSC::ExecState*);
+    JSC::JSValue getInt8( JSC::ExecState * );
+    JSC::JSValue getUint8( JSC::ExecState * );
+    JSC::JSValue getFloat32( JSC::ExecState * );
+    JSC::JSValue getFloat64( JSC::ExecState * );
+    JSC::JSValue setInt8( JSC::ExecState * );
+    JSC::JSValue setUint8( JSC::ExecState * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DataView*);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DataView * );
 
-class JSDataViewPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDataViewPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDataViewPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDataViewPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                         JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSDataViewConstructor : public DOMConstructorObject {
+class JSDataViewConstructor : public DOMConstructorObject
+{
 public:
-    JSDataViewConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDataViewConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSDataView(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSDataView( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt8(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint8(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt16(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint16(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt32(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint32(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat32(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat64(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt8(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint8(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt16(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint16(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt32(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint32(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat32(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat64(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt8( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint8( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt16( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint16( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetInt32( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetUint32( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat32( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionGetFloat64( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt8( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint8( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt16( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint16( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetInt32( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetUint32( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat32( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsDataViewPrototypeFunctionSetFloat64( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsDataViewConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDataViewConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

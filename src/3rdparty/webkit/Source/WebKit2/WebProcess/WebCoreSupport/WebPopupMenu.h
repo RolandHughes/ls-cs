@@ -28,40 +28,49 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class PopupMenuClient;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 struct PlatformPopupMenuData;
 struct WebPopupItem;
 
-class WebPopupMenu : public WebCore::PopupMenu {
+class WebPopupMenu : public WebCore::PopupMenu
+{
 public:
-    static PassRefPtr<WebPopupMenu> create(WebPage*, WebCore::PopupMenuClient*);
+    static PassRefPtr<WebPopupMenu> create( WebPage *, WebCore::PopupMenuClient * );
     ~WebPopupMenu();
 
-    WebPage* page() { return m_page; }
+    WebPage *page()
+    {
+        return m_page;
+    }
 
-    void disconnectFromPage() { m_page = 0; }
-    void didChangeSelectedIndex(int newIndex);
-    void setTextForIndex(int newIndex);
+    void disconnectFromPage()
+    {
+        m_page = 0;
+    }
+    void didChangeSelectedIndex( int newIndex );
+    void setTextForIndex( int newIndex );
 
-    virtual void show(const WebCore::IntRect&, WebCore::FrameView*, int index);
+    virtual void show( const WebCore::IntRect &, WebCore::FrameView *, int index );
     virtual void hide();
     virtual void updateFromElement();
     virtual void disconnectClient();
 
 private:
-    WebPopupMenu(WebPage*, WebCore::PopupMenuClient*);
+    WebPopupMenu( WebPage *, WebCore::PopupMenuClient * );
 
     Vector<WebPopupItem> populateItems();
-    void setUpPlatformData(const WebCore::IntRect& pageCoordinates, PlatformPopupMenuData&);
+    void setUpPlatformData( const WebCore::IntRect &pageCoordinates, PlatformPopupMenuData & );
 
-    WebCore::PopupMenuClient* m_popupClient;
-    WebPage* m_page;
+    WebCore::PopupMenuClient *m_popupClient;
+    WebPage *m_page;
 };
 
 } // namespace WebKit

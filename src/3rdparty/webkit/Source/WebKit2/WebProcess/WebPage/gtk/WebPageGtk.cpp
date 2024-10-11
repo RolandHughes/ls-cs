@@ -40,94 +40,113 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebPage::platformInitialize()
 {
     notImplemented();
 }
 
-void WebPage::platformPreferencesDidChange(const WebPreferencesStore&)
+void WebPage::platformPreferencesDidChange( const WebPreferencesStore & )
 {
     notImplemented();
 }
 
-static inline void scroll(Page* page, ScrollDirection direction, ScrollGranularity granularity)
+static inline void scroll( Page *page, ScrollDirection direction, ScrollGranularity granularity )
 {
-    page->focusController()->focusedOrMainFrame()->eventHandler()->scrollRecursively(direction, granularity);
+    page->focusController()->focusedOrMainFrame()->eventHandler()->scrollRecursively( direction, granularity );
 }
 
-bool WebPage::performDefaultBehaviorForKeyEvent(const WebKeyboardEvent& keyboardEvent)
+bool WebPage::performDefaultBehaviorForKeyEvent( const WebKeyboardEvent &keyboardEvent )
 {
-    if (keyboardEvent.type() != WebEvent::KeyDown && keyboardEvent.type() != WebEvent::RawKeyDown)
+    if ( keyboardEvent.type() != WebEvent::KeyDown && keyboardEvent.type() != WebEvent::RawKeyDown )
+    {
         return false;
+    }
 
-    switch (keyboardEvent.windowsVirtualKeyCode()) {
-    case VK_BACK:
-        if (keyboardEvent.shiftKey())
-            m_page->goForward();
-        else
-            m_page->goBack();
-        break;
-    case VK_SPACE:
-        scroll(m_page.get(), keyboardEvent.shiftKey() ? ScrollUp : ScrollDown, ScrollByPage);
-        break;
-    case VK_LEFT:
-        scroll(m_page.get(), ScrollLeft, ScrollByLine);
-        break;
-    case VK_RIGHT:
-        scroll(m_page.get(), ScrollRight, ScrollByLine);
-        break;
-    case VK_UP:
-        scroll(m_page.get(), ScrollUp, ScrollByLine);
-        break;
-    case VK_DOWN:
-        scroll(m_page.get(), ScrollDown, ScrollByLine);
-        break;
-    case VK_HOME:
-        scroll(m_page.get(), ScrollUp, ScrollByDocument);
-        break;
-    case VK_END:
-        scroll(m_page.get(), ScrollDown, ScrollByDocument);
-        break;
-    case VK_PRIOR:
-        scroll(m_page.get(), ScrollUp, ScrollByPage);
-        break;
-    case VK_NEXT:
-        scroll(m_page.get(), ScrollDown, ScrollByPage);
-        break;
-    default:
-        return false;
+    switch ( keyboardEvent.windowsVirtualKeyCode() )
+    {
+        case VK_BACK:
+            if ( keyboardEvent.shiftKey() )
+            {
+                m_page->goForward();
+            }
+            else
+            {
+                m_page->goBack();
+            }
+
+            break;
+
+        case VK_SPACE:
+            scroll( m_page.get(), keyboardEvent.shiftKey() ? ScrollUp : ScrollDown, ScrollByPage );
+            break;
+
+        case VK_LEFT:
+            scroll( m_page.get(), ScrollLeft, ScrollByLine );
+            break;
+
+        case VK_RIGHT:
+            scroll( m_page.get(), ScrollRight, ScrollByLine );
+            break;
+
+        case VK_UP:
+            scroll( m_page.get(), ScrollUp, ScrollByLine );
+            break;
+
+        case VK_DOWN:
+            scroll( m_page.get(), ScrollDown, ScrollByLine );
+            break;
+
+        case VK_HOME:
+            scroll( m_page.get(), ScrollUp, ScrollByDocument );
+            break;
+
+        case VK_END:
+            scroll( m_page.get(), ScrollDown, ScrollByDocument );
+            break;
+
+        case VK_PRIOR:
+            scroll( m_page.get(), ScrollUp, ScrollByPage );
+            break;
+
+        case VK_NEXT:
+            scroll( m_page.get(), ScrollDown, ScrollByPage );
+            break;
+
+        default:
+            return false;
     }
 
     return true;
 }
 
-bool WebPage::platformHasLocalDataForURL(const KURL&)
+bool WebPage::platformHasLocalDataForURL( const KURL & )
 {
     notImplemented();
     return false;
 }
 
-String WebPage::cachedResponseMIMETypeForURL(const KURL&)
+String WebPage::cachedResponseMIMETypeForURL( const KURL & )
 {
     notImplemented();
     return String();
 }
 
-bool WebPage::platformCanHandleRequest(const ResourceRequest&)
+bool WebPage::platformCanHandleRequest( const ResourceRequest & )
 {
     notImplemented();
     return true;
 }
 
-String WebPage::cachedSuggestedFilenameForURL(const KURL&)
+String WebPage::cachedSuggestedFilenameForURL( const KURL & )
 {
     notImplemented();
     return String();
 }
 
-PassRefPtr<SharedBuffer> WebPage::cachedResponseDataForURL(const KURL&)
+PassRefPtr<SharedBuffer> WebPage::cachedResponseDataForURL( const KURL & )
 {
     notImplemented();
     return 0;

@@ -25,29 +25,35 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Attribute;
 class QualifiedName;
 
-class SVGZoomAndPan {
+class SVGZoomAndPan
+{
 public:
-    enum SVGZoomAndPanType {
+    enum SVGZoomAndPanType
+    {
         SVG_ZOOMANDPAN_UNKNOWN = 0,
         SVG_ZOOMANDPAN_DISABLE = 1,
         SVG_ZOOMANDPAN_MAGNIFY = 2
     };
 
-    SVGZoomAndPan() : m_zoomAndPan(SVG_ZOOMANDPAN_MAGNIFY) { }
+    SVGZoomAndPan() : m_zoomAndPan( SVG_ZOOMANDPAN_MAGNIFY ) { }
     virtual ~SVGZoomAndPan() { }
 
-    unsigned short zoomAndPan() const { return m_zoomAndPan; }
-    virtual void setZoomAndPan(unsigned short zoomAndPan);
+    unsigned short zoomAndPan() const
+    {
+        return m_zoomAndPan;
+    }
+    virtual void setZoomAndPan( unsigned short zoomAndPan );
 
-    bool parseMappedAttribute(Attribute*);
-    bool isKnownAttribute(const QualifiedName&);
+    bool parseMappedAttribute( Attribute * );
+    bool isKnownAttribute( const QualifiedName & );
 
-    bool parseZoomAndPan(const UChar*& start, const UChar* end);
+    bool parseZoomAndPan( const UChar *&start, const UChar *end );
 
 private:
     unsigned short m_zoomAndPan;

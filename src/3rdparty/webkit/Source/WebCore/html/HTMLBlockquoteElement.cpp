@@ -25,27 +25,28 @@
 
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLBlockquoteElement::HTMLBlockquoteElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLBlockquoteElement::HTMLBlockquoteElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(blockquoteTag));
+    ASSERT( hasTagName( blockquoteTag ) );
 }
 
-PassRefPtr<HTMLBlockquoteElement> HTMLBlockquoteElement::create(Document* document)
+PassRefPtr<HTMLBlockquoteElement> HTMLBlockquoteElement::create( Document *document )
 {
-    return adoptRef(new HTMLBlockquoteElement(blockquoteTag, document));
+    return adoptRef( new HTMLBlockquoteElement( blockquoteTag, document ) );
 }
 
-PassRefPtr<HTMLBlockquoteElement> HTMLBlockquoteElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLBlockquoteElement> HTMLBlockquoteElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLBlockquoteElement(tagName, document));
+    return adoptRef( new HTMLBlockquoteElement( tagName, document ) );
 }
 
-bool HTMLBlockquoteElement::isURLAttribute(Attribute* attribute) const
+bool HTMLBlockquoteElement::isURLAttribute( Attribute *attribute ) const
 {
     return attribute->name() == citeAttr;
 }

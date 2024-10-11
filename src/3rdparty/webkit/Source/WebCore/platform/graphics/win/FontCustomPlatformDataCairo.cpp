@@ -28,42 +28,47 @@
 #include <wtf/RetainPtr.h>
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 FontCustomPlatformData::~FontCustomPlatformData()
 {
-   cairo_font_face_destroy(m_fontFace);
+    cairo_font_face_destroy( m_fontFace );
 }
 
-FontPlatformData FontCustomPlatformData::fontPlatformData(int size, bool bold, bool italic, FontOrientation, TextOrientation, FontWidthVariant)
+FontPlatformData FontCustomPlatformData::fontPlatformData( int size, bool bold, bool italic, FontOrientation, TextOrientation,
+        FontWidthVariant )
 {
-    return FontPlatformData(m_fontFace, size, bold, italic);
+    return FontPlatformData( m_fontFace, size, bold, italic );
 }
 
-static void releaseData(void* data)
+static void releaseData( void *data )
 {
-    static_cast<SharedBuffer*>(data)->deref();
+    static_cast<SharedBuffer *>( data )->deref();
 }
 
-FontCustomPlatformData* createFontCustomPlatformData(SharedBuffer* buffer)
+FontCustomPlatformData *createFontCustomPlatformData( SharedBuffer *buffer )
 {
-    ASSERT_ARG(buffer, buffer);
+    ASSERT_ARG( buffer, buffer );
 
     buffer->ref();
-    HFONT font = reinterpret_cast<HFONT>(buffer);
-    cairo_font_face_t* fontFace = cairo_win32_font_face_create_for_hfont(font);
-    if (!fontFace)
-       return 0;
+    HFONT font = reinterpret_cast<HFONT>( buffer );
+    cairo_font_face_t *fontFace = cairo_win32_font_face_create_for_hfont( font );
+
+    if ( !fontFace )
+    {
+        return 0;
+    }
 
     static cairo_user_data_key_t bufferKey;
-    cairo_font_face_set_user_data(fontFace, &bufferKey, buffer, releaseData);
+    cairo_font_face_set_user_data( fontFace, &bufferKey, buffer, releaseData );
 
-    return new FontCustomPlatformData(fontFace);
+    return new FontCustomPlatformData( fontFace );
 }
 
-bool FontCustomPlatformData::supportsFormat(const String& format)
+bool FontCustomPlatformData::supportsFormat( const String &format )
 {
-    return equalIgnoringCase(format, "truetype") || equalIgnoringCase(format, "opentype");
+    return equalIgnoringCase( format, "truetype" ) || equalIgnoringCase( format, "opentype" );
 }
 
 }

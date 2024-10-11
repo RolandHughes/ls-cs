@@ -25,32 +25,38 @@
 
 using namespace QPatternist;
 
-AbstractNodeTest::AbstractNodeTest(const ItemType::Ptr &primaryType) : m_primaryType(primaryType)
+AbstractNodeTest::AbstractNodeTest( const ItemType::Ptr &primaryType ) : m_primaryType( primaryType )
 {
-   Q_ASSERT(m_primaryType);
+    Q_ASSERT( m_primaryType );
 }
 
-bool AbstractNodeTest::xdtTypeMatches(const ItemType::Ptr &other) const
+bool AbstractNodeTest::xdtTypeMatches( const ItemType::Ptr &other ) const
 {
-   Q_ASSERT(other);
+    Q_ASSERT( other );
 
-   if (other->isNodeType()) {
-      if (*other == *this) {
-         return true;
-      } else {
-         return xdtTypeMatches(other->xdtSuperType());
-      }
-   } else {
-      return false;
-   }
+    if ( other->isNodeType() )
+    {
+        if ( *other == *this )
+        {
+            return true;
+        }
+        else
+        {
+            return xdtTypeMatches( other->xdtSuperType() );
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 ItemType::Ptr AbstractNodeTest::atomizedType() const
 {
-   return m_primaryType->atomizedType();
+    return m_primaryType->atomizedType();
 }
 
 ItemType::Ptr AbstractNodeTest::xdtSuperType() const
 {
-   return m_primaryType;
+    return m_primaryType;
 }

@@ -26,27 +26,32 @@
 #include "config.h"
 #include "CertificateCFWin.h"
 
-namespace WebCore {
-
-static void deallocCertContext(void* ptr, void* info)
+namespace WebCore
 {
-    if (ptr)
-        CertFreeCertificateContext(static_cast<PCCERT_CONTEXT>(ptr));
+
+static void deallocCertContext( void *ptr, void *info )
+{
+    if ( ptr )
+    {
+        CertFreeCertificateContext( static_cast<PCCERT_CONTEXT>( ptr ) );
+    }
 }
 
 static CFAllocatorRef createCertContextDeallocator()
 {
-    CFAllocatorContext allocContext = {
+    CFAllocatorContext allocContext =
+    {
         0, 0, 0, 0, 0, 0, 0, deallocCertContext, 0
     };
-    return CFAllocatorCreate(kCFAllocatorDefault, &allocContext);
+    return CFAllocatorCreate( kCFAllocatorDefault, &allocContext );
 }
 
-RetainPtr<CFDataRef> copyCertificateToData(PCCERT_CONTEXT certificate)
+RetainPtr<CFDataRef> copyCertificateToData( PCCERT_CONTEXT certificate )
 {
     static CFAllocatorRef certDealloc = createCertContextDeallocator();
-    PCCERT_CONTEXT certificateCopy = CertDuplicateCertificateContext(certificate);
-    return RetainPtr<CFDataRef>(AdoptCF, CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, reinterpret_cast<const UInt8*>(certificateCopy), sizeof(*certificateCopy), certDealloc));
+    PCCERT_CONTEXT certificateCopy = CertDuplicateCertificateContext( certificate );
+    return RetainPtr<CFDataRef>( AdoptCF, CFDataCreateWithBytesNoCopy( kCFAllocatorDefault,
+                                 reinterpret_cast<const UInt8 *>( certificateCopy ), sizeof( *certificateCopy ), certDealloc ) );
 }
 
 } // namespace WebCore

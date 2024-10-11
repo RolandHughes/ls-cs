@@ -47,447 +47,479 @@ struct QGlyphLayout;
     ((quint32)(ch4)) \
    )
 
-typedef void (*qt_destroy_func_t) (void *user_data);
-typedef bool (*qt_get_font_table_func_t) (void *user_data, uint tag, uchar *buffer, uint *length);
+typedef void ( *qt_destroy_func_t ) ( void *user_data );
+typedef bool ( *qt_get_font_table_func_t ) ( void *user_data, uint tag, uchar *buffer, uint *length );
 
 class Q_GUI_EXPORT QFontEngine
 {
 
- public:
-   using FaceId = QFontEngine_FaceId;
-
-   enum Type {
-      Box,
-      Multi,
-
-      // MS Windows types
-      Win,
-
-      // Apple Mac OS types
-      Mac,
-
-      // QWS types
-      Freetype,
-      QPF1,
-      QPF2,
-      Proxy,
-
-      DirectWrite,
-      TestFontEngine = 0x1000
-   };
-
-   enum GlyphFormat {
-      Format_None,
-      Format_Render = Format_None,
-      Format_Mono,
-      Format_A8,
-      Format_A32,
-      Format_ARGB
-   };
-
-   enum ShaperFlag {
-      DesignMetrics    = 0x0002,
-      GlyphIndicesOnly = 0x0004
-   };
-   using ShaperFlags = QFlags<ShaperFlag>;
-
-
-   enum SynthesizedFlags {
-      SynthesizedItalic  = 0x1,
-      SynthesizedBold    = 0x2,
-      SynthesizedStretch = 0x4
-   };
-
-   enum HintStyle {
-      HintNone,
-      HintLight,
-      HintMedium,
-      HintFull
-   };
-
-   enum SubpixelAntialiasingType {
-      Subpixel_None,
-      Subpixel_RGB,
-      Subpixel_BGR,
-      Subpixel_VRGB,
-      Subpixel_VBGR
-   };
-
-   // all of these are in unscaled metrics if the engine supports uncsaled metrics,
-   // otherwise in design metrics
-
-   struct Properties {
-      QString postscriptName;
-      QString copyright;
-
-      QRectF boundingBox;
-      QFixed emSquare;
-      QFixed ascent;
-      QFixed descent;
-      QFixed leading;
-      QFixed italicAngle;
-      QFixed capHeight;
-      QFixed lineWidth;
-   };
+public:
+    using FaceId = QFontEngine_FaceId;
+
+    enum Type
+    {
+        Box,
+        Multi,
+
+        // MS Windows types
+        Win,
+
+        // Apple Mac OS types
+        Mac,
+
+        // QWS types
+        Freetype,
+        QPF1,
+        QPF2,
+        Proxy,
+
+        DirectWrite,
+        TestFontEngine = 0x1000
+    };
+
+    enum GlyphFormat
+    {
+        Format_None,
+        Format_Render = Format_None,
+        Format_Mono,
+        Format_A8,
+        Format_A32,
+        Format_ARGB
+    };
+
+    enum ShaperFlag
+    {
+        DesignMetrics    = 0x0002,
+        GlyphIndicesOnly = 0x0004
+    };
+    using ShaperFlags = QFlags<ShaperFlag>;
+
+
+    enum SynthesizedFlags
+    {
+        SynthesizedItalic  = 0x1,
+        SynthesizedBold    = 0x2,
+        SynthesizedStretch = 0x4
+    };
+
+    enum HintStyle
+    {
+        HintNone,
+        HintLight,
+        HintMedium,
+        HintFull
+    };
+
+    enum SubpixelAntialiasingType
+    {
+        Subpixel_None,
+        Subpixel_RGB,
+        Subpixel_BGR,
+        Subpixel_VRGB,
+        Subpixel_VBGR
+    };
+
+    // all of these are in unscaled metrics if the engine supports uncsaled metrics,
+    // otherwise in design metrics
+
+    struct Properties
+    {
+        QString postscriptName;
+        QString copyright;
+
+        QRectF boundingBox;
+        QFixed emSquare;
+        QFixed ascent;
+        QFixed descent;
+        QFixed leading;
+        QFixed italicAngle;
+        QFixed capHeight;
+        QFixed lineWidth;
+    };
+
+    virtual ~QFontEngine();
+
+    inline Type type() const
+    {
+        return m_type;
+    }
+
+    virtual Properties properties() const;
+    virtual void getUnscaledGlyph( glyph_t glyph, QPainterPath *path, glyph_metrics_t *metrics );
+
+    QByteArray getSfntTable( uint tag ) const;
+    virtual bool getSfntTableData( uint tag, uchar *buffer, uint *length ) const;
+
+    virtual FaceId faceId() const
+    {
+        return FaceId();
+    }
 
-   virtual ~QFontEngine();
+    virtual int synthesized() const
+    {
+        return 0;
+    }
 
-   inline Type type() const {
-      return m_type;
-   }
-
-   virtual Properties properties() const;
-   virtual void getUnscaledGlyph(glyph_t glyph, QPainterPath *path, glyph_metrics_t *metrics);
-
-   QByteArray getSfntTable(uint tag) const;
-   virtual bool getSfntTableData(uint tag, uchar *buffer, uint *length) const;
+    virtual bool supportsSubPixelPositions() const
+    {
+        return false;
+    }
 
-   virtual FaceId faceId() const {
-      return FaceId();
-   }
+    virtual QFixed subPixelPositionForX( QFixed x ) const;
 
-   virtual int synthesized() const {
-      return 0;
-   }
+    virtual QFixed emSquareSize() const
+    {
+        return ascent();
+    }
 
-   virtual bool supportsSubPixelPositions() const {
-      return false;
-   }
+    virtual glyph_t glyphIndex( char32_t ch ) const = 0;
 
-   virtual QFixed subPixelPositionForX(QFixed x) const;
+    // returns 0 as glyph index for non existent glyphs
+    virtual bool stringToCMap( QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags ) const = 0;
 
-   virtual QFixed emSquareSize() const {
-      return ascent();
-   }
+    virtual void recalcAdvances( QGlyphLayout *, ShaperFlags ) const {}
+    virtual void doKerning( QGlyphLayout *, ShaperFlags ) const;
 
-   virtual glyph_t glyphIndex(char32_t ch) const = 0;
+    virtual void addGlyphsToPath( glyph_t *glyphs, QFixedPoint *positions, int nglyphs,
+                                  QPainterPath *path, QTextItem::RenderFlags flags );
 
-   // returns 0 as glyph index for non existent glyphs
-   virtual bool stringToCMap(QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags) const = 0;
+    void getGlyphPositions( const QGlyphLayout &glyphs, const QTransform &matrix, QTextItem::RenderFlags flags,
+                            QVarLengthArray<glyph_t> &glyphs_out, QVarLengthArray<QFixedPoint> &positions );
 
-   virtual void recalcAdvances(QGlyphLayout *, ShaperFlags) const {}
-   virtual void doKerning(QGlyphLayout *, ShaperFlags) const;
+    virtual void addOutlineToPath( qreal, qreal, const QGlyphLayout &, QPainterPath *, QTextItem::RenderFlags flags );
+    void addBitmapFontToPath( qreal x, qreal y, const QGlyphLayout &, QPainterPath *, QTextItem::RenderFlags );
 
-   virtual void addGlyphsToPath(glyph_t *glyphs, QFixedPoint *positions, int nglyphs,
-      QPainterPath *path, QTextItem::RenderFlags flags);
+    // Create a qimage with the alpha values for the glyph.
+    // Returns an image indexed_8 with index values ranging from 0=fully transparent to 255=opaque
+    virtual QImage alphaMapForGlyph( glyph_t );
+    virtual QImage alphaMapForGlyph( glyph_t glyph, QFixed subPixelPosition );
+    virtual QImage alphaMapForGlyph( glyph_t, const QTransform &t );
+    virtual QImage alphaMapForGlyph( glyph_t, QFixed subPixelPosition, const QTransform &t );
+    virtual QImage alphaRGBMapForGlyph( glyph_t glyph, QFixed subPixelPosition, const QTransform &t );
 
-   void getGlyphPositions(const QGlyphLayout &glyphs, const QTransform &matrix, QTextItem::RenderFlags flags,
-      QVarLengthArray<glyph_t> &glyphs_out, QVarLengthArray<QFixedPoint> &positions);
+    virtual QImage bitmapForGlyph( glyph_t, QFixed subPixelPosition, const QTransform &t );
 
-   virtual void addOutlineToPath(qreal, qreal, const QGlyphLayout &, QPainterPath *, QTextItem::RenderFlags flags);
-   void addBitmapFontToPath(qreal x, qreal y, const QGlyphLayout &, QPainterPath *, QTextItem::RenderFlags);
+    virtual QImage *lockedAlphaMapForGlyph( glyph_t glyph, QFixed subPixelPosition, GlyphFormat neededFormat,
+                                            const QTransform &t = QTransform(), QPoint *offset = nullptr );
 
-   // Create a qimage with the alpha values for the glyph.
-   // Returns an image indexed_8 with index values ranging from 0=fully transparent to 255=opaque
-   virtual QImage alphaMapForGlyph(glyph_t);
-   virtual QImage alphaMapForGlyph(glyph_t glyph, QFixed subPixelPosition);
-   virtual QImage alphaMapForGlyph(glyph_t, const QTransform &t);
-   virtual QImage alphaMapForGlyph(glyph_t, QFixed subPixelPosition, const QTransform &t);
-   virtual QImage alphaRGBMapForGlyph(glyph_t glyph, QFixed subPixelPosition, const QTransform &t);
+    virtual void unlockAlphaMapForGlyph();
+    virtual bool hasInternalCaching() const
+    {
+        return false;
+    }
 
-   virtual QImage bitmapForGlyph(glyph_t, QFixed subPixelPosition, const QTransform &t);
+    virtual glyph_metrics_t alphaMapBoundingBox( glyph_t glyph, QFixed subPixelPosition,
+            const QTransform &matrix, GlyphFormat format )
+    {
+        ( void ) subPixelPosition;
+        ( void ) format;
 
-   virtual QImage *lockedAlphaMapForGlyph(glyph_t glyph, QFixed subPixelPosition, GlyphFormat neededFormat,
-      const QTransform &t = QTransform(), QPoint *offset = nullptr);
+        return boundingBox( glyph, matrix );
+    }
 
-   virtual void unlockAlphaMapForGlyph();
-   virtual bool hasInternalCaching() const {
-      return false;
-   }
+    virtual void removeGlyphFromCache( glyph_t );
 
-   virtual glyph_metrics_t alphaMapBoundingBox(glyph_t glyph, QFixed subPixelPosition,
-                  const QTransform &matrix, GlyphFormat format) {
-      (void) subPixelPosition;
-      (void) format;
+    virtual glyph_metrics_t boundingBox( const QGlyphLayout &glyphs ) = 0;
+    virtual glyph_metrics_t boundingBox( glyph_t glyph ) = 0;
+    virtual glyph_metrics_t boundingBox( glyph_t glyph, const QTransform &matrix );
+    glyph_metrics_t tightBoundingBox( const QGlyphLayout &glyphs );
 
-      return boundingBox(glyph, matrix);
-   }
+    virtual QFixed ascent()  const = 0;
+    virtual QFixed descent() const = 0;
+    virtual QFixed leading() const = 0;
+    virtual QFixed xHeight() const;
 
-   virtual void removeGlyphFromCache(glyph_t);
+    virtual QFixed averageCharWidth() const;
 
-   virtual glyph_metrics_t boundingBox(const QGlyphLayout &glyphs) = 0;
-   virtual glyph_metrics_t boundingBox(glyph_t glyph) = 0;
-   virtual glyph_metrics_t boundingBox(glyph_t glyph, const QTransform &matrix);
-   glyph_metrics_t tightBoundingBox(const QGlyphLayout &glyphs);
+    virtual QFixed lineThickness() const;
+    virtual QFixed underlinePosition() const;
 
-   virtual QFixed ascent()  const = 0;
-   virtual QFixed descent() const = 0;
-   virtual QFixed leading() const = 0;
-   virtual QFixed xHeight() const;
+    virtual qreal maxCharWidth() const = 0;
+    virtual qreal minLeftBearing() const;
+    virtual qreal minRightBearing() const;
 
-   virtual QFixed averageCharWidth() const;
+    virtual void getGlyphBearings( glyph_t glyph, qreal *leftBearing = nullptr, qreal *rightBearing = nullptr );
 
-   virtual QFixed lineThickness() const;
-   virtual QFixed underlinePosition() const;
+    virtual bool canRender( QStringView str ) const;
+    virtual const QString &fontEngineName() const = 0;
 
-   virtual qreal maxCharWidth() const = 0;
-   virtual qreal minLeftBearing() const;
-   virtual qreal minRightBearing() const;
+    virtual bool supportsTransformation( const QTransform &transform ) const;
 
-   virtual void getGlyphBearings(glyph_t glyph, qreal *leftBearing = nullptr, qreal *rightBearing = nullptr);
+    virtual int glyphCount() const;
+    virtual int glyphMargin( GlyphFormat format )
+    {
+        return format == Format_A32 ? 2 : 0;
+    }
 
-   virtual bool canRender(QStringView str) const;
-   virtual const QString &fontEngineName() const = 0;
+    virtual QFontEngine *cloneWithSize( qreal pixelSize ) const
+    {
+        ( void ) pixelSize;
 
-   virtual bool supportsTransformation(const QTransform &transform) const;
+        return nullptr;
+    }
 
-   virtual int glyphCount() const;
-   virtual int glyphMargin(GlyphFormat format) {
-      return format == Format_A32 ? 2 : 0;
-   }
+    virtual Qt::HANDLE handle() const;
 
-   virtual QFontEngine *cloneWithSize(qreal pixelSize) const {
-      (void) pixelSize;
+    bool supportsScript( QChar::Script script ) const;
 
-      return nullptr;
-   }
+    virtual int getPointInOutline( glyph_t glyph, int flags, quint32 point, QFixed  *xpos, QFixed  *ypos, quint32 *nPoints );
 
-   virtual Qt::HANDLE handle() const;
+    void clearGlyphCache( const void *key );
+    void setGlyphCache( const void *key, QFontEngineGlyphCache *cache );
+    QFontEngineGlyphCache *glyphCache( const void *key, GlyphFormat format, const QTransform &transform ) const;
 
-   bool supportsScript(QChar::Script script) const;
+    static const uchar *getCMap( const uchar *table, uint tableSize, bool *isSymbolFont, int *cmapSize );
+    static quint32 getTrueTypeGlyphIndex( const uchar *cmap, int cmapSize, char32_t ch );
 
-   virtual int getPointInOutline(glyph_t glyph, int flags, quint32 point, QFixed  *xpos, QFixed  *ypos, quint32 *nPoints);
+    static QString convertToPostscriptFontFamilyName( const QString &fontFamily );
 
-   void clearGlyphCache(const void *key);
-   void setGlyphCache(const void *key, QFontEngineGlyphCache *cache);
-   QFontEngineGlyphCache *glyphCache(const void *key, GlyphFormat format, const QTransform &transform) const;
+    virtual bool hasUnreliableGlyphOutline() const;
 
-   static const uchar *getCMap(const uchar *table, uint tableSize, bool *isSymbolFont, int *cmapSize);
-   static quint32 getTrueTypeGlyphIndex(const uchar *cmap, int cmapSize, char32_t ch);
+    virtual void setDefaultHintStyle( HintStyle )
+    {
+    }
 
-   static QString convertToPostscriptFontFamilyName(const QString &fontFamily);
+    inline QVariant userData() const
+    {
+        return m_userData;
+    }
 
-   virtual bool hasUnreliableGlyphOutline() const;
+    // harfbuzz
+    std::shared_ptr<hb_face_t> harfbuzzFace() const;
 
-   virtual void setDefaultHintStyle(HintStyle) {
-   }
+    mutable std::shared_ptr<hb_font_t> m_hb_font;
+    mutable std::shared_ptr<hb_face_t> m_hb_face;
 
-   inline QVariant userData() const {
-      return m_userData;
-   }
+    struct FaceData
+    {
+        void *user_data;
+        lscs_fontTable_func_ptr  m_fontTable_funcPtr;
+    } faceData;
 
-   // harfbuzz
-   std::shared_ptr<hb_face_t> harfbuzzFace() const;
+    QAtomicInt m_refCount;
+    QFontDef fontDef;
 
-   mutable std::shared_ptr<hb_font_t> m_hb_font;
-   mutable std::shared_ptr<hb_face_t> m_hb_face;
+    uint cache_cost;       // amount of memory used in kb by the font
 
-   struct FaceData {
-      void *user_data;
-      cs_fontTable_func_ptr  m_fontTable_funcPtr;
-   } faceData;
+    uint fsType : 16;
+    bool symbol;
+    bool isSmoothlyScalable;
 
-   QAtomicInt m_refCount;
-   QFontDef fontDef;
+    struct KernPair
+    {
+        uint left_right;
+        QFixed adjust;
 
-   uint cache_cost;       // amount of memory used in kb by the font
+        inline bool operator<( const KernPair &other ) const
+        {
+            return left_right < other.left_right;
+        }
+    };
 
-   uint fsType : 16;
-   bool symbol;
-   bool isSmoothlyScalable;
+    QVector<KernPair> kerning_pairs;
+    void loadKerningPairs( QFixed scalingFactor );
 
-   struct KernPair {
-      uint left_right;
-      QFixed adjust;
+    GlyphFormat glyphFormat;
+    QImage currentlyLockedAlphaMap;
+    int m_subPixelPositionCount;             // number of positions within a single pixel for this cache
 
-      inline bool operator<(const KernPair &other) const {
-         return left_right < other.left_right;
-      }
-   };
+protected:
+    explicit QFontEngine( Type type );
 
-   QVector<KernPair> kerning_pairs;
-   void loadKerningPairs(QFixed scalingFactor);
+    QFixed lastRightBearing( const QGlyphLayout &glyphs, bool round = false );
 
-   GlyphFormat glyphFormat;
-   QImage currentlyLockedAlphaMap;
-   int m_subPixelPositionCount;             // number of positions within a single pixel for this cache
+    inline void setUserData( const QVariant &userData )
+    {
+        m_userData = userData;
+    }
 
- protected:
-   explicit QFontEngine(Type type);
+private:
+    const Type m_type;
+    QVariant m_userData;
 
-   QFixed lastRightBearing(const QGlyphLayout &glyphs, bool round = false);
+    mutable qreal m_minLeftBearing;
+    mutable qreal m_minRightBearing;
 
-   inline void setUserData(const QVariant &userData) {
-      m_userData = userData;
-   }
+    struct GlyphCacheEntry
+    {
+        GlyphCacheEntry();
+        GlyphCacheEntry( const GlyphCacheEntry & );
 
- private:
-   const Type m_type;
-   QVariant m_userData;
+        ~GlyphCacheEntry();
 
-   mutable qreal m_minLeftBearing;
-   mutable qreal m_minRightBearing;
+        GlyphCacheEntry &operator=( const GlyphCacheEntry & );
 
-   struct GlyphCacheEntry {
-      GlyphCacheEntry();
-      GlyphCacheEntry(const GlyphCacheEntry &);
+        QExplicitlySharedDataPointer<QFontEngineGlyphCache> cache;
 
-      ~GlyphCacheEntry();
+        bool operator==( const GlyphCacheEntry &other ) const
+        {
+            return cache == other.cache;
+        }
+    };
 
-      GlyphCacheEntry &operator=(const GlyphCacheEntry &);
-
-      QExplicitlySharedDataPointer<QFontEngineGlyphCache> cache;
-
-      bool operator==(const GlyphCacheEntry &other) const {
-         return cache == other.cache;
-      }
-   };
-
-   using GlyphCaches = QLinkedList<GlyphCacheEntry>;
-   mutable QHash<const void *, GlyphCaches> m_glyphCaches;
+    using GlyphCaches = QLinkedList<GlyphCacheEntry>;
+    mutable QHash<const void *, GlyphCaches> m_glyphCaches;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QFontEngine::ShaperFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QFontEngine::ShaperFlags )
 
-inline bool operator ==(const QFontEngine::FaceId &f1, const QFontEngine::FaceId &f2)
+inline bool operator ==( const QFontEngine::FaceId &f1, const QFontEngine::FaceId &f2 )
 {
-   return f1.index == f2.index && f1.encoding == f2.encoding && f1.filename == f2.filename && f1.uuid == f2.uuid;
+    return f1.index == f2.index && f1.encoding == f2.encoding && f1.filename == f2.filename && f1.uuid == f2.uuid;
 }
 
-inline uint qHash(const QFontEngine::FaceId &f, uint seed = 0) noexcept(noexcept(qHash(f.filename)))
+inline uint qHash( const QFontEngine::FaceId &f, uint seed = 0 ) noexcept( noexcept( qHash( f.filename ) ) )
 {
-   seed = qHash(f.filename, seed);
-   seed = qHash(f.uuid,     seed);
-   seed = qHash(f.index,    seed);
-   seed = qHash(f.encoding, seed);
+    seed = qHash( f.filename, seed );
+    seed = qHash( f.uuid,     seed );
+    seed = qHash( f.index,    seed );
+    seed = qHash( f.encoding, seed );
 
-   return seed;
+    return seed;
 }
 
 class QFontEngineBox : public QFontEngine
 {
- public:
-   QFontEngineBox(int size);
-   ~QFontEngineBox();
+public:
+    QFontEngineBox( int size );
+    ~QFontEngineBox();
 
-   glyph_t glyphIndex(char32_t ch) const override;
+    glyph_t glyphIndex( char32_t ch ) const override;
 
-   bool stringToCMap(QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags) const override;
-   void recalcAdvances(QGlyphLayout *, QFontEngine::ShaperFlags) const override;
+    bool stringToCMap( QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags ) const override;
+    void recalcAdvances( QGlyphLayout *, QFontEngine::ShaperFlags ) const override;
 
-   void draw(QPaintEngine *p, qreal x, qreal y, const QTextItemInt &si);
+    void draw( QPaintEngine *p, qreal x, qreal y, const QTextItemInt &si );
 
-   void addOutlineToPath(qreal x, qreal y, const QGlyphLayout &glyphs, QPainterPath *path, QTextItem::RenderFlags flags) override;
+    void addOutlineToPath( qreal x, qreal y, const QGlyphLayout &glyphs, QPainterPath *path, QTextItem::RenderFlags flags ) override;
 
-   glyph_metrics_t boundingBox(const QGlyphLayout &glyphs) override;
-   glyph_metrics_t boundingBox(glyph_t glyph) override;
+    glyph_metrics_t boundingBox( const QGlyphLayout &glyphs ) override;
+    glyph_metrics_t boundingBox( glyph_t glyph ) override;
 
-   QFontEngine *cloneWithSize(qreal pixelSize) const override;
+    QFontEngine *cloneWithSize( qreal pixelSize ) const override;
 
-   QFixed ascent() const override;
-   QFixed descent() const override;
-   QFixed leading() const override;
+    QFixed ascent() const override;
+    QFixed descent() const override;
+    QFixed leading() const override;
 
-   qreal maxCharWidth() const override;
+    qreal maxCharWidth() const override;
 
-   qreal minLeftBearing() const override {
-      return 0;
-   }
+    qreal minLeftBearing() const override
+    {
+        return 0;
+    }
 
-   qreal minRightBearing() const override {
-      return 0;
-   }
+    qreal minRightBearing() const override
+    {
+        return 0;
+    }
 
-   QImage alphaMapForGlyph(glyph_t) override;
+    QImage alphaMapForGlyph( glyph_t ) override;
 
-   bool canRender(QStringView str) const override;
+    bool canRender( QStringView str ) const override;
 
-   const QString &fontEngineName() const override {
-      static QString retval = "box";
-      return retval;
-   }
+    const QString &fontEngineName() const override
+    {
+        static QString retval = "box";
+        return retval;
+    }
 
-   int size() const {
-      return _size;
-   }
+    int size() const
+    {
+        return _size;
+    }
 
- protected:
-   explicit QFontEngineBox(Type type, int size);
+protected:
+    explicit QFontEngineBox( Type type, int size );
 
- private:
-   friend class QFontPrivate;
-   int _size;
+private:
+    friend class QFontPrivate;
+    int _size;
 };
 
 class Q_GUI_EXPORT QFontEngineMulti : public QFontEngine
 {
- public:
-   explicit QFontEngineMulti(QFontEngine *engine, int script, const QStringList &fallbackFamilies = QStringList());
+public:
+    explicit QFontEngineMulti( QFontEngine *engine, int script, const QStringList &fallbackFamilies = QStringList() );
 
-   ~QFontEngineMulti();
+    ~QFontEngineMulti();
 
-   glyph_t glyphIndex(char32_t ch) const override;
-   bool stringToCMap(QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags) const override;
+    glyph_t glyphIndex( char32_t ch ) const override;
+    bool stringToCMap( QStringView str, QGlyphLayout *glyphs, int *nglyphs, QFontEngine::ShaperFlags flags ) const override;
 
-   glyph_metrics_t boundingBox(const QGlyphLayout &glyphs) override;
-   glyph_metrics_t boundingBox(glyph_t glyph) override;
+    glyph_metrics_t boundingBox( const QGlyphLayout &glyphs ) override;
+    glyph_metrics_t boundingBox( glyph_t glyph ) override;
 
-   void recalcAdvances(QGlyphLayout *, QFontEngine::ShaperFlags) const override;
-   void doKerning(QGlyphLayout *, QFontEngine::ShaperFlags) const override;
-   void addOutlineToPath(qreal, qreal, const QGlyphLayout &, QPainterPath *, QTextItem::RenderFlags flags) override;
-   void getGlyphBearings(glyph_t glyph, qreal *leftBearing = nullptr, qreal *rightBearing = nullptr) override;
+    void recalcAdvances( QGlyphLayout *, QFontEngine::ShaperFlags ) const override;
+    void doKerning( QGlyphLayout *, QFontEngine::ShaperFlags ) const override;
+    void addOutlineToPath( qreal, qreal, const QGlyphLayout &, QPainterPath *, QTextItem::RenderFlags flags ) override;
+    void getGlyphBearings( glyph_t glyph, qreal *leftBearing = nullptr, qreal *rightBearing = nullptr ) override;
 
-   QFixed ascent() const override;
-   QFixed descent() const override;
-   QFixed leading() const override;
-   QFixed xHeight() const override;
+    QFixed ascent() const override;
+    QFixed descent() const override;
+    QFixed leading() const override;
+    QFixed xHeight() const override;
 
-   QFixed averageCharWidth() const override;
+    QFixed averageCharWidth() const override;
 
-   QImage alphaMapForGlyph(glyph_t) override;
-   QImage alphaMapForGlyph(glyph_t glyph, QFixed subPixelPosition) override;
-   QImage alphaMapForGlyph(glyph_t, const QTransform &t) override;
-   QImage alphaMapForGlyph(glyph_t, QFixed subPixelPosition, const QTransform &t) override;
-   QImage alphaRGBMapForGlyph(glyph_t, QFixed subPixelPosition, const QTransform &t) override;
+    QImage alphaMapForGlyph( glyph_t ) override;
+    QImage alphaMapForGlyph( glyph_t glyph, QFixed subPixelPosition ) override;
+    QImage alphaMapForGlyph( glyph_t, const QTransform &t ) override;
+    QImage alphaMapForGlyph( glyph_t, QFixed subPixelPosition, const QTransform &t ) override;
+    QImage alphaRGBMapForGlyph( glyph_t, QFixed subPixelPosition, const QTransform &t ) override;
 
-   QFixed lineThickness() const override;
-   QFixed underlinePosition() const override;
-   qreal maxCharWidth() const override;
-   qreal minLeftBearing() const override;
-   qreal minRightBearing() const override;
+    QFixed lineThickness() const override;
+    QFixed underlinePosition() const override;
+    qreal maxCharWidth() const override;
+    qreal minLeftBearing() const override;
+    qreal minRightBearing() const override;
 
-   bool canRender(QStringView str) const override;
+    bool canRender( QStringView str ) const override;
 
-   inline int fallbackFamilyCount() const {
-      return m_fallbackFamilies.size();
-   }
+    inline int fallbackFamilyCount() const
+    {
+        return m_fallbackFamilies.size();
+    }
 
-   inline QString fallbackFamilyAt(int at) const {
-      return m_fallbackFamilies.at(at);
-   }
+    inline QString fallbackFamilyAt( int at ) const
+    {
+        return m_fallbackFamilies.at( at );
+    }
 
-   void setFallbackFamiliesList(const QStringList &fallbackFamilies);
+    void setFallbackFamiliesList( const QStringList &fallbackFamilies );
 
-   const QString &fontEngineName() const override {
-      static QString retval("Multi");
-      return retval;
-   }
+    const QString &fontEngineName() const override
+    {
+        static QString retval( "Multi" );
+        return retval;
+    }
 
-   QFontEngine *engine(int at) const {
-      Q_ASSERT(at < m_engines.size());
-      return m_engines.at(at);
-   }
+    QFontEngine *engine( int at ) const
+    {
+        Q_ASSERT( at < m_engines.size() );
+        return m_engines.at( at );
+    }
 
-   void ensureEngineAt(int at);
-   static QFontEngine *createMultiFontEngine(QFontEngine *fe, int script);
+    void ensureEngineAt( int at );
+    static QFontEngine *createMultiFontEngine( QFontEngine *fe, int script );
 
- protected:
-   virtual void ensureFallbackFamiliesQueried();
-   virtual bool shouldLoadFontEngineForCharacter(int at, char32_t ch) const;
-   virtual QFontEngine *loadEngine(int at);
+protected:
+    virtual void ensureFallbackFamiliesQueried();
+    virtual bool shouldLoadFontEngineForCharacter( int at, char32_t ch ) const;
+    virtual QFontEngine *loadEngine( int at );
 
- private:
-   QVector<QFontEngine *> m_engines;
-   QStringList m_fallbackFamilies;
+private:
+    QVector<QFontEngine *> m_engines;
+    QStringList m_fallbackFamilies;
 
-   const int m_script;
-   bool m_fallbackFamiliesQueried;
+    const int m_script;
+    bool m_fallbackFamiliesQueried;
 };
 
 class QTestFontEngine : public QFontEngineBox
 {
- public:
-   QTestFontEngine(int size);
+public:
+    QTestFontEngine( int size );
 };
 
 

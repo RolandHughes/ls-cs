@@ -25,24 +25,26 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifndef NDEBUG
 template<typename T> class TreeShared;
-template<typename T> void adopted(TreeShared<T>*);
+template<typename T> void adopted( TreeShared<T> * );
 #endif
 
-template<typename T> class TreeShared {
-    WTF_MAKE_NONCOPYABLE(TreeShared);
+template<typename T> class TreeShared
+{
+    WTF_MAKE_NONCOPYABLE( TreeShared );
 public:
     TreeShared()
-        : m_refCount(1)
-        , m_parent(0)
+        : m_refCount( 1 )
+        , m_parent( 0 )
 #ifndef NDEBUG
-        , m_adoptionIsRequired(true)
+        , m_adoptionIsRequired( true )
 #endif
     {
-        ASSERT(isMainThread());
+        ASSERT( isMainThread() );
 #ifndef NDEBUG
         m_deletionHasBegun = false;
         m_inRemovedLastRefFunction = false;
@@ -50,29 +52,31 @@ public:
     }
     virtual ~TreeShared()
     {
-        ASSERT(isMainThread());
-        ASSERT(!m_refCount);
-        ASSERT(m_deletionHasBegun);
-        ASSERT(!m_adoptionIsRequired);
+        ASSERT( isMainThread() );
+        ASSERT( !m_refCount );
+        ASSERT( m_deletionHasBegun );
+        ASSERT( !m_adoptionIsRequired );
     }
 
     void ref()
     {
-        ASSERT(isMainThread());
-        ASSERT(!m_deletionHasBegun);
-        ASSERT(!m_inRemovedLastRefFunction);
-        ASSERT(!m_adoptionIsRequired);
+        ASSERT( isMainThread() );
+        ASSERT( !m_deletionHasBegun );
+        ASSERT( !m_inRemovedLastRefFunction );
+        ASSERT( !m_adoptionIsRequired );
         ++m_refCount;
     }
 
     void deref()
     {
-        ASSERT(isMainThread());
-        ASSERT(m_refCount >= 0);
-        ASSERT(!m_deletionHasBegun);
-        ASSERT(!m_inRemovedLastRefFunction);
-        ASSERT(!m_adoptionIsRequired);
-        if (--m_refCount <= 0 && !m_parent) {
+        ASSERT( isMainThread() );
+        ASSERT( m_refCount >= 0 );
+        ASSERT( !m_deletionHasBegun );
+        ASSERT( !m_inRemovedLastRefFunction );
+        ASSERT( !m_adoptionIsRequired );
+
+        if ( --m_refCount <= 0 && !m_parent )
+        {
 #ifndef NDEBUG
             m_inRemovedLastRefFunction = true;
 #endif
@@ -82,8 +86,8 @@ public:
 
     bool hasOneRef() const
     {
-        ASSERT(!m_deletionHasBegun);
-        ASSERT(!m_inRemovedLastRefFunction);
+        ASSERT( !m_deletionHasBegun );
+        ASSERT( !m_inRemovedLastRefFunction );
         return m_refCount == 1;
     }
 
@@ -92,15 +96,15 @@ public:
         return m_refCount;
     }
 
-    void setParent(T* parent)
-    { 
-        ASSERT(isMainThread());
-        m_parent = parent; 
+    void setParent( T *parent )
+    {
+        ASSERT( isMainThread() );
+        m_parent = parent;
     }
 
-    T* parent() const
+    T *parent() const
     {
-        ASSERT(isMainThread());
+        ASSERT( isMainThread() );
         return m_parent;
     }
 
@@ -120,11 +124,11 @@ protected:
 
 private:
 #ifndef NDEBUG
-    friend void adopted<>(TreeShared<T>*);
+    friend void adopted<>( TreeShared<T> * );
 #endif
 
     int m_refCount;
-    T* m_parent;
+    T *m_parent;
 #ifndef NDEBUG
     bool m_adoptionIsRequired;
 #endif
@@ -132,12 +136,15 @@ private:
 
 #ifndef NDEBUG
 
-template<typename T> inline void adopted(TreeShared<T>* object)
+template<typename T> inline void adopted( TreeShared<T> *object )
 {
-    if (!object)
+    if ( !object )
+    {
         return;
-    ASSERT(!object->m_deletionHasBegun);
-    ASSERT(!object->m_inRemovedLastRefFunction);
+    }
+
+    ASSERT( !object->m_deletionHasBegun );
+    ASSERT( !object->m_inRemovedLastRefFunction );
     object->m_adoptionIsRequired = false;
 }
 

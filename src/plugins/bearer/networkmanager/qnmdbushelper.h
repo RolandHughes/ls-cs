@@ -33,25 +33,25 @@
 QT_BEGIN_NAMESPACE
 
 class QNmDBusHelper: public QObject, protected QDBusContext
- {
-     Q_OBJECT
- public:
-    QNmDBusHelper(QObject *parent = nullptr);
+{
+    Q_OBJECT
+public:
+    QNmDBusHelper( QObject *parent = nullptr );
     ~QNmDBusHelper();
 
- public slots:
-    void deviceStateChanged(quint32);
+public slots:
+    void deviceStateChanged( quint32 );
     void slotAccessPointAdded( QDBusObjectPath );
     void slotAccessPointRemoved( QDBusObjectPath );
-    void slotPropertiesChanged( QMap<QString,QVariant>);
+    void slotPropertiesChanged( QMap<QString,QVariant> );
     void slotSettingsRemoved();
 
 Q_SIGNALS:
-    void pathForStateChanged(const QString &, quint32);
-    void pathForAccessPointAdded(const QString &,  QDBusObjectPath );
-    void pathForAccessPointRemoved(const QString &,  QDBusObjectPath );
-    void pathForPropertiesChanged(const QString &, QMap<QString,QVariant>);
-    void pathForSettingsRemoved(const QString &);
+    void pathForStateChanged( const QString &, quint32 );
+    void pathForAccessPointAdded( const QString &,  QDBusObjectPath );
+    void pathForAccessPointRemoved( const QString &,  QDBusObjectPath );
+    void pathForPropertiesChanged( const QString &, QMap<QString,QVariant> );
+    void pathForSettingsRemoved( const QString & );
 };
 
 QT_END_NAMESPACE

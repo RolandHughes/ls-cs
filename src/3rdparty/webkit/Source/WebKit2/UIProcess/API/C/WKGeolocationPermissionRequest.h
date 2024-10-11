@@ -34,8 +34,8 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKGeolocationPermissionRequestGetTypeID();
 
-WK_EXPORT void WKGeolocationPermissionRequestAllow(WKGeolocationPermissionRequestRef geolocationPermissionRequest);
-WK_EXPORT void WKGeolocationPermissionRequestDeny(WKGeolocationPermissionRequestRef geolocationPermissionRequest);
+WK_EXPORT void WKGeolocationPermissionRequestAllow( WKGeolocationPermissionRequestRef geolocationPermissionRequest );
+WK_EXPORT void WKGeolocationPermissionRequestDeny( WKGeolocationPermissionRequestRef geolocationPermissionRequest );
 
 #ifdef __cplusplus
 }

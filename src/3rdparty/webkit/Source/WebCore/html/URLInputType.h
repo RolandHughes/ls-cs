@@ -33,16 +33,18 @@
 
 #include "BaseTextInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class URLInputType : public BaseTextInputType {
+class URLInputType : public BaseTextInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    URLInputType(HTMLInputElement* element) : BaseTextInputType(element) { }
-    virtual const AtomicString& formControlType() const;
-    virtual bool typeMismatchFor(const String&) const;
+    URLInputType( HTMLInputElement *element ) : BaseTextInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
+    virtual bool typeMismatchFor( const String & ) const;
     virtual bool typeMismatch() const;
     virtual String typeMismatchText() const;
     virtual bool isURLField() const;

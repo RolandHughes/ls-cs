@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,40 +30,57 @@
 #include "SimpleFontData.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 SegmentedFontData::~SegmentedFontData()
 {
 }
 
-const SimpleFontData* SegmentedFontData::fontDataForCharacter(UChar32 c) const
+const SimpleFontData *SegmentedFontData::fontDataForCharacter( UChar32 c ) const
 {
     Vector<FontDataRange>::const_iterator end = m_ranges.end();
-    for (Vector<FontDataRange>::const_iterator it = m_ranges.begin(); it != end; ++it) {
-        if (it->from() <= c && it->to() >= c)
+
+    for ( Vector<FontDataRange>::const_iterator it = m_ranges.begin(); it != end; ++it )
+    {
+        if ( it->from() <= c && it->to() >= c )
+        {
             return it->fontData();
+        }
     }
+
     return m_ranges[0].fontData();
 }
 
-bool SegmentedFontData::containsCharacter(UChar32 c) const
+bool SegmentedFontData::containsCharacter( UChar32 c ) const
 {
     Vector<FontDataRange>::const_iterator end = m_ranges.end();
-    for (Vector<FontDataRange>::const_iterator it = m_ranges.begin(); it != end; ++it) {
-        if (c >= it->from() && c <= it->to())
+
+    for ( Vector<FontDataRange>::const_iterator it = m_ranges.begin(); it != end; ++it )
+    {
+        if ( c >= it->from() && c <= it->to() )
+        {
             return true;
+        }
     }
+
     return false;
 }
 
-bool SegmentedFontData::containsCharacters(const UChar* characters, int length) const
+bool SegmentedFontData::containsCharacters( const UChar *characters, int length ) const
 {
     UChar32 c;
-    for (int i = 0; i < length; ) {
-        U16_NEXT(characters, i, length, c)
-        if (!containsCharacter(c))
+
+    for ( int i = 0; i < length; )
+    {
+        U16_NEXT( characters, i, length, c )
+
+        if ( !containsCharacter( c ) )
+        {
             return false;
+        }
     }
+
     return true;
 }
 
@@ -76,10 +93,15 @@ bool SegmentedFontData::isCustomFont() const
 bool SegmentedFontData::isLoading() const
 {
     Vector<FontDataRange>::const_iterator end = m_ranges.end();
-    for (Vector<FontDataRange>::const_iterator it = m_ranges.begin(); it != end; ++it) {
-        if (it->fontData()->isLoading())
+
+    for ( Vector<FontDataRange>::const_iterator it = m_ranges.begin(); it != end; ++it )
+    {
+        if ( it->fontData()->isLoading() )
+        {
             return true;
+        }
     }
+
     return false;
 }
 

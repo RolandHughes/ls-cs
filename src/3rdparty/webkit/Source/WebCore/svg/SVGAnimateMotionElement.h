@@ -25,28 +25,31 @@
 #include "Path.h"
 #include "SVGAnimationElement.h"
 
-namespace WebCore {
-            
-class SVGAnimateMotionElement : public SVGAnimationElement {
+namespace WebCore
+{
+
+class SVGAnimateMotionElement : public SVGAnimationElement
+{
 public:
-    static PassRefPtr<SVGAnimateMotionElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGAnimateMotionElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGAnimateMotionElement(const QualifiedName&, Document*);
+    SVGAnimateMotionElement( const QualifiedName &, Document * );
 
     virtual bool hasValidAttributeType() const;
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual void resetToBaseValue(const String&);
-    virtual bool calculateFromAndToValues(const String& fromString, const String& toString);
-    virtual bool calculateFromAndByValues(const String& fromString, const String& byString);
-    virtual void calculateAnimatedValue(float percentage, unsigned repeat, SVGSMILElement* resultElement);
+    virtual void resetToBaseValue( const String & );
+    virtual bool calculateFromAndToValues( const String &fromString, const String &toString );
+    virtual bool calculateFromAndByValues( const String &fromString, const String &byString );
+    virtual void calculateAnimatedValue( float percentage, unsigned repeat, SVGSMILElement *resultElement );
     virtual void applyResultsToTarget();
-    virtual float calculateDistance(const String& fromString, const String& toString);
+    virtual float calculateDistance( const String &fromString, const String &toString );
     virtual Path animationPath() const;
 
-    enum RotateMode {
+    enum RotateMode
+    {
         RotateAngle,
         RotateAuto,
         RotateAutoReverse
@@ -68,7 +71,7 @@ private:
     Vector<float> m_keyPoints;
     float m_angle;
 };
-    
+
 } // namespace WebCore
 
 #endif // ENABLE(SVG_ANIMATION)

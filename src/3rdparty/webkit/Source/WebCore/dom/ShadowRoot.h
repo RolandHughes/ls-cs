@@ -29,36 +29,41 @@
 
 #include "TreeScope.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 
-class ShadowRoot : public TreeScope {
+class ShadowRoot : public TreeScope
+{
 public:
-    static PassRefPtr<ShadowRoot> create(Document*);
+    static PassRefPtr<ShadowRoot> create( Document * );
 
-    virtual bool isShadowBoundary() const { return true; }
-    virtual void recalcStyle(StyleChange = NoChange);
+    virtual bool isShadowBoundary() const
+    {
+        return true;
+    }
+    virtual void recalcStyle( StyleChange = NoChange );
 
-    ContainerNode* contentContainerFor(Node*);
+    ContainerNode *contentContainerFor( Node * );
     void hostChildrenChanged();
 
 private:
-    ShadowRoot(Document*);
+    ShadowRoot( Document * );
     virtual ~ShadowRoot();
 
     virtual String nodeName() const;
     virtual NodeType nodeType() const;
-    virtual PassRefPtr<Node> cloneNode(bool deep);
-    virtual bool childTypeAllowed(NodeType) const;
+    virtual PassRefPtr<Node> cloneNode( bool deep );
+    virtual bool childTypeAllowed( NodeType ) const;
     virtual bool applyAuthorSheets() const;
 
     bool hasContentElement() const;
 };
 
-inline PassRefPtr<ShadowRoot> ShadowRoot::create(Document* document)
+inline PassRefPtr<ShadowRoot> ShadowRoot::create( Document *document )
 {
-    return adoptRef(new ShadowRoot(document));
+    return adoptRef( new ShadowRoot( document ) );
 }
 
 } // namespace

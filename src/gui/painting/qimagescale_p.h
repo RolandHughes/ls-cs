@@ -31,14 +31,16 @@
 /*
   This version accepts only supported formats.
 */
-QImage qSmoothScaleImage(const QImage &img, int w, int h);
+QImage qSmoothScaleImage( const QImage &img, int w, int h );
 
-namespace QImageScale {
-struct QImageScaleInfo {
-   int *xpoints;
-   const unsigned int **ypoints;
-   int *xapoints, *yapoints;
-   int xup_yup;
+namespace QImageScale
+{
+struct QImageScaleInfo
+{
+    int *xpoints;
+    const unsigned int **ypoints;
+    int *xapoints, *yapoints;
+    int xup_yup;
 };
 }
 

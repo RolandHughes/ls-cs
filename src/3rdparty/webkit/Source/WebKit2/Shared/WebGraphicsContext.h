@@ -36,28 +36,39 @@
 #include "RefPtrCairo.h"
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebGraphicsContext : public APIObject {
+class WebGraphicsContext : public APIObject
+{
 public:
     static const Type APIType = TypeGraphicsContext;
 
-    static PassRefPtr<WebGraphicsContext> create(WebCore::GraphicsContext* graphicsContext)
+    static PassRefPtr<WebGraphicsContext> create( WebCore::GraphicsContext *graphicsContext )
     {
-        return adoptRef(new WebGraphicsContext(graphicsContext));
+        return adoptRef( new WebGraphicsContext( graphicsContext ) );
     }
 
 #if USE(CG)
-    CGContextRef platformContext() { return m_platformContext.get(); }
+    CGContextRef platformContext()
+    {
+        return m_platformContext.get();
+    }
 #elif PLATFORM(GTK)
-    cairo_t* platformContext() { return m_platformContext.get(); }
+    cairo_t *platformContext()
+    {
+        return m_platformContext.get();
+    }
 #endif
 
 
 private:
-    explicit WebGraphicsContext(WebCore::GraphicsContext*);
+    explicit WebGraphicsContext( WebCore::GraphicsContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
 #if USE(CG)
     RetainPtr<CGContextRef> m_platformContext;

@@ -31,7 +31,8 @@ class QObject;
 class QNetworkAccessManager;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if PLATFORM(ANDROID)
 class FrameLoaderClient;
@@ -40,34 +41,38 @@ class MainResourceLoader;
 class ResourceError;
 class ResourceRequest;
 
-class NetworkingContext : public RefCounted<NetworkingContext> {
+class NetworkingContext : public RefCounted<NetworkingContext>
+{
 public:
     virtual ~NetworkingContext() { }
 
-    virtual bool isValid() const { return true; }
+    virtual bool isValid() const
+    {
+        return true;
+    }
 
 #if PLATFORM(MAC)
     virtual bool needsSiteSpecificQuirks() const = 0;
     virtual bool localFileContentSniffingEnabled() const = 0;
-    virtual SchedulePairHashSet* scheduledRunLoopPairs() const = 0;
-    virtual ResourceError blockedError(const ResourceRequest&) const = 0;
+    virtual SchedulePairHashSet *scheduledRunLoopPairs() const = 0;
+    virtual ResourceError blockedError( const ResourceRequest & ) const = 0;
 #endif
 
 #if PLATFORM(QT)
-    virtual QObject* originatingObject() const = 0;
-    virtual QNetworkAccessManager* networkAccessManager() const = 0;
+    virtual QObject *originatingObject() const = 0;
+    virtual QNetworkAccessManager *networkAccessManager() const = 0;
     virtual bool mimeSniffingEnabled() const = 0;
 #endif
 
 #if PLATFORM(WIN)
     virtual String userAgent() const = 0;
     virtual String referrer() const = 0;
-    virtual ResourceError blockedError(const ResourceRequest&) const = 0;
+    virtual ResourceError blockedError( const ResourceRequest & ) const = 0;
 #endif
 
 #if PLATFORM(ANDROID)
-    virtual MainResourceLoader* mainResourceLoader() const = 0;
-    virtual FrameLoaderClient* frameLoaderClient() const = 0;
+    virtual MainResourceLoader *mainResourceLoader() const = 0;
+    virtual FrameLoaderClient *frameLoaderClient() const = 0;
 #endif
 
 protected:

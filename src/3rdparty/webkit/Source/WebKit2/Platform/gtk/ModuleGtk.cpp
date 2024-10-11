@@ -31,23 +31,24 @@
 #include <gmodule.h>
 #include <wtf/text/CString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 bool Module::load()
 {
-    m_handle = g_module_open(m_path.utf8().data(), G_MODULE_BIND_LAZY);
+    m_handle = g_module_open( m_path.utf8().data(), G_MODULE_BIND_LAZY );
     return m_handle;
 }
 
 void Module::unload()
 {
-    g_module_close(m_handle);
+    g_module_close( m_handle );
 }
 
-void* Module::platformFunctionPointer(const char* functionName) const
+void *Module::platformFunctionPointer( const char *functionName ) const
 {
     gpointer symbol = 0;
-    g_module_symbol(m_handle, functionName, &symbol);
+    g_module_symbol( m_handle, functionName, &symbol );
     return symbol;
 }
 

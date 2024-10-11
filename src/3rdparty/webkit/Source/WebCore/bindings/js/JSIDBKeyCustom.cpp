@@ -35,21 +35,27 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue toJS(ExecState* exec, JSDOMGlobalObject*, IDBKey* key)
+namespace WebCore
 {
-    if (!key)
-        return jsNull();
 
-    switch (key->type()) {
-    case IDBKey::NullType:
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *, IDBKey *key )
+{
+    if ( !key )
+    {
         return jsNull();
-    case IDBKey::NumberType:
-        return jsNumber(key->number());
-    case IDBKey::StringType:
-        return jsString(exec, key->string());
-    // FIXME: Implement dates.
+    }
+
+    switch ( key->type() )
+    {
+        case IDBKey::NullType:
+            return jsNull();
+
+        case IDBKey::NumberType:
+            return jsNumber( key->number() );
+
+        case IDBKey::StringType:
+            return jsString( exec, key->string() );
+            // FIXME: Implement dates.
     }
 
     ASSERT_NOT_REACHED();

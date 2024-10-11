@@ -28,28 +28,28 @@
 #include <qmap.h>
 
 class AVFServicePlugin : public QMediaServiceProviderPlugin, public QMediaServiceSupportedDevicesInterface,
-   public QMediaServiceDefaultDeviceInterface, public QMediaServiceCameraInfoInterface
+    public QMediaServiceDefaultDeviceInterface, public QMediaServiceCameraInfoInterface
 {
-   CS_OBJECT_MULTIPLE(AVFServicePlugin, QMediaServiceProviderPlugin)
+    LSCS_OBJECT_MULTIPLE( AVFServicePlugin, QMediaServiceProviderPlugin )
 
-   CS_PLUGIN_IID(QMediaServiceProviderInterface_ID)
-   CS_PLUGIN_KEY(Q_MEDIASERVICE_CAMERA)
+    LSCS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    LSCS_PLUGIN_KEY( Q_MEDIASERVICE_CAMERA )
 
-   CS_INTERFACES(QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface,
-                 QMediaServiceCameraInfoInterface)
+    LSCS_INTERFACES( QMediaServiceSupportedDevicesInterface, QMediaServiceDefaultDeviceInterface,
+                   QMediaServiceCameraInfoInterface )
 
- public:
-   AVFServicePlugin();
+public:
+    AVFServicePlugin();
 
-   QMediaService *create(const QString &key) override;
-   void release(QMediaService *service) override;
+    QMediaService *create( const QString &key ) override;
+    void release( QMediaService *service ) override;
 
-   QString defaultDevice(const QString &service) const override;
-   QList<QString> devices(const QString &service) const override;
-   QString deviceDescription(const QString &service, const QString &device) override;
+    QString defaultDevice( const QString &service ) const override;
+    QList<QString> devices( const QString &service ) const override;
+    QString deviceDescription( const QString &service, const QString &device ) override;
 
-   QCamera::Position cameraPosition(const QString &device) const override;
-   int cameraOrientation(const QString &device) const override;
+    QCamera::Position cameraPosition( const QString &device ) const override;
+    int cameraOrientation( const QString &device ) const override;
 };
 
 #endif

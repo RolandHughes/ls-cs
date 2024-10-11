@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef InsertNodeBeforeCommand_h
@@ -28,23 +28,25 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class InsertNodeBeforeCommand : public SimpleEditCommand {
+class InsertNodeBeforeCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<InsertNodeBeforeCommand> create(PassRefPtr<Node> childToInsert, PassRefPtr<Node> childToInsertBefore)
+    static PassRefPtr<InsertNodeBeforeCommand> create( PassRefPtr<Node> childToInsert, PassRefPtr<Node> childToInsertBefore )
     {
-        return adoptRef(new InsertNodeBeforeCommand(childToInsert, childToInsertBefore));
+        return adoptRef( new InsertNodeBeforeCommand( childToInsert, childToInsertBefore ) );
     }
 
 private:
-    InsertNodeBeforeCommand(PassRefPtr<Node> childToInsert, PassRefPtr<Node> childToInsertBefore);
+    InsertNodeBeforeCommand( PassRefPtr<Node> childToInsert, PassRefPtr<Node> childToInsertBefore );
 
     virtual void doApply();
     virtual void doUnapply();
 
     RefPtr<Node> m_insertChild;
-    RefPtr<Node> m_refChild; 
+    RefPtr<Node> m_refChild;
 };
 
 } // namespace WebCore

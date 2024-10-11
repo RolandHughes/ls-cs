@@ -31,36 +31,50 @@
 
 #include "JNIUtility.h"
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
-class JobjectWrapper {
-friend class JavaArray;
-friend class JavaField;
-friend class JavaFieldJobject;
-friend class JavaInstance;
-friend class JavaInstanceJobject;
+class JobjectWrapper
+{
+    friend class JavaArray;
+    friend class JavaField;
+    friend class JavaFieldJobject;
+    friend class JavaInstance;
+    friend class JavaInstanceJobject;
 
 public:
-    jobject instance() const { return m_instance; }
-    void setInstance(jobject instance) { m_instance = instance; }
+    jobject instance() const
+    {
+        return m_instance;
+    }
+    void setInstance( jobject instance )
+    {
+        m_instance = instance;
+    }
 
-    void ref() { m_refCount++; }
+    void ref()
+    {
+        m_refCount++;
+    }
     void deref()
     {
-        if (!--m_refCount)
+        if ( !--m_refCount )
+        {
             delete this;
+        }
     }
 
 protected:
-    JobjectWrapper(jobject);
+    JobjectWrapper( jobject );
     ~JobjectWrapper();
 
     jobject m_instance;
 
 private:
-    JNIEnv* m_env;
+    JNIEnv *m_env;
     unsigned int m_refCount;
 };
 

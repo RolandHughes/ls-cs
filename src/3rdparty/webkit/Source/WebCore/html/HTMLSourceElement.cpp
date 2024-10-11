@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -37,86 +37,97 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLSourceElement::HTMLSourceElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
-    , m_errorEventTimer(this, &HTMLSourceElement::errorEventTimerFired)
+inline HTMLSourceElement::HTMLSourceElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
+    , m_errorEventTimer( this, &HTMLSourceElement::errorEventTimerFired )
 {
-    LOG(Media, "HTMLSourceElement::HTMLSourceElement - %p", this);
-    ASSERT(hasTagName(sourceTag));
+    LOG( Media, "HTMLSourceElement::HTMLSourceElement - %p", this );
+    ASSERT( hasTagName( sourceTag ) );
 }
 
-PassRefPtr<HTMLSourceElement> HTMLSourceElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLSourceElement> HTMLSourceElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLSourceElement(tagName, document));
+    return adoptRef( new HTMLSourceElement( tagName, document ) );
 }
 
-void HTMLSourceElement::insertedIntoTree(bool deep)
+void HTMLSourceElement::insertedIntoTree( bool deep )
 {
-    HTMLElement::insertedIntoTree(deep);
-    Element* parent = parentElement();
-    if (parent && parent->isMediaElement())
-        static_cast<HTMLMediaElement*>(parentNode())->sourceWasAdded(this);
+    HTMLElement::insertedIntoTree( deep );
+    Element *parent = parentElement();
+
+    if ( parent && parent->isMediaElement() )
+    {
+        static_cast<HTMLMediaElement *>( parentNode() )->sourceWasAdded( this );
+    }
 }
 
 void HTMLSourceElement::willRemove()
 {
-    Element* parent = parentElement();
-    if (parent && parent->isMediaElement())
-        static_cast<HTMLMediaElement*>(parentNode())->sourceWillBeRemoved(this);
+    Element *parent = parentElement();
+
+    if ( parent && parent->isMediaElement() )
+    {
+        static_cast<HTMLMediaElement *>( parentNode() )->sourceWillBeRemoved( this );
+    }
+
     HTMLElement::willRemove();
 }
-    
-void HTMLSourceElement::setSrc(const String& url)
+
+void HTMLSourceElement::setSrc( const String &url )
 {
-    setAttribute(srcAttr, url);
+    setAttribute( srcAttr, url );
 }
 
 String HTMLSourceElement::media() const
 {
-    return getAttribute(mediaAttr);
+    return getAttribute( mediaAttr );
 }
 
-void HTMLSourceElement::setMedia(const String& media)
+void HTMLSourceElement::setMedia( const String &media )
 {
-    setAttribute(mediaAttr, media);
+    setAttribute( mediaAttr, media );
 }
 
 String HTMLSourceElement::type() const
 {
-    return getAttribute(typeAttr);
+    return getAttribute( typeAttr );
 }
 
-void HTMLSourceElement::setType(const String& type)
+void HTMLSourceElement::setType( const String &type )
 {
-    setAttribute(typeAttr, type);
+    setAttribute( typeAttr, type );
 }
 
 void HTMLSourceElement::scheduleErrorEvent()
 {
-    LOG(Media, "HTMLSourceElement::scheduleErrorEvent - %p", this);
-    if (m_errorEventTimer.isActive())
-        return;
+    LOG( Media, "HTMLSourceElement::scheduleErrorEvent - %p", this );
 
-    m_errorEventTimer.startOneShot(0);
+    if ( m_errorEventTimer.isActive() )
+    {
+        return;
+    }
+
+    m_errorEventTimer.startOneShot( 0 );
 }
 
 void HTMLSourceElement::cancelPendingErrorEvent()
 {
-    LOG(Media, "HTMLSourceElement::cancelPendingErrorEvent - %p", this);
+    LOG( Media, "HTMLSourceElement::cancelPendingErrorEvent - %p", this );
     m_errorEventTimer.stop();
 }
 
-void HTMLSourceElement::errorEventTimerFired(Timer<HTMLSourceElement>*)
+void HTMLSourceElement::errorEventTimerFired( Timer<HTMLSourceElement> * )
 {
-    LOG(Media, "HTMLSourceElement::errorEventTimerFired - %p", this);
-    dispatchEvent(Event::create(eventNames().errorEvent, false, true));
+    LOG( Media, "HTMLSourceElement::errorEventTimerFired - %p", this );
+    dispatchEvent( Event::create( eventNames().errorEvent, false, true ) );
 }
 
-bool HTMLSourceElement::isURLAttribute(Attribute* attribute) const
+bool HTMLSourceElement::isURLAttribute( Attribute *attribute ) const
 {
     return attribute->name() == srcAttr;
 }

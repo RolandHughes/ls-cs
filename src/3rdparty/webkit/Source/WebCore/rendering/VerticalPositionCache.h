@@ -29,39 +29,50 @@
 #include "FontBaseline.h"
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 
 // Values for vertical alignment.
 const int PositionUndefined = 0x80000000;
 
-class VerticalPositionCache {
-    WTF_MAKE_NONCOPYABLE(VerticalPositionCache);
+class VerticalPositionCache
+{
+    WTF_MAKE_NONCOPYABLE( VerticalPositionCache );
 public:
     VerticalPositionCache()
     { }
-    
-    int get(RenderObject* renderer, FontBaseline baselineType) const
+
+    int get( RenderObject *renderer, FontBaseline baselineType ) const
     {
-        const HashMap<RenderObject*, int>& mapToCheck = baselineType == AlphabeticBaseline ? m_alphabeticPositions : m_ideographicPositions;
-        const HashMap<RenderObject*, int>::const_iterator it = mapToCheck.find(renderer);
-        if (it == mapToCheck.end())
+        const HashMap<RenderObject *, int> &mapToCheck = baselineType == AlphabeticBaseline ? m_alphabeticPositions :
+                m_ideographicPositions;
+        const HashMap<RenderObject *, int>::const_iterator it = mapToCheck.find( renderer );
+
+        if ( it == mapToCheck.end() )
+        {
             return PositionUndefined;
+        }
+
         return it->second;
     }
-    
-    void set(RenderObject* renderer, FontBaseline baselineType, int position)
+
+    void set( RenderObject *renderer, FontBaseline baselineType, int position )
     {
-        if (baselineType == AlphabeticBaseline)
-            m_alphabeticPositions.set(renderer, position);
+        if ( baselineType == AlphabeticBaseline )
+        {
+            m_alphabeticPositions.set( renderer, position );
+        }
         else
-            m_ideographicPositions.set(renderer, position);
+        {
+            m_ideographicPositions.set( renderer, position );
+        }
     }
 
 private:
-    HashMap<RenderObject*, int> m_alphabeticPositions;
-    HashMap<RenderObject*, int> m_ideographicPositions;
+    HashMap<RenderObject *, int> m_alphabeticPositions;
+    HashMap<RenderObject *, int> m_ideographicPositions;
 };
 
 } // namespace WebCore

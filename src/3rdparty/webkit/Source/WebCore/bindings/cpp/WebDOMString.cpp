@@ -26,63 +26,67 @@
 #include <wtf/text/CString.h>
 #include <wtf/text/WTFString.h>
 
-class WebDOMStringPrivate : public WTF::StringImpl {
+class WebDOMStringPrivate : public WTF::StringImpl
+{
 };
 
 void WebDOMString::reset()
 {
-    if (m_private) {
+    if ( m_private )
+    {
         m_private->deref();
         m_private = 0;
     }
 }
 
-void WebDOMString::assign(const WebDOMString& other)
+void WebDOMString::assign( const WebDOMString &other )
 {
-    assign(const_cast<WebDOMStringPrivate*>(other.m_private));
+    assign( const_cast<WebDOMStringPrivate *>( other.m_private ) );
 }
 
-void WebDOMString::assign(const WebUChar* data, size_t length)
+void WebDOMString::assign( const WebUChar *data, size_t length )
 {
-    assign(static_cast<WebDOMStringPrivate*>(
-        WTF::StringImpl::create(data, length).get()));
+    assign( static_cast<WebDOMStringPrivate *>(
+                WTF::StringImpl::create( data, length ).get() ) );
 }
 
 size_t WebDOMString::length() const
 {
-    return m_private ? const_cast<WebDOMStringPrivate*>(m_private)->length() : 0;
+    return m_private ? const_cast<WebDOMStringPrivate *>( m_private )->length() : 0;
 }
 
-const WebUChar* WebDOMString::data() const
+const WebUChar *WebDOMString::data() const
 {
-    return m_private ? const_cast<WebDOMStringPrivate*>(m_private)->characters() : 0;
+    return m_private ? const_cast<WebDOMStringPrivate *>( m_private )->characters() : 0;
 }
 
 WebDOMCString WebDOMString::utf8() const
 {
-    return WTF::String(m_private).utf8();
+    return WTF::String( m_private ).utf8();
 }
 
-WebDOMString WebDOMString::fromUTF8(const char* data, size_t length)
+WebDOMString WebDOMString::fromUTF8( const char *data, size_t length )
 {
-    return WTF::String::fromUTF8(data, length);
+    return WTF::String::fromUTF8( data, length );
 }
 
-WebDOMString WebDOMString::fromUTF8(const char* data)
+WebDOMString WebDOMString::fromUTF8( const char *data )
 {
-    return WTF::String::fromUTF8(data);
+    return WTF::String::fromUTF8( data );
 }
 
-WebDOMString::WebDOMString(const WTF::String& s)
-    : m_private(static_cast<WebDOMStringPrivate*>(s.impl()))
+WebDOMString::WebDOMString( const WTF::String &s )
+    : m_private( static_cast<WebDOMStringPrivate *>( s.impl() ) )
 {
-    if (m_private)
+    if ( m_private )
+    {
         m_private->ref();
+    }
 }
 
-WebDOMString& WebDOMString::operator=(const WTF::String& s)
+WebDOMString &WebDOMString::operator=( const WTF::String &s )
 {
-    assign(static_cast<WebDOMStringPrivate*>(s.impl()));
+    assign( static_cast<WebDOMStringPrivate *>( s.impl() ) );
     return *this;
 }
 
@@ -91,34 +95,40 @@ WebDOMString::operator WTF::String() const
     return m_private;
 }
 
-WebDOMString::WebDOMString(const WTF::AtomicString& s)
-    : m_private(0)
+WebDOMString::WebDOMString( const WTF::AtomicString &s )
+    : m_private( 0 )
 {
-    assign(s.string());
+    assign( s.string() );
 }
 
-WebDOMString& WebDOMString::operator=(const WTF::AtomicString& s)
+WebDOMString &WebDOMString::operator=( const WTF::AtomicString &s )
 {
-    assign(s.string());
+    assign( s.string() );
     return *this;
 }
 
 WebDOMString::operator WTF::AtomicString() const
 {
-    return WTF::AtomicString(static_cast<WTF::StringImpl *>(m_private));
+    return WTF::AtomicString( static_cast<WTF::StringImpl *>( m_private ) );
 }
 
-bool WebDOMString::equals(const char* string) const
+bool WebDOMString::equals( const char *string ) const
 {
-    return WTF::equal(m_private, string);
+    return WTF::equal( m_private, string );
 }
 
-void WebDOMString::assign(WebDOMStringPrivate* p)
+void WebDOMString::assign( WebDOMStringPrivate *p )
 {
     // Take care to handle the case where m_private == p
-    if (p)
+    if ( p )
+    {
         p->ref();
-    if (m_private)
+    }
+
+    if ( m_private )
+    {
         m_private->deref();
+    }
+
     m_private = p;
 }

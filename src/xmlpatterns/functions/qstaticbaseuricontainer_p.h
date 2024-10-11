@@ -27,36 +27,41 @@
 #include <QUrl>
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class StaticBaseUriContainer : public FunctionCall
 {
- protected:
-   inline StaticBaseUriContainer() {
-   }
+protected:
+    inline StaticBaseUriContainer()
+    {
+    }
 
-   void prepareStaticBaseURI(const StaticContext::Ptr &context) {
-      m_staticBaseURI = context->baseURI();
-   }
+    void prepareStaticBaseURI( const StaticContext::Ptr &context )
+    {
+        m_staticBaseURI = context->baseURI();
+    }
 
-   const QUrl &staticBaseURI() const {
-      return m_staticBaseURI;
-   }
+    const QUrl &staticBaseURI() const
+    {
+        return m_staticBaseURI;
+    }
 
-   /**
-    * Calls prepareStaticBaseURI(), and return the return value of
-    * FunctionCall::typeCheck(), forwarding the arguments.
-    */
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override {
-      prepareStaticBaseURI(context);
-      return FunctionCall::typeCheck(context, reqType);
-   }
+    /**
+     * Calls prepareStaticBaseURI(), and return the return value of
+     * FunctionCall::typeCheck(), forwarding the arguments.
+     */
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override
+    {
+        prepareStaticBaseURI( context );
+        return FunctionCall::typeCheck( context, reqType );
+    }
 
- private:
-   StaticBaseUriContainer(const StaticBaseUriContainer &) = delete;
-   StaticBaseUriContainer &operator=(const StaticBaseUriContainer &) = delete;
+private:
+    StaticBaseUriContainer( const StaticBaseUriContainer & ) = delete;
+    StaticBaseUriContainer &operator=( const StaticBaseUriContainer & ) = delete;
 
-   QUrl m_staticBaseURI;
+    QUrl m_staticBaseURI;
 };
 
 }

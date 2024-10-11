@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef InsertIntoTextNodeCommand_h
@@ -28,19 +28,21 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Text;
 
-class InsertIntoTextNodeCommand : public SimpleEditCommand {
+class InsertIntoTextNodeCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<InsertIntoTextNodeCommand> create(PassRefPtr<Text> node, unsigned offset, const String& text)
+    static PassRefPtr<InsertIntoTextNodeCommand> create( PassRefPtr<Text> node, unsigned offset, const String &text )
     {
-        return adoptRef(new InsertIntoTextNodeCommand(node, offset, text));
+        return adoptRef( new InsertIntoTextNodeCommand( node, offset, text ) );
     }
 
 private:
-    InsertIntoTextNodeCommand(PassRefPtr<Text> node, unsigned offset, const String& text);
+    InsertIntoTextNodeCommand( PassRefPtr<Text> node, unsigned offset, const String &text );
 
     virtual void doApply();
     virtual void doUnapply();

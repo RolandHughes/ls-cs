@@ -40,55 +40,55 @@ class QConnmanEngine : public QBearerEngineImpl
     Q_OBJECT
 
 public:
-    QConnmanEngine(QObject *parent = nullptr);
+    QConnmanEngine( QObject *parent = nullptr );
     ~QConnmanEngine();
 
     bool connmanAvailable() const;
 
-    virtual QString getInterfaceFromId(const QString &id);
-    bool hasIdentifier(const QString &id);
+    virtual QString getInterfaceFromId( const QString &id );
+    bool hasIdentifier( const QString &id );
 
-    virtual void connectToId(const QString &id);
-    virtual void disconnectFromId(const QString &id);
+    virtual void connectToId( const QString &id );
+    virtual void disconnectFromId( const QString &id );
 
     Q_INVOKABLE void initialize();
     Q_INVOKABLE void requestUpdate();
 
-    QNetworkSession::State sessionStateForId(const QString &id);
+    QNetworkSession::State sessionStateForId( const QString &id );
     QNetworkSessionPrivate *createSessionBackend();
 
-    virtual quint64 bytesWritten(const QString &id);
-    virtual quint64 bytesReceived(const QString &id);
-    virtual quint64 startTime(const QString &id);
+    virtual quint64 bytesWritten( const QString &id );
+    virtual quint64 bytesReceived( const QString &id );
+    virtual quint64 startTime( const QString &id );
 
 
     virtual QNetworkConfigurationManager::Capabilities capabilities() const;
     virtual QNetworkConfigurationPrivatePointer defaultConfiguration();
 
-    void configurationChange(const QString &id);
+    void configurationChange( const QString &id );
     QList<QNetworkConfigurationPrivate *> getConfigurations();
 
 
 private Q_SLOTS:
 
     void doRequestUpdate();
-    void servicePropertyChangedContext(const QString &,const QString &,const QDBusVariant &);
-    void propertyChangedContext(const QString &,const QString &,const QDBusVariant &);
-    void technologyPropertyChangedContext(const QString &,const QString &, const QDBusVariant &);
+    void servicePropertyChangedContext( const QString &,const QString &,const QDBusVariant & );
+    void propertyChangedContext( const QString &,const QString &,const QDBusVariant & );
+    void technologyPropertyChangedContext( const QString &,const QString &, const QDBusVariant & );
 
 private:
     QConnmanManagerInterface *connmanManager;
 
     QList<QNetworkConfigurationPrivate *> foundConfigurations;
 
-    QString serviceFromId(const QString &id);
-    QString networkFromId(const QString &id);
+    QString serviceFromId( const QString &id );
+    QString networkFromId( const QString &id );
 
-    QNetworkConfiguration::StateFlags getStateForService(const QString &service);
-    QNetworkConfiguration::BearerType typeToBearer(const QString &type);
+    QNetworkConfiguration::StateFlags getStateForService( const QString &service );
+    QNetworkConfiguration::BearerType typeToBearer( const QString &type );
 
-    void removeConfiguration(const QString &servicePath);
-    void addServiceConfiguration(const QString &servicePath);
+    void removeConfiguration( const QString &servicePath );
+    void addServiceConfiguration( const QString &servicePath );
     QDateTime activeTime;
 
 
@@ -96,8 +96,8 @@ private:
     QMap<QString,QString> configInterfaces; // id, interface name
     QList<QString> serviceNetworks; //servpath
 
-    QNetworkConfiguration::BearerType ofonoTechToBearerType(const QString &type);
-    bool isRoamingAllowed(const QString &context);
+    QNetworkConfiguration::BearerType ofonoTechToBearerType( const QString &type );
+    bool isRoamingAllowed( const QString &context );
 protected:
     bool requiresPolling() const;
 };

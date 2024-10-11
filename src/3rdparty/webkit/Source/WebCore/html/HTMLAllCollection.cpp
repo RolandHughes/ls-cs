@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,15 +28,16 @@
 
 #include "Node.h"
 
-namespace WebCore {
-
-PassRefPtr<HTMLAllCollection> HTMLAllCollection::create(PassRefPtr<Node> base)
+namespace WebCore
 {
-    return adoptRef(new HTMLAllCollection(base));
+
+PassRefPtr<HTMLAllCollection> HTMLAllCollection::create( PassRefPtr<Node> base )
+{
+    return adoptRef( new HTMLAllCollection( base ) );
 }
 
-HTMLAllCollection::HTMLAllCollection(PassRefPtr<Node> base)
-    : HTMLCollection(base, DocAll)
+HTMLAllCollection::HTMLAllCollection( PassRefPtr<Node> base )
+    : HTMLCollection( base, DocAll )
 {
 }
 

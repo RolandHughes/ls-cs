@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DOMApplicationCache_h
@@ -39,22 +39,33 @@
 #include <wtf/Vector.h>
 #include <wtf/text/AtomicStringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class KURL;
 
-class DOMApplicationCache : public RefCounted<DOMApplicationCache>, public EventTarget {
+class DOMApplicationCache : public RefCounted<DOMApplicationCache>, public EventTarget
+{
 public:
-    static PassRefPtr<DOMApplicationCache> create(Frame* frame) { return adoptRef(new DOMApplicationCache(frame)); }
-    ~DOMApplicationCache() { ASSERT(!m_frame); }
+    static PassRefPtr<DOMApplicationCache> create( Frame *frame )
+    {
+        return adoptRef( new DOMApplicationCache( frame ) );
+    }
+    ~DOMApplicationCache()
+    {
+        ASSERT( !m_frame );
+    }
 
-    Frame* frame() const { return m_frame; }
+    Frame *frame() const
+    {
+        return m_frame;
+    }
     void disconnectFrame();
 
     unsigned short status() const;
-    void update(ExceptionCode&);
-    void swapCache(ExceptionCode&);
+    void update( ExceptionCode & );
+    void swapCache( ExceptionCode & );
 
     // EventTarget impl
 
@@ -63,31 +74,40 @@ public:
 
     // Explicitly named attribute event listener helpers
 
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(checking);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(error);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(noupdate);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(downloading);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(progress);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(updateready);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(cached);
-    DEFINE_ATTRIBUTE_EVENT_LISTENER(obsolete);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( checking );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( error );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( noupdate );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( downloading );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( progress );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( updateready );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( cached );
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( obsolete );
 
-    virtual ScriptExecutionContext* scriptExecutionContext() const;
-    DOMApplicationCache* toDOMApplicationCache() { return this; }
+    virtual ScriptExecutionContext *scriptExecutionContext() const;
+    DOMApplicationCache *toDOMApplicationCache()
+    {
+        return this;
+    }
 
-    static const AtomicString& toEventType(ApplicationCacheHost::EventID id);
+    static const AtomicString &toEventType( ApplicationCacheHost::EventID id );
 
 private:
-    DOMApplicationCache(Frame*);
+    DOMApplicationCache( Frame * );
 
-    virtual void refEventTarget() { ref(); }
-    virtual void derefEventTarget() { deref(); }
-    virtual EventTargetData* eventTargetData();
-    virtual EventTargetData* ensureEventTargetData();
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+    virtual EventTargetData *eventTargetData();
+    virtual EventTargetData *ensureEventTargetData();
 
-    ApplicationCacheHost* applicationCacheHost() const;
+    ApplicationCacheHost *applicationCacheHost() const;
 
-    Frame* m_frame;
+    Frame *m_frame;
     EventTargetData m_eventTargetData;
 };
 

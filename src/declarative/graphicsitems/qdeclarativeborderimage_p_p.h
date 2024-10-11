@@ -32,43 +32,54 @@ QT_BEGIN_NAMESPACE
 class QNetworkReply;
 class QDeclarativeBorderImagePrivate : public QDeclarativeImageBasePrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeBorderImage)
+    Q_DECLARE_PUBLIC( QDeclarativeBorderImage )
 
- public:
-   QDeclarativeBorderImagePrivate()
-      : border(0), sciReply(0),
-        horizontalTileMode(QDeclarativeBorderImage::Stretch),
-        verticalTileMode(QDeclarativeBorderImage::Stretch),
-        redirectCount(0) {
-   }
+public:
+    QDeclarativeBorderImagePrivate()
+        : border( 0 ), sciReply( 0 ),
+          horizontalTileMode( QDeclarativeBorderImage::Stretch ),
+          verticalTileMode( QDeclarativeBorderImage::Stretch ),
+          redirectCount( 0 )
+    {
+    }
 
-   ~QDeclarativeBorderImagePrivate() {
-   }
+    ~QDeclarativeBorderImagePrivate()
+    {
+    }
 
 
-   QDeclarativeScaleGrid *getScaleGrid() {
-      Q_Q(QDeclarativeBorderImage);
-      if (!border) {
-         border = new QDeclarativeScaleGrid(q);
-         static int borderChangedSignalIdx = -1;
-         static int doUpdateSlotIdx = -1;
-         if (borderChangedSignalIdx < 0) {
-            borderChangedSignalIdx = QDeclarativeScaleGrid::staticMetaObject.indexOfSignal("borderChanged()");
-         }
-         if (doUpdateSlotIdx < 0) {
-            doUpdateSlotIdx = QDeclarativeBorderImage::staticMetaObject.indexOfSlot("doUpdate()");
-         }
-         QMetaObject::connect(border, borderChangedSignalIdx, q, doUpdateSlotIdx);
-      }
-      return border;
-   }
+    QDeclarativeScaleGrid *getScaleGrid()
+    {
+        Q_Q( QDeclarativeBorderImage );
 
-   QDeclarativeScaleGrid *border;
-   QUrl sciurl;
-   QNetworkReply *sciReply;
-   QDeclarativeBorderImage::TileMode horizontalTileMode;
-   QDeclarativeBorderImage::TileMode verticalTileMode;
-   int redirectCount;
+        if ( !border )
+        {
+            border = new QDeclarativeScaleGrid( q );
+            static int borderChangedSignalIdx = -1;
+            static int doUpdateSlotIdx = -1;
+
+            if ( borderChangedSignalIdx < 0 )
+            {
+                borderChangedSignalIdx = QDeclarativeScaleGrid::staticMetaObject.indexOfSignal( "borderChanged()" );
+            }
+
+            if ( doUpdateSlotIdx < 0 )
+            {
+                doUpdateSlotIdx = QDeclarativeBorderImage::staticMetaObject.indexOfSlot( "doUpdate()" );
+            }
+
+            QMetaObject::connect( border, borderChangedSignalIdx, q, doUpdateSlotIdx );
+        }
+
+        return border;
+    }
+
+    QDeclarativeScaleGrid *border;
+    QUrl sciurl;
+    QNetworkReply *sciReply;
+    QDeclarativeBorderImage::TileMode horizontalTileMode;
+    QDeclarativeBorderImage::TileMode verticalTileMode;
+    int redirectCount;
 };
 
 QT_END_NAMESPACE

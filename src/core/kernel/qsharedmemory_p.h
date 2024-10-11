@@ -31,10 +31,11 @@
 
 #ifndef QT_NO_SYSTEMSEMAPHORE
 
-namespace QSharedMemoryPrivate {
+namespace QSharedMemoryPrivate
+{
 
-int createUnixKeyFile(const QString &fileName);
-QString makePlatformSafeKey(const QString &key, const QString &prefix = QString("qipc_sharedmemory_"));
+int createUnixKeyFile( const QString &fileName );
+QString makePlatformSafeKey( const QString &key, const QString &prefix = QString( "qipc_sharedmemory_" ) );
 
 }
 
@@ -54,93 +55,100 @@ QString makePlatformSafeKey(const QString &key, const QString &prefix = QString(
 
 class QSharedMemoryLocker
 {
- public:
-   QSharedMemoryLocker(QSharedMemory *sharedMemory) : q_sm(sharedMemory) {
-      Q_ASSERT(q_sm);
-   }
+public:
+    QSharedMemoryLocker( QSharedMemory *sharedMemory ) : q_sm( sharedMemory )
+    {
+        Q_ASSERT( q_sm );
+    }
 
-   ~QSharedMemoryLocker() {
-      if (q_sm) {
-         q_sm->unlock();
-      }
-   }
+    ~QSharedMemoryLocker()
+    {
+        if ( q_sm )
+        {
+            q_sm->unlock();
+        }
+    }
 
-   bool lock() {
-      if (q_sm && q_sm->lock()) {
-         return true;
-      }
+    bool lock()
+    {
+        if ( q_sm && q_sm->lock() )
+        {
+            return true;
+        }
 
-      q_sm = nullptr;
-      return false;
-   }
+        q_sm = nullptr;
+        return false;
+    }
 
- private:
-   QSharedMemory *q_sm;
+private:
+    QSharedMemory *q_sm;
 };
 #endif // QT_NO_SYSTEMSEMAPHORE
 
 class QSharedMemoryPrivate
 {
-   Q_DECLARE_PUBLIC(QSharedMemory)
+    Q_DECLARE_PUBLIC( QSharedMemory )
 
- public:
-   QSharedMemoryPrivate();
-   virtual ~QSharedMemoryPrivate() {}
+public:
+    QSharedMemoryPrivate();
+    virtual ~QSharedMemoryPrivate() {}
 
-   void *memory;
-   int size;
-   QString key;
-   QString nativeKey;
-   QSharedMemory::SharedMemoryError error;
-   QString errorString;
-
-#ifndef QT_NO_SYSTEMSEMAPHORE
-   QSystemSemaphore systemSemaphore;
-   bool lockedByMe;
-#endif
-
-   static int createUnixKeyFile(const QString &fileName);
-   static QString makePlatformSafeKey(const QString &key, const QString &prefix = QString("qipc_sharedmemory_"));
-
-#ifdef Q_OS_WIN
-   HANDLE handle();
-#elif defined(QT_POSIX_IPC)
-   int handle();
-#else
-   key_t handle();
-#endif
-
-   bool initKey();
-   void cleanHandle();
-   bool create(int size);
-   bool attach(QSharedMemory::AccessMode mode);
-   bool detach();
-
-   void setErrorString(const QString &function);
+    void *memory;
+    int size;
+    QString key;
+    QString nativeKey;
+    QSharedMemory::SharedMemoryError error;
+    QString errorString;
 
 #ifndef QT_NO_SYSTEMSEMAPHORE
-   bool tryLocker(QSharedMemoryLocker *locker, const QString &function) {
-
-      if (! locker->lock()) {
-         errorString = QSharedMemory::tr("%1: unable to lock").formatArg(function);
-         error = QSharedMemory::LockError;
-         return false;
-      }
-
-      return true;
-   }
+    QSystemSemaphore systemSemaphore;
+    bool lockedByMe;
 #endif
 
- protected:
-   QSharedMemory *q_ptr;
+    static int createUnixKeyFile( const QString &fileName );
+    static QString makePlatformSafeKey( const QString &key, const QString &prefix = QString( "qipc_sharedmemory_" ) );
 
- private:
 #ifdef Q_OS_WIN
-   HANDLE hand;
+    HANDLE handle();
 #elif defined(QT_POSIX_IPC)
-   int hand;
+    int handle();
 #else
-   key_t unix_key;
+    key_t handle();
+#endif
+
+    bool initKey();
+    void cleanHandle();
+    bool create( int size );
+    bool attach( QSharedMemory::AccessMode mode );
+    bool detach();
+
+    void setErrorString( const QString &function );
+
+#ifndef QT_NO_SYSTEMSEMAPHORE
+    bool tryLocker( QSharedMemoryLocker *locker, const QString &function )
+    {
+
+        if ( ! locker->lock() )
+        {
+            errorString = QSharedMemory::tr( "%1: unable to lock" ).formatArg( function );
+            error = QSharedMemory::LockError;
+            return false;
+        }
+
+        return true;
+    }
+#endif
+
+protected:
+    QSharedMemory *q_ptr;
+
+private:
+#ifdef Q_OS_WIN
+    HANDLE hand;
+#elif defined(QT_POSIX_IPC)
+    int hand;
+#else
+    key_t unix_key;
 #endif
 
 };

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Escapes_h
@@ -32,118 +32,159 @@
 
 #include <wtf/Assertions.h>
 
-namespace JSC { namespace WREC {
+namespace JSC
+{
+namespace WREC
+{
 
-    class CharacterClass;
+class CharacterClass;
 
-    class Escape {
-    public:
-        enum Type {
-            PatternCharacter,
-            CharacterClass,
-            Backreference,
-            WordBoundaryAssertion,
-            Error,
-        };
-        
-        Escape(Type type)
-            : m_type(type)
-        {
-        }
-
-        Type type() const { return m_type; }
-
-    private:
-        Type m_type;
-        
-    protected:
-        // Used by subclasses to store data.
-        union {
-            int i;
-            const WREC::CharacterClass* c;
-        } m_u;
-        bool m_invert;
+class Escape
+{
+public:
+    enum Type
+    {
+        PatternCharacter,
+        CharacterClass,
+        Backreference,
+        WordBoundaryAssertion,
+        Error,
     };
 
-    class PatternCharacterEscape : public Escape {
-    public:
-        static const PatternCharacterEscape& cast(const Escape& escape)
-        {
-            ASSERT(escape.type() == PatternCharacter);
-            return static_cast<const PatternCharacterEscape&>(escape);
-        }
-        
-        PatternCharacterEscape(int character)
-            : Escape(PatternCharacter)
-        {
-            m_u.i = character;
-        }
-        
-        operator Escape() const { return *this; }
-        
-        int character() const { return m_u.i; }
-    };
+    Escape( Type type )
+        : m_type( type )
+    {
+    }
 
-    class CharacterClassEscape : public Escape {
-    public:
-        static const CharacterClassEscape& cast(const Escape& escape)
-        {
-            ASSERT(escape.type() == CharacterClass);
-            return static_cast<const CharacterClassEscape&>(escape);
-        }
-        
-        CharacterClassEscape(const WREC::CharacterClass& characterClass, bool invert)
-            : Escape(CharacterClass)
-        {
-            m_u.c = &characterClass;
-            m_invert = invert;
-        }
-        
-        operator Escape() { return *this; }
-        
-        const WREC::CharacterClass& characterClass() const { return *m_u.c; }
-        bool invert() const { return m_invert; }
-    };
+    Type type() const
+    {
+        return m_type;
+    }
 
-    class BackreferenceEscape : public Escape {
-    public:
-        static const BackreferenceEscape& cast(const Escape& escape)
-        {
-            ASSERT(escape.type() == Backreference);
-            return static_cast<const BackreferenceEscape&>(escape);
-        }
-        
-        BackreferenceEscape(int subpatternId)
-            : Escape(Backreference)
-        {
-            m_u.i = subpatternId;
-        }
-        
-        operator Escape() const { return *this; }
-        
-        int subpatternId() const { return m_u.i; }
-    };
+private:
+    Type m_type;
 
-    class WordBoundaryAssertionEscape : public Escape {
-    public:
-        static const WordBoundaryAssertionEscape& cast(const Escape& escape)
-        {
-            ASSERT(escape.type() == WordBoundaryAssertion);
-            return static_cast<const WordBoundaryAssertionEscape&>(escape);
-        }
-        
-        WordBoundaryAssertionEscape(bool invert)
-            : Escape(WordBoundaryAssertion)
-        {
-            m_invert = invert;
-        }
-        
-        operator Escape() const { return *this; }
-        
-        bool invert() const { return m_invert; }
-    };
+protected:
+    // Used by subclasses to store data.
+    union
+    {
+        int i;
+        const WREC::CharacterClass *c;
+    } m_u;
+    bool m_invert;
+};
 
-} } // namespace JSC::WREC
+class PatternCharacterEscape : public Escape
+{
+public:
+    static const PatternCharacterEscape &cast( const Escape &escape )
+    {
+        ASSERT( escape.type() == PatternCharacter );
+        return static_cast<const PatternCharacterEscape &>( escape );
+    }
+
+    PatternCharacterEscape( int character )
+        : Escape( PatternCharacter )
+    {
+        m_u.i = character;
+    }
+
+    operator Escape() const
+    {
+        return *this;
+    }
+
+    int character() const
+    {
+        return m_u.i;
+    }
+};
+
+class CharacterClassEscape : public Escape
+{
+public:
+    static const CharacterClassEscape &cast( const Escape &escape )
+    {
+        ASSERT( escape.type() == CharacterClass );
+        return static_cast<const CharacterClassEscape &>( escape );
+    }
+
+    CharacterClassEscape( const WREC::CharacterClass &characterClass, bool invert )
+        : Escape( CharacterClass )
+    {
+        m_u.c = &characterClass;
+        m_invert = invert;
+    }
+
+    operator Escape()
+    {
+        return *this;
+    }
+
+    const WREC::CharacterClass &characterClass() const
+    {
+        return *m_u.c;
+    }
+    bool invert() const
+    {
+        return m_invert;
+    }
+};
+
+class BackreferenceEscape : public Escape
+{
+public:
+    static const BackreferenceEscape &cast( const Escape &escape )
+    {
+        ASSERT( escape.type() == Backreference );
+        return static_cast<const BackreferenceEscape &>( escape );
+    }
+
+    BackreferenceEscape( int subpatternId )
+        : Escape( Backreference )
+    {
+        m_u.i = subpatternId;
+    }
+
+    operator Escape() const
+    {
+        return *this;
+    }
+
+    int subpatternId() const
+    {
+        return m_u.i;
+    }
+};
+
+class WordBoundaryAssertionEscape : public Escape
+{
+public:
+    static const WordBoundaryAssertionEscape &cast( const Escape &escape )
+    {
+        ASSERT( escape.type() == WordBoundaryAssertion );
+        return static_cast<const WordBoundaryAssertionEscape &>( escape );
+    }
+
+    WordBoundaryAssertionEscape( bool invert )
+        : Escape( WordBoundaryAssertion )
+    {
+        m_invert = invert;
+    }
+
+    operator Escape() const
+    {
+        return *this;
+    }
+
+    bool invert() const
+    {
+        return m_invert;
+    }
+};
+
+}
+} // namespace JSC::WREC
 
 #endif // ENABLE(WREC)
 

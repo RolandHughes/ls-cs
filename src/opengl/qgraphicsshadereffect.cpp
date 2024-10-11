@@ -43,125 +43,138 @@ static const char qglslDefaultImageFragmentShader[] = "\
 
 class QGLCustomShaderEffectStage : public QGLCustomShaderStage
 {
- public:
-   QGLCustomShaderEffectStage (QGraphicsShaderEffect *e, const QByteArray &source)
-      : QGLCustomShaderStage(), effect(e) {
-      setSource(source);
-   }
+public:
+    QGLCustomShaderEffectStage ( QGraphicsShaderEffect *e, const QByteArray &source )
+        : QGLCustomShaderStage(), effect( e )
+    {
+        setSource( source );
+    }
 
-   void setUniforms(QGLShaderProgram *program) override;
+    void setUniforms( QGLShaderProgram *program ) override;
 
-   QGraphicsShaderEffect *effect;
+    QGraphicsShaderEffect *effect;
 };
 
-void QGLCustomShaderEffectStage::setUniforms(QGLShaderProgram *program)
+void QGLCustomShaderEffectStage::setUniforms( QGLShaderProgram *program )
 {
-   effect->setUniforms(program);
+    effect->setUniforms( program );
 }
 
 #endif
 
 class QGraphicsShaderEffectPrivate : public QGraphicsEffectPrivate
 {
-   Q_DECLARE_PUBLIC(QGraphicsShaderEffect)
+    Q_DECLARE_PUBLIC( QGraphicsShaderEffect )
 
- public:
-   QGraphicsShaderEffectPrivate()
-      : pixelShaderFragment(qglslDefaultImageFragmentShader)
+public:
+    QGraphicsShaderEffectPrivate()
+        : pixelShaderFragment( qglslDefaultImageFragmentShader )
 #ifdef QGL_HAVE_CUSTOM_SHADERS
-      , customShaderStage(nullptr)
+        , customShaderStage( nullptr )
 #endif
-   {
-   }
+    {
+    }
 
-   QByteArray pixelShaderFragment;
+    QByteArray pixelShaderFragment;
 #ifdef QGL_HAVE_CUSTOM_SHADERS
-   QGLCustomShaderEffectStage *customShaderStage;
+    QGLCustomShaderEffectStage *customShaderStage;
 #endif
 };
 
-QGraphicsShaderEffect::QGraphicsShaderEffect(QObject *parent)
-   : QGraphicsEffect(*new QGraphicsShaderEffectPrivate(), parent)
+QGraphicsShaderEffect::QGraphicsShaderEffect( QObject *parent )
+    : QGraphicsEffect( *new QGraphicsShaderEffectPrivate(), parent )
 {
 }
 
 QGraphicsShaderEffect::~QGraphicsShaderEffect()
 {
 #ifdef QGL_HAVE_CUSTOM_SHADERS
-   Q_D(QGraphicsShaderEffect);
-   delete d->customShaderStage;
+    Q_D( QGraphicsShaderEffect );
+    delete d->customShaderStage;
 #endif
 }
 
 QByteArray QGraphicsShaderEffect::pixelShaderFragment() const
 {
-   Q_D(const QGraphicsShaderEffect);
-   return d->pixelShaderFragment;
+    Q_D( const QGraphicsShaderEffect );
+    return d->pixelShaderFragment;
 }
 
-void QGraphicsShaderEffect::setPixelShaderFragment(const QByteArray &code)
+void QGraphicsShaderEffect::setPixelShaderFragment( const QByteArray &code )
 {
-   Q_D(QGraphicsShaderEffect);
+    Q_D( QGraphicsShaderEffect );
 
-   if (d->pixelShaderFragment != code) {
-      d->pixelShaderFragment = code;
+    if ( d->pixelShaderFragment != code )
+    {
+        d->pixelShaderFragment = code;
 
 #ifdef QGL_HAVE_CUSTOM_SHADERS
-      delete d->customShaderStage;
-      d->customShaderStage = nullptr;
+        delete d->customShaderStage;
+        d->customShaderStage = nullptr;
 #endif
-   }
+    }
 }
 
-void QGraphicsShaderEffect::draw(QPainter *painter)
+void QGraphicsShaderEffect::draw( QPainter *painter )
 {
-   Q_D(QGraphicsShaderEffect);
+    Q_D( QGraphicsShaderEffect );
 
 #ifdef QGL_HAVE_CUSTOM_SHADERS
-   // Set the custom shader on the paint engine. The setOnPainter() call may fail
-   // if the paint engine is not GL2. Then draw the pixmap normally.
+    // Set the custom shader on the paint engine. The setOnPainter() call may fail
+    // if the paint engine is not GL2. Then draw the pixmap normally.
 
-   if (! d->customShaderStage) {
-      d->customShaderStage = new QGLCustomShaderEffectStage(this, d->pixelShaderFragment);
-   }
-   bool usingShader = d->customShaderStage->setOnPainter(painter);
+    if ( ! d->customShaderStage )
+    {
+        d->customShaderStage = new QGLCustomShaderEffectStage( this, d->pixelShaderFragment );
+    }
 
-   QPoint offset;
-   if (sourceIsPixmap()) {
-      // No point in drawing in device coordinates (pixmap will be scaled anyways).
-      const QPixmap pixmap = sourcePixmap(Qt::LogicalCoordinates, &offset);
-      painter->drawPixmap(offset, pixmap);
-   } else {
-      // Draw pixmap in device coordinates to avoid pixmap scaling.
-      const QPixmap pixmap = sourcePixmap(Qt::DeviceCoordinates, &offset);
-      QTransform restoreTransform = painter->worldTransform();
-      painter->setWorldTransform(QTransform());
-      painter->drawPixmap(offset, pixmap);
-      painter->setWorldTransform(restoreTransform);
-   }
+    bool usingShader = d->customShaderStage->setOnPainter( painter );
 
-   // Remove the custom shader to return to normal painting operations.
-   if (usingShader) {
-      d->customShaderStage->removeFromPainter(painter);
-   }
+    QPoint offset;
+
+    if ( sourceIsPixmap() )
+    {
+        // No point in drawing in device coordinates (pixmap will be scaled anyways).
+        const QPixmap pixmap = sourcePixmap( Qt::LogicalCoordinates, &offset );
+        painter->drawPixmap( offset, pixmap );
+    }
+    else
+    {
+        // Draw pixmap in device coordinates to avoid pixmap scaling.
+        const QPixmap pixmap = sourcePixmap( Qt::DeviceCoordinates, &offset );
+        QTransform restoreTransform = painter->worldTransform();
+        painter->setWorldTransform( QTransform() );
+        painter->drawPixmap( offset, pixmap );
+        painter->setWorldTransform( restoreTransform );
+    }
+
+    // Remove the custom shader to return to normal painting operations.
+    if ( usingShader )
+    {
+        d->customShaderStage->removeFromPainter( painter );
+    }
+
 #else
-   drawSource(painter);
+    drawSource( painter );
 #endif
 }
 
 void QGraphicsShaderEffect::setUniformsDirty()
 {
 #ifdef QGL_HAVE_CUSTOM_SHADERS
-   Q_D(QGraphicsShaderEffect);
-   if (d->customShaderStage) {
-      d->customShaderStage->setUniformsDirty();
-   }
+    Q_D( QGraphicsShaderEffect );
+
+    if ( d->customShaderStage )
+    {
+        d->customShaderStage->setUniformsDirty();
+    }
+
 #endif
 }
 
-void QGraphicsShaderEffect::setUniforms(QGLShaderProgram *program)
+void QGraphicsShaderEffect::setUniforms( QGLShaderProgram *program )
 {
-   (void) program;
+    ( void ) program;
 }
 
 #endif

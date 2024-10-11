@@ -30,27 +30,28 @@
 
 class QGstreamerVideoRendererInterface
 {
- public:
-   virtual ~QGstreamerVideoRendererInterface();
-   virtual GstElement *videoSink() = 0;
+public:
+    virtual ~QGstreamerVideoRendererInterface();
+    virtual GstElement *videoSink() = 0;
 
-   // stopRenderer() is called when the renderer element is stopped.
-   // it can be reimplemented when video renderer can't detect
-   // changes to NULL state but has to free video resources.
-   virtual void stopRenderer() {}
+    // stopRenderer() is called when the renderer element is stopped.
+    // it can be reimplemented when video renderer can't detect
+    // changes to NULL state but has to free video resources.
+    virtual void stopRenderer() {}
 
-   // the video output is configured, usually after the first paint event
-   // (winId is known,
-   virtual bool isReady() const {
-      return true;
-   }
+    // the video output is configured, usually after the first paint event
+    // (winId is known,
+    virtual bool isReady() const
+    {
+        return true;
+    }
 
-   // signals:
-   // void sinkChanged();
-   // void readyChanged(bool);
+    // signals:
+    // void sinkChanged();
+    // void readyChanged(bool);
 };
 
 #define QGstreamerVideoRendererInterface_iid "com.copperspice.CS.gstreamerVideoRenderer/1.0"
-CS_DECLARE_INTERFACE(QGstreamerVideoRendererInterface, QGstreamerVideoRendererInterface_iid)
+LSCS_DECLARE_INTERFACE( QGstreamerVideoRendererInterface, QGstreamerVideoRendererInterface_iid )
 
 #endif

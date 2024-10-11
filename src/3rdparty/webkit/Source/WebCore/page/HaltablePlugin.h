@@ -20,23 +20,25 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HaltablePlugin_h
 #define HaltablePlugin_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Node;
 
-class HaltablePlugin {
+class HaltablePlugin
+{
 public:
     virtual ~HaltablePlugin() { }
 
     virtual void halt() = 0;
     virtual void restart() = 0;
-    virtual Node* node() const = 0;
+    virtual Node *node() const = 0;
     virtual bool isWindowed() const = 0;
     virtual String pluginName() const = 0;
 };

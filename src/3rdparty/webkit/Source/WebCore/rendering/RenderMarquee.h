@@ -48,29 +48,41 @@
 #include "RenderStyleConstants.h"
 #include "Timer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderLayer;
 
 // This class handles the auto-scrolling of layers with overflow: marquee.
-class RenderMarquee {
-    WTF_MAKE_NONCOPYABLE(RenderMarquee); WTF_MAKE_FAST_ALLOCATED;
+class RenderMarquee
+{
+    WTF_MAKE_NONCOPYABLE( RenderMarquee );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    explicit RenderMarquee(RenderLayer*);
+    explicit RenderMarquee( RenderLayer * );
     virtual ~RenderMarquee();
 
-    int speed() const { return m_speed; }
+    int speed() const
+    {
+        return m_speed;
+    }
     int marqueeSpeed() const;
 
-    EMarqueeDirection reverseDirection() const { return static_cast<EMarqueeDirection>(-direction()); }
+    EMarqueeDirection reverseDirection() const
+    {
+        return static_cast<EMarqueeDirection>( -direction() );
+    }
     EMarqueeDirection direction() const;
 
     bool isHorizontal() const;
 
-    int computePosition(EMarqueeDirection, bool stopAtClientEdge);
+    int computePosition( EMarqueeDirection, bool stopAtClientEdge );
 
-    void setEnd(int end) { m_end = end; }
-    
+    void setEnd( int end )
+    {
+        m_end = end;
+    }
+
     void start();
     void suspend();
     void stop();
@@ -79,9 +91,9 @@ public:
     void updateMarqueePosition();
 
 private:
-    void timerFired(Timer<RenderMarquee>*);
+    void timerFired( Timer<RenderMarquee> * );
 
-    RenderLayer* m_layer;
+    RenderLayer *m_layer;
     int m_currentLoop;
     int m_totalLoops;
     Timer<RenderMarquee> m_timer;

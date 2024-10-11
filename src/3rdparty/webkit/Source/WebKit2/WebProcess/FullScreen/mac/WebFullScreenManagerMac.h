@@ -35,23 +35,25 @@
 #import <WebCore/IntRect.h>
 #import <wtf/RetainPtr.h>
 
-typedef struct __WKCARemoteLayerClientRef* WKCARemoteLayerClientRef;
+typedef struct __WKCARemoteLayerClientRef *WKCARemoteLayerClientRef;
 OBJC_CLASS WebFullScreenManagerAnimationListener;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebFullScreenManagerMac : public WebFullScreenManager {
+class WebFullScreenManagerMac : public WebFullScreenManager
+{
 public:
-    static PassRefPtr<WebFullScreenManagerMac> create(WebPage*);
+    static PassRefPtr<WebFullScreenManagerMac> create( WebPage * );
 
-    virtual void setRootFullScreenLayer(WebCore::GraphicsLayer*);
+    virtual void setRootFullScreenLayer( WebCore::GraphicsLayer * );
 
 private:
-    WebFullScreenManagerMac(WebPage*);
+    WebFullScreenManagerMac( WebPage * );
     virtual ~WebFullScreenManagerMac();
 
-    virtual void beginEnterFullScreenAnimation(float duration);
-    virtual void beginExitFullScreenAnimation(float duration);
+    virtual void beginEnterFullScreenAnimation( float duration );
+    virtual void beginExitFullScreenAnimation( float duration );
 
     OwnPtr<WebCore::GraphicsLayer> m_rootLayer;
     RetainPtr<PlatformLayer> m_fullScreenRootLayer;

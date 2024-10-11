@@ -36,59 +36,59 @@ class AVFCameraService;
 using AVFAtomicInt64 = QAtomicInteger<qint64>;
 
 @interface AVFMediaAssetWriter : NSObject<AVCaptureVideoDataOutputSampleBufferDelegate,
-      AVCaptureAudioDataOutputSampleBufferDelegate>
+    AVCaptureAudioDataOutputSampleBufferDelegate>
 {
- @private
-   AVFCameraService *m_service;
+@private
+    AVFCameraService *m_service;
 
-   AVFScopedPointer<AVAssetWriterInput> m_cameraWriterInput;
-   AVFScopedPointer<AVCaptureDeviceInput> m_audioInput;
-   AVFScopedPointer<AVCaptureAudioDataOutput> m_audioOutput;
-   AVFScopedPointer<AVAssetWriterInput> m_audioWriterInput;
+    AVFScopedPointer<AVAssetWriterInput> m_cameraWriterInput;
+    AVFScopedPointer<AVCaptureDeviceInput> m_audioInput;
+    AVFScopedPointer<AVCaptureAudioDataOutput> m_audioOutput;
+    AVFScopedPointer<AVAssetWriterInput> m_audioWriterInput;
 
-   AVCaptureDevice *m_audioCaptureDevice;
+    AVCaptureDevice *m_audioCaptureDevice;
 
-   // Queue to write sample buffers:
-   AVFScopedPointer<dispatch_queue_t> m_writerQueue;
+    // Queue to write sample buffers:
+    AVFScopedPointer<dispatch_queue_t> m_writerQueue;
 
-   // High priority serial queue for video output:
-   AVFScopedPointer<dispatch_queue_t> m_videoQueue;
+    // High priority serial queue for video output:
+    AVFScopedPointer<dispatch_queue_t> m_videoQueue;
 
-   // Serial queue for audio output:
-   AVFScopedPointer<dispatch_queue_t> m_audioQueue;
+    // Serial queue for audio output:
+    AVFScopedPointer<dispatch_queue_t> m_audioQueue;
 
-   AVFScopedPointer<AVAssetWriter> m_assetWriter;
-   QAVFMediaRecorderControlIOS *m_delegate;
+    AVFScopedPointer<AVAssetWriter> m_assetWriter;
+    QAVFMediaRecorderControlIOS *m_delegate;
 
-   bool m_setStartTime;
+    bool m_setStartTime;
 
-   QAtomicInt m_state;
+    QAtomicInt m_state;
 
- @public
-   AVFAtomicInt64 m_durationInMs;
+@public
+    AVFAtomicInt64 m_durationInMs;
 
- @private
-   CMTime m_startTime;
-   CMTime m_lastTimeStamp;
+@private
+    CMTime m_startTime;
+    CMTime m_lastTimeStamp;
 
-   NSDictionary *m_audioSettings;
-   NSDictionary *m_videoSettings;
+    NSDictionary *m_audioSettings;
+    NSDictionary *m_videoSettings;
 }
 
-- (id)initWithDelegate: (AVFMediaRecorderControlIOS *)delegate;
+- ( id )initWithDelegate: ( AVFMediaRecorderControlIOS * )delegate;
 
-- (bool)setupWithFileURL: (NSURL *)fileURL
-           cameraService: (AVFCameraService *)service
-           audioSettings: (NSDictionary *)audioSettings
-           videoSettings: (NSDictionary *)videoSettings
-               transform: (CGAffineTransform)transform;
+- ( bool )setupWithFileURL: ( NSURL * )fileURL
+    cameraService: ( AVFCameraService * )service
+    audioSettings: ( NSDictionary * )audioSettings
+    videoSettings: ( NSDictionary * )videoSettings
+    transform: ( CGAffineTransform )transform;
 
 // This to be called from the recorder control's thread:
-- (void)start;
-- (void)stop;
+- ( void )start;
+- ( void )stop;
 
 // This to be called from the recorder control's dtor:
-- (void)abort;
+- ( void )abort;
 
 @end
 

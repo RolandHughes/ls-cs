@@ -23,8 +23,8 @@
 
 #include <qmediarecordercontrol.h>
 
-QMediaRecorderControl::QMediaRecorderControl(QObject *parent)
-   : QMediaControl(parent)
+QMediaRecorderControl::QMediaRecorderControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

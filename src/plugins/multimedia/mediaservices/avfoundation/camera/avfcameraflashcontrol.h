@@ -33,29 +33,29 @@ class AVFCameraSession;
 
 class AVFCameraFlashControl : public QCameraFlashControl
 {
-   CS_OBJECT(AVFCameraFlashControl)
+    LSCS_OBJECT( AVFCameraFlashControl )
 
- public:
-   AVFCameraFlashControl(AVFCameraService *service);
+public:
+    AVFCameraFlashControl( AVFCameraService *service );
 
-   QCameraExposure::FlashModes flashMode() const override;
-   void setFlashMode(QCameraExposure::FlashModes mode) override;
-   bool isFlashModeSupported(QCameraExposure::FlashModes mode) const override;
-   bool isFlashReady() const override;
+    QCameraExposure::FlashModes flashMode() const override;
+    void setFlashMode( QCameraExposure::FlashModes mode ) override;
+    bool isFlashModeSupported( QCameraExposure::FlashModes mode ) const override;
+    bool isFlashReady() const override;
 
- private:
-   CS_SLOT_1(Private, void cameraStateChanged(QCamera::State newState))
-   CS_SLOT_2(cameraStateChanged)
+private:
+    LSCS_SLOT_1( Private, void cameraStateChanged( QCamera::State newState ) )
+    LSCS_SLOT_2( cameraStateChanged )
 
-   bool applyFlashSettings();
+    bool applyFlashSettings();
 
-   AVFCameraService *m_service;
-   AVFCameraSession *m_session;
+    AVFCameraService *m_service;
+    AVFCameraSession *m_session;
 
-   // Set of bits:
-   QCameraExposure::FlashModes m_supportedModes;
-   // Only one bit set actually:
-   QCameraExposure::FlashModes m_flashMode;
+    // Set of bits:
+    QCameraExposure::FlashModes m_supportedModes;
+    // Only one bit set actually:
+    QCameraExposure::FlashModes m_flashMode;
 };
 
 #endif

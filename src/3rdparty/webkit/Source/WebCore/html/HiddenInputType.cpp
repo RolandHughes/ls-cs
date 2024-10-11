@@ -34,14 +34,16 @@
 
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<InputType> HiddenInputType::create(HTMLInputElement* element)
+namespace WebCore
 {
-    return adoptPtr(new HiddenInputType(element));
+
+PassOwnPtr<InputType> HiddenInputType::create( HTMLInputElement *element )
+{
+    return adoptPtr( new HiddenInputType( element ) );
 }
 
-const AtomicString& HiddenInputType::formControlType() const {
+const AtomicString &HiddenInputType::formControlType() const
+{
     return InputTypeNames::hidden();
 }
 
@@ -50,13 +52,13 @@ bool HiddenInputType::supportsValidation() const
     return false;
 }
 
-RenderObject* HiddenInputType::createRenderer(RenderArena*, RenderStyle*) const
+RenderObject *HiddenInputType::createRenderer( RenderArena *, RenderStyle * ) const
 {
     ASSERT_NOT_REACHED();
     return 0;
 }
 
-void HiddenInputType::accessKeyAction(bool)
+void HiddenInputType::accessKeyAction( bool )
 {
 }
 

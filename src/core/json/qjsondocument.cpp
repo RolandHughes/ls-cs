@@ -30,137 +30,149 @@
 #include <qjsonwriter_p.h>
 
 QJsonDocument::QJsonDocument()
-   : m_data(std::make_shared<QJsonValue>())
+    : m_data( std::make_shared<QJsonValue>() )
 {
 }
 
-QJsonDocument::QJsonDocument(const QJsonObject &object)
-   : m_data(std::make_shared<QJsonValue>(object))
+QJsonDocument::QJsonDocument( const QJsonObject &object )
+    : m_data( std::make_shared<QJsonValue>( object ) )
 {
 }
 
-QJsonDocument::QJsonDocument(const QJsonArray &array)
-   : m_data(std::make_shared<QJsonValue>(array))
+QJsonDocument::QJsonDocument( const QJsonArray &array )
+    : m_data( std::make_shared<QJsonValue>( array ) )
 {
 }
 
-QJsonDocument::QJsonDocument(const QJsonDocument &other)
+QJsonDocument::QJsonDocument( const QJsonDocument &other )
 {
-   m_data = other.m_data;
+    m_data = other.m_data;
 }
 
-QJsonDocument::QJsonDocument(QJsonDocument &&other)
+QJsonDocument::QJsonDocument( QJsonDocument &&other )
 {
-   m_data = std::move(other.m_data);
+    m_data = std::move( other.m_data );
 }
 
-QJsonDocument &QJsonDocument::operator =(const QJsonDocument &other)
+QJsonDocument &QJsonDocument::operator =( const QJsonDocument &other )
 {
-   m_data = other.m_data;
-   return *this;
+    m_data = other.m_data;
+    return *this;
 }
 
 QJsonDocument::~QJsonDocument()
 {
 }
 
-QJsonDocument QJsonDocument::fromVariant(const QVariant &variant)
+QJsonDocument QJsonDocument::fromVariant( const QVariant &variant )
 {
-   QJsonDocument doc;
+    QJsonDocument doc;
 
-   if (variant.type() == QVariant::Map) {
-      doc.setObject(QJsonObject::fromVariantMap(variant.toMap()));
+    if ( variant.type() == QVariant::Map )
+    {
+        doc.setObject( QJsonObject::fromVariantMap( variant.toMap() ) );
 
-   } else if (variant.type() == QVariant::List) {
-      doc.setArray(QJsonArray::fromVariantList(variant.toList()));
+    }
+    else if ( variant.type() == QVariant::List )
+    {
+        doc.setArray( QJsonArray::fromVariantList( variant.toList() ) );
 
-   } else if (variant.type() == QVariant::StringList) {
-      doc.setArray(QJsonArray::fromStringList(variant.toStringList()));
-   }
+    }
+    else if ( variant.type() == QVariant::StringList )
+    {
+        doc.setArray( QJsonArray::fromStringList( variant.toStringList() ) );
+    }
 
-   return doc;
+    return doc;
 }
 
 QVariant QJsonDocument::toVariant() const
 {
-   if (m_data->isArray()) {
-      return m_data->toArray().toVariantList();
+    if ( m_data->isArray() )
+    {
+        return m_data->toArray().toVariantList();
 
-   } else {
-      return m_data->toObject().toVariantMap();
-   }
+    }
+    else
+    {
+        return m_data->toObject().toVariantMap();
+    }
 }
 
-QString QJsonDocument::toJsonString(JsonFormat format) const
+QString QJsonDocument::toJsonString( JsonFormat format ) const
 {
-   QString retval;
+    QString retval;
 
-   if (m_data->isArray()) {
-      retval = QJsonWriter::arrayToString(m_data->toArray(), 0, format);
+    if ( m_data->isArray() )
+    {
+        retval = QJsonWriter::arrayToString( m_data->toArray(), 0, format );
 
-   } else if (m_data->isObject()) {
-      retval = QJsonWriter::objectToString(m_data->toObject(), 0, format);
-   }
+    }
+    else if ( m_data->isObject() )
+    {
+        retval = QJsonWriter::objectToString( m_data->toObject(), 0, format );
+    }
 
-   return retval;
+    return retval;
 }
 
-QJsonDocument QJsonDocument::fromJson(const QByteArray &json, QJsonParseError *error)
+QJsonDocument QJsonDocument::fromJson( const QByteArray &json, QJsonParseError *error )
 {
-   QString str = QString::fromUtf8(json);
-   return fromJson(str, error);
+    QString str = QString::fromUtf8( json );
+    return fromJson( str, error );
 }
 
-QJsonDocument QJsonDocument::fromJson(QStringView json, QJsonParseError *error)
+QJsonDocument QJsonDocument::fromJson( QStringView json, QJsonParseError *error )
 {
-   return QJsonParser(json).parse(error);
+    return QJsonParser( json ).parse( error );
 }
 
 bool QJsonDocument::isEmpty() const
 {
-   return m_data->isNull();
+    return m_data->isNull();
 }
 
 bool QJsonDocument::isArray() const
 {
-   return m_data->isArray();
+    return m_data->isArray();
 }
 
 bool QJsonDocument::isObject() const
 {
-   return m_data->isObject();
+    return m_data->isObject();
 }
 
 QJsonObject QJsonDocument::object() const
 {
-   return m_data->toObject();
+    return m_data->toObject();
 }
 
 QJsonArray QJsonDocument::array() const
 {
-   return m_data->toArray();
+    return m_data->toArray();
 }
 
-void QJsonDocument::setObject(const QJsonObject &object)
+void QJsonDocument::setObject( const QJsonObject &object )
 {
-   m_data = std::make_shared<QJsonValue>(object);
+    m_data = std::make_shared<QJsonValue>( object );
 }
 
-void QJsonDocument::setArray(const QJsonArray &array)
+void QJsonDocument::setArray( const QJsonArray &array )
 {
-   m_data = std::make_shared<QJsonValue>(array);
+    m_data = std::make_shared<QJsonValue>( array );
 }
 
-bool QJsonDocument::operator==(const QJsonDocument &other) const
+bool QJsonDocument::operator==( const QJsonDocument &other ) const
 {
-   if (*m_data == *other.m_data) {
-      return true;
-   }
+    if ( *m_data == *other.m_data )
+    {
+        return true;
+    }
 
-   return false;
+    return false;
 }
 
 bool QJsonDocument::isNull() const
 {
-   return m_data->isNull();
+    return m_data->isNull();
 }

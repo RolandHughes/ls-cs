@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,26 +30,28 @@
 #include "JSDOMBinding.h"
 #include "runtime/ObjectPrototype.h"
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 
 const ClassInfo JavaRuntimeObject::s_info = { "JavaRuntimeObject", &RuntimeObject::s_info, 0, 0 };
 
-JavaRuntimeObject::JavaRuntimeObject(ExecState* exec, JSGlobalObject* globalObject, PassRefPtr<JavaInstance> instance)
-    // FIXME: deprecatedGetDOMStructure uses the prototype off of the wrong global object
-    // We need to pass in the right global object for "i".
-    : RuntimeObject(exec, globalObject, WebCore::deprecatedGetDOMStructure<JavaRuntimeObject>(exec), instance)
+JavaRuntimeObject::JavaRuntimeObject( ExecState *exec, JSGlobalObject *globalObject, PassRefPtr<JavaInstance> instance )
+// FIXME: deprecatedGetDOMStructure uses the prototype off of the wrong global object
+// We need to pass in the right global object for "i".
+    : RuntimeObject( exec, globalObject, WebCore::deprecatedGetDOMStructure<JavaRuntimeObject>( exec ), instance )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
 JavaRuntimeObject::~JavaRuntimeObject()
 {
 }
 
-JavaInstance* JavaRuntimeObject::getInternalJavaInstance() const
+JavaInstance *JavaRuntimeObject::getInternalJavaInstance() const
 {
-    return static_cast<JavaInstance*>(getInternalInstance());
+    return static_cast<JavaInstance *>( getInternalInstance() );
 }
 
 

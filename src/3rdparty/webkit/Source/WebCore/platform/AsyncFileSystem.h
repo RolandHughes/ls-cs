@@ -37,108 +37,124 @@
 #include "Timer.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AsyncFileSystem;
 class AsyncFileSystemCallbacks;
 class AsyncFileWriterClient;
 
 // This class provides async interface for platform-specific file system implementation.  Note that all the methods take platform paths.
-class AsyncFileSystem {
-    WTF_MAKE_NONCOPYABLE(AsyncFileSystem);
+class AsyncFileSystem
+{
+    WTF_MAKE_NONCOPYABLE( AsyncFileSystem );
 public:
     virtual ~AsyncFileSystem() { }
 
     // FileSystem type
-    enum Type {
+    enum Type
+    {
         Temporary,
         Persistent,
         External,
     };
 
     virtual void stop() { }
-    virtual bool hasPendingActivity() { return false; }
+    virtual bool hasPendingActivity()
+    {
+        return false;
+    }
 
     static bool isAvailable();
 
     // Subclass must implement this if it supports synchronous operations.
     // This should return false if there are no pending operations.
-    virtual bool waitForOperationToComplete() { return false; }
+    virtual bool waitForOperationToComplete()
+    {
+        return false;
+    }
 
     // Creates and returns a new platform-specific AsyncFileSystem instance if the platform has its own implementation.
-    static PassOwnPtr<AsyncFileSystem> create(Type, const String& rootPath);
+    static PassOwnPtr<AsyncFileSystem> create( Type, const String &rootPath );
 
     // Opens a new file system. The create parameter specifies whether or not to create the path if it does not already exists.
-    static void openFileSystem(const String& basePath, const String& storageIdentifier, Type, bool create, PassOwnPtr<AsyncFileSystemCallbacks>);
+    static void openFileSystem( const String &basePath, const String &storageIdentifier, Type, bool create,
+                                PassOwnPtr<AsyncFileSystemCallbacks> );
 
     // Moves a file or directory from srcPath to destPath.
     // AsyncFileSystemCallbacks::didSucceed() is called when the operation is completed successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void move(const String& srcPath, const String& destPath, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void move( const String &srcPath, const String &destPath, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Copies a file or directory from srcPath to destPath.
     // AsyncFileSystemCallbacks::didSucceed() is called when the operation is completed successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void copy(const String& srcPath, const String& destPath, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void copy( const String &srcPath, const String &destPath, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Deletes a file or directory at a given path.
     // It is an error to try to remove a directory that is not empty.
     // AsyncFileSystemCallbacks::didSucceed() is called when the operation is completed successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void remove(const String& path, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void remove( const String &path, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Recursively deletes a directory at a given path.
     // AsyncFileSystemCallbacks::didSucceed() is called when the operation is completed successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void removeRecursively(const String& path, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void removeRecursively( const String &path, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Retrieves the metadata information of the file or directory at a given path.
     // AsyncFileSystemCallbacks::didReadMetadata() is called when the operation is completed successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void readMetadata(const String& path, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void readMetadata( const String &path, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Creates a file at a given path.  If exclusive flag is true, it fails if the path already exists.
     // AsyncFileSystemCallbacks::didSucceed() is called when the operation is completed successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void createFile(const String& path, bool exclusive, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void createFile( const String &path, bool exclusive, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Creates a directory at a given path.  If exclusive flag is true, it fails if the path already exists.
     // AsyncFileSystemCallbacks::didSucceed() is called when the operation is completed successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void createDirectory(const String& path, bool exclusive, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void createDirectory( const String &path, bool exclusive, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Checks if a file exists at a given path.
     // AsyncFileSystemCallbacks::didSucceed() is called if the file exists.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void fileExists(const String& path, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void fileExists( const String &path, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Checks if a directory exists at a given path.
     // AsyncFileSystemCallbacks::didSucceed() is called if the directory exists.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void directoryExists(const String& path, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void directoryExists( const String &path, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Reads directory entries of a given directory at path.
     // AsyncFileSystemCallbacks::didReadDirectoryEntry() is called when each directory entry is called. AsyncFileSystemCallbacks::didReadDirectoryEntries() is called after a chunk of directory entries have been read.
     // AsyncFileSystemCallbacks::didFail() is when there is an error.
-    virtual void readDirectory(const String& path, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void readDirectory( const String &path, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Creates an AsyncFileWriter for a given file path.
     // AsyncFileSystemCallbacks::didCreateFileWriter() is called when an AsyncFileWriter is created successfully.
     // AsyncFileSystemCallbacks::didFail() is called otherwise.
-    virtual void createWriter(AsyncFileWriterClient* client, const String& path, PassOwnPtr<AsyncFileSystemCallbacks>) = 0;
+    virtual void createWriter( AsyncFileWriterClient *client, const String &path, PassOwnPtr<AsyncFileSystemCallbacks> ) = 0;
 
     // Converts a given absolute virtual path to a platform path that starts with the platform root path of this file system.
-    virtual String virtualToPlatformPath(const String& path) const;
+    virtual String virtualToPlatformPath( const String &path ) const;
 
     // Getter for this file system's root path.
-    String root() const { return m_platformRootPath; }
+    String root() const
+    {
+        return m_platformRootPath;
+    }
 
-    Type type() const { return m_type; }
+    Type type() const
+    {
+        return m_type;
+    }
 
 protected:
-    AsyncFileSystem(Type type, const String& platformRootPath)
-        : m_type(type)
-        , m_platformRootPath(platformRootPath)
+    AsyncFileSystem( Type type, const String &platformRootPath )
+        : m_type( type )
+        , m_platformRootPath( platformRootPath )
     {
     }
 

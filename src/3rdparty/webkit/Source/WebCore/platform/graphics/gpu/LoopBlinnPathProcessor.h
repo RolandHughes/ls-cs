@@ -34,12 +34,14 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // We use a namespace for classes which are simply implementation
 // details of the algorithm but which we need to reference from the
 // class definition.
-namespace LoopBlinnPathProcessorImplementation {
+namespace LoopBlinnPathProcessorImplementation
+{
 
 class Contour;
 class Segment;
@@ -60,25 +62,26 @@ class PODArena;
 // Note that the fill style and management of multiple layers are
 // separate concerns, handled at a higher level with shaders and
 // polygon offsets.
-class LoopBlinnPathProcessor {
+class LoopBlinnPathProcessor
+{
 public:
     LoopBlinnPathProcessor();
-    explicit LoopBlinnPathProcessor(PassRefPtr<PODArena>);
+    explicit LoopBlinnPathProcessor( PassRefPtr<PODArena> );
     ~LoopBlinnPathProcessor();
 
     // Transforms the given path into a triangle mesh for rendering
     // using Loop and Blinn's shader, placing the result into the given
     // LoopBlinnPathCache.
-    void process(const Path&, LoopBlinnPathCache&);
+    void process( const Path &, LoopBlinnPathCache & );
 
 #ifndef NDEBUG
     // Enables or disables verbose logging in debug mode.
-    void setVerboseLogging(bool onOrOff);
+    void setVerboseLogging( bool onOrOff );
 #endif
 
 private:
     // Builds a list of contours for the given path.
-    void buildContours(const Path&);
+    void buildContours( const Path & );
 
     // Determines whether the left or right side of each contour should
     // be filled.
@@ -86,23 +89,24 @@ private:
 
     // Determines whether the given (closed) contour is oriented
     // clockwise or counterclockwise.
-    void determineOrientation(LoopBlinnPathProcessorImplementation::Contour*);
+    void determineOrientation( LoopBlinnPathProcessorImplementation::Contour * );
 
     // Subdivides the curves so that there are no overlaps of the
     // triangles associated with the curves' control points.
     void subdivideCurves();
 
     // Helper function used during curve subdivision.
-    void conditionallySubdivide(LoopBlinnPathProcessorImplementation::Segment*,
-                                Vector<LoopBlinnPathProcessorImplementation::Segment*>& nextSegments);
+    void conditionallySubdivide( LoopBlinnPathProcessorImplementation::Segment *,
+                                 Vector<LoopBlinnPathProcessorImplementation::Segment *> &nextSegments );
 
     // Tessellates the interior regions of the contours.
-    void tessellateInterior(LoopBlinnPathCache&);
+    void tessellateInterior( LoopBlinnPathCache & );
 
 #ifndef NDEBUG
     // For debugging the orientation computation. Returns all of the
     // segments overlapping the given Y coordinate.
-    Vector<LoopBlinnPathProcessorImplementation::Segment*> allSegmentsOverlappingY(LoopBlinnPathProcessorImplementation::Contour*, float x, float y);
+    Vector<LoopBlinnPathProcessorImplementation::Segment *> allSegmentsOverlappingY( LoopBlinnPathProcessorImplementation::Contour *,
+            float x, float y );
 
     // For debugging the curve subdivision algorithm. Subdivides the
     // curves using an alternate, slow (O(n^3)) algorithm.
@@ -113,7 +117,7 @@ private:
     RefPtr<PODArena> m_arena;
 
     // The contours described by the path.
-    Vector<LoopBlinnPathProcessorImplementation::Contour*> m_contours;
+    Vector<LoopBlinnPathProcessorImplementation::Contour *> m_contours;
 
 #ifndef NDEBUG
     // Whether or not to perform verbose logging in debug mode.

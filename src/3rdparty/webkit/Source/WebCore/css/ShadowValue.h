@@ -25,21 +25,23 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSPrimitiveValue;
 
 // Used for text-shadow and box-shadow
-class ShadowValue : public CSSValue {
+class ShadowValue : public CSSValue
+{
 public:
-    static PassRefPtr<ShadowValue> create(PassRefPtr<CSSPrimitiveValue> x,
-        PassRefPtr<CSSPrimitiveValue> y,
-        PassRefPtr<CSSPrimitiveValue> blur,
-        PassRefPtr<CSSPrimitiveValue> spread,
-        PassRefPtr<CSSPrimitiveValue> style,
-        PassRefPtr<CSSPrimitiveValue> color)
+    static PassRefPtr<ShadowValue> create( PassRefPtr<CSSPrimitiveValue> x,
+                                           PassRefPtr<CSSPrimitiveValue> y,
+                                           PassRefPtr<CSSPrimitiveValue> blur,
+                                           PassRefPtr<CSSPrimitiveValue> spread,
+                                           PassRefPtr<CSSPrimitiveValue> style,
+                                           PassRefPtr<CSSPrimitiveValue> color )
     {
-        return adoptRef(new ShadowValue(x, y, blur, spread, style, color));
+        return adoptRef( new ShadowValue( x, y, blur, spread, style, color ) );
     }
 
     virtual String cssText() const;
@@ -52,14 +54,17 @@ public:
     RefPtr<CSSPrimitiveValue> color;
 
 private:
-    ShadowValue(PassRefPtr<CSSPrimitiveValue> x,
-        PassRefPtr<CSSPrimitiveValue> y,
-        PassRefPtr<CSSPrimitiveValue> blur,
-        PassRefPtr<CSSPrimitiveValue> spread,
-        PassRefPtr<CSSPrimitiveValue> style,
-        PassRefPtr<CSSPrimitiveValue> color);
+    ShadowValue( PassRefPtr<CSSPrimitiveValue> x,
+                 PassRefPtr<CSSPrimitiveValue> y,
+                 PassRefPtr<CSSPrimitiveValue> blur,
+                 PassRefPtr<CSSPrimitiveValue> spread,
+                 PassRefPtr<CSSPrimitiveValue> style,
+                 PassRefPtr<CSSPrimitiveValue> color );
 
-    virtual bool isShadowValue() const { return true; }
+    virtual bool isShadowValue() const
+    {
+        return true;
+    }
 };
 
 } // namespace

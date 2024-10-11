@@ -37,29 +37,31 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Clipboard;
 
 typedef int ExceptionCode;
 
-class DataTransferItems : public RefCounted<DataTransferItems> {
+class DataTransferItems : public RefCounted<DataTransferItems>
+{
 public:
     ~DataTransferItems() {}
 
     virtual size_t length() const;
-    virtual PassRefPtr<DataTransferItem> item(unsigned long index);
-    virtual void deleteItem(unsigned long index, ExceptionCode&);
+    virtual PassRefPtr<DataTransferItem> item( unsigned long index );
+    virtual void deleteItem( unsigned long index, ExceptionCode & );
     virtual void clear();
-    virtual void add(const String& data, const String& type, ExceptionCode&);
+    virtual void add( const String &data, const String &type, ExceptionCode & );
 
 protected:
-    DataTransferItems(RefPtr<Clipboard>, ScriptExecutionContext*);
+    DataTransferItems( RefPtr<Clipboard>, ScriptExecutionContext * );
 
 protected:
     RefPtr<Clipboard> m_owner;
     // Indirectly owned by our parent.
-    ScriptExecutionContext* m_context;
+    ScriptExecutionContext *m_context;
     Vector<RefPtr<DataTransferItem> > m_items;
 
 };

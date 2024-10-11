@@ -29,22 +29,27 @@
 #include "WKAPICast.h"
 #include "WebGeolocationManagerProxy.h"
 
-namespace WebKit {
-
-void WebGeolocationProvider::startUpdating(WebGeolocationManagerProxy* geolocationManager)
+namespace WebKit
 {
-    if (!m_client.startUpdating)
-        return;
 
-    m_client.startUpdating(toAPI(geolocationManager), m_client.clientInfo);
+void WebGeolocationProvider::startUpdating( WebGeolocationManagerProxy *geolocationManager )
+{
+    if ( !m_client.startUpdating )
+    {
+        return;
+    }
+
+    m_client.startUpdating( toAPI( geolocationManager ), m_client.clientInfo );
 }
 
-void WebGeolocationProvider::stopUpdating(WebGeolocationManagerProxy* geolocationManager)
+void WebGeolocationProvider::stopUpdating( WebGeolocationManagerProxy *geolocationManager )
 {
-    if (!m_client.stopUpdating)
+    if ( !m_client.stopUpdating )
+    {
         return;
+    }
 
-    m_client.stopUpdating(toAPI(geolocationManager), m_client.clientInfo);
+    m_client.stopUpdating( toAPI( geolocationManager ), m_client.clientInfo );
 }
 
 } // namespace WebKit

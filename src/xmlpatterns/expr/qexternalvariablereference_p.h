@@ -26,28 +26,29 @@
 
 #include <qemptycontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class ExternalVariableReference : public EmptyContainer
 {
- public:
-   ExternalVariableReference(const QXmlName &name, const SequenceType::Ptr &type);
+public:
+    ExternalVariableReference( const QXmlName &name, const SequenceType::Ptr &type );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   /**
-    * @returns always DisableElimination
-    */
-   Expression::Properties properties() const override;
+    /**
+     * @returns always DisableElimination
+     */
+    Expression::Properties properties() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
- private:
-   const QXmlName             m_name;
-   const SequenceType::Ptr m_seqType;
+private:
+    const QXmlName             m_name;
+    const SequenceType::Ptr m_seqType;
 };
 }
 

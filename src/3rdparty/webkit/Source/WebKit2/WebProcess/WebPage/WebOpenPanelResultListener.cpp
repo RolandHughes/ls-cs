@@ -26,16 +26,18 @@
 #include "config.h"
 #include "WebOpenPanelResultListener.h"
 
-namespace WebKit {
-
-PassRefPtr<WebOpenPanelResultListener> WebOpenPanelResultListener::create(WebPage* page, PassRefPtr<WebCore::FileChooser> fileChooser)
+namespace WebKit
 {
-    return adoptRef(new WebOpenPanelResultListener(page, fileChooser));
+
+PassRefPtr<WebOpenPanelResultListener> WebOpenPanelResultListener::create( WebPage *page,
+        PassRefPtr<WebCore::FileChooser> fileChooser )
+{
+    return adoptRef( new WebOpenPanelResultListener( page, fileChooser ) );
 }
 
-WebOpenPanelResultListener::WebOpenPanelResultListener(WebPage* page, PassRefPtr<WebCore::FileChooser> fileChooser)
-    : m_page(page)
-    , m_fileChooser(fileChooser)
+WebOpenPanelResultListener::WebOpenPanelResultListener( WebPage *page, PassRefPtr<WebCore::FileChooser> fileChooser )
+    : m_page( page )
+    , m_fileChooser( fileChooser )
 {
 }
 
@@ -43,9 +45,9 @@ WebOpenPanelResultListener::~WebOpenPanelResultListener()
 {
 }
 
-void WebOpenPanelResultListener::didChooseFiles(const Vector<String>& files)
+void WebOpenPanelResultListener::didChooseFiles( const Vector<String> &files )
 {
-    m_fileChooser->chooseFiles(files);
+    m_fileChooser->chooseFiles( files );
 }
 
 } // namespace WebKit

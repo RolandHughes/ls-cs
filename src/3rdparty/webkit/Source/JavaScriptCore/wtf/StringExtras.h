@@ -36,14 +36,16 @@
 
 #if COMPILER(MSVC)
 
-inline double wtf_vsnprintf(char* buffer, size_t count, const char* format, va_list args)
+inline double wtf_vsnprintf( char *buffer, size_t count, const char *format, va_list args )
 {
-    int result = _vsnprintf(buffer, count, format, args);
+    int result = _vsnprintf( buffer, count, format, args );
 
     // In the case where the string entirely filled the buffer, _vsnprintf will not
     // null-terminate it, but vsnprintf must.
-    if (count > 0)
+    if ( count > 0 )
+    {
         buffer[count - 1] = '\0';
+    }
 
     return result;
 }
@@ -52,29 +54,37 @@ inline double wtf_vsnprintf(char* buffer, size_t count, const char* format, va_l
 // vsnprintf does not null terminate the buffer. WebKit can rely on the null termination.
 #define vsnprintf(buffer, count, format, args) wtf_vsnprintf(buffer, count, format, args)
 
-inline int strncasecmp(const char* s1, const char* s2, size_t len)
+inline int strncasecmp( const char *s1, const char *s2, size_t len )
 {
-    return _strnicmp(s1, s2, len);
+    return _strnicmp( s1, s2, len );
 }
 
-inline int strcasecmp(const char* s1, const char* s2)
+inline int strcasecmp( const char *s1, const char *s2 )
 {
-    return _stricmp(s1, s2);
+    return _stricmp( s1, s2 );
 }
 
 #endif
 
 #if ! HAVE(STRNSTR)
 
-inline char* strnstr(const char* buffer, const char* target, size_t bufferLength)
+inline char *strnstr( const char *buffer, const char *target, size_t bufferLength )
 {
-    size_t targetLength = strlen(target);
-    if (targetLength == 0)
-        return const_cast<char*>(buffer);
-    for (const char* start = buffer; *start && start + targetLength <= buffer + bufferLength; start++) {
-        if (*start == *target && strncmp(start + 1, target + 1, targetLength - 1) == 0)
-            return const_cast<char*>(start);
+    size_t targetLength = strlen( target );
+
+    if ( targetLength == 0 )
+    {
+        return const_cast<char *>( buffer );
     }
+
+    for ( const char *start = buffer; *start && start + targetLength <= buffer + bufferLength; start++ )
+    {
+        if ( *start == *target && strncmp( start + 1, target + 1, targetLength - 1 ) == 0 )
+        {
+            return const_cast<char *>( start );
+        }
+    }
+
     return 0;
 }
 
@@ -82,8 +92,8 @@ inline char* strnstr(const char* buffer, const char* target, size_t bufferLength
 
 #if COMPILER(RVCT) && __ARMCC_VERSION < 400000
 
-int strcasecmp(const char* s1, const char* s2);
-int strncasecmp(const char* s1, const char* s2, size_t len);
+int strcasecmp( const char *s1, const char *s2 );
+int strncasecmp( const char *s1, const char *s2, size_t len );
 
 #endif
 

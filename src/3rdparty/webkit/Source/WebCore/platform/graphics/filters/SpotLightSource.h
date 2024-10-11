@@ -26,43 +26,57 @@
 #if ENABLE(FILTERS)
 #include "LightSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SpotLightSource : public LightSource {
+class SpotLightSource : public LightSource
+{
 public:
-    static PassRefPtr<SpotLightSource> create(const FloatPoint3D& position,
-        const FloatPoint3D& direction, float specularExponent, float limitingConeAngle)
+    static PassRefPtr<SpotLightSource> create( const FloatPoint3D &position,
+            const FloatPoint3D &direction, float specularExponent, float limitingConeAngle )
     {
-        return adoptRef(new SpotLightSource(position, direction, specularExponent, limitingConeAngle));
+        return adoptRef( new SpotLightSource( position, direction, specularExponent, limitingConeAngle ) );
     }
 
-    const FloatPoint3D& position() const { return m_position; }
-    bool setX(float);
-    bool setY(float);
-    bool setZ(float);
-    const FloatPoint3D& direction() const { return m_direction; }
-    bool setPointsAtX(float);
-    bool setPointsAtY(float);
-    bool setPointsAtZ(float);
+    const FloatPoint3D &position() const
+    {
+        return m_position;
+    }
+    bool setX( float );
+    bool setY( float );
+    bool setZ( float );
+    const FloatPoint3D &direction() const
+    {
+        return m_direction;
+    }
+    bool setPointsAtX( float );
+    bool setPointsAtY( float );
+    bool setPointsAtZ( float );
 
-    float specularExponent() const { return m_specularExponent; }
-    bool setSpecularExponent(float);
-    float limitingConeAngle() const { return m_limitingConeAngle; }
-    bool setLimitingConeAngle(float);
+    float specularExponent() const
+    {
+        return m_specularExponent;
+    }
+    bool setSpecularExponent( float );
+    float limitingConeAngle() const
+    {
+        return m_limitingConeAngle;
+    }
+    bool setLimitingConeAngle( float );
 
-    virtual void initPaintingData(PaintingData&);
-    virtual void updatePaintingData(PaintingData&, int x, int y, float z);
+    virtual void initPaintingData( PaintingData & );
+    virtual void updatePaintingData( PaintingData &, int x, int y, float z );
 
-    virtual TextStream& externalRepresentation(TextStream&) const;
+    virtual TextStream &externalRepresentation( TextStream & ) const;
 
 private:
-    SpotLightSource(const FloatPoint3D& position, const FloatPoint3D& direction,
-        float specularExponent, float limitingConeAngle)
-        : LightSource(LS_SPOT)
-        , m_position(position)
-        , m_direction(direction)
-        , m_specularExponent(specularExponent)
-        , m_limitingConeAngle(limitingConeAngle)
+    SpotLightSource( const FloatPoint3D &position, const FloatPoint3D &direction,
+                     float specularExponent, float limitingConeAngle )
+        : LightSource( LS_SPOT )
+        , m_position( position )
+        , m_direction( direction )
+        , m_specularExponent( specularExponent )
+        , m_limitingConeAngle( limitingConeAngle )
     {
     }
 

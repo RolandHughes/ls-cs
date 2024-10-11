@@ -26,24 +26,26 @@
 #include "StringCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSStringCallback : public StringCallback, public ActiveDOMCallback {
+class JSStringCallback : public StringCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSStringCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSStringCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSStringCallback(callback, globalObject));
+        return adoptRef( new JSStringCallback( callback, globalObject ) );
     }
 
     virtual ~JSStringCallback();
 
     // Functions
-    virtual bool handleEvent(const String& data);
+    virtual bool handleEvent( const String &data );
 
 private:
-    JSStringCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSStringCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

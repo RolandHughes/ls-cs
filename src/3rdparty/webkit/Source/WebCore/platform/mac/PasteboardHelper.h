@@ -20,13 +20,13 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PasteboardHelper_h
 #define PasteboardHelper_h
 
-/* FIXME: This is a helper class used to provide access to functionality inside 
+/* FIXME: This is a helper class used to provide access to functionality inside
  * WebKit.  The required functionality should eventually be migrated to WebCore
  * so that this class can be removed.
  */
@@ -40,19 +40,21 @@
 class DOMDocumentFragment;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Document;
-    
-    class PasteboardHelper {
-    public:
-        virtual ~PasteboardHelper() {}
-        virtual String urlFromPasteboard(NSPasteboard*, String* title) const = 0;
-        virtual String plainTextFromPasteboard(NSPasteboard*) const = 0;
-        virtual DOMDocumentFragment* fragmentFromPasteboard(NSPasteboard*) const = 0;
-        virtual NSArray* insertablePasteboardTypes() const = 0;
-    };
-    
+class Document;
+
+class PasteboardHelper
+{
+public:
+    virtual ~PasteboardHelper() {}
+    virtual String urlFromPasteboard( NSPasteboard *, String *title ) const = 0;
+    virtual String plainTextFromPasteboard( NSPasteboard * ) const = 0;
+    virtual DOMDocumentFragment *fragmentFromPasteboard( NSPasteboard * ) const = 0;
+    virtual NSArray *insertablePasteboardTypes() const = 0;
+};
+
 }
 #endif // PLATFORM(MAC)
 

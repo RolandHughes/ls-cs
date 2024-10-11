@@ -8,7 +8,7 @@ list(APPEND SCRIPT_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/parser/qscriptparser_p.h
 )
 
-target_sources(CsScript
+target_sources(LsCsScript
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/parser/qscriptast.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/parser/qscriptastvisitor.cpp

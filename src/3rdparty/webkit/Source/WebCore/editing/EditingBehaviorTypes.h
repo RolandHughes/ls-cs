@@ -21,7 +21,8 @@
 #ifndef EditingBehaviorTypes_h
 #define EditingBehaviorTypes_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 // There are multiple editing details that are different on Windows than Macintosh.
 // We use a single switch for all of them. Some examples:
@@ -36,7 +37,8 @@ namespace WebCore {
 // behaviors with individual function calls on EditorClient (smart copy and paste and
 // selecting the space after a double click) that could be combined with this if
 // if possible in the future.
-enum EditingBehaviorType {
+enum EditingBehaviorType
+{
     EditingMacBehavior,
     EditingWindowsBehavior,
     EditingUnixBehavior

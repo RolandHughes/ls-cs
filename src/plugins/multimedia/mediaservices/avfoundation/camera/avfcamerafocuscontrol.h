@@ -35,32 +35,32 @@ class AVFCameraSession;
 
 class AVFCameraFocusControl : public QCameraFocusControl
 {
-   CS_OBJECT(AVFCameraFocusControl)
+    LSCS_OBJECT( AVFCameraFocusControl )
 
- public:
-   explicit AVFCameraFocusControl(AVFCameraService *service);
+public:
+    explicit AVFCameraFocusControl( AVFCameraService *service );
 
-   QCameraFocus::FocusModes focusMode() const override;
-   void setFocusMode(QCameraFocus::FocusModes mode) override;
-   bool isFocusModeSupported(QCameraFocus::FocusModes mode) const override;
+    QCameraFocus::FocusModes focusMode() const override;
+    void setFocusMode( QCameraFocus::FocusModes mode ) override;
+    bool isFocusModeSupported( QCameraFocus::FocusModes mode ) const override;
 
-   QCameraFocus::FocusPointMode focusPointMode() const override;
-   void setFocusPointMode(QCameraFocus::FocusPointMode mode) override;
-   bool isFocusPointModeSupported(QCameraFocus::FocusPointMode mode) const override;
-   QPointF customFocusPoint() const override;
-   void setCustomFocusPoint(const QPointF &point) override;
+    QCameraFocus::FocusPointMode focusPointMode() const override;
+    void setFocusPointMode( QCameraFocus::FocusPointMode mode ) override;
+    bool isFocusPointModeSupported( QCameraFocus::FocusPointMode mode ) const override;
+    QPointF customFocusPoint() const override;
+    void setCustomFocusPoint( const QPointF &point ) override;
 
-   QCameraFocusZoneList focusZones() const override;
+    QCameraFocusZoneList focusZones() const override;
 
- private:
-   CS_SLOT_1(Private, void cameraStateChanged())
-   CS_SLOT_2(cameraStateChanged)
+private:
+    LSCS_SLOT_1( Private, void cameraStateChanged() )
+    LSCS_SLOT_2( cameraStateChanged )
 
-   AVFCameraSession *m_session;
-   QCameraFocus::FocusModes m_focusMode;
-   QCameraFocus::FocusPointMode m_focusPointMode;
-   QPointF m_customFocusPoint;
-   QPointF m_actualFocusPoint;
+    AVFCameraSession *m_session;
+    QCameraFocus::FocusModes m_focusMode;
+    QCameraFocus::FocusPointMode m_focusPointMode;
+    QPointF m_customFocusPoint;
+    QPointF m_actualFocusPoint;
 };
 
 #endif

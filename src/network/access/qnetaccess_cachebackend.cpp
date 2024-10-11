@@ -31,7 +31,7 @@
 #include <qurlinfo_p.h>
 
 QNetworkAccessCacheBackend::QNetworkAccessCacheBackend()
-   : QNetworkAccessBackend()
+    : QNetworkAccessBackend()
 {
 }
 
@@ -41,72 +41,86 @@ QNetworkAccessCacheBackend::~QNetworkAccessCacheBackend()
 
 void QNetworkAccessCacheBackend::open()
 {
-   if (operation() != QNetworkAccessManager::GetOperation || !sendCacheContents()) {
-      QString msg = QCoreApplication::translate("QNetworkAccessCacheBackend", "Error opening %1").formatArg(this->url().toString());
-      error(QNetworkReply::ContentNotFoundError, msg);
+    if ( operation() != QNetworkAccessManager::GetOperation || !sendCacheContents() )
+    {
+        QString msg = QCoreApplication::translate( "QNetworkAccessCacheBackend", "Error opening %1" ).formatArg( this->url().toString() );
+        error( QNetworkReply::ContentNotFoundError, msg );
 
-   } else {
-      setAttribute(QNetworkRequest::SourceIsFromCacheAttribute, true);
-   }
+    }
+    else
+    {
+        setAttribute( QNetworkRequest::SourceIsFromCacheAttribute, true );
+    }
 
-   finished();
+    finished();
 }
 
 bool QNetworkAccessCacheBackend::sendCacheContents()
 {
-   setCachingEnabled(false);
-   QAbstractNetworkCache *nc = networkCache();
-   if (! nc) {
-      return false;
-   }
+    setCachingEnabled( false );
+    QAbstractNetworkCache *nc = networkCache();
 
-   QNetworkCacheMetaData item = nc->metaData(url());
-   if (!item.isValid()) {
-      return false;
-   }
+    if ( ! nc )
+    {
+        return false;
+    }
 
-   QNetworkCacheMetaData::AttributesMap attributes = item.attributes();
-   setAttribute(QNetworkRequest::HttpStatusCodeAttribute,   attributes.value(QNetworkRequest::HttpStatusCodeAttribute));
-   setAttribute(QNetworkRequest::HttpReasonPhraseAttribute, attributes.value(QNetworkRequest::HttpReasonPhraseAttribute));
+    QNetworkCacheMetaData item = nc->metaData( url() );
 
-   // set the raw headers
-   QNetworkCacheMetaData::RawHeaderList rawHeaders = item.rawHeaders();
-   QNetworkCacheMetaData::RawHeaderList::const_iterator it = rawHeaders.constBegin(), end = rawHeaders.constEnd();
+    if ( !item.isValid() )
+    {
+        return false;
+    }
 
-   for ( ; it != end; ++it) {
-      if (it->first.toLower() == "cache-control" &&
-            it->second.toLower().contains("must-revalidate")) {
-         return false;
-      }
-      setRawHeader(it->first, it->second);
-   }
+    QNetworkCacheMetaData::AttributesMap attributes = item.attributes();
+    setAttribute( QNetworkRequest::HttpStatusCodeAttribute,   attributes.value( QNetworkRequest::HttpStatusCodeAttribute ) );
+    setAttribute( QNetworkRequest::HttpReasonPhraseAttribute, attributes.value( QNetworkRequest::HttpReasonPhraseAttribute ) );
 
-   // handle a possible redirect
-   QVariant redirectionTarget = attributes.value(QNetworkRequest::RedirectionTargetAttribute);
-   if (redirectionTarget.isValid()) {
-      setAttribute(QNetworkRequest::RedirectionTargetAttribute, redirectionTarget);
-      redirectionRequested(redirectionTarget.toUrl());
-   }
+    // set the raw headers
+    QNetworkCacheMetaData::RawHeaderList rawHeaders = item.rawHeaders();
+    QNetworkCacheMetaData::RawHeaderList::const_iterator it = rawHeaders.constBegin(), end = rawHeaders.constEnd();
 
-   // signal we are open
-   metaDataChanged();
+    for ( ; it != end; ++it )
+    {
+        if ( it->first.toLower() == "cache-control" &&
+                it->second.toLower().contains( "must-revalidate" ) )
+        {
+            return false;
+        }
 
-   if (operation() == QNetworkAccessManager::GetOperation) {
-      QIODevice *contents = nc->data(url());
+        setRawHeader( it->first, it->second );
+    }
 
-      if (! contents) {
-         return false;
-      }
+    // handle a possible redirect
+    QVariant redirectionTarget = attributes.value( QNetworkRequest::RedirectionTargetAttribute );
 
-      contents->setParent(this);
-      writeDownstreamData(contents);
-   }
+    if ( redirectionTarget.isValid() )
+    {
+        setAttribute( QNetworkRequest::RedirectionTargetAttribute, redirectionTarget );
+        redirectionRequested( redirectionTarget.toUrl() );
+    }
 
-#if defined(CS_SHOW_DEBUG_NETWORK)
-   qDebug() << "Cache successfully sent:" << url();
+    // signal we are open
+    metaDataChanged();
+
+    if ( operation() == QNetworkAccessManager::GetOperation )
+    {
+        QIODevice *contents = nc->data( url() );
+
+        if ( ! contents )
+        {
+            return false;
+        }
+
+        contents->setParent( this );
+        writeDownstreamData( contents );
+    }
+
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
+    qDebug() << "Cache successfully sent:" << url();
 #endif
 
-   return true;
+    return true;
 }
 
 void QNetworkAccessCacheBackend::closeDownstreamChannel()
@@ -115,15 +129,15 @@ void QNetworkAccessCacheBackend::closeDownstreamChannel()
 
 void QNetworkAccessCacheBackend::closeUpstreamChannel()
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This method should not be called");
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This method should not be called" );
 }
 
 void QNetworkAccessCacheBackend::upstreamReadyRead()
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This method should not be called");
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This method should not be called" );
 }
 
 void QNetworkAccessCacheBackend::downstreamReadyWrite()
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This method should not be called");
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This method should not be called" );
 }

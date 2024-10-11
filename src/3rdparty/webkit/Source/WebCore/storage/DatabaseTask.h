@@ -39,12 +39,14 @@
 #include <wtf/Threading.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Can be used to wait until DatabaseTask is completed.
 // Has to be passed into DatabaseTask::create to be associated with the task.
-class DatabaseTaskSynchronizer {
-    WTF_MAKE_NONCOPYABLE(DatabaseTaskSynchronizer);
+class DatabaseTaskSynchronizer
+{
+    WTF_MAKE_NONCOPYABLE( DatabaseTaskSynchronizer );
 public:
     DatabaseTaskSynchronizer();
 
@@ -55,8 +57,14 @@ public:
     void taskCompleted();
 
 #ifndef NDEBUG
-    bool hasCheckedForTermination() const { return m_hasCheckedForTermination; }
-    void setHasCheckedForTermination() { m_hasCheckedForTermination = true; }
+    bool hasCheckedForTermination() const
+    {
+        return m_hasCheckedForTermination;
+    }
+    void setHasCheckedForTermination()
+    {
+        m_hasCheckedForTermination = true;
+    }
 #endif
 
 private:
@@ -68,107 +76,126 @@ private:
 #endif
 };
 
-class DatabaseTask {
-    WTF_MAKE_NONCOPYABLE(DatabaseTask); WTF_MAKE_FAST_ALLOCATED;
+class DatabaseTask
+{
+    WTF_MAKE_NONCOPYABLE( DatabaseTask );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     virtual ~DatabaseTask();
 
     void performTask();
 
-    Database* database() const { return m_database; }
+    Database *database() const
+    {
+        return m_database;
+    }
 #ifndef NDEBUG
-    bool hasSynchronizer() const { return m_synchronizer; }
-    bool hasCheckedForTermination() const { return m_synchronizer->hasCheckedForTermination(); }
+    bool hasSynchronizer() const
+    {
+        return m_synchronizer;
+    }
+    bool hasCheckedForTermination() const
+    {
+        return m_synchronizer->hasCheckedForTermination();
+    }
 #endif
 
 protected:
-    DatabaseTask(Database*, DatabaseTaskSynchronizer*);
+    DatabaseTask( Database *, DatabaseTaskSynchronizer * );
 
 private:
     virtual void doPerformTask() = 0;
 
-    Database* m_database;
-    DatabaseTaskSynchronizer* m_synchronizer;
+    Database *m_database;
+    DatabaseTaskSynchronizer *m_synchronizer;
 
 #ifndef NDEBUG
-    virtual const char* debugTaskName() const = 0;
+    virtual const char *debugTaskName() const = 0;
     bool m_complete;
 #endif
 };
 
-class Database::DatabaseOpenTask : public DatabaseTask {
+class Database::DatabaseOpenTask : public DatabaseTask
+{
 public:
-    static PassOwnPtr<DatabaseOpenTask> create(Database* db, bool setVersionInNewDatabase, DatabaseTaskSynchronizer* synchronizer, ExceptionCode& code, bool& success)
+    static PassOwnPtr<DatabaseOpenTask> create( Database *db, bool setVersionInNewDatabase, DatabaseTaskSynchronizer *synchronizer,
+            ExceptionCode &code, bool &success )
     {
-        return adoptPtr(new DatabaseOpenTask(db, setVersionInNewDatabase, synchronizer, code, success));
+        return adoptPtr( new DatabaseOpenTask( db, setVersionInNewDatabase, synchronizer, code, success ) );
     }
 
 private:
-    DatabaseOpenTask(Database*, bool setVersionInNewDatabase, DatabaseTaskSynchronizer*, ExceptionCode&, bool& success);
+    DatabaseOpenTask( Database *, bool setVersionInNewDatabase, DatabaseTaskSynchronizer *, ExceptionCode &, bool &success );
 
     virtual void doPerformTask();
 #ifndef NDEBUG
-    virtual const char* debugTaskName() const;
+    virtual const char *debugTaskName() const;
 #endif
 
     bool m_setVersionInNewDatabase;
-    ExceptionCode& m_code;
-    bool& m_success;
+    ExceptionCode &m_code;
+    bool &m_success;
 };
 
-class Database::DatabaseCloseTask : public DatabaseTask {
+class Database::DatabaseCloseTask : public DatabaseTask
+{
 public:
-    static PassOwnPtr<DatabaseCloseTask> create(Database* db, DatabaseTaskSynchronizer* synchronizer)
+    static PassOwnPtr<DatabaseCloseTask> create( Database *db, DatabaseTaskSynchronizer *synchronizer )
     {
-        return adoptPtr(new DatabaseCloseTask(db, synchronizer));
+        return adoptPtr( new DatabaseCloseTask( db, synchronizer ) );
     }
 
 private:
-    DatabaseCloseTask(Database*, DatabaseTaskSynchronizer*);
+    DatabaseCloseTask( Database *, DatabaseTaskSynchronizer * );
 
     virtual void doPerformTask();
 #ifndef NDEBUG
-    virtual const char* debugTaskName() const;
+    virtual const char *debugTaskName() const;
 #endif
 };
 
-class Database::DatabaseTransactionTask : public DatabaseTask {
+class Database::DatabaseTransactionTask : public DatabaseTask
+{
 public:
     // Transaction task is never synchronous, so no 'synchronizer' parameter.
-    static PassOwnPtr<DatabaseTransactionTask> create(PassRefPtr<SQLTransaction> transaction)
+    static PassOwnPtr<DatabaseTransactionTask> create( PassRefPtr<SQLTransaction> transaction )
     {
-        return adoptPtr(new DatabaseTransactionTask(transaction));
+        return adoptPtr( new DatabaseTransactionTask( transaction ) );
     }
 
-    SQLTransaction* transaction() const { return m_transaction.get(); }
+    SQLTransaction *transaction() const
+    {
+        return m_transaction.get();
+    }
 
 private:
-    DatabaseTransactionTask(PassRefPtr<SQLTransaction>);
+    DatabaseTransactionTask( PassRefPtr<SQLTransaction> );
 
     virtual void doPerformTask();
 #ifndef NDEBUG
-    virtual const char* debugTaskName() const;
+    virtual const char *debugTaskName() const;
 #endif
 
     RefPtr<SQLTransaction> m_transaction;
 };
 
-class Database::DatabaseTableNamesTask : public DatabaseTask {
+class Database::DatabaseTableNamesTask : public DatabaseTask
+{
 public:
-    static PassOwnPtr<DatabaseTableNamesTask> create(Database* db, DatabaseTaskSynchronizer* synchronizer, Vector<String>& names)
+    static PassOwnPtr<DatabaseTableNamesTask> create( Database *db, DatabaseTaskSynchronizer *synchronizer, Vector<String> &names )
     {
-        return adoptPtr(new DatabaseTableNamesTask(db, synchronizer, names));
+        return adoptPtr( new DatabaseTableNamesTask( db, synchronizer, names ) );
     }
 
 private:
-    DatabaseTableNamesTask(Database*, DatabaseTaskSynchronizer*, Vector<String>& names);
+    DatabaseTableNamesTask( Database *, DatabaseTaskSynchronizer *, Vector<String> &names );
 
     virtual void doPerformTask();
 #ifndef NDEBUG
-    virtual const char* debugTaskName() const;
+    virtual const char *debugTaskName() const;
 #endif
 
-    Vector<String>& m_tableNames;
+    Vector<String> &m_tableNames;
 };
 
 } // namespace WebCore

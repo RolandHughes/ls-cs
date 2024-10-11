@@ -33,19 +33,22 @@
 #include "WebEvent.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class Element;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class InjectedBundlePageFullScreenClient : public APIClient<WKBundlePageFullScreenClient> {
+class InjectedBundlePageFullScreenClient : public APIClient<WKBundlePageFullScreenClient>
+{
 public:
-    bool supportsFullScreen(WebPage*, bool withKeyboard);
-    void enterFullScreenForElement(WebPage*, WebCore::Element*);
-    void exitFullScreenForElement(WebPage*, WebCore::Element*);
+    bool supportsFullScreen( WebPage *, bool withKeyboard );
+    void enterFullScreenForElement( WebPage *, WebCore::Element * );
+    void exitFullScreenForElement( WebPage *, WebCore::Element * );
 };
 
 } // namespace WebKit

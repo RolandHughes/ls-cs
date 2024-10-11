@@ -37,7 +37,8 @@
 #include <wtf/Deque.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DatabaseCallback;
 class ScriptExecutionContext;
@@ -49,26 +50,33 @@ class SQLTransactionCoordinator;
 class SQLTransactionErrorCallback;
 class VoidCallback;
 
-class Database : public AbstractDatabase {
+class Database : public AbstractDatabase
+{
 public:
     virtual ~Database();
 
     // Direct support for the DOM API
-    static PassRefPtr<Database> openDatabase(ScriptExecutionContext*, const String& name, const String& expectedVersion, const String& displayName,
-                                             unsigned long estimatedSize, PassRefPtr<DatabaseCallback>, ExceptionCode&);
+    static PassRefPtr<Database> openDatabase( ScriptExecutionContext *, const String &name, const String &expectedVersion,
+            const String &displayName,
+            unsigned long estimatedSize, PassRefPtr<DatabaseCallback>, ExceptionCode & );
     virtual String version() const;
-    void changeVersion(const String& oldVersion, const String& newVersion, PassRefPtr<SQLTransactionCallback>,
-                       PassRefPtr<SQLTransactionErrorCallback>, PassRefPtr<VoidCallback> successCallback);
-    void transaction(PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>, PassRefPtr<VoidCallback> successCallback);
-    void readTransaction(PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>, PassRefPtr<VoidCallback> successCallback);
+    void changeVersion( const String &oldVersion, const String &newVersion, PassRefPtr<SQLTransactionCallback>,
+                        PassRefPtr<SQLTransactionErrorCallback>, PassRefPtr<VoidCallback> successCallback );
+    void transaction( PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
+                      PassRefPtr<VoidCallback> successCallback );
+    void readTransaction( PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
+                          PassRefPtr<VoidCallback> successCallback );
 
     // Internal engine support
     Vector<String> tableNames();
 
-    virtual SecurityOrigin* securityOrigin() const;
+    virtual SecurityOrigin *securityOrigin() const;
 
     virtual void markAsDeletedAndClose();
-    bool deleted() const { return m_deleted; }
+    bool deleted() const
+    {
+        return m_deleted;
+    }
 
     void close();
     virtual void closeImmediately();
@@ -76,11 +84,11 @@ public:
     unsigned long long databaseSize() const;
     unsigned long long maximumSize() const;
 
-    void scheduleTransactionCallback(SQLTransaction*);
-    void scheduleTransactionStep(SQLTransaction*, bool immediately = false);
+    void scheduleTransactionCallback( SQLTransaction * );
+    void scheduleTransactionStep( SQLTransaction *, bool immediately = false );
 
-    SQLTransactionClient* transactionClient() const;
-    SQLTransactionCoordinator* transactionCoordinator() const;
+    SQLTransactionClient *transactionClient() const;
+    SQLTransactionCoordinator *transactionCoordinator() const;
 
 private:
     class DatabaseOpenTask;
@@ -88,20 +96,20 @@ private:
     class DatabaseTransactionTask;
     class DatabaseTableNamesTask;
 
-    Database(ScriptExecutionContext*, const String& name, const String& expectedVersion,
-             const String& displayName, unsigned long estimatedSize);
-    void runTransaction(PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
-                        PassRefPtr<VoidCallback> successCallback, bool readOnly);
+    Database( ScriptExecutionContext *, const String &name, const String &expectedVersion,
+              const String &displayName, unsigned long estimatedSize );
+    void runTransaction( PassRefPtr<SQLTransactionCallback>, PassRefPtr<SQLTransactionErrorCallback>,
+                         PassRefPtr<VoidCallback> successCallback, bool readOnly );
 
-    bool openAndVerifyVersion(bool setVersionInNewDatabase, ExceptionCode&);
-    virtual bool performOpenAndVerify(bool setVersionInNewDatabase, ExceptionCode&);
+    bool openAndVerifyVersion( bool setVersionInNewDatabase, ExceptionCode & );
+    virtual bool performOpenAndVerify( bool setVersionInNewDatabase, ExceptionCode & );
 
     void inProgressTransactionCompleted();
     void scheduleTransaction();
 
     Vector<String> performGetTableNames();
 
-    static void deliverPendingCallback(void*);
+    static void deliverPendingCallback( void * );
 
     Deque<RefPtr<SQLTransaction> > m_transactionQueue;
     Mutex m_transactionInProgressMutex;

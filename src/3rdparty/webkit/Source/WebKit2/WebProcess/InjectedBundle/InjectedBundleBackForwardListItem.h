@@ -29,37 +29,63 @@
 #include "APIObject.h"
 #include <WebCore/HistoryItem.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class ImmutableArray;
 class WebPageProxy;
 
-class InjectedBundleBackForwardListItem : public APIObject {
+class InjectedBundleBackForwardListItem : public APIObject
+{
 public:
     static const Type APIType = TypeBundleBackForwardListItem;
 
-    static PassRefPtr<InjectedBundleBackForwardListItem> create(PassRefPtr<WebCore::HistoryItem> item)
+    static PassRefPtr<InjectedBundleBackForwardListItem> create( PassRefPtr<WebCore::HistoryItem> item )
     {
-        if (!item)
+        if ( !item )
+        {
             return 0;
-        return adoptRef(new InjectedBundleBackForwardListItem(item));
+        }
+
+        return adoptRef( new InjectedBundleBackForwardListItem( item ) );
     }
 
-    WebCore::HistoryItem* item() const { return m_item.get(); }
+    WebCore::HistoryItem *item() const
+    {
+        return m_item.get();
+    }
 
-    const String& originalURL() const { return m_item->originalURLString(); }
-    const String& url() const { return m_item->urlString(); }
-    const String& title() const { return m_item->title(); }
+    const String &originalURL() const
+    {
+        return m_item->originalURLString();
+    }
+    const String &url() const
+    {
+        return m_item->urlString();
+    }
+    const String &title() const
+    {
+        return m_item->title();
+    }
 
-    const String& target() const { return m_item->target(); }
-    bool isTargetItem() const { return m_item->isTargetItem(); }
+    const String &target() const
+    {
+        return m_item->target();
+    }
+    bool isTargetItem() const
+    {
+        return m_item->isTargetItem();
+    }
 
     PassRefPtr<ImmutableArray> children() const;
 
 private:
-    InjectedBundleBackForwardListItem(PassRefPtr<WebCore::HistoryItem> item) : m_item(item) { }
+    InjectedBundleBackForwardListItem( PassRefPtr<WebCore::HistoryItem> item ) : m_item( item ) { }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     RefPtr<WebCore::HistoryItem> m_item;
 };

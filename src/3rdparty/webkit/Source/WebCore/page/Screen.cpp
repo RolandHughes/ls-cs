@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -36,14 +36,15 @@
 #include "PlatformScreen.h"
 #include "Widget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-Screen::Screen(Frame* frame)
-    : m_frame(frame)
+Screen::Screen( Frame *frame )
+    : m_frame( frame )
 {
 }
 
-Frame* Screen::frame() const
+Frame *Screen::frame() const
 {
     return m_frame;
 }
@@ -55,58 +56,82 @@ void Screen::disconnectFrame()
 
 unsigned Screen::height() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<unsigned>(screenRect(m_frame->view()).height());
+    }
+
+    return static_cast<unsigned>( screenRect( m_frame->view() ).height() );
 }
 
 unsigned Screen::width() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<unsigned>(screenRect(m_frame->view()).width());
+    }
+
+    return static_cast<unsigned>( screenRect( m_frame->view() ).width() );
 }
 
 unsigned Screen::colorDepth() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<unsigned>(screenDepth(m_frame->view()));
+    }
+
+    return static_cast<unsigned>( screenDepth( m_frame->view() ) );
 }
 
 unsigned Screen::pixelDepth() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<unsigned>(screenDepth(m_frame->view()));
+    }
+
+    return static_cast<unsigned>( screenDepth( m_frame->view() ) );
 }
 
 int Screen::availLeft() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<int>(screenAvailableRect(m_frame->view()).x());
+    }
+
+    return static_cast<int>( screenAvailableRect( m_frame->view() ).x() );
 }
 
 int Screen::availTop() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<int>(screenAvailableRect(m_frame->view()).y());
+    }
+
+    return static_cast<int>( screenAvailableRect( m_frame->view() ).y() );
 }
 
 unsigned Screen::availHeight() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<unsigned>(screenAvailableRect(m_frame->view()).height());
+    }
+
+    return static_cast<unsigned>( screenAvailableRect( m_frame->view() ).height() );
 }
 
 unsigned Screen::availWidth() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    return static_cast<unsigned>(screenAvailableRect(m_frame->view()).width());
+    }
+
+    return static_cast<unsigned>( screenAvailableRect( m_frame->view() ).width() );
 }
 
 } // namespace WebCore

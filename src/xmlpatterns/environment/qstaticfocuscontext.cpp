@@ -25,12 +25,12 @@
 
 using namespace QPatternist;
 
-StaticFocusContext::StaticFocusContext(const ItemType::Ptr &t, const StaticContext::Ptr &context)
-   : DelegatingStaticContext(context), m_contextItemType(t)
+StaticFocusContext::StaticFocusContext( const ItemType::Ptr &t, const StaticContext::Ptr &context )
+    : DelegatingStaticContext( context ), m_contextItemType( t )
 {
 }
 
 ItemType::Ptr StaticFocusContext::contextItemType() const
 {
-   return m_contextItemType;
+    return m_contextItemType;
 }

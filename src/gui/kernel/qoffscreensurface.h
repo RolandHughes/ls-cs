@@ -33,47 +33,47 @@ class QScreen;
 
 class Q_GUI_EXPORT QOffscreenSurface : public QObject, public QSurface
 {
-   GUI_CS_OBJECT_MULTIPLE(QOffscreenSurface, QObject)
+    GUI_LSCS_OBJECT_MULTIPLE( QOffscreenSurface, QObject )
 
- public:
-   explicit QOffscreenSurface(QScreen *screen = nullptr);
+public:
+    explicit QOffscreenSurface( QScreen *screen = nullptr );
 
-   QOffscreenSurface(const QOffscreenSurface &) = delete;
-   QOffscreenSurface &operator=(const QOffscreenSurface &) = delete;
+    QOffscreenSurface( const QOffscreenSurface & ) = delete;
+    QOffscreenSurface &operator=( const QOffscreenSurface & ) = delete;
 
-   virtual ~QOffscreenSurface();
+    virtual ~QOffscreenSurface();
 
-   SurfaceType surfaceType() const override;
+    SurfaceType surfaceType() const override;
 
-   void create();
-   void destroy();
+    void create();
+    void destroy();
 
-   bool isValid() const;
+    bool isValid() const;
 
-   void setFormat(const QSurfaceFormat &format);
-   QSurfaceFormat format() const override;
-   QSurfaceFormat requestedFormat() const;
+    void setFormat( const QSurfaceFormat &format );
+    QSurfaceFormat format() const override;
+    QSurfaceFormat requestedFormat() const;
 
-   QSize size() const override;
+    QSize size() const override;
 
-   QScreen *screen() const;
-   void setScreen(QScreen *screen);
+    QScreen *screen() const;
+    void setScreen( QScreen *screen );
 
-   QPlatformOffscreenSurface *handle() const;
+    QPlatformOffscreenSurface *handle() const;
 
-   GUI_CS_SIGNAL_1(Public, void screenChanged(QScreen *screen))
-   GUI_CS_SIGNAL_2(screenChanged, screen)
+    GUI_LSCS_SIGNAL_1( Public, void screenChanged( QScreen *screen ) )
+    GUI_LSCS_SIGNAL_2( screenChanged, screen )
 
- protected:
-   QScopedPointer<QOffscreenSurfacePrivate> d_ptr;
+protected:
+    QScopedPointer<QOffscreenSurfacePrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QOffscreenSurface)
+private:
+    Q_DECLARE_PRIVATE( QOffscreenSurface )
 
-   QPlatformSurface *surfaceHandle() const override;
+    QPlatformSurface *surfaceHandle() const override;
 
-   GUI_CS_SLOT_1(Private, void screenDestroyed(QObject *screen))
-   GUI_CS_SLOT_2(screenDestroyed)
+    GUI_LSCS_SLOT_1( Private, void screenDestroyed( QObject *screen ) )
+    GUI_LSCS_SLOT_2( screenDestroyed )
 };
 
 #endif

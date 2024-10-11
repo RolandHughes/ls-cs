@@ -44,179 +44,205 @@
 #include <d3d9.h>
 
 template <typename T, typename U>
-std::enable_if_t<sizeof(T) == sizeof(U) &&
-   std::is_trivially_copyable_v<T> && std::is_trivially_copyable_v<U>, T>
-cs_bitCast(const U &input) noexcept
+std::enable_if_t<sizeof( T ) == sizeof( U ) &&
+std::is_trivially_copyable_v<T> &&std::is_trivially_copyable_v<U>, T> lscs_bitCast( const U &input ) noexcept
 {
-   static_assert(std::is_trivially_constructible_v<T>);
+    static_assert( std::is_trivially_constructible_v<T> );
 
-   T retval;
-   std::memcpy(&retval, &input, sizeof(U));
+    T retval;
+    std::memcpy( &retval, &input, sizeof( U ) );
 
-   return retval;
+    return retval;
 }
 
 GpuDescription GpuDescription::detect()
 {
-   typedef IDirect3D9 * (WINAPI * PtrDirect3DCreate9)(UINT);
+    typedef IDirect3D9 * ( WINAPI * PtrDirect3DCreate9 )( UINT );
 
-   GpuDescription result;
-   QSystemLibrary d3d9lib(QString("d3d9"));
-   if (!d3d9lib.load()) {
-      return result;
-   }
-   PtrDirect3DCreate9 direct3DCreate9 = (PtrDirect3DCreate9)d3d9lib.resolve("Direct3DCreate9");
-   if (!direct3DCreate9) {
-      return result;
-   }
-   IDirect3D9 *direct3D9 = direct3DCreate9(D3D_SDK_VERSION);
-   if (!direct3D9) {
-      return result;
-   }
+    GpuDescription result;
+    QSystemLibrary d3d9lib( QString( "d3d9" ) );
 
-   D3DADAPTER_IDENTIFIER9 adapterIdentifier;
-   const HRESULT hr = direct3D9->GetAdapterIdentifier(0, 0, &adapterIdentifier);
-   direct3D9->Release();
+    if ( !d3d9lib.load() )
+    {
+        return result;
+    }
 
-   if (SUCCEEDED(hr)) {
-      result.vendorId = adapterIdentifier.VendorId;
-      result.deviceId = adapterIdentifier.DeviceId;
-      result.revision = adapterIdentifier.Revision;
-      result.subSysId = adapterIdentifier.SubSysId;
-      QVector<int> version(4, 0);
-      version[0] = HIWORD(adapterIdentifier.DriverVersion.HighPart); // Product
-      version[1] = LOWORD(adapterIdentifier.DriverVersion.HighPart); // Version
-      version[2] = HIWORD(adapterIdentifier.DriverVersion.LowPart); // Sub version
-      version[3] = LOWORD(adapterIdentifier.DriverVersion.LowPart); // build
-      result.driverVersion = QVersionNumber(version);
-      result.driverName = adapterIdentifier.Driver;
-      result.description = adapterIdentifier.Description;
-   }
+    PtrDirect3DCreate9 direct3DCreate9 = ( PtrDirect3DCreate9 )d3d9lib.resolve( "Direct3DCreate9" );
 
-   return result;
+    if ( !direct3DCreate9 )
+    {
+        return result;
+    }
+
+    IDirect3D9 *direct3D9 = direct3DCreate9( D3D_SDK_VERSION );
+
+    if ( !direct3D9 )
+    {
+        return result;
+    }
+
+    D3DADAPTER_IDENTIFIER9 adapterIdentifier;
+    const HRESULT hr = direct3D9->GetAdapterIdentifier( 0, 0, &adapterIdentifier );
+    direct3D9->Release();
+
+    if ( SUCCEEDED( hr ) )
+    {
+        result.vendorId = adapterIdentifier.VendorId;
+        result.deviceId = adapterIdentifier.DeviceId;
+        result.revision = adapterIdentifier.Revision;
+        result.subSysId = adapterIdentifier.SubSysId;
+        QVector<int> version( 4, 0 );
+        version[0] = HIWORD( adapterIdentifier.DriverVersion.HighPart ); // Product
+        version[1] = LOWORD( adapterIdentifier.DriverVersion.HighPart ); // Version
+        version[2] = HIWORD( adapterIdentifier.DriverVersion.LowPart ); // Sub version
+        version[3] = LOWORD( adapterIdentifier.DriverVersion.LowPart ); // build
+        result.driverVersion = QVersionNumber( version );
+        result.driverName = adapterIdentifier.Driver;
+        result.description = adapterIdentifier.Description;
+    }
+
+    return result;
 }
 
 // Return printable string formatted like the output of the dxdiag tool.
 QString GpuDescription::toString() const
 {
-   QString result;
-   QTextStream str(&result);
+    QString result;
+    QTextStream str( &result );
 
-   str <<   "         Card name: " << description
-      << "\n       Driver Name: " << driverName
-      << "\n    Driver Version: " << driverVersion.toString()
-      << "\n         Vendor ID: 0x" << qSetPadChar(QLatin1Char('0'))
-      << uppercasedigits << hex << qSetFieldWidth(4) << vendorId
-      << "\n         Device ID: 0x" << qSetFieldWidth(4) << deviceId
-      << "\n         SubSys ID: 0x" << qSetFieldWidth(8) << subSysId
-      << "\n       Revision ID: 0x" << qSetFieldWidth(4) << revision
-      << dec;
+    str <<   "         Card name: " << description
+        << "\n       Driver Name: " << driverName
+        << "\n    Driver Version: " << driverVersion.toString()
+        << "\n         Vendor ID: 0x" << qSetPadChar( QLatin1Char( '0' ) )
+        << uppercasedigits << hex << qSetFieldWidth( 4 ) << vendorId
+        << "\n         Device ID: 0x" << qSetFieldWidth( 4 ) << deviceId
+        << "\n         SubSys ID: 0x" << qSetFieldWidth( 8 ) << subSysId
+        << "\n       Revision ID: 0x" << qSetFieldWidth( 4 ) << revision
+        << dec;
 
-   return result;
+    return result;
 }
 
 QVariant GpuDescription::toVariant() const
 {
-   QVariantMap result;
+    QVariantMap result;
 
-   result.insert(QString("vendorId"), QVariant(vendorId));
-   result.insert(QString("deviceId"), QVariant(deviceId));
-   result.insert(QString("subSysId"), QVariant(subSysId));
-   result.insert(QString("revision"), QVariant(revision));
-   result.insert(QString("driver"), QVariant(QLatin1String(driverName)));
-   result.insert(QString("driverProduct"), QVariant(driverVersion.segmentAt(0)));
-   result.insert(QString("driverVersion"), QVariant(driverVersion.segmentAt(1)));
-   result.insert(QString("driverSubVersion"), QVariant(driverVersion.segmentAt(2)));
-   result.insert(QString("driverBuild"), QVariant(driverVersion.segmentAt(3)));
-   result.insert(QString("driverVersionString"), driverVersion.toString());
-   result.insert(QString("description"), QVariant(QLatin1String(description)));
-   result.insert(QString("printable"), QVariant(toString()));
+    result.insert( QString( "vendorId" ), QVariant( vendorId ) );
+    result.insert( QString( "deviceId" ), QVariant( deviceId ) );
+    result.insert( QString( "subSysId" ), QVariant( subSysId ) );
+    result.insert( QString( "revision" ), QVariant( revision ) );
+    result.insert( QString( "driver" ), QVariant( QLatin1String( driverName ) ) );
+    result.insert( QString( "driverProduct" ), QVariant( driverVersion.segmentAt( 0 ) ) );
+    result.insert( QString( "driverVersion" ), QVariant( driverVersion.segmentAt( 1 ) ) );
+    result.insert( QString( "driverSubVersion" ), QVariant( driverVersion.segmentAt( 2 ) ) );
+    result.insert( QString( "driverBuild" ), QVariant( driverVersion.segmentAt( 3 ) ) );
+    result.insert( QString( "driverVersionString" ), driverVersion.toString() );
+    result.insert( QString( "description" ), QVariant( QLatin1String( description ) ) );
+    result.insert( QString( "printable" ), QVariant( toString() ) );
 
-   return result;
+    return result;
 }
 
 QWindowsOpenGLTester::Renderer QWindowsOpenGLTester::requestedGlesRenderer()
 {
-   const char platformVar[] = "QT_ANGLE_PLATFORM";
-   const QByteArray anglePlatform = qgetenv(platformVar);
+    const char platformVar[] = "QT_ANGLE_PLATFORM";
+    const QByteArray anglePlatform = qgetenv( platformVar );
 
-   if (! anglePlatform.isEmpty()) {
+    if ( ! anglePlatform.isEmpty() )
+    {
 
-      if (anglePlatform == "d3d11") {
-         return QWindowsOpenGLTester::AngleRendererD3d11;
-      }
-      if (anglePlatform == "d3d9") {
-         return QWindowsOpenGLTester::AngleRendererD3d9;
-      }
-      if (anglePlatform == "warp") {
-         return QWindowsOpenGLTester::AngleRendererD3d11Warp;
-      }
+        if ( anglePlatform == "d3d11" )
+        {
+            return QWindowsOpenGLTester::AngleRendererD3d11;
+        }
 
-      qWarning() << "Invalid value set for " << platformVar << ": " << anglePlatform;
-   }
+        if ( anglePlatform == "d3d9" )
+        {
+            return QWindowsOpenGLTester::AngleRendererD3d9;
+        }
 
-   return QWindowsOpenGLTester::InvalidRenderer;
+        if ( anglePlatform == "warp" )
+        {
+            return QWindowsOpenGLTester::AngleRendererD3d11Warp;
+        }
+
+        qWarning() << "Invalid value set for " << platformVar << ": " << anglePlatform;
+    }
+
+    return QWindowsOpenGLTester::InvalidRenderer;
 }
 
 QWindowsOpenGLTester::Renderer QWindowsOpenGLTester::requestedRenderer()
 {
-   const char openGlVar[] = "QT_OPENGL";
+    const char openGlVar[] = "QT_OPENGL";
 
-   if (QCoreApplication::testAttribute(Qt::AA_UseOpenGLES)) {
-      const Renderer glesRenderer = QWindowsOpenGLTester::requestedGlesRenderer();
-      return glesRenderer != InvalidRenderer ? glesRenderer : Gles;
-   }
+    if ( QCoreApplication::testAttribute( Qt::AA_UseOpenGLES ) )
+    {
+        const Renderer glesRenderer = QWindowsOpenGLTester::requestedGlesRenderer();
+        return glesRenderer != InvalidRenderer ? glesRenderer : Gles;
+    }
 
-   if (QCoreApplication::testAttribute(Qt::AA_UseDesktopOpenGL)) {
-      return QWindowsOpenGLTester::DesktopGl;
-   }
+    if ( QCoreApplication::testAttribute( Qt::AA_UseDesktopOpenGL ) )
+    {
+        return QWindowsOpenGLTester::DesktopGl;
+    }
 
-   if (QCoreApplication::testAttribute(Qt::AA_UseSoftwareOpenGL)) {
-      return QWindowsOpenGLTester::SoftwareRasterizer;
-   }
+    if ( QCoreApplication::testAttribute( Qt::AA_UseSoftwareOpenGL ) )
+    {
+        return QWindowsOpenGLTester::SoftwareRasterizer;
+    }
 
-   const QByteArray requested = qgetenv(openGlVar);
+    const QByteArray requested = qgetenv( openGlVar );
 
-   if (! requested.isEmpty()) {
+    if ( ! requested.isEmpty() )
+    {
 
-      if (requested == "angle") {
-         const Renderer glesRenderer = QWindowsOpenGLTester::requestedGlesRenderer();
-         return glesRenderer != InvalidRenderer ? glesRenderer : Gles;
-      }
+        if ( requested == "angle" )
+        {
+            const Renderer glesRenderer = QWindowsOpenGLTester::requestedGlesRenderer();
+            return glesRenderer != InvalidRenderer ? glesRenderer : Gles;
+        }
 
-      if (requested == "desktop") {
-         return QWindowsOpenGLTester::DesktopGl;
-      }
-      if (requested == "software") {
-         return QWindowsOpenGLTester::SoftwareRasterizer;
-      }
+        if ( requested == "desktop" )
+        {
+            return QWindowsOpenGLTester::DesktopGl;
+        }
 
-      qWarning() << "Invalid value set for " << openGlVar << ": " << requested;
-   }
+        if ( requested == "software" )
+        {
+            return QWindowsOpenGLTester::SoftwareRasterizer;
+        }
 
-   return QWindowsOpenGLTester::InvalidRenderer;
+        qWarning() << "Invalid value set for " << openGlVar << ": " << requested;
+    }
+
+    return QWindowsOpenGLTester::InvalidRenderer;
 }
 
-static inline QString resolveBugListFile(const QString &fileName)
+static inline QString resolveBugListFile( const QString &fileName )
 {
-   if (QFileInfo(fileName).isAbsolute()) {
-      return fileName;
-   }
+    if ( QFileInfo( fileName ).isAbsolute() )
+    {
+        return fileName;
+    }
 
-   // Try QLibraryInfo::SettingsPath which is typically empty unless specified in qt.conf,
-   // then resolve via QStandardPaths::ConfigLocation.
-   const QString settingsPath = QLibraryInfo::location(QLibraryInfo::SettingsPath);
+    // Try QLibraryInfo::SettingsPath which is typically empty unless specified in qt.conf,
+    // then resolve via QStandardPaths::ConfigLocation.
+    const QString settingsPath = QLibraryInfo::location( QLibraryInfo::SettingsPath );
 
-   if (!settingsPath.isEmpty()) {
-      // SettingsPath is empty unless specified in cs.conf
+    if ( !settingsPath.isEmpty() )
+    {
+        // SettingsPath is empty unless specified in cs.conf
 
-      const QFileInfo fi(settingsPath + QChar('/') + fileName);
-      if (fi.isFile()) {
-         return fi.absoluteFilePath();
-      }
-   }
+        const QFileInfo fi( settingsPath + QChar( '/' ) + fileName );
 
-   return QStandardPaths::locate(QStandardPaths::ConfigLocation, fileName);
+        if ( fi.isFile() )
+        {
+            return fi.absoluteFilePath();
+        }
+    }
+
+    return QStandardPaths::locate( QStandardPaths::ConfigLocation, fileName );
 }
 
 #ifndef QT_NO_OPENGL
@@ -225,270 +251,316 @@ using SupportedRenderersCache = QHash<QOpenGLConfig::Gpu, QWindowsOpenGLTester::
 
 static SupportedRenderersCache *supportedRenderersCache()
 {
-   static SupportedRenderersCache retval;
-   return &retval;
+    static SupportedRenderersCache retval;
+    return &retval;
 }
 
 #endif
 
-QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::detectSupportedRenderers(const GpuDescription &gpu, bool glesOnly)
+QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::detectSupportedRenderers( const GpuDescription &gpu, bool glesOnly )
 {
 #if defined(QT_NO_OPENGL)
-   return Qt::EmptyFlag;
+    return Qt::EmptyFlag;
 
 #else
-   QOpenGLConfig::Gpu qgpu = QOpenGLConfig::Gpu::fromDevice(gpu.vendorId, gpu.deviceId, gpu.driverVersion, gpu.description);
-   SupportedRenderersCache *srCache = supportedRenderersCache();
+    QOpenGLConfig::Gpu qgpu = QOpenGLConfig::Gpu::fromDevice( gpu.vendorId, gpu.deviceId, gpu.driverVersion, gpu.description );
+    SupportedRenderersCache *srCache = supportedRenderersCache();
 
-   SupportedRenderersCache::const_iterator iter = srCache->find(qgpu);
+    SupportedRenderersCache::const_iterator iter = srCache->find( qgpu );
 
-   if (iter != srCache->cend()) {
-      return *iter;
-   }
+    if ( iter != srCache->cend() )
+    {
+        return *iter;
+    }
 
-   QWindowsOpenGLTester::Renderers result(QWindowsOpenGLTester::AngleRendererD3d11
-      | QWindowsOpenGLTester::AngleRendererD3d9
-      | QWindowsOpenGLTester::AngleRendererD3d11Warp
-      | QWindowsOpenGLTester::SoftwareRasterizer);
+    QWindowsOpenGLTester::Renderers result( QWindowsOpenGLTester::AngleRendererD3d11
+                                            | QWindowsOpenGLTester::AngleRendererD3d9
+                                            | QWindowsOpenGLTester::AngleRendererD3d11Warp
+                                            | QWindowsOpenGLTester::SoftwareRasterizer );
 
-   if (! glesOnly && testDesktopGL()) {
-      result |= QWindowsOpenGLTester::DesktopGl;
-   }
+    if ( ! glesOnly && testDesktopGL() )
+    {
+        result |= QWindowsOpenGLTester::DesktopGl;
+    }
 
-   QSet<QString> features;
-   const char bugListFileVar[] = "QT_OPENGL_BUGLIST";
+    QSet<QString> features;
+    const char bugListFileVar[] = "QT_OPENGL_BUGLIST";
 
-   QByteArray bugList = qgetenv(bugListFileVar);
+    QByteArray bugList = qgetenv( bugListFileVar );
 
-   if (! bugList.isEmpty()) {
-      const QString fileName = resolveBugListFile(QFile::decodeName(bugList));
+    if ( ! bugList.isEmpty() )
+    {
+        const QString fileName = resolveBugListFile( QFile::decodeName( bugList ) );
 
-      if (! fileName.isEmpty()) {
-         features = QOpenGLConfig::gpuFeatures(qgpu, fileName);
-      }
-   }
+        if ( ! fileName.isEmpty() )
+        {
+            features = QOpenGLConfig::gpuFeatures( qgpu, fileName );
+        }
+    }
 
-   if (features.contains("disable_desktopgl")) {
-      result &= ~QWindowsOpenGLTester::DesktopGl;
-   }
+    if ( features.contains( "disable_desktopgl" ) )
+    {
+        result &= ~QWindowsOpenGLTester::DesktopGl;
+    }
 
-   if (features.contains("disable_angle")) {
-      result &= ~QWindowsOpenGLTester::GlesMask;
+    if ( features.contains( "disable_angle" ) )
+    {
+        result &= ~QWindowsOpenGLTester::GlesMask;
 
-   } else {
-      if (features.contains("disable_d3d11")) {
-         // standard keyword
-         result &= ~QWindowsOpenGLTester::AngleRendererD3d11;
-      }
+    }
+    else
+    {
+        if ( features.contains( "disable_d3d11" ) )
+        {
+            // standard keyword
+            result &= ~QWindowsOpenGLTester::AngleRendererD3d11;
+        }
 
-      if (features.contains("disable_d3d9")) {
-         result &= ~QWindowsOpenGLTester::AngleRendererD3d9;
-      }
-   }
+        if ( features.contains( "disable_d3d9" ) )
+        {
+            result &= ~QWindowsOpenGLTester::AngleRendererD3d9;
+        }
+    }
 
-   if (features.contains("disable_rotation")) {
-      result |= DisableRotationFlag;
-   }
+    if ( features.contains( "disable_rotation" ) )
+    {
+        result |= DisableRotationFlag;
+    }
 
-   srCache->insert(qgpu, result);
+    srCache->insert( qgpu, result );
 
-   return result;
+    return result;
 #endif
 }
 
 QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::supportedGlesRenderers()
 {
-   const GpuDescription gpu = GpuDescription::detect();
-   const QWindowsOpenGLTester::Renderers result = detectSupportedRenderers(gpu, true);
+    const GpuDescription gpu = GpuDescription::detect();
+    const QWindowsOpenGLTester::Renderers result = detectSupportedRenderers( gpu, true );
 
-   return result;
+    return result;
 }
 
 QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::supportedRenderers()
 {
-   const GpuDescription gpu = GpuDescription::detect();
-   const QWindowsOpenGLTester::Renderers result = detectSupportedRenderers(gpu, false);
+    const GpuDescription gpu = GpuDescription::detect();
+    const QWindowsOpenGLTester::Renderers result = detectSupportedRenderers( gpu, false );
 
-   return result;
+    return result;
 }
 
 bool QWindowsOpenGLTester::testDesktopGL()
 {
 #if ! defined(QT_NO_OPENGL)
-   HMODULE lib = nullptr;
-   HWND wnd = nullptr;
-   HDC dc   = nullptr;
-   HGLRC context = nullptr;
+    HMODULE lib = nullptr;
+    HWND wnd = nullptr;
+    HDC dc   = nullptr;
+    HGLRC context = nullptr;
 
-   LPCTSTR className = L"qtopengltest";
+    LPCTSTR className = L"qtopengltest";
 
-   HGLRC (WINAPI * CreateContext)(HDC dc) = nullptr;
-   BOOL (WINAPI * DeleteContext)(HGLRC context) = nullptr;
-   BOOL (WINAPI * MakeCurrent)(HDC dc, HGLRC context) = nullptr;
-   PROC (WINAPI * WGL_GetProcAddress)(LPCSTR name) = nullptr;
+    HGLRC ( WINAPI * CreateContext )( HDC dc ) = nullptr;
+    BOOL ( WINAPI * DeleteContext )( HGLRC context ) = nullptr;
+    BOOL ( WINAPI * MakeCurrent )( HDC dc, HGLRC context ) = nullptr;
+    PROC ( WINAPI * WGL_GetProcAddress )( LPCSTR name ) = nullptr;
 
-   bool result = false;
+    bool result = false;
 
-   // Test #1: Load opengl32.dll and try to resolve an OpenGL 2 function.
-   // This will typically fail on systems that do not have a real OpenGL driver.
-   lib = LoadLibraryA("opengl32.dll");
+    // Test #1: Load opengl32.dll and try to resolve an OpenGL 2 function.
+    // This will typically fail on systems that do not have a real OpenGL driver.
+    lib = LoadLibraryA( "opengl32.dll" );
 
-   if (lib) {
-      CreateContext = cs_bitCast<HGLRC (WINAPI *)(HDC)>(::GetProcAddress(lib, "wglCreateContext"));
-      if (!CreateContext) {
-         goto cleanup;
-      }
+    if ( lib )
+    {
+        CreateContext = lscs_bitCast<HGLRC ( WINAPI * )( HDC )>( ::GetProcAddress( lib, "wglCreateContext" ) );
 
-      DeleteContext = cs_bitCast<BOOL (WINAPI *)(HGLRC)>(::GetProcAddress(lib, "wglDeleteContext"));
-      if (!DeleteContext) {
-         goto cleanup;
-      }
+        if ( !CreateContext )
+        {
+            goto cleanup;
+        }
 
-      MakeCurrent = cs_bitCast<BOOL (WINAPI *)(HDC, HGLRC)>(::GetProcAddress(lib, "wglMakeCurrent"));
-      if (!MakeCurrent) {
-         goto cleanup;
-      }
+        DeleteContext = lscs_bitCast<BOOL ( WINAPI * )( HGLRC )>( ::GetProcAddress( lib, "wglDeleteContext" ) );
 
-      WGL_GetProcAddress = cs_bitCast<PROC (WINAPI *)(LPCSTR)>(::GetProcAddress(lib, "wglGetProcAddress"));
-      if (!WGL_GetProcAddress) {
-         goto cleanup;
-      }
+        if ( !DeleteContext )
+        {
+            goto cleanup;
+        }
 
-      WNDCLASS wclass;
-      wclass.cbClsExtra    = 0;
-      wclass.cbWndExtra    = 0;
-      wclass.hInstance     = static_cast<HINSTANCE>(GetModuleHandle(nullptr));
-      wclass.hIcon         = nullptr;
-      wclass.hCursor       = nullptr;
-      wclass.hbrBackground = HBRUSH(COLOR_BACKGROUND);
-      wclass.lpszMenuName  = nullptr;
-      wclass.lpfnWndProc   = DefWindowProc;
-      wclass.lpszClassName = className;
-      wclass.style = CS_OWNDC;
+        MakeCurrent = lscs_bitCast<BOOL ( WINAPI * )( HDC, HGLRC )>( ::GetProcAddress( lib, "wglMakeCurrent" ) );
 
-      if (!RegisterClass(&wclass)) {
-         goto cleanup;
-      }
+        if ( !MakeCurrent )
+        {
+            goto cleanup;
+        }
 
-      wnd = CreateWindow(className, L"qtopenglproxytest", WS_OVERLAPPED,
-            0, 0, 640, 480, nullptr, nullptr, wclass.hInstance, nullptr);
+        WGL_GetProcAddress = lscs_bitCast<PROC ( WINAPI * )( LPCSTR )>( ::GetProcAddress( lib, "wglGetProcAddress" ) );
 
-      if (! wnd) {
-         goto cleanup;
-      }
+        if ( !WGL_GetProcAddress )
+        {
+            goto cleanup;
+        }
 
-      dc = GetDC(wnd);
-      if (! dc) {
-         goto cleanup;
-      }
+        WNDCLASS wclass;
+        wclass.cbClsExtra    = 0;
+        wclass.cbWndExtra    = 0;
+        wclass.hInstance     = static_cast<HINSTANCE>( GetModuleHandle( nullptr ) );
+        wclass.hIcon         = nullptr;
+        wclass.hCursor       = nullptr;
+        wclass.hbrBackground = HBRUSH( COLOR_BACKGROUND );
+        wclass.lpszMenuName  = nullptr;
+        wclass.lpfnWndProc   = DefWindowProc;
+        wclass.lpszClassName = className;
+        wclass.style = LSCS_OWNDC;
 
-      PIXELFORMATDESCRIPTOR pfd;
-      memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
+        if ( !RegisterClass( &wclass ) )
+        {
+            goto cleanup;
+        }
 
-      pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
-      pfd.nVersion = 1;
-      pfd.dwFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_GENERIC_FORMAT;
-      pfd.iPixelType = PFD_TYPE_RGBA;
+        wnd = CreateWindow( className, L"qtopenglproxytest", WS_OVERLAPPED,
+                            0, 0, 640, 480, nullptr, nullptr, wclass.hInstance, nullptr );
 
-      // Use the GDI functions. Under the hood this will call the wgl variants in opengl32.dll.
-      int pixelFormat = ChoosePixelFormat(dc, &pfd);
+        if ( ! wnd )
+        {
+            goto cleanup;
+        }
 
-      if (! pixelFormat) {
-         goto cleanup;
-      }
+        dc = GetDC( wnd );
 
-      if (! SetPixelFormat(dc, pixelFormat, &pfd)) {
-         goto cleanup;
-      }
+        if ( ! dc )
+        {
+            goto cleanup;
+        }
 
-      context = CreateContext(dc);
-      if (! context) {
-         goto cleanup;
-      }
+        PIXELFORMATDESCRIPTOR pfd;
+        memset( &pfd, 0, sizeof( PIXELFORMATDESCRIPTOR ) );
 
-      if (! MakeCurrent(dc, context)) {
-         goto cleanup;
-      }
+        pfd.nSize = sizeof( PIXELFORMATDESCRIPTOR );
+        pfd.nVersion = 1;
+        pfd.dwFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_GENERIC_FORMAT;
+        pfd.iPixelType = PFD_TYPE_RGBA;
 
-      // Check the version, if it is 1.x then stop
-      typedef const GLubyte * (APIENTRY * GetString_t)(GLenum name);
-      GetString_t GetString = cs_bitCast<GetString_t>(::GetProcAddress(lib, "glGetString"));
+        // Use the GDI functions. Under the hood this will call the wgl variants in opengl32.dll.
+        int pixelFormat = ChoosePixelFormat( dc, &pfd );
 
-      if (GetString != nullptr) {
-         if (const char *versionStr = reinterpret_cast<const char *>(GetString(GL_VERSION))) {
-            const QByteArray version(versionStr);
-            const int majorDot = version.indexOf('.');
+        if ( ! pixelFormat )
+        {
+            goto cleanup;
+        }
 
-            if (majorDot != -1) {
-               int minorDot = version.indexOf('.', majorDot + 1);
+        if ( ! SetPixelFormat( dc, pixelFormat, &pfd ) )
+        {
+            goto cleanup;
+        }
 
-               if (minorDot == -1) {
-                  minorDot = version.size();
-               }
+        context = CreateContext( dc );
 
-               const int major = version.mid(0, majorDot).toInt();
-               const int minor = version.mid(majorDot + 1, minorDot - majorDot - 1).toInt();
+        if ( ! context )
+        {
+            goto cleanup;
+        }
 
-               if (major == 1) {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-                  qDebug("QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported");
+        if ( ! MakeCurrent( dc, context ) )
+        {
+            goto cleanup;
+        }
+
+        // Check the version, if it is 1.x then stop
+        typedef const GLubyte * ( APIENTRY * GetString_t )( GLenum name );
+        GetString_t GetString = lscs_bitCast<GetString_t>( ::GetProcAddress( lib, "glGetString" ) );
+
+        if ( GetString != nullptr )
+        {
+            if ( const char *versionStr = reinterpret_cast<const char *>( GetString( GL_VERSION ) ) )
+            {
+                const QByteArray version( versionStr );
+                const int majorDot = version.indexOf( '.' );
+
+                if ( majorDot != -1 )
+                {
+                    int minorDot = version.indexOf( '.', majorDot + 1 );
+
+                    if ( minorDot == -1 )
+                    {
+                        minorDot = version.size();
+                    }
+
+                    const int major = version.mid( 0, majorDot ).toInt();
+                    const int minor = version.mid( majorDot + 1, minorDot - majorDot - 1 ).toInt();
+
+                    if ( major == 1 )
+                    {
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+                        qDebug( "QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported" );
 #endif
 
-                  result = false;
+                        result = false;
 
-               } else {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-                  qDebug("QWindowsOpenGLTester::testDesktopGL() OpenGL version %d.%d", major, minor);
+                    }
+                    else
+                    {
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+                        qDebug( "QWindowsOpenGLTester::testDesktopGL() OpenGL version %d.%d", major, minor );
 #endif
-               }
+                    }
+                }
             }
-         }
 
-      } else {
-         // "glGetString" was added in version 2
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-         qDebug("QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported");
+        }
+        else
+        {
+            // "glGetString" was added in version 2
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+            qDebug( "QWindowsOpenGLTester::testDesktopGL() OpenGL version 1.x is unsupported" );
 #endif
 
-         result = false;
-      }
+            result = false;
+        }
 
-      // Check for a shader specific function
-      if (result || WGL_GetProcAddress("glCreateShader")) {
-         result = true;
-      }
+        // Check for a shader specific function
+        if ( result || WGL_GetProcAddress( "glCreateShader" ) )
+        {
+            result = true;
+        }
 
-   } else {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-         qDebug("QWindowsOpenGLTester::testDesktopGL() Failed to load opengl32.dll");
+    }
+    else
+    {
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+        qDebug( "QWindowsOpenGLTester::testDesktopGL() Failed to load opengl32.dll" );
 #endif
 
-   }
+    }
 
 cleanup:
-   if (MakeCurrent) {
-      MakeCurrent(nullptr, nullptr);
-   }
 
-   if (context) {
-      DeleteContext(context);
-   }
+    if ( MakeCurrent )
+    {
+        MakeCurrent( nullptr, nullptr );
+    }
 
-   if (dc && wnd) {
-      ReleaseDC(wnd, dc);
-   }
+    if ( context )
+    {
+        DeleteContext( context );
+    }
 
-   if (wnd) {
-      DestroyWindow(wnd);
-      UnregisterClass(className, GetModuleHandle(nullptr));
-   }
+    if ( dc && wnd )
+    {
+        ReleaseDC( wnd, dc );
+    }
 
-   // No calls to FreeLibrary, some implementations like Mesa in particular deadlock when trying to unload
+    if ( wnd )
+    {
+        DestroyWindow( wnd );
+        UnregisterClass( className, GetModuleHandle( nullptr ) );
+    }
 
-   return result;
+    // No calls to FreeLibrary, some implementations like Mesa in particular deadlock when trying to unload
+
+    return result;
 
 #else
-   return false;
+    return false;
 
 #endif
 }

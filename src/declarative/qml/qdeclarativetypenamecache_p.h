@@ -34,55 +34,58 @@ class QDeclarativeType;
 class QDeclarativeEngine;
 class QDeclarativeTypeNameCache : public QDeclarativeRefCount, public QDeclarativeCleanup
 {
- public:
-   QDeclarativeTypeNameCache(QDeclarativeEngine *);
-   virtual ~QDeclarativeTypeNameCache();
+public:
+    QDeclarativeTypeNameCache( QDeclarativeEngine * );
+    virtual ~QDeclarativeTypeNameCache();
 
-   struct Data {
-      inline Data();
-      inline ~Data();
-      QDeclarativeType *type;
-      QDeclarativeTypeNameCache *typeNamespace;
-      int importedScriptIndex;
-   };
+    struct Data
+    {
+        inline Data();
+        inline ~Data();
+        QDeclarativeType *type;
+        QDeclarativeTypeNameCache *typeNamespace;
+        int importedScriptIndex;
+    };
 
-   void add(const QString &, int);
-   void add(const QString &, QDeclarativeType *);
-   void add(const QString &, QDeclarativeTypeNameCache *);
+    void add( const QString &, int );
+    void add( const QString &, QDeclarativeType * );
+    void add( const QString &, QDeclarativeTypeNameCache * );
 
-   Data *data(const QString &) const;
-   inline Data *data(const QScriptDeclarativeClass::Identifier &id) const;
+    Data *data( const QString & ) const;
+    inline Data *data( const QScriptDeclarativeClass::Identifier &id ) const;
 
- protected:
-   virtual void clear();
+protected:
+    virtual void clear();
 
- private:
-   struct RData : public Data {
-      QScriptDeclarativeClass::PersistentIdentifier identifier;
-   };
-   typedef QHash<QString, RData *> StringCache;
-   typedef QHash<QScriptDeclarativeClass::Identifier, RData *> IdentifierCache;
+private:
+    struct RData : public Data
+    {
+        QScriptDeclarativeClass::PersistentIdentifier identifier;
+    };
+    typedef QHash<QString, RData *> StringCache;
+    typedef QHash<QScriptDeclarativeClass::Identifier, RData *> IdentifierCache;
 
-   StringCache stringCache;
-   IdentifierCache identifierCache;
-   QDeclarativeEngine *engine;
+    StringCache stringCache;
+    IdentifierCache identifierCache;
+    QDeclarativeEngine *engine;
 };
 
 QDeclarativeTypeNameCache::Data::Data()
-   : type(0), typeNamespace(0), importedScriptIndex(-1)
+    : type( 0 ), typeNamespace( 0 ), importedScriptIndex( -1 )
 {
 }
 
 QDeclarativeTypeNameCache::Data::~Data()
 {
-   if (typeNamespace) {
-      typeNamespace->release();
-   }
+    if ( typeNamespace )
+    {
+        typeNamespace->release();
+    }
 }
 
-QDeclarativeTypeNameCache::Data *QDeclarativeTypeNameCache::data(const QScriptDeclarativeClass::Identifier &id) const
+QDeclarativeTypeNameCache::Data *QDeclarativeTypeNameCache::data( const QScriptDeclarativeClass::Identifier &id ) const
 {
-   return identifierCache.value(id);
+    return identifierCache.value( id );
 }
 
 QT_END_NAMESPACE

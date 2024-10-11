@@ -31,116 +31,132 @@
 
 class QGLBufferPrivate
 {
- public:
-   QGLBufferPrivate(QGLBuffer::Type t)
-      : ref(1), type(t), guard(nullptr), usagePattern(QGLBuffer::StaticDraw),
-        actualUsagePattern(QGLBuffer::StaticDraw), funcs(nullptr) {
-   }
+public:
+    QGLBufferPrivate( QGLBuffer::Type t )
+        : ref( 1 ), type( t ), guard( nullptr ), usagePattern( QGLBuffer::StaticDraw ),
+          actualUsagePattern( QGLBuffer::StaticDraw ), funcs( nullptr )
+    {
+    }
 
-   QAtomicInt ref;
-   QGLBuffer::Type type;
-   QGLSharedResourceGuardBase *guard;
-   QGLBuffer::UsagePattern usagePattern;
-   QGLBuffer::UsagePattern actualUsagePattern;
-   QOpenGLExtensions *funcs;
+    QAtomicInt ref;
+    QGLBuffer::Type type;
+    QGLSharedResourceGuardBase *guard;
+    QGLBuffer::UsagePattern usagePattern;
+    QGLBuffer::UsagePattern actualUsagePattern;
+    QOpenGLExtensions *funcs;
 };
 
 QGLBuffer::QGLBuffer()
-   : d_ptr(new QGLBufferPrivate(QGLBuffer::VertexBuffer))
+    : d_ptr( new QGLBufferPrivate( QGLBuffer::VertexBuffer ) )
 {
 }
 
-QGLBuffer::QGLBuffer(QGLBuffer::Type type)
-   : d_ptr(new QGLBufferPrivate(type))
+QGLBuffer::QGLBuffer( QGLBuffer::Type type )
+    : d_ptr( new QGLBufferPrivate( type ) )
 {
 }
 
-QGLBuffer::QGLBuffer(const QGLBuffer &other)
-   : d_ptr(other.d_ptr)
+QGLBuffer::QGLBuffer( const QGLBuffer &other )
+    : d_ptr( other.d_ptr )
 {
-   d_ptr->ref.ref();
+    d_ptr->ref.ref();
 }
 
 #define ctx QGLContext::currentContext();
 
 QGLBuffer::~QGLBuffer()
 {
-   if (!d_ptr->ref.deref()) {
-      destroy();
-      delete d_ptr;
-   }
+    if ( !d_ptr->ref.deref() )
+    {
+        destroy();
+        delete d_ptr;
+    }
 }
 
-QGLBuffer &QGLBuffer::operator=(const QGLBuffer &other)
+QGLBuffer &QGLBuffer::operator=( const QGLBuffer &other )
 {
-   if (d_ptr != other.d_ptr) {
-      other.d_ptr->ref.ref();
-      if (!d_ptr->ref.deref()) {
-         destroy();
-         delete d_ptr;
-      }
-      d_ptr = other.d_ptr;
-   }
-   return *this;
+    if ( d_ptr != other.d_ptr )
+    {
+        other.d_ptr->ref.ref();
+
+        if ( !d_ptr->ref.deref() )
+        {
+            destroy();
+            delete d_ptr;
+        }
+
+        d_ptr = other.d_ptr;
+    }
+
+    return *this;
 }
 
 QGLBuffer::Type QGLBuffer::type() const
 {
-   Q_D(const QGLBuffer);
-   return d->type;
+    Q_D( const QGLBuffer );
+    return d->type;
 }
 
 QGLBuffer::UsagePattern QGLBuffer::usagePattern() const
 {
-   Q_D(const QGLBuffer);
-   return d->usagePattern;
+    Q_D( const QGLBuffer );
+    return d->usagePattern;
 }
 
-void QGLBuffer::setUsagePattern(QGLBuffer::UsagePattern value)
+void QGLBuffer::setUsagePattern( QGLBuffer::UsagePattern value )
 {
-   Q_D(QGLBuffer);
-   d->usagePattern = d->actualUsagePattern = value;
+    Q_D( QGLBuffer );
+    d->usagePattern = d->actualUsagePattern = value;
 }
 
 #undef ctx
 
-namespace {
-void freeBufferFunc(QGLContext *ctx, GLuint id)
+namespace
 {
-   Q_ASSERT(ctx);
-   ctx->contextHandle()->functions()->glDeleteBuffers(1, &id);
+void freeBufferFunc( QGLContext *ctx, GLuint id )
+{
+    Q_ASSERT( ctx );
+    ctx->contextHandle()->functions()->glDeleteBuffers( 1, &id );
 }
 }
 
 bool QGLBuffer::create()
 {
-   Q_D(QGLBuffer);
+    Q_D( QGLBuffer );
 
-   if (d->guard && d->guard->id()) {
-      return true;
-   }
+    if ( d->guard && d->guard->id() )
+    {
+        return true;
+    }
 
-   QGLContext *ctx = const_cast<QGLContext *>(QGLContext::currentContext());
+    QGLContext *ctx = const_cast<QGLContext *>( QGLContext::currentContext() );
 
-   if (ctx) {
-      delete d->funcs;
-      d->funcs = new QOpenGLExtensions(ctx->contextHandle());
-      if (!d->funcs->hasOpenGLFeature(QOpenGLFunctions::Buffers)) {
-         return false;
-      }
+    if ( ctx )
+    {
+        delete d->funcs;
+        d->funcs = new QOpenGLExtensions( ctx->contextHandle() );
 
-      GLuint bufferId = 0;
-      d->funcs->glGenBuffers(1, &bufferId);
-      if (bufferId) {
-         if (d->guard) {
-            d->guard->free();
-         }
+        if ( !d->funcs->hasOpenGLFeature( QOpenGLFunctions::Buffers ) )
+        {
+            return false;
+        }
 
-         d->guard = createSharedResourceGuard(ctx, bufferId, freeBufferFunc);
-         return true;
-      }
-   }
-   return false;
+        GLuint bufferId = 0;
+        d->funcs->glGenBuffers( 1, &bufferId );
+
+        if ( bufferId )
+        {
+            if ( d->guard )
+            {
+                d->guard->free();
+            }
+
+            d->guard = createSharedResourceGuard( ctx, bufferId, freeBufferFunc );
+            return true;
+        }
+    }
+
+    return false;
 }
 
 #define ctx QGLContext::currentContext()
@@ -152,124 +168,150 @@ bool QGLBuffer::create()
 */
 bool QGLBuffer::isCreated() const
 {
-   Q_D(const QGLBuffer);
-   return d->guard && d->guard->id();
+    Q_D( const QGLBuffer );
+    return d->guard && d->guard->id();
 }
 
 void QGLBuffer::destroy()
 {
-   Q_D(QGLBuffer);
-   if (d->guard) {
-      d->guard->free();
-      d->guard = nullptr;
-   }
+    Q_D( QGLBuffer );
+
+    if ( d->guard )
+    {
+        d->guard->free();
+        d->guard = nullptr;
+    }
 }
 
-bool QGLBuffer::read(int offset, void *data, int count)
+bool QGLBuffer::read( int offset, void *data, int count )
 {
 #if ! defined(QT_OPENGL_ES)
-   Q_D(QGLBuffer);
+    Q_D( QGLBuffer );
 
-   if (! d->funcs->hasOpenGLFeature(QOpenGLFunctions::Buffers) || !d->guard->id()) {
-      return false;
-   }
+    if ( ! d->funcs->hasOpenGLFeature( QOpenGLFunctions::Buffers ) || !d->guard->id() )
+    {
+        return false;
+    }
 
-   while (d->funcs->glGetError() != GL_NO_ERROR) ; // Clear error state.
-   d->funcs->glGetBufferSubData(d->type, offset, count, data);
-   return d->funcs->glGetError() == GL_NO_ERROR;
+    while ( d->funcs->glGetError() != GL_NO_ERROR ) ; // Clear error state.
+
+    d->funcs->glGetBufferSubData( d->type, offset, count, data );
+    return d->funcs->glGetError() == GL_NO_ERROR;
 
 #else
-   return false;
+    return false;
 
 #endif
 }
 
-void QGLBuffer::write(int offset, const void *data, int count)
+void QGLBuffer::write( int offset, const void *data, int count )
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
-   if (! isCreated()) {
-      qDebug("QGLBuffer::allocate() Buffer was not created");
-   }
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+
+    if ( ! isCreated() )
+    {
+        qDebug( "QGLBuffer::allocate() Buffer was not created" );
+    }
+
 #endif
 
-   Q_D(QGLBuffer);
-   if (d->guard && d->guard->id()) {
-      d->funcs->glBufferSubData(d->type, offset, count, data);
-   }
+    Q_D( QGLBuffer );
+
+    if ( d->guard && d->guard->id() )
+    {
+        d->funcs->glBufferSubData( d->type, offset, count, data );
+    }
 }
 
-void QGLBuffer::allocate(const void *data, int count)
+void QGLBuffer::allocate( const void *data, int count )
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
-   if (! isCreated()) {
-      qDebug("QGLBuffer::allocate() Buffer was not created");
-   }
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+
+    if ( ! isCreated() )
+    {
+        qDebug( "QGLBuffer::allocate() Buffer was not created" );
+    }
+
 #endif
 
-   Q_D(QGLBuffer);
-   if (d->guard && d->guard->id()) {
-      d->funcs->glBufferData(d->type, count, data, d->actualUsagePattern);
-   }
+    Q_D( QGLBuffer );
+
+    if ( d->guard && d->guard->id() )
+    {
+        d->funcs->glBufferData( d->type, count, data, d->actualUsagePattern );
+    }
 }
 
 bool QGLBuffer::bind()
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
-   if (! isCreated()) {
-      qDebug("QGLBuffer::bind() Buffer was not created");
-   }
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+
+    if ( ! isCreated() )
+    {
+        qDebug( "QGLBuffer::bind() Buffer was not created" );
+    }
+
 #endif
 
-   Q_D(const QGLBuffer);
-   GLuint bufferId = d->guard ? d->guard->id() : 0;
+    Q_D( const QGLBuffer );
+    GLuint bufferId = d->guard ? d->guard->id() : 0;
 
-   if (bufferId) {
-      if (d->guard->group() != QOpenGLContextGroup::currentContextGroup()) {
+    if ( bufferId )
+    {
+        if ( d->guard->group() != QOpenGLContextGroup::currentContextGroup() )
+        {
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
-         qDebug("QGLBuffer::bind() Buffer is not valid in the current context");
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+            qDebug( "QGLBuffer::bind() Buffer is not valid in the current context" );
 #endif
-         return false;
-      }
+            return false;
+        }
 
-      d->funcs->glBindBuffer(d->type, bufferId);
-      return true;
+        d->funcs->glBindBuffer( d->type, bufferId );
+        return true;
 
-   } else {
-      return false;
-   }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void QGLBuffer::release()
 {
-#if defined(CS_SHOW_DEBUG_OPENGL)
-   if (! isCreated()) {
-      qDebug("QGLBuffer::release() Buffer was not created");
-   }
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+
+    if ( ! isCreated() )
+    {
+        qDebug( "QGLBuffer::release() Buffer was not created" );
+    }
+
 #endif
 
-   Q_D(const QGLBuffer);
+    Q_D( const QGLBuffer );
 
-   if (d->guard && d->guard->id()) {
-      d->funcs->glBindBuffer(d->type, 0);
-   }
+    if ( d->guard && d->guard->id() )
+    {
+        d->funcs->glBindBuffer( d->type, 0 );
+    }
 }
 
 #undef ctx
 
-void QGLBuffer::release(QGLBuffer::Type type)
+void QGLBuffer::release( QGLBuffer::Type type )
 {
-   if (QOpenGLContext *ctx = QOpenGLContext::currentContext()) {
-      ctx->functions()->glBindBuffer(GLenum(type), 0);
-   }
+    if ( QOpenGLContext *ctx = QOpenGLContext::currentContext() )
+    {
+        ctx->functions()->glBindBuffer( GLenum( type ), 0 );
+    }
 }
 
 #define ctx QGLContext::currentContext()
 
 GLuint QGLBuffer::bufferId() const
 {
-   Q_D(const QGLBuffer);
-   return d->guard ? d->guard->id() : 0;
+    Q_D( const QGLBuffer );
+    return d->guard ? d->guard->id() : 0;
 }
 
 #ifndef GL_BUFFER_SIZE
@@ -278,46 +320,56 @@ GLuint QGLBuffer::bufferId() const
 
 int QGLBuffer::size() const
 {
-   Q_D(const QGLBuffer);
-   if (! d->guard || !d->guard->id()) {
-      return -1;
-   }
+    Q_D( const QGLBuffer );
 
-   GLint value = -1;
-   d->funcs->glGetBufferParameteriv(d->type, GL_BUFFER_SIZE, &value);
-   return value;
+    if ( ! d->guard || !d->guard->id() )
+    {
+        return -1;
+    }
+
+    GLint value = -1;
+    d->funcs->glGetBufferParameteriv( d->type, GL_BUFFER_SIZE, &value );
+    return value;
 }
 
-void *QGLBuffer::map(QGLBuffer::Access access)
+void *QGLBuffer::map( QGLBuffer::Access access )
 {
-   Q_D(QGLBuffer);
+    Q_D( QGLBuffer );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
-   if (! isCreated()) {
-      qDebug("QGLBuffer::map() Buffer was not created");
-   }
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+
+    if ( ! isCreated() )
+    {
+        qDebug( "QGLBuffer::map() Buffer was not created" );
+    }
+
 #endif
 
-   if (! d->guard || !d->guard->id()) {
-      return nullptr;
-   }
+    if ( ! d->guard || !d->guard->id() )
+    {
+        return nullptr;
+    }
 
-   return d->funcs->glMapBuffer(d->type, access);
+    return d->funcs->glMapBuffer( d->type, access );
 }
 
 bool QGLBuffer::unmap()
 {
-   Q_D(QGLBuffer);
+    Q_D( QGLBuffer );
 
-#if defined(CS_SHOW_DEBUG_OPENGL)
-   if (! isCreated()) {
-      qDebug("QGLBuffer::unmap() Buffer was not created");
-   }
+#if defined(LSCS_SHOW_DEBUG_OPENGL)
+
+    if ( ! isCreated() )
+    {
+        qDebug( "QGLBuffer::unmap() Buffer was not created" );
+    }
+
 #endif
 
-   if (! d->guard || ! d->guard->id()) {
-      return false;
-   }
+    if ( ! d->guard || ! d->guard->id() )
+    {
+        return false;
+    }
 
-   return d->funcs->glUnmapBuffer(d->type) == GL_TRUE;
+    return d->funcs->glUnmapBuffer( d->type ) == GL_TRUE;
 }

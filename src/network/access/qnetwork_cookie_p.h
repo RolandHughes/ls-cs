@@ -28,41 +28,45 @@
 
 class QNetworkCookiePrivate: public QSharedData
 {
- public:
-   inline QNetworkCookiePrivate() : secure(false), httpOnly(false) { }
-   static QList<QNetworkCookie> parseSetCookieHeaderLine(const QByteArray &cookieString);
+public:
+    inline QNetworkCookiePrivate() : secure( false ), httpOnly( false ) { }
+    static QList<QNetworkCookie> parseSetCookieHeaderLine( const QByteArray &cookieString );
 
-   QDateTime expirationDate;
-   QString domain;
-   QString path;
-   QString comment;
-   QByteArray name;
-   QByteArray value;
-   bool secure;
-   bool httpOnly;
+    QDateTime expirationDate;
+    QString domain;
+    QString path;
+    QString comment;
+    QByteArray name;
+    QByteArray value;
+    bool secure;
+    bool httpOnly;
 };
 
-static inline bool isLWS(char c)
+static inline bool isLWS( char c )
 {
-   return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 }
 
-static int nextNonWhitespace(const QByteArray &text, int from)
+static int nextNonWhitespace( const QByteArray &text, int from )
 {
-   // RFC 2616 defines linear whitespace as:
-   //  LWS = [CRLF] 1*( SP | HT )
-   // We ignore the fact that CRLF must come as a pair at this point
-   // It's an invalid HTTP header if that happens.
-   while (from < text.length()) {
-      if (isLWS(text.at(from))) {
-         ++from;
-      } else {
-         return from;   // non-whitespace
-      }
-   }
+    // RFC 2616 defines linear whitespace as:
+    //  LWS = [CRLF] 1*( SP | HT )
+    // We ignore the fact that CRLF must come as a pair at this point
+    // It's an invalid HTTP header if that happens.
+    while ( from < text.length() )
+    {
+        if ( isLWS( text.at( from ) ) )
+        {
+            ++from;
+        }
+        else
+        {
+            return from;   // non-whitespace
+        }
+    }
 
-   // reached the end
-   return text.length();
+    // reached the end
+    return text.length();
 }
 
 #endif

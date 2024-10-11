@@ -221,7 +221,7 @@ QStringList QCocoaDropData::formats_sys() const
 
    if (PasteboardCreate(dropPasteboard, &board) != noErr) {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_PASTEBOARD)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_PASTEBOARD)
       qDebug("QCocoaDropData::formats_sys() Unable to create a PasteBoard");
 #endif
 
@@ -239,7 +239,7 @@ QVariant QCocoaDropData::retrieveData_sys(const QString &mimeType, QVariant::Typ
 
    if (PasteboardCreate(dropPasteboard, &board) != noErr) {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_PASTEBOARD)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_PASTEBOARD)
       qDebug("QCocoaDropData::retrieveData_sys() Unable to create a PasteBoard");
 #endif
 
@@ -258,7 +258,7 @@ bool QCocoaDropData::hasFormat_sys(const QString &mimeType) const
 
    if (PasteboardCreate(dropPasteboard, &board) != noErr) {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM_PASTEBOARD)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM_PASTEBOARD)
       qDebug("QCocoaDropData::hasFormat_sys() Unable to create a PasteBoard");
 #endif
 

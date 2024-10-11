@@ -33,45 +33,47 @@
 
 #include "InputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SliderThumbElement;
 
-class RangeInputType : public InputType {
+class RangeInputType : public InputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    RangeInputType(HTMLInputElement* element) : InputType(element) { }
+    RangeInputType( HTMLInputElement *element ) : InputType( element ) { }
     virtual bool isRangeControl() const;
-    virtual const AtomicString& formControlType() const;
+    virtual const AtomicString &formControlType() const;
     virtual double valueAsNumber() const;
-    virtual void setValueAsNumber(double, ExceptionCode&) const;
+    virtual void setValueAsNumber( double, ExceptionCode & ) const;
     virtual bool supportsRequired() const;
-    virtual bool rangeUnderflow(const String&) const;
-    virtual bool rangeOverflow(const String&) const;
+    virtual bool rangeUnderflow( const String & ) const;
+    virtual bool rangeOverflow( const String & ) const;
     virtual bool supportsRangeLimitation() const;
     virtual double minimum() const;
     virtual double maximum() const;
     virtual bool isSteppable() const;
-    virtual bool stepMismatch(const String&, double) const;
+    virtual bool stepMismatch( const String &, double ) const;
     virtual double stepBase() const;
     virtual double defaultStep() const;
     virtual double stepScaleFactor() const;
-    virtual void handleMouseDownEvent(MouseEvent*);
-    virtual void handleKeydownEvent(KeyboardEvent*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*) const;
+    virtual void handleMouseDownEvent( MouseEvent * );
+    virtual void handleKeydownEvent( KeyboardEvent * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * ) const;
     virtual void createShadowSubtree();
-    virtual double parseToDouble(const String&, double) const;
-    virtual String serialize(double) const;
-    virtual void accessKeyAction(bool sendToAnyElement);
+    virtual double parseToDouble( const String &, double ) const;
+    virtual String serialize( double ) const;
+    virtual void accessKeyAction( bool sendToAnyElement );
     virtual void minOrMaxAttributeChanged();
     virtual void valueChanged();
     virtual String fallbackValue();
-    virtual String sanitizeValue(const String& proposedValue);
+    virtual String sanitizeValue( const String &proposedValue );
     virtual bool shouldRespectListAttribute();
 
-    SliderThumbElement* shadowSliderThumb() const;
+    SliderThumbElement *shadowSliderThumb() const;
 };
 
 } // namespace WebCore

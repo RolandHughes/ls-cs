@@ -31,15 +31,16 @@
 #include "WebContext.h"
 #include "WebSecurityOrigin.h"
 
-namespace WebKit {
-
-PassRefPtr<WebApplicationCacheManagerProxy> WebApplicationCacheManagerProxy::create(WebContext* context)
+namespace WebKit
 {
-    return adoptRef(new WebApplicationCacheManagerProxy(context));
+
+PassRefPtr<WebApplicationCacheManagerProxy> WebApplicationCacheManagerProxy::create( WebContext *context )
+{
+    return adoptRef( new WebApplicationCacheManagerProxy( context ) );
 }
 
-WebApplicationCacheManagerProxy::WebApplicationCacheManagerProxy(WebContext* context)
-    : m_webContext(context)
+WebApplicationCacheManagerProxy::WebApplicationCacheManagerProxy( WebContext *context )
+    : m_webContext( context )
 {
 }
 
@@ -49,37 +50,40 @@ WebApplicationCacheManagerProxy::~WebApplicationCacheManagerProxy()
 
 void WebApplicationCacheManagerProxy::invalidate()
 {
-    invalidateCallbackMap(m_arrayCallbacks);
+    invalidateCallbackMap( m_arrayCallbacks );
 }
 
-bool WebApplicationCacheManagerProxy::shouldTerminate(WebProcessProxy*) const
+bool WebApplicationCacheManagerProxy::shouldTerminate( WebProcessProxy * ) const
 {
     return m_arrayCallbacks.isEmpty();
 }
 
-void WebApplicationCacheManagerProxy::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebApplicationCacheManagerProxy::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebApplicationCacheManagerProxyMessage(connection, messageID, arguments);
+    didReceiveWebApplicationCacheManagerProxyMessage( connection, messageID, arguments );
 }
 
-void WebApplicationCacheManagerProxy::getApplicationCacheOrigins(PassRefPtr<ArrayCallback> prpCallback)
+void WebApplicationCacheManagerProxy::getApplicationCacheOrigins( PassRefPtr<ArrayCallback> prpCallback )
 {
     RefPtr<ArrayCallback> callback = prpCallback;
-    
+
     uint64_t callbackID = callback->callbackID();
-    m_arrayCallbacks.set(callbackID, callback.release());
+    m_arrayCallbacks.set( callbackID, callback.release() );
 
     // FIXME (Multi-WebProcess): The application cache shouldn't be stored in the web process.
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebApplicationCacheManager::GetApplicationCacheOrigins(callbackID));
-}
-    
-void WebApplicationCacheManagerProxy::didGetApplicationCacheOrigins(const Vector<SecurityOriginData>& originDatas, uint64_t callbackID)
-{
-    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take(callbackID);
-    performAPICallbackWithSecurityOriginDataVector(originDatas, callback.get());
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebApplicationCacheManager::GetApplicationCacheOrigins(
+                callbackID ) );
 }
 
-void WebApplicationCacheManagerProxy::deleteEntriesForOrigin(WebSecurityOrigin* origin)
+void WebApplicationCacheManagerProxy::didGetApplicationCacheOrigins( const Vector<SecurityOriginData> &originDatas,
+        uint64_t callbackID )
+{
+    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take( callbackID );
+    performAPICallbackWithSecurityOriginDataVector( originDatas, callback.get() );
+}
+
+void WebApplicationCacheManagerProxy::deleteEntriesForOrigin( WebSecurityOrigin *origin )
 {
     SecurityOriginData securityOriginData;
     securityOriginData.protocol = origin->protocol();
@@ -87,13 +91,14 @@ void WebApplicationCacheManagerProxy::deleteEntriesForOrigin(WebSecurityOrigin* 
     securityOriginData.port = origin->port();
 
     // FIXME (Multi-WebProcess): The application cache shouldn't be stored in the web process.
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebApplicationCacheManager::DeleteEntriesForOrigin(securityOriginData));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebApplicationCacheManager::DeleteEntriesForOrigin(
+                securityOriginData ) );
 }
 
 void WebApplicationCacheManagerProxy::deleteAllEntries()
 {
     // FIXME (Multi-WebProcess): The application cache shouldn't be stored in the web process.
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebApplicationCacheManager::DeleteAllEntries());
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebApplicationCacheManager::DeleteAllEntries() );
 }
 
 } // namespace WebKit

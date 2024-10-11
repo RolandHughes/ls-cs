@@ -26,41 +26,43 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class CombineNodes : public PairContainer
 {
- public:
-   enum Operator {
-      Union       = 1,
-      Intersect   = 2,
-      Except      = 4
-   };
+public:
+    enum Operator
+    {
+        Union       = 1,
+        Intersect   = 2,
+        Except      = 4
+    };
 
-   CombineNodes(const Expression::Ptr &operand1, const Operator op, const Expression::Ptr &operand2);
+    CombineNodes( const Expression::Ptr &operand1, const Operator op, const Expression::Ptr &operand2 );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   Operator operatorID() const;
-   ID id() const override;
+    Operator operatorID() const;
+    ID id() const override;
 
-   /**
-    * Determines the string representation for operator @p op.
-    *
-    * @return "union" if @p op is Union, "intersect" if @p op
-    * is Intersect and "except" if @p op is Except.
-    */
-   static QString displayName(const Operator op);
+    /**
+     * Determines the string representation for operator @p op.
+     *
+     * @return "union" if @p op is Union, "intersect" if @p op
+     * is Intersect and "except" if @p op is Except.
+     */
+    static QString displayName( const Operator op );
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
- private:
-   const Operator m_operator;
+private:
+    const Operator m_operator;
 };
 
 }

@@ -30,8 +30,8 @@
 #include <qapplication_p.h>
 #include <qpaintengine_raster_p.h>
 
-QNativeImage::QNativeImage(int width, int height, QImage::Format format, bool, QWindow *)
-   : image(width, height, format)
+QNativeImage::QNativeImage( int width, int height, QImage::Format format, bool, QWindow * )
+    : image( width, height, format )
 {
 }
 
@@ -41,10 +41,12 @@ QNativeImage::~QNativeImage()
 
 QImage::Format QNativeImage::systemFormat()
 {
-   if (!QGuiApplication::primaryScreen()) {
-      return QImage::Format_Invalid;
-   }
-   return QGuiApplication::primaryScreen()->handle()->format();
+    if ( !QGuiApplication::primaryScreen() )
+    {
+        return QImage::Format_Invalid;
+    }
+
+    return QGuiApplication::primaryScreen()->handle()->format();
 }
 
 

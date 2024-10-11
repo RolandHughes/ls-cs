@@ -32,263 +32,318 @@
 
 class QFocusFramePrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QFocusFrame)
+    Q_DECLARE_PUBLIC( QFocusFrame )
 
-   QWidget *widget;
-   QWidget *frameParent;
-   bool showFrameAboveWidget;
+    QWidget *widget;
+    QWidget *frameParent;
+    bool showFrameAboveWidget;
 
- public:
-   QFocusFramePrivate(QObject *q) {
-      widget      = nullptr;
-      frameParent = nullptr;
-      CSInternalEvents::set_m_sendChildEvents(q, false);
-      showFrameAboveWidget = false;
-   }
+public:
+    QFocusFramePrivate( QObject *q )
+    {
+        widget      = nullptr;
+        frameParent = nullptr;
+        LSCSInternalEvents::set_m_sendChildEvents( q, false );
+        showFrameAboveWidget = false;
+    }
 
-   void updateSize();
-   void update();
+    void updateSize();
+    void update();
 };
 
 void QFocusFramePrivate::update()
 {
-   Q_Q(QFocusFrame);
+    Q_Q( QFocusFrame );
 
-   q->setParent(frameParent);
-   updateSize();
+    q->setParent( frameParent );
+    updateSize();
 
-   if (q->parentWidget()->rect().intersects(q->geometry())) {
-      if (showFrameAboveWidget) {
-         q->raise();
-      } else {
-         q->stackUnder(widget);
-      }
-      q->show();
-   } else {
-      q->hide();
-   }
+    if ( q->parentWidget()->rect().intersects( q->geometry() ) )
+    {
+        if ( showFrameAboveWidget )
+        {
+            q->raise();
+        }
+        else
+        {
+            q->stackUnder( widget );
+        }
+
+        q->show();
+    }
+    else
+    {
+        q->hide();
+    }
 }
 
 void QFocusFramePrivate::updateSize()
 {
-   Q_Q(QFocusFrame);
+    Q_Q( QFocusFrame );
 
-   if (!widget) {
-      return;
-   }
+    if ( !widget )
+    {
+        return;
+    }
 
-   int vmargin = q->style()->pixelMetric(QStyle::PM_FocusFrameVMargin),
-         hmargin = q->style()->pixelMetric(QStyle::PM_FocusFrameHMargin);
+    int vmargin = q->style()->pixelMetric( QStyle::PM_FocusFrameVMargin ),
+        hmargin = q->style()->pixelMetric( QStyle::PM_FocusFrameHMargin );
 
-   QPoint pos(widget->x(), widget->y());
+    QPoint pos( widget->x(), widget->y() );
 
-   if (q->parentWidget() != widget->parentWidget()) {
-      pos = widget->parentWidget()->mapTo(q->parentWidget(), pos);
-   }
+    if ( q->parentWidget() != widget->parentWidget() )
+    {
+        pos = widget->parentWidget()->mapTo( q->parentWidget(), pos );
+    }
 
-   QRect geom(pos.x() - hmargin, pos.y() - vmargin,
-         widget->width() + (hmargin * 2), widget->height() + (vmargin * 2));
+    QRect geom( pos.x() - hmargin, pos.y() - vmargin,
+                widget->width() + ( hmargin * 2 ), widget->height() + ( vmargin * 2 ) );
 
-   if (q->geometry() == geom) {
-      return;
-   }
+    if ( q->geometry() == geom )
+    {
+        return;
+    }
 
-   q->setGeometry(geom);
-   QStyleHintReturnMask mask;
-   QStyleOption opt;
-   q->initStyleOption(&opt);
+    q->setGeometry( geom );
+    QStyleHintReturnMask mask;
+    QStyleOption opt;
+    q->initStyleOption( &opt );
 
-   if (q->style()->styleHint(QStyle::SH_FocusFrame_Mask, &opt, q, &mask)) {
-      q->setMask(mask.region);
-   }
+    if ( q->style()->styleHint( QStyle::SH_FocusFrame_Mask, &opt, q, &mask ) )
+    {
+        q->setMask( mask.region );
+    }
 }
 
-void QFocusFrame::initStyleOption(QStyleOption *option) const
+void QFocusFrame::initStyleOption( QStyleOption *option ) const
 {
-   if (!option) {
-      return;
-   }
+    if ( !option )
+    {
+        return;
+    }
 
-   option->initFrom(this);
+    option->initFrom( this );
 }
 
-QFocusFrame::QFocusFrame(QWidget *parent)
-   : QWidget(*new QFocusFramePrivate(this), parent, Qt::EmptyFlag)
+QFocusFrame::QFocusFrame( QWidget *parent )
+    : QWidget( *new QFocusFramePrivate( this ), parent, Qt::EmptyFlag )
 {
-   setAttribute(Qt::WA_TransparentForMouseEvents);
-   setFocusPolicy(Qt::NoFocus);
-   setAttribute(Qt::WA_NoChildEventsForParent, true);
-   setAttribute(Qt::WA_AcceptDrops, style()->styleHint(QStyle::SH_FocusFrame_AboveWidget, nullptr, this));
+    setAttribute( Qt::WA_TransparentForMouseEvents );
+    setFocusPolicy( Qt::NoFocus );
+    setAttribute( Qt::WA_NoChildEventsForParent, true );
+    setAttribute( Qt::WA_AcceptDrops, style()->styleHint( QStyle::SH_FocusFrame_AboveWidget, nullptr, this ) );
 }
 
 QFocusFrame::~QFocusFrame()
 {
 }
 
-void QFocusFrame::setWidget(QWidget *widget)
+void QFocusFrame::setWidget( QWidget *widget )
 {
-   Q_D(QFocusFrame);
+    Q_D( QFocusFrame );
 
-   if (style()->styleHint(QStyle::SH_FocusFrame_AboveWidget, nullptr, this)) {
-      d->showFrameAboveWidget = true;
-   } else {
-      d->showFrameAboveWidget = false;
-   }
+    if ( style()->styleHint( QStyle::SH_FocusFrame_AboveWidget, nullptr, this ) )
+    {
+        d->showFrameAboveWidget = true;
+    }
+    else
+    {
+        d->showFrameAboveWidget = false;
+    }
 
-   if (widget == d->widget) {
-      return;
-   }
-   if (d->widget) {
-      // Remove event filters from the widget hierarchy.
-      QWidget *p = d->widget;
-      do {
-         p->removeEventFilter(this);
-         if (!d->showFrameAboveWidget || p == d->frameParent) {
-            break;
-         }
-         p = p->parentWidget();
-      } while (p);
-   }
+    if ( widget == d->widget )
+    {
+        return;
+    }
 
-   if (widget && !widget->isWindow() && widget->parentWidget()->windowType() != Qt::SubWindow) {
-      d->widget = widget;
-      d->widget->installEventFilter(this);
+    if ( d->widget )
+    {
+        // Remove event filters from the widget hierarchy.
+        QWidget *p = d->widget;
 
-      QWidget *p = widget->parentWidget();
-      QWidget *prev = nullptr;
+        do
+        {
+            p->removeEventFilter( this );
 
-      if (d->showFrameAboveWidget) {
-         // Find the right parent for the focus frame.
-         while (p) {
-            // Traverse the hirerarchy of the 'widget' for setting event filter.
-            // During this if come across toolbar or a top level, use that
-            // as the parent for the focus frame. If we find a scroll area
-            // use its viewport as the parent.
-            bool isScrollArea = false;
-            if (p->isWindow() || p->inherits("QToolBar") || (isScrollArea = p->inherits("QAbstractScrollArea"))) {
-               d->frameParent = p;
-               // The previous one in the hierarchy will be the viewport.
-               if (prev && isScrollArea) {
-                  d->frameParent = prev;
-               }
-               break;
-
-            } else {
-               p->installEventFilter(this);
-               prev = p;
-               p = p->parentWidget();
+            if ( !d->showFrameAboveWidget || p == d->frameParent )
+            {
+                break;
             }
-         }
-      } else {
-         d->frameParent = p;
-      }
-      d->update();
 
-   } else {
-      d->widget = nullptr;
-      hide();
-   }
+            p = p->parentWidget();
+        }
+        while ( p );
+    }
+
+    if ( widget && !widget->isWindow() && widget->parentWidget()->windowType() != Qt::SubWindow )
+    {
+        d->widget = widget;
+        d->widget->installEventFilter( this );
+
+        QWidget *p = widget->parentWidget();
+        QWidget *prev = nullptr;
+
+        if ( d->showFrameAboveWidget )
+        {
+            // Find the right parent for the focus frame.
+            while ( p )
+            {
+                // Traverse the hirerarchy of the 'widget' for setting event filter.
+                // During this if come across toolbar or a top level, use that
+                // as the parent for the focus frame. If we find a scroll area
+                // use its viewport as the parent.
+                bool isScrollArea = false;
+
+                if ( p->isWindow() || p->inherits( "QToolBar" ) || ( isScrollArea = p->inherits( "QAbstractScrollArea" ) ) )
+                {
+                    d->frameParent = p;
+
+                    // The previous one in the hierarchy will be the viewport.
+                    if ( prev && isScrollArea )
+                    {
+                        d->frameParent = prev;
+                    }
+
+                    break;
+
+                }
+                else
+                {
+                    p->installEventFilter( this );
+                    prev = p;
+                    p = p->parentWidget();
+                }
+            }
+        }
+        else
+        {
+            d->frameParent = p;
+        }
+
+        d->update();
+
+    }
+    else
+    {
+        d->widget = nullptr;
+        hide();
+    }
 }
 
 QWidget *QFocusFrame::widget() const
 {
-   Q_D(const QFocusFrame);
-   return d->widget;
+    Q_D( const QFocusFrame );
+    return d->widget;
 }
 
-void QFocusFrame::paintEvent(QPaintEvent *)
+void QFocusFrame::paintEvent( QPaintEvent * )
 {
-   Q_D(QFocusFrame);
+    Q_D( QFocusFrame );
 
-   if (!d->widget) {
-      return;
-   }
+    if ( !d->widget )
+    {
+        return;
+    }
 
-   QStylePainter p(this);
-   QStyleOption option;
+    QStylePainter p( this );
+    QStyleOption option;
 
-   initStyleOption(&option);
-   int vmargin = style()->pixelMetric(QStyle::PM_FocusFrameVMargin);
-   int hmargin = style()->pixelMetric(QStyle::PM_FocusFrameHMargin);
+    initStyleOption( &option );
+    int vmargin = style()->pixelMetric( QStyle::PM_FocusFrameVMargin );
+    int hmargin = style()->pixelMetric( QStyle::PM_FocusFrameHMargin );
 
-   QWidgetPrivate *wd = qt_widget_private(d->widget);
-   QRect rect = wd->clipRect().adjusted(0, 0, hmargin * 2, vmargin * 2);
+    QWidgetPrivate *wd = qt_widget_private( d->widget );
+    QRect rect = wd->clipRect().adjusted( 0, 0, hmargin * 2, vmargin * 2 );
 
-   p.setClipRect(rect);
-   p.drawControl(QStyle::CE_FocusFrame, option);
+    p.setClipRect( rect );
+    p.drawControl( QStyle::CE_FocusFrame, option );
 }
 
-bool QFocusFrame::eventFilter(QObject *o, QEvent *e)
+bool QFocusFrame::eventFilter( QObject *o, QEvent *e )
 {
-   Q_D(QFocusFrame);
-   if (o == d->widget) {
-      switch (e->type()) {
-         case QEvent::Move:
-         case QEvent::Resize:
-            d->updateSize();
-            break;
+    Q_D( QFocusFrame );
 
-         case QEvent::Hide:
-         case QEvent::StyleChange:
-            hide();
-            break;
+    if ( o == d->widget )
+    {
+        switch ( e->type() )
+        {
+            case QEvent::Move:
+            case QEvent::Resize:
+                d->updateSize();
+                break;
 
-         case QEvent::ParentChange:
-            if (d->showFrameAboveWidget) {
-               QWidget *w = d->widget;
-               setWidget(nullptr);
-               setWidget(w);
-            } else {
-               d->update();
-            }
-            break;
+            case QEvent::Hide:
+            case QEvent::StyleChange:
+                hide();
+                break;
 
-         case QEvent::Show:
-            d->update();
-            show();
-            break;
+            case QEvent::ParentChange:
+                if ( d->showFrameAboveWidget )
+                {
+                    QWidget *w = d->widget;
+                    setWidget( nullptr );
+                    setWidget( w );
+                }
+                else
+                {
+                    d->update();
+                }
 
-         case QEvent::PaletteChange:
-            setPalette(d->widget->palette());
-            break;
+                break;
 
-         case QEvent::ZOrderChange:
-            if (style()->styleHint(QStyle::SH_FocusFrame_AboveWidget, nullptr, this)) {
-               raise();
-            } else {
-               stackUnder(d->widget);
-            }
-            break;
+            case QEvent::Show:
+                d->update();
+                show();
+                break;
 
-         case QEvent::Destroy:
-            setWidget(nullptr);
-            break;
+            case QEvent::PaletteChange:
+                setPalette( d->widget->palette() );
+                break;
 
-         default:
-            break;
-      }
+            case QEvent::ZOrderChange:
+                if ( style()->styleHint( QStyle::SH_FocusFrame_AboveWidget, nullptr, this ) )
+                {
+                    raise();
+                }
+                else
+                {
+                    stackUnder( d->widget );
+                }
 
-   } else if (d->showFrameAboveWidget) {
-      // Handle changes in the parent widgets we are monitoring.
-      switch (e->type()) {
-         case QEvent::Move:
-         case QEvent::Resize:
-            d->updateSize();
-            break;
+                break;
 
-         case QEvent::ZOrderChange:
-            raise();
-            break;
+            case QEvent::Destroy:
+                setWidget( nullptr );
+                break;
 
-         default:
-            break;
-      }
-   }
+            default:
+                break;
+        }
 
-   return false;
+    }
+    else if ( d->showFrameAboveWidget )
+    {
+        // Handle changes in the parent widgets we are monitoring.
+        switch ( e->type() )
+        {
+            case QEvent::Move:
+            case QEvent::Resize:
+                d->updateSize();
+                break;
+
+            case QEvent::ZOrderChange:
+                raise();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    return false;
 }
 
-bool QFocusFrame::event(QEvent *e)
+bool QFocusFrame::event( QEvent *e )
 {
-   return QWidget::event(e);
+    return QWidget::event( e );
 }

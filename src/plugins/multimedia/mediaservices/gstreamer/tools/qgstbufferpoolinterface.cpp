@@ -23,8 +23,8 @@
 
 #include <qgstbufferpoolinterface_p.h>
 
-QGstBufferPoolPlugin::QGstBufferPoolPlugin(QObject *parent)
-   : QObject(parent)
+QGstBufferPoolPlugin::QGstBufferPoolPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 

@@ -40,148 +40,149 @@ class QNetworkReplyPrivate;
 
 class Q_NETWORK_EXPORT QNetworkReply : public QIODevice
 {
-   NET_CS_OBJECT(QNetworkReply)
+    NET_LSCS_OBJECT( QNetworkReply )
 
-   NET_CS_ENUM(NetworkError)
+    NET_LSCS_ENUM( NetworkError )
 
- public:
-   enum NetworkError {
-      NoError = 0,
+public:
+    enum NetworkError
+    {
+        NoError = 0,
 
-      // network layer errors [relating to the destination server] (1-99):
-      ConnectionRefusedError = 1,
-      RemoteHostClosedError,
-      HostNotFoundError,
-      TimeoutError,
-      OperationCanceledError,
-      SslHandshakeFailedError,
-      TemporaryNetworkFailureError,
-      NetworkSessionFailedError,
-      BackgroundRequestNotAllowedError,
-      TooManyRedirectsError,
-      InsecureRedirectError,
-      UnknownNetworkError = 99,
+        // network layer errors [relating to the destination server] (1-99):
+        ConnectionRefusedError = 1,
+        RemoteHostClosedError,
+        HostNotFoundError,
+        TimeoutError,
+        OperationCanceledError,
+        SslHandshakeFailedError,
+        TemporaryNetworkFailureError,
+        NetworkSessionFailedError,
+        BackgroundRequestNotAllowedError,
+        TooManyRedirectsError,
+        InsecureRedirectError,
+        UnknownNetworkError = 99,
 
-      // proxy errors (101-199):
-      ProxyConnectionRefusedError = 101,
-      ProxyConnectionClosedError,
-      ProxyNotFoundError,
-      ProxyTimeoutError,
-      ProxyAuthenticationRequiredError,
-      UnknownProxyError = 199,
+        // proxy errors (101-199):
+        ProxyConnectionRefusedError = 101,
+        ProxyConnectionClosedError,
+        ProxyNotFoundError,
+        ProxyTimeoutError,
+        ProxyAuthenticationRequiredError,
+        UnknownProxyError = 199,
 
-      // content errors (201-299):
-      ContentAccessDenied = 201,
-      ContentOperationNotPermittedError,
-      ContentNotFoundError,
-      AuthenticationRequiredError,
-      ContentReSendError,
-      ContentConflictError,
-      ContentGoneError,
-      UnknownContentError = 299,
+        // content errors (201-299):
+        ContentAccessDenied = 201,
+        ContentOperationNotPermittedError,
+        ContentNotFoundError,
+        AuthenticationRequiredError,
+        ContentReSendError,
+        ContentConflictError,
+        ContentGoneError,
+        UnknownContentError = 299,
 
-      // protocol errors
-      ProtocolUnknownError = 301,
-      ProtocolInvalidOperationError,
-      ProtocolFailure = 399,
-      InternalServerError = 401,
-      OperationNotImplementedError,
-      ServiceUnavailableError,
-      UnknownServerError = 499
-   };
+        // protocol errors
+        ProtocolUnknownError = 301,
+        ProtocolInvalidOperationError,
+        ProtocolFailure = 399,
+        InternalServerError = 401,
+        OperationNotImplementedError,
+        ServiceUnavailableError,
+        UnknownServerError = 499
+    };
 
-   ~QNetworkReply();
+    ~QNetworkReply();
 
-   void close() override;
-   bool isSequential() const override;
+    void close() override;
+    bool isSequential() const override;
 
-   // like QAbstractSocket:
-   qint64 readBufferSize() const;
-   virtual void setReadBufferSize(qint64 size);
+    // like QAbstractSocket:
+    qint64 readBufferSize() const;
+    virtual void setReadBufferSize( qint64 size );
 
-   QNetworkAccessManager *manager() const;
-   QNetworkAccessManager::Operation operation() const;
-   QNetworkRequest request() const;
-   NetworkError error() const;
-   bool isFinished() const;
-   bool isRunning() const;
-   QUrl url() const;
+    QNetworkAccessManager *manager() const;
+    QNetworkAccessManager::Operation operation() const;
+    QNetworkRequest request() const;
+    NetworkError error() const;
+    bool isFinished() const;
+    bool isRunning() const;
+    QUrl url() const;
 
-   // "cooked" headers
-   QVariant header(QNetworkRequest::KnownHeaders header) const;
+    // "cooked" headers
+    QVariant header( QNetworkRequest::KnownHeaders header ) const;
 
-   // raw headers:
-   bool hasRawHeader(const QByteArray &headerName) const;
-   QList<QByteArray> rawHeaderList() const;
-   QByteArray rawHeader(const QByteArray &headerName) const;
+    // raw headers:
+    bool hasRawHeader( const QByteArray &headerName ) const;
+    QList<QByteArray> rawHeaderList() const;
+    QByteArray rawHeader( const QByteArray &headerName ) const;
 
-   typedef QPair<QByteArray, QByteArray> RawHeaderPair;
-   const QList<RawHeaderPair> &rawHeaderPairs() const;
+    typedef QPair<QByteArray, QByteArray> RawHeaderPair;
+    const QList<RawHeaderPair> &rawHeaderPairs() const;
 
-   // attributes
-   QVariant attribute(QNetworkRequest::Attribute code) const;
-
-#ifdef QT_SSL
-   QSslConfiguration sslConfiguration() const;
-   void setSslConfiguration(const QSslConfiguration &configuration);
-   void ignoreSslErrors(const QList<QSslError> &errors);
-#endif
-
-   NET_CS_SLOT_1(Public, virtual void abort() = 0)
-   NET_CS_SLOT_2(abort)
-
-   NET_CS_SLOT_1(Public, virtual void ignoreSslErrors())
-   NET_CS_SLOT_OVERLOAD(ignoreSslErrors, ())
-
-   NET_CS_SIGNAL_1(Public, void metaDataChanged())
-   NET_CS_SIGNAL_2(metaDataChanged)
-
-   NET_CS_SIGNAL_1(Public, void finished())
-   NET_CS_SIGNAL_2(finished)
-
-   NET_CS_SIGNAL_1(Public, void error(QNetworkReply::NetworkError code))
-   NET_CS_SIGNAL_OVERLOAD(error, (QNetworkReply::NetworkError), code)
+    // attributes
+    QVariant attribute( QNetworkRequest::Attribute code ) const;
 
 #ifdef QT_SSL
-   NET_CS_SIGNAL_1(Public, void encrypted())
-   NET_CS_SIGNAL_2(encrypted)
-
-   NET_CS_SIGNAL_1(Public, void preSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *authenticator))
-   NET_CS_SIGNAL_2(preSharedKeyAuthenticationRequired, authenticator)
-
-   NET_CS_SIGNAL_1(Public, void sslErrors(const QList <QSslError> &errors))
-   NET_CS_SIGNAL_2(sslErrors, errors)
+    QSslConfiguration sslConfiguration() const;
+    void setSslConfiguration( const QSslConfiguration &configuration );
+    void ignoreSslErrors( const QList<QSslError> &errors );
 #endif
 
-   NET_CS_SIGNAL_1(Public, void redirected(const QUrl &url))
-   NET_CS_SIGNAL_2(redirected, url)
+    NET_LSCS_SLOT_1( Public, virtual void abort() = 0 )
+    NET_LSCS_SLOT_2( abort )
 
-   NET_CS_SIGNAL_1(Public, void uploadProgress(qint64 bytesSent, qint64 bytesTotal))
-   NET_CS_SIGNAL_2(uploadProgress, bytesSent, bytesTotal)
+    NET_LSCS_SLOT_1( Public, virtual void ignoreSslErrors() )
+    NET_LSCS_SLOT_OVERLOAD( ignoreSslErrors, () )
 
-   NET_CS_SIGNAL_1(Public, void downloadProgress(qint64 bytesReceived, qint64 bytesTotal))
-   NET_CS_SIGNAL_2(downloadProgress, bytesReceived, bytesTotal)
+    NET_LSCS_SIGNAL_1( Public, void metaDataChanged() )
+    NET_LSCS_SIGNAL_2( metaDataChanged )
 
- protected:
-   explicit QNetworkReply(QObject *parent = nullptr);
-   QNetworkReply(QNetworkReplyPrivate &dd, QObject *parent);
-   qint64 writeData(const char *data, qint64 len) override;
+    NET_LSCS_SIGNAL_1( Public, void finished() )
+    NET_LSCS_SIGNAL_2( finished )
 
-   void setOperation(QNetworkAccessManager::Operation operation);
-   void setRequest(const QNetworkRequest &request);
-   void setError(NetworkError errorCode, const QString &errorString);
-   void setFinished(bool finished);
-   void setUrl(const QUrl &url);
-   void setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value);
-   void setRawHeader(const QByteArray &headerName, const QByteArray &value);
-   void setAttribute(QNetworkRequest::Attribute code, const QVariant &value);
+    NET_LSCS_SIGNAL_1( Public, void error( QNetworkReply::NetworkError code ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( QNetworkReply::NetworkError ), code )
 
-   virtual void sslConfigurationImplementation(QSslConfiguration &configuration) const;
-   virtual void setSslConfigurationImplementation(const QSslConfiguration &configuration);
-   virtual void ignoreSslErrorsImplementation(const QList<QSslError> &errors);
+#ifdef QT_SSL
+    NET_LSCS_SIGNAL_1( Public, void encrypted() )
+    NET_LSCS_SIGNAL_2( encrypted )
 
- private:
-   Q_DECLARE_PRIVATE(QNetworkReply)
+    NET_LSCS_SIGNAL_1( Public, void preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator *authenticator ) )
+    NET_LSCS_SIGNAL_2( preSharedKeyAuthenticationRequired, authenticator )
+
+    NET_LSCS_SIGNAL_1( Public, void sslErrors( const QList <QSslError> &errors ) )
+    NET_LSCS_SIGNAL_2( sslErrors, errors )
+#endif
+
+    NET_LSCS_SIGNAL_1( Public, void redirected( const QUrl &url ) )
+    NET_LSCS_SIGNAL_2( redirected, url )
+
+    NET_LSCS_SIGNAL_1( Public, void uploadProgress( qint64 bytesSent, qint64 bytesTotal ) )
+    NET_LSCS_SIGNAL_2( uploadProgress, bytesSent, bytesTotal )
+
+    NET_LSCS_SIGNAL_1( Public, void downloadProgress( qint64 bytesReceived, qint64 bytesTotal ) )
+    NET_LSCS_SIGNAL_2( downloadProgress, bytesReceived, bytesTotal )
+
+protected:
+    explicit QNetworkReply( QObject *parent = nullptr );
+    QNetworkReply( QNetworkReplyPrivate &dd, QObject *parent );
+    qint64 writeData( const char *data, qint64 len ) override;
+
+    void setOperation( QNetworkAccessManager::Operation operation );
+    void setRequest( const QNetworkRequest &request );
+    void setError( NetworkError errorCode, const QString &errorString );
+    void setFinished( bool finished );
+    void setUrl( const QUrl &url );
+    void setHeader( QNetworkRequest::KnownHeaders header, const QVariant &value );
+    void setRawHeader( const QByteArray &headerName, const QByteArray &value );
+    void setAttribute( QNetworkRequest::Attribute code, const QVariant &value );
+
+    virtual void sslConfigurationImplementation( QSslConfiguration &configuration ) const;
+    virtual void setSslConfigurationImplementation( const QSslConfiguration &configuration );
+    virtual void ignoreSslErrorsImplementation( const QList<QSslError> &errors );
+
+private:
+    Q_DECLARE_PRIVATE( QNetworkReply )
 };
 
 #endif

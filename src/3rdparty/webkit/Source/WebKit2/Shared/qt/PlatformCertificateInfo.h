@@ -30,23 +30,25 @@
 #include "ArgumentEncoder.h"
 #include <WebCore/ResourceResponse.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class PlatformCertificateInfo {
+class PlatformCertificateInfo
+{
 public:
     PlatformCertificateInfo()
     {
     }
 
-    explicit PlatformCertificateInfo(const WebCore::ResourceResponse&)
+    explicit PlatformCertificateInfo( const WebCore::ResourceResponse & )
     {
     }
 
-    void encode(CoreIPC::ArgumentEncoder*) const
+    void encode( CoreIPC::ArgumentEncoder * ) const
     {
     }
 
-    static bool decode(CoreIPC::ArgumentDecoder*, PlatformCertificateInfo&)
+    static bool decode( CoreIPC::ArgumentDecoder *, PlatformCertificateInfo & )
     {
         return true;
     }

@@ -25,303 +25,324 @@
 
 #include <ui4.h>
 
-void TreeWalker::acceptUI(DomUI *ui)
+void TreeWalker::acceptUI( DomUI *ui )
 {
-   acceptWidget(ui->elementWidget());
+    acceptWidget( ui->elementWidget() );
 
-   const DomButtonGroups *domButtonGroups = ui->elementButtonGroups();
+    const DomButtonGroups *domButtonGroups = ui->elementButtonGroups();
 
-   if (domButtonGroups != nullptr) {
-      acceptButtonGroups(domButtonGroups);
-   }
+    if ( domButtonGroups != nullptr )
+    {
+        acceptButtonGroups( domButtonGroups );
+    }
 
-   acceptTabStops(ui->elementTabStops());
+    acceptTabStops( ui->elementTabStops() );
 
-   if (ui->elementImages()) {
-      acceptImages(ui->elementImages());
-   }
+    if ( ui->elementImages() )
+    {
+        acceptImages( ui->elementImages() );
+    }
 }
 
-void TreeWalker::acceptLayoutDefault(DomLayoutDefault *layoutDefault)
+void TreeWalker::acceptLayoutDefault( DomLayoutDefault *layoutDefault )
 {
-   (void) layoutDefault;
+    ( void ) layoutDefault;
 }
 
-void TreeWalker::acceptLayoutFunction(DomLayoutFunction *layoutFunction)
+void TreeWalker::acceptLayoutFunction( DomLayoutFunction *layoutFunction )
 {
-   (void) layoutFunction;
+    ( void ) layoutFunction;
 }
 
-void TreeWalker::acceptTabStops(DomTabStops *tabStops)
+void TreeWalker::acceptTabStops( DomTabStops *tabStops )
 {
-   (void) tabStops;
+    ( void ) tabStops;
 }
 
-void TreeWalker::acceptLayout(DomLayout *layout)
+void TreeWalker::acceptLayout( DomLayout *layout )
 {
-   for (auto item : layout->elementProperty()) {
-      acceptProperty(item);
-   }
+    for ( auto item : layout->elementProperty() )
+    {
+        acceptProperty( item );
+    }
 
-   for (auto item : layout->elementItem()) {
-      acceptLayoutItem(item);
-   }
+    for ( auto item : layout->elementItem() )
+    {
+        acceptLayoutItem( item );
+    }
 }
 
-void TreeWalker::acceptLayoutItem(DomLayoutItem *layoutItem)
+void TreeWalker::acceptLayoutItem( DomLayoutItem *layoutItem )
 {
-   switch (layoutItem->kind()) {
-      case DomLayoutItem::Widget:
-         acceptWidget(layoutItem->elementWidget());
-         return;
+    switch ( layoutItem->kind() )
+    {
+        case DomLayoutItem::Widget:
+            acceptWidget( layoutItem->elementWidget() );
+            return;
 
-      case DomLayoutItem::Layout:
-         acceptLayout(layoutItem->elementLayout());
-         return;
+        case DomLayoutItem::Layout:
+            acceptLayout( layoutItem->elementLayout() );
+            return;
 
-      case DomLayoutItem::Spacer:
-         acceptSpacer(layoutItem->elementSpacer());
-         return;
+        case DomLayoutItem::Spacer:
+            acceptSpacer( layoutItem->elementSpacer() );
+            return;
 
-      case DomLayoutItem::Unknown:
-         break;
-   }
+        case DomLayoutItem::Unknown:
+            break;
+    }
 
-   Q_ASSERT(0);
+    Q_ASSERT( 0 );
 }
 
-void TreeWalker::acceptWidget(DomWidget *widget)
+void TreeWalker::acceptWidget( DomWidget *widget )
 {
-   for (auto item : widget->elementAction()) {
-      acceptAction(item);
-   }
+    for ( auto item : widget->elementAction() )
+    {
+        acceptAction( item );
+    }
 
-   for (auto item : widget->elementActionGroup()) {
-      acceptActionGroup(item);
-   }
+    for ( auto item : widget->elementActionGroup() )
+    {
+        acceptActionGroup( item );
+    }
 
-   for (auto item : widget->elementAddAction()) {
-      acceptActionRef(item);
-   }
+    for ( auto item : widget->elementAddAction() )
+    {
+        acceptActionRef( item );
+    }
 
-   for (auto item : widget->elementProperty()) {
-      acceptProperty(item);
-   }
+    for ( auto item : widget->elementProperty() )
+    {
+        acceptProperty( item );
+    }
 
-   // recurse down
-   DomWidgets childWidgets;
+    // recurse down
+    DomWidgets childWidgets;
 
-   for (auto child : widget->elementWidget()) {
-      childWidgets += child;
-      acceptWidget(child);
-   }
+    for ( auto child : widget->elementWidget() )
+    {
+        childWidgets += child;
+        acceptWidget( child );
+    }
 
-   if (! widget->elementLayout().isEmpty()) {
-      acceptLayout(widget->elementLayout().at(0));
-   }
+    if ( ! widget->elementLayout().isEmpty() )
+    {
+        acceptLayout( widget->elementLayout().at( 0 ) );
+    }
 
-   const DomScripts scripts(widget->elementScript());
-   acceptWidgetScripts(scripts, widget, childWidgets);
+    const DomScripts scripts( widget->elementScript() );
+    acceptWidgetScripts( scripts, widget, childWidgets );
 }
 
-void TreeWalker::acceptSpacer(DomSpacer *spacer)
+void TreeWalker::acceptSpacer( DomSpacer *spacer )
 {
-   for (auto item :  spacer->elementProperty()) {
-      acceptProperty(item);
-   }
+    for ( auto item :  spacer->elementProperty() )
+    {
+        acceptProperty( item );
+    }
 }
 
-void TreeWalker::acceptColor(DomColor *color)
+void TreeWalker::acceptColor( DomColor *color )
 {
-   (void) color;
+    ( void ) color;
 }
 
-void TreeWalker::acceptColorGroup(DomColorGroup *colorGroup)
+void TreeWalker::acceptColorGroup( DomColorGroup *colorGroup )
 {
-   (void) colorGroup;
+    ( void ) colorGroup;
 }
 
-void TreeWalker::acceptPalette(DomPalette *palette)
+void TreeWalker::acceptPalette( DomPalette *palette )
 {
-   acceptColorGroup(palette->elementActive());
-   acceptColorGroup(palette->elementInactive());
-   acceptColorGroup(palette->elementDisabled());
+    acceptColorGroup( palette->elementActive() );
+    acceptColorGroup( palette->elementInactive() );
+    acceptColorGroup( palette->elementDisabled() );
 }
 
-void TreeWalker::acceptFont(DomFont *font)
+void TreeWalker::acceptFont( DomFont *font )
 {
-   (void) font;
+    ( void ) font;
 }
 
-void TreeWalker::acceptPoint(DomPoint *point)
+void TreeWalker::acceptPoint( DomPoint *point )
 {
-   (void) point;
+    ( void ) point;
 }
 
-void TreeWalker::acceptRect(DomRect *rect)
+void TreeWalker::acceptRect( DomRect *rect )
 {
-   (void) rect;
+    ( void ) rect;
 }
 
-void TreeWalker::acceptSizePolicy(DomSizePolicy *sizePolicy)
+void TreeWalker::acceptSizePolicy( DomSizePolicy *sizePolicy )
 {
-   (void) sizePolicy;
+    ( void ) sizePolicy;
 }
 
-void TreeWalker::acceptSize(DomSize *size)
+void TreeWalker::acceptSize( DomSize *size )
 {
-   (void) size;
+    ( void ) size;
 }
 
-void TreeWalker::acceptDate(DomDate *date)
+void TreeWalker::acceptDate( DomDate *date )
 {
-   (void) date;
+    ( void ) date;
 }
 
-void TreeWalker::acceptTime(DomTime *time)
+void TreeWalker::acceptTime( DomTime *time )
 {
-   (void) time;
+    ( void ) time;
 }
 
-void TreeWalker::acceptDateTime(DomDateTime *dateTime)
+void TreeWalker::acceptDateTime( DomDateTime *dateTime )
 {
-   (void) dateTime;
+    ( void ) dateTime;
 }
 
-void TreeWalker::acceptProperty(DomProperty *property)
+void TreeWalker::acceptProperty( DomProperty *property )
 {
-   switch (property->kind()) {
-      case DomProperty::Bool:
-      case DomProperty::Color:
-      case DomProperty::Cstring:
-      case DomProperty::Cursor:
-      case DomProperty::CursorShape:
-      case DomProperty::Enum:
-      case DomProperty::Font:
-      case DomProperty::Pixmap:
-      case DomProperty::IconSet:
-      case DomProperty::Palette:
-      case DomProperty::Point:
-      case DomProperty::PointF:
-      case DomProperty::Rect:
-      case DomProperty::RectF:
-      case DomProperty::Set:
-      case DomProperty::Locale:
-      case DomProperty::SizePolicy:
-      case DomProperty::Size:
-      case DomProperty::SizeF:
-      case DomProperty::String:
-      case DomProperty::Number:
-      case DomProperty::LongLong:
-      case DomProperty::Char:
-      case DomProperty::Date:
-      case DomProperty::Time:
-      case DomProperty::DateTime:
-      case DomProperty::Url:
-      case DomProperty::Unknown:
-      case DomProperty::StringList:
-      case DomProperty::Float:
-      case DomProperty::Double:
-      case DomProperty::UInt:
-      case DomProperty::ULongLong:
-      case DomProperty::Brush:
-         break;
-   }
+    switch ( property->kind() )
+    {
+        case DomProperty::Bool:
+        case DomProperty::Color:
+        case DomProperty::Cstring:
+        case DomProperty::Cursor:
+        case DomProperty::CursorShape:
+        case DomProperty::Enum:
+        case DomProperty::Font:
+        case DomProperty::Pixmap:
+        case DomProperty::IconSet:
+        case DomProperty::Palette:
+        case DomProperty::Point:
+        case DomProperty::PointF:
+        case DomProperty::Rect:
+        case DomProperty::RectF:
+        case DomProperty::Set:
+        case DomProperty::Locale:
+        case DomProperty::SizePolicy:
+        case DomProperty::Size:
+        case DomProperty::SizeF:
+        case DomProperty::String:
+        case DomProperty::Number:
+        case DomProperty::LongLong:
+        case DomProperty::Char:
+        case DomProperty::Date:
+        case DomProperty::Time:
+        case DomProperty::DateTime:
+        case DomProperty::Url:
+        case DomProperty::Unknown:
+        case DomProperty::StringList:
+        case DomProperty::Float:
+        case DomProperty::Double:
+        case DomProperty::UInt:
+        case DomProperty::ULongLong:
+        case DomProperty::Brush:
+            break;
+    }
 }
 
-void TreeWalker::acceptCustomWidgets(DomCustomWidgets *customWidgets)
+void TreeWalker::acceptCustomWidgets( DomCustomWidgets *customWidgets )
 {
-   for (auto item : customWidgets->elementCustomWidget()) {
-      acceptCustomWidget(item);
-   }
+    for ( auto item : customWidgets->elementCustomWidget() )
+    {
+        acceptCustomWidget( item );
+    }
 }
 
-void TreeWalker::acceptCustomWidget(DomCustomWidget *customWidget)
+void TreeWalker::acceptCustomWidget( DomCustomWidget *customWidget )
 {
-   (void) customWidget;
+    ( void ) customWidget;
 }
 
-void TreeWalker::acceptAction(DomAction *action)
+void TreeWalker::acceptAction( DomAction *action )
 {
-   (void) action;
+    ( void ) action;
 }
 
-void TreeWalker::acceptActionGroup(DomActionGroup *actionGroup)
+void TreeWalker::acceptActionGroup( DomActionGroup *actionGroup )
 {
-   for (auto item : actionGroup->elementAction()) {
-      acceptAction(item);
-   }
+    for ( auto item : actionGroup->elementAction() )
+    {
+        acceptAction( item );
+    }
 
-   for (auto item : actionGroup->elementActionGroup()) {
-      acceptActionGroup(item);
-   }
+    for ( auto item : actionGroup->elementActionGroup() )
+    {
+        acceptActionGroup( item );
+    }
 }
 
-void TreeWalker::acceptActionRef(DomActionRef *actionRef)
+void TreeWalker::acceptActionRef( DomActionRef *actionRef )
 {
-   (void) actionRef;
+    ( void ) actionRef;
 }
 
-void TreeWalker::acceptImages(DomImages *images)
+void TreeWalker::acceptImages( DomImages *images )
 {
-   for (auto item : images->elementImage()) {
-      acceptImage(item);
-   }
+    for ( auto item : images->elementImage() )
+    {
+        acceptImage( item );
+    }
 }
 
-void TreeWalker::acceptImage(DomImage *image)
+void TreeWalker::acceptImage( DomImage *image )
 {
-   (void) image;
+    ( void ) image;
 }
 
-void TreeWalker::acceptIncludes(DomIncludes *includes)
+void TreeWalker::acceptIncludes( DomIncludes *includes )
 {
-   for (auto item : includes->elementInclude()) {
-      acceptInclude(item);
-   }
+    for ( auto item : includes->elementInclude() )
+    {
+        acceptInclude( item );
+    }
 }
 
-void TreeWalker::acceptInclude(DomInclude *incl)
+void TreeWalker::acceptInclude( DomInclude *incl )
 {
-   (void) incl;
+    ( void ) incl;
 }
 
-void TreeWalker::acceptConnections(DomConnections *connections)
+void TreeWalker::acceptConnections( DomConnections *connections )
 {
-   for (auto item : connections->elementConnection()) {
-      acceptConnection(item);
-   }
+    for ( auto item : connections->elementConnection() )
+    {
+        acceptConnection( item );
+    }
 }
 
-void TreeWalker::acceptConnection(DomConnection *connection)
+void TreeWalker::acceptConnection( DomConnection *connection )
 {
-   acceptConnectionHints(connection->elementHints());
+    acceptConnectionHints( connection->elementHints() );
 }
 
-void TreeWalker::acceptConnectionHints(DomConnectionHints *connectionHints)
+void TreeWalker::acceptConnectionHints( DomConnectionHints *connectionHints )
 {
-   for (auto item : connectionHints->elementHint()) {
-      acceptConnectionHint(item);
-   }
+    for ( auto item : connectionHints->elementHint() )
+    {
+        acceptConnectionHint( item );
+    }
 }
 
-void TreeWalker::acceptConnectionHint(DomConnectionHint *connectionHint)
+void TreeWalker::acceptConnectionHint( DomConnectionHint *connectionHint )
 {
-   (void) connectionHint;
+    ( void ) connectionHint;
 }
 
-void TreeWalker::acceptWidgetScripts(const DomScripts &, DomWidget *, const  DomWidgets &)
+void TreeWalker::acceptWidgetScripts( const DomScripts &, DomWidget *, const  DomWidgets & )
 {
 }
 
-void TreeWalker::acceptButtonGroups(const DomButtonGroups *domButtonGroups)
+void TreeWalker::acceptButtonGroups( const DomButtonGroups *domButtonGroups )
 {
-   for (auto item : domButtonGroups->elementButtonGroup()) {
-      acceptButtonGroup(item);
-   }
+    for ( auto item : domButtonGroups->elementButtonGroup() )
+    {
+        acceptButtonGroup( item );
+    }
 }
 
-void TreeWalker::acceptButtonGroup(const DomButtonGroup *)
+void TreeWalker::acceptButtonGroup( const DomButtonGroup * )
 {
 }
 

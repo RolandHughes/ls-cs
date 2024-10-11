@@ -23,8 +23,8 @@
 
 #include <qplatform_integrationplugin.h>
 
-QPlatformIntegrationPlugin::QPlatformIntegrationPlugin(QObject *parent)
-    : QObject(parent)
+QPlatformIntegrationPlugin::QPlatformIntegrationPlugin( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -32,19 +32,20 @@ QPlatformIntegrationPlugin::~QPlatformIntegrationPlugin()
 {
 }
 
-QPlatformIntegration *QPlatformIntegrationPlugin::create(const QString &key, const QStringList &paramList)
+QPlatformIntegration *QPlatformIntegrationPlugin::create( const QString &key, const QStringList &paramList )
 {
-   (void) key;
-   (void) paramList;
+    ( void ) key;
+    ( void ) paramList;
 
-   return nullptr;
+    return nullptr;
 }
 
-QPlatformIntegration *QPlatformIntegrationPlugin::create(const QString &key, const QStringList &paramList, int &argc, char **argv)
+QPlatformIntegration *QPlatformIntegrationPlugin::create( const QString &key, const QStringList &paramList, int &argc,
+        char **argv )
 {
-   (void) argc;
-   (void) argv;
+    ( void ) argc;
+    ( void ) argv;
 
-   return create(key, paramList); // Fallback for platform plugins that do not implement the argc/argv version.
+    return create( key, paramList ); // Fallback for platform plugins that do not implement the argc/argv version.
 }
 

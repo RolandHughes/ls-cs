@@ -32,7 +32,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKProtectionSpaceServerTypeHTTP = 1,
     kWKProtectionSpaceServerTypeHTTPS,
     kWKProtectionSpaceServerTypeFTP,
@@ -44,7 +45,8 @@ enum {
 };
 typedef uint32_t WKProtectionSpaceServerType;
 
-enum  {
+enum
+{
     kWKProtectionSpaceAuthenticationSchemeDefault = 1,
     kWKProtectionSpaceAuthenticationSchemeHTTPBasic,
     kWKProtectionSpaceAuthenticationSchemeHTTPDigest,

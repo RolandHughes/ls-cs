@@ -34,35 +34,38 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class StorageAreaSync;
-    class LocalStorageTask;
+class StorageAreaSync;
+class LocalStorageTask;
 
-    // FIXME: Rename this class to StorageThread
-    class LocalStorageThread {
-        WTF_MAKE_NONCOPYABLE(LocalStorageThread); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        static PassOwnPtr<LocalStorageThread> create();
-        ~LocalStorageThread();
+// FIXME: Rename this class to StorageThread
+class LocalStorageThread
+{
+    WTF_MAKE_NONCOPYABLE( LocalStorageThread );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    static PassOwnPtr<LocalStorageThread> create();
+    ~LocalStorageThread();
 
-        bool start();
-        void terminate();
-        void scheduleTask(PassOwnPtr<LocalStorageTask>);
+    bool start();
+    void terminate();
+    void scheduleTask( PassOwnPtr<LocalStorageTask> );
 
-        // Background thread part of the terminate procedure.
-        void performTerminate();
+    // Background thread part of the terminate procedure.
+    void performTerminate();
 
-    private:
-        LocalStorageThread();
+private:
+    LocalStorageThread();
 
-        // Called on background thread.
-        static void* threadEntryPointCallback(void*);
-        void* threadEntryPoint();
+    // Called on background thread.
+    static void *threadEntryPointCallback( void * );
+    void *threadEntryPoint();
 
-        ThreadIdentifier m_threadID;
-        MessageQueue<LocalStorageTask> m_queue;
-    };
+    ThreadIdentifier m_threadID;
+    MessageQueue<LocalStorageTask> m_queue;
+};
 
 } // namespace WebCore
 

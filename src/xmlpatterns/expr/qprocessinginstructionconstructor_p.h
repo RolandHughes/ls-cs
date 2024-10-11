@@ -26,30 +26,31 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ProcessingInstructionConstructor : public PairContainer
 {
- public:
-   ProcessingInstructionConstructor(const Expression::Ptr &operand1, const Expression::Ptr &operand2);
+public:
+    ProcessingInstructionConstructor( const Expression::Ptr &operand1, const Expression::Ptr &operand2 );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   SequenceType::List expectedOperandTypes() const override;
+    SequenceType::List expectedOperandTypes() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   Properties properties() const override;
+    Properties properties() const override;
 
- private:
-   inline QXmlName evaluateTardata(const DynamicContext::Ptr &context) const;
+private:
+    inline QXmlName evaluateTardata( const DynamicContext::Ptr &context ) const;
 
-   static inline QString leftTrimmed(const QString &input);
+    static inline QString leftTrimmed( const QString &input );
 
-   QString data(const DynamicContext::Ptr &context) const;
+    QString data( const DynamicContext::Ptr &context ) const;
 };
 
 }

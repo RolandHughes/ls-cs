@@ -18,7 +18,7 @@
  *
  */
 
-/* This prefix file should contain only: 
+/* This prefix file should contain only:
  *    1) files to precompile for faster builds
  *    2) in one case at least: OS-X-specific performance bug workarounds
  *    3) the special trick to catch us using new or delete without including "config.h"
@@ -51,7 +51,7 @@
 #endif
 #endif
 
-// If we don't define these, they get defined in windef.h. 
+// If we don't define these, they get defined in windef.h.
 // We want to use std::min and std::max
 #ifdef __cplusplus
 #define max max
@@ -145,8 +145,8 @@
 #endif
 
 #ifdef __cplusplus
-#define new ("if you use new/delete make sure to include config.h at the top of the file"()) 
-#define delete ("if you use new/delete make sure to include config.h at the top of the file"()) 
+#define new ("if you use new/delete make sure to include config.h at the top of the file"())
+#define delete ("if you use new/delete make sure to include config.h at the top of the file"())
 #endif
 
 /* When C++ exceptions are disabled, the C++ library defines |try| and |catch|

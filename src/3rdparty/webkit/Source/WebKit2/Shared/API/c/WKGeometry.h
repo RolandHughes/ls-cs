@@ -32,19 +32,22 @@
 extern "C" {
 #endif
 
-struct WKPoint {
+struct WKPoint
+{
     double x;
     double y;
 };
 typedef struct WKPoint WKPoint;
 
-struct WKSize {
+struct WKSize
+{
     double width;
     double height;
 };
 typedef struct WKSize WKSize;
 
-struct WKRect {
+struct WKRect
+{
     WKPoint origin;
     WKSize size;
 };

@@ -27,11 +27,11 @@
 
 using namespace QPatternist;
 
-static const AtomicComparator::Operators AllCompOperators(AtomicComparator::OperatorNotEqual            |
-      AtomicComparator::OperatorGreaterOrEqual      |
-      AtomicComparator::OperatorLessOrEqual         |
-      AtomicComparator::OperatorLessThanNaNLeast    |
-      AtomicComparator::OperatorLessThanNaNGreatest);
+static const AtomicComparator::Operators AllCompOperators( AtomicComparator::OperatorNotEqual            |
+        AtomicComparator::OperatorGreaterOrEqual      |
+        AtomicComparator::OperatorLessOrEqual         |
+        AtomicComparator::OperatorLessThanNaNLeast    |
+        AtomicComparator::OperatorLessThanNaNGreatest );
 
 /* --------------------------------------------------------------- */
 #define addVisitor(owner, type, comp, validOps)                                \
@@ -67,145 +67,145 @@ owner##ComparatorLocator::visit(const type *,                                   
 /* --------------------------------------------------------------- */
 
 /* ----------- xs:string, xs:anyURI, xs:untypedAtomic  ----------- */
-addVisitor(String,  StringType,         StringComparator,
-           AllCompOperators)
-addVisitor(String,  UntypedAtomicType,  StringComparator,
-           AllCompOperators)
-addVisitor(String,  AnyURIType,         StringComparator,
-           AllCompOperators)
+addVisitor( String,  StringType,         StringComparator,
+            AllCompOperators )
+addVisitor( String,  UntypedAtomicType,  StringComparator,
+            AllCompOperators )
+addVisitor( String,  AnyURIType,         StringComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 
 /* ------------------------- xs:hexBinary ------------------------ */
-addVisitor(HexBinary,   HexBinaryType,        BinaryDataComparator,
-           AtomicComparator::OperatorEqual |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( HexBinary,   HexBinaryType,        BinaryDataComparator,
+            AtomicComparator::OperatorEqual |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* ----------------------- xs:base64Binary ----------------------- */
-addVisitor(Base64Binary,    Base64BinaryType,    BinaryDataComparator,
-           AtomicComparator::OperatorEqual |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( Base64Binary,    Base64BinaryType,    BinaryDataComparator,
+            AtomicComparator::OperatorEqual |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:boolean ------------------------- */
-addVisitor(Boolean,     BooleanType,        BooleanComparator,
-           AllCompOperators)
+addVisitor( Boolean,     BooleanType,        BooleanComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:double -------------------------- */
-visitorForDouble(Double,      DoubleType)
-visitorForDouble(Double,      FloatType)
-visitorForDouble(Double,      DecimalType)
-visitorForDouble(Double,      IntegerType)
+visitorForDouble( Double,      DoubleType )
+visitorForDouble( Double,      FloatType )
+visitorForDouble( Double,      DecimalType )
+visitorForDouble( Double,      IntegerType )
 /* --------------------------------------------------------------- */
 
 /* --------------------------- xs:float -------------------------- */
-visitorForDouble(Float,   DoubleType)
-visitorForDouble(Float,   FloatType)
-visitorForDouble(Float,   DecimalType)
-visitorForDouble(Float,   IntegerType)
+visitorForDouble( Float,   DoubleType )
+visitorForDouble( Float,   FloatType )
+visitorForDouble( Float,   DecimalType )
+visitorForDouble( Float,   IntegerType )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:decimal ------------------------- */
-visitorForDouble(Decimal,     DoubleType)
-visitorForDouble(Decimal,     FloatType)
-addVisitor(Decimal,     DecimalType,    DecimalComparator,
-           AllCompOperators)
-addVisitor(Decimal,     IntegerType,    DecimalComparator,
-           AllCompOperators)
+visitorForDouble( Decimal,     DoubleType )
+visitorForDouble( Decimal,     FloatType )
+addVisitor( Decimal,     DecimalType,    DecimalComparator,
+            AllCompOperators )
+addVisitor( Decimal,     IntegerType,    DecimalComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 
 /* ------------------------- xs:integer -------------------------- */
-visitorForDouble(Integer,     DoubleType)
-visitorForDouble(Integer,     FloatType)
-addVisitor(Integer,     DecimalType,    DecimalComparator,
-           AllCompOperators)
-addVisitor(Integer,     IntegerType,    IntegerComparator,
-           AllCompOperators)
+visitorForDouble( Integer,     DoubleType )
+visitorForDouble( Integer,     FloatType )
+addVisitor( Integer,     DecimalType,    DecimalComparator,
+            AllCompOperators )
+addVisitor( Integer,     IntegerType,    IntegerComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:QName --------------------------- */
-addVisitor(QName,       QNameType,          QNameComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( QName,       QNameType,          QNameComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:gYear --------------------------- */
-addVisitor(GYear,       GYearType,          AbstractDateTimeComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( GYear,       GYearType,          AbstractDateTimeComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:gDay ---------------------------- */
-addVisitor(GDay,        GDayType,           AbstractDateTimeComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( GDay,        GDayType,           AbstractDateTimeComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:gMonth -------------------------- */
-addVisitor(GMonth,      GMonthType,         AbstractDateTimeComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( GMonth,      GMonthType,         AbstractDateTimeComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* ------------------------ xs:gYearMonth ------------------------ */
-addVisitor(GYearMonth,  GYearMonthType,     AbstractDateTimeComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( GYearMonth,  GYearMonthType,     AbstractDateTimeComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* ------------------------ xs:gMonthDay ------------------------- */
-addVisitor(GMonthDay,   GMonthDayType,      AbstractDateTimeComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( GMonthDay,   GMonthDayType,      AbstractDateTimeComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* ------------------------ xs:dateTime -------------------------- */
-addVisitor(DateTime,    DateTimeType,    AbstractDateTimeComparator,
-           AllCompOperators)
+addVisitor( DateTime,    DateTimeType,    AbstractDateTimeComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:time ---------------------------- */
-addVisitor(SchemaTime,        SchemaTimeType,       AbstractDateTimeComparator,
-           AllCompOperators)
+addVisitor( SchemaTime,        SchemaTimeType,       AbstractDateTimeComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 
 /* -------------------------- xs:date ---------------------------- */
-addVisitor(Date,        DateType,       AbstractDateTimeComparator,
-           AllCompOperators)
+addVisitor( Date,        DateType,       AbstractDateTimeComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 
 /* ------------------------ xs:duration -------------------------- */
-addVisitor(Duration,        DayTimeDurationType,        AbstractDurationComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
-addVisitor(Duration,        DurationType,               AbstractDurationComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
-addVisitor(Duration,        YearMonthDurationType,      AbstractDurationComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( Duration,        DayTimeDurationType,        AbstractDurationComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
+addVisitor( Duration,        DurationType,               AbstractDurationComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
+addVisitor( Duration,        YearMonthDurationType,      AbstractDurationComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* ------------------ xs:dayTimeDuration ------------------------ */
-addVisitor(DayTimeDuration,     DayTimeDurationType,    AbstractDurationComparator,
-           AllCompOperators)
-addVisitor(DayTimeDuration,     DurationType,           AbstractDurationComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
-addVisitor(DayTimeDuration,     YearMonthDurationType,  AbstractDurationComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
+addVisitor( DayTimeDuration,     DayTimeDurationType,    AbstractDurationComparator,
+            AllCompOperators )
+addVisitor( DayTimeDuration,     DurationType,           AbstractDurationComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
+addVisitor( DayTimeDuration,     YearMonthDurationType,  AbstractDurationComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
 /* --------------------------------------------------------------- */
 
 /* ------------------- xs:yearMonthDuration --------------------- */
-addVisitor(YearMonthDuration,   DayTimeDurationType,    AbstractDurationComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
-addVisitor(YearMonthDuration,   DurationType,           AbstractDurationComparator,
-           AtomicComparator::OperatorEqual     |
-           AtomicComparator::OperatorNotEqual)
-addVisitor(YearMonthDuration,   YearMonthDurationType,  AbstractDurationComparator,
-           AllCompOperators)
+addVisitor( YearMonthDuration,   DayTimeDurationType,    AbstractDurationComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
+addVisitor( YearMonthDuration,   DurationType,           AbstractDurationComparator,
+            AtomicComparator::OperatorEqual     |
+            AtomicComparator::OperatorNotEqual )
+addVisitor( YearMonthDuration,   YearMonthDurationType,  AbstractDurationComparator,
+            AllCompOperators )
 /* --------------------------------------------------------------- */
 #undef addVisitor

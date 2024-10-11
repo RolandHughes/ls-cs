@@ -30,46 +30,48 @@
 #include "FloatPoint3D.h"
 #include <math.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Use a namespace for these so we can easily import them.
-namespace LoopBlinnMathUtils {
+namespace LoopBlinnMathUtils
+{
 
-float roundToZero(float val);
-bool approxEqual(const FloatPoint& v0, const FloatPoint& v1);
-bool approxEqual(const FloatPoint3D& v0, const FloatPoint3D& v1);
-bool approxEqual(float f0, float f1);
+float roundToZero( float val );
+bool approxEqual( const FloatPoint &v0, const FloatPoint &v1 );
+bool approxEqual( const FloatPoint3D &v0, const FloatPoint3D &v1 );
+bool approxEqual( float f0, float f1 );
 
 // Determines whether the line segment between (p1, q1) intersects
 // that between (p2, q2).
-bool linesIntersect(const FloatPoint& p1,
-                    const FloatPoint& q1,
-                    const FloatPoint& p2,
-                    const FloatPoint& q2);
+bool linesIntersect( const FloatPoint &p1,
+                     const FloatPoint &q1,
+                     const FloatPoint &p2,
+                     const FloatPoint &q2 );
 
 // Determines whether "point" is inside the 2D triangle defined by
 // vertices a, b, and c. This test defines that points exactly on an
 // edge are not considered to be inside the triangle.
-bool pointInTriangle(const FloatPoint& point,
-                     const FloatPoint& a,
-                     const FloatPoint& b,
-                     const FloatPoint& c);
+bool pointInTriangle( const FloatPoint &point,
+                      const FloatPoint &a,
+                      const FloatPoint &b,
+                      const FloatPoint &c );
 
 // Determines whether the triangles defined by the points (a1, b1, c1)
 // and (a2, b2, c2) overlap. The definition of this function is that
 // if the two triangles only share an adjacent edge or vertex, they
 // are not considered to overlap.
-bool trianglesOverlap(const FloatPoint& a1,
-                      const FloatPoint& b1,
-                      const FloatPoint& c1,
-                      const FloatPoint& a2,
-                      const FloatPoint& b2,
-                      const FloatPoint& c2);
+bool trianglesOverlap( const FloatPoint &a1,
+                       const FloatPoint &b1,
+                       const FloatPoint &c1,
+                       const FloatPoint &a2,
+                       const FloatPoint &b2,
+                       const FloatPoint &c2 );
 
 // Given a src cubic bezier, chops it at the specified t value,
 // where 0 < t < 1, and returns the two new cubics in dst[0..3]
 // and dst[3..6].
-void chopCubicAt(const FloatPoint src[4], FloatPoint dst[7], float t);
+void chopCubicAt( const FloatPoint src[4], FloatPoint dst[7], float t );
 
 // "X-Ray" queries. An XRay is a half-line originating at the given
 // point and extending to x=+infinity.
@@ -88,21 +90,21 @@ typedef FloatPoint XRay;
 // because the query occurred exactly at one of the endpoints' y
 // coordinates or at a tangent point, indicating that another query y
 // coordinate is preferred for robustness.
-int numXRayCrossingsForCubic(const XRay& xRay,
-                             const FloatPoint cubic[4],
-                             bool& ambiguous);
+int numXRayCrossingsForCubic( const XRay &xRay,
+                              const FloatPoint cubic[4],
+                              bool &ambiguous );
 
 // Given a line segment from lineEndpoints[0] to lineEndpoints[1], and an
 // XRay, returns true if they intersect. Outgoing "ambiguous" argument
 // indicates whether the answer is ambiguous because the query occurred
 // exactly at one of the endpoints' y coordinates, indicating that another
 // query y coordinate is preferred for robustness.
-bool xRayCrossesLine(const XRay& xRay,
-                     const FloatPoint lineEndpoints[2],
-                     bool& ambiguous);
+bool xRayCrossesLine( const XRay &xRay,
+                      const FloatPoint lineEndpoints[2],
+                      bool &ambiguous );
 
 
-bool isConvex(const FloatPoint* vertices, int nVertices);
+bool isConvex( const FloatPoint *vertices, int nVertices );
 
 } // namespace LoopBlinnMathUtils
 

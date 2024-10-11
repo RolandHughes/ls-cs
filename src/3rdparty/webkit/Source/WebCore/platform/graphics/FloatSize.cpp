@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,20 +31,21 @@
 #include "IntSize.h"
 #include <math.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-FloatSize::FloatSize(const IntSize& size) : m_width(size.width()), m_height(size.height())
+FloatSize::FloatSize( const IntSize &size ) : m_width( size.width() ), m_height( size.height() )
 {
 }
 
 float FloatSize::diagonalLength() const
 {
-    return sqrtf(diagonalLengthSquared());
+    return sqrtf( diagonalLengthSquared() );
 }
 
-FloatSize FloatSize::narrowPrecision(double width, double height)
+FloatSize FloatSize::narrowPrecision( double width, double height )
 {
-    return FloatSize(narrowPrecisionToFloat(width), narrowPrecisionToFloat(height));
+    return FloatSize( narrowPrecisionToFloat( width ), narrowPrecisionToFloat( height ) );
 }
 
 }

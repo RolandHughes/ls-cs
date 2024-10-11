@@ -28,46 +28,49 @@
 #import <Cocoa/Cocoa.h>
 #import <wtf/RetainPtr.h>
 
-namespace WebKit { 
+namespace WebKit
+{
 class LayerTreeContext;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 class IntRect;
 }
 
 @class WKView;
 
-@interface WKFullScreenWindowController : NSWindowController {
+@interface WKFullScreenWindowController : NSWindowController
+{
 @private
     WKView *_webView;
     RetainPtr<NSView> _webViewPlaceholder;
     RetainPtr<NSView> _layerViewPlaceholder;
     RetainPtr<NSView> _layerHostingView;
-    
+
     BOOL _isAnimating;
     BOOL _isFullScreen;
     BOOL _isWindowLoaded;
     BOOL _forceDisableAnimation;
     BOOL _isPlaying;
-    CGRect _initialFrame;    
+    CGRect _initialFrame;
     uint32_t _idleDisplaySleepAssertion;
     uint32_t _idleSystemSleepAssertion;
     NSTimer *_tickleTimer;
 }
 
-- (WKView*)webView;
-- (void)setWebView:(WKView*)webView;
+- ( WKView * )webView;
+- ( void )setWebView:( WKView * )webView;
 
-- (void)enterFullScreen:(NSScreen *)screen;
-- (void)exitFullScreen;
-- (void)beganEnterFullScreenAnimation;
-- (void)beganExitFullScreenAnimation;
-- (void)finishedEnterFullScreenAnimation:(bool)completed;
-- (void)finishedExitFullScreenAnimation:(bool)completed;
-- (void)enterAcceleratedCompositingMode:(const WebKit::LayerTreeContext&)context;
-- (void)exitAcceleratedCompositingMode;
-- (WebCore::IntRect)getFullScreenRect;
+- ( void )enterFullScreen:( NSScreen * )screen;
+- ( void )exitFullScreen;
+- ( void )beganEnterFullScreenAnimation;
+- ( void )beganExitFullScreenAnimation;
+- ( void )finishedEnterFullScreenAnimation:( bool )completed;
+- ( void )finishedExitFullScreenAnimation:( bool )completed;
+- ( void )enterAcceleratedCompositingMode:( const WebKit::LayerTreeContext & )context;
+- ( void )exitAcceleratedCompositingMode;
+- ( WebCore::IntRect )getFullScreenRect;
 
 @end
 

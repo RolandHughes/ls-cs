@@ -30,24 +30,24 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraCaptureDestinationControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraCaptureDestinationControl)
+    MULTI_LSCS_OBJECT( QCameraCaptureDestinationControl )
 
- public:
-   ~QCameraCaptureDestinationControl();
+public:
+    ~QCameraCaptureDestinationControl();
 
-   virtual bool isCaptureDestinationSupported(QCameraImageCapture::CaptureDestinations destination) const = 0;
-   virtual QCameraImageCapture::CaptureDestinations captureDestination() const = 0;
-   virtual void setCaptureDestination(QCameraImageCapture::CaptureDestinations destination) = 0;
+    virtual bool isCaptureDestinationSupported( QCameraImageCapture::CaptureDestinations destination ) const = 0;
+    virtual QCameraImageCapture::CaptureDestinations captureDestination() const = 0;
+    virtual void setCaptureDestination( QCameraImageCapture::CaptureDestinations destination ) = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void captureDestinationChanged(QCameraImageCapture::CaptureDestinations destination))
-   MULTI_CS_SIGNAL_2(captureDestinationChanged, destination)
+    MULTI_LSCS_SIGNAL_1( Public, void captureDestinationChanged( QCameraImageCapture::CaptureDestinations destination ) )
+    MULTI_LSCS_SIGNAL_2( captureDestinationChanged, destination )
 
- protected:
-   explicit QCameraCaptureDestinationControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraCaptureDestinationControl( QObject *parent = nullptr );
 };
 
 #define QCameraCaptureDestinationControl_iid "com.copperspice.CS..cameraCaptureDestinationControl/1.0"
-CS_DECLARE_INTERFACE(QCameraCaptureDestinationControl, QCameraCaptureDestinationControl_iid)
+LSCS_DECLARE_INTERFACE( QCameraCaptureDestinationControl, QCameraCaptureDestinationControl_iid )
 
 #endif
 

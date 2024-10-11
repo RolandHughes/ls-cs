@@ -33,55 +33,58 @@ class QStyleOptionRubberBand;
 
 class Q_GUI_EXPORT QRubberBand : public QWidget
 {
-   GUI_CS_OBJECT(QRubberBand)
+    GUI_LSCS_OBJECT( QRubberBand )
 
- public:
-   enum Shape { Line, Rectangle };
+public:
+    enum Shape { Line, Rectangle };
 
-   explicit QRubberBand(Shape shape, QWidget *parent = nullptr);
+    explicit QRubberBand( Shape shape, QWidget *parent = nullptr );
 
-   ~QRubberBand();
+    ~QRubberBand();
 
-   Shape shape() const;
+    Shape shape() const;
 
-   void setGeometry(const QRect &rect);
+    void setGeometry( const QRect &rect );
 
-   inline void setGeometry(int x, int y, int width, int height);
-   inline void move(int x, int y);
+    inline void setGeometry( int x, int y, int width, int height );
+    inline void move( int x, int y );
 
-   inline void move(const QPoint &point) {
-      move(point.x(), point.y());
-   }
+    inline void move( const QPoint &point )
+    {
+        move( point.x(), point.y() );
+    }
 
-   inline void resize(int width, int height) {
-      setGeometry(geometry().x(), geometry().y(), width, height);
-   }
+    inline void resize( int width, int height )
+    {
+        setGeometry( geometry().x(), geometry().y(), width, height );
+    }
 
-   inline void resize(const QSize &size) {
-      resize(size.width(), size.height());
-   }
+    inline void resize( const QSize &size )
+    {
+        resize( size.width(), size.height() );
+    }
 
- protected:
-   bool event(QEvent *event) override;
-   void paintEvent(QPaintEvent *event) override;
-   void changeEvent(QEvent *event) override;
-   void showEvent(QShowEvent *event) override;
-   void resizeEvent(QResizeEvent *event) override;
-   void moveEvent(QMoveEvent *event) override;
-   void initStyleOption(QStyleOptionRubberBand *option) const;
+protected:
+    bool event( QEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
+    void changeEvent( QEvent *event ) override;
+    void showEvent( QShowEvent *event ) override;
+    void resizeEvent( QResizeEvent *event ) override;
+    void moveEvent( QMoveEvent *event ) override;
+    void initStyleOption( QStyleOptionRubberBand *option ) const;
 
- private:
-   Q_DECLARE_PRIVATE(QRubberBand)
+private:
+    Q_DECLARE_PRIVATE( QRubberBand )
 };
 
-void QRubberBand::setGeometry(int x, int y, int width, int height)
+void QRubberBand::setGeometry( int x, int y, int width, int height )
 {
-   setGeometry(QRect(x, y, width, height));
+    setGeometry( QRect( x, y, width, height ) );
 }
 
-void QRubberBand::move(int x, int y)
+void QRubberBand::move( int x, int y )
 {
-   setGeometry(x, y, width(), height());
+    setGeometry( x, y, width(), height() );
 }
 
 #endif // QT_NO_RUBBERBAND

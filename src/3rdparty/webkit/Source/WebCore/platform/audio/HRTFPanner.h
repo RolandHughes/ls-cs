@@ -29,29 +29,37 @@
 #include "FFTConvolver.h"
 #include "Panner.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HRTFPanner : public Panner {
+class HRTFPanner : public Panner
+{
 public:
-    explicit HRTFPanner(double sampleRate);
+    explicit HRTFPanner( double sampleRate );
     virtual ~HRTFPanner();
 
     // Panner
-    virtual void pan(double azimuth, double elevation, AudioBus* inputBus, AudioBus* outputBus, size_t framesToProcess);
+    virtual void pan( double azimuth, double elevation, AudioBus *inputBus, AudioBus *outputBus, size_t framesToProcess );
     virtual void reset();
 
-    size_t fftSize() { return fftSizeForSampleRate(m_sampleRate); }
-    static size_t fftSizeForSampleRate(double sampleRate);
+    size_t fftSize()
+    {
+        return fftSizeForSampleRate( m_sampleRate );
+    }
+    static size_t fftSizeForSampleRate( double sampleRate );
 
-    double sampleRate() const { return m_sampleRate; }
-    
+    double sampleRate() const
+    {
+        return m_sampleRate;
+    }
+
 private:
     // Given an azimuth angle in the range -180 -> +180, returns the corresponding azimuth index for the database,
     // and azimuthBlend which is an interpolation value from 0 -> 1.
-    int calculateDesiredAzimuthIndexAndBlend(double azimuth, double& azimuthBlend);
+    int calculateDesiredAzimuthIndexAndBlend( double azimuth, double &azimuthBlend );
 
     double m_sampleRate;
-    
+
     // m_isFirstRender and m_azimuthIndex are used to avoid harshly changing from rendering at one azimuth angle to another angle very far away.
     // Changing the azimuth gradually produces a smoother sound.
     bool m_isFirstRender;

@@ -2,36 +2,36 @@ list(APPEND PLATFORMS_XCB_PRIVATE_INCLUDES
 )
 
 if(BUILD_PLATFORMS_XCB_PLUGIN)
-   add_library(CsGuiXcb MODULE "")
-   add_library(CopperSpice::CsGuiXcb ALIAS CsGuiXcb)
+   add_library(LsCsGuiXcb MODULE "")
+   add_library(LsCs::LsCsGuiXcb ALIAS LsCsGuiXcb)
 
-   set_target_properties(CsGuiXcb PROPERTIES
-      OUTPUT_NAME   CsGuiXcb${BUILD_ABI} PREFIX ""
+   set_target_properties(LsCsGuiXcb PROPERTIES
+      OUTPUT_NAME   LsCsGuiXcb${BUILD_ABI} PREFIX ""
       INSTALL_RPATH "$ORIGIN/.."
    )
 
-   target_sources(CsGuiXcb
+   target_sources(LsCsGuiXcb
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/xcb/qxcb_main.cpp
    )
 
-   target_link_libraries(CsGuiXcb
+   target_link_libraries(LsCsGuiXcb
       PRIVATE
-      CsCore
-      CsGui
-      CsXcbSupport
+      LsCsCore
+      LsCsGui
+      LsCsXcbSupport
    )
 
-   target_compile_definitions(CsGuiXcb
+   target_compile_definitions(LsCsGuiXcb
       PRIVATE
       -DQT_PLUGIN
       -DXCB_USE_XINPUT2
    )
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/platforms)
-   else()
-      install(TARGETS CsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/platforms)
+#   else()
+#      install(TARGETS LsCsGuiXcb DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()
 

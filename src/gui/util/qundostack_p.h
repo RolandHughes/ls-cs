@@ -34,59 +34,59 @@ class QUndoGroup;
 
 class QUndoCommandPrivate
 {
- public:
-   QUndoCommandPrivate() : id(-1) {}
-   QList<QUndoCommand *> child_list;
-   QString text;
-   QString actionText;
-   int id;
+public:
+    QUndoCommandPrivate() : id( -1 ) {}
+    QList<QUndoCommand *> child_list;
+    QString text;
+    QString actionText;
+    int id;
 };
 
 #ifndef QT_NO_UNDOSTACK
 
 class QUndoStackPrivate
 {
-   Q_DECLARE_PUBLIC(QUndoStack)
+    Q_DECLARE_PUBLIC( QUndoStack )
 
- public:
-   QUndoStackPrivate()
-      : index(0), clean_index(0), group(nullptr), undo_limit(0)
-   {
-   }
+public:
+    QUndoStackPrivate()
+        : index( 0 ), clean_index( 0 ), group( nullptr ), undo_limit( 0 )
+    {
+    }
 
-   virtual ~QUndoStackPrivate()
-   {
-   }
+    virtual ~QUndoStackPrivate()
+    {
+    }
 
-   QList<QUndoCommand *> command_list;
-   QList<QUndoCommand *> macro_stack;
-   int index;
-   int clean_index;
-   QUndoGroup *group;
-   int undo_limit;
+    QList<QUndoCommand *> command_list;
+    QList<QUndoCommand *> macro_stack;
+    int index;
+    int clean_index;
+    QUndoGroup *group;
+    int undo_limit;
 
-   void setIndex(int idx, bool clean);
-   bool checkUndoLimit();
+    void setIndex( int idx, bool clean );
+    bool checkUndoLimit();
 
- protected:
-   QUndoStack *q_ptr;
+protected:
+    QUndoStack *q_ptr;
 };
 
 #ifndef QT_NO_ACTION
 class QUndoAction : public QAction
 {
-   GUI_CS_OBJECT(QUndoAction)
+    GUI_LSCS_OBJECT( QUndoAction )
 
- public:
-   QUndoAction(const QString &prefix, QObject *parent = nullptr);
-   void setTextFormat(const QString &textFormat, const QString &defaultText);
+public:
+    QUndoAction( const QString &prefix, QObject *parent = nullptr );
+    void setTextFormat( const QString &textFormat, const QString &defaultText );
 
-   GUI_CS_SLOT_1(Public, void setPrefixedText(const QString &text))
-   GUI_CS_SLOT_2(setPrefixedText)
+    GUI_LSCS_SLOT_1( Public, void setPrefixedText( const QString &text ) )
+    GUI_LSCS_SLOT_2( setPrefixedText )
 
- private:
-   QString m_prefix;
-   QString m_defaultText;
+private:
+    QString m_prefix;
+    QString m_defaultText;
 
 };
 #endif // QT_NO_ACTION

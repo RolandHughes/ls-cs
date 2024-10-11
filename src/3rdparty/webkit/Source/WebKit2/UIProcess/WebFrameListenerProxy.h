@@ -31,21 +31,26 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebFrameProxy;
 
-class WebFrameListenerProxy : public APIObject {
+class WebFrameListenerProxy : public APIObject
+{
 public:
     virtual ~WebFrameListenerProxy();
 
     void invalidate();
-    uint64_t listenerID() const { return m_listenerID; }
+    uint64_t listenerID() const
+    {
+        return m_listenerID;
+    }
 
 protected:
-    WebFrameListenerProxy(WebFrameProxy*, uint64_t listenerID);
+    WebFrameListenerProxy( WebFrameProxy *, uint64_t listenerID );
 
-    void receivedPolicyDecision(WebCore::PolicyAction);
+    void receivedPolicyDecision( WebCore::PolicyAction );
 
 private:
     RefPtr<WebFrameProxy> m_frame;

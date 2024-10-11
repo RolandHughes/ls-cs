@@ -37,11 +37,12 @@
 #include "htmlediting.h"
 #include "visible_units.h"
 
-namespace WebCore {
-
-PassRefPtr<Clipboard> Editor::newGeneralClipboard(ClipboardAccessPolicy policy, Frame* frame)
+namespace WebCore
 {
-    return ClipboardQt::create(policy, frame);
+
+PassRefPtr<Clipboard> Editor::newGeneralClipboard( ClipboardAccessPolicy policy, Frame *frame )
+{
+    return ClipboardQt::create( policy, frame );
 }
 
 } // namespace WebCore

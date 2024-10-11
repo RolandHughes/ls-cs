@@ -24,36 +24,41 @@
 #include "CSSValue.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSInitialValue : public CSSValue {
+class CSSInitialValue : public CSSValue
+{
 public:
     static PassRefPtr<CSSInitialValue> createExplicit()
     {
-        static CSSInitialValue* explicitValue = create(false).releaseRef();
+        static CSSInitialValue *explicitValue = create( false ).releaseRef();
         return explicitValue;
     }
     static PassRefPtr<CSSInitialValue> createImplicit()
     {
-        static CSSInitialValue* explicitValue = create(true).releaseRef();
+        static CSSInitialValue *explicitValue = create( true ).releaseRef();
         return explicitValue;
     }
 
     virtual String cssText() const;
-        
+
 private:
-    CSSInitialValue(bool implicit)
-        : m_implicit(implicit)
+    CSSInitialValue( bool implicit )
+        : m_implicit( implicit )
     {
     }
 
-    static PassRefPtr<CSSInitialValue> create(bool implicit)
+    static PassRefPtr<CSSInitialValue> create( bool implicit )
     {
-        return adoptRef(new CSSInitialValue(implicit));
+        return adoptRef( new CSSInitialValue( implicit ) );
     }
 
     virtual unsigned short cssValueType() const;
-    virtual bool isImplicitInitialValue() const { return m_implicit; }
+    virtual bool isImplicitInitialValue() const
+    {
+        return m_implicit;
+    }
 
     bool m_implicit;
 };

@@ -33,28 +33,35 @@
 #include "Document.h"
 #include "StyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-ClassNodeList::ClassNodeList(PassRefPtr<Node> rootNode, const String& classNames)
-    : DynamicNodeList(rootNode)
-    , m_classNames(classNames, m_rootNode->document()->inQuirksMode())
-    , m_originalClassNames(classNames)
+ClassNodeList::ClassNodeList( PassRefPtr<Node> rootNode, const String &classNames )
+    : DynamicNodeList( rootNode )
+    , m_classNames( classNames, m_rootNode->document()->inQuirksMode() )
+    , m_originalClassNames( classNames )
 {
 }
 
 ClassNodeList::~ClassNodeList()
 {
-    m_rootNode->removeCachedClassNodeList(this, m_originalClassNames);
-} 
+    m_rootNode->removeCachedClassNodeList( this, m_originalClassNames );
+}
 
-bool ClassNodeList::nodeMatches(Element* testNode) const
+bool ClassNodeList::nodeMatches( Element *testNode ) const
 {
-    if (!testNode->hasClass())
+    if ( !testNode->hasClass() )
+    {
         return false;
-    if (!m_classNames.size())
+    }
+
+    if ( !m_classNames.size() )
+    {
         return false;
-    ASSERT(testNode->isStyledElement());
-    return static_cast<StyledElement*>(testNode)->classNames().containsAll(m_classNames);
+    }
+
+    ASSERT( testNode->isStyledElement() );
+    return static_cast<StyledElement *>( testNode )->classNames().containsAll( m_classNames );
 }
 
 } // namespace WebCore

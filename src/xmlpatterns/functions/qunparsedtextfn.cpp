@@ -27,34 +27,40 @@
 
 using namespace QPatternist;
 
-Item UnparsedTextFN::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item UnparsedTextFN::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   Q_ASSERT(m_operands.count() == 1 || m_operands.count() == 2);
-   const Item href(m_operands.first()->evaluateSingleton(context));
-   if (!href) {
-      return Item();
-   }
+    Q_ASSERT( m_operands.count() == 1 || m_operands.count() == 2 );
+    const Item href( m_operands.first()->evaluateSingleton( context ) );
 
-   const QUrl mayRela(AnyURI::toQUrl<ReportContext::XTDE1170>(href.stringValue(),
-                      context,
-                      this));
+    if ( !href )
+    {
+        return Item();
+    }
 
-   const QUrl uri(context->resolveURI(mayRela, staticBaseURI()));
+    const QUrl mayRela( AnyURI::toQUrl<ReportContext::XTDE1170>( href.stringValue(),
+                        context,
+                        this ) );
 
-   if (uri.hasFragment()) {
-      context->error(QtXmlPatterns::tr("The URI cannot have a fragment"),
-                     ReportContext::XTDE1170, this);
-   }
+    const QUrl uri( context->resolveURI( mayRela, staticBaseURI() ) );
 
-   QString encoding;
+    if ( uri.hasFragment() )
+    {
+        context->error( QtXmlPatterns::tr( "The URI cannot have a fragment" ),
+                        ReportContext::XTDE1170, this );
+    }
 
-   if (m_operands.count() == 2) {
-      const Item encodingArg(m_operands.at(1)->evaluateSingleton(context));
-      if (encodingArg) {
-         encoding = encodingArg.stringValue();
-      }
-   }
+    QString encoding;
 
-   Q_ASSERT(uri.isValid() && !uri.isRelative());
-   return context->resourceLoader()->openUnparsedText(uri, encoding, context, this);
+    if ( m_operands.count() == 2 )
+    {
+        const Item encodingArg( m_operands.at( 1 )->evaluateSingleton( context ) );
+
+        if ( encodingArg )
+        {
+            encoding = encodingArg.stringValue();
+        }
+    }
+
+    Q_ASSERT( uri.isValid() && !uri.isRelative() );
+    return context->resourceLoader()->openUnparsedText( uri, encoding, context, this );
 }

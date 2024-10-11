@@ -30,52 +30,55 @@
 class QGraphicsLayoutItem;
 class QGraphicsLayoutItemPrivate
 {
-   Q_DECLARE_PUBLIC(QGraphicsLayoutItem)
+    Q_DECLARE_PUBLIC( QGraphicsLayoutItem )
 
- public:
-   enum SizeComponent {
-      Width,
-      Height
-   };
+public:
+    enum SizeComponent
+    {
+        Width,
+        Height
+    };
 
-   virtual ~QGraphicsLayoutItemPrivate();
+    virtual ~QGraphicsLayoutItemPrivate();
 
-   QGraphicsLayoutItemPrivate(QGraphicsLayoutItem *parent, bool isLayout);
-   static QGraphicsLayoutItemPrivate *get(QGraphicsLayoutItem *q) {
-      return q->d_func();
-   }
+    QGraphicsLayoutItemPrivate( QGraphicsLayoutItem *parent, bool isLayout );
+    static QGraphicsLayoutItemPrivate *get( QGraphicsLayoutItem *q )
+    {
+        return q->d_func();
+    }
 
-   static const QGraphicsLayoutItemPrivate *get(const QGraphicsLayoutItem *q) {
-      return q->d_func();
-   }
+    static const QGraphicsLayoutItemPrivate *get( const QGraphicsLayoutItem *q )
+    {
+        return q->d_func();
+    }
 
-   void init();
-   QSizeF *effectiveSizeHints(const QSizeF &constraint) const;
-   QGraphicsItem *parentItem() const;
-   void ensureUserSizeHints();
-   void setSize(Qt::SizeHint which, const QSizeF &size);
+    void init();
+    QSizeF *effectiveSizeHints( const QSizeF &constraint ) const;
+    QGraphicsItem *parentItem() const;
+    void ensureUserSizeHints();
+    void setSize( Qt::SizeHint which, const QSizeF &size );
 
-   void setSizeComponent(Qt::SizeHint which, SizeComponent component, qreal value);
+    void setSizeComponent( Qt::SizeHint which, SizeComponent component, qreal value );
 
-   bool hasHeightForWidth() const;
-   bool hasWidthForHeight() const;
+    bool hasHeightForWidth() const;
+    bool hasWidthForHeight() const;
 
-   QSizePolicy sizePolicy;
-   QGraphicsLayoutItem *parent;
+    QSizePolicy sizePolicy;
+    QGraphicsLayoutItem *parent;
 
-   QSizeF *userSizeHints;
-   mutable QSizeF cachedSizeHints[Qt::NSizeHints];
-   mutable QSizeF cachedConstraint;
-   mutable QSizeF cachedSizeHintsWithConstraints[Qt::NSizeHints];
+    QSizeF *userSizeHints;
+    mutable QSizeF cachedSizeHints[Qt::NSizeHints];
+    mutable QSizeF cachedConstraint;
+    mutable QSizeF cachedSizeHintsWithConstraints[Qt::NSizeHints];
 
-   mutable quint32 sizeHintCacheDirty : 1;
-   mutable quint32 sizeHintWithConstraintCacheDirty : 1;
-   quint32 isLayout : 1;
-   quint32 ownedByLayout : 1;
+    mutable quint32 sizeHintCacheDirty : 1;
+    mutable quint32 sizeHintWithConstraintCacheDirty : 1;
+    quint32 isLayout : 1;
+    quint32 ownedByLayout : 1;
 
-   QGraphicsLayoutItem *q_ptr;
-   QRectF geom;
-   QGraphicsItem *graphicsItem;
+    QGraphicsLayoutItem *q_ptr;
+    QRectF geom;
+    QGraphicsItem *graphicsItem;
 };
 
 #endif

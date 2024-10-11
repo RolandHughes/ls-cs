@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,36 +31,46 @@
 #include "RenderObject.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
-
-SplitTextNodeContainingElementCommand::SplitTextNodeContainingElementCommand(PassRefPtr<Text> text, int offset)
-    : CompositeEditCommand(text->document()), m_text(text), m_offset(offset)
+namespace WebCore
 {
-    ASSERT(m_text);
-    ASSERT(m_text->length() > 0);
+
+SplitTextNodeContainingElementCommand::SplitTextNodeContainingElementCommand( PassRefPtr<Text> text, int offset )
+    : CompositeEditCommand( text->document() ), m_text( text ), m_offset( offset )
+{
+    ASSERT( m_text );
+    ASSERT( m_text->length() > 0 );
 }
 
 void SplitTextNodeContainingElementCommand::doApply()
 {
-    ASSERT(m_text);
-    ASSERT(m_offset > 0);
+    ASSERT( m_text );
+    ASSERT( m_offset > 0 );
 
-    splitTextNode(m_text.get(), m_offset);
+    splitTextNode( m_text.get(), m_offset );
 
-    Element* parent = m_text->parentElement();
-    if (!parent || !parent->parentElement() || !parent->parentElement()->rendererIsEditable())
+    Element *parent = m_text->parentElement();
+
+    if ( !parent || !parent->parentElement() || !parent->parentElement()->rendererIsEditable() )
+    {
         return;
-
-    RenderObject* parentRenderer = parent->renderer();
-    if (!parentRenderer || !parentRenderer->isInline()) {
-        wrapContentsInDummySpan(parent);
-        Node* firstChild = parent->firstChild();
-        if (!firstChild || !firstChild->isElementNode())
-            return;
-        parent = static_cast<Element*>(firstChild);
     }
 
-    splitElement(parent, m_text);
+    RenderObject *parentRenderer = parent->renderer();
+
+    if ( !parentRenderer || !parentRenderer->isInline() )
+    {
+        wrapContentsInDummySpan( parent );
+        Node *firstChild = parent->firstChild();
+
+        if ( !firstChild || !firstChild->isElementNode() )
+        {
+            return;
+        }
+
+        parent = static_cast<Element *>( firstChild );
+    }
+
+    splitElement( parent, m_text );
 }
 
 }

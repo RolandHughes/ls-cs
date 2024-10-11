@@ -26,7 +26,8 @@
 #include "SVGResources.h"
 #include "SVGResourcesCycleSolver.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 SVGResourcesCache::SVGResourcesCache()
 {
@@ -34,134 +35,158 @@ SVGResourcesCache::SVGResourcesCache()
 
 SVGResourcesCache::~SVGResourcesCache()
 {
-    deleteAllValues(m_cache);
+    deleteAllValues( m_cache );
 }
 
-void SVGResourcesCache::addResourcesFromRenderObject(RenderObject* object, const RenderStyle* style)
+void SVGResourcesCache::addResourcesFromRenderObject( RenderObject *object, const RenderStyle *style )
 {
-    ASSERT(object);
-    ASSERT(style);
-    ASSERT(!m_cache.contains(object));
+    ASSERT( object );
+    ASSERT( style );
+    ASSERT( !m_cache.contains( object ) );
 
-    const SVGRenderStyle* svgStyle = style->svgStyle();
-    ASSERT(svgStyle);
+    const SVGRenderStyle *svgStyle = style->svgStyle();
+    ASSERT( svgStyle );
 
     // Build a list of all resources associated with the passed RenderObject
-    SVGResources* resources = new SVGResources;
-    if (!resources->buildCachedResources(object, svgStyle)) {
+    SVGResources *resources = new SVGResources;
+
+    if ( !resources->buildCachedResources( object, svgStyle ) )
+    {
         delete resources;
         return;
     }
 
     // Put object in cache.
-    m_cache.set(object, resources);
+    m_cache.set( object, resources );
 
     // Run cycle-detection _afterwards_, so self-references can be caught as well.
-    SVGResourcesCycleSolver solver(object, resources);
+    SVGResourcesCycleSolver solver( object, resources );
     solver.resolveCycles();
 
     // Walk resources and register the render object at each resources.
-    HashSet<RenderSVGResourceContainer*> resourceSet;
-    resources->buildSetOfResources(resourceSet);
+    HashSet<RenderSVGResourceContainer *> resourceSet;
+    resources->buildSetOfResources( resourceSet );
 
-    HashSet<RenderSVGResourceContainer*>::iterator end = resourceSet.end();
-    for (HashSet<RenderSVGResourceContainer*>::iterator it = resourceSet.begin(); it != end; ++it)
-        (*it)->addClient(object);
+    HashSet<RenderSVGResourceContainer *>::iterator end = resourceSet.end();
+
+    for ( HashSet<RenderSVGResourceContainer *>::iterator it = resourceSet.begin(); it != end; ++it )
+    {
+        ( *it )->addClient( object );
+    }
 }
 
-void SVGResourcesCache::removeResourcesFromRenderObject(RenderObject* object)
+void SVGResourcesCache::removeResourcesFromRenderObject( RenderObject *object )
 {
-    if (!m_cache.contains(object))
+    if ( !m_cache.contains( object ) )
+    {
         return;
+    }
 
-    SVGResources* resources = m_cache.get(object);
+    SVGResources *resources = m_cache.get( object );
 
     // Walk resources and register the render object at each resources.
-    HashSet<RenderSVGResourceContainer*> resourceSet;
-    resources->buildSetOfResources(resourceSet);
+    HashSet<RenderSVGResourceContainer *> resourceSet;
+    resources->buildSetOfResources( resourceSet );
 
-    HashSet<RenderSVGResourceContainer*>::iterator end = resourceSet.end();
-    for (HashSet<RenderSVGResourceContainer*>::iterator it = resourceSet.begin(); it != end; ++it)
-        (*it)->removeClient(object);
+    HashSet<RenderSVGResourceContainer *>::iterator end = resourceSet.end();
 
-    delete m_cache.take(object);
+    for ( HashSet<RenderSVGResourceContainer *>::iterator it = resourceSet.begin(); it != end; ++it )
+    {
+        ( *it )->removeClient( object );
+    }
+
+    delete m_cache.take( object );
 }
 
-static inline SVGResourcesCache* resourcesCacheFromRenderObject(RenderObject* renderer)
+static inline SVGResourcesCache *resourcesCacheFromRenderObject( RenderObject *renderer )
 {
-    Document* document = renderer->document();
-    ASSERT(document);
+    Document *document = renderer->document();
+    ASSERT( document );
 
-    SVGDocumentExtensions* extensions = document->accessSVGExtensions();
-    ASSERT(extensions);
+    SVGDocumentExtensions *extensions = document->accessSVGExtensions();
+    ASSERT( extensions );
 
-    SVGResourcesCache* cache = extensions->resourcesCache();
-    ASSERT(cache);
+    SVGResourcesCache *cache = extensions->resourcesCache();
+    ASSERT( cache );
 
     return cache;
 }
 
-SVGResources* SVGResourcesCache::cachedResourcesForRenderObject(RenderObject* renderer)
+SVGResources *SVGResourcesCache::cachedResourcesForRenderObject( RenderObject *renderer )
 {
-    ASSERT(renderer);
-    SVGResourcesCache* cache = resourcesCacheFromRenderObject(renderer);
-    if (!cache->m_cache.contains(renderer))
+    ASSERT( renderer );
+    SVGResourcesCache *cache = resourcesCacheFromRenderObject( renderer );
+
+    if ( !cache->m_cache.contains( renderer ) )
+    {
         return 0;
+    }
 
-    return cache->m_cache.get(renderer);
+    return cache->m_cache.get( renderer );
 }
 
-void SVGResourcesCache::clientLayoutChanged(RenderObject* object)
+void SVGResourcesCache::clientLayoutChanged( RenderObject *object )
 {
-    SVGResources* resources = SVGResourcesCache::cachedResourcesForRenderObject(object);
-    if (!resources)
-        return;
+    SVGResources *resources = SVGResourcesCache::cachedResourcesForRenderObject( object );
 
-    resources->removeClientFromCache(object);
+    if ( !resources )
+    {
+        return;
+    }
+
+    resources->removeClientFromCache( object );
 }
 
-void SVGResourcesCache::clientStyleChanged(RenderObject* renderer, StyleDifference diff, const RenderStyle* newStyle)
+void SVGResourcesCache::clientStyleChanged( RenderObject *renderer, StyleDifference diff, const RenderStyle *newStyle )
 {
-    ASSERT(renderer);
-    if (diff == StyleDifferenceEqual)
+    ASSERT( renderer );
+
+    if ( diff == StyleDifferenceEqual )
+    {
         return;
+    }
 
     // In this case the proper SVGFE*Element will imply whether the modifided CSS properties implies a relayout or repaint.
-    if (renderer->isSVGResourceFilterPrimitive() && diff == StyleDifferenceRepaint)
+    if ( renderer->isSVGResourceFilterPrimitive() && diff == StyleDifferenceRepaint )
+    {
         return;
+    }
 
-    clientUpdatedFromElement(renderer, newStyle);
-    RenderSVGResource::markForLayoutAndParentResourceInvalidation(renderer, false);
-}
- 
-void SVGResourcesCache::clientUpdatedFromElement(RenderObject* renderer, const RenderStyle* newStyle)
-{
-    ASSERT(renderer);
-    ASSERT(renderer->parent());
-
-    SVGResourcesCache* cache = resourcesCacheFromRenderObject(renderer);
-    cache->removeResourcesFromRenderObject(renderer);
-    cache->addResourcesFromRenderObject(renderer, newStyle);
+    clientUpdatedFromElement( renderer, newStyle );
+    RenderSVGResource::markForLayoutAndParentResourceInvalidation( renderer, false );
 }
 
-void SVGResourcesCache::clientDestroyed(RenderObject* renderer)
+void SVGResourcesCache::clientUpdatedFromElement( RenderObject *renderer, const RenderStyle *newStyle )
 {
-    ASSERT(renderer);
-    SVGResourcesCache* cache = resourcesCacheFromRenderObject(renderer);
-    cache->removeResourcesFromRenderObject(renderer);
+    ASSERT( renderer );
+    ASSERT( renderer->parent() );
+
+    SVGResourcesCache *cache = resourcesCacheFromRenderObject( renderer );
+    cache->removeResourcesFromRenderObject( renderer );
+    cache->addResourcesFromRenderObject( renderer, newStyle );
 }
 
-void SVGResourcesCache::resourceDestroyed(RenderSVGResourceContainer* resource)
+void SVGResourcesCache::clientDestroyed( RenderObject *renderer )
 {
-    ASSERT(resource);
-    SVGResourcesCache* cache = resourcesCacheFromRenderObject(resource);
+    ASSERT( renderer );
+    SVGResourcesCache *cache = resourcesCacheFromRenderObject( renderer );
+    cache->removeResourcesFromRenderObject( renderer );
+}
+
+void SVGResourcesCache::resourceDestroyed( RenderSVGResourceContainer *resource )
+{
+    ASSERT( resource );
+    SVGResourcesCache *cache = resourcesCacheFromRenderObject( resource );
 
     // The resource itself may have clients, that need to be notified.
-    cache->removeResourcesFromRenderObject(resource);
+    cache->removeResourcesFromRenderObject( resource );
 
-    HashMap<RenderObject*, SVGResources*>::iterator end = cache->m_cache.end();
-    for (HashMap<RenderObject*, SVGResources*>::iterator it = cache->m_cache.begin(); it != end; ++it)
-        it->second->resourceDestroyed(resource);
+    HashMap<RenderObject *, SVGResources *>::iterator end = cache->m_cache.end();
+
+    for ( HashMap<RenderObject *, SVGResources *>::iterator it = cache->m_cache.begin(); it != end; ++it )
+    {
+        it->second->resourceDestroyed( resource );
+    }
 }
 
 }

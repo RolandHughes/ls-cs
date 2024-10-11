@@ -36,15 +36,15 @@ class QLinuxInputMouseHandler : public QObject
     Q_OBJECT
 
 public:
-    QLinuxInputMouseHandler(const QString &key, const QString &specification);
+    QLinuxInputMouseHandler( const QString &key, const QString &specification );
     ~QLinuxInputMouseHandler();
 
 private slots:
     void readMouseData();
 
 private:
-    void sendMouseEvent(int x, int y, Qt::MouseButtons buttons);
-    QSocketNotifier *          m_notify;
+    void sendMouseEvent( int x, int y, Qt::MouseButtons buttons );
+    QSocketNotifier           *m_notify;
     int                        m_fd;
     int                        m_x, m_y;
     int m_prevx, m_prevy;
@@ -64,12 +64,12 @@ class QLinuxInputKeyboardHandler : public QObject
 {
     Q_OBJECT
 public:
-    QLinuxInputKeyboardHandler(const QString &key, const QString &specification);
+    QLinuxInputKeyboardHandler( const QString &key, const QString &specification );
     ~QLinuxInputKeyboardHandler();
 
 
 private:
-    void switchLed(int, bool);
+    void switchLed( int, bool );
 
 private slots:
     void readKeycode();

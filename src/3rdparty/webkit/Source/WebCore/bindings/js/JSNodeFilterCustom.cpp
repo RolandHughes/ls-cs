@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,21 +34,24 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSNodeFilter::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
-    visitor.addOpaqueRoot(impl());
+
+void JSNodeFilter::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
+    visitor.addOpaqueRoot( impl() );
 }
 
-PassRefPtr<NodeFilter> toNodeFilter(JSGlobalData& globalData, JSValue value)
+PassRefPtr<NodeFilter> toNodeFilter( JSGlobalData &globalData, JSValue value )
 {
-    if (value.inherits(&JSNodeFilter::s_info))
-        return static_cast<JSNodeFilter*>(asObject(value))->impl();
+    if ( value.inherits( &JSNodeFilter::s_info ) )
+    {
+        return static_cast<JSNodeFilter *>( asObject( value ) )->impl();
+    }
 
     RefPtr<NodeFilter> result = NodeFilter::create();
-    result->setCondition(JSNodeFilterCondition::create(globalData, result.get(), value));
+    result->setCondition( JSNodeFilterCondition::create( globalData, result.get(), value ) );
     return result.release();
 }
 

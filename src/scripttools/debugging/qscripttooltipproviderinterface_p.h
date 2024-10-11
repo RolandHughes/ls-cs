@@ -33,11 +33,11 @@ class QStringList;
 
 class QScriptToolTipProviderInterface
 {
- public:
-   virtual ~QScriptToolTipProviderInterface() {}
+public:
+    virtual ~QScriptToolTipProviderInterface() {}
 
-   virtual void showToolTip(const QPoint &pos, int frameIndex,
-                            int lineNumber, const QStringList &path) = 0;
+    virtual void showToolTip( const QPoint &pos, int frameIndex,
+                              int lineNumber, const QStringList &path ) = 0;
 };
 
 QT_END_NAMESPACE

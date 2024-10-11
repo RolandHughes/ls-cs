@@ -32,13 +32,16 @@
 #include "Biquad.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // BiquadProcessor is an AudioDSPKernelProcessor which uses Biquad objects to implement several common filters.
 
-class BiquadProcessor : public AudioDSPKernelProcessor {
+class BiquadProcessor : public AudioDSPKernelProcessor
+{
 public:
-    enum FilterType {
+    enum FilterType
+    {
         LowPass2,
         HighPass2,
         Peaking,
@@ -46,21 +49,36 @@ public:
         LowShelf,
         HighShelf
     };
-    
-    BiquadProcessor(FilterType, double sampleRate, size_t numberOfChannels, bool autoInitialize = true);
+
+    BiquadProcessor( FilterType, double sampleRate, size_t numberOfChannels, bool autoInitialize = true );
     virtual ~BiquadProcessor();
-    
+
     virtual PassOwnPtr<AudioDSPKernel> createKernel();
-        
-    virtual void process(AudioBus* source, AudioBus* destination, size_t framesToProcess);
 
-    bool filterCoefficientsDirty() const { return m_filterCoefficientsDirty; }
+    virtual void process( AudioBus *source, AudioBus *destination, size_t framesToProcess );
 
-    AudioParam* parameter1() { return m_parameter1.get(); }
-    AudioParam* parameter2() { return m_parameter2.get(); }
-    AudioParam* parameter3() { return m_parameter3.get(); }
+    bool filterCoefficientsDirty() const
+    {
+        return m_filterCoefficientsDirty;
+    }
 
-    FilterType type() const { return m_type; }
+    AudioParam *parameter1()
+    {
+        return m_parameter1.get();
+    }
+    AudioParam *parameter2()
+    {
+        return m_parameter2.get();
+    }
+    AudioParam *parameter3()
+    {
+        return m_parameter3.get();
+    }
+
+    FilterType type() const
+    {
+        return m_type;
+    }
 
 private:
     FilterType m_type;

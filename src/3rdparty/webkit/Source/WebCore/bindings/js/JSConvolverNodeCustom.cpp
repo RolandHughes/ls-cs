@@ -34,12 +34,13 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSConvolverNode::setBuffer(ExecState*, JSValue value)
+namespace WebCore
 {
-    ConvolverNode* imp = static_cast<ConvolverNode*>(impl());
-    imp->setBuffer(toAudioBuffer(value));
+
+void JSConvolverNode::setBuffer( ExecState *, JSValue value )
+{
+    ConvolverNode *imp = static_cast<ConvolverNode *>( impl() );
+    imp->setBuffer( toAudioBuffer( value ) );
 }
 
 } // namespace WebCore

@@ -35,146 +35,164 @@ class RCCFileInfo;
 
 class RCCResourceLibrary
 {
-   RCCResourceLibrary(const RCCResourceLibrary &);
-   RCCResourceLibrary &operator=(const RCCResourceLibrary &);
+    RCCResourceLibrary( const RCCResourceLibrary & );
+    RCCResourceLibrary &operator=( const RCCResourceLibrary & );
 
- public:
-   using ResourceFile = QHash<QString, QString>;
+public:
+    using ResourceFile = QHash<QString, QString>;
 
-   RCCResourceLibrary();
-   ~RCCResourceLibrary();
+    RCCResourceLibrary();
+    ~RCCResourceLibrary();
 
-   bool output(QIODevice &out, QIODevice &errorDevice);
-   bool readFiles(bool ignoreErrors, QIODevice &errorDevice);
+    bool output( QIODevice &out, QIODevice &errorDevice );
+    bool readFiles( bool ignoreErrors, QIODevice &errorDevice );
 
-   enum Format {
-      Binary,
-      C_Code
-   };
-   void setFormat(Format f) {
-      m_format = f;
-   }
+    enum Format
+    {
+        Binary,
+        C_Code
+    };
+    void setFormat( Format f )
+    {
+        m_format = f;
+    }
 
-   Format format() const {
-      return m_format;
-   }
+    Format format() const
+    {
+        return m_format;
+    }
 
-   void setInputFiles(const QStringList &files) {
-      m_fileNames = files;
-   }
+    void setInputFiles( const QStringList &files )
+    {
+        m_fileNames = files;
+    }
 
-   QStringList inputFiles() const {
-      return m_fileNames;
-   }
+    QStringList inputFiles() const
+    {
+        return m_fileNames;
+    }
 
-   QStringList dataFiles() const;
+    QStringList dataFiles() const;
 
-   // Return a container of resource identifier (':/newPrefix/images/p1.png') to file
-   ResourceFile resourceFile() const;
+    // Return a container of resource identifier (':/newPrefix/images/p1.png') to file
+    ResourceFile resourceFile() const;
 
-   void setVerbose(bool b) {
-      m_verbose = b;
-   }
+    void setVerbose( bool b )
+    {
+        m_verbose = b;
+    }
 
-   bool verbose() const {
-      return m_verbose;
-   }
+    bool verbose() const
+    {
+        return m_verbose;
+    }
 
-   void setInitName(const QString &name) {
-      m_initName = name;
-   }
+    void setInitName( const QString &name )
+    {
+        m_initName = name;
+    }
 
-   QString initName() const {
-      return m_initName;
-   }
+    QString initName() const
+    {
+        return m_initName;
+    }
 
-   void setCompressLevel(int c) {
-      m_compressLevel = c;
-   }
+    void setCompressLevel( int c )
+    {
+        m_compressLevel = c;
+    }
 
-   int compressLevel() const {
-      return m_compressLevel;
-   }
+    int compressLevel() const
+    {
+        return m_compressLevel;
+    }
 
-   void setCompressThreshold(int t) {
-      m_compressThreshold = t;
-   }
+    void setCompressThreshold( int t )
+    {
+        m_compressThreshold = t;
+    }
 
-   int compressThreshold() const {
-      return m_compressThreshold;
-   }
+    int compressThreshold() const
+    {
+        return m_compressThreshold;
+    }
 
-   void setResourceRoot(const QString &root) {
-      m_resourceRoot = root;
-   }
+    void setResourceRoot( const QString &root )
+    {
+        m_resourceRoot = root;
+    }
 
-   QString resourceRoot() const {
-      return m_resourceRoot;
-   }
+    QString resourceRoot() const
+    {
+        return m_resourceRoot;
+    }
 
-   QStringList failedResources() const {
-      return m_failedResources;
-   }
+    QStringList failedResources() const
+    {
+        return m_failedResources;
+    }
 
- private:
-   struct Strings {
-      Strings();
+private:
+    struct Strings
+    {
+        Strings();
 
-      const QString TAG_RCC;
-      const QString TAG_RESOURCE;
-      const QString TAG_FILE;
-      const QString ATTRIBUTE_LANG;
-      const QString ATTRIBUTE_PREFIX;
-      const QString ATTRIBUTE_ALIAS;
-      const QString ATTRIBUTE_THRESHOLD;
-      const QString ATTRIBUTE_COMPRESS;
-   };
+        const QString TAG_RCC;
+        const QString TAG_RESOURCE;
+        const QString TAG_FILE;
+        const QString ATTRIBUTE_LANG;
+        const QString ATTRIBUTE_PREFIX;
+        const QString ATTRIBUTE_ALIAS;
+        const QString ATTRIBUTE_THRESHOLD;
+        const QString ATTRIBUTE_COMPRESS;
+    };
 
-   friend class RCCFileInfo;
+    friend class RCCFileInfo;
 
-   void reset();
-   bool addFile(const QString &alias, const RCCFileInfo &file);
+    void reset();
+    bool addFile( const QString &alias, const RCCFileInfo &file );
 
-   bool interpretResourceFile(QIODevice *inputDevice, const QString &file,
-         QString currentPath = QString(), bool ignoreErrors = false);
+    bool interpretResourceFile( QIODevice *inputDevice, const QString &file,
+                                QString currentPath = QString(), bool ignoreErrors = false );
 
-   bool writeHeader();
-   bool writeDataBlobs();
-   bool writeDataNames();
-   bool writeDataStructure();
-   bool writeInitializer();
-   void writeHex(quint8 number);
+    bool writeHeader();
+    bool writeDataBlobs();
+    bool writeDataNames();
+    bool writeDataStructure();
+    bool writeInitializer();
+    void writeHex( quint8 number );
 
-   void writeNumber1(quint8 number);
-   void writeNumber2(quint16 number);
-   void writeNumber4(quint32 number);
+    void writeNumber1( quint8 number );
+    void writeNumber2( quint16 number );
+    void writeNumber4( quint32 number );
 
-   void writeChar(char c) {
-      m_out.append(c);
-   }
+    void writeChar( char c )
+    {
+        m_out.append( c );
+    }
 
-   void writeByteArray(const QByteArray &);
-   void write(const char *, int len);
+    void writeByteArray( const QByteArray & );
+    void write( const char *, int len );
 
-   const Strings m_strings;
-   RCCFileInfo *m_root;
+    const Strings m_strings;
+    RCCFileInfo *m_root;
 
-   QStringList m_fileNames;
-   QString m_resourceRoot;
-   QString m_initName;
+    QStringList m_fileNames;
+    QString m_resourceRoot;
+    QString m_initName;
 
-   Format m_format;
-   bool m_verbose;
+    Format m_format;
+    bool m_verbose;
 
-   int m_compressLevel;
-   int m_compressThreshold;
-   int m_treeOffset;
-   int m_namesOffset;
-   int m_dataOffset;
+    int m_compressLevel;
+    int m_compressThreshold;
+    int m_treeOffset;
+    int m_namesOffset;
+    int m_dataOffset;
 
-   QStringList m_failedResources;
-   QIODevice *m_errorDevice;
-   QByteArray m_out;
+    QStringList m_failedResources;
+    QIODevice *m_errorDevice;
+    QByteArray m_out;
 };
 
 #endif

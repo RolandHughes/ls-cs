@@ -32,42 +32,45 @@
 
 #include <WebCore/InspectorClient.h>
 
-namespace WebCore {
-    class GraphicsContext;
-    class IntRect;
+namespace WebCore
+{
+class GraphicsContext;
+class IntRect;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebInspectorClient : public WebCore::InspectorClient, private PageOverlay::Client {
+class WebInspectorClient : public WebCore::InspectorClient, private PageOverlay::Client
+{
 public:
-    WebInspectorClient(WebPage* page)
-        : m_page(page)
-        , m_highlightOverlay(0)
+    WebInspectorClient( WebPage *page )
+        : m_page( page )
+        , m_highlightOverlay( 0 )
     {
     }
 
 private:
     virtual void inspectorDestroyed();
 
-    virtual void openInspectorFrontend(WebCore::InspectorController*);
+    virtual void openInspectorFrontend( WebCore::InspectorController * );
 
-    virtual void highlight(WebCore::Node*);
+    virtual void highlight( WebCore::Node * );
     virtual void hideHighlight();
 
-    virtual bool sendMessageToFrontend(const String&);
+    virtual bool sendMessageToFrontend( const String & );
 
     // PageOverlay::Client
-    virtual void pageOverlayDestroyed(PageOverlay*);
-    virtual void willMoveToWebPage(PageOverlay*, WebPage*);
-    virtual void didMoveToWebPage(PageOverlay*, WebPage*);
-    virtual void drawRect(PageOverlay*, WebCore::GraphicsContext&, const WebCore::IntRect&);
-    virtual bool mouseEvent(PageOverlay*, const WebMouseEvent&);
+    virtual void pageOverlayDestroyed( PageOverlay * );
+    virtual void willMoveToWebPage( PageOverlay *, WebPage * );
+    virtual void didMoveToWebPage( PageOverlay *, WebPage * );
+    virtual void drawRect( PageOverlay *, WebCore::GraphicsContext &, const WebCore::IntRect & );
+    virtual bool mouseEvent( PageOverlay *, const WebMouseEvent & );
 
-    WebPage* m_page;
-    PageOverlay* m_highlightOverlay;
+    WebPage *m_page;
+    PageOverlay *m_highlightOverlay;
 };
 
 } // namespace WebKit

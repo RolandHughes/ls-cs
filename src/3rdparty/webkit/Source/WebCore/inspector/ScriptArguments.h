@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2010 Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -37,26 +37,31 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ScriptValue;
 
-class ScriptArguments : public RefCounted<ScriptArguments> {
+class ScriptArguments : public RefCounted<ScriptArguments>
+{
 public:
-    static PassRefPtr<ScriptArguments> create(ScriptState*, Vector<ScriptValue>& arguments);
+    static PassRefPtr<ScriptArguments> create( ScriptState *, Vector<ScriptValue> &arguments );
 
     ~ScriptArguments();
 
-    const ScriptValue& argumentAt(size_t) const;
-    size_t argumentCount() const { return m_arguments.size(); }
+    const ScriptValue &argumentAt( size_t ) const;
+    size_t argumentCount() const
+    {
+        return m_arguments.size();
+    }
 
-    ScriptState* globalState() const;
+    ScriptState *globalState() const;
 
-    bool getFirstArgumentAsString(WTF::String& result, bool checkForNullOrUndefined = false);
-    bool isEqual(ScriptArguments*) const;
+    bool getFirstArgumentAsString( WTF::String &result, bool checkForNullOrUndefined = false );
+    bool isEqual( ScriptArguments * ) const;
 
 private:
-    ScriptArguments(ScriptState*, Vector<ScriptValue>& arguments);
+    ScriptArguments( ScriptState *, Vector<ScriptValue> &arguments );
 
     ScriptStateProtectedPtr m_scriptState;
     Vector<ScriptValue> m_arguments;

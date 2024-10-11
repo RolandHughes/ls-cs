@@ -24,47 +24,48 @@
 
 union _XEvent;
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class PluginView;
+class PluginView;
 
-    class PluginContainerQt : public QObject
-    {
-        WEB_CS_OBJECT(PluginContainerQt)
+class PluginContainerQt : public QObject
+{
+    WEB_LSCS_OBJECT( PluginContainerQt )
 
-    public:
-        PluginContainerQt(PluginView*, QWidget *parent);
-        ~PluginContainerQt();
+public:
+    PluginContainerQt( PluginView *, QWidget *parent );
+    ~PluginContainerQt();
 
-        void redirectWheelEventsToParent(bool enable = true);
+    void redirectWheelEventsToParent( bool enable = true );
 
-        WEB_CS_SLOT_1(Public, void on_clientClosed())
-        WEB_CS_SLOT_2(on_clientClosed)
+    WEB_LSCS_SLOT_1( Public, void on_clientClosed() )
+    WEB_LSCS_SLOT_2( on_clientClosed )
 
-        WEB_CS_SLOT_1(Public, void on_clientIsEmbedded())
-        WEB_CS_SLOT_2(on_clientIsEmbedded)
+    WEB_LSCS_SLOT_1( Public, void on_clientIsEmbedded() )
+    WEB_LSCS_SLOT_2( on_clientIsEmbedded )
 
-    protected:
-        virtual bool x11Event(_XEvent *);
-        virtual void focusInEvent(QFocusEvent*);
-        virtual void focusOutEvent(QFocusEvent*);
+protected:
+    virtual bool x11Event( _XEvent * );
+    virtual void focusInEvent( QFocusEvent * );
+    virtual void focusOutEvent( QFocusEvent * );
 
-    private:
-        PluginView *m_pluginView;
-        QWidget *m_clientWrapper;
-    };
+private:
+    PluginView *m_pluginView;
+    QWidget *m_clientWrapper;
+};
 
-    class PluginClientWrapper : public QWidget
-    {
-    public:
-        PluginClientWrapper(QWidget* parent, WId client);
-        ~PluginClientWrapper();
+class PluginClientWrapper : public QWidget
+{
+public:
+    PluginClientWrapper( QWidget *parent, WId client );
+    ~PluginClientWrapper();
 
-        bool x11Event(_XEvent *);
+    bool x11Event( _XEvent * );
 
-    private:
-        QWidget *m_parent;
-    };
+private:
+    QWidget *m_parent;
+};
 }
 
 #endif // PluginContainerQt_h

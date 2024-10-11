@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef KURLHash_h
@@ -30,27 +30,30 @@
 #include "PlatformString.h"
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    struct KURLHash {
-        static unsigned hash(const KURL& key)
-        {
-            return key.string().impl()->hash();
-        }
+struct KURLHash
+{
+    static unsigned hash( const KURL &key )
+    {
+        return key.string().impl()->hash();
+    }
 
-        static bool equal(const KURL& a, const KURL& b)
-        {
-            return StringHash::equal(a.string(), b.string());
-        }
+    static bool equal( const KURL &a, const KURL &b )
+    {
+        return StringHash::equal( a.string(), b.string() );
+    }
 
-        static const bool safeToCompareToEmptyOrDeleted = false;
-    };
+    static const bool safeToCompareToEmptyOrDeleted = false;
+};
 
 } // namespace WebCore
 
-namespace WTF {
+namespace WTF
+{
 
-    template<> struct HashTraits<WebCore::KURL> : SimpleClassHashTraits<WebCore::KURL> { };
+template<> struct HashTraits<WebCore::KURL> : SimpleClassHashTraits<WebCore::KURL> { };
 
 } // namespace WTF
 

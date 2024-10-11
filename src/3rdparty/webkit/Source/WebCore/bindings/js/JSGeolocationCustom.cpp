@@ -43,114 +43,180 @@
 using namespace JSC;
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-static PassRefPtr<PositionOptions> createPositionOptions(ExecState* exec, JSValue value)
+static PassRefPtr<PositionOptions> createPositionOptions( ExecState *exec, JSValue value )
 {
     // Create default options.
     RefPtr<PositionOptions> options = PositionOptions::create();
 
     // Argument is optional (hence undefined is allowed), and null is allowed.
-    if (value.isUndefinedOrNull()) {
+    if ( value.isUndefinedOrNull() )
+    {
         // Use default options.
         return options.release();
     }
 
     // Given the above test, this will always yield an object.
-    JSObject* object = value.toObject(exec);
+    JSObject *object = value.toObject( exec );
 
     // For all three properties, we apply the following ...
     // - If the getter or the property's valueOf method throws an exception, we
     //   quit so as not to risk overwriting the exception.
     // - If the value is absent or undefined, we don't override the default.
-    JSValue enableHighAccuracyValue = object->get(exec, Identifier(exec, "enableHighAccuracy"));
-    if (exec->hadException())
+    JSValue enableHighAccuracyValue = object->get( exec, Identifier( exec, "enableHighAccuracy" ) );
+
+    if ( exec->hadException() )
+    {
         return 0;
-    if (!enableHighAccuracyValue.isUndefined()) {
-        options->setEnableHighAccuracy(enableHighAccuracyValue.toBoolean(exec));
-        if (exec->hadException())
-            return 0;
     }
 
-    JSValue timeoutValue = object->get(exec, Identifier(exec, "timeout"));
-    if (exec->hadException())
-        return 0;
-    if (!timeoutValue.isUndefined()) {
-        double timeoutNumber = timeoutValue.toNumber(exec);
-        if (exec->hadException())
+    if ( !enableHighAccuracyValue.isUndefined() )
+    {
+        options->setEnableHighAccuracy( enableHighAccuracyValue.toBoolean( exec ) );
+
+        if ( exec->hadException() )
+        {
             return 0;
-        // If the value is positive infinity, there's nothing to do.
-        if (!(isinf(timeoutNumber) && (timeoutNumber > 0))) {
-            // Wrap to int32 and force non-negative to match behavior of window.setTimeout.
-            options->setTimeout(max(0, timeoutValue.toInt32(exec)));
-            if (exec->hadException())
-                return 0;
         }
     }
 
-    JSValue maximumAgeValue = object->get(exec, Identifier(exec, "maximumAge"));
-    if (exec->hadException())
+    JSValue timeoutValue = object->get( exec, Identifier( exec, "timeout" ) );
+
+    if ( exec->hadException() )
+    {
         return 0;
-    if (!maximumAgeValue.isUndefined()) {
-        double maximumAgeNumber = maximumAgeValue.toNumber(exec);
-        if (exec->hadException())
+    }
+
+    if ( !timeoutValue.isUndefined() )
+    {
+        double timeoutNumber = timeoutValue.toNumber( exec );
+
+        if ( exec->hadException() )
+        {
             return 0;
-        if (isinf(maximumAgeNumber) && (maximumAgeNumber > 0)) {
+        }
+
+        // If the value is positive infinity, there's nothing to do.
+        if ( !( isinf( timeoutNumber ) && ( timeoutNumber > 0 ) ) )
+        {
+            // Wrap to int32 and force non-negative to match behavior of window.setTimeout.
+            options->setTimeout( max( 0, timeoutValue.toInt32( exec ) ) );
+
+            if ( exec->hadException() )
+            {
+                return 0;
+            }
+        }
+    }
+
+    JSValue maximumAgeValue = object->get( exec, Identifier( exec, "maximumAge" ) );
+
+    if ( exec->hadException() )
+    {
+        return 0;
+    }
+
+    if ( !maximumAgeValue.isUndefined() )
+    {
+        double maximumAgeNumber = maximumAgeValue.toNumber( exec );
+
+        if ( exec->hadException() )
+        {
+            return 0;
+        }
+
+        if ( isinf( maximumAgeNumber ) && ( maximumAgeNumber > 0 ) )
+        {
             // If the value is positive infinity, clear maximumAge.
             options->clearMaximumAge();
-        } else {
+        }
+        else
+        {
             // Wrap to int32 and force non-negative to match behavior of window.setTimeout.
-            options->setMaximumAge(max(0, maximumAgeValue.toInt32(exec)));
-            if (exec->hadException())
+            options->setMaximumAge( max( 0, maximumAgeValue.toInt32( exec ) ) );
+
+            if ( exec->hadException() )
+            {
                 return 0;
+            }
         }
     }
 
     return options.release();
 }
 
-JSValue JSGeolocation::getCurrentPosition(ExecState* exec)
+JSValue JSGeolocation::getCurrentPosition( ExecState *exec )
 {
     // Arguments: PositionCallback, (optional)PositionErrorCallback, (optional)PositionOptions
 
-    RefPtr<PositionCallback> positionCallback = createFunctionOnlyCallback<JSCustomPositionCallback>(exec, static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject()), exec->argument(0));
-    if (exec->hadException())
-        return jsUndefined();
-    ASSERT(positionCallback);
+    RefPtr<PositionCallback> positionCallback = createFunctionOnlyCallback<JSCustomPositionCallback>( exec,
+            static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() ), exec->argument( 0 ) );
 
-    RefPtr<PositionErrorCallback> positionErrorCallback = createFunctionOnlyCallback<JSCustomPositionErrorCallback>(exec, static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject()), exec->argument(1), CallbackAllowUndefined | CallbackAllowNull);
-    if (exec->hadException())
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
-    RefPtr<PositionOptions> positionOptions = createPositionOptions(exec, exec->argument(2));
-    if (exec->hadException())
+    ASSERT( positionCallback );
+
+    RefPtr<PositionErrorCallback> positionErrorCallback = createFunctionOnlyCallback<JSCustomPositionErrorCallback>( exec,
+            static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() ), exec->argument( 1 ),
+            CallbackAllowUndefined | CallbackAllowNull );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
-    ASSERT(positionOptions);
+    }
 
-    m_impl->getCurrentPosition(positionCallback.release(), positionErrorCallback.release(), positionOptions.release());
+    RefPtr<PositionOptions> positionOptions = createPositionOptions( exec, exec->argument( 2 ) );
+
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
+
+    ASSERT( positionOptions );
+
+    m_impl->getCurrentPosition( positionCallback.release(), positionErrorCallback.release(), positionOptions.release() );
     return jsUndefined();
 }
 
-JSValue JSGeolocation::watchPosition(ExecState* exec)
+JSValue JSGeolocation::watchPosition( ExecState *exec )
 {
     // Arguments: PositionCallback, (optional)PositionErrorCallback, (optional)PositionOptions
 
-    RefPtr<PositionCallback> positionCallback = createFunctionOnlyCallback<JSCustomPositionCallback>(exec, static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject()), exec->argument(0));
-    if (exec->hadException())
-        return jsUndefined();
-    ASSERT(positionCallback);
+    RefPtr<PositionCallback> positionCallback = createFunctionOnlyCallback<JSCustomPositionCallback>( exec,
+            static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() ), exec->argument( 0 ) );
 
-    RefPtr<PositionErrorCallback> positionErrorCallback = createFunctionOnlyCallback<JSCustomPositionErrorCallback>(exec, static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject()), exec->argument(1), CallbackAllowUndefined | CallbackAllowNull);
-    if (exec->hadException())
+    if ( exec->hadException() )
+    {
         return jsUndefined();
+    }
 
-    RefPtr<PositionOptions> positionOptions = createPositionOptions(exec, exec->argument(2));
-    if (exec->hadException())
+    ASSERT( positionCallback );
+
+    RefPtr<PositionErrorCallback> positionErrorCallback = createFunctionOnlyCallback<JSCustomPositionErrorCallback>( exec,
+            static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() ), exec->argument( 1 ),
+            CallbackAllowUndefined | CallbackAllowNull );
+
+    if ( exec->hadException() )
+    {
         return jsUndefined();
-    ASSERT(positionOptions);
+    }
 
-    int watchID = m_impl->watchPosition(positionCallback.release(), positionErrorCallback.release(), positionOptions.release());
-    return jsNumber(watchID);
+    RefPtr<PositionOptions> positionOptions = createPositionOptions( exec, exec->argument( 2 ) );
+
+    if ( exec->hadException() )
+    {
+        return jsUndefined();
+    }
+
+    ASSERT( positionOptions );
+
+    int watchID = m_impl->watchPosition( positionCallback.release(), positionErrorCallback.release(), positionOptions.release() );
+    return jsNumber( watchID );
 }
 
 } // namespace WebCore

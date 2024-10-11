@@ -28,13 +28,18 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMPlugin;
 
-class DOMMimeType : public RefCounted<DOMMimeType>, private FrameDestructionObserver {
+class DOMMimeType : public RefCounted<DOMMimeType>, private FrameDestructionObserver
+{
 public:
-    static PassRefPtr<DOMMimeType> create(PassRefPtr<PluginData> pluginData, Frame* frame, unsigned index) { return adoptRef(new DOMMimeType(pluginData, frame, index)); }
+    static PassRefPtr<DOMMimeType> create( PassRefPtr<PluginData> pluginData, Frame *frame, unsigned index )
+    {
+        return adoptRef( new DOMMimeType( pluginData, frame, index ) );
+    }
     ~DOMMimeType();
 
     const String &type() const;
@@ -43,14 +48,20 @@ public:
     PassRefPtr<DOMPlugin> enabledPlugin() const;
 
     // FrameDestructionObserver
-    virtual void frameDestroyed() { m_frame = 0; }
+    virtual void frameDestroyed()
+    {
+        m_frame = 0;
+    }
 
 private:
-    const MimeClassInfo& mimeClassInfo() const { return m_pluginData->mimes()[m_index]; }
-    
-    DOMMimeType(PassRefPtr<PluginData>, Frame*, unsigned index);
+    const MimeClassInfo &mimeClassInfo() const
+    {
+        return m_pluginData->mimes()[m_index];
+    }
+
+    DOMMimeType( PassRefPtr<PluginData>, Frame *, unsigned index );
     RefPtr<PluginData> m_pluginData;
-    Frame* m_frame;
+    Frame *m_frame;
     unsigned m_index;
 };
 

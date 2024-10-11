@@ -25,7 +25,7 @@
 
 #include <qurl.h>
 
-QAbstractUriResolver::QAbstractUriResolver(QObject *parent) : QObject(parent)
+QAbstractUriResolver::QAbstractUriResolver( QObject *parent ) : QObject( parent )
 {
 }
 

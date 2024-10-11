@@ -33,30 +33,35 @@
 #include <wtf/Forward.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class NetscapePluginModule;
 class WebProcessConnection;
 struct PluginProcessCreationParameters;
-        
-class PluginProcess : ChildProcess {
-    WTF_MAKE_NONCOPYABLE(PluginProcess);
+
+class PluginProcess : ChildProcess
+{
+    WTF_MAKE_NONCOPYABLE( PluginProcess );
 public:
-    static PluginProcess& shared();
+    static PluginProcess &shared();
 
-    void initialize(CoreIPC::Connection::Identifier, RunLoop*);
-    void removeWebProcessConnection(WebProcessConnection* webProcessConnection);
+    void initialize( CoreIPC::Connection::Identifier, RunLoop * );
+    void removeWebProcessConnection( WebProcessConnection *webProcessConnection );
 
-    NetscapePluginModule* netscapePluginModule();
+    NetscapePluginModule *netscapePluginModule();
 
 #if PLATFORM(MAC)
     void initializeShim();
 
-    void setModalWindowIsShowing(bool);
-    void setFullscreenWindowIsShowing(bool);
+    void setModalWindowIsShowing( bool );
+    void setFullscreenWindowIsShowing( bool );
 
 #if USE(ACCELERATED_COMPOSITING)
-    mach_port_t compositingRenderServerPort() const { return m_compositingRenderServerPort; }
+    mach_port_t compositingRenderServerPort() const
+    {
+        return m_compositingRenderServerPort;
+    }
 #endif
 #endif
 
@@ -68,19 +73,19 @@ private:
     virtual bool shouldTerminate();
 
     // CoreIPC::Connection::Client
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual void didClose(CoreIPC::Connection*);
-    virtual void didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID);
-    virtual void syncMessageSendTimedOut(CoreIPC::Connection*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual void didClose( CoreIPC::Connection * );
+    virtual void didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID );
+    virtual void syncMessageSendTimedOut( CoreIPC::Connection * );
 
     // Message handlers.
-    void didReceivePluginProcessMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    void initializePluginProcess(const PluginProcessCreationParameters&);
+    void didReceivePluginProcessMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    void initializePluginProcess( const PluginProcessCreationParameters & );
     void createWebProcessConnection();
-    void getSitesWithData(uint64_t callbackID);
-    void clearSiteData(const Vector<String>& sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID);
+    void getSitesWithData( uint64_t callbackID );
+    void clearSiteData( const Vector<String> &sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID );
 
-    void platformInitialize(const PluginProcessCreationParameters&);
+    void platformInitialize( const PluginProcessCreationParameters & );
 
     // The connection to the UI process.
     RefPtr<CoreIPC::Connection> m_connection;
@@ -93,12 +98,12 @@ private:
 
     // The plug-in module.
     RefPtr<NetscapePluginModule> m_pluginModule;
-    
+
 #if USE(ACCELERATED_COMPOSITING) && PLATFORM(MAC)
     // The Mach port used for accelerated compositing.
     mach_port_t m_compositingRenderServerPort;
 #endif
-    
+
 };
 
 } // namespace WebKit

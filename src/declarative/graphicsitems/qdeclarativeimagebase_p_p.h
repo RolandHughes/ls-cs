@@ -33,28 +33,29 @@ QT_BEGIN_NAMESPACE
 class QNetworkReply;
 class QDeclarativeImageBasePrivate : public QDeclarativeImplicitSizeItemPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeImageBase)
+    Q_DECLARE_PUBLIC( QDeclarativeImageBase )
 
- public:
-   QDeclarativeImageBasePrivate()
-      : status(QDeclarativeImageBase::Null),
-        progress(0.0),
-        explicitSourceSize(false),
-        async(false),
-        cache(true),
-        mirror(false) {
-      QGraphicsItemPrivate::flags = QGraphicsItemPrivate::flags & ~QGraphicsItem::ItemHasNoContents;
-   }
+public:
+    QDeclarativeImageBasePrivate()
+        : status( QDeclarativeImageBase::Null ),
+          progress( 0.0 ),
+          explicitSourceSize( false ),
+          async( false ),
+          cache( true ),
+          mirror( false )
+    {
+        QGraphicsItemPrivate::flags = QGraphicsItemPrivate::flags & ~QGraphicsItem::ItemHasNoContents;
+    }
 
-   QDeclarativePixmap pix;
-   QDeclarativeImageBase::Status status;
-   QUrl url;
-   qreal progress;
-   QSize sourcesize;
-   bool explicitSourceSize : 1;
-   bool async : 1;
-   bool cache : 1;
-   bool mirror: 1;
+    QDeclarativePixmap pix;
+    QDeclarativeImageBase::Status status;
+    QUrl url;
+    qreal progress;
+    QSize sourcesize;
+    bool explicitSourceSize : 1;
+    bool async : 1;
+    bool cache : 1;
+    bool mirror: 1;
 };
 
 QT_END_NAMESPACE

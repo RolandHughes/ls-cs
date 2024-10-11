@@ -38,45 +38,45 @@ class QDeclarativeConnectionsPrivate;
 
 class QDeclarativeConnections : public QObject, public QDeclarativeParserStatus
 {
-   DECL_CS_OBJECT(QDeclarativeConnections)
-   Q_DECLARE_PRIVATE(QDeclarativeConnections)
+    DECL_LSCS_OBJECT( QDeclarativeConnections )
+    Q_DECLARE_PRIVATE( QDeclarativeConnections )
 
-   CS_INTERFACES(QDeclarativeParserStatus)
-   DECL_CS_PROPERTY_READ(*target, target)
-   DECL_CS_PROPERTY_WRITE(*target, setTarget)
-   DECL_CS_PROPERTY_NOTIFY(*target, targetChanged)
-   DECL_CS_PROPERTY_READ(ignoreUnknownSignals, ignoreUnknownSignals)
-   DECL_CS_PROPERTY_WRITE(ignoreUnknownSignals, setIgnoreUnknownSignals)
+    LSCS_INTERFACES( QDeclarativeParserStatus )
+    DECL_LSCS_PROPERTY_READ( *target, target )
+    DECL_LSCS_PROPERTY_WRITE( *target, setTarget )
+    DECL_LSCS_PROPERTY_NOTIFY( *target, targetChanged )
+    DECL_LSCS_PROPERTY_READ( ignoreUnknownSignals, ignoreUnknownSignals )
+    DECL_LSCS_PROPERTY_WRITE( ignoreUnknownSignals, setIgnoreUnknownSignals )
 
- public:
-   QDeclarativeConnections(QObject *parent = nullptr);
-   ~QDeclarativeConnections();
+public:
+    QDeclarativeConnections( QObject *parent = nullptr );
+    ~QDeclarativeConnections();
 
-   QObject *target() const;
-   void setTarget(QObject *);
+    QObject *target() const;
+    void setTarget( QObject * );
 
-   bool ignoreUnknownSignals() const;
-   void setIgnoreUnknownSignals(bool ignore);
+    bool ignoreUnknownSignals() const;
+    void setIgnoreUnknownSignals( bool ignore );
 
-   DECL_CS_SIGNAL_1(Public, void targetChanged())
-   DECL_CS_SIGNAL_2(targetChanged)
+    DECL_LSCS_SIGNAL_1( Public, void targetChanged() )
+    DECL_LSCS_SIGNAL_2( targetChanged )
 
- private:
-   void connectSignals();
-   void classBegin();
-   void componentComplete();
+private:
+    void connectSignals();
+    void classBegin();
+    void componentComplete();
 };
 
 class QDeclarativeConnectionsParser : public QDeclarativeCustomParser
 {
- public:
-   virtual QByteArray compile(const QList<QDeclarativeCustomParserProperty> &);
-   virtual void setCustomData(QObject *, const QByteArray &);
+public:
+    virtual QByteArray compile( const QList<QDeclarativeCustomParserProperty> & );
+    virtual void setCustomData( QObject *, const QByteArray & );
 };
 
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeConnections)
+QML_DECLARE_TYPE( QDeclarativeConnections )
 
 #endif

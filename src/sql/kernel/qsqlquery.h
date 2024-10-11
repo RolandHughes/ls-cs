@@ -39,66 +39,66 @@ class QSqlQueryPrivate;
 class Q_SQL_EXPORT QSqlQuery
 {
 
- public:
-   explicit QSqlQuery(QSqlResult *result);
-   explicit QSqlQuery(const QString &query = QString(), QSqlDatabase db = QSqlDatabase());
-   explicit QSqlQuery(QSqlDatabase db);
+public:
+    explicit QSqlQuery( QSqlResult *result );
+    explicit QSqlQuery( const QString &query = QString(), QSqlDatabase db = QSqlDatabase() );
+    explicit QSqlQuery( QSqlDatabase db );
 
-   QSqlQuery(const QSqlQuery &other);
-   QSqlQuery &operator=(const QSqlQuery &other);
+    QSqlQuery( const QSqlQuery &other );
+    QSqlQuery &operator=( const QSqlQuery &other );
 
-   ~QSqlQuery();
+    ~QSqlQuery();
 
-   bool isValid() const;
-   bool isActive() const;
-   bool isNull(int field) const;
-   bool isNull(const QString &name) const;
-   int at() const;
-   QString lastQuery() const;
-   int numRowsAffected() const;
-   QSqlError lastError() const;
-   bool isSelect() const;
-   int size() const;
-   const QSqlDriver *driver() const;
-   const QSqlResult *result() const;
-   bool isForwardOnly() const;
-   QSqlRecord record() const;
+    bool isValid() const;
+    bool isActive() const;
+    bool isNull( int field ) const;
+    bool isNull( const QString &name ) const;
+    int at() const;
+    QString lastQuery() const;
+    int numRowsAffected() const;
+    QSqlError lastError() const;
+    bool isSelect() const;
+    int size() const;
+    const QSqlDriver *driver() const;
+    const QSqlResult *result() const;
+    bool isForwardOnly() const;
+    QSqlRecord record() const;
 
-   void setForwardOnly(bool forward);
-   bool exec(const QString &query);
-   QVariant value(int index) const;
-   QVariant value(const QString &name) const;
+    void setForwardOnly( bool forward );
+    bool exec( const QString &query );
+    QVariant value( int index ) const;
+    QVariant value( const QString &name ) const;
 
-   void setNumericalPrecisionPolicy(QSql::NumericalPrecisionPolicy precisionPolicy);
-   QSql::NumericalPrecisionPolicy numericalPrecisionPolicy() const;
+    void setNumericalPrecisionPolicy( QSql::NumericalPrecisionPolicy precisionPolicy );
+    QSql::NumericalPrecisionPolicy numericalPrecisionPolicy() const;
 
-   bool seek(int index, bool relative = false);
-   bool next();
-   bool previous();
-   bool first();
-   bool last();
+    bool seek( int index, bool relative = false );
+    bool next();
+    bool previous();
+    bool first();
+    bool last();
 
-   void clear();
+    void clear();
 
-   // prepared query support
-   bool exec();
-   enum BatchExecutionMode { ValuesAsRows, ValuesAsColumns };
-   bool execBatch(BatchExecutionMode mode = ValuesAsRows);
-   bool prepare(const QString &query);
-   void bindValue(const QString &placeholder, const QVariant &value, QSql::ParamType type = QSql::In);
-   void bindValue(int pos, const QVariant &value, QSql::ParamType type = QSql::In);
-   void addBindValue(const QVariant &value, QSql::ParamType type = QSql::In);
+    // prepared query support
+    bool exec();
+    enum BatchExecutionMode { ValuesAsRows, ValuesAsColumns };
+    bool execBatch( BatchExecutionMode mode = ValuesAsRows );
+    bool prepare( const QString &query );
+    void bindValue( const QString &placeholder, const QVariant &value, QSql::ParamType type = QSql::In );
+    void bindValue( int pos, const QVariant &value, QSql::ParamType type = QSql::In );
+    void addBindValue( const QVariant &value, QSql::ParamType type = QSql::In );
 
-   QVariant boundValue(const QString &placeholder) const;
-   QVariant boundValue(int pos) const;
-   QMap<QString, QVariant> boundValues() const;
-   QString executedQuery() const;
-   QVariant lastInsertId() const;
-   void finish();
-   bool nextResult();
+    QVariant boundValue( const QString &placeholder ) const;
+    QVariant boundValue( int pos ) const;
+    QMap<QString, QVariant> boundValues() const;
+    QString executedQuery() const;
+    QVariant lastInsertId() const;
+    void finish();
+    bool nextResult();
 
- private:
-   QSqlQueryPrivate *d;
+private:
+    QSqlQueryPrivate *d;
 };
 
 #endif // QSQLQUERY_H

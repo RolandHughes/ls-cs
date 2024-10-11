@@ -32,28 +32,29 @@
 #include <wtf/text/StringBuilder.h>
 #include <wtf/text/StringConcatenate.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 SVGTransform::SVGTransform()
-    : m_type(SVG_TRANSFORM_UNKNOWN)
-    , m_angle(0)
+    : m_type( SVG_TRANSFORM_UNKNOWN )
+    , m_angle( 0 )
 {
 }
 
-SVGTransform::SVGTransform(SVGTransformType type)
-    : m_type(type)
-    , m_angle(0)
+SVGTransform::SVGTransform( SVGTransformType type )
+    : m_type( type )
+    , m_angle( 0 )
 {
 }
 
-SVGTransform::SVGTransform(const AffineTransform& matrix)
-    : m_type(SVG_TRANSFORM_MATRIX)
-    , m_angle(0)
-    , m_matrix(matrix)
+SVGTransform::SVGTransform( const AffineTransform &matrix )
+    : m_type( SVG_TRANSFORM_MATRIX )
+    , m_angle( 0 )
+    , m_matrix( matrix )
 {
 }
 
-void SVGTransform::setMatrix(const AffineTransform& matrix)
+void SVGTransform::setMatrix( const AffineTransform &matrix )
 {
     m_type = SVG_TRANSFORM_MATRIX;
     m_angle = 0;
@@ -69,95 +70,111 @@ void SVGTransform::updateMatrix()
     m_angle = 0;
 }
 
-void SVGTransform::setTranslate(float tx, float ty)
+void SVGTransform::setTranslate( float tx, float ty )
 {
     m_type = SVG_TRANSFORM_TRANSLATE;
     m_angle = 0;
 
     m_matrix.makeIdentity();
-    m_matrix.translate(tx, ty);
+    m_matrix.translate( tx, ty );
 }
 
 FloatPoint SVGTransform::translate() const
 {
-    return FloatPoint::narrowPrecision(m_matrix.e(), m_matrix.f());
+    return FloatPoint::narrowPrecision( m_matrix.e(), m_matrix.f() );
 }
 
-void SVGTransform::setScale(float sx, float sy)
+void SVGTransform::setScale( float sx, float sy )
 {
     m_type = SVG_TRANSFORM_SCALE;
     m_angle = 0;
     m_center = FloatPoint();
 
     m_matrix.makeIdentity();
-    m_matrix.scaleNonUniform(sx, sy);
+    m_matrix.scaleNonUniform( sx, sy );
 }
 
 FloatSize SVGTransform::scale() const
 {
-    return FloatSize::narrowPrecision(m_matrix.a(), m_matrix.d());
+    return FloatSize::narrowPrecision( m_matrix.a(), m_matrix.d() );
 }
 
-void SVGTransform::setRotate(float angle, float cx, float cy)
+void SVGTransform::setRotate( float angle, float cx, float cy )
 {
     m_type = SVG_TRANSFORM_ROTATE;
     m_angle = angle;
-    m_center = FloatPoint(cx, cy);
+    m_center = FloatPoint( cx, cy );
 
     // TODO: toString() implementation, which can show cx, cy (need to be stored?)
     m_matrix.makeIdentity();
-    m_matrix.translate(cx, cy);
-    m_matrix.rotate(angle);
-    m_matrix.translate(-cx, -cy);
+    m_matrix.translate( cx, cy );
+    m_matrix.rotate( angle );
+    m_matrix.translate( -cx, -cy );
 }
 
-void SVGTransform::setSkewX(float angle)
+void SVGTransform::setSkewX( float angle )
 {
     m_type = SVG_TRANSFORM_SKEWX;
     m_angle = angle;
 
     m_matrix.makeIdentity();
-    m_matrix.skewX(angle);
+    m_matrix.skewX( angle );
 }
 
-void SVGTransform::setSkewY(float angle)
+void SVGTransform::setSkewY( float angle )
 {
     m_type = SVG_TRANSFORM_SKEWY;
     m_angle = angle;
 
     m_matrix.makeIdentity();
-    m_matrix.skewY(angle);
+    m_matrix.skewY( angle );
 }
 
 String SVGTransform::valueAsString() const
 {
-    switch (m_type) {
-    case SVG_TRANSFORM_UNKNOWN:
-        return String();
-    case SVG_TRANSFORM_MATRIX: {
-        StringBuilder builder;
-        builder.append(makeString("matrix(", String::number(m_matrix.a()), ' ', String::number(m_matrix.b()), ' ', String::number(m_matrix.c()), ' '));
-        builder.append(makeString(String::number(m_matrix.d()), ' ', String::number(m_matrix.e()), ' ', String::number(m_matrix.f()), ')'));
-        return builder.toString();
-    }
-    case SVG_TRANSFORM_TRANSLATE:
-        return makeString("translate(", String::number(m_matrix.e()), ' ', String::number(m_matrix.f()), ')');
-    case SVG_TRANSFORM_SCALE:
-        return makeString("scale(", String::number(m_matrix.xScale()), ' ', String::number(m_matrix.yScale()), ')');
-    case SVG_TRANSFORM_ROTATE: {
-        double angleInRad = deg2rad(m_angle);
-        double cosAngle = cos(angleInRad);
-        double sinAngle = sin(angleInRad);
-        float cx = narrowPrecisionToFloat(cosAngle != 1 ? (m_matrix.e() * (1 - cosAngle) - m_matrix.f() * sinAngle) / (1 - cosAngle) / 2 : 0);
-        float cy = narrowPrecisionToFloat(cosAngle != 1 ? (m_matrix.e() * sinAngle / (1 - cosAngle) + m_matrix.f()) / 2 : 0);
-        if (cx || cy)
-            return makeString("rotate(", String::number(m_angle), ' ', String::number(cx), ' ', String::number(cy), ')');
-        return makeString("rotate(", String::number(m_angle), ')');
-    }    
-    case SVG_TRANSFORM_SKEWX:
-        return makeString("skewX(", String::number(m_angle), ')');
-    case SVG_TRANSFORM_SKEWY:
-        return makeString("skewY(", String::number(m_angle), ')');
+    switch ( m_type )
+    {
+        case SVG_TRANSFORM_UNKNOWN:
+            return String();
+
+        case SVG_TRANSFORM_MATRIX:
+        {
+            StringBuilder builder;
+            builder.append( makeString( "matrix(", String::number( m_matrix.a() ), ' ', String::number( m_matrix.b() ), ' ',
+                                        String::number( m_matrix.c() ), ' ' ) );
+            builder.append( makeString( String::number( m_matrix.d() ), ' ', String::number( m_matrix.e() ), ' ',
+                                        String::number( m_matrix.f() ), ')' ) );
+            return builder.toString();
+        }
+
+        case SVG_TRANSFORM_TRANSLATE:
+            return makeString( "translate(", String::number( m_matrix.e() ), ' ', String::number( m_matrix.f() ), ')' );
+
+        case SVG_TRANSFORM_SCALE:
+            return makeString( "scale(", String::number( m_matrix.xScale() ), ' ', String::number( m_matrix.yScale() ), ')' );
+
+        case SVG_TRANSFORM_ROTATE:
+        {
+            double angleInRad = deg2rad( m_angle );
+            double cosAngle = cos( angleInRad );
+            double sinAngle = sin( angleInRad );
+            float cx = narrowPrecisionToFloat( cosAngle != 1 ? ( m_matrix.e() * ( 1 - cosAngle ) - m_matrix.f() * sinAngle ) /
+                                               ( 1 - cosAngle ) / 2 : 0 );
+            float cy = narrowPrecisionToFloat( cosAngle != 1 ? ( m_matrix.e() * sinAngle / ( 1 - cosAngle ) + m_matrix.f() ) / 2 : 0 );
+
+            if ( cx || cy )
+            {
+                return makeString( "rotate(", String::number( m_angle ), ' ', String::number( cx ), ' ', String::number( cy ), ')' );
+            }
+
+            return makeString( "rotate(", String::number( m_angle ), ')' );
+        }
+
+        case SVG_TRANSFORM_SKEWX:
+            return makeString( "skewX(", String::number( m_angle ), ')' );
+
+        case SVG_TRANSFORM_SKEWY:
+            return makeString( "skewY(", String::number( m_angle ), ')' );
     }
 
     ASSERT_NOT_REACHED();

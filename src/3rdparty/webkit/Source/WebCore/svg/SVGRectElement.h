@@ -29,40 +29,45 @@
 #include "SVGStyledTransformableElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGRectElement : public SVGStyledTransformableElement,
-                       public SVGTests,
-                       public SVGLangSpace,
-                       public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    static PassRefPtr<SVGRectElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGRectElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGRectElement(const QualifiedName&, Document*);
-    
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    SVGRectElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
+
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual void toPathData(Path&) const;
+    virtual void toPathData( Path & ) const;
 
     virtual bool selfHasRelativeLengths() const;
 
     // Animated property declarations
-    DECLARE_ANIMATED_LENGTH(X, x)
-    DECLARE_ANIMATED_LENGTH(Y, y)
-    DECLARE_ANIMATED_LENGTH(Width, width)
-    DECLARE_ANIMATED_LENGTH(Height, height)
-    DECLARE_ANIMATED_LENGTH(Rx, rx)
-    DECLARE_ANIMATED_LENGTH(Ry, ry)
+    DECLARE_ANIMATED_LENGTH( X, x )
+    DECLARE_ANIMATED_LENGTH( Y, y )
+    DECLARE_ANIMATED_LENGTH( Width, width )
+    DECLARE_ANIMATED_LENGTH( Height, height )
+    DECLARE_ANIMATED_LENGTH( Rx, rx )
+    DECLARE_ANIMATED_LENGTH( Ry, ry )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

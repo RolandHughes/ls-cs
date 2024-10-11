@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class XPathResult;
 
-class JSXPathResult : public JSDOMWrapper {
+class JSXPathResult : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSXPathResult(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<XPathResult>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSXPathResult( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<XPathResult> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    XPathResult* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    XPathResult *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<XPathResult> m_impl;
@@ -55,51 +61,54 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, XPathResult*);
-XPathResult* toXPathResult(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, XPathResult * );
+XPathResult *toXPathResult( JSC::JSValue );
 
-class JSXPathResultPrototype : public JSC::JSObjectWithGlobalObject {
+class JSXPathResultPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSXPathResultPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSXPathResultPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsXPathResultPrototypeFunctionIterateNext(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsXPathResultPrototypeFunctionSnapshotItem(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsXPathResultPrototypeFunctionIterateNext( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsXPathResultPrototypeFunctionSnapshotItem( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsXPathResultResultType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultNumberValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultStringValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultBooleanValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultSingleNodeValue(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultInvalidIteratorState(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultSnapshotLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsXPathResultResultType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultNumberValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultStringValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultBooleanValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultSingleNodeValue( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultInvalidIteratorState( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultSnapshotLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsXPathResultANY_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultNUMBER_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultSTRING_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultBOOLEAN_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultUNORDERED_NODE_ITERATOR_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultORDERED_NODE_ITERATOR_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultUNORDERED_NODE_SNAPSHOT_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultORDERED_NODE_SNAPSHOT_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultANY_UNORDERED_NODE_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsXPathResultFIRST_ORDERED_NODE_TYPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsXPathResultANY_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultNUMBER_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultSTRING_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultBOOLEAN_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultUNORDERED_NODE_ITERATOR_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultORDERED_NODE_ITERATOR_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultUNORDERED_NODE_SNAPSHOT_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultORDERED_NODE_SNAPSHOT_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultANY_UNORDERED_NODE_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsXPathResultFIRST_ORDERED_NODE_TYPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

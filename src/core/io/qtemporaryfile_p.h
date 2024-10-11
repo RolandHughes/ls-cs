@@ -30,55 +30,56 @@
 
 class QTemporaryFilePrivate : public QFilePrivate
 {
- protected:
-   QTemporaryFilePrivate();
-   ~QTemporaryFilePrivate();
+protected:
+    QTemporaryFilePrivate();
+    ~QTemporaryFilePrivate();
 
-   QAbstractFileEngine *engine() const override;
-   void resetFileEngine() const;
-   bool autoRemove;
-   QString templateName;
+    QAbstractFileEngine *engine() const override;
+    void resetFileEngine() const;
+    bool autoRemove;
+    QString templateName;
 
-   static QString defaultTemplateName();
+    static QString defaultTemplateName();
 
- private:
-   Q_DECLARE_PUBLIC(QTemporaryFile)
-   friend class QLockFilePrivate;
+private:
+    Q_DECLARE_PUBLIC( QTemporaryFile )
+    friend class QLockFilePrivate;
 };
 
 class QTemporaryFileEngine : public QFSFileEngine
 {
-   Q_DECLARE_PRIVATE(QFSFileEngine)
+    Q_DECLARE_PRIVATE( QFSFileEngine )
 
- public:
-   QTemporaryFileEngine(const QString &file, quint32 mode, bool nameIsTemplate = true)
-      : QFSFileEngine(), fileMode(mode), filePathIsTemplate(nameIsTemplate), filePathWasTemplate(nameIsTemplate)
-   {
-      Q_D(QFSFileEngine);
+public:
+    QTemporaryFileEngine( const QString &file, quint32 mode, bool nameIsTemplate = true )
+        : QFSFileEngine(), fileMode( mode ), filePathIsTemplate( nameIsTemplate ), filePathWasTemplate( nameIsTemplate )
+    {
+        Q_D( QFSFileEngine );
 
-      d->fileEntry = QFileSystemEntry(file);
+        d->fileEntry = QFileSystemEntry( file );
 
-      if (! filePathIsTemplate) {
-         QFSFileEngine::setFileName(file);
-      }
-   }
+        if ( ! filePathIsTemplate )
+        {
+            QFSFileEngine::setFileName( file );
+        }
+    }
 
-   ~QTemporaryFileEngine();
+    ~QTemporaryFileEngine();
 
-   bool isReallyOpen();
-   void setFileName(const QString &file) override;
-   void setFileTemplate(const QString &fileTemplate);
+    bool isReallyOpen();
+    void setFileName( const QString &file ) override;
+    void setFileTemplate( const QString &fileTemplate );
 
-   bool open(QIODevice::OpenMode flags) override;
-   bool remove() override;
-   bool rename(const QString &newName) override;
-   bool renameOverwrite(const QString &newName) override;
-   bool close() override;
+    bool open( QIODevice::OpenMode flags ) override;
+    bool remove() override;
+    bool rename( const QString &newName ) override;
+    bool renameOverwrite( const QString &newName ) override;
+    bool close() override;
 
-   quint32 fileMode;
+    quint32 fileMode;
 
-   bool filePathIsTemplate;
-   bool filePathWasTemplate;
+    bool filePathIsTemplate;
+    bool filePathWasTemplate;
 };
 
 #endif

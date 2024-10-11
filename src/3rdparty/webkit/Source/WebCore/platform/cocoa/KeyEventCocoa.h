@@ -28,12 +28,13 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-String keyIdentifierForCharCode(unichar charCode);
+String keyIdentifierForCharCode( unichar charCode );
 
-int windowsKeyCodeForKeyCode(uint16_t keyCode);
-int windowsKeyCodeForCharCode(unichar charCode);
+int windowsKeyCodeForKeyCode( uint16_t keyCode );
+int windowsKeyCodeForCharCode( unichar charCode );
 
 }
 

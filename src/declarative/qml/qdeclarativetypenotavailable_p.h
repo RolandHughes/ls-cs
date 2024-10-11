@@ -29,16 +29,16 @@
 QT_BEGIN_NAMESPACE
 
 class QDeclarativeTypeNotAvailable
-   : public QObject
+    : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeTypeNotAvailable)
+    DECL_LSCS_OBJECT( QDeclarativeTypeNotAvailable )
 
- public:
-   QDeclarativeTypeNotAvailable();
+public:
+    QDeclarativeTypeNotAvailable();
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeTypeNotAvailable)
+QML_DECLARE_TYPE( QDeclarativeTypeNotAvailable )
 
 #endif // QDECLARATIVETYPENOTAVAILABLE_H

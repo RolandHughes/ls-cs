@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the Windows FNT/FON error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the Windows FNT/FON error enumeration
+ * constants.
+ *
+ */
 
 #ifndef FNTERRS_H_
 #define FNTERRS_H_

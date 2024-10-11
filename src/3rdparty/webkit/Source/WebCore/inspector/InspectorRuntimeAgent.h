@@ -37,7 +37,8 @@
 #include <wtf/Forward.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InjectedScriptManager;
 class InspectorArray;
@@ -46,25 +47,28 @@ class InspectorValue;
 
 typedef String ErrorString;
 
-class InspectorRuntimeAgent {
-    WTF_MAKE_NONCOPYABLE(InspectorRuntimeAgent);
+class InspectorRuntimeAgent
+{
+    WTF_MAKE_NONCOPYABLE( InspectorRuntimeAgent );
 public:
     virtual ~InspectorRuntimeAgent();
 
     // Part of the protocol.
-    void evaluate(ErrorString*, const String& expression, const String* const objectGroup, const bool* const includeCommandLineAPI, RefPtr<InspectorObject>* result, bool* wasThrown);
-    void evaluateOn(ErrorString*, const String& objectId, const String& expression, RefPtr<InspectorObject>* result, bool* wasThrown);
-    void releaseObject(ErrorString*, const String& objectId);
-    void getProperties(ErrorString*, const String& objectId, bool ignoreHasOwnProperty, RefPtr<InspectorArray>* result);
-    void setPropertyValue(ErrorString*, const String& objectId, const String& propertyName, const String& expression);
-    void releaseObjectGroup(ErrorString*, const String& objectGroup);
+    void evaluate( ErrorString *, const String &expression, const String *const objectGroup, const bool *const includeCommandLineAPI,
+                   RefPtr<InspectorObject> *result, bool *wasThrown );
+    void evaluateOn( ErrorString *, const String &objectId, const String &expression, RefPtr<InspectorObject> *result,
+                     bool *wasThrown );
+    void releaseObject( ErrorString *, const String &objectId );
+    void getProperties( ErrorString *, const String &objectId, bool ignoreHasOwnProperty, RefPtr<InspectorArray> *result );
+    void setPropertyValue( ErrorString *, const String &objectId, const String &propertyName, const String &expression );
+    void releaseObjectGroup( ErrorString *, const String &objectGroup );
 
 protected:
-    explicit InspectorRuntimeAgent(InjectedScriptManager*);
-    virtual ScriptState* getDefaultInspectedState() = 0;
+    explicit InspectorRuntimeAgent( InjectedScriptManager * );
+    virtual ScriptState *getDefaultInspectedState() = 0;
 
 private:
-    InjectedScriptManager* m_injectedScriptManager;
+    InjectedScriptManager *m_injectedScriptManager;
 };
 
 } // namespace WebCore

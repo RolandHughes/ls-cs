@@ -29,30 +29,41 @@
 #include "RenderImage.h"
 #include "SVGImageElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SVGImageLoader::SVGImageLoader(SVGImageElement* node)
-    : ImageLoader(node)
+SVGImageLoader::SVGImageLoader( SVGImageElement *node )
+    : ImageLoader( node )
 {
 }
 
 void SVGImageLoader::dispatchLoadEvent()
 {
-    if (image()->errorOccurred())
-        element()->dispatchEvent(Event::create(eventNames().errorEvent, false, false));
-    else {
-        SVGImageElement* imageElement = static_cast<SVGImageElement*>(element());
-        if (imageElement->externalResourcesRequiredBaseValue())
-            imageElement->sendSVGLoadEventIfPossible(true);
+    if ( image()->errorOccurred() )
+    {
+        element()->dispatchEvent( Event::create( eventNames().errorEvent, false, false ) );
+    }
+    else
+    {
+        SVGImageElement *imageElement = static_cast<SVGImageElement *>( element() );
+
+        if ( imageElement->externalResourcesRequiredBaseValue() )
+        {
+            imageElement->sendSVGLoadEventIfPossible( true );
+        }
     }
 }
 
-String SVGImageLoader::sourceURI(const AtomicString& attr) const
+String SVGImageLoader::sourceURI( const AtomicString &attr ) const
 {
     KURL base = element()->baseURI();
-    if (base.isValid())
-        return KURL(base, stripLeadingAndTrailingHTMLSpaces(attr)).string();
-    return element()->document()->completeURL(stripLeadingAndTrailingHTMLSpaces(attr));
+
+    if ( base.isValid() )
+    {
+        return KURL( base, stripLeadingAndTrailingHTMLSpaces( attr ) ).string();
+    }
+
+    return element()->document()->completeURL( stripLeadingAndTrailingHTMLSpaces( attr ) );
 }
 
 }

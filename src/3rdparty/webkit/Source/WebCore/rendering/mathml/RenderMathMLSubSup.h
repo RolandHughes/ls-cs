@@ -32,26 +32,32 @@
 #include "RenderMathMLBlock.h"
 #include "RenderTable.h"
 
-namespace WebCore {
-    
-class RenderMathMLSubSup : public RenderMathMLBlock {
+namespace WebCore
+{
+
+class RenderMathMLSubSup : public RenderMathMLBlock
+{
 public:
-    RenderMathMLSubSup(Element* fraction);
-    virtual void addChild(RenderObject* child, RenderObject* beforeChild = 0);
-    virtual bool hasBase() const { return true; }
+    RenderMathMLSubSup( Element *fraction );
+    virtual void addChild( RenderObject *child, RenderObject *beforeChild = 0 );
+    virtual bool hasBase() const
+    {
+        return true;
+    }
     virtual int nonOperatorHeight() const;
-    virtual void stretchToHeight(int pixelHeight);
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const;
+    virtual void stretchToHeight( int pixelHeight );
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
 
 protected:
     virtual void layout();
-    
+
 private:
     enum SubSupType { Sub, Sup, SubSup };
     SubSupType m_kind;
-    RenderBlock* m_scripts;
+    RenderBlock *m_scripts;
 };
-    
+
 }
 
 #endif // ENABLE(MATHML)

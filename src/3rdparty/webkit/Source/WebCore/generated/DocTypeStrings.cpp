@@ -33,308 +33,388 @@
 #include "HashTools.h"
 #include <string.h>
 
-namespace WebCore {
+namespace WebCore
+{
 enum
-  {
+{
     TOTAL_KEYWORDS = 77,
     MIN_WORD_LENGTH = 4,
     MAX_WORD_LENGTH = 80,
     MIN_HASH_VALUE = 4,
     MAX_HASH_VALUE = 715
-  };
+};
 
 /* maximum key range = 712, duplicates = 0 */
 
 class DocTypeStringsHash
 {
 private:
-  static inline unsigned int doctype_hash_function (const char *str, unsigned int len);
+    static inline unsigned int doctype_hash_function ( const char *str, unsigned int len );
 public:
-  static const struct PubIDInfo *findDoctypeEntryImpl (const char *str, unsigned int len);
+    static const struct PubIDInfo *findDoctypeEntryImpl ( const char *str, unsigned int len );
 };
 
-inline unsigned int
-DocTypeStringsHash::doctype_hash_function (const char *str, unsigned int len)
+inline unsigned int DocTypeStringsHash::doctype_hash_function ( const char *str, unsigned int len )
 {
-  static const unsigned short asso_values[] =
+    static const unsigned short asso_values[] =
     {
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716,   0, 716, 716, 716, 716, 716, 716,   0,
-      716, 716, 716,   0, 716,   0,  15,   0,  10,  25,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716,   0, 716, 716, 716, 716, 716, 716,   0,
+        716, 716, 716,   0, 716,   0,  15,   0,  10,  25,
         5,   0,   5,  25,  10,   0, 716,   0,   0, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716,  10,   5,   0,
-       40,   0,  20,   0,   0,   0,   0, 716,   0,   0,
-       10,  45,   0,   0,   0,   0,   0,   0,   0,   0,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716,  10,   5,   0,
+        40,   0,  20,   0,   0,   0,   0, 716,   0,   0,
+        10,  45,   0,   0,   0,   0,   0,   0,   0,   0,
         0,   0,   5, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
-      716, 716, 716, 716, 716, 716
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716, 716, 716, 716, 716,
+        716, 716, 716, 716, 716, 716
     };
-  int hval = len;
+    int hval = len;
 
-  switch (hval)
+    switch ( hval )
     {
-      default:
-        hval += asso_values[(unsigned char)str[79]];
-      /*FALLTHROUGH*/
-      case 79:
-        hval += asso_values[(unsigned char)str[78]];
-      /*FALLTHROUGH*/
-      case 78:
-        hval += asso_values[(unsigned char)str[77]];
-      /*FALLTHROUGH*/
-      case 77:
-        hval += asso_values[(unsigned char)str[76]];
-      /*FALLTHROUGH*/
-      case 76:
-        hval += asso_values[(unsigned char)str[75]];
-      /*FALLTHROUGH*/
-      case 75:
-        hval += asso_values[(unsigned char)str[74]];
-      /*FALLTHROUGH*/
-      case 74:
-        hval += asso_values[(unsigned char)str[73]];
-      /*FALLTHROUGH*/
-      case 73:
-        hval += asso_values[(unsigned char)str[72]];
-      /*FALLTHROUGH*/
-      case 72:
-        hval += asso_values[(unsigned char)str[71]];
-      /*FALLTHROUGH*/
-      case 71:
-        hval += asso_values[(unsigned char)str[70]];
-      /*FALLTHROUGH*/
-      case 70:
-        hval += asso_values[(unsigned char)str[69]];
-      /*FALLTHROUGH*/
-      case 69:
-        hval += asso_values[(unsigned char)str[68]];
-      /*FALLTHROUGH*/
-      case 68:
-        hval += asso_values[(unsigned char)str[67]];
-      /*FALLTHROUGH*/
-      case 67:
-        hval += asso_values[(unsigned char)str[66]];
-      /*FALLTHROUGH*/
-      case 66:
-        hval += asso_values[(unsigned char)str[65]];
-      /*FALLTHROUGH*/
-      case 65:
-        hval += asso_values[(unsigned char)str[64]];
-      /*FALLTHROUGH*/
-      case 64:
-        hval += asso_values[(unsigned char)str[63]];
-      /*FALLTHROUGH*/
-      case 63:
-        hval += asso_values[(unsigned char)str[62]];
-      /*FALLTHROUGH*/
-      case 62:
-        hval += asso_values[(unsigned char)str[61]];
-      /*FALLTHROUGH*/
-      case 61:
-        hval += asso_values[(unsigned char)str[60]];
-      /*FALLTHROUGH*/
-      case 60:
-        hval += asso_values[(unsigned char)str[59]];
-      /*FALLTHROUGH*/
-      case 59:
-        hval += asso_values[(unsigned char)str[58]];
-      /*FALLTHROUGH*/
-      case 58:
-        hval += asso_values[(unsigned char)str[57]];
-      /*FALLTHROUGH*/
-      case 57:
-        hval += asso_values[(unsigned char)str[56]];
-      /*FALLTHROUGH*/
-      case 56:
-        hval += asso_values[(unsigned char)str[55]];
-      /*FALLTHROUGH*/
-      case 55:
-        hval += asso_values[(unsigned char)str[54]];
-      /*FALLTHROUGH*/
-      case 54:
-        hval += asso_values[(unsigned char)str[53]];
-      /*FALLTHROUGH*/
-      case 53:
-        hval += asso_values[(unsigned char)str[52]];
-      /*FALLTHROUGH*/
-      case 52:
-        hval += asso_values[(unsigned char)str[51]];
-      /*FALLTHROUGH*/
-      case 51:
-        hval += asso_values[(unsigned char)str[50]];
-      /*FALLTHROUGH*/
-      case 50:
-        hval += asso_values[(unsigned char)str[49]];
-      /*FALLTHROUGH*/
-      case 49:
-        hval += asso_values[(unsigned char)str[48]];
-      /*FALLTHROUGH*/
-      case 48:
-        hval += asso_values[(unsigned char)str[47]];
-      /*FALLTHROUGH*/
-      case 47:
-        hval += asso_values[(unsigned char)str[46]];
-      /*FALLTHROUGH*/
-      case 46:
-        hval += asso_values[(unsigned char)str[45]];
-      /*FALLTHROUGH*/
-      case 45:
-        hval += asso_values[(unsigned char)str[44]];
-      /*FALLTHROUGH*/
-      case 44:
-        hval += asso_values[(unsigned char)str[43]];
-      /*FALLTHROUGH*/
-      case 43:
-        hval += asso_values[(unsigned char)str[42]];
-      /*FALLTHROUGH*/
-      case 42:
-        hval += asso_values[(unsigned char)str[41]];
-      /*FALLTHROUGH*/
-      case 41:
-        hval += asso_values[(unsigned char)str[40]];
-      /*FALLTHROUGH*/
-      case 40:
-        hval += asso_values[(unsigned char)str[39]];
-      /*FALLTHROUGH*/
-      case 39:
-        hval += asso_values[(unsigned char)str[38]];
-      /*FALLTHROUGH*/
-      case 38:
-        hval += asso_values[(unsigned char)str[37]];
-      /*FALLTHROUGH*/
-      case 37:
-        hval += asso_values[(unsigned char)str[36]];
-      /*FALLTHROUGH*/
-      case 36:
-        hval += asso_values[(unsigned char)str[35]];
-      /*FALLTHROUGH*/
-      case 35:
-        hval += asso_values[(unsigned char)str[34]];
-      /*FALLTHROUGH*/
-      case 34:
-        hval += asso_values[(unsigned char)str[33]];
-      /*FALLTHROUGH*/
-      case 33:
-        hval += asso_values[(unsigned char)str[32]];
-      /*FALLTHROUGH*/
-      case 32:
-        hval += asso_values[(unsigned char)str[31]];
-      /*FALLTHROUGH*/
-      case 31:
-        hval += asso_values[(unsigned char)str[30]];
-      /*FALLTHROUGH*/
-      case 30:
-        hval += asso_values[(unsigned char)str[29]];
-      /*FALLTHROUGH*/
-      case 29:
-        hval += asso_values[(unsigned char)str[28]];
-      /*FALLTHROUGH*/
-      case 28:
-        hval += asso_values[(unsigned char)str[27]];
-      /*FALLTHROUGH*/
-      case 27:
-        hval += asso_values[(unsigned char)str[26]];
-      /*FALLTHROUGH*/
-      case 26:
-        hval += asso_values[(unsigned char)str[25]];
-      /*FALLTHROUGH*/
-      case 25:
-        hval += asso_values[(unsigned char)str[24]];
-      /*FALLTHROUGH*/
-      case 24:
-        hval += asso_values[(unsigned char)str[23]];
-      /*FALLTHROUGH*/
-      case 23:
-        hval += asso_values[(unsigned char)str[22]];
-      /*FALLTHROUGH*/
-      case 22:
-        hval += asso_values[(unsigned char)str[21]];
-      /*FALLTHROUGH*/
-      case 21:
-        hval += asso_values[(unsigned char)str[20]];
-      /*FALLTHROUGH*/
-      case 20:
-        hval += asso_values[(unsigned char)str[19]];
-      /*FALLTHROUGH*/
-      case 19:
-        hval += asso_values[(unsigned char)str[18]];
-      /*FALLTHROUGH*/
-      case 18:
-        hval += asso_values[(unsigned char)str[17]];
-      /*FALLTHROUGH*/
-      case 17:
-        hval += asso_values[(unsigned char)str[16]];
-      /*FALLTHROUGH*/
-      case 16:
-        hval += asso_values[(unsigned char)str[15]];
-      /*FALLTHROUGH*/
-      case 15:
-        hval += asso_values[(unsigned char)str[14]];
-      /*FALLTHROUGH*/
-      case 14:
-        hval += asso_values[(unsigned char)str[13]];
-      /*FALLTHROUGH*/
-      case 13:
-        hval += asso_values[(unsigned char)str[12]];
-      /*FALLTHROUGH*/
-      case 12:
-        hval += asso_values[(unsigned char)str[11]];
-      /*FALLTHROUGH*/
-      case 11:
-        hval += asso_values[(unsigned char)str[10]];
-      /*FALLTHROUGH*/
-      case 10:
-        hval += asso_values[(unsigned char)str[9]];
-      /*FALLTHROUGH*/
-      case 9:
-        hval += asso_values[(unsigned char)str[8]];
-      /*FALLTHROUGH*/
-      case 8:
-        hval += asso_values[(unsigned char)str[7]];
-      /*FALLTHROUGH*/
-      case 7:
-        hval += asso_values[(unsigned char)str[6]];
-      /*FALLTHROUGH*/
-      case 6:
-        hval += asso_values[(unsigned char)str[5]];
-      /*FALLTHROUGH*/
-      case 5:
-        hval += asso_values[(unsigned char)str[4]];
-      /*FALLTHROUGH*/
-      case 4:
-        hval += asso_values[(unsigned char)str[3]];
-      /*FALLTHROUGH*/
-      case 3:
-        hval += asso_values[(unsigned char)str[2]];
-      /*FALLTHROUGH*/
-      case 2:
-        hval += asso_values[(unsigned char)str[1]];
-      /*FALLTHROUGH*/
-      case 1:
-        hval += asso_values[(unsigned char)str[0]];
-        break;
+        default:
+            hval += asso_values[( unsigned char )str[79]];
+
+        /*FALLTHROUGH*/
+        case 79:
+            hval += asso_values[( unsigned char )str[78]];
+
+        /*FALLTHROUGH*/
+        case 78:
+            hval += asso_values[( unsigned char )str[77]];
+
+        /*FALLTHROUGH*/
+        case 77:
+            hval += asso_values[( unsigned char )str[76]];
+
+        /*FALLTHROUGH*/
+        case 76:
+            hval += asso_values[( unsigned char )str[75]];
+
+        /*FALLTHROUGH*/
+        case 75:
+            hval += asso_values[( unsigned char )str[74]];
+
+        /*FALLTHROUGH*/
+        case 74:
+            hval += asso_values[( unsigned char )str[73]];
+
+        /*FALLTHROUGH*/
+        case 73:
+            hval += asso_values[( unsigned char )str[72]];
+
+        /*FALLTHROUGH*/
+        case 72:
+            hval += asso_values[( unsigned char )str[71]];
+
+        /*FALLTHROUGH*/
+        case 71:
+            hval += asso_values[( unsigned char )str[70]];
+
+        /*FALLTHROUGH*/
+        case 70:
+            hval += asso_values[( unsigned char )str[69]];
+
+        /*FALLTHROUGH*/
+        case 69:
+            hval += asso_values[( unsigned char )str[68]];
+
+        /*FALLTHROUGH*/
+        case 68:
+            hval += asso_values[( unsigned char )str[67]];
+
+        /*FALLTHROUGH*/
+        case 67:
+            hval += asso_values[( unsigned char )str[66]];
+
+        /*FALLTHROUGH*/
+        case 66:
+            hval += asso_values[( unsigned char )str[65]];
+
+        /*FALLTHROUGH*/
+        case 65:
+            hval += asso_values[( unsigned char )str[64]];
+
+        /*FALLTHROUGH*/
+        case 64:
+            hval += asso_values[( unsigned char )str[63]];
+
+        /*FALLTHROUGH*/
+        case 63:
+            hval += asso_values[( unsigned char )str[62]];
+
+        /*FALLTHROUGH*/
+        case 62:
+            hval += asso_values[( unsigned char )str[61]];
+
+        /*FALLTHROUGH*/
+        case 61:
+            hval += asso_values[( unsigned char )str[60]];
+
+        /*FALLTHROUGH*/
+        case 60:
+            hval += asso_values[( unsigned char )str[59]];
+
+        /*FALLTHROUGH*/
+        case 59:
+            hval += asso_values[( unsigned char )str[58]];
+
+        /*FALLTHROUGH*/
+        case 58:
+            hval += asso_values[( unsigned char )str[57]];
+
+        /*FALLTHROUGH*/
+        case 57:
+            hval += asso_values[( unsigned char )str[56]];
+
+        /*FALLTHROUGH*/
+        case 56:
+            hval += asso_values[( unsigned char )str[55]];
+
+        /*FALLTHROUGH*/
+        case 55:
+            hval += asso_values[( unsigned char )str[54]];
+
+        /*FALLTHROUGH*/
+        case 54:
+            hval += asso_values[( unsigned char )str[53]];
+
+        /*FALLTHROUGH*/
+        case 53:
+            hval += asso_values[( unsigned char )str[52]];
+
+        /*FALLTHROUGH*/
+        case 52:
+            hval += asso_values[( unsigned char )str[51]];
+
+        /*FALLTHROUGH*/
+        case 51:
+            hval += asso_values[( unsigned char )str[50]];
+
+        /*FALLTHROUGH*/
+        case 50:
+            hval += asso_values[( unsigned char )str[49]];
+
+        /*FALLTHROUGH*/
+        case 49:
+            hval += asso_values[( unsigned char )str[48]];
+
+        /*FALLTHROUGH*/
+        case 48:
+            hval += asso_values[( unsigned char )str[47]];
+
+        /*FALLTHROUGH*/
+        case 47:
+            hval += asso_values[( unsigned char )str[46]];
+
+        /*FALLTHROUGH*/
+        case 46:
+            hval += asso_values[( unsigned char )str[45]];
+
+        /*FALLTHROUGH*/
+        case 45:
+            hval += asso_values[( unsigned char )str[44]];
+
+        /*FALLTHROUGH*/
+        case 44:
+            hval += asso_values[( unsigned char )str[43]];
+
+        /*FALLTHROUGH*/
+        case 43:
+            hval += asso_values[( unsigned char )str[42]];
+
+        /*FALLTHROUGH*/
+        case 42:
+            hval += asso_values[( unsigned char )str[41]];
+
+        /*FALLTHROUGH*/
+        case 41:
+            hval += asso_values[( unsigned char )str[40]];
+
+        /*FALLTHROUGH*/
+        case 40:
+            hval += asso_values[( unsigned char )str[39]];
+
+        /*FALLTHROUGH*/
+        case 39:
+            hval += asso_values[( unsigned char )str[38]];
+
+        /*FALLTHROUGH*/
+        case 38:
+            hval += asso_values[( unsigned char )str[37]];
+
+        /*FALLTHROUGH*/
+        case 37:
+            hval += asso_values[( unsigned char )str[36]];
+
+        /*FALLTHROUGH*/
+        case 36:
+            hval += asso_values[( unsigned char )str[35]];
+
+        /*FALLTHROUGH*/
+        case 35:
+            hval += asso_values[( unsigned char )str[34]];
+
+        /*FALLTHROUGH*/
+        case 34:
+            hval += asso_values[( unsigned char )str[33]];
+
+        /*FALLTHROUGH*/
+        case 33:
+            hval += asso_values[( unsigned char )str[32]];
+
+        /*FALLTHROUGH*/
+        case 32:
+            hval += asso_values[( unsigned char )str[31]];
+
+        /*FALLTHROUGH*/
+        case 31:
+            hval += asso_values[( unsigned char )str[30]];
+
+        /*FALLTHROUGH*/
+        case 30:
+            hval += asso_values[( unsigned char )str[29]];
+
+        /*FALLTHROUGH*/
+        case 29:
+            hval += asso_values[( unsigned char )str[28]];
+
+        /*FALLTHROUGH*/
+        case 28:
+            hval += asso_values[( unsigned char )str[27]];
+
+        /*FALLTHROUGH*/
+        case 27:
+            hval += asso_values[( unsigned char )str[26]];
+
+        /*FALLTHROUGH*/
+        case 26:
+            hval += asso_values[( unsigned char )str[25]];
+
+        /*FALLTHROUGH*/
+        case 25:
+            hval += asso_values[( unsigned char )str[24]];
+
+        /*FALLTHROUGH*/
+        case 24:
+            hval += asso_values[( unsigned char )str[23]];
+
+        /*FALLTHROUGH*/
+        case 23:
+            hval += asso_values[( unsigned char )str[22]];
+
+        /*FALLTHROUGH*/
+        case 22:
+            hval += asso_values[( unsigned char )str[21]];
+
+        /*FALLTHROUGH*/
+        case 21:
+            hval += asso_values[( unsigned char )str[20]];
+
+        /*FALLTHROUGH*/
+        case 20:
+            hval += asso_values[( unsigned char )str[19]];
+
+        /*FALLTHROUGH*/
+        case 19:
+            hval += asso_values[( unsigned char )str[18]];
+
+        /*FALLTHROUGH*/
+        case 18:
+            hval += asso_values[( unsigned char )str[17]];
+
+        /*FALLTHROUGH*/
+        case 17:
+            hval += asso_values[( unsigned char )str[16]];
+
+        /*FALLTHROUGH*/
+        case 16:
+            hval += asso_values[( unsigned char )str[15]];
+
+        /*FALLTHROUGH*/
+        case 15:
+            hval += asso_values[( unsigned char )str[14]];
+
+        /*FALLTHROUGH*/
+        case 14:
+            hval += asso_values[( unsigned char )str[13]];
+
+        /*FALLTHROUGH*/
+        case 13:
+            hval += asso_values[( unsigned char )str[12]];
+
+        /*FALLTHROUGH*/
+        case 12:
+            hval += asso_values[( unsigned char )str[11]];
+
+        /*FALLTHROUGH*/
+        case 11:
+            hval += asso_values[( unsigned char )str[10]];
+
+        /*FALLTHROUGH*/
+        case 10:
+            hval += asso_values[( unsigned char )str[9]];
+
+        /*FALLTHROUGH*/
+        case 9:
+            hval += asso_values[( unsigned char )str[8]];
+
+        /*FALLTHROUGH*/
+        case 8:
+            hval += asso_values[( unsigned char )str[7]];
+
+        /*FALLTHROUGH*/
+        case 7:
+            hval += asso_values[( unsigned char )str[6]];
+
+        /*FALLTHROUGH*/
+        case 6:
+            hval += asso_values[( unsigned char )str[5]];
+
+        /*FALLTHROUGH*/
+        case 5:
+            hval += asso_values[( unsigned char )str[4]];
+
+        /*FALLTHROUGH*/
+        case 4:
+            hval += asso_values[( unsigned char )str[3]];
+
+        /*FALLTHROUGH*/
+        case 3:
+            hval += asso_values[( unsigned char )str[2]];
+
+        /*FALLTHROUGH*/
+        case 2:
+            hval += asso_values[( unsigned char )str[1]];
+
+        /*FALLTHROUGH*/
+        case 1:
+            hval += asso_values[( unsigned char )str[0]];
+            break;
     }
-  return hval;
+
+    return hval;
 }
 
 static const struct PubIDInfo wordlist[] =
-  {
+{
     {"",PubIDInfo::eAlmostStandards,PubIDInfo::eAlmostStandards},
     {"",PubIDInfo::eAlmostStandards,PubIDInfo::eAlmostStandards},
     {"",PubIDInfo::eAlmostStandards,PubIDInfo::eAlmostStandards},
@@ -1128,30 +1208,32 @@ static const struct PubIDInfo wordlist[] =
     {"",PubIDInfo::eAlmostStandards,PubIDInfo::eAlmostStandards},
 #line 69 "/Source/WebCore/html/DocTypeStrings.gperf"
     {"-//softquad software//dtd hotmetal pro 6.0::19990601::extensions to html 4.0//en", PubIDInfo::eQuirks, PubIDInfo::eQuirks}
-  };
+};
 
-const struct PubIDInfo *
-DocTypeStringsHash::findDoctypeEntryImpl (const char *str, unsigned int len)
+const struct PubIDInfo *DocTypeStringsHash::findDoctypeEntryImpl ( const char *str, unsigned int len )
 {
-  if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
+    if ( len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH )
     {
-      int key = doctype_hash_function (str, len);
+        int key = doctype_hash_function ( str, len );
 
-      if (key <= MAX_HASH_VALUE && key >= 0)
+        if ( key <= MAX_HASH_VALUE && key >= 0 )
         {
-          const char *s = wordlist[key].name;
+            const char *s = wordlist[key].name;
 
-          if (*str == *s && !strncmp (str + 1, s + 1, len - 1) && s[len] == '\0')
-            return &wordlist[key];
+            if ( *str == *s && !strncmp ( str + 1, s + 1, len - 1 ) && s[len] == '\0' )
+            {
+                return &wordlist[key];
+            }
         }
     }
-  return 0;
+
+    return 0;
 }
 #line 97 "/Source/WebCore/html/DocTypeStrings.gperf"
 
-const PubIDInfo* findDoctypeEntry(const char* str, unsigned int len)
+const PubIDInfo *findDoctypeEntry( const char *str, unsigned int len )
 {
-    return DocTypeStringsHash::findDoctypeEntryImpl(str, len);
+    return DocTypeStringsHash::findDoctypeEntryImpl( str, len );
 }
 
 } // namespace WebCore

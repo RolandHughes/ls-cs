@@ -29,53 +29,60 @@
 #include <qexpression_p.h>
 #include <qgenericsequencetype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class UnlimitedContainer : public Expression
 {
- public:
-   UnlimitedContainer(const Expression::List &operands = Expression::List());
+public:
+    UnlimitedContainer( const Expression::List &operands = Expression::List() );
 
-   void setOperands(const Expression::List &list) override;
-   Expression::List operands() const override;
-   bool compressOperands(const StaticContext::Ptr &) override;
+    void setOperands( const Expression::List &list ) override;
+    Expression::List operands() const override;
+    bool compressOperands( const StaticContext::Ptr & ) override;
 
-   enum CardinalityComputation {
-      ProductOfCardinality,
-      UnionOfCardinality
-   };
+    enum CardinalityComputation
+    {
+        ProductOfCardinality,
+        UnionOfCardinality
+    };
 
- protected:
-   template<CardinalityComputation suppliedCard>
-   inline
-   SequenceType::Ptr operandsUnionType() const {
-      Q_ASSERT(suppliedCard ==  ProductOfCardinality || suppliedCard == UnionOfCardinality);
-      const Expression::List::const_iterator end(m_operands.constEnd());
-      Expression::List::const_iterator it(m_operands.constBegin());
+protected:
+    template<CardinalityComputation suppliedCard>
+    inline
+    SequenceType::Ptr operandsUnionType() const
+    {
+        Q_ASSERT( suppliedCard ==  ProductOfCardinality || suppliedCard == UnionOfCardinality );
+        const Expression::List::const_iterator end( m_operands.constEnd() );
+        Expression::List::const_iterator it( m_operands.constBegin() );
 
-      /* Load the first one, and jump over it in the loop. */
-      SequenceType::Ptr t(m_operands.first()->staticType());
-      ItemType::Ptr type(t->itemType());
-      Cardinality card(t->cardinality());
-      ++it;
+        /* Load the first one, and jump over it in the loop. */
+        SequenceType::Ptr t( m_operands.first()->staticType() );
+        ItemType::Ptr type( t->itemType() );
+        Cardinality card( t->cardinality() );
+        ++it;
 
-      for (; it != end; ++it) {
-         t = (*it)->staticType();
-         type |= t->itemType();
+        for ( ; it != end; ++it )
+        {
+            t = ( *it )->staticType();
+            type |= t->itemType();
 
-         /* Since this function is a template function, it doesn't
-          * hurt performance that this test is inside the loop. */
-         if constexpr (suppliedCard == ProductOfCardinality) {
-            card += t->cardinality();
-         } else {
-            card |= t->cardinality();
-         }
-      }
+            /* Since this function is a template function, it doesn't
+             * hurt performance that this test is inside the loop. */
+            if constexpr ( suppliedCard == ProductOfCardinality )
+            {
+                card += t->cardinality();
+            }
+            else
+            {
+                card |= t->cardinality();
+            }
+        }
 
-      return makeGenericSequenceType(type, card);
-   }
+        return makeGenericSequenceType( type, card );
+    }
 
-   Expression::List m_operands;
+    Expression::List m_operands;
 };
 
 

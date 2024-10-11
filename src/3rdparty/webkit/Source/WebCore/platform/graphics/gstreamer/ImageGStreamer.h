@@ -31,36 +31,38 @@
 #include <cairo.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 class IntSize;
 
-class ImageGStreamer : public RefCounted<ImageGStreamer> {
-    public:
-        static PassRefPtr<ImageGStreamer> createImage(GstBuffer*);
-        ~ImageGStreamer();
+class ImageGStreamer : public RefCounted<ImageGStreamer>
+{
+public:
+    static PassRefPtr<ImageGStreamer> createImage( GstBuffer * );
+    ~ImageGStreamer();
 
-        PassRefPtr<BitmapImage> image()
-        {
-            ASSERT(m_image);
-            return m_image.get();
-        }
+    PassRefPtr<BitmapImage> image()
+    {
+        ASSERT( m_image );
+        return m_image.get();
+    }
 
-    private:
-        RefPtr<BitmapImage> m_image;
+private:
+    RefPtr<BitmapImage> m_image;
 
 #if USE(CAIRO)
-        ImageGStreamer(GstBuffer*&, IntSize, cairo_format_t&);
+    ImageGStreamer( GstBuffer *&, IntSize, cairo_format_t & );
 #endif
 
 #if PLATFORM(QT)
-        ImageGStreamer(GstBuffer*&, IntSize, QImage::Format);
+    ImageGStreamer( GstBuffer *&, IntSize, QImage::Format );
 #endif
 
 #if PLATFORM(MAC)
-        ImageGStreamer(GstBuffer*&, IntSize);
+    ImageGStreamer( GstBuffer *&, IntSize );
 #endif
 
-    };
+};
 }
 
 #endif // USE(GSTREAMER)

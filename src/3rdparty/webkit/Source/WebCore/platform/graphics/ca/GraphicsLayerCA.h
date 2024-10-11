@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef GraphicsLayerCA_h
@@ -37,146 +37,200 @@
 #include <wtf/RetainPtr.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class PlatformCALayer;
 
-class GraphicsLayerCA : public GraphicsLayer, public PlatformCALayerClient {
+class GraphicsLayerCA : public GraphicsLayer, public PlatformCALayerClient
+{
 public:
     // The width and height of a single tile in a tiled layer. Should be large enough to
     // avoid lots of small tiles (and therefore lots of drawing callbacks), but small enough
     // to keep the overall tile cost low.
     static const int kTiledLayerTileSize = 512;
 
-    GraphicsLayerCA(GraphicsLayerClient*);
+    GraphicsLayerCA( GraphicsLayerClient * );
     virtual ~GraphicsLayerCA();
 
-    virtual void setName(const String&);
+    virtual void setName( const String & );
 
-    virtual PlatformLayer* platformLayer() const;
-    virtual PlatformCALayer* platformCALayer() const { return primaryLayer(); }
+    virtual PlatformLayer *platformLayer() const;
+    virtual PlatformCALayer *platformCALayer() const
+    {
+        return primaryLayer();
+    }
 
-    virtual float contentsScale() const { return m_contentsScale; }
-    virtual void setContentsScale(float);
+    virtual float contentsScale() const
+    {
+        return m_contentsScale;
+    }
+    virtual void setContentsScale( float );
 
-    virtual bool setChildren(const Vector<GraphicsLayer*>&);
-    virtual void addChild(GraphicsLayer*);
-    virtual void addChildAtIndex(GraphicsLayer*, int index);
-    virtual void addChildAbove(GraphicsLayer* layer, GraphicsLayer* sibling);
-    virtual void addChildBelow(GraphicsLayer* layer, GraphicsLayer* sibling);
-    virtual bool replaceChild(GraphicsLayer* oldChild, GraphicsLayer* newChild);
+    virtual bool setChildren( const Vector<GraphicsLayer *> & );
+    virtual void addChild( GraphicsLayer * );
+    virtual void addChildAtIndex( GraphicsLayer *, int index );
+    virtual void addChildAbove( GraphicsLayer *layer, GraphicsLayer *sibling );
+    virtual void addChildBelow( GraphicsLayer *layer, GraphicsLayer *sibling );
+    virtual bool replaceChild( GraphicsLayer *oldChild, GraphicsLayer *newChild );
 
     virtual void removeFromParent();
 
-    virtual void setMaskLayer(GraphicsLayer*);
-    virtual void setReplicatedLayer(GraphicsLayer*);
+    virtual void setMaskLayer( GraphicsLayer * );
+    virtual void setReplicatedLayer( GraphicsLayer * );
 
-    virtual void setPosition(const FloatPoint&);
-    virtual void setAnchorPoint(const FloatPoint3D&);
-    virtual void setSize(const FloatSize&);
+    virtual void setPosition( const FloatPoint & );
+    virtual void setAnchorPoint( const FloatPoint3D & );
+    virtual void setSize( const FloatSize & );
 
-    virtual void setTransform(const TransformationMatrix&);
+    virtual void setTransform( const TransformationMatrix & );
 
-    virtual void setChildrenTransform(const TransformationMatrix&);
+    virtual void setChildrenTransform( const TransformationMatrix & );
 
-    virtual void setPreserves3D(bool);
-    virtual void setMasksToBounds(bool);
-    virtual void setDrawsContent(bool);
-    virtual void setAcceleratesDrawing(bool);
+    virtual void setPreserves3D( bool );
+    virtual void setMasksToBounds( bool );
+    virtual void setDrawsContent( bool );
+    virtual void setAcceleratesDrawing( bool );
 
-    virtual void setBackgroundColor(const Color&);
+    virtual void setBackgroundColor( const Color & );
     virtual void clearBackgroundColor();
 
-    virtual void setContentsOpaque(bool);
-    virtual void setBackfaceVisibility(bool);
+    virtual void setContentsOpaque( bool );
+    virtual void setBackfaceVisibility( bool );
 
     // return true if we started an animation
-    virtual void setOpacity(float);
+    virtual void setOpacity( float );
 
     virtual void setNeedsDisplay();
-    virtual void setNeedsDisplayInRect(const FloatRect&);
+    virtual void setNeedsDisplayInRect( const FloatRect & );
     virtual void setContentsNeedsDisplay();
-    
-    virtual void setContentsRect(const IntRect&);
-    
-    virtual void suspendAnimations(double time);
+
+    virtual void setContentsRect( const IntRect & );
+
+    virtual void suspendAnimations( double time );
     virtual void resumeAnimations();
 
-    virtual bool addAnimation(const KeyframeValueList&, const IntSize& boxSize, const Animation*, const String& animationName, double timeOffset);
-    virtual void pauseAnimation(const String& animationName, double timeOffset);
-    virtual void removeAnimation(const String& animationName);
+    virtual bool addAnimation( const KeyframeValueList &, const IntSize &boxSize, const Animation *, const String &animationName,
+                               double timeOffset );
+    virtual void pauseAnimation( const String &animationName, double timeOffset );
+    virtual void removeAnimation( const String &animationName );
 
-    virtual void setContentsToImage(Image*);
-    virtual void setContentsToMedia(PlatformLayer*);
-    virtual void setContentsToCanvas(PlatformLayer*);
+    virtual void setContentsToImage( Image * );
+    virtual void setContentsToMedia( PlatformLayer * );
+    virtual void setContentsToCanvas( PlatformLayer * );
 
-    virtual bool hasContentsLayer() const { return m_contentsLayer; }
-    
-    virtual void setDebugBackgroundColor(const Color&);
-    virtual void setDebugBorder(const Color&, float borderWidth);
+    virtual bool hasContentsLayer() const
+    {
+        return m_contentsLayer;
+    }
 
-    virtual void layerDidDisplay(PlatformLayer*);
+    virtual void setDebugBackgroundColor( const Color & );
+    virtual void setDebugBorder( const Color &, float borderWidth );
+
+    virtual void layerDidDisplay( PlatformLayer * );
 
     void recursiveCommitChanges();
 
     virtual void syncCompositingState();
     virtual void syncCompositingStateForThisLayerOnly();
 
-    bool allowTiledLayer() const { return m_allowTiledLayer; }
-    virtual void setAllowTiledLayer(bool b);
+    bool allowTiledLayer() const
+    {
+        return m_allowTiledLayer;
+    }
+    virtual void setAllowTiledLayer( bool b );
 
 protected:
-    virtual void setOpacityInternal(float);
+    virtual void setOpacityInternal( float );
 
 private:
     // PlatformCALayerClient overrides
-    virtual void platformCALayerLayoutSublayersOfLayer(PlatformCALayer*) { }
-    virtual bool platformCALayerRespondsToLayoutChanges() const { return false; }
+    virtual void platformCALayerLayoutSublayersOfLayer( PlatformCALayer * ) { }
+    virtual bool platformCALayerRespondsToLayoutChanges() const
+    {
+        return false;
+    }
 
-    virtual void platformCALayerAnimationStarted(CFTimeInterval beginTime);
-    virtual CompositingCoordinatesOrientation platformCALayerContentsOrientation() const { return contentsOrientation(); }
-    virtual void platformCALayerPaintContents(GraphicsContext& context, const IntRect& clip) { paintGraphicsLayerContents(context, clip); }
-    virtual bool platformCALayerShowDebugBorders() const { return showDebugBorders(); }
-    virtual bool platformCALayerShowRepaintCounter() const { return showRepaintCounter(); }
-    virtual int platformCALayerIncrementRepaintCount() { return incrementRepaintCount(); }
+    virtual void platformCALayerAnimationStarted( CFTimeInterval beginTime );
+    virtual CompositingCoordinatesOrientation platformCALayerContentsOrientation() const
+    {
+        return contentsOrientation();
+    }
+    virtual void platformCALayerPaintContents( GraphicsContext &context, const IntRect &clip )
+    {
+        paintGraphicsLayerContents( context, clip );
+    }
+    virtual bool platformCALayerShowDebugBorders() const
+    {
+        return showDebugBorders();
+    }
+    virtual bool platformCALayerShowRepaintCounter() const
+    {
+        return showRepaintCounter();
+    }
+    virtual int platformCALayerIncrementRepaintCount()
+    {
+        return incrementRepaintCount();
+    }
 
-    virtual bool platformCALayerContentsOpaque() const { return contentsOpaque(); }
-    virtual bool platformCALayerDrawsContent() const { return drawsContent(); }
-    virtual void platformCALayerLayerDidDisplay(PlatformLayer* layer) { return layerDidDisplay(layer); }
+    virtual bool platformCALayerContentsOpaque() const
+    {
+        return contentsOpaque();
+    }
+    virtual bool platformCALayerDrawsContent() const
+    {
+        return drawsContent();
+    }
+    virtual void platformCALayerLayerDidDisplay( PlatformLayer *layer )
+    {
+        return layerDidDisplay( layer );
+    }
 
     void updateOpacityOnLayer();
 
-    PlatformCALayer* primaryLayer() const { return m_structuralLayer.get() ? m_structuralLayer.get() : m_layer.get(); }
-    PlatformCALayer* hostLayerForSublayers() const;
-    PlatformCALayer* layerForSuperlayer() const;
-    PlatformCALayer* animatedLayer(AnimatedPropertyID) const;
+    PlatformCALayer *primaryLayer() const
+    {
+        return m_structuralLayer.get() ? m_structuralLayer.get() : m_layer.get();
+    }
+    PlatformCALayer *hostLayerForSublayers() const;
+    PlatformCALayer *layerForSuperlayer() const;
+    PlatformCALayer *animatedLayer( AnimatedPropertyID ) const;
 
     typedef String CloneID; // Identifier for a given clone, based on original/replica branching down the tree.
-    static bool isReplicatedRootClone(const CloneID& cloneID) { return cloneID[0U] & 1; }
+    static bool isReplicatedRootClone( const CloneID &cloneID )
+    {
+        return cloneID[0U] & 1;
+    }
 
     typedef HashMap<CloneID, RefPtr<PlatformCALayer> > LayerMap;
-    LayerMap* primaryLayerClones() const { return m_structuralLayer.get() ? m_structuralLayerClones.get() : m_layerClones.get(); }
-    LayerMap* animatedLayerClones(AnimatedPropertyID) const;
+    LayerMap *primaryLayerClones() const
+    {
+        return m_structuralLayer.get() ? m_structuralLayerClones.get() : m_layerClones.get();
+    }
+    LayerMap *animatedLayerClones( AnimatedPropertyID ) const;
 
-    bool createAnimationFromKeyframes(const KeyframeValueList&, const Animation*, const String& animationName, double timeOffset);
-    bool createTransformAnimationsFromKeyframes(const KeyframeValueList&, const Animation*, const String& animationName, double timeOffset, const IntSize& boxSize);
+    bool createAnimationFromKeyframes( const KeyframeValueList &, const Animation *, const String &animationName, double timeOffset );
+    bool createTransformAnimationsFromKeyframes( const KeyframeValueList &, const Animation *, const String &animationName,
+            double timeOffset, const IntSize &boxSize );
 
     // Return autoreleased animation (use RetainPtr?)
-    PassRefPtr<PlatformCAAnimation> createBasicAnimation(const Animation*, AnimatedPropertyID, bool additive);
-    PassRefPtr<PlatformCAAnimation> createKeyframeAnimation(const Animation*, AnimatedPropertyID, bool additive);
-    void setupAnimation(PlatformCAAnimation*, const Animation*, bool additive);
-    
-    const TimingFunction* timingFunctionForAnimationValue(const AnimationValue*, const Animation*);
-    
-    bool setAnimationEndpoints(const KeyframeValueList&, const Animation*, PlatformCAAnimation*);
-    bool setAnimationKeyframes(const KeyframeValueList&, const Animation*, PlatformCAAnimation*);
+    PassRefPtr<PlatformCAAnimation> createBasicAnimation( const Animation *, AnimatedPropertyID, bool additive );
+    PassRefPtr<PlatformCAAnimation> createKeyframeAnimation( const Animation *, AnimatedPropertyID, bool additive );
+    void setupAnimation( PlatformCAAnimation *, const Animation *, bool additive );
 
-    bool setTransformAnimationEndpoints(const KeyframeValueList&, const Animation*, PlatformCAAnimation*, int functionIndex, TransformOperation::OperationType, bool isMatrixAnimation, const IntSize& boxSize);
-    bool setTransformAnimationKeyframes(const KeyframeValueList&, const Animation*, PlatformCAAnimation*, int functionIndex, TransformOperation::OperationType, bool isMatrixAnimation, const IntSize& boxSize);
-    
-    bool animationIsRunning(const String& animationName) const
+    const TimingFunction *timingFunctionForAnimationValue( const AnimationValue *, const Animation * );
+
+    bool setAnimationEndpoints( const KeyframeValueList &, const Animation *, PlatformCAAnimation * );
+    bool setAnimationKeyframes( const KeyframeValueList &, const Animation *, PlatformCAAnimation * );
+
+    bool setTransformAnimationEndpoints( const KeyframeValueList &, const Animation *, PlatformCAAnimation *, int functionIndex,
+                                         TransformOperation::OperationType, bool isMatrixAnimation, const IntSize &boxSize );
+    bool setTransformAnimationKeyframes( const KeyframeValueList &, const Animation *, PlatformCAAnimation *, int functionIndex,
+                                         TransformOperation::OperationType, bool isMatrixAnimation, const IntSize &boxSize );
+
+    bool animationIsRunning( const String &animationName ) const
     {
-        return m_runningAnimations.find(animationName) != m_runningAnimations.end();
+        return m_runningAnimations.find( animationName ) != m_runningAnimations.end();
     }
 
     void commitLayerChangesBeforeSublayers();
@@ -184,44 +238,56 @@ private:
 
     FloatSize constrainedSize() const;
 
-    bool requiresTiledLayer(const FloatSize&) const;
-    void swapFromOrToTiledLayer(bool useTiledLayer);
+    bool requiresTiledLayer( const FloatSize & ) const;
+    void swapFromOrToTiledLayer( bool useTiledLayer );
 
     CompositingCoordinatesOrientation defaultContentsOrientation() const;
     void updateContentsTransform();
-    
-    void setupContentsLayer(PlatformCALayer*);
-    PlatformCALayer* contentsLayer() const { return m_contentsLayer.get(); }
 
-    virtual void setReplicatedByLayer(GraphicsLayer*);
+    void setupContentsLayer( PlatformCALayer * );
+    PlatformCALayer *contentsLayer() const
+    {
+        return m_contentsLayer.get();
+    }
+
+    virtual void setReplicatedByLayer( GraphicsLayer * );
 
     // Used to track the path down the tree for replica layers.
-    struct ReplicaState {
+    struct ReplicaState
+    {
         static const size_t maxReplicaDepth = 16;
         enum ReplicaBranchType { ChildBranch = 0, ReplicaBranch = 1 };
-        ReplicaState(ReplicaBranchType firstBranch)
-            : m_replicaDepth(0)
+        ReplicaState( ReplicaBranchType firstBranch )
+            : m_replicaDepth( 0 )
         {
-            push(firstBranch);
+            push( firstBranch );
         }
-        
-        // Called as we walk down the tree to build replicas.
-        void push(ReplicaBranchType branchType)
-        {
-            m_replicaBranches.append(branchType);
-            if (branchType == ReplicaBranch)
-                ++m_replicaDepth;
-        }
-        
-        void setBranchType(ReplicaBranchType branchType)
-        {
-            ASSERT(!m_replicaBranches.isEmpty());
 
-            if (m_replicaBranches.last() != branchType) {
-                if (branchType == ReplicaBranch)
+        // Called as we walk down the tree to build replicas.
+        void push( ReplicaBranchType branchType )
+        {
+            m_replicaBranches.append( branchType );
+
+            if ( branchType == ReplicaBranch )
+            {
+                ++m_replicaDepth;
+            }
+        }
+
+        void setBranchType( ReplicaBranchType branchType )
+        {
+            ASSERT( !m_replicaBranches.isEmpty() );
+
+            if ( m_replicaBranches.last() != branchType )
+            {
+                if ( branchType == ReplicaBranch )
+                {
                     ++m_replicaDepth;
+                }
                 else
+                {
                     --m_replicaDepth;
+                }
             }
 
             m_replicaBranches.last() = branchType;
@@ -229,36 +295,49 @@ private:
 
         void pop()
         {
-            if (m_replicaBranches.last() == ReplicaBranch)
+            if ( m_replicaBranches.last() == ReplicaBranch )
+            {
                 --m_replicaDepth;
+            }
+
             m_replicaBranches.removeLast();
         }
-        
-        size_t depth() const { return m_replicaBranches.size(); }
-        size_t replicaDepth() const { return m_replicaDepth; }
 
-        CloneID cloneID() const;        
+        size_t depth() const
+        {
+            return m_replicaBranches.size();
+        }
+        size_t replicaDepth() const
+        {
+            return m_replicaDepth;
+        }
+
+        CloneID cloneID() const;
 
     private:
         Vector<ReplicaBranchType> m_replicaBranches;
         size_t m_replicaDepth;
     };
-    PassRefPtr<PlatformCALayer>replicatedLayerRoot(ReplicaState&);
+    PassRefPtr<PlatformCALayer>replicatedLayerRoot( ReplicaState & );
 
     enum CloneLevel { RootCloneLevel, IntermediateCloneLevel };
-    PassRefPtr<PlatformCALayer> fetchCloneLayers(GraphicsLayer* replicaRoot, ReplicaState&, CloneLevel);
-    
-    PassRefPtr<PlatformCALayer> cloneLayer(PlatformCALayer *, CloneLevel);
-    PassRefPtr<PlatformCALayer> findOrMakeClone(CloneID, PlatformCALayer *, LayerMap*, CloneLevel);
+    PassRefPtr<PlatformCALayer> fetchCloneLayers( GraphicsLayer *replicaRoot, ReplicaState &, CloneLevel );
 
-    void ensureCloneLayers(CloneID cloneID, RefPtr<PlatformCALayer>& primaryLayer, RefPtr<PlatformCALayer>& structuralLayer, RefPtr<PlatformCALayer>& contentsLayer, CloneLevel cloneLevel);
+    PassRefPtr<PlatformCALayer> cloneLayer( PlatformCALayer *, CloneLevel );
+    PassRefPtr<PlatformCALayer> findOrMakeClone( CloneID, PlatformCALayer *, LayerMap *, CloneLevel );
 
-    bool hasCloneLayers() const { return m_layerClones; }
+    void ensureCloneLayers( CloneID cloneID, RefPtr<PlatformCALayer> &primaryLayer, RefPtr<PlatformCALayer> &structuralLayer,
+                            RefPtr<PlatformCALayer> &contentsLayer, CloneLevel cloneLevel );
+
+    bool hasCloneLayers() const
+    {
+        return m_layerClones;
+    }
     void removeCloneLayers();
     FloatPoint positionForCloneRootLayer() const;
-    
+
     void propagateLayerChangeToReplicas();
-    
+
     // All these "update" methods will be called inside a BEGIN_BLOCK_OBJC_EXCEPTIONS/END_BLOCK_OBJC_EXCEPTIONS block.
     void updateLayerNames();
     void updateSublayerList();
@@ -285,24 +364,27 @@ private:
     void updateContentsNeedsDisplay();
     void updateAcceleratesDrawing();
     void updateContentsScale();
-    
-    enum StructuralLayerPurpose {
+
+    enum StructuralLayerPurpose
+    {
         NoStructuralLayer = 0,
         StructuralLayerForPreserves3D,
         StructuralLayerForReplicaFlattening
     };
-    void ensureStructuralLayer(StructuralLayerPurpose);
+    void ensureStructuralLayer( StructuralLayerPurpose );
     StructuralLayerPurpose structuralLayerPurpose() const;
 
-    void setAnimationOnLayer(PlatformCAAnimation*, AnimatedPropertyID, const String& animationName, int index, double timeOffset);
-    bool removeCAAnimationFromLayer(AnimatedPropertyID, const String& animationName, int index);
-    void pauseCAAnimationOnLayer(AnimatedPropertyID, const String& animationName, int index, double timeOffset);
+    void setAnimationOnLayer( PlatformCAAnimation *, AnimatedPropertyID, const String &animationName, int index, double timeOffset );
+    bool removeCAAnimationFromLayer( AnimatedPropertyID, const String &animationName, int index );
+    void pauseCAAnimationOnLayer( AnimatedPropertyID, const String &animationName, int index, double timeOffset );
 
     enum MoveOrCopy { Move, Copy };
-    static void moveOrCopyLayerAnimation(MoveOrCopy, const String& animationIdentifier, PlatformCALayer *fromLayer, PlatformCALayer *toLayer);
-    void moveOrCopyAnimationsForProperty(MoveOrCopy, AnimatedPropertyID, PlatformCALayer * fromLayer, PlatformCALayer * toLayer);
-    
-    enum LayerChange {
+    static void moveOrCopyLayerAnimation( MoveOrCopy, const String &animationIdentifier, PlatformCALayer *fromLayer,
+                                          PlatformCALayer *toLayer );
+    void moveOrCopyAnimationsForProperty( MoveOrCopy, AnimatedPropertyID, PlatformCALayer *fromLayer, PlatformCALayer *toLayer );
+
+    enum LayerChange
+    {
         NoChange = 0,
         NameChanged = 1 << 1,
         ChildrenChanged = 1 << 2, // also used for content layer, and preserves-3d, and size if tiling changes?
@@ -331,42 +413,46 @@ private:
         ContentsScaleChanged = 1 << 25
     };
     typedef unsigned LayerChangeFlags;
-    void noteLayerPropertyChanged(LayerChangeFlags flags);
+    void noteLayerPropertyChanged( LayerChangeFlags flags );
     void noteSublayersChanged();
 
     void repaintLayerDirtyRects();
 
     RefPtr<PlatformCALayer> m_layer; // The main layer
-    RefPtr<PlatformCALayer> m_structuralLayer; // A layer used for structural reasons, like preserves-3d or replica-flattening. Is the parent of m_layer.
+    RefPtr<PlatformCALayer>
+    m_structuralLayer; // A layer used for structural reasons, like preserves-3d or replica-flattening. Is the parent of m_layer.
     RefPtr<PlatformCALayer> m_contentsLayer; // A layer used for inner content, like image and video
 
     // References to clones of our layers, for replicated layers.
     OwnPtr<LayerMap> m_layerClones;
     OwnPtr<LayerMap> m_structuralLayerClones;
     OwnPtr<LayerMap> m_contentsLayerClones;
-    
-    enum ContentsLayerPurpose {
+
+    enum ContentsLayerPurpose
+    {
         NoContentsLayer = 0,
         ContentsLayerForImage,
         ContentsLayerForMedia,
         ContentsLayerForCanvas
     };
-    
+
     ContentsLayerPurpose m_contentsLayerPurpose;
     bool m_contentsLayerHasBackgroundColor : 1;
 
     RetainPtr<CGImageRef> m_uncorrectedContentsImage;
     RetainPtr<CGImageRef> m_pendingContentsImage;
-    
+
     // This represents the animation of a single property. There may be multiple transform animations for
     // a single transition or keyframe animation, so index is used to distinguish these.
-    struct LayerPropertyAnimation {
-        LayerPropertyAnimation(PassRefPtr<PlatformCAAnimation> caAnimation, const String& animationName, AnimatedPropertyID property, int index, double timeOffset)
-        : m_animation(caAnimation)
-        , m_name(animationName)
-        , m_property(property)
-        , m_index(index)
-        , m_timeOffset(timeOffset)
+    struct LayerPropertyAnimation
+    {
+        LayerPropertyAnimation( PassRefPtr<PlatformCAAnimation> caAnimation, const String &animationName, AnimatedPropertyID property,
+                                int index, double timeOffset )
+            : m_animation( caAnimation )
+            , m_name( animationName )
+            , m_property( property )
+            , m_index( index )
+            , m_timeOffset( timeOffset )
         { }
 
         RefPtr<PlatformCAAnimation> m_animation;
@@ -375,15 +461,16 @@ private:
         int m_index;
         double m_timeOffset;
     };
-    
+
     // Uncommitted transitions and animations.
     Vector<LayerPropertyAnimation> m_uncomittedAnimations;
-    
+
     enum Action { Remove, Pause };
-    struct AnimationProcessingAction {
-        AnimationProcessingAction(Action action = Remove, double timeOffset = 0)
-            : action(action)
-            , timeOffset(timeOffset)
+    struct AnimationProcessingAction
+    {
+        AnimationProcessingAction( Action action = Remove, double timeOffset = 0 )
+            : action( action )
+            , timeOffset( timeOffset )
         {
         }
         Action action;
@@ -397,12 +484,12 @@ private:
     AnimationsMap m_runningAnimations;
 
     Vector<FloatRect> m_dirtyRects;
-    
+
     LayerChangeFlags m_uncommittedChanges;
 
-    float clampedContentsScaleForScale(float) const;
+    float clampedContentsScaleForScale( float ) const;
     float m_contentsScale;
-    
+
     bool m_allowTiledLayer;
 };
 

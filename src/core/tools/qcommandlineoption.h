@@ -35,42 +35,44 @@ class QCommandLineOptionPrivate;
 
 class Q_CORE_EXPORT QCommandLineOption
 {
- public:
-   explicit QCommandLineOption(const QString &name, const QString &description = QString(),
-         const QString &valueName = QString(), const QString &defaultValue = QString());
+public:
+    explicit QCommandLineOption( const QString &name, const QString &description = QString(),
+                                 const QString &valueName = QString(), const QString &defaultValue = QString() );
 
-   explicit QCommandLineOption(const QStringList &names, const QString &description = QString(),
-         const QString &valueName = QString(), const QString &defaultValue = QString());
+    explicit QCommandLineOption( const QStringList &names, const QString &description = QString(),
+                                 const QString &valueName = QString(), const QString &defaultValue = QString() );
 
-   QCommandLineOption(const QCommandLineOption &other);
+    QCommandLineOption( const QCommandLineOption &other );
 
-   ~QCommandLineOption();
+    ~QCommandLineOption();
 
-   QCommandLineOption &operator=(const QCommandLineOption &other);
+    QCommandLineOption &operator=( const QCommandLineOption &other );
 
-   QCommandLineOption &operator=(QCommandLineOption && other) {
-      qSwap(d, other.d);
-      return *this;
-   }
+    QCommandLineOption &operator=( QCommandLineOption &&other )
+    {
+        qSwap( d, other.d );
+        return *this;
+    }
 
-   void swap(QCommandLineOption &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QCommandLineOption &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   QStringList names() const;
+    QStringList names() const;
 
-   void setValueName(const QString &name);
-   QString valueName() const;
+    void setValueName( const QString &name );
+    QString valueName() const;
 
-   void setDescription(const QString &description);
-   QString description() const;
+    void setDescription( const QString &description );
+    QString description() const;
 
-   void setDefaultValue(const QString &defaultValue);
-   void setDefaultValues(const QStringList &defaultValues);
-   QStringList defaultValues() const;
+    void setDefaultValue( const QString &defaultValue );
+    void setDefaultValues( const QStringList &defaultValues );
+    QStringList defaultValues() const;
 
- private:
-   QSharedDataPointer<QCommandLineOptionPrivate> d;
+private:
+    QSharedDataPointer<QCommandLineOptionPrivate> d;
 };
 
 #endif

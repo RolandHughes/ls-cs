@@ -28,45 +28,50 @@
 #include "XMLNames.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-void SVGLangSpace::setXmllang(const AtomicString& xmlLang)
+void SVGLangSpace::setXmllang( const AtomicString &xmlLang )
 {
     m_lang = xmlLang;
 }
 
-const AtomicString& SVGLangSpace::xmlspace() const
+const AtomicString &SVGLangSpace::xmlspace() const
 {
-    if (!m_space) {
-        DEFINE_STATIC_LOCAL(const AtomicString, defaultString, ("default"));
+    if ( !m_space )
+    {
+        DEFINE_STATIC_LOCAL( const AtomicString, defaultString, ( "default" ) );
         return defaultString;
     }
 
     return m_space;
 }
 
-void SVGLangSpace::setXmlspace(const AtomicString& xmlSpace)
+void SVGLangSpace::setXmlspace( const AtomicString &xmlSpace )
 {
     m_space = xmlSpace;
 }
 
-bool SVGLangSpace::parseMappedAttribute(Attribute* attr)
+bool SVGLangSpace::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name().matches(XMLNames::langAttr)) {
-        setXmllang(attr->value());
+    if ( attr->name().matches( XMLNames::langAttr ) )
+    {
+        setXmllang( attr->value() );
         return true;
     }
-    if (attr->name().matches(XMLNames::spaceAttr)) {
-        setXmlspace(attr->value());
+
+    if ( attr->name().matches( XMLNames::spaceAttr ) )
+    {
+        setXmlspace( attr->value() );
         return true;
     }
 
     return false;
 }
 
-bool SVGLangSpace::isKnownAttribute(const QualifiedName& attrName)
+bool SVGLangSpace::isKnownAttribute( const QualifiedName &attrName )
 {
-    return attrName.matches(XMLNames::langAttr) || attrName.matches(XMLNames::spaceAttr);
+    return attrName.matches( XMLNames::langAttr ) || attrName.matches( XMLNames::spaceAttr );
 }
 
 }

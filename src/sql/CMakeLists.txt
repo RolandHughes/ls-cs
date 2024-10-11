@@ -1,9 +1,9 @@
-add_library(CsSql SHARED "")
-add_library(CopperSpice::CsSql ALIAS CsSql)
+add_library(LsCsSql SHARED "")
+add_library(LsCs::LsCsSql ALIAS LsCsSql)
 
-set_target_properties(CsSql PROPERTIES OUTPUT_NAME CsSql${BUILD_ABI})
+set_target_properties(LsCsSql PROPERTIES OUTPUT_NAME LsCsSql${BUILD_ABI})
 
-target_compile_definitions(CsSql
+target_compile_definitions(LsCsSql
    PRIVATE
    -DQT_BUILD_SQL_LIB
    -DQT_SQL_SQLITE
@@ -12,7 +12,7 @@ target_compile_definitions(CsSql
 set(EXTRA_SQL_CXXFLAGS)
 set(EXTRA_SQL_LDFLAGS)
 
-target_include_directories(CsSql
+target_include_directories(LsCsSql
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtSql>
    $<INSTALL_INTERFACE:include/QtSql>
@@ -54,7 +54,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    add_definitions(-DENABLE_JSC_MULTIPLE_THREADS=0)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(CsSql
+   target_link_libraries(LsCsSql
       PRIVATE
       ws2_32
    )
@@ -64,38 +64,48 @@ endif()
 function_variable_fixup("${EXTRA_SQL_CXXFLAGS}" EXTRA_SQL_CXXFLAGS)
 function_variable_fixup("${EXTRA_SQL_LDFLAGS}"  EXTRA_SQL_LDFLAGS)
 
-target_sources(CsSql
+target_sources(LsCsSql
    PRIVATE
    ${SQL_INCLUDES}
 )
 
-target_link_libraries(CsSql
+target_link_libraries(LsCsSql
    PRIVATE
-   CsCore
+   LsCsCore
 )
 
-set_target_properties(CsSql
+set_target_properties(LsCsSql
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_SQL_CXXFLAGS}
    LINK_FLAGS ${EXTRA_SQL_LDFLAGS}
 )
 
-function_generate_resources(CsSql)
+function_generate_resources(LsCsSql)
 
 macro_generate_package(
-   CsSql
+   LsCsSql
    QtSql
    "${EXTRA_SQL_CXXFLAGS}"
-   "CsCore"
+   "LsCsCore"
 )
 
-install(
-   TARGETS CsSql
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsSql
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsSql
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()
 
 install(
    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtSql

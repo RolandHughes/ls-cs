@@ -34,26 +34,27 @@
 
 class QParallelAnimationGroupPrivate : public QAnimationGroupPrivate
 {
-   Q_DECLARE_PUBLIC(QParallelAnimationGroup)
+    Q_DECLARE_PUBLIC( QParallelAnimationGroup )
 
- public:
-   QParallelAnimationGroupPrivate()
-      : lastLoop(0), lastCurrentTime(0) {
-   }
+public:
+    QParallelAnimationGroupPrivate()
+        : lastLoop( 0 ), lastCurrentTime( 0 )
+    {
+    }
 
-   bool shouldAnimationStart(QAbstractAnimation *animation, bool startIfAtEnd) const;
-   void applyGroupState(QAbstractAnimation *animation);
-   bool isUncontrolledAnimationFinished(QAbstractAnimation *anim) const;
-   void connectUncontrolledAnimations();
-   void disconnectUncontrolledAnimations();
+    bool shouldAnimationStart( QAbstractAnimation *animation, bool startIfAtEnd ) const;
+    void applyGroupState( QAbstractAnimation *animation );
+    bool isUncontrolledAnimationFinished( QAbstractAnimation *anim ) const;
+    void connectUncontrolledAnimations();
+    void disconnectUncontrolledAnimations();
 
-   void animationRemoved(int index, QAbstractAnimation *) override;
+    void animationRemoved( int index, QAbstractAnimation * ) override;
 
-   void _q_uncontrolledAnimationFinished();
+    void _q_uncontrolledAnimationFinished();
 
-   QHash<QAbstractAnimation *, int> uncontrolledFinishTime;
-   int lastLoop;
-   int lastCurrentTime;
+    QHash<QAbstractAnimation *, int> uncontrolledFinishTime;
+    int lastLoop;
+    int lastCurrentTime;
 };
 
 #endif //QT_NO_ANIMATION

@@ -26,12 +26,14 @@
 @class DOMDocument;
 @class DOMRange;
 
-namespace WebCore {
-    class DocumentLoader;
-    class Range;
+namespace WebCore
+{
+class DocumentLoader;
+class Range;
 }
 
-@interface WebHTMLConverter : NSObject {
+@interface WebHTMLConverter : NSObject
+{
     NSMutableAttributedString *_attrStr;
     NSURL *_baseURL;
     DOMDocument *_document;
@@ -68,7 +70,8 @@ namespace WebCore {
     NSInteger _errorCode;
     NSInteger _quoteLevel;
 
-    struct {
+    struct
+    {
         unsigned int isSoft:1;
         unsigned int reachedStart:1;
         unsigned int reachedEnd:1;
@@ -80,12 +83,12 @@ namespace WebCore {
 }
 
 #if !defined(BUILDING_ON_LEOPARD)
-- (id)init;
-- (id)initWithDOMRange:(DOMRange *)domRange;
+- ( id )init;
+- ( id )initWithDOMRange:( DOMRange * )domRange;
 
-- (NSAttributedString *)attributedString;
+- ( NSAttributedString * )attributedString;
 #endif
 
-+ (NSAttributedString *)editingAttributedStringFromRange:(WebCore::Range*)range;
++ ( NSAttributedString * )editingAttributedStringFromRange:( WebCore::Range * )range;
 @end
 

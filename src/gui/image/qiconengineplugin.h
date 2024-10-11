@@ -33,13 +33,13 @@ class QIconEngine;
 
 class Q_GUI_EXPORT QIconEnginePlugin : public QObject
 {
-   GUI_CS_OBJECT(QIconEnginePlugin)
+    GUI_LSCS_OBJECT( QIconEnginePlugin )
 
- public:
-   QIconEnginePlugin(QObject *parent = nullptr);
-   ~QIconEnginePlugin();
+public:
+    QIconEnginePlugin( QObject *parent = nullptr );
+    ~QIconEnginePlugin();
 
-   virtual QIconEngine *create(const QString &filename = QString()) = 0;
+    virtual QIconEngine *create( const QString &filename = QString() ) = 0;
 };
 
 #endif

@@ -32,70 +32,73 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeAbstractBoundSignal : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeAbstractBoundSignal)
+    DECL_LSCS_OBJECT( QDeclarativeAbstractBoundSignal )
 
- public:
-   QDeclarativeAbstractBoundSignal(QObject *parent = nullptr);
-   virtual ~QDeclarativeAbstractBoundSignal() = 0;
-   virtual void disconnect() = 0;
+public:
+    QDeclarativeAbstractBoundSignal( QObject *parent = nullptr );
+    virtual ~QDeclarativeAbstractBoundSignal() = 0;
+    virtual void disconnect() = 0;
 
- protected :
-   DECL_CS_SLOT_1(Protected, virtual void unregisterScopeObject())
-   DECL_CS_SLOT_2(unregisterScopeObject)
+protected :
+    DECL_LSCS_SLOT_1( Protected, virtual void unregisterScopeObject() )
+    DECL_LSCS_SLOT_2( unregisterScopeObject )
 };
 
 class QDeclarativeBoundSignalParameters;
 
 class QDeclarativeBoundSignal : public QDeclarativeAbstractBoundSignal
 {
- public:
-   QDeclarativeBoundSignal(QObject *scope, const QMetaMethod &signal, QObject *parent);
-   QDeclarativeBoundSignal(QDeclarativeContext *ctxt, const QString &val, QObject *scope,
-                           const QMetaMethod &signal, QObject *parent);
-   virtual ~QDeclarativeBoundSignal();
+public:
+    QDeclarativeBoundSignal( QObject *scope, const QMetaMethod &signal, QObject *parent );
+    QDeclarativeBoundSignal( QDeclarativeContext *ctxt, const QString &val, QObject *scope,
+                             const QMetaMethod &signal, QObject *parent );
+    virtual ~QDeclarativeBoundSignal();
 
-   void disconnect();
+    void disconnect();
 
-   int index() const;
+    int index() const;
 
-   QDeclarativeExpression *expression() const;
-   QDeclarativeExpression *setExpression(QDeclarativeExpression *);
+    QDeclarativeExpression *expression() const;
+    QDeclarativeExpression *setExpression( QDeclarativeExpression * );
 
-   bool isEvaluating() const {
-      return m_isEvaluating;
-   }
+    bool isEvaluating() const
+    {
+        return m_isEvaluating;
+    }
 
-   static QDeclarativeBoundSignal *cast(QObject *);
+    static QDeclarativeBoundSignal *cast( QObject * );
 
- protected:
-   void unregisterScopeObject();
-   virtual int qt_metacall(QMetaObject::Call c, int id, void **a);
+protected:
+    void unregisterScopeObject();
+    virtual int qt_metacall( QMetaObject::Call c, int id, void **a );
 
- private:
-   class ScopeGuard : public QDeclarativeGuard<QObject>
-   {
+private:
+    class ScopeGuard : public QDeclarativeGuard<QObject>
+    {
     public:
-      ScopeGuard(QObject *object, QDeclarativeBoundSignal *signal)
-         : QDeclarativeGuard<QObject>(object), m_signal(signal) {
-      }
+        ScopeGuard( QObject *object, QDeclarativeBoundSignal *signal )
+            : QDeclarativeGuard<QObject>( object ), m_signal( signal )
+        {
+        }
 
-      void objectDestroyed(QObject *obj) {
-         Q_UNUSED(obj);
-         m_signal->unregisterScopeObject();
-      }
+        void objectDestroyed( QObject *obj )
+        {
+            Q_UNUSED( obj );
+            m_signal->unregisterScopeObject();
+        }
 
     private:
-      QDeclarativeBoundSignal *m_signal;
-   };
+        QDeclarativeBoundSignal *m_signal;
+    };
 
-   void init(QObject *parent);
+    void init( QObject *parent );
 
-   QDeclarativeExpression *m_expression;
-   QMetaMethod m_signal;
-   bool m_paramsValid : 1;
-   bool m_isEvaluating : 1;
-   QDeclarativeBoundSignalParameters *m_params;
-   ScopeGuard m_scope;
+    QDeclarativeExpression *m_expression;
+    QMetaMethod m_signal;
+    bool m_paramsValid : 1;
+    bool m_isEvaluating : 1;
+    QDeclarativeBoundSignalParameters *m_params;
+    ScopeGuard m_scope;
 };
 
 QT_END_NAMESPACE

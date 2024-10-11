@@ -26,24 +26,25 @@
 
 #include <qvariablereference_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class RangeVariableReference : public VariableReference
 {
- public:
-   RangeVariableReference(const Expression::Ptr &sourceExpression, const VariableSlotID slot);
+public:
+    RangeVariableReference( const Expression::Ptr &sourceExpression, const VariableSlotID slot );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
 
-   ID id() const override;
+    ID id() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Properties properties() const override;
 
- private:
-   const Expression::Ptr m_sourceExpression;
+private:
+    const Expression::Ptr m_sourceExpression;
 };
 
 }

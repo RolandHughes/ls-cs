@@ -36,12 +36,13 @@
 
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-V8TestCallback::V8TestCallback(v8::Local<v8::Object> callback, ScriptExecutionContext* context)
-    : ActiveDOMCallback(context)
-    , m_callback(v8::Persistent<v8::Object>::New(callback))
-    , m_worldContext(UseCurrentWorld)
+V8TestCallback::V8TestCallback( v8::Local<v8::Object> callback, ScriptExecutionContext *context )
+    : ActiveDOMCallback( context )
+    , m_callback( v8::Persistent<v8::Object>::New( callback ) )
+    , m_worldContext( UseCurrentWorld )
 {
 }
 
@@ -54,109 +55,141 @@ V8TestCallback::~V8TestCallback()
 
 bool V8TestCallback::callbackWithNoParam()
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
     v8::HandleScope handleScope;
 
-    v8::Handle<v8::Context> v8Context = toV8Context(scriptExecutionContext(), m_worldContext);
-    if (v8Context.IsEmpty())
-        return true;
+    v8::Handle<v8::Context> v8Context = toV8Context( scriptExecutionContext(), m_worldContext );
 
-    v8::Context::Scope scope(v8Context);
+    if ( v8Context.IsEmpty() )
+    {
+        return true;
+    }
+
+    v8::Context::Scope scope( v8Context );
 
 
     v8::Handle<v8::Value> *argv = 0;
 
     bool callbackReturnValue = false;
-    return !invokeCallback(m_callback, 0, argv, callbackReturnValue, scriptExecutionContext());
+    return !invokeCallback( m_callback, 0, argv, callbackReturnValue, scriptExecutionContext() );
 }
 
-bool V8TestCallback::callbackWithClass1Param(Class1* class1Param)
+bool V8TestCallback::callbackWithClass1Param( Class1 *class1Param )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
     v8::HandleScope handleScope;
 
-    v8::Handle<v8::Context> v8Context = toV8Context(scriptExecutionContext(), m_worldContext);
-    if (v8Context.IsEmpty())
+    v8::Handle<v8::Context> v8Context = toV8Context( scriptExecutionContext(), m_worldContext );
+
+    if ( v8Context.IsEmpty() )
+    {
         return true;
+    }
 
-    v8::Context::Scope scope(v8Context);
+    v8::Context::Scope scope( v8Context );
 
-    v8::Handle<v8::Value> class1ParamHandle = toV8(class1Param);
-    if (class1ParamHandle.IsEmpty()) {
+    v8::Handle<v8::Value> class1ParamHandle = toV8( class1Param );
+
+    if ( class1ParamHandle.IsEmpty() )
+    {
         CRASH();
         return true;
     }
 
-    v8::Handle<v8::Value> argv[] = {
+    v8::Handle<v8::Value> argv[] =
+    {
         class1ParamHandle
     };
 
     bool callbackReturnValue = false;
-    return !invokeCallback(m_callback, 1, argv, callbackReturnValue, scriptExecutionContext());
+    return !invokeCallback( m_callback, 1, argv, callbackReturnValue, scriptExecutionContext() );
 }
 
-bool V8TestCallback::callbackWithClass2Param(Class2* class2Param, const String& strArg)
+bool V8TestCallback::callbackWithClass2Param( Class2 *class2Param, const String &strArg )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
     v8::HandleScope handleScope;
 
-    v8::Handle<v8::Context> v8Context = toV8Context(scriptExecutionContext(), m_worldContext);
-    if (v8Context.IsEmpty())
-        return true;
+    v8::Handle<v8::Context> v8Context = toV8Context( scriptExecutionContext(), m_worldContext );
 
-    v8::Context::Scope scope(v8Context);
-
-    v8::Handle<v8::Value> class2ParamHandle = toV8(class2Param);
-    if (class2ParamHandle.IsEmpty()) {
-        CRASH();
-        return true;
-    }
-    v8::Handle<v8::Value> strArgHandle = v8String(strArg);
-    if (strArgHandle.IsEmpty()) {
-        CRASH();
+    if ( v8Context.IsEmpty() )
+    {
         return true;
     }
 
-    v8::Handle<v8::Value> argv[] = {
+    v8::Context::Scope scope( v8Context );
+
+    v8::Handle<v8::Value> class2ParamHandle = toV8( class2Param );
+
+    if ( class2ParamHandle.IsEmpty() )
+    {
+        CRASH();
+        return true;
+    }
+
+    v8::Handle<v8::Value> strArgHandle = v8String( strArg );
+
+    if ( strArgHandle.IsEmpty() )
+    {
+        CRASH();
+        return true;
+    }
+
+    v8::Handle<v8::Value> argv[] =
+    {
         class2ParamHandle,
         strArgHandle
     };
 
     bool callbackReturnValue = false;
-    return !invokeCallback(m_callback, 2, argv, callbackReturnValue, scriptExecutionContext());
+    return !invokeCallback( m_callback, 2, argv, callbackReturnValue, scriptExecutionContext() );
 }
 
-bool V8TestCallback::callbackWithStringList(PassRefPtr<DOMStringList> listParam)
+bool V8TestCallback::callbackWithStringList( PassRefPtr<DOMStringList> listParam )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
     v8::HandleScope handleScope;
 
-    v8::Handle<v8::Context> v8Context = toV8Context(scriptExecutionContext(), m_worldContext);
-    if (v8Context.IsEmpty())
+    v8::Handle<v8::Context> v8Context = toV8Context( scriptExecutionContext(), m_worldContext );
+
+    if ( v8Context.IsEmpty() )
+    {
         return true;
+    }
 
-    v8::Context::Scope scope(v8Context);
+    v8::Context::Scope scope( v8Context );
 
-    v8::Handle<v8::Value> listParamHandle = toV8(listParam);
-    if (listParamHandle.IsEmpty()) {
+    v8::Handle<v8::Value> listParamHandle = toV8( listParam );
+
+    if ( listParamHandle.IsEmpty() )
+    {
         CRASH();
         return true;
     }
 
-    v8::Handle<v8::Value> argv[] = {
+    v8::Handle<v8::Value> argv[] =
+    {
         listParamHandle
     };
 
     bool callbackReturnValue = false;
-    return !invokeCallback(m_callback, 1, argv, callbackReturnValue, scriptExecutionContext());
+    return !invokeCallback( m_callback, 1, argv, callbackReturnValue, scriptExecutionContext() );
 }
 
 } // namespace WebCore

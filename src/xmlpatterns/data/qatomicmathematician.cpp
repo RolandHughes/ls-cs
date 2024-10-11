@@ -29,22 +29,28 @@ AtomicMathematician::~AtomicMathematician()
 {
 }
 
-QString AtomicMathematician::displayName(const AtomicMathematician::Operator op)
+QString AtomicMathematician::displayName( const AtomicMathematician::Operator op )
 {
-   switch (op) {
-      case AtomicMathematician::Div:
-         return QLatin1String("div");
-      case AtomicMathematician::IDiv:
-         return QLatin1String("idiv");
-      case AtomicMathematician::Substract:
-         return QLatin1String("-");
-      case AtomicMathematician::Mod:
-         return QLatin1String("mod");
-      case AtomicMathematician::Multiply:
-         return QLatin1String("*");
-      case AtomicMathematician::Add:
-         return QLatin1String("+");
-   }
+    switch ( op )
+    {
+        case AtomicMathematician::Div:
+            return QLatin1String( "div" );
 
-   return QString(); /* Silence GCC warning. */
+        case AtomicMathematician::IDiv:
+            return QLatin1String( "idiv" );
+
+        case AtomicMathematician::Substract:
+            return QLatin1String( "-" );
+
+        case AtomicMathematician::Mod:
+            return QLatin1String( "mod" );
+
+        case AtomicMathematician::Multiply:
+            return QLatin1String( "*" );
+
+        case AtomicMathematician::Add:
+            return QLatin1String( "+" );
+    }
+
+    return QString(); /* Silence GCC warning. */
 }

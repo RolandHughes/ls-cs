@@ -31,44 +31,118 @@
 #ifndef RuntimeEnabledFeatures_h
 #define RuntimeEnabledFeatures_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A class that stores static enablers for all experimental features. Note that
 // the method names must line up with the JavaScript method they enable for code
 // generation to work properly.
 
-class RuntimeEnabledFeatures {
+class RuntimeEnabledFeatures
+{
 public:
-    static void setLocalStorageEnabled(bool isEnabled) { isLocalStorageEnabled = isEnabled; }
-    static bool localStorageEnabled() { return isLocalStorageEnabled; }
+    static void setLocalStorageEnabled( bool isEnabled )
+    {
+        isLocalStorageEnabled = isEnabled;
+    }
+    static bool localStorageEnabled()
+    {
+        return isLocalStorageEnabled;
+    }
 
-    static void setSessionStorageEnabled(bool isEnabled) { isSessionStorageEnabled = isEnabled; }
-    static bool sessionStorageEnabled() { return isSessionStorageEnabled; }
+    static void setSessionStorageEnabled( bool isEnabled )
+    {
+        isSessionStorageEnabled = isEnabled;
+    }
+    static bool sessionStorageEnabled()
+    {
+        return isSessionStorageEnabled;
+    }
 
-    static void setWebkitNotificationsEnabled(bool isEnabled) { isWebkitNotificationsEnabled = isEnabled; }
-    static bool webkitNotificationsEnabled() { return isWebkitNotificationsEnabled; }
+    static void setWebkitNotificationsEnabled( bool isEnabled )
+    {
+        isWebkitNotificationsEnabled = isEnabled;
+    }
+    static bool webkitNotificationsEnabled()
+    {
+        return isWebkitNotificationsEnabled;
+    }
 
-    static void setApplicationCacheEnabled(bool isEnabled) { isApplicationCacheEnabled = isEnabled; }
-    static bool applicationCacheEnabled() { return isApplicationCacheEnabled; }
+    static void setApplicationCacheEnabled( bool isEnabled )
+    {
+        isApplicationCacheEnabled = isEnabled;
+    }
+    static bool applicationCacheEnabled()
+    {
+        return isApplicationCacheEnabled;
+    }
 
-    static void setDataTransferItemsEnabled(bool isEnabled) { isDataTransferItemsEnabled = isEnabled; }
-    static bool dataTransferItemsEnabled() { return isDataTransferItemsEnabled; }
+    static void setDataTransferItemsEnabled( bool isEnabled )
+    {
+        isDataTransferItemsEnabled = isEnabled;
+    }
+    static bool dataTransferItemsEnabled()
+    {
+        return isDataTransferItemsEnabled;
+    }
 
-    static void setGeolocationEnabled(bool isEnabled) { isGeolocationEnabled = isEnabled; }
-    static bool geolocationEnabled() { return isGeolocationEnabled; }
+    static void setGeolocationEnabled( bool isEnabled )
+    {
+        isGeolocationEnabled = isEnabled;
+    }
+    static bool geolocationEnabled()
+    {
+        return isGeolocationEnabled;
+    }
 
-    static void setWebkitIndexedDBEnabled(bool isEnabled) { isIndexedDBEnabled = isEnabled; }
-    static bool webkitIndexedDBEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBCursorEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBDatabaseEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBDatabaseErrorEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBDatabaseExceptionEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBFactoryEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBIndexEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBKeyRangeEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBObjectStoreEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBRequestEnabled() { return isIndexedDBEnabled; }
-    static bool webkitIDBTransactionEnabled() { return isIndexedDBEnabled; }
+    static void setWebkitIndexedDBEnabled( bool isEnabled )
+    {
+        isIndexedDBEnabled = isEnabled;
+    }
+    static bool webkitIndexedDBEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBCursorEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBDatabaseEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBDatabaseErrorEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBDatabaseExceptionEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBFactoryEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBIndexEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBKeyRangeEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBObjectStoreEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBRequestEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
+    static bool webkitIDBTransactionEnabled()
+    {
+        return isIndexedDBEnabled;
+    }
 
 #if ENABLE(VIDEO)
     static bool audioEnabled();
@@ -93,66 +167,174 @@ public:
 #endif
 
 #if ENABLE(WEB_AUDIO)
-    static void setWebkitAudioContextEnabled(bool isEnabled) { isWebAudioEnabled = isEnabled; }
-    static bool webkitAudioContextEnabled() { return isWebAudioEnabled; }
+    static void setWebkitAudioContextEnabled( bool isEnabled )
+    {
+        isWebAudioEnabled = isEnabled;
+    }
+    static bool webkitAudioContextEnabled()
+    {
+        return isWebAudioEnabled;
+    }
 #endif
 
-    static void setPushStateEnabled(bool isEnabled) { isPushStateEnabled = isEnabled; }
-    static bool pushStateEnabled() { return isPushStateEnabled; }
-    static bool replaceStateEnabled() { return isPushStateEnabled; }
+    static void setPushStateEnabled( bool isEnabled )
+    {
+        isPushStateEnabled = isEnabled;
+    }
+    static bool pushStateEnabled()
+    {
+        return isPushStateEnabled;
+    }
+    static bool replaceStateEnabled()
+    {
+        return isPushStateEnabled;
+    }
 
 #if ENABLE(TOUCH_EVENTS)
-    static bool touchEnabled() { return isTouchEnabled; }
-    static void setTouchEnabled(bool isEnabled) { isTouchEnabled = isEnabled; }
-    static bool ontouchstartEnabled() { return isTouchEnabled; }
-    static bool ontouchmoveEnabled() { return isTouchEnabled; }
-    static bool ontouchendEnabled() { return isTouchEnabled; }
-    static bool ontouchcancelEnabled() { return isTouchEnabled; }
-    static bool createTouchEnabled() { return isTouchEnabled; }
-    static bool createTouchListEnabled() { return isTouchEnabled; }
+    static bool touchEnabled()
+    {
+        return isTouchEnabled;
+    }
+    static void setTouchEnabled( bool isEnabled )
+    {
+        isTouchEnabled = isEnabled;
+    }
+    static bool ontouchstartEnabled()
+    {
+        return isTouchEnabled;
+    }
+    static bool ontouchmoveEnabled()
+    {
+        return isTouchEnabled;
+    }
+    static bool ontouchendEnabled()
+    {
+        return isTouchEnabled;
+    }
+    static bool ontouchcancelEnabled()
+    {
+        return isTouchEnabled;
+    }
+    static bool createTouchEnabled()
+    {
+        return isTouchEnabled;
+    }
+    static bool createTouchListEnabled()
+    {
+        return isTouchEnabled;
+    }
 #endif
 
-    static void setDeviceMotionEnabled(bool isEnabled) { isDeviceMotionEnabled = isEnabled; }
-    static bool deviceMotionEnabled() { return isDeviceMotionEnabled; }
-    static bool deviceMotionEventEnabled() { return isDeviceMotionEnabled; }
-    static bool ondevicemotionEnabled() { return isDeviceMotionEnabled; }
-    
-    static void setDeviceOrientationEnabled(bool isEnabled) { isDeviceOrientationEnabled = isEnabled; }
-    static bool deviceOrientationEnabled() { return isDeviceOrientationEnabled; }
-    static bool deviceOrientationEventEnabled() { return isDeviceOrientationEnabled; }
-    static bool ondeviceorientationEnabled() { return isDeviceOrientationEnabled; }
+    static void setDeviceMotionEnabled( bool isEnabled )
+    {
+        isDeviceMotionEnabled = isEnabled;
+    }
+    static bool deviceMotionEnabled()
+    {
+        return isDeviceMotionEnabled;
+    }
+    static bool deviceMotionEventEnabled()
+    {
+        return isDeviceMotionEnabled;
+    }
+    static bool ondevicemotionEnabled()
+    {
+        return isDeviceMotionEnabled;
+    }
 
-    static void setSpeechInputEnabled(bool isEnabled) { isSpeechInputEnabled = isEnabled; }
-    static bool speechInputEnabled() { return isSpeechInputEnabled; }
-    static bool webkitSpeechEnabled() { return isSpeechInputEnabled; }
-    static bool webkitGrammarEnabled() { return isSpeechInputEnabled; }
+    static void setDeviceOrientationEnabled( bool isEnabled )
+    {
+        isDeviceOrientationEnabled = isEnabled;
+    }
+    static bool deviceOrientationEnabled()
+    {
+        return isDeviceOrientationEnabled;
+    }
+    static bool deviceOrientationEventEnabled()
+    {
+        return isDeviceOrientationEnabled;
+    }
+    static bool ondeviceorientationEnabled()
+    {
+        return isDeviceOrientationEnabled;
+    }
+
+    static void setSpeechInputEnabled( bool isEnabled )
+    {
+        isSpeechInputEnabled = isEnabled;
+    }
+    static bool speechInputEnabled()
+    {
+        return isSpeechInputEnabled;
+    }
+    static bool webkitSpeechEnabled()
+    {
+        return isSpeechInputEnabled;
+    }
+    static bool webkitGrammarEnabled()
+    {
+        return isSpeechInputEnabled;
+    }
 
 #if ENABLE(XHR_RESPONSE_BLOB)
-    static bool xhrResponseBlobEnabled() { return isXHRResponseBlobEnabled; }
-    static void setXHRResponseBlobEnabled(bool isEnabled) { isXHRResponseBlobEnabled = isEnabled; }
-    static bool responseBlobEnabled() { return isXHRResponseBlobEnabled; }
-    static bool asBlobEnabled()  { return isXHRResponseBlobEnabled; }
+    static bool xhrResponseBlobEnabled()
+    {
+        return isXHRResponseBlobEnabled;
+    }
+    static void setXHRResponseBlobEnabled( bool isEnabled )
+    {
+        isXHRResponseBlobEnabled = isEnabled;
+    }
+    static bool responseBlobEnabled()
+    {
+        return isXHRResponseBlobEnabled;
+    }
+    static bool asBlobEnabled()
+    {
+        return isXHRResponseBlobEnabled;
+    }
 #endif
 
 #if ENABLE(FILE_SYSTEM)
     static bool fileSystemEnabled();
-    static void setFileSystemEnabled(bool isEnabled) { isFileSystemEnabled = isEnabled; }
+    static void setFileSystemEnabled( bool isEnabled )
+    {
+        isFileSystemEnabled = isEnabled;
+    }
 #endif
 
 #if ENABLE(JAVASCRIPT_I18N_API)
     static bool javaScriptI18NAPIEnabled();
-    static void setJavaScriptI18NAPIEnabled(bool isEnabled) { isJavaScriptI18NAPIEnabled = isEnabled; }
+    static void setJavaScriptI18NAPIEnabled( bool isEnabled )
+    {
+        isJavaScriptI18NAPIEnabled = isEnabled;
+    }
 #endif
 
 #if ENABLE(MEDIA_STREAM)
-    static bool mediaStreamEnabled() { return isMediaStreamEnabled; }
-    static void setMediaStreamEnabled(bool isEnabled) { isMediaStreamEnabled = isEnabled; }
-    static bool webkitGetUserMediaEnabled() { return isMediaStreamEnabled; }
+    static bool mediaStreamEnabled()
+    {
+        return isMediaStreamEnabled;
+    }
+    static void setMediaStreamEnabled( bool isEnabled )
+    {
+        isMediaStreamEnabled = isEnabled;
+    }
+    static bool webkitGetUserMediaEnabled()
+    {
+        return isMediaStreamEnabled;
+    }
 #endif
 
 #if ENABLE(QUOTA)
-    static bool quotaEnabled() { return isQuotaEnabled; }
-    static void setQuotaEnabled(bool isEnabled) { isQuotaEnabled = isEnabled; }
+    static bool quotaEnabled()
+    {
+        return isQuotaEnabled;
+    }
+    static void setQuotaEnabled( bool isEnabled )
+    {
+        isQuotaEnabled = isEnabled;
+    }
 #endif
 
 private:

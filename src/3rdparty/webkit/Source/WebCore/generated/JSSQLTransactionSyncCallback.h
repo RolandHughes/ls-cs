@@ -28,24 +28,26 @@
 #include "SQLTransactionSyncCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSQLTransactionSyncCallback : public SQLTransactionSyncCallback, public ActiveDOMCallback {
+class JSSQLTransactionSyncCallback : public SQLTransactionSyncCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSSQLTransactionSyncCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSSQLTransactionSyncCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSSQLTransactionSyncCallback(callback, globalObject));
+        return adoptRef( new JSSQLTransactionSyncCallback( callback, globalObject ) );
     }
 
     virtual ~JSSQLTransactionSyncCallback();
 
     // Functions
-    virtual bool handleEvent(SQLTransactionSync* transaction);
+    virtual bool handleEvent( SQLTransactionSync *transaction );
 
 private:
-    JSSQLTransactionSyncCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSSQLTransactionSyncCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

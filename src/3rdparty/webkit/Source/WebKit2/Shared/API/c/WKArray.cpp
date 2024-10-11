@@ -33,21 +33,22 @@ using namespace WebKit;
 
 WKTypeID WKArrayGetTypeID()
 {
-    return toAPI(ImmutableArray::APIType);
+    return toAPI( ImmutableArray::APIType );
 }
 
-WKArrayRef WKArrayCreate(WKTypeRef* values, size_t numberOfValues)
+WKArrayRef WKArrayCreate( WKTypeRef *values, size_t numberOfValues )
 {
-    RefPtr<ImmutableArray> array = ImmutableArray::create(reinterpret_cast<APIObject**>(const_cast<void**>(values)), numberOfValues);
-    return toAPI(array.release().releaseRef());
+    RefPtr<ImmutableArray> array = ImmutableArray::create( reinterpret_cast<APIObject **>( const_cast<void **>( values ) ),
+                                   numberOfValues );
+    return toAPI( array.release().releaseRef() );
 }
 
-WKTypeRef WKArrayGetItemAtIndex(WKArrayRef arrayRef, size_t index)
+WKTypeRef WKArrayGetItemAtIndex( WKArrayRef arrayRef, size_t index )
 {
-    return toImpl(arrayRef)->at(index);
+    return toImpl( arrayRef )->at( index );
 }
 
-size_t WKArrayGetSize(WKArrayRef arrayRef)
+size_t WKArrayGetSize( WKArrayRef arrayRef )
 {
-    return toImpl(arrayRef)->size();
+    return toImpl( arrayRef )->size();
 }

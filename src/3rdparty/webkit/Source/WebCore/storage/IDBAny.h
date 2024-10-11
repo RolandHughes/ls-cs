@@ -32,7 +32,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBCursor;
 class IDBCursorWithValue;
@@ -44,27 +45,29 @@ class IDBObjectStore;
 class IDBTransaction;
 class SerializedScriptValue;
 
-class IDBAny : public RefCounted<IDBAny> {
+class IDBAny : public RefCounted<IDBAny>
+{
 public:
     static PassRefPtr<IDBAny> createInvalid();
     static PassRefPtr<IDBAny> createNull();
     template<typename T>
-    static PassRefPtr<IDBAny> create(T* idbObject)
+    static PassRefPtr<IDBAny> create( T *idbObject )
     {
         RefPtr<IDBAny> any = IDBAny::createInvalid();
-        any->set(idbObject);
+        any->set( idbObject );
         return any.release();
     }
     template<typename T>
-    static PassRefPtr<IDBAny> create(PassRefPtr<T> idbObject)
+    static PassRefPtr<IDBAny> create( PassRefPtr<T> idbObject )
     {
         RefPtr<IDBAny> any = IDBAny::createInvalid();
-        any->set(idbObject);
+        any->set( idbObject );
         return any.release();
     }
     ~IDBAny();
 
-    enum Type {
+    enum Type
+    {
         UndefinedType = 0,
         NullType,
         IDBCursorType,
@@ -78,7 +81,10 @@ public:
         SerializedScriptValueType
     };
 
-    Type type() const { return m_type; }
+    Type type() const
+    {
+        return m_type;
+    }
     // Use type() to figure out which one of these you're allowed to call.
     PassRefPtr<IDBCursor> idbCursor();
     PassRefPtr<IDBCursorWithValue> idbCursorWithValue();
@@ -92,15 +98,15 @@ public:
 
     // Set can only be called once.
     void setNull();
-    void set(PassRefPtr<IDBCursor>);
-    void set(PassRefPtr<IDBCursorWithValue>);
-    void set(PassRefPtr<IDBDatabase>);
-    void set(PassRefPtr<IDBFactory>);
-    void set(PassRefPtr<IDBIndex>);
-    void set(PassRefPtr<IDBKey>);
-    void set(PassRefPtr<IDBObjectStore>);
-    void set(PassRefPtr<IDBTransaction>);
-    void set(PassRefPtr<SerializedScriptValue>);
+    void set( PassRefPtr<IDBCursor> );
+    void set( PassRefPtr<IDBCursorWithValue> );
+    void set( PassRefPtr<IDBDatabase> );
+    void set( PassRefPtr<IDBFactory> );
+    void set( PassRefPtr<IDBIndex> );
+    void set( PassRefPtr<IDBKey> );
+    void set( PassRefPtr<IDBObjectStore> );
+    void set( PassRefPtr<IDBTransaction> );
+    void set( PassRefPtr<SerializedScriptValue> );
 
 private:
     IDBAny();

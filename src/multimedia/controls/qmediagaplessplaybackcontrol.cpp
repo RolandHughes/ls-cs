@@ -28,7 +28,7 @@ QMediaGaplessPlaybackControl::~QMediaGaplessPlaybackControl()
 {
 }
 
-QMediaGaplessPlaybackControl::QMediaGaplessPlaybackControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QMediaGaplessPlaybackControl::QMediaGaplessPlaybackControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }

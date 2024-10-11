@@ -31,7 +31,7 @@
 #include <qvariant.h>
 #include <qvector.h>
 
-#include <cs_shared_guarded.h>
+#include <lscs_shared_guarded.h>
 
 #ifndef QT_NO_ANIMATION
 
@@ -39,92 +39,95 @@ class QVariantAnimationPrivate;
 
 class Q_CORE_EXPORT QVariantAnimation : public QAbstractAnimation
 {
-   CORE_CS_OBJECT(QVariantAnimation)
+    CORE_LSCS_OBJECT( QVariantAnimation )
 
-   CORE_CS_PROPERTY_READ(startValue, startValue)
-   CORE_CS_PROPERTY_WRITE(startValue, setStartValue)
+    CORE_LSCS_PROPERTY_READ( startValue, startValue )
+    CORE_LSCS_PROPERTY_WRITE( startValue, setStartValue )
 
-   CORE_CS_PROPERTY_READ(endValue, endValue)
-   CORE_CS_PROPERTY_WRITE(endValue, setEndValue)
+    CORE_LSCS_PROPERTY_READ( endValue, endValue )
+    CORE_LSCS_PROPERTY_WRITE( endValue, setEndValue )
 
-   CORE_CS_PROPERTY_READ(currentValue, currentValue)
-   CORE_CS_PROPERTY_NOTIFY(currentValue, valueChanged)
+    CORE_LSCS_PROPERTY_READ( currentValue, currentValue )
+    CORE_LSCS_PROPERTY_NOTIFY( currentValue, valueChanged )
 
-   CORE_CS_PROPERTY_READ(duration, duration)
-   CORE_CS_PROPERTY_WRITE(duration, setDuration)
+    CORE_LSCS_PROPERTY_READ( duration, duration )
+    CORE_LSCS_PROPERTY_WRITE( duration, setDuration )
 
-   CORE_CS_PROPERTY_READ(easingCurve, easingCurve)
-   CORE_CS_PROPERTY_WRITE(easingCurve, setEasingCurve)
+    CORE_LSCS_PROPERTY_READ( easingCurve, easingCurve )
+    CORE_LSCS_PROPERTY_WRITE( easingCurve, setEasingCurve )
 
- public:
-   using ValuePair = QPair<double, QVariant>;
+public:
+    using ValuePair = QPair<double, QVariant>;
 
-   QVariantAnimation(QObject *parent = nullptr);
-   QVariantAnimation (const QVariantAnimation & ) = delete;
+    QVariantAnimation( QObject *parent = nullptr );
+    QVariantAnimation ( const QVariantAnimation & ) = delete;
 
-   ~QVariantAnimation();
+    ~QVariantAnimation();
 
-   QVariant startValue() const;
-   void setStartValue(const QVariant &value);
+    QVariant startValue() const;
+    void setStartValue( const QVariant &value );
 
-   QVariant endValue() const;
-   void setEndValue(const QVariant &value);
+    QVariant endValue() const;
+    void setEndValue( const QVariant &value );
 
-   QVariant keyValueAt(double step) const;
-   void setKeyValueAt(double step, const QVariant &value);
+    QVariant keyValueAt( double step ) const;
+    void setKeyValueAt( double step, const QVariant &value );
 
-   QVector<QVariantAnimation::ValuePair> keyValues() const;
-   void setKeyValues(const QVector<QVariantAnimation::ValuePair> &keyValues);
+    QVector<QVariantAnimation::ValuePair> keyValues() const;
+    void setKeyValues( const QVector<QVariantAnimation::ValuePair> &keyValues );
 
-   QVariant currentValue() const;
+    QVariant currentValue() const;
 
-   int duration() const override;
-   void setDuration(int msecs);
+    int duration() const override;
+    void setDuration( int msecs );
 
-   QEasingCurve easingCurve() const;
-   void setEasingCurve(const QEasingCurve &easing);
+    QEasingCurve easingCurve() const;
+    void setEasingCurve( const QEasingCurve &easing );
 
-   using CustomFormula = std::function<QVariant (const QVariant &, const QVariant &, double)>;
+    using CustomFormula = std::function<QVariant ( const QVariant &, const QVariant &, double )>;
 
-   template <typename T>
-   static void cs_addCustomType(CustomFormula callback);
+    template <typename T>
+    static void lscs_addCustomType( CustomFormula callback );
 
-   CORE_CS_SIGNAL_1(Public, void valueChanged(const QVariant &value))
-   CORE_CS_SIGNAL_2(valueChanged, value)
+    CORE_LSCS_SIGNAL_1( Public, void valueChanged( const QVariant &value ) )
+    CORE_LSCS_SIGNAL_2( valueChanged, value )
 
- protected:
-   QVariantAnimation(QVariantAnimationPrivate &dd, QObject *parent = nullptr);
-   bool event(QEvent *event) override;
+protected:
+    QVariantAnimation( QVariantAnimationPrivate &dd, QObject *parent = nullptr );
+    bool event( QEvent *event ) override;
 
-   void updateCurrentTime(int) override;
-   void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState) override;
+    void updateCurrentTime( int ) override;
+    void updateState( QAbstractAnimation::State newState, QAbstractAnimation::State oldState ) override;
 
-   virtual void updateCurrentValue(const QVariant &value) = 0;
-   virtual QVariant interpolated(const QVariant &from, const QVariant &to, double progress) const;
+    virtual void updateCurrentValue( const QVariant &value ) = 0;
+    virtual QVariant interpolated( const QVariant &from, const QVariant &to, double progress ) const;
 
- private:
-   static libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>> &getFormulas();
+private:
+    static libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>> &getFormulas();
 
-   Q_DECLARE_PRIVATE(QVariantAnimation)
+    Q_DECLARE_PRIVATE( QVariantAnimation )
 };
 
 template <typename T>
-void QVariantAnimation::cs_addCustomType(CustomFormula callback)
+void QVariantAnimation::lscs_addCustomType( CustomFormula callback )
 {
-   // add a custom formula for a given T, this must occur before any annimation which uses this T is constructed
-   // to remove and use the default formula, pass nulptr for func, overrides any existing formula
+    // add a custom formula for a given T, this must occur before any annimation which uses this T is constructed
+    // to remove and use the default formula, pass nulptr for func, overrides any existing formula
 
-   uint typeId = QVariant::typeToTypeId<T>();
+    uint typeId = QVariant::typeToTypeId<T>();
 
-   libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>>::handle hash = getFormulas().lock();
+    libguarded::shared_guarded<QHash<uint, QVariantAnimation::CustomFormula>>::handle hash = getFormulas().lock();
 
-   if (callback) {
-      hash->insert(typeId, callback);
+    if ( callback )
+    {
+        hash->insert( typeId, callback );
 
-   } else {
-      // std::function is empty
-      hash->remove(typeId);
-   }
+    }
+    else
+    {
+        // std::function is empty
+        hash->remove( typeId );
+    }
 }
 
 #endif // QT_NO_ANIMATION

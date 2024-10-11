@@ -25,19 +25,21 @@
 #include <wtf/HashMap.h>
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLFormControlElement;
 class HTMLInputElement;
 
-class CheckedRadioButtons {
+class CheckedRadioButtons
+{
 public:
-    void addButton(HTMLFormControlElement*);
-    void removeButton(HTMLFormControlElement*);
-    HTMLInputElement* checkedButtonForGroup(const AtomicString& groupName) const;
+    void addButton( HTMLFormControlElement * );
+    void removeButton( HTMLFormControlElement * );
+    HTMLInputElement *checkedButtonForGroup( const AtomicString &groupName ) const;
 
 private:
-    typedef HashMap<AtomicStringImpl*, HTMLInputElement*> NameToInputMap;
+    typedef HashMap<AtomicStringImpl *, HTMLInputElement *> NameToInputMap;
     OwnPtr<NameToInputMap> m_nameToCheckedRadioButtonMap;
 };
 

@@ -33,91 +33,118 @@
 
 #include <wtf/HexNumber.h>
 
-namespace WebCore {
-
-static void appendCharacter(UChar32 c, Vector<UChar>& appendTo)
+namespace WebCore
 {
-    if (U16_LENGTH(c) == 1)
-        appendTo.append(static_cast<UChar>(c));
-    else {
-        appendTo.append(U16_LEAD(c));
-        appendTo.append(U16_TRAIL(c));
+
+static void appendCharacter( UChar32 c, Vector<UChar> &appendTo )
+{
+    if ( U16_LENGTH( c ) == 1 )
+    {
+        appendTo.append( static_cast<UChar>( c ) );
+    }
+    else
+    {
+        appendTo.append( U16_LEAD( c ) );
+        appendTo.append( U16_TRAIL( c ) );
     }
 }
 
-void serializeCharacter(UChar32 c, Vector<UChar>& appendTo)
+void serializeCharacter( UChar32 c, Vector<UChar> &appendTo )
 {
-    appendTo.append('\\');
-    appendCharacter(c, appendTo);
+    appendTo.append( '\\' );
+    appendCharacter( c, appendTo );
 }
 
-void serializeCharacterAsCodePoint(UChar32 c, Vector<UChar>& appendTo)
+void serializeCharacterAsCodePoint( UChar32 c, Vector<UChar> &appendTo )
 {
-    appendTo.append('\\');
-    appendUnsignedAsHex(c, appendTo, Lowercase);
-    appendTo.append(' ');
+    appendTo.append( '\\' );
+    appendUnsignedAsHex( c, appendTo, Lowercase );
+    appendTo.append( ' ' );
 }
 
-void serializeIdentifier(const String& identifier, String& appendTo)
+void serializeIdentifier( const String &identifier, String &appendTo )
 {
     Vector<UChar> addend;
-    serializeIdentifier(identifier, addend);
-    appendTo.append(String::adopt(addend));
+    serializeIdentifier( identifier, addend );
+    appendTo.append( String::adopt( addend ) );
 }
 
-void serializeIdentifier(const String& identifier, Vector<UChar>& appendTo)
+void serializeIdentifier( const String &identifier, Vector<UChar> &appendTo )
 {
     bool isFirst = true;
     bool isSecond = false;
     bool isFirstCharHyphen = false;
     unsigned index = 0;
-    while (index < identifier.length()) {
-        UChar32 c = identifier.characterStartingAt(index);
-        index += U16_LENGTH(c);
 
-        if (c <= 0x1f || (0x30 <= c && c <= 0x39 && (isFirst || (isSecond && isFirstCharHyphen))))
-            serializeCharacterAsCodePoint(c, appendTo);
-        else if (c == 0x2d && isSecond && isFirstCharHyphen)
-            serializeCharacter(c, appendTo);
-        else if (0x80 <= c || c == 0x2d || c == 0x5f || (0x30 <= c && c <= 0x39) || (0x41 <= c && c <= 0x5a) || (0x61 <= c && c <= 0x7a))
-            appendCharacter(c, appendTo);
+    while ( index < identifier.length() )
+    {
+        UChar32 c = identifier.characterStartingAt( index );
+        index += U16_LENGTH( c );
+
+        if ( c <= 0x1f || ( 0x30 <= c && c <= 0x39 && ( isFirst || ( isSecond && isFirstCharHyphen ) ) ) )
+        {
+            serializeCharacterAsCodePoint( c, appendTo );
+        }
+        else if ( c == 0x2d && isSecond && isFirstCharHyphen )
+        {
+            serializeCharacter( c, appendTo );
+        }
+        else if ( 0x80 <= c || c == 0x2d || c == 0x5f || ( 0x30 <= c && c <= 0x39 ) || ( 0x41 <= c && c <= 0x5a ) || ( 0x61 <= c
+                  && c <= 0x7a ) )
+        {
+            appendCharacter( c, appendTo );
+        }
         else
-            serializeCharacter(c, appendTo);
+        {
+            serializeCharacter( c, appendTo );
+        }
 
-        if (isFirst) {
+        if ( isFirst )
+        {
             isFirst = false;
             isSecond = true;
-            isFirstCharHyphen = (c == 0x2d);
-        } else if (isSecond) {
+            isFirstCharHyphen = ( c == 0x2d );
+        }
+        else if ( isSecond )
+        {
             isSecond = false;
         }
     }
 }
 
-void serializeString(const String& string, String& appendTo)
+void serializeString( const String &string, String &appendTo )
 {
     Vector<UChar> addend;
-    serializeString(string, addend);
-    appendTo.append(String::adopt(addend));
+    serializeString( string, addend );
+    appendTo.append( String::adopt( addend ) );
 }
 
-void serializeString(const String& string, Vector<UChar>& appendTo)
+void serializeString( const String &string, Vector<UChar> &appendTo )
 {
-    appendTo.append('\"');
+    appendTo.append( '\"' );
 
     unsigned index = 0;
-    while (index < string.length()) {
-        UChar32 c = string.characterStartingAt(index);
-        index += U16_LENGTH(c);
-        if (c <= 0x1f)
-            serializeCharacterAsCodePoint(c, appendTo);
-        else if (c == 0x22 || c == 0x5c)
-            serializeCharacter(c, appendTo);
+
+    while ( index < string.length() )
+    {
+        UChar32 c = string.characterStartingAt( index );
+        index += U16_LENGTH( c );
+
+        if ( c <= 0x1f )
+        {
+            serializeCharacterAsCodePoint( c, appendTo );
+        }
+        else if ( c == 0x22 || c == 0x5c )
+        {
+            serializeCharacter( c, appendTo );
+        }
         else
-            appendCharacter(c, appendTo);
+        {
+            appendCharacter( c, appendTo );
+        }
     }
 
-    appendTo.append('\"');
+    appendTo.append( '\"' );
 }
 
 } // namespace WebCore

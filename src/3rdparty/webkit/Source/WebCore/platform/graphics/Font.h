@@ -39,7 +39,8 @@
 #include <QFont>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
 class FloatRect;
@@ -55,13 +56,14 @@ class TextRun;
 
 struct GlyphData;
 
-struct GlyphOverflow {
+struct GlyphOverflow
+{
     GlyphOverflow()
-        : left(0)
-        , right(0)
-        , top(0)
-        , bottom(0)
-        , computeBounds(false)
+        : left( 0 )
+        , right( 0 )
+        , top( 0 )
+        , bottom( 0 )
+        , computeBounds( false )
     {
     }
 
@@ -73,46 +75,81 @@ struct GlyphOverflow {
 };
 
 
-class Font {
+class Font
+{
 public:
     Font();
-    Font(const FontDescription&, short letterSpacing, short wordSpacing);
+    Font( const FontDescription &, short letterSpacing, short wordSpacing );
     // This constructor is only used if the platform wants to start with a native font.
-    Font(const FontPlatformData&, bool isPrinting, FontSmoothingMode = AutoSmoothing);
+    Font( const FontPlatformData &, bool isPrinting, FontSmoothingMode = AutoSmoothing );
     ~Font();
 
-    Font(const Font&);
-    Font& operator=(const Font&);
+    Font( const Font & );
+    Font &operator=( const Font & );
 
-    bool operator==(const Font& other) const;
-    bool operator!=(const Font& other) const { return !(*this == other); }
+    bool operator==( const Font &other ) const;
+    bool operator!=( const Font &other ) const
+    {
+        return !( *this == other );
+    }
 
-    const FontDescription& fontDescription() const { return m_fontDescription; }
+    const FontDescription &fontDescription() const
+    {
+        return m_fontDescription;
+    }
 
-    int pixelSize() const { return fontDescription().computedPixelSize(); }
-    float size() const { return fontDescription().computedSize(); }
+    int pixelSize() const
+    {
+        return fontDescription().computedPixelSize();
+    }
+    float size() const
+    {
+        return fontDescription().computedSize();
+    }
 
-    void update(PassRefPtr<FontSelector>) const;
+    void update( PassRefPtr<FontSelector> ) const;
 
-    void drawText(GraphicsContext*, const TextRun&, const FloatPoint&, int from = 0, int to = -1) const;
-    void drawEmphasisMarks(GraphicsContext*, const TextRun&, const AtomicString& mark, const FloatPoint&, int from = 0, int to = -1) const;
+    void drawText( GraphicsContext *, const TextRun &, const FloatPoint &, int from = 0, int to = -1 ) const;
+    void drawEmphasisMarks( GraphicsContext *, const TextRun &, const AtomicString &mark, const FloatPoint &, int from = 0,
+                            int to = -1 ) const;
 
-    float width(const TextRun&, HashSet<const SimpleFontData*>* fallbackFonts = 0, GlyphOverflow* = 0) const;
-    float width(const TextRun&, int extraCharsAvailable, int& charsConsumed, String& glyphName) const;
+    float width( const TextRun &, HashSet<const SimpleFontData *> *fallbackFonts = 0, GlyphOverflow * = 0 ) const;
+    float width( const TextRun &, int extraCharsAvailable, int &charsConsumed, String &glyphName ) const;
 
-    int offsetForPosition(const TextRun&, float position, bool includePartialGlyphs) const;
-    FloatRect selectionRectForText(const TextRun&, const FloatPoint&, int h, int from = 0, int to = -1) const;
+    int offsetForPosition( const TextRun &, float position, bool includePartialGlyphs ) const;
+    FloatRect selectionRectForText( const TextRun &, const FloatPoint &, int h, int from = 0, int to = -1 ) const;
 
-    bool isSmallCaps() const { return m_fontDescription.smallCaps(); }
+    bool isSmallCaps() const
+    {
+        return m_fontDescription.smallCaps();
+    }
 
-    short wordSpacing() const { return m_wordSpacing; }
-    short letterSpacing() const { return m_letterSpacing; }
-    void setWordSpacing(short s) { m_wordSpacing = s; }
-    void setLetterSpacing(short s) { m_letterSpacing = s; }
+    short wordSpacing() const
+    {
+        return m_wordSpacing;
+    }
+    short letterSpacing() const
+    {
+        return m_letterSpacing;
+    }
+    void setWordSpacing( short s )
+    {
+        m_wordSpacing = s;
+    }
+    void setLetterSpacing( short s )
+    {
+        m_letterSpacing = s;
+    }
     bool isFixedPitch() const;
-    bool isPrinterFont() const { return m_fontDescription.usePrinterFont(); }
-    
-    FontRenderingMode renderingMode() const { return m_fontDescription.renderingMode(); }
+    bool isPrinterFont() const
+    {
+        return m_fontDescription.usePrinterFont();
+    }
+
+    FontRenderingMode renderingMode() const
+    {
+        return m_fontDescription.renderingMode();
+    }
 
     TypesettingFeatures typesettingFeatures() const
     {
@@ -120,112 +157,161 @@ public:
         return textRenderingMode == OptimizeLegibility || textRenderingMode == GeometricPrecision ? Kerning | Ligatures : 0;
     }
 
-    FontFamily& firstFamily() { return m_fontDescription.firstFamily(); }
-    const FontFamily& family() const { return m_fontDescription.family(); }
+    FontFamily &firstFamily()
+    {
+        return m_fontDescription.firstFamily();
+    }
+    const FontFamily &family() const
+    {
+        return m_fontDescription.family();
+    }
 
-    FontItalic italic() const { return m_fontDescription.italic(); }
-    FontWeight weight() const { return m_fontDescription.weight(); }
-    FontWidthVariant widthVariant() const { return m_fontDescription.widthVariant(); }
+    FontItalic italic() const
+    {
+        return m_fontDescription.italic();
+    }
+    FontWeight weight() const
+    {
+        return m_fontDescription.weight();
+    }
+    FontWidthVariant widthVariant() const
+    {
+        return m_fontDescription.widthVariant();
+    }
 
-    bool isPlatformFont() const { return m_isPlatformFont; }
+    bool isPlatformFont() const
+    {
+        return m_isPlatformFont;
+    }
 
     // Metrics that we query the FontFallbackList for.
-    const FontMetrics& fontMetrics() const { return primaryFont()->fontMetrics(); }
-    float spaceWidth() const { return primaryFont()->spaceWidth() + m_letterSpacing; }
-    float tabWidth(const SimpleFontData& fontData) const { return 8 * fontData.spaceWidth() + letterSpacing(); }
-    int emphasisMarkAscent(const AtomicString&) const;
-    int emphasisMarkDescent(const AtomicString&) const;
-    int emphasisMarkHeight(const AtomicString&) const;
+    const FontMetrics &fontMetrics() const
+    {
+        return primaryFont()->fontMetrics();
+    }
+    float spaceWidth() const
+    {
+        return primaryFont()->spaceWidth() + m_letterSpacing;
+    }
+    float tabWidth( const SimpleFontData &fontData ) const
+    {
+        return 8 * fontData.spaceWidth() + letterSpacing();
+    }
+    int emphasisMarkAscent( const AtomicString & ) const;
+    int emphasisMarkDescent( const AtomicString & ) const;
+    int emphasisMarkHeight( const AtomicString & ) const;
 
-    const SimpleFontData* primaryFont() const;
-    const FontData* fontDataAt(unsigned) const;
-    GlyphData glyphDataForCharacter(UChar32, bool mirror, FontDataVariant = AutoVariant) const;
-    bool primaryFontHasGlyphForCharacter(UChar32) const;
+    const SimpleFontData *primaryFont() const;
+    const FontData *fontDataAt( unsigned ) const;
+    GlyphData glyphDataForCharacter( UChar32, bool mirror, FontDataVariant = AutoVariant ) const;
+    bool primaryFontHasGlyphForCharacter( UChar32 ) const;
 
-    static bool isCJKIdeograph(UChar32);
-    static bool isCJKIdeographOrSymbol(UChar32);
+    static bool isCJKIdeograph( UChar32 );
+    static bool isCJKIdeographOrSymbol( UChar32 );
 
-    static unsigned expansionOpportunityCount(const UChar*, size_t length, TextDirection, bool& isAfterExpansion);
+    static unsigned expansionOpportunityCount( const UChar *, size_t length, TextDirection, bool &isAfterExpansion );
 
 #if PLATFORM(QT)
     QFont font() const;
 #endif
 
-    static void setShouldUseSmoothing(bool);
+    static void setShouldUseSmoothing( bool );
     static bool shouldUseSmoothing();
 
     enum CodePath { Auto, Simple, Complex, SimpleWithGlyphOverflow };
 
 private:
 #if ENABLE(SVG_FONTS)
-    void drawTextUsingSVGFont(GraphicsContext*, const TextRun&, const FloatPoint&, int from, int to) const;
-    float floatWidthUsingSVGFont(const TextRun&) const;
-    float floatWidthUsingSVGFont(const TextRun&, int extraCharsAvailable, int& charsConsumed, String& glyphName) const;
-    FloatRect selectionRectForTextUsingSVGFont(const TextRun&, const FloatPoint&, int h, int from, int to) const;
-    int offsetForPositionForTextUsingSVGFont(const TextRun&, float position, bool includePartialGlyphs) const;
+    void drawTextUsingSVGFont( GraphicsContext *, const TextRun &, const FloatPoint &, int from, int to ) const;
+    float floatWidthUsingSVGFont( const TextRun & ) const;
+    float floatWidthUsingSVGFont( const TextRun &, int extraCharsAvailable, int &charsConsumed, String &glyphName ) const;
+    FloatRect selectionRectForTextUsingSVGFont( const TextRun &, const FloatPoint &, int h, int from, int to ) const;
+    int offsetForPositionForTextUsingSVGFont( const TextRun &, float position, bool includePartialGlyphs ) const;
 #endif
 
     enum ForTextEmphasisOrNot { NotForTextEmphasis, ForTextEmphasis };
 
     // Returns the initial in-stream advance.
-    float getGlyphsAndAdvancesForSimpleText(const TextRun&, int from, int to, GlyphBuffer&, ForTextEmphasisOrNot = NotForTextEmphasis) const;
-    void drawSimpleText(GraphicsContext*, const TextRun&, const FloatPoint&, int from, int to) const;
-    void drawEmphasisMarksForSimpleText(GraphicsContext*, const TextRun&, const AtomicString& mark, const FloatPoint&, int from, int to) const;
-    void drawGlyphs(GraphicsContext*, const SimpleFontData*, const GlyphBuffer&, int from, int to, const FloatPoint&) const;
-    void drawGlyphBuffer(GraphicsContext*, const GlyphBuffer&, const FloatPoint&) const;
-    void drawEmphasisMarks(GraphicsContext* context, const GlyphBuffer&, const AtomicString&, const FloatPoint&) const;
-    float floatWidthForSimpleText(const TextRun&, GlyphBuffer*, HashSet<const SimpleFontData*>* fallbackFonts = 0, GlyphOverflow* = 0) const;
-    int offsetForPositionForSimpleText(const TextRun&, float position, bool includePartialGlyphs) const;
-    FloatRect selectionRectForSimpleText(const TextRun&, const FloatPoint&, int h, int from, int to) const;
+    float getGlyphsAndAdvancesForSimpleText( const TextRun &, int from, int to, GlyphBuffer &,
+            ForTextEmphasisOrNot = NotForTextEmphasis ) const;
+    void drawSimpleText( GraphicsContext *, const TextRun &, const FloatPoint &, int from, int to ) const;
+    void drawEmphasisMarksForSimpleText( GraphicsContext *, const TextRun &, const AtomicString &mark, const FloatPoint &, int from,
+                                         int to ) const;
+    void drawGlyphs( GraphicsContext *, const SimpleFontData *, const GlyphBuffer &, int from, int to, const FloatPoint & ) const;
+    void drawGlyphBuffer( GraphicsContext *, const GlyphBuffer &, const FloatPoint & ) const;
+    void drawEmphasisMarks( GraphicsContext *context, const GlyphBuffer &, const AtomicString &, const FloatPoint & ) const;
+    float floatWidthForSimpleText( const TextRun &, GlyphBuffer *, HashSet<const SimpleFontData *> *fallbackFonts = 0,
+                                   GlyphOverflow * = 0 ) const;
+    int offsetForPositionForSimpleText( const TextRun &, float position, bool includePartialGlyphs ) const;
+    FloatRect selectionRectForSimpleText( const TextRun &, const FloatPoint &, int h, int from, int to ) const;
 
-    bool getEmphasisMarkGlyphData(const AtomicString&, GlyphData&) const;
+    bool getEmphasisMarkGlyphData( const AtomicString &, GlyphData & ) const;
 
     static bool canReturnFallbackFontsForComplexText();
     static bool canExpandAroundIdeographsInComplexText();
 
-    CodePath codePath(const TextRun&) const;
+    CodePath codePath( const TextRun & ) const;
 
     // Returns the initial in-stream advance.
-    float getGlyphsAndAdvancesForComplexText(const TextRun&, int from, int to, GlyphBuffer&, ForTextEmphasisOrNot = NotForTextEmphasis) const;
-    void drawComplexText(GraphicsContext*, const TextRun&, const FloatPoint&, int from, int to) const;
-    void drawEmphasisMarksForComplexText(GraphicsContext*, const TextRun&, const AtomicString& mark, const FloatPoint&, int from, int to) const;
-    float floatWidthForComplexText(const TextRun&, HashSet<const SimpleFontData*>* fallbackFonts = 0, GlyphOverflow* = 0) const;
-    int offsetForPositionForComplexText(const TextRun&, float position, bool includePartialGlyphs) const;
-    FloatRect selectionRectForComplexText(const TextRun&, const FloatPoint&, int h, int from, int to) const;
+    float getGlyphsAndAdvancesForComplexText( const TextRun &, int from, int to, GlyphBuffer &,
+            ForTextEmphasisOrNot = NotForTextEmphasis ) const;
+    void drawComplexText( GraphicsContext *, const TextRun &, const FloatPoint &, int from, int to ) const;
+    void drawEmphasisMarksForComplexText( GraphicsContext *, const TextRun &, const AtomicString &mark, const FloatPoint &, int from,
+                                          int to ) const;
+    float floatWidthForComplexText( const TextRun &, HashSet<const SimpleFontData *> *fallbackFonts = 0, GlyphOverflow * = 0 ) const;
+    int offsetForPositionForComplexText( const TextRun &, float position, bool includePartialGlyphs ) const;
+    FloatRect selectionRectForComplexText( const TextRun &, const FloatPoint &, int h, int from, int to ) const;
 
     friend struct WidthIterator;
 
 public:
     // Useful for debugging the different font rendering code paths.
-    static void setCodePath(CodePath);
+    static void setCodePath( CodePath );
     static CodePath codePath();
     static CodePath s_codePath;
 
-    FontSelector* fontSelector() const;
-    static bool treatAsSpace(UChar c) { return c == ' ' || c == '\t' || c == '\n' || c == noBreakSpace; }
-    static bool treatAsZeroWidthSpace(UChar c) { return treatAsZeroWidthSpaceInComplexScript(c) || c == 0x200c || c == 0x200d; }
-    static bool treatAsZeroWidthSpaceInComplexScript(UChar c) { return c < 0x20 || (c >= 0x7F && c < 0xA0) || c == softHyphen || (c >= 0x200e && c <= 0x200f) || (c >= 0x202a && c <= 0x202e) || c == zeroWidthNoBreakSpace || c == objectReplacementCharacter; }
-    static bool canReceiveTextEmphasis(UChar32 c);
-
-    static inline UChar normalizeSpaces(UChar character)
+    FontSelector *fontSelector() const;
+    static bool treatAsSpace( UChar c )
     {
-        if (treatAsSpace(character))
-            return space;
+        return c == ' ' || c == '\t' || c == '\n' || c == noBreakSpace;
+    }
+    static bool treatAsZeroWidthSpace( UChar c )
+    {
+        return treatAsZeroWidthSpaceInComplexScript( c ) || c == 0x200c || c == 0x200d;
+    }
+    static bool treatAsZeroWidthSpaceInComplexScript( UChar c )
+    {
+        return c < 0x20 || ( c >= 0x7F && c < 0xA0 ) || c == softHyphen || ( c >= 0x200e && c <= 0x200f ) || ( c >= 0x202a
+                && c <= 0x202e ) || c == zeroWidthNoBreakSpace || c == objectReplacementCharacter;
+    }
+    static bool canReceiveTextEmphasis( UChar32 c );
 
-        if (treatAsZeroWidthSpace(character))
+    static inline UChar normalizeSpaces( UChar character )
+    {
+        if ( treatAsSpace( character ) )
+        {
+            return space;
+        }
+
+        if ( treatAsZeroWidthSpace( character ) )
+        {
             return zeroWidthSpace;
+        }
 
         return character;
     }
 
-    static String normalizeSpaces(const UChar*, unsigned length);
+    static String normalizeSpaces( const UChar *, unsigned length );
 
 #if ENABLE(SVG_FONTS)
     bool isSVGFont() const;
-    SVGFontElement* svgFont() const;
+    SVGFontElement *svgFont() const;
 #endif
 
-    bool needsTranscoding() const { return m_needsTranscoding; }
+    bool needsTranscoding() const
+    {
+        return m_needsTranscoding;
+    }
 
 private:
     bool loadingCustomFonts() const
@@ -245,25 +331,25 @@ inline Font::~Font()
 {
 }
 
-inline const SimpleFontData* Font::primaryFont() const
+inline const SimpleFontData *Font::primaryFont() const
 {
-    ASSERT(m_fontList);
-    return m_fontList->primarySimpleFontData(this);
+    ASSERT( m_fontList );
+    return m_fontList->primarySimpleFontData( this );
 }
 
-inline const FontData* Font::fontDataAt(unsigned index) const
+inline const FontData *Font::fontDataAt( unsigned index ) const
 {
-    ASSERT(m_fontList);
-    return m_fontList->fontDataAt(this, index);
+    ASSERT( m_fontList );
+    return m_fontList->fontDataAt( this, index );
 }
 
 inline bool Font::isFixedPitch() const
 {
-    ASSERT(m_fontList);
-    return m_fontList->isFixedPitch(this);
+    ASSERT( m_fontList );
+    return m_fontList->isFixedPitch( this );
 }
 
-inline FontSelector* Font::fontSelector() const
+inline FontSelector *Font::fontSelector() const
 {
     return m_fontList ? m_fontList->fontSelector() : 0;
 }

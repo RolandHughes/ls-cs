@@ -34,7 +34,8 @@
 #include "HTMLViewSourceDocument.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLTokenizer;
 class HTMLScriptRunner;
@@ -43,27 +44,34 @@ class HTMLPreloadScanner;
 class ScriptController;
 class ScriptSourceCode;
 
-class HTMLViewSourceParser :  public DecodedDataDocumentParser {
+class HTMLViewSourceParser :  public DecodedDataDocumentParser
+{
 public:
-    static PassRefPtr<HTMLViewSourceParser> create(HTMLViewSourceDocument* document)
+    static PassRefPtr<HTMLViewSourceParser> create( HTMLViewSourceDocument *document )
     {
-        return adoptRef(new HTMLViewSourceParser(document));
+        return adoptRef( new HTMLViewSourceParser( document ) );
     }
     virtual ~HTMLViewSourceParser();
 
 protected:
-    explicit HTMLViewSourceParser(HTMLViewSourceDocument*);
+    explicit HTMLViewSourceParser( HTMLViewSourceDocument * );
 
-    HTMLTokenizer* tokenizer() const { return m_tokenizer.get(); }
+    HTMLTokenizer *tokenizer() const
+    {
+        return m_tokenizer.get();
+    }
 
 private:
     // DocumentParser
-    virtual void insert(const SegmentedString&);
-    virtual void append(const SegmentedString&);
+    virtual void insert( const SegmentedString & );
+    virtual void append( const SegmentedString & );
     virtual void finish();
     virtual bool finishWasCalled();
 
-    HTMLViewSourceDocument* document() const { return static_cast<HTMLViewSourceDocument*>(DecodedDataDocumentParser::document()); }
+    HTMLViewSourceDocument *document() const
+    {
+        return static_cast<HTMLViewSourceDocument *>( DecodedDataDocumentParser::document() );
+    }
 
     void pumpTokenizer();
     String sourceForToken();

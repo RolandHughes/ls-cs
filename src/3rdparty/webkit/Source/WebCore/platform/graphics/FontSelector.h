@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FontSelector_h
@@ -29,28 +29,31 @@
 #include <wtf/Forward.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FontData;
 class FontDescription;
 class FontSelectorClient;
 
-class FontSelector : public RefCounted<FontSelector> {
+class FontSelector : public RefCounted<FontSelector>
+{
 public:
     virtual ~FontSelector() { }
-    virtual FontData* getFontData(const FontDescription&, const AtomicString& familyName) = 0;
+    virtual FontData *getFontData( const FontDescription &, const AtomicString &familyName ) = 0;
 
     virtual void fontCacheInvalidated() { }
 
-    virtual void registerForInvalidationCallbacks(FontSelectorClient*) = 0;
-    virtual void unregisterForInvalidationCallbacks(FontSelectorClient*) = 0;
+    virtual void registerForInvalidationCallbacks( FontSelectorClient * ) = 0;
+    virtual void unregisterForInvalidationCallbacks( FontSelectorClient * ) = 0;
 };
 
-class FontSelectorClient {
+class FontSelectorClient
+{
 public:
     virtual ~FontSelectorClient() { }
 
-    virtual void fontsNeedUpdate(FontSelector*) = 0;
+    virtual void fontsNeedUpdate( FontSelector * ) = 0;
 };
 
 } // namespace WebCore

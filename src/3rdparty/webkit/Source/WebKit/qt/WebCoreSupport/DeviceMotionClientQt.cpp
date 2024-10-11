@@ -25,15 +25,16 @@
 
 #include "qwebpage.h"
 
-namespace WebCore {
-
-DeviceMotionClientQt::DeviceMotionClientQt(QWebPage* page)
-    : m_page(page)
-    , m_controller(0)
-    , m_provider(new DeviceMotionProviderQt())
+namespace WebCore
 {
 
-    connect(m_provider, SIGNAL(deviceMotionChanged()), this, SLOT(changeDeviceMotion()));
+DeviceMotionClientQt::DeviceMotionClientQt( QWebPage *page )
+    : m_page( page )
+    , m_controller( 0 )
+    , m_provider( new DeviceMotionProviderQt() )
+{
+
+    connect( m_provider, SIGNAL( deviceMotionChanged() ), this, SLOT( changeDeviceMotion() ) );
 }
 
 DeviceMotionClientQt::~DeviceMotionClientQt()
@@ -42,7 +43,7 @@ DeviceMotionClientQt::~DeviceMotionClientQt()
     delete m_provider;
 }
 
-void DeviceMotionClientQt::setController(DeviceMotionController* controller)
+void DeviceMotionClientQt::setController( DeviceMotionController *controller )
 {
     m_controller = controller;
 }
@@ -57,7 +58,7 @@ void DeviceMotionClientQt::stopUpdating()
     m_provider->stop();
 }
 
-DeviceMotionData* DeviceMotionClientQt::currentDeviceMotion() const
+DeviceMotionData *DeviceMotionClientQt::currentDeviceMotion() const
 {
     return m_provider->currentDeviceMotion();
 }
@@ -69,10 +70,12 @@ void DeviceMotionClientQt::deviceMotionControllerDestroyed()
 
 void DeviceMotionClientQt::changeDeviceMotion()
 {
-    if (!m_controller)
+    if ( !m_controller )
+    {
         return;
+    }
 
-    m_controller->didChangeDeviceMotion(currentDeviceMotion());
+    m_controller->didChangeDeviceMotion( currentDeviceMotion() );
 }
 
 } // namespace WebCore

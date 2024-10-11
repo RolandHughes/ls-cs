@@ -92,7 +92,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/itemviews/qwidgetitemdata_p.h
 )
 
-target_sources(CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/itemviews/qabstractitemdelegate.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/itemviews/qabstractitemview.cpp

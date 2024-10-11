@@ -24,7 +24,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MediaList;
 class MediaQueryListListener;
@@ -36,22 +37,23 @@ class MediaQueryMatcher;
 // retrieve the current value of the given media query and to add/remove listeners that
 // will be called whenever the value of the query changes.
 
-class MediaQueryList : public RefCounted<MediaQueryList> {
+class MediaQueryList : public RefCounted<MediaQueryList>
+{
 public:
-    static PassRefPtr<MediaQueryList> create(PassRefPtr<MediaQueryMatcher>, PassRefPtr<MediaList>, bool);
+    static PassRefPtr<MediaQueryList> create( PassRefPtr<MediaQueryMatcher>, PassRefPtr<MediaList>, bool );
     ~MediaQueryList();
 
     String media() const;
     bool matches();
 
-    void addListener(PassRefPtr<MediaQueryListListener>);
-    void removeListener(PassRefPtr<MediaQueryListListener>);
+    void addListener( PassRefPtr<MediaQueryListListener> );
+    void removeListener( PassRefPtr<MediaQueryListListener> );
 
-    void evaluate(MediaQueryEvaluator*, bool& notificationNeeded);
+    void evaluate( MediaQueryEvaluator *, bool &notificationNeeded );
 
 private:
-    MediaQueryList(PassRefPtr<MediaQueryMatcher>, PassRefPtr<MediaList>, bool matches);
-    void setMatches(bool);
+    MediaQueryList( PassRefPtr<MediaQueryMatcher>, PassRefPtr<MediaList>, bool matches );
+    void setMatches( bool );
 
     RefPtr<MediaQueryMatcher> m_matcher;
     RefPtr<MediaList> m_media;

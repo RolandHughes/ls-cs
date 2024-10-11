@@ -46,82 +46,111 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSDocument::location(ExecState* exec) const
+namespace WebCore
 {
-    Frame* frame = static_cast<Document*>(impl())->frame();
-    if (!frame)
+
+JSValue JSDocument::location( ExecState *exec ) const
+{
+    Frame *frame = static_cast<Document *>( impl() )->frame();
+
+    if ( !frame )
+    {
         return jsNull();
+    }
 
-    Location* location = frame->domWindow()->location();
-    if (JSDOMWrapper* wrapper = getCachedWrapper(currentWorld(exec), location))
+    Location *location = frame->domWindow()->location();
+
+    if ( JSDOMWrapper *wrapper = getCachedWrapper( currentWorld( exec ), location ) )
+    {
         return wrapper;
+    }
 
-    JSLocation* jsLocation = new (exec) JSLocation(getDOMStructure<JSLocation>(exec, globalObject()), globalObject(), location);
-    cacheWrapper(currentWorld(exec), location, jsLocation);
+    JSLocation *jsLocation = new ( exec ) JSLocation( getDOMStructure<JSLocation>( exec, globalObject() ), globalObject(), location );
+    cacheWrapper( currentWorld( exec ), location, jsLocation );
     return jsLocation;
 }
 
-void JSDocument::setLocation(ExecState* exec, JSValue value)
+void JSDocument::setLocation( ExecState *exec, JSValue value )
 {
-    Frame* frame = static_cast<Document*>(impl())->frame();
-    if (!frame)
+    Frame *frame = static_cast<Document *>( impl() )->frame();
+
+    if ( !frame )
+    {
         return;
+    }
 
-    String str = ustringToString(value.toString(exec));
+    String str = ustringToString( value.toString( exec ) );
 
-    Frame* lexicalFrame = asJSDOMWindow(exec->lexicalGlobalObject())->impl()->frame();
+    Frame *lexicalFrame = asJSDOMWindow( exec->lexicalGlobalObject() )->impl()->frame();
 
     // IE and Mozilla both resolve the URL relative to the source frame,
     // not the target frame.
-    Frame* activeFrame = asJSDOMWindow(exec->dynamicGlobalObject())->impl()->frame();
-    str = activeFrame->document()->completeURL(str).string();
+    Frame *activeFrame = asJSDOMWindow( exec->dynamicGlobalObject() )->impl()->frame();
+    str = activeFrame->document()->completeURL( str ).string();
 
-    frame->navigationScheduler()->scheduleLocationChange(lexicalFrame->document()->securityOrigin(),
-        str, activeFrame->loader()->outgoingReferrer(), !activeFrame->script()->anyPageIsProcessingUserGesture(), false);
+    frame->navigationScheduler()->scheduleLocationChange( lexicalFrame->document()->securityOrigin(),
+            str, activeFrame->loader()->outgoingReferrer(), !activeFrame->script()->anyPageIsProcessingUserGesture(), false );
 }
 
-JSValue toJS(ExecState* exec, JSDOMGlobalObject* globalObject, Document* document)
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *globalObject, Document *document )
 {
-    if (!document)
+    if ( !document )
+    {
         return jsNull();
+    }
 
-    JSDOMWrapper* wrapper = getCachedWrapper(currentWorld(exec), document);
-    if (wrapper)
+    JSDOMWrapper *wrapper = getCachedWrapper( currentWorld( exec ), document );
+
+    if ( wrapper )
+    {
         return wrapper;
+    }
 
-    if (document->isHTMLDocument())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, HTMLDocument, document);
+    if ( document->isHTMLDocument() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, HTMLDocument, document );
+    }
+
 #if ENABLE(SVG)
-    else if (document->isSVGDocument())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, SVGDocument, document);
+    else if ( document->isSVGDocument() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, SVGDocument, document );
+    }
+
 #endif
     else
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, Document, document);
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, Document, document );
+    }
 
     // Make sure the document is kept around by the window object, and works right with the
     // back/forward cache.
-    if (!document->frame()) {
+    if ( !document->frame() )
+    {
         size_t nodeCount = 0;
-        for (Node* n = document; n; n = n->traverseNextNode())
+
+        for ( Node *n = document; n; n = n->traverseNextNode() )
+        {
             nodeCount++;
-        
-        exec->heap()->reportExtraMemoryCost(nodeCount * sizeof(Node));
+        }
+
+        exec->heap()->reportExtraMemoryCost( nodeCount * sizeof( Node ) );
     }
 
     return wrapper;
 }
 
 #if ENABLE(TOUCH_EVENTS)
-JSValue JSDocument::createTouchList(ExecState* exec)
+JSValue JSDocument::createTouchList( ExecState *exec )
 {
     RefPtr<TouchList> touchList = TouchList::create();
 
-    for (int i = 0; i < exec->argumentCount(); i++)
-        touchList->append(toTouch(exec->argument(i)));
+    for ( int i = 0; i < exec->argumentCount(); i++ )
+    {
+        touchList->append( toTouch( exec->argument( i ) ) );
+    }
 
-    return toJS(exec, globalObject(), touchList.release());
+    return toJS( exec, globalObject(), touchList.release() );
 }
 #endif
 

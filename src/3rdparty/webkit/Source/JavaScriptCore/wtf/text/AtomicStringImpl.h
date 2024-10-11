@@ -23,12 +23,13 @@
 
 #include "StringImpl.h"
 
-namespace WTF {
+namespace WTF
+{
 
 class AtomicStringImpl : public StringImpl
 {
 public:
-    AtomicStringImpl() : StringImpl(0) {}
+    AtomicStringImpl() : StringImpl( 0 ) {}
 };
 
 }

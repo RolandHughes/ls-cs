@@ -23,30 +23,44 @@
 #include "CSSValue.h"
 #include "Node.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSMutableValue : public CSSValue {
+class CSSMutableValue : public CSSValue
+{
 public:
     CSSMutableValue()
-        : m_node(0)
+        : m_node( 0 )
     {
     }
 
     virtual ~CSSMutableValue() { }
-    virtual bool isMutableValue() const { return true; }
+    virtual bool isMutableValue() const
+    {
+        return true;
+    }
 
-    Node* node() const { return m_node; }
-    void setNode(Node* node) { m_node = node; }
+    Node *node() const
+    {
+        return m_node;
+    }
+    void setNode( Node *node )
+    {
+        m_node = node;
+    }
 
     void setNeedsStyleRecalc()
     {
-        if (!m_node)
+        if ( !m_node )
+        {
             return;
-        m_node->setNeedsStyleRecalc(FullStyleChange);
+        }
+
+        m_node->setNeedsStyleRecalc( FullStyleChange );
     }
 
 private:
-    Node* m_node;
+    Node *m_node;
 };
 
 } // namespace WebCore

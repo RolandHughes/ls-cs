@@ -35,14 +35,20 @@
 #include "InspectorInstrumentation.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(DATABASE)
-inline void InspectorInstrumentation::didOpenDatabase(ScriptExecutionContext* context, PassRefPtr<Database> database, const String& domain, const String& name, const String& version)
+inline void InspectorInstrumentation::didOpenDatabase( ScriptExecutionContext *context, PassRefPtr<Database> database,
+        const String &domain, const String &name, const String &version )
 {
 #if ENABLE(INSPECTOR)
-    if (InspectorAgent* inspectorAgent = inspectorAgentForContext(context))
-        didOpenDatabaseImpl(inspectorAgent, database, domain, name, version);
+
+    if ( InspectorAgent *inspectorAgent = inspectorAgentForContext( context ) )
+    {
+        didOpenDatabaseImpl( inspectorAgent, database, domain, name, version );
+    }
+
 #endif
 }
 #endif

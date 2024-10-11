@@ -41,41 +41,54 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSSharedWorker::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
 
-    if (MessagePort* port = impl()->port())
-        visitor.addOpaqueRoot(port);
+void JSSharedWorker::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
+
+    if ( MessagePort *port = impl()->port() )
+    {
+        visitor.addOpaqueRoot( port );
+    }
 }
 
-EncodedJSValue JSC_HOST_CALL JSSharedWorkerConstructor::constructJSSharedWorker(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSSharedWorkerConstructor::constructJSSharedWorker( ExecState *exec )
 {
-    JSSharedWorkerConstructor* jsConstructor = static_cast<JSSharedWorkerConstructor*>(exec->callee());
+    JSSharedWorkerConstructor *jsConstructor = static_cast<JSSharedWorkerConstructor *>( exec->callee() );
 
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-
-    UString scriptURL = exec->argument(0).toString(exec);
-    UString name;
-    if (exec->argumentCount() > 1)
-        name = exec->argument(1).toString(exec);
-
-    if (exec->hadException())
-        return JSValue::encode(JSValue());
-
-    // FIXME: We need to use both the dynamic scope and the lexical scope (dynamic scope for resolving the worker URL)
-    DOMWindow* window = asJSDOMWindow(exec->lexicalGlobalObject())->impl();
-    ExceptionCode ec = 0;
-    RefPtr<SharedWorker> worker = SharedWorker::create(ustringToString(scriptURL), ustringToString(name), window->document(), ec);
-    if (ec) {
-        setDOMException(exec, ec);
-        return JSValue::encode(JSValue());
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
     }
 
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), worker.release())));
+    UString scriptURL = exec->argument( 0 ).toString( exec );
+    UString name;
+
+    if ( exec->argumentCount() > 1 )
+    {
+        name = exec->argument( 1 ).toString( exec );
+    }
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( JSValue() );
+    }
+
+    // FIXME: We need to use both the dynamic scope and the lexical scope (dynamic scope for resolving the worker URL)
+    DOMWindow *window = asJSDOMWindow( exec->lexicalGlobalObject() )->impl();
+    ExceptionCode ec = 0;
+    RefPtr<SharedWorker> worker = SharedWorker::create( ustringToString( scriptURL ), ustringToString( name ), window->document(),
+                                  ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
+        return JSValue::encode( JSValue() );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), worker.release() ) ) );
 }
 
 } // namespace WebCore

@@ -36,82 +36,84 @@ class QDeclarativePropertyPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeProperty
 {
- public:
-   enum PropertyTypeCategory {
-      InvalidCategory,
-      List,
-      Object,
-      Normal
-   };
+public:
+    enum PropertyTypeCategory
+    {
+        InvalidCategory,
+        List,
+        Object,
+        Normal
+    };
 
-   enum Type {
-      Invalid,
-      Property,
-      SignalProperty
-   };
+    enum Type
+    {
+        Invalid,
+        Property,
+        SignalProperty
+    };
 
-   QDeclarativeProperty();
-   ~QDeclarativeProperty();
+    QDeclarativeProperty();
+    ~QDeclarativeProperty();
 
-   QDeclarativeProperty(QObject *);
-   QDeclarativeProperty(QObject *, QDeclarativeContext *);
-   QDeclarativeProperty(QObject *, QDeclarativeEngine *);
+    QDeclarativeProperty( QObject * );
+    QDeclarativeProperty( QObject *, QDeclarativeContext * );
+    QDeclarativeProperty( QObject *, QDeclarativeEngine * );
 
-   QDeclarativeProperty(QObject *, const QString &);
-   QDeclarativeProperty(QObject *, const QString &, QDeclarativeContext *);
-   QDeclarativeProperty(QObject *, const QString &, QDeclarativeEngine *);
+    QDeclarativeProperty( QObject *, const QString & );
+    QDeclarativeProperty( QObject *, const QString &, QDeclarativeContext * );
+    QDeclarativeProperty( QObject *, const QString &, QDeclarativeEngine * );
 
-   QDeclarativeProperty(const QDeclarativeProperty &);
-   QDeclarativeProperty &operator=(const QDeclarativeProperty &);
+    QDeclarativeProperty( const QDeclarativeProperty & );
+    QDeclarativeProperty &operator=( const QDeclarativeProperty & );
 
-   bool operator==(const QDeclarativeProperty &) const;
+    bool operator==( const QDeclarativeProperty & ) const;
 
-   Type type() const;
-   bool isValid() const;
-   bool isProperty() const;
-   bool isSignalProperty() const;
+    Type type() const;
+    bool isValid() const;
+    bool isProperty() const;
+    bool isSignalProperty() const;
 
-   int propertyType() const;
-   PropertyTypeCategory propertyTypeCategory() const;
-   const char *propertyTypeName() const;
+    int propertyType() const;
+    PropertyTypeCategory propertyTypeCategory() const;
+    const char *propertyTypeName() const;
 
-   QString name() const;
+    QString name() const;
 
-   QVariant read() const;
-   static QVariant read(QObject *, const QString &);
-   static QVariant read(QObject *, const QString &, QDeclarativeContext *);
-   static QVariant read(QObject *, const QString &, QDeclarativeEngine *);
+    QVariant read() const;
+    static QVariant read( QObject *, const QString & );
+    static QVariant read( QObject *, const QString &, QDeclarativeContext * );
+    static QVariant read( QObject *, const QString &, QDeclarativeEngine * );
 
-   bool write(const QVariant &) const;
-   static bool write(QObject *, const QString &, const QVariant &);
-   static bool write(QObject *, const QString &, const QVariant &, QDeclarativeContext *);
-   static bool write(QObject *, const QString &, const QVariant &, QDeclarativeEngine *);
+    bool write( const QVariant & ) const;
+    static bool write( QObject *, const QString &, const QVariant & );
+    static bool write( QObject *, const QString &, const QVariant &, QDeclarativeContext * );
+    static bool write( QObject *, const QString &, const QVariant &, QDeclarativeEngine * );
 
-   bool reset() const;
+    bool reset() const;
 
-   bool hasNotifySignal() const;
-   bool needsNotifySignal() const;
-   bool connectNotifySignal(QObject *dest, const char *slot) const;
-   bool connectNotifySignal(QObject *dest, int method) const;
+    bool hasNotifySignal() const;
+    bool needsNotifySignal() const;
+    bool connectNotifySignal( QObject *dest, const char *slot ) const;
+    bool connectNotifySignal( QObject *dest, int method ) const;
 
-   bool isWritable() const;
-   bool isDesignable() const;
-   bool isResettable() const;
-   QObject *object() const;
+    bool isWritable() const;
+    bool isDesignable() const;
+    bool isResettable() const;
+    QObject *object() const;
 
-   int index() const;
-   QMetaProperty property() const;
-   QMetaMethod method() const;
+    int index() const;
+    QMetaProperty property() const;
+    QMetaMethod method() const;
 
- private:
-   friend class QDeclarativePropertyPrivate;
-   QDeclarativePropertyPrivate *d;
+private:
+    friend class QDeclarativePropertyPrivate;
+    QDeclarativePropertyPrivate *d;
 };
 typedef QList<QDeclarativeProperty> QDeclarativeProperties;
 
-inline uint qHash (const QDeclarativeProperty &key)
+inline uint qHash ( const QDeclarativeProperty &key )
 {
-   return qHash(key.object()) + qHash(key.name());
+    return qHash( key.object() ) + qHash( key.name() );
 }
 
 QT_END_NAMESPACE

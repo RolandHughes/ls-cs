@@ -31,56 +31,67 @@
 #include <wtf/FixedArray.h>
 #include <wtf/OwnPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class HeapRootVisitor;
-    class JSGlobalData;
-    class JSString;
-    class MarkStack;
-    class SmallStringsStorage;
-    typedef MarkStack SlotVisitor;
+class HeapRootVisitor;
+class JSGlobalData;
+class JSString;
+class MarkStack;
+class SmallStringsStorage;
+typedef MarkStack SlotVisitor;
 
-    static const unsigned maxSingleCharacterString = 0xFF;
+static const unsigned maxSingleCharacterString = 0xFF;
 
-    class SmallStrings {
-        WTF_MAKE_NONCOPYABLE(SmallStrings);
-    public:
-        SmallStrings();
-        ~SmallStrings();
+class SmallStrings
+{
+    WTF_MAKE_NONCOPYABLE( SmallStrings );
+public:
+    SmallStrings();
+    ~SmallStrings();
 
-        JSString* emptyString(JSGlobalData* globalData)
+    JSString *emptyString( JSGlobalData *globalData )
+    {
+        if ( !m_emptyString )
         {
-            if (!m_emptyString)
-                createEmptyString(globalData);
-            return m_emptyString;
+            createEmptyString( globalData );
         }
 
-        JSString* singleCharacterString(JSGlobalData* globalData, unsigned char character)
+        return m_emptyString;
+    }
+
+    JSString *singleCharacterString( JSGlobalData *globalData, unsigned char character )
+    {
+        if ( !m_singleCharacterStrings[character] )
         {
-            if (!m_singleCharacterStrings[character])
-                createSingleCharacterString(globalData, character);
-            return m_singleCharacterStrings[character];
+            createSingleCharacterString( globalData, character );
         }
 
-        StringImpl* singleCharacterStringRep(unsigned char character);
+        return m_singleCharacterStrings[character];
+    }
 
-        void visitChildren(HeapRootVisitor&);
-        void clear();
+    StringImpl *singleCharacterStringRep( unsigned char character );
 
-        unsigned count() const;
+    void visitChildren( HeapRootVisitor & );
+    void clear();
 
-        JSString** singleCharacterStrings() { return &m_singleCharacterStrings[0]; }
+    unsigned count() const;
 
-    private:
-        static const unsigned singleCharacterStringCount = maxSingleCharacterString + 1;
+    JSString **singleCharacterStrings()
+    {
+        return &m_singleCharacterStrings[0];
+    }
 
-        void createEmptyString(JSGlobalData*);
-        void createSingleCharacterString(JSGlobalData*, unsigned char);
+private:
+    static const unsigned singleCharacterStringCount = maxSingleCharacterString + 1;
 
-        JSString* m_emptyString;
-        JSString* m_singleCharacterStrings[singleCharacterStringCount];
-        OwnPtr<SmallStringsStorage> m_storage;
-    };
+    void createEmptyString( JSGlobalData * );
+    void createSingleCharacterString( JSGlobalData *, unsigned char );
+
+    JSString *m_emptyString;
+    JSString *m_singleCharacterStrings[singleCharacterStringCount];
+    OwnPtr<SmallStringsStorage> m_storage;
+};
 
 } // namespace JSC
 

@@ -30,19 +30,27 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebEditCommand : public RefCounted<WebEditCommand> {
+class WebEditCommand : public RefCounted<WebEditCommand>
+{
 public:
-    static PassRefPtr<WebEditCommand> create(PassRefPtr<WebCore::EditCommand>);
+    static PassRefPtr<WebEditCommand> create( PassRefPtr<WebCore::EditCommand> );
 
-    WebCore::EditCommand* command() const { return m_command.get(); }
-    uint64_t commandID() const { return m_commandID; }
+    WebCore::EditCommand *command() const
+    {
+        return m_command.get();
+    }
+    uint64_t commandID() const
+    {
+        return m_commandID;
+    }
 
 private:
-    WebEditCommand(PassRefPtr<WebCore::EditCommand> command, uint64_t commandID)
-        : m_command(command)
-        , m_commandID(commandID)
+    WebEditCommand( PassRefPtr<WebCore::EditCommand> command, uint64_t commandID )
+        : m_command( command )
+        , m_commandID( commandID )
     {
     }
 

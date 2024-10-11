@@ -31,17 +31,22 @@
 
 #include <wtf/text/StringConcatenate.h>
 
-namespace WebCore {
-
-ExceptionBase::ExceptionBase(const ExceptionCodeDescription& description)
-    : m_code(description.code)
-    , m_name(description.name)
-    , m_description(description.description)
+namespace WebCore
 {
-    if (description.name)
-        m_message = makeString(description.name, ": ", description.typeName, " Exception ", String::number(description.code));
+
+ExceptionBase::ExceptionBase( const ExceptionCodeDescription &description )
+    : m_code( description.code )
+    , m_name( description.name )
+    , m_description( description.description )
+{
+    if ( description.name )
+    {
+        m_message = makeString( description.name, ": ", description.typeName, " Exception ", String::number( description.code ) );
+    }
     else
-        m_message = makeString(description.typeName, " Exception ", String::number(description.code));
+    {
+        m_message = makeString( description.typeName, " Exception ", String::number( description.code ) );
+    }
 }
 
 String ExceptionBase::toString() const

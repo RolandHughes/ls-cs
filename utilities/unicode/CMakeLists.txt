@@ -26,19 +26,19 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
 
    # rpath used for rcc and uic when compiling a user application
-   file(RELATIVE_PATH CS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+   file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
                                    "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
-   set(CMAKE_INSTALL_RPATH "@executable_path/${CS_BIN_RPATH}")
+   set(CMAKE_INSTALL_RPATH "@executable_path/${LSCS_BIN_RPATH}")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
    # rpath used for rcc and uic when compiling a user application
-   file(RELATIVE_PATH CS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+   file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
                                    "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
-   set(CMAKE_INSTALL_RPATH "$ORIGIN/${CS_BIN_RPATH}")
+   set(CMAKE_INSTALL_RPATH "$ORIGIN/${LSCS_BIN_RPATH}")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_BINDIR bin)
@@ -107,7 +107,7 @@ list(APPEND GENERATE_TABLES_SOURCES
 add_executable(Generate_Tables ${GENERATE_TABLES_SOURCES} )
 
 target_link_libraries(Generate_Tables
-   CopperSpice::CsCore
+   LsCs::LsCsCore
 )
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
@@ -127,4 +127,4 @@ endif()
 install(TARGETS Generate_Tables DESTINATION .)
 
 # install the CopperSpice libraries
-cs_copy_library(CsCore)
+lscs_copy_library(LsCsCore)

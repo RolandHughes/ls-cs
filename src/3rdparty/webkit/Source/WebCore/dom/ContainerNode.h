@@ -26,148 +26,179 @@
 
 #include "Node.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
-    
-typedef void (*NodeCallback)(Node*);
 
-namespace Private { 
-    template<class GenericNode, class GenericNodeContainer>
-    void addChildNodesToDeletionQueue(GenericNode*& head, GenericNode*& tail, GenericNodeContainer* container);
+typedef void ( *NodeCallback )( Node * );
+
+namespace Private
+{
+template<class GenericNode, class GenericNodeContainer>
+void addChildNodesToDeletionQueue( GenericNode *&head, GenericNode *&tail, GenericNodeContainer *container );
 };
 
-class ContainerNode : public Node {
+class ContainerNode : public Node
+{
 public:
     virtual ~ContainerNode();
 
-    Node* firstChild() const { return m_firstChild; }
-    Node* lastChild() const { return m_lastChild; }
+    Node *firstChild() const
+    {
+        return m_firstChild;
+    }
+    Node *lastChild() const
+    {
+        return m_lastChild;
+    }
 
-    bool insertBefore(PassRefPtr<Node> newChild, Node* refChild, ExceptionCode&, bool shouldLazyAttach = false);
-    bool replaceChild(PassRefPtr<Node> newChild, Node* oldChild, ExceptionCode&, bool shouldLazyAttach = false);
-    bool removeChild(Node* child, ExceptionCode&);
-    bool appendChild(PassRefPtr<Node> newChild, ExceptionCode&, bool shouldLazyAttach = false);
+    bool insertBefore( PassRefPtr<Node> newChild, Node *refChild, ExceptionCode &, bool shouldLazyAttach = false );
+    bool replaceChild( PassRefPtr<Node> newChild, Node *oldChild, ExceptionCode &, bool shouldLazyAttach = false );
+    bool removeChild( Node *child, ExceptionCode & );
+    bool appendChild( PassRefPtr<Node> newChild, ExceptionCode &, bool shouldLazyAttach = false );
 
     // These methods are only used during parsing.
     // They don't send DOM mutation events or handle reparenting.
     // However, arbitrary code may be run by beforeload handlers.
-    void parserAddChild(PassRefPtr<Node>);
-    void parserRemoveChild(Node*);
-    void parserInsertBefore(PassRefPtr<Node> newChild, Node* refChild);
+    void parserAddChild( PassRefPtr<Node> );
+    void parserRemoveChild( Node * );
+    void parserInsertBefore( PassRefPtr<Node> newChild, Node *refChild );
 
-    bool hasChildNodes() const { return m_firstChild; }
+    bool hasChildNodes() const
+    {
+        return m_firstChild;
+    }
     virtual void attach();
     virtual void detach();
     virtual void willRemove();
     virtual IntRect getRect() const;
-    virtual void setFocus(bool = true);
-    virtual void setActive(bool active = true, bool pause = false);
-    virtual void setHovered(bool = true);
+    virtual void setFocus( bool = true );
+    virtual void setActive( bool active = true, bool pause = false );
+    virtual void setHovered( bool = true );
     unsigned childNodeCount() const;
-    Node* childNode(unsigned index) const;
+    Node *childNode( unsigned index ) const;
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void insertedIntoTree(bool deep);
-    virtual void removedFromTree(bool deep);
-    virtual void childrenChanged(bool createdByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void insertedIntoTree( bool deep );
+    virtual void removedFromTree( bool deep );
+    virtual void childrenChanged( bool createdByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     // FIXME: It's not good to have two functions with such similar names, especially public functions.
     // How do removeChildren and removeAllChildren differ?
     void removeChildren();
     void removeAllChildren();
-    void takeAllChildrenFrom(ContainerNode*);
+    void takeAllChildrenFrom( ContainerNode * );
 
-    void cloneChildNodes(ContainerNode* clone);
-    
-    bool dispatchBeforeLoadEvent(const String& sourceURL);
+    void cloneChildNodes( ContainerNode *clone );
 
-    static void queuePostAttachCallback(NodeCallback, Node*);
+    bool dispatchBeforeLoadEvent( const String &sourceURL );
+
+    static void queuePostAttachCallback( NodeCallback, Node * );
     static bool postAttachCallbacksAreSuspended();
-    
+
 protected:
-    ContainerNode(Document*, ConstructionType = CreateContainer);
+    ContainerNode( Document *, ConstructionType = CreateContainer );
 
     void suspendPostAttachCallbacks();
     void resumePostAttachCallbacks();
 
     template<class GenericNode, class GenericNodeContainer>
-    friend void appendChildToContainer(GenericNode* child, GenericNodeContainer* container);
+    friend void appendChildToContainer( GenericNode *child, GenericNodeContainer *container );
 
     template<class GenericNode, class GenericNodeContainer>
-    friend void Private::addChildNodesToDeletionQueue(GenericNode*& head, GenericNode*& tail, GenericNodeContainer* container);
+    friend void Private::addChildNodesToDeletionQueue( GenericNode *&head, GenericNode *&tail, GenericNodeContainer *container );
 
-    void setFirstChild(Node* child) { m_firstChild = child; }
-    void setLastChild(Node* child) { m_lastChild = child; }
+    void setFirstChild( Node *child )
+    {
+        m_firstChild = child;
+    }
+    void setLastChild( Node *child )
+    {
+        m_lastChild = child;
+    }
 
 private:
     // Never call this function directly.  If you're trying to call this
     // function, your code is either wrong or you're supposed to call
     // parserAddChild.  Please do not call parserAddChild unless you are the
     // parser!
-    virtual void deprecatedParserAddChild(PassRefPtr<Node>);
+    virtual void deprecatedParserAddChild( PassRefPtr<Node> );
 
-    void removeBetween(Node* previousChild, Node* nextChild, Node* oldChild);
-    void insertBeforeCommon(Node* nextChild, Node* oldChild);
+    void removeBetween( Node *previousChild, Node *nextChild, Node *oldChild );
+    void insertBeforeCommon( Node *nextChild, Node *oldChild );
 
     static void dispatchPostAttachCallbacks();
 
-    bool getUpperLeftCorner(FloatPoint&) const;
-    bool getLowerRightCorner(FloatPoint&) const;
+    bool getUpperLeftCorner( FloatPoint & ) const;
+    bool getLowerRightCorner( FloatPoint & ) const;
 
-    Node* m_firstChild;
-    Node* m_lastChild;
+    Node *m_firstChild;
+    Node *m_lastChild;
 };
 
-inline ContainerNode* toContainerNode(Node* node)
+inline ContainerNode *toContainerNode( Node *node )
 {
-    ASSERT(!node || node->isContainerNode());
-    return static_cast<ContainerNode*>(node);
+    ASSERT( !node || node->isContainerNode() );
+    return static_cast<ContainerNode *>( node );
 }
 
-inline const ContainerNode* toContainerNode(const Node* node)
+inline const ContainerNode *toContainerNode( const Node *node )
 {
-    ASSERT(!node || node->isContainerNode());
-    return static_cast<const ContainerNode*>(node);
+    ASSERT( !node || node->isContainerNode() );
+    return static_cast<const ContainerNode *>( node );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toContainerNode(const ContainerNode*);
+void toContainerNode( const ContainerNode * );
 
-inline ContainerNode::ContainerNode(Document* document, ConstructionType type)
-    : Node(document, type)
-    , m_firstChild(0)
-    , m_lastChild(0)
+inline ContainerNode::ContainerNode( Document *document, ConstructionType type )
+    : Node( document, type )
+    , m_firstChild( 0 )
+    , m_lastChild( 0 )
 {
 }
 
 inline unsigned Node::childNodeCount() const
 {
-    if (!isContainerNode())
+    if ( !isContainerNode() )
+    {
         return 0;
-    return toContainerNode(this)->childNodeCount();
+    }
+
+    return toContainerNode( this )->childNodeCount();
 }
 
-inline Node* Node::childNode(unsigned index) const
+inline Node *Node::childNode( unsigned index ) const
 {
-    if (!isContainerNode())
+    if ( !isContainerNode() )
+    {
         return 0;
-    return toContainerNode(this)->childNode(index);
+    }
+
+    return toContainerNode( this )->childNode( index );
 }
 
-inline Node* Node::firstChild() const
+inline Node *Node::firstChild() const
 {
-    if (!isContainerNode())
+    if ( !isContainerNode() )
+    {
         return 0;
-    return toContainerNode(this)->firstChild();
+    }
+
+    return toContainerNode( this )->firstChild();
 }
 
-inline Node* Node::lastChild() const
+inline Node *Node::lastChild() const
 {
-    if (!isContainerNode())
+    if ( !isContainerNode() )
+    {
         return 0;
-    return toContainerNode(this)->lastChild();
+    }
+
+    return toContainerNode( this )->lastChild();
 }
 
 } // namespace WebCore

@@ -33,55 +33,57 @@
 
 class QFileSystemWatcherEngine : public QThread
 {
-   CORE_CS_OBJECT(QFileSystemWatcherEngine)
+    CORE_LSCS_OBJECT( QFileSystemWatcherEngine )
 
- protected:
-   QFileSystemWatcherEngine(bool move = true) {
-      if (move) {
-         moveToThread(this);
-      }
-   }
+protected:
+    QFileSystemWatcherEngine( bool move = true )
+    {
+        if ( move )
+        {
+            moveToThread( this );
+        }
+    }
 
- public:
-   // fills \a files and \a directories with the \a paths it could
-   // watch, and returns a list of paths this engine could not watch
-   virtual QStringList addPaths(const QStringList &paths, QStringList *files, QStringList *directories) = 0;
+public:
+    // fills \a files and \a directories with the \a paths it could
+    // watch, and returns a list of paths this engine could not watch
+    virtual QStringList addPaths( const QStringList &paths, QStringList *files, QStringList *directories ) = 0;
 
-   // removes \a paths from \a files and \a directories, and returns
-   // a list of paths this engine does not know about (either addPath
-   // failed or wasn't called)
-   virtual QStringList removePaths(const QStringList &paths, QStringList *files, QStringList *directories) = 0;
+    // removes \a paths from \a files and \a directories, and returns
+    // a list of paths this engine does not know about (either addPath
+    // failed or wasn't called)
+    virtual QStringList removePaths( const QStringList &paths, QStringList *files, QStringList *directories ) = 0;
 
-   virtual void stop() = 0;
+    virtual void stop() = 0;
 
-   CORE_CS_SIGNAL_1(Public, void fileChanged(const QString &path, bool removed))
-   CORE_CS_SIGNAL_2(fileChanged, path, removed)
-   CORE_CS_SIGNAL_1(Public, void directoryChanged(const QString &path, bool removed))
-   CORE_CS_SIGNAL_2(directoryChanged, path, removed)
+    CORE_LSCS_SIGNAL_1( Public, void fileChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( fileChanged, path, removed )
+    CORE_LSCS_SIGNAL_1( Public, void directoryChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( directoryChanged, path, removed )
 };
 
 class QFileSystemWatcherPrivate
 {
-   Q_DECLARE_PUBLIC(QFileSystemWatcher)
+    Q_DECLARE_PUBLIC( QFileSystemWatcher )
 
-   static QFileSystemWatcherEngine *createNativeEngine();
+    static QFileSystemWatcherEngine *createNativeEngine();
 
- public:
-   QFileSystemWatcherPrivate();
-   virtual ~QFileSystemWatcherPrivate() {}
+public:
+    QFileSystemWatcherPrivate();
+    virtual ~QFileSystemWatcherPrivate() {}
 
-   void init();
-   void initPollerEngine();
-   void initForcedEngine(const QString &);
+    void init();
+    void initPollerEngine();
+    void initForcedEngine( const QString & );
 
-   QFileSystemWatcherEngine *native, *poller, *forced;
-   QStringList files, directories;
+    QFileSystemWatcherEngine *native, *poller, *forced;
+    QStringList files, directories;
 
-   void _q_fileChanged(const QString &path, bool removed);
-   void _q_directoryChanged(const QString &path, bool removed);
+    void _q_fileChanged( const QString &path, bool removed );
+    void _q_directoryChanged( const QString &path, bool removed );
 
- protected:
-   QFileSystemWatcher *q_ptr;
+protected:
+    QFileSystemWatcher *q_ptr;
 
 };
 

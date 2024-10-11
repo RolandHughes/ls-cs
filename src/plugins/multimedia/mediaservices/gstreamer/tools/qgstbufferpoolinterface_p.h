@@ -31,15 +31,15 @@
 
 #include <gst/gst.h>
 
-const QLatin1String QGstBufferPoolPluginKey("bufferpool");
+const QLatin1String QGstBufferPoolPluginKey( "bufferpool" );
 
 class QGstBufferPoolInterface
 {
 public:
     virtual ~QGstBufferPoolInterface() {}
 
-    virtual bool isFormatSupported(const QVideoSurfaceFormat &format) const = 0;
-    virtual GstBuffer *takeBuffer(const QVideoSurfaceFormat &format, GstCaps *caps) = 0;
+    virtual bool isFormatSupported( const QVideoSurfaceFormat &format ) const = 0;
+    virtual GstBuffer *takeBuffer( const QVideoSurfaceFormat &format, GstCaps *caps ) = 0;
     virtual void clear() = 0;
 
     virtual QAbstractVideoBuffer::HandleType handleType() const = 0;
@@ -50,23 +50,23 @@ public:
 
       This method is called from gstreamer video sink thread.
      */
-    virtual QAbstractVideoBuffer *prepareVideoBuffer(GstBuffer *buffer, int bytesPerLine) = 0;
+    virtual QAbstractVideoBuffer *prepareVideoBuffer( GstBuffer *buffer, int bytesPerLine ) = 0;
 };
 
 #define QGstBufferPoolInterface_iid "com.copperspice.CS.gstbufferpool/1.0"
-CS_DECLARE_INTERFACE(QGstBufferPoolInterface, QGstBufferPoolInterface_iid)
+LSCS_DECLARE_INTERFACE( QGstBufferPoolInterface, QGstBufferPoolInterface_iid )
 
 class QGstBufferPoolPlugin : public QObject, public QGstBufferPoolInterface
 {
-    CS_OBJECT(QGstBufferPoolPlugin)
-    CS_INTERFACES(QGstBufferPoolInterface)
+    LSCS_OBJECT( QGstBufferPoolPlugin )
+    LSCS_INTERFACES( QGstBufferPoolInterface )
 
 public:
-    explicit QGstBufferPoolPlugin(QObject *parent = nullptr);
+    explicit QGstBufferPoolPlugin( QObject *parent = nullptr );
     virtual ~QGstBufferPoolPlugin() {}
 
-    virtual bool isFormatSupported(const QVideoSurfaceFormat &format) const = 0;
-    virtual GstBuffer *takeBuffer(const QVideoSurfaceFormat &format, GstCaps *caps) = 0;
+    virtual bool isFormatSupported( const QVideoSurfaceFormat &format ) const = 0;
+    virtual GstBuffer *takeBuffer( const QVideoSurfaceFormat &format, GstCaps *caps ) = 0;
     virtual void clear() = 0;
 
     virtual QAbstractVideoBuffer::HandleType handleType() const = 0;
@@ -77,7 +77,7 @@ public:
 
       This method is called from gstreamer video sink thread.
      */
-    virtual QAbstractVideoBuffer *prepareVideoBuffer(GstBuffer *buffer, int bytesPerLine) = 0;
+    virtual QAbstractVideoBuffer *prepareVideoBuffer( GstBuffer *buffer, int bytesPerLine ) = 0;
 };
 
 #endif

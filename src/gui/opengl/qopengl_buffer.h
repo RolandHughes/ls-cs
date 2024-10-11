@@ -46,11 +46,11 @@ public:
     };
 
     QOpenGLBuffer();
-    explicit QOpenGLBuffer(QOpenGLBuffer::Type type);
-    QOpenGLBuffer(const QOpenGLBuffer &other);
+    explicit QOpenGLBuffer( QOpenGLBuffer::Type type );
+    QOpenGLBuffer( const QOpenGLBuffer &other );
     ~QOpenGLBuffer();
 
-    QOpenGLBuffer &operator=(const QOpenGLBuffer &other);
+    QOpenGLBuffer &operator=( const QOpenGLBuffer &other );
 
     enum UsagePattern
     {
@@ -86,7 +86,7 @@ public:
     QOpenGLBuffer::Type type() const;
 
     QOpenGLBuffer::UsagePattern usagePattern() const;
-    void setUsagePattern(QOpenGLBuffer::UsagePattern value);
+    void setUsagePattern( QOpenGLBuffer::UsagePattern value );
 
     bool create();
     bool isCreated() const;
@@ -96,29 +96,32 @@ public:
     bool bind();
     void release();
 
-    static void release(QOpenGLBuffer::Type type);
+    static void release( QOpenGLBuffer::Type type );
 
     GLuint bufferId() const;
 
     int size() const;
 
-    bool read(int offset, void *data, int count);
-    void write(int offset, const void *data, int count);
+    bool read( int offset, void *data, int count );
+    void write( int offset, const void *data, int count );
 
-    void allocate(const void *data, int count);
-    inline void allocate(int count) { allocate(nullptr, count); }
+    void allocate( const void *data, int count );
+    inline void allocate( int count )
+    {
+        allocate( nullptr, count );
+    }
 
-    void *map(QOpenGLBuffer::Access access);
-    void *mapRange(int offset, int count, QOpenGLBuffer::RangeAccessFlags access);
+    void *map( QOpenGLBuffer::Access access );
+    void *mapRange( int offset, int count, QOpenGLBuffer::RangeAccessFlags access );
     bool unmap();
 
 private:
     QOpenGLBufferPrivate *d_ptr;
 
-    Q_DECLARE_PRIVATE(QOpenGLBuffer)
+    Q_DECLARE_PRIVATE( QOpenGLBuffer )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QOpenGLBuffer::RangeAccessFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLBuffer::RangeAccessFlags )
 
 #endif // QT_NO_OPENGL
 

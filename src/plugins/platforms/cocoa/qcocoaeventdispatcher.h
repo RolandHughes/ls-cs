@@ -42,122 +42,124 @@
 
 typedef struct _NSModalSession *NSModalSession;
 
-typedef struct _QCocoaModalSessionInfo {
-   QPointer<QWindow> window;
-   NSModalSession session;
-   void *nswindow;
+typedef struct _QCocoaModalSessionInfo
+{
+    QPointer<QWindow> window;
+    NSModalSession session;
+    void *nswindow;
 } QCocoaModalSessionInfo;
 
 class QCocoaEventDispatcherPrivate;
 
 class QCocoaEventDispatcher : public QAbstractEventDispatcher
 {
-   CS_OBJECT(QCocoaEventDispatcher)
-   Q_DECLARE_PRIVATE(QCocoaEventDispatcher)
+    LSCS_OBJECT( QCocoaEventDispatcher )
+    Q_DECLARE_PRIVATE( QCocoaEventDispatcher )
 
- public:
-   QCocoaEventDispatcher(QAbstractEventDispatcherPrivate &priv, QObject *parent = nullptr);
-   explicit QCocoaEventDispatcher(QObject *parent = nullptr);
-   ~QCocoaEventDispatcher();
+public:
+    QCocoaEventDispatcher( QAbstractEventDispatcherPrivate &priv, QObject *parent = nullptr );
+    explicit QCocoaEventDispatcher( QObject *parent = nullptr );
+    ~QCocoaEventDispatcher();
 
-   bool processEvents(QEventLoop::ProcessEventsFlags flags) override;
-   bool hasPendingEvents() override;
+    bool processEvents( QEventLoop::ProcessEventsFlags flags ) override;
+    bool hasPendingEvents() override;
 
-   void registerSocketNotifier(QSocketNotifier *notifier) override;
-   void unregisterSocketNotifier(QSocketNotifier *notifier) override;
+    void registerSocketNotifier( QSocketNotifier *notifier ) override;
+    void unregisterSocketNotifier( QSocketNotifier *notifier ) override;
 
-   void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object) override;
-   bool unregisterTimer(int timerId) override;
-   bool unregisterTimers(QObject *object) override;
+    void registerTimer( int timerId, int interval, Qt::TimerType timerType, QObject *object ) override;
+    bool unregisterTimer( int timerId ) override;
+    bool unregisterTimers( QObject *object ) override;
 
-   QList<QTimerInfo> registeredTimers(QObject *object) const override;
+    QList<QTimerInfo> registeredTimers( QObject *object ) const override;
 
-   int remainingTime(int timerId) override;
+    int remainingTime( int timerId ) override;
 
-   void wakeUp() override;
-   void interrupt() override;
-   void flush() override;
+    void wakeUp() override;
+    void interrupt() override;
+    void flush() override;
 
-   static void clearCurrentThreadCocoaEventDispatcherInterruptFlag();
+    static void clearCurrentThreadCocoaEventDispatcherInterruptFlag();
 
-   friend void qt_mac_maybeCancelWaitForMoreEventsForwarder(QAbstractEventDispatcher *eventDispatcher);
+    friend void qt_mac_maybeCancelWaitForMoreEventsForwarder( QAbstractEventDispatcher *eventDispatcher );
 };
 
 class QCocoaEventDispatcherPrivate : public QAbstractEventDispatcherPrivate
 {
-   Q_DECLARE_PUBLIC(QCocoaEventDispatcher)
+    Q_DECLARE_PUBLIC( QCocoaEventDispatcher )
 
- public:
-   QCocoaEventDispatcherPrivate();
+public:
+    QCocoaEventDispatcherPrivate();
 
-   uint processEventsFlags;
+    uint processEventsFlags;
 
-   // timer handling
-   QTimerInfoList timerInfoList;
-   CFRunLoopTimerRef runLoopTimerRef;
-   CFRunLoopSourceRef activateTimersSourceRef;
-   void maybeStartCFRunLoopTimer();
-   void maybeStopCFRunLoopTimer();
-   static void runLoopTimerCallback(CFRunLoopTimerRef, void *info);
-   static void activateTimersSourceCallback(void *info);
+    // timer handling
+    QTimerInfoList timerInfoList;
+    CFRunLoopTimerRef runLoopTimerRef;
+    CFRunLoopSourceRef activateTimersSourceRef;
+    void maybeStartCFRunLoopTimer();
+    void maybeStopCFRunLoopTimer();
+    static void runLoopTimerCallback( CFRunLoopTimerRef, void *info );
+    static void activateTimersSourceCallback( void *info );
 
-   // Set 'blockSendPostedEvents' to true if you _really_ need to make sure events
-   // are not posted while calling low-level cocoa functions (like beginModalForWindow).
-   // use a QBoolBlocker to be safe
-   bool blockSendPostedEvents;
+    // Set 'blockSendPostedEvents' to true if you _really_ need to make sure events
+    // are not posted while calling low-level cocoa functions (like beginModalForWindow).
+    // use a QBoolBlocker to be safe
+    bool blockSendPostedEvents;
 
-   // The following variables help organizing modal sessions:
-   QStack<QCocoaModalSessionInfo> cocoaModalSessionStack;
-   bool currentExecIsNSAppRun;
-   bool nsAppRunCalledByQt;
-   bool cleanupModalSessionsNeeded;
-   uint processEventsCalled;
+    // The following variables help organizing modal sessions:
+    QStack<QCocoaModalSessionInfo> cocoaModalSessionStack;
+    bool currentExecIsNSAppRun;
+    bool nsAppRunCalledByQt;
+    bool cleanupModalSessionsNeeded;
+    uint processEventsCalled;
 
-   NSModalSession currentModalSessionCached;
-   NSModalSession currentModalSession();
+    NSModalSession currentModalSessionCached;
+    NSModalSession currentModalSession();
 
-   void updateChildrenWorksWhenModal();
-   void temporarilyStopAllModalSessions();
-   void beginModalSession(QWindow *widget);
-   void endModalSession(QWindow *widget);
-   void cleanupModalSessions();
+    void updateChildrenWorksWhenModal();
+    void temporarilyStopAllModalSessions();
+    void beginModalSession( QWindow *widget );
+    void endModalSession( QWindow *widget );
+    void cleanupModalSessions();
 
-   void cancelWaitForMoreEvents();
-   void maybeCancelWaitForMoreEvents();
-   void ensureNSAppInitialized();
+    void cancelWaitForMoreEvents();
+    void maybeCancelWaitForMoreEvents();
+    void ensureNSAppInitialized();
 
-   void removeQueuedUserInputEvents(int nsWinNumber);
+    void removeQueuedUserInputEvents( int nsWinNumber );
 
-   QCFSocketNotifier cfSocketNotifier;
-   QList<void *> queuedUserInputEvents;          // NSEvent *
-   CFRunLoopSourceRef postedEventsSource;
-   CFRunLoopObserverRef waitingObserver;
-   CFRunLoopObserverRef firstTimeObserver;
-   QAtomicInt serialNumber;
-   int lastSerial;
-   bool interrupt;
+    QCFSocketNotifier cfSocketNotifier;
+    QList<void *> queuedUserInputEvents;          // NSEvent *
+    CFRunLoopSourceRef postedEventsSource;
+    CFRunLoopObserverRef waitingObserver;
+    CFRunLoopObserverRef firstTimeObserver;
+    QAtomicInt serialNumber;
+    int lastSerial;
+    bool interrupt;
 
-   static void postedEventsSourceCallback(void *info);
-   static void waitingObserverCallback(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info);
-   static void firstLoopEntry(CFRunLoopObserverRef ref, CFRunLoopActivity activity, void *info);
-   void processPostedEvents();
+    static void postedEventsSourceCallback( void *info );
+    static void waitingObserverCallback( CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info );
+    static void firstLoopEntry( CFRunLoopObserverRef ref, CFRunLoopActivity activity, void *info );
+    void processPostedEvents();
 
-   static QCocoaEventDispatcherPrivate *get(QCocoaEventDispatcher *event) {
-      return static_cast<QCocoaEventDispatcherPrivate *>(event->d_ptr.data());
-   }
+    static QCocoaEventDispatcherPrivate *get( QCocoaEventDispatcher *event )
+    {
+        return static_cast<QCocoaEventDispatcherPrivate *>( event->d_ptr.data() );
+    }
 };
 
 class QtCocoaInterruptDispatcher : public QObject
 {
-   static QtCocoaInterruptDispatcher *instance;
-   bool cancelled;
+    static QtCocoaInterruptDispatcher *instance;
+    bool cancelled;
 
-   QtCocoaInterruptDispatcher();
-   ~QtCocoaInterruptDispatcher();
+    QtCocoaInterruptDispatcher();
+    ~QtCocoaInterruptDispatcher();
 
- public:
-   static void interruptLater();
-   static void cancelInterruptLater();
+public:
+    static void interruptLater();
+    static void cancelInterruptLater();
 };
 
 #endif

@@ -27,11 +27,12 @@
 #include <qobject.h>
 #include <qstringlist.h>
 
-struct Q_CORE_EXPORT QFactoryInterface {
-   virtual ~QFactoryInterface();
-   virtual QStringList keys() const = 0;
+struct Q_CORE_EXPORT QFactoryInterface
+{
+    virtual ~QFactoryInterface();
+    virtual QStringList keys() const = 0;
 };
 
-CS_DECLARE_INTERFACE(QFactoryInterface, "com.copperspice.CS.QFactoryInterface")
+LSCS_DECLARE_INTERFACE( QFactoryInterface, "com.copperspice.CS.QFactoryInterface" )
 
 #endif

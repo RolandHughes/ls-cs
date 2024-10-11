@@ -33,20 +33,21 @@ using namespace WebKit;
 
 WKTypeID WKMediaCacheManagerGetTypeID()
 {
-    return toAPI(WebMediaCacheManagerProxy::APIType);
+    return toAPI( WebMediaCacheManagerProxy::APIType );
 }
 
-void WKMediaCacheManagerGetHostnamesWithMediaCache(WKMediaCacheManagerRef mediaCacheManagerRef, void* context, WKMediaCacheManagerGetHostnamesWithMediaCacheFunction callback)
+void WKMediaCacheManagerGetHostnamesWithMediaCache( WKMediaCacheManagerRef mediaCacheManagerRef, void *context,
+        WKMediaCacheManagerGetHostnamesWithMediaCacheFunction callback )
 {
-    toImpl(mediaCacheManagerRef)->getHostnamesWithMediaCache(ArrayCallback::create(context, callback));
+    toImpl( mediaCacheManagerRef )->getHostnamesWithMediaCache( ArrayCallback::create( context, callback ) );
 }
 
-void WKMediaCacheManagerClearCacheForHostname(WKMediaCacheManagerRef mediaCacheManagerRef, WKStringRef hostname)
+void WKMediaCacheManagerClearCacheForHostname( WKMediaCacheManagerRef mediaCacheManagerRef, WKStringRef hostname )
 {
-    toImpl(mediaCacheManagerRef)->clearCacheForHostname(toWTFString(hostname));
+    toImpl( mediaCacheManagerRef )->clearCacheForHostname( toWTFString( hostname ) );
 }
 
-void WKMediaCacheManagerClearCacheForAllHostnames(WKMediaCacheManagerRef mediaCacheManagerRef)
+void WKMediaCacheManagerClearCacheForAllHostnames( WKMediaCacheManagerRef mediaCacheManagerRef )
 {
-    toImpl(mediaCacheManagerRef)->clearCacheForAllHostnames();
+    toImpl( mediaCacheManagerRef )->clearCacheForAllHostnames();
 }

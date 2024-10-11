@@ -31,19 +31,20 @@
 #   define Patternist_DEBUG
 #endif
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 #ifdef Patternist_DEBUG
 
 inline QDebug pDebug()
 {
-   return qDebug();
+    return qDebug();
 }
 #else
 
 inline QNoDebug pDebug()
 {
-   return QNoDebug();
+    return QNoDebug();
 }
 #endif
 

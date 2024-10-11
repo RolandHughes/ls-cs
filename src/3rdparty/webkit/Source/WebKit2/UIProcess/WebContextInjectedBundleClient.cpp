@@ -31,24 +31,33 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void WebContextInjectedBundleClient::didReceiveMessageFromInjectedBundle(WebContext* context, const String& messageName, APIObject* messageBody)
+namespace WebKit
 {
-    if (!m_client.didReceiveMessageFromInjectedBundle)
-        return;
 
-    m_client.didReceiveMessageFromInjectedBundle(toAPI(context), toAPI(messageName.impl()), toAPI(messageBody), m_client.clientInfo);
+void WebContextInjectedBundleClient::didReceiveMessageFromInjectedBundle( WebContext *context, const String &messageName,
+        APIObject *messageBody )
+{
+    if ( !m_client.didReceiveMessageFromInjectedBundle )
+    {
+        return;
+    }
+
+    m_client.didReceiveMessageFromInjectedBundle( toAPI( context ), toAPI( messageName.impl() ), toAPI( messageBody ),
+            m_client.clientInfo );
 }
 
-void WebContextInjectedBundleClient::didReceiveSynchronousMessageFromInjectedBundle(WebContext* context, const String& messageName, APIObject* messageBody, RefPtr<APIObject>& returnData)
+void WebContextInjectedBundleClient::didReceiveSynchronousMessageFromInjectedBundle( WebContext *context,
+        const String &messageName, APIObject *messageBody, RefPtr<APIObject> &returnData )
 {
-    if (!m_client.didReceiveSynchronousMessageFromInjectedBundle)
+    if ( !m_client.didReceiveSynchronousMessageFromInjectedBundle )
+    {
         return;
+    }
 
     WKTypeRef returnDataRef = 0;
-    m_client.didReceiveSynchronousMessageFromInjectedBundle(toAPI(context), toAPI(messageName.impl()), toAPI(messageBody), &returnDataRef, m_client.clientInfo);
-    returnData = adoptRef(toImpl(returnDataRef));
+    m_client.didReceiveSynchronousMessageFromInjectedBundle( toAPI( context ), toAPI( messageName.impl() ), toAPI( messageBody ),
+            &returnDataRef, m_client.clientInfo );
+    returnData = adoptRef( toImpl( returnDataRef ) );
 }
 
 } // namespace WebKit

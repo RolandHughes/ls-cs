@@ -38,8 +38,8 @@ class QOpenGL2GradientCache : public QOpenGLSharedResource
 {
     struct CacheInfo
     {
-        inline CacheInfo(QVector<QPair<qreal, QColor>> s, qreal op, QGradient::InterpolationMode mode) :
-            stops(std::move(s)), opacity(op), interpolationMode(mode) {}
+        inline CacheInfo( QVector<QPair<qreal, QColor>> s, qreal op, QGradient::InterpolationMode mode ) :
+            stops( std::move( s ) ), opacity( op ), interpolationMode( mode ) {}
 
         GLuint texId;
         QVector<QPair<qreal, QColor>> stops;
@@ -50,26 +50,32 @@ class QOpenGL2GradientCache : public QOpenGLSharedResource
     typedef QMultiHash<quint64, CacheInfo> QOpenGLGradientColorTableHash;
 
 public:
-    static QOpenGL2GradientCache *cacheForContext(QOpenGLContext *context);
+    static QOpenGL2GradientCache *cacheForContext( QOpenGLContext *context );
 
-    QOpenGL2GradientCache(QOpenGLContext *);
+    QOpenGL2GradientCache( QOpenGLContext * );
     ~QOpenGL2GradientCache();
 
-    GLuint getBuffer(const QGradient &gradient, qreal opacity);
-    inline int paletteSize() const { return 1024; }
+    GLuint getBuffer( const QGradient &gradient, qreal opacity );
+    inline int paletteSize() const
+    {
+        return 1024;
+    }
 
     void invalidateResource() override;
-    void freeResource(QOpenGLContext *ctx) override;
+    void freeResource( QOpenGLContext *ctx ) override;
 
 private:
-    inline int maxCacheSize() const { return 60; }
-    inline void generateGradientColorTable(const QGradient& gradient,
-                                           QRgba64 *colorTable,
-                                           int size, qreal opacity) const;
-    inline void generateGradientColorTable(const QGradient& gradient,
-                                           uint *colorTable,
-                                           int size, qreal opacity) const;
-    GLuint addCacheElement(quint64 hash_val, const QGradient &gradient, qreal opacity);
+    inline int maxCacheSize() const
+    {
+        return 60;
+    }
+    inline void generateGradientColorTable( const QGradient &gradient,
+                                            QRgba64 *colorTable,
+                                            int size, qreal opacity ) const;
+    inline void generateGradientColorTable( const QGradient &gradient,
+                                            uint *colorTable,
+                                            int size, qreal opacity ) const;
+    GLuint addCacheElement( quint64 hash_val, const QGradient &gradient, qreal opacity );
     void cleanCache();
 
     QOpenGLGradientColorTableHash cache;

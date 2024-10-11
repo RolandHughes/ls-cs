@@ -28,9 +28,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSRGBColor);
+ASSERT_CLASS_FITS_IN_CELL( JSRGBColor );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -41,11 +42,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSRGBColor);
 
 static const HashTableValue JSRGBColorTableValues[5] =
 {
-    { "red", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRGBColorRed), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "green", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRGBColorGreen), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "blue", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRGBColorBlue), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRGBColorConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "red", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRGBColorRed ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "green", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRGBColorGreen ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "blue", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRGBColorBlue ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRGBColorConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,43 +60,49 @@ static JSC_CONST_HASHTABLE HashTable JSRGBColorTable = { 8, 7, JSRGBColorTableVa
 
 static const HashTableValue JSRGBColorConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSRGBColorConstructorTable = { 1, 0, JSRGBColorConstructorTableValues, 0 };
-class JSRGBColorConstructor : public DOMConstructorObject {
+class JSRGBColorConstructor : public DOMConstructorObject
+{
 public:
-    JSRGBColorConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSRGBColorConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSRGBColorConstructor::s_info = { "RGBColorConstructor", &DOMConstructorObject::s_info, &JSRGBColorConstructorTable, 0 };
 
-JSRGBColorConstructor::JSRGBColorConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSRGBColorConstructor::JSRGBColorConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSRGBColorPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSRGBColorPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSRGBColorConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSRGBColorConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSRGBColorConstructor, JSDOMWrapper>(exec, &JSRGBColorConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSRGBColorConstructor, JSDOMWrapper>( exec, &JSRGBColorConstructorTable, this, propertyName, slot );
 }
 
-bool JSRGBColorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSRGBColorConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSRGBColorConstructor, JSDOMWrapper>(exec, &JSRGBColorConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSRGBColorConstructor, JSDOMWrapper>( exec, &JSRGBColorConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -107,91 +114,92 @@ bool JSRGBColorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Iden
 
 static const HashTableValue JSRGBColorPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSRGBColorPrototypeTable = { 1, 0, JSRGBColorPrototypeTableValues, 0 };
 const ClassInfo JSRGBColorPrototype::s_info = { "RGBColorPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSRGBColorPrototypeTable, 0 };
 
-JSObject* JSRGBColorPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSRGBColorPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSRGBColor>(exec, globalObject);
+    return getDOMPrototype<JSRGBColor>( exec, globalObject );
 }
 
 const ClassInfo JSRGBColor::s_info = { "RGBColor", &JSDOMWrapper::s_info, &JSRGBColorTable, 0 };
 
-JSRGBColor::JSRGBColor(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<RGBColor> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSRGBColor::JSRGBColor( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<RGBColor> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSRGBColor::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSRGBColor::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSRGBColorPrototype(exec->globalData(), globalObject, JSRGBColorPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSRGBColorPrototype( exec->globalData(), globalObject,
+            JSRGBColorPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSRGBColor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSRGBColor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSRGBColor, Base>(exec, &JSRGBColorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSRGBColor, Base>( exec, &JSRGBColorTable, this, propertyName, slot );
 }
 
-bool JSRGBColor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSRGBColor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSRGBColor, Base>(exec, &JSRGBColorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSRGBColor, Base>( exec, &JSRGBColorTable, this, propertyName, descriptor );
 }
 
-JSValue jsRGBColorRed(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRGBColorRed( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRGBColor* castedThis = static_cast<JSRGBColor*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RGBColor* imp = static_cast<RGBColor*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->red()));
+    JSRGBColor *castedThis = static_cast<JSRGBColor *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RGBColor *imp = static_cast<RGBColor *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->red() ) );
     return result;
 }
 
 
-JSValue jsRGBColorGreen(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRGBColorGreen( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRGBColor* castedThis = static_cast<JSRGBColor*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RGBColor* imp = static_cast<RGBColor*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->green()));
+    JSRGBColor *castedThis = static_cast<JSRGBColor *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RGBColor *imp = static_cast<RGBColor *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->green() ) );
     return result;
 }
 
 
-JSValue jsRGBColorBlue(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRGBColorBlue( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRGBColor* castedThis = static_cast<JSRGBColor*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    RGBColor* imp = static_cast<RGBColor*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->blue()));
+    JSRGBColor *castedThis = static_cast<JSRGBColor *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    RGBColor *imp = static_cast<RGBColor *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->blue() ) );
     return result;
 }
 
 
-JSValue jsRGBColorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRGBColorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRGBColor* domObject = static_cast<JSRGBColor*>(asObject(slotBase));
-    return JSRGBColor::getConstructor(exec, domObject->globalObject());
+    JSRGBColor *domObject = static_cast<JSRGBColor *>( asObject( slotBase ) );
+    return JSRGBColor::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSRGBColor::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSRGBColor::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSRGBColorConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSRGBColorConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, RGBColor* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, RGBColor *impl )
 {
-    return wrap<JSRGBColor>(exec, globalObject, impl);
+    return wrap<JSRGBColor>( exec, globalObject, impl );
 }
 
-RGBColor* toRGBColor(JSC::JSValue value)
+RGBColor *toRGBColor( JSC::JSValue value )
 {
-    return value.inherits(&JSRGBColor::s_info) ? static_cast<JSRGBColor*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSRGBColor::s_info ) ? static_cast<JSRGBColor *>( asObject( value ) )->impl() : 0;
 }
 
 }

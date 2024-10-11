@@ -36,20 +36,20 @@ class QMacNativeWidgetPrivate;
 
 class Q_GUI_EXPORT QMacNativeWidget : public QWidget
 {
-   GUI_CS_OBJECT(QMacNativeWidget)
+    GUI_LSCS_OBJECT( QMacNativeWidget )
 
- public:
-   QMacNativeWidget(NSView *parentView = nullptr);
-   ~QMacNativeWidget();
+public:
+    QMacNativeWidget( NSView *parentView = nullptr );
+    ~QMacNativeWidget();
 
-   QSize sizeHint() const override;
-   NSView *nativeView() const;
+    QSize sizeHint() const override;
+    NSView *nativeView() const;
 
- protected:
-   bool event(QEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QMacNativeWidget)
+private:
+    Q_DECLARE_PRIVATE( QMacNativeWidget )
 };
 
 #endif // QMACNATIVEWIDGET_H

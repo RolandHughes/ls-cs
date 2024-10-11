@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,53 +32,75 @@
 #include "AnimationBase.h"
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // An ImplicitAnimation tracks the state of a transition of a specific CSS property
 // for a single RenderObject.
-class ImplicitAnimation : public AnimationBase {
+class ImplicitAnimation : public AnimationBase
+{
 public:
-    static PassRefPtr<ImplicitAnimation> create(const Animation* animation, int animatingProperty, RenderObject* renderer, CompositeAnimation* compositeAnimation, RenderStyle* fromStyle)
+    static PassRefPtr<ImplicitAnimation> create( const Animation *animation, int animatingProperty, RenderObject *renderer,
+            CompositeAnimation *compositeAnimation, RenderStyle *fromStyle )
     {
-        return adoptRef(new ImplicitAnimation(animation, animatingProperty, renderer, compositeAnimation, fromStyle));
+        return adoptRef( new ImplicitAnimation( animation, animatingProperty, renderer, compositeAnimation, fromStyle ) );
     };
-    
-    int transitionProperty() const { return m_transitionProperty; }
-    int animatingProperty() const { return m_animatingProperty; }
 
-    virtual void onAnimationEnd(double elapsedTime);
-    virtual bool startAnimation(double timeOffset);
-    virtual void pauseAnimation(double /*timeOffset*/);
+    int transitionProperty() const
+    {
+        return m_transitionProperty;
+    }
+    int animatingProperty() const
+    {
+        return m_animatingProperty;
+    }
+
+    virtual void onAnimationEnd( double elapsedTime );
+    virtual bool startAnimation( double timeOffset );
+    virtual void pauseAnimation( double /*timeOffset*/ );
     virtual void endAnimation();
 
-    virtual void animate(CompositeAnimation*, RenderObject*, const RenderStyle* currentStyle, RenderStyle* targetStyle, RefPtr<RenderStyle>& animatedStyle);
-    virtual void getAnimatedStyle(RefPtr<RenderStyle>& animatedStyle);
-    virtual void reset(RenderStyle* to);
+    virtual void animate( CompositeAnimation *, RenderObject *, const RenderStyle *currentStyle, RenderStyle *targetStyle,
+                          RefPtr<RenderStyle> &animatedStyle );
+    virtual void getAnimatedStyle( RefPtr<RenderStyle> &animatedStyle );
+    virtual void reset( RenderStyle *to );
 
-    void setOverridden(bool);
-    virtual bool overridden() const { return m_overridden; }
+    void setOverridden( bool );
+    virtual bool overridden() const
+    {
+        return m_overridden;
+    }
 
-    virtual bool affectsProperty(int) const;
+    virtual bool affectsProperty( int ) const;
 
-    bool hasStyle() const { return m_fromStyle && m_toStyle; }
+    bool hasStyle() const
+    {
+        return m_fromStyle && m_toStyle;
+    }
 
-    bool isTargetPropertyEqual(int, const RenderStyle* targetStyle);
+    bool isTargetPropertyEqual( int, const RenderStyle *targetStyle );
 
-    void blendPropertyValueInStyle(int, RenderStyle* currentStyle);
+    void blendPropertyValueInStyle( int, RenderStyle *currentStyle );
 
     virtual double timeToNextService();
-    
-    bool active() const { return m_active; }
-    void setActive(bool b) { m_active = b; }
+
+    bool active() const
+    {
+        return m_active;
+    }
+    void setActive( bool b )
+    {
+        m_active = b;
+    }
 
 protected:
-    bool shouldSendEventForListener(Document::ListenerType) const;    
-    bool sendTransitionEvent(const AtomicString&, double elapsedTime);
+    bool shouldSendEventForListener( Document::ListenerType ) const;
+    bool sendTransitionEvent( const AtomicString &, double elapsedTime );
 
     void validateTransformFunctionList();
 
 private:
-    ImplicitAnimation(const Animation*, int animatingProperty, RenderObject*, CompositeAnimation*, RenderStyle* fromStyle);    
+    ImplicitAnimation( const Animation *, int animatingProperty, RenderObject *, CompositeAnimation *, RenderStyle *fromStyle );
     virtual ~ImplicitAnimation();
 
     int m_transitionProperty;   // Transition property as specified in the RenderStyle. May be cAnimateAll

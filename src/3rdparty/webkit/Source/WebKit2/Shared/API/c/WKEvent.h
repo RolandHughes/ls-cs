@@ -32,7 +32,8 @@
 extern "C" {
 #endif
 
-enum {
+enum
+{
     kWKEventModifiersShiftKey = 1 << 0,
     kWKEventModifiersControlKey = 1 << 1,
     kWKEventModifiersAltKey = 1 << 2,
@@ -40,7 +41,8 @@ enum {
 };
 typedef uint32_t WKEventModifiers;
 
-enum {
+enum
+{
     kWKEventMouseButtonNoButton = -1,
     kWKEventMouseButtonLeftButton = 0,
     kWKEventMouseButtonMiddleButton = 1,

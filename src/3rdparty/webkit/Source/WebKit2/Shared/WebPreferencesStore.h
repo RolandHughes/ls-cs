@@ -32,9 +32,10 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-// macro(KeyUpper, KeyLower, TypeNameUpper, TypeName, DefaultValue) 
+// macro(KeyUpper, KeyLower, TypeNameUpper, TypeName, DefaultValue)
 
 #define FOR_EACH_WEBKIT_BOOL_PREFERENCE(macro) \
     macro(JavaScriptEnabled, javaScriptEnabled, Bool, bool, true) \
@@ -106,8 +107,8 @@ namespace WebKit {
     macro(FantasyFontFamily, fantasyFontFamily, String, String, "Papyrus") \
     macro(FixedFontFamily, fixedFontFamily, String, String, "Courier") \
     macro(SansSerifFontFamily, sansSerifFontFamily, String, String, "Helvetica") \
-    macro(SerifFontFamily, serifFontFamily, String, String, "Times") 
-  
+    macro(SerifFontFamily, serifFontFamily, String, String, "Times")
+
 #elif PLATFORM(QT) || PLATFORM(GTK)
 
 #define FOR_EACH_WEBKIT_FONT_FAMILY_PREFERENCE(macro) \
@@ -116,7 +117,7 @@ namespace WebKit {
     macro(FantasyFontFamily, fantasyFontFamily, String, String, "Impact") \
     macro(FixedFontFamily, fixedFontFamily, String, String, "Courier New") \
     macro(SansSerifFontFamily, sansSerifFontFamily, String, String, "Helvetica") \
-    macro(SerifFontFamily, serifFontFamily, String, String, "Times") 
+    macro(SerifFontFamily, serifFontFamily, String, String, "Times")
 
 #endif
 
@@ -124,44 +125,46 @@ namespace WebKit {
     FOR_EACH_WEBKIT_FONT_FAMILY_PREFERENCE(macro) \
     macro(DefaultTextEncodingName, defaultTextEncodingName, String, String, "ISO-8859-1") \
     macro(FTPDirectoryTemplatePath, ftpDirectoryTemplatePath, String, String, "")
-   
+
 #define FOR_EACH_WEBKIT_PREFERENCE(macro) \
     FOR_EACH_WEBKIT_BOOL_PREFERENCE(macro) \
     FOR_EACH_WEBKIT_DOUBLE_PREFERENCE(macro) \
     FOR_EACH_WEBKIT_UINT32_PREFERENCE(macro) \
-    FOR_EACH_WEBKIT_STRING_PREFERENCE(macro)    
+    FOR_EACH_WEBKIT_STRING_PREFERENCE(macro)
 
-namespace WebPreferencesKey {
+namespace WebPreferencesKey
+{
 
 #define DECLARE_KEY_GETTERS(KeyUpper, KeyLower, TypeName, Type, DefaultValue) const String& KeyLower##Key();
 
-    FOR_EACH_WEBKIT_PREFERENCE(DECLARE_KEY_GETTERS)
+FOR_EACH_WEBKIT_PREFERENCE( DECLARE_KEY_GETTERS )
 
 #undef DECLARE_KEY_GETTERS
 
 } // namespace WebPreferencesKey
 
-struct WebPreferencesStore {
+struct WebPreferencesStore
+{
     WebPreferencesStore();
 
-    void encode(CoreIPC::ArgumentEncoder* encoder) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebPreferencesStore&);
+    void encode( CoreIPC::ArgumentEncoder *encoder ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebPreferencesStore & );
 
     // NOTE: The getters in this class have non-standard names to aid in the use of the preference macros.
 
-    bool setStringValueForKey(const String& key, const String& value);
-    String getStringValueForKey(const String& key) const;
+    bool setStringValueForKey( const String &key, const String &value );
+    String getStringValueForKey( const String &key ) const;
 
-    bool setBoolValueForKey(const String& key, bool value);
-    bool getBoolValueForKey(const String& key) const;
+    bool setBoolValueForKey( const String &key, bool value );
+    bool getBoolValueForKey( const String &key ) const;
 
-    bool setUInt32ValueForKey(const String& key, uint32_t value);
-    uint32_t getUInt32ValueForKey(const String& key) const;
+    bool setUInt32ValueForKey( const String &key, uint32_t value );
+    uint32_t getUInt32ValueForKey( const String &key ) const;
 
-    bool setDoubleValueForKey(const String& key, double value);
-    double getDoubleValueForKey(const String& key) const;
+    bool setDoubleValueForKey( const String &key, double value );
+    double getDoubleValueForKey( const String &key ) const;
 
-    static void overrideXSSAuditorEnabledForTestRunner(bool);
+    static void overrideXSSAuditorEnabledForTestRunner( bool );
     static void removeTestRunnerOverrides();
 
     HashMap<String, String> m_stringValues;

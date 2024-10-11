@@ -35,70 +35,98 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-static const MouseEvent* mouseEventForNavigationAction(const NavigationAction& navigationAction)
+namespace WebKit
 {
-    for (const Event* e = navigationAction.event(); e; e = e->underlyingEvent()) {
-        if (e->isMouseEvent())
-            return static_cast<const MouseEvent*>(e);
+
+static const MouseEvent *mouseEventForNavigationAction( const NavigationAction &navigationAction )
+{
+    for ( const Event *e = navigationAction.event(); e; e = e->underlyingEvent() )
+    {
+        if ( e->isMouseEvent() )
+        {
+            return static_cast<const MouseEvent *>( e );
+        }
     }
+
     return 0;
 }
 
-static WebMouseEvent::Button mouseButtonForMouseEvent(const MouseEvent* mouseEvent)
+static WebMouseEvent::Button mouseButtonForMouseEvent( const MouseEvent *mouseEvent )
 {
-    if (!mouseEvent)
+    if ( !mouseEvent )
+    {
         return WebMouseEvent::NoButton;
-
-    if (!mouseEvent->buttonDown())
-        return WebMouseEvent::NoButton;
-
-    return static_cast<WebMouseEvent::Button>(mouseEvent->button());
-}
-
-WebEvent::Modifiers InjectedBundleNavigationAction::modifiersForNavigationAction(const NavigationAction& navigationAction)
-{
-    uint32_t modifiers = 0;
-    if (const UIEventWithKeyState* keyStateEvent = findEventWithKeyState(const_cast<Event*>(navigationAction.event()))) {
-        if (keyStateEvent->shiftKey())
-            modifiers |= WebEvent::ShiftKey;
-        if (keyStateEvent->ctrlKey())
-            modifiers |= WebEvent::ControlKey;
-        if (keyStateEvent->altKey())
-            modifiers |= WebEvent::AltKey;
-        if (keyStateEvent->metaKey())
-            modifiers |= WebEvent::MetaKey;
     }
 
-    return static_cast<WebEvent::Modifiers>(modifiers);
+    if ( !mouseEvent->buttonDown() )
+    {
+        return WebMouseEvent::NoButton;
+    }
+
+    return static_cast<WebMouseEvent::Button>( mouseEvent->button() );
 }
 
-WebMouseEvent::Button InjectedBundleNavigationAction::mouseButtonForNavigationAction(const NavigationAction& navigationAction)
+WebEvent::Modifiers InjectedBundleNavigationAction::modifiersForNavigationAction( const NavigationAction &navigationAction )
 {
-    return mouseButtonForMouseEvent(mouseEventForNavigationAction(navigationAction));
+    uint32_t modifiers = 0;
+
+    if ( const UIEventWithKeyState *keyStateEvent = findEventWithKeyState( const_cast<Event *>( navigationAction.event() ) ) )
+    {
+        if ( keyStateEvent->shiftKey() )
+        {
+            modifiers |= WebEvent::ShiftKey;
+        }
+
+        if ( keyStateEvent->ctrlKey() )
+        {
+            modifiers |= WebEvent::ControlKey;
+        }
+
+        if ( keyStateEvent->altKey() )
+        {
+            modifiers |= WebEvent::AltKey;
+        }
+
+        if ( keyStateEvent->metaKey() )
+        {
+            modifiers |= WebEvent::MetaKey;
+        }
+    }
+
+    return static_cast<WebEvent::Modifiers>( modifiers );
 }
 
-
-PassRefPtr<InjectedBundleNavigationAction> InjectedBundleNavigationAction::create(WebFrame* frame, const NavigationAction& action, PassRefPtr<FormState> formState)
+WebMouseEvent::Button InjectedBundleNavigationAction::mouseButtonForNavigationAction( const NavigationAction &navigationAction )
 {
-    return adoptRef(new InjectedBundleNavigationAction(frame, action, formState));
+    return mouseButtonForMouseEvent( mouseEventForNavigationAction( navigationAction ) );
 }
 
-InjectedBundleNavigationAction::InjectedBundleNavigationAction(WebFrame* frame, const NavigationAction& navigationAction, PassRefPtr<FormState> prpFormState)
+
+PassRefPtr<InjectedBundleNavigationAction> InjectedBundleNavigationAction::create( WebFrame *frame,
+        const NavigationAction &action, PassRefPtr<FormState> formState )
+{
+    return adoptRef( new InjectedBundleNavigationAction( frame, action, formState ) );
+}
+
+InjectedBundleNavigationAction::InjectedBundleNavigationAction( WebFrame *frame, const NavigationAction &navigationAction,
+        PassRefPtr<FormState> prpFormState )
 {
     m_navigationType    = navigationAction.type();
-    m_modifiers         = modifiersForNavigationAction(navigationAction);
+    m_modifiers         = modifiersForNavigationAction( navigationAction );
 
-    if (const MouseEvent* mouseEvent = mouseEventForNavigationAction(navigationAction)) {
-        m_hitTestResult = InjectedBundleHitTestResult::create(frame->coreFrame()->eventHandler()->hitTestResultAtPoint(mouseEvent->absoluteLocation(), false));
-        m_mouseButton   = mouseButtonForMouseEvent(mouseEvent);
+    if ( const MouseEvent *mouseEvent = mouseEventForNavigationAction( navigationAction ) )
+    {
+        m_hitTestResult = InjectedBundleHitTestResult::create( frame->coreFrame()->eventHandler()->hitTestResultAtPoint(
+                              mouseEvent->absoluteLocation(), false ) );
+        m_mouseButton   = mouseButtonForMouseEvent( mouseEvent );
     }
 
     RefPtr<FormState> formState = prpFormState;
-    if (formState) {
-        ASSERT(formState->form());
-        m_formElement   = InjectedBundleNodeHandle::getOrCreate(formState->form());
+
+    if ( formState )
+    {
+        ASSERT( formState->form() );
+        m_formElement   = InjectedBundleNodeHandle::getOrCreate( formState->form() );
     }
 }
 

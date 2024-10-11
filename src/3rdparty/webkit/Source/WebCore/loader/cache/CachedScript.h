@@ -30,48 +30,54 @@
 #include "Timer.h"
 
 #if USE(JSC)
-namespace JSC {
-    class SourceProviderCache;
+namespace JSC
+{
+class SourceProviderCache;
 }
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class CachedResourceLoader;
-    class TextResourceDecoder;
+class CachedResourceLoader;
+class TextResourceDecoder;
 
-    class CachedScript : public CachedResource {
-    public:
-        CachedScript(const String& url, const String& charset);
-        virtual ~CachedScript();
+class CachedScript : public CachedResource
+{
+public:
+    CachedScript( const String &url, const String &charset );
+    virtual ~CachedScript();
 
-        const String& script();
+    const String &script();
 
-        virtual void didAddClient(CachedResourceClient*);
-        virtual void allClientsRemoved();
+    virtual void didAddClient( CachedResourceClient * );
+    virtual void allClientsRemoved();
 
-        virtual void setEncoding(const String&);
-        virtual String encoding() const;
-        virtual void data(PassRefPtr<SharedBuffer> data, bool allDataReceived);
-        virtual void error(Status);
+    virtual void setEncoding( const String & );
+    virtual String encoding() const;
+    virtual void data( PassRefPtr<SharedBuffer> data, bool allDataReceived );
+    virtual void error( Status );
 
-        virtual void destroyDecodedData();
-#if USE(JSC)        
-        // Allows JSC to cache additional information about the source.
-        JSC::SourceProviderCache* sourceProviderCache() const;
-        void sourceProviderCacheSizeChanged(int delta);
+    virtual void destroyDecodedData();
+#if USE(JSC)
+    // Allows JSC to cache additional information about the source.
+    JSC::SourceProviderCache *sourceProviderCache() const;
+    void sourceProviderCacheSizeChanged( int delta );
 #endif
-    private:
-        void decodedDataDeletionTimerFired(Timer<CachedScript>*);
-        virtual PurgePriority purgePriority() const { return PurgeLast; }
+private:
+    void decodedDataDeletionTimerFired( Timer<CachedScript> * );
+    virtual PurgePriority purgePriority() const
+    {
+        return PurgeLast;
+    }
 
-        String m_script;
-        RefPtr<TextResourceDecoder> m_decoder;
-        Timer<CachedScript> m_decodedDataDeletionTimer;
-#if USE(JSC)        
-        mutable OwnPtr<JSC::SourceProviderCache> m_sourceProviderCache;
+    String m_script;
+    RefPtr<TextResourceDecoder> m_decoder;
+    Timer<CachedScript> m_decodedDataDeletionTimer;
+#if USE(JSC)
+    mutable OwnPtr<JSC::SourceProviderCache> m_sourceProviderCache;
 #endif
-    };
+};
 }
 
 #endif

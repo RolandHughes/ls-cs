@@ -30,7 +30,7 @@
 #include <qprintdevice_p.h>
 
 QWindowsPrinterSupport::QWindowsPrinterSupport()
-   : QPlatformPrinterSupport()
+    : QPlatformPrinterSupport()
 {
 }
 
@@ -38,29 +38,29 @@ QWindowsPrinterSupport::~QWindowsPrinterSupport()
 {
 }
 
-QPrintEngine *QWindowsPrinterSupport::createNativePrintEngine(QPrinter::PrinterMode printerMode)
+QPrintEngine *QWindowsPrinterSupport::createNativePrintEngine( QPrinter::PrinterMode printerMode )
 {
-   return new QWin32PrintEngine(printerMode);
+    return new QWin32PrintEngine( printerMode );
 }
 
-QPaintEngine *QWindowsPrinterSupport::createPaintEngine(QPrintEngine *engine, QPrinter::PrinterMode printerMode)
+QPaintEngine *QWindowsPrinterSupport::createPaintEngine( QPrintEngine *engine, QPrinter::PrinterMode printerMode )
 {
-   (void) printerMode;
-   return static_cast<QWin32PrintEngine *>(engine);
+    ( void ) printerMode;
+    return static_cast<QWin32PrintEngine *>( engine );
 }
 
-QPrintDevice QWindowsPrinterSupport::createPrintDevice(const QString &id)
+QPrintDevice QWindowsPrinterSupport::createPrintDevice( const QString &id )
 {
-   return QPlatformPrinterSupport::createPrintDevice(new QWindowsPrintDevice(id));
+    return QPlatformPrinterSupport::createPrintDevice( new QWindowsPrintDevice( id ) );
 }
 
 QStringList QWindowsPrinterSupport::availablePrintDeviceIds() const
 {
-   return QWindowsPrintDevice::availablePrintDeviceIds();
+    return QWindowsPrintDevice::availablePrintDeviceIds();
 }
 
 QString QWindowsPrinterSupport::defaultPrintDeviceId() const
 {
-   return QWindowsPrintDevice::defaultPrintDeviceId();
+    return QWindowsPrintDevice::defaultPrintDeviceId();
 }
 

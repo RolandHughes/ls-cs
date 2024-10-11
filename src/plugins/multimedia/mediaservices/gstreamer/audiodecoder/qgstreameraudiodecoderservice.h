@@ -33,18 +33,18 @@ class QGstreamerAudioDecoderSession;
 
 class QGstreamerAudioDecoderService : public QMediaService
 {
-   CS_OBJECT(QGstreamerAudioDecoderService)
+    LSCS_OBJECT( QGstreamerAudioDecoderService )
 
- public:
-   QGstreamerAudioDecoderService(QObject *parent = nullptr);
-   ~QGstreamerAudioDecoderService();
+public:
+    QGstreamerAudioDecoderService( QObject *parent = nullptr );
+    ~QGstreamerAudioDecoderService();
 
-   QMediaControl *requestControl(const QString &name) override;
-   void releaseControl(QMediaControl *control) override;
+    QMediaControl *requestControl( const QString &name ) override;
+    void releaseControl( QMediaControl *control ) override;
 
- private:
-   QGstreamerAudioDecoderControl *m_control;
-   QGstreamerAudioDecoderSession *m_session;
+private:
+    QGstreamerAudioDecoderControl *m_control;
+    QGstreamerAudioDecoderSession *m_session;
 };
 
 #endif

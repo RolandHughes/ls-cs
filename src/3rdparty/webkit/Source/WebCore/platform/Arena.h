@@ -51,29 +51,32 @@
 #define ARENA_ALIGN_MASK 3
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef uintptr_t uword;
 
-struct Arena {
-    Arena* next;        // next arena
+struct Arena
+{
+    Arena *next;        // next arena
     uword base;         // aligned base address
     uword limit;        // end of arena (1+last byte)
     uword avail;        // points to next available byte in arena
 };
 
-struct ArenaPool {
+struct ArenaPool
+{
     Arena first;        // first arena in pool list.
-    Arena* current;     // current arena.
+    Arena *current;     // current arena.
     unsigned int arenasize;
     uword mask;         // Mask (power-of-2 - 1)
 };
 
-void InitArenaPool(ArenaPool *pool, const char *name, 
-                   unsigned int size, unsigned int align);
-void FinishArenaPool(ArenaPool *pool);
-void FreeArenaPool(ArenaPool *pool);
-void* ArenaAllocate(ArenaPool *pool, unsigned int nb);
+void InitArenaPool( ArenaPool *pool, const char *name,
+                    unsigned int size, unsigned int align );
+void FinishArenaPool( ArenaPool *pool );
+void FreeArenaPool( ArenaPool *pool );
+void *ArenaAllocate( ArenaPool *pool, unsigned int nb );
 
 #define ARENA_ALIGN(n) (((uword)(n) + ARENA_ALIGN_MASK) & ~ARENA_ALIGN_MASK)
 #define INIT_ARENA_POOL(pool, name, size) \
@@ -103,7 +106,7 @@ void* ArenaAllocate(ArenaPool *pool, unsigned int nb);
         }
 
 #define ARENA_MARK(pool) ((void *) (pool)->current->avail)
-#define UPTRDIFF(p,q) ((uword)(p) - (uword)(q))     
+#define UPTRDIFF(p,q) ((uword)(p) - (uword)(q))
 
 #ifdef DEBUG
 #define FREE_PATTERN 0xDA

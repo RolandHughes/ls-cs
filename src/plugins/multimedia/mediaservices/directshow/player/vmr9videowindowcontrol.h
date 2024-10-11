@@ -32,60 +32,61 @@
 
 class Vmr9VideoWindowControl : public QVideoWindowControl
 {
-   CS_OBJECT(Vmr9VideoWindowControl)
+    LSCS_OBJECT( Vmr9VideoWindowControl )
 
- public:
-   Vmr9VideoWindowControl(QObject *parent = nullptr);
-   ~Vmr9VideoWindowControl();
+public:
+    Vmr9VideoWindowControl( QObject *parent = nullptr );
+    ~Vmr9VideoWindowControl();
 
-   IBaseFilter *filter() const {
-      return m_filter;
-   }
+    IBaseFilter *filter() const
+    {
+        return m_filter;
+    }
 
-   WId winId() const override;
-   void setWinId(WId id) override;
+    WId winId() const override;
+    void setWinId( WId id ) override;
 
-   QRect displayRect() const override;
-   void setDisplayRect(const QRect &rect) override;
+    QRect displayRect() const override;
+    void setDisplayRect( const QRect &rect ) override;
 
-   bool isFullScreen() const override;
-   void setFullScreen(bool fullScreen) override;
+    bool isFullScreen() const override;
+    void setFullScreen( bool fullScreen ) override;
 
-   void repaint() override;
+    void repaint() override;
 
-   QSize nativeSize() const override;
+    QSize nativeSize() const override;
 
-   Qt::AspectRatioMode aspectRatioMode() const override;
-   void setAspectRatioMode(Qt::AspectRatioMode mode) override;
+    Qt::AspectRatioMode aspectRatioMode() const override;
+    void setAspectRatioMode( Qt::AspectRatioMode mode ) override;
 
-   int brightness() const override;
-   void setBrightness(int brightness) override;
+    int brightness() const override;
+    void setBrightness( int brightness ) override;
 
-   int contrast() const override;
-   void setContrast(int contrast) override;
+    int contrast() const override;
+    void setContrast( int contrast ) override;
 
-   int hue() const override;
-   void setHue(int hue) override;
+    int hue() const override;
+    void setHue( int hue ) override;
 
-   int saturation() const override;
-   void setSaturation(int saturation) override;
+    int saturation() const override;
+    void setSaturation( int saturation ) override;
 
- private:
-   void setProcAmpValues();
-   float scaleProcAmpValue(
-      IVMRMixerControl9 *control, VMR9ProcAmpControlFlags property, int value) const;
+private:
+    void setProcAmpValues();
+    float scaleProcAmpValue(
+        IVMRMixerControl9 *control, VMR9ProcAmpControlFlags property, int value ) const;
 
-   IBaseFilter *m_filter;
-   WId m_windowId;
-   COLORREF m_windowColor;
-   DWORD m_dirtyValues;
-   Qt::AspectRatioMode m_aspectRatioMode;
-   QRect m_displayRect;
-   int m_brightness;
-   int m_contrast;
-   int m_hue;
-   int m_saturation;
-   bool m_fullScreen;
+    IBaseFilter *m_filter;
+    WId m_windowId;
+    COLORREF m_windowColor;
+    DWORD m_dirtyValues;
+    Qt::AspectRatioMode m_aspectRatioMode;
+    QRect m_displayRect;
+    int m_brightness;
+    int m_contrast;
+    int m_hue;
+    int m_saturation;
+    bool m_fullScreen;
 };
 
 #endif

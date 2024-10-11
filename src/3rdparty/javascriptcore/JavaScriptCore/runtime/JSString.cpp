@@ -29,32 +29,50 @@
 #include "StringObject.h"
 #include "StringPrototype.h"
 
-namespace JSC {
+namespace JSC
+{
 
 void JSString::Rope::destructNonRecursive()
 {
-    Vector<Rope*, 32> workQueue;
-    Rope* rope = this;
+    Vector<Rope *, 32> workQueue;
+    Rope *rope = this;
 
-    while (true) {
+    while ( true )
+    {
         unsigned length = rope->ropeLength();
-        for (unsigned i = 0; i < length; ++i) {
-            Fiber& fiber = rope->fibers(i);
-            if (fiber.isString())
+
+        for ( unsigned i = 0; i < length; ++i )
+        {
+            Fiber &fiber = rope->fibers( i );
+
+            if ( fiber.isString() )
+            {
                 fiber.string()->deref();
-            else {
-                Rope* nextRope = fiber.rope();
-                if (nextRope->hasOneRef())
-                    workQueue.append(nextRope);
+            }
+            else
+            {
+                Rope *nextRope = fiber.rope();
+
+                if ( nextRope->hasOneRef() )
+                {
+                    workQueue.append( nextRope );
+                }
                 else
+                {
                     nextRope->deref();
+                }
             }
         }
-        if (rope != this)
-            fastFree(rope);
 
-        if (workQueue.isEmpty())
+        if ( rope != this )
+        {
+            fastFree( rope );
+        }
+
+        if ( workQueue.isEmpty() )
+        {
             return;
+        }
 
         rope = workQueue.last();
         workQueue.removeLast();
@@ -76,59 +94,83 @@ JSString::Rope::~Rope()
 // Vector before performing any concatenation, but by working backwards we likely
 // only fill the queue with the number of substrings at any given level in a
 // rope-of-ropes.)
-void JSString::resolveRope(ExecState* exec) const
+void JSString::resolveRope( ExecState *exec ) const
 {
-    ASSERT(isRope());
+    ASSERT( isRope() );
 
     // Allocate the buffer to hold the final string, position initially points to the end.
-    UChar* buffer;
-    if (PassRefPtr<UStringImpl> newImpl = UStringImpl::tryCreateUninitialized(m_stringLength, buffer))
+    UChar *buffer;
+
+    if ( PassRefPtr<UStringImpl> newImpl = UStringImpl::tryCreateUninitialized( m_stringLength, buffer ) )
+    {
         m_value = newImpl;
-    else {
-        for (unsigned i = 0; i < m_ropeLength; ++i) {
+    }
+    else
+    {
+        for ( unsigned i = 0; i < m_ropeLength; ++i )
+        {
             m_fibers[i].deref();
-            m_fibers[i] = static_cast<void*>(0);
+            m_fibers[i] = static_cast<void *>( 0 );
         }
+
         m_ropeLength = 0;
-        ASSERT(!isRope());
-        ASSERT(m_value == UString());
-        throwOutOfMemoryError(exec);
+        ASSERT( !isRope() );
+        ASSERT( m_value == UString() );
+        throwOutOfMemoryError( exec );
         return;
     }
-    UChar* position = buffer + m_stringLength;
+
+    UChar *position = buffer + m_stringLength;
 
     // Start with the current Rope.
     Vector<Rope::Fiber, 32> workQueue;
     Rope::Fiber currentFiber;
-    for (unsigned i = 0; i < (m_ropeLength - 1); ++i)
-        workQueue.append(m_fibers[i]);
+
+    for ( unsigned i = 0; i < ( m_ropeLength - 1 ); ++i )
+    {
+        workQueue.append( m_fibers[i] );
+    }
+
     currentFiber = m_fibers[m_ropeLength - 1];
-    while (true) {
-        if (currentFiber.isRope()) {
-            Rope* rope = currentFiber.rope();
+
+    while ( true )
+    {
+        if ( currentFiber.isRope() )
+        {
+            Rope *rope = currentFiber.rope();
             // Copy the contents of the current rope into the workQueue, with the last item in 'currentFiber'
             // (we will be working backwards over the rope).
             unsigned ropeLengthMinusOne = rope->ropeLength() - 1;
-            for (unsigned i = 0; i < ropeLengthMinusOne; ++i)
-                workQueue.append(rope->fibers(i));
-            currentFiber = rope->fibers(ropeLengthMinusOne);
-        } else {
-            UString::Rep* string = currentFiber.string();
+
+            for ( unsigned i = 0; i < ropeLengthMinusOne; ++i )
+            {
+                workQueue.append( rope->fibers( i ) );
+            }
+
+            currentFiber = rope->fibers( ropeLengthMinusOne );
+        }
+        else
+        {
+            UString::Rep *string = currentFiber.string();
             unsigned length = string->size();
             position -= length;
-            UStringImpl::copyChars(position, string->data(), length);
+            UStringImpl::copyChars( position, string->data(), length );
 
             // Was this the last item in the work queue?
-            if (workQueue.isEmpty()) {
+            if ( workQueue.isEmpty() )
+            {
                 // Create a string from the UChar buffer, clear the rope RefPtr.
-                ASSERT(buffer == position);
-                for (unsigned i = 0; i < m_ropeLength; ++i) {
+                ASSERT( buffer == position );
+
+                for ( unsigned i = 0; i < m_ropeLength; ++i )
+                {
                     m_fibers[i].deref();
-                    m_fibers[i] = static_cast<void*>(0);
+                    m_fibers[i] = static_cast<void *>( 0 );
                 }
+
                 m_ropeLength = 0;
 
-                ASSERT(!isRope());
+                ASSERT( !isRope() );
                 return;
             }
 
@@ -139,113 +181,136 @@ void JSString::resolveRope(ExecState* exec) const
     }
 }
 
-JSValue JSString::toPrimitive(ExecState*, PreferredPrimitiveType) const
+JSValue JSString::toPrimitive( ExecState *, PreferredPrimitiveType ) const
 {
-    return const_cast<JSString*>(this);
+    return const_cast<JSString *>( this );
 }
 
-bool JSString::getPrimitiveNumber(ExecState* exec, double& number, JSValue& result)
+bool JSString::getPrimitiveNumber( ExecState *exec, double &number, JSValue &result )
 {
     result = this;
-    number = value(exec).toDouble();
+    number = value( exec ).toDouble();
     return false;
 }
 
-bool JSString::toBoolean(ExecState*) const
+bool JSString::toBoolean( ExecState * ) const
 {
     return m_stringLength;
 }
 
-double JSString::toNumber(ExecState* exec) const
+double JSString::toNumber( ExecState *exec ) const
 {
-    return value(exec).toDouble();
+    return value( exec ).toDouble();
 }
 
-UString JSString::toString(ExecState* exec) const
+UString JSString::toString( ExecState *exec ) const
 {
-    return value(exec);
+    return value( exec );
 }
 
-UString JSString::toThisString(ExecState* exec) const
+UString JSString::toThisString( ExecState *exec ) const
 {
-    return value(exec);
+    return value( exec );
 }
 
-JSString* JSString::toThisJSString(ExecState*)
+JSString *JSString::toThisJSString( ExecState * )
 {
     return this;
 }
 
-inline StringObject* StringObject::create(ExecState* exec, JSString* string)
+inline StringObject *StringObject::create( ExecState *exec, JSString *string )
 {
-    return new (exec) StringObject(exec->lexicalGlobalObject()->stringObjectStructure(), string);
+    return new ( exec ) StringObject( exec->lexicalGlobalObject()->stringObjectStructure(), string );
 }
 
-JSObject* JSString::toObject(ExecState* exec) const
+JSObject *JSString::toObject( ExecState *exec ) const
 {
-    return StringObject::create(exec, const_cast<JSString*>(this));
+    return StringObject::create( exec, const_cast<JSString *>( this ) );
 }
 
-JSObject* JSString::toThisObject(ExecState* exec) const
+JSObject *JSString::toThisObject( ExecState *exec ) const
 {
-    return StringObject::create(exec, const_cast<JSString*>(this));
+    return StringObject::create( exec, const_cast<JSString *>( this ) );
 }
 
-bool JSString::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSString::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
     // The semantics here are really getPropertySlot, not getOwnPropertySlot.
     // This function should only be called by JSValue::get.
-    if (getStringPropertySlot(exec, propertyName, slot))
-        return true;
-    if (propertyName == exec->propertyNames().underscoreProto) {
-        slot.setValue(exec->lexicalGlobalObject()->stringPrototype());
+    if ( getStringPropertySlot( exec, propertyName, slot ) )
+    {
         return true;
     }
-    slot.setBase(this);
-    JSObject* object;
-    for (JSValue prototype = exec->lexicalGlobalObject()->stringPrototype(); !prototype.isNull(); prototype = object->prototype()) {
-        object = asObject(prototype);
-        if (object->getOwnPropertySlot(exec, propertyName, slot))
+
+    if ( propertyName == exec->propertyNames().underscoreProto )
+    {
+        slot.setValue( exec->lexicalGlobalObject()->stringPrototype() );
+        return true;
+    }
+
+    slot.setBase( this );
+    JSObject *object;
+
+    for ( JSValue prototype = exec->lexicalGlobalObject()->stringPrototype(); !prototype.isNull(); prototype = object->prototype() )
+    {
+        object = asObject( prototype );
+
+        if ( object->getOwnPropertySlot( exec, propertyName, slot ) )
+        {
             return true;
+        }
     }
+
     slot.setUndefined();
     return true;
 }
 
-bool JSString::getStringPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSString::getStringPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    if (propertyName == exec->propertyNames().length) {
-        descriptor.setDescriptor(jsNumber(exec, m_stringLength), DontEnum | DontDelete | ReadOnly);
+    if ( propertyName == exec->propertyNames().length )
+    {
+        descriptor.setDescriptor( jsNumber( exec, m_stringLength ), DontEnum | DontDelete | ReadOnly );
         return true;
     }
-    
+
     bool isStrictUInt32;
-    unsigned i = propertyName.toStrictUInt32(&isStrictUInt32);
-    if (isStrictUInt32 && i < m_stringLength) {
-        descriptor.setDescriptor(jsSingleCharacterSubstring(exec, value(exec), i), DontDelete | ReadOnly);
+    unsigned i = propertyName.toStrictUInt32( &isStrictUInt32 );
+
+    if ( isStrictUInt32 && i < m_stringLength )
+    {
+        descriptor.setDescriptor( jsSingleCharacterSubstring( exec, value( exec ), i ), DontDelete | ReadOnly );
         return true;
     }
-    
+
     return false;
 }
 
-bool JSString::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSString::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    if (getStringPropertyDescriptor(exec, propertyName, descriptor))
+    if ( getStringPropertyDescriptor( exec, propertyName, descriptor ) )
+    {
         return true;
-    if (propertyName != exec->propertyNames().underscoreProto)
+    }
+
+    if ( propertyName != exec->propertyNames().underscoreProto )
+    {
         return false;
-    descriptor.setDescriptor(exec->lexicalGlobalObject()->stringPrototype(), DontEnum);
+    }
+
+    descriptor.setDescriptor( exec->lexicalGlobalObject()->stringPrototype(), DontEnum );
     return true;
 }
 
-bool JSString::getOwnPropertySlot(ExecState* exec, unsigned propertyName, PropertySlot& slot)
+bool JSString::getOwnPropertySlot( ExecState *exec, unsigned propertyName, PropertySlot &slot )
 {
     // The semantics here are really getPropertySlot, not getOwnPropertySlot.
     // This function should only be called by JSValue::get.
-    if (getStringPropertySlot(exec, propertyName, slot))
+    if ( getStringPropertySlot( exec, propertyName, slot ) )
+    {
         return true;
-    return JSString::getOwnPropertySlot(exec, Identifier::from(exec, propertyName), slot);
+    }
+
+    return JSString::getOwnPropertySlot( exec, Identifier::from( exec, propertyName ), slot );
 }
 
 } // namespace JSC

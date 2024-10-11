@@ -27,69 +27,71 @@
 #include <qglobal.h>
 #include <qhash.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class ColorOutputPrivate;
 
 class ColorOutput
 {
-static constexpr uint32_t ForegroundShift = 0;
-static constexpr uint32_t BackgroundShift = 10;
+    static constexpr uint32_t ForegroundShift = 0;
+    static constexpr uint32_t BackgroundShift = 10;
 
-static constexpr uint32_t ForegroundMask  = 0x000003FF;
-static constexpr uint32_t BackgroundMask  = 0xFFFFFC00;
+    static constexpr uint32_t ForegroundMask  = 0x000003FF;
+    static constexpr uint32_t BackgroundMask  = 0xFFFFFC00;
 
- public:
-   enum ColorCodeComponent {
-      BlackForeground         = 1 << ForegroundShift,
-      BlueForeground          = 2 << ForegroundShift,
-      GreenForeground         = 3 << ForegroundShift,
-      CyanForeground          = 4 << ForegroundShift,
-      RedForeground           = 5 << ForegroundShift,
-      PurpleForeground        = 6 << ForegroundShift,
-      BrownForeground         = 7 << ForegroundShift,
-      LightGrayForeground     = 8 << ForegroundShift,
-      DarkGrayForeground      = 9 << ForegroundShift,
-      LightBlueForeground     = 10 << ForegroundShift,
-      LightGreenForeground    = 11 << ForegroundShift,
-      LightCyanForeground     = 12 << ForegroundShift,
-      LightRedForeground      = 13 << ForegroundShift,
-      LightPurpleForeground   = 14 << ForegroundShift,
-      YellowForeground        = 15 << ForegroundShift,
-      WhiteForeground         = 16 << ForegroundShift,
+public:
+    enum ColorCodeComponent
+    {
+        BlackForeground         = 1 << ForegroundShift,
+        BlueForeground          = 2 << ForegroundShift,
+        GreenForeground         = 3 << ForegroundShift,
+        CyanForeground          = 4 << ForegroundShift,
+        RedForeground           = 5 << ForegroundShift,
+        PurpleForeground        = 6 << ForegroundShift,
+        BrownForeground         = 7 << ForegroundShift,
+        LightGrayForeground     = 8 << ForegroundShift,
+        DarkGrayForeground      = 9 << ForegroundShift,
+        LightBlueForeground     = 10 << ForegroundShift,
+        LightGreenForeground    = 11 << ForegroundShift,
+        LightCyanForeground     = 12 << ForegroundShift,
+        LightRedForeground      = 13 << ForegroundShift,
+        LightPurpleForeground   = 14 << ForegroundShift,
+        YellowForeground        = 15 << ForegroundShift,
+        WhiteForeground         = 16 << ForegroundShift,
 
-      BlackBackground         = 1 << BackgroundShift,
-      BlueBackground          = 2 << BackgroundShift,
-      GreenBackground         = 3 << BackgroundShift,
-      CyanBackground          = 4 << BackgroundShift,
-      RedBackground           = 5 << BackgroundShift,
-      PurpleBackground        = 6 << BackgroundShift,
-      BrownBackground         = 7 << BackgroundShift,
+        BlackBackground         = 1 << BackgroundShift,
+        BlueBackground          = 2 << BackgroundShift,
+        GreenBackground         = 3 << BackgroundShift,
+        CyanBackground          = 4 << BackgroundShift,
+        RedBackground           = 5 << BackgroundShift,
+        PurpleBackground        = 6 << BackgroundShift,
+        BrownBackground         = 7 << BackgroundShift,
 
-      DefaultColor            = BlackBackground,
-   };
+        DefaultColor            = BlackBackground,
+    };
 
-   using ColorCode    = QFlags<ColorCodeComponent>;
-   using ColorMapping = QHash<int, ColorCode>;
+    using ColorCode    = QFlags<ColorCodeComponent>;
+    using ColorMapping = QHash<int, ColorCode>;
 
-   ColorOutput();
-   ~ColorOutput();
+    ColorOutput();
+    ~ColorOutput();
 
-   void setColorMapping(const ColorMapping &cMapping);
-   ColorMapping colorMapping() const;
-   void insertMapping(int colorID, const ColorCode colorCode);
+    void setColorMapping( const ColorMapping &cMapping );
+    ColorMapping colorMapping() const;
+    void insertMapping( int colorID, const ColorCode colorCode );
 
-   void writeUncolored(const QString &message);
-   void write(const QString &message, int color = -1);
-   QString colorify(const QString &message, int color = -1) const;
+    void writeUncolored( const QString &message );
+    void write( const QString &message, int color = -1 );
+    QString colorify( const QString &message, int color = -1 ) const;
 
- private:
-   ColorOutput(const ColorOutput &) = delete;
-   ColorOutput &operator=(const ColorOutput &) = delete;
+private:
+    ColorOutput( const ColorOutput & ) = delete;
+    ColorOutput &operator=( const ColorOutput & ) = delete;
 
-   ColorOutputPrivate *d;
+    ColorOutputPrivate *d;
 };
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QPatternist::ColorOutput::ColorCode)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QPatternist::ColorOutput::ColorCode )
 
 #endif

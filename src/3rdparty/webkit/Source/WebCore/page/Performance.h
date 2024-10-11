@@ -40,26 +40,31 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class Performance : public RefCounted<Performance> {
+class Performance : public RefCounted<Performance>
+{
 public:
-    static PassRefPtr<Performance> create(Frame* frame) { return adoptRef(new Performance(frame)); }
+    static PassRefPtr<Performance> create( Frame *frame )
+    {
+        return adoptRef( new Performance( frame ) );
+    }
 
-    Frame* frame() const;
+    Frame *frame() const;
     void disconnectFrame();
 
-    MemoryInfo* memory() const;
-    PerformanceNavigation* navigation() const;
-    PerformanceTiming* timing() const;
+    MemoryInfo *memory() const;
+    PerformanceNavigation *navigation() const;
+    PerformanceTiming *timing() const;
 
 private:
-    Performance(Frame*);
+    Performance( Frame * );
 
     mutable RefPtr<MemoryInfo> m_memory;
     mutable RefPtr<PerformanceNavigation> m_navigation;
     mutable RefPtr<PerformanceTiming> m_timing;
-    Frame* m_frame;
+    Frame *m_frame;
 };
 
 }

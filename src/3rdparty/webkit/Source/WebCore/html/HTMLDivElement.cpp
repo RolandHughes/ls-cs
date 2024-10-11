@@ -28,49 +28,65 @@
 #include "CSSValueKeywords.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLDivElement::HTMLDivElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLDivElement::HTMLDivElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(divTag));
+    ASSERT( hasTagName( divTag ) );
 }
 
-PassRefPtr<HTMLDivElement> HTMLDivElement::create(Document* document)
+PassRefPtr<HTMLDivElement> HTMLDivElement::create( Document *document )
 {
-    return adoptRef(new HTMLDivElement(divTag, document));
+    return adoptRef( new HTMLDivElement( divTag, document ) );
 }
 
-PassRefPtr<HTMLDivElement> HTMLDivElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLDivElement> HTMLDivElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLDivElement(tagName, document));
+    return adoptRef( new HTMLDivElement( tagName, document ) );
 }
 
-bool HTMLDivElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLDivElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == alignAttr) {
+    if ( attrName == alignAttr )
+    {
         result = eBlock;
         return false;
     }
-    return HTMLElement::mapToEntry(attrName, result);
+
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-void HTMLDivElement::parseMappedAttribute(Attribute* attr)
+void HTMLDivElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == alignAttr) {
+    if ( attr->name() == alignAttr )
+    {
         String v = attr->value();
-        if (equalIgnoringCase(attr->value(), "middle") || equalIgnoringCase(attr->value(), "center"))
-           addCSSProperty(attr, CSSPropertyTextAlign, CSSValueWebkitCenter);
-        else if (equalIgnoringCase(attr->value(), "left"))
-            addCSSProperty(attr, CSSPropertyTextAlign, CSSValueWebkitLeft);
-        else if (equalIgnoringCase(attr->value(), "right"))
-            addCSSProperty(attr, CSSPropertyTextAlign, CSSValueWebkitRight);
+
+        if ( equalIgnoringCase( attr->value(), "middle" ) || equalIgnoringCase( attr->value(), "center" ) )
+        {
+            addCSSProperty( attr, CSSPropertyTextAlign, CSSValueWebkitCenter );
+        }
+        else if ( equalIgnoringCase( attr->value(), "left" ) )
+        {
+            addCSSProperty( attr, CSSPropertyTextAlign, CSSValueWebkitLeft );
+        }
+        else if ( equalIgnoringCase( attr->value(), "right" ) )
+        {
+            addCSSProperty( attr, CSSPropertyTextAlign, CSSValueWebkitRight );
+        }
         else
-            addCSSProperty(attr, CSSPropertyTextAlign, v);
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+        {
+            addCSSProperty( attr, CSSPropertyTextAlign, v );
+        }
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 }

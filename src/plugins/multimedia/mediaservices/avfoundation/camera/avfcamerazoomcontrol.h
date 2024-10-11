@@ -35,32 +35,32 @@ class AVFCameraControl;
 
 class AVFCameraZoomControl : public QCameraZoomControl
 {
-   CS_OBJECT(AVFCameraZoomControl)
+    LSCS_OBJECT( AVFCameraZoomControl )
 
- public:
-   AVFCameraZoomControl(AVFCameraService *service);
+public:
+    AVFCameraZoomControl( AVFCameraService *service );
 
-   qreal maximumOpticalZoom() const override;
-   qreal maximumDigitalZoom() const override;
+    qreal maximumOpticalZoom() const override;
+    qreal maximumDigitalZoom() const override;
 
-   qreal requestedOpticalZoom() const override;
-   qreal requestedDigitalZoom() const override;
-   qreal currentOpticalZoom() const override;
-   qreal currentDigitalZoom() const override;
+    qreal requestedOpticalZoom() const override;
+    qreal requestedDigitalZoom() const override;
+    qreal currentOpticalZoom() const override;
+    qreal currentDigitalZoom() const override;
 
-   void zoomTo(qreal optical, qreal digital) override;
+    void zoomTo( qreal optical, qreal digital ) override;
 
- private :
-   CS_SLOT_1(Private, void cameraStateChanged())
-   CS_SLOT_2(cameraStateChanged)
+private :
+    LSCS_SLOT_1( Private, void cameraStateChanged() )
+    LSCS_SLOT_2( cameraStateChanged )
 
-   void zoomToRequestedDigital();
+    void zoomToRequestedDigital();
 
-   AVFCameraSession *m_session;
+    AVFCameraSession *m_session;
 
-   CGFloat m_maxZoomFactor;
-   CGFloat m_zoomFactor;
-   CGFloat m_requestedZoomFactor;
+    CGFloat m_maxZoomFactor;
+    CGFloat m_zoomFactor;
+    CGFloat m_requestedZoomFactor;
 };
 
 #endif

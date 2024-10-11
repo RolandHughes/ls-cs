@@ -24,19 +24,23 @@
 #include "SVGPathConsumer.h"
 #include "SVGPathSource.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum FloatBlendMode {
+enum FloatBlendMode
+{
     BlendHorizontal,
     BlendVertical
 };
 
-class SVGPathBlender {
-    WTF_MAKE_NONCOPYABLE(SVGPathBlender); WTF_MAKE_FAST_ALLOCATED;
+class SVGPathBlender
+{
+    WTF_MAKE_NONCOPYABLE( SVGPathBlender );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     SVGPathBlender();
 
-    bool blendAnimatedPath(float, SVGPathSource*, SVGPathSource*, SVGPathConsumer*);
+    bool blendAnimatedPath( float, SVGPathSource *, SVGPathSource *, SVGPathConsumer * );
     void cleanup();
 
 private:
@@ -50,16 +54,16 @@ private:
     bool blendCurveToQuadraticSmoothSegment();
     bool blendArcToSegment();
 
-    float blendAnimatedDimensonalFloat(float, float, FloatBlendMode);
-    FloatPoint blendAnimatedFloatPoint(const FloatPoint& from, const FloatPoint& to);
+    float blendAnimatedDimensonalFloat( float, float, FloatBlendMode );
+    FloatPoint blendAnimatedFloatPoint( const FloatPoint &from, const FloatPoint &to );
 
-    SVGPathSource* m_fromSource;
-    SVGPathSource* m_toSource;
-    SVGPathConsumer* m_consumer;
+    SVGPathSource *m_fromSource;
+    SVGPathSource *m_toSource;
+    SVGPathConsumer *m_consumer;
 
     FloatPoint m_fromCurrentPoint;
     FloatPoint m_toCurrentPoint;
-    
+
     PathCoordinateMode m_fromMode;
     PathCoordinateMode m_toMode;
     float m_progress;

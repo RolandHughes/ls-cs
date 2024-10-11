@@ -31,11 +31,12 @@
 #include "WebContext.h"
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
-
-WebTextChecker* WebTextChecker::shared()
+namespace WebKit
 {
-    static WebTextChecker* textChecker = adoptRef(new WebTextChecker).leakRef();
+
+WebTextChecker *WebTextChecker::shared()
+{
+    static WebTextChecker *textChecker = adoptRef( new WebTextChecker ).leakRef();
     return textChecker;
 }
 
@@ -43,42 +44,48 @@ WebTextChecker::WebTextChecker()
 {
 }
 
-void WebTextChecker::setClient(const WKTextCheckerClient* client)
+void WebTextChecker::setClient( const WKTextCheckerClient *client )
 {
-    m_client.initialize(client);
+    m_client.initialize( client );
 }
 
 static void updateStateForAllWebProcesses()
 {
-    const Vector<WebContext*>& contexts = WebContext::allContexts();
-    for (size_t i = 0; i < contexts.size(); ++i) {
-        WebProcessProxy* webProcess = contexts[i]->process();
-        if (!webProcess)
+    const Vector<WebContext *> &contexts = WebContext::allContexts();
+
+    for ( size_t i = 0; i < contexts.size(); ++i )
+    {
+        WebProcessProxy *webProcess = contexts[i]->process();
+
+        if ( !webProcess )
+        {
             continue;
+        }
+
         webProcess->updateTextCheckerState();
     }
 }
 
-void WebTextChecker::continuousSpellCheckingEnabledStateChanged(bool enabled)
+void WebTextChecker::continuousSpellCheckingEnabledStateChanged( bool enabled )
 {
-    TextChecker::continuousSpellCheckingEnabledStateChanged(enabled);
+    TextChecker::continuousSpellCheckingEnabledStateChanged( enabled );
     updateStateForAllWebProcesses();
 }
 
-void WebTextChecker::grammarCheckingEnabledStateChanged(bool enabled)
+void WebTextChecker::grammarCheckingEnabledStateChanged( bool enabled )
 {
-    TextChecker::grammarCheckingEnabledStateChanged(enabled);
+    TextChecker::grammarCheckingEnabledStateChanged( enabled );
     updateStateForAllWebProcesses();
 }
 
-void WebTextChecker::checkSpelling(const WebPageProxy* page, bool startBeforeSelection)
+void WebTextChecker::checkSpelling( const WebPageProxy *page, bool startBeforeSelection )
 {
-    page->advanceToNextMisspelling(startBeforeSelection);
+    page->advanceToNextMisspelling( startBeforeSelection );
 }
 
-void WebTextChecker::changeSpellingToWord(const WebPageProxy* page, const String& text)
+void WebTextChecker::changeSpellingToWord( const WebPageProxy *page, const String &text )
 {
-    page->changeSpellingToWord(text);
+    page->changeSpellingToWord( text );
 }
 
 } // namespace WebKit

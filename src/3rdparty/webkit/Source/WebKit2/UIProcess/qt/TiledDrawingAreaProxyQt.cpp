@@ -40,31 +40,37 @@ using namespace WebCore;
 
 #define TILE_DEBUG_LOG
 
-namespace WebKit {
-
-void TiledDrawingAreaProxy::updateWebView(const Vector<IntRect>& paintedArea)
+namespace WebKit
 {
-    if (!page() || !page()->isValid())
+
+void TiledDrawingAreaProxy::updateWebView( const Vector<IntRect> &paintedArea )
+{
+    if ( !page() || !page()->isValid() )
+    {
         return;
+    }
 
     unsigned size = paintedArea.size();
-    for (unsigned n = 0; n < size; ++n)
-        m_webView->update(QRect(paintedArea[n]));
+
+    for ( unsigned n = 0; n < size; ++n )
+    {
+        m_webView->update( QRect( paintedArea[n] ) );
+    }
 }
 
 IntRect TiledDrawingAreaProxy::webViewVisibleRect()
 {
-    return enclosingIntRect(FloatRect(m_webView->visibleRect()));
+    return enclosingIntRect( FloatRect( m_webView->visibleRect() ) );
 }
 
-WebPageProxy* TiledDrawingAreaProxy::page()
+WebPageProxy *TiledDrawingAreaProxy::page()
 {
-    return toImpl(m_webView->page()->pageRef());
+    return toImpl( m_webView->page()->pageRef() );
 }
 
-void TiledDrawingAreaProxy::snapshotTaken(UpdateChunk& chunk)
+void TiledDrawingAreaProxy::snapshotTaken( UpdateChunk &chunk )
 {
-    emit m_webView->snapshotTaken(chunk.createImage());
+    emit m_webView->snapshotTaken( chunk.createImage() );
 }
 
 } // namespace WebKit

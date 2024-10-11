@@ -41,228 +41,238 @@
 #ifndef QT_NO_ACCESSIBILITY
 
 #ifndef QT_NO_SPINBOX
-QAccessibleAbstractSpinBox::QAccessibleAbstractSpinBox(QWidget *w)
-   : QAccessibleWidget(w, QAccessible::SpinBox), lineEdit(nullptr)
+QAccessibleAbstractSpinBox::QAccessibleAbstractSpinBox( QWidget *w )
+    : QAccessibleWidget( w, QAccessible::SpinBox ), lineEdit( nullptr )
 {
-   Q_ASSERT(abstractSpinBox());
+    Q_ASSERT( abstractSpinBox() );
 }
 
 QAccessibleAbstractSpinBox::~QAccessibleAbstractSpinBox()
 {
-   delete lineEdit;
+    delete lineEdit;
 }
 
 QAbstractSpinBox *QAccessibleAbstractSpinBox::abstractSpinBox() const
 {
-   return qobject_cast<QAbstractSpinBox *>(object());
+    return qobject_cast<QAbstractSpinBox *>( object() );
 }
 
 QAccessibleInterface *QAccessibleAbstractSpinBox::lineEditIface() const
 {
-   // QAccessibleLineEdit is only used to forward the text functions
-   if (! lineEdit) {
-      lineEdit = new QAccessibleLineEdit(abstractSpinBox()->lineEdit());
-   }
+    // QAccessibleLineEdit is only used to forward the text functions
+    if ( ! lineEdit )
+    {
+        lineEdit = new QAccessibleLineEdit( abstractSpinBox()->lineEdit() );
+    }
 
-   return lineEdit;
+    return lineEdit;
 }
 
-QString QAccessibleAbstractSpinBox::text(QAccessible::Text t) const
+QString QAccessibleAbstractSpinBox::text( QAccessible::Text t ) const
 {
-   if (t == QAccessible::Value) {
-      return abstractSpinBox()->text();
-   }
-   return QAccessibleWidget::text(t);
+    if ( t == QAccessible::Value )
+    {
+        return abstractSpinBox()->text();
+    }
+
+    return QAccessibleWidget::text( t );
 }
 
-void *QAccessibleAbstractSpinBox::interface_cast(QAccessible::InterfaceType t)
+void *QAccessibleAbstractSpinBox::interface_cast( QAccessible::InterfaceType t )
 {
-   if (t == QAccessible::ValueInterface) {
-      return static_cast<QAccessibleValueInterface *>(this);
-   }
-   if (t == QAccessible::TextInterface) {
-      return static_cast<QAccessibleTextInterface *>(this);
-   }
-   if (t == QAccessible::EditableTextInterface) {
-      return static_cast<QAccessibleEditableTextInterface *>(this);
-   }
-   return QAccessibleWidget::interface_cast(t);
+    if ( t == QAccessible::ValueInterface )
+    {
+        return static_cast<QAccessibleValueInterface *>( this );
+    }
+
+    if ( t == QAccessible::TextInterface )
+    {
+        return static_cast<QAccessibleTextInterface *>( this );
+    }
+
+    if ( t == QAccessible::EditableTextInterface )
+    {
+        return static_cast<QAccessibleEditableTextInterface *>( this );
+    }
+
+    return QAccessibleWidget::interface_cast( t );
 }
 
 QVariant QAccessibleAbstractSpinBox::currentValue() const
 {
-   return abstractSpinBox()->property("value");
+    return abstractSpinBox()->property( "value" );
 }
 
-void QAccessibleAbstractSpinBox::setCurrentValue(const QVariant &value)
+void QAccessibleAbstractSpinBox::setCurrentValue( const QVariant &value )
 {
-   abstractSpinBox()->setProperty("value", value);
+    abstractSpinBox()->setProperty( "value", value );
 }
 
 QVariant QAccessibleAbstractSpinBox::maximumValue() const
 {
-   return abstractSpinBox()->property("maximum");
+    return abstractSpinBox()->property( "maximum" );
 }
 
 QVariant QAccessibleAbstractSpinBox::minimumValue() const
 {
-   return abstractSpinBox()->property("minimum");
+    return abstractSpinBox()->property( "minimum" );
 }
 
 QVariant QAccessibleAbstractSpinBox::minimumStepSize() const
 {
-   return abstractSpinBox()->property("stepSize");
+    return abstractSpinBox()->property( "stepSize" );
 }
 
-void QAccessibleAbstractSpinBox::addSelection(int startOffset, int endOffset)
+void QAccessibleAbstractSpinBox::addSelection( int startOffset, int endOffset )
 {
-   lineEditIface()->textInterface()->addSelection(startOffset, endOffset);
+    lineEditIface()->textInterface()->addSelection( startOffset, endOffset );
 }
 
-QString QAccessibleAbstractSpinBox::attributes(int offset, int *startOffset, int *endOffset) const
+QString QAccessibleAbstractSpinBox::attributes( int offset, int *startOffset, int *endOffset ) const
 {
-   return lineEditIface()->textInterface()->attributes(offset, startOffset, endOffset);
+    return lineEditIface()->textInterface()->attributes( offset, startOffset, endOffset );
 }
 
 int QAccessibleAbstractSpinBox::cursorPosition() const
 {
-   return lineEditIface()->textInterface()->cursorPosition();
+    return lineEditIface()->textInterface()->cursorPosition();
 }
 
-QRect QAccessibleAbstractSpinBox::characterRect(int offset) const
+QRect QAccessibleAbstractSpinBox::characterRect( int offset ) const
 {
-   return lineEditIface()->textInterface()->characterRect(offset);
+    return lineEditIface()->textInterface()->characterRect( offset );
 }
 
 int QAccessibleAbstractSpinBox::selectionCount() const
 {
-   return lineEditIface()->textInterface()->selectionCount();
+    return lineEditIface()->textInterface()->selectionCount();
 }
 
-int QAccessibleAbstractSpinBox::offsetAtPoint(const QPoint &point) const
+int QAccessibleAbstractSpinBox::offsetAtPoint( const QPoint &point ) const
 {
-   return lineEditIface()->textInterface()->offsetAtPoint(point);
+    return lineEditIface()->textInterface()->offsetAtPoint( point );
 }
 
-void QAccessibleAbstractSpinBox::selection(int selectionIndex, int *startOffset, int *endOffset) const
+void QAccessibleAbstractSpinBox::selection( int selectionIndex, int *startOffset, int *endOffset ) const
 {
-   lineEditIface()->textInterface()->selection(selectionIndex, startOffset, endOffset);
+    lineEditIface()->textInterface()->selection( selectionIndex, startOffset, endOffset );
 }
 
-QString QAccessibleAbstractSpinBox::text(int startOffset, int endOffset) const
+QString QAccessibleAbstractSpinBox::text( int startOffset, int endOffset ) const
 {
-   return lineEditIface()->textInterface()->text(startOffset, endOffset);
+    return lineEditIface()->textInterface()->text( startOffset, endOffset );
 }
 
-QString QAccessibleAbstractSpinBox::textBeforeOffset(int offset, QAccessible::TextBoundaryType boundaryType, int *startOffset,
-   int *endOffset) const
+QString QAccessibleAbstractSpinBox::textBeforeOffset( int offset, QAccessible::TextBoundaryType boundaryType, int *startOffset,
+        int *endOffset ) const
 {
-   return lineEditIface()->textInterface()->textBeforeOffset(offset, boundaryType, startOffset, endOffset);
+    return lineEditIface()->textInterface()->textBeforeOffset( offset, boundaryType, startOffset, endOffset );
 }
 
-QString QAccessibleAbstractSpinBox::textAfterOffset(int offset, QAccessible::TextBoundaryType boundaryType, int *startOffset,
-   int *endOffset) const
+QString QAccessibleAbstractSpinBox::textAfterOffset( int offset, QAccessible::TextBoundaryType boundaryType, int *startOffset,
+        int *endOffset ) const
 {
-   return lineEditIface()->textInterface()->textAfterOffset(offset, boundaryType, startOffset, endOffset);
+    return lineEditIface()->textInterface()->textAfterOffset( offset, boundaryType, startOffset, endOffset );
 }
 
-QString QAccessibleAbstractSpinBox::textAtOffset(int offset, QAccessible::TextBoundaryType boundaryType, int *startOffset,
-   int *endOffset) const
+QString QAccessibleAbstractSpinBox::textAtOffset( int offset, QAccessible::TextBoundaryType boundaryType, int *startOffset,
+        int *endOffset ) const
 {
-   return lineEditIface()->textInterface()->textAtOffset(offset, boundaryType, startOffset, endOffset);
+    return lineEditIface()->textInterface()->textAtOffset( offset, boundaryType, startOffset, endOffset );
 }
 
-void QAccessibleAbstractSpinBox::removeSelection(int selectionIndex)
+void QAccessibleAbstractSpinBox::removeSelection( int selectionIndex )
 {
-   lineEditIface()->textInterface()->removeSelection(selectionIndex);
+    lineEditIface()->textInterface()->removeSelection( selectionIndex );
 }
 
-void QAccessibleAbstractSpinBox::setCursorPosition(int position)
+void QAccessibleAbstractSpinBox::setCursorPosition( int position )
 {
-   lineEditIface()->textInterface()->setCursorPosition(position);
+    lineEditIface()->textInterface()->setCursorPosition( position );
 }
 
-void QAccessibleAbstractSpinBox::setSelection(int selectionIndex, int startOffset, int endOffset)
+void QAccessibleAbstractSpinBox::setSelection( int selectionIndex, int startOffset, int endOffset )
 {
-   lineEditIface()->textInterface()->setSelection(selectionIndex, startOffset, endOffset);
+    lineEditIface()->textInterface()->setSelection( selectionIndex, startOffset, endOffset );
 }
 
 int QAccessibleAbstractSpinBox::characterCount() const
 {
-   return lineEditIface()->textInterface()->characterCount();
+    return lineEditIface()->textInterface()->characterCount();
 }
 
-void QAccessibleAbstractSpinBox::scrollToSubstring(int startIndex, int endIndex)
+void QAccessibleAbstractSpinBox::scrollToSubstring( int startIndex, int endIndex )
 {
-   lineEditIface()->textInterface()->scrollToSubstring(startIndex, endIndex);
+    lineEditIface()->textInterface()->scrollToSubstring( startIndex, endIndex );
 }
 
-void QAccessibleAbstractSpinBox::deleteText(int startOffset, int endOffset)
+void QAccessibleAbstractSpinBox::deleteText( int startOffset, int endOffset )
 {
-   lineEditIface()->editableTextInterface()->deleteText(startOffset, endOffset);
+    lineEditIface()->editableTextInterface()->deleteText( startOffset, endOffset );
 }
 
-void QAccessibleAbstractSpinBox::insertText(int offset, const QString &text)
+void QAccessibleAbstractSpinBox::insertText( int offset, const QString &text )
 {
-   lineEditIface()->editableTextInterface()->insertText(offset, text);
+    lineEditIface()->editableTextInterface()->insertText( offset, text );
 }
 
-void QAccessibleAbstractSpinBox::replaceText(int startOffset, int endOffset, const QString &text)
+void QAccessibleAbstractSpinBox::replaceText( int startOffset, int endOffset, const QString &text )
 {
-   lineEditIface()->editableTextInterface()->replaceText(startOffset, endOffset, text);
+    lineEditIface()->editableTextInterface()->replaceText( startOffset, endOffset, text );
 }
 
-QAccessibleSpinBox::QAccessibleSpinBox(QWidget *w)
-   : QAccessibleAbstractSpinBox(w)
+QAccessibleSpinBox::QAccessibleSpinBox( QWidget *w )
+    : QAccessibleAbstractSpinBox( w )
 {
-   Q_ASSERT(spinBox() != nullptr);
+    Q_ASSERT( spinBox() != nullptr );
 
-   const QMetaObject &metaObj = QSpinBox::staticMetaObject();
+    const QMetaObject &metaObj = QSpinBox::staticMetaObject();
 
-   int signalIndex1          = metaObj.indexOfSignal(cs_mp_cast<int>(&QSpinBox::valueChanged));
-   QMetaMethod signalMethod1 = metaObj.method(signalIndex1);
-   addControllingSignal(signalMethod1);
+    int signalIndex1          = metaObj.indexOfSignal( lscs_mp_cast<int>( &QSpinBox::valueChanged ) );
+    QMetaMethod signalMethod1 = metaObj.method( signalIndex1 );
+    addControllingSignal( signalMethod1 );
 
-   int signalIndex2          = metaObj.indexOfSignal(cs_mp_cast<const QString &>(&QSpinBox::valueChanged));
-   QMetaMethod signalMethod2 = metaObj.method(signalIndex2);
-   addControllingSignal(signalMethod2);
+    int signalIndex2          = metaObj.indexOfSignal( lscs_mp_cast<const QString &>( &QSpinBox::valueChanged ) );
+    QMetaMethod signalMethod2 = metaObj.method( signalIndex2 );
+    addControllingSignal( signalMethod2 );
 }
 
 QSpinBox *QAccessibleSpinBox::spinBox() const
 {
-   return qobject_cast<QSpinBox *>(object());
+    return qobject_cast<QSpinBox *>( object() );
 }
 
 
 // ================================== QAccessibleDoubleSpinBox ==================================
-QAccessibleDoubleSpinBox::QAccessibleDoubleSpinBox(QWidget *widget)
-   : QAccessibleAbstractSpinBox(widget)
+QAccessibleDoubleSpinBox::QAccessibleDoubleSpinBox( QWidget *widget )
+    : QAccessibleAbstractSpinBox( widget )
 {
-   Q_ASSERT(qobject_cast<QDoubleSpinBox *>(widget));
+    Q_ASSERT( qobject_cast<QDoubleSpinBox *>( widget ) );
 
-   const QMetaObject &metaObj = QDoubleSpinBox::staticMetaObject();
+    const QMetaObject &metaObj = QDoubleSpinBox::staticMetaObject();
 
-   int signalIndex1          = metaObj.indexOfSignal(cs_mp_cast<double>(&QDoubleSpinBox::valueChanged));
-   QMetaMethod signalMethod1 = metaObj.method(signalIndex1);
-   addControllingSignal(signalMethod1);
+    int signalIndex1          = metaObj.indexOfSignal( lscs_mp_cast<double>( &QDoubleSpinBox::valueChanged ) );
+    QMetaMethod signalMethod1 = metaObj.method( signalIndex1 );
+    addControllingSignal( signalMethod1 );
 
-   int signalIndex2          = metaObj.indexOfSignal(cs_mp_cast<const QString &>(&QDoubleSpinBox::valueChanged));
-   QMetaMethod signalMethod2 = metaObj.method(signalIndex2);
-   addControllingSignal(signalMethod2);
+    int signalIndex2          = metaObj.indexOfSignal( lscs_mp_cast<const QString &>( &QDoubleSpinBox::valueChanged ) );
+    QMetaMethod signalMethod2 = metaObj.method( signalIndex2 );
+    addControllingSignal( signalMethod2 );
 }
 
 QDoubleSpinBox *QAccessibleDoubleSpinBox::doubleSpinBox() const
 {
-   return static_cast<QDoubleSpinBox *>(object());
+    return static_cast<QDoubleSpinBox *>( object() );
 }
 
-QString QAccessibleDoubleSpinBox::text(QAccessible::Text textType) const
+QString QAccessibleDoubleSpinBox::text( QAccessible::Text textType ) const
 {
-   if (textType == QAccessible::Value) {
-      return doubleSpinBox()->textFromValue(doubleSpinBox()->value());
-   }
+    if ( textType == QAccessible::Value )
+    {
+        return doubleSpinBox()->textFromValue( doubleSpinBox()->value() );
+    }
 
-   return QAccessibleWidget::text(textType);
+    return QAccessibleWidget::text( textType );
 }
 
 #endif // QT_NO_SPINBOX
@@ -270,30 +280,31 @@ QString QAccessibleDoubleSpinBox::text(QAccessible::Text textType) const
 
 #ifndef QT_NO_SCROLLBAR
 
-QAccessibleScrollBar::QAccessibleScrollBar(QWidget *w)
-   : QAccessibleAbstractSlider(w, QAccessible::ScrollBar)
+QAccessibleScrollBar::QAccessibleScrollBar( QWidget *w )
+    : QAccessibleAbstractSlider( w, QAccessible::ScrollBar )
 {
-   Q_ASSERT(scrollBar());
+    Q_ASSERT( scrollBar() );
 
-   const QMetaObject &metaObj = QScrollBar::staticMetaObject();
+    const QMetaObject &metaObj = QScrollBar::staticMetaObject();
 
-   int signalIndex          = metaObj.indexOfSignal(&QScrollBar::valueChanged);
-   QMetaMethod signalMethod = metaObj.method(signalIndex);
-   addControllingSignal(signalMethod);
+    int signalIndex          = metaObj.indexOfSignal( &QScrollBar::valueChanged );
+    QMetaMethod signalMethod = metaObj.method( signalIndex );
+    addControllingSignal( signalMethod );
 }
 
 QScrollBar *QAccessibleScrollBar::scrollBar() const
 {
-   return qobject_cast<QScrollBar *>(object());
+    return qobject_cast<QScrollBar *>( object() );
 }
 
-QString QAccessibleScrollBar::text(QAccessible::Text t) const
+QString QAccessibleScrollBar::text( QAccessible::Text t ) const
 {
-   if (t == QAccessible::Value) {
-      return QString::number(scrollBar()->value());
-   }
+    if ( t == QAccessible::Value )
+    {
+        return QString::number( scrollBar()->value() );
+    }
 
-   return QAccessibleAbstractSlider::text(t);
+    return QAccessibleAbstractSlider::text( t );
 }
 
 #endif // QT_NO_SCROLLBAR
@@ -301,74 +312,77 @@ QString QAccessibleScrollBar::text(QAccessible::Text t) const
 
 #ifndef QT_NO_SLIDER
 
-QAccessibleSlider::QAccessibleSlider(QWidget *w)
-   : QAccessibleAbstractSlider(w)
+QAccessibleSlider::QAccessibleSlider( QWidget *w )
+    : QAccessibleAbstractSlider( w )
 {
-   Q_ASSERT(slider());
+    Q_ASSERT( slider() );
 
-   const QMetaObject &metaObj = QSlider::staticMetaObject();
+    const QMetaObject &metaObj = QSlider::staticMetaObject();
 
-   int signalIndex          = metaObj.indexOfSignal(&QSlider::valueChanged);
-   QMetaMethod signalMethod = metaObj.method(signalIndex);
-   addControllingSignal(signalMethod);
+    int signalIndex          = metaObj.indexOfSignal( &QSlider::valueChanged );
+    QMetaMethod signalMethod = metaObj.method( signalIndex );
+    addControllingSignal( signalMethod );
 }
 
 QSlider *QAccessibleSlider::slider() const
 {
-   return qobject_cast<QSlider *>(object());
+    return qobject_cast<QSlider *>( object() );
 }
 
-QString QAccessibleSlider::text(QAccessible::Text t) const
+QString QAccessibleSlider::text( QAccessible::Text t ) const
 {
-   if (t == QAccessible::Value) {
-      return QString::number(slider()->value());
-   }
+    if ( t == QAccessible::Value )
+    {
+        return QString::number( slider()->value() );
+    }
 
-   return QAccessibleAbstractSlider::text(t);
+    return QAccessibleAbstractSlider::text( t );
 }
 
-QAccessibleAbstractSlider::QAccessibleAbstractSlider(QWidget *w, QAccessible::Role r)
-   : QAccessibleWidget(w, r)
+QAccessibleAbstractSlider::QAccessibleAbstractSlider( QWidget *w, QAccessible::Role r )
+    : QAccessibleWidget( w, r )
 {
-   Q_ASSERT(qobject_cast<QAbstractSlider *>(w));
+    Q_ASSERT( qobject_cast<QAbstractSlider *>( w ) );
 }
 
-void *QAccessibleAbstractSlider::interface_cast(QAccessible::InterfaceType t)
+void *QAccessibleAbstractSlider::interface_cast( QAccessible::InterfaceType t )
 {
-   if (t == QAccessible::ValueInterface) {
-      return static_cast<QAccessibleValueInterface *>(this);
-   }
-   return QAccessibleWidget::interface_cast(t);
+    if ( t == QAccessible::ValueInterface )
+    {
+        return static_cast<QAccessibleValueInterface *>( this );
+    }
+
+    return QAccessibleWidget::interface_cast( t );
 }
 
 QVariant QAccessibleAbstractSlider::currentValue() const
 {
-   return abstractSlider()->value();
+    return abstractSlider()->value();
 }
 
-void QAccessibleAbstractSlider::setCurrentValue(const QVariant &value)
+void QAccessibleAbstractSlider::setCurrentValue( const QVariant &value )
 {
-   abstractSlider()->setValue(value.toInt());
+    abstractSlider()->setValue( value.toInt() );
 }
 
 QVariant QAccessibleAbstractSlider::maximumValue() const
 {
-   return abstractSlider()->maximum();
+    return abstractSlider()->maximum();
 }
 
 QVariant QAccessibleAbstractSlider::minimumValue() const
 {
-   return abstractSlider()->minimum();
+    return abstractSlider()->minimum();
 }
 
 QVariant QAccessibleAbstractSlider::minimumStepSize() const
 {
-   return abstractSlider()->singleStep();
+    return abstractSlider()->singleStep();
 }
 
 QAbstractSlider *QAccessibleAbstractSlider::abstractSlider() const
 {
-   return static_cast<QAbstractSlider *>(object());
+    return static_cast<QAbstractSlider *>( object() );
 }
 
 #endif // QT_NO_SLIDER
@@ -376,30 +390,31 @@ QAbstractSlider *QAccessibleAbstractSlider::abstractSlider() const
 
 #ifndef QT_NO_DIAL
 
-QAccessibleDial::QAccessibleDial(QWidget *widget)
-   : QAccessibleAbstractSlider(widget, QAccessible::Dial)
+QAccessibleDial::QAccessibleDial( QWidget *widget )
+    : QAccessibleAbstractSlider( widget, QAccessible::Dial )
 {
-   Q_ASSERT(qobject_cast<QDial *>(widget));
+    Q_ASSERT( qobject_cast<QDial *>( widget ) );
 
-   const QMetaObject &metaObj = QDial::staticMetaObject();
+    const QMetaObject &metaObj = QDial::staticMetaObject();
 
-   int signalIndex          = metaObj.indexOfSignal(&QDial::valueChanged);
-   QMetaMethod signalMethod = metaObj.method(signalIndex);
-   addControllingSignal(signalMethod);
+    int signalIndex          = metaObj.indexOfSignal( &QDial::valueChanged );
+    QMetaMethod signalMethod = metaObj.method( signalIndex );
+    addControllingSignal( signalMethod );
 }
 
-QString QAccessibleDial::text(QAccessible::Text textType) const
+QString QAccessibleDial::text( QAccessible::Text textType ) const
 {
-   if (textType == QAccessible::Value) {
-      return QString::number(dial()->value());
-   }
+    if ( textType == QAccessible::Value )
+    {
+        return QString::number( dial()->value() );
+    }
 
-   return QAccessibleAbstractSlider::text(textType);
+    return QAccessibleAbstractSlider::text( textType );
 }
 
 QDial *QAccessibleDial::dial() const
 {
-   return static_cast<QDial *>(object());
+    return static_cast<QDial *>( object() );
 }
 #endif // QT_NO_DIAL
 

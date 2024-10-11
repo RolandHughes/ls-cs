@@ -28,25 +28,31 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WorkerNavigator;
 
-class JSWorkerNavigator : public JSDOMWrapper {
+class JSWorkerNavigator : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSWorkerNavigator(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<WorkerNavigator>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSWorkerNavigator( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<WorkerNavigator> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    WorkerNavigator* impl() const { return m_impl.get(); }
+    WorkerNavigator *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<WorkerNavigator> m_impl;
@@ -54,46 +60,50 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSWorkerNavigatorOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSWorkerNavigatorOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, WorkerNavigator*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, WorkerNavigator * )
 {
-    DEFINE_STATIC_LOCAL(JSWorkerNavigatorOwner, jsWorkerNavigatorOwner, ());
+    DEFINE_STATIC_LOCAL( JSWorkerNavigatorOwner, jsWorkerNavigatorOwner, () );
     return &jsWorkerNavigatorOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, WorkerNavigator*)
+inline void *wrapperContext( DOMWrapperWorld *world, WorkerNavigator * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, WorkerNavigator*);
-WorkerNavigator* toWorkerNavigator(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, WorkerNavigator * );
+WorkerNavigator *toWorkerNavigator( JSC::JSValue );
 
-class JSWorkerNavigatorPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWorkerNavigatorPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWorkerNavigatorPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWorkerNavigatorPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsWorkerNavigatorAppName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerNavigatorAppVersion(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerNavigatorPlatform(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerNavigatorUserAgent(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerNavigatorOnLine(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWorkerNavigatorAppName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerNavigatorAppVersion( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerNavigatorPlatform( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerNavigatorUserAgent( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerNavigatorOnLine( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

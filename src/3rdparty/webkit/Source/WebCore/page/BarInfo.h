@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,28 +32,33 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Frame;
+class Frame;
 
-    class BarInfo : public RefCounted<BarInfo> {
-    public:
-        enum Type { Locationbar, Menubar, Personalbar, Scrollbars, Statusbar, Toolbar };
+class BarInfo : public RefCounted<BarInfo>
+{
+public:
+    enum Type { Locationbar, Menubar, Personalbar, Scrollbars, Statusbar, Toolbar };
 
-        static PassRefPtr<BarInfo> create(Frame* frame, Type type) { return adoptRef(new BarInfo(frame, type)); }
+    static PassRefPtr<BarInfo> create( Frame *frame, Type type )
+    {
+        return adoptRef( new BarInfo( frame, type ) );
+    }
 
-        Frame* frame() const;
-        void disconnectFrame();
+    Frame *frame() const;
+    void disconnectFrame();
 
-        Type type() const;
+    Type type() const;
 
-        bool visible() const;
+    bool visible() const;
 
-    private:
-        BarInfo(Frame*, Type);
-        Frame* m_frame;
-        Type m_type;
-    };
+private:
+    BarInfo( Frame *, Type );
+    Frame *m_frame;
+    Type m_type;
+};
 
 } // namespace WebCore
 

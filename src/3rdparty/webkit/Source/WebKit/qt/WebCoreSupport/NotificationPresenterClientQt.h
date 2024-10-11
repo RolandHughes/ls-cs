@@ -45,31 +45,33 @@
 class QWebFrame;
 class QWebPage;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class Frame;
 class ScriptExecutionContext;
 
-class NotificationWrapper : public QObject, public QWebNotificationData {
-    WEB_CS_OBJECT(NotificationWrapper)
+class NotificationWrapper : public QObject, public QWebNotificationData
+{
+    WEB_LSCS_OBJECT( NotificationWrapper )
 
 public:
     NotificationWrapper();
     ~NotificationWrapper() {}
 
     void close();
-    void close(Timer<NotificationWrapper>*);
+    void close( Timer<NotificationWrapper> * );
     const QString title() const override;
     const QString message() const override;
     const QByteArray iconData() const override;
     const QUrl openerPageUrl() const override;
 
 public :
-    WEB_CS_SLOT_1(Public, void notificationClosed())
-    WEB_CS_SLOT_2(notificationClosed)
-    WEB_CS_SLOT_1(Public, void notificationClicked())
-    WEB_CS_SLOT_2(notificationClicked)
+    WEB_LSCS_SLOT_1( Public, void notificationClosed() )
+    WEB_LSCS_SLOT_2( notificationClosed )
+    WEB_LSCS_SLOT_1( Public, void notificationClicked() )
+    WEB_LSCS_SLOT_2( notificationClicked )
 
 public:
 #ifndef QT_NO_SYSTEMTRAYICON
@@ -82,52 +84,57 @@ public:
 
 #if ENABLE(NOTIFICATIONS)
 
-typedef QHash <Notification*, NotificationWrapper*> NotificationsQueue;
+typedef QHash <Notification *, NotificationWrapper *> NotificationsQueue;
 
-class NotificationPresenterClientQt : public NotificationPresenter {
+class NotificationPresenterClientQt : public NotificationPresenter
+{
 public:
     NotificationPresenterClientQt();
     ~NotificationPresenterClientQt();
 
     /* WebCore::NotificationPresenter interface */
-    virtual bool show(Notification*);
-    virtual void cancel(Notification*);
-    virtual void notificationObjectDestroyed(Notification*);
-    virtual void requestPermission(ScriptExecutionContext*, PassRefPtr<VoidCallback>);
-    virtual NotificationPresenter::Permission checkPermission(ScriptExecutionContext*);
-    virtual void cancelRequestsForPermission(ScriptExecutionContext*);
+    virtual bool show( Notification * );
+    virtual void cancel( Notification * );
+    virtual void notificationObjectDestroyed( Notification * );
+    virtual void requestPermission( ScriptExecutionContext *, PassRefPtr<VoidCallback> );
+    virtual NotificationPresenter::Permission checkPermission( ScriptExecutionContext * );
+    virtual void cancelRequestsForPermission( ScriptExecutionContext * );
 
-    void cancel(NotificationWrapper*);
+    void cancel( NotificationWrapper * );
 
-    void allowNotificationForFrame(Frame*);
+    void allowNotificationForFrame( Frame * );
 
     static bool dumpNotification;
 
-    void addClient() { m_clientCount++; }
+    void addClient()
+    {
+        m_clientCount++;
+    }
     void removeClient();
-    static NotificationPresenterClientQt* notificationPresenter();
+    static NotificationPresenterClientQt *notificationPresenter();
 
-    Notification* notificationForWrapper(const NotificationWrapper*) const;
-    void notificationClicked(NotificationWrapper*);
-    void notificationClicked(const QString& title);
+    Notification *notificationForWrapper( const NotificationWrapper * ) const;
+    void notificationClicked( NotificationWrapper * );
+    void notificationClicked( const QString &title );
 
 private:
-    void sendEvent(Notification*, const AtomicString& eventName);
-    void displayNotification(Notification*, const QByteArray&);
-    void removeReplacedNotificationFromQueue(Notification*);
-    void detachNotification(Notification*);
-    void dumpReplacedIdText(Notification*);
-    void dumpShowText(Notification*);
-    QWebPage* toPage(ScriptExecutionContext*);
-    QWebFrame* toFrame(ScriptExecutionContext*);
+    void sendEvent( Notification *, const AtomicString &eventName );
+    void displayNotification( Notification *, const QByteArray & );
+    void removeReplacedNotificationFromQueue( Notification * );
+    void detachNotification( Notification * );
+    void dumpReplacedIdText( Notification * );
+    void dumpShowText( Notification * );
+    QWebPage *toPage( ScriptExecutionContext * );
+    QWebFrame *toFrame( ScriptExecutionContext * );
 
     int m_clientCount;
-    struct CallbacksInfo {
-        QWebFrame* m_frame;
+    struct CallbacksInfo
+    {
+        QWebFrame *m_frame;
         QList<RefPtr<VoidCallback> > m_callbacks;
     };
-    QHash<ScriptExecutionContext*,  CallbacksInfo > m_pendingPermissionRequests;
-    QHash<ScriptExecutionContext*, NotificationPresenter::Permission> m_cachedPermissions;
+    QHash<ScriptExecutionContext *,  CallbacksInfo > m_pendingPermissionRequests;
+    QHash<ScriptExecutionContext *, NotificationPresenter::Permission> m_cachedPermissions;
 
     NotificationsQueue m_notifications;
     QtPlatformPlugin m_platformPlugin;

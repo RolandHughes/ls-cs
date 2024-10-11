@@ -19,7 +19,7 @@ list(APPEND SQL_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/models/qsqlrelation.h
 )
 
-target_sources(CsSql
+target_sources(LsCsSql
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/models/qsqlquerymodel.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/models/qsqltablemodel.cpp

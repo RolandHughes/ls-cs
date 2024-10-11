@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSReflectValue_h
@@ -31,37 +31,51 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSPrimitiveValue;
 
-class CSSReflectValue : public CSSValue {
+class CSSReflectValue : public CSSValue
+{
 public:
-    static PassRefPtr<CSSReflectValue> create(CSSReflectionDirection direction,
-        PassRefPtr<CSSPrimitiveValue> offset, PassRefPtr<CSSValue> mask)
+    static PassRefPtr<CSSReflectValue> create( CSSReflectionDirection direction,
+            PassRefPtr<CSSPrimitiveValue> offset, PassRefPtr<CSSValue> mask )
     {
-        return adoptRef(new CSSReflectValue(direction, offset, mask));
+        return adoptRef( new CSSReflectValue( direction, offset, mask ) );
     }
 
-    CSSReflectionDirection direction() const { return m_direction; }
-    CSSPrimitiveValue* offset() const { return m_offset.get(); }
-    CSSValue* mask() const { return m_mask.get(); }
+    CSSReflectionDirection direction() const
+    {
+        return m_direction;
+    }
+    CSSPrimitiveValue *offset() const
+    {
+        return m_offset.get();
+    }
+    CSSValue *mask() const
+    {
+        return m_mask.get();
+    }
 
     virtual String cssText() const;
 
-    virtual void addSubresourceStyleURLs(ListHashSet<KURL>&, const CSSStyleSheet*);
+    virtual void addSubresourceStyleURLs( ListHashSet<KURL> &, const CSSStyleSheet * );
 
 private:
-    CSSReflectValue(CSSReflectionDirection direction,
-            PassRefPtr<CSSPrimitiveValue> offset, PassRefPtr<CSSValue> mask)
-        : m_direction(direction)
-        , m_offset(offset)
-        , m_mask(mask)
+    CSSReflectValue( CSSReflectionDirection direction,
+                     PassRefPtr<CSSPrimitiveValue> offset, PassRefPtr<CSSValue> mask )
+        : m_direction( direction )
+        , m_offset( offset )
+        , m_mask( mask )
     {
     }
 
-    virtual bool isReflectValue() const { return true; }
-    
+    virtual bool isReflectValue() const
+    {
+        return true;
+    }
+
     CSSReflectionDirection m_direction;
     RefPtr<CSSPrimitiveValue> m_offset;
     RefPtr<CSSValue> m_mask;

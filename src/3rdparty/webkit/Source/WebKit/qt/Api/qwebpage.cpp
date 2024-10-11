@@ -47,8 +47,8 @@
 #include "ContextMenuController.h"
 
 #if ENABLE(DEVICE_ORIENTATION)
-  #include "DeviceMotionClientQt.h"
-  #include "DeviceOrientationClientQt.h"
+#include "DeviceMotionClientQt.h"
+#include "DeviceOrientationClientQt.h"
 #endif
 
 #include "DocumentLoader.h"
@@ -165,7 +165,7 @@ extern Q_GUI_EXPORT int qt_defaultDpi();
 bool QWebPagePrivate::drtRun = false;
 
 // Lookup table mapping QWebPage::WebActions to the associated Editor commands
-static const char* editorCommandWebActions[] =
+static const char *editorCommandWebActions[] =
 {
     0, // OpenLink,
 
@@ -256,78 +256,104 @@ static const char* editorCommandWebActions[] =
 };
 
 // Lookup the appropriate editor command to use for WebAction \a action
-const char* QWebPagePrivate::editorCommandForWebActions(QWebPage::WebAction action)
+const char *QWebPagePrivate::editorCommandForWebActions( QWebPage::WebAction action )
 {
-    if ((action > QWebPage::NoWebAction) && (action < int(sizeof(editorCommandWebActions) / sizeof(const char*))))
+    if ( ( action > QWebPage::NoWebAction ) && ( action < int( sizeof( editorCommandWebActions ) / sizeof( const char * ) ) ) )
+    {
         return editorCommandWebActions[action];
+    }
+
     return 0;
 }
 
-static inline DragOperation dropActionToDragOp(Qt::DropActions actions)
+static inline DragOperation dropActionToDragOp( Qt::DropActions actions )
 {
     unsigned result = 0;
-    if (actions & Qt::CopyAction)
+
+    if ( actions & Qt::CopyAction )
+    {
         result |= DragOperationCopy;
+    }
+
     // DragOperationgeneric represents InternetExplorer's equivalent of Move operation,
     // hence it should be considered as "move"
-    if (actions & Qt::MoveAction)
-        result |= (DragOperationMove | DragOperationGeneric);
-    if (actions & Qt::LinkAction)
+    if ( actions & Qt::MoveAction )
+    {
+        result |= ( DragOperationMove | DragOperationGeneric );
+    }
+
+    if ( actions & Qt::LinkAction )
+    {
         result |= DragOperationLink;
-    if (result == (DragOperationCopy | DragOperationMove | DragOperationGeneric | DragOperationLink))
+    }
+
+    if ( result == ( DragOperationCopy | DragOperationMove | DragOperationGeneric | DragOperationLink ) )
+    {
         result = DragOperationEvery;
-    return (DragOperation)result;
+    }
+
+    return ( DragOperation )result;
 }
 
-static inline Qt::DropAction dragOpToDropAction(unsigned actions)
+static inline Qt::DropAction dragOpToDropAction( unsigned actions )
 {
     Qt::DropAction result = Qt::IgnoreAction;
-    if (actions & DragOperationCopy)
+
+    if ( actions & DragOperationCopy )
+    {
         result = Qt::CopyAction;
-    else if (actions & DragOperationMove)
+    }
+    else if ( actions & DragOperationMove )
+    {
         result = Qt::MoveAction;
+    }
     // DragOperationgeneric represents InternetExplorer's equivalent of Move operation,
     // hence it should be considered as "move"
-    else if (actions & DragOperationGeneric)
+    else if ( actions & DragOperationGeneric )
+    {
         result = Qt::MoveAction;
-    else if (actions & DragOperationLink)
+    }
+    else if ( actions & DragOperationLink )
+    {
         result = Qt::LinkAction;
+    }
+
     return result;
 }
 
-QWebPagePrivate::QWebPagePrivate(QWebPage *qq)
-    : q(qq)
-    , page(0)
-    , mainFrame(0)
+QWebPagePrivate::QWebPagePrivate( QWebPage *qq )
+    : q( qq )
+    , page( 0 )
+    , mainFrame( 0 )
 #ifndef QT_NO_UNDOSTACK
-    , undoStack(0)
+    , undoStack( 0 )
 #endif
-    , insideOpenCall(false)
-    , m_totalBytes(0)
+    , insideOpenCall( false )
+    , m_totalBytes( 0 )
     , m_bytesReceived()
-    , clickCausedFocus(false)
-    , networkManager(0)
-    , forwardUnsupportedContent(false)
-    , smartInsertDeleteEnabled(true)
-    , selectTrailingWhitespaceEnabled(false)
-    , linkPolicy(QWebPage::DontDelegateLinks)
-    , viewportSize(QSize(0, 0))
-    , pixelRatio(1)
+    , clickCausedFocus( false )
+    , networkManager( 0 )
+    , forwardUnsupportedContent( false )
+    , smartInsertDeleteEnabled( true )
+    , selectTrailingWhitespaceEnabled( false )
+    , linkPolicy( QWebPage::DontDelegateLinks )
+    , viewportSize( QSize( 0, 0 ) )
+    , pixelRatio( 1 )
 #ifndef QT_NO_CONTEXTMENU
-    , currentContextMenu(0)
+    , currentContextMenu( 0 )
 #endif
-    , settings(0)
-    , useFixedLayout(false)
-    , pluginFactory(0)
-    , inspectorFrontend(0)
-    , inspector(0)
-    , inspectorIsInternalOnly(false)
-    , m_lastDropAction(Qt::IgnoreAction)
+    , settings( 0 )
+    , useFixedLayout( false )
+    , pluginFactory( 0 )
+    , inspectorFrontend( 0 )
+    , inspector( 0 )
+    , inspectorIsInternalOnly( false )
+    , m_lastDropAction( Qt::IgnoreAction )
 {
     WebCore::InitializeLoggingChannelsIfNecessary();
     ScriptController::initializeThreading();
     WTF::initializeMainThread();
-    WebCore::SecurityOrigin::setLocalLoadPolicy(WebCore::SecurityOrigin::AllowLocalLoadsForLocalAndSubstituteData);
+    WebCore::SecurityOrigin::setLocalLoadPolicy( WebCore::SecurityOrigin::AllowLocalLoadsForLocalAndSubstituteData );
 
     WebPlatformStrategies::initialize();
 
@@ -336,41 +362,51 @@ QWebPagePrivate::QWebPagePrivate(QWebPage *qq)
 #endif
 
     Page::PageClients pageClients;
-    pageClients.chromeClient = new ChromeClientQt(q);
+    pageClients.chromeClient = new ChromeClientQt( q );
     pageClients.contextMenuClient = new ContextMenuClientQt();
-    pageClients.editorClient = new EditorClientQt(q);
-    pageClients.dragClient = new DragClientQt(q);
-    pageClients.inspectorClient = new InspectorClientQt(q);
+    pageClients.editorClient = new EditorClientQt( q );
+    pageClients.dragClient = new DragClientQt( q );
+    pageClients.inspectorClient = new InspectorClientQt( q );
 #if ENABLE(DEVICE_ORIENTATION)
-    pageClients.deviceOrientationClient = new DeviceOrientationClientQt(q);
-    pageClients.deviceMotionClient = new DeviceMotionClientQt(q);
+    pageClients.deviceOrientationClient = new DeviceOrientationClientQt( q );
+    pageClients.deviceMotionClient = new DeviceMotionClientQt( q );
 #endif
 #if ENABLE(CLIENT_BASED_GEOLOCATION)
-    if (QWebPagePrivate::drtRun)
+
+    if ( QWebPagePrivate::drtRun )
+    {
         pageClients.geolocationClient = new GeolocationClientMock();
+    }
     else
-        pageClients.geolocationClient = new GeolocationClientQt(q);
+    {
+        pageClients.geolocationClient = new GeolocationClientQt( q );
+    }
+
 #endif
-    page = new Page(pageClients);
+    page = new Page( pageClients );
 
     // By default each page is put into their own unique page group, which affects popup windows
     // and visited links. Page groups (per process only) is a feature making it possible to use
     // separate settings for each group, so that for instance an integrated browser/email reader
     // can use different settings for displaying HTML pages and HTML email. To make QtWebKit work
     // as expected out of the box, we use a default group similar to what other ports are doing.
-    page->setGroupName("Default Group");
+    page->setGroupName( "Default Group" );
 
 #if ENABLE(CLIENT_BASED_GEOLOCATION)
+
     // In case running in DumpRenderTree mode set the controller to mock provider.
-    if (QWebPagePrivate::drtRun)
-        static_cast<GeolocationClientMock*>(pageClients.geolocationClient)->setController(page->geolocationController());
+    if ( QWebPagePrivate::drtRun )
+    {
+        static_cast<GeolocationClientMock *>( pageClients.geolocationClient )->setController( page->geolocationController() );
+    }
+
 #endif
-    settings = new QWebSettings(page->settings());
+    settings = new QWebSettings( page->settings() );
 
-    history.d = new QWebHistoryPrivate(static_cast<WebCore::BackForwardListImpl*>(page->backForwardList()));
-    memset(actions, 0, sizeof(actions));
+    history.d = new QWebHistoryPrivate( static_cast<WebCore::BackForwardListImpl *>( page->backForwardList() ) );
+    memset( actions, 0, sizeof( actions ) );
 
-    PageGroup::setShouldTrackVisitedLinks(true);
+    PageGroup::setShouldTrackVisitedLinks( true );
 
 #if ENABLE(NOTIFICATIONS)
     NotificationPresenterClientQt::notificationPresenter()->addClient();
@@ -379,11 +415,13 @@ QWebPagePrivate::QWebPagePrivate(QWebPage *qq)
 
 QWebPagePrivate::~QWebPagePrivate()
 {
-    if (inspector && inspectorIsInternalOnly) {
+    if ( inspector && inspectorIsInternalOnly )
+    {
         // Since we have to delete an internal inspector,
         // call setInspector(0) directly to prevent potential crashes
-        setInspector(0);
+        setInspector( 0 );
     }
+
 #ifndef QT_NO_CONTEXTMENU
     delete currentContextMenu;
 #endif
@@ -393,8 +431,10 @@ QWebPagePrivate::~QWebPagePrivate()
     delete settings;
     delete page;
 
-    if (inspector)
-        inspector->setPage(0);
+    if ( inspector )
+    {
+        inspector->setPage( 0 );
+    }
 
 #if ENABLE(NOTIFICATIONS)
     NotificationPresenterClientQt::notificationPresenter()->removeClient();
@@ -406,132 +446,214 @@ WebCore::ViewportArguments QWebPagePrivate::viewportArguments()
     return page ? page->viewportArguments() : WebCore::ViewportArguments();
 }
 
-WebCore::Page* QWebPagePrivate::core(const QWebPage* page)
+WebCore::Page *QWebPagePrivate::core( const QWebPage *page )
 {
     return page->d->page;
 }
 
-QWebPagePrivate* QWebPagePrivate::priv(QWebPage* page)
+QWebPagePrivate *QWebPagePrivate::priv( QWebPage *page )
 {
     return page->d;
 }
 
-bool QWebPagePrivate::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, QWebPage::NavigationType type)
+bool QWebPagePrivate::acceptNavigationRequest( QWebFrame *frame, const QNetworkRequest &request, QWebPage::NavigationType type )
 {
-    if (insideOpenCall
-        && frame == mainFrame)
+    if ( insideOpenCall
+            && frame == mainFrame )
+    {
         return true;
-    return q->acceptNavigationRequest(frame, request, type);
+    }
+
+    return q->acceptNavigationRequest( frame, request, type );
 }
 
 void QWebPagePrivate::createMainFrame()
 {
-    if (!mainFrame) {
-        QWebFrameData frameData(page);
-        mainFrame = new QWebFrame(q, &frameData);
+    if ( !mainFrame )
+    {
+        QWebFrameData frameData( page );
+        mainFrame = new QWebFrame( q, &frameData );
 
-        emit q->frameCreated(mainFrame);
+        emit q->frameCreated( mainFrame );
     }
 }
 
-static QWebPage::WebAction webActionForContextMenuAction(WebCore::ContextMenuAction action)
+static QWebPage::WebAction webActionForContextMenuAction( WebCore::ContextMenuAction action )
 {
-    switch (action) {
-        case WebCore::ContextMenuItemTagOpenLink: return QWebPage::OpenLink;
-        case WebCore::ContextMenuItemTagOpenLinkInNewWindow: return QWebPage::OpenLinkInNewWindow;
-        case WebCore::ContextMenuItemTagDownloadLinkToDisk: return QWebPage::DownloadLinkToDisk;
-        case WebCore::ContextMenuItemTagCopyLinkToClipboard: return QWebPage::CopyLinkToClipboard;
-        case WebCore::ContextMenuItemTagOpenImageInNewWindow: return QWebPage::OpenImageInNewWindow;
-        case WebCore::ContextMenuItemTagDownloadImageToDisk: return QWebPage::DownloadImageToDisk;
-        case WebCore::ContextMenuItemTagCopyImageToClipboard: return QWebPage::CopyImageToClipboard;
-        case WebCore::ContextMenuItemTagCopyImageUrlToClipboard: return QWebPage::CopyImageUrlToClipboard;
-        case WebCore::ContextMenuItemTagOpenFrameInNewWindow: return QWebPage::OpenFrameInNewWindow;
-        case WebCore::ContextMenuItemTagCopy: return QWebPage::Copy;
-        case WebCore::ContextMenuItemTagGoBack: return QWebPage::Back;
-        case WebCore::ContextMenuItemTagGoForward: return QWebPage::Forward;
-        case WebCore::ContextMenuItemTagStop: return QWebPage::Stop;
-        case WebCore::ContextMenuItemTagReload: return QWebPage::Reload;
-        case WebCore::ContextMenuItemTagCut: return QWebPage::Cut;
-        case WebCore::ContextMenuItemTagPaste: return QWebPage::Paste;
-        case WebCore::ContextMenuItemTagDefaultDirection: return QWebPage::SetTextDirectionDefault;
-        case WebCore::ContextMenuItemTagLeftToRight: return QWebPage::SetTextDirectionLeftToRight;
-        case WebCore::ContextMenuItemTagRightToLeft: return QWebPage::SetTextDirectionRightToLeft;
-        case WebCore::ContextMenuItemTagBold: return QWebPage::ToggleBold;
-        case WebCore::ContextMenuItemTagItalic: return QWebPage::ToggleItalic;
-        case WebCore::ContextMenuItemTagUnderline: return QWebPage::ToggleUnderline;
-        case WebCore::ContextMenuItemTagSelectAll: return QWebPage::SelectAll;
+    switch ( action )
+    {
+        case WebCore::ContextMenuItemTagOpenLink:
+            return QWebPage::OpenLink;
+
+        case WebCore::ContextMenuItemTagOpenLinkInNewWindow:
+            return QWebPage::OpenLinkInNewWindow;
+
+        case WebCore::ContextMenuItemTagDownloadLinkToDisk:
+            return QWebPage::DownloadLinkToDisk;
+
+        case WebCore::ContextMenuItemTagCopyLinkToClipboard:
+            return QWebPage::CopyLinkToClipboard;
+
+        case WebCore::ContextMenuItemTagOpenImageInNewWindow:
+            return QWebPage::OpenImageInNewWindow;
+
+        case WebCore::ContextMenuItemTagDownloadImageToDisk:
+            return QWebPage::DownloadImageToDisk;
+
+        case WebCore::ContextMenuItemTagCopyImageToClipboard:
+            return QWebPage::CopyImageToClipboard;
+
+        case WebCore::ContextMenuItemTagCopyImageUrlToClipboard:
+            return QWebPage::CopyImageUrlToClipboard;
+
+        case WebCore::ContextMenuItemTagOpenFrameInNewWindow:
+            return QWebPage::OpenFrameInNewWindow;
+
+        case WebCore::ContextMenuItemTagCopy:
+            return QWebPage::Copy;
+
+        case WebCore::ContextMenuItemTagGoBack:
+            return QWebPage::Back;
+
+        case WebCore::ContextMenuItemTagGoForward:
+            return QWebPage::Forward;
+
+        case WebCore::ContextMenuItemTagStop:
+            return QWebPage::Stop;
+
+        case WebCore::ContextMenuItemTagReload:
+            return QWebPage::Reload;
+
+        case WebCore::ContextMenuItemTagCut:
+            return QWebPage::Cut;
+
+        case WebCore::ContextMenuItemTagPaste:
+            return QWebPage::Paste;
+
+        case WebCore::ContextMenuItemTagDefaultDirection:
+            return QWebPage::SetTextDirectionDefault;
+
+        case WebCore::ContextMenuItemTagLeftToRight:
+            return QWebPage::SetTextDirectionLeftToRight;
+
+        case WebCore::ContextMenuItemTagRightToLeft:
+            return QWebPage::SetTextDirectionRightToLeft;
+
+        case WebCore::ContextMenuItemTagBold:
+            return QWebPage::ToggleBold;
+
+        case WebCore::ContextMenuItemTagItalic:
+            return QWebPage::ToggleItalic;
+
+        case WebCore::ContextMenuItemTagUnderline:
+            return QWebPage::ToggleUnderline;
+
+        case WebCore::ContextMenuItemTagSelectAll:
+            return QWebPage::SelectAll;
 #if ENABLE(INSPECTOR)
-        case WebCore::ContextMenuItemTagInspectElement: return QWebPage::InspectElement;
+
+        case WebCore::ContextMenuItemTagInspectElement:
+            return QWebPage::InspectElement;
 #endif
-        default: break;
+
+        default:
+            break;
     }
+
     return QWebPage::NoWebAction;
 }
 
 #ifndef QT_NO_CONTEXTMENU
-QMenu *QWebPagePrivate::createContextMenu(const WebCore::ContextMenu *webcoreMenu,
-        const QList<WebCore::ContextMenuItem> *items, QBitArray *visitedWebActions)
+QMenu *QWebPagePrivate::createContextMenu( const WebCore::ContextMenu *webcoreMenu,
+        const QList<WebCore::ContextMenuItem> *items, QBitArray *visitedWebActions )
 {
-    if (!client || !webcoreMenu)
+    if ( !client || !webcoreMenu )
+    {
         return 0;
+    }
 
-    QMenu* menu = new QMenu(client->ownerWidget());
-    for (int i = 0; i < items->count(); ++i) {
-        const ContextMenuItem &item = items->at(i);
-        switch (item.type()) {
+    QMenu *menu = new QMenu( client->ownerWidget() );
+
+    for ( int i = 0; i < items->count(); ++i )
+    {
+        const ContextMenuItem &item = items->at( i );
+
+        switch ( item.type() )
+        {
             case WebCore::CheckableActionType: /* fall through */
-            case WebCore::ActionType: {
-                QWebPage::WebAction action = webActionForContextMenuAction(item.action());
-                QAction *a = q->action(action);
-                if (a) {
-                    ContextMenuItem it(item);
-                    page->contextMenuController()->checkOrEnableIfNeeded(it);
-                    PlatformMenuItemDescription desc = it.releasePlatformDescription();
-                    a->setEnabled(desc.enabled);
-                    a->setChecked(desc.checked);
-                    a->setCheckable(item.type() == WebCore::CheckableActionType);
+            case WebCore::ActionType:
+            {
+                QWebPage::WebAction action = webActionForContextMenuAction( item.action() );
+                QAction *a = q->action( action );
 
-                    menu->addAction(a);
-                    visitedWebActions->setBit(action);
+                if ( a )
+                {
+                    ContextMenuItem it( item );
+                    page->contextMenuController()->checkOrEnableIfNeeded( it );
+                    PlatformMenuItemDescription desc = it.releasePlatformDescription();
+                    a->setEnabled( desc.enabled );
+                    a->setChecked( desc.checked );
+                    a->setCheckable( item.type() == WebCore::CheckableActionType );
+
+                    menu->addAction( a );
+                    visitedWebActions->setBit( action );
                 }
+
                 break;
             }
+
             case WebCore::SeparatorType:
                 menu->addSeparator();
                 break;
-            case WebCore::SubmenuType: {
-                QMenu *subMenu = createContextMenu(webcoreMenu, item.platformSubMenu(), visitedWebActions);
+
+            case WebCore::SubmenuType:
+            {
+                QMenu *subMenu = createContextMenu( webcoreMenu, item.platformSubMenu(), visitedWebActions );
 
                 bool anyEnabledAction = false;
 
                 QList<QAction *> actions = subMenu->actions();
-                for (int i = 0; i < actions.count(); ++i) {
-                    if (actions.at(i)->isVisible())
-                        anyEnabledAction |= actions.at(i)->isEnabled();
+
+                for ( int i = 0; i < actions.count(); ++i )
+                {
+                    if ( actions.at( i )->isVisible() )
+                    {
+                        anyEnabledAction |= actions.at( i )->isEnabled();
+                    }
                 }
 
                 // don't show sub-menus with just disabled actions
-                if (anyEnabledAction) {
-                    subMenu->setTitle(item.title());
-                    menu->addAction(subMenu->menuAction());
-                } else
+                if ( anyEnabledAction )
+                {
+                    subMenu->setTitle( item.title() );
+                    menu->addAction( subMenu->menuAction() );
+                }
+                else
+                {
                     delete subMenu;
+                }
+
                 break;
             }
         }
     }
+
     return menu;
 }
 #endif // QT_NO_CONTEXTMENU
 
 #ifndef QT_NO_ACTION
-void QWebPagePrivate::_q_webActionTriggered(bool checked)
+void QWebPagePrivate::_q_webActionTriggered( bool checked )
 {
-    QAction *a = qobject_cast<QAction *>(q->sender());
-    if (!a)
+    QAction *a = qobject_cast<QAction *>( q->sender() );
+
+    if ( !a )
+    {
         return;
-    QWebPage::WebAction action = static_cast<QWebPage::WebAction>(a->data().toInt());
-    q->triggerAction(action, checked);
+    }
+
+    QWebPage::WebAction action = static_cast<QWebPage::WebAction>( a->data().toInt() );
+    q->triggerAction( action, checked );
 }
 #endif // QT_NO_ACTION
 
@@ -539,18 +661,21 @@ void QWebPagePrivate::_q_cleanupLeakMessages()
 {
 #ifndef NDEBUG
     // Need this to make leak messages accurate.
-    memoryCache()->setCapacities(0, 0, 0);
+    memoryCache()->setCapacities( 0, 0, 0 );
 #endif
 }
 
-void QWebPagePrivate::updateAction(QWebPage::WebAction action)
+void QWebPagePrivate::updateAction( QWebPage::WebAction action )
 {
 #ifdef QT_NO_ACTION
-    Q_UNUSED(action)
+    Q_UNUSED( action )
 #else
     QAction *a = actions[action];
-    if (!a || !mainFrame)
+
+    if ( !a || !mainFrame )
+    {
         return;
+    }
 
     WebCore::FrameLoader *loader = mainFrame->d->frame->loader();
     WebCore::Editor *editor = page->focusController()->focusedOrMainFrame()->editor();
@@ -558,268 +683,351 @@ void QWebPagePrivate::updateAction(QWebPage::WebAction action)
     bool enabled = a->isEnabled();
     bool checked = a->isChecked();
 
-    switch (action) {
+    switch ( action )
+    {
         case QWebPage::Back:
-            enabled = page->canGoBackOrForward(-1);
+            enabled = page->canGoBackOrForward( -1 );
             break;
+
         case QWebPage::Forward:
-            enabled = page->canGoBackOrForward(1);
+            enabled = page->canGoBackOrForward( 1 );
             break;
+
         case QWebPage::Stop:
             enabled = loader->isLoading();
             break;
+
         case QWebPage::Reload:
         case QWebPage::ReloadAndBypassCache:
             enabled = !loader->isLoading();
             break;
 #ifndef QT_NO_UNDOSTACK
+
         case QWebPage::Undo:
         case QWebPage::Redo:
             // those two are handled by QUndoStack
             break;
 #endif // QT_NO_UNDOSTACK
+
         case QWebPage::SelectAll: // editor command is always enabled
             break;
+
         case QWebPage::SetTextDirectionDefault:
         case QWebPage::SetTextDirectionLeftToRight:
         case QWebPage::SetTextDirectionRightToLeft:
             enabled = editor->canEdit();
             checked = false;
             break;
-        default: {
+
+        default:
+        {
             // see if it's an editor command
-            const char* commandName = editorCommandForWebActions(action);
+            const char *commandName = editorCommandForWebActions( action );
 
             // if it's an editor command, let it's logic determine state
-            if (commandName) {
-                Editor::Command command = editor->command(commandName);
+            if ( commandName )
+            {
+                Editor::Command command = editor->command( commandName );
                 enabled = command.isEnabled();
-                if (enabled)
+
+                if ( enabled )
+                {
                     checked = command.state() != FalseTriState;
+                }
                 else
+                {
                     checked = false;
+                }
             }
+
             break;
         }
     }
 
-    a->setEnabled(enabled);
+    a->setEnabled( enabled );
 
-    if (a->isCheckable())
-        a->setChecked(checked);
+    if ( a->isCheckable() )
+    {
+        a->setChecked( checked );
+    }
+
 #endif // QT_NO_ACTION
 }
 
 void QWebPagePrivate::updateNavigationActions()
 {
-    updateAction(QWebPage::Back);
-    updateAction(QWebPage::Forward);
-    updateAction(QWebPage::Stop);
-    updateAction(QWebPage::Reload);
-    updateAction(QWebPage::ReloadAndBypassCache);
+    updateAction( QWebPage::Back );
+    updateAction( QWebPage::Forward );
+    updateAction( QWebPage::Stop );
+    updateAction( QWebPage::Reload );
+    updateAction( QWebPage::ReloadAndBypassCache );
 }
 
 void QWebPagePrivate::updateEditorActions()
 {
-    updateAction(QWebPage::Cut);
-    updateAction(QWebPage::Copy);
-    updateAction(QWebPage::Paste);
-    updateAction(QWebPage::MoveToNextChar);
-    updateAction(QWebPage::MoveToPreviousChar);
-    updateAction(QWebPage::MoveToNextWord);
-    updateAction(QWebPage::MoveToPreviousWord);
-    updateAction(QWebPage::MoveToNextLine);
-    updateAction(QWebPage::MoveToPreviousLine);
-    updateAction(QWebPage::MoveToStartOfLine);
-    updateAction(QWebPage::MoveToEndOfLine);
-    updateAction(QWebPage::MoveToStartOfBlock);
-    updateAction(QWebPage::MoveToEndOfBlock);
-    updateAction(QWebPage::MoveToStartOfDocument);
-    updateAction(QWebPage::MoveToEndOfDocument);
-    updateAction(QWebPage::SelectNextChar);
-    updateAction(QWebPage::SelectPreviousChar);
-    updateAction(QWebPage::SelectNextWord);
-    updateAction(QWebPage::SelectPreviousWord);
-    updateAction(QWebPage::SelectNextLine);
-    updateAction(QWebPage::SelectPreviousLine);
-    updateAction(QWebPage::SelectStartOfLine);
-    updateAction(QWebPage::SelectEndOfLine);
-    updateAction(QWebPage::SelectStartOfBlock);
-    updateAction(QWebPage::SelectEndOfBlock);
-    updateAction(QWebPage::SelectStartOfDocument);
-    updateAction(QWebPage::SelectEndOfDocument);
-    updateAction(QWebPage::DeleteStartOfWord);
-    updateAction(QWebPage::DeleteEndOfWord);
-    updateAction(QWebPage::SetTextDirectionDefault);
-    updateAction(QWebPage::SetTextDirectionLeftToRight);
-    updateAction(QWebPage::SetTextDirectionRightToLeft);
-    updateAction(QWebPage::ToggleBold);
-    updateAction(QWebPage::ToggleItalic);
-    updateAction(QWebPage::ToggleUnderline);
-    updateAction(QWebPage::InsertParagraphSeparator);
-    updateAction(QWebPage::InsertLineSeparator);
-    updateAction(QWebPage::PasteAndMatchStyle);
-    updateAction(QWebPage::RemoveFormat);
-    updateAction(QWebPage::ToggleStrikethrough);
-    updateAction(QWebPage::ToggleSubscript);
-    updateAction(QWebPage::ToggleSuperscript);
-    updateAction(QWebPage::InsertUnorderedList);
-    updateAction(QWebPage::InsertOrderedList);
-    updateAction(QWebPage::Indent);
-    updateAction(QWebPage::Outdent);
-    updateAction(QWebPage::AlignCenter);
-    updateAction(QWebPage::AlignJustified);
-    updateAction(QWebPage::AlignLeft);
-    updateAction(QWebPage::AlignRight);
+    updateAction( QWebPage::Cut );
+    updateAction( QWebPage::Copy );
+    updateAction( QWebPage::Paste );
+    updateAction( QWebPage::MoveToNextChar );
+    updateAction( QWebPage::MoveToPreviousChar );
+    updateAction( QWebPage::MoveToNextWord );
+    updateAction( QWebPage::MoveToPreviousWord );
+    updateAction( QWebPage::MoveToNextLine );
+    updateAction( QWebPage::MoveToPreviousLine );
+    updateAction( QWebPage::MoveToStartOfLine );
+    updateAction( QWebPage::MoveToEndOfLine );
+    updateAction( QWebPage::MoveToStartOfBlock );
+    updateAction( QWebPage::MoveToEndOfBlock );
+    updateAction( QWebPage::MoveToStartOfDocument );
+    updateAction( QWebPage::MoveToEndOfDocument );
+    updateAction( QWebPage::SelectNextChar );
+    updateAction( QWebPage::SelectPreviousChar );
+    updateAction( QWebPage::SelectNextWord );
+    updateAction( QWebPage::SelectPreviousWord );
+    updateAction( QWebPage::SelectNextLine );
+    updateAction( QWebPage::SelectPreviousLine );
+    updateAction( QWebPage::SelectStartOfLine );
+    updateAction( QWebPage::SelectEndOfLine );
+    updateAction( QWebPage::SelectStartOfBlock );
+    updateAction( QWebPage::SelectEndOfBlock );
+    updateAction( QWebPage::SelectStartOfDocument );
+    updateAction( QWebPage::SelectEndOfDocument );
+    updateAction( QWebPage::DeleteStartOfWord );
+    updateAction( QWebPage::DeleteEndOfWord );
+    updateAction( QWebPage::SetTextDirectionDefault );
+    updateAction( QWebPage::SetTextDirectionLeftToRight );
+    updateAction( QWebPage::SetTextDirectionRightToLeft );
+    updateAction( QWebPage::ToggleBold );
+    updateAction( QWebPage::ToggleItalic );
+    updateAction( QWebPage::ToggleUnderline );
+    updateAction( QWebPage::InsertParagraphSeparator );
+    updateAction( QWebPage::InsertLineSeparator );
+    updateAction( QWebPage::PasteAndMatchStyle );
+    updateAction( QWebPage::RemoveFormat );
+    updateAction( QWebPage::ToggleStrikethrough );
+    updateAction( QWebPage::ToggleSubscript );
+    updateAction( QWebPage::ToggleSuperscript );
+    updateAction( QWebPage::InsertUnorderedList );
+    updateAction( QWebPage::InsertOrderedList );
+    updateAction( QWebPage::Indent );
+    updateAction( QWebPage::Outdent );
+    updateAction( QWebPage::AlignCenter );
+    updateAction( QWebPage::AlignJustified );
+    updateAction( QWebPage::AlignLeft );
+    updateAction( QWebPage::AlignRight );
 }
 
-void QWebPagePrivate::timerEvent(QTimerEvent *ev)
+void QWebPagePrivate::timerEvent( QTimerEvent *ev )
 {
     int timerId = ev->timerId();
-    if (timerId == tripleClickTimer.timerId())
+
+    if ( timerId == tripleClickTimer.timerId() )
+    {
         tripleClickTimer.stop();
+    }
     else
-        q->timerEvent(ev);
+    {
+        q->timerEvent( ev );
+    }
 }
 
 template<class T>
-void QWebPagePrivate::mouseMoveEvent(T* ev)
+void QWebPagePrivate::mouseMoveEvent( T *ev )
 {
-    WebCore::Frame* frame = QWebFramePrivate::core(mainFrame);
-    if (!frame->view())
-        return;
+    WebCore::Frame *frame = QWebFramePrivate::core( mainFrame );
 
-    bool accepted = frame->eventHandler()->mouseMoved(PlatformMouseEvent(ev, 0));
-    ev->setAccepted(accepted);
+    if ( !frame->view() )
+    {
+        return;
+    }
+
+    bool accepted = frame->eventHandler()->mouseMoved( PlatformMouseEvent( ev, 0 ) );
+    ev->setAccepted( accepted );
 }
 
 template<class T>
-void QWebPagePrivate::mousePressEvent(T* ev)
+void QWebPagePrivate::mousePressEvent( T *ev )
 {
-    WebCore::Frame* frame = QWebFramePrivate::core(mainFrame);
-    if (!frame->view())
+    WebCore::Frame *frame = QWebFramePrivate::core( mainFrame );
+
+    if ( !frame->view() )
+    {
         return;
+    }
 
     RefPtr<WebCore::Node> oldNode;
-    Frame* focusedFrame = page->focusController()->focusedFrame();
-    if (Document* focusedDocument = focusedFrame ? focusedFrame->document() : 0)
-        oldNode = focusedDocument->focusedNode();
+    Frame *focusedFrame = page->focusController()->focusedFrame();
 
-    if (tripleClickTimer.isActive()
-            && (ev->pos() - tripleClick).manhattanLength()
-                < QApplication::startDragDistance()) {
-        mouseTripleClickEvent(ev);
+    if ( Document *focusedDocument = focusedFrame ? focusedFrame->document() : 0 )
+    {
+        oldNode = focusedDocument->focusedNode();
+    }
+
+    if ( tripleClickTimer.isActive()
+            && ( ev->pos() - tripleClick ).manhattanLength()
+            < QApplication::startDragDistance() )
+    {
+        mouseTripleClickEvent( ev );
         return;
     }
 
     bool accepted = false;
-    adjustPointForClicking(ev);
-    PlatformMouseEvent mev(ev, 1);
+    adjustPointForClicking( ev );
+    PlatformMouseEvent mev( ev, 1 );
+
     // ignore the event if we can't map Qt's mouse buttons to WebCore::MouseButton
-    if (mev.button() != NoButton)
-        accepted = frame->eventHandler()->handleMousePressEvent(mev);
-    ev->setAccepted(accepted);
+    if ( mev.button() != NoButton )
+    {
+        accepted = frame->eventHandler()->handleMousePressEvent( mev );
+    }
+
+    ev->setAccepted( accepted );
 
     RefPtr<WebCore::Node> newNode;
     focusedFrame = page->focusController()->focusedFrame();
-    if (Document* focusedDocument = focusedFrame ? focusedFrame->document() : 0)
+
+    if ( Document *focusedDocument = focusedFrame ? focusedFrame->document() : 0 )
+    {
         newNode = focusedDocument->focusedNode();
+    }
 
-    if (newNode && oldNode != newNode)
+    if ( newNode && oldNode != newNode )
+    {
         clickCausedFocus = true;
+    }
 }
 
 template<class T>
-void QWebPagePrivate::mouseDoubleClickEvent(T *ev)
+void QWebPagePrivate::mouseDoubleClickEvent( T *ev )
 {
-    WebCore::Frame* frame = QWebFramePrivate::core(mainFrame);
-    if (!frame->view())
+    WebCore::Frame *frame = QWebFramePrivate::core( mainFrame );
+
+    if ( !frame->view() )
+    {
         return;
+    }
 
     bool accepted = false;
-    PlatformMouseEvent mev(ev, 2);
-    // ignore the event if we can't map Qt's mouse buttons to WebCore::MouseButton
-    if (mev.button() != NoButton)
-        accepted = frame->eventHandler()->handleMousePressEvent(mev);
-    ev->setAccepted(accepted);
+    PlatformMouseEvent mev( ev, 2 );
 
-    tripleClickTimer.start(QApplication::doubleClickInterval(), q);
-    tripleClick = QPointF(ev->pos()).toPoint();
+    // ignore the event if we can't map Qt's mouse buttons to WebCore::MouseButton
+    if ( mev.button() != NoButton )
+    {
+        accepted = frame->eventHandler()->handleMousePressEvent( mev );
+    }
+
+    ev->setAccepted( accepted );
+
+    tripleClickTimer.start( QApplication::doubleClickInterval(), q );
+    tripleClick = QPointF( ev->pos() ).toPoint();
 }
 
 template<class T>
-void QWebPagePrivate::mouseTripleClickEvent(T *ev)
+void QWebPagePrivate::mouseTripleClickEvent( T *ev )
 {
-    WebCore::Frame* frame = QWebFramePrivate::core(mainFrame);
-    if (!frame->view())
+    WebCore::Frame *frame = QWebFramePrivate::core( mainFrame );
+
+    if ( !frame->view() )
+    {
         return;
+    }
 
     bool accepted = false;
-    PlatformMouseEvent mev(ev, 3);
+    PlatformMouseEvent mev( ev, 3 );
+
     // ignore the event if we can't map Qt's mouse buttons to WebCore::MouseButton
-    if (mev.button() != NoButton)
-        accepted = frame->eventHandler()->handleMousePressEvent(mev);
-    ev->setAccepted(accepted);
+    if ( mev.button() != NoButton )
+    {
+        accepted = frame->eventHandler()->handleMousePressEvent( mev );
+    }
+
+    ev->setAccepted( accepted );
 }
 
-void QWebPagePrivate::handleClipboard(QEvent* ev, Qt::MouseButton button)
+void QWebPagePrivate::handleClipboard( QEvent *ev, Qt::MouseButton button )
 {
 #ifndef QT_NO_CLIPBOARD
-    if (QApplication::clipboard()->supportsSelection()) {
+
+    if ( QApplication::clipboard()->supportsSelection() )
+    {
         bool oldSelectionMode = Pasteboard::generalPasteboard()->isSelectionMode();
-        Pasteboard::generalPasteboard()->setSelectionMode(true);
-        WebCore::Frame* focusFrame = page->focusController()->focusedOrMainFrame();
-        if (button == Qt::LeftButton) {
-            if (focusFrame && (focusFrame->editor()->canCopy() || focusFrame->editor()->canDHTMLCopy())) {
-                Pasteboard::generalPasteboard()->writeSelection(focusFrame->editor()->selectedRange().get(), focusFrame->editor()->canSmartCopyOrDelete(), focusFrame);
-                ev->setAccepted(true);
-            }
-        } else if (button == Qt::MiddleButton) {
-            if (focusFrame && (focusFrame->editor()->canPaste() || focusFrame->editor()->canDHTMLPaste())) {
-                focusFrame->editor()->paste();
-                ev->setAccepted(true);
+        Pasteboard::generalPasteboard()->setSelectionMode( true );
+        WebCore::Frame *focusFrame = page->focusController()->focusedOrMainFrame();
+
+        if ( button == Qt::LeftButton )
+        {
+            if ( focusFrame && ( focusFrame->editor()->canCopy() || focusFrame->editor()->canDHTMLCopy() ) )
+            {
+                Pasteboard::generalPasteboard()->writeSelection( focusFrame->editor()->selectedRange().get(),
+                        focusFrame->editor()->canSmartCopyOrDelete(), focusFrame );
+                ev->setAccepted( true );
             }
         }
-        Pasteboard::generalPasteboard()->setSelectionMode(oldSelectionMode);
+        else if ( button == Qt::MiddleButton )
+        {
+            if ( focusFrame && ( focusFrame->editor()->canPaste() || focusFrame->editor()->canDHTMLPaste() ) )
+            {
+                focusFrame->editor()->paste();
+                ev->setAccepted( true );
+            }
+        }
+
+        Pasteboard::generalPasteboard()->setSelectionMode( oldSelectionMode );
     }
+
 #endif
 }
 
 template<class T>
-void QWebPagePrivate::mouseReleaseEvent(T *ev)
+void QWebPagePrivate::mouseReleaseEvent( T *ev )
 {
-    WebCore::Frame* frame = QWebFramePrivate::core(mainFrame);
-    if (!frame->view())
+    WebCore::Frame *frame = QWebFramePrivate::core( mainFrame );
+
+    if ( !frame->view() )
+    {
         return;
+    }
 
     bool accepted = false;
-    adjustPointForClicking(ev);
-    PlatformMouseEvent mev(ev, 0);
-    // ignore the event if we can't map Qt's mouse buttons to WebCore::MouseButton
-    if (mev.button() != NoButton)
-        accepted = frame->eventHandler()->handleMouseReleaseEvent(mev);
-    ev->setAccepted(accepted);
+    adjustPointForClicking( ev );
+    PlatformMouseEvent mev( ev, 0 );
 
-    handleClipboard(ev, ev->button());
-    handleSoftwareInputPanel(ev->button(), QPointF(ev->pos()).toPoint());
+    // ignore the event if we can't map Qt's mouse buttons to WebCore::MouseButton
+    if ( mev.button() != NoButton )
+    {
+        accepted = frame->eventHandler()->handleMouseReleaseEvent( mev );
+    }
+
+    ev->setAccepted( accepted );
+
+    handleClipboard( ev, ev->button() );
+    handleSoftwareInputPanel( ev->button(), QPointF( ev->pos() ).toPoint() );
 }
 
-void QWebPagePrivate::handleSoftwareInputPanel(Qt::MouseButton button, const QPoint& pos)
+void QWebPagePrivate::handleSoftwareInputPanel( Qt::MouseButton button, const QPoint &pos )
 {
-    Frame* frame = page->focusController()->focusedFrame();
-    if (!frame)
-        return;
+    Frame *frame = page->focusController()->focusedFrame();
 
-    if (client && client->inputMethodEnabled()
-        && frame->document()->focusedNode()
-        && button == Qt::LeftButton && qApp->autoSipEnabled()) {
+    if ( !frame )
+    {
+        return;
+    }
+
+    if ( client && client->inputMethodEnabled()
+            && frame->document()->focusedNode()
+            && button == Qt::LeftButton && qApp->autoSipEnabled() )
+    {
         QStyle::RequestSoftwareInputPanel behavior = QStyle::RequestSoftwareInputPanel(
-            client->ownerWidget()->style()->styleHint(QStyle::SH_RequestSoftwareInputPanel));
-        if (!clickCausedFocus || behavior == QStyle::RSIP_OnMouseClick) {
-            HitTestResult result = frame->eventHandler()->hitTestResultAtPoint(frame->view()->windowToContents(pos), false);
-            if (result.isContentEditable()) {
-                QEvent event(QEvent::RequestSoftwareInputPanel);
-                QApplication::sendEvent(client->ownerWidget(), &event);
+                    client->ownerWidget()->style()->styleHint( QStyle::SH_RequestSoftwareInputPanel ) );
+
+        if ( !clickCausedFocus || behavior == QStyle::RSIP_OnMouseClick )
+        {
+            HitTestResult result = frame->eventHandler()->hitTestResultAtPoint( frame->view()->windowToContents( pos ), false );
+
+            if ( result.isContentEditable() )
+            {
+                QEvent event( QEvent::RequestSoftwareInputPanel );
+                QApplication::sendEvent( client->ownerWidget(), &event );
             }
         }
     }
@@ -828,11 +1036,13 @@ void QWebPagePrivate::handleSoftwareInputPanel(Qt::MouseButton button, const QPo
 }
 
 #ifndef QT_NO_CONTEXTMENU
-void QWebPagePrivate::contextMenuEvent(const QPoint& globalPos)
+void QWebPagePrivate::contextMenuEvent( const QPoint &globalPos )
 {
     QMenu *menu = q->createStandardContextMenu();
-    if (menu) {
-        menu->exec(globalPos);
+
+    if ( menu )
+    {
+        menu->exec( globalPos );
         delete menu;
     }
 }
@@ -858,25 +1068,30 @@ QMenu *QWebPage::createStandardContextMenu()
 
 #ifndef QT_NO_WHEELEVENT
 template<class T>
-void QWebPagePrivate::wheelEvent(T *ev)
+void QWebPagePrivate::wheelEvent( T *ev )
 {
-    WebCore::Frame* frame = QWebFramePrivate::core(mainFrame);
-    if (!frame->view())
-        return;
+    WebCore::Frame *frame = QWebFramePrivate::core( mainFrame );
 
-    WebCore::PlatformWheelEvent pev(ev);
-    bool accepted = frame->eventHandler()->handleWheelEvent(pev);
-    ev->setAccepted(accepted);
+    if ( !frame->view() )
+    {
+        return;
+    }
+
+    WebCore::PlatformWheelEvent pev( ev );
+    bool accepted = frame->eventHandler()->handleWheelEvent( pev );
+    ev->setAccepted( accepted );
 }
 #endif // QT_NO_WHEELEVENT
 
 #ifndef QT_NO_SHORTCUT
-QWebPage::WebAction QWebPagePrivate::editorActionForKeyEvent(QKeyEvent* event)
+QWebPage::WebAction QWebPagePrivate::editorActionForKeyEvent( QKeyEvent *event )
 {
-    static struct {
+    static struct
+    {
         QKeySequence::StandardKey standardKey;
         QWebPage::WebAction action;
-    } editorActions[] = {
+    } editorActions[] =
+    {
         { QKeySequence::Cut, QWebPage::Cut },
         { QKeySequence::Copy, QWebPage::Copy },
         { QKeySequence::Paste, QWebPage::Paste },
@@ -914,142 +1129,173 @@ QWebPage::WebAction QWebPagePrivate::editorActionForKeyEvent(QKeyEvent* event)
         { QKeySequence::UnknownKey, QWebPage::NoWebAction }
     };
 
-    for (int i = 0; editorActions[i].standardKey != QKeySequence::UnknownKey; ++i)
-        if (event == editorActions[i].standardKey)
+    for ( int i = 0; editorActions[i].standardKey != QKeySequence::UnknownKey; ++i )
+        if ( event == editorActions[i].standardKey )
+        {
             return editorActions[i].action;
+        }
 
     return QWebPage::NoWebAction;
 }
 #endif // QT_NO_SHORTCUT
 
-void QWebPagePrivate::keyPressEvent(QKeyEvent *ev)
+void QWebPagePrivate::keyPressEvent( QKeyEvent *ev )
 {
     bool handled = false;
-    WebCore::Frame* frame = page->focusController()->focusedOrMainFrame();
+    WebCore::Frame *frame = page->focusController()->focusedOrMainFrame();
+
     // we forward the key event to WebCore first to handle potential DOM
     // defined event handlers and later on end up in EditorClientQt::handleKeyboardEvent
     // to trigger editor commands via triggerAction().
-    if (!handled)
-        handled = frame->eventHandler()->keyEvent(ev);
-    if (!handled) {
+    if ( !handled )
+    {
+        handled = frame->eventHandler()->keyEvent( ev );
+    }
+
+    if ( !handled )
+    {
         handled = true;
-        if (!handleScrolling(ev, frame)) {
-            switch (ev->key()) {
-            case Qt::Key_Back:
-                q->triggerAction(QWebPage::Back);
-                break;
-            case Qt::Key_Forward:
-                q->triggerAction(QWebPage::Forward);
-                break;
-            case Qt::Key_Stop:
-                q->triggerAction(QWebPage::Stop);
-                break;
-            case Qt::Key_Refresh:
-                q->triggerAction(QWebPage::Reload);
-                break;
-            case Qt::Key_Backspace:
-                if (ev->modifiers() == Qt::ShiftModifier)
-                    q->triggerAction(QWebPage::Forward);
-                else
-                    q->triggerAction(QWebPage::Back);
-                break;
-            default:
-                handled = false;
-                break;
+
+        if ( !handleScrolling( ev, frame ) )
+        {
+            switch ( ev->key() )
+            {
+                case Qt::Key_Back:
+                    q->triggerAction( QWebPage::Back );
+                    break;
+
+                case Qt::Key_Forward:
+                    q->triggerAction( QWebPage::Forward );
+                    break;
+
+                case Qt::Key_Stop:
+                    q->triggerAction( QWebPage::Stop );
+                    break;
+
+                case Qt::Key_Refresh:
+                    q->triggerAction( QWebPage::Reload );
+                    break;
+
+                case Qt::Key_Backspace:
+                    if ( ev->modifiers() == Qt::ShiftModifier )
+                    {
+                        q->triggerAction( QWebPage::Forward );
+                    }
+                    else
+                    {
+                        q->triggerAction( QWebPage::Back );
+                    }
+
+                    break;
+
+                default:
+                    handled = false;
+                    break;
             }
         }
     }
 
-    ev->setAccepted(handled);
+    ev->setAccepted( handled );
 }
 
-void QWebPagePrivate::keyReleaseEvent(QKeyEvent *ev)
+void QWebPagePrivate::keyReleaseEvent( QKeyEvent *ev )
 {
-    if (ev->isAutoRepeat()) {
-        ev->setAccepted(true);
+    if ( ev->isAutoRepeat() )
+    {
+        ev->setAccepted( true );
         return;
     }
 
-    WebCore::Frame* frame = page->focusController()->focusedOrMainFrame();
-    bool handled = frame->eventHandler()->keyEvent(ev);
-    ev->setAccepted(handled);
+    WebCore::Frame *frame = page->focusController()->focusedOrMainFrame();
+    bool handled = frame->eventHandler()->keyEvent( ev );
+    ev->setAccepted( handled );
 }
 
-void QWebPagePrivate::focusInEvent(QFocusEvent*)
+void QWebPagePrivate::focusInEvent( QFocusEvent * )
 {
     FocusController *focusController = page->focusController();
-    focusController->setActive(true);
-    focusController->setFocused(true);
-    if (!focusController->focusedFrame())
-        focusController->setFocusedFrame(QWebFramePrivate::core(mainFrame));
+    focusController->setActive( true );
+    focusController->setFocused( true );
+
+    if ( !focusController->focusedFrame() )
+    {
+        focusController->setFocusedFrame( QWebFramePrivate::core( mainFrame ) );
+    }
 }
 
-void QWebPagePrivate::focusOutEvent(QFocusEvent*)
+void QWebPagePrivate::focusOutEvent( QFocusEvent * )
 {
     // only set the focused frame inactive so that we stop painting the caret
     // and the focus frame. But don't tell the focus controller so that upon
     // focusInEvent() we can re-activate the frame.
     FocusController *focusController = page->focusController();
     // Call setFocused first so that window.onblur doesn't get called twice
-    focusController->setFocused(false);
-    focusController->setActive(false);
+    focusController->setFocused( false );
+    focusController->setActive( false );
 }
 
 template<class T>
-void QWebPagePrivate::dragEnterEvent(T* ev)
+void QWebPagePrivate::dragEnterEvent( T *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    DragData dragData(ev->mimeData(), QPointF(ev->pos()).toPoint(),
-            QCursor::pos(), dropActionToDragOp(ev->possibleActions()));
-    Qt::DropAction action = dragOpToDropAction(page->dragController()->dragEntered(&dragData));
-    ev->setDropAction(action);
+    DragData dragData( ev->mimeData(), QPointF( ev->pos() ).toPoint(),
+                       QCursor::pos(), dropActionToDragOp( ev->possibleActions() ) );
+    Qt::DropAction action = dragOpToDropAction( page->dragController()->dragEntered( &dragData ) );
+    ev->setDropAction( action );
     ev->acceptProposedAction();
 #endif
 }
 
 template<class T>
-void QWebPagePrivate::dragLeaveEvent(T *ev)
+void QWebPagePrivate::dragLeaveEvent( T *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    DragData dragData(0, IntPoint(), QCursor::pos(), DragOperationNone);
-    page->dragController()->dragExited(&dragData);
+    DragData dragData( 0, IntPoint(), QCursor::pos(), DragOperationNone );
+    page->dragController()->dragExited( &dragData );
     ev->accept();
 #endif
 }
 
 template<class T>
-void QWebPagePrivate::dragMoveEvent(T *ev)
+void QWebPagePrivate::dragMoveEvent( T *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    DragData dragData(ev->mimeData(), QPointF(ev->pos()).toPoint(),
-            QCursor::pos(), dropActionToDragOp(ev->possibleActions()));
-    m_lastDropAction = dragOpToDropAction(page->dragController()->dragUpdated(&dragData));
-    ev->setDropAction(m_lastDropAction);
-    if (m_lastDropAction != Qt::IgnoreAction)
+    DragData dragData( ev->mimeData(), QPointF( ev->pos() ).toPoint(),
+                       QCursor::pos(), dropActionToDragOp( ev->possibleActions() ) );
+    m_lastDropAction = dragOpToDropAction( page->dragController()->dragUpdated( &dragData ) );
+    ev->setDropAction( m_lastDropAction );
+
+    if ( m_lastDropAction != Qt::IgnoreAction )
+    {
         ev->accept();
+    }
+
 #endif
 }
 
 template<class T>
-void QWebPagePrivate::dropEvent(T *ev)
+void QWebPagePrivate::dropEvent( T *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    DragData dragData(ev->mimeData(), QPointF(ev->pos()).toPoint(),
-            QCursor::pos(), dropActionToDragOp(ev->possibleActions()));
-    if (page->dragController()->performDrag(&dragData)) {
-        ev->setDropAction(m_lastDropAction);
+    DragData dragData( ev->mimeData(), QPointF( ev->pos() ).toPoint(),
+                       QCursor::pos(), dropActionToDragOp( ev->possibleActions() ) );
+
+    if ( page->dragController()->performDrag( &dragData ) )
+    {
+        ev->setDropAction( m_lastDropAction );
         ev->accept();
     }
+
 #endif
 }
 
-void QWebPagePrivate::leaveEvent(QEvent*)
+void QWebPagePrivate::leaveEvent( QEvent * )
 {
     // Fake a mouse move event just outside of the widget, since all
     // the interesting mouse-out behavior like invalidating scrollbars
     // is handled by the WebKit event handler's mouseMoved function.
-    QMouseEvent fakeEvent(QEvent::MouseMove, QCursor::pos(), Qt::NoButton, Qt::NoButton, Qt::NoModifier);
-    mouseMoveEvent(&fakeEvent);
+    QMouseEvent fakeEvent( QEvent::MouseMove, QCursor::pos(), Qt::NoButton, Qt::NoButton, Qt::NoModifier );
+    mouseMoveEvent( &fakeEvent );
 }
 
 /*!
@@ -1060,15 +1306,18 @@ void QWebPagePrivate::leaveEvent(QEvent*)
 
     By default, this property contains the application's default palette.
 */
-void QWebPage::setPalette(const QPalette &pal)
+void QWebPage::setPalette( const QPalette &pal )
 {
     d->palette = pal;
-    if (!d->mainFrame || !d->mainFrame->d->frame->view())
-        return;
 
-    QBrush brush = pal.brush(QPalette::Base);
+    if ( !d->mainFrame || !d->mainFrame->d->frame->view() )
+    {
+        return;
+    }
+
+    QBrush brush = pal.brush( QPalette::Base );
     QColor backgroundColor = brush.style() == Qt::SolidPattern ? brush.color() : QColor();
-    QWebFramePrivate::core(d->mainFrame)->view()->updateBackgroundRecursively(backgroundColor, !backgroundColor.alpha());
+    QWebFramePrivate::core( d->mainFrame )->view()->updateBackgroundRecursively( backgroundColor, !backgroundColor.alpha() );
 }
 
 QPalette QWebPage::palette() const
@@ -1076,116 +1325,174 @@ QPalette QWebPage::palette() const
     return d->palette;
 }
 
-void QWebPagePrivate::inputMethodEvent(QInputMethodEvent *ev)
+void QWebPagePrivate::inputMethodEvent( QInputMethodEvent *ev )
 {
     WebCore::Frame *frame = page->focusController()->focusedOrMainFrame();
     WebCore::Editor *editor = frame->editor();
 
-    if (!editor->canEdit()) {
+    if ( !editor->canEdit() )
+    {
         ev->ignore();
         return;
     }
 
-    Node* node = 0;
-    if (frame->selection()->rootEditableElement())
+    Node *node = 0;
+
+    if ( frame->selection()->rootEditableElement() )
+    {
         node = frame->selection()->rootEditableElement()->shadowAncestorNode();
+    }
 
     Vector<CompositionUnderline> underlines;
     bool hasSelection = false;
 
-    for (int i = 0; i < ev->attributes().size(); ++i) {
-        const QInputMethodEvent::Attribute& a = ev->attributes().at(i);
-        switch (a.type) {
-        case QInputMethodEvent::TextFormat: {
-            QTextCharFormat textCharFormat = a.value.value<QTextFormat>().toCharFormat();
-            QColor qcolor = textCharFormat.underlineColor();
-            underlines.append(CompositionUnderline(qMin(a.start, (a.start + a.length)), qMax(a.start, (a.start + a.length)), Color(makeRGBA(qcolor.red(), qcolor.green(), qcolor.blue(), qcolor.alpha())), false));
-            break;
-        }
-        case QInputMethodEvent::Cursor: {
-            frame->selection()->setCaretVisible(a.length); //if length is 0 cursor is invisible
-            if (a.length > 0) {
-                RenderObject* caretRenderer = frame->selection()->caretRenderer();
-                if (caretRenderer) {
-                    QColor qcolor = a.value.value<QColor>();
-                    caretRenderer->style()->setColor(Color(makeRGBA(qcolor.red(), qcolor.green(), qcolor.blue(), qcolor.alpha())));
-                }
-            }
-            break;
-        }
-        case QInputMethodEvent::Selection: {
-            hasSelection = true;
-            // A selection in the inputMethodEvent is always reflected in the visible text
-            if (node)
-                setSelectionRange(node, qMin(a.start, (a.start + a.length)), qMax(a.start, (a.start + a.length)));
+    for ( int i = 0; i < ev->attributes().size(); ++i )
+    {
+        const QInputMethodEvent::Attribute &a = ev->attributes().at( i );
 
-            if (!ev->preeditString().isEmpty())
-                editor->setComposition(ev->preeditString(), underlines, qMin(a.start, (a.start + a.length)), qMax(a.start, (a.start + a.length)));
-            else {
-                // If we are in the middle of a composition, an empty pre-edit string and a selection of zero
-                // cancels the current composition
-                if (editor->hasComposition() && (a.start + a.length == 0))
-                    editor->setComposition(QString(), underlines, 0, 0);
+        switch ( a.type )
+        {
+            case QInputMethodEvent::TextFormat:
+            {
+                QTextCharFormat textCharFormat = a.value.value<QTextFormat>().toCharFormat();
+                QColor qcolor = textCharFormat.underlineColor();
+                underlines.append( CompositionUnderline( qMin( a.start, ( a.start + a.length ) ), qMax( a.start, ( a.start + a.length ) ),
+                                   Color( makeRGBA( qcolor.red(), qcolor.green(), qcolor.blue(), qcolor.alpha() ) ), false ) );
+                break;
             }
-            break;
-        }
-        default:
-            break;
+
+            case QInputMethodEvent::Cursor:
+            {
+                frame->selection()->setCaretVisible( a.length ); //if length is 0 cursor is invisible
+
+                if ( a.length > 0 )
+                {
+                    RenderObject *caretRenderer = frame->selection()->caretRenderer();
+
+                    if ( caretRenderer )
+                    {
+                        QColor qcolor = a.value.value<QColor>();
+                        caretRenderer->style()->setColor( Color( makeRGBA( qcolor.red(), qcolor.green(), qcolor.blue(), qcolor.alpha() ) ) );
+                    }
+                }
+
+                break;
+            }
+
+            case QInputMethodEvent::Selection:
+            {
+                hasSelection = true;
+
+                // A selection in the inputMethodEvent is always reflected in the visible text
+                if ( node )
+                {
+                    setSelectionRange( node, qMin( a.start, ( a.start + a.length ) ), qMax( a.start, ( a.start + a.length ) ) );
+                }
+
+                if ( !ev->preeditString().isEmpty() )
+                {
+                    editor->setComposition( ev->preeditString(), underlines, qMin( a.start, ( a.start + a.length ) ), qMax( a.start,
+                                            ( a.start + a.length ) ) );
+                }
+                else
+                {
+                    // If we are in the middle of a composition, an empty pre-edit string and a selection of zero
+                    // cancels the current composition
+                    if ( editor->hasComposition() && ( a.start + a.length == 0 ) )
+                    {
+                        editor->setComposition( QString(), underlines, 0, 0 );
+                    }
+                }
+
+                break;
+            }
+
+            default:
+                break;
         }
     }
 
-    if (node && ev->replacementLength() > 0) {
+    if ( node && ev->replacementLength() > 0 )
+    {
         int cursorPos = frame->selection()->extent().offsetInContainerNode();
         int start = cursorPos + ev->replacementStart();
-        setSelectionRange(node, start, start + ev->replacementLength());
+        setSelectionRange( node, start, start + ev->replacementLength() );
         // Commit regardless of whether commitString is empty, to get rid of selection.
-        editor->confirmComposition(ev->commitString());
-    } else if (!ev->commitString().isEmpty()) {
-        if (editor->hasComposition())
-            editor->confirmComposition(ev->commitString());
+        editor->confirmComposition( ev->commitString() );
+    }
+    else if ( !ev->commitString().isEmpty() )
+    {
+        if ( editor->hasComposition() )
+        {
+            editor->confirmComposition( ev->commitString() );
+        }
         else
-            editor->insertText(ev->commitString(), 0);
-    } else if (!hasSelection && !ev->preeditString().isEmpty())
-        editor->setComposition(ev->preeditString(), underlines, 0, 0);
-    else if (ev->preeditString().isEmpty() && editor->hasComposition())
-        editor->confirmComposition(String());
+        {
+            editor->insertText( ev->commitString(), 0 );
+        }
+    }
+    else if ( !hasSelection && !ev->preeditString().isEmpty() )
+    {
+        editor->setComposition( ev->preeditString(), underlines, 0, 0 );
+    }
+    else if ( ev->preeditString().isEmpty() && editor->hasComposition() )
+    {
+        editor->confirmComposition( String() );
+    }
 
     ev->accept();
 }
 
 #ifndef QT_NO_PROPERTIES
-typedef struct {
-    const char* name;
+typedef struct
+{
+    const char *name;
     double deferredRepaintDelay;
     double initialDeferredRepaintDelayDuringLoading;
     double maxDeferredRepaintDelayDuringLoading;
     double deferredRepaintDelayIncrementDuringLoading;
 } QRepaintThrottlingPreset;
 
-void QWebPagePrivate::dynamicPropertyChangeEvent(QDynamicPropertyChangeEvent* event)
+void QWebPagePrivate::dynamicPropertyChangeEvent( QDynamicPropertyChangeEvent *event )
 {
-    if (event->propertyName() == "_q_viewMode") {
-        page->setViewMode(Page::stringToViewMode(q->property("_q_viewMode").toString()));
-    } else if (event->propertyName() == "_q_HTMLTokenizerChunkSize") {
-        int chunkSize = q->property("_q_HTMLTokenizerChunkSize").toInt();
-        q->handle()->page->setCustomHTMLTokenizerChunkSize(chunkSize);
-    } else if (event->propertyName() == "_q_HTMLTokenizerTimeDelay") {
-        double timeDelay = q->property("_q_HTMLTokenizerTimeDelay").toDouble();
-        q->handle()->page->setCustomHTMLTokenizerTimeDelay(timeDelay);
-    } else if (event->propertyName() == "_q_RepaintThrottlingDeferredRepaintDelay") {
-        double p = q->property("_q_RepaintThrottlingDeferredRepaintDelay").toDouble();
-        FrameView::setRepaintThrottlingDeferredRepaintDelay(p);
-    } else if (event->propertyName() == "_q_RepaintThrottlingnInitialDeferredRepaintDelayDuringLoading") {
-        double p = q->property("_q_RepaintThrottlingnInitialDeferredRepaintDelayDuringLoading").toDouble();
-        FrameView::setRepaintThrottlingnInitialDeferredRepaintDelayDuringLoading(p);
-    } else if (event->propertyName() == "_q_RepaintThrottlingMaxDeferredRepaintDelayDuringLoading") {
-        double p = q->property("_q_RepaintThrottlingMaxDeferredRepaintDelayDuringLoading").toDouble();
-        FrameView::setRepaintThrottlingMaxDeferredRepaintDelayDuringLoading(p);
-    } else if (event->propertyName() == "_q_RepaintThrottlingDeferredRepaintDelayIncrementDuringLoading") {
-        double p = q->property("_q_RepaintThrottlingDeferredRepaintDelayIncrementDuringLoading").toDouble();
-        FrameView::setRepaintThrottlingDeferredRepaintDelayIncrementDuringLoading(p);
-    } else if (event->propertyName() == "_q_RepaintThrottlingPreset") {
-        static const QRepaintThrottlingPreset presets[] = {
+    if ( event->propertyName() == "_q_viewMode" )
+    {
+        page->setViewMode( Page::stringToViewMode( q->property( "_q_viewMode" ).toString() ) );
+    }
+    else if ( event->propertyName() == "_q_HTMLTokenizerChunkSize" )
+    {
+        int chunkSize = q->property( "_q_HTMLTokenizerChunkSize" ).toInt();
+        q->handle()->page->setCustomHTMLTokenizerChunkSize( chunkSize );
+    }
+    else if ( event->propertyName() == "_q_HTMLTokenizerTimeDelay" )
+    {
+        double timeDelay = q->property( "_q_HTMLTokenizerTimeDelay" ).toDouble();
+        q->handle()->page->setCustomHTMLTokenizerTimeDelay( timeDelay );
+    }
+    else if ( event->propertyName() == "_q_RepaintThrottlingDeferredRepaintDelay" )
+    {
+        double p = q->property( "_q_RepaintThrottlingDeferredRepaintDelay" ).toDouble();
+        FrameView::setRepaintThrottlingDeferredRepaintDelay( p );
+    }
+    else if ( event->propertyName() == "_q_RepaintThrottlingnInitialDeferredRepaintDelayDuringLoading" )
+    {
+        double p = q->property( "_q_RepaintThrottlingnInitialDeferredRepaintDelayDuringLoading" ).toDouble();
+        FrameView::setRepaintThrottlingnInitialDeferredRepaintDelayDuringLoading( p );
+    }
+    else if ( event->propertyName() == "_q_RepaintThrottlingMaxDeferredRepaintDelayDuringLoading" )
+    {
+        double p = q->property( "_q_RepaintThrottlingMaxDeferredRepaintDelayDuringLoading" ).toDouble();
+        FrameView::setRepaintThrottlingMaxDeferredRepaintDelayDuringLoading( p );
+    }
+    else if ( event->propertyName() == "_q_RepaintThrottlingDeferredRepaintDelayIncrementDuringLoading" )
+    {
+        double p = q->property( "_q_RepaintThrottlingDeferredRepaintDelayIncrementDuringLoading" ).toDouble();
+        FrameView::setRepaintThrottlingDeferredRepaintDelayIncrementDuringLoading( p );
+    }
+    else if ( event->propertyName() == "_q_RepaintThrottlingPreset" )
+    {
+        static const QRepaintThrottlingPreset presets[] =
+        {
             {   "NoThrottling",     0,      0,      0,      0 },
             {   "Legacy",       0.025,      0,    2.5,    0.5 },
             {   "Minimal",       0.01,      0,      1,    0.2 },
@@ -1193,85 +1500,122 @@ void QWebPagePrivate::dynamicPropertyChangeEvent(QDynamicPropertyChangeEvent* ev
             {   "Heavy",          0.1,      2,     10,      1 }
         };
 
-        QString p = q->property("_q_RepaintThrottlingPreset").toString();
+        QString p = q->property( "_q_RepaintThrottlingPreset" ).toString();
 
-        for (size_t i = 0; i < sizeof(presets) / sizeof(presets[0]); i++) {
+        for ( size_t i = 0; i < sizeof( presets ) / sizeof( presets[0] ); i++ )
+        {
 
-            if (p == QString::fromLatin1(presets[i].name)) {
+            if ( p == QString::fromLatin1( presets[i].name ) )
+            {
 
                 FrameView::setRepaintThrottlingDeferredRepaintDelay(
-                        presets[i].deferredRepaintDelay);
+                    presets[i].deferredRepaintDelay );
 
                 FrameView::setRepaintThrottlingnInitialDeferredRepaintDelayDuringLoading(
-                        presets[i].initialDeferredRepaintDelayDuringLoading);
+                    presets[i].initialDeferredRepaintDelayDuringLoading );
 
                 FrameView::setRepaintThrottlingMaxDeferredRepaintDelayDuringLoading(
-                        presets[i].maxDeferredRepaintDelayDuringLoading);
+                    presets[i].maxDeferredRepaintDelayDuringLoading );
 
                 FrameView::setRepaintThrottlingDeferredRepaintDelayIncrementDuringLoading(
-                        presets[i].deferredRepaintDelayIncrementDuringLoading);
+                    presets[i].deferredRepaintDelayIncrementDuringLoading );
 
                 break;
             }
         }
     }
+
 #if ENABLE(TILED_BACKING_STORE)
-    else if (event->propertyName() == "_q_TiledBackingStoreTileSize") {
-        WebCore::Frame* frame = QWebFramePrivate::core(q->mainFrame());
-        if (!frame->tiledBackingStore())
+    else if ( event->propertyName() == "_q_TiledBackingStoreTileSize" )
+    {
+        WebCore::Frame *frame = QWebFramePrivate::core( q->mainFrame() );
+
+        if ( !frame->tiledBackingStore() )
+        {
             return;
-        QSize tileSize = q->property("_q_TiledBackingStoreTileSize").toSize();
-        frame->tiledBackingStore()->setTileSize(tileSize);
-    } else if (event->propertyName() == "_q_TiledBackingStoreTileCreationDelay") {
-        WebCore::Frame* frame = QWebFramePrivate::core(q->mainFrame());
-        if (!frame->tiledBackingStore())
-            return;
-        int tileCreationDelay = q->property("_q_TiledBackingStoreTileCreationDelay").toInt();
-        frame->tiledBackingStore()->setTileCreationDelay(static_cast<double>(tileCreationDelay) / 1000.);
-    } else if (event->propertyName() == "_q_TiledBackingStoreKeepAreaMultiplier") {
-        WebCore::Frame* frame = QWebFramePrivate::core(q->mainFrame());
-        if (!frame->tiledBackingStore())
-            return;
-        FloatSize keepMultiplier;
-        FloatSize coverMultiplier;
-        frame->tiledBackingStore()->getKeepAndCoverAreaMultipliers(keepMultiplier, coverMultiplier);
-        QSizeF qSize = q->property("_q_TiledBackingStoreKeepAreaMultiplier").toSizeF();
-        keepMultiplier = FloatSize(qSize.width(), qSize.height());
-        frame->tiledBackingStore()->setKeepAndCoverAreaMultipliers(keepMultiplier, coverMultiplier);
-    } else if (event->propertyName() == "_q_TiledBackingStoreCoverAreaMultiplier") {
-        WebCore::Frame* frame = QWebFramePrivate::core(q->mainFrame());
-        if (!frame->tiledBackingStore())
-            return;
-        FloatSize keepMultiplier;
-        FloatSize coverMultiplier;
-        frame->tiledBackingStore()->getKeepAndCoverAreaMultipliers(keepMultiplier, coverMultiplier);
-        QSizeF qSize = q->property("_q_TiledBackingStoreCoverAreaMultiplier").toSizeF();
-        coverMultiplier = FloatSize(qSize.width(), qSize.height());
-        frame->tiledBackingStore()->setKeepAndCoverAreaMultipliers(keepMultiplier, coverMultiplier);
+        }
+
+        QSize tileSize = q->property( "_q_TiledBackingStoreTileSize" ).toSize();
+        frame->tiledBackingStore()->setTileSize( tileSize );
     }
+    else if ( event->propertyName() == "_q_TiledBackingStoreTileCreationDelay" )
+    {
+        WebCore::Frame *frame = QWebFramePrivate::core( q->mainFrame() );
+
+        if ( !frame->tiledBackingStore() )
+        {
+            return;
+        }
+
+        int tileCreationDelay = q->property( "_q_TiledBackingStoreTileCreationDelay" ).toInt();
+        frame->tiledBackingStore()->setTileCreationDelay( static_cast<double>( tileCreationDelay ) / 1000. );
+    }
+    else if ( event->propertyName() == "_q_TiledBackingStoreKeepAreaMultiplier" )
+    {
+        WebCore::Frame *frame = QWebFramePrivate::core( q->mainFrame() );
+
+        if ( !frame->tiledBackingStore() )
+        {
+            return;
+        }
+
+        FloatSize keepMultiplier;
+        FloatSize coverMultiplier;
+        frame->tiledBackingStore()->getKeepAndCoverAreaMultipliers( keepMultiplier, coverMultiplier );
+        QSizeF qSize = q->property( "_q_TiledBackingStoreKeepAreaMultiplier" ).toSizeF();
+        keepMultiplier = FloatSize( qSize.width(), qSize.height() );
+        frame->tiledBackingStore()->setKeepAndCoverAreaMultipliers( keepMultiplier, coverMultiplier );
+    }
+    else if ( event->propertyName() == "_q_TiledBackingStoreCoverAreaMultiplier" )
+    {
+        WebCore::Frame *frame = QWebFramePrivate::core( q->mainFrame() );
+
+        if ( !frame->tiledBackingStore() )
+        {
+            return;
+        }
+
+        FloatSize keepMultiplier;
+        FloatSize coverMultiplier;
+        frame->tiledBackingStore()->getKeepAndCoverAreaMultipliers( keepMultiplier, coverMultiplier );
+        QSizeF qSize = q->property( "_q_TiledBackingStoreCoverAreaMultiplier" ).toSizeF();
+        coverMultiplier = FloatSize( qSize.width(), qSize.height() );
+        frame->tiledBackingStore()->setKeepAndCoverAreaMultipliers( keepMultiplier, coverMultiplier );
+    }
+
 #endif
-    else if (event->propertyName() == "_q_webInspectorServerPort") {
-        InspectorServerQt* inspectorServer = InspectorServerQt::server();
-        inspectorServer->listen(inspectorServerPort());
-    } else if (event->propertyName() == "_q_deadDecodedDataDeletionInterval") {
-        double interval = q->property("_q_deadDecodedDataDeletionInterval").toDouble();
-        memoryCache()->setDeadDecodedDataDeletionInterval(interval);
+    else if ( event->propertyName() == "_q_webInspectorServerPort" )
+    {
+        InspectorServerQt *inspectorServer = InspectorServerQt::server();
+        inspectorServer->listen( inspectorServerPort() );
+    }
+    else if ( event->propertyName() == "_q_deadDecodedDataDeletionInterval" )
+    {
+        double interval = q->property( "_q_deadDecodedDataDeletionInterval" ).toDouble();
+        memoryCache()->setDeadDecodedDataDeletionInterval( interval );
     }
 }
 #endif
 
-void QWebPagePrivate::shortcutOverrideEvent(QKeyEvent* event)
+void QWebPagePrivate::shortcutOverrideEvent( QKeyEvent *event )
 {
-    WebCore::Frame* frame = page->focusController()->focusedOrMainFrame();
-    WebCore::Editor* editor = frame->editor();
-    if (editor->canEdit()) {
-        if (event->modifiers() == Qt::NoModifier
-            || event->modifiers() == Qt::ShiftModifier
-            || event->modifiers() == Qt::KeypadModifier) {
-                if (event->key() < Qt::Key_Escape) {
-                    event->accept();
-                } else {
-                    switch (event->key()) {
+    WebCore::Frame *frame = page->focusController()->focusedOrMainFrame();
+    WebCore::Editor *editor = frame->editor();
+
+    if ( editor->canEdit() )
+    {
+        if ( event->modifiers() == Qt::NoModifier
+                || event->modifiers() == Qt::ShiftModifier
+                || event->modifiers() == Qt::KeypadModifier )
+        {
+            if ( event->key() < Qt::Key_Escape )
+            {
+                event->accept();
+            }
+            else
+            {
+                switch ( event->key() )
+                {
                     case Qt::Key_Return:
                     case Qt::Key_Enter:
                     case Qt::Key_Delete:
@@ -1284,118 +1628,152 @@ void QWebPagePrivate::shortcutOverrideEvent(QKeyEvent* event)
                     case Qt::Key_Down:
                     case Qt::Key_Tab:
                         event->accept();
+
                     default:
                         break;
-                    }
                 }
+            }
         }
+
 #ifndef QT_NO_SHORTCUT
-        else if (editorActionForKeyEvent(event) != QWebPage::NoWebAction)
+        else if ( editorActionForKeyEvent( event ) != QWebPage::NoWebAction )
+        {
             event->accept();
+        }
+
 #endif
     }
 }
 
-bool QWebPagePrivate::handleScrolling(QKeyEvent *ev, Frame *frame)
+bool QWebPagePrivate::handleScrolling( QKeyEvent *ev, Frame *frame )
 {
     ScrollDirection direction;
     ScrollGranularity granularity;
 
 #ifndef QT_NO_SHORTCUT
-    if (ev == QKeySequence::MoveToNextPage
-        || (ev->key() == Qt::Key_Space && !(ev->modifiers() & Qt::ShiftModifier))) {
-        granularity = ScrollByPage;
-        direction = ScrollDown;
-    } else if (ev == QKeySequence::MoveToPreviousPage
-               || ((ev->key() == Qt::Key_Space) && (ev->modifiers() & Qt::ShiftModifier))) {
-        granularity = ScrollByPage;
-        direction = ScrollUp;
-    } else
-#endif // QT_NO_SHORTCUT
-    if ((ev->key() == Qt::Key_Up && ev->modifiers() & Qt::ControlModifier)
-               || ev->key() == Qt::Key_Home) {
-        granularity = ScrollByDocument;
-        direction = ScrollUp;
-    } else if ((ev->key() == Qt::Key_Down && ev->modifiers() & Qt::ControlModifier)
-               || ev->key() == Qt::Key_End) {
-        granularity = ScrollByDocument;
-        direction = ScrollDown;
-    } else {
-        switch (ev->key()) {
-            case Qt::Key_Up:
-                granularity = ScrollByLine;
-                direction = ScrollUp;
-                break;
-            case Qt::Key_Down:
-                granularity = ScrollByLine;
-                direction = ScrollDown;
-                break;
-            case Qt::Key_Left:
-                granularity = ScrollByLine;
-                direction = ScrollLeft;
-                break;
-            case Qt::Key_Right:
-                granularity = ScrollByLine;
-                direction = ScrollRight;
-                break;
-            default:
-                return false;
-        }
-    }
 
-    return frame->eventHandler()->scrollRecursively(direction, granularity);
+    if ( ev == QKeySequence::MoveToNextPage
+            || ( ev->key() == Qt::Key_Space && !( ev->modifiers() & Qt::ShiftModifier ) ) )
+    {
+        granularity = ScrollByPage;
+        direction = ScrollDown;
+    }
+    else if ( ev == QKeySequence::MoveToPreviousPage
+              || ( ( ev->key() == Qt::Key_Space ) && ( ev->modifiers() & Qt::ShiftModifier ) ) )
+    {
+        granularity = ScrollByPage;
+        direction = ScrollUp;
+    }
+    else
+#endif // QT_NO_SHORTCUT
+        if ( ( ev->key() == Qt::Key_Up && ev->modifiers() & Qt::ControlModifier )
+                || ev->key() == Qt::Key_Home )
+        {
+            granularity = ScrollByDocument;
+            direction = ScrollUp;
+        }
+        else if ( ( ev->key() == Qt::Key_Down && ev->modifiers() & Qt::ControlModifier )
+                  || ev->key() == Qt::Key_End )
+        {
+            granularity = ScrollByDocument;
+            direction = ScrollDown;
+        }
+        else
+        {
+            switch ( ev->key() )
+            {
+                case Qt::Key_Up:
+                    granularity = ScrollByLine;
+                    direction = ScrollUp;
+                    break;
+
+                case Qt::Key_Down:
+                    granularity = ScrollByLine;
+                    direction = ScrollDown;
+                    break;
+
+                case Qt::Key_Left:
+                    granularity = ScrollByLine;
+                    direction = ScrollLeft;
+                    break;
+
+                case Qt::Key_Right:
+                    granularity = ScrollByLine;
+                    direction = ScrollRight;
+                    break;
+
+                default:
+                    return false;
+            }
+        }
+
+    return frame->eventHandler()->scrollRecursively( direction, granularity );
 }
 
-void QWebPagePrivate::adjustPointForClicking(QMouseEvent*)
+void QWebPagePrivate::adjustPointForClicking( QMouseEvent * )
 {
     notImplemented();
 }
 
 #if !defined(QT_NO_GRAPHICSVIEW)
-void QWebPagePrivate::adjustPointForClicking(QGraphicsSceneMouseEvent* ev)
+void QWebPagePrivate::adjustPointForClicking( QGraphicsSceneMouseEvent *ev )
 {
     QtPlatformPlugin platformPlugin;
-    QWebTouchModifier* touchModifier = platformPlugin.createTouchModifier();
-    if (!touchModifier)
-        return;
+    QWebTouchModifier *touchModifier = platformPlugin.createTouchModifier();
 
-    unsigned topPadding = touchModifier->hitTestPaddingForTouch(QWebTouchModifier::Up);
-    unsigned rightPadding = touchModifier->hitTestPaddingForTouch(QWebTouchModifier::Right);
-    unsigned bottomPadding = touchModifier->hitTestPaddingForTouch(QWebTouchModifier::Down);
-    unsigned leftPadding = touchModifier->hitTestPaddingForTouch(QWebTouchModifier::Left);
+    if ( !touchModifier )
+    {
+        return;
+    }
+
+    unsigned topPadding = touchModifier->hitTestPaddingForTouch( QWebTouchModifier::Up );
+    unsigned rightPadding = touchModifier->hitTestPaddingForTouch( QWebTouchModifier::Right );
+    unsigned bottomPadding = touchModifier->hitTestPaddingForTouch( QWebTouchModifier::Down );
+    unsigned leftPadding = touchModifier->hitTestPaddingForTouch( QWebTouchModifier::Left );
 
     delete touchModifier;
     touchModifier = 0;
 
-    if (!topPadding && !rightPadding && !bottomPadding && !leftPadding)
+    if ( !topPadding && !rightPadding && !bottomPadding && !leftPadding )
+    {
         return;
+    }
 
-    Document* startingDocument = page->mainFrame()->document();
-    if (!startingDocument)
+    Document *startingDocument = page->mainFrame()->document();
+
+    if ( !startingDocument )
+    {
         return;
+    }
 
-    IntPoint originalPoint(QPointF(ev->pos()).toPoint());
-    TouchAdjuster touchAdjuster(topPadding, rightPadding, bottomPadding, leftPadding);
-    IntPoint adjustedPoint = touchAdjuster.findCandidatePointForTouch(originalPoint, startingDocument);
-    if (adjustedPoint == IntPoint::zero())
+    IntPoint originalPoint( QPointF( ev->pos() ).toPoint() );
+    TouchAdjuster touchAdjuster( topPadding, rightPadding, bottomPadding, leftPadding );
+    IntPoint adjustedPoint = touchAdjuster.findCandidatePointForTouch( originalPoint, startingDocument );
+
+    if ( adjustedPoint == IntPoint::zero() )
+    {
         return;
+    }
 
-    ev->setPos(QPointF(adjustedPoint));
+    ev->setPos( QPointF( adjustedPoint ) );
 }
 #endif
 
-bool QWebPagePrivate::touchEvent(QTouchEvent* event)
+bool QWebPagePrivate::touchEvent( QTouchEvent *event )
 {
 #if ENABLE(TOUCH_EVENTS)
-    WebCore::Frame* frame = QWebFramePrivate::core(mainFrame);
-    if (!frame->view())
+    WebCore::Frame *frame = QWebFramePrivate::core( mainFrame );
+
+    if ( !frame->view() )
+    {
         return false;
+    }
 
     // Always accept the QTouchEvent so that we'll receive also TouchUpdate and TouchEnd events
-    event->setAccepted(true);
+    event->setAccepted( true );
 
     // Return whether the default action was cancelled in the JS event handler
-    return frame->eventHandler()->handleTouchEvent(PlatformTouchEvent(event));
+    return frame->eventHandler()->handleTouchEvent( PlatformTouchEvent( event ) );
 #else
     event->ignore();
     return false;
@@ -1411,81 +1789,130 @@ bool QWebPagePrivate::touchEvent(QTouchEvent* event)
 
   \sa QWidget::inputMethodEvent(), QInputMethodEvent, QInputContext
 */
-QVariant QWebPage::inputMethodQuery(Qt::InputMethodQuery property) const
+QVariant QWebPage::inputMethodQuery( Qt::InputMethodQuery property ) const
 {
-    Frame* frame = d->page->focusController()->focusedFrame();
-    if (!frame)
+    Frame *frame = d->page->focusController()->focusedFrame();
+
+    if ( !frame )
+    {
         return QVariant();
+    }
 
-    WebCore::Editor* editor = frame->editor();
+    WebCore::Editor *editor = frame->editor();
 
-    RenderObject* renderer = 0;
-    RenderTextControl* renderTextControl = 0;
+    RenderObject *renderer = 0;
+    RenderTextControl *renderTextControl = 0;
 
-    if (frame->selection()->rootEditableElement())
+    if ( frame->selection()->rootEditableElement() )
+    {
         renderer = frame->selection()->rootEditableElement()->shadowAncestorNode()->renderer();
+    }
 
-    if (renderer && renderer->isTextControl())
-        renderTextControl = toRenderTextControl(renderer);
+    if ( renderer && renderer->isTextControl() )
+    {
+        renderTextControl = toRenderTextControl( renderer );
+    }
 
-    switch (property) {
-        case Qt::ImMicroFocus: {
-            WebCore::FrameView* view = frame->view();
-            if (view && view->needsLayout()) {
+    switch ( property )
+    {
+        case Qt::ImMicroFocus:
+        {
+            WebCore::FrameView *view = frame->view();
+
+            if ( view && view->needsLayout() )
+            {
                 // We can't access absoluteCaretBounds() while the view needs to layout.
                 return QVariant();
             }
-            return QVariant(view->contentsToWindow(frame->selection()->absoluteCaretBounds()));
+
+            return QVariant( view->contentsToWindow( frame->selection()->absoluteCaretBounds() ) );
         }
-        case Qt::ImFont: {
-            if (renderTextControl) {
-                RenderStyle* renderStyle = renderTextControl->style();
-                return QVariant(QFont(renderStyle->font().font()));
+
+        case Qt::ImFont:
+        {
+            if ( renderTextControl )
+            {
+                RenderStyle *renderStyle = renderTextControl->style();
+                return QVariant( QFont( renderStyle->font().font() ) );
             }
-            return QVariant(QFont());
+
+            return QVariant( QFont() );
         }
-        case Qt::ImCursorPosition: {
-            if (editor->hasComposition())
-                return QVariant(frame->selection()->end().offsetInContainerNode());
-            return QVariant(frame->selection()->extent().offsetInContainerNode());
+
+        case Qt::ImCursorPosition:
+        {
+            if ( editor->hasComposition() )
+            {
+                return QVariant( frame->selection()->end().offsetInContainerNode() );
+            }
+
+            return QVariant( frame->selection()->extent().offsetInContainerNode() );
         }
-        case Qt::ImSurroundingText: {
-            if (renderTextControl) {
+
+        case Qt::ImSurroundingText:
+        {
+            if ( renderTextControl )
+            {
                 QString text = renderTextControl->text();
                 RefPtr<Range> range = editor->compositionRange();
-                if (range)
-                    text.remove(range->startPosition().offsetInContainerNode(), TextIterator::rangeLength(range.get()));
-                return QVariant(text);
+
+                if ( range )
+                {
+                    text.remove( range->startPosition().offsetInContainerNode(), TextIterator::rangeLength( range.get() ) );
+                }
+
+                return QVariant( text );
             }
+
             return QVariant();
         }
-        case Qt::ImCurrentSelection: {
-            if (!editor->hasComposition() && renderTextControl) {
+
+        case Qt::ImCurrentSelection:
+        {
+            if ( !editor->hasComposition() && renderTextControl )
+            {
                 int start = frame->selection()->start().offsetInContainerNode();
                 int end = frame->selection()->end().offsetInContainerNode();
-                if (end > start)
-                    return QVariant(QString(renderTextControl->text()).mid(start, end - start));
+
+                if ( end > start )
+                {
+                    return QVariant( QString( renderTextControl->text() ).mid( start, end - start ) );
+                }
             }
+
             return QVariant();
 
         }
-        case Qt::ImAnchorPosition: {
-            if (editor->hasComposition())
-                return QVariant(frame->selection()->start().offsetInContainerNode());
-            return QVariant(frame->selection()->base().offsetInContainerNode());
+
+        case Qt::ImAnchorPosition:
+        {
+            if ( editor->hasComposition() )
+            {
+                return QVariant( frame->selection()->start().offsetInContainerNode() );
+            }
+
+            return QVariant( frame->selection()->base().offsetInContainerNode() );
         }
-        case Qt::ImMaximumTextLength: {
-            if (frame->selection()->isContentEditable()) {
-                if (frame->document() && frame->document()->focusedNode()) {
-                    if (frame->document()->focusedNode()->hasTagName(HTMLNames::inputTag)) {
-                        HTMLInputElement* inputElement = static_cast<HTMLInputElement*>(frame->document()->focusedNode());
-                        return QVariant(inputElement->maxLength());
+
+        case Qt::ImMaximumTextLength:
+        {
+            if ( frame->selection()->isContentEditable() )
+            {
+                if ( frame->document() && frame->document()->focusedNode() )
+                {
+                    if ( frame->document()->focusedNode()->hasTagName( HTMLNames::inputTag ) )
+                    {
+                        HTMLInputElement *inputElement = static_cast<HTMLInputElement *>( frame->document()->focusedNode() );
+                        return QVariant( inputElement->maxLength() );
                     }
                 }
-                return QVariant(InputElement::s_maximumLength);
+
+                return QVariant( InputElement::s_maximumLength );
             }
-            return QVariant(0);
+
+            return QVariant( 0 );
         }
+
         default:
             return QVariant();
     }
@@ -1494,13 +1921,16 @@ QVariant QWebPage::inputMethodQuery(Qt::InputMethodQuery property) const
 /*!
     \internal
 */
-void QWebPagePrivate::setInspector(QWebInspector* insp)
+void QWebPagePrivate::setInspector( QWebInspector *insp )
 {
-    if (inspector)
-        inspector->d->setFrontend(0);
+    if ( inspector )
+    {
+        inspector->d->setFrontend( 0 );
+    }
 
-    if (inspectorIsInternalOnly) {
-        QWebInspector* inspToDelete = inspector;
+    if ( inspectorIsInternalOnly )
+    {
+        QWebInspector *inspToDelete = inspector;
         inspector = 0;
         inspectorIsInternalOnly = false;
         delete inspToDelete;    // Delete after to prevent infinite recursion
@@ -1509,8 +1939,10 @@ void QWebPagePrivate::setInspector(QWebInspector* insp)
     inspector = insp;
 
     // Give inspector frontend web view if previously created
-    if (inspector && inspectorFrontend)
-        inspector->d->setFrontend(inspectorFrontend);
+    if ( inspector && inspectorFrontend )
+    {
+        inspector->d->setFrontend( inspectorFrontend );
+    }
 }
 
 /*!
@@ -1518,22 +1950,25 @@ void QWebPagePrivate::setInspector(QWebInspector* insp)
     Returns the inspector and creates it if it wasn't created yet.
     The instance created here will not be available through QWebPage's API.
 */
-QWebInspector* QWebPagePrivate::getOrCreateInspector()
+QWebInspector *QWebPagePrivate::getOrCreateInspector()
 {
 #if ENABLE(INSPECTOR)
-    if (!inspector) {
-        QWebInspector* insp = new QWebInspector;
-        insp->setPage(q);
+
+    if ( !inspector )
+    {
+        QWebInspector *insp = new QWebInspector;
+        insp->setPage( q );
         inspectorIsInternalOnly = true;
 
-        Q_ASSERT(inspector); // Associated through QWebInspector::setPage(q)
+        Q_ASSERT( inspector ); // Associated through QWebInspector::setPage(q)
     }
+
 #endif
     return inspector;
 }
 
 /*! \internal */
-InspectorController* QWebPagePrivate::inspectorController()
+InspectorController *QWebPagePrivate::inspectorController()
 {
 #if ENABLE(INSPECTOR)
     return page->inspectorController();
@@ -1545,34 +1980,47 @@ InspectorController* QWebPagePrivate::inspectorController()
 quint16 QWebPagePrivate::inspectorServerPort()
 {
 #if ENABLE(INSPECTOR) && !defined(QT_NO_PROPERTIES)
-    if (q && q->property("_q_webInspectorServerPort").isValid())
-        return q->property("_q_webInspectorServerPort").toInt();
+
+    if ( q && q->property( "_q_webInspectorServerPort" ).isValid() )
+    {
+        return q->property( "_q_webInspectorServerPort" ).toInt();
+    }
+
 #endif
     return 0;
 }
 
-static bool hasMouseListener(Element* element)
+static bool hasMouseListener( Element *element )
 {
-    ASSERT(element);
-    return element->hasEventListeners(eventNames().clickEvent)
-        || element->hasEventListeners(eventNames().mousedownEvent)
-        || element->hasEventListeners(eventNames().mouseupEvent);
+    ASSERT( element );
+    return element->hasEventListeners( eventNames().clickEvent )
+           || element->hasEventListeners( eventNames().mousedownEvent )
+           || element->hasEventListeners( eventNames().mouseupEvent );
 }
 
-static bool isClickableElement(Element* element, RefPtr<NodeList> list)
+static bool isClickableElement( Element *element, RefPtr<NodeList> list )
 {
-    ASSERT(element);
-    bool isClickable = hasMouseListener(element);
-    if (!isClickable && list) {
-        Element* parent = element->parentElement();
-        unsigned count = list->length();
-        for (unsigned i = 0; i < count && parent; i++) {
-            if (list->item(i) != parent)
-                continue;
+    ASSERT( element );
+    bool isClickable = hasMouseListener( element );
 
-            isClickable = hasMouseListener(parent);
-            if (isClickable)
+    if ( !isClickable && list )
+    {
+        Element *parent = element->parentElement();
+        unsigned count = list->length();
+
+        for ( unsigned i = 0; i < count && parent; i++ )
+        {
+            if ( list->item( i ) != parent )
+            {
+                continue;
+            }
+
+            isClickable = hasMouseListener( parent );
+
+            if ( isClickable )
+            {
                 break;
+            }
 
             parent = parent->parentElement();
         }
@@ -1580,93 +2028,116 @@ static bool isClickableElement(Element* element, RefPtr<NodeList> list)
 
     ExceptionCode ec = 0;
     return isClickable
-        || element->webkitMatchesSelector("a,*:link,*:visited,*[role=button],button,input,select,label", ec)
-        || computedStyle(element)->getPropertyValue(cssPropertyID("cursor")) == "pointer";
+           || element->webkitMatchesSelector( "a,*:link,*:visited,*[role=button],button,input,select,label", ec )
+           || computedStyle( element )->getPropertyValue( cssPropertyID( "cursor" ) ) == "pointer";
 }
 
-static bool isValidFrameOwner(Element* element)
+static bool isValidFrameOwner( Element *element )
 {
-    ASSERT(element);
-    return element->isFrameOwnerElement() && static_cast<HTMLFrameOwnerElement*>(element)->contentFrame();
+    ASSERT( element );
+    return element->isFrameOwnerElement() && static_cast<HTMLFrameOwnerElement *>( element )->contentFrame();
 }
 
-static Element* nodeToElement(Node* node)
+static Element *nodeToElement( Node *node )
 {
-    if (node && node->isElementNode())
-        return static_cast<Element*>(node);
+    if ( node && node->isElementNode() )
+    {
+        return static_cast<Element *>( node );
+    }
+
     return 0;
 }
 
-QWebPagePrivate::TouchAdjuster::TouchAdjuster(unsigned topPadding, unsigned rightPadding, unsigned bottomPadding, unsigned leftPadding)
-    : m_topPadding(topPadding)
-    , m_rightPadding(rightPadding)
-    , m_bottomPadding(bottomPadding)
-    , m_leftPadding(leftPadding)
+QWebPagePrivate::TouchAdjuster::TouchAdjuster( unsigned topPadding, unsigned rightPadding, unsigned bottomPadding,
+        unsigned leftPadding )
+    : m_topPadding( topPadding )
+    , m_rightPadding( rightPadding )
+    , m_bottomPadding( bottomPadding )
+    , m_leftPadding( leftPadding )
 {
 }
 
-IntPoint QWebPagePrivate::TouchAdjuster::findCandidatePointForTouch(const IntPoint& touchPoint, Document* document) const
+IntPoint QWebPagePrivate::TouchAdjuster::findCandidatePointForTouch( const IntPoint &touchPoint, Document *document ) const
 {
-    if (!document)
+    if ( !document )
+    {
         return IntPoint();
+    }
 
     int x = touchPoint.x();
     int y = touchPoint.y();
 
-    RefPtr<NodeList> intersectedNodes = document->nodesFromRect(x, y, m_topPadding, m_rightPadding, m_bottomPadding, m_leftPadding, false);
-    if (!intersectedNodes)
-        return IntPoint();
+    RefPtr<NodeList> intersectedNodes = document->nodesFromRect( x, y, m_topPadding, m_rightPadding, m_bottomPadding, m_leftPadding,
+                                        false );
 
-    Element* closestClickableElement = 0;
+    if ( !intersectedNodes )
+    {
+        return IntPoint();
+    }
+
+    Element *closestClickableElement = 0;
     IntRect largestIntersectionRect;
-    FrameView* view = document->frame()->view();
+    FrameView *view = document->frame()->view();
 
     // Touch rect in contents coordinates.
-    IntRect touchRect(HitTestResult::rectForPoint(view->windowToContents(IntPoint(x, y)), m_topPadding, m_rightPadding, m_bottomPadding, m_leftPadding));
+    IntRect touchRect( HitTestResult::rectForPoint( view->windowToContents( IntPoint( x, y ) ), m_topPadding, m_rightPadding,
+                       m_bottomPadding, m_leftPadding ) );
 
     // Iterate over the list of nodes hit looking for the one whose bounding area
     // has largest intersection with the touch area (point + padding).
-    for (unsigned i = 0; i < intersectedNodes->length(); i++) {
-        Node* currentNode = intersectedNodes->item(i);
+    for ( unsigned i = 0; i < intersectedNodes->length(); i++ )
+    {
+        Node *currentNode = intersectedNodes->item( i );
 
-        Element* currentElement = nodeToElement(currentNode);
-        if (!currentElement || (!isClickableElement(currentElement, 0) && !isValidFrameOwner(currentElement)))
+        Element *currentElement = nodeToElement( currentNode );
+
+        if ( !currentElement || ( !isClickableElement( currentElement, 0 ) && !isValidFrameOwner( currentElement ) ) )
+        {
             continue;
+        }
 
         IntRect currentElementBoundingRect = currentElement->getRect();
-        currentElementBoundingRect.intersect(touchRect);
+        currentElementBoundingRect.intersect( touchRect );
 
-        if (currentElementBoundingRect.isEmpty())
+        if ( currentElementBoundingRect.isEmpty() )
+        {
             continue;
+        }
 
         int currentIntersectionRectArea = currentElementBoundingRect.width() * currentElementBoundingRect.height();
         int largestIntersectionRectArea = largestIntersectionRect.width() * largestIntersectionRect.height();
-        if (currentIntersectionRectArea > largestIntersectionRectArea) {
+
+        if ( currentIntersectionRectArea > largestIntersectionRectArea )
+        {
             closestClickableElement = currentElement;
             largestIntersectionRect = currentElementBoundingRect;
         }
     }
 
-    if (largestIntersectionRect.isEmpty())
+    if ( largestIntersectionRect.isEmpty() )
+    {
         return IntPoint();
+    }
 
     // Handle the case when user taps a inner frame. It is done in three steps:
     // 1) Transform the original touch point to the inner document coordinates;
     // 1) Call nodesFromRect for the inner document in case;
     // 3) Re-add the inner frame offset (location) before passing the new clicking
     //    position to WebCore.
-    if (closestClickableElement->isFrameOwnerElement()) {
+    if ( closestClickableElement->isFrameOwnerElement() )
+    {
         // Adjust client coordinates' origin to be top left of inner frame viewport.
         PassRefPtr<ClientRect> rect = closestClickableElement->getBoundingClientRect();
         IntPoint newTouchPoint = touchPoint;
-        IntSize offset =  IntSize(rect->left(), rect->top());
+        IntSize offset =  IntSize( rect->left(), rect->top() );
         newTouchPoint -= offset;
 
-        HTMLFrameOwnerElement* owner = static_cast<HTMLFrameOwnerElement*>(closestClickableElement);
-        Document* childDocument = owner->contentFrame()->document();
-        return findCandidatePointForTouch(newTouchPoint, childDocument);
+        HTMLFrameOwnerElement *owner = static_cast<HTMLFrameOwnerElement *>( closestClickableElement );
+        Document *childDocument = owner->contentFrame()->document();
+        return findCandidatePointForTouch( newTouchPoint, childDocument );
     }
-    return view->contentsToWindow(largestIntersectionRect).center();
+
+    return view->contentsToWindow( largestIntersectionRect ).center();
 }
 
 /*!
@@ -1833,13 +2304,13 @@ IntPoint QWebPagePrivate::TouchAdjuster::findCandidatePointForTouch(const IntPoi
     Constructs an empty QWebPage::ViewportAttributes.
 */
 QWebPage::ViewportAttributes::ViewportAttributes()
-    : d(0)
-    , m_initialScaleFactor(-1.0)
-    , m_minimumScaleFactor(-1.0)
-    , m_maximumScaleFactor(-1.0)
-    , m_devicePixelRatio(-1.0)
-    , m_isUserScalable(true)
-    , m_isValid(false)
+    : d( 0 )
+    , m_initialScaleFactor( -1.0 )
+    , m_minimumScaleFactor( -1.0 )
+    , m_maximumScaleFactor( -1.0 )
+    , m_devicePixelRatio( -1.0 )
+    , m_isUserScalable( true )
+    , m_isValid( false )
 {
 
 }
@@ -1847,15 +2318,15 @@ QWebPage::ViewportAttributes::ViewportAttributes()
 /*!
     Constructs a QWebPage::ViewportAttributes which is a copy from \a other .
 */
-QWebPage::ViewportAttributes::ViewportAttributes(const QWebPage::ViewportAttributes& other)
-    : d(other.d)
-    , m_initialScaleFactor(other.m_initialScaleFactor)
-    , m_minimumScaleFactor(other.m_minimumScaleFactor)
-    , m_maximumScaleFactor(other.m_maximumScaleFactor)
-    , m_devicePixelRatio(other.m_devicePixelRatio)
-    , m_isUserScalable(other.m_isUserScalable)
-    , m_isValid(other.m_isValid)
-    , m_size(other.m_size)
+QWebPage::ViewportAttributes::ViewportAttributes( const QWebPage::ViewportAttributes &other )
+    : d( other.d )
+    , m_initialScaleFactor( other.m_initialScaleFactor )
+    , m_minimumScaleFactor( other.m_minimumScaleFactor )
+    , m_maximumScaleFactor( other.m_maximumScaleFactor )
+    , m_devicePixelRatio( other.m_devicePixelRatio )
+    , m_isUserScalable( other.m_isUserScalable )
+    , m_isValid( other.m_isValid )
+    , m_size( other.m_size )
 {
 
 }
@@ -1872,9 +2343,10 @@ QWebPage::ViewportAttributes::~ViewportAttributes()
     Assigns the given QWebPage::ViewportAttributes to this viewport hints and returns a
     reference to this.
 */
-QWebPage::ViewportAttributes& QWebPage::ViewportAttributes::operator=(const QWebPage::ViewportAttributes& other)
+QWebPage::ViewportAttributes &QWebPage::ViewportAttributes::operator=( const QWebPage::ViewportAttributes &other )
 {
-    if (this != &other) {
+    if ( this != &other )
+    {
         d = other.d;
         m_initialScaleFactor = other.m_initialScaleFactor;
         m_minimumScaleFactor = other.m_minimumScaleFactor;
@@ -1977,15 +2449,15 @@ QWebPage::ViewportAttributes& QWebPage::ViewportAttributes::operator=(const QWeb
 /*!
     Constructs an empty QWebPage with parent \a parent.
 */
-QWebPage::QWebPage(QObject *parent)
-    : QObject(parent)
-    , d(new QWebPagePrivate(this))
+QWebPage::QWebPage( QObject *parent )
+    : QObject( parent )
+    , d( new QWebPagePrivate( this ) )
 {
-    setView(qobject_cast<QWidget*>(parent));
+    setView( qobject_cast<QWidget *>( parent ) );
 
-    connect(this, SIGNAL(loadProgress(int)), this, SLOT(_q_onLoadProgressChanged(int)));
+    connect( this, SIGNAL( loadProgress( int ) ), this, SLOT( _q_onLoadProgressChanged( int ) ) );
 #ifndef NDEBUG
-    connect(QCoreApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(_q_cleanupLeakMessages()));
+    connect( QCoreApplication::instance(), SIGNAL( aboutToQuit() ), this, SLOT( _q_cleanupLeakMessages() ) );
 #endif
 }
 
@@ -1996,8 +2468,12 @@ QWebPage::~QWebPage()
 {
     d->createMainFrame();
     FrameLoader *loader = d->mainFrame->d->frame->loader();
-    if (loader)
+
+    if ( loader )
+    {
         loader->detachFromParent();
+    }
+
     delete d;
 }
 
@@ -2024,7 +2500,7 @@ QWebFrame *QWebPage::currentFrame() const
 {
     d->createMainFrame();
     WebCore::Frame *frame = d->page->focusController()->focusedOrMainFrame();
-    return qobject_cast<QWebFrame*>(frame->loader()->networkingContext()->originatingObject());
+    return qobject_cast<QWebFrame *>( frame->loader()->networkingContext()->originatingObject() );
 }
 
 
@@ -2036,12 +2512,16 @@ QWebFrame *QWebPage::currentFrame() const
 
     \sa mainFrame(), currentFrame()
 */
-QWebFrame* QWebPage::frameAt(const QPoint& pos) const
+QWebFrame *QWebPage::frameAt( const QPoint &pos ) const
 {
-    QWebFrame* webFrame = mainFrame();
-    if (!webFrame->geometry().contains(pos))
+    QWebFrame *webFrame = mainFrame();
+
+    if ( !webFrame->geometry().contains( pos ) )
+    {
         return 0;
-    QWebHitTestResult hitTestResult = webFrame->hitTestContent(pos);
+    }
+
+    QWebHitTestResult hitTestResult = webFrame->hitTestContent( pos );
     return hitTestResult.frame();
 }
 
@@ -2059,13 +2539,15 @@ QWebHistory *QWebPage::history() const
 
     \sa view()
 */
-void QWebPage::setView(QWidget* view)
+void QWebPage::setView( QWidget *view )
 {
-    if (this->view() == view)
+    if ( this->view() == view )
+    {
         return;
+    }
 
     d->view = view;
-    setViewportSize(view ? view->size() : QSize(0, 0));
+    setViewportSize( view ? view->size() : QSize( 0, 0 ) );
 
     // If we have no client, we install a special client delegating
     // the responsibility to the QWidget. This is the code path
@@ -2073,14 +2555,20 @@ void QWebPage::setView(QWidget* view)
     //
     // If such a special delegate already exist, we substitute the view.
 
-    if (d->client) {
-        if (d->client->isQWidgetClient())
-            static_cast<PageClientQWidget*>(d->client.get())->view = view;
+    if ( d->client )
+    {
+        if ( d->client->isQWidgetClient() )
+        {
+            static_cast<PageClientQWidget *>( d->client.get() )->view = view;
+        }
+
         return;
     }
 
-    if (view)
-        d->client = new PageClientQWidget(view, this);
+    if ( view )
+    {
+        d->client = new PageClientQWidget( view, this );
+    }
 }
 
 /*!
@@ -2100,15 +2588,18 @@ QWidget *QWebPage::view() const
 
     The default implementation prints nothing.
 */
-void QWebPage::javaScriptConsoleMessage(const QString& message, int lineNumber, const QString& sourceID)
+void QWebPage::javaScriptConsoleMessage( const QString &message, int lineNumber, const QString &sourceID )
 {
-    Q_UNUSED(sourceID)
+    Q_UNUSED( sourceID )
 
     // Catch plugin logDestroy message for LayoutTests/plugins/open-and-close-window-with-plugin.html
     // At this point DRT's WebPage has already been destroyed
-    if (QWebPagePrivate::drtRun) {
-        if (message == QLatin1String("PLUGIN: NPP_Destroy"))
-            fprintf (stdout, "CONSOLE MESSAGE: line %d: %s\n", lineNumber, message.toUtf8().constData());
+    if ( QWebPagePrivate::drtRun )
+    {
+        if ( message == QLatin1String( "PLUGIN: NPP_Destroy" ) )
+        {
+            fprintf ( stdout, "CONSOLE MESSAGE: line %d: %s\n", lineNumber, message.toUtf8().constData() );
+        }
     }
 }
 
@@ -2118,12 +2609,13 @@ void QWebPage::javaScriptConsoleMessage(const QString& message, int lineNumber, 
 
     The default implementation shows the message, \a msg, with QMessageBox::information.
 */
-void QWebPage::javaScriptAlert(QWebFrame *frame, const QString& msg)
+void QWebPage::javaScriptAlert( QWebFrame *frame, const QString &msg )
 {
-    Q_UNUSED(frame)
+    Q_UNUSED( frame )
 #ifndef QT_NO_MESSAGEBOX
-    QWidget* parent = (d->client) ? d->client->ownerWidget() : 0;
-    QMessageBox::information(parent, tr("JavaScript Alert - %1").formatArg(mainFrame()->url().host()), msg.toHtmlEscaped(), QMessageBox::Ok);
+    QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
+    QMessageBox::information( parent, tr( "JavaScript Alert - %1" ).formatArg( mainFrame()->url().host() ), msg.toHtmlEscaped(),
+                              QMessageBox::Ok );
 #endif
 }
 
@@ -2133,15 +2625,15 @@ void QWebPage::javaScriptAlert(QWebFrame *frame, const QString& msg)
 
     The default implementation executes the query using QMessageBox::information with QMessageBox::Yes and QMessageBox::No buttons.
 */
-bool QWebPage::javaScriptConfirm(QWebFrame *frame, const QString& msg)
+bool QWebPage::javaScriptConfirm( QWebFrame *frame, const QString &msg )
 {
-    Q_UNUSED(frame)
+    Q_UNUSED( frame )
 #ifdef QT_NO_MESSAGEBOX
     return true;
 #else
-    QWidget* parent = (d->client) ? d->client->ownerWidget() : 0;
-    return QMessageBox::Yes == QMessageBox::information(parent, tr("JavaScript Confirm - %1")
-                  .formatArg(mainFrame()->url().host()), msg.toHtmlEscaped(), QMessageBox::Yes, QMessageBox::No);
+    QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
+    return QMessageBox::Yes == QMessageBox::information( parent, tr( "JavaScript Confirm - %1" )
+            .formatArg( mainFrame()->url().host() ), msg.toHtmlEscaped(), QMessageBox::Yes, QMessageBox::No );
 #endif
 }
 
@@ -2155,18 +2647,21 @@ bool QWebPage::javaScriptConfirm(QWebFrame *frame, const QString& msg)
 
     The default implementation uses QInputDialog::getText().
 */
-bool QWebPage::javaScriptPrompt(QWebFrame *frame, const QString& msg, const QString& defaultValue, QString* result)
+bool QWebPage::javaScriptPrompt( QWebFrame *frame, const QString &msg, const QString &defaultValue, QString *result )
 {
-    Q_UNUSED(frame)
+    Q_UNUSED( frame )
     bool ok = false;
 
 #ifndef QT_NO_INPUTDIALOG
-    QWidget* parent = (d->client) ? d->client->ownerWidget() : 0;
-    QString x = QInputDialog::getText(parent, tr("JavaScript Prompt - %1")
-                  .formatArg(mainFrame()->url().host()), msg.toHtmlEscaped(), QLineEdit::Normal, defaultValue, &ok);
+    QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
+    QString x = QInputDialog::getText( parent, tr( "JavaScript Prompt - %1" )
+                                       .formatArg( mainFrame()->url().host() ), msg.toHtmlEscaped(), QLineEdit::Normal, defaultValue, &ok );
 
-    if (ok && result)
+    if ( ok && result )
+    {
         *result = x;
+    }
+
 #endif
     return ok;
 }
@@ -2189,31 +2684,37 @@ bool QWebPage::shouldInterruptJavaScript()
 #ifdef QT_NO_MESSAGEBOX
     return false;
 #else
-    QWidget* parent = (d->client) ? d->client->ownerWidget() : 0;
+    QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
 
-    return QMessageBox::Yes == QMessageBox::information(parent, tr("JavaScript Problem - %1")
-                  .formatArg(mainFrame()->url().host()), tr("The script on this page appears to have a problem. Do you want to stop the script?"),
-                  QMessageBox::Yes, QMessageBox::No);
+    return QMessageBox::Yes == QMessageBox::information( parent, tr( "JavaScript Problem - %1" )
+            .formatArg( mainFrame()->url().host() ),
+            tr( "The script on this page appears to have a problem. Do you want to stop the script?" ),
+            QMessageBox::Yes, QMessageBox::No );
 #endif
 }
 
-void QWebPage::setFeaturePermission(QWebFrame* frame, Feature feature, PermissionPolicy policy)
+void QWebPage::setFeaturePermission( QWebFrame *frame, Feature feature, PermissionPolicy policy )
 {
-    switch (feature) {
-    case Notifications:
+    switch ( feature )
+    {
+        case Notifications:
 #if ENABLE(NOTIFICATIONS)
-        if (policy == PermissionGrantedByUser)
-            NotificationPresenterClientQt::notificationPresenter()->allowNotificationForFrame(frame->d->frame);
-#endif
-        break;
-    case Geolocation:
-#if ENABLE(GEOLOCATION)
-        GeolocationPermissionClientQt::geolocationPermissionClient()->setPermission(frame, policy);
-#endif
-        break;
+            if ( policy == PermissionGrantedByUser )
+            {
+                NotificationPresenterClientQt::notificationPresenter()->allowNotificationForFrame( frame->d->frame );
+            }
 
-    default:
-        break;
+#endif
+            break;
+
+        case Geolocation:
+#if ENABLE(GEOLOCATION)
+            GeolocationPermissionClientQt::geolocationPermissionClient()->setPermission( frame, policy );
+#endif
+            break;
+
+        default:
+            break;
     }
 }
 
@@ -2234,14 +2735,20 @@ void QWebPage::setFeaturePermission(QWebFrame* frame, Feature feature, Permissio
 
     \sa acceptNavigationRequest(), QWebView::createWindow()
 */
-QWebPage *QWebPage::createWindow(WebWindowType type)
+QWebPage *QWebPage::createWindow( WebWindowType type )
 {
-    QWebView *webView = qobject_cast<QWebView*>(view());
-    if (webView) {
-        QWebView *newView = webView->createWindow(type);
-        if (newView)
+    QWebView *webView = qobject_cast<QWebView *>( view() );
+
+    if ( webView )
+    {
+        QWebView *newView = webView->createWindow( type );
+
+        if ( newView )
+        {
             return newView->page();
+        }
     }
+
     return 0;
 }
 
@@ -2250,35 +2757,47 @@ QWebPage *QWebPage::createWindow(WebWindowType type)
     called regardless of the value of QWebSettings::PluginsEnabled. The \a classid, \a url, \a paramNames and \a paramValues
     correspond to the HTML object element attributes and child elements to configure the embeddable object.
 */
-QObject *QWebPage::createPlugin(const QString &classid, const QUrl &url, const QStringList &paramNames, const QStringList &paramValues)
+QObject *QWebPage::createPlugin( const QString &classid, const QUrl &url, const QStringList &paramNames,
+                                 const QStringList &paramValues )
 {
-    Q_UNUSED(classid)
-    Q_UNUSED(url)
-    Q_UNUSED(paramNames)
-    Q_UNUSED(paramValues)
+    Q_UNUSED( classid )
+    Q_UNUSED( url )
+    Q_UNUSED( paramNames )
+    Q_UNUSED( paramValues )
     return 0;
 }
 
-static void extractContentTypeFromHash(const HashSet<String>& types, QStringList* list)
+static void extractContentTypeFromHash( const HashSet<String> &types, QStringList *list )
 {
-    if (!list)
+    if ( !list )
+    {
         return;
+    }
 
     HashSet<String>::const_iterator endIt = types.end();
-    for (HashSet<String>::const_iterator it = types.begin(); it != endIt; ++it)
+
+    for ( HashSet<String>::const_iterator it = types.begin(); it != endIt; ++it )
+    {
         *list << *it;
+    }
 }
 
-static void extractContentTypeFromPluginVector(const Vector<PluginPackage*>& plugins, QStringList* list)
+static void extractContentTypeFromPluginVector( const Vector<PluginPackage *> &plugins, QStringList *list )
 {
-    if (!list)
+    if ( !list )
+    {
         return;
+    }
 
-    for (unsigned int i = 0; i < plugins.size(); ++i) {
+    for ( unsigned int i = 0; i < plugins.size(); ++i )
+    {
         MIMEToDescriptionsMap::const_iterator map_it = plugins[i]->mimeToDescriptions().begin();
         MIMEToDescriptionsMap::const_iterator map_end = plugins[i]->mimeToDescriptions().end();
-        for (; map_it != map_end; ++map_it)
+
+        for ( ; map_it != map_end; ++map_it )
+        {
             *list << map_it->first;
+        }
     }
 }
 
@@ -2289,10 +2808,13 @@ QStringList QWebPage::supportedContentTypes() const
 {
     QStringList mimeTypes;
 
-    extractContentTypeFromHash(MIMETypeRegistry::getSupportedImageMIMETypes(), &mimeTypes);
-    extractContentTypeFromHash(MIMETypeRegistry::getSupportedNonImageMIMETypes(), &mimeTypes);
-    if (d->page->settings() && d->page->settings()->arePluginsEnabled())
-        extractContentTypeFromPluginVector(PluginDatabase::installedPlugins()->plugins(), &mimeTypes);
+    extractContentTypeFromHash( MIMETypeRegistry::getSupportedImageMIMETypes(), &mimeTypes );
+    extractContentTypeFromHash( MIMETypeRegistry::getSupportedNonImageMIMETypes(), &mimeTypes );
+
+    if ( d->page->settings() && d->page->settings()->arePluginsEnabled() )
+    {
+        extractContentTypeFromPluginVector( PluginDatabase::installedPlugins()->plugins(), &mimeTypes );
+    }
 
     return mimeTypes;
 }
@@ -2300,47 +2822,59 @@ QStringList QWebPage::supportedContentTypes() const
 /*!
  *  Returns true if QWebPage can handle the given \a mimeType; otherwise, returns false.
  */
-bool QWebPage::supportsContentType(const QString& mimeType) const
+bool QWebPage::supportsContentType( const QString &mimeType ) const
 {
     const String type = mimeType.toLower();
-    if (MIMETypeRegistry::isSupportedImageMIMEType(type))
-        return true;
 
-    if (MIMETypeRegistry::isSupportedNonImageMIMEType(type))
+    if ( MIMETypeRegistry::isSupportedImageMIMEType( type ) )
+    {
         return true;
+    }
 
-    if (d->page->settings() && d->page->settings()->arePluginsEnabled()
-        && PluginDatabase::installedPlugins()->isMIMETypeRegistered(type))
+    if ( MIMETypeRegistry::isSupportedNonImageMIMEType( type ) )
+    {
         return true;
+    }
+
+    if ( d->page->settings() && d->page->settings()->arePluginsEnabled()
+            && PluginDatabase::installedPlugins()->isMIMETypeRegistered( type ) )
+    {
+        return true;
+    }
 
     return false;
 }
 
-static WebCore::FrameLoadRequest frameLoadRequest(const QUrl &url, WebCore::Frame *frame)
+static WebCore::FrameLoadRequest frameLoadRequest( const QUrl &url, WebCore::Frame *frame )
 {
-    return WebCore::FrameLoadRequest(frame->document()->securityOrigin(),
-        WebCore::ResourceRequest(url, frame->loader()->outgoingReferrer()));
+    return WebCore::FrameLoadRequest( frame->document()->securityOrigin(),
+                                      WebCore::ResourceRequest( url, frame->loader()->outgoingReferrer() ) );
 }
 
-static void openNewWindow(const QUrl& url, WebCore::Frame* frame)
+static void openNewWindow( const QUrl &url, WebCore::Frame *frame )
 {
-    if (Page* oldPage = frame->page()) {
+    if ( Page *oldPage = frame->page() )
+    {
         WindowFeatures features;
         NavigationAction action;
-        FrameLoadRequest request = frameLoadRequest(url, frame);
-        if (Page* newPage = oldPage->chrome()->createWindow(frame, request, features, action)) {
-            newPage->mainFrame()->loader()->loadFrameRequest(request, false, false, 0, 0, SendReferrer);
+        FrameLoadRequest request = frameLoadRequest( url, frame );
+
+        if ( Page *newPage = oldPage->chrome()->createWindow( frame, request, features, action ) )
+        {
+            newPage->mainFrame()->loader()->loadFrameRequest( request, false, false, 0, 0, SendReferrer );
             newPage->chrome()->show();
         }
     }
 }
 
-static void collectChildFrames(QWebFrame* frame, QList<QWebFrame*>& list)
+static void collectChildFrames( QWebFrame *frame, QList<QWebFrame *> &list )
 {
     list << frame->childFrames();
-    QListIterator<QWebFrame*> it(frame->childFrames());
-    while (it.hasNext()) {
-        collectChildFrames(it.next(), list);
+    QListIterator<QWebFrame *> it( frame->childFrames() );
+
+    while ( it.hasNext() )
+    {
+        collectChildFrames( it.next(), list );
     }
 }
 
@@ -2354,119 +2888,165 @@ static void collectChildFrames(QWebFrame* frame, QList<QWebFrame*>& list)
 
     \sa action()
 */
-void QWebPage::triggerAction(WebAction action, bool)
+void QWebPage::triggerAction( WebAction action, bool )
 {
     WebCore::Frame *frame = d->page->focusController()->focusedOrMainFrame();
-    if (!frame)
+
+    if ( !frame )
+    {
         return;
+    }
+
     WebCore::Editor *editor = frame->editor();
     const char *command = 0;
 
-    switch (action) {
+    switch ( action )
+    {
         case OpenLink:
-            if (QWebFrame *targetFrame = d->hitTestResult.linkTargetFrame()) {
+            if ( QWebFrame *targetFrame = d->hitTestResult.linkTargetFrame() )
+            {
                 WTF::RefPtr<WebCore::Frame> wcFrame = targetFrame->d->frame;
-                targetFrame->d->frame->loader()->loadFrameRequest(frameLoadRequest(d->hitTestResult.linkUrl(), wcFrame.get()),
-                                                                  /*lockHistory*/ false, /*lockBackForwardList*/ false, /*event*/ 0,
-                                                                  /*FormState*/ 0, SendReferrer);
+                targetFrame->d->frame->loader()->loadFrameRequest( frameLoadRequest( d->hitTestResult.linkUrl(), wcFrame.get() ),
+                        /*lockHistory*/ false, /*lockBackForwardList*/ false, /*event*/ 0,
+                        /*FormState*/ 0, SendReferrer );
                 break;
             }
-            // fall through
+
+        // fall through
         case OpenLinkInNewWindow:
-            openNewWindow(d->hitTestResult.linkUrl(), frame);
+            openNewWindow( d->hitTestResult.linkUrl(), frame );
             break;
-        case OpenFrameInNewWindow: {
+
+        case OpenFrameInNewWindow:
+        {
             KURL url = frame->loader()->documentLoader()->unreachableURL();
-            if (url.isEmpty())
+
+            if ( url.isEmpty() )
+            {
                 url = frame->loader()->documentLoader()->url();
-            openNewWindow(url, frame);
+            }
+
+            openNewWindow( url, frame );
             break;
         }
-        case CopyLinkToClipboard: {
+
+        case CopyLinkToClipboard:
+        {
 #if defined(Q_WS_X11)
             bool oldSelectionMode = Pasteboard::generalPasteboard()->isSelectionMode();
-            Pasteboard::generalPasteboard()->setSelectionMode(true);
-            editor->copyURL(d->hitTestResult.linkUrl(), d->hitTestResult.linkText());
-            Pasteboard::generalPasteboard()->setSelectionMode(oldSelectionMode);
+            Pasteboard::generalPasteboard()->setSelectionMode( true );
+            editor->copyURL( d->hitTestResult.linkUrl(), d->hitTestResult.linkText() );
+            Pasteboard::generalPasteboard()->setSelectionMode( oldSelectionMode );
 #endif
-            editor->copyURL(d->hitTestResult.linkUrl(), d->hitTestResult.linkText());
+            editor->copyURL( d->hitTestResult.linkUrl(), d->hitTestResult.linkText() );
             break;
         }
+
         case OpenImageInNewWindow:
-            openNewWindow(d->hitTestResult.imageUrl(), frame);
+            openNewWindow( d->hitTestResult.imageUrl(), frame );
             break;
+
         case DownloadImageToDisk:
-            frame->loader()->client()->startDownload(WebCore::ResourceRequest(d->hitTestResult.imageUrl(), frame->loader()->outgoingReferrer()));
+            frame->loader()->client()->startDownload( WebCore::ResourceRequest( d->hitTestResult.imageUrl(),
+                    frame->loader()->outgoingReferrer() ) );
             break;
+
         case DownloadLinkToDisk:
-            frame->loader()->client()->startDownload(WebCore::ResourceRequest(d->hitTestResult.linkUrl(), frame->loader()->outgoingReferrer()));
+            frame->loader()->client()->startDownload( WebCore::ResourceRequest( d->hitTestResult.linkUrl(),
+                    frame->loader()->outgoingReferrer() ) );
             break;
 #ifndef QT_NO_CLIPBOARD
+
         case CopyImageToClipboard:
-            QApplication::clipboard()->setPixmap(d->hitTestResult.pixmap());
+            QApplication::clipboard()->setPixmap( d->hitTestResult.pixmap() );
             break;
+
         case CopyImageUrlToClipboard:
-            QApplication::clipboard()->setText(d->hitTestResult.imageUrl().toString());
+            QApplication::clipboard()->setText( d->hitTestResult.imageUrl().toString() );
             break;
 #endif
+
         case Back:
             d->page->goBack();
             break;
+
         case Forward:
             d->page->goForward();
             break;
+
         case Stop:
             mainFrame()->d->frame->loader()->stopForUserCancel();
             d->updateNavigationActions();
             break;
+
         case Reload:
-            mainFrame()->d->frame->loader()->reload(/*endtoendreload*/false);
+            mainFrame()->d->frame->loader()->reload( /*endtoendreload*/false );
             break;
+
         case ReloadAndBypassCache:
-            mainFrame()->d->frame->loader()->reload(/*endtoendreload*/true);
+            mainFrame()->d->frame->loader()->reload( /*endtoendreload*/true );
             break;
+
         case SetTextDirectionDefault:
-            editor->setBaseWritingDirection(NaturalWritingDirection);
+            editor->setBaseWritingDirection( NaturalWritingDirection );
             break;
+
         case SetTextDirectionLeftToRight:
-            editor->setBaseWritingDirection(LeftToRightWritingDirection);
+            editor->setBaseWritingDirection( LeftToRightWritingDirection );
             break;
+
         case SetTextDirectionRightToLeft:
-            editor->setBaseWritingDirection(RightToLeftWritingDirection);
+            editor->setBaseWritingDirection( RightToLeftWritingDirection );
             break;
-        case InspectElement: {
+
+        case InspectElement:
+        {
 #if ENABLE(INSPECTOR)
-            if (!d->hitTestResult.isNull()) {
+
+            if ( !d->hitTestResult.isNull() )
+            {
                 d->getOrCreateInspector(); // Make sure the inspector is created
                 d->inspector->show(); // The inspector is expected to be shown on inspection
-                d->page->inspectorController()->inspect(d->hitTestResult.d->innerNonSharedNode.get());
+                d->page->inspectorController()->inspect( d->hitTestResult.d->innerNonSharedNode.get() );
             }
+
 #endif
             break;
         }
-        case StopScheduledPageRefresh: {
-            QWebFrame* topFrame = mainFrame();
+
+        case StopScheduledPageRefresh:
+        {
+            QWebFrame *topFrame = mainFrame();
             topFrame->d->frame->navigationScheduler()->cancel();
-            QList<QWebFrame*> childFrames;
-            collectChildFrames(topFrame, childFrames);
-            QListIterator<QWebFrame*> it(childFrames);
-            while (it.hasNext())
+            QList<QWebFrame *> childFrames;
+            collectChildFrames( topFrame, childFrames );
+            QListIterator<QWebFrame *> it( childFrames );
+
+            while ( it.hasNext() )
+            {
                 it.next()->d->frame->navigationScheduler()->cancel();
+            }
+
             break;
         }
+
         default:
-            command = QWebPagePrivate::editorCommandForWebActions(action);
+            command = QWebPagePrivate::editorCommandForWebActions( action );
             break;
     }
 
-    if (command)
-        editor->command(command).execute();
+    if ( command )
+    {
+        editor->command( command ).execute();
+    }
 }
 
 QSize QWebPage::viewportSize() const
 {
-    if (d->mainFrame && d->mainFrame->d->frame->view())
+    if ( d->mainFrame && d->mainFrame->d->frame->view() )
+    {
         return d->mainFrame->d->frame->view()->frameRect().size();
+    }
 
     return d->viewportSize;
 }
@@ -2483,45 +3063,55 @@ QSize QWebPage::viewportSize() const
 
     \sa QWebFrame::render(), preferredContentsSize
 */
-void QWebPage::setViewportSize(const QSize &size)
+void QWebPage::setViewportSize( const QSize &size )
 {
     d->viewportSize = size;
 
     QWebFrame *frame = mainFrame();
-    if (frame->d->frame && frame->d->frame->view()) {
-        WebCore::FrameView* view = frame->d->frame->view();
-        view->resize(size);
+
+    if ( frame->d->frame && frame->d->frame->view() )
+    {
+        WebCore::FrameView *view = frame->d->frame->view();
+        view->resize( size );
         view->adjustViewSize();
     }
 }
 
-static int getintenv(const char* variable)
+static int getintenv( const char *variable )
 {
     bool ok;
-    int value = qgetenv(variable).toInt(&ok);
-    return (ok) ? value : -1;
+    int value = qgetenv( variable ).toInt( &ok );
+    return ( ok ) ? value : -1;
 }
 
-static QSize queryDeviceSizeForScreenContainingWidget(const QWidget* widget)
+static QSize queryDeviceSizeForScreenContainingWidget( const QWidget *widget )
 {
-    QDesktopWidget* desktop = QApplication::desktop();
-    if (!desktop)
+    QDesktopWidget *desktop = QApplication::desktop();
+
+    if ( !desktop )
+    {
         return QSize();
+    }
 
     QSize size;
 
-    if (widget) {
+    if ( widget )
+    {
         // Returns the available geometry of the screen which contains widget.
         // NOTE: this must be the the full screen size including any fixed status areas etc.
-        size = desktop->availableGeometry(widget).size();
-    } else
+        size = desktop->availableGeometry( widget ).size();
+    }
+    else
+    {
         size = desktop->availableGeometry().size();
+    }
 
     // This must be in portrait mode, adjust if not.
-    if (size.width() > size.height()) {
+    if ( size.width() > size.height() )
+    {
         int width = size.width();
-        size.setWidth(size.height());
-        size.setHeight(width);
+        size.setWidth( size.height() );
+        size.setHeight( width );
     }
 
     return size;
@@ -2557,26 +3147,30 @@ static QSize queryDeviceSizeForScreenContainingWidget(const QWidget* widget)
     override it using QX11Info::setAppDpiY().
 */
 
-QWebPage::ViewportAttributes QWebPage::viewportAttributesForSize(const QSize& availableSize) const
+QWebPage::ViewportAttributes QWebPage::viewportAttributesForSize( const QSize &availableSize ) const
 {
     static int desktopWidth = 980;
 
     ViewportAttributes result;
 
-     if (availableSize.isEmpty())
-         return result; // Returns an invalid instance.
+    if ( availableSize.isEmpty() )
+    {
+        return result;    // Returns an invalid instance.
+    }
 
-    int deviceWidth = getintenv("QTWEBKIT_DEVICE_WIDTH");
-    int deviceHeight = getintenv("QTWEBKIT_DEVICE_HEIGHT");
+    int deviceWidth = getintenv( "QTWEBKIT_DEVICE_WIDTH" );
+    int deviceHeight = getintenv( "QTWEBKIT_DEVICE_HEIGHT" );
 
     // Both environment variables need to be set - or they will be ignored.
-    if (deviceWidth < 0 && deviceHeight < 0) {
-        QSize size = queryDeviceSizeForScreenContainingWidget((d->client) ? d->client->ownerWidget() : 0);
+    if ( deviceWidth < 0 && deviceHeight < 0 )
+    {
+        QSize size = queryDeviceSizeForScreenContainingWidget( ( d->client ) ? d->client->ownerWidget() : 0 );
         deviceWidth = size.width();
         deviceHeight = size.height();
     }
 
-    WebCore::ViewportAttributes conf = WebCore::computeViewportAttributes(d->viewportArguments(), desktopWidth, deviceWidth, deviceHeight, qt_defaultDpi(), availableSize);
+    WebCore::ViewportAttributes conf = WebCore::computeViewportAttributes( d->viewportArguments(), desktopWidth, deviceWidth,
+                                       deviceHeight, qt_defaultDpi(), availableSize );
 
     result.m_isValid = true;
     result.m_size = conf.layoutSize;
@@ -2584,7 +3178,7 @@ QWebPage::ViewportAttributes QWebPage::viewportAttributesForSize(const QSize& av
     result.m_minimumScaleFactor = conf.minimumScale;
     result.m_maximumScaleFactor = conf.maximumScale;
     result.m_devicePixelRatio = conf.devicePixelRatio;
-    result.m_isUserScalable = static_cast<bool>(conf.userScalable);
+    result.m_isUserScalable = static_cast<bool>( conf.userScalable );
 
     d->pixelRatio = conf.devicePixelRatio;
 
@@ -2593,11 +3187,16 @@ QWebPage::ViewportAttributes QWebPage::viewportAttributesForSize(const QSize& av
 
 QSize QWebPage::preferredContentsSize() const
 {
-    QWebFrame* frame = d->mainFrame;
-    if (frame) {
-        WebCore::FrameView* view = frame->d->frame->view();
-        if (view && view->useFixedLayout())
+    QWebFrame *frame = d->mainFrame;
+
+    if ( frame )
+    {
+        WebCore::FrameView *view = frame->d->frame->view();
+
+        if ( view && view->useFixedLayout() )
+        {
             return d->mainFrame->d->frame->view()->fixedLayoutSize();
+        }
     }
 
     return d->fixedLayoutSize;
@@ -2622,23 +3221,30 @@ QSize QWebPage::preferredContentsSize() const
 
     \sa viewportSize
 */
-void QWebPage::setPreferredContentsSize(const QSize &size)
+void QWebPage::setPreferredContentsSize( const QSize &size )
 {
     // FIXME: Rename this method to setCustomLayoutSize
 
     d->fixedLayoutSize = size;
 
-    QWebFrame* frame = mainFrame();
-    if (!frame->d->frame || !frame->d->frame->view())
+    QWebFrame *frame = mainFrame();
+
+    if ( !frame->d->frame || !frame->d->frame->view() )
+    {
         return;
+    }
 
-    WebCore::FrameView* view = frame->d->frame->view();
+    WebCore::FrameView *view = frame->d->frame->view();
 
-    if (size.isValid()) {
-        view->setUseFixedLayout(true);
-        view->setFixedLayoutSize(size);
-    } else if (view->useFixedLayout())
-        view->setUseFixedLayout(false);
+    if ( size.isValid() )
+    {
+        view->setUseFixedLayout( true );
+        view->setFixedLayoutSize( size );
+    }
+    else if ( view->useFixedLayout() )
+    {
+        view->setUseFixedLayout( false );
+    }
 
     view->layout();
 }
@@ -2653,14 +3259,17 @@ void QWebPage::setPreferredContentsSize(const QSize &size)
 
     \sa QGraphicsWebView::resizesToContents, QWebSettings::TiledBackingStoreEnabled
 */
-void QWebPage::setActualVisibleContentRect(const QRect& rect) const
+void QWebPage::setActualVisibleContentRect( const QRect &rect ) const
 {
-    QWebFrame* frame = mainFrame();
-    if (!frame->d->frame || !frame->d->frame->view())
-        return;
+    QWebFrame *frame = mainFrame();
 
-    WebCore::FrameView* view = frame->d->frame->view();
-    view->setActualVisibleContentRect(rect);
+    if ( !frame->d->frame || !frame->d->frame->view() )
+    {
+        return;
+    }
+
+    WebCore::FrameView *view = frame->d->frame->view();
+    view->setActualVisibleContentRect( rect );
 }
 
 /*!
@@ -2677,25 +3286,32 @@ void QWebPage::setActualVisibleContentRect(const QRect& rect) const
 
     \sa createWindow()
 */
-bool QWebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, QWebPage::NavigationType type)
+bool QWebPage::acceptNavigationRequest( QWebFrame *frame, const QNetworkRequest &request, QWebPage::NavigationType type )
 {
-    Q_UNUSED(frame)
-    if (type == NavigationTypeLinkClicked) {
-        switch (d->linkPolicy) {
+    Q_UNUSED( frame )
+
+    if ( type == NavigationTypeLinkClicked )
+    {
+        switch ( d->linkPolicy )
+        {
             case DontDelegateLinks:
                 return true;
 
             case DelegateExternalLinks:
-                if (WebCore::SchemeRegistry::shouldTreatURLSchemeAsLocal(request.url().scheme()))
+                if ( WebCore::SchemeRegistry::shouldTreatURLSchemeAsLocal( request.url().scheme() ) )
+                {
                     return true;
-                emit linkClicked(request.url());
+                }
+
+                emit linkClicked( request.url() );
                 return false;
 
             case DelegateAllLinks:
-                emit linkClicked(request.url());
+                emit linkClicked( request.url() );
                 return false;
         }
     }
+
     return true;
 }
 
@@ -2708,9 +3324,13 @@ bool QWebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &
 bool QWebPage::hasSelection() const
 {
     d->createMainFrame();
-    WebCore::Frame* frame = d->page->focusController()->focusedOrMainFrame();
-    if (frame)
-        return (frame->selection()->selection().selectionType() != VisibleSelection::NoSelection);
+    WebCore::Frame *frame = d->page->focusController()->focusedOrMainFrame();
+
+    if ( frame )
+    {
+        return ( frame->selection()->selection().selectionType() != VisibleSelection::NoSelection );
+    }
+
     return false;
 }
 
@@ -2725,9 +3345,13 @@ bool QWebPage::hasSelection() const
 QString QWebPage::selectedText() const
 {
     d->createMainFrame();
-    WebCore::Frame* frame = d->page->focusController()->focusedOrMainFrame();
-    if (frame->selection()->selection().selectionType() == VisibleSelection::NoSelection)
+    WebCore::Frame *frame = d->page->focusController()->focusedOrMainFrame();
+
+    if ( frame->selection()->selection().selectionType() == VisibleSelection::NoSelection )
+    {
         return QString();
+    }
+
     return frame->editor()->selectedText();
 }
 
@@ -2758,24 +3382,33 @@ QString QWebPage::selectedHtml() const
 
    \sa triggerAction()
 */
-QAction *QWebPage::action(WebAction action) const
+QAction *QWebPage::action( WebAction action ) const
 {
-    if (action == QWebPage::NoWebAction) return 0;
-    if (d->actions[action])
+    if ( action == QWebPage::NoWebAction )
+    {
+        return 0;
+    }
+
+    if ( d->actions[action] )
+    {
         return d->actions[action];
+    }
 
     QString text;
     QIcon icon;
     QStyle *style = d->client ? d->client->style() : qApp->style();
     bool checkable = false;
 
-    switch (action) {
+    switch ( action )
+    {
         case OpenLink:
             text = contextMenuItemTagOpenLink();
             break;
+
         case OpenLinkInNewWindow:
             text = contextMenuItemTagOpenLinkInNewWindow();
             break;
+
         case OpenFrameInNewWindow:
             text = contextMenuItemTagOpenFrameInNewWindow();
             break;
@@ -2783,6 +3416,7 @@ QAction *QWebPage::action(WebAction action) const
         case DownloadLinkToDisk:
             text = contextMenuItemTagDownloadLinkToDisk();
             break;
+
         case CopyLinkToClipboard:
             text = contextMenuItemTagCopyLinkToClipboard();
             break;
@@ -2790,143 +3424,185 @@ QAction *QWebPage::action(WebAction action) const
         case OpenImageInNewWindow:
             text = contextMenuItemTagOpenImageInNewWindow();
             break;
+
         case DownloadImageToDisk:
             text = contextMenuItemTagDownloadImageToDisk();
             break;
+
         case CopyImageToClipboard:
             text = contextMenuItemTagCopyImageToClipboard();
             break;
+
         case CopyImageUrlToClipboard:
             text = contextMenuItemTagCopyImageUrlToClipboard();
             break;
 
         case Back:
             text = contextMenuItemTagGoBack();
-            icon = style->standardIcon(QStyle::SP_ArrowBack);
+            icon = style->standardIcon( QStyle::SP_ArrowBack );
             break;
+
         case Forward:
             text = contextMenuItemTagGoForward();
-            icon = style->standardIcon(QStyle::SP_ArrowForward);
+            icon = style->standardIcon( QStyle::SP_ArrowForward );
             break;
+
         case Stop:
             text = contextMenuItemTagStop();
-            icon = style->standardIcon(QStyle::SP_BrowserStop);
+            icon = style->standardIcon( QStyle::SP_BrowserStop );
             break;
+
         case Reload:
             text = contextMenuItemTagReload();
-            icon = style->standardIcon(QStyle::SP_BrowserReload);
+            icon = style->standardIcon( QStyle::SP_BrowserReload );
             break;
 
         case Cut:
             text = contextMenuItemTagCut();
             break;
+
         case Copy:
             text = contextMenuItemTagCopy();
             break;
+
         case Paste:
             text = contextMenuItemTagPaste();
             break;
+
         case SelectAll:
             text = contextMenuItemTagSelectAll();
             break;
 #ifndef QT_NO_UNDOSTACK
-        case Undo: {
-            QAction *a = undoStack()->createUndoAction(d->q);
+
+        case Undo:
+        {
+            QAction *a = undoStack()->createUndoAction( d->q );
             d->actions[action] = a;
             return a;
         }
-        case Redo: {
-            QAction *a = undoStack()->createRedoAction(d->q);
+
+        case Redo:
+        {
+            QAction *a = undoStack()->createRedoAction( d->q );
             d->actions[action] = a;
             return a;
         }
+
 #endif // QT_NO_UNDOSTACK
+
         case MoveToNextChar:
-            text = tr("Move the cursor to the next character");
+            text = tr( "Move the cursor to the next character" );
             break;
+
         case MoveToPreviousChar:
-            text = tr("Move the cursor to the previous character");
+            text = tr( "Move the cursor to the previous character" );
             break;
+
         case MoveToNextWord:
-            text = tr("Move the cursor to the next word");
+            text = tr( "Move the cursor to the next word" );
             break;
+
         case MoveToPreviousWord:
-            text = tr("Move the cursor to the previous word");
+            text = tr( "Move the cursor to the previous word" );
             break;
+
         case MoveToNextLine:
-            text = tr("Move the cursor to the next line");
+            text = tr( "Move the cursor to the next line" );
             break;
+
         case MoveToPreviousLine:
-            text = tr("Move the cursor to the previous line");
+            text = tr( "Move the cursor to the previous line" );
             break;
+
         case MoveToStartOfLine:
-            text = tr("Move the cursor to the start of the line");
+            text = tr( "Move the cursor to the start of the line" );
             break;
+
         case MoveToEndOfLine:
-            text = tr("Move the cursor to the end of the line");
+            text = tr( "Move the cursor to the end of the line" );
             break;
+
         case MoveToStartOfBlock:
-            text = tr("Move the cursor to the start of the block");
+            text = tr( "Move the cursor to the start of the block" );
             break;
+
         case MoveToEndOfBlock:
-            text = tr("Move the cursor to the end of the block");
+            text = tr( "Move the cursor to the end of the block" );
             break;
+
         case MoveToStartOfDocument:
-            text = tr("Move the cursor to the start of the document");
+            text = tr( "Move the cursor to the start of the document" );
             break;
+
         case MoveToEndOfDocument:
-            text = tr("Move the cursor to the end of the document");
+            text = tr( "Move the cursor to the end of the document" );
             break;
+
         case SelectNextChar:
-            text = tr("Select to the next character");
+            text = tr( "Select to the next character" );
             break;
+
         case SelectPreviousChar:
-            text = tr("Select to the previous character");
+            text = tr( "Select to the previous character" );
             break;
+
         case SelectNextWord:
-            text = tr("Select to the next word");
+            text = tr( "Select to the next word" );
             break;
+
         case SelectPreviousWord:
-            text = tr("Select to the previous word");
+            text = tr( "Select to the previous word" );
             break;
+
         case SelectNextLine:
-            text = tr("Select to the next line");
+            text = tr( "Select to the next line" );
             break;
+
         case SelectPreviousLine:
-            text = tr("Select to the previous line");
+            text = tr( "Select to the previous line" );
             break;
+
         case SelectStartOfLine:
-            text = tr("Select to the start of the line");
+            text = tr( "Select to the start of the line" );
             break;
+
         case SelectEndOfLine:
-            text = tr("Select to the end of the line");
+            text = tr( "Select to the end of the line" );
             break;
+
         case SelectStartOfBlock:
-            text = tr("Select to the start of the block");
+            text = tr( "Select to the start of the block" );
             break;
+
         case SelectEndOfBlock:
-            text = tr("Select to the end of the block");
+            text = tr( "Select to the end of the block" );
             break;
+
         case SelectStartOfDocument:
-            text = tr("Select to the start of the document");
+            text = tr( "Select to the start of the document" );
             break;
+
         case SelectEndOfDocument:
-            text = tr("Select to the end of the document");
+            text = tr( "Select to the end of the document" );
             break;
+
         case DeleteStartOfWord:
-            text = tr("Delete to the start of the word");
+            text = tr( "Delete to the start of the word" );
             break;
+
         case DeleteEndOfWord:
-            text = tr("Delete to the end of the word");
+            text = tr( "Delete to the end of the word" );
             break;
 
         case SetTextDirectionDefault:
             text = contextMenuItemTagDefaultDirection();
             break;
+
         case SetTextDirectionLeftToRight:
             text = contextMenuItemTagLeftToRight();
             checkable = true;
             break;
+
         case SetTextDirectionRightToLeft:
             text = contextMenuItemTagRightToLeft();
             checkable = true;
@@ -2936,10 +3612,12 @@ QAction *QWebPage::action(WebAction action) const
             text = contextMenuItemTagBold();
             checkable = true;
             break;
+
         case ToggleItalic:
             text = contextMenuItemTagItalic();
             checkable = true;
             break;
+
         case ToggleUnderline:
             text = contextMenuItemTagUnderline();
             checkable = true;
@@ -2950,77 +3628,93 @@ QAction *QWebPage::action(WebAction action) const
             break;
 
         case InsertParagraphSeparator:
-            text = tr("Insert a new paragraph");
+            text = tr( "Insert a new paragraph" );
             break;
+
         case InsertLineSeparator:
-            text = tr("Insert a new line");
+            text = tr( "Insert a new line" );
             break;
 
         case PasteAndMatchStyle:
-            text = tr("Paste and Match Style");
+            text = tr( "Paste and Match Style" );
             break;
+
         case RemoveFormat:
-            text = tr("Remove formatting");
+            text = tr( "Remove formatting" );
             break;
 
         case ToggleStrikethrough:
-            text = tr("Strikethrough");
+            text = tr( "Strikethrough" );
             checkable = true;
             break;
+
         case ToggleSubscript:
-            text = tr("Subscript");
+            text = tr( "Subscript" );
             checkable = true;
             break;
+
         case ToggleSuperscript:
-            text = tr("Superscript");
+            text = tr( "Superscript" );
             checkable = true;
             break;
+
         case InsertUnorderedList:
-            text = tr("Insert Bulleted List");
+            text = tr( "Insert Bulleted List" );
             checkable = true;
             break;
+
         case InsertOrderedList:
-            text = tr("Insert Numbered List");
+            text = tr( "Insert Numbered List" );
             checkable = true;
             break;
+
         case Indent:
-            text = tr("Indent");
+            text = tr( "Indent" );
             break;
+
         case Outdent:
-            text = tr("Outdent");
+            text = tr( "Outdent" );
             break;
+
         case AlignCenter:
-            text = tr("Center");
+            text = tr( "Center" );
             break;
+
         case AlignJustified:
-            text = tr("Justify");
+            text = tr( "Justify" );
             break;
+
         case AlignLeft:
-            text = tr("Align Left");
+            text = tr( "Align Left" );
             break;
+
         case AlignRight:
-            text = tr("Align Right");
+            text = tr( "Align Right" );
             break;
+
         case NoWebAction:
             return 0;
+
         default:
             break;
     }
 
-    if (text.isEmpty())
+    if ( text.isEmpty() )
+    {
         return 0;
+    }
 
-    QAction *a = new QAction(d->q);
-    a->setText(text);
-    a->setData(action);
-    a->setCheckable(checkable);
-    a->setIcon(icon);
+    QAction *a = new QAction( d->q );
+    a->setText( text );
+    a->setData( action );
+    a->setCheckable( checkable );
+    a->setIcon( icon );
 
-    connect(a, SIGNAL(triggered(bool)),
-            this, SLOT(_q_webActionTriggered(bool)));
+    connect( a, SIGNAL( triggered( bool ) ),
+             this, SLOT( _q_webActionTriggered( bool ) ) );
 
     d->actions[action] = a;
-    d->updateAction(action);
+    d->updateAction( action );
     return a;
 }
 #endif // QT_NO_ACTION
@@ -3038,8 +3732,12 @@ bool QWebPage::isModified() const
 #ifdef QT_NO_UNDOSTACK
     return false;
 #else
-    if (!d->undoStack)
+
+    if ( !d->undoStack )
+    {
         return false;
+    }
+
     return d->undoStack->canUndo();
 #endif // QT_NO_UNDOSTACK
 }
@@ -3052,8 +3750,10 @@ bool QWebPage::isModified() const
 */
 QUndoStack *QWebPage::undoStack() const
 {
-    if (!d->undoStack)
-        d->undoStack = new QUndoStack(const_cast<QWebPage *>(this));
+    if ( !d->undoStack )
+    {
+        d->undoStack = new QUndoStack( const_cast<QWebPage *>( this ) );
+    }
 
     return d->undoStack;
 }
@@ -3061,120 +3761,151 @@ QUndoStack *QWebPage::undoStack() const
 
 /*! \reimp
 */
-bool QWebPage::event(QEvent *ev)
+bool QWebPage::event( QEvent *ev )
 {
-    switch (ev->type()) {
-    case QEvent::Timer:
-        d->timerEvent(static_cast<QTimerEvent*>(ev));
-        break;
-    case QEvent::MouseMove:
-        d->mouseMoveEvent(static_cast<QMouseEvent*>(ev));
-        break;
-    case QEvent::MouseButtonPress:
-        d->mousePressEvent(static_cast<QMouseEvent*>(ev));
-        break;
-    case QEvent::MouseButtonDblClick:
-        d->mouseDoubleClickEvent(static_cast<QMouseEvent*>(ev));
-        break;
-    case QEvent::MouseButtonRelease:
-        d->mouseReleaseEvent(static_cast<QMouseEvent*>(ev));
-        break;
+    switch ( ev->type() )
+    {
+        case QEvent::Timer:
+            d->timerEvent( static_cast<QTimerEvent *>( ev ) );
+            break;
+
+        case QEvent::MouseMove:
+            d->mouseMoveEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
+
+        case QEvent::MouseButtonPress:
+            d->mousePressEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
+
+        case QEvent::MouseButtonDblClick:
+            d->mouseDoubleClickEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
+
+        case QEvent::MouseButtonRelease:
+            d->mouseReleaseEvent( static_cast<QMouseEvent *>( ev ) );
+            break;
 #if !defined(QT_NO_GRAPHICSVIEW)
-    case QEvent::GraphicsSceneMouseMove:
-        d->mouseMoveEvent(static_cast<QGraphicsSceneMouseEvent*>(ev));
-        break;
-    case QEvent::GraphicsSceneMousePress:
-        d->mousePressEvent(static_cast<QGraphicsSceneMouseEvent*>(ev));
-        break;
-    case QEvent::GraphicsSceneMouseDoubleClick:
-        d->mouseDoubleClickEvent(static_cast<QGraphicsSceneMouseEvent*>(ev));
-        break;
-    case QEvent::GraphicsSceneMouseRelease:
-        d->mouseReleaseEvent(static_cast<QGraphicsSceneMouseEvent*>(ev));
-        break;
+
+        case QEvent::GraphicsSceneMouseMove:
+            d->mouseMoveEvent( static_cast<QGraphicsSceneMouseEvent *>( ev ) );
+            break;
+
+        case QEvent::GraphicsSceneMousePress:
+            d->mousePressEvent( static_cast<QGraphicsSceneMouseEvent *>( ev ) );
+            break;
+
+        case QEvent::GraphicsSceneMouseDoubleClick:
+            d->mouseDoubleClickEvent( static_cast<QGraphicsSceneMouseEvent *>( ev ) );
+            break;
+
+        case QEvent::GraphicsSceneMouseRelease:
+            d->mouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( ev ) );
+            break;
 #endif
 #ifndef QT_NO_CONTEXTMENU
-    case QEvent::ContextMenu:
-        d->contextMenuEvent(static_cast<QContextMenuEvent*>(ev)->globalPos());
-        break;
+
+        case QEvent::ContextMenu:
+            d->contextMenuEvent( static_cast<QContextMenuEvent *>( ev )->globalPos() );
+            break;
 #if !defined(QT_NO_GRAPHICSVIEW)
-    case QEvent::GraphicsSceneContextMenu:
-        d->contextMenuEvent(static_cast<QGraphicsSceneContextMenuEvent*>(ev)->screenPos());
-        break;
+
+        case QEvent::GraphicsSceneContextMenu:
+            d->contextMenuEvent( static_cast<QGraphicsSceneContextMenuEvent *>( ev )->screenPos() );
+            break;
 #endif
 #endif
 #ifndef QT_NO_WHEELEVENT
-    case QEvent::Wheel:
-        d->wheelEvent(static_cast<QWheelEvent*>(ev));
-        break;
+
+        case QEvent::Wheel:
+            d->wheelEvent( static_cast<QWheelEvent *>( ev ) );
+            break;
 #if !defined(QT_NO_GRAPHICSVIEW)
-    case QEvent::GraphicsSceneWheel:
-        d->wheelEvent(static_cast<QGraphicsSceneWheelEvent*>(ev));
-        break;
+
+        case QEvent::GraphicsSceneWheel:
+            d->wheelEvent( static_cast<QGraphicsSceneWheelEvent *>( ev ) );
+            break;
 #endif
 #endif
-    case QEvent::KeyPress:
-        d->keyPressEvent(static_cast<QKeyEvent*>(ev));
-        break;
-    case QEvent::KeyRelease:
-        d->keyReleaseEvent(static_cast<QKeyEvent*>(ev));
-        break;
-    case QEvent::FocusIn:
-        d->focusInEvent(static_cast<QFocusEvent*>(ev));
-        break;
-    case QEvent::FocusOut:
-        d->focusOutEvent(static_cast<QFocusEvent*>(ev));
-        break;
+
+        case QEvent::KeyPress:
+            d->keyPressEvent( static_cast<QKeyEvent *>( ev ) );
+            break;
+
+        case QEvent::KeyRelease:
+            d->keyReleaseEvent( static_cast<QKeyEvent *>( ev ) );
+            break;
+
+        case QEvent::FocusIn:
+            d->focusInEvent( static_cast<QFocusEvent *>( ev ) );
+            break;
+
+        case QEvent::FocusOut:
+            d->focusOutEvent( static_cast<QFocusEvent *>( ev ) );
+            break;
 #ifndef QT_NO_DRAGANDDROP
-    case QEvent::DragEnter:
-        d->dragEnterEvent(static_cast<QDragEnterEvent*>(ev));
-        break;
-    case QEvent::DragLeave:
-        d->dragLeaveEvent(static_cast<QDragLeaveEvent*>(ev));
-        break;
-    case QEvent::DragMove:
-        d->dragMoveEvent(static_cast<QDragMoveEvent*>(ev));
-        break;
-    case QEvent::Drop:
-        d->dropEvent(static_cast<QDropEvent*>(ev));
-        break;
+
+        case QEvent::DragEnter:
+            d->dragEnterEvent( static_cast<QDragEnterEvent *>( ev ) );
+            break;
+
+        case QEvent::DragLeave:
+            d->dragLeaveEvent( static_cast<QDragLeaveEvent *>( ev ) );
+            break;
+
+        case QEvent::DragMove:
+            d->dragMoveEvent( static_cast<QDragMoveEvent *>( ev ) );
+            break;
+
+        case QEvent::Drop:
+            d->dropEvent( static_cast<QDropEvent *>( ev ) );
+            break;
 #if !defined(QT_NO_GRAPHICSVIEW)
-    case QEvent::GraphicsSceneDragEnter:
-        d->dragEnterEvent(static_cast<QGraphicsSceneDragDropEvent*>(ev));
-        break;
-    case QEvent::GraphicsSceneDragMove:
-        d->dragMoveEvent(static_cast<QGraphicsSceneDragDropEvent*>(ev));
-        break;
-    case QEvent::GraphicsSceneDragLeave:
-        d->dragLeaveEvent(static_cast<QGraphicsSceneDragDropEvent*>(ev));
-        break;
-    case QEvent::GraphicsSceneDrop:
-        d->dropEvent(static_cast<QGraphicsSceneDragDropEvent*>(ev));
-        break;
+
+        case QEvent::GraphicsSceneDragEnter:
+            d->dragEnterEvent( static_cast<QGraphicsSceneDragDropEvent *>( ev ) );
+            break;
+
+        case QEvent::GraphicsSceneDragMove:
+            d->dragMoveEvent( static_cast<QGraphicsSceneDragDropEvent *>( ev ) );
+            break;
+
+        case QEvent::GraphicsSceneDragLeave:
+            d->dragLeaveEvent( static_cast<QGraphicsSceneDragDropEvent *>( ev ) );
+            break;
+
+        case QEvent::GraphicsSceneDrop:
+            d->dropEvent( static_cast<QGraphicsSceneDragDropEvent *>( ev ) );
+            break;
 #endif
 
 #endif
-    case QEvent::InputMethod:
-        d->inputMethodEvent(static_cast<QInputMethodEvent*>(ev));
-        break;
-    case QEvent::ShortcutOverride:
-        d->shortcutOverrideEvent(static_cast<QKeyEvent*>(ev));
-        break;
-    case QEvent::Leave:
-        d->leaveEvent(ev);
-        break;
-    case QEvent::TouchBegin:
-    case QEvent::TouchUpdate:
-    case QEvent::TouchEnd:
-        // Return whether the default action was cancelled in the JS event handler
-        return d->touchEvent(static_cast<QTouchEvent*>(ev));
+
+        case QEvent::InputMethod:
+            d->inputMethodEvent( static_cast<QInputMethodEvent *>( ev ) );
+            break;
+
+        case QEvent::ShortcutOverride:
+            d->shortcutOverrideEvent( static_cast<QKeyEvent *>( ev ) );
+            break;
+
+        case QEvent::Leave:
+            d->leaveEvent( ev );
+            break;
+
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+            // Return whether the default action was cancelled in the JS event handler
+            return d->touchEvent( static_cast<QTouchEvent *>( ev ) );
 #ifndef QT_NO_PROPERTIES
-    case QEvent::DynamicPropertyChange:
-        d->dynamicPropertyChangeEvent(static_cast<QDynamicPropertyChangeEvent*>(ev));
-        break;
+
+        case QEvent::DynamicPropertyChange:
+            d->dynamicPropertyChangeEvent( static_cast<QDynamicPropertyChangeEvent *>( ev ) );
+            break;
 #endif
-    default:
-        return QObject::event(ev);
+
+        default:
+            return QObject::event( ev );
     }
 
     return true;
@@ -3186,16 +3917,19 @@ bool QWebPage::event(QEvent *ev)
 
     Returns true if it can find a new focusable element, or false if it can't.
 */
-bool QWebPage::focusNextPrevChild(bool next)
+bool QWebPage::focusNextPrevChild( bool next )
 {
-    QKeyEvent ev(QEvent::KeyPress, Qt::Key_Tab, Qt::KeyboardModifiers(next ? Qt::NoModifier : Qt::ShiftModifier));
-    d->keyPressEvent(&ev);
+    QKeyEvent ev( QEvent::KeyPress, Qt::Key_Tab, Qt::KeyboardModifiers( next ? Qt::NoModifier : Qt::ShiftModifier ) );
+    d->keyPressEvent( &ev );
     bool hasFocusedNode = false;
     Frame *frame = d->page->focusController()->focusedFrame();
-    if (frame) {
+
+    if ( frame )
+    {
         Document *document = frame->document();
         hasFocusedNode = document && document->focusedNode();
     }
+
     //qDebug() << "focusNextPrevChild(" << next << ") =" << ev.isAccepted() << "focusedNode?" << hasFocusedNode;
     return hasFocusedNode;
 }
@@ -3211,14 +3945,19 @@ bool QWebPage::focusNextPrevChild(bool next)
 
     \sa modified, contentsChanged(), WebAction
 */
-void QWebPage::setContentEditable(bool editable)
+void QWebPage::setContentEditable( bool editable )
 {
-    if (isContentEditable() != editable) {
-        d->page->setEditable(editable);
-        d->page->setTabKeyCyclesThroughElements(!editable);
-        if (d->mainFrame) {
-            WebCore::Frame* frame = d->mainFrame->d->frame;
-            if (editable) {
+    if ( isContentEditable() != editable )
+    {
+        d->page->setEditable( editable );
+        d->page->setTabKeyCyclesThroughElements( !editable );
+
+        if ( d->mainFrame )
+        {
+            WebCore::Frame *frame = d->mainFrame->d->frame;
+
+            if ( editable )
+            {
                 frame->editor()->applyEditingStyleToBodyElement();
                 // FIXME: mac port calls this if there is no selectedDOMRange
                 //frame->setSelectionFromNone();
@@ -3246,7 +3985,7 @@ bool QWebPage::isContentEditable() const
     By default unsupported content is not forwarded.
 */
 
-void QWebPage::setForwardUnsupportedContent(bool forward)
+void QWebPage::setForwardUnsupportedContent( bool forward )
 {
     d->forwardUnsupportedContent = forward;
 }
@@ -3264,7 +4003,7 @@ bool QWebPage::forwardUnsupportedContent() const
     The default is to delegate no links.
 */
 
-void QWebPage::setLinkDelegationPolicy(LinkDelegationPolicy policy)
+void QWebPage::setLinkDelegationPolicy( LinkDelegationPolicy policy )
 {
     d->linkPolicy = policy;
 }
@@ -3284,18 +4023,22 @@ QWebPage::LinkDelegationPolicy QWebPage::linkDelegationPolicy() const
     menus to be implemented in HTML/JavaScript. This is used by \l{http://maps.google.com/}{Google
     Maps}, for example.
 */
-bool QWebPage::swallowContextMenuEvent(QContextMenuEvent *event)
+bool QWebPage::swallowContextMenuEvent( QContextMenuEvent *event )
 {
     d->page->contextMenuController()->clearContextMenu();
 
-    if (QWebFrame* webFrame = frameAt(event->pos())) {
-        Frame* frame = QWebFramePrivate::core(webFrame);
-        if (Scrollbar* scrollbar = frame->view()->scrollbarAtPoint(PlatformMouseEvent(event, 1).pos()))
-            return scrollbar->contextMenu(PlatformMouseEvent(event, 1));
+    if ( QWebFrame *webFrame = frameAt( event->pos() ) )
+    {
+        Frame *frame = QWebFramePrivate::core( webFrame );
+
+        if ( Scrollbar *scrollbar = frame->view()->scrollbarAtPoint( PlatformMouseEvent( event, 1 ).pos() ) )
+        {
+            return scrollbar->contextMenu( PlatformMouseEvent( event, 1 ) );
+        }
     }
 
-    WebCore::Frame* focusedFrame = d->page->focusController()->focusedOrMainFrame();
-    focusedFrame->eventHandler()->sendContextMenuEvent(PlatformMouseEvent(event, 1));
+    WebCore::Frame *focusedFrame = d->page->focusController()->focusedOrMainFrame();
+    focusedFrame->eventHandler()->sendContextMenuEvent( PlatformMouseEvent( event, 1 ) );
     ContextMenu *menu = d->page->contextMenuController()->contextMenu();
     // If the website defines its own handler then sendContextMenuEvent takes care of
     // calling/showing it and the context menu pointer will be zero. This is the case
@@ -3309,55 +4052,76 @@ bool QWebPage::swallowContextMenuEvent(QContextMenuEvent *event)
     Updates the page's actions depending on the position \a pos. For example if \a pos is over an image
     element the CopyImageToClipboard action is enabled.
 */
-void QWebPage::updatePositionDependentActions(const QPoint &pos)
+void QWebPage::updatePositionDependentActions( const QPoint &pos )
 {
 #ifndef QT_NO_ACTION
     // First we disable all actions, but keep track of which ones were originally enabled.
-    QBitArray originallyEnabledWebActions(QWebPage::WebActionCount);
-    for (int i = ContextMenuItemTagNoAction; i < ContextMenuItemBaseApplicationTag; ++i) {
-        QWebPage::WebAction action = webActionForContextMenuAction(WebCore::ContextMenuAction(i));
-        if (QAction *a = this->action(action)) {
-            originallyEnabledWebActions.setBit(action, a->isEnabled());
-            a->setEnabled(false);
+    QBitArray originallyEnabledWebActions( QWebPage::WebActionCount );
+
+    for ( int i = ContextMenuItemTagNoAction; i < ContextMenuItemBaseApplicationTag; ++i )
+    {
+        QWebPage::WebAction action = webActionForContextMenuAction( WebCore::ContextMenuAction( i ) );
+
+        if ( QAction *a = this->action( action ) )
+        {
+            originallyEnabledWebActions.setBit( action, a->isEnabled() );
+            a->setEnabled( false );
         }
     }
+
 #endif // QT_NO_ACTION
 
     d->createMainFrame();
-    WebCore::Frame* focusedFrame = d->page->focusController()->focusedOrMainFrame();
-    HitTestResult result = focusedFrame->eventHandler()->hitTestResultAtPoint(focusedFrame->view()->windowToContents(pos), /*allowShadowContent*/ false);
+    WebCore::Frame *focusedFrame = d->page->focusController()->focusedOrMainFrame();
+    HitTestResult result = focusedFrame->eventHandler()->hitTestResultAtPoint( focusedFrame->view()->windowToContents(
+                               pos ), /*allowShadowContent*/ false );
 
-    if (result.scrollbar())
+    if ( result.scrollbar() )
+    {
         d->hitTestResult = QWebHitTestResult();
+    }
     else
-        d->hitTestResult = QWebHitTestResult(new QWebHitTestResultPrivate(result));
+    {
+        d->hitTestResult = QWebHitTestResult( new QWebHitTestResultPrivate( result ) );
+    }
 
-    d->page->contextMenuController()->setHitTestResult(result);
+    d->page->contextMenuController()->setHitTestResult( result );
     d->page->contextMenuController()->populate();
 
 #if ENABLE(INSPECTOR)
-    if (d->page->inspectorController()->enabled())
+
+    if ( d->page->inspectorController()->enabled() )
+    {
         d->page->contextMenuController()->addInspectElementItem();
+    }
+
 #endif
 
-    QBitArray visitedWebActions(QWebPage::WebActionCount);
+    QBitArray visitedWebActions( QWebPage::WebActionCount );
 
 #ifndef QT_NO_CONTEXTMENU
     delete d->currentContextMenu;
 
     // Then we let createContextMenu() enable the actions that are put into the menu
-    d->currentContextMenu = d->createContextMenu(d->page->contextMenuController()->contextMenu(), d->page->contextMenuController()->contextMenu()->platformDescription(), &visitedWebActions);
+    d->currentContextMenu = d->createContextMenu( d->page->contextMenuController()->contextMenu(),
+                            d->page->contextMenuController()->contextMenu()->platformDescription(), &visitedWebActions );
 #endif // QT_NO_CONTEXTMENU
 
 #ifndef QT_NO_ACTION
     // Finally, we restore the original enablement for the actions that were not put into the menu.
     originallyEnabledWebActions &= ~visitedWebActions; // Mask out visited actions (they're part of the menu)
-    for (int i = 0; i < QWebPage::WebActionCount; ++i) {
-        if (originallyEnabledWebActions.at(i)) {
-            if (QAction *a = this->action(QWebPage::WebAction(i)))
-                a->setEnabled(true);
+
+    for ( int i = 0; i < QWebPage::WebActionCount; ++i )
+    {
+        if ( originallyEnabledWebActions.at( i ) )
+        {
+            if ( QAction *a = this->action( QWebPage::WebAction( i ) ) )
+            {
+                a->setEnabled( true );
+            }
         }
     }
+
 #endif // QT_NO_ACTION
 
     // This whole process ensures that any actions put into to the context menu has the right
@@ -3567,17 +4331,20 @@ void QWebPage::updatePositionDependentActions(const QPoint &pos)
 
     \sa supportsExtension(), Extension
 */
-bool QWebPage::extension(Extension extension, const ExtensionOption *option, ExtensionReturn *output)
+bool QWebPage::extension( Extension extension, const ExtensionOption *option, ExtensionReturn *output )
 {
 #ifndef QT_NO_FILEDIALOG
-    if (extension == ChooseMultipleFilesExtension) {
+
+    if ( extension == ChooseMultipleFilesExtension )
+    {
         // FIXME: do not ignore suggestedFiles
-        QStringList suggestedFiles = static_cast<const ChooseMultipleFilesExtensionOption*>(option)->suggestedFileNames;
-        QWidget* parent = (d->client) ? d->client->ownerWidget() : 0;
-        QStringList names = QFileDialog::getOpenFileNames(parent, QString());
-        static_cast<ChooseMultipleFilesExtensionReturn*>(output)->fileNames = names;
+        QStringList suggestedFiles = static_cast<const ChooseMultipleFilesExtensionOption *>( option )->suggestedFileNames;
+        QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
+        QStringList names = QFileDialog::getOpenFileNames( parent, QString() );
+        static_cast<ChooseMultipleFilesExtensionReturn *>( output )->fileNames = names;
         return true;
     }
+
 #endif
 
     return false;
@@ -3588,12 +4355,12 @@ bool QWebPage::extension(Extension extension, const ExtensionOption *option, Ext
 
     \sa extension()
 */
-bool QWebPage::supportsExtension(Extension extension) const
+bool QWebPage::supportsExtension( Extension extension ) const
 {
 #ifndef QT_NO_FILEDIALOG
     return extension == ChooseMultipleFilesExtension;
 #else
-    Q_UNUSED(extension);
+    Q_UNUSED( extension );
     return false;
 #endif
 }
@@ -3612,34 +4379,51 @@ bool QWebPage::supportsExtension(Extension extension) const
 
     Returns true if \a subString was found; otherwise returns false.
 */
-bool QWebPage::findText(const QString &subString, FindFlags options)
+bool QWebPage::findText( const QString &subString, FindFlags options )
 {
     ::TextCaseSensitivity caseSensitivity = ::TextCaseInsensitive;
-    if (options & FindCaseSensitively)
-        caseSensitivity = ::TextCaseSensitive;
 
-    if (options & HighlightAllOccurrences) {
-        if (subString.isEmpty()) {
+    if ( options & FindCaseSensitively )
+    {
+        caseSensitivity = ::TextCaseSensitive;
+    }
+
+    if ( options & HighlightAllOccurrences )
+    {
+        if ( subString.isEmpty() )
+        {
             d->page->unmarkAllTextMatches();
             return true;
-        } else
-            return d->page->markAllMatchesForText(subString, caseSensitivity, true, 0);
-    } else {
-        if (subString.isEmpty()) {
+        }
+        else
+        {
+            return d->page->markAllMatchesForText( subString, caseSensitivity, true, 0 );
+        }
+    }
+    else
+    {
+        if ( subString.isEmpty() )
+        {
             d->page->mainFrame()->selection()->clear();
-            Frame* frame = d->page->mainFrame()->tree()->firstChild();
-            while (frame) {
+            Frame *frame = d->page->mainFrame()->tree()->firstChild();
+
+            while ( frame )
+            {
                 frame->selection()->clear();
-                frame = frame->tree()->traverseNextWithWrap(false);
+                frame = frame->tree()->traverseNextWithWrap( false );
             }
         }
+
         ::FindDirection direction = ::FindDirectionForward;
-        if (options & FindBackward)
+
+        if ( options & FindBackward )
+        {
             direction = ::FindDirectionBackward;
+        }
 
         const bool shouldWrap = options & FindWrapsAroundDocument;
 
-        return d->page->findString(subString, caseSensitivity, direction, shouldWrap);
+        return d->page->findString( subString, caseSensitivity, direction, shouldWrap );
     }
 }
 
@@ -3662,13 +4446,13 @@ QWebSettings *QWebPage::settings() const
 
     \sa ChooseMultipleFilesExtension
 */
-QString QWebPage::chooseFile(QWebFrame *parentFrame, const QString& suggestedFile)
+QString QWebPage::chooseFile( QWebFrame *parentFrame, const QString &suggestedFile )
 {
-    Q_UNUSED(parentFrame)
+    Q_UNUSED( parentFrame )
 
 #ifndef QT_NO_FILEDIALOG
-    QWidget* parent = (d->client) ? d->client->ownerWidget() : 0;
-    return QFileDialog::getOpenFileName(parent, QString(), suggestedFile);
+    QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
+    return QFileDialog::getOpenFileName( parent, QString(), suggestedFile );
 #else
     return QString();
 #endif
@@ -3683,12 +4467,18 @@ QString QWebPage::chooseFile(QWebFrame *parentFrame, const QString& suggestedFil
 
     \sa networkAccessManager()
 */
-void QWebPage::setNetworkAccessManager(QNetworkAccessManager *manager)
+void QWebPage::setNetworkAccessManager( QNetworkAccessManager *manager )
 {
-    if (manager == d->networkManager)
+    if ( manager == d->networkManager )
+    {
         return;
-    if (d->networkManager && d->networkManager->parent() == this)
+    }
+
+    if ( d->networkManager && d->networkManager->parent() == this )
+    {
         delete d->networkManager;
+    }
+
     d->networkManager = manager;
 }
 
@@ -3700,10 +4490,12 @@ void QWebPage::setNetworkAccessManager(QNetworkAccessManager *manager)
 */
 QNetworkAccessManager *QWebPage::networkAccessManager() const
 {
-    if (!d->networkManager) {
-        QWebPage *that = const_cast<QWebPage *>(this);
-        that->d->networkManager = new QNetworkAccessManager(that);
+    if ( !d->networkManager )
+    {
+        QWebPage *that = const_cast<QWebPage *>( this );
+        that->d->networkManager = new QNetworkAccessManager( that );
     }
+
     return d->networkManager;
 }
 
@@ -3715,7 +4507,7 @@ QNetworkAccessManager *QWebPage::networkAccessManager() const
 
     \sa pluginFactory()
 */
-void QWebPage::setPluginFactory(QWebPluginFactory *factory)
+void QWebPage::setPluginFactory( QWebPluginFactory *factory )
 {
     d->pluginFactory = factory;
 }
@@ -3748,34 +4540,35 @@ QWebPluginFactory *QWebPage::pluginFactory() const
     \o %AppVersion% expands to QCoreApplication::applicationName()/QCoreApplication::applicationVersion() if they're set; otherwise defaulting to Qt and the current Qt version.
     \endlist
 */
-QString QWebPage::userAgentForUrl(const QUrl&) const
+QString QWebPage::userAgentForUrl( const QUrl & ) const
 {
     // splitting the string in three and user QStringBuilder is better than using QString::arg()
     static QString firstPart;
     static QString secondPart;
     static QString thirdPart;
 
-    if (firstPart.isEmpty() || secondPart.isEmpty() || thirdPart.isEmpty()) {
+    if ( firstPart.isEmpty() || secondPart.isEmpty() || thirdPart.isEmpty() )
+    {
         QString firstPartTemp;
-        firstPartTemp += QString::fromLatin1("Mozilla/5.0 ("
+        firstPartTemp += QString::fromLatin1( "Mozilla/5.0 ("
 
-    // Platform
+                                              // Platform
 #ifdef Q_OS_DARWIN
-        "Macintosh; "
+                                              "Macintosh; "
 #elif defined Q_WS_QWS
-        "QtEmbedded; "
+                                              "QtEmbedded; "
 #elif defined Q_OS_WIN
-        // Nothing
+                                              // Nothing
 #elif defined Q_WS_X11
-        "X11; "
+                                              "X11; "
 #else
-        "Unknown; "
+                                              "Unknown; "
 #endif
-    );
+                                            );
 
 #if ! defined(QT_SSL)
-   // No SSL support
-   firstPartTemp += QString::fromLatin1("N; ");
+        // No SSL support
+        firstPartTemp += QString::fromLatin1( "N; " );
 #endif
 
 
@@ -3783,43 +4576,43 @@ QString QWebPage::userAgentForUrl(const QUrl&) const
         firstPartTemp += windowsVersionForUAString();
 #elif defined Q_OS_DARWIN
 #if CPU(X86) || CPU(X86_64)
-        firstPartTemp += QString::fromLatin1("Intel Mac OS X");
+        firstPartTemp += QString::fromLatin1( "Intel Mac OS X" );
 #else
-        firstPartTemp += QString::fromLatin1("PPC Mac OS X");
+        firstPartTemp += QString::fromLatin1( "PPC Mac OS X" );
 #endif
 
 #elif defined Q_OS_BSD4
-        firstPartTemp += QString::fromLatin1("BSD Four");
+        firstPartTemp += QString::fromLatin1( "BSD Four" );
 #elif defined Q_OS_DRAGONFLY
-        firstPartTemp += QString::fromLatin1("DragonFly");
+        firstPartTemp += QString::fromLatin1( "DragonFly" );
 #elif defined Q_OS_FREEBSD
-        firstPartTemp += QString::fromLatin1("FreeBSD");
+        firstPartTemp += QString::fromLatin1( "FreeBSD" );
 #elif defined Q_OS_HPUX
-        firstPartTemp += QString::fromLatin1("HP-UX");
+        firstPartTemp += QString::fromLatin1( "HP-UX" );
 
 #elif defined Q_OS_LINUX
 
 #if defined(__x86_64__)
-        firstPartTemp += QString::fromLatin1("Linux x86_64");
+        firstPartTemp += QString::fromLatin1( "Linux x86_64" );
 #elif defined(__i386__)
-        firstPartTemp += QString::fromLatin1("Linux i686");
+        firstPartTemp += QString::fromLatin1( "Linux i686" );
 #else
-        firstPartTemp += QString::fromLatin1("Linux");
+        firstPartTemp += QString::fromLatin1( "Linux" );
 #endif
 
 
 #elif defined Q_OS_NETBSD
-        firstPartTemp += QString::fromLatin1("NetBSD");
+        firstPartTemp += QString::fromLatin1( "NetBSD" );
 #elif defined Q_OS_OPENBSD
-        firstPartTemp += QString::fromLatin1("OpenBSD");
+        firstPartTemp += QString::fromLatin1( "OpenBSD" );
 #elif defined Q_OS_SOLARIS
-        firstPartTemp += QString::fromLatin1("Sun Solaris");
+        firstPartTemp += QString::fromLatin1( "Sun Solaris" );
 #elif defined Q_OS_UNIX
-        firstPartTemp += QString::fromLatin1("UNIX BSD/SYSV system");
+        firstPartTemp += QString::fromLatin1( "UNIX BSD/SYSV system" );
 #elif defined Q_OS_UNIXWARE
-        firstPartTemp += QString::fromLatin1("UnixWare Seven, Open UNIX Eight");
+        firstPartTemp += QString::fromLatin1( "UnixWare Seven, Open UNIX Eight" );
 #else
-        firstPartTemp += QString::fromLatin1("Unknown");
+        firstPartTemp += QString::fromLatin1( "Unknown" );
 #endif
 
 #if USE(QT_MOBILITY_SYSTEMINFO)
@@ -3827,22 +4620,28 @@ QString QWebPage::userAgentForUrl(const QUrl&) const
         QtMobility::QSystemDeviceInfo systemDeviceInfo;
 
         QString model = systemDeviceInfo.model();
-        if (!model.isEmpty()) {
-            if (!firstPartTemp.endsWith("; "))
-                firstPartTemp += QString::fromLatin1("; ");
+
+        if ( !model.isEmpty() )
+        {
+            if ( !firstPartTemp.endsWith( "; " ) )
+            {
+                firstPartTemp += QString::fromLatin1( "; " );
+            }
+
             firstPartTemp += systemDeviceInfo.model();
         }
+
 #endif
         firstPartTemp.squeeze();
         firstPart = firstPartTemp;
 
         QString secondPartTemp;
-        secondPartTemp += QString::fromLatin1(") ");
+        secondPartTemp += QString::fromLatin1( ") " );
 
         // webkit/qt version
-        secondPartTemp += QString::fromLatin1("AppleWebKit/");
+        secondPartTemp += QString::fromLatin1( "AppleWebKit/" );
         secondPartTemp += qWebKitVersion();
-        secondPartTemp += QString::fromLatin1(" (KHTML, like Gecko) ");
+        secondPartTemp += QString::fromLatin1( " (KHTML, like Gecko) " );
 
         // Application name split the third part
         secondPartTemp.squeeze();
@@ -3850,31 +4649,38 @@ QString QWebPage::userAgentForUrl(const QUrl&) const
 
         QString thirdPartTemp;
 
-        thirdPartTemp += QLatin1String(" Safari/");
+        thirdPartTemp += QLatin1String( " Safari/" );
         thirdPartTemp += qWebKitVersion();
         thirdPartTemp.squeeze();
         thirdPart = thirdPartTemp;
 
-        Q_ASSERT(!firstPart.isEmpty());
-        Q_ASSERT(!secondPart.isEmpty());
-        Q_ASSERT(!thirdPart.isEmpty());
+        Q_ASSERT( !firstPart.isEmpty() );
+        Q_ASSERT( !secondPart.isEmpty() );
+        Q_ASSERT( !thirdPart.isEmpty() );
     }
 
     // Application name/version
     QString appName = QCoreApplication::applicationName();
-    if (!appName.isEmpty()) {
+
+    if ( !appName.isEmpty() )
+    {
         QString appVer = QCoreApplication::applicationVersion();
-        if (!appVer.isEmpty())
-            appName.append(QLatin1Char('/') + appVer);
-    } else {
+
+        if ( !appVer.isEmpty() )
+        {
+            appName.append( QLatin1Char( '/' ) + appVer );
+        }
+    }
+    else
+    {
         // CS version
-        appName = "CopperSpice/" + QString::fromLatin1(csVersion());
+        appName = "CopperSpice/" + QString::fromLatin1( ls_csVersion() );
     }
 
     return firstPart + secondPart + appName + thirdPart;
 }
 
-void QWebPagePrivate::_q_onLoadProgressChanged(int)
+void QWebPagePrivate::_q_onLoadProgressChanged( int )
 {
     m_totalBytes = page->progress()->totalPageAndResourceBytesToLoad();
     m_bytesReceived = page->progress()->totalBytesReceived();
@@ -3904,23 +4710,23 @@ quint64 QWebPage::bytesReceived() const
 }
 
 //
-void QWebPage::_q_onLoadProgressChanged(int progress)
+void QWebPage::_q_onLoadProgressChanged( int progress )
 {
-	//Q_D(ErrorPageExtensionReturn);
-	d->_q_onLoadProgressChanged(progress);
+    //Q_D(ErrorPageExtensionReturn);
+    d->_q_onLoadProgressChanged( progress );
 }
 
 void QWebPage::_q_cleanupLeakMessages()
 {
-	//Q_D(ErrorPageExtensionReturn);
-	d->_q_cleanupLeakMessages();
+    //Q_D(ErrorPageExtensionReturn);
+    d->_q_cleanupLeakMessages();
 }
 
 #ifndef QT_NO_ACTION
-void QWebPage::_q_webActionTriggered(bool checked)
+void QWebPage::_q_webActionTriggered( bool checked )
 {
-   //Q_D(ErrorPageExtensionReturn);
-   d->_q_webActionTriggered(checked);
+    //Q_D(ErrorPageExtensionReturn);
+    d->_q_webActionTriggered( checked );
 }
 #endif
 

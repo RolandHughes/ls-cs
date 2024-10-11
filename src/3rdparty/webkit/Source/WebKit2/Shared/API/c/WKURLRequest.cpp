@@ -35,20 +35,20 @@ using namespace WebKit;
 
 WKTypeID WKURLRequestGetTypeID()
 {
-    return toAPI(WebURLRequest::APIType);
+    return toAPI( WebURLRequest::APIType );
 }
 
-WKURLRequestRef WKURLRequestCreateWithWKURL(WKURLRef url)
+WKURLRequestRef WKURLRequestCreateWithWKURL( WKURLRef url )
 {
-    return toAPI(WebURLRequest::create(KURL(KURL(), toImpl(url)->string())).leakRef());
+    return toAPI( WebURLRequest::create( KURL( KURL(), toImpl( url )->string() ) ).leakRef() );
 }
 
-WKURLRef WKURLRequestCopyURL(WKURLRequestRef requestRef)
+WKURLRef WKURLRequestCopyURL( WKURLRequestRef requestRef )
 {
-    return toCopiedURLAPI(toImpl(requestRef)->url());
+    return toCopiedURLAPI( toImpl( requestRef )->url() );
 }
 
-void WKURLRequestSetDefaultTimeoutInterval(double timeoutInterval)
+void WKURLRequestSetDefaultTimeoutInterval( double timeoutInterval )
 {
-    WebURLRequest::setDefaultTimeoutInterval(timeoutInterval);
+    WebURLRequest::setDefaultTimeoutInterval( timeoutInterval );
 }

@@ -38,14 +38,15 @@
 #include "LocalizedStrings.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<InputType> ResetInputType::create(HTMLInputElement* element)
+namespace WebCore
 {
-    return adoptPtr(new ResetInputType(element));
+
+PassOwnPtr<InputType> ResetInputType::create( HTMLInputElement *element )
+{
+    return adoptPtr( new ResetInputType( element ) );
 }
 
-const AtomicString& ResetInputType::formControlType() const
+const AtomicString &ResetInputType::formControlType() const
 {
     return InputTypeNames::reset();
 }
@@ -55,10 +56,13 @@ bool ResetInputType::supportsValidation() const
     return false;
 }
 
-void ResetInputType::handleDOMActivateEvent(Event* event)
+void ResetInputType::handleDOMActivateEvent( Event *event )
 {
-    if (element()->disabled() || !element()->form())
+    if ( element()->disabled() || !element()->form() )
+    {
         return;
+    }
+
     element()->form()->reset();
     event->setDefaultHandled();
 }

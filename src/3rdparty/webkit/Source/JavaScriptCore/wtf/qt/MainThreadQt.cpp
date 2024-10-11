@@ -34,23 +34,24 @@
 #include <QCoreApplication>
 #include <QThread>
 
-namespace WTF {
+namespace WTF
+{
 
 class MainThreadInvoker : public QObject
 {
-    WEB_CS_OBJECT(MainThreadInvoker)
+    WEB_LSCS_OBJECT( MainThreadInvoker )
 
 public:
     MainThreadInvoker();
 
 private:
-    WEB_CS_SLOT_1(Private,void dispatch())
-    WEB_CS_SLOT_2(dispatch)
+    WEB_LSCS_SLOT_1( Private,void dispatch() )
+    WEB_LSCS_SLOT_2( dispatch )
 };
 
 MainThreadInvoker::MainThreadInvoker()
 {
-    moveToThread(QCoreApplication::instance()->thread());
+    moveToThread( QCoreApplication::instance()->thread() );
 }
 
 void MainThreadInvoker::dispatch()
@@ -58,7 +59,7 @@ void MainThreadInvoker::dispatch()
     dispatchFunctionsFromMainThread();
 }
 
-Q_GLOBAL_STATIC(MainThreadInvoker, webkit_main_thread_invoker)
+Q_GLOBAL_STATIC( MainThreadInvoker, webkit_main_thread_invoker )
 
 void initializeMainThreadPlatform()
 {
@@ -66,7 +67,7 @@ void initializeMainThreadPlatform()
 
 void scheduleDispatchFunctionsOnMainThread()
 {
-    QMetaObject::invokeMethod(webkit_main_thread_invoker(), "dispatch", Qt::QueuedConnection);
+    QMetaObject::invokeMethod( webkit_main_thread_invoker(), "dispatch", Qt::QueuedConnection );
 }
 
 bool isMainThread()

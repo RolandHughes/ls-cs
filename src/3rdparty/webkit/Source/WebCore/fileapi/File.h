@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef File_h
@@ -31,56 +31,76 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class KURL;
 
-class File : public Blob {
+class File : public Blob
+{
 public:
-    static PassRefPtr<File> create(const String& path)
+    static PassRefPtr<File> create( const String &path )
     {
-        return adoptRef(new File(path));
+        return adoptRef( new File( path ) );
     }
 
     // For deserialization.
-    static PassRefPtr<File> create(const String& path, const KURL& srcURL, const String& type)
+    static PassRefPtr<File> create( const String &path, const KURL &srcURL, const String &type )
     {
-        return adoptRef(new File(path, srcURL, type));
+        return adoptRef( new File( path, srcURL, type ) );
     }
 
 #if ENABLE(DIRECTORY_UPLOAD)
-    static PassRefPtr<File> create(const String& relativePath, const String& path)
+    static PassRefPtr<File> create( const String &relativePath, const String &path )
     {
-        return adoptRef(new File(relativePath, path));
+        return adoptRef( new File( relativePath, path ) );
     }
 #endif
 
     virtual unsigned long long size() const;
-    virtual bool isFile() const { return true; }
+    virtual bool isFile() const
+    {
+        return true;
+    }
 
-    const String& path() const { return m_path; }
-    const String& name() const { return m_name; }
+    const String &path() const
+    {
+        return m_path;
+    }
+    const String &name() const
+    {
+        return m_name;
+    }
     double lastModifiedDate() const;
 #if ENABLE(DIRECTORY_UPLOAD)
     // Returns the relative path of this file in the context of a directory selection.
-    const String& webkitRelativePath() const { return m_relativePath; }
+    const String &webkitRelativePath() const
+    {
+        return m_relativePath;
+    }
 #endif
 
     // Note that this involves synchronous file operation. Think twice before calling this function.
-    void captureSnapshot(long long& snapshotSize, double& snapshotModificationTime) const;
+    void captureSnapshot( long long &snapshotSize, double &snapshotModificationTime ) const;
 
     // FIXME: obsolete attributes. To be removed.
-    const String& fileName() const { return name(); }
-    unsigned long long fileSize() const { return size(); }
+    const String &fileName() const
+    {
+        return name();
+    }
+    unsigned long long fileSize() const
+    {
+        return size();
+    }
 
 private:
-    File(const String& path);
-    
+    File( const String &path );
+
     // For deserialization.
-    File(const String& path, const KURL& srcURL, const String& type);
+    File( const String &path, const KURL &srcURL, const String &type );
 
 #if ENABLE(DIRECTORY_UPLOAD)
-    File(const String& relativePath, const String& path);
+    File( const String &relativePath, const String &path );
 #endif
 
     String m_path;

@@ -3,35 +3,35 @@ list(APPEND IMAGEFORMATS_SVG_PRIVATE_INCLUDES
 )
 
 if(WITH_SVG)
-   add_library(CsImageFormatsSvg MODULE "")
-   add_library(CopperSpice::CsImageFormatsSvg ALIAS CsImageFormatsSvg)
+   add_library(LsCsImageFormatsSvg MODULE "")
+   add_library(LsCs::LsCsImageFormatsSvg ALIAS LsCsImageFormatsSvg)
 
-   set_target_properties(CsImageFormatsSvg PROPERTIES OUTPUT_NAME CsImageFormatsSvg${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsImageFormatsSvg PROPERTIES OUTPUT_NAME LsCsImageFormatsSvg${BUILD_ABI} PREFIX "")
 
-   target_sources(CsImageFormatsSvg
+   target_sources(LsCsImageFormatsSvg
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/imageformats/svg/main.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/imageformats/svg/qsvgiohandler.cpp
    )
 
-   target_link_libraries(CsImageFormatsSvg
-      CsCore
-      CsGui
-      CsSvg
+   target_link_libraries(LsCsImageFormatsSvg
+      LsCsCore
+      LsCsGui
+      LsCsSvg
    )
 
-   target_compile_definitions(CsImageFormatsSvg
+   target_compile_definitions(LsCsImageFormatsSvg
       PRIVATE
       -DQT_PLUGIN
    )
 
-   function_generate_resources(CsImageFormatsSvg)
+   function_generate_resources(LsCsImageFormatsSvg)
 
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/imageformats)
-   else()
-      install(TARGETS CsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/imageformats)
+#   else()
+#      install(TARGETS LsCsImageFormatsSvg DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()
 

@@ -40,9 +40,9 @@ struct NSEvent;
 #endif
 typedef NSEvent *WKNativeEventPtr;
 #elif defined(WIN32) || defined(_WIN32)
-typedef const struct tagMSG* WKNativeEventPtr;
+typedef const struct tagMSG *WKNativeEventPtr;
 #else
-typedef const void* WKNativeEventPtr;
+typedef const void *WKNativeEventPtr;
 #endif
 
 #ifdef __cplusplus

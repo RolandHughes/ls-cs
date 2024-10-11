@@ -33,7 +33,8 @@
 #include <QAction>
 #include <wtf/Assertions.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 ContextMenu::ContextMenu()
 {
@@ -43,9 +44,9 @@ ContextMenu::~ContextMenu()
 {
 }
 
-void ContextMenu::appendItem(ContextMenuItem& item)
+void ContextMenu::appendItem( ContextMenuItem &item )
 {
-    m_items.append(item);
+    m_items.append( item );
 }
 
 unsigned ContextMenu::itemCount() const
@@ -53,12 +54,12 @@ unsigned ContextMenu::itemCount() const
     return m_items.count();
 }
 
-void ContextMenu::insertItem(unsigned position, ContextMenuItem& item)
+void ContextMenu::insertItem( unsigned position, ContextMenuItem &item )
 {
-    m_items.insert(position, item);
+    m_items.insert( position, item );
 }
 
-void ContextMenu::setPlatformDescription(PlatformMenuDescription)
+void ContextMenu::setPlatformDescription( PlatformMenuDescription )
 {
     // doesn't make sense
 }
@@ -73,18 +74,22 @@ PlatformMenuDescription ContextMenu::releasePlatformDescription()
     return PlatformMenuDescription();
 }
 
-Vector<ContextMenuItem> contextMenuItemVector(const QList<ContextMenuItem>* items)
+Vector<ContextMenuItem> contextMenuItemVector( const QList<ContextMenuItem> *items )
 {
     int itemCount = items->size();
-    Vector<ContextMenuItem> menuItemVector(itemCount);
-    for (int i = 0; i < itemCount; ++i)
-        menuItemVector.append(items->at(i));
+    Vector<ContextMenuItem> menuItemVector( itemCount );
+
+    for ( int i = 0; i < itemCount; ++i )
+    {
+        menuItemVector.append( items->at( i ) );
+    }
+
     return menuItemVector;
 }
 
-PlatformMenuDescription platformMenuDescription(Vector<ContextMenuItem>& menuItemVector)
+PlatformMenuDescription platformMenuDescription( Vector<ContextMenuItem> &menuItemVector )
 {
-    // FIXME - Implement    
+    // FIXME - Implement
     return 0;
 }
 

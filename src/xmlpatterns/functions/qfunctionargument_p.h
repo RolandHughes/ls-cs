@@ -29,25 +29,26 @@
 #include <qxmlname.h>
 #include <qsequencetype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class FunctionArgument : public QSharedData
 {
- public:
-   typedef QExplicitlySharedDataPointer<FunctionArgument> Ptr;
-   typedef QList<FunctionArgument::Ptr> List;
+public:
+    typedef QExplicitlySharedDataPointer<FunctionArgument> Ptr;
+    typedef QList<FunctionArgument::Ptr> List;
 
-   FunctionArgument(const QXmlName name, const SequenceType::Ptr &type);
+    FunctionArgument( const QXmlName name, const SequenceType::Ptr &type );
 
-   QXmlName name() const;
-   SequenceType::Ptr type() const;
+    QXmlName name() const;
+    SequenceType::Ptr type() const;
 
- private:
-   FunctionArgument(const FunctionArgument &) = delete;
-   FunctionArgument &operator=(const FunctionArgument &) = delete;
+private:
+    FunctionArgument( const FunctionArgument & ) = delete;
+    FunctionArgument &operator=( const FunctionArgument & ) = delete;
 
-   const QXmlName m_name;
-   const SequenceType::Ptr m_type;
+    const QXmlName m_name;
+    const SequenceType::Ptr m_type;
 };
 
 }

@@ -36,7 +36,8 @@
 #include <qopengl_2pexvertexarray_p.h>
 #include <qopengl_extensions_p.h>
 
-enum EngineMode {
+enum EngineMode
+{
     ImageDrawingMode,
     TextDrawingMode,
     BrushDrawingMode,
@@ -57,7 +58,7 @@ class QOpenGL2PaintEngineExPrivate;
 class QOpenGL2PaintEngineState : public QPainterState
 {
 public:
-    QOpenGL2PaintEngineState(QOpenGL2PaintEngineState &other);
+    QOpenGL2PaintEngineState( QOpenGL2PaintEngineState &other );
     QOpenGL2PaintEngineState();
     ~QOpenGL2PaintEngineState();
 
@@ -77,15 +78,15 @@ public:
 
 class Q_GUI_EXPORT QOpenGL2PaintEngineEx : public QPaintEngineEx
 {
- public:
+public:
     QOpenGL2PaintEngineEx();
 
-    QOpenGL2PaintEngineEx(const QOpenGL2PaintEngineEx &) = delete;
-    QOpenGL2PaintEngineEx &operator=(const QOpenGL2PaintEngineEx &) = delete;
+    QOpenGL2PaintEngineEx( const QOpenGL2PaintEngineEx & ) = delete;
+    QOpenGL2PaintEngineEx &operator=( const QOpenGL2PaintEngineEx & ) = delete;
 
     ~QOpenGL2PaintEngineEx();
 
-    bool begin(QPaintDevice *device) override;
+    bool begin( QPaintDevice *device ) override;
     void ensureActive();
     bool end() override;
 
@@ -98,31 +99,36 @@ class Q_GUI_EXPORT QOpenGL2PaintEngineEx : public QPaintEngineEx
     void renderHintsChanged() override;
     void transformChanged() override;
 
-    void drawPixmap(const QRectF &rect, const QPixmap &pm, const QRectF &srcRect) override;
-    void drawPixmapFragments(const QPainter::PixmapFragment *fragments, int fragmentCount, const QPixmap &pixmap,
-               QPainter::PixmapFragmentHints hints) override;
-    void drawImage(const QRectF &rect, const QImage &pm, const QRectF &srcRect,
-               Qt::ImageConversionFlags flags = Qt::AutoColor) override;
-    void drawTextItem(const QPointF &point, const QTextItem &textItem) override;
-    void fill(const QVectorPath &path, const QBrush &brush) override;
-    void stroke(const QVectorPath &path, const QPen &pen) override;
-    void clip(const QVectorPath &path, Qt::ClipOperation op) override;
+    void drawPixmap( const QRectF &rect, const QPixmap &pm, const QRectF &srcRect ) override;
+    void drawPixmapFragments( const QPainter::PixmapFragment *fragments, int fragmentCount, const QPixmap &pixmap,
+                              QPainter::PixmapFragmentHints hints ) override;
+    void drawImage( const QRectF &rect, const QImage &pm, const QRectF &srcRect,
+                    Qt::ImageConversionFlags flags = Qt::AutoColor ) override;
+    void drawTextItem( const QPointF &point, const QTextItem &textItem ) override;
+    void fill( const QVectorPath &path, const QBrush &brush ) override;
+    void stroke( const QVectorPath &path, const QPen &pen ) override;
+    void clip( const QVectorPath &path, Qt::ClipOperation op ) override;
 
-    void drawStaticTextItem(QStaticTextItem *textItem) override;
+    void drawStaticTextItem( QStaticTextItem *textItem ) override;
 
-    bool drawTexture(const QRectF &rect, GLuint texture_id, const QSize &size, const QRectF &srcRect);
+    bool drawTexture( const QRectF &rect, GLuint texture_id, const QSize &size, const QRectF &srcRect );
 
-    Type type() const override { return OpenGL2; }
-
-    void setState(QPainterState *s) override;
-    QPainterState *createState(QPainterState *orig) const override;
-
-    QOpenGL2PaintEngineState *state() {
-        return static_cast<QOpenGL2PaintEngineState *>(QPaintEngineEx::state());
+    Type type() const override
+    {
+        return OpenGL2;
     }
 
-    const QOpenGL2PaintEngineState *state() const {
-        return static_cast<const QOpenGL2PaintEngineState *>(QPaintEngineEx::state());
+    void setState( QPainterState *s ) override;
+    QPainterState *createState( QPainterState *orig ) const override;
+
+    QOpenGL2PaintEngineState *state()
+    {
+        return static_cast<QOpenGL2PaintEngineState *>( QPaintEngineEx::state() );
+    }
+
+    const QOpenGL2PaintEngineState *state() const
+    {
+        return static_cast<const QOpenGL2PaintEngineState *>( QPaintEngineEx::state() );
     }
 
     void beginNativePainting() override;
@@ -130,14 +136,17 @@ class Q_GUI_EXPORT QOpenGL2PaintEngineEx : public QPaintEngineEx
 
     void invalidateState();
 
-    void setRenderTextActive(bool);
+    void setRenderTextActive( bool );
 
     bool isNativePaintingActive() const;
-    bool requiresPretransformedGlyphPositions(QFontEngine *, const QTransform &) const override { return false; }
-    bool shouldDrawCachedGlyphs(QFontEngine *, const QTransform &) const override;
+    bool requiresPretransformedGlyphPositions( QFontEngine *, const QTransform & ) const override
+    {
+        return false;
+    }
+    bool shouldDrawCachedGlyphs( QFontEngine *, const QTransform & ) const override;
 
- private:
-    Q_DECLARE_PRIVATE(QOpenGL2PaintEngineEx)
+private:
+    Q_DECLARE_PRIVATE( QOpenGL2PaintEngineEx )
     friend class QOpenGLEngineShaderManager;
 };
 
@@ -147,17 +156,18 @@ class Q_GUI_EXPORT QOpenGL2PaintEngineEx : public QPaintEngineEx
 
 class QOpenGL2PaintEngineExPrivate : public QPaintEngineExPrivate
 {
- public:
-    enum StencilFillMode {
+public:
+    enum StencilFillMode
+    {
         OddEvenFillMode,
         WindingFillMode,
         TriStripStrokeFillMode
     };
 
-    QOpenGL2PaintEngineExPrivate(QOpenGL2PaintEngineEx *q_ptr)
-      : q(q_ptr), shaderManager(nullptr), width(0), height(0), ctx(nullptr), useSystemClip(true), elementIndicesVBOId(0),
-        snapToPixelGrid(false), nativePaintingActive(false), inverseScale(1),
-        lastTextureUnitUsed(QT_UNKNOWN_TEXTURE_UNIT)
+    QOpenGL2PaintEngineExPrivate( QOpenGL2PaintEngineEx *q_ptr )
+        : q( q_ptr ), shaderManager( nullptr ), width( 0 ), height( 0 ), ctx( nullptr ), useSystemClip( true ), elementIndicesVBOId( 0 ),
+          snapToPixelGrid( false ), nativePaintingActive( false ), inverseScale( 1 ),
+          lastTextureUnitUsed( QT_UNKNOWN_TEXTURE_UNIT )
     {
     }
 
@@ -171,80 +181,89 @@ class QOpenGL2PaintEngineExPrivate : public QPaintEngineExPrivate
     enum TextureUpdateMode { UpdateIfNeeded, ForceUpdate };
 
     template <typename T>
-    void updateTexture(GLenum textureUnit, const T &texture, GLenum wrapMode, GLenum filterMode,
-          TextureUpdateMode updateMode = UpdateIfNeeded);
+    void updateTexture( GLenum textureUnit, const T &texture, GLenum wrapMode, GLenum filterMode,
+                        TextureUpdateMode updateMode = UpdateIfNeeded );
 
     template <typename T>
-    GLuint bindTexture(const T &texture);
+    GLuint bindTexture( const T &texture );
 
-    void activateTextureUnit(GLenum textureUnit);
+    void activateTextureUnit( GLenum textureUnit );
 
     void resetGLState();
 
     // fill, stroke, drawTexture, drawPixmaps & drawCachedGlyphs are the main rendering entry-points,
     // however writeClip can also be thought of as en entry point as it does similar things.
-    void fill(const QVectorPath &path);
-    void stroke(const QVectorPath &path, const QPen &pen);
+    void fill( const QVectorPath &path );
+    void stroke( const QVectorPath &path, const QPen &pen );
 
-    void drawTexture(const QOpenGLRect& dest, const QOpenGLRect& src, const QSize &textureSize, bool opaque, bool pattern = false);
-    void drawPixmapFragments(const QPainter::PixmapFragment *fragments, int fragmentCount, const QPixmap &pixmap,
-          QPainter::PixmapFragmentHints hints);
+    void drawTexture( const QOpenGLRect &dest, const QOpenGLRect &src, const QSize &textureSize, bool opaque, bool pattern = false );
+    void drawPixmapFragments( const QPainter::PixmapFragment *fragments, int fragmentCount, const QPixmap &pixmap,
+                              QPainter::PixmapFragmentHints hints );
 
-    void drawCachedGlyphs(QFontEngine::GlyphFormat glyphFormat, QStaticTextItem *staticTextItem);
+    void drawCachedGlyphs( QFontEngine::GlyphFormat glyphFormat, QStaticTextItem *staticTextItem );
 
     // Calls glVertexAttributePointer if the pointer has changed
-    inline void setVertexAttributePointer(unsigned int arrayIndex, const GLfloat *pointer);
+    inline void setVertexAttributePointer( unsigned int arrayIndex, const GLfloat *pointer );
 
     // draws whatever is in the vertex array:
-    void drawVertexArrays(const float *data, const int *stops, int stopCount, GLenum primitive);
-    void drawVertexArrays(QOpenGL2PEXVertexArray &vertexArray, GLenum primitive) {
-        drawVertexArrays((const float *) vertexArray.data(), vertexArray.stops(), vertexArray.stopCount(), primitive);
+    void drawVertexArrays( const float *data, const int *stops, int stopCount, GLenum primitive );
+    void drawVertexArrays( QOpenGL2PEXVertexArray &vertexArray, GLenum primitive )
+    {
+        drawVertexArrays( ( const float * ) vertexArray.data(), vertexArray.stops(), vertexArray.stopCount(), primitive );
     }
 
     // Composites the bounding rect onto dest buffer:
-    void composite(const QOpenGLRect& boundingRect);
+    void composite( const QOpenGLRect &boundingRect );
 
     // Calls drawVertexArrays to render into stencil buffer:
-    void fillStencilWithVertexArray(const float *data, int count, const int *stops, int stopCount, const QOpenGLRect &bounds,
-                  StencilFillMode mode);
+    void fillStencilWithVertexArray( const float *data, int count, const int *stops, int stopCount, const QOpenGLRect &bounds,
+                                     StencilFillMode mode );
 
-    void fillStencilWithVertexArray(QOpenGL2PEXVertexArray& vertexArray, bool useWindingFill) {
-        fillStencilWithVertexArray((const float *) vertexArray.data(), 0, vertexArray.stops(), vertexArray.stopCount(),
-                  vertexArray.boundingRect(), useWindingFill ? WindingFillMode : OddEvenFillMode);
+    void fillStencilWithVertexArray( QOpenGL2PEXVertexArray &vertexArray, bool useWindingFill )
+    {
+        fillStencilWithVertexArray( ( const float * ) vertexArray.data(), 0, vertexArray.stops(), vertexArray.stopCount(),
+                                    vertexArray.boundingRect(), useWindingFill ? WindingFillMode : OddEvenFillMode );
     }
 
-    void setBrush(const QBrush& brush);
-    void transferMode(EngineMode newMode);
-    bool prepareForDraw(bool srcPixelsAreOpaque); // returns true if the program has changed
-    bool prepareForCachedGlyphDraw(const QFontEngineGlyphCache &cache);
+    void setBrush( const QBrush &brush );
+    void transferMode( EngineMode newMode );
+    bool prepareForDraw( bool srcPixelsAreOpaque ); // returns true if the program has changed
+    bool prepareForCachedGlyphDraw( const QFontEngineGlyphCache &cache );
 
     inline void useSimpleShader();
 
-    GLuint location(const QOpenGLEngineShaderManager::Uniform uniform) {
-        return shaderManager->getUniformLocation(uniform);
+    GLuint location( const QOpenGLEngineShaderManager::Uniform uniform )
+    {
+        return shaderManager->getUniformLocation( uniform );
     }
 
-    void clearClip(uint value);
-    void writeClip(const QVectorPath &path, uint value);
+    void clearClip( uint value );
+    void writeClip( const QVectorPath &path, uint value );
     void resetClipIfNeeded();
 
     void updateClipScissorTest();
-    void setScissor(const QRect &rect);
+    void setScissor( const QRect &rect );
     void regenerateClip();
     void systemStateChanged() override;
 
-    void setVertexAttribArrayEnabled(int arrayIndex, bool enabled = true);
+    void setVertexAttribArrayEnabled( int arrayIndex, bool enabled = true );
     void syncGlState();
 
-    static QOpenGLEngineShaderManager* shaderManagerForEngine(QOpenGL2PaintEngineEx *engine) { return engine->d_func()->shaderManager; }
-    static QOpenGL2PaintEngineExPrivate *getData(QOpenGL2PaintEngineEx *engine) { return engine->d_func(); }
-    static void cleanupVectorPath(QPaintEngineEx *engine, void *data);
+    static QOpenGLEngineShaderManager *shaderManagerForEngine( QOpenGL2PaintEngineEx *engine )
+    {
+        return engine->d_func()->shaderManager;
+    }
+    static QOpenGL2PaintEngineExPrivate *getData( QOpenGL2PaintEngineEx *engine )
+    {
+        return engine->d_func();
+    }
+    static void cleanupVectorPath( QPaintEngineEx *engine, void *data );
 
     QOpenGLExtensions funcs;
 
-    QOpenGL2PaintEngineEx* q;
-    QOpenGLEngineShaderManager* shaderManager;
-    QOpenGLPaintDevice* device;
+    QOpenGL2PaintEngineEx *q;
+    QOpenGLEngineShaderManager *shaderManager;
+    QOpenGLPaintDevice *device;
     int width, height;
     QOpenGLContext *ctx;
     EngineMode mode;
@@ -298,23 +317,29 @@ class QOpenGL2PaintEngineExPrivate : public QPaintEngineExPrivate
 
     const GLfloat *vertexAttribPointers[3];
 
- private:
-   Q_DECLARE_PUBLIC(QOpenGL2PaintEngineEx)
+private:
+    Q_DECLARE_PUBLIC( QOpenGL2PaintEngineEx )
 };
 
-void QOpenGL2PaintEngineExPrivate::setVertexAttributePointer(unsigned int arrayIndex, const GLfloat *pointer)
+void QOpenGL2PaintEngineExPrivate::setVertexAttributePointer( unsigned int arrayIndex, const GLfloat *pointer )
 {
-    Q_ASSERT(arrayIndex < 3);
+    Q_ASSERT( arrayIndex < 3 );
 
-    if (pointer == vertexAttribPointers[arrayIndex])
+    if ( pointer == vertexAttribPointers[arrayIndex] )
+    {
         return;
+    }
 
     vertexAttribPointers[arrayIndex] = pointer;
 
-    if (arrayIndex == QT_OPACITY_ATTR)
-        funcs.glVertexAttribPointer(arrayIndex, 1, GL_FLOAT, GL_FALSE, 0, pointer);
+    if ( arrayIndex == QT_OPACITY_ATTR )
+    {
+        funcs.glVertexAttribPointer( arrayIndex, 1, GL_FLOAT, GL_FALSE, 0, pointer );
+    }
     else
-        funcs.glVertexAttribPointer(arrayIndex, 2, GL_FLOAT, GL_FALSE, 0, pointer);
+    {
+        funcs.glVertexAttribPointer( arrayIndex, 2, GL_FLOAT, GL_FALSE, 0, pointer );
+    }
 }
 
 #endif

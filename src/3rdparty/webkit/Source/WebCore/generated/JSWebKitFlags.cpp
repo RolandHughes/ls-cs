@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebKitFlags);
+ASSERT_CLASS_FITS_IN_CELL( JSWebKitFlags );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,10 +43,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebKitFlags);
 
 static const HashTableValue JSWebKitFlagsTableValues[4] =
 {
-    { "create", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitFlagsCreate), (intptr_t)setJSWebKitFlagsCreate THUNK_GENERATOR(0) },
-    { "exclusive", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitFlagsExclusive), (intptr_t)setJSWebKitFlagsExclusive THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebKitFlagsConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "create", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitFlagsCreate ), ( intptr_t )setJSWebKitFlagsCreate THUNK_GENERATOR( 0 ) },
+    { "exclusive", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitFlagsExclusive ), ( intptr_t )setJSWebKitFlagsExclusive THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebKitFlagsConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,53 +60,61 @@ static JSC_CONST_HASHTABLE HashTable JSWebKitFlagsTable = { 9, 7, JSWebKitFlagsT
 
 static const HashTableValue JSWebKitFlagsConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitFlagsConstructorTable = { 1, 0, JSWebKitFlagsConstructorTableValues, 0 };
-class JSWebKitFlagsConstructor : public DOMConstructorObject {
+class JSWebKitFlagsConstructor : public DOMConstructorObject
+{
 public:
-    JSWebKitFlagsConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebKitFlagsConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
-    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWebKitFlags(JSC::ExecState*);
-    virtual JSC::ConstructType getConstructData(JSC::ConstructData&);
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
+    static JSC::EncodedJSValue JSC_HOST_CALL constructJSWebKitFlags( JSC::ExecState * );
+    virtual JSC::ConstructType getConstructData( JSC::ConstructData & );
 };
 
 const ClassInfo JSWebKitFlagsConstructor::s_info = { "WebKitFlagsConstructor", &DOMConstructorObject::s_info, &JSWebKitFlagsConstructorTable, 0 };
 
-JSWebKitFlagsConstructor::JSWebKitFlagsConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebKitFlagsConstructor::JSWebKitFlagsConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebKitFlagsPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebKitFlagsPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebKitFlagsConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitFlagsConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebKitFlagsConstructor, JSDOMWrapper>(exec, &JSWebKitFlagsConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebKitFlagsConstructor, JSDOMWrapper>( exec, &JSWebKitFlagsConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSWebKitFlagsConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitFlagsConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebKitFlagsConstructor, JSDOMWrapper>(exec, &JSWebKitFlagsConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebKitFlagsConstructor, JSDOMWrapper>( exec, &JSWebKitFlagsConstructorTable, this, propertyName,
+            descriptor );
 }
 
-EncodedJSValue JSC_HOST_CALL JSWebKitFlagsConstructor::constructJSWebKitFlags(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSWebKitFlagsConstructor::constructJSWebKitFlags( ExecState *exec )
 {
-    return JSValue::encode(asObject(toJS(exec, static_cast<JSWebKitFlagsConstructor*>(exec->callee())->globalObject(), WebKitFlags::create())));
+    return JSValue::encode( asObject( toJS( exec, static_cast<JSWebKitFlagsConstructor *>( exec->callee() )->globalObject(),
+                                            WebKitFlags::create() ) ) );
 }
 
-ConstructType JSWebKitFlagsConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSWebKitFlagsConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSWebKitFlags;
     return ConstructTypeHost;
@@ -120,112 +129,113 @@ ConstructType JSWebKitFlagsConstructor::getConstructData(ConstructData& construc
 
 static const HashTableValue JSWebKitFlagsPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebKitFlagsPrototypeTable = { 1, 0, JSWebKitFlagsPrototypeTableValues, 0 };
-static const HashTable* getJSWebKitFlagsPrototypeTable(ExecState* exec)
+static const HashTable *getJSWebKitFlagsPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSWebKitFlagsPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSWebKitFlagsPrototypeTable );
 }
 
 const ClassInfo JSWebKitFlagsPrototype::s_info = { "WebKitFlagsPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSWebKitFlagsPrototypeTable };
 
-JSObject* JSWebKitFlagsPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitFlagsPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebKitFlags>(exec, globalObject);
+    return getDOMPrototype<JSWebKitFlags>( exec, globalObject );
 }
 
-static const HashTable* getJSWebKitFlagsTable(ExecState* exec)
+static const HashTable *getJSWebKitFlagsTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSWebKitFlagsTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSWebKitFlagsTable );
 }
 
 const ClassInfo JSWebKitFlags::s_info = { "WebKitFlags", &JSDOMWrapper::s_info, 0, getJSWebKitFlagsTable };
 
-JSWebKitFlags::JSWebKitFlags(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebKitFlags> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebKitFlags::JSWebKitFlags( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<WebKitFlags> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebKitFlags::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebKitFlags::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebKitFlagsPrototype(exec->globalData(), globalObject, JSWebKitFlagsPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebKitFlagsPrototype( exec->globalData(), globalObject,
+            JSWebKitFlagsPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebKitFlags::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebKitFlags::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebKitFlags, Base>(exec, getJSWebKitFlagsTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSWebKitFlags, Base>( exec, getJSWebKitFlagsTable( exec ), this, propertyName, slot );
 }
 
-bool JSWebKitFlags::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebKitFlags::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebKitFlags, Base>(exec, getJSWebKitFlagsTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebKitFlags, Base>( exec, getJSWebKitFlagsTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsWebKitFlagsCreate(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitFlagsCreate( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitFlags* castedThis = static_cast<JSWebKitFlags*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitFlags* imp = static_cast<WebKitFlags*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->isCreate());
+    JSWebKitFlags *castedThis = static_cast<JSWebKitFlags *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitFlags *imp = static_cast<WebKitFlags *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->isCreate() );
     return result;
 }
 
 
-JSValue jsWebKitFlagsExclusive(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitFlagsExclusive( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitFlags* castedThis = static_cast<JSWebKitFlags*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    WebKitFlags* imp = static_cast<WebKitFlags*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->isExclusive());
+    JSWebKitFlags *castedThis = static_cast<JSWebKitFlags *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    WebKitFlags *imp = static_cast<WebKitFlags *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->isExclusive() );
     return result;
 }
 
 
-JSValue jsWebKitFlagsConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebKitFlagsConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebKitFlags* domObject = static_cast<JSWebKitFlags*>(asObject(slotBase));
-    return JSWebKitFlags::getConstructor(exec, domObject->globalObject());
+    JSWebKitFlags *domObject = static_cast<JSWebKitFlags *>( asObject( slotBase ) );
+    return JSWebKitFlags::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSWebKitFlags::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSWebKitFlags::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSWebKitFlags, Base>(exec, propertyName, value, getJSWebKitFlagsTable(exec), this, slot);
+    lookupPut<JSWebKitFlags, Base>( exec, propertyName, value, getJSWebKitFlagsTable( exec ), this, slot );
 }
 
-void setJSWebKitFlagsCreate(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSWebKitFlagsCreate( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSWebKitFlags* castedThis = static_cast<JSWebKitFlags*>(thisObject);
-    WebKitFlags* imp = static_cast<WebKitFlags*>(castedThis->impl());
-    imp->setCreate(value.toBoolean(exec));
-}
-
-
-void setJSWebKitFlagsExclusive(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSWebKitFlags* castedThis = static_cast<JSWebKitFlags*>(thisObject);
-    WebKitFlags* imp = static_cast<WebKitFlags*>(castedThis->impl());
-    imp->setExclusive(value.toBoolean(exec));
+    JSWebKitFlags *castedThis = static_cast<JSWebKitFlags *>( thisObject );
+    WebKitFlags *imp = static_cast<WebKitFlags *>( castedThis->impl() );
+    imp->setCreate( value.toBoolean( exec ) );
 }
 
 
-JSValue JSWebKitFlags::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSWebKitFlagsExclusive( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSWebKitFlagsConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSWebKitFlags *castedThis = static_cast<JSWebKitFlags *>( thisObject );
+    WebKitFlags *imp = static_cast<WebKitFlags *>( castedThis->impl() );
+    imp->setExclusive( value.toBoolean( exec ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebKitFlags* impl)
+
+JSValue JSWebKitFlags::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return wrap<JSWebKitFlags>(exec, globalObject, impl);
+    return getDOMConstructor<JSWebKitFlagsConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-WebKitFlags* toWebKitFlags(JSC::JSValue value)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebKitFlags *impl )
 {
-    return value.inherits(&JSWebKitFlags::s_info) ? static_cast<JSWebKitFlags*>(asObject(value))->impl() : 0;
+    return wrap<JSWebKitFlags>( exec, globalObject, impl );
+}
+
+WebKitFlags *toWebKitFlags( JSC::JSValue value )
+{
+    return value.inherits( &JSWebKitFlags::s_info ) ? static_cast<JSWebKitFlags *>( asObject( value ) )->impl() : 0;
 }
 
 }

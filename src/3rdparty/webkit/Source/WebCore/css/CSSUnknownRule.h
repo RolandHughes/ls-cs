@@ -24,11 +24,16 @@
 
 #include "CSSRule.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSUnknownRule : public CSSRule {
+class CSSUnknownRule : public CSSRule
+{
 private:
-    virtual unsigned short type() const { return UNKNOWN_RULE; }
+    virtual unsigned short type() const
+    {
+        return UNKNOWN_RULE;
+    }
 };
 
 } // namespace WebCore

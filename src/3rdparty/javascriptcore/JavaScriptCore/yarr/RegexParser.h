@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RegexParser_h
@@ -35,9 +35,13 @@
 #include <wtf/unicode/Unicode.h>
 #include <limits.h>
 
-namespace JSC { namespace Yarr {
+namespace JSC
+{
+namespace Yarr
+{
 
-enum BuiltInCharacterClassID {
+enum BuiltInCharacterClassID
+{
     DigitClassID,
     SpaceClassID,
     WordClassID,
@@ -46,12 +50,14 @@ enum BuiltInCharacterClassID {
 
 // The Parser class should not be used directly - only via the Yarr::parse() method.
 template<class Delegate>
-class Parser {
+class Parser
+{
 private:
     template<class FriendDelegate>
-    friend const char* parse(FriendDelegate& delegate, const UString& pattern, unsigned backReferenceLimit);
+    friend const char *parse( FriendDelegate &delegate, const UString &pattern, unsigned backReferenceLimit );
 
-    enum ErrorCode {
+    enum ErrorCode
+    {
         NoError,
         PatternTooLarge,
         QuantifierOutOfOrder,
@@ -74,12 +80,13 @@ private:
      * parseEscape() as an EscapeDelegate.  This allows parseEscape() to be reused
      * to perform the parsing of escape characters in character sets.
      */
-    class CharacterClassParserDelegate {
+    class CharacterClassParserDelegate
+    {
     public:
-        CharacterClassParserDelegate(Delegate& delegate, ErrorCode& err)
-            : m_delegate(delegate)
-            , m_err(err)
-            , m_state(empty)
+        CharacterClassParserDelegate( Delegate &delegate, ErrorCode &err )
+            : m_delegate( delegate )
+            , m_err( err )
+            , m_state( empty )
         {
         }
 
@@ -88,9 +95,9 @@ private:
          *
          * Called at beginning of construction.
          */
-        void begin(bool invert)
+        void begin( bool invert )
         {
-            m_delegate.atomCharacterClassBegin(invert);
+            m_delegate.atomCharacterClassBegin( invert );
         }
 
         /*
@@ -102,29 +109,39 @@ private:
          * method may be indicating a character range, but a hyphen parsed by
          * parseEscape() cannot be interpreted as doing so.
          */
-        void atomPatternCharacterUnescaped(UChar ch)
+        void atomPatternCharacterUnescaped( UChar ch )
         {
-            switch (m_state) {
-            case empty:
-                m_character = ch;
-                m_state = cachedCharacter;
-                break;
-
-            case cachedCharacter:
-                if (ch == '-')
-                    m_state = cachedCharacterHyphen;
-                else {
-                    m_delegate.atomCharacterClassAtom(m_character);
+            switch ( m_state )
+            {
+                case empty:
                     m_character = ch;
-                }
-                break;
+                    m_state = cachedCharacter;
+                    break;
 
-            case cachedCharacterHyphen:
-                if (ch >= m_character)
-                    m_delegate.atomCharacterClassRange(m_character, ch);
-                else
-                    m_err = CharacterClassOutOfOrder;
-                m_state = empty;
+                case cachedCharacter:
+                    if ( ch == '-' )
+                    {
+                        m_state = cachedCharacterHyphen;
+                    }
+                    else
+                    {
+                        m_delegate.atomCharacterClassAtom( m_character );
+                        m_character = ch;
+                    }
+
+                    break;
+
+                case cachedCharacterHyphen:
+                    if ( ch >= m_character )
+                    {
+                        m_delegate.atomCharacterClassRange( m_character, ch );
+                    }
+                    else
+                    {
+                        m_err = CharacterClassOutOfOrder;
+                    }
+
+                    m_state = empty;
             }
         }
 
@@ -134,14 +151,16 @@ private:
          * Adds a pattern character, called by parseEscape(), as such will not
          * interpret a hyphen as indicating a character range.
          */
-        void atomPatternCharacter(UChar ch)
+        void atomPatternCharacter( UChar ch )
         {
             // Flush if a character is already pending to prevent the
             // hyphen from begin interpreted as indicating a range.
-            if((ch == '-') && (m_state == cachedCharacter))
+            if ( ( ch == '-' ) && ( m_state == cachedCharacter ) )
+            {
                 flush();
+            }
 
-            atomPatternCharacterUnescaped(ch);
+            atomPatternCharacterUnescaped( ch );
         }
 
         /*
@@ -149,10 +168,10 @@ private:
          *
          * Adds a built-in character class, called by parseEscape().
          */
-        void atomBuiltInCharacterClass(BuiltInCharacterClassID classID, bool invert)
+        void atomBuiltInCharacterClass( BuiltInCharacterClassID classID, bool invert )
         {
             flush();
-            m_delegate.atomCharacterClassBuiltIn(classID, invert);
+            m_delegate.atomCharacterClassBuiltIn( classID, invert );
         }
 
         /*
@@ -168,22 +187,35 @@ private:
 
         // parseEscape() should never call these delegate methods when
         // invoked with inCharacterClass set.
-        void assertionWordBoundary(bool) { ASSERT_NOT_REACHED(); }
-        void atomBackReference(unsigned) { ASSERT_NOT_REACHED(); }
+        void assertionWordBoundary( bool )
+        {
+            ASSERT_NOT_REACHED();
+        }
+        void atomBackReference( unsigned )
+        {
+            ASSERT_NOT_REACHED();
+        }
 
     private:
         void flush()
         {
-            if (m_state != empty) // either cachedCharacter or cachedCharacterHyphen
-                m_delegate.atomCharacterClassAtom(m_character);
-            if (m_state == cachedCharacterHyphen)
-                m_delegate.atomCharacterClassAtom('-');
+            if ( m_state != empty ) // either cachedCharacter or cachedCharacterHyphen
+            {
+                m_delegate.atomCharacterClassAtom( m_character );
+            }
+
+            if ( m_state == cachedCharacterHyphen )
+            {
+                m_delegate.atomCharacterClassAtom( '-' );
+            }
+
             m_state = empty;
         }
-    
-        Delegate& m_delegate;
-        ErrorCode& m_err;
-        enum CharacterClassConstructionState {
+
+        Delegate &m_delegate;
+        ErrorCode &m_err;
+        enum CharacterClassConstructionState
+        {
             empty,
             cachedCharacter,
             cachedCharacterHyphen,
@@ -191,17 +223,17 @@ private:
         UChar m_character;
     };
 
-    Parser(Delegate& delegate, const UString& pattern, unsigned backReferenceLimit)
-        : m_delegate(delegate)
-        , m_backReferenceLimit(backReferenceLimit)
-        , m_err(NoError)
-        , m_data(pattern.data())
-        , m_size(pattern.size())
-        , m_index(0)
-        , m_parenthesesNestingDepth(0)
+    Parser( Delegate &delegate, const UString &pattern, unsigned backReferenceLimit )
+        : m_delegate( delegate )
+        , m_backReferenceLimit( backReferenceLimit )
+        , m_err( NoError )
+        , m_data( pattern.data() )
+        , m_size( pattern.size() )
+        , m_index( 0 )
+        , m_parenthesesNestingDepth( 0 )
     {
     }
-    
+
     /*
      * parseEscape():
      *
@@ -223,169 +255,215 @@ private:
      * interpreted as assertions).
      */
     template<bool inCharacterClass, class EscapeDelegate>
-    bool parseEscape(EscapeDelegate& delegate)
+    bool parseEscape( EscapeDelegate &delegate )
     {
-        ASSERT(!m_err);
-        ASSERT(peek() == '\\');
+        ASSERT( !m_err );
+        ASSERT( peek() == '\\' );
         consume();
 
-        if (atEndOfPattern()) {
+        if ( atEndOfPattern() )
+        {
             m_err = EscapeUnterminated;
             return false;
         }
 
-        switch (peek()) {
-        // Assertions
-        case 'b':
-            consume();
-            if (inCharacterClass)
-                delegate.atomPatternCharacter('\b');
-            else {
-                delegate.assertionWordBoundary(false);
-                return false;
-            }
-            break;
-        case 'B':
-            consume();
-            if (inCharacterClass)
-                delegate.atomPatternCharacter('B');
-            else {
-                delegate.assertionWordBoundary(true);
-                return false;
-            }
-            break;
+        switch ( peek() )
+        {
+            // Assertions
+            case 'b':
+                consume();
 
-        // CharacterClassEscape
-        case 'd':
-            consume();
-            delegate.atomBuiltInCharacterClass(DigitClassID, false);
-            break;
-        case 's':
-            consume();
-            delegate.atomBuiltInCharacterClass(SpaceClassID, false);
-            break;
-        case 'w':
-            consume();
-            delegate.atomBuiltInCharacterClass(WordClassID, false);
-            break;
-        case 'D':
-            consume();
-            delegate.atomBuiltInCharacterClass(DigitClassID, true);
-            break;
-        case 'S':
-            consume();
-            delegate.atomBuiltInCharacterClass(SpaceClassID, true);
-            break;
-        case 'W':
-            consume();
-            delegate.atomBuiltInCharacterClass(WordClassID, true);
-            break;
+                if ( inCharacterClass )
+                {
+                    delegate.atomPatternCharacter( '\b' );
+                }
+                else
+                {
+                    delegate.assertionWordBoundary( false );
+                    return false;
+                }
 
-        // DecimalEscape
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9': {
-            // To match Firefox, we parse an invalid backreference in the range [1-7] as an octal escape.
-            // First, try to parse this as backreference.
-            if (!inCharacterClass) {
-                ParseState state = saveState();
+                break;
 
-                unsigned backReference = consumeNumber();
-                if (backReference <= m_backReferenceLimit) {
-                    delegate.atomBackReference(backReference);
+            case 'B':
+                consume();
+
+                if ( inCharacterClass )
+                {
+                    delegate.atomPatternCharacter( 'B' );
+                }
+                else
+                {
+                    delegate.assertionWordBoundary( true );
+                    return false;
+                }
+
+                break;
+
+            // CharacterClassEscape
+            case 'd':
+                consume();
+                delegate.atomBuiltInCharacterClass( DigitClassID, false );
+                break;
+
+            case 's':
+                consume();
+                delegate.atomBuiltInCharacterClass( SpaceClassID, false );
+                break;
+
+            case 'w':
+                consume();
+                delegate.atomBuiltInCharacterClass( WordClassID, false );
+                break;
+
+            case 'D':
+                consume();
+                delegate.atomBuiltInCharacterClass( DigitClassID, true );
+                break;
+
+            case 'S':
+                consume();
+                delegate.atomBuiltInCharacterClass( SpaceClassID, true );
+                break;
+
+            case 'W':
+                consume();
+                delegate.atomBuiltInCharacterClass( WordClassID, true );
+                break;
+
+            // DecimalEscape
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            {
+                // To match Firefox, we parse an invalid backreference in the range [1-7] as an octal escape.
+                // First, try to parse this as backreference.
+                if ( !inCharacterClass )
+                {
+                    ParseState state = saveState();
+
+                    unsigned backReference = consumeNumber();
+
+                    if ( backReference <= m_backReferenceLimit )
+                    {
+                        delegate.atomBackReference( backReference );
+                        break;
+                    }
+
+                    restoreState( state );
+                }
+
+                // Not a backreference, and not octal.
+                if ( peek() >= '8' )
+                {
+                    delegate.atomPatternCharacter( '\\' );
                     break;
                 }
 
-                restoreState(state);
+                // Fall-through to handle this as an octal escape.
             }
-            
-            // Not a backreference, and not octal.
-            if (peek() >= '8') {
-                delegate.atomPatternCharacter('\\');
+
+            // Octal escape
+            case '0':
+                delegate.atomPatternCharacter( consumeOctal() );
+                break;
+
+            // ControlEscape
+            case 'f':
+                consume();
+                delegate.atomPatternCharacter( '\f' );
+                break;
+
+            case 'n':
+                consume();
+                delegate.atomPatternCharacter( '\n' );
+                break;
+
+            case 'r':
+                consume();
+                delegate.atomPatternCharacter( '\r' );
+                break;
+
+            case 't':
+                consume();
+                delegate.atomPatternCharacter( '\t' );
+                break;
+
+            case 'v':
+                consume();
+                delegate.atomPatternCharacter( '\v' );
+                break;
+
+            // ControlLetter
+            case 'c':
+            {
+                ParseState state = saveState();
+                consume();
+
+                if ( !atEndOfPattern() )
+                {
+                    int control = consume();
+
+                    // To match Firefox, inside a character class, we also accept numbers and '_' as control characters.
+                    if ( inCharacterClass ? WTF::isASCIIAlphanumeric( control ) || ( control == '_' ) : WTF::isASCIIAlpha( control ) )
+                    {
+                        delegate.atomPatternCharacter( control & 0x1f );
+                        break;
+                    }
+                }
+
+                restoreState( state );
+                delegate.atomPatternCharacter( '\\' );
                 break;
             }
 
-            // Fall-through to handle this as an octal escape.
-        }
+            // HexEscape
+            case 'x':
+            {
+                consume();
+                int x = tryConsumeHex( 2 );
 
-        // Octal escape
-        case '0':
-            delegate.atomPatternCharacter(consumeOctal());
-            break;
-
-        // ControlEscape
-        case 'f':
-            consume();
-            delegate.atomPatternCharacter('\f');
-            break;
-        case 'n':
-            consume();
-            delegate.atomPatternCharacter('\n');
-            break;
-        case 'r':
-            consume();
-            delegate.atomPatternCharacter('\r');
-            break;
-        case 't':
-            consume();
-            delegate.atomPatternCharacter('\t');
-            break;
-        case 'v':
-            consume();
-            delegate.atomPatternCharacter('\v');
-            break;
-
-        // ControlLetter
-        case 'c': {
-            ParseState state = saveState();
-            consume();
-            if (!atEndOfPattern()) {
-                int control = consume();
-
-                // To match Firefox, inside a character class, we also accept numbers and '_' as control characters.
-                if (inCharacterClass ? WTF::isASCIIAlphanumeric(control) || (control == '_') : WTF::isASCIIAlpha(control)) {
-                    delegate.atomPatternCharacter(control & 0x1f);
-                    break;
+                if ( x == -1 )
+                {
+                    delegate.atomPatternCharacter( 'x' );
                 }
+                else
+                {
+                    delegate.atomPatternCharacter( x );
+                }
+
+                break;
             }
-            restoreState(state);
-            delegate.atomPatternCharacter('\\');
-            break;
+
+            // UnicodeEscape
+            case 'u':
+            {
+                consume();
+                int u = tryConsumeHex( 4 );
+
+                if ( u == -1 )
+                {
+                    delegate.atomPatternCharacter( 'u' );
+                }
+                else
+                {
+                    delegate.atomPatternCharacter( u );
+                }
+
+                break;
+            }
+
+            // IdentityEscape
+            default:
+                delegate.atomPatternCharacter( consume() );
         }
 
-        // HexEscape
-        case 'x': {
-            consume();
-            int x = tryConsumeHex(2);
-            if (x == -1)
-                delegate.atomPatternCharacter('x');
-            else
-                delegate.atomPatternCharacter(x);
-            break;
-        }
-
-        // UnicodeEscape
-        case 'u': {
-            consume();
-            int u = tryConsumeHex(4);
-            if (u == -1)
-                delegate.atomPatternCharacter('u');
-            else
-                delegate.atomPatternCharacter(u);
-            break;
-        }
-
-        // IdentityEscape
-        default:
-            delegate.atomPatternCharacter(consume());
-        }
-        
         return true;
     }
 
@@ -396,11 +474,11 @@ private:
      */
     bool parseAtomEscape()
     {
-        return parseEscape<false>(m_delegate);
+        return parseEscape<false>( m_delegate );
     }
-    void parseCharacterClassEscape(CharacterClassParserDelegate& delegate)
+    void parseCharacterClassEscape( CharacterClassParserDelegate &delegate )
     {
-        parseEscape<true>(delegate);
+        parseEscape<true>( delegate );
     }
 
     /*
@@ -412,31 +490,35 @@ private:
      */
     void parseCharacterClass()
     {
-        ASSERT(!m_err);
-        ASSERT(peek() == '[');
+        ASSERT( !m_err );
+        ASSERT( peek() == '[' );
         consume();
 
-        CharacterClassParserDelegate characterClassConstructor(m_delegate, m_err);
+        CharacterClassParserDelegate characterClassConstructor( m_delegate, m_err );
 
-        characterClassConstructor.begin(tryConsume('^'));
+        characterClassConstructor.begin( tryConsume( '^' ) );
 
-        while (!atEndOfPattern()) {
-            switch (peek()) {
-            case ']':
-                consume();
-                characterClassConstructor.end();
-                return;
+        while ( !atEndOfPattern() )
+        {
+            switch ( peek() )
+            {
+                case ']':
+                    consume();
+                    characterClassConstructor.end();
+                    return;
 
-            case '\\':
-                parseCharacterClassEscape(characterClassConstructor);
-                break;
+                case '\\':
+                    parseCharacterClassEscape( characterClassConstructor );
+                    break;
 
-            default:
-                characterClassConstructor.atomPatternCharacterUnescaped(consume());
+                default:
+                    characterClassConstructor.atomPatternCharacterUnescaped( consume() );
             }
 
-            if (m_err)
+            if ( m_err )
+            {
                 return;
+            }
         }
 
         m_err = CharacterClassUnmatched;
@@ -449,34 +531,40 @@ private:
      */
     void parseParenthesesBegin()
     {
-        ASSERT(!m_err);
-        ASSERT(peek() == '(');
+        ASSERT( !m_err );
+        ASSERT( peek() == '(' );
         consume();
 
-        if (tryConsume('?')) {
-            if (atEndOfPattern()) {
+        if ( tryConsume( '?' ) )
+        {
+            if ( atEndOfPattern() )
+            {
                 m_err = ParenthesesTypeInvalid;
                 return;
             }
 
-            switch (consume()) {
-            case ':':
-                m_delegate.atomParenthesesSubpatternBegin(false);
-                break;
-            
-            case '=':
-                m_delegate.atomParentheticalAssertionBegin();
-                break;
+            switch ( consume() )
+            {
+                case ':':
+                    m_delegate.atomParenthesesSubpatternBegin( false );
+                    break;
 
-            case '!':
-                m_delegate.atomParentheticalAssertionBegin(true);
-                break;
-            
-            default:
-                m_err = ParenthesesTypeInvalid;
+                case '=':
+                    m_delegate.atomParentheticalAssertionBegin();
+                    break;
+
+                case '!':
+                    m_delegate.atomParentheticalAssertionBegin( true );
+                    break;
+
+                default:
+                    m_err = ParenthesesTypeInvalid;
             }
-        } else
+        }
+        else
+        {
             m_delegate.atomParenthesesSubpatternBegin();
+        }
 
         ++m_parenthesesNestingDepth;
     }
@@ -488,14 +576,18 @@ private:
      */
     void parseParenthesesEnd()
     {
-        ASSERT(!m_err);
-        ASSERT(peek() == ')');
+        ASSERT( !m_err );
+        ASSERT( peek() == ')' );
         consume();
 
-        if (m_parenthesesNestingDepth > 0)
+        if ( m_parenthesesNestingDepth > 0 )
+        {
             m_delegate.atomParenthesesEnd();
+        }
         else
+        {
             m_err = ParenthesesUnmatched;
+        }
 
         --m_parenthesesNestingDepth;
     }
@@ -505,15 +597,19 @@ private:
      *
      * Helper for parseTokens(); checks for parse errors and non-greedy quantifiers.
      */
-    void parseQuantifier(bool lastTokenWasAnAtom, unsigned min, unsigned max)
+    void parseQuantifier( bool lastTokenWasAnAtom, unsigned min, unsigned max )
     {
-        ASSERT(!m_err);
-        ASSERT(min <= max);
+        ASSERT( !m_err );
+        ASSERT( min <= max );
 
-        if (lastTokenWasAnAtom)
-            m_delegate.quantifyAtom(min, max, !tryConsume('?'));
+        if ( lastTokenWasAnAtom )
+        {
+            m_delegate.quantifyAtom( min, max, !tryConsume( '?' ) );
+        }
         else
+        {
             m_err = QuantifierWithoutAtom;
+        }
     }
 
     /*
@@ -529,104 +625,121 @@ private:
     {
         bool lastTokenWasAnAtom = false;
 
-        while (!atEndOfPattern()) {
-            switch (peek()) {
-            case '|':
-                consume();
-                m_delegate.disjunction();
-                lastTokenWasAnAtom = false;
-                break;
+        while ( !atEndOfPattern() )
+        {
+            switch ( peek() )
+            {
+                case '|':
+                    consume();
+                    m_delegate.disjunction();
+                    lastTokenWasAnAtom = false;
+                    break;
 
-            case '(':
-                parseParenthesesBegin();
-                lastTokenWasAnAtom = false;
-                break;
+                case '(':
+                    parseParenthesesBegin();
+                    lastTokenWasAnAtom = false;
+                    break;
 
-            case ')':
-                parseParenthesesEnd();
-                lastTokenWasAnAtom = true;
-                break;
+                case ')':
+                    parseParenthesesEnd();
+                    lastTokenWasAnAtom = true;
+                    break;
 
-            case '^':
-                consume();
-                m_delegate.assertionBOL();
-                lastTokenWasAnAtom = false;
-                break;
+                case '^':
+                    consume();
+                    m_delegate.assertionBOL();
+                    lastTokenWasAnAtom = false;
+                    break;
 
-            case '$':
-                consume();
-                m_delegate.assertionEOL();
-                lastTokenWasAnAtom = false;
-                break;
+                case '$':
+                    consume();
+                    m_delegate.assertionEOL();
+                    lastTokenWasAnAtom = false;
+                    break;
 
-            case '.':
-                consume();
-                m_delegate.atomBuiltInCharacterClass(NewlineClassID, true);
-                lastTokenWasAnAtom = true;
-                break;
+                case '.':
+                    consume();
+                    m_delegate.atomBuiltInCharacterClass( NewlineClassID, true );
+                    lastTokenWasAnAtom = true;
+                    break;
 
-            case '[':
-                parseCharacterClass();
-                lastTokenWasAnAtom = true;
-                break;
+                case '[':
+                    parseCharacterClass();
+                    lastTokenWasAnAtom = true;
+                    break;
 
-            case '\\':
-                lastTokenWasAnAtom = parseAtomEscape();
-                break;
+                case '\\':
+                    lastTokenWasAnAtom = parseAtomEscape();
+                    break;
 
-            case '*':
-                consume();
-                parseQuantifier(lastTokenWasAnAtom, 0, UINT_MAX);
-                lastTokenWasAnAtom = false;
-                break;
+                case '*':
+                    consume();
+                    parseQuantifier( lastTokenWasAnAtom, 0, UINT_MAX );
+                    lastTokenWasAnAtom = false;
+                    break;
 
-            case '+':
-                consume();
-                parseQuantifier(lastTokenWasAnAtom, 1, UINT_MAX);
-                lastTokenWasAnAtom = false;
-                break;
+                case '+':
+                    consume();
+                    parseQuantifier( lastTokenWasAnAtom, 1, UINT_MAX );
+                    lastTokenWasAnAtom = false;
+                    break;
 
-            case '?':
-                consume();
-                parseQuantifier(lastTokenWasAnAtom, 0, 1);
-                lastTokenWasAnAtom = false;
-                break;
+                case '?':
+                    consume();
+                    parseQuantifier( lastTokenWasAnAtom, 0, 1 );
+                    lastTokenWasAnAtom = false;
+                    break;
 
-            case '{': {
-                ParseState state = saveState();
+                case '{':
+                {
+                    ParseState state = saveState();
 
-                consume();
-                if (peekIsDigit()) {
-                    unsigned min = consumeNumber();
-                    unsigned max = min;
-                    
-                    if (tryConsume(','))
-                        max = peekIsDigit() ? consumeNumber() : UINT_MAX;
+                    consume();
 
-                    if (tryConsume('}')) {
-                        if (min <= max)
-                            parseQuantifier(lastTokenWasAnAtom, min, max);
-                        else
-                            m_err = QuantifierOutOfOrder;
-                        lastTokenWasAnAtom = false;
-                        break;
+                    if ( peekIsDigit() )
+                    {
+                        unsigned min = consumeNumber();
+                        unsigned max = min;
+
+                        if ( tryConsume( ',' ) )
+                        {
+                            max = peekIsDigit() ? consumeNumber() : UINT_MAX;
+                        }
+
+                        if ( tryConsume( '}' ) )
+                        {
+                            if ( min <= max )
+                            {
+                                parseQuantifier( lastTokenWasAnAtom, min, max );
+                            }
+                            else
+                            {
+                                m_err = QuantifierOutOfOrder;
+                            }
+
+                            lastTokenWasAnAtom = false;
+                            break;
+                        }
                     }
-                }
 
-                restoreState(state);
-            } // if we did not find a complete quantifer, fall through to the default case.
+                    restoreState( state );
+                } // if we did not find a complete quantifer, fall through to the default case.
 
-            default:
-                m_delegate.atomPatternCharacter(consume());
-                lastTokenWasAnAtom = true;
+                default:
+                    m_delegate.atomPatternCharacter( consume() );
+                    lastTokenWasAnAtom = true;
             }
 
-            if (m_err)
+            if ( m_err )
+            {
                 return;
+            }
         }
 
-        if (m_parenthesesNestingDepth > 0)
+        if ( m_parenthesesNestingDepth > 0 )
+        {
             m_err = MissingParentheses;
+        }
     }
 
     /*
@@ -636,23 +749,33 @@ private:
      * patterns, calls regexEnd() or regexError() as appropriate, and converts any
      * error code to a const char* for a result.
      */
-    const char* parse()
+    const char *parse()
     {
         m_delegate.regexBegin();
 
-        if (m_size > MAX_PATTERN_SIZE)
+        if ( m_size > MAX_PATTERN_SIZE )
+        {
             m_err = PatternTooLarge;
+        }
         else
+        {
             parseTokens();
-        ASSERT(atEndOfPattern() || m_err);
+        }
 
-        if (m_err)
+        ASSERT( atEndOfPattern() || m_err );
+
+        if ( m_err )
+        {
             m_delegate.regexError();
+        }
         else
+        {
             m_delegate.regexEnd();
+        }
 
         // The order of this array must match the ErrorCode enum.
-        static const char* errorMessages[NumberOfErrorCodes] = {
+        static const char *errorMessages[NumberOfErrorCodes] =
+        {
             0, // NoError
             "regular expression too large",
             "numbers out of order in {} quantifier",
@@ -672,100 +795,115 @@ private:
     // Misc helper functions:
 
     typedef unsigned ParseState;
-    
+
     ParseState saveState()
     {
         return m_index;
     }
 
-    void restoreState(ParseState state)
+    void restoreState( ParseState state )
     {
         m_index = state;
     }
 
     bool atEndOfPattern()
     {
-        ASSERT(m_index <= m_size);
+        ASSERT( m_index <= m_size );
         return m_index == m_size;
     }
 
     int peek()
     {
-        ASSERT(m_index < m_size);
+        ASSERT( m_index < m_size );
         return m_data[m_index];
     }
 
     bool peekIsDigit()
     {
-        return !atEndOfPattern() && WTF::isASCIIDigit(peek());
+        return !atEndOfPattern() && WTF::isASCIIDigit( peek() );
     }
 
     unsigned peekDigit()
     {
-        ASSERT(peekIsDigit());
+        ASSERT( peekIsDigit() );
         return peek() - '0';
     }
 
     int consume()
     {
-        ASSERT(m_index < m_size);
+        ASSERT( m_index < m_size );
         return m_data[m_index++];
     }
 
     unsigned consumeDigit()
     {
-        ASSERT(peekIsDigit());
+        ASSERT( peekIsDigit() );
         return consume() - '0';
     }
 
     unsigned consumeNumber()
     {
         unsigned n = consumeDigit();
+
         // check for overflow.
-        for (unsigned newValue; peekIsDigit() && ((newValue = n * 10 + peekDigit()) >= n); ) {
+        for ( unsigned newValue; peekIsDigit() && ( ( newValue = n * 10 + peekDigit() ) >= n ); )
+        {
             n = newValue;
             consume();
         }
+
         return n;
     }
 
     unsigned consumeOctal()
     {
-        ASSERT(WTF::isASCIIOctalDigit(peek()));
+        ASSERT( WTF::isASCIIOctalDigit( peek() ) );
 
         unsigned n = consumeDigit();
-        while (n < 32 && !atEndOfPattern() && WTF::isASCIIOctalDigit(peek()))
+
+        while ( n < 32 && !atEndOfPattern() && WTF::isASCIIOctalDigit( peek() ) )
+        {
             n = n * 8 + consumeDigit();
+        }
+
         return n;
     }
 
-    bool tryConsume(UChar ch)
+    bool tryConsume( UChar ch )
     {
-        if (atEndOfPattern() || (m_data[m_index] != ch))
+        if ( atEndOfPattern() || ( m_data[m_index] != ch ) )
+        {
             return false;
+        }
+
         ++m_index;
         return true;
     }
 
-    int tryConsumeHex(int count)
+    int tryConsumeHex( int count )
     {
         ParseState state = saveState();
 
         int n = 0;
-        while (count--) {
-            if (atEndOfPattern() || !WTF::isASCIIHexDigit(peek())) {
-                restoreState(state);
+
+        while ( count-- )
+        {
+            if ( atEndOfPattern() || !WTF::isASCIIHexDigit( peek() ) )
+            {
+                restoreState( state );
                 return -1;
             }
-            n = (n << 4) | WTF::toASCIIHexValue(consume());
+
+            n = ( n << 4 ) | WTF::toASCIIHexValue( consume() );
         }
+
         return n;
     }
 
-    Delegate& m_delegate;
+    Delegate &m_delegate;
     unsigned m_backReferenceLimit;
     ErrorCode m_err;
-    const UChar* m_data;
+    const UChar *m_data;
     unsigned m_size;
     unsigned m_index;
     unsigned m_parenthesesNestingDepth;
@@ -842,12 +980,13 @@ private:
  */
 
 template<class Delegate>
-const char* parse(Delegate& delegate, const UString& pattern, unsigned backReferenceLimit = UINT_MAX)
+const char *parse( Delegate &delegate, const UString &pattern, unsigned backReferenceLimit = UINT_MAX )
 {
-    return Parser<Delegate>(delegate, pattern, backReferenceLimit).parse();
+    return Parser<Delegate>( delegate, pattern, backReferenceLimit ).parse();
 }
 
-} } // namespace JSC::Yarr
+}
+} // namespace JSC::Yarr
 
 #endif
 

@@ -22,7 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #include "config.h"
 #include "AuthenticationDecisionListener.h"
 
@@ -33,28 +33,33 @@
 #include "WebPageProxy.h"
 #include "WebProcessProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-AuthenticationDecisionListener::AuthenticationDecisionListener(AuthenticationChallengeProxy* authenticationChallenge)
-    : m_challengeProxy(authenticationChallenge)
+AuthenticationDecisionListener::AuthenticationDecisionListener( AuthenticationChallengeProxy *authenticationChallenge )
+    : m_challengeProxy( authenticationChallenge )
 {
 }
 
-void AuthenticationDecisionListener::useCredential(WebCredential* credential)
+void AuthenticationDecisionListener::useCredential( WebCredential *credential )
 {
-    if (m_challengeProxy)
-        m_challengeProxy->useCredential(credential);
+    if ( m_challengeProxy )
+    {
+        m_challengeProxy->useCredential( credential );
+    }
 }
 
 void AuthenticationDecisionListener::cancel()
 {
-    if (m_challengeProxy)
+    if ( m_challengeProxy )
+    {
         m_challengeProxy->cancel();
+    }
 }
 
 void AuthenticationDecisionListener::detachChallenge()
 {
     m_challengeProxy = 0;
 }
-    
+
 } // namespace WebKit

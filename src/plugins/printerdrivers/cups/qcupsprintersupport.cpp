@@ -38,7 +38,7 @@
 #endif
 
 QCupsPrinterSupport::QCupsPrinterSupport()
-   : QPlatformPrinterSupport()
+    : QPlatformPrinterSupport()
 {
 }
 
@@ -46,59 +46,66 @@ QCupsPrinterSupport::~QCupsPrinterSupport()
 {
 }
 
-QPrintEngine *QCupsPrinterSupport::createNativePrintEngine(QPrinter::PrinterMode printerMode)
+QPrintEngine *QCupsPrinterSupport::createNativePrintEngine( QPrinter::PrinterMode printerMode )
 {
-   return new QCupsPrintEngine(printerMode);
+    return new QCupsPrintEngine( printerMode );
 }
 
-QPaintEngine *QCupsPrinterSupport::createPaintEngine(QPrintEngine *engine, QPrinter::PrinterMode printerMode)
+QPaintEngine *QCupsPrinterSupport::createPaintEngine( QPrintEngine *engine, QPrinter::PrinterMode printerMode )
 {
-   (void) printerMode;
+    ( void ) printerMode;
 
-   return static_cast<QCupsPrintEngine *>(engine);
+    return static_cast<QCupsPrintEngine *>( engine );
 }
 
-QPrintDevice QCupsPrinterSupport::createPrintDevice(const QString &id)
+QPrintDevice QCupsPrinterSupport::createPrintDevice( const QString &id )
 {
-   return QPlatformPrinterSupport::createPrintDevice(new QPpdPrintDevice(id));
+    return QPlatformPrinterSupport::createPrintDevice( new QPpdPrintDevice( id ) );
 }
 
 QStringList QCupsPrinterSupport::availablePrintDeviceIds() const
 {
-   QStringList list;
-   cups_dest_t *dests;
-   int count = cupsGetDests(&dests);
+    QStringList list;
+    cups_dest_t *dests;
+    int count = cupsGetDests( &dests );
 
-   for (int i = 0; i < count; ++i) {
-      QString printerId = QString::fromUtf8(dests[i].name);
+    for ( int i = 0; i < count; ++i )
+    {
+        QString printerId = QString::fromUtf8( dests[i].name );
 
-      if (dests[i].instance) {
-         printerId += QChar('/') + QString::fromUtf8(dests[i].instance);
-      }
-      list.append(printerId);
-   }
+        if ( dests[i].instance )
+        {
+            printerId += QChar( '/' ) + QString::fromUtf8( dests[i].instance );
+        }
 
-   cupsFreeDests(count, dests);
-   return list;
+        list.append( printerId );
+    }
+
+    cupsFreeDests( count, dests );
+    return list;
 }
 
 QString QCupsPrinterSupport::defaultPrintDeviceId() const
 {
-   QString printerId;
-   cups_dest_t *dests;
-   int count = cupsGetDests(&dests);
+    QString printerId;
+    cups_dest_t *dests;
+    int count = cupsGetDests( &dests );
 
-   for (int i = 0; i < count; ++i) {
-      if (dests[i].is_default) {
-         printerId = QString::fromUtf8(dests[i].name);
-         if (dests[i].instance) {
-            printerId += QChar('/') + QString::fromUtf8(dests[i].instance);
-            break;
-         }
-      }
-   }
+    for ( int i = 0; i < count; ++i )
+    {
+        if ( dests[i].is_default )
+        {
+            printerId = QString::fromUtf8( dests[i].name );
 
-   cupsFreeDests(count, dests);
-   return printerId;
+            if ( dests[i].instance )
+            {
+                printerId += QChar( '/' ) + QString::fromUtf8( dests[i].instance );
+                break;
+            }
+        }
+    }
+
+    cupsFreeDests( count, dests );
+    return printerId;
 }
 

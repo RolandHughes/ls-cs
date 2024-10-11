@@ -28,56 +28,76 @@
 
 #include "AccessibilityObject.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class AccessibilityScrollbar;
 class Scrollbar;
 class ScrollView;
-    
-class AccessibilityScrollView : public AccessibilityObject {
+
+class AccessibilityScrollView : public AccessibilityObject
+{
 public:
-    static PassRefPtr<AccessibilityScrollView> create(ScrollView*);    
-    virtual AccessibilityRole roleValue() const { return ScrollAreaRole; }
-    ScrollView* scrollView() const { return m_scrollView.get(); }
-    
+    static PassRefPtr<AccessibilityScrollView> create( ScrollView * );
+    virtual AccessibilityRole roleValue() const
+    {
+        return ScrollAreaRole;
+    }
+    ScrollView *scrollView() const
+    {
+        return m_scrollView.get();
+    }
+
 private:
-    AccessibilityScrollView(ScrollView*);
-    
-    virtual bool accessibilityIsIgnored() const { return false; }
-    virtual bool isAccessibilityScrollView() const { return true; }
-    
+    AccessibilityScrollView( ScrollView * );
+
+    virtual bool accessibilityIsIgnored() const
+    {
+        return false;
+    }
+    virtual bool isAccessibilityScrollView() const
+    {
+        return true;
+    }
+
     virtual bool isAttachment() const;
-    virtual Widget* widgetForAttachmentView() const;
-    
-    virtual AccessibilityObject* scrollBar(AccessibilityOrientation) const;
+    virtual Widget *widgetForAttachmentView() const;
+
+    virtual AccessibilityObject *scrollBar( AccessibilityOrientation ) const;
     virtual void addChildren();
-    virtual AccessibilityObject* accessibilityHitTest(const IntPoint&) const;
-    virtual const AccessibilityChildrenVector& children();
+    virtual AccessibilityObject *accessibilityHitTest( const IntPoint & ) const;
+    virtual const AccessibilityChildrenVector &children();
     virtual void updateChildrenIfNecessary();
-    
-    virtual FrameView* documentFrameView() const;
+
+    virtual FrameView *documentFrameView() const;
     virtual IntRect elementRect() const;
-    virtual AccessibilityObject* parentObject() const;
-    
-    AccessibilityObject* webAreaObject() const;
-    virtual AccessibilityObject* firstChild() const { return webAreaObject(); }
-    AccessibilityScrollbar* addChildScrollbar(Scrollbar*);
-    void removeChildScrollbar(AccessibilityObject*);
-    
+    virtual AccessibilityObject *parentObject() const;
+
+    AccessibilityObject *webAreaObject() const;
+    virtual AccessibilityObject *firstChild() const
+    {
+        return webAreaObject();
+    }
+    AccessibilityScrollbar *addChildScrollbar( Scrollbar * );
+    void removeChildScrollbar( AccessibilityObject * );
+
     RefPtr<ScrollView> m_scrollView;
     RefPtr<AccessibilityObject> m_horizontalScrollbar;
     RefPtr<AccessibilityObject> m_verticalScrollbar;
 };
 
-inline AccessibilityScrollView* toAccessibilityScrollView(AccessibilityObject* object)
+inline AccessibilityScrollView *toAccessibilityScrollView( AccessibilityObject *object )
 {
-    ASSERT(!object || object->isAccessibilityScrollView());
-    if (!object->isAccessibilityScrollView())
+    ASSERT( !object || object->isAccessibilityScrollView() );
+
+    if ( !object->isAccessibilityScrollView() )
+    {
         return 0;
-    
-    return static_cast<AccessibilityScrollView*>(object);
+    }
+
+    return static_cast<AccessibilityScrollView *>( object );
 }
-    
+
 } // namespace WebCore
 
 #endif // AccessibilityScrollView_h

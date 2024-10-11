@@ -32,18 +32,20 @@
 
 #include <wtf/Forward.h>
 
-namespace JSC {
-    class ExecState;
-}                                            
-                                             
-namespace WebCore {
+namespace JSC
+{
+class ExecState;
+}
 
-    class JSDOMWrapper;
-    class JSDOMGlobalObject;
-    class HTMLElement;
+namespace WebCore
+{
 
-    JSDOMWrapper* createJSHTMLWrapper(JSC::ExecState*, JSDOMGlobalObject*, PassRefPtr<HTMLElement>);
+class JSDOMWrapper;
+class JSDOMGlobalObject;
+class HTMLElement;
+
+JSDOMWrapper *createJSHTMLWrapper( JSC::ExecState *, JSDOMGlobalObject *, PassRefPtr<HTMLElement> );
 
 }
- 
+
 #endif // JSHTMLElementWrapperFactory_h

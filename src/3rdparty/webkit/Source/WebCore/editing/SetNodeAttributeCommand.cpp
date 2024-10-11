@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,28 +29,29 @@
 #include "Element.h"
 #include <wtf/Assertions.h>
 
-namespace WebCore {
-
-SetNodeAttributeCommand::SetNodeAttributeCommand(PassRefPtr<Element> element, 
-        const QualifiedName& attribute, const AtomicString& value)
-    : SimpleEditCommand(element->document())
-    , m_element(element)
-    , m_attribute(attribute)
-    , m_value(value)
+namespace WebCore
 {
-    ASSERT(m_element);
+
+SetNodeAttributeCommand::SetNodeAttributeCommand( PassRefPtr<Element> element,
+        const QualifiedName &attribute, const AtomicString &value )
+    : SimpleEditCommand( element->document() )
+    , m_element( element )
+    , m_attribute( attribute )
+    , m_value( value )
+{
+    ASSERT( m_element );
 }
 
 void SetNodeAttributeCommand::doApply()
 {
-    m_oldValue = m_element->getAttribute(m_attribute);
-    m_element->setAttribute(m_attribute, m_value);
+    m_oldValue = m_element->getAttribute( m_attribute );
+    m_element->setAttribute( m_attribute, m_value );
 }
 
 void SetNodeAttributeCommand::doUnapply()
 {
-    m_element->setAttribute(m_attribute, m_oldValue);
-    AtomicStringImpl* nullString = 0;
+    m_element->setAttribute( m_attribute, m_oldValue );
+    AtomicStringImpl *nullString = 0;
     m_oldValue = nullString;
 }
 

@@ -44,155 +44,159 @@ class QStyleOptionTitleBar;
 
 class QStyleSheetStyle : public QWindowsStyle
 {
-   GUI_CS_OBJECT(QStyleSheetStyle)
+    GUI_LSCS_OBJECT( QStyleSheetStyle )
 
-   using ParentStyle = QWindowsStyle;
+    using ParentStyle = QWindowsStyle;
 
- public:
-   QStyleSheetStyle(QStyle *baseStyle);
+public:
+    QStyleSheetStyle( QStyle *baseStyle );
 
-   QStyleSheetStyle(const QStyleSheetStyle &) = delete;
-   QStyleSheetStyle &operator=(const QStyleSheetStyle &) = delete;
+    QStyleSheetStyle( const QStyleSheetStyle & ) = delete;
+    QStyleSheetStyle &operator=( const QStyleSheetStyle & ) = delete;
 
-   ~QStyleSheetStyle();
+    ~QStyleSheetStyle();
 
-   void drawComplexControl(ComplexControl cc, const QStyleOptionComplex *option, QPainter *painter,
-      const QWidget *widget = nullptr) const override;
+    void drawComplexControl( ComplexControl cc, const QStyleOptionComplex *option, QPainter *painter,
+                             const QWidget *widget = nullptr ) const override;
 
-   void drawControl(ControlElement element, const QStyleOption *option, QPainter *p,
-      const QWidget *widget = nullptr) const override;
+    void drawControl( ControlElement element, const QStyleOption *option, QPainter *p,
+                      const QWidget *widget = nullptr ) const override;
 
-   void drawItemPixmap(QPainter *painter, const QRect &rect, int alignment, const QPixmap &pixmap) const override;
+    void drawItemPixmap( QPainter *painter, const QRect &rect, int alignment, const QPixmap &pixmap ) const override;
 
-   void drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &palette,
-      bool enabled, const QString &text, QPalette::ColorRole textRole  = QPalette::NoRole) const override;
+    void drawItemText( QPainter *painter, const QRect &rect, int alignment, const QPalette &palette,
+                       bool enabled, const QString &text, QPalette::ColorRole textRole  = QPalette::NoRole ) const override;
 
-   void drawPrimitive(PrimitiveElement pe, const QStyleOption *opiont, QPainter *painter,
-      const QWidget *widget = nullptr) const override;
+    void drawPrimitive( PrimitiveElement pe, const QStyleOption *opiont, QPainter *painter,
+                        const QWidget *widget = nullptr ) const override;
 
-   QPixmap generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option) const override;
-   SubControl hitTestComplexControl(ComplexControl control, const QStyleOptionComplex *option, const QPoint &point,
-      const QWidget *widget = nullptr) const override;
+    QPixmap generatedIconPixmap( QIcon::Mode iconMode, const QPixmap &pixmap, const QStyleOption *option ) const override;
+    SubControl hitTestComplexControl( ComplexControl control, const QStyleOptionComplex *option, const QPoint &point,
+                                      const QWidget *widget = nullptr ) const override;
 
-   QRect itemPixmapRect(const QRect &rect, int alignment, const QPixmap &pixmap) const override;
-   QRect itemTextRect(const QFontMetrics &metrics, const QRect &rect, int alignment, bool enabled,
-      const QString &text) const override;
+    QRect itemPixmapRect( const QRect &rect, int alignment, const QPixmap &pixmap ) const override;
+    QRect itemTextRect( const QFontMetrics &metrics, const QRect &rect, int alignment, bool enabled,
+                        const QString &text ) const override;
 
-   int pixelMetric(PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override;
+    int pixelMetric( PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr ) const override;
 
-   QSize sizeFromContents(ContentsType ct, const QStyleOption *option, const QSize &contentsSize,
-      const QWidget *widget = nullptr) const override;
+    QSize sizeFromContents( ContentsType ct, const QStyleOption *option, const QSize &contentsSize,
+                            const QWidget *widget = nullptr ) const override;
 
-   QPalette standardPalette() const override;
+    QPalette standardPalette() const override;
 
-   QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption *opt = nullptr,
-      const QWidget *widget = nullptr) const override;
+    QIcon standardIcon( StandardPixmap standardIcon, const QStyleOption *opt = nullptr,
+                        const QWidget *widget = nullptr ) const override;
 
-   QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption *option = nullptr,
-      const QWidget *widget = nullptr ) const override;
+    QPixmap standardPixmap( StandardPixmap standardPixmap, const QStyleOption *option = nullptr,
+                            const QWidget *widget = nullptr ) const override;
 
-   int layoutSpacing(QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
-      Qt::Orientation orientation, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override;
+    int layoutSpacing( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
+                       Qt::Orientation orientation, const QStyleOption *option = nullptr, const QWidget *widget = nullptr ) const override;
 
-   int styleHint(StyleHint styleHint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr,
-            QStyleHintReturn *styleHintReturn = nullptr) const
+    int styleHint( StyleHint styleHint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr,
+                   QStyleHintReturn *styleHintReturn = nullptr ) const
 
- override;
-   QRect subElementRect(SubElement rect, const QStyleOption *option, const QWidget *widget = nullptr) const override;
-   QRect subControlRect(ComplexControl cc, const QStyleOptionComplex *option, SubControl subControl,
-      const QWidget *widget = nullptr) const override;
+    override;
+    QRect subElementRect( SubElement rect, const QStyleOption *option, const QWidget *widget = nullptr ) const override;
+    QRect subControlRect( ComplexControl cc, const QStyleOptionComplex *option, SubControl subControl,
+                          const QWidget *widget = nullptr ) const override;
 
-   void polish(QWidget *widget) override;
-   void polish(QApplication *app) override;
-   void polish(QPalette &pal) override;
+    void polish( QWidget *widget ) override;
+    void polish( QApplication *app ) override;
+    void polish( QPalette &pal ) override;
 
-   void unpolish(QWidget *widget) override;
-   void unpolish(QApplication *app) override;
+    void unpolish( QWidget *widget ) override;
+    void unpolish( QApplication *app ) override;
 
-   // These functions are called from QApplication/QWidget. Be careful.
-   QStyle *baseStyle() const;
-   void repolish(QWidget *widget);
-   void repolish(QApplication *app);
+    // These functions are called from QApplication/QWidget. Be careful.
+    QStyle *baseStyle() const;
+    void repolish( QWidget *widget );
+    void repolish( QApplication *app );
 
-   QStyle *base;
-   void ref() {
-      ++refcount;
-   }
+    QStyle *base;
+    void ref()
+    {
+        ++refcount;
+    }
 
-   void deref() {
-      Q_ASSERT(refcount > 0);
-      if (!--refcount) {
-         delete this;
-      }
-   }
+    void deref()
+    {
+        Q_ASSERT( refcount > 0 );
 
-   void updateStyleSheetFont(QWidget *widget) const;
-   void saveWidgetFont(QWidget *widget, const QFont &font) const;
-   void clearWidgetFont(QWidget *widget) const;
+        if ( !--refcount )
+        {
+            delete this;
+        }
+    }
 
-   bool styleSheetPalette(const QWidget *widget, const QStyleOption *option, QPalette *palette);
+    void updateStyleSheetFont( QWidget *widget ) const;
+    void saveWidgetFont( QWidget *widget, const QFont &font ) const;
+    void clearWidgetFont( QWidget *widget ) const;
 
-   static int numinstances;
+    bool styleSheetPalette( const QWidget *widget, const QStyleOption *option, QPalette *palette );
 
- protected:
-   bool event(QEvent *event) override;
+    static int numinstances;
 
- private:
-   Q_DECLARE_PRIVATE(QStyleSheetStyle)
+protected:
+    bool event( QEvent *event ) override;
 
-   int refcount;
+private:
+    Q_DECLARE_PRIVATE( QStyleSheetStyle )
 
-   int nativeFrameWidth(const QWidget *obj);
-   QRenderRule renderRule(const QObject *obj, int, quint64 = 0) const;
-   QRenderRule renderRule(const QObject *obj, const QStyleOption *, int = 0) const;
+    int refcount;
 
-   QSize defaultSize(const QWidget *obj, QSize, const QRect &, int) const;
+    int nativeFrameWidth( const QWidget *obj );
+    QRenderRule renderRule( const QObject *obj, int, quint64 = 0 ) const;
+    QRenderRule renderRule( const QObject *obj, const QStyleOption *, int = 0 ) const;
 
-   QRect positionRect(const QWidget *w, const QRenderRule &, const QRenderRule &, int, const QRect &, Qt::LayoutDirection) const;
-   QRect positionRect(const QWidget *w, const QRenderRule &rule2, int pe, const QRect &originRect, Qt::LayoutDirection dir) const;
+    QSize defaultSize( const QWidget *obj, QSize, const QRect &, int ) const;
 
-   mutable QCss::Parser parser;
+    QRect positionRect( const QWidget *w, const QRenderRule &, const QRenderRule &, int, const QRect &, Qt::LayoutDirection ) const;
+    QRect positionRect( const QWidget *w, const QRenderRule &rule2, int pe, const QRect &originRect, Qt::LayoutDirection dir ) const;
 
-   void setPalette(QWidget *);
-   void unsetPalette(QWidget *);
-   void setProperties(QWidget *);
-   void setGeometry(QWidget *);
+    mutable QCss::Parser parser;
 
-   QVector<QCss::StyleRule> styleRules(const QObject *obj) const;
-   bool hasStyleRule(const QObject *obj, int part) const;
+    void setPalette( QWidget * );
+    void unsetPalette( QWidget * );
+    void setProperties( QWidget * );
+    void setGeometry( QWidget * );
 
-   QHash<QStyle::SubControl, QRect> titleBarLayout(const QWidget *w, const QStyleOptionTitleBar *tb) const;
+    QVector<QCss::StyleRule> styleRules( const QObject *obj ) const;
+    bool hasStyleRule( const QObject *obj, int part ) const;
 
-   QCss::StyleSheet getDefaultStyleSheet() const;
+    QHash<QStyle::SubControl, QRect> titleBarLayout( const QWidget *w, const QStyleOptionTitleBar *tb ) const;
 
-   static Qt::Alignment resolveAlignment(Qt::LayoutDirection, Qt::Alignment);
-   static bool isNaturalChild(const QObject *obj);
-   bool initObject(const QObject *obj) const;
+    QCss::StyleSheet getDefaultStyleSheet() const;
 
-   friend class QRenderRule;
+    static Qt::Alignment resolveAlignment( Qt::LayoutDirection, Qt::Alignment );
+    static bool isNaturalChild( const QObject *obj );
+    bool initObject( const QObject *obj ) const;
+
+    friend class QRenderRule;
 };
 
 class QStyleSheetStyleCaches : public QObject
 {
-   GUI_CS_OBJECT(QStyleSheetStyleCaches)
+    GUI_LSCS_OBJECT( QStyleSheetStyleCaches )
 
- public:
-   using QRenderRules = QHash<int, QHash<quint64, QRenderRule>>;
+public:
+    using QRenderRules = QHash<int, QHash<quint64, QRenderRule>>;
 
-   GUI_CS_SLOT_1(Public, void objectDestroyed(QObject *obj))
-   GUI_CS_SLOT_2(objectDestroyed)
+    GUI_LSCS_SLOT_1( Public, void objectDestroyed( QObject *obj ) )
+    GUI_LSCS_SLOT_2( objectDestroyed )
 
-   GUI_CS_SLOT_1(Public, void styleDestroyed(QObject *obj))
-   GUI_CS_SLOT_2(styleDestroyed)
+    GUI_LSCS_SLOT_1( Public, void styleDestroyed( QObject *obj ) )
+    GUI_LSCS_SLOT_2( styleDestroyed )
 
-   QHash<const QObject *, QVector<QCss::StyleRule>> styleRulesCache;
-   QHash<const QObject *, QHash<int, bool>> hasStyleRuleCache;
+    QHash<const QObject *, QVector<QCss::StyleRule>> styleRulesCache;
+    QHash<const QObject *, QHash<int, bool>> hasStyleRuleCache;
 
-   QHash<const QObject *, QRenderRules> renderRulesCache;
-   QHash<const QWidget *, QPalette> customPaletteWidgets;   // widgets whose palette we tampered
+    QHash<const QObject *, QRenderRules> renderRulesCache;
+    QHash<const QWidget *, QPalette> customPaletteWidgets;   // widgets whose palette we tampered
 
-   QHash<const void *, QCss::StyleSheet> styleSheetCache;      // parsed style sheets
-   QSet<const QWidget *> autoFillDisabledWidgets;
+    QHash<const void *, QCss::StyleSheet> styleSheetCache;      // parsed style sheets
+    QSet<const QWidget *> autoFillDisabledWidgets;
 };
 
 #endif // QT_NO_STYLE_STYLESHEET

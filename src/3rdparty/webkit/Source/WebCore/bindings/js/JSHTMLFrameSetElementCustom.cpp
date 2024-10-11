@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -37,25 +37,30 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-bool JSHTMLFrameSetElement::canGetItemsForName(ExecState*, HTMLFrameSetElement* frameSet, const Identifier& propertyName)
+bool JSHTMLFrameSetElement::canGetItemsForName( ExecState *, HTMLFrameSetElement *frameSet, const Identifier &propertyName )
 {
-    Node* frame = frameSet->children()->namedItem(identifierToAtomicString(propertyName));
-    return frame && frame->hasTagName(frameTag);
+    Node *frame = frameSet->children()->namedItem( identifierToAtomicString( propertyName ) );
+    return frame && frame->hasTagName( frameTag );
 }
 
-JSValue JSHTMLFrameSetElement::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSHTMLFrameSetElement::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSHTMLElement* thisObj = static_cast<JSHTMLElement*>(asObject(slotBase));
-    HTMLElement* element = toHTMLElement(thisObj->impl());
+    JSHTMLElement *thisObj = static_cast<JSHTMLElement *>( asObject( slotBase ) );
+    HTMLElement *element = toHTMLElement( thisObj->impl() );
 
-    Node* frame = element->children()->namedItem(identifierToAtomicString(propertyName));
-    if (Document* doc = static_cast<HTMLFrameElement*>(frame)->contentDocument()) {
-        if (JSDOMWindowShell* window = toJSDOMWindowShell(doc->frame(), currentWorld(exec)))
+    Node *frame = element->children()->namedItem( identifierToAtomicString( propertyName ) );
+
+    if ( Document *doc = static_cast<HTMLFrameElement *>( frame )->contentDocument() )
+    {
+        if ( JSDOMWindowShell *window = toJSDOMWindowShell( doc->frame(), currentWorld( exec ) ) )
+        {
             return window;
+        }
     }
 
     return jsUndefined();

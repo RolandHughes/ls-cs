@@ -26,58 +26,59 @@
 
 #include <qabstractduration_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class Duration : public AbstractDuration
 {
- public:
-   typedef AtomicValue::Ptr Ptr;
+public:
+    typedef AtomicValue::Ptr Ptr;
 
-   /**
-    * Creates an instance from the lexical representation @p string.
-    */
-   static Duration::Ptr fromLexical(const QString &string);
-   static Duration::Ptr fromComponents(const bool isPositive, const YearProperty years,
-                  const MonthProperty months, const DayCountProperty days, const HourProperty hours,
-                  const MinuteProperty minutes, const SecondProperty seconds, const MSecondProperty mseconds);
+    /**
+     * Creates an instance from the lexical representation @p string.
+     */
+    static Duration::Ptr fromLexical( const QString &string );
+    static Duration::Ptr fromComponents( const bool isPositive, const YearProperty years,
+                                         const MonthProperty months, const DayCountProperty days, const HourProperty hours,
+                                         const MinuteProperty minutes, const SecondProperty seconds, const MSecondProperty mseconds );
 
-   ItemType::Ptr type() const override;
-   QString stringValue() const override;
+    ItemType::Ptr type() const override;
+    QString stringValue() const override;
 
-   /**
-    * Always results in an assert crash. Calling this function makes no
-    * sense due to that the value space of xs:duration is not well defined.
-    */
-   Value value() const override;
+    /**
+     * Always results in an assert crash. Calling this function makes no
+     * sense due to that the value space of xs:duration is not well defined.
+     */
+    Value value() const override;
 
-   /**
-    * Always results in an assert crash. Calling this function makes no
-    * sense due to that the value space of xs:duration is not well defined.
-    */
-   Item fromValue(const Value val) const override;
+    /**
+     * Always results in an assert crash. Calling this function makes no
+     * sense due to that the value space of xs:duration is not well defined.
+     */
+    Item fromValue( const Value val ) const override;
 
-   YearProperty years() const override;
-   MonthProperty months() const override;
-   DayCountProperty days() const override;
-   HourProperty hours() const override;
-   MinuteProperty minutes() const override;
-   SecondProperty seconds() const override;
-   MSecondProperty mseconds() const override;
+    YearProperty years() const override;
+    MonthProperty months() const override;
+    DayCountProperty days() const override;
+    HourProperty hours() const override;
+    MinuteProperty minutes() const override;
+    SecondProperty seconds() const override;
+    MSecondProperty mseconds() const override;
 
- protected:
-   friend class CommonValues;
+protected:
+    friend class CommonValues;
 
-   Duration(const bool isPositive, const YearProperty years, const MonthProperty months,
-                  const DayCountProperty days, const HourProperty hours, const MinuteProperty minutes,
-                  const SecondProperty seconds, const MSecondProperty mseconds);
- private:
-   const YearProperty      m_years;
-   const MonthProperty     m_months;
-   const DayCountProperty  m_days;
-   const HourProperty      m_hours;
-   const MinuteProperty    m_minutes;
-   const SecondProperty    m_seconds;
-   const MSecondProperty   m_mseconds;
+    Duration( const bool isPositive, const YearProperty years, const MonthProperty months,
+              const DayCountProperty days, const HourProperty hours, const MinuteProperty minutes,
+              const SecondProperty seconds, const MSecondProperty mseconds );
+private:
+    const YearProperty      m_years;
+    const MonthProperty     m_months;
+    const DayCountProperty  m_days;
+    const HourProperty      m_hours;
+    const MinuteProperty    m_minutes;
+    const SecondProperty    m_seconds;
+    const MSecondProperty   m_mseconds;
 };
 }
 

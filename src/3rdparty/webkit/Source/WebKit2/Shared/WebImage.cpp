@@ -30,31 +30,35 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<WebImage> WebImage::create(const IntSize& size, ImageOptions options)
+namespace WebKit
 {
-    if (options & ImageOptionsShareable)
-        return WebImage::create(ShareableBitmap::createShareable(size, ShareableBitmap::SupportsAlpha));
-    return WebImage::create(ShareableBitmap::create(size, ShareableBitmap::SupportsAlpha));
+
+PassRefPtr<WebImage> WebImage::create( const IntSize &size, ImageOptions options )
+{
+    if ( options & ImageOptionsShareable )
+    {
+        return WebImage::create( ShareableBitmap::createShareable( size, ShareableBitmap::SupportsAlpha ) );
+    }
+
+    return WebImage::create( ShareableBitmap::create( size, ShareableBitmap::SupportsAlpha ) );
 }
 
-PassRefPtr<WebImage> WebImage::create(PassRefPtr<ShareableBitmap> bitmap)
+PassRefPtr<WebImage> WebImage::create( PassRefPtr<ShareableBitmap> bitmap )
 {
-    return adoptRef(new WebImage(bitmap));
+    return adoptRef( new WebImage( bitmap ) );
 }
 
-WebImage::WebImage(PassRefPtr<ShareableBitmap> bitmap)
-    : m_bitmap(bitmap)
+WebImage::WebImage( PassRefPtr<ShareableBitmap> bitmap )
+    : m_bitmap( bitmap )
 {
-    ASSERT(m_bitmap);
+    ASSERT( m_bitmap );
 }
 
 WebImage::~WebImage()
 {
 }
 
-const IntSize& WebImage::size() const
+const IntSize &WebImage::size() const
 {
     return m_bitmap->size();
 }

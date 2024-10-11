@@ -37,28 +37,45 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMFileSystemBase;
 class EntrySync;
 
 // A common base class for Entry and EntrySync.
-class EntryBase : public RefCounted<EntryBase> {
+class EntryBase : public RefCounted<EntryBase>
+{
 public:
     virtual ~EntryBase();
 
-    DOMFileSystemBase* filesystem() const { return m_fileSystem.get(); }
+    DOMFileSystemBase *filesystem() const
+    {
+        return m_fileSystem.get();
+    }
 
-    virtual bool isFile() const { return false; }
-    virtual bool isDirectory() const { return false; }
+    virtual bool isFile() const
+    {
+        return false;
+    }
+    virtual bool isDirectory() const
+    {
+        return false;
+    }
 
-    const String& fullPath() const { return m_fullPath; }
-    const String& name() const { return m_name; }
+    const String &fullPath() const
+    {
+        return m_fullPath;
+    }
+    const String &name() const
+    {
+        return m_name;
+    }
 
     String toURL();
 
 protected:
-    EntryBase(PassRefPtr<DOMFileSystemBase>, const String& fullPath);
+    EntryBase( PassRefPtr<DOMFileSystemBase>, const String &fullPath );
     friend class EntrySync;
 
     RefPtr<DOMFileSystemBase> m_fileSystem;

@@ -30,25 +30,30 @@
 
 #include "SQLiteDatabase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SQLiteTransaction::SQLiteTransaction(SQLiteDatabase& db, bool readOnly)
-    : m_db(db)
-    , m_inProgress(false)
-    , m_readOnly(readOnly)
+SQLiteTransaction::SQLiteTransaction( SQLiteDatabase &db, bool readOnly )
+    : m_db( db )
+    , m_inProgress( false )
+    , m_readOnly( readOnly )
 {
 }
 
 SQLiteTransaction::~SQLiteTransaction()
 {
-    if (m_inProgress)
+    if ( m_inProgress )
+    {
         rollback();
+    }
 }
 
 void SQLiteTransaction::begin()
 {
-    if (!m_inProgress) {
-        ASSERT(!m_db.m_transactionInProgress);
+    if ( !m_inProgress )
+    {
+        ASSERT( !m_db.m_transactionInProgress );
+
         // Call BEGIN IMMEDIATE for a write transaction to acquire
         // a RESERVED lock on the DB file. Otherwise, another write
         // transaction (on another connection) could make changes
@@ -56,19 +61,25 @@ void SQLiteTransaction::begin()
         // any statements. If that happens, this transaction will fail.
         // http://www.sqlite.org/lang_transaction.html
         // http://www.sqlite.org/lockingv3.html#locking
-        if (m_readOnly)
-            m_inProgress = m_db.executeCommand("BEGIN");
+        if ( m_readOnly )
+        {
+            m_inProgress = m_db.executeCommand( "BEGIN" );
+        }
         else
-            m_inProgress = m_db.executeCommand("BEGIN IMMEDIATE");
+        {
+            m_inProgress = m_db.executeCommand( "BEGIN IMMEDIATE" );
+        }
+
         m_db.m_transactionInProgress = m_inProgress;
     }
 }
 
 void SQLiteTransaction::commit()
 {
-    if (m_inProgress) {
-        ASSERT(m_db.m_transactionInProgress);
-        m_inProgress = !m_db.executeCommand("COMMIT");
+    if ( m_inProgress )
+    {
+        ASSERT( m_db.m_transactionInProgress );
+        m_inProgress = !m_db.executeCommand( "COMMIT" );
         m_db.m_transactionInProgress = m_inProgress;
     }
 }
@@ -79,9 +90,10 @@ void SQLiteTransaction::rollback()
     // because m_inProgress should always be set to false after a ROLLBACK, and
     // m_db.executeCommand("ROLLBACK") can sometimes harmlessly fail, thus returning
     // a non-zero/true result (http://www.sqlite.org/lang_transaction.html).
-    if (m_inProgress) {
-        ASSERT(m_db.m_transactionInProgress);
-        m_db.executeCommand("ROLLBACK");
+    if ( m_inProgress )
+    {
+        ASSERT( m_db.m_transactionInProgress );
+        m_db.executeCommand( "ROLLBACK" );
         m_inProgress = false;
         m_db.m_transactionInProgress = false;
     }
@@ -89,7 +101,8 @@ void SQLiteTransaction::rollback()
 
 void SQLiteTransaction::stop()
 {
-    if (m_inProgress) {
+    if ( m_inProgress )
+    {
         m_inProgress = false;
         m_db.m_transactionInProgress = false;
     }

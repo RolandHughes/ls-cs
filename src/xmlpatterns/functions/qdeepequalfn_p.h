@@ -28,20 +28,23 @@
 #include <qcomparisonplatform_p.h>
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DeepEqualFN : public FunctionCall, public ComparisonPlatform<DeepEqualFN, false>
 {
- public:
-   inline DeepEqualFN() : ComparisonPlatform<DeepEqualFN, false>() {
-   }
+public:
+    inline DeepEqualFN() : ComparisonPlatform<DeepEqualFN, false>()
+    {
+    }
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   AtomicComparator::Operator operatorID() const {
-      return AtomicComparator::OperatorEqual;
-   }
+    AtomicComparator::Operator operatorID() const
+    {
+        return AtomicComparator::OperatorEqual;
+    }
 };
 
 }

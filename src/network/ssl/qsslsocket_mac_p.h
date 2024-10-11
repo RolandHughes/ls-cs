@@ -36,28 +36,28 @@
 
 class QSecureTransportContext
 {
- public:
-    explicit QSecureTransportContext(SSLContextRef context);
+public:
+    explicit QSecureTransportContext( SSLContextRef context );
 
-    QSecureTransportContext(const QSecureTransportContext &) = delete;
-    QSecureTransportContext &operator=(const QSecureTransportContext &) = delete;
+    QSecureTransportContext( const QSecureTransportContext & ) = delete;
+    QSecureTransportContext &operator=( const QSecureTransportContext & ) = delete;
 
     ~QSecureTransportContext();
 
     operator SSLContextRef () const;
-    void reset(SSLContextRef newContext);
+    void reset( SSLContextRef newContext );
 
- private:
+private:
     SSLContextRef context;
 };
 
 class QSslSocketBackendPrivate : public QSslSocketPrivate
 {
- public:
+public:
     QSslSocketBackendPrivate();
 
-    QSslSocketBackendPrivate(const QSslSocketBackendPrivate &) = delete;
-    QSslSocketBackendPrivate &operator=(const QSslSocketBackendPrivate &) = delete;
+    QSslSocketBackendPrivate( const QSslSocketBackendPrivate & ) = delete;
+    QSslSocketBackendPrivate &operator=( const QSslSocketBackendPrivate & ) = delete;
 
     virtual ~QSslSocketBackendPrivate();
 
@@ -71,20 +71,20 @@ class QSslSocketBackendPrivate : public QSslSocketPrivate
     void startServerEncryption() override;
     void transmit() override;
 
-    static QList<QSslError> verify(QList<QSslCertificate> certificateChain, const QString &hostName);
+    static QList<QSslError> verify( QList<QSslCertificate> certificateChain, const QString &hostName );
 
-    static bool importPkcs12(QIODevice *device, QSslKey *key, QSslCertificate *cert,
-                  QList<QSslCertificate> *caCertificates, const QByteArray &passPhrase);
+    static bool importPkcs12( QIODevice *device, QSslKey *key, QSslCertificate *cert,
+                              QList<QSslCertificate> *caCertificates, const QByteArray &passPhrase );
 
-    static QSslCipher QSslCipher_from_SSLCipherSuite(SSLCipherSuite cipher);
+    static QSslCipher QSslCipher_from_SSLCipherSuite( SSLCipherSuite cipher );
 
- private:
-    Q_DECLARE_PUBLIC(QSslSocket)
+private:
+    Q_DECLARE_PUBLIC( QSslSocket )
 
     // SSL context management/properties:
     bool initSslContext();
     void destroySslContext();
-    bool setSessionCertificate(QString &errorDescription, QAbstractSocket::SocketError &errorCode);
+    bool setSessionCertificate( QString &errorDescription, QAbstractSocket::SocketError &errorCode );
     bool setSessionProtocol();
 
     // Aux. functions to do a verification during handshake phase:

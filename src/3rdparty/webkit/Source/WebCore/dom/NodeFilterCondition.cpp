@@ -27,9 +27,10 @@
 
 #include "NodeFilter.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-short NodeFilterCondition::acceptNode(ScriptState*, Node*) const
+short NodeFilterCondition::acceptNode( ScriptState *, Node * ) const
 {
     return NodeFilter::FILTER_ACCEPT;
 }

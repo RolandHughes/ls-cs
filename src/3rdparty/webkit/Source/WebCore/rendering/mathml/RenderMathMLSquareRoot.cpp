@@ -35,8 +35,9 @@
 #include "PaintInfo.h"
 #include "Path.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace MathMLNames;
 
 // Bottom padding of the radical (px)
@@ -50,7 +51,7 @@ const float gRadicalBottomPointXPos= 0.5f;
 // Horizontal position of the top left point of the radical (%)
 const float gRadicalTopLeftPointXPos = 0.2f;
 // Vertical position of the top left point of the radical (%)
-const float gRadicalTopLeftPointYPos = 0.5f; 
+const float gRadicalTopLeftPointYPos = 0.5f;
 // Vertical shift of the left end point of the radical (%)
 const float gRadicalLeftEndYShift = 0.05f;
 // Additional bottom root padding (%)
@@ -60,135 +61,162 @@ const float gRootBottomPadding = 0.2f;
 const float gRadicalLineThickness = 0.02f;
 // Radical thick line thickness (%)
 const float gRadicalThickLineThickness = 0.1f;
-    
-RenderMathMLSquareRoot::RenderMathMLSquareRoot(Node *expression) 
-    : RenderMathMLBlock(expression) 
+
+RenderMathMLSquareRoot::RenderMathMLSquareRoot( Node *expression )
+    : RenderMathMLBlock( expression )
 {
 }
 
-void RenderMathMLSquareRoot::paint(PaintInfo& info, int tx, int ty)
+void RenderMathMLSquareRoot::paint( PaintInfo &info, int tx, int ty )
 {
-    RenderMathMLBlock::paint(info, tx, ty);
-   
-    if (info.context->paintingDisabled())
+    RenderMathMLBlock::paint( info, tx, ty );
+
+    if ( info.context->paintingDisabled() )
+    {
         return;
-    
+    }
+
     tx += x();
     ty += y();
 
     int maxHeight = 0;
     int width = 0;
-    RenderObject* current = firstChild();
-    while (current) {
-        if (current->isBoxModelObject()) {
-            
-            RenderBoxModelObject* box = toRenderBoxModelObject(current);
-            
+    RenderObject *current = firstChild();
+
+    while ( current )
+    {
+        if ( current->isBoxModelObject() )
+        {
+
+            RenderBoxModelObject *box = toRenderBoxModelObject( current );
+
             // Check to see if this box has a larger height
-            if (box->offsetHeight() > maxHeight)
+            if ( box->offsetHeight() > maxHeight )
+            {
                 maxHeight = box->offsetHeight();
+            }
+
             width += box->offsetWidth();
         }
+
         current = current->nextSibling();
     }
+
     // default to the font size in pixels if we're empty
-    if (!maxHeight)
+    if ( !maxHeight )
+    {
         maxHeight = style()->fontSize();
-    
-    int frontWidth = static_cast<int>(style()->fontSize() * gRadicalWidth);
+    }
+
+    int frontWidth = static_cast<int>( style()->fontSize() * gRadicalWidth );
     int topStartShift = 0;
     // Base height above which the shape of the root changes
-    int thresholdHeight = static_cast<int>(gThresholdBaseHeight * style()->fontSize());
-    
-    if (maxHeight > thresholdHeight && thresholdHeight) {
-        float shift = (maxHeight - thresholdHeight) / static_cast<float>(thresholdHeight);
-        if (shift > 1.)
-            shift = 1.0f;
-        topStartShift = static_cast<int>(gRadicalBottomPointXPos * frontWidth * shift);
-    }
-    
-    width += topStartShift;
-    
-    FloatPoint topStart(tx + frontWidth - topStartShift, ty);
-    FloatPoint bottomLeft(tx + frontWidth * gRadicalBottomPointXPos , ty + maxHeight + gRadicalBasePad);
-    FloatPoint topLeft(tx + frontWidth * gRadicalTopLeftPointXPos , ty + gRadicalTopLeftPointYPos * maxHeight);
-    FloatPoint leftEnd(tx , topLeft.y() + gRadicalLeftEndYShift * style()->fontSize());
-    
-    GraphicsContextStateSaver stateSaver(*info.context);
-    
-    info.context->setStrokeThickness(gRadicalLineThickness * style()->fontSize());
-    info.context->setStrokeStyle(SolidStroke);
-    info.context->setStrokeColor(style()->visitedDependentColor(CSSPropertyColor), ColorSpaceDeviceRGB);
-    info.context->setLineJoin(MiterJoin);
-    info.context->setMiterLimit(style()->fontSize());
-    
-    Path root;
-    
-    root.moveTo(FloatPoint(topStart.x() + width , ty));
-    // draw top
-    root.addLineTo(topStart);
-    // draw from top left corner to bottom point of radical
-    root.addLineTo(bottomLeft);
-    // draw from bottom point to top of left part of radical base "pocket"
-    root.addLineTo(topLeft);
-    // draw to end
-    root.addLineTo(leftEnd);
+    int thresholdHeight = static_cast<int>( gThresholdBaseHeight * style()->fontSize() );
 
-    info.context->strokePath(root);
-    
-    GraphicsContextStateSaver maskStateSaver(*info.context);
-    
+    if ( maxHeight > thresholdHeight && thresholdHeight )
+    {
+        float shift = ( maxHeight - thresholdHeight ) / static_cast<float>( thresholdHeight );
+
+        if ( shift > 1. )
+        {
+            shift = 1.0f;
+        }
+
+        topStartShift = static_cast<int>( gRadicalBottomPointXPos * frontWidth * shift );
+    }
+
+    width += topStartShift;
+
+    FloatPoint topStart( tx + frontWidth - topStartShift, ty );
+    FloatPoint bottomLeft( tx + frontWidth * gRadicalBottomPointXPos, ty + maxHeight + gRadicalBasePad );
+    FloatPoint topLeft( tx + frontWidth * gRadicalTopLeftPointXPos, ty + gRadicalTopLeftPointYPos * maxHeight );
+    FloatPoint leftEnd( tx, topLeft.y() + gRadicalLeftEndYShift * style()->fontSize() );
+
+    GraphicsContextStateSaver stateSaver( *info.context );
+
+    info.context->setStrokeThickness( gRadicalLineThickness * style()->fontSize() );
+    info.context->setStrokeStyle( SolidStroke );
+    info.context->setStrokeColor( style()->visitedDependentColor( CSSPropertyColor ), ColorSpaceDeviceRGB );
+    info.context->setLineJoin( MiterJoin );
+    info.context->setMiterLimit( style()->fontSize() );
+
+    Path root;
+
+    root.moveTo( FloatPoint( topStart.x() + width, ty ) );
+    // draw top
+    root.addLineTo( topStart );
+    // draw from top left corner to bottom point of radical
+    root.addLineTo( bottomLeft );
+    // draw from bottom point to top of left part of radical base "pocket"
+    root.addLineTo( topLeft );
+    // draw to end
+    root.addLineTo( leftEnd );
+
+    info.context->strokePath( root );
+
+    GraphicsContextStateSaver maskStateSaver( *info.context );
+
     // Build a mask to draw the thick part of the root.
     Path mask;
-    
-    mask.moveTo(topStart);
-    mask.addLineTo(bottomLeft);
-    mask.addLineTo(topLeft);
-    mask.addLineTo(FloatPoint(2 * topLeft.x() - leftEnd.x(), 2 * topLeft.y() - leftEnd.y()));
-    
-    info.context->clip(mask);
-    
+
+    mask.moveTo( topStart );
+    mask.addLineTo( bottomLeft );
+    mask.addLineTo( topLeft );
+    mask.addLineTo( FloatPoint( 2 * topLeft.x() - leftEnd.x(), 2 * topLeft.y() - leftEnd.y() ) );
+
+    info.context->clip( mask );
+
     // Draw the thick part of the root.
-    info.context->setStrokeThickness(gRadicalThickLineThickness * style()->fontSize());
-    info.context->setLineCap(SquareCap);
-    
+    info.context->setStrokeThickness( gRadicalThickLineThickness * style()->fontSize() );
+    info.context->setLineCap( SquareCap );
+
     Path line;
-    line.moveTo(bottomLeft);
-    line.addLineTo(topLeft);
-    
-    info.context->strokePath(line);
+    line.moveTo( bottomLeft );
+    line.addLineTo( topLeft );
+
+    info.context->strokePath( line );
 }
 
 void RenderMathMLSquareRoot::layout()
 {
     int maxHeight = 0;
-    
-    RenderObject* current = firstChild();
-    while (current) {
-        if (current->isBoxModelObject()) {
-            RenderBoxModelObject* box = toRenderBoxModelObject(current);
-            
-            if (box->offsetHeight() > maxHeight)
+
+    RenderObject *current = firstChild();
+
+    while ( current )
+    {
+        if ( current->isBoxModelObject() )
+        {
+            RenderBoxModelObject *box = toRenderBoxModelObject( current );
+
+            if ( box->offsetHeight() > maxHeight )
+            {
                 maxHeight = box->offsetHeight();
-            
-            box->style()->setVerticalAlign(BASELINE);
+            }
+
+            box->style()->setVerticalAlign( BASELINE );
         }
+
         current = current->nextSibling();
     }
-    
-    if (!maxHeight)
+
+    if ( !maxHeight )
+    {
         maxHeight = style()->fontSize();
+    }
 
-    
-    if (maxHeight > static_cast<int>(gThresholdBaseHeight * style()->fontSize()))
-        style()->setPaddingBottom(Length(static_cast<int>(gRootBottomPadding * style()->fontSize()), Fixed));
 
-    
+    if ( maxHeight > static_cast<int>( gThresholdBaseHeight * style()->fontSize() ) )
+    {
+        style()->setPaddingBottom( Length( static_cast<int>( gRootBottomPadding * style()->fontSize() ), Fixed ) );
+    }
+
+
     RenderBlock::layout();
 }
-    
+
 }
 
 #endif // ENABLE(MATHML)
 
-        
+

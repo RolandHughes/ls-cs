@@ -26,7 +26,8 @@
 #include "config.h"
 #include "WebProcessProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 Vector<HWND> WebProcessProxy::windowsToReceiveSentMessagesWhileWaitingForSyncReply()
 {

@@ -34,12 +34,13 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSAudioBufferSourceNode::setBuffer(ExecState*, JSValue value)
+namespace WebCore
 {
-    AudioBufferSourceNode* imp = static_cast<AudioBufferSourceNode*>(impl());
-    imp->setBuffer(toAudioBuffer(value));
+
+void JSAudioBufferSourceNode::setBuffer( ExecState *, JSValue value )
+{
+    AudioBufferSourceNode *imp = static_cast<AudioBufferSourceNode *>( impl() );
+    imp->setBuffer( toAudioBuffer( value ) );
 }
 
 } // namespace WebCore

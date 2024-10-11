@@ -39,21 +39,22 @@
 #include "FileCallback.h"
 #include "FileWriterCallback.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FileEntry::FileEntry(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : Entry(fileSystem, fullPath)
+FileEntry::FileEntry( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : Entry( fileSystem, fullPath )
 {
 }
 
-void FileEntry::createWriter(PassRefPtr<FileWriterCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback)
+void FileEntry::createWriter( PassRefPtr<FileWriterCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback )
 {
-    filesystem()->createWriter(this, successCallback, errorCallback);
+    filesystem()->createWriter( this, successCallback, errorCallback );
 }
 
-void FileEntry::file(PassRefPtr<FileCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback)
+void FileEntry::file( PassRefPtr<FileCallback> successCallback, PassRefPtr<ErrorCallback> errorCallback )
 {
-    filesystem()->createFile(this, successCallback, errorCallback);
+    filesystem()->createFile( this, successCallback, errorCallback );
 }
 
 } // namespace

@@ -38,7 +38,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class KURL;
@@ -49,26 +50,46 @@ class ResourceResponse;
 // This class triggers asynchronous loads independent of Frame staying alive (i.e., auditing pingbacks).
 // Since nothing depends on resources loaded through this class, we just want
 // to allow the load to live long enough to ensure the message was actually sent.
-// Therefore, as soon as a callback is received from the ResourceHandle, this class 
+// Therefore, as soon as a callback is received from the ResourceHandle, this class
 // will cancel the load and delete itself.
-class PingLoader : private ResourceHandleClient {
-    WTF_MAKE_NONCOPYABLE(PingLoader); WTF_MAKE_FAST_ALLOCATED;
+class PingLoader : private ResourceHandleClient
+{
+    WTF_MAKE_NONCOPYABLE( PingLoader );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    static void loadImage(Frame*, const KURL& url);
-    static void sendPing(Frame*, const KURL& pingURL, const KURL& destinationURL);
-    static void reportContentSecurityPolicyViolation(Frame*, const KURL& reportURL, PassRefPtr<FormData> report);
+    static void loadImage( Frame *, const KURL &url );
+    static void sendPing( Frame *, const KURL &pingURL, const KURL &destinationURL );
+    static void reportContentSecurityPolicyViolation( Frame *, const KURL &reportURL, PassRefPtr<FormData> report );
 
     ~PingLoader();
 
 private:
-    PingLoader(Frame*, ResourceRequest&);
+    PingLoader( Frame *, ResourceRequest & );
 
-    void didReceiveResponse(ResourceHandle*, const ResourceResponse&) { delete this; }
-    void didReceiveData(ResourceHandle*, const char*, int, int) { delete this; }
-    void didFinishLoading(ResourceHandle*, double) { delete this; }
-    void didFail(ResourceHandle*, const ResourceError&) { delete this; }
-    void timeout(Timer<PingLoader>*) { delete this; }
-    bool shouldUseCredentialStorage(ResourceHandle*) { return m_shouldUseCredentialStorage; }
+    void didReceiveResponse( ResourceHandle *, const ResourceResponse & )
+    {
+        delete this;
+    }
+    void didReceiveData( ResourceHandle *, const char *, int, int )
+    {
+        delete this;
+    }
+    void didFinishLoading( ResourceHandle *, double )
+    {
+        delete this;
+    }
+    void didFail( ResourceHandle *, const ResourceError & )
+    {
+        delete this;
+    }
+    void timeout( Timer<PingLoader> * )
+    {
+        delete this;
+    }
+    bool shouldUseCredentialStorage( ResourceHandle * )
+    {
+        return m_shouldUseCredentialStorage;
+    }
 
     RefPtr<ResourceHandle> m_handle;
     Timer<PingLoader> m_timeout;

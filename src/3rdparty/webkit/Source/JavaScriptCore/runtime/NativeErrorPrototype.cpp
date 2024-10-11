@@ -27,16 +27,18 @@
 #include "NativeErrorConstructor.h"
 #include "UString.h"
 
-namespace JSC {
-
-ASSERT_CLASS_FITS_IN_CELL(NativeErrorPrototype);
-
-NativeErrorPrototype::NativeErrorPrototype(ExecState* exec, JSGlobalObject* globalObject, Structure* structure, const UString& nameAndMessage, NativeErrorConstructor* constructor)
-    : JSObjectWithGlobalObject(globalObject, structure)
+namespace JSC
 {
-    putDirect(exec->globalData(), exec->propertyNames().name, jsString(exec, nameAndMessage), 0);
-    putDirect(exec->globalData(), exec->propertyNames().message, jsString(exec, nameAndMessage), 0);
-    putDirect(exec->globalData(), exec->propertyNames().constructor, constructor, DontEnum);
+
+ASSERT_CLASS_FITS_IN_CELL( NativeErrorPrototype );
+
+NativeErrorPrototype::NativeErrorPrototype( ExecState *exec, JSGlobalObject *globalObject, Structure *structure,
+        const UString &nameAndMessage, NativeErrorConstructor *constructor )
+    : JSObjectWithGlobalObject( globalObject, structure )
+{
+    putDirect( exec->globalData(), exec->propertyNames().name, jsString( exec, nameAndMessage ), 0 );
+    putDirect( exec->globalData(), exec->propertyNames().message, jsString( exec, nameAndMessage ), 0 );
+    putDirect( exec->globalData(), exec->propertyNames().constructor, constructor, DontEnum );
 }
 
 } // namespace JSC

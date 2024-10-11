@@ -27,16 +27,17 @@
 #include <qshareddata.h>
 #include <qglobal.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class SchemaComponent : public virtual QSharedData
 {
- public:
-   SchemaComponent();
-   virtual ~SchemaComponent();
+public:
+    SchemaComponent();
+    virtual ~SchemaComponent();
 
- private:
-   SchemaComponent(const SchemaComponent &) = delete;
-   SchemaComponent &operator=(const SchemaComponent &) = delete;
+private:
+    SchemaComponent( const SchemaComponent & ) = delete;
+    SchemaComponent &operator=( const SchemaComponent & ) = delete;
 };
 }
 

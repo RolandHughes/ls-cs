@@ -36,21 +36,22 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-PassRefPtr<LayerTreeHost> LayerTreeHost::create(WebPage* webPage)
+PassRefPtr<LayerTreeHost> LayerTreeHost::create( WebPage *webPage )
 {
 #if PLATFORM(MAC)
-    return LayerTreeHostCAMac::create(webPage);
+    return LayerTreeHostCAMac::create( webPage );
 #elif PLATFORM(WIN) && HAVE(WKQCA)
-    return LayerTreeHostCAWin::create(webPage);
+    return LayerTreeHostCAWin::create( webPage );
 #else
     return 0;
 #endif
 }
 
-LayerTreeHost::LayerTreeHost(WebPage* webPage)
-    : m_webPage(webPage)
+LayerTreeHost::LayerTreeHost( WebPage *webPage )
+    : m_webPage( webPage )
 {
 }
 

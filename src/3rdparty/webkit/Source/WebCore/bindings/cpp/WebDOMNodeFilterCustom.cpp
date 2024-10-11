@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,16 +29,18 @@
 #include "WebDOMNode.h"
 #include "WebNativeNodeFilterCondition.h"
 
-short WebDOMNodeFilter::acceptNode(const WebDOMNode& n)
+short WebDOMNodeFilter::acceptNode( const WebDOMNode &n )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return 0;
+    }
 
-    return impl()->acceptNode(0, toWebCore(n));
+    return impl()->acceptNode( 0, toWebCore( n ) );
 }
 
-WebDOMNodeFilter toWebKit(WebUserNodeFilter* value)
+WebDOMNodeFilter toWebKit( WebUserNodeFilter *value )
 {
-    RefPtr<WebCore::NodeFilter> listener = WebCore::NodeFilter::create(WebNativeNodeFilterCondition::create(value));
-    return WebDOMNodeFilter(listener.get());
+    RefPtr<WebCore::NodeFilter> listener = WebCore::NodeFilter::create( WebNativeNodeFilterCondition::create( value ) );
+    return WebDOMNodeFilter( listener.get() );
 }

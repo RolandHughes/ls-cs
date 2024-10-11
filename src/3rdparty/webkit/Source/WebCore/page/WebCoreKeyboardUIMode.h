@@ -20,20 +20,22 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebCoreKeyboardUIMode_h
 #define WebCoreKeyboardUIMode_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-    enum KeyboardUIMode {
-        KeyboardAccessDefault     = 0x00000000,
-        KeyboardAccessFull        = 0x00000001,
-        // this flag may be or'ed with either of the two above
-        KeyboardAccessTabsToLinks = 0x10000000
-    };
+enum KeyboardUIMode
+{
+    KeyboardAccessDefault     = 0x00000000,
+    KeyboardAccessFull        = 0x00000001,
+    // this flag may be or'ed with either of the two above
+    KeyboardAccessTabsToLinks = 0x10000000
+};
 
 }
 

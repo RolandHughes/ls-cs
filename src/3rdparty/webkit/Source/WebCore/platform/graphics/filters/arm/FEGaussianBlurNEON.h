@@ -33,9 +33,11 @@
 
 #include "FEGaussianBlur.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct FEGaussianBlurPaintingDataForNeon {
+struct FEGaussianBlurPaintingDataForNeon
+{
     int stride;
     int strideWidth;
     int strideLine;
@@ -44,65 +46,85 @@ struct FEGaussianBlurPaintingDataForNeon {
     int distanceLeft;
     int distanceRight;
     float invertedKernelSize;
-    unsigned char* paintingConstants;
+    unsigned char *paintingConstants;
 };
 
-unsigned char* feGaussianBlurConstantsForNeon();
+unsigned char *feGaussianBlurConstantsForNeon();
 
 extern "C" {
-void neonDrawAllChannelGaussianBlur(unsigned char* source, unsigned char* destination, FEGaussianBlurPaintingDataForNeon*);
-void neonDrawAlphaChannelGaussianBlur(unsigned char* source, unsigned char* destination, FEGaussianBlurPaintingDataForNeon*);
+    void neonDrawAllChannelGaussianBlur( unsigned char *source, unsigned char *destination, FEGaussianBlurPaintingDataForNeon * );
+    void neonDrawAlphaChannelGaussianBlur( unsigned char *source, unsigned char *destination, FEGaussianBlurPaintingDataForNeon * );
 }
 
-inline void FEGaussianBlur::platformApplyNeon(ByteArray* srcPixelArray, ByteArray* tmpPixelArray, unsigned kernelSizeX, unsigned kernelSizeY, IntSize& paintSize)
+inline void FEGaussianBlur::platformApplyNeon( ByteArray *srcPixelArray, ByteArray *tmpPixelArray, unsigned kernelSizeX,
+        unsigned kernelSizeY, IntSize &paintSize )
 {
     const int widthMultipliedByFour = 4 * paintSize.width();
-    FEGaussianBlurPaintingDataForNeon argumentsX = {
+    FEGaussianBlurPaintingDataForNeon argumentsX =
+    {
         4,
         widthMultipliedByFour,
         widthMultipliedByFour,
-        (isAlphaImage() ? ((paintSize.height() >> 2) << 2) : paintSize.height()) * widthMultipliedByFour,
-        isAlphaImage() ? (paintSize.height() & 0x3) : 0,
+        ( isAlphaImage() ? ( ( paintSize.height() >> 2 ) << 2 ) : paintSize.height() ) *widthMultipliedByFour,
+        isAlphaImage() ? ( paintSize.height() & 0x3 ) : 0,
         0,
         0,
         0,
         isAlphaImage() ? 0 : feGaussianBlurConstantsForNeon()
     };
-    FEGaussianBlurPaintingDataForNeon argumentsY = {
+    FEGaussianBlurPaintingDataForNeon argumentsY =
+    {
         widthMultipliedByFour,
         widthMultipliedByFour * paintSize.height(),
         4,
-        (isAlphaImage() ? ((paintSize.width() >> 2) << 2) : paintSize.width()) * 4,
-        isAlphaImage() ? (paintSize.width() & 0x3) : 0,
+        ( isAlphaImage() ? ( ( paintSize.width() >> 2 ) << 2 ) : paintSize.width() ) * 4,
+        isAlphaImage() ? ( paintSize.width() & 0x3 ) : 0,
         0,
         0,
         0,
         isAlphaImage() ? 0 : feGaussianBlurConstantsForNeon()
     };
 
-    for (int i = 0; i < 3; ++i) {
-        if (kernelSizeX) {
-            kernelPosition(i, kernelSizeX, argumentsX.distanceLeft, argumentsX.distanceRight);
-            argumentsX.invertedKernelSize = 1 / static_cast<float>(kernelSizeX);
-            if (isAlphaImage())
-                neonDrawAlphaChannelGaussianBlur(srcPixelArray->data(), tmpPixelArray->data(), &argumentsX);
+    for ( int i = 0; i < 3; ++i )
+    {
+        if ( kernelSizeX )
+        {
+            kernelPosition( i, kernelSizeX, argumentsX.distanceLeft, argumentsX.distanceRight );
+            argumentsX.invertedKernelSize = 1 / static_cast<float>( kernelSizeX );
+
+            if ( isAlphaImage() )
+            {
+                neonDrawAlphaChannelGaussianBlur( srcPixelArray->data(), tmpPixelArray->data(), &argumentsX );
+            }
             else
-                neonDrawAllChannelGaussianBlur(srcPixelArray->data(), tmpPixelArray->data(), &argumentsX);
-        } else {
-            ByteArray* auxPixelArray = tmpPixelArray;
+            {
+                neonDrawAllChannelGaussianBlur( srcPixelArray->data(), tmpPixelArray->data(), &argumentsX );
+            }
+        }
+        else
+        {
+            ByteArray *auxPixelArray = tmpPixelArray;
             tmpPixelArray = srcPixelArray;
             srcPixelArray = auxPixelArray;
         }
 
-        if (kernelSizeY) {
-            kernelPosition(i, kernelSizeY, argumentsY.distanceLeft, argumentsY.distanceRight);
-            argumentsY.invertedKernelSize = 1 / static_cast<float>(kernelSizeY);
-            if (isAlphaImage())
-                neonDrawAlphaChannelGaussianBlur(tmpPixelArray->data(), srcPixelArray->data(), &argumentsY);
+        if ( kernelSizeY )
+        {
+            kernelPosition( i, kernelSizeY, argumentsY.distanceLeft, argumentsY.distanceRight );
+            argumentsY.invertedKernelSize = 1 / static_cast<float>( kernelSizeY );
+
+            if ( isAlphaImage() )
+            {
+                neonDrawAlphaChannelGaussianBlur( tmpPixelArray->data(), srcPixelArray->data(), &argumentsY );
+            }
             else
-                neonDrawAllChannelGaussianBlur(tmpPixelArray->data(), srcPixelArray->data(), &argumentsY);
-        } else {
-            ByteArray* auxPixelArray = tmpPixelArray;
+            {
+                neonDrawAllChannelGaussianBlur( tmpPixelArray->data(), srcPixelArray->data(), &argumentsY );
+            }
+        }
+        else
+        {
+            ByteArray *auxPixelArray = tmpPixelArray;
             tmpPixelArray = srcPixelArray;
             srcPixelArray = auxPixelArray;
         }

@@ -36,9 +36,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSFileEntrySync);
+ASSERT_CLASS_FITS_IN_CELL( JSFileEntrySync );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -49,8 +50,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSFileEntrySync);
 
 static const HashTableValue JSFileEntrySyncTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileEntrySyncConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileEntrySyncConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,43 +65,50 @@ static JSC_CONST_HASHTABLE HashTable JSFileEntrySyncTable = { 2, 1, JSFileEntryS
 
 static const HashTableValue JSFileEntrySyncConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileEntrySyncConstructorTable = { 1, 0, JSFileEntrySyncConstructorTableValues, 0 };
-class JSFileEntrySyncConstructor : public DOMConstructorObject {
+class JSFileEntrySyncConstructor : public DOMConstructorObject
+{
 public:
-    JSFileEntrySyncConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSFileEntrySyncConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSFileEntrySyncConstructor::s_info = { "FileEntrySyncConstructor", &DOMConstructorObject::s_info, &JSFileEntrySyncConstructorTable, 0 };
 
-JSFileEntrySyncConstructor::JSFileEntrySyncConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSFileEntrySyncConstructor::JSFileEntrySyncConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSFileEntrySyncPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSFileEntrySyncPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSFileEntrySyncConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileEntrySyncConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileEntrySyncConstructor, JSDOMWrapper>(exec, &JSFileEntrySyncConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSFileEntrySyncConstructor, JSDOMWrapper>( exec, &JSFileEntrySyncConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSFileEntrySyncConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileEntrySyncConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileEntrySyncConstructor, JSDOMWrapper>(exec, &JSFileEntrySyncConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileEntrySyncConstructor, JSDOMWrapper>( exec, &JSFileEntrySyncConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -112,112 +120,122 @@ bool JSFileEntrySyncConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSFileEntrySyncPrototypeTableValues[3] =
 {
-    { "file", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileEntrySyncPrototypeFunctionFile), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "createWriter", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsFileEntrySyncPrototypeFunctionCreateWriter), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "file", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileEntrySyncPrototypeFunctionFile ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "createWriter", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsFileEntrySyncPrototypeFunctionCreateWriter ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileEntrySyncPrototypeTable = { 5, 3, JSFileEntrySyncPrototypeTableValues, 0 };
-static const HashTable* getJSFileEntrySyncPrototypeTable(ExecState* exec)
+static const HashTable *getJSFileEntrySyncPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileEntrySyncPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileEntrySyncPrototypeTable );
 }
 
 const ClassInfo JSFileEntrySyncPrototype::s_info = { "FileEntrySyncPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSFileEntrySyncPrototypeTable };
 
-JSObject* JSFileEntrySyncPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileEntrySyncPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSFileEntrySync>(exec, globalObject);
+    return getDOMPrototype<JSFileEntrySync>( exec, globalObject );
 }
 
-bool JSFileEntrySyncPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileEntrySyncPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSFileEntrySyncPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSFileEntrySyncPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSFileEntrySyncPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileEntrySyncPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSFileEntrySyncPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSFileEntrySyncPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
-static const HashTable* getJSFileEntrySyncTable(ExecState* exec)
+static const HashTable *getJSFileEntrySyncTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileEntrySyncTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileEntrySyncTable );
 }
 
 const ClassInfo JSFileEntrySync::s_info = { "FileEntrySync", &JSEntrySync::s_info, 0, getJSFileEntrySyncTable };
 
-JSFileEntrySync::JSFileEntrySync(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<FileEntrySync> impl)
-    : JSEntrySync(structure, globalObject, impl)
+JSFileEntrySync::JSFileEntrySync( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<FileEntrySync> impl )
+    : JSEntrySync( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSFileEntrySync::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFileEntrySync::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSFileEntrySyncPrototype(exec->globalData(), globalObject, JSFileEntrySyncPrototype::createStructure(exec->globalData(), JSEntrySyncPrototype::self(exec, globalObject)));
+    return new ( exec ) JSFileEntrySyncPrototype( exec->globalData(), globalObject,
+            JSFileEntrySyncPrototype::createStructure( exec->globalData(), JSEntrySyncPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSFileEntrySync::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileEntrySync::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileEntrySync, Base>(exec, getJSFileEntrySyncTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSFileEntrySync, Base>( exec, getJSFileEntrySyncTable( exec ), this, propertyName, slot );
 }
 
-bool JSFileEntrySync::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileEntrySync::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileEntrySync, Base>(exec, getJSFileEntrySyncTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileEntrySync, Base>( exec, getJSFileEntrySyncTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsFileEntrySyncConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileEntrySyncConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFileEntrySync* domObject = static_cast<JSFileEntrySync*>(asObject(slotBase));
-    return JSFileEntrySync::getConstructor(exec, domObject->globalObject());
+    JSFileEntrySync *domObject = static_cast<JSFileEntrySync *>( asObject( slotBase ) );
+    return JSFileEntrySync::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSFileEntrySync::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSFileEntrySync::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSFileEntrySyncConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSFileEntrySyncConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileEntrySyncPrototypeFunctionFile(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileEntrySyncPrototypeFunctionFile( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileEntrySync::s_info))
-        return throwVMTypeError(exec);
-    JSFileEntrySync* castedThis = static_cast<JSFileEntrySync*>(asObject(thisValue));
-    FileEntrySync* imp = static_cast<FileEntrySync*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSFileEntrySync::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileEntrySync *castedThis = static_cast<JSFileEntrySync *>( asObject( thisValue ) );
+    FileEntrySync *imp = static_cast<FileEntrySync *>( castedThis->impl() );
     ExceptionCode ec = 0;
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->file(ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->file( ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsFileEntrySyncPrototypeFunctionCreateWriter(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsFileEntrySyncPrototypeFunctionCreateWriter( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSFileEntrySync::s_info))
-        return throwVMTypeError(exec);
-    JSFileEntrySync* castedThis = static_cast<JSFileEntrySync*>(asObject(thisValue));
-    FileEntrySync* imp = static_cast<FileEntrySync*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSFileEntrySync::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSFileEntrySync *castedThis = static_cast<JSFileEntrySync *>( asObject( thisValue ) );
+    FileEntrySync *imp = static_cast<FileEntrySync *>( castedThis->impl() );
     ExceptionCode ec = 0;
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->createWriter(ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->createWriter( ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, FileEntrySync* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, FileEntrySync *impl )
 {
-    return wrap<JSFileEntrySync>(exec, globalObject, impl);
+    return wrap<JSFileEntrySync>( exec, globalObject, impl );
 }
 
-FileEntrySync* toFileEntrySync(JSC::JSValue value)
+FileEntrySync *toFileEntrySync( JSC::JSValue value )
 {
-    return value.inherits(&JSFileEntrySync::s_info) ? static_cast<JSFileEntrySync*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSFileEntrySync::s_info ) ? static_cast<JSFileEntrySync *>( asObject( value ) )->impl() : 0;
 }
 
 }

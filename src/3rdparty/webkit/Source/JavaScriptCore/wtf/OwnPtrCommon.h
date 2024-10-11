@@ -22,20 +22,20 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WTF_OwnPtrCommon_h
 #define WTF_OwnPtrCommon_h
 
 #if PLATFORM(WIN)
-typedef struct HBITMAP__* HBITMAP;
-typedef struct HBRUSH__* HBRUSH;
-typedef struct HDC__* HDC;
-typedef struct HFONT__* HFONT;
-typedef struct HPALETTE__* HPALETTE;
-typedef struct HPEN__* HPEN;
-typedef struct HRGN__* HRGN;
+typedef struct HBITMAP__ *HBITMAP;
+typedef struct HBRUSH__ *HBRUSH;
+typedef struct HDC__ *HDC;
+typedef struct HFONT__ *HFONT;
+typedef struct HPALETTE__ *HPALETTE;
+typedef struct HPEN__ *HPEN;
+typedef struct HRGN__ *HRGN;
 #endif
 
 #if PLATFORM(BREWMP)
@@ -50,33 +50,37 @@ typedef struct IMemGroup IMemGroup;
 typedef struct IMemSpace IMemSpace;
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
-    template <typename T> inline void deleteOwnedPtr(T* ptr)
+template <typename T> inline void deleteOwnedPtr( T *ptr )
+{
+    typedef char known[sizeof( T ) ? 1 : -1];
+
+    if ( sizeof( known ) )
     {
-        typedef char known[sizeof(T) ? 1 : -1];
-        if (sizeof(known))
-            delete ptr;
+        delete ptr;
     }
+}
 
 #if PLATFORM(WIN)
-    void deleteOwnedPtr(HBITMAP);
-    void deleteOwnedPtr(HBRUSH);
-    void deleteOwnedPtr(HDC);
-    void deleteOwnedPtr(HFONT);
-    void deleteOwnedPtr(HPALETTE);
-    void deleteOwnedPtr(HPEN);
-    void deleteOwnedPtr(HRGN);
+void deleteOwnedPtr( HBITMAP );
+void deleteOwnedPtr( HBRUSH );
+void deleteOwnedPtr( HDC );
+void deleteOwnedPtr( HFONT );
+void deleteOwnedPtr( HPALETTE );
+void deleteOwnedPtr( HPEN );
+void deleteOwnedPtr( HRGN );
 #endif
 
 #if PLATFORM(BREWMP)
-    void deleteOwnedPtr(IFileMgr*);
-    void deleteOwnedPtr(IFile*);
-    void deleteOwnedPtr(IBitmap*);
-    void deleteOwnedPtr(ISSL*);
-    void deleteOwnedPtr(ISocket*);
-    void deleteOwnedPtr(IMemGroup*);
-    void deleteOwnedPtr(IMemSpace*);
+void deleteOwnedPtr( IFileMgr * );
+void deleteOwnedPtr( IFile * );
+void deleteOwnedPtr( IBitmap * );
+void deleteOwnedPtr( ISSL * );
+void deleteOwnedPtr( ISocket * );
+void deleteOwnedPtr( IMemGroup * );
+void deleteOwnedPtr( IMemSpace * );
 #endif
 
 } // namespace WTF

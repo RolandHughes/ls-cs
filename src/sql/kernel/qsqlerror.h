@@ -33,44 +33,45 @@ class QSqlErrorPrivate;
 class Q_SQL_EXPORT QSqlError
 {
 
- public:
-   enum ErrorType {
-      NoError,
-      ConnectionError,
-      StatementError,
-      TransactionError,
-      UnknownError
-   };
+public:
+    enum ErrorType
+    {
+        NoError,
+        ConnectionError,
+        StatementError,
+        TransactionError,
+        UnknownError
+    };
 
-   QSqlError( const QString &driverText = QString(),
-      const QString &databaseText = QString(),
-      ErrorType type = NoError,
-      const QString &errorCode = QString());
+    QSqlError( const QString &driverText = QString(),
+               const QString &databaseText = QString(),
+               ErrorType type = NoError,
+               const QString &errorCode = QString() );
 
-   QSqlError(const QSqlError &other);
-   QSqlError &operator=(const QSqlError &other);
-   bool operator==(const QSqlError &other) const;
-   bool operator!=(const QSqlError &other) const;
-   ~QSqlError();
+    QSqlError( const QSqlError &other );
+    QSqlError &operator=( const QSqlError &other );
+    bool operator==( const QSqlError &other ) const;
+    bool operator!=( const QSqlError &other ) const;
+    ~QSqlError();
 
-   QString driverText() const;
+    QString driverText() const;
 
-   QString databaseText() const;
+    QString databaseText() const;
 
-   ErrorType type() const;
+    ErrorType type() const;
 
 
-   QString nativeErrorCode() const;
-   QString text() const;
-   bool isValid() const;
+    QString nativeErrorCode() const;
+    QString text() const;
+    bool isValid() const;
 
- private:
-   QSqlErrorPrivate *d;
+private:
+    QSqlErrorPrivate *d;
 
 
 };
 
-Q_SQL_EXPORT QDebug operator<<(QDebug, const QSqlError &);
+Q_SQL_EXPORT QDebug operator<<( QDebug, const QSqlError & );
 
 
 #endif // QSQLERROR_H

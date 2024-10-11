@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ConservativeRoots_h
@@ -30,60 +30,68 @@
 #include <wtf/OSAllocator.h>
 #include <wtf/Vector.h>
 
-namespace JSC {
+namespace JSC
+{
 
 class JSCell;
 class Heap;
 
 // May contain duplicates.
 
-class ConservativeRoots {
+class ConservativeRoots
+{
 public:
-    ConservativeRoots(Heap*);
+    ConservativeRoots( Heap * );
     ~ConservativeRoots();
 
-    void add(void*);
-    void add(void* begin, void* end);
-    
+    void add( void * );
+    void add( void *begin, void *end );
+
     size_t size();
-    JSCell** roots();
+    JSCell **roots();
 
 private:
     static const size_t inlineCapacity = 128;
-    static const size_t nonInlineCapacity = 8192 / sizeof(JSCell*);
-    
+    static const size_t nonInlineCapacity = 8192 / sizeof( JSCell * );
+
     void grow();
 
-    Heap* m_heap;
-    JSCell** m_roots;
+    Heap *m_heap;
+    JSCell **m_roots;
     size_t m_size;
     size_t m_capacity;
-    JSCell* m_inlineRoots[inlineCapacity];
+    JSCell *m_inlineRoots[inlineCapacity];
 };
 
-inline ConservativeRoots::ConservativeRoots(Heap* heap)
-    : m_heap(heap)
-    , m_roots(m_inlineRoots)
-    , m_size(0)
-    , m_capacity(inlineCapacity)
+inline ConservativeRoots::ConservativeRoots( Heap *heap )
+    : m_heap( heap )
+    , m_roots( m_inlineRoots )
+    , m_size( 0 )
+    , m_capacity( inlineCapacity )
 {
 }
 
 inline ConservativeRoots::~ConservativeRoots()
 {
-    if (m_roots != m_inlineRoots)
-        OSAllocator::decommitAndRelease(m_roots, m_capacity * sizeof(JSCell*));
+    if ( m_roots != m_inlineRoots )
+    {
+        OSAllocator::decommitAndRelease( m_roots, m_capacity * sizeof( JSCell * ) );
+    }
 }
 
-inline void ConservativeRoots::add(void* p)
+inline void ConservativeRoots::add( void *p )
 {
-    if (!m_heap->contains(p))
+    if ( !m_heap->contains( p ) )
+    {
         return;
+    }
 
-    if (m_size == m_capacity)
+    if ( m_size == m_capacity )
+    {
         grow();
+    }
 
-    m_roots[m_size++] = reinterpret_cast<JSCell*>(p);
+    m_roots[m_size++] = reinterpret_cast<JSCell *>( p );
 }
 
 inline size_t ConservativeRoots::size()
@@ -91,7 +99,7 @@ inline size_t ConservativeRoots::size()
     return m_size;
 }
 
-inline JSCell** ConservativeRoots::roots()
+inline JSCell **ConservativeRoots::roots()
 {
     return m_roots;
 }

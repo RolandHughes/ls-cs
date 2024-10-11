@@ -32,22 +32,24 @@
 #include "UStringConcatenate.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-static JSValue regExpObjectGlobal(ExecState*, JSValue, const Identifier&);
-static JSValue regExpObjectIgnoreCase(ExecState*, JSValue, const Identifier&);
-static JSValue regExpObjectMultiline(ExecState*, JSValue, const Identifier&);
-static JSValue regExpObjectSource(ExecState*, JSValue, const Identifier&);
-static JSValue regExpObjectLastIndex(ExecState*, JSValue, const Identifier&);
-static void setRegExpObjectLastIndex(ExecState*, JSObject*, JSValue);
+static JSValue regExpObjectGlobal( ExecState *, JSValue, const Identifier & );
+static JSValue regExpObjectIgnoreCase( ExecState *, JSValue, const Identifier & );
+static JSValue regExpObjectMultiline( ExecState *, JSValue, const Identifier & );
+static JSValue regExpObjectSource( ExecState *, JSValue, const Identifier & );
+static JSValue regExpObjectLastIndex( ExecState *, JSValue, const Identifier & );
+static void setRegExpObjectLastIndex( ExecState *, JSObject *, JSValue );
 
 } // namespace JSC
 
 #include "RegExpObject.lut.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(RegExpObject);
+ASSERT_CLASS_FITS_IN_CELL( RegExpObject );
 
 const ClassInfo RegExpObject::s_info = { "RegExp", &JSObjectWithGlobalObject::s_info, 0, ExecState::regExpTable };
 
@@ -61,120 +63,138 @@ const ClassInfo RegExpObject::s_info = { "RegExp", &JSObjectWithGlobalObject::s_
 @end
 */
 
-RegExpObject::RegExpObject(JSGlobalObject* globalObject, Structure* structure, NonNullPassRefPtr<RegExp> regExp)
-    : JSObjectWithGlobalObject(globalObject, structure)
-    , d(adoptPtr(new RegExpObjectData(regExp)))
+RegExpObject::RegExpObject( JSGlobalObject *globalObject, Structure *structure, NonNullPassRefPtr<RegExp> regExp )
+    : JSObjectWithGlobalObject( globalObject, structure )
+    , d( adoptPtr( new RegExpObjectData( regExp ) ) )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
 RegExpObject::~RegExpObject()
 {
 }
 
-void RegExpObject::visitChildren(SlotVisitor& visitor)
+void RegExpObject::visitChildren( SlotVisitor &visitor )
 {
-    Base::visitChildren(visitor);
-    if (UNLIKELY(!d->lastIndex.get().isInt32()))
-        visitor.append(&d->lastIndex);
+    Base::visitChildren( visitor );
+
+    if ( UNLIKELY( !d->lastIndex.get().isInt32() ) )
+    {
+        visitor.append( &d->lastIndex );
+    }
 }
 
-bool RegExpObject::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool RegExpObject::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<RegExpObject, JSObject>(exec, ExecState::regExpTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<RegExpObject, JSObject>( exec, ExecState::regExpTable( exec ), this, propertyName, slot );
 }
 
-bool RegExpObject::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool RegExpObject::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<RegExpObject, JSObject>(exec, ExecState::regExpTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<RegExpObject, JSObject>( exec, ExecState::regExpTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue regExpObjectGlobal(ExecState*, JSValue slotBase, const Identifier&)
+JSValue regExpObjectGlobal( ExecState *, JSValue slotBase, const Identifier & )
 {
-    return jsBoolean(asRegExpObject(slotBase)->regExp()->global());
+    return jsBoolean( asRegExpObject( slotBase )->regExp()->global() );
 }
 
-JSValue regExpObjectIgnoreCase(ExecState*, JSValue slotBase, const Identifier&)
+JSValue regExpObjectIgnoreCase( ExecState *, JSValue slotBase, const Identifier & )
 {
-    return jsBoolean(asRegExpObject(slotBase)->regExp()->ignoreCase());
-}
- 
-JSValue regExpObjectMultiline(ExecState*, JSValue slotBase, const Identifier&)
-{            
-    return jsBoolean(asRegExpObject(slotBase)->regExp()->multiline());
+    return jsBoolean( asRegExpObject( slotBase )->regExp()->ignoreCase() );
 }
 
-JSValue regExpObjectSource(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue regExpObjectMultiline( ExecState *, JSValue slotBase, const Identifier & )
 {
-    return jsString(exec, asRegExpObject(slotBase)->regExp()->pattern());
+    return jsBoolean( asRegExpObject( slotBase )->regExp()->multiline() );
 }
 
-JSValue regExpObjectLastIndex(ExecState*, JSValue slotBase, const Identifier&)
+JSValue regExpObjectSource( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    return asRegExpObject(slotBase)->getLastIndex();
+    return jsString( exec, asRegExpObject( slotBase )->regExp()->pattern() );
 }
 
-void RegExpObject::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+JSValue regExpObjectLastIndex( ExecState *, JSValue slotBase, const Identifier & )
 {
-    lookupPut<RegExpObject, JSObject>(exec, propertyName, value, ExecState::regExpTable(exec), this, slot);
+    return asRegExpObject( slotBase )->getLastIndex();
 }
 
-void setRegExpObjectLastIndex(ExecState* exec, JSObject* baseObject, JSValue value)
+void RegExpObject::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    asRegExpObject(baseObject)->setLastIndex(exec->globalData(), value);
+    lookupPut<RegExpObject, JSObject>( exec, propertyName, value, ExecState::regExpTable( exec ), this, slot );
 }
 
-JSValue RegExpObject::test(ExecState* exec)
+void setRegExpObjectLastIndex( ExecState *exec, JSObject *baseObject, JSValue value )
 {
-    return jsBoolean(match(exec));
+    asRegExpObject( baseObject )->setLastIndex( exec->globalData(), value );
 }
 
-JSValue RegExpObject::exec(ExecState* exec)
+JSValue RegExpObject::test( ExecState *exec )
 {
-    if (match(exec))
-        return exec->lexicalGlobalObject()->regExpConstructor()->arrayOfMatches(exec);
+    return jsBoolean( match( exec ) );
+}
+
+JSValue RegExpObject::exec( ExecState *exec )
+{
+    if ( match( exec ) )
+    {
+        return exec->lexicalGlobalObject()->regExpConstructor()->arrayOfMatches( exec );
+    }
+
     return jsNull();
 }
 
 // Shared implementation used by test and exec.
-bool RegExpObject::match(ExecState* exec)
+bool RegExpObject::match( ExecState *exec )
 {
-    RegExpConstructor* regExpConstructor = exec->lexicalGlobalObject()->regExpConstructor();
-    UString input = exec->argument(0).toString(exec);
+    RegExpConstructor *regExpConstructor = exec->lexicalGlobalObject()->regExpConstructor();
+    UString input = exec->argument( 0 ).toString( exec );
 
-    if (!regExp()->global()) {
+    if ( !regExp()->global() )
+    {
         int position;
         int length;
-        regExpConstructor->performMatch(d->regExp.get(), input, 0, position, length);
+        regExpConstructor->performMatch( d->regExp.get(), input, 0, position, length );
         return position >= 0;
     }
 
     JSValue jsLastIndex = getLastIndex();
     unsigned lastIndex;
-    if (LIKELY(jsLastIndex.isUInt32())) {
+
+    if ( LIKELY( jsLastIndex.isUInt32() ) )
+    {
         lastIndex = jsLastIndex.asUInt32();
-        if (lastIndex > input.length()) {
-            setLastIndex(0);
+
+        if ( lastIndex > input.length() )
+        {
+            setLastIndex( 0 );
             return false;
         }
-    } else {
-        double doubleLastIndex = jsLastIndex.toInteger(exec);
-        if (doubleLastIndex < 0 || doubleLastIndex > input.length()) {
-            setLastIndex(0);
+    }
+    else
+    {
+        double doubleLastIndex = jsLastIndex.toInteger( exec );
+
+        if ( doubleLastIndex < 0 || doubleLastIndex > input.length() )
+        {
+            setLastIndex( 0 );
             return false;
         }
-        lastIndex = static_cast<unsigned>(doubleLastIndex);
+
+        lastIndex = static_cast<unsigned>( doubleLastIndex );
     }
 
     int position;
     int length = 0;
-    regExpConstructor->performMatch(d->regExp.get(), input, lastIndex, position, length);
-    if (position < 0) {
-        setLastIndex(0);
+    regExpConstructor->performMatch( d->regExp.get(), input, lastIndex, position, length );
+
+    if ( position < 0 )
+    {
+        setLastIndex( 0 );
         return false;
     }
 
-    setLastIndex(position + length);
+    setLastIndex( position + length );
     return true;
 }
 

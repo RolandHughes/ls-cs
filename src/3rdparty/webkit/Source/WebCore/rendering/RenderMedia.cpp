@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,28 +31,29 @@
 #include "HTMLMediaElement.h"
 #include "RenderView.h"
 
-namespace WebCore {
-
-RenderMedia::RenderMedia(HTMLMediaElement* video)
-    : RenderImage(video)
+namespace WebCore
 {
-    setImageResource(RenderImageResource::create());
+
+RenderMedia::RenderMedia( HTMLMediaElement *video )
+    : RenderImage( video )
+{
+    setImageResource( RenderImageResource::create() );
 }
 
-RenderMedia::RenderMedia(HTMLMediaElement* video, const IntSize& intrinsicSize)
-    : RenderImage(video)
+RenderMedia::RenderMedia( HTMLMediaElement *video, const IntSize &intrinsicSize )
+    : RenderImage( video )
 {
-    setImageResource(RenderImageResource::create());
-    setIntrinsicSize(intrinsicSize);
+    setImageResource( RenderImageResource::create() );
+    setIntrinsicSize( intrinsicSize );
 }
 
 RenderMedia::~RenderMedia()
 {
 }
 
-HTMLMediaElement* RenderMedia::mediaElement() const
-{ 
-    return static_cast<HTMLMediaElement*>(node()); 
+HTMLMediaElement *RenderMedia::mediaElement() const
+{
+    return static_cast<HTMLMediaElement *>( node() );
 }
 
 void RenderMedia::layout()
@@ -61,25 +62,32 @@ void RenderMedia::layout()
 
     RenderImage::layout();
 
-    RenderBox* controlsRenderer = toRenderBox(m_children.firstChild());
-    if (!controlsRenderer)
+    RenderBox *controlsRenderer = toRenderBox( m_children.firstChild() );
+
+    if ( !controlsRenderer )
+    {
         return;
+    }
 
     IntSize newSize = contentBoxRect().size();
-    if (newSize == oldSize && !controlsRenderer->needsLayout())
-        return;
 
-    // When calling layout() on a child node, a parent must either push a LayoutStateMaintainter, or 
+    if ( newSize == oldSize && !controlsRenderer->needsLayout() )
+    {
+        return;
+    }
+
+    // When calling layout() on a child node, a parent must either push a LayoutStateMaintainter, or
     // call view()->disableLayoutState().  Since using a LayoutStateMaintainer is slightly more efficient,
     // and this method will be called many times per second during playback, use a LayoutStateMaintainer:
-    LayoutStateMaintainer statePusher(view(), this, IntSize(x(), y()), hasTransform() || hasReflection() || style()->isFlippedBlocksWritingMode());
+    LayoutStateMaintainer statePusher( view(), this, IntSize( x(), y() ), hasTransform() || hasReflection()
+                                       || style()->isFlippedBlocksWritingMode() );
 
-    controlsRenderer->setLocation(borderLeft() + paddingLeft(), borderTop() + paddingTop());
-    controlsRenderer->style()->setHeight(Length(newSize.height(), Fixed));
-    controlsRenderer->style()->setWidth(Length(newSize.width(), Fixed));
-    controlsRenderer->setNeedsLayout(true, false);
+    controlsRenderer->setLocation( borderLeft() + paddingLeft(), borderTop() + paddingTop() );
+    controlsRenderer->style()->setHeight( Length( newSize.height(), Fixed ) );
+    controlsRenderer->style()->setWidth( Length( newSize.width(), Fixed ) );
+    controlsRenderer->setNeedsLayout( true, false );
     controlsRenderer->layout();
-    setChildNeedsLayout(false);
+    setChildNeedsLayout( false );
 
     statePusher.pop();
 }

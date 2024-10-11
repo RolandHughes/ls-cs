@@ -37,10 +37,13 @@
 typedef uint16_t UChar;
 typedef int32_t UChar32;
 
-namespace WTF {
-namespace Unicode {
+namespace WTF
+{
+namespace Unicode
+{
 
-enum Direction {
+enum Direction
+{
     LeftToRight,
     RightToLeft,
     EuropeanNumber,
@@ -62,7 +65,8 @@ enum Direction {
     BoundaryNeutral
 };
 
-enum DecompositionType {
+enum DecompositionType
+{
     DecompositionNone,
     DecompositionCanonical,
     DecompositionCompat,
@@ -83,158 +87,161 @@ enum DecompositionType {
     DecompositionWide,
 };
 
-enum CharCategory {
+enum CharCategory
+{
     NoCategory =  0,
-    Other_NotAssigned = U_MASK(G_UNICODE_UNASSIGNED),
-    Letter_Uppercase = U_MASK(G_UNICODE_UPPERCASE_LETTER),
-    Letter_Lowercase = U_MASK(G_UNICODE_LOWERCASE_LETTER),
-    Letter_Titlecase = U_MASK(G_UNICODE_TITLECASE_LETTER),
-    Letter_Modifier = U_MASK(G_UNICODE_MODIFIER_LETTER),
-    Letter_Other = U_MASK(G_UNICODE_OTHER_LETTER),
+    Other_NotAssigned = U_MASK( G_UNICODE_UNASSIGNED ),
+    Letter_Uppercase = U_MASK( G_UNICODE_UPPERCASE_LETTER ),
+    Letter_Lowercase = U_MASK( G_UNICODE_LOWERCASE_LETTER ),
+    Letter_Titlecase = U_MASK( G_UNICODE_TITLECASE_LETTER ),
+    Letter_Modifier = U_MASK( G_UNICODE_MODIFIER_LETTER ),
+    Letter_Other = U_MASK( G_UNICODE_OTHER_LETTER ),
 
-    Mark_NonSpacing = U_MASK(G_UNICODE_NON_SPACING_MARK),
-    Mark_Enclosing = U_MASK(G_UNICODE_ENCLOSING_MARK),
-    Mark_SpacingCombining = U_MASK(G_UNICODE_COMBINING_MARK),
+    Mark_NonSpacing = U_MASK( G_UNICODE_NON_SPACING_MARK ),
+    Mark_Enclosing = U_MASK( G_UNICODE_ENCLOSING_MARK ),
+    Mark_SpacingCombining = U_MASK( G_UNICODE_COMBINING_MARK ),
 
-    Number_DecimalDigit = U_MASK(G_UNICODE_DECIMAL_NUMBER),
-    Number_Letter = U_MASK(G_UNICODE_LETTER_NUMBER),
-    Number_Other = U_MASK(G_UNICODE_OTHER_NUMBER),
+    Number_DecimalDigit = U_MASK( G_UNICODE_DECIMAL_NUMBER ),
+    Number_Letter = U_MASK( G_UNICODE_LETTER_NUMBER ),
+    Number_Other = U_MASK( G_UNICODE_OTHER_NUMBER ),
 
-    Separator_Space = U_MASK(G_UNICODE_SPACE_SEPARATOR),
-    Separator_Line = U_MASK(G_UNICODE_LINE_SEPARATOR),
-    Separator_Paragraph = U_MASK(G_UNICODE_PARAGRAPH_SEPARATOR),
+    Separator_Space = U_MASK( G_UNICODE_SPACE_SEPARATOR ),
+    Separator_Line = U_MASK( G_UNICODE_LINE_SEPARATOR ),
+    Separator_Paragraph = U_MASK( G_UNICODE_PARAGRAPH_SEPARATOR ),
 
-    Other_Control = U_MASK(G_UNICODE_CONTROL),
-    Other_Format = U_MASK(G_UNICODE_FORMAT),
-    Other_PrivateUse = U_MASK(G_UNICODE_PRIVATE_USE),
-    Other_Surrogate = U_MASK(G_UNICODE_SURROGATE),
+    Other_Control = U_MASK( G_UNICODE_CONTROL ),
+    Other_Format = U_MASK( G_UNICODE_FORMAT ),
+    Other_PrivateUse = U_MASK( G_UNICODE_PRIVATE_USE ),
+    Other_Surrogate = U_MASK( G_UNICODE_SURROGATE ),
 
-    Punctuation_Dash = U_MASK(G_UNICODE_DASH_PUNCTUATION),
-    Punctuation_Open = U_MASK(G_UNICODE_OPEN_PUNCTUATION),
-    Punctuation_Close = U_MASK(G_UNICODE_CLOSE_PUNCTUATION),
-    Punctuation_Connector = U_MASK(G_UNICODE_CONNECT_PUNCTUATION),
-    Punctuation_Other = U_MASK(G_UNICODE_OTHER_PUNCTUATION),
+    Punctuation_Dash = U_MASK( G_UNICODE_DASH_PUNCTUATION ),
+    Punctuation_Open = U_MASK( G_UNICODE_OPEN_PUNCTUATION ),
+    Punctuation_Close = U_MASK( G_UNICODE_CLOSE_PUNCTUATION ),
+    Punctuation_Connector = U_MASK( G_UNICODE_CONNECT_PUNCTUATION ),
+    Punctuation_Other = U_MASK( G_UNICODE_OTHER_PUNCTUATION ),
 
-    Symbol_Math = U_MASK(G_UNICODE_MATH_SYMBOL),
-    Symbol_Currency = U_MASK(G_UNICODE_CURRENCY_SYMBOL),
-    Symbol_Modifier = U_MASK(G_UNICODE_MODIFIER_SYMBOL),
-    Symbol_Other = U_MASK(G_UNICODE_OTHER_SYMBOL),
+    Symbol_Math = U_MASK( G_UNICODE_MATH_SYMBOL ),
+    Symbol_Currency = U_MASK( G_UNICODE_CURRENCY_SYMBOL ),
+    Symbol_Modifier = U_MASK( G_UNICODE_MODIFIER_SYMBOL ),
+    Symbol_Other = U_MASK( G_UNICODE_OTHER_SYMBOL ),
 
-    Punctuation_InitialQuote = U_MASK(G_UNICODE_INITIAL_PUNCTUATION),
-    Punctuation_FinalQuote = U_MASK(G_UNICODE_FINAL_PUNCTUATION)
+    Punctuation_InitialQuote = U_MASK( G_UNICODE_INITIAL_PUNCTUATION ),
+    Punctuation_FinalQuote = U_MASK( G_UNICODE_FINAL_PUNCTUATION )
 };
 
-UChar32 foldCase(UChar32);
+UChar32 foldCase( UChar32 );
 
-int foldCase(UChar* result, int resultLength, const UChar* src, int srcLength, bool* error);
+int foldCase( UChar *result, int resultLength, const UChar *src, int srcLength, bool *error );
 
-int toLower(UChar* result, int resultLength, const UChar* src, int srcLength, bool* error);
+int toLower( UChar *result, int resultLength, const UChar *src, int srcLength, bool *error );
 
-inline UChar32 toLower(UChar32 c)
+inline UChar32 toLower( UChar32 c )
 {
-    return g_unichar_tolower(c);
+    return g_unichar_tolower( c );
 }
 
-inline UChar32 toUpper(UChar32 c)
+inline UChar32 toUpper( UChar32 c )
 {
-    return g_unichar_toupper(c);
+    return g_unichar_toupper( c );
 }
 
-int toUpper(UChar* result, int resultLength, const UChar* src, int srcLength, bool* error);
+int toUpper( UChar *result, int resultLength, const UChar *src, int srcLength, bool *error );
 
-inline UChar32 toTitleCase(UChar32 c)
+inline UChar32 toTitleCase( UChar32 c )
 {
-    return g_unichar_totitle(c);
+    return g_unichar_totitle( c );
 }
 
-inline bool isArabicChar(UChar32 c)
+inline bool isArabicChar( UChar32 c )
 {
     return c >= 0x0600 && c <= 0x06FF;
 }
 
-inline bool isAlphanumeric(UChar32 c)
+inline bool isAlphanumeric( UChar32 c )
 {
-    return g_unichar_isalnum(c);
+    return g_unichar_isalnum( c );
 }
 
-inline bool isFormatChar(UChar32 c)
+inline bool isFormatChar( UChar32 c )
 {
-    return g_unichar_type(c) == G_UNICODE_FORMAT;
+    return g_unichar_type( c ) == G_UNICODE_FORMAT;
 }
 
-inline bool isSeparatorSpace(UChar32 c)
+inline bool isSeparatorSpace( UChar32 c )
 {
-    return g_unichar_type(c) == G_UNICODE_SPACE_SEPARATOR;
+    return g_unichar_type( c ) == G_UNICODE_SPACE_SEPARATOR;
 }
 
-inline bool isPrintableChar(UChar32 c)
+inline bool isPrintableChar( UChar32 c )
 {
-    return g_unichar_isprint(c);
+    return g_unichar_isprint( c );
 }
 
-inline bool isDigit(UChar32 c)
+inline bool isDigit( UChar32 c )
 {
-    return g_unichar_isdigit(c);
+    return g_unichar_isdigit( c );
 }
 
-inline bool isPunct(UChar32 c)
+inline bool isPunct( UChar32 c )
 {
-    return g_unichar_ispunct(c);
+    return g_unichar_ispunct( c );
 }
 
-inline bool hasLineBreakingPropertyComplexContext(UChar32 c)
-{
-    // FIXME
-    return false;
-}
-
-inline bool hasLineBreakingPropertyComplexContextOrIdeographic(UChar32 c)
+inline bool hasLineBreakingPropertyComplexContext( UChar32 c )
 {
     // FIXME
     return false;
 }
 
-inline UChar32 mirroredChar(UChar32 c)
+inline bool hasLineBreakingPropertyComplexContextOrIdeographic( UChar32 c )
+{
+    // FIXME
+    return false;
+}
+
+inline UChar32 mirroredChar( UChar32 c )
 {
     gunichar mirror = 0;
-    g_unichar_get_mirror_char(c, &mirror);
+    g_unichar_get_mirror_char( c, &mirror );
     return mirror;
 }
 
-inline CharCategory category(UChar32 c)
+inline CharCategory category( UChar32 c )
 {
-    if (c > 0xffff)
+    if ( c > 0xffff )
+    {
         return NoCategory;
+    }
 
-    return (CharCategory) U_MASK(g_unichar_type(c));
+    return ( CharCategory ) U_MASK( g_unichar_type( c ) );
 }
 
-Direction direction(UChar32);
+Direction direction( UChar32 );
 
-inline bool isLower(UChar32 c)
+inline bool isLower( UChar32 c )
 {
-    return g_unichar_islower(c);
+    return g_unichar_islower( c );
 }
 
-inline int digitValue(UChar32 c)
+inline int digitValue( UChar32 c )
 {
-    return g_unichar_digit_value(c);
+    return g_unichar_digit_value( c );
 }
 
-inline uint8_t combiningClass(UChar32 c)
+inline uint8_t combiningClass( UChar32 c )
 {
     // FIXME
     // return g_unichar_combining_class(c);
     return 0;
 }
 
-inline DecompositionType decompositionType(UChar32 c)
+inline DecompositionType decompositionType( UChar32 c )
 {
     // FIXME
     return DecompositionNone;
 }
 
-int umemcasecmp(const UChar*, const UChar*, int len);
+int umemcasecmp( const UChar *, const UChar *, int len );
 
 }
 }

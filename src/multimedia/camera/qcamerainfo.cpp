@@ -31,57 +31,63 @@
 
 class QCameraInfoPrivate
 {
- public:
-   QCameraInfoPrivate()
-      : isNull(true), position(QCamera::UnspecifiedPosition), orientation(0)
-   {
-   }
+public:
+    QCameraInfoPrivate()
+        : isNull( true ), position( QCamera::UnspecifiedPosition ), orientation( 0 )
+    {
+    }
 
-   bool isNull;
-   QString deviceName;
-   QString description;
-   QCamera::Position position;
-   int orientation;
+    bool isNull;
+    QString deviceName;
+    QString description;
+    QCamera::Position position;
+    int orientation;
 };
 
-QCameraInfo::QCameraInfo(const QCamera &camera)
-   : d(new QCameraInfoPrivate)
+QCameraInfo::QCameraInfo( const QCamera &camera )
+    : d( new QCameraInfoPrivate )
 {
-   const QVideoDeviceSelectorControl *deviceControl = camera.d_func()->deviceControl;
-   if (deviceControl && deviceControl->deviceCount() > 0) {
-      const int selectedDevice = deviceControl->selectedDevice();
-      d->deviceName = deviceControl->deviceName(selectedDevice);
-      d->description = deviceControl->deviceDescription(selectedDevice);
-      d->isNull = false;
-   }
+    const QVideoDeviceSelectorControl *deviceControl = camera.d_func()->deviceControl;
 
-   const QCameraInfoControl *infoControl = camera.d_func()->infoControl;
-   if (infoControl) {
-      d->position = infoControl->cameraPosition(d->deviceName);
-      d->orientation = infoControl->cameraOrientation(d->deviceName);
-      d->isNull = false;
-   }
+    if ( deviceControl && deviceControl->deviceCount() > 0 )
+    {
+        const int selectedDevice = deviceControl->selectedDevice();
+        d->deviceName = deviceControl->deviceName( selectedDevice );
+        d->description = deviceControl->deviceDescription( selectedDevice );
+        d->isNull = false;
+    }
+
+    const QCameraInfoControl *infoControl = camera.d_func()->infoControl;
+
+    if ( infoControl )
+    {
+        d->position = infoControl->cameraPosition( d->deviceName );
+        d->orientation = infoControl->cameraOrientation( d->deviceName );
+        d->isNull = false;
+    }
 }
 
-QCameraInfo::QCameraInfo(const QString &name)
-   : d(new QCameraInfoPrivate)
+QCameraInfo::QCameraInfo( const QString &name )
+    : d( new QCameraInfoPrivate )
 {
-   if (! name.empty()) {
-      QMediaServiceProvider *provider = QMediaServiceProvider::defaultServiceProvider();
-      const QByteArray service(Q_MEDIASERVICE_CAMERA);
+    if ( ! name.empty() )
+    {
+        QMediaServiceProvider *provider = QMediaServiceProvider::defaultServiceProvider();
+        const QByteArray service( Q_MEDIASERVICE_CAMERA );
 
-      if (provider->devices(service).contains(name)) {
-         d->deviceName  = name;
-         d->description = provider->deviceDescription(service, name);
-         d->position    = provider->cameraPosition(name);
-         d->orientation = provider->cameraOrientation(name);
-         d->isNull = false;
-      }
-   }
+        if ( provider->devices( service ).contains( name ) )
+        {
+            d->deviceName  = name;
+            d->description = provider->deviceDescription( service, name );
+            d->position    = provider->cameraPosition( name );
+            d->orientation = provider->cameraOrientation( name );
+            d->isNull = false;
+        }
+    }
 }
 
-QCameraInfo::QCameraInfo(const QCameraInfo &other)
-   : d(other.d)
+QCameraInfo::QCameraInfo( const QCameraInfo &other )
+    : d( other.d )
 {
 }
 
@@ -89,80 +95,83 @@ QCameraInfo::~QCameraInfo()
 {
 }
 
-bool QCameraInfo::operator==(const QCameraInfo &other) const
+bool QCameraInfo::operator==( const QCameraInfo &other ) const
 {
-   if (d == other.d) {
-      return true;
-   }
+    if ( d == other.d )
+    {
+        return true;
+    }
 
-   return (d->deviceName == other.d->deviceName
-           && d->description == other.d->description
-           && d->position == other.d->position
-           && d->orientation == other.d->orientation);
+    return ( d->deviceName == other.d->deviceName
+             && d->description == other.d->description
+             && d->position == other.d->position
+             && d->orientation == other.d->orientation );
 }
 
 bool QCameraInfo::isNull() const
 {
-   return d->isNull;
+    return d->isNull;
 }
 
 QString QCameraInfo::deviceName() const
 {
-   return d->deviceName;
+    return d->deviceName;
 }
 
 QString QCameraInfo::description() const
 {
-   return d->description;
+    return d->description;
 }
 
 QCamera::Position QCameraInfo::position() const
 {
-   return d->position;
+    return d->position;
 }
 
 int QCameraInfo::orientation() const
 {
-   return d->orientation;
+    return d->orientation;
 }
 
 QCameraInfo QCameraInfo::defaultCamera()
 {
-   return QCameraInfo(QMediaServiceProvider::defaultServiceProvider()->defaultDevice(Q_MEDIASERVICE_CAMERA));
+    return QCameraInfo( QMediaServiceProvider::defaultServiceProvider()->defaultDevice( Q_MEDIASERVICE_CAMERA ) );
 }
 
-QList<QCameraInfo> QCameraInfo::availableCameras(QCamera::Position position)
+QList<QCameraInfo> QCameraInfo::availableCameras( QCamera::Position position )
 {
-   QList<QCameraInfo> cameras;
+    QList<QCameraInfo> cameras;
 
-   const QMediaServiceProvider *provider = QMediaServiceProvider::defaultServiceProvider();
-   const QByteArray service(Q_MEDIASERVICE_CAMERA);
+    const QMediaServiceProvider *provider = QMediaServiceProvider::defaultServiceProvider();
+    const QByteArray service( Q_MEDIASERVICE_CAMERA );
 
-   const QList<QString> devices = provider->devices(service);
+    const QList<QString> devices = provider->devices( service );
 
-   for (const auto &name : devices) {
-      if (position == QCamera::UnspecifiedPosition || position == provider->cameraPosition(name)) {
-         cameras.append(QCameraInfo(name));
-      }
-   }
+    for ( const auto &name : devices )
+    {
+        if ( position == QCamera::UnspecifiedPosition || position == provider->cameraPosition( name ) )
+        {
+            cameras.append( QCameraInfo( name ) );
+        }
+    }
 
-   return cameras;
+    return cameras;
 }
 
-QCameraInfo &QCameraInfo::operator=(const QCameraInfo &other)
+QCameraInfo &QCameraInfo::operator=( const QCameraInfo &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
-QDebug operator<<(QDebug d, const QCameraInfo &camera)
+QDebug operator<<( QDebug d, const QCameraInfo &camera )
 {
-   auto &metaObj = QCamera::staticMetaObject();
+    auto &metaObj = QCamera::staticMetaObject();
 
-   d.maybeSpace() << QString("QCameraInfo(deviceName = %1, position = %2, orientation = %3)")
-                  .formatArg(camera.deviceName())
-                  .formatArg(metaObj.enumerator(metaObj.indexOfEnumerator("Position")).valueToKey(camera.position()))
-                  .formatArg(camera.orientation());
+    d.maybeSpace() << QString( "QCameraInfo(deviceName = %1, position = %2, orientation = %3)" )
+                   .formatArg( camera.deviceName() )
+                   .formatArg( metaObj.enumerator( metaObj.indexOfEnumerator( "Position" ) ).valueToKey( camera.position() ) )
+                   .formatArg( camera.orientation() );
 
-   return d.space();
+    return d.space();
 }

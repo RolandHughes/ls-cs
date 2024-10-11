@@ -36,59 +36,60 @@ class QDBusServiceWatcherPrivate;
 
 class Q_DBUS_EXPORT QDBusServiceWatcher: public QObject
 {
-    CS_OBJECT(QDBusServiceWatcher)
-    CS_PROPERTY_READ(watchedServices, watchedServices)
-    CS_PROPERTY_WRITE(watchedServices, setWatchedServices)
-    CS_PROPERTY_READ(watchMode, watchMode)
-    CS_PROPERTY_WRITE(watchMode, setWatchMode)
+    LSCS_OBJECT( QDBusServiceWatcher )
+    LSCS_PROPERTY_READ( watchedServices, watchedServices )
+    LSCS_PROPERTY_WRITE( watchedServices, setWatchedServices )
+    LSCS_PROPERTY_READ( watchMode, watchMode )
+    LSCS_PROPERTY_WRITE( watchMode, setWatchMode )
 public:
-    enum WatchModeFlag {
+    enum WatchModeFlag
+    {
         WatchForRegistration = 0x01,
         WatchForUnregistration = 0x02,
         WatchForOwnerChange = 0x03
     };
     using WatchMode = QFlags<WatchModeFlag>;
 
-    explicit QDBusServiceWatcher(QObject *parent = nullptr);
-    QDBusServiceWatcher(const QString &service, const QDBusConnection &connection,
-                        WatchMode watchMode = WatchForOwnerChange, QObject *parent = nullptr);
+    explicit QDBusServiceWatcher( QObject *parent = nullptr );
+    QDBusServiceWatcher( const QString &service, const QDBusConnection &connection,
+                         WatchMode watchMode = WatchForOwnerChange, QObject *parent = nullptr );
     ~QDBusServiceWatcher();
 
     QStringList watchedServices() const;
-    void setWatchedServices(const QStringList &services);
-    void addWatchedService(const QString &newService);
-    bool removeWatchedService(const QString &service);
+    void setWatchedServices( const QStringList &services );
+    void addWatchedService( const QString &newService );
+    bool removeWatchedService( const QString &service );
 
     WatchMode watchMode() const;
-    void setWatchMode(WatchMode mode);
+    void setWatchMode( WatchMode mode );
 
     QDBusConnection connection() const;
-    void setConnection(const QDBusConnection &connection);
+    void setConnection( const QDBusConnection &connection );
 
 public:
-    CS_SIGNAL_1(Public, void serviceRegistered(const QString & service))
-    CS_SIGNAL_2(serviceRegistered,service) 
-    CS_SIGNAL_1(Public, void serviceUnregistered(const QString & service))
-    CS_SIGNAL_2(serviceUnregistered,service) 
-    CS_SIGNAL_1(Public, void serviceOwnerChanged(const QString & service,const QString & oldOwner,const QString & newOwner))
-    CS_SIGNAL_2(serviceOwnerChanged,service,oldOwner,newOwner) 
+    LSCS_SIGNAL_1( Public, void serviceRegistered( const QString &service ) )
+    LSCS_SIGNAL_2( serviceRegistered,service )
+    LSCS_SIGNAL_1( Public, void serviceUnregistered( const QString &service ) )
+    LSCS_SIGNAL_2( serviceUnregistered,service )
+    LSCS_SIGNAL_1( Public, void serviceOwnerChanged( const QString &service,const QString &oldOwner,const QString &newOwner ) )
+    LSCS_SIGNAL_2( serviceOwnerChanged,service,oldOwner,newOwner )
 
 private:
-    CS_SLOT_1(Private, void _q_serviceOwnerChanged(QString un_named_arg1,QString un_named_arg2,QString un_named_arg3))
-    CS_SLOT_2(_q_serviceOwnerChanged)
+    LSCS_SLOT_1( Private, void _q_serviceOwnerChanged( QString un_named_arg1,QString un_named_arg2,QString un_named_arg3 ) )
+    LSCS_SLOT_2( _q_serviceOwnerChanged )
 
-/*  PRIVATE_SLOT
-void _q_serviceOwnerChanged(QString un_named_arg1,QString un_named_arg2,QString un_named_arg3)
-{
-	Q_D(QDBusServiceWatcher);
-	d->_q_serviceOwnerChanged();
-}
-*/
-    Q_DISABLE_COPY(QDBusServiceWatcher)
-    Q_DECLARE_PRIVATE(QDBusServiceWatcher)
+    /*  PRIVATE_SLOT
+    void _q_serviceOwnerChanged(QString un_named_arg1,QString un_named_arg2,QString un_named_arg3)
+    {
+        Q_D(QDBusServiceWatcher);
+        d->_q_serviceOwnerChanged();
+    }
+    */
+    Q_DISABLE_COPY( QDBusServiceWatcher )
+    Q_DECLARE_PRIVATE( QDBusServiceWatcher )
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QDBusServiceWatcher::WatchMode)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QDBusServiceWatcher::WatchMode )
 
 QT_END_NAMESPACE
 

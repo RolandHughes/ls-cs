@@ -31,52 +31,59 @@
 
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
-
-PassRefPtr<SourceAlpha> SourceAlpha::create(Filter* filter)
+namespace WebCore
 {
-    return adoptRef(new SourceAlpha(filter));
+
+PassRefPtr<SourceAlpha> SourceAlpha::create( Filter *filter )
+{
+    return adoptRef( new SourceAlpha( filter ) );
 }
 
-const AtomicString& SourceAlpha::effectName()
+const AtomicString &SourceAlpha::effectName()
 {
-    DEFINE_STATIC_LOCAL(const AtomicString, s_effectName, ("SourceAlpha"));
+    DEFINE_STATIC_LOCAL( const AtomicString, s_effectName, ( "SourceAlpha" ) );
     return s_effectName;
 }
 
 void SourceAlpha::determineAbsolutePaintRect()
 {
-    Filter* filter = this->filter();
+    Filter *filter = this->filter();
     FloatRect paintRect = filter->sourceImageRect();
-    paintRect.scale(filter->filterResolution().width(), filter->filterResolution().height());
-    setAbsolutePaintRect(enclosingIntRect(paintRect));
+    paintRect.scale( filter->filterResolution().width(), filter->filterResolution().height() );
+    setAbsolutePaintRect( enclosingIntRect( paintRect ) );
 }
 
 void SourceAlpha::apply()
 {
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    ImageBuffer* resultImage = createImageBufferResult();
-    Filter* filter = this->filter();
-    if (!resultImage || !filter->sourceImage())
+    }
+
+    ImageBuffer *resultImage = createImageBufferResult();
+    Filter *filter = this->filter();
+
+    if ( !resultImage || !filter->sourceImage() )
+    {
         return;
+    }
 
-    setIsAlphaImage(true);
+    setIsAlphaImage( true );
 
-    FloatRect imageRect(FloatPoint(), absolutePaintRect().size());
-    GraphicsContext* filterContext = resultImage->context();
-    GraphicsContextStateSaver stateSaver(*filterContext);
-    filterContext->clipToImageBuffer(filter->sourceImage(), imageRect);
-    filterContext->fillRect(imageRect, Color::black, ColorSpaceDeviceRGB);
+    FloatRect imageRect( FloatPoint(), absolutePaintRect().size() );
+    GraphicsContext *filterContext = resultImage->context();
+    GraphicsContextStateSaver stateSaver( *filterContext );
+    filterContext->clipToImageBuffer( filter->sourceImage(), imageRect );
+    filterContext->fillRect( imageRect, Color::black, ColorSpaceDeviceRGB );
 }
 
 void SourceAlpha::dump()
 {
 }
 
-TextStream& SourceAlpha::externalRepresentation(TextStream& ts, int indent) const
+TextStream &SourceAlpha::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[SourceAlpha]\n";
     return ts;
 }

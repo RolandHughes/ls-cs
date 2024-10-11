@@ -27,29 +27,36 @@
 
 #include <runtime/JSObject.h>
 
-namespace JSC {
+namespace JSC
+{
 class ExecState;
 }
 
-namespace WebCore {
+namespace WebCore
+{
 
 class JSDOMGlobalObject;
 
-enum CallbackAllowedValueFlag {
+enum CallbackAllowedValueFlag
+{
     CallbackAllowUndefined = 1,
     CallbackAllowNull = 1 << 1
 };
 
 typedef unsigned CallbackAllowedValueFlags;
 
-bool checkFunctionOnlyCallback(JSC::ExecState*, JSC::JSValue, CallbackAllowedValueFlags);
+bool checkFunctionOnlyCallback( JSC::ExecState *, JSC::JSValue, CallbackAllowedValueFlags );
 
 // Creates callback objects for callbacks marked as FunctionOnly in WebIDL.
 template <typename JSCallbackType>
-PassRefPtr<JSCallbackType> createFunctionOnlyCallback(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, JSC::JSValue value, CallbackAllowedValueFlags acceptedValues = 0)
+PassRefPtr<JSCallbackType> createFunctionOnlyCallback( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, JSC::JSValue value,
+        CallbackAllowedValueFlags acceptedValues = 0 )
 {
-    if (checkFunctionOnlyCallback(exec, value, acceptedValues))
-        return JSCallbackType::create(asObject(value), globalObject);
+    if ( checkFunctionOnlyCallback( exec, value, acceptedValues ) )
+    {
+        return JSCallbackType::create( asObject( value ), globalObject );
+    }
+
     return 0;
 }
 

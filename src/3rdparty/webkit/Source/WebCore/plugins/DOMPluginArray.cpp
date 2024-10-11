@@ -26,10 +26,11 @@
 #include "PluginData.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-DOMPluginArray::DOMPluginArray(Frame* frame)
-    : m_frame(frame)
+DOMPluginArray::DOMPluginArray( Frame *frame )
+    : m_frame( frame )
 {
 }
 
@@ -39,61 +40,98 @@ DOMPluginArray::~DOMPluginArray()
 
 unsigned DOMPluginArray::length() const
 {
-    PluginData* data = pluginData();
-    if (!data)
+    PluginData *data = pluginData();
+
+    if ( !data )
+    {
         return 0;
+    }
+
     return data->plugins().size();
 }
 
-PassRefPtr<DOMPlugin> DOMPluginArray::item(unsigned index)
+PassRefPtr<DOMPlugin> DOMPluginArray::item( unsigned index )
 {
-    PluginData* data = pluginData();
-    if (!data)
+    PluginData *data = pluginData();
+
+    if ( !data )
+    {
         return 0;
-    const Vector<PluginInfo>& plugins = data->plugins();
-    if (index >= plugins.size())
+    }
+
+    const Vector<PluginInfo> &plugins = data->plugins();
+
+    if ( index >= plugins.size() )
+    {
         return 0;
-    return DOMPlugin::create(data, m_frame, index).get();
+    }
+
+    return DOMPlugin::create( data, m_frame, index ).get();
 }
 
-bool DOMPluginArray::canGetItemsForName(const AtomicString& propertyName)
+bool DOMPluginArray::canGetItemsForName( const AtomicString &propertyName )
 {
-    PluginData* data = pluginData();
-    if (!data)
+    PluginData *data = pluginData();
+
+    if ( !data )
+    {
         return 0;
-    const Vector<PluginInfo>& plugins = data->plugins();
-    for (unsigned i = 0; i < plugins.size(); ++i) {
-        if (plugins[i].name == propertyName)
-            return true;
     }
+
+    const Vector<PluginInfo> &plugins = data->plugins();
+
+    for ( unsigned i = 0; i < plugins.size(); ++i )
+    {
+        if ( plugins[i].name == propertyName )
+        {
+            return true;
+        }
+    }
+
     return false;
 }
 
-PassRefPtr<DOMPlugin> DOMPluginArray::namedItem(const AtomicString& propertyName)
+PassRefPtr<DOMPlugin> DOMPluginArray::namedItem( const AtomicString &propertyName )
 {
-    PluginData* data = pluginData();
-    if (!data)
+    PluginData *data = pluginData();
+
+    if ( !data )
+    {
         return 0;
-    const Vector<PluginInfo>& plugins = data->plugins();
-    for (unsigned i = 0; i < plugins.size(); ++i) {
-        if (plugins[i].name == propertyName)
-            return DOMPlugin::create(data, m_frame, i).get();
     }
+
+    const Vector<PluginInfo> &plugins = data->plugins();
+
+    for ( unsigned i = 0; i < plugins.size(); ++i )
+    {
+        if ( plugins[i].name == propertyName )
+        {
+            return DOMPlugin::create( data, m_frame, i ).get();
+        }
+    }
+
     return 0;
 }
 
-void DOMPluginArray::refresh(bool reload)
+void DOMPluginArray::refresh( bool reload )
 {
-    Page::refreshPlugins(reload);
+    Page::refreshPlugins( reload );
 }
 
-PluginData* DOMPluginArray::pluginData() const
+PluginData *DOMPluginArray::pluginData() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
-    Page* page = m_frame->page();
-    if (!page)
+    }
+
+    Page *page = m_frame->page();
+
+    if ( !page )
+    {
         return 0;
+    }
+
     return page->pluginData();
 }
 

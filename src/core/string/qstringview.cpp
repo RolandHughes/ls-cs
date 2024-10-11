@@ -28,45 +28,53 @@
 
 #include <qunicodetables_p.h>
 
-std::pair<char32_t, const char32_t *> cs_internal_convertCaseTrait(int trait, char32_t value)
+std::pair<char32_t, const char32_t *> lscs_internal_convertCaseTrait( int trait, char32_t value )
 {
-   char32_t caseValue = value;
-   const char32_t *caseSpecial = nullptr;
+    char32_t caseValue = value;
+    const char32_t *caseSpecial = nullptr;
 
-   if (trait == 1)  {
-      caseValue = QUnicodeTables::CaseFoldTraits::caseValue(value);
+    if ( trait == 1 )
+    {
+        caseValue = QUnicodeTables::CaseFoldTraits::caseValue( value );
 
-      if (caseValue == 0 && value != 0) {
-         // special char
-         caseSpecial = QUnicodeTables::CaseFoldTraits::caseSpecial(value);
-      }
+        if ( caseValue == 0 && value != 0 )
+        {
+            // special char
+            caseSpecial = QUnicodeTables::CaseFoldTraits::caseSpecial( value );
+        }
 
-   } else if (trait == 2) {
-      caseValue = QUnicodeTables::LowerCaseTraits::caseValue(value);
+    }
+    else if ( trait == 2 )
+    {
+        caseValue = QUnicodeTables::LowerCaseTraits::caseValue( value );
 
-      if (caseValue == 0 && value != 0) {
-         // special char
-         caseSpecial = QUnicodeTables::LowerCaseTraits::caseSpecial(value);
-      }
+        if ( caseValue == 0 && value != 0 )
+        {
+            // special char
+            caseSpecial = QUnicodeTables::LowerCaseTraits::caseSpecial( value );
+        }
 
-   } else if (trait == 3) {
-      caseValue = QUnicodeTables::UpperCaseTraits::caseValue(value);
+    }
+    else if ( trait == 3 )
+    {
+        caseValue = QUnicodeTables::UpperCaseTraits::caseValue( value );
 
-      if (caseValue == 0 && value != 0) {
-         // special char
-         caseSpecial = QUnicodeTables::UpperCaseTraits::caseSpecial(value);
-      }
-   }
+        if ( caseValue == 0 && value != 0 )
+        {
+            // special char
+            caseSpecial = QUnicodeTables::UpperCaseTraits::caseSpecial( value );
+        }
+    }
 
-   return { caseValue, caseSpecial };
+    return { caseValue, caseSpecial };
 }
 
-QStringView8 make_view(QString8 &&str)
+QStringView8 make_view( QString8 &&str )
 {
-   return QStringView8(str.cbegin(), str.cend());
+    return QStringView8( str.cbegin(), str.cend() );
 }
 
-QStringView16 make_view(QString16 &&str)
+QStringView16 make_view( QString16 &&str )
 {
-   return QStringView16(str.cbegin(), str.cend());
+    return QStringView16( str.cbegin(), str.cend() );
 }

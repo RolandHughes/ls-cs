@@ -36,47 +36,50 @@ class QSslCipherPrivate;
 class Q_NETWORK_EXPORT QSslCipher
 {
 
- public:
-   QSslCipher();
-   explicit QSslCipher(const QString &name);
-   QSslCipher(const QString &name, QSsl::SslProtocol protocol);
-   QSslCipher(const QSslCipher &other);
+public:
+    QSslCipher();
+    explicit QSslCipher( const QString &name );
+    QSslCipher( const QString &name, QSsl::SslProtocol protocol );
+    QSslCipher( const QSslCipher &other );
 
-   ~QSslCipher();
+    ~QSslCipher();
 
-   bool isNull() const;
-   QString name() const;
-   int supportedBits() const;
-   int usedBits() const;
+    bool isNull() const;
+    QString name() const;
+    int supportedBits() const;
+    int usedBits() const;
 
-   QString keyExchangeMethod() const;
-   QString authenticationMethod() const;
-   QString encryptionMethod() const;
-   QString protocolString() const;
-   QSsl::SslProtocol protocol() const;
+    QString keyExchangeMethod() const;
+    QString authenticationMethod() const;
+    QString encryptionMethod() const;
+    QString protocolString() const;
+    QSsl::SslProtocol protocol() const;
 
-   void swap(QSslCipher &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QSslCipher &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   QSslCipher &operator=(QSslCipher &&other) {
-      swap(other);
-      return *this;
-   }
+    QSslCipher &operator=( QSslCipher &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QSslCipher &operator=(const QSslCipher &other);
-   bool operator==(const QSslCipher &other) const;
+    QSslCipher &operator=( const QSslCipher &other );
+    bool operator==( const QSslCipher &other ) const;
 
-   bool operator!=(const QSslCipher &other) const {
-      return !operator==(other);
-   }
+    bool operator!=( const QSslCipher &other ) const
+    {
+        return !operator==( other );
+    }
 
- private:
-   QScopedPointer<QSslCipherPrivate> d;
-   friend class QSslSocketBackendPrivate;
+private:
+    QScopedPointer<QSslCipherPrivate> d;
+    friend class QSslSocketBackendPrivate;
 };
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug debug, const QSslCipher &cipher);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug debug, const QSslCipher &cipher );
 
 #endif
 

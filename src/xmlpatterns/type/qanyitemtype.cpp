@@ -32,37 +32,37 @@ AnyItemType::AnyItemType()
 {
 }
 
-bool AnyItemType::itemMatches(const Item &) const
+bool AnyItemType::itemMatches( const Item & ) const
 {
-   return true;
+    return true;
 }
 
-bool AnyItemType::xdtTypeMatches(const ItemType::Ptr &) const
+bool AnyItemType::xdtTypeMatches( const ItemType::Ptr & ) const
 {
-   return true;
+    return true;
 }
 
-QString AnyItemType::displayName(const NamePool::Ptr &) const
+QString AnyItemType::displayName( const NamePool::Ptr & ) const
 {
-   return QLatin1String("item()");
+    return QLatin1String( "item()" );
 }
 
 ItemType::Ptr AnyItemType::xdtSuperType() const
 {
-   return ItemType::Ptr();
+    return ItemType::Ptr();
 }
 
 bool AnyItemType::isNodeType() const
 {
-   return false;
+    return false;
 }
 
 bool AnyItemType::isAtomicType() const
 {
-   return false;
+    return false;
 }
 
 ItemType::Ptr AnyItemType::atomizedType() const
 {
-   return BuiltinTypes::xsAnyAtomicType;
+    return BuiltinTypes::xsAnyAtomicType;
 }

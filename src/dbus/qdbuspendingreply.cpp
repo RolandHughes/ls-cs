@@ -221,7 +221,7 @@
 */
 
 QDBusPendingReplyData::QDBusPendingReplyData()
-    : QDBusPendingCall(0)         // initialize base class empty
+    : QDBusPendingCall( 0 )       // initialize base class empty
 {
 }
 
@@ -229,34 +229,36 @@ QDBusPendingReplyData::~QDBusPendingReplyData()
 {
 }
 
-void QDBusPendingReplyData::assign(const QDBusPendingCall &other)
+void QDBusPendingReplyData::assign( const QDBusPendingCall &other )
 {
-    QDBusPendingCall::operator=(other);
+    QDBusPendingCall::operator=( other );
 }
 
-void QDBusPendingReplyData::assign(const QDBusMessage &message)
+void QDBusPendingReplyData::assign( const QDBusMessage &message )
 {
-    d = new QDBusPendingCallPrivate(QDBusMessage(), 0); // drops the reference to the old one
+    d = new QDBusPendingCallPrivate( QDBusMessage(), 0 ); // drops the reference to the old one
     d->replyMessage = message;
 }
 
-QVariant QDBusPendingReplyData::argumentAt(int index) const
+QVariant QDBusPendingReplyData::argumentAt( int index ) const
 {
-    if (d)
-        d->waitForFinished();   // bypasses "const"
+    if ( d )
+    {
+        d->waitForFinished();    // bypasses "const"
+    }
 
-    Q_ASSERT_X(d && index >= 0 && index < d->replyMessage.arguments().count(),
-               "QDBusPendingReply::argumentAt",
-               "Index out of bounds");
+    Q_ASSERT_X( d && index >= 0 && index < d->replyMessage.arguments().count(),
+                "QDBusPendingReply::argumentAt",
+                "Index out of bounds" );
 
-    return d->replyMessage.arguments().at(index);
+    return d->replyMessage.arguments().at( index );
 }
 
-void QDBusPendingReplyData::setMetaTypes(int count, const int *types)
+void QDBusPendingReplyData::setMetaTypes( int count, const int *types )
 {
-    Q_ASSERT(d);
-    QMutexLocker locker(&d->mutex);
-    d->setMetaTypes(count, types);
+    Q_ASSERT( d );
+    QMutexLocker locker( &d->mutex );
+    d->setMetaTypes( count, types );
     d->checkReceivedSignature();
 }
 

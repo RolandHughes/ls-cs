@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Generator_h
@@ -28,17 +28,19 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatRect;
 class GraphicsContext;
 
-class Generator : public RefCounted<Generator> {
+class Generator : public RefCounted<Generator>
+{
 public:
     virtual ~Generator() {};
-    
-    virtual void fill(GraphicsContext*, const FloatRect&) = 0;
-    virtual void adjustParametersForTiledDrawing(IntSize& /* size */, FloatRect& /* srcRect */) { }
+
+    virtual void fill( GraphicsContext *, const FloatRect & ) = 0;
+    virtual void adjustParametersForTiledDrawing( IntSize & /* size */, FloatRect & /* srcRect */ ) { }
 };
 
 } //namespace

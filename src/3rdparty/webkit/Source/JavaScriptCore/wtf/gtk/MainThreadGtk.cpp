@@ -32,13 +32,14 @@
 
 #include <glib.h>
 
-namespace WTF {
+namespace WTF
+{
 
 void initializeMainThreadPlatform()
 {
 }
 
-static gboolean timeoutFired(gpointer)
+static gboolean timeoutFired( gpointer )
 {
     dispatchFunctionsFromMainThread();
     return FALSE;
@@ -46,7 +47,7 @@ static gboolean timeoutFired(gpointer)
 
 void scheduleDispatchFunctionsOnMainThread()
 {
-    g_timeout_add(0, timeoutFired, 0);
+    g_timeout_add( 0, timeoutFired, 0 );
 }
 
 } // namespace WTF

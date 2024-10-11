@@ -36,46 +36,73 @@
 #include "SecurityOrigin.h"
 #include "StorageEvent.h"
 
-namespace WebCore {
-
-void StorageEventDispatcher::dispatch(const String& key, const String& oldValue, const String& newValue, StorageType storageType, SecurityOrigin* securityOrigin, Frame* sourceFrame)
+namespace WebCore
 {
-    Page* page = sourceFrame->page();
-    if (!page)
+
+void StorageEventDispatcher::dispatch( const String &key, const String &oldValue, const String &newValue, StorageType storageType,
+                                       SecurityOrigin *securityOrigin, Frame *sourceFrame )
+{
+    Page *page = sourceFrame->page();
+
+    if ( !page )
+    {
         return;
+    }
 
     // We need to copy all relevant frames from every page to a vector since sending the event to one frame might mutate the frame tree
     // of any given page in the group or mutate the page group itself.
     Vector<RefPtr<Frame> > frames;
-    if (storageType == SessionStorage) {
-        // Send events only to our page.
-        for (Frame* frame = page->mainFrame(); frame; frame = frame->tree()->traverseNext()) {
-            if (sourceFrame != frame && frame->document()->securityOrigin()->equal(securityOrigin))
-                frames.append(frame);
-        }
 
-        for (unsigned i = 0; i < frames.size(); ++i) {
-            ExceptionCode ec = 0;
-            Storage* storage = frames[i]->domWindow()->sessionStorage(ec);
-            if (!ec)
-                frames[i]->document()->enqueueWindowEvent(StorageEvent::create(eventNames().storageEvent, key, oldValue, newValue, sourceFrame->document()->url(), storage));
-        }
-    } else {
-        // Send events to every page.
-        const HashSet<Page*>& pages = page->group().pages();
-        HashSet<Page*>::const_iterator end = pages.end();
-        for (HashSet<Page*>::const_iterator it = pages.begin(); it != end; ++it) {
-            for (Frame* frame = (*it)->mainFrame(); frame; frame = frame->tree()->traverseNext()) {
-                if (sourceFrame != frame && frame->document()->securityOrigin()->equal(securityOrigin))
-                    frames.append(frame);
+    if ( storageType == SessionStorage )
+    {
+        // Send events only to our page.
+        for ( Frame *frame = page->mainFrame(); frame; frame = frame->tree()->traverseNext() )
+        {
+            if ( sourceFrame != frame && frame->document()->securityOrigin()->equal( securityOrigin ) )
+            {
+                frames.append( frame );
             }
         }
 
-        for (unsigned i = 0; i < frames.size(); ++i) {
+        for ( unsigned i = 0; i < frames.size(); ++i )
+        {
             ExceptionCode ec = 0;
-            Storage* storage = frames[i]->domWindow()->localStorage(ec);
-            if (!ec)
-                frames[i]->document()->enqueueWindowEvent(StorageEvent::create(eventNames().storageEvent, key, oldValue, newValue, sourceFrame->document()->url(), storage));
+            Storage *storage = frames[i]->domWindow()->sessionStorage( ec );
+
+            if ( !ec )
+            {
+                frames[i]->document()->enqueueWindowEvent( StorageEvent::create( eventNames().storageEvent, key, oldValue, newValue,
+                        sourceFrame->document()->url(), storage ) );
+            }
+        }
+    }
+    else
+    {
+        // Send events to every page.
+        const HashSet<Page *> &pages = page->group().pages();
+        HashSet<Page *>::const_iterator end = pages.end();
+
+        for ( HashSet<Page *>::const_iterator it = pages.begin(); it != end; ++it )
+        {
+            for ( Frame *frame = ( *it )->mainFrame(); frame; frame = frame->tree()->traverseNext() )
+            {
+                if ( sourceFrame != frame && frame->document()->securityOrigin()->equal( securityOrigin ) )
+                {
+                    frames.append( frame );
+                }
+            }
+        }
+
+        for ( unsigned i = 0; i < frames.size(); ++i )
+        {
+            ExceptionCode ec = 0;
+            Storage *storage = frames[i]->domWindow()->localStorage( ec );
+
+            if ( !ec )
+            {
+                frames[i]->document()->enqueueWindowEvent( StorageEvent::create( eventNames().storageEvent, key, oldValue, newValue,
+                        sourceFrame->document()->url(), storage ) );
+            }
         }
     }
 }

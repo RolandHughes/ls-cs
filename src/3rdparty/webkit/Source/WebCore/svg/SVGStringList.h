@@ -26,31 +26,34 @@
 #include "SVGPropertyTraits.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGElement;
 
-class SVGStringList : public Vector<String> {
+class SVGStringList : public Vector<String>
+{
 public:
-    SVGStringList(const QualifiedName& attributeName)
-        : m_attributeName(attributeName)
+    SVGStringList( const QualifiedName &attributeName )
+        : m_attributeName( attributeName )
     {
     }
 
-    void reset(const String&);
-    void parse(const String&, UChar delimiter = ',');
+    void reset( const String & );
+    void parse( const String &, UChar delimiter = ',' );
 
     // Only used by SVGStringListPropertyTearOff.
-    void commitChange(SVGElement* contextElement);
+    void commitChange( SVGElement *contextElement );
 
     String valueAsString() const;
 
 private:
-    const QualifiedName& m_attributeName;
+    const QualifiedName &m_attributeName;
 };
 
 template<>
-struct SVGPropertyTraits<SVGStringList> {
+struct SVGPropertyTraits<SVGStringList>
+{
     typedef String ListItemType;
 };
 

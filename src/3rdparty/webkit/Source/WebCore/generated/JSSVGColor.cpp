@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGColor);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGColor );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,10 +48,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGColor);
 
 static const HashTableValue JSSVGColorTableValues[4] =
 {
-    { "colorType", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorColorType), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "rgbColor", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorRgbColor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "colorType", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorColorType ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "rgbColor", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorRgbColor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,53 +65,60 @@ static JSC_CONST_HASHTABLE HashTable JSSVGColorTable = { 8, 7, JSSVGColorTableVa
 
 static const HashTableValue JSSVGColorConstructorTableValues[5] =
 {
-    { "SVG_COLORTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_COLORTYPE_RGBCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_RGBCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_COLORTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_COLORTYPE_CURRENTCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_CURRENTCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "SVG_COLORTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_COLORTYPE_RGBCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_RGBCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_COLORTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_COLORTYPE_CURRENTCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_CURRENTCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGColorConstructorTable = { 8, 7, JSSVGColorConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == SVGColor::SVG_COLORTYPE_UNKNOWN, SVGColorEnumSVG_COLORTYPE_UNKNOWNIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == SVGColor::SVG_COLORTYPE_RGBCOLOR, SVGColorEnumSVG_COLORTYPE_RGBCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == SVGColor::SVG_COLORTYPE_RGBCOLOR_ICCCOLOR, SVGColorEnumSVG_COLORTYPE_RGBCOLOR_ICCCOLORIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(3 == SVGColor::SVG_COLORTYPE_CURRENTCOLOR, SVGColorEnumSVG_COLORTYPE_CURRENTCOLORIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == SVGColor::SVG_COLORTYPE_UNKNOWN, SVGColorEnumSVG_COLORTYPE_UNKNOWNIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == SVGColor::SVG_COLORTYPE_RGBCOLOR, SVGColorEnumSVG_COLORTYPE_RGBCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == SVGColor::SVG_COLORTYPE_RGBCOLOR_ICCCOLOR,
+                SVGColorEnumSVG_COLORTYPE_RGBCOLOR_ICCCOLORIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 3 == SVGColor::SVG_COLORTYPE_CURRENTCOLOR, SVGColorEnumSVG_COLORTYPE_CURRENTCOLORIsWrongUseDontCheckEnums );
 
-class JSSVGColorConstructor : public DOMConstructorObject {
+class JSSVGColorConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGColorConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGColorConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGColorConstructor::s_info = { "SVGColorConstructor", &DOMConstructorObject::s_info, &JSSVGColorConstructorTable, 0 };
 
-JSSVGColorConstructor::JSSVGColorConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGColorConstructor::JSSVGColorConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGColorPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGColorPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGColorConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGColorConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGColorConstructor, JSDOMWrapper>(exec, &JSSVGColorConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGColorConstructor, JSDOMWrapper>( exec, &JSSVGColorConstructorTable, this, propertyName, slot );
 }
 
-bool JSSVGColorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGColorConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGColorConstructor, JSDOMWrapper>(exec, &JSSVGColorConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGColorConstructor, JSDOMWrapper>( exec, &JSSVGColorConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -122,179 +130,227 @@ bool JSSVGColorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Iden
 
 static const HashTableValue JSSVGColorPrototypeTableValues[8] =
 {
-    { "SVG_COLORTYPE_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_COLORTYPE_RGBCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_RGBCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_COLORTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_COLORTYPE_CURRENTCOLOR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGColorSVG_COLORTYPE_CURRENTCOLOR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "setRGBColor", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGColorPrototypeFunctionSetRGBColor), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "setRGBColorICCColor", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGColorPrototypeFunctionSetRGBColorICCColor), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "setColor", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGColorPrototypeFunctionSetColor), (intptr_t)3 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "SVG_COLORTYPE_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_COLORTYPE_RGBCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_RGBCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_COLORTYPE_RGBCOLOR_ICCCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_COLORTYPE_CURRENTCOLOR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGColorSVG_COLORTYPE_CURRENTCOLOR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "setRGBColor", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGColorPrototypeFunctionSetRGBColor ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "setRGBColorICCColor", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGColorPrototypeFunctionSetRGBColorICCColor ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "setColor", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGColorPrototypeFunctionSetColor ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGColorPrototypeTable = { 17, 15, JSSVGColorPrototypeTableValues, 0 };
 const ClassInfo JSSVGColorPrototype::s_info = { "SVGColorPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGColorPrototypeTable, 0 };
 
-JSObject* JSSVGColorPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGColorPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGColor>(exec, globalObject);
+    return getDOMPrototype<JSSVGColor>( exec, globalObject );
 }
 
-bool JSSVGColorPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGColorPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSSVGColorPrototype, JSObject>(exec, &JSSVGColorPrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSSVGColorPrototype, JSObject>( exec, &JSSVGColorPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGColorPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGColorPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSSVGColorPrototype, JSObject>(exec, &JSSVGColorPrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSSVGColorPrototype, JSObject>( exec, &JSSVGColorPrototypeTable, this, propertyName,
+            descriptor );
 }
 
 const ClassInfo JSSVGColor::s_info = { "SVGColor", &JSCSSValue::s_info, &JSSVGColorTable, 0 };
 
-JSSVGColor::JSSVGColor(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGColor> impl)
-    : JSCSSValue(structure, globalObject, impl)
+JSSVGColor::JSSVGColor( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGColor> impl )
+    : JSCSSValue( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGColor::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGColor::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGColorPrototype(exec->globalData(), globalObject, JSSVGColorPrototype::createStructure(exec->globalData(), JSCSSValuePrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGColorPrototype( exec->globalData(), globalObject,
+            JSSVGColorPrototype::createStructure( exec->globalData(), JSCSSValuePrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGColor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGColor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGColor, Base>(exec, &JSSVGColorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGColor, Base>( exec, &JSSVGColorTable, this, propertyName, slot );
 }
 
-bool JSSVGColor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGColor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGColor, Base>(exec, &JSSVGColorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGColor, Base>( exec, &JSSVGColorTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGColorColorType(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGColorColorType( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGColor* castedThis = static_cast<JSSVGColor*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGColor* imp = static_cast<SVGColor*>(castedThis->impl());
-    JSValue result = jsNumber(imp->colorType());
+    JSSVGColor *castedThis = static_cast<JSSVGColor *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGColor *imp = static_cast<SVGColor *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->colorType() );
     return result;
 }
 
 
-JSValue jsSVGColorRgbColor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGColorRgbColor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGColor* castedThis = static_cast<JSSVGColor*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGColor* imp = static_cast<SVGColor*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->rgbColor()));
+    JSSVGColor *castedThis = static_cast<JSSVGColor *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGColor *imp = static_cast<SVGColor *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->rgbColor() ) );
     return result;
 }
 
 
-JSValue jsSVGColorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGColorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGColor* domObject = static_cast<JSSVGColor*>(asObject(slotBase));
-    return JSSVGColor::getConstructor(exec, domObject->globalObject());
+    JSSVGColor *domObject = static_cast<JSSVGColor *>( asObject( slotBase ) );
+    return JSSVGColor::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGColor::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGColor::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGColorConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGColorConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColor(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColor( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGColor::s_info))
-        return throwVMTypeError(exec);
-    JSSVGColor* castedThis = static_cast<JSSVGColor*>(asObject(thisValue));
-    SVGColor* imp = static_cast<SVGColor*>(castedThis->impl());
-    if (exec->argumentCount() < 1)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    const String& rgbColor(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setRGBColor(rgbColor, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSSVGColor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGColor *castedThis = static_cast<JSSVGColor *>( asObject( thisValue ) );
+    SVGColor *imp = static_cast<SVGColor *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 1 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    const String &rgbColor( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setRGBColor( rgbColor, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColorICCColor(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetRGBColorICCColor( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGColor::s_info))
-        return throwVMTypeError(exec);
-    JSSVGColor* castedThis = static_cast<JSSVGColor*>(asObject(thisValue));
-    SVGColor* imp = static_cast<SVGColor*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    const String& rgbColor(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& iccColor(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setRGBColorICCColor(rgbColor, iccColor, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSSVGColor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGColor *castedThis = static_cast<JSSVGColor *>( asObject( thisValue ) );
+    SVGColor *imp = static_cast<SVGColor *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    const String &rgbColor( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &iccColor( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setRGBColorICCColor( rgbColor, iccColor, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetColor(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGColorPrototypeFunctionSetColor( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGColor::s_info))
-        return throwVMTypeError(exec);
-    JSSVGColor* castedThis = static_cast<JSSVGColor*>(asObject(thisValue));
-    SVGColor* imp = static_cast<SVGColor*>(castedThis->impl());
-    if (exec->argumentCount() < 3)
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-    ExceptionCode ec = 0;
-    unsigned short colorType(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& rgbColor(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& iccColor(ustringToString(exec->argument(2).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->setColor(colorType, rgbColor, iccColor, ec);
-    setDOMException(exec, ec);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSSVGColor::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGColor *castedThis = static_cast<JSSVGColor *>( asObject( thisValue ) );
+    SVGColor *imp = static_cast<SVGColor *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 3 )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
+    }
+
+    ExceptionCode ec = 0;
+    unsigned short colorType( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &rgbColor( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &iccColor( ustringToString( exec->argument( 2 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->setColor( colorType, rgbColor, iccColor, ec );
+    setDOMException( exec, ec );
+    return JSValue::encode( jsUndefined() );
 }
 
 // Constant getters
 
-JSValue jsSVGColorSVG_COLORTYPE_UNKNOWN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGColorSVG_COLORTYPE_UNKNOWN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGColorSVG_COLORTYPE_RGBCOLOR_ICCCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsSVGColorSVG_COLORTYPE_CURRENTCOLOR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGColorSVG_COLORTYPE_CURRENTCOLOR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
 

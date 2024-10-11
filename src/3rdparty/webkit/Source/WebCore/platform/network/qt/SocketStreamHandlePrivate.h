@@ -37,48 +37,50 @@
 #include <QTcpSocket>
 #include <qsslerror.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AuthenticationChallenge;
 class Credential;
 class SocketStreamHandleClient;
 class SocketStreamHandlePrivate;
 
-class SocketStreamHandlePrivate : public QObject {
-    WEB_CS_OBJECT(SocketStreamHandlePrivate)
+class SocketStreamHandlePrivate : public QObject
+{
+    WEB_LSCS_OBJECT( SocketStreamHandlePrivate )
 
 public:
-    SocketStreamHandlePrivate(SocketStreamHandle*, const KURL&);
+    SocketStreamHandlePrivate( SocketStreamHandle *, const KURL & );
     ~SocketStreamHandlePrivate();
 
 public :
-    WEB_CS_SLOT_1(Public, void socketConnected())
-    WEB_CS_SLOT_2(socketConnected)
-    WEB_CS_SLOT_1(Public, void socketReadyRead())
-    WEB_CS_SLOT_2(socketReadyRead)
-    WEB_CS_SLOT_1(Public, int send(const char * data,int len))
-    WEB_CS_SLOT_2(send)
-    WEB_CS_SLOT_1(Public, void close())
-    WEB_CS_SLOT_2(close)
-    WEB_CS_SLOT_1(Public, void socketSentData())
-    WEB_CS_SLOT_2(socketSentData)
-    WEB_CS_SLOT_1(Public, void socketClosed())
-    WEB_CS_SLOT_2(socketClosed)
-    WEB_CS_SLOT_1(Public, void socketError(QAbstractSocket::SocketError error))
-    WEB_CS_SLOT_2(socketError)
-    WEB_CS_SLOT_1(Public, void socketClosedCallback())
-    WEB_CS_SLOT_2(socketClosedCallback)
-    WEB_CS_SLOT_1(Public, void socketErrorCallback(int error))
-    WEB_CS_SLOT_2(socketErrorCallback)
+    WEB_LSCS_SLOT_1( Public, void socketConnected() )
+    WEB_LSCS_SLOT_2( socketConnected )
+    WEB_LSCS_SLOT_1( Public, void socketReadyRead() )
+    WEB_LSCS_SLOT_2( socketReadyRead )
+    WEB_LSCS_SLOT_1( Public, int send( const char *data,int len ) )
+    WEB_LSCS_SLOT_2( send )
+    WEB_LSCS_SLOT_1( Public, void close() )
+    WEB_LSCS_SLOT_2( close )
+    WEB_LSCS_SLOT_1( Public, void socketSentData() )
+    WEB_LSCS_SLOT_2( socketSentData )
+    WEB_LSCS_SLOT_1( Public, void socketClosed() )
+    WEB_LSCS_SLOT_2( socketClosed )
+    WEB_LSCS_SLOT_1( Public, void socketError( QAbstractSocket::SocketError error ) )
+    WEB_LSCS_SLOT_2( socketError )
+    WEB_LSCS_SLOT_1( Public, void socketClosedCallback() )
+    WEB_LSCS_SLOT_2( socketClosedCallback )
+    WEB_LSCS_SLOT_1( Public, void socketErrorCallback( int error ) )
+    WEB_LSCS_SLOT_2( socketErrorCallback )
 
 #ifdef QT_SSL
-    WEB_CS_SLOT_1(Public, void socketSslErrors(const QList <QSslError> & error))
-    WEB_CS_SLOT_2(socketSslErrors)
+    WEB_LSCS_SLOT_1( Public, void socketSslErrors( const QList <QSslError> &error ) )
+    WEB_LSCS_SLOT_2( socketSslErrors )
 #endif
 
 public:
-    QTcpSocket* m_socket;
-    SocketStreamHandle* m_streamHandle;
+    QTcpSocket *m_socket;
+    SocketStreamHandle *m_streamHandle;
 };
 
 }

@@ -30,31 +30,36 @@
 #include <WebCore/ProtectionSpace.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebProtectionSpace : public APIObject {
+class WebProtectionSpace : public APIObject
+{
 public:
     static const Type APIType = TypeProtectionSpace;
 
-    static PassRefPtr<WebProtectionSpace> create(const WebCore::ProtectionSpace& protectionSpace)
+    static PassRefPtr<WebProtectionSpace> create( const WebCore::ProtectionSpace &protectionSpace )
     {
-        return adoptRef(new WebProtectionSpace(protectionSpace));
+        return adoptRef( new WebProtectionSpace( protectionSpace ) );
     }
-    
-    const String& protocol() const;
-    const String& host() const;
+
+    const String &protocol() const;
+    const String &host() const;
     int port() const;
-    const String& realm() const;
+    const String &realm() const;
     bool isProxy() const;
     WebCore::ProtectionSpaceServerType serverType() const;
     bool receivesCredentialSecurely() const;
     WebCore::ProtectionSpaceAuthenticationScheme authenticationScheme() const;
 
 private:
-    WebProtectionSpace(const WebCore::ProtectionSpace&);
+    WebProtectionSpace( const WebCore::ProtectionSpace & );
 
-    virtual Type type() const { return APIType; }
-    
+    virtual Type type() const
+    {
+        return APIType;
+    }
+
     WebCore::ProtectionSpace m_coreProtectionSpace;
 };
 

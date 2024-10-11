@@ -32,46 +32,54 @@
 
 class DirectShowMediaType : public AM_MEDIA_TYPE
 {
- public:
-   DirectShowMediaType() {
-      memset(this, 0, sizeof(DirectShowMediaType));
-   }
-   DirectShowMediaType(const AM_MEDIA_TYPE &type) {
-      copy(this, type);
-   }
-   DirectShowMediaType(const DirectShowMediaType &other) {
-      copy(this, other);
-   }
-   DirectShowMediaType &operator =(const AM_MEDIA_TYPE &type) {
-      freeData(this);
-      copy(this, type);
-      return *this;
-   }
-   DirectShowMediaType &operator =(const DirectShowMediaType &other) {
-      freeData(this);
-      copy(this, other);
-      return *this;
-   }
-   ~DirectShowMediaType() {
-      freeData(this);
-   }
+public:
+    DirectShowMediaType()
+    {
+        memset( this, 0, sizeof( DirectShowMediaType ) );
+    }
+    DirectShowMediaType( const AM_MEDIA_TYPE &type )
+    {
+        copy( this, type );
+    }
+    DirectShowMediaType( const DirectShowMediaType &other )
+    {
+        copy( this, other );
+    }
+    DirectShowMediaType &operator =( const AM_MEDIA_TYPE &type )
+    {
+        freeData( this );
+        copy( this, type );
+        return *this;
+    }
+    DirectShowMediaType &operator =( const DirectShowMediaType &other )
+    {
+        freeData( this );
+        copy( this, other );
+        return *this;
+    }
+    ~DirectShowMediaType()
+    {
+        freeData( this );
+    }
 
-   void clear() {
-      freeData(this);
-      memset(this, 0, sizeof(DirectShowMediaType));
-   }
+    void clear()
+    {
+        freeData( this );
+        memset( this, 0, sizeof( DirectShowMediaType ) );
+    }
 
-   static void copy(AM_MEDIA_TYPE *target, const AM_MEDIA_TYPE &source);
-   static void freeData(AM_MEDIA_TYPE *type);
-   static void deleteType(AM_MEDIA_TYPE *type);
+    static void copy( AM_MEDIA_TYPE *target, const AM_MEDIA_TYPE &source );
+    static void freeData( AM_MEDIA_TYPE *type );
+    static void deleteType( AM_MEDIA_TYPE *type );
 
-   static GUID convertPixelFormat(QVideoFrame::PixelFormat format);
-   static QVideoSurfaceFormat formatFromType(const AM_MEDIA_TYPE &type);
+    static GUID convertPixelFormat( QVideoFrame::PixelFormat format );
+    static QVideoSurfaceFormat formatFromType( const AM_MEDIA_TYPE &type );
 
-   static int bytesPerLine(const QVideoSurfaceFormat &format);
+    static int bytesPerLine( const QVideoSurfaceFormat &format );
 
- private:
-   static QVideoSurfaceFormat::Direction scanLineDirection(QVideoFrame::PixelFormat pixelFormat, const BITMAPINFOHEADER &bmiHeader);
+private:
+    static QVideoSurfaceFormat::Direction scanLineDirection( QVideoFrame::PixelFormat pixelFormat,
+            const BITMAPINFOHEADER &bmiHeader );
 };
 
 #endif

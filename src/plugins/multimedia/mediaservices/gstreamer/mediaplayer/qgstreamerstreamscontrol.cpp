@@ -24,10 +24,10 @@
 #include <qgstreamerstreamscontrol.h>
 #include <qgstreamerplayersession.h>
 
-QGstreamerStreamsControl::QGstreamerStreamsControl(QGstreamerPlayerSession *session, QObject *parent)
-   : QMediaStreamsControl(parent), m_session(session)
+QGstreamerStreamsControl::QGstreamerStreamsControl( QGstreamerPlayerSession *session, QObject *parent )
+    : QMediaStreamsControl( parent ), m_session( session )
 {
-   connect(m_session, &QGstreamerPlayerSession::streamsChanged, this, &QGstreamerStreamsControl::streamsChanged);
+    connect( m_session, &QGstreamerPlayerSession::streamsChanged, this, &QGstreamerStreamsControl::streamsChanged );
 }
 
 QGstreamerStreamsControl::~QGstreamerStreamsControl()
@@ -36,38 +36,44 @@ QGstreamerStreamsControl::~QGstreamerStreamsControl()
 
 int QGstreamerStreamsControl::streamCount()
 {
-   return m_session->streamCount();
+    return m_session->streamCount();
 }
 
-QMediaStreamsControl::StreamType QGstreamerStreamsControl::streamType(int streamNumber)
+QMediaStreamsControl::StreamType QGstreamerStreamsControl::streamType( int streamNumber )
 {
-   return m_session->streamType(streamNumber);
+    return m_session->streamType( streamNumber );
 }
 
-QVariant QGstreamerStreamsControl::metaData(int streamNumber, const QString &key)
+QVariant QGstreamerStreamsControl::metaData( int streamNumber, const QString &key )
 {
-   return m_session->streamProperties(streamNumber).value(key);
+    return m_session->streamProperties( streamNumber ).value( key );
 }
 
-bool QGstreamerStreamsControl::isActive(int streamNumber)
+bool QGstreamerStreamsControl::isActive( int streamNumber )
 {
-   return streamNumber != -1 && streamNumber == m_session->activeStream(streamType(streamNumber));
+    return streamNumber != -1 && streamNumber == m_session->activeStream( streamType( streamNumber ) );
 }
 
-void QGstreamerStreamsControl::setActive(int streamNumber, bool state)
+void QGstreamerStreamsControl::setActive( int streamNumber, bool state )
 {
-   QMediaStreamsControl::StreamType type = m_session->streamType(streamNumber);
-   if (type == QMediaStreamsControl::UnknownStream) {
-      return;
-   }
+    QMediaStreamsControl::StreamType type = m_session->streamType( streamNumber );
 
-   if (state) {
-      m_session->setActiveStream(type, streamNumber);
-   } else {
-      //only one active stream of certain type is supported
-      if (m_session->activeStream(type) == streamNumber) {
-         m_session->setActiveStream(type, -1);
-      }
-   }
+    if ( type == QMediaStreamsControl::UnknownStream )
+    {
+        return;
+    }
+
+    if ( state )
+    {
+        m_session->setActiveStream( type, streamNumber );
+    }
+    else
+    {
+        //only one active stream of certain type is supported
+        if ( m_session->activeStream( type ) == streamNumber )
+        {
+            m_session->setActiveStream( type, -1 );
+        }
+    }
 }
 

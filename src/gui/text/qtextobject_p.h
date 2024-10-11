@@ -34,60 +34,62 @@ class QTextFrameLayoutData;
 
 class QTextObjectPrivate
 {
-   Q_DECLARE_PUBLIC(QTextObject)
+    Q_DECLARE_PUBLIC( QTextObject )
 
- public:
-   QTextObjectPrivate(QTextDocument *doc)
-      : pieceTable(doc->d_func()), objectIndex(-1) {
-   }
+public:
+    QTextObjectPrivate( QTextDocument *doc )
+        : pieceTable( doc->d_func() ), objectIndex( -1 )
+    {
+    }
 
-   virtual ~QTextObjectPrivate() {}
+    virtual ~QTextObjectPrivate() {}
 
-   QTextDocumentPrivate *pieceTable;
-   int objectIndex;
+    QTextDocumentPrivate *pieceTable;
+    int objectIndex;
 
- protected:
-   QTextObject *q_ptr;
+protected:
+    QTextObject *q_ptr;
 
 };
 
 class QTextBlockGroupPrivate : public QTextObjectPrivate
 {
-   Q_DECLARE_PUBLIC(QTextBlockGroup)
+    Q_DECLARE_PUBLIC( QTextBlockGroup )
 
- public:
-   QTextBlockGroupPrivate(QTextDocument *doc)
-      : QTextObjectPrivate(doc) {
-   }
+public:
+    QTextBlockGroupPrivate( QTextDocument *doc )
+        : QTextObjectPrivate( doc )
+    {
+    }
 
-   typedef QList<QTextBlock> BlockList;
+    typedef QList<QTextBlock> BlockList;
 
-   BlockList blocks;
-   void markBlocksDirty();
+    BlockList blocks;
+    void markBlocksDirty();
 };
 
 class QTextFramePrivate : public QTextObjectPrivate
 {
- public:
-   QTextFramePrivate(QTextDocument *doc)
-      : QTextObjectPrivate(doc), fragment_start(0), fragment_end(0), parentFrame(nullptr), layoutData(nullptr)
-   {
-   }
+public:
+    QTextFramePrivate( QTextDocument *doc )
+        : QTextObjectPrivate( doc ), fragment_start( 0 ), fragment_end( 0 ), parentFrame( nullptr ), layoutData( nullptr )
+    {
+    }
 
-   virtual void fragmentAdded(QChar type, uint fragment);
-   virtual void fragmentRemoved(QChar type, uint fragment);
-   void remove_me();
+    virtual void fragmentAdded( QChar type, uint fragment );
+    virtual void fragmentRemoved( QChar type, uint fragment );
+    void remove_me();
 
-   uint fragment_start;
-   uint fragment_end;
+    uint fragment_start;
+    uint fragment_end;
 
-   QTextFrame *parentFrame;
-   QList<QTextFrame *> childFrames;
-   QTextFrameLayoutData *layoutData;
+    QTextFrame *parentFrame;
+    QList<QTextFrame *> childFrames;
+    QTextFrameLayoutData *layoutData;
 
- private:
-   Q_DECLARE_PUBLIC(QTextFrame)
-   friend class QTextDocumentPrivate;
+private:
+    Q_DECLARE_PUBLIC( QTextFrame )
+    friend class QTextDocumentPrivate;
 };
 
 #endif // QTEXTOBJECT_P_H

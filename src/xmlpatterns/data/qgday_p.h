@@ -26,23 +26,24 @@
 
 #include <qabstractdatetime_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class GDay : public AbstractDateTime
 {
 
- public:
-   typedef AtomicValue::Ptr Ptr;
+public:
+    typedef AtomicValue::Ptr Ptr;
 
-   static GDay::Ptr fromLexical(const QString &string);
-   static GDay::Ptr fromDateTime(const QDateTime &dt);
+    static GDay::Ptr fromLexical( const QString &string );
+    static GDay::Ptr fromDateTime( const QDateTime &dt );
 
-   ItemType::Ptr type() const override;
-   QString stringValue() const override;
+    ItemType::Ptr type() const override;
+    QString stringValue() const override;
 
- protected:
-   friend class CommonValues;
+protected:
+    friend class CommonValues;
 
-   GDay(const QDateTime &dateTime);
+    GDay( const QDateTime &dateTime );
 };
 }
 

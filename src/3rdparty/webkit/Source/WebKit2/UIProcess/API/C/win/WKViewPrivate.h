@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 
-WK_EXPORT void WKViewSetOverrideCursor(WKViewRef viewRef, HCURSOR overrideCursor);
+WK_EXPORT void WKViewSetOverrideCursor( WKViewRef viewRef, HCURSOR overrideCursor );
 
 #ifdef __cplusplus
 }

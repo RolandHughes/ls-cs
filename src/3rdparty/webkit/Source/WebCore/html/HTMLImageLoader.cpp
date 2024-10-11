@@ -36,10 +36,11 @@
 #include <runtime/JSLock.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-HTMLImageLoader::HTMLImageLoader(Element* node)
-    : ImageLoader(node)
+HTMLImageLoader::HTMLImageLoader( Element *node )
+    : ImageLoader( node )
 {
 }
 
@@ -50,46 +51,64 @@ HTMLImageLoader::~HTMLImageLoader()
 void HTMLImageLoader::dispatchLoadEvent()
 {
     // HTMLVideoElement uses this class to load the poster image, but it should not fire events for loading or failure.
-    if (element()->hasTagName(HTMLNames::videoTag))
+    if ( element()->hasTagName( HTMLNames::videoTag ) )
+    {
         return;
+    }
 
     bool errorOccurred = image()->errorOccurred();
-    if (!errorOccurred && image()->response().httpStatusCode() >= 400)
-        errorOccurred = element()->hasTagName(HTMLNames::objectTag); // An <object> considers a 404 to be an error and should fire onerror.
-    element()->dispatchEvent(Event::create(errorOccurred ? eventNames().errorEvent : eventNames().loadEvent, false, false));
+
+    if ( !errorOccurred && image()->response().httpStatusCode() >= 400 )
+    {
+        errorOccurred = element()->hasTagName(
+                            HTMLNames::objectTag );    // An <object> considers a 404 to be an error and should fire onerror.
+    }
+
+    element()->dispatchEvent( Event::create( errorOccurred ? eventNames().errorEvent : eventNames().loadEvent, false, false ) );
 }
 
-String HTMLImageLoader::sourceURI(const AtomicString& attr) const
+String HTMLImageLoader::sourceURI( const AtomicString &attr ) const
 {
 #if ENABLE(DASHBOARD_SUPPORT)
-    Settings* settings = element()->document()->settings();
-    if (settings && settings->usesDashboardBackwardCompatibilityMode() && attr.length() > 7 && attr.startsWith("url(\"") && attr.endsWith("\")"))
-        return attr.string().substring(5, attr.length() - 7);
+    Settings *settings = element()->document()->settings();
+
+    if ( settings && settings->usesDashboardBackwardCompatibilityMode() && attr.length() > 7 && attr.startsWith( "url(\"" )
+            && attr.endsWith( "\")" ) )
+    {
+        return attr.string().substring( 5, attr.length() - 7 );
+    }
+
 #endif
 
-    return stripLeadingAndTrailingHTMLSpaces(attr);
+    return stripLeadingAndTrailingHTMLSpaces( attr );
 }
 
-void HTMLImageLoader::notifyFinished(CachedResource*)
+void HTMLImageLoader::notifyFinished( CachedResource * )
 {
-    CachedImage* cachedImage = image();
+    CachedImage *cachedImage = image();
 
-    Element* elem = element();
-    ImageLoader::notifyFinished(cachedImage);
+    Element *elem = element();
+    ImageLoader::notifyFinished( cachedImage );
 
     bool loadError = cachedImage->errorOccurred() || cachedImage->response().httpStatusCode() >= 400;
 #if USE(JSC)
-    if (!loadError) {
-        if (!elem->inDocument()) {
-            JSC::JSLock lock(JSC::SilenceAssertionsOnly);
-            JSC::JSGlobalData* globalData = JSDOMWindowBase::commonJSGlobalData();
-            globalData->heap.reportExtraMemoryCost(cachedImage->encodedSize());
+
+    if ( !loadError )
+    {
+        if ( !elem->inDocument() )
+        {
+            JSC::JSLock lock( JSC::SilenceAssertionsOnly );
+            JSC::JSGlobalData *globalData = JSDOMWindowBase::commonJSGlobalData();
+            globalData->heap.reportExtraMemoryCost( cachedImage->encodedSize() );
         }
     }
+
 #endif
 
-    if (loadError && elem->hasTagName(HTMLNames::objectTag))
-        static_cast<HTMLObjectElement*>(elem)->renderFallbackContent();
+    if ( loadError && elem->hasTagName( HTMLNames::objectTag ) )
+    {
+        static_cast<HTMLObjectElement *>( elem )->renderFallbackContent();
+    }
 }
 
 }

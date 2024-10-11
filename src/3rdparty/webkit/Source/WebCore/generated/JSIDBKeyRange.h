@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBKeyRange;
 
-class JSIDBKeyRange : public JSDOMWrapper {
+class JSIDBKeyRange : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSIDBKeyRange(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<IDBKeyRange>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSIDBKeyRange( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<IDBKeyRange> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    IDBKeyRange* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    IDBKeyRange *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<IDBKeyRange> m_impl;
@@ -55,38 +61,41 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, IDBKeyRange*);
-IDBKeyRange* toIDBKeyRange(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, IDBKeyRange * );
+IDBKeyRange *toIDBKeyRange( JSC::JSValue );
 
-class JSIDBKeyRangePrototype : public JSC::JSObjectWithGlobalObject {
+class JSIDBKeyRangePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSIDBKeyRangePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSIDBKeyRangePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionOnly(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionLowerBound(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionUpperBound(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionBound(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionOnly( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionLowerBound( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionUpperBound( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBKeyRangePrototypeFunctionBound( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsIDBKeyRangeLower(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBKeyRangeUpper(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBKeyRangeLowerOpen(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBKeyRangeUpperOpen(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBKeyRangeConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBKeyRangeLower( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBKeyRangeUpper( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBKeyRangeLowerOpen( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBKeyRangeUpperOpen( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBKeyRangeConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

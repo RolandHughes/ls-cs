@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,39 +29,51 @@
 #include "CachedScript.h"
 #include "Element.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PendingScript::~PendingScript()
 {
-    if (m_cachedScript)
-        m_cachedScript->removeClient(this);
+    if ( m_cachedScript )
+    {
+        m_cachedScript->removeClient( this );
+    }
 }
 
 PassRefPtr<Element> PendingScript::releaseElementAndClear()
 {
-    setCachedScript(0);
+    setCachedScript( 0 );
     m_watchingForLoad = false;
     m_startingPosition = TextPosition1::belowRangePosition();
     return m_element.release();
 }
 
-void PendingScript::setCachedScript(CachedScript* cachedScript)
+void PendingScript::setCachedScript( CachedScript *cachedScript )
 {
-    if (m_cachedScript == cachedScript)
+    if ( m_cachedScript == cachedScript )
+    {
         return;
-    if (m_cachedScript)
-        m_cachedScript->removeClient(this);
+    }
+
+    if ( m_cachedScript )
+    {
+        m_cachedScript->removeClient( this );
+    }
+
     m_cachedScript = cachedScript;
-    if (m_cachedScript)
-        m_cachedScript->addClient(this);
+
+    if ( m_cachedScript )
+    {
+        m_cachedScript->addClient( this );
+    }
 }
 
-CachedScript* PendingScript::cachedScript() const
+CachedScript *PendingScript::cachedScript() const
 {
     return m_cachedScript.get();
 }
 
-void PendingScript::notifyFinished(CachedResource*)
+void PendingScript::notifyFinished( CachedResource * )
 {
 }
 

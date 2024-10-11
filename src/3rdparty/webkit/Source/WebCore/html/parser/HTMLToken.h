@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLToken_h
@@ -30,12 +30,16 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLToken {
-    WTF_MAKE_NONCOPYABLE(HTMLToken); WTF_MAKE_FAST_ALLOCATED;
+class HTMLToken
+{
+    WTF_MAKE_NONCOPYABLE( HTMLToken );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    enum Type {
+    enum Type
+    {
         Uninitialized,
         DOCTYPE,
         StartTag,
@@ -45,13 +49,15 @@ public:
         EndOfFile,
     };
 
-    class Range {
+    class Range
+    {
     public:
         int m_start;
         int m_end;
     };
 
-    class Attribute {
+    class Attribute
+    {
     public:
         Range m_nameRange;
         Range m_valueRange;
@@ -62,7 +68,10 @@ public:
     typedef WTF::Vector<Attribute, 10> AttributeList;
     typedef WTF::Vector<UChar, 1024> DataVector;
 
-    HTMLToken() { clear(); }
+    HTMLToken()
+    {
+        clear();
+    }
 
     void clear()
     {
@@ -73,104 +82,113 @@ public:
         m_data.clear();
     }
 
-    bool isUninitialized() { return m_type == Uninitialized; }
+    bool isUninitialized()
+    {
+        return m_type == Uninitialized;
+    }
 
-    int startIndex() const { return m_range.m_start; }
-    int endIndex() const { return m_range.m_end; }
+    int startIndex() const
+    {
+        return m_range.m_start;
+    }
+    int endIndex() const
+    {
+        return m_range.m_end;
+    }
 
-    void setBaseOffset(int offset)
+    void setBaseOffset( int offset )
     {
         m_baseOffset = offset;
     }
 
-    void end(int endOffset)
+    void end( int endOffset )
     {
         m_range.m_end = endOffset - m_baseOffset;
     }
 
     void makeEndOfFile()
     {
-        ASSERT(m_type == Uninitialized);
+        ASSERT( m_type == Uninitialized );
         m_type = EndOfFile;
     }
 
-    void beginStartTag(UChar character)
+    void beginStartTag( UChar character )
     {
-        ASSERT(character);
-        ASSERT(m_type == Uninitialized);
+        ASSERT( character );
+        ASSERT( m_type == Uninitialized );
         m_type = StartTag;
         m_selfClosing = false;
         m_currentAttribute = 0;
         m_attributes.clear();
 
-        m_data.append(character);
+        m_data.append( character );
     }
 
     template<typename T>
-    void beginEndTag(T characters)
+    void beginEndTag( T characters )
     {
-        ASSERT(m_type == Uninitialized);
+        ASSERT( m_type == Uninitialized );
         m_type = EndTag;
         m_selfClosing = false;
         m_currentAttribute = 0;
         m_attributes.clear();
 
-        m_data.append(characters);
+        m_data.append( characters );
     }
 
     // Starting a character token works slightly differently than starting
     // other types of tokens because we want to save a per-character branch.
     void ensureIsCharacterToken()
     {
-        ASSERT(m_type == Uninitialized || m_type == Character);
+        ASSERT( m_type == Uninitialized || m_type == Character );
         m_type = Character;
     }
 
     void beginComment()
     {
-        ASSERT(m_type == Uninitialized);
+        ASSERT( m_type == Uninitialized );
         m_type = Comment;
     }
 
     void beginDOCTYPE()
     {
-        ASSERT(m_type == Uninitialized);
+        ASSERT( m_type == Uninitialized );
         m_type = DOCTYPE;
-        m_doctypeData = adoptPtr(new DoctypeData());
+        m_doctypeData = adoptPtr( new DoctypeData() );
     }
 
-    void beginDOCTYPE(UChar character)
+    void beginDOCTYPE( UChar character )
     {
-        ASSERT(character);
+        ASSERT( character );
         beginDOCTYPE();
-        m_data.append(character);
+        m_data.append( character );
     }
 
-    void appendToName(UChar character)
+    void appendToName( UChar character )
     {
-        ASSERT(character);
-        ASSERT(m_type == StartTag || m_type == EndTag || m_type == DOCTYPE);
-        m_data.append(character);
+        ASSERT( character );
+        ASSERT( m_type == StartTag || m_type == EndTag || m_type == DOCTYPE );
+        m_data.append( character );
     }
 
     template<typename T>
-    void appendToCharacter(T characters)
+    void appendToCharacter( T characters )
     {
-        ASSERT(m_type == Character);
-        m_data.append(characters);
+        ASSERT( m_type == Character );
+        m_data.append( characters );
     }
 
-    void appendToComment(UChar character)
+    void appendToComment( UChar character )
     {
-        ASSERT(character);
-        ASSERT(m_type == Comment);
-        m_data.append(character);
+        ASSERT( character );
+        ASSERT( m_type == Comment );
+        m_data.append( character );
     }
 
     void addNewAttribute()
     {
-        ASSERT(m_type == StartTag || m_type == EndTag);
-        m_attributes.grow(m_attributes.size() + 1);
+        ASSERT( m_type == StartTag || m_type == EndTag );
+        m_attributes.grow( m_attributes.size() + 1 );
         m_currentAttribute = &m_attributes.last();
 #ifndef NDEBUG
         m_currentAttribute->m_nameRange.m_start = 0;
@@ -180,12 +198,12 @@ public:
 #endif
     }
 
-    void beginAttributeName(int offset)
+    void beginAttributeName( int offset )
     {
         m_currentAttribute->m_nameRange.m_start = offset - m_baseOffset;
     }
 
-    void endAttributeName(int offset)
+    void endAttributeName( int offset )
     {
         int index = offset - m_baseOffset;
         m_currentAttribute->m_nameRange.m_end = index;
@@ -193,7 +211,7 @@ public:
         m_currentAttribute->m_valueRange.m_end = index;
     }
 
-    void beginAttributeValue(int offset)
+    void beginAttributeValue( int offset )
     {
         m_currentAttribute->m_valueRange.m_start = offset - m_baseOffset;
 #ifndef NDEBUG
@@ -201,140 +219,143 @@ public:
 #endif
     }
 
-    void endAttributeValue(int offset)
+    void endAttributeValue( int offset )
     {
         m_currentAttribute->m_valueRange.m_end = offset - m_baseOffset;
     }
 
-    void appendToAttributeName(UChar character)
+    void appendToAttributeName( UChar character )
     {
-        ASSERT(character);
-        ASSERT(m_type == StartTag || m_type == EndTag);
+        ASSERT( character );
+        ASSERT( m_type == StartTag || m_type == EndTag );
         // FIXME: We should be able to add the following ASSERT once we fix
         // https://bugs.webkit.org/show_bug.cgi?id=62971
         //   ASSERT(m_currentAttribute->m_nameRange.m_start);
-        m_currentAttribute->m_name.append(character);
+        m_currentAttribute->m_name.append( character );
     }
 
-    void appendToAttributeValue(UChar character)
+    void appendToAttributeValue( UChar character )
     {
-        ASSERT(character);
-        ASSERT(m_type == StartTag || m_type == EndTag);
-        ASSERT(m_currentAttribute->m_valueRange.m_start);
-        m_currentAttribute->m_value.append(character);
+        ASSERT( character );
+        ASSERT( m_type == StartTag || m_type == EndTag );
+        ASSERT( m_currentAttribute->m_valueRange.m_start );
+        m_currentAttribute->m_value.append( character );
     }
 
-    void appendToAttributeValue(size_t i, const String& value)
+    void appendToAttributeValue( size_t i, const String &value )
     {
-        ASSERT(!value.isEmpty());
-        ASSERT(m_type == StartTag || m_type == EndTag);
-        m_attributes[i].m_value.append(value.characters(), value.length());
+        ASSERT( !value.isEmpty() );
+        ASSERT( m_type == StartTag || m_type == EndTag );
+        m_attributes[i].m_value.append( value.characters(), value.length() );
     }
 
-    Type type() const { return m_type; }
+    Type type() const
+    {
+        return m_type;
+    }
 
     bool selfClosing() const
     {
-        ASSERT(m_type == StartTag || m_type == EndTag);
+        ASSERT( m_type == StartTag || m_type == EndTag );
         return m_selfClosing;
     }
 
     void setSelfClosing()
     {
-        ASSERT(m_type == HTMLToken::StartTag || m_type == HTMLToken::EndTag);
+        ASSERT( m_type == HTMLToken::StartTag || m_type == HTMLToken::EndTag );
         m_selfClosing = true;
     }
 
-    const AttributeList& attributes() const
+    const AttributeList &attributes() const
     {
-        ASSERT(m_type == StartTag || m_type == EndTag);
+        ASSERT( m_type == StartTag || m_type == EndTag );
         return m_attributes;
     }
 
-    const DataVector& name() const
+    const DataVector &name() const
     {
-        ASSERT(m_type == StartTag || m_type == EndTag || m_type == DOCTYPE);
+        ASSERT( m_type == StartTag || m_type == EndTag || m_type == DOCTYPE );
         return m_data;
     }
 
     void eraseCharacters()
     {
-        ASSERT(m_type == Character);
+        ASSERT( m_type == Character );
         m_data.clear();
     }
 
-    void eraseValueOfAttribute(size_t i)
+    void eraseValueOfAttribute( size_t i )
     {
-        ASSERT(m_type == StartTag || m_type == EndTag);
+        ASSERT( m_type == StartTag || m_type == EndTag );
         m_attributes[i].m_value.clear();
     }
 
-    const DataVector& characters() const
+    const DataVector &characters() const
     {
-        ASSERT(m_type == Character);
+        ASSERT( m_type == Character );
         return m_data;
     }
 
-    const DataVector& comment() const
+    const DataVector &comment() const
     {
-        ASSERT(m_type == Comment);
+        ASSERT( m_type == Comment );
         return m_data;
     }
 
     // FIXME: Distinguish between a missing public identifer and an empty one.
-    const WTF::Vector<UChar>& publicIdentifier() const
+    const WTF::Vector<UChar> &publicIdentifier() const
     {
-        ASSERT(m_type == DOCTYPE);
+        ASSERT( m_type == DOCTYPE );
         return m_doctypeData->m_publicIdentifier;
     }
 
     // FIXME: Distinguish between a missing system identifer and an empty one.
-    const WTF::Vector<UChar>& systemIdentifier() const
+    const WTF::Vector<UChar> &systemIdentifier() const
     {
-        ASSERT(m_type == DOCTYPE);
+        ASSERT( m_type == DOCTYPE );
         return m_doctypeData->m_systemIdentifier;
     }
 
     void setPublicIdentifierToEmptyString()
     {
-        ASSERT(m_type == DOCTYPE);
+        ASSERT( m_type == DOCTYPE );
         m_doctypeData->m_hasPublicIdentifier = true;
         m_doctypeData->m_publicIdentifier.clear();
     }
 
     void setSystemIdentifierToEmptyString()
     {
-        ASSERT(m_type == DOCTYPE);
+        ASSERT( m_type == DOCTYPE );
         m_doctypeData->m_hasSystemIdentifier = true;
         m_doctypeData->m_systemIdentifier.clear();
     }
 
     bool forceQuirks() const
     {
-        ASSERT(m_type == DOCTYPE);
+        ASSERT( m_type == DOCTYPE );
         return m_doctypeData->m_forceQuirks;
     }
 
     void setForceQuirks()
     {
-        ASSERT(m_type == DOCTYPE);
+        ASSERT( m_type == DOCTYPE );
         m_doctypeData->m_forceQuirks = true;
     }
 
-    void appendToPublicIdentifier(UChar character)
+    void appendToPublicIdentifier( UChar character )
     {
-        ASSERT(character);
-        ASSERT(m_type == DOCTYPE);
-        ASSERT(m_doctypeData->m_hasPublicIdentifier);
-        m_doctypeData->m_publicIdentifier.append(character);
+        ASSERT( character );
+        ASSERT( m_type == DOCTYPE );
+        ASSERT( m_doctypeData->m_hasPublicIdentifier );
+        m_doctypeData->m_publicIdentifier.append( character );
     }
 
-    void appendToSystemIdentifier(UChar character)
+    void appendToSystemIdentifier( UChar character )
     {
-        ASSERT(character);
-        ASSERT(m_type == DOCTYPE);
-        ASSERT(m_doctypeData->m_hasSystemIdentifier);
-        m_doctypeData->m_systemIdentifier.append(character);
+        ASSERT( character );
+        ASSERT( m_type == DOCTYPE );
+        ASSERT( m_doctypeData->m_hasSystemIdentifier );
+        m_doctypeData->m_systemIdentifier.append( character );
     }
 
 private:
@@ -343,13 +364,14 @@ private:
     // want to end up with a cleaner interface between the two classes.
     friend class AtomicHTMLToken;
 
-    class DoctypeData {
-        WTF_MAKE_NONCOPYABLE(DoctypeData);
+    class DoctypeData
+    {
+        WTF_MAKE_NONCOPYABLE( DoctypeData );
     public:
         DoctypeData()
-            : m_hasPublicIdentifier(false)
-            , m_hasSystemIdentifier(false)
-            , m_forceQuirks(false)
+            : m_hasPublicIdentifier( false )
+            , m_hasSystemIdentifier( false )
+            , m_forceQuirks( false )
         {
         }
 
@@ -377,128 +399,143 @@ private:
     AttributeList m_attributes;
 
     // A pointer into m_attributes used during lexing.
-    Attribute* m_currentAttribute;
+    Attribute *m_currentAttribute;
 };
 
 // FIXME: This class should eventually be named HTMLToken once we move the
 // exiting HTMLToken to be internal to the HTMLTokenizer.
-class AtomicHTMLToken {
-    WTF_MAKE_NONCOPYABLE(AtomicHTMLToken);
+class AtomicHTMLToken
+{
+    WTF_MAKE_NONCOPYABLE( AtomicHTMLToken );
 public:
-    AtomicHTMLToken(HTMLToken& token)
-        : m_type(token.type())
+    AtomicHTMLToken( HTMLToken &token )
+        : m_type( token.type() )
     {
-        switch (m_type) {
-        case HTMLToken::Uninitialized:
-            ASSERT_NOT_REACHED();
-            break;
-        case HTMLToken::DOCTYPE:
-            m_name = AtomicString(token.name().data(), token.name().size());
-            m_doctypeData = token.m_doctypeData.release();
-            break;
-        case HTMLToken::EndOfFile:
-            break;
-        case HTMLToken::StartTag:
-        case HTMLToken::EndTag: {
-            m_selfClosing = token.selfClosing();
-            m_name = AtomicString(token.name().data(), token.name().size());
-            initializeAttributes(token.attributes());
-            break;
-        }
-        case HTMLToken::Comment:
-            m_data = String(token.comment().data(), token.comment().size());
-            break;
-        case HTMLToken::Character:
-            m_externalCharacters = &token.characters();
-            break;
+        switch ( m_type )
+        {
+            case HTMLToken::Uninitialized:
+                ASSERT_NOT_REACHED();
+                break;
+
+            case HTMLToken::DOCTYPE:
+                m_name = AtomicString( token.name().data(), token.name().size() );
+                m_doctypeData = token.m_doctypeData.release();
+                break;
+
+            case HTMLToken::EndOfFile:
+                break;
+
+            case HTMLToken::StartTag:
+            case HTMLToken::EndTag:
+            {
+                m_selfClosing = token.selfClosing();
+                m_name = AtomicString( token.name().data(), token.name().size() );
+                initializeAttributes( token.attributes() );
+                break;
+            }
+
+            case HTMLToken::Comment:
+                m_data = String( token.comment().data(), token.comment().size() );
+                break;
+
+            case HTMLToken::Character:
+                m_externalCharacters = &token.characters();
+                break;
         }
     }
 
-    AtomicHTMLToken(HTMLToken::Type type, AtomicString name, PassRefPtr<NamedNodeMap> attributes = 0)
-        : m_type(type)
-        , m_name(name)
-        , m_attributes(attributes)
+    AtomicHTMLToken( HTMLToken::Type type, AtomicString name, PassRefPtr<NamedNodeMap> attributes = 0 )
+        : m_type( type )
+        , m_name( name )
+        , m_attributes( attributes )
     {
-        ASSERT(usesName());
+        ASSERT( usesName() );
     }
 
-    HTMLToken::Type type() const { return m_type; }
-
-    const AtomicString& name() const
+    HTMLToken::Type type() const
     {
-        ASSERT(usesName());
+        return m_type;
+    }
+
+    const AtomicString &name() const
+    {
+        ASSERT( usesName() );
         return m_name;
     }
 
-    void setName(const AtomicString& name)
+    void setName( const AtomicString &name )
     {
-        ASSERT(usesName());
+        ASSERT( usesName() );
         m_name = name;
     }
 
     bool selfClosing() const
     {
-        ASSERT(m_type == HTMLToken::StartTag || m_type == HTMLToken::EndTag);
+        ASSERT( m_type == HTMLToken::StartTag || m_type == HTMLToken::EndTag );
         return m_selfClosing;
     }
 
-    Attribute* getAttributeItem(const QualifiedName& attributeName)
+    Attribute *getAttributeItem( const QualifiedName &attributeName )
     {
-        ASSERT(usesAttributes());
-        if (!m_attributes)
+        ASSERT( usesAttributes() );
+
+        if ( !m_attributes )
+        {
             return 0;
-        return m_attributes->getAttributeItem(attributeName);
+        }
+
+        return m_attributes->getAttributeItem( attributeName );
     }
 
-    NamedNodeMap* attributes() const
+    NamedNodeMap *attributes() const
     {
-        ASSERT(usesAttributes());
+        ASSERT( usesAttributes() );
         return m_attributes.get();
     }
 
     PassRefPtr<NamedNodeMap> takeAtributes()
     {
-        ASSERT(usesAttributes());
+        ASSERT( usesAttributes() );
         return m_attributes.release();
     }
 
-    const HTMLToken::DataVector& characters() const
+    const HTMLToken::DataVector &characters() const
     {
-        ASSERT(m_type == HTMLToken::Character);
+        ASSERT( m_type == HTMLToken::Character );
         return *m_externalCharacters;
     }
 
-    const String& comment() const
+    const String &comment() const
     {
-        ASSERT(m_type == HTMLToken::Comment);
+        ASSERT( m_type == HTMLToken::Comment );
         return m_data;
     }
 
     // FIXME: Distinguish between a missing public identifer and an empty one.
-    WTF::Vector<UChar>& publicIdentifier() const
+    WTF::Vector<UChar> &publicIdentifier() const
     {
-        ASSERT(m_type == HTMLToken::DOCTYPE);
+        ASSERT( m_type == HTMLToken::DOCTYPE );
         return m_doctypeData->m_publicIdentifier;
     }
 
     // FIXME: Distinguish between a missing system identifer and an empty one.
-    WTF::Vector<UChar>& systemIdentifier() const
+    WTF::Vector<UChar> &systemIdentifier() const
     {
-        ASSERT(m_type == HTMLToken::DOCTYPE);
+        ASSERT( m_type == HTMLToken::DOCTYPE );
         return m_doctypeData->m_systemIdentifier;
     }
 
     bool forceQuirks() const
     {
-        ASSERT(m_type == HTMLToken::DOCTYPE);
+        ASSERT( m_type == HTMLToken::DOCTYPE );
         return m_doctypeData->m_forceQuirks;
     }
 
 private:
     HTMLToken::Type m_type;
 
-    void initializeAttributes(const HTMLToken::AttributeList& attributes);
-    
+    void initializeAttributes( const HTMLToken::AttributeList &attributes );
+
     bool usesName() const
     {
         return m_type == HTMLToken::StartTag || m_type == HTMLToken::EndTag || m_type == HTMLToken::DOCTYPE;
@@ -523,7 +560,7 @@ private:
     //
     // FIXME: Add a mechanism for "internalizing" the characters when the
     //        HTMLToken is destructed.
-    const HTMLToken::DataVector* m_externalCharacters;
+    const HTMLToken::DataVector *m_externalCharacters;
 
     // For DOCTYPE
     OwnPtr<HTMLToken::DoctypeData> m_doctypeData;
@@ -534,29 +571,37 @@ private:
     RefPtr<NamedNodeMap> m_attributes;
 };
 
-inline void AtomicHTMLToken::initializeAttributes(const HTMLToken::AttributeList& attributes)
+inline void AtomicHTMLToken::initializeAttributes( const HTMLToken::AttributeList &attributes )
 {
     size_t size = attributes.size();
-    if (!size)
+
+    if ( !size )
+    {
         return;
+    }
 
     m_attributes = NamedNodeMap::create();
-    m_attributes->reserveInitialCapacity(size);
-    for (size_t i = 0; i < size; ++i) {
-        const HTMLToken::Attribute& attribute = attributes[i];
-        if (attribute.m_name.isEmpty())
+    m_attributes->reserveInitialCapacity( size );
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        const HTMLToken::Attribute &attribute = attributes[i];
+
+        if ( attribute.m_name.isEmpty() )
+        {
             continue;
+        }
 
         // FIXME: We should be able to add the following ASSERT once we fix
         // https://bugs.webkit.org/show_bug.cgi?id=62971
         //   ASSERT(attribute.m_nameRange.m_start);
-        ASSERT(attribute.m_nameRange.m_end);
-        ASSERT(attribute.m_valueRange.m_start);
-        ASSERT(attribute.m_valueRange.m_end);
+        ASSERT( attribute.m_nameRange.m_end );
+        ASSERT( attribute.m_valueRange.m_start );
+        ASSERT( attribute.m_valueRange.m_end );
 
-        String name(attribute.m_name.data(), attribute.m_name.size());
-        String value(attribute.m_value.data(), attribute.m_value.size());
-        m_attributes->insertAttribute(Attribute::createMapped(name, value), false);
+        String name( attribute.m_name.data(), attribute.m_name.size() );
+        String value( attribute.m_value.data(), attribute.m_value.size() );
+        m_attributes->insertAttribute( Attribute::createMapped( name, value ), false );
     }
 }
 

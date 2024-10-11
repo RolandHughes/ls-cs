@@ -32,36 +32,37 @@ class QByteArray;
 
 class QPpmHandler : public QImageIOHandler
 {
- public:
-   QPpmHandler();
+public:
+    QPpmHandler();
 
-   bool canRead() override;
-   bool read(QImage *image) override;
-   bool write(const QImage &image) override;
+    bool canRead() override;
+    bool read( QImage *image ) override;
+    bool write( const QImage &image ) override;
 
-   QString name() const override;
+    QString name() const override;
 
-   static bool canRead(QIODevice *device, QByteArray *subType = nullptr);
+    static bool canRead( QIODevice *device, QByteArray *subType = nullptr );
 
-   QVariant option(ImageOption option) override;
-   void setOption(ImageOption option, const QVariant &value) override;
-   bool supportsOption(ImageOption option) const override;
+    QVariant option( ImageOption option ) override;
+    void setOption( ImageOption option, const QVariant &value ) override;
+    bool supportsOption( ImageOption option ) const override;
 
- private:
-   bool readHeader();
+private:
+    bool readHeader();
 
-   enum State {
-      Ready,
-      ReadHeader,
-      Error
-   };
-   State state;
+    enum State
+    {
+        Ready,
+        ReadHeader,
+        Error
+    };
+    State state;
 
-   char type;
-   int width;
-   int height;
-   int mcc;
-   mutable QByteArray subType;
+    char type;
+    int width;
+    int height;
+    int mcc;
+    mutable QByteArray subType;
 };
 
 #endif // QT_NO_IMAGEFORMAT_PPM

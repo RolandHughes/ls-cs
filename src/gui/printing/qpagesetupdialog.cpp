@@ -28,63 +28,73 @@
 
 #ifndef QT_NO_PRINTDIALOG
 
-QPageSetupDialogPrivate::QPageSetupDialogPrivate(QPrinter *prntr)
-   : printer(nullptr), ownsPrinter(false)
+QPageSetupDialogPrivate::QPageSetupDialogPrivate( QPrinter *prntr )
+    : printer( nullptr ), ownsPrinter( false )
 {
-   setPrinter(prntr);
+    setPrinter( prntr );
 }
 
-void QPageSetupDialogPrivate::setPrinter(QPrinter *newPrinter)
+void QPageSetupDialogPrivate::setPrinter( QPrinter *newPrinter )
 {
-   if (printer && ownsPrinter) {
-      delete printer;
-   }
-   if (newPrinter) {
-      printer = newPrinter;
-      ownsPrinter = false;
-   } else {
-      printer = new QPrinter;
-      ownsPrinter = true;
-   }
+    if ( printer && ownsPrinter )
+    {
+        delete printer;
+    }
 
-   if (printer->outputFormat() != QPrinter::NativeFormat) {
-      qWarning("setPrinter() Unable to use on a non-native printer");
-   }
+    if ( newPrinter )
+    {
+        printer = newPrinter;
+        ownsPrinter = false;
+    }
+    else
+    {
+        printer = new QPrinter;
+        ownsPrinter = true;
+    }
+
+    if ( printer->outputFormat() != QPrinter::NativeFormat )
+    {
+        qWarning( "setPrinter() Unable to use on a non-native printer" );
+    }
 }
 
-void QPageSetupDialog::open(QObject *receiver, const QString &member)
+void QPageSetupDialog::open( QObject *receiver, const QString &member )
 {
-   Q_D(QPageSetupDialog);
-   connect(this, SIGNAL(accepted()), receiver, member);
-   d->receiverToDisconnectOnClose = receiver;
-   d->memberToDisconnectOnClose   = member;
-   QDialog::open();
+    Q_D( QPageSetupDialog );
+    connect( this, SIGNAL( accepted() ), receiver, member );
+    d->receiverToDisconnectOnClose = receiver;
+    d->memberToDisconnectOnClose   = member;
+    QDialog::open();
 }
 
 QPageSetupDialog::~QPageSetupDialog()
 {
-   Q_D(QPageSetupDialog);
-   if (d->ownsPrinter) {
-      delete d->printer;
-   }
+    Q_D( QPageSetupDialog );
+
+    if ( d->ownsPrinter )
+    {
+        delete d->printer;
+    }
 }
 
 QPrinter *QPageSetupDialog::printer()
 {
-   Q_D(QPageSetupDialog);
-   return d->printer;
+    Q_D( QPageSetupDialog );
+    return d->printer;
 }
 
-void QPageSetupDialog::done(int result)
+void QPageSetupDialog::done( int result )
 {
-   Q_D(QPageSetupDialog);
-   QDialog::done(result);
+    Q_D( QPageSetupDialog );
+    QDialog::done( result );
 
-   if (d->receiverToDisconnectOnClose) {
-      disconnect(this, SIGNAL(accepted()), d->receiverToDisconnectOnClose, d->memberToDisconnectOnClose);
-      d->receiverToDisconnectOnClose = nullptr;
-   }
-   d->memberToDisconnectOnClose.clear();
+    if ( d->receiverToDisconnectOnClose )
+    {
+        disconnect( this, SIGNAL( accepted() ), d->receiverToDisconnectOnClose, d->memberToDisconnectOnClose );
+        d->receiverToDisconnectOnClose = nullptr;
+    }
+
+    d->memberToDisconnectOnClose.clear();
 }
 
 #endif

@@ -160,7 +160,7 @@ list(APPEND GUI_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowdefs_win.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowstatechangeevent.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowsysteminterface.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_carbon_wrapper.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_carbon_wrapper.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtgui.h
 )
 
@@ -193,16 +193,16 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindow_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowcontainer_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwindowsysteminterface_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_carbon_wrapper_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_mac_p.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_carbon_wrapper_p.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_mac_p.h
 )
 
-target_sources(CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qaction.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qactiongroup.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qapplication.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qapplication_cs.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qapplication_lscs.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qclipboard.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcursor.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qdrag.cpp
@@ -251,10 +251,10 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
    add_definitions(-DQT_NO_DIRECTDRAW)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qmacgesturerecognizer.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_carbon_wrapper.mm
+      ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_carbon_wrapper.mm
    )
 
    list(APPEND EXTRA_GUI_LDFLAGS

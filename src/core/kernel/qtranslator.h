@@ -33,39 +33,39 @@ class QTranslatorPrivate;
 
 class Q_CORE_EXPORT QTranslator : public QObject
 {
-   CORE_CS_OBJECT(QTranslator)
+    CORE_LSCS_OBJECT( QTranslator )
 
- public:
-   explicit QTranslator(QObject *parent = nullptr);
+public:
+    explicit QTranslator( QObject *parent = nullptr );
 
-   QTranslator(const QTranslator &) = delete;
-   QTranslator &operator=(const QTranslator &) = delete;
+    QTranslator( const QTranslator & ) = delete;
+    QTranslator &operator=( const QTranslator & ) = delete;
 
-   ~QTranslator();
+    ~QTranslator();
 
-   virtual QString translate(const char *context, const char *text, const char *comment = nullptr,
-         std::optional<int> numArg = std::optional<int>()) const;
+    virtual QString translate( const char *context, const char *text, const char *comment = nullptr,
+                               std::optional<int> numArg = std::optional<int>() ) const;
 
-   virtual QString translate(const QString &context, const QString &text, const QString &comment = QString(),
-         std::optional<int> numArg = std::optional<int>()) const;
+    virtual QString translate( const QString &context, const QString &text, const QString &comment = QString(),
+                               std::optional<int> numArg = std::optional<int>() ) const;
 
-   virtual bool isEmpty() const;
+    virtual bool isEmpty() const;
 
-   static QString replacePercentN(QString text, int numArg);
+    static QString replacePercentN( QString text, int numArg );
 
-   bool load(const QString &filename, const QString &directory = QString(), const QString &search_delimiters = QString(),
-         const QString &suffix = QString());
+    bool load( const QString &filename, const QString &directory = QString(), const QString &search_delimiters = QString(),
+               const QString &suffix = QString() );
 
-   bool load(const QLocale &locale, const QString &filename, const QString &prefix = QString(),
-         const QString &directory = QString(), const QString &suffix = QString());
+    bool load( const QLocale &locale, const QString &filename, const QString &prefix = QString(),
+               const QString &directory = QString(), const QString &suffix = QString() );
 
-   bool load(const uchar *data, int len, const QString &directory = QString());
+    bool load( const uchar *data, int len, const QString &directory = QString() );
 
- protected:
-   QScopedPointer<QTranslatorPrivate> d_ptr;
+protected:
+    QScopedPointer<QTranslatorPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QTranslator)
+private:
+    Q_DECLARE_PRIVATE( QTranslator )
 };
 
 #endif

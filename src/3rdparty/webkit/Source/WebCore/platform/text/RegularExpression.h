@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RegularExpression_h
@@ -28,28 +28,30 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RegularExpression {
+class RegularExpression
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    RegularExpression(const String&, TextCaseSensitivity);
+    RegularExpression( const String &, TextCaseSensitivity );
     ~RegularExpression();
 
-    RegularExpression(const RegularExpression&);
-    RegularExpression& operator=(const RegularExpression&);
+    RegularExpression( const RegularExpression & );
+    RegularExpression &operator=( const RegularExpression & );
 
-    int match(const String&, int startFrom = 0, int* matchLength = 0) const;
-    int searchRev(const String&) const;
+    int match( const String &, int startFrom = 0, int *matchLength = 0 ) const;
+    int searchRev( const String & ) const;
 
     int matchedLength() const;
 
 private:
-    class Private;    
+    class Private;
     RefPtr<Private> d;
 };
 
-void replace(String&, const RegularExpression&, const String&);
+void replace( String &, const RegularExpression &, const String & );
 
 } // namespace WebCore
 

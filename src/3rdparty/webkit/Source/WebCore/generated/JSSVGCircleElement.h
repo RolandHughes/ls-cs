@@ -27,74 +27,80 @@
 #include "SVGElement.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGCircleElement;
 
-class JSSVGCircleElement : public JSSVGElement {
+class JSSVGCircleElement : public JSSVGElement
+{
     typedef JSSVGElement Base;
 public:
-    JSSVGCircleElement(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGCircleElement>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSSVGCircleElement( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGCircleElement> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSSVGCircleElementPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGCircleElementPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGCircleElementPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGCircleElementPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                 JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionHasExtension(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetPresentationAttribute(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetBBox(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetCTM(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetScreenCTM(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetTransformToElement(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionHasExtension( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetPresentationAttribute( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetBBox( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetCTM( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetScreenCTM( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGCircleElementPrototypeFunctionGetTransformToElement( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGCircleElementCx(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementCy(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementRequiredFeatures(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementRequiredExtensions(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementSystemLanguage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementXmllang(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGCircleElementXmllang(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGCircleElementXmlspace(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSSVGCircleElementXmlspace(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsSVGCircleElementExternalResourcesRequired(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementClassName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementStyle(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementTransform(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementNearestViewportElement(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementFarthestViewportElement(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGCircleElementConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGCircleElementCx( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementCy( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementRequiredFeatures( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementRequiredExtensions( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementSystemLanguage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementXmllang( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGCircleElementXmllang( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGCircleElementXmlspace( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSSVGCircleElementXmlspace( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsSVGCircleElementExternalResourcesRequired( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementClassName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementStyle( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementTransform( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementNearestViewportElement( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementFarthestViewportElement( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGCircleElementConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

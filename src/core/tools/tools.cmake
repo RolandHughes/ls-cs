@@ -67,7 +67,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/tools/qtools_p.h
 )
 
-target_sources(CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/tools/qarraydata.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/tools/qbitarray.cpp
@@ -91,20 +91,20 @@ target_sources(CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/tools/qbytearray_mac.mm
       ${CMAKE_CURRENT_SOURCE_DIR}/tools/qelapsedtimer_mac.cpp
     )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/tools/qelapsedtimer_unix.cpp
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/tools/qelapsedtimer_win.cpp
    )

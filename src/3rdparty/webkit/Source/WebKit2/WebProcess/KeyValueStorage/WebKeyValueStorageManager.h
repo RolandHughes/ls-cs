@@ -29,32 +29,35 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 struct SecurityOriginData;
 
-class WebKeyValueStorageManager {
-    WTF_MAKE_NONCOPYABLE(WebKeyValueStorageManager);
+class WebKeyValueStorageManager
+{
+    WTF_MAKE_NONCOPYABLE( WebKeyValueStorageManager );
 
 public:
-    static WebKeyValueStorageManager& shared();
+    static WebKeyValueStorageManager &shared();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
 private:
     WebKeyValueStorageManager();
-    
-    void getKeyValueStorageOrigins(uint64_t callbackID);
-    void deleteEntriesForOrigin(const SecurityOriginData&);
+
+    void getKeyValueStorageOrigins( uint64_t callbackID );
+    void deleteEntriesForOrigin( const SecurityOriginData & );
     void deleteAllEntries();
 
-    void didReceiveWebKeyValueStorageManagerMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveWebKeyValueStorageManagerMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 };
 
 } // namespace WebKit

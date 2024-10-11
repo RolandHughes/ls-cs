@@ -28,14 +28,17 @@
 #include "PlatformString.h"
 
 
-static QWebHistoryInterface* default_interface;
+static QWebHistoryInterface *default_interface;
 
 static bool gRoutineAdded;
 
 static void gCleanupInterface()
 {
-    if (default_interface && !default_interface->parent())
+    if ( default_interface && !default_interface->parent() )
+    {
         delete default_interface;
+    }
+
     default_interface = 0;
 }
 
@@ -47,13 +50,17 @@ static void gCleanupInterface()
   When the application exists QWebHistoryInterface will automatically delete the
   \a defaultInterface if it does not have a parent.
 */
-void QWebHistoryInterface::setDefaultInterface(QWebHistoryInterface* defaultInterface)
+void QWebHistoryInterface::setDefaultInterface( QWebHistoryInterface *defaultInterface )
 {
-    if (default_interface == defaultInterface)
+    if ( default_interface == defaultInterface )
+    {
         return;
+    }
 
-    if (default_interface && !default_interface->parent())
+    if ( default_interface && !default_interface->parent() )
+    {
         delete default_interface;
+    }
 
     default_interface = defaultInterface;
     WebCore::PageGroup::removeAllVisitedLinks();
@@ -61,8 +68,9 @@ void QWebHistoryInterface::setDefaultInterface(QWebHistoryInterface* defaultInte
     //### enable after the introduction of a version
     //WebCore::PageGroup::setShouldTrackVisitedLinks(true);
 
-    if (!gRoutineAdded) {
-        qAddPostRoutine(gCleanupInterface);
+    if ( !gRoutineAdded )
+    {
+        qAddPostRoutine( gCleanupInterface );
         gRoutineAdded = true;
     }
 }
@@ -72,7 +80,7 @@ void QWebHistoryInterface::setDefaultInterface(QWebHistoryInterface* defaultInte
   WebKit will not keep track of visited links and a null pointer will be returned.
   \sa setDefaultInterface()
 */
-QWebHistoryInterface* QWebHistoryInterface::defaultInterface()
+QWebHistoryInterface *QWebHistoryInterface::defaultInterface()
 {
     return default_interface;
 }
@@ -99,8 +107,8 @@ QWebHistoryInterface* QWebHistoryInterface::defaultInterface()
 /*!
     Constructs a new QWebHistoryInterface with parent \a parent.
 */
-QWebHistoryInterface::QWebHistoryInterface(QObject* parent)
-    : QObject(parent)
+QWebHistoryInterface::QWebHistoryInterface( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -109,8 +117,10 @@ QWebHistoryInterface::QWebHistoryInterface(QObject* parent)
 */
 QWebHistoryInterface::~QWebHistoryInterface()
 {
-    if (default_interface == this)
+    if ( default_interface == this )
+    {
         default_interface = 0;
+    }
 }
 
 /*!

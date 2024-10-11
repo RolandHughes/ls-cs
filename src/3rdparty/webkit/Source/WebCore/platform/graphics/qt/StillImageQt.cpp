@@ -34,58 +34,67 @@
 
 #include <QPainter>
 
-namespace WebCore {
+namespace WebCore
+{
 
-StillImage::StillImage(const QPixmap& pixmap)
-    : m_pixmap(new QPixmap(pixmap))
-    , m_ownsPixmap(true)
+StillImage::StillImage( const QPixmap &pixmap )
+    : m_pixmap( new QPixmap( pixmap ) )
+    , m_ownsPixmap( true )
 {}
 
-StillImage::StillImage(const QPixmap* pixmap)
-    : m_pixmap(pixmap)
-    , m_ownsPixmap(false)
+StillImage::StillImage( const QPixmap *pixmap )
+    : m_pixmap( pixmap )
+    , m_ownsPixmap( false )
 {}
 
 StillImage::~StillImage()
 {
-    if (m_ownsPixmap)
+    if ( m_ownsPixmap )
+    {
         delete m_pixmap;
+    }
 }
 
 IntSize StillImage::size() const
 {
-    return IntSize(m_pixmap->width(), m_pixmap->height());
+    return IntSize( m_pixmap->width(), m_pixmap->height() );
 }
 
 NativeImagePtr StillImage::nativeImageForCurrentFrame()
 {
-    return const_cast<NativeImagePtr>(m_pixmap);
+    return const_cast<NativeImagePtr>( m_pixmap );
 }
 
-void StillImage::draw(GraphicsContext* ctxt, const FloatRect& dst,
-                      const FloatRect& src, ColorSpace, CompositeOperator op)
+void StillImage::draw( GraphicsContext *ctxt, const FloatRect &dst,
+                       const FloatRect &src, ColorSpace, CompositeOperator op )
 {
-    if (m_pixmap->isNull())
+    if ( m_pixmap->isNull() )
+    {
         return;
+    }
 
     FloatRect normalizedSrc = src.normalized();
     FloatRect normalizedDst = dst.normalized();
 
     CompositeOperator previousOperator = ctxt->compositeOperation();
-    ctxt->setCompositeOperation(op);
+    ctxt->setCompositeOperation( op );
 
-    ContextShadow* shadow = ctxt->contextShadow();
-    if (shadow->m_type != ContextShadow::NoShadow) {
-        QPainter* shadowPainter = shadow->beginShadowLayer(ctxt, normalizedDst);
-        if (shadowPainter) {
-            shadowPainter->setOpacity(static_cast<qreal>(shadow->m_color.alpha()) / 255);
-            shadowPainter->drawPixmap(normalizedDst, *m_pixmap, normalizedSrc);
-            shadow->endShadowLayer(ctxt);
+    ContextShadow *shadow = ctxt->contextShadow();
+
+    if ( shadow->m_type != ContextShadow::NoShadow )
+    {
+        QPainter *shadowPainter = shadow->beginShadowLayer( ctxt, normalizedDst );
+
+        if ( shadowPainter )
+        {
+            shadowPainter->setOpacity( static_cast<qreal>( shadow->m_color.alpha() ) / 255 );
+            shadowPainter->drawPixmap( normalizedDst, *m_pixmap, normalizedSrc );
+            shadow->endShadowLayer( ctxt );
         }
     }
 
-    ctxt->platformContext()->drawPixmap(normalizedDst, *m_pixmap, normalizedSrc);
-    ctxt->setCompositeOperation(previousOperator);
+    ctxt->platformContext()->drawPixmap( normalizedDst, *m_pixmap, normalizedSrc );
+    ctxt->setCompositeOperation( previousOperator );
 }
 
 }

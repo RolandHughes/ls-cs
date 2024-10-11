@@ -30,14 +30,17 @@
 #include "SVGStyledElement.h"
 #include "SVGTests.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGTextContentElement : public SVGStyledElement,
-                              public SVGTests,
-                              public SVGLangSpace,
-                              public SVGExternalResourcesRequired {
+    public SVGTests,
+    public SVGLangSpace,
+    public SVGExternalResourcesRequired
+{
 public:
-    enum SVGLengthAdjustType {
+    enum SVGLengthAdjustType
+    {
         LENGTHADJUST_UNKNOWN            = 0,
         LENGTHADJUST_SPACING            = 1,
         LENGTHADJUST_SPACINGANDGLYPHS   = 2
@@ -45,45 +48,55 @@ public:
 
     unsigned getNumberOfChars() const;
     float getComputedTextLength() const;
-    float getSubStringLength(unsigned charnum, unsigned nchars, ExceptionCode&) const;
-    FloatPoint getStartPositionOfChar(unsigned charnum, ExceptionCode&) const;
-    FloatPoint getEndPositionOfChar(unsigned charnum, ExceptionCode&) const;
-    FloatRect getExtentOfChar(unsigned charnum, ExceptionCode&) const;
-    float getRotationOfChar(unsigned charnum, ExceptionCode&) const;
-    int getCharNumAtPosition(const FloatPoint&) const;
-    void selectSubString(unsigned charnum, unsigned nchars, ExceptionCode&) const;
+    float getSubStringLength( unsigned charnum, unsigned nchars, ExceptionCode & ) const;
+    FloatPoint getStartPositionOfChar( unsigned charnum, ExceptionCode & ) const;
+    FloatPoint getEndPositionOfChar( unsigned charnum, ExceptionCode & ) const;
+    FloatRect getExtentOfChar( unsigned charnum, ExceptionCode & ) const;
+    float getRotationOfChar( unsigned charnum, ExceptionCode & ) const;
+    int getCharNumAtPosition( const FloatPoint & ) const;
+    void selectSubString( unsigned charnum, unsigned nchars, ExceptionCode & ) const;
 
-    static SVGTextContentElement* elementFromRenderer(RenderObject*);
+    static SVGTextContentElement *elementFromRenderer( RenderObject * );
 
     // textLength is not declared using the standard DECLARE_ANIMATED_LENGTH macro
     // as its getter needs special handling (return getComputedTextLength(), instead of m_textLength).
-    SVGLength& specifiedTextLength() { return m_specifiedTextLength; }
+    SVGLength &specifiedTextLength()
+    {
+        return m_specifiedTextLength;
+    }
     PassRefPtr<SVGAnimatedLength> textLengthAnimated();
 
 protected:
-    SVGTextContentElement(const QualifiedName&, Document*);
+    SVGTextContentElement( const QualifiedName &, Document * );
 
-    virtual bool isValid() const { return SVGTests::isValid(); }
+    virtual bool isValid() const
+    {
+        return SVGTests::isValid();
+    }
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
-    void fillPassedAttributeToPropertyTypeMap(AttributeToPropertyTypeMap&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
+    void fillPassedAttributeToPropertyTypeMap( AttributeToPropertyTypeMap & );
 
     virtual bool selfHasRelativeLengths() const;
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
 private:
-    virtual bool isTextContent() const { return true; }
+    virtual bool isTextContent() const
+    {
+        return true;
+    }
 
     // Animated property declarations
     void synchronizeTextLength();
     SVGLength m_specifiedTextLength;
     mutable SVGSynchronizableAnimatedProperty<SVGLength> m_textLength;
-    DECLARE_ANIMATED_ENUMERATION(LengthAdjust, lengthAdjust)
+    DECLARE_ANIMATED_ENUMERATION( LengthAdjust, lengthAdjust )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired) 
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 };
 
 } // namespace WebCore

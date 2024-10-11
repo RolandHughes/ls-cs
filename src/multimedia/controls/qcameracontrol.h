@@ -31,48 +31,49 @@
 
 class Q_MULTIMEDIA_EXPORT QCameraControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QCameraControl)
+    MULTI_LSCS_OBJECT( QCameraControl )
 
- public:
-   enum PropertyChangeType {
-      CaptureMode           = 1,
-      ImageEncodingSettings = 2,
-      VideoEncodingSettings = 3,
-      Viewfinder            = 4,
-      ViewfinderSettings    = 5
-   };
+public:
+    enum PropertyChangeType
+    {
+        CaptureMode           = 1,
+        ImageEncodingSettings = 2,
+        VideoEncodingSettings = 3,
+        Viewfinder            = 4,
+        ViewfinderSettings    = 5
+    };
 
-   ~QCameraControl();
+    ~QCameraControl();
 
-   virtual QCamera::State state() const = 0;
-   virtual void setState(QCamera::State state) = 0;
+    virtual QCamera::State state() const = 0;
+    virtual void setState( QCamera::State state ) = 0;
 
-   virtual QCamera::Status status() const = 0;
+    virtual QCamera::Status status() const = 0;
 
-   virtual QCamera::CaptureModes captureMode() const = 0;
-   virtual void setCaptureMode(QCamera::CaptureModes mode) = 0;
-   virtual bool isCaptureModeSupported(QCamera::CaptureModes mode) const = 0;
+    virtual QCamera::CaptureModes captureMode() const = 0;
+    virtual void setCaptureMode( QCamera::CaptureModes mode ) = 0;
+    virtual bool isCaptureModeSupported( QCamera::CaptureModes mode ) const = 0;
 
-   virtual bool canChangeProperty(PropertyChangeType changeType, QCamera::Status status) const = 0;
+    virtual bool canChangeProperty( PropertyChangeType changeType, QCamera::Status status ) const = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void stateChanged(QCamera::State state))
-   MULTI_CS_SIGNAL_2(stateChanged, state)
+    MULTI_LSCS_SIGNAL_1( Public, void stateChanged( QCamera::State state ) )
+    MULTI_LSCS_SIGNAL_2( stateChanged, state )
 
-   MULTI_CS_SIGNAL_1(Public, void statusChanged(QCamera::Status status))
-   MULTI_CS_SIGNAL_2(statusChanged, status)
+    MULTI_LSCS_SIGNAL_1( Public, void statusChanged( QCamera::Status status ) )
+    MULTI_LSCS_SIGNAL_2( statusChanged, status )
 
-   MULTI_CS_SIGNAL_1(Public, void error(int error, const QString &errorString))
-   MULTI_CS_SIGNAL_2(error, error, errorString)
+    MULTI_LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    MULTI_LSCS_SIGNAL_2( error, error, errorString )
 
-   MULTI_CS_SIGNAL_1(Public, void captureModeChanged(QCamera::CaptureModes mode))
-   MULTI_CS_SIGNAL_2(captureModeChanged, mode)
+    MULTI_LSCS_SIGNAL_1( Public, void captureModeChanged( QCamera::CaptureModes mode ) )
+    MULTI_LSCS_SIGNAL_2( captureModeChanged, mode )
 
- protected:
-   explicit QCameraControl(QObject *parent = nullptr);
+protected:
+    explicit QCameraControl( QObject *parent = nullptr );
 };
 
 #define QCameraControl_iid "com.copperspice.CS.cameraControl/1.0"
-CS_DECLARE_INTERFACE(QCameraControl, QCameraControl_iid)
+LSCS_DECLARE_INTERFACE( QCameraControl, QCameraControl_iid )
 
 #endif
 

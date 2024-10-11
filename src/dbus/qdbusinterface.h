@@ -37,20 +37,20 @@ class Q_DBUS_EXPORT QDBusInterface: public QDBusAbstractInterface
 {
     friend class QDBusConnection;
 private:
-    QDBusInterface(QDBusInterfacePrivate *p);
+    QDBusInterface( QDBusInterfacePrivate *p );
 
 public:
-    QDBusInterface(const QString &service, const QString &path, const QString &interface = QString(),
-                   const QDBusConnection &connection = QDBusConnection::sessionBus(),
-                   QObject *parent = nullptr);
+    QDBusInterface( const QString &service, const QString &path, const QString &interface = QString(),
+                    const QDBusConnection &connection = QDBusConnection::sessionBus(),
+                    QObject *parent = nullptr );
     ~QDBusInterface();
 
     virtual const QMetaObject *metaObject() const;
-    virtual void *qt_metacast(const char *);
-    virtual int qt_metacall(QMetaObject::Call, int, void **);
+    virtual void *qt_metacast( const char * );
+    virtual int qt_metacall( QMetaObject::Call, int, void ** );
 
 private:
-    Q_DECLARE_PRIVATE(QDBusInterface)
+    Q_DECLARE_PRIVATE( QDBusInterface )
 };
 
 QT_END_NAMESPACE

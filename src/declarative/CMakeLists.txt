@@ -1,9 +1,9 @@
-add_library(CsDeclarative SHARED "")
-add_library(CopperSpice::CsDeclarative ALIAS CsDeclarative)
+add_library(LsCsDeclarative SHARED "")
+add_library(LsCs::LsCsDeclarative ALIAS LsCsDeclarative)
 
-set_target_properties(CsDeclarative PROPERTIES OUTPUT_NAME CsDeclarative${BUILD_ABI})
+set_target_properties(LsCsDeclarative PROPERTIES OUTPUT_NAME LsCsDeclarative${BUILD_ABI})
 
-target_add_definitions(CsDeclarative
+target_add_definitions(LsCsDeclarative
    -DQT_BUILD_DECLARATIVE_LIB
 )
 
@@ -50,13 +50,13 @@ macro_generate_public("${DECLARATIVE_PUBLIC_INCLUDES}" QtDeclarative)
 macro_generate_private("${DECLARATIVE_PRIVATE_INCLUDES}" QtDeclarative)
 macro_generate_misc("${DECLARATIVE_INCLUDES}" QtDeclarative)
 
-set_target_properties(CsDeclarative
+set_target_properties(LsCsDeclarative
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_DECLARATIVE_CXXFLAGS}
    LINK_FLAGS ${EXTRA_DECLARATIVE_LDFLAGS}
 )
 
-target_link_libraries(CsDeclarative
+target_link_libraries(LsCsDeclarative
    PRIVATE
    ${EXTRA_DECLARATIVE_LIBS}
 )
@@ -64,18 +64,27 @@ target_link_libraries(CsDeclarative
 function_generate_resources("${DECLARATIVE_SOURCES}")
 
 macro_generate_package(
-   CsDeclarative
+   LsCsDeclarative
    QtDeclarative
    "${EXTRA_DECLARATIVE_CXXFLAGS}"
-   "CsCore CsGui CsNetwork CsScript"
+   "LsCsCore LsCsGui LsCsNetwork LsCsScript"
 )
 
-install(TARGETS CsDeclarative
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(TARGETS LsCsDeclarative
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(TARGETS LsCsDeclarative
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()
 
 install(
     DIRECTORY ${CMAKE_BINARY_DIR}/include/QtDeclarative

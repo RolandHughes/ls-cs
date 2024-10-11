@@ -30,120 +30,144 @@
 // detect a checked button other than the current one
 void QButtonGroupPrivate::detectCheckedButton()
 {
-   QAbstractButton *previous = checkedButton;
-   checkedButton = nullptr;
-   if (exclusive) {
-      return;
-   }
-   for (int i = 0; i < buttonList.count(); i++) {
-      if (buttonList.at(i) != previous && buttonList.at(i)->isChecked()) {
-         checkedButton = buttonList.at(i);
-         return;
-      }
-   }
+    QAbstractButton *previous = checkedButton;
+    checkedButton = nullptr;
+
+    if ( exclusive )
+    {
+        return;
+    }
+
+    for ( int i = 0; i < buttonList.count(); i++ )
+    {
+        if ( buttonList.at( i ) != previous && buttonList.at( i )->isChecked() )
+        {
+            checkedButton = buttonList.at( i );
+            return;
+        }
+    }
 }
 
-QButtonGroup::QButtonGroup(QObject *parent)
-   : QObject(parent), d_ptr(new QButtonGroupPrivate)
+QButtonGroup::QButtonGroup( QObject *parent )
+    : QObject( parent ), d_ptr( new QButtonGroupPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QButtonGroup::~QButtonGroup()
 {
-   Q_D(QButtonGroup);
+    Q_D( QButtonGroup );
 
-   for (int i = 0; i < d->buttonList.count(); ++i) {
-      d->buttonList.at(i)->d_func()->group = nullptr;
-   }
+    for ( int i = 0; i < d->buttonList.count(); ++i )
+    {
+        d->buttonList.at( i )->d_func()->group = nullptr;
+    }
 }
 
 bool QButtonGroup::exclusive() const
 {
-   Q_D(const QButtonGroup);
-   return d->exclusive;
+    Q_D( const QButtonGroup );
+    return d->exclusive;
 }
 
-void QButtonGroup::setExclusive(bool exclusive)
+void QButtonGroup::setExclusive( bool exclusive )
 {
-   Q_D(QButtonGroup);
-   d->exclusive = exclusive;
+    Q_D( QButtonGroup );
+    d->exclusive = exclusive;
 }
 
-void QButtonGroup::addButton(QAbstractButton *button, int id)
+void QButtonGroup::addButton( QAbstractButton *button, int id )
 {
-   Q_D(QButtonGroup);
-   if (QButtonGroup *previous = button->d_func()->group) {
-      previous->removeButton(button);
-   }
-   button->d_func()->group = this;
-   d->buttonList.append(button);
-   if (id == -1) {
-      const QHash<QAbstractButton *, int>::const_iterator it
-         = std::min_element(d->mapping.cbegin(), d->mapping.cend());
-      if (it == d->mapping.cend()) {
-         d->mapping[button] = -2;
-      } else {
-         d->mapping[button] = *it - 1;
-      }
-   } else {
-      d->mapping[button] = id;
-   }
-   if (d->exclusive && button->isChecked()) {
-      button->d_func()->notifyChecked();
-   }
+    Q_D( QButtonGroup );
+
+    if ( QButtonGroup *previous = button->d_func()->group )
+    {
+        previous->removeButton( button );
+    }
+
+    button->d_func()->group = this;
+    d->buttonList.append( button );
+
+    if ( id == -1 )
+    {
+        const QHash<QAbstractButton *, int>::const_iterator it
+            = std::min_element( d->mapping.cbegin(), d->mapping.cend() );
+
+        if ( it == d->mapping.cend() )
+        {
+            d->mapping[button] = -2;
+        }
+        else
+        {
+            d->mapping[button] = *it - 1;
+        }
+    }
+    else
+    {
+        d->mapping[button] = id;
+    }
+
+    if ( d->exclusive && button->isChecked() )
+    {
+        button->d_func()->notifyChecked();
+    }
 }
 
-void QButtonGroup::removeButton(QAbstractButton *button)
+void QButtonGroup::removeButton( QAbstractButton *button )
 {
-   Q_D(QButtonGroup);
-   if (d->checkedButton == button) {
-      d->detectCheckedButton();
-   }
-   if (button->d_func()->group == this) {
-      button->d_func()->group = nullptr;
-      d->buttonList.removeAll(button);
-      d->mapping.remove(button);
-   }
+    Q_D( QButtonGroup );
+
+    if ( d->checkedButton == button )
+    {
+        d->detectCheckedButton();
+    }
+
+    if ( button->d_func()->group == this )
+    {
+        button->d_func()->group = nullptr;
+        d->buttonList.removeAll( button );
+        d->mapping.remove( button );
+    }
 }
 
 QList<QAbstractButton *> QButtonGroup::buttons() const
 {
-   Q_D(const QButtonGroup);
-   return d->buttonList;
+    Q_D( const QButtonGroup );
+    return d->buttonList;
 }
 
 QAbstractButton *QButtonGroup::checkedButton() const
 {
-   Q_D(const QButtonGroup);
-   return d->checkedButton;
+    Q_D( const QButtonGroup );
+    return d->checkedButton;
 }
 
-QAbstractButton *QButtonGroup::button(int id) const
+QAbstractButton *QButtonGroup::button( int id ) const
 {
-   Q_D(const QButtonGroup);
-   return d->mapping.key(id);
+    Q_D( const QButtonGroup );
+    return d->mapping.key( id );
 }
 
-void QButtonGroup::setId(QAbstractButton *button, int id)
+void QButtonGroup::setId( QAbstractButton *button, int id )
 {
-   Q_D(QButtonGroup);
+    Q_D( QButtonGroup );
 
-   if (button && id != -1) {
-      d->mapping[button] = id;
-   }
+    if ( button && id != -1 )
+    {
+        d->mapping[button] = id;
+    }
 }
 
-int QButtonGroup::id(QAbstractButton *button) const
+int QButtonGroup::id( QAbstractButton *button ) const
 {
-   Q_D(const QButtonGroup);
-   return d->mapping.value(button, -1);
+    Q_D( const QButtonGroup );
+    return d->mapping.value( button, -1 );
 }
 
 int QButtonGroup::checkedId() const
 {
-   Q_D(const QButtonGroup);
-   return d->mapping.value(d->checkedButton, -1);
+    Q_D( const QButtonGroup );
+    return d->mapping.value( d->checkedButton, -1 );
 }
 
 #endif // QT_NO_BUTTONGROUP

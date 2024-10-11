@@ -48,7 +48,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/concurrent/qthreadpool_p.h
 )
 
-target_sources(CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/concurrent/qfuture.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/concurrent/qfutureinterface.cpp

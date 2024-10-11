@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JavaRuntimeObject_h
@@ -28,23 +28,26 @@
 
 #include "runtime_object.h"
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 
 class JavaInstance;
 
-class JavaRuntimeObject : public RuntimeObject {
+class JavaRuntimeObject : public RuntimeObject
+{
 public:
-    JavaRuntimeObject(ExecState*, JSGlobalObject*, PassRefPtr<JavaInstance>);
+    JavaRuntimeObject( ExecState *, JSGlobalObject *, PassRefPtr<JavaInstance> );
     virtual ~JavaRuntimeObject();
 
-    JavaInstance* getInternalJavaInstance() const;
+    JavaInstance *getInternalJavaInstance() const;
 
     static const ClassInfo s_info;
 
-    static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
     {
-        return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
     }
 };
 

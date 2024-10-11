@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -31,20 +31,22 @@
 #include "DOMWindow.h"
 #include "EventNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 MessageEvent::MessageEvent()
-    : m_data(SerializedScriptValue::create())
+    : m_data( SerializedScriptValue::create() )
 {
 }
 
-MessageEvent::MessageEvent(PassRefPtr<SerializedScriptValue> data, const String& origin, const String& lastEventId, PassRefPtr<DOMWindow> source, PassOwnPtr<MessagePortArray> ports)
-    : Event(eventNames().messageEvent, false, false)
-    , m_data(data)
-    , m_origin(origin)
-    , m_lastEventId(lastEventId)
-    , m_source(source)
-    , m_ports(ports)
+MessageEvent::MessageEvent( PassRefPtr<SerializedScriptValue> data, const String &origin, const String &lastEventId,
+                            PassRefPtr<DOMWindow> source, PassOwnPtr<MessagePortArray> ports )
+    : Event( eventNames().messageEvent, false, false )
+    , m_data( data )
+    , m_origin( origin )
+    , m_lastEventId( lastEventId )
+    , m_source( source )
+    , m_ports( ports )
 {
 }
 
@@ -52,13 +54,17 @@ MessageEvent::~MessageEvent()
 {
 }
 
-void MessageEvent::initMessageEvent(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtr<SerializedScriptValue> data, const String& origin, const String& lastEventId, DOMWindow* source, PassOwnPtr<MessagePortArray> ports)
+void MessageEvent::initMessageEvent( const AtomicString &type, bool canBubble, bool cancelable,
+                                     PassRefPtr<SerializedScriptValue> data, const String &origin, const String &lastEventId, DOMWindow *source,
+                                     PassOwnPtr<MessagePortArray> ports )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
-        
-    initEvent(type, canBubble, cancelable);
-    
+    }
+
+    initEvent( type, canBubble, cancelable );
+
     m_data = data;
     m_origin = origin;
     m_lastEventId = lastEventId;
@@ -67,25 +73,32 @@ void MessageEvent::initMessageEvent(const AtomicString& type, bool canBubble, bo
 }
 
 // FIXME: remove this when we update the ObjC bindings (bug #28774).
-MessagePort* MessageEvent::messagePort()
+MessagePort *MessageEvent::messagePort()
 {
-    if (!m_ports)
+    if ( !m_ports )
+    {
         return 0;
-    ASSERT(m_ports->size() == 1);
-    return (*m_ports)[0].get();
+    }
+
+    ASSERT( m_ports->size() == 1 );
+    return ( *m_ports )[0].get();
 }
 
-void MessageEvent::initMessageEvent(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtr<SerializedScriptValue> data, const String& origin, const String& lastEventId, DOMWindow* source, MessagePort* port)
+void MessageEvent::initMessageEvent( const AtomicString &type, bool canBubble, bool cancelable,
+                                     PassRefPtr<SerializedScriptValue> data, const String &origin, const String &lastEventId, DOMWindow *source, MessagePort *port )
 {
     OwnPtr<MessagePortArray> ports;
-    if (port) {
-        ports = adoptPtr(new MessagePortArray);
-        ports->append(port);
+
+    if ( port )
+    {
+        ports = adoptPtr( new MessagePortArray );
+        ports->append( port );
     }
-    initMessageEvent(type, canBubble, cancelable, data, origin, lastEventId, source, ports.release());
+
+    initMessageEvent( type, canBubble, cancelable, data, origin, lastEventId, source, ports.release() );
 }
 
-bool MessageEvent::isMessageEvent() const 
+bool MessageEvent::isMessageEvent() const
 {
     return true;
 }

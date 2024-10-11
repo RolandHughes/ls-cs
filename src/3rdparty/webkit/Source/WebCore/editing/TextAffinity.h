@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef TextAffinity_h
@@ -30,7 +30,8 @@
 #include <AppKit/NSTextView.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 // These match the AppKit values for these concepts.
 // From NSTextView.h:
@@ -42,14 +43,14 @@ enum EAffinity { UPSTREAM = 0, DOWNSTREAM = 1 };
 
 #ifdef __OBJC__
 
-inline NSSelectionAffinity kit(WebCore::EAffinity affinity)
+inline NSSelectionAffinity kit( WebCore::EAffinity affinity )
 {
-    return static_cast<NSSelectionAffinity>(affinity);
+    return static_cast<NSSelectionAffinity>( affinity );
 }
 
-inline WebCore::EAffinity core(NSSelectionAffinity affinity)
+inline WebCore::EAffinity core( NSSelectionAffinity affinity )
 {
-    return static_cast<WebCore::EAffinity>(affinity);
+    return static_cast<WebCore::EAffinity>( affinity );
 }
 
 #endif

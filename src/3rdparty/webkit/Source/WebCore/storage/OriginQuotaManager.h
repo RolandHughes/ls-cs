@@ -36,13 +36,16 @@
 #include <wtf/Threading.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AbstractDatabase;
 class OriginUsageRecord;
 
-class OriginQuotaManager {
-    WTF_MAKE_NONCOPYABLE(OriginQuotaManager); WTF_MAKE_FAST_ALLOCATED;
+class OriginQuotaManager
+{
+    WTF_MAKE_NONCOPYABLE( OriginQuotaManager );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     OriginQuotaManager();
 
@@ -50,14 +53,14 @@ public:
     void lock();
     void unlock();
 
-    void trackOrigin(PassRefPtr<SecurityOrigin>);
-    bool tracksOrigin(SecurityOrigin*) const;
-    void addDatabase(SecurityOrigin*, const String& databaseIdentifier, const String& fullPath);
-    void removeDatabase(SecurityOrigin*, const String& databaseIdentifier);
-    void removeOrigin(SecurityOrigin*);
+    void trackOrigin( PassRefPtr<SecurityOrigin> );
+    bool tracksOrigin( SecurityOrigin * ) const;
+    void addDatabase( SecurityOrigin *, const String &databaseIdentifier, const String &fullPath );
+    void removeDatabase( SecurityOrigin *, const String &databaseIdentifier );
+    void removeOrigin( SecurityOrigin * );
 
-    void markDatabase(AbstractDatabase*); // Mark dirtiness of a specific database.
-    unsigned long long diskUsage(SecurityOrigin*) const;
+    void markDatabase( AbstractDatabase * ); // Mark dirtiness of a specific database.
+    unsigned long long diskUsage( SecurityOrigin * ) const;
 
 private:
     mutable Mutex m_usageRecordGuard;
@@ -65,7 +68,7 @@ private:
     bool m_usageRecordGuardLocked;
 #endif
 
-    typedef HashMap<RefPtr<SecurityOrigin>, OriginUsageRecord*, SecurityOriginHash> OriginUsageMap;
+    typedef HashMap<RefPtr<SecurityOrigin>, OriginUsageRecord *, SecurityOriginHash> OriginUsageMap;
     OriginUsageMap m_usageMap;
 };
 

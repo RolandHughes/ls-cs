@@ -33,17 +33,17 @@ NamedSchemaComponent::~NamedSchemaComponent()
 {
 }
 
-void NamedSchemaComponent::setName(const QXmlName &name)
+void NamedSchemaComponent::setName( const QXmlName &name )
 {
-   m_name = name;
+    m_name = name;
 }
 
-QXmlName NamedSchemaComponent::name(const NamePool::Ptr &) const
+QXmlName NamedSchemaComponent::name( const NamePool::Ptr & ) const
 {
-   return m_name;
+    return m_name;
 }
 
-QString NamedSchemaComponent::displayName(const NamePool::Ptr &np) const
+QString NamedSchemaComponent::displayName( const NamePool::Ptr &np ) const
 {
-   return np->displayName(m_name);
+    return np->displayName( m_name );
 }

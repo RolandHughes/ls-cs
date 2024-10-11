@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSUnicodeRangeValue_h
@@ -30,26 +30,34 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CSSUnicodeRangeValue : public CSSValue {
+class CSSUnicodeRangeValue : public CSSValue
+{
 public:
-    static PassRefPtr<CSSUnicodeRangeValue> create(UChar32 from, UChar32 to)
+    static PassRefPtr<CSSUnicodeRangeValue> create( UChar32 from, UChar32 to )
     {
-        return adoptRef(new CSSUnicodeRangeValue(from, to));
+        return adoptRef( new CSSUnicodeRangeValue( from, to ) );
     }
 
     virtual ~CSSUnicodeRangeValue();
 
-    UChar32 from() const { return m_from; }
-    UChar32 to() const { return m_to; }
+    UChar32 from() const
+    {
+        return m_from;
+    }
+    UChar32 to() const
+    {
+        return m_to;
+    }
 
     virtual String cssText() const;
 
 private:
-    CSSUnicodeRangeValue(UChar32 from, UChar32 to)
-        : m_from(from)
-        , m_to(to)
+    CSSUnicodeRangeValue( UChar32 from, UChar32 to )
+        : m_from( from )
+        , m_to( to )
     {
     }
 

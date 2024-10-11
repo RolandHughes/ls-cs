@@ -28,163 +28,191 @@
 
 #include <new>
 
-struct Q_CORE_EXPORT QArrayData {
-   QtPrivate::RefCount ref;
-   int size;
-   uint alloc : 31;
-   uint capacityReserved : 1;
+struct Q_CORE_EXPORT QArrayData
+{
+    QtPrivate::RefCount ref;
+    int size;
+    uint alloc : 31;
+    uint capacityReserved : 1;
 
-   qptrdiff offset;             // in bytes from beginning of header
+    qptrdiff offset;             // in bytes from beginning of header
 
-   void *data() {
-      Q_ASSERT(size == 0 || offset < 0 || size_t(offset) >= sizeof(QArrayData));
-      return std::launder(reinterpret_cast<char *>(this) + offset);
-   }
+    void *data()
+    {
+        Q_ASSERT( size == 0 || offset < 0 || size_t( offset ) >= sizeof( QArrayData ) );
+        return std::launder( reinterpret_cast<char *>( this ) + offset );
+    }
 
-   const void *data() const {
-      Q_ASSERT(size == 0 || offset < 0 || size_t(offset) >= sizeof(QArrayData));
-      return std::launder(reinterpret_cast<const char *>(this) + offset);
-   }
+    const void *data() const
+    {
+        Q_ASSERT( size == 0 || offset < 0 || size_t( offset ) >= sizeof( QArrayData ) );
+        return std::launder( reinterpret_cast<const char *>( this ) + offset );
+    }
 
-   // This refers to array data mutability, not "header data" represented by
-   // data members in QArrayData. Shared data (array and header) must still follow COW principles.
-   bool isMutable() const {
-      return alloc != 0;
-   }
+    // This refers to array data mutability, not "header data" represented by
+    // data members in QArrayData. Shared data (array and header) must still follow COW principles.
+    bool isMutable() const
+    {
+        return alloc != 0;
+    }
 
-   enum AllocationOption {
-      CapacityReserved    = 0x1,
-      Unsharable          = 0x2,
-      RawData             = 0x4,
-      Grow                = 0x8,
+    enum AllocationOption
+    {
+        CapacityReserved    = 0x1,
+        Unsharable          = 0x2,
+        RawData             = 0x4,
+        Grow                = 0x8,
 
-      Default = 0
-   };
+        Default = 0
+    };
 
-   using AllocationOptions = QFlags<AllocationOption>;
+    using AllocationOptions = QFlags<AllocationOption>;
 
-   size_t detachCapacity(size_t newSize) const {
-      if (capacityReserved && newSize < alloc) {
-         return alloc;
-      }
+    size_t detachCapacity( size_t newSize ) const
+    {
+        if ( capacityReserved && newSize < alloc )
+        {
+            return alloc;
+        }
 
-      return newSize;
-   }
+        return newSize;
+    }
 
-   AllocationOptions detachFlags() const {
-      AllocationOptions result;
+    AllocationOptions detachFlags() const
+    {
+        AllocationOptions result;
 
-      if (!ref.isSharable()) {
-         result |= Unsharable;
-      }
+        if ( !ref.isSharable() )
+        {
+            result |= Unsharable;
+        }
 
-      if (capacityReserved) {
-         result |= CapacityReserved;
-      }
+        if ( capacityReserved )
+        {
+            result |= CapacityReserved;
+        }
 
-      return result;
-   }
+        return result;
+    }
 
-   AllocationOptions cloneFlags() const {
-      AllocationOptions result;
+    AllocationOptions cloneFlags() const
+    {
+        AllocationOptions result;
 
-      if (capacityReserved) {
-         result |= CapacityReserved;
-      }
+        if ( capacityReserved )
+        {
+            result |= CapacityReserved;
+        }
 
-      return result;
-   }
+        return result;
+    }
 
-   [[nodiscard]] static QArrayData *allocate(size_t objectSize, size_t alignment,
-         size_t capacity, AllocationOptions options = Default);
+    [[nodiscard]] static QArrayData *allocate( size_t objectSize, size_t alignment,
+            size_t capacity, AllocationOptions options = Default );
 
-   static void deallocate(QArrayData *data, size_t objectSize, size_t alignment);
+    static void deallocate( QArrayData *data, size_t objectSize, size_t alignment );
 
-   static QArrayData *sharedNull();
+    static QArrayData *sharedNull();
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QArrayData::AllocationOptions)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QArrayData::AllocationOptions )
 
 template <class T>
-struct QTypedArrayData : QArrayData {
-   using iterator       = T *;
-   using const_iterator = const T *;
+struct QTypedArrayData : QArrayData
+{
+    using iterator       = T *;
+    using const_iterator = const T *;
 
-   T *data() {
-      return static_cast<T *>(QArrayData::data());
-   }
+    T *data()
+    {
+        return static_cast<T *>( QArrayData::data() );
+    }
 
-   const T *data() const {
-      return static_cast<const T *>(QArrayData::data());
-   }
+    const T *data() const
+    {
+        return static_cast<const T *>( QArrayData::data() );
+    }
 
-   T *begin() {
-      return data();
-   }
+    T *begin()
+    {
+        return data();
+    }
 
-   T *end() {
-      return data() + size;
-   }
+    T *end()
+    {
+        return data() + size;
+    }
 
-   const T *begin() const {
-      return data();
-   }
+    const T *begin() const
+    {
+        return data();
+    }
 
-   const T *end() const {
-      return data() + size;
-   }
+    const T *end() const
+    {
+        return data() + size;
+    }
 
-   class AlignmentDummy
-   {
-      QArrayData header;
-      T data;
-   };
+    class AlignmentDummy
+    {
+        QArrayData header;
+        T data;
+    };
 
-   [[nodiscard]] static QTypedArrayData *allocate(size_t capacity, AllocationOptions options = Default) {
-      return static_cast<QTypedArrayData *>(QArrayData::allocate(sizeof(T),
-            alignof(AlignmentDummy), capacity, options));
-   }
+    [[nodiscard]] static QTypedArrayData *allocate( size_t capacity, AllocationOptions options = Default )
+    {
+        return static_cast<QTypedArrayData *>( QArrayData::allocate( sizeof( T ),
+                                               alignof( AlignmentDummy ), capacity, options ) );
+    }
 
-   static void deallocate(QArrayData *data) {
-      QArrayData::deallocate(data, sizeof(T), alignof(AlignmentDummy));
-   }
+    static void deallocate( QArrayData *data )
+    {
+        QArrayData::deallocate( data, sizeof( T ), alignof( AlignmentDummy ) );
+    }
 
-   static QTypedArrayData *fromRawData(const T *data, size_t n, AllocationOptions options = Default) {
-      QTypedArrayData *result = allocate(0, options | RawData);
+    static QTypedArrayData *fromRawData( const T *data, size_t n, AllocationOptions options = Default )
+    {
+        QTypedArrayData *result = allocate( 0, options | RawData );
 
-      if (result) {
-         Q_ASSERT(! result->ref.isShared());       // dissallow using the special "shared empty value"
+        if ( result )
+        {
+            Q_ASSERT( ! result->ref.isShared() );     // dissallow using the special "shared empty value"
 
-         result->offset = reinterpret_cast<const char *>(data) - reinterpret_cast<const char *>(result);
-         result->size = n;
-      }
+            result->offset = reinterpret_cast<const char *>( data ) - reinterpret_cast<const char *>( result );
+            result->size = n;
+        }
 
-      return result;
-   }
+        return result;
+    }
 
-   static QTypedArrayData *sharedNull() {
-      return static_cast<QTypedArrayData *>(QArrayData::sharedNull());
-   }
+    static QTypedArrayData *sharedNull()
+    {
+        return static_cast<QTypedArrayData *>( QArrayData::sharedNull() );
+    }
 
-   static QTypedArrayData *sharedEmpty() {
-      return allocate(0);
-   }
+    static QTypedArrayData *sharedEmpty()
+    {
+        return allocate( 0 );
+    }
 
-   static QTypedArrayData *unsharableEmpty() {
-      return allocate(0, Unsharable);
-   }
+    static QTypedArrayData *unsharableEmpty()
+    {
+        return allocate( 0, Unsharable );
+    }
 };
 
 template <class T, size_t N>
-struct QStaticArrayData {
-   QArrayData header;
-   T data[N];
+struct QStaticArrayData
+{
+    QArrayData header;
+    T data[N];
 };
 
 // Support for returning QArrayDataPointer<T> from functions
 template <class T>
-struct QArrayDataPointerRef {
-   QTypedArrayData<T> *ptr;
+struct QArrayDataPointerRef
+{
+    QTypedArrayData<T> *ptr;
 };
 
 #define Q_STATIC_ARRAY_DATA_HEADER_INITIALIZER(type, size) { \

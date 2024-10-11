@@ -32,21 +32,23 @@
 #include "HTMLDivElement.h"
 #include "HTMLInputElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<class BaseElement>
-class ShadowElement : public BaseElement {
+class ShadowElement : public BaseElement
+{
 protected:
-    ShadowElement(const QualifiedName& name, HTMLElement* shadowParent)
-        : BaseElement(name, shadowParent->document())
+    ShadowElement( const QualifiedName &name, HTMLElement *shadowParent )
+        : BaseElement( name, shadowParent->document() )
     {
-        BaseElement::setShadowHost(shadowParent);
+        BaseElement::setShadowHost( shadowParent );
     }
 
-    ShadowElement(const QualifiedName& name, HTMLElement* shadowParent, HTMLFormElement* form, bool createdByParser)
-        : BaseElement(name, shadowParent->document(), form, createdByParser)
+    ShadowElement( const QualifiedName &name, HTMLElement *shadowParent, HTMLFormElement *form, bool createdByParser )
+        : BaseElement( name, shadowParent->document(), form, createdByParser )
     {
-        BaseElement::setShadowHost(shadowParent);
+        BaseElement::setShadowHost( shadowParent );
     }
 
 public:
@@ -58,14 +60,15 @@ void ShadowElement<BaseElement>::detach()
 {
     BaseElement::detach();
     // FIXME: Remove once shadow DOM uses Element::setShadowRoot().
-    BaseElement::setShadowHost(0);
+    BaseElement::setShadowHost( 0 );
 }
 
-class ShadowInputElement : public ShadowElement<HTMLInputElement> {
+class ShadowInputElement : public ShadowElement<HTMLInputElement>
+{
 public:
-    static PassRefPtr<ShadowInputElement> create(HTMLElement*);
+    static PassRefPtr<ShadowInputElement> create( HTMLElement * );
 protected:
-    ShadowInputElement(HTMLElement*);
+    ShadowInputElement( HTMLElement * );
 };
 
 } // namespace WebCore

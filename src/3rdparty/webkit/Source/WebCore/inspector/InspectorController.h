@@ -36,7 +36,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMWrapperWorld;
 class Frame;
@@ -51,38 +52,42 @@ class Page;
 class PostWorkerNotificationToFrontendTask;
 class Node;
 
-class InspectorController {
-    WTF_MAKE_NONCOPYABLE(InspectorController);
+class InspectorController
+{
+    WTF_MAKE_NONCOPYABLE( InspectorController );
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    InspectorController(Page*, InspectorClient*);
+    InspectorController( Page *, InspectorClient * );
     ~InspectorController();
 
     bool enabled() const;
-    Page* inspectedPage() const;
+    Page *inspectedPage() const;
 
     void show();
     void close();
 
-    void setInspectorFrontendClient(PassOwnPtr<InspectorFrontendClient>);
+    void setInspectorFrontendClient( PassOwnPtr<InspectorFrontendClient> );
     bool hasInspectorFrontendClient() const;
-    void didClearWindowObjectInWorld(Frame*, DOMWrapperWorld*);
-    void setInspectorExtensionAPI(const String& source);
+    void didClearWindowObjectInWorld( Frame *, DOMWrapperWorld * );
+    void setInspectorExtensionAPI( const String &source );
 
-    void dispatchMessageFromFrontend(const String& message);
+    void dispatchMessageFromFrontend( const String &message );
 
-    bool hasFrontend() const { return m_inspectorFrontend; }
+    bool hasFrontend() const
+    {
+        return m_inspectorFrontend;
+    }
     void connectFrontend();
     void disconnectFrontend();
-    void restoreInspectorStateFromCookie(const String& inspectorCookie);
+    void restoreInspectorStateFromCookie( const String &inspectorCookie );
 
     void showConsole();
-    void inspect(Node*);
-    void drawNodeHighlight(GraphicsContext&) const;
+    void inspect( Node * );
+    void drawNodeHighlight( GraphicsContext & ) const;
     void hideHighlight();
-    Node* highlightedNode() const;
+    Node *highlightedNode() const;
 
-    void evaluateForTestInFrontend(long callId, const String& script);
+    void evaluateForTestInFrontend( long callId, const String &script );
 
     void startTimelineProfiler();
     void stopTimelineProfiler();
@@ -109,7 +114,7 @@ private:
     OwnPtr<InspectorBackendDispatcher> m_inspectorBackendDispatcher;
     OwnPtr<InspectorFrontendClient> m_inspectorFrontendClient;
     OwnPtr<InspectorFrontend> m_inspectorFrontend;
-    InspectorClient* m_inspectorClient;
+    InspectorClient *m_inspectorClient;
     bool m_openingFrontend;
     bool m_startUserInitiatedDebuggingWhenFrontedIsConnected;
 };

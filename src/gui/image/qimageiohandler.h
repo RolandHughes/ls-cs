@@ -39,102 +39,105 @@ class QImageIOHandlerPrivate;
 
 class Q_GUI_EXPORT QImageIOHandler
 {
- public:
-   enum ImageOption {
-      Size,
-      ClipRect,
-      Description,
-      ScaledClipRect,
-      ScaledSize,
-      CompressionRatio,
-      Gamma,
-      Quality,
-      Name,
-      SubType,
-      IncrementalReading,
-      Endianness,
-      Animation,
-      BackgroundColor,
-      ImageFormat,
-      SupportedSubTypes,
-      OptimizedWrite,
-      ProgressiveScanWrite,
-      ImageTransformation,
-      TransformedByDefault
-   };
+public:
+    enum ImageOption
+    {
+        Size,
+        ClipRect,
+        Description,
+        ScaledClipRect,
+        ScaledSize,
+        CompressionRatio,
+        Gamma,
+        Quality,
+        Name,
+        SubType,
+        IncrementalReading,
+        Endianness,
+        Animation,
+        BackgroundColor,
+        ImageFormat,
+        SupportedSubTypes,
+        OptimizedWrite,
+        ProgressiveScanWrite,
+        ImageTransformation,
+        TransformedByDefault
+    };
 
-   enum Transformation {
-      TransformationNone      = 0,
-      TransformationMirror    = 1,
-      TransformationFlip      = 2,
-      TransformationRotate180 = TransformationMirror | TransformationFlip,
-      TransformationRotate90  = 4,
-      TransformationMirrorAndRotate90 = TransformationMirror | TransformationRotate90,
-      TransformationFlipAndRotate90   = TransformationFlip | TransformationRotate90,
-      TransformationRotate270         = TransformationRotate180 | TransformationRotate90
-   };
+    enum Transformation
+    {
+        TransformationNone      = 0,
+        TransformationMirror    = 1,
+        TransformationFlip      = 2,
+        TransformationRotate180 = TransformationMirror | TransformationFlip,
+        TransformationRotate90  = 4,
+        TransformationMirrorAndRotate90 = TransformationMirror | TransformationRotate90,
+        TransformationFlipAndRotate90   = TransformationFlip | TransformationRotate90,
+        TransformationRotate270         = TransformationRotate180 | TransformationRotate90
+    };
 
-   using Transformations = QFlags<Transformation>;
+    using Transformations = QFlags<Transformation>;
 
-   QImageIOHandler();
+    QImageIOHandler();
 
-   QImageIOHandler(const QImageIOHandler &) = delete;
-   QImageIOHandler &operator=(const QImageIOHandler &) = delete;
+    QImageIOHandler( const QImageIOHandler & ) = delete;
+    QImageIOHandler &operator=( const QImageIOHandler & ) = delete;
 
-   virtual ~QImageIOHandler();
+    virtual ~QImageIOHandler();
 
-   void setDevice(QIODevice *device);
-   QIODevice *device() const;
+    void setDevice( QIODevice *device );
+    QIODevice *device() const;
 
-   void setFormat(const QString &format);
-   QString format() const;
+    void setFormat( const QString &format );
+    QString format() const;
 
-   virtual QString name() const;
+    virtual QString name() const;
 
-   virtual bool canRead() = 0;
-   virtual bool read(QImage *image) = 0;
-   virtual bool write(const QImage &image);
+    virtual bool canRead() = 0;
+    virtual bool read( QImage *image ) = 0;
+    virtual bool write( const QImage &image );
 
-   virtual QVariant option(ImageOption option);
-   virtual void setOption(ImageOption option, const QVariant &value);
-   virtual bool supportsOption(ImageOption option) const;
+    virtual QVariant option( ImageOption option );
+    virtual void setOption( ImageOption option, const QVariant &value );
+    virtual bool supportsOption( ImageOption option ) const;
 
-   // incremental loading
-   virtual bool jumpToNextImage();
-   virtual bool jumpToImage(int imageNumber);
-   virtual int loopCount() const;
-   virtual int imageCount();
-   virtual int nextImageDelay() const;
-   virtual int currentImageNumber() const;
-   virtual QRect currentImageRect() const;
+    // incremental loading
+    virtual bool jumpToNextImage();
+    virtual bool jumpToImage( int imageNumber );
+    virtual int loopCount() const;
+    virtual int imageCount();
+    virtual int nextImageDelay() const;
+    virtual int currentImageNumber() const;
+    virtual QRect currentImageRect() const;
 
- protected:
-   QImageIOHandler(QImageIOHandlerPrivate &dd);
-   QScopedPointer<QImageIOHandlerPrivate> d_ptr;
+protected:
+    QImageIOHandler( QImageIOHandlerPrivate &dd );
+    QScopedPointer<QImageIOHandlerPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QImageIOHandler)
+private:
+    Q_DECLARE_PRIVATE( QImageIOHandler )
 };
 
 class Q_GUI_EXPORT QImageIOPlugin : public QObject
 {
-   GUI_CS_OBJECT(QImageIOPlugin)
+    GUI_LSCS_OBJECT( QImageIOPlugin )
 
- public:
-   explicit QImageIOPlugin(QObject *parent = nullptr);
-   virtual ~QImageIOPlugin();
+public:
+    explicit QImageIOPlugin( QObject *parent = nullptr );
+    virtual ~QImageIOPlugin();
 
-   enum Capability {
-      CanRead            = 0x1,
-      CanWrite           = 0x2,
-      CanReadIncremental = 0x4
-   };
-   using Capabilities = QFlags<Capability>;
+    enum Capability
+    {
+        CanRead            = 0x1,
+        CanWrite           = 0x2,
+        CanReadIncremental = 0x4
+    };
+    using Capabilities = QFlags<Capability>;
 
-   virtual Capabilities capabilities(QIODevice *device, const QString &format) const = 0;
-   virtual QImageIOHandler *create(QIODevice *device, const QString &format = QString()) const = 0;
+    virtual Capabilities capabilities( QIODevice *device, const QString &format ) const = 0;
+    virtual QImageIOHandler *create( QIODevice *device, const QString &format = QString() ) const = 0;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QImageIOPlugin::Capabilities)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QImageIOPlugin::Capabilities )
 
 #endif

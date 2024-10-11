@@ -31,27 +31,28 @@ class MultiDataModel;
 
 class ErrorsView : public QListView
 {
-   CS_OBJECT(ErrorsView)
+    LSCS_OBJECT( ErrorsView )
 
- public:
-   enum ErrorType {
-      SuperfluousAccelerator,
-      MissingAccelerator,
-      PunctuationDiffer,
-      IgnoredPhrasebook,
-      PlaceMarkersDiffer,
-      NumerusMarkerMissing
-   };
+public:
+    enum ErrorType
+    {
+        SuperfluousAccelerator,
+        MissingAccelerator,
+        PunctuationDiffer,
+        IgnoredPhrasebook,
+        PlaceMarkersDiffer,
+        NumerusMarkerMissing
+    };
 
-   ErrorsView(MultiDataModel *dataModel, QWidget *parent = nullptr);
-   void clear();
-   void addError(int model, const ErrorType type, const QString &arg = QString());
-   QString firstError();
+    ErrorsView( MultiDataModel *dataModel, QWidget *parent = nullptr );
+    void clear();
+    void addError( int model, const ErrorType type, const QString &arg = QString() );
+    QString firstError();
 
- private:
-   void addError(int model, const QString &error);
-   QStandardItemModel *m_list;
-   MultiDataModel *m_dataModel;
+private:
+    void addError( int model, const QString &error );
+    QStandardItemModel *m_list;
+    MultiDataModel *m_dataModel;
 };
 
 #endif

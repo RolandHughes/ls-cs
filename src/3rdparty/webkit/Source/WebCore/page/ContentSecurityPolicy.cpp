@@ -36,121 +36,148 @@
 #include "TextEncoding.h"
 #include <wtf/text/StringConcatenate.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Normally WebKit uses "static" for internal linkage, but using "static" for
 // these functions causes a compile error because these functions are used as
 // template parameters.
-namespace {
-
-bool isDirectiveNameCharacter(UChar c)
+namespace
 {
-    return isASCIIAlphanumeric(c) || c == '-';
+
+bool isDirectiveNameCharacter( UChar c )
+{
+    return isASCIIAlphanumeric( c ) || c == '-';
 }
 
-bool isDirectiveValueCharacter(UChar c)
+bool isDirectiveValueCharacter( UChar c )
 {
-    return isASCIISpace(c) || (c >= 0x21 && c <= 0x7e); // Whitespace + VCHAR
+    return isASCIISpace( c ) || ( c >= 0x21 && c <= 0x7e ); // Whitespace + VCHAR
 }
 
-bool isSourceCharacter(UChar c)
+bool isSourceCharacter( UChar c )
 {
-    return !isASCIISpace(c);
+    return !isASCIISpace( c );
 }
 
-bool isHostCharacter(UChar c)
+bool isHostCharacter( UChar c )
 {
-    return isASCIIAlphanumeric(c) || c == '-';
+    return isASCIIAlphanumeric( c ) || c == '-';
 }
 
-bool isSchemeContinuationCharacter(UChar c)
+bool isSchemeContinuationCharacter( UChar c )
 {
-    return isASCIIAlphanumeric(c) || c == '+' || c == '-' || c == '.';
+    return isASCIIAlphanumeric( c ) || c == '+' || c == '-' || c == '.';
 }
 
-bool isNotASCIISpace(UChar c)
+bool isNotASCIISpace( UChar c )
 {
-    return !isASCIISpace(c);
+    return !isASCIISpace( c );
 }
 
 } // namespace
 
-static bool skipExactly(const UChar*& position, const UChar* end, UChar delimiter)
+static bool skipExactly( const UChar *&position, const UChar *end, UChar delimiter )
 {
-    if (position < end && *position == delimiter) {
+    if ( position < end && *position == delimiter )
+    {
         ++position;
         return true;
     }
+
     return false;
 }
 
-template<bool characterPredicate(UChar)>
-static bool skipExactly(const UChar*& position, const UChar* end)
+template<bool characterPredicate( UChar )>
+static bool skipExactly( const UChar *&position, const UChar *end )
 {
-    if (position < end && characterPredicate(*position)) {
+    if ( position < end && characterPredicate( *position ) )
+    {
         ++position;
         return true;
     }
+
     return false;
 }
 
-static void skipUtil(const UChar*& position, const UChar* end, UChar delimiter)
+static void skipUtil( const UChar *&position, const UChar *end, UChar delimiter )
 {
-    while (position < end && *position != delimiter)
+    while ( position < end && *position != delimiter )
+    {
         ++position;
+    }
 }
 
-template<bool characterPredicate(UChar)>
-static void skipWhile(const UChar*& position, const UChar* end)
+template<bool characterPredicate( UChar )>
+static void skipWhile( const UChar *&position, const UChar *end )
 {
-    while (position < end && characterPredicate(*position))
+    while ( position < end && characterPredicate( *position ) )
+    {
         ++position;
+    }
 }
 
-class CSPSource {
+class CSPSource
+{
 public:
-    CSPSource(const String& scheme, const String& host, int port, bool hostHasWildcard, bool portHasWildcard)
-        : m_scheme(scheme)
-        , m_host(host)
-        , m_port(port)
-        , m_hostHasWildcard(hostHasWildcard)
-        , m_portHasWildcard(portHasWildcard)
+    CSPSource( const String &scheme, const String &host, int port, bool hostHasWildcard, bool portHasWildcard )
+        : m_scheme( scheme )
+        , m_host( host )
+        , m_port( port )
+        , m_hostHasWildcard( hostHasWildcard )
+        , m_portHasWildcard( portHasWildcard )
     {
     }
 
-    bool matches(const KURL& url) const
+    bool matches( const KURL &url ) const
     {
-        if (!schemeMatches(url))
+        if ( !schemeMatches( url ) )
+        {
             return false;
-        if (isSchemeOnly())
+        }
+
+        if ( isSchemeOnly() )
+        {
             return true;
-        return hostMatches(url) && portMatches(url);
+        }
+
+        return hostMatches( url ) && portMatches( url );
     }
 
 private:
-    bool schemeMatches(const KURL& url) const
+    bool schemeMatches( const KURL &url ) const
     {
-        return equalIgnoringCase(url.protocol(), m_scheme);
+        return equalIgnoringCase( url.protocol(), m_scheme );
     }
 
-    bool hostMatches(const KURL& url) const
+    bool hostMatches( const KURL &url ) const
     {
-        const String& host = url.host();
-        if (equalIgnoringCase(host, m_host))
+        const String &host = url.host();
+
+        if ( equalIgnoringCase( host, m_host ) )
+        {
             return true;
-        return m_hostHasWildcard && host.endsWith("." + m_host, false);
+        }
+
+        return m_hostHasWildcard && host.endsWith( "." + m_host, false );
 
     }
 
-    bool portMatches(const KURL& url) const
+    bool portMatches( const KURL &url ) const
     {
-        if (m_portHasWildcard)
+        if ( m_portHasWildcard )
+        {
             return true;
+        }
+
         int port = url.port();
-        return port ? port == m_port : isDefaultPortForProtocol(m_port, url.protocol());
+        return port ? port == m_port : isDefaultPortForProtocol( m_port, url.protocol() );
     }
 
-    bool isSchemeOnly() const { return m_host.isEmpty(); }
+    bool isSchemeOnly() const
+    {
+        return m_host.isEmpty();
+    }
 
     String m_scheme;
     String m_host;
@@ -160,69 +187,86 @@ private:
     bool m_portHasWildcard;
 };
 
-class CSPSourceList {
+class CSPSourceList
+{
 public:
-    explicit CSPSourceList(SecurityOrigin*);
+    explicit CSPSourceList( SecurityOrigin * );
 
-    void parse(const String&);
-    bool matches(const KURL&);
-    bool allowInline() const { return m_allowInline; }
-    bool allowEval() const { return m_allowEval; }
+    void parse( const String & );
+    bool matches( const KURL & );
+    bool allowInline() const
+    {
+        return m_allowInline;
+    }
+    bool allowEval() const
+    {
+        return m_allowEval;
+    }
 
 private:
-    void parse(const UChar* begin, const UChar* end);
+    void parse( const UChar *begin, const UChar *end );
 
-    bool parseSource(const UChar* begin, const UChar* end, String& scheme, String& host, int& port, bool& hostHasWildcard, bool& portHasWildcard);
-    bool parseScheme(const UChar* begin, const UChar* end, String& scheme);
-    bool parseHost(const UChar* begin, const UChar* end, String& host, bool& hostHasWildcard);
-    bool parsePort(const UChar* begin, const UChar* end, int& port, bool& portHasWildcard);
+    bool parseSource( const UChar *begin, const UChar *end, String &scheme, String &host, int &port, bool &hostHasWildcard,
+                      bool &portHasWildcard );
+    bool parseScheme( const UChar *begin, const UChar *end, String &scheme );
+    bool parseHost( const UChar *begin, const UChar *end, String &host, bool &hostHasWildcard );
+    bool parsePort( const UChar *begin, const UChar *end, int &port, bool &portHasWildcard );
 
     void addSourceSelf();
     void addSourceUnsafeInline();
     void addSourceUnsafeEval();
 
-    SecurityOrigin* m_origin;
+    SecurityOrigin *m_origin;
     Vector<CSPSource> m_list;
     bool m_allowInline;
     bool m_allowEval;
 };
 
-CSPSourceList::CSPSourceList(SecurityOrigin* origin)
-    : m_origin(origin)
-    , m_allowInline(false)
-    , m_allowEval(false)
+CSPSourceList::CSPSourceList( SecurityOrigin *origin )
+    : m_origin( origin )
+    , m_allowInline( false )
+    , m_allowEval( false )
 {
 }
 
-void CSPSourceList::parse(const String& value)
+void CSPSourceList::parse( const String &value )
 {
-    parse(value.characters(), value.characters() + value.length());
+    parse( value.characters(), value.characters() + value.length() );
 }
 
-bool CSPSourceList::matches(const KURL& url)
+bool CSPSourceList::matches( const KURL &url )
 {
-    for (size_t i = 0; i < m_list.size(); ++i) {
-        if (m_list[i].matches(url))
+    for ( size_t i = 0; i < m_list.size(); ++i )
+    {
+        if ( m_list[i].matches( url ) )
+        {
             return true;
+        }
     }
+
     return false;
 }
 
 // source-list       = *WSP [ source *( 1*WSP source ) *WSP ]
 //                   / *WSP "'none'" *WSP
 //
-void CSPSourceList::parse(const UChar* begin, const UChar* end)
+void CSPSourceList::parse( const UChar *begin, const UChar *end )
 {
-    const UChar* position = begin;
+    const UChar *position = begin;
 
     bool isFirstSourceInList = true;
-    while (position < end) {
-        skipWhile<isASCIISpace>(position, end);
-        const UChar* beginSource = position;
-        skipWhile<isSourceCharacter>(position, end);
 
-        if (isFirstSourceInList && equalIgnoringCase("'none'", beginSource, position - beginSource))
-            return; // We represent 'none' as an empty m_list.
+    while ( position < end )
+    {
+        skipWhile<isASCIISpace>( position, end );
+        const UChar *beginSource = position;
+        skipWhile<isSourceCharacter>( position, end );
+
+        if ( isFirstSourceInList && equalIgnoringCase( "'none'", beginSource, position - beginSource ) )
+        {
+            return;    // We represent 'none' as an empty m_list.
+        }
+
         isFirstSourceInList = false;
 
         String scheme, host;
@@ -230,89 +274,121 @@ void CSPSourceList::parse(const UChar* begin, const UChar* end)
         bool hostHasWildcard = false;
         bool portHasWildcard = false;
 
-        if (parseSource(beginSource, position, scheme, host, port, hostHasWildcard, portHasWildcard)) {
-            if (scheme.isEmpty())
+        if ( parseSource( beginSource, position, scheme, host, port, hostHasWildcard, portHasWildcard ) )
+        {
+            if ( scheme.isEmpty() )
+            {
                 scheme = m_origin->protocol();
-            m_list.append(CSPSource(scheme, host, port, hostHasWildcard, portHasWildcard));
+            }
+
+            m_list.append( CSPSource( scheme, host, port, hostHasWildcard, portHasWildcard ) );
         }
 
-        ASSERT(position == end || isASCIISpace(*position));
-     }
+        ASSERT( position == end || isASCIISpace( *position ) );
+    }
 }
 
 // source            = scheme ":"
 //                   / ( [ scheme "://" ] host [ port ] )
 //                   / "'self'"
 //
-bool CSPSourceList::parseSource(const UChar* begin, const UChar* end,
-                                String& scheme, String& host, int& port,
-                                bool& hostHasWildcard, bool& portHasWildcard)
+bool CSPSourceList::parseSource( const UChar *begin, const UChar *end,
+                                 String &scheme, String &host, int &port,
+                                 bool &hostHasWildcard, bool &portHasWildcard )
 {
-    if (begin == end)
+    if ( begin == end )
+    {
         return false;
+    }
 
-    if (equalIgnoringCase("'self'", begin, end - begin)) {
+    if ( equalIgnoringCase( "'self'", begin, end - begin ) )
+    {
         addSourceSelf();
         return false;
     }
 
-    if (equalIgnoringCase("'unsafe-inline'", begin, end - begin)) {
+    if ( equalIgnoringCase( "'unsafe-inline'", begin, end - begin ) )
+    {
         addSourceUnsafeInline();
         return false;
     }
 
-    if (equalIgnoringCase("'unsafe-eval'", begin, end - begin)) {
+    if ( equalIgnoringCase( "'unsafe-eval'", begin, end - begin ) )
+    {
         addSourceUnsafeEval();
         return false;
     }
 
-    const UChar* position = begin;
+    const UChar *position = begin;
 
-    const UChar* beginHost = begin;
-    skipUtil(position, end, ':');
+    const UChar *beginHost = begin;
+    skipUtil( position, end, ':' );
 
-    if (position == end) {
+    if ( position == end )
+    {
         // This must be a host-only source.
-        if (!parseHost(beginHost, position, host, hostHasWildcard))
+        if ( !parseHost( beginHost, position, host, hostHasWildcard ) )
+        {
             return false;
+        }
+
         return true;
     }
 
-    if (end - position == 1) {
-        ASSERT(*position == ':');
+    if ( end - position == 1 )
+    {
+        ASSERT( *position == ':' );
+
         // This must be a scheme-only source.
-        if (!parseScheme(begin, position, scheme))
+        if ( !parseScheme( begin, position, scheme ) )
+        {
             return false;
+        }
+
         return true;
     }
 
-    ASSERT(end - position >= 2);
-    if (position[1] == '/') {
-        if (!parseScheme(begin, position, scheme)
-            || !skipExactly(position, end, ':')
-            || !skipExactly(position, end, '/')
-            || !skipExactly(position, end, '/'))
+    ASSERT( end - position >= 2 );
+
+    if ( position[1] == '/' )
+    {
+        if ( !parseScheme( begin, position, scheme )
+                || !skipExactly( position, end, ':' )
+                || !skipExactly( position, end, '/' )
+                || !skipExactly( position, end, '/' ) )
+        {
             return false;
+        }
+
         beginHost = position;
-        skipUtil(position, end, ':');
+        skipUtil( position, end, ':' );
     }
 
-    if (position == beginHost)
+    if ( position == beginHost )
+    {
         return false;
+    }
 
-    if (!parseHost(beginHost, position, host, hostHasWildcard))
+    if ( !parseHost( beginHost, position, host, hostHasWildcard ) )
+    {
         return false;
+    }
 
-    if (position == end) {
+    if ( position == end )
+    {
         port = 0;
         return true;
     }
 
-    if (!skipExactly(position, end, ':'))
+    if ( !skipExactly( position, end, ':' ) )
+    {
         ASSERT_NOT_REACHED();
+    }
 
-    if (!parsePort(position, end, port, portHasWildcard))
+    if ( !parsePort( position, end, port, portHasWildcard ) )
+    {
         return false;
+    }
 
     return true;
 }
@@ -320,25 +396,31 @@ bool CSPSourceList::parseSource(const UChar* begin, const UChar* end,
 //                     ; <scheme> production from RFC 3986
 // scheme      = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
 //
-bool CSPSourceList::parseScheme(const UChar* begin, const UChar* end, String& scheme)
+bool CSPSourceList::parseScheme( const UChar *begin, const UChar *end, String &scheme )
 {
-    ASSERT(begin <= end);
-    ASSERT(scheme.isEmpty());
+    ASSERT( begin <= end );
+    ASSERT( scheme.isEmpty() );
 
-    if (begin == end)
+    if ( begin == end )
+    {
         return false;
+    }
 
-    const UChar* position = begin;
+    const UChar *position = begin;
 
-    if (!skipExactly<isASCIIAlpha>(position, end))
+    if ( !skipExactly<isASCIIAlpha>( position, end ) )
+    {
         return false;
+    }
 
-    skipWhile<isSchemeContinuationCharacter>(position, end);
+    skipWhile<isSchemeContinuationCharacter>( position, end );
 
-    if (position != end)
+    if ( position != end )
+    {
         return false;
+    }
 
-    scheme = String(begin, end - begin);
+    scheme = String( begin, end - begin );
     return true;
 }
 
@@ -346,75 +428,92 @@ bool CSPSourceList::parseScheme(const UChar* begin, const UChar* end, String& sc
 //                   / "*"
 // host-char         = ALPHA / DIGIT / "-"
 //
-bool CSPSourceList::parseHost(const UChar* begin, const UChar* end, String& host, bool& hostHasWildcard)
+bool CSPSourceList::parseHost( const UChar *begin, const UChar *end, String &host, bool &hostHasWildcard )
 {
-    ASSERT(begin <= end);
-    ASSERT(host.isEmpty());
-    ASSERT(!hostHasWildcard);
+    ASSERT( begin <= end );
+    ASSERT( host.isEmpty() );
+    ASSERT( !hostHasWildcard );
 
-    if (begin == end)
+    if ( begin == end )
+    {
         return false;
+    }
 
-    const UChar* position = begin;
+    const UChar *position = begin;
 
-    if (skipExactly(position, end, '*')) {
+    if ( skipExactly( position, end, '*' ) )
+    {
         hostHasWildcard = true;
 
-        if (position == end)
+        if ( position == end )
+        {
             return true;
+        }
 
-        if (!skipExactly(position, end, '.'))
+        if ( !skipExactly( position, end, '.' ) )
+        {
             return false;
+        }
     }
 
-    const UChar* hostBegin = position;
+    const UChar *hostBegin = position;
 
-    while (position < end) {
-        if (!skipExactly<isHostCharacter>(position, end))
+    while ( position < end )
+    {
+        if ( !skipExactly<isHostCharacter>( position, end ) )
+        {
             return false;
+        }
 
-        skipWhile<isHostCharacter>(position, end);
+        skipWhile<isHostCharacter>( position, end );
 
-        if (position < end && !skipExactly(position, end, '.'))
+        if ( position < end && !skipExactly( position, end, '.' ) )
+        {
             return false;
+        }
     }
 
-    ASSERT(position == end);
-    host = String(hostBegin, end - hostBegin);
+    ASSERT( position == end );
+    host = String( hostBegin, end - hostBegin );
     return true;
 }
 
 // port              = ":" ( 1*DIGIT / "*" )
 //
-bool CSPSourceList::parsePort(const UChar* begin, const UChar* end, int& port, bool& portHasWildcard)
+bool CSPSourceList::parsePort( const UChar *begin, const UChar *end, int &port, bool &portHasWildcard )
 {
-    ASSERT(begin <= end);
-    ASSERT(!port);
-    ASSERT(!portHasWildcard);
+    ASSERT( begin <= end );
+    ASSERT( !port );
+    ASSERT( !portHasWildcard );
 
-    if (begin == end)
+    if ( begin == end )
+    {
         return false;
+    }
 
-    if (end - begin == 1 && *begin == '*') {
+    if ( end - begin == 1 && *begin == '*' )
+    {
         port = 0;
         portHasWildcard = true;
         return true;
     }
 
-    const UChar* position = begin;
-    skipWhile<isASCIIDigit>(position, end);
+    const UChar *position = begin;
+    skipWhile<isASCIIDigit>( position, end );
 
-    if (position != end)
+    if ( position != end )
+    {
         return false;
+    }
 
     bool ok;
-    port = charactersToIntStrict(begin, end - begin, &ok);
+    port = charactersToIntStrict( begin, end - begin, &ok );
     return ok;
 }
 
 void CSPSourceList::addSourceSelf()
 {
-    m_list.append(CSPSource(m_origin->protocol(), m_origin->host(), m_origin->port(), false, false));
+    m_list.append( CSPSource( m_origin->protocol(), m_origin->host(), m_origin->port(), false, false ) );
 }
 
 void CSPSourceList::addSourceUnsafeInline()
@@ -427,33 +526,43 @@ void CSPSourceList::addSourceUnsafeEval()
     m_allowEval = true;
 }
 
-class CSPDirective {
+class CSPDirective
+{
 public:
-    CSPDirective(const String& name, const String& value, SecurityOrigin* origin)
-        : m_sourceList(origin)
-        , m_text(makeString(name, " ", value))
+    CSPDirective( const String &name, const String &value, SecurityOrigin *origin )
+        : m_sourceList( origin )
+        , m_text( makeString( name, " ", value ) )
     {
-        m_sourceList.parse(value);
+        m_sourceList.parse( value );
     }
 
-    bool allows(const KURL& url)
+    bool allows( const KURL &url )
     {
-        return m_sourceList.matches(url);
+        return m_sourceList.matches( url );
     }
 
-    bool allowInline() const { return m_sourceList.allowInline(); }
-    bool allowEval() const { return m_sourceList.allowEval(); }
+    bool allowInline() const
+    {
+        return m_sourceList.allowInline();
+    }
+    bool allowEval() const
+    {
+        return m_sourceList.allowEval();
+    }
 
-    const String& text() { return m_text; }
+    const String &text()
+    {
+        return m_text;
+    }
 
 private:
     CSPSourceList m_sourceList;
     String m_text;
 };
 
-ContentSecurityPolicy::ContentSecurityPolicy(Document* document)
-    : m_havePolicy(false)
-    , m_document(document)
+ContentSecurityPolicy::ContentSecurityPolicy( Document *document )
+    : m_havePolicy( false )
+    , m_document( document )
 {
 }
 
@@ -461,30 +570,40 @@ ContentSecurityPolicy::~ContentSecurityPolicy()
 {
 }
 
-void ContentSecurityPolicy::didReceiveHeader(const String& header)
+void ContentSecurityPolicy::didReceiveHeader( const String &header )
 {
-    if (m_havePolicy)
-        return; // The first policy wins.
+    if ( m_havePolicy )
+    {
+        return;    // The first policy wins.
+    }
 
-    parse(header);
+    parse( header );
     m_havePolicy = true;
 
-    if (!checkEval(operativeDirective(m_scriptSrc.get()))) {
-        if (Frame* frame = m_document->frame())
+    if ( !checkEval( operativeDirective( m_scriptSrc.get() ) ) )
+    {
+        if ( Frame *frame = m_document->frame() )
+        {
             frame->script()->disableEval();
+        }
     }
 }
 
-void ContentSecurityPolicy::reportViolation(const String& directiveText, const String& consoleMessage) const
+void ContentSecurityPolicy::reportViolation( const String &directiveText, const String &consoleMessage ) const
 {
-    Frame* frame = m_document->frame();
-    if (!frame)
-        return;
+    Frame *frame = m_document->frame();
 
-    frame->domWindow()->console()->addMessage(JSMessageSource, LogMessageType, ErrorMessageLevel, consoleMessage, 1, String());
-
-    if (m_reportURLs.isEmpty())
+    if ( !frame )
+    {
         return;
+    }
+
+    frame->domWindow()->console()->addMessage( JSMessageSource, LogMessageType, ErrorMessageLevel, consoleMessage, 1, String() );
+
+    if ( m_reportURLs.isEmpty() )
+    {
+        return;
+    }
 
     // We need to be careful here when deciding what information to send to the
     // report-uri. Currently, we send only the current document's URL and the
@@ -496,148 +615,169 @@ void ContentSecurityPolicy::reportViolation(const String& directiveText, const S
     // sent explicitly. As for which directive was violated, that's pretty
     // harmless information.
 
-    FormDataList reportList(UTF8Encoding());
-    reportList.appendData("document-url", m_document->url());
-    if (!directiveText.isEmpty())
-        reportList.appendData("violated-directive", directiveText);
+    FormDataList reportList( UTF8Encoding() );
+    reportList.appendData( "document-url", m_document->url() );
 
-    RefPtr<FormData> report = FormData::create(reportList, UTF8Encoding());
+    if ( !directiveText.isEmpty() )
+    {
+        reportList.appendData( "violated-directive", directiveText );
+    }
 
-    for (size_t i = 0; i < m_reportURLs.size(); ++i)
-        PingLoader::reportContentSecurityPolicyViolation(frame, m_reportURLs[i], report);
+    RefPtr<FormData> report = FormData::create( reportList, UTF8Encoding() );
+
+    for ( size_t i = 0; i < m_reportURLs.size(); ++i )
+    {
+        PingLoader::reportContentSecurityPolicyViolation( frame, m_reportURLs[i], report );
+    }
 }
 
-bool ContentSecurityPolicy::checkEval(CSPDirective* directive) const
+bool ContentSecurityPolicy::checkEval( CSPDirective *directive ) const
 {
     return !directive || directive->allowEval();
 }
 
-CSPDirective* ContentSecurityPolicy::operativeDirective(CSPDirective* directive) const
+CSPDirective *ContentSecurityPolicy::operativeDirective( CSPDirective *directive ) const
 {
     return directive ? directive : m_defaultSrc.get();
 }
 
-bool ContentSecurityPolicy::checkInlineAndReportViolation(CSPDirective* directive, const String& consoleMessage) const
+bool ContentSecurityPolicy::checkInlineAndReportViolation( CSPDirective *directive, const String &consoleMessage ) const
 {
-    if (!directive || directive->allowInline())
+    if ( !directive || directive->allowInline() )
+    {
         return true;
-    reportViolation(directive->text(), consoleMessage);
+    }
+
+    reportViolation( directive->text(), consoleMessage );
     return false;
 }
 
-bool ContentSecurityPolicy::checkEvalAndReportViolation(CSPDirective* directive, const String& consoleMessage) const
+bool ContentSecurityPolicy::checkEvalAndReportViolation( CSPDirective *directive, const String &consoleMessage ) const
 {
-    if (checkEval(directive))
+    if ( checkEval( directive ) )
+    {
         return true;
-    reportViolation(directive->text(), consoleMessage);
+    }
+
+    reportViolation( directive->text(), consoleMessage );
     return false;
 }
 
-bool ContentSecurityPolicy::checkSourceAndReportViolation(CSPDirective* directive, const KURL& url, const String& type) const
+bool ContentSecurityPolicy::checkSourceAndReportViolation( CSPDirective *directive, const KURL &url, const String &type ) const
 {
-    if (!directive || directive->allows(url))
+    if ( !directive || directive->allows( url ) )
+    {
         return true;
-    reportViolation(directive->text(), makeString("Refused to load ", type, " from '", url.string(), "' because of Content-Security-Policy.\n"));
+    }
+
+    reportViolation( directive->text(), makeString( "Refused to load ", type, " from '", url.string(),
+                     "' because of Content-Security-Policy.\n" ) );
     return false;
 }
 
 bool ContentSecurityPolicy::allowJavaScriptURLs() const
 {
-    DEFINE_STATIC_LOCAL(String, consoleMessage, ("Refused to execute JavaScript URL because of Content-Security-Policy.\n"));
-    return checkInlineAndReportViolation(operativeDirective(m_scriptSrc.get()), consoleMessage);
+    DEFINE_STATIC_LOCAL( String, consoleMessage, ( "Refused to execute JavaScript URL because of Content-Security-Policy.\n" ) );
+    return checkInlineAndReportViolation( operativeDirective( m_scriptSrc.get() ), consoleMessage );
 }
 
 bool ContentSecurityPolicy::allowInlineEventHandlers() const
 {
-    DEFINE_STATIC_LOCAL(String, consoleMessage, ("Refused to execute inline event handler because of Content-Security-Policy.\n"));
-    return checkInlineAndReportViolation(operativeDirective(m_scriptSrc.get()), consoleMessage);
+    DEFINE_STATIC_LOCAL( String, consoleMessage,
+                         ( "Refused to execute inline event handler because of Content-Security-Policy.\n" ) );
+    return checkInlineAndReportViolation( operativeDirective( m_scriptSrc.get() ), consoleMessage );
 }
 
 bool ContentSecurityPolicy::allowInlineScript() const
 {
-    DEFINE_STATIC_LOCAL(String, consoleMessage, ("Refused to execute inline script because of Content-Security-Policy.\n"));
-    return checkInlineAndReportViolation(operativeDirective(m_scriptSrc.get()), consoleMessage);
+    DEFINE_STATIC_LOCAL( String, consoleMessage, ( "Refused to execute inline script because of Content-Security-Policy.\n" ) );
+    return checkInlineAndReportViolation( operativeDirective( m_scriptSrc.get() ), consoleMessage );
 }
 
 bool ContentSecurityPolicy::allowInlineStyle() const
 {
-    DEFINE_STATIC_LOCAL(String, consoleMessage, ("Refused to apply inline style because of Content-Security-Policy.\n"));
-    return checkInlineAndReportViolation(operativeDirective(m_styleSrc.get()), consoleMessage);
+    DEFINE_STATIC_LOCAL( String, consoleMessage, ( "Refused to apply inline style because of Content-Security-Policy.\n" ) );
+    return checkInlineAndReportViolation( operativeDirective( m_styleSrc.get() ), consoleMessage );
 }
 
 bool ContentSecurityPolicy::allowEval() const
 {
-    DEFINE_STATIC_LOCAL(String, consoleMessage, ("Refused to evaluate script because of Content-Security-Policy.\n"));
-    return checkEvalAndReportViolation(operativeDirective(m_scriptSrc.get()), consoleMessage);
+    DEFINE_STATIC_LOCAL( String, consoleMessage, ( "Refused to evaluate script because of Content-Security-Policy.\n" ) );
+    return checkEvalAndReportViolation( operativeDirective( m_scriptSrc.get() ), consoleMessage );
 }
 
-bool ContentSecurityPolicy::allowScriptFromSource(const KURL& url) const
+bool ContentSecurityPolicy::allowScriptFromSource( const KURL &url ) const
 {
-    DEFINE_STATIC_LOCAL(String, type, ("script"));
-    return checkSourceAndReportViolation(operativeDirective(m_scriptSrc.get()), url, type);
+    DEFINE_STATIC_LOCAL( String, type, ( "script" ) );
+    return checkSourceAndReportViolation( operativeDirective( m_scriptSrc.get() ), url, type );
 }
 
-bool ContentSecurityPolicy::allowObjectFromSource(const KURL& url) const
+bool ContentSecurityPolicy::allowObjectFromSource( const KURL &url ) const
 {
-    DEFINE_STATIC_LOCAL(String, type, ("object"));
-    return checkSourceAndReportViolation(operativeDirective(m_objectSrc.get()), url, type);
+    DEFINE_STATIC_LOCAL( String, type, ( "object" ) );
+    return checkSourceAndReportViolation( operativeDirective( m_objectSrc.get() ), url, type );
 }
 
-bool ContentSecurityPolicy::allowChildFrameFromSource(const KURL& url) const
+bool ContentSecurityPolicy::allowChildFrameFromSource( const KURL &url ) const
 {
-    DEFINE_STATIC_LOCAL(String, type, ("frame"));
-    return checkSourceAndReportViolation(operativeDirective(m_frameSrc.get()), url, type);
+    DEFINE_STATIC_LOCAL( String, type, ( "frame" ) );
+    return checkSourceAndReportViolation( operativeDirective( m_frameSrc.get() ), url, type );
 }
 
-bool ContentSecurityPolicy::allowImageFromSource(const KURL& url) const
+bool ContentSecurityPolicy::allowImageFromSource( const KURL &url ) const
 {
-    DEFINE_STATIC_LOCAL(String, type, ("image"));
-    return checkSourceAndReportViolation(operativeDirective(m_imgSrc.get()), url, type);
+    DEFINE_STATIC_LOCAL( String, type, ( "image" ) );
+    return checkSourceAndReportViolation( operativeDirective( m_imgSrc.get() ), url, type );
 }
 
-bool ContentSecurityPolicy::allowStyleFromSource(const KURL& url) const
+bool ContentSecurityPolicy::allowStyleFromSource( const KURL &url ) const
 {
-    DEFINE_STATIC_LOCAL(String, type, ("style"));
-    return checkSourceAndReportViolation(operativeDirective(m_styleSrc.get()), url, type);
+    DEFINE_STATIC_LOCAL( String, type, ( "style" ) );
+    return checkSourceAndReportViolation( operativeDirective( m_styleSrc.get() ), url, type );
 }
 
-bool ContentSecurityPolicy::allowFontFromSource(const KURL& url) const
+bool ContentSecurityPolicy::allowFontFromSource( const KURL &url ) const
 {
-    DEFINE_STATIC_LOCAL(String, type, ("font"));
-    return checkSourceAndReportViolation(operativeDirective(m_fontSrc.get()), url, type);
+    DEFINE_STATIC_LOCAL( String, type, ( "font" ) );
+    return checkSourceAndReportViolation( operativeDirective( m_fontSrc.get() ), url, type );
 }
 
-bool ContentSecurityPolicy::allowMediaFromSource(const KURL& url) const
+bool ContentSecurityPolicy::allowMediaFromSource( const KURL &url ) const
 {
-    DEFINE_STATIC_LOCAL(String, type, ("media"));
-    return checkSourceAndReportViolation(operativeDirective(m_mediaSrc.get()), url, type);
+    DEFINE_STATIC_LOCAL( String, type, ( "media" ) );
+    return checkSourceAndReportViolation( operativeDirective( m_mediaSrc.get() ), url, type );
 }
 
 // policy            = directive-list
 // directive-list    = [ directive *( ";" [ directive ] ) ]
 //
-void ContentSecurityPolicy::parse(const String& policy)
+void ContentSecurityPolicy::parse( const String &policy )
 {
-    ASSERT(!m_havePolicy);
+    ASSERT( !m_havePolicy );
 
-    if (policy.isEmpty())
+    if ( policy.isEmpty() )
+    {
         return;
+    }
 
-    const UChar* position = policy.characters();
-    const UChar* end = position + policy.length();
+    const UChar *position = policy.characters();
+    const UChar *end = position + policy.length();
 
-    while (position < end) {
-        const UChar* directiveBegin = position;
-        skipUtil(position, end, ';');
+    while ( position < end )
+    {
+        const UChar *directiveBegin = position;
+        skipUtil( position, end, ';' );
 
         String name, value;
-        if (parseDirective(directiveBegin, position, name, value)) {
-            ASSERT(!name.isEmpty());
-            addDirective(name, value);
+
+        if ( parseDirective( directiveBegin, position, name, value ) )
+        {
+            ASSERT( !name.isEmpty() );
+            addDirective( name, value );
         }
 
-        ASSERT(position == end || *position == ';');
-        skipExactly(position, end, ';');
+        ASSERT( position == end || *position == ';' );
+        skipExactly( position, end, ';' );
     }
 }
 
@@ -645,100 +785,130 @@ void ContentSecurityPolicy::parse(const String& policy)
 // directive-name    = 1*( ALPHA / DIGIT / "-" )
 // directive-value   = *( WSP / <VCHAR except ";"> )
 //
-bool ContentSecurityPolicy::parseDirective(const UChar* begin, const UChar* end, String& name, String& value)
+bool ContentSecurityPolicy::parseDirective( const UChar *begin, const UChar *end, String &name, String &value )
 {
-    ASSERT(name.isEmpty());
-    ASSERT(value.isEmpty());
+    ASSERT( name.isEmpty() );
+    ASSERT( value.isEmpty() );
 
-    const UChar* position = begin;
-    skipWhile<isASCIISpace>(position, end);
+    const UChar *position = begin;
+    skipWhile<isASCIISpace>( position, end );
 
-    const UChar* nameBegin = position;
-    skipWhile<isDirectiveNameCharacter>(position, end);
+    const UChar *nameBegin = position;
+    skipWhile<isDirectiveNameCharacter>( position, end );
 
     // The directive-name must be non-empty.
-    if (nameBegin == position)
+    if ( nameBegin == position )
+    {
         return false;
+    }
 
-    name = String(nameBegin, position - nameBegin);
+    name = String( nameBegin, position - nameBegin );
 
-    if (position == end)
+    if ( position == end )
+    {
         return true;
+    }
 
-    if (!skipExactly<isASCIISpace>(position, end))
+    if ( !skipExactly<isASCIISpace>( position, end ) )
+    {
         return false;
+    }
 
-    skipWhile<isASCIISpace>(position, end);
+    skipWhile<isASCIISpace>( position, end );
 
-    const UChar* valueBegin = position;
-    skipWhile<isDirectiveValueCharacter>(position, end);
+    const UChar *valueBegin = position;
+    skipWhile<isDirectiveValueCharacter>( position, end );
 
-    if (position != end)
+    if ( position != end )
+    {
         return false;
+    }
 
     // The directive-value may be empty.
-    if (valueBegin == position)
+    if ( valueBegin == position )
+    {
         return true;
+    }
 
-    value = String(valueBegin, position - valueBegin);
+    value = String( valueBegin, position - valueBegin );
     return true;
 }
 
-void ContentSecurityPolicy::parseReportURI(const String& value)
+void ContentSecurityPolicy::parseReportURI( const String &value )
 {
-    const UChar* position = value.characters();
-    const UChar* end = position + value.length();
+    const UChar *position = value.characters();
+    const UChar *end = position + value.length();
 
-    while (position < end) {
-        skipWhile<isASCIISpace>(position, end);
+    while ( position < end )
+    {
+        skipWhile<isASCIISpace>( position, end );
 
-        const UChar* urlBegin = position;
-        skipWhile<isNotASCIISpace>(position, end);
+        const UChar *urlBegin = position;
+        skipWhile<isNotASCIISpace>( position, end );
 
-        if (urlBegin < position) {
-            String url = String(urlBegin, position - urlBegin);
-            m_reportURLs.append(m_document->completeURL(url));
+        if ( urlBegin < position )
+        {
+            String url = String( urlBegin, position - urlBegin );
+            m_reportURLs.append( m_document->completeURL( url ) );
         }
     }
 }
 
-PassOwnPtr<CSPDirective> ContentSecurityPolicy::createCSPDirective(const String& name, const String& value)
+PassOwnPtr<CSPDirective> ContentSecurityPolicy::createCSPDirective( const String &name, const String &value )
 {
-    return adoptPtr(new CSPDirective(name, value, m_document->securityOrigin()));
+    return adoptPtr( new CSPDirective( name, value, m_document->securityOrigin() ) );
 }
 
-void ContentSecurityPolicy::addDirective(const String& name, const String& value)
+void ContentSecurityPolicy::addDirective( const String &name, const String &value )
 {
-    DEFINE_STATIC_LOCAL(String, defaultSrc, ("default-src"));
-    DEFINE_STATIC_LOCAL(String, scriptSrc, ("script-src"));
-    DEFINE_STATIC_LOCAL(String, objectSrc, ("object-src"));
-    DEFINE_STATIC_LOCAL(String, frameSrc, ("frame-src"));
-    DEFINE_STATIC_LOCAL(String, imgSrc, ("img-src"));
-    DEFINE_STATIC_LOCAL(String, styleSrc, ("style-src"));
-    DEFINE_STATIC_LOCAL(String, fontSrc, ("font-src"));
-    DEFINE_STATIC_LOCAL(String, mediaSrc, ("media-src"));
-    DEFINE_STATIC_LOCAL(String, reportURI, ("report-uri"));
+    DEFINE_STATIC_LOCAL( String, defaultSrc, ( "default-src" ) );
+    DEFINE_STATIC_LOCAL( String, scriptSrc, ( "script-src" ) );
+    DEFINE_STATIC_LOCAL( String, objectSrc, ( "object-src" ) );
+    DEFINE_STATIC_LOCAL( String, frameSrc, ( "frame-src" ) );
+    DEFINE_STATIC_LOCAL( String, imgSrc, ( "img-src" ) );
+    DEFINE_STATIC_LOCAL( String, styleSrc, ( "style-src" ) );
+    DEFINE_STATIC_LOCAL( String, fontSrc, ( "font-src" ) );
+    DEFINE_STATIC_LOCAL( String, mediaSrc, ( "media-src" ) );
+    DEFINE_STATIC_LOCAL( String, reportURI, ( "report-uri" ) );
 
-    ASSERT(!name.isEmpty());
+    ASSERT( !name.isEmpty() );
 
-    if (!m_defaultSrc && equalIgnoringCase(name, defaultSrc))
-        m_defaultSrc = createCSPDirective(name, value);
-    else if (!m_scriptSrc && equalIgnoringCase(name, scriptSrc))
-        m_scriptSrc = createCSPDirective(name, value);
-    else if (!m_objectSrc && equalIgnoringCase(name, objectSrc))
-        m_objectSrc = createCSPDirective(name, value);
-    else if (!m_frameSrc && equalIgnoringCase(name, frameSrc))
-        m_frameSrc = createCSPDirective(name, value);
-    else if (!m_imgSrc && equalIgnoringCase(name, imgSrc))
-        m_imgSrc = createCSPDirective(name, value);
-    else if (!m_styleSrc && equalIgnoringCase(name, styleSrc))
-        m_styleSrc = createCSPDirective(name, value);
-    else if (!m_fontSrc && equalIgnoringCase(name, fontSrc))
-        m_fontSrc = createCSPDirective(name, value);
-    else if (!m_mediaSrc && equalIgnoringCase(name, mediaSrc))
-        m_mediaSrc = createCSPDirective(name, value);
-    else if (m_reportURLs.isEmpty() && equalIgnoringCase(name, reportURI))
-        parseReportURI(value);
+    if ( !m_defaultSrc && equalIgnoringCase( name, defaultSrc ) )
+    {
+        m_defaultSrc = createCSPDirective( name, value );
+    }
+    else if ( !m_scriptSrc && equalIgnoringCase( name, scriptSrc ) )
+    {
+        m_scriptSrc = createCSPDirective( name, value );
+    }
+    else if ( !m_objectSrc && equalIgnoringCase( name, objectSrc ) )
+    {
+        m_objectSrc = createCSPDirective( name, value );
+    }
+    else if ( !m_frameSrc && equalIgnoringCase( name, frameSrc ) )
+    {
+        m_frameSrc = createCSPDirective( name, value );
+    }
+    else if ( !m_imgSrc && equalIgnoringCase( name, imgSrc ) )
+    {
+        m_imgSrc = createCSPDirective( name, value );
+    }
+    else if ( !m_styleSrc && equalIgnoringCase( name, styleSrc ) )
+    {
+        m_styleSrc = createCSPDirective( name, value );
+    }
+    else if ( !m_fontSrc && equalIgnoringCase( name, fontSrc ) )
+    {
+        m_fontSrc = createCSPDirective( name, value );
+    }
+    else if ( !m_mediaSrc && equalIgnoringCase( name, mediaSrc ) )
+    {
+        m_mediaSrc = createCSPDirective( name, value );
+    }
+    else if ( m_reportURLs.isEmpty() && equalIgnoringCase( name, reportURI ) )
+    {
+        parseReportURI( value );
+    }
 }
 
 }

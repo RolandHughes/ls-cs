@@ -32,60 +32,60 @@ class QStyleOptionButton;
 
 class Q_GUI_EXPORT QPushButton : public QAbstractButton
 {
-   GUI_CS_OBJECT(QPushButton)
+    GUI_LSCS_OBJECT( QPushButton )
 
-   GUI_CS_PROPERTY_READ(autoDefault, autoDefault)
-   GUI_CS_PROPERTY_WRITE(autoDefault, setAutoDefault)
-   GUI_CS_PROPERTY_READ(default, isDefault)
-   GUI_CS_PROPERTY_WRITE(default, setDefault)
-   GUI_CS_PROPERTY_READ(flat, isFlat)
-   GUI_CS_PROPERTY_WRITE(flat, setFlat)
+    GUI_LSCS_PROPERTY_READ( autoDefault, autoDefault )
+    GUI_LSCS_PROPERTY_WRITE( autoDefault, setAutoDefault )
+    GUI_LSCS_PROPERTY_READ( default, isDefault )
+    GUI_LSCS_PROPERTY_WRITE( default, setDefault )
+    GUI_LSCS_PROPERTY_READ( flat, isFlat )
+    GUI_LSCS_PROPERTY_WRITE( flat, setFlat )
 
- public:
-   explicit QPushButton(QWidget *parent = nullptr);
-   explicit QPushButton(const QString &text, QWidget *parent = nullptr);
-   QPushButton(const QIcon &icon, const QString &text, QWidget *parent = nullptr);
+public:
+    explicit QPushButton( QWidget *parent = nullptr );
+    explicit QPushButton( const QString &text, QWidget *parent = nullptr );
+    QPushButton( const QIcon &icon, const QString &text, QWidget *parent = nullptr );
 
-   QPushButton(const QPushButton &) = delete;
-   QPushButton &operator=(const QPushButton &) = delete;
+    QPushButton( const QPushButton & ) = delete;
+    QPushButton &operator=( const QPushButton & ) = delete;
 
-   ~QPushButton();
+    ~QPushButton();
 
-   QSize sizeHint() const override;
-   QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
-   bool autoDefault() const;
-   void setAutoDefault(bool enabled);
-   bool isDefault() const;
-   void setDefault(bool enabled);
+    bool autoDefault() const;
+    void setAutoDefault( bool enabled );
+    bool isDefault() const;
+    void setDefault( bool enabled );
 
-   void setFlat(bool enabled);
-   bool isFlat() const;
+    void setFlat( bool enabled );
+    bool isFlat() const;
 
 #ifndef QT_NO_MENU
-   void setMenu(QMenu *menu);
-   QMenu *menu() const;
+    void setMenu( QMenu *menu );
+    QMenu *menu() const;
 
-   GUI_CS_SLOT_1(Public, void showMenu())
-   GUI_CS_SLOT_2(showMenu)
+    GUI_LSCS_SLOT_1( Public, void showMenu() )
+    GUI_LSCS_SLOT_2( showMenu )
 #endif
 
- protected:
-   bool event(QEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
 
-   void paintEvent(QPaintEvent *event) override;
-   void keyPressEvent(QKeyEvent *event) override;
-   void focusInEvent(QFocusEvent *event) override;
-   void focusOutEvent(QFocusEvent *event) override;
-   void initStyleOption(QStyleOptionButton *option) const;
-   QPushButton(QPushButtonPrivate &dd, QWidget *parent = nullptr);
+    void paintEvent( QPaintEvent *event ) override;
+    void keyPressEvent( QKeyEvent *event ) override;
+    void focusInEvent( QFocusEvent *event ) override;
+    void focusOutEvent( QFocusEvent *event ) override;
+    void initStyleOption( QStyleOptionButton *option ) const;
+    QPushButton( QPushButtonPrivate &dd, QWidget *parent = nullptr );
 
- private:
-   Q_DECLARE_PRIVATE(QPushButton)
+private:
+    Q_DECLARE_PRIVATE( QPushButton )
 
 #ifndef QT_NO_MENU
-   GUI_CS_SLOT_1(Private, void _q_popupPressed())
-   GUI_CS_SLOT_2(_q_popupPressed)
+    GUI_LSCS_SLOT_1( Private, void _q_popupPressed() )
+    GUI_LSCS_SLOT_2( _q_popupPressed )
 #endif
 
 };

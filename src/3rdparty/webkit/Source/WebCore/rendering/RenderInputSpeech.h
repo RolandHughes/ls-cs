@@ -35,12 +35,14 @@
 
 #if ENABLE(INPUT_SPEECH)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderInputSpeech {
+class RenderInputSpeech
+{
 public:
-    static void adjustInputFieldSpeechButtonStyle(CSSStyleSelector*, RenderStyle*, Element*);
-    static bool paintInputFieldSpeechButton(RenderObject*, const PaintInfo&, const IntRect&);
+    static void adjustInputFieldSpeechButtonStyle( CSSStyleSelector *, RenderStyle *, Element * );
+    static bool paintInputFieldSpeechButton( RenderObject *, const PaintInfo &, const IntRect & );
 };
 
 } // namespace WebCore

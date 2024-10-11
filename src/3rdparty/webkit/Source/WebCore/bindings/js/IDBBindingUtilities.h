@@ -28,14 +28,15 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-#include "ScriptValue.h" 
+#include "ScriptValue.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBKey;
 
-PassRefPtr<IDBKey> createIDBKeyFromValue(JSC::ExecState*, JSC::JSValue);
+PassRefPtr<IDBKey> createIDBKeyFromValue( JSC::ExecState *, JSC::JSValue );
 
 }
 

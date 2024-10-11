@@ -43,52 +43,79 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-bool JSCSSValueOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void* context, MarkStack& markStack)
+namespace WebCore
 {
-    JSCSSValue* jsCSSValue = static_cast<JSCSSValue*>(handle.get().asCell());
-    if (!jsCSSValue->hasCustomProperties())
+
+bool JSCSSValueOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *context, MarkStack &markStack )
+{
+    JSCSSValue *jsCSSValue = static_cast<JSCSSValue *>( handle.get().asCell() );
+
+    if ( !jsCSSValue->hasCustomProperties() )
+    {
         return false;
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    void* root = world->m_cssValueRoots.get(jsCSSValue->impl());
-    if (!root)
+    }
+
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    void *root = world->m_cssValueRoots.get( jsCSSValue->impl() );
+
+    if ( !root )
+    {
         return false;
-    return markStack.containsOpaqueRoot(root);
+    }
+
+    return markStack.containsOpaqueRoot( root );
 }
 
-void JSCSSValueOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSCSSValueOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSCSSValue* jsCSSValue = static_cast<JSCSSValue*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    world->m_cssValueRoots.remove(jsCSSValue->impl());
-    uncacheWrapper(world, jsCSSValue->impl(), jsCSSValue);
+    JSCSSValue *jsCSSValue = static_cast<JSCSSValue *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    world->m_cssValueRoots.remove( jsCSSValue->impl() );
+    uncacheWrapper( world, jsCSSValue->impl(), jsCSSValue );
 }
 
-JSValue toJS(ExecState* exec, JSDOMGlobalObject* globalObject, CSSValue* value)
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *globalObject, CSSValue *value )
 {
-    if (!value)
+    if ( !value )
+    {
         return jsNull();
+    }
 
-    JSDOMWrapper* wrapper = getCachedWrapper(currentWorld(exec), value);
+    JSDOMWrapper *wrapper = getCachedWrapper( currentWorld( exec ), value );
 
-    if (wrapper)
+    if ( wrapper )
+    {
         return wrapper;
+    }
 
-    if (value->isWebKitCSSTransformValue())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, WebKitCSSTransformValue, value);
-    else if (value->isValueList())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, CSSValueList, value);
+    if ( value->isWebKitCSSTransformValue() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, WebKitCSSTransformValue, value );
+    }
+    else if ( value->isValueList() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, CSSValueList, value );
+    }
+
 #if ENABLE(SVG)
-    else if (value->isSVGPaint())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, SVGPaint, value);
-    else if (value->isSVGColor())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, SVGColor, value);
+    else if ( value->isSVGPaint() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, SVGPaint, value );
+    }
+    else if ( value->isSVGColor() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, SVGColor, value );
+    }
+
 #endif
-    else if (value->isPrimitiveValue())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, CSSPrimitiveValue, value);
+    else if ( value->isPrimitiveValue() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, CSSPrimitiveValue, value );
+    }
     else
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, CSSValue, value);
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, CSSValue, value );
+    }
 
     return wrapper;
 }

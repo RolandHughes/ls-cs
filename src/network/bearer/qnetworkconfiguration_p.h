@@ -34,35 +34,36 @@ using QNetworkConfigurationPrivatePointer = QExplicitlySharedDataPointer<QNetwor
 
 class QNetworkConfigurationPrivate : public QSharedData
 {
- public:
-   QNetworkConfigurationPrivate()
-      : type(QNetworkConfiguration::Invalid), purpose(QNetworkConfiguration::UnknownPurpose),
-      bearerType(QNetworkConfiguration::BearerUnknown), isValid(false), roamingSupported(false)
-   {
-   }
+public:
+    QNetworkConfigurationPrivate()
+        : type( QNetworkConfiguration::Invalid ), purpose( QNetworkConfiguration::UnknownPurpose ),
+          bearerType( QNetworkConfiguration::BearerUnknown ), isValid( false ), roamingSupported( false )
+    {
+    }
 
-   QNetworkConfigurationPrivate(const QNetworkConfigurationPrivate &) = delete;
-   QNetworkConfigurationPrivate &operator=(const QNetworkConfigurationPrivate &) = delete;
+    QNetworkConfigurationPrivate( const QNetworkConfigurationPrivate & ) = delete;
+    QNetworkConfigurationPrivate &operator=( const QNetworkConfigurationPrivate & ) = delete;
 
-   virtual ~QNetworkConfigurationPrivate() {
-      //release pointers to member configurations
-      serviceNetworkMembers.clear();
-   }
+    virtual ~QNetworkConfigurationPrivate()
+    {
+        //release pointers to member configurations
+        serviceNetworkMembers.clear();
+    }
 
-   QMap<unsigned int, QNetworkConfigurationPrivatePointer> serviceNetworkMembers;
+    QMap<unsigned int, QNetworkConfigurationPrivatePointer> serviceNetworkMembers;
 
-   mutable QRecursiveMutex mutex;
+    mutable QRecursiveMutex mutex;
 
-   QString name;
-   QString id;
+    QString name;
+    QString id;
 
-   QNetworkConfiguration::StateFlags state;
-   QNetworkConfiguration::Type type;
-   QNetworkConfiguration::Purpose purpose;
-   QNetworkConfiguration::BearerType bearerType;
+    QNetworkConfiguration::StateFlags state;
+    QNetworkConfiguration::Type type;
+    QNetworkConfiguration::Purpose purpose;
+    QNetworkConfiguration::BearerType bearerType;
 
-   bool isValid;
-   bool roamingSupported;
+    bool isValid;
+    bool roamingSupported;
 };
 
 #endif

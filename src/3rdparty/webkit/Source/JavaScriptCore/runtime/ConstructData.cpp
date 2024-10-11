@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,12 +31,14 @@
 #include "JSFunction.h"
 #include "JSGlobalObject.h"
 
-namespace JSC {
-
-JSObject* construct(ExecState* exec, JSValue constructorObject, ConstructType constructType, const ConstructData& constructData, const ArgList& args)
+namespace JSC
 {
-    ASSERT(constructType == ConstructTypeJS || constructType == ConstructTypeHost);
-    return exec->interpreter()->executeConstruct(exec, asObject(constructorObject), constructType, constructData, args);
+
+JSObject *construct( ExecState *exec, JSValue constructorObject, ConstructType constructType, const ConstructData &constructData,
+                     const ArgList &args )
+{
+    ASSERT( constructType == ConstructTypeJS || constructType == ConstructTypeHost );
+    return exec->interpreter()->executeConstruct( exec, asObject( constructorObject ), constructType, constructData, args );
 }
 
 } // namespace JSC

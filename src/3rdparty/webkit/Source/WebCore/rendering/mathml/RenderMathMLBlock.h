@@ -32,76 +32,97 @@
 
 #define ENABLE_DEBUG_MATH_LAYOUT 0
 
-namespace WebCore {
-    
-class RenderMathMLBlock : public RenderBlock {
+namespace WebCore
+{
+
+class RenderMathMLBlock : public RenderBlock
+{
 public:
-    RenderMathMLBlock(Node* container);
-    virtual bool isChildAllowed(RenderObject*, RenderStyle*) const;
-    
-    virtual bool isRenderMathMLBlock() const { return true; }
-    virtual bool isRenderMathMLOperator() const { return false; }
-    virtual bool isRenderMathMLRow() const { return false; }
-    virtual bool isRenderMathMLMath() const { return false; }
-    virtual bool hasBase() const { return false; }
+    RenderMathMLBlock( Node *container );
+    virtual bool isChildAllowed( RenderObject *, RenderStyle * ) const;
+
+    virtual bool isRenderMathMLBlock() const
+    {
+        return true;
+    }
+    virtual bool isRenderMathMLOperator() const
+    {
+        return false;
+    }
+    virtual bool isRenderMathMLRow() const
+    {
+        return false;
+    }
+    virtual bool isRenderMathMLMath() const
+    {
+        return false;
+    }
+    virtual bool hasBase() const
+    {
+        return false;
+    }
     virtual int nonOperatorHeight() const;
-    virtual void stretchToHeight(int height);
+    virtual void stretchToHeight( int height );
 
 #if ENABLE(DEBUG_MATH_LAYOUT)
-    virtual void paint(PaintInfo&, int tx, int ty);
+    virtual void paint( PaintInfo &, int tx, int ty );
 #endif
-    
+
 protected:
-    int getBoxModelObjectHeight(RenderObject* object) 
+    int getBoxModelObjectHeight( RenderObject *object )
     {
-        if (object && object->isBoxModelObject()) {
-            RenderBoxModelObject* box = toRenderBoxModelObject(object);
+        if ( object && object->isBoxModelObject() )
+        {
+            RenderBoxModelObject *box = toRenderBoxModelObject( object );
             return box->offsetHeight();
         }
-        
+
         return 0;
     }
-    int getBoxModelObjectHeight(const RenderObject* object) 
+    int getBoxModelObjectHeight( const RenderObject *object )
     {
-        if (object && object->isBoxModelObject()) {
-            const RenderBoxModelObject* box = toRenderBoxModelObject(object);
+        if ( object && object->isBoxModelObject() )
+        {
+            const RenderBoxModelObject *box = toRenderBoxModelObject( object );
             return box->offsetHeight();
         }
-        
+
         return 0;
     }
-    int getBoxModelObjectWidth(RenderObject* object) 
+    int getBoxModelObjectWidth( RenderObject *object )
     {
-        if (object && object->isBoxModelObject()) {
-            RenderBoxModelObject* box = toRenderBoxModelObject(object);
+        if ( object && object->isBoxModelObject() )
+        {
+            RenderBoxModelObject *box = toRenderBoxModelObject( object );
             return box->offsetWidth();
         }
-        
+
         return 0;
     }
-    int getBoxModelObjectWidth(const RenderObject* object) 
+    int getBoxModelObjectWidth( const RenderObject *object )
     {
-        if (object && object->isBoxModelObject()) {
-            const RenderBoxModelObject* box = toRenderBoxModelObject(object);
+        if ( object && object->isBoxModelObject() )
+        {
+            const RenderBoxModelObject *box = toRenderBoxModelObject( object );
             return box->offsetWidth();
         }
-        
+
         return 0;
     }
     virtual PassRefPtr<RenderStyle> makeBlockStyle();
-    
+
 };
 
-inline RenderMathMLBlock* toRenderMathMLBlock(RenderObject* object)
-{ 
-    ASSERT(!object || object->isRenderMathMLBlock());
-    return static_cast<RenderMathMLBlock*>(object);
+inline RenderMathMLBlock *toRenderMathMLBlock( RenderObject *object )
+{
+    ASSERT( !object || object->isRenderMathMLBlock() );
+    return static_cast<RenderMathMLBlock *>( object );
 }
 
-inline const RenderMathMLBlock* toRenderMathMLBlock(const RenderObject* object)
-{ 
-    ASSERT(!object || object->isRenderMathMLBlock());
-    return static_cast<const RenderMathMLBlock*>(object);
+inline const RenderMathMLBlock *toRenderMathMLBlock( const RenderObject *object )
+{
+    ASSERT( !object || object->isRenderMathMLBlock() );
+    return static_cast<const RenderMathMLBlock *>( object );
 }
 
 }

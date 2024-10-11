@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DeleteSelectionCommand_h
@@ -28,32 +28,38 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class EditingStyle;
 
-class DeleteSelectionCommand : public CompositeEditCommand { 
+class DeleteSelectionCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<DeleteSelectionCommand> create(Document* document, bool smartDelete = false, bool mergeBlocksAfterDelete = true, bool replace = false, bool expandForSpecialElements = false)
+    static PassRefPtr<DeleteSelectionCommand> create( Document *document, bool smartDelete = false,
+            bool mergeBlocksAfterDelete = true, bool replace = false, bool expandForSpecialElements = false )
     {
-        return adoptRef(new DeleteSelectionCommand(document, smartDelete, mergeBlocksAfterDelete, replace, expandForSpecialElements));
+        return adoptRef( new DeleteSelectionCommand( document, smartDelete, mergeBlocksAfterDelete, replace, expandForSpecialElements ) );
     }
-    static PassRefPtr<DeleteSelectionCommand> create(const VisibleSelection& selection, bool smartDelete = false, bool mergeBlocksAfterDelete = true, bool replace = false, bool expandForSpecialElements = false)
+    static PassRefPtr<DeleteSelectionCommand> create( const VisibleSelection &selection, bool smartDelete = false,
+            bool mergeBlocksAfterDelete = true, bool replace = false, bool expandForSpecialElements = false )
     {
-        return adoptRef(new DeleteSelectionCommand(selection, smartDelete, mergeBlocksAfterDelete, replace, expandForSpecialElements));
+        return adoptRef( new DeleteSelectionCommand( selection, smartDelete, mergeBlocksAfterDelete, replace,
+                         expandForSpecialElements ) );
     }
 
 private:
-    DeleteSelectionCommand(Document*, bool smartDelete, bool mergeBlocksAfterDelete, bool replace, bool expandForSpecialElements);
-    DeleteSelectionCommand(const VisibleSelection&, bool smartDelete, bool mergeBlocksAfterDelete, bool replace, bool expandForSpecialElements);
+    DeleteSelectionCommand( Document *, bool smartDelete, bool mergeBlocksAfterDelete, bool replace, bool expandForSpecialElements );
+    DeleteSelectionCommand( const VisibleSelection &, bool smartDelete, bool mergeBlocksAfterDelete, bool replace,
+                            bool expandForSpecialElements );
 
     virtual void doApply();
     virtual EditAction editingAction() const;
-    
+
     virtual bool preservesTypingStyle() const;
 
-    void initializeStartEnd(Position&, Position&);
-    void setStartingSelectionOnSmartDelete(const Position&, const Position&);
+    void initializeStartEnd( Position &, Position & );
+    void setStartingSelectionOnSmartDelete( const Position &, const Position & );
     void initializePositionData();
     void saveTypingStyleState();
     void insertPlaceholderForAncestorBlockContent();
@@ -65,8 +71,8 @@ private:
     void calculateEndingPosition();
     void calculateTypingStyleAfterDelete();
     void clearTransientState();
-    virtual void removeNode(PassRefPtr<Node>);
-    virtual void deleteTextFromNode(PassRefPtr<Text>, unsigned, unsigned);
+    virtual void removeNode( PassRefPtr<Node> );
+    virtual void deleteTextFromNode( PassRefPtr<Text>, unsigned, unsigned );
 
     bool m_hasSelectionToDelete;
     bool m_smartDelete;

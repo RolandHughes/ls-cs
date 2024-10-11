@@ -46,35 +46,40 @@
 #include "ScriptObject.h"
 #include "Settings.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-static const char* inspectorAttachedHeightSetting = "inspectorAttachedHeight";
+static const char *inspectorAttachedHeightSetting = "inspectorAttachedHeight";
 static const unsigned defaultAttachedHeight = 300;
 static const float minimumAttachedHeight = 250.0f;
 static const float maximumAttachedHeightRatio = 0.75f;
 
-String InspectorFrontendClientLocal::Settings::getProperty(const String&)
+String InspectorFrontendClientLocal::Settings::getProperty( const String & )
 {
     return String();
 }
 
-void InspectorFrontendClientLocal::Settings::setProperty(const String&, const String&)
+void InspectorFrontendClientLocal::Settings::setProperty( const String &, const String & )
 {
 }
 
-InspectorFrontendClientLocal::InspectorFrontendClientLocal(InspectorController* inspectorController, Page* frontendPage, PassOwnPtr<Settings> settings)
-    : m_inspectorController(inspectorController)
-    , m_frontendPage(frontendPage)
-    , m_frontendScriptState(0)
-    , m_settings(settings)
+InspectorFrontendClientLocal::InspectorFrontendClientLocal( InspectorController *inspectorController, Page *frontendPage,
+        PassOwnPtr<Settings> settings )
+    : m_inspectorController( inspectorController )
+    , m_frontendPage( frontendPage )
+    , m_frontendScriptState( 0 )
+    , m_settings( settings )
 {
-    m_frontendPage->settings()->setAllowFileAccessFromFileURLs(true);
+    m_frontendPage->settings()->setAllowFileAccessFromFileURLs( true );
 }
 
 InspectorFrontendClientLocal::~InspectorFrontendClientLocal()
 {
-    if (m_frontendHost)
+    if ( m_frontendHost )
+    {
         m_frontendHost->disconnectClient();
+    }
+
     m_frontendScriptState = 0;
     m_frontendPage = 0;
     m_inspectorController = 0;
@@ -83,9 +88,9 @@ InspectorFrontendClientLocal::~InspectorFrontendClientLocal()
 void InspectorFrontendClientLocal::windowObjectCleared()
 {
     // FIXME: don't keep reference to the script state
-    m_frontendScriptState = scriptStateFromPage(debuggerWorld(), m_frontendPage);
-    m_frontendHost = InspectorFrontendHost::create(this, m_frontendPage);
-    ScriptGlobalObject::set(m_frontendScriptState, "InspectorFrontendHost", m_frontendHost.get());
+    m_frontendScriptState = scriptStateFromPage( debuggerWorld(), m_frontendPage );
+    m_frontendHost = InspectorFrontendHost::create( this, m_frontendPage );
+    ScriptGlobalObject::set( m_frontendScriptState, "InspectorFrontendHost", m_frontendHost.get() );
 }
 
 void InspectorFrontendClientLocal::frontendLoaded()
@@ -96,16 +101,19 @@ void InspectorFrontendClientLocal::frontendLoaded()
 
 void InspectorFrontendClientLocal::requestAttachWindow()
 {
-    if (!canAttachWindow())
+    if ( !canAttachWindow() )
+    {
         return;
+    }
+
     attachWindow();
-    setAttachedWindow(true);
+    setAttachedWindow( true );
 }
 
 void InspectorFrontendClientLocal::requestDetachWindow()
 {
     detachWindow();
-    setAttachedWindow(false);
+    setAttachedWindow( false );
 }
 
 bool InspectorFrontendClientLocal::canAttachWindow()
@@ -116,54 +124,58 @@ bool InspectorFrontendClientLocal::canAttachWindow()
     return minimumAttachedHeight <= inspectedPageHeight * maximumAttachedHeightRatio;
 }
 
-void InspectorFrontendClientLocal::changeAttachedWindowHeight(unsigned height)
+void InspectorFrontendClientLocal::changeAttachedWindowHeight( unsigned height )
 {
-    unsigned totalHeight = m_frontendPage->mainFrame()->view()->visibleHeight() + m_inspectorController->inspectedPage()->mainFrame()->view()->visibleHeight();
-    unsigned attachedHeight = constrainedAttachedWindowHeight(height, totalHeight);
-    m_settings->setProperty(inspectorAttachedHeightSetting, String::number(attachedHeight));
-    setAttachedWindowHeight(attachedHeight);
+    unsigned totalHeight = m_frontendPage->mainFrame()->view()->visibleHeight() +
+                           m_inspectorController->inspectedPage()->mainFrame()->view()->visibleHeight();
+    unsigned attachedHeight = constrainedAttachedWindowHeight( height, totalHeight );
+    m_settings->setProperty( inspectorAttachedHeightSetting, String::number( attachedHeight ) );
+    setAttachedWindowHeight( attachedHeight );
 }
 
-void InspectorFrontendClientLocal::moveWindowBy(float x, float y)
+void InspectorFrontendClientLocal::moveWindowBy( float x, float y )
 {
     FloatRect frameRect = m_frontendPage->chrome()->windowRect();
-    frameRect.move(x, y);
-    m_frontendPage->chrome()->setWindowRect(frameRect);
+    frameRect.move( x, y );
+    m_frontendPage->chrome()->setWindowRect( frameRect );
 }
 
-void InspectorFrontendClientLocal::setAttachedWindow(bool attached)
+void InspectorFrontendClientLocal::setAttachedWindow( bool attached )
 {
     ScriptObject webInspectorObj;
-    if (!ScriptGlobalObject::get(m_frontendScriptState, "WebInspector", webInspectorObj)) {
+
+    if ( !ScriptGlobalObject::get( m_frontendScriptState, "WebInspector", webInspectorObj ) )
+    {
         ASSERT_NOT_REACHED();
         return;
     }
-    ScriptFunctionCall function(webInspectorObj, "setAttachedWindow");
-    function.appendArgument(attached);
+
+    ScriptFunctionCall function( webInspectorObj, "setAttachedWindow" );
+    function.appendArgument( attached );
     function.call();
 }
 
 void InspectorFrontendClientLocal::restoreAttachedWindowHeight()
 {
     unsigned inspectedPageHeight = m_inspectorController->inspectedPage()->mainFrame()->view()->visibleHeight();
-    String value = m_settings->getProperty(inspectorAttachedHeightSetting);
+    String value = m_settings->getProperty( inspectorAttachedHeightSetting );
     unsigned preferredHeight = value.isEmpty() ? defaultAttachedHeight : value.toUInt();
-    
+
     // This call might not go through (if the window starts out detached), but if the window is initially created attached,
     // InspectorController::attachWindow is never called, so we need to make sure to set the attachedWindowHeight.
     // FIXME: Clean up code so we only have to call setAttachedWindowHeight in InspectorController::attachWindow
-    setAttachedWindowHeight(constrainedAttachedWindowHeight(preferredHeight, inspectedPageHeight));
+    setAttachedWindowHeight( constrainedAttachedWindowHeight( preferredHeight, inspectedPageHeight ) );
 }
 
-unsigned InspectorFrontendClientLocal::constrainedAttachedWindowHeight(unsigned preferredHeight, unsigned totalWindowHeight)
+unsigned InspectorFrontendClientLocal::constrainedAttachedWindowHeight( unsigned preferredHeight, unsigned totalWindowHeight )
 {
     using namespace std;
-    return roundf(max(minimumAttachedHeight, min<float>(preferredHeight, totalWindowHeight * maximumAttachedHeightRatio)));
+    return roundf( max( minimumAttachedHeight, min<float>( preferredHeight, totalWindowHeight * maximumAttachedHeightRatio ) ) );
 }
 
-void InspectorFrontendClientLocal::sendMessageToBackend(const String& message)
+void InspectorFrontendClientLocal::sendMessageToBackend( const String &message )
 {
-    m_inspectorController->dispatchMessageFromFrontend(message);
+    m_inspectorController->dispatchMessageFromFrontend( message );
 }
 
 } // namespace WebCore

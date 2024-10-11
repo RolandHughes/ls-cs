@@ -28,65 +28,69 @@
 #include <qitem_p.h>
 #include <qitemtype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class SortTuple : public AtomicValue
 {
- public:
-   /**
-    * @p aSortKeys may be empty.
-    */
-   inline SortTuple(const Item::Iterator::Ptr &aValue,
-                    const Item::Vector &aSortKeys) : m_sortKeys(aSortKeys),
-      m_value(aValue) {
-      Q_ASSERT(m_value);
-      Q_ASSERT(!m_sortKeys.isEmpty());
-   }
+public:
+    /**
+     * @p aSortKeys may be empty.
+     */
+    inline SortTuple( const Item::Iterator::Ptr &aValue,
+                      const Item::Vector &aSortKeys ) : m_sortKeys( aSortKeys ),
+        m_value( aValue )
+    {
+        Q_ASSERT( m_value );
+        Q_ASSERT( !m_sortKeys.isEmpty() );
+    }
 
-   /**
-    * A smart pointer wrapping SortTuple instances.
-    */
-   typedef QExplicitlySharedDataPointer<SortTuple> Ptr;
+    /**
+     * A smart pointer wrapping SortTuple instances.
+     */
+    typedef QExplicitlySharedDataPointer<SortTuple> Ptr;
 
-   /**
-    * This function is sometimes called by Literal::description().
-    * This function simply returns "SortTuple".
-    */
-   QString stringValue() const override;
+    /**
+     * This function is sometimes called by Literal::description().
+     * This function simply returns "SortTuple".
+     */
+    QString stringValue() const override;
 
-   /**
-    * @short Always asserts.
-    */
-   virtual Item::Iterator::Ptr typedValue() const;
+    /**
+     * @short Always asserts.
+     */
+    virtual Item::Iterator::Ptr typedValue() const;
 
-   /**
-    * @short Always asserts.
-    */
-   virtual bool isAtomicValue() const;
+    /**
+     * @short Always asserts.
+     */
+    virtual bool isAtomicValue() const;
 
-   /**
-    * @short Always asserts.
-    */
-   virtual bool isNode() const;
+    /**
+     * @short Always asserts.
+     */
+    virtual bool isNode() const;
 
-   /**
-    * @short Always asserts.
-    */
-   bool hasError() const override;
+    /**
+     * @short Always asserts.
+     */
+    bool hasError() const override;
 
-   ItemType::Ptr type() const override;
+    ItemType::Ptr type() const override;
 
-   const Item::Vector &sortKeys() const {
-      return m_sortKeys;
-   }
+    const Item::Vector &sortKeys() const
+    {
+        return m_sortKeys;
+    }
 
-   const Item::Iterator::Ptr &value() const {
-      return m_value;
-   }
+    const Item::Iterator::Ptr &value() const
+    {
+        return m_value;
+    }
 
- private:
-   const Item::Vector          m_sortKeys;
-   const Item::Iterator::Ptr   m_value;
+private:
+    const Item::Vector          m_sortKeys;
+    const Item::Iterator::Ptr   m_value;
 };
 }
 

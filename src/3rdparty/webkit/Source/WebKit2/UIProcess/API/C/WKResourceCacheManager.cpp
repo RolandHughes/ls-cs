@@ -33,20 +33,23 @@ using namespace WebKit;
 
 WKTypeID WKResourceCacheManagerGetTypeID()
 {
-    return toAPI(WebResourceCacheManagerProxy::APIType);
+    return toAPI( WebResourceCacheManagerProxy::APIType );
 }
 
-void WKResourceCacheManagerGetCacheOrigins(WKResourceCacheManagerRef cacheManagerRef, void* context, WKResourceCacheManagerGetCacheOriginsFunction callback)
+void WKResourceCacheManagerGetCacheOrigins( WKResourceCacheManagerRef cacheManagerRef, void *context,
+        WKResourceCacheManagerGetCacheOriginsFunction callback )
 {
-    toImpl(cacheManagerRef)->getCacheOrigins(ArrayCallback::create(context, callback));
+    toImpl( cacheManagerRef )->getCacheOrigins( ArrayCallback::create( context, callback ) );
 }
 
-void WKResourceCacheManagerClearCacheForOrigin(WKResourceCacheManagerRef cacheManagerRef, WKSecurityOriginRef originRef, WKResourceCachesToClear cachesToClear)
+void WKResourceCacheManagerClearCacheForOrigin( WKResourceCacheManagerRef cacheManagerRef, WKSecurityOriginRef originRef,
+        WKResourceCachesToClear cachesToClear )
 {
-    toImpl(cacheManagerRef)->clearCacheForOrigin(toImpl(originRef), toResourceCachesToClear(cachesToClear));
+    toImpl( cacheManagerRef )->clearCacheForOrigin( toImpl( originRef ), toResourceCachesToClear( cachesToClear ) );
 }
 
-void WKResourceCacheManagerClearCacheForAllOrigins(WKResourceCacheManagerRef cacheManagerRef, WKResourceCachesToClear cachesToClear)
+void WKResourceCacheManagerClearCacheForAllOrigins( WKResourceCacheManagerRef cacheManagerRef,
+        WKResourceCachesToClear cachesToClear )
 {
-    toImpl(cacheManagerRef)->clearCacheForAllOrigins(toResourceCachesToClear(cachesToClear));
+    toImpl( cacheManagerRef )->clearCacheForAllOrigins( toResourceCachesToClear( cachesToClear ) );
 }

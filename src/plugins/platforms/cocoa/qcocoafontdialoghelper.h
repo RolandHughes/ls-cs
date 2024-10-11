@@ -29,17 +29,17 @@
 
 class QCocoaFontDialogHelper : public QPlatformFontDialogHelper
 {
- public:
-   QCocoaFontDialogHelper();
-   ~QCocoaFontDialogHelper();
+public:
+    QCocoaFontDialogHelper();
+    ~QCocoaFontDialogHelper();
 
-   void exec() override;
+    void exec() override;
 
-   bool show(Qt::WindowFlags windowFlags, Qt::WindowModality windowModality, QWindow *parent) override;
-   void hide() override;
+    bool show( Qt::WindowFlags windowFlags, Qt::WindowModality windowModality, QWindow *parent ) override;
+    void hide() override;
 
-   void setCurrentFont(const QFont &) override;
-   QFont currentFont() const override;
+    void setCurrentFont( const QFont & ) override;
+    QFont currentFont() const override;
 };
 
 

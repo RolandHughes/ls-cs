@@ -35,105 +35,113 @@
 class QIncrementalSleepTimer
 {
 
- public:
-   QIncrementalSleepTimer(int msecs)
-      : totalTimeOut(msecs), nextSleep(qMin(SLEEPMIN, totalTimeOut))
-   {
-      if (totalTimeOut == -1) {
-         nextSleep = SLEEPMIN;
-      }
+public:
+    QIncrementalSleepTimer( int msecs )
+        : totalTimeOut( msecs ), nextSleep( qMin( SLEEPMIN, totalTimeOut ) )
+    {
+        if ( totalTimeOut == -1 )
+        {
+            nextSleep = SLEEPMIN;
+        }
 
-      timer.start();
-   }
+        timer.start();
+    }
 
-   int nextSleepTime() {
-      int tmp = nextSleep;
-      nextSleep = qMin(nextSleep * 2, qMin(SLEEPMAX, timeLeft()));
-      return tmp;
-   }
+    int nextSleepTime()
+    {
+        int tmp = nextSleep;
+        nextSleep = qMin( nextSleep * 2, qMin( SLEEPMAX, timeLeft() ) );
+        return tmp;
+    }
 
-   int timeLeft() const {
-      if (totalTimeOut == -1) {
-         return SLEEPMAX;
-      }
+    int timeLeft() const
+    {
+        if ( totalTimeOut == -1 )
+        {
+            return SLEEPMAX;
+        }
 
-      return qMax(totalTimeOut - timer.elapsed(), 0);
-   }
+        return qMax( totalTimeOut - timer.elapsed(), 0 );
+    }
 
-   bool hasTimedOut() const {
-      if (totalTimeOut == -1) {
-         return false;
-      }
+    bool hasTimedOut() const
+    {
+        if ( totalTimeOut == -1 )
+        {
+            return false;
+        }
 
-      return timer.elapsed() >= totalTimeOut;
-   }
+        return timer.elapsed() >= totalTimeOut;
+    }
 
-   void resetIncrements() {
-      nextSleep = qMin(SLEEPMIN, timeLeft());
-   }
+    void resetIncrements()
+    {
+        nextSleep = qMin( SLEEPMIN, timeLeft() );
+    }
 
- private:
-   QElapsedTimer timer;
-   int totalTimeOut;
-   int nextSleep;
+private:
+    QElapsedTimer timer;
+    int totalTimeOut;
+    int nextSleep;
 };
 
 class Q_CORE_EXPORT QWindowsPipeWriter : public QObject
 {
-   CORE_CS_OBJECT(QWindowsPipeWriter)
+    CORE_LSCS_OBJECT( QWindowsPipeWriter )
 
- public:
-   explicit QWindowsPipeWriter(HANDLE pipeWriteEnd, QObject *parent = nullptr);
-   ~QWindowsPipeWriter();
+public:
+    explicit QWindowsPipeWriter( HANDLE pipeWriteEnd, QObject *parent = nullptr );
+    ~QWindowsPipeWriter();
 
-   bool write(const QByteArray &ba);
-   void stop();
-   bool waitForWrite(int msecs);
+    bool write( const QByteArray &ba );
+    void stop();
+    bool waitForWrite( int msecs );
 
-   bool isWriteOperationActive() const {
-      return writeSequenceStarted;
-   }
+    bool isWriteOperationActive() const
+    {
+        return writeSequenceStarted;
+    }
 
-   qint64 bytesToWrite() const;
+    qint64 bytesToWrite() const;
 
-   CORE_CS_SIGNAL_1(Public, void canWrite())
-   CORE_CS_SIGNAL_2(canWrite)
+    CORE_LSCS_SIGNAL_1( Public, void canWrite() )
+    CORE_LSCS_SIGNAL_2( canWrite )
 
-   CORE_CS_SIGNAL_1(Public, void bytesWritten(qint64 bytes))
-   CORE_CS_SIGNAL_2(bytesWritten, bytes)
+    CORE_LSCS_SIGNAL_1( Public, void bytesWritten( qint64 bytes ) )
+    CORE_LSCS_SIGNAL_2( bytesWritten, bytes )
 
-   CORE_CS_SIGNAL_1(Public, void _q_queueBytesWritten())
-   CORE_CS_SIGNAL_2(_q_queueBytesWritten)
+    CORE_LSCS_SIGNAL_1( Public, void _q_queueBytesWritten() )
+    CORE_LSCS_SIGNAL_2( _q_queueBytesWritten )
 
- private:
-   static void CALLBACK writeFileCompleted(DWORD errorCode, DWORD numberOfBytesTransfered,
-         OVERLAPPED *overlappedBase);
-   void notified(DWORD errorCode, DWORD numberOfBytesWritten);
-   bool waitForNotification(int timeout);
-   void emitPendingBytesWrittenValue();
+private:
+    static void CALLBACK writeFileCompleted( DWORD errorCode, DWORD numberOfBytesTransfered,
+            OVERLAPPED *overlappedBase );
+    void notified( DWORD errorCode, DWORD numberOfBytesWritten );
+    bool waitForNotification( int timeout );
+    void emitPendingBytesWrittenValue();
 
-   class Overlapped : public OVERLAPPED
-   {
+    class Overlapped : public OVERLAPPED
+    {
     public:
-      explicit Overlapped(QWindowsPipeWriter *pipeWriter);
+        explicit Overlapped( QWindowsPipeWriter *pipeWriter );
 
-      Overlapped(const Overlapped &) = delete;
-      Overlapped &operator=(const Overlapped &) = delete;
+        Overlapped( const Overlapped & ) = delete;
+        Overlapped &operator=( const Overlapped & ) = delete;
 
-      void clear();
-      QWindowsPipeWriter *pipeWriter;
-   };
+        void clear();
+        QWindowsPipeWriter *pipeWriter;
+    };
 
-   HANDLE handle;
-   Overlapped overlapped;
-   QByteArray buffer;
-   qint64 numberOfBytesToWrite;
-   qint64 pendingBytesWrittenValue;
-   bool stopped;
-   bool writeSequenceStarted;
-   bool notifiedCalled;
-   bool bytesWrittenPending;
-   bool inBytesWritten;
+    HANDLE handle;
+    Overlapped overlapped;
+    QByteArray buffer;
+    qint64 numberOfBytesToWrite;
+    qint64 pendingBytesWrittenValue;
+    bool stopped;
+    bool writeSequenceStarted;
+    bool notifiedCalled;
+    bool bytesWrittenPending;
+    bool inBytesWritten;
 };
 
 #endif // QT_NO_PROCESS

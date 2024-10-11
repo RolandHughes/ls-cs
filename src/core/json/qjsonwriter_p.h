@@ -31,9 +31,9 @@
 
 class QJsonWriter
 {
- public:
-   static QString arrayToString(const QJsonArray &data, int indent, QJsonDocument::JsonFormat format);
-   static QString objectToString(const QJsonObject &data, int indent, QJsonDocument::JsonFormat format);
+public:
+    static QString arrayToString( const QJsonArray &data, int indent, QJsonDocument::JsonFormat format );
+    static QString objectToString( const QJsonObject &data, int indent, QJsonDocument::JsonFormat format );
 };
 
 #endif

@@ -29,234 +29,261 @@
 
 QT_BEGIN_NAMESPACE
 
-DEFINE_BOOL_CONFIG_OPTION(rewriteDump, QML_REWRITE_DUMP);
+DEFINE_BOOL_CONFIG_OPTION( rewriteDump, QML_REWRITE_DUMP );
 
-namespace QDeclarativeRewrite {
-
-bool SharedBindingTester::isSharable(const QString &code)
+namespace QDeclarativeRewrite
 {
-   Engine engine;
-   NodePool pool(QString(), &engine);
-   Lexer lexer(&engine);
-   Parser parser(&engine);
-   lexer.setCode(code, 0);
-   parser.parseStatement();
-   if (!parser.statement()) {
-      return false;
-   }
 
-   return isSharable(parser.statement());
+bool SharedBindingTester::isSharable( const QString &code )
+{
+    Engine engine;
+    NodePool pool( QString(), &engine );
+    Lexer lexer( &engine );
+    Parser parser( &engine );
+    lexer.setCode( code, 0 );
+    parser.parseStatement();
+
+    if ( !parser.statement() )
+    {
+        return false;
+    }
+
+    return isSharable( parser.statement() );
 }
 
-bool SharedBindingTester::isSharable(AST::Node *node)
+bool SharedBindingTester::isSharable( AST::Node *node )
 {
-   _sharable = true;
-   AST::Node::acceptChild(node, this);
-   return _sharable;
+    _sharable = true;
+    AST::Node::acceptChild( node, this );
+    return _sharable;
 }
 
-QString RewriteBinding::operator()(const QString &code, bool *ok, bool *sharable)
+QString RewriteBinding::operator()( const QString &code, bool *ok, bool *sharable )
 {
-   Engine engine;
-   NodePool pool(QString(), &engine);
-   Lexer lexer(&engine);
-   Parser parser(&engine);
-   lexer.setCode(code, 0);
-   parser.parseStatement();
-   if (!parser.statement()) {
-      if (ok) {
-         *ok = false;
-      }
-      return QString();
-   } else {
-      if (ok) {
-         *ok = true;
-      }
-      if (sharable) {
-         SharedBindingTester tester;
-         *sharable = tester.isSharable(parser.statement());
-      }
-   }
-   return rewrite(code, 0, parser.statement());
+    Engine engine;
+    NodePool pool( QString(), &engine );
+    Lexer lexer( &engine );
+    Parser parser( &engine );
+    lexer.setCode( code, 0 );
+    parser.parseStatement();
+
+    if ( !parser.statement() )
+    {
+        if ( ok )
+        {
+            *ok = false;
+        }
+
+        return QString();
+    }
+    else
+    {
+        if ( ok )
+        {
+            *ok = true;
+        }
+
+        if ( sharable )
+        {
+            SharedBindingTester tester;
+            *sharable = tester.isSharable( parser.statement() );
+        }
+    }
+
+    return rewrite( code, 0, parser.statement() );
 }
 
-QString RewriteBinding::operator()(QDeclarativeJS::AST::Node *node, const QString &code, bool *sharable)
+QString RewriteBinding::operator()( QDeclarativeJS::AST::Node *node, const QString &code, bool *sharable )
 {
-   if (!node) {
-      return code;
-   }
+    if ( !node )
+    {
+        return code;
+    }
 
-   if (sharable) {
-      SharedBindingTester tester;
-      *sharable = tester.isSharable(node);
-   }
+    if ( sharable )
+    {
+        SharedBindingTester tester;
+        *sharable = tester.isSharable( node );
+    }
 
-   QDeclarativeJS::AST::ExpressionNode *expression = node->expressionCast();
-   QDeclarativeJS::AST::Statement *statement = node->statementCast();
-   if (!expression && !statement) {
-      return code;
-   }
+    QDeclarativeJS::AST::ExpressionNode *expression = node->expressionCast();
+    QDeclarativeJS::AST::Statement *statement = node->statementCast();
 
-   TextWriter w;
-   _writer = &w;
-   _position = expression ? expression->firstSourceLocation().begin() : statement->firstSourceLocation().begin();
-   _inLoop = 0;
+    if ( !expression && !statement )
+    {
+        return code;
+    }
 
-   accept(node);
+    TextWriter w;
+    _writer = &w;
+    _position = expression ? expression->firstSourceLocation().begin() : statement->firstSourceLocation().begin();
+    _inLoop = 0;
 
-   unsigned startOfStatement = 0;
-   unsigned endOfStatement = (expression ? expression->lastSourceLocation().end() : statement->lastSourceLocation().end())
-                             - _position;
+    accept( node );
 
-   QString startString = QLatin1String("(function ") + QString::fromUtf8(_name) + QLatin1String("() { ");
-   if (expression) {
-      startString += QLatin1String("return ");
-   }
-   _writer->replace(startOfStatement, 0, startString);
-   _writer->replace(endOfStatement, 0, QLatin1String(" })"));
+    unsigned startOfStatement = 0;
+    unsigned endOfStatement = ( expression ? expression->lastSourceLocation().end() : statement->lastSourceLocation().end() )
+                              - _position;
 
-   if (rewriteDump()) {
-      qWarning() << "=============================================================";
-      qWarning() << "Rewrote:";
-      qWarning() << qPrintable(code);
-   }
+    QString startString = QLatin1String( "(function " ) + QString::fromUtf8( _name ) + QLatin1String( "() { " );
 
-   QString codeCopy = code;
-   w.write(&codeCopy);
+    if ( expression )
+    {
+        startString += QLatin1String( "return " );
+    }
 
-   if (rewriteDump()) {
-      qWarning() << "To:";
-      qWarning() << qPrintable(code);
-      qWarning() << "=============================================================";
-   }
+    _writer->replace( startOfStatement, 0, startString );
+    _writer->replace( endOfStatement, 0, QLatin1String( " })" ) );
 
-   return codeCopy;
+    if ( rewriteDump() )
+    {
+        qWarning() << "=============================================================";
+        qWarning() << "Rewrote:";
+        qWarning() << qPrintable( code );
+    }
+
+    QString codeCopy = code;
+    w.write( &codeCopy );
+
+    if ( rewriteDump() )
+    {
+        qWarning() << "To:";
+        qWarning() << qPrintable( code );
+        qWarning() << "=============================================================";
+    }
+
+    return codeCopy;
 }
 
-void RewriteBinding::accept(AST::Node *node)
+void RewriteBinding::accept( AST::Node *node )
 {
-   AST::Node::acceptChild(node, this);
+    AST::Node::acceptChild( node, this );
 }
 
-QString RewriteBinding::rewrite(QString code, unsigned position,
-                                AST::Statement *node)
+QString RewriteBinding::rewrite( QString code, unsigned position,
+                                 AST::Statement *node )
 {
-   TextWriter w;
-   _writer = &w;
-   _position = position;
-   _inLoop = 0;
+    TextWriter w;
+    _writer = &w;
+    _position = position;
+    _inLoop = 0;
 
-   accept(node);
+    accept( node );
 
-   unsigned startOfStatement = node->firstSourceLocation().begin() - _position;
-   unsigned endOfStatement = node->lastSourceLocation().end() - _position;
+    unsigned startOfStatement = node->firstSourceLocation().begin() - _position;
+    unsigned endOfStatement = node->lastSourceLocation().end() - _position;
 
-   _writer->replace(startOfStatement, 0, QLatin1String("(function ") + QString::fromUtf8(_name) + QLatin1String("() { "));
-   _writer->replace(endOfStatement, 0, QLatin1String(" })"));
+    _writer->replace( startOfStatement, 0, QLatin1String( "(function " ) + QString::fromUtf8( _name ) + QLatin1String( "() { " ) );
+    _writer->replace( endOfStatement, 0, QLatin1String( " })" ) );
 
-   if (rewriteDump()) {
-      qWarning() << "=============================================================";
-      qWarning() << "Rewrote:";
-      qWarning() << qPrintable(code);
-   }
+    if ( rewriteDump() )
+    {
+        qWarning() << "=============================================================";
+        qWarning() << "Rewrote:";
+        qWarning() << qPrintable( code );
+    }
 
-   w.write(&code);
+    w.write( &code );
 
-   if (rewriteDump()) {
-      qWarning() << "To:";
-      qWarning() << qPrintable(code);
-      qWarning() << "=============================================================";
-   }
+    if ( rewriteDump() )
+    {
+        qWarning() << "To:";
+        qWarning() << qPrintable( code );
+        qWarning() << "=============================================================";
+    }
 
-   return code;
+    return code;
 }
 
-bool RewriteBinding::visit(AST::Block *ast)
+bool RewriteBinding::visit( AST::Block *ast )
 {
-   for (AST::StatementList *it = ast->statements; it; it = it->next) {
-      if (! it->next) {
-         // we need to rewrite only the last statement of a block.
-         accept(it->statement);
-      }
-   }
+    for ( AST::StatementList *it = ast->statements; it; it = it->next )
+    {
+        if ( ! it->next )
+        {
+            // we need to rewrite only the last statement of a block.
+            accept( it->statement );
+        }
+    }
 
-   return false;
+    return false;
 }
 
-bool RewriteBinding::visit(AST::ExpressionStatement *ast)
+bool RewriteBinding::visit( AST::ExpressionStatement *ast )
 {
-   if (! _inLoop) {
-      unsigned startOfExpressionStatement = ast->firstSourceLocation().begin() - _position;
-      _writer->replace(startOfExpressionStatement, 0, QLatin1String("return "));
-   }
+    if ( ! _inLoop )
+    {
+        unsigned startOfExpressionStatement = ast->firstSourceLocation().begin() - _position;
+        _writer->replace( startOfExpressionStatement, 0, QLatin1String( "return " ) );
+    }
 
-   return false;
+    return false;
 }
 
-bool RewriteBinding::visit(AST::DoWhileStatement *)
+bool RewriteBinding::visit( AST::DoWhileStatement * )
 {
-   ++_inLoop;
-   return true;
+    ++_inLoop;
+    return true;
 }
 
-void RewriteBinding::endVisit(AST::DoWhileStatement *)
+void RewriteBinding::endVisit( AST::DoWhileStatement * )
 {
-   --_inLoop;
+    --_inLoop;
 }
 
-bool RewriteBinding::visit(AST::WhileStatement *)
+bool RewriteBinding::visit( AST::WhileStatement * )
 {
-   ++_inLoop;
-   return true;
+    ++_inLoop;
+    return true;
 }
 
-void RewriteBinding::endVisit(AST::WhileStatement *)
+void RewriteBinding::endVisit( AST::WhileStatement * )
 {
-   --_inLoop;
+    --_inLoop;
 }
 
-bool RewriteBinding::visit(AST::ForStatement *)
+bool RewriteBinding::visit( AST::ForStatement * )
 {
-   ++_inLoop;
-   return true;
+    ++_inLoop;
+    return true;
 }
 
-void RewriteBinding::endVisit(AST::ForStatement *)
+void RewriteBinding::endVisit( AST::ForStatement * )
 {
-   --_inLoop;
+    --_inLoop;
 }
 
-bool RewriteBinding::visit(AST::LocalForStatement *)
+bool RewriteBinding::visit( AST::LocalForStatement * )
 {
-   ++_inLoop;
-   return true;
+    ++_inLoop;
+    return true;
 }
 
-void RewriteBinding::endVisit(AST::LocalForStatement *)
+void RewriteBinding::endVisit( AST::LocalForStatement * )
 {
-   --_inLoop;
+    --_inLoop;
 }
 
-bool RewriteBinding::visit(AST::ForEachStatement *)
+bool RewriteBinding::visit( AST::ForEachStatement * )
 {
-   ++_inLoop;
-   return true;
+    ++_inLoop;
+    return true;
 }
 
-void RewriteBinding::endVisit(AST::ForEachStatement *)
+void RewriteBinding::endVisit( AST::ForEachStatement * )
 {
-   --_inLoop;
+    --_inLoop;
 }
 
-bool RewriteBinding::visit(AST::LocalForEachStatement *)
+bool RewriteBinding::visit( AST::LocalForEachStatement * )
 {
-   ++_inLoop;
-   return true;
+    ++_inLoop;
+    return true;
 }
 
-void RewriteBinding::endVisit(AST::LocalForEachStatement *)
+void RewriteBinding::endVisit( AST::LocalForEachStatement * )
 {
-   --_inLoop;
+    --_inLoop;
 }
 
 } // namespace QDeclarativeRewrite

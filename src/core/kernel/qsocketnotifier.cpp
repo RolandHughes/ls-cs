@@ -29,101 +29,116 @@
 
 #include <qthread_p.h>
 
-QSocketNotifier::QSocketNotifier(qintptr socket, Type type, QObject *parent)
-   : QObject(parent)
+QSocketNotifier::QSocketNotifier( qintptr socket, Type type, QObject *parent )
+    : QObject( parent )
 {
-   sockfd    = socket;
-   sntype    = type;
-   snenabled = true;
+    sockfd    = socket;
+    sntype    = type;
+    snenabled = true;
 
-   QThreadData *threadData = CSInternalThreadData::get_m_ThreadData(this);
-   auto tmp = threadData->eventDispatcher.load();
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
+    auto tmp = threadData->eventDispatcher.load();
 
-   if (socket < 0) {
-      qWarning("QSocketNotifier() Invalid socket specified");
+    if ( socket < 0 )
+    {
+        qWarning( "QSocketNotifier() Invalid socket specified" );
 
-   } else if (! tmp) {
-      qWarning("QSocketNotifier() Can only be used with threads started with QThread");
+    }
+    else if ( ! tmp )
+    {
+        qWarning( "QSocketNotifier() Can only be used with threads started with QThread" );
 
-   } else {
-      tmp->registerSocketNotifier(this);
-   }
+    }
+    else
+    {
+        tmp->registerSocketNotifier( this );
+    }
 }
 
 QSocketNotifier::~QSocketNotifier()
 {
-   setEnabled(false);
+    setEnabled( false );
 }
 
 qintptr QSocketNotifier::socket() const
 {
 
-   return sockfd;
+    return sockfd;
 }
 
 QSocketNotifier::Type QSocketNotifier::type() const
 {
 
-   return sntype;
+    return sntype;
 }
 
 bool QSocketNotifier::isEnabled() const
 {
 
-   return snenabled;
+    return snenabled;
 }
 
-void QSocketNotifier::setEnabled(bool enable)
+void QSocketNotifier::setEnabled( bool enable )
 {
-   if (sockfd < 0) {
-      return;
-   }
+    if ( sockfd < 0 )
+    {
+        return;
+    }
 
-   if (snenabled == enable) {                      // no change
-      return;
-   }
+    if ( snenabled == enable )                      // no change
+    {
+        return;
+    }
 
-   snenabled = enable;
+    snenabled = enable;
 
-   //
-   QThreadData *threadData = CSInternalThreadData::get_m_ThreadData(this);
-   auto tmp = threadData->eventDispatcher.load();
+    //
+    QThreadData *threadData = LSCSInternalThreadData::get_m_ThreadData( this );
+    auto tmp = threadData->eventDispatcher.load();
 
-   if (! tmp) {
-      // perhaps application/thread is shutting down
-      return;
-   }
+    if ( ! tmp )
+    {
+        // perhaps application/thread is shutting down
+        return;
+    }
 
-   if (thread() != QThread::currentThread()) {
-      qWarning("QSocketNotifier::setEnabled() Socket notifiers can not be enabled or disabled from another thread");
-      return;
-   }
+    if ( thread() != QThread::currentThread() )
+    {
+        qWarning( "QSocketNotifier::setEnabled() Socket notifiers can not be enabled or disabled from another thread" );
+        return;
+    }
 
-   if (snenabled) {
-      tmp->registerSocketNotifier(this);
+    if ( snenabled )
+    {
+        tmp->registerSocketNotifier( this );
 
-   } else {
-      tmp->unregisterSocketNotifier(this);
-   }
+    }
+    else
+    {
+        tmp->unregisterSocketNotifier( this );
+    }
 }
 
-bool QSocketNotifier::event(QEvent *e)
+bool QSocketNotifier::event( QEvent *e )
 {
-   // Emits the activated() signal when a QEvent::SockAct is received.
+    // Emits the activated() signal when a QEvent::SockAct is received.
 
-   if (e->type() == QEvent::ThreadChange) {
-      if (snenabled) {
-         QMetaObject::invokeMethod(this, "setEnabled", Qt::QueuedConnection, Q_ARG(bool, snenabled));
-         setEnabled(false);
-      }
-   }
+    if ( e->type() == QEvent::ThreadChange )
+    {
+        if ( snenabled )
+        {
+            QMetaObject::invokeMethod( this, "setEnabled", Qt::QueuedConnection, Q_ARG( bool, snenabled ) );
+            setEnabled( false );
+        }
+    }
 
-   QObject::event(e);                        // will activate filters
+    QObject::event( e );                      // will activate filters
 
-   if ((e->type() == QEvent::SockAct) || (e->type() == QEvent::SockClose)) {
-      emit activated(sockfd);
-      return true;
-   }
+    if ( ( e->type() == QEvent::SockAct ) || ( e->type() == QEvent::SockClose ) )
+    {
+        emit activated( sockfd );
+        return true;
+    }
 
-   return false;
+    return false;
 }

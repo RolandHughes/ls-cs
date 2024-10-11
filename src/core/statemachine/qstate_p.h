@@ -37,67 +37,73 @@ class QState;
 
 #ifndef QT_NO_STATEMACHINE
 
-struct QPropertyAssignment {
-   QPropertyAssignment()
-      : object(nullptr), explicitlySet(true)
-   { }
+struct QPropertyAssignment
+{
+    QPropertyAssignment()
+        : object( nullptr ), explicitlySet( true )
+    { }
 
-   QPropertyAssignment(QObject *o, const QString &n, const QVariant &v, bool es = true)
-      : object(o), propertyName(n), value(v), explicitlySet(es)
-   { }
+    QPropertyAssignment( QObject *o, const QString &n, const QVariant &v, bool es = true )
+        : object( o ), propertyName( n ), value( v ), explicitlySet( es )
+    { }
 
-   bool objectDeleted() const {
-      return !object;
-   }
+    bool objectDeleted() const
+    {
+        return !object;
+    }
 
-   void write() const {
-      Q_ASSERT(object != nullptr);
-      object->setProperty(propertyName, value);
-   }
+    void write() const
+    {
+        Q_ASSERT( object != nullptr );
+        object->setProperty( propertyName, value );
+    }
 
-   bool hasTarget(QObject *o, const QString &pn) const {
-      return object == o && propertyName == pn;
-   }
+    bool hasTarget( QObject *o, const QString &pn ) const
+    {
+        return object == o && propertyName == pn;
+    }
 
-   QPointer<QObject> object;
-   QString propertyName;
-   QVariant value;
-   bool explicitlySet;
+    QPointer<QObject> object;
+    QString propertyName;
+    QVariant value;
+    bool explicitlySet;
 };
 
 class Q_CORE_EXPORT QStatePrivate : public QAbstractStatePrivate
 {
-   Q_DECLARE_PUBLIC(QState)
+    Q_DECLARE_PUBLIC( QState )
 
- public:
-   QStatePrivate();
-   ~QStatePrivate();
+public:
+    QStatePrivate();
+    ~QStatePrivate();
 
-   static QStatePrivate *get(QState *q) {
-      return q ? q->d_func() : nullptr;
-   }
+    static QStatePrivate *get( QState *q )
+    {
+        return q ? q->d_func() : nullptr;
+    }
 
-   static const QStatePrivate *get(const QState *q) {
-      return q ? q->d_func() : nullptr;
-   }
+    static const QStatePrivate *get( const QState *q )
+    {
+        return q ? q->d_func() : nullptr;
+    }
 
-   QList<QAbstractState *> childStates() const;
-   QList<QHistoryState *> historyStates() const;
-   QList<QAbstractTransition *> transitions() const;
+    QList<QAbstractState *> childStates() const;
+    QList<QHistoryState *> historyStates() const;
+    QList<QAbstractTransition *> transitions() const;
 
-   void emitFinished();
-   void emitPropertiesAssigned();
+    void emitFinished();
+    void emitPropertiesAssigned();
 
-   QAbstractState *errorState;
-   QAbstractState *initialState;
-   QState::ChildMode childMode;
+    QAbstractState *errorState;
+    QAbstractState *initialState;
+    QState::ChildMode childMode;
 
-   mutable bool childStatesListNeedsRefresh;
-   mutable bool transitionsListNeedsRefresh;
-   mutable QList<QAbstractState *> childStatesList;
-   mutable QList<QAbstractTransition *> transitionsList;
+    mutable bool childStatesListNeedsRefresh;
+    mutable bool transitionsListNeedsRefresh;
+    mutable QList<QAbstractState *> childStatesList;
+    mutable QList<QAbstractTransition *> transitionsList;
 
-   QVector<QPropertyAssignment> propertyAssignments;
+    QVector<QPropertyAssignment> propertyAssignments;
 };
 
 #endif // QT_NO_STATEMACHINE

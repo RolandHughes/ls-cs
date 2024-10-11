@@ -28,19 +28,21 @@
 
 #import "WebEvent.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 // FIXME: This is not needed in the WebProcess and should be moved to be a peer
 // of WKView.
 
-class WebEventFactory {
+class WebEventFactory
+{
 public:
-    static WebMouseEvent createWebMouseEvent(NSEvent *event, NSView *windowView);
-    static WebWheelEvent createWebWheelEvent(NSEvent *event, NSView *windowView);
-    static WebKeyboardEvent createWebKeyboardEvent(NSEvent *event, NSView *windowView);
+    static WebMouseEvent createWebMouseEvent( NSEvent *event, NSView *windowView );
+    static WebWheelEvent createWebWheelEvent( NSEvent *event, NSView *windowView );
+    static WebKeyboardEvent createWebKeyboardEvent( NSEvent *event, NSView *windowView );
 
 #if ENABLE(GESTURE_EVENTS)
-    static WebGestureEvent createWebGestureEvent(NSEvent *event, NSView *windowView);
+    static WebGestureEvent createWebGestureEvent( NSEvent *event, NSView *windowView );
 #endif
 };
 

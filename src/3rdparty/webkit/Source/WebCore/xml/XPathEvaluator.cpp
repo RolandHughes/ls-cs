@@ -5,13 +5,13 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
@@ -36,40 +36,45 @@
 #include "XPathResult.h"
 #include "XPathUtil.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace XPath;
-    
-PassRefPtr<XPathExpression> XPathEvaluator::createExpression(const String& expression,
-                                                             XPathNSResolver* resolver,
-                                                             ExceptionCode& ec)
+
+PassRefPtr<XPathExpression> XPathEvaluator::createExpression( const String &expression,
+        XPathNSResolver *resolver,
+        ExceptionCode &ec )
 {
-    return XPathExpression::createExpression(expression, resolver, ec);
+    return XPathExpression::createExpression( expression, resolver, ec );
 }
 
-PassRefPtr<XPathNSResolver> XPathEvaluator::createNSResolver(Node* nodeResolver)
+PassRefPtr<XPathNSResolver> XPathEvaluator::createNSResolver( Node *nodeResolver )
 {
-    return NativeXPathNSResolver::create(nodeResolver);
+    return NativeXPathNSResolver::create( nodeResolver );
 }
 
-PassRefPtr<XPathResult> XPathEvaluator::evaluate(const String& expression,
-                                                 Node* contextNode,
-                                                 XPathNSResolver* resolver,
-                                                 unsigned short type,
-                                                 XPathResult* result,
-                                                 ExceptionCode& ec)
+PassRefPtr<XPathResult> XPathEvaluator::evaluate( const String &expression,
+        Node *contextNode,
+        XPathNSResolver *resolver,
+        unsigned short type,
+        XPathResult *result,
+        ExceptionCode &ec )
 {
-    if (!isValidContextNode(contextNode)) {
+    if ( !isValidContextNode( contextNode ) )
+    {
         ec = NOT_SUPPORTED_ERR;
         return 0;
     }
 
     ec = 0;
-    RefPtr<XPathExpression> expr = createExpression(expression, resolver, ec);
-    if (ec)
+    RefPtr<XPathExpression> expr = createExpression( expression, resolver, ec );
+
+    if ( ec )
+    {
         return 0;
-    
-    return expr->evaluate(contextNode, type, result, ec);
+    }
+
+    return expr->evaluate( contextNode, type, result, ec );
 }
 
 }

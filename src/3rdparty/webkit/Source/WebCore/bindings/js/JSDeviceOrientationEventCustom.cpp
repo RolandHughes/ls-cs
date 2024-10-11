@@ -33,48 +33,62 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSDeviceOrientationEvent::alpha(ExecState*) const
+namespace WebCore
 {
-    DeviceOrientationEvent* imp = static_cast<DeviceOrientationEvent*>(impl());
-    if (!imp->orientation()->canProvideAlpha())
+
+JSValue JSDeviceOrientationEvent::alpha( ExecState * ) const
+{
+    DeviceOrientationEvent *imp = static_cast<DeviceOrientationEvent *>( impl() );
+
+    if ( !imp->orientation()->canProvideAlpha() )
+    {
         return jsNull();
-    return jsNumber(imp->orientation()->alpha());
+    }
+
+    return jsNumber( imp->orientation()->alpha() );
 }
 
-JSValue JSDeviceOrientationEvent::beta(ExecState*) const
+JSValue JSDeviceOrientationEvent::beta( ExecState * ) const
 {
-    DeviceOrientationEvent* imp = static_cast<DeviceOrientationEvent*>(impl());
-    if (!imp->orientation()->canProvideBeta())
+    DeviceOrientationEvent *imp = static_cast<DeviceOrientationEvent *>( impl() );
+
+    if ( !imp->orientation()->canProvideBeta() )
+    {
         return jsNull();
-    return jsNumber(imp->orientation()->beta());
+    }
+
+    return jsNumber( imp->orientation()->beta() );
 }
 
-JSValue JSDeviceOrientationEvent::gamma(ExecState*) const
+JSValue JSDeviceOrientationEvent::gamma( ExecState * ) const
 {
-    DeviceOrientationEvent* imp = static_cast<DeviceOrientationEvent*>(impl());
-    if (!imp->orientation()->canProvideGamma())
+    DeviceOrientationEvent *imp = static_cast<DeviceOrientationEvent *>( impl() );
+
+    if ( !imp->orientation()->canProvideGamma() )
+    {
         return jsNull();
-    return jsNumber(imp->orientation()->gamma());
+    }
+
+    return jsNumber( imp->orientation()->gamma() );
 }
 
-JSValue JSDeviceOrientationEvent::initDeviceOrientationEvent(ExecState* exec)
+JSValue JSDeviceOrientationEvent::initDeviceOrientationEvent( ExecState *exec )
 {
-    const String& type = ustringToString(exec->argument(0).toString(exec));
-    bool bubbles = exec->argument(1).toBoolean(exec);
-    bool cancelable = exec->argument(2).toBoolean(exec);
+    const String &type = ustringToString( exec->argument( 0 ).toString( exec ) );
+    bool bubbles = exec->argument( 1 ).toBoolean( exec );
+    bool cancelable = exec->argument( 2 ).toBoolean( exec );
     // If alpha, beta or gamma are null or undefined, mark them as not provided.
     // Otherwise, use the standard JavaScript conversion.
-    bool alphaProvided = !exec->argument(3).isUndefinedOrNull();
-    double alpha = exec->argument(3).toNumber(exec);
-    bool betaProvided = !exec->argument(4).isUndefinedOrNull();
-    double beta = exec->argument(4).toNumber(exec);
-    bool gammaProvided = !exec->argument(5).isUndefinedOrNull();
-    double gamma = exec->argument(5).toNumber(exec);
-    RefPtr<DeviceOrientation> orientation = DeviceOrientation::create(alphaProvided, alpha, betaProvided, beta, gammaProvided, gamma);
-    DeviceOrientationEvent* imp = static_cast<DeviceOrientationEvent*>(impl());
-    imp->initDeviceOrientationEvent(type, bubbles, cancelable, orientation.get());
+    bool alphaProvided = !exec->argument( 3 ).isUndefinedOrNull();
+    double alpha = exec->argument( 3 ).toNumber( exec );
+    bool betaProvided = !exec->argument( 4 ).isUndefinedOrNull();
+    double beta = exec->argument( 4 ).toNumber( exec );
+    bool gammaProvided = !exec->argument( 5 ).isUndefinedOrNull();
+    double gamma = exec->argument( 5 ).toNumber( exec );
+    RefPtr<DeviceOrientation> orientation = DeviceOrientation::create( alphaProvided, alpha, betaProvided, beta, gammaProvided,
+                                            gamma );
+    DeviceOrientationEvent *imp = static_cast<DeviceOrientationEvent *>( impl() );
+    imp->initDeviceOrientationEvent( type, bubbles, cancelable, orientation.get() );
     return jsUndefined();
 }
 

@@ -27,23 +27,27 @@
 #include "JSString.h"
 #include "ObjectPrototype.h"
 
-namespace JSC {
+namespace JSC
+{
 
-ASSERT_CLASS_FITS_IN_CELL(BooleanPrototype);
+ASSERT_CLASS_FITS_IN_CELL( BooleanPrototype );
 
 // Functions
-static EncodedJSValue JSC_HOST_CALL booleanProtoFuncToString(ExecState*);
-static EncodedJSValue JSC_HOST_CALL booleanProtoFuncValueOf(ExecState*);
+static EncodedJSValue JSC_HOST_CALL booleanProtoFuncToString( ExecState * );
+static EncodedJSValue JSC_HOST_CALL booleanProtoFuncValueOf( ExecState * );
 
 // ECMA 15.6.4
 
-BooleanPrototype::BooleanPrototype(ExecState* exec, JSGlobalObject* globalObject, Structure* structure, Structure* functionStructure)
-    : BooleanObject(exec->globalData(), structure)
+BooleanPrototype::BooleanPrototype( ExecState *exec, JSGlobalObject *globalObject, Structure *structure,
+                                    Structure *functionStructure )
+    : BooleanObject( exec->globalData(), structure )
 {
-    setInternalValue(exec->globalData(), jsBoolean(false));
+    setInternalValue( exec->globalData(), jsBoolean( false ) );
 
-    putDirectFunctionWithoutTransition(exec, new (exec) JSFunction(exec, globalObject, functionStructure, 0, exec->propertyNames().toString, booleanProtoFuncToString), DontEnum);
-    putDirectFunctionWithoutTransition(exec, new (exec) JSFunction(exec, globalObject, functionStructure, 0, exec->propertyNames().valueOf, booleanProtoFuncValueOf), DontEnum);
+    putDirectFunctionWithoutTransition( exec, new ( exec ) JSFunction( exec, globalObject, functionStructure, 0,
+                                        exec->propertyNames().toString, booleanProtoFuncToString ), DontEnum );
+    putDirectFunctionWithoutTransition( exec, new ( exec ) JSFunction( exec, globalObject, functionStructure, 0,
+                                        exec->propertyNames().valueOf, booleanProtoFuncValueOf ), DontEnum );
 }
 
 
@@ -51,35 +55,49 @@ BooleanPrototype::BooleanPrototype(ExecState* exec, JSGlobalObject* globalObject
 
 // ECMA 15.6.4.2 + 15.6.4.3
 
-EncodedJSValue JSC_HOST_CALL booleanProtoFuncToString(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL booleanProtoFuncToString( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (thisValue == jsBoolean(false))
-        return JSValue::encode(jsNontrivialString(exec, "false"));
 
-    if (thisValue == jsBoolean(true))
-        return JSValue::encode(jsNontrivialString(exec, "true"));
+    if ( thisValue == jsBoolean( false ) )
+    {
+        return JSValue::encode( jsNontrivialString( exec, "false" ) );
+    }
 
-    if (!thisValue.inherits(&BooleanObject::s_info))
-        return throwVMTypeError(exec);
+    if ( thisValue == jsBoolean( true ) )
+    {
+        return JSValue::encode( jsNontrivialString( exec, "true" ) );
+    }
 
-    if (asBooleanObject(thisValue)->internalValue() == jsBoolean(false))
-        return JSValue::encode(jsNontrivialString(exec, "false"));
+    if ( !thisValue.inherits( &BooleanObject::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
 
-    ASSERT(asBooleanObject(thisValue)->internalValue() == jsBoolean(true));
-    return JSValue::encode(jsNontrivialString(exec, "true"));
+    if ( asBooleanObject( thisValue )->internalValue() == jsBoolean( false ) )
+    {
+        return JSValue::encode( jsNontrivialString( exec, "false" ) );
+    }
+
+    ASSERT( asBooleanObject( thisValue )->internalValue() == jsBoolean( true ) );
+    return JSValue::encode( jsNontrivialString( exec, "true" ) );
 }
 
-EncodedJSValue JSC_HOST_CALL booleanProtoFuncValueOf(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL booleanProtoFuncValueOf( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (thisValue.isBoolean())
-        return JSValue::encode(thisValue);
 
-    if (!thisValue.inherits(&BooleanObject::s_info))
-        return throwVMTypeError(exec);
+    if ( thisValue.isBoolean() )
+    {
+        return JSValue::encode( thisValue );
+    }
 
-    return JSValue::encode(asBooleanObject(thisValue)->internalValue());
+    if ( !thisValue.inherits( &BooleanObject::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    return JSValue::encode( asBooleanObject( thisValue )->internalValue() );
 }
 
 } // namespace JSC

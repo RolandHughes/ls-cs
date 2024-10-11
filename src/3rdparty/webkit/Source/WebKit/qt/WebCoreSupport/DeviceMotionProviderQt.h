@@ -28,29 +28,34 @@
 
 QTM_USE_NAMESPACE
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientationProviderQt;
 
-class DeviceMotionProviderQt : public QObject, public QAccelerometerFilter {
-    WEB_CS_OBJECT(DeviceMotionProviderQt)
+class DeviceMotionProviderQt : public QObject, public QAccelerometerFilter
+{
+    WEB_LSCS_OBJECT( DeviceMotionProviderQt )
 public:
     DeviceMotionProviderQt();
     ~DeviceMotionProviderQt();
 
-    bool filter(QAccelerometerReading*);
+    bool filter( QAccelerometerReading * );
     void start();
     void stop();
-    DeviceMotionData* currentDeviceMotion() const { return m_motion.get(); }
+    DeviceMotionData *currentDeviceMotion() const
+    {
+        return m_motion.get();
+    }
 
 public:
-    WEB_CS_SIGNAL_1(Public, void deviceMotionChanged())
-    WEB_CS_SIGNAL_2(deviceMotionChanged) 
+    WEB_LSCS_SIGNAL_1( Public, void deviceMotionChanged() )
+    WEB_LSCS_SIGNAL_2( deviceMotionChanged )
 
 private:
     RefPtr<DeviceMotionData> m_motion;
     QAccelerometer m_acceleration;
-    DeviceOrientationProviderQt* m_deviceOrientation;
+    DeviceOrientationProviderQt *m_deviceOrientation;
 };
 
 } // namespace WebCore

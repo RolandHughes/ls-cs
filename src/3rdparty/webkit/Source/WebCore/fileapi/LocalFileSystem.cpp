@@ -48,26 +48,30 @@
 #include "SecurityOrigin.h"
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-LocalFileSystem* LocalFileSystem::s_instance = 0;
+LocalFileSystem *LocalFileSystem::s_instance = 0;
 
-void LocalFileSystem::initializeLocalFileSystem(const String& basePath)
+void LocalFileSystem::initializeLocalFileSystem( const String &basePath )
 {
     // FIXME: Should initialize the quota settings as well.
-    ASSERT(isMainThread());
-    ASSERT(!s_instance);
-    if (s_instance)
-        return;
+    ASSERT( isMainThread() );
+    ASSERT( !s_instance );
 
-    OwnPtr<LocalFileSystem> localFileSystem = adoptPtr(new LocalFileSystem(basePath));
+    if ( s_instance )
+    {
+        return;
+    }
+
+    OwnPtr<LocalFileSystem> localFileSystem = adoptPtr( new LocalFileSystem( basePath ) );
     s_instance = localFileSystem.leakPtr();
 }
 
-LocalFileSystem& LocalFileSystem::localFileSystem()
+LocalFileSystem &LocalFileSystem::localFileSystem()
 {
     // initializeLocalFileSystem must be called prior calling this.
-    ASSERT(s_instance);
+    ASSERT( s_instance );
     return *s_instance;
 }
 
@@ -76,21 +80,26 @@ String LocalFileSystem::fileSystemBasePath() const
     return m_basePath;
 }
 
-static void openFileSystem(ScriptExecutionContext*, const String& basePath, const String& identifier, AsyncFileSystem::Type type, bool create, PassOwnPtr<AsyncFileSystemCallbacks> callbacks)
+static void openFileSystem( ScriptExecutionContext *, const String &basePath, const String &identifier,
+                            AsyncFileSystem::Type type, bool create, PassOwnPtr<AsyncFileSystemCallbacks> callbacks )
 {
-    AsyncFileSystem::openFileSystem(basePath, identifier, type, create, callbacks);
+    AsyncFileSystem::openFileSystem( basePath, identifier, type, create, callbacks );
 }
 
-void LocalFileSystem::readFileSystem(ScriptExecutionContext* context, AsyncFileSystem::Type type, PassOwnPtr<AsyncFileSystemCallbacks> callbacks, bool)
+void LocalFileSystem::readFileSystem( ScriptExecutionContext *context, AsyncFileSystem::Type type,
+                                      PassOwnPtr<AsyncFileSystemCallbacks> callbacks, bool )
 {
     // AsyncFileSystem::openFileSystem calls callbacks synchronously, so the method needs to be called asynchronously.
-    context->postTask(createCallbackTask(&openFileSystem, fileSystemBasePath(), context->securityOrigin()->databaseIdentifier(), type, false, callbacks));
+    context->postTask( createCallbackTask( &openFileSystem, fileSystemBasePath(), context->securityOrigin()->databaseIdentifier(),
+                                           type, false, callbacks ) );
 }
 
-void LocalFileSystem::requestFileSystem(ScriptExecutionContext* context, AsyncFileSystem::Type type, long long, PassOwnPtr<AsyncFileSystemCallbacks> callbacks, bool)
+void LocalFileSystem::requestFileSystem( ScriptExecutionContext *context, AsyncFileSystem::Type type, long long,
+        PassOwnPtr<AsyncFileSystemCallbacks> callbacks, bool )
 {
     // AsyncFileSystem::openFileSystem calls callbacks synchronously, so the method needs to be called asynchronously.
-    context->postTask(createCallbackTask(&openFileSystem, fileSystemBasePath(), context->securityOrigin()->databaseIdentifier(), type, true, callbacks));
+    context->postTask( createCallbackTask( &openFileSystem, fileSystemBasePath(), context->securityOrigin()->databaseIdentifier(),
+                                           type, true, callbacks ) );
 }
 
 } // namespace

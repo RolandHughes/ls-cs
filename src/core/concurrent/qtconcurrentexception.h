@@ -29,49 +29,51 @@
 
 #include <exception>
 
-namespace QtConcurrent {
+namespace QtConcurrent
+{
 
 class Q_CORE_EXPORT Exception : public std::exception
 {
- public:
-   virtual void raise() const;
-   virtual Exception *clone() const;
+public:
+    virtual void raise() const;
+    virtual Exception *clone() const;
 };
 
 class Q_CORE_EXPORT UnhandledException : public Exception
 {
- public:
-   void raise() const override;
-   Exception *clone() const override;
+public:
+    void raise() const override;
+    Exception *clone() const override;
 };
 
-namespace cs_internal {
+namespace lscs_internal
+{
 
 class Base;
 
 class ExceptionHolder
 {
- public:
-   ExceptionHolder(Exception *exception = nullptr);
-   ExceptionHolder(const ExceptionHolder &other);
-   void operator=(const ExceptionHolder &other);
+public:
+    ExceptionHolder( Exception *exception = nullptr );
+    ExceptionHolder( const ExceptionHolder &other );
+    void operator=( const ExceptionHolder &other );
 
-   ~ExceptionHolder();
+    ~ExceptionHolder();
 
-   Exception *exception() const;
+    Exception *exception() const;
 
-   Base *base;
+    Base *base;
 };
 
 class Q_CORE_EXPORT ExceptionStore
 {
- public:
-   void setException(const Exception &e);
-   bool hasException() const;
-   ExceptionHolder exception();
-   void throwPossibleException();
-   bool hasThrown() const;
-   ExceptionHolder exceptionHolder;
+public:
+    void setException( const Exception &e );
+    bool hasException() const;
+    ExceptionHolder exception();
+    void throwPossibleException();
+    bool hasThrown() const;
+    ExceptionHolder exceptionHolder;
 };
 
 }   // end namespace

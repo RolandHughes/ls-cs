@@ -26,7 +26,8 @@
 #ifndef JSParser_h
 #define JSParser_h
 
-namespace JSC {
+namespace JSC
+{
 
 class ExecState;
 class FunctionParameters;
@@ -34,7 +35,8 @@ class Identifier;
 class JSGlobalData;
 class SourceCode;
 
-enum {
+enum
+{
     UnaryOpTokenFlag = 64,
     KeywordTokenFlag = 128,
     BinaryOpTokenPrecedenceShift = 8,
@@ -45,7 +47,8 @@ enum {
 #define BINARY_OP_PRECEDENCE(prec) (((prec) << BinaryOpTokenPrecedenceShift) | ((prec) << (BinaryOpTokenPrecedenceShift + BinaryOpTokenAllowsInPrecedenceAdditionalShift)))
 #define IN_OP_PRECEDENCE(prec) ((prec) << (BinaryOpTokenPrecedenceShift + BinaryOpTokenAllowsInPrecedenceAdditionalShift))
 
-enum JSTokenType {
+enum JSTokenType
+{
     NULLTOKEN = KeywordTokenFlag,
     TRUETOKEN,
     FALSETOKEN,
@@ -112,45 +115,48 @@ enum JSTokenType {
     TYPEOF = 6 | UnaryOpTokenFlag | KeywordTokenFlag,
     VOIDTOKEN = 7 | UnaryOpTokenFlag | KeywordTokenFlag,
     DELETETOKEN = 8 | UnaryOpTokenFlag | KeywordTokenFlag,
-    OR = 0 | BINARY_OP_PRECEDENCE(1),
-    AND = 1 | BINARY_OP_PRECEDENCE(2),
-    BITOR = 2 | BINARY_OP_PRECEDENCE(3),
-    BITXOR = 3 | BINARY_OP_PRECEDENCE(4),
-    BITAND = 4 | BINARY_OP_PRECEDENCE(5),
-    EQEQ = 5 | BINARY_OP_PRECEDENCE(6),
-    NE = 6 | BINARY_OP_PRECEDENCE(6),
-    STREQ = 7 | BINARY_OP_PRECEDENCE(6),
-    STRNEQ = 8 | BINARY_OP_PRECEDENCE(6),
-    LT = 9 | BINARY_OP_PRECEDENCE(7),
-    GT = 10 | BINARY_OP_PRECEDENCE(7),
-    LE = 11 | BINARY_OP_PRECEDENCE(7),
-    GE = 12 | BINARY_OP_PRECEDENCE(7),
-    INSTANCEOF = 13 | BINARY_OP_PRECEDENCE(7) | KeywordTokenFlag,
-    INTOKEN = 14 | IN_OP_PRECEDENCE(7) | KeywordTokenFlag,
-    LSHIFT = 15 | BINARY_OP_PRECEDENCE(8),
-    RSHIFT = 16 | BINARY_OP_PRECEDENCE(8),
-    URSHIFT = 17 | BINARY_OP_PRECEDENCE(8),
-    PLUS = 18 | BINARY_OP_PRECEDENCE(9) | UnaryOpTokenFlag,
-    MINUS = 19 | BINARY_OP_PRECEDENCE(9) | UnaryOpTokenFlag,
-    TIMES = 20 | BINARY_OP_PRECEDENCE(10),
-    DIVIDE = 21 | BINARY_OP_PRECEDENCE(10),
-    MOD = 22 | BINARY_OP_PRECEDENCE(10)
+    OR = 0 | BINARY_OP_PRECEDENCE( 1 ),
+    AND = 1 | BINARY_OP_PRECEDENCE( 2 ),
+    BITOR = 2 | BINARY_OP_PRECEDENCE( 3 ),
+    BITXOR = 3 | BINARY_OP_PRECEDENCE( 4 ),
+    BITAND = 4 | BINARY_OP_PRECEDENCE( 5 ),
+    EQEQ = 5 | BINARY_OP_PRECEDENCE( 6 ),
+    NE = 6 | BINARY_OP_PRECEDENCE( 6 ),
+    STREQ = 7 | BINARY_OP_PRECEDENCE( 6 ),
+    STRNEQ = 8 | BINARY_OP_PRECEDENCE( 6 ),
+    LT = 9 | BINARY_OP_PRECEDENCE( 7 ),
+    GT = 10 | BINARY_OP_PRECEDENCE( 7 ),
+    LE = 11 | BINARY_OP_PRECEDENCE( 7 ),
+    GE = 12 | BINARY_OP_PRECEDENCE( 7 ),
+    INSTANCEOF = 13 | BINARY_OP_PRECEDENCE( 7 ) | KeywordTokenFlag,
+    INTOKEN = 14 | IN_OP_PRECEDENCE( 7 ) | KeywordTokenFlag,
+    LSHIFT = 15 | BINARY_OP_PRECEDENCE( 8 ),
+    RSHIFT = 16 | BINARY_OP_PRECEDENCE( 8 ),
+    URSHIFT = 17 | BINARY_OP_PRECEDENCE( 8 ),
+    PLUS = 18 | BINARY_OP_PRECEDENCE( 9 ) | UnaryOpTokenFlag,
+    MINUS = 19 | BINARY_OP_PRECEDENCE( 9 ) | UnaryOpTokenFlag,
+    TIMES = 20 | BINARY_OP_PRECEDENCE( 10 ),
+    DIVIDE = 21 | BINARY_OP_PRECEDENCE( 10 ),
+    MOD = 22 | BINARY_OP_PRECEDENCE( 10 )
 };
 
-union JSTokenData {
+union JSTokenData
+{
     int intValue;
     double doubleValue;
-    const Identifier* ident;
+    const Identifier *ident;
 };
 
-struct JSTokenInfo {
-    JSTokenInfo() : line(0) {}
+struct JSTokenInfo
+{
+    JSTokenInfo() : line( 0 ) {}
     int line;
     int startOffset;
     int endOffset;
 };
 
-struct JSToken {
+struct JSToken
+{
     JSTokenType m_type;
     JSTokenData m_data;
     JSTokenInfo m_info;
@@ -159,6 +165,6 @@ struct JSToken {
 enum JSParserStrictness { JSParseNormal, JSParseStrict };
 enum JSParserMode { JSParseProgramCode, JSParseFunctionCode };
 
-const char* jsParse(JSGlobalData*, FunctionParameters*, JSParserStrictness, JSParserMode, const SourceCode*);
+const char *jsParse( JSGlobalData *, FunctionParameters *, JSParserStrictness, JSParserMode, const SourceCode * );
 }
 #endif // JSParser_h

@@ -23,8 +23,8 @@
  *
  * Adobe Author(s): Michiharu Ariza
  */
-#ifndef HB_CFF1_INTERP_CS_HH
-#define HB_CFF1_INTERP_CS_HH
+#ifndef HB_CFF1_INTERP_LSCS_HH
+#define HB_CFF1_INTERP_LSCS_HH
 
 #include "hb.hh"
 #include "hb-cff-interp-cs-common.hh"
@@ -35,10 +35,10 @@ using namespace OT;
 
 typedef biased_subrs_t<CFF1Subrs>   cff1_biased_subrs_t;
 
-struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
+struct cff1_lscs_interp_env_t : lscs_interp_env_t<number_t, CFF1Subrs>
 {
   template <typename ACC>
-  cff1_cs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
+  cff1_lscs_interp_env_t (const hb_ubytes_t &str, ACC &acc, unsigned int fd,
 			const int *coords_=nullptr, unsigned int num_coords_=0)
     : SUPER (str, acc.globalSubrs, acc.privateDicts[fd].localSubrs)
   {
@@ -77,16 +77,16 @@ struct cff1_cs_interp_env_t : cs_interp_env_t<number_t, CFF1Subrs>
   bool	  in_seac;
 
   private:
-  typedef cs_interp_env_t<number_t, CFF1Subrs> SUPER;
+  typedef lscs_interp_env_t<number_t, CFF1Subrs> SUPER;
 };
 
-template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_cs_interp_env_t, PARAM>>
-struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>
+template <typename OPSET, typename PARAM, typename PATH=path_procs_null_t<cff1_lscs_interp_env_t, PARAM>>
+struct cff1_lscs_opset_t : lscs_opset_t<number_t, OPSET, cff1_lscs_interp_env_t, PARAM, PATH>
 {
   /* PostScript-originated legacy opcodes (OpCode_add etc) are unsupported */
   /* Type 1-originated deprecated opcodes, seac behavior of endchar and dotsection are supported */
 
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  static void process_op (op_code_t op, cff1_lscs_interp_env_t &env, PARAM& param)
   {
     switch (op) {
       case OpCode_dotsection:
@@ -108,7 +108,7 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
     }
   }
 
-  static void check_width (op_code_t op, cff1_cs_interp_env_t &env, PARAM& param)
+  static void check_width (op_code_t op, cff1_lscs_interp_env_t &env, PARAM& param)
   {
     if (!env.processed_width)
     {
@@ -138,23 +138,23 @@ struct cff1_cs_opset_t : cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM
     }
   }
 
-  static void process_seac (cff1_cs_interp_env_t &env, PARAM& param)
+  static void process_seac (cff1_lscs_interp_env_t &env, PARAM& param)
   {
   }
 
-  static void flush_args (cff1_cs_interp_env_t &env, PARAM& param)
+  static void flush_args (cff1_lscs_interp_env_t &env, PARAM& param)
   {
     SUPER::flush_args (env, param);
     env.clear_args ();  /* pop off width */
   }
 
   private:
-  typedef cs_opset_t<number_t, OPSET, cff1_cs_interp_env_t, PARAM, PATH>  SUPER;
+  typedef lscs_opset_t<number_t, OPSET, cff1_lscs_interp_env_t, PARAM, PATH>  SUPER;
 };
 
 template <typename OPSET, typename PARAM>
-using cff1_cs_interpreter_t = cs_interpreter_t<cff1_cs_interp_env_t, OPSET, PARAM>;
+using cff1_lscs_interpreter_t = lscs_interpreter_t<cff1_lscs_interp_env_t, OPSET, PARAM>;
 
 } /* namespace CFF */
 
-#endif /* HB_CFF1_INTERP_CS_HH */
+#endif /* HB_CFF1_INTERP_LSCS_HH */

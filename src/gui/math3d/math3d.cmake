@@ -35,7 +35,7 @@ list(APPEND GUI_INCLUDES
 list(APPEND GUI_PRIVATE_INCLUDES
 )
 
-target_sources(CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/math3d/qgenericmatrix.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/math3d/qmatrix4x4.cpp

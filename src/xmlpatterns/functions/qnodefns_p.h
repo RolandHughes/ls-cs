@@ -27,54 +27,56 @@
 #include <qfunctioncall_p.h>
 #include <qcastingplatform_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NameFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class LocalNameFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class NamespaceURIFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 };
 
 class NumberFN : public FunctionCall,
-   public CastingPlatform<NumberFN, false>
+    public CastingPlatform<NumberFN, false>
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   ItemType::Ptr targetType() const {
-      return BuiltinTypes::xsDouble;
-   }
+    ItemType::Ptr targetType() const
+    {
+        return BuiltinTypes::xsDouble;
+    }
 };
 
 class LangFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
- private:
-   static inline bool isLangMatch(const QString &candidate, const QString &toMatch);
+private:
+    static inline bool isLangMatch( const QString &candidate, const QString &toMatch );
 };
 
 
 class RootFN : public FunctionCall
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   SequenceType::Ptr staticType() const override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    SequenceType::Ptr staticType() const override;
 };
 
 }

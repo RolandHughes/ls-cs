@@ -27,14 +27,17 @@
 #include "PlatformString.h"
 #include "TextDirection.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 class RenderSVGResource;
 
-class TextRun {
+class TextRun
+{
 public:
-    enum ExpansionBehaviorFlags {
+    enum ExpansionBehaviorFlags
+    {
         ForbidTrailingExpansion = 0 << 0,
         AllowTrailingExpansion = 1 << 0,
         ForbidLeadingExpansion = 0 << 1,
@@ -43,90 +46,169 @@ public:
 
     typedef unsigned ExpansionBehavior;
 
-    TextRun(const UChar* c, int len, bool allowTabs = false, float xpos = 0, float expansion = 0, ExpansionBehavior expansionBehavior = AllowTrailingExpansion | ForbidLeadingExpansion, TextDirection direction = LTR, bool directionalOverride = false)
-        : m_characters(c)
-        , m_len(len)
-        , m_xpos(xpos)
-        , m_expansion(expansion)
-        , m_expansionBehavior(expansionBehavior)
+    TextRun( const UChar *c, int len, bool allowTabs = false, float xpos = 0, float expansion = 0,
+             ExpansionBehavior expansionBehavior = AllowTrailingExpansion | ForbidLeadingExpansion, TextDirection direction = LTR,
+             bool directionalOverride = false )
+        : m_characters( c )
+        , m_len( len )
+        , m_xpos( xpos )
+        , m_expansion( expansion )
+        , m_expansionBehavior( expansionBehavior )
 #if ENABLE(SVG)
-        , m_horizontalGlyphStretch(1)
+        , m_horizontalGlyphStretch( 1 )
 #endif
-        , m_allowTabs(allowTabs)
-        , m_direction(direction)
-        , m_directionalOverride(directionalOverride)
-        , m_disableSpacing(false)
+        , m_allowTabs( allowTabs )
+        , m_direction( direction )
+        , m_directionalOverride( directionalOverride )
+        , m_disableSpacing( false )
 #if ENABLE(SVG_FONTS)
-        , m_referencingRenderObject(0)
-        , m_activePaintingResource(0)
+        , m_referencingRenderObject( 0 )
+        , m_activePaintingResource( 0 )
 #endif
     {
     }
 
-    TextRun(const String& s, bool allowTabs = false, float xpos = 0, float expansion = 0, ExpansionBehavior expansionBehavior = AllowTrailingExpansion | ForbidLeadingExpansion, TextDirection direction = LTR, bool directionalOverride = false)
-        : m_characters(s.characters())
-        , m_len(s.length())
-        , m_xpos(xpos)
-        , m_expansion(expansion)
-        , m_expansionBehavior(expansionBehavior)
+    TextRun( const String &s, bool allowTabs = false, float xpos = 0, float expansion = 0,
+             ExpansionBehavior expansionBehavior = AllowTrailingExpansion | ForbidLeadingExpansion, TextDirection direction = LTR,
+             bool directionalOverride = false )
+        : m_characters( s.characters() )
+        , m_len( s.length() )
+        , m_xpos( xpos )
+        , m_expansion( expansion )
+        , m_expansionBehavior( expansionBehavior )
 #if ENABLE(SVG)
-        , m_horizontalGlyphStretch(1)
+        , m_horizontalGlyphStretch( 1 )
 #endif
-        , m_allowTabs(allowTabs)
-        , m_direction(direction)
-        , m_directionalOverride(directionalOverride)
-        , m_disableSpacing(false)
+        , m_allowTabs( allowTabs )
+        , m_direction( direction )
+        , m_directionalOverride( directionalOverride )
+        , m_disableSpacing( false )
 #if ENABLE(SVG_FONTS)
-        , m_referencingRenderObject(0)
-        , m_activePaintingResource(0)
+        , m_referencingRenderObject( 0 )
+        , m_activePaintingResource( 0 )
 #endif
     {
     }
 
-    UChar operator[](int i) const { ASSERT(i >= 0 && i < m_len); return m_characters[i]; }
-    const UChar* data(int i) const { ASSERT(i >= 0 && i < m_len); return &m_characters[i]; }
+    UChar operator[]( int i ) const
+    {
+        ASSERT( i >= 0 && i < m_len );
+        return m_characters[i];
+    }
+    const UChar *data( int i ) const
+    {
+        ASSERT( i >= 0 && i < m_len );
+        return &m_characters[i];
+    }
 
-    const UChar* characters() const { return m_characters; }
-    int length() const { return m_len; }
+    const UChar *characters() const
+    {
+        return m_characters;
+    }
+    int length() const
+    {
+        return m_len;
+    }
 
-    void setText(const UChar* c, int len) { m_characters = c; m_len = len; }
+    void setText( const UChar *c, int len )
+    {
+        m_characters = c;
+        m_len = len;
+    }
 
 #if ENABLE(SVG)
-    float horizontalGlyphStretch() const { return m_horizontalGlyphStretch; }
-    void setHorizontalGlyphStretch(float scale) { m_horizontalGlyphStretch = scale; }
+    float horizontalGlyphStretch() const
+    {
+        return m_horizontalGlyphStretch;
+    }
+    void setHorizontalGlyphStretch( float scale )
+    {
+        m_horizontalGlyphStretch = scale;
+    }
 #endif
 
-    bool allowTabs() const { return m_allowTabs; }
-    float xPos() const { return m_xpos; }
-    float expansion() const { return m_expansion; }
-    bool allowsLeadingExpansion() const { return m_expansionBehavior & AllowLeadingExpansion; }
-    bool allowsTrailingExpansion() const { return m_expansionBehavior & AllowTrailingExpansion; }
-    TextDirection direction() const { return m_direction; }
-    bool rtl() const { return m_direction == RTL; }
-    bool ltr() const { return m_direction == LTR; }
-    bool directionalOverride() const { return m_directionalOverride; }
-    bool spacingDisabled() const { return m_disableSpacing; }
+    bool allowTabs() const
+    {
+        return m_allowTabs;
+    }
+    float xPos() const
+    {
+        return m_xpos;
+    }
+    float expansion() const
+    {
+        return m_expansion;
+    }
+    bool allowsLeadingExpansion() const
+    {
+        return m_expansionBehavior & AllowLeadingExpansion;
+    }
+    bool allowsTrailingExpansion() const
+    {
+        return m_expansionBehavior & AllowTrailingExpansion;
+    }
+    TextDirection direction() const
+    {
+        return m_direction;
+    }
+    bool rtl() const
+    {
+        return m_direction == RTL;
+    }
+    bool ltr() const
+    {
+        return m_direction == LTR;
+    }
+    bool directionalOverride() const
+    {
+        return m_directionalOverride;
+    }
+    bool spacingDisabled() const
+    {
+        return m_disableSpacing;
+    }
 
-    void disableSpacing() { m_disableSpacing = true; }
-    void setDirection(TextDirection direction) { m_direction = direction; }
-    void setDirectionalOverride(bool override) { m_directionalOverride = override; }
+    void disableSpacing()
+    {
+        m_disableSpacing = true;
+    }
+    void setDirection( TextDirection direction )
+    {
+        m_direction = direction;
+    }
+    void setDirectionalOverride( bool override )
+    {
+        m_directionalOverride = override;
+    }
 
 #if ENABLE(SVG_FONTS)
-    RenderObject* referencingRenderObject() const { return m_referencingRenderObject; }
-    void setReferencingRenderObject(RenderObject* object) { m_referencingRenderObject = object; }
+    RenderObject *referencingRenderObject() const
+    {
+        return m_referencingRenderObject;
+    }
+    void setReferencingRenderObject( RenderObject *object )
+    {
+        m_referencingRenderObject = object;
+    }
 
-    RenderSVGResource* activePaintingResource() const { return m_activePaintingResource; }
-    void setActivePaintingResource(RenderSVGResource* object) { m_activePaintingResource = object; }
+    RenderSVGResource *activePaintingResource() const
+    {
+        return m_activePaintingResource;
+    }
+    void setActivePaintingResource( RenderSVGResource *object )
+    {
+        m_activePaintingResource = object;
+    }
 #endif
 
 private:
-    const UChar* m_characters;
+    const UChar *m_characters;
     int m_len;
 
     // m_xpos is the x position relative to the left start of the text line, not relative to the left
     // start of the containing block. In the case of right alignment or center alignment, left start of
     // the text line is not the same as left start of the containing block.
-    float m_xpos;  
+    float m_xpos;
     float m_expansion;
     ExpansionBehavior m_expansionBehavior;
 #if ENABLE(SVG)
@@ -138,8 +220,8 @@ private:
     bool m_disableSpacing;
 
 #if ENABLE(SVG_FONTS)
-    RenderObject* m_referencingRenderObject;
-    RenderSVGResource* m_activePaintingResource;
+    RenderObject *m_referencingRenderObject;
+    RenderSVGResource *m_activePaintingResource;
 #endif
 };
 

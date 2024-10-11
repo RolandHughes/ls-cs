@@ -30,47 +30,59 @@
 #include "WebPageGroupData.h"
 #include "WebPageProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 // Adds
 // - Page -> BundlePage
 // - Frame -> BundleFrame
 // - PageGroup -> BundlePageGroup
 
-class WebContextUserMessageEncoder : public UserMessageEncoder<WebContextUserMessageEncoder> {
+class WebContextUserMessageEncoder : public UserMessageEncoder<WebContextUserMessageEncoder>
+{
 public:
     typedef UserMessageEncoder<WebContextUserMessageEncoder> Base;
 
-    WebContextUserMessageEncoder(APIObject* root) 
-        : Base(root)
+    WebContextUserMessageEncoder( APIObject *root )
+        : Base( root )
     {
     }
 
-    void encode(CoreIPC::ArgumentEncoder* encoder) const 
+    void encode( CoreIPC::ArgumentEncoder *encoder ) const
     {
         APIObject::Type type = APIObject::TypeNull;
-        if (baseEncode(encoder, type))
-            return;
 
-        switch (type) {
-        case APIObject::TypePage: {
-            WebPageProxy* page = static_cast<WebPageProxy*>(m_root);
-            encoder->encode(page->pageID());
-            break;
+        if ( baseEncode( encoder, type ) )
+        {
+            return;
         }
-        case APIObject::TypeFrame: {
-            WebFrameProxy* frame = static_cast<WebFrameProxy*>(m_root);
-            encoder->encode(frame->frameID());
-            break;
-        }
-        case APIObject::TypePageGroup: {
-            WebPageGroup* pageGroup = static_cast<WebPageGroup*>(m_root);
-            encoder->encode(pageGroup->data());
-            break;
-        }
-        default:
-            ASSERT_NOT_REACHED();
-            break;
+
+        switch ( type )
+        {
+            case APIObject::TypePage:
+            {
+                WebPageProxy *page = static_cast<WebPageProxy *>( m_root );
+                encoder->encode( page->pageID() );
+                break;
+            }
+
+            case APIObject::TypeFrame:
+            {
+                WebFrameProxy *frame = static_cast<WebFrameProxy *>( m_root );
+                encoder->encode( frame->frameID() );
+                break;
+            }
+
+            case APIObject::TypePageGroup:
+            {
+                WebPageGroup *pageGroup = static_cast<WebPageGroup *>( m_root );
+                encoder->encode( pageGroup->data() );
+                break;
+            }
+
+            default:
+                ASSERT_NOT_REACHED();
+                break;
         }
     }
 };
@@ -80,62 +92,87 @@ public:
 //   - Frame -> BundleFrame
 //   - PageGroup -> BundlePageGroup
 
-class WebContextUserMessageDecoder : public UserMessageDecoder<WebContextUserMessageDecoder> {
+class WebContextUserMessageDecoder : public UserMessageDecoder<WebContextUserMessageDecoder>
+{
 public:
     typedef UserMessageDecoder<WebContextUserMessageDecoder> Base;
 
-    WebContextUserMessageDecoder(RefPtr<APIObject>& root, WebContext* context)
-        : Base(root)
-        , m_context(context)
+    WebContextUserMessageDecoder( RefPtr<APIObject> &root, WebContext *context )
+        : Base( root )
+        , m_context( context )
     {
     }
 
-    WebContextUserMessageDecoder(WebContextUserMessageDecoder& userMessageDecoder, RefPtr<APIObject>& root)
-        : Base(root)
-        , m_context(userMessageDecoder.m_context)
+    WebContextUserMessageDecoder( WebContextUserMessageDecoder &userMessageDecoder, RefPtr<APIObject> &root )
+        : Base( root )
+        , m_context( userMessageDecoder.m_context )
     {
     }
 
-    static bool decode(CoreIPC::ArgumentDecoder* decoder, WebContextUserMessageDecoder& coder)
+    static bool decode( CoreIPC::ArgumentDecoder *decoder, WebContextUserMessageDecoder &coder )
     {
         APIObject::Type type = APIObject::TypeNull;
-        if (!Base::baseDecode(decoder, coder, type))
-            return false;
 
-        if (coder.m_root || type == APIObject::TypeNull)
+        if ( !Base::baseDecode( decoder, coder, type ) )
+        {
+            return false;
+        }
+
+        if ( coder.m_root || type == APIObject::TypeNull )
+        {
             return true;
+        }
 
-        switch (type) {
-        case APIObject::TypeBundlePage: {
-            uint64_t pageID;
-            if (!decoder->decode(pageID))
+        switch ( type )
+        {
+            case APIObject::TypeBundlePage:
+            {
+                uint64_t pageID;
+
+                if ( !decoder->decode( pageID ) )
+                {
+                    return false;
+                }
+
+                coder.m_root = coder.m_context->process()->webPage( pageID );
+                break;
+            }
+
+            case APIObject::TypeBundleFrame:
+            {
+                uint64_t frameID;
+
+                if ( !decoder->decode( frameID ) )
+                {
+                    return false;
+                }
+
+                coder.m_root = coder.m_context->process()->webFrame( frameID );
+                break;
+            }
+
+            case APIObject::TypeBundlePageGroup:
+            {
+                uint64_t pageGroupID;
+
+                if ( !decoder->decode( pageGroupID ) )
+                {
+                    return false;
+                }
+
+                coder.m_root = WebPageGroup::get( pageGroupID );
+                break;
+            }
+
+            default:
                 return false;
-            coder.m_root = coder.m_context->process()->webPage(pageID);
-            break;
-        }
-        case APIObject::TypeBundleFrame: {
-            uint64_t frameID;
-            if (!decoder->decode(frameID))
-                return false;
-            coder.m_root = coder.m_context->process()->webFrame(frameID);
-            break;
-        }
-        case APIObject::TypeBundlePageGroup: {
-            uint64_t pageGroupID;
-            if (!decoder->decode(pageGroupID))
-                return false;
-            coder.m_root = WebPageGroup::get(pageGroupID);
-            break;
-        }
-        default:
-            return false;
         }
 
         return true;
     }
 
 private:
-    WebContext* m_context;
+    WebContext *m_context;
 };
 
 } // namespace WebKit

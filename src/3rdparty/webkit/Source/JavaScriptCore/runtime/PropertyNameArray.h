@@ -27,72 +27,114 @@
 #include <wtf/OwnArrayPtr.h>
 #include <wtf/Vector.h>
 
-namespace JSC {
-    
-    class Structure;
-    class StructureChain;
+namespace JSC
+{
 
-    // FIXME: Rename to PropertyNameArray.
-    class PropertyNameArrayData : public RefCounted<PropertyNameArrayData> {
-    public:
-        typedef Vector<Identifier, 20> PropertyNameVector;
+class Structure;
+class StructureChain;
 
-        static PassRefPtr<PropertyNameArrayData> create() { return adoptRef(new PropertyNameArrayData); }
+// FIXME: Rename to PropertyNameArray.
+class PropertyNameArrayData : public RefCounted<PropertyNameArrayData>
+{
+public:
+    typedef Vector<Identifier, 20> PropertyNameVector;
 
-        PropertyNameVector& propertyNameVector() { return m_propertyNameVector; }
+    static PassRefPtr<PropertyNameArrayData> create()
+    {
+        return adoptRef( new PropertyNameArrayData );
+    }
 
-    private:
-        PropertyNameArrayData()
-        {
-        }
+    PropertyNameVector &propertyNameVector()
+    {
+        return m_propertyNameVector;
+    }
 
-        PropertyNameVector m_propertyNameVector;
-    };
+private:
+    PropertyNameArrayData()
+    {
+    }
 
-    // FIXME: Rename to PropertyNameArrayBuilder.
-    class PropertyNameArray {
-    public:
-        PropertyNameArray(JSGlobalData* globalData)
-            : m_data(PropertyNameArrayData::create())
-            , m_globalData(globalData)
-            , m_shouldCache(true)
-        {
-        }
+    PropertyNameVector m_propertyNameVector;
+};
 
-        PropertyNameArray(ExecState* exec)
-            : m_data(PropertyNameArrayData::create())
-            , m_globalData(&exec->globalData())
-            , m_shouldCache(true)
-        {
-        }
+// FIXME: Rename to PropertyNameArrayBuilder.
+class PropertyNameArray
+{
+public:
+    PropertyNameArray( JSGlobalData *globalData )
+        : m_data( PropertyNameArrayData::create() )
+        , m_globalData( globalData )
+        , m_shouldCache( true )
+    {
+    }
 
-        JSGlobalData* globalData() { return m_globalData; }
+    PropertyNameArray( ExecState *exec )
+        : m_data( PropertyNameArrayData::create() )
+        , m_globalData( &exec->globalData() )
+        , m_shouldCache( true )
+    {
+    }
 
-        void add(const Identifier& identifier) { add(identifier.impl()); }
-        void add(StringImpl*);
-        void addKnownUnique(StringImpl* identifier) { m_data->propertyNameVector().append(Identifier(m_globalData, identifier)); }
+    JSGlobalData *globalData()
+    {
+        return m_globalData;
+    }
 
-        Identifier& operator[](unsigned i) { return m_data->propertyNameVector()[i]; }
-        const Identifier& operator[](unsigned i) const { return m_data->propertyNameVector()[i]; }
+    void add( const Identifier &identifier )
+    {
+        add( identifier.impl() );
+    }
+    void add( StringImpl * );
+    void addKnownUnique( StringImpl *identifier )
+    {
+        m_data->propertyNameVector().append( Identifier( m_globalData, identifier ) );
+    }
 
-        void setData(PassRefPtr<PropertyNameArrayData> data) { m_data = data; }
-        PropertyNameArrayData* data() { return m_data.get(); }
-        PassRefPtr<PropertyNameArrayData> releaseData() { return m_data.release(); }
+    Identifier &operator[]( unsigned i )
+    {
+        return m_data->propertyNameVector()[i];
+    }
+    const Identifier &operator[]( unsigned i ) const
+    {
+        return m_data->propertyNameVector()[i];
+    }
 
-        // FIXME: Remove these functions.
-        typedef PropertyNameArrayData::PropertyNameVector::const_iterator const_iterator;
-        size_t size() const { return m_data->propertyNameVector().size(); }
-        const_iterator begin() const { return m_data->propertyNameVector().begin(); }
-        const_iterator end() const { return m_data->propertyNameVector().end(); }
+    void setData( PassRefPtr<PropertyNameArrayData> data )
+    {
+        m_data = data;
+    }
+    PropertyNameArrayData *data()
+    {
+        return m_data.get();
+    }
+    PassRefPtr<PropertyNameArrayData> releaseData()
+    {
+        return m_data.release();
+    }
 
-    private:
-        typedef HashSet<StringImpl*, PtrHash<StringImpl*> > IdentifierSet;
+    // FIXME: Remove these functions.
+    typedef PropertyNameArrayData::PropertyNameVector::const_iterator const_iterator;
+    size_t size() const
+    {
+        return m_data->propertyNameVector().size();
+    }
+    const_iterator begin() const
+    {
+        return m_data->propertyNameVector().begin();
+    }
+    const_iterator end() const
+    {
+        return m_data->propertyNameVector().end();
+    }
 
-        RefPtr<PropertyNameArrayData> m_data;
-        IdentifierSet m_set;
-        JSGlobalData* m_globalData;
-        bool m_shouldCache;
-    };
+private:
+    typedef HashSet<StringImpl *, PtrHash<StringImpl *> > IdentifierSet;
+
+    RefPtr<PropertyNameArrayData> m_data;
+    IdentifierSet m_set;
+    JSGlobalData *m_globalData;
+    bool m_shouldCache;
+};
 
 } // namespace JSC
 

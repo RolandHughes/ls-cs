@@ -28,48 +28,48 @@ QT_BEGIN_NAMESPACE
 
 void QDeclarativeImplicitSizeItemPrivate::implicitWidthChanged()
 {
-   Q_Q(QDeclarativeImplicitSizeItem);
-   emit q->implicitWidthChanged();
+    Q_Q( QDeclarativeImplicitSizeItem );
+    emit q->implicitWidthChanged();
 }
 
 void QDeclarativeImplicitSizeItemPrivate::implicitHeightChanged()
 {
-   Q_Q(QDeclarativeImplicitSizeItem);
-   emit q->implicitHeightChanged();
+    Q_Q( QDeclarativeImplicitSizeItem );
+    emit q->implicitHeightChanged();
 }
 
-QDeclarativeImplicitSizeItem::QDeclarativeImplicitSizeItem(QDeclarativeItem *parent)
-   : QDeclarativeItem(*(new QDeclarativeImplicitSizeItemPrivate), parent)
+QDeclarativeImplicitSizeItem::QDeclarativeImplicitSizeItem( QDeclarativeItem *parent )
+    : QDeclarativeItem( *( new QDeclarativeImplicitSizeItemPrivate ), parent )
 {
 }
 
-QDeclarativeImplicitSizeItem::QDeclarativeImplicitSizeItem(QDeclarativeImplicitSizeItemPrivate &dd,
-      QDeclarativeItem *parent)
-   : QDeclarativeItem(dd, parent)
+QDeclarativeImplicitSizeItem::QDeclarativeImplicitSizeItem( QDeclarativeImplicitSizeItemPrivate &dd,
+        QDeclarativeItem *parent )
+    : QDeclarativeItem( dd, parent )
 {
 }
 
 
 void QDeclarativeImplicitSizePaintedItemPrivate::implicitWidthChanged()
 {
-   Q_Q(QDeclarativeImplicitSizePaintedItem);
-   emit q->implicitWidthChanged();
+    Q_Q( QDeclarativeImplicitSizePaintedItem );
+    emit q->implicitWidthChanged();
 }
 
 void QDeclarativeImplicitSizePaintedItemPrivate::implicitHeightChanged()
 {
-   Q_Q(QDeclarativeImplicitSizePaintedItem);
-   emit q->implicitHeightChanged();
+    Q_Q( QDeclarativeImplicitSizePaintedItem );
+    emit q->implicitHeightChanged();
 }
 
-QDeclarativeImplicitSizePaintedItem::QDeclarativeImplicitSizePaintedItem(QDeclarativeItem *parent)
-   : QDeclarativePaintedItem(*(new QDeclarativeImplicitSizePaintedItemPrivate), parent)
+QDeclarativeImplicitSizePaintedItem::QDeclarativeImplicitSizePaintedItem( QDeclarativeItem *parent )
+    : QDeclarativePaintedItem( *( new QDeclarativeImplicitSizePaintedItemPrivate ), parent )
 {
 }
 
-QDeclarativeImplicitSizePaintedItem::QDeclarativeImplicitSizePaintedItem(QDeclarativeImplicitSizePaintedItemPrivate &dd,
-      QDeclarativeItem *parent)
-   : QDeclarativePaintedItem(dd, parent)
+QDeclarativeImplicitSizePaintedItem::QDeclarativeImplicitSizePaintedItem( QDeclarativeImplicitSizePaintedItemPrivate &dd,
+        QDeclarativeItem *parent )
+    : QDeclarativePaintedItem( dd, parent )
 {
 }
 

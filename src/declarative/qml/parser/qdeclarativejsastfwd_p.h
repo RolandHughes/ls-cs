@@ -29,34 +29,40 @@
 
 QT_QML_BEGIN_NAMESPACE
 
-namespace QDeclarativeJS {
-namespace AST {
+namespace QDeclarativeJS
+{
+namespace AST
+{
 
 class SourceLocation
 {
- public:
-   SourceLocation(quint32 offset = 0, quint32 length = 0, quint32 line = 0, quint32 column = 0)
-      : offset(offset), length(length),
-        startLine(line), startColumn(column) {
-   }
+public:
+    SourceLocation( quint32 offset = 0, quint32 length = 0, quint32 line = 0, quint32 column = 0 )
+        : offset( offset ), length( length ),
+          startLine( line ), startColumn( column )
+    {
+    }
 
-   bool isValid() const {
-      return length != 0;
-   }
+    bool isValid() const
+    {
+        return length != 0;
+    }
 
-   quint32 begin() const {
-      return offset;
-   }
-   quint32 end() const {
-      return offset + length;
-   }
+    quint32 begin() const
+    {
+        return offset;
+    }
+    quint32 end() const
+    {
+        return offset + length;
+    }
 
-   // attributes
-   // ### encode
-   quint32 offset;
-   quint32 length;
-   quint32 startLine;
-   quint32 startColumn;
+    // attributes
+    // ### encode
+    quint32 offset;
+    quint32 length;
+    quint32 startLine;
+    quint32 startColumn;
 };
 
 class Visitor;

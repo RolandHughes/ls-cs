@@ -26,20 +26,28 @@
 
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLFieldSetElement : public HTMLFormControlElement {
+class HTMLFieldSetElement : public HTMLFormControlElement
+{
 public:
-    static PassRefPtr<HTMLFieldSetElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLFieldSetElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
 private:
-    HTMLFieldSetElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLFieldSetElement( const QualifiedName &, Document *, HTMLFormElement * );
 
-    virtual bool isEnumeratable() const { return true; }
+    virtual bool isEnumeratable() const
+    {
+        return true;
+    }
     virtual bool supportsFocus() const;
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual const AtomicString& formControlType() const;
-    virtual bool recalcWillValidate() const { return false; }
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual const AtomicString &formControlType() const;
+    virtual bool recalcWillValidate() const
+    {
+        return false;
+    }
 };
 
 } // namespace

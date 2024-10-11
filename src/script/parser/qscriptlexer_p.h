@@ -29,209 +29,233 @@
 class QScriptEnginePrivate;
 class QScriptNameIdImpl;
 
-namespace QScript {
+namespace QScript
+{
 
 class Lexer
 {
- public:
-   Lexer(QScriptEnginePrivate *eng);
-   ~Lexer();
+public:
+    Lexer( QScriptEnginePrivate *eng );
+    ~Lexer();
 
-   void setCode(const QString &str, int lineno);
-   int lex();
+    void setCode( const QString &str, int lineno );
+    int lex();
 
-   int currentLineNo() const {
-      return yylineno;
-   }
-   int currentColumnNo() const {
-      return yycolumn;
-   }
+    int currentLineNo() const
+    {
+        return yylineno;
+    }
+    int currentColumnNo() const
+    {
+        return yycolumn;
+    }
 
-   int startLineNo() const {
-      return startlineno;
-   }
-   int startColumnNo() const {
-      return startcolumn;
-   }
+    int startLineNo() const
+    {
+        return startlineno;
+    }
+    int startColumnNo() const
+    {
+        return startcolumn;
+    }
 
-   int endLineNo() const {
-      return currentLineNo();
-   }
-   int endColumnNo() const {
-      int col = currentColumnNo();
-      return (col > 0) ? col - 1 : col;
-   }
+    int endLineNo() const
+    {
+        return currentLineNo();
+    }
+    int endColumnNo() const
+    {
+        int col = currentColumnNo();
+        return ( col > 0 ) ? col - 1 : col;
+    }
 
-   bool prevTerminator() const {
-      return terminator;
-   }
+    bool prevTerminator() const
+    {
+        return terminator;
+    }
 
-   enum State { Start,
-                Identifier,
-                InIdentifier,
-                InSingleLineComment,
-                InMultiLineComment,
-                InNum,
-                InNum0,
-                InHex,
-                InOctal,
-                InDecimal,
-                InExponentIndicator,
-                InExponent,
-                Hex,
-                Octal,
-                Number,
-                String,
-                Eof,
-                InString,
-                InEscapeSequence,
-                InHexEscape,
-                InUnicodeEscape,
-                Other,
-                Bad
-              };
+    enum State { Start,
+                 Identifier,
+                 InIdentifier,
+                 InSingleLineComment,
+                 InMultiLineComment,
+                 InNum,
+                 InNum0,
+                 InHex,
+                 InOctal,
+                 InDecimal,
+                 InExponentIndicator,
+                 InExponent,
+                 Hex,
+                 Octal,
+                 Number,
+                 String,
+                 Eof,
+                 InString,
+                 InEscapeSequence,
+                 InHexEscape,
+                 InUnicodeEscape,
+                 Other,
+                 Bad
+               };
 
-   enum Error {
-      NoError,
-      IllegalCharacter,
-      UnclosedStringLiteral,
-      IllegalEscapeSequence,
-      IllegalUnicodeEscapeSequence,
-      UnclosedComment,
-      IllegalExponentIndicator,
-      IllegalIdentifier
-   };
+    enum Error
+    {
+        NoError,
+        IllegalCharacter,
+        UnclosedStringLiteral,
+        IllegalEscapeSequence,
+        IllegalUnicodeEscapeSequence,
+        UnclosedComment,
+        IllegalExponentIndicator,
+        IllegalIdentifier
+    };
 
-   enum ParenthesesState {
-      IgnoreParentheses,
-      CountParentheses,
-      BalancedParentheses
-   };
+    enum ParenthesesState
+    {
+        IgnoreParentheses,
+        CountParentheses,
+        BalancedParentheses
+    };
 
-   enum RegExpBodyPrefix {
-      NoPrefix,
-      EqualPrefix
-   };
+    enum RegExpBodyPrefix
+    {
+        NoPrefix,
+        EqualPrefix
+    };
 
-   bool scanRegExp(RegExpBodyPrefix prefix = NoPrefix);
+    bool scanRegExp( RegExpBodyPrefix prefix = NoPrefix );
 
-   QScriptNameIdImpl *pattern;
-   int flags;
+    QScriptNameIdImpl *pattern;
+    int flags;
 
-   State lexerState() const {
-      return state;
-   }
+    State lexerState() const
+    {
+        return state;
+    }
 
-   QString errorMessage() const {
-      return errmsg;
-   }
-   void setErrorMessage(const QString &err) {
-      errmsg = err;
-   }
-   void setErrorMessage(const char *err) {
-      setErrorMessage(QString::fromLatin1(err));
-   }
+    QString errorMessage() const
+    {
+        return errmsg;
+    }
+    void setErrorMessage( const QString &err )
+    {
+        errmsg = err;
+    }
+    void setErrorMessage( const char *err )
+    {
+        setErrorMessage( QString::fromLatin1( err ) );
+    }
 
-   Error error() const {
-      return err;
-   }
-   void clearError() {
-      err = NoError;
-   }
+    Error error() const
+    {
+        return err;
+    }
+    void clearError()
+    {
+        err = NoError;
+    }
 
-   static unsigned char convertHex(char32_t c1);
-   static unsigned char convertHex(char32_t c1, char32_t c2);
-   static QChar convertUnicode(char32_t c1, char32_t c2, char32_t c3, char32_t c4);
-   static bool isIdentLetter(char32_t c);
-   static bool isDecimalDigit(char32_t c);
+    static unsigned char convertHex( char32_t c1 );
+    static unsigned char convertHex( char32_t c1, char32_t c2 );
+    static QChar convertUnicode( char32_t c1, char32_t c2, char32_t c3, char32_t c4 );
+    static bool isIdentLetter( char32_t c );
+    static bool isDecimalDigit( char32_t c );
 
-   inline int ival() const {
-      return qsyylval.ival;
-   }
-   inline double dval() const {
-      return qsyylval.dval;
-   }
-   inline QScriptNameIdImpl *ustr() const {
-      return qsyylval.ustr;
-   }
+    inline int ival() const
+    {
+        return qsyylval.ival;
+    }
+    inline double dval() const
+    {
+        return qsyylval.dval;
+    }
+    inline QScriptNameIdImpl *ustr() const
+    {
+        return qsyylval.ustr;
+    }
 
-   const QChar *characterBuffer() const {
-      return buffer16;
-   }
-   int characterCount() const {
-      return pos16;
-   }
+    const QChar *characterBuffer() const
+    {
+        return buffer16;
+    }
+    int characterCount() const
+    {
+        return pos16;
+    }
 
- private:
+private:
 
-   QScriptEnginePrivate *driver;
-   int yylineno;
-   bool done;
-   char *buffer8;
-   QChar *buffer16;
-   uint size8, size16;
-   uint pos8, pos16;
-   bool terminator;
-   bool restrKeyword;
+    QScriptEnginePrivate *driver;
+    int yylineno;
+    bool done;
+    char *buffer8;
+    QChar *buffer16;
+    uint size8, size16;
+    uint pos8, pos16;
+    bool terminator;
+    bool restrKeyword;
 
-   // encountered delimiter like "'" and "}" on last run
-   bool delimited;
-   int stackToken;
+    // encountered delimiter like "'" and "}" on last run
+    bool delimited;
+    int stackToken;
 
-   State state;
-   void setDone(State s);
-   uint pos;
-   void shift(uint p);
-   int lookupKeyword(const char *);
+    State state;
+    void setDone( State s );
+    uint pos;
+    void shift( uint p );
+    int lookupKeyword( const char * );
 
-   bool isWhiteSpace() const;
-   bool isLineTerminator() const;
-   bool isHexDigit(char32_t c) const;
-   bool isOctalDigit(char32_t c) const;
+    bool isWhiteSpace() const;
+    bool isLineTerminator() const;
+    bool isHexDigit( char32_t c ) const;
+    bool isOctalDigit( char32_t c ) const;
 
-   int matchPunctuator(char32_t c1, char32_t c2, char32_t c3, char32_t c4);
-   char32_t singleEscape(char32_t c) const;
-   char32_t convertOctal(char32_t c1, char32_t c2, char32_t c3) const;
+    int matchPunctuator( char32_t c1, char32_t c2, char32_t c3, char32_t c4 );
+    char32_t singleEscape( char32_t c ) const;
+    char32_t convertOctal( char32_t c1, char32_t c2, char32_t c3 ) const;
 
-   void record8(char32_t c);
-   void record16(QChar c);
-   void recordStartPos();
+    void record8( char32_t c );
+    void record16( QChar c );
+    void recordStartPos();
 
-   int findReservedWord(const QChar *buffer, int size) const;
+    int findReservedWord( const QChar *buffer, int size ) const;
 
-   void syncProhibitAutomaticSemicolon();
+    void syncProhibitAutomaticSemicolon();
 
-   QString::const_iterator m_iter;
+    QString::const_iterator m_iter;
 
-   uint length;
-   int yycolumn;
-   int startlineno;
-   int startcolumn;
-   int bol;                 // begin of line
+    uint length;
+    int yycolumn;
+    int startlineno;
+    int startcolumn;
+    int bol;                 // begin of line
 
-   union {
-      int ival;
-      double dval;
-      QScriptNameIdImpl *ustr;
-   } qsyylval;
+    union
+    {
+        int ival;
+        double dval;
+        QScriptNameIdImpl *ustr;
+    } qsyylval;
 
-   // current and following unicode characters
-   char32_t current, next1, next2, next3;
+    // current and following unicode characters
+    char32_t current, next1, next2, next3;
 
-   struct keyword {
-      const char *name;
-      int token;
-   };
+    struct keyword
+    {
+        const char *name;
+        int token;
+    };
 
-   QString errmsg;
-   Error err;
+    QString errmsg;
+    Error err;
 
-   bool wantRx;
-   bool check_reserved;
+    bool wantRx;
+    bool check_reserved;
 
-   ParenthesesState parenthesesState;
-   int parenthesesCount;
-   bool prohibitAutomaticSemicolon;
+    ParenthesesState parenthesesState;
+    int parenthesesCount;
+    bool prohibitAutomaticSemicolon;
 };
 
 } // namespace QScript

@@ -36,48 +36,48 @@ class QUndoViewPrivate;
 
 class Q_GUI_EXPORT QUndoView : public QListView
 {
-   GUI_CS_OBJECT(QUndoView)
+    GUI_LSCS_OBJECT( QUndoView )
 
-   GUI_CS_PROPERTY_READ(emptyLabel, emptyLabel)
-   GUI_CS_PROPERTY_WRITE(emptyLabel, setEmptyLabel)
-   GUI_CS_PROPERTY_READ(cleanIcon, cleanIcon)
-   GUI_CS_PROPERTY_WRITE(cleanIcon, setCleanIcon)
+    GUI_LSCS_PROPERTY_READ( emptyLabel, emptyLabel )
+    GUI_LSCS_PROPERTY_WRITE( emptyLabel, setEmptyLabel )
+    GUI_LSCS_PROPERTY_READ( cleanIcon, cleanIcon )
+    GUI_LSCS_PROPERTY_WRITE( cleanIcon, setCleanIcon )
 
- public:
-   explicit QUndoView(QWidget *parent = nullptr);
-   explicit QUndoView(QUndoStack *stack, QWidget *parent = nullptr);
-
-#ifndef QT_NO_UNDOGROUP
-   explicit QUndoView(QUndoGroup *group, QWidget *parent = nullptr);
-#endif
-
-   QUndoView(const QUndoView &) = delete;
-   QUndoView &operator=(const QUndoView &) = delete;
-
-   ~QUndoView();
-
-   QUndoStack *stack() const;
+public:
+    explicit QUndoView( QWidget *parent = nullptr );
+    explicit QUndoView( QUndoStack *stack, QWidget *parent = nullptr );
 
 #ifndef QT_NO_UNDOGROUP
-   QUndoGroup *group() const;
+    explicit QUndoView( QUndoGroup *group, QWidget *parent = nullptr );
 #endif
 
-   void setEmptyLabel(const QString &label);
-   QString emptyLabel() const;
+    QUndoView( const QUndoView & ) = delete;
+    QUndoView &operator=( const QUndoView & ) = delete;
 
-   void setCleanIcon(const QIcon &icon);
-   QIcon cleanIcon() const;
+    ~QUndoView();
 
-   GUI_CS_SLOT_1(Public, void setStack(QUndoStack *stack))
-   GUI_CS_SLOT_2(setStack)
+    QUndoStack *stack() const;
 
 #ifndef QT_NO_UNDOGROUP
-   GUI_CS_SLOT_1(Public, void setGroup(QUndoGroup *group))
-   GUI_CS_SLOT_2(setGroup)
+    QUndoGroup *group() const;
 #endif
 
- private:
-   Q_DECLARE_PRIVATE(QUndoView)
+    void setEmptyLabel( const QString &label );
+    QString emptyLabel() const;
+
+    void setCleanIcon( const QIcon &icon );
+    QIcon cleanIcon() const;
+
+    GUI_LSCS_SLOT_1( Public, void setStack( QUndoStack *stack ) )
+    GUI_LSCS_SLOT_2( setStack )
+
+#ifndef QT_NO_UNDOGROUP
+    GUI_LSCS_SLOT_1( Public, void setGroup( QUndoGroup *group ) )
+    GUI_LSCS_SLOT_2( setGroup )
+#endif
+
+private:
+    Q_DECLARE_PRIVATE( QUndoView )
 };
 
 #endif // QT_NO_UNDOVIEW

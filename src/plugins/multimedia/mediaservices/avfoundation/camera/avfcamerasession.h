@@ -37,112 +37,119 @@ class AVFCameraService;
 class AVFCameraRendererControl;
 class AVFMediaVideoProbeControl;
 
-struct AVFCameraInfo {
-   AVFCameraInfo()
-      : position(QCamera::UnspecifiedPosition), orientation(0) {
-   }
+struct AVFCameraInfo
+{
+    AVFCameraInfo()
+        : position( QCamera::UnspecifiedPosition ), orientation( 0 )
+    {
+    }
 
-   QString deviceId;
-   QString description;
-   QCamera::Position position;
-   int orientation;
+    QString deviceId;
+    QString description;
+    QCamera::Position position;
+    int orientation;
 };
 
 class AVFCameraSession : public QObject
 {
-   CS_OBJECT(AVFCameraSession)
+    LSCS_OBJECT( AVFCameraSession )
 
- public:
-   AVFCameraSession(AVFCameraService *service, QObject *parent = nullptr);
-   ~AVFCameraSession();
+public:
+    AVFCameraSession( AVFCameraService *service, QObject *parent = nullptr );
+    ~AVFCameraSession();
 
-   static int defaultCameraIndex();
-   static const QList<AVFCameraInfo> &availableCameraDevices();
-   static AVFCameraInfo cameraDeviceInfo(const QString &device);
+    static int defaultCameraIndex();
+    static const QList<AVFCameraInfo> &availableCameraDevices();
+    static AVFCameraInfo cameraDeviceInfo( const QString &device );
 
-   AVFCameraInfo activeCameraInfo() const {
-      return m_activeCameraInfo;
-   }
+    AVFCameraInfo activeCameraInfo() const
+    {
+        return m_activeCameraInfo;
+    }
 
-   void setVideoOutput(AVFCameraRendererControl *output);
-   AVCaptureSession *captureSession() const {
-      return m_captureSession;
-   }
-   AVCaptureDevice *videoCaptureDevice() const;
+    void setVideoOutput( AVFCameraRendererControl *output );
+    AVCaptureSession *captureSession() const
+    {
+        return m_captureSession;
+    }
+    AVCaptureDevice *videoCaptureDevice() const;
 
-   QCamera::State state() const;
-   QCamera::State requestedState() const {
-      return m_state;
-   }
-   bool isActive() const {
-      return m_active;
-   }
+    QCamera::State state() const;
+    QCamera::State requestedState() const
+    {
+        return m_state;
+    }
+    bool isActive() const
+    {
+        return m_active;
+    }
 
-   void addProbe(AVFMediaVideoProbeControl *probe);
-   void removeProbe(AVFMediaVideoProbeControl *probe);
-   FourCharCode defaultCodec();
+    void addProbe( AVFMediaVideoProbeControl *probe );
+    void removeProbe( AVFMediaVideoProbeControl *probe );
+    FourCharCode defaultCodec();
 
-   AVCaptureDeviceInput *videoInput() const {
-      return m_videoInput;
-   }
+    AVCaptureDeviceInput *videoInput() const
+    {
+        return m_videoInput;
+    }
 
-   CS_SLOT_1(Public, void setState(QCamera::State state))
-   CS_SLOT_2(setState)
+    LSCS_SLOT_1( Public, void setState( QCamera::State state ) )
+    LSCS_SLOT_2( setState )
 
-   CS_SLOT_1(Public, void processRuntimeError())
-   CS_SLOT_2(processRuntimeError)
+    LSCS_SLOT_1( Public, void processRuntimeError() )
+    LSCS_SLOT_2( processRuntimeError )
 
-   CS_SLOT_1(Public, void processSessionStarted())
-   CS_SLOT_2(processSessionStarted)
+    LSCS_SLOT_1( Public, void processSessionStarted() )
+    LSCS_SLOT_2( processSessionStarted )
 
-   CS_SLOT_1(Public, void processSessionStopped())
-   CS_SLOT_2(processSessionStopped)
+    LSCS_SLOT_1( Public, void processSessionStopped() )
+    LSCS_SLOT_2( processSessionStopped )
 
-   CS_SLOT_1(Public, void onCaptureModeChanged(QCamera::CaptureModes mode))
-   CS_SLOT_2(onCaptureModeChanged)
+    LSCS_SLOT_1( Public, void onCaptureModeChanged( QCamera::CaptureModes mode ) )
+    LSCS_SLOT_2( onCaptureModeChanged )
 
-   CS_SLOT_1(Public, void onCameraFrameFetched(const QVideoFrame &frame))
-   CS_SLOT_2(onCameraFrameFetched)
+    LSCS_SLOT_1( Public, void onCameraFrameFetched( const QVideoFrame &frame ) )
+    LSCS_SLOT_2( onCameraFrameFetched )
 
-   CS_SIGNAL_1(Public, void readyToConfigureConnections())
-   CS_SIGNAL_2(readyToConfigureConnections)
+    LSCS_SIGNAL_1( Public, void readyToConfigureConnections() )
+    LSCS_SIGNAL_2( readyToConfigureConnections )
 
-   CS_SIGNAL_1(Public, void stateChanged(QCamera::State newState))
-   CS_SIGNAL_2(stateChanged, newState)
+    LSCS_SIGNAL_1( Public, void stateChanged( QCamera::State newState ) )
+    LSCS_SIGNAL_2( stateChanged, newState )
 
-   CS_SIGNAL_1(Public, void activeChanged(bool isActive))
-   CS_SIGNAL_2(activeChanged, isActive)
+    LSCS_SIGNAL_1( Public, void activeChanged( bool isActive ) )
+    LSCS_SIGNAL_2( activeChanged, isActive )
 
-   CS_SIGNAL_1(Public, void newViewfinderFrame(const QVideoFrame &frame))
-   CS_SIGNAL_2(newViewfinderFrame, frame)
+    LSCS_SIGNAL_1( Public, void newViewfinderFrame( const QVideoFrame &frame ) )
+    LSCS_SIGNAL_2( newViewfinderFrame, frame )
 
-   CS_SIGNAL_1(Public, void error(int error, const QString &errorString))
-   CS_SIGNAL_2(error, error, errorString)
+    LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( error, error, errorString )
 
- private:
-   static void updateCameraDevices();
-   void attachVideoInputDevice();
-   bool applyImageEncoderSettings();
-   bool applyViewfinderSettings();
+private:
+    static void updateCameraDevices();
+    void attachVideoInputDevice();
+    bool applyImageEncoderSettings();
+    bool applyViewfinderSettings();
 
-   static int m_defaultCameraIndex;
-   static QList<AVFCameraInfo> m_cameraDevices;
-   AVFCameraInfo m_activeCameraInfo;
+    static int m_defaultCameraIndex;
+    static QList<AVFCameraInfo> m_cameraDevices;
+    AVFCameraInfo m_activeCameraInfo;
 
-   AVFCameraService *m_service;
-   AVFCameraRendererControl *m_videoOutput;
+    AVFCameraService *m_service;
+    AVFCameraRendererControl *m_videoOutput;
 
-   QCamera::State m_state;
-   bool m_active;
+    QCamera::State m_state;
+    bool m_active;
 
-   AVCaptureSession *m_captureSession;
-   AVCaptureDeviceInput *m_videoInput;
-   AVFCameraSessionObserver *m_observer;
+    AVCaptureSession *m_captureSession;
+    AVCaptureDeviceInput *m_videoInput;
+    AVFCameraSessionObserver *m_observer;
 
-   QSet<AVFMediaVideoProbeControl *> m_videoProbes;
-   QMutex m_videoProbesMutex;
+    QSet<AVFMediaVideoProbeControl *> m_videoProbes;
+    QMutex m_videoProbesMutex;
 
-   FourCharCode m_defaultCodec;
+    FourCharCode m_defaultCodec;
 };
 
 #endif

@@ -30,7 +30,8 @@
 #include "PlatformContextSkia.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 RenderSVGResourceType RenderSVGResourceSolidColor::s_resourceType = SolidColorResourceType;
 
@@ -42,48 +43,64 @@ RenderSVGResourceSolidColor::~RenderSVGResourceSolidColor()
 {
 }
 
-bool RenderSVGResourceSolidColor::applyResource(RenderObject* object, RenderStyle* style, GraphicsContext*& context, unsigned short resourceMode)
+bool RenderSVGResourceSolidColor::applyResource( RenderObject *object, RenderStyle *style, GraphicsContext *&context,
+        unsigned short resourceMode )
 {
     // We are NOT allowed to ASSERT(object) here, unlike all other resources.
     // RenderSVGResourceSolidColor is the only resource which may be used from HTML, when rendering
     // SVG Fonts for a HTML document. This will be indicated by a null RenderObject pointer.
-    ASSERT(context);
-    ASSERT(resourceMode != ApplyToDefaultMode);
+    ASSERT( context );
+    ASSERT( resourceMode != ApplyToDefaultMode );
 
-    const SVGRenderStyle* svgStyle = style ? style->svgStyle() : 0;
+    const SVGRenderStyle *svgStyle = style ? style->svgStyle() : 0;
     ColorSpace colorSpace = style ? style->colorSpace() : ColorSpaceDeviceRGB;
 
-    if (resourceMode & ApplyToFillMode) {
-        context->setAlpha(svgStyle ? svgStyle->fillOpacity() : 1.0f);
-        context->setFillColor(m_color, colorSpace);
-        context->setFillRule(svgStyle ? svgStyle->fillRule() : RULE_NONZERO);
+    if ( resourceMode & ApplyToFillMode )
+    {
+        context->setAlpha( svgStyle ? svgStyle->fillOpacity() : 1.0f );
+        context->setFillColor( m_color, colorSpace );
+        context->setFillRule( svgStyle ? svgStyle->fillRule() : RULE_NONZERO );
 
-        if (resourceMode & ApplyToTextMode)
-            context->setTextDrawingMode(TextModeFill);
-    } else if (resourceMode & ApplyToStrokeMode) {
-        context->setAlpha(svgStyle ? svgStyle->strokeOpacity() : 1.0f);
-        context->setStrokeColor(m_color, colorSpace);
+        if ( resourceMode & ApplyToTextMode )
+        {
+            context->setTextDrawingMode( TextModeFill );
+        }
+    }
+    else if ( resourceMode & ApplyToStrokeMode )
+    {
+        context->setAlpha( svgStyle ? svgStyle->strokeOpacity() : 1.0f );
+        context->setStrokeColor( m_color, colorSpace );
 
-        if (style)
-            SVGRenderSupport::applyStrokeStyleToContext(context, style, object);
+        if ( style )
+        {
+            SVGRenderSupport::applyStrokeStyleToContext( context, style, object );
+        }
 
-        if (resourceMode & ApplyToTextMode)
-            context->setTextDrawingMode(TextModeStroke);
+        if ( resourceMode & ApplyToTextMode )
+        {
+            context->setTextDrawingMode( TextModeStroke );
+        }
     }
 
     return true;
 }
 
-void RenderSVGResourceSolidColor::postApplyResource(RenderObject*, GraphicsContext*& context, unsigned short resourceMode, const Path* path)
+void RenderSVGResourceSolidColor::postApplyResource( RenderObject *, GraphicsContext *&context, unsigned short resourceMode,
+        const Path *path )
 {
-    ASSERT(context);
-    ASSERT(resourceMode != ApplyToDefaultMode);
+    ASSERT( context );
+    ASSERT( resourceMode != ApplyToDefaultMode );
 
-    if (path && !(resourceMode & ApplyToTextMode)) {
-        if (resourceMode & ApplyToFillMode)
-            context->fillPath(*path);
-        else if (resourceMode & ApplyToStrokeMode)
-            context->strokePath(*path);
+    if ( path && !( resourceMode & ApplyToTextMode ) )
+    {
+        if ( resourceMode & ApplyToFillMode )
+        {
+            context->fillPath( *path );
+        }
+        else if ( resourceMode & ApplyToStrokeMode )
+        {
+            context->strokePath( *path );
+        }
     }
 }
 

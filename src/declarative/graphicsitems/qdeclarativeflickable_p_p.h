@@ -45,175 +45,181 @@ const qreal MinimumFlickVelocity = QML_FLICK_MINVELOCITY;
 class QDeclarativeFlickableVisibleArea;
 class QDeclarativeFlickablePrivate : public QDeclarativeItemPrivate, public QDeclarativeItemChangeListener
 {
-   Q_DECLARE_PUBLIC(QDeclarativeFlickable)
+    Q_DECLARE_PUBLIC( QDeclarativeFlickable )
 
- public:
-   QDeclarativeFlickablePrivate();
-   void init();
+public:
+    QDeclarativeFlickablePrivate();
+    void init();
 
-   struct Velocity : public QDeclarativeTimeLineValue {
-      Velocity(QDeclarativeFlickablePrivate *p)
-         : parent(p) {}
-      virtual void setValue(qreal v) {
-         if (v != value()) {
-            QDeclarativeTimeLineValue::setValue(v);
-            parent->updateVelocity();
-         }
-      }
-      QDeclarativeFlickablePrivate *parent;
-   };
+    struct Velocity : public QDeclarativeTimeLineValue
+    {
+        Velocity( QDeclarativeFlickablePrivate *p )
+            : parent( p ) {}
+        virtual void setValue( qreal v )
+        {
+            if ( v != value() )
+            {
+                QDeclarativeTimeLineValue::setValue( v );
+                parent->updateVelocity();
+            }
+        }
+        QDeclarativeFlickablePrivate *parent;
+    };
 
-   struct AxisData {
-      AxisData(QDeclarativeFlickablePrivate *fp, void (QDeclarativeFlickablePrivate::*func)(qreal))
-         : move(fp, func), viewSize(-1), smoothVelocity(fp), atEnd(false), atBeginning(true)
-         , fixingUp(false), inOvershoot(false), moving(false), flicking(false) {
-      }
+    struct AxisData
+    {
+        AxisData( QDeclarativeFlickablePrivate *fp, void ( QDeclarativeFlickablePrivate::*func )( qreal ) )
+            : move( fp, func ), viewSize( -1 ), smoothVelocity( fp ), atEnd( false ), atBeginning( true )
+            , fixingUp( false ), inOvershoot( false ), moving( false ), flicking( false )
+        {
+        }
 
-      void reset() {
-         velocityBuffer.clear();
-         dragStartOffset = 0;
-         fixingUp = false;
-         inOvershoot = false;
-      }
+        void reset()
+        {
+            velocityBuffer.clear();
+            dragStartOffset = 0;
+            fixingUp = false;
+            inOvershoot = false;
+        }
 
-      void addVelocitySample(qreal v, qreal maxVelocity);
-      void updateVelocity();
+        void addVelocitySample( qreal v, qreal maxVelocity );
+        void updateVelocity();
 
-      QDeclarativeTimeLineValueProxy<QDeclarativeFlickablePrivate> move;
-      qreal viewSize;
-      qreal pressPos;
-      qreal dragStartOffset;
-      qreal dragMinBound;
-      qreal dragMaxBound;
-      qreal velocity;
-      qreal flickTarget;
-      QDeclarativeFlickablePrivate::Velocity smoothVelocity;
-      QPODVector<qreal, 10> velocityBuffer;
-      bool atEnd : 1;
-      bool atBeginning : 1;
-      bool fixingUp : 1;
-      bool inOvershoot : 1;
-      bool moving : 1;
-      bool flicking : 1;
-   };
+        QDeclarativeTimeLineValueProxy<QDeclarativeFlickablePrivate> move;
+        qreal viewSize;
+        qreal pressPos;
+        qreal dragStartOffset;
+        qreal dragMinBound;
+        qreal dragMaxBound;
+        qreal velocity;
+        qreal flickTarget;
+        QDeclarativeFlickablePrivate::Velocity smoothVelocity;
+        QPODVector<qreal, 10> velocityBuffer;
+        bool atEnd : 1;
+        bool atBeginning : 1;
+        bool fixingUp : 1;
+        bool inOvershoot : 1;
+        bool moving : 1;
+        bool flicking : 1;
+    };
 
-   void flickX(qreal velocity);
-   void flickY(qreal velocity);
-   virtual void flick(AxisData &data, qreal minExtent, qreal maxExtent, qreal vSize,
-                      QDeclarativeTimeLineCallback::Callback fixupCallback, qreal velocity);
+    void flickX( qreal velocity );
+    void flickY( qreal velocity );
+    virtual void flick( AxisData &data, qreal minExtent, qreal maxExtent, qreal vSize,
+                        QDeclarativeTimeLineCallback::Callback fixupCallback, qreal velocity );
 
-   void fixupX();
-   void fixupY();
-   virtual void fixup(AxisData &data, qreal minExtent, qreal maxExtent);
+    void fixupX();
+    void fixupY();
+    virtual void fixup( AxisData &data, qreal minExtent, qreal maxExtent );
 
-   void updateBeginningEnd();
+    void updateBeginningEnd();
 
-   bool isOutermostPressDelay() const;
-   void captureDelayedPress(QGraphicsSceneMouseEvent *event);
-   void clearDelayedPress();
+    bool isOutermostPressDelay() const;
+    void captureDelayedPress( QGraphicsSceneMouseEvent *event );
+    void clearDelayedPress();
 
-   void setRoundedViewportX(qreal x);
-   void setRoundedViewportY(qreal y);
+    void setRoundedViewportX( qreal x );
+    void setRoundedViewportY( qreal y );
 
-   qreal overShootDistance(qreal size);
+    qreal overShootDistance( qreal size );
 
-   void itemGeometryChanged(QDeclarativeItem *, const QRectF &, const QRectF &);
+    void itemGeometryChanged( QDeclarativeItem *, const QRectF &, const QRectF & );
 
- public:
-   QDeclarativeItem *contentItem;
+public:
+    QDeclarativeItem *contentItem;
 
-   AxisData hData;
-   AxisData vData;
+    AxisData hData;
+    AxisData vData;
 
-   QDeclarativeTimeLine timeline;
-   bool hMoved : 1;
-   bool vMoved : 1;
-   bool stealMouse : 1;
-   bool pressed : 1;
-   bool interactive : 1;
-   bool calcVelocity : 1;
-   QElapsedTimer lastPosTime;
-   QPointF lastPos;
-   QPointF pressPos;
-   QElapsedTimer pressTime;
-   qreal deceleration;
-   qreal maxVelocity;
-   QElapsedTimer velocityTime;
-   QPointF lastFlickablePosition;
-   qreal reportedVelocitySmoothing;
-   QGraphicsSceneMouseEvent *delayedPressEvent;
-   QGraphicsItem *delayedPressTarget;
-   QBasicTimer delayedPressTimer;
-   int pressDelay;
-   int fixupDuration;
+    QDeclarativeTimeLine timeline;
+    bool hMoved : 1;
+    bool vMoved : 1;
+    bool stealMouse : 1;
+    bool pressed : 1;
+    bool interactive : 1;
+    bool calcVelocity : 1;
+    QElapsedTimer lastPosTime;
+    QPointF lastPos;
+    QPointF pressPos;
+    QElapsedTimer pressTime;
+    qreal deceleration;
+    qreal maxVelocity;
+    QElapsedTimer velocityTime;
+    QPointF lastFlickablePosition;
+    qreal reportedVelocitySmoothing;
+    QGraphicsSceneMouseEvent *delayedPressEvent;
+    QGraphicsItem *delayedPressTarget;
+    QBasicTimer delayedPressTimer;
+    int pressDelay;
+    int fixupDuration;
 
-   enum FixupMode { Normal, Immediate, ExtentChanged };
-   FixupMode fixupMode;
+    enum FixupMode { Normal, Immediate, ExtentChanged };
+    FixupMode fixupMode;
 
-   static void fixupY_callback(void *);
-   static void fixupX_callback(void *);
+    static void fixupY_callback( void * );
+    static void fixupX_callback( void * );
 
-   void updateVelocity();
-   int vTime;
-   QDeclarativeTimeLine velocityTimeline;
-   QDeclarativeFlickableVisibleArea *visibleArea;
-   QDeclarativeFlickable::FlickableDirection flickableDirection;
-   QDeclarativeFlickable::BoundsBehavior boundsBehavior;
+    void updateVelocity();
+    int vTime;
+    QDeclarativeTimeLine velocityTimeline;
+    QDeclarativeFlickableVisibleArea *visibleArea;
+    QDeclarativeFlickable::FlickableDirection flickableDirection;
+    QDeclarativeFlickable::BoundsBehavior boundsBehavior;
 
-   void handleMousePressEvent(QGraphicsSceneMouseEvent *);
-   void handleMouseMoveEvent(QGraphicsSceneMouseEvent *);
-   void handleMouseReleaseEvent(QGraphicsSceneMouseEvent *);
+    void handleMousePressEvent( QGraphicsSceneMouseEvent * );
+    void handleMouseMoveEvent( QGraphicsSceneMouseEvent * );
+    void handleMouseReleaseEvent( QGraphicsSceneMouseEvent * );
 
-   // flickableData property
-   static void data_append(QDeclarativeListProperty<QObject> *, QObject *);
-   static int data_count(QDeclarativeListProperty<QObject> *);
-   static QObject *data_at(QDeclarativeListProperty<QObject> *, int);
-   static void data_clear(QDeclarativeListProperty<QObject> *);
+    // flickableData property
+    static void data_append( QDeclarativeListProperty<QObject> *, QObject * );
+    static int data_count( QDeclarativeListProperty<QObject> * );
+    static QObject *data_at( QDeclarativeListProperty<QObject> *, int );
+    static void data_clear( QDeclarativeListProperty<QObject> * );
 };
 
 class QDeclarativeFlickableVisibleArea : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeFlickableVisibleArea)
+    DECL_LSCS_OBJECT( QDeclarativeFlickableVisibleArea )
 
-   DECL_CS_PROPERTY_READ(xPosition, xPosition)
-   DECL_CS_PROPERTY_NOTIFY(xPosition, xPositionChanged)
-   DECL_CS_PROPERTY_READ(yPosition, yPosition)
-   DECL_CS_PROPERTY_NOTIFY(yPosition, yPositionChanged)
-   DECL_CS_PROPERTY_READ(widthRatio, widthRatio)
-   DECL_CS_PROPERTY_NOTIFY(widthRatio, widthRatioChanged)
-   DECL_CS_PROPERTY_READ(heightRatio, heightRatio)
-   DECL_CS_PROPERTY_NOTIFY(heightRatio, heightRatioChanged)
+    DECL_LSCS_PROPERTY_READ( xPosition, xPosition )
+    DECL_LSCS_PROPERTY_NOTIFY( xPosition, xPositionChanged )
+    DECL_LSCS_PROPERTY_READ( yPosition, yPosition )
+    DECL_LSCS_PROPERTY_NOTIFY( yPosition, yPositionChanged )
+    DECL_LSCS_PROPERTY_READ( widthRatio, widthRatio )
+    DECL_LSCS_PROPERTY_NOTIFY( widthRatio, widthRatioChanged )
+    DECL_LSCS_PROPERTY_READ( heightRatio, heightRatio )
+    DECL_LSCS_PROPERTY_NOTIFY( heightRatio, heightRatioChanged )
 
- public:
-   QDeclarativeFlickableVisibleArea(QDeclarativeFlickable *parent = 0);
+public:
+    QDeclarativeFlickableVisibleArea( QDeclarativeFlickable *parent = 0 );
 
-   qreal xPosition() const;
-   qreal widthRatio() const;
-   qreal yPosition() const;
-   qreal heightRatio() const;
+    qreal xPosition() const;
+    qreal widthRatio() const;
+    qreal yPosition() const;
+    qreal heightRatio() const;
 
-   void updateVisible();
+    void updateVisible();
 
- public:
-   DECL_CS_SIGNAL_1(Public, void xPositionChanged(qreal xPosition))
-   DECL_CS_SIGNAL_2(xPositionChanged, xPosition)
-   DECL_CS_SIGNAL_1(Public, void yPositionChanged(qreal yPosition))
-   DECL_CS_SIGNAL_2(yPositionChanged, yPosition)
-   DECL_CS_SIGNAL_1(Public, void widthRatioChanged(qreal widthRatio))
-   DECL_CS_SIGNAL_2(widthRatioChanged, widthRatio)
-   DECL_CS_SIGNAL_1(Public, void heightRatioChanged(qreal heightRatio))
-   DECL_CS_SIGNAL_2(heightRatioChanged, heightRatio)
+public:
+    DECL_LSCS_SIGNAL_1( Public, void xPositionChanged( qreal xPosition ) )
+    DECL_LSCS_SIGNAL_2( xPositionChanged, xPosition )
+    DECL_LSCS_SIGNAL_1( Public, void yPositionChanged( qreal yPosition ) )
+    DECL_LSCS_SIGNAL_2( yPositionChanged, yPosition )
+    DECL_LSCS_SIGNAL_1( Public, void widthRatioChanged( qreal widthRatio ) )
+    DECL_LSCS_SIGNAL_2( widthRatioChanged, widthRatio )
+    DECL_LSCS_SIGNAL_1( Public, void heightRatioChanged( qreal heightRatio ) )
+    DECL_LSCS_SIGNAL_2( heightRatioChanged, heightRatio )
 
- private:
-   QDeclarativeFlickable *flickable;
-   qreal m_xPosition;
-   qreal m_widthRatio;
-   qreal m_yPosition;
-   qreal m_heightRatio;
+private:
+    QDeclarativeFlickable *flickable;
+    qreal m_xPosition;
+    qreal m_widthRatio;
+    qreal m_yPosition;
+    qreal m_heightRatio;
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeFlickableVisibleArea)
+QML_DECLARE_TYPE( QDeclarativeFlickableVisibleArea )
 
 #endif

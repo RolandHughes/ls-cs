@@ -24,52 +24,55 @@
 #include <qxcb_nativeinterfacehandler.h>
 #include <qxcb_nativeinterface.h>
 
-QXcbNativeInterfaceHandler::QXcbNativeInterfaceHandler(QXcbNativeInterface *nativeInterface)
-   : m_native_interface(nativeInterface)
+QXcbNativeInterfaceHandler::QXcbNativeInterfaceHandler( QXcbNativeInterface *nativeInterface )
+    : m_native_interface( nativeInterface )
 {
-   m_native_interface->addHandler(this);
+    m_native_interface->addHandler( this );
 }
 
 QXcbNativeInterfaceHandler::~QXcbNativeInterfaceHandler()
 {
-   m_native_interface->removeHandler(this);
+    m_native_interface->removeHandler( this );
 }
 
 QPlatformNativeInterface::FP_Integration QXcbNativeInterfaceHandler::nativeResourceFunctionForIntegration(
-   const QByteArray &resource) const
+    const QByteArray &resource ) const
 {
-   (void) resource;
-   return nullptr;
+    ( void ) resource;
+    return nullptr;
 }
 
-QPlatformNativeInterface::FP_Context QXcbNativeInterfaceHandler::nativeResourceFunctionForContext(const QByteArray &resource) const
+QPlatformNativeInterface::FP_Context QXcbNativeInterfaceHandler::nativeResourceFunctionForContext(
+    const QByteArray &resource ) const
 {
-   (void) resource;
-   return nullptr;
+    ( void ) resource;
+    return nullptr;
 }
 
-QPlatformNativeInterface::FP_Screen QXcbNativeInterfaceHandler::nativeResourceFunctionForScreen(const QByteArray &resource) const
+QPlatformNativeInterface::FP_Screen QXcbNativeInterfaceHandler::nativeResourceFunctionForScreen(
+    const QByteArray &resource ) const
 {
-   (void) resource;
-   return nullptr;
+    ( void ) resource;
+    return nullptr;
 }
 
-QPlatformNativeInterface::FP_Window QXcbNativeInterfaceHandler::nativeResourceFunctionForWindow(const QByteArray &resource) const
+QPlatformNativeInterface::FP_Window QXcbNativeInterfaceHandler::nativeResourceFunctionForWindow(
+    const QByteArray &resource ) const
 {
-   (void) resource;
-   return nullptr;
+    ( void ) resource;
+    return nullptr;
 }
 
 QPlatformNativeInterface::FP_BackingStore QXcbNativeInterfaceHandler::nativeResourceFunctionForBackingStore(
-   const QByteArray &resource) const
+    const QByteArray &resource ) const
 {
-   (void) resource;
-   return nullptr;
+    ( void ) resource;
+    return nullptr;
 }
 
-QXcbNativeInterfaceHandler::FP_Void QXcbNativeInterfaceHandler::platformFunction(const QByteArray &function) const
+QXcbNativeInterfaceHandler::FP_Void QXcbNativeInterfaceHandler::platformFunction( const QByteArray &function ) const
 {
-   (void) function;
-   return nullptr;
+    ( void ) function;
+    return nullptr;
 }
 

@@ -27,29 +27,36 @@
 #include "SVGTransformList.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class AffineTransform;
 class SVGTransform;
 class QualifiedName;
 
-class SVGTransformable : virtual public SVGLocatable {
+class SVGTransformable : virtual public SVGLocatable
+{
 public:
-    enum TransformParsingMode {
+    enum TransformParsingMode
+    {
         ClearList,
         DoNotClearList
     };
 
     virtual ~SVGTransformable();
 
-    static bool parseTransformAttribute(SVGTransformList&, const AtomicString& transform);
-    static bool parseTransformAttribute(SVGTransformList&, const UChar*& ptr, const UChar* end, TransformParsingMode mode = ClearList);
-    static bool parseTransformValue(unsigned type, const UChar*& ptr, const UChar* end, SVGTransform&);
+    static bool parseTransformAttribute( SVGTransformList &, const AtomicString &transform );
+    static bool parseTransformAttribute( SVGTransformList &, const UChar *&ptr, const UChar *end,
+                                         TransformParsingMode mode = ClearList );
+    static bool parseTransformValue( unsigned type, const UChar *&ptr, const UChar *end, SVGTransform & );
 
-    virtual AffineTransform localCoordinateSpaceTransform(SVGLocatable::CTMScope) const { return animatedLocalTransform(); }
+    virtual AffineTransform localCoordinateSpaceTransform( SVGLocatable::CTMScope ) const
+    {
+        return animatedLocalTransform();
+    }
     virtual AffineTransform animatedLocalTransform() const = 0;
 
-    bool isKnownAttribute(const QualifiedName&);
+    bool isKnownAttribute( const QualifiedName & );
 };
 
 } // namespace WebCore

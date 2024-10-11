@@ -28,13 +28,13 @@
 
 class AVFMediaVideoProbeControl : public QMediaVideoProbeControl
 {
-   CS_OBJECT(AVFMediaVideoProbeControl)
+    LSCS_OBJECT( AVFMediaVideoProbeControl )
 
- public:
-   explicit AVFMediaVideoProbeControl(QObject *parent = nullptr);
-   ~AVFMediaVideoProbeControl();
+public:
+    explicit AVFMediaVideoProbeControl( QObject *parent = nullptr );
+    ~AVFMediaVideoProbeControl();
 
-   void newFrameProbed(const QVideoFrame &frame);
+    void newFrameProbed( const QVideoFrame &frame );
 };
 
 #endif

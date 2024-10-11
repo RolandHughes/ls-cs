@@ -26,22 +26,23 @@
 
 #include <qexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TripleContainer : public Expression
 {
- public:
-   Expression::List operands() const override;
-   void setOperands(const Expression::List &operands) override;
+public:
+    Expression::List operands() const override;
+    void setOperands( const Expression::List &operands ) override;
 
-   bool compressOperands(const StaticContext::Ptr &) override;
+    bool compressOperands( const StaticContext::Ptr & ) override;
 
- protected:
-   TripleContainer(const Expression::Ptr &operand1, const Expression::Ptr &operand2, const Expression::Ptr &operand3);
+protected:
+    TripleContainer( const Expression::Ptr &operand1, const Expression::Ptr &operand2, const Expression::Ptr &operand3 );
 
-   Expression::Ptr m_operand1;
-   Expression::Ptr m_operand2;
-   Expression::Ptr m_operand3;
+    Expression::Ptr m_operand1;
+    Expression::Ptr m_operand2;
+    Expression::Ptr m_operand3;
 };
 
 }

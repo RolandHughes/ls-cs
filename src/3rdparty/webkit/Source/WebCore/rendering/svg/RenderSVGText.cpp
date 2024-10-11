@@ -47,92 +47,114 @@
 #include "TransformState.h"
 #include "VisiblePosition.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderSVGText::RenderSVGText(SVGTextElement* node) 
-    : RenderSVGBlock(node)
-    , m_needsReordering(false)
-    , m_needsPositioningValuesUpdate(true)
-    , m_needsTransformUpdate(true)
+RenderSVGText::RenderSVGText( SVGTextElement *node )
+    : RenderSVGBlock( node )
+    , m_needsReordering( false )
+    , m_needsPositioningValuesUpdate( true )
+    , m_needsTransformUpdate( true )
 {
 }
 
-bool RenderSVGText::isChildAllowed(RenderObject* child, RenderStyle*) const
+bool RenderSVGText::isChildAllowed( RenderObject *child, RenderStyle * ) const
 {
     return child->isInline();
 }
 
-RenderSVGText* RenderSVGText::locateRenderSVGTextAncestor(RenderObject* start)
+RenderSVGText *RenderSVGText::locateRenderSVGTextAncestor( RenderObject *start )
 {
-    ASSERT(start);
-    while (start && !start->isSVGText())
+    ASSERT( start );
+
+    while ( start && !start->isSVGText() )
+    {
         start = start->parent();
-    if (!start || !start->isSVGText())
+    }
+
+    if ( !start || !start->isSVGText() )
+    {
         return 0;
-    return toRenderSVGText(start);
+    }
+
+    return toRenderSVGText( start );
 }
 
-const RenderSVGText* RenderSVGText::locateRenderSVGTextAncestor(const RenderObject* start)
+const RenderSVGText *RenderSVGText::locateRenderSVGTextAncestor( const RenderObject *start )
 {
-    ASSERT(start);
-    while (start && !start->isSVGText())
+    ASSERT( start );
+
+    while ( start && !start->isSVGText() )
+    {
         start = start->parent();
-    if (!start || !start->isSVGText())
+    }
+
+    if ( !start || !start->isSVGText() )
+    {
         return 0;
-    return toRenderSVGText(start);
+    }
+
+    return toRenderSVGText( start );
 }
 
-IntRect RenderSVGText::clippedOverflowRectForRepaint(RenderBoxModelObject* repaintContainer)
+IntRect RenderSVGText::clippedOverflowRectForRepaint( RenderBoxModelObject *repaintContainer )
 {
-    return SVGRenderSupport::clippedOverflowRectForRepaint(this, repaintContainer);
+    return SVGRenderSupport::clippedOverflowRectForRepaint( this, repaintContainer );
 }
 
-void RenderSVGText::computeRectForRepaint(RenderBoxModelObject* repaintContainer, IntRect& repaintRect, bool fixed)
+void RenderSVGText::computeRectForRepaint( RenderBoxModelObject *repaintContainer, IntRect &repaintRect, bool fixed )
 {
-    SVGRenderSupport::computeRectForRepaint(this, repaintContainer, repaintRect, fixed);
+    SVGRenderSupport::computeRectForRepaint( this, repaintContainer, repaintRect, fixed );
 }
 
-void RenderSVGText::mapLocalToContainer(RenderBoxModelObject* repaintContainer, bool fixed, bool useTransforms, TransformState& transformState) const
+void RenderSVGText::mapLocalToContainer( RenderBoxModelObject *repaintContainer, bool fixed, bool useTransforms,
+        TransformState &transformState ) const
 {
-    SVGRenderSupport::mapLocalToContainer(this, repaintContainer, fixed, useTransforms, transformState);
+    SVGRenderSupport::mapLocalToContainer( this, repaintContainer, fixed, useTransforms, transformState );
 }
 
-static inline void recursiveUpdateScaledFont(RenderObject* start)
+static inline void recursiveUpdateScaledFont( RenderObject *start )
 {
-    for (RenderObject* child = start->firstChild(); child; child = child->nextSibling()) {
-        if (child->isSVGInlineText()) {
-            toRenderSVGInlineText(child)->updateScaledFont();
+    for ( RenderObject *child = start->firstChild(); child; child = child->nextSibling() )
+    {
+        if ( child->isSVGInlineText() )
+        {
+            toRenderSVGInlineText( child )->updateScaledFont();
             continue;
         }
 
-        recursiveUpdateScaledFont(child);
+        recursiveUpdateScaledFont( child );
     }
 }
 
 void RenderSVGText::layout()
 {
-    ASSERT(needsLayout());
-    LayoutRepainter repainter(*this, checkForRepaintDuringLayout());
+    ASSERT( needsLayout() );
+    LayoutRepainter repainter( *this, checkForRepaintDuringLayout() );
 
     bool updateCachedBoundariesInParents = false;
-    if (m_needsTransformUpdate) {
-        SVGTextElement* text = static_cast<SVGTextElement*>(node());
+
+    if ( m_needsTransformUpdate )
+    {
+        SVGTextElement *text = static_cast<SVGTextElement *>( node() );
         m_localTransform = text->animatedLocalTransform();
         m_needsTransformUpdate = false;
         updateCachedBoundariesInParents = true;
     }
 
     // If the root layout size changed (eg. window size changes) or the positioning values change, recompute the on-screen font size.
-    if (m_needsPositioningValuesUpdate || SVGRenderSupport::findTreeRootObject(this)->isLayoutSizeChanged()) {
-        recursiveUpdateScaledFont(this);
+    if ( m_needsPositioningValuesUpdate || SVGRenderSupport::findTreeRootObject( this )->isLayoutSizeChanged() )
+    {
+        recursiveUpdateScaledFont( this );
         m_needsPositioningValuesUpdate = true;
         updateCachedBoundariesInParents = true;
     }
 
-    if (m_needsPositioningValuesUpdate) {
+    if ( m_needsPositioningValuesUpdate )
+    {
         // Perform SVG text layout phase one (see SVGTextLayoutAttributesBuilder for details).
         SVGTextLayoutAttributesBuilder layoutAttributesBuilder;
-        layoutAttributesBuilder.buildLayoutAttributesForTextSubtree(this);
+        layoutAttributesBuilder.buildLayoutAttributesForTextSubtree( this );
         m_needsReordering = true;
         m_needsPositioningValuesUpdate = false;
         updateCachedBoundariesInParents = true;
@@ -140,138 +162,169 @@ void RenderSVGText::layout()
 
     // Reduced version of RenderBlock::layoutBlock(), which only takes care of SVG text.
     // All if branches that could cause early exit in RenderBlocks layoutBlock() method are turned into assertions.
-    ASSERT(!isInline());
-    ASSERT(!simplifiedLayout());
-    ASSERT(!scrollsOverflow());
-    ASSERT(!hasControlClip());
-    ASSERT(!hasColumns());
-    ASSERT(!positionedObjects());
-    ASSERT(!m_overflow);
-    ASSERT(!isAnonymousBlock());
+    ASSERT( !isInline() );
+    ASSERT( !simplifiedLayout() );
+    ASSERT( !scrollsOverflow() );
+    ASSERT( !hasControlClip() );
+    ASSERT( !hasColumns() );
+    ASSERT( !positionedObjects() );
+    ASSERT( !m_overflow );
+    ASSERT( !isAnonymousBlock() );
 
-    if (!firstChild())
-        setChildrenInline(true);
+    if ( !firstChild() )
+    {
+        setChildrenInline( true );
+    }
 
     // FIXME: We need to find a way to only layout the child boxes, if needed.
     FloatRect oldBoundaries = objectBoundingBox();
-    ASSERT(childrenInline());
+    ASSERT( childrenInline() );
     forceLayoutInlineChildren();
 
-    if (m_needsReordering)
+    if ( m_needsReordering )
+    {
         m_needsReordering = false;
+    }
 
-    if (!updateCachedBoundariesInParents)
+    if ( !updateCachedBoundariesInParents )
+    {
         updateCachedBoundariesInParents = oldBoundaries != objectBoundingBox();
+    }
 
     // Invalidate all resources of this client if our layout changed.
-    if (m_everHadLayout && selfNeedsLayout())
-        SVGResourcesCache::clientLayoutChanged(this);
+    if ( m_everHadLayout && selfNeedsLayout() )
+    {
+        SVGResourcesCache::clientLayoutChanged( this );
+    }
 
     // If our bounds changed, notify the parents.
-    if (updateCachedBoundariesInParents)
+    if ( updateCachedBoundariesInParents )
+    {
         RenderSVGBlock::setNeedsBoundariesUpdate();
+    }
 
     repainter.repaintAfterLayout();
-    setNeedsLayout(false);
+    setNeedsLayout( false );
 }
 
-RootInlineBox* RenderSVGText::createRootInlineBox() 
+RootInlineBox *RenderSVGText::createRootInlineBox()
 {
-    RootInlineBox* box = new (renderArena()) SVGRootInlineBox(this);
+    RootInlineBox *box = new ( renderArena() ) SVGRootInlineBox( this );
     box->setHasVirtualLogicalHeight();
     return box;
 }
 
-bool RenderSVGText::nodeAtFloatPoint(const HitTestRequest& request, HitTestResult& result, const FloatPoint& pointInParent, HitTestAction hitTestAction)
+bool RenderSVGText::nodeAtFloatPoint( const HitTestRequest &request, HitTestResult &result, const FloatPoint &pointInParent,
+                                      HitTestAction hitTestAction )
 {
-    PointerEventsHitRules hitRules(PointerEventsHitRules::SVG_TEXT_HITTESTING, request, style()->pointerEvents());
-    bool isVisible = (style()->visibility() == VISIBLE);
-    if (isVisible || !hitRules.requireVisible) {
-        if ((hitRules.canHitStroke && (style()->svgStyle()->hasStroke() || !hitRules.requireStroke))
-            || (hitRules.canHitFill && (style()->svgStyle()->hasFill() || !hitRules.requireFill))) {
-            FloatPoint localPoint = localToParentTransform().inverse().mapPoint(pointInParent);
+    PointerEventsHitRules hitRules( PointerEventsHitRules::SVG_TEXT_HITTESTING, request, style()->pointerEvents() );
+    bool isVisible = ( style()->visibility() == VISIBLE );
 
-            if (!SVGRenderSupport::pointInClippingArea(this, localPoint))
-                return false;       
+    if ( isVisible || !hitRules.requireVisible )
+    {
+        if ( ( hitRules.canHitStroke && ( style()->svgStyle()->hasStroke() || !hitRules.requireStroke ) )
+                || ( hitRules.canHitFill && ( style()->svgStyle()->hasFill() || !hitRules.requireFill ) ) )
+        {
+            FloatPoint localPoint = localToParentTransform().inverse().mapPoint( pointInParent );
 
-            return RenderBlock::nodeAtPoint(request, result, (int)localPoint.x(), (int)localPoint.y(), 0, 0, hitTestAction);
+            if ( !SVGRenderSupport::pointInClippingArea( this, localPoint ) )
+            {
+                return false;
+            }
+
+            return RenderBlock::nodeAtPoint( request, result, ( int )localPoint.x(), ( int )localPoint.y(), 0, 0, hitTestAction );
         }
     }
 
     return false;
 }
 
-bool RenderSVGText::nodeAtPoint(const HitTestRequest&, HitTestResult&, int, int, int, int, HitTestAction)
+bool RenderSVGText::nodeAtPoint( const HitTestRequest &, HitTestResult &, int, int, int, int, HitTestAction )
 {
     ASSERT_NOT_REACHED();
     return false;
 }
 
-VisiblePosition RenderSVGText::positionForPoint(const IntPoint& pointInContents)
+VisiblePosition RenderSVGText::positionForPoint( const IntPoint &pointInContents )
 {
-    RootInlineBox* rootBox = firstRootBox();
-    if (!rootBox)
-        return createVisiblePosition(0, DOWNSTREAM);
+    RootInlineBox *rootBox = firstRootBox();
 
-    ASSERT(rootBox->isSVGRootInlineBox());
-    ASSERT(!rootBox->nextRootBox());
-    ASSERT(childrenInline());
+    if ( !rootBox )
+    {
+        return createVisiblePosition( 0, DOWNSTREAM );
+    }
 
-    InlineBox* closestBox = static_cast<SVGRootInlineBox*>(rootBox)->closestLeafChildForPosition(pointInContents);
-    if (!closestBox)
-        return createVisiblePosition(0, DOWNSTREAM);
+    ASSERT( rootBox->isSVGRootInlineBox() );
+    ASSERT( !rootBox->nextRootBox() );
+    ASSERT( childrenInline() );
 
-    return closestBox->renderer()->positionForPoint(IntPoint(pointInContents.x(), closestBox->m_y));
+    InlineBox *closestBox = static_cast<SVGRootInlineBox *>( rootBox )->closestLeafChildForPosition( pointInContents );
+
+    if ( !closestBox )
+    {
+        return createVisiblePosition( 0, DOWNSTREAM );
+    }
+
+    return closestBox->renderer()->positionForPoint( IntPoint( pointInContents.x(), closestBox->m_y ) );
 }
 
-void RenderSVGText::absoluteQuads(Vector<FloatQuad>& quads)
+void RenderSVGText::absoluteQuads( Vector<FloatQuad> &quads )
 {
-    quads.append(localToAbsoluteQuad(strokeBoundingBox()));
+    quads.append( localToAbsoluteQuad( strokeBoundingBox() ) );
 }
 
-void RenderSVGText::paint(PaintInfo& paintInfo, int, int)
+void RenderSVGText::paint( PaintInfo &paintInfo, int, int )
 {
-    if (paintInfo.context->paintingDisabled())
+    if ( paintInfo.context->paintingDisabled() )
+    {
         return;
+    }
 
-    if (paintInfo.phase != PaintPhaseForeground
-     && paintInfo.phase != PaintPhaseSelfOutline
-     && paintInfo.phase != PaintPhaseSelection)
-         return;
+    if ( paintInfo.phase != PaintPhaseForeground
+            && paintInfo.phase != PaintPhaseSelfOutline
+            && paintInfo.phase != PaintPhaseSelection )
+    {
+        return;
+    }
 
-    PaintInfo blockInfo(paintInfo);
-    GraphicsContextStateSaver stateSaver(*blockInfo.context);
-    blockInfo.applyTransform(localToParentTransform());
-    RenderBlock::paint(blockInfo, 0, 0);
+    PaintInfo blockInfo( paintInfo );
+    GraphicsContextStateSaver stateSaver( *blockInfo.context );
+    blockInfo.applyTransform( localToParentTransform() );
+    RenderBlock::paint( blockInfo, 0, 0 );
 }
 
 FloatRect RenderSVGText::strokeBoundingBox() const
 {
     FloatRect strokeBoundaries = objectBoundingBox();
-    const SVGRenderStyle* svgStyle = style()->svgStyle();
-    if (!svgStyle->hasStroke())
-        return strokeBoundaries;
+    const SVGRenderStyle *svgStyle = style()->svgStyle();
 
-    ASSERT(node());
-    ASSERT(node()->isSVGElement());
-    strokeBoundaries.inflate(svgStyle->strokeWidth().value(static_cast<SVGElement*>(node())));
+    if ( !svgStyle->hasStroke() )
+    {
+        return strokeBoundaries;
+    }
+
+    ASSERT( node() );
+    ASSERT( node()->isSVGElement() );
+    strokeBoundaries.inflate( svgStyle->strokeWidth().value( static_cast<SVGElement *>( node() ) ) );
     return strokeBoundaries;
 }
 
 FloatRect RenderSVGText::repaintRectInLocalCoordinates() const
 {
     FloatRect repaintRect = strokeBoundingBox();
-    SVGRenderSupport::intersectRepaintRectWithResources(this, repaintRect);
+    SVGRenderSupport::intersectRepaintRectWithResources( this, repaintRect );
 
-    if (const ShadowData* textShadow = style()->textShadow())
-        textShadow->adjustRectForShadow(repaintRect);
+    if ( const ShadowData *textShadow = style()->textShadow() )
+    {
+        textShadow->adjustRectForShadow( repaintRect );
+    }
 
     return repaintRect;
 }
 
 // Fix for <rdar://problem/8048875>. We should not render :first-line CSS Style
 // in a SVG text element context.
-RenderBlock* RenderSVGText::firstLineBlock() const
+RenderBlock *RenderSVGText::firstLineBlock() const
 {
     return 0;
 }

@@ -30,18 +30,21 @@
 #include "ShareableBitmap.h"
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct PlatformPopupMenuData {
+struct PlatformPopupMenuData
+{
     PlatformPopupMenuData();
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, PlatformPopupMenuData&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, PlatformPopupMenuData & );
 
 #if PLATFORM(WIN)
     int m_clientPaddingLeft;

@@ -39,20 +39,22 @@
 class QWebFrame;
 class QWebPage;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class GeolocationPermissionClientQt {
+class GeolocationPermissionClientQt
+{
 public:
     GeolocationPermissionClientQt();
     ~GeolocationPermissionClientQt();
 
-    void requestGeolocationPermissionForFrame(QWebFrame*, Geolocation*);
-    void cancelGeolocationPermissionRequestForFrame(QWebFrame*, Geolocation*);
-    void setPermission(QWebFrame*, QWebPage::PermissionPolicy);
+    void requestGeolocationPermissionForFrame( QWebFrame *, Geolocation * );
+    void cancelGeolocationPermissionRequestForFrame( QWebFrame *, Geolocation * );
+    void setPermission( QWebFrame *, QWebPage::PermissionPolicy );
 
-    static GeolocationPermissionClientQt* geolocationPermissionClient();
+    static GeolocationPermissionClientQt *geolocationPermissionClient();
 private:
-    QHash<QWebFrame*, Geolocation*> m_pendingPermissionRequests;
+    QHash<QWebFrame *, Geolocation *> m_pendingPermissionRequests;
 };
 
 }

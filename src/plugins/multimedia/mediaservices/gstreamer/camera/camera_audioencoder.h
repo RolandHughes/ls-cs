@@ -44,49 +44,49 @@ class CameraBinSession;
 
 class CameraBinAudioEncoder : public QAudioEncoderSettingsControl
 {
-   CS_OBJECT(CameraBinAudioEncoder)
+    LSCS_OBJECT( CameraBinAudioEncoder )
 
- public:
-   CameraBinAudioEncoder(QObject *parent);
-   virtual ~CameraBinAudioEncoder();
+public:
+    CameraBinAudioEncoder( QObject *parent );
+    virtual ~CameraBinAudioEncoder();
 
-   QStringList supportedAudioCodecs() const override;
-   QString codecDescription(const QString &codecName) const override;
+    QStringList supportedAudioCodecs() const override;
+    QString codecDescription( const QString &codecName ) const override;
 
-   QStringList supportedEncodingOptions(const QString &codec) const;
-   QVariant encodingOption(const QString &codec, const QString &name) const;
-   void setEncodingOption(const QString &codec, const QString &name, const QVariant &value);
+    QStringList supportedEncodingOptions( const QString &codec ) const;
+    QVariant encodingOption( const QString &codec, const QString &name ) const;
+    void setEncodingOption( const QString &codec, const QString &name, const QVariant &value );
 
-   QList<int> supportedSampleRates(const QAudioEncoderSettings &settings = QAudioEncoderSettings(),
-                                   bool *isContinuous = nullptr) const override;
+    QList<int> supportedSampleRates( const QAudioEncoderSettings &settings = QAudioEncoderSettings(),
+                                     bool *isContinuous = nullptr ) const override;
 
-   QList<int> supportedChannelCounts(const QAudioEncoderSettings &settings = QAudioEncoderSettings()) const;
-   QList<int> supportedSampleSizes(const QAudioEncoderSettings &settings = QAudioEncoderSettings()) const;
+    QList<int> supportedChannelCounts( const QAudioEncoderSettings &settings = QAudioEncoderSettings() ) const;
+    QList<int> supportedSampleSizes( const QAudioEncoderSettings &settings = QAudioEncoderSettings() ) const;
 
-   QAudioEncoderSettings audioSettings() const override;
-   void setAudioSettings(const QAudioEncoderSettings &) override;
+    QAudioEncoderSettings audioSettings() const override;
+    void setAudioSettings( const QAudioEncoderSettings & ) override;
 
-   QAudioEncoderSettings actualAudioSettings() const;
-   void setActualAudioSettings(const QAudioEncoderSettings &);
-   void resetActualSettings();
-
-#ifdef HAVE_GST_ENCODING_PROFILES
-   GstEncodingProfile *createProfile();
-#endif
-
-   void applySettings(GstElement *element);
-
-   CS_SIGNAL_1(Public, void settingsChanged())
-   CS_SIGNAL_2(settingsChanged)
-
- private:
+    QAudioEncoderSettings actualAudioSettings() const;
+    void setActualAudioSettings( const QAudioEncoderSettings & );
+    void resetActualSettings();
 
 #ifdef HAVE_GST_ENCODING_PROFILES
-   QGstCodecsInfo m_codecs;
+    GstEncodingProfile *createProfile();
 #endif
 
-   QAudioEncoderSettings m_actualAudioSettings;
-   QAudioEncoderSettings m_audioSettings;
+    void applySettings( GstElement *element );
+
+    LSCS_SIGNAL_1( Public, void settingsChanged() )
+    LSCS_SIGNAL_2( settingsChanged )
+
+private:
+
+#ifdef HAVE_GST_ENCODING_PROFILES
+    QGstCodecsInfo m_codecs;
+#endif
+
+    QAudioEncoderSettings m_actualAudioSettings;
+    QAudioEncoderSettings m_audioSettings;
 };
 
 #endif

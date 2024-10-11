@@ -29,9 +29,10 @@
 #include <wtf/GetPtr.h>
 #include <wtf/RefPtr.h>
 
-struct WebDOMTestInterface::WebDOMTestInterfacePrivate {
-    WebDOMTestInterfacePrivate(WebCore::TestInterface* object = 0)
-        : impl(object)
+struct WebDOMTestInterface::WebDOMTestInterfacePrivate
+{
+    WebDOMTestInterfacePrivate( WebCore::TestInterface *object = 0 )
+        : impl( object )
     {
     }
 
@@ -40,30 +41,30 @@ struct WebDOMTestInterface::WebDOMTestInterfacePrivate {
 
 WebDOMTestInterface::WebDOMTestInterface()
     : WebDOMObject()
-    , m_impl(0)
+    , m_impl( 0 )
 {
 }
 
-WebDOMTestInterface::WebDOMTestInterface(WebCore::TestInterface* impl)
+WebDOMTestInterface::WebDOMTestInterface( WebCore::TestInterface *impl )
     : WebDOMObject()
-    , m_impl(new WebDOMTestInterfacePrivate(impl))
+    , m_impl( new WebDOMTestInterfacePrivate( impl ) )
 {
 }
 
-WebDOMTestInterface::WebDOMTestInterface(const WebDOMTestInterface& copy)
+WebDOMTestInterface::WebDOMTestInterface( const WebDOMTestInterface &copy )
     : WebDOMObject()
 {
-    m_impl = copy.impl() ? new WebDOMTestInterfacePrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestInterfacePrivate( copy.impl() ) : 0;
 }
 
-WebDOMTestInterface& WebDOMTestInterface::operator=(const WebDOMTestInterface& copy)
+WebDOMTestInterface &WebDOMTestInterface::operator=( const WebDOMTestInterface &copy )
 {
     delete m_impl;
-    m_impl = copy.impl() ? new WebDOMTestInterfacePrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestInterfacePrivate( copy.impl() ) : 0;
     return *this;
 }
 
-WebCore::TestInterface* WebDOMTestInterface::impl() const
+WebCore::TestInterface *WebDOMTestInterface::impl() const
 {
     return m_impl ? m_impl->impl.get() : 0;
 }
@@ -74,14 +75,14 @@ WebDOMTestInterface::~WebDOMTestInterface()
     m_impl = 0;
 }
 
-WebCore::TestInterface* toWebCore(const WebDOMTestInterface& wrapper)
+WebCore::TestInterface *toWebCore( const WebDOMTestInterface &wrapper )
 {
     return wrapper.impl();
 }
 
-WebDOMTestInterface toWebKit(WebCore::TestInterface* value)
+WebDOMTestInterface toWebKit( WebCore::TestInterface *value )
 {
-    return WebDOMTestInterface(value);
+    return WebDOMTestInterface( value );
 }
 
 #endif // ENABLE(Condition1) || ENABLE(Condition2)

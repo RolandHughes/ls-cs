@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -44,317 +44,432 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ApplicationCacheHost;
+class ApplicationCacheHost;
 #if ENABLE(WEB_ARCHIVE)
-    class Archive;
+class Archive;
 #endif
-    class ArchiveResource;
-    class ArchiveResourceCollection;
-    class Frame;
-    class FrameLoader;
-    class MainResourceLoader;
-    class Page;
-    class ResourceLoader;
-    class SchedulePair;
-    class SharedBuffer;
-    class SubstituteResource;
+class ArchiveResource;
+class ArchiveResourceCollection;
+class Frame;
+class FrameLoader;
+class MainResourceLoader;
+class Page;
+class ResourceLoader;
+class SchedulePair;
+class SharedBuffer;
+class SubstituteResource;
 
-    typedef HashSet<RefPtr<ResourceLoader> > ResourceLoaderSet;
-    typedef Vector<ResourceResponse> ResponseVector;
+typedef HashSet<RefPtr<ResourceLoader> > ResourceLoaderSet;
+typedef Vector<ResourceResponse> ResponseVector;
 
-    class DocumentLoader : public RefCounted<DocumentLoader> {
-    public:
-        static PassRefPtr<DocumentLoader> create(const ResourceRequest& request, const SubstituteData& data)
-        {
-            return adoptRef(new DocumentLoader(request, data));
-        }
-        virtual ~DocumentLoader();
+class DocumentLoader : public RefCounted<DocumentLoader>
+{
+public:
+    static PassRefPtr<DocumentLoader> create( const ResourceRequest &request, const SubstituteData &data )
+    {
+        return adoptRef( new DocumentLoader( request, data ) );
+    }
+    virtual ~DocumentLoader();
 
-        void setFrame(Frame*);
-        Frame* frame() const { return m_frame; }
+    void setFrame( Frame * );
+    Frame *frame() const
+    {
+        return m_frame;
+    }
 
-        virtual void attachToFrame();
-        virtual void detachFromFrame();
+    virtual void attachToFrame();
+    virtual void detachFromFrame();
 
-        FrameLoader* frameLoader() const;
-        MainResourceLoader* mainResourceLoader() const { return m_mainResourceLoader.get(); }
-        PassRefPtr<SharedBuffer> mainResourceData() const;
-        
-        DocumentWriter* writer() const { return &m_writer; }
+    FrameLoader *frameLoader() const;
+    MainResourceLoader *mainResourceLoader() const
+    {
+        return m_mainResourceLoader.get();
+    }
+    PassRefPtr<SharedBuffer> mainResourceData() const;
 
-        const ResourceRequest& originalRequest() const;
-        const ResourceRequest& originalRequestCopy() const;
+    DocumentWriter *writer() const
+    {
+        return &m_writer;
+    }
 
-        const ResourceRequest& request() const;
-        ResourceRequest& request();
-        void setRequest(const ResourceRequest&);
+    const ResourceRequest &originalRequest() const;
+    const ResourceRequest &originalRequestCopy() const;
 
-        const SubstituteData& substituteData() const { return m_substituteData; }
+    const ResourceRequest &request() const;
+    ResourceRequest &request();
+    void setRequest( const ResourceRequest & );
 
-        const KURL& url() const;
-        const KURL& unreachableURL() const;
+    const SubstituteData &substituteData() const
+    {
+        return m_substituteData;
+    }
 
-        const KURL& originalURL() const;
-        const KURL& requestURL() const;
-        const KURL& responseURL() const;
-        const String& responseMIMEType() const;
-        
-        void replaceRequestURLForSameDocumentNavigation(const KURL&);
-        bool isStopping() const { return m_isStopping; }
-        void stopLoading();
-        void setCommitted(bool committed) { m_committed = committed; }
-        bool isCommitted() const { return m_committed; }
-        bool isLoading() const { return m_loading; }
-        void setLoading(bool loading) { m_loading = loading; }
-        void updateLoading();
-        void receivedData(const char*, int);
-        void setupForReplaceByMIMEType(const String& newMIMEType);
-        void finishedLoading();
-        const ResourceResponse& response() const { return m_response; }
-        const ResourceError& mainDocumentError() const { return m_mainDocumentError; }
-        void mainReceivedError(const ResourceError&, bool isComplete);
-        void setResponse(const ResourceResponse& response) { m_response = response; }
-        void prepareForLoadStart();
-        bool isClientRedirect() const { return m_isClientRedirect; }
-        void setIsClientRedirect(bool isClientRedirect) { m_isClientRedirect = isClientRedirect; }
-        void handledOnloadEvents() { m_wasOnloadHandled = true; }
-        bool wasOnloadHandled() { return m_wasOnloadHandled; }
-        bool isLoadingInAPISense() const;
-        void setPrimaryLoadComplete(bool);
-        void setTitle(const StringWithDirection&);
-        void setIconURL(const IconURL&);
-        const String& overrideEncoding() const { return m_overrideEncoding; }
+    const KURL &url() const;
+    const KURL &unreachableURL() const;
+
+    const KURL &originalURL() const;
+    const KURL &requestURL() const;
+    const KURL &responseURL() const;
+    const String &responseMIMEType() const;
+
+    void replaceRequestURLForSameDocumentNavigation( const KURL & );
+    bool isStopping() const
+    {
+        return m_isStopping;
+    }
+    void stopLoading();
+    void setCommitted( bool committed )
+    {
+        m_committed = committed;
+    }
+    bool isCommitted() const
+    {
+        return m_committed;
+    }
+    bool isLoading() const
+    {
+        return m_loading;
+    }
+    void setLoading( bool loading )
+    {
+        m_loading = loading;
+    }
+    void updateLoading();
+    void receivedData( const char *, int );
+    void setupForReplaceByMIMEType( const String &newMIMEType );
+    void finishedLoading();
+    const ResourceResponse &response() const
+    {
+        return m_response;
+    }
+    const ResourceError &mainDocumentError() const
+    {
+        return m_mainDocumentError;
+    }
+    void mainReceivedError( const ResourceError &, bool isComplete );
+    void setResponse( const ResourceResponse &response )
+    {
+        m_response = response;
+    }
+    void prepareForLoadStart();
+    bool isClientRedirect() const
+    {
+        return m_isClientRedirect;
+    }
+    void setIsClientRedirect( bool isClientRedirect )
+    {
+        m_isClientRedirect = isClientRedirect;
+    }
+    void handledOnloadEvents()
+    {
+        m_wasOnloadHandled = true;
+    }
+    bool wasOnloadHandled()
+    {
+        return m_wasOnloadHandled;
+    }
+    bool isLoadingInAPISense() const;
+    void setPrimaryLoadComplete( bool );
+    void setTitle( const StringWithDirection & );
+    void setIconURL( const IconURL & );
+    const String &overrideEncoding() const
+    {
+        return m_overrideEncoding;
+    }
 
 #if PLATFORM(MAC)
-        void schedule(SchedulePair*);
-        void unschedule(SchedulePair*);
+    void schedule( SchedulePair * );
+    void unschedule( SchedulePair * );
 #endif
 
 #if ENABLE(WEB_ARCHIVE)
-        void addAllArchiveResources(Archive*);
-        void addArchiveResource(PassRefPtr<ArchiveResource>);
-        
-        PassRefPtr<Archive> popArchiveForSubframe(const String& frameName);
-        void clearArchiveResources();
-        void setParsedArchiveData(PassRefPtr<SharedBuffer>);
-        SharedBuffer* parsedArchiveData() const;
-        
-        bool scheduleArchiveLoad(ResourceLoader*, const ResourceRequest&, const KURL&);
+    void addAllArchiveResources( Archive * );
+    void addArchiveResource( PassRefPtr<ArchiveResource> );
+
+    PassRefPtr<Archive> popArchiveForSubframe( const String &frameName );
+    void clearArchiveResources();
+    void setParsedArchiveData( PassRefPtr<SharedBuffer> );
+    SharedBuffer *parsedArchiveData() const;
+
+    bool scheduleArchiveLoad( ResourceLoader *, const ResourceRequest &, const KURL & );
 #endif // ENABLE(WEB_ARCHIVE)
 
-        // Return the ArchiveResource for the URL only when loading an Archive
-        ArchiveResource* archiveResourceForURL(const KURL&) const;
+    // Return the ArchiveResource for the URL only when loading an Archive
+    ArchiveResource *archiveResourceForURL( const KURL & ) const;
 
-        PassRefPtr<ArchiveResource> mainResource() const;
+    PassRefPtr<ArchiveResource> mainResource() const;
 
-        // Return an ArchiveResource for the URL, either creating from live data or
-        // pulling from the ArchiveResourceCollection
-        PassRefPtr<ArchiveResource> subresource(const KURL&) const;
-        void getSubresources(Vector<PassRefPtr<ArchiveResource> >&) const;
+    // Return an ArchiveResource for the URL, either creating from live data or
+    // pulling from the ArchiveResourceCollection
+    PassRefPtr<ArchiveResource> subresource( const KURL & ) const;
+    void getSubresources( Vector<PassRefPtr<ArchiveResource> > & ) const;
 
 
 #ifndef NDEBUG
-        bool isSubstituteLoadPending(ResourceLoader*) const;
+    bool isSubstituteLoadPending( ResourceLoader * ) const;
 #endif
-        void cancelPendingSubstituteLoad(ResourceLoader*);   
-        
-        void addResponse(const ResourceResponse&);
-        const ResponseVector& responses() const { return m_responses; }
+    void cancelPendingSubstituteLoad( ResourceLoader * );
 
-        const NavigationAction& triggeringAction() const { return m_triggeringAction; }
-        void setTriggeringAction(const NavigationAction& action) { m_triggeringAction = action; }
-        void setOverrideEncoding(const String& encoding) { m_overrideEncoding = encoding; }
-        void setLastCheckedRequest(const ResourceRequest& request) { m_lastCheckedRequest = request; }
-        const ResourceRequest& lastCheckedRequest()  { return m_lastCheckedRequest; }
+    void addResponse( const ResourceResponse & );
+    const ResponseVector &responses() const
+    {
+        return m_responses;
+    }
 
-        void stopRecordingResponses();
-        const StringWithDirection& title() const { return m_pageTitle; }
-        IconURL iconURL(IconType) const;
+    const NavigationAction &triggeringAction() const
+    {
+        return m_triggeringAction;
+    }
+    void setTriggeringAction( const NavigationAction &action )
+    {
+        m_triggeringAction = action;
+    }
+    void setOverrideEncoding( const String &encoding )
+    {
+        m_overrideEncoding = encoding;
+    }
+    void setLastCheckedRequest( const ResourceRequest &request )
+    {
+        m_lastCheckedRequest = request;
+    }
+    const ResourceRequest &lastCheckedRequest()
+    {
+        return m_lastCheckedRequest;
+    }
 
-        KURL urlForHistory() const;
-        bool urlForHistoryReflectsFailure() const;
+    void stopRecordingResponses();
+    const StringWithDirection &title() const
+    {
+        return m_pageTitle;
+    }
+    IconURL iconURL( IconType ) const;
 
-        // These accessors accommodate WebCore's somewhat fickle custom of creating history
-        // items for redirects, but only sometimes. For "source" and "destination",
-        // these accessors return the URL that would have been used if a history
-        // item were created. This allows WebKit to link history items reflecting
-        // redirects into a chain from start to finish.
-        String clientRedirectSourceForHistory() const { return m_clientRedirectSourceForHistory; } // null if no client redirect occurred.
-        String clientRedirectDestinationForHistory() const { return urlForHistory(); }
-        void setClientRedirectSourceForHistory(const String& clientedirectSourceForHistory) { m_clientRedirectSourceForHistory = clientedirectSourceForHistory; }
-        
-        String serverRedirectSourceForHistory() const { return urlForHistory() == url() ? String() : urlForHistory().string(); } // null if no server redirect occurred.
-        String serverRedirectDestinationForHistory() const { return url(); }
+    KURL urlForHistory() const;
+    bool urlForHistoryReflectsFailure() const;
 
-        bool didCreateGlobalHistoryEntry() const { return m_didCreateGlobalHistoryEntry; }
-        void setDidCreateGlobalHistoryEntry(bool didCreateGlobalHistoryEntry) { m_didCreateGlobalHistoryEntry = didCreateGlobalHistoryEntry; }
-        
-        void setDefersLoading(bool);
+    // These accessors accommodate WebCore's somewhat fickle custom of creating history
+    // items for redirects, but only sometimes. For "source" and "destination",
+    // these accessors return the URL that would have been used if a history
+    // item were created. This allows WebKit to link history items reflecting
+    // redirects into a chain from start to finish.
+    String clientRedirectSourceForHistory() const
+    {
+        return m_clientRedirectSourceForHistory;    // null if no client redirect occurred.
+    }
+    String clientRedirectDestinationForHistory() const
+    {
+        return urlForHistory();
+    }
+    void setClientRedirectSourceForHistory( const String &clientedirectSourceForHistory )
+    {
+        m_clientRedirectSourceForHistory = clientedirectSourceForHistory;
+    }
 
-        bool startLoadingMainResource(unsigned long identifier);
-        void cancelMainResourceLoad(const ResourceError&);
-        
-        // Support iconDatabase in synchronous mode.
-        void iconLoadDecisionAvailable();
-        
-        // Support iconDatabase in asynchronous mode.
-        void continueIconLoadWithDecision(IconLoadDecision);
-        void getIconLoadDecisionForIconURL(const String&);
-        void getIconDataForIconURL(const String&);
-        
-        bool isLoadingMainResource() const;
-        bool isLoadingSubresources() const;
-        bool isLoadingPlugIns() const;
-        bool isLoadingMultipartContent() const;
+    String serverRedirectSourceForHistory() const
+    {
+        return urlForHistory() == url() ? String() : urlForHistory().string();    // null if no server redirect occurred.
+    }
+    String serverRedirectDestinationForHistory() const
+    {
+        return url();
+    }
 
-        void stopLoadingPlugIns();
-        void stopLoadingSubresources();
+    bool didCreateGlobalHistoryEntry() const
+    {
+        return m_didCreateGlobalHistoryEntry;
+    }
+    void setDidCreateGlobalHistoryEntry( bool didCreateGlobalHistoryEntry )
+    {
+        m_didCreateGlobalHistoryEntry = didCreateGlobalHistoryEntry;
+    }
 
-        void addSubresourceLoader(ResourceLoader*);
-        void removeSubresourceLoader(ResourceLoader*);
-        void addPlugInStreamLoader(ResourceLoader*);
-        void removePlugInStreamLoader(ResourceLoader*);
+    void setDefersLoading( bool );
 
-        void subresourceLoaderFinishedLoadingOnePart(ResourceLoader*);
+    bool startLoadingMainResource( unsigned long identifier );
+    void cancelMainResourceLoad( const ResourceError & );
 
-        void transferLoadingResourcesFromPage(Page*);
+    // Support iconDatabase in synchronous mode.
+    void iconLoadDecisionAvailable();
 
-        void setDeferMainResourceDataLoad(bool defer) { m_deferMainResourceDataLoad = defer; }
-        bool deferMainResourceDataLoad() const { return m_deferMainResourceDataLoad; }
-        
-        void didTellClientAboutLoad(const String& url)
-        { 
-            if (!url.isEmpty())
-                m_resourcesClientKnowsAbout.add(url);
+    // Support iconDatabase in asynchronous mode.
+    void continueIconLoadWithDecision( IconLoadDecision );
+    void getIconLoadDecisionForIconURL( const String & );
+    void getIconDataForIconURL( const String & );
+
+    bool isLoadingMainResource() const;
+    bool isLoadingSubresources() const;
+    bool isLoadingPlugIns() const;
+    bool isLoadingMultipartContent() const;
+
+    void stopLoadingPlugIns();
+    void stopLoadingSubresources();
+
+    void addSubresourceLoader( ResourceLoader * );
+    void removeSubresourceLoader( ResourceLoader * );
+    void addPlugInStreamLoader( ResourceLoader * );
+    void removePlugInStreamLoader( ResourceLoader * );
+
+    void subresourceLoaderFinishedLoadingOnePart( ResourceLoader * );
+
+    void transferLoadingResourcesFromPage( Page * );
+
+    void setDeferMainResourceDataLoad( bool defer )
+    {
+        m_deferMainResourceDataLoad = defer;
+    }
+    bool deferMainResourceDataLoad() const
+    {
+        return m_deferMainResourceDataLoad;
+    }
+
+    void didTellClientAboutLoad( const String &url )
+    {
+        if ( !url.isEmpty() )
+        {
+            m_resourcesClientKnowsAbout.add( url );
         }
-        bool haveToldClientAboutLoad(const String& url) { return m_resourcesClientKnowsAbout.contains(url); }
-        void recordMemoryCacheLoadForFutureClientNotification(const String& url);
-        void takeMemoryCacheLoadsForClientNotification(Vector<String>& loads);
+    }
+    bool haveToldClientAboutLoad( const String &url )
+    {
+        return m_resourcesClientKnowsAbout.contains( url );
+    }
+    void recordMemoryCacheLoadForFutureClientNotification( const String &url );
+    void takeMemoryCacheLoadsForClientNotification( Vector<String> &loads );
 
-        DocumentLoadTiming* timing() { return &m_documentLoadTiming; }
-        void resetTiming() { m_documentLoadTiming = DocumentLoadTiming(); }
+    DocumentLoadTiming *timing()
+    {
+        return &m_documentLoadTiming;
+    }
+    void resetTiming()
+    {
+        m_documentLoadTiming = DocumentLoadTiming();
+    }
 
-        // The WebKit layer calls this function when it's ready for the data to
-        // actually be added to the document.
-        void commitData(const char* bytes, int length);
+    // The WebKit layer calls this function when it's ready for the data to
+    // actually be added to the document.
+    void commitData( const char *bytes, int length );
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-        ApplicationCacheHost* applicationCacheHost() const { return m_applicationCacheHost.get(); }
+    ApplicationCacheHost *applicationCacheHost() const
+    {
+        return m_applicationCacheHost.get();
+    }
 #endif
 
-    protected:
-        DocumentLoader(const ResourceRequest&, const SubstituteData&);
+protected:
+    DocumentLoader( const ResourceRequest &, const SubstituteData & );
 
-        bool m_deferMainResourceDataLoad;
+    bool m_deferMainResourceDataLoad;
 
-    private:
-        void setupForReplace();
-        void commitIfReady();
-        void clearErrors();
-        void setMainDocumentError(const ResourceError&);
-        void commitLoad(const char*, int);
-        bool doesProgressiveLoad(const String& MIMEType) const;
+private:
+    void setupForReplace();
+    void commitIfReady();
+    void clearErrors();
+    void setMainDocumentError( const ResourceError & );
+    void commitLoad( const char *, int );
+    bool doesProgressiveLoad( const String &MIMEType ) const;
 
-        void deliverSubstituteResourcesAfterDelay();
-        void substituteResourceDeliveryTimerFired(Timer<DocumentLoader>*);
-                
-        Frame* m_frame;
+    void deliverSubstituteResourcesAfterDelay();
+    void substituteResourceDeliveryTimerFired( Timer<DocumentLoader> * );
 
-        RefPtr<MainResourceLoader> m_mainResourceLoader;
-        ResourceLoaderSet m_subresourceLoaders;
-        ResourceLoaderSet m_multipartSubresourceLoaders;
-        ResourceLoaderSet m_plugInStreamLoaders;
+    Frame *m_frame;
 
-        RefPtr<SharedBuffer> m_mainResourceData;
-        
-        mutable DocumentWriter m_writer;
+    RefPtr<MainResourceLoader> m_mainResourceLoader;
+    ResourceLoaderSet m_subresourceLoaders;
+    ResourceLoaderSet m_multipartSubresourceLoaders;
+    ResourceLoaderSet m_plugInStreamLoaders;
 
-        // A reference to actual request used to create the data source.
-        // This should only be used by the resourceLoadDelegate's
-        // identifierForInitialRequest:fromDatasource: method. It is
-        // not guaranteed to remain unchanged, as requests are mutable.
-        ResourceRequest m_originalRequest;   
+    RefPtr<SharedBuffer> m_mainResourceData;
 
-        SubstituteData m_substituteData;
+    mutable DocumentWriter m_writer;
 
-        // A copy of the original request used to create the data source.
-        // We have to copy the request because requests are mutable.
-        ResourceRequest m_originalRequestCopy;
-        
-        // The 'working' request. It may be mutated
-        // several times from the original request to include additional
-        // headers, cookie information, canonicalization and redirects.
-        ResourceRequest m_request;
+    // A reference to actual request used to create the data source.
+    // This should only be used by the resourceLoadDelegate's
+    // identifierForInitialRequest:fromDatasource: method. It is
+    // not guaranteed to remain unchanged, as requests are mutable.
+    ResourceRequest m_originalRequest;
 
-        ResourceResponse m_response;
-    
-        ResourceError m_mainDocumentError;    
+    SubstituteData m_substituteData;
 
-        bool m_committed;
-        bool m_isStopping;
-        bool m_loading;
-        bool m_gotFirstByte;
-        bool m_primaryLoadComplete;
-        bool m_isClientRedirect;
-        bool m_wasOnloadHandled;
+    // A copy of the original request used to create the data source.
+    // We have to copy the request because requests are mutable.
+    ResourceRequest m_originalRequestCopy;
 
-        StringWithDirection m_pageTitle;
-        IconURL m_iconURLs[ICON_COUNT];
+    // The 'working' request. It may be mutated
+    // several times from the original request to include additional
+    // headers, cookie information, canonicalization and redirects.
+    ResourceRequest m_request;
 
-        String m_overrideEncoding;
+    ResourceResponse m_response;
 
-        // The action that triggered loading - we keep this around for the
-        // benefit of the various policy handlers.
-        NavigationAction m_triggeringAction;
+    ResourceError m_mainDocumentError;
 
-        // The last request that we checked click policy for - kept around
-        // so we can avoid asking again needlessly.
-        ResourceRequest m_lastCheckedRequest;
+    bool m_committed;
+    bool m_isStopping;
+    bool m_loading;
+    bool m_gotFirstByte;
+    bool m_primaryLoadComplete;
+    bool m_isClientRedirect;
+    bool m_wasOnloadHandled;
 
-        // We retain all the received responses so we can play back the
-        // WebResourceLoadDelegate messages if the item is loaded from the
-        // page cache.
-        ResponseVector m_responses;
-        bool m_stopRecordingResponses;
-        
-        typedef HashMap<RefPtr<ResourceLoader>, RefPtr<SubstituteResource> > SubstituteResourceMap;
-        SubstituteResourceMap m_pendingSubstituteResources;
-        Timer<DocumentLoader> m_substituteResourceDeliveryTimer;
+    StringWithDirection m_pageTitle;
+    IconURL m_iconURLs[ICON_COUNT];
 
-        OwnPtr<ArchiveResourceCollection> m_archiveResourceCollection;
+    String m_overrideEncoding;
+
+    // The action that triggered loading - we keep this around for the
+    // benefit of the various policy handlers.
+    NavigationAction m_triggeringAction;
+
+    // The last request that we checked click policy for - kept around
+    // so we can avoid asking again needlessly.
+    ResourceRequest m_lastCheckedRequest;
+
+    // We retain all the received responses so we can play back the
+    // WebResourceLoadDelegate messages if the item is loaded from the
+    // page cache.
+    ResponseVector m_responses;
+    bool m_stopRecordingResponses;
+
+    typedef HashMap<RefPtr<ResourceLoader>, RefPtr<SubstituteResource> > SubstituteResourceMap;
+    SubstituteResourceMap m_pendingSubstituteResources;
+    Timer<DocumentLoader> m_substituteResourceDeliveryTimer;
+
+    OwnPtr<ArchiveResourceCollection> m_archiveResourceCollection;
 #if ENABLE(WEB_ARCHIVE)
-        RefPtr<SharedBuffer> m_parsedArchiveData;
+    RefPtr<SharedBuffer> m_parsedArchiveData;
 #endif
 
-        HashSet<String> m_resourcesClientKnowsAbout;
-        Vector<String> m_resourcesLoadedFromMemoryCacheForClientNotification;
-        
-        String m_clientRedirectSourceForHistory;
-        bool m_didCreateGlobalHistoryEntry;
+    HashSet<String> m_resourcesClientKnowsAbout;
+    Vector<String> m_resourcesLoadedFromMemoryCacheForClientNotification;
 
-        DocumentLoadTiming m_documentLoadTiming;
-    
-        RefPtr<IconLoadDecisionCallback> m_iconLoadDecisionCallback;
-        RefPtr<IconDataCallback> m_iconDataCallback;
+    String m_clientRedirectSourceForHistory;
+    bool m_didCreateGlobalHistoryEntry;
+
+    DocumentLoadTiming m_documentLoadTiming;
+
+    RefPtr<IconLoadDecisionCallback> m_iconLoadDecisionCallback;
+    RefPtr<IconDataCallback> m_iconDataCallback;
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-        friend class ApplicationCacheHost;  // for substitute resource delivery
-        OwnPtr<ApplicationCacheHost> m_applicationCacheHost;
+    friend class ApplicationCacheHost;  // for substitute resource delivery
+    OwnPtr<ApplicationCacheHost> m_applicationCacheHost;
 #endif
-    };
+};
 
-    inline void DocumentLoader::recordMemoryCacheLoadForFutureClientNotification(const String& url)
-    {
-        m_resourcesLoadedFromMemoryCacheForClientNotification.append(url);
-    }
+inline void DocumentLoader::recordMemoryCacheLoadForFutureClientNotification( const String &url )
+{
+    m_resourcesLoadedFromMemoryCacheForClientNotification.append( url );
+}
 
-    inline void DocumentLoader::takeMemoryCacheLoadsForClientNotification(Vector<String>& loadsSet)
-    {
-        loadsSet.swap(m_resourcesLoadedFromMemoryCacheForClientNotification);
-        m_resourcesLoadedFromMemoryCacheForClientNotification.clear();
-    }
+inline void DocumentLoader::takeMemoryCacheLoadsForClientNotification( Vector<String> &loadsSet )
+{
+    loadsSet.swap( m_resourcesLoadedFromMemoryCacheForClientNotification );
+    m_resourcesLoadedFromMemoryCacheForClientNotification.clear();
+}
 
 }
 

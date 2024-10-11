@@ -27,47 +27,48 @@
 #include <qatomicmathematician_p.h>
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ArithmeticExpression : public PairContainer
 {
- public:
-   ArithmeticExpression(const Expression::Ptr &operand1, const AtomicMathematician::Operator op,
-                  const Expression::Ptr &operand2);
+public:
+    ArithmeticExpression( const Expression::Ptr &operand1, const AtomicMathematician::Operator op,
+                          const Expression::Ptr &operand2 );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
-   AtomicMathematician::Operator operatorID() const;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    AtomicMathematician::Operator operatorID() const;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   static Item flexiblyCalculate(const Item &op1, const AtomicMathematician::Operator op,
-                                 const Item &op2, const AtomicMathematician::Ptr &mather,
-                                 const DynamicContext::Ptr &context,
-                                 const SourceLocationReflection *const reflection,
-                                 const ReportContext::ErrorCode code = ReportContext::XPTY0004,
-                                 const bool isCompat = false);
+    static Item flexiblyCalculate( const Item &op1, const AtomicMathematician::Operator op,
+                                   const Item &op2, const AtomicMathematician::Ptr &mather,
+                                   const DynamicContext::Ptr &context,
+                                   const SourceLocationReflection *const reflection,
+                                   const ReportContext::ErrorCode code = ReportContext::XPTY0004,
+                                   const bool isCompat = false );
 
-   static AtomicMathematician::Ptr fetchMathematician(Expression::Ptr &t1,
-                      Expression::Ptr &t2, const AtomicMathematician::Operator op,
-                      const bool issueError, const ReportContext::Ptr &context,
-                      const SourceLocationReflection *const reflection,
-                      const ReportContext::ErrorCode code = ReportContext::XPTY0004,
-                      const bool isCompat = false);
+    static AtomicMathematician::Ptr fetchMathematician( Expression::Ptr &t1,
+            Expression::Ptr &t2, const AtomicMathematician::Operator op,
+            const bool issueError, const ReportContext::Ptr &context,
+            const SourceLocationReflection *const reflection,
+            const ReportContext::ErrorCode code = ReportContext::XPTY0004,
+            const bool isCompat = false );
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
- private:
-   const AtomicMathematician::Operator m_op;
-   AtomicMathematician::Ptr m_mather;
-   bool m_isCompat;
+private:
+    const AtomicMathematician::Operator m_op;
+    AtomicMathematician::Ptr m_mather;
+    bool m_isCompat;
 };
 
 inline AtomicMathematician::Operator ArithmeticExpression::operatorID() const
 {
-   return m_op;
+    return m_op;
 }
 
 }

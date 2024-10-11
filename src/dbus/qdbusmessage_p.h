@@ -61,18 +61,20 @@ public:
     mutable uint parametersValidated : 1;
     uint autoStartService : 1;
 
-    static void setParametersValidated(QDBusMessage &msg, bool enable)
-    { msg.d_ptr->parametersValidated = enable; }
+    static void setParametersValidated( QDBusMessage &msg, bool enable )
+    {
+        msg.d_ptr->parametersValidated = enable;
+    }
 
-    static DBusMessage *toDBusMessage(const QDBusMessage &message, QDBusConnection::ConnectionCapabilities capabilities,
-                                      QDBusError *error);
-    static QDBusMessage fromDBusMessage(DBusMessage *dmsg, QDBusConnection::ConnectionCapabilities capabilities);
+    static DBusMessage *toDBusMessage( const QDBusMessage &message, QDBusConnection::ConnectionCapabilities capabilities,
+                                       QDBusError *error );
+    static QDBusMessage fromDBusMessage( DBusMessage *dmsg, QDBusConnection::ConnectionCapabilities capabilities );
 
-    static bool isLocal(const QDBusMessage &msg);
-    static QDBusMessage makeLocal(const QDBusConnectionPrivate &conn,
-                                  const QDBusMessage &asSent);
-    static QDBusMessage makeLocalReply(const QDBusConnectionPrivate &conn,
-                                       const QDBusMessage &asSent);
+    static bool isLocal( const QDBusMessage &msg );
+    static QDBusMessage makeLocal( const QDBusConnectionPrivate &conn,
+                                   const QDBusMessage &asSent );
+    static QDBusMessage makeLocalReply( const QDBusConnectionPrivate &conn,
+                                        const QDBusMessage &asSent );
 };
 
 QT_END_NAMESPACE

@@ -36,27 +36,27 @@ class EVRCustomPresenter;
 
 class DirectShowVideoRendererControl : public QVideoRendererControl
 {
-   CS_OBJECT(DirectShowVideoRendererControl)
+    LSCS_OBJECT( DirectShowVideoRendererControl )
 
- public:
-   DirectShowVideoRendererControl(DirectShowEventLoop *loop, QObject *parent = nullptr);
-   ~DirectShowVideoRendererControl();
+public:
+    DirectShowVideoRendererControl( DirectShowEventLoop *loop, QObject *parent = nullptr );
+    ~DirectShowVideoRendererControl();
 
-   QAbstractVideoSurface *surface() const override;
-   void setSurface(QAbstractVideoSurface *surface) override;
+    QAbstractVideoSurface *surface() const override;
+    void setSurface( QAbstractVideoSurface *surface ) override;
 
-   IBaseFilter *filter();
+    IBaseFilter *filter();
 
-   CS_SIGNAL_1(Public, void filterChanged())
-   CS_SIGNAL_2(filterChanged)
+    LSCS_SIGNAL_1( Public, void filterChanged() )
+    LSCS_SIGNAL_2( filterChanged )
 
- private:
-   DirectShowEventLoop *m_loop;
-   QAbstractVideoSurface *m_surface;
-   IBaseFilter *m_filter;
+private:
+    DirectShowEventLoop *m_loop;
+    QAbstractVideoSurface *m_surface;
+    IBaseFilter *m_filter;
 
 #ifdef HAVE_EVR
-   EVRCustomPresenter *m_evrPresenter;
+    EVRCustomPresenter *m_evrPresenter;
 #endif
 };
 

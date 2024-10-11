@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,105 +28,162 @@
 
 #include "HTMLEntityTable.h"
 
-namespace WebCore {
-
-namespace {
-    
-const HTMLEntityTableEntry* halfway(const HTMLEntityTableEntry* left, const HTMLEntityTableEntry* right)
+namespace WebCore
 {
-    return &left[(right - left) / 2];
+
+namespace
+{
+
+const HTMLEntityTableEntry *halfway( const HTMLEntityTableEntry *left, const HTMLEntityTableEntry *right )
+{
+    return &left[( right - left ) / 2];
 }
 
 }
-    
+
 HTMLEntitySearch::HTMLEntitySearch()
-    : m_currentLength(0)
-    , m_currentValue(0)
-    , m_mostRecentMatch(0)
-    , m_first(HTMLEntityTable::firstEntry())
-    , m_last(HTMLEntityTable::lastEntry())
+    : m_currentLength( 0 )
+    , m_currentValue( 0 )
+    , m_mostRecentMatch( 0 )
+    , m_first( HTMLEntityTable::firstEntry() )
+    , m_last( HTMLEntityTable::lastEntry() )
 {
 }
 
-HTMLEntitySearch::CompareResult HTMLEntitySearch::compare(const HTMLEntityTableEntry* entry, UChar nextCharacter) const
+HTMLEntitySearch::CompareResult HTMLEntitySearch::compare( const HTMLEntityTableEntry *entry, UChar nextCharacter ) const
 {
-    if (entry->length < m_currentLength + 1)
+    if ( entry->length < m_currentLength + 1 )
+    {
         return Before;
+    }
+
     UChar entryNextCharacter = entry->entity[m_currentLength];
-    if (entryNextCharacter == nextCharacter)
+
+    if ( entryNextCharacter == nextCharacter )
+    {
         return Prefix;
+    }
+
     return entryNextCharacter < nextCharacter ? Before : After;
 }
 
-const HTMLEntityTableEntry* HTMLEntitySearch::findFirst(UChar nextCharacter) const
+const HTMLEntityTableEntry *HTMLEntitySearch::findFirst( UChar nextCharacter ) const
 {
-    const HTMLEntityTableEntry* left = m_first;
-    const HTMLEntityTableEntry* right = m_last;
-    if (left == right)
+    const HTMLEntityTableEntry *left = m_first;
+    const HTMLEntityTableEntry *right = m_last;
+
+    if ( left == right )
+    {
         return left;
-    CompareResult result = compare(left, nextCharacter);
-    if (result == Prefix)
+    }
+
+    CompareResult result = compare( left, nextCharacter );
+
+    if ( result == Prefix )
+    {
         return left;
-    if (result == After)
+    }
+
+    if ( result == After )
+    {
         return right;
-    while (left + 1 < right) {
-        const HTMLEntityTableEntry* probe = halfway(left, right);
-        result = compare(probe, nextCharacter);
-        if (result == Before)
+    }
+
+    while ( left + 1 < right )
+    {
+        const HTMLEntityTableEntry *probe = halfway( left, right );
+        result = compare( probe, nextCharacter );
+
+        if ( result == Before )
+        {
             left = probe;
-        else {
-            ASSERT(result == After || result == Prefix);
+        }
+        else
+        {
+            ASSERT( result == After || result == Prefix );
             right = probe;
         }
     }
-    ASSERT(left + 1 == right);
+
+    ASSERT( left + 1 == right );
     return right;
 }
 
-const HTMLEntityTableEntry* HTMLEntitySearch::findLast(UChar nextCharacter) const
+const HTMLEntityTableEntry *HTMLEntitySearch::findLast( UChar nextCharacter ) const
 {
-    const HTMLEntityTableEntry* left = m_first;
-    const HTMLEntityTableEntry* right = m_last;
-    if (left == right)
+    const HTMLEntityTableEntry *left = m_first;
+    const HTMLEntityTableEntry *right = m_last;
+
+    if ( left == right )
+    {
         return right;
-    CompareResult result = compare(right, nextCharacter);
-    if (result == Prefix)
+    }
+
+    CompareResult result = compare( right, nextCharacter );
+
+    if ( result == Prefix )
+    {
         return right;
-    if (result == Before)
+    }
+
+    if ( result == Before )
+    {
         return left;
-    while (left + 1 < right) {
-        const HTMLEntityTableEntry* probe = halfway(left, right);
-        result = compare(probe, nextCharacter);
-        if (result == After)
+    }
+
+    while ( left + 1 < right )
+    {
+        const HTMLEntityTableEntry *probe = halfway( left, right );
+        result = compare( probe, nextCharacter );
+
+        if ( result == After )
+        {
             right = probe;
-        else {
-            ASSERT(result == Before || result == Prefix);
+        }
+        else
+        {
+            ASSERT( result == Before || result == Prefix );
             left = probe;
         }
     }
-    ASSERT(left + 1 == right);
+
+    ASSERT( left + 1 == right );
     return left;
 }
 
-void HTMLEntitySearch::advance(UChar nextCharacter)
+void HTMLEntitySearch::advance( UChar nextCharacter )
 {
-    ASSERT(isEntityPrefix());
-    if (!m_currentLength) {
-        m_first = HTMLEntityTable::firstEntryStartingWith(nextCharacter);
-        m_last = HTMLEntityTable::lastEntryStartingWith(nextCharacter);
-        if (!m_first || !m_last)
+    ASSERT( isEntityPrefix() );
+
+    if ( !m_currentLength )
+    {
+        m_first = HTMLEntityTable::firstEntryStartingWith( nextCharacter );
+        m_last = HTMLEntityTable::lastEntryStartingWith( nextCharacter );
+
+        if ( !m_first || !m_last )
+        {
             return fail();
-    } else {
-        m_first = findFirst(nextCharacter);
-        m_last = findLast(nextCharacter);
-        if (m_first == m_last && compare(m_first, nextCharacter) != Prefix)
-            return fail();
+        }
     }
+    else
+    {
+        m_first = findFirst( nextCharacter );
+        m_last = findLast( nextCharacter );
+
+        if ( m_first == m_last && compare( m_first, nextCharacter ) != Prefix )
+        {
+            return fail();
+        }
+    }
+
     ++m_currentLength;
-    if (m_first->length != m_currentLength) {
+
+    if ( m_first->length != m_currentLength )
+    {
         m_currentValue = 0;
         return;
     }
+
     m_mostRecentMatch = m_first;
     m_currentValue = m_mostRecentMatch->value;
 }

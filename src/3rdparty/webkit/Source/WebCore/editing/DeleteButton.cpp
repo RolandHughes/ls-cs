@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,29 +34,31 @@
 #include "Frame.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline DeleteButton::DeleteButton(Document* document)
-    : HTMLImageElement(imgTag, document)
+inline DeleteButton::DeleteButton( Document *document )
+    : HTMLImageElement( imgTag, document )
 {
 }
 
-PassRefPtr<DeleteButton> DeleteButton::create(Document* document)
+PassRefPtr<DeleteButton> DeleteButton::create( Document *document )
 {
-    return adoptRef(new DeleteButton(document));
+    return adoptRef( new DeleteButton( document ) );
 }
 
-void DeleteButton::defaultEventHandler(Event* event)
+void DeleteButton::defaultEventHandler( Event *event )
 {
-    if (event->type() == eventNames().clickEvent) {
+    if ( event->type() == eventNames().clickEvent )
+    {
         document()->frame()->editor()->deleteButtonController()->deleteTarget();
         event->setDefaultHandled();
         return;
     }
 
-    HTMLImageElement::defaultEventHandler(event);
+    HTMLImageElement::defaultEventHandler( event );
 }
 
 } // namespace

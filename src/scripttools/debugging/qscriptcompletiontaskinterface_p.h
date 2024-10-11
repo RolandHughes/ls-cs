@@ -33,44 +33,45 @@ class QScriptCompletionTaskInterfacePrivate;
 
 class QScriptCompletionTaskInterface : public QObject
 {
-   SCRIPT_T_CS_OBJECT(QScriptCompletionTaskInterface)
+    SCRIPT_T_LSCS_OBJECT( QScriptCompletionTaskInterface )
 
- public:
-   enum CompletionType {
-      NoCompletion,
-      CommandNameCompletion,
-      CommandArgumentCompletion,
-      ScriptIdentifierCompletion
-   };
+public:
+    enum CompletionType
+    {
+        NoCompletion,
+        CommandNameCompletion,
+        CommandArgumentCompletion,
+        ScriptIdentifierCompletion
+    };
 
-   ~QScriptCompletionTaskInterface();
+    ~QScriptCompletionTaskInterface();
 
-   virtual void start() = 0;
+    virtual void start() = 0;
 
-   CompletionType completionType() const;
+    CompletionType completionType() const;
 
-   int resultCount() const;
-   QString resultAt(int index) const;
+    int resultCount() const;
+    QString resultAt( int index ) const;
 
-   int position() const;
-   int length() const;
+    int position() const;
+    int length() const;
 
-   QString appendix() const;
+    QString appendix() const;
 
- protected:
-   void addResult(const QString &result);
+protected:
+    void addResult( const QString &result );
 
- public:
-   CS_SIGNAL_1(Public, void finished())
-   CS_SIGNAL_2(finished)
+public:
+    LSCS_SIGNAL_1( Public, void finished() )
+    LSCS_SIGNAL_2( finished )
 
- protected:
-   QScriptCompletionTaskInterface(
-      QScriptCompletionTaskInterfacePrivate &dd, QObject *parent);
+protected:
+    QScriptCompletionTaskInterface(
+        QScriptCompletionTaskInterfacePrivate &dd, QObject *parent );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptCompletionTaskInterface)
-   Q_DISABLE_COPY(QScriptCompletionTaskInterface)
+private:
+    Q_DECLARE_PRIVATE( QScriptCompletionTaskInterface )
+    Q_DISABLE_COPY( QScriptCompletionTaskInterface )
 };
 
 QT_END_NAMESPACE

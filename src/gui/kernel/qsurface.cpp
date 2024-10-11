@@ -26,29 +26,32 @@
 
 bool QSurface::supportsOpenGL() const
 {
-   SurfaceType type = surfaceType();
-   return type == OpenGLSurface || type == RasterGLSurface;
+    SurfaceType type = surfaceType();
+    return type == OpenGLSurface || type == RasterGLSurface;
 }
 
-QSurface::QSurface(SurfaceClass type)
-   : m_type(type), m_reserved(nullptr)
+QSurface::QSurface( SurfaceClass type )
+    : m_type( type ), m_reserved( nullptr )
 {
 }
 
 QSurface::~QSurface()
 {
 #ifndef QT_NO_OPENGL
-   QOpenGLContext *context = QOpenGLContext::currentContext();
-   if (context && context->surface() == this) {
-      context->doneCurrent();
-   }
+    QOpenGLContext *context = QOpenGLContext::currentContext();
+
+    if ( context && context->surface() == this )
+    {
+        context->doneCurrent();
+    }
+
 #endif
 }
 
 
 QSurface::SurfaceClass QSurface::surfaceClass() const
 {
-   return m_type;
+    return m_type;
 }
 
 

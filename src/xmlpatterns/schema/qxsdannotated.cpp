@@ -25,17 +25,17 @@
 
 using namespace QPatternist;
 
-void XsdAnnotated::addAnnotation(const XsdAnnotation::Ptr &annotation)
+void XsdAnnotated::addAnnotation( const XsdAnnotation::Ptr &annotation )
 {
-   m_annotations.append(annotation);
+    m_annotations.append( annotation );
 }
 
-void XsdAnnotated::addAnnotations(const XsdAnnotation::List &annotations)
+void XsdAnnotated::addAnnotations( const XsdAnnotation::List &annotations )
 {
-   m_annotations << annotations;
+    m_annotations << annotations;
 }
 
 XsdAnnotation::List XsdAnnotated::annotations() const
 {
-   return m_annotations;
+    return m_annotations;
 }

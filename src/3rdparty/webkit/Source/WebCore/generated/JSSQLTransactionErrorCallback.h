@@ -28,24 +28,26 @@
 #include "SQLTransactionErrorCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSQLTransactionErrorCallback : public SQLTransactionErrorCallback, public ActiveDOMCallback {
+class JSSQLTransactionErrorCallback : public SQLTransactionErrorCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSSQLTransactionErrorCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSSQLTransactionErrorCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSSQLTransactionErrorCallback(callback, globalObject));
+        return adoptRef( new JSSQLTransactionErrorCallback( callback, globalObject ) );
     }
 
     virtual ~JSSQLTransactionErrorCallback();
 
     // Functions
-    virtual bool handleEvent(SQLError* error);
+    virtual bool handleEvent( SQLError *error );
 
 private:
-    JSSQLTransactionErrorCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSSQLTransactionErrorCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

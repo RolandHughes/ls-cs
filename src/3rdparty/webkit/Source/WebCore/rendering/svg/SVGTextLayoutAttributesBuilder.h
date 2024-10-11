@@ -24,7 +24,8 @@
 #include "SVGTextLayoutAttributes.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 class RenderSVGText;
@@ -39,30 +40,33 @@ class SVGTextPositioningElement;
 // to create the InlineBox tree based on text chunk boundaries & BiDi information.
 // The second layout phase is carried out by SVGTextLayoutEngine.
 
-class SVGTextLayoutAttributesBuilder {
-    WTF_MAKE_NONCOPYABLE(SVGTextLayoutAttributesBuilder);
+class SVGTextLayoutAttributesBuilder
+{
+    WTF_MAKE_NONCOPYABLE( SVGTextLayoutAttributesBuilder );
 public:
     SVGTextLayoutAttributesBuilder();
-    void buildLayoutAttributesForTextSubtree(RenderSVGText*);
+    void buildLayoutAttributesForTextSubtree( RenderSVGText * );
 
 private:
-    struct TextPosition {
-        TextPosition(SVGTextPositioningElement* newElement = 0, unsigned newStart = 0, unsigned newLength = 0)
-            : element(newElement)
-            , start(newStart)
-            , length(newLength)
+    struct TextPosition
+    {
+        TextPosition( SVGTextPositioningElement *newElement = 0, unsigned newStart = 0, unsigned newLength = 0 )
+            : element( newElement )
+            , start( newStart )
+            , length( newLength )
         {
         }
 
-        SVGTextPositioningElement* element;
+        SVGTextPositioningElement *element;
         unsigned start;
         unsigned length;
     };
 
-    void collectTextPositioningElements(RenderObject*, unsigned& atCharacter, UChar& lastCharacter);
-    void buildLayoutAttributesForAllCharacters(RenderSVGText*, unsigned textLength);
-    void propagateLayoutAttributes(RenderObject*, Vector<SVGTextLayoutAttributes>& allAttributes, unsigned& atCharacter, UChar& lastCharacter) const;
-    void fillAttributesAtPosition(const TextPosition&);
+    void collectTextPositioningElements( RenderObject *, unsigned &atCharacter, UChar &lastCharacter );
+    void buildLayoutAttributesForAllCharacters( RenderSVGText *, unsigned textLength );
+    void propagateLayoutAttributes( RenderObject *, Vector<SVGTextLayoutAttributes> &allAttributes, unsigned &atCharacter,
+                                    UChar &lastCharacter ) const;
+    void fillAttributesAtPosition( const TextPosition & );
 
 private:
     Vector<TextPosition> m_textPositions;

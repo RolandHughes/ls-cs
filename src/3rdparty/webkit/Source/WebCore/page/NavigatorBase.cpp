@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -65,7 +65,8 @@
 #endif // ifndef WEBCORE_NAVIGATOR_VENDOR_SUB
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 NavigatorBase::~NavigatorBase()
 {
@@ -79,20 +80,29 @@ String NavigatorBase::appName() const
 String NavigatorBase::appVersion() const
 {
     // Version is everything in the user agent string past the "Mozilla/" prefix.
-    const String& agent = userAgent();
-    return agent.substring(agent.find('/') + 1);
+    const String &agent = userAgent();
+    return agent.substring( agent.find( '/' ) + 1 );
 }
 
 String NavigatorBase::platform() const
 {
 #if OS(LINUX)
-    if (String("") != WEBCORE_NAVIGATOR_PLATFORM)
+
+    if ( String( "" ) != WEBCORE_NAVIGATOR_PLATFORM )
+    {
         return WEBCORE_NAVIGATOR_PLATFORM;
+    }
+
     struct utsname osname;
-    DEFINE_STATIC_LOCAL(String, platformName, (uname(&osname) >= 0 ? String(osname.sysname) + String(" ") + String(osname.machine) : ""));
+
+    DEFINE_STATIC_LOCAL( String, platformName,
+                         ( uname( &osname ) >= 0 ? String( osname.sysname ) + String( " " ) + String( osname.machine ) : "" ) );
+
     return platformName;
+
 #else
     return WEBCORE_NAVIGATOR_PLATFORM;
+
 #endif
 }
 

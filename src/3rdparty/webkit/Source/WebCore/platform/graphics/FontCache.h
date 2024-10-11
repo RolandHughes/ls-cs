@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -50,68 +50,72 @@ class FontDescription;
 class FontSelector;
 class SimpleFontData;
 
-class FontCache {
-    WTF_MAKE_NONCOPYABLE(FontCache); WTF_MAKE_FAST_ALLOCATED;
+class FontCache
+{
+    WTF_MAKE_NONCOPYABLE( FontCache );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    friend FontCache* fontCache();
+    friend FontCache *fontCache();
 
-    const FontData* getFontData(const Font&, int& familyIndex, FontSelector*);
-    void releaseFontData(const SimpleFontData*);
-    
+    const FontData *getFontData( const Font &, int &familyIndex, FontSelector * );
+    void releaseFontData( const SimpleFontData * );
+
     // This method is implemented by the platform.
     // FIXME: Font data returned by this method never go inactive because callers don't track and release them.
-    const SimpleFontData* getFontDataForCharacters(const Font&, const UChar* characters, int length);
-    
+    const SimpleFontData *getFontDataForCharacters( const Font &, const UChar *characters, int length );
+
     // Also implemented by the platform.
     void platformInit();
 
 #if OS(WINCE) && !PLATFORM(QT)
 #if defined(IMLANG_FONT_LINK) && (IMLANG_FONT_LINK == 2)
-    IMLangFontLink2* getFontLinkInterface();
+    IMLangFontLink2 *getFontLinkInterface();
 #else
-    IMLangFontLink* getFontLinkInterface();
+    IMLangFontLink *getFontLinkInterface();
 #endif
     static void comInitialize();
     static void comUninitialize();
-    static IMultiLanguage* getMultiLanguageInterface();
+    static IMultiLanguage *getMultiLanguageInterface();
 #elif PLATFORM(WIN)
-    IMLangFontLink2* getFontLinkInterface();
+    IMLangFontLink2 *getFontLinkInterface();
 #endif
 
-    void getTraitsInFamily(const AtomicString&, Vector<unsigned>&);
+    void getTraitsInFamily( const AtomicString &, Vector<unsigned> & );
 
-    SimpleFontData* getCachedFontData(const FontDescription& fontDescription, const AtomicString& family, bool checkingAlternateName = false);
-    SimpleFontData* getLastResortFallbackFont(const FontDescription&);
+    SimpleFontData *getCachedFontData( const FontDescription &fontDescription, const AtomicString &family,
+                                       bool checkingAlternateName = false );
+    SimpleFontData *getLastResortFallbackFont( const FontDescription & );
 
-    void addClient(FontSelector*);
-    void removeClient(FontSelector*);
+    void addClient( FontSelector * );
+    void removeClient( FontSelector * );
 
     unsigned generation();
     void invalidate();
 
     size_t fontDataCount();
     size_t inactiveFontDataCount();
-    void purgeInactiveFontData(int count = INT_MAX);
+    void purgeInactiveFontData( int count = INT_MAX );
 
 private:
     FontCache();
     ~FontCache();
 
     // FIXME: This method should eventually be removed.
-    FontPlatformData* getCachedFontPlatformData(const FontDescription&, const AtomicString& family, bool checkingAlternateName = false);
+    FontPlatformData *getCachedFontPlatformData( const FontDescription &, const AtomicString &family,
+            bool checkingAlternateName = false );
 
     // These methods are implemented by each platform.
-    SimpleFontData* getSimilarFontPlatformData(const Font&);
-    FontPlatformData* createFontPlatformData(const FontDescription&, const AtomicString& family);
+    SimpleFontData *getSimilarFontPlatformData( const Font & );
+    FontPlatformData *createFontPlatformData( const FontDescription &, const AtomicString &family );
 
-    SimpleFontData* getCachedFontData(const FontPlatformData*);
+    SimpleFontData *getCachedFontData( const FontPlatformData * );
 
     friend class SimpleFontData; // For getCachedFontData(const FontPlatformData*)
     friend class FontFallbackList;
 };
 
 // Get the global fontCache.
-FontCache* fontCache();
+FontCache *fontCache();
 
 }
 

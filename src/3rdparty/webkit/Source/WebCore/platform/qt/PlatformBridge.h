@@ -78,9 +78,10 @@
 
 typedef struct NPObject NPObject;
 typedef struct _NPP NPP_t;
-typedef NPP_t* NPP;
+typedef NPP_t *NPP;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Widget;
 
@@ -88,11 +89,12 @@ class Widget;
 // questions about the system and so on...
 // This is very similar to chromium/PlatformBridge and the two are likely to converge
 // in the future.
-class PlatformBridge {
+class PlatformBridge
+{
 public:
-    static bool popupsAllowed(NPP npp);
+    static bool popupsAllowed( NPP npp );
     // Plugin
-    static NPObject* pluginScriptableObject(Widget*);
+    static NPObject *pluginScriptableObject( Widget * );
 };
 
 }

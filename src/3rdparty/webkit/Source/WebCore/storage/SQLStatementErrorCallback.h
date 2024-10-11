@@ -33,15 +33,17 @@
 
 #include <wtf/ThreadSafeRefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SQLTransaction;
 class SQLError;
 
-class SQLStatementErrorCallback : public ThreadSafeRefCounted<SQLStatementErrorCallback> {
+class SQLStatementErrorCallback : public ThreadSafeRefCounted<SQLStatementErrorCallback>
+{
 public:
     virtual ~SQLStatementErrorCallback() { }
-    virtual bool handleEvent(SQLTransaction*, SQLError*) = 0;
+    virtual bool handleEvent( SQLTransaction *, SQLError * ) = 0;
 };
 
 }

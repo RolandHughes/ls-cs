@@ -28,9 +28,10 @@
 #include <wtf/GetPtr.h>
 #include <wtf/RefPtr.h>
 
-struct WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListenerPrivate {
-    WebDOMTestMediaQueryListListenerPrivate(WebCore::TestMediaQueryListListener* object = 0)
-        : impl(object)
+struct WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListenerPrivate
+{
+    WebDOMTestMediaQueryListListenerPrivate( WebCore::TestMediaQueryListListener *object = 0 )
+        : impl( object )
     {
     }
 
@@ -39,30 +40,30 @@ struct WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListenerPrivate
 
 WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListener()
     : WebDOMObject()
-    , m_impl(0)
+    , m_impl( 0 )
 {
 }
 
-WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListener(WebCore::TestMediaQueryListListener* impl)
+WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListener( WebCore::TestMediaQueryListListener *impl )
     : WebDOMObject()
-    , m_impl(new WebDOMTestMediaQueryListListenerPrivate(impl))
+    , m_impl( new WebDOMTestMediaQueryListListenerPrivate( impl ) )
 {
 }
 
-WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListener(const WebDOMTestMediaQueryListListener& copy)
+WebDOMTestMediaQueryListListener::WebDOMTestMediaQueryListListener( const WebDOMTestMediaQueryListListener &copy )
     : WebDOMObject()
 {
-    m_impl = copy.impl() ? new WebDOMTestMediaQueryListListenerPrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestMediaQueryListListenerPrivate( copy.impl() ) : 0;
 }
 
-WebDOMTestMediaQueryListListener& WebDOMTestMediaQueryListListener::operator=(const WebDOMTestMediaQueryListListener& copy)
+WebDOMTestMediaQueryListListener &WebDOMTestMediaQueryListListener::operator=( const WebDOMTestMediaQueryListListener &copy )
 {
     delete m_impl;
-    m_impl = copy.impl() ? new WebDOMTestMediaQueryListListenerPrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestMediaQueryListListenerPrivate( copy.impl() ) : 0;
     return *this;
 }
 
-WebCore::TestMediaQueryListListener* WebDOMTestMediaQueryListListener::impl() const
+WebCore::TestMediaQueryListListener *WebDOMTestMediaQueryListListener::impl() const
 {
     return m_impl ? m_impl->impl.get() : 0;
 }
@@ -73,20 +74,22 @@ WebDOMTestMediaQueryListListener::~WebDOMTestMediaQueryListListener()
     m_impl = 0;
 }
 
-void WebDOMTestMediaQueryListListener::method(const WebDOMMediaQueryListListener& listener)
+void WebDOMTestMediaQueryListListener::method( const WebDOMMediaQueryListListener &listener )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
-    impl()->method(toWebCore(listener));
+    impl()->method( toWebCore( listener ) );
 }
 
-WebCore::TestMediaQueryListListener* toWebCore(const WebDOMTestMediaQueryListListener& wrapper)
+WebCore::TestMediaQueryListListener *toWebCore( const WebDOMTestMediaQueryListListener &wrapper )
 {
     return wrapper.impl();
 }
 
-WebDOMTestMediaQueryListListener toWebKit(WebCore::TestMediaQueryListListener* value)
+WebDOMTestMediaQueryListListener toWebKit( WebCore::TestMediaQueryListListener *value )
 {
-    return WebDOMTestMediaQueryListListener(value);
+    return WebDOMTestMediaQueryListListener( value );
 }

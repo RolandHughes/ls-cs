@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,25 +32,32 @@
 #include "PropertyNameArray.h"
 #include "PropertyDescriptor.h"
 
-namespace JSC {
-
-bool JSVariableObject::deleteProperty(ExecState* exec, const Identifier& propertyName)
+namespace JSC
 {
-    if (symbolTable().contains(propertyName.impl()))
-        return false;
 
-    return JSObject::deleteProperty(exec, propertyName);
+bool JSVariableObject::deleteProperty( ExecState *exec, const Identifier &propertyName )
+{
+    if ( symbolTable().contains( propertyName.impl() ) )
+    {
+        return false;
+    }
+
+    return JSObject::deleteProperty( exec, propertyName );
 }
 
-void JSVariableObject::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void JSVariableObject::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
     SymbolTable::const_iterator end = symbolTable().end();
-    for (SymbolTable::const_iterator it = symbolTable().begin(); it != end; ++it) {
-        if (!(it->second.getAttributes() & DontEnum) || (mode == IncludeDontEnumProperties))
-            propertyNames.add(Identifier(exec, it->first.get()));
+
+    for ( SymbolTable::const_iterator it = symbolTable().begin(); it != end; ++it )
+    {
+        if ( !( it->second.getAttributes() & DontEnum ) || ( mode == IncludeDontEnumProperties ) )
+        {
+            propertyNames.add( Identifier( exec, it->first.get() ) );
+        }
     }
-    
-    JSObject::getOwnPropertyNames(exec, propertyNames, mode);
+
+    JSObject::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
 bool JSVariableObject::isVariableObject() const
@@ -58,13 +65,16 @@ bool JSVariableObject::isVariableObject() const
     return true;
 }
 
-bool JSVariableObject::symbolTableGet(const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSVariableObject::symbolTableGet( const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    SymbolTableEntry entry = symbolTable().inlineGet(propertyName.impl());
-    if (!entry.isNull()) {
-        descriptor.setDescriptor(registerAt(entry.getIndex()).get(), entry.getAttributes() | DontDelete);
+    SymbolTableEntry entry = symbolTable().inlineGet( propertyName.impl() );
+
+    if ( !entry.isNull() )
+    {
+        descriptor.setDescriptor( registerAt( entry.getIndex() ).get(), entry.getAttributes() | DontDelete );
         return true;
     }
+
     return false;
 }
 

@@ -31,9 +31,10 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-bool NetscapePluginModule::getPluginInfo(const String&, PluginInfoStore::Plugin&)
+bool NetscapePluginModule::getPluginInfo( const String &, PluginInfoStore::Plugin & )
 {
     return false;
 }

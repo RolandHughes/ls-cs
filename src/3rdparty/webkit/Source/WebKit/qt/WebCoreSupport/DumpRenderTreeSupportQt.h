@@ -26,21 +26,26 @@
 #include "qwebkitglobal.h"
 #include <QVariant>
 
-namespace WebCore {
+namespace WebCore
+{
 class Text;
 class Node;
 }
 
 
 #if defined(WTF_USE_V8) && WTF_USE_V8
-namespace V8 {
-namespace Bindings {
+namespace V8
+{
+namespace Bindings
+{
 class QtDRTNodeRuntime;
 }
 }
 #else
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 class QtDRTNodeRuntime;
 }
 }
@@ -53,18 +58,19 @@ class QWebHistoryItem;
 class QWebScriptWorld;
 class QUrl;
 
-extern QMap<int, QWebScriptWorld*> m_worldMap;
+extern QMap<int, QWebScriptWorld *> m_worldMap;
 
 // Used to pass WebCore::Node's to layout tests using LayoutTestController
-class QWEBKIT_EXPORT QDRTNode {
+class QWEBKIT_EXPORT QDRTNode
+{
 public:
     QDRTNode();
-    QDRTNode(const QDRTNode&);
-    QDRTNode &operator=(const QDRTNode&);
+    QDRTNode( const QDRTNode & );
+    QDRTNode &operator=( const QDRTNode & );
     ~QDRTNode();
 
 private:
-    explicit QDRTNode(WebCore::Node*);
+    explicit QDRTNode( WebCore::Node * );
 
     friend class DumpRenderTreeSupportQt;
 
@@ -74,147 +80,153 @@ private:
     friend class JSC::Bindings::QtDRTNodeRuntime;
 #endif
 
-    WebCore::Node* m_node;
+    WebCore::Node *m_node;
 };
 
-CS_DECLARE_METATYPE(QDRTNode)
+LSCS_DECLARE_METATYPE( QDRTNode )
 
-class QWEBKIT_EXPORT DumpRenderTreeSupportQt {
+class QWEBKIT_EXPORT DumpRenderTreeSupportQt
+{
 
 public:
     DumpRenderTreeSupportQt();
     ~DumpRenderTreeSupportQt();
 
-    static void executeCoreCommandByName(QWebPage* page, const QString& name, const QString& value);
-    static bool isCommandEnabled(QWebPage* page, const QString& name);
-    static bool findString(QWebPage* page, const QString& string, const QStringList& optionArray);
-    static void setSmartInsertDeleteEnabled(QWebPage* page, bool enabled);
-    static void setSelectTrailingWhitespaceEnabled(QWebPage* page, bool enabled);
-    static QVariantList selectedRange(QWebPage* page);
-    static QVariantList firstRectForCharacterRange(QWebPage* page, int location, int length);
-    static void confirmComposition(QWebPage*, const char* text);
+    static void executeCoreCommandByName( QWebPage *page, const QString &name, const QString &value );
+    static bool isCommandEnabled( QWebPage *page, const QString &name );
+    static bool findString( QWebPage *page, const QString &string, const QStringList &optionArray );
+    static void setSmartInsertDeleteEnabled( QWebPage *page, bool enabled );
+    static void setSelectTrailingWhitespaceEnabled( QWebPage *page, bool enabled );
+    static QVariantList selectedRange( QWebPage *page );
+    static QVariantList firstRectForCharacterRange( QWebPage *page, int location, int length );
+    static void confirmComposition( QWebPage *, const char *text );
 
-    static bool pauseAnimation(QWebFrame*, const QString& name, double time, const QString& elementId);
-    static bool pauseTransitionOfProperty(QWebFrame*, const QString& name, double time, const QString& elementId);
-    static bool pauseSVGAnimation(QWebFrame*, const QString& animationId, double time, const QString& elementId);
-    static void suspendActiveDOMObjects(QWebFrame* frame);
-    static void resumeActiveDOMObjects(QWebFrame* frame);
+    static bool pauseAnimation( QWebFrame *, const QString &name, double time, const QString &elementId );
+    static bool pauseTransitionOfProperty( QWebFrame *, const QString &name, double time, const QString &elementId );
+    static bool pauseSVGAnimation( QWebFrame *, const QString &animationId, double time, const QString &elementId );
+    static void suspendActiveDOMObjects( QWebFrame *frame );
+    static void resumeActiveDOMObjects( QWebFrame *frame );
 
-    static void setDomainRelaxationForbiddenForURLScheme(bool forbidden, const QString& scheme);
-    static void setFrameFlatteningEnabled(QWebPage*, bool);
-    static void setCaretBrowsingEnabled(QWebPage* page, bool value);
-    static void setAuthorAndUserStylesEnabled(QWebPage*, bool);
-    static void setMediaType(QWebFrame* qframe, const QString& type);
-    static void setDumpRenderTreeModeEnabled(bool b);
+    static void setDomainRelaxationForbiddenForURLScheme( bool forbidden, const QString &scheme );
+    static void setFrameFlatteningEnabled( QWebPage *, bool );
+    static void setCaretBrowsingEnabled( QWebPage *page, bool value );
+    static void setAuthorAndUserStylesEnabled( QWebPage *, bool );
+    static void setMediaType( QWebFrame *qframe, const QString &type );
+    static void setDumpRenderTreeModeEnabled( bool b );
 
     static void garbageCollectorCollect();
-    static void garbageCollectorCollectOnAlternateThread(bool waitUntilDone);
-    static void setAutofilled(const QWebElement&, bool enabled);
-    static void setJavaScriptProfilingEnabled(QWebFrame*, bool enabled);
-    static void setValueForUser(const QWebElement&, const QString& value);
+    static void garbageCollectorCollectOnAlternateThread( bool waitUntilDone );
+    static void setAutofilled( const QWebElement &, bool enabled );
+    static void setJavaScriptProfilingEnabled( QWebFrame *, bool enabled );
+    static void setValueForUser( const QWebElement &, const QString &value );
     static int javaScriptObjectsCount();
     static void clearScriptWorlds();
-    static void evaluateScriptInIsolatedWorld(QWebFrame* frame, int worldID, const QString& script);
+    static void evaluateScriptInIsolatedWorld( QWebFrame *frame, int worldID, const QString &script );
 
-    static void setTimelineProfilingEnabled(QWebPage*, bool enabled);
-    static void webInspectorExecuteScript(QWebPage* page, long callId, const QString& script);
-    static void webInspectorShow(QWebPage* page);
-    static void webInspectorClose(QWebPage* page);
+    static void setTimelineProfilingEnabled( QWebPage *, bool enabled );
+    static void webInspectorExecuteScript( QWebPage *page, long callId, const QString &script );
+    static void webInspectorShow( QWebPage *page );
+    static void webInspectorClose( QWebPage *page );
 
-    static QString webPageGroupName(QWebPage *page);
-    static QString counterValueForElementById(QWebFrame* frame, const QString& id);
-    static void webPageSetGroupName(QWebPage* page, const QString& groupName);
-    static void clearFrameName(QWebFrame* frame);
+    static QString webPageGroupName( QWebPage *page );
+    static QString counterValueForElementById( QWebFrame *frame, const QString &id );
+    static void webPageSetGroupName( QWebPage *page, const QString &groupName );
+    static void clearFrameName( QWebFrame *frame );
     static void overwritePluginDirectories();
-    static int numberOfActiveAnimations(QWebFrame*);
-    static void suspendAnimations(QWebFrame*);
-    static void resumeAnimations(QWebFrame*);
-    static int numberOfPages(QWebFrame* frame, float width, float height);
-    static int pageNumberForElementById(QWebFrame* frame, const QString& id, float width, float height);
-    static bool hasDocumentElement(QWebFrame* frame);
-    static bool elementDoesAutoCompleteForElementWithId(QWebFrame* frame, const QString& elementId);
-    static void setEditingBehavior(QWebPage* page, const QString& editingBehavior);
+    static int numberOfActiveAnimations( QWebFrame * );
+    static void suspendAnimations( QWebFrame * );
+    static void resumeAnimations( QWebFrame * );
+    static int numberOfPages( QWebFrame *frame, float width, float height );
+    static int pageNumberForElementById( QWebFrame *frame, const QString &id, float width, float height );
+    static bool hasDocumentElement( QWebFrame *frame );
+    static bool elementDoesAutoCompleteForElementWithId( QWebFrame *frame, const QString &elementId );
+    static void setEditingBehavior( QWebPage *page, const QString &editingBehavior );
 
     static void clearAllApplicationCaches();
 
-    static void whiteListAccessFromOrigin(const QString& sourceOrigin, const QString& destinationProtocol, const QString& destinationHost, bool allowDestinationSubdomains);
-    static void removeWhiteListAccessFromOrigin(const QString& sourceOrigin, const QString& destinationProtocol, const QString& destinationHost, bool allowDestinationSubdomains);
+    static void whiteListAccessFromOrigin( const QString &sourceOrigin, const QString &destinationProtocol,
+                                           const QString &destinationHost, bool allowDestinationSubdomains );
+    static void removeWhiteListAccessFromOrigin( const QString &sourceOrigin, const QString &destinationProtocol,
+            const QString &destinationHost, bool allowDestinationSubdomains );
     static void resetOriginAccessWhiteLists();
 
-    static void activeMockDeviceOrientationClient(bool b);
+    static void activeMockDeviceOrientationClient( bool b );
     static void removeMockDeviceOrientation();
-    static void setMockDeviceOrientation(bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma, double gamma);
+    static void setMockDeviceOrientation( bool canProvideAlpha, double alpha, bool canProvideBeta, double beta, bool canProvideGamma,
+                                          double gamma );
 
-    static void resetGeolocationMock(QWebPage*);
-    static void setMockGeolocationPermission(QWebPage*, bool allowed);
-    static void setMockGeolocationPosition(QWebPage*, double latitude, double longitude, double accuracy);
-    static void setMockGeolocationError(QWebPage*, int errorCode, const QString& message);
-    static int numberOfPendingGeolocationPermissionRequests(QWebPage*);
+    static void resetGeolocationMock( QWebPage * );
+    static void setMockGeolocationPermission( QWebPage *, bool allowed );
+    static void setMockGeolocationPosition( QWebPage *, double latitude, double longitude, double accuracy );
+    static void setMockGeolocationError( QWebPage *, int errorCode, const QString &message );
+    static int numberOfPendingGeolocationPermissionRequests( QWebPage * );
 
     static int workerThreadCount();
 
-    static QString markerTextForListItem(const QWebElement& listItem);
-    static QVariantMap computedStyleIncludingVisitedInfo(const QWebElement& element);
-    static QString plainText(const QVariant& rng);
+    static QString markerTextForListItem( const QWebElement &listItem );
+    static QVariantMap computedStyleIncludingVisitedInfo( const QWebElement &element );
+    static QString plainText( const QVariant &rng );
 
-    static void dumpFrameLoader(bool b);
-    static void dumpProgressFinishedCallback(bool);
-    static void dumpUserGestureInFrameLoader(bool b);
-    static void dumpResourceLoadCallbacks(bool b);
-    static void dumpResourceResponseMIMETypes(bool b);
-    static void dumpResourceLoadCallbacksPath(const QString& path);
-    static void setWillSendRequestReturnsNullOnRedirect(bool b);
-    static void setWillSendRequestReturnsNull(bool b);
-    static void setWillSendRequestClearHeaders(const QStringList& headers);
-    static void dumpHistoryCallbacks(bool b);
-    static void dumpVisitedLinksCallbacks(bool b);
+    static void dumpFrameLoader( bool b );
+    static void dumpProgressFinishedCallback( bool );
+    static void dumpUserGestureInFrameLoader( bool b );
+    static void dumpResourceLoadCallbacks( bool b );
+    static void dumpResourceResponseMIMETypes( bool b );
+    static void dumpResourceLoadCallbacksPath( const QString &path );
+    static void setWillSendRequestReturnsNullOnRedirect( bool b );
+    static void setWillSendRequestReturnsNull( bool b );
+    static void setWillSendRequestClearHeaders( const QStringList &headers );
+    static void dumpHistoryCallbacks( bool b );
+    static void dumpVisitedLinksCallbacks( bool b );
 
-    static void setDeferMainResourceDataLoad(bool b);
+    static void setDeferMainResourceDataLoad( bool b );
 
-    static void dumpEditingCallbacks(bool b);
-    static void dumpSetAcceptsEditing(bool b);
+    static void dumpEditingCallbacks( bool b );
+    static void dumpSetAcceptsEditing( bool b );
 
-    static void dumpNotification(bool b);
+    static void dumpNotification( bool b );
 
-    static QMap<QString, QWebHistoryItem> getChildHistoryItems(const QWebHistoryItem& historyItem);
-    static bool isTargetItem(const QWebHistoryItem& historyItem);
-    static QString historyItemTarget(const QWebHistoryItem& historyItem);
+    static QMap<QString, QWebHistoryItem> getChildHistoryItems( const QWebHistoryItem &historyItem );
+    static bool isTargetItem( const QWebHistoryItem &historyItem );
+    static QString historyItemTarget( const QWebHistoryItem &historyItem );
 
-    static bool shouldClose(QWebFrame* frame);
+    static bool shouldClose( QWebFrame *frame );
 
-    static void setCustomPolicyDelegate(bool enabled, bool permissive);
+    static void setCustomPolicyDelegate( bool enabled, bool permissive );
 
-    static bool isPageBoxVisible(QWebFrame* frame, int pageIndex);
+    static bool isPageBoxVisible( QWebFrame *frame, int pageIndex );
 
-    static QString pageSizeAndMarginsInPixels(QWebFrame* frame, int pageIndex, int width, int height, int marginTop, int marginRight, int marginBottom, int marginLeft);
-    static QString pageProperty(QWebFrame* frame, const QString& propertyName, int pageNumber);
-    static void addUserStyleSheet(QWebPage* page, const QString& sourceCode);
-    static void simulateDesktopNotificationClick(const QString& title);
-    static QString viewportAsText(QWebPage*, int deviceDPI, const QSize& deviceSize, const QSize& availableSize);
+    static QString pageSizeAndMarginsInPixels( QWebFrame *frame, int pageIndex, int width, int height, int marginTop, int marginRight,
+            int marginBottom, int marginLeft );
+    static QString pageProperty( QWebFrame *frame, const QString &propertyName, int pageNumber );
+    static void addUserStyleSheet( QWebPage *page, const QString &sourceCode );
+    static void simulateDesktopNotificationClick( const QString &title );
+    static QString viewportAsText( QWebPage *, int deviceDPI, const QSize &deviceSize, const QSize &availableSize );
 
-    static void scalePageBy(QWebFrame*, float scale, const QPoint& origin);
+    static void scalePageBy( QWebFrame *, float scale, const QPoint &origin );
 
-    static QVariantList nodesFromRect(const QWebElement& document, int x, int y, unsigned top, unsigned right, unsigned bottom, unsigned left, bool ignoreClipping);
-    static QString responseMimeType(QWebFrame*);
-    static void clearOpener(QWebFrame*);
-    static void addURLToRedirect(const QString& origin, const QString& destination);
-    static QStringList contextMenu(QWebPage*);
+    static QVariantList nodesFromRect( const QWebElement &document, int x, int y, unsigned top, unsigned right, unsigned bottom,
+                                       unsigned left, bool ignoreClipping );
+    static QString responseMimeType( QWebFrame * );
+    static void clearOpener( QWebFrame * );
+    static void addURLToRedirect( const QString &origin, const QString &destination );
+    static QStringList contextMenu( QWebPage * );
 
     static double defaultMinimumTimerInterval(); // Not really tied to WebView
-    static void setMinimumTimerInterval(QWebPage*, double);
+    static void setMinimumTimerInterval( QWebPage *, double );
 
-    static QUrl mediaContentUrlByElementId(QWebFrame*, const QString& elementId);
-    static void setAlternateHtml(QWebFrame*, const QString& html, const QUrl& baseUrl, const QUrl& failingUrl);
+    static QUrl mediaContentUrlByElementId( QWebFrame *, const QString &elementId );
+    static void setAlternateHtml( QWebFrame *, const QString &html, const QUrl &baseUrl, const QUrl &failingUrl );
 
-    static QVariant shadowRoot(const QWebElement&);
-    static QVariant ensureShadowRoot(const QWebElement&);
-    static void removeShadowRoot(const QWebElement&);
-    static QString shadowPseudoId(const QWebElement&);
+    static QVariant shadowRoot( const QWebElement & );
+    static QVariant ensureShadowRoot( const QWebElement & );
+    static void removeShadowRoot( const QWebElement & );
+    static QString shadowPseudoId( const QWebElement & );
 
-    static QString layerTreeAsText(QWebFrame*);
+    static QString layerTreeAsText( QWebFrame * );
 
-    static void injectInternalsObject(QWebFrame*);
-    static void resetInternalsObject(QWebFrame*);
+    static void injectInternalsObject( QWebFrame * );
+    static void resetInternalsObject( QWebFrame * );
 };
 
 #endif

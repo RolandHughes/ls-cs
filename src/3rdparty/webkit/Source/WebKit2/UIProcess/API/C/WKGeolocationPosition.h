@@ -34,7 +34,8 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKGeolocationPositionGetTypeID();
 
-WK_EXPORT WKGeolocationPositionRef WKGeolocationPositionCreate(double timestamp, double latitude, double longitude, double accuracy);
+WK_EXPORT WKGeolocationPositionRef WKGeolocationPositionCreate( double timestamp, double latitude, double longitude,
+        double accuracy );
 
 #ifdef __cplusplus
 }

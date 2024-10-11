@@ -36,120 +36,120 @@ class QVideoEncoderSettingsPrivate;
 
 class Q_MULTIMEDIA_EXPORT QAudioEncoderSettings
 {
- public:
-   QAudioEncoderSettings();
-   QAudioEncoderSettings(const QAudioEncoderSettings &other);
+public:
+    QAudioEncoderSettings();
+    QAudioEncoderSettings( const QAudioEncoderSettings &other );
 
-   ~QAudioEncoderSettings();
+    ~QAudioEncoderSettings();
 
-   QAudioEncoderSettings &operator=(const QAudioEncoderSettings &other);
-   bool operator==(const QAudioEncoderSettings &other) const;
-   bool operator!=(const QAudioEncoderSettings &other) const;
+    QAudioEncoderSettings &operator=( const QAudioEncoderSettings &other );
+    bool operator==( const QAudioEncoderSettings &other ) const;
+    bool operator!=( const QAudioEncoderSettings &other ) const;
 
-   bool isNull() const;
+    bool isNull() const;
 
-   QMultimedia::EncodingMode encodingMode() const;
-   void setEncodingMode(QMultimedia::EncodingMode mode);
+    QMultimedia::EncodingMode encodingMode() const;
+    void setEncodingMode( QMultimedia::EncodingMode mode );
 
-   QString codec() const;
-   void setCodec(const QString &codecName);
+    QString codec() const;
+    void setCodec( const QString &codecName );
 
-   int bitRate() const;
-   void setBitRate(int bitrate);
+    int bitRate() const;
+    void setBitRate( int bitrate );
 
-   int channelCount() const;
-   void setChannelCount(int channels);
+    int channelCount() const;
+    void setChannelCount( int channels );
 
-   int sampleRate() const;
-   void setSampleRate(int rate);
+    int sampleRate() const;
+    void setSampleRate( int rate );
 
-   QMultimedia::EncodingQuality quality() const;
-   void setQuality(QMultimedia::EncodingQuality quality);
+    QMultimedia::EncodingQuality quality() const;
+    void setQuality( QMultimedia::EncodingQuality quality );
 
-   QVariant encodingOption(const QString &option) const;
-   QVariantMap encodingOptions() const;
-   void setEncodingOption(const QString &option, const QVariant &value);
-   void setEncodingOptions(const QVariantMap &options);
+    QVariant encodingOption( const QString &option ) const;
+    QVariantMap encodingOptions() const;
+    void setEncodingOption( const QString &option, const QVariant &value );
+    void setEncodingOptions( const QVariantMap &options );
 
- private:
-   QSharedDataPointer<QAudioEncoderSettingsPrivate> d;
+private:
+    QSharedDataPointer<QAudioEncoderSettingsPrivate> d;
 };
 
 
 class Q_MULTIMEDIA_EXPORT QVideoEncoderSettings
 {
- public:
-   QVideoEncoderSettings();
-   QVideoEncoderSettings(const QVideoEncoderSettings &other);
+public:
+    QVideoEncoderSettings();
+    QVideoEncoderSettings( const QVideoEncoderSettings &other );
 
-   ~QVideoEncoderSettings();
+    ~QVideoEncoderSettings();
 
-   QVideoEncoderSettings &operator=(const QVideoEncoderSettings &other);
-   bool operator==(const QVideoEncoderSettings &other) const;
-   bool operator!=(const QVideoEncoderSettings &other) const;
+    QVideoEncoderSettings &operator=( const QVideoEncoderSettings &other );
+    bool operator==( const QVideoEncoderSettings &other ) const;
+    bool operator!=( const QVideoEncoderSettings &other ) const;
 
-   bool isNull() const;
+    bool isNull() const;
 
-   QMultimedia::EncodingMode encodingMode() const;
-   void setEncodingMode(QMultimedia::EncodingMode mode);
+    QMultimedia::EncodingMode encodingMode() const;
+    void setEncodingMode( QMultimedia::EncodingMode mode );
 
-   QString codec() const;
-   void setCodec(const QString &codecName);
+    QString codec() const;
+    void setCodec( const QString &codecName );
 
-   QSize resolution() const;
-   void setResolution(const QSize &resolution);
-   void setResolution(int width, int height);
+    QSize resolution() const;
+    void setResolution( const QSize &resolution );
+    void setResolution( int width, int height );
 
-   qreal frameRate() const;
-   void setFrameRate(qreal rate);
+    qreal frameRate() const;
+    void setFrameRate( qreal rate );
 
-   int bitRate() const;
-   void setBitRate(int bitrate);
+    int bitRate() const;
+    void setBitRate( int bitrate );
 
-   QMultimedia::EncodingQuality quality() const;
-   void setQuality(QMultimedia::EncodingQuality quality);
+    QMultimedia::EncodingQuality quality() const;
+    void setQuality( QMultimedia::EncodingQuality quality );
 
-   QVariant encodingOption(const QString &option) const;
-   QVariantMap encodingOptions() const;
-   void setEncodingOption(const QString &option, const QVariant &value);
-   void setEncodingOptions(const QVariantMap &options);
+    QVariant encodingOption( const QString &option ) const;
+    QVariantMap encodingOptions() const;
+    void setEncodingOption( const QString &option, const QVariant &value );
+    void setEncodingOptions( const QVariantMap &options );
 
- private:
-   QSharedDataPointer<QVideoEncoderSettingsPrivate> d;
+private:
+    QSharedDataPointer<QVideoEncoderSettingsPrivate> d;
 };
 
 
 class Q_MULTIMEDIA_EXPORT QImageEncoderSettings
 {
- public:
-   QImageEncoderSettings();
-   QImageEncoderSettings(const QImageEncoderSettings &other);
+public:
+    QImageEncoderSettings();
+    QImageEncoderSettings( const QImageEncoderSettings &other );
 
-   ~QImageEncoderSettings();
+    ~QImageEncoderSettings();
 
-   QImageEncoderSettings &operator=(const QImageEncoderSettings &other);
-   bool operator==(const QImageEncoderSettings &other) const;
-   bool operator!=(const QImageEncoderSettings &other) const;
+    QImageEncoderSettings &operator=( const QImageEncoderSettings &other );
+    bool operator==( const QImageEncoderSettings &other ) const;
+    bool operator!=( const QImageEncoderSettings &other ) const;
 
-   bool isNull() const;
+    bool isNull() const;
 
-   QString codec() const;
-   void setCodec(const QString &codecName);
+    QString codec() const;
+    void setCodec( const QString &codecName );
 
-   QSize resolution() const;
-   void setResolution(const QSize &resolution);
-   void setResolution(int width, int height);
+    QSize resolution() const;
+    void setResolution( const QSize &resolution );
+    void setResolution( int width, int height );
 
-   QMultimedia::EncodingQuality quality() const;
-   void setQuality(QMultimedia::EncodingQuality quality);
+    QMultimedia::EncodingQuality quality() const;
+    void setQuality( QMultimedia::EncodingQuality quality );
 
-   QVariant encodingOption(const QString &option) const;
-   QVariantMap encodingOptions() const;
-   void setEncodingOption(const QString &option, const QVariant &value);
-   void setEncodingOptions(const QVariantMap &options);
+    QVariant encodingOption( const QString &option ) const;
+    QVariantMap encodingOptions() const;
+    void setEncodingOption( const QString &option, const QVariant &value );
+    void setEncodingOptions( const QVariantMap &options );
 
- private:
-   QSharedDataPointer<QImageEncoderSettingsPrivate> d;
+private:
+    QSharedDataPointer<QImageEncoderSettingsPrivate> d;
 };
 
 #endif

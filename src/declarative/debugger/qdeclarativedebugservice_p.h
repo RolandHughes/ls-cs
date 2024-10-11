@@ -34,40 +34,40 @@ class QDeclarativeDebugServicePrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeDebugService : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeDebugService)
+    DECL_LSCS_OBJECT( QDeclarativeDebugService )
 
-   Q_DECLARE_PRIVATE(QDeclarativeDebugService)
-   Q_DISABLE_COPY(QDeclarativeDebugService)
+    Q_DECLARE_PRIVATE( QDeclarativeDebugService )
+    Q_DISABLE_COPY( QDeclarativeDebugService )
 
- public:
-   explicit QDeclarativeDebugService(const QString &, QObject *parent = nullptr);
-   ~QDeclarativeDebugService();
+public:
+    explicit QDeclarativeDebugService( const QString &, QObject *parent = nullptr );
+    ~QDeclarativeDebugService();
 
-   QString name() const;
+    QString name() const;
 
-   enum Status { NotConnected, Unavailable, Enabled };
-   Status status() const;
+    enum Status { NotConnected, Unavailable, Enabled };
+    Status status() const;
 
-   void sendMessage(const QByteArray &);
-   bool waitForMessage();
+    void sendMessage( const QByteArray & );
+    bool waitForMessage();
 
-   static int idForObject(QObject *);
-   static QObject *objectForId(int);
+    static int idForObject( QObject * );
+    static QObject *objectForId( int );
 
-   static QString objectToString(QObject *obj);
+    static QString objectToString( QObject *obj );
 
-   static bool isDebuggingEnabled();
-   static bool hasDebuggingClient();
+    static bool isDebuggingEnabled();
+    static bool hasDebuggingClient();
 
- protected:
-   virtual void statusChanged(Status);
-   virtual void messageReceived(const QByteArray &);
+protected:
+    virtual void statusChanged( Status );
+    virtual void messageReceived( const QByteArray & );
 
-   QScopedPointer<QDeclarativeDebugServicePrivate> d_ptr;
+    QScopedPointer<QDeclarativeDebugServicePrivate> d_ptr;
 
- private:
-   friend class QDeclarativeDebugServer;
-   friend class QDeclarativeDebugServerPrivate;
+private:
+    friend class QDeclarativeDebugServer;
+    friend class QDeclarativeDebugServerPrivate;
 };
 
 QT_END_NAMESPACE

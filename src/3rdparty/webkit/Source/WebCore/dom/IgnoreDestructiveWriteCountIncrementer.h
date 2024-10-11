@@ -28,28 +28,36 @@
 
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IgnoreDestructiveWriteCountIncrementer {
-    WTF_MAKE_NONCOPYABLE(IgnoreDestructiveWriteCountIncrementer);
+class IgnoreDestructiveWriteCountIncrementer
+{
+    WTF_MAKE_NONCOPYABLE( IgnoreDestructiveWriteCountIncrementer );
 public:
-    explicit IgnoreDestructiveWriteCountIncrementer(Document* document)
-        : m_count(document ? &document->m_ignoreDestructiveWriteCount : 0)
+    explicit IgnoreDestructiveWriteCountIncrementer( Document *document )
+        : m_count( document ? &document->m_ignoreDestructiveWriteCount : 0 )
     {
-        if (!m_count)
+        if ( !m_count )
+        {
             return;
-        ++(*m_count);
+        }
+
+        ++( *m_count );
     }
 
     ~IgnoreDestructiveWriteCountIncrementer()
     {
-        if (!m_count)
+        if ( !m_count )
+        {
             return;
-        --(*m_count);
+        }
+
+        --( *m_count );
     }
 
 private:
-    unsigned* m_count;
+    unsigned *m_count;
 };
 
 }

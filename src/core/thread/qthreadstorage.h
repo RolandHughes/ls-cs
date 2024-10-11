@@ -28,118 +28,125 @@
 
 class Q_CORE_EXPORT QThreadStorageData
 {
- public:
-   explicit QThreadStorageData(void (*func)(void *));
-   ~QThreadStorageData();
+public:
+    explicit QThreadStorageData( void ( *func )( void * ) );
+    ~QThreadStorageData();
 
-   void **get() const;
-   void **set(void *p);
+    void **get() const;
+    void **set( void *p );
 
-   static void finish(void **);
-   int id;
+    static void finish( void ** );
+    int id;
 };
 
 // pointer specialization
 template <typename T>
-inline T *&qThreadStorage_localData(QThreadStorageData &d, T **)
+inline T *&qThreadStorage_localData( QThreadStorageData &d, T ** )
 {
-   void **v = d.get();
+    void **v = d.get();
 
-   if (! v) {
-      v = d.set(nullptr);
-   }
+    if ( ! v )
+    {
+        v = d.set( nullptr );
+    }
 
-   return *(reinterpret_cast<T **>(v));
+    return *( reinterpret_cast<T **>( v ) );
 }
 
 template <typename T>
-inline T *qThreadStorage_localData_const(const QThreadStorageData &d, T **)
+inline T *qThreadStorage_localData_const( const QThreadStorageData &d, T ** )
 {
-   void **v = d.get();
+    void **v = d.get();
 
-   return v ? *(reinterpret_cast<T **>(v)) : nullptr;
+    return v ? *( reinterpret_cast<T **>( v ) ) : nullptr;
 }
 
 template <typename T>
-inline void qThreadStorage_setLocalData(QThreadStorageData &d, T **t)
+inline void qThreadStorage_setLocalData( QThreadStorageData &d, T **t )
 {
-   (void) d.set(*t);
+    ( void ) d.set( *t );
 }
 
 template <typename T>
-inline void qThreadStorage_deleteData(void *d, T **)
+inline void qThreadStorage_deleteData( void *d, T ** )
 {
-   delete static_cast<T *>(d);
+    delete static_cast<T *>( d );
 }
 
 // value-based specialization
 template <typename T>
-inline T &qThreadStorage_localData(QThreadStorageData &d, T *)
+inline T &qThreadStorage_localData( QThreadStorageData &d, T * )
 {
-   void **v = d.get();
+    void **v = d.get();
 
-   if (! v) {
-      v = d.set(new T());
-   }
+    if ( ! v )
+    {
+        v = d.set( new T() );
+    }
 
-   return *(reinterpret_cast<T *>(*v));
+    return *( reinterpret_cast<T *>( *v ) );
 }
 
 template <typename T>
-inline T qThreadStorage_localData_const(const QThreadStorageData &d, T *)
+inline T qThreadStorage_localData_const( const QThreadStorageData &d, T * )
 {
-   void **v = d.get();
-   return v ? *(reinterpret_cast<T *>(*v)) : T();
+    void **v = d.get();
+    return v ? *( reinterpret_cast<T *>( *v ) ) : T();
 }
 
 template <typename T>
-inline void qThreadStorage_setLocalData(QThreadStorageData &d, T *t)
+inline void qThreadStorage_setLocalData( QThreadStorageData &d, T *t )
 {
-   (void) d.set(new T(*t));
+    ( void ) d.set( new T( *t ) );
 }
 
 template <typename T>
-inline void qThreadStorage_deleteData(void *d, T *)
+inline void qThreadStorage_deleteData( void *d, T * )
 {
-   delete static_cast<T *>(d);
+    delete static_cast<T *>( d );
 }
 
 template <class T>
 class QThreadStorage
 {
- private:
-   QThreadStorageData d;
+private:
+    QThreadStorageData d;
 
-   static void deleteData(void *x) {
-      qThreadStorage_deleteData(x, static_cast<T *>(nullptr));
-   }
+    static void deleteData( void *x )
+    {
+        qThreadStorage_deleteData( x, static_cast<T *>( nullptr ) );
+    }
 
- public:
-   QThreadStorage()
-      : d(deleteData)
-   { }
+public:
+    QThreadStorage()
+        : d( deleteData )
+    { }
 
-   QThreadStorage(const QThreadStorage &) = delete;
-   QThreadStorage &operator=(const QThreadStorage &) = delete;
+    QThreadStorage( const QThreadStorage & ) = delete;
+    QThreadStorage &operator=( const QThreadStorage & ) = delete;
 
-   ~QThreadStorage()
-   { }
+    ~QThreadStorage()
+    { }
 
-   bool hasLocalData() const {
-      return d.get() != nullptr;
-   }
+    bool hasLocalData() const
+    {
+        return d.get() != nullptr;
+    }
 
-   T &localData() {
-      return qThreadStorage_localData(d, static_cast<T *>(nullptr));
-   }
+    T &localData()
+    {
+        return qThreadStorage_localData( d, static_cast<T *>( nullptr ) );
+    }
 
-   T localData() const {
-      return qThreadStorage_localData_const(d, static_cast<T *>(nullptr));
-   }
+    T localData() const
+    {
+        return qThreadStorage_localData_const( d, static_cast<T *>( nullptr ) );
+    }
 
-   void setLocalData(T data) {
-      qThreadStorage_setLocalData(d, &data);
-   }
+    void setLocalData( T data )
+    {
+        qThreadStorage_setLocalData( d, &data );
+    }
 };
 
 #endif

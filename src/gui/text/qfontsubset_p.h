@@ -28,50 +28,53 @@
 
 class QFontSubset
 {
- public:
-   explicit QFontSubset(QFontEngine *fe, int obj_id = 0)
-      : object_id(obj_id), noEmbed(false), fontEngine(fe), downloaded_glyphs(0), standard_font(false)
-   {
-      fontEngine->m_refCount.ref();
+public:
+    explicit QFontSubset( QFontEngine *fe, int obj_id = 0 )
+        : object_id( obj_id ), noEmbed( false ), fontEngine( fe ), downloaded_glyphs( 0 ), standard_font( false )
+    {
+        fontEngine->m_refCount.ref();
 
 #ifndef QT_NO_PDF
-      addGlyph(0);
+        addGlyph( 0 );
 #endif
-   }
+    }
 
-   ~QFontSubset() {
-      if (! fontEngine->m_refCount.deref()) {
-         delete fontEngine;
-      }
-   }
+    ~QFontSubset()
+    {
+        if ( ! fontEngine->m_refCount.deref() )
+        {
+            delete fontEngine;
+        }
+    }
 
-   QByteArray toTruetype() const;
+    QByteArray toTruetype() const;
 
 #ifndef QT_NO_PDF
-   QByteArray widthArray() const;
-   QByteArray createToUnicodeMap() const;
-   QVector<int> getReverseMap() const;
+    QByteArray widthArray() const;
+    QByteArray createToUnicodeMap() const;
+    QVector<int> getReverseMap() const;
 
-   QByteArray glyphName(unsigned int glyph, const QVector<int> &reverseMap) const;
+    QByteArray glyphName( unsigned int glyph, const QVector<int> &reverseMap ) const;
 
-   static QByteArray glyphName(unsigned short unicode, bool symbol);
+    static QByteArray glyphName( unsigned short unicode, bool symbol );
 
-   int addGlyph(int index);
+    int addGlyph( int index );
 #endif
 
-   const int object_id;
-   bool noEmbed;
-   QFontEngine *fontEngine;
-   QVector<int> glyph_indices;
-   mutable int downloaded_glyphs;
-   mutable bool standard_font;
+    const int object_id;
+    bool noEmbed;
+    QFontEngine *fontEngine;
+    QVector<int> glyph_indices;
+    mutable int downloaded_glyphs;
+    mutable bool standard_font;
 
-   int nGlyphs() const {
-      return glyph_indices.size();
-   }
+    int nGlyphs() const
+    {
+        return glyph_indices.size();
+    }
 
-   mutable QFixed emSquare;
-   mutable QVector<QFixed> widths;
+    mutable QFixed emSquare;
+    mutable QVector<QFixed> widths;
 };
 
 #endif

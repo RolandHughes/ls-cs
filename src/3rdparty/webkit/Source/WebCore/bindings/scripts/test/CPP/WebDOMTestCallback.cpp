@@ -40,9 +40,10 @@
 #include <wtf/GetPtr.h>
 #include <wtf/RefPtr.h>
 
-struct WebDOMTestCallback::WebDOMTestCallbackPrivate {
-    WebDOMTestCallbackPrivate(WebCore::TestCallback* object = 0)
-        : impl(object)
+struct WebDOMTestCallback::WebDOMTestCallbackPrivate
+{
+    WebDOMTestCallbackPrivate( WebCore::TestCallback *object = 0 )
+        : impl( object )
     {
     }
 
@@ -51,30 +52,30 @@ struct WebDOMTestCallback::WebDOMTestCallbackPrivate {
 
 WebDOMTestCallback::WebDOMTestCallback()
     : WebDOMObject()
-    , m_impl(0)
+    , m_impl( 0 )
 {
 }
 
-WebDOMTestCallback::WebDOMTestCallback(WebCore::TestCallback* impl)
+WebDOMTestCallback::WebDOMTestCallback( WebCore::TestCallback *impl )
     : WebDOMObject()
-    , m_impl(new WebDOMTestCallbackPrivate(impl))
+    , m_impl( new WebDOMTestCallbackPrivate( impl ) )
 {
 }
 
-WebDOMTestCallback::WebDOMTestCallback(const WebDOMTestCallback& copy)
+WebDOMTestCallback::WebDOMTestCallback( const WebDOMTestCallback &copy )
     : WebDOMObject()
 {
-    m_impl = copy.impl() ? new WebDOMTestCallbackPrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestCallbackPrivate( copy.impl() ) : 0;
 }
 
-WebDOMTestCallback& WebDOMTestCallback::operator=(const WebDOMTestCallback& copy)
+WebDOMTestCallback &WebDOMTestCallback::operator=( const WebDOMTestCallback &copy )
 {
     delete m_impl;
-    m_impl = copy.impl() ? new WebDOMTestCallbackPrivate(copy.impl()) : 0;
+    m_impl = copy.impl() ? new WebDOMTestCallbackPrivate( copy.impl() ) : 0;
     return *this;
 }
 
-WebCore::TestCallback* WebDOMTestCallback::impl() const
+WebCore::TestCallback *WebDOMTestCallback::impl() const
 {
     return m_impl ? m_impl->impl.get() : 0;
 }
@@ -87,52 +88,62 @@ WebDOMTestCallback::~WebDOMTestCallback()
 
 bool WebDOMTestCallback::callbackWithNoParam()
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return false;
+    }
 
     return impl()->callbackWithNoParam();
 }
 
-bool WebDOMTestCallback::callbackWithClass1Param(const WebDOMClass1& class1Param)
+bool WebDOMTestCallback::callbackWithClass1Param( const WebDOMClass1 &class1Param )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return false;
+    }
 
-    return impl()->callbackWithClass1Param(toWebCore(class1Param));
+    return impl()->callbackWithClass1Param( toWebCore( class1Param ) );
 }
 
-bool WebDOMTestCallback::callbackWithClass2Param(const WebDOMClass2& class2Param, const WebDOMString& strArg)
+bool WebDOMTestCallback::callbackWithClass2Param( const WebDOMClass2 &class2Param, const WebDOMString &strArg )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return false;
+    }
 
-    return impl()->callbackWithClass2Param(toWebCore(class2Param), strArg);
+    return impl()->callbackWithClass2Param( toWebCore( class2Param ), strArg );
 }
 
-int WebDOMTestCallback::callbackWithNonBoolReturnType(const WebDOMClass3& class3Param)
+int WebDOMTestCallback::callbackWithNonBoolReturnType( const WebDOMClass3 &class3Param )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return 0;
+    }
 
-    return impl()->callbackWithNonBoolReturnType(toWebCore(class3Param));
+    return impl()->callbackWithNonBoolReturnType( toWebCore( class3Param ) );
 }
 
-bool WebDOMTestCallback::callbackWithStringList(const WebDOMDOMStringList& listParam)
+bool WebDOMTestCallback::callbackWithStringList( const WebDOMDOMStringList &listParam )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return false;
+    }
 
-    return impl()->callbackWithStringList(toWebCore(listParam));
+    return impl()->callbackWithStringList( toWebCore( listParam ) );
 }
 
-WebCore::TestCallback* toWebCore(const WebDOMTestCallback& wrapper)
+WebCore::TestCallback *toWebCore( const WebDOMTestCallback &wrapper )
 {
     return wrapper.impl();
 }
 
-WebDOMTestCallback toWebKit(WebCore::TestCallback* value)
+WebDOMTestCallback toWebKit( WebCore::TestCallback *value )
 {
-    return WebDOMTestCallback(value);
+    return WebDOMTestCallback( value );
 }
 
 #endif // ENABLE(DATABASE)

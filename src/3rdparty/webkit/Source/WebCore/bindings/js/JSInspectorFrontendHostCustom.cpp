@@ -48,79 +48,99 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSValue JSInspectorFrontendHost::platform(ExecState* execState)
+JSValue JSInspectorFrontendHost::platform( ExecState *execState )
 {
 #if PLATFORM(MAC)
-    DEFINE_STATIC_LOCAL(const String, platform, ("mac"));
+    DEFINE_STATIC_LOCAL( const String, platform, ( "mac" ) );
 #elif OS(WINDOWS)
-    DEFINE_STATIC_LOCAL(const String, platform, ("windows"));
+    DEFINE_STATIC_LOCAL( const String, platform, ( "windows" ) );
 #elif OS(LINUX)
-    DEFINE_STATIC_LOCAL(const String, platform, ("linux"));
+    DEFINE_STATIC_LOCAL( const String, platform, ( "linux" ) );
 #elif OS(FREEBSD)
-    DEFINE_STATIC_LOCAL(const String, platform, ("freebsd"));
+    DEFINE_STATIC_LOCAL( const String, platform, ( "freebsd" ) );
 #elif OS(OPENBSD)
-    DEFINE_STATIC_LOCAL(const String, platform, ("openbsd"));
+    DEFINE_STATIC_LOCAL( const String, platform, ( "openbsd" ) );
 #elif OS(SOLARIS)
-    DEFINE_STATIC_LOCAL(const String, platform, ("solaris"));
+    DEFINE_STATIC_LOCAL( const String, platform, ( "solaris" ) );
 #else
-    DEFINE_STATIC_LOCAL(const String, platform, ("unknown"));
+    DEFINE_STATIC_LOCAL( const String, platform, ( "unknown" ) );
 #endif
-    return jsString(execState, platform);
+    return jsString( execState, platform );
 }
 
-JSValue JSInspectorFrontendHost::port(ExecState* execState)
+JSValue JSInspectorFrontendHost::port( ExecState *execState )
 {
 #if PLATFORM(QT)
-    DEFINE_STATIC_LOCAL(const String, port, ("qt"));
+    DEFINE_STATIC_LOCAL( const String, port, ( "qt" ) );
 #elif PLATFORM(GTK)
-    DEFINE_STATIC_LOCAL(const String, port, ("gtk"));
+    DEFINE_STATIC_LOCAL( const String, port, ( "gtk" ) );
 #elif PLATFORM(WX)
-    DEFINE_STATIC_LOCAL(const String, port, ("wx"));
+    DEFINE_STATIC_LOCAL( const String, port, ( "wx" ) );
 #else
-    DEFINE_STATIC_LOCAL(const String, port, ("unknown"));
+    DEFINE_STATIC_LOCAL( const String, port, ( "unknown" ) );
 #endif
-    return jsString(execState, port);
+    return jsString( execState, port );
 }
 
-JSValue JSInspectorFrontendHost::showContextMenu(ExecState* exec)
+JSValue JSInspectorFrontendHost::showContextMenu( ExecState *exec )
 {
-    if (exec->argumentCount() < 2)
+    if ( exec->argumentCount() < 2 )
+    {
         return jsUndefined();
+    }
+
 #if ENABLE(CONTEXT_MENUS)
-    Event* event = toEvent(exec->argument(0));
+    Event *event = toEvent( exec->argument( 0 ) );
 
-    JSArray* array = asArray(exec->argument(1));
-    Vector<ContextMenuItem*> items;
+    JSArray *array = asArray( exec->argument( 1 ) );
+    Vector<ContextMenuItem *> items;
 
-    for (size_t i = 0; i < array->length(); ++i) {
-        JSObject* item = asObject(array->getIndex(i));
-        JSValue label = item->get(exec, Identifier(exec, "label"));
-        JSValue type = item->get(exec, Identifier(exec, "type"));
-        JSValue id = item->get(exec, Identifier(exec, "id"));
-        JSValue enabled = item->get(exec, Identifier(exec, "enabled"));
-        JSValue checked = item->get(exec, Identifier(exec, "checked"));
-        if (!type.isString())
+    for ( size_t i = 0; i < array->length(); ++i )
+    {
+        JSObject *item = asObject( array->getIndex( i ) );
+        JSValue label = item->get( exec, Identifier( exec, "label" ) );
+        JSValue type = item->get( exec, Identifier( exec, "type" ) );
+        JSValue id = item->get( exec, Identifier( exec, "id" ) );
+        JSValue enabled = item->get( exec, Identifier( exec, "enabled" ) );
+        JSValue checked = item->get( exec, Identifier( exec, "checked" ) );
+
+        if ( !type.isString() )
+        {
             continue;
+        }
 
-        String typeString = ustringToString(type.toString(exec));
-        if (typeString == "separator") {
-            items.append(new ContextMenuItem(SeparatorType,
-                                             ContextMenuItemCustomTagNoAction,
-                                             String()));
-        } else {
-            ContextMenuAction typedId = static_cast<ContextMenuAction>(ContextMenuItemBaseCustomTag + id.toInt32(exec));
-            ContextMenuItem* menuItem = new ContextMenuItem((typeString == "checkbox" ? CheckableActionType : ActionType), typedId, ustringToString(label.toString(exec)));
-            if (!enabled.isUndefined())
-                menuItem->setEnabled(enabled.toBoolean(exec));
-            if (!checked.isUndefined())
-                menuItem->setChecked(checked.toBoolean(exec));
-            items.append(menuItem);
+        String typeString = ustringToString( type.toString( exec ) );
+
+        if ( typeString == "separator" )
+        {
+            items.append( new ContextMenuItem( SeparatorType,
+                                               ContextMenuItemCustomTagNoAction,
+                                               String() ) );
+        }
+        else
+        {
+            ContextMenuAction typedId = static_cast<ContextMenuAction>( ContextMenuItemBaseCustomTag + id.toInt32( exec ) );
+            ContextMenuItem *menuItem = new ContextMenuItem( ( typeString == "checkbox" ? CheckableActionType : ActionType ), typedId,
+                    ustringToString( label.toString( exec ) ) );
+
+            if ( !enabled.isUndefined() )
+            {
+                menuItem->setEnabled( enabled.toBoolean( exec ) );
+            }
+
+            if ( !checked.isUndefined() )
+            {
+                menuItem->setChecked( checked.toBoolean( exec ) );
+            }
+
+            items.append( menuItem );
         }
     }
 
-    impl()->showContextMenu(event, items);
+    impl()->showContextMenu( event, items );
 #endif
     return jsUndefined();
 }

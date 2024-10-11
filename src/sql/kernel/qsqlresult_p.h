@@ -30,81 +30,88 @@
 #include <qsqlresult.h>
 #include <qhash.h>
 
-struct QHolder {
-   QHolder(const QString &hldr = QString(), int index = -1): holderName(hldr), holderPos(index) { }
-   bool operator==(const QHolder &h) const {
-      return h.holderPos == holderPos && h.holderName == holderName;
-   }
-   bool operator!=(const QHolder &h) const {
-      return h.holderPos != holderPos || h.holderName != holderName;
-   }
-   QString holderName;
-   int holderPos;
+struct QHolder
+{
+    QHolder( const QString &hldr = QString(), int index = -1 ): holderName( hldr ), holderPos( index ) { }
+    bool operator==( const QHolder &h ) const
+    {
+        return h.holderPos == holderPos && h.holderName == holderName;
+    }
+    bool operator!=( const QHolder &h ) const
+    {
+        return h.holderPos != holderPos || h.holderName != holderName;
+    }
+    QString holderName;
+    int holderPos;
 };
 
 class Q_SQL_EXPORT QSqlResultPrivate
 {
 
- public:
-   QSqlResultPrivate()
-      : q_ptr(nullptr),
-        idx(QSql::BeforeFirstRow),
-        active(false),
-        isSel(false),
-        forwardOnly(false),
-        precisionPolicy(QSql::LowPrecisionDouble),
-        bindCount(0),
-        binds(QSqlResult::PositionalBinding)
-   { }
+public:
+    QSqlResultPrivate()
+        : q_ptr( nullptr ),
+          idx( QSql::BeforeFirstRow ),
+          active( false ),
+          isSel( false ),
+          forwardOnly( false ),
+          precisionPolicy( QSql::LowPrecisionDouble ),
+          bindCount( 0 ),
+          binds( QSqlResult::PositionalBinding )
+    { }
 
-   virtual ~QSqlResultPrivate() { }
+    virtual ~QSqlResultPrivate() { }
 
-   void clearValues() {
-      values.clear();
-      bindCount = 0;
-   }
+    void clearValues()
+    {
+        values.clear();
+        bindCount = 0;
+    }
 
-   void resetBindCount() {
-      bindCount = 0;
-   }
+    void resetBindCount()
+    {
+        bindCount = 0;
+    }
 
-   void clearIndex() {
-      indexes.clear();
-      holders.clear();
-      types.clear();
-   }
+    void clearIndex()
+    {
+        indexes.clear();
+        holders.clear();
+        types.clear();
+    }
 
-   void clear() {
-      clearValues();
-      clearIndex();;
-   }
+    void clear()
+    {
+        clearValues();
+        clearIndex();;
+    }
 
-   virtual QString fieldSerial(int) const;
-   QString positionalToNamedBinding(const QString &query) const;
-   QString namedToPositionalBinding(const QString &query);
-   QString holderAt(int index) const;
+    virtual QString fieldSerial( int ) const;
+    QString positionalToNamedBinding( const QString &query ) const;
+    QString namedToPositionalBinding( const QString &query );
+    QString holderAt( int index ) const;
 
-   QSqlResult *q_ptr;
-   QPointer<QSqlDriver> sqldriver;
-   int idx;
-   QString sql;
-   bool active;
-   bool isSel;
-   QSqlError error;
-   bool forwardOnly;
-   QSql::NumericalPrecisionPolicy precisionPolicy;
+    QSqlResult *q_ptr;
+    QPointer<QSqlDriver> sqldriver;
+    int idx;
+    QString sql;
+    bool active;
+    bool isSel;
+    QSqlError error;
+    bool forwardOnly;
+    QSql::NumericalPrecisionPolicy precisionPolicy;
 
-   int bindCount;
-   QSqlResult::BindingSyntax binds;
+    int bindCount;
+    QSqlResult::BindingSyntax binds;
 
-   QString executedQuery;
-   QHash<int, QSql::ParamType> types;
-   QVector<QVariant> values;
-   typedef QHash<QString, QList<int>> IndexMap;
-   IndexMap indexes;
+    QString executedQuery;
+    QHash<int, QSql::ParamType> types;
+    QVector<QVariant> values;
+    typedef QHash<QString, QList<int>> IndexMap;
+    IndexMap indexes;
 
-   typedef QVector<QHolder> QHolderVector;
-   QHolderVector holders;
+    typedef QVector<QHolder> QHolderVector;
+    QHolderVector holders;
 };
 
 

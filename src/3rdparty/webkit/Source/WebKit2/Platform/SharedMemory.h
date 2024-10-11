@@ -35,34 +35,39 @@
 #include <wtf/text/WTFString.h>
 #endif
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class SharedMemory : public RefCounted<SharedMemory> {
+class SharedMemory : public RefCounted<SharedMemory>
+{
 public:
-    enum Protection {
+    enum Protection
+    {
         ReadOnly,
         ReadWrite
     };
 
-    class Handle {
-        WTF_MAKE_NONCOPYABLE(Handle);
+    class Handle
+    {
+        WTF_MAKE_NONCOPYABLE( Handle );
     public:
         Handle();
         ~Handle();
 
         bool isNull() const;
 
-        void encode(CoreIPC::ArgumentEncoder*) const;
-        static bool decode(CoreIPC::ArgumentDecoder*, Handle&);
+        void encode( CoreIPC::ArgumentEncoder * ) const;
+        static bool decode( CoreIPC::ArgumentDecoder *, Handle & );
 
 #if USE(UNIX_DOMAIN_SOCKETS)
         CoreIPC::Attachment releaseToAttachment() const;
-        void adoptFromAttachment(int fileDescriptor, size_t);
+        void adoptFromAttachment( int fileDescriptor, size_t );
 #endif
     private:
         friend class SharedMemory;
@@ -75,33 +80,39 @@ public:
 #endif
         size_t m_size;
     };
-    
+
     // Create a shared memory object with the given size. Will return 0 on failure.
-    static PassRefPtr<SharedMemory> create(size_t);
+    static PassRefPtr<SharedMemory> create( size_t );
 
     // Create a shared memory object from the given handle and the requested protection. Will return 0 on failure.
-    static PassRefPtr<SharedMemory> create(const Handle&, Protection);
-    
+    static PassRefPtr<SharedMemory> create( const Handle &, Protection );
+
 #if PLATFORM(WIN)
-    static PassRefPtr<SharedMemory> adopt(HANDLE, size_t, Protection);
+    static PassRefPtr<SharedMemory> adopt( HANDLE, size_t, Protection );
 #endif
 
     ~SharedMemory();
 
-    bool createHandle(Handle&, Protection);
+    bool createHandle( Handle &, Protection );
 
-    size_t size() const { return m_size; }
-    void* data() const { return m_data; }
+    size_t size() const
+    {
+        return m_size;
+    }
+    void *data() const
+    {
+        return m_data;
+    }
 
     // Creates a copy-on-write copy of the first |size| bytes.
-    PassRefPtr<SharedMemory> createCopyOnWriteCopy(size_t) const;
+    PassRefPtr<SharedMemory> createCopyOnWriteCopy( size_t ) const;
 
     // Return the system page size in bytes.
     static unsigned systemPageSize();
 
 private:
     size_t m_size;
-    void* m_data;
+    void *m_data;
 #if PLATFORM(MAC)
     mach_port_t m_port;
 #elif PLATFORM(WIN)

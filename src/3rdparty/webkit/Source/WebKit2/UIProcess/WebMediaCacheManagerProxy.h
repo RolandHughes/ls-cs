@@ -34,47 +34,56 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class Connection;
-    class MessageID;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class Connection;
+class MessageID;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebContext;
 class WebProcessProxy;
 
 typedef GenericCallback<WKArrayRef> ArrayCallback;
 
-class WebMediaCacheManagerProxy : public APIObject {
+class WebMediaCacheManagerProxy : public APIObject
+{
 public:
     static const Type APIType = TypeMediaCacheManager;
 
-    static PassRefPtr<WebMediaCacheManagerProxy> create(WebContext*);
+    static PassRefPtr<WebMediaCacheManagerProxy> create( WebContext * );
     virtual ~WebMediaCacheManagerProxy();
 
     void invalidate();
-    void clearContext() { m_webContext = 0; }
-    
-    void getHostnamesWithMediaCache(PassRefPtr<ArrayCallback>);
-    void clearCacheForHostname(const String&);
+    void clearContext()
+    {
+        m_webContext = 0;
+    }
+
+    void getHostnamesWithMediaCache( PassRefPtr<ArrayCallback> );
+    void clearCacheForHostname( const String & );
     void clearCacheForAllHostnames();
 
-    void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
-    bool shouldTerminate(WebProcessProxy*) const;
+    bool shouldTerminate( WebProcessProxy * ) const;
 
 private:
-    WebMediaCacheManagerProxy(WebContext*);
+    WebMediaCacheManagerProxy( WebContext * );
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
-    void didGetHostnamesWithMediaCache(const Vector<String>&, uint64_t callbackID);
-    
-    void didReceiveWebMediaCacheManagerProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    void didGetHostnamesWithMediaCache( const Vector<String> &, uint64_t callbackID );
 
-    WebContext* m_webContext;
+    void didReceiveWebMediaCacheManagerProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+
+    WebContext *m_webContext;
     HashMap<uint64_t, RefPtr<ArrayCallback> > m_arrayCallbacks;
 };
 

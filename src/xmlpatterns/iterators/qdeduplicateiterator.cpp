@@ -25,47 +25,53 @@
 
 using namespace QPatternist;
 
-DeduplicateIterator::DeduplicateIterator(const Item::List &source) : ListIterator<Item>(source)
-   , m_listPos(0)
+DeduplicateIterator::DeduplicateIterator( const Item::List &source ) : ListIterator<Item>( source )
+    , m_listPos( 0 )
 {
-   Q_ASSERT(!Item());
-   Q_ASSERT(!Item().isNode());
-   Q_ASSERT(!Item().isAtomicValue());
+    Q_ASSERT( !Item() );
+    Q_ASSERT( !Item().isNode() );
+    Q_ASSERT( !Item().isAtomicValue() );
 }
 
 Item DeduplicateIterator::next()
 {
-   if (m_listPos == m_list.count()) {
-      m_current.reset();
-      m_position = -1;
-      return Item();
-   }
+    if ( m_listPos == m_list.count() )
+    {
+        m_current.reset();
+        m_position = -1;
+        return Item();
+    }
 
-   Item next(m_list.at(m_listPos));
+    Item next( m_list.at( m_listPos ) );
 
-   while (next.asNode().is(m_current.asNode())) {
-      ++m_listPos;
-      if (m_listPos == m_list.count()) {
-         m_current.reset();
-         m_position = -1;
-         return Item();
-      } else {
-         next = m_list.at(m_listPos);
-      }
-   }
+    while ( next.asNode().is( m_current.asNode() ) )
+    {
+        ++m_listPos;
 
-   ++m_position;
-   m_current = next;
-   return next;
+        if ( m_listPos == m_list.count() )
+        {
+            m_current.reset();
+            m_position = -1;
+            return Item();
+        }
+        else
+        {
+            next = m_list.at( m_listPos );
+        }
+    }
+
+    ++m_position;
+    m_current = next;
+    return next;
 }
 
 xsInteger DeduplicateIterator::count()
 {
-   return QAbstractXmlForwardIterator<Item>::count();
+    return QAbstractXmlForwardIterator<Item>::count();
 }
 
 Item::Iterator::Ptr DeduplicateIterator::copy() const
 {
-   return Item::Iterator::Ptr(new DeduplicateIterator(m_list));
+    return Item::Iterator::Ptr( new DeduplicateIterator( m_list ) );
 }
 

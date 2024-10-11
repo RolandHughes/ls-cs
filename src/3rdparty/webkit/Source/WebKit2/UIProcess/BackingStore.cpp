@@ -31,34 +31,39 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassOwnPtr<BackingStore> BackingStore::create(const IntSize& size, WebPageProxy* webPageProxy)
+namespace WebKit
 {
-    return adoptPtr(new BackingStore(size, webPageProxy));
+
+PassOwnPtr<BackingStore> BackingStore::create( const IntSize &size, WebPageProxy *webPageProxy )
+{
+    return adoptPtr( new BackingStore( size, webPageProxy ) );
 }
 
-BackingStore::BackingStore(const IntSize& size, WebPageProxy* webPageProxy)
-    : m_size(size)
-    , m_webPageProxy(webPageProxy)
+BackingStore::BackingStore( const IntSize &size, WebPageProxy *webPageProxy )
+    : m_size( size )
+    , m_webPageProxy( webPageProxy )
 {
-    ASSERT(!m_size.isEmpty());
+    ASSERT( !m_size.isEmpty() );
 }
 
 BackingStore::~BackingStore()
 {
 }
 
-void BackingStore::incorporateUpdate(const UpdateInfo& updateInfo)
+void BackingStore::incorporateUpdate( const UpdateInfo &updateInfo )
 {
 //    ASSERT(m_size == updateInfo.viewSize);
-    
-    RefPtr<ShareableBitmap> bitmap = ShareableBitmap::create(updateInfo.bitmapHandle);
-    if (!bitmap)
+
+    RefPtr<ShareableBitmap> bitmap = ShareableBitmap::create( updateInfo.bitmapHandle );
+
+    if ( !bitmap )
+    {
         return;
-    ASSERT(bitmap->size() == updateInfo.updateRectBounds.size());
-    
-    incorporateUpdate(bitmap.get(), updateInfo);
+    }
+
+    ASSERT( bitmap->size() == updateInfo.updateRectBounds.size() );
+
+    incorporateUpdate( bitmap.get(), updateInfo );
 }
 
 } // namespace WebKit

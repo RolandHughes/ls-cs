@@ -36,25 +36,25 @@ class QStringList;
 
 class Q_MULTIMEDIA_EXPORT QVideoEncoderSettingsControl : public QMediaControl
 {
-    MULTI_CS_OBJECT(QVideoEncoderSettingsControl)
+    MULTI_LSCS_OBJECT( QVideoEncoderSettingsControl )
 
 public:
     virtual ~QVideoEncoderSettingsControl();
 
-    virtual QList<QSize> supportedResolutions(const QVideoEncoderSettings &settings, bool *continuous = nullptr) const = 0;
-    virtual QList<qreal> supportedFrameRates(const QVideoEncoderSettings &settings, bool *continuous = nullptr) const = 0;
+    virtual QList<QSize> supportedResolutions( const QVideoEncoderSettings &settings, bool *continuous = nullptr ) const = 0;
+    virtual QList<qreal> supportedFrameRates( const QVideoEncoderSettings &settings, bool *continuous = nullptr ) const = 0;
 
     virtual QStringList supportedVideoCodecs() const = 0;
-    virtual QString videoCodecDescription(const QString &codecName) const = 0;
+    virtual QString videoCodecDescription( const QString &codecName ) const = 0;
 
     virtual QVideoEncoderSettings videoSettings() const = 0;
-    virtual void setVideoSettings(const QVideoEncoderSettings &settings) = 0;
+    virtual void setVideoSettings( const QVideoEncoderSettings &settings ) = 0;
 
 protected:
-    explicit QVideoEncoderSettingsControl(QObject *parent = nullptr);
+    explicit QVideoEncoderSettingsControl( QObject *parent = nullptr );
 };
 
 #define QVideoEncoderSettingsControl_iid "com.copperspice.CS.videoEncoderSettingsControl/1.0"
-CS_DECLARE_INTERFACE(QVideoEncoderSettingsControl, QVideoEncoderSettingsControl_iid)
+LSCS_DECLARE_INTERFACE( QVideoEncoderSettingsControl, QVideoEncoderSettingsControl_iid )
 
 #endif

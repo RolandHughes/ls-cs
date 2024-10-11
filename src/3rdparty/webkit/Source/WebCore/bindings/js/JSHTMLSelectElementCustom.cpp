@@ -27,42 +27,56 @@
 #include "HTMLSelectElement.h"
 #include "JSHTMLOptionElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 using namespace HTMLNames;
 
-JSValue JSHTMLSelectElement::remove(ExecState* exec)
+JSValue JSHTMLSelectElement::remove( ExecState *exec )
 {
-    HTMLSelectElement& select = *static_cast<HTMLSelectElement*>(impl());
+    HTMLSelectElement &select = *static_cast<HTMLSelectElement *>( impl() );
 
     // The remove function can take either an option object or the index of an option.
-    if (HTMLOptionElement* option = toHTMLOptionElement(exec->argument(0)))
-        select.remove(option);
+    if ( HTMLOptionElement *option = toHTMLOptionElement( exec->argument( 0 ) ) )
+    {
+        select.remove( option );
+    }
     else
-        select.remove(exec->argument(0).toInt32(exec));
+    {
+        select.remove( exec->argument( 0 ).toInt32( exec ) );
+    }
 
     return jsUndefined();
 }
 
-void selectIndexSetter(HTMLSelectElement* select, JSC::ExecState* exec, unsigned index, JSC::JSValue value)
+void selectIndexSetter( HTMLSelectElement *select, JSC::ExecState *exec, unsigned index, JSC::JSValue value )
 {
-    if (value.isUndefinedOrNull())
-        select->remove(index);
-    else {
+    if ( value.isUndefinedOrNull() )
+    {
+        select->remove( index );
+    }
+    else
+    {
         ExceptionCode ec = 0;
-        HTMLOptionElement* option = toHTMLOptionElement(value);
-        if (!option)
+        HTMLOptionElement *option = toHTMLOptionElement( value );
+
+        if ( !option )
+        {
             ec = TYPE_MISMATCH_ERR;
+        }
         else
-            select->setOption(index, option, ec);
-        setDOMException(exec, ec);
+        {
+            select->setOption( index, option, ec );
+        }
+
+        setDOMException( exec, ec );
     }
 }
 
-void JSHTMLSelectElement::indexSetter(JSC::ExecState* exec, unsigned index, JSC::JSValue value)
+void JSHTMLSelectElement::indexSetter( JSC::ExecState *exec, unsigned index, JSC::JSValue value )
 {
-    selectIndexSetter(static_cast<HTMLSelectElement*>(impl()), exec, index, value);
+    selectIndexSetter( static_cast<HTMLSelectElement *>( impl() ), exec, index, value );
 }
 
 }

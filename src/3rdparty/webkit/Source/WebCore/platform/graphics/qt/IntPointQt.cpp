@@ -30,17 +30,18 @@
 
 #include <QPoint>
 
-namespace WebCore {
+namespace WebCore
+{
 
-IntPoint::IntPoint(const QPoint& p)
-    : m_x(p.x())
-    , m_y(p.y())
+IntPoint::IntPoint( const QPoint &p )
+    : m_x( p.x() )
+    , m_y( p.y() )
 {
 }
 
 IntPoint::operator QPoint() const
 {
-    return QPoint(m_x, m_y);
+    return QPoint( m_x, m_y );
 }
 
 }

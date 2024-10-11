@@ -32,34 +32,34 @@ class QKeyEventTransitionPrivate;
 
 class Q_GUI_EXPORT QKeyEventTransition : public QEventTransition
 {
-   GUI_CS_OBJECT(QKeyEventTransition)
+    GUI_LSCS_OBJECT( QKeyEventTransition )
 
-   GUI_CS_PROPERTY_READ(key, key)
-   GUI_CS_PROPERTY_WRITE(key, setKey)
-   GUI_CS_PROPERTY_READ(modifierMask, modifierMask)
-   GUI_CS_PROPERTY_WRITE(modifierMask, setModifierMask)
+    GUI_LSCS_PROPERTY_READ( key, key )
+    GUI_LSCS_PROPERTY_WRITE( key, setKey )
+    GUI_LSCS_PROPERTY_READ( modifierMask, modifierMask )
+    GUI_LSCS_PROPERTY_WRITE( modifierMask, setModifierMask )
 
- public:
-   QKeyEventTransition(QState *sourceState = nullptr);
-   QKeyEventTransition(QObject *object, QEvent::Type type, int key, QState *sourceState = nullptr);
+public:
+    QKeyEventTransition( QState *sourceState = nullptr );
+    QKeyEventTransition( QObject *object, QEvent::Type type, int key, QState *sourceState = nullptr );
 
-   QKeyEventTransition(const QKeyEventTransition &) = delete;
-   QKeyEventTransition &operator=(const QKeyEventTransition &) = delete;
+    QKeyEventTransition( const QKeyEventTransition & ) = delete;
+    QKeyEventTransition &operator=( const QKeyEventTransition & ) = delete;
 
-   ~QKeyEventTransition();
+    ~QKeyEventTransition();
 
-   int key() const;
-   void setKey(int key);
+    int key() const;
+    void setKey( int key );
 
-   Qt::KeyboardModifiers modifierMask() const;
-   void setModifierMask(Qt::KeyboardModifiers modifiers);
+    Qt::KeyboardModifiers modifierMask() const;
+    void setModifierMask( Qt::KeyboardModifiers modifiers );
 
- protected:
-   void onTransition(QEvent *event) override;
-   bool eventTest(QEvent *event) override;
+protected:
+    void onTransition( QEvent *event ) override;
+    bool eventTest( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QKeyEventTransition)
+private:
+    Q_DECLARE_PRIVATE( QKeyEventTransition )
 };
 
 #endif //QT_NO_STATEMACHINE

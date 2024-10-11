@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,39 +30,55 @@
 #include "RenderBlock.h"
 #include "htmlediting.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 PositionIterator::operator Position() const
 {
-    if (m_nodeAfterPositionInAnchor) {
-        ASSERT(m_nodeAfterPositionInAnchor->parentNode() == m_anchorNode);
+    if ( m_nodeAfterPositionInAnchor )
+    {
+        ASSERT( m_nodeAfterPositionInAnchor->parentNode() == m_anchorNode );
+
         // FIXME: This check is inadaquete because any ancestor could be ignored by editing
-        if (editingIgnoresContent(m_nodeAfterPositionInAnchor->parentNode()))
-            return positionBeforeNode(m_anchorNode);
-        return positionInParentBeforeNode(m_nodeAfterPositionInAnchor);
+        if ( editingIgnoresContent( m_nodeAfterPositionInAnchor->parentNode() ) )
+        {
+            return positionBeforeNode( m_anchorNode );
+        }
+
+        return positionInParentBeforeNode( m_nodeAfterPositionInAnchor );
     }
-    if (m_anchorNode->hasChildNodes())
-        return lastPositionInOrAfterNode(m_anchorNode);
-    return Position(m_anchorNode, m_offsetInAnchor);
+
+    if ( m_anchorNode->hasChildNodes() )
+    {
+        return lastPositionInOrAfterNode( m_anchorNode );
+    }
+
+    return Position( m_anchorNode, m_offsetInAnchor );
 }
 
 void PositionIterator::increment()
 {
-    if (!m_anchorNode)
+    if ( !m_anchorNode )
+    {
         return;
+    }
 
-    if (m_nodeAfterPositionInAnchor) {
+    if ( m_nodeAfterPositionInAnchor )
+    {
         m_anchorNode = m_nodeAfterPositionInAnchor;
         m_nodeAfterPositionInAnchor = m_anchorNode->firstChild();
         m_offsetInAnchor = 0;
         return;
     }
 
-    if (!m_anchorNode->hasChildNodes() && m_offsetInAnchor < lastOffsetForEditing(m_anchorNode))
-        m_offsetInAnchor = Position::uncheckedNextOffset(m_anchorNode, m_offsetInAnchor);
-    else {
+    if ( !m_anchorNode->hasChildNodes() && m_offsetInAnchor < lastOffsetForEditing( m_anchorNode ) )
+    {
+        m_offsetInAnchor = Position::uncheckedNextOffset( m_anchorNode, m_offsetInAnchor );
+    }
+    else
+    {
         m_nodeAfterPositionInAnchor = m_anchorNode;
         m_anchorNode = m_nodeAfterPositionInAnchor->parentNode();
         m_nodeAfterPositionInAnchor = m_nodeAfterPositionInAnchor->nextSibling();
@@ -72,104 +88,163 @@ void PositionIterator::increment()
 
 void PositionIterator::decrement()
 {
-    if (!m_anchorNode)
+    if ( !m_anchorNode )
+    {
         return;
+    }
 
-    if (m_nodeAfterPositionInAnchor) {
+    if ( m_nodeAfterPositionInAnchor )
+    {
         m_anchorNode = m_nodeAfterPositionInAnchor->previousSibling();
-        if (m_anchorNode) {
+
+        if ( m_anchorNode )
+        {
             m_nodeAfterPositionInAnchor = 0;
-            m_offsetInAnchor = m_anchorNode->hasChildNodes() ? 0 : lastOffsetForEditing(m_anchorNode);
-        } else {
+            m_offsetInAnchor = m_anchorNode->hasChildNodes() ? 0 : lastOffsetForEditing( m_anchorNode );
+        }
+        else
+        {
             m_nodeAfterPositionInAnchor = m_nodeAfterPositionInAnchor->parentNode();
             m_anchorNode = m_nodeAfterPositionInAnchor->parentNode();
             m_offsetInAnchor = 0;
         }
+
         return;
     }
-    
-    if (m_anchorNode->hasChildNodes()) {
+
+    if ( m_anchorNode->hasChildNodes() )
+    {
         m_anchorNode = m_anchorNode->lastChild();
-        m_offsetInAnchor = m_anchorNode->hasChildNodes()? 0: lastOffsetForEditing(m_anchorNode);
-    } else {
-        if (m_offsetInAnchor)
-            m_offsetInAnchor = Position::uncheckedPreviousOffset(m_anchorNode, m_offsetInAnchor);
-        else {
+        m_offsetInAnchor = m_anchorNode->hasChildNodes()? 0: lastOffsetForEditing( m_anchorNode );
+    }
+    else
+    {
+        if ( m_offsetInAnchor )
+        {
+            m_offsetInAnchor = Position::uncheckedPreviousOffset( m_anchorNode, m_offsetInAnchor );
+        }
+        else
+        {
             m_nodeAfterPositionInAnchor = m_anchorNode;
             m_anchorNode = m_anchorNode->parentNode();
         }
     }
 }
 
-void PositionIterator::setOffsetInLeafNode(int offset)
+void PositionIterator::setOffsetInLeafNode( int offset )
 {
-    ASSERT(!m_anchorNode->hasChildNodes());
-    ASSERT(0 <= offset && offset <= lastOffsetForEditing(m_anchorNode));
+    ASSERT( !m_anchorNode->hasChildNodes() );
+    ASSERT( 0 <= offset && offset <= lastOffsetForEditing( m_anchorNode ) );
     m_offsetInAnchor = offset;
 }
 
 bool PositionIterator::atStart() const
 {
-    if (!m_anchorNode)
+    if ( !m_anchorNode )
+    {
         return true;
-    if (m_anchorNode->parentNode())
+    }
+
+    if ( m_anchorNode->parentNode() )
+    {
         return false;
-    return (!m_anchorNode->hasChildNodes() && !m_offsetInAnchor) || (m_nodeAfterPositionInAnchor && !m_nodeAfterPositionInAnchor->previousSibling());
+    }
+
+    return ( !m_anchorNode->hasChildNodes() && !m_offsetInAnchor ) || ( m_nodeAfterPositionInAnchor
+            && !m_nodeAfterPositionInAnchor->previousSibling() );
 }
 
 bool PositionIterator::atEnd() const
 {
-    if (!m_anchorNode)
+    if ( !m_anchorNode )
+    {
         return true;
-    if (m_nodeAfterPositionInAnchor)
+    }
+
+    if ( m_nodeAfterPositionInAnchor )
+    {
         return false;
-    return !m_anchorNode->parentNode() && (m_anchorNode->hasChildNodes() || m_offsetInAnchor >= lastOffsetForEditing(m_anchorNode));
+    }
+
+    return !m_anchorNode->parentNode() && ( m_anchorNode->hasChildNodes()
+                                            || m_offsetInAnchor >= lastOffsetForEditing( m_anchorNode ) );
 }
 
 bool PositionIterator::atStartOfNode() const
 {
-    if (!m_anchorNode)
+    if ( !m_anchorNode )
+    {
         return true;
-    if (!m_nodeAfterPositionInAnchor)
+    }
+
+    if ( !m_nodeAfterPositionInAnchor )
+    {
         return !m_anchorNode->hasChildNodes() && !m_offsetInAnchor;
+    }
+
     return !m_nodeAfterPositionInAnchor->previousSibling();
 }
 
 bool PositionIterator::atEndOfNode() const
 {
-    if (!m_anchorNode)
+    if ( !m_anchorNode )
+    {
         return true;
-    if (m_nodeAfterPositionInAnchor)
+    }
+
+    if ( m_nodeAfterPositionInAnchor )
+    {
         return false;
-    return m_anchorNode->hasChildNodes() || m_offsetInAnchor >= lastOffsetForEditing(m_anchorNode);
+    }
+
+    return m_anchorNode->hasChildNodes() || m_offsetInAnchor >= lastOffsetForEditing( m_anchorNode );
 }
 
 bool PositionIterator::isCandidate() const
 {
-    if (!m_anchorNode)
+    if ( !m_anchorNode )
+    {
         return false;
+    }
 
-    RenderObject* renderer = m_anchorNode->renderer();
-    if (!renderer)
+    RenderObject *renderer = m_anchorNode->renderer();
+
+    if ( !renderer )
+    {
         return false;
-    
-    if (renderer->style()->visibility() != VISIBLE)
+    }
+
+    if ( renderer->style()->visibility() != VISIBLE )
+    {
         return false;
+    }
 
-    if (renderer->isBR())
-        return !m_offsetInAnchor && !Position::nodeIsUserSelectNone(m_anchorNode->parentNode());
+    if ( renderer->isBR() )
+    {
+        return !m_offsetInAnchor && !Position::nodeIsUserSelectNone( m_anchorNode->parentNode() );
+    }
 
-    if (renderer->isText())
-        return !Position::nodeIsUserSelectNone(m_anchorNode) && Position(*this).inRenderedText();
+    if ( renderer->isText() )
+    {
+        return !Position::nodeIsUserSelectNone( m_anchorNode ) && Position( *this ).inRenderedText();
+    }
 
-    if (isTableElement(m_anchorNode) || editingIgnoresContent(m_anchorNode))
-        return (atStartOfNode() || atEndOfNode()) && !Position::nodeIsUserSelectNone(m_anchorNode->parentNode());
+    if ( isTableElement( m_anchorNode ) || editingIgnoresContent( m_anchorNode ) )
+    {
+        return ( atStartOfNode() || atEndOfNode() ) && !Position::nodeIsUserSelectNone( m_anchorNode->parentNode() );
+    }
 
-    if (!m_anchorNode->hasTagName(htmlTag) && renderer->isBlockFlow()) {
-        if (toRenderBlock(renderer)->height() || m_anchorNode->hasTagName(bodyTag)) {
-            if (!Position::hasRenderedNonAnonymousDescendantsWithHeight(renderer))
-                return atStartOfNode() && !Position::nodeIsUserSelectNone(m_anchorNode);
-            return m_anchorNode->rendererIsEditable() && !Position::nodeIsUserSelectNone(m_anchorNode) && Position(*this).atEditingBoundary();
+    if ( !m_anchorNode->hasTagName( htmlTag ) && renderer->isBlockFlow() )
+    {
+        if ( toRenderBlock( renderer )->height() || m_anchorNode->hasTagName( bodyTag ) )
+        {
+            if ( !Position::hasRenderedNonAnonymousDescendantsWithHeight( renderer ) )
+            {
+                return atStartOfNode() && !Position::nodeIsUserSelectNone( m_anchorNode );
+            }
+
+            return m_anchorNode->rendererIsEditable() && !Position::nodeIsUserSelectNone( m_anchorNode )
+                   && Position( *this ).atEditingBoundary();
         }
     }
 

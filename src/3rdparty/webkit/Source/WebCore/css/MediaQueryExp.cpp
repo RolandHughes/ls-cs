@@ -23,7 +23,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,56 +34,77 @@
 #include "CSSValueList.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
-
-inline MediaQueryExp::MediaQueryExp(const AtomicString& mediaFeature, CSSParserValueList* valueList)
-    : m_mediaFeature(mediaFeature)
-    , m_value(0)
-    , m_isValid(true)
+namespace WebCore
 {
-    if (valueList) {
-        if (valueList->size() == 1) {
-            CSSParserValue* value = valueList->current();
 
-            if (value->id != 0)
-                m_value = CSSPrimitiveValue::createIdentifier(value->id);
-            else if (value->unit == CSSPrimitiveValue::CSS_STRING)
-                m_value = CSSPrimitiveValue::create(value->string, (CSSPrimitiveValue::UnitTypes) value->unit);
-            else if (value->unit >= CSSPrimitiveValue::CSS_NUMBER &&
-                      value->unit <= CSSPrimitiveValue::CSS_KHZ)
-                m_value = CSSPrimitiveValue::create(value->fValue, (CSSPrimitiveValue::UnitTypes) value->unit);
+inline MediaQueryExp::MediaQueryExp( const AtomicString &mediaFeature, CSSParserValueList *valueList )
+    : m_mediaFeature( mediaFeature )
+    , m_value( 0 )
+    , m_isValid( true )
+{
+    if ( valueList )
+    {
+        if ( valueList->size() == 1 )
+        {
+            CSSParserValue *value = valueList->current();
+
+            if ( value->id != 0 )
+            {
+                m_value = CSSPrimitiveValue::createIdentifier( value->id );
+            }
+            else if ( value->unit == CSSPrimitiveValue::CSS_STRING )
+            {
+                m_value = CSSPrimitiveValue::create( value->string, ( CSSPrimitiveValue::UnitTypes ) value->unit );
+            }
+            else if ( value->unit >= CSSPrimitiveValue::CSS_NUMBER &&
+                      value->unit <= CSSPrimitiveValue::CSS_KHZ )
+            {
+                m_value = CSSPrimitiveValue::create( value->fValue, ( CSSPrimitiveValue::UnitTypes ) value->unit );
+            }
 
             valueList->next();
-        } else if (valueList->size() > 1) {
+        }
+        else if ( valueList->size() > 1 )
+        {
             // create list of values
             // currently accepts only <integer>/<integer>
 
             RefPtr<CSSValueList> list = CSSValueList::createCommaSeparated();
-            CSSParserValue* value = 0;
+            CSSParserValue *value = 0;
             bool isValid = true;
 
-            while ((value = valueList->current()) && isValid) {
-                if (value->unit == CSSParserValue::Operator && value->iValue == '/')
-                    list->append(CSSPrimitiveValue::create("/", CSSPrimitiveValue::CSS_STRING));
-                else if (value->unit == CSSPrimitiveValue::CSS_NUMBER)
-                    list->append(CSSPrimitiveValue::create(value->fValue, CSSPrimitiveValue::CSS_NUMBER));
+            while ( ( value = valueList->current() ) && isValid )
+            {
+                if ( value->unit == CSSParserValue::Operator && value->iValue == '/' )
+                {
+                    list->append( CSSPrimitiveValue::create( "/", CSSPrimitiveValue::CSS_STRING ) );
+                }
+                else if ( value->unit == CSSPrimitiveValue::CSS_NUMBER )
+                {
+                    list->append( CSSPrimitiveValue::create( value->fValue, CSSPrimitiveValue::CSS_NUMBER ) );
+                }
                 else
+                {
                     isValid = false;
+                }
 
                 value = valueList->next();
             }
 
-            if (isValid)
+            if ( isValid )
+            {
                 m_value = list.release();
+            }
         }
+
         m_isValid = m_value;
     }
 }
 
 
-PassOwnPtr<MediaQueryExp> MediaQueryExp::create(const AtomicString& mediaFeature, CSSParserValueList* values)
+PassOwnPtr<MediaQueryExp> MediaQueryExp::create( const AtomicString &mediaFeature, CSSParserValueList *values )
 {
-    return adoptPtr(new MediaQueryExp(mediaFeature, values));
+    return adoptPtr( new MediaQueryExp( mediaFeature, values ) );
 }
 
 MediaQueryExp::~MediaQueryExp()
@@ -92,19 +113,24 @@ MediaQueryExp::~MediaQueryExp()
 
 String MediaQueryExp::serialize() const
 {
-    if (!m_serializationCache.isNull())
+    if ( !m_serializationCache.isNull() )
+    {
         return m_serializationCache;
+    }
 
     StringBuilder result;
-    result.append("(");
-    result.append(m_mediaFeature.lower());
-    if (m_value) {
-        result.append(": ");
-        result.append(m_value->cssText());
-    }
-    result.append(")");
+    result.append( "(" );
+    result.append( m_mediaFeature.lower() );
 
-    const_cast<MediaQueryExp*>(this)->m_serializationCache = result.toString();
+    if ( m_value )
+    {
+        result.append( ": " );
+        result.append( m_value->cssText() );
+    }
+
+    result.append( ")" );
+
+    const_cast<MediaQueryExp *>( this )->m_serializationCache = result.toString();
     return m_serializationCache;
 }
 

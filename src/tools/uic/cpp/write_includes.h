@@ -35,55 +35,58 @@ class QTextStream;
 class Driver;
 class Uic;
 
-namespace CPP {
+namespace CPP
+{
 
-struct WriteIncludes : public TreeWalker {
-   WriteIncludes(Uic *uic);
+struct WriteIncludes : public TreeWalker
+{
+    WriteIncludes( Uic *uic );
 
-   void acceptUI(DomUI *node) override;
-   void acceptWidget(DomWidget *node) override;
-   void acceptLayout(DomLayout *node) override;
-   void acceptSpacer(DomSpacer *node) override;
-   void acceptProperty(DomProperty *node) override;
-   void acceptWidgetScripts(const DomScripts &, DomWidget *, const DomWidgets &) override;
+    void acceptUI( DomUI *node ) override;
+    void acceptWidget( DomWidget *node ) override;
+    void acceptLayout( DomLayout *node ) override;
+    void acceptSpacer( DomSpacer *node ) override;
+    void acceptProperty( DomProperty *node ) override;
+    void acceptWidgetScripts( const DomScripts &, DomWidget *, const DomWidgets & ) override;
 
-   // custom widgets
-   void acceptCustomWidgets(DomCustomWidgets *node) override;
-   void acceptCustomWidget(DomCustomWidget *node) override;
+    // custom widgets
+    void acceptCustomWidgets( DomCustomWidgets *node ) override;
+    void acceptCustomWidget( DomCustomWidget *node ) override;
 
-   // include hints
-   void acceptIncludes(DomIncludes *node) override;
-   void acceptInclude(DomInclude *node) override;
+    // include hints
+    void acceptIncludes( DomIncludes *node ) override;
+    void acceptInclude( DomInclude *node ) override;
 
-   bool scriptsActivated() const {
-      return m_scriptsActivated;
-   }
+    bool scriptsActivated() const
+    {
+        return m_scriptsActivated;
+    }
 
- private:
-   void add(const QString &className, bool determineHeader = true, const QString &header = QString(), bool global = false);
+private:
+    void add( const QString &className, bool determineHeader = true, const QString &header = QString(), bool global = false );
 
-   typedef QMap<QString, bool> OrderedSet;
-   void insertIncludeForClass(const QString &className, QString header = QString(), bool global = false);
-   void insertInclude(const QString &header, bool global);
-   void writeHeaders(const OrderedSet &headers, bool global);
-   QString headerForClassName(const QString &className) const;
-   void activateScripts();
+    typedef QMap<QString, bool> OrderedSet;
+    void insertIncludeForClass( const QString &className, QString header = QString(), bool global = false );
+    void insertInclude( const QString &header, bool global );
+    void writeHeaders( const OrderedSet &headers, bool global );
+    QString headerForClassName( const QString &className ) const;
+    void activateScripts();
 
-   const Uic *m_uic;
-   QTextStream &m_output;
+    const Uic *m_uic;
+    QTextStream &m_output;
 
-   OrderedSet m_localIncludes;
-   OrderedSet m_globalIncludes;
-   QSet<QString> m_includeBaseNames;
+    OrderedSet m_localIncludes;
+    OrderedSet m_globalIncludes;
+    QSet<QString> m_includeBaseNames;
 
-   QSet<QString> m_knownClasses;
+    QSet<QString> m_knownClasses;
 
-   typedef QMap<QString, QString> StringMap;
-   StringMap m_classToHeader;
-   StringMap m_oldHeaderToNewHeader;
+    typedef QMap<QString, QString> StringMap;
+    StringMap m_classToHeader;
+    StringMap m_oldHeaderToNewHeader;
 
-   bool m_scriptsActivated;
-   bool m_laidOut;
+    bool m_scriptsActivated;
+    bool m_laidOut;
 };
 
 } // namespace CPP

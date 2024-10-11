@@ -36,43 +36,43 @@ class CameraBinFocus;
 
 class CameraBinLocks  : public QCameraLocksControl
 {
-   CS_OBJECT(CameraBinLocks)
+    LSCS_OBJECT( CameraBinLocks )
 
- public:
-   CameraBinLocks(CameraBinSession *session);
-   virtual ~CameraBinLocks();
+public:
+    CameraBinLocks( CameraBinSession *session );
+    virtual ~CameraBinLocks();
 
-   QCamera::LockTypes supportedLocks() const;
+    QCamera::LockTypes supportedLocks() const;
 
-   QCamera::LockStatus lockStatus(QCamera::LockType lock) const;
+    QCamera::LockStatus lockStatus( QCamera::LockType lock ) const;
 
-   void searchAndLock(QCamera::LockTypes locks);
-   void unlock(QCamera::LockTypes locks);
+    void searchAndLock( QCamera::LockTypes locks );
+    void unlock( QCamera::LockTypes locks );
 
- protected:
+protected:
 #if GST_CHECK_VERSION(1, 2, 0)
-   void timerEvent(QTimerEvent *event);
+    void timerEvent( QTimerEvent *event );
 #endif
 
- private :
-   CS_SLOT_1(Private, void updateFocusStatus(QCamera::LockStatus status, QCamera::LockChangeReason reason))
-   CS_SLOT_2(updateFocusStatus)
+private :
+    LSCS_SLOT_1( Private, void updateFocusStatus( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
+    LSCS_SLOT_2( updateFocusStatus )
 
- private:
+private:
 #if GST_CHECK_VERSION(1, 2, 0)
-   bool isExposureLocked() const;
-   void lockExposure(QCamera::LockChangeReason reason);
-   void unlockExposure(QCamera::LockStatus status, QCamera::LockChangeReason reason);
+    bool isExposureLocked() const;
+    void lockExposure( QCamera::LockChangeReason reason );
+    void unlockExposure( QCamera::LockStatus status, QCamera::LockChangeReason reason );
 
-   bool isWhiteBalanceLocked() const;
-   void lockWhiteBalance(QCamera::LockChangeReason reason);
-   void unlockWhiteBalance(QCamera::LockStatus status, QCamera::LockChangeReason reason);
+    bool isWhiteBalanceLocked() const;
+    void lockWhiteBalance( QCamera::LockChangeReason reason );
+    void unlockWhiteBalance( QCamera::LockStatus status, QCamera::LockChangeReason reason );
 #endif
 
-   CameraBinSession *m_session;
-   CameraBinFocus *m_focus;
-   QBasicTimer m_lockTimer;
-   QCamera::LockTypes m_pendingLocks;
+    CameraBinSession *m_session;
+    CameraBinFocus *m_focus;
+    QBasicTimer m_lockTimer;
+    QCamera::LockTypes m_pendingLocks;
 };
 
 #endif

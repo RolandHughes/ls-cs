@@ -33,35 +33,35 @@ class AVFCameraService;
 
 class AVFCameraExposureControl : public QCameraExposureControl
 {
-   CS_OBJECT(AVFCameraExposureControl)
+    LSCS_OBJECT( AVFCameraExposureControl )
 
- public:
-   AVFCameraExposureControl(AVFCameraService *service);
+public:
+    AVFCameraExposureControl( AVFCameraService *service );
 
-   bool isParameterSupported(ExposureParameter parameter) const override;
-   QVariantList supportedParameterRange(ExposureParameter parameter, bool *continuous) const override;
+    bool isParameterSupported( ExposureParameter parameter ) const override;
+    QVariantList supportedParameterRange( ExposureParameter parameter, bool *continuous ) const override;
 
-   QVariant requestedValue(ExposureParameter parameter) const override;
-   QVariant actualValue(ExposureParameter parameter) const override;
-   bool setValue(ExposureParameter parameter, const QVariant &value) override;
+    QVariant requestedValue( ExposureParameter parameter ) const override;
+    QVariant actualValue( ExposureParameter parameter ) const override;
+    bool setValue( ExposureParameter parameter, const QVariant &value ) override;
 
- private:
-   CS_SLOT_1(Private, void cameraStateChanged())
-   CS_SLOT_2(cameraStateChanged)
+private:
+    LSCS_SLOT_1( Private, void cameraStateChanged() )
+    LSCS_SLOT_2( cameraStateChanged )
 
-   AVFCameraService *m_service;
-   AVFCameraSession *m_session;
+    AVFCameraService *m_service;
+    AVFCameraSession *m_session;
 
-   QVariant m_requestedMode;
-   QVariant m_requestedCompensation;
-   QVariant m_requestedShutterSpeed;
-   QVariant m_requestedISO;
+    QVariant m_requestedMode;
+    QVariant m_requestedCompensation;
+    QVariant m_requestedShutterSpeed;
+    QVariant m_requestedISO;
 
-   // Aux setters
-   bool setExposureMode(const QVariant &value);
-   bool setExposureCompensation(const QVariant &value);
-   bool setShutterSpeed(const QVariant &value);
-   bool setISO(const QVariant &value);
+    // Aux setters
+    bool setExposureMode( const QVariant &value );
+    bool setExposureCompensation( const QVariant &value );
+    bool setShutterSpeed( const QVariant &value );
+    bool setISO( const QVariant &value );
 };
 
 #endif

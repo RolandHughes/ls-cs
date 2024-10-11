@@ -192,7 +192,7 @@ macro(MACRO_GENERATE_PACKAGE PC_NAME PC_REALNAME PC_CFLAGS PC_REQUIRES)
 
       install(
          FILES ${CMAKE_BINARY_DIR}/pkgconfig/${PC_NAME}.pc
-         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+         DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig
          COMPONENT Devel
       )
 

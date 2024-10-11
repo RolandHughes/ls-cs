@@ -30,35 +30,50 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
-    class AuthenticationChallenge;
-    class Credential;
+namespace WebCore
+{
+class AuthenticationChallenge;
+class Credential;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class Download;
 
-class DownloadAuthenticationClient : public RefCounted<DownloadAuthenticationClient>, public WebCore::AuthenticationClient {
+class DownloadAuthenticationClient : public RefCounted<DownloadAuthenticationClient>, public WebCore::AuthenticationClient
+{
 public:
-    static PassRefPtr<DownloadAuthenticationClient> create(Download* download) { return adoptRef(new DownloadAuthenticationClient(download)); }
+    static PassRefPtr<DownloadAuthenticationClient> create( Download *download )
+    {
+        return adoptRef( new DownloadAuthenticationClient( download ) );
+    }
 
-    void detach() { m_download = 0; }
+    void detach()
+    {
+        m_download = 0;
+    }
 
     using RefCounted<DownloadAuthenticationClient>::ref;
     using RefCounted<DownloadAuthenticationClient>::deref;
 
 private:
-    DownloadAuthenticationClient(Download*);
+    DownloadAuthenticationClient( Download * );
 
-    virtual void receivedCredential(const WebCore::AuthenticationChallenge&, const WebCore::Credential&);
-    virtual void receivedRequestToContinueWithoutCredential(const WebCore::AuthenticationChallenge&);
-    virtual void receivedCancellation(const WebCore::AuthenticationChallenge&);
+    virtual void receivedCredential( const WebCore::AuthenticationChallenge &, const WebCore::Credential & );
+    virtual void receivedRequestToContinueWithoutCredential( const WebCore::AuthenticationChallenge & );
+    virtual void receivedCancellation( const WebCore::AuthenticationChallenge & );
 
-    virtual void refAuthenticationClient() { ref(); }
-    virtual void derefAuthenticationClient() { deref(); }
+    virtual void refAuthenticationClient()
+    {
+        ref();
+    }
+    virtual void derefAuthenticationClient()
+    {
+        deref();
+    }
 
-    Download* m_download;
+    Download *m_download;
 };
 
 } // namespace WebKit

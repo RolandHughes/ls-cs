@@ -30,20 +30,25 @@
 
 #include <QColor>
 
-namespace WebCore {
+namespace WebCore
+{
 
-Color::Color(const QColor& c)
-    : m_color(makeRGBA(c.red(), c.green(), c.blue(), c.alpha()))
+Color::Color( const QColor &c )
+    : m_color( makeRGBA( c.red(), c.green(), c.blue(), c.alpha() ) )
 {
     m_valid = c.isValid();
 }
 
 Color::operator QColor() const
 {
-    if (m_valid)
-        return QColor(red(), green(), blue(), alpha());
+    if ( m_valid )
+    {
+        return QColor( red(), green(), blue(), alpha() );
+    }
     else
+    {
         return QColor();
+    }
 }
 
 }

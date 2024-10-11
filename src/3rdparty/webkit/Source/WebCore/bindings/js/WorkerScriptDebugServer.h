@@ -35,24 +35,29 @@
 
 #include "ScriptDebugServer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WorkerContext;
 
-class WorkerScriptDebugServer : public ScriptDebugServer {
-    WTF_MAKE_NONCOPYABLE(WorkerScriptDebugServer);
+class WorkerScriptDebugServer : public ScriptDebugServer
+{
+    WTF_MAKE_NONCOPYABLE( WorkerScriptDebugServer );
 public:
     WorkerScriptDebugServer();
     ~WorkerScriptDebugServer() { }
 
-    void addListener(ScriptDebugListener*, WorkerContext*);
-    void removeListener(ScriptDebugListener*, WorkerContext*);
+    void addListener( ScriptDebugListener *, WorkerContext * );
+    void removeListener( ScriptDebugListener *, WorkerContext * );
 
 private:
-    virtual void recompileAllJSFunctions(Timer<ScriptDebugServer>*) { }
-    virtual ListenerSet* getListenersForGlobalObject(JSC::JSGlobalObject*) { return 0; }
-    virtual void didPause(JSC::JSGlobalObject*) { }
-    virtual void didContinue(JSC::JSGlobalObject*) { }
+    virtual void recompileAllJSFunctions( Timer<ScriptDebugServer> * ) { }
+    virtual ListenerSet *getListenersForGlobalObject( JSC::JSGlobalObject * )
+    {
+        return 0;
+    }
+    virtual void didPause( JSC::JSGlobalObject * ) { }
+    virtual void didContinue( JSC::JSGlobalObject * ) { }
 };
 
 } // namespace WebCore

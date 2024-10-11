@@ -31,44 +31,45 @@ class QIODevice;
 
 class Q_CORE_EXPORT QCryptographicHash
 {
- public:
-   enum Algorithm {
-      Md4,
-      Md5,
-      Sha1,
-      Sha224,
-      Sha256,
-      Sha384,
-      Sha512,
-      Keccak_224,
-      Keccak_256,
-      Keccak_384,
-      Keccak_512,
-      Sha3_224,
-      Sha3_256,
-      Sha3_384,
-      Sha3_512
-   };
+public:
+    enum Algorithm
+    {
+        Md4,
+        Md5,
+        Sha1,
+        Sha224,
+        Sha256,
+        Sha384,
+        Sha512,
+        Keccak_224,
+        Keccak_256,
+        Keccak_384,
+        Keccak_512,
+        Sha3_224,
+        Sha3_256,
+        Sha3_384,
+        Sha3_512
+    };
 
-   explicit QCryptographicHash(Algorithm method);
+    explicit QCryptographicHash( Algorithm method );
 
-   QCryptographicHash(const QCryptographicHash &) = delete;
-   QCryptographicHash &operator=(const QCryptographicHash &) = delete;
+    QCryptographicHash( const QCryptographicHash & ) = delete;
+    QCryptographicHash &operator=( const QCryptographicHash & ) = delete;
 
-   ~QCryptographicHash();
+    ~QCryptographicHash();
 
-   void reset();
+    void reset();
 
-   void addData(const char *data, int length);
-   void addData(const QByteArray &data);
-   bool addData(QIODevice *device);
+    void addData( const char *data, int length );
+    void addData( const QByteArray &data );
+    bool addData( QIODevice *device );
 
-   QByteArray result() const;
+    QByteArray result() const;
 
-   static QByteArray hash(const QByteArray &data, Algorithm method);
+    static QByteArray hash( const QByteArray &data, Algorithm method );
 
- private:
-   QCryptographicHashPrivate *d;
+private:
+    QCryptographicHashPrivate *d;
 };
 
 #endif

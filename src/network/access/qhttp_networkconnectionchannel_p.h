@@ -49,148 +49,150 @@ class QHttpNetworkRequest;
 class QHttpNetworkReply;
 class QByteArray;
 
-using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply*>;
+using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply *>;
 
 class QHttpNetworkConnectionChannel : public QObject
 {
-   NET_CS_OBJECT(QHttpNetworkConnectionChannel)
+    NET_LSCS_OBJECT( QHttpNetworkConnectionChannel )
 
- public:
-   enum ChannelState {
-      IdleState = 0,          // ready to send request
-      ConnectingState = 1,    // connecting to host
-      WritingState = 2,       // writing the data
-      WaitingState = 4,       // waiting for reply
-      ReadingState = 8,       // reading the reply
-      ClosingState = 16,
-      BusyState = (ConnectingState | WritingState | WaitingState | ReadingState | ClosingState)
-   };
+public:
+    enum ChannelState
+    {
+        IdleState = 0,          // ready to send request
+        ConnectingState = 1,    // connecting to host
+        WritingState = 2,       // writing the data
+        WaitingState = 4,       // waiting for reply
+        ReadingState = 8,       // reading the reply
+        ClosingState = 16,
+        BusyState = ( ConnectingState | WritingState | WaitingState | ReadingState | ClosingState )
+    };
 
-   QAbstractSocket *socket;
-   bool ssl;
-   bool isInitialized;
-   ChannelState state;
-   QHttpNetworkRequest request; // current request
-   QHttpNetworkReply *reply; // current reply for this request
-   qint64 written;
-   qint64 bytesTotal;
-   bool resendCurrent;
-   int lastStatus; // last status received on this channel
-   bool pendingEncrypt; // for https (send after encrypted)
-   int reconnectAttempts; // maximum 2 reconnection attempts
-   QAuthenticatorPrivate::Method authMethod;
-   QAuthenticatorPrivate::Method proxyAuthMethod;
-   QAuthenticator authenticator;
-   QAuthenticator proxyAuthenticator;
-   bool authenticationCredentialsSent;
-   bool proxyCredentialsSent;
-   QScopedPointer<QAbstractProtocolHandler> protocolHandler;
+    QAbstractSocket *socket;
+    bool ssl;
+    bool isInitialized;
+    ChannelState state;
+    QHttpNetworkRequest request; // current request
+    QHttpNetworkReply *reply; // current reply for this request
+    qint64 written;
+    qint64 bytesTotal;
+    bool resendCurrent;
+    int lastStatus; // last status received on this channel
+    bool pendingEncrypt; // for https (send after encrypted)
+    int reconnectAttempts; // maximum 2 reconnection attempts
+    QAuthenticatorPrivate::Method authMethod;
+    QAuthenticatorPrivate::Method proxyAuthMethod;
+    QAuthenticator authenticator;
+    QAuthenticator proxyAuthenticator;
+    bool authenticationCredentialsSent;
+    bool proxyCredentialsSent;
+    QScopedPointer<QAbstractProtocolHandler> protocolHandler;
 
 #ifdef QT_SSL
-   bool ignoreAllSslErrors;
-   QList<QSslError> ignoreSslErrorsList;
-   QSslConfiguration sslConfiguration;
-   QMultiMap<int, HttpMessagePair> spdyRequestsToSend; // sorted by priority
+    bool ignoreAllSslErrors;
+    QList<QSslError> ignoreSslErrorsList;
+    QSslConfiguration sslConfiguration;
+    QMultiMap<int, HttpMessagePair> spdyRequestsToSend; // sorted by priority
 
-   void ignoreSslErrors();
-   void ignoreSslErrors(const QList<QSslError> &errors);
-   void setSslConfiguration(const QSslConfiguration &config);
-   void requeueSpdyRequests(); // when we wanted SPDY but got HTTP
-   void emitFinishedWithError(QNetworkReply::NetworkError error, const char *message);
+    void ignoreSslErrors();
+    void ignoreSslErrors( const QList<QSslError> &errors );
+    void setSslConfiguration( const QSslConfiguration &config );
+    void requeueSpdyRequests(); // when we wanted SPDY but got HTTP
+    void emitFinishedWithError( QNetworkReply::NetworkError error, const char *message );
 #endif
 
 #ifndef QT_NO_BEARERMANAGEMENT
-   QSharedPointer<QNetworkSession> networkSession;
+    QSharedPointer<QNetworkSession> networkSession;
 #endif
 
-   // HTTP pipelining -> http://en.wikipedia.org/wiki/Http_pipelining
-   enum PipeliningSupport {
-      PipeliningSupportUnknown, // default for a new connection
-      PipeliningProbablySupported, // after having received a server response that indicates support
-      PipeliningNotSupported // currently not used
-   };
+    // HTTP pipelining -> http://en.wikipedia.org/wiki/Http_pipelining
+    enum PipeliningSupport
+    {
+        PipeliningSupportUnknown, // default for a new connection
+        PipeliningProbablySupported, // after having received a server response that indicates support
+        PipeliningNotSupported // currently not used
+    };
 
-   PipeliningSupport pipeliningSupported;
-   QList<HttpMessagePair> alreadyPipelinedRequests;
-   QByteArray pipeline; // temporary buffer that gets sent to socket in pipelineFlush
-   void pipelineInto(HttpMessagePair &pair);
-   void pipelineFlush();
-   void requeueCurrentlyPipelinedRequests();
-   void detectPipeliningSupport();
+    PipeliningSupport pipeliningSupported;
+    QList<HttpMessagePair> alreadyPipelinedRequests;
+    QByteArray pipeline; // temporary buffer that gets sent to socket in pipelineFlush
+    void pipelineInto( HttpMessagePair &pair );
+    void pipelineFlush();
+    void requeueCurrentlyPipelinedRequests();
+    void detectPipeliningSupport();
 
-   QHttpNetworkConnectionChannel();
+    QHttpNetworkConnectionChannel();
 
-   QAbstractSocket::NetworkLayerProtocol networkLayerPreference;
-   void setConnection(QHttpNetworkConnection *c);
-   QPointer<QHttpNetworkConnection> connection;
+    QAbstractSocket::NetworkLayerProtocol networkLayerPreference;
+    void setConnection( QHttpNetworkConnection *c );
+    QPointer<QHttpNetworkConnection> connection;
 
 #ifndef QT_NO_NETWORKPROXY
     QNetworkProxy proxy;
-    void setProxy(const QNetworkProxy &networkProxy);
+    void setProxy( const QNetworkProxy &networkProxy );
 #endif
-   void init();
-   void close();
-   void abort();
+    void init();
+    void close();
+    void abort();
 
-   bool sendRequest();
-   bool ensureConnection();
+    bool sendRequest();
+    bool ensureConnection();
 
-   void allDone(); // reply header + body have been read
-   void handleStatus(); // called from allDone()
+    void allDone(); // reply header + body have been read
+    void handleStatus(); // called from allDone()
 
-   bool resetUploadData(); // return true if resetting worked or there is no upload data
+    bool resetUploadData(); // return true if resetting worked or there is no upload data
 
-   void handleUnexpectedEOF();
-   void closeAndResendCurrentRequest();
-   void resendCurrentRequest();
+    void handleUnexpectedEOF();
+    void closeAndResendCurrentRequest();
+    void resendCurrentRequest();
 
-   bool isSocketBusy() const;
-   bool isSocketWriting() const;
-   bool isSocketWaiting() const;
-   bool isSocketReading() const;
+    bool isSocketBusy() const;
+    bool isSocketWriting() const;
+    bool isSocketWaiting() const;
+    bool isSocketReading() const;
 
 
- protected :
-   NET_CS_SLOT_1(Protected, void _q_receiveReply())
-   NET_CS_SLOT_2(_q_receiveReply)
+protected :
+    NET_LSCS_SLOT_1( Protected, void _q_receiveReply() )
+    NET_LSCS_SLOT_2( _q_receiveReply )
 
-   NET_CS_SLOT_1(Protected, void _q_bytesWritten(qint64 bytes))
-   NET_CS_SLOT_2(_q_bytesWritten)  // proceed sending
+    NET_LSCS_SLOT_1( Protected, void _q_bytesWritten( qint64 bytes ) )
+    NET_LSCS_SLOT_2( _q_bytesWritten ) // proceed sending
 
-   NET_CS_SLOT_1(Protected, void _q_readyRead())
-   NET_CS_SLOT_2(_q_readyRead)  // pending data to read
+    NET_LSCS_SLOT_1( Protected, void _q_readyRead() )
+    NET_LSCS_SLOT_2( _q_readyRead ) // pending data to read
 
-   NET_CS_SLOT_1(Protected, void _q_disconnected())
-   NET_CS_SLOT_2(_q_disconnected)  // disconnected from host
+    NET_LSCS_SLOT_1( Protected, void _q_disconnected() )
+    NET_LSCS_SLOT_2( _q_disconnected ) // disconnected from host
 
-   NET_CS_SLOT_1(Protected, void _q_connected())
-   NET_CS_SLOT_2(_q_connected)  // start sending request
+    NET_LSCS_SLOT_1( Protected, void _q_connected() )
+    NET_LSCS_SLOT_2( _q_connected ) // start sending request
 
-   NET_CS_SLOT_1(Protected, void _q_error(QAbstractSocket::SocketError socketError))
-   NET_CS_SLOT_2(_q_error)  // error from socket
+    NET_LSCS_SLOT_1( Protected, void _q_error( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_error ) // error from socket
 
 #ifndef QT_NO_NETWORKPROXY
-   NET_CS_SLOT_1(Protected, void _q_proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *auth))
-   NET_CS_SLOT_2(_q_proxyAuthenticationRequired)  // from transparent proxy
+    NET_LSCS_SLOT_1( Protected, void _q_proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
+    NET_LSCS_SLOT_2( _q_proxyAuthenticationRequired ) // from transparent proxy
 #endif
 
-   NET_CS_SLOT_1(Protected, void _q_uploadDataReadyRead())
-   NET_CS_SLOT_2(_q_uploadDataReadyRead)
+    NET_LSCS_SLOT_1( Protected, void _q_uploadDataReadyRead() )
+    NET_LSCS_SLOT_2( _q_uploadDataReadyRead )
 
 #ifdef QT_SSL
-   NET_CS_SLOT_1(Protected, void _q_encrypted())
-   NET_CS_SLOT_2(_q_encrypted)  // start sending request (https)
+    NET_LSCS_SLOT_1( Protected, void _q_encrypted() )
+    NET_LSCS_SLOT_2( _q_encrypted ) // start sending request (https)
 
-   NET_CS_SLOT_1(Protected, void _q_sslErrors(const QList <QSslError> &errors))
-   NET_CS_SLOT_2(_q_sslErrors)  // ssl errors from the socket
+    NET_LSCS_SLOT_1( Protected, void _q_sslErrors( const QList <QSslError> &errors ) )
+    NET_LSCS_SLOT_2( _q_sslErrors ) // ssl errors from the socket
 
-   NET_CS_SLOT_1(Protected, void _q_preSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *))
-   NET_CS_SLOT_2(_q_preSharedKeyAuthenticationRequired)
+    NET_LSCS_SLOT_1( Protected, void _q_preSharedKeyAuthenticationRequired( QSslPreSharedKeyAuthenticator * ) )
+    NET_LSCS_SLOT_2( _q_preSharedKeyAuthenticationRequired )
 
-   NET_CS_SLOT_1(Protected, void _q_encryptedBytesWritten(qint64 bytes))
-   NET_CS_SLOT_2(_q_encryptedBytesWritten)  // proceed sending
+    NET_LSCS_SLOT_1( Protected, void _q_encryptedBytesWritten( qint64 bytes ) )
+    NET_LSCS_SLOT_2( _q_encryptedBytesWritten ) // proceed sending
 #endif
-   friend class QHttpProtocolHandler;
+    friend class QHttpProtocolHandler;
 };
 
 

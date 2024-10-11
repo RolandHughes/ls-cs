@@ -41,69 +41,89 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
-    class KURL;
+namespace WebCore
+{
+class KURL;
 };
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebBackForwardListItem;
 class WebContext;
 class WebPageGroup;
 struct WebNavigationDataStore;
 
-class WebProcessProxy : public RefCounted<WebProcessProxy>, CoreIPC::Connection::Client, ResponsivenessTimer::Client, ProcessLauncher::Client, ThreadLauncher::Client {
+class WebProcessProxy : public RefCounted<WebProcessProxy>, CoreIPC::Connection::Client, ResponsivenessTimer::Client,
+    ProcessLauncher::Client, ThreadLauncher::Client
+{
 public:
     typedef HashMap<uint64_t, RefPtr<WebFrameProxy> > WebFrameProxyMap;
     typedef HashMap<uint64_t, RefPtr<WebBackForwardListItem> > WebBackForwardListItemMap;
 
-    static PassRefPtr<WebProcessProxy> create(PassRefPtr<WebContext>);
+    static PassRefPtr<WebProcessProxy> create( PassRefPtr<WebContext> );
     ~WebProcessProxy();
 
     void terminate();
 
-    template<typename T> bool send(const T& message, uint64_t destinationID, unsigned messageSendFlags = 0);
-    template<typename U> bool sendSync(const U& message, const typename U::Reply& reply, uint64_t destinationID, double timeout = 1);
-    
-    CoreIPC::Connection* connection() const
-    { 
-        ASSERT(m_connection);
-        
-        return m_connection.get(); 
+    template<typename T> bool send( const T &message, uint64_t destinationID, unsigned messageSendFlags = 0 );
+    template<typename U> bool sendSync( const U &message, const typename U::Reply &reply, uint64_t destinationID,
+                                        double timeout = 1 );
+
+    CoreIPC::Connection *connection() const
+    {
+        ASSERT( m_connection );
+
+        return m_connection.get();
     }
 
-    WebContext* context() const { return m_context.get(); }
+    WebContext *context() const
+    {
+        return m_context.get();
+    }
 
-    PlatformProcessIdentifier processIdentifier() const { return m_processLauncher->processIdentifier(); }
+    PlatformProcessIdentifier processIdentifier() const
+    {
+        return m_processLauncher->processIdentifier();
+    }
 
-    WebPageProxy* webPage(uint64_t pageID) const;
-    PassRefPtr<WebPageProxy> createWebPage(PageClient*, WebContext*, WebPageGroup*);
-    void addExistingWebPage(WebPageProxy*, uint64_t pageID);
-    void removeWebPage(uint64_t pageID);
+    WebPageProxy *webPage( uint64_t pageID ) const;
+    PassRefPtr<WebPageProxy> createWebPage( PageClient *, WebContext *, WebPageGroup * );
+    void addExistingWebPage( WebPageProxy *, uint64_t pageID );
+    void removeWebPage( uint64_t pageID );
 
-    WebBackForwardListItem* webBackForwardItem(uint64_t itemID) const;
+    WebBackForwardListItem *webBackForwardItem( uint64_t itemID ) const;
 
-    ResponsivenessTimer* responsivenessTimer() { return &m_responsivenessTimer; }
+    ResponsivenessTimer *responsivenessTimer()
+    {
+        return &m_responsivenessTimer;
+    }
 
-    bool isValid() const { return m_connection; }
+    bool isValid() const
+    {
+        return m_connection;
+    }
     bool isLaunching() const;
-    bool canSendMessage() const { return isValid() || isLaunching(); }
+    bool canSendMessage() const
+    {
+        return isValid() || isLaunching();
+    }
 
-    WebFrameProxy* webFrame(uint64_t) const;
-    bool canCreateFrame(uint64_t frameID) const;
-    void frameCreated(uint64_t, WebFrameProxy*);
-    void disconnectFramesFromPage(WebPageProxy*); // Including main frame.
-    size_t frameCountInPage(WebPageProxy*) const; // Including main frame.
+    WebFrameProxy *webFrame( uint64_t ) const;
+    bool canCreateFrame( uint64_t frameID ) const;
+    void frameCreated( uint64_t, WebFrameProxy * );
+    void disconnectFramesFromPage( WebPageProxy * ); // Including main frame.
+    size_t frameCountInPage( WebPageProxy * ) const; // Including main frame.
 
     void updateTextCheckerState();
 
-    void registerNewWebBackForwardListItem(WebBackForwardListItem*);
+    void registerNewWebBackForwardListItem( WebBackForwardListItem * );
 
     // FIXME: This variant of send is deprecated. All clients should move to an overload that take a message type.
-    template<typename E, typename T> bool deprecatedSend(E messageID, uint64_t destinationID, const T& arguments);
+    template<typename E, typename T> bool deprecatedSend( E messageID, uint64_t destinationID, const T &arguments );
 
 private:
-    explicit WebProcessProxy(PassRefPtr<WebContext>);
+    explicit WebProcessProxy( PassRefPtr<WebContext> );
 
     // Initializes the process or thread launcher which will begin launching the process.
     void connect();
@@ -112,45 +132,49 @@ private:
     // Will potentially cause the WebProcessProxy object to be freed.
     void disconnect();
 
-    bool sendMessage(CoreIPC::MessageID, PassOwnPtr<CoreIPC::ArgumentEncoder>, unsigned messageSendFlags);
+    bool sendMessage( CoreIPC::MessageID, PassOwnPtr<CoreIPC::ArgumentEncoder>, unsigned messageSendFlags );
 
     // CoreIPC message handlers.
-    void addBackForwardItem(uint64_t itemID, const String& originalURLString, const String& urlString, const String& title, const CoreIPC::DataReference& backForwardData);
-    void didDestroyFrame(uint64_t);
-    
-    void shouldTerminate(bool& shouldTerminate);
+    void addBackForwardItem( uint64_t itemID, const String &originalURLString, const String &urlString, const String &title,
+                             const CoreIPC::DataReference &backForwardData );
+    void didDestroyFrame( uint64_t );
+
+    void shouldTerminate( bool &shouldTerminate );
 
 #if ENABLE(PLUGIN_PROCESS)
-    void getPluginProcessConnection(const String& pluginPath, PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply>);
-    void pluginSyncMessageSendTimedOut(const String& pluginPath);
+    void getPluginProcessConnection( const String &pluginPath,
+                                     PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply> );
+    void pluginSyncMessageSendTimedOut( const String &pluginPath );
 #endif
 
     // CoreIPC::Connection::Client
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    virtual CoreIPC::SyncReplyMode didReceiveSyncMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*, CoreIPC::ArgumentEncoder*);
-    virtual void didClose(CoreIPC::Connection*);
-    virtual void didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID);
-    virtual void syncMessageSendTimedOut(CoreIPC::Connection*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    virtual CoreIPC::SyncReplyMode didReceiveSyncMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder *,
+            CoreIPC::ArgumentEncoder * );
+    virtual void didClose( CoreIPC::Connection * );
+    virtual void didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID );
+    virtual void syncMessageSendTimedOut( CoreIPC::Connection * );
 
 #if PLATFORM(WIN)
     Vector<HWND> windowsToReceiveSentMessagesWhileWaitingForSyncReply();
 #endif
 
     // ResponsivenessTimer::Client
-    void didBecomeUnresponsive(ResponsivenessTimer*);
-    void didBecomeResponsive(ResponsivenessTimer*);
+    void didBecomeUnresponsive( ResponsivenessTimer * );
+    void didBecomeResponsive( ResponsivenessTimer * );
 
     // ProcessLauncher::Client
-    virtual void didFinishLaunching(ProcessLauncher*, CoreIPC::Connection::Identifier);
+    virtual void didFinishLaunching( ProcessLauncher *, CoreIPC::Connection::Identifier );
 
     // ThreadLauncher::Client
-    virtual void didFinishLaunching(ThreadLauncher*, CoreIPC::Connection::Identifier);
+    virtual void didFinishLaunching( ThreadLauncher *, CoreIPC::Connection::Identifier );
 
-    void didFinishLaunching(CoreIPC::Connection::Identifier);
+    void didFinishLaunching( CoreIPC::Connection::Identifier );
 
     // Implemented in generated WebProcessProxyMessageReceiver.cpp
-    void didReceiveWebProcessProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
-    CoreIPC::SyncReplyMode didReceiveSyncWebProcessProxyMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply);
+    void didReceiveWebProcessProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
+    CoreIPC::SyncReplyMode didReceiveSyncWebProcessProxyMessage( CoreIPC::Connection *, CoreIPC::MessageID,
+            CoreIPC::ArgumentDecoder *arguments, CoreIPC::ArgumentEncoder *reply );
 
     ResponsivenessTimer m_responsivenessTimer;
     RefPtr<CoreIPC::Connection> m_connection;
@@ -161,35 +185,35 @@ private:
 
     RefPtr<WebContext> m_context;
 
-    HashMap<uint64_t, WebPageProxy*> m_pageMap;
+    HashMap<uint64_t, WebPageProxy *> m_pageMap;
     WebFrameProxyMap m_frameMap;
     WebBackForwardListItemMap m_backForwardListItemMap;
 };
 
 template<typename E, typename T>
-bool WebProcessProxy::deprecatedSend(E messageID, uint64_t destinationID, const T& arguments)
+bool WebProcessProxy::deprecatedSend( E messageID, uint64_t destinationID, const T &arguments )
 {
-    OwnPtr<CoreIPC::ArgumentEncoder> argumentEncoder = CoreIPC::ArgumentEncoder::create(destinationID);
-    argumentEncoder->encode(arguments);
+    OwnPtr<CoreIPC::ArgumentEncoder> argumentEncoder = CoreIPC::ArgumentEncoder::create( destinationID );
+    argumentEncoder->encode( arguments );
 
-    return sendMessage(CoreIPC::MessageID(messageID), argumentEncoder.release(), 0);
+    return sendMessage( CoreIPC::MessageID( messageID ), argumentEncoder.release(), 0 );
 }
 
 template<typename T>
-bool WebProcessProxy::send(const T& message, uint64_t destinationID, unsigned messageSendFlags)
+bool WebProcessProxy::send( const T &message, uint64_t destinationID, unsigned messageSendFlags )
 {
-    OwnPtr<CoreIPC::ArgumentEncoder> argumentEncoder = CoreIPC::ArgumentEncoder::create(destinationID);
-    argumentEncoder->encode(message);
+    OwnPtr<CoreIPC::ArgumentEncoder> argumentEncoder = CoreIPC::ArgumentEncoder::create( destinationID );
+    argumentEncoder->encode( message );
 
-    return sendMessage(CoreIPC::MessageID(T::messageID), argumentEncoder.release(), messageSendFlags);
+    return sendMessage( CoreIPC::MessageID( T::messageID ), argumentEncoder.release(), messageSendFlags );
 }
 
-template<typename U> 
-bool WebProcessProxy::sendSync(const U& message, const typename U::Reply& reply, uint64_t destinationID, double timeout)
+template<typename U>
+bool WebProcessProxy::sendSync( const U &message, const typename U::Reply &reply, uint64_t destinationID, double timeout )
 {
-    return m_connection->sendSync(message, reply, destinationID, timeout);
+    return m_connection->sendSync( message, reply, destinationID, timeout );
 }
-    
+
 } // namespace WebKit
 
 #endif // WebProcessProxy_h

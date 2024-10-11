@@ -26,61 +26,69 @@
 
 #if defined(QT_COMPILER_SUPPORTS_SSE4_1)
 
-const uint * convertARGB32ToARGB32PM_sse4(uint *buffer, const uint *src, int count,
-   const QPixelLayout *, const QRgb *)
+const uint *convertARGB32ToARGB32PM_sse4( uint *buffer, const uint *src, int count,
+        const QPixelLayout *, const QRgb * )
 {
-   return qt_convertARGB32ToARGB32PM(buffer, src, count);
+    return qt_convertARGB32ToARGB32PM( buffer, src, count );
 }
 
-const uint * convertRGBA8888ToARGB32PM_sse4(uint *buffer, const uint *src, int count,
-   const QPixelLayout *, const QRgb *)
+const uint *convertRGBA8888ToARGB32PM_sse4( uint *buffer, const uint *src, int count,
+        const QPixelLayout *, const QRgb * )
 {
-   return qt_convertRGBA8888ToARGB32PM(buffer, src, count);
+    return qt_convertRGBA8888ToARGB32PM( buffer, src, count );
 }
 
-const uint * convertARGB32FromARGB32PM_sse4(uint *buffer, const uint *src, int count,
-   const QPixelLayout *, const QRgb *)
+const uint *convertARGB32FromARGB32PM_sse4( uint *buffer, const uint *src, int count,
+        const QPixelLayout *, const QRgb * )
 {
-   for (int i = 0; i < count; ++i) {
-      buffer[i] = qUnpremultiply_sse4(src[i]);
-   }
-   return buffer;
+    for ( int i = 0; i < count; ++i )
+    {
+        buffer[i] = qUnpremultiply_sse4( src[i] );
+    }
+
+    return buffer;
 }
 
-const uint * convertRGBA8888FromARGB32PM_sse4(uint *buffer, const uint *src, int count,
-   const QPixelLayout *, const QRgb *)
+const uint *convertRGBA8888FromARGB32PM_sse4( uint *buffer, const uint *src, int count,
+        const QPixelLayout *, const QRgb * )
 {
-   for (int i = 0; i < count; ++i) {
-      buffer[i] = ARGB2RGBA(qUnpremultiply_sse4(src[i]));
-   }
-   return buffer;
+    for ( int i = 0; i < count; ++i )
+    {
+        buffer[i] = ARGB2RGBA( qUnpremultiply_sse4( src[i] ) );
+    }
+
+    return buffer;
 }
 
-const uint * convertRGBXFromARGB32PM_sse4(uint *buffer, const uint *src, int count,
-   const QPixelLayout *, const QRgb *)
+const uint *convertRGBXFromARGB32PM_sse4( uint *buffer, const uint *src, int count,
+        const QPixelLayout *, const QRgb * )
 {
-   for (int i = 0; i < count; ++i) {
-      buffer[i] = ARGB2RGBA(0xff000000 | qUnpremultiply_sse4(src[i]));
-   }
-   return buffer;
+    for ( int i = 0; i < count; ++i )
+    {
+        buffer[i] = ARGB2RGBA( 0xff000000 | qUnpremultiply_sse4( src[i] ) );
+    }
+
+    return buffer;
 }
 
 template <QtPixelOrder PixelOrder>
-const uint * convertA2RGB30PMFromARGB32PM_sse4(uint *buffer, const uint *src, int count,
-   const QPixelLayout *, const QRgb *)
+const uint *convertA2RGB30PMFromARGB32PM_sse4( uint *buffer, const uint *src, int count,
+        const QPixelLayout *, const QRgb * )
 {
-   for (int i = 0; i < count; ++i) {
-      buffer[i] = qConvertArgb32ToA2rgb30_sse4<PixelOrder>(src[i]);
-   }
-   return buffer;
+    for ( int i = 0; i < count; ++i )
+    {
+        buffer[i] = qConvertArgb32ToA2rgb30_sse4<PixelOrder>( src[i] );
+    }
+
+    return buffer;
 }
 
 template <>
-const uint * convertA2RGB30PMFromARGB32PM_sse4<PixelOrderBGR>(uint *buffer, const uint *src,
-      int count, const QPixelLayout *, const QRgb *);
+const uint *convertA2RGB30PMFromARGB32PM_sse4<PixelOrderBGR>( uint *buffer, const uint *src,
+        int count, const QPixelLayout *, const QRgb * );
 
 template <>
-const uint * convertA2RGB30PMFromARGB32PM_sse4<PixelOrderRGB>(uint *buffer, const uint *src,
-      int count, const QPixelLayout *, const QRgb *);
+const uint *convertA2RGB30PMFromARGB32PM_sse4<PixelOrderRGB>( uint *buffer, const uint *src,
+        int count, const QPixelLayout *, const QRgb * );
 
 #endif

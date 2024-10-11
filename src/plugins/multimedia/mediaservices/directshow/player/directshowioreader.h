@@ -38,64 +38,64 @@ class DirectShowSampleRequest;
 
 class DirectShowIOReader : public QObject, public IAsyncReader
 {
-   CS_OBJECT(DirectShowIOReader)
+    LSCS_OBJECT( DirectShowIOReader )
 
- public:
-   DirectShowIOReader(QIODevice *device, DirectShowIOSource *source, DirectShowEventLoop *loop);
-   ~DirectShowIOReader();
+public:
+    DirectShowIOReader( QIODevice *device, DirectShowIOSource *source, DirectShowEventLoop *loop );
+    ~DirectShowIOReader();
 
-   // IUnknown
-   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject) override;
-   ULONG STDMETHODCALLTYPE AddRef() override;
-   ULONG STDMETHODCALLTYPE Release() override;
+    // IUnknown
+    HRESULT STDMETHODCALLTYPE QueryInterface( REFIID riid, void **ppvObject ) override;
+    ULONG STDMETHODCALLTYPE AddRef() override;
+    ULONG STDMETHODCALLTYPE Release() override;
 
-   // IAsyncReader
-   HRESULT STDMETHODCALLTYPE RequestAllocator(
-      IMemAllocator *pPreferred, ALLOCATOR_PROPERTIES *pProps, IMemAllocator **ppActual) override;
+    // IAsyncReader
+    HRESULT STDMETHODCALLTYPE RequestAllocator(
+        IMemAllocator *pPreferred, ALLOCATOR_PROPERTIES *pProps, IMemAllocator **ppActual ) override;
 
-   HRESULT STDMETHODCALLTYPE Request(IMediaSample *pSample, DWORD_PTR dwUser) override;
+    HRESULT STDMETHODCALLTYPE Request( IMediaSample *pSample, DWORD_PTR dwUser ) override;
 
-   HRESULT STDMETHODCALLTYPE WaitForNext(
-      DWORD dwTimeout, IMediaSample **ppSample, DWORD_PTR *pdwUser) override;
+    HRESULT STDMETHODCALLTYPE WaitForNext(
+        DWORD dwTimeout, IMediaSample **ppSample, DWORD_PTR *pdwUser ) override;
 
-   HRESULT STDMETHODCALLTYPE SyncReadAligned(IMediaSample *pSample) override;
+    HRESULT STDMETHODCALLTYPE SyncReadAligned( IMediaSample *pSample ) override;
 
-   HRESULT STDMETHODCALLTYPE SyncRead(LONGLONG llPosition, LONG lLength, BYTE *pBuffer) override;
+    HRESULT STDMETHODCALLTYPE SyncRead( LONGLONG llPosition, LONG lLength, BYTE *pBuffer ) override;
 
-   HRESULT STDMETHODCALLTYPE Length(LONGLONG *pTotal, LONGLONG *pAvailable) override;
+    HRESULT STDMETHODCALLTYPE Length( LONGLONG *pTotal, LONGLONG *pAvailable ) override;
 
-   HRESULT STDMETHODCALLTYPE BeginFlush() override;
-   HRESULT STDMETHODCALLTYPE EndFlush() override;
+    HRESULT STDMETHODCALLTYPE BeginFlush() override;
+    HRESULT STDMETHODCALLTYPE EndFlush() override;
 
- protected:
-   void customEvent(QEvent *event) override;
+protected:
+    void customEvent( QEvent *event ) override;
 
- private:
-   CS_SLOT_1(Private, void readyRead())
-   CS_SLOT_2(readyRead)
+private:
+    LSCS_SLOT_1( Private, void readyRead() )
+    LSCS_SLOT_2( readyRead )
 
-   HRESULT blockingRead(LONGLONG position, LONG length, BYTE *buffer, qint64 *bytesRead);
-   bool nonBlockingRead(
-      LONGLONG position, LONG length, BYTE *buffer, qint64 *bytesRead, HRESULT *result);
-   void flushRequests();
+    HRESULT blockingRead( LONGLONG position, LONG length, BYTE *buffer, qint64 *bytesRead );
+    bool nonBlockingRead(
+        LONGLONG position, LONG length, BYTE *buffer, qint64 *bytesRead, HRESULT *result );
+    void flushRequests();
 
-   DirectShowIOSource *m_source;
-   QIODevice *m_device;
-   DirectShowEventLoop *m_loop;
-   DirectShowSampleRequest *m_pendingHead;
-   DirectShowSampleRequest *m_pendingTail;
-   DirectShowSampleRequest *m_readyHead;
-   DirectShowSampleRequest *m_readyTail;
-   LONGLONG m_synchronousPosition;
-   LONG m_synchronousLength;
-   qint64 m_synchronousBytesRead;
-   BYTE *m_synchronousBuffer;
-   HRESULT m_synchronousResult;
-   LONGLONG m_totalLength;
-   LONGLONG m_availableLength;
-   bool m_flushing;
-   QMutex m_mutex;
-   QWaitCondition m_wait;
+    DirectShowIOSource *m_source;
+    QIODevice *m_device;
+    DirectShowEventLoop *m_loop;
+    DirectShowSampleRequest *m_pendingHead;
+    DirectShowSampleRequest *m_pendingTail;
+    DirectShowSampleRequest *m_readyHead;
+    DirectShowSampleRequest *m_readyTail;
+    LONGLONG m_synchronousPosition;
+    LONG m_synchronousLength;
+    qint64 m_synchronousBytesRead;
+    BYTE *m_synchronousBuffer;
+    HRESULT m_synchronousResult;
+    LONGLONG m_totalLength;
+    LONGLONG m_availableLength;
+    bool m_flushing;
+    QMutex m_mutex;
+    QWaitCondition m_wait;
 };
 
 #endif

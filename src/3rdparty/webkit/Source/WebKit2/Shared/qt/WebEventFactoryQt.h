@@ -37,15 +37,17 @@ class QGraphicsSceneMouseEvent;
 class QGraphicsSceneWheelEvent;
 class QKeyEvent;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebEventFactory {
+class WebEventFactory
+{
 public:
-    static WebMouseEvent createWebMouseEvent(QGraphicsSceneMouseEvent* event, int eventClickCount);
-    static WebWheelEvent createWebWheelEvent(QGraphicsSceneWheelEvent* event);
-    static WebKeyboardEvent createWebKeyboardEvent(QKeyEvent* event);
+    static WebMouseEvent createWebMouseEvent( QGraphicsSceneMouseEvent *event, int eventClickCount );
+    static WebWheelEvent createWebWheelEvent( QGraphicsSceneWheelEvent *event );
+    static WebKeyboardEvent createWebKeyboardEvent( QKeyEvent *event );
 #if ENABLE(TOUCH_EVENTS)
-    static WebTouchEvent createWebTouchEvent(QTouchEvent* event);
+    static WebTouchEvent createWebTouchEvent( QTouchEvent *event );
 #endif
 };
 

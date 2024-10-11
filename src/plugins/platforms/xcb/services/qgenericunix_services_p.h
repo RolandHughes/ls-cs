@@ -29,19 +29,19 @@
 
 class QGenericUnixServices : public QPlatformServices
 {
- public:
-   QGenericUnixServices()
-   {
-   }
+public:
+    QGenericUnixServices()
+    {
+    }
 
-   QByteArray desktopEnvironment() const override;
+    QByteArray desktopEnvironment() const override;
 
-   bool openUrl(const QUrl &url) override;
-   bool openDocument(const QUrl &url) override;
+    bool openUrl( const QUrl &url ) override;
+    bool openDocument( const QUrl &url ) override;
 
- private:
-   QString m_webBrowser;
-   QString m_documentLauncher;
+private:
+    QString m_webBrowser;
+    QString m_documentLauncher;
 };
 
 #endif

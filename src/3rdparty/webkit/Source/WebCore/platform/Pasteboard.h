@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Pasteboard_h
@@ -56,14 +56,15 @@ class NSArray;
 
 #if PLATFORM(WIN)
 #include <windows.h>
-typedef struct HWND__* HWND;
+typedef struct HWND__ *HWND;
 #endif
 
 #if PLATFORM(CHROMIUM)
 #include "PasteboardPrivate.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if PLATFORM(MAC)
 extern NSString *WebArchivePboardType;
@@ -80,41 +81,43 @@ class KURL;
 class Node;
 class Range;
 class ArchiveResource;
-    
-class Pasteboard {
-    WTF_MAKE_NONCOPYABLE(Pasteboard); WTF_MAKE_FAST_ALLOCATED;
+
+class Pasteboard
+{
+    WTF_MAKE_NONCOPYABLE( Pasteboard );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
 #if PLATFORM(MAC)
     //Helper functions to allow Clipboard to share code
-    static void writeSelection(NSPasteboard*, NSArray* pasteboardTypes, Range* selectedRange, bool canSmartCopyOrDelete, Frame*);
-    static void writeURL(NSPasteboard* pasteboard, NSArray* types, const KURL& url, const String& titleStr, Frame* frame);
-    static void writePlainText(NSPasteboard* pasteboard, const String& text);
+    static void writeSelection( NSPasteboard *, NSArray *pasteboardTypes, Range *selectedRange, bool canSmartCopyOrDelete, Frame * );
+    static void writeURL( NSPasteboard *pasteboard, NSArray *types, const KURL &url, const String &titleStr, Frame *frame );
+    static void writePlainText( NSPasteboard *pasteboard, const String &text );
 
-    Pasteboard(NSPasteboard *);
+    Pasteboard( NSPasteboard * );
 #endif
-    
-    static Pasteboard* generalPasteboard();
-    void writeSelection(Range*, bool canSmartCopyOrDelete, Frame*);
-    void writePlainText(const String&);
-    void writeURL(const KURL&, const String&, Frame* = 0);
-    void writeImage(Node*, const KURL&, const String& title);
+
+    static Pasteboard *generalPasteboard();
+    void writeSelection( Range *, bool canSmartCopyOrDelete, Frame * );
+    void writePlainText( const String & );
+    void writeURL( const KURL &, const String &, Frame * = 0 );
+    void writeImage( Node *, const KURL &, const String &title );
 #if PLATFORM(MAC)
-    void writeFileWrapperAsRTFDAttachment(NSFileWrapper*);
-    String asURL(Frame*);
+    void writeFileWrapperAsRTFDAttachment( NSFileWrapper * );
+    String asURL( Frame * );
 #endif
     void clear();
     bool canSmartReplace();
-    PassRefPtr<DocumentFragment> documentFragment(Frame*, PassRefPtr<Range>, bool allowPlainText, bool& chosePlainText);
-    String plainText(Frame* = 0);
-    
+    PassRefPtr<DocumentFragment> documentFragment( Frame *, PassRefPtr<Range>, bool allowPlainText, bool &chosePlainText );
+    String plainText( Frame * = 0 );
+
 #if PLATFORM(QT) || PLATFORM(CHROMIUM)
     bool isSelectionMode() const;
-    void setSelectionMode(bool selectionMode);
+    void setSelectionMode( bool selectionMode );
 #endif
 
 #if PLATFORM(GTK)
-    void setHelper(PasteboardHelper*);
-    PasteboardHelper* helper();
+    void setHelper( PasteboardHelper * );
+    PasteboardHelper *helper();
     ~Pasteboard();
 #endif
 
@@ -123,9 +126,9 @@ private:
 
 #if PLATFORM(MAC)
     RetainPtr<NSPasteboard> m_pasteboard;
-    PassRefPtr<DocumentFragment> documentFragmentWithImageResource(Frame* frame, PassRefPtr<ArchiveResource> resource);
-    PassRefPtr<DocumentFragment> documentFragmentWithRtf(Frame* frame, NSString* pboardType);
-    NSURL *getBestURL(Frame *);
+    PassRefPtr<DocumentFragment> documentFragmentWithImageResource( Frame *frame, PassRefPtr<ArchiveResource> resource );
+    PassRefPtr<DocumentFragment> documentFragmentWithRtf( Frame *frame, NSString *pboardType );
+    NSURL *getBestURL( Frame * );
 #endif
 
 #if PLATFORM(WIN)
@@ -141,7 +144,7 @@ private:
 #endif
 
 #if PLATFORM(GTK)
-    PasteboardHelper* m_helper;
+    PasteboardHelper *m_helper;
 #endif
 };
 

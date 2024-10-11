@@ -33,32 +33,32 @@ QT_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsoleGlobalObjectPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerConsoleGlobalObject)
+    Q_DECLARE_PUBLIC( QScriptDebuggerConsoleGlobalObject )
 
- public:
-   QScriptDebuggerConsoleGlobalObjectPrivate();
-   ~QScriptDebuggerConsoleGlobalObjectPrivate();
+public:
+    QScriptDebuggerConsoleGlobalObjectPrivate();
+    ~QScriptDebuggerConsoleGlobalObjectPrivate();
 
-   QScriptDebuggerCommandSchedulerInterface *scheduler;
-   QScriptDebuggerResponseHandlerInterface *responseHandler;
-   QScriptMessageHandlerInterface *messageHandler;
-   QScriptDebuggerConsole *console;
+    QScriptDebuggerCommandSchedulerInterface *scheduler;
+    QScriptDebuggerResponseHandlerInterface *responseHandler;
+    QScriptMessageHandlerInterface *messageHandler;
+    QScriptDebuggerConsole *console;
 };
 
 QScriptDebuggerConsoleGlobalObjectPrivate::QScriptDebuggerConsoleGlobalObjectPrivate()
 {
-   scheduler = 0;
-   responseHandler = 0;
-   messageHandler = 0;
-   console = 0;
+    scheduler = 0;
+    responseHandler = 0;
+    messageHandler = 0;
+    console = 0;
 }
 
 QScriptDebuggerConsoleGlobalObjectPrivate::~QScriptDebuggerConsoleGlobalObjectPrivate()
 {
 }
 
-QScriptDebuggerConsoleGlobalObject::QScriptDebuggerConsoleGlobalObject(QObject *parent)
-   : QObject(*new QScriptDebuggerConsoleGlobalObjectPrivate, parent)
+QScriptDebuggerConsoleGlobalObject::QScriptDebuggerConsoleGlobalObject( QObject *parent )
+    : QObject( *new QScriptDebuggerConsoleGlobalObjectPrivate, parent )
 {
 }
 
@@ -68,51 +68,51 @@ QScriptDebuggerConsoleGlobalObject::~QScriptDebuggerConsoleGlobalObject()
 
 QScriptDebuggerCommandSchedulerInterface *QScriptDebuggerConsoleGlobalObject::scheduler() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->scheduler;
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->scheduler;
 }
 
-void QScriptDebuggerConsoleGlobalObject::setScheduler(QScriptDebuggerCommandSchedulerInterface *scheduler)
+void QScriptDebuggerConsoleGlobalObject::setScheduler( QScriptDebuggerCommandSchedulerInterface *scheduler )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->scheduler = scheduler;
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->scheduler = scheduler;
 }
 
 QScriptDebuggerResponseHandlerInterface *QScriptDebuggerConsoleGlobalObject::responseHandler() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->responseHandler;
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->responseHandler;
 }
 
 void QScriptDebuggerConsoleGlobalObject::setResponseHandler(
-   QScriptDebuggerResponseHandlerInterface *responseHandler)
+    QScriptDebuggerResponseHandlerInterface *responseHandler )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->responseHandler = responseHandler;
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->responseHandler = responseHandler;
 }
 
 QScriptMessageHandlerInterface *QScriptDebuggerConsoleGlobalObject::messageHandler() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->messageHandler;
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->messageHandler;
 }
 
-void QScriptDebuggerConsoleGlobalObject::setMessageHandler(QScriptMessageHandlerInterface *messageHandler)
+void QScriptDebuggerConsoleGlobalObject::setMessageHandler( QScriptMessageHandlerInterface *messageHandler )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->messageHandler = messageHandler;
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->messageHandler = messageHandler;
 }
 
 QScriptDebuggerConsole *QScriptDebuggerConsoleGlobalObject::console() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console;
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console;
 }
 
-void QScriptDebuggerConsoleGlobalObject::setConsole(QScriptDebuggerConsole *console)
+void QScriptDebuggerConsoleGlobalObject::setConsole( QScriptDebuggerConsole *console )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->console = console;
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->console = console;
 }
 
 // ### the scheduleXXX functions could take a callback function as argument (rather than using the
@@ -120,324 +120,324 @@ void QScriptDebuggerConsoleGlobalObject::setConsole(QScriptDebuggerConsole *cons
 
 int QScriptDebuggerConsoleGlobalObject::scheduleInterrupt()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleInterrupt();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleInterrupt();
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleContinue()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleContinue();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleContinue();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleStepInto(int count)
+int QScriptDebuggerConsoleGlobalObject::scheduleStepInto( int count )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleStepInto(count);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleStepInto( count );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleStepOver(int count)
+int QScriptDebuggerConsoleGlobalObject::scheduleStepOver( int count )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleStepOver(count);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleStepOver( count );
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleStepOut()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleStepOut();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleStepOut();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleRunToLocation(const QString &fileName, int lineNumber)
+int QScriptDebuggerConsoleGlobalObject::scheduleRunToLocation( const QString &fileName, int lineNumber )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleRunToLocation(fileName, lineNumber);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleRunToLocation( fileName, lineNumber );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleRunToLocation(qint64 scriptId, int lineNumber)
+int QScriptDebuggerConsoleGlobalObject::scheduleRunToLocation( qint64 scriptId, int lineNumber )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleRunToLocation(scriptId, lineNumber);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleRunToLocation( scriptId, lineNumber );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleForceReturn(int contextIndex, const QScriptDebuggerValue &value)
+int QScriptDebuggerConsoleGlobalObject::scheduleForceReturn( int contextIndex, const QScriptDebuggerValue &value )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleForceReturn(contextIndex, value);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleForceReturn( contextIndex, value );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleSetBreakpoint(const QScriptBreakpointData &data)
+int QScriptDebuggerConsoleGlobalObject::scheduleSetBreakpoint( const QScriptBreakpointData &data )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleSetBreakpoint(data);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleSetBreakpoint( data );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleDeleteBreakpoint(int id)
+int QScriptDebuggerConsoleGlobalObject::scheduleDeleteBreakpoint( int id )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleDeleteBreakpoint(id);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleDeleteBreakpoint( id );
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleDeleteAllBreakpoints()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleDeleteAllBreakpoints();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleDeleteAllBreakpoints();
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleGetBreakpoints()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetBreakpoints();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetBreakpoints();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleGetBreakpointData(int id)
+int QScriptDebuggerConsoleGlobalObject::scheduleGetBreakpointData( int id )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetBreakpointData(id);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetBreakpointData( id );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleSetBreakpointData(int id, const QScriptBreakpointData &data)
+int QScriptDebuggerConsoleGlobalObject::scheduleSetBreakpointData( int id, const QScriptBreakpointData &data )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleSetBreakpointData(id, data);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleSetBreakpointData( id, data );
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleGetScripts()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetScripts();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetScripts();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleGetScriptData(qint64 id)
+int QScriptDebuggerConsoleGlobalObject::scheduleGetScriptData( qint64 id )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetScriptData(id);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetScriptData( id );
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleScriptsCheckpoint()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleScriptsCheckpoint();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleScriptsCheckpoint();
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleGetScriptsDelta()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetScriptsDelta();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetScriptsDelta();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleResolveScript(const QString &fileName)
+int QScriptDebuggerConsoleGlobalObject::scheduleResolveScript( const QString &fileName )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleResolveScript(fileName);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleResolveScript( fileName );
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleGetBacktrace()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetBacktrace();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetBacktrace();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleGetThisObject(int contextIndex)
+int QScriptDebuggerConsoleGlobalObject::scheduleGetThisObject( int contextIndex )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetThisObject(contextIndex);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetThisObject( contextIndex );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleGetActivationObject(int contextIndex)
+int QScriptDebuggerConsoleGlobalObject::scheduleGetActivationObject( int contextIndex )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetActivationObject(contextIndex);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetActivationObject( contextIndex );
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleGetContextCount()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetContextCount();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetContextCount();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleGetContextInfo(int contextIndex)
+int QScriptDebuggerConsoleGlobalObject::scheduleGetContextInfo( int contextIndex )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetContextInfo(contextIndex);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetContextInfo( contextIndex );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleNewScriptValueIterator(const QScriptDebuggerValue &object)
+int QScriptDebuggerConsoleGlobalObject::scheduleNewScriptValueIterator( const QScriptDebuggerValue &object )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleNewScriptValueIterator(object);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleNewScriptValueIterator( object );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleGetPropertiesByIterator(int id, int count)
+int QScriptDebuggerConsoleGlobalObject::scheduleGetPropertiesByIterator( int id, int count )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleGetPropertiesByIterator(id, count);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleGetPropertiesByIterator( id, count );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleDeleteScriptValueIterator(int id)
+int QScriptDebuggerConsoleGlobalObject::scheduleDeleteScriptValueIterator( int id )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleDeleteScriptValueIterator(id);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleDeleteScriptValueIterator( id );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleEvaluate(int contextIndex, const QString &program,
-      const QString &fileName,
-      int lineNumber)
+int QScriptDebuggerConsoleGlobalObject::scheduleEvaluate( int contextIndex, const QString &program,
+        const QString &fileName,
+        int lineNumber )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleEvaluate(contextIndex, program, fileName, lineNumber);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleEvaluate( contextIndex, program, fileName, lineNumber );
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleScriptValueToString(const QScriptDebuggerValue &value)
+int QScriptDebuggerConsoleGlobalObject::scheduleScriptValueToString( const QScriptDebuggerValue &value )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleScriptValueToString(value);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleScriptValueToString( value );
 }
 
 int QScriptDebuggerConsoleGlobalObject::scheduleClearExceptions()
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   QScriptDebuggerCommandSchedulerFrontend frontend(d->scheduler, d->responseHandler);
-   return frontend.scheduleClearExceptions();
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    QScriptDebuggerCommandSchedulerFrontend frontend( d->scheduler, d->responseHandler );
+    return frontend.scheduleClearExceptions();
 }
 
-int QScriptDebuggerConsoleGlobalObject::scheduleCommand(const QScriptDebuggerCommand &command)
+int QScriptDebuggerConsoleGlobalObject::scheduleCommand( const QScriptDebuggerCommand &command )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   return d->scheduler->scheduleCommand(command, d->responseHandler);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    return d->scheduler->scheduleCommand( command, d->responseHandler );
 }
 
-void QScriptDebuggerConsoleGlobalObject::warning(const QString &text,
-      const QString &fileName,
-      int lineNumber, int columnNumber)
+void QScriptDebuggerConsoleGlobalObject::warning( const QString &text,
+        const QString &fileName,
+        int lineNumber, int columnNumber )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   Q_ASSERT(d->messageHandler != 0);
-   d->messageHandler->message(QtWarningMsg, text, fileName, lineNumber, columnNumber);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    Q_ASSERT( d->messageHandler != 0 );
+    d->messageHandler->message( QtWarningMsg, text, fileName, lineNumber, columnNumber );
 }
 
-void QScriptDebuggerConsoleGlobalObject::message(const QString &text,
-      const QString &fileName,
-      int lineNumber, int columnNumber)
+void QScriptDebuggerConsoleGlobalObject::message( const QString &text,
+        const QString &fileName,
+        int lineNumber, int columnNumber )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   Q_ASSERT(d->messageHandler != 0);
-   d->messageHandler->message(QtDebugMsg, text, fileName, lineNumber, columnNumber);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    Q_ASSERT( d->messageHandler != 0 );
+    d->messageHandler->message( QtDebugMsg, text, fileName, lineNumber, columnNumber );
 }
 
-void QScriptDebuggerConsoleGlobalObject::error(const QString &text,
-      const QString &fileName,
-      int lineNumber, int columnNumber)
+void QScriptDebuggerConsoleGlobalObject::error( const QString &text,
+        const QString &fileName,
+        int lineNumber, int columnNumber )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   Q_ASSERT(d->messageHandler != 0);
-   d->messageHandler->message(QtCriticalMsg, text, fileName, lineNumber, columnNumber);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    Q_ASSERT( d->messageHandler != 0 );
+    d->messageHandler->message( QtCriticalMsg, text, fileName, lineNumber, columnNumber );
 }
 
 int QScriptDebuggerConsoleGlobalObject::getCurrentFrameIndex() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->currentFrameIndex();
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->currentFrameIndex();
 }
 
-void QScriptDebuggerConsoleGlobalObject::setCurrentFrameIndex(int index)
+void QScriptDebuggerConsoleGlobalObject::setCurrentFrameIndex( int index )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->console->setCurrentFrameIndex(index);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->console->setCurrentFrameIndex( index );
 }
 
 int QScriptDebuggerConsoleGlobalObject::getCurrentLineNumber() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->currentLineNumber();
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->currentLineNumber();
 }
 
-void QScriptDebuggerConsoleGlobalObject::setCurrentLineNumber(int lineNumber)
+void QScriptDebuggerConsoleGlobalObject::setCurrentLineNumber( int lineNumber )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->console->setCurrentLineNumber(lineNumber);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->console->setCurrentLineNumber( lineNumber );
 }
 
 qint64 QScriptDebuggerConsoleGlobalObject::getCurrentScriptId() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->currentScriptId();
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->currentScriptId();
 }
 
-void QScriptDebuggerConsoleGlobalObject::setCurrentScriptId(qint64 id)
+void QScriptDebuggerConsoleGlobalObject::setCurrentScriptId( qint64 id )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->console->setCurrentScriptId(id);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->console->setCurrentScriptId( id );
 }
 
 qint64 QScriptDebuggerConsoleGlobalObject::getSessionId() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->sessionId();
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->sessionId();
 }
 
 QScriptDebuggerConsoleCommandGroupMap QScriptDebuggerConsoleGlobalObject::getCommandGroups() const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->commandManager()->commandGroups();
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->commandManager()->commandGroups();
 }
 
-QScriptDebuggerConsoleCommand *QScriptDebuggerConsoleGlobalObject::findCommand(const QString &name) const
+QScriptDebuggerConsoleCommand *QScriptDebuggerConsoleGlobalObject::findCommand( const QString &name ) const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->commandManager()->findCommand(name);
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->commandManager()->findCommand( name );
 }
 
-QScriptDebuggerConsoleCommandList QScriptDebuggerConsoleGlobalObject::getCommandsInGroup(const QString &name) const
+QScriptDebuggerConsoleCommandList QScriptDebuggerConsoleGlobalObject::getCommandsInGroup( const QString &name ) const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->commandManager()->commandsInGroup(name);
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->commandManager()->commandsInGroup( name );
 }
 
-QStringList QScriptDebuggerConsoleGlobalObject::getCommandCompletions(const QString &prefix) const
+QStringList QScriptDebuggerConsoleGlobalObject::getCommandCompletions( const QString &prefix ) const
 {
-   Q_D(const QScriptDebuggerConsoleGlobalObject);
-   return d->console->commandManager()->completions(prefix);
+    Q_D( const QScriptDebuggerConsoleGlobalObject );
+    return d->console->commandManager()->completions( prefix );
 }
 
-bool QScriptDebuggerConsoleGlobalObject::checkSyntax(const QString &program)
+bool QScriptDebuggerConsoleGlobalObject::checkSyntax( const QString &program )
 {
-   return (QScriptEngine::checkSyntax(program).state() == QScriptSyntaxCheckResult::Valid);
+    return ( QScriptEngine::checkSyntax( program ).state() == QScriptSyntaxCheckResult::Valid );
 }
 
-void QScriptDebuggerConsoleGlobalObject::setEvaluateAction(int action)
+void QScriptDebuggerConsoleGlobalObject::setEvaluateAction( int action )
 {
-   Q_D(QScriptDebuggerConsoleGlobalObject);
-   d->console->setEvaluateAction(action);
+    Q_D( QScriptDebuggerConsoleGlobalObject );
+    d->console->setEvaluateAction( action );
 }
 
 QT_END_NAMESPACE

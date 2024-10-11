@@ -26,11 +26,13 @@
 #ifndef FragmentScriptingPermission_h
 #define FragmentScriptingPermission_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 // FIXME: This enum is poorly named.  It is used to remove script contents when
 // generating DocumentFragments for paste in platform/*/Pasteboard.*.
-enum FragmentScriptingPermission {
+enum FragmentScriptingPermission
+{
     FragmentScriptingAllowed,
     FragmentScriptingNotAllowed,
 };

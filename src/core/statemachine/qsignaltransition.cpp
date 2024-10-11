@@ -35,26 +35,28 @@
 
 void QSignalTransition::unregister()
 {
-   if (! m_signalBento || ! machine()) {
-      return;
-   }
+    if ( ! m_signalBento || ! machine() )
+    {
+        return;
+    }
 
-   QStateMachinePrivate::get(machine())->unregisterSignalTransition(this);
+    QStateMachinePrivate::get( machine() )->unregisterSignalTransition( this );
 }
 
 void QSignalTransition::maybeRegister()
 {
-   if (! machine() || ! machine()->configuration().contains(sourceState())) {
-      return;
-   }
+    if ( ! machine() || ! machine()->configuration().contains( sourceState() ) )
+    {
+        return;
+    }
 
-   QStateMachinePrivate::get(machine())->registerSignalTransition(this);
+    QStateMachinePrivate::get( machine() )->registerSignalTransition( this );
 }
 
-QSignalTransition::QSignalTransition(QState *sourceState)
-   : QAbstractTransition(*new QSignalTransitionPrivate, sourceState)
+QSignalTransition::QSignalTransition( QState *sourceState )
+    : QAbstractTransition( *new QSignalTransitionPrivate, sourceState )
 {
-   m_sender = nullptr;
+    m_sender = nullptr;
 }
 
 QSignalTransition::~QSignalTransition()
@@ -63,51 +65,53 @@ QSignalTransition::~QSignalTransition()
 
 const QObject *QSignalTransition::senderObject() const
 {
-   return m_sender;
+    return m_sender;
 }
 
-void QSignalTransition::setSenderObject(const QObject *sender)
+void QSignalTransition::setSenderObject( const QObject *sender )
 {
-   if (sender == m_sender) {
-      return;
-   }
+    if ( sender == m_sender )
+    {
+        return;
+    }
 
-   unregister();
-   m_sender = sender;
+    unregister();
+    m_sender = sender;
 
-   maybeRegister();
+    maybeRegister();
 }
 
-CsSignal::Internal::BentoAbstract *QSignalTransition::get_signalBento() const
+LsCsSignal::Internal::BentoAbstract *QSignalTransition::get_signalBento() const
 {
-   return m_signalBento.data();
+    return m_signalBento.data();
 }
 
-bool QSignalTransition::eventTest(QEvent *event)
+bool QSignalTransition::eventTest( QEvent *event )
 {
-   if (event->type() == QEvent::StateMachineSignal) {
+    if ( event->type() == QEvent::StateMachineSignal )
+    {
 
-      QStateMachine::SignalEvent *se = static_cast<QStateMachine::SignalEvent *>(event);
-      return (se->sender() == m_sender);
-   }
+        QStateMachine::SignalEvent *se = static_cast<QStateMachine::SignalEvent *>( event );
+        return ( se->sender() == m_sender );
+    }
 
-   return false;
+    return false;
 }
 
-void QSignalTransition::onTransition(QEvent *event)
+void QSignalTransition::onTransition( QEvent *event )
 {
-   (void) event;
+    ( void ) event;
 }
 
-bool QSignalTransition::event(QEvent *e)
+bool QSignalTransition::event( QEvent *e )
 {
-   return QAbstractTransition::event(e);
+    return QAbstractTransition::event( e );
 }
 
-void QSignalTransitionPrivate::callOnTransition(QEvent *e)
+void QSignalTransitionPrivate::callOnTransition( QEvent *e )
 {
-   Q_Q(QSignalTransition);
-   q->onTransition(e);
+    Q_Q( QSignalTransition );
+    q->onTransition( e );
 }
 
 #endif //QT_NO_STATEMACHINE

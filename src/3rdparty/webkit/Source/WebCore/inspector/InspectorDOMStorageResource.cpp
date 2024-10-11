@@ -46,76 +46,90 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 int InspectorDOMStorageResource::s_nextUnusedId = 1;
 
-InspectorDOMStorageResource::InspectorDOMStorageResource(Storage* domStorage, bool isLocalStorage, Frame* frame)
-    :  EventListener(InspectorDOMStorageResourceType)
-    , m_domStorage(domStorage)
-    , m_isLocalStorage(isLocalStorage)
-    , m_frame(frame)
-    , m_frontend(0)
-    , m_id(s_nextUnusedId++)
-    , m_reportingChangesToFrontend(false)
+InspectorDOMStorageResource::InspectorDOMStorageResource( Storage *domStorage, bool isLocalStorage, Frame *frame )
+    :  EventListener( InspectorDOMStorageResourceType )
+    , m_domStorage( domStorage )
+    , m_isLocalStorage( isLocalStorage )
+    , m_frame( frame )
+    , m_frontend( 0 )
+    , m_id( s_nextUnusedId++ )
+    , m_reportingChangesToFrontend( false )
 {
 }
 
-bool InspectorDOMStorageResource::isSameHostAndType(Frame* frame, bool isLocalStorage) const
+bool InspectorDOMStorageResource::isSameHostAndType( Frame *frame, bool isLocalStorage ) const
 {
-    return equalIgnoringCase(m_frame->document()->securityOrigin()->host(), frame->document()->securityOrigin()->host()) && m_isLocalStorage == isLocalStorage;
+    return equalIgnoringCase( m_frame->document()->securityOrigin()->host(), frame->document()->securityOrigin()->host() )
+           && m_isLocalStorage == isLocalStorage;
 }
 
-void InspectorDOMStorageResource::bind(InspectorFrontend* frontend)
+void InspectorDOMStorageResource::bind( InspectorFrontend *frontend )
 {
-    ASSERT(!m_frontend);
+    ASSERT( !m_frontend );
     m_frontend = frontend->domstorage();
 
     RefPtr<InspectorObject> jsonObject = InspectorObject::create();
-    jsonObject->setString("host", m_frame->document()->securityOrigin()->host());
-    jsonObject->setBoolean("isLocalStorage", m_isLocalStorage);
-    jsonObject->setNumber("id", m_id);
-    m_frontend->addDOMStorage(jsonObject);
+    jsonObject->setString( "host", m_frame->document()->securityOrigin()->host() );
+    jsonObject->setBoolean( "isLocalStorage", m_isLocalStorage );
+    jsonObject->setNumber( "id", m_id );
+    m_frontend->addDOMStorage( jsonObject );
 }
 
 void InspectorDOMStorageResource::unbind()
 {
-    if (!m_frontend)
-        return;  // Already unbound.
+    if ( !m_frontend )
+    {
+        return;    // Already unbound.
+    }
 
-    if (m_reportingChangesToFrontend) {
-        m_frame->domWindow()->removeEventListener(eventNames().storageEvent, this, true);
+    if ( m_reportingChangesToFrontend )
+    {
+        m_frame->domWindow()->removeEventListener( eventNames().storageEvent, this, true );
         m_reportingChangesToFrontend = false;
     }
+
     m_frontend = 0;
 }
 
 void InspectorDOMStorageResource::startReportingChangesToFrontend()
 {
-    ASSERT(m_frontend);
-    if (!m_reportingChangesToFrontend) {
-        m_frame->domWindow()->addEventListener(eventNames().storageEvent, this, true);
+    ASSERT( m_frontend );
+
+    if ( !m_reportingChangesToFrontend )
+    {
+        m_frame->domWindow()->addEventListener( eventNames().storageEvent, this, true );
         m_reportingChangesToFrontend = true;
     }
 }
 
-void InspectorDOMStorageResource::handleEvent(ScriptExecutionContext*, Event* event)
+void InspectorDOMStorageResource::handleEvent( ScriptExecutionContext *, Event *event )
 {
-    ASSERT(m_frontend);
-    if (event->type() != eventNames().storageEvent || !event->isStorageEvent())
-        return;
+    ASSERT( m_frontend );
 
-    StorageEvent* storageEvent = static_cast<StorageEvent*>(event);
-    Storage* storage = storageEvent->storageArea();
+    if ( event->type() != eventNames().storageEvent || !event->isStorageEvent() )
+    {
+        return;
+    }
+
+    StorageEvent *storageEvent = static_cast<StorageEvent *>( event );
+    Storage *storage = storageEvent->storageArea();
     ExceptionCode ec = 0;
-    bool isLocalStorage = (storage->frame()->domWindow()->localStorage(ec) == storage && !ec);
-    if (isSameHostAndType(storage->frame(), isLocalStorage))
-        m_frontend->updateDOMStorage(m_id);
+    bool isLocalStorage = ( storage->frame()->domWindow()->localStorage( ec ) == storage && !ec );
+
+    if ( isSameHostAndType( storage->frame(), isLocalStorage ) )
+    {
+        m_frontend->updateDOMStorage( m_id );
+    }
 }
 
-bool InspectorDOMStorageResource::operator==(const EventListener& listener)
+bool InspectorDOMStorageResource::operator==( const EventListener &listener )
 {
-    return (this == InspectorDOMStorageResource::cast(&listener));
+    return ( this == InspectorDOMStorageResource::cast( &listener ) );
 }
 
 } // namespace WebCore

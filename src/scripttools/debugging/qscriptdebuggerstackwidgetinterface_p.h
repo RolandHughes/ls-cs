@@ -33,28 +33,28 @@ class QScriptDebuggerStackWidgetInterfacePrivate;
 
 class QScriptDebuggerStackWidgetInterface: public QWidget
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerStackWidgetInterface)
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerStackWidgetInterface )
 
- public:
-   ~QScriptDebuggerStackWidgetInterface();
+public:
+    ~QScriptDebuggerStackWidgetInterface();
 
-   virtual QAbstractItemModel *stackModel() const = 0;
-   virtual void setStackModel(QAbstractItemModel *model) = 0;
+    virtual QAbstractItemModel *stackModel() const = 0;
+    virtual void setStackModel( QAbstractItemModel *model ) = 0;
 
-   virtual int currentFrameIndex() const = 0;
-   virtual void setCurrentFrameIndex(int frameIndex) = 0;
+    virtual int currentFrameIndex() const = 0;
+    virtual void setCurrentFrameIndex( int frameIndex ) = 0;
 
-   CS_SIGNAL_1(Public, void currentFrameChanged(int newFrameIndex))
-   CS_SIGNAL_2(currentFrameChanged, newFrameIndex)
+    LSCS_SIGNAL_1( Public, void currentFrameChanged( int newFrameIndex ) )
+    LSCS_SIGNAL_2( currentFrameChanged, newFrameIndex )
 
- protected:
-   QScriptDebuggerStackWidgetInterface(
-      QScriptDebuggerStackWidgetInterfacePrivate &dd,
-      QWidget *parent, Qt::WindowFlags flags);
+protected:
+    QScriptDebuggerStackWidgetInterface(
+        QScriptDebuggerStackWidgetInterfacePrivate &dd,
+        QWidget *parent, Qt::WindowFlags flags );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerStackWidgetInterface)
-   Q_DISABLE_COPY(QScriptDebuggerStackWidgetInterface)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerStackWidgetInterface )
+    Q_DISABLE_COPY( QScriptDebuggerStackWidgetInterface )
 };
 
 QT_END_NAMESPACE

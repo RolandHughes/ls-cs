@@ -28,27 +28,33 @@
 
 #include <JavaScriptCore/InternalFunction.h>
 
-typedef void* NPIdentifier;
+typedef void *NPIdentifier;
 
-namespace WebKit {
+namespace WebKit
+{
 
 // A JSObject that wraps an NPMethod.
-class JSNPMethod : public JSC::InternalFunction {
+class JSNPMethod : public JSC::InternalFunction
+{
 public:
-    JSNPMethod(JSC::ExecState*, JSC::JSGlobalObject*, const JSC::Identifier&, NPIdentifier);
+    JSNPMethod( JSC::ExecState *, JSC::JSGlobalObject *, const JSC::Identifier &, NPIdentifier );
 
     static const JSC::ClassInfo s_info;
 
-    NPIdentifier npIdentifier() const { return m_npIdentifier; }
-
-private:    
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    NPIdentifier npIdentifier() const
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return m_npIdentifier;
     }
 
-    virtual JSC::CallType getCallData(JSC::CallData&);
-    
+private:
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
+    }
+
+    virtual JSC::CallType getCallData( JSC::CallData & );
+
     NPIdentifier m_npIdentifier;
 };
 

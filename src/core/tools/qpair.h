@@ -32,23 +32,23 @@ template <class T1, class T2>
 using QPair = std::pair<T1, T2>;
 
 template <class T1, class T2>
-QPair<T1, T2> qMakePair(const T1 &x, const T2 &y)
+QPair<T1, T2> qMakePair( const T1 &x, const T2 &y )
 {
-   return QPair<T1, T2>(x, y);
+    return QPair<T1, T2>( x, y );
 }
 
 template <class T1, class T2>
-inline QDataStream &operator>>(QDataStream &stream, QPair<T1, T2> &pair)
+inline QDataStream &operator>>( QDataStream &stream, QPair<T1, T2> &pair )
 {
-   stream >> pair.first >> pair.second;
-   return stream;
+    stream >> pair.first >> pair.second;
+    return stream;
 }
 
 template <class T1, class T2>
-inline QDataStream &operator<<(QDataStream &stream, const QPair<T1, T2> &pair)
+inline QDataStream &operator<<( QDataStream &stream, const QPair<T1, T2> &pair )
 {
-   stream << pair.first << pair.second;
-   return stream;
+    stream << pair.first << pair.second;
+    return stream;
 }
 
 #endif

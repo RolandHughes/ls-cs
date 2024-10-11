@@ -36,10 +36,10 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKDataGetTypeID();
 
-WK_EXPORT WKDataRef WKDataCreate(const unsigned char* bytes, size_t size);
+WK_EXPORT WKDataRef WKDataCreate( const unsigned char *bytes, size_t size );
 
-WK_EXPORT const unsigned char* WKDataGetBytes(WKDataRef data);
-WK_EXPORT size_t WKDataGetSize(WKDataRef data);
+WK_EXPORT const unsigned char *WKDataGetBytes( WKDataRef data );
+WK_EXPORT size_t WKDataGetSize( WKDataRef data );
 
 #ifdef __cplusplus
 }

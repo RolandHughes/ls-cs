@@ -37,28 +37,42 @@ OBJC_CLASS NSView;
 typedef struct _GdkEventScroll GdkEventScroll;
 #endif
 
-namespace WebKit {
+namespace WebKit
+{
 
-class NativeWebWheelEvent : public WebWheelEvent {
+class NativeWebWheelEvent : public WebWheelEvent
+{
 public:
 #if PLATFORM(MAC)
-    NativeWebWheelEvent(NSEvent *, NSView *);
+    NativeWebWheelEvent( NSEvent *, NSView * );
 #elif PLATFORM(WIN)
-    NativeWebWheelEvent(HWND, UINT message, WPARAM, LPARAM);
+    NativeWebWheelEvent( HWND, UINT message, WPARAM, LPARAM );
 #elif PLATFORM(QT)
-    explicit NativeWebWheelEvent(QGraphicsSceneWheelEvent*);
+    explicit NativeWebWheelEvent( QGraphicsSceneWheelEvent * );
 #elif PLATFORM(GTK)
-    NativeWebWheelEvent(GdkEventScroll*);
+    NativeWebWheelEvent( GdkEventScroll * );
 #endif
 
 #if PLATFORM(MAC)
-    NSEvent* nativeEvent() const { return m_nativeEvent.get(); }
+    NSEvent *nativeEvent() const
+    {
+        return m_nativeEvent.get();
+    }
 #elif PLATFORM(WIN)
-    const MSG* nativeEvent() const { return &m_nativeEvent; }
+    const MSG *nativeEvent() const
+    {
+        return &m_nativeEvent;
+    }
 #elif PLATFORM(QT)
-    const QGraphicsSceneWheelEvent* nativeEvent() const { return m_nativeEvent; }
+    const QGraphicsSceneWheelEvent *nativeEvent() const
+    {
+        return m_nativeEvent;
+    }
 #elif PLATFORM(GTK)
-    GdkEventScroll* nativeEvent() const { return m_nativeEvent; }
+    GdkEventScroll *nativeEvent() const
+    {
+        return m_nativeEvent;
+    }
 #endif
 
 private:
@@ -67,9 +81,9 @@ private:
 #elif PLATFORM(WIN)
     MSG m_nativeEvent;
 #elif PLATFORM(QT)
-    QGraphicsSceneWheelEvent* m_nativeEvent;
+    QGraphicsSceneWheelEvent *m_nativeEvent;
 #elif PLATFORM(GTK)
-    GdkEventScroll* m_nativeEvent;
+    GdkEventScroll *m_nativeEvent;
 #endif
 };
 

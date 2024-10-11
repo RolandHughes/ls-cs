@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -36,33 +36,38 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FormState;
 
-typedef void (*NavigationPolicyDecisionFunction)(void* argument,
-    const ResourceRequest&, PassRefPtr<FormState>, bool shouldContinue);
-typedef void (*NewWindowPolicyDecisionFunction)(void* argument,
-    const ResourceRequest&, PassRefPtr<FormState>, const String& frameName, const NavigationAction&, bool shouldContinue);
-typedef void (*ContentPolicyDecisionFunction)(void* argument, PolicyAction);
+typedef void ( *NavigationPolicyDecisionFunction )( void *argument,
+        const ResourceRequest &, PassRefPtr<FormState>, bool shouldContinue );
+typedef void ( *NewWindowPolicyDecisionFunction )( void *argument,
+        const ResourceRequest &, PassRefPtr<FormState>, const String &frameName, const NavigationAction &, bool shouldContinue );
+typedef void ( *ContentPolicyDecisionFunction )( void *argument, PolicyAction );
 
-class PolicyCallback {
+class PolicyCallback
+{
 public:
     PolicyCallback();
     ~PolicyCallback();
 
     void clear();
-    void set(const ResourceRequest&, PassRefPtr<FormState>,
-        NavigationPolicyDecisionFunction, void* argument);
-    void set(const ResourceRequest&, PassRefPtr<FormState>, const String& frameName, const NavigationAction&,
-        NewWindowPolicyDecisionFunction, void* argument);
-    void set(ContentPolicyDecisionFunction, void* argument);
+    void set( const ResourceRequest &, PassRefPtr<FormState>,
+              NavigationPolicyDecisionFunction, void *argument );
+    void set( const ResourceRequest &, PassRefPtr<FormState>, const String &frameName, const NavigationAction &,
+              NewWindowPolicyDecisionFunction, void *argument );
+    void set( ContentPolicyDecisionFunction, void *argument );
 
-    const ResourceRequest& request() const { return m_request; }
+    const ResourceRequest &request() const
+    {
+        return m_request;
+    }
     void clearRequest();
 
-    void call(bool shouldContinue);
-    void call(PolicyAction);
+    void call( bool shouldContinue );
+    void call( PolicyAction );
     void cancel();
 
 private:
@@ -74,7 +79,7 @@ private:
     NavigationPolicyDecisionFunction m_navigationFunction;
     NewWindowPolicyDecisionFunction m_newWindowFunction;
     ContentPolicyDecisionFunction m_contentFunction;
-    void* m_argument;
+    void *m_argument;
 };
 
 } // namespace WebCore

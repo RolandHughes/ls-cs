@@ -25,8 +25,8 @@
 #include <camera_session.h>
 #include <qdebug.h>
 
-CameraBinImageEncoder::CameraBinImageEncoder(CameraBinSession *session)
-   : QImageEncoderControl(session), m_session(session)
+CameraBinImageEncoder::CameraBinImageEncoder( CameraBinSession *session )
+    : QImageEncoderControl( session ), m_session( session )
 {
 }
 
@@ -34,37 +34,39 @@ CameraBinImageEncoder::~CameraBinImageEncoder()
 {
 }
 
-QList<QSize> CameraBinImageEncoder::supportedResolutions(const QImageEncoderSettings &, bool *continuous) const
+QList<QSize> CameraBinImageEncoder::supportedResolutions( const QImageEncoderSettings &, bool *continuous ) const
 {
-   if (continuous) {
-      *continuous = false;
-   }
+    if ( continuous )
+    {
+        *continuous = false;
+    }
 
-   return m_session->supportedResolutions(qMakePair<int, int>(0, 0), continuous, QCamera::CaptureStillImage);
+    return m_session->supportedResolutions( qMakePair<int, int>( 0, 0 ), continuous, QCamera::CaptureStillImage );
 }
 
 QStringList CameraBinImageEncoder::supportedImageCodecs() const
 {
-   return QStringList() << "jpeg";
+    return QStringList() << "jpeg";
 }
 
-QString CameraBinImageEncoder::imageCodecDescription(const QString &codecName) const
+QString CameraBinImageEncoder::imageCodecDescription( const QString &codecName ) const
 {
-   if (codecName == "jpeg") {
-      return tr("JPEG image");
-   }
+    if ( codecName == "jpeg" )
+    {
+        return tr( "JPEG image" );
+    }
 
-   return QString();
+    return QString();
 }
 
 QImageEncoderSettings CameraBinImageEncoder::imageSettings() const
 {
-   return m_settings;
+    return m_settings;
 }
 
-void CameraBinImageEncoder::setImageSettings(const QImageEncoderSettings &settings)
+void CameraBinImageEncoder::setImageSettings( const QImageEncoderSettings &settings )
 {
-   m_settings = settings;
-   emit settingsChanged();
+    m_settings = settings;
+    emit settingsChanged();
 }
 

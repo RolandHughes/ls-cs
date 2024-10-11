@@ -37,24 +37,30 @@
 
 QT_BEGIN_NAMESPACE
 
-static inline const char *data(const QByteArray &arr)
+static inline const char *data( const QByteArray &arr )
 {
     return arr.isEmpty() ? 0 : arr.constData();
 }
 
 QDBusMessagePrivate::QDBusMessagePrivate()
-    : msg(0), reply(0), type(DBUS_MESSAGE_TYPE_INVALID),
-      timeout(-1), localReply(0), ref(1), delayedReply(false), localMessage(false),
-      parametersValidated(false), autoStartService(true)
+    : msg( 0 ), reply( 0 ), type( DBUS_MESSAGE_TYPE_INVALID ),
+      timeout( -1 ), localReply( 0 ), ref( 1 ), delayedReply( false ), localMessage( false ),
+      parametersValidated( false ), autoStartService( true )
 {
 }
 
 QDBusMessagePrivate::~QDBusMessagePrivate()
 {
-    if (msg)
-        q_dbus_message_unref(msg);
-    if (reply)
-        q_dbus_message_unref(reply);
+    if ( msg )
+    {
+        q_dbus_message_unref( msg );
+    }
+
+    if ( reply )
+    {
+        q_dbus_message_unref( reply );
+    }
+
     delete localReply;
 }
 
@@ -64,12 +70,19 @@ QDBusMessagePrivate::~QDBusMessagePrivate()
 */
 QString QDBusMessage::errorMessage() const
 {
-    if (d_ptr->type == ErrorMessage) {
-        if (!d_ptr->message.isEmpty())
-           return d_ptr->message;
-        if (!d_ptr->arguments.isEmpty())
-            return d_ptr->arguments.at(0).toString();
+    if ( d_ptr->type == ErrorMessage )
+    {
+        if ( !d_ptr->message.isEmpty() )
+        {
+            return d_ptr->message;
+        }
+
+        if ( !d_ptr->arguments.isEmpty() )
+        {
+            return d_ptr->arguments.at( 0 ).toString();
+        }
     }
+
     return QString();
 }
 
@@ -82,75 +95,115 @@ QString QDBusMessage::errorMessage() const
     marshalling. Usually, this error message will be placed in the reply, as if the call failed.
     The \a error pointer must not be null.
 */
-DBusMessage *QDBusMessagePrivate::toDBusMessage(const QDBusMessage &message, QDBusConnection::ConnectionCapabilities capabilities,
-                                                QDBusError *error)
+DBusMessage *QDBusMessagePrivate::toDBusMessage( const QDBusMessage &message,
+        QDBusConnection::ConnectionCapabilities capabilities,
+        QDBusError *error )
 {
-    if (!qdbus_loadLibDBus()) {
-        *error = QDBusError(QDBusError::Failed, QLatin1String("Could not open lidbus-1 library"));
+    if ( !qdbus_loadLibDBus() )
+    {
+        *error = QDBusError( QDBusError::Failed, QLatin1String( "Could not open lidbus-1 library" ) );
         return 0;
     }
 
     DBusMessage *msg = 0;
     const QDBusMessagePrivate *d_ptr = message.d_ptr;
 
-    switch (d_ptr->type) {
-    case DBUS_MESSAGE_TYPE_INVALID:
-        //qDebug() << "QDBusMessagePrivate::toDBusMessage" <<  "message is invalid";
-        break;
-    case DBUS_MESSAGE_TYPE_METHOD_CALL:
-        // only service and interface can be empty -> path and name must not be empty
-        if (!d_ptr->parametersValidated) {
-            if (!QDBusUtil::checkBusName(d_ptr->service, QDBusUtil::EmptyAllowed, error))
-                return 0;
-            if (!QDBusUtil::checkObjectPath(d_ptr->path, QDBusUtil::EmptyNotAllowed, error))
-                return 0;
-            if (!QDBusUtil::checkInterfaceName(d_ptr->interface, QDBusUtil::EmptyAllowed, error))
-                return 0;
-            if (!QDBusUtil::checkMemberName(d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method"))
-                return 0;
-        }
+    switch ( d_ptr->type )
+    {
+        case DBUS_MESSAGE_TYPE_INVALID:
+            //qDebug() << "QDBusMessagePrivate::toDBusMessage" <<  "message is invalid";
+            break;
 
-        msg = q_dbus_message_new_method_call(data(d_ptr->service.toUtf8()), d_ptr->path.toUtf8(),
-                                             data(d_ptr->interface.toUtf8()), d_ptr->name.toUtf8());
-        q_dbus_message_set_auto_start( msg, d_ptr->autoStartService );
-        break;
-    case DBUS_MESSAGE_TYPE_METHOD_RETURN:
-        msg = q_dbus_message_new(DBUS_MESSAGE_TYPE_METHOD_RETURN);
-        if (!d_ptr->localMessage) {
-            q_dbus_message_set_destination(msg, q_dbus_message_get_sender(d_ptr->reply));
-            q_dbus_message_set_reply_serial(msg, q_dbus_message_get_serial(d_ptr->reply));
-        }
-        break;
-    case DBUS_MESSAGE_TYPE_ERROR:
-        // error name can't be empty
-        if (!d_ptr->parametersValidated
-            && !QDBusUtil::checkErrorName(d_ptr->name, QDBusUtil::EmptyNotAllowed, error))
-            return 0;
+        case DBUS_MESSAGE_TYPE_METHOD_CALL:
 
-        msg = q_dbus_message_new(DBUS_MESSAGE_TYPE_ERROR);
-        q_dbus_message_set_error_name(msg, d_ptr->name.toUtf8());
-        if (!d_ptr->localMessage) {
-            q_dbus_message_set_destination(msg, q_dbus_message_get_sender(d_ptr->reply));
-            q_dbus_message_set_reply_serial(msg, q_dbus_message_get_serial(d_ptr->reply));
-        }
-        break;
-    case DBUS_MESSAGE_TYPE_SIGNAL:
-        // nothing can be empty here
-        if (!d_ptr->parametersValidated) {
-            if (!QDBusUtil::checkObjectPath(d_ptr->path, QDBusUtil::EmptyNotAllowed, error))
-                return 0;
-            if (!QDBusUtil::checkInterfaceName(d_ptr->interface, QDBusUtil::EmptyAllowed, error))
-                return 0;
-            if (!QDBusUtil::checkMemberName(d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method"))
-                return 0;
-        }
+            // only service and interface can be empty -> path and name must not be empty
+            if ( !d_ptr->parametersValidated )
+            {
+                if ( !QDBusUtil::checkBusName( d_ptr->service, QDBusUtil::EmptyAllowed, error ) )
+                {
+                    return 0;
+                }
 
-        msg = q_dbus_message_new_signal(d_ptr->path.toUtf8(), d_ptr->interface.toUtf8(),
-                                        d_ptr->name.toUtf8());
-        break;
-    default:
-        Q_ASSERT(false);
-        break;
+                if ( !QDBusUtil::checkObjectPath( d_ptr->path, QDBusUtil::EmptyNotAllowed, error ) )
+                {
+                    return 0;
+                }
+
+                if ( !QDBusUtil::checkInterfaceName( d_ptr->interface, QDBusUtil::EmptyAllowed, error ) )
+                {
+                    return 0;
+                }
+
+                if ( !QDBusUtil::checkMemberName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method" ) )
+                {
+                    return 0;
+                }
+            }
+
+            msg = q_dbus_message_new_method_call( data( d_ptr->service.toUtf8() ), d_ptr->path.toUtf8(),
+                                                  data( d_ptr->interface.toUtf8() ), d_ptr->name.toUtf8() );
+            q_dbus_message_set_auto_start( msg, d_ptr->autoStartService );
+            break;
+
+        case DBUS_MESSAGE_TYPE_METHOD_RETURN:
+            msg = q_dbus_message_new( DBUS_MESSAGE_TYPE_METHOD_RETURN );
+
+            if ( !d_ptr->localMessage )
+            {
+                q_dbus_message_set_destination( msg, q_dbus_message_get_sender( d_ptr->reply ) );
+                q_dbus_message_set_reply_serial( msg, q_dbus_message_get_serial( d_ptr->reply ) );
+            }
+
+            break;
+
+        case DBUS_MESSAGE_TYPE_ERROR:
+
+            // error name can't be empty
+            if ( !d_ptr->parametersValidated
+                    && !QDBusUtil::checkErrorName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error ) )
+            {
+                return 0;
+            }
+
+            msg = q_dbus_message_new( DBUS_MESSAGE_TYPE_ERROR );
+            q_dbus_message_set_error_name( msg, d_ptr->name.toUtf8() );
+
+            if ( !d_ptr->localMessage )
+            {
+                q_dbus_message_set_destination( msg, q_dbus_message_get_sender( d_ptr->reply ) );
+                q_dbus_message_set_reply_serial( msg, q_dbus_message_get_serial( d_ptr->reply ) );
+            }
+
+            break;
+
+        case DBUS_MESSAGE_TYPE_SIGNAL:
+
+            // nothing can be empty here
+            if ( !d_ptr->parametersValidated )
+            {
+                if ( !QDBusUtil::checkObjectPath( d_ptr->path, QDBusUtil::EmptyNotAllowed, error ) )
+                {
+                    return 0;
+                }
+
+                if ( !QDBusUtil::checkInterfaceName( d_ptr->interface, QDBusUtil::EmptyAllowed, error ) )
+                {
+                    return 0;
+                }
+
+                if ( !QDBusUtil::checkMemberName( d_ptr->name, QDBusUtil::EmptyNotAllowed, error, "method" ) )
+                {
+                    return 0;
+                }
+            }
+
+            msg = q_dbus_message_new_signal( d_ptr->path.toUtf8(), d_ptr->interface.toUtf8(),
+                                             d_ptr->name.toUtf8() );
+            break;
+
+        default:
+            Q_ASSERT( false );
+            break;
     }
 
     // if we got here, the parameters validated
@@ -158,23 +211,31 @@ DBusMessage *QDBusMessagePrivate::toDBusMessage(const QDBusMessage &message, QDB
     // we can record this fact
     d_ptr->parametersValidated = true;
 
-    QDBusMarshaller marshaller(capabilities);
+    QDBusMarshaller marshaller( capabilities );
     QVariantList::ConstIterator it =  d_ptr->arguments.constBegin();
     QVariantList::ConstIterator cend = d_ptr->arguments.constEnd();
-    q_dbus_message_iter_init_append(msg, &marshaller.iterator);
-    if (!d_ptr->message.isEmpty())
+    q_dbus_message_iter_init_append( msg, &marshaller.iterator );
+
+    if ( !d_ptr->message.isEmpty() )
         // prepend the error message
-        marshaller.append(d_ptr->message);
-    for ( ; it != cend; ++it)
-        marshaller.appendVariantInternal(*it);
+    {
+        marshaller.append( d_ptr->message );
+    }
+
+    for ( ; it != cend; ++it )
+    {
+        marshaller.appendVariantInternal( *it );
+    }
 
     // check if everything is ok
-    if (marshaller.ok)
+    if ( marshaller.ok )
+    {
         return msg;
+    }
 
     // not ok;
-    q_dbus_message_unref(msg);
-    *error = QDBusError(QDBusError::Failed, QLatin1String("Marshalling failed: ") + marshaller.errorString);
+    q_dbus_message_unref( msg );
+    *error = QDBusError( QDBusError::Failed, QLatin1String( "Marshalling failed: " ) + marshaller.errorString );
     return 0;
 }
 
@@ -203,37 +264,44 @@ DBUS_DISABLE_CHECKS
     \internal
     Constructs a QDBusMessage by parsing the given DBusMessage object.
 */
-QDBusMessage QDBusMessagePrivate::fromDBusMessage(DBusMessage *dmsg, QDBusConnection::ConnectionCapabilities capabilities)
+QDBusMessage QDBusMessagePrivate::fromDBusMessage( DBusMessage *dmsg, QDBusConnection::ConnectionCapabilities capabilities )
 {
     QDBusMessage message;
-    if (!dmsg)
+
+    if ( !dmsg )
+    {
         return message;
+    }
 
-    message.d_ptr->type = q_dbus_message_get_type(dmsg);
-    message.d_ptr->path = QString::fromUtf8(q_dbus_message_get_path(dmsg));
-    message.d_ptr->interface = QString::fromUtf8(q_dbus_message_get_interface(dmsg));
+    message.d_ptr->type = q_dbus_message_get_type( dmsg );
+    message.d_ptr->path = QString::fromUtf8( q_dbus_message_get_path( dmsg ) );
+    message.d_ptr->interface = QString::fromUtf8( q_dbus_message_get_interface( dmsg ) );
     message.d_ptr->name = message.d_ptr->type == DBUS_MESSAGE_TYPE_ERROR ?
-                      QString::fromUtf8(q_dbus_message_get_error_name(dmsg)) :
-                      QString::fromUtf8(q_dbus_message_get_member(dmsg));
-    message.d_ptr->service = QString::fromUtf8(q_dbus_message_get_sender(dmsg));
-    message.d_ptr->signature = QString::fromUtf8(q_dbus_message_get_signature(dmsg));
-    message.d_ptr->msg = q_dbus_message_ref(dmsg);
+                          QString::fromUtf8( q_dbus_message_get_error_name( dmsg ) ) :
+                          QString::fromUtf8( q_dbus_message_get_member( dmsg ) );
+    message.d_ptr->service = QString::fromUtf8( q_dbus_message_get_sender( dmsg ) );
+    message.d_ptr->signature = QString::fromUtf8( q_dbus_message_get_signature( dmsg ) );
+    message.d_ptr->msg = q_dbus_message_ref( dmsg );
 
-    QDBusDemarshaller demarshaller(capabilities);
-    demarshaller.message = q_dbus_message_ref(dmsg);
-    if (q_dbus_message_iter_init(demarshaller.message, &demarshaller.iterator))
-        while (!demarshaller.atEnd())
+    QDBusDemarshaller demarshaller( capabilities );
+    demarshaller.message = q_dbus_message_ref( dmsg );
+
+    if ( q_dbus_message_iter_init( demarshaller.message, &demarshaller.iterator ) )
+        while ( !demarshaller.atEnd() )
+        {
             message << demarshaller.toVariantInternal();
+        }
+
     return message;
 }
 
-bool QDBusMessagePrivate::isLocal(const QDBusMessage &message)
+bool QDBusMessagePrivate::isLocal( const QDBusMessage &message )
 {
     return message.d_ptr->localMessage;
 }
 
-QDBusMessage QDBusMessagePrivate::makeLocal(const QDBusConnectionPrivate &conn,
-                                            const QDBusMessage &asSent)
+QDBusMessage QDBusMessagePrivate::makeLocal( const QDBusConnectionPrivate &conn,
+        const QDBusMessage &asSent )
 {
     // simulate the message being sent to the bus and then received back
     // the only field that the bus sets when delivering the message
@@ -244,31 +312,43 @@ QDBusMessage QDBusMessagePrivate::makeLocal(const QDBusConnectionPrivate &conn,
     QString computedSignature;
     QVariantList::ConstIterator it = asSent.d_ptr->arguments.constBegin();
     QVariantList::ConstIterator end = asSent.d_ptr->arguments.constEnd();
-    for ( ; it != end; ++it) {
+
+    for ( ; it != end; ++it )
+    {
         int id = it->userType();
-        const char *signature = QDBusMetaType::typeToSignature(id);
-        if ((id != QVariant::StringList && id != QVariant::ByteArray &&
-             qstrlen(signature) != 1) || id == qMetaTypeId<QDBusVariant>()) {
+        const char *signature = QDBusMetaType::typeToSignature( id );
+
+        if ( ( id != QVariant::StringList && id != QVariant::ByteArray &&
+                qstrlen( signature ) != 1 ) || id == qMetaTypeId<QDBusVariant>() )
+        {
             // yes, we are
             // we must marshall and demarshall again so as to create QDBusArgument
             // entries for the complex types
             QDBusError error;
-            DBusMessage *message = toDBusMessage(asSent, conn.capabilities, &error);
-            if (!message) {
+            DBusMessage *message = toDBusMessage( asSent, conn.capabilities, &error );
+
+            if ( !message )
+            {
                 // failed to marshall, so it's a call error
-                return QDBusMessage::createError(error);
+                return QDBusMessage::createError( error );
             }
 
-            q_dbus_message_set_sender(message, conn.baseService.toUtf8());
+            q_dbus_message_set_sender( message, conn.baseService.toUtf8() );
 
-            QDBusMessage retval = fromDBusMessage(message, conn.capabilities);
+            QDBusMessage retval = fromDBusMessage( message, conn.capabilities );
             retval.d_ptr->localMessage = true;
-            q_dbus_message_unref(message);
-            if (retval.d_ptr->service.isEmpty())
+            q_dbus_message_unref( message );
+
+            if ( retval.d_ptr->service.isEmpty() )
+            {
                 retval.d_ptr->service = conn.baseService;
+            }
+
             return retval;
-        } else {
-            computedSignature += QLatin1String(signature);
+        }
+        else
+        {
+            computedSignature += QLatin1String( signature );
         }
     }
 
@@ -289,13 +369,16 @@ QDBusMessage QDBusMessagePrivate::makeLocal(const QDBusConnectionPrivate &conn,
     return retval;
 }
 
-QDBusMessage QDBusMessagePrivate::makeLocalReply(const QDBusConnectionPrivate &conn,
-                                                 const QDBusMessage &callMsg)
+QDBusMessage QDBusMessagePrivate::makeLocalReply( const QDBusConnectionPrivate &conn,
+        const QDBusMessage &callMsg )
 {
     // simulate the reply (return or error) message being sent to the bus and
     // then received back.
-    if (callMsg.d_ptr->localReply)
-        return makeLocal(conn, *callMsg.d_ptr->localReply);
+    if ( callMsg.d_ptr->localReply )
+    {
+        return makeLocal( conn, *callMsg.d_ptr->localReply );
+    }
+
     return QDBusMessage();      // failed
 }
 
@@ -344,8 +427,8 @@ QDBusMessage QDBusMessagePrivate::makeLocalReply(const QDBusConnectionPrivate &c
     The QDBusMessage object that is returned can be sent using the
     QDBusConnection::send() function.
 */
-QDBusMessage QDBusMessage::createSignal(const QString &path, const QString &interface,
-                                        const QString &name)
+QDBusMessage QDBusMessage::createSignal( const QString &path, const QString &interface,
+        const QString &name )
 {
     QDBusMessage message;
     message.d_ptr->type = DBUS_MESSAGE_TYPE_SIGNAL;
@@ -375,8 +458,8 @@ QDBusMessage QDBusMessage::createSignal(const QString &path, const QString &inte
     This function returns a QDBusMessage object that can be sent with
     QDBusConnection::call().
 */
-QDBusMessage QDBusMessage::createMethodCall(const QString &service, const QString &path,
-                                            const QString &interface, const QString &method)
+QDBusMessage QDBusMessage::createMethodCall( const QString &service, const QString &path,
+        const QString &interface, const QString &method )
 {
     QDBusMessage message;
     message.d_ptr->type = DBUS_MESSAGE_TYPE_METHOD_CALL;
@@ -392,7 +475,7 @@ QDBusMessage QDBusMessage::createMethodCall(const QString &service, const QStrin
     Constructs a new DBus message representing an error,
     with the given \a name and \a msg.
 */
-QDBusMessage QDBusMessage::createError(const QString &name, const QString &msg)
+QDBusMessage QDBusMessage::createError( const QString &name, const QString &msg )
 {
     QDBusMessage error;
     error.d_ptr->type = DBUS_MESSAGE_TYPE_ERROR;
@@ -421,20 +504,25 @@ QDBusMessage QDBusMessage::createError(const QString &name, const QString &msg)
     Constructs a new DBus message representing a reply, with the given
     \a arguments.
 */
-QDBusMessage QDBusMessage::createReply(const QVariantList &arguments) const
+QDBusMessage QDBusMessage::createReply( const QVariantList &arguments ) const
 {
     QDBusMessage reply;
-    reply.setArguments(arguments);
+    reply.setArguments( arguments );
     reply.d_ptr->type = DBUS_MESSAGE_TYPE_METHOD_RETURN;
-    if (d_ptr->msg)
-        reply.d_ptr->reply = q_dbus_message_ref(d_ptr->msg);
-    if (d_ptr->localMessage) {
+
+    if ( d_ptr->msg )
+    {
+        reply.d_ptr->reply = q_dbus_message_ref( d_ptr->msg );
+    }
+
+    if ( d_ptr->localMessage )
+    {
         reply.d_ptr->localMessage = true;
-        d_ptr->localReply = new QDBusMessage(reply); // keep an internal copy
+        d_ptr->localReply = new QDBusMessage( reply ); // keep an internal copy
     }
 
     // the reply must have a msg or be a local-loop optimization
-    Q_ASSERT(reply.d_ptr->reply || reply.d_ptr->localMessage);
+    Q_ASSERT( reply.d_ptr->reply || reply.d_ptr->localMessage );
     return reply;
 }
 
@@ -442,18 +530,23 @@ QDBusMessage QDBusMessage::createReply(const QVariantList &arguments) const
     Constructs a new DBus message representing an error reply message,
     with the given \a name and \a msg.
 */
-QDBusMessage QDBusMessage::createErrorReply(const QString name, const QString &msg) const
+QDBusMessage QDBusMessage::createErrorReply( const QString name, const QString &msg ) const
 {
-    QDBusMessage reply = QDBusMessage::createError(name, msg);
-    if (d_ptr->msg)
-        reply.d_ptr->reply = q_dbus_message_ref(d_ptr->msg);
-    if (d_ptr->localMessage) {
+    QDBusMessage reply = QDBusMessage::createError( name, msg );
+
+    if ( d_ptr->msg )
+    {
+        reply.d_ptr->reply = q_dbus_message_ref( d_ptr->msg );
+    }
+
+    if ( d_ptr->localMessage )
+    {
         reply.d_ptr->localMessage = true;
-        d_ptr->localReply = new QDBusMessage(reply); // keep an internal copy
+        d_ptr->localReply = new QDBusMessage( reply ); // keep an internal copy
     }
 
     // the reply must have a msg or be a local-loop optimization
-    Q_ASSERT(reply.d_ptr->reply || reply.d_ptr->localMessage);
+    Q_ASSERT( reply.d_ptr->reply || reply.d_ptr->localMessage );
     return reply;
 }
 
@@ -477,9 +570,9 @@ QDBusMessage QDBusMessage::createErrorReply(const QString name, const QString &m
   Constructs a new DBus reply message for the error type \a type using
   the message \a msg. Returns the DBus message.
 */
-QDBusMessage QDBusMessage::createErrorReply(QDBusError::ErrorType atype, const QString &amsg) const
+QDBusMessage QDBusMessage::createErrorReply( QDBusError::ErrorType atype, const QString &amsg ) const
 {
-    QDBusMessage msg = createErrorReply(QDBusError::errorString(atype), amsg);
+    QDBusMessage msg = createErrorReply( QDBusError::errorString( atype ), amsg );
     msg.d_ptr->parametersValidated = true;
     return msg;
 }
@@ -502,7 +595,7 @@ QDBusMessage::QDBusMessage()
     copy will affect the original one as well. See setDelayedReply()
     for more information.
 */
-QDBusMessage::QDBusMessage(const QDBusMessage &other)
+QDBusMessage::QDBusMessage( const QDBusMessage &other )
 {
     d_ptr = other.d_ptr;
     d_ptr->ref.ref();
@@ -513,8 +606,10 @@ QDBusMessage::QDBusMessage(const QDBusMessage &other)
 */
 QDBusMessage::~QDBusMessage()
 {
-    if (!d_ptr->ref.deref())
+    if ( !d_ptr->ref.deref() )
+    {
         delete d_ptr;
+    }
 }
 
 /*!
@@ -524,9 +619,9 @@ QDBusMessage::~QDBusMessage()
     copy will affect the original one as well. See setDelayedReply()
     for more information.
 */
-QDBusMessage &QDBusMessage::operator=(const QDBusMessage &other)
+QDBusMessage &QDBusMessage::operator=( const QDBusMessage &other )
 {
-    qAtomicAssign(d_ptr, other.d_ptr);
+    qAtomicAssign( d_ptr, other.d_ptr );
     return *this;
 }
 
@@ -561,8 +656,11 @@ QString QDBusMessage::interface() const
 */
 QString QDBusMessage::member() const
 {
-    if (d_ptr->type != ErrorMessage)
+    if ( d_ptr->type != ErrorMessage )
+    {
         return d_ptr->name;
+    }
+
     return QString();
 }
 
@@ -571,8 +669,11 @@ QString QDBusMessage::member() const
 */
 QString QDBusMessage::errorName() const
 {
-    if (d_ptr->type == ErrorMessage)
+    if ( d_ptr->type == ErrorMessage )
+    {
         return d_ptr->name;
+    }
+
     return QString();
 }
 
@@ -593,9 +694,12 @@ QString QDBusMessage::signature() const
 */
 bool QDBusMessage::isReplyRequired() const
 {
-    if (!d_ptr->msg)
-        return d_ptr->localMessage; // if it's a local message, reply is required
-    return !q_dbus_message_get_no_reply(d_ptr->msg);
+    if ( !d_ptr->msg )
+    {
+        return d_ptr->localMessage;    // if it's a local message, reply is required
+    }
+
+    return !q_dbus_message_get_no_reply( d_ptr->msg );
 }
 
 /*!
@@ -612,7 +716,7 @@ bool QDBusMessage::isReplyRequired() const
 
     \sa {Delayed Replies}
 */
-void QDBusMessage::setDelayedReply(bool enable) const
+void QDBusMessage::setDelayedReply( bool enable ) const
 {
     d_ptr->delayedReply = enable;
 }
@@ -647,7 +751,7 @@ bool QDBusMessage::isDelayedReply() const
 
     \since 4.7
 */
-void QDBusMessage::setAutoStartService(bool enable)
+void QDBusMessage::setAutoStartService( bool enable )
 {
     d_ptr->autoStartService = enable;
 }
@@ -672,7 +776,7 @@ bool QDBusMessage::autoStartService() const
 
     \sa arguments()
 */
-void QDBusMessage::setArguments(const QList<QVariant> &arguments)
+void QDBusMessage::setArguments( const QList<QVariant> &arguments )
 {
     // FIXME: should we detach?
     d_ptr->arguments = arguments;
@@ -692,10 +796,10 @@ QList<QVariant> QDBusMessage::arguments() const
     a method call or signal emission.
 */
 
-QDBusMessage &QDBusMessage::operator<<(const QVariant &arg)
+QDBusMessage &QDBusMessage::operator<<( const QVariant &arg )
 {
     // FIXME: should we detach?
-    d_ptr->arguments.append(arg);
+    d_ptr->arguments.append( arg );
     return *this;
 }
 
@@ -704,67 +808,85 @@ QDBusMessage &QDBusMessage::operator<<(const QVariant &arg)
 */
 QDBusMessage::MessageType QDBusMessage::type() const
 {
-    switch (d_ptr->type) {
-    case DBUS_MESSAGE_TYPE_METHOD_CALL:
-        return MethodCallMessage;
-    case DBUS_MESSAGE_TYPE_METHOD_RETURN:
-        return ReplyMessage;
-    case DBUS_MESSAGE_TYPE_ERROR:
-        return ErrorMessage;
-    case DBUS_MESSAGE_TYPE_SIGNAL:
-        return SignalMessage;
-    default:
-        break;
+    switch ( d_ptr->type )
+    {
+        case DBUS_MESSAGE_TYPE_METHOD_CALL:
+            return MethodCallMessage;
+
+        case DBUS_MESSAGE_TYPE_METHOD_RETURN:
+            return ReplyMessage;
+
+        case DBUS_MESSAGE_TYPE_ERROR:
+            return ErrorMessage;
+
+        case DBUS_MESSAGE_TYPE_SIGNAL:
+            return SignalMessage;
+
+        default:
+            break;
     }
+
     return InvalidMessage;
 }
 
 
-static QDebug operator<<(QDebug dbg, QDBusMessage::MessageType t)
+static QDebug operator<<( QDebug dbg, QDBusMessage::MessageType t )
 {
-    switch (t)
+    switch ( t )
     {
-    case QDBusMessage::MethodCallMessage:
-        return dbg << "MethodCall";
-    case QDBusMessage::ReplyMessage:
-        return dbg << "MethodReturn";
-    case QDBusMessage::SignalMessage:
-        return dbg << "Signal";
-    case QDBusMessage::ErrorMessage:
-        return dbg << "Error";
-    default:
-        return dbg << "Invalid";
+        case QDBusMessage::MethodCallMessage:
+            return dbg << "MethodCall";
+
+        case QDBusMessage::ReplyMessage:
+            return dbg << "MethodReturn";
+
+        case QDBusMessage::SignalMessage:
+            return dbg << "Signal";
+
+        case QDBusMessage::ErrorMessage:
+            return dbg << "Error";
+
+        default:
+            return dbg << "Invalid";
     }
 }
 
-static void debugVariantList(QDebug dbg, const QVariantList &list)
+static void debugVariantList( QDebug dbg, const QVariantList &list )
 {
     bool first = true;
     QVariantList::ConstIterator it = list.constBegin();
     QVariantList::ConstIterator end = list.constEnd();
-    for ( ; it != end; ++it) {
-        if (!first)
+
+    for ( ; it != end; ++it )
+    {
+        if ( !first )
+        {
             dbg.nospace() << ", ";
-        dbg.nospace() << qPrintable(QDBusUtil::argumentToString(*it));
+        }
+
+        dbg.nospace() << qPrintable( QDBusUtil::argumentToString( *it ) );
         first = false;
     }
 }
 
-QDebug operator<<(QDebug dbg, const QDBusMessage &msg)
+QDebug operator<<( QDebug dbg, const QDBusMessage &msg )
 {
     dbg.nospace() << "QDBusMessage(type=" << msg.type()
                   << ", service=" << msg.service();
-    if (msg.type() == QDBusMessage::MethodCallMessage ||
-        msg.type() == QDBusMessage::SignalMessage)
+
+    if ( msg.type() == QDBusMessage::MethodCallMessage ||
+            msg.type() == QDBusMessage::SignalMessage )
         dbg.nospace() << ", path=" << msg.path()
                       << ", interface=" << msg.interface()
                       << ", member=" << msg.member();
-    if (msg.type() == QDBusMessage::ErrorMessage)
+
+    if ( msg.type() == QDBusMessage::ErrorMessage )
         dbg.nospace() << ", error name=" << msg.errorName()
                       << ", error message=" << msg.errorMessage();
+
     dbg.nospace() << ", signature=" << msg.signature()
                   << ", contents=(";
-    debugVariantList(dbg, msg.arguments());
+    debugVariantList( dbg, msg.arguments() );
     dbg.nospace() << ") )";
     return dbg.space();
 }

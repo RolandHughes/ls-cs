@@ -47,278 +47,288 @@ class QGstreamerVideoRendererInterface;
 class QGstreamerVideoProbeControl;
 class QGstreamerAudioProbeControl;
 
-typedef enum {
-   GST_AUTOPLUG_SELECT_TRY,
-   GST_AUTOPLUG_SELECT_EXPOSE,
-   GST_AUTOPLUG_SELECT_SKIP
+typedef enum
+{
+    GST_AUTOPLUG_SELECT_TRY,
+    GST_AUTOPLUG_SELECT_EXPOSE,
+    GST_AUTOPLUG_SELECT_SKIP
 } GstAutoplugSelectResult;
 
 class QGstreamerPlayerSession : public QObject, public QGstreamerBusMessageFilter
 {
-   CS_OBJECT_MULTIPLE(QGstreamerPlayerSession, QObject)
+    LSCS_OBJECT_MULTIPLE( QGstreamerPlayerSession, QObject )
 
-   CS_INTERFACES(QGstreamerBusMessageFilter)
+    LSCS_INTERFACES( QGstreamerBusMessageFilter )
 
- public:
-   QGstreamerPlayerSession(QObject *parent);
-   virtual ~QGstreamerPlayerSession();
+public:
+    QGstreamerPlayerSession( QObject *parent );
+    virtual ~QGstreamerPlayerSession();
 
-   GstElement *playbin() const;
-   QGstreamerBusHelper *bus() const {
-      return m_busHelper;
-   }
+    GstElement *playbin() const;
+    QGstreamerBusHelper *bus() const
+    {
+        return m_busHelper;
+    }
 
-   QNetworkRequest request() const;
+    QNetworkRequest request() const;
 
-   QMediaPlayer::State state() const {
-      return m_state;
-   }
+    QMediaPlayer::State state() const
+    {
+        return m_state;
+    }
 
-   QMediaPlayer::State pendingState() const {
-      return m_pendingState;
-   }
+    QMediaPlayer::State pendingState() const
+    {
+        return m_pendingState;
+    }
 
-   qint64 duration() const;
-   qint64 position() const;
+    qint64 duration() const;
+    qint64 position() const;
 
-   int volume() const;
-   bool isMuted() const;
+    int volume() const;
+    bool isMuted() const;
 
-   bool isAudioAvailable() const;
+    bool isAudioAvailable() const;
 
-   void setVideoRenderer(QObject *renderer);
-   bool isVideoAvailable() const;
+    void setVideoRenderer( QObject *renderer );
+    bool isVideoAvailable() const;
 
-   bool isSeekable() const;
+    bool isSeekable() const;
 
-   qreal playbackRate() const;
-   void setPlaybackRate(qreal rate);
+    qreal playbackRate() const;
+    void setPlaybackRate( qreal rate );
 
-   QMediaTimeRange availablePlaybackRanges() const;
+    QMediaTimeRange availablePlaybackRanges() const;
 
-   QMap<QByteArray, QVariant> tags() const {
-      return m_tags;
-   }
+    QMap<QByteArray, QVariant> tags() const
+    {
+        return m_tags;
+    }
 
-   QMap<QString, QVariant> streamProperties(int streamNumber) const {
-      return m_streamProperties[streamNumber];
-   }
+    QMap<QString, QVariant> streamProperties( int streamNumber ) const
+    {
+        return m_streamProperties[streamNumber];
+    }
 
-   int streamCount() const {
-      return m_streamProperties.count();
-   }
+    int streamCount() const
+    {
+        return m_streamProperties.count();
+    }
 
-   QMediaStreamsControl::StreamType streamType(int streamNumber) {
-      return m_streamTypes.value(streamNumber, QMediaStreamsControl::UnknownStream);
-   }
+    QMediaStreamsControl::StreamType streamType( int streamNumber )
+    {
+        return m_streamTypes.value( streamNumber, QMediaStreamsControl::UnknownStream );
+    }
 
-   int activeStream(QMediaStreamsControl::StreamType streamType) const;
-   void setActiveStream(QMediaStreamsControl::StreamType streamType, int streamNumber);
+    int activeStream( QMediaStreamsControl::StreamType streamType ) const;
+    void setActiveStream( QMediaStreamsControl::StreamType streamType, int streamNumber );
 
-   bool processBusMessage(const QGstreamerMessage &message) override;
+    bool processBusMessage( const QGstreamerMessage &message ) override;
 
 #if defined(HAVE_GST_APPSRC)
-   QGstAppSrc *appsrc() const {
-      return m_appSrc;
-   }
-   static void configureAppSrcElement(GObject *, GObject *, GParamSpec *, QGstreamerPlayerSession *_this);
+    QGstAppSrc *appsrc() const
+    {
+        return m_appSrc;
+    }
+    static void configureAppSrcElement( GObject *, GObject *, GParamSpec *, QGstreamerPlayerSession *_this );
 #endif
 
-   bool isLiveSource() const;
+    bool isLiveSource() const;
 
-   void addProbe(QGstreamerVideoProbeControl *probe);
-   void removeProbe(QGstreamerVideoProbeControl *probe);
+    void addProbe( QGstreamerVideoProbeControl *probe );
+    void removeProbe( QGstreamerVideoProbeControl *probe );
 
-   void addProbe(QGstreamerAudioProbeControl *probe);
-   void removeProbe(QGstreamerAudioProbeControl *probe);
+    void addProbe( QGstreamerAudioProbeControl *probe );
+    void removeProbe( QGstreamerAudioProbeControl *probe );
 
-   void endOfMediaReset();
+    void endOfMediaReset();
 
-   CS_SLOT_1(Public, void loadFromUri(const QNetworkRequest &url))
-   CS_SLOT_2(loadFromUri)
+    LSCS_SLOT_1( Public, void loadFromUri( const QNetworkRequest &url ) )
+    LSCS_SLOT_2( loadFromUri )
 
-   CS_SLOT_1(Public, void loadFromStream(const QNetworkRequest &url, QIODevice *stream))
-   CS_SLOT_2(loadFromStream)
+    LSCS_SLOT_1( Public, void loadFromStream( const QNetworkRequest &url, QIODevice *stream ) )
+    LSCS_SLOT_2( loadFromStream )
 
-   CS_SLOT_1(Public, bool play())
-   CS_SLOT_2(play)
+    LSCS_SLOT_1( Public, bool play() )
+    LSCS_SLOT_2( play )
 
-   CS_SLOT_1(Public, bool pause())
-   CS_SLOT_2(pause)
+    LSCS_SLOT_1( Public, bool pause() )
+    LSCS_SLOT_2( pause )
 
-   CS_SLOT_1(Public, void stop())
-   CS_SLOT_2(stop)
+    LSCS_SLOT_1( Public, void stop() )
+    LSCS_SLOT_2( stop )
 
-   CS_SLOT_1(Public, bool seek(qint64 pos))
-   CS_SLOT_2(seek)
+    LSCS_SLOT_1( Public, bool seek( qint64 pos ) )
+    LSCS_SLOT_2( seek )
 
-   CS_SLOT_1(Public, void setVolume(int volume))
-   CS_SLOT_2(setVolume)
+    LSCS_SLOT_1( Public, void setVolume( int volume ) )
+    LSCS_SLOT_2( setVolume )
 
-   CS_SLOT_1(Public, void setMuted(bool muted))
-   CS_SLOT_2(setMuted)
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) )
+    LSCS_SLOT_2( setMuted )
 
-   CS_SLOT_1(Public, void showPrerollFrames(bool enabled))
-   CS_SLOT_2(showPrerollFrames)
+    LSCS_SLOT_1( Public, void showPrerollFrames( bool enabled ) )
+    LSCS_SLOT_2( showPrerollFrames )
 
-   CS_SIGNAL_1(Public, void durationChanged(qint64 duration))
-   CS_SIGNAL_2(durationChanged, duration)
+    LSCS_SIGNAL_1( Public, void durationChanged( qint64 duration ) )
+    LSCS_SIGNAL_2( durationChanged, duration )
 
-   CS_SIGNAL_1(Public, void positionChanged(qint64 position))
-   CS_SIGNAL_2(positionChanged, position)
+    LSCS_SIGNAL_1( Public, void positionChanged( qint64 position ) )
+    LSCS_SIGNAL_2( positionChanged, position )
 
-   CS_SIGNAL_1(Public, void stateChanged(QMediaPlayer::State state))
-   CS_SIGNAL_2(stateChanged, state)
+    LSCS_SIGNAL_1( Public, void stateChanged( QMediaPlayer::State state ) )
+    LSCS_SIGNAL_2( stateChanged, state )
 
-   CS_SIGNAL_1(Public, void volumeChanged(int volume))
-   CS_SIGNAL_2(volumeChanged, volume)
+    LSCS_SIGNAL_1( Public, void volumeChanged( int volume ) )
+    LSCS_SIGNAL_2( volumeChanged, volume )
 
-   CS_SIGNAL_1(Public, void mutedStateChanged(bool muted))
-   CS_SIGNAL_2(mutedStateChanged, muted)
+    LSCS_SIGNAL_1( Public, void mutedStateChanged( bool muted ) )
+    LSCS_SIGNAL_2( mutedStateChanged, muted )
 
-   CS_SIGNAL_1(Public, void audioAvailableChanged(bool audioAvailable))
-   CS_SIGNAL_2(audioAvailableChanged, audioAvailable)
+    LSCS_SIGNAL_1( Public, void audioAvailableChanged( bool audioAvailable ) )
+    LSCS_SIGNAL_2( audioAvailableChanged, audioAvailable )
 
-   CS_SIGNAL_1(Public, void videoAvailableChanged(bool videoAvailable))
-   CS_SIGNAL_2(videoAvailableChanged, videoAvailable)
+    LSCS_SIGNAL_1( Public, void videoAvailableChanged( bool videoAvailable ) )
+    LSCS_SIGNAL_2( videoAvailableChanged, videoAvailable )
 
-   CS_SIGNAL_1(Public, void bufferingProgressChanged(int percentFilled))
-   CS_SIGNAL_2(bufferingProgressChanged, percentFilled)
+    LSCS_SIGNAL_1( Public, void bufferingProgressChanged( int percentFilled ) )
+    LSCS_SIGNAL_2( bufferingProgressChanged, percentFilled )
 
-   CS_SIGNAL_1(Public, void playbackFinished())
-   CS_SIGNAL_2(playbackFinished)
+    LSCS_SIGNAL_1( Public, void playbackFinished() )
+    LSCS_SIGNAL_2( playbackFinished )
 
-   CS_SIGNAL_1(Public, void tagsChanged())
-   CS_SIGNAL_2(tagsChanged)
+    LSCS_SIGNAL_1( Public, void tagsChanged() )
+    LSCS_SIGNAL_2( tagsChanged )
 
-   CS_SIGNAL_1(Public, void streamsChanged())
-   CS_SIGNAL_2(streamsChanged)
+    LSCS_SIGNAL_1( Public, void streamsChanged() )
+    LSCS_SIGNAL_2( streamsChanged )
 
-   CS_SIGNAL_1(Public, void seekableChanged(bool seekable))
-   CS_SIGNAL_2(seekableChanged, seekable)
+    LSCS_SIGNAL_1( Public, void seekableChanged( bool seekable ) )
+    LSCS_SIGNAL_2( seekableChanged, seekable )
 
-   CS_SIGNAL_1(Public, void error(int error, const QString &errorString))
-   CS_SIGNAL_2(error, error, errorString)
+    LSCS_SIGNAL_1( Public, void error( int error, const QString &errorString ) )
+    LSCS_SIGNAL_2( error, error, errorString )
 
-   CS_SIGNAL_1(Public, void invalidMedia())
-   CS_SIGNAL_2(invalidMedia)
+    LSCS_SIGNAL_1( Public, void invalidMedia() )
+    LSCS_SIGNAL_2( invalidMedia )
 
-   CS_SIGNAL_1(Public, void playbackRateChanged(qreal rate))
-   CS_SIGNAL_2(playbackRateChanged, rate)
+    LSCS_SIGNAL_1( Public, void playbackRateChanged( qreal rate ) )
+    LSCS_SIGNAL_2( playbackRateChanged, rate )
 
- private:
-   static void playbinNotifySource(GObject *o, GParamSpec *p, gpointer d);
-   static void handleVolumeChange(GObject *o, GParamSpec *p, gpointer d);
-   static void handleMutedChange(GObject *o, GParamSpec *p, gpointer d);
+private:
+    static void playbinNotifySource( GObject *o, GParamSpec *p, gpointer d );
+    static void handleVolumeChange( GObject *o, GParamSpec *p, gpointer d );
+    static void handleMutedChange( GObject *o, GParamSpec *p, gpointer d );
 
 #if !GST_CHECK_VERSION(1,0,0)
-   static void insertColorSpaceElement(GstElement *element, gpointer data);
+    static void insertColorSpaceElement( GstElement *element, gpointer data );
 #endif
 
-   static void handleElementAdded(GstBin *bin, GstElement *element, QGstreamerPlayerSession *session);
-   static void handleStreamsChange(GstBin *bin, gpointer user_data);
-   static GstAutoplugSelectResult handleAutoplugSelect(GstBin *bin, GstPad *pad, GstCaps *caps,
-      GstElementFactory *factory, QGstreamerPlayerSession *session);
+    static void handleElementAdded( GstBin *bin, GstElement *element, QGstreamerPlayerSession *session );
+    static void handleStreamsChange( GstBin *bin, gpointer user_data );
+    static GstAutoplugSelectResult handleAutoplugSelect( GstBin *bin, GstPad *pad, GstCaps *caps,
+            GstElementFactory *factory, QGstreamerPlayerSession *session );
 
-   void processInvalidMedia(QMediaPlayer::Error errorCode, const QString &errorString);
+    void processInvalidMedia( QMediaPlayer::Error errorCode, const QString &errorString );
 
-   void removeVideoBufferProbe();
-   void addVideoBufferProbe();
-   void removeAudioBufferProbe();
-   void addAudioBufferProbe();
-   void flushVideoProbes();
-   void resumeVideoProbes();
+    void removeVideoBufferProbe();
+    void addVideoBufferProbe();
+    void removeAudioBufferProbe();
+    void addAudioBufferProbe();
+    void flushVideoProbes();
+    void resumeVideoProbes();
 
-   static void playlistTypeFindFunction(GstTypeFind *find, gpointer userData);
+    static void playlistTypeFindFunction( GstTypeFind *find, gpointer userData );
 
-   QNetworkRequest m_request;
-   QMediaPlayer::State m_state;
-   QMediaPlayer::State m_pendingState;
-   QGstreamerBusHelper *m_busHelper;
-   GstElement *m_playbin;
+    QNetworkRequest m_request;
+    QMediaPlayer::State m_state;
+    QMediaPlayer::State m_pendingState;
+    QGstreamerBusHelper *m_busHelper;
+    GstElement *m_playbin;
 
-   GstElement *m_videoSink;
+    GstElement *m_videoSink;
 
-   GstElement *m_videoOutputBin;
-   GstElement *m_videoIdentity;
+    GstElement *m_videoOutputBin;
+    GstElement *m_videoIdentity;
 
 #if ! GST_CHECK_VERSION(1,0,0)
-   GstElement *m_colorSpace;
-   bool m_usingColorspaceElement;
+    GstElement *m_colorSpace;
+    bool m_usingColorspaceElement;
 #endif
 
-   GstElement *m_pendingVideoSink;
-   GstElement *m_nullVideoSink;
+    GstElement *m_pendingVideoSink;
+    GstElement *m_nullVideoSink;
 
-   GstElement *m_audioSink;
-   GstElement *m_volumeElement;
+    GstElement *m_audioSink;
+    GstElement *m_volumeElement;
 
-   GstBus *m_bus;
-   QObject *m_videoOutput;
-   QGstreamerVideoRendererInterface *m_renderer;
+    GstBus *m_bus;
+    QObject *m_videoOutput;
+    QGstreamerVideoRendererInterface *m_renderer;
 
 #if defined(HAVE_GST_APPSRC)
-   QGstAppSrc *m_appSrc;
+    QGstAppSrc *m_appSrc;
 #endif
 
-   QMap<QByteArray, QVariant> m_tags;
-   QList< QMap<QString, QVariant>> m_streamProperties;
-   QList<QMediaStreamsControl::StreamType> m_streamTypes;
-   QMap<QMediaStreamsControl::StreamType, int> m_playbin2StreamOffset;
+    QMap<QByteArray, QVariant> m_tags;
+    QList< QMap<QString, QVariant>> m_streamProperties;
+    QList<QMediaStreamsControl::StreamType> m_streamTypes;
+    QMap<QMediaStreamsControl::StreamType, int> m_playbin2StreamOffset;
 
-   QGstreamerVideoProbeControl *m_videoProbe;
-   QGstreamerAudioProbeControl *m_audioProbe;
+    QGstreamerVideoProbeControl *m_videoProbe;
+    QGstreamerAudioProbeControl *m_audioProbe;
 
-   int m_volume;
-   qreal m_playbackRate;
-   bool m_muted;
-   bool m_audioAvailable;
-   bool m_videoAvailable;
-   bool m_seekable;
+    int m_volume;
+    qreal m_playbackRate;
+    bool m_muted;
+    bool m_audioAvailable;
+    bool m_videoAvailable;
+    bool m_seekable;
 
-   mutable qint64 m_lastPosition;
-   qint64 m_duration;
-   int m_durationQueries;
+    mutable qint64 m_lastPosition;
+    qint64 m_duration;
+    int m_durationQueries;
 
-   bool m_displayPrerolledFrame;
+    bool m_displayPrerolledFrame;
 
-   enum SourceType {
-      UnknownSrc,
-      SoupHTTPSrc,
-      UDPSrc,
-      MMSSrc,
-      RTSPSrc,
-   };
-   SourceType m_sourceType;
-   bool m_everPlayed;
-   bool m_isLiveSource;
+    enum SourceType
+    {
+        UnknownSrc,
+        SoupHTTPSrc,
+        UDPSrc,
+        MMSSrc,
+        RTSPSrc,
+    };
+    SourceType m_sourceType;
+    bool m_everPlayed;
+    bool m_isLiveSource;
 
-   bool m_isPlaylist;
-   gulong pad_probe_id;
+    bool m_isPlaylist;
+    gulong pad_probe_id;
 
-   CS_SLOT_1(Private, void getStreamsInfo())
-   CS_SLOT_2(getStreamsInfo)
+    LSCS_SLOT_1( Private, void getStreamsInfo() )
+    LSCS_SLOT_2( getStreamsInfo )
 
-   CS_SLOT_1(Private, void setSeekable(bool seekable))
-   CS_SLOT_2(setSeekable)
+    LSCS_SLOT_1( Private, void setSeekable( bool seekable ) )
+    LSCS_SLOT_2( setSeekable )
 
-   CS_SLOT_1(Private, void finishVideoOutputChange())
-   CS_SLOT_2(finishVideoOutputChange)
+    LSCS_SLOT_1( Private, void finishVideoOutputChange() )
+    LSCS_SLOT_2( finishVideoOutputChange )
 
-   CS_SLOT_1(Private, void updateVideoRenderer())
-   CS_SLOT_2(updateVideoRenderer)
+    LSCS_SLOT_1( Private, void updateVideoRenderer() )
+    LSCS_SLOT_2( updateVideoRenderer )
 
-   CS_SLOT_1(Private, void updateVideoResolutionTag())
-   CS_SLOT_2(updateVideoResolutionTag)
+    LSCS_SLOT_1( Private, void updateVideoResolutionTag() )
+    LSCS_SLOT_2( updateVideoResolutionTag )
 
-   CS_SLOT_1(Private, void updateVolume())
-   CS_SLOT_2(updateVolume)
+    LSCS_SLOT_1( Private, void updateVolume() )
+    LSCS_SLOT_2( updateVolume )
 
-   CS_SLOT_1(Private, void updateMuted())
-   CS_SLOT_2(updateMuted)
+    LSCS_SLOT_1( Private, void updateMuted() )
+    LSCS_SLOT_2( updateMuted )
 
-   CS_SLOT_1(Private, void updateDuration())
-   CS_SLOT_2(updateDuration)
+    LSCS_SLOT_1( Private, void updateDuration() )
+    LSCS_SLOT_2( updateDuration )
 };
 
 #endif

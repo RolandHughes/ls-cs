@@ -23,35 +23,46 @@
 #if ENABLE(SVG)
 #include "SVGPathElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGPathSegWithContext : public SVGPathSeg {
+class SVGPathSegWithContext : public SVGPathSeg
+{
 public:
-    SVGPathSegWithContext(SVGPathElement* element, SVGPathSegRole role)
-        : m_role(role)
-        , m_element(element)
+    SVGPathSegWithContext( SVGPathElement *element, SVGPathSegRole role )
+        : m_role( role )
+        , m_element( element )
     {
     }
 
-    SVGAnimatedProperty* animatedProperty() const
+    SVGAnimatedProperty *animatedProperty() const
     {
-        switch (m_role) {
-        case PathSegUndefinedRole:
-            return 0;
-        case PathSegUnalteredRole:
-            return m_element->animatablePathSegList();
-        case PathSegNormalizedRole:
-            // FIXME: https://bugs.webkit.org/show_bug.cgi?id=15412 - Implement normalized path segment lists!
-            return 0;
+        switch ( m_role )
+        {
+            case PathSegUndefinedRole:
+                return 0;
+
+            case PathSegUnalteredRole:
+                return m_element->animatablePathSegList();
+
+            case PathSegNormalizedRole:
+                // FIXME: https://bugs.webkit.org/show_bug.cgi?id=15412 - Implement normalized path segment lists!
+                return 0;
         };
 
         return 0;
     }
 
-    SVGPathElement* contextElement() const { return m_element.get(); }
-    SVGPathSegRole role() const { return m_role; }
+    SVGPathElement *contextElement() const
+    {
+        return m_element.get();
+    }
+    SVGPathSegRole role() const
+    {
+        return m_role;
+    }
 
-    void setContextAndRole(SVGPathElement* element, SVGPathSegRole role)
+    void setContextAndRole( SVGPathElement *element, SVGPathSegRole role )
     {
         m_role = role;
         m_element = element;
@@ -60,13 +71,14 @@ public:
 protected:
     void commitChange()
     {
-        if (!m_element) {
-            ASSERT(m_role == PathSegUndefinedRole);
+        if ( !m_element )
+        {
+            ASSERT( m_role == PathSegUndefinedRole );
             return;
         }
 
-        ASSERT(m_role != PathSegUndefinedRole);
-        m_element->pathSegListChanged(m_role);
+        ASSERT( m_role != PathSegUndefinedRole );
+        m_element->pathSegListChanged( m_role );
     }
 
 private:
@@ -74,27 +86,34 @@ private:
     RefPtr<SVGPathElement> m_element;
 };
 
-class SVGPathSegSingleCoordinate : public SVGPathSegWithContext { 
+class SVGPathSegSingleCoordinate : public SVGPathSegWithContext
+{
 public:
-    float x() const { return m_x; }
-    void setX(float x)
+    float x() const
+    {
+        return m_x;
+    }
+    void setX( float x )
     {
         m_x = x;
         commitChange();
     }
 
-    float y() const { return m_y; }
-    void setY(float y)
+    float y() const
+    {
+        return m_y;
+    }
+    void setY( float y )
     {
         m_y = y;
         commitChange();
     }
 
 protected:
-    SVGPathSegSingleCoordinate(SVGPathElement* element, SVGPathSegRole role, float x, float y)
-        : SVGPathSegWithContext(element, role)
-        , m_x(x)
-        , m_y(y)
+    SVGPathSegSingleCoordinate( SVGPathElement *element, SVGPathSegRole role, float x, float y )
+        : SVGPathSegWithContext( element, role )
+        , m_x( x )
+        , m_y( y )
     {
     }
 

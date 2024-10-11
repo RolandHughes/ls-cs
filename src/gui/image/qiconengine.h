@@ -31,36 +31,38 @@
 
 class Q_GUI_EXPORT QIconEngine
 {
- public:
-   enum IconEngineHook {
-      AvailableSizesHook = 1,
-      IconNameHook
-   };
+public:
+    enum IconEngineHook
+    {
+        AvailableSizesHook = 1,
+        IconNameHook
+    };
 
-   QIconEngine();
+    QIconEngine();
 
-   virtual ~QIconEngine();
-   virtual void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state) = 0;
-   virtual QSize actualSize(const QSize &size, QIcon::Mode mode, QIcon::State state);
-   virtual QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state);
+    virtual ~QIconEngine();
+    virtual void paint( QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state ) = 0;
+    virtual QSize actualSize( const QSize &size, QIcon::Mode mode, QIcon::State state );
+    virtual QPixmap pixmap( const QSize &size, QIcon::Mode mode, QIcon::State state );
 
-   virtual void addPixmap(const QPixmap &pixmap, QIcon::Mode mode, QIcon::State state);
-   virtual void addFile(const QString &fileName, const QSize &size, QIcon::Mode mode, QIcon::State state);
+    virtual void addPixmap( const QPixmap &pixmap, QIcon::Mode mode, QIcon::State state );
+    virtual void addFile( const QString &fileName, const QSize &size, QIcon::Mode mode, QIcon::State state );
 
-   virtual QString key() const;
-   virtual QIconEngine *clone() const = 0;
-   virtual bool read(QDataStream &in);
-   virtual bool write(QDataStream &out) const;
+    virtual QString key() const;
+    virtual QIconEngine *clone() const = 0;
+    virtual bool read( QDataStream &in );
+    virtual bool write( QDataStream &out ) const;
 
-   struct AvailableSizesArgument {
-      QIcon::Mode mode;
-      QIcon::State state;
-      QList<QSize> sizes;
-   };
+    struct AvailableSizesArgument
+    {
+        QIcon::Mode mode;
+        QIcon::State state;
+        QList<QSize> sizes;
+    };
 
-   virtual QList<QSize> availableSizes(QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off) const;
-   virtual QString iconName() const;
-   virtual void virtual_hook(int id, void *data);
+    virtual QList<QSize> availableSizes( QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off ) const;
+    virtual QString iconName() const;
+    virtual void virtual_hook( int id, void *data );
 };
 
 

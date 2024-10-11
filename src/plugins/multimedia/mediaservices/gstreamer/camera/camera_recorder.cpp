@@ -29,18 +29,18 @@
 #include <camera_container.h>
 #include <qdebug.h>
 
-CameraBinRecorder::CameraBinRecorder(CameraBinSession *session)
-   : QMediaRecorderControl(session), m_session(session),
-     m_state(QMediaRecorder::StoppedState), m_status(QMediaRecorder::UnloadedStatus)
+CameraBinRecorder::CameraBinRecorder( CameraBinSession *session )
+    : QMediaRecorderControl( session ), m_session( session ),
+      m_state( QMediaRecorder::StoppedState ), m_status( QMediaRecorder::UnloadedStatus )
 {
-   connect(m_session, &CameraBinSession::statusChanged,       this, &CameraBinRecorder::updateStatus);
-   connect(m_session, &CameraBinSession::pendingStateChanged, this, &CameraBinRecorder::updateStatus);
-   connect(m_session, &CameraBinSession::busyChanged,         this, &CameraBinRecorder::updateStatus);
-   connect(m_session, &CameraBinSession::durationChanged,     this, &CameraBinRecorder::durationChanged);
-   connect(m_session, &CameraBinSession::mutedChanged,        this, &CameraBinRecorder::mutedChanged);
+    connect( m_session, &CameraBinSession::statusChanged,       this, &CameraBinRecorder::updateStatus );
+    connect( m_session, &CameraBinSession::pendingStateChanged, this, &CameraBinRecorder::updateStatus );
+    connect( m_session, &CameraBinSession::busyChanged,         this, &CameraBinRecorder::updateStatus );
+    connect( m_session, &CameraBinSession::durationChanged,     this, &CameraBinRecorder::durationChanged );
+    connect( m_session, &CameraBinSession::mutedChanged,        this, &CameraBinRecorder::mutedChanged );
 
-   connect(m_session->cameraControl()->resourcePolicy(), &CamerabinResourcePolicy::canCaptureChanged,
-           this, &CameraBinRecorder::updateStatus);
+    connect( m_session->cameraControl()->resourcePolicy(), &CamerabinResourcePolicy::canCaptureChanged,
+             this, &CameraBinRecorder::updateStatus );
 }
 
 CameraBinRecorder::~CameraBinRecorder()
@@ -49,116 +49,132 @@ CameraBinRecorder::~CameraBinRecorder()
 
 QUrl CameraBinRecorder::outputLocation() const
 {
-   return m_session->outputLocation();
+    return m_session->outputLocation();
 }
 
-bool CameraBinRecorder::setOutputLocation(const QUrl &sink)
+bool CameraBinRecorder::setOutputLocation( const QUrl &sink )
 {
-   m_session->setOutputLocation(sink);
-   return true;
+    m_session->setOutputLocation( sink );
+    return true;
 }
 
 QMediaRecorder::State CameraBinRecorder::state() const
 {
-   return m_state;
+    return m_state;
 }
 
 QMediaRecorder::Status CameraBinRecorder::status() const
 {
-   return m_status;
+    return m_status;
 }
 
 void CameraBinRecorder::updateStatus()
 {
-   QCamera::Status sessionStatus = m_session->status();
+    QCamera::Status sessionStatus = m_session->status();
 
-   QMediaRecorder::State oldState = m_state;
-   QMediaRecorder::Status oldStatus = m_status;
+    QMediaRecorder::State oldState = m_state;
+    QMediaRecorder::Status oldStatus = m_status;
 
-   if (sessionStatus == QCamera::ActiveStatus &&
-         m_session->captureMode().testFlag(QCamera::CaptureVideo)) {
+    if ( sessionStatus == QCamera::ActiveStatus &&
+            m_session->captureMode().testFlag( QCamera::CaptureVideo ) )
+    {
 
-      if (!m_session->cameraControl()->resourcePolicy()->canCapture()) {
-         m_status = QMediaRecorder::UnavailableStatus;
-         m_state  = QMediaRecorder::StoppedState;
-         m_session->stopVideoRecording();
+        if ( !m_session->cameraControl()->resourcePolicy()->canCapture() )
+        {
+            m_status = QMediaRecorder::UnavailableStatus;
+            m_state  = QMediaRecorder::StoppedState;
+            m_session->stopVideoRecording();
 
-      } else  if (m_state == QMediaRecorder::RecordingState) {
-         m_status = QMediaRecorder::RecordingStatus;
+        }
+        else  if ( m_state == QMediaRecorder::RecordingState )
+        {
+            m_status = QMediaRecorder::RecordingStatus;
 
-      } else {
-         m_status = m_session->isBusy() ? QMediaRecorder::FinalizingStatus : QMediaRecorder::LoadedStatus;
-      }
+        }
+        else
+        {
+            m_status = m_session->isBusy() ? QMediaRecorder::FinalizingStatus : QMediaRecorder::LoadedStatus;
+        }
 
-   } else {
-      if (m_state == QMediaRecorder::RecordingState) {
-         m_state = QMediaRecorder::StoppedState;
-         m_session->stopVideoRecording();
-      }
-      m_status = m_session->pendingState() == QCamera::ActiveState
-                 && m_session->captureMode().testFlag(QCamera::CaptureVideo)
-                 ? QMediaRecorder::LoadingStatus : QMediaRecorder::UnloadedStatus;
-   }
+    }
+    else
+    {
+        if ( m_state == QMediaRecorder::RecordingState )
+        {
+            m_state = QMediaRecorder::StoppedState;
+            m_session->stopVideoRecording();
+        }
 
-   if (m_state != oldState) {
-      emit stateChanged(m_state);
-   }
+        m_status = m_session->pendingState() == QCamera::ActiveState
+                   && m_session->captureMode().testFlag( QCamera::CaptureVideo )
+                   ? QMediaRecorder::LoadingStatus : QMediaRecorder::UnloadedStatus;
+    }
 
-   if (m_status != oldStatus) {
-      emit statusChanged(m_status);
-   }
+    if ( m_state != oldState )
+    {
+        emit stateChanged( m_state );
+    }
+
+    if ( m_status != oldStatus )
+    {
+        emit statusChanged( m_status );
+    }
 }
 
 qint64 CameraBinRecorder::duration() const
 {
-   return m_session->duration();
+    return m_session->duration();
 }
 
 
 void CameraBinRecorder::applySettings()
 {
 #ifdef HAVE_GST_ENCODING_PROFILES
-   CameraBinContainer *containerControl = m_session->mediaContainerControl();
-   CameraBinAudioEncoder *audioEncoderControl = m_session->audioEncodeControl();
-   CameraBinVideoEncoder *videoEncoderControl = m_session->videoEncodeControl();
+    CameraBinContainer *containerControl = m_session->mediaContainerControl();
+    CameraBinAudioEncoder *audioEncoderControl = m_session->audioEncodeControl();
+    CameraBinVideoEncoder *videoEncoderControl = m_session->videoEncodeControl();
 
-   containerControl->resetActualContainerFormat();
-   audioEncoderControl->resetActualSettings();
-   videoEncoderControl->resetActualSettings();
+    containerControl->resetActualContainerFormat();
+    audioEncoderControl->resetActualSettings();
+    videoEncoderControl->resetActualSettings();
 
-   //encodebin doesn't like the encoding profile with ANY caps,
-   //if container and codecs are not specified,
-   //try to find a commonly used supported combination
-   if (containerControl->containerFormat().isEmpty() &&
-         audioEncoderControl->audioSettings().codec().isEmpty() &&
-         videoEncoderControl->videoSettings().codec().isEmpty()) {
+    //encodebin doesn't like the encoding profile with ANY caps,
+    //if container and codecs are not specified,
+    //try to find a commonly used supported combination
+    if ( containerControl->containerFormat().isEmpty() &&
+            audioEncoderControl->audioSettings().codec().isEmpty() &&
+            videoEncoderControl->videoSettings().codec().isEmpty() )
+    {
 
-      QList<QStringList> candidates;
-      candidates.append(QStringList() << "video/x-matroska" << "video/x-h264" << "audio/mpeg, mpegversion=(int)4");
-      candidates.append(QStringList() << "video/webm" << "video/x-vp8" << "audio/x-vorbis");
-      candidates.append(QStringList() << "application/ogg" << "video/x-theora" << "audio/x-vorbis");
-      candidates.append(QStringList() << "video/quicktime" << "video/x-h264" << "audio/mpeg, mpegversion=(int)4");
-      candidates.append(QStringList() << "video/quicktime" << "video/x-h264" << "audio/mpeg");
-      candidates.append(QStringList() << "video/x-msvideo" << "video/x-divx" << "audio/mpeg");
+        QList<QStringList> candidates;
+        candidates.append( QStringList() << "video/x-matroska" << "video/x-h264" << "audio/mpeg, mpegversion=(int)4" );
+        candidates.append( QStringList() << "video/webm" << "video/x-vp8" << "audio/x-vorbis" );
+        candidates.append( QStringList() << "application/ogg" << "video/x-theora" << "audio/x-vorbis" );
+        candidates.append( QStringList() << "video/quicktime" << "video/x-h264" << "audio/mpeg, mpegversion=(int)4" );
+        candidates.append( QStringList() << "video/quicktime" << "video/x-h264" << "audio/mpeg" );
+        candidates.append( QStringList() << "video/x-msvideo" << "video/x-divx" << "audio/mpeg" );
 
-      for (const QStringList &candidate : candidates) {
-         if (containerControl->supportedContainers().contains(candidate[0]) &&
-               videoEncoderControl->supportedVideoCodecs().contains(candidate[1]) &&
-               audioEncoderControl->supportedAudioCodecs().contains(candidate[2])) {
-            containerControl->setActualContainerFormat(candidate[0]);
+        for ( const QStringList &candidate : candidates )
+        {
+            if ( containerControl->supportedContainers().contains( candidate[0] ) &&
+                    videoEncoderControl->supportedVideoCodecs().contains( candidate[1] ) &&
+                    audioEncoderControl->supportedAudioCodecs().contains( candidate[2] ) )
+            {
+                containerControl->setActualContainerFormat( candidate[0] );
 
-            QVideoEncoderSettings videoSettings = videoEncoderControl->videoSettings();
-            videoSettings.setCodec(candidate[1]);
-            videoEncoderControl->setActualVideoSettings(videoSettings);
+                QVideoEncoderSettings videoSettings = videoEncoderControl->videoSettings();
+                videoSettings.setCodec( candidate[1] );
+                videoEncoderControl->setActualVideoSettings( videoSettings );
 
-            QAudioEncoderSettings audioSettings = audioEncoderControl->audioSettings();
-            audioSettings.setCodec(candidate[2]);
-            audioEncoderControl->setActualAudioSettings(audioSettings);
+                QAudioEncoderSettings audioSettings = audioEncoderControl->audioSettings();
+                audioSettings.setCodec( candidate[2] );
+                audioEncoderControl->setActualAudioSettings( audioSettings );
 
-            break;
-         }
-      }
-   }
+                break;
+            }
+        }
+    }
+
 #endif
 }
 
@@ -166,92 +182,108 @@ void CameraBinRecorder::applySettings()
 
 GstEncodingContainerProfile *CameraBinRecorder::videoProfile()
 {
-   GstEncodingContainerProfile *containerProfile = m_session->mediaContainerControl()->createProfile();
+    GstEncodingContainerProfile *containerProfile = m_session->mediaContainerControl()->createProfile();
 
-   if (containerProfile) {
-      GstEncodingProfile *audioProfile = m_session->audioEncodeControl()->createProfile();
-      GstEncodingProfile *videoProfile = m_session->videoEncodeControl()->createProfile();
+    if ( containerProfile )
+    {
+        GstEncodingProfile *audioProfile = m_session->audioEncodeControl()->createProfile();
+        GstEncodingProfile *videoProfile = m_session->videoEncodeControl()->createProfile();
 
-      if (audioProfile) {
-         if (!gst_encoding_container_profile_add_profile(containerProfile, audioProfile)) {
-            gst_encoding_profile_unref(audioProfile);
-         }
-      }
-      if (videoProfile) {
-         if (!gst_encoding_container_profile_add_profile(containerProfile, videoProfile)) {
-            gst_encoding_profile_unref(videoProfile);
-         }
-      }
-   }
+        if ( audioProfile )
+        {
+            if ( !gst_encoding_container_profile_add_profile( containerProfile, audioProfile ) )
+            {
+                gst_encoding_profile_unref( audioProfile );
+            }
+        }
 
-   return containerProfile;
+        if ( videoProfile )
+        {
+            if ( !gst_encoding_container_profile_add_profile( containerProfile, videoProfile ) )
+            {
+                gst_encoding_profile_unref( videoProfile );
+            }
+        }
+    }
+
+    return containerProfile;
 }
 
 #endif
 
-void CameraBinRecorder::setState(QMediaRecorder::State state)
+void CameraBinRecorder::setState( QMediaRecorder::State state )
 {
-   if (m_state == state) {
-      return;
-   }
+    if ( m_state == state )
+    {
+        return;
+    }
 
-   QMediaRecorder::State oldState = m_state;
-   QMediaRecorder::Status oldStatus = m_status;
+    QMediaRecorder::State oldState = m_state;
+    QMediaRecorder::Status oldStatus = m_status;
 
-   switch (state) {
-      case QMediaRecorder::StoppedState:
-         m_state = state;
-         m_status = QMediaRecorder::FinalizingStatus;
-         m_session->stopVideoRecording();
-         break;
-
-      case QMediaRecorder::PausedState:
-         emit error(QMediaRecorder::ResourceError, tr("QMediaRecorder::pause() is not supported by camerabin2."));
-         break;
-
-      case QMediaRecorder::RecordingState:
-
-         if (m_session->status() != QCamera::ActiveStatus) {
-            emit error(QMediaRecorder::ResourceError, tr("Service has not been started"));
-
-         } else if (!m_session->cameraControl()->resourcePolicy()->canCapture()) {
-            emit error(QMediaRecorder::ResourceError, tr("Recording permissions are not available"));
-
-         } else {
-            m_session->recordVideo();
+    switch ( state )
+    {
+        case QMediaRecorder::StoppedState:
             m_state = state;
-            m_status = QMediaRecorder::RecordingStatus;
-            emit actualLocationChanged(m_session->outputLocation());
-         }
-   }
+            m_status = QMediaRecorder::FinalizingStatus;
+            m_session->stopVideoRecording();
+            break;
 
-   if (m_state != oldState) {
-      emit stateChanged(m_state);
-   }
+        case QMediaRecorder::PausedState:
+            emit error( QMediaRecorder::ResourceError, tr( "QMediaRecorder::pause() is not supported by camerabin2." ) );
+            break;
 
-   if (m_status != oldStatus) {
-      emit statusChanged(m_status);
-   }
+        case QMediaRecorder::RecordingState:
+
+            if ( m_session->status() != QCamera::ActiveStatus )
+            {
+                emit error( QMediaRecorder::ResourceError, tr( "Service has not been started" ) );
+
+            }
+            else if ( !m_session->cameraControl()->resourcePolicy()->canCapture() )
+            {
+                emit error( QMediaRecorder::ResourceError, tr( "Recording permissions are not available" ) );
+
+            }
+            else
+            {
+                m_session->recordVideo();
+                m_state = state;
+                m_status = QMediaRecorder::RecordingStatus;
+                emit actualLocationChanged( m_session->outputLocation() );
+            }
+    }
+
+    if ( m_state != oldState )
+    {
+        emit stateChanged( m_state );
+    }
+
+    if ( m_status != oldStatus )
+    {
+        emit statusChanged( m_status );
+    }
 }
 
 bool CameraBinRecorder::isMuted() const
 {
-   return m_session->isMuted();
+    return m_session->isMuted();
 }
 
 qreal CameraBinRecorder::volume() const
 {
-   return 1.0;
+    return 1.0;
 }
 
-void CameraBinRecorder::setMuted(bool muted)
+void CameraBinRecorder::setMuted( bool muted )
 {
-   m_session->setMuted(muted);
+    m_session->setMuted( muted );
 }
 
-void CameraBinRecorder::setVolume(qreal volume)
+void CameraBinRecorder::setVolume( qreal volume )
 {
-   if (!qFuzzyCompare(volume, qreal(1.0))) {
-      qWarning() << "Media service does not support recorder audio gain.";
-   }
+    if ( !qFuzzyCompare( volume, qreal( 1.0 ) ) )
+    {
+        qWarning() << "Media service does not support recorder audio gain.";
+    }
 }

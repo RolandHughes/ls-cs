@@ -43,7 +43,8 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Color;
 class DrawingBuffer;
@@ -52,30 +53,31 @@ class GraphicsContext3D;
 class Path;
 class SharedGraphicsContext3D;
 
-class GraphicsContextGPU {
-    WTF_MAKE_NONCOPYABLE(GraphicsContextGPU);
+class GraphicsContextGPU
+{
+    WTF_MAKE_NONCOPYABLE( GraphicsContextGPU );
 public:
-    GraphicsContextGPU(SharedGraphicsContext3D*, DrawingBuffer*, const IntSize&);
+    GraphicsContextGPU( SharedGraphicsContext3D *, DrawingBuffer *, const IntSize & );
     ~GraphicsContextGPU();
 
-    void fillPath(const Path&);
-    void fillRect(const FloatRect&, const Color&, ColorSpace);
-    void fillRect(const FloatRect&);
-    void clearRect(const FloatRect&);
-    void setFillColor(const Color&, ColorSpace);
-    void setAlpha(float alpha);
-    void setShadowColor(const Color&, ColorSpace);
-    void setShadowOffset(const FloatSize&);
-    void setShadowBlur(float);
-    void setShadowsIgnoreTransforms(bool);
-    void setCompositeOperation(CompositeOperator);
-    void translate(float x, float y);
-    void rotate(float angleInRadians);
-    void scale(const FloatSize&);
-    void concatCTM(const AffineTransform&);
-    void setCTM(const AffineTransform&);
-    void clipPath(const Path&);
-    void clipOut(const Path&);
+    void fillPath( const Path & );
+    void fillRect( const FloatRect &, const Color &, ColorSpace );
+    void fillRect( const FloatRect & );
+    void clearRect( const FloatRect & );
+    void setFillColor( const Color &, ColorSpace );
+    void setAlpha( float alpha );
+    void setShadowColor( const Color &, ColorSpace );
+    void setShadowOffset( const FloatSize & );
+    void setShadowBlur( float );
+    void setShadowsIgnoreTransforms( bool );
+    void setCompositeOperation( CompositeOperator );
+    void translate( float x, float y );
+    void rotate( float angleInRadians );
+    void scale( const FloatSize & );
+    void concatCTM( const AffineTransform & );
+    void setCTM( const AffineTransform & );
+    void clipPath( const Path & );
+    void clipOut( const Path & );
 
     void save();
     void restore();
@@ -85,48 +87,60 @@ public:
     // down into a PlatformContextGLES2 at some point.
 
     // This version is called by the canvas->canvas draws.
-    void drawTexturedRect(unsigned texture, const IntSize& textureSize, const FloatRect& srcRect, const FloatRect& dstRect, ColorSpace, CompositeOperator);
+    void drawTexturedRect( unsigned texture, const IntSize &textureSize, const FloatRect &srcRect, const FloatRect &dstRect,
+                           ColorSpace, CompositeOperator );
     // This version is called by BitmapImage::draw().
-    void drawTexturedRect(Texture*, const FloatRect& srcRect, const FloatRect& dstRect, ColorSpace, CompositeOperator);
+    void drawTexturedRect( Texture *, const FloatRect &srcRect, const FloatRect &dstRect, ColorSpace, CompositeOperator );
     // This version is called by the above, and by the software->hardware uploads.
-    void drawTexturedRect(Texture*, const FloatRect& srcRect, const FloatRect& dstRect, const AffineTransform&, float alpha, ColorSpace, CompositeOperator, bool clip);
-    Texture* createTexture(NativeImagePtr, Texture::Format, int width, int height);
-    Texture* getTexture(NativeImagePtr);
+    void drawTexturedRect( Texture *, const FloatRect &srcRect, const FloatRect &dstRect, const AffineTransform &, float alpha,
+                           ColorSpace, CompositeOperator, bool clip );
+    Texture *createTexture( NativeImagePtr, Texture::Format, int width, int height );
+    Texture *getTexture( NativeImagePtr );
 
-    SharedGraphicsContext3D* context() const { return m_context; }
+    SharedGraphicsContext3D *context() const
+    {
+        return m_context;
+    }
 
     void bindFramebuffer();
 
-    DrawingBuffer* drawingBuffer() const { return m_drawingBuffer; }
+    DrawingBuffer *drawingBuffer() const
+    {
+        return m_drawingBuffer;
+    }
 
 private:
     void applyState();
-    void scissorClear(float x, float y, float width, float height);
-    void drawTexturedRectTile(Texture* texture, int tile, const FloatRect& srcRect, const FloatRect& dstRect, const AffineTransform&, float alpha);
-    void drawTexturedQuad(const IntSize& textureSize, const FloatRect& srcRect, const FloatRect& dstRect, const AffineTransform&, float alpha);
-    void drawTexturedQuadMitchell(const IntSize& textureSize, const FloatRect& srcRect, const FloatRect& dstRect, const AffineTransform&, float alpha);
-    void convolveRect(unsigned texture, const IntSize& textureSize, const FloatRect& srcRect, const FloatRect& dstRect, float imageIncrement[2], const float* kernel, int kernelWidth);
+    void scissorClear( float x, float y, float width, float height );
+    void drawTexturedRectTile( Texture *texture, int tile, const FloatRect &srcRect, const FloatRect &dstRect,
+                               const AffineTransform &, float alpha );
+    void drawTexturedQuad( const IntSize &textureSize, const FloatRect &srcRect, const FloatRect &dstRect, const AffineTransform &,
+                           float alpha );
+    void drawTexturedQuadMitchell( const IntSize &textureSize, const FloatRect &srcRect, const FloatRect &dstRect,
+                                   const AffineTransform &, float alpha );
+    void convolveRect( unsigned texture, const IntSize &textureSize, const FloatRect &srcRect, const FloatRect &dstRect,
+                       float imageIncrement[2], const float *kernel, int kernelWidth );
 
-    void tesselateAndFillPath(const Path&, const Color&);
-    void fillPathInternal(const Path&, const Color&);
-    void fillRectInternal(const FloatRect&, const Color&);
-    FloatRect flipRect(const FloatRect&);
-    void clearBorders(const FloatRect&, int width);
+    void tesselateAndFillPath( const Path &, const Color & );
+    void fillPathInternal( const Path &, const Color & );
+    void fillRectInternal( const FloatRect &, const Color & );
+    FloatRect flipRect( const FloatRect & );
+    void clearBorders( const FloatRect &, int width );
     void beginShadowDraw();
-    void endShadowDraw(const FloatRect& boundingBox);
-    void beginStencilDraw(unsigned op);
-    void applyClipping(bool enable);
-    void checkGLError(const char* header);
+    void endShadowDraw( const FloatRect &boundingBox );
+    void beginStencilDraw( unsigned op );
+    void applyClipping( bool enable );
+    void checkGLError( const char *header );
 
     IntSize m_size;
 
-    SharedGraphicsContext3D* m_context;
-    DrawingBuffer* m_drawingBuffer;
+    SharedGraphicsContext3D *m_context;
+    DrawingBuffer *m_drawingBuffer;
 
     struct State;
     typedef WTF::Vector<State> StateVector;
     StateVector m_stateStack;
-    State* m_state;
+    State *m_state;
     AffineTransform m_flipMatrix;
 
     // Members for GPU-accelerated path rendering.

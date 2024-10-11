@@ -32,88 +32,97 @@
 
 class QAbstractSliderPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QAbstractSlider)
+    Q_DECLARE_PUBLIC( QAbstractSlider )
 
- public:
-   QAbstractSliderPrivate();
-   ~QAbstractSliderPrivate();
+public:
+    QAbstractSliderPrivate();
+    ~QAbstractSliderPrivate();
 
-   void setSteps(int single, int page);
+    void setSteps( int single, int page );
 
-   int minimum;
-   int maximum;
-   int pageStep;
-   int value;
-   int position;
-   int pressValue;
-   int singleStep;
+    int minimum;
+    int maximum;
+    int pageStep;
+    int value;
+    int position;
+    int pressValue;
+    int singleStep;
 
-   float offset_accumulated;
-   uint tracking : 1;
-   uint blocktracking : 1;
-   uint pressed : 1;
-   uint invertedAppearance : 1;
-   uint invertedControls : 1;
-   Qt::Orientation orientation;
+    float offset_accumulated;
+    uint tracking : 1;
+    uint blocktracking : 1;
+    uint pressed : 1;
+    uint invertedAppearance : 1;
+    uint invertedControls : 1;
+    Qt::Orientation orientation;
 
-   QBasicTimer repeatActionTimer;
-   int repeatActionTime;
-   QAbstractSlider::SliderAction repeatAction;
+    QBasicTimer repeatActionTimer;
+    int repeatActionTime;
+    QAbstractSlider::SliderAction repeatAction;
 
 #ifdef QT_KEYPAD_NAVIGATION
-   int origValue;
-   bool isAutoRepeating;
+    int origValue;
+    bool isAutoRepeating;
 
-   // When auto repeating, multiply singleStep with this value to get our effective step
-   qreal repeatMultiplier;
+    // When auto repeating, multiply singleStep with this value to get our effective step
+    qreal repeatMultiplier;
 
 
-   // time of when the first auto repeating key press event occurs
-   QElapsedTimer firstRepeat;
+    // time of when the first auto repeating key press event occurs
+    QElapsedTimer firstRepeat;
 
 #endif
 
-   int effectiveSingleStep() const {
+    int effectiveSingleStep() const
+    {
 
 #ifdef QT_KEYPAD_NAVIGATION
-      return singleStep * repeatMultiplier;
+        return singleStep * repeatMultiplier;
 #else
-      return singleStep;
+        return singleStep;
 #endif
 
-   }
+    }
 
-   virtual int bound(int val) const {
-      return qMax(minimum, qMin(maximum, val));
-   }
+    virtual int bound( int val ) const
+    {
+        return qMax( minimum, qMin( maximum, val ) );
+    }
 
-   int overflowSafeAdd(int add) const {
-      int newValue = value + add;
+    int overflowSafeAdd( int add ) const
+    {
+        int newValue = value + add;
 
-      if (add > 0 && newValue < value) {
-         newValue = maximum;
-      } else if (add < 0 && newValue > value) {
-         newValue = minimum;
-      }
+        if ( add > 0 && newValue < value )
+        {
+            newValue = maximum;
+        }
+        else if ( add < 0 && newValue > value )
+        {
+            newValue = minimum;
+        }
 
-      return newValue;
-   }
+        return newValue;
+    }
 
-   void setAdjustedSliderPosition(int position) {
-      Q_Q(QAbstractSlider);
+    void setAdjustedSliderPosition( int position )
+    {
+        Q_Q( QAbstractSlider );
 
-      if (q->style()->styleHint(QStyle::SH_Slider_StopMouseOverSlider, nullptr, q)) {
-         if ((position > pressValue - 2 * pageStep) && (position < pressValue + 2 * pageStep)) {
-            repeatAction = QAbstractSlider::SliderNoAction;
-            q->setSliderPosition(pressValue);
-            return;
-         }
-      }
+        if ( q->style()->styleHint( QStyle::SH_Slider_StopMouseOverSlider, nullptr, q ) )
+        {
+            if ( ( position > pressValue - 2 * pageStep ) && ( position < pressValue + 2 * pageStep ) )
+            {
+                repeatAction = QAbstractSlider::SliderNoAction;
+                q->setSliderPosition( pressValue );
+                return;
+            }
+        }
 
-      q->triggerAction(repeatAction);
-   }
+        q->triggerAction( repeatAction );
+    }
 
-   bool scrollByDelta(Qt::Orientation orientation, Qt::KeyboardModifiers modifiers, int delta);
+    bool scrollByDelta( Qt::Orientation orientation, Qt::KeyboardModifiers modifiers, int delta );
 };
 
 #endif // QABSTRACTSLIDER_P_H

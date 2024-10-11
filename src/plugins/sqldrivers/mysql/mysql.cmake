@@ -11,40 +11,40 @@ list(APPEND SQL_INCLUDES
 
 if(WITH_MYSQL_PLUGIN AND MySQL_FOUND)
 
-   add_library(CsSqlMySql MODULE "")
-   add_library(CopperSpice::CsSqlMySql ALIAS CsSqlMySql)
+   add_library(LsCsSqlMySql MODULE "")
+   add_library(LsCs::LsCsSqlMySql ALIAS LsCsSqlMySql)
 
-   set_target_properties(CsSqlMySql PROPERTIES OUTPUT_NAME CsSqlMySql${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlMySql PROPERTIES OUTPUT_NAME LsCsSqlMySql${BUILD_ABI} PREFIX "")
 
    include_directories(${MySQL_INCLUDE_DIRS})
 
-   target_sources(CsSqlMySql
+   target_sources(LsCsSqlMySql
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/mysql/main.cpp
     )
 
-   target_link_libraries(CsSqlMySql
-      CsCore
-      CsSql
+   target_link_libraries(LsCsSqlMySql
+      LsCsCore
+      LsCsSql
       ${MySQL_LIBRARIES}
    )
 
    if(ZLIB_FOUND)
-      target_link_libraries(CsSqlMySql
+      target_link_libraries(LsCsSqlMySql
          ${ZLIB_LIBRARIES}
       )
    endif()
 
-   target_compile_definitions(CsSqlMySql
+   target_compile_definitions(LsCsSqlMySql
       PRIVATE
       -DIN_TRUE
       -DQT_PLUGIN
    )
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/sqldrivers)
-   else()
-      install(TARGETS CsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/sqldrivers)
+#   else()
+#      install(TARGETS LsCsSqlMySql DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()

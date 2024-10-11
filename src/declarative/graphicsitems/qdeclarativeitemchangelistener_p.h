@@ -33,15 +33,16 @@ class QDeclarativeItem;
 class QDeclarativeAnchorsPrivate;
 class QDeclarativeItemChangeListener
 {
- public:
-   virtual void itemGeometryChanged(QDeclarativeItem *, const QRectF &, const QRectF &) {}
-   virtual void itemSiblingOrderChanged(QDeclarativeItem *) {}
-   virtual void itemVisibilityChanged(QDeclarativeItem *) {}
-   virtual void itemOpacityChanged(QDeclarativeItem *) {}
-   virtual void itemDestroyed(QDeclarativeItem *) {}
-   virtual QDeclarativeAnchorsPrivate *anchorPrivate() {
-      return 0;
-   }
+public:
+    virtual void itemGeometryChanged( QDeclarativeItem *, const QRectF &, const QRectF & ) {}
+    virtual void itemSiblingOrderChanged( QDeclarativeItem * ) {}
+    virtual void itemVisibilityChanged( QDeclarativeItem * ) {}
+    virtual void itemOpacityChanged( QDeclarativeItem * ) {}
+    virtual void itemDestroyed( QDeclarativeItem * ) {}
+    virtual QDeclarativeAnchorsPrivate *anchorPrivate()
+    {
+        return 0;
+    }
 };
 
 QT_END_NAMESPACE

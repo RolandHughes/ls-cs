@@ -46,27 +46,32 @@
 
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 static const char webSocketChannelMode[] = "webSocketChannelMode";
 
-PassRefPtr<ThreadableWebSocketChannel> ThreadableWebSocketChannel::create(ScriptExecutionContext* context, WebSocketChannelClient* client, const KURL& url, const String& protocol)
+PassRefPtr<ThreadableWebSocketChannel> ThreadableWebSocketChannel::create( ScriptExecutionContext *context,
+        WebSocketChannelClient *client, const KURL &url, const String &protocol )
 {
-    ASSERT(context);
-    ASSERT(client);
+    ASSERT( context );
+    ASSERT( client );
 
 #if ENABLE(WORKERS)
-    if (context->isWorkerContext()) {
-        WorkerContext* workerContext = static_cast<WorkerContext*>(context);
-        WorkerRunLoop& runLoop = workerContext->thread()->runLoop();
+
+    if ( context->isWorkerContext() )
+    {
+        WorkerContext *workerContext = static_cast<WorkerContext *>( context );
+        WorkerRunLoop &runLoop = workerContext->thread()->runLoop();
         String mode = webSocketChannelMode;
-        mode.append(String::number(runLoop.createUniqueId()));
-        return WorkerThreadableWebSocketChannel::create(workerContext, client, mode, url, protocol);
+        mode.append( String::number( runLoop.createUniqueId() ) );
+        return WorkerThreadableWebSocketChannel::create( workerContext, client, mode, url, protocol );
     }
+
 #endif // ENABLE(WORKERS)
 
-    ASSERT(context->isDocument());
-    return WebSocketChannel::create(context, client, url, protocol);
+    ASSERT( context->isDocument() );
+    return WebSocketChannel::create( context, client, url, protocol );
 }
 
 } // namespace WebCore

@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGElementInstanceList);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGElementInstanceList );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,9 +48,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGElementInstanceList);
 
 static const HashTableValue JSSVGElementInstanceListTableValues[3] =
 {
-    { "length", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGElementInstanceListLength), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGElementInstanceListConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "length", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGElementInstanceListLength ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGElementInstanceListConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -63,43 +64,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGElementInstanceListTable = { 5, 3, JSS
 
 static const HashTableValue JSSVGElementInstanceListConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGElementInstanceListConstructorTable = { 1, 0, JSSVGElementInstanceListConstructorTableValues, 0 };
-class JSSVGElementInstanceListConstructor : public DOMConstructorObject {
+class JSSVGElementInstanceListConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGElementInstanceListConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGElementInstanceListConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGElementInstanceListConstructor::s_info = { "SVGElementInstanceListConstructor", &DOMConstructorObject::s_info, &JSSVGElementInstanceListConstructorTable, 0 };
 
-JSSVGElementInstanceListConstructor::JSSVGElementInstanceListConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGElementInstanceListConstructor::JSSVGElementInstanceListConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGElementInstanceListPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGElementInstanceListPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGElementInstanceListConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGElementInstanceListConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGElementInstanceListConstructor, JSDOMWrapper>(exec, &JSSVGElementInstanceListConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGElementInstanceListConstructor, JSDOMWrapper>( exec, &JSSVGElementInstanceListConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSSVGElementInstanceListConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGElementInstanceListConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGElementInstanceListConstructor, JSDOMWrapper>(exec, &JSSVGElementInstanceListConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGElementInstanceListConstructor, JSDOMWrapper>( exec,
+            &JSSVGElementInstanceListConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -111,98 +121,111 @@ bool JSSVGElementInstanceListConstructor::getOwnPropertyDescriptor(ExecState* ex
 
 static const HashTableValue JSSVGElementInstanceListPrototypeTableValues[2] =
 {
-    { "item", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGElementInstanceListPrototypeFunctionItem), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "item", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGElementInstanceListPrototypeFunctionItem ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGElementInstanceListPrototypeTable = { 2, 1, JSSVGElementInstanceListPrototypeTableValues, 0 };
 const ClassInfo JSSVGElementInstanceListPrototype::s_info = { "SVGElementInstanceListPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGElementInstanceListPrototypeTable, 0 };
 
-JSObject* JSSVGElementInstanceListPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGElementInstanceListPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGElementInstanceList>(exec, globalObject);
+    return getDOMPrototype<JSSVGElementInstanceList>( exec, globalObject );
 }
 
-bool JSSVGElementInstanceListPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGElementInstanceListPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGElementInstanceListPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGElementInstanceListPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGElementInstanceListPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGElementInstanceListPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGElementInstanceListPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGElementInstanceListPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGElementInstanceList::s_info = { "SVGElementInstanceList", &JSDOMWrapper::s_info, &JSSVGElementInstanceListTable, 0 };
 
-JSSVGElementInstanceList::JSSVGElementInstanceList(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGElementInstanceList> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSVGElementInstanceList::JSSVGElementInstanceList( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGElementInstanceList> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGElementInstanceList::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGElementInstanceList::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGElementInstanceListPrototype(exec->globalData(), globalObject, JSSVGElementInstanceListPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSVGElementInstanceListPrototype( exec->globalData(), globalObject,
+            JSSVGElementInstanceListPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSVGElementInstanceList::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGElementInstanceList::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGElementInstanceList, Base>(exec, &JSSVGElementInstanceListTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGElementInstanceList, Base>( exec, &JSSVGElementInstanceListTable, this, propertyName, slot );
 }
 
-bool JSSVGElementInstanceList::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGElementInstanceList::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGElementInstanceList, Base>(exec, &JSSVGElementInstanceListTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGElementInstanceList, Base>( exec, &JSSVGElementInstanceListTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsSVGElementInstanceListLength(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGElementInstanceListLength( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGElementInstanceList* castedThis = static_cast<JSSVGElementInstanceList*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGElementInstanceList* imp = static_cast<SVGElementInstanceList*>(castedThis->impl());
-    JSValue result = jsNumber(imp->length());
+    JSSVGElementInstanceList *castedThis = static_cast<JSSVGElementInstanceList *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGElementInstanceList *imp = static_cast<SVGElementInstanceList *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->length() );
     return result;
 }
 
 
-JSValue jsSVGElementInstanceListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGElementInstanceListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGElementInstanceList* domObject = static_cast<JSSVGElementInstanceList*>(asObject(slotBase));
-    return JSSVGElementInstanceList::getConstructor(exec, domObject->globalObject());
+    JSSVGElementInstanceList *domObject = static_cast<JSSVGElementInstanceList *>( asObject( slotBase ) );
+    return JSSVGElementInstanceList::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGElementInstanceList::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGElementInstanceList::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGElementInstanceListConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGElementInstanceListConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGElementInstanceListPrototypeFunctionItem(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGElementInstanceListPrototypeFunctionItem( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGElementInstanceList::s_info))
-        return throwVMTypeError(exec);
-    JSSVGElementInstanceList* castedThis = static_cast<JSSVGElementInstanceList*>(asObject(thisValue));
-    SVGElementInstanceList* imp = static_cast<SVGElementInstanceList*>(castedThis->impl());
-    unsigned index(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGElementInstanceList::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGElementInstanceList *castedThis = static_cast<JSSVGElementInstanceList *>( asObject( thisValue ) );
+    SVGElementInstanceList *imp = static_cast<SVGElementInstanceList *>( castedThis->impl() );
+    unsigned index( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->item(index)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->item( index ) ) );
+    return JSValue::encode( result );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SVGElementInstanceList* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SVGElementInstanceList *impl )
 {
-    return wrap<JSSVGElementInstanceList>(exec, globalObject, impl);
+    return wrap<JSSVGElementInstanceList>( exec, globalObject, impl );
 }
 
-SVGElementInstanceList* toSVGElementInstanceList(JSC::JSValue value)
+SVGElementInstanceList *toSVGElementInstanceList( JSC::JSValue value )
 {
-    return value.inherits(&JSSVGElementInstanceList::s_info) ? static_cast<JSSVGElementInstanceList*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSVGElementInstanceList::s_info ) ? static_cast<JSSVGElementInstanceList *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

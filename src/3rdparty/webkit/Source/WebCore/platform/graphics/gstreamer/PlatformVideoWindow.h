@@ -31,34 +31,48 @@
 
 typedef struct _GstMessage GstMessage;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PlatformVideoWindow : public RefCounted<PlatformVideoWindow> {
-    public:
-        static PassRefPtr<PlatformVideoWindow> createWindow() { return adoptRef(new PlatformVideoWindow()); }
+class PlatformVideoWindow : public RefCounted<PlatformVideoWindow>
+{
+public:
+    static PassRefPtr<PlatformVideoWindow> createWindow()
+    {
+        return adoptRef( new PlatformVideoWindow() );
+    }
 
-        PlatformVideoWindow();
-        ~PlatformVideoWindow();
+    PlatformVideoWindow();
+    ~PlatformVideoWindow();
 
 
-        void prepareForOverlay(GstMessage*);
+    void prepareForOverlay( GstMessage * );
 #if !PLATFORM(MAC)
-        PlatformWidget window() const { return m_window; }
+    PlatformWidget window() const
+    {
+        return m_window;
+    }
 #else
-        PlatformWidget window() const { return m_window.get(); }
+    PlatformWidget window() const
+    {
+        return m_window.get();
+    }
 #endif
-        unsigned long videoWindowId() const { return m_videoWindowId; }
+    unsigned long videoWindowId() const
+    {
+        return m_videoWindowId;
+    }
 
-    private:
-        unsigned long m_videoWindowId;
-        PlatformWidget m_videoWindow;
+private:
+    unsigned long m_videoWindowId;
+    PlatformWidget m_videoWindow;
 #if !PLATFORM(MAC)
-        PlatformWidget m_window;
+    PlatformWidget m_window;
 #else
-        RetainPtr<NSView> m_window;
+    RetainPtr<NSView> m_window;
 #endif
 
-    };
+};
 }
 
 #endif // USE(GSTREAMER)

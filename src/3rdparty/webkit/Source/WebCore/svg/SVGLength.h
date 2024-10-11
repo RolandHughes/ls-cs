@@ -25,11 +25,13 @@
 #include "ExceptionCode.h"
 #include "SVGPropertyTraits.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSPrimitiveValue;
 
-enum SVGLengthType {
+enum SVGLengthType
+{
     LengthTypeUnknown = 0,
     LengthTypeNumber = 1,
     LengthTypePercentage = 2,
@@ -43,7 +45,8 @@ enum SVGLengthType {
     LengthTypePC = 10
 };
 
-enum SVGLengthMode {
+enum SVGLengthMode
+{
     LengthModeWidth = 0,
     LengthModeHeight,
     LengthModeOther
@@ -51,10 +54,12 @@ enum SVGLengthMode {
 
 class SVGElement;
 
-class SVGLength {
+class SVGLength
+{
 public:
     // Forward declare these enums in the w3c naming scheme, for IDL generation
-    enum {
+    enum
+    {
         SVG_LENGTHTYPE_UNKNOWN = LengthTypeUnknown,
         SVG_LENGTHTYPE_NUMBER = LengthTypeNumber,
         SVG_LENGTHTYPE_PERCENTAGE = LengthTypePercentage,
@@ -68,28 +73,34 @@ public:
         SVG_LENGTHTYPE_PC = LengthTypePC
     };
 
-    SVGLength(SVGLengthMode mode = LengthModeOther, const String& valueAsString = String());
-    SVGLength(const SVGLength&);
+    SVGLength( SVGLengthMode mode = LengthModeOther, const String &valueAsString = String() );
+    SVGLength( const SVGLength & );
 
     SVGLengthType unitType() const;
 
-    bool operator==(const SVGLength&) const;
-    bool operator!=(const SVGLength&) const;
+    bool operator==( const SVGLength & ) const;
+    bool operator!=( const SVGLength & ) const;
 
-    float value(const SVGElement* context) const;
-    float value(const SVGElement* context, ExceptionCode&) const;
-    void setValue(float, const SVGElement* context, ExceptionCode&);
+    float value( const SVGElement *context ) const;
+    float value( const SVGElement *context, ExceptionCode & ) const;
+    void setValue( float, const SVGElement *context, ExceptionCode & );
 
-    float valueInSpecifiedUnits() const { return m_valueInSpecifiedUnits; }
-    void setValueInSpecifiedUnits(float value) { m_valueInSpecifiedUnits = value; }
+    float valueInSpecifiedUnits() const
+    {
+        return m_valueInSpecifiedUnits;
+    }
+    void setValueInSpecifiedUnits( float value )
+    {
+        m_valueInSpecifiedUnits = value;
+    }
 
     float valueAsPercentage() const;
 
     String valueAsString() const;
-    void setValueAsString(const String&, ExceptionCode&);
+    void setValueAsString( const String &, ExceptionCode & );
 
-    void newValueSpecifiedUnits(unsigned short, float valueInSpecifiedUnits, ExceptionCode&);
-    void convertToSpecifiedUnits(unsigned short, const SVGElement* context, ExceptionCode&);
+    void newValueSpecifiedUnits( unsigned short, float valueInSpecifiedUnits, ExceptionCode & );
+    void convertToSpecifiedUnits( unsigned short, const SVGElement *context, ExceptionCode & );
 
     // Helper functions
     inline bool isRelative() const
@@ -98,20 +109,20 @@ public:
         return type == LengthTypePercentage || type == LengthTypeEMS || type == LengthTypeEXS;
     }
 
-    static SVGLength fromCSSPrimitiveValue(CSSPrimitiveValue*);
-    static PassRefPtr<CSSPrimitiveValue> toCSSPrimitiveValue(const SVGLength&);
+    static SVGLength fromCSSPrimitiveValue( CSSPrimitiveValue * );
+    static PassRefPtr<CSSPrimitiveValue> toCSSPrimitiveValue( const SVGLength & );
 
 private:
-    bool determineViewport(const SVGElement* context, float& width, float& height) const;
+    bool determineViewport( const SVGElement *context, float &width, float &height ) const;
 
-    float convertValueFromPercentageToUserUnits(float value, const SVGElement* context, ExceptionCode&) const;
-    float convertValueFromUserUnitsToPercentage(float value, const SVGElement* context, ExceptionCode&) const;
+    float convertValueFromPercentageToUserUnits( float value, const SVGElement *context, ExceptionCode & ) const;
+    float convertValueFromUserUnitsToPercentage( float value, const SVGElement *context, ExceptionCode & ) const;
 
-    float convertValueFromUserUnitsToEMS(float value, const SVGElement* context, ExceptionCode&) const;
-    float convertValueFromEMSToUserUnits(float value, const SVGElement* context, ExceptionCode&) const;
+    float convertValueFromUserUnitsToEMS( float value, const SVGElement *context, ExceptionCode & ) const;
+    float convertValueFromEMSToUserUnits( float value, const SVGElement *context, ExceptionCode & ) const;
 
-    float convertValueFromUserUnitsToEXS(float value, const SVGElement* context, ExceptionCode&) const;
-    float convertValueFromEXSToUserUnits(float value, const SVGElement* context, ExceptionCode&) const;
+    float convertValueFromUserUnitsToEXS( float value, const SVGElement *context, ExceptionCode & ) const;
+    float convertValueFromEXSToUserUnits( float value, const SVGElement *context, ExceptionCode & ) const;
 
 private:
     float m_valueInSpecifiedUnits;
@@ -119,9 +130,16 @@ private:
 };
 
 template<>
-struct SVGPropertyTraits<SVGLength> {
-    static SVGLength initialValue() { return SVGLength(); }
-    static String toString(const SVGLength& type) { return type.valueAsString(); }
+struct SVGPropertyTraits<SVGLength>
+{
+    static SVGLength initialValue()
+    {
+        return SVGLength();
+    }
+    static String toString( const SVGLength &type )
+    {
+        return type.valueAsString();
+    }
 };
 
 

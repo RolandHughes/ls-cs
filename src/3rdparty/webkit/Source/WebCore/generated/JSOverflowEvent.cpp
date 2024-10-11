@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSOverflowEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSOverflowEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,11 +43,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSOverflowEvent);
 
 static const HashTableValue JSOverflowEventTableValues[5] =
 {
-    { "orient", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventOrient), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "horizontalOverflow", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventHorizontalOverflow), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "verticalOverflow", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventVerticalOverflow), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "orient", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventOrient ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "horizontalOverflow", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventHorizontalOverflow ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "verticalOverflow", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventVerticalOverflow ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,51 +61,58 @@ static JSC_CONST_HASHTABLE HashTable JSOverflowEventTable = { 9, 7, JSOverflowEv
 
 static const HashTableValue JSOverflowEventConstructorTableValues[4] =
 {
-    { "HORIZONTAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventHORIZONTAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "VERTICAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventVERTICAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "BOTH", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventBOTH), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "HORIZONTAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventHORIZONTAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "VERTICAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventVERTICAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "BOTH", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventBOTH ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSOverflowEventConstructorTable = { 9, 7, JSOverflowEventConstructorTableValues, 0 };
 
-COMPILE_ASSERT(0 == OverflowEvent::HORIZONTAL, OverflowEventEnumHORIZONTALIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(1 == OverflowEvent::VERTICAL, OverflowEventEnumVERTICALIsWrongUseDontCheckEnums);
-COMPILE_ASSERT(2 == OverflowEvent::BOTH, OverflowEventEnumBOTHIsWrongUseDontCheckEnums);
+COMPILE_ASSERT( 0 == OverflowEvent::HORIZONTAL, OverflowEventEnumHORIZONTALIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 1 == OverflowEvent::VERTICAL, OverflowEventEnumVERTICALIsWrongUseDontCheckEnums );
+COMPILE_ASSERT( 2 == OverflowEvent::BOTH, OverflowEventEnumBOTHIsWrongUseDontCheckEnums );
 
-class JSOverflowEventConstructor : public DOMConstructorObject {
+class JSOverflowEventConstructor : public DOMConstructorObject
+{
 public:
-    JSOverflowEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSOverflowEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSOverflowEventConstructor::s_info = { "OverflowEventConstructor", &DOMConstructorObject::s_info, &JSOverflowEventConstructorTable, 0 };
 
-JSOverflowEventConstructor::JSOverflowEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSOverflowEventConstructor::JSOverflowEventConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSOverflowEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSOverflowEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSOverflowEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSOverflowEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSOverflowEventConstructor, JSDOMWrapper>(exec, &JSOverflowEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSOverflowEventConstructor, JSDOMWrapper>( exec, &JSOverflowEventConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSOverflowEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSOverflowEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSOverflowEventConstructor, JSDOMWrapper>(exec, &JSOverflowEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSOverflowEventConstructor, JSDOMWrapper>( exec, &JSOverflowEventConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -116,135 +124,154 @@ bool JSOverflowEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const
 
 static const HashTableValue JSOverflowEventPrototypeTableValues[5] =
 {
-    { "HORIZONTAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventHORIZONTAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "VERTICAL", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventVERTICAL), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "BOTH", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsOverflowEventBOTH), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "initOverflowEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsOverflowEventPrototypeFunctionInitOverflowEvent), (intptr_t)3 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "HORIZONTAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventHORIZONTAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "VERTICAL", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventVERTICAL ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "BOTH", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsOverflowEventBOTH ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "initOverflowEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsOverflowEventPrototypeFunctionInitOverflowEvent ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSOverflowEventPrototypeTable = { 9, 7, JSOverflowEventPrototypeTableValues, 0 };
 const ClassInfo JSOverflowEventPrototype::s_info = { "OverflowEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSOverflowEventPrototypeTable, 0 };
 
-JSObject* JSOverflowEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSOverflowEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSOverflowEvent>(exec, globalObject);
+    return getDOMPrototype<JSOverflowEvent>( exec, globalObject );
 }
 
-bool JSOverflowEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSOverflowEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSOverflowEventPrototype, JSObject>(exec, &JSOverflowEventPrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSOverflowEventPrototype, JSObject>( exec, &JSOverflowEventPrototypeTable, this, propertyName,
+            slot );
 }
 
-bool JSOverflowEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSOverflowEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSOverflowEventPrototype, JSObject>(exec, &JSOverflowEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSOverflowEventPrototype, JSObject>( exec, &JSOverflowEventPrototypeTable, this, propertyName,
+            descriptor );
 }
 
 const ClassInfo JSOverflowEvent::s_info = { "OverflowEvent", &JSEvent::s_info, &JSOverflowEventTable, 0 };
 
-JSOverflowEvent::JSOverflowEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<OverflowEvent> impl)
-    : JSEvent(structure, globalObject, impl)
+JSOverflowEvent::JSOverflowEvent( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<OverflowEvent> impl )
+    : JSEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSOverflowEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSOverflowEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSOverflowEventPrototype(exec->globalData(), globalObject, JSOverflowEventPrototype::createStructure(exec->globalData(), JSEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSOverflowEventPrototype( exec->globalData(), globalObject,
+            JSOverflowEventPrototype::createStructure( exec->globalData(), JSEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSOverflowEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSOverflowEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSOverflowEvent, Base>(exec, &JSOverflowEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSOverflowEvent, Base>( exec, &JSOverflowEventTable, this, propertyName, slot );
 }
 
-bool JSOverflowEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSOverflowEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSOverflowEvent, Base>(exec, &JSOverflowEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSOverflowEvent, Base>( exec, &JSOverflowEventTable, this, propertyName, descriptor );
 }
 
-JSValue jsOverflowEventOrient(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsOverflowEventOrient( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSOverflowEvent* castedThis = static_cast<JSOverflowEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    OverflowEvent* imp = static_cast<OverflowEvent*>(castedThis->impl());
-    JSValue result = jsNumber(imp->orient());
+    JSOverflowEvent *castedThis = static_cast<JSOverflowEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    OverflowEvent *imp = static_cast<OverflowEvent *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->orient() );
     return result;
 }
 
 
-JSValue jsOverflowEventHorizontalOverflow(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsOverflowEventHorizontalOverflow( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSOverflowEvent* castedThis = static_cast<JSOverflowEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    OverflowEvent* imp = static_cast<OverflowEvent*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->horizontalOverflow());
+    JSOverflowEvent *castedThis = static_cast<JSOverflowEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    OverflowEvent *imp = static_cast<OverflowEvent *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->horizontalOverflow() );
     return result;
 }
 
 
-JSValue jsOverflowEventVerticalOverflow(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsOverflowEventVerticalOverflow( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSOverflowEvent* castedThis = static_cast<JSOverflowEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    OverflowEvent* imp = static_cast<OverflowEvent*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->verticalOverflow());
+    JSOverflowEvent *castedThis = static_cast<JSOverflowEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    OverflowEvent *imp = static_cast<OverflowEvent *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->verticalOverflow() );
     return result;
 }
 
 
-JSValue jsOverflowEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsOverflowEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSOverflowEvent* domObject = static_cast<JSOverflowEvent*>(asObject(slotBase));
-    return JSOverflowEvent::getConstructor(exec, domObject->globalObject());
+    JSOverflowEvent *domObject = static_cast<JSOverflowEvent *>( asObject( slotBase ) );
+    return JSOverflowEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSOverflowEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSOverflowEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSOverflowEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSOverflowEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsOverflowEventPrototypeFunctionInitOverflowEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsOverflowEventPrototypeFunctionInitOverflowEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSOverflowEvent::s_info))
-        return throwVMTypeError(exec);
-    JSOverflowEvent* castedThis = static_cast<JSOverflowEvent*>(asObject(thisValue));
-    OverflowEvent* imp = static_cast<OverflowEvent*>(castedThis->impl());
-    unsigned short orient(exec->argument(0).toUInt32(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool horizontalOverflow(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool verticalOverflow(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->initOverflowEvent(orient, horizontalOverflow, verticalOverflow);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSOverflowEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSOverflowEvent *castedThis = static_cast<JSOverflowEvent *>( asObject( thisValue ) );
+    OverflowEvent *imp = static_cast<OverflowEvent *>( castedThis->impl() );
+    unsigned short orient( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool horizontalOverflow( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool verticalOverflow( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->initOverflowEvent( orient, horizontalOverflow, verticalOverflow );
+    return JSValue::encode( jsUndefined() );
 }
 
 // Constant getters
 
-JSValue jsOverflowEventHORIZONTAL(ExecState* exec, JSValue, const Identifier&)
+JSValue jsOverflowEventHORIZONTAL( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsOverflowEventVERTICAL(ExecState* exec, JSValue, const Identifier&)
+JSValue jsOverflowEventVERTICAL( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsOverflowEventBOTH(ExecState* exec, JSValue, const Identifier&)
+JSValue jsOverflowEventBOTH( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
 

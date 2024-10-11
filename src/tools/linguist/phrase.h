@@ -34,125 +34,138 @@ class QphHandler;
 
 class Phrase
 {
- public:
-   Phrase();
-   Phrase(const QString &source, const QString &target, const QString &definition, int sc = -1);
-   Phrase(const QString &source, const QString &target, const QString &definition, PhraseBook *phraseBook);
+public:
+    Phrase();
+    Phrase( const QString &source, const QString &target, const QString &definition, int sc = -1 );
+    Phrase( const QString &source, const QString &target, const QString &definition, PhraseBook *phraseBook );
 
-   QString source() const {
-      return s;
-   }
+    QString source() const
+    {
+        return s;
+    }
 
-   void setSource(const QString &ns);
+    void setSource( const QString &ns );
 
-   QString target() const {
-      return t;
-   }
+    QString target() const
+    {
+        return t;
+    }
 
-   void setTarget(const QString &nt);
+    void setTarget( const QString &nt );
 
-   QString definition() const {
-      return d;
-   }
+    QString definition() const
+    {
+        return d;
+    }
 
-   void setDefinition (const QString &nd);
+    void setDefinition ( const QString &nd );
 
-   int shortcut() const {
-      return shrtc;
-   }
+    int shortcut() const
+    {
+        return shrtc;
+    }
 
-   PhraseBook *phraseBook() const {
-      return m_phraseBook;
-   }
+    PhraseBook *phraseBook() const
+    {
+        return m_phraseBook;
+    }
 
-   void setPhraseBook(PhraseBook *book) {
-      m_phraseBook = book;
-   }
+    void setPhraseBook( PhraseBook *book )
+    {
+        m_phraseBook = book;
+    }
 
- private:
-   int shrtc;
-   QString s;
-   QString t;
-   QString d;
-   PhraseBook *m_phraseBook;
+private:
+    int shrtc;
+    QString s;
+    QString t;
+    QString d;
+    PhraseBook *m_phraseBook;
 };
 
-bool operator==(const Phrase &p, const Phrase &q);
+bool operator==( const Phrase &p, const Phrase &q );
 
-inline bool operator!=(const Phrase &p, const Phrase &q)
+inline bool operator!=( const Phrase &p, const Phrase &q )
 {
-   return !(p == q);
+    return !( p == q );
 }
 
 class PhraseBook : public QObject
 {
-   CS_OBJECT(PhraseBook)
+    LSCS_OBJECT( PhraseBook )
 
- public:
-   PhraseBook();
-   ~PhraseBook();
-   bool load(const QString &fileName, bool *langGuessed);
-   bool save(const QString &fileName);
+public:
+    PhraseBook();
+    ~PhraseBook();
+    bool load( const QString &fileName, bool *langGuessed );
+    bool save( const QString &fileName );
 
-   QList<Phrase *> phrases() const {
-      return m_phrases;
-   }
+    QList<Phrase *> phrases() const
+    {
+        return m_phrases;
+    }
 
-   void append(Phrase *phrase);
-   void remove(Phrase *phrase);
+    void append( Phrase *phrase );
+    void remove( Phrase *phrase );
 
-   QString fileName() const {
-      return m_fileName;
-   }
+    QString fileName() const
+    {
+        return m_fileName;
+    }
 
-   QString friendlyPhraseBookName() const;
-   bool isModified() const {
-      return m_changed;
-   }
+    QString friendlyPhraseBookName() const;
+    bool isModified() const
+    {
+        return m_changed;
+    }
 
-   void setLanguageAndCountry(QLocale::Language lang, QLocale::Country country);
-   QLocale::Language language() const {
-      return m_language;
-   }
+    void setLanguageAndCountry( QLocale::Language lang, QLocale::Country country );
+    QLocale::Language language() const
+    {
+        return m_language;
+    }
 
-   QLocale::Country country() const {
-      return m_country;
-   }
+    QLocale::Country country() const
+    {
+        return m_country;
+    }
 
-   void setSourceLanguageAndCountry(QLocale::Language lang, QLocale::Country country);
-   QLocale::Language sourceLanguage() const {
-      return m_sourceLanguage;
-   }
+    void setSourceLanguageAndCountry( QLocale::Language lang, QLocale::Country country );
+    QLocale::Language sourceLanguage() const
+    {
+        return m_sourceLanguage;
+    }
 
-   QLocale::Country sourceCountry() const {
-      return m_sourceCountry;
-   }
+    QLocale::Country sourceCountry() const
+    {
+        return m_sourceCountry;
+    }
 
-   CS_SIGNAL_1(Public, void modifiedChanged(bool changed))
-   CS_SIGNAL_2(modifiedChanged,changed)
+    LSCS_SIGNAL_1( Public, void modifiedChanged( bool changed ) )
+    LSCS_SIGNAL_2( modifiedChanged,changed )
 
-   CS_SIGNAL_1(Public, void listChanged())
-   CS_SIGNAL_2(listChanged)
+    LSCS_SIGNAL_1( Public, void listChanged() )
+    LSCS_SIGNAL_2( listChanged )
 
- private:
-   // Prevent copying
-   PhraseBook(const PhraseBook &);
-   PhraseBook &operator=(const PhraseBook &);
+private:
+    // Prevent copying
+    PhraseBook( const PhraseBook & );
+    PhraseBook &operator=( const PhraseBook & );
 
-   void setModified(bool modified);
-   void phraseChanged(Phrase *phrase);
+    void setModified( bool modified );
+    void phraseChanged( Phrase *phrase );
 
-   QList<Phrase *> m_phrases;
-   QString m_fileName;
-   bool m_changed;
+    QList<Phrase *> m_phrases;
+    QString m_fileName;
+    bool m_changed;
 
-   QLocale::Language m_language;
-   QLocale::Language m_sourceLanguage;
-   QLocale::Country m_country;
-   QLocale::Country m_sourceCountry;
+    QLocale::Language m_language;
+    QLocale::Language m_sourceLanguage;
+    QLocale::Country m_country;
+    QLocale::Country m_sourceCountry;
 
-   friend class QphHandler;
-   friend class Phrase;
+    friend class QphHandler;
+    friend class Phrase;
 };
 
 #endif

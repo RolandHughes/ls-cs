@@ -31,60 +31,79 @@
 
 #include "JSGlobalObject.h"
 
-namespace JSC {
-
-ASSERT_CLASS_FITS_IN_CELL(JSPropertyNameIterator);
-
-JSPropertyNameIterator* JSPropertyNameIterator::create(ExecState* exec, JSObject* o)
+namespace JSC
 {
-    ASSERT(!o->structure()->enumerationCache() ||
+
+ASSERT_CLASS_FITS_IN_CELL( JSPropertyNameIterator );
+
+JSPropertyNameIterator *JSPropertyNameIterator::create( ExecState *exec, JSObject *o )
+{
+    ASSERT( !o->structure()->enumerationCache() ||
             o->structure()->enumerationCache()->cachedStructure() != o->structure() ||
-            o->structure()->enumerationCache()->cachedPrototypeChain() != o->structure()->prototypeChain(exec));
+            o->structure()->enumerationCache()->cachedPrototypeChain() != o->structure()->prototypeChain( exec ) );
 
-    PropertyNameArray propertyNames(exec);
-    o->getPropertyNames(exec, propertyNames);
+    PropertyNameArray propertyNames( exec );
+    o->getPropertyNames( exec, propertyNames );
     size_t numCacheableSlots = 0;
-    if (!o->structure()->hasNonEnumerableProperties() && !o->structure()->hasAnonymousSlots() &&
-        !o->structure()->hasGetterSetterProperties() && !o->structure()->isUncacheableDictionary() &&
-        !o->structure()->typeInfo().overridesGetPropertyNames())
+
+    if ( !o->structure()->hasNonEnumerableProperties() && !o->structure()->hasAnonymousSlots() &&
+            !o->structure()->hasGetterSetterProperties() && !o->structure()->isUncacheableDictionary() &&
+            !o->structure()->typeInfo().overridesGetPropertyNames() )
+    {
         numCacheableSlots = o->structure()->propertyStorageSize();
-
-    JSPropertyNameIterator* jsPropertyNameIterator = new (exec) JSPropertyNameIterator(exec, propertyNames.data(), numCacheableSlots);
-
-    if (o->structure()->isDictionary())
-        return jsPropertyNameIterator;
-
-    if (o->structure()->typeInfo().overridesGetPropertyNames())
-        return jsPropertyNameIterator;
-    
-    size_t count = normalizePrototypeChain(exec, o);
-    StructureChain* structureChain = o->structure()->prototypeChain(exec);
-    RefPtr<Structure>* structure = structureChain->head();
-    for (size_t i = 0; i < count; ++i) {
-        if (structure[i]->typeInfo().overridesGetPropertyNames())
-            return jsPropertyNameIterator;
     }
 
-    jsPropertyNameIterator->setCachedPrototypeChain(structureChain);
-    jsPropertyNameIterator->setCachedStructure(o->structure());
-    o->structure()->setEnumerationCache(jsPropertyNameIterator);
+    JSPropertyNameIterator *jsPropertyNameIterator = new ( exec ) JSPropertyNameIterator( exec, propertyNames.data(),
+            numCacheableSlots );
+
+    if ( o->structure()->isDictionary() )
+    {
+        return jsPropertyNameIterator;
+    }
+
+    if ( o->structure()->typeInfo().overridesGetPropertyNames() )
+    {
+        return jsPropertyNameIterator;
+    }
+
+    size_t count = normalizePrototypeChain( exec, o );
+    StructureChain *structureChain = o->structure()->prototypeChain( exec );
+    RefPtr<Structure> *structure = structureChain->head();
+
+    for ( size_t i = 0; i < count; ++i )
+    {
+        if ( structure[i]->typeInfo().overridesGetPropertyNames() )
+        {
+            return jsPropertyNameIterator;
+        }
+    }
+
+    jsPropertyNameIterator->setCachedPrototypeChain( structureChain );
+    jsPropertyNameIterator->setCachedStructure( o->structure() );
+    o->structure()->setEnumerationCache( jsPropertyNameIterator );
     return jsPropertyNameIterator;
 }
 
-JSValue JSPropertyNameIterator::get(ExecState* exec, JSObject* base, size_t i)
+JSValue JSPropertyNameIterator::get( ExecState *exec, JSObject *base, size_t i )
 {
-    JSValue& identifier = m_jsStrings[i];
-    if (m_cachedStructure == base->structure() && m_cachedPrototypeChain == base->structure()->prototypeChain(exec))
-        return identifier;
+    JSValue &identifier = m_jsStrings[i];
 
-    if (!base->hasProperty(exec, Identifier(exec, asString(identifier)->value(exec))))
+    if ( m_cachedStructure == base->structure() && m_cachedPrototypeChain == base->structure()->prototypeChain( exec ) )
+    {
+        return identifier;
+    }
+
+    if ( !base->hasProperty( exec, Identifier( exec, asString( identifier )->value( exec ) ) ) )
+    {
         return JSValue();
+    }
+
     return identifier;
 }
 
-void JSPropertyNameIterator::markChildren(MarkStack& markStack)
+void JSPropertyNameIterator::markChildren( MarkStack &markStack )
 {
-    markStack.appendValues(m_jsStrings.get(), m_jsStringsSize, MayContainNullValues);
+    markStack.appendValues( m_jsStrings.get(), m_jsStringsSize, MayContainNullValues );
 }
 
 } // namespace JSC

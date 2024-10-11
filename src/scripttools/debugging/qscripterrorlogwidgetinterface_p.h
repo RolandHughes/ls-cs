@@ -33,20 +33,20 @@ class QScriptErrorLogWidgetInterfacePrivate;
 
 class QScriptErrorLogWidgetInterface: public QWidget, public QScriptMessageHandlerInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptErrorLogWidgetInterface)
+    SCRIPT_T_LSCS_OBJECT( QScriptErrorLogWidgetInterface )
 
- public:
-   ~QScriptErrorLogWidgetInterface();
+public:
+    ~QScriptErrorLogWidgetInterface();
 
-   virtual void clear() = 0;
+    virtual void clear() = 0;
 
- protected:
-   QScriptErrorLogWidgetInterface(QScriptErrorLogWidgetInterfacePrivate &dd,
-                                  QWidget *parent, Qt::WindowFlags flags);
+protected:
+    QScriptErrorLogWidgetInterface( QScriptErrorLogWidgetInterfacePrivate &dd,
+                                    QWidget *parent, Qt::WindowFlags flags );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptErrorLogWidgetInterface)
-   Q_DISABLE_COPY(QScriptErrorLogWidgetInterface)
+private:
+    Q_DECLARE_PRIVATE( QScriptErrorLogWidgetInterface )
+    Q_DISABLE_COPY( QScriptErrorLogWidgetInterface )
 };
 
 QT_END_NAMESPACE

@@ -34,36 +34,36 @@ class MultiDataModel;
 
 class CheckableListModel : public QStandardItemModel
 {
- public:
-   CheckableListModel(QObject *parent = nullptr);
-   Qt::ItemFlags flags(const QModelIndex &index) const override;
+public:
+    CheckableListModel( QObject *parent = nullptr );
+    Qt::ItemFlags flags( const QModelIndex &index ) const override;
 };
 
 class BatchTranslationDialog : public QDialog
 {
-   CS_OBJECT(BatchTranslationDialog)
+    LSCS_OBJECT( BatchTranslationDialog )
 
- public:
-   BatchTranslationDialog(MultiDataModel *model, QWidget *w = nullptr);
-   ~BatchTranslationDialog();
+public:
+    BatchTranslationDialog( MultiDataModel *model, QWidget *w = nullptr );
+    ~BatchTranslationDialog();
 
-   void setPhraseBooks(const QList<PhraseBook *> &phrasebooks, int modelIndex);
+    void setPhraseBooks( const QList<PhraseBook *> &phrasebooks, int modelIndex );
 
-   CS_SIGNAL_1(Public, void finished())
-   CS_SIGNAL_2(finished)
+    LSCS_SIGNAL_1( Public, void finished() )
+    LSCS_SIGNAL_2( finished )
 
- private:
-   Ui::BatchTranslationDialog *m_ui;
+private:
+    Ui::BatchTranslationDialog *m_ui;
 
-   CheckableListModel m_model;
-   MultiDataModel *m_dataModel;
-   QList<PhraseBook *> m_phrasebooks;
-   int m_modelIndex;
+    CheckableListModel m_model;
+    MultiDataModel *m_dataModel;
+    QList<PhraseBook *> m_phrasebooks;
+    int m_modelIndex;
 
-   // slots
-   void startTranslation();
-   void movePhraseBookUp();
-   void movePhraseBookDown();
+    // slots
+    void startTranslation();
+    void movePhraseBookUp();
+    void movePhraseBookDown();
 };
 
 #endif

@@ -33,27 +33,28 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeProxyMetaObject : public QAbstractDynamicMetaObject
 {
- public:
-   struct ProxyData {
-      typedef QObject *(*CreateFunc)(QObject *);
-      QMetaObject *metaObject;
-      CreateFunc createFunc;
-      int propertyOffset;
-      int methodOffset;
-   };
+public:
+    struct ProxyData
+    {
+        typedef QObject *( *CreateFunc )( QObject * );
+        QMetaObject *metaObject;
+        CreateFunc createFunc;
+        int propertyOffset;
+        int methodOffset;
+    };
 
-   QDeclarativeProxyMetaObject(QObject *, QList<ProxyData> *);
-   virtual ~QDeclarativeProxyMetaObject();
+    QDeclarativeProxyMetaObject( QObject *, QList<ProxyData> * );
+    virtual ~QDeclarativeProxyMetaObject();
 
- protected:
-   virtual int metaCall(QMetaObject::Call _c, int _id, void **_a);
+protected:
+    virtual int metaCall( QMetaObject::Call _c, int _id, void **_a );
 
- private:
-   QList<ProxyData> *metaObjects;
-   QObject **proxies;
+private:
+    QList<ProxyData> *metaObjects;
+    QObject **proxies;
 
-   QAbstractDynamicMetaObject *parent;
-   QObject *object;
+    QAbstractDynamicMetaObject *parent;
+    QObject *object;
 };
 
 QT_END_NAMESPACE

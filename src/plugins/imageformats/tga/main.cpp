@@ -34,41 +34,51 @@
 
 class QTgaPlugin : public QImageIOPlugin
 {
-   CS_OBJECT(QTgaPlugin)
+    LSCS_OBJECT( QTgaPlugin )
 
-   CS_PLUGIN_IID(QImageIOHandlerInterface_ID)
-   CS_PLUGIN_KEY("tga")
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "tga" )
 
 public:
-    Capabilities capabilities(QIODevice * device, const QByteArray & format) const;
-    QImageIOHandler * create(QIODevice * device, const QByteArray & format = QByteArray()) const;
+    Capabilities capabilities( QIODevice *device, const QByteArray &format ) const;
+    QImageIOHandler *create( QIODevice *device, const QByteArray &format = QByteArray() ) const;
     QStringList keys() const;
 };
 
-CS_PLUGIN_REGISTER(QTgaPlugin)
+LSCS_PLUGIN_REGISTER( QTgaPlugin )
 
-QImageIOPlugin::Capabilities QTgaPlugin::capabilities(QIODevice *device, const QByteArray &format) const
+QImageIOPlugin::Capabilities QTgaPlugin::capabilities( QIODevice *device, const QByteArray &format ) const
 {
-    if (format == "tga")
-        return Capabilities(CanRead);
+    if ( format == "tga" )
+    {
+        return Capabilities( CanRead );
+    }
 
-    if (!format.isEmpty())
+    if ( !format.isEmpty() )
+    {
         return 0;
+    }
 
-    if (!device->isOpen())
+    if ( !device->isOpen() )
+    {
         return 0;
+    }
 
     Capabilities cap;
-    if (device->isReadable() && QTgaHandler::canRead(device))
+
+    if ( device->isReadable() && QTgaHandler::canRead( device ) )
+    {
         cap |= CanRead;
+    }
+
     return cap;
 }
 
-QImageIOHandler* QTgaPlugin::create(QIODevice *device, const QByteArray &format) const
+QImageIOHandler *QTgaPlugin::create( QIODevice *device, const QByteArray &format ) const
 {
     QImageIOHandler *tgaHandler = new QTgaHandler();
-    tgaHandler->setDevice(device);
-    tgaHandler->setFormat(format);
+    tgaHandler->setDevice( device );
+    tgaHandler->setFormat( format );
     return tgaHandler;
 }
 

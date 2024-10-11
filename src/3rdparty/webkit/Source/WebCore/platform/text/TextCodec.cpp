@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,26 +30,32 @@
 #include "PlatformString.h"
 #include <wtf/StringExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 TextCodec::~TextCodec()
 {
 }
 
-int TextCodec::getUnencodableReplacement(unsigned codePoint, UnencodableHandling handling, UnencodableReplacementArray replacement)
+int TextCodec::getUnencodableReplacement( unsigned codePoint, UnencodableHandling handling,
+        UnencodableReplacementArray replacement )
 {
-    switch (handling) {
+    switch ( handling )
+    {
         case QuestionMarksForUnencodables:
             replacement[0] = '?';
             replacement[1] = 0;
             return 1;
+
         case EntitiesForUnencodables:
-            snprintf(replacement, sizeof(UnencodableReplacementArray), "&#%u;", codePoint);
-            return static_cast<int>(strlen(replacement));
+            snprintf( replacement, sizeof( UnencodableReplacementArray ), "&#%u;", codePoint );
+            return static_cast<int>( strlen( replacement ) );
+
         case URLEncodedEntitiesForUnencodables:
-            snprintf(replacement, sizeof(UnencodableReplacementArray), "%%26%%23%u%%3B", codePoint);
-            return static_cast<int>(strlen(replacement));
+            snprintf( replacement, sizeof( UnencodableReplacementArray ), "%%26%%23%u%%3B", codePoint );
+            return static_cast<int>( strlen( replacement ) );
     }
+
     ASSERT_NOT_REACHED();
     replacement[0] = 0;
     return 0;

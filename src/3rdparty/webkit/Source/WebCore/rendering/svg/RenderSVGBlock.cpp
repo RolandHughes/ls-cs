@@ -27,26 +27,28 @@
 #include "RenderSVGResource.h"
 #include "SVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderSVGBlock::RenderSVGBlock(SVGElement* node) 
-    : RenderBlock(node)
+RenderSVGBlock::RenderSVGBlock( SVGElement *node )
+    : RenderBlock( node )
 {
 }
 
-void RenderSVGBlock::setStyle(PassRefPtr<RenderStyle> style) 
+void RenderSVGBlock::setStyle( PassRefPtr<RenderStyle> style )
 {
     RefPtr<RenderStyle> useStyle = style;
 
-    // SVG text layout code expects us to be a block-level style element.   
-    if (useStyle->isDisplayInlineType()) {
+    // SVG text layout code expects us to be a block-level style element.
+    if ( useStyle->isDisplayInlineType() )
+    {
         RefPtr<RenderStyle> newStyle = RenderStyle::create();
-        newStyle->inheritFrom(useStyle.get());
-        newStyle->setDisplay(BLOCK);
+        newStyle->inheritFrom( useStyle.get() );
+        newStyle->setDisplay( BLOCK );
         useStyle = newStyle.release();
     }
 
-    RenderBlock::setStyle(useStyle.release());
+    RenderBlock::setStyle( useStyle.release() );
 }
 
 void RenderSVGBlock::updateBoxModelInfoFromStyle()
@@ -65,10 +67,10 @@ void RenderSVGBlock::updateBoxModelInfoFromStyle()
     //
     // Note: This does NOT affect overflow handling on outer/inner <svg> elements - this is handled
     // manually by RenderSVGRoot - which owns the documents enclosing root layer and thus works fine.
-    setHasOverflowClip(false);
+    setHasOverflowClip( false );
 }
 
-void RenderSVGBlock::absoluteRects(Vector<IntRect>&, int, int)
+void RenderSVGBlock::absoluteRects( Vector<IntRect> &, int, int )
 {
     // This code path should never be taken for SVG, as we're assuming useTransforms=true everywhere, absoluteQuads should be used.
     ASSERT_NOT_REACHED();
@@ -76,27 +78,30 @@ void RenderSVGBlock::absoluteRects(Vector<IntRect>&, int, int)
 
 void RenderSVGBlock::destroy()
 {
-    SVGResourcesCache::clientDestroyed(this);
+    SVGResourcesCache::clientDestroyed( this );
     RenderBlock::destroy();
 }
 
-void RenderSVGBlock::styleWillChange(StyleDifference diff, const RenderStyle* newStyle)
+void RenderSVGBlock::styleWillChange( StyleDifference diff, const RenderStyle *newStyle )
 {
-    if (diff == StyleDifferenceLayout)
+    if ( diff == StyleDifferenceLayout )
+    {
         setNeedsBoundariesUpdate();
-    RenderBlock::styleWillChange(diff, newStyle);
+    }
+
+    RenderBlock::styleWillChange( diff, newStyle );
 }
 
-void RenderSVGBlock::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderSVGBlock::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderBlock::styleDidChange(diff, oldStyle);
-    SVGResourcesCache::clientStyleChanged(this, diff, style());
+    RenderBlock::styleDidChange( diff, oldStyle );
+    SVGResourcesCache::clientStyleChanged( this, diff, style() );
 }
 
 void RenderSVGBlock::updateFromElement()
 {
     RenderBlock::updateFromElement();
-    SVGResourcesCache::clientUpdatedFromElement(this, style());
+    SVGResourcesCache::clientUpdatedFromElement( this, style() );
 }
 
 }

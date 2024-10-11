@@ -34,25 +34,26 @@
 #include <wtf/text/CString.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 LevelDBIterator::~LevelDBIterator()
 {
 }
 
-LevelDBIterator::LevelDBIterator(PassOwnPtr<leveldb::Iterator> it)
-    : m_iterator(it)
+LevelDBIterator::LevelDBIterator( PassOwnPtr<leveldb::Iterator> it )
+    : m_iterator( it )
 {
 }
 
-static leveldb::Slice makeSlice(const Vector<char>& value)
+static leveldb::Slice makeSlice( const Vector<char> &value )
 {
-    return leveldb::Slice(value.data(), value.size());
+    return leveldb::Slice( value.data(), value.size() );
 }
 
-static LevelDBSlice makeLevelDBSlice(leveldb::Slice s)
+static LevelDBSlice makeLevelDBSlice( leveldb::Slice s )
 {
-    return LevelDBSlice(s.data(), s.data() + s.size());
+    return LevelDBSlice( s.data(), s.data() + s.size() );
 }
 
 bool LevelDBIterator::isValid() const
@@ -65,9 +66,9 @@ void LevelDBIterator::seekToLast()
     m_iterator->SeekToLast();
 }
 
-void LevelDBIterator::seek(const Vector<char>& target)
+void LevelDBIterator::seek( const Vector<char> &target )
 {
-    m_iterator->Seek(makeSlice(target));
+    m_iterator->Seek( makeSlice( target ) );
 }
 
 void LevelDBIterator::next()
@@ -82,12 +83,12 @@ void LevelDBIterator::prev()
 
 LevelDBSlice LevelDBIterator::key() const
 {
-    return makeLevelDBSlice(m_iterator->key());
+    return makeLevelDBSlice( m_iterator->key() );
 }
 
 LevelDBSlice LevelDBIterator::value() const
 {
-    return makeLevelDBSlice(m_iterator->value());
+    return makeLevelDBSlice( m_iterator->value() );
 }
 
 } // namespace WebCore

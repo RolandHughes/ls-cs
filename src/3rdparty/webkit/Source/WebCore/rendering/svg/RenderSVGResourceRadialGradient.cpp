@@ -26,12 +26,13 @@
 #include "RadialGradientAttributes.h"
 #include "SVGRadialGradientElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 RenderSVGResourceType RenderSVGResourceRadialGradient::s_resourceType = RadialGradientResourceType;
 
-RenderSVGResourceRadialGradient::RenderSVGResourceRadialGradient(SVGRadialGradientElement* node)
-    : RenderSVGResourceGradient(node)
+RenderSVGResourceRadialGradient::RenderSVGResourceRadialGradient( SVGRadialGradientElement *node )
+    : RenderSVGResourceGradient( node )
 {
 }
 
@@ -39,31 +40,31 @@ RenderSVGResourceRadialGradient::~RenderSVGResourceRadialGradient()
 {
 }
 
-void RenderSVGResourceRadialGradient::collectGradientAttributes(SVGGradientElement* gradientElement)
+void RenderSVGResourceRadialGradient::collectGradientAttributes( SVGGradientElement *gradientElement )
 {
     m_attributes = RadialGradientAttributes();
-    static_cast<SVGRadialGradientElement*>(gradientElement)->collectGradientAttributes(m_attributes);
+    static_cast<SVGRadialGradientElement *>( gradientElement )->collectGradientAttributes( m_attributes );
 }
 
-void RenderSVGResourceRadialGradient::buildGradient(GradientData* gradientData, SVGGradientElement* gradientElement) const
+void RenderSVGResourceRadialGradient::buildGradient( GradientData *gradientData, SVGGradientElement *gradientElement ) const
 {
-    SVGRadialGradientElement* radialGradientElement = static_cast<SVGRadialGradientElement*>(gradientElement);
+    SVGRadialGradientElement *radialGradientElement = static_cast<SVGRadialGradientElement *>( gradientElement );
 
     // Determine gradient focal/center points and radius
     FloatPoint focalPoint;
     FloatPoint centerPoint;
     float radius;
-    radialGradientElement->calculateFocalCenterPointsAndRadius(m_attributes, focalPoint, centerPoint, radius);
+    radialGradientElement->calculateFocalCenterPointsAndRadius( m_attributes, focalPoint, centerPoint, radius );
 
-    gradientData->gradient = Gradient::create(focalPoint,
-                                              0, // SVG does not support a "focus radius"
-                                              centerPoint,
-                                              radius);
+    gradientData->gradient = Gradient::create( focalPoint,
+                             0, // SVG does not support a "focus radius"
+                             centerPoint,
+                             radius );
 
-    gradientData->gradient->setSpreadMethod(m_attributes.spreadMethod());
+    gradientData->gradient->setSpreadMethod( m_attributes.spreadMethod() );
 
     // Add stops
-    addStops(gradientData, m_attributes.stops());
+    addStops( gradientData, m_attributes.stops() );
 }
 
 }

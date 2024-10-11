@@ -27,14 +27,16 @@
 #include "RenderObject.h"
 #include "ShadowData.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Modes for some of the line-related functions.
 enum LinePositionMode { PositionOnContainingLine, PositionOfInteriorLineBoxes };
 enum LineDirectionMode { HorizontalLine, VerticalLine };
 typedef unsigned BorderEdgeFlags;
 
-enum BackgroundBleedAvoidance {
+enum BackgroundBleedAvoidance
+{
     BackgroundBleedNone,
     BackgroundBleedShrinkBackground,
     BackgroundBleedUseTransparencyLayer
@@ -43,17 +45,24 @@ enum BackgroundBleedAvoidance {
 // This class is the base for all objects that adhere to the CSS box model as described
 // at http://www.w3.org/TR/CSS21/box.html
 
-class RenderBoxModelObject : public RenderObject {
+class RenderBoxModelObject : public RenderObject
+{
 public:
-    RenderBoxModelObject(Node*);
+    RenderBoxModelObject( Node * );
     virtual ~RenderBoxModelObject();
-    
+
     virtual void destroy();
 
     int relativePositionOffsetX() const;
     int relativePositionOffsetY() const;
-    IntSize relativePositionOffset() const { return IntSize(relativePositionOffsetX(), relativePositionOffsetY()); }
-    IntSize relativePositionLogicalOffset() const { return style()->isHorizontalWritingMode() ? relativePositionOffset() : relativePositionOffset().transposedSize(); }
+    IntSize relativePositionOffset() const
+    {
+        return IntSize( relativePositionOffsetX(), relativePositionOffsetY() );
+    }
+    IntSize relativePositionLogicalOffset() const
+    {
+        return style()->isHorizontalWritingMode() ? relativePositionOffset() : relativePositionOffset().transposedSize();
+    }
 
     // IE extensions. Used to calculate offsetWidth/Height.  Overridden by inlines (RenderFlow)
     // to return the remaining width on a given line (and the height of a single line).
@@ -62,45 +71,100 @@ public:
     virtual int offsetWidth() const = 0;
     virtual int offsetHeight() const = 0;
 
-    virtual void styleWillChange(StyleDifference, const RenderStyle* newStyle);
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleWillChange( StyleDifference, const RenderStyle *newStyle );
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
     virtual void updateBoxModelInfoFromStyle();
 
     bool hasSelfPaintingLayer() const;
-    RenderLayer* layer() const { return m_layer; }
-    virtual bool requiresLayer() const { return isRoot() || isPositioned() || isRelPositioned() || isTransparent() || hasOverflowClip() || hasTransform() || hasMask() || hasReflection() || style()->specifiesColumns(); }
+    RenderLayer *layer() const
+    {
+        return m_layer;
+    }
+    virtual bool requiresLayer() const
+    {
+        return isRoot() || isPositioned() || isRelPositioned() || isTransparent() || hasOverflowClip() || hasTransform() || hasMask()
+               || hasReflection() || style()->specifiesColumns();
+    }
 
     // This will work on inlines to return the bounding box of all of the lines' border boxes.
     virtual IntRect borderBoundingBox() const = 0;
 
     // Virtual since table cells override
-    virtual int paddingTop(bool includeIntrinsicPadding = true) const;
-    virtual int paddingBottom(bool includeIntrinsicPadding = true) const;
-    virtual int paddingLeft(bool includeIntrinsicPadding = true) const;
-    virtual int paddingRight(bool includeIntrinsicPadding = true) const;
-    virtual int paddingBefore(bool includeIntrinsicPadding = true) const;
-    virtual int paddingAfter(bool includeIntrinsicPadding = true) const;
-    virtual int paddingStart(bool includeIntrinsicPadding = true) const;
-    virtual int paddingEnd(bool includeIntrinsicPadding = true) const;
+    virtual int paddingTop( bool includeIntrinsicPadding = true ) const;
+    virtual int paddingBottom( bool includeIntrinsicPadding = true ) const;
+    virtual int paddingLeft( bool includeIntrinsicPadding = true ) const;
+    virtual int paddingRight( bool includeIntrinsicPadding = true ) const;
+    virtual int paddingBefore( bool includeIntrinsicPadding = true ) const;
+    virtual int paddingAfter( bool includeIntrinsicPadding = true ) const;
+    virtual int paddingStart( bool includeIntrinsicPadding = true ) const;
+    virtual int paddingEnd( bool includeIntrinsicPadding = true ) const;
 
-    virtual int borderTop() const { return style()->borderTopWidth(); }
-    virtual int borderBottom() const { return style()->borderBottomWidth(); }
-    virtual int borderLeft() const { return style()->borderLeftWidth(); }
-    virtual int borderRight() const { return style()->borderRightWidth(); }
-    virtual int borderBefore() const { return style()->borderBeforeWidth(); }
-    virtual int borderAfter() const { return style()->borderAfterWidth(); }
-    virtual int borderStart() const { return style()->borderStartWidth(); }
-    virtual int borderEnd() const { return style()->borderEndWidth(); }
+    virtual int borderTop() const
+    {
+        return style()->borderTopWidth();
+    }
+    virtual int borderBottom() const
+    {
+        return style()->borderBottomWidth();
+    }
+    virtual int borderLeft() const
+    {
+        return style()->borderLeftWidth();
+    }
+    virtual int borderRight() const
+    {
+        return style()->borderRightWidth();
+    }
+    virtual int borderBefore() const
+    {
+        return style()->borderBeforeWidth();
+    }
+    virtual int borderAfter() const
+    {
+        return style()->borderAfterWidth();
+    }
+    virtual int borderStart() const
+    {
+        return style()->borderStartWidth();
+    }
+    virtual int borderEnd() const
+    {
+        return style()->borderEndWidth();
+    }
 
-    int borderAndPaddingHeight() const { return borderTop() + borderBottom() + paddingTop() + paddingBottom(); }
-    int borderAndPaddingWidth() const { return borderLeft() + borderRight() + paddingLeft() + paddingRight(); }
-    int borderAndPaddingLogicalHeight() const { return borderBefore() + borderAfter() + paddingBefore() + paddingAfter(); }
-    int borderAndPaddingLogicalWidth() const { return borderStart() + borderEnd() + paddingStart() + paddingEnd(); }
-    int borderAndPaddingLogicalLeft() const { return style()->isHorizontalWritingMode() ? borderLeft() + paddingLeft() : borderTop() + paddingTop(); }
+    int borderAndPaddingHeight() const
+    {
+        return borderTop() + borderBottom() + paddingTop() + paddingBottom();
+    }
+    int borderAndPaddingWidth() const
+    {
+        return borderLeft() + borderRight() + paddingLeft() + paddingRight();
+    }
+    int borderAndPaddingLogicalHeight() const
+    {
+        return borderBefore() + borderAfter() + paddingBefore() + paddingAfter();
+    }
+    int borderAndPaddingLogicalWidth() const
+    {
+        return borderStart() + borderEnd() + paddingStart() + paddingEnd();
+    }
+    int borderAndPaddingLogicalLeft() const
+    {
+        return style()->isHorizontalWritingMode() ? borderLeft() + paddingLeft() : borderTop() + paddingTop();
+    }
 
-    int borderAndPaddingStart() const { return borderStart() + paddingStart(); }
-    int borderLogicalLeft() const { return style()->isHorizontalWritingMode() ? borderLeft() : borderTop(); }
-    int borderLogicalRight() const { return style()->isHorizontalWritingMode() ? borderRight() : borderBottom(); }
+    int borderAndPaddingStart() const
+    {
+        return borderStart() + paddingStart();
+    }
+    int borderLogicalLeft() const
+    {
+        return style()->isHorizontalWritingMode() ? borderLeft() : borderTop();
+    }
+    int borderLogicalRight() const
+    {
+        return style()->isHorizontalWritingMode() ? borderRight() : borderBottom();
+    }
 
     virtual int marginTop() const = 0;
     virtual int marginBottom() const = 0;
@@ -111,84 +175,105 @@ public:
     virtual int marginStart() const = 0;
     virtual int marginEnd() const = 0;
 
-    bool hasInlineDirectionBordersPaddingOrMargin() const { return hasInlineDirectionBordersOrPadding() || marginStart()|| marginEnd(); }
-    bool hasInlineDirectionBordersOrPadding() const { return borderStart() || borderEnd() || paddingStart()|| paddingEnd(); }
+    bool hasInlineDirectionBordersPaddingOrMargin() const
+    {
+        return hasInlineDirectionBordersOrPadding() || marginStart()|| marginEnd();
+    }
+    bool hasInlineDirectionBordersOrPadding() const
+    {
+        return borderStart() || borderEnd() || paddingStart()|| paddingEnd();
+    }
 
     virtual int containingBlockLogicalWidthForContent() const;
 
-    virtual void childBecameNonInline(RenderObject* /*child*/) { }
+    virtual void childBecameNonInline( RenderObject * /*child*/ ) { }
 
-    void paintBorder(GraphicsContext*, int tx, int ty, int w, int h, const RenderStyle*, BackgroundBleedAvoidance = BackgroundBleedNone, bool includeLogicalLeftEdge = true, bool includeLogicalRightEdge = true);
-    bool paintNinePieceImage(GraphicsContext*, int tx, int ty, int w, int h, const RenderStyle*, const NinePieceImage&, CompositeOperator = CompositeSourceOver);
-    void paintBoxShadow(GraphicsContext*, int tx, int ty, int w, int h, const RenderStyle*, ShadowStyle, bool includeLogicalLeftEdge = true, bool includeLogicalRightEdge = true);
-    void paintFillLayerExtended(const PaintInfo&, const Color&, const FillLayer*, int tx, int ty, int width, int height, BackgroundBleedAvoidance, InlineFlowBox* = 0, int inlineBoxWidth = 0, int inlineBoxHeight = 0, CompositeOperator = CompositeSourceOver, RenderObject* backgroundObject = 0);
-    
+    void paintBorder( GraphicsContext *, int tx, int ty, int w, int h, const RenderStyle *,
+                      BackgroundBleedAvoidance = BackgroundBleedNone, bool includeLogicalLeftEdge = true, bool includeLogicalRightEdge = true );
+    bool paintNinePieceImage( GraphicsContext *, int tx, int ty, int w, int h, const RenderStyle *, const NinePieceImage &,
+                              CompositeOperator = CompositeSourceOver );
+    void paintBoxShadow( GraphicsContext *, int tx, int ty, int w, int h, const RenderStyle *, ShadowStyle,
+                         bool includeLogicalLeftEdge = true, bool includeLogicalRightEdge = true );
+    void paintFillLayerExtended( const PaintInfo &, const Color &, const FillLayer *, int tx, int ty, int width, int height,
+                                 BackgroundBleedAvoidance, InlineFlowBox * = 0, int inlineBoxWidth = 0, int inlineBoxHeight = 0,
+                                 CompositeOperator = CompositeSourceOver, RenderObject *backgroundObject = 0 );
+
     // Overridden by subclasses to determine line height and baseline position.
-    virtual int lineHeight(bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const = 0;
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const = 0;
+    virtual int lineHeight( bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine ) const = 0;
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const = 0;
 
     // Called by RenderObject::destroy() (and RenderWidget::destroy()) and is the only way layers should ever be destroyed
     void destroyLayer();
 
-    void highQualityRepaintTimerFired(Timer<RenderBoxModelObject>*);
+    void highQualityRepaintTimerFired( Timer<RenderBoxModelObject> * );
 
-    virtual void setSelectionState(SelectionState s);
+    virtual void setSelectionState( SelectionState s );
 protected:
-    void calculateBackgroundImageGeometry(const FillLayer*, int tx, int ty, int w, int h, IntRect& destRect, IntPoint& phase, IntSize& tileSize);
-    void getBorderEdgeInfo(class BorderEdge[], bool includeLogicalLeftEdge = true, bool includeLogicalRightEdge = true) const;
-    bool borderObscuresBackgroundEdge(const FloatSize& contextScale) const;
+    void calculateBackgroundImageGeometry( const FillLayer *, int tx, int ty, int w, int h, IntRect &destRect, IntPoint &phase,
+                                           IntSize &tileSize );
+    void getBorderEdgeInfo( class BorderEdge[], bool includeLogicalLeftEdge = true, bool includeLogicalRightEdge = true ) const;
+    bool borderObscuresBackgroundEdge( const FloatSize &contextScale ) const;
 
-    bool shouldPaintAtLowQuality(GraphicsContext*, Image*, const void*, const IntSize&);
+    bool shouldPaintAtLowQuality( GraphicsContext *, Image *, const void *, const IntSize & );
 
-    RenderBoxModelObject* continuation() const;
-    void setContinuation(RenderBoxModelObject*);
+    RenderBoxModelObject *continuation() const;
+    void setContinuation( RenderBoxModelObject * );
 
 private:
-    virtual bool isBoxModelObject() const { return true; }
+    virtual bool isBoxModelObject() const
+    {
+        return true;
+    }
 
-    IntSize calculateFillTileSize(const FillLayer*, IntSize scaledSize) const;
+    IntSize calculateFillTileSize( const FillLayer *, IntSize scaledSize ) const;
 
-    RoundedIntRect getBackgroundRoundedRect(const IntRect&, InlineFlowBox*, int inlineBoxWidth, int inlineBoxHeight,
-        bool includeLogicalLeftEdge, bool includeLogicalRightEdge);
+    RoundedIntRect getBackgroundRoundedRect( const IntRect &, InlineFlowBox *, int inlineBoxWidth, int inlineBoxHeight,
+            bool includeLogicalLeftEdge, bool includeLogicalRightEdge );
 
-    void clipBorderSidePolygon(GraphicsContext*, const RoundedIntRect& outerBorder, const RoundedIntRect& innerBorder,
-                               BoxSide, bool firstEdgeMatches, bool secondEdgeMatches);
-    void paintOneBorderSide(GraphicsContext*, const RenderStyle*, const RoundedIntRect& outerBorder, const RoundedIntRect& innerBorder,
-                                const IntRect& sideRect, BoxSide, BoxSide adjacentSide1, BoxSide adjacentSide2, const class BorderEdge[],
-                                const Path*, BackgroundBleedAvoidance, bool includeLogicalLeftEdge, bool includeLogicalRightEdge, bool antialias, const Color* overrideColor = 0);
-    void paintTranslucentBorderSides(GraphicsContext*, const RenderStyle*, const RoundedIntRect& outerBorder, const RoundedIntRect& innerBorder,
-                          const class BorderEdge[], BackgroundBleedAvoidance, bool includeLogicalLeftEdge, bool includeLogicalRightEdge, bool antialias = false);
-    void paintBorderSides(GraphicsContext*, const RenderStyle*, const RoundedIntRect& outerBorder, const RoundedIntRect& innerBorder,
-                          const class BorderEdge[], BorderEdgeFlags, BackgroundBleedAvoidance,
-                          bool includeLogicalLeftEdge, bool includeLogicalRightEdge, bool antialias = false, const Color* overrideColor = 0);
-    void drawBoxSideFromPath(GraphicsContext*, const IntRect&, const Path&, const class BorderEdge[],
-                            float thickness, float drawThickness, BoxSide, const RenderStyle*, 
-                            Color, EBorderStyle, BackgroundBleedAvoidance, bool includeLogicalLeftEdge, bool includeLogicalRightEdge);
+    void clipBorderSidePolygon( GraphicsContext *, const RoundedIntRect &outerBorder, const RoundedIntRect &innerBorder,
+                                BoxSide, bool firstEdgeMatches, bool secondEdgeMatches );
+    void paintOneBorderSide( GraphicsContext *, const RenderStyle *, const RoundedIntRect &outerBorder,
+                             const RoundedIntRect &innerBorder,
+                             const IntRect &sideRect, BoxSide, BoxSide adjacentSide1, BoxSide adjacentSide2, const class BorderEdge[],
+                             const Path *, BackgroundBleedAvoidance, bool includeLogicalLeftEdge, bool includeLogicalRightEdge, bool antialias,
+                             const Color *overrideColor = 0 );
+    void paintTranslucentBorderSides( GraphicsContext *, const RenderStyle *, const RoundedIntRect &outerBorder,
+                                      const RoundedIntRect &innerBorder,
+                                      const class BorderEdge[], BackgroundBleedAvoidance, bool includeLogicalLeftEdge, bool includeLogicalRightEdge,
+                                      bool antialias = false );
+    void paintBorderSides( GraphicsContext *, const RenderStyle *, const RoundedIntRect &outerBorder,
+                           const RoundedIntRect &innerBorder,
+                           const class BorderEdge[], BorderEdgeFlags, BackgroundBleedAvoidance,
+                           bool includeLogicalLeftEdge, bool includeLogicalRightEdge, bool antialias = false, const Color *overrideColor = 0 );
+    void drawBoxSideFromPath( GraphicsContext *, const IntRect &, const Path &, const class BorderEdge[],
+                              float thickness, float drawThickness, BoxSide, const RenderStyle *,
+                              Color, EBorderStyle, BackgroundBleedAvoidance, bool includeLogicalLeftEdge, bool includeLogicalRightEdge );
 
     friend class RenderView;
 
-    RenderLayer* m_layer;
-    
+    RenderLayer *m_layer;
+
     // Used to store state between styleWillChange and styleDidChange
     static bool s_wasFloating;
     static bool s_hadLayer;
     static bool s_layerWasSelfPainting;
 };
 
-inline RenderBoxModelObject* toRenderBoxModelObject(RenderObject* object)
-{ 
-    ASSERT(!object || object->isBoxModelObject());
-    return static_cast<RenderBoxModelObject*>(object);
+inline RenderBoxModelObject *toRenderBoxModelObject( RenderObject *object )
+{
+    ASSERT( !object || object->isBoxModelObject() );
+    return static_cast<RenderBoxModelObject *>( object );
 }
 
-inline const RenderBoxModelObject* toRenderBoxModelObject(const RenderObject* object)
-{ 
-    ASSERT(!object || object->isBoxModelObject());
-    return static_cast<const RenderBoxModelObject*>(object);
+inline const RenderBoxModelObject *toRenderBoxModelObject( const RenderObject *object )
+{
+    ASSERT( !object || object->isBoxModelObject() );
+    return static_cast<const RenderBoxModelObject *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderBoxModelObject(const RenderBoxModelObject*);
+void toRenderBoxModelObject( const RenderBoxModelObject * );
 
 } // namespace WebCore
 

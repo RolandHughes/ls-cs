@@ -36,32 +36,32 @@ using namespace WebKit;
 
 WKTypeID WKBundleNavigationActionGetTypeID()
 {
-    return toAPI(InjectedBundleNavigationAction::APIType);
+    return toAPI( InjectedBundleNavigationAction::APIType );
 }
 
-WKFrameNavigationType WKBundleNavigationActionGetNavigationType(WKBundleNavigationActionRef navigationActionRef)
+WKFrameNavigationType WKBundleNavigationActionGetNavigationType( WKBundleNavigationActionRef navigationActionRef )
 {
-    return toAPI(toImpl(navigationActionRef)->navigationType());
+    return toAPI( toImpl( navigationActionRef )->navigationType() );
 }
 
-WKEventModifiers WKBundleNavigationActionGetEventModifiers(WKBundleNavigationActionRef navigationActionRef)
+WKEventModifiers WKBundleNavigationActionGetEventModifiers( WKBundleNavigationActionRef navigationActionRef )
 {
-    return toAPI(toImpl(navigationActionRef)->modifiers());
+    return toAPI( toImpl( navigationActionRef )->modifiers() );
 }
 
-WKEventMouseButton WKBundleNavigationActionGetEventMouseButton(WKBundleNavigationActionRef navigationActionRef)
+WKEventMouseButton WKBundleNavigationActionGetEventMouseButton( WKBundleNavigationActionRef navigationActionRef )
 {
-    return toAPI(toImpl(navigationActionRef)->mouseButton());
+    return toAPI( toImpl( navigationActionRef )->mouseButton() );
 }
 
-WKBundleHitTestResultRef WKBundleNavigationActionCopyHitTestResult(WKBundleNavigationActionRef navigationActionRef)
+WKBundleHitTestResultRef WKBundleNavigationActionCopyHitTestResult( WKBundleNavigationActionRef navigationActionRef )
 {
-    RefPtr<InjectedBundleHitTestResult> hitTestResult = toImpl(navigationActionRef)->hitTestResult();
-    return toAPI(hitTestResult.release().leakRef());
+    RefPtr<InjectedBundleHitTestResult> hitTestResult = toImpl( navigationActionRef )->hitTestResult();
+    return toAPI( hitTestResult.release().leakRef() );
 }
 
-WKBundleNodeHandleRef WKBundleNavigationActionCopyFormElement(WKBundleNavigationActionRef navigationActionRef)
+WKBundleNodeHandleRef WKBundleNavigationActionCopyFormElement( WKBundleNavigationActionRef navigationActionRef )
 {
-    RefPtr<InjectedBundleNodeHandle> formElement = toImpl(navigationActionRef)->formElement();
-    return toAPI(formElement.release().leakRef());
+    RefPtr<InjectedBundleNodeHandle> formElement = toImpl( navigationActionRef )->formElement();
+    return toAPI( formElement.release().leakRef() );
 }

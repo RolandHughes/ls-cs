@@ -27,87 +27,115 @@
 #include <runtime/WeakGCMap.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSValue;
 class JSDOMWrapper;
 class ScriptController;
 
-typedef HashMap<void*, JSC::Weak<JSDOMWrapper> > DOMObjectWrapperMap;
-typedef HashMap<StringImpl*, JSC::Weak<JSC::JSString> > JSStringCache;
+typedef HashMap<void *, JSC::Weak<JSDOMWrapper> > DOMObjectWrapperMap;
+typedef HashMap<StringImpl *, JSC::Weak<JSC::JSString> > JSStringCache;
 
-class JSDOMWrapperOwner : public JSC::WeakHandleOwner {
+class JSDOMWrapperOwner : public JSC::WeakHandleOwner
+{
 public:
-    JSDOMWrapperOwner(DOMWrapperWorld*);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+    JSDOMWrapperOwner( DOMWrapperWorld * );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 
 private:
-    DOMWrapperWorld* m_world;
+    DOMWrapperWorld *m_world;
 };
 
-inline JSDOMWrapperOwner::JSDOMWrapperOwner(DOMWrapperWorld* world)
-    : m_world(world)
+inline JSDOMWrapperOwner::JSDOMWrapperOwner( DOMWrapperWorld *world )
+    : m_world( world )
 {
 }
 
-class JSStringOwner : public JSC::WeakHandleOwner {
+class JSStringOwner : public JSC::WeakHandleOwner
+{
 public:
-    JSStringOwner(DOMWrapperWorld*);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+    JSStringOwner( DOMWrapperWorld * );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 
 private:
-    DOMWrapperWorld* m_world;
+    DOMWrapperWorld *m_world;
 };
 
-inline JSStringOwner::JSStringOwner(DOMWrapperWorld* world)
-    : m_world(world)
+inline JSStringOwner::JSStringOwner( DOMWrapperWorld *world )
+    : m_world( world )
 {
 }
 
-class DOMWrapperWorld : public RefCounted<DOMWrapperWorld> {
+class DOMWrapperWorld : public RefCounted<DOMWrapperWorld>
+{
 public:
-    static PassRefPtr<DOMWrapperWorld> create(JSC::JSGlobalData* globalData, bool isNormal = false)
+    static PassRefPtr<DOMWrapperWorld> create( JSC::JSGlobalData *globalData, bool isNormal = false )
     {
-        return adoptRef(new DOMWrapperWorld(globalData, isNormal));
+        return adoptRef( new DOMWrapperWorld( globalData, isNormal ) );
     }
     ~DOMWrapperWorld();
 
     // Free as much memory held onto by this world as possible.
     void clearWrappers();
 
-    void didCreateWindowShell(ScriptController* scriptController) { m_scriptControllersWithWindowShells.add(scriptController); }
-    void didDestroyWindowShell(ScriptController* scriptController) { m_scriptControllersWithWindowShells.remove(scriptController); }
+    void didCreateWindowShell( ScriptController *scriptController )
+    {
+        m_scriptControllersWithWindowShells.add( scriptController );
+    }
+    void didDestroyWindowShell( ScriptController *scriptController )
+    {
+        m_scriptControllersWithWindowShells.remove( scriptController );
+    }
 
     // FIXME: can we make this private?
     DOMObjectWrapperMap m_wrappers;
     JSStringCache m_stringCache;
-    HashMap<CSSValue*, void*> m_cssValueRoots;
+    HashMap<CSSValue *, void *> m_cssValueRoots;
 
-    bool isNormal() const { return m_isNormal; }
+    bool isNormal() const
+    {
+        return m_isNormal;
+    }
 
-    JSC::JSGlobalData* globalData() const { return m_globalData; }
-    JSDOMWrapperOwner* defaultWrapperOwner() { return &m_defaultWrapperOwner; }
-    JSStringOwner* stringWrapperOwner() { return &m_stringWrapperOwner; }
+    JSC::JSGlobalData *globalData() const
+    {
+        return m_globalData;
+    }
+    JSDOMWrapperOwner *defaultWrapperOwner()
+    {
+        return &m_defaultWrapperOwner;
+    }
+    JSStringOwner *stringWrapperOwner()
+    {
+        return &m_stringWrapperOwner;
+    }
 
 protected:
-    DOMWrapperWorld(JSC::JSGlobalData*, bool isNormal);
+    DOMWrapperWorld( JSC::JSGlobalData *, bool isNormal );
 
 private:
-    JSC::JSGlobalData* m_globalData;
-    HashSet<ScriptController*> m_scriptControllersWithWindowShells;
+    JSC::JSGlobalData *m_globalData;
+    HashSet<ScriptController *> m_scriptControllersWithWindowShells;
     bool m_isNormal;
     JSDOMWrapperOwner m_defaultWrapperOwner;
     JSStringOwner m_stringWrapperOwner;
 };
 
-DOMWrapperWorld* normalWorld(JSC::JSGlobalData&);
-DOMWrapperWorld* mainThreadNormalWorld();
-inline DOMWrapperWorld* debuggerWorld() { return mainThreadNormalWorld(); }
-inline DOMWrapperWorld* pluginWorld() { return mainThreadNormalWorld(); }
-
-inline DOMWrapperWorld* currentWorld(JSC::ExecState* exec)
+DOMWrapperWorld *normalWorld( JSC::JSGlobalData & );
+DOMWrapperWorld *mainThreadNormalWorld();
+inline DOMWrapperWorld *debuggerWorld()
 {
-    return static_cast<JSDOMGlobalObject*>(exec->lexicalGlobalObject())->world();
+    return mainThreadNormalWorld();
+}
+inline DOMWrapperWorld *pluginWorld()
+{
+    return mainThreadNormalWorld();
+}
+
+inline DOMWrapperWorld *currentWorld( JSC::ExecState *exec )
+{
+    return static_cast<JSDOMGlobalObject *>( exec->lexicalGlobalObject() )->world();
 }
 
 } // namespace WebCore

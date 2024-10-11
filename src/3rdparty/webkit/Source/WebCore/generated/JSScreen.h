@@ -26,25 +26,31 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Screen;
 
-class JSScreen : public JSDOMWrapper {
+class JSScreen : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSScreen(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Screen>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSScreen( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Screen> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    Screen* impl() const { return m_impl.get(); }
+    Screen *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Screen> m_impl;
@@ -52,49 +58,53 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSScreenOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSScreenOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, Screen*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, Screen * )
 {
-    DEFINE_STATIC_LOCAL(JSScreenOwner, jsScreenOwner, ());
+    DEFINE_STATIC_LOCAL( JSScreenOwner, jsScreenOwner, () );
     return &jsScreenOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, Screen*)
+inline void *wrapperContext( DOMWrapperWorld *world, Screen * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Screen*);
-Screen* toScreen(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Screen * );
+Screen *toScreen( JSC::JSValue );
 
-class JSScreenPrototype : public JSC::JSObjectWithGlobalObject {
+class JSScreenPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSScreenPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSScreenPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsScreenHeight(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScreenWidth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScreenColorDepth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScreenPixelDepth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScreenAvailLeft(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScreenAvailTop(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScreenAvailHeight(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsScreenAvailWidth(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsScreenHeight( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScreenWidth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScreenColorDepth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScreenPixelDepth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScreenAvailLeft( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScreenAvailTop( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScreenAvailHeight( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsScreenAvailWidth( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

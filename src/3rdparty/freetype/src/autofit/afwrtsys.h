@@ -19,8 +19,8 @@
 #ifndef AFWRTSYS_H_
 #define AFWRTSYS_H_
 
-  /* Since preprocessor directives can't create other preprocessor */
-  /* directives, we have to include the header files manually.     */
+/* Since preprocessor directives can't create other preprocessor */
+/* directives, we have to include the header files manually.     */
 
 #include "afdummy.h"
 #include "aflatin.h"
@@ -30,16 +30,16 @@
 #endif /* AFWRTSYS_H_ */
 
 
-  /* The following part can be included multiple times. */
-  /* Define `WRITING_SYSTEM' as needed.                 */
+/* The following part can be included multiple times. */
+/* Define `WRITING_SYSTEM' as needed.                 */
 
 
-  /* Add new writing systems here.  The arguments are the writing system */
-  /* name in lowercase and uppercase, respectively.                      */
+/* Add new writing systems here.  The arguments are the writing system */
+/* name in lowercase and uppercase, respectively.                      */
 
-  WRITING_SYSTEM( dummy,  DUMMY  )
-  WRITING_SYSTEM( latin,  LATIN  )
-  WRITING_SYSTEM( cjk,    CJK    )
-  WRITING_SYSTEM( indic,  INDIC  )
+WRITING_SYSTEM( dummy,  DUMMY  )
+WRITING_SYSTEM( latin,  LATIN  )
+WRITING_SYSTEM( cjk,    CJK    )
+WRITING_SYSTEM( indic,  INDIC  )
 
 /* END */

@@ -21,40 +21,65 @@
 #include "config.h"
 #include "QuotesData.h"
 
-namespace WebCore {
-
-QuotesData* QuotesData::create(int stringCount)
+namespace WebCore
 {
-    char* tmp = new char[sizeof(QuotesData)+sizeof(String)*stringCount];
-    if (!tmp)
+
+QuotesData *QuotesData::create( int stringCount )
+{
+    char *tmp = new char[sizeof( QuotesData )+sizeof( String )*stringCount];
+
+    if ( !tmp )
+    {
         return 0;
-    new (tmp) QuotesData(stringCount);
-    for (int i = 0; i < stringCount; ++i)
-        new (tmp +sizeof(QuotesData) + sizeof(String)*i) String();
-    return reinterpret_cast<QuotesData*>(tmp);
+    }
+
+    new ( tmp ) QuotesData( stringCount );
+
+    for ( int i = 0; i < stringCount; ++i )
+    {
+        new ( tmp +sizeof( QuotesData ) + sizeof( String )*i ) String();
+    }
+
+    return reinterpret_cast<QuotesData *>( tmp );
 }
 
-bool QuotesData::operator==(const QuotesData& other) const
+bool QuotesData::operator==( const QuotesData &other ) const
 {
-    if (this == &other)
+    if ( this == &other )
+    {
         return true;
-    if (!&other || !this)
+    }
+
+    if ( !&other || !this )
+    {
         return false;
-    if (length != other.length)
+    }
+
+    if ( length != other.length )
+    {
         return false;
-    const String* myData = data();
-    const String* otherData = other.data();
-    for (int i = length-1; i >= 0; --i)
-        if (myData[i] != otherData[i])
+    }
+
+    const String *myData = data();
+    const String *otherData = other.data();
+
+    for ( int i = length-1; i >= 0; --i )
+        if ( myData[i] != otherData[i] )
+        {
             return false;
+        }
+
     return true;
 }
 
 QuotesData::~QuotesData()
 {
-    String* p = data();
-    for (int i = 0; i < length; ++i)
+    String *p = data();
+
+    for ( int i = 0; i < length; ++i )
+    {
         p[i].~String();
+    }
 }
 
 } // namespace WebCore

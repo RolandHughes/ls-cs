@@ -26,94 +26,101 @@
 
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ProjectedExpression
 {
- public:
-   typedef ProjectedExpression *Ptr;
-   typedef QVector<ProjectedExpression::Ptr> Vector;
+public:
+    typedef ProjectedExpression *Ptr;
+    typedef QVector<ProjectedExpression::Ptr> Vector;
 
-   virtual ~ProjectedExpression()
-   { }
+    virtual ~ProjectedExpression()
+    { }
 
-   enum Action {
-      Move = 0,
-      Skip = 1,
-      Keep = 2,
-      KeepSubtree = 4 | Keep
-   };
+    enum Action
+    {
+        Move = 0,
+        Skip = 1,
+        Keep = 2,
+        KeepSubtree = 4 | Keep
+    };
 
-   virtual Action actionForElement(const QXmlName name, ProjectedExpression::Ptr &next) const {
-      (void) name;
-      (void) next;
+    virtual Action actionForElement( const QXmlName name, ProjectedExpression::Ptr &next ) const
+    {
+        ( void ) name;
+        ( void ) next;
 
-      return Skip;
-   }
+        return Skip;
+    }
 };
 
 class ProjectedNodeTest
 {
- public:
-   typedef ProjectedNodeTest *Ptr;
+public:
+    typedef ProjectedNodeTest *Ptr;
 
-   virtual ~ProjectedNodeTest()
-   { }
+    virtual ~ProjectedNodeTest()
+    { }
 
-   virtual bool isMatch(const QXmlNodeModelIndex::NodeKind kind) const {
-      (void) kind;
-      return false;
-   }
+    virtual bool isMatch( const QXmlNodeModelIndex::NodeKind kind ) const
+    {
+        ( void ) kind;
+        return false;
+    }
 };
 
 class ProjectedStep : public ProjectedExpression
 {
- public:
-   ProjectedStep(const ProjectedNodeTest::Ptr test, const QXmlNodeModelIndex::Axis axis)
-      : m_test(test)
-   {
-      (void) axis;
+public:
+    ProjectedStep( const ProjectedNodeTest::Ptr test, const QXmlNodeModelIndex::Axis axis )
+        : m_test( test )
+    {
+        ( void ) axis;
 
-      Q_ASSERT(m_test);
-   }
+        Q_ASSERT( m_test );
+    }
 
-   Action actionForElement(const QXmlName name, ProjectedExpression::Ptr &next) const override {
-      (void) name;
-      (void) next;
+    Action actionForElement( const QXmlName name, ProjectedExpression::Ptr &next ) const override
+    {
+        ( void ) name;
+        ( void ) next;
 
-      // TODO
-      return Skip;
-   }
+        // TODO
+        return Skip;
+    }
 
- private:
-   const ProjectedNodeTest::Ptr m_test;
+private:
+    const ProjectedNodeTest::Ptr m_test;
 };
 
 class ProjectedPath : public ProjectedExpression
 {
- public:
-   ProjectedPath(const ProjectedExpression::Ptr left, const ProjectedExpression::Ptr right)
-      : m_left(left), m_right(right)
-   {
-      Q_ASSERT(m_left);
-      Q_ASSERT(m_right);
-   }
+public:
+    ProjectedPath( const ProjectedExpression::Ptr left, const ProjectedExpression::Ptr right )
+        : m_left( left ), m_right( right )
+    {
+        Q_ASSERT( m_left );
+        Q_ASSERT( m_right );
+    }
 
-   Action actionForElement(const QXmlName name, ProjectedExpression::Ptr &next) const override {
-      ProjectedExpression::Ptr &candidateNext = next;
-      const Action a = m_left->actionForElement(name, candidateNext);
+    Action actionForElement( const QXmlName name, ProjectedExpression::Ptr &next ) const override
+    {
+        ProjectedExpression::Ptr &candidateNext = next;
+        const Action a = m_left->actionForElement( name, candidateNext );
 
-      if (a != Skip) {
-         /* The test accepted it, so let's replace us with the new step. */
-         next = candidateNext;
-      }
+        if ( a != Skip )
+        {
+            /* The test accepted it, so let's replace us with the new step. */
+            next = candidateNext;
+        }
 
-      return a;
-   }
+        return a;
+    }
 
- private:
-   const ProjectedExpression::Ptr  m_left;
-   const ProjectedExpression::Ptr  m_right;
+private:
+    const ProjectedExpression::Ptr  m_left;
+    const ProjectedExpression::Ptr  m_right;
 };
 
 }

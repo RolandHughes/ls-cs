@@ -23,113 +23,121 @@
 
 #include <qtconcurrentexception.h>
 
-namespace QtConcurrent {
+namespace QtConcurrent
+{
 
 void Exception::raise() const
 {
-   Exception e = *this;
-   throw e;
+    Exception e = *this;
+    throw e;
 }
 
 Exception *Exception::clone() const
 {
-   return new Exception(*this);
+    return new Exception( *this );
 }
 
 void UnhandledException::raise() const
 {
-   UnhandledException e = *this;
-   throw e;
+    UnhandledException e = *this;
+    throw e;
 }
 
 Exception *UnhandledException::clone() const
 {
-   return new UnhandledException(*this);
+    return new UnhandledException( *this );
 }
 
-namespace cs_internal {
+namespace lscs_internal
+{
 
 class Base
 {
- public:
-   Base(Exception *exception)
-      : exception(exception), refCount(1), hasThrown(false)
-   { }
+public:
+    Base( Exception *exception )
+        : exception( exception ), refCount( 1 ), hasThrown( false )
+    { }
 
-   ~Base() {
-      delete exception;
-   }
+    ~Base()
+    {
+        delete exception;
+    }
 
-   Exception *exception;
-   QAtomicInt refCount;
-   bool hasThrown;
+    Exception *exception;
+    QAtomicInt refCount;
+    bool hasThrown;
 };
 
-ExceptionHolder::ExceptionHolder(Exception *exception)
-   : base(new Base(exception))
+ExceptionHolder::ExceptionHolder( Exception *exception )
+    : base( new Base( exception ) )
 {
 }
 
-ExceptionHolder::ExceptionHolder(const ExceptionHolder &other)
-   : base(other.base)
+ExceptionHolder::ExceptionHolder( const ExceptionHolder &other )
+    : base( other.base )
 {
-   base->refCount.ref();
+    base->refCount.ref();
 }
 
-void ExceptionHolder::operator=(const ExceptionHolder &other)
+void ExceptionHolder::operator=( const ExceptionHolder &other )
 {
-   if (base == other.base) {
-      return;
-   }
+    if ( base == other.base )
+    {
+        return;
+    }
 
-   if (base->refCount.deref() == false) {
-      delete base;
-   }
+    if ( base->refCount.deref() == false )
+    {
+        delete base;
+    }
 
-   base = other.base;
-   base->refCount.ref();
+    base = other.base;
+    base->refCount.ref();
 }
 
 ExceptionHolder::~ExceptionHolder()
 {
-   if (base->refCount.deref() == false) {
-      delete base;
-   }
+    if ( base->refCount.deref() == false )
+    {
+        delete base;
+    }
 }
 
 Exception *ExceptionHolder::exception() const
 {
-   return base->exception;
+    return base->exception;
 }
 
-void ExceptionStore::setException(const Exception &e)
+void ExceptionStore::setException( const Exception &e )
 {
-   if (hasException() == false) {
-      exceptionHolder = ExceptionHolder(e.clone());
-   }
+    if ( hasException() == false )
+    {
+        exceptionHolder = ExceptionHolder( e.clone() );
+    }
 }
 
 bool ExceptionStore::hasException() const
 {
-   return (exceptionHolder.exception() != nullptr);
+    return ( exceptionHolder.exception() != nullptr );
 }
 
 ExceptionHolder ExceptionStore::exception()
 {
-   return exceptionHolder;
+    return exceptionHolder;
 }
 
 void ExceptionStore::throwPossibleException()
 {
-   if (hasException() ) {
-      exceptionHolder.base->hasThrown = true;
-      exceptionHolder.exception()->raise();
-   }
+    if ( hasException() )
+    {
+        exceptionHolder.base->hasThrown = true;
+        exceptionHolder.exception()->raise();
+    }
 }
 
 bool ExceptionStore::hasThrown() const
 {
-   return exceptionHolder.base->hasThrown;
+    return exceptionHolder.base->hasThrown;
 }
 
 }   // end namespace

@@ -44,66 +44,68 @@
 
 class QLocalServerPrivate
 {
-   Q_DECLARE_PUBLIC(QLocalServer)
+    Q_DECLARE_PUBLIC( QLocalServer )
 
- public:
-   QLocalServerPrivate()
-      :
+public:
+    QLocalServerPrivate()
+        :
 
 #if ! defined(QT_LOCALSOCKET_TCP) && ! defined(Q_OS_WIN)
-      listenSocket(-1), socketNotifier(nullptr),
+        listenSocket( -1 ), socketNotifier( nullptr ),
 #endif
 
-      maxPendingConnections(30), error(QAbstractSocket::UnknownSocketError),
-      socketOptions(QLocalServer::NoOptions) {
-   }
+        maxPendingConnections( 30 ), error( QAbstractSocket::UnknownSocketError ),
+        socketOptions( QLocalServer::NoOptions )
+    {
+    }
 
-   virtual ~QLocalServerPrivate() {}
+    virtual ~QLocalServerPrivate() {}
 
-   void init();
-   bool listen(const QString &name);
-   bool listen(qintptr socketDescriptor);
-   static bool removeServer(const QString &name);
-   void closeServer();
-   void waitForNewConnection(int msec, bool *timedOut);
+    void init();
+    bool listen( const QString &name );
+    bool listen( qintptr socketDescriptor );
+    static bool removeServer( const QString &name );
+    void closeServer();
+    void waitForNewConnection( int msec, bool *timedOut );
 
-   void _q_onNewConnection();
+    void _q_onNewConnection();
 
 #if defined(QT_LOCALSOCKET_TCP)
-   QTcpServer tcpServer;
-   QMap<quintptr, QTcpSocket *> socketMap;
+    QTcpServer tcpServer;
+    QMap<quintptr, QTcpSocket *> socketMap;
 
 #elif defined(Q_OS_WIN)
-   struct Listener {
-      HANDLE handle;
-      OVERLAPPED overlapped;
-      bool connected;
-   };
+    struct Listener
+    {
+        HANDLE handle;
+        OVERLAPPED overlapped;
+        bool connected;
+    };
 
-   void setError(const QString &function);
-   bool addListener();
+    void setError( const QString &function );
+    bool addListener();
 
-   QList<Listener> listeners;
-   HANDLE eventHandle;
-   QWinEventNotifier *connectionEventNotifier;
+    QList<Listener> listeners;
+    HANDLE eventHandle;
+    QWinEventNotifier *connectionEventNotifier;
 
 #else
-   void setError(const QString &function);
+    void setError( const QString &function );
 
-   int listenSocket;
-   QSocketNotifier *socketNotifier;
+    int listenSocket;
+    QSocketNotifier *socketNotifier;
 #endif
 
-   QString serverName;
-   QString fullServerName;
-   int maxPendingConnections;
-   QQueue<QLocalSocket *> pendingConnections;
-   QString errorString;
-   QAbstractSocket::SocketError error;
-   QLocalServer::SocketOptions socketOptions;
+    QString serverName;
+    QString fullServerName;
+    int maxPendingConnections;
+    QQueue<QLocalSocket *> pendingConnections;
+    QString errorString;
+    QAbstractSocket::SocketError error;
+    QLocalServer::SocketOptions socketOptions;
 
- protected:
-   QLocalServer *q_ptr;
+protected:
+    QLocalServer *q_ptr;
 
 };
 

@@ -1,9 +1,9 @@
-add_library(CsScriptTools SHARED "")
-add_library(CopperSpice::CsScriptTools ALIAS CsScriptTools)
+add_library(LsCsScriptTools SHARED "")
+add_library(LsCs::LsCsScriptTools ALIAS LsCsScriptTools)
 
-set_target_properties(CsScriptTools PROPERTIES OUTPUT_NAME CsScriptTools${BUILD_ABI})
+set_target_properties(LsCsScriptTools PROPERTIES OUTPUT_NAME LsCsScriptTools${BUILD_ABI})
 
-target_add_definitions(CsScriptTools
+target_add_definitions(LsCsScriptTools
    PRIVATE
    -DQT_BUILD_SCRIPTTOOLS_LIB
 )
@@ -31,13 +31,13 @@ macro_generate_misc("${SCRIPTTOOLS_INCLUDES}" QtScriptTools)
 function_variable_fixup("${EXTRA_SCRIPTTOOLS_CXXFLAGS}" EXTRA_SCRIPTTOOLS_CXXFLAGS)
 function_variable_fixup("${EXTRA_SCRIPTTOOLS_LDFLAGS}"  EXTRA_SCRIPTTOOLS_LDFLAGS)
 
-target_link_libraries(CsScriptTools
+target_link_libraries(LsCsScriptTools
    PRIVATE
-   CsCore
-   CsScript
+   LsCsCore
+   LsCsScript
 )
 
-set_target_properties(CsScriptTools
+set_target_properties(LsCsScriptTools
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_SCRIPTTOOLS_CXXFLAGS}
    LINK_FLAGS ${EXTRA_SCRIPTTOOLS_LDFLAGS}
@@ -46,19 +46,29 @@ set_target_properties(CsScriptTools
 function_generate_resources("${SCRIPTTOOLS_SOURCES}")
 
 macro_generate_package(
-   CsScriptTools
+   LsCsScriptTools
    QtScriptTools
    "${EXTRA_SCRIPTTOOLS_CXXFLAGS}"
-   "CsCore CsGui"
+   "LsCsCore LsCsGui"
 )
 
-install(
-    TARGETS CsScriptTools
-    EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsScriptTools
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsScriptTools
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif()  
 
 install(
     DIRECTORY ${CMAKE_BINARY_DIR}/include/QtScriptTools

@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,72 +34,98 @@
 using namespace WTF;
 using namespace Unicode;
 
-namespace WebCore {
-
-int endOfFirstWordBoundaryContext(const UChar* characters, int length)
+namespace WebCore
 {
-    for (int i = 0; i < length; ) {
+
+int endOfFirstWordBoundaryContext( const UChar *characters, int length )
+{
+    for ( int i = 0; i < length; )
+    {
         int first = i;
         UChar32 ch;
-        U16_NEXT(characters, i, length, ch);
-        if (!requiresContextForWordBoundary(ch))
+        U16_NEXT( characters, i, length, ch );
+
+        if ( !requiresContextForWordBoundary( ch ) )
+        {
             return first;
+        }
     }
+
     return length;
 }
 
-int startOfLastWordBoundaryContext(const UChar* characters, int length)
+int startOfLastWordBoundaryContext( const UChar *characters, int length )
 {
-    for (int i = length; i > 0; ) {
+    for ( int i = length; i > 0; )
+    {
         int last = i;
         UChar32 ch;
-        U16_PREV(characters, 0, i, ch);
-        if (!requiresContextForWordBoundary(ch))
+        U16_PREV( characters, 0, i, ch );
+
+        if ( !requiresContextForWordBoundary( ch ) )
+        {
             return last;
+        }
     }
+
     return 0;
 }
 
 #if !PLATFORM(BREWMP) && !PLATFORM(MAC) && !PLATFORM(QT)
 
-int findNextWordFromIndex(const UChar* chars, int len, int position, bool forward)
+int findNextWordFromIndex( const UChar *chars, int len, int position, bool forward )
 {
-    TextBreakIterator* it = wordBreakIterator(chars, len);
+    TextBreakIterator *it = wordBreakIterator( chars, len );
 
-    if (forward) {
-        position = textBreakFollowing(it, position);
-        while (position != TextBreakDone) {
+    if ( forward )
+    {
+        position = textBreakFollowing( it, position );
+
+        while ( position != TextBreakDone )
+        {
             // We stop searching when the character preceeding the break
             // is alphanumeric.
-            if (position < len && isAlphanumeric(chars[position - 1]))
+            if ( position < len && isAlphanumeric( chars[position - 1] ) )
+            {
                 return position;
+            }
 
-            position = textBreakFollowing(it, position);
+            position = textBreakFollowing( it, position );
         }
 
         return len;
-    } else {
-        position = textBreakPreceding(it, position);
-        while (position != TextBreakDone) {
+    }
+    else
+    {
+        position = textBreakPreceding( it, position );
+
+        while ( position != TextBreakDone )
+        {
             // We stop searching when the character following the break
             // is alphanumeric.
-            if (position > 0 && isAlphanumeric(chars[position]))
+            if ( position > 0 && isAlphanumeric( chars[position] ) )
+            {
                 return position;
+            }
 
-            position = textBreakPreceding(it, position);
+            position = textBreakPreceding( it, position );
         }
 
         return 0;
     }
 }
 
-void findWordBoundary(const UChar* chars, int len, int position, int* start, int* end)
+void findWordBoundary( const UChar *chars, int len, int position, int *start, int *end )
 {
-    TextBreakIterator* it = wordBreakIterator(chars, len);
-    *end = textBreakFollowing(it, position);
-    if (*end < 0)
-        *end = textBreakLast(it);
-    *start = textBreakPrevious(it);
+    TextBreakIterator *it = wordBreakIterator( chars, len );
+    *end = textBreakFollowing( it, position );
+
+    if ( *end < 0 )
+    {
+        *end = textBreakLast( it );
+    }
+
+    *start = textBreakPrevious( it );
 }
 
 #endif // !PLATFORM(BREWMP) && !PLATFORM(MAC) && !PLATFORM(QT)

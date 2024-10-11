@@ -28,29 +28,30 @@
 
 #include "WebCertificateInfo.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebCredential::WebCredential(const WebCore::Credential& credential)
-    : m_coreCredential(credential)
+WebCredential::WebCredential( const WebCore::Credential &credential )
+    : m_coreCredential( credential )
 {
 }
 
-WebCredential::WebCredential(WebCertificateInfo* certificateInfo)
-    : m_certificateInfo(certificateInfo)
+WebCredential::WebCredential( WebCertificateInfo *certificateInfo )
+    : m_certificateInfo( certificateInfo )
 {
 }
 
-WebCertificateInfo* WebCredential::certificateInfo()
+WebCertificateInfo *WebCredential::certificateInfo()
 {
     return m_certificateInfo.get();
 }
 
-const WebCore::Credential& WebCredential::core()
+const WebCore::Credential &WebCredential::core()
 {
     return m_coreCredential;
 }
 
-const String& WebCredential::user() const
+const String &WebCredential::user() const
 {
     return m_coreCredential.user();
 }

@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimateColorElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAnimateColorElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimateColorElement);
 
 static const HashTableValue JSSVGAnimateColorElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimateColorElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimateColorElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAnimateColorElementTable = { 2, 1, JSS
 
 static const HashTableValue JSSVGAnimateColorElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimateColorElementConstructorTable = { 1, 0, JSSVGAnimateColorElementConstructorTableValues, 0 };
-class JSSVGAnimateColorElementConstructor : public DOMConstructorObject {
+class JSSVGAnimateColorElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGAnimateColorElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGAnimateColorElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGAnimateColorElementConstructor::s_info = { "SVGAnimateColorElementConstructor", &DOMConstructorObject::s_info, &JSSVGAnimateColorElementConstructorTable, 0 };
 
-JSSVGAnimateColorElementConstructor::JSSVGAnimateColorElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGAnimateColorElementConstructor::JSSVGAnimateColorElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGAnimateColorElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGAnimateColorElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGAnimateColorElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimateColorElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimateColorElementConstructor, JSDOMWrapper>(exec, &JSSVGAnimateColorElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimateColorElementConstructor, JSDOMWrapper>( exec, &JSSVGAnimateColorElementConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSSVGAnimateColorElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimateColorElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimateColorElementConstructor, JSDOMWrapper>(exec, &JSSVGAnimateColorElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimateColorElementConstructor, JSDOMWrapper>( exec,
+            &JSSVGAnimateColorElementConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +115,55 @@ bool JSSVGAnimateColorElementConstructor::getOwnPropertyDescriptor(ExecState* ex
 
 static const HashTableValue JSSVGAnimateColorElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimateColorElementPrototypeTable = { 1, 0, JSSVGAnimateColorElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGAnimateColorElementPrototype::s_info = { "SVGAnimateColorElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAnimateColorElementPrototypeTable, 0 };
 
-JSObject* JSSVGAnimateColorElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimateColorElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAnimateColorElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGAnimateColorElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGAnimateColorElement::s_info = { "SVGAnimateColorElement", &JSSVGAnimationElement::s_info, &JSSVGAnimateColorElementTable, 0 };
 
-JSSVGAnimateColorElement::JSSVGAnimateColorElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAnimateColorElement> impl)
-    : JSSVGAnimationElement(structure, globalObject, impl)
+JSSVGAnimateColorElement::JSSVGAnimateColorElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGAnimateColorElement> impl )
+    : JSSVGAnimationElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAnimateColorElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimateColorElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAnimateColorElementPrototype(exec->globalData(), globalObject, JSSVGAnimateColorElementPrototype::createStructure(exec->globalData(), JSSVGAnimationElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGAnimateColorElementPrototype( exec->globalData(), globalObject,
+            JSSVGAnimateColorElementPrototype::createStructure( exec->globalData(), JSSVGAnimationElementPrototype::self( exec,
+                    globalObject ) ) );
 }
 
-bool JSSVGAnimateColorElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimateColorElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimateColorElement, Base>(exec, &JSSVGAnimateColorElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimateColorElement, Base>( exec, &JSSVGAnimateColorElementTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimateColorElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimateColorElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimateColorElement, Base>(exec, &JSSVGAnimateColorElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimateColorElement, Base>( exec, &JSSVGAnimateColorElementTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsSVGAnimateColorElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimateColorElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimateColorElement* domObject = static_cast<JSSVGAnimateColorElement*>(asObject(slotBase));
-    return JSSVGAnimateColorElement::getConstructor(exec, domObject->globalObject());
+    JSSVGAnimateColorElement *domObject = static_cast<JSSVGAnimateColorElement *>( asObject( slotBase ) );
+    return JSSVGAnimateColorElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGAnimateColorElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGAnimateColorElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGAnimateColorElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGAnimateColorElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -19,7 +19,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PluginDocument_h
@@ -27,56 +27,70 @@
 
 #include "HTMLDocument.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Node;
 class Widget;
-class PluginDocument : public HTMLDocument {
+class PluginDocument : public HTMLDocument
+{
 public:
-    static PassRefPtr<PluginDocument> create(Frame* frame, const KURL& url)
+    static PassRefPtr<PluginDocument> create( Frame *frame, const KURL &url )
     {
-        return adoptRef(new PluginDocument(frame, url));
+        return adoptRef( new PluginDocument( frame, url ) );
     }
 
-    void setPluginNode(Node* pluginNode) { m_pluginNode = pluginNode; }
+    void setPluginNode( Node *pluginNode )
+    {
+        m_pluginNode = pluginNode;
+    }
 
-    Widget* pluginWidget();
-    Node* pluginNode();
+    Widget *pluginWidget();
+    Node *pluginNode();
 
-    virtual bool isPluginDocument() const { return true; }
+    virtual bool isPluginDocument() const
+    {
+        return true;
+    }
 
     virtual void detach();
 
     void cancelManualPluginLoad();
 
-    bool shouldLoadPluginManually() { return m_shouldLoadPluginManually; }
+    bool shouldLoadPluginManually()
+    {
+        return m_shouldLoadPluginManually;
+    }
 
 private:
-    PluginDocument(Frame*, const KURL&);
+    PluginDocument( Frame *, const KURL & );
 
     virtual PassRefPtr<DocumentParser> createParser();
-        
-    void setShouldLoadPluginManually(bool loadManually) { m_shouldLoadPluginManually = loadManually; }
+
+    void setShouldLoadPluginManually( bool loadManually )
+    {
+        m_shouldLoadPluginManually = loadManually;
+    }
 
     bool m_shouldLoadPluginManually;
     RefPtr<Node> m_pluginNode;
 };
 
-inline PluginDocument* toPluginDocument(Document* document)
+inline PluginDocument *toPluginDocument( Document *document )
 {
-    ASSERT(!document || document->isPluginDocument());
-    return static_cast<PluginDocument*>(document);
+    ASSERT( !document || document->isPluginDocument() );
+    return static_cast<PluginDocument *>( document );
 }
 
-inline const PluginDocument* toPluginDocument(const Document* document)
+inline const PluginDocument *toPluginDocument( const Document *document )
 {
-    ASSERT(!document || document->isPluginDocument());
-    return static_cast<const PluginDocument*>(document);
+    ASSERT( !document || document->isPluginDocument() );
+    return static_cast<const PluginDocument *>( document );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toPluginDocument(const PluginDocument*);
-    
+void toPluginDocument( const PluginDocument * );
+
 }
 
 #endif // PluginDocument_h

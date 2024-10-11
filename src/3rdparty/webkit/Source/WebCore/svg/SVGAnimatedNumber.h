@@ -24,7 +24,8 @@
 #include "SVGAnimatedPropertyMacros.h"
 #include "SVGAnimatedStaticPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedStaticPropertyTearOff<float> SVGAnimatedNumber;
 

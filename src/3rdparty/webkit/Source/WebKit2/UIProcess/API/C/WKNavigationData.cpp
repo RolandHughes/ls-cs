@@ -33,15 +33,15 @@ using namespace WebKit;
 
 WKTypeID WKNavigationDataGetTypeID()
 {
-    return toAPI(WebNavigationData::APIType);
+    return toAPI( WebNavigationData::APIType );
 }
 
-WKStringRef WKNavigationDataCopyTitle(WKNavigationDataRef navigationDataRef)
+WKStringRef WKNavigationDataCopyTitle( WKNavigationDataRef navigationDataRef )
 {
-    return toCopiedAPI(toImpl(navigationDataRef)->title());
+    return toCopiedAPI( toImpl( navigationDataRef )->title() );
 }
 
-WKURLRef WKNavigationDataCopyURL(WKNavigationDataRef navigationDataRef)
+WKURLRef WKNavigationDataCopyURL( WKNavigationDataRef navigationDataRef )
 {
-    return toCopiedURLAPI(toImpl(navigationDataRef)->url());
+    return toCopiedURLAPI( toImpl( navigationDataRef )->url() );
 }

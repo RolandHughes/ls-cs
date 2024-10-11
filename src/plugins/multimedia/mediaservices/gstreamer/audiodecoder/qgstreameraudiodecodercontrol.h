@@ -38,34 +38,34 @@ class QGstreamerAudioDecoderService;
 
 class QGstreamerAudioDecoderControl : public QAudioDecoderControl
 {
-   CS_OBJECT(QGstreamerAudioDecoderControl)
+    LSCS_OBJECT( QGstreamerAudioDecoderControl )
 
- public:
-   QGstreamerAudioDecoderControl(QGstreamerAudioDecoderSession *session, QObject *parent = nullptr);
-   ~QGstreamerAudioDecoderControl();
+public:
+    QGstreamerAudioDecoderControl( QGstreamerAudioDecoderSession *session, QObject *parent = nullptr );
+    ~QGstreamerAudioDecoderControl();
 
-   QAudioDecoder::State state() const override;
+    QAudioDecoder::State state() const override;
 
-   QString sourceFilename() const override;
-   void setSourceFilename(const QString &fileName) override;
+    QString sourceFilename() const override;
+    void setSourceFilename( const QString &fileName ) override;
 
-   QIODevice *sourceDevice() const override;
-   void setSourceDevice(QIODevice *device) override;
+    QIODevice *sourceDevice() const override;
+    void setSourceDevice( QIODevice *device ) override;
 
-   void start() override;
-   void stop() override;
+    void start() override;
+    void stop() override;
 
-   QAudioFormat audioFormat() const override;
-   void setAudioFormat(const QAudioFormat &format) override;
+    QAudioFormat audioFormat() const override;
+    void setAudioFormat( const QAudioFormat &format ) override;
 
-   QAudioBuffer read() override;
-   bool bufferAvailable() const override;
+    QAudioBuffer read() override;
+    bool bufferAvailable() const override;
 
-   qint64 position() const override;
-   qint64 duration() const override;
+    qint64 position() const override;
+    qint64 duration() const override;
 
- private:
-   QGstreamerAudioDecoderSession *m_session;
+private:
+    QGstreamerAudioDecoderSession *m_session;
 };
 
 #endif

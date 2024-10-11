@@ -32,131 +32,154 @@
 
 static inline QByteArray detectDesktopEnvironment()
 {
-   const QByteArray xdgCurrentDesktop = qgetenv("XDG_CURRENT_DESKTOP");
-   if (! xdgCurrentDesktop.isEmpty()) {
-      return xdgCurrentDesktop.toUpper();   // KDE, GNOME, UNITY, LXDE, MATE, XFCE...
-   }
+    const QByteArray xdgCurrentDesktop = qgetenv( "XDG_CURRENT_DESKTOP" );
 
-   // Classic fallbacks
-   if (! qgetenv("KDE_FULL_SESSION").isEmpty()) {
-      return "KDE";
-   }
+    if ( ! xdgCurrentDesktop.isEmpty() )
+    {
+        return xdgCurrentDesktop.toUpper();   // KDE, GNOME, UNITY, LXDE, MATE, XFCE...
+    }
 
-   if (! qgetenv("GNOME_DESKTOP_SESSION_ID").isEmpty()) {
-      return "GNOME";
-   }
+    // Classic fallbacks
+    if ( ! qgetenv( "KDE_FULL_SESSION" ).isEmpty() )
+    {
+        return "KDE";
+    }
 
-   // Fallback to checking $DESKTOP_SESSION (unreliable)
-   const QByteArray desktopSession = qgetenv("DESKTOP_SESSION");
+    if ( ! qgetenv( "GNOME_DESKTOP_SESSION_ID" ).isEmpty() )
+    {
+        return "GNOME";
+    }
 
-   if (desktopSession == "gnome") {
-      return "GNOME";
-   }
+    // Fallback to checking $DESKTOP_SESSION (unreliable)
+    const QByteArray desktopSession = qgetenv( "DESKTOP_SESSION" );
 
-   if (desktopSession == "xfce") {
-      return "XFCE";
-   }
+    if ( desktopSession == "gnome" )
+    {
+        return "GNOME";
+    }
 
-   return "UNKNOWN";
+    if ( desktopSession == "xfce" )
+    {
+        return "XFCE";
+    }
+
+    return "UNKNOWN";
 }
 
-static inline bool checkExecutable(const QString &candidate, QString *result)
+static inline bool checkExecutable( const QString &candidate, QString *result )
 {
-   *result = QStandardPaths::findExecutable(candidate);
-   return !result->isEmpty();
+    *result = QStandardPaths::findExecutable( candidate );
+    return !result->isEmpty();
 }
 
-static inline bool detectWebBrowser(const QByteArray &desktop, bool checkBrowserVariable, QString *browser)
+static inline bool detectWebBrowser( const QByteArray &desktop, bool checkBrowserVariable, QString *browser )
 {
-   const QString browsers[] = {"google-chrome", "firefox", "mozilla", "opera"};
+    const QString browsers[] = {"google-chrome", "firefox", "mozilla", "opera"};
 
-   browser->clear();
-   if (checkExecutable("xdg-open", browser)) {
-      return true;
-   }
+    browser->clear();
 
-   if (checkBrowserVariable) {
-      QByteArray browserVariable = qgetenv("DEFAULT_BROWSER");
+    if ( checkExecutable( "xdg-open", browser ) )
+    {
+        return true;
+    }
 
-      if (browserVariable.isEmpty()) {
-         browserVariable = qgetenv("BROWSER");
-      }
+    if ( checkBrowserVariable )
+    {
+        QByteArray browserVariable = qgetenv( "DEFAULT_BROWSER" );
 
-      if (! browserVariable.isEmpty() && checkExecutable(QString::fromUtf8(browserVariable), browser)) {
-         return true;
-      }
-   }
+        if ( browserVariable.isEmpty() )
+        {
+            browserVariable = qgetenv( "BROWSER" );
+        }
 
-   if (desktop == "KDE") {
-      // Konqueror launcher
+        if ( ! browserVariable.isEmpty() && checkExecutable( QString::fromUtf8( browserVariable ), browser ) )
+        {
+            return true;
+        }
+    }
 
-      if (checkExecutable("kfmclient", browser)) {
-         browser->append(" exec");
-         return true;
-      }
+    if ( desktop == "KDE" )
+    {
+        // Konqueror launcher
 
-   } else if (desktop == "GNOME") {
-      if (checkExecutable("gnome-open", browser)) {
-         return true;
-      }
-   }
+        if ( checkExecutable( "kfmclient", browser ) )
+        {
+            browser->append( " exec" );
+            return true;
+        }
 
-   for (auto &item : browsers) {
-      if (checkExecutable(item, browser)) {
-         return true;
-      }
-   }
+    }
+    else if ( desktop == "GNOME" )
+    {
+        if ( checkExecutable( "gnome-open", browser ) )
+        {
+            return true;
+        }
+    }
 
-   return false;
+    for ( auto &item : browsers )
+    {
+        if ( checkExecutable( item, browser ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
-static inline bool launch(const QString &launcher, const QUrl &url)
+static inline bool launch( const QString &launcher, const QUrl &url )
 {
-   const QString command = launcher + QLatin1Char(' ') + url.toEncoded();
+    const QString command = launcher + QLatin1Char( ' ' ) + url.toEncoded();
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
-   qDebug("launch() Starting process %s", csPrintable(command));
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
+    qDebug( "launch() Starting process %s", lscsPrintable( command ) );
 #endif
 
 #if defined(QT_NO_PROCESS)
-   const bool ok = ::system(csPrintable(command + " &"));
+    const bool ok = ::system( lscsPrintable( command + " &" ) );
 #else
-   const bool ok = QProcess::startDetached(command);
+    const bool ok = QProcess::startDetached( command );
 #endif
 
-   if (!ok) {
-      qWarning("launch() Failed to start process %s", csPrintable(command));
-   }
+    if ( !ok )
+    {
+        qWarning( "launch() Failed to start process %s", lscsPrintable( command ) );
+    }
 
-   return ok;
+    return ok;
 }
 
 QByteArray QGenericUnixServices::desktopEnvironment() const
 {
-   static const QByteArray result = detectDesktopEnvironment();
-   return result;
+    static const QByteArray result = detectDesktopEnvironment();
+    return result;
 }
 
-bool QGenericUnixServices::openUrl(const QUrl &url)
+bool QGenericUnixServices::openUrl( const QUrl &url )
 {
-   if (url.scheme() == "mailto") {
-      return openDocument(url);
-   }
+    if ( url.scheme() == "mailto" )
+    {
+        return openDocument( url );
+    }
 
-   if (m_webBrowser.isEmpty() && ! detectWebBrowser(desktopEnvironment(), true, &m_webBrowser)) {
-      qWarning("Unable to detect a web browser to launch '%s'", csPrintable(url.toString()));
-      return false;
-   }
-   return launch(m_webBrowser, url);
+    if ( m_webBrowser.isEmpty() && ! detectWebBrowser( desktopEnvironment(), true, &m_webBrowser ) )
+    {
+        qWarning( "Unable to detect a web browser to launch '%s'", lscsPrintable( url.toString() ) );
+        return false;
+    }
+
+    return launch( m_webBrowser, url );
 }
 
-bool QGenericUnixServices::openDocument(const QUrl &url)
+bool QGenericUnixServices::openDocument( const QUrl &url )
 {
-   if (m_documentLauncher.isEmpty() && ! detectWebBrowser(desktopEnvironment(), false, &m_documentLauncher)) {
-      qWarning("Unable to detect a launcher for '%s'", csPrintable(url.toString()));
-      return false;
-   }
+    if ( m_documentLauncher.isEmpty() && ! detectWebBrowser( desktopEnvironment(), false, &m_documentLauncher ) )
+    {
+        qWarning( "Unable to detect a launcher for '%s'", lscsPrintable( url.toString() ) );
+        return false;
+    }
 
-   return launch(m_documentLauncher, url);
+    return launch( m_documentLauncher, url );
 }
 

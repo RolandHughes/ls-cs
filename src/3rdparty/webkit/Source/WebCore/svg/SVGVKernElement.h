@@ -28,23 +28,28 @@
 #include <limits>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGFontData;
 
-class SVGVKernElement : public SVGElement {
+class SVGVKernElement : public SVGElement
+{
 public:
-    static PassRefPtr<SVGVKernElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGVKernElement> create( const QualifiedName &, Document * );
 
-    void buildVerticalKerningPair(KerningPairVector&);
+    void buildVerticalKerningPair( KerningPairVector & );
 
 private:
-    SVGVKernElement(const QualifiedName&, Document*);
+    SVGVKernElement( const QualifiedName &, Document * );
 
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
 };
 
 } // namespace WebCore

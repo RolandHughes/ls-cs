@@ -30,26 +30,30 @@
 #include "HTMLTokenizer.h"
 #include "HTMLTreeBuilder.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-TextDocumentParser::TextDocumentParser(HTMLDocument* document)
-    : HTMLDocumentParser(document, false)
-    , m_haveInsertedFakePreElement(false)
+TextDocumentParser::TextDocumentParser( HTMLDocument *document )
+    : HTMLDocumentParser( document, false )
+    , m_haveInsertedFakePreElement( false )
 {
-    tokenizer()->setState(HTMLTokenizer::PLAINTEXTState);
+    tokenizer()->setState( HTMLTokenizer::PLAINTEXTState );
 }
 
 TextDocumentParser::~TextDocumentParser()
 {
 }
 
-void TextDocumentParser::append(const SegmentedString& text)
+void TextDocumentParser::append( const SegmentedString &text )
 {
-    if (!m_haveInsertedFakePreElement)
+    if ( !m_haveInsertedFakePreElement )
+    {
         insertFakePreElement();
-    HTMLDocumentParser::append(text);
+    }
+
+    HTMLDocumentParser::append( text );
 }
 
 void TextDocumentParser::insertFakePreElement()
@@ -60,12 +64,12 @@ void TextDocumentParser::insertFakePreElement()
     // sending fake bytes through the front-end of the parser to avoid
     // distrubing the line/column number calculations.
 
-    RefPtr<Attribute> styleAttribute = Attribute::createMapped("style", "word-wrap: break-word; white-space: pre-wrap;");
+    RefPtr<Attribute> styleAttribute = Attribute::createMapped( "style", "word-wrap: break-word; white-space: pre-wrap;" );
     RefPtr<NamedNodeMap> attributes = NamedNodeMap::create();
-    attributes->insertAttribute(styleAttribute.release(), false);
-    AtomicHTMLToken fakePre(HTMLToken::StartTag, preTag.localName(), attributes.release());
+    attributes->insertAttribute( styleAttribute.release(), false );
+    AtomicHTMLToken fakePre( HTMLToken::StartTag, preTag.localName(), attributes.release() );
 
-    treeBuilder()->constructTreeFromAtomicToken(fakePre);
+    treeBuilder()->constructTreeFromAtomicToken( fakePre );
     m_haveInsertedFakePreElement = true;
 }
 

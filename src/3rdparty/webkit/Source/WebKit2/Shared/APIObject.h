@@ -28,11 +28,14 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class APIObject : public RefCounted<APIObject> {
+class APIObject : public RefCounted<APIObject>
+{
 public:
-    enum Type {
+    enum Type
+    {
         // Base types
         TypeNull = 0,
         TypeArray,
@@ -59,7 +62,7 @@ public:
         TypeBoolean,
         TypeDouble,
         TypeUInt64,
-        
+
         // UIProcess types
         TypeApplicationCacheManager,
         TypeBackForwardList,

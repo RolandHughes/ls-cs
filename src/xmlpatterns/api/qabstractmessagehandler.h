@@ -32,29 +32,29 @@ class QAbstractMessageHandlerPrivate;
 
 class Q_XMLPATTERNS_EXPORT QAbstractMessageHandler : public QObject
 {
-   XMLP_CS_OBJECT(QAbstractMessageHandler)
+    XMLP_LSCS_OBJECT( QAbstractMessageHandler )
 
- public:
-   QAbstractMessageHandler(QObject *parent = nullptr);
-   virtual ~QAbstractMessageHandler();
+public:
+    QAbstractMessageHandler( QObject *parent = nullptr );
+    virtual ~QAbstractMessageHandler();
 
-   void message(QtMsgType type,
-                const QString &description,
-                const QUrl &identifier = QUrl(),
-                const QSourceLocation &sourceLocation = QSourceLocation());
+    void message( QtMsgType type,
+                  const QString &description,
+                  const QUrl &identifier = QUrl(),
+                  const QSourceLocation &sourceLocation = QSourceLocation() );
 
- protected:
-   virtual void handleMessage(QtMsgType type,
-                              const QString &description,
-                              const QUrl &identifier,
-                              const QSourceLocation &sourceLocation) = 0;
-   QScopedPointer<QAbstractMessageHandlerPrivate> d_ptr;
+protected:
+    virtual void handleMessage( QtMsgType type,
+                                const QString &description,
+                                const QUrl &identifier,
+                                const QSourceLocation &sourceLocation ) = 0;
+    QScopedPointer<QAbstractMessageHandlerPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractMessageHandler)
+private:
+    Q_DECLARE_PRIVATE( QAbstractMessageHandler )
 
-   QAbstractMessageHandler(const QAbstractMessageHandler &) = delete;
-   QAbstractMessageHandler &operator=(const QAbstractMessageHandler &) = delete;
+    QAbstractMessageHandler( const QAbstractMessageHandler & ) = delete;
+    QAbstractMessageHandler &operator=( const QAbstractMessageHandler & ) = delete;
 };
 
 #endif

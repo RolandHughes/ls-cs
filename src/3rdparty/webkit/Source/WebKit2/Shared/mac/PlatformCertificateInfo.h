@@ -29,23 +29,29 @@
 #include <WebCore/ResourceResponse.h>
 #include <wtf/RetainPtr.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class PlatformCertificateInfo {
+class PlatformCertificateInfo
+{
 public:
     PlatformCertificateInfo();
-    explicit PlatformCertificateInfo(const WebCore::ResourceResponse&);
-    explicit PlatformCertificateInfo(CFArrayRef certificateChain);
+    explicit PlatformCertificateInfo( const WebCore::ResourceResponse & );
+    explicit PlatformCertificateInfo( CFArrayRef certificateChain );
 
-    CFArrayRef certificateChain() const { return m_certificateChain.get(); }
+    CFArrayRef certificateChain() const
+    {
+        return m_certificateChain.get();
+    }
 
-    void encode(CoreIPC::ArgumentEncoder* encoder) const;
-    static bool decode(CoreIPC::ArgumentDecoder* decoder, PlatformCertificateInfo& t);
+    void encode( CoreIPC::ArgumentEncoder *encoder ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *decoder, PlatformCertificateInfo &t );
 
 #ifndef NDEBUG
     void dump() const;

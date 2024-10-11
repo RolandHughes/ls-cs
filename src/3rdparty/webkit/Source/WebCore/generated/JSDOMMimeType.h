@@ -26,26 +26,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMMimeType;
 
-class JSDOMMimeType : public JSDOMWrapper {
+class JSDOMMimeType : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSDOMMimeType(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DOMMimeType>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDOMMimeType( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DOMMimeType> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    DOMMimeType* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    DOMMimeType *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<DOMMimeType> m_impl;
@@ -53,30 +59,33 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DOMMimeType*);
-DOMMimeType* toDOMMimeType(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DOMMimeType * );
+DOMMimeType *toDOMMimeType( JSC::JSValue );
 
-class JSDOMMimeTypePrototype : public JSC::JSObjectWithGlobalObject {
+class JSDOMMimeTypePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDOMMimeTypePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDOMMimeTypePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                            JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = Base::StructureFlags;
 };
 
 // Attributes
 
-JSC::JSValue jsDOMMimeTypeType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMMimeTypeSuffixes(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMMimeTypeDescription(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMMimeTypeEnabledPlugin(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDOMMimeTypeConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDOMMimeTypeType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMMimeTypeSuffixes( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMMimeTypeDescription( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMMimeTypeEnabledPlugin( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDOMMimeTypeConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

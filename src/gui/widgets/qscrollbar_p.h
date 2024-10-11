@@ -29,30 +29,30 @@
 
 class QScrollBarPrivate : public QAbstractSliderPrivate
 {
-   Q_DECLARE_PUBLIC(QScrollBar)
+    Q_DECLARE_PUBLIC( QScrollBar )
 
- public:
-   QStyle::SubControl pressedControl;
-   bool pointerOutsidePressedControl;
+public:
+    QStyle::SubControl pressedControl;
+    bool pointerOutsidePressedControl;
 
-   int clickOffset, snapBackPosition;
+    int clickOffset, snapBackPosition;
 
-   void activateControl(uint control, int threshold = 500);
-   void stopRepeatAction();
-   int pixelPosToRangeValue(int pos) const;
-   void init();
-   bool updateHoverControl(const QPoint &pos);
-   QStyle::SubControl newHoverControl(const QPoint &pos);
+    void activateControl( uint control, int threshold = 500 );
+    void stopRepeatAction();
+    int pixelPosToRangeValue( int pos ) const;
+    void init();
+    bool updateHoverControl( const QPoint &pos );
+    QStyle::SubControl newHoverControl( const QPoint &pos );
 
-   QStyle::SubControl hoverControl;
-   QRect hoverRect;
+    QStyle::SubControl hoverControl;
+    QRect hoverRect;
 
-   bool transient;
-   void setTransient(bool value);
+    bool transient;
+    void setTransient( bool value );
 
-   bool flashed;
-   int flashTimer;
-   void flash();
+    bool flashed;
+    int flashTimer;
+    void flash();
 };
 
 #endif

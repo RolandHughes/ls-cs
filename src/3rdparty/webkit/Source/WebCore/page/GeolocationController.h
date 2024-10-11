@@ -33,35 +33,40 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GeolocationClient;
 class GeolocationError;
 class GeolocationPosition;
 class Page;
 
-class GeolocationController {
-    WTF_MAKE_NONCOPYABLE(GeolocationController);
+class GeolocationController
+{
+    WTF_MAKE_NONCOPYABLE( GeolocationController );
 public:
-    GeolocationController(Page*, GeolocationClient*);
+    GeolocationController( Page *, GeolocationClient * );
     ~GeolocationController();
 
-    void addObserver(Geolocation*, bool enableHighAccuracy);
-    void removeObserver(Geolocation*);
+    void addObserver( Geolocation *, bool enableHighAccuracy );
+    void removeObserver( Geolocation * );
 
-    void requestPermission(Geolocation*);
-    void cancelPermissionRequest(Geolocation*);
+    void requestPermission( Geolocation * );
+    void cancelPermissionRequest( Geolocation * );
 
-    void positionChanged(GeolocationPosition*);
-    void errorOccurred(GeolocationError*);
+    void positionChanged( GeolocationPosition * );
+    void errorOccurred( GeolocationError * );
 
-    GeolocationPosition* lastPosition();
+    GeolocationPosition *lastPosition();
 
-    GeolocationClient* client() { return m_client; }
+    GeolocationClient *client()
+    {
+        return m_client;
+    }
 
 private:
-    Page* m_page;
-    GeolocationClient* m_client;
+    Page *m_page;
+    GeolocationClient *m_client;
 
     RefPtr<GeolocationPosition> m_lastPosition;
     typedef HashSet<RefPtr<Geolocation> > ObserversSet;

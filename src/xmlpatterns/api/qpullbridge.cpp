@@ -49,142 +49,177 @@ using namespace QPatternist;
 
 AbstractXmlPullProvider::Event PullBridge::next()
 {
-   m_index = m_iterators.top().second->next();
+    m_index = m_iterators.top().second->next();
 
-   if (!m_index.isNull()) {
-      Item item(m_index);
+    if ( !m_index.isNull() )
+    {
+        Item item( m_index );
 
-      if (item && item.isAtomicValue()) {
-         m_current = AtomicValue;
-      } else {
-         Q_ASSERT(item.isNode());
+        if ( item && item.isAtomicValue() )
+        {
+            m_current = AtomicValue;
+        }
+        else
+        {
+            Q_ASSERT( item.isNode() );
 
-         switch (m_index.kind()) {
-            case QXmlNodeModelIndex::Attribute: {
-               m_current = Attribute;
-               break;
-            }
-            case QXmlNodeModelIndex::Comment: {
-               m_current = Comment;
-               break;
-            }
-            case QXmlNodeModelIndex::Element: {
-               m_iterators.push(qMakePair(StartElement, m_index.iterate(QXmlNodeModelIndex::AxisChild)));
-               m_current = StartElement;
-               break;
-            }
-            case QXmlNodeModelIndex::Document: {
-               m_iterators.push(qMakePair(StartDocument, m_index.iterate(QXmlNodeModelIndex::AxisChild)));
-               m_current = StartDocument;
-               break;
-            }
-            case QXmlNodeModelIndex::Namespace: {
-               m_current = Namespace;
-               break;
-            }
-            case QXmlNodeModelIndex::ProcessingInstruction: {
-               m_current = ProcessingInstruction;
-               break;
-            }
-            case QXmlNodeModelIndex::Text: {
-               m_current = Text;
-               break;
-            }
-         }
-      }
-   } else {
-      if (m_iterators.isEmpty()) {
-         m_current = EndOfInput;
-      } else {
-         switch (m_iterators.top().first) {
-            case StartOfInput: {
-               m_current = EndOfInput;
-               break;
-            }
-            case StartElement: {
-               m_current = EndElement;
-               m_iterators.pop();
-               break;
-            }
-            case StartDocument: {
-               m_current = EndDocument;
-               m_iterators.pop();
-               break;
-            }
-            default: {
-               Q_ASSERT_X(false, Q_FUNC_INFO, "Invalid value.");
-               m_current = EndOfInput;
-            }
-         }
-      }
+            switch ( m_index.kind() )
+            {
+                case QXmlNodeModelIndex::Attribute:
+                {
+                    m_current = Attribute;
+                    break;
+                }
 
-   }
+                case QXmlNodeModelIndex::Comment:
+                {
+                    m_current = Comment;
+                    break;
+                }
 
-   return m_current;
+                case QXmlNodeModelIndex::Element:
+                {
+                    m_iterators.push( qMakePair( StartElement, m_index.iterate( QXmlNodeModelIndex::AxisChild ) ) );
+                    m_current = StartElement;
+                    break;
+                }
+
+                case QXmlNodeModelIndex::Document:
+                {
+                    m_iterators.push( qMakePair( StartDocument, m_index.iterate( QXmlNodeModelIndex::AxisChild ) ) );
+                    m_current = StartDocument;
+                    break;
+                }
+
+                case QXmlNodeModelIndex::Namespace:
+                {
+                    m_current = Namespace;
+                    break;
+                }
+
+                case QXmlNodeModelIndex::ProcessingInstruction:
+                {
+                    m_current = ProcessingInstruction;
+                    break;
+                }
+
+                case QXmlNodeModelIndex::Text:
+                {
+                    m_current = Text;
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        if ( m_iterators.isEmpty() )
+        {
+            m_current = EndOfInput;
+        }
+        else
+        {
+            switch ( m_iterators.top().first )
+            {
+                case StartOfInput:
+                {
+                    m_current = EndOfInput;
+                    break;
+                }
+
+                case StartElement:
+                {
+                    m_current = EndElement;
+                    m_iterators.pop();
+                    break;
+                }
+
+                case StartDocument:
+                {
+                    m_current = EndDocument;
+                    m_iterators.pop();
+                    break;
+                }
+
+                default:
+                {
+                    Q_ASSERT_X( false, Q_FUNC_INFO, "Invalid value." );
+                    m_current = EndOfInput;
+                }
+            }
+        }
+
+    }
+
+    return m_current;
 }
 
 AbstractXmlPullProvider::Event PullBridge::current() const
 {
-   return m_current;
+    return m_current;
 }
 
 QXmlNodeModelIndex PullBridge::index() const
 {
-   return m_index;
+    return m_index;
 }
 
 QSourceLocation PullBridge::sourceLocation() const
 {
-   return m_index.model()->sourceLocation(m_index);
+    return m_index.model()->sourceLocation( m_index );
 }
 
 QXmlName PullBridge::name() const
 {
-   return m_index.name();
+    return m_index.name();
 }
 
 QVariant PullBridge::atomicValue() const
 {
-   return QVariant();
+    return QVariant();
 }
 
 QString PullBridge::stringValue() const
 {
-   return QString();
+    return QString();
 }
 
 QHash<QXmlName, QString> PullBridge::attributes()
 {
-   Q_ASSERT(m_current == StartElement);
+    Q_ASSERT( m_current == StartElement );
 
-   QHash<QXmlName, QString> attributes;
+    QHash<QXmlName, QString> attributes;
 
-   QXmlNodeModelIndex::Iterator::Ptr it = m_index.iterate(QXmlNodeModelIndex::AxisAttribute);
-   QXmlNodeModelIndex index = it->next();
-   while (!index.isNull()) {
-      const Item attribute(index);
-      attributes.insert(index.name(), index.stringValue());
+    QXmlNodeModelIndex::Iterator::Ptr it = m_index.iterate( QXmlNodeModelIndex::AxisAttribute );
+    QXmlNodeModelIndex index = it->next();
 
-      index = it->next();
-   }
+    while ( !index.isNull() )
+    {
+        const Item attribute( index );
+        attributes.insert( index.name(), index.stringValue() );
 
-   return attributes;
+        index = it->next();
+    }
+
+    return attributes;
 }
 
 QHash<QXmlName, QXmlItem> PullBridge::attributeItems()
 {
-   Q_ASSERT(m_current == StartElement);
+    Q_ASSERT( m_current == StartElement );
 
-   QHash<QXmlName, QXmlItem> attributes;
+    QHash<QXmlName, QXmlItem> attributes;
 
-   QXmlNodeModelIndex::Iterator::Ptr it = m_index.iterate(QXmlNodeModelIndex::AxisAttribute);
-   QXmlNodeModelIndex index = it->next();
-   while (!index.isNull()) {
-      const Item attribute(index);
-      attributes.insert(index.name(), QXmlItem(index));
+    QXmlNodeModelIndex::Iterator::Ptr it = m_index.iterate( QXmlNodeModelIndex::AxisAttribute );
+    QXmlNodeModelIndex index = it->next();
 
-      index = it->next();
-   }
+    while ( !index.isNull() )
+    {
+        const Item attribute( index );
+        attributes.insert( index.name(), QXmlItem( index ) );
 
-   return attributes;
+        index = it->next();
+    }
+
+    return attributes;
 }

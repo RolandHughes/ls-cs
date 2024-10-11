@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -38,10 +38,11 @@
 
 #ifndef NDEBUG
 void showGlyphPageTrees();
-void showGlyphPageTree(unsigned pageNumber);
+void showGlyphPageTree( unsigned pageNumber );
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FontData;
 class SimpleFontData;
@@ -66,71 +67,84 @@ class SimpleFontData;
 // system fallback page is not populated at construction like the other pages,
 // but on demand for each glyph, because the system may need to use different
 // fallback fonts for each. This lazy population is done by the Font.
-class GlyphPageTreeNode {
+class GlyphPageTreeNode
+{
 public:
     GlyphPageTreeNode()
-        : m_parent(0)
-        , m_level(0)
-        , m_isSystemFallback(false)
-        , m_customFontCount(0)
-        , m_systemFallbackChild(0)
+        : m_parent( 0 )
+        , m_level( 0 )
+        , m_isSystemFallback( false )
+        , m_customFontCount( 0 )
+        , m_systemFallbackChild( 0 )
 #ifndef NDEBUG
-        , m_pageNumber(0)
+        , m_pageNumber( 0 )
 #endif
     {
     }
 
     ~GlyphPageTreeNode();
 
-    static HashMap<int, GlyphPageTreeNode*>* roots;
-    static GlyphPageTreeNode* pageZeroRoot;
+    static HashMap<int, GlyphPageTreeNode *> *roots;
+    static GlyphPageTreeNode *pageZeroRoot;
 
-    static GlyphPageTreeNode* getRootChild(const FontData* fontData, unsigned pageNumber)
+    static GlyphPageTreeNode *getRootChild( const FontData *fontData, unsigned pageNumber )
     {
-        return getRoot(pageNumber)->getChild(fontData, pageNumber);
+        return getRoot( pageNumber )->getChild( fontData, pageNumber );
     }
 
-    static void pruneTreeCustomFontData(const FontData*);
-    static void pruneTreeFontData(const SimpleFontData*);
+    static void pruneTreeCustomFontData( const FontData * );
+    static void pruneTreeFontData( const SimpleFontData * );
 
-    void pruneCustomFontData(const FontData*);
-    void pruneFontData(const SimpleFontData*, unsigned level = 0);
+    void pruneCustomFontData( const FontData * );
+    void pruneFontData( const SimpleFontData *, unsigned level = 0 );
 
-    GlyphPageTreeNode* parent() const { return m_parent; }
-    GlyphPageTreeNode* getChild(const FontData*, unsigned pageNumber);
+    GlyphPageTreeNode *parent() const
+    {
+        return m_parent;
+    }
+    GlyphPageTreeNode *getChild( const FontData *, unsigned pageNumber );
 
     // Returns a page of glyphs (or NULL if there are no glyphs in this page's character range).
-    GlyphPage* page() const { return m_page.get(); }
+    GlyphPage *page() const
+    {
+        return m_page.get();
+    }
 
     // Returns the level of this node. See class-level comment.
-    unsigned level() const { return m_level; }
+    unsigned level() const
+    {
+        return m_level;
+    }
 
     // The system fallback font has special rules (see above).
-    bool isSystemFallback() const { return m_isSystemFallback; }
+    bool isSystemFallback() const
+    {
+        return m_isSystemFallback;
+    }
 
     static size_t treeGlyphPageCount();
     size_t pageCount() const;
 
 private:
-    static GlyphPageTreeNode* getRoot(unsigned pageNumber);
-    void initializePage(const FontData*, unsigned pageNumber);
+    static GlyphPageTreeNode *getRoot( unsigned pageNumber );
+    void initializePage( const FontData *, unsigned pageNumber );
 
 #ifndef NDEBUG
     void showSubtree();
 #endif
 
-    GlyphPageTreeNode* m_parent;
+    GlyphPageTreeNode *m_parent;
     RefPtr<GlyphPage> m_page;
     unsigned m_level : 31;
     bool m_isSystemFallback : 1;
     unsigned m_customFontCount;
-    HashMap<const FontData*, GlyphPageTreeNode*> m_children;
-    GlyphPageTreeNode* m_systemFallbackChild;
+    HashMap<const FontData *, GlyphPageTreeNode *> m_children;
+    GlyphPageTreeNode *m_systemFallbackChild;
 
 #ifndef NDEBUG
     unsigned m_pageNumber;
 
-    friend void ::showGlyphPageTree(unsigned pageNumber);
+    friend void ::showGlyphPageTree( unsigned pageNumber );
 #endif
 };
 

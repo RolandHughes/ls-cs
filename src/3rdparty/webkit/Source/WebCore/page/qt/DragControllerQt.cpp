@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,9 +31,10 @@
 #include "FrameView.h"
 #include "Page.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-// FIXME: These values are straight out of DragControllerMac, so probably have 
+// FIXME: These values are straight out of DragControllerMac, so probably have
 // little correlation with Qt standards...
 const int DragController::LinkDragBorderInset = 2;
 const int DragController::MaxOriginalImageArea = 1500 * 1500;
@@ -43,24 +44,26 @@ const int DragController::DragIconBottomInset = 3;
 const float DragController::DragImageAlpha = 0.75f;
 
 
-bool DragController::isCopyKeyDown(DragData*)
+bool DragController::isCopyKeyDown( DragData * )
 {
     return false;
 }
-    
-DragOperation DragController::dragOperation(DragData* dragData)
+
+DragOperation DragController::dragOperation( DragData *dragData )
 {
     // FIXME: This logic is incomplete.
-    if (dragData->containsURL(0))
+    if ( dragData->containsURL( 0 ) )
+    {
         return DragOperationCopy;
-        
-    return DragOperationNone;
-} 
+    }
 
-const IntSize& DragController::maxDragImageSize()
+    return DragOperationNone;
+}
+
+const IntSize &DragController::maxDragImageSize()
 {
-    static const IntSize maxDragImageSize(400, 400);
-    
+    static const IntSize maxDragImageSize( 400, 400 );
+
     return maxDragImageSize;
 }
 

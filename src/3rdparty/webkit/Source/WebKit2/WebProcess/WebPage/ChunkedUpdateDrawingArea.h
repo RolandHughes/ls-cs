@@ -30,39 +30,41 @@
 #include "RunLoop.h"
 #include <WebCore/IntPoint.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class UpdateChunk;
 
-class ChunkedUpdateDrawingArea : public DrawingArea {
+class ChunkedUpdateDrawingArea : public DrawingArea
+{
 public:
-    explicit ChunkedUpdateDrawingArea(WebPage*);
+    explicit ChunkedUpdateDrawingArea( WebPage * );
     virtual ~ChunkedUpdateDrawingArea();
 
-    virtual void setNeedsDisplay(const WebCore::IntRect&);
-    virtual void scroll(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset);
+    virtual void setNeedsDisplay( const WebCore::IntRect & );
+    virtual void scroll( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset );
     virtual void display();
     virtual void forceRepaint();
 
 #if USE(ACCELERATED_COMPOSITING)
-    virtual void setRootCompositingLayer(WebCore::GraphicsLayer*) { }
+    virtual void setRootCompositingLayer( WebCore::GraphicsLayer * ) { }
     virtual void scheduleCompositingLayerSync() { }
     virtual void syncCompositingLayers() { }
 #endif
 
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
 private:
     void scheduleDisplay();
-    
+
     // CoreIPC message handlers.
-    void setSize(const WebCore::IntSize& viewSize);
+    void setSize( const WebCore::IntSize &viewSize );
     void suspendPainting();
-    void deprecatedResumePainting(bool forceRepaint);
+    void deprecatedResumePainting( bool forceRepaint );
     void didUpdate();
 
     // Platform overrides
-    void paintIntoUpdateChunk(UpdateChunk*);
+    void paintIntoUpdateChunk( UpdateChunk * );
 
     WebCore::IntRect m_dirtyRect;
     bool m_isWaitingForUpdate;

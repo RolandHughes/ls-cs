@@ -26,65 +26,71 @@
 #include "JSAudioNode.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RealtimeAnalyserNode;
 
-class JSRealtimeAnalyserNode : public JSAudioNode {
+class JSRealtimeAnalyserNode : public JSAudioNode
+{
     typedef JSAudioNode Base;
 public:
-    JSRealtimeAnalyserNode(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<RealtimeAnalyserNode>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSRealtimeAnalyserNode( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<RealtimeAnalyserNode> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, RealtimeAnalyserNode*);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, RealtimeAnalyserNode * );
 
-class JSRealtimeAnalyserNodePrototype : public JSC::JSObjectWithGlobalObject {
+class JSRealtimeAnalyserNodePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSRealtimeAnalyserNodePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSRealtimeAnalyserNodePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                     JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetFloatFrequencyData(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteFrequencyData(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteTimeDomainData(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetFloatFrequencyData( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteFrequencyData( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsRealtimeAnalyserNodePrototypeFunctionGetByteTimeDomainData( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsRealtimeAnalyserNodeFftSize(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSRealtimeAnalyserNodeFftSize(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsRealtimeAnalyserNodeFrequencyBinCount(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsRealtimeAnalyserNodeMinDecibels(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSRealtimeAnalyserNodeMinDecibels(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsRealtimeAnalyserNodeMaxDecibels(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSRealtimeAnalyserNodeMaxDecibels(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsRealtimeAnalyserNodeSmoothingTimeConstant(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSRealtimeAnalyserNodeSmoothingTimeConstant(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsRealtimeAnalyserNodeConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsRealtimeAnalyserNodeFftSize( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSRealtimeAnalyserNodeFftSize( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsRealtimeAnalyserNodeFrequencyBinCount( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsRealtimeAnalyserNodeMinDecibels( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSRealtimeAnalyserNodeMinDecibels( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsRealtimeAnalyserNodeMaxDecibels( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSRealtimeAnalyserNodeMaxDecibels( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsRealtimeAnalyserNodeSmoothingTimeConstant( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSRealtimeAnalyserNodeSmoothingTimeConstant( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsRealtimeAnalyserNodeConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

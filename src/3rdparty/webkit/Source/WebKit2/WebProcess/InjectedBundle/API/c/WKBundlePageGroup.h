@@ -34,7 +34,7 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKBundlePageGroupGetTypeID();
 
-WK_EXPORT WKStringRef WKBundlePageGroupCopyIdentifier(WKBundlePageGroupRef bundlePageGroup);
+WK_EXPORT WKStringRef WKBundlePageGroupCopyIdentifier( WKBundlePageGroupRef bundlePageGroup );
 
 #ifdef __cplusplus
 }

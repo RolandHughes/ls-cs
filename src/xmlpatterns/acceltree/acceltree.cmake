@@ -7,7 +7,7 @@ list(APPEND XMLPATTERNS_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/acceltree/qacceltreebuilder.cpp
 )
 
-target_sources(CsXmlPatterns
+target_sources(LsCsXmlPatterns
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/acceltree/qacceltree.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/acceltree/qacceltreeresourceloader.cpp

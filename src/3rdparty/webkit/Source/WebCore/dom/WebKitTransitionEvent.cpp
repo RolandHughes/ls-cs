@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,18 +28,19 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
-        
+namespace WebCore
+{
+
 WebKitTransitionEvent::WebKitTransitionEvent()
     : m_propertyName()
-    , m_elapsedTime(0.0)
+    , m_elapsedTime( 0.0 )
 {
 }
 
-WebKitTransitionEvent::WebKitTransitionEvent(const AtomicString& type, const String& propertyName, double elapsedTime)
-    : Event(type, true, true)
-    , m_propertyName(propertyName)
-    , m_elapsedTime(elapsedTime)
+WebKitTransitionEvent::WebKitTransitionEvent( const AtomicString &type, const String &propertyName, double elapsedTime )
+    : Event( type, true, true )
+    , m_propertyName( propertyName )
+    , m_elapsedTime( elapsedTime )
 {
 }
 
@@ -47,22 +48,24 @@ WebKitTransitionEvent::~WebKitTransitionEvent()
 {
 }
 
-void WebKitTransitionEvent::initWebKitTransitionEvent(const AtomicString& type, 
-                                            bool canBubbleArg,
-                                            bool cancelableArg,
-                                            const String& propertyName,
-                                            double elapsedTime)
+void WebKitTransitionEvent::initWebKitTransitionEvent( const AtomicString &type,
+        bool canBubbleArg,
+        bool cancelableArg,
+        const String &propertyName,
+        double elapsedTime )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
-    
-    initEvent(type, canBubbleArg, cancelableArg);
-    
+    }
+
+    initEvent( type, canBubbleArg, cancelableArg );
+
     m_propertyName = propertyName;
     m_elapsedTime = elapsedTime;
 }
 
-const String& WebKitTransitionEvent::propertyName() const
+const String &WebKitTransitionEvent::propertyName() const
 {
     return m_propertyName;
 }

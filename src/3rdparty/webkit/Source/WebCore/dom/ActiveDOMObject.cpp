@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -31,23 +31,26 @@
 #include "WorkerContext.h"
 #include "WorkerThread.h"
 
-namespace WebCore {
-
-ActiveDOMObject::ActiveDOMObject(ScriptExecutionContext* scriptExecutionContext, void* upcastPointer)
-    : m_scriptExecutionContext(scriptExecutionContext)
-    , m_pendingActivityCount(0)
+namespace WebCore
 {
-    if (m_scriptExecutionContext) {
-        ASSERT(m_scriptExecutionContext->isContextThread());
-        m_scriptExecutionContext->createdActiveDOMObject(this, upcastPointer);
+
+ActiveDOMObject::ActiveDOMObject( ScriptExecutionContext *scriptExecutionContext, void *upcastPointer )
+    : m_scriptExecutionContext( scriptExecutionContext )
+    , m_pendingActivityCount( 0 )
+{
+    if ( m_scriptExecutionContext )
+    {
+        ASSERT( m_scriptExecutionContext->isContextThread() );
+        m_scriptExecutionContext->createdActiveDOMObject( this, upcastPointer );
     }
 }
 
 ActiveDOMObject::~ActiveDOMObject()
 {
-    if (m_scriptExecutionContext) {
-        ASSERT(m_scriptExecutionContext->isContextThread());
-        m_scriptExecutionContext->destroyedActiveDOMObject(this);
+    if ( m_scriptExecutionContext )
+    {
+        ASSERT( m_scriptExecutionContext->isContextThread() );
+        m_scriptExecutionContext->destroyedActiveDOMObject( this );
     }
 }
 
@@ -66,7 +69,7 @@ bool ActiveDOMObject::canSuspend() const
     return false;
 }
 
-void ActiveDOMObject::suspend(ReasonForSuspension)
+void ActiveDOMObject::suspend( ReasonForSuspension )
 {
 }
 

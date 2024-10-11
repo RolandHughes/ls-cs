@@ -75,15 +75,15 @@ list(APPEND CORE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtranslator.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qvariant.h
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qwineventnotifier.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmetafwd.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_callevent.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_internal_1.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_internal_2.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csobject_internal.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csobject_macro.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csregister1.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csregister2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmetafwd.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_callevent.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_internal_1.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_internal_2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsobject_internal.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsobject_macro.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsregister1.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsregister2.h
 )
 
 list(APPEND CORE_PRIVATE_INCLUDES
@@ -107,7 +107,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtranslator_p.h
 )
 
-target_sources(CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qabstracteventdispatcher.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qabstractitemmodel.cpp
@@ -130,17 +130,17 @@ target_sources(CsCore
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtimer.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qtranslator.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qvariant.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_callevent.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_classinfo.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_enum.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_method.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csmeta_prop.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csobject_debug.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/csobject_private.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_callevent.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_classinfo.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_enum.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_method.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsmeta_prop.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsobject_debug.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscsobject_private.cpp
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcfsocketnotifier.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcore_mac.cpp
@@ -155,7 +155,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcore_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcrashhandler.cpp
@@ -166,14 +166,14 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
    )
 
    if(GTK2_FOUND)
-      target_sources(CsCore
+      target_sources(LsCsCore
          PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qeventdispatcher_glib.cpp
       )
    endif()
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qeventdispatcher_win.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcoreapplication_win.cpp

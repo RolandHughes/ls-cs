@@ -29,46 +29,52 @@
 
 class QAudioDeviceInfoPrivate : public QSharedData
 {
- public:
-   QAudioDeviceInfoPrivate()
-      : mode(QAudio::AudioOutput), info(nullptr)
-   {
-   }
+public:
+    QAudioDeviceInfoPrivate()
+        : mode( QAudio::AudioOutput ), info( nullptr )
+    {
+    }
 
-   QAudioDeviceInfoPrivate(const QString &r, const QString &h, QAudio::Mode m):
-      realm(r), handle(h), mode(m)
-   {
-      if (! handle.isEmpty()) {
-         info = QAudioDeviceFactory::audioDeviceInfo(realm, handle, mode);
-      } else {
-         info = nullptr;
-      }
-   }
+    QAudioDeviceInfoPrivate( const QString &r, const QString &h, QAudio::Mode m ):
+        realm( r ), handle( h ), mode( m )
+    {
+        if ( ! handle.isEmpty() )
+        {
+            info = QAudioDeviceFactory::audioDeviceInfo( realm, handle, mode );
+        }
+        else
+        {
+            info = nullptr;
+        }
+    }
 
-   QAudioDeviceInfoPrivate(const QAudioDeviceInfoPrivate &other):
-      QSharedData(other),
-      realm(other.realm), handle(other.handle), mode(other.mode) {
-      info = QAudioDeviceFactory::audioDeviceInfo(realm, handle, mode);
-   }
+    QAudioDeviceInfoPrivate( const QAudioDeviceInfoPrivate &other ):
+        QSharedData( other ),
+        realm( other.realm ), handle( other.handle ), mode( other.mode )
+    {
+        info = QAudioDeviceFactory::audioDeviceInfo( realm, handle, mode );
+    }
 
-   QAudioDeviceInfoPrivate &operator=(const QAudioDeviceInfoPrivate &other) {
-      delete info;
+    QAudioDeviceInfoPrivate &operator=( const QAudioDeviceInfoPrivate &other )
+    {
+        delete info;
 
-      realm = other.realm;
-      handle = other.handle;
-      mode = other.mode;
-      info = QAudioDeviceFactory::audioDeviceInfo(realm, handle, mode);
-      return *this;
-   }
+        realm = other.realm;
+        handle = other.handle;
+        mode = other.mode;
+        info = QAudioDeviceFactory::audioDeviceInfo( realm, handle, mode );
+        return *this;
+    }
 
-   ~QAudioDeviceInfoPrivate() {
-      delete info;
-   }
+    ~QAudioDeviceInfoPrivate()
+    {
+        delete info;
+    }
 
-   QString  realm;
-   QString  handle;
-   QAudio::Mode mode;
-   QAbstractAudioDeviceInfo *info;
+    QString  realm;
+    QString  handle;
+    QAudio::Mode mode;
+    QAbstractAudioDeviceInfo *info;
 };
 
 /*!
@@ -76,7 +82,7 @@ class QAudioDeviceInfoPrivate : public QSharedData
 */
 
 QAudioDeviceInfo::QAudioDeviceInfo():
-   d(new QAudioDeviceInfoPrivate)
+    d( new QAudioDeviceInfoPrivate )
 {
 }
 
@@ -84,8 +90,8 @@ QAudioDeviceInfo::QAudioDeviceInfo():
     Constructs a copy of \a other.
 */
 
-QAudioDeviceInfo::QAudioDeviceInfo(const QAudioDeviceInfo &other):
-   d(other.d)
+QAudioDeviceInfo::QAudioDeviceInfo( const QAudioDeviceInfo &other ):
+    d( other.d )
 {
 }
 
@@ -101,36 +107,40 @@ QAudioDeviceInfo::~QAudioDeviceInfo()
     Sets the QAudioDeviceInfo object to be equal to \a other.
 */
 
-QAudioDeviceInfo &QAudioDeviceInfo::operator=(const QAudioDeviceInfo &other)
+QAudioDeviceInfo &QAudioDeviceInfo::operator=( const QAudioDeviceInfo &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
 /*!
     Returns whether this QAudioDeviceInfo object holds a device definition.
 */
-bool QAudioDeviceInfo::operator ==(const QAudioDeviceInfo &other) const
+bool QAudioDeviceInfo::operator ==( const QAudioDeviceInfo &other ) const
 {
-   if (d == other.d) {
-      return true;
-   }
-   if (d->realm == other.d->realm
-      && d->mode == other.d->mode
-      && d->handle == other.d->handle
-      && deviceName() == other.deviceName()) {
-      return true;
-   }
-   return false;
+    if ( d == other.d )
+    {
+        return true;
+    }
+
+    if ( d->realm == other.d->realm
+            && d->mode == other.d->mode
+            && d->handle == other.d->handle
+            && deviceName() == other.deviceName() )
+    {
+        return true;
+    }
+
+    return false;
 }
 
-bool QAudioDeviceInfo::operator !=(const QAudioDeviceInfo &other) const
+bool QAudioDeviceInfo::operator !=( const QAudioDeviceInfo &other ) const
 {
-   return !operator==(other);
+    return !operator==( other );
 }
 bool QAudioDeviceInfo::isNull() const
 {
-   return d->info == nullptr;
+    return d->info == nullptr;
 }
 
 /*!
@@ -145,16 +155,16 @@ bool QAudioDeviceInfo::isNull() const
 
 QString QAudioDeviceInfo::deviceName() const
 {
-   return isNull() ? QString() : d->info->deviceName();
+    return isNull() ? QString() : d->info->deviceName();
 }
 
 /*!
     Returns true if \a settings are supported by the audio device of this QAudioDeviceInfo.
 */
 
-bool QAudioDeviceInfo::isFormatSupported(const QAudioFormat &settings) const
+bool QAudioDeviceInfo::isFormatSupported( const QAudioFormat &settings ) const
 {
-   return isNull() ? false : d->info->isFormatSupported(settings);
+    return isNull() ? false : d->info->isFormatSupported( settings );
 }
 
 /*!
@@ -173,7 +183,7 @@ bool QAudioDeviceInfo::isFormatSupported(const QAudioFormat &settings) const
 
 QAudioFormat QAudioDeviceInfo::preferredFormat() const
 {
-   return isNull() ? QAudioFormat() : d->info->preferredFormat();
+    return isNull() ? QAudioFormat() : d->info->preferredFormat();
 }
 
 /*!
@@ -184,184 +194,209 @@ QAudioFormat QAudioDeviceInfo::preferredFormat() const
     They also are dependent on the QAudio::Mode being used.
 */
 
-QAudioFormat QAudioDeviceInfo::nearestFormat(const QAudioFormat &settings) const
+QAudioFormat QAudioDeviceInfo::nearestFormat( const QAudioFormat &settings ) const
 {
-   if (isFormatSupported(settings)) {
-      return settings;
-   }
+    if ( isFormatSupported( settings ) )
+    {
+        return settings;
+    }
 
-   QAudioFormat nearest = settings;
+    QAudioFormat nearest = settings;
 
-   QList<QString> testCodecs = supportedCodecs();
-   QList<int> testChannels = supportedChannelCounts();
-   QList<QAudioFormat::Endian> testByteOrders = supportedByteOrders();
-   QList<QAudioFormat::SampleType> testSampleTypes;
-   QList<QAudioFormat::SampleType> sampleTypesAvailable = supportedSampleTypes();
-   QMap<int, int> testSampleRates;
-   QList<int> sampleRatesAvailable = supportedSampleRates();
-   QMap<int, int> testSampleSizes;
-   QList<int> sampleSizesAvailable = supportedSampleSizes();
+    QList<QString> testCodecs = supportedCodecs();
+    QList<int> testChannels = supportedChannelCounts();
+    QList<QAudioFormat::Endian> testByteOrders = supportedByteOrders();
+    QList<QAudioFormat::SampleType> testSampleTypes;
+    QList<QAudioFormat::SampleType> sampleTypesAvailable = supportedSampleTypes();
+    QMap<int, int> testSampleRates;
+    QList<int> sampleRatesAvailable = supportedSampleRates();
+    QMap<int, int> testSampleSizes;
+    QList<int> sampleSizesAvailable = supportedSampleSizes();
 
-   // Get sorted lists for checking
-   if (testCodecs.contains(settings.codec())) {
-      testCodecs.removeAll(settings.codec());
-      testCodecs.insert(0, settings.codec());
-   }
-   testChannels.removeAll(settings.channelCount());
-   testChannels.insert(0, settings.channelCount());
-   testByteOrders.removeAll(settings.byteOrder());
-   testByteOrders.insert(0, settings.byteOrder());
+    // Get sorted lists for checking
+    if ( testCodecs.contains( settings.codec() ) )
+    {
+        testCodecs.removeAll( settings.codec() );
+        testCodecs.insert( 0, settings.codec() );
+    }
 
-   // Get sorted sampleSizes (equal to and ascending values only)
-   if (sampleTypesAvailable.contains(settings.sampleType())) {
-      testSampleTypes.append(settings.sampleType());
-   }
-   if (sampleTypesAvailable.contains(QAudioFormat::SignedInt)) {
-      testSampleTypes.append(QAudioFormat::SignedInt);
-   }
-   if (sampleTypesAvailable.contains(QAudioFormat::UnSignedInt)) {
-      testSampleTypes.append(QAudioFormat::UnSignedInt);
-   }
-   if (sampleTypesAvailable.contains(QAudioFormat::Float)) {
-      testSampleTypes.append(QAudioFormat::Float);
-   }
-   if (sampleSizesAvailable.contains(settings.sampleSize())) {
-      testSampleSizes.insert(0, settings.sampleSize());
-   }
+    testChannels.removeAll( settings.channelCount() );
+    testChannels.insert( 0, settings.channelCount() );
+    testByteOrders.removeAll( settings.byteOrder() );
+    testByteOrders.insert( 0, settings.byteOrder() );
 
-   sampleSizesAvailable.removeAll(settings.sampleSize());
-   for (int size : sampleSizesAvailable) {
-      int larger  = (size > settings.sampleSize()) ? size : settings.sampleSize();
-      int smaller = (size > settings.sampleSize()) ? settings.sampleSize() : size;
+    // Get sorted sampleSizes (equal to and ascending values only)
+    if ( sampleTypesAvailable.contains( settings.sampleType() ) )
+    {
+        testSampleTypes.append( settings.sampleType() );
+    }
 
-      bool isMultiple = ( 0 == (larger % smaller));
-      int diff = larger - smaller;
-      testSampleSizes.insert((isMultiple ? diff : diff + 100000), size);
-   }
+    if ( sampleTypesAvailable.contains( QAudioFormat::SignedInt ) )
+    {
+        testSampleTypes.append( QAudioFormat::SignedInt );
+    }
 
-   if (sampleRatesAvailable.contains(settings.sampleRate())) {
-      testSampleRates.insert(0, settings.sampleRate());
-   }
+    if ( sampleTypesAvailable.contains( QAudioFormat::UnSignedInt ) )
+    {
+        testSampleTypes.append( QAudioFormat::UnSignedInt );
+    }
 
-   sampleRatesAvailable.removeAll(settings.sampleRate());
-   for (int sampleRate : sampleRatesAvailable) {
-      int larger  = (sampleRate > settings.sampleRate()) ? sampleRate : settings.sampleRate();
-      int smaller = (sampleRate > settings.sampleRate()) ? settings.sampleRate() : sampleRate;
-      bool isMultiple = ( 0 == (larger % smaller));
-      int diff = larger - smaller;
-      testSampleRates.insert((isMultiple ? diff : diff + 100000), sampleRate);
+    if ( sampleTypesAvailable.contains( QAudioFormat::Float ) )
+    {
+        testSampleTypes.append( QAudioFormat::Float );
+    }
 
-   }
+    if ( sampleSizesAvailable.contains( settings.sampleSize() ) )
+    {
+        testSampleSizes.insert( 0, settings.sampleSize() );
+    }
 
-   // Try to find nearest
-   for (QString codec : testCodecs) {
-      nearest.setCodec(codec);
+    sampleSizesAvailable.removeAll( settings.sampleSize() );
 
-      for (QAudioFormat::Endian order : testByteOrders) {
-         nearest.setByteOrder(order);
+    for ( int size : sampleSizesAvailable )
+    {
+        int larger  = ( size > settings.sampleSize() ) ? size : settings.sampleSize();
+        int smaller = ( size > settings.sampleSize() ) ? settings.sampleSize() : size;
 
-         for (QAudioFormat::SampleType sample : testSampleTypes) {
-            nearest.setSampleType(sample);
-            QMapIterator<int, int> sz(testSampleSizes);
+        bool isMultiple = ( 0 == ( larger % smaller ) );
+        int diff = larger - smaller;
+        testSampleSizes.insert( ( isMultiple ? diff : diff + 100000 ), size );
+    }
 
-            while (sz.hasNext()) {
-               sz.next();
-               nearest.setSampleSize(sz.value());
+    if ( sampleRatesAvailable.contains( settings.sampleRate() ) )
+    {
+        testSampleRates.insert( 0, settings.sampleRate() );
+    }
 
-               for (int channel : testChannels) {
-                  nearest.setChannelCount(channel);
-                  QMapIterator<int, int> i(testSampleRates);
+    sampleRatesAvailable.removeAll( settings.sampleRate() );
 
-                  while (i.hasNext()) {
-                     i.next();
-                     nearest.setSampleRate(i.value());
-                     if (isFormatSupported(nearest)) {
-                        return nearest;
-                     }
-                  }
-               }
+    for ( int sampleRate : sampleRatesAvailable )
+    {
+        int larger  = ( sampleRate > settings.sampleRate() ) ? sampleRate : settings.sampleRate();
+        int smaller = ( sampleRate > settings.sampleRate() ) ? settings.sampleRate() : sampleRate;
+        bool isMultiple = ( 0 == ( larger % smaller ) );
+        int diff = larger - smaller;
+        testSampleRates.insert( ( isMultiple ? diff : diff + 100000 ), sampleRate );
+
+    }
+
+    // Try to find nearest
+    for ( QString codec : testCodecs )
+    {
+        nearest.setCodec( codec );
+
+        for ( QAudioFormat::Endian order : testByteOrders )
+        {
+            nearest.setByteOrder( order );
+
+            for ( QAudioFormat::SampleType sample : testSampleTypes )
+            {
+                nearest.setSampleType( sample );
+                QMapIterator<int, int> sz( testSampleSizes );
+
+                while ( sz.hasNext() )
+                {
+                    sz.next();
+                    nearest.setSampleSize( sz.value() );
+
+                    for ( int channel : testChannels )
+                    {
+                        nearest.setChannelCount( channel );
+                        QMapIterator<int, int> i( testSampleRates );
+
+                        while ( i.hasNext() )
+                        {
+                            i.next();
+                            nearest.setSampleRate( i.value() );
+
+                            if ( isFormatSupported( nearest ) )
+                            {
+                                return nearest;
+                            }
+                        }
+                    }
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   //Fallback
-   return preferredFormat();
+    //Fallback
+    return preferredFormat();
 }
 
 
 
 QStringList QAudioDeviceInfo::supportedCodecs() const
 {
-   return isNull() ? QStringList() : d->info->supportedCodecs();
+    return isNull() ? QStringList() : d->info->supportedCodecs();
 }
 
 
 QList<int> QAudioDeviceInfo::supportedSampleRates() const
 {
-   return isNull() ? QList<int>() : d->info->supportedSampleRates();
+    return isNull() ? QList<int>() : d->info->supportedSampleRates();
 }
 
 
 
 QList<int> QAudioDeviceInfo::supportedChannelCounts() const
 {
-   return isNull() ? QList<int>() : d->info->supportedChannelCounts();
+    return isNull() ? QList<int>() : d->info->supportedChannelCounts();
 }
 
 
 
 QList<int> QAudioDeviceInfo::supportedSampleSizes() const
 {
-   return isNull() ? QList<int>() : d->info->supportedSampleSizes();
+    return isNull() ? QList<int>() : d->info->supportedSampleSizes();
 }
 
 
 QList<QAudioFormat::Endian> QAudioDeviceInfo::supportedByteOrders() const
 {
-   return isNull() ? QList<QAudioFormat::Endian>() : d->info->supportedByteOrders();
+    return isNull() ? QList<QAudioFormat::Endian>() : d->info->supportedByteOrders();
 }
 
 QList<QAudioFormat::SampleType> QAudioDeviceInfo::supportedSampleTypes() const
 {
-   return isNull() ? QList<QAudioFormat::SampleType>() : d->info->supportedSampleTypes();
+    return isNull() ? QList<QAudioFormat::SampleType>() : d->info->supportedSampleTypes();
 }
 
 QAudioDeviceInfo QAudioDeviceInfo::defaultInputDevice()
 {
-   return QAudioDeviceFactory::defaultInputDevice();
+    return QAudioDeviceFactory::defaultInputDevice();
 }
 QAudioDeviceInfo QAudioDeviceInfo::defaultOutputDevice()
 {
-   return QAudioDeviceFactory::defaultOutputDevice();
+    return QAudioDeviceFactory::defaultOutputDevice();
 }
 
-QList<QAudioDeviceInfo> QAudioDeviceInfo::availableDevices(QAudio::Mode mode)
+QList<QAudioDeviceInfo> QAudioDeviceInfo::availableDevices( QAudio::Mode mode )
 {
-   return QAudioDeviceFactory::availableDevices(mode);
+    return QAudioDeviceFactory::availableDevices( mode );
 }
 
 
-QAudioDeviceInfo::QAudioDeviceInfo(const QString &realm, const QString &handle, QAudio::Mode mode):
-   d(new QAudioDeviceInfoPrivate(realm, handle, mode))
+QAudioDeviceInfo::QAudioDeviceInfo( const QString &realm, const QString &handle, QAudio::Mode mode ):
+    d( new QAudioDeviceInfoPrivate( realm, handle, mode ) )
 {
 }
 
 
 QString QAudioDeviceInfo::realm() const
 {
-   return d->realm;
+    return d->realm;
 }
 
 QString QAudioDeviceInfo::handle() const
 {
-   return d->handle;
+    return d->handle;
 }
 
 
 QAudio::Mode QAudioDeviceInfo::mode() const
 {
-   return d->mode;
+    return d->mode;
 }
 
 

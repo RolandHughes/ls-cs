@@ -28,7 +28,8 @@
 #include "Node.h"
 #include "StyleSheet.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 String StyleBase::cssText() const
 {
@@ -37,27 +38,37 @@ String StyleBase::cssText() const
 
 void StyleBase::checkLoaded()
 {
-    if (parent())
+    if ( parent() )
+    {
         parent()->checkLoaded();
+    }
 }
 
-Node* StyleBase::node()
+Node *StyleBase::node()
 {
-    if (isStyleSheet())
-        return static_cast<StyleSheet*>(this)->ownerNode();
+    if ( isStyleSheet() )
+    {
+        return static_cast<StyleSheet *>( this )->ownerNode();
+    }
 
-    if (isMutableStyleDeclaration())
-        return static_cast<CSSMutableStyleDeclaration*>(this)->node();
+    if ( isMutableStyleDeclaration() )
+    {
+        return static_cast<CSSMutableStyleDeclaration *>( this )->node();
+    }
 
     return 0;
 }
 
-StyleSheet* StyleBase::stylesheet()
+StyleSheet *StyleBase::stylesheet()
 {
     StyleBase *b = this;
-    while (b && !b->isStyleSheet())
+
+    while ( b && !b->isStyleSheet() )
+    {
         b = b->parent();
-    return static_cast<StyleSheet*>(b);
+    }
+
+    return static_cast<StyleSheet *>( b );
 }
 
 KURL StyleBase::baseURL() const
@@ -65,15 +76,28 @@ KURL StyleBase::baseURL() const
     // Try to find the style sheet. If found look for its URL.
     // If it has none, get the URL from the parent sheet or the parent node.
 
-    StyleSheet* sheet = const_cast<StyleBase*>(this)->stylesheet();
-    if (!sheet)
+    StyleSheet *sheet = const_cast<StyleBase *>( this )->stylesheet();
+
+    if ( !sheet )
+    {
         return KURL();
-    if (!sheet->finalURL().isNull())
+    }
+
+    if ( !sheet->finalURL().isNull() )
+    {
         return sheet->finalURL();
-    if (sheet->parent())
+    }
+
+    if ( sheet->parent() )
+    {
         return sheet->parent()->baseURL();
-    if (!sheet->ownerNode()) 
+    }
+
+    if ( !sheet->ownerNode() )
+    {
         return KURL();
+    }
+
     return sheet->ownerNode()->document()->baseURL();
 }
 

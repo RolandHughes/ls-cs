@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,24 +32,32 @@
 
 using namespace JSC;
 
-PassRefPtr<OpaqueJSString> OpaqueJSString::create(const UString& ustring)
+PassRefPtr<OpaqueJSString> OpaqueJSString::create( const UString &ustring )
 {
-    if (!ustring.isNull())
-        return adoptRef(new OpaqueJSString(ustring.characters(), ustring.length()));
+    if ( !ustring.isNull() )
+    {
+        return adoptRef( new OpaqueJSString( ustring.characters(), ustring.length() ) );
+    }
+
     return 0;
 }
 
 UString OpaqueJSString::ustring() const
 {
-    if (this && m_characters)
-        return UString(m_characters, m_length);
+    if ( this && m_characters )
+    {
+        return UString( m_characters, m_length );
+    }
+
     return UString();
 }
 
-Identifier OpaqueJSString::identifier(JSGlobalData* globalData) const
+Identifier OpaqueJSString::identifier( JSGlobalData *globalData ) const
 {
-    if (!this || !m_characters)
-        return Identifier(globalData, static_cast<const char*>(0));
+    if ( !this || !m_characters )
+    {
+        return Identifier( globalData, static_cast<const char *>( 0 ) );
+    }
 
-    return Identifier(globalData, m_characters, m_length);
+    return Identifier( globalData, m_characters, m_length );
 }

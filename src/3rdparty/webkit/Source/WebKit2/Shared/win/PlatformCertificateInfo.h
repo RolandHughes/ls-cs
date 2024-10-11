@@ -28,31 +28,38 @@
 
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebCore {
-    class ResourceResponse;
+namespace WebCore
+{
+class ResourceResponse;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class PlatformCertificateInfo {
+class PlatformCertificateInfo
+{
 public:
     PlatformCertificateInfo();
-    explicit PlatformCertificateInfo(const WebCore::ResourceResponse&);    
-    explicit PlatformCertificateInfo(PCCERT_CONTEXT);    
+    explicit PlatformCertificateInfo( const WebCore::ResourceResponse & );
+    explicit PlatformCertificateInfo( PCCERT_CONTEXT );
     ~PlatformCertificateInfo();
 
-    PlatformCertificateInfo(const PlatformCertificateInfo&);
-    PlatformCertificateInfo& operator=(const PlatformCertificateInfo&);
+    PlatformCertificateInfo( const PlatformCertificateInfo & );
+    PlatformCertificateInfo &operator=( const PlatformCertificateInfo & );
 
-    const Vector<PCCERT_CONTEXT>& certificateChain() const { return m_certificateChain; }
+    const Vector<PCCERT_CONTEXT> &certificateChain() const
+    {
+        return m_certificateChain;
+    }
 
-    void encode(CoreIPC::ArgumentEncoder* encoder) const;
-    static bool decode(CoreIPC::ArgumentDecoder* decoder, PlatformCertificateInfo& t);
+    void encode( CoreIPC::ArgumentEncoder *encoder ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *decoder, PlatformCertificateInfo &t );
 
 private:
     void clearCertificateChain();

@@ -33,24 +33,26 @@
 
 using namespace JSC::Bindings;
 
-JobjectWrapper::JobjectWrapper(jobject instance)
-    : m_refCount(0)
+JobjectWrapper::JobjectWrapper( jobject instance )
+    : m_refCount( 0 )
 {
-    assert(instance);
+    assert( instance );
 
     // Cache the JNIEnv used to get the global ref for this java instanace.
     // It'll be used to delete the reference.
     m_env = getJNIEnv();
 
-    m_instance = m_env->NewGlobalRef(instance);
+    m_instance = m_env->NewGlobalRef( instance );
 
-    if (!m_instance)
-        LOG_ERROR("Could not get GlobalRef for %p", instance);
+    if ( !m_instance )
+    {
+        LOG_ERROR( "Could not get GlobalRef for %p", instance );
+    }
 }
 
 JobjectWrapper::~JobjectWrapper()
 {
-    m_env->DeleteGlobalRef(m_instance);
+    m_env->DeleteGlobalRef( m_instance );
 }
 
 #endif // ENABLE(JAVA_BRIDGE)

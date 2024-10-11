@@ -29,31 +29,33 @@
 #include "LayerTreeHostCA.h"
 #include <wtf/RetainPtr.h>
 
-typedef struct __WKCARemoteLayerClientRef* WKCARemoteLayerClientRef;
+typedef struct __WKCARemoteLayerClientRef *WKCARemoteLayerClientRef;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class LayerTreeHostCAMac : public LayerTreeHostCA {
+class LayerTreeHostCAMac : public LayerTreeHostCA
+{
 public:
-    static PassRefPtr<LayerTreeHostCAMac> create(WebPage*);
+    static PassRefPtr<LayerTreeHostCAMac> create( WebPage * );
     virtual ~LayerTreeHostCAMac();
 
 private:
-    explicit LayerTreeHostCAMac(WebPage*);
+    explicit LayerTreeHostCAMac( WebPage * );
 
     // LayerTreeHost.
     virtual void scheduleLayerFlush();
     virtual void invalidate();
-    virtual void sizeDidChange(const WebCore::IntSize& newSize);
+    virtual void sizeDidChange( const WebCore::IntSize &newSize );
     virtual void forceRepaint();
     virtual void pauseRendering();
     virtual void resumeRendering();
 
     // LayerTreeHostCA
-    virtual void platformInitialize(LayerTreeContext&);
+    virtual void platformInitialize( LayerTreeContext & );
     virtual void didPerformScheduledLayerFlush();
 
-    static void flushPendingLayerChangesRunLoopObserverCallback(CFRunLoopObserverRef, CFRunLoopActivity, void*);
+    static void flushPendingLayerChangesRunLoopObserverCallback( CFRunLoopObserverRef, CFRunLoopActivity, void * );
 
     RetainPtr<WKCARemoteLayerClientRef> m_remoteLayerClient;
     RetainPtr<CFRunLoopObserverRef> m_flushPendingLayerChangesRunLoopObserver;

@@ -33,21 +33,21 @@
 
 class QGifPlugin : public QImageIOPlugin
 {
-   CS_OBJECT(QGifPlugin)
+    LSCS_OBJECT( QGifPlugin )
 
-   CS_PLUGIN_IID(QImageIOHandlerInterface_ID)
-   CS_PLUGIN_KEY("gif")
+    LSCS_PLUGIN_IID( QImageIOHandlerInterface_ID )
+    LSCS_PLUGIN_KEY( "gif" )
 
 public:
     QGifPlugin();
     ~QGifPlugin();
 
     QStringList keys() const;
-    Capabilities capabilities(QIODevice *device, const QByteArray &format) const;
-    QImageIOHandler *create(QIODevice *device, const QByteArray &format = QByteArray()) const;
+    Capabilities capabilities( QIODevice *device, const QByteArray &format ) const;
+    QImageIOHandler *create( QIODevice *device, const QByteArray &format = QByteArray() ) const;
 };
 
-CS_PLUGIN_REGISTER(QGifPlugin)
+LSCS_PLUGIN_REGISTER( QGifPlugin )
 
 QGifPlugin::QGifPlugin()
 {
@@ -62,18 +62,21 @@ QStringList QGifPlugin::keys() const
     return QStringList() << "gif";
 }
 
-QImageIOPlugin::Capabilities QGifPlugin::capabilities(QIODevice *device, const QByteArray &format) const
+QImageIOPlugin::Capabilities QGifPlugin::capabilities( QIODevice *device, const QByteArray &format ) const
 {
-    if (format == "gif" || (device && device->isReadable() && QGifHandler::canRead(device)))
-        return Capabilities(CanRead);
+    if ( format == "gif" || ( device && device->isReadable() && QGifHandler::canRead( device ) ) )
+    {
+        return Capabilities( CanRead );
+    }
+
     return 0;
 }
 
-QImageIOHandler *QGifPlugin::create(QIODevice *device, const QByteArray &format) const
+QImageIOHandler *QGifPlugin::create( QIODevice *device, const QByteArray &format ) const
 {
     QImageIOHandler *handler = new QGifHandler;
-    handler->setDevice(device);
-    handler->setFormat(format);
+    handler->setDevice( device );
+    handler->setFormat( format );
     return handler;
 }
 

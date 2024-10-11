@@ -40,16 +40,18 @@ class Q_GUI_EXPORT QPrintDevice
 {
 public:
     QPrintDevice();
-    QPrintDevice(const QString & id);
-    QPrintDevice(const QPrintDevice &other);
+    QPrintDevice( const QString &id );
+    QPrintDevice( const QPrintDevice &other );
     ~QPrintDevice();
 
-    QPrintDevice &operator=(const QPrintDevice &other);
-    QPrintDevice &operator=(QPrintDevice &&other) {
-      swap(other); return *this;
+    QPrintDevice &operator=( const QPrintDevice &other );
+    QPrintDevice &operator=( QPrintDevice &&other )
+    {
+        swap( other );
+        return *this;
     }
 
-    bool operator==(const QPrintDevice &other) const;
+    bool operator==( const QPrintDevice &other ) const;
 
     QString id() const;
     QString name() const;
@@ -62,10 +64,11 @@ public:
 
     QPrint::DeviceState state() const;
 
-    bool isValidPageLayout(const QPageLayout &layout, int resolution) const;
+    bool isValidPageLayout( const QPageLayout &layout, int resolution ) const;
 
-    void swap(QPrintDevice &other) {
-      d.swap(other.d);
+    void swap( QPrintDevice &other )
+    {
+        d.swap( other.d );
     }
 
     bool supportsMultipleCopies() const;
@@ -74,18 +77,18 @@ public:
     QPageSize defaultPageSize() const;
     QList<QPageSize> supportedPageSizes() const;
 
-    QPageSize supportedPageSize(const QPageSize &pageSize) const;
-    QPageSize supportedPageSize(QPageSize::PageSizeId pageSizeId) const;
-    QPageSize supportedPageSize(const QString &pageName) const;
-    QPageSize supportedPageSize(const QSize &pointSize) const;
-    QPageSize supportedPageSize(const QSizeF &size, QPageSize::Unit units = QPageSize::Unit::Point) const;
+    QPageSize supportedPageSize( const QPageSize &pageSize ) const;
+    QPageSize supportedPageSize( QPageSize::PageSizeId pageSizeId ) const;
+    QPageSize supportedPageSize( const QString &pageName ) const;
+    QPageSize supportedPageSize( const QSize &pointSize ) const;
+    QPageSize supportedPageSize( const QSizeF &size, QPageSize::Unit units = QPageSize::Unit::Point ) const;
 
     bool supportsCustomPageSizes() const;
 
     QSize minimumPhysicalPageSize() const;
     QSize maximumPhysicalPageSize() const;
 
-    QMarginsF printableMargins(const QPageSize &pageSize, QPageLayout::Orientation orientation, int resolution) const;
+    QMarginsF printableMargins( const QPageSize &pageSize, QPageLayout::Orientation orientation, int resolution ) const;
 
     int defaultResolution() const;
     QList<int> supportedResolutions() const;
@@ -103,22 +106,22 @@ public:
     QList<QPrint::ColorMode> supportedColorModes() const;
 
 #ifndef QT_NO_MIMETYPE
-/* emerald - mimedatabase
-    QList<QMimeType> supportedMimeTypes() const;
-*/
+    /* emerald - mimedatabase
+        QList<QMimeType> supportedMimeTypes() const;
+    */
 #endif
 
-   void format(QDebug debug) const;
+    void format( QDebug debug ) const;
 
 private:
-    QPrintDevice(QPlatformPrintDevice *dd);
+    QPrintDevice( QPlatformPrintDevice *dd );
     QSharedPointer<QPlatformPrintDevice> d;
 
     friend class QPlatformPrinterSupport;
     friend class QPlatformPrintDevice;
 };
 
-Q_GUI_EXPORT QDebug operator<<(QDebug debug, const QPrintDevice &);
+Q_GUI_EXPORT QDebug operator<<( QDebug debug, const QPrintDevice & );
 
 #endif // QT_NO_PRINTER
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FontFamily_h
@@ -30,23 +30,34 @@
 #include <wtf/ListRefPtr.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SharedFontFamily;
 
-class FontFamily {
+class FontFamily
+{
 public:
     FontFamily() { }
-    FontFamily(const FontFamily&);    
-    FontFamily& operator=(const FontFamily&);
+    FontFamily( const FontFamily & );
+    FontFamily &operator=( const FontFamily & );
 
-    void setFamily(const AtomicString& family) { m_family = family; }
-    const AtomicString& family() const { return m_family; }
-    bool familyIsEmpty() const { return m_family.isEmpty(); }
+    void setFamily( const AtomicString &family )
+    {
+        m_family = family;
+    }
+    const AtomicString &family() const
+    {
+        return m_family;
+    }
+    bool familyIsEmpty() const
+    {
+        return m_family.isEmpty();
+    }
 
-    const FontFamily* next() const;
+    const FontFamily *next() const;
 
-    void appendFamily(PassRefPtr<SharedFontFamily>);
+    void appendFamily( PassRefPtr<SharedFontFamily> );
     PassRefPtr<SharedFontFamily> releaseNext();
 
 private:
@@ -54,26 +65,30 @@ private:
     ListRefPtr<SharedFontFamily> m_next;
 };
 
-class SharedFontFamily : public FontFamily, public RefCounted<SharedFontFamily> {
+class SharedFontFamily : public FontFamily, public RefCounted<SharedFontFamily>
+{
 public:
     static PassRefPtr<SharedFontFamily> create()
     {
-        return adoptRef(new SharedFontFamily);
+        return adoptRef( new SharedFontFamily );
     }
 
 private:
     SharedFontFamily() { }
 };
 
-bool operator==(const FontFamily&, const FontFamily&);
-inline bool operator!=(const FontFamily& a, const FontFamily& b) { return !(a == b); }
+bool operator==( const FontFamily &, const FontFamily & );
+inline bool operator!=( const FontFamily &a, const FontFamily &b )
+{
+    return !( a == b );
+}
 
-inline const FontFamily* FontFamily::next() const
+inline const FontFamily *FontFamily::next() const
 {
     return m_next.get();
 }
 
-inline void FontFamily::appendFamily(PassRefPtr<SharedFontFamily> family)
+inline void FontFamily::appendFamily( PassRefPtr<SharedFontFamily> family )
 {
     m_next = family;
 }

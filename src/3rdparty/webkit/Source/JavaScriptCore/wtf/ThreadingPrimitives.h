@@ -49,31 +49,34 @@
 #if PLATFORM(QT)
 
 #include <qglobal.h>
-   class QMutex;
-   class QWaitCondition;
+class QMutex;
+class QWaitCondition;
 #endif
 
-namespace WTF {
+namespace WTF
+{
 
 #if USE(PTHREADS)
 typedef pthread_mutex_t PlatformMutex;
 #if HAVE(PTHREAD_RWLOCK)
 typedef pthread_rwlock_t PlatformReadWriteLock;
 #else
-typedef void* PlatformReadWriteLock;
+typedef void *PlatformReadWriteLock;
 #endif
 typedef pthread_cond_t PlatformCondition;
 #elif PLATFORM(QT)
-typedef QT_PREPEND_NAMESPACE(QMutex)* PlatformMutex;
-typedef void* PlatformReadWriteLock; // FIXME: Implement.
-typedef QT_PREPEND_NAMESPACE(QWaitCondition)* PlatformCondition;
+typedef QT_PREPEND_NAMESPACE( QMutex ) *PlatformMutex;
+typedef void *PlatformReadWriteLock; // FIXME: Implement.
+typedef QT_PREPEND_NAMESPACE( QWaitCondition ) *PlatformCondition;
 #elif OS(WINDOWS)
-struct PlatformMutex {
+struct PlatformMutex
+{
     CRITICAL_SECTION m_internalMutex;
     size_t m_recursionCount;
 };
-typedef void* PlatformReadWriteLock; // FIXME: Implement.
-struct PlatformCondition {
+typedef void *PlatformReadWriteLock; // FIXME: Implement.
+struct PlatformCondition
+{
     size_t m_waitersGone;
     size_t m_waitersBlocked;
     size_t m_waitersToUnblock;
@@ -81,17 +84,19 @@ struct PlatformCondition {
     HANDLE m_blockQueue;
     HANDLE m_unblockLock;
 
-    bool timedWait(PlatformMutex&, DWORD durationMilliseconds);
-    void signal(bool unblockAll);
+    bool timedWait( PlatformMutex &, DWORD durationMilliseconds );
+    void signal( bool unblockAll );
 };
 #else
-typedef void* PlatformMutex;
-typedef void* PlatformReadWriteLock;
-typedef void* PlatformCondition;
+typedef void *PlatformMutex;
+typedef void *PlatformReadWriteLock;
+typedef void *PlatformCondition;
 #endif
 
-class Mutex {
-    WTF_MAKE_NONCOPYABLE(Mutex); WTF_MAKE_FAST_ALLOCATED;
+class Mutex
+{
+    WTF_MAKE_NONCOPYABLE( Mutex );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     Mutex();
     ~Mutex();
@@ -101,15 +106,19 @@ public:
     void unlock();
 
 public:
-    PlatformMutex& impl() { return m_mutex; }
+    PlatformMutex &impl()
+    {
+        return m_mutex;
+    }
 private:
     PlatformMutex m_mutex;
 };
 
 typedef Locker<Mutex> MutexLocker;
 
-class ReadWriteLock {
-    WTF_MAKE_NONCOPYABLE(ReadWriteLock);
+class ReadWriteLock
+{
+    WTF_MAKE_NONCOPYABLE( ReadWriteLock );
 public:
     ReadWriteLock();
     ~ReadWriteLock();
@@ -126,16 +135,17 @@ private:
     PlatformReadWriteLock m_readWriteLock;
 };
 
-class ThreadCondition {
-    WTF_MAKE_NONCOPYABLE(ThreadCondition);
+class ThreadCondition
+{
+    WTF_MAKE_NONCOPYABLE( ThreadCondition );
 public:
     ThreadCondition();
     ~ThreadCondition();
 
-    void wait(Mutex& mutex);
+    void wait( Mutex &mutex );
     // Returns true if the condition was signaled before absoluteTime, false if the absoluteTime was reached or is in the past.
     // The absoluteTime is in seconds, starting on January 1, 1970. The time is assumed to use the same time zone as WTF::currentTime().
-    bool timedWait(Mutex&, double absoluteTime);
+    bool timedWait( Mutex &, double absoluteTime );
     void signal();
     void broadcast();
 
@@ -146,7 +156,7 @@ private:
 #if OS(WINDOWS)
 // The absoluteTime is in seconds, starting on January 1, 1970. The time is assumed to use the same time zone as WTF::currentTime().
 // Returns an interval in milliseconds suitable for passing to one of the Win32 wait functions (e.g., ::WaitForSingleObject).
-DWORD absoluteTimeToWaitTimeoutInterval(double absoluteTime);
+DWORD absoluteTimeToWaitTimeoutInterval( double absoluteTime );
 #endif
 
 } // namespace WTF

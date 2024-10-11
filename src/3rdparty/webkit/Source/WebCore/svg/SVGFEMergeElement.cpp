@@ -28,46 +28,56 @@
 #include "SVGFilterBuilder.h"
 #include "SVGNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGFEMergeElement::SVGFEMergeElement(const QualifiedName& tagName, Document* document)
-    : SVGFilterPrimitiveStandardAttributes(tagName, document)
+inline SVGFEMergeElement::SVGFEMergeElement( const QualifiedName &tagName, Document *document )
+    : SVGFilterPrimitiveStandardAttributes( tagName, document )
 {
 }
 
-PassRefPtr<SVGFEMergeElement> SVGFEMergeElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFEMergeElement> SVGFEMergeElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFEMergeElement(tagName, document));
+    return adoptRef( new SVGFEMergeElement( tagName, document ) );
 }
 
-PassRefPtr<FilterEffect> SVGFEMergeElement::build(SVGFilterBuilder* filterBuilder, Filter* filter)
+PassRefPtr<FilterEffect> SVGFEMergeElement::build( SVGFilterBuilder *filterBuilder, Filter *filter )
 {
-    RefPtr<FilterEffect> effect = FEMerge::create(filter);
-    FilterEffectVector& mergeInputs = effect->inputEffects();
-    for (Node* node = firstChild(); node; node = node->nextSibling()) {
-        if (node->hasTagName(SVGNames::feMergeNodeTag)) {
-            FilterEffect* mergeEffect = filterBuilder->getEffectById(static_cast<SVGFEMergeNodeElement*>(node)->in1());
-            if (!mergeEffect)
+    RefPtr<FilterEffect> effect = FEMerge::create( filter );
+    FilterEffectVector &mergeInputs = effect->inputEffects();
+
+    for ( Node *node = firstChild(); node; node = node->nextSibling() )
+    {
+        if ( node->hasTagName( SVGNames::feMergeNodeTag ) )
+        {
+            FilterEffect *mergeEffect = filterBuilder->getEffectById( static_cast<SVGFEMergeNodeElement *>( node )->in1() );
+
+            if ( !mergeEffect )
+            {
                 return 0;
-            mergeInputs.append(mergeEffect);
+            }
+
+            mergeInputs.append( mergeEffect );
         }
     }
 
-    if (mergeInputs.isEmpty())
+    if ( mergeInputs.isEmpty() )
+    {
         return 0;
+    }
 
     return effect.release();
 }
 
-AttributeToPropertyTypeMap& SVGFEMergeElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGFEMergeElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGFEMergeElement::fillAttributeToPropertyTypeMap()
 {
-    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap());
+    SVGFilterPrimitiveStandardAttributes::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap() );
 }
 
 }

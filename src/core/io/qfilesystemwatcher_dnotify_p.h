@@ -35,56 +35,58 @@
 
 class QDnotifyFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-   CORE_CS_OBJECT(QDnotifyFileSystemWatcherEngine)
+    CORE_LSCS_OBJECT( QDnotifyFileSystemWatcherEngine )
 
- public:
-   virtual ~QDnotifyFileSystemWatcherEngine();
+public:
+    virtual ~QDnotifyFileSystemWatcherEngine();
 
-   static QDnotifyFileSystemWatcherEngine *create();
+    static QDnotifyFileSystemWatcherEngine *create();
 
-   void run() override;
+    void run() override;
 
-   QStringList addPaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
-   QStringList removePaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
+    QStringList addPaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
+    QStringList removePaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
 
-   void stop() override;
+    void stop() override;
 
- private:
-   CORE_CS_SLOT_1(Private, void refresh(int fd))
-   CORE_CS_SLOT_2(refresh)
+private:
+    CORE_LSCS_SLOT_1( Private, void refresh( int fd ) )
+    CORE_LSCS_SLOT_2( refresh )
 
-   struct Directory {
-      Directory()
-         : fd(0), parentFd(0), isMonitored(false)
-      { }
+    struct Directory
+    {
+        Directory()
+            : fd( 0 ), parentFd( 0 ), isMonitored( false )
+        { }
 
-      struct File {
-         File()
-            : ownerId(0u), groupId(0u), permissions(Qt::EmptyFlag)
-         { }
+        struct File
+        {
+            File()
+                : ownerId( 0u ), groupId( 0u ), permissions( Qt::EmptyFlag )
+            { }
 
-         bool updateInfo();
+            bool updateInfo();
 
-         QString path;
-         uint ownerId;
-         uint groupId;
-         QFile::Permissions permissions;
-         QDateTime lastWrite;
-      };
+            QString path;
+            uint ownerId;
+            uint groupId;
+            QFile::Permissions permissions;
+            QDateTime lastWrite;
+        };
 
-      QString path;
-      int fd;
-      int parentFd;
-      bool isMonitored;
-      QList<File> files;
-   };
+        QString path;
+        int fd;
+        int parentFd;
+        bool isMonitored;
+        QList<File> files;
+    };
 
-   QDnotifyFileSystemWatcherEngine();
+    QDnotifyFileSystemWatcherEngine();
 
-   QMutex mutex;
-   QHash<QString, int> pathToFD;
-   QHash<int, Directory> fdToDirectory;
-   QHash<int, int> parentToFD;
+    QMutex mutex;
+    QHash<QString, int> pathToFD;
+    QHash<int, Directory> fdToDirectory;
+    QHash<int, int> parentToFD;
 };
 
 #endif // QT_NO_FILESYSTEMWATCHER

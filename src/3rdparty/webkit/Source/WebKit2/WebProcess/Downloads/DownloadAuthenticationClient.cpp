@@ -30,33 +30,43 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-DownloadAuthenticationClient::DownloadAuthenticationClient(Download* download)
-    : m_download(download)
+namespace WebKit
 {
-    ASSERT_ARG(download, download);
+
+DownloadAuthenticationClient::DownloadAuthenticationClient( Download *download )
+    : m_download( download )
+{
+    ASSERT_ARG( download, download );
 }
 
-void DownloadAuthenticationClient::receivedCredential(const AuthenticationChallenge& challenge, const Credential& credential)
+void DownloadAuthenticationClient::receivedCredential( const AuthenticationChallenge &challenge, const Credential &credential )
 {
-    if (!m_download)
+    if ( !m_download )
+    {
         return;
-    m_download->useCredential(challenge, credential);
+    }
+
+    m_download->useCredential( challenge, credential );
 }
 
-void DownloadAuthenticationClient::receivedRequestToContinueWithoutCredential(const AuthenticationChallenge& challenge)
+void DownloadAuthenticationClient::receivedRequestToContinueWithoutCredential( const AuthenticationChallenge &challenge )
 {
-    if (!m_download)
+    if ( !m_download )
+    {
         return;
-    m_download->continueWithoutCredential(challenge);
+    }
+
+    m_download->continueWithoutCredential( challenge );
 }
 
-void DownloadAuthenticationClient::receivedCancellation(const AuthenticationChallenge& challenge)
+void DownloadAuthenticationClient::receivedCancellation( const AuthenticationChallenge &challenge )
 {
-    if (!m_download)
+    if ( !m_download )
+    {
         return;
-    m_download->cancelAuthenticationChallenge(challenge);
+    }
+
+    m_download->cancelAuthenticationChallenge( challenge );
 }
 
 } // namespace WebKit

@@ -25,34 +25,42 @@
 #include "StyleImage.h"
 #include <wtf/text/StringImpl.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void ContentData::clear()
 {
     deleteContent();
 
     // Delete the singly-linked list without recursing.
-    for (OwnPtr<ContentData> next = m_next.release(); next; next = next->m_next.release()) { }
+    for ( OwnPtr<ContentData> next = m_next.release(); next; next = next->m_next.release() ) { }
 }
 
 // FIXME: Why isn't this just operator==?
 // FIXME: This is not a good name for a boolean-returning function.
-bool ContentData::dataEquivalent(const ContentData& other) const
+bool ContentData::dataEquivalent( const ContentData &other ) const
 {
-    if (type() != other.type())
+    if ( type() != other.type() )
+    {
         return false;
+    }
 
-    switch (type()) {
-    case CONTENT_NONE:
-        return true;
-    case CONTENT_TEXT:
-        return equal(text(), other.text());
-    case CONTENT_OBJECT:
-        return StyleImage::imagesEquivalent(image(), other.image());
-    case CONTENT_COUNTER:
-        return *counter() == *other.counter();
-    case CONTENT_QUOTE:
-        return quote() == other.quote();
+    switch ( type() )
+    {
+        case CONTENT_NONE:
+            return true;
+
+        case CONTENT_TEXT:
+            return equal( text(), other.text() );
+
+        case CONTENT_OBJECT:
+            return StyleImage::imagesEquivalent( image(), other.image() );
+
+        case CONTENT_COUNTER:
+            return *counter() == *other.counter();
+
+        case CONTENT_QUOTE:
+            return quote() == other.quote();
     }
 
     ASSERT_NOT_REACHED();
@@ -61,20 +69,25 @@ bool ContentData::dataEquivalent(const ContentData& other) const
 
 void ContentData::deleteContent()
 {
-    switch (m_type) {
-    case CONTENT_NONE:
-        break;
-    case CONTENT_OBJECT:
-        m_content.m_image->deref();
-        break;
-    case CONTENT_TEXT:
-        m_content.m_text->deref();
-        break;
-    case CONTENT_COUNTER:
-        delete m_content.m_counter;
-        break;
-    case CONTENT_QUOTE:
-        break;
+    switch ( m_type )
+    {
+        case CONTENT_NONE:
+            break;
+
+        case CONTENT_OBJECT:
+            m_content.m_image->deref();
+            break;
+
+        case CONTENT_TEXT:
+            m_content.m_text->deref();
+            break;
+
+        case CONTENT_COUNTER:
+            delete m_content.m_counter;
+            break;
+
+        case CONTENT_QUOTE:
+            break;
     }
 
     m_type = CONTENT_NONE;

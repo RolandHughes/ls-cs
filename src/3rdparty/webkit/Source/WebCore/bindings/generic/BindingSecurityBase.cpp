@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,14 +36,15 @@
 #include "Frame.h"
 #include "SecurityOrigin.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DOMWindow* BindingSecurityBase::getDOMWindow(Frame* frame)
+DOMWindow *BindingSecurityBase::getDOMWindow( Frame *frame )
 {
     return frame->domWindow();
 }
 
-Frame* BindingSecurityBase::getFrame(Node* node)
+Frame *BindingSecurityBase::getFrame( Node *node )
 {
     return node->document()->frame();
 }
@@ -74,34 +75,44 @@ Frame* BindingSecurityBase::getFrame(Node* node)
 // First it checks same domain policy using the lexical context.
 //
 // This is equivalent to KJS::Window::allowsAccessFrom(ExecState*).
-bool BindingSecurityBase::canAccess(DOMWindow* activeWindow,
-                                    DOMWindow* targetWindow)
+bool BindingSecurityBase::canAccess( DOMWindow *activeWindow,
+                                     DOMWindow *targetWindow )
 {
-    ASSERT(targetWindow);
+    ASSERT( targetWindow );
 
     String message;
 
-    if (activeWindow == targetWindow)
+    if ( activeWindow == targetWindow )
+    {
         return true;
+    }
 
-    if (!activeWindow)
+    if ( !activeWindow )
+    {
         return false;
+    }
 
-    const SecurityOrigin* activeSecurityOrigin = activeWindow->securityOrigin();
-    const SecurityOrigin* targetSecurityOrigin = targetWindow->securityOrigin();
+    const SecurityOrigin *activeSecurityOrigin = activeWindow->securityOrigin();
+    const SecurityOrigin *targetSecurityOrigin = targetWindow->securityOrigin();
 
     // We have seen crashes were the security origin of the target has not been
     // initialized. Defend against that.
-    if (!targetSecurityOrigin)
+    if ( !targetSecurityOrigin )
+    {
         return false;
+    }
 
-    if (activeSecurityOrigin->canAccess(targetSecurityOrigin))
+    if ( activeSecurityOrigin->canAccess( targetSecurityOrigin ) )
+    {
         return true;
+    }
 
     // Allow access to a "about:blank" page if the dynamic context is a
     // detached context of the same frame as the blank page.
-    if (targetSecurityOrigin->isEmpty() && activeWindow->frame() == targetWindow->frame())
+    if ( targetSecurityOrigin->isEmpty() && activeWindow->frame() == targetWindow->frame() )
+    {
         return true;
+    }
 
     return false;
 }

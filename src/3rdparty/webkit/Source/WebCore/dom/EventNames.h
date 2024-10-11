@@ -25,7 +25,8 @@
 #include "ThreadGlobalData.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 #define DOM_EVENT_NAMES_FOR_EACH(macro) \
     \
@@ -181,23 +182,25 @@ namespace WebCore {
     \
 // end of DOM_EVENT_NAMES_FOR_EACH
 
-    class EventNames {
-        WTF_MAKE_NONCOPYABLE(EventNames); WTF_MAKE_FAST_ALLOCATED;
-        int dummy; // Needed to make initialization macro work.
-        // Private to prevent accidental call to EventNames() instead of eventNames()
-        EventNames();
-        friend class ThreadGlobalData;
+class EventNames
+{
+    WTF_MAKE_NONCOPYABLE( EventNames );
+    WTF_MAKE_FAST_ALLOCATED;
+    int dummy; // Needed to make initialization macro work.
+    // Private to prevent accidental call to EventNames() instead of eventNames()
+    EventNames();
+    friend class ThreadGlobalData;
 
-    public:
-        #define DOM_EVENT_NAMES_DECLARE(name) AtomicString name##Event;
-        DOM_EVENT_NAMES_FOR_EACH(DOM_EVENT_NAMES_DECLARE)
-        #undef DOM_EVENT_NAMES_DECLARE
-    };
+public:
+#define DOM_EVENT_NAMES_DECLARE(name) AtomicString name##Event;
+    DOM_EVENT_NAMES_FOR_EACH( DOM_EVENT_NAMES_DECLARE )
+#undef DOM_EVENT_NAMES_DECLARE
+};
 
-    inline EventNames& eventNames()
-    {
-        return threadGlobalData().eventNames();
-    }
+inline EventNames &eventNames()
+{
+    return threadGlobalData().eventNames();
+}
 
 }
 

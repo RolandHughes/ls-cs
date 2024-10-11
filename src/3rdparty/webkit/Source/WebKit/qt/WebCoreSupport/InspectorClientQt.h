@@ -7,13 +7,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -40,43 +40,46 @@
 class QWebPage;
 class QWebView;
 
-namespace WebCore {
+namespace WebCore
+{
 class InspectorFrontendClientQt;
 class InspectorServerRequestHandlerQt;
 class Node;
 class Page;
 class RemoteFrontendChannel;
 
-class InspectorClientQt : public InspectorClient {
+class InspectorClientQt : public InspectorClient
+{
 public:
-    InspectorClientQt(QWebPage*);
+    InspectorClientQt( QWebPage * );
 
     virtual void inspectorDestroyed();
 
-    virtual void openInspectorFrontend(WebCore::InspectorController*);
+    virtual void openInspectorFrontend( WebCore::InspectorController * );
 
-    virtual void highlight(Node*);
+    virtual void highlight( Node * );
     virtual void hideHighlight();
 
-    virtual bool sendMessageToFrontend(const String&);
+    virtual bool sendMessageToFrontend( const String & );
 
     void releaseFrontendPage();
 
-    void attachAndReplaceRemoteFrontend(RemoteFrontendChannel *channel);
+    void attachAndReplaceRemoteFrontend( RemoteFrontendChannel *channel );
     void detachRemoteFrontend();
 
 private:
-    QWebPage* m_inspectedWebPage;
-    QWebPage* m_frontendWebPage;
-    InspectorFrontendClientQt* m_frontendClient;
+    QWebPage *m_inspectedWebPage;
+    QWebPage *m_frontendWebPage;
+    InspectorFrontendClientQt *m_frontendClient;
     bool m_remoteInspector;
 
     friend class InspectorServerRequestHandlerQt;
 };
 
-class InspectorFrontendClientQt : public InspectorFrontendClientLocal {
+class InspectorFrontendClientQt : public InspectorFrontendClientLocal
+{
 public:
-    InspectorFrontendClientQt(QWebPage* inspectedWebPage, PassOwnPtr<QWebView> inspectorView, InspectorClientQt* inspectorClient);
+    InspectorFrontendClientQt( QWebPage *inspectedWebPage, PassOwnPtr<QWebView> inspectorView, InspectorClientQt *inspectorClient );
     virtual ~InspectorFrontendClientQt();
 
     virtual void frontendLoaded();
@@ -92,20 +95,20 @@ public:
     virtual void attachWindow();
     virtual void detachWindow();
 
-    virtual void setAttachedWindowHeight(unsigned height);
+    virtual void setAttachedWindowHeight( unsigned height );
 
-    virtual void inspectedURLChanged(const String& newURL);
+    virtual void inspectedURLChanged( const String &newURL );
 
     void inspectorClientDestroyed();
 
 private:
     void updateWindowTitle();
-    void destroyInspectorView(bool notifyInspectorController);
-    QWebPage* m_inspectedWebPage;
+    void destroyInspectorView( bool notifyInspectorController );
+    QWebPage *m_inspectedWebPage;
     OwnPtr<QWebView> m_inspectorView;
     QString m_inspectedURL;
     bool m_destroyingInspectorView;
-    InspectorClientQt* m_inspectorClient;
+    InspectorClientQt *m_inspectorClient;
 };
 }
 

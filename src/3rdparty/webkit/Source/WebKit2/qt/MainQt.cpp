@@ -26,14 +26,15 @@
 
 #include <qglobal.h>
 
-namespace WebKit {
-Q_DECL_IMPORT int WebProcessMainQt(int argc, char** argv);
+namespace WebKit
+{
+Q_DECL_IMPORT int WebProcessMainQt( int argc, char **argv );
 }
 
 // The framework entry point.
 // We call our platform specific entry point directly rather than WebKitMain because it makes little sense
 // to reimplement the handling of command line arguments from QApplication.
-int main(int argc, char** argv)
+int main( int argc, char **argv )
 {
-    return WebKit::WebProcessMainQt(argc, argv);
+    return WebKit::WebProcessMainQt( argc, argv );
 }

@@ -30,70 +30,75 @@ class QSqlRelationalTableModelPrivate;
 
 class Q_SQL_EXPORT QSqlRelation
 {
- public:
-   QSqlRelation() {}
-   QSqlRelation(const QString &tableName, const QString &indexColumn, const QString &displayColumn)
-      : tName(tableName), iColumn(indexColumn), dColumn(displayColumn) {}
+public:
+    QSqlRelation() {}
+    QSqlRelation( const QString &tableName, const QString &indexColumn, const QString &displayColumn )
+        : tName( tableName ), iColumn( indexColumn ), dColumn( displayColumn ) {}
 
-   inline QString tableName() const {
-      return tName;
-   }
+    inline QString tableName() const
+    {
+        return tName;
+    }
 
-   inline QString indexColumn() const {
-      return iColumn;
-   }
+    inline QString indexColumn() const
+    {
+        return iColumn;
+    }
 
-   inline QString displayColumn() const {
-      return dColumn;
-   }
+    inline QString displayColumn() const
+    {
+        return dColumn;
+    }
 
-   inline bool isValid() const {
-      return !(tName.isEmpty() || iColumn.isEmpty() || dColumn.isEmpty());
-   }
+    inline bool isValid() const
+    {
+        return !( tName.isEmpty() || iColumn.isEmpty() || dColumn.isEmpty() );
+    }
 
- private:
-   QString tName;
-   QString iColumn;
-   QString dColumn;
+private:
+    QString tName;
+    QString iColumn;
+    QString dColumn;
 };
 
 class Q_SQL_EXPORT QSqlRelationalTableModel: public QSqlTableModel
 {
-   SQL_CS_OBJECT(QSqlRelationalTableModel)
+    SQL_LSCS_OBJECT( QSqlRelationalTableModel )
 
- public:
-   enum JoinMode {
-      InnerJoin,
-      LeftJoin
-   };
+public:
+    enum JoinMode
+    {
+        InnerJoin,
+        LeftJoin
+    };
 
-   explicit QSqlRelationalTableModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
-   virtual ~QSqlRelationalTableModel();
+    explicit QSqlRelationalTableModel( QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase() );
+    virtual ~QSqlRelationalTableModel();
 
-   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-   bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
+    QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const override;
+    bool setData( const QModelIndex &index, const QVariant &value, int role = Qt::EditRole ) override;
+    bool removeColumns( int column, int count, const QModelIndex &parent = QModelIndex() ) override;
 
-   void clear() override;
-   bool select() override;
+    void clear() override;
+    bool select() override;
 
-   void setTable(const QString &tableName) override;
-   virtual void setRelation(int column, const QSqlRelation &relation);
-   QSqlRelation relation(int column) const;
-   virtual QSqlTableModel *relationModel(int column) const;
-   void setJoinMode( QSqlRelationalTableModel::JoinMode joinMode );
+    void setTable( const QString &tableName ) override;
+    virtual void setRelation( int column, const QSqlRelation &relation );
+    QSqlRelation relation( int column ) const;
+    virtual QSqlTableModel *relationModel( int column ) const;
+    void setJoinMode( QSqlRelationalTableModel::JoinMode joinMode );
 
-   SQL_CS_SLOT_1(Public, void revertRow(int row) override)
-   SQL_CS_SLOT_2(revertRow)
+    SQL_LSCS_SLOT_1( Public, void revertRow( int row ) override )
+    SQL_LSCS_SLOT_2( revertRow )
 
- protected:
-   QString selectStatement() const override;
-   bool updateRowInTable(int row, const QSqlRecord &values) override;
-   bool insertRowIntoTable(const QSqlRecord &values) override;
-   QString orderByClause() const override;
+protected:
+    QString selectStatement() const override;
+    bool updateRowInTable( int row, const QSqlRecord &values ) override;
+    bool insertRowIntoTable( const QSqlRecord &values ) override;
+    QString orderByClause() const override;
 
- private:
-   Q_DECLARE_PRIVATE(QSqlRelationalTableModel)
+private:
+    Q_DECLARE_PRIVATE( QSqlRelationalTableModel )
 };
 
 #endif // QSQLRELATIONALTABLEMODEL_H

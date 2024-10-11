@@ -26,28 +26,29 @@
 
 #include <qxsdannotation_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XsdAnnotated
 {
- public:
-   /**
-    * Adds a new @p annotation to the component.
-    */
-   void addAnnotation(const XsdAnnotation::Ptr &annotation);
+public:
+    /**
+     * Adds a new @p annotation to the component.
+     */
+    void addAnnotation( const XsdAnnotation::Ptr &annotation );
 
-   /**
-    * Adds a list of new @p annotations to the component.
-    */
-   void addAnnotations(const XsdAnnotation::List &annotations);
+    /**
+     * Adds a list of new @p annotations to the component.
+     */
+    void addAnnotations( const XsdAnnotation::List &annotations );
 
-   /**
-    * Returns the list of all annotations of the component.
-    */
-   XsdAnnotation::List annotations() const;
+    /**
+     * Returns the list of all annotations of the component.
+     */
+    XsdAnnotation::List annotations() const;
 
- private:
-   XsdAnnotation::List m_annotations;
+private:
+    XsdAnnotation::List m_annotations;
 };
 
 }

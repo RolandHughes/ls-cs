@@ -32,16 +32,17 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-PassRefPtr<WebPopupMenu> WebPopupMenu::create(WebPage* page, PopupMenuClient* client)
+namespace WebKit
 {
-    return adoptRef(new WebPopupMenu(page, client));
+
+PassRefPtr<WebPopupMenu> WebPopupMenu::create( WebPage *page, PopupMenuClient *client )
+{
+    return adoptRef( new WebPopupMenu( page, client ) );
 }
 
-WebPopupMenu::WebPopupMenu(WebPage* page, PopupMenuClient* client)
-    : m_popupClient(client)
-    , m_page(page)
+WebPopupMenu::WebPopupMenu( WebPage *page, PopupMenuClient *client )
+    : m_popupClient( client )
+    , m_page( page )
 {
 }
 
@@ -54,22 +55,29 @@ void WebPopupMenu::disconnectClient()
     m_popupClient = 0;
 }
 
-void WebPopupMenu::didChangeSelectedIndex(int newIndex)
+void WebPopupMenu::didChangeSelectedIndex( int newIndex )
 {
-    if (!m_popupClient)
+    if ( !m_popupClient )
+    {
         return;
+    }
 
     m_popupClient->popupDidHide();
-    if (newIndex >= 0)
-        m_popupClient->valueChanged(newIndex);
+
+    if ( newIndex >= 0 )
+    {
+        m_popupClient->valueChanged( newIndex );
+    }
 }
 
-void WebPopupMenu::setTextForIndex(int index)
+void WebPopupMenu::setTextForIndex( int index )
 {
-    if (!m_popupClient)
+    if ( !m_popupClient )
+    {
         return;
+    }
 
-    m_popupClient->setTextFromItem(index);
+    m_popupClient->setTextFromItem( index );
 }
 
 Vector<WebPopupItem> WebPopupMenu::populateItems()
@@ -77,61 +85,74 @@ Vector<WebPopupItem> WebPopupMenu::populateItems()
     size_t size = m_popupClient->listSize();
 
     Vector<WebPopupItem> items;
-    items.reserveInitialCapacity(size);
-    
-    for (size_t i = 0; i < size; ++i) {
-        if (m_popupClient->itemIsSeparator(i))
-            items.append(WebPopupItem(WebPopupItem::Separator));
-        else {
+    items.reserveInitialCapacity( size );
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        if ( m_popupClient->itemIsSeparator( i ) )
+        {
+            items.append( WebPopupItem( WebPopupItem::Separator ) );
+        }
+        else
+        {
             // FIXME: Add support for styling the font.
             // FIXME: Add support for styling the foreground and background colors.
             // FIXME: Find a way to customize text color when an item is highlighted.
-            PopupMenuStyle itemStyle = m_popupClient->itemStyle(i);
-            items.append(WebPopupItem(WebPopupItem::Item, m_popupClient->itemText(i), itemStyle.textDirection(), itemStyle.hasTextDirectionOverride(), m_popupClient->itemToolTip(i), m_popupClient->itemAccessibilityText(i), m_popupClient->itemIsEnabled(i), m_popupClient->itemIsLabel(i)));
+            PopupMenuStyle itemStyle = m_popupClient->itemStyle( i );
+            items.append( WebPopupItem( WebPopupItem::Item, m_popupClient->itemText( i ), itemStyle.textDirection(),
+                                        itemStyle.hasTextDirectionOverride(), m_popupClient->itemToolTip( i ), m_popupClient->itemAccessibilityText( i ),
+                                        m_popupClient->itemIsEnabled( i ), m_popupClient->itemIsLabel( i ) ) );
         }
     }
 
     return items;
 }
 
-void WebPopupMenu::show(const IntRect& rect, FrameView* view, int index)
+void WebPopupMenu::show( const IntRect &rect, FrameView *view, int index )
 {
     // FIXME: We should probably inform the client to also close the menu.
     Vector<WebPopupItem> items = populateItems();
 
-    if (items.isEmpty() || !m_page) {
+    if ( items.isEmpty() || !m_page )
+    {
         m_popupClient->popupDidHide();
         return;
     }
 
-    m_page->setActivePopupMenu(this);
+    m_page->setActivePopupMenu( this );
 
     // Move to page coordinates
-    IntRect pageCoordinates(view->contentsToWindow(rect.location()), rect.size());
+    IntRect pageCoordinates( view->contentsToWindow( rect.location() ), rect.size() );
 
     PlatformPopupMenuData platformData;
-    setUpPlatformData(pageCoordinates, platformData);
+    setUpPlatformData( pageCoordinates, platformData );
 
-    WebProcess::shared().connection()->send(Messages::WebPageProxy::ShowPopupMenu(pageCoordinates, m_popupClient->menuStyle().textDirection(), items, index, platformData), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebPageProxy::ShowPopupMenu( pageCoordinates,
+            m_popupClient->menuStyle().textDirection(), items, index, platformData ), m_page->pageID() );
 }
 
 void WebPopupMenu::hide()
 {
-    if (!m_page || !m_popupClient)
+    if ( !m_page || !m_popupClient )
+    {
         return;
+    }
 
-    WebProcess::shared().connection()->send(Messages::WebPageProxy::HidePopupMenu(), m_page->pageID());
-    m_page->setActivePopupMenu(0);
+    WebProcess::shared().connection()->send( Messages::WebPageProxy::HidePopupMenu(), m_page->pageID() );
+    m_page->setActivePopupMenu( 0 );
 }
 
 void WebPopupMenu::updateFromElement()
 {
 #if PLATFORM(WIN)
-    if (!m_page || !m_popupClient)
+
+    if ( !m_page || !m_popupClient )
+    {
         return;
+    }
 
     int selectedIndex = m_popupClient->selectedIndex();
-    WebProcess::shared().connection()->send(Messages::WebPageProxy::SetPopupMenuSelectedIndex(selectedIndex), m_page->pageID());
+    WebProcess::shared().connection()->send( Messages::WebPageProxy::SetPopupMenuSelectedIndex( selectedIndex ), m_page->pageID() );
 #endif
 }
 

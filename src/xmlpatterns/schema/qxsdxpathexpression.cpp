@@ -25,42 +25,42 @@
 
 using namespace QPatternist;
 
-void XsdXPathExpression::setNamespaceBindings(const QList<QXmlName> &set)
+void XsdXPathExpression::setNamespaceBindings( const QList<QXmlName> &set )
 {
-   m_namespaceBindings = set;
+    m_namespaceBindings = set;
 }
 
 QList<QXmlName> XsdXPathExpression::namespaceBindings() const
 {
-   return m_namespaceBindings;
+    return m_namespaceBindings;
 }
 
-void XsdXPathExpression::setDefaultNamespace(const AnyURI::Ptr &defaultNs)
+void XsdXPathExpression::setDefaultNamespace( const AnyURI::Ptr &defaultNs )
 {
-   m_defaultNamespace = defaultNs;
+    m_defaultNamespace = defaultNs;
 }
 
 AnyURI::Ptr XsdXPathExpression::defaultNamespace() const
 {
-   return m_defaultNamespace;
+    return m_defaultNamespace;
 }
 
-void XsdXPathExpression::setBaseURI(const AnyURI::Ptr &uri)
+void XsdXPathExpression::setBaseURI( const AnyURI::Ptr &uri )
 {
-   m_baseURI = uri;
+    m_baseURI = uri;
 }
 
 AnyURI::Ptr XsdXPathExpression::baseURI() const
 {
-   return m_baseURI;
+    return m_baseURI;
 }
 
-void XsdXPathExpression::setExpression(const QString &expression)
+void XsdXPathExpression::setExpression( const QString &expression )
 {
-   m_expression = expression;
+    m_expression = expression;
 }
 
 QString XsdXPathExpression::expression() const
 {
-   return m_expression;
+    return m_expression;
 }

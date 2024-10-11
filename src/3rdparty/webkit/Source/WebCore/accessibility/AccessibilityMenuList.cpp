@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,20 +30,27 @@
 #include "AccessibilityMenuListPopup.h"
 #include "RenderMenuList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-AccessibilityMenuList::AccessibilityMenuList(RenderMenuList* renderer)
-    : AccessibilityRenderObject(renderer)
+AccessibilityMenuList::AccessibilityMenuList( RenderMenuList *renderer )
+    : AccessibilityRenderObject( renderer )
 {
 }
 
 bool AccessibilityMenuList::press() const
 {
-    RenderMenuList* menuList = static_cast<RenderMenuList*>(m_renderer);
-    if (menuList->popupIsVisible())
+    RenderMenuList *menuList = static_cast<RenderMenuList *>( m_renderer );
+
+    if ( menuList->popupIsVisible() )
+    {
         menuList->hidePopup();
+    }
     else
+    {
         menuList->showPopup();
+    }
+
     return true;
 }
 
@@ -51,35 +58,42 @@ void AccessibilityMenuList::addChildren()
 {
     m_haveChildren = true;
 
-    AXObjectCache* cache = m_renderer->document()->axObjectCache();
+    AXObjectCache *cache = m_renderer->document()->axObjectCache();
 
-    AccessibilityObject* list = cache->getOrCreate(MenuListPopupRole);
-    if (!list)
-        return;
+    AccessibilityObject *list = cache->getOrCreate( MenuListPopupRole );
 
-    if (list->accessibilityPlatformIncludesObject() == IgnoreObject) {
-        cache->remove(list->axObjectID());
+    if ( !list )
+    {
         return;
     }
 
-    static_cast<AccessibilityMenuListPopup*>(list)->setMenuList(this);
-    m_children.append(list);
+    if ( list->accessibilityPlatformIncludesObject() == IgnoreObject )
+    {
+        cache->remove( list->axObjectID() );
+        return;
+    }
+
+    static_cast<AccessibilityMenuListPopup *>( list )->setMenuList( this );
+
+    m_children.append( list );
 
     list->addChildren();
 }
 
 void AccessibilityMenuList::childrenChanged()
 {
-    if (m_children.isEmpty())
+    if ( m_children.isEmpty() )
+    {
         return;
+    }
 
-    ASSERT(m_children.size() == 1);
+    ASSERT( m_children.size() == 1 );
     m_children[0]->childrenChanged();
 }
 
 bool AccessibilityMenuList::isCollapsed() const
 {
-    return !static_cast<RenderMenuList*>(m_renderer)->popupIsVisible();
+    return !static_cast<RenderMenuList *>( m_renderer )->popupIsVisible();
 }
 
 } // namespace WebCore

@@ -33,70 +33,89 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-bool JSDOMStringMap::canGetItemsForName(ExecState*, DOMStringMap* impl, const Identifier& propertyName)
+namespace WebCore
 {
-    return impl->contains(identifierToAtomicString(propertyName));
+
+bool JSDOMStringMap::canGetItemsForName( ExecState *, DOMStringMap *impl, const Identifier &propertyName )
+{
+    return impl->contains( identifierToAtomicString( propertyName ) );
 }
 
-JSValue JSDOMStringMap::nameGetter(ExecState* exec, JSValue slotBase, const Identifier& propertyName)
+JSValue JSDOMStringMap::nameGetter( ExecState *exec, JSValue slotBase, const Identifier &propertyName )
 {
-    JSDOMStringMap* thisObj = static_cast<JSDOMStringMap*>(asObject(slotBase));
-    return jsString(exec, thisObj->impl()->item(identifierToAtomicString(propertyName)));
+    JSDOMStringMap *thisObj = static_cast<JSDOMStringMap *>( asObject( slotBase ) );
+    return jsString( exec, thisObj->impl()->item( identifierToAtomicString( propertyName ) ) );
 }
 
-void JSDOMStringMap::getOwnPropertyNames(ExecState* exec, PropertyNameArray& propertyNames, EnumerationMode mode)
+void JSDOMStringMap::getOwnPropertyNames( ExecState *exec, PropertyNameArray &propertyNames, EnumerationMode mode )
 {
     Vector<String> names;
-    m_impl->getNames(names);
+    m_impl->getNames( names );
     size_t length = names.size();
-    for (size_t i = 0; i < length; ++i)
-        propertyNames.add(Identifier(exec, stringToUString(names[i])));
 
-    Base::getOwnPropertyNames(exec, propertyNames, mode);
+    for ( size_t i = 0; i < length; ++i )
+    {
+        propertyNames.add( Identifier( exec, stringToUString( names[i] ) ) );
+    }
+
+    Base::getOwnPropertyNames( exec, propertyNames, mode );
 }
 
-bool JSDOMStringMap::deleteProperty(ExecState* exec, const Identifier& propertyName)
+bool JSDOMStringMap::deleteProperty( ExecState *exec, const Identifier &propertyName )
 {
     // Only perform the custom delete if the object doesn't have a native property by this name.
     // Since hasProperty() would end up calling canGetItemsForName() and be fooled, we need to check
     // the native property slots manually.
     PropertySlot slot;
-    if (getStaticValueSlot<JSDOMStringMap, Base>(exec, s_info.propHashTable(exec), this, propertyName, slot))
+
+    if ( getStaticValueSlot<JSDOMStringMap, Base>( exec, s_info.propHashTable( exec ), this, propertyName, slot ) )
+    {
         return false;
-        
+    }
+
     JSValue prototype = this->prototype();
-    if (prototype.isObject() && asObject(prototype)->hasProperty(exec, propertyName))
+
+    if ( prototype.isObject() && asObject( prototype )->hasProperty( exec, propertyName ) )
+    {
         return false;
+    }
 
     ExceptionCode ec = 0;
-    m_impl->deleteItem(identifierToString(propertyName), ec);
-    setDOMException(exec, ec);
+    m_impl->deleteItem( identifierToString( propertyName ), ec );
+    setDOMException( exec, ec );
 
     return true;
 }
 
-bool JSDOMStringMap::putDelegate(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot&)
+bool JSDOMStringMap::putDelegate( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot & )
 {
     // Only perform the custom put if the object doesn't have a native property by this name.
     // Since hasProperty() would end up calling canGetItemsForName() and be fooled, we need to check
     // the native property slots manually.
     PropertySlot slot;
-    if (getStaticValueSlot<JSDOMStringMap, Base>(exec, s_info.propHashTable(exec), this, propertyName, slot))
+
+    if ( getStaticValueSlot<JSDOMStringMap, Base>( exec, s_info.propHashTable( exec ), this, propertyName, slot ) )
+    {
         return false;
-        
+    }
+
     JSValue prototype = this->prototype();
-    if (prototype.isObject() && asObject(prototype)->hasProperty(exec, propertyName))
+
+    if ( prototype.isObject() && asObject( prototype )->hasProperty( exec, propertyName ) )
+    {
         return false;
-    
-    String stringValue = ustringToString(value.toString(exec));
-    if (exec->hadException())
+    }
+
+    String stringValue = ustringToString( value.toString( exec ) );
+
+    if ( exec->hadException() )
+    {
         return true;
-    
+    }
+
     ExceptionCode ec = 0;
-    impl()->setItem(identifierToString(propertyName), stringValue, ec);
-    setDOMException(exec, ec);
+    impl()->setItem( identifierToString( propertyName ), stringValue, ec );
+    setDOMException( exec, ec );
 
     return true;
 }

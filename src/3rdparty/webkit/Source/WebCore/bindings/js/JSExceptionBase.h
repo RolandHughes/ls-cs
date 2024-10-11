@@ -26,17 +26,19 @@
 #ifndef JSExceptionBase_h
 #define JSExceptionBase_h
 
-namespace JSC {
+namespace JSC
+{
 
 class JSValue;
 
 }   // namespace JSC
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ExceptionBase;
 
-ExceptionBase* toExceptionBase(JSC::JSValue);
+ExceptionBase *toExceptionBase( JSC::JSValue );
 
 } // namespace WebCore
 

@@ -61,176 +61,195 @@
   The second half of the table is a replica of the first half, because of
   laziness.
 */
-static const int indexOf[256] = {
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   //      !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
-   0,  2,  6,  7,  10, 12, 15, 19, 2,  6,  7,  10, 12, 15, 19, 0,
-   //  0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
-   1,  3,  4,  5,  8,  9,  11, 13, 14, 16, 2,  6,  7,  10, 12, 15,
-   //  @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
-   0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
-   //  P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
-   15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0,
-   //  `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
-   0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
-   //  p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~
-   15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0,
+static const int indexOf[256] =
+{
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    //      !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+    0,  2,  6,  7,  10, 12, 15, 19, 2,  6,  7,  10, 12, 15, 19, 0,
+    //  0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+    1,  3,  4,  5,  8,  9,  11, 13, 14, 16, 2,  6,  7,  10, 12, 15,
+    //  @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
+    //  P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+    15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0,
+    //  `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
+    //  p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~
+    15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0,
 
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-   0,  2,  6,  7,  10, 12, 15, 19, 2,  6,  7,  10, 12, 15, 19, 0,
-   1,  3,  4,  5,  8,  9,  11, 13, 14, 16, 2,  6,  7,  10, 12, 15,
-   0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
-   15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0,
-   0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
-   15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  2,  6,  7,  10, 12, 15, 19, 2,  6,  7,  10, 12, 15, 19, 0,
+    1,  3,  4,  5,  8,  9,  11, 13, 14, 16, 2,  6,  7,  10, 12, 15,
+    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
+    15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0,
+    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  6,  10, 11, 12, 13, 14,
+    15, 12, 16, 17, 18, 19, 2,  10, 15, 7,  19, 2,  6,  7,  10, 0
 };
 
 /*
   The entry bitCount[i] (for i between 0 and 255) is the number of bits used to
   represent i in binary.
 */
-static const int bitCount[256] = {
-   0,  1,  1,  2,  1,  2,  2,  3,  1,  2,  2,  3,  2,  3,  3,  4,
-   1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
-   1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
-   2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
-   1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
-   2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
-   2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
-   3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
-   1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
-   2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
-   2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
-   3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
-   2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
-   3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
-   3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
-   4,  5,  5,  6,  5,  6,  6,  7,  5,  6,  6,  7,  6,  7,  7,  8
+static const int bitCount[256] =
+{
+    0,  1,  1,  2,  1,  2,  2,  3,  1,  2,  2,  3,  2,  3,  3,  4,
+    1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
+    1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
+    2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
+    1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
+    2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
+    2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
+    3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
+    1,  2,  2,  3,  2,  3,  3,  4,  2,  3,  3,  4,  3,  4,  4,  5,
+    2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
+    2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
+    3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
+    2,  3,  3,  4,  3,  4,  4,  5,  3,  4,  4,  5,  4,  5,  5,  6,
+    3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
+    3,  4,  4,  5,  4,  5,  5,  6,  4,  5,  5,  6,  5,  6,  6,  7,
+    4,  5,  5,  6,  5,  6,  6,  7,  5,  6,  6,  7,  6,  7,  7,  8
 };
 
-static inline void setCoOccurence(CoMatrix &m, char c, char d)
+static inline void setCoOccurence( CoMatrix &m, char c, char d )
 {
-   int k = indexOf[(uchar) c] + 20 * indexOf[(uchar) d];
-   m.b[k >> 3] |= (1 << (k & 0x7));
+    int k = indexOf[( uchar ) c] + 20 * indexOf[( uchar ) d];
+    m.b[k >> 3] |= ( 1 << ( k & 0x7 ) );
 }
 
-CoMatrix::CoMatrix(const QString &str)
+CoMatrix::CoMatrix( const QString &str )
 {
-   QByteArray ba = str.toUtf8();
-   const char *text = ba.constData();
-   char c = '\0', d;
-   memset( b, 0, 52 );
+    QByteArray ba = str.toUtf8();
+    const char *text = ba.constData();
+    char c = '\0', d;
+    memset( b, 0, 52 );
 
-   /*
-     The Knuth books are not in the office only for show; they help make
-     loops 30% faster and 20% as readable.
-   */
+    /*
+      The Knuth books are not in the office only for show; they help make
+      loops 30% faster and 20% as readable.
+    */
 
-   while ( (d = *text) != '\0' ) {
-      setCoOccurence(*this, c, d);
+    while ( ( d = *text ) != '\0' )
+    {
+        setCoOccurence( *this, c, d );
 
-      if ( (c = *++text) != '\0' ) {
-         setCoOccurence(*this, d, c);
-         text++;
-      }
-   }
+        if ( ( c = *++text ) != '\0' )
+        {
+            setCoOccurence( *this, d, c );
+            text++;
+        }
+    }
 }
 
 
-static inline int worth(const CoMatrix &m)
+static inline int worth( const CoMatrix &m )
 {
-   int w = 0;
+    int w = 0;
 
-   for ( int i = 0; i < 50; i++ ) {
-      w += bitCount[m.b[i]];
-   }
+    for ( int i = 0; i < 50; i++ )
+    {
+        w += bitCount[m.b[i]];
+    }
 
-   return w;
+    return w;
 }
 
-static inline CoMatrix reunion(const CoMatrix &m, const CoMatrix &n)
+static inline CoMatrix reunion( const CoMatrix &m, const CoMatrix &n )
 {
-   CoMatrix p;
+    CoMatrix p;
 
-   for (int i = 0; i < 13; ++i) {
-      p.w[i] = m.w[i] | n.w[i];
-   }
+    for ( int i = 0; i < 13; ++i )
+    {
+        p.w[i] = m.w[i] | n.w[i];
+    }
 
-   return p;
+    return p;
 }
 
-static inline CoMatrix intersection(const CoMatrix &m, const CoMatrix &n)
+static inline CoMatrix intersection( const CoMatrix &m, const CoMatrix &n )
 {
-   CoMatrix p;
+    CoMatrix p;
 
-   for (int i = 0; i < 13; ++i) {
-      p.w[i] = m.w[i] & n.w[i];
-   }
+    for ( int i = 0; i < 13; ++i )
+    {
+        p.w[i] = m.w[i] & n.w[i];
+    }
 
-   return p;
+    return p;
 }
 
-StringSimilarityMatcher::StringSimilarityMatcher(const QString &stringToMatch)
-   : m_cm(stringToMatch)
+StringSimilarityMatcher::StringSimilarityMatcher( const QString &stringToMatch )
+    : m_cm( stringToMatch )
 {
-   m_length = stringToMatch.length();
+    m_length = stringToMatch.length();
 }
 
-int StringSimilarityMatcher::getSimilarityScore(const QString &strCandidate)
+int StringSimilarityMatcher::getSimilarityScore( const QString &strCandidate )
 {
-   CoMatrix cmTarget(strCandidate);
-   int delta = qAbs(m_length - strCandidate.size());
+    CoMatrix cmTarget( strCandidate );
+    int delta = qAbs( m_length - strCandidate.size() );
 
-   int score = ( (worth(intersection(m_cm, cmTarget)) + 1) << 10 ) /
-               ( worth(reunion(m_cm, cmTarget)) + (delta << 1) + 1 );
+    int score = ( ( worth( intersection( m_cm, cmTarget ) ) + 1 ) << 10 ) /
+                ( worth( reunion( m_cm, cmTarget ) ) + ( delta << 1 ) + 1 );
 
-   return score;
+    return score;
 }
 
-QList<Candidate> similarTextHeuristicCandidates(const Translator *tor, const QString &text, int maxCandidates)
+QList<Candidate> similarTextHeuristicCandidates( const Translator *tor, const QString &text, int maxCandidates )
 {
-   QList<int> scores;
+    QList<int> scores;
 
-   QList<Candidate> candidates;
-   StringSimilarityMatcher matcher(text);
+    QList<Candidate> candidates;
+    StringSimilarityMatcher matcher( text );
 
-   for (const TranslatorMessage &mtm : tor->messages()) {
-      if (mtm.type() == TranslatorMessage::Type::Unfinished || mtm.translation().isEmpty()) {
-         continue;
-      }
+    for ( const TranslatorMessage &mtm : tor->messages() )
+    {
+        if ( mtm.type() == TranslatorMessage::Type::Unfinished || mtm.translation().isEmpty() )
+        {
+            continue;
+        }
 
-      QString s = mtm.sourceText();
-      int score = matcher.getSimilarityScore(s);
+        QString s = mtm.sourceText();
+        int score = matcher.getSimilarityScore( s );
 
-      if (candidates.size() == maxCandidates && score > scores[maxCandidates - 1] ) {
-         candidates.removeLast();
-      }
+        if ( candidates.size() == maxCandidates && score > scores[maxCandidates - 1] )
+        {
+            candidates.removeLast();
+        }
 
-      if (candidates.size() < maxCandidates && score >= textSimilarityThreshold) {
-         Candidate cand(s, mtm.translation() );
+        if ( candidates.size() < maxCandidates && score >= textSimilarityThreshold )
+        {
+            Candidate cand( s, mtm.translation() );
 
-         int i;
-         for (i = 0; i < candidates.size(); i++) {
-            if (score >= scores.at(i)) {
-               if (score == scores.at(i)) {
-                  if (candidates.at(i) == cand) {
-                     goto continue_outer_loop;
-                  }
+            int i;
 
-               } else {
-                  break;
-               }
+            for ( i = 0; i < candidates.size(); i++ )
+            {
+                if ( score >= scores.at( i ) )
+                {
+                    if ( score == scores.at( i ) )
+                    {
+                        if ( candidates.at( i ) == cand )
+                        {
+                            goto continue_outer_loop;
+                        }
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
             }
-         }
-         scores.insert(i, score);
-         candidates.insert(i, cand);
-      }
 
-   continue_outer_loop:
-      ;
-   }
+            scores.insert( i, score );
+            candidates.insert( i, cand );
+        }
 
-   return candidates;
+continue_outer_loop:
+        ;
+    }
+
+    return candidates;
 }

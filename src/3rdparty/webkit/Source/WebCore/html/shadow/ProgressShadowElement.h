@@ -35,51 +35,55 @@
 #include "HTMLDivElement.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLProgressElement;
 
-class ProgressShadowElement : public HTMLDivElement {
+class ProgressShadowElement : public HTMLDivElement
+{
 public:
-    ProgressShadowElement(Document*);
-    HTMLProgressElement* progressElement() const;
+    ProgressShadowElement( Document * );
+    HTMLProgressElement *progressElement() const;
 
 private:
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
 };
 
-class ProgressBarElement : public ProgressShadowElement {
+class ProgressBarElement : public ProgressShadowElement
+{
 public:
-    ProgressBarElement(Document* document) 
-        : ProgressShadowElement(document)
+    ProgressBarElement( Document *document )
+        : ProgressShadowElement( document )
     {
     }
 
-    static PassRefPtr<ProgressBarElement> create(Document*);
-    virtual const AtomicString& shadowPseudoId() const;
+    static PassRefPtr<ProgressBarElement> create( Document * );
+    virtual const AtomicString &shadowPseudoId() const;
 };
 
-inline PassRefPtr<ProgressBarElement> ProgressBarElement::create(Document* document)
+inline PassRefPtr<ProgressBarElement> ProgressBarElement::create( Document *document )
 {
-    return adoptRef(new ProgressBarElement(document));
+    return adoptRef( new ProgressBarElement( document ) );
 }
 
 
-class ProgressValueElement : public ProgressShadowElement {
+class ProgressValueElement : public ProgressShadowElement
+{
 public:
-    ProgressValueElement(Document* document) 
-        : ProgressShadowElement(document)
+    ProgressValueElement( Document *document )
+        : ProgressShadowElement( document )
     {
     }
 
-    virtual const AtomicString& shadowPseudoId() const;
-    static PassRefPtr<ProgressValueElement> create(Document*);
-    void setWidthPercentage(double);
+    virtual const AtomicString &shadowPseudoId() const;
+    static PassRefPtr<ProgressValueElement> create( Document * );
+    void setWidthPercentage( double );
 };
 
-inline PassRefPtr<ProgressValueElement> ProgressValueElement::create(Document* document)
+inline PassRefPtr<ProgressValueElement> ProgressValueElement::create( Document *document )
 {
-    return adoptRef(new ProgressValueElement(document));
+    return adoptRef( new ProgressValueElement( document ) );
 }
 
 }

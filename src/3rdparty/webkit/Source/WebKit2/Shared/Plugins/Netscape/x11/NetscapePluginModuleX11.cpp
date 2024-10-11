@@ -37,18 +37,24 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 #if PLATFORM(QT)
 static void initializeGTK()
 {
-    QLibrary library(QLatin1String("libgtk-x11-2.0.so.0"));
-    if (library.load()) {
-        typedef void *(*gtk_init_check_ptr)(int*, char***);
-        gtk_init_check_ptr gtkInitCheck = reinterpret_cast<gtk_init_check_ptr>(library.resolve("gtk_init_check"));
+    QLibrary library( QLatin1String( "libgtk-x11-2.0.so.0" ) );
+
+    if ( library.load() )
+    {
+        typedef void *( *gtk_init_check_ptr )( int *, char *** );
+        gtk_init_check_ptr gtkInitCheck = reinterpret_cast<gtk_init_check_ptr>( library.resolve( "gtk_init_check" ) );
+
         // NOTE: We're using gtk_init_check() since gtk_init() calls exit() on failure.
-        if (gtkInitCheck)
-            (void) gtkInitCheck(0, 0);
+        if ( gtkInitCheck )
+        {
+            ( void ) gtkInitCheck( 0, 0 );
+        }
     }
 }
 #endif
@@ -56,38 +62,46 @@ static void initializeGTK()
 void NetscapePluginModule::applyX11QuirksBeforeLoad()
 {
 #if PLATFORM(QT)
-    if (m_pluginPath.contains("npwrapper") || m_pluginPath.contains("flashplayer")) {
+
+    if ( m_pluginPath.contains( "npwrapper" ) || m_pluginPath.contains( "flashplayer" ) )
+    {
         initializeGTK();
-        m_pluginQuirks.add(PluginQuirks::RequiresGTKToolKit);
+        m_pluginQuirks.add( PluginQuirks::RequiresGTKToolKit );
     }
+
 #endif
 }
 
-bool NetscapePluginModule::getPluginInfo(const String& pluginPath, PluginInfoStore::Plugin& plugin)
+bool NetscapePluginModule::getPluginInfo( const String &pluginPath, PluginInfoStore::Plugin &plugin )
 {
     // We are loading the plugin here since it does not seem to be a standardized way to
     // get the needed informations from a UNIX plugin without loading it.
 
-    RefPtr<PluginPackage> package = PluginPackage::createPackage(pluginPath, 0 /*lastModified*/);
-    if (!package)
+    RefPtr<PluginPackage> package = PluginPackage::createPackage( pluginPath, 0 /*lastModified*/ );
+
+    if ( !package )
+    {
         return false;
+    }
 
     plugin.path = pluginPath;
     plugin.info.desc = package->description();
     plugin.info.file = package->fileName();
 
-    const MIMEToDescriptionsMap& descriptions = package->mimeToDescriptions();
-    const MIMEToExtensionsMap& extensions = package->mimeToExtensions();
+    const MIMEToDescriptionsMap &descriptions = package->mimeToDescriptions();
+    const MIMEToExtensionsMap &extensions = package->mimeToExtensions();
     MIMEToDescriptionsMap::const_iterator descEnd = descriptions.end();
-    plugin.info.mimes.reserveCapacity(descriptions.size());
+    plugin.info.mimes.reserveCapacity( descriptions.size() );
     unsigned i = 0;
-    for (MIMEToDescriptionsMap::const_iterator it = descriptions.begin(); it != descEnd; ++it) {
-        plugin.info.mimes.uncheckedAppend(MimeClassInfo());
-        MimeClassInfo& mime = plugin.info.mimes[i++];
+
+    for ( MIMEToDescriptionsMap::const_iterator it = descriptions.begin(); it != descEnd; ++it )
+    {
+        plugin.info.mimes.uncheckedAppend( MimeClassInfo() );
+        MimeClassInfo &mime = plugin.info.mimes[i++];
         mime.type = it->first;
         mime.desc = it->second;
-        MIMEToExtensionsMap::const_iterator extensionIt = extensions.find(it->first);
-        ASSERT(extensionIt != extensions.end());
+        MIMEToExtensionsMap::const_iterator extensionIt = extensions.find( it->first );
+        ASSERT( extensionIt != extensions.end() );
         mime.extensions = extensionIt->second;
     }
 

@@ -33,32 +33,33 @@ using namespace WebKit;
 
 WKTypeID WKSecurityOriginGetTypeID()
 {
-    return toAPI(WebSecurityOrigin::APIType);
+    return toAPI( WebSecurityOrigin::APIType );
 }
 
-WKSecurityOriginRef WKSecurityOriginCreateFromIdentifier(WKStringRef identifier)
+WKSecurityOriginRef WKSecurityOriginCreateFromIdentifier( WKStringRef identifier )
 {
-    RefPtr<WebSecurityOrigin> securityOrigin = WebSecurityOrigin::create(toImpl(identifier)->string());
-    return toAPI(securityOrigin.release().leakRef());
+    RefPtr<WebSecurityOrigin> securityOrigin = WebSecurityOrigin::create( toImpl( identifier )->string() );
+    return toAPI( securityOrigin.release().leakRef() );
 }
 
-WKSecurityOriginRef WKSecurityOriginCreate(WKStringRef protocol, WKStringRef host, int port)
+WKSecurityOriginRef WKSecurityOriginCreate( WKStringRef protocol, WKStringRef host, int port )
 {
-    RefPtr<WebSecurityOrigin> securityOrigin = WebSecurityOrigin::create(toImpl(protocol)->string(), toImpl(host)->string(), port);
-    return toAPI(securityOrigin.release().leakRef());
+    RefPtr<WebSecurityOrigin> securityOrigin = WebSecurityOrigin::create( toImpl( protocol )->string(), toImpl( host )->string(),
+            port );
+    return toAPI( securityOrigin.release().leakRef() );
 }
 
-WKStringRef WKSecurityOriginGetProtocol(WKSecurityOriginRef securityOrigin)
+WKStringRef WKSecurityOriginGetProtocol( WKSecurityOriginRef securityOrigin )
 {
-    return toCopiedAPI(toImpl(securityOrigin)->protocol());
+    return toCopiedAPI( toImpl( securityOrigin )->protocol() );
 }
 
-WKStringRef WKSecurityOriginGetHost(WKSecurityOriginRef securityOrigin)
+WKStringRef WKSecurityOriginGetHost( WKSecurityOriginRef securityOrigin )
 {
-    return toCopiedAPI(toImpl(securityOrigin)->host());
+    return toCopiedAPI( toImpl( securityOrigin )->host() );
 }
 
-unsigned short WKSecurityOriginGetPort(WKSecurityOriginRef securityOrigin)
+unsigned short WKSecurityOriginGetPort( WKSecurityOriginRef securityOrigin )
 {
-    return toImpl(securityOrigin)->port();
+    return toImpl( securityOrigin )->port();
 }

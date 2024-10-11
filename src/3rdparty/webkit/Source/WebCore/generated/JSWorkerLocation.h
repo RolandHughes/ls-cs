@@ -28,26 +28,32 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class WorkerLocation;
 
-class JSWorkerLocation : public JSDOMWrapper {
+class JSWorkerLocation : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSWorkerLocation(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<WorkerLocation>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSWorkerLocation( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<WorkerLocation> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    WorkerLocation* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    WorkerLocation *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<WorkerLocation> m_impl;
@@ -55,55 +61,59 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSWorkerLocationOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSWorkerLocationOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, WorkerLocation*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, WorkerLocation * )
 {
-    DEFINE_STATIC_LOCAL(JSWorkerLocationOwner, jsWorkerLocationOwner, ());
+    DEFINE_STATIC_LOCAL( JSWorkerLocationOwner, jsWorkerLocationOwner, () );
     return &jsWorkerLocationOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, WorkerLocation*)
+inline void *wrapperContext( DOMWrapperWorld *world, WorkerLocation * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, WorkerLocation*);
-WorkerLocation* toWorkerLocation(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, WorkerLocation * );
+WorkerLocation *toWorkerLocation( JSC::JSValue );
 
-class JSWorkerLocationPrototype : public JSC::JSObjectWithGlobalObject {
+class JSWorkerLocationPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSWorkerLocationPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSWorkerLocationPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                               JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsWorkerLocationPrototypeFunctionToString(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsWorkerLocationPrototypeFunctionToString( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsWorkerLocationHref(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationProtocol(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationHost(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationHostname(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationPort(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationPathname(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationSearch(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationHash(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsWorkerLocationConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsWorkerLocationHref( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationProtocol( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationHost( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationHostname( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationPort( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationPathname( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationSearch( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationHash( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsWorkerLocationConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

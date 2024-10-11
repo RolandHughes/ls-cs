@@ -25,111 +25,123 @@
 #include <wtf/HashMap.h>
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef HashMap<int, CSSPropertyLonghand> ShorthandMap;
 
-static void initShorthandMap(ShorthandMap& shorthandMap)
+static void initShorthandMap( ShorthandMap &shorthandMap )
 {
-    #define SET_SHORTHAND_MAP_ENTRY(map, propID, array) \
+#define SET_SHORTHAND_MAP_ENTRY(map, propID, array) \
         map.set(propID, CSSPropertyLonghand(array, WTF_ARRAY_LENGTH(array)))
 
     // FIXME: The 'font' property has "shorthand nature" but is not parsed as a shorthand.
 
     // Do not change the order of the following four shorthands, and keep them together.
-    static const int borderProperties[4][3] = {
+    static const int borderProperties[4][3] =
+    {
         { CSSPropertyBorderTopColor, CSSPropertyBorderTopStyle, CSSPropertyBorderTopWidth },
         { CSSPropertyBorderRightColor, CSSPropertyBorderRightStyle, CSSPropertyBorderRightWidth },
         { CSSPropertyBorderBottomColor, CSSPropertyBorderBottomStyle, CSSPropertyBorderBottomWidth },
         { CSSPropertyBorderLeftColor, CSSPropertyBorderLeftStyle, CSSPropertyBorderLeftWidth }
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderTop, borderProperties[0]);
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderRight, borderProperties[1]);
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderBottom, borderProperties[2]);
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderLeft, borderProperties[3]);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderTop, borderProperties[0] );
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderRight, borderProperties[1] );
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderBottom, borderProperties[2] );
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderLeft, borderProperties[3] );
 
-    shorthandMap.set(CSSPropertyBorder, CSSPropertyLonghand(borderProperties[0], sizeof(borderProperties) / sizeof(borderProperties[0][0])));
+    shorthandMap.set( CSSPropertyBorder, CSSPropertyLonghand( borderProperties[0],
+                      sizeof( borderProperties ) / sizeof( borderProperties[0][0] ) ) );
 
-    static const int borderColorProperties[] = {
+    static const int borderColorProperties[] =
+    {
         CSSPropertyBorderTopColor,
         CSSPropertyBorderRightColor,
         CSSPropertyBorderBottomColor,
         CSSPropertyBorderLeftColor
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderColor, borderColorProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderColor, borderColorProperties );
 
-    static const int borderStyleProperties[] = {
+    static const int borderStyleProperties[] =
+    {
         CSSPropertyBorderTopStyle,
         CSSPropertyBorderRightStyle,
         CSSPropertyBorderBottomStyle,
         CSSPropertyBorderLeftStyle
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderStyle, borderStyleProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderStyle, borderStyleProperties );
 
-    static const int borderWidthProperties[] = {
+    static const int borderWidthProperties[] =
+    {
         CSSPropertyBorderTopWidth,
         CSSPropertyBorderRightWidth,
         CSSPropertyBorderBottomWidth,
         CSSPropertyBorderLeftWidth
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderWidth, borderWidthProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderWidth, borderWidthProperties );
 
     static const int backgroundPositionProperties[] = { CSSPropertyBackgroundPositionX, CSSPropertyBackgroundPositionY };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBackgroundPosition, backgroundPositionProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBackgroundPosition, backgroundPositionProperties );
 
     static const int backgroundRepeatProperties[] = { CSSPropertyBackgroundRepeatX, CSSPropertyBackgroundRepeatY };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBackgroundRepeat, backgroundRepeatProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBackgroundRepeat, backgroundRepeatProperties );
 
     static const int borderSpacingProperties[] = { CSSPropertyWebkitBorderHorizontalSpacing, CSSPropertyWebkitBorderVerticalSpacing };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderSpacing, borderSpacingProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderSpacing, borderSpacingProperties );
 
-    static const int listStyleProperties[] = {
+    static const int listStyleProperties[] =
+    {
         CSSPropertyListStyleImage,
         CSSPropertyListStylePosition,
         CSSPropertyListStyleType
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyListStyle, listStyleProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyListStyle, listStyleProperties );
 
-    static const int marginProperties[] = {
+    static const int marginProperties[] =
+    {
         CSSPropertyMarginTop,
         CSSPropertyMarginRight,
         CSSPropertyMarginBottom,
         CSSPropertyMarginLeft
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyMargin, marginProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyMargin, marginProperties );
 
     static const int marginCollapseProperties[] = { CSSPropertyWebkitMarginBeforeCollapse, CSSPropertyWebkitMarginAfterCollapse };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitMarginCollapse, marginCollapseProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitMarginCollapse, marginCollapseProperties );
 
-    static const int marqueeProperties[] = {
+    static const int marqueeProperties[] =
+    {
         CSSPropertyWebkitMarqueeDirection,
         CSSPropertyWebkitMarqueeIncrement,
         CSSPropertyWebkitMarqueeRepetition,
         CSSPropertyWebkitMarqueeStyle,
         CSSPropertyWebkitMarqueeSpeed
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitMarquee, marqueeProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitMarquee, marqueeProperties );
 
-    static const int outlineProperties[] = {
+    static const int outlineProperties[] =
+    {
         CSSPropertyOutlineColor,
         CSSPropertyOutlineOffset,
         CSSPropertyOutlineStyle,
         CSSPropertyOutlineWidth
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyOutline, outlineProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyOutline, outlineProperties );
 
-    static const int paddingProperties[] = {
+    static const int paddingProperties[] =
+    {
         CSSPropertyPaddingTop,
         CSSPropertyPaddingRight,
         CSSPropertyPaddingBottom,
         CSSPropertyPaddingLeft
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyPadding, paddingProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyPadding, paddingProperties );
 
     static const int textStrokeProperties[] = { CSSPropertyWebkitTextStrokeColor, CSSPropertyWebkitTextStrokeWidth };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitTextStroke, textStrokeProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitTextStroke, textStrokeProperties );
 
-    static const int backgroundProperties[] = {
+    static const int backgroundProperties[] =
+    {
         CSSPropertyBackgroundAttachment,
         CSSPropertyBackgroundClip,
         CSSPropertyBackgroundColor,
@@ -140,37 +152,40 @@ static void initShorthandMap(ShorthandMap& shorthandMap)
         CSSPropertyBackgroundRepeatX,
         CSSPropertyBackgroundRepeatY
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBackground, backgroundProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBackground, backgroundProperties );
 
     static const int columnsProperties[] = { CSSPropertyWebkitColumnWidth, CSSPropertyWebkitColumnCount };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitColumns, columnsProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitColumns, columnsProperties );
 
-    static const int columnRuleProperties[] = {
+    static const int columnRuleProperties[] =
+    {
         CSSPropertyWebkitColumnRuleColor,
         CSSPropertyWebkitColumnRuleStyle,
         CSSPropertyWebkitColumnRuleWidth
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitColumnRule, columnRuleProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitColumnRule, columnRuleProperties );
 
     static const int overflowProperties[] = { CSSPropertyOverflowX, CSSPropertyOverflowY };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyOverflow, overflowProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyOverflow, overflowProperties );
 
-    static const int borderRadiusProperties[] = {
+    static const int borderRadiusProperties[] =
+    {
         CSSPropertyBorderTopRightRadius,
         CSSPropertyBorderTopLeftRadius,
         CSSPropertyBorderBottomLeftRadius,
         CSSPropertyBorderBottomRightRadius
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyBorderRadius, borderRadiusProperties);
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitBorderRadius, borderRadiusProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyBorderRadius, borderRadiusProperties );
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitBorderRadius, borderRadiusProperties );
 
     static const int maskPositionProperties[] = { CSSPropertyWebkitMaskPositionX, CSSPropertyWebkitMaskPositionY };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitMaskPosition, maskPositionProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitMaskPosition, maskPositionProperties );
 
     static const int maskRepeatProperties[] = { CSSPropertyWebkitMaskRepeatX, CSSPropertyWebkitMaskRepeatY };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitMaskRepeat, maskRepeatProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitMaskRepeat, maskRepeatProperties );
 
-    static const int maskProperties[] = {
+    static const int maskProperties[] =
+    {
         CSSPropertyWebkitMaskAttachment,
         CSSPropertyWebkitMaskClip,
         CSSPropertyWebkitMaskImage,
@@ -180,9 +195,10 @@ static void initShorthandMap(ShorthandMap& shorthandMap)
         CSSPropertyWebkitMaskRepeatX,
         CSSPropertyWebkitMaskRepeatY
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitMask, maskProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitMask, maskProperties );
 
-    static const int animationProperties[] = {
+    static const int animationProperties[] =
+    {
         CSSPropertyWebkitAnimationName,
         CSSPropertyWebkitAnimationDuration,
         CSSPropertyWebkitAnimationTimingFunction,
@@ -191,38 +207,44 @@ static void initShorthandMap(ShorthandMap& shorthandMap)
         CSSPropertyWebkitAnimationDirection,
         CSSPropertyWebkitAnimationFillMode
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitAnimation, animationProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitAnimation, animationProperties );
 
-    static const int transitionProperties[] = {
+    static const int transitionProperties[] =
+    {
         CSSPropertyWebkitTransitionProperty,
         CSSPropertyWebkitTransitionDuration,
         CSSPropertyWebkitTransitionTimingFunction,
         CSSPropertyWebkitTransitionDelay
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitTransition, transitionProperties);
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitTransition, transitionProperties );
 
-    static const int transformOriginProperties[] = {
+    static const int transformOriginProperties[] =
+    {
         CSSPropertyWebkitTransformOriginX,
         CSSPropertyWebkitTransformOriginY
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitTransformOrigin, transformOriginProperties);
-    
-    static const int textEmphasisProperties[] = {
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitTransformOrigin, transformOriginProperties );
+
+    static const int textEmphasisProperties[] =
+    {
         CSSPropertyWebkitTextEmphasisColor,
         CSSPropertyWebkitTextEmphasisStyle
     };
-    SET_SHORTHAND_MAP_ENTRY(shorthandMap, CSSPropertyWebkitTextEmphasis, textEmphasisProperties);
-    
-    #undef SET_SHORTHAND_MAP_ENTRY
+    SET_SHORTHAND_MAP_ENTRY( shorthandMap, CSSPropertyWebkitTextEmphasis, textEmphasisProperties );
+
+#undef SET_SHORTHAND_MAP_ENTRY
 }
 
-CSSPropertyLonghand longhandForProperty(int propertyID)
+CSSPropertyLonghand longhandForProperty( int propertyID )
 {
-    DEFINE_STATIC_LOCAL(ShorthandMap, shorthandMap, ());
-    if (shorthandMap.isEmpty())
-        initShorthandMap(shorthandMap);
+    DEFINE_STATIC_LOCAL( ShorthandMap, shorthandMap, () );
 
-    return shorthandMap.get(propertyID);
+    if ( shorthandMap.isEmpty() )
+    {
+        initShorthandMap( shorthandMap );
+    }
+
+    return shorthandMap.get( propertyID );
 }
 
 

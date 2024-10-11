@@ -27,29 +27,30 @@
 #include <qpaircontainer_p.h>
 #include <qvariabledeclaration_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class LetClause : public PairContainer
 {
- public:
-   LetClause(const Expression::Ptr &operand1, const Expression::Ptr &operand2, const VariableDeclaration::Ptr &decl);
+public:
+    LetClause( const Expression::Ptr &operand1, const Expression::Ptr &operand2, const VariableDeclaration::Ptr &decl );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   SequenceType::Ptr staticType() const override;
-   Properties properties() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   ID id() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    SequenceType::Ptr staticType() const override;
+    Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    ID id() const override;
 
- private:
-   inline DynamicContext::Ptr bindVariable(const DynamicContext::Ptr &context) const;
+private:
+    inline DynamicContext::Ptr bindVariable( const DynamicContext::Ptr &context ) const;
 
-   const VariableDeclaration::Ptr m_varDecl;
+    const VariableDeclaration::Ptr m_varDecl;
 };
 
 }

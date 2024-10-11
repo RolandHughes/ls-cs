@@ -23,23 +23,23 @@
 
 #include <statistics.h>
 
-Statistics::Statistics(QWidget *parent, Qt::WindowFlags flags)
-   : QDialog(parent, flags)
+Statistics::Statistics( QWidget *parent, Qt::WindowFlags flags )
+    : QDialog( parent, flags )
 {
-   setupUi(this);
+    setupUi( this );
 }
 
 void Statistics::languageChange()
 {
-   retranslateUi(this);
+    retranslateUi( this );
 }
 
-void Statistics::updateStats(int sW, int sC, int sCS, int trW, int trC, int trCS)
+void Statistics::updateStats( int sW, int sC, int sCS, int trW, int trC, int trCS )
 {
-   untrWords->setText(QString::number(sW));
-   untrChars->setText(QString::number(sC));
-   untrCharsSpc->setText(QString::number(sCS));
-   trWords->setText(QString::number(trW));
-   trChars->setText(QString::number(trC));
-   trCharsSpc->setText(QString::number(trCS));
+    untrWords->setText( QString::number( sW ) );
+    untrChars->setText( QString::number( sC ) );
+    untrCharsSpc->setText( QString::number( sCS ) );
+    trWords->setText( QString::number( trW ) );
+    trChars->setText( QString::number( trC ) );
+    trCharsSpc->setText( QString::number( trCS ) );
 }

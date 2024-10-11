@@ -34,32 +34,33 @@ class AVFCameraService;
 
 class AVFAudioInputSelectorControl : public QAudioInputSelectorControl
 {
-   CS_OBJECT(AVFAudioInputSelectorControl)
+    LSCS_OBJECT( AVFAudioInputSelectorControl )
 
- public:
-   AVFAudioInputSelectorControl(AVFCameraService *service, QObject *parent = nullptr);
-   ~AVFAudioInputSelectorControl();
+public:
+    AVFAudioInputSelectorControl( AVFCameraService *service, QObject *parent = nullptr );
+    ~AVFAudioInputSelectorControl();
 
-   QList<QString> availableInputs() const override;
-   QString inputDescription(const QString &name) const override;
-   QString defaultInput() const override;
-   QString activeInput() const override;
+    QList<QString> availableInputs() const override;
+    QString inputDescription( const QString &name ) const override;
+    QString defaultInput() const override;
+    QString activeInput() const override;
 
-   CS_SLOT_1(Public, void setActiveInput(const QString &name) override)
-   CS_SLOT_2(setActiveInput)
+    LSCS_SLOT_1( Public, void setActiveInput( const QString &name ) override )
+    LSCS_SLOT_2( setActiveInput )
 
-   //device changed since the last createCaptureDevice()
-   bool isDirty() const {
-      return m_dirty;
-   }
-   AVCaptureDevice *createCaptureDevice();
+    //device changed since the last createCaptureDevice()
+    bool isDirty() const
+    {
+        return m_dirty;
+    }
+    AVCaptureDevice *createCaptureDevice();
 
- private:
-   QString m_activeInput;
-   bool m_dirty;
-   QString m_defaultDevice;
-   QStringList m_devices;
-   QMap<QString, QString> m_deviceDescriptions;
+private:
+    QString m_activeInput;
+    bool m_dirty;
+    QString m_defaultDevice;
+    QStringList m_devices;
+    QMap<QString, QString> m_deviceDescriptions;
 };
 
 #endif

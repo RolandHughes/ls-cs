@@ -35,66 +35,67 @@ class QPixmap;
 
 class Q_GUI_EXPORT QClipboard : public QObject
 {
-   GUI_CS_OBJECT(QClipboard)
+    GUI_LSCS_OBJECT( QClipboard )
 
- public:
-   enum Mode {
-      Clipboard,
-      Selection,
-      FindBuffer,
-      LastMode = FindBuffer
-   };
+public:
+    enum Mode
+    {
+        Clipboard,
+        Selection,
+        FindBuffer,
+        LastMode = FindBuffer
+    };
 
-   QClipboard(const QClipboard &) = delete;
-   QClipboard &operator=(const QClipboard &) = delete;
+    QClipboard( const QClipboard & ) = delete;
+    QClipboard &operator=( const QClipboard & ) = delete;
 
-   void clear(Mode mode = Clipboard);
+    void clear( Mode mode = Clipboard );
 
-   bool supportsSelection() const;
-   bool supportsFindBuffer() const;
+    bool supportsSelection() const;
+    bool supportsFindBuffer() const;
 
-   bool ownsSelection() const;
-   bool ownsClipboard() const;
-   bool ownsFindBuffer() const;
+    bool ownsSelection() const;
+    bool ownsClipboard() const;
+    bool ownsFindBuffer() const;
 
-   QString text(Mode mode = Clipboard) const;
-   QString text(QString &subtype, Mode mode = Clipboard) const;
-   void setText(const QString &text, Mode mode = Clipboard);
+    QString text( Mode mode = Clipboard ) const;
+    QString text( QString &subtype, Mode mode = Clipboard ) const;
+    void setText( const QString &text, Mode mode = Clipboard );
 
-   const QMimeData *mimeData(Mode mode = Clipboard ) const;
-   void setMimeData(QMimeData *data, Mode mode = Clipboard);
+    const QMimeData *mimeData( Mode mode = Clipboard ) const;
+    void setMimeData( QMimeData *data, Mode mode = Clipboard );
 
-   QImage image(Mode mode = Clipboard) const;
-   QPixmap pixmap(Mode mode = Clipboard) const;
-   void setImage(const QImage &image, Mode mode  = Clipboard);
-   void setPixmap(const QPixmap &pixmap, Mode mode  = Clipboard);
+    QImage image( Mode mode = Clipboard ) const;
+    QPixmap pixmap( Mode mode = Clipboard ) const;
+    void setImage( const QImage &image, Mode mode  = Clipboard );
+    void setPixmap( const QPixmap &pixmap, Mode mode  = Clipboard );
 
-   GUI_CS_SIGNAL_1(Public, void changed(QClipboard::Mode mode))
-   GUI_CS_SIGNAL_2(changed, mode)
+    GUI_LSCS_SIGNAL_1( Public, void changed( QClipboard::Mode mode ) )
+    GUI_LSCS_SIGNAL_2( changed, mode )
 
-   GUI_CS_SIGNAL_1(Public, void selectionChanged())
-   GUI_CS_SIGNAL_2(selectionChanged)
+    GUI_LSCS_SIGNAL_1( Public, void selectionChanged() )
+    GUI_LSCS_SIGNAL_2( selectionChanged )
 
-   GUI_CS_SIGNAL_1(Public, void findBufferChanged())
-   GUI_CS_SIGNAL_2(findBufferChanged)
+    GUI_LSCS_SIGNAL_1( Public, void findBufferChanged() )
+    GUI_LSCS_SIGNAL_2( findBufferChanged )
 
-   GUI_CS_SIGNAL_1(Public, void dataChanged())
-   GUI_CS_SIGNAL_2(dataChanged)
+    GUI_LSCS_SIGNAL_1( Public, void dataChanged() )
+    GUI_LSCS_SIGNAL_2( dataChanged )
 
- protected:
-   friend class QApplication;
-   friend class QApplicationPrivate;
-   friend class QBaseApplication;
-   friend class QDragManager;
-   friend class QPlatformClipboard;
+protected:
+    friend class QApplication;
+    friend class QApplicationPrivate;
+    friend class QBaseApplication;
+    friend class QDragManager;
+    friend class QPlatformClipboard;
 
- private:
-   explicit QClipboard(QObject *parent);
-   ~QClipboard();
+private:
+    explicit QClipboard( QObject *parent );
+    ~QClipboard();
 
-   bool supportsMode(Mode mode) const;
-   bool ownsMode(Mode mode) const;
-   void emitChanged(Mode mode);
+    bool supportsMode( Mode mode ) const;
+    bool ownsMode( Mode mode ) const;
+    void emitChanged( Mode mode );
 };
 
 #endif // QT_NO_CLIPBOARD

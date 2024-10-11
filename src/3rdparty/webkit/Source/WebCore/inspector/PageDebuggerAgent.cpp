@@ -35,16 +35,19 @@
 
 #include "PageScriptDebugServer.h"
 
-namespace WebCore {
-
-PassOwnPtr<PageDebuggerAgent> PageDebuggerAgent::create(InstrumentingAgents* instrumentingAgents, InspectorState* inspectorState, Page* inspectedPage, InjectedScriptManager* injectedScriptManager)
+namespace WebCore
 {
-    return adoptPtr(new PageDebuggerAgent(instrumentingAgents, inspectorState, inspectedPage, injectedScriptManager));
+
+PassOwnPtr<PageDebuggerAgent> PageDebuggerAgent::create( InstrumentingAgents *instrumentingAgents, InspectorState *inspectorState,
+        Page *inspectedPage, InjectedScriptManager *injectedScriptManager )
+{
+    return adoptPtr( new PageDebuggerAgent( instrumentingAgents, inspectorState, inspectedPage, injectedScriptManager ) );
 }
 
-PageDebuggerAgent::PageDebuggerAgent(InstrumentingAgents* instrumentingAgents, InspectorState* inspectorState, Page* inspectedPage, InjectedScriptManager* injectedScriptManager)
-    : InspectorDebuggerAgent(instrumentingAgents, inspectorState, injectedScriptManager)
-    , m_inspectedPage(inspectedPage)
+PageDebuggerAgent::PageDebuggerAgent( InstrumentingAgents *instrumentingAgents, InspectorState *inspectorState,
+                                      Page *inspectedPage, InjectedScriptManager *injectedScriptManager )
+    : InspectorDebuggerAgent( instrumentingAgents, inspectorState, injectedScriptManager )
+    , m_inspectedPage( inspectedPage )
 {
 }
 
@@ -54,15 +57,15 @@ PageDebuggerAgent::~PageDebuggerAgent()
 
 void PageDebuggerAgent::startListeningScriptDebugServer()
 {
-    scriptDebugServer().addListener(this, m_inspectedPage);
+    scriptDebugServer().addListener( this, m_inspectedPage );
 }
 
 void PageDebuggerAgent::stopListeningScriptDebugServer()
 {
-    scriptDebugServer().removeListener(this, m_inspectedPage);
+    scriptDebugServer().removeListener( this, m_inspectedPage );
 }
 
-PageScriptDebugServer& PageDebuggerAgent::scriptDebugServer()
+PageScriptDebugServer &PageDebuggerAgent::scriptDebugServer()
 {
     return PageScriptDebugServer::shared();
 }

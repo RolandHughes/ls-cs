@@ -25,14 +25,17 @@
 #include "ExceptionCode.h"
 #include "SVGPropertyTraits.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 class FloatRect;
 
-class SVGPreserveAspectRatio {
+class SVGPreserveAspectRatio
+{
 public:
-    enum SVGPreserveAspectRatioType {
+    enum SVGPreserveAspectRatioType
+    {
         SVG_PRESERVEASPECTRATIO_UNKNOWN = 0,
         SVG_PRESERVEASPECTRATIO_NONE = 1,
         SVG_PRESERVEASPECTRATIO_XMINYMIN = 2,
@@ -46,7 +49,8 @@ public:
         SVG_PRESERVEASPECTRATIO_XMAXYMAX = 10
     };
 
-    enum SVGMeetOrSliceType {
+    enum SVGMeetOrSliceType
+    {
         SVG_MEETORSLICE_UNKNOWN = 0,
         SVG_MEETORSLICE_MEET = 1,
         SVG_MEETORSLICE_SLICE = 2
@@ -54,30 +58,36 @@ public:
 
     SVGPreserveAspectRatio();
 
-    void setAlign(unsigned short align, ExceptionCode&);
-    unsigned short align() const { return m_align; }
+    void setAlign( unsigned short align, ExceptionCode & );
+    unsigned short align() const
+    {
+        return m_align;
+    }
 
-    void setMeetOrSlice(unsigned short, ExceptionCode&);
-    unsigned short meetOrSlice() const { return m_meetOrSlice; }
+    void setMeetOrSlice( unsigned short, ExceptionCode & );
+    unsigned short meetOrSlice() const
+    {
+        return m_meetOrSlice;
+    }
 
-    void transformRect(FloatRect& destRect, FloatRect& srcRect);
+    void transformRect( FloatRect &destRect, FloatRect &srcRect );
 
-    AffineTransform getCTM(float logicX, float logicY,
-                           float logicWidth, float logicHeight,
-                           float physWidth, float physHeight) const;
+    AffineTransform getCTM( float logicX, float logicY,
+                            float logicWidth, float logicHeight,
+                            float physWidth, float physHeight ) const;
 
     template<class Consumer>
-    static bool parsePreserveAspectRatio(Consumer* consumer, const String& value, bool validate = true)
+    static bool parsePreserveAspectRatio( Consumer *consumer, const String &value, bool validate = true )
     {
         bool result = false;
-        const UChar* begin = value.characters();
-        const UChar* end = begin + value.length();
-        consumer->setPreserveAspectRatioBaseValue(parsePreserveAspectRatio(begin, end, validate, result));
+        const UChar *begin = value.characters();
+        const UChar *end = begin + value.length();
+        consumer->setPreserveAspectRatioBaseValue( parsePreserveAspectRatio( begin, end, validate, result ) );
         return result;
     }
 
     // It's recommended to use the method above, only SVGViewSpec needs this parsing method
-    static SVGPreserveAspectRatio parsePreserveAspectRatio(const UChar*& currParam, const UChar* end, bool validate, bool& result);
+    static SVGPreserveAspectRatio parsePreserveAspectRatio( const UChar *&currParam, const UChar *end, bool validate, bool &result );
 
     String valueAsString() const;
 
@@ -87,9 +97,16 @@ private:
 };
 
 template<>
-struct SVGPropertyTraits<SVGPreserveAspectRatio> {
-    static SVGPreserveAspectRatio initialValue() { return SVGPreserveAspectRatio(); }
-    static String toString(const SVGPreserveAspectRatio& type) { return type.valueAsString(); }
+struct SVGPropertyTraits<SVGPreserveAspectRatio>
+{
+    static SVGPreserveAspectRatio initialValue()
+    {
+        return SVGPreserveAspectRatio();
+    }
+    static String toString( const SVGPreserveAspectRatio &type )
+    {
+        return type.valueAsString();
+    }
 };
 
 } // namespace WebCore

@@ -40,10 +40,11 @@
 #include <wtf/text/CString.h>
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // static
-void Shader::affineTo3x3(const AffineTransform& transform, float mat[9])
+void Shader::affineTo3x3( const AffineTransform &transform, float mat[9] )
 {
     mat[0] = transform.a();
     mat[1] = transform.b();
@@ -57,7 +58,7 @@ void Shader::affineTo3x3(const AffineTransform& transform, float mat[9])
 }
 
 // static
-void Shader::affineTo4x4(const AffineTransform& transform, float mat[16])
+void Shader::affineTo4x4( const AffineTransform &transform, float mat[16] )
 {
     mat[0] = transform.a();
     mat[1] = transform.b();
@@ -78,155 +79,197 @@ void Shader::affineTo4x4(const AffineTransform& transform, float mat[16])
 }
 
 // static
-unsigned Shader::loadShader(GraphicsContext3D* context, unsigned type, const String& shaderSource)
+unsigned Shader::loadShader( GraphicsContext3D *context, unsigned type, const String &shaderSource )
 {
-    unsigned shader = context->createShader(type);
-    if (!shader)
-        return 0;
+    unsigned shader = context->createShader( type );
 
-    context->shaderSource(shader, shaderSource);
-    context->compileShader(shader);
-    int compileStatus = 0;
-    context->getShaderiv(shader, GraphicsContext3D::COMPILE_STATUS, &compileStatus);
-    if (!compileStatus) {
-        String infoLog = context->getShaderInfoLog(shader);
-        LOG_ERROR("%s", infoLog.utf8().data());
-        context->deleteShader(shader);
+    if ( !shader )
+    {
         return 0;
     }
+
+    context->shaderSource( shader, shaderSource );
+    context->compileShader( shader );
+    int compileStatus = 0;
+    context->getShaderiv( shader, GraphicsContext3D::COMPILE_STATUS, &compileStatus );
+
+    if ( !compileStatus )
+    {
+        String infoLog = context->getShaderInfoLog( shader );
+        LOG_ERROR( "%s", infoLog.utf8().data() );
+        context->deleteShader( shader );
+        return 0;
+    }
+
     return shader;
 }
 
 // static
-unsigned Shader::loadProgram(GraphicsContext3D* context, const String& vertexShaderSource, const String& fragmentShaderSource)
+unsigned Shader::loadProgram( GraphicsContext3D *context, const String &vertexShaderSource, const String &fragmentShaderSource )
 {
-    unsigned vertexShader = loadShader(context, GraphicsContext3D::VERTEX_SHADER, vertexShaderSource);
-    if (!vertexShader)
+    unsigned vertexShader = loadShader( context, GraphicsContext3D::VERTEX_SHADER, vertexShaderSource );
+
+    if ( !vertexShader )
+    {
         return 0;
-    unsigned fragmentShader = loadShader(context, GraphicsContext3D::FRAGMENT_SHADER, fragmentShaderSource);
-    if (!fragmentShader)
+    }
+
+    unsigned fragmentShader = loadShader( context, GraphicsContext3D::FRAGMENT_SHADER, fragmentShaderSource );
+
+    if ( !fragmentShader )
+    {
         return 0;
+    }
+
     unsigned program = context->createProgram();
-    if (!program)
+
+    if ( !program )
+    {
         return 0;
-    context->attachShader(program, vertexShader);
-    context->attachShader(program, fragmentShader);
-    context->linkProgram(program);
+    }
+
+    context->attachShader( program, vertexShader );
+    context->attachShader( program, fragmentShader );
+    context->linkProgram( program );
     int linkStatus = 0;
-    context->getProgramiv(program, GraphicsContext3D::LINK_STATUS, &linkStatus);
-    if (!linkStatus)
-        context->deleteProgram(program);
-    context->deleteShader(vertexShader);
-    context->deleteShader(fragmentShader);
+    context->getProgramiv( program, GraphicsContext3D::LINK_STATUS, &linkStatus );
+
+    if ( !linkStatus )
+    {
+        context->deleteProgram( program );
+    }
+
+    context->deleteShader( vertexShader );
+    context->deleteShader( fragmentShader );
     return program;
 }
 
-Shader::Shader(GraphicsContext3D* context, unsigned program)
-    : m_context(context)
-    , m_program(program)
+Shader::Shader( GraphicsContext3D *context, unsigned program )
+    : m_context( context )
+    , m_program( program )
 {
 }
 
 Shader::~Shader()
 {
-    m_context->deleteProgram(m_program);
+    m_context->deleteProgram( m_program );
 }
 
 // static
-String Shader::generateVertex(Shader::VertexType vertexType, Shader::FillType fillType)
+String Shader::generateVertex( Shader::VertexType vertexType, Shader::FillType fillType )
 {
     StringBuilder builder;
-    switch (vertexType) {
-    case TwoDimensional:
-        builder.append(
-            "uniform mat3 matrix;\n"
-            "attribute vec2 position;\n");
-        break;
-    case LoopBlinnInterior:
-        builder.append(
-            "uniform mat4 worldViewProjection;\n"
-            "attribute vec2 position;\n");
-        break;
-    case LoopBlinnExterior:
-        builder.append(
-            "uniform mat4 worldViewProjection;\n"
-            "attribute vec2 position;\n"
-            "attribute vec3 klm;\n"
-            "varying vec3 v_klm;\n");
-        break;
+
+    switch ( vertexType )
+    {
+        case TwoDimensional:
+            builder.append(
+                "uniform mat3 matrix;\n"
+                "attribute vec2 position;\n" );
+            break;
+
+        case LoopBlinnInterior:
+            builder.append(
+                "uniform mat4 worldViewProjection;\n"
+                "attribute vec2 position;\n" );
+            break;
+
+        case LoopBlinnExterior:
+            builder.append(
+                "uniform mat4 worldViewProjection;\n"
+                "attribute vec2 position;\n"
+                "attribute vec3 klm;\n"
+                "varying vec3 v_klm;\n" );
+            break;
     }
 
-    if (fillType == TextureFill) {
+    if ( fillType == TextureFill )
+    {
         builder.append(
             "uniform mat3 texMatrix;\n"
-            "varying vec3 texCoord;\n");
+            "varying vec3 texCoord;\n" );
     }
 
     builder.append(
-        "void main() {\n");
+        "void main() {\n" );
 
-    if (vertexType == TwoDimensional) {
+    if ( vertexType == TwoDimensional )
+    {
         builder.append(
-            "gl_Position = vec4(matrix * vec3(position, 1.0), 1.0);\n");
-    } else {
+            "gl_Position = vec4(matrix * vec3(position, 1.0), 1.0);\n" );
+    }
+    else
+    {
         builder.append(
-            "gl_Position = worldViewProjection * vec4(position, 0.0, 1.0);\n");
-        if (vertexType == LoopBlinnExterior) {
+            "gl_Position = worldViewProjection * vec4(position, 0.0, 1.0);\n" );
+
+        if ( vertexType == LoopBlinnExterior )
+        {
             builder.append(
-                "v_klm = klm;\n");
+                "v_klm = klm;\n" );
         }
     }
 
-    if (fillType == TextureFill) {
+    if ( fillType == TextureFill )
+    {
         builder.append(
-            "texCoord = texMatrix * vec3(position, 1.0);\n");
+            "texCoord = texMatrix * vec3(position, 1.0);\n" );
     }
 
     builder.append(
-        "}\n");
+        "}\n" );
 
     return builder.toString();
 }
 
 // static
-String Shader::generateFragment(Shader::VertexType vertexType, Shader::FillType fillType, Shader::AntialiasType antialiasType)
+String Shader::generateFragment( Shader::VertexType vertexType, Shader::FillType fillType, Shader::AntialiasType antialiasType )
 {
     StringBuilder builder;
     builder.append(
         "#ifdef GL_ES\n"
         "precision mediump float;\n"
-        "#endif\n");
+        "#endif\n" );
 
-    if (vertexType == LoopBlinnExterior) {
-        if (antialiasType == Antialiased) {
+    if ( vertexType == LoopBlinnExterior )
+    {
+        if ( antialiasType == Antialiased )
+        {
             builder.append(
-                "#extension GL_OES_standard_derivatives : enable\n");
+                "#extension GL_OES_standard_derivatives : enable\n" );
         }
+
         builder.append(
-            "varying vec3 v_klm;\n");
+            "varying vec3 v_klm;\n" );
     }
 
-    switch (fillType) {
-    case SolidFill:
-        builder.append(
-            "uniform vec4 color;\n");
-        break;
-    case TextureFill:
-        builder.append(
-            "uniform sampler2D sampler;\n"
-            "uniform float globalAlpha;\n"
-            "varying vec3 texCoord;\n");
-        break;
+    switch ( fillType )
+    {
+        case SolidFill:
+            builder.append(
+                "uniform vec4 color;\n" );
+            break;
+
+        case TextureFill:
+            builder.append(
+                "uniform sampler2D sampler;\n"
+                "uniform float globalAlpha;\n"
+                "varying vec3 texCoord;\n" );
+            break;
     }
 
     builder.append(
-        "void main() {\n");
+        "void main() {\n" );
 
-    if (vertexType != LoopBlinnExterior) {
+    if ( vertexType != LoopBlinnExterior )
+    {
         builder.append(
-            "float alpha = 1.0;\n");
-    } else {
-        if (antialiasType == Antialiased) {
+            "float alpha = 1.0;\n" );
+    }
+    else
+    {
+        if ( antialiasType == Antialiased )
+        {
             builder.append(
                 "  // Gradients\n"
                 "  vec3 px = dFdx(v_klm);\n"
@@ -247,27 +290,31 @@ String Shader::generateFragment(Shader::VertexType vertexType, Shader::FillType 
                 "  // negated compared to the HLSL version, and also why\n"
                 "  // we need an adjustment by +1.0 for it to look good.\n"
                 "  // float alpha = clamp(0.5 - sd, 0.0, 1.0);\n"
-                "  float alpha = clamp(sd + 0.5, 0.0, 1.0);\n");
-        } else {
+                "  float alpha = clamp(sd + 0.5, 0.0, 1.0);\n" );
+        }
+        else
+        {
             builder.append(
                 "  float t = v_klm.x * v_klm.x * v_klm.x - v_klm.y * v_klm.z;\n"
-                "  float alpha = clamp(sign(t), 0.0, 1.0);\n");
+                "  float alpha = clamp(sign(t), 0.0, 1.0);\n" );
         }
     }
 
-    switch (fillType) {
-    case SolidFill:
-        builder.append(
-            "gl_FragColor = color * alpha;\n");
-        break;
-    case TextureFill:
-        builder.append(
-            "gl_FragColor = texture2D(sampler, texCoord.xy) * alpha * globalAlpha;\n");
-        break;
+    switch ( fillType )
+    {
+        case SolidFill:
+            builder.append(
+                "gl_FragColor = color * alpha;\n" );
+            break;
+
+        case TextureFill:
+            builder.append(
+                "gl_FragColor = texture2D(sampler, texCoord.xy) * alpha * globalAlpha;\n" );
+            break;
     }
 
     builder.append(
-        "}\n");
+        "}\n" );
 
     return builder.toString();
 }

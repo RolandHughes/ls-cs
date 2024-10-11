@@ -33,51 +33,52 @@ QT_BEGIN_NAMESPACE
 class QDeclarativeEngine;
 class QJSDebuggerAgent;
 
-struct JSAgentCoverageData {
-   QByteArray prefix;
-   qint64 time;
-   int messageType;
+struct JSAgentCoverageData
+{
+    QByteArray prefix;
+    qint64 time;
+    int messageType;
 
-   qint64 scriptId;
-   QString program;
-   QString fileName;
-   int baseLineNumber;
-   int lineNumber;
-   int columnNumber;
-   QString returnValue;
+    qint64 scriptId;
+    QString program;
+    QString fileName;
+    int baseLineNumber;
+    int lineNumber;
+    int columnNumber;
+    QString returnValue;
 
-   QByteArray toByteArray() const;
+    QByteArray toByteArray() const;
 };
 
 class QJSDebugService : public QDeclarativeDebugService
 {
-   DECL_CS_OBJECT(QJSDebugService)
+    DECL_LSCS_OBJECT( QJSDebugService )
 
- public:
-   QJSDebugService(QObject *parent = nullptr);
-   ~QJSDebugService();
+public:
+    QJSDebugService( QObject *parent = nullptr );
+    ~QJSDebugService();
 
-   static QJSDebugService *instance();
+    static QJSDebugService *instance();
 
-   void addEngine(QDeclarativeEngine *);
-   void removeEngine(QDeclarativeEngine *);
-   void processMessage(const JSAgentCoverageData &message);
+    void addEngine( QDeclarativeEngine * );
+    void removeEngine( QDeclarativeEngine * );
+    void processMessage( const JSAgentCoverageData &message );
 
-   QElapsedTimer m_timer;
+    QElapsedTimer m_timer;
 
- protected:
-   void statusChanged(Status status);
-   void messageReceived(const QByteArray &);
+protected:
+    void statusChanged( Status status );
+    void messageReceived( const QByteArray & );
 
- private :
-   DECL_CS_SLOT_1(Private, void executionStopped(bool becauseOfException, const QString &exception))
-   DECL_CS_SLOT_2(executionStopped)
+private :
+    DECL_LSCS_SLOT_1( Private, void executionStopped( bool becauseOfException, const QString &exception ) )
+    DECL_LSCS_SLOT_2( executionStopped )
 
-   void sendMessages();
-   QList<QDeclarativeEngine *> m_engines;
-   QPointer<QJSDebuggerAgent> m_agent;
-   bool m_deferredSend;
-   QList<JSAgentCoverageData> m_data;
+    void sendMessages();
+    QList<QDeclarativeEngine *> m_engines;
+    QPointer<QJSDebuggerAgent> m_agent;
+    bool m_deferredSend;
+    QList<JSAgentCoverageData> m_data;
 };
 
 QT_END_NAMESPACE

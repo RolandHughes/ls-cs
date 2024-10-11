@@ -37,14 +37,15 @@
 #include "Frame.h"
 #include "FrameLoaderTypes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-PerformanceNavigation::PerformanceNavigation(Frame* frame)
-    : m_frame(frame)
+PerformanceNavigation::PerformanceNavigation( Frame *frame )
+    : m_frame( frame )
 {
 }
 
-Frame* PerformanceNavigation::frame() const
+Frame *PerformanceNavigation::frame() const
 {
     return m_frame;
 }
@@ -56,36 +57,53 @@ void PerformanceNavigation::disconnectFrame()
 
 unsigned short PerformanceNavigation::type() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return TYPE_NAVIGATE;
+    }
 
-    DocumentLoader* documentLoader = m_frame->loader()->documentLoader();
-    if (!documentLoader)
+    DocumentLoader *documentLoader = m_frame->loader()->documentLoader();
+
+    if ( !documentLoader )
+    {
         return TYPE_NAVIGATE;
+    }
 
     WebCore::NavigationType navigationType = documentLoader->triggeringAction().type();
-    switch (navigationType) {
-    case NavigationTypeReload:
-        return TYPE_RELOAD;
-    case NavigationTypeBackForward:
-        return TYPE_BACK_FORWARD;
-    default:
-        return TYPE_NAVIGATE;
+
+    switch ( navigationType )
+    {
+        case NavigationTypeReload:
+            return TYPE_RELOAD;
+
+        case NavigationTypeBackForward:
+            return TYPE_BACK_FORWARD;
+
+        default:
+            return TYPE_NAVIGATE;
     }
 }
 
 unsigned short PerformanceNavigation::redirectCount() const
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return 0;
+    }
 
-    DocumentLoader* loader = m_frame->loader()->documentLoader();
-    if (!loader)
-        return 0;
+    DocumentLoader *loader = m_frame->loader()->documentLoader();
 
-    DocumentLoadTiming* timing = loader->timing();
-    if (timing->hasCrossOriginRedirect)
+    if ( !loader )
+    {
         return 0;
+    }
+
+    DocumentLoadTiming *timing = loader->timing();
+
+    if ( timing->hasCrossOriginRedirect )
+    {
+        return 0;
+    }
 
     return timing->redirectCount;
 }

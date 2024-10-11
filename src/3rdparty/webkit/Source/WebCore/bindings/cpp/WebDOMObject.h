@@ -20,7 +20,8 @@
 #ifndef WebDOMObject_h
 #define WebDOMObject_h
 
-class WebDOMObject {
+class WebDOMObject
+{
 protected:
     WebDOMObject() { }
     ~WebDOMObject() { }

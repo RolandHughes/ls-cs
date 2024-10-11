@@ -25,7 +25,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef JSActivation_h
 #define JSActivation_h
 
@@ -35,73 +35,89 @@
 #include "SymbolTable.h"
 #include "Nodes.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class Arguments;
-    class Register;
-    
-    class JSActivation : public JSVariableObject {
-        typedef JSVariableObject Base;
-    public:
-        JSActivation(CallFrame*, NonNullPassRefPtr<FunctionExecutable>);
-        virtual ~JSActivation();
+class Arguments;
+class Register;
 
-        virtual void markChildren(MarkStack&);
+class JSActivation : public JSVariableObject
+{
+    typedef JSVariableObject Base;
+public:
+    JSActivation( CallFrame *, NonNullPassRefPtr<FunctionExecutable> );
+    virtual ~JSActivation();
 
-        virtual bool isDynamicScope() const;
+    virtual void markChildren( MarkStack & );
 
-        virtual bool isActivationObject() const { return true; }
+    virtual bool isDynamicScope() const;
 
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
+    virtual bool isActivationObject() const
+    {
+        return true;
+    }
 
-        virtual void put(ExecState*, const Identifier&, JSValue, PutPropertySlot&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
 
-        virtual void putWithAttributes(ExecState*, const Identifier&, JSValue, unsigned attributes);
-        virtual bool deleteProperty(ExecState*, const Identifier& propertyName);
+    virtual void put( ExecState *, const Identifier &, JSValue, PutPropertySlot & );
 
-        virtual JSObject* toThisObject(ExecState*) const;
+    virtual void putWithAttributes( ExecState *, const Identifier &, JSValue, unsigned attributes );
+    virtual bool deleteProperty( ExecState *, const Identifier &propertyName );
 
-        void copyRegisters(Arguments* arguments);
-        
-        virtual const ClassInfo* classInfo() const { return &info; }
-        static const ClassInfo info;
+    virtual JSObject *toThisObject( ExecState * ) const;
 
-        static PassRefPtr<Structure> createStructure(JSValue proto) { return Structure::create(proto, TypeInfo(ObjectType, StructureFlags)); }
+    void copyRegisters( Arguments *arguments );
 
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | NeedsThisConversion | OverridesMarkChildren | OverridesGetPropertyNames | JSVariableObject::StructureFlags;
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const ClassInfo info;
 
-    private:
-        struct JSActivationData : public JSVariableObjectData {
-            JSActivationData(NonNullPassRefPtr<FunctionExecutable> _functionExecutable, Register* registers)
-                : JSVariableObjectData(_functionExecutable->generatedBytecode().symbolTable(), registers)
-                , functionExecutable(_functionExecutable)
-            {
-                // We have to manually ref and deref the symbol table as JSVariableObjectData
-                // doesn't know about SharedSymbolTable
-                functionExecutable->generatedBytecode().sharedSymbolTable()->ref();
-            }
-            ~JSActivationData()
-            {
-                static_cast<SharedSymbolTable*>(symbolTable)->deref();
-            }
+    static PassRefPtr<Structure> createStructure( JSValue proto )
+    {
+        return Structure::create( proto, TypeInfo( ObjectType, StructureFlags ) );
+    }
 
-            RefPtr<FunctionExecutable> functionExecutable;
-        };
-        
-        static JSValue argumentsGetter(ExecState*, const Identifier&, const PropertySlot&);
-        NEVER_INLINE PropertySlot::GetValueFunc getArgumentsGetter();
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | NeedsThisConversion | OverridesMarkChildren |
+                                           OverridesGetPropertyNames | JSVariableObject::StructureFlags;
 
-        JSActivationData* d() const { return static_cast<JSActivationData*>(JSVariableObject::d); }
+private:
+    struct JSActivationData : public JSVariableObjectData
+    {
+        JSActivationData( NonNullPassRefPtr<FunctionExecutable> _functionExecutable, Register *registers )
+            : JSVariableObjectData( _functionExecutable->generatedBytecode().symbolTable(), registers )
+            , functionExecutable( _functionExecutable )
+        {
+            // We have to manually ref and deref the symbol table as JSVariableObjectData
+            // doesn't know about SharedSymbolTable
+            functionExecutable->generatedBytecode().sharedSymbolTable()->ref();
+        }
+        ~JSActivationData()
+        {
+            static_cast<SharedSymbolTable *>( symbolTable )->deref();
+        }
+
+        RefPtr<FunctionExecutable> functionExecutable;
     };
 
-    JSActivation* asActivation(JSValue);
+    static JSValue argumentsGetter( ExecState *, const Identifier &, const PropertySlot & );
+    NEVER_INLINE PropertySlot::GetValueFunc getArgumentsGetter();
 
-    inline JSActivation* asActivation(JSValue value)
+    JSActivationData *d() const
     {
-        ASSERT(asObject(value)->inherits(&JSActivation::info));
-        return static_cast<JSActivation*>(asObject(value));
+        return static_cast<JSActivationData *>( JSVariableObject::d );
     }
+};
+
+JSActivation *asActivation( JSValue );
+
+inline JSActivation *asActivation( JSValue value )
+{
+    ASSERT( asObject( value )->inherits( &JSActivation::info ) );
+    return static_cast<JSActivation *>( asObject( value ) );
+}
 
 } // namespace JSC
 

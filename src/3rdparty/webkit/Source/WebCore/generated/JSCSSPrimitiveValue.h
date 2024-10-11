@@ -24,87 +24,93 @@
 #include "JSCSSValue.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSPrimitiveValue;
 
-class JSCSSPrimitiveValue : public JSCSSValue {
+class JSCSSPrimitiveValue : public JSCSSValue
+{
     typedef JSCSSValue Base;
 public:
-    JSCSSPrimitiveValue(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<CSSPrimitiveValue>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSCSSPrimitiveValue( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<CSSPrimitiveValue> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSCSSPrimitiveValuePrototype : public JSC::JSObjectWithGlobalObject {
+class JSCSSPrimitiveValuePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSCSSPrimitiveValuePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSCSSPrimitiveValuePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                  JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionSetFloatValue(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetFloatValue(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionSetStringValue(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetStringValue(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetCounterValue(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetRectValue(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetRGBColorValue(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionSetFloatValue( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetFloatValue( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionSetStringValue( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetStringValue( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetCounterValue( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetRectValue( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsCSSPrimitiveValuePrototypeFunctionGetRGBColorValue( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsCSSPrimitiveValuePrimitiveType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCSSPrimitiveValuePrimitiveType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsCSSPrimitiveValueCSS_UNKNOWN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_NUMBER(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_PERCENTAGE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_EMS(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_EXS(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_PX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_CM(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_MM(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_IN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_PT(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_PC(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_DEG(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_RAD(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_GRAD(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_MS(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_S(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_HZ(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_KHZ(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_DIMENSION(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_STRING(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_URI(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_IDENT(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_ATTR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_COUNTER(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_RECT(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsCSSPrimitiveValueCSS_RGBCOLOR(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsCSSPrimitiveValueCSS_UNKNOWN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_NUMBER( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_PERCENTAGE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_EMS( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_EXS( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_PX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_CM( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_MM( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_IN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_PT( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_PC( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_DEG( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_RAD( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_GRAD( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_MS( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_S( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_HZ( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_KHZ( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_DIMENSION( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_STRING( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_URI( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_IDENT( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_ATTR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_COUNTER( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_RECT( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsCSSPrimitiveValueCSS_RGBCOLOR( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

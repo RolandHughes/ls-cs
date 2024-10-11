@@ -38,21 +38,22 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 WebSocketHandshakeRequest::Key3::Key3()
 {
-    memset(value, 0, sizeof(value));
+    memset( value, 0, sizeof( value ) );
 }
 
-void WebSocketHandshakeRequest::Key3::set(const unsigned char key3[8])
+void WebSocketHandshakeRequest::Key3::set( const unsigned char key3[8] )
 {
-    memcpy(value, key3, sizeof(value));
+    memcpy( value, key3, sizeof( value ) );
 }
 
-WebSocketHandshakeRequest::WebSocketHandshakeRequest(const String& requestMethod, const KURL& url)
-    : m_url(url)
-    , m_requestMethod(requestMethod)
+WebSocketHandshakeRequest::WebSocketHandshakeRequest( const String &requestMethod, const KURL &url )
+    : m_url( url )
+    , m_requestMethod( requestMethod )
 {
 }
 
@@ -70,12 +71,12 @@ KURL WebSocketHandshakeRequest::url() const
     return m_url;
 }
 
-void WebSocketHandshakeRequest::addHeaderField(const char* name, const String& value)
+void WebSocketHandshakeRequest::addHeaderField( const char *name, const String &value )
 {
-    m_headerFields.add(name, value);
+    m_headerFields.add( name, value );
 }
 
-const HTTPHeaderMap& WebSocketHandshakeRequest::headerFields() const
+const HTTPHeaderMap &WebSocketHandshakeRequest::headerFields() const
 {
     return m_headerFields;
 }
@@ -85,9 +86,9 @@ WebSocketHandshakeRequest::Key3 WebSocketHandshakeRequest::key3() const
     return m_key3;
 }
 
-void WebSocketHandshakeRequest::setKey3(const unsigned char key3[8])
+void WebSocketHandshakeRequest::setKey3( const unsigned char key3[8] )
 {
-    m_key3.set(key3);
+    m_key3.set( key3 );
 }
 
 } // namespace WebCore

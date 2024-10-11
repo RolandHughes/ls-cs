@@ -30,17 +30,19 @@
 #include <parser/SourceProvider.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ScriptSourceProvider : public JSC::SourceProvider {
-    public:
-        ScriptSourceProvider(const JSC::UString& url, JSC::SourceProviderCache* cache = 0)
-            : SourceProvider(url, cache)
-        {
-        }
+class ScriptSourceProvider : public JSC::SourceProvider
+{
+public:
+    ScriptSourceProvider( const JSC::UString &url, JSC::SourceProviderCache *cache = 0 )
+        : SourceProvider( url, cache )
+    {
+    }
 
-        virtual const String& source() const = 0;
-    };
+    virtual const String &source() const = 0;
+};
 
 } // namespace WebCore
 

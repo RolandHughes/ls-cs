@@ -37,9 +37,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimationElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAnimationElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -50,12 +51,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimationElement);
 
 static const HashTableValue JSSVGAnimationElementTableValues[6] =
 {
-    { "targetElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimationElementTargetElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "requiredFeatures", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimationElementRequiredFeatures), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "requiredExtensions", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimationElementRequiredExtensions), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "systemLanguage", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimationElementSystemLanguage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "externalResourcesRequired", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimationElementExternalResourcesRequired), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "targetElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimationElementTargetElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "requiredFeatures", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimationElementRequiredFeatures ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "requiredExtensions", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimationElementRequiredExtensions ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "systemLanguage", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimationElementSystemLanguage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "externalResourcesRequired", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimationElementExternalResourcesRequired ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -69,219 +70,273 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAnimationElementTable = { 16, 15, JSSV
 
 static const HashTableValue JSSVGAnimationElementPrototypeTableValues[9] =
 {
-    { "getStartTime", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionGetStartTime), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getCurrentTime", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionGetCurrentTime), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getSimpleDuration", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionGetSimpleDuration), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "hasExtension", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionHasExtension), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "beginElement", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionBeginElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "beginElementAt", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionBeginElementAt), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "endElement", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionEndElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "endElementAt", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAnimationElementPrototypeFunctionEndElementAt), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "getStartTime", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionGetStartTime ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getCurrentTime", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionGetCurrentTime ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getSimpleDuration", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionGetSimpleDuration ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "hasExtension", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionHasExtension ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "beginElement", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionBeginElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "beginElementAt", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionBeginElementAt ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "endElement", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionEndElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "endElementAt", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAnimationElementPrototypeFunctionEndElementAt ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimationElementPrototypeTable = { 17, 15, JSSVGAnimationElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGAnimationElementPrototype::s_info = { "SVGAnimationElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAnimationElementPrototypeTable, 0 };
 
-JSObject* JSSVGAnimationElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimationElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAnimationElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGAnimationElement>( exec, globalObject );
 }
 
-bool JSSVGAnimationElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimationElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGAnimationElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGAnimationElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimationElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimationElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGAnimationElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGAnimationElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGAnimationElement::s_info = { "SVGAnimationElement", &JSSVGElement::s_info, &JSSVGAnimationElementTable, 0 };
 
-JSSVGAnimationElement::JSSVGAnimationElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAnimationElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGAnimationElement::JSSVGAnimationElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGAnimationElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAnimationElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimationElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAnimationElementPrototype(exec->globalData(), globalObject, JSSVGAnimationElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGAnimationElementPrototype( exec->globalData(), globalObject,
+            JSSVGAnimationElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGAnimationElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimationElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimationElement, Base>(exec, &JSSVGAnimationElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimationElement, Base>( exec, &JSSVGAnimationElementTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimationElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimationElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimationElement, Base>(exec, &JSSVGAnimationElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimationElement, Base>( exec, &JSSVGAnimationElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGAnimationElementTargetElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimationElementTargetElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->targetElement()));
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->targetElement() ) );
     return result;
 }
 
 
-JSValue jsSVGAnimationElementRequiredFeatures(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimationElementRequiredFeatures( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGAnimationElement, IsDerivedFromSVGElement<SVGAnimationElement>::value>::ownerElement(imp), imp->requiredFeatures())));
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGAnimationElement, IsDerivedFromSVGElement<SVGAnimationElement>::value>::ownerElement( imp ),
+                                            imp->requiredFeatures() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAnimationElementRequiredExtensions(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimationElementRequiredExtensions( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGAnimationElement, IsDerivedFromSVGElement<SVGAnimationElement>::value>::ownerElement(imp), imp->requiredExtensions())));
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGAnimationElement, IsDerivedFromSVGElement<SVGAnimationElement>::value>::ownerElement( imp ),
+                                            imp->requiredExtensions() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAnimationElementSystemLanguage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimationElementSystemLanguage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGAnimationElement, IsDerivedFromSVGElement<SVGAnimationElement>::value>::ownerElement(imp), imp->systemLanguage())));
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGAnimationElement, IsDerivedFromSVGElement<SVGAnimationElement>::value>::ownerElement( imp ),
+                                            imp->systemLanguage() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAnimationElementExternalResourcesRequired(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimationElementExternalResourcesRequired( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedBoolean> obj = imp->externalResourcesRequiredAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionGetStartTime(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionGetStartTime( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = jsNumber(imp->getStartTime());
-    return JSValue::encode(result);
+    JSC::JSValue result = jsNumber( imp->getStartTime() );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionGetCurrentTime(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionGetCurrentTime( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = jsNumber(imp->getCurrentTime());
-    return JSValue::encode(result);
+    JSC::JSValue result = jsNumber( imp->getCurrentTime() );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionGetSimpleDuration(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionGetSimpleDuration( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
     ExceptionCode ec = 0;
 
 
-    JSC::JSValue result = jsNumber(imp->getSimpleDuration(ec));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = jsNumber( imp->getSimpleDuration( ec ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionHasExtension(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionHasExtension( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
-    const String& extension(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
+    const String &extension( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->hasExtension(extension));
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->hasExtension( extension ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionBeginElement(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionBeginElement( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
 
     imp->beginElement();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionBeginElementAt(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionBeginElementAt( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
-    float offset(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->beginElementAt(offset);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
+    float offset( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->beginElementAt( offset );
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionEndElement(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionEndElement( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
 
     imp->endElement();
-    return JSValue::encode(jsUndefined());
+    return JSValue::encode( jsUndefined() );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionEndElementAt(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAnimationElementPrototypeFunctionEndElementAt( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAnimationElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAnimationElement* castedThis = static_cast<JSSVGAnimationElement*>(asObject(thisValue));
-    SVGAnimationElement* imp = static_cast<SVGAnimationElement*>(castedThis->impl());
-    float offset(exec->argument(0).toFloat(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->endElementAt(offset);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSSVGAnimationElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAnimationElement *castedThis = static_cast<JSSVGAnimationElement *>( asObject( thisValue ) );
+    SVGAnimationElement *imp = static_cast<SVGAnimationElement *>( castedThis->impl() );
+    float offset( exec->argument( 0 ).toFloat( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->endElementAt( offset );
+    return JSValue::encode( jsUndefined() );
 }
 
 

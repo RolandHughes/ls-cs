@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebDragSource_h
@@ -30,16 +30,17 @@
 #include <WebCore/COMPtr.h>
 #include <objidl.h>
 
-class WebDragSource : public IDropSource, public RefCounted<WebDragSource> {
+class WebDragSource : public IDropSource, public RefCounted<WebDragSource>
+{
 public:
     static PassRefPtr<WebDragSource> createInstance();
 
 private:
-    virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject);        
+    virtual HRESULT STDMETHODCALLTYPE QueryInterface( REFIID riid, void **ppvObject );
     virtual ULONG STDMETHODCALLTYPE AddRef();
     virtual ULONG STDMETHODCALLTYPE Release();
-    virtual HRESULT STDMETHODCALLTYPE QueryContinueDrag(BOOL fEscapePressed, DWORD grfState);
-    virtual HRESULT STDMETHODCALLTYPE GiveFeedback(DWORD dwEffect);
+    virtual HRESULT STDMETHODCALLTYPE QueryContinueDrag( BOOL fEscapePressed, DWORD grfState );
+    virtual HRESULT STDMETHODCALLTYPE GiveFeedback( DWORD dwEffect );
     WebDragSource();
 };
 

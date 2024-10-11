@@ -25,7 +25,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -35,39 +35,46 @@
 
 #include "RenderTreeAsText.h"
 
-namespace WebCore {
-
-void DistantLightSource::initPaintingData(PaintingData& paintingData)
+namespace WebCore
 {
-    float azimuth = deg2rad(m_azimuth);
-    float elevation = deg2rad(m_elevation);
-    paintingData.lightVector.setX(cosf(azimuth) * cosf(elevation));
-    paintingData.lightVector.setY(sinf(azimuth) * cosf(elevation));
-    paintingData.lightVector.setZ(sinf(elevation));
+
+void DistantLightSource::initPaintingData( PaintingData &paintingData )
+{
+    float azimuth = deg2rad( m_azimuth );
+    float elevation = deg2rad( m_elevation );
+    paintingData.lightVector.setX( cosf( azimuth ) * cosf( elevation ) );
+    paintingData.lightVector.setY( sinf( azimuth ) * cosf( elevation ) );
+    paintingData.lightVector.setZ( sinf( elevation ) );
     paintingData.lightVectorLength = 1;
 }
 
-void DistantLightSource::updatePaintingData(PaintingData&, int, int, float)
+void DistantLightSource::updatePaintingData( PaintingData &, int, int, float )
 {
 }
 
-bool DistantLightSource::setAzimuth(float azimuth)
+bool DistantLightSource::setAzimuth( float azimuth )
 {
-    if (m_azimuth == azimuth)
+    if ( m_azimuth == azimuth )
+    {
         return false;
+    }
+
     m_azimuth = azimuth;
     return true;
 }
 
-bool DistantLightSource::setElevation(float elevation)
+bool DistantLightSource::setElevation( float elevation )
 {
-    if (m_elevation == elevation)
+    if ( m_elevation == elevation )
+    {
         return false;
+    }
+
     m_elevation = elevation;
     return true;
 }
 
-TextStream& DistantLightSource::externalRepresentation(TextStream& ts) const
+TextStream &DistantLightSource::externalRepresentation( TextStream &ts ) const
 {
     ts << "[type=DISTANT-LIGHT] ";
     ts << "[azimuth=\"" << azimuth() << "\"]";

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,14 +28,15 @@
 
 #include <cairo.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 NativeImagePtr ImageFrame::asNewNativeImage() const
 {
     return cairo_image_surface_create_for_data(
-        reinterpret_cast<unsigned char*>(const_cast<PixelData*>(
-            m_bytes)), CAIRO_FORMAT_ARGB32, width(), height(),
-        width() * sizeof(PixelData));
+               reinterpret_cast<unsigned char *>( const_cast<PixelData *>(
+                           m_bytes ) ), CAIRO_FORMAT_ARGB32, width(), height(),
+               width() * sizeof( PixelData ) );
 }
 
 } // namespace WebCore

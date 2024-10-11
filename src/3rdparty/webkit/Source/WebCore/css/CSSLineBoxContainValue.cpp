@@ -29,42 +29,70 @@
 #include "CSSPrimitiveValue.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSLineBoxContainValue::CSSLineBoxContainValue(unsigned value)
-    : m_value(value)
+CSSLineBoxContainValue::CSSLineBoxContainValue( unsigned value )
+    : m_value( value )
 {
 }
 
 String CSSLineBoxContainValue::cssText() const
 {
-    String text("");
+    String text( "" );
 
-    if (m_value & LineBoxContainBlock)
+    if ( m_value & LineBoxContainBlock )
+    {
         text += "block";
-    if (m_value & LineBoxContainInline) {
-        if (!text.isEmpty())
+    }
+
+    if ( m_value & LineBoxContainInline )
+    {
+        if ( !text.isEmpty() )
+        {
             text += " ";
+        }
+
         text += "inline";
     }
-    if (m_value & LineBoxContainFont) {
-        if (!text.isEmpty())
+
+    if ( m_value & LineBoxContainFont )
+    {
+        if ( !text.isEmpty() )
+        {
             text += " ";
+        }
+
         text += "font";
     }
-    if (m_value & LineBoxContainGlyphs) {
-        if (!text.isEmpty())
+
+    if ( m_value & LineBoxContainGlyphs )
+    {
+        if ( !text.isEmpty() )
+        {
             text += " ";
+        }
+
         text += "glyphs";
     }
-    if (m_value & LineBoxContainReplaced) {
-        if (!text.isEmpty())
+
+    if ( m_value & LineBoxContainReplaced )
+    {
+        if ( !text.isEmpty() )
+        {
             text += " ";
+        }
+
         text += "replaced";
     }
-    if (m_value & LineBoxContainInlineBox) {
-        if (!text.isEmpty())
+
+    if ( m_value & LineBoxContainInlineBox )
+    {
+        if ( !text.isEmpty() )
+        {
             text += " ";
+        }
+
         text += "inline-box";
     }
 

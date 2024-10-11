@@ -28,127 +28,221 @@
 
 #include "ArgumentCoders.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebProcessCreationParameters::WebProcessCreationParameters()
-    : shouldTrackVisitedLinks(false)
-    , shouldAlwaysUseComplexTextCodePath(false)
-    , defaultRequestTimeoutInterval(INT_MAX)
+    : shouldTrackVisitedLinks( false )
+    , shouldAlwaysUseComplexTextCodePath( false )
+    , defaultRequestTimeoutInterval( INT_MAX )
 #if PLATFORM(MAC)
-    , nsURLCacheMemoryCapacity(0)
-    , nsURLCacheDiskCapacity(0)
+    , nsURLCacheMemoryCapacity( 0 )
+    , nsURLCacheDiskCapacity( 0 )
 #elif PLATFORM(WIN)
-    , shouldPaintNativeControls(false)
+    , shouldPaintNativeControls( false )
 #endif
 {
 }
 
-void WebProcessCreationParameters::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebProcessCreationParameters::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(injectedBundlePath);
-    encoder->encode(injectedBundlePathExtensionHandle);
-    encoder->encode(applicationCacheDirectory);
-    encoder->encode(applicationCacheDirectoryExtensionHandle);
-    encoder->encode(databaseDirectory);
-    encoder->encode(localStorageDirectory);
-    encoder->encode(urlSchemesRegistererdAsEmptyDocument);
-    encoder->encode(urlSchemesRegisteredAsSecure);
-    encoder->encode(urlSchemesForWhichDomainRelaxationIsForbidden);
-    encoder->encode(mimeTypesWithCustomRepresentation);
-    encoder->encodeEnum(cacheModel);
-    encoder->encode(shouldTrackVisitedLinks);
-    encoder->encode(shouldAlwaysUseComplexTextCodePath);
-    encoder->encode(iconDatabaseEnabled);
-    encoder->encode(languageCode);
-    encoder->encode(textCheckerState);
-    encoder->encode(defaultRequestTimeoutInterval);
+    encoder->encode( injectedBundlePath );
+    encoder->encode( injectedBundlePathExtensionHandle );
+    encoder->encode( applicationCacheDirectory );
+    encoder->encode( applicationCacheDirectoryExtensionHandle );
+    encoder->encode( databaseDirectory );
+    encoder->encode( localStorageDirectory );
+    encoder->encode( urlSchemesRegistererdAsEmptyDocument );
+    encoder->encode( urlSchemesRegisteredAsSecure );
+    encoder->encode( urlSchemesForWhichDomainRelaxationIsForbidden );
+    encoder->encode( mimeTypesWithCustomRepresentation );
+    encoder->encodeEnum( cacheModel );
+    encoder->encode( shouldTrackVisitedLinks );
+    encoder->encode( shouldAlwaysUseComplexTextCodePath );
+    encoder->encode( iconDatabaseEnabled );
+    encoder->encode( languageCode );
+    encoder->encode( textCheckerState );
+    encoder->encode( defaultRequestTimeoutInterval );
 #if USE(CFURLSTORAGESESSIONS)
-    encoder->encode(uiProcessBundleIdentifier);
+    encoder->encode( uiProcessBundleIdentifier );
 #endif
 #if PLATFORM(MAC)
-    encoder->encode(parentProcessName);
-    encoder->encode(presenterApplicationPid);
-    encoder->encode(nsURLCachePath);
-    encoder->encode(nsURLCacheMemoryCapacity);
-    encoder->encode(nsURLCacheDiskCapacity);
-    encoder->encode(acceleratedCompositingPort);
-    encoder->encode(uiProcessBundleResourcePath);
+    encoder->encode( parentProcessName );
+    encoder->encode( presenterApplicationPid );
+    encoder->encode( nsURLCachePath );
+    encoder->encode( nsURLCacheMemoryCapacity );
+    encoder->encode( nsURLCacheDiskCapacity );
+    encoder->encode( acceleratedCompositingPort );
+    encoder->encode( uiProcessBundleResourcePath );
 #elif PLATFORM(WIN)
-    encoder->encode(shouldPaintNativeControls);
-    encoder->encode(cfURLCachePath);
-    encoder->encode(cfURLCacheDiskCapacity);
-    encoder->encode(cfURLCacheMemoryCapacity);
-    encoder->encode(initialHTTPCookieAcceptPolicy);
+    encoder->encode( shouldPaintNativeControls );
+    encoder->encode( cfURLCachePath );
+    encoder->encode( cfURLCacheDiskCapacity );
+    encoder->encode( cfURLCacheMemoryCapacity );
+    encoder->encode( initialHTTPCookieAcceptPolicy );
 #endif
 }
 
-bool WebProcessCreationParameters::decode(CoreIPC::ArgumentDecoder* decoder, WebProcessCreationParameters& parameters)
+bool WebProcessCreationParameters::decode( CoreIPC::ArgumentDecoder *decoder, WebProcessCreationParameters &parameters )
 {
-    if (!decoder->decode(parameters.injectedBundlePath))
+    if ( !decoder->decode( parameters.injectedBundlePath ) )
+    {
         return false;
-    if (!decoder->decode(parameters.injectedBundlePathExtensionHandle))
+    }
+
+    if ( !decoder->decode( parameters.injectedBundlePathExtensionHandle ) )
+    {
         return false;
-    if (!decoder->decode(parameters.applicationCacheDirectory))
+    }
+
+    if ( !decoder->decode( parameters.applicationCacheDirectory ) )
+    {
         return false;
-    if (!decoder->decode(parameters.applicationCacheDirectoryExtensionHandle))
+    }
+
+    if ( !decoder->decode( parameters.applicationCacheDirectoryExtensionHandle ) )
+    {
         return false;
-    if (!decoder->decode(parameters.databaseDirectory))
+    }
+
+    if ( !decoder->decode( parameters.databaseDirectory ) )
+    {
         return false;
-    if (!decoder->decode(parameters.localStorageDirectory))
+    }
+
+    if ( !decoder->decode( parameters.localStorageDirectory ) )
+    {
         return false;
-    if (!decoder->decode(parameters.urlSchemesRegistererdAsEmptyDocument))
+    }
+
+    if ( !decoder->decode( parameters.urlSchemesRegistererdAsEmptyDocument ) )
+    {
         return false;
-    if (!decoder->decode(parameters.urlSchemesRegisteredAsSecure))
+    }
+
+    if ( !decoder->decode( parameters.urlSchemesRegisteredAsSecure ) )
+    {
         return false;
-    if (!decoder->decode(parameters.urlSchemesForWhichDomainRelaxationIsForbidden))
+    }
+
+    if ( !decoder->decode( parameters.urlSchemesForWhichDomainRelaxationIsForbidden ) )
+    {
         return false;
-    if (!decoder->decode(parameters.mimeTypesWithCustomRepresentation))
+    }
+
+    if ( !decoder->decode( parameters.mimeTypesWithCustomRepresentation ) )
+    {
         return false;
-    if (!decoder->decodeEnum(parameters.cacheModel))
+    }
+
+    if ( !decoder->decodeEnum( parameters.cacheModel ) )
+    {
         return false;
-    if (!decoder->decode(parameters.shouldTrackVisitedLinks))
+    }
+
+    if ( !decoder->decode( parameters.shouldTrackVisitedLinks ) )
+    {
         return false;
-    if (!decoder->decode(parameters.shouldAlwaysUseComplexTextCodePath))
+    }
+
+    if ( !decoder->decode( parameters.shouldAlwaysUseComplexTextCodePath ) )
+    {
         return false;
-    if (!decoder->decode(parameters.iconDatabaseEnabled))
+    }
+
+    if ( !decoder->decode( parameters.iconDatabaseEnabled ) )
+    {
         return false;
-    if (!decoder->decode(parameters.languageCode))
+    }
+
+    if ( !decoder->decode( parameters.languageCode ) )
+    {
         return false;
-    if (!decoder->decode(parameters.textCheckerState))
+    }
+
+    if ( !decoder->decode( parameters.textCheckerState ) )
+    {
         return false;
-    if (!decoder->decode(parameters.defaultRequestTimeoutInterval))
+    }
+
+    if ( !decoder->decode( parameters.defaultRequestTimeoutInterval ) )
+    {
         return false;
+    }
+
 #if USE(CFURLSTORAGESESSIONS)
-    if (!decoder->decode(parameters.uiProcessBundleIdentifier))
+
+    if ( !decoder->decode( parameters.uiProcessBundleIdentifier ) )
+    {
         return false;
+    }
+
 #endif
 
 #if PLATFORM(MAC)
-    if (!decoder->decode(parameters.parentProcessName))
+
+    if ( !decoder->decode( parameters.parentProcessName ) )
+    {
         return false;
-    if (!decoder->decode(parameters.presenterApplicationPid))
+    }
+
+    if ( !decoder->decode( parameters.presenterApplicationPid ) )
+    {
         return false;
-    if (!decoder->decode(parameters.nsURLCachePath))
+    }
+
+    if ( !decoder->decode( parameters.nsURLCachePath ) )
+    {
         return false;
-    if (!decoder->decode(parameters.nsURLCacheMemoryCapacity))
+    }
+
+    if ( !decoder->decode( parameters.nsURLCacheMemoryCapacity ) )
+    {
         return false;
-    if (!decoder->decode(parameters.nsURLCacheDiskCapacity))
+    }
+
+    if ( !decoder->decode( parameters.nsURLCacheDiskCapacity ) )
+    {
         return false;
-    if (!decoder->decode(parameters.acceleratedCompositingPort))
+    }
+
+    if ( !decoder->decode( parameters.acceleratedCompositingPort ) )
+    {
         return false;
-    if (!decoder->decode(parameters.uiProcessBundleResourcePath))
+    }
+
+    if ( !decoder->decode( parameters.uiProcessBundleResourcePath ) )
+    {
         return false;
+    }
+
 #elif PLATFORM(WIN)
-    if (!decoder->decode(parameters.shouldPaintNativeControls))
+
+    if ( !decoder->decode( parameters.shouldPaintNativeControls ) )
+    {
         return false;
-    if (!decoder->decode(parameters.cfURLCachePath))
+    }
+
+    if ( !decoder->decode( parameters.cfURLCachePath ) )
+    {
         return false;
-    if (!decoder->decode(parameters.cfURLCacheDiskCapacity))
+    }
+
+    if ( !decoder->decode( parameters.cfURLCacheDiskCapacity ) )
+    {
         return false;
-    if (!decoder->decode(parameters.cfURLCacheMemoryCapacity))
+    }
+
+    if ( !decoder->decode( parameters.cfURLCacheMemoryCapacity ) )
+    {
         return false;
-    if (!decoder->decode(parameters.initialHTTPCookieAcceptPolicy))
+    }
+
+    if ( !decoder->decode( parameters.initialHTTPCookieAcceptPolicy ) )
+    {
         return false;
+    }
+
 #endif
 
     return true;

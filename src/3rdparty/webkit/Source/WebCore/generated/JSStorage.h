@@ -28,86 +28,97 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Storage;
 
-class JSStorage : public JSDOMWrapper {
+class JSStorage : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSStorage(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Storage>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
-    bool putDelegate(JSC::ExecState*, const JSC::Identifier&, JSC::JSValue, JSC::PutPropertySlot&);
+    JSStorage( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Storage> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
+    bool putDelegate( JSC::ExecState *, const JSC::Identifier &, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual bool deleteProperty(JSC::ExecState*, const JSC::Identifier&);
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    Storage* impl() const { return m_impl.get(); }
+    virtual bool deleteProperty( JSC::ExecState *, const JSC::Identifier & );
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    Storage *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Storage> m_impl;
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 private:
-    static bool canGetItemsForName(JSC::ExecState*, Storage*, const JSC::Identifier&);
-    static JSC::JSValue nameGetter(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+    static bool canGetItemsForName( JSC::ExecState *, Storage *, const JSC::Identifier & );
+    static JSC::JSValue nameGetter( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 };
 
-class JSStorageOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
-};
-
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, Storage*)
+class JSStorageOwner : public JSC::WeakHandleOwner
 {
-    DEFINE_STATIC_LOCAL(JSStorageOwner, jsStorageOwner, ());
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
+};
+
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, Storage * )
+{
+    DEFINE_STATIC_LOCAL( JSStorageOwner, jsStorageOwner, () );
     return &jsStorageOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, Storage*)
+inline void *wrapperContext( DOMWrapperWorld *world, Storage * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Storage*);
-Storage* toStorage(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Storage * );
+Storage *toStorage( JSC::JSValue );
 
-class JSStoragePrototype : public JSC::JSObjectWithGlobalObject {
+class JSStoragePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSStoragePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSStoragePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                        JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionKey(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionGetItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionSetItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionRemoveItem(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionClear(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionKey( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionGetItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionSetItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionRemoveItem( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsStoragePrototypeFunctionClear( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsStorageLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsStorageConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsStorageLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsStorageConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

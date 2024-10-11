@@ -31,10 +31,8 @@
 // ### Remove me
 #include <qdeclarativeengine_p.h>
 
-QT_BEGIN_NAMESPACE
-
-QDeclarativeListAccessor::QDeclarativeListAccessor()
-   : m_type(Invalid)
+QT_BEGIN_NAMESPACE QDeclarativeListAccessor::QDeclarativeListAccessor()
+    : m_type( Invalid )
 {
 }
 
@@ -44,77 +42,103 @@ QDeclarativeListAccessor::~QDeclarativeListAccessor()
 
 QVariant QDeclarativeListAccessor::list() const
 {
-   return d;
+    return d;
 }
 
-void QDeclarativeListAccessor::setList(const QVariant &v, QDeclarativeEngine *engine)
+void QDeclarativeListAccessor::setList( const QVariant &v, QDeclarativeEngine *engine )
 {
-   d = v;
+    d = v;
 
-   QDeclarativeEnginePrivate *enginePrivate = engine ? QDeclarativeEnginePrivate::get(engine) : 0;
+    QDeclarativeEnginePrivate *enginePrivate = engine ? QDeclarativeEnginePrivate::get( engine ) : 0;
 
-   if (!d.isValid()) {
-      m_type = Invalid;
-   } else if (d.userType() == QVariant::StringList) {
-      m_type = StringList;
-   } else if (d.userType() == QMetaType::QVariantList) {
-      m_type = VariantList;
-   } else if (d.canConvert(QVariant::Int)) {
-      m_type = Integer;
-   } else if ((!enginePrivate && QDeclarativeMetaType::isQObject(d.userType())) ||
-              (enginePrivate && enginePrivate->isQObject(d.userType()))) {
-      QObject *data = enginePrivate ? enginePrivate->toQObject(v) : QDeclarativeMetaType::toQObject(v);
-      d = QVariant::fromValue(data);
-      m_type = Instance;
-   } else if (d.userType() == qMetaTypeId<QDeclarativeListReference>()) {
-      m_type = ListProperty;
-   } else {
-      m_type = Instance;
-   }
+    if ( !d.isValid() )
+    {
+        m_type = Invalid;
+    }
+    else if ( d.userType() == QVariant::StringList )
+    {
+        m_type = StringList;
+    }
+    else if ( d.userType() == QMetaType::QVariantList )
+    {
+        m_type = VariantList;
+    }
+    else if ( d.canConvert( QVariant::Int ) )
+    {
+        m_type = Integer;
+    }
+    else if ( ( !enginePrivate && QDeclarativeMetaType::isQObject( d.userType() ) ) ||
+              ( enginePrivate && enginePrivate->isQObject( d.userType() ) ) )
+    {
+        QObject *data = enginePrivate ? enginePrivate->toQObject( v ) : QDeclarativeMetaType::toQObject( v );
+        d = QVariant::fromValue( data );
+        m_type = Instance;
+    }
+    else if ( d.userType() == qMetaTypeId<QDeclarativeListReference>() )
+    {
+        m_type = ListProperty;
+    }
+    else
+    {
+        m_type = Instance;
+    }
 }
 
 int QDeclarativeListAccessor::count() const
 {
-   switch (m_type) {
-      case StringList:
-         return qvariant_cast<QStringList>(d).count();
-      case VariantList:
-         return qvariant_cast<QVariantList>(d).count();
-      case ListProperty:
-         return ((QDeclarativeListReference *)d.constData())->count();
-      case Instance:
-         return 1;
-      case Integer:
-         return d.toInt();
-      default:
-      case Invalid:
-         return 0;
-   }
+    switch ( m_type )
+    {
+        case StringList:
+            return qvariant_cast<QStringList>( d ).count();
+
+        case VariantList:
+            return qvariant_cast<QVariantList>( d ).count();
+
+        case ListProperty:
+            return ( ( QDeclarativeListReference * )d.constData() )->count();
+
+        case Instance:
+            return 1;
+
+        case Integer:
+            return d.toInt();
+
+        default:
+        case Invalid:
+            return 0;
+    }
 }
 
-QVariant QDeclarativeListAccessor::at(int idx) const
+QVariant QDeclarativeListAccessor::at( int idx ) const
 {
-   Q_ASSERT(idx >= 0 && idx < count());
-   switch (m_type) {
-      case StringList:
-         return QVariant::fromValue(qvariant_cast<QStringList>(d).at(idx));
-      case VariantList:
-         return qvariant_cast<QVariantList>(d).at(idx);
-      case ListProperty:
-         return QVariant::fromValue(((QDeclarativeListReference *)d.constData())->at(idx));
-      case Instance:
-         return d;
-      case Integer:
-         return QVariant(idx);
-      default:
-      case Invalid:
-         return QVariant();
-   }
+    Q_ASSERT( idx >= 0 && idx < count() );
+
+    switch ( m_type )
+    {
+        case StringList:
+            return QVariant::fromValue( qvariant_cast<QStringList>( d ).at( idx ) );
+
+        case VariantList:
+            return qvariant_cast<QVariantList>( d ).at( idx );
+
+        case ListProperty:
+            return QVariant::fromValue( ( ( QDeclarativeListReference * )d.constData() )->at( idx ) );
+
+        case Instance:
+            return d;
+
+        case Integer:
+            return QVariant( idx );
+
+        default:
+        case Invalid:
+            return QVariant();
+    }
 }
 
 bool QDeclarativeListAccessor::isValid() const
 {
-   return m_type != Invalid;
+    return m_type != Invalid;
 }
 
 QT_END_NAMESPACE

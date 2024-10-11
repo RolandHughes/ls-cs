@@ -24,7 +24,8 @@
 #include "SVGAnimatedPropertyTearOff.h"
 #include "SVGPreserveAspectRatio.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedPropertyTearOff<SVGPreserveAspectRatio> SVGAnimatedPreserveAspectRatio;
 

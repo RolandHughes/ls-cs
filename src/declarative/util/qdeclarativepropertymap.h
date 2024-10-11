@@ -35,33 +35,33 @@ class QDeclarativePropertyMapPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativePropertyMap : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativePropertyMap)
+    DECL_LSCS_OBJECT( QDeclarativePropertyMap )
 
- public:
-   QDeclarativePropertyMap(QObject *parent = nullptr);
-   virtual ~QDeclarativePropertyMap();
+public:
+    QDeclarativePropertyMap( QObject *parent = nullptr );
+    virtual ~QDeclarativePropertyMap();
 
-   QVariant value(const QString &key) const;
-   void insert(const QString &key, const QVariant &value);
-   void clear(const QString &key);
+    QVariant value( const QString &key ) const;
+    void insert( const QString &key, const QVariant &value );
+    void clear( const QString &key );
 
-   Q_INVOKABLE QStringList keys() const;
+    Q_INVOKABLE QStringList keys() const;
 
-   int count() const;
-   int size() const;
-   bool isEmpty() const;
-   bool contains(const QString &key) const;
+    int count() const;
+    int size() const;
+    bool isEmpty() const;
+    bool contains( const QString &key ) const;
 
-   QVariant &operator[](const QString &key);
-   QVariant operator[](const QString &key) const;
+    QVariant &operator[]( const QString &key );
+    QVariant operator[]( const QString &key ) const;
 
- public:
-   DECL_CS_SIGNAL_1(Public, void valueChanged(const QString &key, const QVariant &value))
-   DECL_CS_SIGNAL_2(valueChanged, key, value)
+public:
+    DECL_LSCS_SIGNAL_1( Public, void valueChanged( const QString &key, const QVariant &value ) )
+    DECL_LSCS_SIGNAL_2( valueChanged, key, value )
 
- private:
-   Q_DECLARE_PRIVATE(QDeclarativePropertyMap)
-   Q_DISABLE_COPY(QDeclarativePropertyMap)
+private:
+    Q_DECLARE_PRIVATE( QDeclarativePropertyMap )
+    Q_DISABLE_COPY( QDeclarativePropertyMap )
 };
 
 QT_END_NAMESPACE

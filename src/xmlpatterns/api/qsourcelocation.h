@@ -30,35 +30,36 @@ class QSourceLocationPrivate;
 
 class Q_XMLPATTERNS_EXPORT QSourceLocation
 {
- public:
-   QSourceLocation();
-   QSourceLocation(const QSourceLocation &other);
-   QSourceLocation(const QUrl &url, int line = -1, int column = -1);
-   ~QSourceLocation();
-   QSourceLocation &operator=(const QSourceLocation &other);
-   bool operator==(const QSourceLocation &other) const;
-   bool operator!=(const QSourceLocation &other) const;
+public:
+    QSourceLocation();
+    QSourceLocation( const QSourceLocation &other );
+    QSourceLocation( const QUrl &url, int line = -1, int column = -1 );
+    ~QSourceLocation();
+    QSourceLocation &operator=( const QSourceLocation &other );
+    bool operator==( const QSourceLocation &other ) const;
+    bool operator!=( const QSourceLocation &other ) const;
 
-   qint64 column() const;
-   void setColumn(qint64 newColumn);
+    qint64 column() const;
+    void setColumn( qint64 newColumn );
 
-   qint64 line() const;
-   void setLine(qint64 newLine);
+    qint64 line() const;
+    void setLine( qint64 newLine );
 
-   QUrl uri() const;
-   void setUri(const QUrl &newUri);
-   bool isNull() const;
+    QUrl uri() const;
+    void setUri( const QUrl &newUri );
+    bool isNull() const;
 
- private:
-   union {
-      qint64 m_line;
-      QSourceLocationPrivate *m_ptr;
-   };
-   qint64 m_column;
-   QUrl m_uri;
+private:
+    union
+    {
+        qint64 m_line;
+        QSourceLocationPrivate *m_ptr;
+    };
+    qint64 m_column;
+    QUrl m_uri;
 };
 
-Q_XMLPATTERNS_EXPORT uint qHash(const QSourceLocation &location);
-Q_XMLPATTERNS_EXPORT QDebug operator<<(QDebug debug, const QSourceLocation &sourceLocation);
+Q_XMLPATTERNS_EXPORT uint qHash( const QSourceLocation &location );
+Q_XMLPATTERNS_EXPORT QDebug operator<<( QDebug debug, const QSourceLocation &sourceLocation );
 
 #endif

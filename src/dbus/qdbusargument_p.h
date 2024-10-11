@@ -42,32 +42,35 @@ class QDBusDemarshaller;
 class QDBusArgumentPrivate
 {
 public:
-    inline QDBusArgumentPrivate(int flags = 0)
-        : message(0), ref(1), capabilities(flags)
+    inline QDBusArgumentPrivate( int flags = 0 )
+        : message( 0 ), ref( 1 ), capabilities( flags )
     { }
     ~QDBusArgumentPrivate();
 
-    static bool checkRead(QDBusArgumentPrivate *d);
-    static bool checkReadAndDetach(QDBusArgumentPrivate *&d);
-    static bool checkWrite(QDBusArgumentPrivate *&d);
+    static bool checkRead( QDBusArgumentPrivate *d );
+    static bool checkReadAndDetach( QDBusArgumentPrivate *&d );
+    static bool checkWrite( QDBusArgumentPrivate *&d );
 
     QDBusMarshaller *marshaller();
     QDBusDemarshaller *demarshaller();
 
-    static QByteArray createSignature(int id);
-    static inline QDBusArgument create(QDBusArgumentPrivate *d)
+    static QByteArray createSignature( int id );
+    static inline QDBusArgument create( QDBusArgumentPrivate *d )
     {
-        QDBusArgument q(d);
+        QDBusArgument q( d );
         return q;
     }
-    static inline QDBusArgumentPrivate *d(QDBusArgument &q)
-    { return q.d; }
+    static inline QDBusArgumentPrivate *d( QDBusArgument &q )
+    {
+        return q.d;
+    }
 
 public:
     DBusMessage *message;
     QAtomicInt ref;
     int capabilities;
-    enum Direction {
+    enum Direction
+    {
         Marshalling,
         Demarshalling
     } direction;
@@ -76,46 +79,48 @@ public:
 class QDBusMarshaller: public QDBusArgumentPrivate
 {
 public:
-    QDBusMarshaller(int flags) : QDBusArgumentPrivate(flags), parent(0), ba(0), closeCode(0), ok(true)
-    { direction = Marshalling; }
+    QDBusMarshaller( int flags ) : QDBusArgumentPrivate( flags ), parent( 0 ), ba( 0 ), closeCode( 0 ), ok( true )
+    {
+        direction = Marshalling;
+    }
     ~QDBusMarshaller();
 
     QString currentSignature();
 
-    void append(uchar arg);
-    void append(bool arg);
-    void append(short arg);
-    void append(ushort arg);
-    void append(int arg);
-    void append(uint arg);
-    void append(qint64 arg);
-    void append(quint64 arg);
-    void append(double arg);
-    void append(const QString &arg);
-    void append(const QDBusObjectPath &arg);
-    void append(const QDBusSignature &arg);
-    void append(const QDBusUnixFileDescriptor &arg);
-    void append(const QStringList &arg);
-    void append(const QByteArray &arg);
-    bool append(const QDBusVariant &arg); // this one can fail
+    void append( uchar arg );
+    void append( bool arg );
+    void append( short arg );
+    void append( ushort arg );
+    void append( int arg );
+    void append( uint arg );
+    void append( qint64 arg );
+    void append( quint64 arg );
+    void append( double arg );
+    void append( const QString &arg );
+    void append( const QDBusObjectPath &arg );
+    void append( const QDBusSignature &arg );
+    void append( const QDBusUnixFileDescriptor &arg );
+    void append( const QStringList &arg );
+    void append( const QByteArray &arg );
+    bool append( const QDBusVariant &arg ); // this one can fail
 
     QDBusMarshaller *beginStructure();
     QDBusMarshaller *endStructure();
-    QDBusMarshaller *beginArray(int id);
+    QDBusMarshaller *beginArray( int id );
     QDBusMarshaller *endArray();
-    QDBusMarshaller *beginMap(int kid, int vid);
+    QDBusMarshaller *beginMap( int kid, int vid );
     QDBusMarshaller *endMap();
     QDBusMarshaller *beginMapEntry();
     QDBusMarshaller *endMapEntry();
-    QDBusMarshaller *beginCommon(int code, const char *signature);
+    QDBusMarshaller *beginCommon( int code, const char *signature );
     QDBusMarshaller *endCommon();
-    void open(QDBusMarshaller &sub, int code, const char *signature);
+    void open( QDBusMarshaller &sub, int code, const char *signature );
     void close();
-    void error(const QString &message);
+    void error( const QString &message );
 
-    bool appendVariantInternal(const QVariant &arg);
-    bool appendRegisteredType(const QVariant &arg);
-    bool appendCrossMarshalling(QDBusDemarshaller *arg);
+    bool appendVariantInternal( const QVariant &arg );
+    bool appendRegisteredType( const QVariant &arg );
+    bool appendCrossMarshalling( QDBusDemarshaller *arg );
 
 public:
     DBusMessageIter iterator;
@@ -126,14 +131,16 @@ public:
     bool ok;
 
 private:
-    Q_DISABLE_COPY(QDBusMarshaller)
+    Q_DISABLE_COPY( QDBusMarshaller )
 };
 
 class QDBusDemarshaller: public QDBusArgumentPrivate
 {
 public:
-    inline QDBusDemarshaller(int flags) : QDBusArgumentPrivate(flags), parent(0)
-    { direction = Demarshalling; }
+    inline QDBusDemarshaller( int flags ) : QDBusArgumentPrivate( flags ), parent( 0 )
+    {
+        direction = Demarshalling;
+    }
     ~QDBusDemarshaller();
 
     QString currentSignature();
@@ -179,7 +186,7 @@ public:
     QDBusDemarshaller *parent;
 
 private:
-    Q_DISABLE_COPY(QDBusDemarshaller)
+    Q_DISABLE_COPY( QDBusDemarshaller )
     QString toStringUnchecked();
     QDBusObjectPath toObjectPathUnchecked();
     QDBusSignature toSignatureUnchecked();
@@ -188,10 +195,14 @@ private:
 };
 
 inline QDBusMarshaller *QDBusArgumentPrivate::marshaller()
-{ return static_cast<QDBusMarshaller *>(this); }
+{
+    return static_cast<QDBusMarshaller *>( this );
+}
 
 inline QDBusDemarshaller *QDBusArgumentPrivate::demarshaller()
-{ return static_cast<QDBusDemarshaller *>(this); }
+{
+    return static_cast<QDBusDemarshaller *>( this );
+}
 
 QT_END_NAMESPACE
 

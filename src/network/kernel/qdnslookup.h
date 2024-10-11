@@ -41,103 +41,111 @@ class QDnsTextRecordPrivate;
 
 class Q_NETWORK_EXPORT QDnsDomainNameRecord
 {
- public:
+public:
     QDnsDomainNameRecord();
-    QDnsDomainNameRecord(const QDnsDomainNameRecord &other);
+    QDnsDomainNameRecord( const QDnsDomainNameRecord &other );
     ~QDnsDomainNameRecord();
 
-    QDnsDomainNameRecord &operator=(const QDnsDomainNameRecord &other);
+    QDnsDomainNameRecord &operator=( const QDnsDomainNameRecord &other );
 
-    QDnsDomainNameRecord &operator=(QDnsDomainNameRecord &&other) {
-      swap(other);
-      return *this;
+    QDnsDomainNameRecord &operator=( QDnsDomainNameRecord &&other )
+    {
+        swap( other );
+        return *this;
     }
 
-    void swap(QDnsDomainNameRecord &other) {
-      qSwap(d, other.d);
+    void swap( QDnsDomainNameRecord &other )
+    {
+        qSwap( d, other.d );
     }
 
     QString name() const;
     quint32 timeToLive() const;
     QString value() const;
 
- private:
+private:
     QSharedDataPointer<QDnsDomainNameRecordPrivate> d;
     friend class QDnsLookupRunnable;
 };
 
 class Q_NETWORK_EXPORT QDnsHostAddressRecord
 {
- public:
+public:
     QDnsHostAddressRecord();
-    QDnsHostAddressRecord(const QDnsHostAddressRecord &other);
+    QDnsHostAddressRecord( const QDnsHostAddressRecord &other );
     ~QDnsHostAddressRecord();
 
-    QDnsHostAddressRecord &operator=(const QDnsHostAddressRecord &other);
+    QDnsHostAddressRecord &operator=( const QDnsHostAddressRecord &other );
 
-    QDnsHostAddressRecord &operator=(QDnsHostAddressRecord &&other)  {
-      swap(other);
-      return *this;
-   }
+    QDnsHostAddressRecord &operator=( QDnsHostAddressRecord &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
 
-   void swap(QDnsHostAddressRecord &other)  {
-      qSwap(d, other.d);
-   }
+    void swap( QDnsHostAddressRecord &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   QString name() const;
-   quint32 timeToLive() const;
-   QHostAddress value() const;
+    QString name() const;
+    quint32 timeToLive() const;
+    QHostAddress value() const;
 
- private:
+private:
     QSharedDataPointer<QDnsHostAddressRecordPrivate> d;
     friend class QDnsLookupRunnable;
 };
 
 class Q_NETWORK_EXPORT QDnsMailExchangeRecord
 {
- public:
+public:
     QDnsMailExchangeRecord();
-    QDnsMailExchangeRecord(const QDnsMailExchangeRecord &other);
-   ~QDnsMailExchangeRecord();
+    QDnsMailExchangeRecord( const QDnsMailExchangeRecord &other );
+    ~QDnsMailExchangeRecord();
 
-   QDnsMailExchangeRecord &operator=(const QDnsMailExchangeRecord &other);
+    QDnsMailExchangeRecord &operator=( const QDnsMailExchangeRecord &other );
 
-    QDnsMailExchangeRecord &operator=(QDnsMailExchangeRecord &&other)  {
-      swap(other);
-      return *this;
+    QDnsMailExchangeRecord &operator=( QDnsMailExchangeRecord &&other )
+    {
+        swap( other );
+        return *this;
     }
 
-    void swap(QDnsMailExchangeRecord &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QDnsMailExchangeRecord &other )
+    {
+        qSwap( d, other.d );
+    }
 
     QString exchange() const;
     QString name() const;
     quint16 preference() const;
     quint32 timeToLive() const;
 
- private:
+private:
     QSharedDataPointer<QDnsMailExchangeRecordPrivate> d;
     friend class QDnsLookupRunnable;
 };
 
 class Q_NETWORK_EXPORT QDnsServiceRecord
 {
- public:
+public:
     QDnsServiceRecord();
-    QDnsServiceRecord(const QDnsServiceRecord &other);
+    QDnsServiceRecord( const QDnsServiceRecord &other );
     ~QDnsServiceRecord();
 
-    QDnsServiceRecord &operator=(QDnsServiceRecord &&other)  {
-      swap(other);
-      return *this;
+    QDnsServiceRecord &operator=( QDnsServiceRecord &&other )
+    {
+        swap( other );
+        return *this;
     }
 
-    QDnsServiceRecord &operator=(const QDnsServiceRecord &other);
+    QDnsServiceRecord &operator=( const QDnsServiceRecord &other );
 
-    void swap(QDnsServiceRecord &other) {
-      qSwap(d, other.d);
+    void swap( QDnsServiceRecord &other )
+    {
+        qSwap( d, other.d );
     }
 
     QString name() const;
@@ -147,94 +155,98 @@ class Q_NETWORK_EXPORT QDnsServiceRecord
     quint32 timeToLive() const;
     quint16 weight() const;
 
- private:
+private:
     QSharedDataPointer<QDnsServiceRecordPrivate> d;
     friend class QDnsLookupRunnable;
 };
 
 class Q_NETWORK_EXPORT QDnsTextRecord
 {
- public:
+public:
     QDnsTextRecord();
-    QDnsTextRecord(const QDnsTextRecord &other);
+    QDnsTextRecord( const QDnsTextRecord &other );
     ~QDnsTextRecord();
 
-    QDnsTextRecord &operator=(const QDnsTextRecord &other);
+    QDnsTextRecord &operator=( const QDnsTextRecord &other );
 
-    QDnsTextRecord &operator=(QDnsTextRecord &&other) {
-      swap(other);
-      return *this;
+    QDnsTextRecord &operator=( QDnsTextRecord &&other )
+    {
+        swap( other );
+        return *this;
     }
 
     QString name() const;
     quint32 timeToLive() const;
     QList<QByteArray> values() const;
 
-    void swap(QDnsTextRecord &other) {
-      qSwap(d, other.d);
+    void swap( QDnsTextRecord &other )
+    {
+        qSwap( d, other.d );
     }
 
- private:
+private:
     QSharedDataPointer<QDnsTextRecordPrivate> d;
     friend class QDnsLookupRunnable;
 };
 
 class Q_NETWORK_EXPORT QDnsLookup : public QObject
 {
-    NET_CS_OBJECT(QDnsLookup)
+    NET_LSCS_OBJECT( QDnsLookup )
 
-    NET_CS_ENUM(Error)
-    NET_CS_ENUM(Type)
+    NET_LSCS_ENUM( Error )
+    NET_LSCS_ENUM( Type )
 
-    NET_CS_PROPERTY_READ(error, error)
-    NET_CS_PROPERTY_NOTIFY(error, finished)
+    NET_LSCS_PROPERTY_READ( error, error )
+    NET_LSCS_PROPERTY_NOTIFY( error, finished )
 
-    NET_CS_PROPERTY_READ(errorString, errorString)
-    NET_CS_PROPERTY_NOTIFY(errorString, finished)
+    NET_LSCS_PROPERTY_READ( errorString, errorString )
+    NET_LSCS_PROPERTY_NOTIFY( errorString, finished )
 
-    NET_CS_PROPERTY_READ(name, name)
-    NET_CS_PROPERTY_WRITE(name, setName)
-    NET_CS_PROPERTY_NOTIFY(name, nameChanged)
+    NET_LSCS_PROPERTY_READ( name, name )
+    NET_LSCS_PROPERTY_WRITE( name, setName )
+    NET_LSCS_PROPERTY_NOTIFY( name, nameChanged )
 
-    NET_CS_PROPERTY_READ(type, type)
-    NET_CS_PROPERTY_WRITE(type, setType)
-    NET_CS_PROPERTY_NOTIFY(type, typeChanged)
+    NET_LSCS_PROPERTY_READ( type, type )
+    NET_LSCS_PROPERTY_WRITE( type, setType )
+    NET_LSCS_PROPERTY_NOTIFY( type, typeChanged )
 
-    NET_CS_PROPERTY_READ(nameserver, nameserver)
-    NET_CS_PROPERTY_WRITE(nameserver, setNameserver)
-    NET_CS_PROPERTY_NOTIFY(nameserver, nameserverChanged)
+    NET_LSCS_PROPERTY_READ( nameserver, nameserver )
+    NET_LSCS_PROPERTY_WRITE( nameserver, setNameserver )
+    NET_LSCS_PROPERTY_NOTIFY( nameserver, nameserverChanged )
 
- public:
-    NET_CS_REGISTER_ENUM(
-       enum Error {
-           NoError = 0,
-           ResolverError,
-           OperationCancelledError,
-           InvalidRequestError,
-           InvalidReplyError,
-           ServerFailureError,
-           ServerRefusedError,
-           NotFoundError
-       };
+public:
+    NET_LSCS_REGISTER_ENUM(
+        enum Error
+    {
+        NoError = 0,
+        ResolverError,
+        OperationCancelledError,
+        InvalidRequestError,
+        InvalidReplyError,
+        ServerFailureError,
+        ServerRefusedError,
+        NotFoundError
+    };
     )
 
-    NET_CS_REGISTER_ENUM(
-      enum Type {
-           A = 1,
-           AAAA = 28,
-           ANY = 255,
-           CNAME = 5,
-           MX = 15,
-           NS = 2,
-           PTR = 12,
-           SRV = 33,
-           TXT = 16
-       };
+    NET_LSCS_REGISTER_ENUM(
+        enum Type
+    {
+        A = 1,
+        AAAA = 28,
+        ANY = 255,
+        CNAME = 5,
+        MX = 15,
+        NS = 2,
+        PTR = 12,
+        SRV = 33,
+        TXT = 16
+    };
     )
 
-    explicit QDnsLookup(QObject *parent = nullptr);
-    QDnsLookup(Type type, const QString &name, QObject *parent = nullptr);
-    QDnsLookup(Type type, const QString &name, const QHostAddress &nameserver, QObject *parent = nullptr);
+    explicit QDnsLookup( QObject *parent = nullptr );
+    QDnsLookup( Type type, const QString &name, QObject *parent = nullptr );
+    QDnsLookup( Type type, const QString &name, const QHostAddress &nameserver, QObject *parent = nullptr );
     ~QDnsLookup();
 
     Error error() const;
@@ -242,13 +254,13 @@ class Q_NETWORK_EXPORT QDnsLookup : public QObject
     bool isFinished() const;
 
     QString name() const;
-    void setName(const QString &name);
+    void setName( const QString &name );
 
     Type type() const;
-    void setType(QDnsLookup::Type);
+    void setType( QDnsLookup::Type );
 
     QHostAddress nameserver() const;
-    void setNameserver(const QHostAddress &nameserver);
+    void setNameserver( const QHostAddress &nameserver );
 
     QList<QDnsDomainNameRecord> canonicalNameRecords() const;
     QList<QDnsHostAddressRecord> hostAddressRecords() const;
@@ -258,32 +270,32 @@ class Q_NETWORK_EXPORT QDnsLookup : public QObject
     QList<QDnsServiceRecord> serviceRecords() const;
     QList<QDnsTextRecord> textRecords() const;
 
-    NET_CS_SIGNAL_1(Public, void finished())
-    NET_CS_SIGNAL_2(finished)
+    NET_LSCS_SIGNAL_1( Public, void finished() )
+    NET_LSCS_SIGNAL_2( finished )
 
-    NET_CS_SIGNAL_1(Public, void nameChanged(const QString &name))
-    NET_CS_SIGNAL_2(nameChanged, name)
+    NET_LSCS_SIGNAL_1( Public, void nameChanged( const QString &name ) )
+    NET_LSCS_SIGNAL_2( nameChanged, name )
 
-    NET_CS_SIGNAL_1(Public, void typeChanged(Type type))
-    NET_CS_SIGNAL_2(typeChanged, type)
+    NET_LSCS_SIGNAL_1( Public, void typeChanged( Type type ) )
+    NET_LSCS_SIGNAL_2( typeChanged, type )
 
-    NET_CS_SIGNAL_1(Public, void nameserverChanged(const QHostAddress &nameserver))
-    NET_CS_SIGNAL_2(nameserverChanged, nameserver)
+    NET_LSCS_SIGNAL_1( Public, void nameserverChanged( const QHostAddress &nameserver ) )
+    NET_LSCS_SIGNAL_2( nameserverChanged, nameserver )
 
-    NET_CS_SLOT_1(Public, void abort())
-    NET_CS_SLOT_2(abort)
+    NET_LSCS_SLOT_1( Public, void abort() )
+    NET_LSCS_SLOT_2( abort )
 
-    NET_CS_SLOT_1(Public, void lookup())
-    NET_CS_SLOT_2(lookup)
+    NET_LSCS_SLOT_1( Public, void lookup() )
+    NET_LSCS_SLOT_2( lookup )
 
-  protected:
+protected:
     QScopedPointer<QDnsLookupPrivate> d_ptr;
 
-  private:
-    Q_DECLARE_PRIVATE(QDnsLookup)
+private:
+    Q_DECLARE_PRIVATE( QDnsLookup )
 
-    NET_CS_SLOT_1(Private, void _q_lookupFinished(const QDnsLookupReply &reply))
-    NET_CS_SLOT_2(_q_lookupFinished)
+    NET_LSCS_SLOT_1( Private, void _q_lookupFinished( const QDnsLookupReply &reply ) )
+    NET_LSCS_SLOT_2( _q_lookupFinished )
 };
 
 #endif

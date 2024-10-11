@@ -26,53 +26,56 @@
 #include <wtf/HashMap.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGElement;
 
-struct SVGAnimatedPropertyDescription {            
+struct SVGAnimatedPropertyDescription
+{
     // Empty value
     SVGAnimatedPropertyDescription()
-        : m_element(0)
-        , m_attributeName(0)
+        : m_element( 0 )
+        , m_attributeName( 0 )
     {
     }
 
     // Deleted value
-    SVGAnimatedPropertyDescription(WTF::HashTableDeletedValueType)
-        : m_element(reinterpret_cast<SVGElement*>(-1))
+    SVGAnimatedPropertyDescription( WTF::HashTableDeletedValueType )
+        : m_element( reinterpret_cast<SVGElement *>( -1 ) )
     {
     }
 
     bool isHashTableDeletedValue() const
     {
-        return m_element == reinterpret_cast<SVGElement*>(-1);
+        return m_element == reinterpret_cast<SVGElement *>( -1 );
     }
 
-    SVGAnimatedPropertyDescription(SVGElement* element, const AtomicString& attributeName)
-        : m_element(element)
-        , m_attributeName(attributeName.impl())
+    SVGAnimatedPropertyDescription( SVGElement *element, const AtomicString &attributeName )
+        : m_element( element )
+        , m_attributeName( attributeName.impl() )
     {
-        ASSERT(m_element);
-        ASSERT(m_attributeName);
+        ASSERT( m_element );
+        ASSERT( m_attributeName );
     }
 
-    bool operator==(const SVGAnimatedPropertyDescription& other) const
+    bool operator==( const SVGAnimatedPropertyDescription &other ) const
     {
         return m_element == other.m_element && m_attributeName == other.m_attributeName;
     }
 
-    SVGElement* m_element;
-    AtomicStringImpl* m_attributeName;
+    SVGElement *m_element;
+    AtomicStringImpl *m_attributeName;
 };
 
-struct SVGAnimatedPropertyDescriptionHash {
-    static unsigned hash(const SVGAnimatedPropertyDescription& key)
+struct SVGAnimatedPropertyDescriptionHash
+{
+    static unsigned hash( const SVGAnimatedPropertyDescription &key )
     {
-        return StringHasher::hashMemory<sizeof(SVGAnimatedPropertyDescription)>(&key);
+        return StringHasher::hashMemory<sizeof( SVGAnimatedPropertyDescription )>( &key );
     }
 
-    static bool equal(const SVGAnimatedPropertyDescription& a, const SVGAnimatedPropertyDescription& b)
+    static bool equal( const SVGAnimatedPropertyDescription &a, const SVGAnimatedPropertyDescription &b )
     {
         return a == b;
     }
@@ -81,7 +84,7 @@ struct SVGAnimatedPropertyDescriptionHash {
 };
 
 struct SVGAnimatedPropertyDescriptionHashTraits : WTF::SimpleClassHashTraits<SVGAnimatedPropertyDescription> { };
- 
+
 }
 
 #endif // ENABLE(SVG)

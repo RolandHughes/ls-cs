@@ -39,627 +39,839 @@
 #include "RenderTable.h"
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLTableElement::HTMLTableElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
-    , m_borderAttr(false)
-    , m_borderColorAttr(false)
-    , m_frameAttr(false)
-    , m_rulesAttr(UnsetRules)
-    , m_padding(1)
+HTMLTableElement::HTMLTableElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
+    , m_borderAttr( false )
+    , m_borderColorAttr( false )
+    , m_frameAttr( false )
+    , m_rulesAttr( UnsetRules )
+    , m_padding( 1 )
 {
-    ASSERT(hasTagName(tableTag));
+    ASSERT( hasTagName( tableTag ) );
 }
 
-PassRefPtr<HTMLTableElement> HTMLTableElement::create(Document* document)
+PassRefPtr<HTMLTableElement> HTMLTableElement::create( Document *document )
 {
-    return adoptRef(new HTMLTableElement(tableTag, document));
+    return adoptRef( new HTMLTableElement( tableTag, document ) );
 }
 
-PassRefPtr<HTMLTableElement> HTMLTableElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLTableElement> HTMLTableElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLTableElement(tagName, document));
+    return adoptRef( new HTMLTableElement( tagName, document ) );
 }
 
-HTMLTableCaptionElement* HTMLTableElement::caption() const
+HTMLTableCaptionElement *HTMLTableElement::caption() const
 {
-    for (Node* child = firstChild(); child; child = child->nextSibling()) {
-        if (child->hasTagName(captionTag))
-            return static_cast<HTMLTableCaptionElement*>(child);
+    for ( Node *child = firstChild(); child; child = child->nextSibling() )
+    {
+        if ( child->hasTagName( captionTag ) )
+        {
+            return static_cast<HTMLTableCaptionElement *>( child );
+        }
     }
+
     return 0;
 }
 
-void HTMLTableElement::setCaption(PassRefPtr<HTMLTableCaptionElement> newCaption, ExceptionCode& ec)
+void HTMLTableElement::setCaption( PassRefPtr<HTMLTableCaptionElement> newCaption, ExceptionCode &ec )
 {
     deleteCaption();
-    insertBefore(newCaption, firstChild(), ec);
+    insertBefore( newCaption, firstChild(), ec );
 }
 
-HTMLTableSectionElement* HTMLTableElement::tHead() const
+HTMLTableSectionElement *HTMLTableElement::tHead() const
 {
-    for (Node* child = firstChild(); child; child = child->nextSibling()) {
-        if (child->hasTagName(theadTag))
-            return static_cast<HTMLTableSectionElement*>(child);
+    for ( Node *child = firstChild(); child; child = child->nextSibling() )
+    {
+        if ( child->hasTagName( theadTag ) )
+        {
+            return static_cast<HTMLTableSectionElement *>( child );
+        }
     }
+
     return 0;
 }
 
-void HTMLTableElement::setTHead(PassRefPtr<HTMLTableSectionElement> newHead, ExceptionCode& ec)
+void HTMLTableElement::setTHead( PassRefPtr<HTMLTableSectionElement> newHead, ExceptionCode &ec )
 {
     deleteTHead();
 
-    Node* child;
-    for (child = firstChild(); child; child = child->nextSibling())
-        if (child->isElementNode() && !child->hasTagName(captionTag) && !child->hasTagName(colgroupTag))
-            break;
+    Node *child;
 
-    insertBefore(newHead, child, ec);
+    for ( child = firstChild(); child; child = child->nextSibling() )
+        if ( child->isElementNode() && !child->hasTagName( captionTag ) && !child->hasTagName( colgroupTag ) )
+        {
+            break;
+        }
+
+    insertBefore( newHead, child, ec );
 }
 
-HTMLTableSectionElement* HTMLTableElement::tFoot() const
+HTMLTableSectionElement *HTMLTableElement::tFoot() const
 {
-    for (Node* child = firstChild(); child; child = child->nextSibling()) {
-        if (child->hasTagName(tfootTag))
-            return static_cast<HTMLTableSectionElement*>(child);
+    for ( Node *child = firstChild(); child; child = child->nextSibling() )
+    {
+        if ( child->hasTagName( tfootTag ) )
+        {
+            return static_cast<HTMLTableSectionElement *>( child );
+        }
     }
+
     return 0;
 }
 
-void HTMLTableElement::setTFoot(PassRefPtr<HTMLTableSectionElement> newFoot, ExceptionCode& ec)
+void HTMLTableElement::setTFoot( PassRefPtr<HTMLTableSectionElement> newFoot, ExceptionCode &ec )
 {
     deleteTFoot();
 
-    Node* child;
-    for (child = firstChild(); child; child = child->nextSibling())
-        if (child->isElementNode() && !child->hasTagName(captionTag) && !child->hasTagName(colgroupTag) && !child->hasTagName(theadTag))
-            break;
+    Node *child;
 
-    insertBefore(newFoot, child, ec);
+    for ( child = firstChild(); child; child = child->nextSibling() )
+        if ( child->isElementNode() && !child->hasTagName( captionTag ) && !child->hasTagName( colgroupTag )
+                && !child->hasTagName( theadTag ) )
+        {
+            break;
+        }
+
+    insertBefore( newFoot, child, ec );
 }
 
 PassRefPtr<HTMLElement> HTMLTableElement::createTHead()
 {
-    if (HTMLTableSectionElement* existingHead = tHead())
+    if ( HTMLTableSectionElement *existingHead = tHead() )
+    {
         return existingHead;
-    RefPtr<HTMLTableSectionElement> head = HTMLTableSectionElement::create(theadTag, document());
+    }
+
+    RefPtr<HTMLTableSectionElement> head = HTMLTableSectionElement::create( theadTag, document() );
     ExceptionCode ec;
-    setTHead(head, ec);
+    setTHead( head, ec );
     return head.release();
 }
 
 void HTMLTableElement::deleteTHead()
 {
     ExceptionCode ec;
-    removeChild(tHead(), ec);
+    removeChild( tHead(), ec );
 }
 
 PassRefPtr<HTMLElement> HTMLTableElement::createTFoot()
 {
-    if (HTMLTableSectionElement* existingFoot = tFoot())
+    if ( HTMLTableSectionElement *existingFoot = tFoot() )
+    {
         return existingFoot;
-    RefPtr<HTMLTableSectionElement> foot = HTMLTableSectionElement::create(tfootTag, document());
+    }
+
+    RefPtr<HTMLTableSectionElement> foot = HTMLTableSectionElement::create( tfootTag, document() );
     ExceptionCode ec;
-    setTFoot(foot, ec);
+    setTFoot( foot, ec );
     return foot.release();
 }
 
 void HTMLTableElement::deleteTFoot()
 {
     ExceptionCode ec;
-    removeChild(tFoot(), ec);
+    removeChild( tFoot(), ec );
 }
 
 PassRefPtr<HTMLElement> HTMLTableElement::createCaption()
 {
-    if (HTMLTableCaptionElement* existingCaption = caption())
+    if ( HTMLTableCaptionElement *existingCaption = caption() )
+    {
         return existingCaption;
-    RefPtr<HTMLTableCaptionElement> caption = HTMLTableCaptionElement::create(captionTag, document());
+    }
+
+    RefPtr<HTMLTableCaptionElement> caption = HTMLTableCaptionElement::create( captionTag, document() );
     ExceptionCode ec;
-    setCaption(caption, ec);
+    setCaption( caption, ec );
     return caption.release();
 }
 
 void HTMLTableElement::deleteCaption()
 {
     ExceptionCode ec;
-    removeChild(caption(), ec);
+    removeChild( caption(), ec );
 }
 
-HTMLTableSectionElement* HTMLTableElement::lastBody() const
+HTMLTableSectionElement *HTMLTableElement::lastBody() const
 {
-    for (Node* child = lastChild(); child; child = child->previousSibling()) {
-        if (child->hasTagName(tbodyTag))
-            return static_cast<HTMLTableSectionElement*>(child);
+    for ( Node *child = lastChild(); child; child = child->previousSibling() )
+    {
+        if ( child->hasTagName( tbodyTag ) )
+        {
+            return static_cast<HTMLTableSectionElement *>( child );
+        }
     }
+
     return 0;
 }
 
-PassRefPtr<HTMLElement> HTMLTableElement::insertRow(int index, ExceptionCode& ec)
+PassRefPtr<HTMLElement> HTMLTableElement::insertRow( int index, ExceptionCode &ec )
 {
-    if (index < -1) {
+    if ( index < -1 )
+    {
         ec = INDEX_SIZE_ERR;
         return 0;
     }
 
-    HTMLTableRowElement* lastRow = 0;
-    HTMLTableRowElement* row = 0;
-    if (index == -1)
-        lastRow = HTMLTableRowsCollection::lastRow(this);
-    else {
-        for (int i = 0; i <= index; ++i) {
-            row = HTMLTableRowsCollection::rowAfter(this, lastRow);
-            if (!row) {
-                if (i != index) {
+    HTMLTableRowElement *lastRow = 0;
+    HTMLTableRowElement *row = 0;
+
+    if ( index == -1 )
+    {
+        lastRow = HTMLTableRowsCollection::lastRow( this );
+    }
+    else
+    {
+        for ( int i = 0; i <= index; ++i )
+        {
+            row = HTMLTableRowsCollection::rowAfter( this, lastRow );
+
+            if ( !row )
+            {
+                if ( i != index )
+                {
                     ec = INDEX_SIZE_ERR;
                     return 0;
                 }
+
                 break;
             }
+
             lastRow = row;
         }
     }
 
-    ContainerNode* parent;
-    if (lastRow)
+    ContainerNode *parent;
+
+    if ( lastRow )
+    {
         parent = row ? row->parentNode() : lastRow->parentNode();
-    else {
+    }
+    else
+    {
         parent = lastBody();
-        if (!parent) {
-            RefPtr<HTMLTableSectionElement> newBody = HTMLTableSectionElement::create(tbodyTag, document());
-            RefPtr<HTMLTableRowElement> newRow = HTMLTableRowElement::create(document());
-            newBody->appendChild(newRow, ec);
-            appendChild(newBody.release(), ec);
+
+        if ( !parent )
+        {
+            RefPtr<HTMLTableSectionElement> newBody = HTMLTableSectionElement::create( tbodyTag, document() );
+            RefPtr<HTMLTableRowElement> newRow = HTMLTableRowElement::create( document() );
+            newBody->appendChild( newRow, ec );
+            appendChild( newBody.release(), ec );
             return newRow.release();
         }
     }
 
-    RefPtr<HTMLTableRowElement> newRow = HTMLTableRowElement::create(document());
-    parent->insertBefore(newRow, row, ec);
+    RefPtr<HTMLTableRowElement> newRow = HTMLTableRowElement::create( document() );
+    parent->insertBefore( newRow, row, ec );
     return newRow.release();
 }
 
-void HTMLTableElement::deleteRow(int index, ExceptionCode& ec)
+void HTMLTableElement::deleteRow( int index, ExceptionCode &ec )
 {
-    HTMLTableRowElement* row = 0;
-    if (index == -1)
-        row = HTMLTableRowsCollection::lastRow(this);
-    else {
-        for (int i = 0; i <= index; ++i) {
-            row = HTMLTableRowsCollection::rowAfter(this, row);
-            if (!row)
+    HTMLTableRowElement *row = 0;
+
+    if ( index == -1 )
+    {
+        row = HTMLTableRowsCollection::lastRow( this );
+    }
+    else
+    {
+        for ( int i = 0; i <= index; ++i )
+        {
+            row = HTMLTableRowsCollection::rowAfter( this, row );
+
+            if ( !row )
+            {
                 break;
+            }
         }
     }
-    if (!row) {
+
+    if ( !row )
+    {
         ec = INDEX_SIZE_ERR;
         return;
     }
-    row->remove(ec);
+
+    row->remove( ec );
 }
 
-bool HTMLTableElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLTableElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == backgroundAttr) {
-        result = (MappedAttributeEntry)(eLastEntry + document()->docID());
+    if ( attrName == backgroundAttr )
+    {
+        result = ( MappedAttributeEntry )( eLastEntry + document()->docID() );
         return false;
     }
-    
-    if (attrName == widthAttr ||
-        attrName == heightAttr ||
-        attrName == bgcolorAttr ||
-        attrName == cellspacingAttr ||
-        attrName == vspaceAttr ||
-        attrName == hspaceAttr ||
-        attrName == valignAttr) {
+
+    if ( attrName == widthAttr ||
+            attrName == heightAttr ||
+            attrName == bgcolorAttr ||
+            attrName == cellspacingAttr ||
+            attrName == vspaceAttr ||
+            attrName == hspaceAttr ||
+            attrName == valignAttr )
+    {
         result = eUniversal;
         return false;
     }
-    
-    if (attrName == bordercolorAttr || attrName == frameAttr || attrName == rulesAttr) {
+
+    if ( attrName == bordercolorAttr || attrName == frameAttr || attrName == rulesAttr )
+    {
         result = eUniversal;
         return true;
     }
-    
-    if (attrName == borderAttr) {
+
+    if ( attrName == borderAttr )
+    {
         result = eTable;
         return true;
     }
-    
-    if (attrName == alignAttr) {
+
+    if ( attrName == alignAttr )
+    {
         result = eTable;
         return false;
     }
 
-    return HTMLElement::mapToEntry(attrName, result);
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-static inline bool isTableCellAncestor(Node* n)
+static inline bool isTableCellAncestor( Node *n )
 {
-    return n->hasTagName(theadTag) || n->hasTagName(tbodyTag) ||
-           n->hasTagName(tfootTag) || n->hasTagName(trTag) ||
-           n->hasTagName(thTag);
+    return n->hasTagName( theadTag ) || n->hasTagName( tbodyTag ) ||
+           n->hasTagName( tfootTag ) || n->hasTagName( trTag ) ||
+           n->hasTagName( thTag );
 }
 
-static bool setTableCellsChanged(Node* n)
+static bool setTableCellsChanged( Node *n )
 {
-    ASSERT(n);
+    ASSERT( n );
     bool cellChanged = false;
 
-    if (n->hasTagName(tdTag))
+    if ( n->hasTagName( tdTag ) )
+    {
         cellChanged = true;
-    else if (isTableCellAncestor(n)) {
-        for (Node* child = n->firstChild(); child; child = child->nextSibling())
-            cellChanged |= setTableCellsChanged(child);
+    }
+    else if ( isTableCellAncestor( n ) )
+    {
+        for ( Node *child = n->firstChild(); child; child = child->nextSibling() )
+        {
+            cellChanged |= setTableCellsChanged( child );
+        }
     }
 
-    if (cellChanged)
-       n->setNeedsStyleRecalc();
+    if ( cellChanged )
+    {
+        n->setNeedsStyleRecalc();
+    }
 
     return cellChanged;
 }
 
-void HTMLTableElement::parseMappedAttribute(Attribute* attr)
+void HTMLTableElement::parseMappedAttribute( Attribute *attr )
 {
     CellBorders bordersBefore = cellBorders();
     unsigned short oldPadding = m_padding;
 
-    if (attr->name() == widthAttr)
-        addCSSLength(attr, CSSPropertyWidth, attr->value());
-    else if (attr->name() == heightAttr)
-        addCSSLength(attr, CSSPropertyHeight, attr->value());
-    else if (attr->name() == borderAttr)  {
+    if ( attr->name() == widthAttr )
+    {
+        addCSSLength( attr, CSSPropertyWidth, attr->value() );
+    }
+    else if ( attr->name() == heightAttr )
+    {
+        addCSSLength( attr, CSSPropertyHeight, attr->value() );
+    }
+    else if ( attr->name() == borderAttr )
+    {
         m_borderAttr = true;
-        if (attr->decl()) {
-            RefPtr<CSSValue> val = attr->decl()->getPropertyCSSValue(CSSPropertyBorderLeftWidth);
-            if (val && val->isPrimitiveValue()) {
-                CSSPrimitiveValue* primVal = static_cast<CSSPrimitiveValue*>(val.get());
-                m_borderAttr = primVal->getDoubleValue(CSSPrimitiveValue::CSS_NUMBER);
+
+        if ( attr->decl() )
+        {
+            RefPtr<CSSValue> val = attr->decl()->getPropertyCSSValue( CSSPropertyBorderLeftWidth );
+
+            if ( val && val->isPrimitiveValue() )
+            {
+                CSSPrimitiveValue *primVal = static_cast<CSSPrimitiveValue *>( val.get() );
+                m_borderAttr = primVal->getDoubleValue( CSSPrimitiveValue::CSS_NUMBER );
             }
-        } else if (!attr->isNull()) {
-            int border = 0;
-            if (attr->isEmpty())
-                border = 1;
-            else
-                border = attr->value().toInt();
-            m_borderAttr = border;
-            addCSSLength(attr, CSSPropertyBorderWidth, String::number(border));
         }
-    } else if (attr->name() == bgcolorAttr)
-        addCSSColor(attr, CSSPropertyBackgroundColor, attr->value());
-    else if (attr->name() == bordercolorAttr) {
+        else if ( !attr->isNull() )
+        {
+            int border = 0;
+
+            if ( attr->isEmpty() )
+            {
+                border = 1;
+            }
+            else
+            {
+                border = attr->value().toInt();
+            }
+
+            m_borderAttr = border;
+            addCSSLength( attr, CSSPropertyBorderWidth, String::number( border ) );
+        }
+    }
+    else if ( attr->name() == bgcolorAttr )
+    {
+        addCSSColor( attr, CSSPropertyBackgroundColor, attr->value() );
+    }
+    else if ( attr->name() == bordercolorAttr )
+    {
         m_borderColorAttr = attr->decl();
-        if (!attr->decl() && !attr->isEmpty()) {
-            addCSSColor(attr, CSSPropertyBorderColor, attr->value());
+
+        if ( !attr->decl() && !attr->isEmpty() )
+        {
+            addCSSColor( attr, CSSPropertyBorderColor, attr->value() );
             m_borderColorAttr = true;
         }
-    } else if (attr->name() == backgroundAttr) {
-        String url = stripLeadingAndTrailingHTMLSpaces(attr->value());
-        if (!url.isEmpty())
-            addCSSImageProperty(attr, CSSPropertyBackgroundImage, document()->completeURL(url).string());
-    } else if (attr->name() == frameAttr) {
+    }
+    else if ( attr->name() == backgroundAttr )
+    {
+        String url = stripLeadingAndTrailingHTMLSpaces( attr->value() );
+
+        if ( !url.isEmpty() )
+        {
+            addCSSImageProperty( attr, CSSPropertyBackgroundImage, document()->completeURL( url ).string() );
+        }
+    }
+    else if ( attr->name() == frameAttr )
+    {
         // Cache the value of "frame" so that the table can examine it later.
         m_frameAttr = false;
-        
+
         // Whether or not to hide the top/right/bottom/left borders.
         const int cTop = 0;
         const int cRight = 1;
         const int cBottom = 2;
         const int cLeft = 3;
         bool borders[4] = { false, false, false, false };
-        
+
         // void, above, below, hsides, vsides, lhs, rhs, box, border
-        if (equalIgnoringCase(attr->value(), "void"))
+        if ( equalIgnoringCase( attr->value(), "void" ) )
+        {
             m_frameAttr = true;
-        else if (equalIgnoringCase(attr->value(), "above")) {
+        }
+        else if ( equalIgnoringCase( attr->value(), "above" ) )
+        {
             m_frameAttr = true;
             borders[cTop] = true;
-        } else if (equalIgnoringCase(attr->value(), "below")) {
+        }
+        else if ( equalIgnoringCase( attr->value(), "below" ) )
+        {
             m_frameAttr = true;
             borders[cBottom] = true;
-        } else if (equalIgnoringCase(attr->value(), "hsides")) {
+        }
+        else if ( equalIgnoringCase( attr->value(), "hsides" ) )
+        {
             m_frameAttr = true;
             borders[cTop] = borders[cBottom] = true;
-        } else if (equalIgnoringCase(attr->value(), "vsides")) {
+        }
+        else if ( equalIgnoringCase( attr->value(), "vsides" ) )
+        {
             m_frameAttr = true;
             borders[cLeft] = borders[cRight] = true;
-        } else if (equalIgnoringCase(attr->value(), "lhs")) {
+        }
+        else if ( equalIgnoringCase( attr->value(), "lhs" ) )
+        {
             m_frameAttr = true;
             borders[cLeft] = true;
-        } else if (equalIgnoringCase(attr->value(), "rhs")) {
+        }
+        else if ( equalIgnoringCase( attr->value(), "rhs" ) )
+        {
             m_frameAttr = true;
             borders[cRight] = true;
-        } else if (equalIgnoringCase(attr->value(), "box") ||
-                   equalIgnoringCase(attr->value(), "border")) {
+        }
+        else if ( equalIgnoringCase( attr->value(), "box" ) ||
+                  equalIgnoringCase( attr->value(), "border" ) )
+        {
             m_frameAttr = true;
             borders[cTop] = borders[cBottom] = borders[cLeft] = borders[cRight] = true;
         }
-        
-        // Now map in the border styles of solid and hidden respectively.
-        if (m_frameAttr) {
-            addCSSProperty(attr, CSSPropertyBorderTopWidth, CSSValueThin);
-            addCSSProperty(attr, CSSPropertyBorderBottomWidth, CSSValueThin);
-            addCSSProperty(attr, CSSPropertyBorderLeftWidth, CSSValueThin);
-            addCSSProperty(attr, CSSPropertyBorderRightWidth, CSSValueThin);
-            addCSSProperty(attr, CSSPropertyBorderTopStyle, borders[cTop] ? CSSValueSolid : CSSValueHidden);
-            addCSSProperty(attr, CSSPropertyBorderBottomStyle, borders[cBottom] ? CSSValueSolid : CSSValueHidden);
-            addCSSProperty(attr, CSSPropertyBorderLeftStyle, borders[cLeft] ? CSSValueSolid : CSSValueHidden);
-            addCSSProperty(attr, CSSPropertyBorderRightStyle, borders[cRight] ? CSSValueSolid : CSSValueHidden);
-        }
-    } else if (attr->name() == rulesAttr) {
-        m_rulesAttr = UnsetRules;
-        if (equalIgnoringCase(attr->value(), "none"))
-            m_rulesAttr = NoneRules;
-        else if (equalIgnoringCase(attr->value(), "groups"))
-            m_rulesAttr = GroupsRules;
-        else if (equalIgnoringCase(attr->value(), "rows"))
-            m_rulesAttr = RowsRules;
-        if (equalIgnoringCase(attr->value(), "cols"))
-            m_rulesAttr = ColsRules;
-        if (equalIgnoringCase(attr->value(), "all"))
-            m_rulesAttr = AllRules;
-        
-        // The presence of a valid rules attribute causes border collapsing to be enabled.
-        if (m_rulesAttr != UnsetRules)
-            addCSSProperty(attr, CSSPropertyBorderCollapse, CSSValueCollapse);
-    } else if (attr->name() == cellspacingAttr) {
-        if (!attr->value().isEmpty())
-            addCSSLength(attr, CSSPropertyBorderSpacing, attr->value());
-    } else if (attr->name() == cellpaddingAttr) {
-        if (!attr->value().isEmpty())
-            m_padding = max(0, attr->value().toInt());
-        else
-            m_padding = 1;
-    } else if (attr->name() == colsAttr) {
-        // ###
-    } else if (attr->name() == vspaceAttr) {
-        addCSSLength(attr, CSSPropertyMarginTop, attr->value());
-        addCSSLength(attr, CSSPropertyMarginBottom, attr->value());
-    } else if (attr->name() == hspaceAttr) {
-        addCSSLength(attr, CSSPropertyMarginLeft, attr->value());
-        addCSSLength(attr, CSSPropertyMarginRight, attr->value());
-    } else if (attr->name() == alignAttr) {
-        if (!attr->value().isEmpty()) {
-            if (equalIgnoringCase(attr->value(), "center")) {
-                addCSSProperty(attr, CSSPropertyWebkitMarginStart, CSSValueAuto);
-                addCSSProperty(attr, CSSPropertyWebkitMarginEnd, CSSValueAuto);
-            } else
-                addCSSProperty(attr, CSSPropertyFloat, attr->value());
-        }
-    } else if (attr->name() == valignAttr) {
-        if (!attr->value().isEmpty())
-            addCSSProperty(attr, CSSPropertyVerticalAlign, attr->value());
-    } else
-        HTMLElement::parseMappedAttribute(attr);
 
-    if (bordersBefore != cellBorders() || oldPadding != m_padding) {
-        if (oldPadding != m_padding)
+        // Now map in the border styles of solid and hidden respectively.
+        if ( m_frameAttr )
+        {
+            addCSSProperty( attr, CSSPropertyBorderTopWidth, CSSValueThin );
+            addCSSProperty( attr, CSSPropertyBorderBottomWidth, CSSValueThin );
+            addCSSProperty( attr, CSSPropertyBorderLeftWidth, CSSValueThin );
+            addCSSProperty( attr, CSSPropertyBorderRightWidth, CSSValueThin );
+            addCSSProperty( attr, CSSPropertyBorderTopStyle, borders[cTop] ? CSSValueSolid : CSSValueHidden );
+            addCSSProperty( attr, CSSPropertyBorderBottomStyle, borders[cBottom] ? CSSValueSolid : CSSValueHidden );
+            addCSSProperty( attr, CSSPropertyBorderLeftStyle, borders[cLeft] ? CSSValueSolid : CSSValueHidden );
+            addCSSProperty( attr, CSSPropertyBorderRightStyle, borders[cRight] ? CSSValueSolid : CSSValueHidden );
+        }
+    }
+    else if ( attr->name() == rulesAttr )
+    {
+        m_rulesAttr = UnsetRules;
+
+        if ( equalIgnoringCase( attr->value(), "none" ) )
+        {
+            m_rulesAttr = NoneRules;
+        }
+        else if ( equalIgnoringCase( attr->value(), "groups" ) )
+        {
+            m_rulesAttr = GroupsRules;
+        }
+        else if ( equalIgnoringCase( attr->value(), "rows" ) )
+        {
+            m_rulesAttr = RowsRules;
+        }
+
+        if ( equalIgnoringCase( attr->value(), "cols" ) )
+        {
+            m_rulesAttr = ColsRules;
+        }
+
+        if ( equalIgnoringCase( attr->value(), "all" ) )
+        {
+            m_rulesAttr = AllRules;
+        }
+
+        // The presence of a valid rules attribute causes border collapsing to be enabled.
+        if ( m_rulesAttr != UnsetRules )
+        {
+            addCSSProperty( attr, CSSPropertyBorderCollapse, CSSValueCollapse );
+        }
+    }
+    else if ( attr->name() == cellspacingAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
+            addCSSLength( attr, CSSPropertyBorderSpacing, attr->value() );
+        }
+    }
+    else if ( attr->name() == cellpaddingAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
+            m_padding = max( 0, attr->value().toInt() );
+        }
+        else
+        {
+            m_padding = 1;
+        }
+    }
+    else if ( attr->name() == colsAttr )
+    {
+        // ###
+    }
+    else if ( attr->name() == vspaceAttr )
+    {
+        addCSSLength( attr, CSSPropertyMarginTop, attr->value() );
+        addCSSLength( attr, CSSPropertyMarginBottom, attr->value() );
+    }
+    else if ( attr->name() == hspaceAttr )
+    {
+        addCSSLength( attr, CSSPropertyMarginLeft, attr->value() );
+        addCSSLength( attr, CSSPropertyMarginRight, attr->value() );
+    }
+    else if ( attr->name() == alignAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
+            if ( equalIgnoringCase( attr->value(), "center" ) )
+            {
+                addCSSProperty( attr, CSSPropertyWebkitMarginStart, CSSValueAuto );
+                addCSSProperty( attr, CSSPropertyWebkitMarginEnd, CSSValueAuto );
+            }
+            else
+            {
+                addCSSProperty( attr, CSSPropertyFloat, attr->value() );
+            }
+        }
+    }
+    else if ( attr->name() == valignAttr )
+    {
+        if ( !attr->value().isEmpty() )
+        {
+            addCSSProperty( attr, CSSPropertyVerticalAlign, attr->value() );
+        }
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
+
+    if ( bordersBefore != cellBorders() || oldPadding != m_padding )
+    {
+        if ( oldPadding != m_padding )
+        {
             m_paddingDecl = 0;
+        }
+
         bool cellChanged = false;
-        for (Node* child = firstChild(); child; child = child->nextSibling())
-            cellChanged |= setTableCellsChanged(child);
-        if (cellChanged)
+
+        for ( Node *child = firstChild(); child; child = child->nextSibling() )
+        {
+            cellChanged |= setTableCellsChanged( child );
+        }
+
+        if ( cellChanged )
+        {
             setNeedsStyleRecalc();
+        }
     }
 }
 
-void HTMLTableElement::additionalAttributeStyleDecls(Vector<CSSMutableStyleDeclaration*>& results)
+void HTMLTableElement::additionalAttributeStyleDecls( Vector<CSSMutableStyleDeclaration *> &results )
 {
-    if ((!m_borderAttr && !m_borderColorAttr) || m_frameAttr)
+    if ( ( !m_borderAttr && !m_borderColorAttr ) || m_frameAttr )
+    {
         return;
+    }
 
     AtomicString borderValue = m_borderColorAttr ? "solid" : "outset";
-    CSSMappedAttributeDeclaration* decl = getMappedAttributeDecl(ePersistent, tableborderAttr, borderValue);
-    if (!decl) {
-        decl = CSSMappedAttributeDeclaration::create().releaseRef(); // This single ref pins us in the table until the document dies.
-        decl->setParent(document()->elementSheet());
-        decl->setNode(this);
-        decl->setStrictParsing(false); // Mapped attributes are just always quirky.
-        
-        int v = m_borderColorAttr ? CSSValueSolid : CSSValueOutset;
-        decl->setProperty(CSSPropertyBorderTopStyle, v, false);
-        decl->setProperty(CSSPropertyBorderBottomStyle, v, false);
-        decl->setProperty(CSSPropertyBorderLeftStyle, v, false);
-        decl->setProperty(CSSPropertyBorderRightStyle, v, false);
+    CSSMappedAttributeDeclaration *decl = getMappedAttributeDecl( ePersistent, tableborderAttr, borderValue );
 
-        setMappedAttributeDecl(ePersistent, tableborderAttr, borderValue, decl);
-        decl->setParent(0);
-        decl->setNode(0);
-        decl->setMappedState(ePersistent, tableborderAttr, borderValue);
+    if ( !decl )
+    {
+        decl = CSSMappedAttributeDeclaration::create().releaseRef(); // This single ref pins us in the table until the document dies.
+        decl->setParent( document()->elementSheet() );
+        decl->setNode( this );
+        decl->setStrictParsing( false ); // Mapped attributes are just always quirky.
+
+        int v = m_borderColorAttr ? CSSValueSolid : CSSValueOutset;
+        decl->setProperty( CSSPropertyBorderTopStyle, v, false );
+        decl->setProperty( CSSPropertyBorderBottomStyle, v, false );
+        decl->setProperty( CSSPropertyBorderLeftStyle, v, false );
+        decl->setProperty( CSSPropertyBorderRightStyle, v, false );
+
+        setMappedAttributeDecl( ePersistent, tableborderAttr, borderValue, decl );
+        decl->setParent( 0 );
+        decl->setNode( 0 );
+        decl->setMappedState( ePersistent, tableborderAttr, borderValue );
     }
-    
-    
-    results.append(decl);
+
+
+    results.append( decl );
 }
 
 HTMLTableElement::CellBorders HTMLTableElement::cellBorders() const
 {
-    switch (m_rulesAttr) {
+    switch ( m_rulesAttr )
+    {
         case NoneRules:
         case GroupsRules:
             return NoBorders;
+
         case AllRules:
             return SolidBorders;
+
         case ColsRules:
             return SolidBordersColsOnly;
+
         case RowsRules:
             return SolidBordersRowsOnly;
+
         case UnsetRules:
-            if (!m_borderAttr)
+            if ( !m_borderAttr )
+            {
                 return NoBorders;
-            if (m_borderColorAttr)
+            }
+
+            if ( m_borderColorAttr )
+            {
                 return SolidBorders;
+            }
+
             return InsetBorders;
     }
+
     ASSERT_NOT_REACHED();
     return NoBorders;
 }
 
-void HTMLTableElement::addSharedCellDecls(Vector<CSSMutableStyleDeclaration*>& results)
+void HTMLTableElement::addSharedCellDecls( Vector<CSSMutableStyleDeclaration *> &results )
 {
-    addSharedCellBordersDecl(results);
-    addSharedCellPaddingDecl(results);
+    addSharedCellBordersDecl( results );
+    addSharedCellPaddingDecl( results );
 }
 
-void HTMLTableElement::addSharedCellBordersDecl(Vector<CSSMutableStyleDeclaration*>& results)
+void HTMLTableElement::addSharedCellBordersDecl( Vector<CSSMutableStyleDeclaration *> &results )
 {
     CellBorders borders = cellBorders();
 
-    static const AtomicString* cellBorderNames[] = { new AtomicString("none"), new AtomicString("solid"), new AtomicString("inset"), new AtomicString("solid-cols"), new AtomicString("solid-rows") };
-    const AtomicString& cellborderValue = *cellBorderNames[borders];
-    CSSMappedAttributeDeclaration* decl = getMappedAttributeDecl(ePersistent, cellborderAttr, cellborderValue);
-    if (!decl) {
+    static const AtomicString *cellBorderNames[] = { new AtomicString( "none" ), new AtomicString( "solid" ), new AtomicString( "inset" ), new AtomicString( "solid-cols" ), new AtomicString( "solid-rows" ) };
+    const AtomicString &cellborderValue = *cellBorderNames[borders];
+    CSSMappedAttributeDeclaration *decl = getMappedAttributeDecl( ePersistent, cellborderAttr, cellborderValue );
+
+    if ( !decl )
+    {
         decl = CSSMappedAttributeDeclaration::create().releaseRef(); // This single ref pins us in the table until the document dies.
-        decl->setParent(document()->elementSheet());
-        decl->setNode(this);
-        decl->setStrictParsing(false); // Mapped attributes are just always quirky.
-        
-        switch (borders) {
+        decl->setParent( document()->elementSheet() );
+        decl->setNode( this );
+        decl->setStrictParsing( false ); // Mapped attributes are just always quirky.
+
+        switch ( borders )
+        {
             case SolidBordersColsOnly:
-                decl->setProperty(CSSPropertyBorderLeftWidth, CSSValueThin, false);
-                decl->setProperty(CSSPropertyBorderRightWidth, CSSValueThin, false);
-                decl->setProperty(CSSPropertyBorderLeftStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderRightStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderColor, "inherit", false);
+                decl->setProperty( CSSPropertyBorderLeftWidth, CSSValueThin, false );
+                decl->setProperty( CSSPropertyBorderRightWidth, CSSValueThin, false );
+                decl->setProperty( CSSPropertyBorderLeftStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderRightStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderColor, "inherit", false );
                 break;
+
             case SolidBordersRowsOnly:
-                decl->setProperty(CSSPropertyBorderTopWidth, CSSValueThin, false);
-                decl->setProperty(CSSPropertyBorderBottomWidth, CSSValueThin, false);
-                decl->setProperty(CSSPropertyBorderTopStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderBottomStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderColor, "inherit", false);
+                decl->setProperty( CSSPropertyBorderTopWidth, CSSValueThin, false );
+                decl->setProperty( CSSPropertyBorderBottomWidth, CSSValueThin, false );
+                decl->setProperty( CSSPropertyBorderTopStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderBottomStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderColor, "inherit", false );
                 break;
+
             case SolidBorders:
-                decl->setProperty(CSSPropertyBorderWidth, "1px", false);
-                decl->setProperty(CSSPropertyBorderTopStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderBottomStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderLeftStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderRightStyle, CSSValueSolid, false);
-                decl->setProperty(CSSPropertyBorderColor, "inherit", false);
+                decl->setProperty( CSSPropertyBorderWidth, "1px", false );
+                decl->setProperty( CSSPropertyBorderTopStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderBottomStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderLeftStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderRightStyle, CSSValueSolid, false );
+                decl->setProperty( CSSPropertyBorderColor, "inherit", false );
                 break;
+
             case InsetBorders:
-                decl->setProperty(CSSPropertyBorderWidth, "1px", false);
-                decl->setProperty(CSSPropertyBorderTopStyle, CSSValueInset, false);
-                decl->setProperty(CSSPropertyBorderBottomStyle, CSSValueInset, false);
-                decl->setProperty(CSSPropertyBorderLeftStyle, CSSValueInset, false);
-                decl->setProperty(CSSPropertyBorderRightStyle, CSSValueInset, false);
-                decl->setProperty(CSSPropertyBorderColor, "inherit", false);
+                decl->setProperty( CSSPropertyBorderWidth, "1px", false );
+                decl->setProperty( CSSPropertyBorderTopStyle, CSSValueInset, false );
+                decl->setProperty( CSSPropertyBorderBottomStyle, CSSValueInset, false );
+                decl->setProperty( CSSPropertyBorderLeftStyle, CSSValueInset, false );
+                decl->setProperty( CSSPropertyBorderRightStyle, CSSValueInset, false );
+                decl->setProperty( CSSPropertyBorderColor, "inherit", false );
                 break;
+
             case NoBorders:
-                decl->setProperty(CSSPropertyBorderWidth, "0", false);
+                decl->setProperty( CSSPropertyBorderWidth, "0", false );
                 break;
         }
 
-        setMappedAttributeDecl(ePersistent, cellborderAttr, *cellBorderNames[borders], decl);
-        decl->setParent(0);
-        decl->setNode(0);
-        decl->setMappedState(ePersistent, cellborderAttr, cellborderValue);
+        setMappedAttributeDecl( ePersistent, cellborderAttr, *cellBorderNames[borders], decl );
+        decl->setParent( 0 );
+        decl->setNode( 0 );
+        decl->setMappedState( ePersistent, cellborderAttr, cellborderValue );
     }
-    
-    results.append(decl);
+
+    results.append( decl );
 }
 
-void HTMLTableElement::addSharedCellPaddingDecl(Vector<CSSMutableStyleDeclaration*>& results)
+void HTMLTableElement::addSharedCellPaddingDecl( Vector<CSSMutableStyleDeclaration *> &results )
 {
-    if (m_padding == 0)
+    if ( m_padding == 0 )
+    {
         return;
+    }
 
-    if (!m_paddingDecl) {
-        String paddingValue = String::number(m_padding);
-        m_paddingDecl = getMappedAttributeDecl(eUniversal, cellpaddingAttr, paddingValue);
-        if (!m_paddingDecl) {
+    if ( !m_paddingDecl )
+    {
+        String paddingValue = String::number( m_padding );
+        m_paddingDecl = getMappedAttributeDecl( eUniversal, cellpaddingAttr, paddingValue );
+
+        if ( !m_paddingDecl )
+        {
             m_paddingDecl = CSSMappedAttributeDeclaration::create();
-            m_paddingDecl->setParent(document()->elementSheet());
-            m_paddingDecl->setNode(this);
-            m_paddingDecl->setStrictParsing(false); // Mapped attributes are just always quirky.
-            
-            m_paddingDecl->setProperty(CSSPropertyPaddingTop, paddingValue, false);
-            m_paddingDecl->setProperty(CSSPropertyPaddingRight, paddingValue, false);
-            m_paddingDecl->setProperty(CSSPropertyPaddingBottom, paddingValue, false);
-            m_paddingDecl->setProperty(CSSPropertyPaddingLeft, paddingValue, false);
+            m_paddingDecl->setParent( document()->elementSheet() );
+            m_paddingDecl->setNode( this );
+            m_paddingDecl->setStrictParsing( false ); // Mapped attributes are just always quirky.
+
+            m_paddingDecl->setProperty( CSSPropertyPaddingTop, paddingValue, false );
+            m_paddingDecl->setProperty( CSSPropertyPaddingRight, paddingValue, false );
+            m_paddingDecl->setProperty( CSSPropertyPaddingBottom, paddingValue, false );
+            m_paddingDecl->setProperty( CSSPropertyPaddingLeft, paddingValue, false );
         }
-        setMappedAttributeDecl(eUniversal, cellpaddingAttr, paddingValue, m_paddingDecl.get());
-        m_paddingDecl->setParent(0);
-        m_paddingDecl->setNode(0);
-        m_paddingDecl->setMappedState(eUniversal, cellpaddingAttr, paddingValue);
+
+        setMappedAttributeDecl( eUniversal, cellpaddingAttr, paddingValue, m_paddingDecl.get() );
+        m_paddingDecl->setParent( 0 );
+        m_paddingDecl->setNode( 0 );
+        m_paddingDecl->setMappedState( eUniversal, cellpaddingAttr, paddingValue );
     }
-    
-    results.append(m_paddingDecl.get());
+
+    results.append( m_paddingDecl.get() );
 }
 
-void HTMLTableElement::addSharedGroupDecls(bool rows, Vector<CSSMutableStyleDeclaration*>& results)
+void HTMLTableElement::addSharedGroupDecls( bool rows, Vector<CSSMutableStyleDeclaration *> &results )
 {
-    if (m_rulesAttr != GroupsRules)
+    if ( m_rulesAttr != GroupsRules )
+    {
         return;
+    }
 
     AtomicString rulesValue = rows ? "rowgroups" : "colgroups";
-    CSSMappedAttributeDeclaration* decl = getMappedAttributeDecl(ePersistent, rulesAttr, rulesValue);
-    if (!decl) {
+    CSSMappedAttributeDeclaration *decl = getMappedAttributeDecl( ePersistent, rulesAttr, rulesValue );
+
+    if ( !decl )
+    {
         decl = CSSMappedAttributeDeclaration::create().releaseRef(); // This single ref pins us in the table until the document dies.
-        decl->setParent(document()->elementSheet());
-        decl->setNode(this);
-        decl->setStrictParsing(false); // Mapped attributes are just always quirky.
-        
-        if (rows) {
-            decl->setProperty(CSSPropertyBorderTopWidth, CSSValueThin, false);
-            decl->setProperty(CSSPropertyBorderBottomWidth, CSSValueThin, false);
-            decl->setProperty(CSSPropertyBorderTopStyle, CSSValueSolid, false);
-            decl->setProperty(CSSPropertyBorderBottomStyle, CSSValueSolid, false);
-        } else {
-            decl->setProperty(CSSPropertyBorderLeftWidth, CSSValueThin, false);
-            decl->setProperty(CSSPropertyBorderRightWidth, CSSValueThin, false);
-            decl->setProperty(CSSPropertyBorderLeftStyle, CSSValueSolid, false);
-            decl->setProperty(CSSPropertyBorderRightStyle, CSSValueSolid, false);
+        decl->setParent( document()->elementSheet() );
+        decl->setNode( this );
+        decl->setStrictParsing( false ); // Mapped attributes are just always quirky.
+
+        if ( rows )
+        {
+            decl->setProperty( CSSPropertyBorderTopWidth, CSSValueThin, false );
+            decl->setProperty( CSSPropertyBorderBottomWidth, CSSValueThin, false );
+            decl->setProperty( CSSPropertyBorderTopStyle, CSSValueSolid, false );
+            decl->setProperty( CSSPropertyBorderBottomStyle, CSSValueSolid, false );
+        }
+        else
+        {
+            decl->setProperty( CSSPropertyBorderLeftWidth, CSSValueThin, false );
+            decl->setProperty( CSSPropertyBorderRightWidth, CSSValueThin, false );
+            decl->setProperty( CSSPropertyBorderLeftStyle, CSSValueSolid, false );
+            decl->setProperty( CSSPropertyBorderRightStyle, CSSValueSolid, false );
         }
 
-        setMappedAttributeDecl(ePersistent, rulesAttr, rulesValue, decl);
-        decl->setParent(0);
-        decl->setNode(0);
-        decl->setMappedState(ePersistent, rulesAttr, rulesValue);
+        setMappedAttributeDecl( ePersistent, rulesAttr, rulesValue, decl );
+        decl->setParent( 0 );
+        decl->setNode( 0 );
+        decl->setMappedState( ePersistent, rulesAttr, rulesValue );
     }
 
-    results.append(decl);
+    results.append( decl );
 }
 
 void HTMLTableElement::attach()
 {
-    ASSERT(!attached());
+    ASSERT( !attached() );
     HTMLElement::attach();
 }
 
-bool HTMLTableElement::isURLAttribute(Attribute *attr) const
+bool HTMLTableElement::isURLAttribute( Attribute *attr ) const
 {
     return attr->name() == backgroundAttr;
 }
 
 PassRefPtr<HTMLCollection> HTMLTableElement::rows()
 {
-    return HTMLTableRowsCollection::create(this);
+    return HTMLTableRowsCollection::create( this );
 }
 
 PassRefPtr<HTMLCollection> HTMLTableElement::tBodies()
 {
-    return HTMLCollection::create(this, TableTBodies);
+    return HTMLCollection::create( this, TableTBodies );
 }
 
 String HTMLTableElement::rules() const
 {
-    return getAttribute(rulesAttr);
+    return getAttribute( rulesAttr );
 }
 
 String HTMLTableElement::summary() const
 {
-    return getAttribute(summaryAttr);
+    return getAttribute( summaryAttr );
 }
 
-void HTMLTableElement::addSubresourceAttributeURLs(ListHashSet<KURL>& urls) const
+void HTMLTableElement::addSubresourceAttributeURLs( ListHashSet<KURL> &urls ) const
 {
-    HTMLElement::addSubresourceAttributeURLs(urls);
+    HTMLElement::addSubresourceAttributeURLs( urls );
 
-    addSubresourceURL(urls, document()->completeURL(getAttribute(backgroundAttr)));
+    addSubresourceURL( urls, document()->completeURL( getAttribute( backgroundAttr ) ) );
 }
 
 }

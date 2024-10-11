@@ -32,131 +32,139 @@
 #include <qdebug_p.h>
 
 QTouchDevice::QTouchDevice()
-   : d(new QTouchDevicePrivate)
+    : d( new QTouchDevicePrivate )
 {
 }
 
 QTouchDevice::~QTouchDevice()
 {
-   delete d;
+    delete d;
 }
 
 QTouchDevice::DeviceType QTouchDevice::type() const
 {
-   return d->type;
+    return d->type;
 }
 
 
 QTouchDevice::Capabilities QTouchDevice::capabilities() const
 {
-   return d->caps;
+    return d->caps;
 }
 
 int QTouchDevice::maximumTouchPoints() const
 {
-   return d->maxTouchPoints;
+    return d->maxTouchPoints;
 }
 
 QString QTouchDevice::name() const
 {
-   return d->name;
+    return d->name;
 }
 
-void QTouchDevice::setType(DeviceType devType)
+void QTouchDevice::setType( DeviceType devType )
 {
-   d->type = devType;
+    d->type = devType;
 }
 
-void QTouchDevice::setCapabilities(Capabilities caps)
+void QTouchDevice::setCapabilities( Capabilities caps )
 {
-   d->caps = caps;
+    d->caps = caps;
 }
 
-void QTouchDevice::setMaximumTouchPoints(int max)
+void QTouchDevice::setMaximumTouchPoints( int max )
 {
-   d->maxTouchPoints = max;
+    d->maxTouchPoints = max;
 }
 
-void QTouchDevice::setName(const QString &name)
+void QTouchDevice::setName( const QString &name )
 {
-   d->name = name;
+    d->name = name;
 }
 
 using TouchDevices = QList<const QTouchDevice *>;
 
 static TouchDevices *deviceList()
 {
-   static TouchDevices retval;
-   return &retval;
+    static TouchDevices retval;
+    return &retval;
 }
 
 static QMutex devicesMutex;
 
 static void cleanupDevicesList()
 {
-   QMutexLocker lock(&devicesMutex);
+    QMutexLocker lock( &devicesMutex );
 
-   for (auto item : *deviceList()) {
-      delete item;
-   }
+    for ( auto item : *deviceList() )
+    {
+        delete item;
+    }
 
-   deviceList()->clear();
+    deviceList()->clear();
 }
 
 
 QList<const QTouchDevice *> QTouchDevice::devices()
 {
-   QMutexLocker lock(&devicesMutex);
-   return *deviceList();
+    QMutexLocker lock( &devicesMutex );
+    return *deviceList();
 }
 
-bool QTouchDevicePrivate::isRegistered(const QTouchDevice *dev)
+bool QTouchDevicePrivate::isRegistered( const QTouchDevice *dev )
 {
-   QMutexLocker locker(&devicesMutex);
-   return deviceList()->contains(dev);
+    QMutexLocker locker( &devicesMutex );
+    return deviceList()->contains( dev );
 }
 
-void QTouchDevicePrivate::registerDevice(const QTouchDevice *dev)
+void QTouchDevicePrivate::registerDevice( const QTouchDevice *dev )
 {
-   QMutexLocker lock(&devicesMutex);
-   if (deviceList()->isEmpty()) {
-      qAddPostRoutine(cleanupDevicesList);
-   }
-   deviceList()->append(dev);
+    QMutexLocker lock( &devicesMutex );
+
+    if ( deviceList()->isEmpty() )
+    {
+        qAddPostRoutine( cleanupDevicesList );
+    }
+
+    deviceList()->append( dev );
 }
 
-void QTouchDevicePrivate::unregisterDevice(const QTouchDevice *dev)
+void QTouchDevicePrivate::unregisterDevice( const QTouchDevice *dev )
 {
-   QMutexLocker lock(&devicesMutex);
-   bool wasRemoved = deviceList()->removeOne(dev);
+    QMutexLocker lock( &devicesMutex );
+    bool wasRemoved = deviceList()->removeOne( dev );
 
-   if (wasRemoved && deviceList()->isEmpty()) {
-      qRemovePostRoutine(cleanupDevicesList);
-   }
+    if ( wasRemoved && deviceList()->isEmpty() )
+    {
+        qRemovePostRoutine( cleanupDevicesList );
+    }
 }
 
-QDebug operator<<(QDebug debug, const QTouchDevice *device)
+QDebug operator<<( QDebug debug, const QTouchDevice *device )
 {
-   QDebugStateSaver saver(debug);
-   debug.nospace();
-   debug.noquote();
+    QDebugStateSaver saver( debug );
+    debug.nospace();
+    debug.noquote();
 
-   debug << "QTouchDevice(";
+    debug << "QTouchDevice(";
 
-   if (device) {
-      debug << '"' << device->name() << "\", type=";
+    if ( device )
+    {
+        debug << '"' << device->name() << "\", type=";
 
-      QtDebugUtils::formatQEnum(debug, device->type());
-      debug << ", capabilities=";
+        QtDebugUtils::formatQEnum( debug, device->type() );
+        debug << ", capabilities=";
 
-      QtDebugUtils::formatQFlags(debug, device->capabilities());
-      debug << ", maximumTouchPoints=" << device->maximumTouchPoints();
+        QtDebugUtils::formatQFlags( debug, device->capabilities() );
+        debug << ", maximumTouchPoints=" << device->maximumTouchPoints();
 
-   } else {
-      debug << '0';
-   }
+    }
+    else
+    {
+        debug << '0';
+    }
 
-   debug << ')';
+    debug << ')';
 
-   return debug;
+    return debug;
 }

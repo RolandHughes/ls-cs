@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSContextRefPrivate_h
@@ -44,7 +44,7 @@ extern "C" {
 @param ctx The JSContext whose global context you want to get.
 @result ctx's global context.
 */
-JS_EXPORT JSGlobalContextRef JSContextGetGlobalContext(JSContextRef ctx);
+JS_EXPORT JSGlobalContextRef JSContextGetGlobalContext( JSContextRef ctx );
 
 #ifdef __cplusplus
 }

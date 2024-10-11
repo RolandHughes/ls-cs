@@ -28,14 +28,15 @@
 
 #include <WebCore/SharedBuffer.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebProtectionSpace::WebProtectionSpace(const WebCore::ProtectionSpace& coreProtectionSpace)
-    : m_coreProtectionSpace(coreProtectionSpace)
+WebProtectionSpace::WebProtectionSpace( const WebCore::ProtectionSpace &coreProtectionSpace )
+    : m_coreProtectionSpace( coreProtectionSpace )
 {
 }
 
-const String& WebProtectionSpace::host() const
+const String &WebProtectionSpace::host() const
 {
     return m_coreProtectionSpace.host();
 }
@@ -45,7 +46,7 @@ int WebProtectionSpace::port() const
     return m_coreProtectionSpace.port();
 }
 
-const String& WebProtectionSpace::realm() const
+const String &WebProtectionSpace::realm() const
 {
     return m_coreProtectionSpace.realm();
 }

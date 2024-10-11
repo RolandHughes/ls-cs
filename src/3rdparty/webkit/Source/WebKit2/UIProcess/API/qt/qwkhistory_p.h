@@ -31,32 +31,35 @@
 #include <WebKit2/WKRetainPtr.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 class WebBackForwardList;
 }
 
 class QWKHistory;
 
-class QWEBKIT_EXPORT QWKHistoryItemPrivate : public QSharedData {
+class QWEBKIT_EXPORT QWKHistoryItemPrivate : public QSharedData
+{
 public:
-       ~QWKHistoryItemPrivate();
+    ~QWKHistoryItemPrivate();
 private:
-    QWKHistoryItemPrivate(WKBackForwardListItemRef listItem);
+    QWKHistoryItemPrivate( WKBackForwardListItemRef listItem );
     WKRetainPtr<WKBackForwardListItemRef> m_backForwardListItem;
 
     friend class QWKHistory;
     friend class QWKHistoryItem;
 };
 
-class QWEBKIT_EXPORT QWKHistoryPrivate {
+class QWEBKIT_EXPORT QWKHistoryPrivate
+{
 public:
-    static QWKHistory* createHistory(WebKit::WebBackForwardList* list);
+    static QWKHistory *createHistory( WebKit::WebBackForwardList *list );
 
 private:
-    QWKHistoryPrivate(WebKit::WebBackForwardList* list);
+    QWKHistoryPrivate( WebKit::WebBackForwardList *list );
     ~QWKHistoryPrivate();
 
-    WebKit::WebBackForwardList* m_backForwardList;
+    WebKit::WebBackForwardList *m_backForwardList;
 
     friend class QWKHistory;
 };

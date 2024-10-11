@@ -26,24 +26,28 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-template <typename T> class RefCountedGDIHandle : public RefCounted<RefCountedGDIHandle<T> > {
+template <typename T> class RefCountedGDIHandle : public RefCounted<RefCountedGDIHandle<T> >
+{
 public:
-    static PassRefPtr<RefCountedGDIHandle> create(T handle)
+    static PassRefPtr<RefCountedGDIHandle> create( T handle )
     {
-        return adoptRef(new RefCountedGDIHandle<T>(handle));
+        return adoptRef( new RefCountedGDIHandle<T>( handle ) );
     }
 
     static PassRefPtr<RefCountedGDIHandle<T> > createDeleted()
     {
-        return adoptRef(new RefCountedGDIHandle<T>(reinterpret_cast<T>(-1)));
+        return adoptRef( new RefCountedGDIHandle<T>( reinterpret_cast<T>( -1 ) ) );
     }
 
     ~RefCountedGDIHandle()
     {
-        if (m_handle != reinterpret_cast<T>(-1))
-            WTF::deleteOwnedPtr(m_handle);
+        if ( m_handle != reinterpret_cast<T>( -1 ) )
+        {
+            WTF::deleteOwnedPtr( m_handle );
+        }
     }
 
     T handle() const
@@ -53,12 +57,12 @@ public:
 
     unsigned hash() const
     {
-        return WTF::PtrHash<T>::hash(m_handle);
+        return WTF::PtrHash<T>::hash( m_handle );
     }
 
 private:
-    RefCountedGDIHandle(T handle)
-        : m_handle(handle)
+    RefCountedGDIHandle( T handle )
+        : m_handle( handle )
     {
     }
 

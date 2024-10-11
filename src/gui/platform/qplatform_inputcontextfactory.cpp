@@ -33,20 +33,20 @@
 #include <stdlib.h>
 
 #if ! defined(QT_NO_SETTINGS)
-   static QFactoryLoader *loader()
-   {
-      static QFactoryLoader retval(QPlatformInputContextInterface_ID, "/platforminputcontexts", Qt::CaseInsensitive);
-      return &retval;
-   }
+static QFactoryLoader *loader()
+{
+    static QFactoryLoader retval( QPlatformInputContextInterface_ID, "/platforminputcontexts", Qt::CaseInsensitive );
+    return &retval;
+}
 #endif
 
 QStringList QPlatformInputContextFactory::keys()
 {
 
 #if ! defined(QT_NO_SETTINGS)
-   auto keySet = loader()->keySet();
-   QStringList retval(keySet.toList());
-   return retval;
+    auto keySet = loader()->keySet();
+    QStringList retval( keySet.toList() );
+    return retval;
 
 #else
     return QStringList();
@@ -56,25 +56,29 @@ QStringList QPlatformInputContextFactory::keys()
 
 QString QPlatformInputContextFactory::requested()
 {
-    QByteArray env = qgetenv("QT_IM_MODULE");
-    return env.isNull() ? QString() : QString::fromUtf8(env);
+    QByteArray env = qgetenv( "QT_IM_MODULE" );
+    return env.isNull() ? QString() : QString::fromUtf8( env );
 }
 
-QPlatformInputContext *QPlatformInputContextFactory::create(const QString& key)
+QPlatformInputContext *QPlatformInputContextFactory::create( const QString &key )
 {
 #if ! defined(QT_NO_SETTINGS)
-    if (! key.isEmpty()) {
-        QStringList paramList  = key.split(':');
+
+    if ( ! key.isEmpty() )
+    {
+        QStringList paramList  = key.split( ':' );
         const QString platform = paramList.takeFirst().toLower();
 
-        QPlatformInputContext *ic = cs_load_plugin<QPlatformInputContext, QPlatformInputContextPlugin> (loader(), platform, paramList);
+        QPlatformInputContext *ic = lscs_load_plugin<QPlatformInputContext, QPlatformInputContextPlugin> ( loader(), platform, paramList );
 
-        if (ic && ic->isValid()) {
+        if ( ic && ic->isValid() )
+        {
             return ic;
         }
 
         delete ic;
     }
+
 #endif
 
     return nullptr;
@@ -82,6 +86,6 @@ QPlatformInputContext *QPlatformInputContextFactory::create(const QString& key)
 
 QPlatformInputContext *QPlatformInputContextFactory::create()
 {
-   return create(requested());
+    return create( requested() );
 }
 

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ParserArena_h
@@ -29,103 +29,120 @@
 #include "Identifier.h"
 #include <wtf/SegmentedVector.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class ParserArenaDeletable;
-    class ParserArenaRefCounted;
+class ParserArenaDeletable;
+class ParserArenaRefCounted;
 
-    class IdentifierArena {
-        WTF_MAKE_FAST_ALLOCATED;
-    public:
-        ALWAYS_INLINE const Identifier& makeIdentifier(JSGlobalData*, const UChar* characters, size_t length);
-        const Identifier& makeNumericIdentifier(JSGlobalData*, double number);
+class IdentifierArena
+{
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    ALWAYS_INLINE const Identifier &makeIdentifier( JSGlobalData *, const UChar *characters, size_t length );
+    const Identifier &makeNumericIdentifier( JSGlobalData *, double number );
 
-        void clear() { m_identifiers.clear(); }
-        bool isEmpty() const { return m_identifiers.isEmpty(); }
-
-    private:
-        typedef SegmentedVector<Identifier, 64> IdentifierVector;
-        IdentifierVector m_identifiers;
-    };
-
-    ALWAYS_INLINE const Identifier& IdentifierArena::makeIdentifier(JSGlobalData* globalData, const UChar* characters, size_t length)
+    void clear()
     {
-        m_identifiers.append(Identifier(globalData, characters, length));
-        return m_identifiers.last();
+        m_identifiers.clear();
+    }
+    bool isEmpty() const
+    {
+        return m_identifiers.isEmpty();
     }
 
-    inline const Identifier& IdentifierArena::makeNumericIdentifier(JSGlobalData* globalData, double number)
+private:
+    typedef SegmentedVector<Identifier, 64> IdentifierVector;
+    IdentifierVector m_identifiers;
+};
+
+ALWAYS_INLINE const Identifier &IdentifierArena::makeIdentifier( JSGlobalData *globalData, const UChar *characters,
+        size_t length )
+{
+    m_identifiers.append( Identifier( globalData, characters, length ) );
+    return m_identifiers.last();
+}
+
+inline const Identifier &IdentifierArena::makeNumericIdentifier( JSGlobalData *globalData, double number )
+{
+    m_identifiers.append( Identifier( globalData, UString::number( number ) ) );
+    return m_identifiers.last();
+}
+
+class ParserArena
+{
+    WTF_MAKE_NONCOPYABLE( ParserArena );
+public:
+    ParserArena();
+    ~ParserArena();
+
+    void swap( ParserArena &otherArena )
     {
-        m_identifiers.append(Identifier(globalData, UString::number(number)));
-        return m_identifiers.last();
+        std::swap( m_freeableMemory, otherArena.m_freeableMemory );
+        std::swap( m_freeablePoolEnd, otherArena.m_freeablePoolEnd );
+        m_identifierArena.swap( otherArena.m_identifierArena );
+        m_freeablePools.swap( otherArena.m_freeablePools );
+        m_deletableObjects.swap( otherArena.m_deletableObjects );
+        m_refCountedObjects.swap( otherArena.m_refCountedObjects );
     }
 
-    class ParserArena {
-        WTF_MAKE_NONCOPYABLE(ParserArena);
-    public:
-        ParserArena();
-        ~ParserArena();
+    void *allocateFreeable( size_t size )
+    {
+        ASSERT( size );
+        ASSERT( size <= freeablePoolSize );
+        size_t alignedSize = alignSize( size );
+        ASSERT( alignedSize <= freeablePoolSize );
 
-        void swap(ParserArena& otherArena)
+        if ( UNLIKELY( static_cast<size_t>( m_freeablePoolEnd - m_freeableMemory ) < alignedSize ) )
         {
-            std::swap(m_freeableMemory, otherArena.m_freeableMemory);
-            std::swap(m_freeablePoolEnd, otherArena.m_freeablePoolEnd);
-            m_identifierArena.swap(otherArena.m_identifierArena);
-            m_freeablePools.swap(otherArena.m_freeablePools);
-            m_deletableObjects.swap(otherArena.m_deletableObjects);
-            m_refCountedObjects.swap(otherArena.m_refCountedObjects);
+            allocateFreeablePool();
         }
 
-        void* allocateFreeable(size_t size)
-        {
-            ASSERT(size);
-            ASSERT(size <= freeablePoolSize);
-            size_t alignedSize = alignSize(size);
-            ASSERT(alignedSize <= freeablePoolSize);
-            if (UNLIKELY(static_cast<size_t>(m_freeablePoolEnd - m_freeableMemory) < alignedSize))
-                allocateFreeablePool();
-            void* block = m_freeableMemory;
-            m_freeableMemory += alignedSize;
-            return block;
-        }
+        void *block = m_freeableMemory;
+        m_freeableMemory += alignedSize;
+        return block;
+    }
 
-        void* allocateDeletable(size_t size)
-        {
-            ParserArenaDeletable* deletable = static_cast<ParserArenaDeletable*>(fastMalloc(size));
-            m_deletableObjects.append(deletable);
-            return deletable;
-        }
+    void *allocateDeletable( size_t size )
+    {
+        ParserArenaDeletable *deletable = static_cast<ParserArenaDeletable *>( fastMalloc( size ) );
+        m_deletableObjects.append( deletable );
+        return deletable;
+    }
 
-        void derefWithArena(PassRefPtr<ParserArenaRefCounted>);
-        bool contains(ParserArenaRefCounted*) const;
-        ParserArenaRefCounted* last() const;
-        void removeLast();
+    void derefWithArena( PassRefPtr<ParserArenaRefCounted> );
+    bool contains( ParserArenaRefCounted * ) const;
+    ParserArenaRefCounted *last() const;
+    void removeLast();
 
-        bool isEmpty() const;
-        void reset();
+    bool isEmpty() const;
+    void reset();
 
-        IdentifierArena& identifierArena() { return *m_identifierArena; }
+    IdentifierArena &identifierArena()
+    {
+        return *m_identifierArena;
+    }
 
-    private:
-        static const size_t freeablePoolSize = 8000;
+private:
+    static const size_t freeablePoolSize = 8000;
 
-        static size_t alignSize(size_t size)
-        {
-            return (size + sizeof(WTF::AllocAlignmentInteger) - 1) & ~(sizeof(WTF::AllocAlignmentInteger) - 1);
-        }
+    static size_t alignSize( size_t size )
+    {
+        return ( size + sizeof( WTF::AllocAlignmentInteger ) - 1 ) & ~( sizeof( WTF::AllocAlignmentInteger ) - 1 );
+    }
 
-        void* freeablePool();
-        void allocateFreeablePool();
-        void deallocateObjects();
+    void *freeablePool();
+    void allocateFreeablePool();
+    void deallocateObjects();
 
-        char* m_freeableMemory;
-        char* m_freeablePoolEnd;
+    char *m_freeableMemory;
+    char *m_freeablePoolEnd;
 
-        OwnPtr<IdentifierArena> m_identifierArena;
-        Vector<void*> m_freeablePools;
-        Vector<ParserArenaDeletable*> m_deletableObjects;
-        Vector<RefPtr<ParserArenaRefCounted> > m_refCountedObjects;
-    };
+    OwnPtr<IdentifierArena> m_identifierArena;
+    Vector<void *> m_freeablePools;
+    Vector<ParserArenaDeletable *> m_deletableObjects;
+    Vector<RefPtr<ParserArenaRefCounted> > m_refCountedObjects;
+};
 
 }
 

@@ -34,7 +34,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBAny;
 class IDBCallbacks;
@@ -44,33 +45,38 @@ class IDBTransaction;
 class ScriptExecutionContext;
 class SerializedScriptValue;
 
-class IDBCursor : public RefCounted<IDBCursor> {
+class IDBCursor : public RefCounted<IDBCursor>
+{
 public:
-    enum Direction {
+    enum Direction
+    {
         NEXT = 0,
         NEXT_NO_DUPLICATE = 1,
         PREV = 2,
         PREV_NO_DUPLICATE = 3,
     };
-    static PassRefPtr<IDBCursor> create(PassRefPtr<IDBCursorBackendInterface>, IDBRequest*, IDBAny* source, IDBTransaction*);
+    static PassRefPtr<IDBCursor> create( PassRefPtr<IDBCursorBackendInterface>, IDBRequest *, IDBAny *source, IDBTransaction * );
     virtual ~IDBCursor();
 
     // FIXME: Try to modify the code generator so this is unneeded.
-    void continueFunction(ExceptionCode& ec) { continueFunction(0, ec); }
+    void continueFunction( ExceptionCode &ec )
+    {
+        continueFunction( 0, ec );
+    }
 
     // Implement the IDL
     unsigned short direction() const;
     PassRefPtr<IDBKey> key() const;
     PassRefPtr<IDBKey> primaryKey() const;
     PassRefPtr<SerializedScriptValue> value() const;
-    IDBAny* source() const;
+    IDBAny *source() const;
 
-    PassRefPtr<IDBRequest> update(ScriptExecutionContext*, PassRefPtr<SerializedScriptValue>, ExceptionCode&);
-    void continueFunction(PassRefPtr<IDBKey>, ExceptionCode&);
-    PassRefPtr<IDBRequest> deleteFunction(ScriptExecutionContext*, ExceptionCode&);
+    PassRefPtr<IDBRequest> update( ScriptExecutionContext *, PassRefPtr<SerializedScriptValue>, ExceptionCode & );
+    void continueFunction( PassRefPtr<IDBKey>, ExceptionCode & );
+    PassRefPtr<IDBRequest> deleteFunction( ScriptExecutionContext *, ExceptionCode & );
 
 protected:
-    IDBCursor(PassRefPtr<IDBCursorBackendInterface>, IDBRequest*, IDBAny* source, IDBTransaction*);
+    IDBCursor( PassRefPtr<IDBCursorBackendInterface>, IDBRequest *, IDBAny *source, IDBTransaction * );
 
 private:
     RefPtr<IDBCursorBackendInterface> m_backend;

@@ -27,29 +27,30 @@
 #include <QUrl>
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class DocumentConstructor : public SingleContainer
 {
- public:
-   DocumentConstructor(const Expression::Ptr &operand);
+public:
+    DocumentConstructor( const Expression::Ptr &operand );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   /**
-    * The first operand must be exactly one @c xs:string.
-    */
-   SequenceType::List expectedOperandTypes() const override;
+    /**
+     * The first operand must be exactly one @c xs:string.
+     */
+    SequenceType::List expectedOperandTypes() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   Properties properties() const override;
-   SequenceType::Ptr staticType() const override;
+    Properties properties() const override;
+    SequenceType::Ptr staticType() const override;
 
- private:
-   QUrl m_staticBaseURI;
+private:
+    QUrl m_staticBaseURI;
 };
 }
 

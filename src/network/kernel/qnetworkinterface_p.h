@@ -37,56 +37,56 @@
 
 class QNetworkAddressEntryPrivate
 {
- public:
-   QHostAddress address;
-   QNetmaskAddress netmask;
-   QHostAddress broadcast;
+public:
+    QHostAddress address;
+    QNetmaskAddress netmask;
+    QHostAddress broadcast;
 };
 
 class QNetworkInterfacePrivate: public QSharedData
 {
- public:
-   QNetworkInterfacePrivate()
-      : index(0), flags(Qt::EmptyFlag)
-   {
-   }
+public:
+    QNetworkInterfacePrivate()
+        : index( 0 ), flags( Qt::EmptyFlag )
+    {
+    }
 
-   ~QNetworkInterfacePrivate()
-   {
-   }
+    ~QNetworkInterfacePrivate()
+    {
+    }
 
-   int index;                                 // interface index, if know
-   QNetworkInterface::InterfaceFlags flags;
+    int index;                                 // interface index, if know
+    QNetworkInterface::InterfaceFlags flags;
 
-   QString name;
-   QString friendlyName;
-   QString hardwareAddress;
+    QString name;
+    QString friendlyName;
+    QString hardwareAddress;
 
-   QList<QNetworkAddressEntry> addressEntries;
+    QList<QNetworkAddressEntry> addressEntries;
 
-   static QString makeHwAddress(int len, uchar *data);
+    static QString makeHwAddress( int len, uchar *data );
 
- private:
-   // disallow copying -- avoid detaching
-   QNetworkInterfacePrivate &operator=(const QNetworkInterfacePrivate &other);
-   QNetworkInterfacePrivate(const QNetworkInterfacePrivate &other);
+private:
+    // disallow copying -- avoid detaching
+    QNetworkInterfacePrivate &operator=( const QNetworkInterfacePrivate &other );
+    QNetworkInterfacePrivate( const QNetworkInterfacePrivate &other );
 };
 
 class QNetworkInterfaceManager
 {
- public:
-   QNetworkInterfaceManager();
-   ~QNetworkInterfaceManager();
+public:
+    QNetworkInterfaceManager();
+    ~QNetworkInterfaceManager();
 
-   QSharedDataPointer<QNetworkInterfacePrivate> interfaceFromName(const QString &name);
-   QSharedDataPointer<QNetworkInterfacePrivate> interfaceFromIndex(int index);
-   QList<QSharedDataPointer<QNetworkInterfacePrivate> > allInterfaces();
+    QSharedDataPointer<QNetworkInterfacePrivate> interfaceFromName( const QString &name );
+    QSharedDataPointer<QNetworkInterfacePrivate> interfaceFromIndex( int index );
+    QList<QSharedDataPointer<QNetworkInterfacePrivate> > allInterfaces();
 
-   // convenience
-   QSharedDataPointer<QNetworkInterfacePrivate> empty;
+    // convenience
+    QSharedDataPointer<QNetworkInterfacePrivate> empty;
 
- private:
-   QList<QNetworkInterfacePrivate *> scan();
+private:
+    QList<QNetworkInterfacePrivate *> scan();
 };
 
 #endif // QT_NO_NETWORKINTERFACE

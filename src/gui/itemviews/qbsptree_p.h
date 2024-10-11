@@ -29,91 +29,102 @@
 
 class QBspTree
 {
- public:
+public:
 
-   struct Node {
-      enum Type {
-         None            = 0,
-         VerticalPlane   = 1,
-         HorizontalPlane = 2,
-         Both            = 3
-      };
+    struct Node
+    {
+        enum Type
+        {
+            None            = 0,
+            VerticalPlane   = 1,
+            HorizontalPlane = 2,
+            Both            = 3
+        };
 
-      Node()
-         : pos(0), type(None)
-      { }
+        Node()
+            : pos( 0 ), type( None )
+        { }
 
-      int pos;
-      Type type;
-   };
+        int pos;
+        Type type;
+    };
 
-   typedef Node::Type NodeType;
+    typedef Node::Type NodeType;
 
-   struct Data {
-      Data(void *p)
-         : ptr(p)
-      { }
+    struct Data
+    {
+        Data( void *p )
+            : ptr( p )
+        { }
 
-      Data(int n)
-         : i(n)
-      { }
+        Data( int n )
+            : i( n )
+        { }
 
-      union {
-         void *ptr;
-         int i;
-      };
-   };
+        union
+            {
+                void *ptr;
+                int i;
+            };
+    };
 
-   typedef QBspTree::Data QBspTreeData;
-   typedef void callback(QVector<int> &leaf, const QRect &area, uint visited, QBspTreeData data);
+    typedef QBspTree::Data QBspTreeData;
+    typedef void callback( QVector<int> &leaf, const QRect &area, uint visited, QBspTreeData data );
 
-   QBspTree();
+    QBspTree();
 
-   void create(int n, int d = -1);
-   void destroy();
+    void create( int n, int d = -1 );
+    void destroy();
 
-   void init(const QRect &area, NodeType type) {
-      init(area, depth, type, 0);
-   }
+    void init( const QRect &area, NodeType type )
+    {
+        init( area, depth, type, 0 );
+    }
 
-   void climbTree(const QRect &rect, callback *function, QBspTreeData data);
+    void climbTree( const QRect &rect, callback *function, QBspTreeData data );
 
-   int leafCount() const {
-      return leaves.count();
-   }
+    int leafCount() const
+    {
+        return leaves.count();
+    }
 
-   QVector<int> &leaf(int i) {
-      return leaves[i];
-   }
+    QVector<int> &leaf( int i )
+    {
+        return leaves[i];
+    }
 
-   void insertLeaf(const QRect &r, int i) {
-      climbTree(r, &insert, i, 0);
-   }
+    void insertLeaf( const QRect &r, int i )
+    {
+        climbTree( r, &insert, i, 0 );
+    }
 
-   void removeLeaf(const QRect &r, int i) {
-      climbTree(r, &remove, i, 0);
-   }
+    void removeLeaf( const QRect &r, int i )
+    {
+        climbTree( r, &remove, i, 0 );
+    }
 
- protected:
-   void init(const QRect &area, int depth, NodeType type, int index);
-   void climbTree(const QRect &rect, callback *function, QBspTreeData data, int index);
+protected:
+    void init( const QRect &area, int depth, NodeType type, int index );
+    void climbTree( const QRect &rect, callback *function, QBspTreeData data, int index );
 
-   int parentIndex(int i) const {
-      return (i & 1) ? ((i - 1) / 2) : ((i - 2) / 2);
-   }
+    int parentIndex( int i ) const
+    {
+        return ( i & 1 ) ? ( ( i - 1 ) / 2 ) : ( ( i - 2 ) / 2 );
+    }
 
-   int firstChildIndex(int i) const {
-      return ((i * 2) + 1);
-   }
+    int firstChildIndex( int i ) const
+    {
+        return ( ( i * 2 ) + 1 );
+    }
 
-   static void insert(QVector<int> &leaf, const QRect &area, uint visited, QBspTreeData data);
-   static void remove(QVector<int> &leaf, const QRect &area, uint visited, QBspTreeData data);
+    static void insert( QVector<int> &leaf, const QRect &area, uint visited, QBspTreeData data );
+    static void remove( QVector<int> &leaf, const QRect &area, uint visited, QBspTreeData data );
 
- private:
-   uint depth;
-   mutable uint visited;
-   QVector<Node> nodes;
-   mutable QVector< QVector<int>> leaves; // the leaves are just indices into the items
+private:
+    uint depth;
+    mutable uint visited;
+    QVector<Node> nodes;
+    mutable QVector< QVector<int>> leaves; // the leaves are just indices into the items
 };
 
 #endif // QBSPTREE_P_H

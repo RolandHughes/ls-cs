@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef AccessibilityMenuList_h
@@ -28,27 +28,44 @@
 
 #include "AccessibilityRenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AccessibilityMenuList;
 class AccessibilityMenuListPopup;
 class HTMLOptionElement;
 class RenderMenuList;
 
-class AccessibilityMenuList : public AccessibilityRenderObject {
+class AccessibilityMenuList : public AccessibilityRenderObject
+{
 public:
-    static PassRefPtr<AccessibilityMenuList> create(RenderMenuList* renderer) { return adoptRef(new AccessibilityMenuList(renderer)); }
+    static PassRefPtr<AccessibilityMenuList> create( RenderMenuList *renderer )
+    {
+        return adoptRef( new AccessibilityMenuList( renderer ) );
+    }
 
     virtual bool isCollapsed() const;
     virtual bool press() const;
 
 private:
-    AccessibilityMenuList(RenderMenuList*);
+    AccessibilityMenuList( RenderMenuList * );
 
-    virtual bool isMenuList() const { return true; }
-    virtual AccessibilityRole roleValue() const { return PopUpButtonRole; }
-    virtual bool accessibilityIsIgnored() const { return false; }
-    virtual bool canSetFocusAttribute() const { return true; }
+    virtual bool isMenuList() const
+    {
+        return true;
+    }
+    virtual AccessibilityRole roleValue() const
+    {
+        return PopUpButtonRole;
+    }
+    virtual bool accessibilityIsIgnored() const
+    {
+        return false;
+    }
+    virtual bool canSetFocusAttribute() const
+    {
+        return true;
+    }
 
     virtual void addChildren();
     virtual void childrenChanged();

@@ -29,14 +29,17 @@
 #include "WebProcess.h"
 #include "InjectedBundle.h"
 
-namespace WebKit {
-
-PassRefPtr<WebPageGroupProxy> WebPageGroupProxy::create(const WebPageGroupData& data)
+namespace WebKit
 {
-    RefPtr<WebPageGroupProxy> pageGroup = adoptRef(new WebPageGroupProxy(data));
-    
-    if (pageGroup->isVisibleToInjectedBundle() && WebProcess::shared().injectedBundle())
-        WebProcess::shared().injectedBundle()->didInitializePageGroup(pageGroup.get());
+
+PassRefPtr<WebPageGroupProxy> WebPageGroupProxy::create( const WebPageGroupData &data )
+{
+    RefPtr<WebPageGroupProxy> pageGroup = adoptRef( new WebPageGroupProxy( data ) );
+
+    if ( pageGroup->isVisibleToInjectedBundle() && WebProcess::shared().injectedBundle() )
+    {
+        WebProcess::shared().injectedBundle()->didInitializePageGroup( pageGroup.get() );
+    }
 
     return pageGroup.release();
 }

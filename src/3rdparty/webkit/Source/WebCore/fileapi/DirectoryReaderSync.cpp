@@ -42,26 +42,33 @@
 #include "FileException.h"
 #include "SyncCallbackHelper.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DirectoryReaderSync::DirectoryReaderSync(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : DirectoryReaderBase(fileSystem, fullPath)
+DirectoryReaderSync::DirectoryReaderSync( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : DirectoryReaderBase( fileSystem, fullPath )
 {
 }
 
-PassRefPtr<EntryArraySync> DirectoryReaderSync::readEntries(ExceptionCode& ec)
+PassRefPtr<EntryArraySync> DirectoryReaderSync::readEntries( ExceptionCode &ec )
 {
     ec = 0;
-    if (!m_hasMoreEntries)
-        return EntryArraySync::create();
 
-    EntriesSyncCallbackHelper helper(m_fileSystem->asyncFileSystem());
-    if (!m_fileSystem->readDirectory(this, m_fullPath, helper.successCallback(), helper.errorCallback())) {
+    if ( !m_hasMoreEntries )
+    {
+        return EntryArraySync::create();
+    }
+
+    EntriesSyncCallbackHelper helper( m_fileSystem->asyncFileSystem() );
+
+    if ( !m_fileSystem->readDirectory( this, m_fullPath, helper.successCallback(), helper.errorCallback() ) )
+    {
         ec = FileException::INVALID_MODIFICATION_ERR;
-        setHasMoreEntries(false);
+        setHasMoreEntries( false );
         return 0;
     }
-    return helper.getResult(ec);
+
+    return helper.getResult( ec );
 }
 
 } // namespace

@@ -32,80 +32,102 @@
 #include "ShadowContentElement.h"
 #include "ShadowRoot.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-class SummaryContentElement : public ShadowContentElement {
+class SummaryContentElement : public ShadowContentElement
+{
 public:
-    static PassRefPtr<SummaryContentElement> create(Document*);
+    static PassRefPtr<SummaryContentElement> create( Document * );
 
 private:
-    SummaryContentElement(Document* document)
-        : ShadowContentElement(document)
+    SummaryContentElement( Document *document )
+        : ShadowContentElement( document )
     {
     }
 
-    virtual bool shouldInclude(Node*) { return true; }
+    virtual bool shouldInclude( Node * )
+    {
+        return true;
+    }
 };
 
-PassRefPtr<SummaryContentElement> SummaryContentElement::create(Document* document)
+PassRefPtr<SummaryContentElement> SummaryContentElement::create( Document *document )
 {
-    return adoptRef(new SummaryContentElement(document));
+    return adoptRef( new SummaryContentElement( document ) );
 }
 
-PassRefPtr<HTMLSummaryElement> HTMLSummaryElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLSummaryElement> HTMLSummaryElement::create( const QualifiedName &tagName, Document *document )
 {
-    RefPtr<HTMLSummaryElement> result = adoptRef(new HTMLSummaryElement(tagName, document));
+    RefPtr<HTMLSummaryElement> result = adoptRef( new HTMLSummaryElement( tagName, document ) );
     result->createShadowSubtree();
     return result;
 }
 
-HTMLSummaryElement::HTMLSummaryElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLSummaryElement::HTMLSummaryElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(summaryTag));
+    ASSERT( hasTagName( summaryTag ) );
 }
 
-RenderObject* HTMLSummaryElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *HTMLSummaryElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderSummary(this);
+    return new ( arena ) RenderSummary( this );
 }
 
 void HTMLSummaryElement::createShadowSubtree()
 {
     ExceptionCode ec = 0;
-    ensureShadowRoot()->appendChild(DetailsMarkerControl::create(document()), ec, true);
-    ensureShadowRoot()->appendChild(SummaryContentElement::create(document()), ec, true);
+    ensureShadowRoot()->appendChild( DetailsMarkerControl::create( document() ), ec, true );
+    ensureShadowRoot()->appendChild( SummaryContentElement::create( document() ), ec, true );
 }
 
-HTMLDetailsElement* HTMLSummaryElement::detailsElement() const
+HTMLDetailsElement *HTMLSummaryElement::detailsElement() const
 {
-    Node* mayDetails = const_cast<HTMLSummaryElement*>(this)->parentNodeForRenderingAndStyle();
-    if (!mayDetails || !mayDetails->hasTagName(detailsTag))
+    Node *mayDetails = const_cast<HTMLSummaryElement *>( this )->parentNodeForRenderingAndStyle();
+
+    if ( !mayDetails || !mayDetails->hasTagName( detailsTag ) )
+    {
         return 0;
-    return static_cast<HTMLDetailsElement*>(mayDetails);
+    }
+
+    return static_cast<HTMLDetailsElement *>( mayDetails );
 }
 
 bool HTMLSummaryElement::isMainSummary() const
 {
-    if (HTMLDetailsElement* details = detailsElement())
+    if ( HTMLDetailsElement *details = detailsElement() )
+    {
         return details->mainSummary() == this;
+    }
+
     return 0;
 }
 
-void HTMLSummaryElement::defaultEventHandler(Event* event)
+void HTMLSummaryElement::defaultEventHandler( Event *event )
 {
-    HTMLElement::defaultEventHandler(event);
-    if (!isMainSummary() || !renderer() || !renderer()->isSummary() || !event->isMouseEvent() || event->type() != eventNames().clickEvent || event->defaultHandled())
-        return;
+    HTMLElement::defaultEventHandler( event );
 
-    MouseEvent* mouseEvent = static_cast<MouseEvent*>(event);
-    if (mouseEvent->button() != LeftButton)
+    if ( !isMainSummary() || !renderer() || !renderer()->isSummary() || !event->isMouseEvent()
+            || event->type() != eventNames().clickEvent || event->defaultHandled() )
+    {
         return;
+    }
 
-    if (HTMLDetailsElement* details = detailsElement())
+    MouseEvent *mouseEvent = static_cast<MouseEvent *>( event );
+
+    if ( mouseEvent->button() != LeftButton )
+    {
+        return;
+    }
+
+    if ( HTMLDetailsElement *details = detailsElement() )
+    {
         details->toggleOpen();
+    }
+
     event->setDefaultHandled();
 }
 

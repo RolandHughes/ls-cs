@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -42,10 +42,12 @@
 #error "This file should only be used on CF platforms."
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
-struct DefaultGCActivityCallbackPlatformData {
-    static void trigger(CFRunLoopTimerRef, void *info);
+struct DefaultGCActivityCallbackPlatformData
+{
+    static void trigger( CFRunLoopTimerRef, void *info );
 
     RetainPtr<CFRunLoopTimerRef> timer;
     RetainPtr<CFRunLoopRef> runLoop;
@@ -55,56 +57,59 @@ struct DefaultGCActivityCallbackPlatformData {
 const CFTimeInterval decade = 60 * 60 * 24 * 365 * 10;
 const CFTimeInterval triggerInterval = 2; // seconds
 
-void DefaultGCActivityCallbackPlatformData::trigger(CFRunLoopTimerRef timer, void *info)
+void DefaultGCActivityCallbackPlatformData::trigger( CFRunLoopTimerRef timer, void *info )
 {
-    Heap* heap = static_cast<Heap*>(info);
-    APIEntryShim shim(heap->globalData());
+    Heap *heap = static_cast<Heap *>( info );
+    APIEntryShim shim( heap->globalData() );
     heap->collectAllGarbage();
-    CFRunLoopTimerSetNextFireDate(timer, CFAbsoluteTimeGetCurrent() + decade);
+    CFRunLoopTimerSetNextFireDate( timer, CFAbsoluteTimeGetCurrent() + decade );
 }
 
-DefaultGCActivityCallback::DefaultGCActivityCallback(Heap* heap)
+DefaultGCActivityCallback::DefaultGCActivityCallback( Heap *heap )
 {
-    commonConstructor(heap, CFRunLoopGetCurrent());
+    commonConstructor( heap, CFRunLoopGetCurrent() );
 }
 
-DefaultGCActivityCallback::DefaultGCActivityCallback(Heap* heap, CFRunLoopRef runLoop)
+DefaultGCActivityCallback::DefaultGCActivityCallback( Heap *heap, CFRunLoopRef runLoop )
 {
-    commonConstructor(heap, runLoop);
+    commonConstructor( heap, runLoop );
 }
 
 DefaultGCActivityCallback::~DefaultGCActivityCallback()
 {
-    CFRunLoopRemoveTimer(d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes);
-    CFRunLoopTimerInvalidate(d->timer.get());
+    CFRunLoopRemoveTimer( d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes );
+    CFRunLoopTimerInvalidate( d->timer.get() );
     d->context.info = 0;
     d->runLoop = 0;
     d->timer = 0;
 }
 
-void DefaultGCActivityCallback::commonConstructor(Heap* heap, CFRunLoopRef runLoop)
+void DefaultGCActivityCallback::commonConstructor( Heap *heap, CFRunLoopRef runLoop )
 {
-    d = adoptPtr(new DefaultGCActivityCallbackPlatformData);
+    d = adoptPtr( new DefaultGCActivityCallbackPlatformData );
 
-    memset(&d->context, 0, sizeof(CFRunLoopTimerContext));
+    memset( &d->context, 0, sizeof( CFRunLoopTimerContext ) );
     d->context.info = heap;
     d->runLoop = runLoop;
-    d->timer.adoptCF(CFRunLoopTimerCreate(0, decade, decade, 0, 0, DefaultGCActivityCallbackPlatformData::trigger, &d->context));
-    CFRunLoopAddTimer(d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes);
+    d->timer.adoptCF( CFRunLoopTimerCreate( 0, decade, decade, 0, 0, DefaultGCActivityCallbackPlatformData::trigger, &d->context ) );
+    CFRunLoopAddTimer( d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes );
 }
 
 void DefaultGCActivityCallback::operator()()
 {
-    CFRunLoopTimerSetNextFireDate(d->timer.get(), CFAbsoluteTimeGetCurrent() + triggerInterval);
+    CFRunLoopTimerSetNextFireDate( d->timer.get(), CFAbsoluteTimeGetCurrent() + triggerInterval );
 }
 
 void DefaultGCActivityCallback::synchronize()
 {
-    if (CFRunLoopGetCurrent() == d->runLoop.get())
+    if ( CFRunLoopGetCurrent() == d->runLoop.get() )
+    {
         return;
-    CFRunLoopRemoveTimer(d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes);
+    }
+
+    CFRunLoopRemoveTimer( d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes );
     d->runLoop = CFRunLoopGetCurrent();
-    CFRunLoopAddTimer(d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes);
+    CFRunLoopAddTimer( d->runLoop.get(), d->timer.get(), kCFRunLoopCommonModes );
 }
 
 }

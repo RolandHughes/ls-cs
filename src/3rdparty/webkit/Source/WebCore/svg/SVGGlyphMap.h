@@ -23,75 +23,93 @@
 #if ENABLE(SVG_FONTS)
 #include "SVGGlyphElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 struct GlyphMapNode;
 
 typedef HashMap<UChar, RefPtr<GlyphMapNode> > GlyphMapLayer;
 
-struct GlyphMapNode : public RefCounted<GlyphMapNode> {
+struct GlyphMapNode : public RefCounted<GlyphMapNode>
+{
 private:
     GlyphMapNode() { }
 public:
-    static PassRefPtr<GlyphMapNode> create() { return adoptRef(new GlyphMapNode); }
+    static PassRefPtr<GlyphMapNode> create()
+    {
+        return adoptRef( new GlyphMapNode );
+    }
 
     Vector<SVGGlyph> glyphs;
 
     GlyphMapLayer children;
 };
 
-class SVGGlyphMap {
+class SVGGlyphMap
+{
 
 public:
-    SVGGlyphMap() : m_currentPriority(0) { }
+    SVGGlyphMap() : m_currentPriority( 0 ) { }
 
-    void add(const String& string, const SVGGlyph& glyph) 
+    void add( const String &string, const SVGGlyph &glyph )
     {
         size_t len = string.length();
-        GlyphMapLayer* currentLayer = &m_rootLayer;
+        GlyphMapLayer *currentLayer = &m_rootLayer;
 
         RefPtr<GlyphMapNode> node;
-        for (size_t i = 0; i < len; ++i) {
+
+        for ( size_t i = 0; i < len; ++i )
+        {
             UChar curChar = string[i];
-            node = currentLayer->get(curChar);
-            if (!node) {
+            node = currentLayer->get( curChar );
+
+            if ( !node )
+            {
                 node = GlyphMapNode::create();
-                currentLayer->set(curChar, node);
+                currentLayer->set( curChar, node );
             }
+
             currentLayer = &node->children;
         }
 
-        if (node) {
-            node->glyphs.append(glyph);
+        if ( node )
+        {
+            node->glyphs.append( glyph );
             node->glyphs.last().priority = m_currentPriority++;
             node->glyphs.last().unicodeStringLength = len;
             node->glyphs.last().isValid = true;
         }
     }
 
-    static inline bool compareGlyphPriority(const SVGGlyph& first, const SVGGlyph& second)
+    static inline bool compareGlyphPriority( const SVGGlyph &first, const SVGGlyph &second )
     {
         return first.priority < second.priority;
     }
 
-    void get(const String& string, Vector<SVGGlyph>& glyphs)
+    void get( const String &string, Vector<SVGGlyph> &glyphs )
     {
-        GlyphMapLayer* currentLayer = &m_rootLayer;
+        GlyphMapLayer *currentLayer = &m_rootLayer;
 
-        for (size_t i = 0; i < string.length(); ++i) {
+        for ( size_t i = 0; i < string.length(); ++i )
+        {
             UChar curChar = string[i];
-            RefPtr<GlyphMapNode> node = currentLayer->get(curChar);
-            if (!node)
+            RefPtr<GlyphMapNode> node = currentLayer->get( curChar );
+
+            if ( !node )
+            {
                 break;
-            glyphs.append(node->glyphs);
+            }
+
+            glyphs.append( node->glyphs );
             currentLayer = &node->children;
         }
-        std::sort(glyphs.begin(), glyphs.end(), compareGlyphPriority);
+
+        std::sort( glyphs.begin(), glyphs.end(), compareGlyphPriority );
     }
 
-    void clear() 
-    { 
-        m_rootLayer.clear(); 
+    void clear()
+    {
+        m_rootLayer.clear();
         m_currentPriority = 0;
     }
 

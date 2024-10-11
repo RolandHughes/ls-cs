@@ -29,55 +29,70 @@
 #include "RegularExpression.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 static const char emailPattern[] =
     "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+" // local part
     "@"
     "[a-z0-9-]+(\\.[a-z0-9-]+)+"; // domain part
 
-static bool isValidEmailAddress(const String& address)
+static bool isValidEmailAddress( const String &address )
 {
     int addressLength = address.length();
-    if (!addressLength)
-        return false;
 
-    DEFINE_STATIC_LOCAL(const RegularExpression, regExp, (emailPattern, TextCaseInsensitive));
+    if ( !addressLength )
+    {
+        return false;
+    }
+
+    DEFINE_STATIC_LOCAL( const RegularExpression, regExp, ( emailPattern, TextCaseInsensitive ) );
 
     int matchLength;
-    int matchOffset = regExp.match(address, 0, &matchLength);
+    int matchOffset = regExp.match( address, 0, &matchLength );
 
     return !matchOffset && matchLength == addressLength;
 }
 
-PassOwnPtr<InputType> EmailInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> EmailInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new EmailInputType(element));
+    return adoptPtr( new EmailInputType( element ) );
 }
 
-const AtomicString& EmailInputType::formControlType() const
+const AtomicString &EmailInputType::formControlType() const
 {
     return InputTypeNames::email();
 }
 
-bool EmailInputType::typeMismatchFor(const String& value) const
+bool EmailInputType::typeMismatchFor( const String &value ) const
 {
-    if (value.isEmpty())
+    if ( value.isEmpty() )
+    {
         return false;
-    if (!element()->multiple())
-        return !isValidEmailAddress(value);
-    Vector<String> addresses;
-    value.split(',', addresses);
-    for (unsigned i = 0; i < addresses.size(); ++i) {
-        if (!isValidEmailAddress(addresses[i]))
-            return true;
     }
+
+    if ( !element()->multiple() )
+    {
+        return !isValidEmailAddress( value );
+    }
+
+    Vector<String> addresses;
+    value.split( ',', addresses );
+
+    for ( unsigned i = 0; i < addresses.size(); ++i )
+    {
+        if ( !isValidEmailAddress( addresses[i] ) )
+        {
+            return true;
+        }
+    }
+
     return false;
 }
 
 bool EmailInputType::typeMismatch() const
 {
-    return typeMismatchFor(element()->value());
+    return typeMismatchFor( element()->value() );
 }
 
 String EmailInputType::typeMismatchText() const

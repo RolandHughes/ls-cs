@@ -33,68 +33,71 @@ class QActionGroupPrivate;
 
 class Q_GUI_EXPORT QActionGroup : public QObject
 {
-   GUI_CS_OBJECT(QActionGroup)
+    GUI_LSCS_OBJECT( QActionGroup )
 
-   GUI_CS_PROPERTY_READ(exclusive, isExclusive)
-   GUI_CS_PROPERTY_WRITE(exclusive, setExclusive)
+    GUI_LSCS_PROPERTY_READ( exclusive, isExclusive )
+    GUI_LSCS_PROPERTY_WRITE( exclusive, setExclusive )
 
-   GUI_CS_PROPERTY_READ(enabled, isEnabled)
-   GUI_CS_PROPERTY_WRITE(enabled, setEnabled)
+    GUI_LSCS_PROPERTY_READ( enabled, isEnabled )
+    GUI_LSCS_PROPERTY_WRITE( enabled, setEnabled )
 
-   GUI_CS_PROPERTY_READ(visible, isVisible)
-   GUI_CS_PROPERTY_WRITE(visible, setVisible)
+    GUI_LSCS_PROPERTY_READ( visible, isVisible )
+    GUI_LSCS_PROPERTY_WRITE( visible, setVisible )
 
- public:
-   explicit QActionGroup(QObject *parent);
+public:
+    explicit QActionGroup( QObject *parent );
 
-   QActionGroup(const QActionGroup &) = delete;
-   QActionGroup &operator=(const QActionGroup &) = delete;
+    QActionGroup( const QActionGroup & ) = delete;
+    QActionGroup &operator=( const QActionGroup & ) = delete;
 
-   ~QActionGroup();
+    ~QActionGroup();
 
-   QAction *addAction(QAction *action);
-   QAction *addAction(const QString &text);
-   QAction *addAction(const QIcon &icon, const QString &text);
-   void removeAction(QAction *action);
-   QList<QAction *> actions() const;
+    QAction *addAction( QAction *action );
+    QAction *addAction( const QString &text );
+    QAction *addAction( const QIcon &icon, const QString &text );
+    void removeAction( QAction *action );
+    QList<QAction *> actions() const;
 
-   QAction *checkedAction() const;
-   bool isExclusive() const;
-   bool isEnabled() const;
-   bool isVisible() const;
+    QAction *checkedAction() const;
+    bool isExclusive() const;
+    bool isEnabled() const;
+    bool isVisible() const;
 
-   GUI_CS_SLOT_1(Public, void setEnabled(bool b))
-   GUI_CS_SLOT_2(setEnabled)
+    GUI_LSCS_SLOT_1( Public, void setEnabled( bool b ) )
+    GUI_LSCS_SLOT_2( setEnabled )
 
-   GUI_CS_SLOT_1(Public, void setDisabled(bool b) { setEnabled(! b); })
-   GUI_CS_SLOT_2(setDisabled)
+    GUI_LSCS_SLOT_1( Public, void setDisabled( bool b )
+    {
+        setEnabled( ! b );
+    } )
+    GUI_LSCS_SLOT_2( setDisabled )
 
-   GUI_CS_SLOT_1(Public, void setVisible(bool b))
-   GUI_CS_SLOT_2(setVisible)
+    GUI_LSCS_SLOT_1( Public, void setVisible( bool b ) )
+    GUI_LSCS_SLOT_2( setVisible )
 
-   GUI_CS_SLOT_1(Public, void setExclusive(bool b))
-   GUI_CS_SLOT_2(setExclusive)
+    GUI_LSCS_SLOT_1( Public, void setExclusive( bool b ) )
+    GUI_LSCS_SLOT_2( setExclusive )
 
-   GUI_CS_SIGNAL_1(Public, void triggered(QAction *action))
-   GUI_CS_SIGNAL_2(triggered, action)
+    GUI_LSCS_SIGNAL_1( Public, void triggered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( triggered, action )
 
-   GUI_CS_SIGNAL_1(Public, void hovered(QAction *action))
-   GUI_CS_SIGNAL_2(hovered, action)
+    GUI_LSCS_SIGNAL_1( Public, void hovered( QAction *action ) )
+    GUI_LSCS_SIGNAL_2( hovered, action )
 
- protected:
-   QScopedPointer<QActionGroupPrivate> d_ptr;
+protected:
+    QScopedPointer<QActionGroupPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QActionGroup)
+private:
+    Q_DECLARE_PRIVATE( QActionGroup )
 
-   GUI_CS_SLOT_1(Private, void _q_actionTriggered())
-   GUI_CS_SLOT_2(_q_actionTriggered)
+    GUI_LSCS_SLOT_1( Private, void _q_actionTriggered() )
+    GUI_LSCS_SLOT_2( _q_actionTriggered )
 
-   GUI_CS_SLOT_1(Private, void _q_actionChanged())
-   GUI_CS_SLOT_2(_q_actionChanged)
+    GUI_LSCS_SLOT_1( Private, void _q_actionChanged() )
+    GUI_LSCS_SLOT_2( _q_actionChanged )
 
-   GUI_CS_SLOT_1(Private, void _q_actionHovered())
-   GUI_CS_SLOT_2(_q_actionHovered)
+    GUI_LSCS_SLOT_1( Private, void _q_actionHovered() )
+    GUI_LSCS_SLOT_2( _q_actionHovered )
 };
 
 #endif // QT_NO_ACTION

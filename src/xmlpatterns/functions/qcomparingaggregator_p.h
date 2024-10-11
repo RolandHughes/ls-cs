@@ -33,39 +33,42 @@
 #include <quntypedatomicconverter_p.h>
 #include <qpatternistlocale_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template <AtomicComparator::Operator oper, AtomicComparator::ComparisonResult result>
 class ComparingAggregator : public Aggregator,
-   public ComparisonPlatform<ComparingAggregator<oper, result>,
-   true, AtomicComparator::AsValueComparison, ReportContext::FORG0006>,
-   public CastingPlatform<ComparingAggregator<oper, result>, true>
+    public ComparisonPlatform<ComparingAggregator<oper, result>,
+    true, AtomicComparator::AsValueComparison, ReportContext::FORG0006>,
+    public CastingPlatform<ComparingAggregator<oper, result>, true>
 {
- public:
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+public:
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   AtomicComparator::Operator operatorID() const {
-      return oper;
-   }
+    AtomicComparator::Operator operatorID() const
+    {
+        return oper;
+    }
 
-   ItemType::Ptr targetType() const {
-      return BuiltinTypes::xsDouble;
-   }
+    ItemType::Ptr targetType() const
+    {
+        return BuiltinTypes::xsDouble;
+    }
 
- private:
-   inline Item applyNumericPromotion(const Item &old, const Item &nev, const Item &newVal) const;
+private:
+    inline Item applyNumericPromotion( const Item &old, const Item &nev, const Item &newVal ) const;
 
-   using ComparisonPlatform<ComparingAggregator<oper, result>,
-         true,
-         AtomicComparator::AsValueComparison,
-         ReportContext::FORG0006>::comparator;
+    using ComparisonPlatform<ComparingAggregator<oper, result>,
+          true,
+          AtomicComparator::AsValueComparison,
+          ReportContext::FORG0006>::comparator;
 
-   using ComparisonPlatform<ComparingAggregator<oper, result>,
-         true,
-         AtomicComparator::AsValueComparison,
-         ReportContext::FORG0006>::fetchComparator;
-   using CastingPlatform<ComparingAggregator<oper, result>, true>::cast;
+    using ComparisonPlatform<ComparingAggregator<oper, result>,
+          true,
+          AtomicComparator::AsValueComparison,
+          ReportContext::FORG0006>::fetchComparator;
+    using CastingPlatform<ComparingAggregator<oper, result>, true>::cast;
 };
 
 #include "qcomparingaggregator.cpp"

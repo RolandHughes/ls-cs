@@ -28,31 +28,37 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InspectorFrontendHost;
 
-class JSInspectorFrontendHost : public JSDOMWrapper {
+class JSInspectorFrontendHost : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSInspectorFrontendHost(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<InspectorFrontendHost>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSInspectorFrontendHost( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<InspectorFrontendHost> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue platform(JSC::ExecState*);
-    JSC::JSValue port(JSC::ExecState*);
-    JSC::JSValue showContextMenu(JSC::ExecState*);
-    InspectorFrontendHost* impl() const { return m_impl.get(); }
+    JSC::JSValue platform( JSC::ExecState * );
+    JSC::JSValue port( JSC::ExecState * );
+    JSC::JSValue showContextMenu( JSC::ExecState * );
+    InspectorFrontendHost *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<InspectorFrontendHost> m_impl;
@@ -60,50 +66,53 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, InspectorFrontendHost*);
-InspectorFrontendHost* toInspectorFrontendHost(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, InspectorFrontendHost * );
+InspectorFrontendHost *toInspectorFrontendHost( JSC::JSValue );
 
-class JSInspectorFrontendHostPrototype : public JSC::JSObjectWithGlobalObject {
+class JSInspectorFrontendHostPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSInspectorFrontendHostPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSInspectorFrontendHostPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                      JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionLoaded(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionCloseWindow(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionDisconnectFromBackend(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionBringToFront(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionInspectedURLChanged(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionRequestAttachWindow(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionRequestDetachWindow(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSetAttachedWindowHeight(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionMoveWindowBy(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSetExtensionAPI(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionLocalizedStringsURL(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionHiddenPanels(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSaveSessionSetting(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionLoadSessionSetting(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionCopyText(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSaveAs(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionPlatform(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionPort(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionShowContextMenu(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSendMessageToBackend(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionLoaded( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionCloseWindow( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionDisconnectFromBackend( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionBringToFront( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionInspectedURLChanged( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionRequestAttachWindow( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionRequestDetachWindow( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSetAttachedWindowHeight( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionMoveWindowBy( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSetExtensionAPI( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionLocalizedStringsURL( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionHiddenPanels( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSaveSessionSetting( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionLoadSessionSetting( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionCopyText( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSaveAs( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionPlatform( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionPort( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionShowContextMenu( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInspectorFrontendHostPrototypeFunctionSendMessageToBackend( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsInspectorFrontendHostConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsInspectorFrontendHostConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

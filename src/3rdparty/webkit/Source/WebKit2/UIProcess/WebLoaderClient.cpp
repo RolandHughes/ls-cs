@@ -33,210 +33,277 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void WebLoaderClient::didStartProvisionalLoadForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+namespace WebKit
 {
-    if (!m_client.didStartProvisionalLoadForFrame)
-        return;
 
-    m_client.didStartProvisionalLoadForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+void WebLoaderClient::didStartProvisionalLoadForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
+{
+    if ( !m_client.didStartProvisionalLoadForFrame )
+    {
+        return;
+    }
+
+    m_client.didStartProvisionalLoadForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didReceiveServerRedirectForProvisionalLoadForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didReceiveServerRedirectForProvisionalLoadForFrame( WebPageProxy *page, WebFrameProxy *frame,
+        APIObject *userData )
 {
-    if (!m_client.didReceiveServerRedirectForProvisionalLoadForFrame)
+    if ( !m_client.didReceiveServerRedirectForProvisionalLoadForFrame )
+    {
         return;
+    }
 
-    m_client.didReceiveServerRedirectForProvisionalLoadForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didReceiveServerRedirectForProvisionalLoadForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ),
+            m_client.clientInfo );
 }
 
-void WebLoaderClient::didFailProvisionalLoadWithErrorForFrame(WebPageProxy* page, WebFrameProxy* frame, const ResourceError& error, APIObject* userData)
+void WebLoaderClient::didFailProvisionalLoadWithErrorForFrame( WebPageProxy *page, WebFrameProxy *frame,
+        const ResourceError &error, APIObject *userData )
 {
-    if (!m_client.didFailProvisionalLoadWithErrorForFrame)
+    if ( !m_client.didFailProvisionalLoadWithErrorForFrame )
+    {
         return;
+    }
 
-    m_client.didFailProvisionalLoadWithErrorForFrame(toAPI(page), toAPI(frame), toAPI(error), toAPI(userData), m_client.clientInfo);
+    m_client.didFailProvisionalLoadWithErrorForFrame( toAPI( page ), toAPI( frame ), toAPI( error ), toAPI( userData ),
+            m_client.clientInfo );
 }
 
-void WebLoaderClient::didCommitLoadForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didCommitLoadForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didCommitLoadForFrame)
+    if ( !m_client.didCommitLoadForFrame )
+    {
         return;
+    }
 
-    m_client.didCommitLoadForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didCommitLoadForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didFinishDocumentLoadForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didFinishDocumentLoadForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didFinishDocumentLoadForFrame)
+    if ( !m_client.didFinishDocumentLoadForFrame )
+    {
         return;
+    }
 
-    m_client.didFinishDocumentLoadForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didFinishDocumentLoadForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didFinishLoadForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didFinishLoadForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didFinishLoadForFrame)
+    if ( !m_client.didFinishLoadForFrame )
+    {
         return;
+    }
 
-    m_client.didFinishLoadForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didFinishLoadForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didFailLoadWithErrorForFrame(WebPageProxy* page, WebFrameProxy* frame, const ResourceError& error, APIObject* userData)
+void WebLoaderClient::didFailLoadWithErrorForFrame( WebPageProxy *page, WebFrameProxy *frame, const ResourceError &error,
+        APIObject *userData )
 {
-    if (!m_client.didFailLoadWithErrorForFrame)
+    if ( !m_client.didFailLoadWithErrorForFrame )
+    {
         return;
+    }
 
-    m_client.didFailLoadWithErrorForFrame(toAPI(page), toAPI(frame), toAPI(error), toAPI(userData), m_client.clientInfo);
+    m_client.didFailLoadWithErrorForFrame( toAPI( page ), toAPI( frame ), toAPI( error ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didSameDocumentNavigationForFrame(WebPageProxy* page, WebFrameProxy* frame, SameDocumentNavigationType type, APIObject* userData)
+void WebLoaderClient::didSameDocumentNavigationForFrame( WebPageProxy *page, WebFrameProxy *frame,
+        SameDocumentNavigationType type, APIObject *userData )
 {
-    if (!m_client.didSameDocumentNavigationForFrame)
+    if ( !m_client.didSameDocumentNavigationForFrame )
+    {
         return;
+    }
 
-    m_client.didSameDocumentNavigationForFrame(toAPI(page), toAPI(frame), toAPI(type), toAPI(userData), m_client.clientInfo);
+    m_client.didSameDocumentNavigationForFrame( toAPI( page ), toAPI( frame ), toAPI( type ), toAPI( userData ),
+            m_client.clientInfo );
 }
 
-void WebLoaderClient::didReceiveTitleForFrame(WebPageProxy* page, const String& title, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didReceiveTitleForFrame( WebPageProxy *page, const String &title, WebFrameProxy *frame,
+        APIObject *userData )
 {
-    if (!m_client.didReceiveTitleForFrame)
+    if ( !m_client.didReceiveTitleForFrame )
+    {
         return;
+    }
 
-    m_client.didReceiveTitleForFrame(toAPI(page), toAPI(title.impl()), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didReceiveTitleForFrame( toAPI( page ), toAPI( title.impl() ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didFirstLayoutForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didFirstLayoutForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didFirstLayoutForFrame)
+    if ( !m_client.didFirstLayoutForFrame )
+    {
         return;
+    }
 
-    m_client.didFirstLayoutForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didFirstLayoutForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didFirstVisuallyNonEmptyLayoutForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didFirstVisuallyNonEmptyLayoutForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didFirstVisuallyNonEmptyLayoutForFrame)
+    if ( !m_client.didFirstVisuallyNonEmptyLayoutForFrame )
+    {
         return;
+    }
 
-    m_client.didFirstVisuallyNonEmptyLayoutForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didFirstVisuallyNonEmptyLayoutForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didRemoveFrameFromHierarchy(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didRemoveFrameFromHierarchy( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didRemoveFrameFromHierarchy)
+    if ( !m_client.didRemoveFrameFromHierarchy )
+    {
         return;
+    }
 
-    m_client.didRemoveFrameFromHierarchy(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didRemoveFrameFromHierarchy( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didDisplayInsecureContentForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didDisplayInsecureContentForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didDisplayInsecureContentForFrame)
+    if ( !m_client.didDisplayInsecureContentForFrame )
+    {
         return;
+    }
 
-    m_client.didDisplayInsecureContentForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didDisplayInsecureContentForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didRunInsecureContentForFrame(WebPageProxy* page, WebFrameProxy* frame, APIObject* userData)
+void WebLoaderClient::didRunInsecureContentForFrame( WebPageProxy *page, WebFrameProxy *frame, APIObject *userData )
 {
-    if (!m_client.didRunInsecureContentForFrame)
+    if ( !m_client.didRunInsecureContentForFrame )
+    {
         return;
+    }
 
-    m_client.didRunInsecureContentForFrame(toAPI(page), toAPI(frame), toAPI(userData), m_client.clientInfo);
+    m_client.didRunInsecureContentForFrame( toAPI( page ), toAPI( frame ), toAPI( userData ), m_client.clientInfo );
 }
 
-bool WebLoaderClient::canAuthenticateAgainstProtectionSpaceInFrame(WebPageProxy* page, WebFrameProxy* frame, WebProtectionSpace* protectionSpace)
+bool WebLoaderClient::canAuthenticateAgainstProtectionSpaceInFrame( WebPageProxy *page, WebFrameProxy *frame,
+        WebProtectionSpace *protectionSpace )
 {
-    if (!m_client.canAuthenticateAgainstProtectionSpaceInFrame)
+    if ( !m_client.canAuthenticateAgainstProtectionSpaceInFrame )
+    {
         return false;
+    }
 
-    return m_client.canAuthenticateAgainstProtectionSpaceInFrame(toAPI(page), toAPI(frame), toAPI(protectionSpace), m_client.clientInfo);
+    return m_client.canAuthenticateAgainstProtectionSpaceInFrame( toAPI( page ), toAPI( frame ), toAPI( protectionSpace ),
+            m_client.clientInfo );
 }
 
-void WebLoaderClient::didReceiveAuthenticationChallengeInFrame(WebPageProxy* page, WebFrameProxy* frame, AuthenticationChallengeProxy* authenticationChallenge)
+void WebLoaderClient::didReceiveAuthenticationChallengeInFrame( WebPageProxy *page, WebFrameProxy *frame,
+        AuthenticationChallengeProxy *authenticationChallenge )
 {
-    if (!m_client.didReceiveAuthenticationChallengeInFrame)
+    if ( !m_client.didReceiveAuthenticationChallengeInFrame )
+    {
         return;
+    }
 
-    m_client.didReceiveAuthenticationChallengeInFrame(toAPI(page), toAPI(frame), toAPI(authenticationChallenge), m_client.clientInfo);
+    m_client.didReceiveAuthenticationChallengeInFrame( toAPI( page ), toAPI( frame ), toAPI( authenticationChallenge ),
+            m_client.clientInfo );
 }
 
-void WebLoaderClient::didStartProgress(WebPageProxy* page)
+void WebLoaderClient::didStartProgress( WebPageProxy *page )
 {
-    if (!m_client.didStartProgress)
+    if ( !m_client.didStartProgress )
+    {
         return;
+    }
 
-    m_client.didStartProgress(toAPI(page), m_client.clientInfo);
+    m_client.didStartProgress( toAPI( page ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didChangeProgress(WebPageProxy* page)
+void WebLoaderClient::didChangeProgress( WebPageProxy *page )
 {
-    if (!m_client.didChangeProgress)
+    if ( !m_client.didChangeProgress )
+    {
         return;
+    }
 
-    m_client.didChangeProgress(toAPI(page), m_client.clientInfo);
+    m_client.didChangeProgress( toAPI( page ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didFinishProgress(WebPageProxy* page)
+void WebLoaderClient::didFinishProgress( WebPageProxy *page )
 {
-    if (!m_client.didFinishProgress)
+    if ( !m_client.didFinishProgress )
+    {
         return;
+    }
 
-    m_client.didFinishProgress(toAPI(page), m_client.clientInfo);
+    m_client.didFinishProgress( toAPI( page ), m_client.clientInfo );
 }
 
-void WebLoaderClient::processDidBecomeUnresponsive(WebPageProxy* page)
+void WebLoaderClient::processDidBecomeUnresponsive( WebPageProxy *page )
 {
-    if (!m_client.processDidBecomeUnresponsive)
+    if ( !m_client.processDidBecomeUnresponsive )
+    {
         return;
+    }
 
-    m_client.processDidBecomeUnresponsive(toAPI(page), m_client.clientInfo);
+    m_client.processDidBecomeUnresponsive( toAPI( page ), m_client.clientInfo );
 }
 
-void WebLoaderClient::processDidBecomeResponsive(WebPageProxy* page)
+void WebLoaderClient::processDidBecomeResponsive( WebPageProxy *page )
 {
-    if (!m_client.processDidBecomeResponsive)
+    if ( !m_client.processDidBecomeResponsive )
+    {
         return;
+    }
 
-    m_client.processDidBecomeResponsive(toAPI(page), m_client.clientInfo);
+    m_client.processDidBecomeResponsive( toAPI( page ), m_client.clientInfo );
 }
 
-void WebLoaderClient::processDidCrash(WebPageProxy* page)
+void WebLoaderClient::processDidCrash( WebPageProxy *page )
 {
-    if (!m_client.processDidCrash)
+    if ( !m_client.processDidCrash )
+    {
         return;
+    }
 
-    m_client.processDidCrash(toAPI(page), m_client.clientInfo);
+    m_client.processDidCrash( toAPI( page ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didChangeBackForwardList(WebPageProxy* page, WebBackForwardListItem* addedItem, Vector<RefPtr<APIObject> >* removedItems)
+void WebLoaderClient::didChangeBackForwardList( WebPageProxy *page, WebBackForwardListItem *addedItem,
+        Vector<RefPtr<APIObject> > *removedItems )
 {
-    if (!m_client.didChangeBackForwardList)
+    if ( !m_client.didChangeBackForwardList )
+    {
         return;
+    }
 
     RefPtr<ImmutableArray> removedItemsArray;
-    if (removedItems && !removedItems->isEmpty())
-        removedItemsArray = ImmutableArray::adopt(*removedItems);
 
-    m_client.didChangeBackForwardList(toAPI(page), toAPI(addedItem), toAPI(removedItemsArray.get()), m_client.clientInfo);
+    if ( removedItems && !removedItems->isEmpty() )
+    {
+        removedItemsArray = ImmutableArray::adopt( *removedItems );
+    }
+
+    m_client.didChangeBackForwardList( toAPI( page ), toAPI( addedItem ), toAPI( removedItemsArray.get() ), m_client.clientInfo );
 }
 
-bool WebLoaderClient::shouldGoToBackForwardListItem(WebPageProxy* page, WebBackForwardListItem* item)
+bool WebLoaderClient::shouldGoToBackForwardListItem( WebPageProxy *page, WebBackForwardListItem *item )
 {
-    if (!m_client.shouldGoToBackForwardListItem)
+    if ( !m_client.shouldGoToBackForwardListItem )
+    {
         return true;
-    
-    return m_client.shouldGoToBackForwardListItem(toAPI(page), toAPI(item), m_client.clientInfo);
+    }
+
+    return m_client.shouldGoToBackForwardListItem( toAPI( page ), toAPI( item ), m_client.clientInfo );
 }
 
-void WebLoaderClient::didFailToInitializePlugin(WebPageProxy* page, const String& mimeType)
+void WebLoaderClient::didFailToInitializePlugin( WebPageProxy *page, const String &mimeType )
 {
-    if (!m_client.didFailToInitializePlugin)
+    if ( !m_client.didFailToInitializePlugin )
+    {
         return;
+    }
 
-    m_client.didFailToInitializePlugin(toAPI(page), toAPI(mimeType.impl()), m_client.clientInfo);
+    m_client.didFailToInitializePlugin( toAPI( page ), toAPI( mimeType.impl() ), m_client.clientInfo );
 }
 
 } // namespace WebKit

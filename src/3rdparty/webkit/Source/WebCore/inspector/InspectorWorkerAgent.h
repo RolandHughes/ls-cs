@@ -36,7 +36,8 @@
 #include <wtf/Forward.h>
 #include <wtf/HashMap.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class InspectorFrontend;
 class InspectorObject;
 class InstrumentingAgents;
@@ -45,28 +46,29 @@ class WorkerContextInspectorProxy;
 
 typedef String ErrorString;
 
-class InspectorWorkerAgent {
+class InspectorWorkerAgent
+{
 public:
-    static PassOwnPtr<InspectorWorkerAgent> create(InstrumentingAgents*);
+    static PassOwnPtr<InspectorWorkerAgent> create( InstrumentingAgents * );
     ~InspectorWorkerAgent();
 
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
 
     // Called from InspectorInstrumentation
-    void didStartWorkerContext(WorkerContextProxy*);
+    void didStartWorkerContext( WorkerContextProxy * );
 
     // Called from InspectorBackendDispatcher
-    void sendMessageToWorker(ErrorString*, int workerId, PassRefPtr<InspectorObject> message);
+    void sendMessageToWorker( ErrorString *, int workerId, PassRefPtr<InspectorObject> message );
 
 private:
-    explicit InspectorWorkerAgent(InstrumentingAgents*);
+    explicit InspectorWorkerAgent( InstrumentingAgents * );
 
-    InstrumentingAgents* m_instrumentingAgents;
-    InspectorFrontend* m_inspectorFrontend;
+    InstrumentingAgents *m_instrumentingAgents;
+    InspectorFrontend *m_inspectorFrontend;
 
     class WorkerFrontendChannel;
-    HashMap<int, WorkerFrontendChannel*> m_idToChannel;
+    HashMap<int, WorkerFrontendChannel *> m_idToChannel;
 };
 
 } // namespace WebCore

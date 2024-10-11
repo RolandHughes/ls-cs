@@ -32,13 +32,15 @@
 
 #include "RenderBox.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderLineBoxList {
+class RenderLineBoxList
+{
 public:
     RenderLineBoxList()
-        : m_firstLineBox(0)
-        , m_lastLineBox(0)
+        : m_firstLineBox( 0 )
+        , m_lastLineBox( 0 )
     {
     }
 
@@ -46,36 +48,44 @@ public:
     ~RenderLineBoxList();
 #endif
 
-    InlineFlowBox* firstLineBox() const { return m_firstLineBox; }
-    InlineFlowBox* lastLineBox() const { return m_lastLineBox; }
+    InlineFlowBox *firstLineBox() const
+    {
+        return m_firstLineBox;
+    }
+    InlineFlowBox *lastLineBox() const
+    {
+        return m_lastLineBox;
+    }
 
     void checkConsistency() const;
 
-    void appendLineBox(InlineFlowBox*);
+    void appendLineBox( InlineFlowBox * );
 
-    void deleteLineBoxTree(RenderArena*);
-    void deleteLineBoxes(RenderArena*);
+    void deleteLineBoxTree( RenderArena * );
+    void deleteLineBoxes( RenderArena * );
 
-    void extractLineBox(InlineFlowBox*);
-    void attachLineBox(InlineFlowBox*);
-    void removeLineBox(InlineFlowBox*);
-    
+    void extractLineBox( InlineFlowBox * );
+    void attachLineBox( InlineFlowBox * );
+    void removeLineBox( InlineFlowBox * );
+
     void dirtyLineBoxes();
-    void dirtyLinesFromChangedChild(RenderObject* parent, RenderObject* child);
+    void dirtyLinesFromChangedChild( RenderObject *parent, RenderObject *child );
 
-    void paint(RenderBoxModelObject*, PaintInfo&, int x, int y) const;
-    bool hitTest(RenderBoxModelObject*, const HitTestRequest&, HitTestResult&, int x, int y, int tx, int ty, HitTestAction) const;
-    
+    void paint( RenderBoxModelObject *, PaintInfo &, int x, int y ) const;
+    bool hitTest( RenderBoxModelObject *, const HitTestRequest &, HitTestResult &, int x, int y, int tx, int ty,
+                  HitTestAction ) const;
+
 private:
-    bool anyLineIntersectsRect(RenderBoxModelObject*, const IntRect&, int tx, int ty, bool usePrintRect = false, int outlineSize = 0) const;
-    bool lineIntersectsDirtyRect(RenderBoxModelObject*, InlineFlowBox*, const PaintInfo&, int tx, int ty) const;
-    bool rangeIntersectsRect(RenderBoxModelObject*, int logicalTop, int logicalBottom, const IntRect&, int tx, int ty) const;
+    bool anyLineIntersectsRect( RenderBoxModelObject *, const IntRect &, int tx, int ty, bool usePrintRect = false,
+                                int outlineSize = 0 ) const;
+    bool lineIntersectsDirtyRect( RenderBoxModelObject *, InlineFlowBox *, const PaintInfo &, int tx, int ty ) const;
+    bool rangeIntersectsRect( RenderBoxModelObject *, int logicalTop, int logicalBottom, const IntRect &, int tx, int ty ) const;
 
     // For block flows, each box represents the root inline box for a line in the
     // paragraph.
     // For inline flows, each box represents a portion of that inline.
-    InlineFlowBox* m_firstLineBox;
-    InlineFlowBox* m_lastLineBox;
+    InlineFlowBox *m_firstLineBox;
+    InlineFlowBox *m_lastLineBox;
 };
 
 

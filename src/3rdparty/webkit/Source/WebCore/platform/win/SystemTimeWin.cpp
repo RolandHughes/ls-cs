@@ -32,15 +32,20 @@
 #endif
 #include <windows.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 float userIdleTime()
 {
 #if !OS(WINCE)
     LASTINPUTINFO lastInputInfo;
-    lastInputInfo.cbSize = sizeof(LASTINPUTINFO);
-    if (::GetLastInputInfo(&lastInputInfo))
-        return (GetTickCount() - lastInputInfo.dwTime) * 0.001; // ::GetTickCount returns ms of uptime valid for up to 49.7 days.
+    lastInputInfo.cbSize = sizeof( LASTINPUTINFO );
+
+    if ( ::GetLastInputInfo( &lastInputInfo ) )
+    {
+        return ( GetTickCount() - lastInputInfo.dwTime ) * 0.001;    // ::GetTickCount returns ms of uptime valid for up to 49.7 days.
+    }
+
 #endif
     // Return an arbitrarily high userIdleTime so that releasing pages from the page cache isn't postponed.
     return std::numeric_limits<float>::max();

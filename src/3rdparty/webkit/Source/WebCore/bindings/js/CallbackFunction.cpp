@@ -29,19 +29,26 @@
 #include "JSDOMBinding.h"
 #include <runtime/CallData.h>
 
-namespace WebCore {
-
-bool checkFunctionOnlyCallback(JSC::ExecState* exec, JSC::JSValue value, CallbackAllowedValueFlags acceptedValues)
+namespace WebCore
 {
-    if (value.isUndefined() && (acceptedValues & CallbackAllowUndefined))
-        return false;
 
-    if (value.isNull() && (acceptedValues & CallbackAllowNull))
+bool checkFunctionOnlyCallback( JSC::ExecState *exec, JSC::JSValue value, CallbackAllowedValueFlags acceptedValues )
+{
+    if ( value.isUndefined() && ( acceptedValues & CallbackAllowUndefined ) )
+    {
         return false;
+    }
+
+    if ( value.isNull() && ( acceptedValues & CallbackAllowNull ) )
+    {
+        return false;
+    }
 
     JSC::CallData callData;
-    if (getCallData(value, callData) == JSC::CallTypeNone) {
-        setDOMException(exec, TYPE_MISMATCH_ERR);
+
+    if ( getCallData( value, callData ) == JSC::CallTypeNone )
+    {
+        setDOMException( exec, TYPE_MISMATCH_ERR );
         return false;
     }
 

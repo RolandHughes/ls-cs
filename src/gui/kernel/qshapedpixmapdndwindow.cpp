@@ -29,63 +29,78 @@
 #include <qpalette.h>
 #include <qbitmap.h>
 
-QShapedPixmapWindow::QShapedPixmapWindow(QScreen *screen)
-   : m_useCompositing(true)
+QShapedPixmapWindow::QShapedPixmapWindow( QScreen *screen )
+    : m_useCompositing( true )
 {
-   setScreen(screen);
-   QSurfaceFormat format;
-   format.setAlphaBufferSize(8);
-   setFormat(format);
-   setFlags(Qt::ToolTip | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint
-      | Qt::WindowTransparentForInput | Qt::WindowDoesNotAcceptFocus);
+    setScreen( screen );
+    QSurfaceFormat format;
+    format.setAlphaBufferSize( 8 );
+    setFormat( format );
+    setFlags( Qt::ToolTip | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint
+              | Qt::WindowTransparentForInput | Qt::WindowDoesNotAcceptFocus );
 }
 
 QShapedPixmapWindow::~QShapedPixmapWindow()
 {
 }
 
-void QShapedPixmapWindow::setPixmap(const QPixmap &pixmap)
+void QShapedPixmapWindow::setPixmap( const QPixmap &pixmap )
 {
-   m_pixmap = pixmap;
-   if (!m_useCompositing) {
-      const QBitmap mask = m_pixmap.mask();
-      if (!mask.isNull()) {
-         if (!handle()) {
-            create();
-         }
-         setMask(mask);
-      }
-   }
+    m_pixmap = pixmap;
+
+    if ( !m_useCompositing )
+    {
+        const QBitmap mask = m_pixmap.mask();
+
+        if ( !mask.isNull() )
+        {
+            if ( !handle() )
+            {
+                create();
+            }
+
+            setMask( mask );
+        }
+    }
 }
 
-void QShapedPixmapWindow::setHotspot(const QPoint &hotspot)
+void QShapedPixmapWindow::setHotspot( const QPoint &hotspot )
 {
-   m_hotSpot = hotspot;
+    m_hotSpot = hotspot;
 }
 
-void QShapedPixmapWindow::paintEvent(QPaintEvent *)
+void QShapedPixmapWindow::paintEvent( QPaintEvent * )
 {
-   if (!m_pixmap.isNull()) {
-      const QRect rect(QPoint(0, 0), size());
-      QPainter painter(this);
-      if (m_useCompositing) {
-         painter.setCompositionMode(QPainter::CompositionMode_Source);
-      } else {
-         painter.fillRect(rect, QGuiApplication::palette().base());
-      }
-      painter.drawPixmap(rect, m_pixmap);
-   }
+    if ( !m_pixmap.isNull() )
+    {
+        const QRect rect( QPoint( 0, 0 ), size() );
+        QPainter painter( this );
+
+        if ( m_useCompositing )
+        {
+            painter.setCompositionMode( QPainter::CompositionMode_Source );
+        }
+        else
+        {
+            painter.fillRect( rect, QGuiApplication::palette().base() );
+        }
+
+        painter.drawPixmap( rect, m_pixmap );
+    }
 }
 
-void QShapedPixmapWindow::updateGeometry(const QPoint &pos)
+void QShapedPixmapWindow::updateGeometry( const QPoint &pos )
 {
-   QSize size(1, 1);
-   if (!m_pixmap.isNull()) {
-      size = qFuzzyCompare(m_pixmap.devicePixelRatio(), qreal(1.0))
-         ? m_pixmap.size()
-         : (QSizeF(m_pixmap.size()) / m_pixmap.devicePixelRatio()).toSize();
-   }
-   setGeometry(QRect(pos - m_hotSpot, size));
+    QSize size( 1, 1 );
+
+    if ( !m_pixmap.isNull() )
+    {
+        size = qFuzzyCompare( m_pixmap.devicePixelRatio(), qreal( 1.0 ) )
+               ? m_pixmap.size()
+               : ( QSizeF( m_pixmap.size() ) / m_pixmap.devicePixelRatio() ).toSize();
+    }
+
+    setGeometry( QRect( pos - m_hotSpot, size ) );
 }
 
 

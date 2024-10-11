@@ -26,7 +26,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class HTMLStyleElement;
@@ -34,32 +35,36 @@ class StyleSheet;
 
 typedef Vector<RefPtr<StyleSheet> > StyleSheetVector;
 
-class StyleSheetList : public RefCounted<StyleSheetList> {
+class StyleSheetList : public RefCounted<StyleSheetList>
+{
 public:
-    static PassRefPtr<StyleSheetList> create(Document* doc) { return adoptRef(new StyleSheetList(doc)); }
+    static PassRefPtr<StyleSheetList> create( Document *doc )
+    {
+        return adoptRef( new StyleSheetList( doc ) );
+    }
     ~StyleSheetList();
 
     void documentDestroyed();
 
     unsigned length() const;
-    StyleSheet* item(unsigned index);
+    StyleSheet *item( unsigned index );
 
-    HTMLStyleElement* getNamedItem(const String&) const;
+    HTMLStyleElement *getNamedItem( const String & ) const;
 
-    void swap(StyleSheetVector& sheets)
+    void swap( StyleSheetVector &sheets )
     {
-        m_sheets.swap(sheets);
+        m_sheets.swap( sheets );
     }
 
-    Document* document()
+    Document *document()
     {
         return m_doc;
     }
-    
-private:
-    StyleSheetList(Document*);
 
-    Document* m_doc;
+private:
+    StyleSheetList( Document * );
+
+    Document *m_doc;
     StyleSheetVector m_sheets;
 };
 

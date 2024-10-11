@@ -28,41 +28,45 @@
 #include <qstring.h>
 #include <qvector.h>
 
-struct QCharAttributes {
-   uchar graphemeBoundary : 1;
-   uchar wordBreak        : 1;
-   uchar sentenceBoundary : 1;
-   uchar lineBreak        : 1;
-   uchar whiteSpace       : 1;
-   uchar wordStart        : 1;
-   uchar wordEnd          : 1;
-   uchar mandatoryBreak   : 1;
+struct QCharAttributes
+{
+    uchar graphemeBoundary : 1;
+    uchar wordBreak        : 1;
+    uchar sentenceBoundary : 1;
+    uchar lineBreak        : 1;
+    uchar whiteSpace       : 1;
+    uchar wordStart        : 1;
+    uchar wordEnd          : 1;
+    uchar mandatoryBreak   : 1;
 };
 
-namespace QUnicodeTools {
+namespace QUnicodeTools
+{
 
-struct ScriptItem {
-   int position;
-   QChar::Script script;
+struct ScriptItem
+{
+    int position;
+    QChar::Script script;
 };
 
-enum CharAttributeOption {
-   GraphemeBreaks       = 0x01,
-   WordBreaks           = 0x02,
-   SentenceBreaks       = 0x04,
-   LineBreaks           = 0x08,
-   WhiteSpaces          = 0x10,
-   DefaultOptionsCompat = GraphemeBreaks | LineBreaks | WhiteSpaces,
+enum CharAttributeOption
+{
+    GraphemeBreaks       = 0x01,
+    WordBreaks           = 0x02,
+    SentenceBreaks       = 0x04,
+    LineBreaks           = 0x08,
+    WhiteSpaces          = 0x10,
+    DefaultOptionsCompat = GraphemeBreaks | LineBreaks | WhiteSpaces,
 
-   DontClearAttributes = 0x1000
+    DontClearAttributes = 0x1000
 };
 using CharAttributeOptions = QFlags<CharAttributeOption>;
 
 // attributes buffer has to have a length of string length + 1
-Q_CORE_EXPORT void initCharAttributes(const QString &str, QVector<QUnicodeTools::ScriptItem> &scriptItems,
-      QCharAttributes *attributes, CharAttributeOptions options = DefaultOptionsCompat);
+Q_CORE_EXPORT void initCharAttributes( const QString &str, QVector<QUnicodeTools::ScriptItem> &scriptItems,
+                                       QCharAttributes *attributes, CharAttributeOptions options = DefaultOptionsCompat );
 
-Q_CORE_EXPORT void initScripts(const QString &str, QVector<QChar::Script> &scriptIds);
+Q_CORE_EXPORT void initScripts( const QString &str, QVector<QChar::Script> &scriptIds );
 
 } // namespace
 

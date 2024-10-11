@@ -33,42 +33,45 @@ ExternalVariableLoader::~ExternalVariableLoader()
 {
 }
 
-SequenceType::Ptr ExternalVariableLoader::announceExternalVariable(const QXmlName name,
-      const SequenceType::Ptr &declaredType)
+SequenceType::Ptr ExternalVariableLoader::announceExternalVariable( const QXmlName name,
+        const SequenceType::Ptr &declaredType )
 {
-   Q_ASSERT(!name.isNull());
-   Q_ASSERT(declaredType);
+    Q_ASSERT( !name.isNull() );
+    Q_ASSERT( declaredType );
 
-   (void) name;
-   (void) declaredType;
+    ( void ) name;
+    ( void ) declaredType;
 
-   return SequenceType::Ptr();
+    return SequenceType::Ptr();
 }
 
-Item::Iterator::Ptr ExternalVariableLoader::evaluateSequence(const QXmlName name,
-      const DynamicContext::Ptr &context)
+Item::Iterator::Ptr ExternalVariableLoader::evaluateSequence( const QXmlName name,
+        const DynamicContext::Ptr &context )
 {
-   Q_ASSERT(!name.isNull());
-   const Item item(evaluateSingleton(name, context));
+    Q_ASSERT( !name.isNull() );
+    const Item item( evaluateSingleton( name, context ) );
 
-   if (item) {
-      return makeSingletonIterator(item);
-   } else {
-      return CommonValues::emptyIterator;
-   }
+    if ( item )
+    {
+        return makeSingletonIterator( item );
+    }
+    else
+    {
+        return CommonValues::emptyIterator;
+    }
 }
 
-Item ExternalVariableLoader::evaluateSingleton(const QXmlName name,
-      const DynamicContext::Ptr &context)
+Item ExternalVariableLoader::evaluateSingleton( const QXmlName name,
+        const DynamicContext::Ptr &context )
 {
-   Q_ASSERT(!name.isNull());
-   return Boolean::fromValue(evaluateEBV(name, context));
+    Q_ASSERT( !name.isNull() );
+    return Boolean::fromValue( evaluateEBV( name, context ) );
 }
 
-bool ExternalVariableLoader::evaluateEBV(const QXmlName name,
-      const DynamicContext::Ptr &context)
+bool ExternalVariableLoader::evaluateEBV( const QXmlName name,
+        const DynamicContext::Ptr &context )
 {
-   Q_ASSERT(!name.isNull());
-   return Boolean::evaluateEBV(evaluateSequence(name, context), context);
+    Q_ASSERT( !name.isNull() );
+    return Boolean::evaluateEBV( evaluateSequence( name, context ), context );
 }
 

@@ -61,18 +61,28 @@ QT_BEGIN_NAMESPACE
 
 #ifndef QT_NO_TEXTCODEC
 
-class QSjisCodec : public QTextCodec {
+class QSjisCodec : public QTextCodec
+{
 public:
     static QByteArray _name();
     static QList<QByteArray> _aliases();
     static int _mibEnum();
 
-    QByteArray name() const { return _name(); }
-    QList<QByteArray> aliases() const { return _aliases(); }
-    int mibEnum() const { return _mibEnum(); }
+    QByteArray name() const
+    {
+        return _name();
+    }
+    QList<QByteArray> aliases() const
+    {
+        return _aliases();
+    }
+    int mibEnum() const
+    {
+        return _mibEnum();
+    }
 
-    QString convertToUnicode(const char *, int, ConverterState *) const;
-    QByteArray convertFromUnicode(const QChar *, int, ConverterState *) const;
+    QString convertToUnicode( const char *, int, ConverterState * ) const;
+    QByteArray convertFromUnicode( const QChar *, int, ConverterState * ) const;
 
     QSjisCodec();
     ~QSjisCodec();

@@ -25,10 +25,11 @@
 
 typedef struct _GstElement GstElement;
 
-namespace WTF {
+namespace WTF
+{
 
-template<> GstElement* refGPtr<GstElement>(GstElement* ptr);
-template<> void derefGPtr<GstElement>(GstElement* ptr);
+template<> GstElement *refGPtr<GstElement>( GstElement *ptr );
+template<> void derefGPtr<GstElement>( GstElement *ptr );
 
 }
 

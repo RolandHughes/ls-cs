@@ -48,14 +48,14 @@ class QDBusConnectionPrivate;
 
 class QDBusAbstractAdaptorPrivate: public QObjectPrivate
 {
-    Q_DECLARE_PUBLIC(QDBusAbstractAdaptor)
+    Q_DECLARE_PUBLIC( QDBusAbstractAdaptor )
 public:
-    QDBusAbstractAdaptorPrivate() : autoRelaySignals(false) {}
+    QDBusAbstractAdaptorPrivate() : autoRelaySignals( false ) {}
     QString xml;
     bool autoRelaySignals;
 
-    static QString retrieveIntrospectionXml(QDBusAbstractAdaptor *adaptor);
-    static void saveIntrospectionXml(QDBusAbstractAdaptor *adaptor, const QString &xml);
+    static QString retrieveIntrospectionXml( QDBusAbstractAdaptor *adaptor );
+    static void saveIntrospectionXml( QDBusAbstractAdaptor *adaptor, const QString &xml );
 };
 
 class QDBusAdaptorConnector: public QObject
@@ -68,39 +68,45 @@ public: // typedefs
         const char *interface;
         QDBusAbstractAdaptor *adaptor;
 
-        inline bool operator<(const AdaptorData &other) const
-        { return QByteArray(interface) < other.interface; }
-        inline bool operator<(const QString &other) const
-        { return QLatin1String(interface) < other; }
-        inline bool operator<(const QByteArray &other) const
-        { return interface < other; }
+        inline bool operator<( const AdaptorData &other ) const
+        {
+            return QByteArray( interface ) < other.interface;
+        }
+        inline bool operator<( const QString &other ) const
+        {
+            return QLatin1String( interface ) < other;
+        }
+        inline bool operator<( const QByteArray &other ) const
+        {
+            return interface < other;
+        }
     };
     typedef QVector<AdaptorData> AdaptorMap;
 
 public: // methods
-    explicit QDBusAdaptorConnector(QObject *parent);
+    explicit QDBusAdaptorConnector( QObject *parent );
     ~QDBusAdaptorConnector();
 
-    void addAdaptor(QDBusAbstractAdaptor *adaptor);
-    void connectAllSignals(QObject *object);
-    void disconnectAllSignals(QObject *object);
-    void relay(QObject *sender, int id, void **);
+    void addAdaptor( QDBusAbstractAdaptor *adaptor );
+    void connectAllSignals( QObject *object );
+    void disconnectAllSignals( QObject *object );
+    void relay( QObject *sender, int id, void ** );
 
 //public slots:
-    void relaySlot(void **);
+    void relaySlot( void ** );
     void polish();
 
 protected:
 //signals:
-    void relaySignal(QObject *obj, const QMetaObject *metaObject, int sid, const QVariantList &args);
+    void relaySignal( QObject *obj, const QMetaObject *metaObject, int sid, const QVariantList &args );
 
 public: // member variables
     AdaptorMap adaptors;
     bool waitingForPolish : 1;
 };
 
-extern QDBusAdaptorConnector *qDBusFindAdaptorConnector(QObject *object);
-extern QDBusAdaptorConnector *qDBusCreateAdaptorConnector(QObject *object);
+extern QDBusAdaptorConnector *qDBusFindAdaptorConnector( QObject *object );
+extern QDBusAdaptorConnector *qDBusCreateAdaptorConnector( QObject *object );
 
 QT_END_NAMESPACE
 

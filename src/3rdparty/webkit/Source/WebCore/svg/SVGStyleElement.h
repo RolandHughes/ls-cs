@@ -26,38 +26,47 @@
 #include "SVGLangSpace.h"
 #include "StyleElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGStyleElement : public SVGElement
-                      , public SVGLangSpace
-                      , public StyleElement {
+    , public SVGLangSpace
+    , public StyleElement
+{
 public:
-    static PassRefPtr<SVGStyleElement> create(const QualifiedName&, Document*, bool createdByParser);
+    static PassRefPtr<SVGStyleElement> create( const QualifiedName &, Document *, bool createdByParser );
     virtual ~SVGStyleElement();
 
     using StyleElement::sheet;
 
-    virtual const AtomicString& type() const;
-    void setType(const AtomicString&, ExceptionCode&);
+    virtual const AtomicString &type() const;
+    void setType( const AtomicString &, ExceptionCode & );
 
-    virtual const AtomicString& media() const;
-    void setMedia(const AtomicString&, ExceptionCode&);
+    virtual const AtomicString &media() const;
+    void setMedia( const AtomicString &, ExceptionCode & );
 
     virtual String title() const;
-    void setTitle(const AtomicString&, ExceptionCode&);
+    void setTitle( const AtomicString &, ExceptionCode & );
 
 private:
-    SVGStyleElement(const QualifiedName&, Document*, bool createdByParser);
+    SVGStyleElement( const QualifiedName &, Document *, bool createdByParser );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
     virtual void finishParsingChildren();
 
-    virtual bool isLoading() const { return StyleElement::isLoading(); }
-    virtual bool sheetLoaded() { return StyleElement::sheetLoaded(document()); }
+    virtual bool isLoading() const
+    {
+        return StyleElement::isLoading();
+    }
+    virtual bool sheetLoaded()
+    {
+        return StyleElement::sheetLoaded( document() );
+    }
 };
 
 } // namespace WebCore

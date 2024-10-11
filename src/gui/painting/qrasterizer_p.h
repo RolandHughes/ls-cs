@@ -36,24 +36,24 @@ class QRasterizerPrivate;
 class QRasterizer
 
 {
- public:
-   QRasterizer();
-   ~QRasterizer();
+public:
+    QRasterizer();
+    ~QRasterizer();
 
-   void setAntialiased(bool antialiased);
-   void setClipRect(const QRect &clipRect);
-   void setLegacyRoundingEnabled(bool legacyRoundingEnabled);
+    void setAntialiased( bool antialiased );
+    void setClipRect( const QRect &clipRect );
+    void setLegacyRoundingEnabled( bool legacyRoundingEnabled );
 
-   void initialize(ProcessSpans blend, void *data);
+    void initialize( ProcessSpans blend, void *data );
 
-   void rasterize(const QT_FT_Outline *outline, Qt::FillRule fillRule);
-   void rasterize(const QPainterPath &path, Qt::FillRule fillRule);
+    void rasterize( const QT_FT_Outline *outline, Qt::FillRule fillRule );
+    void rasterize( const QPainterPath &path, Qt::FillRule fillRule );
 
-   // width should be in units of |a-b|
-   void rasterizeLine(const QPointF &a, const QPointF &b, qreal width, bool squareCap = false);
+    // width should be in units of |a-b|
+    void rasterizeLine( const QPointF &a, const QPointF &b, qreal width, bool squareCap = false );
 
- private:
-   QRasterizerPrivate *d;
+private:
+    QRasterizerPrivate *d;
 };
 
 

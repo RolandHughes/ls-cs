@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the Autofitter error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the Autofitter error enumeration
+ * constants.
+ *
+ */
 
 #ifndef AFERRORS_H_
 #define AFERRORS_H_

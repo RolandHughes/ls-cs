@@ -39,16 +39,17 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 WebSocketHandshakeResponse::ChallengeResponse::ChallengeResponse()
 {
-    memset(value, 0, sizeof(value));
+    memset( value, 0, sizeof( value ) );
 }
 
-void WebSocketHandshakeResponse::ChallengeResponse::set(const unsigned char challengeResponse[16])
+void WebSocketHandshakeResponse::ChallengeResponse::set( const unsigned char challengeResponse[16] )
 {
-    memcpy(value, challengeResponse, sizeof(value));
+    memcpy( value, challengeResponse, sizeof( value ) );
 }
 
 WebSocketHandshakeResponse::WebSocketHandshakeResponse()
@@ -64,30 +65,30 @@ int WebSocketHandshakeResponse::statusCode() const
     return m_statusCode;
 }
 
-void WebSocketHandshakeResponse::setStatusCode(int statusCode)
+void WebSocketHandshakeResponse::setStatusCode( int statusCode )
 {
-    ASSERT(statusCode >= 100 && statusCode < 600);
+    ASSERT( statusCode >= 100 && statusCode < 600 );
     m_statusCode = statusCode;
 }
 
-const String& WebSocketHandshakeResponse::statusText() const
+const String &WebSocketHandshakeResponse::statusText() const
 {
     return m_statusText;
 }
 
-void WebSocketHandshakeResponse::setStatusText(const String& statusText)
+void WebSocketHandshakeResponse::setStatusText( const String &statusText )
 {
     m_statusText = statusText;
 }
 
-const HTTPHeaderMap& WebSocketHandshakeResponse::headerFields() const
+const HTTPHeaderMap &WebSocketHandshakeResponse::headerFields() const
 {
     return m_headerFields;
 }
 
-void WebSocketHandshakeResponse::addHeaderField(const AtomicString& name, const String& value)
+void WebSocketHandshakeResponse::addHeaderField( const AtomicString &name, const String &value )
 {
-    m_headerFields.add(name, value);
+    m_headerFields.add( name, value );
 }
 
 void WebSocketHandshakeResponse::clearHeaderFields()
@@ -95,14 +96,14 @@ void WebSocketHandshakeResponse::clearHeaderFields()
     m_headerFields.clear();
 }
 
-const WebSocketHandshakeResponse::ChallengeResponse& WebSocketHandshakeResponse::challengeResponse() const
+const WebSocketHandshakeResponse::ChallengeResponse &WebSocketHandshakeResponse::challengeResponse() const
 {
     return m_challengeResponse;
 }
 
-void WebSocketHandshakeResponse::setChallengeResponse(const unsigned char challengeResponse[16])
+void WebSocketHandshakeResponse::setChallengeResponse( const unsigned char challengeResponse[16] )
 {
-    m_challengeResponse.set(challengeResponse);
+    m_challengeResponse.set( challengeResponse );
 }
 
 } // namespace WebCore

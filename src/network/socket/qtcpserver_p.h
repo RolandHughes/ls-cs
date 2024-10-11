@@ -35,51 +35,52 @@
 
 class QTcpServerPrivate : public QAbstractSocketEngineReceiver
 {
-   Q_DECLARE_PUBLIC(QTcpServer)
+    Q_DECLARE_PUBLIC( QTcpServer )
 
- public:
-   QTcpServerPrivate();
-   ~QTcpServerPrivate();
+public:
+    QTcpServerPrivate();
+    ~QTcpServerPrivate();
 
-   QList<QTcpSocket *> pendingConnections;
+    QList<QTcpSocket *> pendingConnections;
 
-   quint16 port;
-   QHostAddress address;
+    quint16 port;
+    QHostAddress address;
 
-   QAbstractSocket::SocketState state;
-   QAbstractSocketEngine *socketEngine;
+    QAbstractSocket::SocketState state;
+    QAbstractSocketEngine *socketEngine;
 
-   QAbstractSocket::SocketError serverSocketError;
-   QString serverSocketErrorString;
+    QAbstractSocket::SocketError serverSocketError;
+    QString serverSocketErrorString;
 
-   int maxConnections;
-
-#ifndef QT_NO_NETWORKPROXY
-   QNetworkProxy proxy;
-   QNetworkProxy resolveProxy(const QHostAddress &address, quint16 port);
-#endif
-
-   virtual void configureCreatedSocket();
-
-   // from QAbstractSocketEngineReceiver
-   void readNotification() override;
-   void closeNotification() override {
-      readNotification();
-   }
-
-   void writeNotification() override {}
-   void exceptionNotification() override {}
-   void connectionNotification() override {}
+    int maxConnections;
 
 #ifndef QT_NO_NETWORKPROXY
-   void proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *) override
-   {
-      (void) proxy;
-   }
+    QNetworkProxy proxy;
+    QNetworkProxy resolveProxy( const QHostAddress &address, quint16 port );
 #endif
 
- protected:
-   QTcpServer *q_ptr;
+    virtual void configureCreatedSocket();
+
+    // from QAbstractSocketEngineReceiver
+    void readNotification() override;
+    void closeNotification() override
+    {
+        readNotification();
+    }
+
+    void writeNotification() override {}
+    void exceptionNotification() override {}
+    void connectionNotification() override {}
+
+#ifndef QT_NO_NETWORKPROXY
+    void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator * ) override
+    {
+        ( void ) proxy;
+    }
+#endif
+
+protected:
+    QTcpServer *q_ptr;
 
 };
 

@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the smooth renderer error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the smooth renderer error enumeration
+ * constants.
+ *
+ */
 
 #ifndef FTSMERRS_H_
 #define FTSMERRS_H_

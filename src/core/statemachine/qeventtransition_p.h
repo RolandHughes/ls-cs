@@ -30,19 +30,19 @@ class QEventTransition;
 
 class Q_CORE_EXPORT QEventTransitionPrivate : public QAbstractTransitionPrivate
 {
-   Q_DECLARE_PUBLIC(QEventTransition)
+    Q_DECLARE_PUBLIC( QEventTransition )
 
- public:
-   QEventTransitionPrivate();
+public:
+    QEventTransitionPrivate();
 
-   static QEventTransitionPrivate *get(QEventTransition *q);
+    static QEventTransitionPrivate *get( QEventTransition *q );
 
-   void unregister();
-   void maybeRegister();
+    void unregister();
+    void maybeRegister();
 
-   bool registered;
-   QObject *object;
-   QEvent::Type eventType;
+    bool registered;
+    QObject *object;
+    QEvent::Type eventType;
 };
 
 #endif

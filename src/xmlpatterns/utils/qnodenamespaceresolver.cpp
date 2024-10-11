@@ -28,34 +28,40 @@
 
 using namespace QPatternist;
 
-NodeNamespaceResolver::NodeNamespaceResolver(const Item &item) : m_node(item.asNode())
+NodeNamespaceResolver::NodeNamespaceResolver( const Item &item ) : m_node( item.asNode() )
 {
-   Q_ASSERT(!m_node.isNull());
+    Q_ASSERT( !m_node.isNull() );
 }
 
-void NodeNamespaceResolver::addBinding(const QXmlName nb)
+void NodeNamespaceResolver::addBinding( const QXmlName nb )
 {
-   (void) nb;
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
+    ( void ) nb;
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
 }
 
-QXmlName::NamespaceCode NodeNamespaceResolver::lookupNamespaceURI(const QXmlName::PrefixCode prefix) const
+QXmlName::NamespaceCode NodeNamespaceResolver::lookupNamespaceURI( const QXmlName::PrefixCode prefix ) const
 {
-   const QXmlName::NamespaceCode ns = m_node.namespaceForPrefix(prefix);
+    const QXmlName::NamespaceCode ns = m_node.namespaceForPrefix( prefix );
 
-   if (ns == NoBinding) {
-      if (prefix == StandardPrefixes::empty) {
-         return StandardNamespaces::empty;
-      } else {
-         return NoBinding;
-      }
-   } else {
-      return ns;
-   }
+    if ( ns == NoBinding )
+    {
+        if ( prefix == StandardPrefixes::empty )
+        {
+            return StandardNamespaces::empty;
+        }
+        else
+        {
+            return NoBinding;
+        }
+    }
+    else
+    {
+        return ns;
+    }
 }
 
 NamespaceResolver::Bindings NodeNamespaceResolver::bindings() const
 {
-   Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
-   return NamespaceResolver::Bindings();
+    Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
+    return NamespaceResolver::Bindings();
 }

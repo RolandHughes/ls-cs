@@ -272,7 +272,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \class QDBusIntrospection::ObjectTree
     \brief Complete information about one object node and its descendency.
-    
+
     This struct contains the same data as QDBusIntrospection::Object, plus the actual data for the
     interfaces and child (sub) objects that was available in the XML document.
 */
@@ -342,13 +342,15 @@ QT_BEGIN_NAMESPACE
     If there are multiple interfaces in this XML data, it is undefined which one will be
     returned.
 */
-QDBusIntrospection::Interface
-QDBusIntrospection::parseInterface(const QString &xml)
+QDBusIntrospection::Interface QDBusIntrospection::parseInterface( const QString &xml )
 {
     // be lazy
-    Interfaces ifs = parseInterfaces(xml);
-    if (ifs.isEmpty())
+    Interfaces ifs = parseInterfaces( xml );
+
+    if ( ifs.isEmpty() )
+    {
         return Interface();
+    }
 
     // return the first in map order (probably alphabetical order)
     return *ifs.constBegin().value();
@@ -360,11 +362,10 @@ QDBusIntrospection::parseInterface(const QString &xml)
     If the first element tag in this document fragment is \<node\>, the interfaces parsed will
     be those found as child elements of the \<node\> tag.
 */
-QDBusIntrospection::Interfaces
-QDBusIntrospection::parseInterfaces(const QString &xml)
+QDBusIntrospection::Interfaces QDBusIntrospection::parseInterfaces( const QString &xml )
 {
     QString null;
-    QDBusXmlParser parser(null, null, xml);
+    QDBusXmlParser parser( null, null, xml );
     return parser.interfaces();
 }
 
@@ -379,13 +380,16 @@ QDBusIntrospection::parseInterfaces(const QString &xml)
     This function does not parse the interfaces contained in the node, nor sub-object's contents.
     It will only list their names. If you need to know their contents, use parseObjectTree.
 */
-QDBusIntrospection::Object
-QDBusIntrospection::parseObject(const QString &xml, const QString &service, const QString &path)
+QDBusIntrospection::Object QDBusIntrospection::parseObject( const QString &xml, const QString &service, const QString &path )
 {
-    QDBusXmlParser parser(service, path, xml);
+    QDBusXmlParser parser( service, path, xml );
     QSharedDataPointer<QDBusIntrospection::Object> retval = parser.object();
-    if (!retval)
+
+    if ( !retval )
+    {
         return QDBusIntrospection::Object();
+    }
+
     return *retval;
 }
 
@@ -396,13 +400,17 @@ QDBusIntrospection::parseObject(const QString &xml, const QString &service, cons
 
     The Objects map returned will contain the absolute path names in the key.
 */
-QDBusIntrospection::ObjectTree
-QDBusIntrospection::parseObjectTree(const QString &xml, const QString &service, const QString &path)
+QDBusIntrospection::ObjectTree QDBusIntrospection::parseObjectTree( const QString &xml, const QString &service,
+        const QString &path )
 {
-    QDBusXmlParser parser(service, path, xml);
+    QDBusXmlParser parser( service, path, xml );
     QSharedDataPointer<QDBusIntrospection::ObjectTree> retval = parser.objectTree();
-    if (!retval)
+
+    if ( !retval )
+    {
         return QDBusIntrospection::ObjectTree();
+    }
+
     return *retval;
 }
 

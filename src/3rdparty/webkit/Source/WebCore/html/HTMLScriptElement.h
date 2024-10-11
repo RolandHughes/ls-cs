@@ -27,32 +27,38 @@
 #include "ScriptElement.h"
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLScriptElement : public HTMLElement, public ScriptElement {
+class HTMLScriptElement : public HTMLElement, public ScriptElement
+{
 public:
-    static PassRefPtr<HTMLScriptElement> create(const QualifiedName&, Document*, bool wasInsertedByParser);
+    static PassRefPtr<HTMLScriptElement> create( const QualifiedName &, Document *, bool wasInsertedByParser );
 
-    String text() const { return scriptContent(); }
-    void setText(const String&);
+    String text() const
+    {
+        return scriptContent();
+    }
+    void setText( const String & );
 
     KURL src() const;
 
-    void setAsync(bool);
+    void setAsync( bool );
     bool async() const;
 
 private:
-    HTMLScriptElement(const QualifiedName&, Document*, bool wasInsertedByParser, bool alreadyStarted);
+    HTMLScriptElement( const QualifiedName &, Document *, bool wasInsertedByParser, bool alreadyStarted );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
-    virtual void attributeChanged(Attribute*, bool preserveDecls = false);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
+    virtual void attributeChanged( Attribute *, bool preserveDecls = false );
 
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     virtual String sourceAttributeValue() const;
     virtual String charsetAttributeValue() const;

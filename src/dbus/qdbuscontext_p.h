@@ -49,13 +49,13 @@ class QDBusContext;
 class QDBusContextPrivate
 {
 public:
-    inline QDBusContextPrivate(const QDBusConnection &conn, const QDBusMessage &msg)
-        : connection(conn), message(msg) {}
+    inline QDBusContextPrivate( const QDBusConnection &conn, const QDBusMessage &msg )
+        : connection( conn ), message( msg ) {}
 
     QDBusConnection connection;
     const QDBusMessage &message;
 
-    static QDBusContextPrivate *set(QObject *obj, QDBusContextPrivate *newContext);
+    static QDBusContextPrivate *set( QObject *obj, QDBusContextPrivate *newContext );
 };
 
 QT_END_NAMESPACE

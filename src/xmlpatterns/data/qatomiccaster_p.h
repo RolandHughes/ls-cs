@@ -28,17 +28,18 @@
 #include <qitem_p.h>
 #include <qatomictypedispatch_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AtomicCaster : public AtomicTypeVisitorResult
 {
- public:
-   typedef QExplicitlySharedDataPointer<AtomicCaster> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<AtomicCaster> Ptr;
 
-   AtomicCaster();
-   virtual ~AtomicCaster();
+    AtomicCaster();
+    virtual ~AtomicCaster();
 
-   virtual Item castFrom(const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context) const = 0;
+    virtual Item castFrom( const Item &from, const QExplicitlySharedDataPointer<DynamicContext> &context ) const = 0;
 };
 }
 

@@ -40,27 +40,29 @@
 #include <QPainter>
 #include <QPixmap>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct TransparencyLayer {
+struct TransparencyLayer
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    TransparencyLayer(const QPainter* p, const QRect &rect, qreal opacity, QPixmap& alphaMask)
-        : pixmap(rect.width(), rect.height())
-        , opacity(opacity)
-        , alphaMask(alphaMask)
-        , saveCounter(1) // see the comment for saveCounter
+    TransparencyLayer( const QPainter *p, const QRect &rect, qreal opacity, QPixmap &alphaMask )
+        : pixmap( rect.width(), rect.height() )
+        , opacity( opacity )
+        , alphaMask( alphaMask )
+        , saveCounter( 1 ) // see the comment for saveCounter
     {
         offset = rect.topLeft();
-        pixmap.fill(Qt::transparent);
-        painter.begin(&pixmap);
-        painter.setRenderHints(p->renderHints());
-        painter.translate(-offset);
-        painter.setPen(p->pen());
-        painter.setBrush(p->brush());
-        painter.setTransform(p->transform(), true);
-        painter.setFont(p->font());
-        painter.setOpacity(1);
+        pixmap.fill( Qt::transparent );
+        painter.begin( &pixmap );
+        painter.setRenderHints( p->renderHints() );
+        painter.translate( -offset );
+        painter.setPen( p->pen() );
+        painter.setBrush( p->brush() );
+        painter.setTransform( p->transform(), true );
+        painter.setFont( p->font() );
+        painter.setOpacity( 1 );
     }
 
     TransparencyLayer()
@@ -77,8 +79,11 @@ public:
     // otherwise, its value is unspecified
     int saveCounter;
 private:
-    TransparencyLayer(const TransparencyLayer &) {}
-    TransparencyLayer & operator=(const TransparencyLayer &) { return *this; }
+    TransparencyLayer( const TransparencyLayer & ) {}
+    TransparencyLayer &operator=( const TransparencyLayer & )
+    {
+        return *this;
+    }
 };
 
 } // namespace WebCore

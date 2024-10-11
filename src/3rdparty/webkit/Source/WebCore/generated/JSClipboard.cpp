@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSClipboard);
+ASSERT_CLASS_FITS_IN_CELL( JSClipboard );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,15 +48,15 @@ ASSERT_CLASS_FITS_IN_CELL(JSClipboard);
 
 static const HashTableValue JSClipboardTableValues[7] =
 {
-    { "dropEffect", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsClipboardDropEffect), (intptr_t)setJSClipboardDropEffect THUNK_GENERATOR(0) },
-    { "effectAllowed", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsClipboardEffectAllowed), (intptr_t)setJSClipboardEffectAllowed THUNK_GENERATOR(0) },
-    { "types", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsClipboardTypes), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "files", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsClipboardFiles), (intptr_t)0 THUNK_GENERATOR(0) },
+    { "dropEffect", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsClipboardDropEffect ), ( intptr_t )setJSClipboardDropEffect THUNK_GENERATOR( 0 ) },
+    { "effectAllowed", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsClipboardEffectAllowed ), ( intptr_t )setJSClipboardEffectAllowed THUNK_GENERATOR( 0 ) },
+    { "types", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsClipboardTypes ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "files", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsClipboardFiles ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
 #if ENABLE(DATA_TRANSFER_ITEMS)
-    { "items", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsClipboardItems), (intptr_t)0 THUNK_GENERATOR(0) },
+    { "items", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsClipboardItems ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
 #endif
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsClipboardConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsClipboardConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -69,43 +70,49 @@ static JSC_CONST_HASHTABLE HashTable JSClipboardTable = { 17, 15, JSClipboardTab
 
 static const HashTableValue JSClipboardConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSClipboardConstructorTable = { 1, 0, JSClipboardConstructorTableValues, 0 };
-class JSClipboardConstructor : public DOMConstructorObject {
+class JSClipboardConstructor : public DOMConstructorObject
+{
 public:
-    JSClipboardConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSClipboardConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSClipboardConstructor::s_info = { "ClipboardConstructor", &DOMConstructorObject::s_info, &JSClipboardConstructorTable, 0 };
 
-JSClipboardConstructor::JSClipboardConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSClipboardConstructor::JSClipboardConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSClipboardPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSClipboardPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSClipboardConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSClipboardConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSClipboardConstructor, JSDOMWrapper>(exec, &JSClipboardConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSClipboardConstructor, JSDOMWrapper>( exec, &JSClipboardConstructorTable, this, propertyName, slot );
 }
 
-bool JSClipboardConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSClipboardConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSClipboardConstructor, JSDOMWrapper>(exec, &JSClipboardConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSClipboardConstructor, JSDOMWrapper>( exec, &JSClipboardConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -117,193 +124,222 @@ bool JSClipboardConstructor::getOwnPropertyDescriptor(ExecState* exec, const Ide
 
 static const HashTableValue JSClipboardPrototypeTableValues[5] =
 {
-    { "clearData", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsClipboardPrototypeFunctionClearData), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getData", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsClipboardPrototypeFunctionGetData), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "setData", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsClipboardPrototypeFunctionSetData), (intptr_t)2 THUNK_GENERATOR(0) },
-    { "setDragImage", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsClipboardPrototypeFunctionSetDragImage), (intptr_t)3 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "clearData", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsClipboardPrototypeFunctionClearData ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getData", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsClipboardPrototypeFunctionGetData ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "setData", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsClipboardPrototypeFunctionSetData ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { "setDragImage", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsClipboardPrototypeFunctionSetDragImage ), ( intptr_t )3 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSClipboardPrototypeTable = { 8, 7, JSClipboardPrototypeTableValues, 0 };
 const ClassInfo JSClipboardPrototype::s_info = { "ClipboardPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSClipboardPrototypeTable, 0 };
 
-JSObject* JSClipboardPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSClipboardPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSClipboard>(exec, globalObject);
+    return getDOMPrototype<JSClipboard>( exec, globalObject );
 }
 
-bool JSClipboardPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSClipboardPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSClipboardPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSClipboardPrototypeTable, this, propertyName, slot );
 }
 
-bool JSClipboardPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSClipboardPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSClipboardPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSClipboardPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSClipboard::s_info = { "Clipboard", &JSDOMWrapper::s_info, &JSClipboardTable, 0 };
 
-JSClipboard::JSClipboard(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Clipboard> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSClipboard::JSClipboard( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Clipboard> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSClipboard::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSClipboard::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSClipboardPrototype(exec->globalData(), globalObject, JSClipboardPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSClipboardPrototype( exec->globalData(), globalObject,
+            JSClipboardPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSClipboard::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSClipboard::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSClipboard, Base>(exec, &JSClipboardTable, this, propertyName, slot);
+    return getStaticValueSlot<JSClipboard, Base>( exec, &JSClipboardTable, this, propertyName, slot );
 }
 
-bool JSClipboard::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSClipboard::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSClipboard, Base>(exec, &JSClipboardTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSClipboard, Base>( exec, &JSClipboardTable, this, propertyName, descriptor );
 }
 
-JSValue jsClipboardDropEffect(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsClipboardDropEffect( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Clipboard* imp = static_cast<Clipboard*>(castedThis->impl());
-    JSValue result = jsStringOrUndefined(exec, imp->dropEffect());
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Clipboard *imp = static_cast<Clipboard *>( castedThis->impl() );
+    JSValue result = jsStringOrUndefined( exec, imp->dropEffect() );
     return result;
 }
 
 
-JSValue jsClipboardEffectAllowed(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsClipboardEffectAllowed( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Clipboard* imp = static_cast<Clipboard*>(castedThis->impl());
-    JSValue result = jsStringOrUndefined(exec, imp->effectAllowed());
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Clipboard *imp = static_cast<Clipboard *>( castedThis->impl() );
+    JSValue result = jsStringOrUndefined( exec, imp->effectAllowed() );
     return result;
 }
 
 
-JSValue jsClipboardTypes(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsClipboardTypes( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(slotBase));
-    return castedThis->types(exec);
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( slotBase ) );
+    return castedThis->types( exec );
 }
 
 
-JSValue jsClipboardFiles(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsClipboardFiles( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Clipboard* imp = static_cast<Clipboard*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->files()));
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Clipboard *imp = static_cast<Clipboard *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->files() ) );
     return result;
 }
 
 
 #if ENABLE(DATA_TRANSFER_ITEMS)
-JSValue jsClipboardItems(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsClipboardItems( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Clipboard* imp = static_cast<Clipboard*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->items()));
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Clipboard *imp = static_cast<Clipboard *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->items() ) );
     return result;
 }
 
 #endif
 
-JSValue jsClipboardConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsClipboardConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSClipboard* domObject = static_cast<JSClipboard*>(asObject(slotBase));
-    return JSClipboard::getConstructor(exec, domObject->globalObject());
+    JSClipboard *domObject = static_cast<JSClipboard *>( asObject( slotBase ) );
+    return JSClipboard::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSClipboard::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSClipboard::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSClipboard, Base>(exec, propertyName, value, &JSClipboardTable, this, slot);
+    lookupPut<JSClipboard, Base>( exec, propertyName, value, &JSClipboardTable, this, slot );
 }
 
-void setJSClipboardDropEffect(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSClipboardDropEffect( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSClipboard* castedThis = static_cast<JSClipboard*>(thisObject);
-    Clipboard* imp = static_cast<Clipboard*>(castedThis->impl());
-    imp->setDropEffect(ustringToString(value.toString(exec)));
-}
-
-
-void setJSClipboardEffectAllowed(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSClipboard* castedThis = static_cast<JSClipboard*>(thisObject);
-    Clipboard* imp = static_cast<Clipboard*>(castedThis->impl());
-    imp->setEffectAllowed(ustringToString(value.toString(exec)));
+    JSClipboard *castedThis = static_cast<JSClipboard *>( thisObject );
+    Clipboard *imp = static_cast<Clipboard *>( castedThis->impl() );
+    imp->setDropEffect( ustringToString( value.toString( exec ) ) );
 }
 
 
-JSValue JSClipboard::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSClipboardEffectAllowed( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSClipboardConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSClipboard *castedThis = static_cast<JSClipboard *>( thisObject );
+    Clipboard *imp = static_cast<Clipboard *>( castedThis->impl() );
+    imp->setEffectAllowed( ustringToString( value.toString( exec ) ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionClearData(ExecState* exec)
+
+JSValue JSClipboard::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSClipboardConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionClearData( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSClipboard::s_info))
-        return throwVMTypeError(exec);
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(thisValue));
-    return JSValue::encode(castedThis->clearData(exec));
+
+    if ( !thisValue.inherits( &JSClipboard::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->clearData( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionGetData(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionGetData( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSClipboard::s_info))
-        return throwVMTypeError(exec);
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getData(exec));
+
+    if ( !thisValue.inherits( &JSClipboard::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getData( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionSetData(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionSetData( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSClipboard::s_info))
-        return throwVMTypeError(exec);
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(thisValue));
-    Clipboard* imp = static_cast<Clipboard*>(castedThis->impl());
-    if (exec->argumentCount() < 2)
-        return JSValue::encode(jsUndefined());
-    const String& type(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& data(ustringToString(exec->argument(1).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSClipboard::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( thisValue ) );
+    Clipboard *imp = static_cast<Clipboard *>( castedThis->impl() );
+
+    if ( exec->argumentCount() < 2 )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &type( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &data( ustringToString( exec->argument( 1 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->setData(type, data));
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->setData( type, data ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionSetDragImage(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsClipboardPrototypeFunctionSetDragImage( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSClipboard::s_info))
-        return throwVMTypeError(exec);
-    JSClipboard* castedThis = static_cast<JSClipboard*>(asObject(thisValue));
-    return JSValue::encode(castedThis->setDragImage(exec));
+
+    if ( !thisValue.inherits( &JSClipboard::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSClipboard *castedThis = static_cast<JSClipboard *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->setDragImage( exec ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Clipboard* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Clipboard *impl )
 {
-    return wrap<JSClipboard>(exec, globalObject, impl);
+    return wrap<JSClipboard>( exec, globalObject, impl );
 }
 
-Clipboard* toClipboard(JSC::JSValue value)
+Clipboard *toClipboard( JSC::JSValue value )
 {
-    return value.inherits(&JSClipboard::s_info) ? static_cast<JSClipboard*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSClipboard::s_info ) ? static_cast<JSClipboard *>( asObject( value ) )->impl() : 0;
 }
 
 }

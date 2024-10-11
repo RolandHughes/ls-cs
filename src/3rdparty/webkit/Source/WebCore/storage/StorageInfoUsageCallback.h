@@ -35,12 +35,14 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StorageInfoUsageCallback : public RefCounted<StorageInfoUsageCallback> {
+class StorageInfoUsageCallback : public RefCounted<StorageInfoUsageCallback>
+{
 public:
     virtual ~StorageInfoUsageCallback() { }
-    virtual bool handleEvent(unsigned long long currentUsageInBytes, unsigned long long currentQuotaInBytes) = 0;
+    virtual bool handleEvent( unsigned long long currentUsageInBytes, unsigned long long currentQuotaInBytes ) = 0;
 };
 
 } // namespace

@@ -29,37 +29,39 @@
 #include <qdebug.h>
 
 #if ! defined(Q_OS_WIN) || defined(QT_SHARED)
-   static QFactoryLoader *loader()
-   {
-      static QFactoryLoader retval(QGenericPluginInterface_ID, "/generic", Qt::CaseInsensitive);
-      return &retval;
-   }
+static QFactoryLoader *loader()
+{
+    static QFactoryLoader retval( QGenericPluginInterface_ID, "/generic", Qt::CaseInsensitive );
+    return &retval;
+}
 
 #endif
 
-QObject *QGenericPluginFactory::create(const QString &key, const QString &specification)
+QObject *QGenericPluginFactory::create( const QString &key, const QString &specification )
 {
 #if (! defined(Q_OS_WIN) || defined(QT_SHARED))
-   const QString driver = key.toLower();
+    const QString driver = key.toLower();
 
-   if (QObject *object = cs_load_plugin<QObject, QGenericPlugin>(loader(), driver, specification)) {
-      return object;
-   }
+    if ( QObject *object = lscs_load_plugin<QObject, QGenericPlugin>( loader(), driver, specification ) )
+    {
+        return object;
+    }
+
 #endif
 
-   return nullptr;
+    return nullptr;
 }
 
 QStringList QGenericPluginFactory::keys()
 {
-   QStringList list;
+    QStringList list;
 
 #if ! defined(Q_OS_WIN) || defined(QT_SHARED)
-   auto keySet = loader()->keySet();
-   list.append(keySet.toList());
+    auto keySet = loader()->keySet();
+    list.append( keySet.toList() );
 #endif
 
-   return list;
+    return list;
 }
 
 

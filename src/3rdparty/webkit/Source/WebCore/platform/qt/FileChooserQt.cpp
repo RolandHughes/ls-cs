@@ -26,23 +26,32 @@
 #include <QCoreApplication>
 #include <QFontMetrics>
 
-namespace WebCore {
-
-String FileChooser::basenameForWidth(const Font& f, int width) const
+namespace WebCore
 {
-    if (width <= 0)
+
+String FileChooser::basenameForWidth( const Font &f, int width ) const
+{
+    if ( width <= 0 )
+    {
         return String();
+    }
 
     String string;
-    if (m_filenames.isEmpty())
+
+    if ( m_filenames.isEmpty() )
+    {
         string = fileButtonNoFileSelectedLabel();
-    else if (m_filenames.size() == 1) {
+    }
+    else if ( m_filenames.size() == 1 )
+    {
         String fname = m_filenames[0];
-        QFontMetrics fm(f.font());
-        string = fm.elidedText(fname, Qt::ElideLeft, width);
-    } else {
+        QFontMetrics fm( f.font() );
+        string = fm.elidedText( fname, Qt::ElideLeft, width );
+    }
+    else
+    {
         int n = m_filenames.size();
-        string = QCoreApplication::translate("QWebPage", "%n file(s)", "number of chosen file", n);
+        string = QCoreApplication::translate( "QWebPage", "%n file(s)", "number of chosen file", n );
     }
 
     return string;

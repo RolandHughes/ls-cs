@@ -27,29 +27,29 @@
 #include <qhostaddress.h>
 #include <qlist.h>
 
-QTcpSocket::QTcpSocket(QObject *parent)
-   : QAbstractSocket(TcpSocket, *new QTcpSocketPrivate, parent)
+QTcpSocket::QTcpSocket( QObject *parent )
+    : QAbstractSocket( TcpSocket, *new QTcpSocketPrivate, parent )
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
-   qDebug("QTcpSocket::QTcpSocket()");
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
+    qDebug( "QTcpSocket::QTcpSocket()" );
 #endif
-   d_func()->isBuffered = true;
+    d_func()->isBuffered = true;
 }
 
 QTcpSocket::~QTcpSocket()
 {
-#if defined(CS_SHOW_DEBUG_NETWORK)
-   qDebug("QTcpSocket::~QTcpSocket()");
+#if defined(LSCS_SHOW_DEBUG_NETWORK)
+    qDebug( "QTcpSocket::~QTcpSocket()" );
 #endif
 }
 
-QTcpSocket::QTcpSocket(QTcpSocketPrivate &dd, QObject *parent)
-   : QAbstractSocket(TcpSocket, dd, parent)
+QTcpSocket::QTcpSocket( QTcpSocketPrivate &dd, QObject *parent )
+    : QAbstractSocket( TcpSocket, dd, parent )
 {
-   d_func()->isBuffered = true;
+    d_func()->isBuffered = true;
 }
 
-QTcpSocket::QTcpSocket(QAbstractSocket::SocketType socketType, QTcpSocketPrivate &dd, QObject *parent)
-   : QAbstractSocket(socketType, dd, parent)
+QTcpSocket::QTcpSocket( QAbstractSocket::SocketType socketType, QTcpSocketPrivate &dd, QObject *parent )
+    : QAbstractSocket( socketType, dd, parent )
 {
 }

@@ -34,26 +34,32 @@
 
 static QPrinterInfoPrivate *shared_null()
 {
-   static QPrinterInfoPrivate retval;
-   return &retval;
+    static QPrinterInfoPrivate retval;
+    return &retval;
 }
 
-namespace cs_internal {
-   void QPrinterInfoPrivateDeleter::operator()(QPrinterInfoPrivate *d) const {
-      if (d != shared_null()) {
-         delete d;
-      }
-   }
-}
-
-QPrinterInfoPrivate::QPrinterInfoPrivate(const QString &id)
+namespace lscs_internal
 {
-   if (!id.isEmpty()) {
-      QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
-      if (ps) {
-         m_printDevice = ps->createPrintDevice(id);
-      }
-   }
+void QPrinterInfoPrivateDeleter::operator()( QPrinterInfoPrivate *d ) const
+{
+    if ( d != shared_null() )
+    {
+        delete d;
+    }
+}
+}
+
+QPrinterInfoPrivate::QPrinterInfoPrivate( const QString &id )
+{
+    if ( !id.isEmpty() )
+    {
+        QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
+
+        if ( ps )
+        {
+            m_printDevice = ps->createPrintDevice( id );
+        }
+    }
 }
 
 QPrinterInfoPrivate::~QPrinterInfoPrivate()
@@ -61,31 +67,37 @@ QPrinterInfoPrivate::~QPrinterInfoPrivate()
 }
 
 QPrinterInfo::QPrinterInfo()
-   : d_ptr(shared_null())
+    : d_ptr( shared_null() )
 {
 }
 
-QPrinterInfo::QPrinterInfo(const QPrinterInfo &other)
-   : d_ptr((other.d_ptr.data() == shared_null()) ? shared_null() : new QPrinterInfoPrivate(*other.d_ptr))
+QPrinterInfo::QPrinterInfo( const QPrinterInfo &other )
+    : d_ptr( ( other.d_ptr.data() == shared_null() ) ? shared_null() : new QPrinterInfoPrivate( *other.d_ptr ) )
 {
 }
 
-QPrinterInfo::QPrinterInfo(const QPrinter &printer)
-   : d_ptr(shared_null())
+QPrinterInfo::QPrinterInfo( const QPrinter &printer )
+    : d_ptr( shared_null() )
 {
-   QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
-   if (ps) {
-      QPrinterInfo pi(printer.printerName());
-      if (pi.d_ptr.data() == shared_null()) {
-         d_ptr.reset(shared_null());
-      } else {
-         d_ptr.reset(new QPrinterInfoPrivate(*pi.d_ptr));
-      }
-   }
+    QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
+
+    if ( ps )
+    {
+        QPrinterInfo pi( printer.printerName() );
+
+        if ( pi.d_ptr.data() == shared_null() )
+        {
+            d_ptr.reset( shared_null() );
+        }
+        else
+        {
+            d_ptr.reset( new QPrinterInfoPrivate( *pi.d_ptr ) );
+        }
+    }
 }
 
-QPrinterInfo::QPrinterInfo(const QString &name)
-   : d_ptr(new QPrinterInfoPrivate(name))
+QPrinterInfo::QPrinterInfo( const QString &name )
+    : d_ptr( new QPrinterInfoPrivate( name ) )
 {
 }
 
@@ -93,181 +105,203 @@ QPrinterInfo::~QPrinterInfo()
 {
 }
 
-QPrinterInfo &QPrinterInfo::operator=(const QPrinterInfo &other)
+QPrinterInfo &QPrinterInfo::operator=( const QPrinterInfo &other )
 {
-   Q_ASSERT(d_ptr);
-   if (other.d_ptr.data() == shared_null()) {
-      d_ptr.reset(shared_null());
-   } else {
-      d_ptr.reset(new QPrinterInfoPrivate(*other.d_ptr));
-   }
-   return *this;
+    Q_ASSERT( d_ptr );
+
+    if ( other.d_ptr.data() == shared_null() )
+    {
+        d_ptr.reset( shared_null() );
+    }
+    else
+    {
+        d_ptr.reset( new QPrinterInfoPrivate( *other.d_ptr ) );
+    }
+
+    return *this;
 }
 
 QString QPrinterInfo::printerName() const
 {
-   const Q_D(QPrinterInfo);
-   return d->m_printDevice.id();
+    const Q_D( QPrinterInfo );
+    return d->m_printDevice.id();
 }
 
 QString QPrinterInfo::description() const
 {
-   const Q_D(QPrinterInfo);
-   return d->m_printDevice.name();
+    const Q_D( QPrinterInfo );
+    return d->m_printDevice.name();
 }
 
 QString QPrinterInfo::location() const
 {
-   const Q_D(QPrinterInfo);
-   return d->m_printDevice.location();
+    const Q_D( QPrinterInfo );
+    return d->m_printDevice.location();
 }
 
 QString QPrinterInfo::makeAndModel() const
 {
-   const Q_D(QPrinterInfo);
-   return d->m_printDevice.makeAndModel();
+    const Q_D( QPrinterInfo );
+    return d->m_printDevice.makeAndModel();
 }
 
 bool QPrinterInfo::isNull() const
 {
-   Q_D(const QPrinterInfo);
-   return d == shared_null() || !d->m_printDevice.isValid();
+    Q_D( const QPrinterInfo );
+    return d == shared_null() || !d->m_printDevice.isValid();
 }
 
 bool QPrinterInfo::isDefault() const
 {
-   Q_D(const QPrinterInfo);
-   return d->m_printDevice.isDefault();
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.isDefault();
 }
 
 bool QPrinterInfo::isRemote() const
 {
-   Q_D(const QPrinterInfo);
-   return d->m_printDevice.isRemote();
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.isRemote();
 }
 
 QPrinter::PrinterState QPrinterInfo::state() const
 {
-   Q_D(const QPrinterInfo);
-   return QPrinter::PrinterState(d->m_printDevice.state());
+    Q_D( const QPrinterInfo );
+    return QPrinter::PrinterState( d->m_printDevice.state() );
 }
 
 QList<QPageSize> QPrinterInfo::supportedPageSizes() const
 {
-   Q_D(const QPrinterInfo);
-   return d->m_printDevice.supportedPageSizes();
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.supportedPageSizes();
 }
 
 QPageSize QPrinterInfo::defaultPageSize() const
 {
-   Q_D(const QPrinterInfo);
-   return d->m_printDevice.defaultPageSize();
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.defaultPageSize();
 }
 
 bool QPrinterInfo::supportsCustomPageSizes() const
 {
-   Q_D(const QPrinterInfo);
-   return d->m_printDevice.supportsCustomPageSizes();
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.supportsCustomPageSizes();
 }
 
 QPageSize QPrinterInfo::minimumPhysicalPageSize() const
 {
-   Q_D(const QPrinterInfo);
-   return QPageSize(d->m_printDevice.minimumPhysicalPageSize(), QString(), QPageSize::ExactMatch);
+    Q_D( const QPrinterInfo );
+    return QPageSize( d->m_printDevice.minimumPhysicalPageSize(), QString(), QPageSize::ExactMatch );
 }
 
 QPageSize QPrinterInfo::maximumPhysicalPageSize() const
 {
-   Q_D(const QPrinterInfo);
-   return QPageSize(d->m_printDevice.maximumPhysicalPageSize(), QString(), QPageSize::ExactMatch);
+    Q_D( const QPrinterInfo );
+    return QPageSize( d->m_printDevice.maximumPhysicalPageSize(), QString(), QPageSize::ExactMatch );
 }
 
 QList<int> QPrinterInfo::supportedResolutions() const
 {
-   Q_D(const QPrinterInfo);
-   return d->m_printDevice.supportedResolutions();
+    Q_D( const QPrinterInfo );
+    return d->m_printDevice.supportedResolutions();
 }
 
 QPrinter::DuplexMode QPrinterInfo::defaultDuplexMode() const
 {
-   Q_D(const QPrinterInfo);
-   return QPrinter::DuplexMode(d->m_printDevice.defaultDuplexMode());
+    Q_D( const QPrinterInfo );
+    return QPrinter::DuplexMode( d->m_printDevice.defaultDuplexMode() );
 }
 
 QList<QPrinter::DuplexMode> QPrinterInfo::supportedDuplexModes() const
 {
-   Q_D(const QPrinterInfo);
-   QList<QPrinter::DuplexMode> list;
-   const QList<QPrint::DuplexMode> supportedDuplexModes = d->m_printDevice.supportedDuplexModes();
+    Q_D( const QPrinterInfo );
+    QList<QPrinter::DuplexMode> list;
+    const QList<QPrint::DuplexMode> supportedDuplexModes = d->m_printDevice.supportedDuplexModes();
 
-   for (QPrint::DuplexMode mode : supportedDuplexModes) {
-      list << QPrinter::DuplexMode(mode);
-   }
-   return list;
+    for ( QPrint::DuplexMode mode : supportedDuplexModes )
+    {
+        list << QPrinter::DuplexMode( mode );
+    }
+
+    return list;
 }
 
 QStringList QPrinterInfo::availablePrinterNames()
 {
-   QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
-   if (ps) {
-      return ps->availablePrintDeviceIds();
-   }
-   return QStringList();
+    QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
+
+    if ( ps )
+    {
+        return ps->availablePrintDeviceIds();
+    }
+
+    return QStringList();
 }
 
 QList<QPrinterInfo> QPrinterInfo::availablePrinters()
 {
-   QList<QPrinterInfo> list;
-   QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
+    QList<QPrinterInfo> list;
+    QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
 
-   if (ps) {
-      const QStringList availablePrintDeviceIds = ps->availablePrintDeviceIds();
+    if ( ps )
+    {
+        const QStringList availablePrintDeviceIds = ps->availablePrintDeviceIds();
 
-      for (const QString &id : availablePrintDeviceIds) {
-         list.append(QPrinterInfo(id));
-      }
-   }
-   return list;
+        for ( const QString &id : availablePrintDeviceIds )
+        {
+            list.append( QPrinterInfo( id ) );
+        }
+    }
+
+    return list;
 }
 
 QString QPrinterInfo::defaultPrinterName()
 {
-   QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
-   if (ps) {
-      return ps->defaultPrintDeviceId();
-   }
-   return QString();
+    QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
+
+    if ( ps )
+    {
+        return ps->defaultPrintDeviceId();
+    }
+
+    return QString();
 }
 
 QPrinterInfo QPrinterInfo::defaultPrinter()
 {
-   QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
-   if (ps) {
-      return QPrinterInfo(ps->defaultPrintDeviceId());
-   }
-   return QPrinterInfo();
+    QPlatformPrinterSupport *ps = QPlatformPrinterSupportPlugin::get();
+
+    if ( ps )
+    {
+        return QPrinterInfo( ps->defaultPrintDeviceId() );
+    }
+
+    return QPrinterInfo();
 }
 
-QPrinterInfo QPrinterInfo::printerInfo(const QString &printerName)
+QPrinterInfo QPrinterInfo::printerInfo( const QString &printerName )
 {
-   return QPrinterInfo(printerName);
+    return QPrinterInfo( printerName );
 }
 
-QDebug operator<<(QDebug debug, const QPrinterInfo &p)
+QDebug operator<<( QDebug debug, const QPrinterInfo &p )
 {
-   QDebugStateSaver saver(debug);
-   debug.nospace();
-   debug << "QPrinterInfo(";
+    QDebugStateSaver saver( debug );
+    debug.nospace();
+    debug << "QPrinterInfo(";
 
-   if (p.isNull()) {
-      debug << "null";
-   } else {
-      p.d_ptr->m_printDevice.format(debug);
-   }
+    if ( p.isNull() )
+    {
+        debug << "null";
+    }
+    else
+    {
+        p.d_ptr->m_printDevice.format( debug );
+    }
 
-   debug << ')';
+    debug << ')';
 
-   return debug;
+    return debug;
 }
 
 #endif

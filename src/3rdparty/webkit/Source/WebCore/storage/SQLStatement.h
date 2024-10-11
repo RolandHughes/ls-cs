@@ -37,7 +37,8 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Database;
 class SQLError;
@@ -45,24 +46,36 @@ class SQLStatementCallback;
 class SQLStatementErrorCallback;
 class SQLTransaction;
 
-class SQLStatement : public ThreadSafeRefCounted<SQLStatement> {
+class SQLStatement : public ThreadSafeRefCounted<SQLStatement>
+{
 public:
-    static PassRefPtr<SQLStatement> create(Database*, const String&, const Vector<SQLValue>&, PassRefPtr<SQLStatementCallback>, PassRefPtr<SQLStatementErrorCallback>, int permissions);
+    static PassRefPtr<SQLStatement> create( Database *, const String &, const Vector<SQLValue> &, PassRefPtr<SQLStatementCallback>,
+                                            PassRefPtr<SQLStatementErrorCallback>, int permissions );
 
-    bool execute(Database*);
+    bool execute( Database * );
     bool lastExecutionFailedDueToQuota() const;
 
-    bool hasStatementCallback() const { return m_statementCallbackWrapper.hasCallback(); }
-    bool hasStatementErrorCallback() const { return m_statementErrorCallbackWrapper.hasCallback(); }
+    bool hasStatementCallback() const
+    {
+        return m_statementCallbackWrapper.hasCallback();
+    }
+    bool hasStatementErrorCallback() const
+    {
+        return m_statementErrorCallbackWrapper.hasCallback();
+    }
 
     void setDatabaseDeletedError();
     void setVersionMismatchedError();
 
-    bool performCallback(SQLTransaction*);
+    bool performCallback( SQLTransaction * );
 
-    SQLError* sqlError() const { return m_error.get(); }
+    SQLError *sqlError() const
+    {
+        return m_error.get();
+    }
 private:
-    SQLStatement(Database*, const String& statement, const Vector<SQLValue>& arguments, PassRefPtr<SQLStatementCallback>, PassRefPtr<SQLStatementErrorCallback>, int permissions);
+    SQLStatement( Database *, const String &statement, const Vector<SQLValue> &arguments, PassRefPtr<SQLStatementCallback>,
+                  PassRefPtr<SQLStatementErrorCallback>, int permissions );
 
     void setFailureDueToQuota();
     void clearFailureDueToQuota();

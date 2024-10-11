@@ -32,7 +32,7 @@
 
 #if USE(CG)
 #include "ColorSpace.h"
-typedef struct CGColor* CGColorRef;
+typedef struct CGColor *CGColorRef;
 #endif
 
 #if PLATFORM(QT)
@@ -55,40 +55,54 @@ class wxColour;
 struct rgb_color;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Color;
 
 typedef unsigned RGBA32;        // RGBA quadruplet
 
-RGBA32 makeRGB(int r, int g, int b);
-RGBA32 makeRGBA(int r, int g, int b, int a);
+RGBA32 makeRGB( int r, int g, int b );
+RGBA32 makeRGBA( int r, int g, int b, int a );
 
-RGBA32 colorWithOverrideAlpha(RGBA32 color, float overrideAlpha);
-RGBA32 makeRGBA32FromFloats(float r, float g, float b, float a);
-RGBA32 makeRGBAFromHSLA(double h, double s, double l, double a);
-RGBA32 makeRGBAFromCMYKA(float c, float m, float y, float k, float a);
+RGBA32 colorWithOverrideAlpha( RGBA32 color, float overrideAlpha );
+RGBA32 makeRGBA32FromFloats( float r, float g, float b, float a );
+RGBA32 makeRGBAFromHSLA( double h, double s, double l, double a );
+RGBA32 makeRGBAFromCMYKA( float c, float m, float y, float k, float a );
 
-int differenceSquared(const Color&, const Color&);
+int differenceSquared( const Color &, const Color & );
 
-inline int redChannel(RGBA32 color) { return (color >> 16) & 0xFF; }
-inline int greenChannel(RGBA32 color) { return (color >> 8) & 0xFF; }
-inline int blueChannel(RGBA32 color) { return color & 0xFF; }
-inline int alphaChannel(RGBA32 color) { return (color >> 24) & 0xFF; }
+inline int redChannel( RGBA32 color )
+{
+    return ( color >> 16 ) & 0xFF;
+}
+inline int greenChannel( RGBA32 color )
+{
+    return ( color >> 8 ) & 0xFF;
+}
+inline int blueChannel( RGBA32 color )
+{
+    return color & 0xFF;
+}
+inline int alphaChannel( RGBA32 color )
+{
+    return ( color >> 24 ) & 0xFF;
+}
 
-class Color {
+class Color
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    Color() : m_color(0), m_valid(false) { }
-    Color(RGBA32 col) : m_color(col), m_valid(true) { }
-    Color(int r, int g, int b) : m_color(makeRGB(r, g, b)), m_valid(true) { }
-    Color(int r, int g, int b, int a) : m_color(makeRGBA(r, g, b, a)), m_valid(true) { }
+    Color() : m_color( 0 ), m_valid( false ) { }
+    Color( RGBA32 col ) : m_color( col ), m_valid( true ) { }
+    Color( int r, int g, int b ) : m_color( makeRGB( r, g, b ) ), m_valid( true ) { }
+    Color( int r, int g, int b, int a ) : m_color( makeRGBA( r, g, b, a ) ), m_valid( true ) { }
     // Color is currently limited to 32bit RGBA, perhaps some day we'll support better colors
-    Color(float r, float g, float b, float a) : m_color(makeRGBA32FromFloats(r, g, b, a)), m_valid(true) { }
+    Color( float r, float g, float b, float a ) : m_color( makeRGBA32FromFloats( r, g, b, a ) ), m_valid( true ) { }
     // Creates a new color from the specific CMYK and alpha values.
-    Color(float c, float m, float y, float k, float a) : m_color(makeRGBAFromCMYKA(c, m, y, k, a)), m_valid(true) { }
-    explicit Color(const String&);
-    explicit Color(const char*);
+    Color( float c, float m, float y, float k, float a ) : m_color( makeRGBAFromCMYKA( c, m, y, k, a ) ), m_valid( true ) { }
+    explicit Color( const String & );
+    explicit Color( const char * );
 
     // Returns the color serialized according to HTML5
     // - http://www.whatwg.org/specs/web-apps/current-work/#serialization-of-a-color
@@ -98,61 +112,90 @@ public:
     // The latter format is not a valid CSS color, and should only be seen in DRT dumps.
     String nameForRenderTreeAsText() const;
 
-    void setNamedColor(const String&);
+    void setNamedColor( const String & );
 
-    bool isValid() const { return m_valid; }
+    bool isValid() const
+    {
+        return m_valid;
+    }
 
-    bool hasAlpha() const { return alpha() < 255; }
+    bool hasAlpha() const
+    {
+        return alpha() < 255;
+    }
 
-    int red() const { return redChannel(m_color); }
-    int green() const { return greenChannel(m_color); }
-    int blue() const { return blueChannel(m_color); }
-    int alpha() const { return alphaChannel(m_color); }
+    int red() const
+    {
+        return redChannel( m_color );
+    }
+    int green() const
+    {
+        return greenChannel( m_color );
+    }
+    int blue() const
+    {
+        return blueChannel( m_color );
+    }
+    int alpha() const
+    {
+        return alphaChannel( m_color );
+    }
 
-    RGBA32 rgb() const { return m_color; } // Preserve the alpha.
-    void setRGB(int r, int g, int b) { m_color = makeRGB(r, g, b); m_valid = true; }
-    void setRGB(RGBA32 rgb) { m_color = rgb; m_valid = true; }
-    void getRGBA(float& r, float& g, float& b, float& a) const;
-    void getRGBA(double& r, double& g, double& b, double& a) const;
-    void getHSL(double& h, double& s, double& l) const;
+    RGBA32 rgb() const
+    {
+        return m_color;    // Preserve the alpha.
+    }
+    void setRGB( int r, int g, int b )
+    {
+        m_color = makeRGB( r, g, b );
+        m_valid = true;
+    }
+    void setRGB( RGBA32 rgb )
+    {
+        m_color = rgb;
+        m_valid = true;
+    }
+    void getRGBA( float &r, float &g, float &b, float &a ) const;
+    void getRGBA( double &r, double &g, double &b, double &a ) const;
+    void getHSL( double &h, double &s, double &l ) const;
 
     Color light() const;
     Color dark() const;
 
     // This is an implementation of Porter-Duff's "source-over" equation
-    Color blend(const Color&) const;
+    Color blend( const Color & ) const;
     Color blendWithWhite() const;
 
 #if PLATFORM(QT)
-    Color(const QColor&);
+    Color( const QColor & );
     operator QColor() const;
 #endif
 
 #if PLATFORM(GTK)
-    Color(const GdkColor&);
+    Color( const GdkColor & );
     // We can't sensibly go back to GdkColor without losing the alpha value
 #ifndef GTK_API_VERSION_2
-    Color(const GdkRGBA&);
+    Color( const GdkRGBA & );
     operator GdkRGBA() const;
 #endif
 #endif
 
 #if PLATFORM(WX)
-    Color(const wxColour&);
+    Color( const wxColour & );
     operator wxColour() const;
 #endif
 
 #if USE(CG)
-    Color(CGColorRef);
+    Color( CGColorRef );
 #endif
 
 #if PLATFORM(HAIKU)
-    Color(const rgb_color&);
+    Color( const rgb_color & );
     operator rgb_color() const;
 #endif
 
-    static bool parseHexColor(const String& name, RGBA32& rgb);
-    static bool parseHexColor(const UChar* name, unsigned length, RGBA32& rgb);
+    static bool parseHexColor( const String &name, RGBA32 &rgb );
+    static bool parseHexColor( const UChar *name, unsigned length, RGBA32 &rgb );
 
     static const RGBA32 black = 0xFF000000;
     static const RGBA32 white = 0xFFFFFFFF;
@@ -166,21 +209,21 @@ private:
     bool m_valid;
 };
 
-inline bool operator==(const Color& a, const Color& b)
+inline bool operator==( const Color &a, const Color &b )
 {
     return a.rgb() == b.rgb() && a.isValid() == b.isValid();
 }
 
-inline bool operator!=(const Color& a, const Color& b)
+inline bool operator!=( const Color &a, const Color &b )
 {
-    return !(a == b);
+    return !( a == b );
 }
 
-Color colorFromPremultipliedARGB(unsigned);
-unsigned premultipliedARGBFromColor(const Color&);
+Color colorFromPremultipliedARGB( unsigned );
+unsigned premultipliedARGBFromColor( const Color & );
 
 #if USE(CG)
-CGColorRef cachedCGColor(const Color&, ColorSpace);
+CGColorRef cachedCGColor( const Color &, ColorSpace );
 #endif
 
 } // namespace WebCore

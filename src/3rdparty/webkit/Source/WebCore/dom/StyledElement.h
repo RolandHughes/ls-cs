@@ -28,68 +28,86 @@
 #include "Element.h"
 #include "MappedAttributeEntry.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Attribute;
 class CSSMappedAttributeDeclaration;
 class CSSMutableStyleDeclaration;
 
-class StyledElement : public Element {
+class StyledElement : public Element
+{
 public:
     virtual ~StyledElement();
 
-    bool hasMappedAttributes() const { return attributeMap() && attributeMap()->hasMappedAttributes(); }
-    bool isMappedAttribute(const QualifiedName& name) const { MappedAttributeEntry res = eNone; mapToEntry(name, res); return res != eNone; }
+    bool hasMappedAttributes() const
+    {
+        return attributeMap() && attributeMap()->hasMappedAttributes();
+    }
+    bool isMappedAttribute( const QualifiedName &name ) const
+    {
+        MappedAttributeEntry res = eNone;
+        mapToEntry( name, res );
+        return res != eNone;
+    }
 
-    void addCSSLength(Attribute*, int id, const String& value);
-    void addCSSProperty(Attribute*, int id, const String& value);
-    void addCSSProperty(Attribute*, int id, int value);
-    void addCSSImageProperty(Attribute*, int propertyID, const String& url);
-    void addCSSColor(Attribute*, int id, const String& color);
+    void addCSSLength( Attribute *, int id, const String &value );
+    void addCSSProperty( Attribute *, int id, const String &value );
+    void addCSSProperty( Attribute *, int id, int value );
+    void addCSSImageProperty( Attribute *, int propertyID, const String &url );
+    void addCSSColor( Attribute *, int id, const String &color );
 
-    static CSSMappedAttributeDeclaration* getMappedAttributeDecl(MappedAttributeEntry, const QualifiedName& name, const AtomicString& value);
-    static void setMappedAttributeDecl(MappedAttributeEntry, const QualifiedName& name, const AtomicString& value, CSSMappedAttributeDeclaration*);
-    static void removeMappedAttributeDecl(MappedAttributeEntry, const QualifiedName& name, const AtomicString& value);
+    static CSSMappedAttributeDeclaration *getMappedAttributeDecl( MappedAttributeEntry, const QualifiedName &name,
+            const AtomicString &value );
+    static void setMappedAttributeDecl( MappedAttributeEntry, const QualifiedName &name, const AtomicString &value,
+                                        CSSMappedAttributeDeclaration * );
+    static void removeMappedAttributeDecl( MappedAttributeEntry, const QualifiedName &name, const AtomicString &value );
 
-    static CSSMappedAttributeDeclaration* getMappedAttributeDecl(MappedAttributeEntry, Attribute*);
-    static void setMappedAttributeDecl(MappedAttributeEntry, Attribute*, CSSMappedAttributeDeclaration*);
+    static CSSMappedAttributeDeclaration *getMappedAttributeDecl( MappedAttributeEntry, Attribute * );
+    static void setMappedAttributeDecl( MappedAttributeEntry, Attribute *, CSSMappedAttributeDeclaration * );
 
-    CSSMutableStyleDeclaration* inlineStyleDecl() const { return m_inlineStyleDecl.get(); }
-    virtual bool canHaveAdditionalAttributeStyleDecls() const { return false; }
-    virtual void additionalAttributeStyleDecls(Vector<CSSMutableStyleDeclaration*>&) { }
-    CSSMutableStyleDeclaration* getInlineStyleDecl();
-    CSSStyleDeclaration* style();
+    CSSMutableStyleDeclaration *inlineStyleDecl() const
+    {
+        return m_inlineStyleDecl.get();
+    }
+    virtual bool canHaveAdditionalAttributeStyleDecls() const
+    {
+        return false;
+    }
+    virtual void additionalAttributeStyleDecls( Vector<CSSMutableStyleDeclaration *> & ) { }
+    CSSMutableStyleDeclaration *getInlineStyleDecl();
+    CSSStyleDeclaration *style();
     void invalidateStyleAttribute();
 
-    const SpaceSplitString& classNames() const;
+    const SpaceSplitString &classNames() const;
 
-    virtual bool mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const;
+    virtual bool mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const;
 
-    virtual PassRefPtr<Attribute> createAttribute(const QualifiedName&, const AtomicString& value);
+    virtual PassRefPtr<Attribute> createAttribute( const QualifiedName &, const AtomicString &value );
 
 protected:
-    StyledElement(const QualifiedName& name, Document* document, ConstructionType type)
-        : Element(name, document, type)
+    StyledElement( const QualifiedName &name, Document *document, ConstructionType type )
+        : Element( name, document, type )
     {
     }
 
-    virtual void attributeChanged(Attribute*, bool preserveDecls = false);
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void copyNonAttributeProperties(const Element*);
+    virtual void attributeChanged( Attribute *, bool preserveDecls = false );
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void copyNonAttributeProperties( const Element * );
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     // classAttributeChanged() exists to share code between
     // parseMappedAttribute (called via setAttribute()) and
     // svgAttributeChanged (called when element.className.baseValue is set)
-    void classAttributeChanged(const AtomicString& newClassString);
-    
+    void classAttributeChanged( const AtomicString &newClassString );
+
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
     virtual void didMoveToNewOwnerDocument();
 
 private:
-    void createMappedDecl(Attribute*);
+    void createMappedDecl( Attribute * );
 
     void createInlineStyleDecl();
     void destroyInlineStyleDecl();
@@ -98,10 +116,10 @@ private:
     RefPtr<CSSMutableStyleDeclaration> m_inlineStyleDecl;
 };
 
-inline const SpaceSplitString& StyledElement::classNames() const
+inline const SpaceSplitString &StyledElement::classNames() const
 {
-    ASSERT(hasClass());
-    ASSERT(attributeMap());
+    ASSERT( hasClass() );
+    ASSERT( attributeMap() );
     return attributeMap()->classNames();
 }
 

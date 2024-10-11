@@ -37,74 +37,95 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebInspectorClient::inspectorDestroyed()
 {
     delete this;
 }
 
-void WebInspectorClient::openInspectorFrontend(InspectorController*)
+void WebInspectorClient::openInspectorFrontend( InspectorController * )
 {
-    WebPage* inspectorPage = m_page->inspector()->createInspectorPage();
-    ASSERT(inspectorPage);
-    if (!inspectorPage)
-        return;
+    WebPage *inspectorPage = m_page->inspector()->createInspectorPage();
+    ASSERT( inspectorPage );
 
-    inspectorPage->corePage()->inspectorController()->setInspectorFrontendClient(adoptPtr(new WebInspectorFrontendClient(m_page, inspectorPage)));
+    if ( !inspectorPage )
+    {
+        return;
+    }
+
+    inspectorPage->corePage()->inspectorController()->setInspectorFrontendClient( adoptPtr( new WebInspectorFrontendClient( m_page,
+            inspectorPage ) ) );
 }
 
-void WebInspectorClient::highlight(Node*)
+void WebInspectorClient::highlight( Node * )
 {
-    if (!m_highlightOverlay) {
-        RefPtr<PageOverlay> highlightOverlay = PageOverlay::create(this);
+    if ( !m_highlightOverlay )
+    {
+        RefPtr<PageOverlay> highlightOverlay = PageOverlay::create( this );
         m_highlightOverlay = highlightOverlay.get();
-        m_page->installPageOverlay(highlightOverlay.release());
-    } else
+        m_page->installPageOverlay( highlightOverlay.release() );
+    }
+    else
+    {
         m_highlightOverlay->setNeedsDisplay();
+    }
 }
 
 void WebInspectorClient::hideHighlight()
 {
-    if (m_highlightOverlay)
-        m_page->uninstallPageOverlay(m_highlightOverlay, false);
+    if ( m_highlightOverlay )
+    {
+        m_page->uninstallPageOverlay( m_highlightOverlay, false );
+    }
 }
 
-bool WebInspectorClient::sendMessageToFrontend(const String& message)
+bool WebInspectorClient::sendMessageToFrontend( const String &message )
 {
-    WebInspector* inspector = m_page->inspector();
-    if (!inspector)
+    WebInspector *inspector = m_page->inspector();
+
+    if ( !inspector )
+    {
         return false;
-    WebPage* inspectorPage = inspector->inspectorPage();
-    if (!inspectorPage)
+    }
+
+    WebPage *inspectorPage = inspector->inspectorPage();
+
+    if ( !inspectorPage )
+    {
         return false;
-    return doDispatchMessageOnFrontendPage(inspectorPage->corePage(), message);
+    }
+
+    return doDispatchMessageOnFrontendPage( inspectorPage->corePage(), message );
 }
 
-void WebInspectorClient::pageOverlayDestroyed(PageOverlay*)
+void WebInspectorClient::pageOverlayDestroyed( PageOverlay * )
 {
 }
 
-void WebInspectorClient::willMoveToWebPage(PageOverlay*, WebPage* webPage)
+void WebInspectorClient::willMoveToWebPage( PageOverlay *, WebPage *webPage )
 {
-    if (webPage)
+    if ( webPage )
+    {
         return;
+    }
 
     // The page overlay is moving away from the web page, reset it.
-    ASSERT(m_highlightOverlay);
+    ASSERT( m_highlightOverlay );
     m_highlightOverlay = 0;
 }
 
-void WebInspectorClient::didMoveToWebPage(PageOverlay*, WebPage*)
+void WebInspectorClient::didMoveToWebPage( PageOverlay *, WebPage * )
 {
 }
 
-void WebInspectorClient::drawRect(PageOverlay* overlay, WebCore::GraphicsContext& context, const WebCore::IntRect& dirtyRect)
+void WebInspectorClient::drawRect( PageOverlay *overlay, WebCore::GraphicsContext &context, const WebCore::IntRect &dirtyRect )
 {
-    m_page->corePage()->inspectorController()->drawNodeHighlight(context);
+    m_page->corePage()->inspectorController()->drawNodeHighlight( context );
 }
 
-bool WebInspectorClient::mouseEvent(PageOverlay*, const WebMouseEvent&)
+bool WebInspectorClient::mouseEvent( PageOverlay *, const WebMouseEvent & )
 {
     return false;
 }

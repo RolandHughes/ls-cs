@@ -30,43 +30,50 @@
 #include <memory>
 
 #ifndef yyparse
-extern int jscyyparse(void*);
+extern int jscyyparse( void * );
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
-void Parser::parse(JSGlobalData* globalData, int* errLine, UString* errMsg)
+void Parser::parse( JSGlobalData *globalData, int *errLine, UString *errMsg )
 {
     m_sourceElements = 0;
 
     int defaultErrLine;
     UString defaultErrMsg;
 
-    if (!errLine)
+    if ( !errLine )
+    {
         errLine = &defaultErrLine;
-    if (!errMsg)
+    }
+
+    if ( !errMsg )
+    {
         errMsg = &defaultErrMsg;
+    }
 
     *errLine = -1;
     *errMsg = 0;
 
-    Lexer& lexer = *globalData->lexer;
-    lexer.setCode(*m_source, m_arena);
+    Lexer &lexer = *globalData->lexer;
+    lexer.setCode( *m_source, m_arena );
 
-    int parseError = jscyyparse(globalData);
+    int parseError = jscyyparse( globalData );
     bool lexError = lexer.sawError();
     int lineNumber = lexer.lineNumber();
     lexer.clear();
 
-    if (parseError || lexError) {
+    if ( parseError || lexError )
+    {
         *errLine = lineNumber;
         *errMsg = "Parse error";
         m_sourceElements = 0;
     }
 }
 
-void Parser::didFinishParsing(SourceElements* sourceElements, ParserArenaData<DeclarationStacks::VarStack>* varStack,
-                              ParserArenaData<DeclarationStacks::FunctionStack>* funcStack, CodeFeatures features, int lastLine, int numConstants)
+void Parser::didFinishParsing( SourceElements *sourceElements, ParserArenaData<DeclarationStacks::VarStack> *varStack,
+                               ParserArenaData<DeclarationStacks::FunctionStack> *funcStack, CodeFeatures features, int lastLine, int numConstants )
 {
     m_sourceElements = sourceElements;
     m_varDeclarations = varStack;

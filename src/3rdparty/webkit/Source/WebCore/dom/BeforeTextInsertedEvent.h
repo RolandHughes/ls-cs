@@ -20,32 +20,43 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef BeforeTextInsertedEvent_h
 #define BeforeTextInsertedEvent_h
 
 #include "Event.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class BeforeTextInsertedEvent : public Event {
+class BeforeTextInsertedEvent : public Event
+{
 public:
     virtual ~BeforeTextInsertedEvent();
 
-    static PassRefPtr<BeforeTextInsertedEvent> create(const String& text)
+    static PassRefPtr<BeforeTextInsertedEvent> create( const String &text )
     {
-        return adoptRef(new BeforeTextInsertedEvent(text));
+        return adoptRef( new BeforeTextInsertedEvent( text ) );
     }
 
-    virtual bool isBeforeTextInsertedEvent() const { return true; }
-  
-    const String& text() const { return m_text; }
-    void setText(const String& s) { m_text = s; }
+    virtual bool isBeforeTextInsertedEvent() const
+    {
+        return true;
+    }
+
+    const String &text() const
+    {
+        return m_text;
+    }
+    void setText( const String &s )
+    {
+        m_text = s;
+    }
 
 private:
-    BeforeTextInsertedEvent(const String&);
+    BeforeTextInsertedEvent( const String & );
 
     String m_text;
 };

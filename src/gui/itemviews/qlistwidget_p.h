@@ -35,116 +35,119 @@
 
 class QListModelLessThan
 {
- public:
-   inline bool operator()(QListWidgetItem *i1, QListWidgetItem *i2) const {
-      return *i1 < *i2;
-   }
+public:
+    inline bool operator()( QListWidgetItem *i1, QListWidgetItem *i2 ) const
+    {
+        return *i1 < *i2;
+    }
 };
 
 class QListModelGreaterThan
 {
- public:
-   inline bool operator()(QListWidgetItem *i1, QListWidgetItem *i2) const {
-      return *i2 < *i1;
-   }
+public:
+    inline bool operator()( QListWidgetItem *i1, QListWidgetItem *i2 ) const
+    {
+        return *i2 < *i1;
+    }
 };
 
 class QListModel : public QAbstractListModel
 {
-   GUI_CS_OBJECT(QListModel)
+    GUI_LSCS_OBJECT( QListModel )
 
- public:
-   QListModel(QListWidget *parent);
-   ~QListModel();
+public:
+    QListModel( QListWidget *parent );
+    ~QListModel();
 
-   void clear();
-   QListWidgetItem *at(int row) const;
-   void insert(int row, QListWidgetItem *item);
-   void insert(int row, const QStringList &items);
-   void remove(QListWidgetItem *item);
-   QListWidgetItem *take(int row);
-   void move(int srcRow, int dstRow);
+    void clear();
+    QListWidgetItem *at( int row ) const;
+    void insert( int row, QListWidgetItem *item );
+    void insert( int row, const QStringList &items );
+    void remove( QListWidgetItem *item );
+    QListWidgetItem *take( int row );
+    void move( int srcRow, int dstRow );
 
-   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int rowCount( const QModelIndex &parent = QModelIndex() ) const override;
 
-   QModelIndex index(QListWidgetItem *item) const;
-   QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex index( QListWidgetItem *item ) const;
+    QModelIndex index( int row, int column = 0, const QModelIndex &parent = QModelIndex() ) const override;
 
-   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-   bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const override;
+    bool setData( const QModelIndex &index, const QVariant &value, int role ) override;
 
-   QMap<int, QVariant> itemData(const QModelIndex &index) const override;
+    QMap<int, QVariant> itemData( const QModelIndex &index ) const override;
 
-   bool insertRows(int row, int count = 1, const QModelIndex &parent = QModelIndex()) override;
-   bool removeRows(int row, int count = 1, const QModelIndex &parent = QModelIndex()) override;
+    bool insertRows( int row, int count = 1, const QModelIndex &parent = QModelIndex() ) override;
+    bool removeRows( int row, int count = 1, const QModelIndex &parent = QModelIndex() ) override;
 
-   Qt::ItemFlags flags(const QModelIndex &index) const override;
+    Qt::ItemFlags flags( const QModelIndex &index ) const override;
 
-   void sort(int column, Qt::SortOrder order) override;
-   void ensureSorted(int column, Qt::SortOrder order, int start, int end);
-   static bool itemLessThan(const QPair<QListWidgetItem *, int> &left, const QPair<QListWidgetItem *, int> &right);
-   static bool itemGreaterThan(const QPair<QListWidgetItem *, int> &left, const QPair<QListWidgetItem *, int> &right);
+    void sort( int column, Qt::SortOrder order ) override;
+    void ensureSorted( int column, Qt::SortOrder order, int start, int end );
+    static bool itemLessThan( const QPair<QListWidgetItem *, int> &left, const QPair<QListWidgetItem *, int> &right );
+    static bool itemGreaterThan( const QPair<QListWidgetItem *, int> &left, const QPair<QListWidgetItem *, int> &right );
 
-   static QList<QListWidgetItem *>::iterator sortedInsertionIterator(const QList<QListWidgetItem *>::iterator &begin,
-      const QList<QListWidgetItem *>::iterator &end, Qt::SortOrder order, QListWidgetItem *item);
+    static QList<QListWidgetItem *>::iterator sortedInsertionIterator( const QList<QListWidgetItem *>::iterator &begin,
+            const QList<QListWidgetItem *>::iterator &end, Qt::SortOrder order, QListWidgetItem *item );
 
-   void itemChanged(QListWidgetItem *item);
+    void itemChanged( QListWidgetItem *item );
 
-   // dnd
-   QStringList mimeTypes() const override;
-   QMimeData *mimeData(const QModelIndexList &indexes) const override;
+    // dnd
+    QStringList mimeTypes() const override;
+    QMimeData *mimeData( const QModelIndexList &indexes ) const override;
 
 #ifndef QT_NO_DRAGANDDROP
-   bool dropMimeData(const QMimeData *data, Qt::DropAction action,
-      int row, int column, const QModelIndex &parent) override;
-   Qt::DropActions supportedDropActions() const override;
+    bool dropMimeData( const QMimeData *data, Qt::DropAction action,
+                       int row, int column, const QModelIndex &parent ) override;
+    Qt::DropActions supportedDropActions() const override;
 #endif
 
-   QMimeData *internalMimeData()  const;
+    QMimeData *internalMimeData()  const;
 
- private:
-   QList<QListWidgetItem *> items;
+private:
+    QList<QListWidgetItem *> items;
 
-   // A cache must be mutable if get-functions should have const modifiers
-   mutable QModelIndexList cachedIndexes;
+    // A cache must be mutable if get-functions should have const modifiers
+    mutable QModelIndexList cachedIndexes;
 
-   friend class QListWidget;
+    friend class QListWidget;
 };
 
 
 
 class QListWidgetPrivate : public QListViewPrivate
 {
-   Q_DECLARE_PUBLIC(QListWidget)
+    Q_DECLARE_PUBLIC( QListWidget )
 
- public:
-   QListWidgetPrivate() : QListViewPrivate(), sortOrder(Qt::AscendingOrder), sortingEnabled(false) {}
+public:
+    QListWidgetPrivate() : QListViewPrivate(), sortOrder( Qt::AscendingOrder ), sortingEnabled( false ) {}
 
-   inline QListModel *listModel() const {
-      return qobject_cast<QListModel *>(model);
-   }
+    inline QListModel *listModel() const
+    {
+        return qobject_cast<QListModel *>( model );
+    }
 
-   void setup();
-   void _q_emitItemPressed(const QModelIndex &index);
-   void _q_emitItemClicked(const QModelIndex &index);
-   void _q_emitItemDoubleClicked(const QModelIndex &index);
-   void _q_emitItemActivated(const QModelIndex &index);
-   void _q_emitItemEntered(const QModelIndex &index);
-   void _q_emitItemChanged(const QModelIndex &index);
-   void _q_emitCurrentItemChanged(const QModelIndex &current, const QModelIndex &previous);
-   void _q_sort();
-   void _q_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-   Qt::SortOrder sortOrder;
-   bool sortingEnabled;
+    void setup();
+    void _q_emitItemPressed( const QModelIndex &index );
+    void _q_emitItemClicked( const QModelIndex &index );
+    void _q_emitItemDoubleClicked( const QModelIndex &index );
+    void _q_emitItemActivated( const QModelIndex &index );
+    void _q_emitItemEntered( const QModelIndex &index );
+    void _q_emitItemChanged( const QModelIndex &index );
+    void _q_emitCurrentItemChanged( const QModelIndex &current, const QModelIndex &previous );
+    void _q_sort();
+    void _q_dataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight );
+    Qt::SortOrder sortOrder;
+    bool sortingEnabled;
 };
 
 class QListWidgetItemPrivate
 {
- public:
-   QListWidgetItemPrivate(QListWidgetItem *item) : q(item), theid(-1) {}
-   QListWidgetItem *q;
-   QVector<QWidgetItemData> values;
-   int theid;
+public:
+    QListWidgetItemPrivate( QListWidgetItem *item ) : q( item ), theid( -1 ) {}
+    QListWidgetItem *q;
+    QVector<QWidgetItemData> values;
+    int theid;
 };
 
 

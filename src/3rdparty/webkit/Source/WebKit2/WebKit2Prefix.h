@@ -22,13 +22,13 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 
 #ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
 #endif
 
 #ifdef __cplusplus
-#define new ("if you use new/delete make sure to include config.h at the top of the file"()) 
-#define delete ("if you use new/delete make sure to include config.h at the top of the file"()) 
+#define new ("if you use new/delete make sure to include config.h at the top of the file"())
+#define delete ("if you use new/delete make sure to include config.h at the top of the file"())
 #endif

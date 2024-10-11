@@ -33,32 +33,32 @@ XsdDocumentation::~XsdDocumentation()
 {
 }
 
-void XsdDocumentation::setSource(const AnyURI::Ptr &source)
+void XsdDocumentation::setSource( const AnyURI::Ptr &source )
 {
-   m_source = source;
+    m_source = source;
 }
 
 AnyURI::Ptr XsdDocumentation::source() const
 {
-   return m_source;
+    return m_source;
 }
 
-void XsdDocumentation::setLanguage(const DerivedString<TypeLanguage>::Ptr &language)
+void XsdDocumentation::setLanguage( const DerivedString<TypeLanguage>::Ptr &language )
 {
-   m_language = language;
+    m_language = language;
 }
 
 DerivedString<TypeLanguage>::Ptr XsdDocumentation::language() const
 {
-   return m_language;
+    return m_language;
 }
 
-void XsdDocumentation::setContent(const QString &content)
+void XsdDocumentation::setContent( const QString &content )
 {
-   m_content = content;
+    m_content = content;
 }
 
 QString XsdDocumentation::content() const
 {
-   return m_content;
+    return m_content;
 }

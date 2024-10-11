@@ -30,27 +30,35 @@
 class QFile;
 class QNetworkReply;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ResourceHandle;
 class ResourceRequest;
 class ResourceResponse;
 class QNetworkReplyHandler;
 
-class QNetworkReplyHandlerCallQueue {
+class QNetworkReplyHandlerCallQueue
+{
 public:
-    QNetworkReplyHandlerCallQueue(QNetworkReplyHandler*, bool deferSignals);
-    bool deferSignals() const { return m_deferSignals; }
-    void setDeferSignals(bool);
+    QNetworkReplyHandlerCallQueue( QNetworkReplyHandler *, bool deferSignals );
+    bool deferSignals() const
+    {
+        return m_deferSignals;
+    }
+    void setDeferSignals( bool );
 
-    typedef void (QNetworkReplyHandler::*EnqueuedCall)();
-    void push(EnqueuedCall method);
-    void clear() { m_enqueuedCalls.clear(); }
+    typedef void ( QNetworkReplyHandler::*EnqueuedCall )();
+    void push( EnqueuedCall method );
+    void clear()
+    {
+        m_enqueuedCalls.clear();
+    }
 
     void lock();
     void unlock();
 private:
-    QNetworkReplyHandler* m_replyHandler;
+    QNetworkReplyHandler *m_replyHandler;
     int m_locks;
     bool m_deferSignals;
     bool m_flushing;
@@ -59,48 +67,73 @@ private:
     void flush();
 };
 
-class QNetworkReplyWrapper : public QObject {
-    WEB_CS_OBJECT(QNetworkReplyWrapper)
+class QNetworkReplyWrapper : public QObject
+{
+    WEB_LSCS_OBJECT( QNetworkReplyWrapper )
 public:
-    QNetworkReplyWrapper(QNetworkReplyHandlerCallQueue*, QNetworkReply*, bool sniffMIMETypes, QObject* parent = 0);
+    QNetworkReplyWrapper( QNetworkReplyHandlerCallQueue *, QNetworkReply *, bool sniffMIMETypes, QObject *parent = 0 );
     ~QNetworkReplyWrapper();
 
-    QNetworkReply* reply() const { return m_reply; }
-    QNetworkReply* release();
+    QNetworkReply *reply() const
+    {
+        return m_reply;
+    }
+    QNetworkReply *release();
 
     void synchronousLoad();
 
-    QUrl redirectionTargetUrl() const { return m_redirectionTargetUrl; }
-    QString encoding() const { return m_encoding; }
-    QString advertisedMIMEType() const { return m_advertisedMIMEType; }
-    QString mimeType() const { return m_sniffedMIMEType.isEmpty() ? m_advertisedMIMEType : m_sniffedMIMEType; }
+    QUrl redirectionTargetUrl() const
+    {
+        return m_redirectionTargetUrl;
+    }
+    QString encoding() const
+    {
+        return m_encoding;
+    }
+    QString advertisedMIMEType() const
+    {
+        return m_advertisedMIMEType;
+    }
+    QString mimeType() const
+    {
+        return m_sniffedMIMEType.isEmpty() ? m_advertisedMIMEType : m_sniffedMIMEType;
+    }
 
-    bool responseContainsData() const { return m_responseContainsData; }
-    bool wasRedirected() const { return m_redirectionTargetUrl.isValid(); }
+    bool responseContainsData() const
+    {
+        return m_responseContainsData;
+    }
+    bool wasRedirected() const
+    {
+        return m_redirectionTargetUrl.isValid();
+    }
 
     // See setFinished().
-    bool isFinished() const { return m_reply->property("_q_isFinished").toBool(); }
+    bool isFinished() const
+    {
+        return m_reply->property( "_q_isFinished" ).toBool();
+    }
 
 private :
-    WEB_CS_SLOT_1(Private, void receiveMetaData())
-    WEB_CS_SLOT_2(receiveMetaData)
-    WEB_CS_SLOT_1(Private, void didReceiveFinished())
-    WEB_CS_SLOT_2(didReceiveFinished)
-    WEB_CS_SLOT_1(Private, void didReceiveReadyRead())
-    WEB_CS_SLOT_2(didReceiveReadyRead)
-    WEB_CS_SLOT_1(Private, void receiveSniffedMIMEType())
-    WEB_CS_SLOT_2(receiveSniffedMIMEType)
-    WEB_CS_SLOT_1(Private, void setFinished())
-    WEB_CS_SLOT_2(setFinished)
+    WEB_LSCS_SLOT_1( Private, void receiveMetaData() )
+    WEB_LSCS_SLOT_2( receiveMetaData )
+    WEB_LSCS_SLOT_1( Private, void didReceiveFinished() )
+    WEB_LSCS_SLOT_2( didReceiveFinished )
+    WEB_LSCS_SLOT_1( Private, void didReceiveReadyRead() )
+    WEB_LSCS_SLOT_2( didReceiveReadyRead )
+    WEB_LSCS_SLOT_1( Private, void receiveSniffedMIMEType() )
+    WEB_LSCS_SLOT_2( receiveSniffedMIMEType )
+    WEB_LSCS_SLOT_1( Private, void setFinished() )
+    WEB_LSCS_SLOT_2( setFinished )
 
     void resetConnections();
     void emitMetaDataChanged();
 
-    QNetworkReply* m_reply;
+    QNetworkReply *m_reply;
     QUrl m_redirectionTargetUrl;
 
     QString m_encoding;
-    QNetworkReplyHandlerCallQueue* m_queue;
+    QNetworkReplyHandlerCallQueue *m_queue;
     bool m_responseContainsData;
 
     QString m_advertisedMIMEType;
@@ -112,49 +145,61 @@ private :
 
 class QNetworkReplyHandler : public QObject
 {
-    WEB_CS_OBJECT(QNetworkReplyHandler)
+    WEB_LSCS_OBJECT( QNetworkReplyHandler )
 public:
-    enum LoadType {
+    enum LoadType
+    {
         AsynchronousLoad,
         SynchronousLoad
     };
 
-    QNetworkReplyHandler(ResourceHandle*, LoadType, bool deferred = false);
-    void setLoadingDeferred(bool deferred) { m_queue.setDeferSignals(deferred); }
+    QNetworkReplyHandler( ResourceHandle *, LoadType, bool deferred = false );
+    void setLoadingDeferred( bool deferred )
+    {
+        m_queue.setDeferSignals( deferred );
+    }
 
-    QNetworkReply* reply() const { return m_replyWrapper ? m_replyWrapper->reply() : 0; }
+    QNetworkReply *reply() const
+    {
+        return m_replyWrapper ? m_replyWrapper->reply() : 0;
+    }
 
     void abort();
 
-    QNetworkReply* release();
+    QNetworkReply *release();
 
     void finish();
     void forwardData();
     void sendResponseIfNeeded();
 
 private :
-    WEB_CS_SLOT_1(Private, void uploadProgress(qint64 bytesSent,qint64 bytesTotal))
-    WEB_CS_SLOT_2(uploadProgress)
+    WEB_LSCS_SLOT_1( Private, void uploadProgress( qint64 bytesSent,qint64 bytesTotal ) )
+    WEB_LSCS_SLOT_2( uploadProgress )
 
     void start();
     String httpMethod() const;
-    void redirect(ResourceResponse&, const QUrl&);
-    bool wasAborted() const { return !m_resourceHandle; }
-    QNetworkReply* sendNetworkRequest(QNetworkAccessManager*, const ResourceRequest&);
+    void redirect( ResourceResponse &, const QUrl & );
+    bool wasAborted() const
+    {
+        return !m_resourceHandle;
+    }
+    QNetworkReply *sendNetworkRequest( QNetworkAccessManager *, const ResourceRequest & );
 
-    class Deleter {
+    class Deleter
+    {
     public:
-	void operator()(QNetworkReplyWrapper* data)
-	{
-	    if(data != nullptr) {
-  		data->deleteLater();
-		
-	    }
-	}
+        void operator()( QNetworkReplyWrapper *data )
+        {
+            if ( data != nullptr )
+            {
+                data->deleteLater();
+
+            }
+        }
     };
 
     std::unique_ptr<QNetworkReplyWrapper, Deleter> m_replyWrapper;
-    ResourceHandle* m_resourceHandle;
+    ResourceHandle *m_resourceHandle;
     LoadType m_loadType;
     QNetworkAccessManager::Operation m_method;
     QNetworkRequest m_request;
@@ -171,19 +216,23 @@ private :
 //  been emitted. With the presence of QNetworkReplyHandler::release I do
 //  not want to gurantee this.
 
-class FormDataIODevice : public QIODevice {
-    WEB_CS_OBJECT(FormDataIODevice)
+class FormDataIODevice : public QIODevice
+{
+    WEB_LSCS_OBJECT( FormDataIODevice )
 
 public:
-    FormDataIODevice(FormData*);
+    FormDataIODevice( FormData * );
     ~FormDataIODevice();
 
     bool isSequential() const override;
-    qint64 getFormDataSize() const { return m_fileSize + m_dataSize; }
+    qint64 getFormDataSize() const
+    {
+        return m_fileSize + m_dataSize;
+    }
 
 protected:
-    qint64 readData(char*, qint64) override;
-    qint64 writeData(const char*, qint64) override;
+    qint64 readData( char *, qint64 ) override;
+    qint64 writeData( const char *, qint64 ) override;
 
 private:
     void moveToNextElement();
@@ -191,7 +240,7 @@ private:
     void openFileForCurrentElement();
 
     Vector<FormDataElement> m_formElements;
-    QFile* m_currentFile;
+    QFile *m_currentFile;
     qint64 m_currentDelta;
     qint64 m_fileSize;
     qint64 m_dataSize;

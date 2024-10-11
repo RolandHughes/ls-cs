@@ -28,9 +28,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSFile);
+ASSERT_CLASS_FITS_IN_CELL( JSFile );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -41,12 +42,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSFile);
 
 static const HashTableValue JSFileTableValues[6] =
 {
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "lastModifiedDate", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileLastModifiedDate), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "fileName", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileFileName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "fileSize", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileFileSize), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsFileConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "lastModifiedDate", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileLastModifiedDate ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "fileName", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileFileName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "fileSize", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileFileSize ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsFileConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,48 @@ static JSC_CONST_HASHTABLE HashTable JSFileTable = { 17, 15, JSFileTableValues, 
 
 static const HashTableValue JSFileConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFileConstructorTable = { 1, 0, JSFileConstructorTableValues, 0 };
-class JSFileConstructor : public DOMConstructorObject {
+class JSFileConstructor : public DOMConstructorObject
+{
 public:
-    JSFileConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSFileConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSFileConstructor::s_info = { "FileConstructor", &DOMConstructorObject::s_info, &JSFileConstructorTable, 0 };
 
-JSFileConstructor::JSFileConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSFileConstructor::JSFileConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSFilePrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSFilePrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSFileConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFileConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFileConstructor, JSDOMWrapper>(exec, &JSFileConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSFileConstructor, JSDOMWrapper>( exec, &JSFileConstructorTable, this, propertyName, slot );
 }
 
-bool JSFileConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFileConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFileConstructor, JSDOMWrapper>(exec, &JSFileConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFileConstructor, JSDOMWrapper>( exec, &JSFileConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,110 +114,111 @@ bool JSFileConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifi
 
 static const HashTableValue JSFilePrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSFilePrototypeTable = { 1, 0, JSFilePrototypeTableValues, 0 };
-static const HashTable* getJSFilePrototypeTable(ExecState* exec)
+static const HashTable *getJSFilePrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFilePrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFilePrototypeTable );
 }
 
 const ClassInfo JSFilePrototype::s_info = { "FilePrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSFilePrototypeTable };
 
-JSObject* JSFilePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFilePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSFile>(exec, globalObject);
+    return getDOMPrototype<JSFile>( exec, globalObject );
 }
 
-static const HashTable* getJSFileTable(ExecState* exec)
+static const HashTable *getJSFileTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSFileTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSFileTable );
 }
 
 const ClassInfo JSFile::s_info = { "File", &JSBlob::s_info, 0, getJSFileTable };
 
-JSFile::JSFile(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<File> impl)
-    : JSBlob(structure, globalObject, impl)
+JSFile::JSFile( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<File> impl )
+    : JSBlob( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSFile::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSFile::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSFilePrototype(exec->globalData(), globalObject, JSFilePrototype::createStructure(exec->globalData(), JSBlobPrototype::self(exec, globalObject)));
+    return new ( exec ) JSFilePrototype( exec->globalData(), globalObject, JSFilePrototype::createStructure( exec->globalData(),
+                                         JSBlobPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSFile::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSFile::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSFile, Base>(exec, getJSFileTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSFile, Base>( exec, getJSFileTable( exec ), this, propertyName, slot );
 }
 
-bool JSFile::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSFile::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSFile, Base>(exec, getJSFileTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSFile, Base>( exec, getJSFileTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsFileName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFile* castedThis = static_cast<JSFile*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    File* imp = static_cast<File*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSFile *castedThis = static_cast<JSFile *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    File *imp = static_cast<File *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsFileLastModifiedDate(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileLastModifiedDate( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFile* castedThis = static_cast<JSFile*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    File* imp = static_cast<File*>(castedThis->impl());
-    JSValue result = jsDateOrNull(exec, imp->lastModifiedDate());
+    JSFile *castedThis = static_cast<JSFile *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    File *imp = static_cast<File *>( castedThis->impl() );
+    JSValue result = jsDateOrNull( exec, imp->lastModifiedDate() );
     return result;
 }
 
 
-JSValue jsFileFileName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileFileName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFile* castedThis = static_cast<JSFile*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    File* imp = static_cast<File*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->fileName());
+    JSFile *castedThis = static_cast<JSFile *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    File *imp = static_cast<File *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->fileName() );
     return result;
 }
 
 
-JSValue jsFileFileSize(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileFileSize( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFile* castedThis = static_cast<JSFile*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    File* imp = static_cast<File*>(castedThis->impl());
-    JSValue result = jsNumber(imp->fileSize());
+    JSFile *castedThis = static_cast<JSFile *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    File *imp = static_cast<File *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->fileSize() );
     return result;
 }
 
 
-JSValue jsFileConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsFileConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSFile* domObject = static_cast<JSFile*>(asObject(slotBase));
-    return JSFile::getConstructor(exec, domObject->globalObject());
+    JSFile *domObject = static_cast<JSFile *>( asObject( slotBase ) );
+    return JSFile::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSFile::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSFile::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSFileConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSFileConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, File* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, File *impl )
 {
-    return wrap<JSFile>(exec, globalObject, impl);
+    return wrap<JSFile>( exec, globalObject, impl );
 }
 
-File* toFile(JSC::JSValue value)
+File *toFile( JSC::JSValue value )
 {
-    return value.inherits(&JSFile::s_info) ? static_cast<JSFile*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSFile::s_info ) ? static_cast<JSFile *>( asObject( value ) )->impl() : 0;
 }
 
 }

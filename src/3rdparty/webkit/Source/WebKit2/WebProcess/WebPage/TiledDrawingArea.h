@@ -33,41 +33,43 @@
 #include <WebCore/IntRect.h>
 #include <wtf/Vector.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class UpdateChunk;
 
-class TiledDrawingArea : public DrawingArea {
+class TiledDrawingArea : public DrawingArea
+{
 public:
-    explicit TiledDrawingArea(WebPage*);
+    explicit TiledDrawingArea( WebPage * );
     virtual ~TiledDrawingArea();
 
-    virtual void setNeedsDisplay(const WebCore::IntRect&);
-    virtual void scroll(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollDelta);
+    virtual void setNeedsDisplay( const WebCore::IntRect & );
+    virtual void scroll( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollDelta );
     virtual void display();
 
 #if USE(ACCELERATED_COMPOSITING)
     virtual void attachCompositingContext() { }
     virtual void detachCompositingContext() { }
-    virtual void setRootCompositingLayer(WebCore::GraphicsLayer*) { }
+    virtual void setRootCompositingLayer( WebCore::GraphicsLayer * ) { }
     virtual void scheduleCompositingLayerSync() { }
     virtual void syncCompositingLayers() { }
 #endif
 
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
 private:
     void scheduleDisplay();
 
     // CoreIPC message handlers.
-    void setSize(const WebCore::IntSize& viewSize);
+    void setSize( const WebCore::IntSize &viewSize );
     void suspendPainting();
     void resumePainting();
     void didUpdate();
-    void updateTile(int tileID, const WebCore::IntRect& dirtyRect, float scale);
+    void updateTile( int tileID, const WebCore::IntRect &dirtyRect, float scale );
 
     // Platform overrides
-    void paintIntoUpdateChunk(UpdateChunk*, float scale);
+    void paintIntoUpdateChunk( UpdateChunk *, float scale );
 
     void tileUpdateTimerFired();
 
@@ -76,7 +78,8 @@ private:
     bool m_shouldPaint;
     RunLoop::Timer<TiledDrawingArea> m_displayTimer;
 
-    struct TileUpdate {
+    struct TileUpdate
+    {
         int tileID;
         WebCore::IntRect dirtyRect;
         float scale;

@@ -30,30 +30,30 @@ class ICOReader;
 
 class QIcoHandler: public QImageIOHandler
 {
- public:
-   QIcoHandler();
-   virtual ~QIcoHandler();
+public:
+    QIcoHandler();
+    virtual ~QIcoHandler();
 
-   bool canRead() override;
-   bool read(QImage *image) override;
-   bool write(const QImage &image) override;
+    bool canRead() override;
+    bool read( QImage *image ) override;
+    bool write( const QImage &image ) override;
 
-   QString name() const override;
+    QString name() const override;
 
-   int imageCount() override;
-   bool jumpToImage(int imageNumber) override;
-   bool jumpToNextImage() override;
+    int imageCount() override;
+    bool jumpToImage( int imageNumber ) override;
+    bool jumpToNextImage() override;
 
-   static bool canRead(QIODevice *device);
+    static bool canRead( QIODevice *device );
 
-   bool supportsOption(ImageOption option) const override;
-   QVariant option(ImageOption option) override;
+    bool supportsOption( ImageOption option ) const override;
+    QVariant option( ImageOption option ) override;
 
- private:
-   void setupReader() const;
+private:
+    void setupReader() const;
 
-   int m_currentIconIndex;
-   mutable ICOReader *m_ICOReader;
+    int m_currentIconIndex;
+    mutable ICOReader *m_ICOReader;
 
 };
 

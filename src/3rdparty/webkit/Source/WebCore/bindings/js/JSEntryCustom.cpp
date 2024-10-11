@@ -42,18 +42,23 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue toJS(ExecState* exec, JSDOMGlobalObject* globalObject, Entry* entry)
+namespace WebCore
 {
-    if (!entry)
+
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *globalObject, Entry *entry )
+{
+    if ( !entry )
+    {
         return jsNull();
+    }
 
-    if (entry->isFile())
-        return getDOMObjectWrapper<JSFileEntry>(exec, globalObject, static_cast<FileEntry*>(entry));
+    if ( entry->isFile() )
+    {
+        return getDOMObjectWrapper<JSFileEntry>( exec, globalObject, static_cast<FileEntry *>( entry ) );
+    }
 
-    ASSERT(entry->isDirectory());
-    return getDOMObjectWrapper<JSDirectoryEntry>(exec, globalObject, static_cast<DirectoryEntry*>(entry));
+    ASSERT( entry->isDirectory() );
+    return getDOMObjectWrapper<JSDirectoryEntry>( exec, globalObject, static_cast<DirectoryEntry *>( entry ) );
 }
 
 } // namespace WebCore

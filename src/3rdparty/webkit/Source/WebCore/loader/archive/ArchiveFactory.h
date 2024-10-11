@@ -34,14 +34,16 @@
 #include <wtf/Forward.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SharedBuffer;
 
-class ArchiveFactory {
+class ArchiveFactory
+{
 public:
-    static bool isArchiveMimeType(const String&);
-    static PassRefPtr<Archive> create(SharedBuffer* data, const String& mimeType);
+    static bool isArchiveMimeType( const String & );
+    static PassRefPtr<Archive> create( SharedBuffer *data, const String &mimeType );
     static void registerKnownArchiveMIMETypes();
 };
 

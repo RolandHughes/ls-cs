@@ -33,78 +33,81 @@ class QScrollerPropertiesPrivate;
 
 class Q_GUI_EXPORT QScrollerProperties
 {
- public:
-   enum OvershootPolicy {
-      OvershootWhenScrollable,
-      OvershootAlwaysOff,
-      OvershootAlwaysOn
-   };
+public:
+    enum OvershootPolicy
+    {
+        OvershootWhenScrollable,
+        OvershootAlwaysOff,
+        OvershootAlwaysOn
+    };
 
-   enum FrameRates {
-      Standard,
-      Fps60,
-      Fps30,
-      Fps20
-   };
+    enum FrameRates
+    {
+        Standard,
+        Fps60,
+        Fps30,
+        Fps20
+    };
 
-   enum ScrollMetric {
-      MousePressEventDelay,                    // qreal [s]
-      DragStartDistance,                       // qreal [m]
-      DragVelocitySmoothingFactor,             // qreal [0..1/s]  (complex calculation involving time) v = v_new* DASF + v_old * (1-DASF)
-      AxisLockThreshold,                       // qreal [0..1] atan(|min(dx,dy)|/|max(dx,dy)|)
+    enum ScrollMetric
+    {
+        MousePressEventDelay,                    // qreal [s]
+        DragStartDistance,                       // qreal [m]
+        DragVelocitySmoothingFactor,             // qreal [0..1/s]  (complex calculation involving time) v = v_new* DASF + v_old * (1-DASF)
+        AxisLockThreshold,                       // qreal [0..1] atan(|min(dx,dy)|/|max(dx,dy)|)
 
-      ScrollingCurve,                          // QEasingCurve
-      DecelerationFactor,                      // slope of the curve
+        ScrollingCurve,                          // QEasingCurve
+        DecelerationFactor,                      // slope of the curve
 
-      MinimumVelocity,                         // qreal [m/s]
-      MaximumVelocity,                         // qreal [m/s]
-      MaximumClickThroughVelocity,             // qreal [m/s]
+        MinimumVelocity,                         // qreal [m/s]
+        MaximumVelocity,                         // qreal [m/s]
+        MaximumClickThroughVelocity,             // qreal [m/s]
 
-      AcceleratingFlickMaximumTime,            // qreal [s]
-      AcceleratingFlickSpeedupFactor,          // qreal [1..]
+        AcceleratingFlickMaximumTime,            // qreal [s]
+        AcceleratingFlickSpeedupFactor,          // qreal [1..]
 
-      SnapPositionRatio,                       // qreal [0..1]
-      SnapTime,                                // qreal [s]
+        SnapPositionRatio,                       // qreal [0..1]
+        SnapTime,                                // qreal [s]
 
-      OvershootDragResistanceFactor,           // qreal [0..1]
-      OvershootDragDistanceFactor,             // qreal [0..1]
-      OvershootScrollDistanceFactor,           // qreal [0..1]
-      OvershootScrollTime,                     // qreal [s]
+        OvershootDragResistanceFactor,           // qreal [0..1]
+        OvershootDragDistanceFactor,             // qreal [0..1]
+        OvershootScrollDistanceFactor,           // qreal [0..1]
+        OvershootScrollTime,                     // qreal [s]
 
-      HorizontalOvershootPolicy,               // enum OvershootPolicy
-      VerticalOvershootPolicy,                 // enum OvershootPolicy
-      FrameRate,                               // enum FrameRates
+        HorizontalOvershootPolicy,               // enum OvershootPolicy
+        VerticalOvershootPolicy,                 // enum OvershootPolicy
+        FrameRate,                               // enum FrameRates
 
-      ScrollMetricCount
-   };
+        ScrollMetricCount
+    };
 
-   QScrollerProperties();
-   QScrollerProperties(const QScrollerProperties &sp);
+    QScrollerProperties();
+    QScrollerProperties( const QScrollerProperties &sp );
 
-   virtual ~QScrollerProperties();
+    virtual ~QScrollerProperties();
 
-   QScrollerProperties &operator=(const QScrollerProperties &other);
+    QScrollerProperties &operator=( const QScrollerProperties &other );
 
-   bool operator==(const QScrollerProperties &other) const;
-   bool operator!=(const QScrollerProperties &other) const;
+    bool operator==( const QScrollerProperties &other ) const;
+    bool operator!=( const QScrollerProperties &other ) const;
 
-   static void setDefaultScrollerProperties(const QScrollerProperties &sp);
-   static void unsetDefaultScrollerProperties();
+    static void setDefaultScrollerProperties( const QScrollerProperties &sp );
+    static void unsetDefaultScrollerProperties();
 
-   QVariant scrollMetric(ScrollMetric metric) const;
-   void setScrollMetric(ScrollMetric metric, const QVariant &value);
+    QVariant scrollMetric( ScrollMetric metric ) const;
+    void setScrollMetric( ScrollMetric metric, const QVariant &value );
 
- protected:
-   QScopedPointer<QScrollerPropertiesPrivate> d;
+protected:
+    QScopedPointer<QScrollerPropertiesPrivate> d;
 
- private:
-   QScrollerProperties(QScrollerPropertiesPrivate &dd);
+private:
+    QScrollerProperties( QScrollerPropertiesPrivate &dd );
 
-   friend class QScrollerPropertiesPrivate;
-   friend class QScroller;
-   friend class QScrollerPrivate;
+    friend class QScrollerPropertiesPrivate;
+    friend class QScroller;
+    friend class QScrollerPrivate;
 };
 
-CS_DECLARE_METATYPE(QScrollerProperties)
+LSCS_DECLARE_METATYPE( QScrollerProperties )
 
 #endif

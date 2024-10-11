@@ -33,16 +33,18 @@
 
 #include "TextFieldInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ColorInputType : public TextFieldInputType {
+class ColorInputType : public TextFieldInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    ColorInputType(HTMLInputElement* element) : TextFieldInputType(element) { }
-    virtual const AtomicString& formControlType() const;
-    virtual bool typeMismatchFor(const String&) const;
+    ColorInputType( HTMLInputElement *element ) : TextFieldInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
+    virtual bool typeMismatchFor( const String & ) const;
     virtual bool typeMismatch() const;
     virtual bool supportsRequired() const;
 };

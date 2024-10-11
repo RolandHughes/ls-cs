@@ -32,93 +32,141 @@
 #include <WebCore/Scrollbar.h>
 #include <WebCore/ScrollableArea.h>
 
-typedef struct HWND__* HWND;
-typedef struct HDC__* HDC;
-typedef struct HBITMAP__* HBITMAP;
+typedef struct HWND__ *HWND;
+typedef struct HDC__ *HDC;
+typedef struct HBITMAP__ *HBITMAP;
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebView;
 
-class WebPopupMenuProxyWin : public WebPopupMenuProxy, private WebCore::ScrollableArea  {
+class WebPopupMenuProxyWin : public WebPopupMenuProxy, private WebCore::ScrollableArea
+{
 public:
-    static PassRefPtr<WebPopupMenuProxyWin> create(WebView* webView, WebPopupMenuProxy::Client* client)
+    static PassRefPtr<WebPopupMenuProxyWin> create( WebView *webView, WebPopupMenuProxy::Client *client )
     {
-        return adoptRef(new WebPopupMenuProxyWin(webView, client));
+        return adoptRef( new WebPopupMenuProxyWin( webView, client ) );
     }
     ~WebPopupMenuProxyWin();
 
-    virtual void showPopupMenu(const WebCore::IntRect&, WebCore::TextDirection, double scaleFactor, const Vector<WebPopupItem>&, const PlatformPopupMenuData&, int32_t selectedIndex);
+    virtual void showPopupMenu( const WebCore::IntRect &, WebCore::TextDirection, double scaleFactor, const Vector<WebPopupItem> &,
+                                const PlatformPopupMenuData &, int32_t selectedIndex );
     virtual void hidePopupMenu();
 
-    bool setFocusedIndex(int index, bool hotTracking = false);
+    bool setFocusedIndex( int index, bool hotTracking = false );
 
-    void hide() { hidePopupMenu(); }
+    void hide()
+    {
+        hidePopupMenu();
+    }
 
 private:
-    WebPopupMenuProxyWin(WebView*, WebPopupMenuProxy::Client*);
+    WebPopupMenuProxyWin( WebView *, WebPopupMenuProxy::Client * );
 
-    WebCore::Scrollbar* scrollbar() const { return m_scrollbar.get(); }
+    WebCore::Scrollbar *scrollbar() const
+    {
+        return m_scrollbar.get();
+    }
 
     // ScrollableArea
-    virtual int scrollSize(WebCore::ScrollbarOrientation) const;
-    virtual int scrollPosition(WebCore::Scrollbar*) const;
-    virtual void setScrollOffset(const WebCore::IntPoint&);
-    virtual void invalidateScrollbarRect(WebCore::Scrollbar*, const WebCore::IntRect&);
-    virtual void invalidateScrollCornerRect(const WebCore::IntRect&) { }
-    virtual bool isActive() const { return true; }
-    virtual bool isScrollCornerVisible() const { return false; }
-    virtual WebCore::IntRect scrollCornerRect() const { return WebCore::IntRect(); }
-    virtual WebCore::Scrollbar* verticalScrollbar() const { return m_scrollbar.get(); }
+    virtual int scrollSize( WebCore::ScrollbarOrientation ) const;
+    virtual int scrollPosition( WebCore::Scrollbar * ) const;
+    virtual void setScrollOffset( const WebCore::IntPoint & );
+    virtual void invalidateScrollbarRect( WebCore::Scrollbar *, const WebCore::IntRect & );
+    virtual void invalidateScrollCornerRect( const WebCore::IntRect & ) { }
+    virtual bool isActive() const
+    {
+        return true;
+    }
+    virtual bool isScrollCornerVisible() const
+    {
+        return false;
+    }
+    virtual WebCore::IntRect scrollCornerRect() const
+    {
+        return WebCore::IntRect();
+    }
+    virtual WebCore::Scrollbar *verticalScrollbar() const
+    {
+        return m_scrollbar.get();
+    }
 
     // NOTE: This should only be called by the overriden setScrollOffset from ScrollableArea.
-    void scrollTo(int offset);
+    void scrollTo( int offset );
 
     static bool registerWindowClass();
-    static LRESULT CALLBACK WebPopupMenuProxyWndProc(HWND, UINT, WPARAM, LPARAM);
-    LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    static LRESULT CALLBACK WebPopupMenuProxyWndProc( HWND, UINT, WPARAM, LPARAM );
+    LRESULT wndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
     // Message pump messages.
-    LRESULT onMouseActivate(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onSize(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onKeyDown(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onChar(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onMouseMove(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onLButtonDown(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onLButtonUp(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onMouseWheel(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onPaint(HWND, UINT message, WPARAM, LPARAM, bool& handled);
-    LRESULT onPrintClient(HWND, UINT message, WPARAM, LPARAM, bool& handled);
+    LRESULT onMouseActivate( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onSize( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onKeyDown( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onChar( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onMouseMove( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onLButtonDown( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onLButtonUp( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onMouseWheel( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onPaint( HWND, UINT message, WPARAM, LPARAM, bool &handled );
+    LRESULT onPrintClient( HWND, UINT message, WPARAM, LPARAM, bool &handled );
 
-    void calculatePositionAndSize(const WebCore::IntRect&);
+    void calculatePositionAndSize( const WebCore::IntRect & );
     WebCore::IntRect clientRect() const;
-    void invalidateItem(int index);
+    void invalidateItem( int index );
 
-    int itemHeight() const { return m_itemHeight; }
-    const WebCore::IntRect& windowRect() const { return m_windowRect; }
-    int wheelDelta() const { return m_wheelDelta; }
-    void setWasClicked(bool b = true) { m_wasClicked = b; }
-    bool wasClicked() const { return m_wasClicked; }
-    void setScrollOffset(int offset) { m_scrollOffset = offset; }
-    int scrollOffset() const { return m_scrollOffset; }
-    bool scrollbarCapturingMouse() const { return m_scrollbarCapturingMouse; }
-    void setScrollbarCapturingMouse(bool b) { m_scrollbarCapturingMouse = b; }
+    int itemHeight() const
+    {
+        return m_itemHeight;
+    }
+    const WebCore::IntRect &windowRect() const
+    {
+        return m_windowRect;
+    }
+    int wheelDelta() const
+    {
+        return m_wheelDelta;
+    }
+    void setWasClicked( bool b = true )
+    {
+        m_wasClicked = b;
+    }
+    bool wasClicked() const
+    {
+        return m_wasClicked;
+    }
+    void setScrollOffset( int offset )
+    {
+        m_scrollOffset = offset;
+    }
+    int scrollOffset() const
+    {
+        return m_scrollOffset;
+    }
+    bool scrollbarCapturingMouse() const
+    {
+        return m_scrollbarCapturingMouse;
+    }
+    void setScrollbarCapturingMouse( bool b )
+    {
+        m_scrollbarCapturingMouse = b;
+    }
 
 
-    bool up(unsigned lines = 1);
-    bool down(unsigned lines = 1);
+    bool up( unsigned lines = 1 );
+    bool down( unsigned lines = 1 );
 
-    void paint(const WebCore::IntRect& damageRect, HDC = 0);
+    void paint( const WebCore::IntRect &damageRect, HDC = 0 );
     int visibleItems() const;
-    int listIndexAtPoint(const WebCore::IntPoint&) const;
+    int listIndexAtPoint( const WebCore::IntPoint & ) const;
     int focusedIndex() const;
     void focusFirst();
     void focusLast();
     bool scrollToRevealSelection();
-    void incrementWheelDelta(int delta);
-    void reduceWheelDelta(int delta);
+    void incrementWheelDelta( int delta );
+    void reduceWheelDelta( int delta );
 
-    WebView* m_webView;
+    WebView *m_webView;
     Vector<WebPopupItem> m_items;
     PlatformPopupMenuData m_data;
     int m_newSelectedIndex;

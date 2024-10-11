@@ -27,24 +27,26 @@
 #include <QTime>
 #include "qwebsettings.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class DnsPrefetchHelper : public QObject {
-        WEB_CS_OBJECT(DnsPrefetchHelper)
+class DnsPrefetchHelper : public QObject
+{
+    WEB_LSCS_OBJECT( DnsPrefetchHelper )
 
-    public:
-        DnsPrefetchHelper() : QObject(), currentLookups(0) { }
+public:
+    DnsPrefetchHelper() : QObject(), currentLookups( 0 ) { }
 
-        WEB_CS_SLOT_1(Public,void lookup(QString hostname))
-        WEB_CS_SLOT_2(lookup)
+    WEB_LSCS_SLOT_1( Public,void lookup( QString hostname ) )
+    WEB_LSCS_SLOT_2( lookup )
 
-        WEB_CS_SLOT_1(Public,void lookedUp(const QHostInfo &hostInfo))
-        WEB_CS_SLOT_2(lookedUp)
+    WEB_LSCS_SLOT_1( Public,void lookedUp( const QHostInfo &hostInfo ) )
+    WEB_LSCS_SLOT_2( lookedUp )
 
 
-    protected:
-        int currentLookups;
-    };
+protected:
+    int currentLookups;
+};
 
 
 }

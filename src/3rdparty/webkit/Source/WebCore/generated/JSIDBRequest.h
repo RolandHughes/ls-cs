@@ -28,29 +28,35 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBRequest;
 
-class JSIDBRequest : public JSDOMWrapper {
+class JSIDBRequest : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSIDBRequest(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<IDBRequest>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSIDBRequest( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<IDBRequest> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    IDBRequest* impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    IDBRequest *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<IDBRequest> m_impl;
@@ -58,63 +64,67 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSIDBRequestOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSIDBRequestOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, IDBRequest*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, IDBRequest * )
 {
-    DEFINE_STATIC_LOCAL(JSIDBRequestOwner, jsIDBRequestOwner, ());
+    DEFINE_STATIC_LOCAL( JSIDBRequestOwner, jsIDBRequestOwner, () );
     return &jsIDBRequestOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, IDBRequest*)
+inline void *wrapperContext( DOMWrapperWorld *world, IDBRequest * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, IDBRequest*);
-IDBRequest* toIDBRequest(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, IDBRequest * );
+IDBRequest *toIDBRequest( JSC::JSValue );
 
-class JSIDBRequestPrototype : public JSC::JSObjectWithGlobalObject {
+class JSIDBRequestPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSIDBRequestPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSIDBRequestPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                           JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBRequestPrototypeFunctionAddEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBRequestPrototypeFunctionRemoveEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsIDBRequestPrototypeFunctionDispatchEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBRequestPrototypeFunctionAddEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBRequestPrototypeFunctionRemoveEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsIDBRequestPrototypeFunctionDispatchEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsIDBRequestResult(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBRequestErrorCode(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBRequestWebkitErrorMessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBRequestSource(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBRequestTransaction(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBRequestReadyState(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBRequestOnsuccess(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSIDBRequestOnsuccess(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsIDBRequestOnerror(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSIDBRequestOnerror(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsIDBRequestConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBRequestResult( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBRequestErrorCode( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBRequestWebkitErrorMessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBRequestSource( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBRequestTransaction( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBRequestReadyState( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBRequestOnsuccess( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSIDBRequestOnsuccess( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsIDBRequestOnerror( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSIDBRequestOnerror( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsIDBRequestConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsIDBRequestLOADING(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsIDBRequestDONE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsIDBRequestLOADING( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsIDBRequestDONE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

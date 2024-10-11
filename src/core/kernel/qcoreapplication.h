@@ -47,223 +47,226 @@ class QAbstractNativeEventFilter;
 
 class Q_CORE_EXPORT QCoreApplication : public QObject
 {
-   CORE_CS_OBJECT(QCoreApplication)
+    CORE_LSCS_OBJECT( QCoreApplication )
 
-   CORE_CS_PROPERTY_READ(applicationName, cs_applicationName)
-   CORE_CS_PROPERTY_WRITE(applicationName, cs_setApplicationName)
+    CORE_LSCS_PROPERTY_READ( applicationName, lscs_applicationName )
+    CORE_LSCS_PROPERTY_WRITE( applicationName, lscs_setApplicationName )
 
-   CORE_CS_PROPERTY_READ(applicationVersion, cs_applicationVersion)
-   CORE_CS_PROPERTY_WRITE(applicationVersion, cs_setApplicationVersion)
+    CORE_LSCS_PROPERTY_READ( applicationVersion, lscs_applicationVersion )
+    CORE_LSCS_PROPERTY_WRITE( applicationVersion, lscs_setApplicationVersion )
 
-   CORE_CS_PROPERTY_READ(organizationName, cs_organizationName)
-   CORE_CS_PROPERTY_WRITE(organizationName, cs_setOrganizationName)
+    CORE_LSCS_PROPERTY_READ( organizationName, lscs_organizationName )
+    CORE_LSCS_PROPERTY_WRITE( organizationName, lscs_setOrganizationName )
 
-   CORE_CS_PROPERTY_READ(organizationDomain, cs_organizationDomain)
-   CORE_CS_PROPERTY_WRITE(organizationDomain, cs_setOrganizationDomain)
+    CORE_LSCS_PROPERTY_READ( organizationDomain, lscs_organizationDomain )
+    CORE_LSCS_PROPERTY_WRITE( organizationDomain, lscs_setOrganizationDomain )
 
-   CORE_CS_PROPERTY_READ(quitLockEnabled, cs_isQuitLockEnabled)
-   CORE_CS_PROPERTY_WRITE(quitLockEnabled, cs_setQuitLockEnabled)
+    CORE_LSCS_PROPERTY_READ( quitLockEnabled, lscs_isQuitLockEnabled )
+    CORE_LSCS_PROPERTY_WRITE( quitLockEnabled, lscs_setQuitLockEnabled )
 
-   Q_DECLARE_PRIVATE(QCoreApplication)
+    Q_DECLARE_PRIVATE( QCoreApplication )
 
- public:
-   static constexpr const int ApplicationFlags = CS_VERSION | 0x01000000;
+public:
+    static constexpr const int ApplicationFlags = LSCS_VERSION | 0x01000000;
 
-   QCoreApplication(int &argc, char **argv, int = ApplicationFlags);
+    QCoreApplication( int &argc, char **argv, int = ApplicationFlags );
 
-   QCoreApplication(const QCoreApplication &) = delete;
-   QCoreApplication &operator=(const QCoreApplication &) = delete;
+    QCoreApplication( const QCoreApplication & ) = delete;
+    QCoreApplication &operator=( const QCoreApplication & ) = delete;
 
-   ~QCoreApplication();
+    ~QCoreApplication();
 
-   static QStringList arguments();
+    static QStringList arguments();
 
-   static void setAttribute(Qt::ApplicationAttribute attribute, bool on = true);
-   static bool testAttribute(Qt::ApplicationAttribute attribute);
+    static void setAttribute( Qt::ApplicationAttribute attribute, bool on = true );
+    static bool testAttribute( Qt::ApplicationAttribute attribute );
 
-   static void setOrganizationDomain(const QString &orgDomain);
-   static QString organizationDomain();
+    static void setOrganizationDomain( const QString &orgDomain );
+    static QString organizationDomain();
 
-   // wrapper for static method
-   inline void cs_setOrganizationDomain(const QString &orgDomain);
-   inline QString cs_organizationDomain() const;
+    // wrapper for static method
+    inline void lscs_setOrganizationDomain( const QString &orgDomain );
+    inline QString lscs_organizationDomain() const;
 
-   static void setOrganizationName(const QString &orgName);
-   static QString organizationName();
-   inline void cs_setOrganizationName(const QString &orgName);
-   inline QString cs_organizationName() const;
+    static void setOrganizationName( const QString &orgName );
+    static QString organizationName();
+    inline void lscs_setOrganizationName( const QString &orgName );
+    inline QString lscs_organizationName() const;
 
-   static void setApplicationName(const QString &application);
-   static QString applicationName();
-   inline void cs_setApplicationName(const QString &application);
-   inline QString cs_applicationName() const;
+    static void setApplicationName( const QString &application );
+    static QString applicationName();
+    inline void lscs_setApplicationName( const QString &application );
+    inline QString lscs_applicationName() const;
 
-   static void setApplicationVersion(const QString &version);
-   static QString applicationVersion();
-   inline void cs_setApplicationVersion(const QString &version);
-   inline QString cs_applicationVersion() const;
+    static void setApplicationVersion( const QString &version );
+    static QString applicationVersion();
+    inline void lscs_setApplicationVersion( const QString &version );
+    inline QString lscs_applicationVersion() const;
 
-   static void setSetuidAllowed(bool allow);
-   static bool isSetuidAllowed();
+    static void setSetuidAllowed( bool allow );
+    static bool isSetuidAllowed();
 
-   static QCoreApplication *instance() {
-      return m_self;
-   }
+    static QCoreApplication *instance()
+    {
+        return m_self;
+    }
 
-   static int exec();
-   static void processEvents(QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents);
-   static void processEvents(QEventLoop::ProcessEventsFlags flags, int maxtime);
-   static void exit(int returnCode = 0);
+    static int exec();
+    static void processEvents( QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents );
+    static void processEvents( QEventLoop::ProcessEventsFlags flags, int maxtime );
+    static void exit( int returnCode = 0 );
 
-   static bool sendEvent(QObject *receiver, QEvent *event);
-   static void postEvent(QObject *receiver, QEvent *event, int priority = Qt::NormalEventPriority);
+    static bool sendEvent( QObject *receiver, QEvent *event );
+    static void postEvent( QObject *receiver, QEvent *event, int priority = Qt::NormalEventPriority );
 
-   static void sendPostedEvents(QObject *receiver = nullptr, int event_type = 0);
-   static void removePostedEvents(QObject *receiver, int eventType = 0);
-   static QAbstractEventDispatcher *eventDispatcher();
-   static void setEventDispatcher(QAbstractEventDispatcher *eventDispatcher);
+    static void sendPostedEvents( QObject *receiver = nullptr, int event_type = 0 );
+    static void removePostedEvents( QObject *receiver, int eventType = 0 );
+    static QAbstractEventDispatcher *eventDispatcher();
+    static void setEventDispatcher( QAbstractEventDispatcher *eventDispatcher );
 
-   virtual bool notify(QObject *receiver, QEvent *event);
+    virtual bool notify( QObject *receiver, QEvent *event );
 
-   static bool startingUp();
-   static bool closingDown();
+    static bool startingUp();
+    static bool closingDown();
 
-   static QString applicationDirPath();
-   static QString applicationFilePath();
-   static qint64 applicationPid();
+    static QString applicationDirPath();
+    static QString applicationFilePath();
+    static qint64 applicationPid();
 
-   static void setLibraryPaths(const QStringList &paths);
-   static QStringList libraryPaths();
-   static void addLibraryPath(const QString &path);
-   static void removeLibraryPath(const QString &path);
+    static void setLibraryPaths( const QStringList &paths );
+    static QStringList libraryPaths();
+    static void addLibraryPath( const QString &path );
+    static void removeLibraryPath( const QString &path );
 
-   static void installTranslator(QTranslator *translationFile);
-   static void removeTranslator(QTranslator *translationFile);
+    static void installTranslator( QTranslator *translationFile );
+    static void removeTranslator( QTranslator *translationFile );
 
-   static QString translate(const char *context, const char *text, const char *comment = nullptr,
-         std::optional<int> numArg = std::optional<int>());
+    static QString translate( const char *context, const char *text, const char *comment = nullptr,
+                              std::optional<int> numArg = std::optional<int>() );
 
-   static QString translate(const QString &context, const QString &text, const QString &comment = QString(),
-         std::optional<int> numArg = std::optional<int>());
+    static QString translate( const QString &context, const QString &text, const QString &comment = QString(),
+                              std::optional<int> numArg = std::optional<int>() );
 
-   static void flush();
-   void installNativeEventFilter(QAbstractNativeEventFilter *filterObj);
-   void removeNativeEventFilter(QAbstractNativeEventFilter *filterObj);
+    static void flush();
+    void installNativeEventFilter( QAbstractNativeEventFilter *filterObj );
+    void removeNativeEventFilter( QAbstractNativeEventFilter *filterObj );
 
-   void cs_internal_maybeQuit();
-   bool cs_isRealGuiApp();
+    void lscs_internal_maybeQuit();
+    bool lscs_isRealGuiApp();
 
-   static bool isQuitLockEnabled();
-   static void setQuitLockEnabled(bool enabled);
+    static bool isQuitLockEnabled();
+    static void setQuitLockEnabled( bool enabled );
 
-   // wrapper for static method
-   inline bool cs_isQuitLockEnabled() const;
-   inline void cs_setQuitLockEnabled(bool enabled);
+    // wrapper for static method
+    inline bool lscs_isQuitLockEnabled() const;
+    inline void lscs_setQuitLockEnabled( bool enabled );
 
-   CORE_CS_SLOT_1(Public, static void quit())
-   CORE_CS_SLOT_2(quit)
+    CORE_LSCS_SLOT_1( Public, static void quit() )
+    CORE_LSCS_SLOT_2( quit )
 
-   CORE_CS_SIGNAL_1(Public, void aboutToQuit())
-   CORE_CS_SIGNAL_2(aboutToQuit)
+    CORE_LSCS_SIGNAL_1( Public, void aboutToQuit() )
+    CORE_LSCS_SIGNAL_2( aboutToQuit )
 
-   CORE_CS_SIGNAL_1(Public, void unixSignal(int signalId))
-   CORE_CS_SIGNAL_2(unixSignal, signalId)
+    CORE_LSCS_SIGNAL_1( Public, void unixSignal( int signalId ) )
+    CORE_LSCS_SIGNAL_2( unixSignal, signalId )
 
- protected:
-   bool event(QEvent *) override;
-   virtual bool compressEvent(QEvent *, QObject *receiver, QPostEventList *);
-   QCoreApplication(QCoreApplicationPrivate &p);
+protected:
+    bool event( QEvent * ) override;
+    virtual bool compressEvent( QEvent *, QObject *receiver, QPostEventList * );
+    QCoreApplication( QCoreApplicationPrivate &p );
 
-   QScopedPointer<QCoreApplicationPrivate> d_ptr;
+    QScopedPointer<QCoreApplicationPrivate> d_ptr;
 
- private:
-   static bool sendSpontaneousEvent(QObject *receiver, QEvent *event);
-   bool notifyInternal(QObject *receiver, QEvent *event);
+private:
+    static bool sendSpontaneousEvent( QObject *receiver, QEvent *event );
+    bool notifyInternal( QObject *receiver, QEvent *event );
 
-   void init();
+    void init();
 
-   static QCoreApplication *m_self;
+    static QCoreApplication *m_self;
 
-   friend class QApplication;
-   friend class QApplicationPrivate;
-   friend class QClassFactory;
-   friend class QCocoaEventDispatcherPrivate;
-   friend class QEventDispatcherUNIXPrivate;
-   friend class QWidget;
-   friend class QWidgetWindow;
-   friend class QWidgetPrivate;
+    friend class QApplication;
+    friend class QApplicationPrivate;
+    friend class QClassFactory;
+    friend class QCocoaEventDispatcherPrivate;
+    friend class QEventDispatcherUNIXPrivate;
+    friend class QWidget;
+    friend class QWidgetWindow;
+    friend class QWidgetPrivate;
 
-   friend bool qt_sendSpontaneousEvent(QObject *, QEvent *);
-   friend Q_CORE_EXPORT QString qAppName();
+    friend bool qt_sendSpontaneousEvent( QObject *, QEvent * );
+    friend Q_CORE_EXPORT QString qAppName();
 };
 
 // wrappers for static method
-void QCoreApplication::cs_setApplicationName(const QString &application)
+void QCoreApplication::lscs_setApplicationName( const QString &application )
 {
-   QCoreApplication::setApplicationName(application);
+    QCoreApplication::setApplicationName( application );
 }
 
-QString QCoreApplication::cs_applicationName() const
+QString QCoreApplication::lscs_applicationName() const
 {
-   return QCoreApplication::applicationName();
+    return QCoreApplication::applicationName();
 }
 
-void QCoreApplication::cs_setOrganizationName(const QString &orgName)
+void QCoreApplication::lscs_setOrganizationName( const QString &orgName )
 {
-   QCoreApplication::setOrganizationName(orgName);
+    QCoreApplication::setOrganizationName( orgName );
 }
 
-QString QCoreApplication::cs_organizationName() const
+QString QCoreApplication::lscs_organizationName() const
 {
-   return QCoreApplication::organizationName();
+    return QCoreApplication::organizationName();
 }
 
-void QCoreApplication::cs_setApplicationVersion(const QString &version)
+void QCoreApplication::lscs_setApplicationVersion( const QString &version )
 {
-   QCoreApplication::setApplicationVersion(version);
+    QCoreApplication::setApplicationVersion( version );
 }
 
-QString QCoreApplication::cs_applicationVersion() const
+QString QCoreApplication::lscs_applicationVersion() const
 {
-   return QCoreApplication::applicationVersion();
+    return QCoreApplication::applicationVersion();
 }
 
-void QCoreApplication::cs_setOrganizationDomain(const QString &orgDomain)
+void QCoreApplication::lscs_setOrganizationDomain( const QString &orgDomain )
 {
-   QCoreApplication::setOrganizationDomain(orgDomain);
+    QCoreApplication::setOrganizationDomain( orgDomain );
 }
 
-QString QCoreApplication::cs_organizationDomain() const
+QString QCoreApplication::lscs_organizationDomain() const
 {
-   return QCoreApplication::organizationDomain();
+    return QCoreApplication::organizationDomain();
 }
 
-bool QCoreApplication::cs_isQuitLockEnabled() const
+bool QCoreApplication::lscs_isQuitLockEnabled() const
 {
-   return QCoreApplication::isQuitLockEnabled();
+    return QCoreApplication::isQuitLockEnabled();
 }
 
-void QCoreApplication::cs_setQuitLockEnabled(bool enabled)
+void QCoreApplication::lscs_setQuitLockEnabled( bool enabled )
 {
-   return QCoreApplication::setQuitLockEnabled(enabled);
+    return QCoreApplication::setQuitLockEnabled( enabled );
 }
 
-inline bool QCoreApplication::sendEvent(QObject *receiver, QEvent *event)
+inline bool QCoreApplication::sendEvent( QObject *receiver, QEvent *event )
 {
-   if (event) {
-      event->spont = false;
-   }
+    if ( event )
+    {
+        event->spont = false;
+    }
 
-   return m_self ? m_self->notifyInternal(receiver, event) : false;
+    return m_self ? m_self->notifyInternal( receiver, event ) : false;
 }
 
-inline bool QCoreApplication::sendSpontaneousEvent(QObject *receiver, QEvent *event)
+inline bool QCoreApplication::sendSpontaneousEvent( QObject *receiver, QEvent *event )
 {
-   if (event) {
-      event->spont = true;
-   }
+    if ( event )
+    {
+        event->spont = true;
+    }
 
-   return m_self ? m_self->notifyInternal(receiver, event) : false;
+    return m_self ? m_self->notifyInternal( receiver, event ) : false;
 }
 
 #define Q_DECLARE_TR_FUNCTIONS(context) \
@@ -273,16 +276,16 @@ inline bool QCoreApplication::sendSpontaneousEvent(QObject *receiver, QEvent *ev
    { return QCoreApplication::translate(#context, text, comment, numArg); } \
    private:
 
-using FP_Void = void (*)();
+using FP_Void = void ( * )();
 
-Q_CORE_EXPORT void qAddPreRoutine(FP_Void);
-Q_CORE_EXPORT void qAddPostRoutine(FP_Void);
-Q_CORE_EXPORT void qRemovePostRoutine(FP_Void);
+Q_CORE_EXPORT void qAddPreRoutine( FP_Void );
+Q_CORE_EXPORT void qAddPostRoutine( FP_Void );
+Q_CORE_EXPORT void qRemovePostRoutine( FP_Void );
 Q_CORE_EXPORT QString qAppName();
 
 #if defined(Q_OS_WIN)
-Q_CORE_EXPORT QString decodeMSG(const MSG &);
-Q_CORE_EXPORT QDebug operator<<(QDebug, const MSG &);
+Q_CORE_EXPORT QString decodeMSG( const MSG & );
+Q_CORE_EXPORT QDebug operator<<( QDebug, const MSG & );
 #endif
 
 #endif

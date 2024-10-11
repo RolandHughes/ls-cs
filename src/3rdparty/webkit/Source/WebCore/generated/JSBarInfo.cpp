@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSBarInfo);
+ASSERT_CLASS_FITS_IN_CELL( JSBarInfo );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,8 +40,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSBarInfo);
 
 static const HashTableValue JSBarInfoTableValues[2] =
 {
-    { "visible", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsBarInfoVisible), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "visible", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsBarInfoVisible ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -54,85 +55,97 @@ static JSC_CONST_HASHTABLE HashTable JSBarInfoTable = { 2, 1, JSBarInfoTableValu
 
 static const HashTableValue JSBarInfoPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSBarInfoPrototypeTable = { 1, 0, JSBarInfoPrototypeTableValues, 0 };
 const ClassInfo JSBarInfoPrototype::s_info = { "BarInfoPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSBarInfoPrototypeTable, 0 };
 
-JSObject* JSBarInfoPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSBarInfoPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSBarInfo>(exec, globalObject);
+    return getDOMPrototype<JSBarInfo>( exec, globalObject );
 }
 
 const ClassInfo JSBarInfo::s_info = { "BarInfo", &JSDOMWrapper::s_info, &JSBarInfoTable, 0 };
 
-JSBarInfo::JSBarInfo(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<BarInfo> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSBarInfo::JSBarInfo( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<BarInfo> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSBarInfo::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSBarInfo::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSBarInfoPrototype(exec->globalData(), globalObject, JSBarInfoPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSBarInfoPrototype( exec->globalData(), globalObject,
+                                            JSBarInfoPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSBarInfo::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSBarInfo::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSBarInfo, Base>(exec, &JSBarInfoTable, this, propertyName, slot);
+    return getStaticValueSlot<JSBarInfo, Base>( exec, &JSBarInfoTable, this, propertyName, slot );
 }
 
-bool JSBarInfo::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSBarInfo::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSBarInfo, Base>(exec, &JSBarInfoTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSBarInfo, Base>( exec, &JSBarInfoTable, this, propertyName, descriptor );
 }
 
-JSValue jsBarInfoVisible(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsBarInfoVisible( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSBarInfo* castedThis = static_cast<JSBarInfo*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    BarInfo* imp = static_cast<BarInfo*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->visible());
+    JSBarInfo *castedThis = static_cast<JSBarInfo *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    BarInfo *imp = static_cast<BarInfo *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->visible() );
     return result;
 }
 
 
-static inline bool isObservable(JSBarInfo* jsBarInfo)
+static inline bool isObservable( JSBarInfo *jsBarInfo )
 {
-    if (jsBarInfo->hasCustomProperties())
+    if ( jsBarInfo->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSBarInfoOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSBarInfoOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSBarInfo* jsBarInfo = static_cast<JSBarInfo*>(handle.get().asCell());
-    if (!isObservable(jsBarInfo))
+    JSBarInfo *jsBarInfo = static_cast<JSBarInfo *>( handle.get().asCell() );
+
+    if ( !isObservable( jsBarInfo ) )
+    {
         return false;
-    Frame* root = jsBarInfo->impl()->frame();
-    if (!root)
+    }
+
+    Frame *root = jsBarInfo->impl()->frame();
+
+    if ( !root )
+    {
         return false;
-    return visitor.containsOpaqueRoot(root);
+    }
+
+    return visitor.containsOpaqueRoot( root );
 }
 
-void JSBarInfoOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSBarInfoOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSBarInfo* jsBarInfo = static_cast<JSBarInfo*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsBarInfo->impl(), jsBarInfo);
+    JSBarInfo *jsBarInfo = static_cast<JSBarInfo *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsBarInfo->impl(), jsBarInfo );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, BarInfo* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, BarInfo *impl )
 {
-    return wrap<JSBarInfo>(exec, globalObject, impl);
+    return wrap<JSBarInfo>( exec, globalObject, impl );
 }
 
-BarInfo* toBarInfo(JSC::JSValue value)
+BarInfo *toBarInfo( JSC::JSValue value )
 {
-    return value.inherits(&JSBarInfo::s_info) ? static_cast<JSBarInfo*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSBarInfo::s_info ) ? static_cast<JSBarInfo *>( asObject( value ) )->impl() : 0;
 }
 
 }

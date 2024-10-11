@@ -39,104 +39,108 @@ class QGraphicsSceneIndexPrivate;
 class QPointF;
 class QRectF;
 
-typedef bool (*QGraphicsSceneIndexIntersector)(const QGraphicsItem *item, const QRectF &exposeRect, Qt::ItemSelectionMode mode,
-   const QTransform &deviceTransform, const void *data);
+typedef bool ( *QGraphicsSceneIndexIntersector )( const QGraphicsItem *item, const QRectF &exposeRect, Qt::ItemSelectionMode mode,
+        const QTransform &deviceTransform, const void *data );
 
 class QGraphicsSceneIndex : public QObject
 {
-   GUI_CS_OBJECT(QGraphicsSceneIndex)
+    GUI_LSCS_OBJECT( QGraphicsSceneIndex )
 
- public:
-   QGraphicsSceneIndex(QGraphicsScene *scene = nullptr);
+public:
+    QGraphicsSceneIndex( QGraphicsScene *scene = nullptr );
 
-   QGraphicsSceneIndex(const QGraphicsSceneIndex &) = delete;
-   QGraphicsSceneIndex &operator=(const QGraphicsSceneIndex &) = delete;
+    QGraphicsSceneIndex( const QGraphicsSceneIndex & ) = delete;
+    QGraphicsSceneIndex &operator=( const QGraphicsSceneIndex & ) = delete;
 
-   virtual ~QGraphicsSceneIndex();
+    virtual ~QGraphicsSceneIndex();
 
-   QGraphicsScene *scene() const;
+    QGraphicsScene *scene() const;
 
-   virtual QList<QGraphicsItem *> items(Qt::SortOrder order = Qt::DescendingOrder) const  = 0;
-   virtual QList<QGraphicsItem *> items(const QPointF &pos, Qt::ItemSelectionMode mode,
-      Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
-   virtual QList<QGraphicsItem *> items(const QRectF &rect, Qt::ItemSelectionMode mode,
-      Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
-   virtual QList<QGraphicsItem *> items(const QPolygonF &polygon, Qt::ItemSelectionMode mode,
-      Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
-   virtual QList<QGraphicsItem *> items(const QPainterPath &path, Qt::ItemSelectionMode mode,
-      Qt::SortOrder order, const QTransform &deviceTransform = QTransform()) const;
-   virtual QList<QGraphicsItem *> estimateItems(const QPointF &point, Qt::SortOrder order) const;
-   virtual QList<QGraphicsItem *> estimateItems(const QRectF &rect, Qt::SortOrder order) const = 0;
-   virtual QList<QGraphicsItem *> estimateTopLevelItems(const QRectF &, Qt::SortOrder order) const;
+    virtual QList<QGraphicsItem *> items( Qt::SortOrder order = Qt::DescendingOrder ) const  = 0;
+    virtual QList<QGraphicsItem *> items( const QPointF &pos, Qt::ItemSelectionMode mode,
+                                          Qt::SortOrder order, const QTransform &deviceTransform = QTransform() ) const;
+    virtual QList<QGraphicsItem *> items( const QRectF &rect, Qt::ItemSelectionMode mode,
+                                          Qt::SortOrder order, const QTransform &deviceTransform = QTransform() ) const;
+    virtual QList<QGraphicsItem *> items( const QPolygonF &polygon, Qt::ItemSelectionMode mode,
+                                          Qt::SortOrder order, const QTransform &deviceTransform = QTransform() ) const;
+    virtual QList<QGraphicsItem *> items( const QPainterPath &path, Qt::ItemSelectionMode mode,
+                                          Qt::SortOrder order, const QTransform &deviceTransform = QTransform() ) const;
+    virtual QList<QGraphicsItem *> estimateItems( const QPointF &point, Qt::SortOrder order ) const;
+    virtual QList<QGraphicsItem *> estimateItems( const QRectF &rect, Qt::SortOrder order ) const = 0;
+    virtual QList<QGraphicsItem *> estimateTopLevelItems( const QRectF &, Qt::SortOrder order ) const;
 
- protected:
-   virtual void clear();
-   virtual void addItem(QGraphicsItem *item) = 0;
-   virtual void removeItem(QGraphicsItem *item) = 0;
-   virtual void deleteItem(QGraphicsItem *item);
+protected:
+    virtual void clear();
+    virtual void addItem( QGraphicsItem *item ) = 0;
+    virtual void removeItem( QGraphicsItem *item ) = 0;
+    virtual void deleteItem( QGraphicsItem *item );
 
-   virtual void itemChange(const QGraphicsItem *item, QGraphicsItem::GraphicsItemChange, const void *const value);
-   virtual void prepareBoundingRectChange(const QGraphicsItem *item);
+    virtual void itemChange( const QGraphicsItem *item, QGraphicsItem::GraphicsItemChange, const void *const value );
+    virtual void prepareBoundingRectChange( const QGraphicsItem *item );
 
-   QGraphicsSceneIndex(QGraphicsSceneIndexPrivate &dd, QGraphicsScene *scene);
-   QScopedPointer<QGraphicsSceneIndexPrivate> d_ptr;
+    QGraphicsSceneIndex( QGraphicsSceneIndexPrivate &dd, QGraphicsScene *scene );
+    QScopedPointer<QGraphicsSceneIndexPrivate> d_ptr;
 
-   GUI_CS_SLOT_1(Protected, virtual void updateSceneRect(const QRectF &rect))
-   GUI_CS_SLOT_2(updateSceneRect)
+    GUI_LSCS_SLOT_1( Protected, virtual void updateSceneRect( const QRectF &rect ) )
+    GUI_LSCS_SLOT_2( updateSceneRect )
 
-   friend class QGraphicsScene;
-   friend class QGraphicsScenePrivate;
-   friend class QGraphicsItem;
-   friend class QGraphicsItemPrivate;
-   friend class QGraphicsSceneBspTreeIndex;
+    friend class QGraphicsScene;
+    friend class QGraphicsScenePrivate;
+    friend class QGraphicsItem;
+    friend class QGraphicsItemPrivate;
+    friend class QGraphicsSceneBspTreeIndex;
 
- private:
-   Q_DECLARE_PRIVATE(QGraphicsSceneIndex)
+private:
+    Q_DECLARE_PRIVATE( QGraphicsSceneIndex )
 };
 
 class QGraphicsSceneIndexPrivate
 {
-   Q_DECLARE_PUBLIC(QGraphicsSceneIndex)
+    Q_DECLARE_PUBLIC( QGraphicsSceneIndex )
 
- public:
-   QGraphicsSceneIndexPrivate(QGraphicsScene *scene);
-   virtual ~QGraphicsSceneIndexPrivate();
+public:
+    QGraphicsSceneIndexPrivate( QGraphicsScene *scene );
+    virtual ~QGraphicsSceneIndexPrivate();
 
-   void init();
-   static bool itemCollidesWithPath(const QGraphicsItem *item, const QPainterPath &path, Qt::ItemSelectionMode mode);
+    void init();
+    static bool itemCollidesWithPath( const QGraphicsItem *item, const QPainterPath &path, Qt::ItemSelectionMode mode );
 
-   void recursive_items_helper(QGraphicsItem *item, QRectF exposeRect,
-      QGraphicsSceneIndexIntersector intersect, QList<QGraphicsItem *> *items,
-      const QTransform &viewTransform,
-      Qt::ItemSelectionMode mode, qreal parentOpacity, const void *intersectData) const;
+    void recursive_items_helper( QGraphicsItem *item, QRectF exposeRect,
+                                 QGraphicsSceneIndexIntersector intersect, QList<QGraphicsItem *> *items,
+                                 const QTransform &viewTransform,
+                                 Qt::ItemSelectionMode mode, qreal parentOpacity, const void *intersectData ) const;
 
-   inline void items_helper(const QRectF &rect, QGraphicsSceneIndexIntersector intersect,
-      QList<QGraphicsItem *> *items, const QTransform &viewTransform,
-      Qt::ItemSelectionMode mode, Qt::SortOrder order, const void *intersectData) const;
+    inline void items_helper( const QRectF &rect, QGraphicsSceneIndexIntersector intersect,
+                              QList<QGraphicsItem *> *items, const QTransform &viewTransform,
+                              Qt::ItemSelectionMode mode, Qt::SortOrder order, const void *intersectData ) const;
 
-   QGraphicsScene *scene;
+    QGraphicsScene *scene;
 
- protected:
-   QGraphicsSceneIndex *q_ptr;
+protected:
+    QGraphicsSceneIndex *q_ptr;
 };
 
-inline void QGraphicsSceneIndexPrivate::items_helper(const QRectF &rect, QGraphicsSceneIndexIntersector intersect,
-   QList<QGraphicsItem *> *items, const QTransform &viewTransform,
-   Qt::ItemSelectionMode mode, Qt::SortOrder order, const void *intersectData) const
+inline void QGraphicsSceneIndexPrivate::items_helper( const QRectF &rect, QGraphicsSceneIndexIntersector intersect,
+        QList<QGraphicsItem *> *items, const QTransform &viewTransform,
+        Qt::ItemSelectionMode mode, Qt::SortOrder order, const void *intersectData ) const
 {
-   Q_Q(const QGraphicsSceneIndex);
-   const QList<QGraphicsItem *> tli = q->estimateTopLevelItems(rect, Qt::AscendingOrder);
+    Q_Q( const QGraphicsSceneIndex );
+    const QList<QGraphicsItem *> tli = q->estimateTopLevelItems( rect, Qt::AscendingOrder );
 
-   for (int i = 0; i < tli.size(); ++i) {
-      recursive_items_helper(tli.at(i), rect, intersect, items, viewTransform, mode, 1.0, intersectData);
-   }
+    for ( int i = 0; i < tli.size(); ++i )
+    {
+        recursive_items_helper( tli.at( i ), rect, intersect, items, viewTransform, mode, 1.0, intersectData );
+    }
 
-   if (order == Qt::DescendingOrder) {
-      const int n = items->size();
-      for (int i = 0; i < n / 2; ++i) {
-         items->swap(i, n - i - 1);
-      }
-   }
+    if ( order == Qt::DescendingOrder )
+    {
+        const int n = items->size();
+
+        for ( int i = 0; i < n / 2; ++i )
+        {
+            items->swap( i, n - i - 1 );
+        }
+    }
 }
 
 #endif // QT_NO_GRAPHICSVIEW

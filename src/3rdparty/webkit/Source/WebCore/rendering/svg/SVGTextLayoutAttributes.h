@@ -25,16 +25,19 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderSVGInlineText;
 
-class SVGTextLayoutAttributes {
+class SVGTextLayoutAttributes
+{
 public:
-    struct PositioningLists {
-        void fillWithEmptyValues(unsigned length);
+    struct PositioningLists
+    {
+        void fillWithEmptyValues( unsigned length );
         void appendEmptyValues();
-        void appendValuesFromPosition(const PositioningLists&, unsigned position);
+        void appendValuesFromPosition( const PositioningLists &, unsigned position );
 
         Vector<float> xValues;
         Vector<float> yValues;
@@ -43,38 +46,83 @@ public:
         Vector<float> rotateValues;
     };
 
-    SVGTextLayoutAttributes(RenderSVGInlineText* context = 0);
+    SVGTextLayoutAttributes( RenderSVGInlineText *context = 0 );
 
-    void reserveCapacity(unsigned length);
+    void reserveCapacity( unsigned length );
     void dump() const;
 
     static float emptyValue();
 
-    RenderSVGInlineText* context() const { return m_context; }
+    RenderSVGInlineText *context() const
+    {
+        return m_context;
+    }
 
-    PositioningLists& positioningLists() { return m_positioningLists; }
-    const PositioningLists& positioningLists() const { return m_positioningLists; }
+    PositioningLists &positioningLists()
+    {
+        return m_positioningLists;
+    }
+    const PositioningLists &positioningLists() const
+    {
+        return m_positioningLists;
+    }
 
-    Vector<float>& xValues() { return m_positioningLists.xValues; }
-    const Vector<float>& xValues() const { return m_positioningLists.xValues; }
+    Vector<float> &xValues()
+    {
+        return m_positioningLists.xValues;
+    }
+    const Vector<float> &xValues() const
+    {
+        return m_positioningLists.xValues;
+    }
 
-    Vector<float>& yValues() { return m_positioningLists.yValues; }
-    const Vector<float>& yValues() const { return m_positioningLists.yValues; }
+    Vector<float> &yValues()
+    {
+        return m_positioningLists.yValues;
+    }
+    const Vector<float> &yValues() const
+    {
+        return m_positioningLists.yValues;
+    }
 
-    Vector<float>& dxValues() { return m_positioningLists.dxValues; }
-    const Vector<float>& dxValues() const { return m_positioningLists.dxValues; }
+    Vector<float> &dxValues()
+    {
+        return m_positioningLists.dxValues;
+    }
+    const Vector<float> &dxValues() const
+    {
+        return m_positioningLists.dxValues;
+    }
 
-    Vector<float>& dyValues() { return m_positioningLists.dyValues; }
-    const Vector<float>& dyValues() const { return m_positioningLists.dyValues; }
+    Vector<float> &dyValues()
+    {
+        return m_positioningLists.dyValues;
+    }
+    const Vector<float> &dyValues() const
+    {
+        return m_positioningLists.dyValues;
+    }
 
-    Vector<float>& rotateValues() { return m_positioningLists.rotateValues; }
-    const Vector<float>& rotateValues() const { return m_positioningLists.rotateValues; }
+    Vector<float> &rotateValues()
+    {
+        return m_positioningLists.rotateValues;
+    }
+    const Vector<float> &rotateValues() const
+    {
+        return m_positioningLists.rotateValues;
+    }
 
-    Vector<SVGTextMetrics>& textMetricsValues() { return m_textMetricsValues; }
-    const Vector<SVGTextMetrics>& textMetricsValues() const { return m_textMetricsValues; }
+    Vector<SVGTextMetrics> &textMetricsValues()
+    {
+        return m_textMetricsValues;
+    }
+    const Vector<SVGTextMetrics> &textMetricsValues() const
+    {
+        return m_textMetricsValues;
+    }
 
 private:
-    RenderSVGInlineText* m_context;
+    RenderSVGInlineText *m_context;
     PositioningLists m_positioningLists;
     Vector<SVGTextMetrics> m_textMetricsValues;
 };

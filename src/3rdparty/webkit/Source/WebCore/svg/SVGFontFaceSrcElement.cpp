@@ -29,40 +29,55 @@
 #include "SVGFontFaceUriElement.h"
 #include "SVGNames.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace SVGNames;
-    
-inline SVGFontFaceSrcElement::SVGFontFaceSrcElement(const QualifiedName& tagName, Document* document)
-    : SVGElement(tagName, document)
+
+inline SVGFontFaceSrcElement::SVGFontFaceSrcElement( const QualifiedName &tagName, Document *document )
+    : SVGElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGFontFaceSrcElement> SVGFontFaceSrcElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFontFaceSrcElement> SVGFontFaceSrcElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFontFaceSrcElement(tagName, document));
+    return adoptRef( new SVGFontFaceSrcElement( tagName, document ) );
 }
 
 PassRefPtr<CSSValueList> SVGFontFaceSrcElement::srcValue() const
 {
     RefPtr<CSSValueList> list = CSSValueList::createCommaSeparated();
-    for (Node* child = firstChild(); child; child = child->nextSibling()) {
+
+    for ( Node *child = firstChild(); child; child = child->nextSibling() )
+    {
         RefPtr<CSSFontFaceSrcValue> srcValue;
-        if (child->hasTagName(font_face_uriTag))
-            srcValue = static_cast<SVGFontFaceUriElement*>(child)->srcValue();
-        else if (child->hasTagName(font_face_nameTag))
-            srcValue = static_cast<SVGFontFaceNameElement*>(child)->srcValue();
-        if (srcValue && srcValue->resource().length())
-            list->append(srcValue);
+
+        if ( child->hasTagName( font_face_uriTag ) )
+        {
+            srcValue = static_cast<SVGFontFaceUriElement *>( child )->srcValue();
+        }
+        else if ( child->hasTagName( font_face_nameTag ) )
+        {
+            srcValue = static_cast<SVGFontFaceNameElement *>( child )->srcValue();
+        }
+
+        if ( srcValue && srcValue->resource().length() )
+        {
+            list->append( srcValue );
+        }
     }
+
     return list;
 }
 
-void SVGFontFaceSrcElement::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void SVGFontFaceSrcElement::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
-    SVGElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
-    if (parentNode() && parentNode()->hasTagName(font_faceTag))
-        static_cast<SVGFontFaceElement*>(parentNode())->rebuildFontFace();
+    SVGElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
+
+    if ( parentNode() && parentNode()->hasTagName( font_faceTag ) )
+    {
+        static_cast<SVGFontFaceElement *>( parentNode() )->rebuildFontFace();
+    }
 }
 
 }

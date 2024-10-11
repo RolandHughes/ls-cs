@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RemoveFormatCommand_h
@@ -28,20 +28,25 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RemoveFormatCommand : public CompositeEditCommand {
+class RemoveFormatCommand : public CompositeEditCommand
+{
 public:
-    static PassRefPtr<RemoveFormatCommand> create(Document* document)
+    static PassRefPtr<RemoveFormatCommand> create( Document *document )
     {
-        return adoptRef(new RemoveFormatCommand(document));
+        return adoptRef( new RemoveFormatCommand( document ) );
     }
 
 private:
-    RemoveFormatCommand(Document*);
+    RemoveFormatCommand( Document * );
 
     virtual void doApply();
-    virtual EditAction editingAction() const { return EditActionUnspecified; }
+    virtual EditAction editingAction() const
+    {
+        return EditActionUnspecified;
+    }
 };
 
 } // namespace WebCore

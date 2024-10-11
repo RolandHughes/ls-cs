@@ -32,23 +32,30 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSDatabaseCallback::JSDatabaseCallback(JSObject* callback, JSDOMGlobalObject* globalObject)
-    : ActiveDOMCallback(globalObject->scriptExecutionContext())
-    , m_data(new JSCallbackData(callback, globalObject))
+JSDatabaseCallback::JSDatabaseCallback( JSObject *callback, JSDOMGlobalObject *globalObject )
+    : ActiveDOMCallback( globalObject->scriptExecutionContext() )
+    , m_data( new JSCallbackData( callback, globalObject ) )
 {
 }
 
 JSDatabaseCallback::~JSDatabaseCallback()
 {
-    ScriptExecutionContext* context = scriptExecutionContext();
+    ScriptExecutionContext *context = scriptExecutionContext();
+
     // When the context is destroyed, all tasks with a reference to a callback
     // should be deleted. So if the context is 0, we are on the context thread.
-    if (!context || context->isContextThread())
+    if ( !context || context->isContextThread() )
+    {
         delete m_data;
+    }
     else
-        context->postTask(DeleteCallbackDataTask::create(m_data));
+    {
+        context->postTask( DeleteCallbackDataTask::create( m_data ) );
+    }
+
 #ifndef NDEBUG
     m_data = 0;
 #endif
@@ -56,39 +63,43 @@ JSDatabaseCallback::~JSDatabaseCallback()
 
 // Functions
 
-bool JSDatabaseCallback::handleEvent(Database* database)
+bool JSDatabaseCallback::handleEvent( Database *database )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
-    RefPtr<JSDatabaseCallback> protect(this);
+    RefPtr<JSDatabaseCallback> protect( this );
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    ExecState* exec = m_data->globalObject()->globalExec();
+    ExecState *exec = m_data->globalObject()->globalExec();
     MarkedArgumentBuffer args;
-    args.append(toJS(exec, m_data->globalObject(), database));
+    args.append( toJS( exec, m_data->globalObject(), database ) );
 
     bool raisedException = false;
-    m_data->invokeCallback(args, &raisedException);
+    m_data->invokeCallback( args, &raisedException );
     return !raisedException;
 }
 
-bool JSDatabaseCallback::handleEvent(DatabaseSync* database)
+bool JSDatabaseCallback::handleEvent( DatabaseSync *database )
 {
-    if (!canInvokeCallback())
+    if ( !canInvokeCallback() )
+    {
         return true;
+    }
 
-    RefPtr<JSDatabaseCallback> protect(this);
+    RefPtr<JSDatabaseCallback> protect( this );
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    ExecState* exec = m_data->globalObject()->globalExec();
+    ExecState *exec = m_data->globalObject()->globalExec();
     MarkedArgumentBuffer args;
-    args.append(toJS(exec, m_data->globalObject(), database));
+    args.append( toJS( exec, m_data->globalObject(), database ) );
 
     bool raisedException = false;
-    m_data->invokeCallback(args, &raisedException);
+    m_data->invokeCallback( args, &raisedException );
     return !raisedException;
 }
 

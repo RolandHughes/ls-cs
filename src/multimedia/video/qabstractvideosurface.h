@@ -34,64 +34,65 @@ class QAbstractVideoSurfacePrivate;
 
 class Q_MULTIMEDIA_EXPORT QAbstractVideoSurface : public QObject
 {
-   MULTI_CS_OBJECT(QAbstractVideoSurface)
+    MULTI_LSCS_OBJECT( QAbstractVideoSurface )
 
-   MULTI_CS_PROPERTY_READ(nativeResolution,   nativeResolution)
-   MULTI_CS_PROPERTY_NOTIFY(nativeResolution, nativeResolutionChanged)
+    MULTI_LSCS_PROPERTY_READ( nativeResolution,   nativeResolution )
+    MULTI_LSCS_PROPERTY_NOTIFY( nativeResolution, nativeResolutionChanged )
 
- public:
-   enum Error {
-      NoError,
-      UnsupportedFormatError,
-      IncorrectFormatError,
-      StoppedError,
-      ResourceError
-   };
+public:
+    enum Error
+    {
+        NoError,
+        UnsupportedFormatError,
+        IncorrectFormatError,
+        StoppedError,
+        ResourceError
+    };
 
-   explicit QAbstractVideoSurface(QObject *parent = nullptr);
-   ~QAbstractVideoSurface();
+    explicit QAbstractVideoSurface( QObject *parent = nullptr );
+    ~QAbstractVideoSurface();
 
-   virtual QList<QVideoFrame::PixelFormat> supportedPixelFormats(
-      QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle) const = 0;
+    virtual QList<QVideoFrame::PixelFormat> supportedPixelFormats(
+        QAbstractVideoBuffer::HandleType handleType = QAbstractVideoBuffer::NoHandle ) const = 0;
 
-   virtual bool isFormatSupported(const QVideoSurfaceFormat &format) const;
-   virtual QVideoSurfaceFormat nearestFormat(const QVideoSurfaceFormat &format) const;
+    virtual bool isFormatSupported( const QVideoSurfaceFormat &format ) const;
+    virtual QVideoSurfaceFormat nearestFormat( const QVideoSurfaceFormat &format ) const;
 
-   QVideoSurfaceFormat surfaceFormat() const;
+    QVideoSurfaceFormat surfaceFormat() const;
 
-   QSize nativeResolution() const;
-   virtual bool start(const QVideoSurfaceFormat &format);
-   virtual void stop();
+    QSize nativeResolution() const;
+    virtual bool start( const QVideoSurfaceFormat &format );
+    virtual void stop();
 
-   bool isActive() const;
+    bool isActive() const;
 
-   virtual bool present(const QVideoFrame &frame) = 0;
+    virtual bool present( const QVideoFrame &frame ) = 0;
 
-   Error error() const;
+    Error error() const;
 
-   MULTI_CS_SIGNAL_1(Public, void activeChanged(bool active))
-   MULTI_CS_SIGNAL_2(activeChanged, active)
+    MULTI_LSCS_SIGNAL_1( Public, void activeChanged( bool active ) )
+    MULTI_LSCS_SIGNAL_2( activeChanged, active )
 
-   MULTI_CS_SIGNAL_1(Public, void surfaceFormatChanged(const QVideoSurfaceFormat &format))
-   MULTI_CS_SIGNAL_2(surfaceFormatChanged, format)
+    MULTI_LSCS_SIGNAL_1( Public, void surfaceFormatChanged( const QVideoSurfaceFormat &format ) )
+    MULTI_LSCS_SIGNAL_2( surfaceFormatChanged, format )
 
-   MULTI_CS_SIGNAL_1(Public, void supportedFormatsChanged())
-   MULTI_CS_SIGNAL_2(supportedFormatsChanged)
+    MULTI_LSCS_SIGNAL_1( Public, void supportedFormatsChanged() )
+    MULTI_LSCS_SIGNAL_2( supportedFormatsChanged )
 
-   MULTI_CS_SIGNAL_1(Public, void nativeResolutionChanged(const QSize &resolution))
-   MULTI_CS_SIGNAL_2(nativeResolutionChanged, resolution)
+    MULTI_LSCS_SIGNAL_1( Public, void nativeResolutionChanged( const QSize &resolution ) )
+    MULTI_LSCS_SIGNAL_2( nativeResolutionChanged, resolution )
 
- protected:
-   QScopedPointer<QAbstractVideoSurfacePrivate> d_ptr;
+protected:
+    QScopedPointer<QAbstractVideoSurfacePrivate> d_ptr;
 
-   void setError(Error error);
-   void setNativeResolution(const QSize &resolution);
+    void setError( Error error );
+    void setNativeResolution( const QSize &resolution );
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractVideoSurface)
+private:
+    Q_DECLARE_PRIVATE( QAbstractVideoSurface )
 
 };
 
-Q_MULTIMEDIA_EXPORT QDebug operator<<(QDebug, const QAbstractVideoSurface::Error &);
+Q_MULTIMEDIA_EXPORT QDebug operator<<( QDebug, const QAbstractVideoSurface::Error & );
 
 #endif

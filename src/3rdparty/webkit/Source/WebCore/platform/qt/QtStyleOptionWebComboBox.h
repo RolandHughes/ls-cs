@@ -26,30 +26,35 @@
 
 #include <QStyleOption>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 
-class QtStyleOptionWebComboBox : public QStyleOptionComboBox {
+class QtStyleOptionWebComboBox : public QStyleOptionComboBox
+{
 public:
-    QtStyleOptionWebComboBox(RenderObject* o)
+    QtStyleOptionWebComboBox( RenderObject *o )
         : QStyleOptionComboBox()
-    #if ENABLE(NO_LISTBOX_RENDERING)
-        , m_multiple(checkMultiple(o))
-    #else
-        , m_multiple(false)
-    #endif
+#if ENABLE(NO_LISTBOX_RENDERING)
+        , m_multiple( checkMultiple( o ) )
+#else
+        , m_multiple( false )
+#endif
     {
     }
 
-    bool multiple() const { return m_multiple; }
+    bool multiple() const
+    {
+        return m_multiple;
+    }
 
 private:
     bool m_multiple;
 
-    bool checkMultiple(RenderObject* o)
+    bool checkMultiple( RenderObject *o )
     {
-        HTMLSelectElement* select = o ? static_cast<HTMLSelectElement*>(o->node()) : 0;
+        HTMLSelectElement *select = o ? static_cast<HTMLSelectElement *>( o->node() ) : 0;
         return select ? select->multiple() : false;
     }
 };

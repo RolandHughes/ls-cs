@@ -29,21 +29,21 @@
 
 class QGstreamerAudioInputSelector : public QAudioInputSelectorControl
 {
-   CS_OBJECT(QGstreamerAudioInputSelector)
+    LSCS_OBJECT( QGstreamerAudioInputSelector )
 
- public:
-    QGstreamerAudioInputSelector(QObject *parent);
+public:
+    QGstreamerAudioInputSelector( QObject *parent );
     ~QGstreamerAudioInputSelector();
 
     QList<QString> availableInputs() const override;
-    QString inputDescription(const QString& name) const override;
+    QString inputDescription( const QString &name ) const override;
     QString defaultInput() const override;
     QString activeInput() const override;
 
-    CS_SLOT_1(Public, void setActiveInput(const QString& name) override)
-    CS_SLOT_2(setActiveInput)
+    LSCS_SLOT_1( Public, void setActiveInput( const QString &name ) override )
+    LSCS_SLOT_2( setActiveInput )
 
- private:
+private:
     void update();
     void updateAlsaDevices();
     void updateOssDevices();

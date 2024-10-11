@@ -24,8 +24,8 @@
 #include "qmediaplaylistcontrol_p.h"
 #include "qmediacontrol_p.h"
 
-QMediaPlaylistControl::QMediaPlaylistControl(QObject *parent):
-   QMediaControl(*new QMediaControlPrivate, parent)
+QMediaPlaylistControl::QMediaPlaylistControl( QObject *parent ):
+    QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

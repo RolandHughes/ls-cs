@@ -21,18 +21,19 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #import <WebCore/DOMTestMediaQueryListListener.h>
 
 #if WEBKIT_VERSION_MAX_ALLOWED >= WEBKIT_VERSION_LATEST
 
-namespace WebCore {
-    class TestMediaQueryListListener;
+namespace WebCore
+{
+class TestMediaQueryListListener;
 }
 
-WebCore::TestMediaQueryListListener* core(DOMTestMediaQueryListListener *);
-DOMTestMediaQueryListListener *kit(WebCore::TestMediaQueryListListener*);
+WebCore::TestMediaQueryListListener *core( DOMTestMediaQueryListListener * );
+DOMTestMediaQueryListListener *kit( WebCore::TestMediaQueryListListener * );
 
 #endif

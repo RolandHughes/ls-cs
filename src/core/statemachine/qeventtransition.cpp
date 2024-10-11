@@ -35,66 +35,68 @@
 
 QEventTransitionPrivate::QEventTransitionPrivate()
 {
-   object     = nullptr;
-   eventType  = QEvent::None;
-   registered = false;
+    object     = nullptr;
+    eventType  = QEvent::None;
+    registered = false;
 }
 
-QEventTransitionPrivate *QEventTransitionPrivate::get(QEventTransition *q)
+QEventTransitionPrivate *QEventTransitionPrivate::get( QEventTransition *q )
 {
-   return q->d_func();
+    return q->d_func();
 }
 
 void QEventTransitionPrivate::unregister()
 {
-   Q_Q(QEventTransition);
+    Q_Q( QEventTransition );
 
-   if (! registered || !machine()) {
-      return;
-   }
+    if ( ! registered || !machine() )
+    {
+        return;
+    }
 
-   QStateMachinePrivate::get(machine())->unregisterEventTransition(q);
+    QStateMachinePrivate::get( machine() )->unregisterEventTransition( q );
 }
 
 void QEventTransitionPrivate::maybeRegister()
 {
-   Q_Q(QEventTransition);
+    Q_Q( QEventTransition );
 
-   if (! machine() || !machine()->configuration().contains(sourceState())) {
-      return;
-   }
+    if ( ! machine() || !machine()->configuration().contains( sourceState() ) )
+    {
+        return;
+    }
 
-   QStateMachinePrivate::get(machine())->registerEventTransition(q);
+    QStateMachinePrivate::get( machine() )->registerEventTransition( q );
 }
 
-QEventTransition::QEventTransition(QState *sourceState)
-   : QAbstractTransition(*new QEventTransitionPrivate, sourceState)
+QEventTransition::QEventTransition( QState *sourceState )
+    : QAbstractTransition( *new QEventTransitionPrivate, sourceState )
 {
 }
 
-QEventTransition::QEventTransition(QObject *object, QEvent::Type type, QState *sourceState)
-   : QAbstractTransition(*new QEventTransitionPrivate, sourceState)
+QEventTransition::QEventTransition( QObject *object, QEvent::Type type, QState *sourceState )
+    : QAbstractTransition( *new QEventTransitionPrivate, sourceState )
 {
-   Q_D(QEventTransition);
-   d->registered = false;
-   d->object = object;
-   d->eventType = type;
+    Q_D( QEventTransition );
+    d->registered = false;
+    d->object = object;
+    d->eventType = type;
 }
 
-QEventTransition::QEventTransition(QEventTransitionPrivate &dd, QState *parent)
-   : QAbstractTransition(dd, parent)
+QEventTransition::QEventTransition( QEventTransitionPrivate &dd, QState *parent )
+    : QAbstractTransition( dd, parent )
 {
 }
 
-QEventTransition::QEventTransition(QEventTransitionPrivate &dd, QObject *object,
-      QEvent::Type type, QState *parent)
-   : QAbstractTransition(dd, parent)
+QEventTransition::QEventTransition( QEventTransitionPrivate &dd, QObject *object,
+                                    QEvent::Type type, QState *parent )
+    : QAbstractTransition( dd, parent )
 {
-   Q_D(QEventTransition);
+    Q_D( QEventTransition );
 
-   d->registered = false;
-   d->object = object;
-   d->eventType = type;
+    d->registered = false;
+    d->object = object;
+    d->eventType = type;
 }
 
 QEventTransition::~QEventTransition()
@@ -103,63 +105,66 @@ QEventTransition::~QEventTransition()
 
 QEvent::Type QEventTransition::eventType() const
 {
-   Q_D(const QEventTransition);
-   return d->eventType;
+    Q_D( const QEventTransition );
+    return d->eventType;
 }
 
-void QEventTransition::setEventType(QEvent::Type type)
+void QEventTransition::setEventType( QEvent::Type type )
 {
-   Q_D(QEventTransition);
+    Q_D( QEventTransition );
 
-   if (d->eventType == type) {
-      return;
-   }
+    if ( d->eventType == type )
+    {
+        return;
+    }
 
-   d->unregister();
-   d->eventType = type;
-   d->maybeRegister();
+    d->unregister();
+    d->eventType = type;
+    d->maybeRegister();
 }
 
 QObject *QEventTransition::eventSource() const
 {
-   Q_D(const QEventTransition);
-   return d->object;
+    Q_D( const QEventTransition );
+    return d->object;
 }
 
-void QEventTransition::setEventSource(QObject *object)
+void QEventTransition::setEventSource( QObject *object )
 {
-   Q_D(QEventTransition);
+    Q_D( QEventTransition );
 
-   if (d->object == object) {
-      return;
-   }
+    if ( d->object == object )
+    {
+        return;
+    }
 
-   d->unregister();
-   d->object = object;
-   d->maybeRegister();
+    d->unregister();
+    d->object = object;
+    d->maybeRegister();
 }
 
-bool QEventTransition::eventTest(QEvent *event)
+bool QEventTransition::eventTest( QEvent *event )
 {
-   Q_D(const QEventTransition);
+    Q_D( const QEventTransition );
 
-   if (event->type() == QEvent::StateMachineWrapped) {
-      QStateMachine::WrappedEvent *we = static_cast<QStateMachine::WrappedEvent *>(event);
+    if ( event->type() == QEvent::StateMachineWrapped )
+    {
+        QStateMachine::WrappedEvent *we = static_cast<QStateMachine::WrappedEvent *>( event );
 
-      return (we->object() == d->object) && (we->event()->type() == d->eventType);
-   }
+        return ( we->object() == d->object ) && ( we->event()->type() == d->eventType );
+    }
 
-   return false;
+    return false;
 }
 
-void QEventTransition::onTransition(QEvent *event)
+void QEventTransition::onTransition( QEvent *event )
 {
-   (void) event;
+    ( void ) event;
 }
 
-bool QEventTransition::event(QEvent *e)
+bool QEventTransition::event( QEvent *e )
 {
-   return QAbstractTransition::event(e);
+    return QAbstractTransition::event( e );
 }
 
 #endif //QT_NO_STATEMACHINE

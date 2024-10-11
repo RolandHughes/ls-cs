@@ -48,9 +48,9 @@ struct Q_DBUS_EXPORT QDBusMetaObject: public QMetaObject
 {
     bool cached;
 
-    static QDBusMetaObject *createMetaObject(const QString &interface, const QString &xml,
-                                             QHash<QString, QDBusMetaObject *> &map,
-                                             QDBusError &error);
+    static QDBusMetaObject *createMetaObject( const QString &interface, const QString &xml,
+            QHash<QString, QDBusMetaObject *> &map,
+            QDBusError &error );
     ~QDBusMetaObject()
     {
         delete [] d.stringdata;
@@ -58,14 +58,14 @@ struct Q_DBUS_EXPORT QDBusMetaObject: public QMetaObject
     }
 
     // methods (slots & signals):
-    const char *dbusNameForMethod(int id) const;
-    const char *inputSignatureForMethod(int id) const;
-    const char *outputSignatureForMethod(int id) const;
-    const int *inputTypesForMethod(int id) const;
-    const int *outputTypesForMethod(int id) const;
+    const char *dbusNameForMethod( int id ) const;
+    const char *inputSignatureForMethod( int id ) const;
+    const char *outputSignatureForMethod( int id ) const;
+    const int *inputTypesForMethod( int id ) const;
+    const int *outputTypesForMethod( int id ) const;
 
     // properties:
-    int propertyMetaType(int id) const;
+    int propertyMetaType( int id ) const;
 
 private:
     QDBusMetaObject();

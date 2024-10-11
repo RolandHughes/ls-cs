@@ -30,9 +30,10 @@
 
 #include "NotImplemented.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DragImageRef Frame::nodeImage(Node*)
+DragImageRef Frame::nodeImage( Node * )
 {
     notImplemented();
     return 0;
@@ -40,27 +41,32 @@ DragImageRef Frame::nodeImage(Node*)
 
 DragImageRef Frame::dragImageForSelection()
 {
-    if (!selection()->isRange())
+    if ( !selection()->isRange() )
+    {
         return 0;
+    }
 
     m_doc->updateLayout();
 
-    IntRect paintingRect = enclosingIntRect(selection()->bounds());
-    OwnPtr<ImageBuffer> buffer(ImageBuffer::create(paintingRect.size()));
-    if (!buffer)
-        return 0;
+    IntRect paintingRect = enclosingIntRect( selection()->bounds() );
+    OwnPtr<ImageBuffer> buffer( ImageBuffer::create( paintingRect.size() ) );
 
-    GraphicsContext* context = buffer->context();
-    context->translate(-paintingRect.x(), -paintingRect.y());
-    context->clip(FloatRect(0, 0, paintingRect.maxX(), paintingRect.maxY()));
+    if ( !buffer )
+    {
+        return 0;
+    }
+
+    GraphicsContext *context = buffer->context();
+    context->translate( -paintingRect.x(), -paintingRect.y() );
+    context->clip( FloatRect( 0, 0, paintingRect.maxX(), paintingRect.maxY() ) );
 
     PaintBehavior previousPaintBehavior = m_view->paintBehavior();
-    m_view->setPaintBehavior(PaintBehaviorSelectionOnly);
-    m_view->paintContents(context, paintingRect);
-    m_view->setPaintBehavior(previousPaintBehavior);
+    m_view->setPaintBehavior( PaintBehaviorSelectionOnly );
+    m_view->paintContents( context, paintingRect );
+    m_view->setPaintBehavior( previousPaintBehavior );
 
     RefPtr<Image> image = buffer->copyImage();
-    return createDragImageFromImage(image.get());
+    return createDragImageFromImage( image.get() );
 }
 
 }

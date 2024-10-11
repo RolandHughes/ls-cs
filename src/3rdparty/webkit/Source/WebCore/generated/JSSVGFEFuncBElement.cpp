@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGFEFuncBElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGFEFuncBElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGFEFuncBElement);
 
 static const HashTableValue JSSVGFEFuncBElementTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGFEFuncBElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGFEFuncBElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSSVGFEFuncBElementTable = { 2, 1, JSSVGFEF
 
 static const HashTableValue JSSVGFEFuncBElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGFEFuncBElementConstructorTable = { 1, 0, JSSVGFEFuncBElementConstructorTableValues, 0 };
-class JSSVGFEFuncBElementConstructor : public DOMConstructorObject {
+class JSSVGFEFuncBElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGFEFuncBElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGFEFuncBElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGFEFuncBElementConstructor::s_info = { "SVGFEFuncBElementConstructor", &DOMConstructorObject::s_info, &JSSVGFEFuncBElementConstructorTable, 0 };
 
-JSSVGFEFuncBElementConstructor::JSSVGFEFuncBElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGFEFuncBElementConstructor::JSSVGFEFuncBElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGFEFuncBElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGFEFuncBElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGFEFuncBElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGFEFuncBElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGFEFuncBElementConstructor, JSDOMWrapper>(exec, &JSSVGFEFuncBElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGFEFuncBElementConstructor, JSDOMWrapper>( exec, &JSSVGFEFuncBElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGFEFuncBElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGFEFuncBElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGFEFuncBElementConstructor, JSDOMWrapper>(exec, &JSSVGFEFuncBElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGFEFuncBElementConstructor, JSDOMWrapper>( exec, &JSSVGFEFuncBElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,50 +114,54 @@ bool JSSVGFEFuncBElementConstructor::getOwnPropertyDescriptor(ExecState* exec, c
 
 static const HashTableValue JSSVGFEFuncBElementPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGFEFuncBElementPrototypeTable = { 1, 0, JSSVGFEFuncBElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGFEFuncBElementPrototype::s_info = { "SVGFEFuncBElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGFEFuncBElementPrototypeTable, 0 };
 
-JSObject* JSSVGFEFuncBElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGFEFuncBElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGFEFuncBElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGFEFuncBElement>( exec, globalObject );
 }
 
 const ClassInfo JSSVGFEFuncBElement::s_info = { "SVGFEFuncBElement", &JSSVGComponentTransferFunctionElement::s_info, &JSSVGFEFuncBElementTable, 0 };
 
-JSSVGFEFuncBElement::JSSVGFEFuncBElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGFEFuncBElement> impl)
-    : JSSVGComponentTransferFunctionElement(structure, globalObject, impl)
+JSSVGFEFuncBElement::JSSVGFEFuncBElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGFEFuncBElement> impl )
+    : JSSVGComponentTransferFunctionElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGFEFuncBElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGFEFuncBElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGFEFuncBElementPrototype(exec->globalData(), globalObject, JSSVGFEFuncBElementPrototype::createStructure(exec->globalData(), JSSVGComponentTransferFunctionElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGFEFuncBElementPrototype( exec->globalData(), globalObject,
+            JSSVGFEFuncBElementPrototype::createStructure( exec->globalData(), JSSVGComponentTransferFunctionElementPrototype::self( exec,
+                    globalObject ) ) );
 }
 
-bool JSSVGFEFuncBElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGFEFuncBElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGFEFuncBElement, Base>(exec, &JSSVGFEFuncBElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGFEFuncBElement, Base>( exec, &JSSVGFEFuncBElementTable, this, propertyName, slot );
 }
 
-bool JSSVGFEFuncBElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGFEFuncBElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGFEFuncBElement, Base>(exec, &JSSVGFEFuncBElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGFEFuncBElement, Base>( exec, &JSSVGFEFuncBElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGFEFuncBElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGFEFuncBElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGFEFuncBElement* domObject = static_cast<JSSVGFEFuncBElement*>(asObject(slotBase));
-    return JSSVGFEFuncBElement::getConstructor(exec, domObject->globalObject());
+    JSSVGFEFuncBElement *domObject = static_cast<JSSVGFEFuncBElement *>( asObject( slotBase ) );
+    return JSSVGFEFuncBElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGFEFuncBElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGFEFuncBElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGFEFuncBElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGFEFuncBElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

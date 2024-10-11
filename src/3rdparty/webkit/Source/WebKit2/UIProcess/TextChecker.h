@@ -29,50 +29,56 @@
 #include <WebCore/EditorClient.h>
 #include <WebCore/TextCheckerClient.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageProxy;
 struct TextCheckerState;
 
-class TextChecker {
+class TextChecker
+{
 public:
-    static const TextCheckerState& state();
+    static const TextCheckerState &state();
     static bool isContinuousSpellCheckingAllowed();
 
-    static void setContinuousSpellCheckingEnabled(bool);
-    static void setGrammarCheckingEnabled(bool);
+    static void setContinuousSpellCheckingEnabled( bool );
+    static void setGrammarCheckingEnabled( bool );
 
 #if PLATFORM(MAC)
-    static void setAutomaticSpellingCorrectionEnabled(bool);
-    static void setAutomaticQuoteSubstitutionEnabled(bool);
-    static void setAutomaticDashSubstitutionEnabled(bool);
-    static void setAutomaticLinkDetectionEnabled(bool);
-    static void setAutomaticTextReplacementEnabled(bool);
+    static void setAutomaticSpellingCorrectionEnabled( bool );
+    static void setAutomaticQuoteSubstitutionEnabled( bool );
+    static void setAutomaticDashSubstitutionEnabled( bool );
+    static void setAutomaticLinkDetectionEnabled( bool );
+    static void setAutomaticTextReplacementEnabled( bool );
 
     static bool isSmartInsertDeleteEnabled();
-    static void setSmartInsertDeleteEnabled(bool);
+    static void setSmartInsertDeleteEnabled( bool );
 
     static bool substitutionsPanelIsShowing();
     static void toggleSubstitutionsPanelIsShowing();
 #elif PLATFORM(WIN)
-    static void continuousSpellCheckingEnabledStateChanged(bool);
-    static void grammarCheckingEnabledStateChanged(bool);
+    static void continuousSpellCheckingEnabledStateChanged( bool );
+    static void grammarCheckingEnabledStateChanged( bool );
 #endif
 
-    static int64_t uniqueSpellDocumentTag(WebPageProxy*);
-    static void closeSpellDocumentWithTag(int64_t);
+    static int64_t uniqueSpellDocumentTag( WebPageProxy * );
+    static void closeSpellDocumentWithTag( int64_t );
 #if USE(UNIFIED_TEXT_CHECKING)
-    static Vector<WebCore::TextCheckingResult> checkTextOfParagraph(int64_t spellDocumentTag, const UChar* text, int length, uint64_t checkingTypes);
+    static Vector<WebCore::TextCheckingResult> checkTextOfParagraph( int64_t spellDocumentTag, const UChar *text, int length,
+            uint64_t checkingTypes );
 #endif
-    static void checkSpellingOfString(int64_t spellDocumentTag, const UChar* text, uint32_t length, int32_t& misspellingLocation, int32_t& misspellingLength);
-    static void checkGrammarOfString(int64_t spellDocumentTag, const UChar* text, uint32_t length, Vector<WebCore::GrammarDetail>&, int32_t& badGrammarLocation, int32_t& badGrammarLength);
+    static void checkSpellingOfString( int64_t spellDocumentTag, const UChar *text, uint32_t length, int32_t &misspellingLocation,
+                                       int32_t &misspellingLength );
+    static void checkGrammarOfString( int64_t spellDocumentTag, const UChar *text, uint32_t length, Vector<WebCore::GrammarDetail> &,
+                                      int32_t &badGrammarLocation, int32_t &badGrammarLength );
     static bool spellingUIIsShowing();
     static void toggleSpellingUIIsShowing();
-    static void updateSpellingUIWithMisspelledWord(int64_t spellDocumentTag, const String& misspelledWord);
-    static void updateSpellingUIWithGrammarString(int64_t spellDocumentTag, const String& badGrammarPhrase, const WebCore::GrammarDetail&);
-    static void getGuessesForWord(int64_t spellDocumentTag, const String& word, const String& context, Vector<String>& guesses);
-    static void learnWord(int64_t spellDocumentTag, const String& word);
-    static void ignoreWord(int64_t spellDocumentTag, const String& word);
+    static void updateSpellingUIWithMisspelledWord( int64_t spellDocumentTag, const String &misspelledWord );
+    static void updateSpellingUIWithGrammarString( int64_t spellDocumentTag, const String &badGrammarPhrase,
+            const WebCore::GrammarDetail & );
+    static void getGuessesForWord( int64_t spellDocumentTag, const String &word, const String &context, Vector<String> &guesses );
+    static void learnWord( int64_t spellDocumentTag, const String &word );
+    static void ignoreWord( int64_t spellDocumentTag, const String &word );
 };
 
 } // namespace WebKit

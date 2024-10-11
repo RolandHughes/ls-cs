@@ -35,47 +35,47 @@ class PhraseModel;
 
 class PhraseView : public QTreeView
 {
-   CS_OBJECT(PhraseView)
+    LSCS_OBJECT( PhraseView )
 
- public:
-   PhraseView(MultiDataModel *model, QList<QHash<QString, QList<Phrase *>>> *phraseDict, QWidget *parent = nullptr);
-   ~PhraseView();
+public:
+    PhraseView( MultiDataModel *model, QList<QHash<QString, QList<Phrase *>>> *phraseDict, QWidget *parent = nullptr );
+    ~PhraseView();
 
-   void setSourceText(int model, const QString &sourceText);
+    void setSourceText( int model, const QString &sourceText );
 
-   CS_SLOT_1(Public, void toggleGuessing())
-   CS_SLOT_2(toggleGuessing)
+    LSCS_SLOT_1( Public, void toggleGuessing() )
+    LSCS_SLOT_2( toggleGuessing )
 
-   CS_SLOT_1(Public, void update())
-   CS_SLOT_2(update)
+    LSCS_SLOT_1( Public, void update() )
+    LSCS_SLOT_2( update )
 
-   CS_SIGNAL_1(Public, void phraseSelected(int latestModel,const QString & phrase))
-   CS_SIGNAL_2(phraseSelected,latestModel,phrase)
+    LSCS_SIGNAL_1( Public, void phraseSelected( int latestModel,const QString &phrase ) )
+    LSCS_SIGNAL_2( phraseSelected,latestModel,phrase )
 
- protected:
-   // QObject
-   void contextMenuEvent(QContextMenuEvent *event) override;
+protected:
+    // QObject
+    void contextMenuEvent( QContextMenuEvent *event ) override;
 
-   // QAbstractItemView
-   void mouseDoubleClickEvent(QMouseEvent *event) override;
+    // QAbstractItemView
+    void mouseDoubleClickEvent( QMouseEvent *event ) override;
 
- private:
-   // slots
-   void guessShortcut(int id);
-   void selectPhrase(const QModelIndex & index);
-   void selectCurrentPhrase();
-   void editPhrase();
+private:
+    // slots
+    void guessShortcut( int id );
+    void selectPhrase( const QModelIndex &index );
+    void selectCurrentPhrase();
+    void editPhrase();
 
-   QList<Phrase *> getPhrases(int model, const QString &sourceText);
-   void deleteGuesses();
+    QList<Phrase *> getPhrases( int model, const QString &sourceText );
+    void deleteGuesses();
 
-   MultiDataModel *m_dataModel;
-   QList<QHash<QString, QList<Phrase *> > > *m_phraseDict;
-   QList<Phrase *> m_guesses;
-   PhraseModel *m_phraseModel;
-   QString m_sourceText;
-   int m_modelIndex;
-   bool m_doGuesses;
+    MultiDataModel *m_dataModel;
+    QList<QHash<QString, QList<Phrase *> > > *m_phraseDict;
+    QList<Phrase *> m_guesses;
+    PhraseModel *m_phraseModel;
+    QString m_sourceText;
+    int m_modelIndex;
+    bool m_doGuesses;
 };
 
 #endif

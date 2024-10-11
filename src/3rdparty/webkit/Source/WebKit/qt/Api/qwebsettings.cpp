@@ -55,17 +55,18 @@
 
 #include "NetworkStateNotifier.h"
 
-void QWEBKIT_EXPORT qt_networkAccessAllowed(bool isAllowed)
+void QWEBKIT_EXPORT qt_networkAccessAllowed( bool isAllowed )
 {
 #if USE(QT_BEARER)
-    WebCore::networkStateNotifier().setNetworkAccessAllowed(isAllowed);
+    WebCore::networkStateNotifier().setNetworkAccessAllowed( isAllowed );
 #endif
 }
 
-class QWebSettingsPrivate {
+class QWebSettingsPrivate
+{
 public:
-    QWebSettingsPrivate(WebCore::Settings* wcSettings = 0)
-        : settings(wcSettings)
+    QWebSettingsPrivate( WebCore::Settings *wcSettings = 0 )
+        : settings( wcSettings )
     {
     }
 
@@ -79,209 +80,218 @@ public:
     qint64 offlineStorageDefaultQuota;
 
     void apply();
-    WebCore::Settings* settings;
+    WebCore::Settings *settings;
 };
 
 typedef QHash<int, QPixmap> WebGraphicHash;
-Q_GLOBAL_STATIC(WebGraphicHash, _graphics)
+Q_GLOBAL_STATIC( WebGraphicHash, _graphics )
 
 static void earlyClearGraphics()
 {
     _graphics()->clear();
 }
 
-static WebGraphicHash* graphics()
+static WebGraphicHash *graphics()
 {
-    WebGraphicHash* hash = _graphics();
+    WebGraphicHash *hash = _graphics();
 
-    if (hash->isEmpty()) {
+    if ( hash->isEmpty() )
+    {
 
         // prevent ~QPixmap running after ~QApplication (leaks native pixmaps)
-        qAddPostRoutine(earlyClearGraphics);
+        qAddPostRoutine( earlyClearGraphics );
 
-        hash->insert(QWebSettings::MissingImageGraphic, QPixmap(QLatin1String(":webkit/resources/missingImage.png")));
-        hash->insert(QWebSettings::MissingPluginGraphic, QPixmap(QLatin1String(":webkit/resources/nullPlugin.png")));
-        hash->insert(QWebSettings::DefaultFrameIconGraphic, QPixmap(QLatin1String(":webkit/resources/urlIcon.png")));
-        hash->insert(QWebSettings::TextAreaSizeGripCornerGraphic, QPixmap(QLatin1String(":webkit/resources/textAreaResizeCorner.png")));
-        hash->insert(QWebSettings::DeleteButtonGraphic, QPixmap(QLatin1String(":webkit/resources/deleteButton.png")));
-        hash->insert(QWebSettings::InputSpeechButtonGraphic, QPixmap(QLatin1String(":webkit/resources/inputSpeech.png")));
-        hash->insert(QWebSettings::SearchCancelButtonGraphic, QApplication::style()->standardPixmap(QStyle::SP_DialogCloseButton));
-        hash->insert(QWebSettings::SearchCancelButtonPressedGraphic, QApplication::style()->standardPixmap(QStyle::SP_DialogCloseButton));
+        hash->insert( QWebSettings::MissingImageGraphic, QPixmap( QLatin1String( ":webkit/resources/missingImage.png" ) ) );
+        hash->insert( QWebSettings::MissingPluginGraphic, QPixmap( QLatin1String( ":webkit/resources/nullPlugin.png" ) ) );
+        hash->insert( QWebSettings::DefaultFrameIconGraphic, QPixmap( QLatin1String( ":webkit/resources/urlIcon.png" ) ) );
+        hash->insert( QWebSettings::TextAreaSizeGripCornerGraphic,
+                      QPixmap( QLatin1String( ":webkit/resources/textAreaResizeCorner.png" ) ) );
+        hash->insert( QWebSettings::DeleteButtonGraphic, QPixmap( QLatin1String( ":webkit/resources/deleteButton.png" ) ) );
+        hash->insert( QWebSettings::InputSpeechButtonGraphic, QPixmap( QLatin1String( ":webkit/resources/inputSpeech.png" ) ) );
+        hash->insert( QWebSettings::SearchCancelButtonGraphic, QApplication::style()->standardPixmap( QStyle::SP_DialogCloseButton ) );
+        hash->insert( QWebSettings::SearchCancelButtonPressedGraphic,
+                      QApplication::style()->standardPixmap( QStyle::SP_DialogCloseButton ) );
     }
 
     return hash;
 }
 
-Q_GLOBAL_STATIC(QList<QWebSettingsPrivate*>, allSettings);
+Q_GLOBAL_STATIC( QList<QWebSettingsPrivate *>, allSettings );
 
 void QWebSettingsPrivate::apply()
 {
-    if (settings) {
-        settings->setTextAreasAreResizable(true);
+    if ( settings )
+    {
+        settings->setTextAreasAreResizable( true );
 
-        QWebSettingsPrivate* global = QWebSettings::globalSettings()->d;
+        QWebSettingsPrivate *global = QWebSettings::globalSettings()->d;
 
-        QString family = fontFamilies.value(QWebSettings::StandardFont,
-                                            global->fontFamilies.value(QWebSettings::StandardFont));
-        settings->setStandardFontFamily(family);
+        QString family = fontFamilies.value( QWebSettings::StandardFont,
+                                             global->fontFamilies.value( QWebSettings::StandardFont ) );
+        settings->setStandardFontFamily( family );
 
-        family = fontFamilies.value(QWebSettings::FixedFont,
-                                    global->fontFamilies.value(QWebSettings::FixedFont));
-        settings->setFixedFontFamily(family);
+        family = fontFamilies.value( QWebSettings::FixedFont,
+                                     global->fontFamilies.value( QWebSettings::FixedFont ) );
+        settings->setFixedFontFamily( family );
 
-        family = fontFamilies.value(QWebSettings::SerifFont,
-                                    global->fontFamilies.value(QWebSettings::SerifFont));
-        settings->setSerifFontFamily(family);
+        family = fontFamilies.value( QWebSettings::SerifFont,
+                                     global->fontFamilies.value( QWebSettings::SerifFont ) );
+        settings->setSerifFontFamily( family );
 
-        family = fontFamilies.value(QWebSettings::SansSerifFont,
-                                    global->fontFamilies.value(QWebSettings::SansSerifFont));
-        settings->setSansSerifFontFamily(family);
+        family = fontFamilies.value( QWebSettings::SansSerifFont,
+                                     global->fontFamilies.value( QWebSettings::SansSerifFont ) );
+        settings->setSansSerifFontFamily( family );
 
-        family = fontFamilies.value(QWebSettings::CursiveFont,
-                                    global->fontFamilies.value(QWebSettings::CursiveFont));
-        settings->setCursiveFontFamily(family);
+        family = fontFamilies.value( QWebSettings::CursiveFont,
+                                     global->fontFamilies.value( QWebSettings::CursiveFont ) );
+        settings->setCursiveFontFamily( family );
 
-        family = fontFamilies.value(QWebSettings::FantasyFont,
-                                    global->fontFamilies.value(QWebSettings::FantasyFont));
-        settings->setFantasyFontFamily(family);
+        family = fontFamilies.value( QWebSettings::FantasyFont,
+                                     global->fontFamilies.value( QWebSettings::FantasyFont ) );
+        settings->setFantasyFontFamily( family );
 
-        int size = fontSizes.value(QWebSettings::MinimumFontSize,
-                                   global->fontSizes.value(QWebSettings::MinimumFontSize));
-        settings->setMinimumFontSize(size);
+        int size = fontSizes.value( QWebSettings::MinimumFontSize,
+                                    global->fontSizes.value( QWebSettings::MinimumFontSize ) );
+        settings->setMinimumFontSize( size );
 
-        size = fontSizes.value(QWebSettings::MinimumLogicalFontSize,
-                                   global->fontSizes.value(QWebSettings::MinimumLogicalFontSize));
-        settings->setMinimumLogicalFontSize(size);
+        size = fontSizes.value( QWebSettings::MinimumLogicalFontSize,
+                                global->fontSizes.value( QWebSettings::MinimumLogicalFontSize ) );
+        settings->setMinimumLogicalFontSize( size );
 
-        size = fontSizes.value(QWebSettings::DefaultFontSize,
-                                   global->fontSizes.value(QWebSettings::DefaultFontSize));
-        settings->setDefaultFontSize(size);
+        size = fontSizes.value( QWebSettings::DefaultFontSize,
+                                global->fontSizes.value( QWebSettings::DefaultFontSize ) );
+        settings->setDefaultFontSize( size );
 
-        size = fontSizes.value(QWebSettings::DefaultFixedFontSize,
-                                   global->fontSizes.value(QWebSettings::DefaultFixedFontSize));
-        settings->setDefaultFixedFontSize(size);
+        size = fontSizes.value( QWebSettings::DefaultFixedFontSize,
+                                global->fontSizes.value( QWebSettings::DefaultFixedFontSize ) );
+        settings->setDefaultFixedFontSize( size );
 
-        bool value = attributes.value(QWebSettings::AutoLoadImages,
-                                      global->attributes.value(QWebSettings::AutoLoadImages));
-        settings->setLoadsImagesAutomatically(value);
+        bool value = attributes.value( QWebSettings::AutoLoadImages,
+                                       global->attributes.value( QWebSettings::AutoLoadImages ) );
+        settings->setLoadsImagesAutomatically( value );
 
-        value = attributes.value(QWebSettings::JavascriptEnabled,
-                                      global->attributes.value(QWebSettings::JavascriptEnabled));
-        settings->setJavaScriptEnabled(value);
+        value = attributes.value( QWebSettings::JavascriptEnabled,
+                                  global->attributes.value( QWebSettings::JavascriptEnabled ) );
+        settings->setJavaScriptEnabled( value );
 #if USE(ACCELERATED_COMPOSITING)
-        value = attributes.value(QWebSettings::AcceleratedCompositingEnabled,
-                                      global->attributes.value(QWebSettings::AcceleratedCompositingEnabled));
+        value = attributes.value( QWebSettings::AcceleratedCompositingEnabled,
+                                  global->attributes.value( QWebSettings::AcceleratedCompositingEnabled ) );
 
-        settings->setAcceleratedCompositingEnabled(value);
+        settings->setAcceleratedCompositingEnabled( value );
 #endif
 #if ENABLE(WEBGL)
-        value = attributes.value(QWebSettings::WebGLEnabled,
-                                 global->attributes.value(QWebSettings::WebGLEnabled));
+        value = attributes.value( QWebSettings::WebGLEnabled,
+                                  global->attributes.value( QWebSettings::WebGLEnabled ) );
 
-        settings->setWebGLEnabled(value);
+        settings->setWebGLEnabled( value );
 #endif
 
-        value = attributes.value(QWebSettings::HyperlinkAuditingEnabled,
-                                 global->attributes.value(QWebSettings::HyperlinkAuditingEnabled));
+        value = attributes.value( QWebSettings::HyperlinkAuditingEnabled,
+                                  global->attributes.value( QWebSettings::HyperlinkAuditingEnabled ) );
 
-        settings->setHyperlinkAuditingEnabled(value);
+        settings->setHyperlinkAuditingEnabled( value );
 
-        value = attributes.value(QWebSettings::JavascriptCanOpenWindows,
-                                      global->attributes.value(QWebSettings::JavascriptCanOpenWindows));
-        settings->setJavaScriptCanOpenWindowsAutomatically(value);
+        value = attributes.value( QWebSettings::JavascriptCanOpenWindows,
+                                  global->attributes.value( QWebSettings::JavascriptCanOpenWindows ) );
+        settings->setJavaScriptCanOpenWindowsAutomatically( value );
 
-        value = attributes.value(QWebSettings::JavascriptCanCloseWindows,
-                                      global->attributes.value(QWebSettings::JavascriptCanCloseWindows));
-        settings->setAllowScriptsToCloseWindows(value);
+        value = attributes.value( QWebSettings::JavascriptCanCloseWindows,
+                                  global->attributes.value( QWebSettings::JavascriptCanCloseWindows ) );
+        settings->setAllowScriptsToCloseWindows( value );
 
-        value = attributes.value(QWebSettings::JavaEnabled,
-                                      global->attributes.value(QWebSettings::JavaEnabled));
-        settings->setJavaEnabled(value);
+        value = attributes.value( QWebSettings::JavaEnabled,
+                                  global->attributes.value( QWebSettings::JavaEnabled ) );
+        settings->setJavaEnabled( value );
 
-        value = attributes.value(QWebSettings::PluginsEnabled,
-                                      global->attributes.value(QWebSettings::PluginsEnabled));
-        settings->setPluginsEnabled(value);
+        value = attributes.value( QWebSettings::PluginsEnabled,
+                                  global->attributes.value( QWebSettings::PluginsEnabled ) );
+        settings->setPluginsEnabled( value );
 
-        value = attributes.value(QWebSettings::PrivateBrowsingEnabled,
-                                      global->attributes.value(QWebSettings::PrivateBrowsingEnabled));
-        settings->setPrivateBrowsingEnabled(value);
+        value = attributes.value( QWebSettings::PrivateBrowsingEnabled,
+                                  global->attributes.value( QWebSettings::PrivateBrowsingEnabled ) );
+        settings->setPrivateBrowsingEnabled( value );
 
-        value = attributes.value(QWebSettings::SpatialNavigationEnabled,
-                                      global->attributes.value(QWebSettings::SpatialNavigationEnabled));
-        settings->setSpatialNavigationEnabled(value);
+        value = attributes.value( QWebSettings::SpatialNavigationEnabled,
+                                  global->attributes.value( QWebSettings::SpatialNavigationEnabled ) );
+        settings->setSpatialNavigationEnabled( value );
 
-        value = attributes.value(QWebSettings::JavascriptCanAccessClipboard,
-                                      global->attributes.value(QWebSettings::JavascriptCanAccessClipboard));
-        settings->setDOMPasteAllowed(value);
-        settings->setJavaScriptCanAccessClipboard(value);
+        value = attributes.value( QWebSettings::JavascriptCanAccessClipboard,
+                                  global->attributes.value( QWebSettings::JavascriptCanAccessClipboard ) );
+        settings->setDOMPasteAllowed( value );
+        settings->setJavaScriptCanAccessClipboard( value );
 
-        value = attributes.value(QWebSettings::DeveloperExtrasEnabled,
-                                      global->attributes.value(QWebSettings::DeveloperExtrasEnabled));
-        settings->setDeveloperExtrasEnabled(value);
+        value = attributes.value( QWebSettings::DeveloperExtrasEnabled,
+                                  global->attributes.value( QWebSettings::DeveloperExtrasEnabled ) );
+        settings->setDeveloperExtrasEnabled( value );
 
-        value = attributes.value(QWebSettings::FrameFlatteningEnabled,
-                                      global->attributes.value(QWebSettings::FrameFlatteningEnabled));
-        settings->setFrameFlatteningEnabled(value);
+        value = attributes.value( QWebSettings::FrameFlatteningEnabled,
+                                  global->attributes.value( QWebSettings::FrameFlatteningEnabled ) );
+        settings->setFrameFlatteningEnabled( value );
 
         QUrl location = !userStyleSheetLocation.isEmpty() ? userStyleSheetLocation : global->userStyleSheetLocation;
-        settings->setUserStyleSheetLocation(WebCore::KURL(location));
+        settings->setUserStyleSheetLocation( WebCore::KURL( location ) );
 
         QString encoding = !defaultTextEncoding.isEmpty() ? defaultTextEncoding: global->defaultTextEncoding;
-        settings->setDefaultTextEncodingName(encoding);
+        settings->setDefaultTextEncodingName( encoding );
 
         QString storagePath = !localStoragePath.isEmpty() ? localStoragePath : global->localStoragePath;
-        settings->setLocalStorageDatabasePath(storagePath);
+        settings->setLocalStorageDatabasePath( storagePath );
 
-        value = attributes.value(QWebSettings::PrintElementBackgrounds,
-                                      global->attributes.value(QWebSettings::PrintElementBackgrounds));
-        settings->setShouldPrintBackgrounds(value);
+        value = attributes.value( QWebSettings::PrintElementBackgrounds,
+                                  global->attributes.value( QWebSettings::PrintElementBackgrounds ) );
+        settings->setShouldPrintBackgrounds( value );
 
 #if ENABLE(DATABASE)
-        value = attributes.value(QWebSettings::OfflineStorageDatabaseEnabled,
-                                      global->attributes.value(QWebSettings::OfflineStorageDatabaseEnabled));
-        WebCore::AbstractDatabase::setIsAvailable(value);
+        value = attributes.value( QWebSettings::OfflineStorageDatabaseEnabled,
+                                  global->attributes.value( QWebSettings::OfflineStorageDatabaseEnabled ) );
+        WebCore::AbstractDatabase::setIsAvailable( value );
 #endif
 
-        value = attributes.value(QWebSettings::OfflineWebApplicationCacheEnabled,
-                                      global->attributes.value(QWebSettings::OfflineWebApplicationCacheEnabled));
-        settings->setOfflineWebApplicationCacheEnabled(value);
+        value = attributes.value( QWebSettings::OfflineWebApplicationCacheEnabled,
+                                  global->attributes.value( QWebSettings::OfflineWebApplicationCacheEnabled ) );
+        settings->setOfflineWebApplicationCacheEnabled( value );
 
-        value = attributes.value(QWebSettings::LocalStorageEnabled,
-                                      global->attributes.value(QWebSettings::LocalStorageEnabled));
-        settings->setLocalStorageEnabled(value);
+        value = attributes.value( QWebSettings::LocalStorageEnabled,
+                                  global->attributes.value( QWebSettings::LocalStorageEnabled ) );
+        settings->setLocalStorageEnabled( value );
 
-        value = attributes.value(QWebSettings::LocalContentCanAccessRemoteUrls,
-                                      global->attributes.value(QWebSettings::LocalContentCanAccessRemoteUrls));
-        settings->setAllowUniversalAccessFromFileURLs(value);
+        value = attributes.value( QWebSettings::LocalContentCanAccessRemoteUrls,
+                                  global->attributes.value( QWebSettings::LocalContentCanAccessRemoteUrls ) );
+        settings->setAllowUniversalAccessFromFileURLs( value );
 
-        value = attributes.value(QWebSettings::LocalContentCanAccessFileUrls,
-                                      global->attributes.value(QWebSettings::LocalContentCanAccessFileUrls));
-        settings->setAllowFileAccessFromFileURLs(value);
+        value = attributes.value( QWebSettings::LocalContentCanAccessFileUrls,
+                                  global->attributes.value( QWebSettings::LocalContentCanAccessFileUrls ) );
+        settings->setAllowFileAccessFromFileURLs( value );
 
-        value = attributes.value(QWebSettings::XSSAuditingEnabled,
-                                      global->attributes.value(QWebSettings::XSSAuditingEnabled));
-        settings->setXSSAuditorEnabled(value);
+        value = attributes.value( QWebSettings::XSSAuditingEnabled,
+                                  global->attributes.value( QWebSettings::XSSAuditingEnabled ) );
+        settings->setXSSAuditorEnabled( value );
 
 #if ENABLE(TILED_BACKING_STORE)
-        value = attributes.value(QWebSettings::TiledBackingStoreEnabled,
-                                      global->attributes.value(QWebSettings::TiledBackingStoreEnabled));
-        settings->setTiledBackingStoreEnabled(value);
+        value = attributes.value( QWebSettings::TiledBackingStoreEnabled,
+                                  global->attributes.value( QWebSettings::TiledBackingStoreEnabled ) );
+        settings->setTiledBackingStoreEnabled( value );
 #endif
 
-        value = attributes.value(QWebSettings::SiteSpecificQuirksEnabled,
-                                      global->attributes.value(QWebSettings::SiteSpecificQuirksEnabled));
-        settings->setNeedsSiteSpecificQuirks(value);
+        value = attributes.value( QWebSettings::SiteSpecificQuirksEnabled,
+                                  global->attributes.value( QWebSettings::SiteSpecificQuirksEnabled ) );
+        settings->setNeedsSiteSpecificQuirks( value );
 
-        settings->setUsesPageCache(WebCore::pageCache()->capacity());
+        settings->setUsesPageCache( WebCore::pageCache()->capacity() );
 
 #if ENABLE(PASSWORD_ECHO)
-        settings->setPasswordEchoEnabled(true);
-        settings->setPasswordEchoDurationInSeconds(1);
+        settings->setPasswordEchoEnabled( true );
+        settings->setPasswordEchoDurationInSeconds( 1 );
 #endif
-    } else {
-        QList<QWebSettingsPrivate*> settings = *::allSettings();
-        for (int i = 0; i < settings.count(); ++i)
+    }
+    else
+    {
+        QList<QWebSettingsPrivate *> settings = *::allSettings();
+
+        for ( int i = 0; i < settings.count(); ++i )
+        {
             settings[i]->apply();
+        }
     }
 }
 
@@ -291,11 +301,15 @@ void QWebSettingsPrivate::apply()
     Any setting changed on the default object is automatically applied to all
     QWebPage instances where the particular setting is not overriden already.
 */
-QWebSettings* QWebSettings::globalSettings()
+QWebSettings *QWebSettings::globalSettings()
 {
-    static QWebSettings* global = 0;
-    if (!global)
+    static QWebSettings *global = 0;
+
+    if ( !global )
+    {
         global = new QWebSettings;
+    }
+
     return global;
 }
 
@@ -472,62 +486,62 @@ QWebSettings* QWebSettings::globalSettings()
     \internal
 */
 QWebSettings::QWebSettings()
-    : d(new QWebSettingsPrivate)
+    : d( new QWebSettingsPrivate )
 {
     // Initialize our global defaults
-    d->fontSizes.insert(QWebSettings::MinimumFontSize, 0);
-    d->fontSizes.insert(QWebSettings::MinimumLogicalFontSize, 0);
-    d->fontSizes.insert(QWebSettings::DefaultFontSize, 16);
-    d->fontSizes.insert(QWebSettings::DefaultFixedFontSize, 13);
+    d->fontSizes.insert( QWebSettings::MinimumFontSize, 0 );
+    d->fontSizes.insert( QWebSettings::MinimumLogicalFontSize, 0 );
+    d->fontSizes.insert( QWebSettings::DefaultFontSize, 16 );
+    d->fontSizes.insert( QWebSettings::DefaultFixedFontSize, 13 );
 
     QFont defaultFont;
-    defaultFont.setStyleHint(QFont::Serif);
-    d->fontFamilies.insert(QWebSettings::StandardFont, defaultFont.defaultFamily());
-    d->fontFamilies.insert(QWebSettings::SerifFont, defaultFont.defaultFamily());
+    defaultFont.setStyleHint( QFont::Serif );
+    d->fontFamilies.insert( QWebSettings::StandardFont, defaultFont.defaultFamily() );
+    d->fontFamilies.insert( QWebSettings::SerifFont, defaultFont.defaultFamily() );
 
-    defaultFont.setStyleHint(QFont::Fantasy);
-    d->fontFamilies.insert(QWebSettings::FantasyFont, defaultFont.defaultFamily());
+    defaultFont.setStyleHint( QFont::Fantasy );
+    d->fontFamilies.insert( QWebSettings::FantasyFont, defaultFont.defaultFamily() );
 
-    defaultFont.setStyleHint(QFont::Cursive);
-    d->fontFamilies.insert(QWebSettings::CursiveFont, defaultFont.defaultFamily());
+    defaultFont.setStyleHint( QFont::Cursive );
+    d->fontFamilies.insert( QWebSettings::CursiveFont, defaultFont.defaultFamily() );
 
-    defaultFont.setStyleHint(QFont::SansSerif);
-    d->fontFamilies.insert(QWebSettings::SansSerifFont, defaultFont.defaultFamily());
+    defaultFont.setStyleHint( QFont::SansSerif );
+    d->fontFamilies.insert( QWebSettings::SansSerifFont, defaultFont.defaultFamily() );
 
-    defaultFont.setStyleHint(QFont::Monospace);
-    d->fontFamilies.insert(QWebSettings::FixedFont, defaultFont.defaultFamily());
+    defaultFont.setStyleHint( QFont::Monospace );
+    d->fontFamilies.insert( QWebSettings::FixedFont, defaultFont.defaultFamily() );
 
-    d->attributes.insert(QWebSettings::AutoLoadImages, true);
-    d->attributes.insert(QWebSettings::DnsPrefetchEnabled, false);
-    d->attributes.insert(QWebSettings::JavascriptEnabled, true);
-    d->attributes.insert(QWebSettings::SpatialNavigationEnabled, false);
-    d->attributes.insert(QWebSettings::LinksIncludedInFocusChain, true);
-    d->attributes.insert(QWebSettings::ZoomTextOnly, false);
-    d->attributes.insert(QWebSettings::PrintElementBackgrounds, true);
-    d->attributes.insert(QWebSettings::OfflineStorageDatabaseEnabled, false);
-    d->attributes.insert(QWebSettings::OfflineWebApplicationCacheEnabled, false);
-    d->attributes.insert(QWebSettings::LocalStorageEnabled, false);
-    d->attributes.insert(QWebSettings::LocalContentCanAccessRemoteUrls, false);
-    d->attributes.insert(QWebSettings::LocalContentCanAccessFileUrls, true);
-    d->attributes.insert(QWebSettings::AcceleratedCompositingEnabled, true);
-    d->attributes.insert(QWebSettings::WebGLEnabled, false);
-    d->attributes.insert(QWebSettings::HyperlinkAuditingEnabled, false);
-    d->attributes.insert(QWebSettings::TiledBackingStoreEnabled, false);
-    d->attributes.insert(QWebSettings::FrameFlatteningEnabled, false);
-    d->attributes.insert(QWebSettings::SiteSpecificQuirksEnabled, true);
+    d->attributes.insert( QWebSettings::AutoLoadImages, true );
+    d->attributes.insert( QWebSettings::DnsPrefetchEnabled, false );
+    d->attributes.insert( QWebSettings::JavascriptEnabled, true );
+    d->attributes.insert( QWebSettings::SpatialNavigationEnabled, false );
+    d->attributes.insert( QWebSettings::LinksIncludedInFocusChain, true );
+    d->attributes.insert( QWebSettings::ZoomTextOnly, false );
+    d->attributes.insert( QWebSettings::PrintElementBackgrounds, true );
+    d->attributes.insert( QWebSettings::OfflineStorageDatabaseEnabled, false );
+    d->attributes.insert( QWebSettings::OfflineWebApplicationCacheEnabled, false );
+    d->attributes.insert( QWebSettings::LocalStorageEnabled, false );
+    d->attributes.insert( QWebSettings::LocalContentCanAccessRemoteUrls, false );
+    d->attributes.insert( QWebSettings::LocalContentCanAccessFileUrls, true );
+    d->attributes.insert( QWebSettings::AcceleratedCompositingEnabled, true );
+    d->attributes.insert( QWebSettings::WebGLEnabled, false );
+    d->attributes.insert( QWebSettings::HyperlinkAuditingEnabled, false );
+    d->attributes.insert( QWebSettings::TiledBackingStoreEnabled, false );
+    d->attributes.insert( QWebSettings::FrameFlatteningEnabled, false );
+    d->attributes.insert( QWebSettings::SiteSpecificQuirksEnabled, true );
     d->offlineStorageDefaultQuota = 5 * 1024 * 1024;
-    d->defaultTextEncoding = QLatin1String("iso-8859-1");
+    d->defaultTextEncoding = QLatin1String( "iso-8859-1" );
 }
 
 /*!
     \internal
 */
-QWebSettings::QWebSettings(WebCore::Settings* settings)
-    : d(new QWebSettingsPrivate(settings))
+QWebSettings::QWebSettings( WebCore::Settings *settings )
+    : d( new QWebSettingsPrivate( settings ) )
 {
     d->settings = settings;
     d->apply();
-    allSettings()->append(d);
+    allSettings()->append( d );
 }
 
 /*!
@@ -535,8 +549,10 @@ QWebSettings::QWebSettings(WebCore::Settings* settings)
 */
 QWebSettings::~QWebSettings()
 {
-    if (d->settings)
-        allSettings()->removeAll(d);
+    if ( d->settings )
+    {
+        allSettings()->removeAll( d );
+    }
 
     delete d;
 }
@@ -544,23 +560,26 @@ QWebSettings::~QWebSettings()
 /*!
     Sets the font size for \a type to \a size.
 */
-void QWebSettings::setFontSize(FontSize type, int size)
+void QWebSettings::setFontSize( FontSize type, int size )
 {
-    d->fontSizes.insert(type, size);
+    d->fontSizes.insert( type, size );
     d->apply();
 }
 
 /*!
     Returns the default font size for \a type.
 */
-int QWebSettings::fontSize(FontSize type) const
+int QWebSettings::fontSize( FontSize type ) const
 {
     int defaultValue = 0;
-    if (d->settings) {
-        QWebSettingsPrivate* global = QWebSettings::globalSettings()->d;
-        defaultValue = global->fontSizes.value(type);
+
+    if ( d->settings )
+    {
+        QWebSettingsPrivate *global = QWebSettings::globalSettings()->d;
+        defaultValue = global->fontSizes.value( type );
     }
-    return d->fontSizes.value(type, defaultValue);
+
+    return d->fontSizes.value( type, defaultValue );
 }
 
 /*!
@@ -569,10 +588,11 @@ int QWebSettings::fontSize(FontSize type) const
 
     This function has no effect on the global QWebSettings instance.
 */
-void QWebSettings::resetFontSize(FontSize type)
+void QWebSettings::resetFontSize( FontSize type )
 {
-    if (d->settings) {
-        d->fontSizes.remove(type);
+    if ( d->settings )
+    {
+        d->fontSizes.remove( type );
         d->apply();
     }
 }
@@ -589,7 +609,7 @@ void QWebSettings::resetFontSize(FontSize type)
 
     \sa userStyleSheetUrl()
 */
-void QWebSettings::setUserStyleSheetUrl(const QUrl& location)
+void QWebSettings::setUserStyleSheetUrl( const QUrl &location )
 {
     d->userStyleSheetLocation = location;
     d->apply();
@@ -615,7 +635,7 @@ QUrl QWebSettings::userStyleSheetUrl() const
 
     \sa defaultTextEncoding()
 */
-void QWebSettings::setDefaultTextEncoding(const QString& encoding)
+void QWebSettings::setDefaultTextEncoding( const QString &encoding )
 {
     d->defaultTextEncoding = encoding;
     d->apply();
@@ -642,7 +662,7 @@ QString QWebSettings::defaultTextEncoding() const
 
     \sa iconDatabasePath(), clearIconDatabase()
 */
-void QWebSettings::setIconDatabasePath(const QString& path)
+void QWebSettings::setIconDatabasePath( const QString &path )
 {
 #if ENABLE(ICONDATABASE)
     // Make sure that IconDatabaseClientQt is instantiated.
@@ -651,13 +671,19 @@ void QWebSettings::setIconDatabasePath(const QString& path)
 
     WebCore::IconDatabase::delayDatabaseCleanup();
 
-    if (!path.isEmpty()) {
-        WebCore::iconDatabase().setEnabled(true);
-        QFileInfo info(path);
-        if (info.isDir() && info.isWritable())
-            WebCore::iconDatabase().open(path, WebCore::IconDatabase::defaultDatabaseFilename());
-    } else {
-        WebCore::iconDatabase().setEnabled(false);
+    if ( !path.isEmpty() )
+    {
+        WebCore::iconDatabase().setEnabled( true );
+        QFileInfo info( path );
+
+        if ( info.isDir() && info.isWritable() )
+        {
+            WebCore::iconDatabase().open( path, WebCore::IconDatabase::defaultDatabaseFilename() );
+        }
+    }
+    else
+    {
+        WebCore::iconDatabase().setEnabled( false );
         WebCore::iconDatabase().close();
     }
 }
@@ -670,10 +696,14 @@ void QWebSettings::setIconDatabasePath(const QString& path)
 */
 QString QWebSettings::iconDatabasePath()
 {
-    if (WebCore::iconDatabase().isEnabled() && WebCore::iconDatabase().isOpen())
+    if ( WebCore::iconDatabase().isEnabled() && WebCore::iconDatabase().isOpen() )
+    {
         return WebCore::iconDatabase().databasePath();
+    }
     else
+    {
         return QString();
+    }
 }
 
 /*!
@@ -681,8 +711,10 @@ QString QWebSettings::iconDatabasePath()
 */
 void QWebSettings::clearIconDatabase()
 {
-    if (WebCore::iconDatabase().isEnabled() && WebCore::iconDatabase().isOpen())
+    if ( WebCore::iconDatabase().isEnabled() && WebCore::iconDatabase().isOpen() )
+    {
         WebCore::iconDatabase().removeAllIcons();
+    }
 }
 
 /*!
@@ -695,16 +727,22 @@ void QWebSettings::clearIconDatabase()
 
     \sa setIconDatabasePath()
 */
-QIcon QWebSettings::iconForUrl(const QUrl& url)
+QIcon QWebSettings::iconForUrl( const QUrl &url )
 {
-    WebCore::Image* image = WebCore::iconDatabase().synchronousIconForPageURL(WebCore::KURL(url).string(),
-                                WebCore::IntSize(16, 16));
-    if (!image)
-        return QPixmap();
+    WebCore::Image *image = WebCore::iconDatabase().synchronousIconForPageURL( WebCore::KURL( url ).string(),
+                            WebCore::IntSize( 16, 16 ) );
 
-    QPixmap* icon = image->nativeImageForCurrentFrame();
-    if (!icon)
+    if ( !image )
+    {
         return QPixmap();
+    }
+
+    QPixmap *icon = image->nativeImageForCurrentFrame();
+
+    if ( !icon )
+    {
+        return QPixmap();
+    }
 
     return* icon;
 }
@@ -730,13 +768,18 @@ QWebPluginDatabase *QWebSettings::pluginDatabase()
 
     \sa webGraphic()
 */
-void QWebSettings::setWebGraphic(WebGraphic type, const QPixmap& graphic)
+void QWebSettings::setWebGraphic( WebGraphic type, const QPixmap &graphic )
 {
-    WebGraphicHash* h = graphics();
-    if (graphic.isNull())
-        h->remove(type);
+    WebGraphicHash *h = graphics();
+
+    if ( graphic.isNull() )
+    {
+        h->remove( type );
+    }
     else
-        h->insert(type, graphic);
+    {
+        h->insert( type, graphic );
+    }
 }
 
 /*!
@@ -745,9 +788,9 @@ void QWebSettings::setWebGraphic(WebGraphic type, const QPixmap& graphic)
 
     \sa setWebGraphic()
 */
-QPixmap QWebSettings::webGraphic(WebGraphic type)
+QPixmap QWebSettings::webGraphic( WebGraphic type )
 {
-    return graphics()->value(type);
+    return graphics()->value( type );
 }
 
 /*!
@@ -761,16 +804,17 @@ void QWebSettings::clearMemoryCaches()
     // Turn the cache on and off.  Disabling the object cache will remove all
     // resources from the cache.  They may still live on if they are referenced
     // by some Web page though.
-    if (!WebCore::memoryCache()->disabled()) {
-        WebCore::memoryCache()->setDisabled(true);
-        WebCore::memoryCache()->setDisabled(false);
+    if ( !WebCore::memoryCache()->disabled() )
+    {
+        WebCore::memoryCache()->setDisabled( true );
+        WebCore::memoryCache()->setDisabled( false );
     }
 
     int pageCapacity = WebCore::pageCache()->capacity();
     // Setting size to 0, makes all pages be released.
-    WebCore::pageCache()->setCapacity(0);
+    WebCore::pageCache()->setCapacity( 0 );
     WebCore::pageCache()->releaseAutoreleasedPagesNow();
-    WebCore::pageCache()->setCapacity(pageCapacity);
+    WebCore::pageCache()->setCapacity( pageCapacity );
 
     // Invalidating the font cache and freeing all inactive font data.
     WebCore::fontCache()->invalidate();
@@ -789,10 +833,10 @@ void QWebSettings::clearMemoryCaches()
 
     http://webkit.org/blog/427/webkit-page-cache-i-the-basics/
 */
-void QWebSettings::setMaximumPagesInCache(int pages)
+void QWebSettings::setMaximumPagesInCache( int pages )
 {
-    QWebSettingsPrivate* global = QWebSettings::globalSettings()->d;
-    WebCore::pageCache()->setCapacity(qMax(0, pages));
+    QWebSettingsPrivate *global = QWebSettings::globalSettings()->d;
+    WebCore::pageCache()->setCapacity( qMax( 0, pages ) );
     global->apply();
 }
 
@@ -820,23 +864,23 @@ int QWebSettings::maximumPagesInCache()
    The cache is enabled by default. Calling setObjectCacheCapacities(0, 0, 0)
    will disable the cache. Calling it with one non-zero enables it again.
 */
-void QWebSettings::setObjectCacheCapacities(int cacheMinDeadCapacity, int cacheMaxDead, int totalCapacity)
+void QWebSettings::setObjectCacheCapacities( int cacheMinDeadCapacity, int cacheMaxDead, int totalCapacity )
 {
     bool disableCache = !cacheMinDeadCapacity && !cacheMaxDead && !totalCapacity;
-    WebCore::memoryCache()->setDisabled(disableCache);
+    WebCore::memoryCache()->setDisabled( disableCache );
 
-    WebCore::memoryCache()->setCapacities(qMax(0, cacheMinDeadCapacity),
-                                    qMax(0, cacheMaxDead),
-                                    qMax(0, totalCapacity));
+    WebCore::memoryCache()->setCapacities( qMax( 0, cacheMinDeadCapacity ),
+                                           qMax( 0, cacheMaxDead ),
+                                           qMax( 0, totalCapacity ) );
 }
 
 /*!
     Sets the actual font family to \a family for the specified generic family,
     \a which.
 */
-void QWebSettings::setFontFamily(FontFamily which, const QString& family)
+void QWebSettings::setFontFamily( FontFamily which, const QString &family )
 {
-    d->fontFamilies.insert(which, family);
+    d->fontFamilies.insert( which, family );
     d->apply();
 }
 
@@ -844,14 +888,17 @@ void QWebSettings::setFontFamily(FontFamily which, const QString& family)
     Returns the actual font family for the specified generic font family,
     \a which.
 */
-QString QWebSettings::fontFamily(FontFamily which) const
+QString QWebSettings::fontFamily( FontFamily which ) const
 {
     QString defaultValue;
-    if (d->settings) {
-        QWebSettingsPrivate* global = QWebSettings::globalSettings()->d;
-        defaultValue = global->fontFamilies.value(which);
+
+    if ( d->settings )
+    {
+        QWebSettingsPrivate *global = QWebSettings::globalSettings()->d;
+        defaultValue = global->fontFamilies.value( which );
     }
-    return d->fontFamilies.value(which, defaultValue);
+
+    return d->fontFamilies.value( which, defaultValue );
 }
 
 /*!
@@ -860,10 +907,11 @@ QString QWebSettings::fontFamily(FontFamily which) const
 
     This function has no effect on the global QWebSettings instance.
 */
-void QWebSettings::resetFontFamily(FontFamily which)
+void QWebSettings::resetFontFamily( FontFamily which )
 {
-    if (d->settings) {
-        d->fontFamilies.remove(which);
+    if ( d->settings )
+    {
+        d->fontFamilies.remove( which );
         d->apply();
     }
 }
@@ -874,9 +922,9 @@ void QWebSettings::resetFontFamily(FontFamily which)
     Enables or disables the specified \a attribute feature depending on the
     value of \a on.
 */
-void QWebSettings::setAttribute(WebAttribute attr, bool on)
+void QWebSettings::setAttribute( WebAttribute attr, bool on )
 {
-    d->attributes.insert(attr, on);
+    d->attributes.insert( attr, on );
     d->apply();
 }
 
@@ -885,14 +933,17 @@ void QWebSettings::setAttribute(WebAttribute attr, bool on)
 
     Returns true if \a attribute is enabled; otherwise returns false.
 */
-bool QWebSettings::testAttribute(WebAttribute attr) const
+bool QWebSettings::testAttribute( WebAttribute attr ) const
 {
     bool defaultValue = false;
-    if (d->settings) {
-        QWebSettingsPrivate* global = QWebSettings::globalSettings()->d;
-        defaultValue = global->attributes.value(attr);
+
+    if ( d->settings )
+    {
+        QWebSettingsPrivate *global = QWebSettings::globalSettings()->d;
+        defaultValue = global->attributes.value( attr );
     }
-    return d->attributes.value(attr, defaultValue);
+
+    return d->attributes.value( attr, defaultValue );
 }
 
 /*!
@@ -905,10 +956,11 @@ bool QWebSettings::testAttribute(WebAttribute attr) const
 
     \sa globalSettings()
 */
-void QWebSettings::resetAttribute(WebAttribute attr)
+void QWebSettings::resetAttribute( WebAttribute attr )
 {
-    if (d->settings) {
-        d->attributes.remove(attr);
+    if ( d->settings )
+    {
+        d->attributes.remove( attr );
         d->apply();
     }
 }
@@ -927,10 +979,10 @@ void QWebSettings::resetAttribute(WebAttribute attr)
 
     \sa offlineStoragePath()
 */
-void QWebSettings::setOfflineStoragePath(const QString& path)
+void QWebSettings::setOfflineStoragePath( const QString &path )
 {
 #if ENABLE(DATABASE)
-    WebCore::DatabaseTracker::tracker().setDatabaseDirectoryPath(path);
+    WebCore::DatabaseTracker::tracker().setDatabaseDirectoryPath( path );
 #endif
 }
 
@@ -957,7 +1009,7 @@ QString QWebSettings::offlineStoragePath()
     Sets the value of the default quota for new offline storage databases
     to \a maximumSize.
 */
-void QWebSettings::setOfflineStorageDefaultQuota(qint64 maximumSize)
+void QWebSettings::setOfflineStorageDefaultQuota( qint64 maximumSize )
 {
     QWebSettings::globalSettings()->d->offlineStorageDefaultQuota = maximumSize;
 }
@@ -994,10 +1046,10 @@ qint64 QWebSettings::offlineStorageDefaultQuota()
 
     \sa offlineWebApplicationCachePath()
 */
-void QWebSettings::setOfflineWebApplicationCachePath(const QString& path)
+void QWebSettings::setOfflineWebApplicationCachePath( const QString &path )
 {
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-    WebCore::cacheStorage().setCacheDirectory(path);
+    WebCore::cacheStorage().setCacheDirectory( path );
 #endif
 }
 
@@ -1024,12 +1076,12 @@ QString QWebSettings::offlineWebApplicationCachePath()
     Sets the value of the quota for the offline web application cache
     to \a maximumSize.
 */
-void QWebSettings::setOfflineWebApplicationCacheQuota(qint64 maximumSize)
+void QWebSettings::setOfflineWebApplicationCacheQuota( qint64 maximumSize )
 {
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
     WebCore::cacheStorage().empty();
     WebCore::cacheStorage().vacuumDatabaseFile();
-    WebCore::cacheStorage().setMaximumSize(maximumSize);
+    WebCore::cacheStorage().setMaximumSize( maximumSize );
 #endif
 }
 
@@ -1060,7 +1112,7 @@ qint64 QWebSettings::offlineWebApplicationCacheQuota()
 
     \sa localStoragePath()
 */
-void QWebSettings::setLocalStoragePath(const QString& path)
+void QWebSettings::setLocalStoragePath( const QString &path )
 {
     d->localStoragePath = path;
     d->apply();
@@ -1090,44 +1142,51 @@ QString QWebSettings::localStoragePath() const
 
     \sa localStoragePath()
 */
-void QWebSettings::enablePersistentStorage(const QString& path)
+void QWebSettings::enablePersistentStorage( const QString &path )
 {
 #ifndef QT_NO_DESKTOPSERVICES
     QString storagePath;
 
-    if (path.isEmpty()) {
+    if ( path.isEmpty() )
+    {
 
-        storagePath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+        storagePath = QStandardPaths::writableLocation( QStandardPaths::DataLocation );
 
-        if (storagePath.isEmpty()) {
-            storagePath = WebCore::pathByAppendingComponent(QDir::homePath(), QCoreApplication::applicationName());
+        if ( storagePath.isEmpty() )
+        {
+            storagePath = WebCore::pathByAppendingComponent( QDir::homePath(), QCoreApplication::applicationName() );
         }
 
-    } else {
+    }
+    else
+    {
         storagePath = path;
     }
 
-    WebCore::makeAllDirectories(storagePath);
+    WebCore::makeAllDirectories( storagePath );
 
-    QWebSettings::setIconDatabasePath(storagePath);
-    QWebSettings::setOfflineWebApplicationCachePath(storagePath);
-    QWebSettings::setOfflineStoragePath(WebCore::pathByAppendingComponent(storagePath, "Databases"));
-    QWebSettings::globalSettings()->setLocalStoragePath(WebCore::pathByAppendingComponent(storagePath, "LocalStorage"));
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
+    QWebSettings::setIconDatabasePath( storagePath );
+    QWebSettings::setOfflineWebApplicationCachePath( storagePath );
+    QWebSettings::setOfflineStoragePath( WebCore::pathByAppendingComponent( storagePath, "Databases" ) );
+    QWebSettings::globalSettings()->setLocalStoragePath( WebCore::pathByAppendingComponent( storagePath, "LocalStorage" ) );
+    QWebSettings::globalSettings()->setAttribute( QWebSettings::LocalStorageEnabled, true );
+    QWebSettings::globalSettings()->setAttribute( QWebSettings::OfflineStorageDatabaseEnabled, true );
+    QWebSettings::globalSettings()->setAttribute( QWebSettings::OfflineWebApplicationCacheEnabled, true );
 
 #if ENABLE(NETSCAPE_PLUGIN_METADATA_CACHE)
     // All applications can share the common QtWebkit cache file(s).
     // Path is not configurable and uses QDesktopServices::CacheLocation by default.
-    QString cachePath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    WebCore::makeAllDirectories(cachePath);
+    QString cachePath = QStandardPaths::writableLocation( QStandardPaths::CacheLocation );
+    WebCore::makeAllDirectories( cachePath );
 
-    QFileInfo info(cachePath);
-    if (info.isDir() && info.isWritable()) {
-        WebCore::PluginDatabase::setPersistentMetadataCacheEnabled(true);
-        WebCore::PluginDatabase::setPersistentMetadataCachePath(cachePath);
+    QFileInfo info( cachePath );
+
+    if ( info.isDir() && info.isWritable() )
+    {
+        WebCore::PluginDatabase::setPersistentMetadataCacheEnabled( true );
+        WebCore::PluginDatabase::setPersistentMetadataCachePath( cachePath );
     }
+
 #endif
 #endif
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -34,79 +34,90 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-typedef HashSet<IdentifierRep*> IdentifierSet;
-
-static IdentifierSet& identifierSet()
+namespace WebCore
 {
-    DEFINE_STATIC_LOCAL(IdentifierSet, identifierSet, ());
+
+typedef HashSet<IdentifierRep *> IdentifierSet;
+
+static IdentifierSet &identifierSet()
+{
+    DEFINE_STATIC_LOCAL( IdentifierSet, identifierSet, () );
     return identifierSet;
 }
-    
-typedef HashMap<int, IdentifierRep*> IntIdentifierMap;
 
-static IntIdentifierMap& intIdentifierMap()
+typedef HashMap<int, IdentifierRep *> IntIdentifierMap;
+
+static IntIdentifierMap &intIdentifierMap()
 {
-    DEFINE_STATIC_LOCAL(IntIdentifierMap, intIdentifierMap, ());
+    DEFINE_STATIC_LOCAL( IntIdentifierMap, intIdentifierMap, () );
     return intIdentifierMap;
 }
 
-IdentifierRep* IdentifierRep::get(int intID)
+IdentifierRep *IdentifierRep::get( int intID )
 {
-    if (intID == 0 || intID == -1) {
-        static IdentifierRep* negativeOneAndZeroIdentifiers[2];
+    if ( intID == 0 || intID == -1 )
+    {
+        static IdentifierRep *negativeOneAndZeroIdentifiers[2];
 
-        IdentifierRep* identifier = negativeOneAndZeroIdentifiers[intID + 1];
-        if (!identifier) {
-            identifier = new IdentifierRep(intID);
+        IdentifierRep *identifier = negativeOneAndZeroIdentifiers[intID + 1];
+
+        if ( !identifier )
+        {
+            identifier = new IdentifierRep( intID );
 
             negativeOneAndZeroIdentifiers[intID + 1] = identifier;
         }
-        
+
         return identifier;
     }
-    
-    pair<IntIdentifierMap::iterator, bool> result = intIdentifierMap().add(intID, 0); 
-    if (result.second) {
-        ASSERT(!result.first->second);
-        result.first->second = new IdentifierRep(intID);
-        
-        identifierSet().add(result.first->second);
+
+    pair<IntIdentifierMap::iterator, bool> result = intIdentifierMap().add( intID, 0 );
+
+    if ( result.second )
+    {
+        ASSERT( !result.first->second );
+        result.first->second = new IdentifierRep( intID );
+
+        identifierSet().add( result.first->second );
     }
-    
+
     return result.first->second;
 }
 
-typedef HashMap<RefPtr<StringImpl>, IdentifierRep*> StringIdentifierMap;
+typedef HashMap<RefPtr<StringImpl>, IdentifierRep *> StringIdentifierMap;
 
-static StringIdentifierMap& stringIdentifierMap()
+static StringIdentifierMap &stringIdentifierMap()
 {
-    DEFINE_STATIC_LOCAL(StringIdentifierMap, stringIdentifierMap, ());
+    DEFINE_STATIC_LOCAL( StringIdentifierMap, stringIdentifierMap, () );
     return stringIdentifierMap;
 }
 
-IdentifierRep* IdentifierRep::get(const char* name)
+IdentifierRep *IdentifierRep::get( const char *name )
 {
-    ASSERT(name);
-    if (!name)
+    ASSERT( name );
+
+    if ( !name )
+    {
         return 0;
-  
-    UString string = stringToUString(String::fromUTF8WithLatin1Fallback(name, strlen(name)));
-    pair<StringIdentifierMap::iterator, bool> result = stringIdentifierMap().add(string.impl(), 0);
-    if (result.second) {
-        ASSERT(!result.first->second);
-        result.first->second = new IdentifierRep(name);
-        
-        identifierSet().add(result.first->second);
     }
-    
+
+    UString string = stringToUString( String::fromUTF8WithLatin1Fallback( name, strlen( name ) ) );
+    pair<StringIdentifierMap::iterator, bool> result = stringIdentifierMap().add( string.impl(), 0 );
+
+    if ( result.second )
+    {
+        ASSERT( !result.first->second );
+        result.first->second = new IdentifierRep( name );
+
+        identifierSet().add( result.first->second );
+    }
+
     return result.first->second;
 }
 
-bool IdentifierRep::isValid(IdentifierRep* identifier)
+bool IdentifierRep::isValid( IdentifierRep *identifier )
 {
-    return identifierSet().contains(identifier);
+    return identifierSet().contains( identifier );
 }
-    
+
 } // namespace WebCore

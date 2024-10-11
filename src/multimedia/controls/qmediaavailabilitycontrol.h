@@ -31,20 +31,20 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaAvailabilityControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QMediaAvailabilityControl)
+    MULTI_LSCS_OBJECT( QMediaAvailabilityControl )
 
- public:
-   ~QMediaAvailabilityControl();
-   virtual QMultimedia::AvailabilityStatus availability() const = 0;
+public:
+    ~QMediaAvailabilityControl();
+    virtual QMultimedia::AvailabilityStatus availability() const = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void availabilityChanged(QMultimedia::AvailabilityStatus availability))
-   MULTI_CS_SIGNAL_2(availabilityChanged, availability)
+    MULTI_LSCS_SIGNAL_1( Public, void availabilityChanged( QMultimedia::AvailabilityStatus availability ) )
+    MULTI_LSCS_SIGNAL_2( availabilityChanged, availability )
 
- protected:
-   explicit QMediaAvailabilityControl(QObject *parent = nullptr);
+protected:
+    explicit QMediaAvailabilityControl( QObject *parent = nullptr );
 };
 
 #define QMediaAvailabilityControl_iid "com.copperspice.CS.mediaAvailabilityControl/1.0"
-CS_DECLARE_INTERFACE(QMediaAvailabilityControl, QMediaAvailabilityControl_iid)
+LSCS_DECLARE_INTERFACE( QMediaAvailabilityControl, QMediaAvailabilityControl_iid )
 
 #endif

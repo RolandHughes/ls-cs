@@ -24,9 +24,9 @@
 #include <camera_capturedestination.h>
 #include <camera_session.h>
 
-CameraBinCaptureDestination::CameraBinCaptureDestination(CameraBinSession *session)
-   : QCameraCaptureDestinationControl(session), m_session(session),
-     m_destination(QCameraImageCapture::CaptureToFile)
+CameraBinCaptureDestination::CameraBinCaptureDestination( CameraBinSession *session )
+    : QCameraCaptureDestinationControl( session ), m_session( session ),
+      m_destination( QCameraImageCapture::CaptureToFile )
 {
 }
 
@@ -34,21 +34,22 @@ CameraBinCaptureDestination::~CameraBinCaptureDestination()
 {
 }
 
-bool CameraBinCaptureDestination::isCaptureDestinationSupported(QCameraImageCapture::CaptureDestinations destination) const
+bool CameraBinCaptureDestination::isCaptureDestinationSupported( QCameraImageCapture::CaptureDestinations destination ) const
 {
-   //capture to buffer, file and both are supported.
-   return destination & (QCameraImageCapture::CaptureToFile | QCameraImageCapture::CaptureToBuffer);
+    //capture to buffer, file and both are supported.
+    return destination & ( QCameraImageCapture::CaptureToFile | QCameraImageCapture::CaptureToBuffer );
 }
 
 QCameraImageCapture::CaptureDestinations CameraBinCaptureDestination::captureDestination() const
 {
-   return m_destination;
+    return m_destination;
 }
 
-void CameraBinCaptureDestination::setCaptureDestination(QCameraImageCapture::CaptureDestinations destination)
+void CameraBinCaptureDestination::setCaptureDestination( QCameraImageCapture::CaptureDestinations destination )
 {
-   if (m_destination != destination) {
-      m_destination = destination;
-      emit captureDestinationChanged(m_destination);
-   }
+    if ( m_destination != destination )
+    {
+        m_destination = destination;
+        emit captureDestinationChanged( m_destination );
+    }
 }

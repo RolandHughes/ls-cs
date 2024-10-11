@@ -32,30 +32,30 @@
 
 class Q_MULTIMEDIA_EXPORT QMetaDataReaderControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QMetaDataReaderControl)
+    MULTI_LSCS_OBJECT( QMetaDataReaderControl )
 
- public:
-   ~QMetaDataReaderControl();
+public:
+    ~QMetaDataReaderControl();
 
-   virtual bool isMetaDataAvailable() const = 0;
+    virtual bool isMetaDataAvailable() const = 0;
 
-   virtual QVariant metaData(const QString &key) const = 0;
-   virtual QStringList availableMetaData() const = 0;
+    virtual QVariant metaData( const QString &key ) const = 0;
+    virtual QStringList availableMetaData() const = 0;
 
-   MULTI_CS_SIGNAL_1(Public, void metaDataChanged())
-   MULTI_CS_SIGNAL_OVERLOAD(metaDataChanged, ())
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataChanged() )
+    MULTI_LSCS_SIGNAL_OVERLOAD( metaDataChanged, () )
 
-   MULTI_CS_SIGNAL_1(Public, void metaDataChanged(const QString &key, const QVariant &value))
-   MULTI_CS_SIGNAL_OVERLOAD(metaDataChanged, (const QString &, const QVariant &), key, value)
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataChanged( const QString &key, const QVariant &value ) )
+    MULTI_LSCS_SIGNAL_OVERLOAD( metaDataChanged, ( const QString &, const QVariant & ), key, value )
 
-   MULTI_CS_SIGNAL_1(Public, void metaDataAvailableChanged(bool available))
-   MULTI_CS_SIGNAL_2(metaDataAvailableChanged, available)
+    MULTI_LSCS_SIGNAL_1( Public, void metaDataAvailableChanged( bool available ) )
+    MULTI_LSCS_SIGNAL_2( metaDataAvailableChanged, available )
 
- protected:
-   explicit QMetaDataReaderControl(QObject *parent = nullptr);
+protected:
+    explicit QMetaDataReaderControl( QObject *parent = nullptr );
 };
 
 #define QMetaDataReaderControl_iid "com.copperspice.CS.metaDataReaderControl/1.0"
-CS_DECLARE_INTERFACE(QMetaDataReaderControl, QMetaDataReaderControl_iid)
+LSCS_DECLARE_INTERFACE( QMetaDataReaderControl, QMetaDataReaderControl_iid )
 
 #endif

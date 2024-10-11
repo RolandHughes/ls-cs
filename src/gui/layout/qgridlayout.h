@@ -31,85 +31,87 @@ class QGridLayoutPrivate;
 
 class Q_GUI_EXPORT QGridLayout : public QLayout
 {
-   GUI_CS_OBJECT(QGridLayout)
+    GUI_LSCS_OBJECT( QGridLayout )
 
-   GUI_CS_PROPERTY_READ(horizontalSpacing, horizontalSpacing)
-   GUI_CS_PROPERTY_WRITE(horizontalSpacing, setHorizontalSpacing)
+    GUI_LSCS_PROPERTY_READ( horizontalSpacing, horizontalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( horizontalSpacing, setHorizontalSpacing )
 
-   GUI_CS_PROPERTY_READ(verticalSpacing, verticalSpacing)
-   GUI_CS_PROPERTY_WRITE(verticalSpacing, setVerticalSpacing)
+    GUI_LSCS_PROPERTY_READ( verticalSpacing, verticalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( verticalSpacing, setVerticalSpacing )
 
- public:
-   explicit QGridLayout(QWidget *parent);
-   QGridLayout();
+public:
+    explicit QGridLayout( QWidget *parent );
+    QGridLayout();
 
-   QGridLayout(const QGridLayout &) = delete;
-   QGridLayout &operator=(const QGridLayout &) = delete;
+    QGridLayout( const QGridLayout & ) = delete;
+    QGridLayout &operator=( const QGridLayout & ) = delete;
 
-   ~QGridLayout();
+    ~QGridLayout();
 
-   QSize sizeHint() const override;
-   QSize minimumSize() const override;
-   QSize maximumSize() const override;
+    QSize sizeHint() const override;
+    QSize minimumSize() const override;
+    QSize maximumSize() const override;
 
-   void setHorizontalSpacing(int spacing);
-   int horizontalSpacing() const;
-   void setVerticalSpacing(int spacing);
-   int verticalSpacing() const;
-   void setSpacing(int spacing);
-   int spacing() const;
+    void setHorizontalSpacing( int spacing );
+    int horizontalSpacing() const;
+    void setVerticalSpacing( int spacing );
+    int verticalSpacing() const;
+    void setSpacing( int spacing );
+    int spacing() const;
 
-   void setRowStretch(int row, int stretch);
-   void setColumnStretch(int column, int stretch);
-   int rowStretch(int row) const;
-   int columnStretch(int column) const;
+    void setRowStretch( int row, int stretch );
+    void setColumnStretch( int column, int stretch );
+    int rowStretch( int row ) const;
+    int columnStretch( int column ) const;
 
-   void setRowMinimumHeight(int row, int minSize);
-   void setColumnMinimumWidth(int column, int minSize);
-   int rowMinimumHeight(int row) const;
-   int columnMinimumWidth(int column) const;
+    void setRowMinimumHeight( int row, int minSize );
+    void setColumnMinimumWidth( int column, int minSize );
+    int rowMinimumHeight( int row ) const;
+    int columnMinimumWidth( int column ) const;
 
-   int columnCount() const;
-   int rowCount() const;
+    int columnCount() const;
+    int rowCount() const;
 
-   QRect cellRect(int row, int column) const;
+    QRect cellRect( int row, int column ) const;
 
-   bool hasHeightForWidth() const override;
-   int heightForWidth(int width) const override;
-   int minimumHeightForWidth(int width) const override;
+    bool hasHeightForWidth() const override;
+    int heightForWidth( int width ) const override;
+    int minimumHeightForWidth( int width ) const override;
 
-   Qt::Orientations expandingDirections() const override;
-   void invalidate() override;
+    Qt::Orientations expandingDirections() const override;
+    void invalidate() override;
 
-   void addItem(QLayoutItem *item, int row, int column, int rowSpan = 1, int columnSpan = 1, Qt::Alignment alignment = Qt::Alignment());
+    void addItem( QLayoutItem *item, int row, int column, int rowSpan = 1, int columnSpan = 1,
+                  Qt::Alignment alignment = Qt::Alignment() );
 
-   void addWidget(QWidget *widget) {
-      QLayout::addWidget(widget);
-   }
+    void addWidget( QWidget *widget )
+    {
+        QLayout::addWidget( widget );
+    }
 
-   void addWidget(QWidget *widget, int row, int column, Qt::Alignment alignment = Qt::Alignment());
-   void addWidget(QWidget *widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = Qt::Alignment());
+    void addWidget( QWidget *widget, int row, int column, Qt::Alignment alignment = Qt::Alignment() );
+    void addWidget( QWidget *widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = Qt::Alignment() );
 
-   void addLayout(QLayout *layout, int row, int column, Qt::Alignment alignment = Qt::Alignment());
-   void addLayout(QLayout *layout, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = Qt::Alignment());
+    void addLayout( QLayout *layout, int row, int column, Qt::Alignment alignment = Qt::Alignment() );
+    void addLayout( QLayout *layout, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = Qt::Alignment() );
 
-   void setOriginCorner(Qt::Corner corner);
-   Qt::Corner originCorner() const;
+    void setOriginCorner( Qt::Corner corner );
+    Qt::Corner originCorner() const;
 
-   QLayoutItem *itemAt(int index) const override;
-   QLayoutItem *itemAtPosition(int row, int column) const;
-   QLayoutItem *takeAt(int index) override;
-   int count() const override;
-   void setGeometry(const QRect &rect) override;
+    QLayoutItem *itemAt( int index ) const override;
+    QLayoutItem *itemAtPosition( int row, int column ) const;
+    QLayoutItem *takeAt( int index ) override;
+    int count() const override;
+    void setGeometry( const QRect &rect ) override;
 
-   void setDefaultPositioning(int index, Qt::Orientation orient);
-   void getItemPosition(int index, int *row, int *column, int *rowSpan, int *columnSpan) const;
+    void setDefaultPositioning( int index, Qt::Orientation orient );
+    void getItemPosition( int index, int *row, int *column, int *rowSpan, int *columnSpan ) const;
 
- protected:
-   void addItem(QLayoutItem *item) override;
+protected:
+    void addItem( QLayoutItem *item ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QGridLayout)
+private:
+    Q_DECLARE_PRIVATE( QGridLayout )
 };
 
 #endif

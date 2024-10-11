@@ -19,19 +19,22 @@
 #ifndef DOMObjectCache_h
 #define DOMObjectCache_h
 
-namespace WebCore {
+namespace WebCore
+{
 class Node;
 class Frame;
 };
 
-namespace WebKit {
-class DOMObjectCache {
+namespace WebKit
+{
+class DOMObjectCache
+{
 public:
-    static void* get(void* objectHandle);
-    static void* put(void* objectHandle, void* wrapper);
-    static void* put(WebCore::Node* objectHandle, void* wrapper);
-    static void clearByFrame(WebCore::Frame* frame = 0);
-    static void forget(void* objectHandle);
+    static void *get( void *objectHandle );
+    static void *put( void *objectHandle, void *wrapper );
+    static void *put( WebCore::Node *objectHandle, void *wrapper );
+    static void clearByFrame( WebCore::Frame *frame = 0 );
+    static void forget( void *objectHandle );
     ~DOMObjectCache();
 };
 } // namespace WebKit

@@ -30,233 +30,253 @@
 
 class QSocketEngineHandlerList : public QList<QSocketEngineHandler *>
 {
- public:
-   QMutex mutex;
+public:
+    QMutex mutex;
 };
 
 static QSocketEngineHandlerList *socketHandlers()
 {
-   static QSocketEngineHandlerList retval;
-   return &retval;
+    static QSocketEngineHandlerList retval;
+    return &retval;
 }
 
 QSocketEngineHandler::QSocketEngineHandler()
 {
-   if (! socketHandlers()) {
-      return;
-   }
+    if ( ! socketHandlers() )
+    {
+        return;
+    }
 
-   QMutexLocker locker(&socketHandlers()->mutex);
-   socketHandlers()->prepend(this);
+    QMutexLocker locker( &socketHandlers()->mutex );
+    socketHandlers()->prepend( this );
 }
 
 QSocketEngineHandler::~QSocketEngineHandler()
 {
-   if (! socketHandlers()) {
-      return;
-   }
+    if ( ! socketHandlers() )
+    {
+        return;
+    }
 
-   QMutexLocker locker(&socketHandlers()->mutex);
-   socketHandlers()->removeAll(this);
+    QMutexLocker locker( &socketHandlers()->mutex );
+    socketHandlers()->removeAll( this );
 }
 
 QAbstractSocketEnginePrivate::QAbstractSocketEnginePrivate()
-   : socketError(QAbstractSocket::UnknownSocketError), hasSetSocketError(false),
-     socketErrorString(QString::fromLatin1(cs_mark_tr("QSocketLayer", "Unknown error"))),
-     socketState(QAbstractSocket::UnconnectedState), socketType(QAbstractSocket::UnknownSocketType),
-     socketProtocol(QAbstractSocket::UnknownNetworkLayerProtocol), localPort(0), peerPort(0), receiver(nullptr)
+    : socketError( QAbstractSocket::UnknownSocketError ), hasSetSocketError( false ),
+      socketErrorString( QString::fromLatin1( lscs_mark_tr( "QSocketLayer", "Unknown error" ) ) ),
+      socketState( QAbstractSocket::UnconnectedState ), socketType( QAbstractSocket::UnknownSocketType ),
+      socketProtocol( QAbstractSocket::UnknownNetworkLayerProtocol ), localPort( 0 ), peerPort( 0 ), receiver( nullptr )
 {
 }
 
-QAbstractSocketEngine::QAbstractSocketEngine(QObject *parent)
-   : QObject(parent), d_ptr(new QAbstractSocketEnginePrivate)
+QAbstractSocketEngine::QAbstractSocketEngine( QObject *parent )
+    : QObject( parent ), d_ptr( new QAbstractSocketEnginePrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-QAbstractSocketEngine::QAbstractSocketEngine(QAbstractSocketEnginePrivate &dd, QObject *parent)
-   : QObject(parent), d_ptr(&dd)
+QAbstractSocketEngine::QAbstractSocketEngine( QAbstractSocketEnginePrivate &dd, QObject *parent )
+    : QObject( parent ), d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
 QAbstractSocketEngine::~QAbstractSocketEngine()
 {
 }
 
-QAbstractSocketEngine *QAbstractSocketEngine::createSocketEngine(QAbstractSocket::SocketType socketType,
-      const QNetworkProxy &proxy, QObject *parent)
+QAbstractSocketEngine *QAbstractSocketEngine::createSocketEngine( QAbstractSocket::SocketType socketType,
+        const QNetworkProxy &proxy, QObject *parent )
 {
 #ifndef QT_NO_NETWORKPROXY
-   // proxy type must have been resolved by now
-   if (proxy.type() == QNetworkProxy::DefaultProxy) {
-      return nullptr;
-   }
+
+    // proxy type must have been resolved by now
+    if ( proxy.type() == QNetworkProxy::DefaultProxy )
+    {
+        return nullptr;
+    }
+
 #endif
 
-   QMutexLocker locker(&socketHandlers()->mutex);
-   for (int i = 0; i < socketHandlers()->size(); i++) {
-      if (QAbstractSocketEngine *ret = socketHandlers()->at(i)->createSocketEngine(socketType, proxy, parent)) {
-         return ret;
-      }
-   }
+    QMutexLocker locker( &socketHandlers()->mutex );
+
+    for ( int i = 0; i < socketHandlers()->size(); i++ )
+    {
+        if ( QAbstractSocketEngine *ret = socketHandlers()->at( i )->createSocketEngine( socketType, proxy, parent ) )
+        {
+            return ret;
+        }
+    }
 
 #ifndef QT_NO_NETWORKPROXY
-   // only NoProxy can have reached here
-   if (proxy.type() != QNetworkProxy::NoProxy) {
-      return nullptr;
-   }
+
+    // only NoProxy can have reached here
+    if ( proxy.type() != QNetworkProxy::NoProxy )
+    {
+        return nullptr;
+    }
+
 #endif
 
-   return new QNativeSocketEngine(parent);
+    return new QNativeSocketEngine( parent );
 }
 
-QAbstractSocketEngine *QAbstractSocketEngine::createSocketEngine(qintptr socketDescriptor, QObject *parent)
+QAbstractSocketEngine *QAbstractSocketEngine::createSocketEngine( qintptr socketDescriptor, QObject *parent )
 {
-   QMutexLocker locker(&socketHandlers()->mutex);
-   for (int i = 0; i < socketHandlers()->size(); i++) {
-      if (QAbstractSocketEngine *ret = socketHandlers()->at(i)->createSocketEngine(socketDescriptor, parent)) {
-         return ret;
-      }
-   }
+    QMutexLocker locker( &socketHandlers()->mutex );
 
-   return new QNativeSocketEngine(parent);
+    for ( int i = 0; i < socketHandlers()->size(); i++ )
+    {
+        if ( QAbstractSocketEngine *ret = socketHandlers()->at( i )->createSocketEngine( socketDescriptor, parent ) )
+        {
+            return ret;
+        }
+    }
+
+    return new QNativeSocketEngine( parent );
 }
 
 QAbstractSocket::SocketError QAbstractSocketEngine::error() const
 {
-   return d_func()->socketError;
+    return d_func()->socketError;
 }
 
 QString QAbstractSocketEngine::errorString() const
 {
-   return d_func()->socketErrorString;
+    return d_func()->socketErrorString;
 }
 
-void QAbstractSocketEngine::setError(QAbstractSocket::SocketError error, const QString &errorString) const
+void QAbstractSocketEngine::setError( QAbstractSocket::SocketError error, const QString &errorString ) const
 {
-   Q_D(const QAbstractSocketEngine);
-   d->socketError = error;
-   d->socketErrorString = errorString;
+    Q_D( const QAbstractSocketEngine );
+    d->socketError = error;
+    d->socketErrorString = errorString;
 }
 
-void QAbstractSocketEngine::setReceiver(QAbstractSocketEngineReceiver *receiver)
+void QAbstractSocketEngine::setReceiver( QAbstractSocketEngineReceiver *receiver )
 {
-   d_func()->receiver = receiver;
+    d_func()->receiver = receiver;
 }
 
 void QAbstractSocketEngine::readNotification()
 {
-   if (QAbstractSocketEngineReceiver *receiver = d_func()->receiver) {
-      receiver->readNotification();
-   }
+    if ( QAbstractSocketEngineReceiver *receiver = d_func()->receiver )
+    {
+        receiver->readNotification();
+    }
 }
 
 void QAbstractSocketEngine::writeNotification()
 {
-   if (QAbstractSocketEngineReceiver *receiver = d_func()->receiver) {
-      receiver->writeNotification();
-   }
+    if ( QAbstractSocketEngineReceiver *receiver = d_func()->receiver )
+    {
+        receiver->writeNotification();
+    }
 }
 
 void QAbstractSocketEngine::exceptionNotification()
 {
-   if (QAbstractSocketEngineReceiver *receiver = d_func()->receiver) {
-      receiver->exceptionNotification();
-   }
+    if ( QAbstractSocketEngineReceiver *receiver = d_func()->receiver )
+    {
+        receiver->exceptionNotification();
+    }
 }
 
 void QAbstractSocketEngine::closeNotification()
 {
-   if (QAbstractSocketEngineReceiver *receiver = d_func()->receiver) {
-      receiver->closeNotification();
-   }
+    if ( QAbstractSocketEngineReceiver *receiver = d_func()->receiver )
+    {
+        receiver->closeNotification();
+    }
 }
 
 void QAbstractSocketEngine::connectionNotification()
 {
-   if (QAbstractSocketEngineReceiver *receiver = d_func()->receiver) {
-      receiver->connectionNotification();
-   }
+    if ( QAbstractSocketEngineReceiver *receiver = d_func()->receiver )
+    {
+        receiver->connectionNotification();
+    }
 }
 
 #ifndef QT_NO_NETWORKPROXY
-void QAbstractSocketEngine::proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
+void QAbstractSocketEngine::proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator )
 {
-   if (QAbstractSocketEngineReceiver *receiver = d_func()->receiver) {
-      receiver->proxyAuthenticationRequired(proxy, authenticator);
-   }
+    if ( QAbstractSocketEngineReceiver *receiver = d_func()->receiver )
+    {
+        receiver->proxyAuthenticationRequired( proxy, authenticator );
+    }
 }
 #endif
 
 
 QAbstractSocket::SocketState QAbstractSocketEngine::state() const
 {
-   return d_func()->socketState;
+    return d_func()->socketState;
 }
 
-void QAbstractSocketEngine::setState(QAbstractSocket::SocketState state)
+void QAbstractSocketEngine::setState( QAbstractSocket::SocketState state )
 {
-   d_func()->socketState = state;
+    d_func()->socketState = state;
 }
 
 QAbstractSocket::SocketType QAbstractSocketEngine::socketType() const
 {
-   return d_func()->socketType;
+    return d_func()->socketType;
 }
 
-void QAbstractSocketEngine::setSocketType(QAbstractSocket::SocketType socketType)
+void QAbstractSocketEngine::setSocketType( QAbstractSocket::SocketType socketType )
 {
-   d_func()->socketType = socketType;
+    d_func()->socketType = socketType;
 }
 
 QAbstractSocket::NetworkLayerProtocol QAbstractSocketEngine::protocol() const
 {
-   return d_func()->socketProtocol;
+    return d_func()->socketProtocol;
 }
 
-void QAbstractSocketEngine::setProtocol(QAbstractSocket::NetworkLayerProtocol protocol)
+void QAbstractSocketEngine::setProtocol( QAbstractSocket::NetworkLayerProtocol protocol )
 {
-   d_func()->socketProtocol = protocol;
+    d_func()->socketProtocol = protocol;
 }
 
 QHostAddress QAbstractSocketEngine::localAddress() const
 {
-   return d_func()->localAddress;
+    return d_func()->localAddress;
 }
 
-void QAbstractSocketEngine::setLocalAddress(const QHostAddress &address)
+void QAbstractSocketEngine::setLocalAddress( const QHostAddress &address )
 {
-   d_func()->localAddress = address;
+    d_func()->localAddress = address;
 }
 
 quint16 QAbstractSocketEngine::localPort() const
 {
-   return d_func()->localPort;
+    return d_func()->localPort;
 }
 
-void QAbstractSocketEngine::setLocalPort(quint16 port)
+void QAbstractSocketEngine::setLocalPort( quint16 port )
 {
-   d_func()->localPort = port;
+    d_func()->localPort = port;
 }
 
 QHostAddress QAbstractSocketEngine::peerAddress() const
 {
-   return d_func()->peerAddress;
+    return d_func()->peerAddress;
 }
 
-void QAbstractSocketEngine::setPeerAddress(const QHostAddress &address)
+void QAbstractSocketEngine::setPeerAddress( const QHostAddress &address )
 {
-   d_func()->peerAddress = address;
+    d_func()->peerAddress = address;
 }
 
 quint16 QAbstractSocketEngine::peerPort() const
 {
-   return d_func()->peerPort;
+    return d_func()->peerPort;
 }
 
-void QAbstractSocketEngine::setPeerPort(quint16 port)
+void QAbstractSocketEngine::setPeerPort( quint16 port )
 {
-   d_func()->peerPort = port;
+    d_func()->peerPort = port;
 }
 

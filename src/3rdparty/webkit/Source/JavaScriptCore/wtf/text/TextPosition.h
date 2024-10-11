@@ -27,7 +27,8 @@
 
 #include <wtf/Assertions.h>
 
-namespace WTF {
+namespace WTF
+{
 
 /*
  * Text Position
@@ -57,23 +58,36 @@ namespace WTF {
  */
 
 template<typename NUMBER>
-class TextPosition {
+class TextPosition
+{
 public:
-    TextPosition(NUMBER line, NUMBER column)
-        : m_line(line)
-        , m_column(column)
+    TextPosition( NUMBER line, NUMBER column )
+        : m_line( line )
+        , m_column( column )
     {
     }
     TextPosition() {}
 
-    bool operator==(const TextPosition& other) { return m_line == other.m_line && m_column == other.m_column; }
-    bool operator!=(const TextPosition& other) { return !((*this) == other); }
+    bool operator==( const TextPosition &other )
+    {
+        return m_line == other.m_line && m_column == other.m_column;
+    }
+    bool operator!=( const TextPosition &other )
+    {
+        return !( ( *this ) == other );
+    }
 
     // A 'minimum' value of position, used as a default value.
-    static TextPosition<NUMBER> minimumPosition() { return TextPosition<NUMBER>(NUMBER::base(), NUMBER::base()); }
+    static TextPosition<NUMBER> minimumPosition()
+    {
+        return TextPosition<NUMBER>( NUMBER::base(), NUMBER::base() );
+    }
 
     // A value with line value less than a minimum; used as an impossible position.
-    static TextPosition<NUMBER> belowRangePosition() { return TextPosition<NUMBER>(NUMBER::belowBase(), NUMBER::belowBase()); }
+    static TextPosition<NUMBER> belowRangePosition()
+    {
+        return TextPosition<NUMBER>( NUMBER::belowBase(), NUMBER::belowBase() );
+    }
 
     NUMBER m_line;
     NUMBER m_column;
@@ -82,64 +96,111 @@ public:
 class OneBasedNumber;
 
 // An int wrapper that always reminds you that the number should be 0-based
-class ZeroBasedNumber {
+class ZeroBasedNumber
+{
 public:
-    static ZeroBasedNumber fromZeroBasedInt(int zeroBasedInt) { return ZeroBasedNumber(zeroBasedInt); }
+    static ZeroBasedNumber fromZeroBasedInt( int zeroBasedInt )
+    {
+        return ZeroBasedNumber( zeroBasedInt );
+    }
 
     ZeroBasedNumber() {}
 
-    int zeroBasedInt() const { return m_value; }
-    int convertAsOneBasedInt() const { return m_value + 1; }
+    int zeroBasedInt() const
+    {
+        return m_value;
+    }
+    int convertAsOneBasedInt() const
+    {
+        return m_value + 1;
+    }
     OneBasedNumber convertToOneBased() const;
 
-    bool operator==(ZeroBasedNumber other) { return m_value == other.m_value; }
-    bool operator!=(ZeroBasedNumber other) { return !((*this) == other); }
+    bool operator==( ZeroBasedNumber other )
+    {
+        return m_value == other.m_value;
+    }
+    bool operator!=( ZeroBasedNumber other )
+    {
+        return !( ( *this ) == other );
+    }
 
-    static ZeroBasedNumber base() { return 0; }
-    static ZeroBasedNumber belowBase() { return -1; }
+    static ZeroBasedNumber base()
+    {
+        return 0;
+    }
+    static ZeroBasedNumber belowBase()
+    {
+        return -1;
+    }
 
 private:
-    ZeroBasedNumber(int value) : m_value(value) {}
+    ZeroBasedNumber( int value ) : m_value( value ) {}
     int m_value;
 };
 
 // An int wrapper that always reminds you that the number should be 1-based
-class OneBasedNumber {
+class OneBasedNumber
+{
 public:
-    static OneBasedNumber fromOneBasedInt(int oneBasedInt) { return OneBasedNumber(oneBasedInt); }
+    static OneBasedNumber fromOneBasedInt( int oneBasedInt )
+    {
+        return OneBasedNumber( oneBasedInt );
+    }
     OneBasedNumber() {}
 
-    int oneBasedInt() const { return m_value; }
-    int convertAsZeroBasedInt() const { return m_value - 1; }
-    ZeroBasedNumber convertToZeroBased() const { return ZeroBasedNumber::fromZeroBasedInt(m_value - 1); }
+    int oneBasedInt() const
+    {
+        return m_value;
+    }
+    int convertAsZeroBasedInt() const
+    {
+        return m_value - 1;
+    }
+    ZeroBasedNumber convertToZeroBased() const
+    {
+        return ZeroBasedNumber::fromZeroBasedInt( m_value - 1 );
+    }
 
-    bool operator==(OneBasedNumber other) { return m_value == other.m_value; }
-    bool operator!=(OneBasedNumber other) { return !((*this) == other); }
+    bool operator==( OneBasedNumber other )
+    {
+        return m_value == other.m_value;
+    }
+    bool operator!=( OneBasedNumber other )
+    {
+        return !( ( *this ) == other );
+    }
 
-    static OneBasedNumber base() { return 1; }
-    static OneBasedNumber belowBase() { return 0; }
+    static OneBasedNumber base()
+    {
+        return 1;
+    }
+    static OneBasedNumber belowBase()
+    {
+        return 0;
+    }
 
 private:
-    OneBasedNumber(int value) : m_value(value) {}
+    OneBasedNumber( int value ) : m_value( value ) {}
     int m_value;
 };
 
 typedef TextPosition<ZeroBasedNumber> TextPosition0;
 typedef TextPosition<OneBasedNumber> TextPosition1;
 
-inline TextPosition0 toZeroBasedTextPosition(const TextPosition1& position)
+inline TextPosition0 toZeroBasedTextPosition( const TextPosition1 &position )
 {
-    return TextPosition0(position.m_line.convertToZeroBased(), position.m_column.convertToZeroBased());
+    return TextPosition0( position.m_line.convertToZeroBased(), position.m_column.convertToZeroBased() );
 }
 
-inline TextPosition1 toOneBasedTextPosition(const TextPosition0& position)
+inline TextPosition1 toOneBasedTextPosition( const TextPosition0 &position )
 {
-    return TextPosition1(position.m_line.convertToOneBased(), position.m_column.convertToOneBased());
+    return TextPosition1( position.m_line.convertToOneBased(), position.m_column.convertToOneBased() );
 }
 
 inline OneBasedNumber ZeroBasedNumber::convertToOneBased() const
 {
-    return OneBasedNumber::fromOneBasedInt(m_value + 1);
+    return OneBasedNumber::fromOneBasedInt( m_value + 1 );
 }
 
 }

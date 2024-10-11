@@ -34,20 +34,20 @@ class CameraBinSession;
 
 class Q_MULTIMEDIA_EXPORT CameraBinCaptureBufferFormat : public QCameraCaptureBufferFormatControl
 {
-   CS_OBJECT(CameraBinCaptureBufferFormat)
+    LSCS_OBJECT( CameraBinCaptureBufferFormat )
 
- public:
-   CameraBinCaptureBufferFormat(CameraBinSession *session);
-   virtual ~CameraBinCaptureBufferFormat();
+public:
+    CameraBinCaptureBufferFormat( CameraBinSession *session );
+    virtual ~CameraBinCaptureBufferFormat();
 
-   QList<QVideoFrame::PixelFormat> supportedBufferFormats() const override;
+    QList<QVideoFrame::PixelFormat> supportedBufferFormats() const override;
 
-   QVideoFrame::PixelFormat bufferFormat() const override;
-   void setBufferFormat(QVideoFrame::PixelFormat format) override;
+    QVideoFrame::PixelFormat bufferFormat() const override;
+    void setBufferFormat( QVideoFrame::PixelFormat format ) override;
 
- private:
-   CameraBinSession *m_session;
-   QVideoFrame::PixelFormat m_format;
+private:
+    CameraBinSession *m_session;
+    QVideoFrame::PixelFormat m_format;
 };
 
 #endif

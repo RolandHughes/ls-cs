@@ -31,38 +31,45 @@
 #include "WebCoreSystemInterface.h"
 #include <wtf/RetainPtr.h>
 
-namespace WebCore {
-
-void getSupportedKeySizes(Vector<String>& supportedKeySizes)
+namespace WebCore
 {
-    ASSERT(supportedKeySizes.isEmpty());
-    supportedKeySizes.append(keygenMenuItem2048());
-    supportedKeySizes.append(keygenMenuItem1024());
-    supportedKeySizes.append(keygenMenuItem512());
+
+void getSupportedKeySizes( Vector<String> &supportedKeySizes )
+{
+    ASSERT( supportedKeySizes.isEmpty() );
+    supportedKeySizes.append( keygenMenuItem2048() );
+    supportedKeySizes.append( keygenMenuItem1024() );
+    supportedKeySizes.append( keygenMenuItem512() );
 }
 
-String signedPublicKeyAndChallengeString(unsigned keySizeIndex, const String& challengeString, const KURL& url)
-{   
+String signedPublicKeyAndChallengeString( unsigned keySizeIndex, const String &challengeString, const KURL &url )
+{
     // This switch statement must always be synced with the UI strings returned by getSupportedKeySizes.
     UInt32 keySize;
-    switch (keySizeIndex) {
-    case 0:
-        keySize = 2048;
-        break;
-    case 1:
-        keySize = 1024;
-        break;
-    case 2:
-        keySize = 512;
-        break;
-    default:
-        ASSERT_NOT_REACHED();
-        return String();
+
+    switch ( keySizeIndex )
+    {
+        case 0:
+            keySize = 2048;
+            break;
+
+        case 1:
+            keySize = 1024;
+            break;
+
+        case 2:
+            keySize = 512;
+            break;
+
+        default:
+            ASSERT_NOT_REACHED();
+            return String();
     }
 
-    RetainPtr<CFStringRef> challengeStringCF(AdoptCF, challengeString.createCFString());
-    RetainPtr<CFStringRef> keyDescription(AdoptCF, keygenKeychainItemName(url.host()).createCFString());
-    RetainPtr<CFStringRef> result(AdoptCF, wkSignedPublicKeyAndChallengeString(keySize, challengeStringCF.get(), keyDescription.get()));
+    RetainPtr<CFStringRef> challengeStringCF( AdoptCF, challengeString.createCFString() );
+    RetainPtr<CFStringRef> keyDescription( AdoptCF, keygenKeychainItemName( url.host() ).createCFString() );
+    RetainPtr<CFStringRef> result( AdoptCF, wkSignedPublicKeyAndChallengeString( keySize, challengeStringCF.get(),
+                                   keyDescription.get() ) );
 
     return result.get();
 }

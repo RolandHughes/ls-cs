@@ -30,30 +30,33 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void WebDragClient::willPerformDragDestinationAction(DragDestinationAction action, DragData*)
+namespace WebKit
 {
-    if (action == DragDestinationActionLoad)
+
+void WebDragClient::willPerformDragDestinationAction( DragDestinationAction action, DragData * )
+{
+    if ( action == DragDestinationActionLoad )
+    {
         m_page->willPerformLoadDragDestinationAction();
+    }
 }
 
-void WebDragClient::willPerformDragSourceAction(DragSourceAction, const IntPoint&, Clipboard*)
+void WebDragClient::willPerformDragSourceAction( DragSourceAction, const IntPoint &, Clipboard * )
 {
 }
 
-DragDestinationAction WebDragClient::actionMaskForDrag(DragData*)
+DragDestinationAction WebDragClient::actionMaskForDrag( DragData * )
 {
     return DragDestinationActionAny;
 }
 
-DragSourceAction WebDragClient::dragSourceActionMaskForPoint(const IntPoint& windowPoint)
+DragSourceAction WebDragClient::dragSourceActionMaskForPoint( const IntPoint &windowPoint )
 {
     return DragSourceActionAny;
 }
 
 #if !PLATFORM(MAC) && !PLATFORM(WIN)
-void WebDragClient::startDrag(DragImageRef, const IntPoint&, const IntPoint&, Clipboard*, Frame*, bool)
+void WebDragClient::startDrag( DragImageRef, const IntPoint &, const IntPoint &, Clipboard *, Frame *, bool )
 {
 }
 #endif

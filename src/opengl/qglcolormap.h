@@ -29,56 +29,60 @@
 
 class Q_OPENGL_EXPORT QGLColormap
 {
- public:
-   QGLColormap();
-   QGLColormap(const QGLColormap &other);
+public:
+    QGLColormap();
+    QGLColormap( const QGLColormap &other );
 
-   ~QGLColormap();
+    ~QGLColormap();
 
-   QGLColormap &operator=(const QGLColormap &other);
+    QGLColormap &operator=( const QGLColormap &other );
 
-   bool   isEmpty() const;
-   int    size() const;
-   void   detach();
+    bool   isEmpty() const;
+    int    size() const;
+    void   detach();
 
-   void   setEntries(int count, const QRgb *colors, int base = 0);
-   void   setEntry(int idx, QRgb color);
-   void   setEntry(int idx, const QColor &color);
-   QRgb   entryRgb(int idx) const;
-   QColor entryColor(int idx) const;
-   int    find(QRgb color) const;
-   int    findNearest(QRgb color) const;
+    void   setEntries( int count, const QRgb *colors, int base = 0 );
+    void   setEntry( int idx, QRgb color );
+    void   setEntry( int idx, const QColor &color );
+    QRgb   entryRgb( int idx ) const;
+    QColor entryColor( int idx ) const;
+    int    find( QRgb color ) const;
+    int    findNearest( QRgb color ) const;
 
- protected:
-   Qt::HANDLE handle() {
-      return d ? d->cmapHandle : nullptr;
-   }
+protected:
+    Qt::HANDLE handle()
+    {
+        return d ? d->cmapHandle : nullptr;
+    }
 
-   void setHandle(Qt::HANDLE ahandle) {
-      d->cmapHandle = ahandle;
-   }
+    void setHandle( Qt::HANDLE ahandle )
+    {
+        d->cmapHandle = ahandle;
+    }
 
- private:
-   struct QGLColormapData {
-      QAtomicInt ref;
-      QVector<QRgb> *cells;
-      Qt::HANDLE cmapHandle;
-   };
+private:
+    struct QGLColormapData
+    {
+        QAtomicInt ref;
+        QVector<QRgb> *cells;
+        Qt::HANDLE cmapHandle;
+    };
 
-   QGLColormapData *d;
-   static struct QGLColormapData shared_null;
-   static void cleanup(QGLColormapData *x);
-   void detach_helper();
+    QGLColormapData *d;
+    static struct QGLColormapData shared_null;
+    static void cleanup( QGLColormapData *x );
+    void detach_helper();
 
-   friend class QGLWidget;
-   friend class QGLWidgetPrivate;
+    friend class QGLWidget;
+    friend class QGLWidgetPrivate;
 };
 
 inline void QGLColormap::detach()
 {
-   if (d->ref.load() != 1) {
-      detach_helper();
-   }
+    if ( d->ref.load() != 1 )
+    {
+        detach_helper();
+    }
 }
 
 #endif

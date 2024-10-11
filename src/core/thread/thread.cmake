@@ -40,7 +40,7 @@ list(APPEND CORE_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/thread/qthread_p.h
 )
 
-target_sources(CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/thread/qmutex.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/thread/qmutexpool.cpp
@@ -51,28 +51,28 @@ target_sources(CsCore
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qthread_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qwaitcondition_unix.cpp
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qthread_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qwaitcondition_unix.cpp
   )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qthread_unix.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qwaitcondition_unix.cpp
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsCore
+   target_sources(LsCsCore
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qthread_win.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/thread/qwaitcondition_win.cpp

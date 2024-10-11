@@ -32,10 +32,11 @@
 #include <stdio.h>
 #endif
 
-namespace WebCore {
-    
-DefaultAudioDestinationNode::DefaultAudioDestinationNode(AudioContext* context)
-    : AudioDestinationNode(context, AudioDestination::hardwareSampleRate())
+namespace WebCore
+{
+
+DefaultAudioDestinationNode::DefaultAudioDestinationNode( AudioContext *context )
+    : AudioDestinationNode( context, AudioDestination::hardwareSampleRate() )
 {
     initialize();
 }
@@ -47,23 +48,27 @@ DefaultAudioDestinationNode::~DefaultAudioDestinationNode()
 
 void DefaultAudioDestinationNode::initialize()
 {
-    if (isInitialized())
+    if ( isInitialized() )
+    {
         return;
+    }
 
     double hardwareSampleRate = AudioDestination::hardwareSampleRate();
-#ifndef NDEBUG    
-    fprintf(stderr, ">>>> hardwareSampleRate = %f\n", hardwareSampleRate);
+#ifndef NDEBUG
+    fprintf( stderr, ">>>> hardwareSampleRate = %f\n", hardwareSampleRate );
 #endif
-    
-    m_destination = AudioDestination::create(*this, hardwareSampleRate);
-    
+
+    m_destination = AudioDestination::create( *this, hardwareSampleRate );
+
     AudioNode::initialize();
 }
 
 void DefaultAudioDestinationNode::uninitialize()
 {
-    if (!isInitialized())
+    if ( !isInitialized() )
+    {
         return;
+    }
 
     m_destination->stop();
 
@@ -72,9 +77,12 @@ void DefaultAudioDestinationNode::uninitialize()
 
 void DefaultAudioDestinationNode::startRendering()
 {
-    ASSERT(isInitialized());
-    if (isInitialized())
+    ASSERT( isInitialized() );
+
+    if ( isInitialized() )
+    {
         m_destination->start();
+    }
 }
 
 } // namespace WebCore

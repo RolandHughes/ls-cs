@@ -29,23 +29,23 @@
 
 class QM3uPlaylistPlugin : public QMediaPlaylistIOPlugin
 {
-   CS_OBJECT(QM3uPlaylistPlugin)
+    LSCS_OBJECT( QM3uPlaylistPlugin )
 
-   CS_PLUGIN_IID(QMediaPlaylistInterface_ID)
-   CS_PLUGIN_KEY("m3u")
+    LSCS_PLUGIN_IID( QMediaPlaylistInterface_ID )
+    LSCS_PLUGIN_KEY( "m3u" )
 
- public:
-   explicit QM3uPlaylistPlugin(QObject *parent = nullptr);
+public:
+    explicit QM3uPlaylistPlugin( QObject *parent = nullptr );
 
-   bool canRead(QIODevice *device, const QByteArray &format = QByteArray() ) const override;
-   bool canRead(const QUrl &location, const QByteArray &format = QByteArray()) const override;
+    bool canRead( QIODevice *device, const QByteArray &format = QByteArray() ) const override;
+    bool canRead( const QUrl &location, const QByteArray &format = QByteArray() ) const override;
 
-   bool canWrite(QIODevice *device, const QByteArray &format) const override;
+    bool canWrite( QIODevice *device, const QByteArray &format ) const override;
 
-   QMediaPlaylistReader *createReader(QIODevice *device, const QByteArray &format = QByteArray()) override;
-   QMediaPlaylistReader *createReader(const QUrl &location, const QByteArray &format = QByteArray()) override;
+    QMediaPlaylistReader *createReader( QIODevice *device, const QByteArray &format = QByteArray() ) override;
+    QMediaPlaylistReader *createReader( const QUrl &location, const QByteArray &format = QByteArray() ) override;
 
-   QMediaPlaylistWriter *createWriter(QIODevice *device, const QByteArray &format) override;
+    QMediaPlaylistWriter *createWriter( QIODevice *device, const QByteArray &format ) override;
 };
 
 #endif

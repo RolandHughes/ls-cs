@@ -75,25 +75,28 @@
     macro(writable) \
     macro(displayName)
 
-namespace JSC {
+namespace JSC
+{
 
-    class CommonIdentifiers {
-        WTF_MAKE_NONCOPYABLE(CommonIdentifiers); WTF_MAKE_FAST_ALLOCATED;
-    private:
-        CommonIdentifiers(JSGlobalData*);
-        friend class JSGlobalData;
+class CommonIdentifiers
+{
+    WTF_MAKE_NONCOPYABLE( CommonIdentifiers );
+    WTF_MAKE_FAST_ALLOCATED;
+private:
+    CommonIdentifiers( JSGlobalData * );
+    friend class JSGlobalData;
 
-    public:
-        const Identifier nullIdentifier;
-        const Identifier emptyIdentifier;
-        const Identifier underscoreProto;
-        const Identifier thisIdentifier;
-        const Identifier useStrictIdentifier;
+public:
+    const Identifier nullIdentifier;
+    const Identifier emptyIdentifier;
+    const Identifier underscoreProto;
+    const Identifier thisIdentifier;
+    const Identifier useStrictIdentifier;
 
 #define JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL(name) const Identifier name;
-        JSC_COMMON_IDENTIFIERS_EACH_PROPERTY_NAME(JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL)
+    JSC_COMMON_IDENTIFIERS_EACH_PROPERTY_NAME( JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL )
 #undef JSC_IDENTIFIER_DECLARE_PROPERTY_NAME_GLOBAL
-    };
+};
 
 } // namespace JSC
 

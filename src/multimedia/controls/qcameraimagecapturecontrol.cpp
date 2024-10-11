@@ -24,8 +24,8 @@
 #include <qcameraimagecapturecontrol.h>
 #include <qstringlist.h>
 
-QCameraImageCaptureControl::QCameraImageCaptureControl(QObject *parent)
-   : QMediaControl(parent)
+QCameraImageCaptureControl::QCameraImageCaptureControl( QObject *parent )
+    : QMediaControl( parent )
 {
 }
 

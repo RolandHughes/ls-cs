@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WTF_Assertions_h
@@ -34,11 +34,11 @@
 
    For non-debug builds, everything is disabled by default.
    Defining any of the symbols explicitly prevents this from having any effect.
-   
+
    MSVC7 note: variadic macro support was added in MSVC8, so for now we disable
-   those macros in MSVC7. For more info, see the MSDN document on variadic 
+   those macros in MSVC7. For more info, see the MSDN document on variadic
    macros here:
-   
+
    http://msdn2.microsoft.com/en-us/library/ms177415(VS.80).aspx
 */
 
@@ -129,7 +129,7 @@
 #if COMPILER(GCC) && !defined(__OBJC__)
 #define WTF_ATTRIBUTE_PRINTF(formatStringArgument, extraArguments) __attribute__((__format__(printf, formatStringArgument, extraArguments)))
 #else
-#define WTF_ATTRIBUTE_PRINTF(formatStringArgument, extraArguments) 
+#define WTF_ATTRIBUTE_PRINTF(formatStringArgument, extraArguments)
 #endif
 
 /* These helper functions are always declared, but not necessarily always defined if the corresponding function is disabled. */
@@ -140,20 +140,26 @@ extern "C" {
 
 typedef enum { WTFLogChannelOff, WTFLogChannelOn } WTFLogChannelState;
 
-typedef struct {
+typedef struct
+{
     unsigned mask;
     const char *defaultName;
     WTFLogChannelState state;
 } WTFLogChannel;
 
-WTF_EXPORT_PRIVATE void WTFReportAssertionFailure(const char* file, int line, const char* function, const char* assertion);
-WTF_EXPORT_PRIVATE void WTFReportAssertionFailureWithMessage(const char* file, int line, const char* function, const char* assertion, const char* format, ...) WTF_ATTRIBUTE_PRINTF(5, 6);
-WTF_EXPORT_PRIVATE void WTFReportArgumentAssertionFailure(const char* file, int line, const char* function, const char* argName, const char* assertion);
+WTF_EXPORT_PRIVATE void WTFReportAssertionFailure( const char *file, int line, const char *function, const char *assertion );
+WTF_EXPORT_PRIVATE void WTFReportAssertionFailureWithMessage( const char *file, int line, const char *function,
+        const char *assertion, const char *format, ... ) WTF_ATTRIBUTE_PRINTF( 5, 6 );
+WTF_EXPORT_PRIVATE void WTFReportArgumentAssertionFailure( const char *file, int line, const char *function, const char *argName,
+        const char *assertion );
 WTF_EXPORT_PRIVATE void WTFReportBacktrace();
-WTF_EXPORT_PRIVATE void WTFReportFatalError(const char* file, int line, const char* function, const char* format, ...) WTF_ATTRIBUTE_PRINTF(4, 5);
-WTF_EXPORT_PRIVATE void WTFReportError(const char* file, int line, const char* function, const char* format, ...) WTF_ATTRIBUTE_PRINTF(4, 5);
-WTF_EXPORT_PRIVATE void WTFLog(WTFLogChannel*, const char* format, ...) WTF_ATTRIBUTE_PRINTF(2, 3);
-WTF_EXPORT_PRIVATE void WTFLogVerbose(const char* file, int line, const char* function, WTFLogChannel*, const char* format, ...) WTF_ATTRIBUTE_PRINTF(5, 6);
+WTF_EXPORT_PRIVATE void WTFReportFatalError( const char *file, int line, const char *function, const char *format,
+        ... ) WTF_ATTRIBUTE_PRINTF( 4, 5 );
+WTF_EXPORT_PRIVATE void WTFReportError( const char *file, int line, const char *function, const char *format,
+                                        ... ) WTF_ATTRIBUTE_PRINTF( 4, 5 );
+WTF_EXPORT_PRIVATE void WTFLog( WTFLogChannel *, const char *format, ... ) WTF_ATTRIBUTE_PRINTF( 2, 3 );
+WTF_EXPORT_PRIVATE void WTFLogVerbose( const char *file, int line, const char *function, WTFLogChannel *, const char *format,
+                                       ... ) WTF_ATTRIBUTE_PRINTF( 5, 6 );
 
 #ifdef __cplusplus
 }
@@ -239,7 +245,10 @@ WTF_EXPORT_PRIVATE void WTFLogVerbose(const char* file, int line, const char* fu
 
 #if COMPILER(INTEL) && !OS(WINDOWS) || COMPILER(RVCT)
 template<typename T>
-inline void assertUnused(T& x) { (void)x; }
+inline void assertUnused( T &x )
+{
+    ( void )x;
+}
 #define ASSERT_UNUSED(variable, assertion) (assertUnused(variable))
 #else
 #define ASSERT_UNUSED(variable, assertion) ((void)variable)
@@ -289,7 +298,10 @@ while (0)
 #elif ASSERT_MSG_DISABLED
 #if COMPILER(INTEL) && !OS(WINDOWS) || COMPILER(RVCT)
 template<typename T>
-inline void assertWithMessageUnused(T& x) { (void)x; }
+inline void assertWithMessageUnused( T &x )
+{
+    ( void )x;
+}
 #define ASSERT_WITH_MESSAGE_UNUSED(variable, assertion, ...) (assertWithMessageUnused(variable))
 #else
 #define ASSERT_WITH_MESSAGE_UNUSED(variable, assertion, ...) ((void)variable)
@@ -302,8 +314,8 @@ inline void assertWithMessageUnused(T& x) { (void)x; }
     } \
 while (0)
 #endif
-                        
-                        
+
+
 /* ASSERT_ARG */
 
 #if ASSERT_ARG_DISABLED

@@ -16,11 +16,11 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the Type 1 error enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the Type 1 error enumeration constants.
+ *
+ */
 
 #ifndef T1ERRORS_H_
 #define T1ERRORS_H_

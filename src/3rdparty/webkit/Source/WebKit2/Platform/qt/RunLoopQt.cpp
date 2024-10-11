@@ -40,23 +40,29 @@ class RunLoop::TimerObject : public QObject
 {
     Q_OBJECT
 public:
-    TimerObject(RunLoop* runLoop) : m_runLoop(runLoop)
+    TimerObject( RunLoop *runLoop ) : m_runLoop( runLoop )
     {
-        int methodIndex = metaObject()->indexOfMethod("performWork()");
-        m_method = metaObject()->method(methodIndex);
+        int methodIndex = metaObject()->indexOfMethod( "performWork()" );
+        m_method = metaObject()->method( methodIndex );
     }
 
-    Q_SLOT void performWork() { m_runLoop->performWork(); }
-    inline void wakeUp() { m_method.invoke(this, Qt::QueuedConnection); }
+    Q_SLOT void performWork()
+    {
+        m_runLoop->performWork();
+    }
+    inline void wakeUp()
+    {
+        m_method.invoke( this, Qt::QueuedConnection );
+    }
 
 protected:
-    virtual void timerEvent(QTimerEvent* event)
+    virtual void timerEvent( QTimerEvent *event )
     {
-        RunLoop::TimerBase::timerFired(m_runLoop, event->timerId());
+        RunLoop::TimerBase::timerFired( m_runLoop, event->timerId() );
     }
 
 private:
-    RunLoop* m_runLoop;
+    RunLoop *m_runLoop;
     QMetaMethod m_method;
 };
 
@@ -71,7 +77,7 @@ void RunLoop::stop()
 }
 
 RunLoop::RunLoop()
-    : m_timerObject(new TimerObject(this))
+    : m_timerObject( new TimerObject( this ) )
 {
 }
 
@@ -87,26 +93,27 @@ void RunLoop::wakeUp()
 
 // RunLoop::Timer
 
-void RunLoop::TimerBase::timerFired(RunLoop* runLoop, int ID)
+void RunLoop::TimerBase::timerFired( RunLoop *runLoop, int ID )
 {
-    TimerMap::iterator it = runLoop->m_activeTimers.find(ID);
-    ASSERT(it != runLoop->m_activeTimers.end());
-    TimerBase* timer = it->second;
+    TimerMap::iterator it = runLoop->m_activeTimers.find( ID );
+    ASSERT( it != runLoop->m_activeTimers.end() );
+    TimerBase *timer = it->second;
 
-    if (!timer->m_isRepeating) {
+    if ( !timer->m_isRepeating )
+    {
         // Stop the timer (calling stop would need another hash table lookup).
-        runLoop->m_activeTimers.remove(it);
-        runLoop->m_timerObject->killTimer(timer->m_ID);
+        runLoop->m_activeTimers.remove( it );
+        runLoop->m_timerObject->killTimer( timer->m_ID );
         timer->m_ID = 0;
     }
 
     timer->fired();
 }
 
-RunLoop::TimerBase::TimerBase(RunLoop* runLoop)
-    : m_runLoop(runLoop)
-    , m_ID(0)
-    , m_isRepeating(false)
+RunLoop::TimerBase::TimerBase( RunLoop *runLoop )
+    : m_runLoop( runLoop )
+    , m_ID( 0 )
+    , m_isRepeating( false )
 {
 }
 
@@ -115,26 +122,32 @@ RunLoop::TimerBase::~TimerBase()
     stop();
 }
 
-void RunLoop::TimerBase::start(double nextFireInterval, bool repeat)
+void RunLoop::TimerBase::start( double nextFireInterval, bool repeat )
 {
     stop();
-    int millis = static_cast<int>(nextFireInterval * 1000);
+    int millis = static_cast<int>( nextFireInterval * 1000 );
     m_isRepeating = repeat;
-    m_ID = m_runLoop->m_timerObject->startTimer(millis);
-    ASSERT(m_ID);
-    m_runLoop->m_activeTimers.set(m_ID, this);
+    m_ID = m_runLoop->m_timerObject->startTimer( millis );
+    ASSERT( m_ID );
+    m_runLoop->m_activeTimers.set( m_ID, this );
 }
 
 void RunLoop::TimerBase::stop()
 {
-    if (!m_ID)
+    if ( !m_ID )
+    {
         return;
-    TimerMap::iterator it = m_runLoop->m_activeTimers.find(m_ID);
-    if (it == m_runLoop->m_activeTimers.end())
-        return;
+    }
 
-    m_runLoop->m_activeTimers.remove(it);
-    m_runLoop->m_timerObject->killTimer(m_ID);
+    TimerMap::iterator it = m_runLoop->m_activeTimers.find( m_ID );
+
+    if ( it == m_runLoop->m_activeTimers.end() )
+    {
+        return;
+    }
+
+    m_runLoop->m_activeTimers.remove( it );
+    m_runLoop->m_timerObject->killTimer( m_ID );
     m_ID = 0;
 }
 

@@ -38,21 +38,33 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class Database;
 class InspectorFrontend;
 
-class InspectorDatabaseResource : public RefCounted<InspectorDatabaseResource> {
+class InspectorDatabaseResource : public RefCounted<InspectorDatabaseResource>
+{
 public:
-    static PassRefPtr<InspectorDatabaseResource> create(PassRefPtr<Database> database, const String& domain, const String& name, const String& version);
+    static PassRefPtr<InspectorDatabaseResource> create( PassRefPtr<Database> database, const String &domain, const String &name,
+            const String &version );
 
-    void bind(InspectorFrontend::Database*);
-    Database* database() { return m_database.get(); }
-    void setDatabase(PassRefPtr<Database> database) { m_database = database; }
-    int id() const { return m_id; }
+    void bind( InspectorFrontend::Database * );
+    Database *database()
+    {
+        return m_database.get();
+    }
+    void setDatabase( PassRefPtr<Database> database )
+    {
+        m_database = database;
+    }
+    int id() const
+    {
+        return m_id;
+    }
 
 private:
-    InspectorDatabaseResource(PassRefPtr<Database>, const String& domain, const String& name, const String& version);
+    InspectorDatabaseResource( PassRefPtr<Database>, const String &domain, const String &name, const String &version );
 
     RefPtr<Database> m_database;
     int m_id;

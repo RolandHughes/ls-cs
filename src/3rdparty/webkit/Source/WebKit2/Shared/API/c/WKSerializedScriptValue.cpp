@@ -34,27 +34,29 @@ using namespace WebKit;
 
 WKTypeID WKSerializedScriptValueGetTypeID()
 {
-    return toAPI(WebSerializedScriptValue::APIType);
+    return toAPI( WebSerializedScriptValue::APIType );
 }
 
-WKSerializedScriptValueRef WKSerializedScriptValueCreate(JSContextRef context, JSValueRef value, JSValueRef* exception)
+WKSerializedScriptValueRef WKSerializedScriptValueCreate( JSContextRef context, JSValueRef value, JSValueRef *exception )
 {
-    RefPtr<WebSerializedScriptValue> serializedValue = WebSerializedScriptValue::create(context, value, exception);
-    return toAPI(serializedValue.release().leakRef());
+    RefPtr<WebSerializedScriptValue> serializedValue = WebSerializedScriptValue::create( context, value, exception );
+    return toAPI( serializedValue.release().leakRef() );
 }
 
-WKSerializedScriptValueRef WKSerializedScriptValueCreateWithInternalRepresentation(void* internalRepresentation)
+WKSerializedScriptValueRef WKSerializedScriptValueCreateWithInternalRepresentation( void *internalRepresentation )
 {
-    RefPtr<WebSerializedScriptValue> serializedValue = WebSerializedScriptValue::create(static_cast<WebCore::SerializedScriptValue*>(internalRepresentation));
-    return toAPI(serializedValue.release().leakRef());
+    RefPtr<WebSerializedScriptValue> serializedValue = WebSerializedScriptValue::create(
+                static_cast<WebCore::SerializedScriptValue *>( internalRepresentation ) );
+    return toAPI( serializedValue.release().leakRef() );
 }
 
-JSValueRef WKSerializedScriptValueDeserialize(WKSerializedScriptValueRef scriptValueRef, JSContextRef contextRef, JSValueRef* exception)
+JSValueRef WKSerializedScriptValueDeserialize( WKSerializedScriptValueRef scriptValueRef, JSContextRef contextRef,
+        JSValueRef *exception )
 {
-    return toImpl(scriptValueRef)->deserialize(contextRef, exception);
+    return toImpl( scriptValueRef )->deserialize( contextRef, exception );
 }
 
-void* WKSerializedScriptValueGetInternalRepresentation(WKSerializedScriptValueRef scriptValueRef)
+void *WKSerializedScriptValueGetInternalRepresentation( WKSerializedScriptValueRef scriptValueRef )
 {
-    return toImpl(scriptValueRef)->internalRepresentation();
+    return toImpl( scriptValueRef )->internalRepresentation();
 }

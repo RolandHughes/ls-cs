@@ -32,7 +32,7 @@
 QT_BEGIN_NAMESPACE
 
 class QScriptEngine;
-void qt_add_qmlxmlhttprequest(QScriptEngine *engine);
+void qt_add_qmlxmlhttprequest( QScriptEngine *engine );
 
 QT_END_NAMESPACE
 

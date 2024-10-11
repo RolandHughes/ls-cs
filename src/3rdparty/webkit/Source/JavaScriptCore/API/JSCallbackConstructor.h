@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSCallbackConstructor_h
@@ -29,26 +29,34 @@
 #include "JSObjectRef.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace JSC {
+namespace JSC
+{
 
-class JSCallbackConstructor : public JSObjectWithGlobalObject {
+class JSCallbackConstructor : public JSObjectWithGlobalObject
+{
 public:
-    JSCallbackConstructor(JSGlobalObject*, Structure*, JSClassRef, JSObjectCallAsConstructorCallback);
+    JSCallbackConstructor( JSGlobalObject *, Structure *, JSClassRef, JSObjectCallAsConstructorCallback );
     virtual ~JSCallbackConstructor();
-    JSClassRef classRef() const { return m_class; }
-    JSObjectCallAsConstructorCallback callback() const { return m_callback; }
+    JSClassRef classRef() const
+    {
+        return m_class;
+    }
+    JSObjectCallAsConstructorCallback callback() const
+    {
+        return m_callback;
+    }
     static const ClassInfo s_info;
 
-    static Structure* createStructure(JSGlobalData& globalData, JSValue proto) 
+    static Structure *createStructure( JSGlobalData &globalData, JSValue proto )
     {
-        return Structure::create(globalData, proto, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return Structure::create( globalData, proto, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
     }
 
 protected:
     static const unsigned StructureFlags = ImplementsHasInstance | JSObject::StructureFlags;
 
 private:
-    virtual ConstructType getConstructData(ConstructData&);
+    virtual ConstructType getConstructData( ConstructData & );
 
     JSClassRef m_class;
     JSObjectCallAsConstructorCallback m_callback;

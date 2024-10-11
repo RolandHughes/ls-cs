@@ -44,95 +44,125 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 // FIXME: This should try and use <WebCore/FileSystem.h>.
 
-static String pathGetFileName(const String& path)
+static String pathGetFileName( const String &path )
 {
-    return String(::PathFindFileName(String(path).charactersWithNullTermination()));
+    return String( ::PathFindFileName( String( path ).charactersWithNullTermination() ) );
 }
 
-static String directoryName(const String& path)
+static String directoryName( const String &path )
 {
-    String fileName = pathGetFileName(path);
-    String dirName = String(path);
-    dirName.truncate(dirName.length() - pathGetFileName(path).length());
+    String fileName = pathGetFileName( path );
+    String dirName = String( path );
+    dirName.truncate( dirName.length() - pathGetFileName( path ).length() );
     return dirName;
 }
 
-bool InjectedBundle::load(APIObject* initializationUserData)
+bool InjectedBundle::load( APIObject *initializationUserData )
 {
     WCHAR currentPath[MAX_PATH];
-    if (!::GetCurrentDirectoryW(MAX_PATH, currentPath))
-        return false;
 
-    String directorBundleResidesIn = directoryName(m_path);
-    if (!::SetCurrentDirectoryW(directorBundleResidesIn.charactersWithNullTermination()))
-        return false;
-
-    m_platformBundle = ::LoadLibraryExW(m_path.charactersWithNullTermination(), 0, LOAD_WITH_ALTERED_SEARCH_PATH);
-    if (!m_platformBundle)
-        return false;
-
-    // Reset the current directory.
-    if (!::SetCurrentDirectoryW(currentPath)) {
+    if ( !::GetCurrentDirectoryW( MAX_PATH, currentPath ) )
+    {
         return false;
     }
 
-    WKBundleInitializeFunctionPtr initializeFunction = reinterpret_cast<WKBundleInitializeFunctionPtr>(::GetProcAddress(m_platformBundle, "WKBundleInitialize"));
-    if (!initializeFunction)
-        return false;
+    String directorBundleResidesIn = directoryName( m_path );
 
-    initializeFunction(toAPI(this), toAPI(initializationUserData));
+    if ( !::SetCurrentDirectoryW( directorBundleResidesIn.charactersWithNullTermination() ) )
+    {
+        return false;
+    }
+
+    m_platformBundle = ::LoadLibraryExW( m_path.charactersWithNullTermination(), 0, LOAD_WITH_ALTERED_SEARCH_PATH );
+
+    if ( !m_platformBundle )
+    {
+        return false;
+    }
+
+    // Reset the current directory.
+    if ( !::SetCurrentDirectoryW( currentPath ) )
+    {
+        return false;
+    }
+
+    WKBundleInitializeFunctionPtr initializeFunction = reinterpret_cast<WKBundleInitializeFunctionPtr>( ::GetProcAddress(
+                m_platformBundle, "WKBundleInitialize" ) );
+
+    if ( !initializeFunction )
+    {
+        return false;
+    }
+
+    initializeFunction( toAPI( this ), toAPI( initializationUserData ) );
     return true;
 }
 
 void InjectedBundle::activateMacFontAscentHack()
 {
-    SimpleFontData::setShouldApplyMacAscentHack(true);
+    SimpleFontData::setShouldApplyMacAscentHack( true );
 }
 
-void InjectedBundle::setHostAllowsAnyHTTPSCertificate(const String& host)
+void InjectedBundle::setHostAllowsAnyHTTPSCertificate( const String &host )
 {
 #if USE(CFNETWORK)
-    ResourceHandle::setHostAllowsAnyHTTPSCertificate(host);
+    ResourceHandle::setHostAllowsAnyHTTPSCertificate( host );
 #endif
 }
 
-void InjectedBundle::setClientCertificate(const String& host, const String& certificateSystemStoreName, const WebCertificateInfo* certificateInfo)
+void InjectedBundle::setClientCertificate( const String &host, const String &certificateSystemStoreName,
+        const WebCertificateInfo *certificateInfo )
 {
 #if USE(CFNETWORK)
-    ASSERT_ARG(certificateInfo, certificateInfo);
-    if (!certificateInfo)
-        return;
-    
-    const Vector<PCCERT_CONTEXT> certificateChain = certificateInfo->platformCertificateInfo().certificateChain();
-    ASSERT(certificateChain.size() == 1);
-    if (certificateChain.size() != 1)
-        return;
-    
-    ASSERT_ARG(certificateSystemStoreName, !certificateSystemStoreName.isEmpty());
-    if (certificateSystemStoreName.isEmpty())
-        return;
-    
-    // The PCCERT_CONTEXT in the WebCertificateInfo we created using the message from the UI process doesn't contain enough information
-    // to actually use it in a request, we need to get the real certificate from the certificate store (which is typically the "MY" store).
-    String mutableCertificateSystemStoreName = certificateSystemStoreName;
-    HCERTSTORE certStore = ::CertOpenSystemStore(0, mutableCertificateSystemStoreName.charactersWithNullTermination());
-    if (!certStore) {
-        LOG_ERROR("Could not open system certificate store %s", certificateSystemStoreName.ascii().data());
-        return;
-    }
-    
-    PCCERT_CONTEXT realCert = ::CertFindCertificateInStore(certStore, X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 0, CERT_FIND_EXISTING, certificateChain.first(), 0);
-    if (!realCert) {
-        LOG_ERROR("Could not find certificate in system certificate store");
+    ASSERT_ARG( certificateInfo, certificateInfo );
+
+    if ( !certificateInfo )
+    {
         return;
     }
 
-    ResourceHandle::setClientCertificate(host, WebCore::copyCertificateToData(realCert).get());
-    CertFreeCertificateContext(realCert);
+    const Vector<PCCERT_CONTEXT> certificateChain = certificateInfo->platformCertificateInfo().certificateChain();
+    ASSERT( certificateChain.size() == 1 );
+
+    if ( certificateChain.size() != 1 )
+    {
+        return;
+    }
+
+    ASSERT_ARG( certificateSystemStoreName, !certificateSystemStoreName.isEmpty() );
+
+    if ( certificateSystemStoreName.isEmpty() )
+    {
+        return;
+    }
+
+    // The PCCERT_CONTEXT in the WebCertificateInfo we created using the message from the UI process doesn't contain enough information
+    // to actually use it in a request, we need to get the real certificate from the certificate store (which is typically the "MY" store).
+    String mutableCertificateSystemStoreName = certificateSystemStoreName;
+    HCERTSTORE certStore = ::CertOpenSystemStore( 0, mutableCertificateSystemStoreName.charactersWithNullTermination() );
+
+    if ( !certStore )
+    {
+        LOG_ERROR( "Could not open system certificate store %s", certificateSystemStoreName.ascii().data() );
+        return;
+    }
+
+    PCCERT_CONTEXT realCert = ::CertFindCertificateInStore( certStore, X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 0, CERT_FIND_EXISTING,
+                              certificateChain.first(), 0 );
+
+    if ( !realCert )
+    {
+        LOG_ERROR( "Could not find certificate in system certificate store" );
+        return;
+    }
+
+    ResourceHandle::setClientCertificate( host, WebCore::copyCertificateToData( realCert ).get() );
+    CertFreeCertificateContext( realCert );
 
     // We can't close certStore here, since the certificate is still in use.
 #endif

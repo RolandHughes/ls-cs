@@ -35,45 +35,50 @@
 #include <wtf/PassOwnPtr.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AffineTransform;
 class GraphicsContext3D;
 class Color;
 
-class Shader {
-    WTF_MAKE_NONCOPYABLE(Shader);
+class Shader
+{
+    WTF_MAKE_NONCOPYABLE( Shader );
 public:
-    enum VertexType {
+    enum VertexType
+    {
         TwoDimensional,
         LoopBlinnInterior,
         LoopBlinnExterior
     };
 
-    enum FillType {
+    enum FillType
+    {
         SolidFill,
         TextureFill
     };
 
     // Currently only applies to the Loop-Blinn vertex type.
-    enum AntialiasType {
+    enum AntialiasType
+    {
         NotAntialiased,
         Antialiased
     };
 
 protected:
-    Shader(GraphicsContext3D*, unsigned program);
+    Shader( GraphicsContext3D *, unsigned program );
     ~Shader();
 
-    static String generateVertex(VertexType, FillType);
-    static String generateFragment(VertexType, FillType, AntialiasType);
+    static String generateVertex( VertexType, FillType );
+    static String generateFragment( VertexType, FillType, AntialiasType );
 
-    static void affineTo3x3(const AffineTransform&, float mat[9]);
-    static void affineTo4x4(const AffineTransform&, float mat[16]);
-    static unsigned loadShader(GraphicsContext3D*, unsigned type, const String& shaderSource);
-    static unsigned loadProgram(GraphicsContext3D*, const String& vertexShaderSource, const String& fragmentShaderSource);
+    static void affineTo3x3( const AffineTransform &, float mat[9] );
+    static void affineTo4x4( const AffineTransform &, float mat[16] );
+    static unsigned loadShader( GraphicsContext3D *, unsigned type, const String &shaderSource );
+    static unsigned loadProgram( GraphicsContext3D *, const String &vertexShaderSource, const String &fragmentShaderSource );
 
-    GraphicsContext3D* m_context;
+    GraphicsContext3D *m_context;
     unsigned m_program;
 };
 

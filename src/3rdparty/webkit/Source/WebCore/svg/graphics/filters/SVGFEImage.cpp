@@ -32,60 +32,66 @@
 #include "SVGPreserveAspectRatio.h"
 #include "TextStream.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FEImage::FEImage(Filter* filter, RefPtr<Image> image, const SVGPreserveAspectRatio& preserveAspectRatio)
-    : FilterEffect(filter)
-    , m_image(image)
-    , m_preserveAspectRatio(preserveAspectRatio)
+FEImage::FEImage( Filter *filter, RefPtr<Image> image, const SVGPreserveAspectRatio &preserveAspectRatio )
+    : FilterEffect( filter )
+    , m_image( image )
+    , m_preserveAspectRatio( preserveAspectRatio )
 {
 }
 
-PassRefPtr<FEImage> FEImage::create(Filter* filter, RefPtr<Image> image, const SVGPreserveAspectRatio& preserveAspectRatio)
+PassRefPtr<FEImage> FEImage::create( Filter *filter, RefPtr<Image> image, const SVGPreserveAspectRatio &preserveAspectRatio )
 {
-    return adoptRef(new FEImage(filter, image, preserveAspectRatio));
+    return adoptRef( new FEImage( filter, image, preserveAspectRatio ) );
 }
 
 void FEImage::determineAbsolutePaintRect()
 {
-    ASSERT(m_image);
-    FloatRect srcRect(FloatPoint(), m_image->size());
-    FloatRect paintRect(m_absoluteSubregion);
-    m_preserveAspectRatio.transformRect(paintRect, srcRect);
-    paintRect.intersect(maxEffectRect());
-    setAbsolutePaintRect(enclosingIntRect(paintRect));
+    ASSERT( m_image );
+    FloatRect srcRect( FloatPoint(), m_image->size() );
+    FloatRect paintRect( m_absoluteSubregion );
+    m_preserveAspectRatio.transformRect( paintRect, srcRect );
+    paintRect.intersect( maxEffectRect() );
+    setAbsolutePaintRect( enclosingIntRect( paintRect ) );
 }
 
 void FEImage::apply()
 {
-    if (!m_image.get() || hasResult())
+    if ( !m_image.get() || hasResult() )
+    {
         return;
+    }
 
-    ImageBuffer* resultImage = createImageBufferResult();
-    if (!resultImage)
+    ImageBuffer *resultImage = createImageBufferResult();
+
+    if ( !resultImage )
+    {
         return;
+    }
 
-    FloatRect srcRect(FloatPoint(), m_image->size());
-    FloatRect destRect(m_absoluteSubregion);
-    m_preserveAspectRatio.transformRect(destRect, srcRect);
+    FloatRect srcRect( FloatPoint(), m_image->size() );
+    FloatRect destRect( m_absoluteSubregion );
+    m_preserveAspectRatio.transformRect( destRect, srcRect );
 
     IntPoint paintLocation = absolutePaintRect().location();
-    destRect.move(-paintLocation.x(), -paintLocation.y());
+    destRect.move( -paintLocation.x(), -paintLocation.y() );
 
-    resultImage->context()->drawImage(m_image.get(), ColorSpaceDeviceRGB, destRect, srcRect);
+    resultImage->context()->drawImage( m_image.get(), ColorSpaceDeviceRGB, destRect, srcRect );
 }
 
 void FEImage::dump()
 {
 }
 
-TextStream& FEImage::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FEImage::externalRepresentation( TextStream &ts, int indent ) const
 {
-    ASSERT(m_image);
+    ASSERT( m_image );
     IntSize imageSize = m_image->size();
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[feImage";
-    FilterEffect::externalRepresentation(ts);
+    FilterEffect::externalRepresentation( ts );
     ts << " image-size=\"" << imageSize.width() << "x" << imageSize.height() << "\"]\n";
     // FIXME: should this dump also object returned by SVGFEImage::image() ?
     return ts;

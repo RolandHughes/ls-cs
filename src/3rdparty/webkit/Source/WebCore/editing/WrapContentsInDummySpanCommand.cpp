@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,65 +29,82 @@
 #include "ApplyStyleCommand.h"
 #include "HTMLElement.h"
 
-namespace WebCore {
-
-WrapContentsInDummySpanCommand::WrapContentsInDummySpanCommand(PassRefPtr<Element> element)
-    : SimpleEditCommand(element->document())
-    , m_element(element)
+namespace WebCore
 {
-    ASSERT(m_element);
+
+WrapContentsInDummySpanCommand::WrapContentsInDummySpanCommand( PassRefPtr<Element> element )
+    : SimpleEditCommand( element->document() )
+    , m_element( element )
+{
+    ASSERT( m_element );
 }
 
 void WrapContentsInDummySpanCommand::executeApply()
 {
     Vector<RefPtr<Node> > children;
-    for (Node* child = m_element->firstChild(); child; child = child->nextSibling())
-        children.append(child);
-    
+
+    for ( Node *child = m_element->firstChild(); child; child = child->nextSibling() )
+    {
+        children.append( child );
+    }
+
     ExceptionCode ec;
-    
+
     size_t size = children.size();
-    for (size_t i = 0; i < size; ++i)
-        m_dummySpan->appendChild(children[i].release(), ec);
-    
-    m_element->appendChild(m_dummySpan.get(), ec);
+
+    for ( size_t i = 0; i < size; ++i )
+    {
+        m_dummySpan->appendChild( children[i].release(), ec );
+    }
+
+    m_element->appendChild( m_dummySpan.get(), ec );
 }
 
 void WrapContentsInDummySpanCommand::doApply()
 {
-    m_dummySpan = createStyleSpanElement(document());
-    
+    m_dummySpan = createStyleSpanElement( document() );
+
     executeApply();
 }
-    
+
 void WrapContentsInDummySpanCommand::doUnapply()
 {
-    ASSERT(m_element);
+    ASSERT( m_element );
 
-    if (!m_dummySpan || !m_element->rendererIsEditable())
+    if ( !m_dummySpan || !m_element->rendererIsEditable() )
+    {
         return;
+    }
 
     Vector<RefPtr<Node> > children;
-    for (Node* child = m_dummySpan->firstChild(); child; child = child->nextSibling())
-        children.append(child);
+
+    for ( Node *child = m_dummySpan->firstChild(); child; child = child->nextSibling() )
+    {
+        children.append( child );
+    }
 
     ExceptionCode ec;
 
     size_t size = children.size();
-    for (size_t i = 0; i < size; ++i)
-        m_element->appendChild(children[i].release(), ec);
 
-    m_dummySpan->remove(ec);
+    for ( size_t i = 0; i < size; ++i )
+    {
+        m_element->appendChild( children[i].release(), ec );
+    }
+
+    m_dummySpan->remove( ec );
 }
 
 void WrapContentsInDummySpanCommand::doReapply()
 {
-    ASSERT(m_element);
-    
-    if (!m_dummySpan || !m_element->rendererIsEditable())
+    ASSERT( m_element );
+
+    if ( !m_dummySpan || !m_element->rendererIsEditable() )
+    {
         return;
+    }
 
     executeApply();
 }
-    
+
 } // namespace WebCore

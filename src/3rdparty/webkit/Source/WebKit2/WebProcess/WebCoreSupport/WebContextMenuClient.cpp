@@ -36,7 +36,8 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 void WebContextMenuClient::contextMenuDestroyed()
 {
@@ -44,44 +45,45 @@ void WebContextMenuClient::contextMenuDestroyed()
 }
 
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
-PassOwnPtr<ContextMenu> WebContextMenuClient::customizeMenu(PassOwnPtr<ContextMenu> menu)
+PassOwnPtr<ContextMenu> WebContextMenuClient::customizeMenu( PassOwnPtr<ContextMenu> menu )
 {
     // WebKit2 ignores this client callback and does context menu customization when it is told to show the menu.
     return menu;
 }
 #else
-PlatformMenuDescription WebContextMenuClient::getCustomMenuFromDefaultItems(ContextMenu* menu)
+PlatformMenuDescription WebContextMenuClient::getCustomMenuFromDefaultItems( ContextMenu *menu )
 {
     // WebKit2 ignores this client callback and does context menu customization when it is told to show the menu.
     return menu->platformDescription();
 }
 #endif
 
-void WebContextMenuClient::contextMenuItemSelected(ContextMenuItem*, const ContextMenu*)
+void WebContextMenuClient::contextMenuItemSelected( ContextMenuItem *, const ContextMenu * )
 {
     notImplemented();
 }
 
-void WebContextMenuClient::downloadURL(const KURL& url)
+void WebContextMenuClient::downloadURL( const KURL &url )
 {
     // This is handled in the UI process.
     ASSERT_NOT_REACHED();
 }
 
-void WebContextMenuClient::searchWithGoogle(const Frame* frame)
+void WebContextMenuClient::searchWithGoogle( const Frame *frame )
 {
     String searchString = frame->editor()->selectedText();
     searchString.stripWhiteSpace();
-    String encoded = encodeWithURLEscapeSequences(searchString);
-    encoded.replace("%20", "+");
-    
-    String url("http://www.google.com/search?q=");
-    url.append(encoded);
-    url.append("&ie=UTF-8&oe=UTF-8");
+    String encoded = encodeWithURLEscapeSequences( searchString );
+    encoded.replace( "%20", "+" );
 
-    if (Page* page = frame->page()) {
-        UserGestureIndicator indicator(DefinitelyProcessingUserGesture);
-        page->mainFrame()->loader()->urlSelected(KURL(ParsedURLString, url), String(), 0, false, false, SendReferrer);
+    String url( "http://www.google.com/search?q=" );
+    url.append( encoded );
+    url.append( "&ie=UTF-8&oe=UTF-8" );
+
+    if ( Page *page = frame->page() )
+    {
+        UserGestureIndicator indicator( DefinitelyProcessingUserGesture );
+        page->mainFrame()->loader()->urlSelected( KURL( ParsedURLString, url ), String(), 0, false, false, SendReferrer );
     }
 }
 

@@ -44,102 +44,103 @@ class QSqlRecordInfo;
 
 class QPSQLResult : public QSqlResult
 {
-   Q_DECLARE_PRIVATE(QPSQLResult)
+    Q_DECLARE_PRIVATE( QPSQLResult )
 
- public:
-   QPSQLResult(const QPSQLDriver *db);
-   ~QPSQLResult();
+public:
+    QPSQLResult( const QPSQLDriver *db );
+    ~QPSQLResult();
 
-   QVariant handle() const override;
-   void virtual_hook(int id, void *data) override;
+    QVariant handle() const override;
+    void virtual_hook( int id, void *data ) override;
 
- protected:
-   void cleanup();
-   bool fetch(int i) override;
-   bool fetchFirst() override;
-   bool fetchLast() override;
-   QVariant data(int i) override;
-   bool isNull(int field) override;
-   bool reset (const QString &query) override;
-   int size() override;
-   int numRowsAffected() override;
-   QSqlRecord record() const override;
-   QVariant lastInsertId() const override;
-   bool prepare(const QString &query) override;
-   bool exec() override;
+protected:
+    void cleanup();
+    bool fetch( int i ) override;
+    bool fetchFirst() override;
+    bool fetchLast() override;
+    QVariant data( int i ) override;
+    bool isNull( int field ) override;
+    bool reset ( const QString &query ) override;
+    int size() override;
+    int numRowsAffected() override;
+    QSqlRecord record() const override;
+    QVariant lastInsertId() const override;
+    bool prepare( const QString &query ) override;
+    bool exec() override;
 };
 
 class Q_EXPORT_SQLDRIVER_PSQL QPSQLDriver : public QSqlDriver
 {
-   CS_OBJECT(QPSQLDriver)
+    LSCS_OBJECT( QPSQLDriver )
 
-   Q_DECLARE_PRIVATE(QPSQLDriver)
+    Q_DECLARE_PRIVATE( QPSQLDriver )
 
- public:
-   enum Protocol {
-      VersionUnknown = -1,
-      Version6  = 6,
-      Version7  = 7,
-      Version71 = 8,
-      Version73 = 9,
-      Version74 = 10,
-      Version8  = 11,
-      Version81 = 12,
-      Version82 = 13,
-      Version83 = 14,
-      Version84 = 15,
-      Version9  = 16,
-      Version91 = 17,
-      Version92 = 18,
-      Version93 = 19,
-      Version94 = 20,
-      Version95 = 21,
-      Version96 = 22,
-      Version97 = 23,
-      Version98 = 24,
-      Version10 = 25,
-      Version11 = 26,
-      Version12 = 27,
-   };
+public:
+    enum Protocol
+    {
+        VersionUnknown = -1,
+        Version6  = 6,
+        Version7  = 7,
+        Version71 = 8,
+        Version73 = 9,
+        Version74 = 10,
+        Version8  = 11,
+        Version81 = 12,
+        Version82 = 13,
+        Version83 = 14,
+        Version84 = 15,
+        Version9  = 16,
+        Version91 = 17,
+        Version92 = 18,
+        Version93 = 19,
+        Version94 = 20,
+        Version95 = 21,
+        Version96 = 22,
+        Version97 = 23,
+        Version98 = 24,
+        Version10 = 25,
+        Version11 = 26,
+        Version12 = 27,
+    };
 
-   explicit QPSQLDriver(QObject *parent = nullptr);
-   explicit QPSQLDriver(PGconn *conn, QObject *parent = nullptr);
-   ~QPSQLDriver();
+    explicit QPSQLDriver( QObject *parent = nullptr );
+    explicit QPSQLDriver( PGconn *conn, QObject *parent = nullptr );
+    ~QPSQLDriver();
 
-   bool hasFeature(DriverFeature f) const override;
-   bool open(const QString &db, const QString &user, const QString &password,
-      const QString &host, int port, const QString &connOpts) override;
+    bool hasFeature( DriverFeature f ) const override;
+    bool open( const QString &db, const QString &user, const QString &password,
+               const QString &host, int port, const QString &connOpts ) override;
 
-   bool isOpen() const override;
-   void close() override;
-   QSqlResult *createResult() const override;
-   QStringList tables(QSql::TableType) const override;
-   QSqlIndex primaryIndex(const QString &tablename) const override;
-   QSqlRecord record(const QString &tablename) const override;
+    bool isOpen() const override;
+    void close() override;
+    QSqlResult *createResult() const override;
+    QStringList tables( QSql::TableType ) const override;
+    QSqlIndex primaryIndex( const QString &tablename ) const override;
+    QSqlRecord record( const QString &tablename ) const override;
 
-   Protocol protocol() const;
-   QVariant handle() const override;
+    Protocol protocol() const;
+    QVariant handle() const override;
 
-   QString escapeIdentifier(const QString &identifier, IdentifierType type) const override;
-   QString formatValue(const QSqlField &field, bool trimStrings) const override;
+    QString escapeIdentifier( const QString &identifier, IdentifierType type ) const override;
+    QString formatValue( const QSqlField &field, bool trimStrings ) const override;
 
-   bool subscribeToNotification(const QString &name) override;
-   bool unsubscribeFromNotification(const QString &name) override;
-   QStringList subscribedToNotifications() const override;
+    bool subscribeToNotification( const QString &name ) override;
+    bool unsubscribeFromNotification( const QString &name ) override;
+    QStringList subscribedToNotifications() const override;
 
- protected:
-   bool beginTransaction() override;
-   bool commitTransaction() override;
-   bool rollbackTransaction() override;
+protected:
+    bool beginTransaction() override;
+    bool commitTransaction() override;
+    bool rollbackTransaction() override;
 
- private:
-   CS_SLOT_1(Private, void _q_handleNotification(int handle))
-   CS_SLOT_2(_q_handleNotification)
+private:
+    LSCS_SLOT_1( Private, void _q_handleNotification( int handle ) )
+    LSCS_SLOT_2( _q_handleNotification )
 
-   friend class QPSQLResultPrivate;
+    friend class QPSQLResultPrivate;
 };
 
-CS_DECLARE_METATYPE(pg_conn)
-CS_DECLARE_METATYPE(pg_result)
+LSCS_DECLARE_METATYPE( pg_conn )
+LSCS_DECLARE_METATYPE( pg_result )
 
 #endif

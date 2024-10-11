@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CachedTranscendentalFunction_h
@@ -28,74 +28,88 @@
 
 #include "JSValue.h"
 
-namespace JSC {
+namespace JSC
+{
 
 extern const double NaN;
 
-typedef double (*TranscendentalFunctionPtr)(double);
+typedef double ( *TranscendentalFunctionPtr )( double );
 
 // CachedTranscendentalFunction provides a generic mechanism to cache results
 // for pure functions with the signature "double func(double)", and where NaN
 // maps to NaN.
 template<TranscendentalFunctionPtr orignalFunction>
-class CachedTranscendentalFunction {
-    struct CacheEntry {
+class CachedTranscendentalFunction
+{
+    struct CacheEntry
+    {
         double operand;
         double result;
     };
 
 public:
     CachedTranscendentalFunction()
-        : m_cache(0)
+        : m_cache( 0 )
     {
     }
 
     ~CachedTranscendentalFunction()
     {
-        if (m_cache)
-            fastFree(m_cache);
+        if ( m_cache )
+        {
+            fastFree( m_cache );
+        }
     }
 
-    JSValue operator() (double operand)
+    JSValue operator() ( double operand )
     {
-        if (UNLIKELY(!m_cache))
+        if ( UNLIKELY( !m_cache ) )
+        {
             initialize();
-        CacheEntry* entry = &m_cache[hash(operand)];
+        }
 
-        if (entry->operand == operand)
-            return jsDoubleNumber(entry->result);
-        double result = orignalFunction(operand);
+        CacheEntry *entry = &m_cache[hash( operand )];
+
+        if ( entry->operand == operand )
+        {
+            return jsDoubleNumber( entry->result );
+        }
+
+        double result = orignalFunction( operand );
         entry->operand = operand;
         entry->result = result;
-        return jsDoubleNumber(result);
+        return jsDoubleNumber( result );
     }
 
 private:
     void initialize()
     {
         // Lazily allocate the table, populate with NaN->NaN mapping.
-        m_cache = static_cast<CacheEntry*>(fastMalloc(s_cacheSize * sizeof(CacheEntry)));
-        for (unsigned x = 0; x < s_cacheSize; ++x) {
+        m_cache = static_cast<CacheEntry *>( fastMalloc( s_cacheSize * sizeof( CacheEntry ) ) );
+
+        for ( unsigned x = 0; x < s_cacheSize; ++x )
+        {
             m_cache[x].operand = NaN;
             m_cache[x].result = NaN;
         }
     }
 
-    static unsigned hash(double d)
+    static unsigned hash( double d )
     {
-        union doubleAndUInt64 {
+        union doubleAndUInt64
+        {
             double d;
             uint32_t is[2];
         } u;
         u.d = d;
 
         unsigned x = u.is[0] ^ u.is[1];
-        x = (x >> 20) ^ (x >> 8);
-        return x & (s_cacheSize - 1);
+        x = ( x >> 20 ) ^ ( x >> 8 );
+        return x & ( s_cacheSize - 1 );
     }
 
     static const unsigned s_cacheSize = 0x1000;
-    CacheEntry* m_cache;
+    CacheEntry *m_cache;
 };
 
 }

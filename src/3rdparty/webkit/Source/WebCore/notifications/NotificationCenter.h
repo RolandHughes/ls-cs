@@ -42,47 +42,61 @@
 
 #if ENABLE(NOTIFICATIONS)
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class NotificationCenter : public RefCounted<NotificationCenter>, public ActiveDOMObject { 
-    public:
-        static PassRefPtr<NotificationCenter> create(ScriptExecutionContext* context, NotificationPresenter* presenter) { return adoptRef(new NotificationCenter(context, presenter)); }
+class NotificationCenter : public RefCounted<NotificationCenter>, public ActiveDOMObject
+{
+public:
+    static PassRefPtr<NotificationCenter> create( ScriptExecutionContext *context, NotificationPresenter *presenter )
+    {
+        return adoptRef( new NotificationCenter( context, presenter ) );
+    }
 
-        PassRefPtr<Notification> createHTMLNotification(const String& URI, ExceptionCode& ec)
+    PassRefPtr<Notification> createHTMLNotification( const String &URI, ExceptionCode &ec )
+    {
+        if ( !presenter() )
         {
-            if (!presenter()) {
-                ec = INVALID_STATE_ERR;
-                return 0;
-            }
-            if (URI.isEmpty()) {
-                ec = SYNTAX_ERR;
-                return 0;
-            }
-            return Notification::create(scriptExecutionContext()->completeURL(URI), scriptExecutionContext(), ec, this);
+            ec = INVALID_STATE_ERR;
+            return 0;
         }
 
-        PassRefPtr<Notification> createNotification(const String& iconURI, const String& title, const String& body, ExceptionCode& ec)
+        if ( URI.isEmpty() )
         {
-            if (!presenter()) {
-                ec = INVALID_STATE_ERR;
-                return 0;
-            }
-            NotificationContents contents(iconURI.isEmpty() ? KURL() : scriptExecutionContext()->completeURL(iconURI), title, body);
-            return Notification::create(contents, scriptExecutionContext(), ec, this);
+            ec = SYNTAX_ERR;
+            return 0;
         }
 
-        NotificationPresenter* presenter() const { return m_notificationPresenter; }
+        return Notification::create( scriptExecutionContext()->completeURL( URI ), scriptExecutionContext(), ec, this );
+    }
 
-        int checkPermission();
-        void requestPermission(PassRefPtr<VoidCallback> callback);
+    PassRefPtr<Notification> createNotification( const String &iconURI, const String &title, const String &body, ExceptionCode &ec )
+    {
+        if ( !presenter() )
+        {
+            ec = INVALID_STATE_ERR;
+            return 0;
+        }
 
-        void disconnectFrame();
+        NotificationContents contents( iconURI.isEmpty() ? KURL() : scriptExecutionContext()->completeURL( iconURI ), title, body );
+        return Notification::create( contents, scriptExecutionContext(), ec, this );
+    }
 
-    private:
-        NotificationCenter(ScriptExecutionContext*, NotificationPresenter*);
+    NotificationPresenter *presenter() const
+    {
+        return m_notificationPresenter;
+    }
 
-        NotificationPresenter* m_notificationPresenter;
-    };
+    int checkPermission();
+    void requestPermission( PassRefPtr<VoidCallback> callback );
+
+    void disconnectFrame();
+
+private:
+    NotificationCenter( ScriptExecutionContext *, NotificationPresenter * );
+
+    NotificationPresenter *m_notificationPresenter;
+};
 
 } // namespace WebCore
 

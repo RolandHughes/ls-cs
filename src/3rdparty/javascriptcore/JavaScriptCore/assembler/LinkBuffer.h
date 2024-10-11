@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef LinkBuffer_h
@@ -33,7 +33,8 @@
 #include <MacroAssembler.h>
 #include <wtf/Noncopyable.h>
 
-namespace JSC {
+namespace JSC
+{
 
 // LinkBuffer:
 //
@@ -49,7 +50,8 @@ namespace JSC {
 //   * The address of a Label pointing into the code may be resolved.
 //   * The value referenced by a DataLabel may be set.
 //
-class LinkBuffer : public Noncopyable {
+class LinkBuffer : public Noncopyable
+{
     typedef MacroAssemblerCodeRef CodeRef;
     typedef MacroAssembler::Label Label;
     typedef MacroAssembler::Jump Jump;
@@ -62,86 +64,88 @@ public:
     // Note: Initialization sequence is significant, since executablePool is a PassRefPtr.
     //       First, executablePool is copied into m_executablePool, then the initialization of
     //       m_code uses m_executablePool, *not* executablePool, since this is no longer valid.
-    LinkBuffer(MacroAssembler* masm, PassRefPtr<ExecutablePool> executablePool)
-        : m_executablePool(executablePool)
-        , m_code(masm->m_assembler.executableCopy(m_executablePool.get()))
-        , m_size(masm->m_assembler.size())
+    LinkBuffer( MacroAssembler *masm, PassRefPtr<ExecutablePool> executablePool )
+        : m_executablePool( executablePool )
+        , m_code( masm->m_assembler.executableCopy( m_executablePool.get() ) )
+        , m_size( masm->m_assembler.size() )
 #ifndef NDEBUG
-        , m_completed(false)
+        , m_completed( false )
 #endif
     {
     }
 
     ~LinkBuffer()
     {
-        ASSERT(m_completed);
+        ASSERT( m_completed );
     }
 
     // These methods are used to link or set values at code generation time.
 
-    void link(Call call, FunctionPtr function)
+    void link( Call call, FunctionPtr function )
     {
-        ASSERT(call.isFlagSet(Call::Linkable));
-        MacroAssembler::linkCall(code(), call, function);
-    }
-    
-    void link(Jump jump, CodeLocationLabel label)
-    {
-        MacroAssembler::linkJump(code(), jump, label);
+        ASSERT( call.isFlagSet( Call::Linkable ) );
+        MacroAssembler::linkCall( code(), call, function );
     }
 
-    void link(JumpList list, CodeLocationLabel label)
+    void link( Jump jump, CodeLocationLabel label )
     {
-        for (unsigned i = 0; i < list.m_jumps.size(); ++i)
-            MacroAssembler::linkJump(code(), list.m_jumps[i], label);
+        MacroAssembler::linkJump( code(), jump, label );
     }
 
-    void patch(DataLabelPtr label, void* value)
+    void link( JumpList list, CodeLocationLabel label )
     {
-        MacroAssembler::linkPointer(code(), label.m_label, value);
+        for ( unsigned i = 0; i < list.m_jumps.size(); ++i )
+        {
+            MacroAssembler::linkJump( code(), list.m_jumps[i], label );
+        }
     }
 
-    void patch(DataLabelPtr label, CodeLocationLabel value)
+    void patch( DataLabelPtr label, void *value )
     {
-        MacroAssembler::linkPointer(code(), label.m_label, value.executableAddress());
+        MacroAssembler::linkPointer( code(), label.m_label, value );
+    }
+
+    void patch( DataLabelPtr label, CodeLocationLabel value )
+    {
+        MacroAssembler::linkPointer( code(), label.m_label, value.executableAddress() );
     }
 
     // These methods are used to obtain handles to allow the code to be relinked / repatched later.
 
-    CodeLocationCall locationOf(Call call)
+    CodeLocationCall locationOf( Call call )
     {
-        ASSERT(call.isFlagSet(Call::Linkable));
-        ASSERT(!call.isFlagSet(Call::Near));
-        return CodeLocationCall(MacroAssembler::getLinkerAddress(code(), call.m_jmp));
+        ASSERT( call.isFlagSet( Call::Linkable ) );
+        ASSERT( !call.isFlagSet( Call::Near ) );
+        return CodeLocationCall( MacroAssembler::getLinkerAddress( code(), call.m_jmp ) );
     }
 
-    CodeLocationNearCall locationOfNearCall(Call call)
+    CodeLocationNearCall locationOfNearCall( Call call )
     {
-        ASSERT(call.isFlagSet(Call::Linkable));
-        ASSERT(call.isFlagSet(Call::Near));
-        return CodeLocationNearCall(MacroAssembler::getLinkerAddress(code(), call.m_jmp));
+        ASSERT( call.isFlagSet( Call::Linkable ) );
+        ASSERT( call.isFlagSet( Call::Near ) );
+        return CodeLocationNearCall( MacroAssembler::getLinkerAddress( code(), call.m_jmp ) );
     }
 
-    CodeLocationLabel locationOf(Label label)
+    CodeLocationLabel locationOf( Label label )
     {
-        return CodeLocationLabel(MacroAssembler::getLinkerAddress(code(), label.m_label));
+        return CodeLocationLabel( MacroAssembler::getLinkerAddress( code(), label.m_label ) );
     }
 
-    CodeLocationDataLabelPtr locationOf(DataLabelPtr label)
+    CodeLocationDataLabelPtr locationOf( DataLabelPtr label )
     {
-        return CodeLocationDataLabelPtr(MacroAssembler::getLinkerAddress(code(), label.m_label));
+        return CodeLocationDataLabelPtr( MacroAssembler::getLinkerAddress( code(), label.m_label ) );
     }
 
-    CodeLocationDataLabel32 locationOf(DataLabel32 label)
+    CodeLocationDataLabel32 locationOf( DataLabel32 label )
     {
-        return CodeLocationDataLabel32(MacroAssembler::getLinkerAddress(code(), label.m_label));
+        return CodeLocationDataLabel32( MacroAssembler::getLinkerAddress( code(), label.m_label ) );
     }
 
     // This method obtains the return address of the call, given as an offset from
     // the start of the code.
-    unsigned returnAddressOffset(Call call)
+    unsigned returnAddressOffset( Call call )
     {
-        return MacroAssembler::getLinkerCallReturnOffset(call);
+        return MacroAssembler::getLinkerCallReturnOffset( call );
     }
 
     // Upon completion of all patching either 'finalizeCode()' or 'finalizeCodeAddendum()' should be called
@@ -152,19 +156,19 @@ public:
     {
         performFinalization();
 
-        return CodeRef(m_code, m_executablePool, m_size);
+        return CodeRef( m_code, m_executablePool, m_size );
     }
     CodeLocationLabel finalizeCodeAddendum()
     {
         performFinalization();
 
-        return CodeLocationLabel(code());
+        return CodeLocationLabel( code() );
     }
 
 private:
-    // Keep this private! - the underlying code should only be obtained externally via 
+    // Keep this private! - the underlying code should only be obtained externally via
     // finalizeCode() or finalizeCodeAddendum().
-    void* code()
+    void *code()
     {
         return m_code;
     }
@@ -172,16 +176,16 @@ private:
     void performFinalization()
     {
 #ifndef NDEBUG
-        ASSERT(!m_completed);
+        ASSERT( !m_completed );
         m_completed = true;
 #endif
 
-        ExecutableAllocator::makeExecutable(code(), m_size);
-        ExecutableAllocator::cacheFlush(code(), m_size);
+        ExecutableAllocator::makeExecutable( code(), m_size );
+        ExecutableAllocator::cacheFlush( code(), m_size );
     }
 
     RefPtr<ExecutablePool> m_executablePool;
-    void* m_code;
+    void *m_code;
     size_t m_size;
 #ifndef NDEBUG
     bool m_completed;

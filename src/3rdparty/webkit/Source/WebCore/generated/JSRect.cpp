@@ -28,9 +28,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSRect);
+ASSERT_CLASS_FITS_IN_CELL( JSRect );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -41,12 +42,12 @@ ASSERT_CLASS_FITS_IN_CELL(JSRect);
 
 static const HashTableValue JSRectTableValues[6] =
 {
-    { "top", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRectTop), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "right", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRectRight), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "bottom", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRectBottom), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "left", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRectLeft), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsRectConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "top", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRectTop ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "right", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRectRight ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "bottom", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRectBottom ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "left", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRectLeft ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsRectConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,48 @@ static JSC_CONST_HASHTABLE HashTable JSRectTable = { 16, 15, JSRectTableValues, 
 
 static const HashTableValue JSRectConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSRectConstructorTable = { 1, 0, JSRectConstructorTableValues, 0 };
-class JSRectConstructor : public DOMConstructorObject {
+class JSRectConstructor : public DOMConstructorObject
+{
 public:
-    JSRectConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSRectConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSRectConstructor::s_info = { "RectConstructor", &DOMConstructorObject::s_info, &JSRectConstructorTable, 0 };
 
-JSRectConstructor::JSRectConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSRectConstructor::JSRectConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSRectPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSRectPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSRectConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSRectConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSRectConstructor, JSDOMWrapper>(exec, &JSRectConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSRectConstructor, JSDOMWrapper>( exec, &JSRectConstructorTable, this, propertyName, slot );
 }
 
-bool JSRectConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSRectConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSRectConstructor, JSDOMWrapper>(exec, &JSRectConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSRectConstructor, JSDOMWrapper>( exec, &JSRectConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,101 +114,102 @@ bool JSRectConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifi
 
 static const HashTableValue JSRectPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSRectPrototypeTable = { 1, 0, JSRectPrototypeTableValues, 0 };
 const ClassInfo JSRectPrototype::s_info = { "RectPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSRectPrototypeTable, 0 };
 
-JSObject* JSRectPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSRectPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSRect>(exec, globalObject);
+    return getDOMPrototype<JSRect>( exec, globalObject );
 }
 
 const ClassInfo JSRect::s_info = { "Rect", &JSDOMWrapper::s_info, &JSRectTable, 0 };
 
-JSRect::JSRect(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Rect> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSRect::JSRect( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Rect> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSRect::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSRect::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSRectPrototype(exec->globalData(), globalObject, JSRectPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSRectPrototype( exec->globalData(), globalObject,
+                                         JSRectPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSRect::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSRect::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSRect, Base>(exec, &JSRectTable, this, propertyName, slot);
+    return getStaticValueSlot<JSRect, Base>( exec, &JSRectTable, this, propertyName, slot );
 }
 
-bool JSRect::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSRect::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSRect, Base>(exec, &JSRectTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSRect, Base>( exec, &JSRectTable, this, propertyName, descriptor );
 }
 
-JSValue jsRectTop(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRectTop( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRect* castedThis = static_cast<JSRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Rect* imp = static_cast<Rect*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->top()));
+    JSRect *castedThis = static_cast<JSRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Rect *imp = static_cast<Rect *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->top() ) );
     return result;
 }
 
 
-JSValue jsRectRight(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRectRight( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRect* castedThis = static_cast<JSRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Rect* imp = static_cast<Rect*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->right()));
+    JSRect *castedThis = static_cast<JSRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Rect *imp = static_cast<Rect *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->right() ) );
     return result;
 }
 
 
-JSValue jsRectBottom(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRectBottom( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRect* castedThis = static_cast<JSRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Rect* imp = static_cast<Rect*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->bottom()));
+    JSRect *castedThis = static_cast<JSRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Rect *imp = static_cast<Rect *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->bottom() ) );
     return result;
 }
 
 
-JSValue jsRectLeft(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRectLeft( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRect* castedThis = static_cast<JSRect*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Rect* imp = static_cast<Rect*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->left()));
+    JSRect *castedThis = static_cast<JSRect *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Rect *imp = static_cast<Rect *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->left() ) );
     return result;
 }
 
 
-JSValue jsRectConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsRectConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSRect* domObject = static_cast<JSRect*>(asObject(slotBase));
-    return JSRect::getConstructor(exec, domObject->globalObject());
+    JSRect *domObject = static_cast<JSRect *>( asObject( slotBase ) );
+    return JSRect::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSRect::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSRect::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSRectConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSRectConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Rect* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Rect *impl )
 {
-    return wrap<JSRect>(exec, globalObject, impl);
+    return wrap<JSRect>( exec, globalObject, impl );
 }
 
-Rect* toRect(JSC::JSValue value)
+Rect *toRect( JSC::JSValue value )
 {
-    return value.inherits(&JSRect::s_info) ? static_cast<JSRect*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSRect::s_info ) ? static_cast<JSRect *>( asObject( value ) )->impl() : 0;
 }
 
 }

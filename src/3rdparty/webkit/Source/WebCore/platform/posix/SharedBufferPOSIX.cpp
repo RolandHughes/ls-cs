@@ -33,39 +33,52 @@
 #include <unistd.h>
 #include <wtf/text/CString.h>
 
-namespace WebCore {
-
-PassRefPtr<SharedBuffer> SharedBuffer::createWithContentsOfFile(const String& filePath)
+namespace WebCore
 {
-    if (filePath.isEmpty())
-        return 0;
 
-    CString filename = fileSystemRepresentation(filePath);
-    int fd = open(filename.data(), O_RDONLY);
-    if (fd == -1)
+PassRefPtr<SharedBuffer> SharedBuffer::createWithContentsOfFile( const String &filePath )
+{
+    if ( filePath.isEmpty() )
+    {
         return 0;
+    }
+
+    CString filename = fileSystemRepresentation( filePath );
+    int fd = open( filename.data(), O_RDONLY );
+
+    if ( fd == -1 )
+    {
+        return 0;
+    }
 
     struct stat fileStat;
-    if (fstat(fd, &fileStat)) {
-        close(fd);
+
+    if ( fstat( fd, &fileStat ) )
+    {
+        close( fd );
         return 0;
     }
 
     size_t bytesToRead = fileStat.st_size;
-    if (bytesToRead != fileStat.st_size) {
-        close(fd);
+
+    if ( bytesToRead != fileStat.st_size )
+    {
+        close( fd );
         return 0;
     }
 
     RefPtr<SharedBuffer> result = create();
-    result->m_buffer.grow(bytesToRead);
+    result->m_buffer.grow( bytesToRead );
 
     size_t totalBytesRead = 0;
     ssize_t bytesRead;
-    while ((bytesRead = read(fd, result->m_buffer.data() + totalBytesRead, bytesToRead - totalBytesRead)) > 0)
-        totalBytesRead += bytesRead;
 
-    close(fd);
+    while ( ( bytesRead = read( fd, result->m_buffer.data() + totalBytesRead, bytesToRead - totalBytesRead ) ) > 0 )
+    {
+        totalBytesRead += bytesRead;
+    }
+
+    close( fd );
 
     return totalBytesRead == bytesToRead ? result.release() : 0;
 }

@@ -26,7 +26,8 @@
 #include "config.h"
 #include "WebContextMenuProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebContextMenuProxy::WebContextMenuProxy()
 {

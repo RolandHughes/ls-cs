@@ -35,20 +35,23 @@ extern "C" {
 #endif
 
 // Undo Client.
-enum {
+enum
+{
     kWKViewUndo = 0,
     kWKViewRedo = 1
 };
 typedef uint32_t WKViewUndoType;
 
-typedef void (*WKViewRegisterEditCommandCallback)(WKViewRef, WKEditCommandRef, WKViewUndoType undoOrRedo, const void *clientInfo);
-typedef void (*WKViewClearAllEditCommandsCallback)(WKViewRef, const void *clientInfo);
-typedef bool (*WKViewCanUndoRedoCallback)(WKViewRef, WKViewUndoType undoOrRedo, const void *clientInfo);
-typedef void (*WKViewExecuteUndoRedoCallback)(WKViewRef, WKViewUndoType undoOrRedo, const void *clientInfo);
+typedef void ( *WKViewRegisterEditCommandCallback )( WKViewRef, WKEditCommandRef, WKViewUndoType undoOrRedo,
+        const void *clientInfo );
+typedef void ( *WKViewClearAllEditCommandsCallback )( WKViewRef, const void *clientInfo );
+typedef bool ( *WKViewCanUndoRedoCallback )( WKViewRef, WKViewUndoType undoOrRedo, const void *clientInfo );
+typedef void ( *WKViewExecuteUndoRedoCallback )( WKViewRef, WKViewUndoType undoOrRedo, const void *clientInfo );
 
-struct WKViewUndoClient {
+struct WKViewUndoClient
+{
     int                                                                 version;
-    const void *                                                        clientInfo;
+    const void                                                         *clientInfo;
     WKViewRegisterEditCommandCallback                                   registerEditCommand;
     WKViewClearAllEditCommandsCallback                                  clearAllEditCommands;
     WKViewCanUndoRedoCallback                                           canUndoRedo;
@@ -58,28 +61,29 @@ typedef struct WKViewUndoClient WKViewUndoClient;
 
 WK_EXPORT WKTypeID WKViewGetTypeID();
 
-WK_EXPORT WKViewRef WKViewCreate(RECT rect, WKContextRef context, WKPageGroupRef pageGroup, HWND parentWindow);
+WK_EXPORT WKViewRef WKViewCreate( RECT rect, WKContextRef context, WKPageGroupRef pageGroup, HWND parentWindow );
 
-WK_EXPORT HWND WKViewGetWindow(WKViewRef view);
+WK_EXPORT HWND WKViewGetWindow( WKViewRef view );
 
-WK_EXPORT WKPageRef WKViewGetPage(WKViewRef view);
+WK_EXPORT WKPageRef WKViewGetPage( WKViewRef view );
 
-WK_EXPORT void WKViewSetViewUndoClient(WKViewRef view, const WKViewUndoClient* client);
-WK_EXPORT void WKViewReapplyEditCommand(WKViewRef view, WKEditCommandRef command);
-WK_EXPORT void WKViewUnapplyEditCommand(WKViewRef view, WKEditCommandRef command);
+WK_EXPORT void WKViewSetViewUndoClient( WKViewRef view, const WKViewUndoClient *client );
+WK_EXPORT void WKViewReapplyEditCommand( WKViewRef view, WKEditCommandRef command );
+WK_EXPORT void WKViewUnapplyEditCommand( WKViewRef view, WKEditCommandRef command );
 
-WK_EXPORT void WKViewSetParentWindow(WKViewRef view, HWND parentWindow);
-WK_EXPORT void WKViewWindowAncestryDidChange(WKViewRef view);
-WK_EXPORT void WKViewSetIsInWindow(WKViewRef view, bool isInWindow);
-WK_EXPORT void WKViewSetInitialFocus(WKViewRef view, bool forward);
-WK_EXPORT void WKViewSetScrollOffsetOnNextResize(WKViewRef view, WKSize scrollOffset);
+WK_EXPORT void WKViewSetParentWindow( WKViewRef view, HWND parentWindow );
+WK_EXPORT void WKViewWindowAncestryDidChange( WKViewRef view );
+WK_EXPORT void WKViewSetIsInWindow( WKViewRef view, bool isInWindow );
+WK_EXPORT void WKViewSetInitialFocus( WKViewRef view, bool forward );
+WK_EXPORT void WKViewSetScrollOffsetOnNextResize( WKViewRef view, WKSize scrollOffset );
 
-typedef void (*WKViewFindIndicatorCallback)(WKViewRef, HBITMAP selectionBitmap, RECT selectionRectInWindowCoordinates, bool fadeout, void*);
-WK_EXPORT void WKViewSetFindIndicatorCallback(WKViewRef view, WKViewFindIndicatorCallback callback, void* context);
-WK_EXPORT WKViewFindIndicatorCallback WKViewGetFindIndicatorCallback(WKViewRef view, void** context);
+typedef void ( *WKViewFindIndicatorCallback )( WKViewRef, HBITMAP selectionBitmap, RECT selectionRectInWindowCoordinates,
+        bool fadeout, void * );
+WK_EXPORT void WKViewSetFindIndicatorCallback( WKViewRef view, WKViewFindIndicatorCallback callback, void *context );
+WK_EXPORT WKViewFindIndicatorCallback WKViewGetFindIndicatorCallback( WKViewRef view, void **context );
 
-WK_EXPORT void WKViewSetDrawsTransparentBackground(WKViewRef view, bool drawsTransparentBackground);
-WK_EXPORT bool WKViewDrawsTransparentBackground(WKViewRef view);
+WK_EXPORT void WKViewSetDrawsTransparentBackground( WKViewRef view, bool drawsTransparentBackground );
+WK_EXPORT bool WKViewDrawsTransparentBackground( WKViewRef view );
 
 #ifdef __cplusplus
 }

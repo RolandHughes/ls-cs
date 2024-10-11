@@ -31,7 +31,8 @@
 #include "WebProcessCreationParameters.h"
 #include <QProcess>
 
-namespace WebKit {
+namespace WebKit
+{
 
 String WebContext::applicationCacheDirectory()
 {
@@ -42,7 +43,7 @@ String WebContext::applicationCacheDirectory()
 #endif
 }
 
-void WebContext::platformInitializeWebProcess(WebProcessCreationParameters&)
+void WebContext::platformInitializeWebProcess( WebProcessCreationParameters & )
 {
 }
 

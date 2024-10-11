@@ -25,39 +25,41 @@
 
 class QAudioEncoderSettingsPrivate  : public QSharedData
 {
- public:
-   QAudioEncoderSettingsPrivate() :
-      isNull(true),
-      encodingMode(QMultimedia::ConstantQualityEncoding),
-      bitrate(-1),
-      sampleRate(-1),
-      channels(-1),
-      quality(QMultimedia::NormalQuality) {
-   }
+public:
+    QAudioEncoderSettingsPrivate() :
+        isNull( true ),
+        encodingMode( QMultimedia::ConstantQualityEncoding ),
+        bitrate( -1 ),
+        sampleRate( -1 ),
+        channels( -1 ),
+        quality( QMultimedia::NormalQuality )
+    {
+    }
 
-   QAudioEncoderSettingsPrivate(const QAudioEncoderSettingsPrivate &other):
-      QSharedData(other),
-      isNull(other.isNull),
-      encodingMode(other.encodingMode),
-      codec(other.codec),
-      bitrate(other.bitrate),
-      sampleRate(other.sampleRate),
-      channels(other.channels),
-      quality(other.quality),
-      encodingOptions(other.encodingOptions) {
-   }
+    QAudioEncoderSettingsPrivate( const QAudioEncoderSettingsPrivate &other ):
+        QSharedData( other ),
+        isNull( other.isNull ),
+        encodingMode( other.encodingMode ),
+        codec( other.codec ),
+        bitrate( other.bitrate ),
+        sampleRate( other.sampleRate ),
+        channels( other.channels ),
+        quality( other.quality ),
+        encodingOptions( other.encodingOptions )
+    {
+    }
 
-   bool isNull;
-   QMultimedia::EncodingMode encodingMode;
-   QString codec;
-   int bitrate;
-   int sampleRate;
-   int channels;
-   QMultimedia::EncodingQuality quality;
-   QVariantMap encodingOptions;
+    bool isNull;
+    QMultimedia::EncodingMode encodingMode;
+    QString codec;
+    int bitrate;
+    int sampleRate;
+    int channels;
+    QMultimedia::EncodingQuality quality;
+    QVariantMap encodingOptions;
 
- private:
-   QAudioEncoderSettingsPrivate &operator=(const QAudioEncoderSettingsPrivate &other);
+private:
+    QAudioEncoderSettingsPrivate &operator=( const QAudioEncoderSettingsPrivate &other );
 };
 
 /*!
@@ -84,7 +86,7 @@ class QAudioEncoderSettingsPrivate  : public QSharedData
     Construct a null audio encoder settings object.
 */
 QAudioEncoderSettings::QAudioEncoderSettings()
-   : d(new QAudioEncoderSettingsPrivate)
+    : d( new QAudioEncoderSettingsPrivate )
 {
 }
 
@@ -92,8 +94,8 @@ QAudioEncoderSettings::QAudioEncoderSettings()
     Constructs a copy of the audio encoder settings object \a other.
 */
 
-QAudioEncoderSettings::QAudioEncoderSettings(const QAudioEncoderSettings &other)
-   : d(other.d)
+QAudioEncoderSettings::QAudioEncoderSettings( const QAudioEncoderSettings &other )
+    : d( other.d )
 {
 }
 
@@ -109,10 +111,10 @@ QAudioEncoderSettings::~QAudioEncoderSettings()
     Assigns the value of \a other to an audio encoder settings object.
 */
 
-QAudioEncoderSettings &QAudioEncoderSettings::operator=(const QAudioEncoderSettings &other)
+QAudioEncoderSettings &QAudioEncoderSettings::operator=( const QAudioEncoderSettings &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
 /*!
@@ -123,17 +125,17 @@ QAudioEncoderSettings &QAudioEncoderSettings::operator=(const QAudioEncoderSetti
     are not of equal value.
 */
 
-bool QAudioEncoderSettings::operator==(const QAudioEncoderSettings &other) const
+bool QAudioEncoderSettings::operator==( const QAudioEncoderSettings &other ) const
 {
-   return (d == other.d) ||
-      (d->isNull == other.d->isNull &&
-         d->encodingMode == other.d->encodingMode &&
-         d->bitrate == other.d->bitrate &&
-         d->sampleRate == other.d->sampleRate &&
-         d->channels == other.d->channels &&
-         d->quality == other.d->quality &&
-         d->codec == other.d->codec &&
-         d->encodingOptions == other.d->encodingOptions);
+    return ( d == other.d ) ||
+           ( d->isNull == other.d->isNull &&
+             d->encodingMode == other.d->encodingMode &&
+             d->bitrate == other.d->bitrate &&
+             d->sampleRate == other.d->sampleRate &&
+             d->channels == other.d->channels &&
+             d->quality == other.d->quality &&
+             d->codec == other.d->codec &&
+             d->encodingOptions == other.d->encodingOptions );
 }
 
 /*!
@@ -144,9 +146,9 @@ bool QAudioEncoderSettings::operator==(const QAudioEncoderSettings &other) const
     they are of equal value.
 */
 
-bool QAudioEncoderSettings::operator!=(const QAudioEncoderSettings &other) const
+bool QAudioEncoderSettings::operator!=( const QAudioEncoderSettings &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
 /*!
@@ -157,7 +159,7 @@ bool QAudioEncoderSettings::operator!=(const QAudioEncoderSettings &other) const
 
 bool QAudioEncoderSettings::isNull() const
 {
-   return d->isNull;
+    return d->isNull;
 }
 
 /*!
@@ -167,7 +169,7 @@ bool QAudioEncoderSettings::isNull() const
 */
 QMultimedia::EncodingMode QAudioEncoderSettings::encodingMode() const
 {
-   return d->encodingMode;
+    return d->encodingMode;
 }
 
 /*!
@@ -182,9 +184,9 @@ QMultimedia::EncodingMode QAudioEncoderSettings::encodingMode() const
 
     \sa encodingMode(), QMultimedia::EncodingMode
 */
-void QAudioEncoderSettings::setEncodingMode(QMultimedia::EncodingMode mode)
+void QAudioEncoderSettings::setEncodingMode( QMultimedia::EncodingMode mode )
 {
-   d->encodingMode = mode;
+    d->encodingMode = mode;
 }
 
 /*!
@@ -192,16 +194,16 @@ void QAudioEncoderSettings::setEncodingMode(QMultimedia::EncodingMode mode)
 */
 QString QAudioEncoderSettings::codec() const
 {
-   return d->codec;
+    return d->codec;
 }
 
 /*!
     Sets the audio \a codec.
 */
-void QAudioEncoderSettings::setCodec(const QString &codec)
+void QAudioEncoderSettings::setCodec( const QString &codec )
 {
-   d->isNull = false;
-   d->codec = codec;
+    d->isNull = false;
+    d->codec = codec;
 }
 
 /*!
@@ -209,7 +211,7 @@ void QAudioEncoderSettings::setCodec(const QString &codec)
 */
 int QAudioEncoderSettings::bitRate() const
 {
-   return d->bitrate;
+    return d->bitrate;
 }
 
 /*!
@@ -217,7 +219,7 @@ int QAudioEncoderSettings::bitRate() const
 */
 int QAudioEncoderSettings::channelCount() const
 {
-   return d->channels;
+    return d->channels;
 }
 
 /*!
@@ -226,19 +228,19 @@ int QAudioEncoderSettings::channelCount() const
     A value of -1 indicates the encoder should make an optimal choice based on
     what is available from the audio source and the limitations of the codec.
 */
-void QAudioEncoderSettings::setChannelCount(int channels)
+void QAudioEncoderSettings::setChannelCount( int channels )
 {
-   d->isNull = false;
-   d->channels = channels;
+    d->isNull = false;
+    d->channels = channels;
 }
 
 /*!
     Sets the audio bit \a rate in bits per second.
 */
-void QAudioEncoderSettings::setBitRate(int rate)
+void QAudioEncoderSettings::setBitRate( int rate )
 {
-   d->isNull = false;
-   d->bitrate = rate;
+    d->isNull = false;
+    d->bitrate = rate;
 }
 
 /*!
@@ -246,7 +248,7 @@ void QAudioEncoderSettings::setBitRate(int rate)
 */
 int QAudioEncoderSettings::sampleRate() const
 {
-   return d->sampleRate;
+    return d->sampleRate;
 }
 
 /*!
@@ -255,10 +257,10 @@ int QAudioEncoderSettings::sampleRate() const
     A value of -1 indicates the encoder should make an optimal choice based on what is avaialbe
     from the audio source and the limitations of the codec.
   */
-void QAudioEncoderSettings::setSampleRate(int rate)
+void QAudioEncoderSettings::setSampleRate( int rate )
 {
-   d->isNull = false;
-   d->sampleRate = rate;
+    d->isNull = false;
+    d->sampleRate = rate;
 }
 
 /*!
@@ -267,7 +269,7 @@ void QAudioEncoderSettings::setSampleRate(int rate)
 
 QMultimedia::EncodingQuality QAudioEncoderSettings::quality() const
 {
-   return d->quality;
+    return d->quality;
 }
 
 /*!
@@ -279,10 +281,10 @@ QMultimedia::EncodingQuality QAudioEncoderSettings::quality() const
     The \a quality settings parameter is only used in the
     \l {QMultimedia::ConstantQualityEncoding}{constant quality} \l{encodingMode()}{encoding mode}.
 */
-void QAudioEncoderSettings::setQuality(QMultimedia::EncodingQuality quality)
+void QAudioEncoderSettings::setQuality( QMultimedia::EncodingQuality quality )
 {
-   d->isNull = false;
-   d->quality = quality;
+    d->isNull = false;
+    d->quality = quality;
 }
 
 /*!
@@ -290,67 +292,72 @@ void QAudioEncoderSettings::setQuality(QMultimedia::EncodingQuality quality)
 
     \sa setEncodingOption(), encodingOptions()
 */
-QVariant QAudioEncoderSettings::encodingOption(const QString &option) const
+QVariant QAudioEncoderSettings::encodingOption( const QString &option ) const
 {
-   return d->encodingOptions.value(option);
+    return d->encodingOptions.value( option );
 }
 
 QVariantMap QAudioEncoderSettings::encodingOptions() const
 {
-   return d->encodingOptions;
+    return d->encodingOptions;
 }
 
-void QAudioEncoderSettings::setEncodingOption(const QString &option, const QVariant &value)
+void QAudioEncoderSettings::setEncodingOption( const QString &option, const QVariant &value )
 {
-   d->isNull = false;
+    d->isNull = false;
 
-   if (! value.isValid()) {
-      d->encodingOptions.remove(option);
-   } else {
-      d->encodingOptions.insert(option, value);
-   }
+    if ( ! value.isValid() )
+    {
+        d->encodingOptions.remove( option );
+    }
+    else
+    {
+        d->encodingOptions.insert( option, value );
+    }
 }
 
-void QAudioEncoderSettings::setEncodingOptions(const QVariantMap &options)
+void QAudioEncoderSettings::setEncodingOptions( const QVariantMap &options )
 {
-   d->isNull = false;
-   d->encodingOptions = options;
+    d->isNull = false;
+    d->encodingOptions = options;
 }
 
 class QVideoEncoderSettingsPrivate  : public QSharedData
 {
- public:
-   QVideoEncoderSettingsPrivate() :
-      isNull(true),
-      encodingMode(QMultimedia::ConstantQualityEncoding),
-      bitrate(-1),
-      frameRate(0),
-      quality(QMultimedia::NormalQuality) {
-   }
+public:
+    QVideoEncoderSettingsPrivate() :
+        isNull( true ),
+        encodingMode( QMultimedia::ConstantQualityEncoding ),
+        bitrate( -1 ),
+        frameRate( 0 ),
+        quality( QMultimedia::NormalQuality )
+    {
+    }
 
-   QVideoEncoderSettingsPrivate(const QVideoEncoderSettingsPrivate &other):
-      QSharedData(other),
-      isNull(other.isNull),
-      encodingMode(other.encodingMode),
-      codec(other.codec),
-      bitrate(other.bitrate),
-      resolution(other.resolution),
-      frameRate(other.frameRate),
-      quality(other.quality),
-      encodingOptions(other.encodingOptions) {
-   }
+    QVideoEncoderSettingsPrivate( const QVideoEncoderSettingsPrivate &other ):
+        QSharedData( other ),
+        isNull( other.isNull ),
+        encodingMode( other.encodingMode ),
+        codec( other.codec ),
+        bitrate( other.bitrate ),
+        resolution( other.resolution ),
+        frameRate( other.frameRate ),
+        quality( other.quality ),
+        encodingOptions( other.encodingOptions )
+    {
+    }
 
-   bool isNull;
-   QMultimedia::EncodingMode encodingMode;
-   QString codec;
-   int bitrate;
-   QSize resolution;
-   qreal frameRate;
-   QMultimedia::EncodingQuality quality;
-   QVariantMap encodingOptions;
+    bool isNull;
+    QMultimedia::EncodingMode encodingMode;
+    QString codec;
+    int bitrate;
+    QSize resolution;
+    qreal frameRate;
+    QMultimedia::EncodingQuality quality;
+    QVariantMap encodingOptions;
 
- private:
-   QVideoEncoderSettingsPrivate &operator=(const QVideoEncoderSettingsPrivate &other);
+private:
+    QVideoEncoderSettingsPrivate &operator=( const QVideoEncoderSettingsPrivate &other );
 };
 
 /*!
@@ -378,7 +385,7 @@ class QVideoEncoderSettingsPrivate  : public QSharedData
 */
 
 QVideoEncoderSettings::QVideoEncoderSettings()
-   : d(new QVideoEncoderSettingsPrivate)
+    : d( new QVideoEncoderSettingsPrivate )
 {
 }
 
@@ -386,8 +393,8 @@ QVideoEncoderSettings::QVideoEncoderSettings()
     Constructs a copy of the video encoder settings object \a other.
 */
 
-QVideoEncoderSettings::QVideoEncoderSettings(const QVideoEncoderSettings &other)
-   : d(other.d)
+QVideoEncoderSettings::QVideoEncoderSettings( const QVideoEncoderSettings &other )
+    : d( other.d )
 {
 }
 
@@ -402,10 +409,10 @@ QVideoEncoderSettings::~QVideoEncoderSettings()
 /*!
     Assigns the value of \a other to a video encoder settings object.
 */
-QVideoEncoderSettings &QVideoEncoderSettings::operator=(const QVideoEncoderSettings &other)
+QVideoEncoderSettings &QVideoEncoderSettings::operator=( const QVideoEncoderSettings &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
 /*!
@@ -414,17 +421,17 @@ QVideoEncoderSettings &QVideoEncoderSettings::operator=(const QVideoEncoderSetti
     Returns true if the settings objects are of equal value, and false if they
     are not of equal value.
 */
-bool QVideoEncoderSettings::operator==(const QVideoEncoderSettings &other) const
+bool QVideoEncoderSettings::operator==( const QVideoEncoderSettings &other ) const
 {
-   return (d == other.d) ||
-      (d->isNull == other.d->isNull &&
-         d->encodingMode == other.d->encodingMode &&
-         d->bitrate == other.d->bitrate &&
-         d->quality == other.d->quality &&
-         d->codec == other.d->codec &&
-         d->resolution == other.d->resolution &&
-         qFuzzyCompare(d->frameRate, other.d->frameRate) &&
-         d->encodingOptions == other.d->encodingOptions);
+    return ( d == other.d ) ||
+           ( d->isNull == other.d->isNull &&
+             d->encodingMode == other.d->encodingMode &&
+             d->bitrate == other.d->bitrate &&
+             d->quality == other.d->quality &&
+             d->codec == other.d->codec &&
+             d->resolution == other.d->resolution &&
+             qFuzzyCompare( d->frameRate, other.d->frameRate ) &&
+             d->encodingOptions == other.d->encodingOptions );
 }
 
 /*!
@@ -433,9 +440,9 @@ bool QVideoEncoderSettings::operator==(const QVideoEncoderSettings &other) const
     Returns true if the settings objects are not of equal value, and false if
     they are of equal value.
 */
-bool QVideoEncoderSettings::operator!=(const QVideoEncoderSettings &other) const
+bool QVideoEncoderSettings::operator!=( const QVideoEncoderSettings &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
 /*!
@@ -445,7 +452,7 @@ bool QVideoEncoderSettings::operator!=(const QVideoEncoderSettings &other) const
 */
 bool QVideoEncoderSettings::isNull() const
 {
-   return d->isNull;
+    return d->isNull;
 }
 
 /*!
@@ -455,7 +462,7 @@ bool QVideoEncoderSettings::isNull() const
 */
 QMultimedia::EncodingMode QVideoEncoderSettings::encodingMode() const
 {
-   return d->encodingMode;
+    return d->encodingMode;
 }
 
 /*!
@@ -469,10 +476,10 @@ QMultimedia::EncodingMode QVideoEncoderSettings::encodingMode() const
 
     \sa QMultimedia::EncodingMode
 */
-void QVideoEncoderSettings::setEncodingMode(QMultimedia::EncodingMode mode)
+void QVideoEncoderSettings::setEncodingMode( QMultimedia::EncodingMode mode )
 {
-   d->isNull = false;
-   d->encodingMode = mode;
+    d->isNull = false;
+    d->encodingMode = mode;
 }
 
 /*!
@@ -481,16 +488,16 @@ void QVideoEncoderSettings::setEncodingMode(QMultimedia::EncodingMode mode)
 
 QString QVideoEncoderSettings::codec() const
 {
-   return d->codec;
+    return d->codec;
 }
 
 /*!
     Sets the video \a codec.
 */
-void QVideoEncoderSettings::setCodec(const QString &codec)
+void QVideoEncoderSettings::setCodec( const QString &codec )
 {
-   d->isNull = false;
-   d->codec = codec;
+    d->isNull = false;
+    d->codec = codec;
 }
 
 /*!
@@ -498,17 +505,17 @@ void QVideoEncoderSettings::setCodec(const QString &codec)
 */
 int QVideoEncoderSettings::bitRate() const
 {
-   return d->bitrate;
+    return d->bitrate;
 }
 
 /*!
     Sets the bit rate of the encoded video stream to \a value.
 */
 
-void QVideoEncoderSettings::setBitRate(int value)
+void QVideoEncoderSettings::setBitRate( int value )
 {
-   d->isNull = false;
-   d->bitrate = value;
+    d->isNull = false;
+    d->bitrate = value;
 }
 
 /*!
@@ -516,7 +523,7 @@ void QVideoEncoderSettings::setBitRate(int value)
 */
 qreal QVideoEncoderSettings::frameRate() const
 {
-   return d->frameRate;
+    return d->frameRate;
 }
 
 /*!
@@ -528,10 +535,10 @@ qreal QVideoEncoderSettings::frameRate() const
     from the video source and the limitations of the codec.
 */
 
-void QVideoEncoderSettings::setFrameRate(qreal rate)
+void QVideoEncoderSettings::setFrameRate( qreal rate )
 {
-   d->isNull = false;
-   d->frameRate = rate;
+    d->isNull = false;
+    d->frameRate = rate;
 }
 
 /*!
@@ -540,7 +547,7 @@ void QVideoEncoderSettings::setFrameRate(qreal rate)
 
 QSize QVideoEncoderSettings::resolution() const
 {
-   return d->resolution;
+    return d->resolution;
 }
 
 /*!
@@ -550,10 +557,10 @@ QSize QVideoEncoderSettings::resolution() const
     what is available from the video source and the limitations of the codec.
 */
 
-void QVideoEncoderSettings::setResolution(const QSize &resolution)
+void QVideoEncoderSettings::setResolution( const QSize &resolution )
 {
-   d->isNull = false;
-   d->resolution = resolution;
+    d->isNull = false;
+    d->resolution = resolution;
 }
 
 /*!
@@ -562,10 +569,10 @@ void QVideoEncoderSettings::setResolution(const QSize &resolution)
     \overload
 */
 
-void QVideoEncoderSettings::setResolution(int width, int height)
+void QVideoEncoderSettings::setResolution( int width, int height )
 {
-   d->isNull = false;
-   d->resolution = QSize(width, height);
+    d->isNull = false;
+    d->resolution = QSize( width, height );
 }
 
 /*!
@@ -574,7 +581,7 @@ void QVideoEncoderSettings::setResolution(int width, int height)
 
 QMultimedia::EncodingQuality QVideoEncoderSettings::quality() const
 {
-   return d->quality;
+    return d->quality;
 }
 
 /*!
@@ -590,10 +597,10 @@ QMultimedia::EncodingQuality QVideoEncoderSettings::quality() const
     \l{encodingMode()}{encoding mode}.
 */
 
-void QVideoEncoderSettings::setQuality(QMultimedia::EncodingQuality quality)
+void QVideoEncoderSettings::setQuality( QMultimedia::EncodingQuality quality )
 {
-   d->isNull = false;
-   d->quality = quality;
+    d->isNull = false;
+    d->quality = quality;
 }
 
 /*!
@@ -601,59 +608,64 @@ void QVideoEncoderSettings::setQuality(QMultimedia::EncodingQuality quality)
 
     \sa setEncodingOption(), encodingOptions()
 */
-QVariant QVideoEncoderSettings::encodingOption(const QString &option) const
+QVariant QVideoEncoderSettings::encodingOption( const QString &option ) const
 {
-   return d->encodingOptions.value(option);
+    return d->encodingOptions.value( option );
 }
 
 QVariantMap QVideoEncoderSettings::encodingOptions() const
 {
-   return d->encodingOptions;
+    return d->encodingOptions;
 }
 
-void QVideoEncoderSettings::setEncodingOption(const QString &option, const QVariant &value)
+void QVideoEncoderSettings::setEncodingOption( const QString &option, const QVariant &value )
 {
-   d->isNull = false;
+    d->isNull = false;
 
-   if (! value.isValid()) {
-      d->encodingOptions.remove(option);
-   } else {
-      d->encodingOptions.insert(option, value);
-   }
+    if ( ! value.isValid() )
+    {
+        d->encodingOptions.remove( option );
+    }
+    else
+    {
+        d->encodingOptions.insert( option, value );
+    }
 }
 
-void QVideoEncoderSettings::setEncodingOptions(const QVariantMap &options)
+void QVideoEncoderSettings::setEncodingOptions( const QVariantMap &options )
 {
-   d->isNull = false;
-   d->encodingOptions = options;
+    d->isNull = false;
+    d->encodingOptions = options;
 }
 
 
 class QImageEncoderSettingsPrivate  : public QSharedData
 {
- public:
-   QImageEncoderSettingsPrivate() :
-      isNull(true),
-      quality(QMultimedia::NormalQuality) {
-   }
+public:
+    QImageEncoderSettingsPrivate() :
+        isNull( true ),
+        quality( QMultimedia::NormalQuality )
+    {
+    }
 
-   QImageEncoderSettingsPrivate(const QImageEncoderSettingsPrivate &other):
-      QSharedData(other),
-      isNull(other.isNull),
-      codec(other.codec),
-      resolution(other.resolution),
-      quality(other.quality),
-      encodingOptions(other.encodingOptions) {
-   }
+    QImageEncoderSettingsPrivate( const QImageEncoderSettingsPrivate &other ):
+        QSharedData( other ),
+        isNull( other.isNull ),
+        codec( other.codec ),
+        resolution( other.resolution ),
+        quality( other.quality ),
+        encodingOptions( other.encodingOptions )
+    {
+    }
 
-   bool isNull;
-   QString codec;
-   QSize resolution;
-   QMultimedia::EncodingQuality quality;
-   QVariantMap encodingOptions;
+    bool isNull;
+    QString codec;
+    QSize resolution;
+    QMultimedia::EncodingQuality quality;
+    QVariantMap encodingOptions;
 
- private:
-   QImageEncoderSettingsPrivate &operator=(const QImageEncoderSettingsPrivate &other);
+private:
+    QImageEncoderSettingsPrivate &operator=( const QImageEncoderSettingsPrivate &other );
 };
 
 /*!
@@ -683,7 +695,7 @@ class QImageEncoderSettingsPrivate  : public QSharedData
 */
 
 QImageEncoderSettings::QImageEncoderSettings()
-   : d(new QImageEncoderSettingsPrivate)
+    : d( new QImageEncoderSettingsPrivate )
 {
 }
 
@@ -691,8 +703,8 @@ QImageEncoderSettings::QImageEncoderSettings()
     Constructs a copy of the image encoder settings object \a other.
 */
 
-QImageEncoderSettings::QImageEncoderSettings(const QImageEncoderSettings &other)
-   : d(other.d)
+QImageEncoderSettings::QImageEncoderSettings( const QImageEncoderSettings &other )
+    : d( other.d )
 {
 }
 
@@ -707,10 +719,10 @@ QImageEncoderSettings::~QImageEncoderSettings()
 /*!
     Assigns the value of \a other to a image encoder settings object.
 */
-QImageEncoderSettings &QImageEncoderSettings::operator=(const QImageEncoderSettings &other)
+QImageEncoderSettings &QImageEncoderSettings::operator=( const QImageEncoderSettings &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
 /*!
@@ -720,14 +732,14 @@ QImageEncoderSettings &QImageEncoderSettings::operator=(const QImageEncoderSetti
     Returns true if the settings objects are of equal value, and false if they
     are not of equal value.
 */
-bool QImageEncoderSettings::operator==(const QImageEncoderSettings &other) const
+bool QImageEncoderSettings::operator==( const QImageEncoderSettings &other ) const
 {
-   return (d == other.d) ||
-      (d->isNull == other.d->isNull &&
-         d->quality == other.d->quality &&
-         d->codec == other.d->codec &&
-         d->resolution == other.d->resolution &&
-         d->encodingOptions == other.d->encodingOptions);
+    return ( d == other.d ) ||
+           ( d->isNull == other.d->isNull &&
+             d->quality == other.d->quality &&
+             d->codec == other.d->codec &&
+             d->resolution == other.d->resolution &&
+             d->encodingOptions == other.d->encodingOptions );
 
 }
 
@@ -738,9 +750,9 @@ bool QImageEncoderSettings::operator==(const QImageEncoderSettings &other) const
     Returns true if the settings objects are not of equal value, and false if
     they are of equal value.
 */
-bool QImageEncoderSettings::operator!=(const QImageEncoderSettings &other) const
+bool QImageEncoderSettings::operator!=( const QImageEncoderSettings &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
 /*!
@@ -750,72 +762,75 @@ bool QImageEncoderSettings::operator!=(const QImageEncoderSettings &other) const
 */
 bool QImageEncoderSettings::isNull() const
 {
-   return d->isNull;
+    return d->isNull;
 }
 
 QString QImageEncoderSettings::codec() const
 {
-   return d->codec;
+    return d->codec;
 }
 
-void QImageEncoderSettings::setCodec(const QString &codec)
+void QImageEncoderSettings::setCodec( const QString &codec )
 {
-   d->isNull = false;
-   d->codec = codec;
+    d->isNull = false;
+    d->codec = codec;
 }
 
 QSize QImageEncoderSettings::resolution() const
 {
-   return d->resolution;
+    return d->resolution;
 }
 
-void QImageEncoderSettings::setResolution(const QSize &resolution)
+void QImageEncoderSettings::setResolution( const QSize &resolution )
 {
-   d->isNull = false;
-   d->resolution = resolution;
+    d->isNull = false;
+    d->resolution = resolution;
 }
 
-void QImageEncoderSettings::setResolution(int width, int height)
+void QImageEncoderSettings::setResolution( int width, int height )
 {
-   d->isNull = false;
-   d->resolution = QSize(width, height);
+    d->isNull = false;
+    d->resolution = QSize( width, height );
 }
 
 QMultimedia::EncodingQuality QImageEncoderSettings::quality() const
 {
-   return d->quality;
+    return d->quality;
 }
 
-void QImageEncoderSettings::setQuality(QMultimedia::EncodingQuality quality)
+void QImageEncoderSettings::setQuality( QMultimedia::EncodingQuality quality )
 {
-   d->isNull = false;
-   d->quality = quality;
+    d->isNull = false;
+    d->quality = quality;
 }
 
-QVariant QImageEncoderSettings::encodingOption(const QString &option) const
+QVariant QImageEncoderSettings::encodingOption( const QString &option ) const
 {
-   return d->encodingOptions.value(option);
+    return d->encodingOptions.value( option );
 }
 
 QVariantMap QImageEncoderSettings::encodingOptions() const
 {
-   return d->encodingOptions;
+    return d->encodingOptions;
 }
 
-void QImageEncoderSettings::setEncodingOption(const QString &option, const QVariant &value)
+void QImageEncoderSettings::setEncodingOption( const QString &option, const QVariant &value )
 {
-   d->isNull = false;
+    d->isNull = false;
 
-   if (! value.isValid()) {
-      d->encodingOptions.remove(option);
-   } else {
-      d->encodingOptions.insert(option, value);
-   }
+    if ( ! value.isValid() )
+    {
+        d->encodingOptions.remove( option );
+    }
+    else
+    {
+        d->encodingOptions.insert( option, value );
+    }
 }
 
-void QImageEncoderSettings::setEncodingOptions(const QVariantMap &options)
+void QImageEncoderSettings::setEncodingOptions( const QVariantMap &options )
 {
-   d->isNull = false;
-   d->encodingOptions = options;
+    d->isNull = false;
+    d->encodingOptions = options;
 }
 

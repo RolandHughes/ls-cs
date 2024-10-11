@@ -33,22 +33,23 @@ class QDeclarativeImageProviderPrivate;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeImageProvider
 {
- public:
-   enum ImageType {
-      Image,
-      Pixmap
-   };
+public:
+    enum ImageType
+    {
+        Image,
+        Pixmap
+    };
 
-   QDeclarativeImageProvider(ImageType type);
-   virtual ~QDeclarativeImageProvider();
+    QDeclarativeImageProvider( ImageType type );
+    virtual ~QDeclarativeImageProvider();
 
-   ImageType imageType() const;
+    ImageType imageType() const;
 
-   virtual QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
-   virtual QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+    virtual QImage requestImage( const QString &id, QSize *size, const QSize &requestedSize );
+    virtual QPixmap requestPixmap( const QString &id, QSize *size, const QSize &requestedSize );
 
- private:
-   QDeclarativeImageProviderPrivate *d;
+private:
+    QDeclarativeImageProviderPrivate *d;
 };
 
 QT_END_NAMESPACE

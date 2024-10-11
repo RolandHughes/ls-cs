@@ -61,28 +61,30 @@ struct RDFTContext;
 #include <wtf/Platform.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Defines the interface for an "FFT frame", an object which is able to perform a forward
 // and reverse FFT, internally storing the resultant frequency-domain data.
 
-class FFTFrame {
+class FFTFrame
+{
 public:
     // The constructors, destructor, and methods up to the CROSS-PLATFORM section have platform-dependent implementations.
 
-    FFTFrame(unsigned fftSize);
+    FFTFrame( unsigned fftSize );
     FFTFrame(); // creates a blank/empty frame for later use with createInterpolatedFrame()
-    FFTFrame(const FFTFrame& frame);
+    FFTFrame( const FFTFrame &frame );
     ~FFTFrame();
 
     static void initialize();
     static void cleanup();
-    void doFFT(float* data);
-    void doInverseFFT(float* data);
-    void multiply(const FFTFrame& frame); // multiplies ourself with frame : effectively operator*=()
+    void doFFT( float *data );
+    void doInverseFFT( float *data );
+    void multiply( const FFTFrame &frame ); // multiplies ourself with frame : effectively operator*=()
 
-    float* realData() const;
-    float* imagData() const;
+    float *realData() const;
+    float *imagData() const;
 
     void print(); // for debugging
 
@@ -90,28 +92,40 @@ public:
     // The remaining public methods have cross-platform implementations:
 
     // Interpolates from frame1 -> frame2 as x goes from 0.0 -> 1.0
-    static PassOwnPtr<FFTFrame> createInterpolatedFrame(const FFTFrame& frame1, const FFTFrame& frame2, double x);
+    static PassOwnPtr<FFTFrame> createInterpolatedFrame( const FFTFrame &frame1, const FFTFrame &frame2, double x );
 
-    void doPaddedFFT(float* data, size_t dataSize); // zero-padding with dataSize <= fftSize
+    void doPaddedFFT( float *data, size_t dataSize ); // zero-padding with dataSize <= fftSize
     double extractAverageGroupDelay();
-    void addConstantGroupDelay(double sampleFrameDelay);
+    void addConstantGroupDelay( double sampleFrameDelay );
 
-    unsigned fftSize() const { return m_FFTSize; }
-    unsigned log2FFTSize() const { return m_log2FFTSize; }
+    unsigned fftSize() const
+    {
+        return m_FFTSize;
+    }
+    unsigned log2FFTSize() const
+    {
+        return m_log2FFTSize;
+    }
 
 private:
     unsigned m_FFTSize;
     unsigned m_log2FFTSize;
 
-    void interpolateFrequencyComponents(const FFTFrame& frame1, const FFTFrame& frame2, double x);
+    void interpolateFrequencyComponents( const FFTFrame &frame1, const FFTFrame &frame2, double x );
 
 #if USE_ACCELERATE_FFT
-    DSPSplitComplex& dspSplitComplex() { return m_frame; }
-    DSPSplitComplex dspSplitComplex() const { return m_frame; }
+    DSPSplitComplex &dspSplitComplex()
+    {
+        return m_frame;
+    }
+    DSPSplitComplex dspSplitComplex() const
+    {
+        return m_frame;
+    }
 
-    static FFTSetup fftSetupForSize(unsigned fftSize);
+    static FFTSetup fftSetupForSize( unsigned fftSize );
 
-    static FFTSetup* fftSetups;
+    static FFTSetup *fftSetups;
 
     FFTSetup m_FFTSetup;
 
@@ -126,11 +140,11 @@ private:
     // or out-of-place operations. FIXME: ideally all of the MKL
     // routines would operate on planar data and this method would be
     // removed.
-    float* getUpToDateComplexData();
+    float *getUpToDateComplexData();
 
-    static DFTI_DESCRIPTOR_HANDLE descriptorHandleForSize(unsigned fftSize);
+    static DFTI_DESCRIPTOR_HANDLE descriptorHandleForSize( unsigned fftSize );
 
-    static DFTI_DESCRIPTOR_HANDLE* descriptorHandles;
+    static DFTI_DESCRIPTOR_HANDLE *descriptorHandles;
 
     DFTI_DESCRIPTOR_HANDLE m_handle;
     AudioFloatArray m_complexData;
@@ -139,12 +153,12 @@ private:
 #endif // USE(WEBAUDIO_MKL)
 
 #if USE(WEBAUDIO_FFMPEG)
-    static RDFTContext* contextForSize(unsigned fftSize, int trans);
+    static RDFTContext *contextForSize( unsigned fftSize, int trans );
 
-    RDFTContext* m_forwardContext;
-    RDFTContext* m_inverseContext;
+    RDFTContext *m_forwardContext;
+    RDFTContext *m_inverseContext;
 
-    float* getUpToDateComplexData();
+    float *getUpToDateComplexData();
     AudioFloatArray m_complexData;
     AudioFloatArray m_realData;
     AudioFloatArray m_imagData;
@@ -154,7 +168,8 @@ private:
     fftwf_plan m_forwardPlan;
     fftwf_plan m_backwardPlan;
 
-    enum Direction {
+    enum Direction
+    {
         Forward,
         Backward
     };
@@ -167,11 +182,11 @@ private:
     AudioFloatArray m_data;
 
     static Mutex *s_planLock;
-    static fftwf_plan* fftwForwardPlans;
-    static fftwf_plan* fftwBackwardPlans;
+    static fftwf_plan *fftwForwardPlans;
+    static fftwf_plan *fftwBackwardPlans;
 
-    static fftwf_plan fftwPlanForSize(unsigned fftSize, Direction,
-                                      float*, float*, float*);
+    static fftwf_plan fftwPlanForSize( unsigned fftSize, Direction,
+                                       float *, float *, float * );
 #endif // USE(WEBAUDIO_FFTW)
 
 #endif // !USE_ACCELERATE_FFT

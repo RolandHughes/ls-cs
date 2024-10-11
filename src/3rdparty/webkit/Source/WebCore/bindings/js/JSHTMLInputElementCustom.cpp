@@ -20,9 +20,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #include "config.h"
 #include "JSHTMLInputElement.h"
 
@@ -31,54 +31,70 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSValue JSHTMLInputElement::selectionStart(ExecState* exec) const
+namespace WebCore
 {
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(impl());
-    if (!input->canHaveSelection())
-        return throwTypeError(exec);
 
-    return jsNumber(input->selectionStart());
+JSValue JSHTMLInputElement::selectionStart( ExecState *exec ) const
+{
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( impl() );
+
+    if ( !input->canHaveSelection() )
+    {
+        return throwTypeError( exec );
+    }
+
+    return jsNumber( input->selectionStart() );
 }
 
-void JSHTMLInputElement::setSelectionStart(ExecState* exec, JSValue value)
+void JSHTMLInputElement::setSelectionStart( ExecState *exec, JSValue value )
 {
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(impl());
-    if (!input->canHaveSelection())
-        throwTypeError(exec);
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( impl() );
 
-    input->setSelectionStart(value.toInt32(exec));
+    if ( !input->canHaveSelection() )
+    {
+        throwTypeError( exec );
+    }
+
+    input->setSelectionStart( value.toInt32( exec ) );
 }
 
-JSValue JSHTMLInputElement::selectionEnd(ExecState* exec) const
+JSValue JSHTMLInputElement::selectionEnd( ExecState *exec ) const
 {
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(impl());
-    if (!input->canHaveSelection())
-        return throwTypeError(exec);
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( impl() );
 
-    return jsNumber(input->selectionEnd());
+    if ( !input->canHaveSelection() )
+    {
+        return throwTypeError( exec );
+    }
+
+    return jsNumber( input->selectionEnd() );
 }
 
-void JSHTMLInputElement::setSelectionEnd(ExecState* exec, JSValue value)
+void JSHTMLInputElement::setSelectionEnd( ExecState *exec, JSValue value )
 {
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(impl());
-    if (!input->canHaveSelection())
-        throwTypeError(exec);
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( impl() );
 
-    input->setSelectionEnd(value.toInt32(exec));
+    if ( !input->canHaveSelection() )
+    {
+        throwTypeError( exec );
+    }
+
+    input->setSelectionEnd( value.toInt32( exec ) );
 }
 
-JSValue JSHTMLInputElement::setSelectionRange(ExecState* exec)
+JSValue JSHTMLInputElement::setSelectionRange( ExecState *exec )
 {
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(impl());
-    if (!input->canHaveSelection())
-        return throwTypeError(exec);
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( impl() );
 
-    int start = exec->argument(0).toInt32(exec);
-    int end = exec->argument(1).toInt32(exec);
+    if ( !input->canHaveSelection() )
+    {
+        return throwTypeError( exec );
+    }
 
-    input->setSelectionRange(start, end);
+    int start = exec->argument( 0 ).toInt32( exec );
+    int end = exec->argument( 1 ).toInt32( exec );
+
+    input->setSelectionRange( start, end );
     return jsUndefined();
 }
 

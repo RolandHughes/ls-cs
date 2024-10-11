@@ -27,36 +27,42 @@
 #include "HTMLFormControlElement.h"
 #include "OptionGroupElement.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 class HTMLSelectElement;
 
-class HTMLOptGroupElement : public HTMLFormControlElement, public OptionGroupElement {
+class HTMLOptGroupElement : public HTMLFormControlElement, public OptionGroupElement
+{
 public:
-    static PassRefPtr<HTMLOptGroupElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLOptGroupElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
-    HTMLSelectElement* ownerSelectElement() const;
-    
+    HTMLSelectElement *ownerSelectElement() const;
+
     virtual String groupLabelText() const;
 
 private:
-    HTMLOptGroupElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLOptGroupElement( const QualifiedName &, Document *, HTMLFormElement * );
 
-    virtual const AtomicString& formControlType() const;
+    virtual const AtomicString &formControlType() const;
     virtual bool supportsFocus() const;
     virtual bool isFocusable() const;
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool rendererIsNeeded(RenderStyle*) { return false; }
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool rendererIsNeeded( RenderStyle * )
+    {
+        return false;
+    }
     virtual void attach();
     virtual void detach();
-    virtual void setRenderStyle(PassRefPtr<RenderStyle>);
+    virtual void setRenderStyle( PassRefPtr<RenderStyle> );
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    virtual void accessKeyAction(bool sendToAnyElement);
-    
-    virtual RenderStyle* nonRendererRenderStyle() const;
-    
+    virtual void accessKeyAction( bool sendToAnyElement );
+
+    virtual RenderStyle *nonRendererRenderStyle() const;
+
     void recalcSelectOptions();
 
     RefPtr<RenderStyle> m_style;

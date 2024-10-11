@@ -32,28 +32,42 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-    class GraphicsContext;
+namespace WebCore
+{
+class GraphicsContext;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class FindIndicator : public RefCounted<FindIndicator> {
+class FindIndicator : public RefCounted<FindIndicator>
+{
 public:
-    static PassRefPtr<FindIndicator> create(const WebCore::FloatRect& selectionRectInWindowCoordinates, const Vector<WebCore::FloatRect>& textRectsInSelectionRectCoordinates, const ShareableBitmap::Handle& contentImageHandle);
+    static PassRefPtr<FindIndicator> create( const WebCore::FloatRect &selectionRectInWindowCoordinates,
+            const Vector<WebCore::FloatRect> &textRectsInSelectionRectCoordinates, const ShareableBitmap::Handle &contentImageHandle );
     ~FindIndicator();
 
-    WebCore::FloatRect selectionRectInWindowCoordinates() const { return m_selectionRectInWindowCoordinates; }
+    WebCore::FloatRect selectionRectInWindowCoordinates() const
+    {
+        return m_selectionRectInWindowCoordinates;
+    }
     WebCore::FloatRect frameRect() const;
 
-    const Vector<WebCore::FloatRect>& textRects() const { return m_textRectsInSelectionRectCoordinates; }
+    const Vector<WebCore::FloatRect> &textRects() const
+    {
+        return m_textRectsInSelectionRectCoordinates;
+    }
 
-    ShareableBitmap* contentImage() const { return m_contentImage.get(); }
+    ShareableBitmap *contentImage() const
+    {
+        return m_contentImage.get();
+    }
 
-    void draw(WebCore::GraphicsContext&, const WebCore::IntRect& dirtyRect);
+    void draw( WebCore::GraphicsContext &, const WebCore::IntRect &dirtyRect );
 
 private:
-    FindIndicator(const WebCore::FloatRect& selectionRect, const Vector<WebCore::FloatRect>& textRects, PassRefPtr<ShareableBitmap> contentImage);
+    FindIndicator( const WebCore::FloatRect &selectionRect, const Vector<WebCore::FloatRect> &textRects,
+                   PassRefPtr<ShareableBitmap> contentImage );
 
     WebCore::FloatRect m_selectionRectInWindowCoordinates;
     Vector<WebCore::FloatRect> m_textRectsInSelectionRectCoordinates;

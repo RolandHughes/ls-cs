@@ -34,185 +34,189 @@
 #include <wtf/FastAllocBase.h>
 #include <wtf/VectorTraits.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class Arguments;
-    class CodeBlock;
-    class ExecState;
-    class JSActivation;
-    class JSPropertyNameIterator;
-    class ScopeChainNode;
+class Arguments;
+class CodeBlock;
+class ExecState;
+class JSActivation;
+class JSPropertyNameIterator;
+class ScopeChainNode;
 
-    struct Instruction;
+struct Instruction;
 
-    typedef ExecState CallFrame;
+typedef ExecState CallFrame;
 
-    class Register : public WTF::FastAllocBase {
-    public:
-        Register();
+class Register : public WTF::FastAllocBase
+{
+public:
+    Register();
 
-        Register(const JSValue&);
-        Register& operator=(const JSValue&);
-        JSValue jsValue() const;
-        
-        Register& operator=(JSActivation*);
-        Register& operator=(CallFrame*);
-        Register& operator=(CodeBlock*);
-        Register& operator=(JSObject*);
-        Register& operator=(JSPropertyNameIterator*);
-        Register& operator=(ScopeChainNode*);
-        Register& operator=(Instruction*);
+    Register( const JSValue & );
+    Register &operator=( const JSValue & );
+    JSValue jsValue() const;
 
-        int32_t i() const;
-        JSActivation* activation() const;
-        Arguments* arguments() const;
-        CallFrame* callFrame() const;
-        CodeBlock* codeBlock() const;
-        JSObject* object() const;
-        JSPropertyNameIterator* propertyNameIterator() const;
-        ScopeChainNode* scopeChain() const;
-        Instruction* vPC() const;
+    Register &operator=( JSActivation * );
+    Register &operator=( CallFrame * );
+    Register &operator=( CodeBlock * );
+    Register &operator=( JSObject * );
+    Register &operator=( JSPropertyNameIterator * );
+    Register &operator=( ScopeChainNode * );
+    Register &operator=( Instruction * );
 
-        static Register withInt(int32_t i)
-        {
-            Register r;
-            r.u.i = i;
-            return r;
-        }
+    int32_t i() const;
+    JSActivation *activation() const;
+    Arguments *arguments() const;
+    CallFrame *callFrame() const;
+    CodeBlock *codeBlock() const;
+    JSObject *object() const;
+    JSPropertyNameIterator *propertyNameIterator() const;
+    ScopeChainNode *scopeChain() const;
+    Instruction *vPC() const;
 
-    private:
-        union {
-            int32_t i;
-            EncodedJSValue value;
-
-            JSActivation* activation;
-            CallFrame* callFrame;
-            CodeBlock* codeBlock;
-            JSObject* object;
-            JSPropertyNameIterator* propertyNameIterator;
-            ScopeChainNode* scopeChain;
-            Instruction* vPC;
-        } u;
-    };
-
-    ALWAYS_INLINE Register::Register()
+    static Register withInt( int32_t i )
     {
+        Register r;
+        r.u.i = i;
+        return r;
+    }
+
+private:
+    union
+    {
+        int32_t i;
+        EncodedJSValue value;
+
+        JSActivation *activation;
+        CallFrame *callFrame;
+        CodeBlock *codeBlock;
+        JSObject *object;
+        JSPropertyNameIterator *propertyNameIterator;
+        ScopeChainNode *scopeChain;
+        Instruction *vPC;
+    } u;
+};
+
+ALWAYS_INLINE Register::Register()
+{
 #ifndef NDEBUG
-        *this = JSValue();
+    *this = JSValue();
 #endif
-    }
+}
 
-    ALWAYS_INLINE Register::Register(const JSValue& v)
-    {
+ALWAYS_INLINE Register::Register( const JSValue &v )
+{
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!v.isZombie());
+    ASSERT( !v.isZombie() );
 #endif
-        u.value = JSValue::encode(v);
-    }
+    u.value = JSValue::encode( v );
+}
 
-    ALWAYS_INLINE Register& Register::operator=(const JSValue& v)
-    {
+ALWAYS_INLINE Register &Register::operator=( const JSValue &v )
+{
 #if ENABLE(JSC_ZOMBIES)
-        ASSERT(!v.isZombie());
+    ASSERT( !v.isZombie() );
 #endif
-        u.value = JSValue::encode(v);
-        return *this;
-    }
+    u.value = JSValue::encode( v );
+    return *this;
+}
 
-    ALWAYS_INLINE JSValue Register::jsValue() const
-    {
-        return JSValue::decode(u.value);
-    }
+ALWAYS_INLINE JSValue Register::jsValue() const
+{
+    return JSValue::decode( u.value );
+}
 
-    // Interpreter functions
+// Interpreter functions
 
-    ALWAYS_INLINE Register& Register::operator=(JSActivation* activation)
-    {
-        u.activation = activation;
-        return *this;
-    }
+ALWAYS_INLINE Register &Register::operator=( JSActivation *activation )
+{
+    u.activation = activation;
+    return *this;
+}
 
-    ALWAYS_INLINE Register& Register::operator=(CallFrame* callFrame)
-    {
-        u.callFrame = callFrame;
-        return *this;
-    }
+ALWAYS_INLINE Register &Register::operator=( CallFrame *callFrame )
+{
+    u.callFrame = callFrame;
+    return *this;
+}
 
-    ALWAYS_INLINE Register& Register::operator=(CodeBlock* codeBlock)
-    {
-        u.codeBlock = codeBlock;
-        return *this;
-    }
+ALWAYS_INLINE Register &Register::operator=( CodeBlock *codeBlock )
+{
+    u.codeBlock = codeBlock;
+    return *this;
+}
 
-    ALWAYS_INLINE Register& Register::operator=(JSObject* object)
-    {
-        u.object = object;
-        return *this;
-    }
+ALWAYS_INLINE Register &Register::operator=( JSObject *object )
+{
+    u.object = object;
+    return *this;
+}
 
-    ALWAYS_INLINE Register& Register::operator=(Instruction* vPC)
-    {
-        u.vPC = vPC;
-        return *this;
-    }
+ALWAYS_INLINE Register &Register::operator=( Instruction *vPC )
+{
+    u.vPC = vPC;
+    return *this;
+}
 
-    ALWAYS_INLINE Register& Register::operator=(ScopeChainNode* scopeChain)
-    {
-        u.scopeChain = scopeChain;
-        return *this;
-    }
+ALWAYS_INLINE Register &Register::operator=( ScopeChainNode *scopeChain )
+{
+    u.scopeChain = scopeChain;
+    return *this;
+}
 
-    ALWAYS_INLINE Register& Register::operator=(JSPropertyNameIterator* propertyNameIterator)
-    {
-        u.propertyNameIterator = propertyNameIterator;
-        return *this;
-    }
+ALWAYS_INLINE Register &Register::operator=( JSPropertyNameIterator *propertyNameIterator )
+{
+    u.propertyNameIterator = propertyNameIterator;
+    return *this;
+}
 
-    ALWAYS_INLINE int32_t Register::i() const
-    {
-        return u.i;
-    }
-    
-    ALWAYS_INLINE JSActivation* Register::activation() const
-    {
-        return u.activation;
-    }
-    
-    ALWAYS_INLINE CallFrame* Register::callFrame() const
-    {
-        return u.callFrame;
-    }
-    
-    ALWAYS_INLINE CodeBlock* Register::codeBlock() const
-    {
-        return u.codeBlock;
-    }
-    
-    ALWAYS_INLINE JSObject* Register::object() const
-    {
-        return u.object;
-    }
-    
-    ALWAYS_INLINE JSPropertyNameIterator* Register::propertyNameIterator() const
-    {
-        return u.propertyNameIterator;
-    }
-    
-    ALWAYS_INLINE ScopeChainNode* Register::scopeChain() const
-    {
-        return u.scopeChain;
-    }
-    
-    ALWAYS_INLINE Instruction* Register::vPC() const
-    {
-        return u.vPC;
-    }
+ALWAYS_INLINE int32_t Register::i() const
+{
+    return u.i;
+}
+
+ALWAYS_INLINE JSActivation *Register::activation() const
+{
+    return u.activation;
+}
+
+ALWAYS_INLINE CallFrame *Register::callFrame() const
+{
+    return u.callFrame;
+}
+
+ALWAYS_INLINE CodeBlock *Register::codeBlock() const
+{
+    return u.codeBlock;
+}
+
+ALWAYS_INLINE JSObject *Register::object() const
+{
+    return u.object;
+}
+
+ALWAYS_INLINE JSPropertyNameIterator *Register::propertyNameIterator() const
+{
+    return u.propertyNameIterator;
+}
+
+ALWAYS_INLINE ScopeChainNode *Register::scopeChain() const
+{
+    return u.scopeChain;
+}
+
+ALWAYS_INLINE Instruction *Register::vPC() const
+{
+    return u.vPC;
+}
 
 } // namespace JSC
 
-namespace WTF {
+namespace WTF
+{
 
-    template<> struct VectorTraits<JSC::Register> : VectorTraitsBase<true, JSC::Register> { };
+template<> struct VectorTraits<JSC::Register> : VectorTraitsBase<true, JSC::Register> { };
 
 } // namespace WTF
 

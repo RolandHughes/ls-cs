@@ -24,18 +24,20 @@
 
 #include "ContainerNode.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class EntityReference : public ContainerNode {
+class EntityReference : public ContainerNode
+{
 public:
-    static PassRefPtr<EntityReference> create(Document*, const String& entityName);
+    static PassRefPtr<EntityReference> create( Document *, const String &entityName );
 
 private:
-    EntityReference(Document*, const String& entityName);
+    EntityReference( Document *, const String &entityName );
 
     virtual String nodeName() const;
     virtual NodeType nodeType() const;
-    virtual PassRefPtr<Node> cloneNode(bool deep);
+    virtual PassRefPtr<Node> cloneNode( bool deep );
 
     String m_entityName;
 };

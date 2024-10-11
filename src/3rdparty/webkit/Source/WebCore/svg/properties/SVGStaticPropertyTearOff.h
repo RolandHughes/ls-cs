@@ -23,7 +23,8 @@
 #if ENABLE(SVG)
 #include "SVGPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if COMPILER(MSVC)
 // UpdateMethod is 12 bytes. We have to pack to a size greater than or equal to that to avoid an
@@ -31,26 +32,30 @@ namespace WebCore {
 #pragma pack(push, 16)
 #endif
 template<typename ContextElement, typename PropertyType>
-class SVGStaticPropertyTearOff : public SVGPropertyTearOff<PropertyType> {
+class SVGStaticPropertyTearOff : public SVGPropertyTearOff<PropertyType>
+{
 public:
     typedef SVGStaticPropertyTearOff<ContextElement, PropertyType> Self;
-    typedef void (ContextElement::*UpdateMethod)();
+    typedef void ( ContextElement::*UpdateMethod )();
 
     // Used for non-animated POD types that are not associated with a SVGAnimatedProperty object, nor with a XML DOM attribute
     // (for example: SVGSVGElement::currentTranslate).
-    static PassRefPtr<Self> create(ContextElement* contextElement, PropertyType& value, UpdateMethod update)
+    static PassRefPtr<Self> create( ContextElement *contextElement, PropertyType &value, UpdateMethod update )
     {
-        ASSERT(contextElement);
-        return adoptRef(new Self(contextElement, value, update));
+        ASSERT( contextElement );
+        return adoptRef( new Self( contextElement, value, update ) );
     }
 
-    virtual void commitChange() { (m_contextElement.get()->*m_update)(); }
+    virtual void commitChange()
+    {
+        ( m_contextElement.get()->*m_update )();
+    }
 
 private:
-    SVGStaticPropertyTearOff(ContextElement* contextElement, PropertyType& value, UpdateMethod update)
-        : SVGPropertyTearOff<PropertyType>(0, UndefinedRole, value)
-        , m_update(update)
-        , m_contextElement(contextElement)
+    SVGStaticPropertyTearOff( ContextElement *contextElement, PropertyType &value, UpdateMethod update )
+        : SVGPropertyTearOff<PropertyType>( 0, UndefinedRole, value )
+        , m_update( update )
+        , m_contextElement( contextElement )
     {
     }
 

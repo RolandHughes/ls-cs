@@ -32,53 +32,59 @@ extern QString qAppFileName();
 
 static QString qSystemDirectory()
 {
-   std::wstring fullPath(MAX_PATH, L'\0');
+    std::wstring fullPath( MAX_PATH, L'\0' );
 
-   UINT retLen = ::GetSystemDirectory(&fullPath[0], MAX_PATH);
+    UINT retLen = ::GetSystemDirectory( &fullPath[0], MAX_PATH );
 
-   if (retLen > MAX_PATH) {
-      fullPath.resize(retLen);
-      retLen = ::GetSystemDirectory(&fullPath[0], retLen);
-   }
+    if ( retLen > MAX_PATH )
+    {
+        fullPath.resize( retLen );
+        retLen = ::GetSystemDirectory( &fullPath[0], retLen );
+    }
 
-   // in some rare cases retLen might be 0
-   return QString::fromStdWString(fullPath, int(retLen));
+    // in some rare cases retLen might be 0
+    return QString::fromStdWString( fullPath, int( retLen ) );
 }
 
-HINSTANCE QSystemLibrary::load(const QString &libraryName, bool onlySystemDirectory)
+HINSTANCE QSystemLibrary::load( const QString &libraryName, bool onlySystemDirectory )
 {
-   QStringList searchOrder;
+    QStringList searchOrder;
 
-   if (! onlySystemDirectory) {
-      searchOrder << QFileInfo(qAppFileName()).path();
-   }
+    if ( ! onlySystemDirectory )
+    {
+        searchOrder << QFileInfo( qAppFileName() ).path();
+    }
 
-   searchOrder << qSystemDirectory();
+    searchOrder << qSystemDirectory();
 
-   if (! onlySystemDirectory) {
-      const QString path = QString::fromUtf16((const char16_t *)_wgetenv(L"PATH"));
-      searchOrder << path.split(';', QStringParser::SkipEmptyParts);
-   }
+    if ( ! onlySystemDirectory )
+    {
+        const QString path = QString::fromUtf16( ( const char16_t * )_wgetenv( L"PATH" ) );
+        searchOrder << path.split( ';', QStringParser::SkipEmptyParts );
+    }
 
-   const QString fileName = libraryName + ".dll";
+    const QString fileName = libraryName + ".dll";
 
-   // Start looking in the order specified
-   for (int i = 0; i < searchOrder.count(); ++i) {
+    // Start looking in the order specified
+    for ( int i = 0; i < searchOrder.count(); ++i )
+    {
 
-      QString fullPathAttempt = searchOrder.at(i);
+        QString fullPathAttempt = searchOrder.at( i );
 
-      if (! fullPathAttempt.endsWith('\\')) {
-         fullPathAttempt.append('\\');
-      }
+        if ( ! fullPathAttempt.endsWith( '\\' ) )
+        {
+            fullPathAttempt.append( '\\' );
+        }
 
-      fullPathAttempt.append(fileName);
-      HINSTANCE inst = ::LoadLibrary(&fullPathAttempt.toStdWString()[0]);
+        fullPathAttempt.append( fileName );
+        HINSTANCE inst = ::LoadLibrary( &fullPathAttempt.toStdWString()[0] );
 
-      if (inst != nullptr) {
-         return inst;
-      }
-   }
+        if ( inst != nullptr )
+        {
+            return inst;
+        }
+    }
 
-   return nullptr;
+    return nullptr;
 }
 

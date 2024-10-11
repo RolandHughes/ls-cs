@@ -31,109 +31,120 @@
 
 QT_QML_BEGIN_NAMESPACE
 
-namespace QDeclarativeJS {
+namespace QDeclarativeJS
+{
 class QML_PARSER_EXPORT NameId
 {
-   QString _text;
+    QString _text;
 
- public:
-   NameId(const QChar *u, int s)
-      : _text(u, s) {
-   }
+public:
+    NameId( const QChar *u, int s )
+        : _text( u, s )
+    {
+    }
 
-   const QString asString() const {
-      return _text;
-   }
+    const QString asString() const
+    {
+        return _text;
+    }
 
-   bool operator == (const NameId &other) const {
-      return _text == other._text;
-   }
+    bool operator == ( const NameId &other ) const
+    {
+        return _text == other._text;
+    }
 
-   bool operator != (const NameId &other) const {
-      return _text != other._text;
-   }
+    bool operator != ( const NameId &other ) const
+    {
+        return _text != other._text;
+    }
 
-   bool operator < (const NameId &other) const {
-      return _text < other._text;
-   }
+    bool operator < ( const NameId &other ) const
+    {
+        return _text < other._text;
+    }
 };
 
-uint qHash(const QDeclarativeJS::NameId &id);
+uint qHash( const QDeclarativeJS::NameId &id );
 
 } // end of namespace QDeclarativeJS
 
-namespace QDeclarativeJS {
+namespace QDeclarativeJS
+{
 
 class Lexer;
 class NodePool;
 
-namespace Ecma {
+namespace Ecma
+{
 
 class QML_PARSER_EXPORT RegExp
 {
- public:
-   enum RegExpFlag {
-      Global     = 0x01,
-      IgnoreCase = 0x02,
-      Multiline  = 0x04
-   };
+public:
+    enum RegExpFlag
+    {
+        Global     = 0x01,
+        IgnoreCase = 0x02,
+        Multiline  = 0x04
+    };
 
- public:
-   static int flagFromChar(const QChar &);
-   static QString flagsToString(int flags);
+public:
+    static int flagFromChar( const QChar & );
+    static QString flagsToString( int flags );
 };
 
 } // end of namespace Ecma
 
 class QML_PARSER_EXPORT DiagnosticMessage
 {
- public:
-   enum Kind { Warning, Error };
+public:
+    enum Kind { Warning, Error };
 
-   DiagnosticMessage()
-      : kind(Error) {}
+    DiagnosticMessage()
+        : kind( Error ) {}
 
-   DiagnosticMessage(Kind kind, const AST::SourceLocation &loc, const QString &message)
-      : kind(kind), loc(loc), message(message) {}
+    DiagnosticMessage( Kind kind, const AST::SourceLocation &loc, const QString &message )
+        : kind( kind ), loc( loc ), message( message ) {}
 
-   bool isWarning() const {
-      return kind == Warning;
-   }
+    bool isWarning() const
+    {
+        return kind == Warning;
+    }
 
-   bool isError() const {
-      return kind == Error;
-   }
+    bool isError() const
+    {
+        return kind == Error;
+    }
 
-   Kind kind;
-   AST::SourceLocation loc;
-   QString message;
+    Kind kind;
+    AST::SourceLocation loc;
+    QString message;
 };
 
 class QML_PARSER_EXPORT Engine
 {
-   Lexer *_lexer;
-   NodePool *_nodePool;
-   QSet<NameId> _literals;
-   QList<QDeclarativeJS::AST::SourceLocation> _comments;
+    Lexer *_lexer;
+    NodePool *_nodePool;
+    QSet<NameId> _literals;
+    QList<QDeclarativeJS::AST::SourceLocation> _comments;
 
- public:
-   Engine();
-   ~Engine();
+public:
+    Engine();
+    ~Engine();
 
-   QSet<NameId> literals() const;
+    QSet<NameId> literals() const;
 
-   void addComment(int pos, int len, int line, int col);
-   QList<QDeclarativeJS::AST::SourceLocation> comments() const;
+    void addComment( int pos, int len, int line, int col );
+    QList<QDeclarativeJS::AST::SourceLocation> comments() const;
 
-   NameId *intern(const QChar *u, int s);
+    NameId *intern( const QChar *u, int s );
 
-   static QString toString(NameId *id);
+    static QString toString( NameId *id );
 
-   Lexer *lexer() const;
-   void setLexer(Lexer *lexer);
+    Lexer *lexer() const;
+    void setLexer( Lexer *lexer );
 
-   NodePool *nodePool() const;
-   void setNodePool(NodePool *nodePool);
+    NodePool *nodePool() const;
+    void setNodePool( NodePool *nodePool );
 };
 
 } // end of namespace QDeclarativeJS

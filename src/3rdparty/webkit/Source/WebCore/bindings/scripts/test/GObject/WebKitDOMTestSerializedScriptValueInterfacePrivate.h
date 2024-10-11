@@ -24,15 +24,16 @@
 #include <glib-object.h>
 #include <webkit/WebKitDOMObject.h>
 #include "TestSerializedScriptValueInterface.h"
-namespace WebKit {
-    WebKitDOMTestSerializedScriptValueInterface *
-    wrapTestSerializedScriptValueInterface(WebCore::TestSerializedScriptValueInterface *coreObject);
+namespace WebKit
+{
+WebKitDOMTestSerializedScriptValueInterface *
+wrapTestSerializedScriptValueInterface( WebCore::TestSerializedScriptValueInterface *coreObject );
 
-    WebCore::TestSerializedScriptValueInterface *
-    core(WebKitDOMTestSerializedScriptValueInterface *request);
+WebCore::TestSerializedScriptValueInterface *
+core( WebKitDOMTestSerializedScriptValueInterface *request );
 
-    WebKitDOMTestSerializedScriptValueInterface*
-    kit(WebCore::TestSerializedScriptValueInterface* node);
+WebKitDOMTestSerializedScriptValueInterface *
+kit( WebCore::TestSerializedScriptValueInterface *node );
 
 } // namespace WebKit
 

@@ -172,9 +172,9 @@
 
 /* TODO: add a trace-mask so certain functions can be excluded */
 
-mng_retcode mng_trace (mng_datap  pData,
-                       mng_uint32 iFunction,
-                       mng_uint32 iLocation);
+mng_retcode mng_trace ( mng_datap  pData,
+                        mng_uint32 iFunction,
+                        mng_uint32 iLocation );
 
 /* ************************************************************************** */
 
@@ -1454,11 +1454,12 @@ mng_retcode mng_trace (mng_datap  pData,
 /* *                                                                        * */
 /* ************************************************************************** */
 
-typedef struct {
-                 mng_uint32 iFunction;
-                 mng_pchar  zTracetext;
-               } mng_trace_entry;
-typedef mng_trace_entry const * mng_trace_entryp;
+typedef struct
+{
+    mng_uint32 iFunction;
+    mng_pchar  zTracetext;
+} mng_trace_entry;
+typedef mng_trace_entry const *mng_trace_entryp;
 
 /* ************************************************************************** */
 

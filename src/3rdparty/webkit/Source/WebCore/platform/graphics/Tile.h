@@ -33,41 +33,52 @@ class QPixmap;
 class QRegion;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
 class TiledBackingStore;
 
-class Tile : public RefCounted<Tile> {
+class Tile : public RefCounted<Tile>
+{
 public:
     typedef IntPoint Coordinate;
 
-    static PassRefPtr<Tile> create(TiledBackingStore* backingStore, const Coordinate& tileCoordinate) { return adoptRef(new Tile(backingStore, tileCoordinate)); }
+    static PassRefPtr<Tile> create( TiledBackingStore *backingStore, const Coordinate &tileCoordinate )
+    {
+        return adoptRef( new Tile( backingStore, tileCoordinate ) );
+    }
     ~Tile();
 
     bool isDirty() const;
-    void invalidate(const IntRect&);
+    void invalidate( const IntRect & );
     Vector<IntRect> updateBackBuffer();
     void swapBackBufferToFront();
     bool isReadyToPaint() const;
-    void paint(GraphicsContext*, const IntRect&);
+    void paint( GraphicsContext *, const IntRect & );
 
-    const Tile::Coordinate& coordinate() const { return m_coordinate; }
-    const IntRect& rect() const { return m_rect; }
+    const Tile::Coordinate &coordinate() const
+    {
+        return m_coordinate;
+    }
+    const IntRect &rect() const
+    {
+        return m_rect;
+    }
 
-    static void paintCheckerPattern(GraphicsContext*, const FloatRect&);
+    static void paintCheckerPattern( GraphicsContext *, const FloatRect & );
 
 private:
-    Tile(TiledBackingStore*, const Coordinate&);
+    Tile( TiledBackingStore *, const Coordinate & );
 
-    TiledBackingStore* m_backingStore;
+    TiledBackingStore *m_backingStore;
     Coordinate m_coordinate;
     IntRect m_rect;
 
 #if PLATFORM(QT)
-    QPixmap* m_buffer;
-    QPixmap* m_backBuffer;
-    QRegion* m_dirtyRegion;
+    QPixmap *m_buffer;
+    QPixmap *m_backBuffer;
+    QRegion *m_dirtyRegion;
 #endif
 };
 

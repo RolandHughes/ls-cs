@@ -30,7 +30,8 @@
 #include <qrect.h>
 #include <qglobal.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 Icon::Icon()
 {
@@ -41,14 +42,17 @@ Icon::~Icon()
 }
 
 // FIXME: Move the code to ChromeClient::iconForFiles().
-PassRefPtr<Icon> Icon::createIconForFiles(const Vector<String>& filenames)
+PassRefPtr<Icon> Icon::createIconForFiles( const Vector<String> &filenames )
 {
-    if (filenames.isEmpty())
+    if ( filenames.isEmpty() )
+    {
         return 0;
+    }
 
-    if (filenames.size() == 1) {
-        RefPtr<Icon> i = adoptRef(new Icon);
-        i->m_icon = QIcon(filenames[0]);
+    if ( filenames.size() == 1 )
+    {
+        RefPtr<Icon> i = adoptRef( new Icon );
+        i->m_icon = QIcon( filenames[0] );
         return i.release();
     }
 
@@ -56,12 +60,15 @@ PassRefPtr<Icon> Icon::createIconForFiles(const Vector<String>& filenames)
     return 0;
 }
 
-void Icon::paint(GraphicsContext* ctx, const IntRect& rect)
+void Icon::paint( GraphicsContext *ctx, const IntRect &rect )
 {
-    QPixmap px = m_icon.pixmap(rect.size());
-    QPainter *p = static_cast<QPainter*>(ctx->platformContext());
-    if (p && !px.isNull())
-        p->drawPixmap(rect.x(), rect.y(), px);
+    QPixmap px = m_icon.pixmap( rect.size() );
+    QPainter *p = static_cast<QPainter *>( ctx->platformContext() );
+
+    if ( p && !px.isNull() )
+    {
+        p->drawPixmap( rect.x(), rect.y(), px );
+    }
 }
 
 }

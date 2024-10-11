@@ -24,8 +24,8 @@
 #include <qgstreameraudioprobecontrol_p.h>
 #include <qgstutils_p.h>
 
-QGstreamerAudioProbeControl::QGstreamerAudioProbeControl(QObject *parent)
-   : QMediaAudioProbeControl(parent)
+QGstreamerAudioProbeControl::QGstreamerAudioProbeControl( QObject *parent )
+    : QMediaAudioProbeControl( parent )
 {
 }
 
@@ -33,55 +33,67 @@ QGstreamerAudioProbeControl::~QGstreamerAudioProbeControl()
 {
 }
 
-void QGstreamerAudioProbeControl::probeCaps(GstCaps *caps)
+void QGstreamerAudioProbeControl::probeCaps( GstCaps *caps )
 {
-   QAudioFormat format = QGstUtils::audioFormatForCaps(caps);
+    QAudioFormat format = QGstUtils::audioFormatForCaps( caps );
 
-   QMutexLocker locker(&m_bufferMutex);
-   m_format = format;
+    QMutexLocker locker( &m_bufferMutex );
+    m_format = format;
 }
 
-bool QGstreamerAudioProbeControl::probeBuffer(GstBuffer *buffer)
+bool QGstreamerAudioProbeControl::probeBuffer( GstBuffer *buffer )
 {
-   qint64 position = GST_BUFFER_TIMESTAMP(buffer);
-   position = position >= 0
-      ? position / G_GINT64_CONSTANT(1000) // microseconds
-      : -1;
+    qint64 position = GST_BUFFER_TIMESTAMP( buffer );
+    position = position >= 0
+               ? position / G_GINT64_CONSTANT( 1000 ) // microseconds
+               : -1;
 
-   QByteArray data;
+    QByteArray data;
 #if GST_CHECK_VERSION(1,0,0)
-   GstMapInfo info;
-   if (gst_buffer_map(buffer, &info, GST_MAP_READ)) {
-      data = QByteArray(reinterpret_cast<const char *>(info.data), info.size);
-      gst_buffer_unmap(buffer, &info);
-   } else {
-      return true;
-   }
+    GstMapInfo info;
+
+    if ( gst_buffer_map( buffer, &info, GST_MAP_READ ) )
+    {
+        data = QByteArray( reinterpret_cast<const char *>( info.data ), info.size );
+        gst_buffer_unmap( buffer, &info );
+    }
+    else
+    {
+        return true;
+    }
+
 #else
-   data = QByteArray(reinterpret_cast<const char *>(buffer->data), buffer->size);
+    data = QByteArray( reinterpret_cast<const char *>( buffer->data ), buffer->size );
 #endif
 
-   QMutexLocker locker(&m_bufferMutex);
-   if (m_format.isValid()) {
-      if (!m_pendingBuffer.isValid()) {
-         QMetaObject::invokeMethod(this, "bufferProbed", Qt::QueuedConnection);
-      }
-      m_pendingBuffer = QAudioBuffer(data, m_format, position);
-   }
+    QMutexLocker locker( &m_bufferMutex );
 
-   return true;
+    if ( m_format.isValid() )
+    {
+        if ( !m_pendingBuffer.isValid() )
+        {
+            QMetaObject::invokeMethod( this, "bufferProbed", Qt::QueuedConnection );
+        }
+
+        m_pendingBuffer = QAudioBuffer( data, m_format, position );
+    }
+
+    return true;
 }
 
 void QGstreamerAudioProbeControl::bufferProbed()
 {
-   QAudioBuffer audioBuffer;
-   {
-      QMutexLocker locker(&m_bufferMutex);
-      if (!m_pendingBuffer.isValid()) {
-         return;
-      }
-      audioBuffer = m_pendingBuffer;
-      m_pendingBuffer = QAudioBuffer();
-   }
-   emit audioBufferProbed(audioBuffer);
+    QAudioBuffer audioBuffer;
+    {
+        QMutexLocker locker( &m_bufferMutex );
+
+        if ( !m_pendingBuffer.isValid() )
+        {
+            return;
+        }
+
+        audioBuffer = m_pendingBuffer;
+        m_pendingBuffer = QAudioBuffer();
+    }
+    emit audioBufferProbed( audioBuffer );
 }

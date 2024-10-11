@@ -33,18 +33,23 @@
 
 #include "ThreadableLoaderClient.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ResourceRequest;
 class ResourceResponse;
 
-class DocumentThreadableLoaderClient : public ThreadableLoaderClient {
-    WTF_MAKE_NONCOPYABLE(DocumentThreadableLoaderClient);
+class DocumentThreadableLoaderClient : public ThreadableLoaderClient
+{
+    WTF_MAKE_NONCOPYABLE( DocumentThreadableLoaderClient );
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    virtual bool isDocumentThreadableLoaderClient() { return true; }
+    virtual bool isDocumentThreadableLoaderClient()
+    {
+        return true;
+    }
 
-    virtual void willSendRequest(ResourceRequest& /*newRequest*/, const ResourceResponse& /*redirectResponse*/) { }
+    virtual void willSendRequest( ResourceRequest & /*newRequest*/, const ResourceResponse & /*redirectResponse*/ ) { }
 
 protected:
     DocumentThreadableLoaderClient() { }

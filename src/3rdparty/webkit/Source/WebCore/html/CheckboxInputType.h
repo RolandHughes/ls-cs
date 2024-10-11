@@ -33,20 +33,22 @@
 
 #include "BaseCheckableInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CheckboxInputType : public BaseCheckableInputType {
+class CheckboxInputType : public BaseCheckableInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    CheckboxInputType(HTMLInputElement* element) : BaseCheckableInputType(element) { }
-    virtual const AtomicString& formControlType() const;
-    virtual bool valueMissing(const String&) const;
+    CheckboxInputType( HTMLInputElement *element ) : BaseCheckableInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
+    virtual bool valueMissing( const String & ) const;
     virtual String valueMissingText() const;
-    virtual void handleKeyupEvent(KeyboardEvent*);
+    virtual void handleKeyupEvent( KeyboardEvent * );
     virtual PassOwnPtr<ClickHandlingState> willDispatchClick();
-    virtual void didDispatchClick(Event*, const ClickHandlingState&);
+    virtual void didDispatchClick( Event *, const ClickHandlingState & );
     virtual bool isCheckbox() const;
 };
 

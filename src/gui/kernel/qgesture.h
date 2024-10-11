@@ -43,309 +43,312 @@ class QGestureEventPrivate;
 
 class Q_GUI_EXPORT QGesture : public QObject
 {
-   GUI_CS_OBJECT(QGesture)
-   Q_DECLARE_PRIVATE(QGesture)
+    GUI_LSCS_OBJECT( QGesture )
+    Q_DECLARE_PRIVATE( QGesture )
 
-   GUI_CS_PROPERTY_READ(state, state)
-   GUI_CS_PROPERTY_READ(gestureType, gestureType)
-   GUI_CS_PROPERTY_READ(gestureCancelPolicy, gestureCancelPolicy)
-   GUI_CS_PROPERTY_WRITE(gestureCancelPolicy, setGestureCancelPolicy)
-   GUI_CS_PROPERTY_READ(hotSpot, hotSpot)
-   GUI_CS_PROPERTY_WRITE(hotSpot, setHotSpot)
-   GUI_CS_PROPERTY_RESET(hotSpot, unsetHotSpot)
-   GUI_CS_PROPERTY_READ(hasHotSpot, hasHotSpot)
+    GUI_LSCS_PROPERTY_READ( state, state )
+    GUI_LSCS_PROPERTY_READ( gestureType, gestureType )
+    GUI_LSCS_PROPERTY_READ( gestureCancelPolicy, gestureCancelPolicy )
+    GUI_LSCS_PROPERTY_WRITE( gestureCancelPolicy, setGestureCancelPolicy )
+    GUI_LSCS_PROPERTY_READ( hotSpot, hotSpot )
+    GUI_LSCS_PROPERTY_WRITE( hotSpot, setHotSpot )
+    GUI_LSCS_PROPERTY_RESET( hotSpot, unsetHotSpot )
+    GUI_LSCS_PROPERTY_READ( hasHotSpot, hasHotSpot )
 
- public:
-   explicit QGesture(QObject *parent = nullptr);
-   ~QGesture();
+public:
+    explicit QGesture( QObject *parent = nullptr );
+    ~QGesture();
 
-   Qt::GestureType gestureType() const;
+    Qt::GestureType gestureType() const;
 
-   Qt::GestureState state() const;
+    Qt::GestureState state() const;
 
-   QPointF hotSpot() const;
-   void setHotSpot(const QPointF &value);
-   bool hasHotSpot() const;
-   void unsetHotSpot();
+    QPointF hotSpot() const;
+    void setHotSpot( const QPointF &value );
+    bool hasHotSpot() const;
+    void unsetHotSpot();
 
-   enum GestureCancelPolicy {
-      CancelNone = 0,
-      CancelAllInContext
-   };
+    enum GestureCancelPolicy
+    {
+        CancelNone = 0,
+        CancelAllInContext
+    };
 
-   void setGestureCancelPolicy(GestureCancelPolicy policy);
-   GestureCancelPolicy gestureCancelPolicy() const;
+    void setGestureCancelPolicy( GestureCancelPolicy policy );
+    GestureCancelPolicy gestureCancelPolicy() const;
 
- protected:
-   QGesture(QGesturePrivate &dd, QObject *parent);
-   QScopedPointer<QGesturePrivate> d_ptr;
+protected:
+    QGesture( QGesturePrivate &dd, QObject *parent );
+    QScopedPointer<QGesturePrivate> d_ptr;
 
- private:
-   friend class QGestureEvent;
-   friend class QGestureRecognizer;
-   friend class QGestureManager;
-   friend class QGraphicsScenePrivate;
+private:
+    friend class QGestureEvent;
+    friend class QGestureRecognizer;
+    friend class QGestureManager;
+    friend class QGraphicsScenePrivate;
 };
 
 class Q_GUI_EXPORT QPanGesture : public QGesture
 {
-   GUI_CS_OBJECT(QPanGesture)
-   Q_DECLARE_PRIVATE(QPanGesture)
+    GUI_LSCS_OBJECT( QPanGesture )
+    Q_DECLARE_PRIVATE( QPanGesture )
 
-   GUI_CS_PROPERTY_READ(lastOffset, lastOffset)
-   GUI_CS_PROPERTY_WRITE(lastOffset, setLastOffset)
-   GUI_CS_PROPERTY_READ(offset, offset)
-   GUI_CS_PROPERTY_WRITE(offset, setOffset)
-   GUI_CS_PROPERTY_READ(delta, delta)
-   GUI_CS_PROPERTY_STORED(delta, false)
-   GUI_CS_PROPERTY_READ(acceleration, acceleration)
-   GUI_CS_PROPERTY_WRITE(acceleration, setAcceleration)
+    GUI_LSCS_PROPERTY_READ( lastOffset, lastOffset )
+    GUI_LSCS_PROPERTY_WRITE( lastOffset, setLastOffset )
+    GUI_LSCS_PROPERTY_READ( offset, offset )
+    GUI_LSCS_PROPERTY_WRITE( offset, setOffset )
+    GUI_LSCS_PROPERTY_READ( delta, delta )
+    GUI_LSCS_PROPERTY_STORED( delta, false )
+    GUI_LSCS_PROPERTY_READ( acceleration, acceleration )
+    GUI_LSCS_PROPERTY_WRITE( acceleration, setAcceleration )
 
-   // private properties
-   GUI_CS_PROPERTY_READ(horizontalVelocity, cs_horizontalVelocity)
-   GUI_CS_PROPERTY_WRITE(horizontalVelocity, cs_setHorizontalVelocity)
+    // private properties
+    GUI_LSCS_PROPERTY_READ( horizontalVelocity, lscs_horizontalVelocity )
+    GUI_LSCS_PROPERTY_WRITE( horizontalVelocity, lscs_setHorizontalVelocity )
 
-   // private properties
-   GUI_CS_PROPERTY_READ(verticalVelocity, cs_verticalVelocity)
-   GUI_CS_PROPERTY_WRITE(verticalVelocity, cs_setVerticalVelocity)
+    // private properties
+    GUI_LSCS_PROPERTY_READ( verticalVelocity, lscs_verticalVelocity )
+    GUI_LSCS_PROPERTY_WRITE( verticalVelocity, lscs_setVerticalVelocity )
 
- public:
-   explicit QPanGesture(QObject *parent = nullptr);
-   ~QPanGesture();
+public:
+    explicit QPanGesture( QObject *parent = nullptr );
+    ~QPanGesture();
 
-   QPointF lastOffset() const;
-   QPointF offset() const;
-   QPointF delta() const;
-   qreal acceleration() const;
+    QPointF lastOffset() const;
+    QPointF offset() const;
+    QPointF delta() const;
+    qreal acceleration() const;
 
-   void setLastOffset(const QPointF &value);
-   void setOffset(const QPointF &value);
-   void setAcceleration(qreal value);
+    void setLastOffset( const QPointF &value );
+    void setOffset( const QPointF &value );
+    void setAcceleration( qreal value );
 
-   friend class QPanGestureRecognizer;
-   friend class QWinNativePanGestureRecognizer;
+    friend class QPanGestureRecognizer;
+    friend class QWinNativePanGestureRecognizer;
 
- private:
-   // wrapper for overloaded method
-   qreal cs_horizontalVelocity() const;
+private:
+    // wrapper for overloaded method
+    qreal lscs_horizontalVelocity() const;
 
-   // wrapper for overloaded method
-   void cs_setHorizontalVelocity(qreal velocity);
+    // wrapper for overloaded method
+    void lscs_setHorizontalVelocity( qreal velocity );
 
-   // wrapper for overloaded method
-   qreal cs_verticalVelocity() const;
+    // wrapper for overloaded method
+    qreal lscs_verticalVelocity() const;
 
-   // wrapper for overloaded method
-   void cs_setVerticalVelocity(qreal velocity);
+    // wrapper for overloaded method
+    void lscs_setVerticalVelocity( qreal velocity );
 };
 
 class Q_GUI_EXPORT QPinchGesture : public QGesture
 {
-   GUI_CS_OBJECT(QPinchGesture)
-   Q_DECLARE_PRIVATE(QPinchGesture)
+    GUI_LSCS_OBJECT( QPinchGesture )
+    Q_DECLARE_PRIVATE( QPinchGesture )
 
-   GUI_CS_FLAG(ChangeFlags, ChangeFlag)
+    GUI_LSCS_FLAG( ChangeFlags, ChangeFlag )
 
- public:
-   enum ChangeFlag {
-      ScaleFactorChanged   = 0x1,
-      RotationAngleChanged = 0x2,
-      CenterPointChanged   = 0x4
-   };
-   using ChangeFlags = QFlags<ChangeFlag>;
+public:
+    enum ChangeFlag
+    {
+        ScaleFactorChanged   = 0x1,
+        RotationAngleChanged = 0x2,
+        CenterPointChanged   = 0x4
+    };
+    using ChangeFlags = QFlags<ChangeFlag>;
 
-   GUI_CS_PROPERTY_READ(totalChangeFlags, totalChangeFlags)
-   GUI_CS_PROPERTY_WRITE(totalChangeFlags, setTotalChangeFlags)
-   GUI_CS_PROPERTY_READ(changeFlags, changeFlags)
-   GUI_CS_PROPERTY_WRITE(changeFlags, setChangeFlags)
+    GUI_LSCS_PROPERTY_READ( totalChangeFlags, totalChangeFlags )
+    GUI_LSCS_PROPERTY_WRITE( totalChangeFlags, setTotalChangeFlags )
+    GUI_LSCS_PROPERTY_READ( changeFlags, changeFlags )
+    GUI_LSCS_PROPERTY_WRITE( changeFlags, setChangeFlags )
 
-   GUI_CS_PROPERTY_READ(totalScaleFactor, totalScaleFactor)
-   GUI_CS_PROPERTY_WRITE(totalScaleFactor, setTotalScaleFactor)
-   GUI_CS_PROPERTY_READ(lastScaleFactor, lastScaleFactor)
-   GUI_CS_PROPERTY_WRITE(lastScaleFactor, setLastScaleFactor)
-   GUI_CS_PROPERTY_READ(scaleFactor, scaleFactor)
-   GUI_CS_PROPERTY_WRITE(scaleFactor, setScaleFactor)
+    GUI_LSCS_PROPERTY_READ( totalScaleFactor, totalScaleFactor )
+    GUI_LSCS_PROPERTY_WRITE( totalScaleFactor, setTotalScaleFactor )
+    GUI_LSCS_PROPERTY_READ( lastScaleFactor, lastScaleFactor )
+    GUI_LSCS_PROPERTY_WRITE( lastScaleFactor, setLastScaleFactor )
+    GUI_LSCS_PROPERTY_READ( scaleFactor, scaleFactor )
+    GUI_LSCS_PROPERTY_WRITE( scaleFactor, setScaleFactor )
 
-   GUI_CS_PROPERTY_READ(totalRotationAngle, totalRotationAngle)
-   GUI_CS_PROPERTY_WRITE(totalRotationAngle, setTotalRotationAngle)
-   GUI_CS_PROPERTY_READ(lastRotationAngle, lastRotationAngle)
-   GUI_CS_PROPERTY_WRITE(lastRotationAngle, setLastRotationAngle)
-   GUI_CS_PROPERTY_READ(rotationAngle, rotationAngle)
-   GUI_CS_PROPERTY_WRITE(rotationAngle, setRotationAngle)
+    GUI_LSCS_PROPERTY_READ( totalRotationAngle, totalRotationAngle )
+    GUI_LSCS_PROPERTY_WRITE( totalRotationAngle, setTotalRotationAngle )
+    GUI_LSCS_PROPERTY_READ( lastRotationAngle, lastRotationAngle )
+    GUI_LSCS_PROPERTY_WRITE( lastRotationAngle, setLastRotationAngle )
+    GUI_LSCS_PROPERTY_READ( rotationAngle, rotationAngle )
+    GUI_LSCS_PROPERTY_WRITE( rotationAngle, setRotationAngle )
 
-   GUI_CS_PROPERTY_READ(startCenterPoint, startCenterPoint)
-   GUI_CS_PROPERTY_WRITE(startCenterPoint, setStartCenterPoint)
-   GUI_CS_PROPERTY_READ(lastCenterPoint, lastCenterPoint)
-   GUI_CS_PROPERTY_WRITE(lastCenterPoint, setLastCenterPoint)
-   GUI_CS_PROPERTY_READ(centerPoint, centerPoint)
-   GUI_CS_PROPERTY_WRITE(centerPoint, setCenterPoint)
+    GUI_LSCS_PROPERTY_READ( startCenterPoint, startCenterPoint )
+    GUI_LSCS_PROPERTY_WRITE( startCenterPoint, setStartCenterPoint )
+    GUI_LSCS_PROPERTY_READ( lastCenterPoint, lastCenterPoint )
+    GUI_LSCS_PROPERTY_WRITE( lastCenterPoint, setLastCenterPoint )
+    GUI_LSCS_PROPERTY_READ( centerPoint, centerPoint )
+    GUI_LSCS_PROPERTY_WRITE( centerPoint, setCenterPoint )
 
-   explicit QPinchGesture(QObject *parent = nullptr);
-   ~QPinchGesture();
+    explicit QPinchGesture( QObject *parent = nullptr );
+    ~QPinchGesture();
 
-   ChangeFlags totalChangeFlags() const;
-   void setTotalChangeFlags(ChangeFlags value);
+    ChangeFlags totalChangeFlags() const;
+    void setTotalChangeFlags( ChangeFlags value );
 
-   ChangeFlags changeFlags() const;
-   void setChangeFlags(ChangeFlags value);
+    ChangeFlags changeFlags() const;
+    void setChangeFlags( ChangeFlags value );
 
-   QPointF startCenterPoint() const;
-   QPointF lastCenterPoint() const;
-   QPointF centerPoint() const;
-   void setStartCenterPoint(const QPointF &value);
-   void setLastCenterPoint(const QPointF &value);
-   void setCenterPoint(const QPointF &value);
+    QPointF startCenterPoint() const;
+    QPointF lastCenterPoint() const;
+    QPointF centerPoint() const;
+    void setStartCenterPoint( const QPointF &value );
+    void setLastCenterPoint( const QPointF &value );
+    void setCenterPoint( const QPointF &value );
 
-   qreal totalScaleFactor() const;
-   qreal lastScaleFactor() const;
-   qreal scaleFactor() const;
-   void setTotalScaleFactor(qreal value);
-   void setLastScaleFactor(qreal value);
-   void setScaleFactor(qreal value);
+    qreal totalScaleFactor() const;
+    qreal lastScaleFactor() const;
+    qreal scaleFactor() const;
+    void setTotalScaleFactor( qreal value );
+    void setLastScaleFactor( qreal value );
+    void setScaleFactor( qreal value );
 
-   qreal totalRotationAngle() const;
-   qreal lastRotationAngle() const;
-   qreal rotationAngle() const;
-   void setTotalRotationAngle(qreal value);
-   void setLastRotationAngle(qreal value);
-   void setRotationAngle(qreal value);
+    qreal totalRotationAngle() const;
+    qreal lastRotationAngle() const;
+    qreal rotationAngle() const;
+    void setTotalRotationAngle( qreal value );
+    void setLastRotationAngle( qreal value );
+    void setRotationAngle( qreal value );
 
-   friend class QPinchGestureRecognizer;
+    friend class QPinchGestureRecognizer;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QPinchGesture::ChangeFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QPinchGesture::ChangeFlags )
 
 class Q_GUI_EXPORT QSwipeGesture : public QGesture
 {
-   GUI_CS_OBJECT(QSwipeGesture)
-   Q_DECLARE_PRIVATE(QSwipeGesture)
+    GUI_LSCS_OBJECT( QSwipeGesture )
+    Q_DECLARE_PRIVATE( QSwipeGesture )
 
-   GUI_CS_ENUM(SwipeDirection)
+    GUI_LSCS_ENUM( SwipeDirection )
 
-   GUI_CS_PROPERTY_READ(horizontalDirection, horizontalDirection)
-   GUI_CS_PROPERTY_STORED(horizontalDirection, false)
-   GUI_CS_PROPERTY_READ(verticalDirection, verticalDirection)
-   GUI_CS_PROPERTY_STORED(verticalDirection, false)
-   GUI_CS_PROPERTY_READ(swipeAngle, swipeAngle)
-   GUI_CS_PROPERTY_WRITE(swipeAngle, setSwipeAngle)
+    GUI_LSCS_PROPERTY_READ( horizontalDirection, horizontalDirection )
+    GUI_LSCS_PROPERTY_STORED( horizontalDirection, false )
+    GUI_LSCS_PROPERTY_READ( verticalDirection, verticalDirection )
+    GUI_LSCS_PROPERTY_STORED( verticalDirection, false )
+    GUI_LSCS_PROPERTY_READ( swipeAngle, swipeAngle )
+    GUI_LSCS_PROPERTY_WRITE( swipeAngle, setSwipeAngle )
 
-   // private properties
-   GUI_CS_PROPERTY_READ(velocity, cs_velocity)
-   GUI_CS_PROPERTY_WRITE(velocity, cs_setVelocity)
+    // private properties
+    GUI_LSCS_PROPERTY_READ( velocity, lscs_velocity )
+    GUI_LSCS_PROPERTY_WRITE( velocity, lscs_setVelocity )
 
- public:
-   enum SwipeDirection {
-      NoDirection,
-      Left,
-      Right,
-      Up,
-      Down
-   };
+public:
+    enum SwipeDirection
+    {
+        NoDirection,
+        Left,
+        Right,
+        Up,
+        Down
+    };
 
-   explicit QSwipeGesture(QObject *parent = nullptr);
-   ~QSwipeGesture();
+    explicit QSwipeGesture( QObject *parent = nullptr );
+    ~QSwipeGesture();
 
-   SwipeDirection horizontalDirection() const;
-   SwipeDirection verticalDirection() const;
+    SwipeDirection horizontalDirection() const;
+    SwipeDirection verticalDirection() const;
 
-   qreal swipeAngle() const;
-   void setSwipeAngle(qreal value);
+    qreal swipeAngle() const;
+    void setSwipeAngle( qreal value );
 
-   friend class QSwipeGestureRecognizer;
+    friend class QSwipeGestureRecognizer;
 
- private:
-   // wrapper for overloaded method
-   qreal cs_velocity() const;
+private:
+    // wrapper for overloaded method
+    qreal lscs_velocity() const;
 
-   // wrapper for overloaded method
-   void cs_setVelocity(qreal velocity);
+    // wrapper for overloaded method
+    void lscs_setVelocity( qreal velocity );
 };
 
 class Q_GUI_EXPORT QTapGesture : public QGesture
 {
-   GUI_CS_OBJECT(QTapGesture)
-   Q_DECLARE_PRIVATE(QTapGesture)
+    GUI_LSCS_OBJECT( QTapGesture )
+    Q_DECLARE_PRIVATE( QTapGesture )
 
-   GUI_CS_PROPERTY_READ(position, position)
-   GUI_CS_PROPERTY_WRITE(position, setPosition)
+    GUI_LSCS_PROPERTY_READ( position, position )
+    GUI_LSCS_PROPERTY_WRITE( position, setPosition )
 
- public:
-   explicit QTapGesture(QObject *parent = nullptr);
-   ~QTapGesture();
+public:
+    explicit QTapGesture( QObject *parent = nullptr );
+    ~QTapGesture();
 
-   QPointF position() const;
-   void setPosition(const QPointF &pos);
+    QPointF position() const;
+    void setPosition( const QPointF &pos );
 
-   friend class QTapGestureRecognizer;
+    friend class QTapGestureRecognizer;
 };
 
 class Q_GUI_EXPORT QTapAndHoldGesture : public QGesture
 {
-   GUI_CS_OBJECT(QTapAndHoldGesture)
-   Q_DECLARE_PRIVATE(QTapAndHoldGesture)
+    GUI_LSCS_OBJECT( QTapAndHoldGesture )
+    Q_DECLARE_PRIVATE( QTapAndHoldGesture )
 
-   GUI_CS_PROPERTY_READ(position, position)
-   GUI_CS_PROPERTY_WRITE(position, setPosition)
+    GUI_LSCS_PROPERTY_READ( position, position )
+    GUI_LSCS_PROPERTY_WRITE( position, setPosition )
 
- public:
-   explicit QTapAndHoldGesture(QObject *parent = nullptr);
-   ~QTapAndHoldGesture();
+public:
+    explicit QTapAndHoldGesture( QObject *parent = nullptr );
+    ~QTapAndHoldGesture();
 
-   QPointF position() const;
-   void setPosition(const QPointF &pos);
+    QPointF position() const;
+    void setPosition( const QPointF &pos );
 
-   static void setTimeout(int msecs);
-   static int timeout();
+    static void setTimeout( int msecs );
+    static int timeout();
 
-   friend class QTapAndHoldGestureRecognizer;
+    friend class QTapAndHoldGestureRecognizer;
 };
 
 class Q_GUI_EXPORT QGestureEvent : public QEvent
 {
- public:
-   explicit QGestureEvent(const QList<QGesture *> &gestures);
-   ~QGestureEvent();
+public:
+    explicit QGestureEvent( const QList<QGesture *> &gestures );
+    ~QGestureEvent();
 
-   QList<QGesture *> gestures() const;
-   QGesture *gesture(Qt::GestureType gestureType) const;
+    QList<QGesture *> gestures() const;
+    QGesture *gesture( Qt::GestureType gestureType ) const;
 
-   QList<QGesture *> activeGestures() const;
-   QList<QGesture *> canceledGestures() const;
+    QList<QGesture *> activeGestures() const;
+    QList<QGesture *> canceledGestures() const;
 
-   using QEvent::setAccepted;
-   using QEvent::isAccepted;
-   using QEvent::accept;
-   using QEvent::ignore;
+    using QEvent::setAccepted;
+    using QEvent::isAccepted;
+    using QEvent::accept;
+    using QEvent::ignore;
 
-   void setAccepted(QGesture *gesture, bool isAccepted);
-   void accept(QGesture *gesture);
-   void ignore(QGesture *gesture);
-   bool isAccepted(QGesture *gesture) const;
+    void setAccepted( QGesture *gesture, bool isAccepted );
+    void accept( QGesture *gesture );
+    void ignore( QGesture *gesture );
+    bool isAccepted( QGesture *gesture ) const;
 
-   void setAccepted(Qt::GestureType gestureType, bool isAccepted);
-   void accept(Qt::GestureType gestureType);
-   void ignore(Qt::GestureType gestureType);
-   bool isAccepted(Qt::GestureType gestureType) const;
+    void setAccepted( Qt::GestureType gestureType, bool isAccepted );
+    void accept( Qt::GestureType gestureType );
+    void ignore( Qt::GestureType gestureType );
+    bool isAccepted( Qt::GestureType gestureType ) const;
 
-   void setWidget(QWidget *widget);
-   QWidget *widget() const;
+    void setWidget( QWidget *widget );
+    QWidget *widget() const;
 
 #ifndef QT_NO_GRAPHICSVIEW
-   QPointF mapToGraphicsScene(const QPointF &gesturePoint) const;
+    QPointF mapToGraphicsScene( const QPointF &gesturePoint ) const;
 #endif
 
- private:
-   QList<QGesture *> m_gestures;
-   QWidget *m_widget;
-   QMap<Qt::GestureType, bool> m_accepted;
-   QMap<Qt::GestureType, QWidget *> m_targetWidgets;
+private:
+    QList<QGesture *> m_gestures;
+    QWidget *m_widget;
+    QMap<Qt::GestureType, bool> m_accepted;
+    QMap<Qt::GestureType, QWidget *> m_targetWidgets;
 
-   friend class QApplication;
-   friend class QGestureManager;
+    friend class QApplication;
+    friend class QGestureManager;
 };
 
-Q_GUI_EXPORT QDebug operator<<(QDebug, const QGesture *);
-Q_GUI_EXPORT QDebug operator<<(QDebug, const QGestureEvent *event);
+Q_GUI_EXPORT QDebug operator<<( QDebug, const QGesture * );
+Q_GUI_EXPORT QDebug operator<<( QDebug, const QGestureEvent *event );
 
 #endif // QT_NO_GESTURES
 

@@ -49,27 +49,29 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/UnusedParam.h>
 
-namespace WTF {
+namespace WTF
+{
 
-struct LocalTimeOffset {
+struct LocalTimeOffset
+{
     LocalTimeOffset()
-        : isDST(false)
-        , offset(0)
+        : isDST( false )
+        , offset( 0 )
     {
     }
 
-    LocalTimeOffset(bool isDST, int offset)
-        : isDST(isDST)
-        , offset(offset)
+    LocalTimeOffset( bool isDST, int offset )
+        : isDST( isDST )
+        , offset( offset )
     {
     }
 
-    bool operator==(const LocalTimeOffset& other)
+    bool operator==( const LocalTimeOffset &other )
     {
         return isDST == other.isDST && offset == other.offset;
     }
 
-    bool operator!=(const LocalTimeOffset& other)
+    bool operator!=( const LocalTimeOffset &other )
     {
         return isDST != other.isDST || offset != other.offset;
     }
@@ -79,20 +81,20 @@ struct LocalTimeOffset {
 };
 
 void initializeDates();
-int equivalentYearForDST(int year);
+int equivalentYearForDST( int year );
 
 // Not really math related, but this is currently the only shared place to put these.
-double parseDateFromNullTerminatedCharacters(const char* dateString);
-double timeClip(double);
+double parseDateFromNullTerminatedCharacters( const char *dateString );
+double timeClip( double );
 
 inline double jsCurrentTime()
 {
     // JavaScript doesn't recognize fractions of a millisecond.
-    return floor(WTF::currentTimeMS());
+    return floor( WTF::currentTimeMS() );
 }
 
-const char * const weekdayName[7] = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
-const char * const monthName[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+const char *const weekdayName[7] = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+const char *const monthName[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
 const double hoursPerDay = 24.0;
 const double minutesPerHour = 60.0;
@@ -105,14 +107,14 @@ const double msPerDay = 24.0 * 60.0 * 60.0 * 1000.0;
 const double msPerMonth = 2592000000.0;
 
 // Returns the number of days from 1970-01-01 to the specified date.
-double dateToDaysFrom1970(int year, int month, int day);
-int msToYear(double ms);
-int dayInYear(double ms, int year);
-int monthFromDayInYear(int dayInYear, bool leapYear);
-int dayInMonthFromDayInYear(int dayInYear, bool leapYear);
+double dateToDaysFrom1970( int year, int month, int day );
+int msToYear( double ms );
+int dayInYear( double ms, int year );
+int monthFromDayInYear( int dayInYear, bool leapYear );
+int dayInMonthFromDayInYear( int dayInYear, bool leapYear );
 
 // Returns combined offset in millisecond (UTC + DST).
-LocalTimeOffset calculateLocalTimeOffset(double utcInMilliseconds);
+LocalTimeOffset calculateLocalTimeOffset( double utcInMilliseconds );
 
 } // namespace WTF
 
@@ -129,30 +131,32 @@ using WTF::LocalTimeOffset;
 using WTF::calculateLocalTimeOffset;
 
 #if USE(JSC)
-namespace JSC {
+namespace JSC
+{
 class ExecState;
 struct GregorianDateTime;
 
-void msToGregorianDateTime(ExecState*, double, bool outputIsUTC, GregorianDateTime&);
-double gregorianDateTimeToMS(ExecState*, const GregorianDateTime&, double, bool inputIsUTC);
-double getUTCOffset(ExecState*);
-double parseDateFromNullTerminatedCharacters(ExecState*, const char* dateString);
+void msToGregorianDateTime( ExecState *, double, bool outputIsUTC, GregorianDateTime & );
+double gregorianDateTimeToMS( ExecState *, const GregorianDateTime &, double, bool inputIsUTC );
+double getUTCOffset( ExecState * );
+double parseDateFromNullTerminatedCharacters( ExecState *, const char *dateString );
 
 // Intentionally overridding the default tm of the system.
 // The members of tm differ on various operating systems.
-struct GregorianDateTime : Noncopyable {
+struct GregorianDateTime : Noncopyable
+{
     GregorianDateTime()
-        : second(0)
-        , minute(0)
-        , hour(0)
-        , weekDay(0)
-        , monthDay(0)
-        , yearDay(0)
-        , month(0)
-        , year(0)
-        , isDST(0)
-        , utcOffset(0)
-        , timeZone(nullptr)
+        : second( 0 )
+        , minute( 0 )
+        , hour( 0 )
+        , weekDay( 0 )
+        , monthDay( 0 )
+        , yearDay( 0 )
+        , month( 0 )
+        , year( 0 )
+        , isDST( 0 )
+        , utcOffset( 0 )
+        , timeZone( nullptr )
     {
     }
 
@@ -164,7 +168,7 @@ struct GregorianDateTime : Noncopyable {
     operator tm() const
     {
         tm ret;
-        memset(&ret, 0, sizeof(ret));
+        memset( &ret, 0, sizeof( ret ) );
 
         ret.tm_sec   =  second;
         ret.tm_min   =  minute;
@@ -177,7 +181,7 @@ struct GregorianDateTime : Noncopyable {
         ret.tm_isdst =  isDST;
 
 #if HAVE(TM_GMTOFF)
-        ret.tm_gmtoff = static_cast<long>(utcOffset);
+        ret.tm_gmtoff = static_cast<long>( utcOffset );
 #endif
 #if HAVE(TM_ZONE)
         ret.tm_zone = timeZone;
@@ -186,7 +190,7 @@ struct GregorianDateTime : Noncopyable {
         return ret;
     }
 
-    void copyFrom(const GregorianDateTime& rhs)
+    void copyFrom( const GregorianDateTime &rhs )
     {
         second = rhs.second;
         minute = rhs.minute;
@@ -198,12 +202,17 @@ struct GregorianDateTime : Noncopyable {
         year = rhs.year;
         isDST = rhs.isDST;
         utcOffset = rhs.utcOffset;
-        if (rhs.timeZone) {
-            int inZoneSize = strlen(rhs.timeZone) + 1;
+
+        if ( rhs.timeZone )
+        {
+            int inZoneSize = strlen( rhs.timeZone ) + 1;
             timeZone = new char[inZoneSize];
-            strncpy(timeZone, rhs.timeZone, inZoneSize);
-        } else
+            strncpy( timeZone, rhs.timeZone, inZoneSize );
+        }
+        else
+        {
             timeZone = nullptr;
+        }
     }
 
     int second;
@@ -216,10 +225,10 @@ struct GregorianDateTime : Noncopyable {
     int year;
     int isDST;
     int utcOffset;
-    char* timeZone;
+    char *timeZone;
 };
 
-static inline int gmtoffset(const GregorianDateTime& t)
+static inline int gmtoffset( const GregorianDateTime &t )
 {
     return t.utcOffset;
 }

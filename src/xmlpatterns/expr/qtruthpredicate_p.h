@@ -26,35 +26,44 @@
 
 #include <qgenericpredicate_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TruthPredicate : public GenericPredicate
 {
- public:
-   TruthPredicate(const Expression::Ptr &sourceExpression, const Expression::Ptr &predicate);
+public:
+    TruthPredicate( const Expression::Ptr &sourceExpression, const Expression::Ptr &predicate );
 
-   Item mapToItem(const Item &item, const DynamicContext::Ptr &context) const {
-      Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
+    Item mapToItem( const Item &item, const DynamicContext::Ptr &context ) const
+    {
+        Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
 
-      if (m_operand2->evaluateEBV(context)) {
-         return item;
-      } else {
-         return Item();
-      }
-   }
+        if ( m_operand2->evaluateEBV( context ) )
+        {
+            return item;
+        }
+        else
+        {
+            return Item();
+        }
+    }
 
-   Item::Iterator::Ptr map(const Item &item, const DynamicContext::Ptr &context) const {
-      Q_ASSERT_X(false, Q_FUNC_INFO, "This function should never be called.");
+    Item::Iterator::Ptr map( const Item &item, const DynamicContext::Ptr &context ) const
+    {
+        Q_ASSERT_X( false, Q_FUNC_INFO, "This function should never be called." );
 
-      if (m_operand2->evaluateEBV(context)) {
-         return makeSingletonIterator(item);
-      } else {
-         return CommonValues::emptyIterator;
-      }
-   }
+        if ( m_operand2->evaluateEBV( context ) )
+        {
+            return makeSingletonIterator( item );
+        }
+        else
+        {
+            return CommonValues::emptyIterator;
+        }
+    }
 
-   SequenceType::List expectedOperandTypes() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    SequenceType::List expectedOperandTypes() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 };
 }
 

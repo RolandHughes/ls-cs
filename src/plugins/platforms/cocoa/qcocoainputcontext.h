@@ -30,32 +30,34 @@
 
 class QCocoaInputContext : public QPlatformInputContext
 {
-   CS_OBJECT(QCocoaInputContext)
+    LSCS_OBJECT( QCocoaInputContext )
 
- public:
-   explicit QCocoaInputContext();
-   ~QCocoaInputContext();
+public:
+    explicit QCocoaInputContext();
+    ~QCocoaInputContext();
 
-   bool isValid() const override {
-      return true;
-   }
+    bool isValid() const override
+    {
+        return true;
+    }
 
-   void reset() override;
+    void reset() override;
 
-   QLocale locale() const override {
-      return m_locale;
-   }
-   void updateLocale();
+    QLocale locale() const override
+    {
+        return m_locale;
+    }
+    void updateLocale();
 
- private:
-   CS_SLOT_1(Private, void connectSignals())
-   CS_SLOT_2(connectSignals)
+private:
+    LSCS_SLOT_1( Private, void connectSignals() )
+    LSCS_SLOT_2( connectSignals )
 
-   CS_SLOT_1(Private, void focusObjectChanged(QObject *focusObject))
-   CS_SLOT_2(focusObjectChanged)
+    LSCS_SLOT_1( Private, void focusObjectChanged( QObject *focusObject ) )
+    LSCS_SLOT_2( focusObjectChanged )
 
-   QPointer<QWindow> mWindow;
-   QLocale m_locale;
+    QPointer<QWindow> mWindow;
+    QLocale m_locale;
 };
 
 

@@ -40,90 +40,93 @@ class QList;
 
 class Q_NETWORK_EXPORT QNetworkCacheMetaData
 {
- public:
-   typedef QPair<QByteArray, QByteArray> RawHeader;
-   typedef QList<RawHeader> RawHeaderList;
-   typedef QHash<QNetworkRequest::Attribute, QVariant> AttributesMap;
+public:
+    typedef QPair<QByteArray, QByteArray> RawHeader;
+    typedef QList<RawHeader> RawHeaderList;
+    typedef QHash<QNetworkRequest::Attribute, QVariant> AttributesMap;
 
-   QNetworkCacheMetaData();
-   QNetworkCacheMetaData(const QNetworkCacheMetaData &other);
-   ~QNetworkCacheMetaData();
+    QNetworkCacheMetaData();
+    QNetworkCacheMetaData( const QNetworkCacheMetaData &other );
+    ~QNetworkCacheMetaData();
 
-   QNetworkCacheMetaData &operator=(QNetworkCacheMetaData &&other)  {
-      swap(other);
-      return *this;
-   }
+    QNetworkCacheMetaData &operator=( QNetworkCacheMetaData &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
-   QNetworkCacheMetaData &operator=(const QNetworkCacheMetaData &other);
+    QNetworkCacheMetaData &operator=( const QNetworkCacheMetaData &other );
 
-   void swap(QNetworkCacheMetaData &other) {
-      qSwap(d, other.d);
-   }
+    void swap( QNetworkCacheMetaData &other )
+    {
+        qSwap( d, other.d );
+    }
 
-   bool operator==(const QNetworkCacheMetaData &other) const;
+    bool operator==( const QNetworkCacheMetaData &other ) const;
 
-   bool operator!=(const QNetworkCacheMetaData &other) const {
-      return !(*this == other);
-   }
+    bool operator!=( const QNetworkCacheMetaData &other ) const
+    {
+        return !( *this == other );
+    }
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QUrl url() const;
-   void setUrl(const QUrl &url);
+    QUrl url() const;
+    void setUrl( const QUrl &url );
 
-   RawHeaderList rawHeaders() const;
-   void setRawHeaders(const RawHeaderList &list);
+    RawHeaderList rawHeaders() const;
+    void setRawHeaders( const RawHeaderList &list );
 
-   QDateTime lastModified() const;
-   void setLastModified(const QDateTime &dateTime);
+    QDateTime lastModified() const;
+    void setLastModified( const QDateTime &dateTime );
 
-   QDateTime expirationDate() const;
-   void setExpirationDate(const QDateTime &dateTime);
+    QDateTime expirationDate() const;
+    void setExpirationDate( const QDateTime &dateTime );
 
-   bool saveToDisk() const;
-   void setSaveToDisk(bool allow);
+    bool saveToDisk() const;
+    void setSaveToDisk( bool allow );
 
-   AttributesMap attributes() const;
-   void setAttributes(const AttributesMap &attributes);
+    AttributesMap attributes() const;
+    void setAttributes( const AttributesMap &attributes );
 
- private:
-   friend class QNetworkCacheMetaDataPrivate;
-   QSharedDataPointer<QNetworkCacheMetaDataPrivate> d;
+private:
+    friend class QNetworkCacheMetaDataPrivate;
+    QSharedDataPointer<QNetworkCacheMetaDataPrivate> d;
 };
 
-Q_NETWORK_EXPORT QDataStream &operator<<(QDataStream &, const QNetworkCacheMetaData &);
-Q_NETWORK_EXPORT QDataStream &operator>>(QDataStream &, QNetworkCacheMetaData &);
+Q_NETWORK_EXPORT QDataStream &operator<<( QDataStream &, const QNetworkCacheMetaData & );
+Q_NETWORK_EXPORT QDataStream &operator>>( QDataStream &, QNetworkCacheMetaData & );
 
 class Q_NETWORK_EXPORT QAbstractNetworkCache : public QObject
 {
-   NET_CS_OBJECT(QAbstractNetworkCache)
+    NET_LSCS_OBJECT( QAbstractNetworkCache )
 
- public:
-   QAbstractNetworkCache(const QAbstractNetworkCache &) = delete;
-   QAbstractNetworkCache &operator=(const QAbstractNetworkCache &) = delete;
+public:
+    QAbstractNetworkCache( const QAbstractNetworkCache & ) = delete;
+    QAbstractNetworkCache &operator=( const QAbstractNetworkCache & ) = delete;
 
-   virtual ~QAbstractNetworkCache();
+    virtual ~QAbstractNetworkCache();
 
-   virtual QNetworkCacheMetaData metaData(const QUrl &url) = 0;
-   virtual void updateMetaData(const QNetworkCacheMetaData &metaData) = 0;
-   virtual QIODevice *data(const QUrl &url) = 0;
-   virtual bool remove(const QUrl &url) = 0;
-   virtual qint64 cacheSize() const = 0;
+    virtual QNetworkCacheMetaData metaData( const QUrl &url ) = 0;
+    virtual void updateMetaData( const QNetworkCacheMetaData &metaData ) = 0;
+    virtual QIODevice *data( const QUrl &url ) = 0;
+    virtual bool remove( const QUrl &url ) = 0;
+    virtual qint64 cacheSize() const = 0;
 
-   virtual QIODevice *prepare(const QNetworkCacheMetaData &metaData) = 0;
-   virtual void insert(QIODevice *device) = 0;
+    virtual QIODevice *prepare( const QNetworkCacheMetaData &metaData ) = 0;
+    virtual void insert( QIODevice *device ) = 0;
 
-   NET_CS_SLOT_1(Public, virtual void clear() = 0)
-   NET_CS_SLOT_2(clear)
+    NET_LSCS_SLOT_1( Public, virtual void clear() = 0 )
+    NET_LSCS_SLOT_2( clear )
 
- protected:
-   explicit QAbstractNetworkCache(QObject *parent = nullptr);
-   QAbstractNetworkCache(QAbstractNetworkCachePrivate &dd, QObject *parent);
+protected:
+    explicit QAbstractNetworkCache( QObject *parent = nullptr );
+    QAbstractNetworkCache( QAbstractNetworkCachePrivate &dd, QObject *parent );
 
-   QScopedPointer<QAbstractNetworkCachePrivate> d_ptr;
+    QScopedPointer<QAbstractNetworkCachePrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QAbstractNetworkCache)
+private:
+    Q_DECLARE_PRIVATE( QAbstractNetworkCache )
 };
 
 #endif

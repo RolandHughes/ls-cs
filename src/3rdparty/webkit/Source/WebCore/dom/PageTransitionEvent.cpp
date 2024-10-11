@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,16 +28,17 @@
 
 #include "EventNames.h"
 
-namespace WebCore {
-        
+namespace WebCore
+{
+
 PageTransitionEvent::PageTransitionEvent()
-    : m_persisted(false)
+    : m_persisted( false )
 {
 }
 
-PageTransitionEvent::PageTransitionEvent(const AtomicString& type, bool persisted)
-    : Event(type, true, true)
-    , m_persisted(persisted)
+PageTransitionEvent::PageTransitionEvent( const AtomicString &type, bool persisted )
+    : Event( type, true, true )
+    , m_persisted( persisted )
 {
 }
 
@@ -45,16 +46,18 @@ PageTransitionEvent::~PageTransitionEvent()
 {
 }
 
-void PageTransitionEvent::initPageTransitionEvent(const AtomicString& type, 
-                                            bool canBubbleArg,
-                                            bool cancelableArg,
-                                            bool persisted)
+void PageTransitionEvent::initPageTransitionEvent( const AtomicString &type,
+        bool canBubbleArg,
+        bool cancelableArg,
+        bool persisted )
 {
-    if (dispatched())
+    if ( dispatched() )
+    {
         return;
-    
-    initEvent(type, canBubbleArg, cancelableArg);
-    
+    }
+
+    initEvent( type, canBubbleArg, cancelableArg );
+
     m_persisted = persisted;
 }
 

@@ -26,7 +26,8 @@
 #ifndef RenderStyleConstants_h
 #define RenderStyleConstants_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 /*
  * WARNING:
@@ -46,7 +47,8 @@ namespace WebCore {
 // (6) StyleDifferenceSimplifiedLayout - Only overflow needs to be recomputed
 // (7) StyleDifferenceSimplifiedLayoutAndPositionedMovement - Both positioned movement and simplified layout updates are required.
 // (8) StyleDifferenceLayout - A full layout is required.
-enum StyleDifference {
+enum StyleDifference
+{
     StyleDifferenceEqual,
 #if USE(ACCELERATED_COMPOSITING)
     StyleDifferenceRecompositeLayer,
@@ -63,14 +65,16 @@ enum StyleDifference {
 // context (e.g. whether the property is changing on an element which has a compositing layer).
 // A simple StyleDifference does not provide enough information so we return a bit mask of
 // StyleDifferenceContextSensitiveProperties from RenderStyle::diff() too.
-enum StyleDifferenceContextSensitiveProperty {
+enum StyleDifferenceContextSensitiveProperty
+{
     ContextSensitivePropertyNone = 0,
-    ContextSensitivePropertyTransform = (1 << 0),
-    ContextSensitivePropertyOpacity = (1 << 1)
+    ContextSensitivePropertyTransform = ( 1 << 0 ),
+    ContextSensitivePropertyOpacity = ( 1 << 1 )
 };
 
 // Static pseudo styles. Dynamic ones are produced on the fly.
-enum PseudoId {
+enum PseudoId
+{
     // The order must be NOP ID, public IDs, and then internal IDs.
     NOPSEUDO, FIRST_LINE, FIRST_LETTER, BEFORE, AFTER, SELECTION, FIRST_LINE_INHERITED, SCROLLBAR, FILE_UPLOAD_BUTTON, INPUT_PLACEHOLDER,
     SEARCH_CANCEL_BUTTON, SEARCH_DECORATION, SEARCH_RESULTS_DECORATION, SEARCH_RESULTS_BUTTON,
@@ -81,7 +85,7 @@ enum PseudoId {
     FULL_SCREEN, FULL_SCREEN_DOCUMENT, FULL_SCREEN_MEDIA_DOCUMENT,
     FIRST_PUBLIC_PSEUDOID = FIRST_LINE,
     FIRST_INTERNAL_PSEUDOID = FILE_UPLOAD_BUTTON,
-    PUBLIC_PSEUDOID_MASK = ((1 << FIRST_INTERNAL_PSEUDOID) - 1) & ~((1 << FIRST_PUBLIC_PSEUDOID) - 1)
+    PUBLIC_PSEUDOID_MASK = ( ( 1 << FIRST_INTERNAL_PSEUDOID ) - 1 ) & ~( ( 1 << FIRST_PUBLIC_PSEUDOID ) - 1 )
 };
 
 enum EBorderCollapse { BSEPARATE = 0, BCOLLAPSE = 1 };
@@ -92,11 +96,13 @@ enum EBorderStyle { BNONE, BHIDDEN, INSET, GROOVE, RIDGE, OUTSET, DOTTED, DASHED
 
 enum EBorderPrecedence { BOFF, BTABLE, BCOLGROUP, BCOL, BROWGROUP, BROW, BCELL };
 
-enum EPosition {
+enum EPosition
+{
     StaticPosition, RelativePosition, AbsolutePosition, FixedPosition
 };
 
-enum EFloat {
+enum EFloat
+{
     FNONE = 0, FLEFT, FRIGHT
 };
 
@@ -108,45 +114,55 @@ enum EBoxSizing { CONTENT_BOX, BORDER_BOX };
 
 // Random visual rendering model attributes. Not inherited.
 
-enum EOverflow {
+enum EOverflow
+{
     OVISIBLE, OHIDDEN, OSCROLL, OAUTO, OOVERLAY, OMARQUEE
 };
 
-enum EVerticalAlign {
+enum EVerticalAlign
+{
     BASELINE, MIDDLE, SUB, SUPER, TEXT_TOP,
     TEXT_BOTTOM, TOP, BOTTOM, BASELINE_MIDDLE, LENGTH
 };
 
-enum EClear {
+enum EClear
+{
     CNONE = 0, CLEFT = 1, CRIGHT = 2, CBOTH = 3
 };
 
-enum ETableLayout {
+enum ETableLayout
+{
     TAUTO, TFIXED
 };
 
 // CSS Text Layout Module Level 3: Vertical writing support
-enum WritingMode {
+enum WritingMode
+{
     TopToBottomWritingMode, RightToLeftWritingMode, LeftToRightWritingMode, BottomToTopWritingMode
 };
 
-enum TextCombine {
+enum TextCombine
+{
     TextCombineNone, TextCombineHorizontal
 };
 
-enum EFillAttachment {
+enum EFillAttachment
+{
     ScrollBackgroundAttachment, LocalBackgroundAttachment, FixedBackgroundAttachment
 };
 
-enum EFillBox {
+enum EFillBox
+{
     BorderFillBox, PaddingFillBox, ContentFillBox, TextFillBox
 };
 
-enum EFillRepeat {
+enum EFillRepeat
+{
     RepeatFill, NoRepeatFill, RoundFill, SpaceFill
 };
 
-enum EFillLayerType {
+enum EFillLayerType
+{
     BackgroundFillLayer, MaskFillLayer
 };
 
@@ -165,56 +181,67 @@ enum EBoxOrient { HORIZONTAL, VERTICAL };
 enum EBoxLines { SINGLE, MULTIPLE };
 enum EBoxDirection { BNORMAL, BREVERSE };
 
-enum ETextSecurity {
+enum ETextSecurity
+{
     TSNONE, TSDISC, TSCIRCLE, TSSQUARE
 };
 
 // CSS3 User Modify Properties
 
-enum EUserModify {
+enum EUserModify
+{
     READ_ONLY, READ_WRITE, READ_WRITE_PLAINTEXT_ONLY
 };
 
 // CSS3 User Drag Values
 
-enum EUserDrag {
+enum EUserDrag
+{
     DRAG_AUTO, DRAG_NONE, DRAG_ELEMENT
 };
 
 // CSS3 User Select Values
 
-enum EUserSelect {
+enum EUserSelect
+{
     SELECT_NONE, SELECT_TEXT
 };
 
 // Word Break Values. Matches WinIE, rather than CSS3
 
-enum EWordBreak {
+enum EWordBreak
+{
     NormalWordBreak, BreakAllWordBreak, BreakWordBreak
 };
 
-enum EWordWrap {
+enum EWordWrap
+{
     NormalWordWrap, BreakWordWrap
 };
 
-enum ENBSPMode {
+enum ENBSPMode
+{
     NBNORMAL, SPACE
 };
 
-enum EKHTMLLineBreak {
+enum EKHTMLLineBreak
+{
     LBNORMAL, AFTER_WHITE_SPACE
 };
 
-enum EMatchNearestMailBlockquoteColor {
+enum EMatchNearestMailBlockquoteColor
+{
     BCNORMAL, MATCH
 };
 
-enum EResize {
+enum EResize
+{
     RESIZE_NONE, RESIZE_BOTH, RESIZE_HORIZONTAL, RESIZE_VERTICAL
 };
 
-// The order of this enum must match the order of the list style types in CSSValueKeywords.in. 
-enum EListStyleType {
+// The order of this enum must match the order of the list style types in CSSValueKeywords.in.
+enum EListStyleType
+{
     Disc,
     Circle,
     Square,
@@ -298,11 +325,13 @@ enum EListStyleType {
     NoneListStyle
 };
 
-enum StyleContentType {
+enum StyleContentType
+{
     CONTENT_NONE, CONTENT_OBJECT, CONTENT_TEXT, CONTENT_COUNTER, CONTENT_QUOTE
 };
 
-enum QuoteType {
+enum QuoteType
+{
     OPEN_QUOTE, CLOSE_QUOTE, NO_OPEN_QUOTE, NO_CLOSE_QUOTE
 };
 
@@ -310,36 +339,44 @@ enum EBorderFit { BorderFitBorder, BorderFitLines };
 
 enum EAnimationFillMode { AnimationFillModeNone, AnimationFillModeForwards, AnimationFillModeBackwards, AnimationFillModeBoth };
 
-enum EAnimPlayState {
+enum EAnimPlayState
+{
     AnimPlayStatePlaying = 0x0,
     AnimPlayStatePaused = 0x1
 };
 
-enum EWhiteSpace {
+enum EWhiteSpace
+{
     NORMAL, PRE, PRE_WRAP, PRE_LINE, NOWRAP, KHTML_NOWRAP
 };
 
-enum ETextAlign {
+enum ETextAlign
+{
     TAAUTO, LEFT, RIGHT, CENTER, JUSTIFY, WEBKIT_LEFT, WEBKIT_RIGHT, WEBKIT_CENTER, TASTART, TAEND,
 };
 
-enum ETextTransform {
+enum ETextTransform
+{
     CAPITALIZE, UPPERCASE, LOWERCASE, TTNONE
 };
 
-enum ETextDecoration {
-    TDNONE = 0x0 , UNDERLINE = 0x1, OVERLINE = 0x2, LINE_THROUGH= 0x4, BLINK = 0x8
+enum ETextDecoration
+{
+    TDNONE = 0x0, UNDERLINE = 0x1, OVERLINE = 0x2, LINE_THROUGH= 0x4, BLINK = 0x8
 };
 
-enum EPageBreak {
+enum EPageBreak
+{
     PBAUTO, PBALWAYS, PBAVOID
 };
 
-enum EEmptyCell {
+enum EEmptyCell
+{
     SHOW, HIDE
 };
 
-enum ECaptionSide {
+enum ECaptionSide
+{
     CAPTOP, CAPBOTTOM, CAPLEFT, CAPRIGHT
 };
 
@@ -347,7 +384,8 @@ enum EListStylePosition { OUTSIDE, INSIDE };
 
 enum EVisibility { VISIBLE, HIDDEN, COLLAPSE };
 
-enum ECursor {
+enum ECursor
+{
     // The following must match the order in CSSValueKeywords.in.
     CURSOR_AUTO,
     CURSOR_CROSS,
@@ -389,35 +427,40 @@ enum ECursor {
     CURSOR_NONE
 };
 
-enum EDisplay {
+enum EDisplay
+{
     INLINE, BLOCK, LIST_ITEM, RUN_IN, COMPACT, INLINE_BLOCK,
     TABLE, INLINE_TABLE, TABLE_ROW_GROUP,
     TABLE_HEADER_GROUP, TABLE_FOOTER_GROUP, TABLE_ROW,
     TABLE_COLUMN_GROUP, TABLE_COLUMN, TABLE_CELL,
-    TABLE_CAPTION, BOX, INLINE_BOX, 
+    TABLE_CAPTION, BOX, INLINE_BOX,
 #if ENABLE(WCSS)
     WAP_MARQUEE,
 #endif
     NONE
 };
 
-enum EInsideLink {
+enum EInsideLink
+{
     NotInsideLink, InsideUnvisitedLink, InsideVisitedLink
 };
-    
-enum EPointerEvents {
+
+enum EPointerEvents
+{
     PE_NONE, PE_AUTO, PE_STROKE, PE_FILL, PE_PAINTED, PE_VISIBLE,
     PE_VISIBLE_STROKE, PE_VISIBLE_FILL, PE_VISIBLE_PAINTED, PE_ALL
 };
 
-enum ETransformStyle3D {
+enum ETransformStyle3D
+{
     TransformStyle3DFlat, TransformStyle3DPreserve3D
 };
 
-enum EBackfaceVisibility {
+enum EBackfaceVisibility
+{
     BackfaceVisibilityVisible, BackfaceVisibilityHidden
 };
-    
+
 enum ELineClampType { LineClampLineCount, LineClampPercentage };
 
 enum Hyphens { HyphensNone, HyphensManual, HyphensAuto };

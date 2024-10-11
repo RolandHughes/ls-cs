@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PlatformMenuDescription_h
@@ -42,22 +42,23 @@ class wxMenu;
 class BMenu;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if !USE(CROSS_PLATFORM_CONTEXT_MENUS)
 #if PLATFORM(MAC)
-    typedef NSMutableArray* PlatformMenuDescription;
+typedef NSMutableArray *PlatformMenuDescription;
 #elif PLATFORM(QT)
-    class ContextMenuItem;
-    typedef const QList<ContextMenuItem>* PlatformMenuDescription;
+class ContextMenuItem;
+typedef const QList<ContextMenuItem> *PlatformMenuDescription;
 #elif PLATFORM(GTK)
-    typedef GtkMenu* PlatformMenuDescription;
+typedef GtkMenu *PlatformMenuDescription;
 #elif PLATFORM(WX)
-    typedef wxMenu* PlatformMenuDescription;
+typedef wxMenu *PlatformMenuDescription;
 #elif PLATFORM(HAIKU)
-    typedef BMenu* PlatformMenuDescription;
+typedef BMenu *PlatformMenuDescription;
 #else
-    typedef void* PlatformMenuDescription;
+typedef void *PlatformMenuDescription;
 #endif
 #endif // !USE(CROSS_PLATFORM_CONTEXT_MENUS)
 

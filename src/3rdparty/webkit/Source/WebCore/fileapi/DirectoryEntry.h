@@ -39,7 +39,8 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMFileSystemBase;
 class DirectoryReader;
@@ -47,21 +48,26 @@ class EntryCallback;
 class ErrorCallback;
 class VoidCallback;
 
-class DirectoryEntry : public Entry {
+class DirectoryEntry : public Entry
+{
 public:
-    static PassRefPtr<DirectoryEntry> create(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
+    static PassRefPtr<DirectoryEntry> create( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
     {
-        return adoptRef(new DirectoryEntry(fileSystem, fullPath));
+        return adoptRef( new DirectoryEntry( fileSystem, fullPath ) );
     }
-    virtual bool isDirectory() const { return true; }
+    virtual bool isDirectory() const
+    {
+        return true;
+    }
 
     PassRefPtr<DirectoryReader> createReader();
-    void getFile(const String& path, PassRefPtr<WebKitFlags> = 0, PassRefPtr<EntryCallback> = 0, PassRefPtr<ErrorCallback> = 0);
-    void getDirectory(const String& path, PassRefPtr<WebKitFlags> = 0, PassRefPtr<EntryCallback> = 0, PassRefPtr<ErrorCallback> = 0);
-    void removeRecursively(PassRefPtr<VoidCallback> successCallback = 0, PassRefPtr<ErrorCallback> = 0) const;
+    void getFile( const String &path, PassRefPtr<WebKitFlags> = 0, PassRefPtr<EntryCallback> = 0, PassRefPtr<ErrorCallback> = 0 );
+    void getDirectory( const String &path, PassRefPtr<WebKitFlags> = 0, PassRefPtr<EntryCallback> = 0,
+                       PassRefPtr<ErrorCallback> = 0 );
+    void removeRecursively( PassRefPtr<VoidCallback> successCallback = 0, PassRefPtr<ErrorCallback> = 0 ) const;
 
 private:
-    DirectoryEntry(PassRefPtr<DOMFileSystemBase>, const String& fullPath);
+    DirectoryEntry( PassRefPtr<DOMFileSystemBase>, const String &fullPath );
 };
 
 } // namespace

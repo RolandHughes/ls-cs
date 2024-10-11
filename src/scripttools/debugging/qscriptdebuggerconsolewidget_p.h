@@ -32,42 +32,42 @@ class QScriptDebuggerConsoleWidgetPrivate;
 
 class QScriptDebuggerConsoleWidget : public QScriptDebuggerConsoleWidgetInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerConsoleWidget)
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerConsoleWidget )
 
- public:
-   QScriptDebuggerConsoleWidget(QWidget *parent = nullptr);
-   ~QScriptDebuggerConsoleWidget();
+public:
+    QScriptDebuggerConsoleWidget( QWidget *parent = nullptr );
+    ~QScriptDebuggerConsoleWidget();
 
-   void message(QtMsgType type, const QString &text,
-                const QString &fileName = QString(),
-                int lineNumber = -1, int columnNumber = -1,
-                const QVariant &data = QVariant());
+    void message( QtMsgType type, const QString &text,
+                  const QString &fileName = QString(),
+                  int lineNumber = -1, int columnNumber = -1,
+                  const QVariant &data = QVariant() );
 
-   void setLineContinuationMode(bool enabled);
+    void setLineContinuationMode( bool enabled );
 
-   void clear();
+    void clear();
 
- protected:
-   void keyPressEvent(QKeyEvent *event);
-   bool focusNextPrevChild(bool);
+protected:
+    void keyPressEvent( QKeyEvent *event );
+    bool focusNextPrevChild( bool );
 
-   QScriptDebuggerConsoleWidget(
-      QScriptDebuggerConsoleWidgetPrivate &dd,
-      QWidget *parent);
+    QScriptDebuggerConsoleWidget(
+        QScriptDebuggerConsoleWidgetPrivate &dd,
+        QWidget *parent );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerConsoleWidget)
-   Q_DISABLE_COPY(QScriptDebuggerConsoleWidget)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerConsoleWidget )
+    Q_DISABLE_COPY( QScriptDebuggerConsoleWidget )
 
-   CS_SLOT_1(Private, void _q_onLineEntered(const QString &un_named_arg1))
-   CS_SLOT_2(_q_onLineEntered)
+    LSCS_SLOT_1( Private, void _q_onLineEntered( const QString &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onLineEntered )
 
-   CS_SLOT_1(Private, void _q_onLineEdited(const QString &un_named_arg1))
-   CS_SLOT_2(_q_onLineEdited)
- 
-   CS_SLOT_1(Private, void _q_onCompletionTaskFinished())
-   CS_SLOT_2(_q_onCompletionTaskFinished)
-  
+    LSCS_SLOT_1( Private, void _q_onLineEdited( const QString &un_named_arg1 ) )
+    LSCS_SLOT_2( _q_onLineEdited )
+
+    LSCS_SLOT_1( Private, void _q_onCompletionTaskFinished() )
+    LSCS_SLOT_2( _q_onCompletionTaskFinished )
+
 };
 
 QT_END_NAMESPACE

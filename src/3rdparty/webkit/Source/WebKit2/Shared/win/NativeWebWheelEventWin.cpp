@@ -28,10 +28,11 @@
 
 #include "WebEventFactory.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebWheelEvent::NativeWebWheelEvent(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-    : WebWheelEvent(WebEventFactory::createWebWheelEvent(hwnd, message, wParam, lParam))
+NativeWebWheelEvent::NativeWebWheelEvent( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
+    : WebWheelEvent( WebEventFactory::createWebWheelEvent( hwnd, message, wParam, lParam ) )
     , m_nativeEvent()
 {
     m_nativeEvent.hwnd = hwnd;

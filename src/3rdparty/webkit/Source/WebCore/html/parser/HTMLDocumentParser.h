@@ -38,7 +38,8 @@
 #include "XSSFilter.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class DocumentFragment;
@@ -53,16 +54,18 @@ class ScriptSourceCode;
 
 class PumpSession;
 
-class HTMLDocumentParser :  public ScriptableDocumentParser, HTMLScriptRunnerHost, CachedResourceClient {
+class HTMLDocumentParser :  public ScriptableDocumentParser, HTMLScriptRunnerHost, CachedResourceClient
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassRefPtr<HTMLDocumentParser> create(HTMLDocument* document, bool reportErrors)
+    static PassRefPtr<HTMLDocumentParser> create( HTMLDocument *document, bool reportErrors )
     {
-        return adoptRef(new HTMLDocumentParser(document, reportErrors));
+        return adoptRef( new HTMLDocumentParser( document, reportErrors ) );
     }
-    static PassRefPtr<HTMLDocumentParser> create(DocumentFragment* fragment, Element* contextElement, FragmentScriptingPermission permission)
+    static PassRefPtr<HTMLDocumentParser> create( DocumentFragment *fragment, Element *contextElement,
+            FragmentScriptingPermission permission )
     {
-        return adoptRef(new HTMLDocumentParser(fragment, contextElement, permission));
+        return adoptRef( new HTMLDocumentParser( fragment, contextElement, permission ) );
     }
 
     virtual ~HTMLDocumentParser();
@@ -70,12 +73,16 @@ public:
     // Exposed for HTMLParserScheduler
     void resumeParsingAfterYield();
 
-    static void parseDocumentFragment(const String&, DocumentFragment*, Element* contextElement, FragmentScriptingPermission = FragmentScriptingAllowed);
-    
-    static bool usePreHTML5ParserQuirks(Document*);
+    static void parseDocumentFragment( const String &, DocumentFragment *, Element *contextElement,
+                                       FragmentScriptingPermission = FragmentScriptingAllowed );
 
-    HTMLTokenizer* tokenizer() const { return m_tokenizer.get(); }
-    String sourceForToken(const HTMLToken&);
+    static bool usePreHTML5ParserQuirks( Document * );
+
+    HTMLTokenizer *tokenizer() const
+    {
+        return m_tokenizer.get();
+    }
+    String sourceForToken( const HTMLToken & );
 
     virtual TextPosition0 textPosition() const;
     virtual int lineNumber() const;
@@ -84,14 +91,17 @@ public:
     virtual void resumeScheduledTasks();
 
 protected:
-    virtual void insert(const SegmentedString&);
-    virtual void append(const SegmentedString&);
+    virtual void insert( const SegmentedString & );
+    virtual void append( const SegmentedString & );
     virtual void finish();
 
-    HTMLDocumentParser(HTMLDocument*, bool reportErrors);
-    HTMLDocumentParser(DocumentFragment*, Element* contextElement, FragmentScriptingPermission);
+    HTMLDocumentParser( HTMLDocument *, bool reportErrors );
+    HTMLDocumentParser( DocumentFragment *, Element *contextElement, FragmentScriptingPermission );
 
-    HTMLTreeBuilder* treeBuilder() const { return m_treeBuilder.get(); }
+    HTMLTreeBuilder *treeBuilder() const
+    {
+        return m_treeBuilder.get();
+    }
 
 private:
     // DocumentParser
@@ -106,22 +116,29 @@ private:
     virtual void executeScriptsWaitingForStylesheets();
 
     // HTMLScriptRunnerHost
-    virtual void watchForLoad(CachedResource*);
-    virtual void stopWatchingForLoad(CachedResource*);
-    virtual HTMLInputStream& inputStream() { return m_input; }
-    virtual bool hasPreloadScanner() const { return m_preloadScanner.get(); }
+    virtual void watchForLoad( CachedResource * );
+    virtual void stopWatchingForLoad( CachedResource * );
+    virtual HTMLInputStream &inputStream()
+    {
+        return m_input;
+    }
+    virtual bool hasPreloadScanner() const
+    {
+        return m_preloadScanner.get();
+    }
     virtual void appendCurrentInputStreamToPreloadScannerAndScan();
 
     // CachedResourceClient
-    virtual void notifyFinished(CachedResource*);
+    virtual void notifyFinished( CachedResource * );
 
-    enum SynchronousMode {
+    enum SynchronousMode
+    {
         AllowYield,
         ForceSynchronous,
     };
-    bool canTakeNextToken(SynchronousMode, PumpSession&);
-    void pumpTokenizer(SynchronousMode);
-    void pumpTokenizerIfPossible(SynchronousMode);
+    bool canTakeNextToken( SynchronousMode, PumpSession & );
+    void pumpTokenizer( SynchronousMode );
+    void pumpTokenizerIfPossible( SynchronousMode );
 
     bool runScriptsForPausedTreeBuilder();
     void resumeParsingAfterScriptExecution();
@@ -135,10 +152,16 @@ private:
     bool isParsingFragment() const;
     bool isScheduledForResume() const;
     bool inScriptExecution() const;
-    bool inPumpSession() const { return m_pumpSessionNestingLevel > 0; }
-    bool shouldDelayEnd() const { return inPumpSession() || isWaitingForScripts() || inScriptExecution() || isScheduledForResume(); }
+    bool inPumpSession() const
+    {
+        return m_pumpSessionNestingLevel > 0;
+    }
+    bool shouldDelayEnd() const
+    {
+        return inPumpSession() || isWaitingForScripts() || inScriptExecution() || isScheduledForResume();
+    }
 
-    ScriptController* script() const;
+    ScriptController *script() const;
 
     HTMLInputStream m_input;
 

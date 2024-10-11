@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -30,35 +30,44 @@
 #define PluginQuirkSet_h
 
 
-namespace WebCore {
+namespace WebCore
+{
 
-    enum PluginQuirk {
-        PluginQuirkWantsMozillaUserAgent = 1 << 0,
-        PluginQuirkDeferFirstSetWindowCall = 1 << 1,
-        PluginQuirkThrottleInvalidate = 1 << 2, 
-        PluginQuirkRemoveWindowlessVideoParam = 1 << 3,
-        PluginQuirkThrottleWMUserPlusOneMessages = 1 << 4,
-        PluginQuirkDontUnloadPlugin = 1 << 5,
-        PluginQuirkDontCallWndProcForSameMessageRecursively = 1 << 6,
-        PluginQuirkHasModalMessageLoop = 1 << 7,
-        PluginQuirkFlashURLNotifyBug = 1 << 8,
-        PluginQuirkDontClipToZeroRectWhenScrolling = 1 << 9,
-        PluginQuirkDontSetNullWindowHandleOnDestroy = 1 << 10,
-        PluginQuirkDontAllowMultipleInstances = 1 << 11,
-        PluginQuirkRequiresGtkToolKit = 1 << 12,
-        PluginQuirkRequiresDefaultScreenDepth = 1 << 13,
-        PluginQuirkDontCallSetWindowMoreThanOnce = 1 << 14,
-        PluginQuirkIgnoreRightClickInWindowlessMode = 1 << 15
-    };
+enum PluginQuirk
+{
+    PluginQuirkWantsMozillaUserAgent = 1 << 0,
+    PluginQuirkDeferFirstSetWindowCall = 1 << 1,
+    PluginQuirkThrottleInvalidate = 1 << 2,
+    PluginQuirkRemoveWindowlessVideoParam = 1 << 3,
+    PluginQuirkThrottleWMUserPlusOneMessages = 1 << 4,
+    PluginQuirkDontUnloadPlugin = 1 << 5,
+    PluginQuirkDontCallWndProcForSameMessageRecursively = 1 << 6,
+    PluginQuirkHasModalMessageLoop = 1 << 7,
+    PluginQuirkFlashURLNotifyBug = 1 << 8,
+    PluginQuirkDontClipToZeroRectWhenScrolling = 1 << 9,
+    PluginQuirkDontSetNullWindowHandleOnDestroy = 1 << 10,
+    PluginQuirkDontAllowMultipleInstances = 1 << 11,
+    PluginQuirkRequiresGtkToolKit = 1 << 12,
+    PluginQuirkRequiresDefaultScreenDepth = 1 << 13,
+    PluginQuirkDontCallSetWindowMoreThanOnce = 1 << 14,
+    PluginQuirkIgnoreRightClickInWindowlessMode = 1 << 15
+};
 
-    class PluginQuirkSet {
-        public:
-            PluginQuirkSet() : m_quirks(0) { }
-            void add(PluginQuirk quirk) { m_quirks |= quirk; }
-            bool contains(PluginQuirk quirk) const { return m_quirks & quirk; }
-        private:
-            unsigned m_quirks;
-    };
+class PluginQuirkSet
+{
+public:
+    PluginQuirkSet() : m_quirks( 0 ) { }
+    void add( PluginQuirk quirk )
+    {
+        m_quirks |= quirk;
+    }
+    bool contains( PluginQuirk quirk ) const
+    {
+        return m_quirks & quirk;
+    }
+private:
+    unsigned m_quirks;
+};
 
 } // namespace WebCore
 

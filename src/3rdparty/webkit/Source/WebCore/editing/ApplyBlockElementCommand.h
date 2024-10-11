@@ -33,22 +33,28 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ApplyBlockElementCommand : public CompositeEditCommand {
+class ApplyBlockElementCommand : public CompositeEditCommand
+{
 protected:
-    ApplyBlockElementCommand(Document*, const QualifiedName& tagName, const AtomicString& className, const AtomicString& inlineStyle);
-    ApplyBlockElementCommand(Document*, const QualifiedName& tagName);
+    ApplyBlockElementCommand( Document *, const QualifiedName &tagName, const AtomicString &className,
+                              const AtomicString &inlineStyle );
+    ApplyBlockElementCommand( Document *, const QualifiedName &tagName );
 
-    virtual void formatSelection(const VisiblePosition& startOfSelection, const VisiblePosition& endOfSelection);
+    virtual void formatSelection( const VisiblePosition &startOfSelection, const VisiblePosition &endOfSelection );
     PassRefPtr<Element> createBlockElement() const;
-    const QualifiedName tagName() const { return m_tagName; }
+    const QualifiedName tagName() const
+    {
+        return m_tagName;
+    }
 
 private:
     virtual void doApply();
-    virtual void formatRange(const Position& start, const Position& end, const Position& endOfSelection, RefPtr<Element>&) = 0;
-    void rangeForParagraphSplittingTextNodesIfNeeded(const VisiblePosition&, Position&, Position&);
-    VisiblePosition endOfNextParagrahSplittingTextNodesIfNeeded(VisiblePosition&, Position&, Position&);
+    virtual void formatRange( const Position &start, const Position &end, const Position &endOfSelection, RefPtr<Element> & ) = 0;
+    void rangeForParagraphSplittingTextNodesIfNeeded( const VisiblePosition &, Position &, Position & );
+    VisiblePosition endOfNextParagrahSplittingTextNodesIfNeeded( VisiblePosition &, Position &, Position & );
 
     QualifiedName m_tagName;
     AtomicString m_className;

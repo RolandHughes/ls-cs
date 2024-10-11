@@ -37,22 +37,22 @@
 #include <qfont_p.h>
 
 QOpenGLPaintDevice::QOpenGLPaintDevice()
-    : d_ptr(new QOpenGLPaintDevicePrivate(QSize()))
+    : d_ptr( new QOpenGLPaintDevicePrivate( QSize() ) )
 {
 }
 
-QOpenGLPaintDevice::QOpenGLPaintDevice(const QSize &size)
-    : d_ptr(new QOpenGLPaintDevicePrivate(size))
+QOpenGLPaintDevice::QOpenGLPaintDevice( const QSize &size )
+    : d_ptr( new QOpenGLPaintDevicePrivate( size ) )
 {
 }
 
-QOpenGLPaintDevice::QOpenGLPaintDevice(int width, int height)
-    : d_ptr(new QOpenGLPaintDevicePrivate(QSize(width, height)))
+QOpenGLPaintDevice::QOpenGLPaintDevice( int width, int height )
+    : d_ptr( new QOpenGLPaintDevicePrivate( QSize( width, height ) ) )
 {
 }
 
-QOpenGLPaintDevice::QOpenGLPaintDevice(QOpenGLPaintDevicePrivate &dd)
-    : d_ptr(&dd)
+QOpenGLPaintDevice::QOpenGLPaintDevice( QOpenGLPaintDevicePrivate &dd )
+    : d_ptr( &dd )
 {
 }
 
@@ -61,9 +61,9 @@ QOpenGLPaintDevice::~QOpenGLPaintDevice()
     delete d_ptr->engine;
 }
 
-QOpenGLPaintDevicePrivate::QOpenGLPaintDevicePrivate(const QSize &sz)
-    : size(sz), ctx(QOpenGLContext::currentContext()), dpmx(qt_defaultDpiX() * 100. / 2.54),
-      dpmy(qt_defaultDpiY() * 100. / 2.54), devicePixelRatio(1.0), flipped(false), engine(nullptr)
+QOpenGLPaintDevicePrivate::QOpenGLPaintDevicePrivate( const QSize &sz )
+    : size( sz ), ctx( QOpenGLContext::currentContext() ), dpmx( qt_defaultDpiX() * 100. / 2.54 ),
+      dpmy( qt_defaultDpiY() * 100. / 2.54 ), devicePixelRatio( 1.0 ), flipped( false ), engine( nullptr )
 {
 }
 
@@ -73,34 +73,40 @@ QOpenGLPaintDevicePrivate::~QOpenGLPaintDevicePrivate()
 
 class QOpenGLEngineThreadStorage
 {
- public:
-    QPaintEngine *engine() {
+public:
+    QPaintEngine *engine()
+    {
         QPaintEngine *&localEngine = storage.localData();
-        if (! localEngine) {
+
+        if ( ! localEngine )
+        {
             localEngine = new QOpenGL2PaintEngineEx;
         }
 
         return localEngine;
     }
 
- private:
+private:
     QThreadStorage<QPaintEngine *> storage;
 };
 
 static QOpenGLEngineThreadStorage *qt_opengl_engine()
 {
-   static QOpenGLEngineThreadStorage retval;
-   return &retval;
+    static QOpenGLEngineThreadStorage retval;
+    return &retval;
 }
 
 QPaintEngine *QOpenGLPaintDevice::paintEngine() const
 {
-    if (d_ptr->engine) {
+    if ( d_ptr->engine )
+    {
         return d_ptr->engine;
     }
 
     QPaintEngine *engine = qt_opengl_engine()->engine();
-    if (engine->isActive() && engine->paintDevice() != this) {
+
+    if ( engine->isActive() && engine->paintDevice() != this )
+    {
         d_ptr->engine = new QOpenGL2PaintEngineEx;
         return d_ptr->engine;
     }
@@ -118,47 +124,59 @@ QSize QOpenGLPaintDevice::size() const
     return d_ptr->size;
 }
 
-void QOpenGLPaintDevice::setSize(const QSize &size)
+void QOpenGLPaintDevice::setSize( const QSize &size )
 {
     d_ptr->size = size;
 }
 
-void QOpenGLPaintDevice::setDevicePixelRatio(qreal devicePixelRatio)
+void QOpenGLPaintDevice::setDevicePixelRatio( qreal devicePixelRatio )
 {
     d_ptr->devicePixelRatio = devicePixelRatio;
 }
 
-int QOpenGLPaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
+int QOpenGLPaintDevice::metric( QPaintDevice::PaintDeviceMetric metric ) const
 {
-    switch (metric) {
-       case PdmWidth:
-           return d_ptr->size.width();
-       case PdmHeight:
-           return d_ptr->size.height();
-       case PdmDepth:
-           return 32;
-       case PdmWidthMM:
-           return qRound(d_ptr->size.width() * 1000 / d_ptr->dpmx);
-       case PdmHeightMM:
-           return qRound(d_ptr->size.height() * 1000 / d_ptr->dpmy);
-       case PdmNumColors:
-           return 0;
-       case PdmDpiX:
-           return qRound(d_ptr->dpmx * 0.0254);
-       case PdmDpiY:
-           return qRound(d_ptr->dpmy * 0.0254);
-       case PdmPhysicalDpiX:
-           return qRound(d_ptr->dpmx * 0.0254);
-       case PdmPhysicalDpiY:
-           return qRound(d_ptr->dpmy * 0.0254);
-       case PdmDevicePixelRatio:
-           return d_ptr->devicePixelRatio;
-       case PdmDevicePixelRatioScaled:
-           return d_ptr->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
+    switch ( metric )
+    {
+        case PdmWidth:
+            return d_ptr->size.width();
 
-       default:
-           qWarning("QOpenGLPaintDevice::metric() - metric %d not known", metric);
-           return 0;
+        case PdmHeight:
+            return d_ptr->size.height();
+
+        case PdmDepth:
+            return 32;
+
+        case PdmWidthMM:
+            return qRound( d_ptr->size.width() * 1000 / d_ptr->dpmx );
+
+        case PdmHeightMM:
+            return qRound( d_ptr->size.height() * 1000 / d_ptr->dpmy );
+
+        case PdmNumColors:
+            return 0;
+
+        case PdmDpiX:
+            return qRound( d_ptr->dpmx * 0.0254 );
+
+        case PdmDpiY:
+            return qRound( d_ptr->dpmy * 0.0254 );
+
+        case PdmPhysicalDpiX:
+            return qRound( d_ptr->dpmx * 0.0254 );
+
+        case PdmPhysicalDpiY:
+            return qRound( d_ptr->dpmy * 0.0254 );
+
+        case PdmDevicePixelRatio:
+            return d_ptr->devicePixelRatio;
+
+        case PdmDevicePixelRatioScaled:
+            return d_ptr->devicePixelRatio * QPaintDevice::devicePixelRatioFScale();
+
+        default:
+            qWarning( "QOpenGLPaintDevice::metric() - metric %d not known", metric );
+            return 0;
     }
 }
 
@@ -172,17 +190,17 @@ qreal QOpenGLPaintDevice::dotsPerMeterY() const
     return d_ptr->dpmy;
 }
 
-void QOpenGLPaintDevice::setDotsPerMeterX(qreal dpmx)
+void QOpenGLPaintDevice::setDotsPerMeterX( qreal dpmx )
 {
     d_ptr->dpmx = dpmx;
 }
 
-void QOpenGLPaintDevice::setDotsPerMeterY(qreal dpmy)
+void QOpenGLPaintDevice::setDotsPerMeterY( qreal dpmy )
 {
     d_ptr->dpmx = dpmy;
 }
 
-void QOpenGLPaintDevice::setPaintFlipped(bool flipped)
+void QOpenGLPaintDevice::setPaintFlipped( bool flipped )
 {
     d_ptr->flipped = flipped;
 }

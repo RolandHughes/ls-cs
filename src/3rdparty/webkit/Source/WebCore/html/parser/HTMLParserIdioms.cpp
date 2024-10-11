@@ -30,66 +30,88 @@
 #include <wtf/dtoa.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
-
-String stripLeadingAndTrailingHTMLSpaces(const String& string)
+namespace WebCore
 {
-    const UChar* characters = string.characters();
+
+String stripLeadingAndTrailingHTMLSpaces( const String &string )
+{
+    const UChar *characters = string.characters();
     unsigned length = string.length();
 
     unsigned numLeadingSpaces;
-    for (numLeadingSpaces = 0; numLeadingSpaces < length; ++numLeadingSpaces) {
-        if (isNotHTMLSpace(characters[numLeadingSpaces]))
+
+    for ( numLeadingSpaces = 0; numLeadingSpaces < length; ++numLeadingSpaces )
+    {
+        if ( isNotHTMLSpace( characters[numLeadingSpaces] ) )
+        {
             break;
+        }
     }
 
-    if (numLeadingSpaces == length)
+    if ( numLeadingSpaces == length )
+    {
         return string.isNull() ? string : emptyAtom.string();
+    }
 
     unsigned numTrailingSpaces;
-    for (numTrailingSpaces = 0; numTrailingSpaces < length; ++numTrailingSpaces) {
-        if (isNotHTMLSpace(characters[length - numTrailingSpaces - 1]))
+
+    for ( numTrailingSpaces = 0; numTrailingSpaces < length; ++numTrailingSpaces )
+    {
+        if ( isNotHTMLSpace( characters[length - numTrailingSpaces - 1] ) )
+        {
             break;
+        }
     }
 
-    ASSERT(numLeadingSpaces + numTrailingSpaces < length);
+    ASSERT( numLeadingSpaces + numTrailingSpaces < length );
 
-    return string.substring(numLeadingSpaces, length - (numLeadingSpaces + numTrailingSpaces));
+    return string.substring( numLeadingSpaces, length - ( numLeadingSpaces + numTrailingSpaces ) );
 }
 
-String serializeForNumberType(double number)
+String serializeForNumberType( double number )
 {
     // According to HTML5, "the best representation of the number n as a floating
     // point number" is a string produced by applying ToString() to n.
     NumberToStringBuffer buffer;
-    unsigned length = numberToString(number, buffer);
-    return String(buffer, length);
+    unsigned length = numberToString( number, buffer );
+    return String( buffer, length );
 }
 
-bool parseToDoubleForNumberType(const String& string, double* result)
+bool parseToDoubleForNumberType( const String &string, double *result )
 {
     // See HTML5 2.4.4.3 `Real numbers.'
 
     // String::toDouble() accepts leading + and whitespace characters, which are not valid here.
     UChar firstCharacter = string[0];
-    if (firstCharacter != '-' && !isASCIIDigit(firstCharacter))
+
+    if ( firstCharacter != '-' && !isASCIIDigit( firstCharacter ) )
+    {
         return false;
+    }
 
     bool valid = false;
-    double value = string.toDouble(&valid);
-    if (!valid)
+    double value = string.toDouble( &valid );
+
+    if ( !valid )
+    {
         return false;
+    }
 
     // NaN and infinity are considered valid by String::toDouble, but not valid here.
-    if (! std::isfinite(value))
+    if ( ! std::isfinite( value ) )
+    {
         return false;
+    }
 
     // Numbers are considered finite IEEE 754 single-precision floating point values.
     // See HTML5 2.4.4.3 `Real numbers.'
-    if (-std::numeric_limits<float>::max() > value || value > std::numeric_limits<float>::max())
+    if ( -std::numeric_limits<float>::max() > value || value > std::numeric_limits<float>::max() )
+    {
         return false;
+    }
 
-    if (result) {
+    if ( result )
+    {
         // The following expression converts -0 to +0.
         *result = value ? value : 0;
     }
@@ -97,32 +119,49 @@ bool parseToDoubleForNumberType(const String& string, double* result)
     return true;
 }
 
-bool parseToDoubleForNumberTypeWithDecimalPlaces(const String& string, double *result, unsigned *decimalPlaces)
+bool parseToDoubleForNumberTypeWithDecimalPlaces( const String &string, double *result, unsigned *decimalPlaces )
 {
-    if (decimalPlaces)
+    if ( decimalPlaces )
+    {
         *decimalPlaces = 0;
+    }
 
-    if (!parseToDoubleForNumberType(string, result))
+    if ( !parseToDoubleForNumberType( string, result ) )
+    {
         return false;
+    }
 
-    if (!decimalPlaces)
+    if ( !decimalPlaces )
+    {
         return true;
+    }
 
-    size_t dotIndex = string.find('.');
-    size_t eIndex = string.find('e');
-    if (eIndex == notFound) 
-        eIndex = string.find('E');
+    size_t dotIndex = string.find( '.' );
+    size_t eIndex = string.find( 'e' );
+
+    if ( eIndex == notFound )
+    {
+        eIndex = string.find( 'E' );
+    }
 
     unsigned baseDecimalPlaces = 0;
-    if (dotIndex != notFound) {
-        if (eIndex == notFound)
+
+    if ( dotIndex != notFound )
+    {
+        if ( eIndex == notFound )
+        {
             baseDecimalPlaces = string.length() - dotIndex - 1;
+        }
         else
+        {
             baseDecimalPlaces = eIndex - dotIndex - 1;
+        }
     }
 
     int exponent = 0;
-    if (eIndex != notFound) {
+
+    if ( eIndex != notFound )
+    {
         unsigned cursor = eIndex + 1, cursorSaved;
         int digit, exponentSign;
         int32_t exponent32;
@@ -130,92 +169,144 @@ bool parseToDoubleForNumberTypeWithDecimalPlaces(const String& string, double *r
 
         // Not using String.toInt() in order to perform the same computation as dtoa() does.
         exponentSign = 0;
-        switch (digit = string[cursor]) {
-        case '-':
-            exponentSign = 1;
-        case '+':
-            digit = string[++cursor];
-        }
-        if (digit >= '0' && digit <= '9') {
-            while (cursor < length && digit == '0')
+
+        switch ( digit = string[cursor] )
+        {
+            case '-':
+                exponentSign = 1;
+
+            case '+':
                 digit = string[++cursor];
-            if (digit > '0' && digit <= '9') {
+        }
+
+        if ( digit >= '0' && digit <= '9' )
+        {
+            while ( cursor < length && digit == '0' )
+            {
+                digit = string[++cursor];
+            }
+
+            if ( digit > '0' && digit <= '9' )
+            {
                 exponent32 = digit - '0';
                 cursorSaved = cursor;
-                while (cursor < length && (digit = string[++cursor]) >= '0' && digit <= '9')
-                    exponent32 = (10 * exponent32) + digit - '0';
-                if (cursor - cursorSaved > 8 || exponent32 > 19999)
+
+                while ( cursor < length && ( digit = string[++cursor] ) >= '0' && digit <= '9' )
+                {
+                    exponent32 = ( 10 * exponent32 ) + digit - '0';
+                }
+
+                if ( cursor - cursorSaved > 8 || exponent32 > 19999 )
                     /* Avoid confusion from exponents
                      * so large that e might overflow.
                      */
-                    exponent = 19999; /* safe for 16 bit ints */
+                {
+                    exponent = 19999;    /* safe for 16 bit ints */
+                }
                 else
-                    exponent = static_cast<int>(exponent32);
-                if (exponentSign)
+                {
+                    exponent = static_cast<int>( exponent32 );
+                }
+
+                if ( exponentSign )
+                {
                     exponent = -exponent;
-            } else
+                }
+            }
+            else
+            {
                 exponent = 0;
+            }
         }
     }
 
     int intDecimalPlaces = baseDecimalPlaces - exponent;
-    if (intDecimalPlaces < 0)
+
+    if ( intDecimalPlaces < 0 )
+    {
         *decimalPlaces = 0;
-    else if (intDecimalPlaces > 19999)
+    }
+    else if ( intDecimalPlaces > 19999 )
+    {
         *decimalPlaces = 19999;
+    }
     else
-        *decimalPlaces = static_cast<unsigned>(intDecimalPlaces);
+    {
+        *decimalPlaces = static_cast<unsigned>( intDecimalPlaces );
+    }
 
     return true;
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/#rules-for-parsing-integers
-bool parseHTMLInteger(const String& input, int& value)
+bool parseHTMLInteger( const String &input, int &value )
 {
     // Step 1
     // Step 2
-    const UChar* position = input.characters();
-    const UChar* end = position + input.length();
+    const UChar *position = input.characters();
+    const UChar *end = position + input.length();
 
     // Step 3
     int sign = 1;
 
     // Step 4
-    while (position < end) {
-        if (!isHTMLSpace(*position))
+    while ( position < end )
+    {
+        if ( !isHTMLSpace( *position ) )
+        {
             break;
+        }
+
         ++position;
     }
 
     // Step 5
-    if (position == end)
+    if ( position == end )
+    {
         return false;
-    ASSERT(position < end);
+    }
+
+    ASSERT( position < end );
 
     // Step 6
-    if (*position == '-') {
+    if ( *position == '-' )
+    {
         sign = -1;
         ++position;
-    } else if (*position == '+')
+    }
+    else if ( *position == '+' )
+    {
         ++position;
-    if (position == end)
+    }
+
+    if ( position == end )
+    {
         return false;
-    ASSERT(position < end);
+    }
+
+    ASSERT( position < end );
 
     // Step 7
-    if (!isASCIIDigit(*position))
+    if ( !isASCIIDigit( *position ) )
+    {
         return false;
+    }
 
     // Step 8
     Vector<UChar, 16> digits;
-    while (position < end) {
-        if (!isASCIIDigit(*position))
+
+    while ( position < end )
+    {
+        if ( !isASCIIDigit( *position ) )
+        {
             break;
-        digits.append(*position++);
+        }
+
+        digits.append( *position++ );
     }
 
     // Step 9
-    value = sign * charactersToIntStrict(digits.data(), digits.size());
+    value = sign * charactersToIntStrict( digits.data(), digits.size() );
     return true;
 }
 

@@ -30,14 +30,19 @@
 
 #include "RenderMathMLRow.h"
 
-namespace WebCore {
-    
-class RenderMathMLMath : public RenderMathMLRow {
+namespace WebCore
+{
+
+class RenderMathMLMath : public RenderMathMLRow
+{
 public:
-    RenderMathMLMath(Node* container);
-    virtual bool isRenderMathMLMath() const { return true; }
+    RenderMathMLMath( Node *container );
+    virtual bool isRenderMathMLMath() const
+    {
+        return true;
+    }
 };
-    
+
 }
 
 

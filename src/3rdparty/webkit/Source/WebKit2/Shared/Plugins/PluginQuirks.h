@@ -26,11 +26,14 @@
 #ifndef PluginQuirks_h
 #define PluginQuirks_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-class PluginQuirks {
+class PluginQuirks
+{
 public:
-    enum PluginQuirk {
+    enum PluginQuirk
+    {
         // Mac specific quirks:
 #if PLUGIN_ARCHITECTURE(MAC)
         // The plug-in wants the call to getprogame() to return "WebKitPluginHost".
@@ -63,24 +66,24 @@ public:
 #endif
         NumPluginQuirks
     };
-    
+
     PluginQuirks()
-        : m_quirks(0)
+        : m_quirks( 0 )
     {
-        COMPILE_ASSERT(sizeof(m_quirks) * 8 >= NumPluginQuirks, not_enough_room_for_quirks);
+        COMPILE_ASSERT( sizeof( m_quirks ) * 8 >= NumPluginQuirks, not_enough_room_for_quirks );
     }
-    
-    void add(PluginQuirk quirk)
+
+    void add( PluginQuirk quirk )
     {
-        ASSERT(quirk >= 0);
-        ASSERT(quirk < NumPluginQuirks);
-        
-        m_quirks |= (1 << quirk);
+        ASSERT( quirk >= 0 );
+        ASSERT( quirk < NumPluginQuirks );
+
+        m_quirks |= ( 1 << quirk );
     }
-    
-    bool contains(PluginQuirk quirk) const
+
+    bool contains( PluginQuirk quirk ) const
     {
-        return m_quirks & (1 << quirk);
+        return m_quirks & ( 1 << quirk );
     }
 
 private:

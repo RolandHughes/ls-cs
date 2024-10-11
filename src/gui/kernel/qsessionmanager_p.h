@@ -33,16 +33,17 @@ class QPlatformSessionManager;
 
 class QSessionManagerPrivate
 {
- public:
-   QSessionManagerPrivate(const QString &id, const QString &key);
-   virtual ~QSessionManagerPrivate();
+public:
+    QSessionManagerPrivate( const QString &id, const QString &key );
+    virtual ~QSessionManagerPrivate();
 
-   static QSessionManagerPrivate *get(QSessionManager *object) {
-      // d_ptr is a smart pointer, need to return a raw pointer
-      return object->d_ptr.data();
-   }
+    static QSessionManagerPrivate *get( QSessionManager *object )
+    {
+        // d_ptr is a smart pointer, need to return a raw pointer
+        return object->d_ptr.data();
+    }
 
-   QPlatformSessionManager *platformSessionManager;
+    QPlatformSessionManager *platformSessionManager;
 };
 
 #endif // QT_NO_SESSIONMANAGER

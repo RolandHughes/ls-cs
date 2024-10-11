@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CSSFunctionValue_h
@@ -28,25 +28,27 @@
 
 #include "CSSValue.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSValueList;
 struct CSSParserFunction;
 
-class CSSFunctionValue : public CSSValue {
+class CSSFunctionValue : public CSSValue
+{
 public:
-    static PassRefPtr<CSSFunctionValue> create(CSSParserFunction* function)
+    static PassRefPtr<CSSFunctionValue> create( CSSParserFunction *function )
     {
-        return adoptRef(new CSSFunctionValue(function));
+        return adoptRef( new CSSFunctionValue( function ) );
     }
 
     virtual ~CSSFunctionValue();
-    
+
     virtual String cssText() const;
 
 private:
-    explicit CSSFunctionValue(CSSParserFunction*);
-    
+    explicit CSSFunctionValue( CSSParserFunction * );
+
     String m_name;
     RefPtr<CSSValueList> m_args;
 };

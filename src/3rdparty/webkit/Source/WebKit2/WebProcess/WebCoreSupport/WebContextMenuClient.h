@@ -28,39 +28,41 @@
 
 #include <WebCore/ContextMenuClient.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebContextMenuClient : public WebCore::ContextMenuClient {
+class WebContextMenuClient : public WebCore::ContextMenuClient
+{
 public:
-    WebContextMenuClient(WebPage* page)
-        : m_page(page)
+    WebContextMenuClient( WebPage *page )
+        : m_page( page )
     {
     }
-    
+
 private:
     virtual void contextMenuDestroyed();
-    
+
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
-    virtual PassOwnPtr<WebCore::ContextMenu> customizeMenu(PassOwnPtr<WebCore::ContextMenu>);
+    virtual PassOwnPtr<WebCore::ContextMenu> customizeMenu( PassOwnPtr<WebCore::ContextMenu> );
 #else
-    virtual WebCore::PlatformMenuDescription getCustomMenuFromDefaultItems(WebCore::ContextMenu*);
+    virtual WebCore::PlatformMenuDescription getCustomMenuFromDefaultItems( WebCore::ContextMenu * );
 #endif
-    virtual void contextMenuItemSelected(WebCore::ContextMenuItem*, const WebCore::ContextMenu*);
-    
-    virtual void downloadURL(const WebCore::KURL& url);
-    virtual void searchWithGoogle(const WebCore::Frame*);
-    virtual void lookUpInDictionary(WebCore::Frame*);
+    virtual void contextMenuItemSelected( WebCore::ContextMenuItem *, const WebCore::ContextMenu * );
+
+    virtual void downloadURL( const WebCore::KURL &url );
+    virtual void searchWithGoogle( const WebCore::Frame * );
+    virtual void lookUpInDictionary( WebCore::Frame * );
     virtual bool isSpeaking();
-    virtual void speak(const String&);
+    virtual void speak( const String & );
     virtual void stopSpeaking();
-    
+
 #if PLATFORM(MAC)
     virtual void searchWithSpotlight();
 #endif
-    
-    WebPage* m_page;
+
+    WebPage *m_page;
 };
 
 } // namespace WebKit

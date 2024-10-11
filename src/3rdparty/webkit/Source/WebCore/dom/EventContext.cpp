@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -32,20 +32,21 @@
 #include "Event.h"
 #include "Node.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-EventContext::EventContext(PassRefPtr<Node> node, PassRefPtr<EventTarget> currentTarget, PassRefPtr<EventTarget> target)
-    : m_node(node)
-    , m_currentTarget(currentTarget)
-    , m_target(target)
+EventContext::EventContext( PassRefPtr<Node> node, PassRefPtr<EventTarget> currentTarget, PassRefPtr<EventTarget> target )
+    : m_node( node )
+    , m_currentTarget( currentTarget )
+    , m_target( target )
 {
 }
 
-void EventContext::handleLocalEvents(Event* event) const
+void EventContext::handleLocalEvents( Event *event ) const
 {
-    event->setTarget(m_target.get());
-    event->setCurrentTarget(m_currentTarget.get());
-    m_node->handleLocalEvents(event);
+    event->setTarget( m_target.get() );
+    event->setCurrentTarget( m_currentTarget.get() );
+    m_node->handleLocalEvents( event );
 }
 
 }

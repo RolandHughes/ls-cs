@@ -34,28 +34,28 @@ class DirectShowPostedEvent;
 
 class DirectShowEventLoop : public QObject
 {
-   CS_OBJECT(DirectShowEventLoop)
+    LSCS_OBJECT( DirectShowEventLoop )
 
- public:
-   DirectShowEventLoop(QObject *parent = nullptr);
-   ~DirectShowEventLoop();
+public:
+    DirectShowEventLoop( QObject *parent = nullptr );
+    ~DirectShowEventLoop();
 
-   void wait(QMutex *mutex);
-   void wake();
+    void wait( QMutex *mutex );
+    void wake();
 
-   void postEvent(QObject *object, QEvent *event);
+    void postEvent( QObject *object, QEvent *event );
 
- protected:
-   void customEvent(QEvent *event) override;
+protected:
+    void customEvent( QEvent *event ) override;
 
- private:
-   void processEvents();
+private:
+    void processEvents();
 
-   DirectShowPostedEvent *m_postsHead;
-   DirectShowPostedEvent *m_postsTail;
-   HANDLE m_eventHandle;
-   HANDLE m_waitHandle;
-   QMutex m_mutex;
+    DirectShowPostedEvent *m_postsHead;
+    DirectShowPostedEvent *m_postsTail;
+    HANDLE m_eventHandle;
+    HANDLE m_waitHandle;
+    QMutex m_mutex;
 };
 
 #endif

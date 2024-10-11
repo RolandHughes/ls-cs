@@ -35,22 +35,22 @@ class QAbstractAudioDeviceInfo;
 
 class QAudioDeviceFactory
 {
- public:
-   static QList<QAudioDeviceInfo> availableDevices(QAudio::Mode mode);
+public:
+    static QList<QAudioDeviceInfo> availableDevices( QAudio::Mode mode );
 
-   static QAudioDeviceInfo defaultInputDevice();
-   static QAudioDeviceInfo defaultOutputDevice();
+    static QAudioDeviceInfo defaultInputDevice();
+    static QAudioDeviceInfo defaultOutputDevice();
 
-   static QAbstractAudioDeviceInfo *audioDeviceInfo(const QString &realm, const QString &handle, QAudio::Mode mode);
+    static QAbstractAudioDeviceInfo *audioDeviceInfo( const QString &realm, const QString &handle, QAudio::Mode mode );
 
-   static QAbstractAudioInput *createDefaultInputDevice(QAudioFormat const &format);
-   static QAbstractAudioOutput *createDefaultOutputDevice(QAudioFormat const &format);
+    static QAbstractAudioInput *createDefaultInputDevice( QAudioFormat const &format );
+    static QAbstractAudioOutput *createDefaultOutputDevice( QAudioFormat const &format );
 
-   static QAbstractAudioInput *createInputDevice(QAudioDeviceInfo const &device, QAudioFormat const &format);
-   static QAbstractAudioOutput *createOutputDevice(QAudioDeviceInfo const &device, QAudioFormat const &format);
+    static QAbstractAudioInput *createInputDevice( QAudioDeviceInfo const &device, QAudioFormat const &format );
+    static QAbstractAudioOutput *createOutputDevice( QAudioDeviceInfo const &device, QAudioFormat const &format );
 
-   static QAbstractAudioInput *createNullInput();
-   static QAbstractAudioOutput *createNullOutput();
+    static QAbstractAudioInput *createNullInput();
+    static QAbstractAudioOutput *createNullOutput();
 };
 
 #endif

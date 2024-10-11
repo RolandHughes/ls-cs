@@ -27,48 +27,51 @@
 
 using namespace QPatternist;
 
-ToCodepointsIterator::ToCodepointsIterator(const QString &string)
-   : m_string(string),
-     m_len(string.length()),
-     m_position(0)
+ToCodepointsIterator::ToCodepointsIterator( const QString &string )
+    : m_string( string ),
+      m_len( string.length() ),
+      m_position( 0 )
 {
-   Q_ASSERT(!string.isEmpty());
+    Q_ASSERT( !string.isEmpty() );
 }
 
 Item ToCodepointsIterator::next()
 {
-   if (m_position == -1) {
-      return Item();
-   }
+    if ( m_position == -1 )
+    {
+        return Item();
+    }
 
-   ++m_position;
-   if (m_position > m_len) {
-      m_position = -1;
-      m_current.reset();
-      return m_current;
-   }
+    ++m_position;
 
-   m_current = Integer::fromValue(m_string.at(m_position - 1).unicode());
-   return m_current;
+    if ( m_position > m_len )
+    {
+        m_position = -1;
+        m_current.reset();
+        return m_current;
+    }
+
+    m_current = Integer::fromValue( m_string.at( m_position - 1 ).unicode() );
+    return m_current;
 }
 
 xsInteger ToCodepointsIterator::count()
 {
-   return m_len;
+    return m_len;
 }
 
 Item ToCodepointsIterator::current() const
 {
-   return m_current;
+    return m_current;
 }
 
 xsInteger ToCodepointsIterator::position() const
 {
-   return m_position;
+    return m_position;
 }
 
 Item::Iterator::Ptr ToCodepointsIterator::copy() const
 {
-   return Item::Iterator::Ptr(new ToCodepointsIterator(m_string));
+    return Item::Iterator::Ptr( new ToCodepointsIterator( m_string ) );
 }
 

@@ -30,86 +30,88 @@
 #include <quserfunction_p.h>
 #include <qvariabledeclaration_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class UserFunctionCallsite : public CallSite
 {
- public:
-   typedef QExplicitlySharedDataPointer<UserFunctionCallsite> Ptr;
-   typedef QList<UserFunctionCallsite::Ptr> List;
+public:
+    typedef QExplicitlySharedDataPointer<UserFunctionCallsite> Ptr;
+    typedef QList<UserFunctionCallsite::Ptr> List;
 
-   UserFunctionCallsite(const QXmlName name,
-                        const FunctionSignature::Arity arity);
+    UserFunctionCallsite( const QXmlName name,
+                          const FunctionSignature::Arity arity );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   /**
-    * We call compress on our body.
-    */
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    /**
+     * We call compress on our body.
+     */
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
-   Expression::Properties properties() const override;
+    Expression::Properties properties() const override;
 
-   /**
-    * @short Returns the types declared in the function declaration.
-    *
-    * @see CallTemplate::expectedOperandTypes()
-    */
-   SequenceType::List expectedOperandTypes() const override;
+    /**
+     * @short Returns the types declared in the function declaration.
+     *
+     * @see CallTemplate::expectedOperandTypes()
+     */
+    SequenceType::List expectedOperandTypes() const override;
 
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   /**
-    * @returns always IDUserFunctionCallsite.
-    */
-   ID id() const override;
+    /**
+     * @returns always IDUserFunctionCallsite.
+     */
+    ID id() const override;
 
-   /**
-    * If @p slotOffset is -1, it means this function has no arguments.
-    */
-   void setSource(const UserFunction::Ptr &userFunction,
-                  const VariableSlotID cacheSlotOffset);
+    /**
+     * If @p slotOffset is -1, it means this function has no arguments.
+     */
+    void setSource( const UserFunction::Ptr &userFunction,
+                    const VariableSlotID cacheSlotOffset );
 
-   /**
-    * @returns @c true, if a function definition with signature @p sign
-    * would be valid to call from this callsite, otherwise @c false.
-    */
-   bool isSignatureValid(const FunctionSignature::Ptr &sign) const;
+    /**
+     * @returns @c true, if a function definition with signature @p sign
+     * would be valid to call from this callsite, otherwise @c false.
+     */
+    bool isSignatureValid( const FunctionSignature::Ptr &sign ) const;
 
-   FunctionSignature::Arity arity() const;
+    FunctionSignature::Arity arity() const;
 
-   Expression::Ptr body() const override {
-      return m_body;
-   }
+    Expression::Ptr body() const override
+    {
+        return m_body;
+    }
 
-   bool configureRecursion(const CallTargetDescription::Ptr &sign) override;
-   CallTargetDescription::Ptr callTargetDescription() const override;
+    bool configureRecursion( const CallTargetDescription::Ptr &sign ) override;
+    CallTargetDescription::Ptr callTargetDescription() const override;
 
- private:
-   /**
-    * Creates a new context sets the arguments, and returns it.
-    */
-   DynamicContext::Ptr bindVariables(const DynamicContext::Ptr &context) const;
+private:
+    /**
+     * Creates a new context sets the arguments, and returns it.
+     */
+    DynamicContext::Ptr bindVariables( const DynamicContext::Ptr &context ) const;
 
-   const FunctionSignature::Arity  m_arity;
-   /**
-    * The reason this variable, as well as others, aren't const, is that
-    * the binding to the actual function, is resolved after this
-    * UserFunctionCallsite has been created.
-    */
-   VariableSlotID                  m_expressionSlotOffset;
+    const FunctionSignature::Arity  m_arity;
+    /**
+     * The reason this variable, as well as others, aren't const, is that
+     * the binding to the actual function, is resolved after this
+     * UserFunctionCallsite has been created.
+     */
+    VariableSlotID                  m_expressionSlotOffset;
 
-   /**
-    * @note This may be different from m_functionDeclaration->body(). It
-    * may differ on a per-callsite basis.
-    */
-   Expression::Ptr                 m_body;
-   UserFunction::Ptr               m_functionDeclaration;
+    /**
+     * @note This may be different from m_functionDeclaration->body(). It
+     * may differ on a per-callsite basis.
+     */
+    Expression::Ptr                 m_body;
+    UserFunction::Ptr               m_functionDeclaration;
 };
 
 /**
@@ -117,16 +119,16 @@ class UserFunctionCallsite : public CallSite
  *
  * @relates UserFunctionCallsite
  */
-static inline QString formatFunction(const UserFunctionCallsite::Ptr &func)
+static inline QString formatFunction( const UserFunctionCallsite::Ptr &func )
 {
-   (void) func;
+    ( void ) func;
 
-   // TODO TODO TODO
-   // TODO Make UserFunctionCallsite always use a FunctionSignature
-   return QLatin1String("<span class='XQuery-function'>")  +
-          QString() +
-          //escape(func->name()->toString())                 +
-          QLatin1String("</span>");
+    // TODO TODO TODO
+    // TODO Make UserFunctionCallsite always use a FunctionSignature
+    return QLatin1String( "<span class='XQuery-function'>" )  +
+           QString() +
+           //escape(func->name()->toString())                 +
+           QLatin1String( "</span>" );
 }
 }
 

@@ -30,62 +30,68 @@
 #include <wtf/text/CString.h>
 #include <qset.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 static QSet<QString> *unique_names = nullptr;
 
-static const char *getAtomicName(const QString &name)
+static const char *getAtomicName( const QString &name )
 {
-    if (! unique_names)
+    if ( ! unique_names )
+    {
         unique_names = new QSet<QString>;
+    }
 
-    unique_names->insert(name);
+    unique_names->insert( name );
 
-    return unique_names->find(name)->constData();
+    return unique_names->find( name )->constData();
 }
 
-void TextCodecQt::registerEncodingNames(EncodingNameRegistrar registrar)
+void TextCodecQt::registerEncodingNames( EncodingNameRegistrar registrar )
 {
     QList<int> mibs = QTextCodec::availableMibs();
 //     qDebug() << ">>>>>>>>> registerEncodingNames";
 
-    for (int i = 0; i < mibs.size(); ++i) {
-        QTextCodec *c = QTextCodec::codecForMib(mibs.at(i));
-        const char *name = getAtomicName(c->name());
-        registrar(name, name);
+    for ( int i = 0; i < mibs.size(); ++i )
+    {
+        QTextCodec *c = QTextCodec::codecForMib( mibs.at( i ) );
+        const char *name = getAtomicName( c->name() );
+        registrar( name, name );
 
         QStringList aliases = c->aliases();
 
-        for (int i = 0; i < aliases.size(); ++i) {
-            const char *a = getAtomicName(aliases.at(i));
+        for ( int i = 0; i < aliases.size(); ++i )
+        {
+            const char *a = getAtomicName( aliases.at( i ) );
 
-            registrar(a, name);
+            registrar( a, name );
         }
     }
 }
 
-static PassOwnPtr<TextCodec> newTextCodecQt(const TextEncoding& encoding, const void*)
+static PassOwnPtr<TextCodec> newTextCodecQt( const TextEncoding &encoding, const void * )
 {
-    return new TextCodecQt(encoding);
+    return new TextCodecQt( encoding );
 }
 
-void TextCodecQt::registerCodecs(TextCodecRegistrar registrar)
+void TextCodecQt::registerCodecs( TextCodecRegistrar registrar )
 {
     QList<int> mibs = QTextCodec::availableMibs();
 //     qDebug() << ">>>>>>>>> registerCodecs";
 
-    for (int i = 0; i < mibs.size(); ++i) {
-        QTextCodec *c = QTextCodec::codecForMib(mibs.at(i));
-        const char *name = getAtomicName(c->name());
+    for ( int i = 0; i < mibs.size(); ++i )
+    {
+        QTextCodec *c = QTextCodec::codecForMib( mibs.at( i ) );
+        const char *name = getAtomicName( c->name() );
 
-        registrar(name, newTextCodecQt, 0);
+        registrar( name, newTextCodecQt, 0 );
     }
 }
 
-TextCodecQt::TextCodecQt(const TextEncoding& encoding)
-    : m_encoding(encoding)
+TextCodecQt::TextCodecQt( const TextEncoding &encoding )
+    : m_encoding( encoding )
 {
-    m_codec = QTextCodec::codecForName(m_encoding.name());
+    m_codec = QTextCodec::codecForName( m_encoding.name() );
 }
 
 TextCodecQt::~TextCodecQt()
@@ -93,7 +99,7 @@ TextCodecQt::~TextCodecQt()
 }
 
 
-String TextCodecQt::decode(const char* bytes, size_t length, bool flush, bool /*stopOnError*/, bool& sawError)
+String TextCodecQt::decode( const char *bytes, size_t length, bool flush, bool /*stopOnError*/, bool &sawError )
 {
     // We chop input buffer to smaller buffers to avoid excessive memory consumption
     // when the input buffer is big.  This helps reduce peak memory consumption in
@@ -103,25 +109,27 @@ String TextCodecQt::decode(const char* bytes, size_t length, bool flush, bool /*
 #else
     static const int MaxInputChunkSize = 1024 * 1024;
 #endif
-    const char* buf = bytes;
-    const char* end = buf + length;
-    String unicode(""); // a non-null string is expected
+    const char *buf = bytes;
+    const char *end = buf + length;
+    String unicode( "" ); // a non-null string is expected
 
-    while (buf < end) {
+    while ( buf < end )
+    {
         int size = end - buf;
-        size = qMin(size, MaxInputChunkSize);
+        size = qMin( size, MaxInputChunkSize );
 
-        QString decoded = m_codec->toUnicode(buf, size, &m_state);
+        QString decoded = m_codec->toUnicode( buf, size, &m_state );
 
         QString16 tmp = decoded.toUtf16();
-        unicode.append(reinterpret_cast_ptr<const UChar*>(tmp.constData()), tmp.size_storage());
+        unicode.append( reinterpret_cast_ptr<const UChar *>( tmp.constData() ), tmp.size_storage() );
 
         buf += size;
     }
 
     sawError = m_state.invalidChars != 0;
 
-    if (flush) {
+    if ( flush )
+    {
         m_state.m_flags = QTextCodec::DefaultConversion;
         m_state.remainingChars = 0;
         m_state.invalidChars = 0;
@@ -130,51 +138,58 @@ String TextCodecQt::decode(const char* bytes, size_t length, bool flush, bool /*
     return unicode;
 }
 
-CString TextCodecQt::encode(const UChar* characters, size_t length, UnencodableHandling handling)
+CString TextCodecQt::encode( const UChar *characters, size_t length, UnencodableHandling handling )
 {
     QTextCodec::ConverterState state;
-    state.m_flags = QTextCodec::ConversionFlags(QTextCodec::ConvertInvalidToNull | QTextCodec::IgnoreHeader);
+    state.m_flags = QTextCodec::ConversionFlags( QTextCodec::ConvertInvalidToNull | QTextCodec::IgnoreHeader );
 
-    if (! length)
+    if ( ! length )
+    {
         return "";
+    }
 
-    QString tmp   = QString::fromUtf16(reinterpret_cast<const char16_t *>(characters), length);
-    QByteArray ba = m_codec->fromUnicode(tmp, &state);
+    QString tmp   = QString::fromUtf16( reinterpret_cast<const char16_t *>( characters ), length );
+    QByteArray ba = m_codec->fromUnicode( tmp, &state );
 
     // If some <b> characters </b> are unencodable, escape them as specified by <b> handling </b>
     // We append one valid encoded chunk to a QByteArray at a time. When we encounter an unencodable chunk we
     // escape it with getUnencodableReplacement, append it, then move to the next chunk.
 
-    if (state.invalidChars) {
+    if ( state.invalidChars )
+    {
         state.invalidChars = 0;
         state.remainingChars = 0;
 
         int len = 0;
         ba.clear();
 
-        for (size_t pos = 0; pos < length; ++pos) {
+        for ( size_t pos = 0; pos < length; ++pos )
+        {
 
-            QString tmp    = QString::fromUtf16(reinterpret_cast<const char16_t *>(characters), ++len);
-            QByteArray tba = m_codec->fromUnicode(tmp, &state);
+            QString tmp    = QString::fromUtf16( reinterpret_cast<const char16_t *>( characters ), ++len );
+            QByteArray tba = m_codec->fromUnicode( tmp, &state );
 
-            if (state.remainingChars)
+            if ( state.remainingChars )
+            {
                 continue;
+            }
 
-            if (state.invalidChars) {
+            if ( state.invalidChars )
+            {
                 UnencodableReplacementArray replacement;
-                getUnencodableReplacement(characters[0], handling, replacement);
-                tba.replace('\0', replacement);
+                getUnencodableReplacement( characters[0], handling, replacement );
+                tba.replace( '\0', replacement );
                 state.invalidChars = 0;
             }
 
-            ba.append(tba);
+            ba.append( tba );
             characters += len;
             len = 0;
             state.remainingChars = 0;
         }
     }
 
-    return CString(ba.constData(), ba.length());
+    return CString( ba.constData(), ba.length() );
 }
 
 

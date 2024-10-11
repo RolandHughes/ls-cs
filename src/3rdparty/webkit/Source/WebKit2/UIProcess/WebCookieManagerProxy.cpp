@@ -31,15 +31,16 @@
 #include "WebContext.h"
 #include "WebSecurityOrigin.h"
 
-namespace WebKit {
-
-PassRefPtr<WebCookieManagerProxy> WebCookieManagerProxy::create(WebContext* context)
+namespace WebKit
 {
-    return adoptRef(new WebCookieManagerProxy(context));
+
+PassRefPtr<WebCookieManagerProxy> WebCookieManagerProxy::create( WebContext *context )
+{
+    return adoptRef( new WebCookieManagerProxy( context ) );
 }
 
-WebCookieManagerProxy::WebCookieManagerProxy(WebContext* context)
-    : m_webContext(context)
+WebCookieManagerProxy::WebCookieManagerProxy( WebContext *context )
+    : m_webContext( context )
 {
 }
 
@@ -49,115 +50,122 @@ WebCookieManagerProxy::~WebCookieManagerProxy()
 
 void WebCookieManagerProxy::invalidate()
 {
-    invalidateCallbackMap(m_arrayCallbacks);
-    invalidateCallbackMap(m_httpCookieAcceptPolicyCallbacks);
+    invalidateCallbackMap( m_arrayCallbacks );
+    invalidateCallbackMap( m_httpCookieAcceptPolicyCallbacks );
 }
 
-bool WebCookieManagerProxy::shouldTerminate(WebProcessProxy*) const
+bool WebCookieManagerProxy::shouldTerminate( WebProcessProxy * ) const
 {
     return m_arrayCallbacks.isEmpty() && m_httpCookieAcceptPolicyCallbacks.isEmpty();
 }
 
-void WebCookieManagerProxy::initializeClient(const WKCookieManagerClient* client)
+void WebCookieManagerProxy::initializeClient( const WKCookieManagerClient *client )
 {
-    m_client.initialize(client);
+    m_client.initialize( client );
 }
 
-void WebCookieManagerProxy::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebCookieManagerProxy::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebCookieManagerProxyMessage(connection, messageID, arguments);
+    didReceiveWebCookieManagerProxyMessage( connection, messageID, arguments );
 }
 
-void WebCookieManagerProxy::getHostnamesWithCookies(PassRefPtr<ArrayCallback> prpCallback)
+void WebCookieManagerProxy::getHostnamesWithCookies( PassRefPtr<ArrayCallback> prpCallback )
 {
-    ASSERT(m_webContext);
+    ASSERT( m_webContext );
 
     RefPtr<ArrayCallback> callback = prpCallback;
     uint64_t callbackID = callback->callbackID();
-    m_arrayCallbacks.set(callbackID, callback.release());
+    m_arrayCallbacks.set( callbackID, callback.release() );
 
     // FIXME (Multi-WebProcess): Cookies shouldn't be stored in the web process.
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebCookieManager::GetHostnamesWithCookies(callbackID));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebCookieManager::GetHostnamesWithCookies( callbackID ) );
 }
-    
-void WebCookieManagerProxy::didGetHostnamesWithCookies(const Vector<String>& hostnameList, uint64_t callbackID)
+
+void WebCookieManagerProxy::didGetHostnamesWithCookies( const Vector<String> &hostnameList, uint64_t callbackID )
 {
-    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take(callbackID);
-    if (!callback) {
+    RefPtr<ArrayCallback> callback = m_arrayCallbacks.take( callbackID );
+
+    if ( !callback )
+    {
         // FIXME: Log error or assert.
         return;
     }
 
     size_t hostnameCount = hostnameList.size();
-    Vector<RefPtr<APIObject> > hostnames(hostnameCount);
+    Vector<RefPtr<APIObject> > hostnames( hostnameCount );
 
-    for (size_t i = 0; i < hostnameCount; ++i)
-        hostnames[i] = WebString::create(hostnameList[i]);
+    for ( size_t i = 0; i < hostnameCount; ++i )
+    {
+        hostnames[i] = WebString::create( hostnameList[i] );
+    }
 
-    callback->performCallbackWithReturnValue(ImmutableArray::adopt(hostnames).get());
+    callback->performCallbackWithReturnValue( ImmutableArray::adopt( hostnames ).get() );
 }
 
-void WebCookieManagerProxy::deleteCookiesForHostname(const String& hostname)
+void WebCookieManagerProxy::deleteCookiesForHostname( const String &hostname )
 {
-    ASSERT(m_webContext);
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebCookieManager::DeleteCookiesForHostname(hostname));
+    ASSERT( m_webContext );
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebCookieManager::DeleteCookiesForHostname( hostname ) );
 }
 
 void WebCookieManagerProxy::deleteAllCookies()
 {
-    ASSERT(m_webContext);
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebCookieManager::DeleteAllCookies());
+    ASSERT( m_webContext );
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebCookieManager::DeleteAllCookies() );
 }
 
 void WebCookieManagerProxy::startObservingCookieChanges()
 {
-    ASSERT(m_webContext);
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebCookieManager::StartObservingCookieChanges());
+    ASSERT( m_webContext );
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebCookieManager::StartObservingCookieChanges() );
 }
 
 void WebCookieManagerProxy::stopObservingCookieChanges()
 {
-    ASSERT(m_webContext);
-    m_webContext->sendToAllProcesses(Messages::WebCookieManager::StopObservingCookieChanges());
+    ASSERT( m_webContext );
+    m_webContext->sendToAllProcesses( Messages::WebCookieManager::StopObservingCookieChanges() );
 }
 
 void WebCookieManagerProxy::cookiesDidChange()
 {
-    m_client.cookiesDidChange(this);
+    m_client.cookiesDidChange( this );
 }
 
-void WebCookieManagerProxy::setHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicy policy)
+void WebCookieManagerProxy::setHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicy policy )
 {
-    ASSERT(m_webContext);
+    ASSERT( m_webContext );
 #if PLATFORM(MAC)
-    persistHTTPCookieAcceptPolicy(policy);
+    persistHTTPCookieAcceptPolicy( policy );
 #endif
 
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebCookieManager::SetHTTPCookieAcceptPolicy(policy));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebCookieManager::SetHTTPCookieAcceptPolicy( policy ) );
 }
 
-void WebCookieManagerProxy::getHTTPCookieAcceptPolicy(PassRefPtr<HTTPCookieAcceptPolicyCallback> prpCallback)
+void WebCookieManagerProxy::getHTTPCookieAcceptPolicy( PassRefPtr<HTTPCookieAcceptPolicyCallback> prpCallback )
 {
-    ASSERT(m_webContext);
+    ASSERT( m_webContext );
 
     RefPtr<HTTPCookieAcceptPolicyCallback> callback = prpCallback;
 
     uint64_t callbackID = callback->callbackID();
-    m_httpCookieAcceptPolicyCallbacks.set(callbackID, callback.release());
+    m_httpCookieAcceptPolicyCallbacks.set( callbackID, callback.release() );
 
     // FIXME (Multi-WebProcess): Cookies shouldn't be stored in the web process.
-    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary(Messages::WebCookieManager::GetHTTPCookieAcceptPolicy(callbackID));
+    m_webContext->sendToAllProcessesRelaunchingThemIfNecessary( Messages::WebCookieManager::GetHTTPCookieAcceptPolicy( callbackID ) );
 }
 
-void WebCookieManagerProxy::didGetHTTPCookieAcceptPolicy(uint32_t policy, uint64_t callbackID)
+void WebCookieManagerProxy::didGetHTTPCookieAcceptPolicy( uint32_t policy, uint64_t callbackID )
 {
-    RefPtr<HTTPCookieAcceptPolicyCallback> callback = m_httpCookieAcceptPolicyCallbacks.take(callbackID);
-    if (!callback) {
+    RefPtr<HTTPCookieAcceptPolicyCallback> callback = m_httpCookieAcceptPolicyCallbacks.take( callbackID );
+
+    if ( !callback )
+    {
         // FIXME: Log error or assert.
         return;
     }
 
-    callback->performCallbackWithReturnValue(policy);
+    callback->performCallbackWithReturnValue( policy );
 }
 
 } // namespace WebKit

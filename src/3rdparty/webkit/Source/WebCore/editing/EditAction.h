@@ -20,52 +20,54 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef EditAction_h
 #define EditAction_h
 
-namespace WebCore {
-    typedef enum {
-        EditActionUnspecified,
-        EditActionSetColor,
-        EditActionSetBackgroundColor,
-        EditActionTurnOffKerning,
-        EditActionTightenKerning,
-        EditActionLoosenKerning,
-        EditActionUseStandardKerning,
-        EditActionTurnOffLigatures,
-        EditActionUseStandardLigatures,
-        EditActionUseAllLigatures,
-        EditActionRaiseBaseline,
-        EditActionLowerBaseline,
-        EditActionSetTraditionalCharacterShape,
-        EditActionSetFont,
-        EditActionChangeAttributes,
-        EditActionAlignLeft,
-        EditActionAlignRight,
-        EditActionCenter,
-        EditActionJustify,
-        EditActionSetWritingDirection,
-        EditActionSubscript,
-        EditActionSuperscript,
-        EditActionUnderline,
-        EditActionOutline,
-        EditActionUnscript,
-        EditActionDrag,
-        EditActionCut,
-        EditActionPaste,
-        EditActionPasteFont,
-        EditActionPasteRuler,
-        EditActionTyping,
-        EditActionCreateLink,
-        EditActionUnlink,
-        EditActionFormatBlock,
-        EditActionInsertList,
-        EditActionIndent,
-        EditActionOutdent
-    } EditAction;    
+namespace WebCore
+{
+typedef enum
+{
+    EditActionUnspecified,
+    EditActionSetColor,
+    EditActionSetBackgroundColor,
+    EditActionTurnOffKerning,
+    EditActionTightenKerning,
+    EditActionLoosenKerning,
+    EditActionUseStandardKerning,
+    EditActionTurnOffLigatures,
+    EditActionUseStandardLigatures,
+    EditActionUseAllLigatures,
+    EditActionRaiseBaseline,
+    EditActionLowerBaseline,
+    EditActionSetTraditionalCharacterShape,
+    EditActionSetFont,
+    EditActionChangeAttributes,
+    EditActionAlignLeft,
+    EditActionAlignRight,
+    EditActionCenter,
+    EditActionJustify,
+    EditActionSetWritingDirection,
+    EditActionSubscript,
+    EditActionSuperscript,
+    EditActionUnderline,
+    EditActionOutline,
+    EditActionUnscript,
+    EditActionDrag,
+    EditActionCut,
+    EditActionPaste,
+    EditActionPasteFont,
+    EditActionPasteRuler,
+    EditActionTyping,
+    EditActionCreateLink,
+    EditActionUnlink,
+    EditActionFormatBlock,
+    EditActionInsertList,
+    EditActionIndent,
+    EditActionOutdent
+} EditAction;
 }
 
 #endif

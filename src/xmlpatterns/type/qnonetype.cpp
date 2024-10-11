@@ -31,52 +31,52 @@ NoneType::NoneType()
 {
 }
 
-bool NoneType::itemMatches(const Item &) const
+bool NoneType::itemMatches( const Item & ) const
 {
-   return false;
+    return false;
 }
 
-bool NoneType::xdtTypeMatches(const ItemType::Ptr &t) const
+bool NoneType::xdtTypeMatches( const ItemType::Ptr &t ) const
 {
-   return *this == *t;
+    return *this == *t;
 }
 
-const ItemType &NoneType::operator|(const ItemType &other) const
+const ItemType &NoneType::operator|( const ItemType &other ) const
 {
-   return other;
+    return other;
 }
 
-QString NoneType::displayName(const NamePool::Ptr &) const
+QString NoneType::displayName( const NamePool::Ptr & ) const
 {
-   return QLatin1String("none");
+    return QLatin1String( "none" );
 }
 
 Cardinality NoneType::cardinality() const
 {
-   return Cardinality::zeroOrMore();
+    return Cardinality::zeroOrMore();
 }
 
 ItemType::Ptr NoneType::itemType() const
 {
-   return ItemType::Ptr(const_cast<NoneType *>(this));
+    return ItemType::Ptr( const_cast<NoneType *>( this ) );
 }
 
 bool NoneType::isAtomicType() const
 {
-   return false;
+    return false;
 }
 
 bool NoneType::isNodeType() const
 {
-   return false;
+    return false;
 }
 
 ItemType::Ptr NoneType::atomizedType() const
 {
-   return BuiltinTypes::xsAnyAtomicType;
+    return BuiltinTypes::xsAnyAtomicType;
 }
 
 ItemType::Ptr NoneType::xdtSuperType() const
 {
-   return BuiltinTypes::item;
+    return BuiltinTypes::item;
 }

@@ -26,52 +26,59 @@
 #include <qplatformdefs.h>
 #include <qurl.h>
 
-Q_CORE_EXPORT QPair<QString, QByteArray> qDecodeDataUrl(const QUrl &uri)
+Q_CORE_EXPORT QPair<QString, QByteArray> qDecodeDataUrl( const QUrl &uri )
 {
-   QString mimeType;
-   QByteArray payload;
+    QString mimeType;
+    QByteArray payload;
 
-   if (uri.scheme() == "data" && uri.host().isEmpty()) {
-      mimeType = "text/plain;charset=US-ASCII";
+    if ( uri.scheme() == "data" && uri.host().isEmpty() )
+    {
+        mimeType = "text/plain;charset=US-ASCII";
 
-      QByteArray data = QByteArray::fromPercentEncoding(uri.toEncoded());
+        QByteArray data = QByteArray::fromPercentEncoding( uri.toEncoded() );
 
-      // remove the data: scheme
-      data.remove(0, 5);
+        // remove the data: scheme
+        data.remove( 0, 5 );
 
-      // parse it:
-      int pos = data.indexOf(',');
+        // parse it:
+        int pos = data.indexOf( ',' );
 
-      if (pos != -1) {
-         payload = data.mid(pos + 1);
+        if ( pos != -1 )
+        {
+            payload = data.mid( pos + 1 );
 
-         data.truncate(pos);
-         data = data.trimmed();
+            data.truncate( pos );
+            data = data.trimmed();
 
-         // find out if the payload is encoded in Base64
-         if (data.endsWith(";base64")) {
-            payload = QByteArray::fromBase64(payload);
-            data.chop(7);
-         }
-
-         if (data.toLower().startsWith("charset")) {
-            int i = 7;
-
-            while (data.at(i) == ' ') {
-               ++i;
+            // find out if the payload is encoded in Base64
+            if ( data.endsWith( ";base64" ) )
+            {
+                payload = QByteArray::fromBase64( payload );
+                data.chop( 7 );
             }
 
-            if (data.at(i) == '=') {
-               data.prepend("text/plain;");
+            if ( data.toLower().startsWith( "charset" ) )
+            {
+                int i = 7;
+
+                while ( data.at( i ) == ' ' )
+                {
+                    ++i;
+                }
+
+                if ( data.at( i ) == '=' )
+                {
+                    data.prepend( "text/plain;" );
+                }
             }
-         }
 
-         if (! data.isEmpty()) {
-            mimeType = QString::fromUtf8(data.trimmed());
-         }
+            if ( ! data.isEmpty() )
+            {
+                mimeType = QString::fromUtf8( data.trimmed() );
+            }
 
-      }
-   }
+        }
+    }
 
-   return QPair<QString, QByteArray>(mimeType, payload);
+    return QPair<QString, QByteArray>( mimeType, payload );
 }

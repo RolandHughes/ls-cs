@@ -28,29 +28,30 @@
 #include <qfunctionsignature_p.h>
 #include <qxpathhelper_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class FunctionCall : public UnlimitedContainer
 {
- public:
-   typedef QExplicitlySharedDataPointer<FunctionCall> Ptr;
+public:
+    typedef QExplicitlySharedDataPointer<FunctionCall> Ptr;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
-   virtual void setSignature(const FunctionSignature::Ptr &sign);
-   virtual FunctionSignature::Ptr signature() const;
+    virtual void setSignature( const FunctionSignature::Ptr &sign );
+    virtual FunctionSignature::Ptr signature() const;
 
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   Expression::Properties properties() const override;
+    Expression::Properties properties() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   ID id() const override;
+    ID id() const override;
 
- private:
-   FunctionSignature::Ptr m_signature;
+private:
+    FunctionSignature::Ptr m_signature;
 };
 
 }

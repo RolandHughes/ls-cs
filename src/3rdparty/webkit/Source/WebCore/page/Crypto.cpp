@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Google, Inc. ("Google") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY GOOGLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -34,18 +34,20 @@
 #include "Uint8Array.h"
 #include <wtf/CryptographicallyRandomNumber.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-namespace {
+namespace
+{
 
-bool isIntegerArray(ArrayBufferView* array)
+bool isIntegerArray( ArrayBufferView *array )
 {
     return array->isByteArray()
-        || array->isUnsignedByteArray()
-        || array->isShortArray()
-        || array->isUnsignedShortArray()
-        || array->isIntArray()
-        || array->isUnsignedIntArray();
+           || array->isUnsignedByteArray()
+           || array->isShortArray()
+           || array->isUnsignedShortArray()
+           || array->isIntArray()
+           || array->isUnsignedIntArray();
 }
 
 }
@@ -54,16 +56,19 @@ Crypto::Crypto()
 {
 }
 
-void Crypto::getRandomValues(ArrayBufferView* array, ExceptionCode& ec)
+void Crypto::getRandomValues( ArrayBufferView *array, ExceptionCode &ec )
 {
 #if USE(OS_RANDOMNESS)
-    if (!array || !isIntegerArray(array)) {
+
+    if ( !array || !isIntegerArray( array ) )
+    {
         ec = TYPE_MISMATCH_ERR;
         return;
     }
-    cryptographicallyRandomValues(array->baseAddress(), array->byteLength());
+
+    cryptographicallyRandomValues( array->baseAddress(), array->byteLength() );
 #else
-    ASSERT_UNUSED(array, array);
+    ASSERT_UNUSED( array, array );
     ec = NOT_SUPPORTED_ERR;
 #endif
 }

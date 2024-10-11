@@ -27,9 +27,9 @@
 FT_BEGIN_HEADER
 
 
-  FT_LOCAL( FT_Error )
-  woff_open_font( FT_Stream  stream,
-                  TT_Face    face );
+FT_LOCAL( FT_Error )
+woff_open_font( FT_Stream  stream,
+                TT_Face    face );
 
 
 FT_END_HEADER

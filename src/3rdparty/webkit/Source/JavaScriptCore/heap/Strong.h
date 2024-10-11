@@ -30,13 +30,15 @@
 #include "Handle.h"
 #include "HandleHeap.h"
 
-namespace JSC {
+namespace JSC
+{
 
 class JSGlobalData;
-HandleSlot allocateGlobalHandle(JSGlobalData&);
+HandleSlot allocateGlobalHandle( JSGlobalData & );
 
 // A strongly referenced handle that prevents the object it points to from being garbage collected.
-template <typename T> class Strong : public Handle<T> {
+template <typename T> class Strong : public Handle<T>
+{
     using Handle<T>::slot;
     using Handle<T>::setSlot;
 
@@ -48,40 +50,49 @@ public:
     {
     }
 
-    Strong(JSGlobalData& globalData, ExternalType value = ExternalType())
-        : Handle<T>(allocateGlobalHandle(globalData))
+    Strong( JSGlobalData &globalData, ExternalType value = ExternalType() )
+        : Handle<T>( allocateGlobalHandle( globalData ) )
     {
-        set(value);
+        set( value );
     }
 
-    Strong(JSGlobalData& globalData, Handle<T> handle)
-        : Handle<T>(allocateGlobalHandle(globalData))
+    Strong( JSGlobalData &globalData, Handle<T> handle )
+        : Handle<T>( allocateGlobalHandle( globalData ) )
     {
-        set(handle.get());
+        set( handle.get() );
     }
 
-    Strong(const Strong& other)
+    Strong( const Strong &other )
         : Handle<T>()
     {
-        if (!other.slot())
+        if ( !other.slot() )
+        {
             return;
-        setSlot(HandleHeap::heapFor(other.slot())->allocate());
-        set(other.get());
+        }
+
+        setSlot( HandleHeap::heapFor( other.slot() )->allocate() );
+        set( other.get() );
     }
 
-    template <typename U> Strong(const Strong<U>& other)
+    template <typename U> Strong( const Strong<U> &other )
         : Handle<T>()
     {
-        if (!other.slot())
+        if ( !other.slot() )
+        {
             return;
-        setSlot(HandleHeap::heapFor(other.slot())->allocate());
-        set(other.get());
+        }
+
+        setSlot( HandleHeap::heapFor( other.slot() )->allocate() );
+        set( other.get() );
     }
 
     enum HashTableDeletedValueTag { HashTableDeletedValue };
-    bool isHashTableDeletedValue() const { return slot() == hashTableDeletedValue(); }
-    Strong(HashTableDeletedValueTag)
-        : Handle<T>(hashTableDeletedValue())
+    bool isHashTableDeletedValue() const
+    {
+        return slot() == hashTableDeletedValue();
+    }
+    Strong( HashTableDeletedValueTag )
+        : Handle<T>( hashTableDeletedValue() )
     {
     }
 
@@ -90,70 +101,83 @@ public:
         clear();
     }
 
-    void swap(Strong& other)
+    void swap( Strong &other )
     {
-        Handle<T>::swap(other);
+        Handle<T>::swap( other );
     }
 
-    void set(JSGlobalData& globalData, ExternalType value)
+    void set( JSGlobalData &globalData, ExternalType value )
     {
-        if (!slot())
-            setSlot(allocateGlobalHandle(globalData));
-        set(value);
+        if ( !slot() )
+        {
+            setSlot( allocateGlobalHandle( globalData ) );
+        }
+
+        set( value );
     }
 
-    template <typename U> Strong& operator=(const Strong<U>& other)
+    template <typename U> Strong &operator=( const Strong<U> &other )
     {
-        if (!other.slot()) {
+        if ( !other.slot() )
+        {
             clear();
             return *this;
         }
 
-        set(*HandleHeap::heapFor(other.slot())->globalData(), other.get());
+        set( *HandleHeap::heapFor( other.slot() )->globalData(), other.get() );
         return *this;
     }
 
-    Strong& operator=(const Strong& other)
+    Strong &operator=( const Strong &other )
     {
-        if (!other.slot()) {
+        if ( !other.slot() )
+        {
             clear();
             return *this;
         }
 
-        set(*HandleHeap::heapFor(other.slot())->globalData(), other.get());
+        set( *HandleHeap::heapFor( other.slot() )->globalData(), other.get() );
         return *this;
     }
 
     void clear()
     {
-        if (!slot())
+        if ( !slot() )
+        {
             return;
-        HandleHeap::heapFor(slot())->deallocate(slot());
-        setSlot(nullptr);
+        }
+
+        HandleHeap::heapFor( slot() )->deallocate( slot() );
+        setSlot( nullptr );
     }
 
 private:
-    static HandleSlot hashTableDeletedValue() { return reinterpret_cast<HandleSlot>(-1); }
-
-    void set(ExternalType externalType)
+    static HandleSlot hashTableDeletedValue()
     {
-        ASSERT(slot());
-        JSValue value = HandleTypes<T>::toJSValue(externalType);
-        HandleHeap::heapFor(slot())->writeBarrier(slot(), value);
+        return reinterpret_cast<HandleSlot>( -1 );
+    }
+
+    void set( ExternalType externalType )
+    {
+        ASSERT( slot() );
+        JSValue value = HandleTypes<T>::toJSValue( externalType );
+        HandleHeap::heapFor( slot() )->writeBarrier( slot(), value );
         *slot() = value;
     }
 };
 
-template<class T> inline void swap(Strong<T>& a, Strong<T>& b)
+template<class T> inline void swap( Strong<T> &a, Strong<T> &b )
 {
-    a.swap(b);
+    a.swap( b );
 }
 
 } // namespace JSC
 
-namespace WTF {
+namespace WTF
+{
 
-template<typename T> struct VectorTraits<JSC::Strong<T> > : SimpleClassVectorTraits {
+template<typename T> struct VectorTraits<JSC::Strong<T> > : SimpleClassVectorTraits
+{
     static const bool canCompareWithMemcmp = false;
 };
 

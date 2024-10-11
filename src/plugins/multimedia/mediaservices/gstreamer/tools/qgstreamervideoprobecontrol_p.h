@@ -35,36 +35,36 @@
 #include <gst/video/video.h>
 
 class QGstreamerVideoProbeControl
-   : public QMediaVideoProbeControl, public QGstreamerBufferProbe, public QSharedData
+    : public QMediaVideoProbeControl, public QGstreamerBufferProbe, public QSharedData
 {
-   CS_OBJECT(QGstreamerVideoProbeControl)
+    LSCS_OBJECT( QGstreamerVideoProbeControl )
 
- public:
-   explicit QGstreamerVideoProbeControl(QObject *parent);
-   virtual ~QGstreamerVideoProbeControl();
+public:
+    explicit QGstreamerVideoProbeControl( QObject *parent );
+    virtual ~QGstreamerVideoProbeControl();
 
-   void probeCaps(GstCaps *caps) override;
-   bool probeBuffer(GstBuffer *buffer) override;
+    void probeCaps( GstCaps *caps ) override;
+    bool probeBuffer( GstBuffer *buffer ) override;
 
-   void startFlushing();
-   void stopFlushing();
+    void startFlushing();
+    void stopFlushing();
 
- private:
-   CS_SLOT_1(Private, void frameProbed())
-   CS_SLOT_2(frameProbed)
+private:
+    LSCS_SLOT_1( Private, void frameProbed() )
+    LSCS_SLOT_2( frameProbed )
 
-   QVideoSurfaceFormat m_format;
-   QVideoFrame m_pendingFrame;
-   QMutex m_frameMutex;
+    QVideoSurfaceFormat m_format;
+    QVideoFrame m_pendingFrame;
+    QMutex m_frameMutex;
 
 #if GST_CHECK_VERSION(1,0,0)
-   GstVideoInfo m_videoInfo;
+    GstVideoInfo m_videoInfo;
 #else
-   int m_bytesPerLine;
+    int m_bytesPerLine;
 #endif
 
-   bool m_flushing;
-   bool m_frameProbed; // true if at least one frame was probed
+    bool m_flushing;
+    bool m_frameProbed; // true if at least one frame was probed
 };
 
 #endif

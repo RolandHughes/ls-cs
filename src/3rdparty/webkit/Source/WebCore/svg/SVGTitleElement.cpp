@@ -24,49 +24,56 @@
 
 #include "Document.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline SVGTitleElement::SVGTitleElement(const QualifiedName& tagName, Document* document)
-    : SVGStyledElement(tagName, document)
+inline SVGTitleElement::SVGTitleElement( const QualifiedName &tagName, Document *document )
+    : SVGStyledElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGTitleElement> SVGTitleElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGTitleElement> SVGTitleElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGTitleElement(tagName, document));
+    return adoptRef( new SVGTitleElement( tagName, document ) );
 }
 
 void SVGTitleElement::insertedIntoDocument()
 {
     SVGStyledElement::insertedIntoDocument();
-    if (firstChild())
+
+    if ( firstChild() )
         // FIXME: does SVG have a title text direction?
-        document()->setTitleElement(StringWithDirection(textContent(), LTR), this);
+    {
+        document()->setTitleElement( StringWithDirection( textContent(), LTR ), this );
+    }
 }
 
 void SVGTitleElement::removedFromDocument()
 {
     SVGElement::removedFromDocument();
-    document()->removeTitle(this);
+    document()->removeTitle( this );
 }
 
-void SVGTitleElement::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void SVGTitleElement::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
-    SVGElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
-    if (inDocument())
+    SVGElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
+
+    if ( inDocument() )
         // FIXME: does SVG have title text direction?
-        document()->setTitleElement(StringWithDirection(textContent(), LTR), this);
+    {
+        document()->setTitleElement( StringWithDirection( textContent(), LTR ), this );
+    }
 }
 
-AttributeToPropertyTypeMap& SVGTitleElement::attributeToPropertyTypeMap()
+AttributeToPropertyTypeMap &SVGTitleElement::attributeToPropertyTypeMap()
 {
-    DEFINE_STATIC_LOCAL(AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, ());
+    DEFINE_STATIC_LOCAL( AttributeToPropertyTypeMap, s_attributeToPropertyTypeMap, () );
     return s_attributeToPropertyTypeMap;
 }
 
 void SVGTitleElement::fillAttributeToPropertyTypeMap()
-{        
-    SVGStyledElement::fillPassedAttributeToPropertyTypeMap(attributeToPropertyTypeMap());
+{
+    SVGStyledElement::fillPassedAttributeToPropertyTypeMap( attributeToPropertyTypeMap() );
 }
 
 }

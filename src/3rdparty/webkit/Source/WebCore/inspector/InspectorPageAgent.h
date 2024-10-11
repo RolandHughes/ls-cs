@@ -38,7 +38,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedResource;
 class DOMWrapperWorld;
@@ -54,11 +55,13 @@ class Page;
 
 typedef String ErrorString;
 
-class InspectorPageAgent {
-    WTF_MAKE_NONCOPYABLE(InspectorPageAgent);
+class InspectorPageAgent
+{
+    WTF_MAKE_NONCOPYABLE( InspectorPageAgent );
 public:
 
-    enum ResourceType {
+    enum ResourceType
+    {
         DocumentResource,
         StylesheetResource,
         ImageResource,
@@ -69,55 +72,56 @@ public:
         OtherResource
     };
 
-    static PassOwnPtr<InspectorPageAgent> create(InstrumentingAgents*, Page*, InjectedScriptManager*);
+    static PassOwnPtr<InspectorPageAgent> create( InstrumentingAgents *, Page *, InjectedScriptManager * );
 
-    static void resourceContent(ErrorString*, Frame*, const KURL&, String* result);
-    static void resourceContentBase64(ErrorString*, Frame*, const KURL&, String* result);
+    static void resourceContent( ErrorString *, Frame *, const KURL &, String *result );
+    static void resourceContentBase64( ErrorString *, Frame *, const KURL &, String *result );
 
-    static PassRefPtr<SharedBuffer> resourceData(Frame*, const KURL&, String* textEncodingName);
-    static CachedResource* cachedResource(Frame*, const KURL&);
-    static String resourceTypeString(ResourceType);
-    static ResourceType cachedResourceType(const CachedResource&);
-    static String cachedResourceTypeString(const CachedResource&);
+    static PassRefPtr<SharedBuffer> resourceData( Frame *, const KURL &, String *textEncodingName );
+    static CachedResource *cachedResource( Frame *, const KURL & );
+    static String resourceTypeString( ResourceType );
+    static ResourceType cachedResourceType( const CachedResource & );
+    static String cachedResourceTypeString( const CachedResource & );
 
     // Page API for InspectorFrontend
-    void addScriptToEvaluateOnLoad(ErrorString*, const String& source);
-    void removeAllScriptsToEvaluateOnLoad(ErrorString*);
-    void reload(ErrorString*, const bool* const optionalIgnoreCache);
-    void open(ErrorString*, const String& url, const bool* const inNewWindow);
-    void getCookies(ErrorString*, RefPtr<InspectorArray>* cookies, WTF::String* cookiesString);
-    void deleteCookie(ErrorString*, const String& cookieName, const String& domain);
-    void getResourceTree(ErrorString*, RefPtr<InspectorObject>*);
-    void getResourceContent(ErrorString*, const String& frameId, const String& url, const bool* const base64Encode, String* content);
+    void addScriptToEvaluateOnLoad( ErrorString *, const String &source );
+    void removeAllScriptsToEvaluateOnLoad( ErrorString * );
+    void reload( ErrorString *, const bool *const optionalIgnoreCache );
+    void open( ErrorString *, const String &url, const bool *const inNewWindow );
+    void getCookies( ErrorString *, RefPtr<InspectorArray> *cookies, WTF::String *cookiesString );
+    void deleteCookie( ErrorString *, const String &cookieName, const String &domain );
+    void getResourceTree( ErrorString *, RefPtr<InspectorObject> * );
+    void getResourceContent( ErrorString *, const String &frameId, const String &url, const bool *const base64Encode,
+                             String *content );
 
     // InspectorInstrumentation API
-    void didCommitLoad(const String& url);
-    void didClearWindowObjectInWorld(Frame*, DOMWrapperWorld*);
+    void didCommitLoad( const String &url );
+    void didClearWindowObjectInWorld( Frame *, DOMWrapperWorld * );
     void domContentEventFired();
     void loadEventFired();
-    void frameNavigated(DocumentLoader*);
-    void frameDetached(Frame*);
+    void frameNavigated( DocumentLoader * );
+    void frameDetached( Frame * );
 
     // Inspector Controller API
-    void setFrontend(InspectorFrontend*);
+    void setFrontend( InspectorFrontend * );
     void clearFrontend();
 
     // Cross-agents API
-    Frame* mainFrame();
-    Frame* frameForId(const String& frameId);
-    String frameId(Frame*);
-    String loaderId(DocumentLoader*);
+    Frame *mainFrame();
+    Frame *frameForId( const String &frameId );
+    String frameId( Frame * );
+    String loaderId( DocumentLoader * );
 
 private:
-    InspectorPageAgent(InstrumentingAgents*, Page*, InjectedScriptManager*);
+    InspectorPageAgent( InstrumentingAgents *, Page *, InjectedScriptManager * );
 
-    PassRefPtr<InspectorObject> buildObjectForFrame(Frame*);
-    PassRefPtr<InspectorObject> buildObjectForFrameTree(Frame*);
+    PassRefPtr<InspectorObject> buildObjectForFrame( Frame * );
+    PassRefPtr<InspectorObject> buildObjectForFrameTree( Frame * );
 
-    InstrumentingAgents* m_instrumentingAgents;
-    Page* m_page;
-    InjectedScriptManager* m_injectedScriptManager;
-    InspectorFrontend::Page* m_frontend;
+    InstrumentingAgents *m_instrumentingAgents;
+    Page *m_page;
+    InjectedScriptManager *m_injectedScriptManager;
+    InspectorFrontend::Page *m_frontend;
     Vector<String> m_scriptsToEvaluateOnLoad;
 };
 

@@ -35,7 +35,8 @@
 #include "ScrollbarTheme.h"
 #include "UserAgentStyleSheets.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 unsigned RenderThemeChromiumLinux::m_activeSelectionBackgroundColor =
     0xff1e90ff;
@@ -50,14 +51,22 @@ double RenderThemeChromiumLinux::m_caretBlinkInterval;
 
 static const unsigned defaultButtonBackgroundColor = 0xffdddddd;
 
-static PlatformBridge::ThemePaintState getWebThemeState(const RenderTheme* theme, const RenderObject* o)
+static PlatformBridge::ThemePaintState getWebThemeState( const RenderTheme *theme, const RenderObject *o )
 {
-    if (!theme->isEnabled(o))
+    if ( !theme->isEnabled( o ) )
+    {
         return PlatformBridge::StateDisabled;
-    if (theme->isPressed(o))
+    }
+
+    if ( theme->isPressed( o ) )
+    {
         return PlatformBridge::StatePressed;
-    if (theme->isHovered(o))
+    }
+
+    if ( theme->isHovered( o ) )
+    {
         return PlatformBridge::StateHover;
+    }
 
     return PlatformBridge::StateNormal;
 }
@@ -65,12 +74,12 @@ static PlatformBridge::ThemePaintState getWebThemeState(const RenderTheme* theme
 
 PassRefPtr<RenderTheme> RenderThemeChromiumLinux::create()
 {
-    return adoptRef(new RenderThemeChromiumLinux());
+    return adoptRef( new RenderThemeChromiumLinux() );
 }
 
-PassRefPtr<RenderTheme> RenderTheme::themeForPage(Page* page)
+PassRefPtr<RenderTheme> RenderTheme::themeForPage( Page *page )
 {
-    static RenderTheme* rt = RenderThemeChromiumLinux::create().releaseRef();
+    static RenderTheme *rt = RenderThemeChromiumLinux::create().releaseRef();
     return rt;
 }
 
@@ -83,29 +92,32 @@ RenderThemeChromiumLinux::~RenderThemeChromiumLinux()
 {
 }
 
-Color RenderThemeChromiumLinux::systemColor(int cssValueId) const
+Color RenderThemeChromiumLinux::systemColor( int cssValueId ) const
 {
-    static const Color linuxButtonGrayColor(0xffdddddd);
+    static const Color linuxButtonGrayColor( 0xffdddddd );
 
-    if (cssValueId == CSSValueButtonface)
+    if ( cssValueId == CSSValueButtonface )
+    {
         return linuxButtonGrayColor;
-    return RenderTheme::systemColor(cssValueId);
+    }
+
+    return RenderTheme::systemColor( cssValueId );
 }
 
 String RenderThemeChromiumLinux::extraDefaultStyleSheet()
 {
     return RenderThemeChromiumSkia::extraDefaultStyleSheet() +
-           String(themeChromiumLinuxUserAgentStyleSheet, sizeof(themeChromiumLinuxUserAgentStyleSheet));
+           String( themeChromiumLinuxUserAgentStyleSheet, sizeof( themeChromiumLinuxUserAgentStyleSheet ) );
 }
 
-bool RenderThemeChromiumLinux::controlSupportsTints(const RenderObject* o) const
+bool RenderThemeChromiumLinux::controlSupportsTints( const RenderObject *o ) const
 {
-    return isEnabled(o);
+    return isEnabled( o );
 }
 
 Color RenderThemeChromiumLinux::activeListBoxSelectionBackgroundColor() const
 {
-    return Color(0x28, 0x28, 0x28);
+    return Color( 0x28, 0x28, 0x28 );
 }
 
 Color RenderThemeChromiumLinux::activeListBoxSelectionForegroundColor() const
@@ -115,12 +127,12 @@ Color RenderThemeChromiumLinux::activeListBoxSelectionForegroundColor() const
 
 Color RenderThemeChromiumLinux::inactiveListBoxSelectionBackgroundColor() const
 {
-    return Color(0xc8, 0xc8, 0xc8);
+    return Color( 0xc8, 0xc8, 0xc8 );
 }
 
 Color RenderThemeChromiumLinux::inactiveListBoxSelectionForegroundColor() const
 {
-    return Color(0x32, 0x32, 0x32);
+    return Color( 0x32, 0x32, 0x32 );
 }
 
 Color RenderThemeChromiumLinux::platformActiveSelectionBackgroundColor() const
@@ -143,18 +155,24 @@ Color RenderThemeChromiumLinux::platformInactiveSelectionForegroundColor() const
     return m_inactiveSelectionForegroundColor;
 }
 
-void RenderThemeChromiumLinux::adjustSliderThumbSize(RenderObject* o) const
+void RenderThemeChromiumLinux::adjustSliderThumbSize( RenderObject *o ) const
 {
-    IntSize size = PlatformBridge::getThemePartSize(PlatformBridge::PartSliderThumb);
+    IntSize size = PlatformBridge::getThemePartSize( PlatformBridge::PartSliderThumb );
 
-    if (o->style()->appearance() == SliderThumbHorizontalPart) {
-        o->style()->setWidth(Length(size.width(), Fixed));
-        o->style()->setHeight(Length(size.height(), Fixed));
-    } else if (o->style()->appearance() == SliderThumbVerticalPart) {
-        o->style()->setWidth(Length(size.height(), Fixed));
-        o->style()->setHeight(Length(size.width(), Fixed));
-    } else
-        RenderThemeChromiumSkia::adjustSliderThumbSize(o);
+    if ( o->style()->appearance() == SliderThumbHorizontalPart )
+    {
+        o->style()->setWidth( Length( size.width(), Fixed ) );
+        o->style()->setHeight( Length( size.height(), Fixed ) );
+    }
+    else if ( o->style()->appearance() == SliderThumbVerticalPart )
+    {
+        o->style()->setWidth( Length( size.height(), Fixed ) );
+        o->style()->setHeight( Length( size.width(), Fixed ) );
+    }
+    else
+    {
+        RenderThemeChromiumSkia::adjustSliderThumbSize( o );
+    }
 }
 
 bool RenderThemeChromiumLinux::supportsControlTints() const
@@ -162,7 +180,7 @@ bool RenderThemeChromiumLinux::supportsControlTints() const
     return true;
 }
 
-void RenderThemeChromiumLinux::setCaretBlinkInterval(double interval)
+void RenderThemeChromiumLinux::setCaretBlinkInterval( double interval )
 {
     m_caretBlinkInterval = interval;
 }
@@ -176,7 +194,7 @@ void RenderThemeChromiumLinux::setSelectionColors(
     unsigned activeBackgroundColor,
     unsigned activeForegroundColor,
     unsigned inactiveBackgroundColor,
-    unsigned inactiveForegroundColor)
+    unsigned inactiveForegroundColor )
 {
     m_activeSelectionBackgroundColor = activeBackgroundColor;
     m_activeSelectionForegroundColor = activeForegroundColor;
@@ -184,64 +202,73 @@ void RenderThemeChromiumLinux::setSelectionColors(
     m_inactiveSelectionForegroundColor = inactiveForegroundColor;
 }
 
-bool RenderThemeChromiumLinux::paintCheckbox(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintCheckbox( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
     PlatformBridge::ThemePaintExtraParams extraParams;
-    extraParams.button.checked = isChecked(o);
-    extraParams.button.indeterminate = isIndeterminate(o);
+    extraParams.button.checked = isChecked( o );
+    extraParams.button.indeterminate = isIndeterminate( o );
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartCheckbox, getWebThemeState(this, o), rect, &extraParams);
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartCheckbox, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
-void RenderThemeChromiumLinux::setCheckboxSize(RenderStyle* style) const
+void RenderThemeChromiumLinux::setCheckboxSize( RenderStyle *style ) const
 {
     // If the width and height are both specified, then we have nothing to do.
-    if (!style->width().isIntrinsicOrAuto() && !style->height().isAuto())
+    if ( !style->width().isIntrinsicOrAuto() && !style->height().isAuto() )
+    {
         return;
+    }
 
-    IntSize size = PlatformBridge::getThemePartSize(PlatformBridge::PartCheckbox);
-    setSizeIfAuto(style, size);
+    IntSize size = PlatformBridge::getThemePartSize( PlatformBridge::PartCheckbox );
+    setSizeIfAuto( style, size );
 }
 
-bool RenderThemeChromiumLinux::paintRadio(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintRadio( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
     PlatformBridge::ThemePaintExtraParams extraParams;
-    extraParams.button.checked = isChecked(o);
+    extraParams.button.checked = isChecked( o );
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartRadio, getWebThemeState(this, o), rect, &extraParams);
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartRadio, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
-void RenderThemeChromiumLinux::setRadioSize(RenderStyle* style) const
+void RenderThemeChromiumLinux::setRadioSize( RenderStyle *style ) const
 {
     // If the width and height are both specified, then we have nothing to do.
-    if (!style->width().isIntrinsicOrAuto() && !style->height().isAuto())
+    if ( !style->width().isIntrinsicOrAuto() && !style->height().isAuto() )
+    {
         return;
+    }
 
-    IntSize size = PlatformBridge::getThemePartSize(PlatformBridge::PartRadio);
-    setSizeIfAuto(style, size);
+    IntSize size = PlatformBridge::getThemePartSize( PlatformBridge::PartRadio );
+    setSizeIfAuto( style, size );
 }
 
-bool RenderThemeChromiumLinux::paintButton(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintButton( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
     PlatformBridge::ThemePaintExtraParams extraParams;
-    extraParams.button.isDefault = isDefault(o);
+    extraParams.button.isDefault = isDefault( o );
     extraParams.button.hasBorder = true;
     extraParams.button.backgroundColor = defaultButtonBackgroundColor;
-    if (o->hasBackground())
-        extraParams.button.backgroundColor = o->style()->visitedDependentColor(CSSPropertyBackgroundColor).rgb();
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartButton, getWebThemeState(this, o), rect, &extraParams);
+    if ( o->hasBackground() )
+    {
+        extraParams.button.backgroundColor = o->style()->visitedDependentColor( CSSPropertyBackgroundColor ).rgb();
+    }
+
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartButton, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
-bool RenderThemeChromiumLinux::paintTextField(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintTextField( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
     // WebThemeEngine does not handle border rounded corner and background image
     // so return true to draw CSS border and background.
-    if (o->style()->hasBorderRadius() || o->style()->hasBackgroundImage())
+    if ( o->style()->hasBorderRadius() || o->style()->hasBackgroundImage() )
+    {
         return true;
+    }
 
     ControlPart part = o->style()->appearance();
 
@@ -250,85 +277,96 @@ bool RenderThemeChromiumLinux::paintTextField(RenderObject* o, const PaintInfo& 
     extraParams.textField.isListbox = part == ListboxPart;
 
     // Fallback to white if the specified color object is invalid.
-    Color backgroundColor(Color::white);
-    if (o->style()->visitedDependentColor(CSSPropertyBackgroundColor).isValid())
-        backgroundColor = o->style()->visitedDependentColor(CSSPropertyBackgroundColor);
+    Color backgroundColor( Color::white );
+
+    if ( o->style()->visitedDependentColor( CSSPropertyBackgroundColor ).isValid() )
+    {
+        backgroundColor = o->style()->visitedDependentColor( CSSPropertyBackgroundColor );
+    }
+
     extraParams.textField.backgroundColor = backgroundColor.rgb();
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartTextField, getWebThemeState(this, o), rect, &extraParams);
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartTextField, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
-bool RenderThemeChromiumLinux::paintMenuList(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintMenuList( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
-    if (!o->isBox())
+    if ( !o->isBox() )
+    {
         return false;
+    }
 
     const int right = rect.x() + rect.width();
     const int middle = rect.y() + rect.height() / 2;
 
     PlatformBridge::ThemePaintExtraParams extraParams;
-    extraParams.menuList.arrowX = (o->style()->direction() == RTL) ? rect.x() + 7 : right - 13;
+    extraParams.menuList.arrowX = ( o->style()->direction() == RTL ) ? rect.x() + 7 : right - 13;
     extraParams.menuList.arrowY = middle;
-    const RenderBox* box = toRenderBox(o);
+    const RenderBox *box = toRenderBox( o );
     // Match Chromium Win behaviour of showing all borders if any are shown.
     extraParams.menuList.hasBorder = box->borderRight() || box->borderLeft() || box->borderTop() || box->borderBottom();
     extraParams.menuList.hasBorderRadius = o->style()->hasBorderRadius();
     // Fallback to transparent if the specified color object is invalid.
     extraParams.menuList.backgroundColor = Color::transparent;
-    if (o->hasBackground())
-        extraParams.menuList.backgroundColor = o->style()->visitedDependentColor(CSSPropertyBackgroundColor).rgb();
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartMenuList, getWebThemeState(this, o), rect, &extraParams);
+    if ( o->hasBackground() )
+    {
+        extraParams.menuList.backgroundColor = o->style()->visitedDependentColor( CSSPropertyBackgroundColor ).rgb();
+    }
+
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartMenuList, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
-bool RenderThemeChromiumLinux::paintSliderTrack(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintSliderTrack( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
     PlatformBridge::ThemePaintExtraParams extraParams;
     extraParams.slider.vertical = o->style()->appearance() == SliderVerticalPart;
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartSliderTrack, getWebThemeState(this, o), rect, &extraParams);
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartSliderTrack, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
-bool RenderThemeChromiumLinux::paintSliderThumb(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintSliderThumb( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
     PlatformBridge::ThemePaintExtraParams extraParams;
     extraParams.slider.vertical = o->style()->appearance() == SliderThumbVerticalPart;
-    extraParams.slider.inDrag = toRenderSlider(o->parent())->inDragMode();
+    extraParams.slider.inDrag = toRenderSlider( o->parent() )->inDragMode();
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartSliderThumb, getWebThemeState(this, o), rect, &extraParams);
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartSliderThumb, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
-void RenderThemeChromiumLinux::adjustInnerSpinButtonStyle(CSSStyleSelector*, RenderStyle* style, Element*) const
+void RenderThemeChromiumLinux::adjustInnerSpinButtonStyle( CSSStyleSelector *, RenderStyle *style, Element * ) const
 {
-    IntSize size = PlatformBridge::getThemePartSize(PlatformBridge::PartInnerSpinButton);
+    IntSize size = PlatformBridge::getThemePartSize( PlatformBridge::PartInnerSpinButton );
 
-    style->setWidth(Length(size.width(), Fixed));
-    style->setMinWidth(Length(size.width(), Fixed));
+    style->setWidth( Length( size.width(), Fixed ) );
+    style->setMinWidth( Length( size.width(), Fixed ) );
 }
 
-bool RenderThemeChromiumLinux::paintInnerSpinButton(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintInnerSpinButton( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
     PlatformBridge::ThemePaintExtraParams extraParams;
-    extraParams.innerSpin.spinUp = (controlStatesForRenderer(o) & SpinUpState);
-    extraParams.innerSpin.readOnly = isReadOnlyControl(o);
+    extraParams.innerSpin.spinUp = ( controlStatesForRenderer( o ) & SpinUpState );
+    extraParams.innerSpin.readOnly = isReadOnlyControl( o );
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartInnerSpinButton, getWebThemeState(this, o), rect, &extraParams);
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartInnerSpinButton, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 
 #if ENABLE(PROGRESS_TAG)
 
-bool RenderThemeChromiumLinux::paintProgressBar(RenderObject* o, const PaintInfo& i, const IntRect& rect)
+bool RenderThemeChromiumLinux::paintProgressBar( RenderObject *o, const PaintInfo &i, const IntRect &rect )
 {
-    if (!o->isProgress())
+    if ( !o->isProgress() )
+    {
         return true;
+    }
 
-    RenderProgress* renderProgress = toRenderProgress(o);
-    IntRect valueRect = progressValueRectFor(renderProgress, rect);
+    RenderProgress *renderProgress = toRenderProgress( o );
+    IntRect valueRect = progressValueRectFor( renderProgress, rect );
 
     PlatformBridge::ThemePaintExtraParams extraParams;
     extraParams.progressBar.determinate = renderProgress->isDeterminate();
@@ -337,7 +375,7 @@ bool RenderThemeChromiumLinux::paintProgressBar(RenderObject* o, const PaintInfo
     extraParams.progressBar.valueRectWidth = valueRect.width();
     extraParams.progressBar.valueRectHeight = valueRect.height();
 
-    PlatformBridge::paintThemePart(i.context, PlatformBridge::PartProgressBar, getWebThemeState(this, o), rect, &extraParams);
+    PlatformBridge::paintThemePart( i.context, PlatformBridge::PartProgressBar, getWebThemeState( this, o ), rect, &extraParams );
     return false;
 }
 

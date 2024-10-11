@@ -26,13 +26,13 @@
 FT_BEGIN_HEADER
 
 
-  /*
-   * This is the `extended' FT_Module structure that holds the
-   * autofitter's global data.
-   */
+/*
+ * This is the `extended' FT_Module structure that holds the
+ * autofitter's global data.
+ */
 
-  typedef struct  AF_ModuleRec_
-  {
+typedef struct  AF_ModuleRec_
+{
     FT_ModuleRec  root;
 
     FT_UInt       fallback_style;
@@ -40,7 +40,7 @@ FT_BEGIN_HEADER
     FT_Bool       no_stem_darkening;
     FT_Int        darken_params[8];
 
-  } AF_ModuleRec, *AF_Module;
+} AF_ModuleRec, *AF_Module;
 
 
 FT_DECLARE_AUTOHINTER_INTERFACE( af_autofitter_interface )

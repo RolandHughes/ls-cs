@@ -56,7 +56,7 @@ list(APPEND NETWORK_PRIVATE_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/access/qspdyprotocolhandler_p.h
 )
 
-target_sources(CsNetwork
+target_sources(LsCsNetwork
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/access/qabstract_networkcache.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/access/qabstract_protocolhandler.cpp

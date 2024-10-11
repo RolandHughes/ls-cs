@@ -30,53 +30,55 @@
 
 class Q_CORE_EXPORT QStandardPaths
 {
- public:
-   // Do not re-order, this must match QDesktopServices
-   enum StandardLocation {
-      DesktopLocation,
-      DocumentsLocation,
-      FontsLocation,
-      ApplicationsLocation,
-      MusicLocation,
-      MoviesLocation,
-      PicturesLocation,
-      TempLocation,
-      HomeLocation,
-      DataLocation,
-      CacheLocation,
-      GenericDataLocation,
-      RuntimeLocation,
-      ConfigLocation,
-      DownloadLocation,
-      GenericCacheLocation,
-      GenericConfigLocation,
-      AppDataLocation,
-      AppConfigLocation,
-      AppLocalDataLocation = DataLocation
-   };
+public:
+    // Do not re-order, this must match QDesktopServices
+    enum StandardLocation
+    {
+        DesktopLocation,
+        DocumentsLocation,
+        FontsLocation,
+        ApplicationsLocation,
+        MusicLocation,
+        MoviesLocation,
+        PicturesLocation,
+        TempLocation,
+        HomeLocation,
+        DataLocation,
+        CacheLocation,
+        GenericDataLocation,
+        RuntimeLocation,
+        ConfigLocation,
+        DownloadLocation,
+        GenericCacheLocation,
+        GenericConfigLocation,
+        AppDataLocation,
+        AppConfigLocation,
+        AppLocalDataLocation = DataLocation
+    };
 
-   static QString writableLocation(StandardLocation type);
-   static QStringList standardLocations(StandardLocation type);
+    static QString writableLocation( StandardLocation type );
+    static QStringList standardLocations( StandardLocation type );
 
-   enum LocateOption {
-      LocateFile = 0x0,
-      LocateDirectory = 0x1
-   };
-   using LocateOptions = QFlags<LocateOption>;
+    enum LocateOption
+    {
+        LocateFile = 0x0,
+        LocateDirectory = 0x1
+    };
+    using LocateOptions = QFlags<LocateOption>;
 
-   static QString locate(StandardLocation type, const QString &fileName, LocateOptions options = LocateFile);
-   static QStringList locateAll(StandardLocation type, const QString &fileName, LocateOptions options = LocateFile);
-   static QString displayName(StandardLocation type);
+    static QString locate( StandardLocation type, const QString &fileName, LocateOptions options = LocateFile );
+    static QStringList locateAll( StandardLocation type, const QString &fileName, LocateOptions options = LocateFile );
+    static QString displayName( StandardLocation type );
 
-   static QString findExecutable(const QString &executableName, const QStringList &paths = QStringList());
+    static QString findExecutable( const QString &executableName, const QStringList &paths = QStringList() );
 
-   static void setTestModeEnabled(bool testMode);
-   static bool isTestModeEnabled();
+    static void setTestModeEnabled( bool testMode );
+    static bool isTestModeEnabled();
 
- private:
-   // prevent construction
-   QStandardPaths();
-   ~QStandardPaths();
+private:
+    // prevent construction
+    QStandardPaths();
+    ~QStandardPaths();
 };
 
 #endif // QT_NO_STANDARDPATHS

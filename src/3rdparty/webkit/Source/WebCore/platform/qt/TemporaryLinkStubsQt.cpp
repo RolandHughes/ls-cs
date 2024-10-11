@@ -69,14 +69,15 @@
 #include <wtf/text/CString.h>
 
 using namespace WebCore;
-namespace WebCore {
+namespace WebCore
+{
 
-void getSupportedKeySizes(Vector<String>&)
+void getSupportedKeySizes( Vector<String> & )
 {
     notImplemented();
 }
 
-String signedPublicKeyAndChallengeString(unsigned, const String&, const KURL&)
+String signedPublicKeyAndChallengeString( unsigned, const String &, const KURL & )
 {
     return String();
 }
@@ -90,7 +91,7 @@ float userIdleTime()
 }
 #endif
 
-void setCookieStoragePrivateBrowsingEnabled(bool)
+void setCookieStoragePrivateBrowsingEnabled( bool )
 {
     notImplemented();
 }

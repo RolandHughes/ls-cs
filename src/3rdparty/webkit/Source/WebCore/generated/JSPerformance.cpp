@@ -35,9 +35,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSPerformance);
+ASSERT_CLASS_FITS_IN_CELL( JSPerformance );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -48,10 +49,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSPerformance);
 
 static const HashTableValue JSPerformanceTableValues[4] =
 {
-    { "navigation", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceNavigation), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "timing", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceTiming), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "memory", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPerformanceMemory), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "navigation", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceNavigation ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "timing", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceTiming ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "memory", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPerformanceMemory ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -65,80 +66,81 @@ static JSC_CONST_HASHTABLE HashTable JSPerformanceTable = { 8, 7, JSPerformanceT
 
 static const HashTableValue JSPerformancePrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSPerformancePrototypeTable = { 1, 0, JSPerformancePrototypeTableValues, 0 };
 const ClassInfo JSPerformancePrototype::s_info = { "PerformancePrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSPerformancePrototypeTable, 0 };
 
-JSObject* JSPerformancePrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPerformancePrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSPerformance>(exec, globalObject);
+    return getDOMPrototype<JSPerformance>( exec, globalObject );
 }
 
 const ClassInfo JSPerformance::s_info = { "Performance", &JSDOMWrapper::s_info, &JSPerformanceTable, 0 };
 
-JSPerformance::JSPerformance(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Performance> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSPerformance::JSPerformance( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Performance> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSPerformance::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPerformance::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSPerformancePrototype(exec->globalData(), globalObject, JSPerformancePrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSPerformancePrototype( exec->globalData(), globalObject,
+            JSPerformancePrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSPerformance::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPerformance::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPerformance, Base>(exec, &JSPerformanceTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPerformance, Base>( exec, &JSPerformanceTable, this, propertyName, slot );
 }
 
-bool JSPerformance::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPerformance::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPerformance, Base>(exec, &JSPerformanceTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPerformance, Base>( exec, &JSPerformanceTable, this, propertyName, descriptor );
 }
 
-JSValue jsPerformanceNavigation(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPerformanceNavigation( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPerformance* castedThis = static_cast<JSPerformance*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Performance* imp = static_cast<Performance*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->navigation()));
+    JSPerformance *castedThis = static_cast<JSPerformance *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Performance *imp = static_cast<Performance *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->navigation() ) );
     return result;
 }
 
 
-JSValue jsPerformanceTiming(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPerformanceTiming( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPerformance* castedThis = static_cast<JSPerformance*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Performance* imp = static_cast<Performance*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->timing()));
+    JSPerformance *castedThis = static_cast<JSPerformance *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Performance *imp = static_cast<Performance *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->timing() ) );
     return result;
 }
 
 
-JSValue jsPerformanceMemory(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPerformanceMemory( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPerformance* castedThis = static_cast<JSPerformance*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Performance* imp = static_cast<Performance*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->memory()));
+    JSPerformance *castedThis = static_cast<JSPerformance *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Performance *imp = static_cast<Performance *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->memory() ) );
     return result;
 }
 
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, Performance* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, Performance *impl )
 {
-    return wrap<JSPerformance>(exec, globalObject, impl);
+    return wrap<JSPerformance>( exec, globalObject, impl );
 }
 
-Performance* toPerformance(JSC::JSValue value)
+Performance *toPerformance( JSC::JSValue value )
 {
-    return value.inherits(&JSPerformance::s_info) ? static_cast<JSPerformance*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSPerformance::s_info ) ? static_cast<JSPerformance *>( asObject( value ) )->impl() : 0;
 }
 
 }

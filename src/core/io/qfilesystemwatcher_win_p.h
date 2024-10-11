@@ -44,84 +44,86 @@ class QWindowsFileSystemWatcherEngineThread;
 // to do the actually watching.
 class QWindowsFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-   CORE_CS_OBJECT(QWindowsFileSystemWatcherEngine)
+    CORE_LSCS_OBJECT( QWindowsFileSystemWatcherEngine )
 
- public:
-   QWindowsFileSystemWatcherEngine();
-   ~QWindowsFileSystemWatcherEngine();
+public:
+    QWindowsFileSystemWatcherEngine();
+    ~QWindowsFileSystemWatcherEngine();
 
-   QStringList addPaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
-   QStringList removePaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
+    QStringList addPaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
+    QStringList removePaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
 
-   void stop() override;
+    void stop() override;
 
-   class Handle
-   {
+    class Handle
+    {
     public:
-      HANDLE handle;
-      uint flags;
+        HANDLE handle;
+        uint flags;
 
-      Handle()
-         : handle(INVALID_HANDLE_VALUE), flags(0u)
-      {
-      }
-   };
+        Handle()
+            : handle( INVALID_HANDLE_VALUE ), flags( 0u )
+        {
+        }
+    };
 
-   class PathInfo
-   {
+    class PathInfo
+    {
     public:
-      QString absolutePath;
-      QString path;
-      bool isDir;
+        QString absolutePath;
+        QString path;
+        bool isDir;
 
-      // fileinfo bits
-      uint ownerId;
-      uint groupId;
-      QFile::Permissions permissions;
-      QDateTime lastModified;
+        // fileinfo bits
+        uint ownerId;
+        uint groupId;
+        QFile::Permissions permissions;
+        QDateTime lastModified;
 
-      PathInfo &operator=(const QFileInfo &fileInfo) {
-         ownerId = fileInfo.ownerId();
-         groupId = fileInfo.groupId();
-         permissions = fileInfo.permissions();
-         lastModified = fileInfo.lastModified();
-         return *this;
-      }
+        PathInfo &operator=( const QFileInfo &fileInfo )
+        {
+            ownerId = fileInfo.ownerId();
+            groupId = fileInfo.groupId();
+            permissions = fileInfo.permissions();
+            lastModified = fileInfo.lastModified();
+            return *this;
+        }
 
-      bool operator!=(const QFileInfo &fileInfo) const {
-         return (ownerId != fileInfo.ownerId() || groupId != fileInfo.groupId()
-               || permissions != fileInfo.permissions() || lastModified != fileInfo.lastModified());
-      }
-   };
+        bool operator!=( const QFileInfo &fileInfo ) const
+        {
+            return ( ownerId != fileInfo.ownerId() || groupId != fileInfo.groupId()
+                     || permissions != fileInfo.permissions() || lastModified != fileInfo.lastModified() );
+        }
+    };
 
- private:
-   QList<QWindowsFileSystemWatcherEngineThread *> threads;
+private:
+    QList<QWindowsFileSystemWatcherEngineThread *> threads;
 
 };
 
 class QWindowsFileSystemWatcherEngineThread : public QThread
 {
-   CORE_CS_OBJECT(QWindowsFileSystemWatcherEngineThread)
+    CORE_LSCS_OBJECT( QWindowsFileSystemWatcherEngineThread )
 
- public:
-   QWindowsFileSystemWatcherEngineThread();
-   ~QWindowsFileSystemWatcherEngineThread();
-   void run() override;
-   void stop();
-   void wakeup();
+public:
+    QWindowsFileSystemWatcherEngineThread();
+    ~QWindowsFileSystemWatcherEngineThread();
+    void run() override;
+    void stop();
+    void wakeup();
 
-   QMutex mutex;
-   QVector<HANDLE> handles;
-   int msg;
+    QMutex mutex;
+    QVector<HANDLE> handles;
+    int msg;
 
-   QHash<QString, QWindowsFileSystemWatcherEngine::Handle> handleForDir;
+    QHash<QString, QWindowsFileSystemWatcherEngine::Handle> handleForDir;
 
-   QHash<HANDLE, QHash<QString, QWindowsFileSystemWatcherEngine::PathInfo>> pathInfoForHandle;
+    QHash<HANDLE, QHash<QString, QWindowsFileSystemWatcherEngine::PathInfo>> pathInfoForHandle;
 
-   CORE_CS_SIGNAL_1(Public, void fileChanged(const QString &path, bool removed))
-   CORE_CS_SIGNAL_2(fileChanged, path, removed)
-   CORE_CS_SIGNAL_1(Public, void directoryChanged(const QString &path, bool removed))
-   CORE_CS_SIGNAL_2(directoryChanged, path, removed)
+    CORE_LSCS_SIGNAL_1( Public, void fileChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( fileChanged, path, removed )
+    CORE_LSCS_SIGNAL_1( Public, void directoryChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SIGNAL_2( directoryChanged, path, removed )
 };
 
 #endif // QT_NO_FILESYSTEMWATCHER

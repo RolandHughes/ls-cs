@@ -35,19 +35,22 @@
 
 #include "ExceptionBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FileException : public ExceptionBase {
+class FileException : public ExceptionBase
+{
 public:
-    static PassRefPtr<FileException> create(const ExceptionCodeDescription& description)
+    static PassRefPtr<FileException> create( const ExceptionCodeDescription &description )
     {
-        return adoptRef(new FileException(description));
+        return adoptRef( new FileException( description ) );
     }
 
     static const int FileExceptionOffset = 1100;
     static const int FileExceptionMax = 1199;
 
-    enum FileExceptionCode {
+    enum FileExceptionCode
+    {
         NOT_FOUND_ERR = FileExceptionOffset + 1,
         SECURITY_ERR = FileExceptionOffset + 2,
         ABORT_ERR = FileExceptionOffset + 3,
@@ -62,16 +65,19 @@ public:
         PATH_EXISTS_ERR = FileExceptionOffset + 12,
     };
 
-    static int ErrorCodeToExceptionCode(int errorCode)
+    static int ErrorCodeToExceptionCode( int errorCode )
     {
-        if (!errorCode)
+        if ( !errorCode )
+        {
             return 0;
+        }
+
         return errorCode + FileExceptionOffset;
     }
 
 private:
-    FileException(const ExceptionCodeDescription& description)
-        : ExceptionBase(description)
+    FileException( const ExceptionCodeDescription &description )
+        : ExceptionBase( description )
     {
     }
 };

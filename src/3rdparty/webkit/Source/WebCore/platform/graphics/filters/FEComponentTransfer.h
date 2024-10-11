@@ -28,9 +28,11 @@
 #include "Filter.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum ComponentTransferType {
+enum ComponentTransferType
+{
     FECOMPONENTTRANSFER_TYPE_UNKNOWN  = 0,
     FECOMPONENTTRANSFER_TYPE_IDENTITY = 1,
     FECOMPONENTTRANSFER_TYPE_TABLE    = 2,
@@ -39,14 +41,15 @@ enum ComponentTransferType {
     FECOMPONENTTRANSFER_TYPE_GAMMA    = 5
 };
 
-struct ComponentTransferFunction {
+struct ComponentTransferFunction
+{
     ComponentTransferFunction()
-        : type(FECOMPONENTTRANSFER_TYPE_UNKNOWN)
-        , slope(0)
-        , intercept(0)
-        , amplitude(0)
-        , exponent(0)
-        , offset(0)
+        : type( FECOMPONENTTRANSFER_TYPE_UNKNOWN )
+        , slope( 0 )
+        , intercept( 0 )
+        , amplitude( 0 )
+        , exponent( 0 )
+        , offset( 0 )
     {
     }
 
@@ -61,31 +64,33 @@ struct ComponentTransferFunction {
     Vector<float> tableValues;
 };
 
-class FEComponentTransfer : public FilterEffect {
+class FEComponentTransfer : public FilterEffect
+{
 public:
-    static PassRefPtr<FEComponentTransfer> create(Filter*, const ComponentTransferFunction& redFunc, const ComponentTransferFunction& greenFunc,
-                                                  const ComponentTransferFunction& blueFunc, const ComponentTransferFunction& alphaFunc);
+    static PassRefPtr<FEComponentTransfer> create( Filter *, const ComponentTransferFunction &redFunc,
+            const ComponentTransferFunction &greenFunc,
+            const ComponentTransferFunction &blueFunc, const ComponentTransferFunction &alphaFunc );
 
     ComponentTransferFunction redFunction() const;
-    void setRedFunction(const ComponentTransferFunction&);
+    void setRedFunction( const ComponentTransferFunction & );
 
     ComponentTransferFunction greenFunction() const;
-    void setGreenFunction(const ComponentTransferFunction&);
+    void setGreenFunction( const ComponentTransferFunction & );
 
     ComponentTransferFunction blueFunction() const;
-    void setBlueFunction(const ComponentTransferFunction&);
+    void setBlueFunction( const ComponentTransferFunction & );
 
     ComponentTransferFunction alphaFunction() const;
-    void setAlphaFunction(const ComponentTransferFunction&);
+    void setAlphaFunction( const ComponentTransferFunction & );
 
     virtual void apply();
     virtual void dump();
 
-    virtual TextStream& externalRepresentation(TextStream&, int indention) const;
+    virtual TextStream &externalRepresentation( TextStream &, int indention ) const;
 
 private:
-    FEComponentTransfer(Filter*, const ComponentTransferFunction& redFunc, const ComponentTransferFunction& greenFunc,
-                        const ComponentTransferFunction& blueFunc, const ComponentTransferFunction& alphaFunc);
+    FEComponentTransfer( Filter *, const ComponentTransferFunction &redFunc, const ComponentTransferFunction &greenFunc,
+                         const ComponentTransferFunction &blueFunc, const ComponentTransferFunction &alphaFunc );
 
     ComponentTransferFunction m_redFunc;
     ComponentTransferFunction m_greenFunc;

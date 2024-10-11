@@ -32,45 +32,47 @@ class QTextCursor;
 
 class Q_GUI_EXPORT QTextList : public QTextBlockGroup
 {
-   GUI_CS_OBJECT(QTextList)
+    GUI_LSCS_OBJECT( QTextList )
 
- public:
-   explicit QTextList(QTextDocument *doc);
+public:
+    explicit QTextList( QTextDocument *doc );
 
-   QTextList(const QTextList &) = delete;
-   QTextList &operator=(const QTextList &) = delete;
+    QTextList( const QTextList & ) = delete;
+    QTextList &operator=( const QTextList & ) = delete;
 
-   ~QTextList();
+    ~QTextList();
 
-   int count() const;
+    int count() const;
 
-   bool isEmpty() const {
-      return count() == 0;
-   }
+    bool isEmpty() const
+    {
+        return count() == 0;
+    }
 
-   QTextBlock item(int i) const;
+    QTextBlock item( int i ) const;
 
-   int itemNumber(const QTextBlock &block) const;
-   QString itemText(const QTextBlock &block) const;
+    int itemNumber( const QTextBlock &block ) const;
+    QString itemText( const QTextBlock &block ) const;
 
-   void removeItem(int i);
-   void remove(const QTextBlock &block);
+    void removeItem( int i );
+    void remove( const QTextBlock &block );
 
-   void add(const QTextBlock &block);
+    void add( const QTextBlock &block );
 
-   inline void setFormat(const QTextListFormat &format);
+    inline void setFormat( const QTextListFormat &format );
 
-   QTextListFormat format() const {
-      return QTextObject::format().toListFormat();
-   }
+    QTextListFormat format() const
+    {
+        return QTextObject::format().toListFormat();
+    }
 
- private:
-   Q_DECLARE_PRIVATE(QTextList)
+private:
+    Q_DECLARE_PRIVATE( QTextList )
 };
 
-inline void QTextList::setFormat(const QTextListFormat &format)
+inline void QTextList::setFormat( const QTextListFormat &format )
 {
-   QTextObject::setFormat(format);
+    QTextObject::setFormat( format );
 }
 
 #endif // QTEXTLIST_H

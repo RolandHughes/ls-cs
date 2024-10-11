@@ -33,33 +33,41 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderRubyRun;
 
-class RenderRubyBase : public RenderBlock {
+class RenderRubyBase : public RenderBlock
+{
 public:
-    RenderRubyBase(Node*);
+    RenderRubyBase( Node * );
     virtual ~RenderRubyBase();
 
-    virtual const char* renderName() const { return "RenderRubyBase (anonymous)"; }
+    virtual const char *renderName() const
+    {
+        return "RenderRubyBase (anonymous)";
+    }
 
-    virtual bool isRubyBase() const { return true; }
+    virtual bool isRubyBase() const
+    {
+        return true;
+    }
 
-    virtual bool isChildAllowed(RenderObject*, RenderStyle*) const;
+    virtual bool isChildAllowed( RenderObject *, RenderStyle * ) const;
 
 private:
-    virtual ETextAlign textAlignmentForLine(bool endsWithSoftBreak) const;
-    virtual void adjustInlineDirectionLineBounds(int expansionOpportunityCount, float& logicalLeft, float& logicalWidth) const;
+    virtual ETextAlign textAlignmentForLine( bool endsWithSoftBreak ) const;
+    virtual void adjustInlineDirectionLineBounds( int expansionOpportunityCount, float &logicalLeft, float &logicalWidth ) const;
 
-    bool hasOnlyWrappedInlineChildren(RenderObject* beforeChild = 0) const;
+    bool hasOnlyWrappedInlineChildren( RenderObject *beforeChild = 0 ) const;
 
-    void moveChildren(RenderRubyBase* toBase, RenderObject* fromBeforeChild = 0);
-    void moveInlineChildren(RenderRubyBase* toBase, RenderObject* fromBeforeChild = 0);
-    void moveBlockChildren(RenderRubyBase* toBase, RenderObject* fromBeforeChild = 0);
-    void mergeBlockChildren(RenderRubyBase* toBase, RenderObject* fromBeforeChild = 0);
+    void moveChildren( RenderRubyBase *toBase, RenderObject *fromBeforeChild = 0 );
+    void moveInlineChildren( RenderRubyBase *toBase, RenderObject *fromBeforeChild = 0 );
+    void moveBlockChildren( RenderRubyBase *toBase, RenderObject *fromBeforeChild = 0 );
+    void mergeBlockChildren( RenderRubyBase *toBase, RenderObject *fromBeforeChild = 0 );
 
-    RenderRubyRun* rubyRun() const;
+    RenderRubyRun *rubyRun() const;
 
     // Allow RenderRubyRun to manipulate the children within ruby bases.
     friend class RenderRubyRun;

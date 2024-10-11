@@ -30,14 +30,15 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-double parseLocalizedDate(const String&, DateComponents::Type)
+double parseLocalizedDate( const String &, DateComponents::Type )
 {
     return numeric_limits<double>::quiet_NaN();
 }
 
-String formatLocalizedDate(const DateComponents&)
+String formatLocalizedDate( const DateComponents & )
 {
     return String();
 }

@@ -27,78 +27,87 @@
 #include <dscamera_service.h>
 #include <dscamera_session.h>
 
-DSCameraControl::DSCameraControl(QObject *parent)
-   : QCameraControl(parent), m_state(QCamera::UnloadedState), m_captureMode(QCamera::CaptureStillImage)
+DSCameraControl::DSCameraControl( QObject *parent )
+    : QCameraControl( parent ), m_state( QCamera::UnloadedState ), m_captureMode( QCamera::CaptureStillImage )
 {
-   m_session = dynamic_cast<DSCameraSession *>(parent);
-   connect(m_session, SIGNAL(statusChanged(QCamera::Status)), this, SLOT(statusChanged(QCamera::Status)));
+    m_session = dynamic_cast<DSCameraSession *>( parent );
+    connect( m_session, SIGNAL( statusChanged( QCamera::Status ) ), this, SLOT( statusChanged( QCamera::Status ) ) );
 }
 
 DSCameraControl::~DSCameraControl()
 {
 }
 
-void DSCameraControl::setState(QCamera::State state)
+void DSCameraControl::setState( QCamera::State state )
 {
-   if (m_state == state) {
-      return;
-   }
+    if ( m_state == state )
+    {
+        return;
+    }
 
-   bool succeeded = false;
+    bool succeeded = false;
 
-   switch (state) {
-      case QCamera::UnloadedState:
-         succeeded = m_session->unload();
-         break;
+    switch ( state )
+    {
+        case QCamera::UnloadedState:
+            succeeded = m_session->unload();
+            break;
 
-      case QCamera::LoadedState:
-      case QCamera::ActiveState:
-         if (m_state == QCamera::UnloadedState && !m_session->load()) {
-            return;
-         }
+        case QCamera::LoadedState:
+        case QCamera::ActiveState:
+            if ( m_state == QCamera::UnloadedState && !m_session->load() )
+            {
+                return;
+            }
 
-         if (state == QCamera::ActiveState) {
-            succeeded = m_session->startPreview();
-         } else {
-            succeeded = m_session->stopPreview();
-         }
+            if ( state == QCamera::ActiveState )
+            {
+                succeeded = m_session->startPreview();
+            }
+            else
+            {
+                succeeded = m_session->stopPreview();
+            }
 
-         break;
-   }
+            break;
+    }
 
-   if (succeeded) {
-      m_state = state;
-      emit stateChanged(m_state);
-   }
+    if ( succeeded )
+    {
+        m_state = state;
+        emit stateChanged( m_state );
+    }
 }
 
-bool DSCameraControl::isCaptureModeSupported(QCamera::CaptureModes mode) const
+bool DSCameraControl::isCaptureModeSupported( QCamera::CaptureModes mode ) const
 {
-   bool bCaptureSupported = false;
+    bool bCaptureSupported = false;
 
-   switch (mode) {
-      case QCamera::CaptureStillImage:
-         bCaptureSupported = true;
-         break;
+    switch ( mode )
+    {
+        case QCamera::CaptureStillImage:
+            bCaptureSupported = true;
+            break;
 
-      case QCamera::CaptureVideo:
-         bCaptureSupported = false;
-         break;
-   }
+        case QCamera::CaptureVideo:
+            bCaptureSupported = false;
+            break;
+    }
 
-   return bCaptureSupported;
+    return bCaptureSupported;
 }
 
-void DSCameraControl::setCaptureMode(QCamera::CaptureModes mode)
+void DSCameraControl::setCaptureMode( QCamera::CaptureModes mode )
 {
-   if (m_captureMode != mode && isCaptureModeSupported(mode)) {
-      m_captureMode = mode;
-      emit captureModeChanged(mode);
-   }
+    if ( m_captureMode != mode && isCaptureModeSupported( mode ) )
+    {
+        m_captureMode = mode;
+        emit captureModeChanged( mode );
+    }
 }
 
 QCamera::Status DSCameraControl::status() const
 {
-   return m_session->status();
+    return m_session->status();
 }
 

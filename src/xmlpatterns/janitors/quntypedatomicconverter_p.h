@@ -28,43 +28,45 @@
 #include <qitem_p.h>
 #include <qsinglecontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class UntypedAtomicConverter : public SingleContainer, public CastingPlatform<UntypedAtomicConverter, true>
 {
- public:
-   UntypedAtomicConverter(const Expression::Ptr &operand, const ItemType::Ptr &reqType,
-                  const ReportContext::ErrorCode code = ReportContext::FORG0001);
+public:
+    UntypedAtomicConverter( const Expression::Ptr &operand, const ItemType::Ptr &reqType,
+                            const ReportContext::ErrorCode code = ReportContext::FORG0001 );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
 
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   /**
-    * Overridden to call CastingPlatform::typeCheck()
-    */
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
+    /**
+     * Overridden to call CastingPlatform::typeCheck()
+     */
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
 
-   inline Item mapToItem(const Item &item, const DynamicContext::Ptr &context) const;
+    inline Item mapToItem( const Item &item, const DynamicContext::Ptr &context ) const;
 
-   ItemType::Ptr targetType() const {
-      return m_reqType;
-   }
+    ItemType::Ptr targetType() const
+    {
+        return m_reqType;
+    }
 
-   const SourceLocationReflection *actualReflection() const override;
+    const SourceLocationReflection *actualReflection() const override;
 
- private:
-   typedef QExplicitlySharedDataPointer<const UntypedAtomicConverter> ConstPtr;
-   const ItemType::Ptr m_reqType;
+private:
+    typedef QExplicitlySharedDataPointer<const UntypedAtomicConverter> ConstPtr;
+    const ItemType::Ptr m_reqType;
 };
 
-Item UntypedAtomicConverter::mapToItem(const Item &item, const DynamicContext::Ptr &context) const
+Item UntypedAtomicConverter::mapToItem( const Item &item, const DynamicContext::Ptr &context ) const
 {
-   return cast(item, context);
+    return cast( item, context );
 }
 }
 

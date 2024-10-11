@@ -35,31 +35,31 @@ using namespace WebKit;
 
 WKTypeID WKGrammarDetailGetTypeID()
 {
-    return toAPI(APIObject::TypeGrammarDetail);
+    return toAPI( APIObject::TypeGrammarDetail );
 }
 
-WKGrammarDetailRef WKGrammarDetailCreate(int location, int length, WKArrayRef guesses, WKStringRef userDescription)
+WKGrammarDetailRef WKGrammarDetailCreate( int location, int length, WKArrayRef guesses, WKStringRef userDescription )
 {
-    RefPtr<WebGrammarDetail> detail = WebGrammarDetail::create(location, length, toImpl(guesses), toWTFString(userDescription));
-    return toAPI(detail.release().releaseRef());
+    RefPtr<WebGrammarDetail> detail = WebGrammarDetail::create( location, length, toImpl( guesses ), toWTFString( userDescription ) );
+    return toAPI( detail.release().releaseRef() );
 }
 
-int WKGrammarDetailGetLocation(WKGrammarDetailRef grammarDetailRef)
+int WKGrammarDetailGetLocation( WKGrammarDetailRef grammarDetailRef )
 {
-    return toImpl(grammarDetailRef)->location();
+    return toImpl( grammarDetailRef )->location();
 }
 
-int WKGrammarDetailGetLength(WKGrammarDetailRef grammarDetailRef)
+int WKGrammarDetailGetLength( WKGrammarDetailRef grammarDetailRef )
 {
-    return toImpl(grammarDetailRef)->length();
+    return toImpl( grammarDetailRef )->length();
 }
 
-WKArrayRef WKGrammarDetailCopyGuesses(WKGrammarDetailRef grammarDetailRef)
+WKArrayRef WKGrammarDetailCopyGuesses( WKGrammarDetailRef grammarDetailRef )
 {
-    return toAPI(toImpl(grammarDetailRef)->guesses().leakRef());
+    return toAPI( toImpl( grammarDetailRef )->guesses().leakRef() );
 }
 
-WKStringRef WKGrammarDetailCopyUserDescription(WKGrammarDetailRef grammarDetailRef)
+WKStringRef WKGrammarDetailCopyUserDescription( WKGrammarDetailRef grammarDetailRef )
 {
-    return toCopiedAPI(toImpl(grammarDetailRef)->userDescription());
+    return toCopiedAPI( toImpl( grammarDetailRef )->userDescription() );
 }

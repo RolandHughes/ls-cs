@@ -35,12 +35,14 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RequestAnimationFrameCallback : public RefCounted<RequestAnimationFrameCallback> {
+class RequestAnimationFrameCallback : public RefCounted<RequestAnimationFrameCallback>
+{
 public:
     virtual ~RequestAnimationFrameCallback() { }
-    virtual bool handleEvent(DOMTimeStamp) = 0;
+    virtual bool handleEvent( DOMTimeStamp ) = 0;
 
     RefPtr<Element> m_element;
     int m_id;

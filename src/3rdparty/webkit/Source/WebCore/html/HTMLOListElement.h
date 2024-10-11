@@ -25,21 +25,26 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLOListElement : public HTMLElement {
+class HTMLOListElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLOListElement> create(Document*);
-    static PassRefPtr<HTMLOListElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLOListElement> create( Document * );
+    static PassRefPtr<HTMLOListElement> create( const QualifiedName &, Document * );
 
-    int start() const { return m_start; }
-    void setStart(int);
+    int start() const
+    {
+        return m_start;
+    }
+    void setStart( int );
 
 private:
-    HTMLOListElement(const QualifiedName&, Document*);
-        
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+    HTMLOListElement( const QualifiedName &, Document * );
+
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
     int m_start;
 };

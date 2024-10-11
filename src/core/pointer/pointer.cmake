@@ -15,14 +15,14 @@ if (false)
 
 else()
    # use annex headers
-   target_include_directories(CsCore
+   target_include_directories(LsCsCore
       PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/cs_pointer>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/annex/lscs_pointer>
    )
 
    list(APPEND CORE_INCLUDES
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_pointer/cs_unique_pointer.h
-      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/cs_pointer/cs_unique_array_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_unique_pointer.h
+      ${CMAKE_CURRENT_SOURCE_DIR}/../annex/lscs_pointer/lscs_unique_array_pointer.h
    )
 endif()
 
@@ -40,7 +40,7 @@ list(APPEND CORE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qweakpointer.h
 )
 
-target_sources(CsCore
+target_sources(LsCsCore
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qpointer.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/pointer/qscopedvaluerollback.cpp

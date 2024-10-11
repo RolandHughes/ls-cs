@@ -32,39 +32,50 @@
 #include "KURL.h"
 #include "ScriptExecutionContext.h"
 
-namespace WebCore {
-
-DOMURL::DOMURL(ScriptExecutionContext* scriptExecutionContext)
-    : m_scriptExecutionContext(scriptExecutionContext)
+namespace WebCore
 {
-    if (m_scriptExecutionContext)
-        m_scriptExecutionContext->createdDomUrl(this);
+
+DOMURL::DOMURL( ScriptExecutionContext *scriptExecutionContext )
+    : m_scriptExecutionContext( scriptExecutionContext )
+{
+    if ( m_scriptExecutionContext )
+    {
+        m_scriptExecutionContext->createdDomUrl( this );
+    }
 }
 
 DOMURL::~DOMURL()
 {
-    if (m_scriptExecutionContext)
-        m_scriptExecutionContext->destroyedDomUrl(this);
+    if ( m_scriptExecutionContext )
+    {
+        m_scriptExecutionContext->destroyedDomUrl( this );
+    }
 }
 
 void DOMURL::contextDestroyed()
 {
-    ASSERT(m_scriptExecutionContext);
+    ASSERT( m_scriptExecutionContext );
     m_scriptExecutionContext = 0;
 }
 
-String DOMURL::createObjectURL(Blob* blob)
+String DOMURL::createObjectURL( Blob *blob )
 {
-    if (!m_scriptExecutionContext)
+    if ( !m_scriptExecutionContext )
+    {
         return String();
-    return m_scriptExecutionContext->createPublicBlobURL(blob).string();
+    }
+
+    return m_scriptExecutionContext->createPublicBlobURL( blob ).string();
 }
 
-void DOMURL::revokeObjectURL(const String& urlString)
+void DOMURL::revokeObjectURL( const String &urlString )
 {
-    if (!m_scriptExecutionContext)
+    if ( !m_scriptExecutionContext )
+    {
         return;
-    m_scriptExecutionContext->revokePublicBlobURL(KURL(KURL(), urlString));
+    }
+
+    m_scriptExecutionContext->revokePublicBlobURL( KURL( KURL(), urlString ) );
 }
 
 } // namespace WebCore

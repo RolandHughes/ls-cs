@@ -25,71 +25,83 @@
 
 #ifndef QT_NO_BEARERMANAGEMENT
 
-QBearerEngine::QBearerEngine(QObject *parent)
-   : QObject(parent)
+QBearerEngine::QBearerEngine( QObject *parent )
+    : QObject( parent )
 {
 }
 
 QBearerEngine::~QBearerEngine()
 {
-   QHash<QString, QNetworkConfigurationPrivatePointer>::iterator it;
-   QHash<QString, QNetworkConfigurationPrivatePointer>::iterator end;
+    QHash<QString, QNetworkConfigurationPrivatePointer>::iterator it;
+    QHash<QString, QNetworkConfigurationPrivatePointer>::iterator end;
 
-   for (it = snapConfigurations.begin(), end = snapConfigurations.end(); it != end; ++it) {
-      it.value()->isValid = false;
-      it.value()->id.clear();
-   }
-   snapConfigurations.clear();
+    for ( it = snapConfigurations.begin(), end = snapConfigurations.end(); it != end; ++it )
+    {
+        it.value()->isValid = false;
+        it.value()->id.clear();
+    }
 
-   for (it = accessPointConfigurations.begin(), end = accessPointConfigurations.end();
-         it != end; ++it) {
-      it.value()->isValid = false;
-      it.value()->id.clear();
-   }
-   accessPointConfigurations.clear();
+    snapConfigurations.clear();
 
-   for (it = userChoiceConfigurations.begin(), end = userChoiceConfigurations.end();
-         it != end; ++it) {
-      it.value()->isValid = false;
-      it.value()->id.clear();
-   }
-   userChoiceConfigurations.clear();
+    for ( it = accessPointConfigurations.begin(), end = accessPointConfigurations.end();
+            it != end; ++it )
+    {
+        it.value()->isValid = false;
+        it.value()->id.clear();
+    }
+
+    accessPointConfigurations.clear();
+
+    for ( it = userChoiceConfigurations.begin(), end = userChoiceConfigurations.end();
+            it != end; ++it )
+    {
+        it.value()->isValid = false;
+        it.value()->id.clear();
+    }
+
+    userChoiceConfigurations.clear();
 }
 
 bool QBearerEngine::requiresPolling() const
 {
-   return false;
+    return false;
 }
 
 bool QBearerEngine::configurationsInUse() const
 {
-   QHash<QString, QNetworkConfigurationPrivatePointer>::const_iterator it;
-   QHash<QString, QNetworkConfigurationPrivatePointer>::const_iterator end;
+    QHash<QString, QNetworkConfigurationPrivatePointer>::const_iterator it;
+    QHash<QString, QNetworkConfigurationPrivatePointer>::const_iterator end;
 
-   QRecursiveMutexLocker locker(&mutex);
+    QRecursiveMutexLocker locker( &mutex );
 
-   for (it = accessPointConfigurations.constBegin(),
-         end = accessPointConfigurations.constEnd(); it != end; ++it) {
-      if (it.value()->ref.load() > 1) {
-         return true;
-      }
-   }
+    for ( it = accessPointConfigurations.constBegin(),
+            end = accessPointConfigurations.constEnd(); it != end; ++it )
+    {
+        if ( it.value()->ref.load() > 1 )
+        {
+            return true;
+        }
+    }
 
-   for (it = snapConfigurations.constBegin(),
-         end = snapConfigurations.constEnd(); it != end; ++it) {
-      if (it.value()->ref.load() > 1) {
-         return true;
-      }
-   }
+    for ( it = snapConfigurations.constBegin(),
+            end = snapConfigurations.constEnd(); it != end; ++it )
+    {
+        if ( it.value()->ref.load() > 1 )
+        {
+            return true;
+        }
+    }
 
-   for (it = userChoiceConfigurations.constBegin(),
-         end = userChoiceConfigurations.constEnd(); it != end; ++it) {
-      if (it.value()->ref.load() > 1) {
-         return true;
-      }
-   }
+    for ( it = userChoiceConfigurations.constBegin(),
+            end = userChoiceConfigurations.constEnd(); it != end; ++it )
+    {
+        if ( it.value()->ref.load() > 1 )
+        {
+            return true;
+        }
+    }
 
-   return false;
+    return false;
 }
 
 #endif // QT_NO_BEARERMANAGEMENT

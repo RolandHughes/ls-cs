@@ -25,18 +25,22 @@
 
 unsigned WebDOMHTMLOptionsCollection::length() const
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return 0;
+    }
 
     return impl()->length();
 }
 
-void WebDOMHTMLOptionsCollection::setLength(unsigned length)
+void WebDOMHTMLOptionsCollection::setLength( unsigned length )
 {
-    if (!impl())
+    if ( !impl() )
+    {
         return;
+    }
 
     WebCore::ExceptionCode ec = 0;
-    impl()->setLength(length, ec);
-    webDOMRaiseError(static_cast<WebDOMExceptionCode>(ec));
+    impl()->setLength( length, ec );
+    webDOMRaiseError( static_cast<WebDOMExceptionCode>( ec ) );
 }

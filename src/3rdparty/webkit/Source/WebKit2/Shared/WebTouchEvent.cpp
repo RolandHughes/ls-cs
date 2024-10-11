@@ -31,39 +31,43 @@
 #include "ArgumentCoders.h"
 #include "Arguments.h"
 
-namespace WebKit {
-
-WebTouchEvent::WebTouchEvent(WebEvent::Type type, Vector<WebPlatformTouchPoint> touchPoints, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, Modifiers modifiers, double timestamp)
-    : WebEvent(type, modifiers, timestamp)
-    , m_touchPoints(touchPoints)
-    , m_ctrlKey(ctrlKey)
-    , m_altKey(altKey)
-    , m_shiftKey(shiftKey)
-    , m_metaKey(metaKey)
+namespace WebKit
 {
-    ASSERT(isTouchEventType(type));
+
+WebTouchEvent::WebTouchEvent( WebEvent::Type type, Vector<WebPlatformTouchPoint> touchPoints, bool ctrlKey, bool altKey,
+                              bool shiftKey, bool metaKey, Modifiers modifiers, double timestamp )
+    : WebEvent( type, modifiers, timestamp )
+    , m_touchPoints( touchPoints )
+    , m_ctrlKey( ctrlKey )
+    , m_altKey( altKey )
+    , m_shiftKey( shiftKey )
+    , m_metaKey( metaKey )
+{
+    ASSERT( isTouchEventType( type ) );
 }
 
-void WebTouchEvent::encode(CoreIPC::ArgumentEncoder* encoder) const
+void WebTouchEvent::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    WebEvent::encode(encoder);
+    WebEvent::encode( encoder );
 
-    encoder->encode(CoreIPC::In(m_touchPoints));
+    encoder->encode( CoreIPC::In( m_touchPoints ) );
 }
 
-bool WebTouchEvent::decode(CoreIPC::ArgumentDecoder* decoder, WebTouchEvent& t)
+bool WebTouchEvent::decode( CoreIPC::ArgumentDecoder *decoder, WebTouchEvent &t )
 {
-    if (!WebEvent::decode(decoder, t))
+    if ( !WebEvent::decode( decoder, t ) )
+    {
         return false;
+    }
 
-    return decoder->decode(CoreIPC::Out(t.m_touchPoints));
+    return decoder->decode( CoreIPC::Out( t.m_touchPoints ) );
 }
 
-bool WebTouchEvent::isTouchEventType(Type type)
+bool WebTouchEvent::isTouchEventType( Type type )
 {
     return type == TouchStart || type == TouchMove || type == TouchEnd || type == TouchCancel;
 }
-    
+
 } // namespace WebKit
 
 #endif // ENABLE(TOUCH_EVENTS)

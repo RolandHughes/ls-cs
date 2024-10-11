@@ -36,7 +36,8 @@
 #include <QMimeData>
 #include <QUrl>
 
-namespace WebCore {
+namespace WebCore
+{
 
 bool DragData::canSmartReplace() const
 {
@@ -45,100 +46,140 @@ bool DragData::canSmartReplace() const
 
 bool DragData::containsColor() const
 {
-    if (!m_platformDragData)
+    if ( !m_platformDragData )
+    {
         return false;
+    }
+
     return m_platformDragData->hasColor();
 }
 
 bool DragData::containsFiles() const
 {
-    if (!m_platformDragData)
+    if ( !m_platformDragData )
+    {
         return false;
-    QList<QUrl> urls = m_platformDragData->urls();
-    for (const QUrl &url : urls) {
-        if (!url.toLocalFile().isEmpty())
-            return true;
     }
+
+    QList<QUrl> urls = m_platformDragData->urls();
+
+    for ( const QUrl &url : urls )
+    {
+        if ( !url.toLocalFile().isEmpty() )
+        {
+            return true;
+        }
+    }
+
     return false;
 }
 
-void DragData::asFilenames(Vector<String>& result) const
+void DragData::asFilenames( Vector<String> &result ) const
 {
-    if (!m_platformDragData)
+    if ( !m_platformDragData )
+    {
         return;
+    }
+
     QList<QUrl> urls = m_platformDragData->urls();
-    for (const QUrl &url : urls) {
+
+    for ( const QUrl &url : urls )
+    {
         QString file = url.toLocalFile();
-        if (!file.isEmpty())
-            result.append(file);
+
+        if ( !file.isEmpty() )
+        {
+            result.append( file );
+        }
     }
 }
 
 bool DragData::containsPlainText() const
 {
-    if (!m_platformDragData)
+    if ( !m_platformDragData )
+    {
         return false;
+    }
+
     return m_platformDragData->hasText() || m_platformDragData->hasUrls();
 }
 
-String DragData::asPlainText(Frame* frame) const
+String DragData::asPlainText( Frame *frame ) const
 {
-    if (!m_platformDragData)
+    if ( !m_platformDragData )
+    {
         return String();
+    }
+
     String text = m_platformDragData->text();
-    if (!text.isEmpty())
+
+    if ( !text.isEmpty() )
+    {
         return text;
+    }
 
     // FIXME: Should handle rich text here
-    return asURL(frame, DoNotConvertFilenames, 0);
+    return asURL( frame, DoNotConvertFilenames, 0 );
 }
 
 Color DragData::asColor() const
 {
-    if (! m_platformDragData) {
+    if ( ! m_platformDragData )
+    {
         return Color();
     }
 
-    return (m_platformDragData->colorData()).value<QColor>();
+    return ( m_platformDragData->colorData() ).value<QColor>();
 }
 
 bool DragData::containsCompatibleContent() const
 {
-    if (!m_platformDragData)
+    if ( !m_platformDragData )
+    {
         return false;
-    return containsColor() || containsURL(0) || m_platformDragData->hasHtml() || m_platformDragData->hasText();
+    }
+
+    return containsColor() || containsURL( 0 ) || m_platformDragData->hasHtml() || m_platformDragData->hasText();
 }
 
-bool DragData::containsURL(Frame*, FilenameConversionPolicy filenamePolicy) const
+bool DragData::containsURL( Frame *, FilenameConversionPolicy filenamePolicy ) const
 {
-    (void) filenamePolicy;
+    ( void ) filenamePolicy;
 
-    if (! m_platformDragData)
+    if ( ! m_platformDragData )
+    {
         return false;
+    }
 
     return m_platformDragData->hasUrls();
 }
 
-String DragData::asURL(Frame*, FilenameConversionPolicy filenamePolicy, String*) const
+String DragData::asURL( Frame *, FilenameConversionPolicy filenamePolicy, String * ) const
 {
-    (void) filenamePolicy;
+    ( void ) filenamePolicy;
 
-    if (!m_platformDragData)
+    if ( !m_platformDragData )
+    {
         return String();
+    }
 
     QList<QUrl> urls = m_platformDragData->urls();
 
-    if (urls.isEmpty())
+    if ( urls.isEmpty() )
+    {
         return String();
+    }
 
     QByteArray encodedUrl = urls.first().toEncoded();
-    return String(encodedUrl.constData(), encodedUrl.length());
+    return String( encodedUrl.constData(), encodedUrl.length() );
 }
 
-PassRefPtr<DocumentFragment> DragData::asFragment(Frame* frame, PassRefPtr<Range>, bool, bool&) const
+PassRefPtr<DocumentFragment> DragData::asFragment( Frame *frame, PassRefPtr<Range>, bool, bool & ) const
 {
-    if (m_platformDragData && m_platformDragData->hasHtml())
-        return createFragmentFromMarkup(frame->document(), m_platformDragData->html(), "", FragmentScriptingNotAllowed);
+    if ( m_platformDragData && m_platformDragData->hasHtml() )
+    {
+        return createFragmentFromMarkup( frame->document(), m_platformDragData->html(), "", FragmentScriptingNotAllowed );
+    }
 
     return 0;
 }

@@ -31,27 +31,29 @@
 
 #include "AudioArray.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // SincResampler is a high-quality sample-rate converter.
 
-class SincResampler {
-public:   
+class SincResampler
+{
+public:
     // scaleFactor == sourceSampleRate / destinationSampleRate
     // kernelSize can be adjusted for quality (higher is better)
     // numberOfKernelOffsets is used for interpolation and is the number of sub-sample kernel shifts.
-    SincResampler(double scaleFactor, unsigned kernelSize = 32, unsigned numberOfKernelOffsets = 32);
-    
+    SincResampler( double scaleFactor, unsigned kernelSize = 32, unsigned numberOfKernelOffsets = 32 );
+
     // Processes numberOfSourceFrames from source to produce numberOfSourceFrames / scaleFactor frames in destination.
-    void process(float* source, float* destination, unsigned numberOfSourceFrames);
-    
+    void process( float *source, float *destination, unsigned numberOfSourceFrames );
+
     // FIXME: we can add a process() method which takes an input source callback function for streaming applications
     // where the entire input buffer is not all available.
-    
+
 protected:
     void initializeKernel();
-    void consumeSource(float* buffer, unsigned numberOfSourceFrames);
-    
+    void consumeSource( float *buffer, unsigned numberOfSourceFrames );
+
     double m_scaleFactor;
     unsigned m_kernelSize;
     unsigned m_numberOfKernelOffsets;
@@ -59,18 +61,18 @@ protected:
     // m_kernelStorage has m_numberOfKernelOffsets kernels back-to-back, each of size m_kernelSize.
     // The kernel offsets are sub-sample shifts of a windowed sinc() shifted from 0.0 to 1.0 sample.
     AudioFloatArray m_kernelStorage;
-    
+
     // m_virtualSourceIndex is an index on the source input buffer with sub-sample precision.
     // It must be double precision to avoid drift.
     double m_virtualSourceIndex;
-    
+
     // This is the number of destination frames we generate per processing pass on the buffer.
     unsigned m_blockSize;
 
     // Source is copied into this buffer for each processing pass.
     AudioFloatArray m_inputBuffer;
 
-    float* m_source;
+    float *m_source;
     unsigned m_sourceFramesAvailable;
 };
 

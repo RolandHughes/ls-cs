@@ -34,28 +34,28 @@ class QGraphicsShaderEffectPrivate;
 
 class Q_OPENGL_EXPORT QGraphicsShaderEffect : public QGraphicsEffect
 {
-   OPENGL_CS_OBJECT(QGraphicsShaderEffect)
+    OPENGL_LSCS_OBJECT( QGraphicsShaderEffect )
 
- public:
-   QGraphicsShaderEffect(QObject *parent = nullptr);
+public:
+    QGraphicsShaderEffect( QObject *parent = nullptr );
 
-   QGraphicsShaderEffect(const QGraphicsShaderEffect &) = delete;
-   QGraphicsShaderEffect &operator=(const QGraphicsShaderEffect &) = delete;
+    QGraphicsShaderEffect( const QGraphicsShaderEffect & ) = delete;
+    QGraphicsShaderEffect &operator=( const QGraphicsShaderEffect & ) = delete;
 
-   virtual ~QGraphicsShaderEffect();
+    virtual ~QGraphicsShaderEffect();
 
-   QByteArray pixelShaderFragment() const;
-   void setPixelShaderFragment(const QByteArray &code);
+    QByteArray pixelShaderFragment() const;
+    void setPixelShaderFragment( const QByteArray &code );
 
- protected:
-   void draw(QPainter *painter) override;
-   void setUniformsDirty();
-   virtual void setUniforms(QGLShaderProgram *program);
+protected:
+    void draw( QPainter *painter ) override;
+    void setUniformsDirty();
+    virtual void setUniforms( QGLShaderProgram *program );
 
- private:
-   Q_DECLARE_PRIVATE(QGraphicsShaderEffect)
+private:
+    Q_DECLARE_PRIVATE( QGraphicsShaderEffect )
 
-   friend class QGLCustomShaderEffectStage;
+    friend class QGLCustomShaderEffectStage;
 };
 
 #endif // QT_NO_GRAPHICSEFFECT

@@ -30,32 +30,37 @@
 #include <wtf/StdLibExtras.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
-
-NetworkStateNotifier& networkStateNotifier()
+namespace WebCore
 {
-    AtomicallyInitializedStatic(NetworkStateNotifier*, networkStateNotifier = new NetworkStateNotifier);
+
+NetworkStateNotifier &networkStateNotifier()
+{
+    AtomicallyInitializedStatic( NetworkStateNotifier *, networkStateNotifier = new NetworkStateNotifier );
 
     return *networkStateNotifier;
 }
 
-void NetworkStateNotifier::setNetworkStateChangedFunction(void(*function)())
+void NetworkStateNotifier::setNetworkStateChangedFunction( void( *function )() )
 {
-    ASSERT(!m_networkStateChangedFunction);
+    ASSERT( !m_networkStateChangedFunction );
 
     m_networkStateChangedFunction = function;
 }
 
 #if PLATFORM(ANDROID) || PLATFORM(CHROMIUM)
-void NetworkStateNotifier::setOnLine(bool onLine)
+void NetworkStateNotifier::setOnLine( bool onLine )
 {
-    if (m_isOnLine == onLine)
+    if ( m_isOnLine == onLine )
+    {
         return;
+    }
 
     m_isOnLine = onLine;
 
-    if (m_networkStateChangedFunction)
+    if ( m_networkStateChangedFunction )
+    {
         m_networkStateChangedFunction();
+    }
 }
 #endif // PLATFORM(ANDROID) || PLATFORM(CHROMIM)
 

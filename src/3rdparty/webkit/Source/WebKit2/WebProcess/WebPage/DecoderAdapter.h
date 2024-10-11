@@ -30,22 +30,24 @@
 #include <wtf/Decoder.h>
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class DecoderAdapter : public Decoder {
+class DecoderAdapter : public Decoder
+{
 public:
-    DecoderAdapter(const uint8_t* buffer, size_t bufferSize);
+    DecoderAdapter( const uint8_t *buffer, size_t bufferSize );
 
 private:
-    virtual bool decodeBytes(Vector<uint8_t>&);
-    virtual bool decodeBool(bool&);
-    virtual bool decodeUInt32(uint32_t&);
-    virtual bool decodeUInt64(uint64_t&);
-    virtual bool decodeInt32(int32_t&);
-    virtual bool decodeInt64(int64_t&);
-    virtual bool decodeFloat(float&);
-    virtual bool decodeDouble(double&);
-    virtual bool decodeString(String&);
+    virtual bool decodeBytes( Vector<uint8_t> & );
+    virtual bool decodeBool( bool & );
+    virtual bool decodeUInt32( uint32_t & );
+    virtual bool decodeUInt64( uint64_t & );
+    virtual bool decodeInt32( int32_t & );
+    virtual bool decodeInt64( int64_t & );
+    virtual bool decodeFloat( float & );
+    virtual bool decodeDouble( double & );
+    virtual bool decodeString( String & );
 
     CoreIPC::ArgumentDecoder m_decoder;
 };

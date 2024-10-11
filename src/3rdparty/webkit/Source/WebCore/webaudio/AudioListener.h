@@ -33,47 +33,91 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // AudioListener maintains the state of the listener in the audio scene as defined in the OpenAL specification.
 
-class AudioListener : public RefCounted<AudioListener> {
+class AudioListener : public RefCounted<AudioListener>
+{
 public:
     static PassRefPtr<AudioListener> create()
     {
-        return adoptRef(new AudioListener());
+        return adoptRef( new AudioListener() );
     }
 
     // Position
-    void setPosition(double x, double y, double z) { setPosition(FloatPoint3D(x, y, z)); }
-    void setPosition(const FloatPoint3D &position) { m_position = position; }
-    const FloatPoint3D& position() const { return m_position; }
+    void setPosition( double x, double y, double z )
+    {
+        setPosition( FloatPoint3D( x, y, z ) );
+    }
+    void setPosition( const FloatPoint3D &position )
+    {
+        m_position = position;
+    }
+    const FloatPoint3D &position() const
+    {
+        return m_position;
+    }
 
     // Orientation
-    void setOrientation(double x, double y, double z, double upX, double upY, double upZ)
+    void setOrientation( double x, double y, double z, double upX, double upY, double upZ )
     {
-        setOrientation(FloatPoint3D(x, y, z));
-        setUpVector(FloatPoint3D(upX, upY, upZ));
+        setOrientation( FloatPoint3D( x, y, z ) );
+        setUpVector( FloatPoint3D( upX, upY, upZ ) );
     }
-    void setOrientation(const FloatPoint3D &orientation) { m_orientation = orientation; }
-    const FloatPoint3D& orientation() const { return m_orientation; }
+    void setOrientation( const FloatPoint3D &orientation )
+    {
+        m_orientation = orientation;
+    }
+    const FloatPoint3D &orientation() const
+    {
+        return m_orientation;
+    }
 
     // Up-vector
-    void setUpVector(const FloatPoint3D &upVector) { m_upVector = upVector; }
-    const FloatPoint3D& upVector() const { return m_upVector; }
+    void setUpVector( const FloatPoint3D &upVector )
+    {
+        m_upVector = upVector;
+    }
+    const FloatPoint3D &upVector() const
+    {
+        return m_upVector;
+    }
 
     // Velocity
-    void setVelocity(double x, double y, double z) { setVelocity(FloatPoint3D(x, y, z)); }
-    void setVelocity(const FloatPoint3D &velocity) { m_velocity = velocity; }
-    const FloatPoint3D& velocity() const { return m_velocity; }
+    void setVelocity( double x, double y, double z )
+    {
+        setVelocity( FloatPoint3D( x, y, z ) );
+    }
+    void setVelocity( const FloatPoint3D &velocity )
+    {
+        m_velocity = velocity;
+    }
+    const FloatPoint3D &velocity() const
+    {
+        return m_velocity;
+    }
 
     // Doppler factor
-    void setDopplerFactor(double dopplerFactor) { m_dopplerFactor = dopplerFactor; }
-    double dopplerFactor() const { return m_dopplerFactor; }
+    void setDopplerFactor( double dopplerFactor )
+    {
+        m_dopplerFactor = dopplerFactor;
+    }
+    double dopplerFactor() const
+    {
+        return m_dopplerFactor;
+    }
 
     // Speed of sound
-    void setSpeedOfSound(double speedOfSound) { m_speedOfSound = speedOfSound; }
-    double speedOfSound() const { return m_speedOfSound; }
+    void setSpeedOfSound( double speedOfSound )
+    {
+        m_speedOfSound = speedOfSound;
+    }
+    double speedOfSound() const
+    {
+        return m_speedOfSound;
+    }
 
 private:
     AudioListener();

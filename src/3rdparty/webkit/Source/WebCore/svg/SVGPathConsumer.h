@@ -29,20 +29,25 @@
 #include <wtf/FastAllocBase.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-enum PathCoordinateMode {
+enum PathCoordinateMode
+{
     AbsoluteCoordinates,
     RelativeCoordinates
 };
 
-enum PathParsingMode {
+enum PathParsingMode
+{
     NormalizedParsing,
     UnalteredParsing
 };
 
-class SVGPathConsumer {
-    WTF_MAKE_NONCOPYABLE(SVGPathConsumer); WTF_MAKE_FAST_ALLOCATED;
+class SVGPathConsumer
+{
+    WTF_MAKE_NONCOPYABLE( SVGPathConsumer );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     SVGPathConsumer() { }
     virtual void incrementPathSegmentCount() = 0;
@@ -50,18 +55,18 @@ public:
     virtual void cleanup() = 0;
 
     // Used in UnalteredParisng/NormalizedParsing modes.
-    virtual void moveTo(const FloatPoint&, bool closed, PathCoordinateMode) = 0;
-    virtual void lineTo(const FloatPoint&, PathCoordinateMode) = 0;
-    virtual void curveToCubic(const FloatPoint&, const FloatPoint&, const FloatPoint&, PathCoordinateMode) = 0;
+    virtual void moveTo( const FloatPoint &, bool closed, PathCoordinateMode ) = 0;
+    virtual void lineTo( const FloatPoint &, PathCoordinateMode ) = 0;
+    virtual void curveToCubic( const FloatPoint &, const FloatPoint &, const FloatPoint &, PathCoordinateMode ) = 0;
     virtual void closePath() = 0;
 
     // Only used in UnalteredParsing mode.
-    virtual void lineToHorizontal(float, PathCoordinateMode) = 0;
-    virtual void lineToVertical(float, PathCoordinateMode) = 0;
-    virtual void curveToCubicSmooth(const FloatPoint&, const FloatPoint&, PathCoordinateMode) = 0;
-    virtual void curveToQuadratic(const FloatPoint&, const FloatPoint&, PathCoordinateMode) = 0;
-    virtual void curveToQuadraticSmooth(const FloatPoint&, PathCoordinateMode) = 0;
-    virtual void arcTo(float, float, float, bool largeArcFlag, bool sweepFlag, const FloatPoint&, PathCoordinateMode) = 0;
+    virtual void lineToHorizontal( float, PathCoordinateMode ) = 0;
+    virtual void lineToVertical( float, PathCoordinateMode ) = 0;
+    virtual void curveToCubicSmooth( const FloatPoint &, const FloatPoint &, PathCoordinateMode ) = 0;
+    virtual void curveToQuadratic( const FloatPoint &, const FloatPoint &, PathCoordinateMode ) = 0;
+    virtual void curveToQuadraticSmooth( const FloatPoint &, PathCoordinateMode ) = 0;
+    virtual void arcTo( float, float, float, bool largeArcFlag, bool sweepFlag, const FloatPoint &, PathCoordinateMode ) = 0;
 
 protected:
     virtual ~SVGPathConsumer() { }

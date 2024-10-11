@@ -20,9 +20,11 @@
 #ifndef SharedResourceOpenVG_h
 #define SharedResourceOpenVG_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SharedResourceOpenVG {
+class SharedResourceOpenVG
+{
 public:
     void makeSharedContextCurrent();
     void makeCompatibleContextCurrent();

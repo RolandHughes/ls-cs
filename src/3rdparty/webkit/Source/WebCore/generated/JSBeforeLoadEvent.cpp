@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSBeforeLoadEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSBeforeLoadEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,9 +45,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSBeforeLoadEvent);
 
 static const HashTableValue JSBeforeLoadEventTableValues[3] =
 {
-    { "url", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsBeforeLoadEventUrl), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsBeforeLoadEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "url", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsBeforeLoadEventUrl ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsBeforeLoadEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,51 @@ static JSC_CONST_HASHTABLE HashTable JSBeforeLoadEventTable = { 4, 3, JSBeforeLo
 
 static const HashTableValue JSBeforeLoadEventConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSBeforeLoadEventConstructorTable = { 1, 0, JSBeforeLoadEventConstructorTableValues, 0 };
-class JSBeforeLoadEventConstructor : public DOMConstructorObject {
+class JSBeforeLoadEventConstructor : public DOMConstructorObject
+{
 public:
-    JSBeforeLoadEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSBeforeLoadEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSBeforeLoadEventConstructor::s_info = { "BeforeLoadEventConstructor", &DOMConstructorObject::s_info, &JSBeforeLoadEventConstructorTable, 0 };
 
-JSBeforeLoadEventConstructor::JSBeforeLoadEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSBeforeLoadEventConstructor::JSBeforeLoadEventConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSBeforeLoadEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSBeforeLoadEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSBeforeLoadEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSBeforeLoadEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSBeforeLoadEventConstructor, JSDOMWrapper>(exec, &JSBeforeLoadEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSBeforeLoadEventConstructor, JSDOMWrapper>( exec, &JSBeforeLoadEventConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSBeforeLoadEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSBeforeLoadEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSBeforeLoadEventConstructor, JSDOMWrapper>(exec, &JSBeforeLoadEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSBeforeLoadEventConstructor, JSDOMWrapper>( exec, &JSBeforeLoadEventConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,95 +117,117 @@ bool JSBeforeLoadEventConstructor::getOwnPropertyDescriptor(ExecState* exec, con
 
 static const HashTableValue JSBeforeLoadEventPrototypeTableValues[2] =
 {
-    { "initBeforeLoadEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsBeforeLoadEventPrototypeFunctionInitBeforeLoadEvent), (intptr_t)4 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "initBeforeLoadEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsBeforeLoadEventPrototypeFunctionInitBeforeLoadEvent ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSBeforeLoadEventPrototypeTable = { 2, 1, JSBeforeLoadEventPrototypeTableValues, 0 };
 const ClassInfo JSBeforeLoadEventPrototype::s_info = { "BeforeLoadEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSBeforeLoadEventPrototypeTable, 0 };
 
-JSObject* JSBeforeLoadEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSBeforeLoadEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSBeforeLoadEvent>(exec, globalObject);
+    return getDOMPrototype<JSBeforeLoadEvent>( exec, globalObject );
 }
 
-bool JSBeforeLoadEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSBeforeLoadEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSBeforeLoadEventPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSBeforeLoadEventPrototypeTable, this, propertyName, slot );
 }
 
-bool JSBeforeLoadEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSBeforeLoadEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSBeforeLoadEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSBeforeLoadEventPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSBeforeLoadEvent::s_info = { "BeforeLoadEvent", &JSEvent::s_info, &JSBeforeLoadEventTable, 0 };
 
-JSBeforeLoadEvent::JSBeforeLoadEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<BeforeLoadEvent> impl)
-    : JSEvent(structure, globalObject, impl)
+JSBeforeLoadEvent::JSBeforeLoadEvent( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<BeforeLoadEvent> impl )
+    : JSEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSBeforeLoadEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSBeforeLoadEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSBeforeLoadEventPrototype(exec->globalData(), globalObject, JSBeforeLoadEventPrototype::createStructure(exec->globalData(), JSEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSBeforeLoadEventPrototype( exec->globalData(), globalObject,
+            JSBeforeLoadEventPrototype::createStructure( exec->globalData(), JSEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSBeforeLoadEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSBeforeLoadEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSBeforeLoadEvent, Base>(exec, &JSBeforeLoadEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSBeforeLoadEvent, Base>( exec, &JSBeforeLoadEventTable, this, propertyName, slot );
 }
 
-bool JSBeforeLoadEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSBeforeLoadEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSBeforeLoadEvent, Base>(exec, &JSBeforeLoadEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSBeforeLoadEvent, Base>( exec, &JSBeforeLoadEventTable, this, propertyName, descriptor );
 }
 
-JSValue jsBeforeLoadEventUrl(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsBeforeLoadEventUrl( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSBeforeLoadEvent* castedThis = static_cast<JSBeforeLoadEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    BeforeLoadEvent* imp = static_cast<BeforeLoadEvent*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->url());
+    JSBeforeLoadEvent *castedThis = static_cast<JSBeforeLoadEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    BeforeLoadEvent *imp = static_cast<BeforeLoadEvent *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->url() );
     return result;
 }
 
 
-JSValue jsBeforeLoadEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsBeforeLoadEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSBeforeLoadEvent* domObject = static_cast<JSBeforeLoadEvent*>(asObject(slotBase));
-    return JSBeforeLoadEvent::getConstructor(exec, domObject->globalObject());
+    JSBeforeLoadEvent *domObject = static_cast<JSBeforeLoadEvent *>( asObject( slotBase ) );
+    return JSBeforeLoadEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSBeforeLoadEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSBeforeLoadEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSBeforeLoadEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSBeforeLoadEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsBeforeLoadEventPrototypeFunctionInitBeforeLoadEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsBeforeLoadEventPrototypeFunctionInitBeforeLoadEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSBeforeLoadEvent::s_info))
-        return throwVMTypeError(exec);
-    JSBeforeLoadEvent* castedThis = static_cast<JSBeforeLoadEvent*>(asObject(thisValue));
-    BeforeLoadEvent* imp = static_cast<BeforeLoadEvent*>(castedThis->impl());
-    const String& type(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool canBubble(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool cancelable(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    const String& url(ustringToString(exec->argument(3).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->initBeforeLoadEvent(type, canBubble, cancelable, url);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSBeforeLoadEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSBeforeLoadEvent *castedThis = static_cast<JSBeforeLoadEvent *>( asObject( thisValue ) );
+    BeforeLoadEvent *imp = static_cast<BeforeLoadEvent *>( castedThis->impl() );
+    const String &type( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool canBubble( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool cancelable( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    const String &url( ustringToString( exec->argument( 3 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->initBeforeLoadEvent( type, canBubble, cancelable, url );
+    return JSValue::encode( jsUndefined() );
 }
 
 

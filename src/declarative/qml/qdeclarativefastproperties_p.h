@@ -34,21 +34,22 @@ class QDeclarativeNotifierEndpoint;
 
 class QDeclarativeFastProperties
 {
- public:
-   typedef void (*Accessor)(QObject *object, void *output, QDeclarativeNotifierEndpoint *endpoint);
+public:
+    typedef void ( *Accessor )( QObject *object, void *output, QDeclarativeNotifierEndpoint *endpoint );
 
-   QDeclarativeFastProperties();
+    QDeclarativeFastProperties();
 
-   Accessor accessor(int index) const {
-      return m_accessors.at(index);
-   }
-   int accessorIndexForProperty(const QMetaObject *, int);
+    Accessor accessor( int index ) const
+    {
+        return m_accessors.at( index );
+    }
+    int accessorIndexForProperty( const QMetaObject *, int );
 
- private:
-   void add(const QMetaObject *, int, Accessor);
+private:
+    void add( const QMetaObject *, int, Accessor );
 
-   QHash<QPair<const QMetaObject *, int>, int> m_index;
-   QVector<Accessor> m_accessors;
+    QHash<QPair<const QMetaObject *, int>, int> m_index;
+    QVector<Accessor> m_accessors;
 };
 
 QT_END_NAMESPACE

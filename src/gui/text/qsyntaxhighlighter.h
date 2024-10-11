@@ -41,53 +41,53 @@ class QTextBlockUserData;
 
 class Q_GUI_EXPORT QSyntaxHighlighter : public QObject
 {
-   GUI_CS_OBJECT(QSyntaxHighlighter)
+    GUI_LSCS_OBJECT( QSyntaxHighlighter )
 
- public:
-   explicit QSyntaxHighlighter(QObject *parent);
-   explicit QSyntaxHighlighter(QTextDocument *parent);
+public:
+    explicit QSyntaxHighlighter( QObject *parent );
+    explicit QSyntaxHighlighter( QTextDocument *parent );
 
-   QSyntaxHighlighter(const QSyntaxHighlighter &) = delete;
-   QSyntaxHighlighter &operator=(const QSyntaxHighlighter &) = delete;
+    QSyntaxHighlighter( const QSyntaxHighlighter & ) = delete;
+    QSyntaxHighlighter &operator=( const QSyntaxHighlighter & ) = delete;
 
-   virtual ~QSyntaxHighlighter();
+    virtual ~QSyntaxHighlighter();
 
-   void setDocument(QTextDocument *doc);
-   QTextDocument *document() const;
+    void setDocument( QTextDocument *doc );
+    QTextDocument *document() const;
 
-   GUI_CS_SLOT_1(Public, void rehighlight())
-   GUI_CS_SLOT_2(rehighlight)
+    GUI_LSCS_SLOT_1( Public, void rehighlight() )
+    GUI_LSCS_SLOT_2( rehighlight )
 
-   GUI_CS_SLOT_1(Public, void rehighlightBlock(const QTextBlock &block))
-   GUI_CS_SLOT_2(rehighlightBlock)
+    GUI_LSCS_SLOT_1( Public, void rehighlightBlock( const QTextBlock &block ) )
+    GUI_LSCS_SLOT_2( rehighlightBlock )
 
- protected:
-   virtual void highlightBlock(const QString &text) = 0;
+protected:
+    virtual void highlightBlock( const QString &text ) = 0;
 
-   void setFormat(int start, int count, const QTextCharFormat &format);
-   void setFormat(int start, int count, const QColor &color);
-   void setFormat(int start, int count, const QFont &font);
-   QTextCharFormat format(int position) const;
+    void setFormat( int start, int count, const QTextCharFormat &format );
+    void setFormat( int start, int count, const QColor &color );
+    void setFormat( int start, int count, const QFont &font );
+    QTextCharFormat format( int position ) const;
 
-   int previousBlockState() const;
-   int currentBlockState() const;
-   void setCurrentBlockState(int newState);
+    int previousBlockState() const;
+    int currentBlockState() const;
+    void setCurrentBlockState( int newState );
 
-   void setCurrentBlockUserData(QTextBlockUserData *data);
-   QTextBlockUserData *currentBlockUserData() const;
+    void setCurrentBlockUserData( QTextBlockUserData *data );
+    QTextBlockUserData *currentBlockUserData() const;
 
-   QTextBlock currentBlock() const;
+    QTextBlock currentBlock() const;
 
-   QScopedPointer<QSyntaxHighlighterPrivate> d_ptr;
+    QScopedPointer<QSyntaxHighlighterPrivate> d_ptr;
 
- private:
-   GUI_CS_SLOT_1(Private, void _q_reformatBlocks(int from, int charsRemoved, int charsAdded))
-   GUI_CS_SLOT_2(_q_reformatBlocks)
+private:
+    GUI_LSCS_SLOT_1( Private, void _q_reformatBlocks( int from, int charsRemoved, int charsAdded ) )
+    GUI_LSCS_SLOT_2( _q_reformatBlocks )
 
-   GUI_CS_SLOT_1(Private, void _q_delayedRehighlight())
-   GUI_CS_SLOT_2(_q_delayedRehighlight)
+    GUI_LSCS_SLOT_1( Private, void _q_delayedRehighlight() )
+    GUI_LSCS_SLOT_2( _q_delayedRehighlight )
 
-   Q_DECLARE_PRIVATE(QSyntaxHighlighter)
+    Q_DECLARE_PRIVATE( QSyntaxHighlighter )
 };
 
 #endif // QT_NO_SYNTAXHIGHLIGHTER

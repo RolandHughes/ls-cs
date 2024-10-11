@@ -30,7 +30,8 @@
 #include "HTMLElement.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Event;
 class FormAssociatedElement;
@@ -43,107 +44,135 @@ class TextEncoding;
 
 struct CollectionCache;
 
-class HTMLFormElement : public HTMLElement {
+class HTMLFormElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLFormElement> create(Document*);
-    static PassRefPtr<HTMLFormElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLFormElement> create( Document * );
+    static PassRefPtr<HTMLFormElement> create( const QualifiedName &, Document * );
     virtual ~HTMLFormElement();
 
     PassRefPtr<HTMLCollection> elements();
-    void getNamedElements(const AtomicString&, Vector<RefPtr<Node> >&);
+    void getNamedElements( const AtomicString &, Vector<RefPtr<Node> > & );
 
     unsigned length() const;
-    Node* item(unsigned index);
+    Node *item( unsigned index );
 
-    String enctype() const { return m_attributes.encodingType(); }
-    void setEnctype(const String&);
+    String enctype() const
+    {
+        return m_attributes.encodingType();
+    }
+    void setEnctype( const String & );
 
-    String encoding() const { return m_attributes.encodingType(); }
-    void setEncoding(const String& value) { setEnctype(value); }
+    String encoding() const
+    {
+        return m_attributes.encodingType();
+    }
+    void setEncoding( const String &value )
+    {
+        setEnctype( value );
+    }
 
     // FIXME: Rename this function to shouldAutocomplete.
     bool autoComplete() const;
 
     // FIXME: Should rename these two functions to say "form control" or "form-associated element" instead of "form element".
-    void registerFormElement(FormAssociatedElement*);
-    void removeFormElement(FormAssociatedElement*);
+    void registerFormElement( FormAssociatedElement * );
+    void removeFormElement( FormAssociatedElement * );
 
-    void registerImgElement(HTMLImageElement*);
-    void removeImgElement(HTMLImageElement*);
+    void registerImgElement( HTMLImageElement * );
+    void removeImgElement( HTMLImageElement * );
 
-    bool prepareForSubmission(Event*);
+    bool prepareForSubmission( Event * );
     void submit();
     void submitFromJavaScript();
     void reset();
 
     // Used to indicate a malformed state to keep from applying the bottom margin of the form.
     // FIXME: Would probably be better to call this wasUnclosed; that's more specific.
-    void setMalformed(bool malformed) { m_wasMalformed = malformed; }
-    bool isMalformed() const { return m_wasMalformed; }
+    void setMalformed( bool malformed )
+    {
+        m_wasMalformed = malformed;
+    }
+    bool isMalformed() const
+    {
+        return m_wasMalformed;
+    }
 
-    void setDemoted(bool demoted) { m_wasDemoted = demoted; }
+    void setDemoted( bool demoted )
+    {
+        m_wasDemoted = demoted;
+    }
 
-    void submitImplicitly(Event*, bool fromImplicitSubmissionTrigger);
-    bool formWouldHaveSecureSubmission(const String& url);
+    void submitImplicitly( Event *, bool fromImplicitSubmissionTrigger );
+    bool formWouldHaveSecureSubmission( const String &url );
 
     String name() const;
 
     bool noValidate() const;
 
-    String acceptCharset() const { return m_attributes.acceptCharset(); }
-    void setAcceptCharset(const String&);
+    String acceptCharset() const
+    {
+        return m_attributes.acceptCharset();
+    }
+    void setAcceptCharset( const String & );
 
     String action() const;
-    void setAction(const String&);
+    void setAction( const String & );
 
     String method() const;
-    void setMethod(const String&);
+    void setMethod( const String & );
 
     virtual String target() const;
 
     bool wasUserSubmitted() const;
 
-    HTMLFormControlElement* defaultButton() const;
+    HTMLFormControlElement *defaultButton() const;
 
     bool checkValidity();
 
-    HTMLFormControlElement* elementForAlias(const AtomicString&);
-    void addElementAlias(HTMLFormControlElement*, const AtomicString& alias);
+    HTMLFormControlElement *elementForAlias( const AtomicString & );
+    void addElementAlias( HTMLFormControlElement *, const AtomicString &alias );
 
-    CheckedRadioButtons& checkedRadioButtons() { return m_checkedRadioButtons; }
+    CheckedRadioButtons &checkedRadioButtons()
+    {
+        return m_checkedRadioButtons;
+    }
 
-    const Vector<FormAssociatedElement*>& associatedElements() const { return m_associatedElements; }
+    const Vector<FormAssociatedElement *> &associatedElements() const
+    {
+        return m_associatedElements;
+    }
 
 private:
-    HTMLFormElement(const QualifiedName&, Document*);
+    HTMLFormElement( const QualifiedName &, Document * );
 
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
 
-    virtual void handleLocalEvents(Event*);
+    virtual void handleLocalEvents( Event * );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 
     virtual void documentDidBecomeActive();
 
     virtual void willMoveToNewOwnerDocument();
     virtual void didMoveToNewOwnerDocument();
 
-    void submit(Event*, bool activateSubmitButton, bool processingUserGesture, FormSubmissionTrigger);
+    void submit( Event *, bool activateSubmitButton, bool processingUserGesture, FormSubmissionTrigger );
 
-    unsigned formElementIndexWithFormAttribute(Element*);
-    unsigned formElementIndex(FormAssociatedElement*);
+    unsigned formElementIndexWithFormAttribute( Element * );
+    unsigned formElementIndex( FormAssociatedElement * );
 
     // Returns true if the submission should proceed.
-    bool validateInteractively(Event*);
+    bool validateInteractively( Event * );
 
     // Validates each of the controls, and stores controls of which 'invalid'
     // event was not canceled to the specified vector. Returns true if there
     // are any invalid controls in this form.
-    bool checkInvalidControlsAndCollectUnhandled(Vector<RefPtr<FormAssociatedElement> >&);
+    bool checkInvalidControlsAndCollectUnhandled( Vector<RefPtr<FormAssociatedElement> > & );
 
     friend class HTMLFormCollection;
 
@@ -157,8 +186,8 @@ private:
 
     unsigned m_associatedElementsBeforeIndex;
     unsigned m_associatedElementsAfterIndex;
-    Vector<FormAssociatedElement*> m_associatedElements;
-    Vector<HTMLImageElement*> m_imageElements;
+    Vector<FormAssociatedElement *> m_associatedElements;
+    Vector<HTMLImageElement *> m_imageElements;
 
     bool m_wasUserSubmitted;
     bool m_isSubmittingOrPreparingForSubmission;

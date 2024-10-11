@@ -34,68 +34,70 @@ class DirectShowTimedSample;
 
 class DirectShowSampleScheduler : public QObject, public IMemInputPin
 {
-   CS_OBJECT(DirectShowSampleScheduler)
- public:
+    LSCS_OBJECT( DirectShowSampleScheduler )
+public:
 
-   enum State {
-      Stopped  = 0x00,
-      Running  = 0x01,
-      Paused   = 0x02,
-      RunMask  = 0x03,
-      Flushing = 0x04
-   };
+    enum State
+    {
+        Stopped  = 0x00,
+        Running  = 0x01,
+        Paused   = 0x02,
+        RunMask  = 0x03,
+        Flushing = 0x04
+    };
 
-   DirectShowSampleScheduler(IUnknown *pin, QObject *parent = nullptr);
-   ~DirectShowSampleScheduler();
+    DirectShowSampleScheduler( IUnknown *pin, QObject *parent = nullptr );
+    ~DirectShowSampleScheduler();
 
-   // IUnknown
-   HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppvObject) override;
-   ULONG STDMETHODCALLTYPE AddRef() override;
-   ULONG STDMETHODCALLTYPE Release() override;
+    // IUnknown
+    HRESULT STDMETHODCALLTYPE QueryInterface( REFIID riid, void **ppvObject ) override;
+    ULONG STDMETHODCALLTYPE AddRef() override;
+    ULONG STDMETHODCALLTYPE Release() override;
 
-   // IMemInputPin
-   HRESULT STDMETHODCALLTYPE GetAllocator(IMemAllocator **ppAllocator) override;
-   HRESULT STDMETHODCALLTYPE NotifyAllocator(IMemAllocator *pAllocator, BOOL bReadOnly) override;
-   HRESULT STDMETHODCALLTYPE GetAllocatorRequirements(ALLOCATOR_PROPERTIES *pProps) override;
+    // IMemInputPin
+    HRESULT STDMETHODCALLTYPE GetAllocator( IMemAllocator **ppAllocator ) override;
+    HRESULT STDMETHODCALLTYPE NotifyAllocator( IMemAllocator *pAllocator, BOOL bReadOnly ) override;
+    HRESULT STDMETHODCALLTYPE GetAllocatorRequirements( ALLOCATOR_PROPERTIES *pProps ) override;
 
-   HRESULT STDMETHODCALLTYPE Receive(IMediaSample *pSample) override;
-   HRESULT STDMETHODCALLTYPE ReceiveMultiple(IMediaSample **pSamples, long nSamples, long *nSamplesProcessed) override;
-   HRESULT STDMETHODCALLTYPE ReceiveCanBlock() override;
+    HRESULT STDMETHODCALLTYPE Receive( IMediaSample *pSample ) override;
+    HRESULT STDMETHODCALLTYPE ReceiveMultiple( IMediaSample **pSamples, long nSamples, long *nSamplesProcessed ) override;
+    HRESULT STDMETHODCALLTYPE ReceiveCanBlock() override;
 
-   void run(REFERENCE_TIME startTime);
-   void pause();
-   void stop();
-   void setFlushing(bool flushing);
+    void run( REFERENCE_TIME startTime );
+    void pause();
+    void stop();
+    void setFlushing( bool flushing );
 
-   IReferenceClock *clock() const {
-      return m_clock;
-   }
-   void setClock(IReferenceClock *clock);
+    IReferenceClock *clock() const
+    {
+        return m_clock;
+    }
+    void setClock( IReferenceClock *clock );
 
-   bool schedule(IMediaSample *sample);
-   bool scheduleEndOfStream();
+    bool schedule( IMediaSample *sample );
+    bool scheduleEndOfStream();
 
-   IMediaSample *takeSample(bool *eos);
+    IMediaSample *takeSample( bool *eos );
 
-   bool event(QEvent *event) override;
+    bool event( QEvent *event ) override;
 
- public:
-   CS_SIGNAL_1(Public, void sampleReady())
-   CS_SIGNAL_2(sampleReady)
+public:
+    LSCS_SIGNAL_1( Public, void sampleReady() )
+    LSCS_SIGNAL_2( sampleReady )
 
- private:
-   IUnknown *m_pin;
-   IReferenceClock *m_clock;
-   IMemAllocator *m_allocator;
-   DirectShowTimedSample *m_head;
-   DirectShowTimedSample *m_tail;
-   int m_maximumSamples;
-   int m_state;
-   REFERENCE_TIME m_startTime;
-   HANDLE m_timeoutEvent;
-   HANDLE m_flushEvent;
-   QSemaphore m_semaphore;
-   QMutex m_mutex;
+private:
+    IUnknown *m_pin;
+    IReferenceClock *m_clock;
+    IMemAllocator *m_allocator;
+    DirectShowTimedSample *m_head;
+    DirectShowTimedSample *m_tail;
+    int m_maximumSamples;
+    int m_state;
+    REFERENCE_TIME m_startTime;
+    HANDLE m_timeoutEvent;
+    HANDLE m_flushEvent;
+    QSemaphore m_semaphore;
+    QMutex m_mutex;
 };
 
 #endif

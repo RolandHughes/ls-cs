@@ -25,32 +25,34 @@
 #include "SVGTextPositioningElement.h"
 #include "SVGURIReference.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGTRefElement : public SVGTextPositioningElement,
-                       public SVGURIReference {
+    public SVGURIReference
+{
 public:
-    static PassRefPtr<SVGTRefElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGTRefElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGTRefElement(const QualifiedName&, Document*);
+    SVGTRefElement( const QualifiedName &, Document * );
 
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
 
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual bool childShouldCreateRenderer(Node*) const;
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool childShouldCreateRenderer( Node * ) const;
+    virtual bool rendererIsNeeded( RenderStyle * );
 
     void updateReferencedText();
 
     // Animated property declarations
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 };
 
 } // namespace WebCore

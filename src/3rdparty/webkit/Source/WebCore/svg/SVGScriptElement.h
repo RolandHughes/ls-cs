@@ -29,34 +29,37 @@
 #include "SVGURIReference.h"
 #include "ScriptElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGScriptElement : public SVGElement
-                       , public SVGURIReference
-                       , public SVGExternalResourcesRequired
-                       , public ScriptElement {
+    , public SVGURIReference
+    , public SVGExternalResourcesRequired
+    , public ScriptElement
+{
 public:
-    static PassRefPtr<SVGScriptElement> create(const QualifiedName&, Document*, bool wasInsertedByParser);
+    static PassRefPtr<SVGScriptElement> create( const QualifiedName &, Document *, bool wasInsertedByParser );
 
     String type() const;
-    void setType(const String&);
+    void setType( const String & );
 
 private:
-    SVGScriptElement(const QualifiedName&, Document*, bool wasInsertedByParser, bool alreadyStarted);
+    SVGScriptElement( const QualifiedName &, Document *, bool wasInsertedByParser, bool alreadyStarted );
 
-    virtual void parseMappedAttribute(Attribute*);
+    virtual void parseMappedAttribute( Attribute * );
     virtual void insertedIntoDocument();
     virtual void removedFromDocument();
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual bool isURLAttribute( Attribute * ) const;
     virtual void finishParsingChildren();
 
-    virtual void addSubresourceAttributeURLs(ListHashSet<KURL>&) const;
+    virtual void addSubresourceAttributeURLs( ListHashSet<KURL> & ) const;
 
     virtual bool haveLoadedRequiredResources();
 
@@ -77,10 +80,10 @@ private:
     // Animated property declarations
 
     // SVGURIReference
-    DECLARE_ANIMATED_STRING(Href, href)
+    DECLARE_ANIMATED_STRING( Href, href )
 
     // SVGExternalResourcesRequired
-    DECLARE_ANIMATED_BOOLEAN(ExternalResourcesRequired, externalResourcesRequired)
+    DECLARE_ANIMATED_BOOLEAN( ExternalResourcesRequired, externalResourcesRequired )
 
     String m_type;
 };

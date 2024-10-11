@@ -33,51 +33,51 @@ class QMimeDataPrivate;
 
 class Q_CORE_EXPORT QMimeData : public QObject
 {
-   CORE_CS_OBJECT(QMimeData)
+    CORE_LSCS_OBJECT( QMimeData )
 
- public:
-   QMimeData();
+public:
+    QMimeData();
 
-   QMimeData(const QMimeData &) = delete;
-   QMimeData &operator=(const QMimeData &) = delete;
+    QMimeData( const QMimeData & ) = delete;
+    QMimeData &operator=( const QMimeData & ) = delete;
 
-   ~QMimeData();
+    ~QMimeData();
 
-   QList<QUrl> urls() const;
-   void setUrls(const QList<QUrl> &urls);
-   bool hasUrls() const;
+    QList<QUrl> urls() const;
+    void setUrls( const QList<QUrl> &urls );
+    bool hasUrls() const;
 
-   QString text() const;
-   void setText(const QString &text);
-   bool hasText() const;
+    QString text() const;
+    void setText( const QString &text );
+    bool hasText() const;
 
-   QString html() const;
-   void setHtml(const QString &html);
-   bool hasHtml() const;
+    QString html() const;
+    void setHtml( const QString &html );
+    bool hasHtml() const;
 
-   QVariant imageData() const;
-   void setImageData(const QVariant &image);
-   bool hasImage() const;
+    QVariant imageData() const;
+    void setImageData( const QVariant &image );
+    bool hasImage() const;
 
-   QVariant colorData() const;
-   void setColorData(const QVariant &color);
-   bool hasColor() const;
+    QVariant colorData() const;
+    void setColorData( const QVariant &color );
+    bool hasColor() const;
 
-   QByteArray data(const QString &mimeType) const;
-   void setData(const QString &mimeType, const QByteArray &data);
-   void removeFormat(const QString &mimeType);
+    QByteArray data( const QString &mimeType ) const;
+    void setData( const QString &mimeType, const QByteArray &data );
+    void removeFormat( const QString &mimeType );
 
-   virtual bool hasFormat(const QString &mimeType) const;
-   virtual QStringList formats() const;
+    virtual bool hasFormat( const QString &mimeType ) const;
+    virtual QStringList formats() const;
 
-   void clear();
+    void clear();
 
- protected:
-   virtual QVariant retrieveData(const QString &mimeType, QVariant::Type preferredType) const;
-   QScopedPointer<QMimeDataPrivate> d_ptr;
+protected:
+    virtual QVariant retrieveData( const QString &mimeType, QVariant::Type preferredType ) const;
+    QScopedPointer<QMimeDataPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QMimeData)
+private:
+    Q_DECLARE_PRIVATE( QMimeData )
 };
 
 #endif

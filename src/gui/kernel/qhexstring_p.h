@@ -28,60 +28,64 @@
 
 // converts an integer or double to an unique string token
 template <typename T>
-struct HexString {
-   HexString(const T t)
-      : m_data(t)
-   { }
+struct HexString
+{
+    HexString( const T t )
+        : m_data( t )
+    { }
 
-   QString toString() const {
-      return QString("%1").formatArg(m_data, sizeof(T) * 2, 16, '0');
-   }
+    QString toString() const
+    {
+        return QString( "%1" ).formatArg( m_data, sizeof( T ) * 2, 16, '0' );
+    }
 
-   const T m_data;
+    const T m_data;
 };
 
 template <>
 inline QString HexString<double>::toString() const
 {
 
-   uchar buffer[sizeof(double)];
-   memcpy(buffer, &m_data, sizeof(double));
+    uchar buffer[sizeof( double )];
+    memcpy( buffer, &m_data, sizeof( double ) );
 
-   QString retval;
+    QString retval;
 
-   for (std::size_t i = 0; i < sizeof(double); ++i) {
-      retval += QString("%1").formatArg(buffer[i], 2, 16, '0');
-   }
+    for ( std::size_t i = 0; i < sizeof( double ); ++i )
+    {
+        retval += QString( "%1" ).formatArg( buffer[i], 2, 16, '0' );
+    }
 
-   return retval;
+    return retval;
 }
 
 template <>
 inline QString HexString<float>::toString() const
 {
 
-   uchar buffer[sizeof(float)];
-   memcpy(buffer, &m_data, sizeof(float));
+    uchar buffer[sizeof( float )];
+    memcpy( buffer, &m_data, sizeof( float ) );
 
-   QString retval;
+    QString retval;
 
-   for (std::size_t i = 0; i < sizeof(float); ++i) {
-      retval += QString("%1").formatArg(buffer[i], 2, 16, '0');
-   }
+    for ( std::size_t i = 0; i < sizeof( float ); ++i )
+    {
+        retval += QString( "%1" ).formatArg( buffer[i], 2, 16, '0' );
+    }
 
-   return retval;
+    return retval;
 }
 
 template <typename T>
-QString operator+(QString str, HexString<T> hex)
+QString operator+( QString str, HexString<T> hex )
 {
-   return std::move(str) + hex.toString();
+    return std::move( str ) + hex.toString();
 }
 
 template <typename T>
-QString operator+(HexString<T> hex, const QString &str)
+QString operator+( HexString<T> hex, const QString &str )
 {
-   return hex.toString() + str;
+    return hex.toString() + str;
 }
 
 

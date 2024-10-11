@@ -31,17 +31,19 @@
 #include "AudioBuffer.h"
 #include "EventNames.h"
 
-namespace WebCore {
-
-PassRefPtr<AudioProcessingEvent> AudioProcessingEvent::create(PassRefPtr<AudioBuffer> inputBuffer, PassRefPtr<AudioBuffer> outputBuffer)
+namespace WebCore
 {
-    return adoptRef(new AudioProcessingEvent(inputBuffer, outputBuffer));
+
+PassRefPtr<AudioProcessingEvent> AudioProcessingEvent::create( PassRefPtr<AudioBuffer> inputBuffer,
+        PassRefPtr<AudioBuffer> outputBuffer )
+{
+    return adoptRef( new AudioProcessingEvent( inputBuffer, outputBuffer ) );
 }
 
-AudioProcessingEvent::AudioProcessingEvent(PassRefPtr<AudioBuffer> inputBuffer, PassRefPtr<AudioBuffer> outputBuffer)
-    : Event(eventNames().audioprocessEvent, true, false)
-    , m_inputBuffer(inputBuffer)
-    , m_outputBuffer(outputBuffer)
+AudioProcessingEvent::AudioProcessingEvent( PassRefPtr<AudioBuffer> inputBuffer, PassRefPtr<AudioBuffer> outputBuffer )
+    : Event( eventNames().audioprocessEvent, true, false )
+    , m_inputBuffer( inputBuffer )
+    , m_outputBuffer( outputBuffer )
 {
 }
 

@@ -26,7 +26,8 @@
 #include "config.h"
 #include "MutableDictionary.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 MutableDictionary::MutableDictionary()
 {
@@ -36,21 +37,21 @@ MutableDictionary::~MutableDictionary()
 {
 }
 
-bool MutableDictionary::add(const String& key, APIObject* item)
+bool MutableDictionary::add( const String &key, APIObject *item )
 {
-    std::pair<MapType::iterator, bool> result = m_map.add(key, item);
+    std::pair<MapType::iterator, bool> result = m_map.add( key, item );
     return result.second;
 }
 
-bool MutableDictionary::set(const String& key, APIObject* item)
+bool MutableDictionary::set( const String &key, APIObject *item )
 {
-    std::pair<MapType::iterator, bool> result = m_map.set(key, item);
+    std::pair<MapType::iterator, bool> result = m_map.set( key, item );
     return result.second;
 }
 
-void MutableDictionary::remove(const String& key)
+void MutableDictionary::remove( const String &key )
 {
-    m_map.remove(key);
+    m_map.remove( key );
 }
 
 } // namespace WebKit

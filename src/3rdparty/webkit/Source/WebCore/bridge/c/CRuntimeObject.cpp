@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,26 +32,28 @@
 #include "c_instance.h"
 #include "runtime/ObjectPrototype.h"
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 
 const ClassInfo CRuntimeObject::s_info = { "CRuntimeObject", &RuntimeObject::s_info, 0, 0 };
 
-CRuntimeObject::CRuntimeObject(ExecState* exec, JSGlobalObject* globalObject, PassRefPtr<CInstance> instance)
-    // FIXME: deprecatedGetDOMStructure uses the prototype off of the wrong global object
-    // We need to pass in the right global object for "i".
-    : RuntimeObject(exec, globalObject, WebCore::deprecatedGetDOMStructure<CRuntimeObject>(exec), instance)
+CRuntimeObject::CRuntimeObject( ExecState *exec, JSGlobalObject *globalObject, PassRefPtr<CInstance> instance )
+// FIXME: deprecatedGetDOMStructure uses the prototype off of the wrong global object
+// We need to pass in the right global object for "i".
+    : RuntimeObject( exec, globalObject, WebCore::deprecatedGetDOMStructure<CRuntimeObject>( exec ), instance )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
 CRuntimeObject::~CRuntimeObject()
 {
 }
 
-CInstance* CRuntimeObject::getInternalCInstance() const
+CInstance *CRuntimeObject::getInternalCInstance() const
 {
-    return static_cast<CInstance*>(getInternalInstance());
+    return static_cast<CInstance *>( getInternalInstance() );
 }
 
 

@@ -34,9 +34,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSXPathException);
+ASSERT_CLASS_FITS_IN_CELL( JSXPathException );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -47,11 +48,11 @@ ASSERT_CLASS_FITS_IN_CELL(JSXPathException);
 
 static const HashTableValue JSXPathExceptionTableValues[5] =
 {
-    { "code", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionCode), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "name", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "message", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionMessage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "code", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionCode ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "name", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "message", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionMessage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -65,45 +66,52 @@ static JSC_CONST_HASHTABLE HashTable JSXPathExceptionTable = { 10, 7, JSXPathExc
 
 static const HashTableValue JSXPathExceptionConstructorTableValues[3] =
 {
-    { "INVALID_EXPRESSION_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionINVALID_EXPRESSION_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TYPE_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionTYPE_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "INVALID_EXPRESSION_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionINVALID_EXPRESSION_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TYPE_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionTYPE_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSXPathExceptionConstructorTable = { 4, 3, JSXPathExceptionConstructorTableValues, 0 };
-class JSXPathExceptionConstructor : public DOMConstructorObject {
+class JSXPathExceptionConstructor : public DOMConstructorObject
+{
 public:
-    JSXPathExceptionConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSXPathExceptionConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSXPathExceptionConstructor::s_info = { "XPathExceptionConstructor", &DOMConstructorObject::s_info, &JSXPathExceptionConstructorTable, 0 };
 
-JSXPathExceptionConstructor::JSXPathExceptionConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSXPathExceptionConstructor::JSXPathExceptionConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSXPathExceptionPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSXPathExceptionPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSXPathExceptionConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSXPathExceptionConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSXPathExceptionConstructor, JSDOMWrapper>(exec, &JSXPathExceptionConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSXPathExceptionConstructor, JSDOMWrapper>( exec, &JSXPathExceptionConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSXPathExceptionConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSXPathExceptionConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSXPathExceptionConstructor, JSDOMWrapper>(exec, &JSXPathExceptionConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSXPathExceptionConstructor, JSDOMWrapper>( exec, &JSXPathExceptionConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -115,131 +123,139 @@ bool JSXPathExceptionConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSXPathExceptionPrototypeTableValues[4] =
 {
-    { "INVALID_EXPRESSION_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionINVALID_EXPRESSION_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "TYPE_ERR", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsXPathExceptionTYPE_ERR), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "toString", DontDelete | DontEnum | Function, (intptr_t)static_cast<NativeFunction>(jsXPathExceptionPrototypeFunctionToString), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "INVALID_EXPRESSION_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionINVALID_EXPRESSION_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "TYPE_ERR", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsXPathExceptionTYPE_ERR ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "toString", DontDelete | DontEnum | Function, ( intptr_t )static_cast<NativeFunction>( jsXPathExceptionPrototypeFunctionToString ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSXPathExceptionPrototypeTable = { 8, 7, JSXPathExceptionPrototypeTableValues, 0 };
 const ClassInfo JSXPathExceptionPrototype::s_info = { "XPathExceptionPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSXPathExceptionPrototypeTable, 0 };
 
-JSObject* JSXPathExceptionPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSXPathExceptionPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSXPathException>(exec, globalObject);
+    return getDOMPrototype<JSXPathException>( exec, globalObject );
 }
 
-bool JSXPathExceptionPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSXPathExceptionPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSXPathExceptionPrototype, JSObject>(exec, &JSXPathExceptionPrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSXPathExceptionPrototype, JSObject>( exec, &JSXPathExceptionPrototypeTable, this, propertyName,
+            slot );
 }
 
-bool JSXPathExceptionPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSXPathExceptionPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSXPathExceptionPrototype, JSObject>(exec, &JSXPathExceptionPrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSXPathExceptionPrototype, JSObject>( exec, &JSXPathExceptionPrototypeTable, this,
+            propertyName, descriptor );
 }
 
 const ClassInfo JSXPathException::s_info = { "XPathException", &JSDOMWrapper::s_info, &JSXPathExceptionTable, 0 };
 
-JSXPathException::JSXPathException(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<XPathException> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSXPathException::JSXPathException( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<XPathException> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSXPathException::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSXPathException::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSXPathExceptionPrototype(exec->globalData(), globalObject, JSXPathExceptionPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSXPathExceptionPrototype( exec->globalData(), globalObject,
+            JSXPathExceptionPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSXPathException::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSXPathException::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSXPathException, Base>(exec, &JSXPathExceptionTable, this, propertyName, slot);
+    return getStaticValueSlot<JSXPathException, Base>( exec, &JSXPathExceptionTable, this, propertyName, slot );
 }
 
-bool JSXPathException::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSXPathException::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSXPathException, Base>(exec, &JSXPathExceptionTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSXPathException, Base>( exec, &JSXPathExceptionTable, this, propertyName, descriptor );
 }
 
-JSValue jsXPathExceptionCode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsXPathExceptionCode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSXPathException* castedThis = static_cast<JSXPathException*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    XPathException* imp = static_cast<XPathException*>(castedThis->impl());
-    JSValue result = jsNumber(imp->code());
+    JSXPathException *castedThis = static_cast<JSXPathException *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    XPathException *imp = static_cast<XPathException *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->code() );
     return result;
 }
 
 
-JSValue jsXPathExceptionName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsXPathExceptionName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSXPathException* castedThis = static_cast<JSXPathException*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    XPathException* imp = static_cast<XPathException*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->name());
+    JSXPathException *castedThis = static_cast<JSXPathException *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    XPathException *imp = static_cast<XPathException *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->name() );
     return result;
 }
 
 
-JSValue jsXPathExceptionMessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsXPathExceptionMessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSXPathException* castedThis = static_cast<JSXPathException*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    XPathException* imp = static_cast<XPathException*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->message());
+    JSXPathException *castedThis = static_cast<JSXPathException *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    XPathException *imp = static_cast<XPathException *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->message() );
     return result;
 }
 
 
-JSValue jsXPathExceptionConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsXPathExceptionConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSXPathException* domObject = static_cast<JSXPathException*>(asObject(slotBase));
-    return JSXPathException::getConstructor(exec, domObject->globalObject());
+    JSXPathException *domObject = static_cast<JSXPathException *>( asObject( slotBase ) );
+    return JSXPathException::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSXPathException::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSXPathException::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSXPathExceptionConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSXPathExceptionConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsXPathExceptionPrototypeFunctionToString(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsXPathExceptionPrototypeFunctionToString( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSXPathException::s_info))
-        return throwVMTypeError(exec);
-    JSXPathException* castedThis = static_cast<JSXPathException*>(asObject(thisValue));
-    XPathException* imp = static_cast<XPathException*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSXPathException::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSXPathException *castedThis = static_cast<JSXPathException *>( asObject( thisValue ) );
+    XPathException *imp = static_cast<XPathException *>( castedThis->impl() );
 
 
-    JSC::JSValue result = jsString(exec, imp->toString());
-    return JSValue::encode(result);
+    JSC::JSValue result = jsString( exec, imp->toString() );
+    return JSValue::encode( result );
 }
 
 // Constant getters
 
-JSValue jsXPathExceptionINVALID_EXPRESSION_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsXPathExceptionINVALID_EXPRESSION_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(51));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 51 ) );
 }
 
-JSValue jsXPathExceptionTYPE_ERR(ExecState* exec, JSValue, const Identifier&)
+JSValue jsXPathExceptionTYPE_ERR( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(52));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 52 ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, XPathException* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, XPathException *impl )
 {
-    return wrap<JSXPathException>(exec, globalObject, impl);
+    return wrap<JSXPathException>( exec, globalObject, impl );
 }
 
-XPathException* toXPathException(JSC::JSValue value)
+XPathException *toXPathException( JSC::JSValue value )
 {
-    return value.inherits(&JSXPathException::s_info) ? static_cast<JSXPathException*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSXPathException::s_info ) ? static_cast<JSXPathException *>( asObject( value ) )->impl() : 0;
 }
 
 }

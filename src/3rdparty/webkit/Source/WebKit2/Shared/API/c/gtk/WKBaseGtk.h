@@ -34,6 +34,6 @@
 
 #include <stdbool.h>
 
-typedef const struct OpaqueWKView* WKViewRef;
+typedef const struct OpaqueWKView *WKViewRef;
 
 #endif /* WKBaseGtk_h */

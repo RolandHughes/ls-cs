@@ -36,15 +36,27 @@ public:
     QFontJis0201Codec();
 
     static QString _name();
-    static QStringList _aliases() { return QStringList(); }
+    static QStringList _aliases()
+    {
+        return QStringList();
+    }
     static int _mibEnum();
 
-    QString name() const override { return _name(); }
-    QStringList aliases() const override { return _aliases(); }
-    int mibEnum() const override { return _mibEnum(); }
+    QString name() const override
+    {
+        return _name();
+    }
+    QStringList aliases() const override
+    {
+        return _aliases();
+    }
+    int mibEnum() const override
+    {
+        return _mibEnum();
+    }
 
-    QString convertToUnicode(const char *in, int len,  ConverterState *) const override;
-    QByteArray convertFromUnicode(QStringView str, ConverterState *) const override;
+    QString convertToUnicode( const char *in, int len,  ConverterState * ) const override;
+    QByteArray convertFromUnicode( QStringView str, ConverterState * ) const override;
 
 };
 
@@ -55,15 +67,27 @@ public:
     ~QFontJis0208Codec();
 
     static QString _name();
-    static QStringList _aliases() { return QStringList(); }
+    static QStringList _aliases()
+    {
+        return QStringList();
+    }
     static int _mibEnum();
 
-    QString name() const override { return _name(); }
-    QStringList aliases() const override { return _aliases(); }
-    int mibEnum() const override { return _mibEnum(); }
+    QString name() const override
+    {
+        return _name();
+    }
+    QStringList aliases() const override
+    {
+        return _aliases();
+    }
+    int mibEnum() const override
+    {
+        return _mibEnum();
+    }
 
-    QByteArray convertFromUnicode(QStringView str, ConverterState *) const override;
-    QString convertToUnicode(const char *chars, int len, ConverterState *) const override;
+    QByteArray convertFromUnicode( QStringView str, ConverterState * ) const override;
+    QString convertToUnicode( const char *chars, int len, ConverterState * ) const override;
 
 private:
     QJpUnicodeConv *convJP;

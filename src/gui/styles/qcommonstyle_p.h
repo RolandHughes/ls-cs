@@ -34,74 +34,76 @@ class QStringList;
 
 class QCommonStylePrivate : public QStylePrivate
 {
-   Q_DECLARE_PUBLIC(QCommonStyle)
+    Q_DECLARE_PUBLIC( QCommonStyle )
 
- public:
-   QCommonStylePrivate()
+public:
+    QCommonStylePrivate()
 
 #ifndef QT_NO_ITEMVIEWS
-      : cachedOption(nullptr), animationFps(30)
+        : cachedOption( nullptr ), animationFps( 30 )
 #else
-      : animationFps(30)
+        : animationFps( 30 )
 #endif
-   { }
+    { }
 
-   ~QCommonStylePrivate() {
+    ~QCommonStylePrivate()
+    {
 #ifndef QT_NO_ANIMATION
-      qDeleteAll(animations);
+        qDeleteAll( animations );
 #endif
 
 #ifndef QT_NO_ITEMVIEWS
-      delete cachedOption;
+        delete cachedOption;
 #endif
-   }
+    }
 
 #ifndef QT_NO_ITEMVIEWS
-   void viewItemDrawText(QPainter *painter, const QStyleOptionViewItem *option, const QRect &rect) const;
-   void viewItemLayout(const QStyleOptionViewItem *option,  QRect *checkRect,
-      QRect *pixmapRect, QRect *textRect, bool sizehint) const;
+    void viewItemDrawText( QPainter *painter, const QStyleOptionViewItem *option, const QRect &rect ) const;
+    void viewItemLayout( const QStyleOptionViewItem *option,  QRect *checkRect,
+                         QRect *pixmapRect, QRect *textRect, bool sizehint ) const;
 
-   QSize viewItemSize(const QStyleOptionViewItem *option, int role) const;
+    QSize viewItemSize( const QStyleOptionViewItem *option, int role ) const;
 
-   mutable QRect decorationRect, displayRect, checkRect;
-   mutable QStyleOptionViewItem *cachedOption;
+    mutable QRect decorationRect, displayRect, checkRect;
+    mutable QStyleOptionViewItem *cachedOption;
 
-   bool isViewItemCached(const QStyleOptionViewItem &option) const {
-      return cachedOption && (option.widget == cachedOption->widget
-            && option.index == cachedOption->index
-            && option.state == cachedOption->state
-            && option.rect == cachedOption->rect
-            && option.text == cachedOption->text
-            && option.direction == cachedOption->direction
-            && option.displayAlignment == cachedOption->displayAlignment
-            && option.decorationAlignment == cachedOption->decorationAlignment
-            && option.decorationPosition == cachedOption->decorationPosition
-            && option.decorationSize == cachedOption->decorationSize
-            && option.features == cachedOption->features
-            && option.icon.isNull() == cachedOption->icon.isNull()
-            && option.font == cachedOption->font
-            && option.viewItemPosition == cachedOption->viewItemPosition);
-   }
+    bool isViewItemCached( const QStyleOptionViewItem &option ) const
+    {
+        return cachedOption && ( option.widget == cachedOption->widget
+                                 && option.index == cachedOption->index
+                                 && option.state == cachedOption->state
+                                 && option.rect == cachedOption->rect
+                                 && option.text == cachedOption->text
+                                 && option.direction == cachedOption->direction
+                                 && option.displayAlignment == cachedOption->displayAlignment
+                                 && option.decorationAlignment == cachedOption->decorationAlignment
+                                 && option.decorationPosition == cachedOption->decorationPosition
+                                 && option.decorationSize == cachedOption->decorationSize
+                                 && option.features == cachedOption->features
+                                 && option.icon.isNull() == cachedOption->icon.isNull()
+                                 && option.font == cachedOption->font
+                                 && option.viewItemPosition == cachedOption->viewItemPosition );
+    }
 #endif
-   mutable QIcon tabBarcloseButtonIcon;
+    mutable QIcon tabBarcloseButtonIcon;
 
 #ifndef QT_NO_TABBAR
-   void tabLayout(const QStyleOptionTab *option, const QWidget *widget, QRect *textRect, QRect *pixmapRect) const;
+    void tabLayout( const QStyleOptionTab *option, const QWidget *widget, QRect *textRect, QRect *pixmapRect ) const;
 #endif
 
-   int animationFps;
+    int animationFps;
 
 #ifndef QT_NO_ANIMATION
-   void _q_removeAnimation(QObject *obj);
+    void _q_removeAnimation( QObject *obj );
 
-   QList<const QObject *> animationKeys() const;
-   QStyleAnimation *animationValue(const QObject *target) const;
+    QList<const QObject *> animationKeys() const;
+    QStyleAnimation *animationValue( const QObject *target ) const;
 
-   void startAnimation(QStyleAnimation *animation) const;
-   void stopAnimation(const QObject *target) const;
+    void startAnimation( QStyleAnimation *animation ) const;
+    void stopAnimation( const QObject *target ) const;
 
- private:
-   mutable QHash<const QObject *, QStyleAnimation *> animations;
+private:
+    mutable QHash<const QObject *, QStyleAnimation *> animations;
 #endif
 
 };

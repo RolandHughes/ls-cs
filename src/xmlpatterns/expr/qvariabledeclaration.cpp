@@ -25,17 +25,19 @@
 
 using namespace QPatternist;
 
-bool VariableDeclaration::contains(const VariableDeclaration::List &list,
-                                   const QXmlName &lookup)
+bool VariableDeclaration::contains( const VariableDeclaration::List &list,
+                                    const QXmlName &lookup )
 {
-   VariableDeclaration::List::const_iterator it(list.constBegin());
-   const VariableDeclaration::List::const_iterator end(list.constEnd());
+    VariableDeclaration::List::const_iterator it( list.constBegin() );
+    const VariableDeclaration::List::const_iterator end( list.constEnd() );
 
-   for (; it != end; ++it) {
-      if ((*it)->name == lookup) {
-         return true;
-      }
-   }
+    for ( ; it != end; ++it )
+    {
+        if ( ( *it )->name == lookup )
+        {
+            return true;
+        }
+    }
 
-   return false;
+    return false;
 }

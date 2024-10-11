@@ -24,8 +24,8 @@
 #include <dscamera_imageprocessingcontrol.h>
 #include <dscamera_session.h>
 
-DSCameraImageProcessingControl::DSCameraImageProcessingControl(DSCameraSession *session)
-   : QCameraImageProcessingControl(session), m_session(session)
+DSCameraImageProcessingControl::DSCameraImageProcessingControl( DSCameraSession *session )
+    : QCameraImageProcessingControl( session ), m_session( session )
 {
 }
 
@@ -34,27 +34,27 @@ DSCameraImageProcessingControl::~DSCameraImageProcessingControl()
 }
 
 bool DSCameraImageProcessingControl::isParameterSupported(
-   QCameraImageProcessingControl::ProcessingParameter parameter) const
+    QCameraImageProcessingControl::ProcessingParameter parameter ) const
 {
-   return m_session->isImageProcessingParameterSupported(parameter);
+    return m_session->isImageProcessingParameterSupported( parameter );
 }
 
 bool DSCameraImageProcessingControl::isParameterValueSupported(
-   QCameraImageProcessingControl::ProcessingParameter parameter,
-   const QVariant &value) const
+    QCameraImageProcessingControl::ProcessingParameter parameter,
+    const QVariant &value ) const
 {
-   return m_session->isImageProcessingParameterValueSupported(parameter, value);
+    return m_session->isImageProcessingParameterValueSupported( parameter, value );
 }
 
 QVariant DSCameraImageProcessingControl::parameter(
-   QCameraImageProcessingControl::ProcessingParameter parameter) const
+    QCameraImageProcessingControl::ProcessingParameter parameter ) const
 {
-   return m_session->imageProcessingParameter(parameter);
+    return m_session->imageProcessingParameter( parameter );
 }
 
-void DSCameraImageProcessingControl::setParameter(QCameraImageProcessingControl::ProcessingParameter parameter,
-      const QVariant &value)
+void DSCameraImageProcessingControl::setParameter( QCameraImageProcessingControl::ProcessingParameter parameter,
+        const QVariant &value )
 {
-   m_session->setImageProcessingParameter(parameter, value);
+    m_session->setImageProcessingParameter( parameter, value );
 }
 

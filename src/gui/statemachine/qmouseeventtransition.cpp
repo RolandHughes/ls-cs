@@ -33,90 +33,93 @@
 
 class QMouseEventTransitionPrivate : public QEventTransitionPrivate
 {
-   Q_DECLARE_PUBLIC(QMouseEventTransition)
+    Q_DECLARE_PUBLIC( QMouseEventTransition )
 
- public:
-   QMouseEventTransitionPrivate();
+public:
+    QMouseEventTransitionPrivate();
 
-   QBasicMouseEventTransition *transition;
+    QBasicMouseEventTransition *transition;
 };
 
 QMouseEventTransitionPrivate::QMouseEventTransitionPrivate()
 {
 }
 
-QMouseEventTransition::QMouseEventTransition(QState *sourceState)
-   : QEventTransition(*new QMouseEventTransitionPrivate, sourceState)
+QMouseEventTransition::QMouseEventTransition( QState *sourceState )
+    : QEventTransition( *new QMouseEventTransitionPrivate, sourceState )
 {
-   Q_D(QMouseEventTransition);
-   d->transition = new QBasicMouseEventTransition();
+    Q_D( QMouseEventTransition );
+    d->transition = new QBasicMouseEventTransition();
 }
 
-QMouseEventTransition::QMouseEventTransition(QObject *object, QEvent::Type type,
-      Qt::MouseButton button,
-      QState *sourceState)
-   : QEventTransition(*new QMouseEventTransitionPrivate, object, type, sourceState)
+QMouseEventTransition::QMouseEventTransition( QObject *object, QEvent::Type type,
+        Qt::MouseButton button,
+        QState *sourceState )
+    : QEventTransition( *new QMouseEventTransitionPrivate, object, type, sourceState )
 {
-   Q_D(QMouseEventTransition);
-   d->transition = new QBasicMouseEventTransition(type, button);
+    Q_D( QMouseEventTransition );
+    d->transition = new QBasicMouseEventTransition( type, button );
 }
 
 QMouseEventTransition::~QMouseEventTransition()
 {
-   Q_D(QMouseEventTransition);
-   delete d->transition;
+    Q_D( QMouseEventTransition );
+    delete d->transition;
 }
 
 Qt::MouseButton QMouseEventTransition::button() const
 {
-   Q_D(const QMouseEventTransition);
-   return d->transition->button();
+    Q_D( const QMouseEventTransition );
+    return d->transition->button();
 }
 
-void QMouseEventTransition::setButton(Qt::MouseButton button)
+void QMouseEventTransition::setButton( Qt::MouseButton button )
 {
-   Q_D(QMouseEventTransition);
-   d->transition->setButton(button);
+    Q_D( QMouseEventTransition );
+    d->transition->setButton( button );
 }
 
 Qt::KeyboardModifiers QMouseEventTransition::modifierMask() const
 {
-   Q_D(const QMouseEventTransition);
-   return d->transition->modifierMask();
+    Q_D( const QMouseEventTransition );
+    return d->transition->modifierMask();
 }
 
-void QMouseEventTransition::setModifierMask(Qt::KeyboardModifiers modifierMask)
+void QMouseEventTransition::setModifierMask( Qt::KeyboardModifiers modifierMask )
 {
-   Q_D(QMouseEventTransition);
-   d->transition->setModifierMask(modifierMask);
+    Q_D( QMouseEventTransition );
+    d->transition->setModifierMask( modifierMask );
 }
 
 QPainterPath QMouseEventTransition::hitTestPath() const
 {
-   Q_D(const QMouseEventTransition);
-   return d->transition->hitTestPath();
+    Q_D( const QMouseEventTransition );
+    return d->transition->hitTestPath();
 }
 
-void QMouseEventTransition::setHitTestPath(const QPainterPath &path)
+void QMouseEventTransition::setHitTestPath( const QPainterPath &path )
 {
-   Q_D(QMouseEventTransition);
-   d->transition->setHitTestPath(path);
+    Q_D( QMouseEventTransition );
+    d->transition->setHitTestPath( path );
 }
 
-bool QMouseEventTransition::eventTest(QEvent *event)
+bool QMouseEventTransition::eventTest( QEvent *event )
 {
-   Q_D(const QMouseEventTransition);
-   if (!QEventTransition::eventTest(event)) {
-      return false;
-   }
-   QStateMachine::WrappedEvent *we = static_cast<QStateMachine::WrappedEvent *>(event);
-   d->transition->setEventType(we->event()->type());
-   return QAbstractTransitionPrivate::get(d->transition)->callEventTest(we->event());
+    Q_D( const QMouseEventTransition );
+
+    if ( !QEventTransition::eventTest( event ) )
+    {
+        return false;
+    }
+
+    QStateMachine::WrappedEvent *we = static_cast<QStateMachine::WrappedEvent *>( event );
+    d->transition->setEventType( we->event()->type() );
+    return QAbstractTransitionPrivate::get( d->transition )->callEventTest( we->event() );
 }
 
-void QMouseEventTransition::onTransition(QEvent *event)
+void QMouseEventTransition::onTransition( QEvent *event )
 {
-   QEventTransition::onTransition(event);
+    QEventTransition::onTransition( event );
 }
 
 #endif //QT_NO_STATEMACHINE

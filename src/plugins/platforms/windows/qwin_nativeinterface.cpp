@@ -33,224 +33,245 @@
 #include <qwin_window.h>
 #include <qwindow.h>
 
-enum ResourceType {
-   RenderingContextType,
-   EglContextType,
-   EglDisplayType,
-   EglConfigType,
-   HandleType,
-   GlHandleType,
-   GetDCType,
-   ReleaseDCType
+enum ResourceType
+{
+    RenderingContextType,
+    EglContextType,
+    EglDisplayType,
+    EglConfigType,
+    HandleType,
+    GlHandleType,
+    GetDCType,
+    ReleaseDCType
 };
 
-static int resourceType(const QByteArray &key)
+static int resourceType( const QByteArray &key )
 {
-   static const char *names[] = { // match ResourceType
-      "renderingcontext",
-      "eglcontext",
-      "egldisplay",
-      "eglconfig",
-      "handle",
-      "glhandle",
-      "getdc",
-      "releasedc"
-   };
+    static const char *names[] =   // match ResourceType
+    {
+        "renderingcontext",
+        "eglcontext",
+        "egldisplay",
+        "eglconfig",
+        "handle",
+        "glhandle",
+        "getdc",
+        "releasedc"
+    };
 
-   const char **const end = names + sizeof(names) / sizeof(names[0]);
-   const char **result = std::find(names, end, key);
+    const char **const end = names + sizeof( names ) / sizeof( names[0] );
+    const char **result = std::find( names, end, key );
 
-   if (result == end) {
-      result = std::find(names, end, key.toLower());
-   }
+    if ( result == end )
+    {
+        result = std::find( names, end, key.toLower() );
+    }
 
-   return int(result - names);
+    return int( result - names );
 }
 
 static QString customMarginPropertyC = "WindowsCustomMargins";
 
-void *QWindowsNativeInterface::nativeResourceForWindow(const QByteArray &resource, QWindow *window)
+void *QWindowsNativeInterface::nativeResourceForWindow( const QByteArray &resource, QWindow *window )
 {
-   if (! window || ! window->handle()) {
-      qWarning("QWindowsNativeInterface::nativeResourceForWindow() Called with a null window or a window without a handle, %s",
-            resource.constData());
+    if ( ! window || ! window->handle() )
+    {
+        qWarning( "QWindowsNativeInterface::nativeResourceForWindow() Called with a null window or a window without a handle, %s",
+                  resource.constData() );
 
-      return nullptr;
-   }
+        return nullptr;
+    }
 
-   QWindowsWindow *bw = static_cast<QWindowsWindow *>(window->handle());
-   int type = resourceType(resource);
+    QWindowsWindow *bw = static_cast<QWindowsWindow *>( window->handle() );
+    int type = resourceType( resource );
 
-   if (type == HandleType) {
-      return bw->handle();
-   }
+    if ( type == HandleType )
+    {
+        return bw->handle();
+    }
 
-   switch (window->surfaceType()) {
-      case QWindow::RasterSurface:
-      case QWindow::RasterGLSurface:
-         if (type == GetDCType) {
-            return bw->getDC();
-         }
+    switch ( window->surfaceType() )
+    {
+        case QWindow::RasterSurface:
+        case QWindow::RasterGLSurface:
+            if ( type == GetDCType )
+            {
+                return bw->getDC();
+            }
 
-         if (type == ReleaseDCType) {
-            bw->releaseDC();
-            return nullptr;
-         }
-         break;
+            if ( type == ReleaseDCType )
+            {
+                bw->releaseDC();
+                return nullptr;
+            }
 
-      case QWindow::OpenGLSurface:
-      case QWindow::VulkanSurface:
-         break;
-   }
+            break;
 
-   qWarning("QWindowsNativeInterface::nativeResourceForWindow() Invalid key, %s", resource.constData());
+        case QWindow::OpenGLSurface:
+        case QWindow::VulkanSurface:
+            break;
+    }
 
-   return nullptr;
+    qWarning( "QWindowsNativeInterface::nativeResourceForWindow() Invalid key, %s", resource.constData() );
+
+    return nullptr;
 }
 
-QVariant QWindowsNativeInterface::windowProperty(QPlatformWindow *window, const QString &name) const
+QVariant QWindowsNativeInterface::windowProperty( QPlatformWindow *window, const QString &name ) const
 {
-   QWindowsWindow *platformWindow = static_cast<QWindowsWindow *>(window);
+    QWindowsWindow *platformWindow = static_cast<QWindowsWindow *>( window );
 
-   if (name == customMarginPropertyC) {
-      return QVariant::fromValue(platformWindow->customMargins());
-   }
+    if ( name == customMarginPropertyC )
+    {
+        return QVariant::fromValue( platformWindow->customMargins() );
+    }
 
-   return QVariant();
+    return QVariant();
 }
 
-QVariant QWindowsNativeInterface::windowProperty(QPlatformWindow *window, const QString &name, const QVariant &defaultValue) const
+QVariant QWindowsNativeInterface::windowProperty( QPlatformWindow *window, const QString &name,
+        const QVariant &defaultValue ) const
 {
-   const QVariant result = windowProperty(window, name);
-   return result.isValid() ? result : defaultValue;
+    const QVariant result = windowProperty( window, name );
+    return result.isValid() ? result : defaultValue;
 }
 
-void QWindowsNativeInterface::setWindowProperty(QPlatformWindow *window, const QString &name, const QVariant &value)
+void QWindowsNativeInterface::setWindowProperty( QPlatformWindow *window, const QString &name, const QVariant &value )
 {
-   QWindowsWindow *platformWindow = static_cast<QWindowsWindow *>(window);
+    QWindowsWindow *platformWindow = static_cast<QWindowsWindow *>( window );
 
-   if (name == customMarginPropertyC) {
-      platformWindow->setCustomMargins(value.value<QMargins>());
-   }
+    if ( name == customMarginPropertyC )
+    {
+        platformWindow->setCustomMargins( value.value<QMargins>() );
+    }
 }
 
-QVariantMap QWindowsNativeInterface::windowProperties(QPlatformWindow *window) const
+QVariantMap QWindowsNativeInterface::windowProperties( QPlatformWindow *window ) const
 {
-   QVariantMap result;
-   const QString customMarginProperty = customMarginPropertyC;
-   result.insert(customMarginProperty, windowProperty(window, customMarginProperty));
+    QVariantMap result;
+    const QString customMarginProperty = customMarginPropertyC;
+    result.insert( customMarginProperty, windowProperty( window, customMarginProperty ) );
 
-   return result;
+    return result;
 }
 
-void *QWindowsNativeInterface::nativeResourceForIntegration(const QByteArray &resource)
+void *QWindowsNativeInterface::nativeResourceForIntegration( const QByteArray &resource )
 {
 #ifndef QT_NO_OPENGL
-   if (resourceType(resource) == GlHandleType) {
-      if (const QWindowsStaticOpenGLContext *sc = QWindowsIntegration::staticOpenGLContext()) {
-         return sc->moduleHandle();
-      }
-   }
+
+    if ( resourceType( resource ) == GlHandleType )
+    {
+        if ( const QWindowsStaticOpenGLContext *sc = QWindowsIntegration::staticOpenGLContext() )
+        {
+            return sc->moduleHandle();
+        }
+    }
+
 #endif
 
-   return nullptr;
+    return nullptr;
 }
 
 #ifndef QT_NO_OPENGL
-void *QWindowsNativeInterface::nativeResourceForContext(const QByteArray &resource, QOpenGLContext *context)
+void *QWindowsNativeInterface::nativeResourceForContext( const QByteArray &resource, QOpenGLContext *context )
 {
-   if (! context || ! context->handle()) {
-      qWarning("nativeResourceForContext() Called with a null context or a conttext without a handle, %s", resource.constData());
-      return nullptr;
-   }
+    if ( ! context || ! context->handle() )
+    {
+        qWarning( "nativeResourceForContext() Called with a null context or a conttext without a handle, %s", resource.constData() );
+        return nullptr;
+    }
 
-   QWindowsOpenGLContext *glcontext = static_cast<QWindowsOpenGLContext *>(context->handle());
+    QWindowsOpenGLContext *glcontext = static_cast<QWindowsOpenGLContext *>( context->handle() );
 
-   switch (resourceType(resource)) {
-      case RenderingContextType:
-      case EglContextType:
-         return glcontext->nativeContext();
+    switch ( resourceType( resource ) )
+    {
+        case RenderingContextType:
+        case EglContextType:
+            return glcontext->nativeContext();
 
-      case EglDisplayType:
-         return glcontext->nativeDisplay();
+        case EglDisplayType:
+            return glcontext->nativeDisplay();
 
-      case EglConfigType:
-         return glcontext->nativeConfig();
+        case EglConfigType:
+            return glcontext->nativeConfig();
 
-      default:
-         break;
-   }
+        default:
+            break;
+    }
 
-   qWarning("nativeResourceForContext() Invalid key, %s", resource.constData());
+    qWarning( "nativeResourceForContext() Invalid key, %s", resource.constData() );
 
-   return nullptr;
+    return nullptr;
 }
 #endif
 
-void *QWindowsNativeInterface::createMessageWindow(const QString &classNameTemplate,
-   const QString &windowName, void *eventProc) const
+void *QWindowsNativeInterface::createMessageWindow( const QString &classNameTemplate,
+        const QString &windowName, void *eventProc ) const
 {
-   QWindowsContext *ctx = QWindowsContext::instance();
+    QWindowsContext *ctx = QWindowsContext::instance();
 
-   std::wstring tmp = windowName.toStdWString();
-   const HWND hwnd = ctx->createDummyWindow(classNameTemplate, tmp.data(), (WNDPROC)eventProc);
+    std::wstring tmp = windowName.toStdWString();
+    const HWND hwnd = ctx->createDummyWindow( classNameTemplate, tmp.data(), ( WNDPROC )eventProc );
 
-   return hwnd;
+    return hwnd;
 }
 
-QString QWindowsNativeInterface::registerWindowClass(const QString &classNameIn, void *eventProc) const
+QString QWindowsNativeInterface::registerWindowClass( const QString &classNameIn, void *eventProc ) const
 {
-   return QWindowsContext::instance()->registerWindowClass(classNameIn, (WNDPROC)eventProc);
+    return QWindowsContext::instance()->registerWindowClass( classNameIn, ( WNDPROC )eventProc );
 }
 
 void QWindowsNativeInterface::beep()
 {
-   MessageBeep(MB_OK);  // For QApplication
+    MessageBeep( MB_OK ); // For QApplication
 }
 
 bool QWindowsNativeInterface::asyncExpose() const
 {
-   return QWindowsContext::instance()->asyncExpose();
+    return QWindowsContext::instance()->asyncExpose();
 }
 
-void QWindowsNativeInterface::setAsyncExpose(bool value)
+void QWindowsNativeInterface::setAsyncExpose( bool value )
 {
-   QWindowsContext::instance()->setAsyncExpose(value);
+    QWindowsContext::instance()->setAsyncExpose( value );
 }
 
-void QWindowsNativeInterface::registerWindowsMime(void *mimeIn)
+void QWindowsNativeInterface::registerWindowsMime( void *mimeIn )
 {
-   QWindowsContext::instance()->mimeConverter().registerMime(reinterpret_cast<QWindowsMime *>(mimeIn));
+    QWindowsContext::instance()->mimeConverter().registerMime( reinterpret_cast<QWindowsMime *>( mimeIn ) );
 }
 
-void QWindowsNativeInterface::unregisterWindowsMime(void *mimeIn)
+void QWindowsNativeInterface::unregisterWindowsMime( void *mimeIn )
 {
-   QWindowsContext::instance()->mimeConverter().unregisterMime(reinterpret_cast<QWindowsMime *>(mimeIn));
+    QWindowsContext::instance()->mimeConverter().unregisterMime( reinterpret_cast<QWindowsMime *>( mimeIn ) );
 }
 
-int QWindowsNativeInterface::registerMimeType(const QString &mimeType)
+int QWindowsNativeInterface::registerMimeType( const QString &mimeType )
 {
-   return QWindowsMime::registerMimeType(mimeType);
+    return QWindowsMime::registerMimeType( mimeType );
 }
 
-QFont QWindowsNativeInterface::logFontToQFont(const void *logFont, int verticalDpi)
+QFont QWindowsNativeInterface::logFontToQFont( const void *logFont, int verticalDpi )
 {
-   return QWindowsFontDatabase::LOGFONT_to_QFont(*reinterpret_cast<const LOGFONT *>(logFont), verticalDpi);
+    return QWindowsFontDatabase::LOGFONT_to_QFont( *reinterpret_cast<const LOGFONT *>( logFont ), verticalDpi );
 }
 
-QWindowsNativeInterface::FP_Void QWindowsNativeInterface::platformFunction(const QByteArray &function) const
+QWindowsNativeInterface::FP_Void QWindowsNativeInterface::platformFunction( const QByteArray &function ) const
 {
-   if (function == QWindowsWindowFunctions::setTouchWindowTouchTypeIdentifier()) {
-      return FP_Void(QWindowsWindow::setTouchWindowTouchTypeStatic);
+    if ( function == QWindowsWindowFunctions::setTouchWindowTouchTypeIdentifier() )
+    {
+        return FP_Void( QWindowsWindow::setTouchWindowTouchTypeStatic );
 
-   } else if (function == QWindowsWindowFunctions::setHasBorderInFullScreenIdentifier()) {
-      return FP_Void(QWindowsWindow::setHasBorderInFullScreenStatic);
-   }
+    }
+    else if ( function == QWindowsWindowFunctions::setHasBorderInFullScreenIdentifier() )
+    {
+        return FP_Void( QWindowsWindow::setHasBorderInFullScreenStatic );
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
 QVariant QWindowsNativeInterface::gpu() const
 {
-   return GpuDescription::detect().toVariant();
+    return GpuDescription::detect().toVariant();
 }

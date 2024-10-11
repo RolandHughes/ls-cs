@@ -51,7 +51,7 @@ for ($j = 0; $j < $i; ++$j) {
 }
 print "0\n};\n";
 ===== PERL SCRIPT ====
- 
+
  * The input data is as follows:
 other
 org.freedesktop.DBus.Error.Failed
@@ -109,29 +109,36 @@ static const char errorMessages_string[] =
     "com.trolltech.QtDBus.Error.InvalidMember\0"
     "\0";
 
-static const int errorMessages_indices[] = {
-       0,    6,   40,   76,  118,  153,  191,  231,
-     273,  313,  349,  384,  421,  461,  501,  540,
-     581,  617,  661,  705,  746,  787,  829,  874,
-     918,    0
+static const int errorMessages_indices[] =
+{
+    0,    6,   40,   76,  118,  153,  191,  231,
+    273,  313,  349,  384,  421,  461,  501,  540,
+    581,  617,  661,  705,  746,  787,  829,  874,
+    918,    0
 };
 
 static const int errorMessages_count = sizeof errorMessages_indices /
                                        sizeof errorMessages_indices[0];
 
-static inline const char *get(QDBusError::ErrorType code)
+static inline const char *get( QDBusError::ErrorType code )
 {
-    int intcode = qBound(0, int(code) - int(QDBusError::Other), errorMessages_count);
+    int intcode = qBound( 0, int( code ) - int( QDBusError::Other ), errorMessages_count );
     return errorMessages_string + errorMessages_indices[intcode];
 }
 
-static inline QDBusError::ErrorType get(const char *name)
+static inline QDBusError::ErrorType get( const char *name )
 {
-    if (!name || !*name)
+    if ( !name || !*name )
+    {
         return QDBusError::NoError;
-    for (int i = 0; i < errorMessages_count; ++i)
-        if (strcmp(name, errorMessages_string + errorMessages_indices[i]) == 0)
-            return QDBusError::ErrorType(i + int(QDBusError::Other));
+    }
+
+    for ( int i = 0; i < errorMessages_count; ++i )
+        if ( strcmp( name, errorMessages_string + errorMessages_indices[i] ) == 0 )
+        {
+            return QDBusError::ErrorType( i + int( QDBusError::Other ) );
+        }
+
     return QDBusError::Other;
 }
 
@@ -169,28 +176,32 @@ static inline QDBusError::ErrorType get(const char *name)
     \internal
     Constructs a QDBusError from a DBusError structure.
 */
-QDBusError::QDBusError(const DBusError *error)
-    : code(NoError)
+QDBusError::QDBusError( const DBusError *error )
+    : code( NoError )
 {
-    if (!error || !q_dbus_error_is_set(error))
+    if ( !error || !q_dbus_error_is_set( error ) )
+    {
         return;
+    }
 
-    code = ::get(error->name);
-    msg = QString::fromUtf8(error->message);
-    nm = QString::fromUtf8(error->name);
+    code = ::get( error->name );
+    msg = QString::fromUtf8( error->message );
+    nm = QString::fromUtf8( error->name );
 }
 
 /*!
     \internal
     Constructs a QDBusError from a QDBusMessage.
 */
-QDBusError::QDBusError(const QDBusMessage &qdmsg)
-    : code(NoError)
+QDBusError::QDBusError( const QDBusMessage &qdmsg )
+    : code( NoError )
 {
-    if (qdmsg.type() != QDBusMessage::ErrorMessage)
+    if ( qdmsg.type() != QDBusMessage::ErrorMessage )
+    {
         return;
+    }
 
-    code = ::get(qdmsg.errorName().toUtf8().constData());
+    code = ::get( qdmsg.errorName().toUtf8().constData() );
     nm = qdmsg.errorName();
     msg = qdmsg.errorMessage();
 }
@@ -199,10 +210,10 @@ QDBusError::QDBusError(const QDBusMessage &qdmsg)
     \internal
     Constructs a QDBusError from a well-known error code
 */
-QDBusError::QDBusError(ErrorType error, const QString &mess)
-    : code(error)
+QDBusError::QDBusError( ErrorType error, const QString &mess )
+    : code( error )
 {
-    nm = QLatin1String(::get(error));
+    nm = QLatin1String( ::get( error ) );
     msg = mess;
 }
 
@@ -210,8 +221,8 @@ QDBusError::QDBusError(ErrorType error, const QString &mess)
     \internal
     Constructs a QDBusError from another QDBusError object
 */
-QDBusError::QDBusError(const QDBusError &other)
-        : code(other.code), msg(other.msg), nm(other.nm)
+QDBusError::QDBusError( const QDBusError &other )
+    : code( other.code ), msg( other.msg ), nm( other.nm )
 {
 }
 
@@ -220,7 +231,7 @@ QDBusError::QDBusError(const QDBusError &other)
   Assignment operator
 */
 
-QDBusError &QDBusError::operator=(const QDBusError &other)
+QDBusError &QDBusError::operator=( const QDBusError &other )
 {
     code = other.code;
     msg = other.msg;
@@ -269,19 +280,19 @@ QString QDBusError::message() const
 
 bool QDBusError::isValid() const
 {
-    return (code != NoError);
+    return ( code != NoError );
 }
 
 /*!
     \since 4.3
     Returns the error name associated with error condition \a error.
 */
-QString QDBusError::errorString(ErrorType error)
+QString QDBusError::errorString( ErrorType error )
 {
-    return QLatin1String(::get(error));
+    return QLatin1String( ::get( error ) );
 }
 
-QDebug operator<<(QDebug dbg, const QDBusError &msg)
+QDebug operator<<( QDebug dbg, const QDBusError &msg )
 {
     dbg.nospace() << "QDBusError(" << msg.name() << ", " << msg.message() << ')';
     return dbg.space();

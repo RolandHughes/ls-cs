@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -44,258 +44,314 @@
 
 using namespace JSC;
 
-::JSType JSValueGetType(JSContextRef ctx, JSValueRef value)
+::JSType JSValueGetType( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
 
-    if (jsValue.isUndefined())
+    if ( jsValue.isUndefined() )
+    {
         return kJSTypeUndefined;
-    if (jsValue.isNull())
+    }
+
+    if ( jsValue.isNull() )
+    {
         return kJSTypeNull;
-    if (jsValue.isBoolean())
+    }
+
+    if ( jsValue.isBoolean() )
+    {
         return kJSTypeBoolean;
-    if (jsValue.isNumber())
+    }
+
+    if ( jsValue.isNumber() )
+    {
         return kJSTypeNumber;
-    if (jsValue.isString())
+    }
+
+    if ( jsValue.isString() )
+    {
         return kJSTypeString;
-    ASSERT(jsValue.isObject());
+    }
+
+    ASSERT( jsValue.isObject() );
     return kJSTypeObject;
 }
 
-bool JSValueIsUndefined(JSContextRef ctx, JSValueRef value)
+bool JSValueIsUndefined( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
     return jsValue.isUndefined();
 }
 
-bool JSValueIsNull(JSContextRef ctx, JSValueRef value)
+bool JSValueIsNull( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
     return jsValue.isNull();
 }
 
-bool JSValueIsBoolean(JSContextRef ctx, JSValueRef value)
+bool JSValueIsBoolean( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
     return jsValue.isBoolean();
 }
 
-bool JSValueIsNumber(JSContextRef ctx, JSValueRef value)
+bool JSValueIsNumber( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
     return jsValue.isNumber();
 }
 
-bool JSValueIsString(JSContextRef ctx, JSValueRef value)
+bool JSValueIsString( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
     return jsValue.isString();
 }
 
-bool JSValueIsObject(JSContextRef ctx, JSValueRef value)
+bool JSValueIsObject( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
     return jsValue.isObject();
 }
 
-bool JSValueIsObjectOfClass(JSContextRef ctx, JSValueRef value, JSClassRef jsClass)
+bool JSValueIsObjectOfClass( JSContextRef ctx, JSValueRef value, JSClassRef jsClass )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
-    
-    if (JSObject* o = jsValue.getObject()) {
-        if (o->inherits(&JSCallbackObject<JSGlobalObject>::info))
-            return static_cast<JSCallbackObject<JSGlobalObject>*>(o)->inherits(jsClass);
-        else if (o->inherits(&JSCallbackObject<JSObject>::info))
-            return static_cast<JSCallbackObject<JSObject>*>(o)->inherits(jsClass);
+    JSValue jsValue = toJS( exec, value );
+
+    if ( JSObject *o = jsValue.getObject() )
+    {
+        if ( o->inherits( &JSCallbackObject<JSGlobalObject>::info ) )
+        {
+            return static_cast<JSCallbackObject<JSGlobalObject>*>( o )->inherits( jsClass );
+        }
+        else if ( o->inherits( &JSCallbackObject<JSObject>::info ) )
+        {
+            return static_cast<JSCallbackObject<JSObject>*>( o )->inherits( jsClass );
+        }
     }
+
     return false;
 }
 
-bool JSValueIsEqual(JSContextRef ctx, JSValueRef a, JSValueRef b, JSValueRef* exception)
+bool JSValueIsEqual( JSContextRef ctx, JSValueRef a, JSValueRef b, JSValueRef *exception )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsA = toJS(exec, a);
-    JSValue jsB = toJS(exec, b);
+    JSValue jsA = toJS( exec, a );
+    JSValue jsB = toJS( exec, b );
 
-    bool result = JSValue::equal(exec, jsA, jsB); // false if an exception is thrown
-    if (exec->hadException()) {
-        if (exception)
-            *exception = toRef(exec, exec->exception());
+    bool result = JSValue::equal( exec, jsA, jsB ); // false if an exception is thrown
+
+    if ( exec->hadException() )
+    {
+        if ( exception )
+        {
+            *exception = toRef( exec, exec->exception() );
+        }
+
         exec->clearException();
     }
+
     return result;
 }
 
-bool JSValueIsStrictEqual(JSContextRef ctx, JSValueRef a, JSValueRef b)
+bool JSValueIsStrictEqual( JSContextRef ctx, JSValueRef a, JSValueRef b )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsA = toJS(exec, a);
-    JSValue jsB = toJS(exec, b);
+    JSValue jsA = toJS( exec, a );
+    JSValue jsB = toJS( exec, b );
 
-    return JSValue::strictEqual(exec, jsA, jsB);
+    return JSValue::strictEqual( exec, jsA, jsB );
 }
 
-bool JSValueIsInstanceOfConstructor(JSContextRef ctx, JSValueRef value, JSObjectRef constructor, JSValueRef* exception)
+bool JSValueIsInstanceOfConstructor( JSContextRef ctx, JSValueRef value, JSObjectRef constructor, JSValueRef *exception )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
 
-    JSObject* jsConstructor = toJS(constructor);
-    if (!jsConstructor->structure()->typeInfo().implementsHasInstance())
+    JSObject *jsConstructor = toJS( constructor );
+
+    if ( !jsConstructor->structure()->typeInfo().implementsHasInstance() )
+    {
         return false;
-    bool result = jsConstructor->hasInstance(exec, jsValue, jsConstructor->get(exec, exec->propertyNames().prototype)); // false if an exception is thrown
-    if (exec->hadException()) {
-        if (exception)
-            *exception = toRef(exec, exec->exception());
+    }
+
+    bool result = jsConstructor->hasInstance( exec, jsValue, jsConstructor->get( exec,
+                  exec->propertyNames().prototype ) ); // false if an exception is thrown
+
+    if ( exec->hadException() )
+    {
+        if ( exception )
+        {
+            *exception = toRef( exec, exec->exception() );
+        }
+
         exec->clearException();
     }
+
     return result;
 }
 
-JSValueRef JSValueMakeUndefined(JSContextRef ctx)
+JSValueRef JSValueMakeUndefined( JSContextRef ctx )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    return toRef(exec, jsUndefined());
+    return toRef( exec, jsUndefined() );
 }
 
-JSValueRef JSValueMakeNull(JSContextRef ctx)
+JSValueRef JSValueMakeNull( JSContextRef ctx )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    return toRef(exec, jsNull());
+    return toRef( exec, jsNull() );
 }
 
-JSValueRef JSValueMakeBoolean(JSContextRef ctx, bool value)
+JSValueRef JSValueMakeBoolean( JSContextRef ctx, bool value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    return toRef(exec, jsBoolean(value));
+    return toRef( exec, jsBoolean( value ) );
 }
 
-JSValueRef JSValueMakeNumber(JSContextRef ctx, double value)
+JSValueRef JSValueMakeNumber( JSContextRef ctx, double value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    return toRef(exec, jsNumber(exec, value));
+    return toRef( exec, jsNumber( exec, value ) );
 }
 
-JSValueRef JSValueMakeString(JSContextRef ctx, JSStringRef string)
+JSValueRef JSValueMakeString( JSContextRef ctx, JSStringRef string )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    return toRef(exec, jsString(exec, string->ustring()));
+    return toRef( exec, jsString( exec, string->ustring() ) );
 }
 
-bool JSValueToBoolean(JSContextRef ctx, JSValueRef value)
+bool JSValueToBoolean( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
-    return jsValue.toBoolean(exec);
+    JSValue jsValue = toJS( exec, value );
+    return jsValue.toBoolean( exec );
 }
 
-double JSValueToNumber(JSContextRef ctx, JSValueRef value, JSValueRef* exception)
+double JSValueToNumber( JSContextRef ctx, JSValueRef value, JSValueRef *exception )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
+    JSValue jsValue = toJS( exec, value );
 
-    double number = jsValue.toNumber(exec);
-    if (exec->hadException()) {
-        if (exception)
-            *exception = toRef(exec, exec->exception());
+    double number = jsValue.toNumber( exec );
+
+    if ( exec->hadException() )
+    {
+        if ( exception )
+        {
+            *exception = toRef( exec, exec->exception() );
+        }
+
         exec->clearException();
         number = NaN;
     }
+
     return number;
 }
 
-JSStringRef JSValueToStringCopy(JSContextRef ctx, JSValueRef value, JSValueRef* exception)
+JSStringRef JSValueToStringCopy( JSContextRef ctx, JSValueRef value, JSValueRef *exception )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
-    
-    RefPtr<OpaqueJSString> stringRef(OpaqueJSString::create(jsValue.toString(exec)));
-    if (exec->hadException()) {
-        if (exception)
-            *exception = toRef(exec, exec->exception());
+    JSValue jsValue = toJS( exec, value );
+
+    RefPtr<OpaqueJSString> stringRef( OpaqueJSString::create( jsValue.toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        if ( exception )
+        {
+            *exception = toRef( exec, exec->exception() );
+        }
+
         exec->clearException();
         stringRef.clear();
     }
+
     return stringRef.release().releaseRef();
 }
 
-JSObjectRef JSValueToObject(JSContextRef ctx, JSValueRef value, JSValueRef* exception)
+JSObjectRef JSValueToObject( JSContextRef ctx, JSValueRef value, JSValueRef *exception )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJS(exec, value);
-    
-    JSObjectRef objectRef = toRef(jsValue.toObject(exec));
-    if (exec->hadException()) {
-        if (exception)
-            *exception = toRef(exec, exec->exception());
+    JSValue jsValue = toJS( exec, value );
+
+    JSObjectRef objectRef = toRef( jsValue.toObject( exec ) );
+
+    if ( exec->hadException() )
+    {
+        if ( exception )
+        {
+            *exception = toRef( exec, exec->exception() );
+        }
+
         exec->clearException();
         objectRef = 0;
     }
+
     return objectRef;
-}    
-
-void JSValueProtect(JSContextRef ctx, JSValueRef value)
-{
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
-
-    JSValue jsValue = toJSForGC(exec, value);
-    gcProtect(jsValue);
 }
 
-void JSValueUnprotect(JSContextRef ctx, JSValueRef value)
+void JSValueProtect( JSContextRef ctx, JSValueRef value )
 {
-    ExecState* exec = toJS(ctx);
-    APIEntryShim entryShim(exec);
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
 
-    JSValue jsValue = toJSForGC(exec, value);
-    gcUnprotect(jsValue);
+    JSValue jsValue = toJSForGC( exec, value );
+    gcProtect( jsValue );
+}
+
+void JSValueUnprotect( JSContextRef ctx, JSValueRef value )
+{
+    ExecState *exec = toJS( ctx );
+    APIEntryShim entryShim( exec );
+
+    JSValue jsValue = toJSForGC( exec, value );
+    gcUnprotect( jsValue );
 }

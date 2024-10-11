@@ -28,30 +28,41 @@
 
 QTM_USE_NAMESPACE
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientationClientQt;
 
-class DeviceOrientationProviderQt : public QObject, public QRotationFilter {
-    WEB_CS_OBJECT(DeviceOrientationProviderQt)
+class DeviceOrientationProviderQt : public QObject, public QRotationFilter
+{
+    WEB_LSCS_OBJECT( DeviceOrientationProviderQt )
 
 public:
     DeviceOrientationProviderQt();
     ~DeviceOrientationProviderQt();
 
-    bool filter(QRotationReading*);
+    bool filter( QRotationReading * );
     void start();
     void stop();
-    bool isActive() const { return m_rotation.isActive(); }
-    DeviceOrientation* orientation() const { return m_orientation.get(); }
-    bool hasAlpha() const { return m_rotation.property("hasZ").toBool(); }
+    bool isActive() const
+    {
+        return m_rotation.isActive();
+    }
+    DeviceOrientation *orientation() const
+    {
+        return m_orientation.get();
+    }
+    bool hasAlpha() const
+    {
+        return m_rotation.property( "hasZ" ).toBool();
+    }
 
 public:
-    WEB_CS_SIGNAL_1(Public, void deviceOrientationChanged(DeviceOrientation *orientation))
-    WEB_CS_SIGNAL_2(deviceOrientationChanged,orientation)
+    WEB_LSCS_SIGNAL_1( Public, void deviceOrientationChanged( DeviceOrientation *orientation ) )
+    WEB_LSCS_SIGNAL_2( deviceOrientationChanged,orientation )
 
-    WEB_CS_SLOT_1(Public, void changeDeviceOrientation(DeviceOrientation *orientation))
-    WEB_CS_SLOT_2(changeDeviceOrientation)
+    WEB_LSCS_SLOT_1( Public, void changeDeviceOrientation( DeviceOrientation *orientation ) )
+    WEB_LSCS_SLOT_2( changeDeviceOrientation )
 
 private:
     void activeClientMock();

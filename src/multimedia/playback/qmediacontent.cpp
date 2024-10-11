@@ -30,79 +30,83 @@
 
 class QMediaContentPrivate : public QSharedData
 {
- public:
-   QMediaContentPrivate()
-      : isPlaylistOwned(false)
-   {}
+public:
+    QMediaContentPrivate()
+        : isPlaylistOwned( false )
+    {}
 
-   QMediaContentPrivate(const QList<QMediaResource> &r)
-      : resources(r), isPlaylistOwned(false)
-   {}
+    QMediaContentPrivate( const QList<QMediaResource> &r )
+        : resources( r ), isPlaylistOwned( false )
+    {}
 
-   QMediaContentPrivate(const QMediaContentPrivate &other):
-      QSharedData(other), resources(other.resources), playlist(other.playlist), isPlaylistOwned(false)
-   {}
+    QMediaContentPrivate( const QMediaContentPrivate &other ):
+        QSharedData( other ), resources( other.resources ), playlist( other.playlist ), isPlaylistOwned( false )
+    {}
 
-   QMediaContentPrivate(QMediaPlaylist *pls, const QUrl &url, bool isOwn):
-      playlist(pls),
-      isPlaylistOwned(isOwn) {
-      resources << QMediaResource(url);
-   }
+    QMediaContentPrivate( QMediaPlaylist *pls, const QUrl &url, bool isOwn ):
+        playlist( pls ),
+        isPlaylistOwned( isOwn )
+    {
+        resources << QMediaResource( url );
+    }
 
-   ~QMediaContentPrivate() {
-      if (isPlaylistOwned && !playlist.isNull()) {
-         playlist.data()->deleteLater();
-      }
-   }
+    ~QMediaContentPrivate()
+    {
+        if ( isPlaylistOwned && !playlist.isNull() )
+        {
+            playlist.data()->deleteLater();
+        }
+    }
 
-   bool operator ==(const QMediaContentPrivate &other) const {
-      return resources == other.resources && playlist == other.playlist;
-   }
+    bool operator ==( const QMediaContentPrivate &other ) const
+    {
+        return resources == other.resources && playlist == other.playlist;
+    }
 
-   QList<QMediaResource> resources;
+    QList<QMediaResource> resources;
 
-   QPointer<QMediaPlaylist> playlist;
-   bool isPlaylistOwned;
+    QPointer<QMediaPlaylist> playlist;
+    bool isPlaylistOwned;
 
- private:
-   QMediaContentPrivate &operator=(const QMediaContentPrivate &other);
+private:
+    QMediaContentPrivate &operator=( const QMediaContentPrivate &other );
 };
 
 QMediaContent::QMediaContent()
 {
 }
 
-QMediaContent::QMediaContent(const QUrl &url)
-   : d(new QMediaContentPrivate)
+QMediaContent::QMediaContent( const QUrl &url )
+    : d( new QMediaContentPrivate )
 {
-   d->resources << QMediaResource(url);
+    d->resources << QMediaResource( url );
 }
 
 
-QMediaContent::QMediaContent(const QNetworkRequest &request)
-   : d(new QMediaContentPrivate)
+QMediaContent::QMediaContent( const QNetworkRequest &request )
+    : d( new QMediaContentPrivate )
 {
-   d->resources << QMediaResource(request);
+    d->resources << QMediaResource( request );
 }
 
-QMediaContent::QMediaContent(const QMediaResource &resource)
-   : d(new QMediaContentPrivate)
+QMediaContent::QMediaContent( const QMediaResource &resource )
+    : d( new QMediaContentPrivate )
 {
-   d->resources << resource;
+    d->resources << resource;
 }
 
-QMediaContent::QMediaContent(const QList<QMediaResource> &resources)
-   : d(new QMediaContentPrivate(resources))
-{
-}
-
-QMediaContent::QMediaContent(const QMediaContent &other)
-   : d(other.d)
+QMediaContent::QMediaContent( const QList<QMediaResource> &resources )
+    : d( new QMediaContentPrivate( resources ) )
 {
 }
 
-QMediaContent::QMediaContent(QMediaPlaylist *playlist, const QUrl &contentUrl, bool takeOwnership)
-   : d(new QMediaContentPrivate(playlist, contentUrl, takeOwnership))
+QMediaContent::QMediaContent( const QMediaContent &other )
+    : d( other.d )
+{
+}
+
+QMediaContent::QMediaContent( QMediaPlaylist *playlist, const QUrl &contentUrl, bool takeOwnership )
+    : d( new QMediaContentPrivate( playlist, contentUrl, takeOwnership ) )
 {
 }
 
@@ -110,51 +114,51 @@ QMediaContent::~QMediaContent()
 {
 }
 
-QMediaContent &QMediaContent::operator=(const QMediaContent &other)
+QMediaContent &QMediaContent::operator=( const QMediaContent &other )
 {
-   d = other.d;
-   return *this;
+    d = other.d;
+    return *this;
 }
 
-bool QMediaContent::operator==(const QMediaContent &other) const
+bool QMediaContent::operator==( const QMediaContent &other ) const
 {
-   return (d.constData() == nullptr && other.d.constData() == nullptr) ||
-      (d.constData() != nullptr && other.d.constData() != nullptr &&
-      *d.constData() == *other.d.constData());
+    return ( d.constData() == nullptr && other.d.constData() == nullptr ) ||
+           ( d.constData() != nullptr && other.d.constData() != nullptr &&
+             *d.constData() == *other.d.constData() );
 }
 
-bool QMediaContent::operator!=(const QMediaContent &other) const
+bool QMediaContent::operator!=( const QMediaContent &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
 bool QMediaContent::isNull() const
 {
-   return d.constData() == nullptr;
+    return d.constData() == nullptr;
 }
 
 QUrl QMediaContent::canonicalUrl() const
 {
-   return canonicalResource().url();
+    return canonicalResource().url();
 }
 
 QNetworkRequest QMediaContent::canonicalRequest() const
 {
-   return canonicalResource().request();
+    return canonicalResource().request();
 }
 
 QMediaResource QMediaContent::canonicalResource() const
 {
-   return d.constData() != nullptr ?  d->resources.value(0) : QMediaResource();
+    return d.constData() != nullptr ?  d->resources.value( 0 ) : QMediaResource();
 }
 
 QList<QMediaResource> QMediaContent::resources() const
 {
-   return d.constData() != nullptr ? d->resources : QList<QMediaResource>();
+    return d.constData() != nullptr ? d->resources : QList<QMediaResource>();
 }
 
 QMediaPlaylist *QMediaContent::playlist() const
 {
-   return d.constData() != nullptr ? d->playlist.data() : nullptr;
+    return d.constData() != nullptr ? d->playlist.data() : nullptr;
 }
 

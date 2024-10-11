@@ -36,11 +36,14 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FileError : public RefCounted<FileError> {
+class FileError : public RefCounted<FileError>
+{
 public:
-    enum ErrorCode {
+    enum ErrorCode
+    {
         OK = 0,
         NOT_FOUND_ERR = 1,
         SECURITY_ERR = 2,
@@ -56,13 +59,19 @@ public:
         PATH_EXISTS_ERR = 12,
     };
 
-    static PassRefPtr<FileError> create(ErrorCode code) { return adoptRef(new FileError(code)); }
+    static PassRefPtr<FileError> create( ErrorCode code )
+    {
+        return adoptRef( new FileError( code ) );
+    }
 
-    ErrorCode code() const { return m_code; }
+    ErrorCode code() const
+    {
+        return m_code;
+    }
 
 private:
-    FileError(ErrorCode code)
-        : m_code(code)
+    FileError( ErrorCode code )
+        : m_code( code )
     { }
 
     ErrorCode m_code;

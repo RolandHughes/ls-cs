@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2010, Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -41,55 +41,66 @@
 #include <wtf/CurrentTime.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
-
-PassOwnPtr<ScrollAnimator> ScrollAnimator::create(ScrollableArea* scrollableArea)
+namespace WebCore
 {
-    return adoptPtr(new ScrollAnimatorWin(scrollableArea));
+
+PassOwnPtr<ScrollAnimator> ScrollAnimator::create( ScrollableArea *scrollableArea )
+{
+    return adoptPtr( new ScrollAnimatorWin( scrollableArea ) );
 }
 
 const double ScrollAnimatorWin::animationTimerDelay = 0.01;
 
-ScrollAnimatorWin::PerAxisData::PerAxisData(ScrollAnimatorWin* parent, float* currentPos)
-    : m_currentPos(currentPos)
-    , m_desiredPos(0)
-    , m_currentVelocity(0)
-    , m_desiredVelocity(0)
-    , m_lastAnimationTime(0)
-    , m_animationTimer(parent, &ScrollAnimatorWin::animationTimerFired)
+ScrollAnimatorWin::PerAxisData::PerAxisData( ScrollAnimatorWin *parent, float *currentPos )
+    : m_currentPos( currentPos )
+    , m_desiredPos( 0 )
+    , m_currentVelocity( 0 )
+    , m_desiredVelocity( 0 )
+    , m_lastAnimationTime( 0 )
+    , m_animationTimer( parent, &ScrollAnimatorWin::animationTimerFired )
 {
 }
 
 
-ScrollAnimatorWin::ScrollAnimatorWin(ScrollableArea* scrollableArea)
-    : ScrollAnimator(scrollableArea)
-    , m_horizontalData(this, &m_currentPosX)
-    , m_verticalData(this, &m_currentPosY)
+ScrollAnimatorWin::ScrollAnimatorWin( ScrollableArea *scrollableArea )
+    : ScrollAnimator( scrollableArea )
+    , m_horizontalData( this, &m_currentPosX )
+    , m_verticalData( this, &m_currentPosY )
 {
 }
 
 ScrollAnimatorWin::~ScrollAnimatorWin()
 {
-    stopAnimationTimerIfNeeded(&m_horizontalData);
-    stopAnimationTimerIfNeeded(&m_verticalData);
+    stopAnimationTimerIfNeeded( &m_horizontalData );
+    stopAnimationTimerIfNeeded( &m_verticalData );
 }
 
-bool ScrollAnimatorWin::scroll(ScrollbarOrientation orientation, ScrollGranularity granularity, float step, float multiplier)
+bool ScrollAnimatorWin::scroll( ScrollbarOrientation orientation, ScrollGranularity granularity, float step, float multiplier )
 {
     // Don't animate jumping to the beginning or end of the document.
-    if (granularity == ScrollByDocument)
-        return ScrollAnimator::scroll(orientation, granularity, step, multiplier);
+    if ( granularity == ScrollByDocument )
+    {
+        return ScrollAnimator::scroll( orientation, granularity, step, multiplier );
+    }
 
     // This is an animatable scroll.  Calculate the scroll delta.
-    PerAxisData* data = (orientation == VerticalScrollbar) ? &m_verticalData : &m_horizontalData;
-    float newPos = std::max(std::min(data->m_desiredPos + (step * multiplier), static_cast<float>(m_scrollableArea->scrollSize(orientation))), 0.0f);
-    if (newPos == data->m_desiredPos)
+    PerAxisData *data = ( orientation == VerticalScrollbar ) ? &m_verticalData : &m_horizontalData;
+    float newPos = std::max( std::min( data->m_desiredPos + ( step * multiplier ),
+                                       static_cast<float>( m_scrollableArea->scrollSize( orientation ) ) ), 0.0f );
+
+    if ( newPos == data->m_desiredPos )
+    {
         return false;
+    }
+
     data->m_desiredPos = newPos;
 
     // Calculate the animation velocity.
-    if (*data->m_currentPos == data->m_desiredPos)
+    if ( *data->m_currentPos == data->m_desiredPos )
+    {
         return false;
+    }
+
     bool alreadyAnimating = data->m_animationTimer.isActive();
     // There are a number of different sources of scroll requests.  We want to
     // make both keyboard and wheel-generated scroll requests (which can come at
@@ -132,7 +143,8 @@ bool ScrollAnimatorWin::scroll(ScrollbarOrientation orientation, ScrollGranulari
     // velocity needed to stay smoothly in sync with the user's actions; for
     // events that come slower, we'll scroll one increment and then pause until
     // the next event fires.
-    float animationStep = fabs(newPos - *data->m_currentPos);
+    float animationStep = fabs( newPos - *data->m_currentPos );
+
     // If a key is held down (or the wheel continually spun), then once we have
     // reached a velocity close to the steady-state velocity, we're likely to
     // hit the desired position at around the same time we'd expect the next
@@ -162,8 +174,12 @@ bool ScrollAnimatorWin::scroll(ScrollbarOrientation orientation, ScrollGranulari
     // with |animationStep| == |step| * |multiplier| despite the actual distance
     // calculated above being larger than that).  This will result in "perfect"
     // behavior for autoscrolling without having to special-case it.
-    if (alreadyAnimating)
-        animationStep /= (2.0 - ((1.0 / ScrollbarTheme::nativeTheme()->autoscrollTimerDelay()) * (0.5 * accelerationTime() + animationTimerDelay)));
+    if ( alreadyAnimating )
+    {
+        animationStep /= ( 2.0 - ( ( 1.0 / ScrollbarTheme::nativeTheme()->autoscrollTimerDelay() ) *
+                                   ( 0.5 * accelerationTime() + animationTimerDelay ) ) );
+    }
+
     // The result of all this is that single keypresses or wheel flicks will
     // scroll in the same time period as single presses of scrollbar elements;
     // holding the mouse down on a scrollbar part will scroll as fast as
@@ -173,15 +189,18 @@ bool ScrollAnimatorWin::scroll(ScrollbarOrientation orientation, ScrollGranulari
     data->m_desiredVelocity = animationStep / ScrollbarTheme::nativeTheme()->autoscrollTimerDelay();
 
     // If we're not already scrolling, start.
-    if (!alreadyAnimating)
-        animateScroll(data);
+    if ( !alreadyAnimating )
+    {
+        animateScroll( data );
+    }
+
     return true;
 }
 
-void ScrollAnimatorWin::scrollToOffsetWithoutAnimation(const FloatPoint& offset)
+void ScrollAnimatorWin::scrollToOffsetWithoutAnimation( const FloatPoint &offset )
 {
-    stopAnimationTimerIfNeeded(&m_horizontalData);
-    stopAnimationTimerIfNeeded(&m_verticalData);
+    stopAnimationTimerIfNeeded( &m_horizontalData );
+    stopAnimationTimerIfNeeded( &m_verticalData );
 
     *m_horizontalData.m_currentPos = offset.x();
     m_horizontalData.m_desiredPos = offset.x();
@@ -205,18 +224,20 @@ double ScrollAnimatorWin::accelerationTime()
     return ScrollbarTheme::nativeTheme()->autoscrollTimerDelay();
 }
 
-void ScrollAnimatorWin::animationTimerFired(Timer<ScrollAnimatorWin>* timer)
+void ScrollAnimatorWin::animationTimerFired( Timer<ScrollAnimatorWin> *timer )
 {
-    animateScroll((timer == &m_horizontalData.m_animationTimer) ? &m_horizontalData : &m_verticalData);
+    animateScroll( ( timer == &m_horizontalData.m_animationTimer ) ? &m_horizontalData : &m_verticalData );
 }
 
-void ScrollAnimatorWin::stopAnimationTimerIfNeeded(PerAxisData* data)
+void ScrollAnimatorWin::stopAnimationTimerIfNeeded( PerAxisData *data )
 {
-    if (data->m_animationTimer.isActive())
+    if ( data->m_animationTimer.isActive() )
+    {
         data->m_animationTimer.stop();
+    }
 }
 
-void ScrollAnimatorWin::animateScroll(PerAxisData* data)
+void ScrollAnimatorWin::animateScroll( PerAxisData *data )
 {
     // Note on smooth scrolling perf versus non-smooth scrolling perf:
     // The total time to perform a complete scroll is given by
@@ -244,12 +265,14 @@ void ScrollAnimatorWin::animateScroll(PerAxisData* data)
     // To avoid feeling laggy, if we've just started smooth scrolling we pretend
     // we've already accelerated for one ideal interval, so that we'll scroll at
     // least some distance immediately.
-    double lastScrollInterval = data->m_currentVelocity ? (WTF::currentTime() - data->m_lastAnimationTime) : animationTimerDelay;
+    double lastScrollInterval = data->m_currentVelocity ? ( WTF::currentTime() - data->m_lastAnimationTime ) : animationTimerDelay;
 
     // Figure out how far we've actually traveled and update our current
     // velocity.
     float distanceTraveled;
-    if (data->m_currentVelocity < data->m_desiredVelocity) {
+
+    if ( data->m_currentVelocity < data->m_desiredVelocity )
+    {
         // We accelerate at a constant rate until we reach the desired velocity.
         float accelerationRate = data->m_desiredVelocity / accelerationTime();
 
@@ -257,7 +280,9 @@ void ScrollAnimatorWin::animateScroll(PerAxisData* data)
         // target velocity.
         float potentialVelocityChange = accelerationRate * lastScrollInterval;
         float potentialNewVelocity = data->m_currentVelocity + potentialVelocityChange;
-        if (potentialNewVelocity > data->m_desiredVelocity) {
+
+        if ( potentialNewVelocity > data->m_desiredVelocity )
+        {
             // We reached the target velocity at some point between our last
             // update and now.  The distance traveled can be calculated in two
             // pieces: the distance traveled while accelerating, and the
@@ -267,17 +292,21 @@ void ScrollAnimatorWin::animateScroll(PerAxisData* data)
             // The distance traveled under constant acceleration is the area
             // under a line segment with a constant rising slope.  Break this
             // into a triangular portion atop a rectangular portion and sum.
-            distanceTraveled = ((data->m_currentVelocity + (actualVelocityChange / 2)) * accelerationInterval);
+            distanceTraveled = ( ( data->m_currentVelocity + ( actualVelocityChange / 2 ) ) * accelerationInterval );
             // The distance traveled at the target velocity is simply
             // (target velocity) * (remaining time after accelerating).
-            distanceTraveled += (data->m_desiredVelocity * (lastScrollInterval - accelerationInterval));
+            distanceTraveled += ( data->m_desiredVelocity * ( lastScrollInterval - accelerationInterval ) );
             data->m_currentVelocity = data->m_desiredVelocity;
-        } else {
+        }
+        else
+        {
             // Constant acceleration through the entire time interval.
-            distanceTraveled = (data->m_currentVelocity + (potentialVelocityChange / 2)) * lastScrollInterval;
+            distanceTraveled = ( data->m_currentVelocity + ( potentialVelocityChange / 2 ) ) * lastScrollInterval;
             data->m_currentVelocity = potentialNewVelocity;
         }
-    } else {
+    }
+    else
+    {
         // We've already reached the target velocity, so the distance we've
         // traveled is simply (current velocity) * (elapsed time).
         distanceTraveled = data->m_currentVelocity * lastScrollInterval;
@@ -286,19 +315,25 @@ void ScrollAnimatorWin::animateScroll(PerAxisData* data)
     }
 
     // Now update the scroll position based on the distance traveled.
-    if (distanceTraveled >= fabs(data->m_desiredPos - *data->m_currentPos)) {
+    if ( distanceTraveled >= fabs( data->m_desiredPos - *data->m_currentPos ) )
+    {
         // We've traveled far enough to reach the desired position.  Stop smooth
         // scrolling.
         *data->m_currentPos = data->m_desiredPos;
         data->m_currentVelocity = 0;
         data->m_desiredVelocity = 0;
-    } else {
+    }
+    else
+    {
         // Not yet at the target position.  Travel towards it and set up the
         // next update.
-        if (*data->m_currentPos > data->m_desiredPos)
+        if ( *data->m_currentPos > data->m_desiredPos )
+        {
             distanceTraveled = -distanceTraveled;
+        }
+
         *data->m_currentPos += distanceTraveled;
-        data->m_animationTimer.startOneShot(animationTimerDelay);
+        data->m_animationTimer.startOneShot( animationTimerDelay );
         data->m_lastAnimationTime = WTF::currentTime();
     }
 

@@ -39,44 +39,59 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class Blob : public RefCounted<Blob> {
+class Blob : public RefCounted<Blob>
+{
 public:
-    static PassRefPtr<Blob> create(PassOwnPtr<BlobData> blobData, long long size)
+    static PassRefPtr<Blob> create( PassOwnPtr<BlobData> blobData, long long size )
     {
-        return adoptRef(new Blob(blobData, size));
+        return adoptRef( new Blob( blobData, size ) );
     }
 
     // For deserialization.
-    static PassRefPtr<Blob> create(const KURL& srcURL, const String& type, long long size)
+    static PassRefPtr<Blob> create( const KURL &srcURL, const String &type, long long size )
     {
-        return adoptRef(new Blob(srcURL, type, size));
+        return adoptRef( new Blob( srcURL, type, size ) );
     }
 
     virtual ~Blob();
 
-    const KURL& url() const { return m_internalURL; }
-    const String& type() const { return m_type; }
+    const KURL &url() const
+    {
+        return m_internalURL;
+    }
+    const String &type() const
+    {
+        return m_type;
+    }
 
-    virtual unsigned long long size() const { return static_cast<unsigned long long>(m_size); }
-    virtual bool isFile() const { return false; }
+    virtual unsigned long long size() const
+    {
+        return static_cast<unsigned long long>( m_size );
+    }
+    virtual bool isFile() const
+    {
+        return false;
+    }
 
 #if ENABLE(BLOB)
-    PassRefPtr<Blob> webkitSlice(long long start, long long end = std::numeric_limits<long long>::max(), const String& contentType = String()) const;
+    PassRefPtr<Blob> webkitSlice( long long start, long long end = std::numeric_limits<long long>::max(),
+                                  const String &contentType = String() ) const;
 #endif
 
 protected:
-    Blob(PassOwnPtr<BlobData>, long long size);
+    Blob( PassOwnPtr<BlobData>, long long size );
 
     // For deserialization.
-    Blob(const KURL& srcURL, const String& type, long long size);
+    Blob( const KURL &srcURL, const String &type, long long size );
 
     // This is an internal URL referring to the blob data associated with this object. It serves
     // as an identifier for this blob. The internal URL is never used to source the blob's content
     // into an HTML or for FileRead'ing, public blob URLs must be used for those purposes.
     KURL m_internalURL;
-    
+
     String m_type;
     long long m_size;
 };

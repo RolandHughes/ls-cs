@@ -30,21 +30,21 @@
 
 class Statistics : public QDialog, public Ui::Statistics
 {
-   CS_OBJECT(Statistics)
+    LSCS_OBJECT( Statistics )
 
- public:
-   Statistics(QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag);
+public:
+    Statistics( QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::EmptyFlag );
 
-   ~Statistics()
-   {
-   }
+    ~Statistics()
+    {
+    }
 
-   CS_SLOT_1(Public, virtual void updateStats(int w1,int c1,int cs1,int w2,int c2,int cs2))
-   CS_SLOT_2(updateStats)
+    LSCS_SLOT_1( Public, virtual void updateStats( int w1,int c1,int cs1,int w2,int c2,int cs2 ) )
+    LSCS_SLOT_2( updateStats )
 
- protected:
-   CS_SLOT_1(Protected, virtual void languageChange())
-   CS_SLOT_2(languageChange)
+protected:
+    LSCS_SLOT_1( Protected, virtual void languageChange() )
+    LSCS_SLOT_2( languageChange )
 };
 
 #endif

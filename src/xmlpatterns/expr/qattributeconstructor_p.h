@@ -26,35 +26,36 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AttributeConstructor : public PairContainer
 {
- public:
-   AttributeConstructor(const Expression::Ptr &operand1, const Expression::Ptr &operand2);
+public:
+    AttributeConstructor( const Expression::Ptr &operand1, const Expression::Ptr &operand2 );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
+    SequenceType::Ptr staticType() const override;
 
-   /**
-    * The first operand must be exactly one @c xs:QName, and the second
-    * argument can be zero or more items.
-    */
-   SequenceType::List expectedOperandTypes() const override;
+    /**
+     * The first operand must be exactly one @c xs:QName, and the second
+     * argument can be zero or more items.
+     */
+    SequenceType::List expectedOperandTypes() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   /**
-    * @returns always IDAttributeConstructor.
-    */
-   ID id() const override;
+    /**
+     * @returns always IDAttributeConstructor.
+     */
+    ID id() const override;
 
-   Properties properties() const override;
+    Properties properties() const override;
 
- private:
-   static inline QString processValue(const QXmlName name, const Item &value);
+private:
+    static inline QString processValue( const QXmlName name, const Item &value );
 };
 
 }

@@ -33,15 +33,16 @@
 #include "AudioNodeInput.h"
 #include "AudioNodeOutput.h"
 
-namespace WebCore {
-    
-AudioDestinationNode::AudioDestinationNode(AudioContext* context, double sampleRate)
-    : AudioNode(context, sampleRate)
-    , m_currentTime(0.0)
+namespace WebCore
 {
-    addInput(adoptPtr(new AudioNodeInput(this)));
-    
-    setType(NodeTypeDestination);
+
+AudioDestinationNode::AudioDestinationNode( AudioContext *context, double sampleRate )
+    : AudioNode( context, sampleRate )
+    , m_currentTime( 0.0 )
+{
+    addInput( adoptPtr( new AudioNodeInput( this ) ) );
+
+    setType( NodeTypeDestination );
 }
 
 AudioDestinationNode::~AudioDestinationNode()
@@ -50,11 +51,12 @@ AudioDestinationNode::~AudioDestinationNode()
 }
 
 // The audio hardware calls us back here to gets its input stream.
-void AudioDestinationNode::provideInput(AudioBus* destinationBus, size_t numberOfFrames)
+void AudioDestinationNode::provideInput( AudioBus *destinationBus, size_t numberOfFrames )
 {
-    context()->setAudioThread(currentThread());
-    
-    if (!context()->isRunnable()) {
+    context()->setAudioThread( currentThread() );
+
+    if ( !context()->isRunnable() )
+    {
         destinationBus->zero();
         return;
     }
@@ -64,18 +66,21 @@ void AudioDestinationNode::provideInput(AudioBus* destinationBus, size_t numberO
 
     // This will cause the node(s) connected to us to process, which in turn will pull on their input(s),
     // all the way backwards through the rendering graph.
-    AudioBus* renderedBus = input(0)->pull(destinationBus, numberOfFrames);
-    
-    if (!renderedBus)
+    AudioBus *renderedBus = input( 0 )->pull( destinationBus, numberOfFrames );
+
+    if ( !renderedBus )
+    {
         destinationBus->zero();
-    else if (renderedBus != destinationBus) {
+    }
+    else if ( renderedBus != destinationBus )
+    {
         // in-place processing was not possible - so copy
-        destinationBus->copyFrom(*renderedBus);
+        destinationBus->copyFrom( *renderedBus );
     }
 
     // Let the context take care of any business at the end of each render quantum.
     context()->handlePostRenderTasks();
-    
+
     // Advance current time.
     m_currentTime += numberOfFrames / sampleRate();
 }

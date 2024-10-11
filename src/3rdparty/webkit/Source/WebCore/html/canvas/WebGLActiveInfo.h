@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebGLActiveInfo_h
@@ -31,27 +31,38 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebGLActiveInfo : public RefCounted<WebGLActiveInfo> {
+class WebGLActiveInfo : public RefCounted<WebGLActiveInfo>
+{
 public:
-    static PassRefPtr<WebGLActiveInfo> create(const String& name, GC3Denum type, GC3Dint size)
+    static PassRefPtr<WebGLActiveInfo> create( const String &name, GC3Denum type, GC3Dint size )
     {
-        return adoptRef(new WebGLActiveInfo(name, type, size));
+        return adoptRef( new WebGLActiveInfo( name, type, size ) );
     }
-    String name() const { return m_name; }
-    GC3Denum type() const { return m_type; }
-    GC3Dint size() const { return m_size; }
+    String name() const
+    {
+        return m_name;
+    }
+    GC3Denum type() const
+    {
+        return m_type;
+    }
+    GC3Dint size() const
+    {
+        return m_size;
+    }
 
 private:
-    WebGLActiveInfo(const String& name, GC3Denum type, GC3Dint size)
-        : m_name(name)
-        , m_type(type)
-        , m_size(size)
+    WebGLActiveInfo( const String &name, GC3Denum type, GC3Dint size )
+        : m_name( name )
+        , m_type( type )
+        , m_size( size )
     {
-        ASSERT(name.length());
-        ASSERT(type);
-        ASSERT(size);
+        ASSERT( name.length() );
+        ASSERT( type );
+        ASSERT( size );
     }
     String m_name;
     GC3Denum m_type;

@@ -27,18 +27,19 @@
 #define ThunkGenerators_h
 
 #if ENABLE(JIT)
-namespace JSC {
-    class ExecutablePool;
-    class JSGlobalData;
-    class NativeExecutable;
-    class MacroAssemblerCodePtr;
+namespace JSC
+{
+class ExecutablePool;
+class JSGlobalData;
+class NativeExecutable;
+class MacroAssemblerCodePtr;
 
-    typedef MacroAssemblerCodePtr (*ThunkGenerator)(JSGlobalData*, ExecutablePool*);
-    MacroAssemblerCodePtr charCodeAtThunkGenerator(JSGlobalData*, ExecutablePool*);
-    MacroAssemblerCodePtr charAtThunkGenerator(JSGlobalData*, ExecutablePool*);
-    MacroAssemblerCodePtr fromCharCodeThunkGenerator(JSGlobalData*, ExecutablePool*);
-    MacroAssemblerCodePtr sqrtThunkGenerator(JSGlobalData*, ExecutablePool*);
-    MacroAssemblerCodePtr powThunkGenerator(JSGlobalData*, ExecutablePool*);
+typedef MacroAssemblerCodePtr ( *ThunkGenerator )( JSGlobalData *, ExecutablePool * );
+MacroAssemblerCodePtr charCodeAtThunkGenerator( JSGlobalData *, ExecutablePool * );
+MacroAssemblerCodePtr charAtThunkGenerator( JSGlobalData *, ExecutablePool * );
+MacroAssemblerCodePtr fromCharCodeThunkGenerator( JSGlobalData *, ExecutablePool * );
+MacroAssemblerCodePtr sqrtThunkGenerator( JSGlobalData *, ExecutablePool * );
+MacroAssemblerCodePtr powThunkGenerator( JSGlobalData *, ExecutablePool * );
 }
 #endif
 

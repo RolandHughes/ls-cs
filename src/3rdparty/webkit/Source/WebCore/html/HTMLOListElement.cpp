@@ -29,69 +29,98 @@
 #include "HTMLNames.h"
 #include "RenderListItem.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLOListElement::HTMLOListElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
-    , m_start(1)
+HTMLOListElement::HTMLOListElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
+    , m_start( 1 )
 {
-    ASSERT(hasTagName(olTag));
+    ASSERT( hasTagName( olTag ) );
 }
 
-PassRefPtr<HTMLOListElement> HTMLOListElement::create(Document* document)
+PassRefPtr<HTMLOListElement> HTMLOListElement::create( Document *document )
 {
-    return adoptRef(new HTMLOListElement(olTag, document));
+    return adoptRef( new HTMLOListElement( olTag, document ) );
 }
 
-PassRefPtr<HTMLOListElement> HTMLOListElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLOListElement> HTMLOListElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLOListElement(tagName, document));
+    return adoptRef( new HTMLOListElement( tagName, document ) );
 }
 
-bool HTMLOListElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLOListElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == typeAttr) {
+    if ( attrName == typeAttr )
+    {
         result = eListItem; // Share with <li>
         return false;
     }
-    
-    return HTMLElement::mapToEntry(attrName, result);
+
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-void HTMLOListElement::parseMappedAttribute(Attribute* attr)
+void HTMLOListElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == typeAttr) {
-        if (attr->value() == "a")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueLowerAlpha);
-        else if (attr->value() == "A")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueUpperAlpha);
-        else if (attr->value() == "i")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueLowerRoman);
-        else if (attr->value() == "I")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueUpperRoman);
-        else if (attr->value() == "1")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueDecimal);
-    } else if (attr->name() == startAttr) {
-        bool canParse;
-        int start = attr->value().toInt(&canParse);
-        if (!canParse)
-            start = 1;
-        if (start == m_start)
-            return;
-        m_start = start;
-        for (RenderObject* child = renderer(); child; child = child->nextInPreOrder(renderer())) {
-            if (child->isListItem())
-                toRenderListItem(child)->updateValue();
+    if ( attr->name() == typeAttr )
+    {
+        if ( attr->value() == "a" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueLowerAlpha );
         }
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+        else if ( attr->value() == "A" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueUpperAlpha );
+        }
+        else if ( attr->value() == "i" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueLowerRoman );
+        }
+        else if ( attr->value() == "I" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueUpperRoman );
+        }
+        else if ( attr->value() == "1" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueDecimal );
+        }
+    }
+    else if ( attr->name() == startAttr )
+    {
+        bool canParse;
+        int start = attr->value().toInt( &canParse );
+
+        if ( !canParse )
+        {
+            start = 1;
+        }
+
+        if ( start == m_start )
+        {
+            return;
+        }
+
+        m_start = start;
+
+        for ( RenderObject *child = renderer(); child; child = child->nextInPreOrder( renderer() ) )
+        {
+            if ( child->isListItem() )
+            {
+                toRenderListItem( child )->updateValue();
+            }
+        }
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
-void HTMLOListElement::setStart(int start)
+void HTMLOListElement::setStart( int start )
 {
-    setAttribute(startAttr, String::number(start));
+    setAttribute( startAttr, String::number( start ) );
 }
 
 }

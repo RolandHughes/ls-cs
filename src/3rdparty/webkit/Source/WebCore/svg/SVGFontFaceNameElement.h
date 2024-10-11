@@ -23,18 +23,20 @@
 #if ENABLE(SVG_FONTS)
 #include "SVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSFontFaceSrcValue;
 
-class SVGFontFaceNameElement : public SVGElement {
+class SVGFontFaceNameElement : public SVGElement
+{
 public:
-    static PassRefPtr<SVGFontFaceNameElement> create(const QualifiedName&, Document*);
-    
+    static PassRefPtr<SVGFontFaceNameElement> create( const QualifiedName &, Document * );
+
     PassRefPtr<CSSFontFaceSrcValue> srcValue() const;
 
 private:
-    SVGFontFaceNameElement(const QualifiedName&, Document*);
+    SVGFontFaceNameElement( const QualifiedName &, Document * );
 };
 
 } // namespace WebCore

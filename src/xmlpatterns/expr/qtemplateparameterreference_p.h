@@ -27,36 +27,37 @@
 #include <qvariabledeclaration_p.h>
 #include <qemptycontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TemplateParameterReference : public EmptyContainer
 {
- public:
-   TemplateParameterReference(const VariableDeclaration *varDecl);
+public:
+    TemplateParameterReference( const VariableDeclaration *varDecl );
 
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   Properties properties() const override;
+    SequenceType::Ptr staticType() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    Properties properties() const override;
 
-   inline const Expression::Ptr &sourceExpression() const;
-   inline const VariableDeclaration *variableDeclaration() const;
+    inline const Expression::Ptr &sourceExpression() const;
+    inline const VariableDeclaration *variableDeclaration() const;
 
- private:
-   const VariableDeclaration *m_varDecl;
+private:
+    const VariableDeclaration *m_varDecl;
 };
 
 inline const Expression::Ptr &TemplateParameterReference::sourceExpression() const
 {
-   return m_varDecl->expression();
+    return m_varDecl->expression();
 }
 
 inline const VariableDeclaration *TemplateParameterReference::variableDeclaration() const
 {
-   return m_varDecl;
+    return m_varDecl;
 }
 
 }

@@ -32,59 +32,107 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class GeolocationPosition : public RefCounted<GeolocationPosition> {
+class GeolocationPosition : public RefCounted<GeolocationPosition>
+{
 public:
-    static PassRefPtr<GeolocationPosition> create(double timestamp, double latitude, double longitude, double accuracy) { return adoptRef(new GeolocationPosition(timestamp, latitude, longitude, accuracy)); }
+    static PassRefPtr<GeolocationPosition> create( double timestamp, double latitude, double longitude, double accuracy )
+    {
+        return adoptRef( new GeolocationPosition( timestamp, latitude, longitude, accuracy ) );
+    }
 
-    static PassRefPtr<GeolocationPosition> create(double timestamp, double latitude, double longitude, double accuracy, bool providesAltitude, double altitude, bool providesAltitudeAccuracy, double altitudeAccuracy, bool providesHeading, double heading, bool providesSpeed, double speed) { return adoptRef(new GeolocationPosition(timestamp, latitude, longitude, accuracy, providesAltitude, altitude, providesAltitudeAccuracy, altitudeAccuracy, providesHeading, heading, providesSpeed, speed)); }
+    static PassRefPtr<GeolocationPosition> create( double timestamp, double latitude, double longitude, double accuracy,
+            bool providesAltitude, double altitude, bool providesAltitudeAccuracy, double altitudeAccuracy, bool providesHeading,
+            double heading, bool providesSpeed, double speed )
+    {
+        return adoptRef( new GeolocationPosition( timestamp, latitude, longitude, accuracy, providesAltitude, altitude,
+                         providesAltitudeAccuracy, altitudeAccuracy, providesHeading, heading, providesSpeed, speed ) );
+    }
 
-    double timestamp() const { return m_timestamp; }
+    double timestamp() const
+    {
+        return m_timestamp;
+    }
 
-    double latitude() const { return m_latitude; }
-    double longitude() const { return m_longitude; }
-    double accuracy() const { return m_accuracy; }
-    double altitude() const { return m_altitude; }
-    double altitudeAccuracy() const { return m_altitudeAccuracy; }
-    double heading() const { return m_heading; }
-    double speed() const { return m_speed; }
+    double latitude() const
+    {
+        return m_latitude;
+    }
+    double longitude() const
+    {
+        return m_longitude;
+    }
+    double accuracy() const
+    {
+        return m_accuracy;
+    }
+    double altitude() const
+    {
+        return m_altitude;
+    }
+    double altitudeAccuracy() const
+    {
+        return m_altitudeAccuracy;
+    }
+    double heading() const
+    {
+        return m_heading;
+    }
+    double speed() const
+    {
+        return m_speed;
+    }
 
-    bool canProvideAltitude() const { return m_canProvideAltitude; }
-    bool canProvideAltitudeAccuracy() const { return m_canProvideAltitudeAccuracy; }
-    bool canProvideHeading() const { return m_canProvideHeading; }
-    bool canProvideSpeed() const { return m_canProvideSpeed; }
+    bool canProvideAltitude() const
+    {
+        return m_canProvideAltitude;
+    }
+    bool canProvideAltitudeAccuracy() const
+    {
+        return m_canProvideAltitudeAccuracy;
+    }
+    bool canProvideHeading() const
+    {
+        return m_canProvideHeading;
+    }
+    bool canProvideSpeed() const
+    {
+        return m_canProvideSpeed;
+    }
 
 private:
-    GeolocationPosition(double timestamp, double latitude, double longitude, double accuracy)
-        : m_timestamp(timestamp)
-        , m_latitude(latitude)
-        , m_longitude(longitude)
-        , m_accuracy(accuracy)
-        , m_altitude(0)
-        , m_altitudeAccuracy(0)
-        , m_heading(0)
-        , m_speed(0)
-        , m_canProvideAltitude(false)
-        , m_canProvideAltitudeAccuracy(false)
-        , m_canProvideHeading(false)
-        , m_canProvideSpeed(false)
+    GeolocationPosition( double timestamp, double latitude, double longitude, double accuracy )
+        : m_timestamp( timestamp )
+        , m_latitude( latitude )
+        , m_longitude( longitude )
+        , m_accuracy( accuracy )
+        , m_altitude( 0 )
+        , m_altitudeAccuracy( 0 )
+        , m_heading( 0 )
+        , m_speed( 0 )
+        , m_canProvideAltitude( false )
+        , m_canProvideAltitudeAccuracy( false )
+        , m_canProvideHeading( false )
+        , m_canProvideSpeed( false )
     {
     }
 
-    GeolocationPosition(double timestamp, double latitude, double longitude, double accuracy, bool providesAltitude, double altitude, bool providesAltitudeAccuracy, double altitudeAccuracy, bool providesHeading, double heading, bool providesSpeed, double speed)
-        : m_timestamp(timestamp)
-        , m_latitude(latitude)
-        , m_longitude(longitude)
-        , m_accuracy(accuracy)
-        , m_altitude(altitude)
-        , m_altitudeAccuracy(altitudeAccuracy)
-        , m_heading(heading)
-        , m_speed(speed)
-        , m_canProvideAltitude(providesAltitude)
-        , m_canProvideAltitudeAccuracy(providesAltitudeAccuracy)
-        , m_canProvideHeading(providesHeading)
-        , m_canProvideSpeed(providesSpeed)
+    GeolocationPosition( double timestamp, double latitude, double longitude, double accuracy, bool providesAltitude, double altitude,
+                         bool providesAltitudeAccuracy, double altitudeAccuracy, bool providesHeading, double heading, bool providesSpeed, double speed )
+        : m_timestamp( timestamp )
+        , m_latitude( latitude )
+        , m_longitude( longitude )
+        , m_accuracy( accuracy )
+        , m_altitude( altitude )
+        , m_altitudeAccuracy( altitudeAccuracy )
+        , m_heading( heading )
+        , m_speed( speed )
+        , m_canProvideAltitude( providesAltitude )
+        , m_canProvideAltitudeAccuracy( providesAltitudeAccuracy )
+        , m_canProvideHeading( providesHeading )
+        , m_canProvideSpeed( providesSpeed )
     {
     }
 

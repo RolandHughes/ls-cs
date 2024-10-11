@@ -25,7 +25,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Document;
 class MediaList;
@@ -38,42 +39,56 @@ class MediaQueryEvaluator;
 // whenever it is needed and to call the listeners if the corresponding query has changed.
 // The listeners must be called in the very same order in which they have been added.
 
-class MediaQueryMatcher : public RefCounted<MediaQueryMatcher> {
+class MediaQueryMatcher : public RefCounted<MediaQueryMatcher>
+{
 public:
-    static PassRefPtr<MediaQueryMatcher> create(Document* document) { return adoptRef(new MediaQueryMatcher(document)); }
+    static PassRefPtr<MediaQueryMatcher> create( Document *document )
+    {
+        return adoptRef( new MediaQueryMatcher( document ) );
+    }
     ~MediaQueryMatcher();
     void documentDestroyed();
 
-    void addListener(PassRefPtr<MediaQueryListListener>, PassRefPtr<MediaQueryList>);
-    void removeListener(MediaQueryListListener*, MediaQueryList*);
+    void addListener( PassRefPtr<MediaQueryListListener>, PassRefPtr<MediaQueryList> );
+    void removeListener( MediaQueryListListener *, MediaQueryList * );
 
-    PassRefPtr<MediaQueryList> matchMedia(const String&);
+    PassRefPtr<MediaQueryList> matchMedia( const String & );
 
-    unsigned evaluationRound() const { return m_evaluationRound; }
+    unsigned evaluationRound() const
+    {
+        return m_evaluationRound;
+    }
     void styleSelectorChanged();
-    bool evaluate(MediaList*);
+    bool evaluate( MediaList * );
 
 private:
-    class Listener {
+    class Listener
+    {
     public:
-        Listener(PassRefPtr<MediaQueryListListener>, PassRefPtr<MediaQueryList>);
+        Listener( PassRefPtr<MediaQueryListListener>, PassRefPtr<MediaQueryList> );
         ~Listener();
 
-        void evaluate(ScriptState*, MediaQueryEvaluator*);
+        void evaluate( ScriptState *, MediaQueryEvaluator * );
 
-        MediaQueryListListener* listener() { return m_listener.get(); }
-        MediaQueryList* query() { return m_query.get(); }
+        MediaQueryListListener *listener()
+        {
+            return m_listener.get();
+        }
+        MediaQueryList *query()
+        {
+            return m_query.get();
+        }
 
     private:
         RefPtr<MediaQueryListListener> m_listener;
         RefPtr<MediaQueryList> m_query;
     };
 
-    MediaQueryMatcher(Document*);
+    MediaQueryMatcher( Document * );
     PassOwnPtr<MediaQueryEvaluator> prepareEvaluator() const;
     String mediaType() const;
 
-    Document* m_document;
+    Document *m_document;
     Vector<OwnPtr<Listener> > m_listeners;
 
     // This value is incremented at style selector changes.

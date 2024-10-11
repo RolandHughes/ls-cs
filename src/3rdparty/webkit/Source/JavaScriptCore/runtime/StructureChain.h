@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef StructureChain_h
@@ -34,26 +34,37 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RefPtr.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class Structure;
+class Structure;
 
-    class StructureChain : public JSCell {
-        friend class JIT;
+class StructureChain : public JSCell
+{
+    friend class JIT;
 
-    public:
-        static StructureChain* create(JSGlobalData& globalData, Structure* head) { return new (&globalData) StructureChain(globalData, globalData.structureChainStructure.get(), head); }
-        WriteBarrier<Structure>* head() { return m_vector.get(); }
-        void visitChildren(SlotVisitor&);
+public:
+    static StructureChain *create( JSGlobalData &globalData, Structure *head )
+    {
+        return new ( &globalData ) StructureChain( globalData, globalData.structureChainStructure.get(), head );
+    }
+    WriteBarrier<Structure> *head()
+    {
+        return m_vector.get();
+    }
+    void visitChildren( SlotVisitor & );
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype) { return Structure::create(globalData, prototype, TypeInfo(CompoundType, OverridesVisitChildren), 0, &s_info); }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( CompoundType, OverridesVisitChildren ), 0, &s_info );
+    }
 
-    private:
-        StructureChain(JSGlobalData&, Structure*, Structure* head);
-        ~StructureChain();
-        OwnArrayPtr<WriteBarrier<Structure> > m_vector;
-        static ClassInfo s_info;
-    };
+private:
+    StructureChain( JSGlobalData &, Structure *, Structure *head );
+    ~StructureChain();
+    OwnArrayPtr<WriteBarrier<Structure> > m_vector;
+    static ClassInfo s_info;
+};
 
 } // namespace JSC
 

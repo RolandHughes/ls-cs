@@ -28,9 +28,11 @@
 
 #if ENABLE(JAVA_BRIDGE)
 
-namespace JSC {
+namespace JSC
+{
 
-namespace Bindings {
+namespace Bindings
+{
 
 // The order of these items can not be modified as they are tightly
 // bound with the JVM on Mac OSX. If new types need to be added, they
@@ -40,7 +42,8 @@ namespace Bindings {
 //
 // The type conversion logic used here needs improving and this enum will likely
 // be changed at that time. See https://bugs.webkit.org/show_bug.cgi?id=38745
-enum JavaType {
+enum JavaType
+{
     JavaTypeInvalid = 0,
     JavaTypeVoid,
     JavaTypeObject,

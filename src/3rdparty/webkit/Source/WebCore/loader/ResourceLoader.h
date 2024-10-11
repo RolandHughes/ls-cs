@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -38,148 +38,201 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ApplicationCacheHost;
-    class DocumentLoader;
-    class Frame;
-    class FrameLoader;
-    class ProtectionSpace;
-    class ResourceHandle;
-    class SharedBuffer;
-    
-    class ResourceLoader : public RefCounted<ResourceLoader>, protected ResourceHandleClient {
-    public:
-        virtual ~ResourceLoader();
+class ApplicationCacheHost;
+class DocumentLoader;
+class Frame;
+class FrameLoader;
+class ProtectionSpace;
+class ResourceHandle;
+class SharedBuffer;
 
-        void cancel();
+class ResourceLoader : public RefCounted<ResourceLoader>, protected ResourceHandleClient
+{
+public:
+    virtual ~ResourceLoader();
 
-        virtual bool init(const ResourceRequest&);
+    void cancel();
 
-        FrameLoader* frameLoader() const;
-        DocumentLoader* documentLoader() const { return m_documentLoader.get(); }
-        
-        virtual void cancel(const ResourceError&);
-        ResourceError cancelledError();
-        ResourceError blockedError();
-        ResourceError cannotShowURLError();
-        
-        virtual void setDefersLoading(bool);
+    virtual bool init( const ResourceRequest & );
 
-        void setIdentifier(unsigned long identifier) { m_identifier = identifier; }
-        unsigned long identifier() const { return m_identifier; }
+    FrameLoader *frameLoader() const;
+    DocumentLoader *documentLoader() const
+    {
+        return m_documentLoader.get();
+    }
 
-        virtual void releaseResources();
-        const ResourceResponse& response() const;
+    virtual void cancel( const ResourceError & );
+    ResourceError cancelledError();
+    ResourceError blockedError();
+    ResourceError cannotShowURLError();
 
-        virtual void addData(const char*, int, bool allAtOnce);
-        virtual PassRefPtr<SharedBuffer> resourceData();
-        void clearResourceData();
-        
-        virtual void willSendRequest(ResourceRequest&, const ResourceResponse& redirectResponse);
-        virtual void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent);
-        virtual void didReceiveResponse(const ResourceResponse&);
-        virtual void didReceiveData(const char*, int, long long encodedDataLength, bool allAtOnce);
-        virtual void didReceiveCachedMetadata(const char*, int) { }
-        void willStopBufferingData(const char*, int);
-        virtual void didFinishLoading(double finishTime);
-        virtual void didFail(const ResourceError&);
+    virtual void setDefersLoading( bool );
+
+    void setIdentifier( unsigned long identifier )
+    {
+        m_identifier = identifier;
+    }
+    unsigned long identifier() const
+    {
+        return m_identifier;
+    }
+
+    virtual void releaseResources();
+    const ResourceResponse &response() const;
+
+    virtual void addData( const char *, int, bool allAtOnce );
+    virtual PassRefPtr<SharedBuffer> resourceData();
+    void clearResourceData();
+
+    virtual void willSendRequest( ResourceRequest &, const ResourceResponse &redirectResponse );
+    virtual void didSendData( unsigned long long bytesSent, unsigned long long totalBytesToBeSent );
+    virtual void didReceiveResponse( const ResourceResponse & );
+    virtual void didReceiveData( const char *, int, long long encodedDataLength, bool allAtOnce );
+    virtual void didReceiveCachedMetadata( const char *, int ) { }
+    void willStopBufferingData( const char *, int );
+    virtual void didFinishLoading( double finishTime );
+    virtual void didFail( const ResourceError & );
 #if HAVE(CFNETWORK_DATA_ARRAY_CALLBACK)
-        virtual void didReceiveDataArray(CFArrayRef dataArray);
+    virtual void didReceiveDataArray( CFArrayRef dataArray );
 #endif
 
-        virtual bool shouldUseCredentialStorage();
-        virtual void didReceiveAuthenticationChallenge(const AuthenticationChallenge&);
-        void didCancelAuthenticationChallenge(const AuthenticationChallenge&);
+    virtual bool shouldUseCredentialStorage();
+    virtual void didReceiveAuthenticationChallenge( const AuthenticationChallenge & );
+    void didCancelAuthenticationChallenge( const AuthenticationChallenge & );
 #if USE(PROTECTION_SPACE_AUTH_CALLBACK)
-        virtual bool canAuthenticateAgainstProtectionSpace(const ProtectionSpace&);
+    virtual bool canAuthenticateAgainstProtectionSpace( const ProtectionSpace & );
 #endif
-        virtual void receivedCancellation(const AuthenticationChallenge&);
+    virtual void receivedCancellation( const AuthenticationChallenge & );
 
-        // ResourceHandleClient
-        virtual void willSendRequest(ResourceHandle*, ResourceRequest&, const ResourceResponse& redirectResponse);
-        virtual void didSendData(ResourceHandle*, unsigned long long bytesSent, unsigned long long totalBytesToBeSent);
-        virtual void didReceiveResponse(ResourceHandle*, const ResourceResponse&);
-        virtual void didReceiveData(ResourceHandle*, const char*, int, int encodedDataLength);
-        virtual void didReceiveCachedMetadata(ResourceHandle*, const char* data, int length) { didReceiveCachedMetadata(data, length); }
-        virtual void didFinishLoading(ResourceHandle*, double finishTime);
-        virtual void didFail(ResourceHandle*, const ResourceError&);
-        virtual void wasBlocked(ResourceHandle*);
-        virtual void cannotShowURL(ResourceHandle*);
-        virtual void willStopBufferingData(ResourceHandle*, const char* data, int length) { willStopBufferingData(data, length); } 
-        virtual bool shouldUseCredentialStorage(ResourceHandle*) { return shouldUseCredentialStorage(); }
-        virtual void didReceiveAuthenticationChallenge(ResourceHandle*, const AuthenticationChallenge& challenge) { didReceiveAuthenticationChallenge(challenge); } 
-        virtual void didCancelAuthenticationChallenge(ResourceHandle*, const AuthenticationChallenge& challenge) { didCancelAuthenticationChallenge(challenge); } 
+    // ResourceHandleClient
+    virtual void willSendRequest( ResourceHandle *, ResourceRequest &, const ResourceResponse &redirectResponse );
+    virtual void didSendData( ResourceHandle *, unsigned long long bytesSent, unsigned long long totalBytesToBeSent );
+    virtual void didReceiveResponse( ResourceHandle *, const ResourceResponse & );
+    virtual void didReceiveData( ResourceHandle *, const char *, int, int encodedDataLength );
+    virtual void didReceiveCachedMetadata( ResourceHandle *, const char *data, int length )
+    {
+        didReceiveCachedMetadata( data, length );
+    }
+    virtual void didFinishLoading( ResourceHandle *, double finishTime );
+    virtual void didFail( ResourceHandle *, const ResourceError & );
+    virtual void wasBlocked( ResourceHandle * );
+    virtual void cannotShowURL( ResourceHandle * );
+    virtual void willStopBufferingData( ResourceHandle *, const char *data, int length )
+    {
+        willStopBufferingData( data, length );
+    }
+    virtual bool shouldUseCredentialStorage( ResourceHandle * )
+    {
+        return shouldUseCredentialStorage();
+    }
+    virtual void didReceiveAuthenticationChallenge( ResourceHandle *, const AuthenticationChallenge &challenge )
+    {
+        didReceiveAuthenticationChallenge( challenge );
+    }
+    virtual void didCancelAuthenticationChallenge( ResourceHandle *, const AuthenticationChallenge &challenge )
+    {
+        didCancelAuthenticationChallenge( challenge );
+    }
 #if HAVE(CFNETWORK_DATA_ARRAY_CALLBACK)
-        virtual void didReceiveDataArray(ResourceHandle*, CFArrayRef dataArray);
+    virtual void didReceiveDataArray( ResourceHandle *, CFArrayRef dataArray );
 #endif
 #if USE(PROTECTION_SPACE_AUTH_CALLBACK)
-        virtual bool canAuthenticateAgainstProtectionSpace(ResourceHandle*, const ProtectionSpace& protectionSpace) { return canAuthenticateAgainstProtectionSpace(protectionSpace); }
+    virtual bool canAuthenticateAgainstProtectionSpace( ResourceHandle *, const ProtectionSpace &protectionSpace )
+    {
+        return canAuthenticateAgainstProtectionSpace( protectionSpace );
+    }
 #endif
-        virtual void receivedCancellation(ResourceHandle*, const AuthenticationChallenge& challenge) { receivedCancellation(challenge); }
-        virtual void willCacheResponse(ResourceHandle*, CacheStoragePolicy&);
+    virtual void receivedCancellation( ResourceHandle *, const AuthenticationChallenge &challenge )
+    {
+        receivedCancellation( challenge );
+    }
+    virtual void willCacheResponse( ResourceHandle *, CacheStoragePolicy & );
 #if PLATFORM(MAC)
 #if USE(CFNETWORK)
-        virtual CFCachedURLResponseRef willCacheResponse(ResourceHandle*, CFCachedURLResponseRef);
+    virtual CFCachedURLResponseRef willCacheResponse( ResourceHandle *, CFCachedURLResponseRef );
 #else
-        virtual NSCachedURLResponse* willCacheResponse(ResourceHandle*, NSCachedURLResponse*);
+    virtual NSCachedURLResponse *willCacheResponse( ResourceHandle *, NSCachedURLResponse * );
 #endif
 #endif // PLATFORM(MAC)
 #if PLATFORM(WIN) && USE(CFNETWORK)
-        // FIXME: Windows should use willCacheResponse - <https://bugs.webkit.org/show_bug.cgi?id=57257>.
-        virtual bool shouldCacheResponse(ResourceHandle*, CFCachedURLResponseRef);
+    // FIXME: Windows should use willCacheResponse - <https://bugs.webkit.org/show_bug.cgi?id=57257>.
+    virtual bool shouldCacheResponse( ResourceHandle *, CFCachedURLResponseRef );
 #endif
 #if ENABLE(BLOB)
-        virtual AsyncFileStream* createAsyncFileStream(FileStreamClient*);
+    virtual AsyncFileStream *createAsyncFileStream( FileStreamClient * );
 #endif
 
-        const KURL& url() const { return m_request.url(); } 
-        ResourceHandle* handle() const { return m_handle.get(); }
-        bool sendResourceLoadCallbacks() const { return m_sendResourceLoadCallbacks; }
+    const KURL &url() const
+    {
+        return m_request.url();
+    }
+    ResourceHandle *handle() const
+    {
+        return m_handle.get();
+    }
+    bool sendResourceLoadCallbacks() const
+    {
+        return m_sendResourceLoadCallbacks;
+    }
 
-        bool reachedTerminalState() const { return m_reachedTerminalState; }
+    bool reachedTerminalState() const
+    {
+        return m_reachedTerminalState;
+    }
 
-        void setShouldBufferData(bool shouldBufferData);
+    void setShouldBufferData( bool shouldBufferData );
 
-    protected:
-        ResourceLoader(Frame*, bool sendResourceLoadCallbacks, bool shouldContentSniff);
+protected:
+    ResourceLoader( Frame *, bool sendResourceLoadCallbacks, bool shouldContentSniff );
 
 #if ENABLE(OFFLINE_WEB_APPLICATIONS)
-        friend class ApplicationCacheHost;  // for access to request()
+    friend class ApplicationCacheHost;  // for access to request()
 #endif
-        friend class ResourceLoadScheduler; // for access to start()
-        // start() actually sends the load to the network (unless the load is being 
-        // deferred) and should only be called by ResourceLoadScheduler or setDefersLoading().
-        void start();
-        
-        virtual void didCancel(const ResourceError&);
-        void didFinishLoadingOnePart(double finishTime);
+    friend class ResourceLoadScheduler; // for access to start()
+    // start() actually sends the load to the network (unless the load is being
+    // deferred) and should only be called by ResourceLoadScheduler or setDefersLoading().
+    void start();
 
-        const ResourceRequest& request() const { return m_request; }
-        bool cancelled() const { return m_cancelled; }
-        bool defersLoading() const { return m_defersLoading; }
+    virtual void didCancel( const ResourceError & );
+    void didFinishLoadingOnePart( double finishTime );
 
-        RefPtr<ResourceHandle> m_handle;
-        RefPtr<Frame> m_frame;
-        RefPtr<DocumentLoader> m_documentLoader;
-        ResourceResponse m_response;
-        
-    private:
-        ResourceRequest m_request;
-        RefPtr<SharedBuffer> m_resourceData;
-        
-        unsigned long m_identifier;
+    const ResourceRequest &request() const
+    {
+        return m_request;
+    }
+    bool cancelled() const
+    {
+        return m_cancelled;
+    }
+    bool defersLoading() const
+    {
+        return m_defersLoading;
+    }
 
-        bool m_reachedTerminalState;
-        bool m_cancelled;
-        bool m_calledDidFinishLoad;
+    RefPtr<ResourceHandle> m_handle;
+    RefPtr<Frame> m_frame;
+    RefPtr<DocumentLoader> m_documentLoader;
+    ResourceResponse m_response;
 
-        bool m_sendResourceLoadCallbacks;
-        bool m_shouldContentSniff;
-        bool m_shouldBufferData;
-        bool m_defersLoading;
-        ResourceRequest m_deferredRequest;
-    };
+private:
+    ResourceRequest m_request;
+    RefPtr<SharedBuffer> m_resourceData;
+
+    unsigned long m_identifier;
+
+    bool m_reachedTerminalState;
+    bool m_cancelled;
+    bool m_calledDidFinishLoad;
+
+    bool m_sendResourceLoadCallbacks;
+    bool m_shouldContentSniff;
+    bool m_shouldBufferData;
+    bool m_defersLoading;
+    ResourceRequest m_deferredRequest;
+};
 
 }
 

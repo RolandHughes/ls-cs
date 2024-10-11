@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,12 +33,13 @@
 #include "HTMLSelectElement.h"
 #include "RenderMenuList.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 AccessibilityMenuListPopup::AccessibilityMenuListPopup()
-    : m_menuList(0)
+    : m_menuList( 0 )
 {
 }
 
@@ -52,7 +53,7 @@ bool AccessibilityMenuListPopup::isOffScreen() const
     return m_menuList->isCollapsed();
 }
 
-AccessibilityObject* AccessibilityMenuListPopup::parentObject() const
+AccessibilityObject *AccessibilityMenuListPopup::parentObject() const
 {
     return m_menuList;
 }
@@ -62,16 +63,18 @@ bool AccessibilityMenuListPopup::isEnabled() const
     return m_menuList->isEnabled();
 }
 
-AccessibilityMenuListOption* AccessibilityMenuListPopup::menuListOptionAccessibilityObject(HTMLElement* element) const
+AccessibilityMenuListOption *AccessibilityMenuListPopup::menuListOptionAccessibilityObject( HTMLElement *element ) const
 {
-    if (!element || !element->hasTagName(optionTag))
+    if ( !element || !element->hasTagName( optionTag ) )
+    {
         return 0;
+    }
 
-    AccessibilityObject* object = m_menuList->renderer()->document()->axObjectCache()->getOrCreate(MenuListOptionRole);
-    ASSERT(object->isMenuListOption());
+    AccessibilityObject *object = m_menuList->renderer()->document()->axObjectCache()->getOrCreate( MenuListOptionRole );
+    ASSERT( object->isMenuListOption() );
 
-    AccessibilityMenuListOption* option = static_cast<AccessibilityMenuListOption*>(object);
-    option->setElement(element);
+    AccessibilityMenuListOption *option = static_cast<AccessibilityMenuListOption *>( object );
+    option->setElement( element );
 
     return option;
 }
@@ -84,42 +87,52 @@ bool AccessibilityMenuListPopup::press() const
 
 void AccessibilityMenuListPopup::addChildren()
 {
-    Node* selectNode = m_menuList->renderer()->node();
-    if (!selectNode)
+    Node *selectNode = m_menuList->renderer()->node();
+
+    if ( !selectNode )
+    {
         return;
+    }
 
     m_haveChildren = true;
 
-    ASSERT(selectNode->hasTagName(selectTag));
+    ASSERT( selectNode->hasTagName( selectTag ) );
 
-    const Vector<Element*>& listItems = static_cast<HTMLSelectElement*>(selectNode)->listItems();
+    const Vector<Element *> &listItems = static_cast<HTMLSelectElement *>( selectNode )->listItems();
     unsigned length = listItems.size();
-    for (unsigned i = 0; i < length; i++) {
+
+    for ( unsigned i = 0; i < length; i++ )
+    {
         // The cast to HTMLElement below is safe because the only other possible listItem type
         // would be a WMLElement, but WML builds don't use accessbility features at all.
-        AccessibilityMenuListOption* option = menuListOptionAccessibilityObject(toHTMLElement(listItems[i]));
-        if (option) {
-            option->setParent(this);
-            m_children.append(option);
+        AccessibilityMenuListOption *option = menuListOptionAccessibilityObject( toHTMLElement( listItems[i] ) );
+
+        if ( option )
+        {
+            option->setParent( this );
+            m_children.append( option );
         }
     }
 }
 
 void AccessibilityMenuListPopup::childrenChanged()
 {
-    for (size_t i = m_children.size(); i > 0 ; --i) {
-        AccessibilityObject* child = m_children[i - 1].get();
-        if (child->actionElement() && !child->actionElement()->attached()) {
-            m_menuList->renderer()->document()->axObjectCache()->remove(child->axObjectID());
-            m_children.remove(i - 1);
+    for ( size_t i = m_children.size(); i > 0 ; --i )
+    {
+        AccessibilityObject *child = m_children[i - 1].get();
+
+        if ( child->actionElement() && !child->actionElement()->attached() )
+        {
+            m_menuList->renderer()->document()->axObjectCache()->remove( child->axObjectID() );
+            m_children.remove( i - 1 );
         }
     }
 }
 
-void AccessibilityMenuListPopup::setMenuList(AccessibilityMenuList* menuList)
+void AccessibilityMenuListPopup::setMenuList( AccessibilityMenuList *menuList )
 {
-    ASSERT_ARG(menuList, menuList);
-    ASSERT(!m_menuList);
+    ASSERT_ARG( menuList, menuList );
+    ASSERT( !m_menuList );
     m_menuList = menuList;
 }
 

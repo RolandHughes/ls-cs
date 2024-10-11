@@ -32,16 +32,18 @@
 #include <wtf/OwnPtr.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioSourceProvider;
 
 // Abstraction for an audio output to the audio hardware
 // An AudioSourceProvider is called back periodically to provide the rendered audio stream.
 
-class AudioDestination {
+class AudioDestination
+{
 public:
-    static PassOwnPtr<AudioDestination> create(AudioSourceProvider&, double sampleRate);
+    static PassOwnPtr<AudioDestination> create( AudioSourceProvider &, double sampleRate );
 
     virtual ~AudioDestination() { }
 

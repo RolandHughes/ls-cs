@@ -36,9 +36,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSDirectoryEntry);
+ASSERT_CLASS_FITS_IN_CELL( JSDirectoryEntry );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -49,8 +50,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSDirectoryEntry);
 
 static const HashTableValue JSDirectoryEntryTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsDirectoryEntryConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsDirectoryEntryConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -64,43 +65,50 @@ static JSC_CONST_HASHTABLE HashTable JSDirectoryEntryTable = { 2, 1, JSDirectory
 
 static const HashTableValue JSDirectoryEntryConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDirectoryEntryConstructorTable = { 1, 0, JSDirectoryEntryConstructorTableValues, 0 };
-class JSDirectoryEntryConstructor : public DOMConstructorObject {
+class JSDirectoryEntryConstructor : public DOMConstructorObject
+{
 public:
-    JSDirectoryEntryConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSDirectoryEntryConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSDirectoryEntryConstructor::s_info = { "DirectoryEntryConstructor", &DOMConstructorObject::s_info, &JSDirectoryEntryConstructorTable, 0 };
 
-JSDirectoryEntryConstructor::JSDirectoryEntryConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSDirectoryEntryConstructor::JSDirectoryEntryConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSDirectoryEntryPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSDirectoryEntryPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSDirectoryEntryConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDirectoryEntryConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDirectoryEntryConstructor, JSDOMWrapper>(exec, &JSDirectoryEntryConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSDirectoryEntryConstructor, JSDOMWrapper>( exec, &JSDirectoryEntryConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSDirectoryEntryConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDirectoryEntryConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDirectoryEntryConstructor, JSDOMWrapper>(exec, &JSDirectoryEntryConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDirectoryEntryConstructor, JSDOMWrapper>( exec, &JSDirectoryEntryConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -112,143 +120,170 @@ bool JSDirectoryEntryConstructor::getOwnPropertyDescriptor(ExecState* exec, cons
 
 static const HashTableValue JSDirectoryEntryPrototypeTableValues[5] =
 {
-    { "createReader", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDirectoryEntryPrototypeFunctionCreateReader), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getFile", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDirectoryEntryPrototypeFunctionGetFile), (intptr_t)4 THUNK_GENERATOR(0) },
-    { "getDirectory", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDirectoryEntryPrototypeFunctionGetDirectory), (intptr_t)4 THUNK_GENERATOR(0) },
-    { "removeRecursively", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsDirectoryEntryPrototypeFunctionRemoveRecursively), (intptr_t)2 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "createReader", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDirectoryEntryPrototypeFunctionCreateReader ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getFile", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDirectoryEntryPrototypeFunctionGetFile ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { "getDirectory", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDirectoryEntryPrototypeFunctionGetDirectory ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { "removeRecursively", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsDirectoryEntryPrototypeFunctionRemoveRecursively ), ( intptr_t )2 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSDirectoryEntryPrototypeTable = { 10, 7, JSDirectoryEntryPrototypeTableValues, 0 };
-static const HashTable* getJSDirectoryEntryPrototypeTable(ExecState* exec)
+static const HashTable *getJSDirectoryEntryPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDirectoryEntryPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDirectoryEntryPrototypeTable );
 }
 
 const ClassInfo JSDirectoryEntryPrototype::s_info = { "DirectoryEntryPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSDirectoryEntryPrototypeTable };
 
-JSObject* JSDirectoryEntryPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDirectoryEntryPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSDirectoryEntry>(exec, globalObject);
+    return getDOMPrototype<JSDirectoryEntry>( exec, globalObject );
 }
 
-bool JSDirectoryEntryPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDirectoryEntryPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSDirectoryEntryPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSDirectoryEntryPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSDirectoryEntryPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDirectoryEntryPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSDirectoryEntryPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSDirectoryEntryPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
-static const HashTable* getJSDirectoryEntryTable(ExecState* exec)
+static const HashTable *getJSDirectoryEntryTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSDirectoryEntryTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSDirectoryEntryTable );
 }
 
 const ClassInfo JSDirectoryEntry::s_info = { "DirectoryEntry", &JSEntry::s_info, 0, getJSDirectoryEntryTable };
 
-JSDirectoryEntry::JSDirectoryEntry(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<DirectoryEntry> impl)
-    : JSEntry(structure, globalObject, impl)
+JSDirectoryEntry::JSDirectoryEntry( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<DirectoryEntry> impl )
+    : JSEntry( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSDirectoryEntry::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSDirectoryEntry::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSDirectoryEntryPrototype(exec->globalData(), globalObject, JSDirectoryEntryPrototype::createStructure(exec->globalData(), JSEntryPrototype::self(exec, globalObject)));
+    return new ( exec ) JSDirectoryEntryPrototype( exec->globalData(), globalObject,
+            JSDirectoryEntryPrototype::createStructure( exec->globalData(), JSEntryPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSDirectoryEntry::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSDirectoryEntry::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSDirectoryEntry, Base>(exec, getJSDirectoryEntryTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSDirectoryEntry, Base>( exec, getJSDirectoryEntryTable( exec ), this, propertyName, slot );
 }
 
-bool JSDirectoryEntry::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSDirectoryEntry::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSDirectoryEntry, Base>(exec, getJSDirectoryEntryTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSDirectoryEntry, Base>( exec, getJSDirectoryEntryTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsDirectoryEntryConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsDirectoryEntryConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSDirectoryEntry* domObject = static_cast<JSDirectoryEntry*>(asObject(slotBase));
-    return JSDirectoryEntry::getConstructor(exec, domObject->globalObject());
+    JSDirectoryEntry *domObject = static_cast<JSDirectoryEntry *>( asObject( slotBase ) );
+    return JSDirectoryEntry::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSDirectoryEntry::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSDirectoryEntry::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSDirectoryEntryConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSDirectoryEntryConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionCreateReader(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionCreateReader( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDirectoryEntry::s_info))
-        return throwVMTypeError(exec);
-    JSDirectoryEntry* castedThis = static_cast<JSDirectoryEntry*>(asObject(thisValue));
-    DirectoryEntry* imp = static_cast<DirectoryEntry*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSDirectoryEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDirectoryEntry *castedThis = static_cast<JSDirectoryEntry *>( asObject( thisValue ) );
+    DirectoryEntry *imp = static_cast<DirectoryEntry *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->createReader()));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->createReader() ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionGetFile(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionGetFile( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDirectoryEntry::s_info))
-        return throwVMTypeError(exec);
-    JSDirectoryEntry* castedThis = static_cast<JSDirectoryEntry*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getFile(exec));
+
+    if ( !thisValue.inherits( &JSDirectoryEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDirectoryEntry *castedThis = static_cast<JSDirectoryEntry *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getFile( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionGetDirectory(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionGetDirectory( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDirectoryEntry::s_info))
-        return throwVMTypeError(exec);
-    JSDirectoryEntry* castedThis = static_cast<JSDirectoryEntry*>(asObject(thisValue));
-    return JSValue::encode(castedThis->getDirectory(exec));
+
+    if ( !thisValue.inherits( &JSDirectoryEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDirectoryEntry *castedThis = static_cast<JSDirectoryEntry *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->getDirectory( exec ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionRemoveRecursively(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsDirectoryEntryPrototypeFunctionRemoveRecursively( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSDirectoryEntry::s_info))
-        return throwVMTypeError(exec);
-    JSDirectoryEntry* castedThis = static_cast<JSDirectoryEntry*>(asObject(thisValue));
-    DirectoryEntry* imp = static_cast<DirectoryEntry*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSDirectoryEntry::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSDirectoryEntry *castedThis = static_cast<JSDirectoryEntry *>( asObject( thisValue ) );
+    DirectoryEntry *imp = static_cast<DirectoryEntry *>( castedThis->impl() );
     RefPtr<VoidCallback> successCallback;
-    if (exec->argumentCount() > 0 && !exec->argument(0).isNull() && !exec->argument(0).isUndefined()) {
-        if (!exec->argument(0).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 0 && !exec->argument( 0 ).isNull() && !exec->argument( 0 ).isUndefined() )
+    {
+        if ( !exec->argument( 0 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        successCallback = JSCustomVoidCallback::create(asObject(exec->argument(0)), castedThis->globalObject());
+
+        successCallback = JSCustomVoidCallback::create( asObject( exec->argument( 0 ) ), castedThis->globalObject() );
     }
+
     RefPtr<ErrorCallback> errorCallback;
-    if (exec->argumentCount() > 1 && !exec->argument(1).isNull() && !exec->argument(1).isUndefined()) {
-        if (!exec->argument(1).isObject()) {
-            setDOMException(exec, TYPE_MISMATCH_ERR);
-            return JSValue::encode(jsUndefined());
+
+    if ( exec->argumentCount() > 1 && !exec->argument( 1 ).isNull() && !exec->argument( 1 ).isUndefined() )
+    {
+        if ( !exec->argument( 1 ).isObject() )
+        {
+            setDOMException( exec, TYPE_MISMATCH_ERR );
+            return JSValue::encode( jsUndefined() );
         }
-        errorCallback = JSErrorCallback::create(asObject(exec->argument(1)), castedThis->globalObject());
+
+        errorCallback = JSErrorCallback::create( asObject( exec->argument( 1 ) ), castedThis->globalObject() );
     }
 
-    imp->removeRecursively(successCallback, errorCallback);
-    return JSValue::encode(jsUndefined());
+    imp->removeRecursively( successCallback, errorCallback );
+    return JSValue::encode( jsUndefined() );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, DirectoryEntry* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, DirectoryEntry *impl )
 {
-    return wrap<JSDirectoryEntry>(exec, globalObject, impl);
+    return wrap<JSDirectoryEntry>( exec, globalObject, impl );
 }
 
-DirectoryEntry* toDirectoryEntry(JSC::JSValue value)
+DirectoryEntry *toDirectoryEntry( JSC::JSValue value )
 {
-    return value.inherits(&JSDirectoryEntry::s_info) ? static_cast<JSDirectoryEntry*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSDirectoryEntry::s_info ) ? static_cast<JSDirectoryEntry *>( asObject( value ) )->impl() : 0;
 }
 
 }

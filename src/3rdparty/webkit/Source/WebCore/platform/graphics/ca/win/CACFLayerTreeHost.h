@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef CACFLayerTreeHost_h
@@ -44,24 +44,29 @@
 interface IDirect3DDevice9;
 struct WKCACFContext;
 
-typedef struct CGImage* CGImageRef;
+typedef struct CGImage *CGImageRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CACFLayerTreeHostClient;
 class PlatformCALayer;
 
-class CACFLayerTreeHost : public RefCounted<CACFLayerTreeHost>, private AbstractCACFLayerTreeHost {
+class CACFLayerTreeHost : public RefCounted<CACFLayerTreeHost>, private AbstractCACFLayerTreeHost
+{
 public:
     static PassRefPtr<CACFLayerTreeHost> create();
     virtual ~CACFLayerTreeHost();
 
     static bool acceleratedCompositingAvailable();
 
-    void setClient(CACFLayerTreeHostClient* client) { m_client = client; }
+    void setClient( CACFLayerTreeHostClient *client )
+    {
+        m_client = client;
+    }
 
-    void setRootChildLayer(PlatformCALayer*);
-    void setWindow(HWND);
+    void setRootChildLayer( PlatformCALayer * );
+    void setWindow( HWND );
     virtual void paint();
     virtual void resize() = 0;
     void flushPendingGraphicsLayerChangesSoon();
@@ -73,11 +78,14 @@ protected:
     CACFLayerTreeHost();
 
     CGRect bounds() const;
-    HWND window() const { return m_window; }
+    HWND window() const
+    {
+        return m_window;
+    }
     void notifyAnimationsStarted();
 
     // AbstractCACFLayerTreeHost
-    virtual PlatformCALayer* rootLayer() const;
+    virtual PlatformCALayer *rootLayer() const;
 
     virtual bool createRenderer() = 0;
     virtual void destroyRenderer();
@@ -87,16 +95,16 @@ private:
     void initialize();
 
     // AbstractCACFLayerTreeHost
-    virtual void addPendingAnimatedLayer(PassRefPtr<PlatformCALayer>);
+    virtual void addPendingAnimatedLayer( PassRefPtr<PlatformCALayer> );
     virtual void layerTreeDidChange();
 
 
     virtual void flushContext() = 0;
     virtual CFTimeInterval lastCommitTime() const = 0;
-    virtual void render(const Vector<CGRect>& dirtyRects = Vector<CGRect>()) = 0;
-    virtual void initializeContext(void* userData, PlatformCALayer*) = 0;
+    virtual void render( const Vector<CGRect> &dirtyRects = Vector<CGRect>() ) = 0;
+    virtual void initializeContext( void *userData, PlatformCALayer * ) = 0;
 
-    CACFLayerTreeHostClient* m_client;
+    CACFLayerTreeHostClient *m_client;
     RefPtr<PlatformCALayer> m_rootLayer;
     RefPtr<PlatformCALayer> m_rootChildLayer;
     HashSet<RefPtr<PlatformCALayer> > m_pendingAnimatedLayers;

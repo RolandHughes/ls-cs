@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,210 +28,306 @@
 
 #include "Image.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-IntPoint determineHotSpot(Image* image, const IntPoint& specifiedHotSpot)
+IntPoint determineHotSpot( Image *image, const IntPoint &specifiedHotSpot )
 {
     // Hot spot must be inside cursor rectangle.
     IntRect imageRect = image->rect();
-    if (imageRect.contains(specifiedHotSpot))
+
+    if ( imageRect.contains( specifiedHotSpot ) )
+    {
         return specifiedHotSpot;
+    }
 
     // If hot spot is not specified externally, it can be extracted from some image formats (e.g. .cur).
     IntPoint intrinsicHotSpot;
-    bool imageHasIntrinsicHotSpot = image->getHotSpot(intrinsicHotSpot);
-    if (imageHasIntrinsicHotSpot && imageRect.contains(intrinsicHotSpot))
+    bool imageHasIntrinsicHotSpot = image->getHotSpot( intrinsicHotSpot );
+
+    if ( imageHasIntrinsicHotSpot && imageRect.contains( intrinsicHotSpot ) )
+    {
         return intrinsicHotSpot;
+    }
 
     return IntPoint();
 }
 
-const Cursor& Cursor::fromType(Cursor::Type type)
+const Cursor &Cursor::fromType( Cursor::Type type )
 {
-    switch (type) {
-    case Cursor::Pointer:
-        return pointerCursor();
-    case Cursor::Cross:
-        return crossCursor();
-    case Cursor::Hand:
-        return handCursor();
-    case Cursor::IBeam:
-        return iBeamCursor();
-    case Cursor::Wait:
-        return waitCursor();
-    case Cursor::Help:
-        return helpCursor();
-    case Cursor::EastResize:
-        return eastResizeCursor();
-    case Cursor::NorthResize:
-        return northResizeCursor();
-    case Cursor::NorthEastResize:
-        return northEastResizeCursor();
-    case Cursor::NorthWestResize:
-        return northWestResizeCursor();
-    case Cursor::SouthResize:
-        return southResizeCursor();
-    case Cursor::SouthEastResize:
-        return southEastResizeCursor();
-    case Cursor::SouthWestResize:
-        return southWestResizeCursor();
-    case Cursor::WestResize:
-        return westResizeCursor();
-    case Cursor::NorthSouthResize:
-        return northSouthResizeCursor();
-    case Cursor::EastWestResize:
-        return eastWestResizeCursor();
-    case Cursor::NorthEastSouthWestResize:
-        return northEastSouthWestResizeCursor();
-    case Cursor::NorthWestSouthEastResize:
-        return northWestSouthEastResizeCursor();
-    case Cursor::ColumnResize:
-        return columnResizeCursor();
-    case Cursor::RowResize:
-        return rowResizeCursor();
-    case Cursor::MiddlePanning:
-        return middlePanningCursor();
-    case Cursor::EastPanning:
-        return eastPanningCursor();
-    case Cursor::NorthPanning:
-        return northPanningCursor();
-    case Cursor::NorthEastPanning:
-        return northEastPanningCursor();
-    case Cursor::NorthWestPanning:
-        return northWestPanningCursor();
-    case Cursor::SouthPanning:
-        return southPanningCursor();
-    case Cursor::SouthEastPanning:
-        return southEastPanningCursor();
-    case Cursor::SouthWestPanning:
-        return southWestPanningCursor();
-    case Cursor::WestPanning:
-        return westPanningCursor();
-    case Cursor::Move:
-        return moveCursor();
-    case Cursor::VerticalText:
-        return verticalTextCursor();
-    case Cursor::Cell:
-        return cellCursor();
-    case Cursor::ContextMenu:
-        return contextMenuCursor();
-    case Cursor::Alias:
-        return aliasCursor();
-    case Cursor::Progress:
-        return progressCursor();
-    case Cursor::NoDrop:
-        return noDropCursor();
-    case Cursor::Copy:
-        return copyCursor();
-    case Cursor::None:
-        return noneCursor();
-    case Cursor::NotAllowed:
-        return notAllowedCursor();
-    case Cursor::ZoomIn:
-        return zoomInCursor();
-    case Cursor::ZoomOut:
-        return zoomOutCursor();
-    case Cursor::Grab:
-        return grabCursor();
-    case Cursor::Grabbing:
-        return grabbingCursor();
-    case Cursor::Custom:
-        ASSERT_NOT_REACHED();
+    switch ( type )
+    {
+        case Cursor::Pointer:
+            return pointerCursor();
+
+        case Cursor::Cross:
+            return crossCursor();
+
+        case Cursor::Hand:
+            return handCursor();
+
+        case Cursor::IBeam:
+            return iBeamCursor();
+
+        case Cursor::Wait:
+            return waitCursor();
+
+        case Cursor::Help:
+            return helpCursor();
+
+        case Cursor::EastResize:
+            return eastResizeCursor();
+
+        case Cursor::NorthResize:
+            return northResizeCursor();
+
+        case Cursor::NorthEastResize:
+            return northEastResizeCursor();
+
+        case Cursor::NorthWestResize:
+            return northWestResizeCursor();
+
+        case Cursor::SouthResize:
+            return southResizeCursor();
+
+        case Cursor::SouthEastResize:
+            return southEastResizeCursor();
+
+        case Cursor::SouthWestResize:
+            return southWestResizeCursor();
+
+        case Cursor::WestResize:
+            return westResizeCursor();
+
+        case Cursor::NorthSouthResize:
+            return northSouthResizeCursor();
+
+        case Cursor::EastWestResize:
+            return eastWestResizeCursor();
+
+        case Cursor::NorthEastSouthWestResize:
+            return northEastSouthWestResizeCursor();
+
+        case Cursor::NorthWestSouthEastResize:
+            return northWestSouthEastResizeCursor();
+
+        case Cursor::ColumnResize:
+            return columnResizeCursor();
+
+        case Cursor::RowResize:
+            return rowResizeCursor();
+
+        case Cursor::MiddlePanning:
+            return middlePanningCursor();
+
+        case Cursor::EastPanning:
+            return eastPanningCursor();
+
+        case Cursor::NorthPanning:
+            return northPanningCursor();
+
+        case Cursor::NorthEastPanning:
+            return northEastPanningCursor();
+
+        case Cursor::NorthWestPanning:
+            return northWestPanningCursor();
+
+        case Cursor::SouthPanning:
+            return southPanningCursor();
+
+        case Cursor::SouthEastPanning:
+            return southEastPanningCursor();
+
+        case Cursor::SouthWestPanning:
+            return southWestPanningCursor();
+
+        case Cursor::WestPanning:
+            return westPanningCursor();
+
+        case Cursor::Move:
+            return moveCursor();
+
+        case Cursor::VerticalText:
+            return verticalTextCursor();
+
+        case Cursor::Cell:
+            return cellCursor();
+
+        case Cursor::ContextMenu:
+            return contextMenuCursor();
+
+        case Cursor::Alias:
+            return aliasCursor();
+
+        case Cursor::Progress:
+            return progressCursor();
+
+        case Cursor::NoDrop:
+            return noDropCursor();
+
+        case Cursor::Copy:
+            return copyCursor();
+
+        case Cursor::None:
+            return noneCursor();
+
+        case Cursor::NotAllowed:
+            return notAllowedCursor();
+
+        case Cursor::ZoomIn:
+            return zoomInCursor();
+
+        case Cursor::ZoomOut:
+            return zoomOutCursor();
+
+        case Cursor::Grab:
+            return grabCursor();
+
+        case Cursor::Grabbing:
+            return grabbingCursor();
+
+        case Cursor::Custom:
+            ASSERT_NOT_REACHED();
     }
+
     return pointerCursor();
 }
 
-const char* nameForCursorType(Cursor::Type type)
+const char *nameForCursorType( Cursor::Type type )
 {
-    switch (type) {
-    case Cursor::Pointer:
-        return "Pointer";
-    case Cursor::Cross:
-        return "Cross";
-    case Cursor::Hand:
-        return "Hand";
-    case Cursor::IBeam:
-        return "IBeam";
-    case Cursor::Wait:
-        return "Wait";
-    case Cursor::Help:
-        return "Help";
-    case Cursor::EastResize:
-        return "EastResize";
-    case Cursor::NorthResize:
-        return "NorthResize";
-    case Cursor::NorthEastResize:
-        return "NorthEastResize";
-    case Cursor::NorthWestResize:
-        return "NorthWestResize";
-    case Cursor::SouthResize:
-        return "SouthResize";
-    case Cursor::SouthEastResize:
-        return "SouthEastResize";
-    case Cursor::SouthWestResize:
-        return "SouthWestResize";
-    case Cursor::WestResize:
-        return "WestResize";
-    case Cursor::NorthSouthResize:
-        return "NorthSouthResize";
-    case Cursor::EastWestResize:
-        return "EastWestResize";
-    case Cursor::NorthEastSouthWestResize:
-        return "NorthEastSouthWestResize";
-    case Cursor::NorthWestSouthEastResize:
-        return "NorthWestSouthEastResize";
-    case Cursor::ColumnResize:
-        return "ColumnResize";
-    case Cursor::RowResize:
-        return "RowResize";
-    case Cursor::MiddlePanning:
-        return "MiddlePanning";
-    case Cursor::EastPanning:
-        return "EastPanning";
-    case Cursor::NorthPanning:
-        return "NorthPanning";
-    case Cursor::NorthEastPanning:
-        return "NorthEastPanning";
-    case Cursor::NorthWestPanning:
-        return "NorthWestPanning";
-    case Cursor::SouthPanning:
-        return "SouthPanning";
-    case Cursor::SouthEastPanning:
-        return "SouthEastPanning";
-    case Cursor::SouthWestPanning:
-        return "SouthWestPanning";
-    case Cursor::WestPanning:
-        return "WestPanning";
-    case Cursor::Move:
-        return "Move";
-    case Cursor::VerticalText:
-        return "VerticalText";
-    case Cursor::Cell:
-        return "Cell";
-    case Cursor::ContextMenu:
-        return "ContextMenu";
-    case Cursor::Alias:
-        return "Alias";
-    case Cursor::Progress:
-        return "Progress";
-    case Cursor::NoDrop:
-        return "NoDrop";
-    case Cursor::Copy:
-        return "Copy";
-    case Cursor::None:
-        return "None";
-    case Cursor::NotAllowed:
-        return "NotAllowed";
-    case Cursor::ZoomIn:
-        return "ZoomIn";
-    case Cursor::ZoomOut:
-        return "ZoomOut";
-    case Cursor::Grab:
-        return "Grab";
-    case Cursor::Grabbing:
-        return "Grabbing";
-    case Cursor::Custom:
-        return "Custom";
+    switch ( type )
+    {
+        case Cursor::Pointer:
+            return "Pointer";
+
+        case Cursor::Cross:
+            return "Cross";
+
+        case Cursor::Hand:
+            return "Hand";
+
+        case Cursor::IBeam:
+            return "IBeam";
+
+        case Cursor::Wait:
+            return "Wait";
+
+        case Cursor::Help:
+            return "Help";
+
+        case Cursor::EastResize:
+            return "EastResize";
+
+        case Cursor::NorthResize:
+            return "NorthResize";
+
+        case Cursor::NorthEastResize:
+            return "NorthEastResize";
+
+        case Cursor::NorthWestResize:
+            return "NorthWestResize";
+
+        case Cursor::SouthResize:
+            return "SouthResize";
+
+        case Cursor::SouthEastResize:
+            return "SouthEastResize";
+
+        case Cursor::SouthWestResize:
+            return "SouthWestResize";
+
+        case Cursor::WestResize:
+            return "WestResize";
+
+        case Cursor::NorthSouthResize:
+            return "NorthSouthResize";
+
+        case Cursor::EastWestResize:
+            return "EastWestResize";
+
+        case Cursor::NorthEastSouthWestResize:
+            return "NorthEastSouthWestResize";
+
+        case Cursor::NorthWestSouthEastResize:
+            return "NorthWestSouthEastResize";
+
+        case Cursor::ColumnResize:
+            return "ColumnResize";
+
+        case Cursor::RowResize:
+            return "RowResize";
+
+        case Cursor::MiddlePanning:
+            return "MiddlePanning";
+
+        case Cursor::EastPanning:
+            return "EastPanning";
+
+        case Cursor::NorthPanning:
+            return "NorthPanning";
+
+        case Cursor::NorthEastPanning:
+            return "NorthEastPanning";
+
+        case Cursor::NorthWestPanning:
+            return "NorthWestPanning";
+
+        case Cursor::SouthPanning:
+            return "SouthPanning";
+
+        case Cursor::SouthEastPanning:
+            return "SouthEastPanning";
+
+        case Cursor::SouthWestPanning:
+            return "SouthWestPanning";
+
+        case Cursor::WestPanning:
+            return "WestPanning";
+
+        case Cursor::Move:
+            return "Move";
+
+        case Cursor::VerticalText:
+            return "VerticalText";
+
+        case Cursor::Cell:
+            return "Cell";
+
+        case Cursor::ContextMenu:
+            return "ContextMenu";
+
+        case Cursor::Alias:
+            return "Alias";
+
+        case Cursor::Progress:
+            return "Progress";
+
+        case Cursor::NoDrop:
+            return "NoDrop";
+
+        case Cursor::Copy:
+            return "Copy";
+
+        case Cursor::None:
+            return "None";
+
+        case Cursor::NotAllowed:
+            return "NotAllowed";
+
+        case Cursor::ZoomIn:
+            return "ZoomIn";
+
+        case Cursor::ZoomOut:
+            return "ZoomOut";
+
+        case Cursor::Grab:
+            return "Grab";
+
+        case Cursor::Grabbing:
+            return "Grabbing";
+
+        case Cursor::Custom:
+            return "Custom";
     }
 
     return "ERROR";
@@ -239,17 +335,17 @@ const char* nameForCursorType(Cursor::Type type)
 
 #if USE(LAZY_NATIVE_CURSOR)
 
-Cursor::Cursor(Image* image, const IntPoint& hotSpot)
-    : m_type(Custom)
-    , m_image(image)
-    , m_hotSpot(determineHotSpot(image, hotSpot))
-    , m_platformCursor(0)
+Cursor::Cursor( Image *image, const IntPoint &hotSpot )
+    : m_type( Custom )
+    , m_image( image )
+    , m_hotSpot( determineHotSpot( image, hotSpot ) )
+    , m_platformCursor( 0 )
 {
 }
 
-Cursor::Cursor(Type type)
-    : m_type(type)
-    , m_platformCursor(0)
+Cursor::Cursor( Type type )
+    : m_type( type )
+    , m_platformCursor( 0 )
 {
 }
 
@@ -263,261 +359,261 @@ PlatformCursor Cursor::platformCursor() const
 
 #endif
 
-const Cursor& pointerCursor()
+const Cursor &pointerCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Pointer));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Pointer ) );
     return c;
 }
 
-const Cursor& crossCursor()
+const Cursor &crossCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Cross));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Cross ) );
     return c;
 }
 
-const Cursor& handCursor()
+const Cursor &handCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Hand));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Hand ) );
     return c;
 }
 
-const Cursor& moveCursor()
+const Cursor &moveCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Move));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Move ) );
     return c;
 }
 
-const Cursor& verticalTextCursor()
+const Cursor &verticalTextCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::VerticalText));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::VerticalText ) );
     return c;
 }
 
-const Cursor& cellCursor()
+const Cursor &cellCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Cell));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Cell ) );
     return c;
 }
 
-const Cursor& contextMenuCursor()
+const Cursor &contextMenuCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::ContextMenu));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::ContextMenu ) );
     return c;
 }
 
-const Cursor& aliasCursor()
+const Cursor &aliasCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Alias));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Alias ) );
     return c;
 }
 
-const Cursor& zoomInCursor()
+const Cursor &zoomInCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::ZoomIn));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::ZoomIn ) );
     return c;
 }
 
-const Cursor& zoomOutCursor()
+const Cursor &zoomOutCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::ZoomOut));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::ZoomOut ) );
     return c;
 }
 
-const Cursor& copyCursor()
+const Cursor &copyCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Copy));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Copy ) );
     return c;
 }
 
-const Cursor& noneCursor()
+const Cursor &noneCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::None));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::None ) );
     return c;
 }
 
-const Cursor& progressCursor()
+const Cursor &progressCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Progress));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Progress ) );
     return c;
 }
 
-const Cursor& noDropCursor()
+const Cursor &noDropCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NoDrop));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NoDrop ) );
     return c;
 }
 
-const Cursor& notAllowedCursor()
+const Cursor &notAllowedCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NotAllowed));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NotAllowed ) );
     return c;
 }
 
-const Cursor& iBeamCursor()
+const Cursor &iBeamCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::IBeam));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::IBeam ) );
     return c;
 }
 
-const Cursor& waitCursor()
+const Cursor &waitCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Wait));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Wait ) );
     return c;
 }
 
-const Cursor& helpCursor()
+const Cursor &helpCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Help));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Help ) );
     return c;
 }
 
-const Cursor& eastResizeCursor()
+const Cursor &eastResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::EastResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::EastResize ) );
     return c;
 }
 
-const Cursor& northResizeCursor()
+const Cursor &northResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthResize ) );
     return c;
 }
 
-const Cursor& northEastResizeCursor()
+const Cursor &northEastResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthEastResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthEastResize ) );
     return c;
 }
 
-const Cursor& northWestResizeCursor()
+const Cursor &northWestResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthWestResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthWestResize ) );
     return c;
 }
 
-const Cursor& southResizeCursor()
+const Cursor &southResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::SouthResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::SouthResize ) );
     return c;
 }
 
-const Cursor& southEastResizeCursor()
+const Cursor &southEastResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::SouthEastResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::SouthEastResize ) );
     return c;
 }
 
-const Cursor& southWestResizeCursor()
+const Cursor &southWestResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::SouthWestResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::SouthWestResize ) );
     return c;
 }
 
-const Cursor& westResizeCursor()
+const Cursor &westResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::WestResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::WestResize ) );
     return c;
 }
 
-const Cursor& northSouthResizeCursor()
+const Cursor &northSouthResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthSouthResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthSouthResize ) );
     return c;
 }
 
-const Cursor& eastWestResizeCursor()
+const Cursor &eastWestResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::EastWestResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::EastWestResize ) );
     return c;
 }
 
-const Cursor& northEastSouthWestResizeCursor()
+const Cursor &northEastSouthWestResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthEastSouthWestResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthEastSouthWestResize ) );
     return c;
 }
 
-const Cursor& northWestSouthEastResizeCursor()
+const Cursor &northWestSouthEastResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthWestSouthEastResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthWestSouthEastResize ) );
     return c;
 }
 
-const Cursor& columnResizeCursor()
+const Cursor &columnResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::ColumnResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::ColumnResize ) );
     return c;
 }
 
-const Cursor& rowResizeCursor()
+const Cursor &rowResizeCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::RowResize));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::RowResize ) );
     return c;
 }
 
-const Cursor& middlePanningCursor()
+const Cursor &middlePanningCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::MiddlePanning));
-    return c;
-}
-    
-const Cursor& eastPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::EastPanning));
-    return c;
-}
-    
-const Cursor& northPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthPanning));
-    return c;
-}
-    
-const Cursor& northEastPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthEastPanning));
-    return c;
-}
-    
-const Cursor& northWestPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::NorthWestPanning));
-    return c;
-}
-    
-const Cursor& southPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::SouthPanning));
-    return c;
-}
-    
-const Cursor& southEastPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::SouthEastPanning));
-    return c;
-}
-    
-const Cursor& southWestPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::SouthWestPanning));
-    return c;
-}
-    
-const Cursor& westPanningCursor()
-{
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::WestPanning));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::MiddlePanning ) );
     return c;
 }
 
-const Cursor& grabCursor()
+const Cursor &eastPanningCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Grab));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::EastPanning ) );
     return c;
 }
 
-const Cursor& grabbingCursor()
+const Cursor &northPanningCursor()
 {
-    DEFINE_STATIC_LOCAL(Cursor, c, (Cursor::Grabbing));
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthPanning ) );
+    return c;
+}
+
+const Cursor &northEastPanningCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthEastPanning ) );
+    return c;
+}
+
+const Cursor &northWestPanningCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::NorthWestPanning ) );
+    return c;
+}
+
+const Cursor &southPanningCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::SouthPanning ) );
+    return c;
+}
+
+const Cursor &southEastPanningCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::SouthEastPanning ) );
+    return c;
+}
+
+const Cursor &southWestPanningCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::SouthWestPanning ) );
+    return c;
+}
+
+const Cursor &westPanningCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::WestPanning ) );
+    return c;
+}
+
+const Cursor &grabCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Grab ) );
+    return c;
+}
+
+const Cursor &grabbingCursor()
+{
+    DEFINE_STATIC_LOCAL( Cursor, c, ( Cursor::Grabbing ) );
     return c;
 }
 

@@ -34,9 +34,10 @@
 
 using namespace WTF;
 
-namespace WebCore {
+namespace WebCore
+{
 
-void PluginView::setFocus(bool)
+void PluginView::setFocus( bool )
 {
 }
 
@@ -48,53 +49,53 @@ void PluginView::hide()
 {
 }
 
-void PluginView::paint(GraphicsContext*, const IntRect&)
+void PluginView::paint( GraphicsContext *, const IntRect & )
 {
 }
 
-void PluginView::handleKeyboardEvent(KeyboardEvent*)
+void PluginView::handleKeyboardEvent( KeyboardEvent * )
 {
 }
 
-void PluginView::handleMouseEvent(MouseEvent*)
+void PluginView::handleMouseEvent( MouseEvent * )
 {
 }
 
-void PluginView::setParent(ScrollView*)
+void PluginView::setParent( ScrollView * )
 {
 }
 
-void PluginView::setNPWindowRect(const IntRect&)
+void PluginView::setNPWindowRect( const IntRect & )
 {
 }
 
 #if ENABLE(NETSCAPE_PLUGIN_API)
-NPError PluginView::handlePostReadFile(Vector<char>&, uint32_t, const char*)
+NPError PluginView::handlePostReadFile( Vector<char> &, uint32_t, const char * )
 {
     return 0;
 }
 
-bool PluginView::platformGetValue(NPNVariable, void*, NPError*)
+bool PluginView::platformGetValue( NPNVariable, void *, NPError * )
 {
     return false;
 }
 
-bool PluginView::platformGetValueStatic(NPNVariable, void*, NPError*)
+bool PluginView::platformGetValueStatic( NPNVariable, void *, NPError * )
 {
     return false;
 }
 
-void PluginView::invalidateRect(NPRect*)
+void PluginView::invalidateRect( NPRect * )
 {
 }
 #endif
 
-void PluginView::invalidateRect(const IntRect&)
+void PluginView::invalidateRect( const IntRect & )
 {
 }
 
 #if ENABLE(NETSCAPE_PLUGIN_API)
-void PluginView::invalidateRegion(NPRegion)
+void PluginView::invalidateRegion( NPRegion )
 {
 }
 #endif
@@ -112,7 +113,7 @@ void PluginView::platformDestroy()
 {
 }
 
-void PluginView::setParentVisible(bool)
+void PluginView::setParentVisible( bool )
 {
 }
 
@@ -146,7 +147,7 @@ void PluginView::handleFocusOutEvent()
 #if PLATFORM(MAC) || PLATFORM(CHROMIUM) || PLATFORM(EFL) || PLATFORM(BREWMP)
 
 #if ENABLE(NETSCAPE_PLUGIN_API)
-void PluginView::keepAlive(NPP)
+void PluginView::keepAlive( NPP )
 {
 }
 #endif
@@ -158,20 +159,21 @@ PassRefPtr<JSC::Bindings::Instance> PluginView::bindingInstance()
 }
 #endif
 
-void PluginView::privateBrowsingStateChanged(bool)
+void PluginView::privateBrowsingStateChanged( bool )
 {
 }
 
-void PluginView::setJavaScriptPaused(bool)
+void PluginView::setJavaScriptPaused( bool )
 {
 }
 #endif
 
 #if USE(ACCELERATED_COMPOSITING)
 #if USE(ACCELERATED_COMPOSITING_PLUGIN_LAYER)
-   PlatformLayer * PluginView::platformLayer() const {
-      return 0;
-   }
+PlatformLayer *PluginView::platformLayer() const
+{
+    return 0;
+}
 #endif
 #endif
 

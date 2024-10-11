@@ -32,7 +32,8 @@
 #include "MediaControls.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLInputElement;
 class HTMLMediaElement;
@@ -66,9 +67,10 @@ class MediaPlayer;
 class RenderBox;
 class RenderMedia;
 
-class MediaControlRootElement : public MediaControls {
+class MediaControlRootElement : public MediaControls
+{
 public:
-    static PassRefPtr<MediaControlRootElement> create(HTMLMediaElement*);
+    static PassRefPtr<MediaControlRootElement> create( HTMLMediaElement * );
 
     // MediaControls implementation.
     void show();
@@ -99,39 +101,39 @@ public:
     virtual bool shouldHideControls();
 
 private:
-    MediaControlRootElement(HTMLMediaElement*);
+    MediaControlRootElement( HTMLMediaElement * );
 
-    virtual void defaultEventHandler(Event*);
-    void hideFullscreenControlsTimerFired(Timer<MediaControlRootElement>*);
+    virtual void defaultEventHandler( Event * );
+    void hideFullscreenControlsTimerFired( Timer<MediaControlRootElement> * );
     void startHideFullscreenControlsTimer();
     void stopHideFullscreenControlsTimer();
 
-    virtual const AtomicString& shadowPseudoId() const;
+    virtual const AtomicString &shadowPseudoId() const;
 
-    bool containsRelatedTarget(Event*);
+    bool containsRelatedTarget( Event * );
 
-    HTMLMediaElement* m_mediaElement;
+    HTMLMediaElement *m_mediaElement;
 
-    MediaControlRewindButtonElement* m_rewindButton;
-    MediaControlPlayButtonElement* m_playButton;
-    MediaControlReturnToRealtimeButtonElement* m_returnToRealTimeButton;
-    MediaControlStatusDisplayElement* m_statusDisplay;
-    MediaControlCurrentTimeDisplayElement* m_currentTimeDisplay;
-    MediaControlTimelineElement* m_timeline;
-    MediaControlTimeRemainingDisplayElement* m_timeRemainingDisplay;
-    MediaControlTimelineContainerElement* m_timelineContainer;
-    MediaControlSeekBackButtonElement* m_seekBackButton;
-    MediaControlSeekForwardButtonElement* m_seekForwardButton;
-    MediaControlToggleClosedCaptionsButtonElement* m_toggleClosedCaptionsButton;
-    MediaControlPanelMuteButtonElement* m_panelMuteButton;
-    MediaControlVolumeSliderElement* m_volumeSlider;
-    MediaControlVolumeSliderMuteButtonElement* m_volumeSliderMuteButton;
-    MediaControlVolumeSliderContainerElement* m_volumeSliderContainer;
-    MediaControlFullscreenButtonElement* m_fullScreenButton;
-    MediaControlFullscreenVolumeMinButtonElement* m_fullScreenMinVolumeButton;
-    MediaControlFullscreenVolumeSliderElement* m_fullScreenVolumeSlider;
-    MediaControlFullscreenVolumeMaxButtonElement* m_fullScreenMaxVolumeButton;
-    MediaControlPanelElement* m_panel;
+    MediaControlRewindButtonElement *m_rewindButton;
+    MediaControlPlayButtonElement *m_playButton;
+    MediaControlReturnToRealtimeButtonElement *m_returnToRealTimeButton;
+    MediaControlStatusDisplayElement *m_statusDisplay;
+    MediaControlCurrentTimeDisplayElement *m_currentTimeDisplay;
+    MediaControlTimelineElement *m_timeline;
+    MediaControlTimeRemainingDisplayElement *m_timeRemainingDisplay;
+    MediaControlTimelineContainerElement *m_timelineContainer;
+    MediaControlSeekBackButtonElement *m_seekBackButton;
+    MediaControlSeekForwardButtonElement *m_seekForwardButton;
+    MediaControlToggleClosedCaptionsButtonElement *m_toggleClosedCaptionsButton;
+    MediaControlPanelMuteButtonElement *m_panelMuteButton;
+    MediaControlVolumeSliderElement *m_volumeSlider;
+    MediaControlVolumeSliderMuteButtonElement *m_volumeSliderMuteButton;
+    MediaControlVolumeSliderContainerElement *m_volumeSliderContainer;
+    MediaControlFullscreenButtonElement *m_fullScreenButton;
+    MediaControlFullscreenVolumeMinButtonElement *m_fullScreenMinVolumeButton;
+    MediaControlFullscreenVolumeSliderElement *m_fullScreenVolumeSlider;
+    MediaControlFullscreenVolumeMaxButtonElement *m_fullScreenMaxVolumeButton;
+    MediaControlPanelElement *m_panel;
     bool m_opaque;
     bool m_isMouseOverControls;
     Timer<MediaControlRootElement> m_hideFullscreenControlsTimer;

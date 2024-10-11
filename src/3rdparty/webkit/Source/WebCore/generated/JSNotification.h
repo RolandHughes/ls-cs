@@ -28,28 +28,34 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Notification;
 
-class JSNotification : public JSDOMWrapper {
+class JSNotification : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSNotification(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Notification>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSNotification( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Notification> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual void visitChildren(JSC::SlotVisitor&);
+    virtual void visitChildren( JSC::SlotVisitor & );
 
-    Notification* impl() const { return m_impl.get(); }
+    Notification *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Notification> m_impl;
@@ -57,62 +63,66 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
-class JSNotificationOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSNotificationOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, Notification*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, Notification * )
 {
-    DEFINE_STATIC_LOCAL(JSNotificationOwner, jsNotificationOwner, ());
+    DEFINE_STATIC_LOCAL( JSNotificationOwner, jsNotificationOwner, () );
     return &jsNotificationOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, Notification*)
+inline void *wrapperContext( DOMWrapperWorld *world, Notification * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Notification*);
-Notification* toNotification(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Notification * );
+Notification *toNotification( JSC::JSValue );
 
-class JSNotificationPrototype : public JSC::JSObjectWithGlobalObject {
+class JSNotificationPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSNotificationPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSNotificationPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                             JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::OverridesVisitChildren | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionShow(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionCancel(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionAddEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionRemoveEventListener(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionDispatchEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionShow( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionCancel( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionAddEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionRemoveEventListener( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNotificationPrototypeFunctionDispatchEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsNotificationOndisplay(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSNotificationOndisplay(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsNotificationOnerror(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSNotificationOnerror(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsNotificationOnclose(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSNotificationOnclose(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsNotificationOnclick(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSNotificationOnclick(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsNotificationDir(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSNotificationDir(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
-JSC::JSValue jsNotificationReplaceId(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSNotificationReplaceId(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
+JSC::JSValue jsNotificationOndisplay( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSNotificationOndisplay( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsNotificationOnerror( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSNotificationOnerror( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsNotificationOnclose( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSNotificationOnclose( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsNotificationOnclick( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSNotificationOnclick( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsNotificationDir( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSNotificationDir( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
+JSC::JSValue jsNotificationReplaceId( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSNotificationReplaceId( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
 
 } // namespace WebCore
 

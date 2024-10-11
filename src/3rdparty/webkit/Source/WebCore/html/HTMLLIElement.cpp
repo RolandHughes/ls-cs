@@ -29,90 +29,127 @@
 #include "HTMLNames.h"
 #include "RenderListItem.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLLIElement::HTMLLIElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
-    , m_requestedValue(0)
+HTMLLIElement::HTMLLIElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
+    , m_requestedValue( 0 )
 {
-    ASSERT(hasTagName(liTag));
+    ASSERT( hasTagName( liTag ) );
 }
 
-PassRefPtr<HTMLLIElement> HTMLLIElement::create(Document* document)
+PassRefPtr<HTMLLIElement> HTMLLIElement::create( Document *document )
 {
-    return adoptRef(new HTMLLIElement(liTag, document));
+    return adoptRef( new HTMLLIElement( liTag, document ) );
 }
 
-PassRefPtr<HTMLLIElement> HTMLLIElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLLIElement> HTMLLIElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLLIElement(tagName, document));
+    return adoptRef( new HTMLLIElement( tagName, document ) );
 }
 
-bool HTMLLIElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLLIElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == typeAttr) {
+    if ( attrName == typeAttr )
+    {
         result = eListItem; // Share with <ol> since all the values are the same
         return false;
     }
-    
-    return HTMLElement::mapToEntry(attrName, result);
+
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-void HTMLLIElement::parseMappedAttribute(Attribute* attr)
+void HTMLLIElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == valueAttr) {
+    if ( attr->name() == valueAttr )
+    {
         m_requestedValue = attr->value().toInt();
-        if (renderer() && renderer()->isListItem()) {
-            if (m_requestedValue > 0)
-                toRenderListItem(renderer())->setExplicitValue(m_requestedValue);
+
+        if ( renderer() && renderer()->isListItem() )
+        {
+            if ( m_requestedValue > 0 )
+            {
+                toRenderListItem( renderer() )->setExplicitValue( m_requestedValue );
+            }
             else
-                toRenderListItem(renderer())->clearExplicitValue();
+            {
+                toRenderListItem( renderer() )->clearExplicitValue();
+            }
         }
-    } else if (attr->name() == typeAttr) {
-        if (attr->value() == "a")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueLowerAlpha);
-        else if (attr->value() == "A")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueUpperAlpha);
-        else if (attr->value() == "i")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueLowerRoman);
-        else if (attr->value() == "I")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueUpperRoman);
-        else if (attr->value() == "1")
-            addCSSProperty(attr, CSSPropertyListStyleType, CSSValueDecimal);
+    }
+    else if ( attr->name() == typeAttr )
+    {
+        if ( attr->value() == "a" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueLowerAlpha );
+        }
+        else if ( attr->value() == "A" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueUpperAlpha );
+        }
+        else if ( attr->value() == "i" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueLowerRoman );
+        }
+        else if ( attr->value() == "I" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueUpperRoman );
+        }
+        else if ( attr->value() == "1" )
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, CSSValueDecimal );
+        }
         else
-            addCSSProperty(attr, CSSPropertyListStyleType, attr->value());
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+        {
+            addCSSProperty( attr, CSSPropertyListStyleType, attr->value() );
+        }
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 void HTMLLIElement::attach()
 {
-    ASSERT(!attached());
+    ASSERT( !attached() );
 
     HTMLElement::attach();
 
-    if (renderer() && renderer()->isListItem()) {
-        RenderListItem* render = toRenderListItem(renderer());
+    if ( renderer() && renderer()->isListItem() )
+    {
+        RenderListItem *render = toRenderListItem( renderer() );
 
         // Find the enclosing list node.
-        Node* listNode = 0;
-        Node* n = this;
-        while (!listNode && (n = n->parentNode())) {
-            if (n->hasTagName(ulTag) || n->hasTagName(olTag))
+        Node *listNode = 0;
+        Node *n = this;
+
+        while ( !listNode && ( n = n->parentNode() ) )
+        {
+            if ( n->hasTagName( ulTag ) || n->hasTagName( olTag ) )
+            {
                 listNode = n;
+            }
         }
 
         // If we are not in a list, tell the renderer so it can position us inside.
         // We don't want to change our style to say "inside" since that would affect nested nodes.
-        if (!listNode)
-            render->setNotInList(true);
+        if ( !listNode )
+        {
+            render->setNotInList( true );
+        }
 
-        if (m_requestedValue > 0)
-            render->setExplicitValue(m_requestedValue);
+        if ( m_requestedValue > 0 )
+        {
+            render->setExplicitValue( m_requestedValue );
+        }
         else
+        {
             render->clearExplicitValue();
+        }
     }
 }
 

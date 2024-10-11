@@ -28,10 +28,11 @@
 
 #include "WebEventFactory.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-NativeWebMouseEvent::NativeWebMouseEvent(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, bool didActivateWebView)
-    : WebMouseEvent(WebEventFactory::createWebMouseEvent(hwnd, message, wParam, lParam, didActivateWebView))
+NativeWebMouseEvent::NativeWebMouseEvent( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, bool didActivateWebView )
+    : WebMouseEvent( WebEventFactory::createWebMouseEvent( hwnd, message, wParam, lParam, didActivateWebView ) )
     , m_nativeEvent()
 {
     m_nativeEvent.hwnd = hwnd;

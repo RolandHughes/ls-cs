@@ -32,9 +32,9 @@ StaticContext::~StaticContext()
 {
 }
 
-void StaticContext::wrapExpressionWith(const SourceLocationReflection *const existingNode,
-                                       const QExplicitlySharedDataPointer<Expression> &newNode)
+void StaticContext::wrapExpressionWith( const SourceLocationReflection *const existingNode,
+                                        const QExplicitlySharedDataPointer<Expression> &newNode )
 {
-   addLocation(newNode.data(), locationFor(existingNode));
+    addLocation( newNode.data(), locationFor( existingNode ) );
 }
 

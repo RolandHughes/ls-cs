@@ -31,19 +31,19 @@ template<typename T> class QExplicitlySharedDataPointer;
 class QSimpleXmlNodeModelPrivate;
 class Q_XMLPATTERNS_EXPORT QSimpleXmlNodeModel : public QAbstractXmlNodeModel
 {
- public:
-   QSimpleXmlNodeModel(const QXmlNamePool &namePool);
-   virtual ~QSimpleXmlNodeModel();
+public:
+    QSimpleXmlNodeModel( const QXmlNamePool &namePool );
+    virtual ~QSimpleXmlNodeModel();
 
-   QUrl baseUri(const QXmlNodeModelIndex &node) const override;
-   QXmlNamePool &namePool() const;
-   QVector<QXmlName> namespaceBindings(const QXmlNodeModelIndex &node) const override;
-   QString stringValue(const QXmlNodeModelIndex &node) const override;
-   QXmlNodeModelIndex elementById(const QXmlName &id) const override;
-   QVector<QXmlNodeModelIndex> nodesByIdref(const QXmlName &idref) const override;
+    QUrl baseUri( const QXmlNodeModelIndex &node ) const override;
+    QXmlNamePool &namePool() const;
+    QVector<QXmlName> namespaceBindings( const QXmlNodeModelIndex &node ) const override;
+    QString stringValue( const QXmlNodeModelIndex &node ) const override;
+    QXmlNodeModelIndex elementById( const QXmlName &id ) const override;
+    QVector<QXmlNodeModelIndex> nodesByIdref( const QXmlName &idref ) const override;
 
- private:
-   Q_DECLARE_PRIVATE(QSimpleXmlNodeModel)
+private:
+    Q_DECLARE_PRIVATE( QSimpleXmlNodeModel )
 };
 
 #endif

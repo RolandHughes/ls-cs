@@ -32,17 +32,17 @@
 
 class QToolBarExtension : public QToolButton
 {
-   GUI_CS_OBJECT(QToolBarExtension)
-   Qt::Orientation orientation;
+    GUI_LSCS_OBJECT( QToolBarExtension )
+    Qt::Orientation orientation;
 
- public:
-   explicit QToolBarExtension(QWidget *parent);
+public:
+    explicit QToolBarExtension( QWidget *parent );
 
-   void paintEvent(QPaintEvent *event) override;
-   QSize sizeHint() const override;
+    void paintEvent( QPaintEvent *event ) override;
+    QSize sizeHint() const override;
 
-   GUI_CS_SLOT_1(Public, void setOrientation(Qt::Orientation o))
-   GUI_CS_SLOT_2(setOrientation)
+    GUI_LSCS_SLOT_1( Public, void setOrientation( Qt::Orientation o ) )
+    GUI_LSCS_SLOT_2( setOrientation )
 };
 
 #endif // QT_NO_TOOLBUTTON

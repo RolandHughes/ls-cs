@@ -29,22 +29,22 @@
 
 class Q_MULTIMEDIA_EXPORT QMediaVideoProbeControl : public QMediaControl
 {
-   MULTI_CS_OBJECT(QMediaVideoProbeControl)
+    MULTI_LSCS_OBJECT( QMediaVideoProbeControl )
 
- public:
-   virtual ~QMediaVideoProbeControl();
+public:
+    virtual ~QMediaVideoProbeControl();
 
-   MULTI_CS_SIGNAL_1(Public, void videoFrameProbed(const QVideoFrame &frame))
-   MULTI_CS_SIGNAL_2(videoFrameProbed, frame)
+    MULTI_LSCS_SIGNAL_1( Public, void videoFrameProbed( const QVideoFrame &frame ) )
+    MULTI_LSCS_SIGNAL_2( videoFrameProbed, frame )
 
-   MULTI_CS_SIGNAL_1(Public, void flush())
-   MULTI_CS_SIGNAL_2(flush)
+    MULTI_LSCS_SIGNAL_1( Public, void flush() )
+    MULTI_LSCS_SIGNAL_2( flush )
 
- protected:
-   explicit QMediaVideoProbeControl(QObject *parent = nullptr);
+protected:
+    explicit QMediaVideoProbeControl( QObject *parent = nullptr );
 };
 
 #define QMediaVideoProbeControl_iid "com.copperspice.CS.mediaVideoProbeControl/1.0"
-CS_DECLARE_INTERFACE(QMediaVideoProbeControl, QMediaVideoProbeControl_iid)
+LSCS_DECLARE_INTERFACE( QMediaVideoProbeControl, QMediaVideoProbeControl_iid )
 
 #endif

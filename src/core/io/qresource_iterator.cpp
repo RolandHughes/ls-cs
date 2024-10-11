@@ -26,8 +26,8 @@
 #include <qresource.h>
 #include <qvariant.h>
 
-QResourceFileEngineIterator::QResourceFileEngineIterator(QDir::Filters filters, const QStringList &filterNames)
-   : QAbstractFileEngineIterator(filters, filterNames), index(-1)
+QResourceFileEngineIterator::QResourceFileEngineIterator( QDir::Filters filters, const QStringList &filterNames )
+    : QAbstractFileEngineIterator( filters, filterNames ), index( -1 )
 {
 }
 
@@ -37,36 +37,40 @@ QResourceFileEngineIterator::~QResourceFileEngineIterator()
 
 QString QResourceFileEngineIterator::next()
 {
-   if (! hasNext()) {
-      return QString();
-   }
+    if ( ! hasNext() )
+    {
+        return QString();
+    }
 
-   ++index;
-   return currentFilePath();
+    ++index;
+    return currentFilePath();
 }
 
 bool QResourceFileEngineIterator::hasNext() const
 {
-   if (index == -1) {
-      QResource resource(path());
+    if ( index == -1 )
+    {
+        QResource resource( path() );
 
-      if (!resource.isValid()) {
-         return false;
-      }
+        if ( !resource.isValid() )
+        {
+            return false;
+        }
 
-      // Initialize and move to the next entry
-      entries = resource.children();
-      index = 0;
-   }
+        // Initialize and move to the next entry
+        entries = resource.children();
+        index = 0;
+    }
 
-   return index < entries.size();
+    return index < entries.size();
 }
 
 QString QResourceFileEngineIterator::currentFileName() const
 {
-   if (index <= 0 || index > entries.size()) {
-      return QString();
-   }
+    if ( index <= 0 || index > entries.size() )
+    {
+        return QString();
+    }
 
-   return entries.at(index - 1);
+    return entries.at( index - 1 );
 }

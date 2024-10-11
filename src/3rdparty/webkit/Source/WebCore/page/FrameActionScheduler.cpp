@@ -30,13 +30,15 @@
 #include "Node.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class EventFrameAction : public FrameAction {
+class EventFrameAction : public FrameAction
+{
 public:
-    EventFrameAction(PassRefPtr<Event> event, PassRefPtr<Node> target)
-        : m_event(event)
-        , m_eventTarget(target)
+    EventFrameAction( PassRefPtr<Event> event, PassRefPtr<Node> target )
+        : m_event( event )
+        , m_eventTarget( target )
     {
     }
 
@@ -44,8 +46,11 @@ public:
     {
         // Only dispatch events to nodes that are in the document
         ExceptionCode ec = 0;
-        if (m_eventTarget->inDocument())
-            m_eventTarget->dispatchEvent(m_event, ec);
+
+        if ( m_eventTarget->inDocument() )
+        {
+            m_eventTarget->dispatchEvent( m_event, ec );
+        }
     }
 
 private:
@@ -54,7 +59,7 @@ private:
 };
 
 FrameActionScheduler::FrameActionScheduler()
-    : m_enqueueActions(0)
+    : m_enqueueActions( 0 )
 {
 }
 
@@ -76,35 +81,41 @@ void FrameActionScheduler::clear()
 
 void FrameActionScheduler::pause()
 {
-    ASSERT(isEmpty() || m_enqueueActions);
+    ASSERT( isEmpty() || m_enqueueActions );
     m_enqueueActions++;
 }
 
 void FrameActionScheduler::resume()
 {
     m_enqueueActions--;
-    if (!m_enqueueActions)
+
+    if ( !m_enqueueActions )
+    {
         dispatch();
-    ASSERT(isEmpty() || m_enqueueActions);
+    }
+
+    ASSERT( isEmpty() || m_enqueueActions );
 }
 
 void FrameActionScheduler::dispatch()
 {
     Vector< OwnPtr<FrameAction> > snapshot;
-    m_scheduledActions.swap(snapshot);
-    
-    for (Vector< OwnPtr<FrameAction> >::iterator i = snapshot.begin(); i != snapshot.end(); ++i)
-        (*i)->fire();
+    m_scheduledActions.swap( snapshot );
+
+    for ( Vector< OwnPtr<FrameAction> >::iterator i = snapshot.begin(); i != snapshot.end(); ++i )
+    {
+        ( *i )->fire();
+    }
 }
 
-void FrameActionScheduler::scheduleAction(PassOwnPtr<FrameAction> action)
+void FrameActionScheduler::scheduleAction( PassOwnPtr<FrameAction> action )
 {
-    m_scheduledActions.append(action);
+    m_scheduledActions.append( action );
 }
 
-void FrameActionScheduler::scheduleEvent(PassRefPtr<Event> event, PassRefPtr<Node> eventTarget)
+void FrameActionScheduler::scheduleEvent( PassRefPtr<Event> event, PassRefPtr<Node> eventTarget )
 {
-    scheduleAction(adoptPtr(new EventFrameAction(event, eventTarget)));
+    scheduleAction( adoptPtr( new EventFrameAction( event, eventTarget ) ) );
 }
 
 

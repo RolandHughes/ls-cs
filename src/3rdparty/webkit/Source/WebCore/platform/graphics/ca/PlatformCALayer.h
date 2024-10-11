@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PlatformCALayer_h
@@ -41,15 +41,20 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class PlatformCALayer;
 
 typedef Vector<RefPtr<PlatformCALayer> > PlatformCALayerList;
 
-class PlatformCALayer : public RefCounted<PlatformCALayer> {
+class PlatformCALayer : public RefCounted<PlatformCALayer>
+{
 public:
-    static CFTimeInterval currentTimeToMediaTime(double t) { return CACurrentMediaTime() + t - WTF::currentTime(); }
+    static CFTimeInterval currentTimeToMediaTime( double t )
+    {
+        return CACurrentMediaTime() + t - WTF::currentTime();
+    }
 
     // LayerTypeRootLayer is used on some platforms. It has no backing store, so setNeedsDisplay
     // should not call CACFLayerSetNeedsDisplay, but rather just notify the renderer that it
@@ -57,138 +62,150 @@ public:
     enum LayerType { LayerTypeLayer, LayerTypeWebLayer, LayerTypeTransformLayer, LayerTypeWebTiledLayer, LayerTypeRootLayer, LayerTypeCustom };
     enum FilterType { Linear, Nearest, Trilinear };
 
-    static PassRefPtr<PlatformCALayer> create(LayerType, PlatformCALayerClient*);
-    
+    static PassRefPtr<PlatformCALayer> create( LayerType, PlatformCALayerClient * );
+
     // This function passes the layer as a void* rather than a PlatformLayer because PlatformLayer
     // is defined differently for Obj C and C++. This allows callers from both languages.
-    static PassRefPtr<PlatformCALayer> create(void* platformLayer, PlatformCALayerClient*);
+    static PassRefPtr<PlatformCALayer> create( void *platformLayer, PlatformCALayerClient * );
 
     ~PlatformCALayer();
-    
+
     // This function passes the layer as a void* rather than a PlatformLayer because PlatformLayer
     // is defined differently for Obj C and C++. This allows callers from both languages.
-    static PlatformCALayer* platformCALayer(void* platformLayer);
-    
-    PlatformLayer* platformLayer() const;
+    static PlatformCALayer *platformCALayer( void *platformLayer );
 
-    PlatformCALayer* rootLayer() const;
-    
+    PlatformLayer *platformLayer() const;
+
+    PlatformCALayer *rootLayer() const;
+
     static bool isValueFunctionSupported();
-    
-    PlatformCALayerClient* owner() const { return m_owner; }
-    void setOwner(PlatformCALayerClient*);
 
-    void animationStarted(CFTimeInterval beginTime);
+    PlatformCALayerClient *owner() const
+    {
+        return m_owner;
+    }
+    void setOwner( PlatformCALayerClient * );
+
+    void animationStarted( CFTimeInterval beginTime );
     void ensureAnimationsSubmitted();
 
     // Layout support
     void setNeedsLayout();
 
 
-    void setNeedsDisplay(const FloatRect* dirtyRect = 0);
-    
+    void setNeedsDisplay( const FloatRect *dirtyRect = 0 );
+
     // This tells the layer tree to commit changes and perform a render, without do a setNeedsDisplay on any layer.
     void setNeedsCommit();
 
     void setContentsChanged();
-    
-    LayerType layerType() const { return m_layerType; }
 
-    PlatformCALayer* superlayer() const;
+    LayerType layerType() const
+    {
+        return m_layerType;
+    }
+
+    PlatformCALayer *superlayer() const;
     void removeFromSuperlayer();
-    void setSublayers(const PlatformCALayerList&);
+    void setSublayers( const PlatformCALayerList & );
     void removeAllSublayers();
-    void appendSublayer(PlatformCALayer*);
-    void insertSublayer(PlatformCALayer*, size_t index);
-    void replaceSublayer(PlatformCALayer* reference, PlatformCALayer*);
+    void appendSublayer( PlatformCALayer * );
+    void insertSublayer( PlatformCALayer *, size_t index );
+    void replaceSublayer( PlatformCALayer *reference, PlatformCALayer * );
     size_t sublayerCount() const;
 
     // This method removes the sublayers from the source and reparents them to the current layer.
     // Any sublayers previously in the current layer are removed.
-    void adoptSublayers(PlatformCALayer* source);
-    
-    void addAnimationForKey(const String& key, PlatformCAAnimation* animation);    
-    void removeAnimationForKey(const String& key);
-    PassRefPtr<PlatformCAAnimation> animationForKey(const String& key);
-    
-    PlatformCALayer* mask() const;
-    void setMask(PlatformCALayer*);
-    
+    void adoptSublayers( PlatformCALayer *source );
+
+    void addAnimationForKey( const String &key, PlatformCAAnimation *animation );
+    void removeAnimationForKey( const String &key );
+    PassRefPtr<PlatformCAAnimation> animationForKey( const String &key );
+
+    PlatformCALayer *mask() const;
+    void setMask( PlatformCALayer * );
+
     bool isOpaque() const;
-    void setOpaque(bool);
+    void setOpaque( bool );
 
     FloatRect bounds() const;
-    void setBounds(const FloatRect&);
+    void setBounds( const FloatRect & );
 
     FloatPoint3D position() const;
-    void setPosition(const FloatPoint3D&);
-    void setPosition(const FloatPoint& pos) { setPosition(FloatPoint3D(pos.x(), pos.y(), 0)); }
+    void setPosition( const FloatPoint3D & );
+    void setPosition( const FloatPoint &pos )
+    {
+        setPosition( FloatPoint3D( pos.x(), pos.y(), 0 ) );
+    }
 
     FloatPoint3D anchorPoint() const;
-    void setAnchorPoint(const FloatPoint3D&);
+    void setAnchorPoint( const FloatPoint3D & );
 
     TransformationMatrix transform() const;
-    void setTransform(const TransformationMatrix&);
+    void setTransform( const TransformationMatrix & );
 
     TransformationMatrix sublayerTransform() const;
-    void setSublayerTransform(const TransformationMatrix&);
+    void setSublayerTransform( const TransformationMatrix & );
 
     TransformationMatrix contentsTransform() const;
-    void setContentsTransform(const TransformationMatrix&);
+    void setContentsTransform( const TransformationMatrix & );
 
     bool isHidden() const;
-    void setHidden(bool);
+    void setHidden( bool );
 
     bool isGeometryFlipped() const;
-    void setGeometryFlipped(bool);
+    void setGeometryFlipped( bool );
 
     bool isDoubleSided() const;
-    void setDoubleSided(bool);
+    void setDoubleSided( bool );
 
     bool masksToBounds() const;
-    void setMasksToBounds(bool);
-    
+    void setMasksToBounds( bool );
+
     bool acceleratesDrawing() const;
-    void setAcceleratesDrawing(bool);
+    void setAcceleratesDrawing( bool );
 
     CFTypeRef contents() const;
-    void setContents(CFTypeRef);
+    void setContents( CFTypeRef );
 
     FloatRect contentsRect() const;
-    void setContentsRect(const FloatRect&);
+    void setContentsRect( const FloatRect & );
 
-    void setMinificationFilter(FilterType);
-    void setMagnificationFilter(FilterType);
+    void setMinificationFilter( FilterType );
+    void setMagnificationFilter( FilterType );
 
     Color backgroundColor() const;
-    void setBackgroundColor(const Color&);
+    void setBackgroundColor( const Color & );
 
     float borderWidth() const;
-    void setBorderWidth(float);
+    void setBorderWidth( float );
 
     Color borderColor() const;
-    void setBorderColor(const Color&);
+    void setBorderColor( const Color & );
 
     float opacity() const;
-    void setOpacity(float);
+    void setOpacity( float );
 
     String name() const;
-    void setName(const String&);
+    void setName( const String & );
 
     FloatRect frame() const;
-    void setFrame(const FloatRect&);
+    void setFrame( const FloatRect & );
 
     float speed() const;
-    void setSpeed(float);
+    void setSpeed( float );
 
     CFTimeInterval timeOffset() const;
-    void setTimeOffset(CFTimeInterval);
-    
+    void setTimeOffset( CFTimeInterval );
+
     float contentsScale() const;
-    void setContentsScale(float);
+    void setContentsScale( float );
 
 #if PLATFORM(WIN)
-    HashMap<String, RefPtr<PlatformCAAnimation> >& animations() { return m_animations; }
+    HashMap<String, RefPtr<PlatformCAAnimation> > &animations()
+    {
+        return m_animations;
+    }
 #endif
 
 #if PLATFORM(WIN) && !defined(NDEBUG)
@@ -196,12 +213,12 @@ public:
 #endif
 
 protected:
-    PlatformCALayer(LayerType, PlatformLayer*, PlatformCALayerClient*);
-    
+    PlatformCALayer( LayerType, PlatformLayer *, PlatformCALayerClient * );
+
 private:
-    PlatformCALayerClient* m_owner;
+    PlatformCALayerClient *m_owner;
     LayerType m_layerType;
-    
+
 #if PLATFORM(MAC) || PLATFORM(WIN)
     RetainPtr<PlatformLayer> m_layer;
 #endif

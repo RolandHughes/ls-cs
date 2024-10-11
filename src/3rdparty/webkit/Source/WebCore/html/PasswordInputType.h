@@ -33,17 +33,19 @@
 
 #include "BaseTextInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PasswordInputType : public BaseTextInputType {
+class PasswordInputType : public BaseTextInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    PasswordInputType(HTMLInputElement* element) : BaseTextInputType(element) { }
-    virtual const AtomicString& formControlType() const;
-    virtual bool saveFormControlState(String&) const;
-    virtual void restoreFormControlState(const String&) const;
+    PasswordInputType( HTMLInputElement *element ) : BaseTextInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
+    virtual bool saveFormControlState( String & ) const;
+    virtual void restoreFormControlState( const String & ) const;
     virtual bool shouldUseInputMethod() const;
     virtual bool shouldResetOnDocumentActivation();
     virtual bool shouldRespectListAttribute();

@@ -35,47 +35,49 @@ class QPlatformOpenGLContextPrivate;
 
 class Q_GUI_EXPORT QPlatformOpenGLContext
 {
-   Q_DECLARE_PRIVATE(QPlatformOpenGLContext)
+    Q_DECLARE_PRIVATE( QPlatformOpenGLContext )
 
- public:
-   using FP_Void = void(*)();
+public:
+    using FP_Void = void( * )();
 
-   QPlatformOpenGLContext();
+    QPlatformOpenGLContext();
 
-   QPlatformOpenGLContext(const QPlatformOpenGLContext &) = delete;
-   QPlatformOpenGLContext &operator=(const QPlatformOpenGLContext &) = delete;
+    QPlatformOpenGLContext( const QPlatformOpenGLContext & ) = delete;
+    QPlatformOpenGLContext &operator=( const QPlatformOpenGLContext & ) = delete;
 
-   virtual ~QPlatformOpenGLContext();
+    virtual ~QPlatformOpenGLContext();
 
-   virtual void initialize();
-   virtual QSurfaceFormat format() const = 0;
+    virtual void initialize();
+    virtual QSurfaceFormat format() const = 0;
 
-   virtual void swapBuffers(QPlatformSurface *surface) = 0;
+    virtual void swapBuffers( QPlatformSurface *surface ) = 0;
 
-   virtual GLuint defaultFramebufferObject(QPlatformSurface *surface) const;
-   virtual bool makeCurrent(QPlatformSurface *surface) = 0;
-   virtual void doneCurrent() = 0;
+    virtual GLuint defaultFramebufferObject( QPlatformSurface *surface ) const;
+    virtual bool makeCurrent( QPlatformSurface *surface ) = 0;
+    virtual void doneCurrent() = 0;
 
-   virtual bool isSharing() const {
-      return false;
-   }
+    virtual bool isSharing() const
+    {
+        return false;
+    }
 
-   virtual bool isValid() const {
-      return true;
-   }
+    virtual bool isValid() const
+    {
+        return true;
+    }
 
-   virtual FP_Void getProcAddress(const QByteArray &procName) = 0;
+    virtual FP_Void getProcAddress( const QByteArray &procName ) = 0;
 
-   QOpenGLContext *context() const;
-   static bool parseOpenGLVersion(const QByteArray &versionString, int &major, int &minor);
+    QOpenGLContext *context() const;
+    static bool parseOpenGLVersion( const QByteArray &versionString, int &major, int &minor );
 
- protected:
-   QScopedPointer<QPlatformOpenGLContextPrivate> d_ptr;
+protected:
+    QScopedPointer<QPlatformOpenGLContextPrivate> d_ptr;
 
- private:
-   friend class QOpenGLContext;
+private:
+    friend class QOpenGLContext;
 
-   void setContext(QOpenGLContext *context);
+    void setContext( QOpenGLContext *context );
 };
 
 #endif  // no-opengl

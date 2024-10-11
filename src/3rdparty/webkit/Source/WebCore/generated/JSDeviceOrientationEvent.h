@@ -26,63 +26,69 @@
 #include "JSEvent.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DeviceOrientationEvent;
 
-class JSDeviceOrientationEvent : public JSEvent {
+class JSDeviceOrientationEvent : public JSEvent
+{
     typedef JSEvent Base;
 public:
-    JSDeviceOrientationEvent(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<DeviceOrientationEvent>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSDeviceOrientationEvent( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<DeviceOrientationEvent> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom attributes
-    JSC::JSValue alpha(JSC::ExecState*) const;
-    JSC::JSValue beta(JSC::ExecState*) const;
-    JSC::JSValue gamma(JSC::ExecState*) const;
+    JSC::JSValue alpha( JSC::ExecState * ) const;
+    JSC::JSValue beta( JSC::ExecState * ) const;
+    JSC::JSValue gamma( JSC::ExecState * ) const;
 
     // Custom functions
-    JSC::JSValue initDeviceOrientationEvent(JSC::ExecState*);
+    JSC::JSValue initDeviceOrientationEvent( JSC::ExecState * );
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 
-class JSDeviceOrientationEventPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDeviceOrientationEventPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDeviceOrientationEventPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDeviceOrientationEventPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsDeviceOrientationEventPrototypeFunctionInitDeviceOrientationEvent(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsDeviceOrientationEventPrototypeFunctionInitDeviceOrientationEvent( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsDeviceOrientationEventAlpha(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDeviceOrientationEventBeta(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDeviceOrientationEventGamma(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsDeviceOrientationEventConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsDeviceOrientationEventAlpha( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDeviceOrientationEventBeta( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDeviceOrientationEventGamma( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsDeviceOrientationEventConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

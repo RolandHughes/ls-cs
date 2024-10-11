@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FELighting_h
@@ -39,54 +39,61 @@
 
 // Common base class for FEDiffuseLighting and FESpecularLighting
 
-namespace WebCore {
+namespace WebCore
+{
 
-class FELighting : public FilterEffect {
+class FELighting : public FilterEffect
+{
 public:
     virtual void apply();
 
-    virtual void determineAbsolutePaintRect() { setAbsolutePaintRect(maxEffectRect()); }
+    virtual void determineAbsolutePaintRect()
+    {
+        setAbsolutePaintRect( maxEffectRect() );
+    }
 
 protected:
-    enum LightingType {
+    enum LightingType
+    {
         DiffuseLighting,
         SpecularLighting
     };
 
-    struct LightingData {
+    struct LightingData
+    {
         // This structure contains only read-only (SMP safe) data
-        ByteArray* pixels;
+        ByteArray *pixels;
         float surfaceScale;
         int widthMultipliedByPixelSize;
         int widthDecreasedByOne;
         int heightDecreasedByOne;
 
-        inline void topLeft(int offset, IntPoint& normalVector);
-        inline void topRow(int offset, IntPoint& normalVector);
-        inline void topRight(int offset, IntPoint& normalVector);
-        inline void leftColumn(int offset, IntPoint& normalVector);
-        inline void interior(int offset, IntPoint& normalVector);
-        inline void rightColumn(int offset, IntPoint& normalVector);
-        inline void bottomLeft(int offset, IntPoint& normalVector);
-        inline void bottomRow(int offset, IntPoint& normalVector);
-        inline void bottomRight(int offset, IntPoint& normalVector);
+        inline void topLeft( int offset, IntPoint &normalVector );
+        inline void topRow( int offset, IntPoint &normalVector );
+        inline void topRight( int offset, IntPoint &normalVector );
+        inline void leftColumn( int offset, IntPoint &normalVector );
+        inline void interior( int offset, IntPoint &normalVector );
+        inline void rightColumn( int offset, IntPoint &normalVector );
+        inline void bottomLeft( int offset, IntPoint &normalVector );
+        inline void bottomRow( int offset, IntPoint &normalVector );
+        inline void bottomRight( int offset, IntPoint &normalVector );
     };
 
-    FELighting(Filter*, LightingType, const Color&, float, float, float, float, float, float, PassRefPtr<LightSource>);
+    FELighting( Filter *, LightingType, const Color &, float, float, float, float, float, float, PassRefPtr<LightSource> );
 
-    bool drawLighting(ByteArray*, int, int);
-    inline void inlineSetPixel(int offset, LightingData&, LightSource::PaintingData&,
-                               int lightX, int lightY, float factorX, float factorY, IntPoint& normalVector);
+    bool drawLighting( ByteArray *, int, int );
+    inline void inlineSetPixel( int offset, LightingData &, LightSource::PaintingData &,
+                                int lightX, int lightY, float factorX, float factorY, IntPoint &normalVector );
 
     // Not worth to inline every occurence of setPixel.
-    void setPixel(int offset, LightingData&, LightSource::PaintingData&,
-                  int lightX, int lightY, float factorX, float factorY, IntPoint& normalVector);
+    void setPixel( int offset, LightingData &, LightSource::PaintingData &,
+                   int lightX, int lightY, float factorX, float factorY, IntPoint &normalVector );
 
-    inline void platformApply(LightingData&, LightSource::PaintingData&);
+    inline void platformApply( LightingData &, LightSource::PaintingData & );
 
-    inline void platformApplyGeneric(LightingData&, LightSource::PaintingData&);
-    static int getPowerCoefficients(float exponent);
-    inline void platformApplyNeon(LightingData&, LightSource::PaintingData&);
+    inline void platformApplyGeneric( LightingData &, LightSource::PaintingData & );
+    static int getPowerCoefficients( float exponent );
+    inline void platformApplyNeon( LightingData &, LightSource::PaintingData & );
 
     LightingType m_lightingType;
     RefPtr<LightSource> m_lightSource;

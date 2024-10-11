@@ -36,13 +36,13 @@
 
 /* ************************************************************************** */
 
-mng_retcode mng_process_eof       (mng_datap pData);
+mng_retcode mng_process_eof       ( mng_datap pData );
 
-mng_retcode mng_release_pushdata  (mng_datap pData);
+mng_retcode mng_release_pushdata  ( mng_datap pData );
 
-mng_retcode mng_release_pushchunk (mng_datap pData);
+mng_retcode mng_release_pushchunk ( mng_datap pData );
 
-mng_retcode mng_read_graphic      (mng_datap pData);
+mng_retcode mng_read_graphic      ( mng_datap pData );
 
 /* ************************************************************************** */
 

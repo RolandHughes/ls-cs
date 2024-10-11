@@ -25,13 +25,15 @@
 
 #include <math.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 void FloatPoint3D::normalize()
 {
     float tempLength = length();
 
-    if (tempLength) {
+    if ( tempLength )
+    {
         m_x /= tempLength;
         m_y /= tempLength;
         m_z /= tempLength;

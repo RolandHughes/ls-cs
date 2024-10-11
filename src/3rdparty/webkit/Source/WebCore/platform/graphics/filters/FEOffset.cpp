@@ -31,18 +31,19 @@
 #include "RenderTreeAsText.h"
 #include "TextStream.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-FEOffset::FEOffset(Filter* filter, float dx, float dy)
-    : FilterEffect(filter)
-    , m_dx(dx)
-    , m_dy(dy)
+FEOffset::FEOffset( Filter *filter, float dx, float dy )
+    : FilterEffect( filter )
+    , m_dx( dx )
+    , m_dy( dy )
 {
 }
 
-PassRefPtr<FEOffset> FEOffset::create(Filter* filter, float dx, float dy)
+PassRefPtr<FEOffset> FEOffset::create( Filter *filter, float dx, float dy )
 {
-    return adoptRef(new FEOffset(filter, dx, dy));
+    return adoptRef( new FEOffset( filter, dx, dy ) );
 }
 
 float FEOffset::dx() const
@@ -50,7 +51,7 @@ float FEOffset::dx() const
     return m_dx;
 }
 
-void FEOffset::setDx(float dx)
+void FEOffset::setDx( float dx )
 {
     m_dx = dx;
 }
@@ -60,52 +61,61 @@ float FEOffset::dy() const
     return m_dy;
 }
 
-void FEOffset::setDy(float dy)
+void FEOffset::setDy( float dy )
 {
     m_dy = dy;
 }
 
 void FEOffset::determineAbsolutePaintRect()
 {
-    FloatRect paintRect = inputEffect(0)->absolutePaintRect();
-    Filter* filter = this->filter();
-    paintRect.move(filter->applyHorizontalScale(m_dx), filter->applyVerticalScale(m_dy));
-    paintRect.intersect(maxEffectRect());
-    setAbsolutePaintRect(enclosingIntRect(paintRect));
+    FloatRect paintRect = inputEffect( 0 )->absolutePaintRect();
+    Filter *filter = this->filter();
+    paintRect.move( filter->applyHorizontalScale( m_dx ), filter->applyVerticalScale( m_dy ) );
+    paintRect.intersect( maxEffectRect() );
+    setAbsolutePaintRect( enclosingIntRect( paintRect ) );
 }
 
 void FEOffset::apply()
 {
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    FilterEffect* in = inputEffect(0);
+    }
+
+    FilterEffect *in = inputEffect( 0 );
     in->apply();
-    if (!in->hasResult())
+
+    if ( !in->hasResult() )
+    {
         return;
+    }
 
-    ImageBuffer* resultImage = createImageBufferResult();
-    if (!resultImage)
+    ImageBuffer *resultImage = createImageBufferResult();
+
+    if ( !resultImage )
+    {
         return;
+    }
 
-    setIsAlphaImage(in->isAlphaImage());
+    setIsAlphaImage( in->isAlphaImage() );
 
-    FloatRect drawingRegion = drawingRegionOfInputImage(in->absolutePaintRect());
-    Filter* filter = this->filter();
-    drawingRegion.move(filter->applyHorizontalScale(m_dx), filter->applyVerticalScale(m_dy));
-    resultImage->context()->drawImageBuffer(in->asImageBuffer(), ColorSpaceDeviceRGB, drawingRegion);
+    FloatRect drawingRegion = drawingRegionOfInputImage( in->absolutePaintRect() );
+    Filter *filter = this->filter();
+    drawingRegion.move( filter->applyHorizontalScale( m_dx ), filter->applyVerticalScale( m_dy ) );
+    resultImage->context()->drawImageBuffer( in->asImageBuffer(), ColorSpaceDeviceRGB, drawingRegion );
 }
 
 void FEOffset::dump()
 {
 }
 
-TextStream& FEOffset::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FEOffset::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
-    ts << "[feOffset"; 
-    FilterEffect::externalRepresentation(ts);
+    writeIndent( ts, indent );
+    ts << "[feOffset";
+    FilterEffect::externalRepresentation( ts );
     ts << " dx=\"" << dx() << "\" dy=\"" << dy() << "\"]\n";
-    inputEffect(0)->externalRepresentation(ts, indent + 1);
+    inputEffect( 0 )->externalRepresentation( ts, indent + 1 );
     return ts;
 }
 

@@ -30,28 +30,28 @@
 #include <qobject.h>
 
 class QGstreamerPlayerServicePlugin : public QMediaServiceProviderPlugin, public QMediaServiceFeaturesInterface,
-     public QMediaServiceSupportedFormatsInterface
+    public QMediaServiceSupportedFormatsInterface
 {
-   CS_OBJECT_MULTIPLE(QGstreamerPlayerServicePlugin, QMediaServiceProviderPlugin)
+    LSCS_OBJECT_MULTIPLE( QGstreamerPlayerServicePlugin, QMediaServiceProviderPlugin )
 
-   CS_PLUGIN_IID(QMediaServiceProviderInterface_ID)
-   CS_PLUGIN_KEY(Q_MEDIASERVICE_MEDIAPLAYER)
+    LSCS_PLUGIN_IID( QMediaServiceProviderInterface_ID )
+    LSCS_PLUGIN_KEY( Q_MEDIASERVICE_MEDIAPLAYER )
 
-   CS_INTERFACES(QMediaServiceFeaturesInterface, QMediaServiceSupportedFormatsInterface)
+    LSCS_INTERFACES( QMediaServiceFeaturesInterface, QMediaServiceSupportedFormatsInterface )
 
- public:
-   QMediaService *create(QString const &key) override;
-   void release(QMediaService *service) override;
+public:
+    QMediaService *create( QString const &key ) override;
+    void release( QMediaService *service ) override;
 
-   QMediaServiceProviderHint::Features supportedFeatures(const QString &service) const override;
+    QMediaServiceProviderHint::Features supportedFeatures( const QString &service ) const override;
 
-   QMultimedia::SupportEstimate hasSupport(const QString &mimeType, const QStringList &codecs) const override;
-   QStringList supportedMimeTypes() const override;
+    QMultimedia::SupportEstimate hasSupport( const QString &mimeType, const QStringList &codecs ) const override;
+    QStringList supportedMimeTypes() const override;
 
- private:
-   void updateSupportedMimeTypes() const;
+private:
+    void updateSupportedMimeTypes() const;
 
-   mutable QSet<QString> m_supportedMimeTypeSet;
+    mutable QSet<QString> m_supportedMimeTypeSet;
 };
 
 #endif

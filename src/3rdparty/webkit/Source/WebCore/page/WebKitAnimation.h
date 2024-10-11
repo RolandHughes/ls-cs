@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebKitAnimation_h
@@ -31,14 +31,16 @@
 #include "KeyframeAnimation.h"
 #include "RenderStyle.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class WebKitAnimation : public RefCounted<WebKitAnimation> {
+class WebKitAnimation : public RefCounted<WebKitAnimation>
+{
 public:
 
-    static PassRefPtr<WebKitAnimation> create(PassRefPtr<KeyframeAnimation> keyframeAnimation)
+    static PassRefPtr<WebKitAnimation> create( PassRefPtr<KeyframeAnimation> keyframeAnimation )
     {
-        return adoptRef(new WebKitAnimation(keyframeAnimation));
+        return adoptRef( new WebKitAnimation( keyframeAnimation ) );
     }
 
     virtual ~WebKitAnimation() { }
@@ -50,7 +52,7 @@ public:
     double duration() const;
 
     double elapsedTime() const;
-    void setElapsedTime(double);
+    void setElapsedTime( double );
 
     double delay() const;
     int iterationCount() const;
@@ -70,7 +72,7 @@ public:
     void pause();
 
 protected:
-    WebKitAnimation(PassRefPtr<KeyframeAnimation>);
+    WebKitAnimation( PassRefPtr<KeyframeAnimation> );
 
 private:
     RefPtr<KeyframeAnimation> m_keyframeAnimation;

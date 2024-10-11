@@ -27,20 +27,21 @@
 #include "qexpression_p.h"
 #include "qatomictype_p.h"
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class PairContainer : public Expression
 {
- public:
-   Expression::List operands() const override;
-   void setOperands(const Expression::List &operands) override;
-   bool compressOperands(const StaticContext::Ptr &) override;
+public:
+    Expression::List operands() const override;
+    void setOperands( const Expression::List &operands ) override;
+    bool compressOperands( const StaticContext::Ptr & ) override;
 
- protected:
-   PairContainer(const Expression::Ptr &operand1, const Expression::Ptr &operand2);
+protected:
+    PairContainer( const Expression::Ptr &operand1, const Expression::Ptr &operand2 );
 
-   Expression::Ptr m_operand1;
-   Expression::Ptr m_operand2;
+    Expression::Ptr m_operand1;
+    Expression::Ptr m_operand2;
 };
 
 }

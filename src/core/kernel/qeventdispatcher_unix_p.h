@@ -36,24 +36,25 @@
 #include <sys/time.h>
 #include <sys/select.h>
 
-struct QSockNot {
-   QSocketNotifier *obj;
-   int fd;
-   fd_set *queue;
+struct QSockNot
+{
+    QSocketNotifier *obj;
+    int fd;
+    fd_set *queue;
 };
 
 class QSockNotType
 {
- public:
-   QSockNotType();
-   ~QSockNotType();
+public:
+    QSockNotType();
+    ~QSockNotType();
 
-   using List = QPodList<QSockNot *, 32>;
+    using List = QPodList<QSockNot *, 32>;
 
-   List list;
-   fd_set select_fds;
-   fd_set enabled_fds;
-   fd_set pending_fds;
+    List list;
+    fd_set select_fds;
+    fd_set enabled_fds;
+    fd_set pending_fds;
 };
 
 #ifdef check
@@ -64,70 +65,70 @@ class QEventDispatcherUNIXPrivate;
 
 class Q_CORE_EXPORT QEventDispatcherUNIX : public QAbstractEventDispatcher
 {
-   CORE_CS_OBJECT(QEventDispatcherUNIX)
-   Q_DECLARE_PRIVATE(QEventDispatcherUNIX)
+    CORE_LSCS_OBJECT( QEventDispatcherUNIX )
+    Q_DECLARE_PRIVATE( QEventDispatcherUNIX )
 
- public:
-   explicit QEventDispatcherUNIX(QObject *parent = nullptr);
-   ~QEventDispatcherUNIX();
+public:
+    explicit QEventDispatcherUNIX( QObject *parent = nullptr );
+    ~QEventDispatcherUNIX();
 
-   bool processEvents(QEventLoop::ProcessEventsFlags flags) override;
-   bool hasPendingEvents() override;
+    bool processEvents( QEventLoop::ProcessEventsFlags flags ) override;
+    bool hasPendingEvents() override;
 
-   void registerSocketNotifier(QSocketNotifier *notifier) override;
-   void unregisterSocketNotifier(QSocketNotifier *notifier) override;
+    void registerSocketNotifier( QSocketNotifier *notifier ) override;
+    void unregisterSocketNotifier( QSocketNotifier *notifier ) override;
 
-   void registerTimer(int timerId, int interval, Qt::TimerType timerType, QObject *object) override;
-   bool unregisterTimer(int timerId) override;
-   bool unregisterTimers(QObject *object) override;
-   QList<QTimerInfo> registeredTimers(QObject *object) const override;
+    void registerTimer( int timerId, int interval, Qt::TimerType timerType, QObject *object ) override;
+    bool unregisterTimer( int timerId ) override;
+    bool unregisterTimers( QObject *object ) override;
+    QList<QTimerInfo> registeredTimers( QObject *object ) const override;
 
-   int remainingTime(int timerId) override;
-   void wakeUp() override;
-   void interrupt() override;
-   void flush() override;
+    int remainingTime( int timerId ) override;
+    void wakeUp() override;
+    void interrupt() override;
+    void flush() override;
 
- protected:
-   QEventDispatcherUNIX(QEventDispatcherUNIXPrivate &dd, QObject *parent = nullptr);
+protected:
+    QEventDispatcherUNIX( QEventDispatcherUNIXPrivate &dd, QObject *parent = nullptr );
 
-   void setSocketNotifierPending(QSocketNotifier *notifier);
+    void setSocketNotifierPending( QSocketNotifier *notifier );
 
-   int activateTimers();
-   int activateSocketNotifiers();
+    int activateTimers();
+    int activateSocketNotifiers();
 
-   virtual int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, timespec *timeout);
+    virtual int select( int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, timespec *timeout );
 };
 
 class Q_CORE_EXPORT QEventDispatcherUNIXPrivate : public QAbstractEventDispatcherPrivate
 {
-   Q_DECLARE_PUBLIC(QEventDispatcherUNIX)
+    Q_DECLARE_PUBLIC( QEventDispatcherUNIX )
 
- public:
-   QEventDispatcherUNIXPrivate();
-   ~QEventDispatcherUNIXPrivate();
+public:
+    QEventDispatcherUNIXPrivate();
+    ~QEventDispatcherUNIXPrivate();
 
-   int doSelect(QEventLoop::ProcessEventsFlags flags, timespec *timeout);
-   virtual int initThreadWakeUp();
-   virtual int processThreadWakeUp(int nsel);
+    int doSelect( QEventLoop::ProcessEventsFlags flags, timespec *timeout );
+    virtual int initThreadWakeUp();
+    virtual int processThreadWakeUp( int nsel );
 
-   bool mainThread;
-   // note for eventfd(7) support:
-   // if thread_pipe[1] is -1, then eventfd(7) is in use and is stored in thread_pipe[0]
-   int thread_pipe[2];
+    bool mainThread;
+    // note for eventfd(7) support:
+    // if thread_pipe[1] is -1, then eventfd(7) is in use and is stored in thread_pipe[0]
+    int thread_pipe[2];
 
-   // highest fd for all socket notifiers
-   int sn_highest;
+    // highest fd for all socket notifiers
+    int sn_highest;
 
-   // 3 socket notifier types - read, write and exception
-   QSockNotType sn_vec[3];
+    // 3 socket notifier types - read, write and exception
+    QSockNotType sn_vec[3];
 
-   QTimerInfoList timerList;
+    QTimerInfoList timerList;
 
-   // pending socket notifiers list
-   QSockNotType::List sn_pending_list;
+    // pending socket notifiers list
+    QSockNotType::List sn_pending_list;
 
-   QAtomicInt wakeUps;
-   std::atomic<bool> interrupt;
+    QAtomicInt wakeUps;
+    std::atomic<bool> interrupt;
 };
 
 #endif // QEVENTDISPATCHER_UNIX_P_H

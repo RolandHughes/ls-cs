@@ -32,27 +32,31 @@
 #include <wtf/RefCounted.h>
 #include <wtf/RetainPtr.h>
 
-typedef struct _CGLContextObject* CGLContextObj;
-typedef struct __IOSurface* IOSurfaceRef;
+typedef struct _CGLContextObject *CGLContextObj;
+typedef struct __IOSurface *IOSurfaceRef;
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-class ShareableSurface : public RefCounted<ShareableSurface> {
+class ShareableSurface : public RefCounted<ShareableSurface>
+{
 public:
-    class Handle {
-        WTF_MAKE_NONCOPYABLE(Handle);
-    
+    class Handle
+    {
+        WTF_MAKE_NONCOPYABLE( Handle );
+
     public:
         Handle();
         ~Handle();
 
-        void encode(CoreIPC::ArgumentEncoder*) const;
-        static bool decode(CoreIPC::ArgumentDecoder*, Handle&);
+        void encode( CoreIPC::ArgumentEncoder * ) const;
+        static bool decode( CoreIPC::ArgumentDecoder *, Handle & );
 
     private:
         friend class ShareableSurface;
@@ -61,29 +65,29 @@ public:
     };
 
     // Create a shareable surface with the given size. Returns 0 on failure.
-    static PassRefPtr<ShareableSurface> create(CGLContextObj, const WebCore::IntSize&);
+    static PassRefPtr<ShareableSurface> create( CGLContextObj, const WebCore::IntSize & );
 
     // Create a shareable surface from a handle. Returns 0 on failure.
-    static PassRefPtr<ShareableSurface> create(CGLContextObj, const Handle&);
+    static PassRefPtr<ShareableSurface> create( CGLContextObj, const Handle & );
 
     ~ShareableSurface();
 
-    bool createHandle(Handle&);
-    
+    bool createHandle( Handle & );
+
     unsigned textureID();
 
     void attach();
     void detach();
 
 private:
-    ShareableSurface(CGLContextObj, const WebCore::IntSize&, IOSurfaceRef);
+    ShareableSurface( CGLContextObj, const WebCore::IntSize &, IOSurfaceRef );
 
     // The OpenGL context.
     CGLContextObj m_cglContextObj;
 
     // The size of the surface.
     WebCore::IntSize m_size;
-    
+
     // The ID of the texture.
     unsigned m_textureID;
 

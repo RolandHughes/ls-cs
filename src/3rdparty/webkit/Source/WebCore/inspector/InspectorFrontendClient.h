@@ -34,19 +34,21 @@
 #include <wtf/Forward.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ContextMenuItem;
 class Event;
 
-class InspectorFrontendClient {
+class InspectorFrontendClient
+{
 public:
     virtual ~InspectorFrontendClient() { }
 
     virtual void windowObjectCleared() = 0;
     virtual void frontendLoaded() = 0;
 
-    virtual void moveWindowBy(float x, float y) = 0;
+    virtual void moveWindowBy( float x, float y ) = 0;
 
     virtual String localizedStringsURL() = 0;
     virtual String hiddenPanels() = 0;
@@ -57,15 +59,15 @@ public:
 
     virtual void requestAttachWindow() = 0;
     virtual void requestDetachWindow() = 0;
-    virtual void changeAttachedWindowHeight(unsigned) = 0;
-    virtual void saveAs(const WTF::String& fileName, const WTF::String& content) = 0;
+    virtual void changeAttachedWindowHeight( unsigned ) = 0;
+    virtual void saveAs( const WTF::String &fileName, const WTF::String &content ) = 0;
 
-    virtual void inspectedURLChanged(const String&) = 0;
+    virtual void inspectedURLChanged( const String & ) = 0;
 
-    virtual void sendMessageToBackend(const String&) = 0;
+    virtual void sendMessageToBackend( const String & ) = 0;
 
-    virtual void saveSessionSetting(const String&, const String&) { }
-    virtual void loadSessionSetting(const String&, String*) { }
+    virtual void saveSessionSetting( const String &, const String & ) { }
+    virtual void loadSessionSetting( const String &, String * ) { }
 };
 
 } // namespace WebCore

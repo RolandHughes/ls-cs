@@ -43,7 +43,8 @@ class QOpenGLDebugMessagePrivate;
 class Q_GUI_EXPORT QOpenGLDebugMessage
 {
 public:
-    enum Source {
+    enum Source
+    {
         InvalidSource        = 0x00000000,
         APISource            = 0x00000001,
         WindowSystemSource   = 0x00000002,
@@ -56,7 +57,8 @@ public:
     };
     using Sources = QFlags<Source>;
 
-    enum Type {
+    enum Type
+    {
         InvalidType            = 0x00000000,
         ErrorType              = 0x00000001,
         DeprecatedBehaviorType = 0x00000002,
@@ -72,7 +74,8 @@ public:
     };
     using Types = QFlags<Type>;
 
-    enum Severity {
+    enum Severity
+    {
         InvalidSeverity      = 0x00000000,
         HighSeverity         = 0x00000001,
         MediumSeverity       = 0x00000002,
@@ -84,15 +87,22 @@ public:
     using Severities = QFlags<Severity>;
 
     QOpenGLDebugMessage();
-    QOpenGLDebugMessage(const QOpenGLDebugMessage &debugMessage);
+    QOpenGLDebugMessage( const QOpenGLDebugMessage &debugMessage );
 
-    QOpenGLDebugMessage &operator=(const QOpenGLDebugMessage &debugMessage);
+    QOpenGLDebugMessage &operator=( const QOpenGLDebugMessage &debugMessage );
 
-    QOpenGLDebugMessage &operator=(QOpenGLDebugMessage &&other)  { swap(other); return *this; }
+    QOpenGLDebugMessage &operator=( QOpenGLDebugMessage &&other )
+    {
+        swap( other );
+        return *this;
+    }
 
     ~QOpenGLDebugMessage();
 
-    void swap(QOpenGLDebugMessage &other)  { qSwap(d, other.d); }
+    void swap( QOpenGLDebugMessage &other )
+    {
+        qSwap( d, other.d );
+    }
 
     Source source() const;
     Type type() const;
@@ -100,17 +110,20 @@ public:
     GLuint id() const;
     QString message() const;
 
-    static QOpenGLDebugMessage createApplicationMessage(const QString &text,
-                                                        GLuint id = 0,
-                                                        Severity severity = NotificationSeverity,
-                                                        Type type = OtherType);
-    static QOpenGLDebugMessage createThirdPartyMessage(const QString &text,
-                                                       GLuint id = 0,
-                                                       Severity severity = NotificationSeverity,
-                                                       Type type = OtherType);
+    static QOpenGLDebugMessage createApplicationMessage( const QString &text,
+            GLuint id = 0,
+            Severity severity = NotificationSeverity,
+            Type type = OtherType );
+    static QOpenGLDebugMessage createThirdPartyMessage( const QString &text,
+            GLuint id = 0,
+            Severity severity = NotificationSeverity,
+            Type type = OtherType );
 
-    bool operator==(const QOpenGLDebugMessage &debugMessage) const;
-    inline bool operator!=(const QOpenGLDebugMessage &debugMessage) const { return !operator==(debugMessage); }
+    bool operator==( const QOpenGLDebugMessage &debugMessage ) const;
+    inline bool operator!=( const QOpenGLDebugMessage &debugMessage ) const
+    {
+        return !operator==( debugMessage );
+    }
 
 private:
     friend class QOpenGLDebugLogger;
@@ -118,34 +131,35 @@ private:
     QSharedDataPointer<QOpenGLDebugMessagePrivate> d;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(QOpenGLDebugMessage::Sources)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QOpenGLDebugMessage::Types)
-Q_DECLARE_OPERATORS_FOR_FLAGS(QOpenGLDebugMessage::Severities)
+Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLDebugMessage::Sources )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLDebugMessage::Types )
+Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLDebugMessage::Severities )
 
-Q_GUI_EXPORT QDebug operator<<(QDebug debug, const QOpenGLDebugMessage &message);
-Q_GUI_EXPORT QDebug operator<<(QDebug debug, QOpenGLDebugMessage::Source source);
-Q_GUI_EXPORT QDebug operator<<(QDebug debug, QOpenGLDebugMessage::Type type);
-Q_GUI_EXPORT QDebug operator<<(QDebug debug, QOpenGLDebugMessage::Severity severity);
+Q_GUI_EXPORT QDebug operator<<( QDebug debug, const QOpenGLDebugMessage &message );
+Q_GUI_EXPORT QDebug operator<<( QDebug debug, QOpenGLDebugMessage::Source source );
+Q_GUI_EXPORT QDebug operator<<( QDebug debug, QOpenGLDebugMessage::Type type );
+Q_GUI_EXPORT QDebug operator<<( QDebug debug, QOpenGLDebugMessage::Severity severity );
 
 class QOpenGLDebugLoggerPrivate;
 
 class Q_GUI_EXPORT QOpenGLDebugLogger : public QObject
 {
-    GUI_CS_OBJECT(QOpenGLDebugLogger)
+    GUI_LSCS_OBJECT( QOpenGLDebugLogger )
 
-    GUI_CS_ENUM(LoggingMode)
-    GUI_CS_PROPERTY_READ(loggingMode, loggingMode)
+    GUI_LSCS_ENUM( LoggingMode )
+    GUI_LSCS_PROPERTY_READ( loggingMode, loggingMode )
 
- public:
-    enum LoggingMode {
+public:
+    enum LoggingMode
+    {
         AsynchronousLogging,
         SynchronousLogging
     };
 
-    explicit QOpenGLDebugLogger(QObject *parent = nullptr);
+    explicit QOpenGLDebugLogger( QObject *parent = nullptr );
 
-    QOpenGLDebugLogger(const QOpenGLDebugLogger &) = delete;
-    QOpenGLDebugLogger &operator=(const QOpenGLDebugLogger &) = delete;
+    QOpenGLDebugLogger( const QOpenGLDebugLogger & ) = delete;
+    QOpenGLDebugLogger &operator=( const QOpenGLDebugLogger & ) = delete;
 
     ~QOpenGLDebugLogger();
 
@@ -156,49 +170,49 @@ class Q_GUI_EXPORT QOpenGLDebugLogger : public QObject
 
     qint64 maximumMessageLength() const;
 
-    void pushGroup(const QString &name, GLuint id = 0,
-                        QOpenGLDebugMessage::Source source = QOpenGLDebugMessage::ApplicationSource);
+    void pushGroup( const QString &name, GLuint id = 0,
+                    QOpenGLDebugMessage::Source source = QOpenGLDebugMessage::ApplicationSource );
 
     void popGroup();
 
-    void enableMessages(QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
-                        QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType,
-                        QOpenGLDebugMessage::Severities severities = QOpenGLDebugMessage::AnySeverity);
+    void enableMessages( QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
+                         QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType,
+                         QOpenGLDebugMessage::Severities severities = QOpenGLDebugMessage::AnySeverity );
 
-    void enableMessages(const QVector<GLuint> &ids,
-                        QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
-                        QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType);
+    void enableMessages( const QVector<GLuint> &ids,
+                         QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
+                         QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType );
 
-    void disableMessages(QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
-                        QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType,
-                        QOpenGLDebugMessage::Severities severities = QOpenGLDebugMessage::AnySeverity);
+    void disableMessages( QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
+                          QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType,
+                          QOpenGLDebugMessage::Severities severities = QOpenGLDebugMessage::AnySeverity );
 
-    void disableMessages(const QVector<GLuint> &ids,
-                        QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
-                        QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType);
+    void disableMessages( const QVector<GLuint> &ids,
+                          QOpenGLDebugMessage::Sources sources = QOpenGLDebugMessage::AnySource,
+                          QOpenGLDebugMessage::Types types = QOpenGLDebugMessage::AnyType );
 
     QList<QOpenGLDebugMessage> loggedMessages() const;
 
-    GUI_CS_SLOT_1(Public, void logMessage(const QOpenGLDebugMessage & debugMessage))
-    GUI_CS_SLOT_2(logMessage)
+    GUI_LSCS_SLOT_1( Public, void logMessage( const QOpenGLDebugMessage &debugMessage ) )
+    GUI_LSCS_SLOT_2( logMessage )
 
-    GUI_CS_SLOT_1(Public, void startLogging(LoggingMode loggingMode = AsynchronousLogging))
-    GUI_CS_SLOT_2(startLogging)
+    GUI_LSCS_SLOT_1( Public, void startLogging( LoggingMode loggingMode = AsynchronousLogging ) )
+    GUI_LSCS_SLOT_2( startLogging )
 
-    GUI_CS_SLOT_1(Public, void stopLogging())
-    GUI_CS_SLOT_2(stopLogging)
+    GUI_LSCS_SLOT_1( Public, void stopLogging() )
+    GUI_LSCS_SLOT_2( stopLogging )
 
-    GUI_CS_SIGNAL_1(Public, void messageLogged(const QOpenGLDebugMessage & debugMessage))
-    GUI_CS_SIGNAL_2(messageLogged,debugMessage)
+    GUI_LSCS_SIGNAL_1( Public, void messageLogged( const QOpenGLDebugMessage &debugMessage ) )
+    GUI_LSCS_SIGNAL_2( messageLogged,debugMessage )
 
- protected:
-   QScopedPointer<QOpenGLDebugLoggerPrivate> d_ptr;
+protected:
+    QScopedPointer<QOpenGLDebugLoggerPrivate> d_ptr;
 
- private:
-    Q_DECLARE_PRIVATE(QOpenGLDebugLogger)
+private:
+    Q_DECLARE_PRIVATE( QOpenGLDebugLogger )
 
-    GUI_CS_SLOT_1(Private, void _q_contextAboutToBeDestroyed())
-    GUI_CS_SLOT_2(_q_contextAboutToBeDestroyed)
+    GUI_LSCS_SLOT_1( Private, void _q_contextAboutToBeDestroyed() )
+    GUI_LSCS_SLOT_2( _q_contextAboutToBeDestroyed )
 };
 
 #endif // QT_NO_OPENGL

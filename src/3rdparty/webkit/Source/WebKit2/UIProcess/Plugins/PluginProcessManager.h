@@ -34,37 +34,42 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace CoreIPC {
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class PluginInfoStore;
 class PluginProcessProxy;
 class WebProcessProxy;
 class WebPluginSiteDataManager;
 
-class PluginProcessManager {
-    WTF_MAKE_NONCOPYABLE(PluginProcessManager);
+class PluginProcessManager
+{
+    WTF_MAKE_NONCOPYABLE( PluginProcessManager );
 public:
-    static PluginProcessManager& shared();
+    static PluginProcessManager &shared();
 
-    void getPluginProcessConnection(PluginInfoStore*, const String& pluginPath, PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply>);
-    void removePluginProcessProxy(PluginProcessProxy*);
+    void getPluginProcessConnection( PluginInfoStore *, const String &pluginPath,
+                                     PassRefPtr<Messages::WebProcessProxy::GetPluginProcessConnection::DelayedReply> );
+    void removePluginProcessProxy( PluginProcessProxy * );
 
-    void getSitesWithData(const PluginInfoStore::Plugin&, WebPluginSiteDataManager*, uint64_t callbackID);
-    void clearSiteData(const PluginInfoStore::Plugin&, WebPluginSiteDataManager*, const Vector<String>& sites, uint64_t flags, uint64_t maxAgeInSeconds, uint64_t callbackID);
+    void getSitesWithData( const PluginInfoStore::Plugin &, WebPluginSiteDataManager *, uint64_t callbackID );
+    void clearSiteData( const PluginInfoStore::Plugin &, WebPluginSiteDataManager *, const Vector<String> &sites, uint64_t flags,
+                        uint64_t maxAgeInSeconds, uint64_t callbackID );
 
-    void pluginSyncMessageSendTimedOut(const String& pluginPath);
+    void pluginSyncMessageSendTimedOut( const String &pluginPath );
 
 private:
     PluginProcessManager();
 
-    PluginProcessProxy* getOrCreatePluginProcess(const PluginInfoStore::Plugin&);
-    PluginProcessProxy* pluginProcessWithPath(const String& pluginPath);
+    PluginProcessProxy *getOrCreatePluginProcess( const PluginInfoStore::Plugin & );
+    PluginProcessProxy *pluginProcessWithPath( const String &pluginPath );
 
-    Vector<PluginProcessProxy*> m_pluginProcesses;
+    Vector<PluginProcessProxy *> m_pluginProcesses;
 };
 
 } // namespace WebKit

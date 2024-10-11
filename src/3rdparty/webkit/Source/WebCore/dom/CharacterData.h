@@ -25,49 +25,66 @@
 
 #include "Node.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CharacterData : public Node {
+class CharacterData : public Node
+{
 public:
-    String data() const { return m_data; }
-    void setData(const String&, ExceptionCode&);
-    unsigned length() const { return m_data->length(); }
-    String substringData(unsigned offset, unsigned count, ExceptionCode&);
-    void appendData(const String&, ExceptionCode&);
-    void insertData(unsigned offset, const String&, ExceptionCode&);
-    void deleteData(unsigned offset, unsigned count, ExceptionCode&);
-    void replaceData(unsigned offset, unsigned count, const String&, ExceptionCode&);
+    String data() const
+    {
+        return m_data;
+    }
+    void setData( const String &, ExceptionCode & );
+    unsigned length() const
+    {
+        return m_data->length();
+    }
+    String substringData( unsigned offset, unsigned count, ExceptionCode & );
+    void appendData( const String &, ExceptionCode & );
+    void insertData( unsigned offset, const String &, ExceptionCode & );
+    void deleteData( unsigned offset, unsigned count, ExceptionCode & );
+    void replaceData( unsigned offset, unsigned count, const String &, ExceptionCode & );
 
     bool containsOnlyWhitespace() const;
 
-    StringImpl* dataImpl() { return m_data.get(); }
+    StringImpl *dataImpl()
+    {
+        return m_data.get();
+    }
 
     // Like appendData, but optimized for the parser (e.g., no mutation events).
     // Returns how much could be added before length limit was met.
-    unsigned parserAppendData(const UChar*, unsigned dataLength, unsigned lengthLimit);
+    unsigned parserAppendData( const UChar *, unsigned dataLength, unsigned lengthLimit );
 
 protected:
-    CharacterData(Document* document, const String& text, ConstructionType type)
-        : Node(document, type)
-        , m_data(text.impl() ? text.impl() : StringImpl::empty())
+    CharacterData( Document *document, const String &text, ConstructionType type )
+        : Node( document, type )
+        , m_data( text.impl() ? text.impl() : StringImpl::empty() )
     {
-        ASSERT(type == CreateComment || type == CreateText);
+        ASSERT( type == CreateComment || type == CreateText );
     }
 
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
 
-    void setDataImpl(PassRefPtr<StringImpl> impl) { m_data = impl; }
-    void dispatchModifiedEvent(StringImpl* oldValue);
+    void setDataImpl( PassRefPtr<StringImpl> impl )
+    {
+        m_data = impl;
+    }
+    void dispatchModifiedEvent( StringImpl *oldValue );
 
 private:
     virtual String nodeValue() const;
-    virtual void setNodeValue(const String&, ExceptionCode&);
-    virtual bool isCharacterDataNode() const { return true; }
+    virtual void setNodeValue( const String &, ExceptionCode & );
+    virtual bool isCharacterDataNode() const
+    {
+        return true;
+    }
     virtual int maxCharacterOffset() const;
     virtual bool offsetInCharacters() const;
-    void setDataAndUpdate(PassRefPtr<StringImpl>, unsigned offsetOfReplacedData, unsigned oldLength, unsigned newLength);
-    void updateRenderer(unsigned offsetOfReplacedData, unsigned lengthOfReplacedData);
-    void checkCharDataOperation(unsigned offset, ExceptionCode&);
+    void setDataAndUpdate( PassRefPtr<StringImpl>, unsigned offsetOfReplacedData, unsigned oldLength, unsigned newLength );
+    void updateRenderer( unsigned offsetOfReplacedData, unsigned lengthOfReplacedData );
+    void checkCharDataOperation( unsigned offset, ExceptionCode & );
 
     RefPtr<StringImpl> m_data;
 };

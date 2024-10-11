@@ -34,92 +34,123 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSValue JSJavaScriptCallFrame::evaluate(ExecState* exec)
+JSValue JSJavaScriptCallFrame::evaluate( ExecState *exec )
 {
     JSValue exception;
-    JSValue result = impl()->evaluate(exec->argument(0).toString(exec), exception);
+    JSValue result = impl()->evaluate( exec->argument( 0 ).toString( exec ), exception );
 
-    if (exception)
-        throwError(exec, exception);
+    if ( exception )
+    {
+        throwError( exec, exception );
+    }
 
     return result;
 }
 
-JSValue JSJavaScriptCallFrame::thisObject(ExecState*) const
+JSValue JSJavaScriptCallFrame::thisObject( ExecState * ) const
 {
-    return impl()->thisObject() ? JSValue(impl()->thisObject()) : jsNull();
+    return impl()->thisObject() ? JSValue( impl()->thisObject() ) : jsNull();
 }
 
-JSValue JSJavaScriptCallFrame::type(ExecState* exec) const
+JSValue JSJavaScriptCallFrame::type( ExecState *exec ) const
 {
-    switch (impl()->type()) {
+    switch ( impl()->type() )
+    {
         case DebuggerCallFrame::FunctionType:
-            return jsString(exec, UString("function"));
+            return jsString( exec, UString( "function" ) );
+
         case DebuggerCallFrame::ProgramType:
-            return jsString(exec, UString("program"));
+            return jsString( exec, UString( "program" ) );
     }
 
     ASSERT_NOT_REACHED();
     return jsNull();
 }
 
-JSValue JSJavaScriptCallFrame::scopeChain(ExecState* exec) const
+JSValue JSJavaScriptCallFrame::scopeChain( ExecState *exec ) const
 {
-    if (!impl()->scopeChain())
+    if ( !impl()->scopeChain() )
+    {
         return jsNull();
+    }
 
-    ScopeChainNode* scopeChain = impl()->scopeChain();
+    ScopeChainNode *scopeChain = impl()->scopeChain();
     ScopeChainIterator iter = scopeChain->begin();
     ScopeChainIterator end = scopeChain->end();
 
     // we must always have something in the scope chain
-    ASSERT(iter != end);
+    ASSERT( iter != end );
 
     MarkedArgumentBuffer list;
-    do {
-        list.append(iter->get());
-        ++iter;
-    } while (iter != end);
 
-    return constructArray(exec, globalObject(), list);
+    do
+    {
+        list.append( iter->get() );
+        ++iter;
+    }
+    while ( iter != end );
+
+    return constructArray( exec, globalObject(), list );
 }
 
-JSValue JSJavaScriptCallFrame::scopeType(ExecState* exec)
+JSValue JSJavaScriptCallFrame::scopeType( ExecState *exec )
 {
-    if (!impl()->scopeChain())
+    if ( !impl()->scopeChain() )
+    {
         return jsUndefined();
+    }
 
-    if (!exec->argument(0).isInt32())
+    if ( !exec->argument( 0 ).isInt32() )
+    {
         return jsUndefined();
-    int index = exec->argument(0).asInt32();
+    }
 
-    ScopeChainNode* scopeChain = impl()->scopeChain();
+    int index = exec->argument( 0 ).asInt32();
+
+    ScopeChainNode *scopeChain = impl()->scopeChain();
     ScopeChainIterator end = scopeChain->end();
 
     bool foundLocalScope = false;
-    for (ScopeChainIterator iter = scopeChain->begin(); iter != end; ++iter) {
-        JSObject* scope = iter->get();
-        if (scope->isActivationObject()) {
-            if (!foundLocalScope) {
+
+    for ( ScopeChainIterator iter = scopeChain->begin(); iter != end; ++iter )
+    {
+        JSObject *scope = iter->get();
+
+        if ( scope->isActivationObject() )
+        {
+            if ( !foundLocalScope )
+            {
                 // First activation object is local scope, each successive activation object is closure.
-                if (!index)
-                    return jsJavaScriptCallFrameLOCAL_SCOPE(exec, JSValue(), Identifier());
+                if ( !index )
+                {
+                    return jsJavaScriptCallFrameLOCAL_SCOPE( exec, JSValue(), Identifier() );
+                }
+
                 foundLocalScope = true;
-            } else if (!index)
-                return jsJavaScriptCallFrameCLOSURE_SCOPE(exec, JSValue(), Identifier());
+            }
+            else if ( !index )
+            {
+                return jsJavaScriptCallFrameCLOSURE_SCOPE( exec, JSValue(), Identifier() );
+            }
         }
 
-        if (!index) {
+        if ( !index )
+        {
             // Last in the chain is global scope.
-            if (++iter == end)
-                return jsJavaScriptCallFrameGLOBAL_SCOPE(exec, JSValue(), Identifier());
-            return jsJavaScriptCallFrameWITH_SCOPE(exec, JSValue(), Identifier());
+            if ( ++iter == end )
+            {
+                return jsJavaScriptCallFrameGLOBAL_SCOPE( exec, JSValue(), Identifier() );
+            }
+
+            return jsJavaScriptCallFrameWITH_SCOPE( exec, JSValue(), Identifier() );
         }
 
         --index;
     }
+
     return jsUndefined();
 }
 

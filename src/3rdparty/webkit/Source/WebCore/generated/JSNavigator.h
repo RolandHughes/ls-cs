@@ -26,25 +26,31 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Navigator;
 
-class JSNavigator : public JSDOMWrapper {
+class JSNavigator : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSNavigator(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<Navigator>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSNavigator( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<Navigator> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    Navigator* impl() const { return m_impl.get(); }
+    Navigator *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<Navigator> m_impl;
@@ -52,61 +58,65 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSNavigatorOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSNavigatorOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, Navigator*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, Navigator * )
 {
-    DEFINE_STATIC_LOCAL(JSNavigatorOwner, jsNavigatorOwner, ());
+    DEFINE_STATIC_LOCAL( JSNavigatorOwner, jsNavigatorOwner, () );
     return &jsNavigatorOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, Navigator*)
+inline void *wrapperContext( DOMWrapperWorld *world, Navigator * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, Navigator*);
-Navigator* toNavigator(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, Navigator * );
+Navigator *toNavigator( JSC::JSValue );
 
-class JSNavigatorPrototype : public JSC::JSObjectWithGlobalObject {
+class JSNavigatorPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSNavigatorPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSNavigatorPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                          JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsNavigatorPrototypeFunctionJavaEnabled(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsNavigatorPrototypeFunctionGetStorageUpdates(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsNavigatorPrototypeFunctionJavaEnabled( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsNavigatorPrototypeFunctionGetStorageUpdates( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsNavigatorAppCodeName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorAppName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorAppVersion(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorLanguage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorUserAgent(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorPlatform(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorPlugins(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorMimeTypes(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorProduct(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorProductSub(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorVendor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorVendorSub(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorCookieEnabled(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsNavigatorOnLine(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsNavigatorAppCodeName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorAppName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorAppVersion( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorLanguage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorUserAgent( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorPlatform( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorPlugins( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorMimeTypes( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorProduct( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorProductSub( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorVendor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorVendorSub( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorCookieEnabled( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsNavigatorOnLine( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

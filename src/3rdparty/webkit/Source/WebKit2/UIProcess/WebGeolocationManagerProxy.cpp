@@ -29,16 +29,17 @@
 #include "WebContext.h"
 #include "WebGeolocationManagerMessages.h"
 
-namespace WebKit {
-
-PassRefPtr<WebGeolocationManagerProxy> WebGeolocationManagerProxy::create(WebContext* context)
+namespace WebKit
 {
-    return adoptRef(new WebGeolocationManagerProxy(context));
+
+PassRefPtr<WebGeolocationManagerProxy> WebGeolocationManagerProxy::create( WebContext *context )
+{
+    return adoptRef( new WebGeolocationManagerProxy( context ) );
 }
 
-WebGeolocationManagerProxy::WebGeolocationManagerProxy(WebContext* context)
-    : m_isUpdating(false)
-    , m_context(context)
+WebGeolocationManagerProxy::WebGeolocationManagerProxy( WebContext *context )
+    : m_isUpdating( false )
+    , m_context( context )
 {
 }
 
@@ -51,47 +52,56 @@ void WebGeolocationManagerProxy::invalidate()
     stopUpdating();
 }
 
-void WebGeolocationManagerProxy::initializeProvider(const WKGeolocationProvider* provider)
+void WebGeolocationManagerProxy::initializeProvider( const WKGeolocationProvider *provider )
 {
-    m_provider.initialize(provider);
+    m_provider.initialize( provider );
 }
 
-void WebGeolocationManagerProxy::providerDidChangePosition(WebGeolocationPosition* position)
+void WebGeolocationManagerProxy::providerDidChangePosition( WebGeolocationPosition *position )
 {
-    if (!m_context)
+    if ( !m_context )
+    {
         return;
+    }
 
-    m_context->sendToAllProcesses(Messages::WebGeolocationManager::DidChangePosition(position->data()));
+    m_context->sendToAllProcesses( Messages::WebGeolocationManager::DidChangePosition( position->data() ) );
 }
 
 void WebGeolocationManagerProxy::providerDidFailToDeterminePosition()
 {
-    if (!m_context)
+    if ( !m_context )
+    {
         return;
+    }
 
-    m_context->sendToAllProcesses(Messages::WebGeolocationManager::DidFailToDeterminePosition());
+    m_context->sendToAllProcesses( Messages::WebGeolocationManager::DidFailToDeterminePosition() );
 }
 
-void WebGeolocationManagerProxy::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebGeolocationManagerProxy::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebGeolocationManagerProxyMessage(connection, messageID, arguments);
+    didReceiveWebGeolocationManagerProxyMessage( connection, messageID, arguments );
 }
 
 void WebGeolocationManagerProxy::startUpdating()
 {
-    if (m_isUpdating)
+    if ( m_isUpdating )
+    {
         return;
+    }
 
-    m_provider.startUpdating(this);
+    m_provider.startUpdating( this );
     m_isUpdating = true;
 }
 
 void WebGeolocationManagerProxy::stopUpdating()
 {
-    if (!m_isUpdating)
+    if ( !m_isUpdating )
+    {
         return;
+    }
 
-    m_provider.stopUpdating(this);
+    m_provider.stopUpdating( this );
     m_isUpdating = false;
 }
 

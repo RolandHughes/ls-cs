@@ -25,8 +25,8 @@
 
 #include <qmediacontrol_p.h>
 
-QCameraExposureControl::QCameraExposureControl(QObject *parent)
-   : QMediaControl(*new QMediaControlPrivate, parent)
+QCameraExposureControl::QCameraExposureControl( QObject *parent )
+    : QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

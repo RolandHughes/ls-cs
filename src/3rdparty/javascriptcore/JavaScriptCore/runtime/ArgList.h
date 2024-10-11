@@ -27,218 +27,272 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Vector.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class MarkStack;
+class MarkStack;
 
-    class MarkedArgumentBuffer : public Noncopyable {
+class MarkedArgumentBuffer : public Noncopyable
+{
 
-    private:
-        static const unsigned inlineCapacity = 8;
-        typedef Vector<Register, inlineCapacity> VectorType;
-        typedef HashSet<MarkedArgumentBuffer*> ListSet;
+private:
+    static const unsigned inlineCapacity = 8;
+    typedef Vector<Register, inlineCapacity> VectorType;
+    typedef HashSet<MarkedArgumentBuffer *> ListSet;
 
-    public:
-        typedef VectorType::iterator iterator;
-        typedef VectorType::const_iterator const_iterator;
+public:
+    typedef VectorType::iterator iterator;
+    typedef VectorType::const_iterator const_iterator;
 
-        // Constructor for a read-write list, to which you may append values.
-        // FIXME: Remove all clients of this API, then remove this API.
-        MarkedArgumentBuffer()
-            : m_isUsingInlineBuffer(true)
-            , m_markSet(nullptr)
+    // Constructor for a read-write list, to which you may append values.
+    // FIXME: Remove all clients of this API, then remove this API.
+    MarkedArgumentBuffer()
+        : m_isUsingInlineBuffer( true )
+        , m_markSet( nullptr )
 #ifndef NDEBUG
-            , m_isReadOnly(false)
+        , m_isReadOnly( false )
 #endif
-        {
-            m_buffer = m_vector.data();
-            m_size = 0;
-        }
+    {
+        m_buffer = m_vector.data();
+        m_size = 0;
+    }
 
-        // Constructor for a read-only list whose data has already been allocated elsewhere.
-        MarkedArgumentBuffer(Register* buffer, size_t size)
-            : m_buffer(buffer)
-            , m_size(size)
-            , m_isUsingInlineBuffer(true)
-            , m_markSet(nullptr)
+    // Constructor for a read-only list whose data has already been allocated elsewhere.
+    MarkedArgumentBuffer( Register *buffer, size_t size )
+        : m_buffer( buffer )
+        , m_size( size )
+        , m_isUsingInlineBuffer( true )
+        , m_markSet( nullptr )
 #ifndef NDEBUG
-            , m_isReadOnly(true)
+        , m_isReadOnly( true )
 #endif
-        {
-        }
+    {
+    }
 
-        void initialize(Register* buffer, size_t size)
-        {
-            ASSERT(!m_markSet);
-            ASSERT(isEmpty());
+    void initialize( Register *buffer, size_t size )
+    {
+        ASSERT( !m_markSet );
+        ASSERT( isEmpty() );
 
-            m_buffer = buffer;
-            m_size = size;
+        m_buffer = buffer;
+        m_size = size;
 #ifndef NDEBUG
-            m_isReadOnly = true;
+        m_isReadOnly = true;
 #endif
+    }
+
+    ~MarkedArgumentBuffer()
+    {
+        if ( m_markSet )
+        {
+            m_markSet->remove( this );
+        }
+    }
+
+    size_t size() const
+    {
+        return m_size;
+    }
+    bool isEmpty() const
+    {
+        return !m_size;
+    }
+
+    JSValue at( size_t i ) const
+    {
+        if ( i < m_size )
+        {
+            return m_buffer[i].jsValue();
         }
 
-        ~MarkedArgumentBuffer()
-        {
-            if (m_markSet)
-                m_markSet->remove(this);
-        }
+        return jsUndefined();
+    }
 
-        size_t size() const { return m_size; }
-        bool isEmpty() const { return !m_size; }
+    void clear()
+    {
+        m_vector.clear();
+        m_buffer = nullptr;
+        m_size = 0;
+    }
 
-        JSValue at(size_t i) const
-        {
-            if (i < m_size)
-                return m_buffer[i].jsValue();
-            return jsUndefined();
-        }
-
-        void clear()
-        {
-            m_vector.clear();
-            m_buffer = nullptr;
-            m_size = 0;
-        }
-
-        void append(JSValue v)
-        {
-            ASSERT(!m_isReadOnly);
+    void append( JSValue v )
+    {
+        ASSERT( !m_isReadOnly );
 
 #if ENABLE(JSC_ZOMBIES)
-            ASSERT(!v.isZombie());
+        ASSERT( !v.isZombie() );
 #endif
 
-            if (m_isUsingInlineBuffer && m_size < inlineCapacity) {
-                m_vector.uncheckedAppend(v);
-                ++m_size;
-            } else {
-                // Putting this case all in one function measurably improves
-                // the performance of the fast "just append to inline buffer" case.
-                slowAppend(v);
-                ++m_size;
-                m_isUsingInlineBuffer = false;
-            }
-        }
-
-        void removeLast()
+        if ( m_isUsingInlineBuffer && m_size < inlineCapacity )
         {
-            ASSERT(m_size);
-            m_size--;
-            m_vector.removeLast();
+            m_vector.uncheckedAppend( v );
+            ++m_size;
         }
-
-        JSValue last()
+        else
         {
-            ASSERT(m_size);
-            return m_buffer[m_size - 1].jsValue();
+            // Putting this case all in one function measurably improves
+            // the performance of the fast "just append to inline buffer" case.
+            slowAppend( v );
+            ++m_size;
+            m_isUsingInlineBuffer = false;
         }
+    }
 
-        iterator begin() { return m_buffer; }
-        iterator end() { return m_buffer + m_size; }
+    void removeLast()
+    {
+        ASSERT( m_size );
+        m_size--;
+        m_vector.removeLast();
+    }
 
-        const_iterator begin() const { return m_buffer; }
-        const_iterator end() const { return m_buffer + m_size; }
+    JSValue last()
+    {
+        ASSERT( m_size );
+        return m_buffer[m_size - 1].jsValue();
+    }
 
-        static void markLists(MarkStack&, ListSet&);
+    iterator begin()
+    {
+        return m_buffer;
+    }
+    iterator end()
+    {
+        return m_buffer + m_size;
+    }
 
-    private:
-        void slowAppend(JSValue);
+    const_iterator begin() const
+    {
+        return m_buffer;
+    }
+    const_iterator end() const
+    {
+        return m_buffer + m_size;
+    }
 
-        Register* m_buffer;
-        size_t m_size;
-        bool m_isUsingInlineBuffer;
+    static void markLists( MarkStack &, ListSet & );
 
-        VectorType m_vector;
-        ListSet* m_markSet;
+private:
+    void slowAppend( JSValue );
+
+    Register *m_buffer;
+    size_t m_size;
+    bool m_isUsingInlineBuffer;
+
+    VectorType m_vector;
+    ListSet *m_markSet;
 #ifndef NDEBUG
-        bool m_isReadOnly;
+    bool m_isReadOnly;
 #endif
 
-    private:
-        // Prohibits new / delete, which would break GC.
-        friend class JSGlobalData;
+private:
+    // Prohibits new / delete, which would break GC.
+    friend class JSGlobalData;
 
-        void* operator new(size_t size)
-        {
-            return fastMalloc(size);
-        }
+    void *operator new ( size_t size )
+    {
+        return fastMalloc( size );
+    }
 
-        void operator delete(void* p)
-        {
-            fastFree(p);
-        }
+    void operator delete ( void *p )
+    {
+        fastFree( p );
+    }
 
-        void* operator new[](size_t);
-        void operator delete[](void*);
+    void *operator new[]( size_t );
+    void operator delete[]( void * );
 
-        void* operator new(size_t, void*);
+    void *operator new ( size_t, void * );
 
-        void operator delete(void* p, size_t)
-        {
-            fastFree(p);
-        }
+    void operator delete ( void *p, size_t )
+    {
+        fastFree( p );
+    }
 
-    };
+};
 
-    class ArgList {
-        friend class JIT;
-    public:
-        typedef JSValue* iterator;
-        typedef const JSValue* const_iterator;
+class ArgList
+{
+    friend class JIT;
+public:
+    typedef JSValue *iterator;
+    typedef const JSValue *const_iterator;
 
-        ArgList()
-            : m_args(nullptr)
-            , m_argCount(0)
-        {
-        }
+    ArgList()
+        : m_args( nullptr )
+        , m_argCount( 0 )
+    {
+    }
 
-        ArgList(JSValue* args, unsigned argCount)
-            : m_args(args)
-            , m_argCount(argCount)
-        {
+    ArgList( JSValue *args, unsigned argCount )
+        : m_args( args )
+        , m_argCount( argCount )
+    {
 #if ENABLE(JSC_ZOMBIES)
-            for (size_t i = 0; i < argCount; i++)
-                ASSERT(!m_args[i].isZombie());
+
+        for ( size_t i = 0; i < argCount; i++ )
+        {
+            ASSERT( !m_args[i].isZombie() );
+        }
+
 #endif
-        }
+    }
 
-        ArgList(Register* args, int argCount)
-            : m_args(reinterpret_cast<JSValue*>(args))
-            , m_argCount(argCount)
+    ArgList( Register *args, int argCount )
+        : m_args( reinterpret_cast<JSValue *>( args ) )
+        , m_argCount( argCount )
+    {
+        ASSERT( argCount >= 0 );
+    }
+
+    ArgList( const MarkedArgumentBuffer &args )
+        : m_args( reinterpret_cast<JSValue *>( const_cast<Register *>( args.begin() ) ) )
+        , m_argCount( args.size() )
+    {
+    }
+
+    JSValue at( size_t idx ) const
+    {
+        if ( idx < m_argCount )
         {
-            ASSERT(argCount >= 0);
+            return m_args[idx];
         }
 
-        ArgList(const MarkedArgumentBuffer& args)
-            : m_args(reinterpret_cast<JSValue*>(const_cast<Register*>(args.begin())))
-            , m_argCount(args.size())
-        {
-        }
+        return jsUndefined();
+    }
 
-        JSValue at(size_t idx) const
-        {
-            if (idx < m_argCount)
-                return m_args[idx];
-            return jsUndefined();
-        }
+    bool isEmpty() const
+    {
+        return !m_argCount;
+    }
 
-        bool isEmpty() const { return !m_argCount; }
+    size_t size() const
+    {
+        return m_argCount;
+    }
 
-        size_t size() const { return m_argCount; }
+    iterator begin()
+    {
+        return m_args;
+    }
+    iterator end()
+    {
+        return m_args + m_argCount;
+    }
 
-        iterator begin() { return m_args; }
-        iterator end() { return m_args + m_argCount; }
+    const_iterator begin() const
+    {
+        return m_args;
+    }
+    const_iterator end() const
+    {
+        return m_args + m_argCount;
+    }
 
-        const_iterator begin() const { return m_args; }
-        const_iterator end() const { return m_args + m_argCount; }
-
-        void getSlice(int startIndex, ArgList& result) const;
-    private:
-        JSValue* m_args;
-        size_t m_argCount;
-    };
+    void getSlice( int startIndex, ArgList &result ) const;
+private:
+    JSValue *m_args;
+    size_t m_argCount;
+};
 
 } // namespace JSC
 

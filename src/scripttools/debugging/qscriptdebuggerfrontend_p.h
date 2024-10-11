@@ -39,31 +39,31 @@ class QScriptDebuggerFrontendPrivate;
 
 class QScriptDebuggerFrontend : public QScriptDebuggerCommandSchedulerInterface
 {
- public:
-   QScriptDebuggerFrontend();
-   virtual ~QScriptDebuggerFrontend();
+public:
+    QScriptDebuggerFrontend();
+    virtual ~QScriptDebuggerFrontend();
 
-   QScriptDebuggerEventHandlerInterface *eventHandler() const;
-   void setEventHandler(QScriptDebuggerEventHandlerInterface *eventHandler);
+    QScriptDebuggerEventHandlerInterface *eventHandler() const;
+    void setEventHandler( QScriptDebuggerEventHandlerInterface *eventHandler );
 
-   int scheduleCommand(const QScriptDebuggerCommand &command,
-                       QScriptDebuggerResponseHandlerInterface *responseHandler);
+    int scheduleCommand( const QScriptDebuggerCommand &command,
+                         QScriptDebuggerResponseHandlerInterface *responseHandler );
 
-   int scheduledCommandCount() const;
+    int scheduledCommandCount() const;
 
- protected:
-   void notifyCommandFinished(int id, const QScriptDebuggerResponse &response);
-   bool notifyEvent(const QScriptDebuggerEvent &event);
+protected:
+    void notifyCommandFinished( int id, const QScriptDebuggerResponse &response );
+    bool notifyEvent( const QScriptDebuggerEvent &event );
 
-   virtual void processCommand(int id, const QScriptDebuggerCommand &command) = 0;
+    virtual void processCommand( int id, const QScriptDebuggerCommand &command ) = 0;
 
- protected:
-   QScriptDebuggerFrontend(QScriptDebuggerFrontendPrivate &dd);
-   QScopedPointer<QScriptDebuggerFrontendPrivate> d_ptr;
+protected:
+    QScriptDebuggerFrontend( QScriptDebuggerFrontendPrivate &dd );
+    QScopedPointer<QScriptDebuggerFrontendPrivate> d_ptr;
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerFrontend)
-   Q_DISABLE_COPY(QScriptDebuggerFrontend)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerFrontend )
+    Q_DISABLE_COPY( QScriptDebuggerFrontend )
 };
 
 QT_END_NAMESPACE

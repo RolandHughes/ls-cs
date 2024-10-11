@@ -33,7 +33,8 @@
 
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Parses a string representation of a floating point number localized
 // for the browser's current locale. If the input string is not valid
@@ -41,7 +42,7 @@ namespace WebCore {
 // function returns NaN. This function doesn't need to support
 // scientific notation, NaN, +Infinity and -Infinity, and doesn't need
 // to support the standard representations of ECMAScript and HTML5.
-double parseLocalizedNumber(const String&);
+double parseLocalizedNumber( const String & );
 
 // Serializes the specified floating point number for the browser's
 // current locale.  If an implementation doesn't support localized
@@ -49,7 +50,7 @@ double parseLocalizedNumber(const String&);
 // return an empty string.
 // fractionDigits is the maximum length of the fractional parts of the
 // resultant string.
-String formatLocalizedNumber(double, unsigned fractionDigits);
+String formatLocalizedNumber( double, unsigned fractionDigits );
 
 } // namespace WebCore
 

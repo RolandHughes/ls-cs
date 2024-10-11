@@ -39,85 +39,99 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeFontObject : public QObject
 {
-   CS__OBJECT(QDeclarativeFontObject)
+    LSCS_OBJECT( QDeclarativeFontObject )
 
- public:
-   QDeclarativeFontObject(int _id = -1);
+public:
+    QDeclarativeFontObject( int _id = -1 );
 
-   void download(const QUrl &url, QNetworkAccessManager *manager);
-   int id;
+    void download( const QUrl &url, QNetworkAccessManager *manager );
+    int id;
 
-   DECL_CS_SIGNAL_1(Public, void fontDownloaded(const QString &un_named_arg1, QDeclarativeFontLoader::Status un_named_arg2))
-   DECL_CS_SIGNAL_2(fontDownloaded, un_named_arg1, un_named_arg2)
+    DECL_LSCS_SIGNAL_1( Public, void fontDownloaded( const QString &un_named_arg1, QDeclarativeFontLoader::Status un_named_arg2 ) )
+    DECL_LSCS_SIGNAL_2( fontDownloaded, un_named_arg1, un_named_arg2 )
 
- private:
-   DECL_CS_SLOT_1(Private, void replyFinished())
-   DECL_CS_SLOT_2(replyFinished)
+private:
+    DECL_LSCS_SLOT_1( Private, void replyFinished() )
+    DECL_LSCS_SLOT_2( replyFinished )
 
 
- private:
-   QNetworkReply *reply;
-   int redirectCount;
+private:
+    QNetworkReply *reply;
+    int redirectCount;
 
-   Q_DISABLE_COPY(QDeclarativeFontObject)
+    Q_DISABLE_COPY( QDeclarativeFontObject )
 };
 
-QDeclarativeFontObject::QDeclarativeFontObject(int _id)
-   : QObject(0), id(_id), reply(0), redirectCount(0) {}
+QDeclarativeFontObject::QDeclarativeFontObject( int _id )
+    : QObject( 0 ), id( _id ), reply( 0 ), redirectCount( 0 ) {}
 
 
-void QDeclarativeFontObject::download(const QUrl &url, QNetworkAccessManager *manager)
+void QDeclarativeFontObject::download( const QUrl &url, QNetworkAccessManager *manager )
 {
-   QNetworkRequest req(url);
-   req.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-   reply = manager->get(req);
-   QObject::connect(reply, SIGNAL(finished()), this, SLOT(replyFinished()));
+    QNetworkRequest req( url );
+    req.setAttribute( QNetworkRequest::HttpPipeliningAllowedAttribute, true );
+    reply = manager->get( req );
+    QObject::connect( reply, SIGNAL( finished() ), this, SLOT( replyFinished() ) );
 }
 
 void QDeclarativeFontObject::replyFinished()
 {
-   if (reply) {
-      redirectCount++;
-      if (redirectCount < FONTLOADER_MAXIMUM_REDIRECT_RECURSION) {
-         QVariant redirect = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-         if (redirect.isValid()) {
-            QUrl url = reply->url().resolved(redirect.toUrl());
-            QNetworkAccessManager *manager = reply->manager();
-            reply->deleteLater();
-            reply = 0;
-            download(url, manager);
-            return;
-         }
-      }
-      redirectCount = 0;
+    if ( reply )
+    {
+        redirectCount++;
 
-      if (!reply->error()) {
-         id = QFontDatabase::addApplicationFontFromData(reply->readAll());
-         if (id != -1) {
-            emit fontDownloaded(QFontDatabase::applicationFontFamilies(id).at(0), QDeclarativeFontLoader::Ready);
-         } else {
-            emit fontDownloaded(QString(), QDeclarativeFontLoader::Error);
-         }
-      } else {
-         emit fontDownloaded(QString(), QDeclarativeFontLoader::Error);
-      }
-      reply->deleteLater();
-      reply = 0;
-   }
+        if ( redirectCount < FONTLOADER_MAXIMUM_REDIRECT_RECURSION )
+        {
+            QVariant redirect = reply->attribute( QNetworkRequest::RedirectionTargetAttribute );
+
+            if ( redirect.isValid() )
+            {
+                QUrl url = reply->url().resolved( redirect.toUrl() );
+                QNetworkAccessManager *manager = reply->manager();
+                reply->deleteLater();
+                reply = 0;
+                download( url, manager );
+                return;
+            }
+        }
+
+        redirectCount = 0;
+
+        if ( !reply->error() )
+        {
+            id = QFontDatabase::addApplicationFontFromData( reply->readAll() );
+
+            if ( id != -1 )
+            {
+                emit fontDownloaded( QFontDatabase::applicationFontFamilies( id ).at( 0 ), QDeclarativeFontLoader::Ready );
+            }
+            else
+            {
+                emit fontDownloaded( QString(), QDeclarativeFontLoader::Error );
+            }
+        }
+        else
+        {
+            emit fontDownloaded( QString(), QDeclarativeFontLoader::Error );
+        }
+
+        reply->deleteLater();
+        reply = 0;
+    }
 }
 
 
 class QDeclarativeFontLoaderPrivate
 {
-   Q_DECLARE_PUBLIC(QDeclarativeFontLoader)
+    Q_DECLARE_PUBLIC( QDeclarativeFontLoader )
 
- public:
-   QDeclarativeFontLoaderPrivate() : status(QDeclarativeFontLoader::Null) {}
+public:
+    QDeclarativeFontLoaderPrivate() : status( QDeclarativeFontLoader::Null ) {}
 
-   QUrl url;
-   QString name;
-   QDeclarativeFontLoader::Status status;
-   static QHash<QUrl, QDeclarativeFontObject *> fonts;
+    QUrl url;
+    QString name;
+    QDeclarativeFontLoader::Status status;
+    static QHash<QUrl, QDeclarativeFontObject *> fonts;
 };
 
 QHash<QUrl, QDeclarativeFontObject *> QDeclarativeFontLoaderPrivate::fonts;
@@ -148,8 +162,8 @@ QHash<QUrl, QDeclarativeFontObject *> QDeclarativeFontLoaderPrivate::fonts;
 
     \sa {declarative/text/fonts}{Fonts example}
 */
-QDeclarativeFontLoader::QDeclarativeFontLoader(QObject *parent)
-   : QObject(*(new QDeclarativeFontLoaderPrivate), parent)
+QDeclarativeFontLoader::QDeclarativeFontLoader( QObject *parent )
+    : QObject( *( new QDeclarativeFontLoaderPrivate ), parent )
 {
 }
 
@@ -163,74 +177,99 @@ QDeclarativeFontLoader::~QDeclarativeFontLoader()
 */
 QUrl QDeclarativeFontLoader::source() const
 {
-   Q_D(const QDeclarativeFontLoader);
-   return d->url;
+    Q_D( const QDeclarativeFontLoader );
+    return d->url;
 }
 
-void QDeclarativeFontLoader::setSource(const QUrl &url)
+void QDeclarativeFontLoader::setSource( const QUrl &url )
 {
-   Q_D(QDeclarativeFontLoader);
-   if (url == d->url) {
-      return;
-   }
-   d->url = qmlContext(this)->resolvedUrl(url);
-   emit sourceChanged();
+    Q_D( QDeclarativeFontLoader );
+
+    if ( url == d->url )
+    {
+        return;
+    }
+
+    d->url = qmlContext( this )->resolvedUrl( url );
+    emit sourceChanged();
 
 #ifndef QT_NO_LOCALFILE_OPTIMIZED_QML
-   QString localFile = QDeclarativeEnginePrivate::urlToLocalFileOrQrc(d->url);
-   if (!localFile.isEmpty()) {
-      if (!d->fonts.contains(d->url)) {
-         int id = QFontDatabase::addApplicationFont(localFile);
-         if (id != -1) {
-            updateFontInfo(QFontDatabase::applicationFontFamilies(id).at(0), Ready);
-            QDeclarativeFontObject *fo = new QDeclarativeFontObject(id);
-            d->fonts[d->url] = fo;
-         } else {
-            updateFontInfo(QString(), Error);
-         }
-      } else {
-         updateFontInfo(QFontDatabase::applicationFontFamilies(d->fonts[d->url]->id).at(0), Ready);
-      }
-   } else
+    QString localFile = QDeclarativeEnginePrivate::urlToLocalFileOrQrc( d->url );
+
+    if ( !localFile.isEmpty() )
+    {
+        if ( !d->fonts.contains( d->url ) )
+        {
+            int id = QFontDatabase::addApplicationFont( localFile );
+
+            if ( id != -1 )
+            {
+                updateFontInfo( QFontDatabase::applicationFontFamilies( id ).at( 0 ), Ready );
+                QDeclarativeFontObject *fo = new QDeclarativeFontObject( id );
+                d->fonts[d->url] = fo;
+            }
+            else
+            {
+                updateFontInfo( QString(), Error );
+            }
+        }
+        else
+        {
+            updateFontInfo( QFontDatabase::applicationFontFamilies( d->fonts[d->url]->id ).at( 0 ), Ready );
+        }
+    }
+    else
 #endif
-   {
-      if (!d->fonts.contains(d->url)) {
-         QDeclarativeFontObject *fo = new QDeclarativeFontObject;
-         d->fonts[d->url] = fo;
-         fo->download(d->url, qmlEngine(this)->networkAccessManager());
-         d->status = Loading;
-         emit statusChanged();
-         QObject::connect(fo, SIGNAL(fontDownloaded(QString, QDeclarativeFontLoader::Status)),
-                          this, SLOT(updateFontInfo(QString, QDeclarativeFontLoader::Status)));
-      } else {
-         QDeclarativeFontObject *fo = d->fonts[d->url];
-         if (fo->id == -1) {
+    {
+        if ( !d->fonts.contains( d->url ) )
+        {
+            QDeclarativeFontObject *fo = new QDeclarativeFontObject;
+            d->fonts[d->url] = fo;
+            fo->download( d->url, qmlEngine( this )->networkAccessManager() );
             d->status = Loading;
             emit statusChanged();
-            QObject::connect(fo, SIGNAL(fontDownloaded(QString, QDeclarativeFontLoader::Status)),
-                             this, SLOT(updateFontInfo(QString, QDeclarativeFontLoader::Status)));
-         } else {
-            updateFontInfo(QFontDatabase::applicationFontFamilies(fo->id).at(0), Ready);
-         }
-      }
-   }
+            QObject::connect( fo, SIGNAL( fontDownloaded( QString, QDeclarativeFontLoader::Status ) ),
+                              this, SLOT( updateFontInfo( QString, QDeclarativeFontLoader::Status ) ) );
+        }
+        else
+        {
+            QDeclarativeFontObject *fo = d->fonts[d->url];
+
+            if ( fo->id == -1 )
+            {
+                d->status = Loading;
+                emit statusChanged();
+                QObject::connect( fo, SIGNAL( fontDownloaded( QString, QDeclarativeFontLoader::Status ) ),
+                                  this, SLOT( updateFontInfo( QString, QDeclarativeFontLoader::Status ) ) );
+            }
+            else
+            {
+                updateFontInfo( QFontDatabase::applicationFontFamilies( fo->id ).at( 0 ), Ready );
+            }
+        }
+    }
 }
 
-void QDeclarativeFontLoader::updateFontInfo(const QString &name, QDeclarativeFontLoader::Status status)
+void QDeclarativeFontLoader::updateFontInfo( const QString &name, QDeclarativeFontLoader::Status status )
 {
-   Q_D(QDeclarativeFontLoader);
+    Q_D( QDeclarativeFontLoader );
 
-   if (name != d->name) {
-      d->name = name;
-      emit nameChanged();
-   }
-   if (status != d->status) {
-      if (status == Error) {
-         qmlInfo(this) << "Cannot load font: \"" << d->url.toString() << "\"";
-      }
-      d->status = status;
-      emit statusChanged();
-   }
+    if ( name != d->name )
+    {
+        d->name = name;
+        emit nameChanged();
+    }
+
+    if ( status != d->status )
+    {
+        if ( status == Error )
+        {
+            qmlInfo( this ) << "Cannot load font: \"" << d->url.toString() << "\"";
+        }
+
+        d->status = status;
+        emit statusChanged();
+    }
 }
 
 /*!
@@ -259,20 +298,23 @@ void QDeclarativeFontLoader::updateFontInfo(const QString &name, QDeclarativeFon
 */
 QString QDeclarativeFontLoader::name() const
 {
-   Q_D(const QDeclarativeFontLoader);
-   return d->name;
+    Q_D( const QDeclarativeFontLoader );
+    return d->name;
 }
 
-void QDeclarativeFontLoader::setName(const QString &name)
+void QDeclarativeFontLoader::setName( const QString &name )
 {
-   Q_D(QDeclarativeFontLoader);
-   if (d->name == name) {
-      return;
-   }
-   d->name = name;
-   emit nameChanged();
-   d->status = Ready;
-   emit statusChanged();
+    Q_D( QDeclarativeFontLoader );
+
+    if ( d->name == name )
+    {
+        return;
+    }
+
+    d->name = name;
+    emit nameChanged();
+    d->status = Ready;
+    emit statusChanged();
 }
 
 /*!
@@ -311,8 +353,8 @@ void QDeclarativeFontLoader::setName(const QString &name)
 */
 QDeclarativeFontLoader::Status QDeclarativeFontLoader::status() const
 {
-   Q_D(const QDeclarativeFontLoader);
-   return d->status;
+    Q_D( const QDeclarativeFontLoader );
+    return d->status;
 }
 
 QT_END_NAMESPACE

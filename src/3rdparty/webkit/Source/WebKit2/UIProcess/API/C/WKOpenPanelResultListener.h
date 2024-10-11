@@ -34,8 +34,8 @@ extern "C" {
 
 WK_EXPORT WKTypeID WKOpenPanelResultListenerGetTypeID();
 
-WK_EXPORT void WKOpenPanelResultListenerChooseFiles(WKOpenPanelResultListenerRef listener, WKArrayRef fileURLs);
-WK_EXPORT void WKOpenPanelResultListenerCancel(WKOpenPanelResultListenerRef listener);
+WK_EXPORT void WKOpenPanelResultListenerChooseFiles( WKOpenPanelResultListenerRef listener, WKArrayRef fileURLs );
+WK_EXPORT void WKOpenPanelResultListenerCancel( WKOpenPanelResultListenerRef listener );
 
 #ifdef __cplusplus
 }

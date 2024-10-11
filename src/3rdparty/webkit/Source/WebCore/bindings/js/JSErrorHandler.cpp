@@ -39,10 +39,11 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-JSErrorHandler::JSErrorHandler(JSObject* function, JSObject* wrapper, bool isAttribute, DOMWrapperWorld* isolatedWorld)
-    : JSEventListener(function, wrapper, isAttribute, isolatedWorld)
+JSErrorHandler::JSErrorHandler( JSObject *function, JSObject *wrapper, bool isAttribute, DOMWrapperWorld *isolatedWorld )
+    : JSEventListener( function, wrapper, isAttribute, isolatedWorld )
 {
 }
 
@@ -50,60 +51,79 @@ JSErrorHandler::~JSErrorHandler()
 {
 }
 
-void JSErrorHandler::handleEvent(ScriptExecutionContext* scriptExecutionContext, Event* event)
+void JSErrorHandler::handleEvent( ScriptExecutionContext *scriptExecutionContext, Event *event )
 {
-    if (!event->isErrorEvent())
-        return JSEventListener::handleEvent(scriptExecutionContext, event);
+    if ( !event->isErrorEvent() )
+    {
+        return JSEventListener::handleEvent( scriptExecutionContext, event );
+    }
 
-    ASSERT(scriptExecutionContext);
-    if (!scriptExecutionContext)
+    ASSERT( scriptExecutionContext );
+
+    if ( !scriptExecutionContext )
+    {
         return;
+    }
 
-    ErrorEvent* errorEvent = static_cast<ErrorEvent*>(event);
+    ErrorEvent *errorEvent = static_cast<ErrorEvent *>( event );
 
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    JSObject* jsFunction = this->jsFunction(scriptExecutionContext);
-    if (!jsFunction)
+    JSObject *jsFunction = this->jsFunction( scriptExecutionContext );
+
+    if ( !jsFunction )
+    {
         return;
+    }
 
-    JSDOMGlobalObject* globalObject = toJSDOMGlobalObject(scriptExecutionContext, isolatedWorld());
-    if (!globalObject)
+    JSDOMGlobalObject *globalObject = toJSDOMGlobalObject( scriptExecutionContext, isolatedWorld() );
+
+    if ( !globalObject )
+    {
         return;
+    }
 
-    ExecState* exec = globalObject->globalExec();
+    ExecState *exec = globalObject->globalExec();
 
     CallData callData;
-    CallType callType = jsFunction->getCallData(callData);
+    CallType callType = jsFunction->getCallData( callData );
 
-    if (callType != CallTypeNone) {
-        RefPtr<JSErrorHandler> protectedctor(this);
+    if ( callType != CallTypeNone )
+    {
+        RefPtr<JSErrorHandler> protectedctor( this );
 
-        Event* savedEvent = globalObject->currentEvent();
-        globalObject->setCurrentEvent(event);
+        Event *savedEvent = globalObject->currentEvent();
+        globalObject->setCurrentEvent( event );
 
         MarkedArgumentBuffer args;
-        args.append(jsString(exec, errorEvent->message()));
-        args.append(jsString(exec, errorEvent->filename()));
-        args.append(jsNumber(errorEvent->lineno()));
+        args.append( jsString( exec, errorEvent->message() ) );
+        args.append( jsString( exec, errorEvent->filename() ) );
+        args.append( jsNumber( errorEvent->lineno() ) );
 
-        JSGlobalData& globalData = globalObject->globalData();
-        DynamicGlobalObjectScope globalObjectScope(globalData, globalData.dynamicGlobalObject ? globalData.dynamicGlobalObject : globalObject);
+        JSGlobalData &globalData = globalObject->globalData();
+        DynamicGlobalObjectScope globalObjectScope( globalData,
+                globalData.dynamicGlobalObject ? globalData.dynamicGlobalObject : globalObject );
 
-        JSValue thisValue = globalObject->toThisObject(exec);
+        JSValue thisValue = globalObject->toThisObject( exec );
 
         globalData.timeoutChecker.start();
-        JSValue returnValue = JSC::call(exec, jsFunction, callType, callData, thisValue, args);
+        JSValue returnValue = JSC::call( exec, jsFunction, callType, callData, thisValue, args );
         globalData.timeoutChecker.stop();
 
-        globalObject->setCurrentEvent(savedEvent);
+        globalObject->setCurrentEvent( savedEvent );
 
-        if (exec->hadException())
-            reportCurrentException(exec);
-        else {
+        if ( exec->hadException() )
+        {
+            reportCurrentException( exec );
+        }
+        else
+        {
             bool retvalbool;
-            if (returnValue.getBoolean(retvalbool) && !retvalbool)
+
+            if ( returnValue.getBoolean( retvalbool ) && !retvalbool )
+            {
                 event->preventDefault();
+            }
         }
     }
 }

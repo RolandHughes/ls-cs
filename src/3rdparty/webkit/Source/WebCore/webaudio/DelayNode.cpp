@@ -28,16 +28,17 @@
 
 #include "DelayNode.h"
 
-namespace WebCore {
-
-DelayNode::DelayNode(AudioContext* context, double sampleRate)
-    : AudioBasicProcessorNode(context, sampleRate)
+namespace WebCore
 {
-    m_processor = adoptPtr(new DelayProcessor(sampleRate, 1));    
-    setType(NodeTypeDelay);
+
+DelayNode::DelayNode( AudioContext *context, double sampleRate )
+    : AudioBasicProcessorNode( context, sampleRate )
+{
+    m_processor = adoptPtr( new DelayProcessor( sampleRate, 1 ) );
+    setType( NodeTypeDelay );
 }
 
-AudioParam* DelayNode::delayTime()
+AudioParam *DelayNode::delayTime()
 {
     return delayProcessor()->delayTime();
 }

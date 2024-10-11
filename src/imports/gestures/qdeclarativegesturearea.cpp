@@ -38,11 +38,11 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeGestureAreaPrivate : public QDeclarativeItemPrivate
 {
-    Q_DECLARE_PUBLIC(QDeclarativeGestureArea)
+    Q_DECLARE_PUBLIC( QDeclarativeGestureArea )
 public:
-    QDeclarativeGestureAreaPrivate() : componentcomplete(false), gesture(0) {}
+    QDeclarativeGestureAreaPrivate() : componentcomplete( false ), gesture( 0 ) {}
 
-    typedef QMap<Qt::GestureType,QDeclarativeExpression*> Bindings;
+    typedef QMap<Qt::GestureType,QDeclarativeExpression *> Bindings;
     Bindings bindings;
 
     bool componentcomplete;
@@ -51,7 +51,7 @@ public:
 
     QGesture *gesture;
 
-    bool gestureEvent(QGestureEvent *event);
+    bool gestureEvent( QGestureEvent *event );
 };
 
 /*!
@@ -122,64 +122,86 @@ public:
     \brief The QDeclarativeGestureArea class provides simple gesture handling.
 
 */
-QDeclarativeGestureArea::QDeclarativeGestureArea(QDeclarativeItem *parent) :
-    QDeclarativeItem(*(new QDeclarativeGestureAreaPrivate), parent)
+QDeclarativeGestureArea::QDeclarativeGestureArea( QDeclarativeItem *parent ) :
+    QDeclarativeItem( *( new QDeclarativeGestureAreaPrivate ), parent )
 {
-    setAcceptedMouseButtons(Qt::LeftButton);
-    setAcceptTouchEvents(true);
+    setAcceptedMouseButtons( Qt::LeftButton );
+    setAcceptTouchEvents( true );
 }
 
 QDeclarativeGestureArea::~QDeclarativeGestureArea()
 {
 }
 
-QByteArray
-QDeclarativeGestureAreaParser::compile(const QList<QDeclarativeCustomParserProperty> &props)
+QByteArray QDeclarativeGestureAreaParser::compile( const QList<QDeclarativeCustomParserProperty> &props )
 {
     QByteArray rv;
-    QDataStream ds(&rv, QIODevice::WriteOnly);
+    QDataStream ds( &rv, QIODevice::WriteOnly );
 
-    for(int ii = 0; ii < props.count(); ++ii)
+    for ( int ii = 0; ii < props.count(); ++ii )
     {
-        QString propName = QString::fromUtf8(props.at(ii).name());
+        QString propName = QString::fromUtf8( props.at( ii ).name() );
         Qt::GestureType type;
 
-        if (propName == QLatin1String("onTap")) {
+        if ( propName == QLatin1String( "onTap" ) )
+        {
             type = Qt::TapGesture;
-        } else if (propName == QLatin1String("onTapAndHold")) {
+        }
+        else if ( propName == QLatin1String( "onTapAndHold" ) )
+        {
             type = Qt::TapAndHoldGesture;
-        } else if (propName == QLatin1String("onPan")) {
+        }
+        else if ( propName == QLatin1String( "onPan" ) )
+        {
             type = Qt::PanGesture;
-        } else if (propName == QLatin1String("onPinch")) {
+        }
+        else if ( propName == QLatin1String( "onPinch" ) )
+        {
             type = Qt::PinchGesture;
-        } else if (propName == QLatin1String("onSwipe")) {
+        }
+        else if ( propName == QLatin1String( "onSwipe" ) )
+        {
             type = Qt::SwipeGesture;
-        } else if (propName == QLatin1String("onGesture")) {
+        }
+        else if ( propName == QLatin1String( "onGesture" ) )
+        {
             type = Qt::CustomGesture;
-        } else {
-            error(props.at(ii), QDeclarativeGestureArea::tr("Cannot assign to non-existent property \"%1\"").arg(propName));
+        }
+        else
+        {
+            error( props.at( ii ), QDeclarativeGestureArea::tr( "Cannot assign to non-existent property \"%1\"" ).arg( propName ) );
             return QByteArray();
         }
 
-        QList<QVariant> values = props.at(ii).assignedValues();
+        QList<QVariant> values = props.at( ii ).assignedValues();
 
-        for (int i = 0; i < values.count(); ++i) {
-            const QVariant &value = values.at(i);
+        for ( int i = 0; i < values.count(); ++i )
+        {
+            const QVariant &value = values.at( i );
 
-            if (value.userType() == qMetaTypeId<QDeclarativeCustomParserNode>()) {
-                error(props.at(ii), QDeclarativeGestureArea::tr("GestureArea: nested objects not allowed"));
+            if ( value.userType() == qMetaTypeId<QDeclarativeCustomParserNode>() )
+            {
+                error( props.at( ii ), QDeclarativeGestureArea::tr( "GestureArea: nested objects not allowed" ) );
                 return QByteArray();
-            } else if (value.userType() == qMetaTypeId<QDeclarativeCustomParserProperty>()) {
-                error(props.at(ii), QDeclarativeGestureArea::tr("GestureArea: syntax error"));
+            }
+            else if ( value.userType() == qMetaTypeId<QDeclarativeCustomParserProperty>() )
+            {
+                error( props.at( ii ), QDeclarativeGestureArea::tr( "GestureArea: syntax error" ) );
                 return QByteArray();
-            } else {
-                QDeclarativeParser::Variant v = qvariant_cast<QDeclarativeParser::Variant>(value);
-                if (v.isScript()) {
+            }
+            else
+            {
+                QDeclarativeParser::Variant v = qvariant_cast<QDeclarativeParser::Variant>( value );
+
+                if ( v.isScript() )
+                {
                     ds << propName;
-                    ds << int(type);
+                    ds << int( type );
                     ds << v.asScript();
-                } else {
-                    error(props.at(ii), QDeclarativeGestureArea::tr("GestureArea: script expected"));
+                }
+                else
+                {
+                    error( props.at( ii ), QDeclarativeGestureArea::tr( "GestureArea: script expected" ) );
                     return QByteArray();
                 }
             }
@@ -189,68 +211,85 @@ QDeclarativeGestureAreaParser::compile(const QList<QDeclarativeCustomParserPrope
     return rv;
 }
 
-void QDeclarativeGestureAreaParser::setCustomData(QObject *object,
-                                            const QByteArray &data)
+void QDeclarativeGestureAreaParser::setCustomData( QObject *object,
+        const QByteArray &data )
 {
-    QDeclarativeGestureArea *ga = static_cast<QDeclarativeGestureArea*>(object);
+    QDeclarativeGestureArea *ga = static_cast<QDeclarativeGestureArea *>( object );
     ga->d_func()->data = data;
 }
 
 
 void QDeclarativeGestureArea::connectSignals()
 {
-    Q_D(QDeclarativeGestureArea);
-    if (!d->componentcomplete)
-        return;
+    Q_D( QDeclarativeGestureArea );
 
-    QDataStream ds(d->data);
-    while (!ds.atEnd()) {
+    if ( !d->componentcomplete )
+    {
+        return;
+    }
+
+    QDataStream ds( d->data );
+
+    while ( !ds.atEnd() )
+    {
         QString propName;
         ds >> propName;
         int gesturetype;
         ds >> gesturetype;
         QString script;
         ds >> script;
-        QDeclarativeExpression *exp = new QDeclarativeExpression(qmlContext(this), this, script);
-        d->bindings.insert(Qt::GestureType(gesturetype),exp);
-        grabGesture(Qt::GestureType(gesturetype));
+        QDeclarativeExpression *exp = new QDeclarativeExpression( qmlContext( this ), this, script );
+        d->bindings.insert( Qt::GestureType( gesturetype ),exp );
+        grabGesture( Qt::GestureType( gesturetype ) );
     }
 }
 
 void QDeclarativeGestureArea::componentComplete()
 {
     QDeclarativeItem::componentComplete();
-    Q_D(QDeclarativeGestureArea);
+    Q_D( QDeclarativeGestureArea );
     d->componentcomplete=true;
     connectSignals();
 }
 
 QGesture *QDeclarativeGestureArea::gesture() const
 {
-    Q_D(const QDeclarativeGestureArea);
+    Q_D( const QDeclarativeGestureArea );
     return d->gesture;
 }
 
-bool QDeclarativeGestureArea::sceneEvent(QEvent *event)
+bool QDeclarativeGestureArea::sceneEvent( QEvent *event )
 {
-    Q_D(QDeclarativeGestureArea);
-    if (event->type() == QEvent::Gesture)
-        return d->gestureEvent(static_cast<QGestureEvent*>(event));
-    return QDeclarativeItem::sceneEvent(event);
+    Q_D( QDeclarativeGestureArea );
+
+    if ( event->type() == QEvent::Gesture )
+    {
+        return d->gestureEvent( static_cast<QGestureEvent *>( event ) );
+    }
+
+    return QDeclarativeItem::sceneEvent( event );
 }
 
-bool QDeclarativeGestureAreaPrivate::gestureEvent(QGestureEvent *event)
+bool QDeclarativeGestureAreaPrivate::gestureEvent( QGestureEvent *event )
 {
     bool accept = true;
-    for (Bindings::Iterator it = bindings.begin(); it != bindings.end(); ++it) {
-        if ((gesture = event->gesture(it.key()))) {
+
+    for ( Bindings::Iterator it = bindings.begin(); it != bindings.end(); ++it )
+    {
+        if ( ( gesture = event->gesture( it.key() ) ) )
+        {
             QDeclarativeExpression *expr = it.value();
             expr->evaluate();
-            if (expr->hasError())
-                qmlInfo(q_func()) << expr->error();
-            event->setAccepted(true); // XXX only if value returns true?
+
+            if ( expr->hasError() )
+            {
+                qmlInfo( q_func() ) << expr->error();
+            }
+
+            event->setAccepted( true ); // XXX only if value returns true?
         }
     }
+
     return accept;
 }
 

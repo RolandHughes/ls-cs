@@ -31,34 +31,36 @@
 #include <qabstractxmlpullprovider_p.h>
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class PullBridge : public AbstractXmlPullProvider
 {
- public:
-   inline PullBridge(const QXmlNodeModelIndex::Iterator::Ptr &it) : m_current(StartOfInput) {
-      Q_ASSERT(it);
-      m_iterators.push(qMakePair(StartOfInput, it));
-   }
+public:
+    inline PullBridge( const QXmlNodeModelIndex::Iterator::Ptr &it ) : m_current( StartOfInput )
+    {
+        Q_ASSERT( it );
+        m_iterators.push( qMakePair( StartOfInput, it ) );
+    }
 
-   Event next() override;
-   Event current() const override;
-   QXmlName name() const override;
-   /**
-    * Returns always an empty QVariant.
-    */
-   QVariant atomicValue() const override;
-   QString stringValue() const override;
-   QHash<QXmlName, QString> attributes() override;
-   QHash<QXmlName, QXmlItem> attributeItems() override;
+    Event next() override;
+    Event current() const override;
+    QXmlName name() const override;
+    /**
+     * Returns always an empty QVariant.
+     */
+    QVariant atomicValue() const override;
+    QString stringValue() const override;
+    QHash<QXmlName, QString> attributes() override;
+    QHash<QXmlName, QXmlItem> attributeItems() override;
 
-   QXmlNodeModelIndex index() const;
-   QSourceLocation sourceLocation() const;
+    QXmlNodeModelIndex index() const;
+    QSourceLocation sourceLocation() const;
 
- private:
-   typedef QStack<QPair<Event, QXmlNodeModelIndex::Iterator::Ptr> > IteratorStack;
-   IteratorStack      m_iterators;
-   QXmlNodeModelIndex m_index;
-   Event              m_current;
+private:
+    typedef QStack<QPair<Event, QXmlNodeModelIndex::Iterator::Ptr> > IteratorStack;
+    IteratorStack      m_iterators;
+    QXmlNodeModelIndex m_index;
+    Event              m_current;
 };
 }
 

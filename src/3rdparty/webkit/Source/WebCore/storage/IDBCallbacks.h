@@ -40,19 +40,21 @@
 
 #if ENABLE(INDEXED_DATABASE)
 
-namespace WebCore {
+namespace WebCore
+{
 
 // FIXME: All child classes need to be made threadsafe.
-class IDBCallbacks : public ThreadSafeRefCounted<IDBCallbacks> {
+class IDBCallbacks : public ThreadSafeRefCounted<IDBCallbacks>
+{
 public:
     virtual ~IDBCallbacks() { }
 
-    virtual void onError(PassRefPtr<IDBDatabaseError>) = 0;
-    virtual void onSuccess(PassRefPtr<IDBCursorBackendInterface>) = 0;
-    virtual void onSuccess(PassRefPtr<IDBDatabaseBackendInterface>) = 0;
-    virtual void onSuccess(PassRefPtr<IDBKey>) = 0;
-    virtual void onSuccess(PassRefPtr<IDBTransactionBackendInterface>) = 0;
-    virtual void onSuccess(PassRefPtr<SerializedScriptValue>) = 0;
+    virtual void onError( PassRefPtr<IDBDatabaseError> ) = 0;
+    virtual void onSuccess( PassRefPtr<IDBCursorBackendInterface> ) = 0;
+    virtual void onSuccess( PassRefPtr<IDBDatabaseBackendInterface> ) = 0;
+    virtual void onSuccess( PassRefPtr<IDBKey> ) = 0;
+    virtual void onSuccess( PassRefPtr<IDBTransactionBackendInterface> ) = 0;
+    virtual void onSuccess( PassRefPtr<SerializedScriptValue> ) = 0;
     virtual void onBlocked() = 0;
 };
 

@@ -41,223 +41,263 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 // CFURLDownload Callbacks ----------------------------------------------------------------
-static void didStartCallback(CFURLDownloadRef download, const void* clientInfo);
-static CFURLRequestRef willSendRequestCallback(CFURLDownloadRef download, CFURLRequestRef request, CFURLResponseRef redirectionResponse, const void* clientInfo);
-static void didReceiveAuthenticationChallengeCallback(CFURLDownloadRef download, CFURLAuthChallengeRef challenge, const void* clientInfo);
-static void didReceiveResponseCallback(CFURLDownloadRef download, CFURLResponseRef response, const void* clientInfo);
-static void willResumeWithResponseCallback(CFURLDownloadRef download, CFURLResponseRef response, UInt64 startingByte, const void* clientInfo);
-static void didReceiveDataCallback(CFURLDownloadRef download, CFIndex length, const void* clientInfo);
-static Boolean shouldDecodeDataOfMIMETypeCallback(CFURLDownloadRef download, CFStringRef encodingType, const void* clientInfo);
-static void decideDestinationWithSuggestedObjectNameCallback(CFURLDownloadRef download, CFStringRef objectName, const void* clientInfo);
-static void didCreateDestinationCallback(CFURLDownloadRef download, CFURLRef path, const void* clientInfo);
-static void didFinishCallback(CFURLDownloadRef download, const void* clientInfo);
-static void didFailCallback(CFURLDownloadRef download, CFErrorRef error, const void* clientInfo);
+static void didStartCallback( CFURLDownloadRef download, const void *clientInfo );
+static CFURLRequestRef willSendRequestCallback( CFURLDownloadRef download, CFURLRequestRef request,
+        CFURLResponseRef redirectionResponse, const void *clientInfo );
+static void didReceiveAuthenticationChallengeCallback( CFURLDownloadRef download, CFURLAuthChallengeRef challenge,
+        const void *clientInfo );
+static void didReceiveResponseCallback( CFURLDownloadRef download, CFURLResponseRef response, const void *clientInfo );
+static void willResumeWithResponseCallback( CFURLDownloadRef download, CFURLResponseRef response, UInt64 startingByte,
+        const void *clientInfo );
+static void didReceiveDataCallback( CFURLDownloadRef download, CFIndex length, const void *clientInfo );
+static Boolean shouldDecodeDataOfMIMETypeCallback( CFURLDownloadRef download, CFStringRef encodingType, const void *clientInfo );
+static void decideDestinationWithSuggestedObjectNameCallback( CFURLDownloadRef download, CFStringRef objectName,
+        const void *clientInfo );
+static void didCreateDestinationCallback( CFURLDownloadRef download, CFURLRef path, const void *clientInfo );
+static void didFinishCallback( CFURLDownloadRef download, const void *clientInfo );
+static void didFailCallback( CFURLDownloadRef download, CFErrorRef error, const void *clientInfo );
 
-void Download::useCredential(const WebCore::AuthenticationChallenge& challenge, const WebCore::Credential& credential)
+void Download::useCredential( const WebCore::AuthenticationChallenge &challenge, const WebCore::Credential &credential )
 {
-    if (!m_download)
+    if ( !m_download )
+    {
         return;
-    RetainPtr<CFURLCredentialRef> cfCredential(AdoptCF, createCF(credential));
-    CFURLDownloadUseCredential(m_download.get(), cfCredential.get(), challenge.cfURLAuthChallengeRef());
+    }
+
+    RetainPtr<CFURLCredentialRef> cfCredential( AdoptCF, createCF( credential ) );
+    CFURLDownloadUseCredential( m_download.get(), cfCredential.get(), challenge.cfURLAuthChallengeRef() );
 }
 
-void Download::continueWithoutCredential(const WebCore::AuthenticationChallenge& challenge)
+void Download::continueWithoutCredential( const WebCore::AuthenticationChallenge &challenge )
 {
-    if (!m_download)
+    if ( !m_download )
+    {
         return;
-    CFURLDownloadUseCredential(m_download.get(), 0, challenge.cfURLAuthChallengeRef());
+    }
+
+    CFURLDownloadUseCredential( m_download.get(), 0, challenge.cfURLAuthChallengeRef() );
 }
 
-void Download::cancelAuthenticationChallenge(const WebCore::AuthenticationChallenge&)
+void Download::cancelAuthenticationChallenge( const WebCore::AuthenticationChallenge & )
 {
-    if (!m_download)
+    if ( !m_download )
+    {
         return;
-    CFURLDownloadCancel(m_download.get());
+    }
+
+    CFURLDownloadCancel( m_download.get() );
     m_download = 0;
 }
 
-DownloadAuthenticationClient* Download::authenticationClient()
+DownloadAuthenticationClient *Download::authenticationClient()
 {
-    if (!m_authenticationClient)
-        m_authenticationClient = DownloadAuthenticationClient::create(this);
+    if ( !m_authenticationClient )
+    {
+        m_authenticationClient = DownloadAuthenticationClient::create( this );
+    }
+
     return m_authenticationClient.get();
 }
 
-void Download::start(WebPage*)
+void Download::start( WebPage * )
 {
-    ASSERT(!m_download);
+    ASSERT( !m_download );
 
     CFURLRequestRef cfRequest = m_request.cfURLRequest();
 
-    CFURLDownloadClient client = {0, this, 0, 0, 0, didStartCallback, willSendRequestCallback, didReceiveAuthenticationChallengeCallback, 
-                                  didReceiveResponseCallback, willResumeWithResponseCallback, didReceiveDataCallback, shouldDecodeDataOfMIMETypeCallback, 
-                                  decideDestinationWithSuggestedObjectNameCallback, didCreateDestinationCallback, didFinishCallback, didFailCallback};
-    m_download.adoptCF(CFURLDownloadCreate(0, cfRequest, &client));
+    CFURLDownloadClient client = {0, this, 0, 0, 0, didStartCallback, willSendRequestCallback, didReceiveAuthenticationChallengeCallback,
+                                  didReceiveResponseCallback, willResumeWithResponseCallback, didReceiveDataCallback, shouldDecodeDataOfMIMETypeCallback,
+                                  decideDestinationWithSuggestedObjectNameCallback, didCreateDestinationCallback, didFinishCallback, didFailCallback
+                                 };
+    m_download.adoptCF( CFURLDownloadCreate( 0, cfRequest, &client ) );
 
     // FIXME: Allow this to be changed by the client.
-    CFURLDownloadSetDeletesUponFailure(m_download.get(), false);
+    CFURLDownloadSetDeletesUponFailure( m_download.get(), false );
 
-    CFURLDownloadScheduleWithCurrentMessageQueue(m_download.get());
-    CFURLDownloadScheduleDownloadWithRunLoop(m_download.get(), loaderRunLoop(), kCFRunLoopDefaultMode);
+    CFURLDownloadScheduleWithCurrentMessageQueue( m_download.get() );
+    CFURLDownloadScheduleDownloadWithRunLoop( m_download.get(), loaderRunLoop(), kCFRunLoopDefaultMode );
 
-    CFURLDownloadStart(m_download.get());
+    CFURLDownloadStart( m_download.get() );
 }
 
-void Download::startWithHandle(WebPage*, ResourceHandle* handle, const ResourceRequest& initialRequest, const ResourceResponse& response)
+void Download::startWithHandle( WebPage *, ResourceHandle *handle, const ResourceRequest &initialRequest,
+                                const ResourceResponse &response )
 {
-    ASSERT(!m_download);
+    ASSERT( !m_download );
 
     CFURLConnectionRef connection = handle->connection();
-    if (!connection)
+
+    if ( !connection )
+    {
         return;
+    }
 
-    CFURLDownloadClient client = {0, this, 0, 0, 0, didStartCallback, willSendRequestCallback, didReceiveAuthenticationChallengeCallback, 
+    CFURLDownloadClient client = {0, this, 0, 0, 0, didStartCallback, willSendRequestCallback, didReceiveAuthenticationChallengeCallback,
                                   didReceiveResponseCallback, willResumeWithResponseCallback, didReceiveDataCallback, shouldDecodeDataOfMIMETypeCallback,
-                                  decideDestinationWithSuggestedObjectNameCallback, didCreateDestinationCallback, didFinishCallback, didFailCallback};
+                                  decideDestinationWithSuggestedObjectNameCallback, didCreateDestinationCallback, didFinishCallback, didFailCallback
+                                 };
 
-    m_download.adoptCF(CFURLDownloadCreateAndStartWithLoadingConnection(0, connection, initialRequest.cfURLRequest(), response.cfURLResponse(), &client));
+    m_download.adoptCF( CFURLDownloadCreateAndStartWithLoadingConnection( 0, connection, initialRequest.cfURLRequest(),
+                        response.cfURLResponse(), &client ) );
 
     // It is possible for CFURLDownloadCreateAndStartWithLoadingConnection() to fail if the passed in CFURLConnection is not in a "downloadable state"
     // However, we should never hit that case
-    if (!m_download)
+    if ( !m_download )
+    {
         ASSERT_NOT_REACHED();
+    }
 
-    // The CFURLDownload either starts successfully and retains the CFURLConnection, 
-    // or it fails to creating and we have a now-useless connection with a dangling ref. 
+    // The CFURLDownload either starts successfully and retains the CFURLConnection,
+    // or it fails to creating and we have a now-useless connection with a dangling ref.
     // Either way, we need to release the connection to balance out ref counts
     handle->releaseConnectionForDownload();
-    CFRelease(connection);
+    CFRelease( connection );
 }
 
 void Download::cancel()
 {
-    ASSERT(m_download);
-    if (!m_download)
+    ASSERT( m_download );
+
+    if ( !m_download )
+    {
         return;
+    }
 
-    CFURLDownloadSetDeletesUponFailure(m_download.get(), false);
-    CFURLDownloadCancel(m_download.get());
+    CFURLDownloadSetDeletesUponFailure( m_download.get(), false );
+    CFURLDownloadCancel( m_download.get() );
 
-    RetainPtr<CFDataRef> resumeData(AdoptCF, CFURLDownloadCopyResumeData(m_download.get()));
-    if (resumeData)
-        DownloadBundle::appendResumeData(resumeData.get(), m_bundlePath);
+    RetainPtr<CFDataRef> resumeData( AdoptCF, CFURLDownloadCopyResumeData( m_download.get() ) );
 
-    didCancel(CoreIPC::DataReference());
+    if ( resumeData )
+    {
+        DownloadBundle::appendResumeData( resumeData.get(), m_bundlePath );
+    }
+
+    didCancel( CoreIPC::DataReference() );
 }
 
 void Download::platformInvalidate()
 {
     m_download = nullptr;
-    if (m_authenticationClient)
+
+    if ( m_authenticationClient )
+    {
         m_authenticationClient->detach();
+    }
 }
 
-void Download::didDecideDestination(const String& destination, bool allowOverwrite)
+void Download::didDecideDestination( const String &destination, bool allowOverwrite )
 {
-    ASSERT(!destination.isEmpty());
-    if (destination.isEmpty())
+    ASSERT( !destination.isEmpty() );
+
+    if ( destination.isEmpty() )
+    {
         return;
+    }
 
     m_allowOverwrite = allowOverwrite;
     m_destination = destination;
     m_bundlePath = destination + DownloadBundle::fileExtension();
 
-    RetainPtr<CFStringRef> bundlePath(AdoptCF, CFStringCreateWithCharactersNoCopy(0, reinterpret_cast<const UniChar*>(m_bundlePath.characters()), m_bundlePath.length(), kCFAllocatorNull));
-    RetainPtr<CFURLRef> bundlePathURL(AdoptCF, CFURLCreateWithFileSystemPath(0, bundlePath.get(), kCFURLWindowsPathStyle, false));
-    CFURLDownloadSetDestination(m_download.get(), bundlePathURL.get(), allowOverwrite);
+    RetainPtr<CFStringRef> bundlePath( AdoptCF, CFStringCreateWithCharactersNoCopy( 0,
+                                       reinterpret_cast<const UniChar *>( m_bundlePath.characters() ), m_bundlePath.length(), kCFAllocatorNull ) );
+    RetainPtr<CFURLRef> bundlePathURL( AdoptCF, CFURLCreateWithFileSystemPath( 0, bundlePath.get(), kCFURLWindowsPathStyle, false ) );
+    CFURLDownloadSetDestination( m_download.get(), bundlePathURL.get(), allowOverwrite );
 }
 
 // CFURLDownload Callbacks ----------------------------------------------------------------
-static Download* downloadFromClientInfo(const void* clientInfo)
+static Download *downloadFromClientInfo( const void *clientInfo )
 {
-    return reinterpret_cast<Download*>(const_cast<void*>(clientInfo));
+    return reinterpret_cast<Download *>( const_cast<void *>( clientInfo ) );
 }
 
-void didStartCallback(CFURLDownloadRef, const void* clientInfo)
-{ 
-    downloadFromClientInfo(clientInfo)->didStart(); 
+void didStartCallback( CFURLDownloadRef, const void *clientInfo )
+{
+    downloadFromClientInfo( clientInfo )->didStart();
 }
 
-CFURLRequestRef willSendRequestCallback(CFURLDownloadRef, CFURLRequestRef request, CFURLResponseRef redirectionResponse, const void* clientInfo)
-{ 
+CFURLRequestRef willSendRequestCallback( CFURLDownloadRef, CFURLRequestRef request, CFURLResponseRef redirectionResponse,
+        const void *clientInfo )
+{
     // CFNetwork requires us to return a retained request.
-    CFRetain(request);
+    CFRetain( request );
     return request;
 }
 
-void didReceiveAuthenticationChallengeCallback(CFURLDownloadRef, CFURLAuthChallengeRef challenge, const void* clientInfo)
+void didReceiveAuthenticationChallengeCallback( CFURLDownloadRef, CFURLAuthChallengeRef challenge, const void *clientInfo )
 {
-    Download* download = downloadFromClientInfo(clientInfo);
-    download->didReceiveAuthenticationChallenge(AuthenticationChallenge(challenge, download->authenticationClient()));
+    Download *download = downloadFromClientInfo( clientInfo );
+    download->didReceiveAuthenticationChallenge( AuthenticationChallenge( challenge, download->authenticationClient() ) );
 }
 
-void didReceiveResponseCallback(CFURLDownloadRef, CFURLResponseRef response, const void* clientInfo)
+void didReceiveResponseCallback( CFURLDownloadRef, CFURLResponseRef response, const void *clientInfo )
 {
-    downloadFromClientInfo(clientInfo)->didReceiveResponse(ResourceResponse(response)); 
+    downloadFromClientInfo( clientInfo )->didReceiveResponse( ResourceResponse( response ) );
 }
 
-void willResumeWithResponseCallback(CFURLDownloadRef, CFURLResponseRef response, UInt64 startingByte, const void* clientInfo)
+void willResumeWithResponseCallback( CFURLDownloadRef, CFURLResponseRef response, UInt64 startingByte, const void *clientInfo )
 {
     // FIXME: implement.
     notImplemented();
 }
 
-void didReceiveDataCallback(CFURLDownloadRef, CFIndex length, const void* clientInfo)
-{ 
-    downloadFromClientInfo(clientInfo)->didReceiveData(length);
+void didReceiveDataCallback( CFURLDownloadRef, CFIndex length, const void *clientInfo )
+{
+    downloadFromClientInfo( clientInfo )->didReceiveData( length );
 }
 
-Boolean shouldDecodeDataOfMIMETypeCallback(CFURLDownloadRef, CFStringRef encodingType, const void* clientInfo)
-{ 
-    return downloadFromClientInfo(clientInfo)->shouldDecodeSourceDataOfMIMEType(encodingType);
+Boolean shouldDecodeDataOfMIMETypeCallback( CFURLDownloadRef, CFStringRef encodingType, const void *clientInfo )
+{
+    return downloadFromClientInfo( clientInfo )->shouldDecodeSourceDataOfMIMEType( encodingType );
 }
 
-void decideDestinationWithSuggestedObjectNameCallback(CFURLDownloadRef, CFStringRef objectName, const void* clientInfo)
-{ 
-    Download* download = downloadFromClientInfo(clientInfo);
+void decideDestinationWithSuggestedObjectNameCallback( CFURLDownloadRef, CFStringRef objectName, const void *clientInfo )
+{
+    Download *download = downloadFromClientInfo( clientInfo );
     bool allowOverwrite;
-    download->decideDestinationWithSuggestedFilename(objectName, allowOverwrite);
+    download->decideDestinationWithSuggestedFilename( objectName, allowOverwrite );
 }
 
-void didCreateDestinationCallback(CFURLDownloadRef, CFURLRef, const void* clientInfo)
+void didCreateDestinationCallback( CFURLDownloadRef, CFURLRef, const void *clientInfo )
 {
     // The concept of the ".download bundle" is internal to the Download, so we try to hide its
     // existence by reporting the final destination was created, when in reality the bundle was created.
 
-    Download* download = downloadFromClientInfo(clientInfo);
-    download->didCreateDestination(download->destination());
+    Download *download = downloadFromClientInfo( clientInfo );
+    download->didCreateDestination( download->destination() );
 }
 
-void didFinishCallback(CFURLDownloadRef, const void* clientInfo)
-{ 
-    downloadFromClientInfo(clientInfo)->didFinish();
-}
-
-void didFailCallback(CFURLDownloadRef, CFErrorRef error, const void* clientInfo)
-{ 
-    CoreIPC::DataReference dataReference(0, 0);
-    downloadFromClientInfo(clientInfo)->didFail(ResourceError(error), dataReference);
-}
-
-void Download::receivedCredential(const AuthenticationChallenge& authenticationChallenge, const Credential& credential)
+void didFinishCallback( CFURLDownloadRef, const void *clientInfo )
 {
-    ASSERT(authenticationChallenge.authenticationClient());
-    authenticationChallenge.authenticationClient()->receivedCredential(authenticationChallenge, credential);
+    downloadFromClientInfo( clientInfo )->didFinish();
 }
 
-void Download::receivedRequestToContinueWithoutCredential(const AuthenticationChallenge& authenticationChallenge)
+void didFailCallback( CFURLDownloadRef, CFErrorRef error, const void *clientInfo )
 {
-    ASSERT(authenticationChallenge.authenticationClient());
-    authenticationChallenge.authenticationClient()->receivedRequestToContinueWithoutCredential(authenticationChallenge);
+    CoreIPC::DataReference dataReference( 0, 0 );
+    downloadFromClientInfo( clientInfo )->didFail( ResourceError( error ), dataReference );
 }
 
-void Download::receivedCancellation(const AuthenticationChallenge& authenticationChallenge)
+void Download::receivedCredential( const AuthenticationChallenge &authenticationChallenge, const Credential &credential )
 {
-    ASSERT(authenticationChallenge.authenticationClient());
-    authenticationChallenge.authenticationClient()->receivedCancellation(authenticationChallenge);
+    ASSERT( authenticationChallenge.authenticationClient() );
+    authenticationChallenge.authenticationClient()->receivedCredential( authenticationChallenge, credential );
+}
+
+void Download::receivedRequestToContinueWithoutCredential( const AuthenticationChallenge &authenticationChallenge )
+{
+    ASSERT( authenticationChallenge.authenticationClient() );
+    authenticationChallenge.authenticationClient()->receivedRequestToContinueWithoutCredential( authenticationChallenge );
+}
+
+void Download::receivedCancellation( const AuthenticationChallenge &authenticationChallenge )
+{
+    ASSERT( authenticationChallenge.authenticationClient() );
+    authenticationChallenge.authenticationClient()->receivedCancellation( authenticationChallenge );
 }
 
 } // namespace WebKit

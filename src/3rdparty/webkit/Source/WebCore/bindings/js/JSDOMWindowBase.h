@@ -24,73 +24,79 @@
 #include "JSDOMGlobalObject.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class DOMWindow;
-    class Frame;
-    class DOMWrapperWorld;
-    class JSDOMWindow;
-    class JSDOMWindowShell;
+class DOMWindow;
+class Frame;
+class DOMWrapperWorld;
+class JSDOMWindow;
+class JSDOMWindowShell;
 
-    class JSDOMWindowBasePrivate;
+class JSDOMWindowBasePrivate;
 
-    class JSDOMWindowBase : public JSDOMGlobalObject {
-        typedef JSDOMGlobalObject Base;
-    protected:
-        JSDOMWindowBase(JSC::JSGlobalData&, JSC::Structure*, PassRefPtr<DOMWindow>, JSDOMWindowShell*);
+class JSDOMWindowBase : public JSDOMGlobalObject
+{
+    typedef JSDOMGlobalObject Base;
+protected:
+    JSDOMWindowBase( JSC::JSGlobalData &, JSC::Structure *, PassRefPtr<DOMWindow>, JSDOMWindowShell * );
 
-    public:
-        void updateDocument();
+public:
+    void updateDocument();
 
-        DOMWindow* impl() const { return m_impl.get(); }
-        virtual ScriptExecutionContext* scriptExecutionContext() const;
+    DOMWindow *impl() const
+    {
+        return m_impl.get();
+    }
+    virtual ScriptExecutionContext *scriptExecutionContext() const;
 
-        // Called just before removing this window from the JSDOMWindowShell.
-        void willRemoveFromWindowShell();
+    // Called just before removing this window from the JSDOMWindowShell.
+    void willRemoveFromWindowShell();
 
-        static const JSC::ClassInfo s_info;
+    static const JSC::ClassInfo s_info;
 
-        static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
-        {
-            return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
+    {
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
+    }
 
-        virtual JSC::ExecState* globalExec();
-        virtual bool supportsProfiling() const;
-        virtual bool supportsRichSourceInfo() const;
-        virtual bool shouldInterruptScript() const;
+    virtual JSC::ExecState *globalExec();
+    virtual bool supportsProfiling() const;
+    virtual bool supportsRichSourceInfo() const;
+    virtual bool shouldInterruptScript() const;
 
-        bool allowsAccessFrom(JSC::ExecState*) const;
-        bool allowsAccessFromNoErrorMessage(JSC::ExecState*) const;
-        bool allowsAccessFrom(JSC::ExecState*, String& message) const;
-        void printErrorMessage(const String&) const;
+    bool allowsAccessFrom( JSC::ExecState * ) const;
+    bool allowsAccessFromNoErrorMessage( JSC::ExecState * ) const;
+    bool allowsAccessFrom( JSC::ExecState *, String &message ) const;
+    void printErrorMessage( const String & ) const;
 
-        // Don't call this version of allowsAccessFrom -- it's a slightly incorrect implementation used only by WebScriptObject
-        virtual bool allowsAccessFrom(const JSC::JSGlobalObject*) const;
-        
-        virtual JSC::JSObject* toThisObject(JSC::ExecState*) const;
-        virtual JSC::JSValue toStrictThisObject(JSC::ExecState*) const;
-        JSDOMWindowShell* shell() const;
+    // Don't call this version of allowsAccessFrom -- it's a slightly incorrect implementation used only by WebScriptObject
+    virtual bool allowsAccessFrom( const JSC::JSGlobalObject * ) const;
 
-        static JSC::JSGlobalData* commonJSGlobalData();
+    virtual JSC::JSObject *toThisObject( JSC::ExecState * ) const;
+    virtual JSC::JSValue toStrictThisObject( JSC::ExecState * ) const;
+    JSDOMWindowShell *shell() const;
 
-    private:
-        RefPtr<DOMWindow> m_impl;
-        JSDOMWindowShell* m_shell;
+    static JSC::JSGlobalData *commonJSGlobalData();
 
-        bool allowsAccessFromPrivate(const JSC::JSGlobalObject*) const;
-        String crossDomainAccessErrorMessage(const JSC::JSGlobalObject*) const;
-    };
+private:
+    RefPtr<DOMWindow> m_impl;
+    JSDOMWindowShell *m_shell;
 
-    // Returns a JSDOMWindow or jsNull()
-    // JSDOMGlobalObject* is ignored, accessing a window in any context will
-    // use that DOMWindow's prototype chain.
-    JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, DOMWindow*);
-    JSC::JSValue toJS(JSC::ExecState*, DOMWindow*);
+    bool allowsAccessFromPrivate( const JSC::JSGlobalObject * ) const;
+    String crossDomainAccessErrorMessage( const JSC::JSGlobalObject * ) const;
+};
 
-    // Returns JSDOMWindow or 0
-    JSDOMWindow* toJSDOMWindow(Frame*, DOMWrapperWorld*);
-    JSDOMWindow* toJSDOMWindow(JSC::JSValue);
+// Returns a JSDOMWindow or jsNull()
+// JSDOMGlobalObject* is ignored, accessing a window in any context will
+// use that DOMWindow's prototype chain.
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, DOMWindow * );
+JSC::JSValue toJS( JSC::ExecState *, DOMWindow * );
+
+// Returns JSDOMWindow or 0
+JSDOMWindow *toJSDOMWindow( Frame *, DOMWrapperWorld * );
+JSDOMWindow *toJSDOMWindow( JSC::JSValue );
 
 } // namespace WebCore
 

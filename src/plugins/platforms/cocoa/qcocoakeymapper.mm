@@ -63,7 +63,7 @@ struct qt_mac_enum_mapper {
    int mac_code;
    int qt_code;
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
 #   define QT_MAC_MAP_ENUM(x) x, #x
     const char *desc;
 #else
@@ -87,7 +87,7 @@ static qt_mac_enum_mapper qt_mac_modifier_symbols[] = {
 
 Qt::KeyboardModifiers qt_mac_get_modifiers(int keys)
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
    qDebug("qt_mac_get_modifiers() Mapping modifiers = %d (0x%04x)", keys, keys);
 #endif
 
@@ -117,7 +117,7 @@ Qt::KeyboardModifiers qt_mac_get_modifiers(int keys)
 
 static int qt_mac_get_mac_modifiers(Qt::KeyboardModifiers keys)
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
    qDebug("qt_mac_get_mac_modifiers() Mapping modifiers = %d (0x%04x)", (int)keys, (int)keys);
 #endif
 
@@ -256,7 +256,7 @@ static qt_mac_enum_mapper qt_mac_private_unicode[] = {
 
 static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
 {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
    qDebug("qt_mac_get_key() Mapping key = %d (0x%04x) - %d (0x%04x)",
          key.unicode(), key.unicode(), virtualKey, virtualKey);
 #endif
@@ -266,7 +266,7 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
    }
 
    if (key.isDigit()) {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
       qDebug("qt_mac_get_key() digit key = %d", key.digitValue());
 #endif
 
@@ -274,7 +274,7 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
    }
 
    if (key.isLetter()) {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
       qDebug("qt_mac_get_key() letter key = %d", key.toUpper()[0].unicode() - 'A');
 #endif
 
@@ -282,7 +282,7 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
    }
 
    if (key.isSymbol()) {
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
       qDebug("qt_mac_get_key() symbol key = %d", key.unicode());
 #endif
       return key.unicode();
@@ -294,13 +294,13 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
          // To work like X11 we issue Backtab when Shift + Tab are pressed
          if (qt_mac_keyboard_symbols[i].qt_code == Qt::Key_Tab && (modif & Qt::ShiftModifier)) {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
             qDebug("qt_mac_get_key() key = Qt::Key_Backtab");
 #endif
             return Qt::Key_Backtab;
          }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
          qDebug("qt_mac_get_key() symbol key = %s", qt_mac_keyboard_symbols[i].desc);
 #endif
          return qt_mac_keyboard_symbols[i].qt_code;
@@ -311,7 +311,7 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
    for (int i = 0; qt_mac_keyvkey_symbols[i].qt_code; i++) {
       if (qt_mac_keyvkey_symbols[i].mac_code == virtualKey) {
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
          qDebug("qt_mac_get_key() symbol key = %s", qt_mac_keyvkey_symbols[i].desc);
 #endif
 
@@ -333,7 +333,7 @@ static int qt_mac_get_key(int modif, const QChar &key, int virtualKey)
 
    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
    qDebug("qt_mac_get_key() key = %d,  latin1 = %d, virtual key = %d", key.unicode(), key.toLatin1(), virtualKey);
 #endif
 
@@ -448,7 +448,7 @@ void QCocoaKeyMapper::updateKeyMap(unsigned short macVirtualKey, QChar unicodeKe
       }
    }
 
-#if defined(CS_SHOW_DEBUG_PLATFORM)
+#if defined(LSCS_SHOW_DEBUG_PLATFORM)
    qDebug("QCocoaKeyMapper::updateKeyMap() virtual key = 0x%02x", (uint)macVirtualKey);
 
    for (int i = 0; i < 16; ++i) {

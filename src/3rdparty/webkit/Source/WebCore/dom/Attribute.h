@@ -28,7 +28,8 @@
 #include "CSSMappedAttributeDeclaration.h"
 #include "QualifiedName.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Attr;
 class CSSStyleDeclaration;
@@ -38,79 +39,123 @@ class NamedNodeMap;
 // This has no counterpart in DOM.
 // It is an internal representation of the node value of an Attr.
 // The actual Attr with its value as a Text child is allocated only if needed.
-class Attribute : public RefCounted<Attribute> {
+class Attribute : public RefCounted<Attribute>
+{
     friend class Attr;
     friend class NamedNodeMap;
 public:
-    static PassRefPtr<Attribute> create(const QualifiedName& name, const AtomicString& value)
+    static PassRefPtr<Attribute> create( const QualifiedName &name, const AtomicString &value )
     {
-        return adoptRef(new Attribute(name, value, false, 0));
+        return adoptRef( new Attribute( name, value, false, 0 ) );
     }
-    static PassRefPtr<Attribute> createMapped(const QualifiedName& name, const AtomicString& value)
+    static PassRefPtr<Attribute> createMapped( const QualifiedName &name, const AtomicString &value )
     {
-        return adoptRef(new Attribute(name, value, true, 0));
+        return adoptRef( new Attribute( name, value, true, 0 ) );
     }
-    static PassRefPtr<Attribute> createMapped(const AtomicString& name, const AtomicString& value)
+    static PassRefPtr<Attribute> createMapped( const AtomicString &name, const AtomicString &value )
     {
-        return adoptRef(new Attribute(name, value, true, 0));
+        return adoptRef( new Attribute( name, value, true, 0 ) );
     }
 
-    const AtomicString& value() const { return m_value; }
-    const AtomicString& prefix() const { return m_name.prefix(); }
-    const AtomicString& localName() const { return m_name.localName(); }
-    const AtomicString& namespaceURI() const { return m_name.namespaceURI(); }
-    
-    const QualifiedName& name() const { return m_name; }
-    
-    Attr* attr() const;
-    PassRefPtr<Attr> createAttrIfNeeded(Element*);
+    const AtomicString &value() const
+    {
+        return m_value;
+    }
+    const AtomicString &prefix() const
+    {
+        return m_name.prefix();
+    }
+    const AtomicString &localName() const
+    {
+        return m_name.localName();
+    }
+    const AtomicString &namespaceURI() const
+    {
+        return m_name.namespaceURI();
+    }
 
-    bool isNull() const { return m_value.isNull(); }
-    bool isEmpty() const { return m_value.isEmpty(); }
-    
+    const QualifiedName &name() const
+    {
+        return m_name;
+    }
+
+    Attr *attr() const;
+    PassRefPtr<Attr> createAttrIfNeeded( Element * );
+
+    bool isNull() const
+    {
+        return m_value.isNull();
+    }
+    bool isEmpty() const
+    {
+        return m_value.isEmpty();
+    }
+
     PassRefPtr<Attribute> clone() const;
 
     // An extension to get the style information for presentational attributes.
-    CSSStyleDeclaration* style() const { return m_styleDecl.get(); }
-    CSSMappedAttributeDeclaration* decl() const { return m_styleDecl.get(); }
-    void setDecl(PassRefPtr<CSSMappedAttributeDeclaration> decl) { m_styleDecl = decl; }
+    CSSStyleDeclaration *style() const
+    {
+        return m_styleDecl.get();
+    }
+    CSSMappedAttributeDeclaration *decl() const
+    {
+        return m_styleDecl.get();
+    }
+    void setDecl( PassRefPtr<CSSMappedAttributeDeclaration> decl )
+    {
+        m_styleDecl = decl;
+    }
 
-    void setValue(const AtomicString& value) { m_value = value; }
-    void setPrefix(const AtomicString& prefix) { m_name.setPrefix(prefix); }
+    void setValue( const AtomicString &value )
+    {
+        m_value = value;
+    }
+    void setPrefix( const AtomicString &prefix )
+    {
+        m_name.setPrefix( prefix );
+    }
 
     // Note: This API is only for HTMLTreeBuilder.  It is not safe to change the
     // name of an attribute once parseMappedAttribute has been called as DOM
     // elements may have placed the Attribute in a hash by name.
-    void parserSetName(const QualifiedName& name) { m_name = name; }
+    void parserSetName( const QualifiedName &name )
+    {
+        m_name = name;
+    }
 
-    bool isMappedAttribute() { return m_isMappedAttribute; }
+    bool isMappedAttribute()
+    {
+        return m_isMappedAttribute;
+    }
 
 private:
-    Attribute(const QualifiedName& name, const AtomicString& value, bool isMappedAttribute, CSSMappedAttributeDeclaration* styleDecl)
-        : m_isMappedAttribute(isMappedAttribute)
-        , m_hasAttr(false)
-        , m_name(name)
-        , m_value(value)
-        , m_styleDecl(styleDecl)
+    Attribute( const QualifiedName &name, const AtomicString &value, bool isMappedAttribute,
+               CSSMappedAttributeDeclaration *styleDecl )
+        : m_isMappedAttribute( isMappedAttribute )
+        , m_hasAttr( false )
+        , m_name( name )
+        , m_value( value )
+        , m_styleDecl( styleDecl )
     {
     }
 
-    Attribute(const AtomicString& name, const AtomicString& value, bool isMappedAttribute, CSSMappedAttributeDeclaration* styleDecl)
-        : m_isMappedAttribute(isMappedAttribute)
-        , m_hasAttr(false)
-        , m_name(nullAtom, name, nullAtom)
-        , m_value(value)
-        , m_styleDecl(styleDecl)
+    Attribute( const AtomicString &name, const AtomicString &value, bool isMappedAttribute, CSSMappedAttributeDeclaration *styleDecl )
+        : m_isMappedAttribute( isMappedAttribute )
+        , m_hasAttr( false )
+        , m_name( nullAtom, name, nullAtom )
+        , m_value( value )
+        , m_styleDecl( styleDecl )
     {
     }
 
-    void bindAttr(Attr*);
-    void unbindAttr(Attr*);
+    void bindAttr( Attr * );
+    void unbindAttr( Attr * );
 
     // These booleans will go into the spare 32-bits of padding from RefCounted in 64-bit.
     bool m_isMappedAttribute;
     bool m_hasAttr;
-    
+
     QualifiedName m_name;
     AtomicString m_value;
     RefPtr<CSSMappedAttributeDeclaration> m_styleDecl;

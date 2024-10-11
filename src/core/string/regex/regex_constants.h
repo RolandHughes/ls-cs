@@ -24,130 +24,135 @@
  * LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#ifndef CS_REGEX_CONSTANTS_H
-#define CS_REGEX_CONSTANTS_H
+#ifndef LSCS_REGEX_CONSTANTS_H
+#define LSCS_REGEX_CONSTANTS_H
 
-namespace cs_regex_ns {
+namespace lscs_regex_ns
+{
 
 // handles error codes and flags
 
-class LIB_CS_STRING_EXPORT regbase
+class LIB_LSCS_STRING_EXPORT regbase
 {
- public:
-   enum flag_type_ {
+public:
+    enum flag_type_
+    {
 
-      // Divide the flags up into logical groups
-      // bits 0-7 indicate main synatx type.
-      // bits 8-15 indicate syntax subtype.
-      // bits 16-31 indicate options that are common to all regex syntaxes
-      // In all cases the default is 0.
+        // Divide the flags up into logical groups
+        // bits 0-7 indicate main synatx type.
+        // bits 8-15 indicate syntax subtype.
+        // bits 16-31 indicate options that are common to all regex syntaxes
+        // In all cases the default is 0.
 
-      // main synatx group
-      perl_syntax_group  = 0,                           // default
-      basic_syntax_group = 1,                           // POSIX basic
-      literal            = 2,                           // all characters are literals
-      main_option_type = literal | basic_syntax_group | perl_syntax_group, // everything
-
-
-      // options specific to perl group
-      no_bk_refs = 1 << 8,                              // \d not allowed
-      no_perl_ex = 1 << 9,                              // disable perl extensions
-      no_mod_m   = 1 << 10,                             // disable Perl m modifier
-      mod_x      = 1 << 11,                             // Perl x modifier
-      mod_s      = 1 << 12,                             // force s modifier on (overrides match_not_dot_newline)
-      no_mod_s   = 1 << 13,                             // force s modifier off (overrides match_not_dot_newline)
+        // main synatx group
+        perl_syntax_group  = 0,                           // default
+        basic_syntax_group = 1,                           // POSIX basic
+        literal            = 2,                           // all characters are literals
+        main_option_type = literal | basic_syntax_group | perl_syntax_group, // everything
 
 
-      // options specific to basic group
-      no_char_classes = 1 << 8,                         // [[:CLASS:]] not allowed
-      no_intervals    = 1 << 9,                         // {x,y} not allowed
-      bk_plus_qm      = 1 << 10,                        // uses \+ and \?
-      bk_vbar         = 1 << 11,                        // use \| for alternatives
-      emacs_ex        = 1 << 12,                        // enables emacs extensions
-
-      // options common to all groups
-      no_escape_in_lists = 1 << 16,                     // '\' not special inside [...]
-      newline_alt        = 1 << 17,                     // \n is the same as |
-      no_except          = 1 << 18,                     // no exception on error
-      failbit            = 1 << 19,                     // error flag
-      icase              = 1 << 20,                     // characters are matched regardless of case
-      nocollate          = 0,                           // don't use locale specific collation (deprecated)
-      collate            = 1 << 21,                     // use locale specific collation
-      nosubs             = 1 << 22,                     // don't mark sub-expressions
-      save_subexpression_location = 1 << 23,            // save subexpression locations
-      no_empty_expressions        = 1 << 24,            // no empty expressions allowed
-      optimize           = 0,                           // not really supported
+        // options specific to perl group
+        no_bk_refs = 1 << 8,                              // \d not allowed
+        no_perl_ex = 1 << 9,                              // disable perl extensions
+        no_mod_m   = 1 << 10,                             // disable Perl m modifier
+        mod_x      = 1 << 11,                             // Perl x modifier
+        mod_s      = 1 << 12,                             // force s modifier on (overrides match_not_dot_newline)
+        no_mod_s   = 1 << 13,                             // force s modifier off (overrides match_not_dot_newline)
 
 
-      basic      = basic_syntax_group | collate | no_escape_in_lists,
-      extended   = no_bk_refs | collate | no_perl_ex | no_escape_in_lists,
-      normal     = 0,
-      emacs      = basic_syntax_group | collate | emacs_ex | bk_vbar,
-      awk        = no_bk_refs | collate | no_perl_ex,
-      grep       = basic | newline_alt,
-      egrep      = extended | newline_alt,
-      sed        = basic,
-      perl       = normal,
-      ECMAScript = normal,
-      JavaScript = normal,
-      JScript    = normal
-   };
-   using flag_type  = unsigned int;
+        // options specific to basic group
+        no_char_classes = 1 << 8,                         // [[:CLASS:]] not allowed
+        no_intervals    = 1 << 9,                         // {x,y} not allowed
+        bk_plus_qm      = 1 << 10,                        // uses \+ and \?
+        bk_vbar         = 1 << 11,                        // use \| for alternatives
+        emacs_ex        = 1 << 12,                        // enables emacs extensions
 
-   enum restart_info {
-      restart_any       = 0,
-      restart_word      = 1,
-      restart_line      = 2,
-      restart_buf       = 3,
-      restart_continue  = 4,
-      restart_lit       = 5,
-      restart_fixed_lit = 6,
-      restart_count     = 7
-   };
+        // options common to all groups
+        no_escape_in_lists = 1 << 16,                     // '\' not special inside [...]
+        newline_alt        = 1 << 17,                     // \n is the same as |
+        no_except          = 1 << 18,                     // no exception on error
+        failbit            = 1 << 19,                     // error flag
+        icase              = 1 << 20,                     // characters are matched regardless of case
+        nocollate          = 0,                           // don't use locale specific collation (deprecated)
+        collate            = 1 << 21,                     // use locale specific collation
+        nosubs             = 1 << 22,                     // don't mark sub-expressions
+        save_subexpression_location = 1 << 23,            // save subexpression locations
+        no_empty_expressions        = 1 << 24,            // no empty expressions allowed
+        optimize           = 0,                           // not really supported
+
+
+        basic      = basic_syntax_group | collate | no_escape_in_lists,
+        extended   = no_bk_refs | collate | no_perl_ex | no_escape_in_lists,
+        normal     = 0,
+        emacs      = basic_syntax_group | collate | emacs_ex | bk_vbar,
+        awk        = no_bk_refs | collate | no_perl_ex,
+        grep       = basic | newline_alt,
+        egrep      = extended | newline_alt,
+        sed        = basic,
+        perl       = normal,
+        ECMAScript = normal,
+        JavaScript = normal,
+        JScript    = normal
+    };
+    using flag_type  = unsigned int;
+
+    enum restart_info
+    {
+        restart_any       = 0,
+        restart_word      = 1,
+        restart_line      = 2,
+        restart_buf       = 3,
+        restart_continue  = 4,
+        restart_lit       = 5,
+        restart_fixed_lit = 6,
+        restart_count     = 7
+    };
 };
 
 
 // provide std lib proposal compatible constants
 
-namespace regex_constants {
+namespace regex_constants
+{
 
-enum flag_type_ {
+enum flag_type_
+{
 
-   no_except = cs_regex_ns::regbase::no_except,
-   failbit = cs_regex_ns::regbase::failbit,
-   literal = cs_regex_ns::regbase::literal,
-   icase = cs_regex_ns::regbase::icase,
-   nocollate = cs_regex_ns::regbase::nocollate,
-   collate = cs_regex_ns::regbase::collate,
-   nosubs = cs_regex_ns::regbase::nosubs,
-   optimize = cs_regex_ns::regbase::optimize,
-   bk_plus_qm = cs_regex_ns::regbase::bk_plus_qm,
-   bk_vbar = cs_regex_ns::regbase::bk_vbar,
-   no_intervals = cs_regex_ns::regbase::no_intervals,
-   no_char_classes = cs_regex_ns::regbase::no_char_classes,
-   no_escape_in_lists = cs_regex_ns::regbase::no_escape_in_lists,
-   no_mod_m = cs_regex_ns::regbase::no_mod_m,
-   mod_x = cs_regex_ns::regbase::mod_x,
-   mod_s = cs_regex_ns::regbase::mod_s,
-   no_mod_s = cs_regex_ns::regbase::no_mod_s,
-   save_subexpression_location = cs_regex_ns::regbase::save_subexpression_location,
-   no_empty_expressions = cs_regex_ns::regbase::no_empty_expressions,
+    no_except = lscs_regex_ns::regbase::no_except,
+    failbit = lscs_regex_ns::regbase::failbit,
+    literal = lscs_regex_ns::regbase::literal,
+    icase = lscs_regex_ns::regbase::icase,
+    nocollate = lscs_regex_ns::regbase::nocollate,
+    collate = lscs_regex_ns::regbase::collate,
+    nosubs = lscs_regex_ns::regbase::nosubs,
+    optimize = lscs_regex_ns::regbase::optimize,
+    bk_plus_qm = lscs_regex_ns::regbase::bk_plus_qm,
+    bk_vbar = lscs_regex_ns::regbase::bk_vbar,
+    no_intervals = lscs_regex_ns::regbase::no_intervals,
+    no_char_classes = lscs_regex_ns::regbase::no_char_classes,
+    no_escape_in_lists = lscs_regex_ns::regbase::no_escape_in_lists,
+    no_mod_m = lscs_regex_ns::regbase::no_mod_m,
+    mod_x = lscs_regex_ns::regbase::mod_x,
+    mod_s = lscs_regex_ns::regbase::mod_s,
+    no_mod_s = lscs_regex_ns::regbase::no_mod_s,
+    save_subexpression_location = lscs_regex_ns::regbase::save_subexpression_location,
+    no_empty_expressions = lscs_regex_ns::regbase::no_empty_expressions,
 
-   basic        = cs_regex_ns::regbase::basic,
-   extended     = cs_regex_ns::regbase::extended,
-   normal       = cs_regex_ns::regbase::normal,
-   emacs        = cs_regex_ns::regbase::emacs,
-   awk          = cs_regex_ns::regbase::awk,
-   grep         = cs_regex_ns::regbase::grep,
-   egrep        = cs_regex_ns::regbase::egrep,
-   sed          = basic,
-   perl         = normal,
-   ECMAScript   = normal,
-   JavaScript   = normal,
-   JScript      = normal
+    basic        = lscs_regex_ns::regbase::basic,
+    extended     = lscs_regex_ns::regbase::extended,
+    normal       = lscs_regex_ns::regbase::normal,
+    emacs        = lscs_regex_ns::regbase::emacs,
+    awk          = lscs_regex_ns::regbase::awk,
+    grep         = lscs_regex_ns::regbase::grep,
+    egrep        = lscs_regex_ns::regbase::egrep,
+    sed          = basic,
+    perl         = normal,
+    ECMAScript   = normal,
+    JavaScript   = normal,
+    JScript      = normal
 };
 
-using syntax_option_type = cs_regex_ns::regbase::flag_type;
+using syntax_option_type = lscs_regex_ns::regbase::flag_type;
 using syntax_type        = unsigned char;
 using escape_syntax_type = unsigned char;
 

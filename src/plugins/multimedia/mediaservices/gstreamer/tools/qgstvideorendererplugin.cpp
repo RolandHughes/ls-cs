@@ -23,7 +23,7 @@
 
 #include <qgstvideorendererplugin_p.h>
 
-QGstVideoRendererPlugin::QGstVideoRendererPlugin(QObject *parent)
-   : QObject(parent)
+QGstVideoRendererPlugin::QGstVideoRendererPlugin( QObject *parent )
+    : QObject( parent )
 {
 }

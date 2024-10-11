@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGPathSegLinetoHorizontalRel);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGPathSegLinetoHorizontalRel );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,9 +44,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGPathSegLinetoHorizontalRel);
 
 static const HashTableValue JSSVGPathSegLinetoHorizontalRelTableValues[3] =
 {
-    { "x", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegLinetoHorizontalRelX), (intptr_t)setJSSVGPathSegLinetoHorizontalRelX THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGPathSegLinetoHorizontalRelConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "x", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegLinetoHorizontalRelX ), ( intptr_t )setJSSVGPathSegLinetoHorizontalRelX THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGPathSegLinetoHorizontalRelConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -59,43 +60,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGPathSegLinetoHorizontalRelTable = { 5,
 
 static const HashTableValue JSSVGPathSegLinetoHorizontalRelConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPathSegLinetoHorizontalRelConstructorTable = { 1, 0, JSSVGPathSegLinetoHorizontalRelConstructorTableValues, 0 };
-class JSSVGPathSegLinetoHorizontalRelConstructor : public DOMConstructorObject {
+class JSSVGPathSegLinetoHorizontalRelConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGPathSegLinetoHorizontalRelConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGPathSegLinetoHorizontalRelConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGPathSegLinetoHorizontalRelConstructor::s_info = { "SVGPathSegLinetoHorizontalRelConstructor", &DOMConstructorObject::s_info, &JSSVGPathSegLinetoHorizontalRelConstructorTable, 0 };
 
-JSSVGPathSegLinetoHorizontalRelConstructor::JSSVGPathSegLinetoHorizontalRelConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGPathSegLinetoHorizontalRelConstructor::JSSVGPathSegLinetoHorizontalRelConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGPathSegLinetoHorizontalRelPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGPathSegLinetoHorizontalRelPrototype::self( exec,
+               globalObject ), DontDelete | ReadOnly );
 }
 
-bool JSSVGPathSegLinetoHorizontalRelConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPathSegLinetoHorizontalRelConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPathSegLinetoHorizontalRelConstructor, JSDOMWrapper>(exec, &JSSVGPathSegLinetoHorizontalRelConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPathSegLinetoHorizontalRelConstructor, JSDOMWrapper>( exec,
+            &JSSVGPathSegLinetoHorizontalRelConstructorTable, this, propertyName, slot );
 }
 
-bool JSSVGPathSegLinetoHorizontalRelConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPathSegLinetoHorizontalRelConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPathSegLinetoHorizontalRelConstructor, JSDOMWrapper>(exec, &JSSVGPathSegLinetoHorizontalRelConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPathSegLinetoHorizontalRelConstructor, JSDOMWrapper>( exec,
+            &JSSVGPathSegLinetoHorizontalRelConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -107,73 +117,79 @@ bool JSSVGPathSegLinetoHorizontalRelConstructor::getOwnPropertyDescriptor(ExecSt
 
 static const HashTableValue JSSVGPathSegLinetoHorizontalRelPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGPathSegLinetoHorizontalRelPrototypeTable = { 1, 0, JSSVGPathSegLinetoHorizontalRelPrototypeTableValues, 0 };
 const ClassInfo JSSVGPathSegLinetoHorizontalRelPrototype::s_info = { "SVGPathSegLinetoHorizontalRelPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGPathSegLinetoHorizontalRelPrototypeTable, 0 };
 
-JSObject* JSSVGPathSegLinetoHorizontalRelPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPathSegLinetoHorizontalRelPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGPathSegLinetoHorizontalRel>(exec, globalObject);
+    return getDOMPrototype<JSSVGPathSegLinetoHorizontalRel>( exec, globalObject );
 }
 
 const ClassInfo JSSVGPathSegLinetoHorizontalRel::s_info = { "SVGPathSegLinetoHorizontalRel", &JSSVGPathSeg::s_info, &JSSVGPathSegLinetoHorizontalRelTable, 0 };
 
-JSSVGPathSegLinetoHorizontalRel::JSSVGPathSegLinetoHorizontalRel(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGPathSegLinetoHorizontalRel> impl)
-    : JSSVGPathSeg(structure, globalObject, impl)
+JSSVGPathSegLinetoHorizontalRel::JSSVGPathSegLinetoHorizontalRel( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGPathSegLinetoHorizontalRel> impl )
+    : JSSVGPathSeg( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGPathSegLinetoHorizontalRel::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGPathSegLinetoHorizontalRel::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGPathSegLinetoHorizontalRelPrototype(exec->globalData(), globalObject, JSSVGPathSegLinetoHorizontalRelPrototype::createStructure(exec->globalData(), JSSVGPathSegPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGPathSegLinetoHorizontalRelPrototype( exec->globalData(), globalObject,
+            JSSVGPathSegLinetoHorizontalRelPrototype::createStructure( exec->globalData(), JSSVGPathSegPrototype::self( exec,
+                    globalObject ) ) );
 }
 
-bool JSSVGPathSegLinetoHorizontalRel::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGPathSegLinetoHorizontalRel::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGPathSegLinetoHorizontalRel, Base>(exec, &JSSVGPathSegLinetoHorizontalRelTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGPathSegLinetoHorizontalRel, Base>( exec, &JSSVGPathSegLinetoHorizontalRelTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGPathSegLinetoHorizontalRel::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGPathSegLinetoHorizontalRel::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGPathSegLinetoHorizontalRel, Base>(exec, &JSSVGPathSegLinetoHorizontalRelTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGPathSegLinetoHorizontalRel, Base>( exec, &JSSVGPathSegLinetoHorizontalRelTable, this,
+            propertyName, descriptor );
 }
 
-JSValue jsSVGPathSegLinetoHorizontalRelX(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegLinetoHorizontalRelX( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegLinetoHorizontalRel* castedThis = static_cast<JSSVGPathSegLinetoHorizontalRel*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGPathSegLinetoHorizontalRel* imp = static_cast<SVGPathSegLinetoHorizontalRel*>(castedThis->impl());
-    JSValue result = jsNumber(imp->x());
+    JSSVGPathSegLinetoHorizontalRel *castedThis = static_cast<JSSVGPathSegLinetoHorizontalRel *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGPathSegLinetoHorizontalRel *imp = static_cast<SVGPathSegLinetoHorizontalRel *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->x() );
     return result;
 }
 
 
-JSValue jsSVGPathSegLinetoHorizontalRelConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGPathSegLinetoHorizontalRelConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGPathSegLinetoHorizontalRel* domObject = static_cast<JSSVGPathSegLinetoHorizontalRel*>(asObject(slotBase));
-    return JSSVGPathSegLinetoHorizontalRel::getConstructor(exec, domObject->globalObject());
+    JSSVGPathSegLinetoHorizontalRel *domObject = static_cast<JSSVGPathSegLinetoHorizontalRel *>( asObject( slotBase ) );
+    return JSSVGPathSegLinetoHorizontalRel::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGPathSegLinetoHorizontalRel::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGPathSegLinetoHorizontalRel::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGPathSegLinetoHorizontalRel, Base>(exec, propertyName, value, &JSSVGPathSegLinetoHorizontalRelTable, this, slot);
+    lookupPut<JSSVGPathSegLinetoHorizontalRel, Base>( exec, propertyName, value, &JSSVGPathSegLinetoHorizontalRelTable, this, slot );
 }
 
-void setJSSVGPathSegLinetoHorizontalRelX(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGPathSegLinetoHorizontalRelX( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGPathSegLinetoHorizontalRel* castedThis = static_cast<JSSVGPathSegLinetoHorizontalRel*>(thisObject);
-    SVGPathSegLinetoHorizontalRel* imp = static_cast<SVGPathSegLinetoHorizontalRel*>(castedThis->impl());
-    imp->setX(value.toFloat(exec));
+    JSSVGPathSegLinetoHorizontalRel *castedThis = static_cast<JSSVGPathSegLinetoHorizontalRel *>( thisObject );
+    SVGPathSegLinetoHorizontalRel *imp = static_cast<SVGPathSegLinetoHorizontalRel *>( castedThis->impl() );
+    imp->setX( value.toFloat( exec ) );
 }
 
 
-JSValue JSSVGPathSegLinetoHorizontalRel::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGPathSegLinetoHorizontalRel::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGPathSegLinetoHorizontalRelConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGPathSegLinetoHorizontalRelConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
 

@@ -20,21 +20,23 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DocumentTiming_h
 #define DocumentTiming_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct DocumentTiming {
+struct DocumentTiming
+{
     DocumentTiming()
-        : domLoading(0.0)
-        , domInteractive(0.0)
-        , domContentLoadedEventStart(0.0)
-        , domContentLoadedEventEnd(0.0)
-        , domComplete(0.0)
+        : domLoading( 0.0 )
+        , domInteractive( 0.0 )
+        , domContentLoadedEventStart( 0.0 )
+        , domContentLoadedEventEnd( 0.0 )
+        , domComplete( 0.0 )
     {
     }
 

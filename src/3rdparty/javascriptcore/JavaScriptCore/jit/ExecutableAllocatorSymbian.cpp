@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA  02110-1301  USA
  *
  */
@@ -28,40 +28,45 @@
 #include <e32std.h>
 
 // Set the page size to 256 Kb to compensate for moving memory model limitation
-const size_t MOVING_MEM_PAGE_SIZE = 256 * 1024; 
+const size_t MOVING_MEM_PAGE_SIZE = 256 * 1024;
 
-namespace JSC {
+namespace JSC
+{
 
 void ExecutableAllocator::intializePageSize()
 {
 #if CPU(ARMV5_OR_LOWER)
     // The moving memory model (as used in ARMv5 and earlier platforms)
-    // on Symbian OS limits the number of chunks for each process to 16. 
-    // To mitigate this limitation increase the pagesize to 
+    // on Symbian OS limits the number of chunks for each process to 16.
+    // To mitigate this limitation increase the pagesize to
     // allocate less of larger chunks.
     ExecutableAllocator::pageSize = MOVING_MEM_PAGE_SIZE;
 #else
     TInt page_size;
-    UserHal::PageSizeInBytes(page_size);
+    UserHal::PageSizeInBytes( page_size );
     ExecutableAllocator::pageSize = page_size;
 #endif
 }
 
-ExecutablePool::Allocation ExecutablePool::systemAlloc(size_t n)
+ExecutablePool::Allocation ExecutablePool::systemAlloc( size_t n )
 {
-    RChunk* codeChunk = new RChunk();
+    RChunk *codeChunk = new RChunk();
 
-    TInt errorCode = codeChunk->CreateLocalCode(n, n);
+    TInt errorCode = codeChunk->CreateLocalCode( n, n );
 
-    char* allocation = reinterpret_cast<char*>(codeChunk->Base());
-    if (!allocation)
+    char *allocation = reinterpret_cast<char *>( codeChunk->Base() );
+
+    if ( !allocation )
+    {
         CRASH();
+    }
+
     ExecutablePool::Allocation alloc = { allocation, n, codeChunk };
     return alloc;
 }
 
-void ExecutablePool::systemRelease(const ExecutablePool::Allocation& alloc)
-{ 
+void ExecutablePool::systemRelease( const ExecutablePool::Allocation &alloc )
+{
     alloc.chunk->Close();
     delete alloc.chunk;
 }

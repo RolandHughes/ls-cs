@@ -28,27 +28,28 @@
 
 template<typename T> class QList;
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class VariableReference : public EmptyContainer
 {
- public:
-   typedef QExplicitlySharedDataPointer<VariableReference> Ptr;
-   typedef QList<VariableReference::Ptr> List;
+public:
+    typedef QExplicitlySharedDataPointer<VariableReference> Ptr;
+    typedef QList<VariableReference::Ptr> List;
 
-   VariableReference(const VariableSlotID slot);
+    VariableReference( const VariableSlotID slot );
 
-   inline VariableSlotID slot() const;
+    inline VariableSlotID slot() const;
 
-   Properties properties() const override;
+    Properties properties() const override;
 
- private:
-   const VariableSlotID m_varSlot;
+private:
+    const VariableSlotID m_varSlot;
 };
 
 inline VariableSlotID VariableReference::slot() const
 {
-   return m_varSlot;
+    return m_varSlot;
 }
 
 }

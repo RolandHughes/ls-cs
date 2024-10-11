@@ -33,21 +33,29 @@
 
 @class WKView;
 
-namespace WebKit {
+namespace WebKit
+{
 
-class CorrectionPanel {
+class CorrectionPanel
+{
 public:
     CorrectionPanel();
     ~CorrectionPanel();
-    void show(WKView*, WebCore::CorrectionPanelInfo::PanelType, const WebCore::FloatRect& boundingBoxOfReplacedString, const String& replacedString, const String& replacementString, const Vector<String>& alternativeReplacementStrings);
-    void dismiss(WebCore::ReasonForDismissingCorrectionPanel);
-    String dismissSoon(WebCore::ReasonForDismissingCorrectionPanel);
-    static void recordAutocorrectionResponse(WKView*, NSCorrectionResponse, const String& replacedString, const String& replacementString);
+    void show( WKView *, WebCore::CorrectionPanelInfo::PanelType, const WebCore::FloatRect &boundingBoxOfReplacedString,
+               const String &replacedString, const String &replacementString, const Vector<String> &alternativeReplacementStrings );
+    void dismiss( WebCore::ReasonForDismissingCorrectionPanel );
+    String dismissSoon( WebCore::ReasonForDismissingCorrectionPanel );
+    static void recordAutocorrectionResponse( WKView *, NSCorrectionResponse, const String &replacedString,
+            const String &replacementString );
 
 private:
-    bool isShowing() const { return m_view; }
-    void dismissInternal(WebCore::ReasonForDismissingCorrectionPanel, bool dismissingExternally);
-    void handleAcceptedReplacement(NSString* acceptedReplacement, NSString* replaced, NSString* proposedReplacement, NSCorrectionIndicatorType);
+    bool isShowing() const
+    {
+        return m_view;
+    }
+    void dismissInternal( WebCore::ReasonForDismissingCorrectionPanel, bool dismissingExternally );
+    void handleAcceptedReplacement( NSString *acceptedReplacement, NSString *replaced, NSString *proposedReplacement,
+                                    NSCorrectionIndicatorType );
 
     bool m_wasDismissedExternally;
     WebCore::ReasonForDismissingCorrectionPanel m_reasonForDismissing;

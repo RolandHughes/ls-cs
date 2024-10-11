@@ -41,10 +41,11 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // The following constants define unicode subranges
-// values below cRangeNum must be continuous so that we can map to 
+// values below cRangeNum must be continuous so that we can map to
 // a lang group directly.
 // All ranges we care about should fit within 32 bits.
 
@@ -110,14 +111,14 @@ const unsigned char   cRangeCombiningDiacriticalMarks = 56;
 const unsigned char   cRangeSpecials             = 57;
 
 const unsigned char   cRangeTableBase   = 128;    //values over 127 are reserved for internal use only
-const unsigned char   cRangeTertiaryTable  = 145; // leave room for 16 subtable 
-                                            // indices (cRangeTableBase + 1 ..
-                                            // cRangeTableBase + 16)
+const unsigned char   cRangeTertiaryTable  = 145; // leave room for 16 subtable
+// indices (cRangeTableBase + 1 ..
+// cRangeTableBase + 16)
 
 
 
-unsigned int findCharUnicodeRange(UChar32 ch);
-const char* langGroupFromUnicodeRange(unsigned char unicodeRange);
+unsigned int findCharUnicodeRange( UChar32 ch );
+const char *langGroupFromUnicodeRange( unsigned char unicodeRange );
 
 }
 

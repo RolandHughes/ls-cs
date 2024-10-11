@@ -23,21 +23,26 @@
 #include "Frame.h"
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
-
-DOMPlugin::DOMPlugin(PluginData* pluginData, Frame* frame, unsigned index)
-    : m_pluginData(pluginData)
-    , m_frame(frame)
-    , m_index(index)
+namespace WebCore
 {
-    if (m_frame)
-        m_frame->addDestructionObserver(this);
+
+DOMPlugin::DOMPlugin( PluginData *pluginData, Frame *frame, unsigned index )
+    : m_pluginData( pluginData )
+    , m_frame( frame )
+    , m_index( index )
+{
+    if ( m_frame )
+    {
+        m_frame->addDestructionObserver( this );
+    }
 }
 
 DOMPlugin::~DOMPlugin()
 {
-    if (m_frame)
-        m_frame->removeDestructionObserver(this);
+    if ( m_frame )
+    {
+        m_frame->removeDestructionObserver( this );
+    }
 }
 
 String DOMPlugin::name() const
@@ -60,36 +65,51 @@ unsigned DOMPlugin::length() const
     return pluginInfo().mimes.size();
 }
 
-PassRefPtr<DOMMimeType> DOMPlugin::item(unsigned index)
+PassRefPtr<DOMMimeType> DOMPlugin::item( unsigned index )
 {
-    if (index >= pluginInfo().mimes.size())
+    if ( index >= pluginInfo().mimes.size() )
+    {
         return 0;
-
-    const MimeClassInfo& mime = pluginInfo().mimes[index];
-
-    const Vector<MimeClassInfo>& mimes = m_pluginData->mimes();
-    for (unsigned i = 0; i < mimes.size(); ++i) {
-        if (mimes[i] == mime && m_pluginData->mimePluginIndices()[i] == m_index)
-            return DOMMimeType::create(m_pluginData.get(), m_frame, i).get();
     }
+
+    const MimeClassInfo &mime = pluginInfo().mimes[index];
+
+    const Vector<MimeClassInfo> &mimes = m_pluginData->mimes();
+
+    for ( unsigned i = 0; i < mimes.size(); ++i )
+    {
+        if ( mimes[i] == mime && m_pluginData->mimePluginIndices()[i] == m_index )
+        {
+            return DOMMimeType::create( m_pluginData.get(), m_frame, i ).get();
+        }
+    }
+
     return 0;
 }
 
-bool DOMPlugin::canGetItemsForName(const AtomicString& propertyName)
+bool DOMPlugin::canGetItemsForName( const AtomicString &propertyName )
 {
-    const Vector<MimeClassInfo>& mimes = m_pluginData->mimes();
-    for (unsigned i = 0; i < mimes.size(); ++i)
-        if (mimes[i].type == propertyName)
+    const Vector<MimeClassInfo> &mimes = m_pluginData->mimes();
+
+    for ( unsigned i = 0; i < mimes.size(); ++i )
+        if ( mimes[i].type == propertyName )
+        {
             return true;
+        }
+
     return false;
 }
 
-PassRefPtr<DOMMimeType> DOMPlugin::namedItem(const AtomicString& propertyName)
+PassRefPtr<DOMMimeType> DOMPlugin::namedItem( const AtomicString &propertyName )
 {
-    const Vector<MimeClassInfo>& mimes = m_pluginData->mimes();
-    for (unsigned i = 0; i < mimes.size(); ++i)
-        if (mimes[i].type == propertyName)
-            return DOMMimeType::create(m_pluginData.get(), m_frame, i).get();
+    const Vector<MimeClassInfo> &mimes = m_pluginData->mimes();
+
+    for ( unsigned i = 0; i < mimes.size(); ++i )
+        if ( mimes[i].type == propertyName )
+        {
+            return DOMMimeType::create( m_pluginData.get(), m_frame, i ).get();
+        }
+
     return 0;
 }
 

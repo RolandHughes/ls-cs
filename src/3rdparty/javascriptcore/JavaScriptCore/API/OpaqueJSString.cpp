@@ -32,29 +32,32 @@
 
 using namespace JSC;
 
-PassRefPtr<OpaqueJSString> OpaqueJSString::create(const UString& ustring)
+PassRefPtr<OpaqueJSString> OpaqueJSString::create( const UString &ustring )
 {
-   if (! ustring.isNull()) {
-      return adoptRef(new OpaqueJSString(ustring.data(), ustring.size()));
-   }
+    if ( ! ustring.isNull() )
+    {
+        return adoptRef( new OpaqueJSString( ustring.data(), ustring.size() ) );
+    }
 
-   return 0;
+    return 0;
 }
 
 UString OpaqueJSString::ustring() const
 {
-   if (m_characters != nullptr) {
-        return UString(m_characters, m_length);
-   }
+    if ( m_characters != nullptr )
+    {
+        return UString( m_characters, m_length );
+    }
 
-   return UString::null();
+    return UString::null();
 }
 
-Identifier OpaqueJSString::identifier(JSGlobalData* globalData) const
+Identifier OpaqueJSString::identifier( JSGlobalData *globalData ) const
 {
-   if (m_characters == nullptr) {
-      return Identifier(globalData, static_cast<const char*>(0));
-   }
+    if ( m_characters == nullptr )
+    {
+        return Identifier( globalData, static_cast<const char *>( 0 ) );
+    }
 
-   return Identifier(globalData, m_characters, m_length);
+    return Identifier( globalData, m_characters, m_length );
 }

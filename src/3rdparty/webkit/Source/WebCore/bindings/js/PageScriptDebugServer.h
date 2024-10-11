@@ -36,42 +36,44 @@
 #include "ScriptDebugServer.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Frame;
 class FrameView;
 class Page;
 class PageGroup;
 
-class PageScriptDebugServer : public ScriptDebugServer {
-    WTF_MAKE_NONCOPYABLE(PageScriptDebugServer);
+class PageScriptDebugServer : public ScriptDebugServer
+{
+    WTF_MAKE_NONCOPYABLE( PageScriptDebugServer );
 public:
-    static PageScriptDebugServer& shared();
+    static PageScriptDebugServer &shared();
 
-    void addListener(ScriptDebugListener*, Page*);
-    void removeListener(ScriptDebugListener*, Page*);
+    void addListener( ScriptDebugListener *, Page * );
+    void removeListener( ScriptDebugListener *, Page * );
 
-    virtual void recompileAllJSFunctions(Timer<ScriptDebugServer>*);
+    virtual void recompileAllJSFunctions( Timer<ScriptDebugServer> * );
 
 private:
-    typedef HashMap<Page*, ListenerSet*> PageListenersMap;
+    typedef HashMap<Page *, ListenerSet *> PageListenersMap;
 
     PageScriptDebugServer();
     virtual ~PageScriptDebugServer();
 
-    virtual ListenerSet* getListenersForGlobalObject(JSC::JSGlobalObject*);
-    virtual void didPause(JSC::JSGlobalObject*);
-    virtual void didContinue(JSC::JSGlobalObject*);
+    virtual ListenerSet *getListenersForGlobalObject( JSC::JSGlobalObject * );
+    virtual void didPause( JSC::JSGlobalObject * );
+    virtual void didContinue( JSC::JSGlobalObject * );
 
-    void didRemoveLastListener(Page*);
+    void didRemoveLastListener( Page * );
 
-    void setJavaScriptPaused(const PageGroup&, bool paused);
-    void setJavaScriptPaused(Page*, bool paused);
-    void setJavaScriptPaused(Frame*, bool paused);
-    void setJavaScriptPaused(FrameView*, bool paused);
+    void setJavaScriptPaused( const PageGroup &, bool paused );
+    void setJavaScriptPaused( Page *, bool paused );
+    void setJavaScriptPaused( Frame *, bool paused );
+    void setJavaScriptPaused( FrameView *, bool paused );
 
     PageListenersMap m_pageListenersMap;
-    Page* m_pausedPage;
+    Page *m_pausedPage;
 };
 
 } // namespace WebCore

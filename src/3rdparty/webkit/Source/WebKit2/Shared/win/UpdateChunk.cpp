@@ -32,45 +32,53 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 UpdateChunk::UpdateChunk()
-    : m_bitmapSharedMemory(0)
+    : m_bitmapSharedMemory( 0 )
 {
 }
 
-UpdateChunk::UpdateChunk(const IntRect& rect)
-    : m_rect(rect)
+UpdateChunk::UpdateChunk( const IntRect &rect )
+    : m_rect( rect )
 {
     // Create our shared memory mapping.
     unsigned memorySize = rect.height() * rect.width() * 4;
-    m_bitmapSharedMemory = ::CreateFileMapping(INVALID_HANDLE_VALUE, 0, PAGE_READWRITE, 0, memorySize, 0);
+    m_bitmapSharedMemory = ::CreateFileMapping( INVALID_HANDLE_VALUE, 0, PAGE_READWRITE, 0, memorySize, 0 );
 }
 
-UpdateChunk::UpdateChunk(const IntRect& rect, HANDLE bitmapSharedMemory)
-    : m_rect(rect)
-    , m_bitmapSharedMemory(bitmapSharedMemory)
+UpdateChunk::UpdateChunk( const IntRect &rect, HANDLE bitmapSharedMemory )
+    : m_rect( rect )
+    , m_bitmapSharedMemory( bitmapSharedMemory )
 {
 }
 
-void UpdateChunk::encode(CoreIPC::ArgumentEncoder* encoder) const
+void UpdateChunk::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(m_rect);
-    encoder->encode(reinterpret_cast<uintptr_t>(m_bitmapSharedMemory));
+    encoder->encode( m_rect );
+    encoder->encode( reinterpret_cast<uintptr_t>( m_bitmapSharedMemory ) );
 }
 
-bool UpdateChunk::decode(CoreIPC::ArgumentDecoder* decoder, UpdateChunk& updateChunk)
+bool UpdateChunk::decode( CoreIPC::ArgumentDecoder *decoder, UpdateChunk &updateChunk )
 {
     IntRect rect;
-    if (!decoder->decode(rect))
+
+    if ( !decoder->decode( rect ) )
+    {
         return false;
+    }
+
     updateChunk.m_rect = rect;
 
     uintptr_t bitmapSharedMmemory;
-    if (!decoder->decode(bitmapSharedMmemory))
-        return false;
 
-    updateChunk.m_bitmapSharedMemory = reinterpret_cast<HANDLE>(bitmapSharedMmemory);
+    if ( !decoder->decode( bitmapSharedMmemory ) )
+    {
+        return false;
+    }
+
+    updateChunk.m_bitmapSharedMemory = reinterpret_cast<HANDLE>( bitmapSharedMmemory );
     return true;
 }
 

@@ -39,7 +39,8 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Database;
 class DatabaseTask;
@@ -48,31 +49,45 @@ class Document;
 class SQLTransactionClient;
 class SQLTransactionCoordinator;
 
-class DatabaseThread : public ThreadSafeRefCounted<DatabaseThread> {
+class DatabaseThread : public ThreadSafeRefCounted<DatabaseThread>
+{
 public:
-    static PassRefPtr<DatabaseThread> create() { return adoptRef(new DatabaseThread); }
+    static PassRefPtr<DatabaseThread> create()
+    {
+        return adoptRef( new DatabaseThread );
+    }
     ~DatabaseThread();
 
     bool start();
-    void requestTermination(DatabaseTaskSynchronizer* cleanupSync);
-    bool terminationRequested(DatabaseTaskSynchronizer* taskSynchronizer = 0) const;
+    void requestTermination( DatabaseTaskSynchronizer *cleanupSync );
+    bool terminationRequested( DatabaseTaskSynchronizer *taskSynchronizer = 0 ) const;
 
-    void scheduleTask(PassOwnPtr<DatabaseTask>);
-    void scheduleImmediateTask(PassOwnPtr<DatabaseTask>); // This just adds the task to the front of the queue - the caller needs to be extremely careful not to create deadlocks when waiting for completion.
-    void unscheduleDatabaseTasks(Database*);
+    void scheduleTask( PassOwnPtr<DatabaseTask> );
+    void scheduleImmediateTask(
+        PassOwnPtr<DatabaseTask> ); // This just adds the task to the front of the queue - the caller needs to be extremely careful not to create deadlocks when waiting for completion.
+    void unscheduleDatabaseTasks( Database * );
 
-    void recordDatabaseOpen(Database*);
-    void recordDatabaseClosed(Database*);
-    ThreadIdentifier getThreadID() { return m_threadID; }
+    void recordDatabaseOpen( Database * );
+    void recordDatabaseClosed( Database * );
+    ThreadIdentifier getThreadID()
+    {
+        return m_threadID;
+    }
 
-    SQLTransactionClient* transactionClient() { return m_transactionClient.get(); }
-    SQLTransactionCoordinator* transactionCoordinator() { return m_transactionCoordinator.get(); }
+    SQLTransactionClient *transactionClient()
+    {
+        return m_transactionClient.get();
+    }
+    SQLTransactionCoordinator *transactionCoordinator()
+    {
+        return m_transactionCoordinator.get();
+    }
 
 private:
     DatabaseThread();
 
-    static void* databaseThreadStart(void*);
-    void* databaseThread();
+    static void *databaseThreadStart( void * );
+    void *databaseThread();
 
     Mutex m_threadCreationMutex;
     ThreadIdentifier m_threadID;
@@ -86,7 +101,7 @@ private:
 
     OwnPtr<SQLTransactionClient> m_transactionClient;
     OwnPtr<SQLTransactionCoordinator> m_transactionCoordinator;
-    DatabaseTaskSynchronizer* m_cleanupSync;
+    DatabaseTaskSynchronizer *m_cleanupSync;
 };
 
 } // namespace WebCore

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef InsertListCommand_h
@@ -28,35 +28,43 @@
 
 #include "CompositeEditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLElement;
 
-class InsertListCommand : public CompositeEditCommand {
+class InsertListCommand : public CompositeEditCommand
+{
 public:
     enum Type { OrderedList, UnorderedList };
 
-    static PassRefPtr<InsertListCommand> create(Document* document, Type listType)
+    static PassRefPtr<InsertListCommand> create( Document *document, Type listType )
     {
-        return adoptRef(new InsertListCommand(document, listType));
+        return adoptRef( new InsertListCommand( document, listType ) );
     }
 
-    static PassRefPtr<HTMLElement> insertList(Document*, Type);
-    
-    virtual bool preservesTypingStyle() const { return true; }
+    static PassRefPtr<HTMLElement> insertList( Document *, Type );
+
+    virtual bool preservesTypingStyle() const
+    {
+        return true;
+    }
 
 private:
-    InsertListCommand(Document*, Type);
+    InsertListCommand( Document *, Type );
 
     virtual void doApply();
-    virtual EditAction editingAction() const { return EditActionInsertList; }
+    virtual EditAction editingAction() const
+    {
+        return EditActionInsertList;
+    }
 
-    HTMLElement* fixOrphanedListChild(Node*);
-    bool selectionHasListOfType(const VisibleSelection& selection, const QualifiedName&);
-    PassRefPtr<HTMLElement> mergeWithNeighboringLists(PassRefPtr<HTMLElement>);
-    void doApplyForSingleParagraph(bool forceCreateList, const QualifiedName&, Range* currentSelection);
-    void unlistifyParagraph(const VisiblePosition& originalStart, HTMLElement* listNode, Node* listChildNode);
-    PassRefPtr<HTMLElement> listifyParagraph(const VisiblePosition& originalStart, const QualifiedName& listTag);
+    HTMLElement *fixOrphanedListChild( Node * );
+    bool selectionHasListOfType( const VisibleSelection &selection, const QualifiedName & );
+    PassRefPtr<HTMLElement> mergeWithNeighboringLists( PassRefPtr<HTMLElement> );
+    void doApplyForSingleParagraph( bool forceCreateList, const QualifiedName &, Range *currentSelection );
+    void unlistifyParagraph( const VisiblePosition &originalStart, HTMLElement *listNode, Node *listChildNode );
+    PassRefPtr<HTMLElement> listifyParagraph( const VisiblePosition &originalStart, const QualifiedName &listTag );
     RefPtr<HTMLElement> m_listElement;
     Type m_type;
 };

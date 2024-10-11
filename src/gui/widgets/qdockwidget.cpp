@@ -44,36 +44,38 @@
 #include <qdockwidget_p.h>
 #include <qmainwindowlayout_p.h>
 
-extern QString cs_internal_parseWindowTitle(const QString &, const QWidget *); // qwidget.cpp
+extern QString lscs_internal_parseWindowTitle( const QString &, const QWidget * ); // qwidget.cpp
 
 // qmainwindow.cpp
-extern QMainWindowLayout *qt_mainwindow_layout(const QMainWindow *window);
+extern QMainWindowLayout *qt_mainwindow_layout( const QMainWindow *window );
 
-static inline QMainWindowLayout *qt_mainwindow_layout_from_dock(const QDockWidget *dock)
+static inline QMainWindowLayout *qt_mainwindow_layout_from_dock( const QDockWidget *dock )
 {
-   const QWidget *p = dock->parentWidget();
+    const QWidget *p = dock->parentWidget();
 
-   while (p) {
-      const QMainWindow *window = qobject_cast<const QMainWindow *>(p);
+    while ( p )
+    {
+        const QMainWindow *window = qobject_cast<const QMainWindow *>( p );
 
-      if (window) {
-         return qt_mainwindow_layout(window);
-      }
+        if ( window )
+        {
+            return qt_mainwindow_layout( window );
+        }
 
-      p = p->parentWidget();
-   }
+        p = p->parentWidget();
+    }
 
-   return nullptr;
+    return nullptr;
 }
 
-static inline bool hasFeature(const QDockWidgetPrivate *priv, QDockWidget::DockWidgetFeature feature)
+static inline bool hasFeature( const QDockWidgetPrivate *priv, QDockWidget::DockWidgetFeature feature )
 {
-   return (priv->features & feature) == feature;
+    return ( priv->features & feature ) == feature;
 }
 
-static inline bool hasFeature(const QDockWidget *dockwidget, QDockWidget::DockWidgetFeature feature)
+static inline bool hasFeature( const QDockWidget *dockwidget, QDockWidget::DockWidgetFeature feature )
 {
-   return (dockwidget->features() & feature) == feature;
+    return ( dockwidget->features() & feature ) == feature;
 }
 
 /*
@@ -104,1054 +106,1232 @@ static inline bool hasFeature(const QDockWidget *dockwidget, QDockWidget::DockWi
 
 class QDockWidgetTitleButton : public QAbstractButton
 {
-   GUI_CS_OBJECT(QDockWidgetTitleButton)
+    GUI_LSCS_OBJECT( QDockWidgetTitleButton )
 
- public:
-   QDockWidgetTitleButton(QDockWidget *dockWidget);
+public:
+    QDockWidgetTitleButton( QDockWidget *dockWidget );
 
-   QSize sizeHint() const override;
-   QSize minimumSizeHint() const override {
-      return sizeHint();
-   }
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override
+    {
+        return sizeHint();
+    }
 
-   void enterEvent(QEvent *event) override;
-   void leaveEvent(QEvent *event) override;
-   void paintEvent(QPaintEvent *event) override;
+    void enterEvent( QEvent *event ) override;
+    void leaveEvent( QEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
 };
 
-QDockWidgetTitleButton::QDockWidgetTitleButton(QDockWidget *dockWidget)
-   : QAbstractButton(dockWidget)
+QDockWidgetTitleButton::QDockWidgetTitleButton( QDockWidget *dockWidget )
+    : QAbstractButton( dockWidget )
 {
-   setFocusPolicy(Qt::NoFocus);
+    setFocusPolicy( Qt::NoFocus );
 }
 
 QSize QDockWidgetTitleButton::sizeHint() const
 {
-   ensurePolished();
+    ensurePolished();
 
-   int size = 2 * style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin, nullptr, this);
+    int size = 2 * style()->pixelMetric( QStyle::PM_DockWidgetTitleBarButtonMargin, nullptr, this );
 
-   if (!icon().isNull()) {
-      int iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
-      QSize sz = icon().actualSize(QSize(iconSize, iconSize));
-      size += qMax(sz.width(), sz.height());
-   }
+    if ( !icon().isNull() )
+    {
+        int iconSize = style()->pixelMetric( QStyle::PM_SmallIconSize, nullptr, this );
+        QSize sz = icon().actualSize( QSize( iconSize, iconSize ) );
+        size += qMax( sz.width(), sz.height() );
+    }
 
-   return QSize(size, size);
+    return QSize( size, size );
 }
 
-void QDockWidgetTitleButton::enterEvent(QEvent *event)
+void QDockWidgetTitleButton::enterEvent( QEvent *event )
 {
-   if (isEnabled()) {
-      update();
-   }
-   QAbstractButton::enterEvent(event);
+    if ( isEnabled() )
+    {
+        update();
+    }
+
+    QAbstractButton::enterEvent( event );
 }
 
-void QDockWidgetTitleButton::leaveEvent(QEvent *event)
+void QDockWidgetTitleButton::leaveEvent( QEvent *event )
 {
-   if (isEnabled()) {
-      update();
-   }
-   QAbstractButton::leaveEvent(event);
+    if ( isEnabled() )
+    {
+        update();
+    }
+
+    QAbstractButton::leaveEvent( event );
 }
 
-void QDockWidgetTitleButton::paintEvent(QPaintEvent *)
+void QDockWidgetTitleButton::paintEvent( QPaintEvent * )
 {
-   QPainter p(this);
+    QPainter p( this );
 
-   QStyleOptionToolButton opt;
-   opt.initFrom(this);
-   opt.state |= QStyle::State_AutoRaise;
+    QStyleOptionToolButton opt;
+    opt.initFrom( this );
+    opt.state |= QStyle::State_AutoRaise;
 
-   if (style()->styleHint(QStyle::SH_DockWidget_ButtonsHaveFrame, nullptr, this)) {
-      if (isEnabled() && underMouse() && !isChecked() && !isDown()) {
-         opt.state |= QStyle::State_Raised;
-      }
-      if (isChecked()) {
-         opt.state |= QStyle::State_On;
-      }
-      if (isDown()) {
-         opt.state |= QStyle::State_Sunken;
-      }
-      style()->drawPrimitive(QStyle::PE_PanelButtonTool, &opt, &p, this);
-   }
+    if ( style()->styleHint( QStyle::SH_DockWidget_ButtonsHaveFrame, nullptr, this ) )
+    {
+        if ( isEnabled() && underMouse() && !isChecked() && !isDown() )
+        {
+            opt.state |= QStyle::State_Raised;
+        }
 
-   opt.icon = icon();
-   opt.subControls = Qt::EmptyFlag;
-   opt.activeSubControls = Qt::EmptyFlag;
-   opt.features = QStyleOptionToolButton::None;
-   opt.arrowType = Qt::NoArrow;
-   int size = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
-   opt.iconSize = QSize(size, size);
-   style()->drawComplexControl(QStyle::CC_ToolButton, &opt, &p, this);
+        if ( isChecked() )
+        {
+            opt.state |= QStyle::State_On;
+        }
+
+        if ( isDown() )
+        {
+            opt.state |= QStyle::State_Sunken;
+        }
+
+        style()->drawPrimitive( QStyle::PE_PanelButtonTool, &opt, &p, this );
+    }
+
+    opt.icon = icon();
+    opt.subControls = Qt::EmptyFlag;
+    opt.activeSubControls = Qt::EmptyFlag;
+    opt.features = QStyleOptionToolButton::None;
+    opt.arrowType = Qt::NoArrow;
+    int size = style()->pixelMetric( QStyle::PM_SmallIconSize, nullptr, this );
+    opt.iconSize = QSize( size, size );
+    style()->drawComplexControl( QStyle::CC_ToolButton, &opt, &p, this );
 }
 
-QDockWidgetLayout::QDockWidgetLayout(QWidget *parent)
-   : QLayout(parent), verticalTitleBar(false), item_list(RoleCount, nullptr)
+QDockWidgetLayout::QDockWidgetLayout( QWidget *parent )
+    : QLayout( parent ), verticalTitleBar( false ), item_list( RoleCount, nullptr )
 {
 }
 
 QDockWidgetLayout::~QDockWidgetLayout()
 {
-   qDeleteAll(item_list);
+    qDeleteAll( item_list );
 }
 
 bool QDockWidgetLayout::nativeWindowDeco() const
 {
-   bool floating = parentWidget()->isWindow();
+    bool floating = parentWidget()->isWindow();
 
-   if (!floating && qobject_cast<QDockWidgetGroupWindow *>(parentWidget()->parentWidget())) {
-      return wmSupportsNativeWindowDeco();
-   }
+    if ( !floating && qobject_cast<QDockWidgetGroupWindow *>( parentWidget()->parentWidget() ) )
+    {
+        return wmSupportsNativeWindowDeco();
+    }
 
-   return nativeWindowDeco(floating);
+    return nativeWindowDeco( floating );
 }
 
 bool QDockWidgetLayout::wmSupportsNativeWindowDeco()
 {
-   static const bool xcb = !QGuiApplication::platformName().compare(QLatin1String("xcb"), Qt::CaseInsensitive);
-   return ! xcb;
+    static const bool xcb = !QGuiApplication::platformName().compare( QLatin1String( "xcb" ), Qt::CaseInsensitive );
+    return ! xcb;
 }
 
-bool QDockWidgetLayout::nativeWindowDeco(bool floating) const
+bool QDockWidgetLayout::nativeWindowDeco( bool floating ) const
 {
-   return wmSupportsNativeWindowDeco() && floating && item_list.at(QDockWidgetLayout::TitleBar) == nullptr;
+    return wmSupportsNativeWindowDeco() && floating && item_list.at( QDockWidgetLayout::TitleBar ) == nullptr;
 }
 
-void QDockWidgetLayout::addItem(QLayoutItem *)
+void QDockWidgetLayout::addItem( QLayoutItem * )
 {
-   qWarning("QDockWidgetLayout::addItem(): Use QDockWidgetLayout::setWidget()");
-   return;
+    qWarning( "QDockWidgetLayout::addItem(): Use QDockWidgetLayout::setWidget()" );
+    return;
 }
 
-QLayoutItem *QDockWidgetLayout::itemAt(int index) const
+QLayoutItem *QDockWidgetLayout::itemAt( int index ) const
 {
-   int cnt = 0;
-   for (int i = 0; i < item_list.count(); ++i) {
-      QLayoutItem *item = item_list.at(i);
-      if (item == nullptr) {
-         continue;
-      }
+    int cnt = 0;
 
-      if (index == cnt++) {
-         return item;
-      }
-   }
+    for ( int i = 0; i < item_list.count(); ++i )
+    {
+        QLayoutItem *item = item_list.at( i );
 
-   return nullptr;
+        if ( item == nullptr )
+        {
+            continue;
+        }
+
+        if ( index == cnt++ )
+        {
+            return item;
+        }
+    }
+
+    return nullptr;
 }
 
-QLayoutItem *QDockWidgetLayout::takeAt(int index)
+QLayoutItem *QDockWidgetLayout::takeAt( int index )
 {
-   int j = 0;
-   for (int i = 0; i < item_list.count(); ++i) {
-      QLayoutItem *item = item_list.at(i);
-      if (item == nullptr) {
-         continue;
-      }
+    int j = 0;
 
-      if (index == j) {
-         item_list[i] = nullptr;
-         invalidate();
+    for ( int i = 0; i < item_list.count(); ++i )
+    {
+        QLayoutItem *item = item_list.at( i );
 
-         return item;
-      }
+        if ( item == nullptr )
+        {
+            continue;
+        }
 
-      ++j;
-   }
+        if ( index == j )
+        {
+            item_list[i] = nullptr;
+            invalidate();
 
-   return nullptr;
+            return item;
+        }
+
+        ++j;
+    }
+
+    return nullptr;
 }
 
 int QDockWidgetLayout::count() const
 {
-   int result = 0;
+    int result = 0;
 
-   for (int i = 0; i < item_list.count(); ++i) {
-      if (item_list.at(i)) {
-         ++result;
-      }
-   }
+    for ( int i = 0; i < item_list.count(); ++i )
+    {
+        if ( item_list.at( i ) )
+        {
+            ++result;
+        }
+    }
 
-   return result;
+    return result;
 }
 
-QSize QDockWidgetLayout::sizeFromContent(const QSize &content, bool floating) const
+QSize QDockWidgetLayout::sizeFromContent( const QSize &content, bool floating ) const
 {
-   QSize result = content;
+    QSize result = content;
 
-   if (verticalTitleBar) {
-      result.setHeight(qMax(result.height(), minimumTitleWidth()));
-      result.setWidth(qMax(content.width(), 0));
+    if ( verticalTitleBar )
+    {
+        result.setHeight( qMax( result.height(), minimumTitleWidth() ) );
+        result.setWidth( qMax( content.width(), 0 ) );
 
-   } else {
-      result.setHeight(qMax(result.height(), 0));
-      result.setWidth(qMax(content.width(), minimumTitleWidth()));
-   }
+    }
+    else
+    {
+        result.setHeight( qMax( result.height(), 0 ) );
+        result.setWidth( qMax( content.width(), minimumTitleWidth() ) );
+    }
 
-   QDockWidget *w = qobject_cast<QDockWidget *>(parentWidget());
-   const bool nativeDeco = nativeWindowDeco(floating);
+    QDockWidget *w = qobject_cast<QDockWidget *>( parentWidget() );
+    const bool nativeDeco = nativeWindowDeco( floating );
 
-   int fw = floating && ! nativeDeco
-            ? w->style()->pixelMetric(QStyle::PM_DockWidgetFrameWidth, nullptr, w) : 0;
+    int fw = floating && ! nativeDeco
+             ? w->style()->pixelMetric( QStyle::PM_DockWidgetFrameWidth, nullptr, w ) : 0;
 
-   const int th = titleHeight();
-   if (!nativeDeco) {
-      if (verticalTitleBar) {
-         result += QSize(th + 2 * fw, 2 * fw);
-      } else {
-         result += QSize(2 * fw, th + 2 * fw);
-      }
-   }
+    const int th = titleHeight();
 
-   result.setHeight(qMin(result.height(), (int) QWIDGETSIZE_MAX));
-   result.setWidth(qMin(result.width(), (int) QWIDGETSIZE_MAX));
+    if ( !nativeDeco )
+    {
+        if ( verticalTitleBar )
+        {
+            result += QSize( th + 2 * fw, 2 * fw );
+        }
+        else
+        {
+            result += QSize( 2 * fw, th + 2 * fw );
+        }
+    }
 
-   if (content.width() < 0) {
-      result.setWidth(-1);
-   }
-   if (content.height() < 0) {
-      result.setHeight(-1);
-   }
+    result.setHeight( qMin( result.height(), ( int ) QWIDGETSIZE_MAX ) );
+    result.setWidth( qMin( result.width(), ( int ) QWIDGETSIZE_MAX ) );
 
-   int left, top, right, bottom;
-   w->getContentsMargins(&left, &top, &right, &bottom);
+    if ( content.width() < 0 )
+    {
+        result.setWidth( -1 );
+    }
 
-   // we need to substract the contents margin (it will be added by the caller)
-   QSize min = w->minimumSize() - QSize(left + right, top + bottom);
-   QSize max = w->maximumSize() - QSize(left + right, top + bottom);
+    if ( content.height() < 0 )
+    {
+        result.setHeight( -1 );
+    }
 
-   /* A floating dockwidget will automatically get its minimumSize set to the layout's
-      minimum size + deco. We're *not* interested in this, we only take minimumSize()
-      into account if the user set it herself. Otherwise we end up expanding the result
-      of a calculation for a non-floating dock widget to a floating dock widget's
-      minimum size + window decorations. */
+    int left, top, right, bottom;
+    w->getContentsMargins( &left, &top, &right, &bottom );
 
-   uint explicitMin = 0;
-   uint explicitMax = 0;
+    // we need to substract the contents margin (it will be added by the caller)
+    QSize min = w->minimumSize() - QSize( left + right, top + bottom );
+    QSize max = w->maximumSize() - QSize( left + right, top + bottom );
 
-   if (w->d_func()->extra != nullptr) {
-      explicitMin = w->d_func()->extra->explicitMinSize;
-      explicitMax = w->d_func()->extra->explicitMaxSize;
-   }
+    /* A floating dockwidget will automatically get its minimumSize set to the layout's
+       minimum size + deco. We're *not* interested in this, we only take minimumSize()
+       into account if the user set it herself. Otherwise we end up expanding the result
+       of a calculation for a non-floating dock widget to a floating dock widget's
+       minimum size + window decorations. */
 
-   if (!(explicitMin & Qt::Horizontal) || min.width() == 0) {
-      min.setWidth(-1);
-   }
+    uint explicitMin = 0;
+    uint explicitMax = 0;
 
-   if (!(explicitMin & Qt::Vertical) || min.height() == 0) {
-      min.setHeight(-1);
-   }
+    if ( w->d_func()->extra != nullptr )
+    {
+        explicitMin = w->d_func()->extra->explicitMinSize;
+        explicitMax = w->d_func()->extra->explicitMaxSize;
+    }
 
-   if (!(explicitMax & Qt::Horizontal)) {
-      max.setWidth(QWIDGETSIZE_MAX);
-   }
+    if ( !( explicitMin & Qt::Horizontal ) || min.width() == 0 )
+    {
+        min.setWidth( -1 );
+    }
 
-   if (!(explicitMax & Qt::Vertical)) {
-      max.setHeight(QWIDGETSIZE_MAX);
-   }
+    if ( !( explicitMin & Qt::Vertical ) || min.height() == 0 )
+    {
+        min.setHeight( -1 );
+    }
 
-   return result.boundedTo(max).expandedTo(min);
+    if ( !( explicitMax & Qt::Horizontal ) )
+    {
+        max.setWidth( QWIDGETSIZE_MAX );
+    }
+
+    if ( !( explicitMax & Qt::Vertical ) )
+    {
+        max.setHeight( QWIDGETSIZE_MAX );
+    }
+
+    return result.boundedTo( max ).expandedTo( min );
 }
 
 QSize QDockWidgetLayout::sizeHint() const
 {
-   QDockWidget *w = qobject_cast<QDockWidget *>(parentWidget());
+    QDockWidget *w = qobject_cast<QDockWidget *>( parentWidget() );
 
-   QSize content(-1, -1);
-   if (item_list[Content] != nullptr) {
-      content = item_list[Content]->sizeHint();
-   }
+    QSize content( -1, -1 );
 
-   return sizeFromContent(content, w->isFloating());
+    if ( item_list[Content] != nullptr )
+    {
+        content = item_list[Content]->sizeHint();
+    }
+
+    return sizeFromContent( content, w->isFloating() );
 }
 
 QSize QDockWidgetLayout::maximumSize() const
 {
-   if (item_list[Content] != nullptr) {
-      const QSize content = item_list[Content]->maximumSize();
-      return sizeFromContent(content, parentWidget()->isWindow());
-   } else {
-      return parentWidget()->maximumSize();
-   }
+    if ( item_list[Content] != nullptr )
+    {
+        const QSize content = item_list[Content]->maximumSize();
+        return sizeFromContent( content, parentWidget()->isWindow() );
+    }
+    else
+    {
+        return parentWidget()->maximumSize();
+    }
 }
 
 QSize QDockWidgetLayout::minimumSize() const
 {
-   QDockWidget *w = qobject_cast<QDockWidget *>(parentWidget());
+    QDockWidget *w = qobject_cast<QDockWidget *>( parentWidget() );
 
-   QSize content(0, 0);
+    QSize content( 0, 0 );
 
-   if (item_list[Content] != nullptr) {
-      content = item_list[Content]->minimumSize();
-   }
+    if ( item_list[Content] != nullptr )
+    {
+        content = item_list[Content]->minimumSize();
+    }
 
-   return sizeFromContent(content, w->isFloating());
+    return sizeFromContent( content, w->isFloating() );
 }
 
-QWidget *QDockWidgetLayout::widgetForRole(Role r) const
+QWidget *QDockWidgetLayout::widgetForRole( Role r ) const
 {
-   QLayoutItem *item = item_list.at(r);
-   return item == nullptr ? nullptr : item->widget();
+    QLayoutItem *item = item_list.at( r );
+    return item == nullptr ? nullptr : item->widget();
 }
 
-QLayoutItem *QDockWidgetLayout::itemForRole(Role r) const
+QLayoutItem *QDockWidgetLayout::itemForRole( Role r ) const
 {
-   return item_list.at(r);
+    return item_list.at( r );
 }
 
-void QDockWidgetLayout::setWidgetForRole(Role r, QWidget *w)
+void QDockWidgetLayout::setWidgetForRole( Role r, QWidget *w )
 {
-   QWidget *old = widgetForRole(r);
-   if (old != nullptr) {
-      old->hide();
-      removeWidget(old);
-   }
+    QWidget *old = widgetForRole( r );
 
-   if (w != nullptr) {
-      addChildWidget(w);
-      item_list[r] = new QWidgetItemV2(w);
-      w->show();
-   } else {
-      item_list[r] = nullptr;
-   }
+    if ( old != nullptr )
+    {
+        old->hide();
+        removeWidget( old );
+    }
 
-   invalidate();
+    if ( w != nullptr )
+    {
+        addChildWidget( w );
+        item_list[r] = new QWidgetItemV2( w );
+        w->show();
+    }
+    else
+    {
+        item_list[r] = nullptr;
+    }
+
+    invalidate();
 }
 
-static inline int pick(bool vertical, const QSize &size)
+static inline int pick( bool vertical, const QSize &size )
 {
-   return vertical ? size.height() : size.width();
+    return vertical ? size.height() : size.width();
 }
 
-static inline int perp(bool vertical, const QSize &size)
+static inline int perp( bool vertical, const QSize &size )
 {
-   return vertical ? size.width() : size.height();
+    return vertical ? size.width() : size.height();
 }
 
 int QDockWidgetLayout::minimumTitleWidth() const
 {
-   QDockWidget *q = qobject_cast<QDockWidget *>(parentWidget());
+    QDockWidget *q = qobject_cast<QDockWidget *>( parentWidget() );
 
-   if (QWidget *title = widgetForRole(TitleBar)) {
-      return pick(verticalTitleBar, title->minimumSizeHint());
-   }
+    if ( QWidget *title = widgetForRole( TitleBar ) )
+    {
+        return pick( verticalTitleBar, title->minimumSizeHint() );
+    }
 
-   QSize closeSize(0, 0);
-   QSize floatSize(0, 0);
-   if (hasFeature(q, QDockWidget::DockWidgetClosable)) {
-      if (QLayoutItem *item = item_list[CloseButton]) {
-         closeSize = item->widget()->sizeHint();
-      }
-   }
-   if (hasFeature(q, QDockWidget::DockWidgetFloatable)) {
-      if (QLayoutItem *item = item_list[FloatButton]) {
-         floatSize = item->widget()->sizeHint();
-      }
-   }
+    QSize closeSize( 0, 0 );
+    QSize floatSize( 0, 0 );
 
-   int titleHeight = this->titleHeight();
+    if ( hasFeature( q, QDockWidget::DockWidgetClosable ) )
+    {
+        if ( QLayoutItem *item = item_list[CloseButton] )
+        {
+            closeSize = item->widget()->sizeHint();
+        }
+    }
 
-   int mw = q->style()->pixelMetric(QStyle::PM_DockWidgetTitleMargin, nullptr, q);
-   int fw = q->style()->pixelMetric(QStyle::PM_DockWidgetFrameWidth, nullptr, q);
+    if ( hasFeature( q, QDockWidget::DockWidgetFloatable ) )
+    {
+        if ( QLayoutItem *item = item_list[FloatButton] )
+        {
+            floatSize = item->widget()->sizeHint();
+        }
+    }
 
-   return pick(verticalTitleBar, closeSize)
-      + pick(verticalTitleBar, floatSize)
-      + titleHeight + 2 * fw + 3 * mw;
+    int titleHeight = this->titleHeight();
+
+    int mw = q->style()->pixelMetric( QStyle::PM_DockWidgetTitleMargin, nullptr, q );
+    int fw = q->style()->pixelMetric( QStyle::PM_DockWidgetFrameWidth, nullptr, q );
+
+    return pick( verticalTitleBar, closeSize )
+           + pick( verticalTitleBar, floatSize )
+           + titleHeight + 2 * fw + 3 * mw;
 }
 
 int QDockWidgetLayout::titleHeight() const
 {
-   QDockWidget *q = qobject_cast<QDockWidget *>(parentWidget());
+    QDockWidget *q = qobject_cast<QDockWidget *>( parentWidget() );
 
-   if (QWidget *title = widgetForRole(TitleBar)) {
-      return perp(verticalTitleBar, title->sizeHint());
-   }
+    if ( QWidget *title = widgetForRole( TitleBar ) )
+    {
+        return perp( verticalTitleBar, title->sizeHint() );
+    }
 
-   QSize closeSize(0, 0);
-   QSize floatSize(0, 0);
-   if (QLayoutItem *item = item_list[CloseButton]) {
-      closeSize = item->widget()->sizeHint();
-   }
-   if (QLayoutItem *item = item_list[FloatButton]) {
-      floatSize = item->widget()->sizeHint();
-   }
+    QSize closeSize( 0, 0 );
+    QSize floatSize( 0, 0 );
 
-   int buttonHeight = qMax(perp(verticalTitleBar, closeSize),
-         perp(verticalTitleBar, floatSize));
+    if ( QLayoutItem *item = item_list[CloseButton] )
+    {
+        closeSize = item->widget()->sizeHint();
+    }
 
-   QFontMetrics titleFontMetrics = q->fontMetrics();
+    if ( QLayoutItem *item = item_list[FloatButton] )
+    {
+        floatSize = item->widget()->sizeHint();
+    }
 
-   int mw = q->style()->pixelMetric(QStyle::PM_DockWidgetTitleMargin, nullptr, q);
+    int buttonHeight = qMax( perp( verticalTitleBar, closeSize ),
+                             perp( verticalTitleBar, floatSize ) );
 
-   return qMax(buttonHeight + 2, titleFontMetrics.height() + 2 * mw);
+    QFontMetrics titleFontMetrics = q->fontMetrics();
+
+    int mw = q->style()->pixelMetric( QStyle::PM_DockWidgetTitleMargin, nullptr, q );
+
+    return qMax( buttonHeight + 2, titleFontMetrics.height() + 2 * mw );
 }
 
-void QDockWidgetLayout::setGeometry(const QRect &geometry)
+void QDockWidgetLayout::setGeometry( const QRect &geometry )
 {
-   QDockWidget *q = qobject_cast<QDockWidget *>(parentWidget());
+    QDockWidget *q = qobject_cast<QDockWidget *>( parentWidget() );
 
-   bool nativeDeco = nativeWindowDeco();
+    bool nativeDeco = nativeWindowDeco();
 
-   int fw = q->isFloating() && !nativeDeco
-      ? q->style()->pixelMetric(QStyle::PM_DockWidgetFrameWidth, nullptr, q)
-      : 0;
+    int fw = q->isFloating() && !nativeDeco
+             ? q->style()->pixelMetric( QStyle::PM_DockWidgetFrameWidth, nullptr, q )
+             : 0;
 
-   if (nativeDeco) {
-      if (QLayoutItem *item = item_list[Content]) {
-         item->setGeometry(geometry);
-      }
-   } else {
-      int titleHeight = this->titleHeight();
+    if ( nativeDeco )
+    {
+        if ( QLayoutItem *item = item_list[Content] )
+        {
+            item->setGeometry( geometry );
+        }
+    }
+    else
+    {
+        int titleHeight = this->titleHeight();
 
-      if (verticalTitleBar) {
-         _titleArea = QRect(QPoint(fw, fw),
-               QSize(titleHeight, geometry.height() - (fw * 2)));
-      } else {
-         _titleArea = QRect(QPoint(fw, fw),
-               QSize(geometry.width() - (fw * 2), titleHeight));
-      }
+        if ( verticalTitleBar )
+        {
+            _titleArea = QRect( QPoint( fw, fw ),
+                                QSize( titleHeight, geometry.height() - ( fw * 2 ) ) );
+        }
+        else
+        {
+            _titleArea = QRect( QPoint( fw, fw ),
+                                QSize( geometry.width() - ( fw * 2 ), titleHeight ) );
+        }
 
-      if (QLayoutItem *item = item_list[TitleBar]) {
-         item->setGeometry(_titleArea);
+        if ( QLayoutItem *item = item_list[TitleBar] )
+        {
+            item->setGeometry( _titleArea );
 
-      } else {
-         QStyleOptionDockWidget opt;
-         q->initStyleOption(&opt);
+        }
+        else
+        {
+            QStyleOptionDockWidget opt;
+            q->initStyleOption( &opt );
 
-         if (QLayoutItem *item = item_list[CloseButton]) {
-            if (!item->isEmpty()) {
-               QRect r = q->style()->subElementRect(QStyle::SE_DockWidgetCloseButton, &opt, q);
+            if ( QLayoutItem *item = item_list[CloseButton] )
+            {
+                if ( !item->isEmpty() )
+                {
+                    QRect r = q->style()->subElementRect( QStyle::SE_DockWidgetCloseButton, &opt, q );
 
-               if (!r.isNull()) {
-                  item->setGeometry(r);
-               }
+                    if ( !r.isNull() )
+                    {
+                        item->setGeometry( r );
+                    }
+                }
             }
-         }
 
-         if (QLayoutItem *item = item_list[FloatButton]) {
-            if (!item->isEmpty()) {
-               QRect r = q->style()->subElementRect(QStyle::SE_DockWidgetFloatButton,&opt, q);
-               if (!r.isNull()) {
-                  item->setGeometry(r);
-               }
+            if ( QLayoutItem *item = item_list[FloatButton] )
+            {
+                if ( !item->isEmpty() )
+                {
+                    QRect r = q->style()->subElementRect( QStyle::SE_DockWidgetFloatButton,&opt, q );
+
+                    if ( !r.isNull() )
+                    {
+                        item->setGeometry( r );
+                    }
+                }
             }
-         }
-      }
+        }
 
-      if (QLayoutItem *item = item_list[Content]) {
-         QRect r = geometry;
-         if (verticalTitleBar) {
-            r.setLeft(_titleArea.right() + 1);
-            r.adjust(0, fw, -fw, -fw);
-         } else {
-            r.setTop(_titleArea.bottom() + 1);
-            r.adjust(fw, 0, -fw, -fw);
-         }
-         item->setGeometry(r);
-      }
-   }
+        if ( QLayoutItem *item = item_list[Content] )
+        {
+            QRect r = geometry;
+
+            if ( verticalTitleBar )
+            {
+                r.setLeft( _titleArea.right() + 1 );
+                r.adjust( 0, fw, -fw, -fw );
+            }
+            else
+            {
+                r.setTop( _titleArea.bottom() + 1 );
+                r.adjust( fw, 0, -fw, -fw );
+            }
+
+            item->setGeometry( r );
+        }
+    }
 }
 
-void QDockWidgetLayout::setVerticalTitleBar(bool b)
+void QDockWidgetLayout::setVerticalTitleBar( bool b )
 {
-   if (b == verticalTitleBar) {
-      return;
-   }
-   verticalTitleBar = b;
-   invalidate();
-   parentWidget()->update();
+    if ( b == verticalTitleBar )
+    {
+        return;
+    }
+
+    verticalTitleBar = b;
+    invalidate();
+    parentWidget()->update();
 }
 
-QDockWidgetItem::QDockWidgetItem(QDockWidget *dockWidget)
-   : QWidgetItem(dockWidget)
+QDockWidgetItem::QDockWidgetItem( QDockWidget *dockWidget )
+    : QWidgetItem( dockWidget )
 {
 }
 
 QSize QDockWidgetItem::minimumSize() const
 {
-   QSize widgetMin(0, 0);
-   if (QLayoutItem *item = dockWidgetChildItem()) {
-      widgetMin = item->minimumSize();
-   }
-   return dockWidgetLayout()->sizeFromContent(widgetMin, false);
+    QSize widgetMin( 0, 0 );
+
+    if ( QLayoutItem *item = dockWidgetChildItem() )
+    {
+        widgetMin = item->minimumSize();
+    }
+
+    return dockWidgetLayout()->sizeFromContent( widgetMin, false );
 }
 
 QSize QDockWidgetItem::maximumSize() const
 {
-   if (QLayoutItem *item = dockWidgetChildItem()) {
-      return dockWidgetLayout()->sizeFromContent(item->maximumSize(), false);
-   } else {
-      return QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-   }
+    if ( QLayoutItem *item = dockWidgetChildItem() )
+    {
+        return dockWidgetLayout()->sizeFromContent( item->maximumSize(), false );
+    }
+    else
+    {
+        return QSize( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+    }
 }
 
 QSize QDockWidgetItem::sizeHint() const
 {
-   if (QLayoutItem *item = dockWidgetChildItem()) {
-      return dockWidgetLayout()->sizeFromContent(item->sizeHint(), false);
-   } else {
-      return QWidgetItem::sizeHint();
-   }
+    if ( QLayoutItem *item = dockWidgetChildItem() )
+    {
+        return dockWidgetLayout()->sizeFromContent( item->sizeHint(), false );
+    }
+    else
+    {
+        return QWidgetItem::sizeHint();
+    }
 }
 
 void QDockWidgetPrivate::init()
 {
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   QDockWidgetLayout *layout = new QDockWidgetLayout(q);
-   layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    QDockWidgetLayout *layout = new QDockWidgetLayout( q );
+    layout->setSizeConstraint( QLayout::SetMinAndMaxSize );
 
-   QAbstractButton *button1 = new QDockWidgetTitleButton(q);
-   button1->setObjectName("qt_dockwidget_floatbutton");
-   layout->setWidgetForRole(QDockWidgetLayout::FloatButton, button1);
+    QAbstractButton *button1 = new QDockWidgetTitleButton( q );
+    button1->setObjectName( "qt_dockwidget_floatbutton" );
+    layout->setWidgetForRole( QDockWidgetLayout::FloatButton, button1 );
 
-   QAbstractButton *button2 = new QDockWidgetTitleButton(q);
-   button2->setObjectName("qt_dockwidget_closebutton");
-   layout->setWidgetForRole(QDockWidgetLayout::CloseButton, button2);
+    QAbstractButton *button2 = new QDockWidgetTitleButton( q );
+    button2->setObjectName( "qt_dockwidget_closebutton" );
+    layout->setWidgetForRole( QDockWidgetLayout::CloseButton, button2 );
 
-   QObject::connect(button1, &QAbstractButton::clicked, q, &QDockWidget::_q_toggleTopLevel);
-   QObject::connect(button2, &QAbstractButton::clicked, q, &QDockWidget::close);
+    QObject::connect( button1, &QAbstractButton::clicked, q, &QDockWidget::_q_toggleTopLevel );
+    QObject::connect( button2, &QAbstractButton::clicked, q, &QDockWidget::close );
 
 #ifndef QT_NO_ACTION
-   toggleViewAction = new QAction(q);
-   toggleViewAction->setCheckable(true);
+    toggleViewAction = new QAction( q );
+    toggleViewAction->setCheckable( true );
 
-   fixedWindowTitle = cs_internal_parseWindowTitle(q->windowTitle(), q);
-   toggleViewAction->setText(fixedWindowTitle);
+    fixedWindowTitle = lscs_internal_parseWindowTitle( q->windowTitle(), q );
+    toggleViewAction->setText( fixedWindowTitle );
 
-   QObject::connect(toggleViewAction, &QAction::triggered, q, &QDockWidget::_q_toggleView);
+    QObject::connect( toggleViewAction, &QAction::triggered, q, &QDockWidget::_q_toggleView );
 #endif
 
-   updateButtons();
+    updateButtons();
 }
 
-void QDockWidget::initStyleOption(QStyleOptionDockWidget *option) const
+void QDockWidget::initStyleOption( QStyleOptionDockWidget *option ) const
 {
-   Q_D(const QDockWidget);
+    Q_D( const QDockWidget );
 
-   if (! option) {
-      return;
-   }
+    if ( ! option )
+    {
+        return;
+    }
 
-   QDockWidgetLayout *dwlayout = qobject_cast<QDockWidgetLayout *>(layout());
+    QDockWidgetLayout *dwlayout = qobject_cast<QDockWidgetLayout *>( layout() );
 
-   QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>(parent());
+    QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>( parent() );
 
-   // If we are in a floating tab, init from the parent because the attributes and the geometry
-   // of the title bar should be taken from the floating window.
-   option->initFrom(floatingTab && !isFloating() ? parentWidget() : this);
-   option->rect  = dwlayout->titleArea();
-   option->title = d->fixedWindowTitle;
+    // If we are in a floating tab, init from the parent because the attributes and the geometry
+    // of the title bar should be taken from the floating window.
+    option->initFrom( floatingTab && !isFloating() ? parentWidget() : this );
+    option->rect  = dwlayout->titleArea();
+    option->title = d->fixedWindowTitle;
 
-   option->closable  = hasFeature(this, QDockWidget::DockWidgetClosable);
-   option->movable   = hasFeature(this, QDockWidget::DockWidgetMovable);
-   option->floatable = hasFeature(this, QDockWidget::DockWidgetFloatable);
+    option->closable  = hasFeature( this, QDockWidget::DockWidgetClosable );
+    option->movable   = hasFeature( this, QDockWidget::DockWidgetMovable );
+    option->floatable = hasFeature( this, QDockWidget::DockWidgetFloatable );
 
-   QDockWidgetLayout *l = qobject_cast<QDockWidgetLayout *>(layout());
-   option->verticalTitleBar = l->verticalTitleBar;
+    QDockWidgetLayout *l = qobject_cast<QDockWidgetLayout *>( layout() );
+    option->verticalTitleBar = l->verticalTitleBar;
 }
 
-void QDockWidgetPrivate::_q_toggleView(bool b)
+void QDockWidgetPrivate::_q_toggleView( bool b )
 {
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   if (b == q->isHidden()) {
-      if (b) {
-         q->show();
-      } else {
-         q->close();
-      }
-   }
+    if ( b == q->isHidden() )
+    {
+        if ( b )
+        {
+            q->show();
+        }
+        else
+        {
+            q->close();
+        }
+    }
 }
 
 void QDockWidgetPrivate::updateButtons()
 {
-   Q_Q(QDockWidget);
-   QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>(layout);
+    Q_Q( QDockWidget );
+    QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>( layout );
 
-   QStyleOptionDockWidget opt;
-   q->initStyleOption(&opt);
+    QStyleOptionDockWidget opt;
+    q->initStyleOption( &opt );
 
-   bool customTitleBar = dwLayout->widgetForRole(QDockWidgetLayout::TitleBar) != nullptr;
-   bool nativeDeco = dwLayout->nativeWindowDeco();
-   bool hideButtons = nativeDeco || customTitleBar;
+    bool customTitleBar = dwLayout->widgetForRole( QDockWidgetLayout::TitleBar ) != nullptr;
+    bool nativeDeco = dwLayout->nativeWindowDeco();
+    bool hideButtons = nativeDeco || customTitleBar;
 
-   bool canClose = hasFeature(this, QDockWidget::DockWidgetClosable);
-   bool canFloat = hasFeature(this, QDockWidget::DockWidgetFloatable);
+    bool canClose = hasFeature( this, QDockWidget::DockWidgetClosable );
+    bool canFloat = hasFeature( this, QDockWidget::DockWidgetFloatable );
 
-   QAbstractButton *button
-      = qobject_cast<QAbstractButton *>(dwLayout->widgetForRole(QDockWidgetLayout::FloatButton));
-   button->setIcon(q->style()->standardIcon(QStyle::SP_TitleBarNormalButton, &opt, q));
-   button->setVisible(canFloat && !hideButtons);
-
-#ifndef QT_NO_ACCESSIBILITY
-   //: Accessible name for button undocking a dock widget (floating state)
-   button->setAccessibleName(QDockWidget::tr("Float"));
-   button->setAccessibleDescription(QDockWidget::tr("Undocks and re-attaches the dock widget"));
-#endif
-
-   button = qobject_cast <QAbstractButton *>(dwLayout->widgetForRole(QDockWidgetLayout::CloseButton));
-   button->setIcon(q->style()->standardIcon(QStyle::SP_TitleBarCloseButton, &opt, q));
-   button->setVisible(canClose && !hideButtons);
+    QAbstractButton *button
+        = qobject_cast<QAbstractButton *>( dwLayout->widgetForRole( QDockWidgetLayout::FloatButton ) );
+    button->setIcon( q->style()->standardIcon( QStyle::SP_TitleBarNormalButton, &opt, q ) );
+    button->setVisible( canFloat && !hideButtons );
 
 #ifndef QT_NO_ACCESSIBILITY
-   //: Accessible name for button closing a dock widget
-   button->setAccessibleName(QDockWidget::tr("Close"));
-   button->setAccessibleDescription(QDockWidget::tr("Closes the dock widget"));
+    //: Accessible name for button undocking a dock widget (floating state)
+    button->setAccessibleName( QDockWidget::tr( "Float" ) );
+    button->setAccessibleDescription( QDockWidget::tr( "Undocks and re-attaches the dock widget" ) );
 #endif
 
-   q->setAttribute(Qt::WA_ContentsPropagated, (canFloat || canClose) && !hideButtons);
-   layout->invalidate();
+    button = qobject_cast <QAbstractButton *>( dwLayout->widgetForRole( QDockWidgetLayout::CloseButton ) );
+    button->setIcon( q->style()->standardIcon( QStyle::SP_TitleBarCloseButton, &opt, q ) );
+    button->setVisible( canClose && !hideButtons );
+
+#ifndef QT_NO_ACCESSIBILITY
+    //: Accessible name for button closing a dock widget
+    button->setAccessibleName( QDockWidget::tr( "Close" ) );
+    button->setAccessibleDescription( QDockWidget::tr( "Closes the dock widget" ) );
+#endif
+
+    q->setAttribute( Qt::WA_ContentsPropagated, ( canFloat || canClose ) && !hideButtons );
+    layout->invalidate();
 }
 
 void QDockWidgetPrivate::_q_toggleTopLevel()
 {
-   Q_Q(QDockWidget);
-   q->setFloating(!q->isFloating());
+    Q_Q( QDockWidget );
+    q->setFloating( !q->isFloating() );
 }
 
-void QDockWidgetPrivate::initDrag(const QPoint &pos, bool nca)
+void QDockWidgetPrivate::initDrag( const QPoint &pos, bool nca )
 {
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   if (state != nullptr) {
-      return;
-   }
+    if ( state != nullptr )
+    {
+        return;
+    }
 
-   QMainWindowLayout *layout = qt_mainwindow_layout_from_dock(q);
-   Q_ASSERT(layout != nullptr);
+    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( q );
+    Q_ASSERT( layout != nullptr );
 
-   if (layout->pluggingWidget != nullptr) {
-      // the main window is animating a docking operation
-      return;
-   }
+    if ( layout->pluggingWidget != nullptr )
+    {
+        // the main window is animating a docking operation
+        return;
+    }
 
-   state = new QDockWidgetPrivate::DragState;
-   state->pressPos = pos;
-   state->dragging = false;
-   state->widgetItem = nullptr;
-   state->ownWidgetItem = false;
-   state->nca = nca;
-   state->ctrlDrag = false;
+    state = new QDockWidgetPrivate::DragState;
+    state->pressPos = pos;
+    state->dragging = false;
+    state->widgetItem = nullptr;
+    state->ownWidgetItem = false;
+    state->nca = nca;
+    state->ctrlDrag = false;
 }
 
-void QDockWidgetPrivate::startDrag(bool group)
+void QDockWidgetPrivate::startDrag( bool group )
 {
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   if (state == nullptr || state->dragging) {
-      return;
-   }
+    if ( state == nullptr || state->dragging )
+    {
+        return;
+    }
 
-   QMainWindowLayout *layout = qt_mainwindow_layout_from_dock(q);
-   Q_ASSERT(layout != nullptr);
+    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( q );
+    Q_ASSERT( layout != nullptr );
 
-   state->widgetItem = layout->unplug(q, group);
+    state->widgetItem = layout->unplug( q, group );
 
-   if (state->widgetItem == nullptr) {
+    if ( state->widgetItem == nullptr )
+    {
 
-      QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>(q->parent());
+        QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>( q->parent() );
 
-      if (floatingTab && !q->isFloating()) {
-         state->widgetItem = new QDockWidgetGroupWindowItem(floatingTab);
-      } else {
-         state->widgetItem = new QDockWidgetItem(q);
-      }
+        if ( floatingTab && !q->isFloating() )
+        {
+            state->widgetItem = new QDockWidgetGroupWindowItem( floatingTab );
+        }
+        else
+        {
+            state->widgetItem = new QDockWidgetItem( q );
+        }
 
-      state->ownWidgetItem = true;
-   }
+        state->ownWidgetItem = true;
+    }
 
-   if (state->ctrlDrag) {
-      layout->restore();
-   }
+    if ( state->ctrlDrag )
+    {
+        layout->restore();
+    }
 
-   state->dragging = true;
+    state->dragging = true;
 }
 
-void QDockWidgetPrivate::endDrag(bool abort)
+void QDockWidgetPrivate::endDrag( bool abort )
 {
-   Q_Q(QDockWidget);
-   Q_ASSERT(state != nullptr);
+    Q_Q( QDockWidget );
+    Q_ASSERT( state != nullptr );
 
-   q->releaseMouse();
+    q->releaseMouse();
 
-   if (state->dragging) {
-      QMainWindowLayout *mwLayout = qt_mainwindow_layout_from_dock(q);
-      Q_ASSERT(mwLayout != nullptr);
+    if ( state->dragging )
+    {
+        QMainWindowLayout *mwLayout = qt_mainwindow_layout_from_dock( q );
+        Q_ASSERT( mwLayout != nullptr );
 
-      if (abort || !mwLayout->plug(state->widgetItem)) {
-         if (hasFeature(this, QDockWidget::DockWidgetFloatable)) {
-            if (state->ownWidgetItem) {
-               delete state->widgetItem;
-               state->widgetItem = nullptr;
+        if ( abort || !mwLayout->plug( state->widgetItem ) )
+        {
+            if ( hasFeature( this, QDockWidget::DockWidgetFloatable ) )
+            {
+                if ( state->ownWidgetItem )
+                {
+                    delete state->widgetItem;
+                    state->widgetItem = nullptr;
+                }
+
+                mwLayout->restore();
+
+                QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>( layout );
+
+                if ( !dwLayout->nativeWindowDeco() )
+                {
+                    // get rid of the X11BypassWindowManager window flag and activate the resizer
+                    Qt::WindowFlags flags = q->windowFlags();
+                    flags &= ~Qt::X11BypassWindowManagerHint;
+                    q->setWindowFlags( flags );
+                    setResizerActive( q->isFloating() );
+                    q->show();
+                }
+                else
+                {
+                    setResizerActive( false );
+                }
+
+                if ( q->isFloating() ) // Might not be floating when dragging a QDockWidgetGroupWindow
+                {
+                    undockedGeometry = q->geometry();
+                }
+
+                q->activateWindow();
             }
-
-            mwLayout->restore();
-
-            QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>(layout);
-
-            if (!dwLayout->nativeWindowDeco()) {
-               // get rid of the X11BypassWindowManager window flag and activate the resizer
-               Qt::WindowFlags flags = q->windowFlags();
-               flags &= ~Qt::X11BypassWindowManagerHint;
-               q->setWindowFlags(flags);
-               setResizerActive(q->isFloating());
-               q->show();
-            } else {
-               setResizerActive(false);
+            else
+            {
+                mwLayout->revert( state->widgetItem );
             }
-            if (q->isFloating()) { // Might not be floating when dragging a QDockWidgetGroupWindow
-               undockedGeometry = q->geometry();
-            }
-            q->activateWindow();
-         } else {
-            mwLayout->revert(state->widgetItem);
-         }
-      }
-   }
+        }
+    }
 
-   delete state;
-   state = nullptr;
+    delete state;
+    state = nullptr;
 }
 
-void QDockWidgetPrivate::setResizerActive(bool active)
+void QDockWidgetPrivate::setResizerActive( bool active )
 {
-   Q_Q(QDockWidget);
-   if (active && !resizer) {
-      resizer = new QWidgetResizeHandler(q);
-      resizer->setMovingEnabled(false);
-   }
-   if (resizer) {
-      resizer->setActive(QWidgetResizeHandler::Resize, active);
-   }
+    Q_Q( QDockWidget );
+
+    if ( active && !resizer )
+    {
+        resizer = new QWidgetResizeHandler( q );
+        resizer->setMovingEnabled( false );
+    }
+
+    if ( resizer )
+    {
+        resizer->setActive( QWidgetResizeHandler::Resize, active );
+    }
 }
 
 bool QDockWidgetPrivate::isAnimating() const
 {
-   Q_Q(const QDockWidget);
+    Q_Q( const QDockWidget );
 
-   QMainWindowLayout *mainWinLayout = qt_mainwindow_layout_from_dock(q);
+    QMainWindowLayout *mainWinLayout = qt_mainwindow_layout_from_dock( q );
 
-   if (mainWinLayout == nullptr) {
-      return false;
-   }
+    if ( mainWinLayout == nullptr )
+    {
+        return false;
+    }
 
-   return (const void *)mainWinLayout->pluggingWidget == (const void *)q;
+    return ( const void * )mainWinLayout->pluggingWidget == ( const void * )q;
 }
 
-bool QDockWidgetPrivate::mousePressEvent(QMouseEvent *event)
+bool QDockWidgetPrivate::mousePressEvent( QMouseEvent *event )
 {
 #if !defined(QT_NO_MAINWINDOW)
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>(layout);
+    QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>( layout );
 
-   if (!dwLayout->nativeWindowDeco()) {
-      QRect titleArea = dwLayout->titleArea();
+    if ( !dwLayout->nativeWindowDeco() )
+    {
+        QRect titleArea = dwLayout->titleArea();
 
-      QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>(q->parent());
+        QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>( q->parent() );
 
-      // check if the tool window is movable... do nothing if it
-      // is not (but allow moving if the window is floating)
+        // check if the tool window is movable... do nothing if it
+        // is not (but allow moving if the window is floating)
 
-      if (event->button() != Qt::LeftButton ||
-            ! titleArea.contains(event->pos()) ||
-            (! hasFeature(this, QDockWidget::DockWidgetMovable) && ! q->isFloating()) ||
-            (qobject_cast<QMainWindow *>(q->parent()) == nullptr && ! floatingTab) || isAnimating() || state != nullptr) {
-         return false;
-      }
+        if ( event->button() != Qt::LeftButton ||
+                ! titleArea.contains( event->pos() ) ||
+                ( ! hasFeature( this, QDockWidget::DockWidgetMovable ) && ! q->isFloating() ) ||
+                ( qobject_cast<QMainWindow *>( q->parent() ) == nullptr && ! floatingTab ) || isAnimating() || state != nullptr )
+        {
+            return false;
+        }
 
-      initDrag(event->pos(), false);
+        initDrag( event->pos(), false );
 
-      if (state) {
-         state->ctrlDrag = hasFeature(this, QDockWidget::DockWidgetFloatable) && event->modifiers() & Qt::ControlModifier;
-      }
+        if ( state )
+        {
+            state->ctrlDrag = hasFeature( this, QDockWidget::DockWidgetFloatable ) && event->modifiers() & Qt::ControlModifier;
+        }
 
-      return true;
-   }
+        return true;
+    }
 
 #endif // !defined(QT_NO_MAINWINDOW)
-   return false;
+    return false;
 }
 
-bool QDockWidgetPrivate::mouseDoubleClickEvent(QMouseEvent *event)
+bool QDockWidgetPrivate::mouseDoubleClickEvent( QMouseEvent *event )
 {
-   QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>(layout);
+    QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>( layout );
 
-   if (!dwLayout->nativeWindowDeco()) {
-      QRect titleArea = dwLayout->titleArea();
+    if ( !dwLayout->nativeWindowDeco() )
+    {
+        QRect titleArea = dwLayout->titleArea();
 
-      if (event->button() == Qt::LeftButton && titleArea.contains(event->pos()) &&
-         hasFeature(this, QDockWidget::DockWidgetFloatable)) {
-         _q_toggleTopLevel();
-         return true;
-      }
-   }
-   return false;
+        if ( event->button() == Qt::LeftButton && titleArea.contains( event->pos() ) &&
+                hasFeature( this, QDockWidget::DockWidgetFloatable ) )
+        {
+            _q_toggleTopLevel();
+            return true;
+        }
+    }
+
+    return false;
 }
 
-bool QDockWidgetPrivate::mouseMoveEvent(QMouseEvent *event)
+bool QDockWidgetPrivate::mouseMoveEvent( QMouseEvent *event )
 {
-   bool ret = false;
+    bool ret = false;
 
 #if ! defined(QT_NO_MAINWINDOW)
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   if (!state) {
-      return ret;
-   }
+    if ( !state )
+    {
+        return ret;
+    }
 
-   QDockWidgetLayout *dwlayout = qobject_cast<QDockWidgetLayout *>(layout);
-   QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock(q);
+    QDockWidgetLayout *dwlayout = qobject_cast<QDockWidgetLayout *>( layout );
+    QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock( q );
 
-   if (! dwlayout->nativeWindowDeco()) {
-      if (! state->dragging && mwlayout->pluggingWidget == nullptr
-         && (event->pos() - state->pressPos).manhattanLength() > QApplication::startDragDistance()) {
-         startDrag();
+    if ( ! dwlayout->nativeWindowDeco() )
+    {
+        if ( ! state->dragging && mwlayout->pluggingWidget == nullptr
+                && ( event->pos() - state->pressPos ).manhattanLength() > QApplication::startDragDistance() )
+        {
+            startDrag();
 
 
-         q->grabMouse();
+            q->grabMouse();
 
-         ret = true;
-      }
-   }
+            ret = true;
+        }
+    }
 
-   if (state->dragging && !state->nca) {
-      QPoint pos = event->globalPos() - state->pressPos;
-      QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>(q->parent());
+    if ( state->dragging && !state->nca )
+    {
+        QPoint pos = event->globalPos() - state->pressPos;
+        QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>( q->parent() );
 
-      if (floatingTab && !q->isFloating()) {
-         floatingTab->move(pos);
-      } else {
-         q->move(pos);
-      }
+        if ( floatingTab && !q->isFloating() )
+        {
+            floatingTab->move( pos );
+        }
+        else
+        {
+            q->move( pos );
+        }
 
-      if (state && !state->ctrlDrag) {
-         mwlayout->hover(state->widgetItem, event->globalPos());
-      }
+        if ( state && !state->ctrlDrag )
+        {
+            mwlayout->hover( state->widgetItem, event->globalPos() );
+        }
 
-      ret = true;
-   }
+        ret = true;
+    }
+
 #endif // !defined(QT_NO_MAINWINDOW)
 
-   return ret;
+    return ret;
 }
 
-bool QDockWidgetPrivate::mouseReleaseEvent(QMouseEvent *event)
+bool QDockWidgetPrivate::mouseReleaseEvent( QMouseEvent *event )
 {
 #if !defined(QT_NO_MAINWINDOW)
 
-   if (event->button() == Qt::LeftButton && state && !state->nca) {
-      endDrag();
-      return true; //filter out the event
-   }
+    if ( event->button() == Qt::LeftButton && state && !state->nca )
+    {
+        endDrag();
+        return true; //filter out the event
+    }
 
 #endif
-   return false;
+    return false;
 }
 
-void QDockWidgetPrivate::nonClientAreaMouseEvent(QMouseEvent *event)
+void QDockWidgetPrivate::nonClientAreaMouseEvent( QMouseEvent *event )
 {
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   int fw = q->style()->pixelMetric(QStyle::PM_DockWidgetFrameWidth, nullptr, q);
+    int fw = q->style()->pixelMetric( QStyle::PM_DockWidgetFrameWidth, nullptr, q );
 
-   QWidget *tl     = q->topLevelWidget();
-   QRect geo       = tl->geometry();
-   QRect titleRect = tl->frameGeometry();
+    QWidget *tl     = q->topLevelWidget();
+    QRect geo       = tl->geometry();
+    QRect titleRect = tl->frameGeometry();
 
-   titleRect.setLeft(geo.left());
-   titleRect.setRight(geo.right());
-   titleRect.setBottom(geo.top() - 1);
-   titleRect.adjust(0, fw, 0, 0);
+    titleRect.setLeft( geo.left() );
+    titleRect.setRight( geo.right() );
+    titleRect.setBottom( geo.top() - 1 );
+    titleRect.adjust( 0, fw, 0, 0 );
 
-   switch (event->type()) {
-      case QEvent::NonClientAreaMouseButtonPress:
-         if (!titleRect.contains(event->globalPos())) {
+    switch ( event->type() )
+    {
+        case QEvent::NonClientAreaMouseButtonPress:
+            if ( !titleRect.contains( event->globalPos() ) )
+            {
+                break;
+            }
+
+            if ( state != nullptr )
+            {
+                break;
+            }
+
+            if ( qobject_cast<QMainWindow *>( q->parent() ) == nullptr &&
+                    qobject_cast<QDockWidgetGroupWindow *>( q->parent() ) == nullptr )
+            {
+                break;
+            }
+
+            if ( isAnimating() )
+            {
+                break;
+            }
+
+            initDrag( event->pos(), true );
+
+            if ( state == nullptr )
+            {
+                break;
+            }
+
+            state->ctrlDrag = event->modifiers() & Qt::ControlModifier;
+
+            startDrag();
             break;
-         }
 
-         if (state != nullptr) {
-            break;
-         }
-
-         if (qobject_cast<QMainWindow *>(q->parent()) == nullptr &&
-                  qobject_cast<QDockWidgetGroupWindow *>(q->parent()) == nullptr) {
-            break;
-         }
-
-         if (isAnimating()) {
-            break;
-         }
-
-         initDrag(event->pos(), true);
-         if (state == nullptr) {
-            break;
-         }
-
-         state->ctrlDrag = event->modifiers() & Qt::ControlModifier;
-
-         startDrag();
-         break;
-
-      case QEvent::NonClientAreaMouseMove:
-         if (state == nullptr || ! state->dragging) {
-            break;
-         }
+        case QEvent::NonClientAreaMouseMove:
+            if ( state == nullptr || ! state->dragging )
+            {
+                break;
+            }
 
 #ifndef Q_OS_DARWIN
-         if (state->nca) {
-            endDrag();
-         }
+
+            if ( state->nca )
+            {
+                endDrag();
+            }
+
 #endif
-         break;
-      case QEvent::NonClientAreaMouseButtonRelease:
+            break;
+
+        case QEvent::NonClientAreaMouseButtonRelease:
 
 #ifdef Q_OS_DARWIN
-         if (state) {
-            endDrag();
-         }
+            if ( state )
+            {
+                endDrag();
+            }
+
 #endif
-         break;
+            break;
 
-      case QEvent::NonClientAreaMouseButtonDblClick:
-         _q_toggleTopLevel();
-         break;
+        case QEvent::NonClientAreaMouseButtonDblClick:
+            _q_toggleTopLevel();
+            break;
 
-      default:
-         break;
-   }
+        default:
+            break;
+    }
 }
 
-void QDockWidgetPrivate::moveEvent(QMoveEvent *event)
+void QDockWidgetPrivate::moveEvent( QMoveEvent *event )
 {
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   if (state == nullptr || !state->dragging || !state->nca) {
-      return;
-   }
+    if ( state == nullptr || !state->dragging || !state->nca )
+    {
+        return;
+    }
 
-   if (! q->isWindow() && qobject_cast<QDockWidgetGroupWindow *>(q->parent()) == nullptr) {
-      return;
-   }
+    if ( ! q->isWindow() && qobject_cast<QDockWidgetGroupWindow *>( q->parent() ) == nullptr )
+    {
+        return;
+    }
 
-   // When the native window frame is being dragged, all we get is these mouse  move events
-   if (state->ctrlDrag) {
-      return;
-   }
+    // When the native window frame is being dragged, all we get is these mouse  move events
+    if ( state->ctrlDrag )
+    {
+        return;
+    }
 
-   QMainWindowLayout *layout = qt_mainwindow_layout_from_dock(q);
-   Q_ASSERT(layout != nullptr);
+    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( q );
+    Q_ASSERT( layout != nullptr );
 
-   QPoint globalMousePos = event->pos() + state->pressPos;
-   layout->hover(state->widgetItem, globalMousePos);
+    QPoint globalMousePos = event->pos() + state->pressPos;
+    layout->hover( state->widgetItem, globalMousePos );
 }
 
-void QDockWidgetPrivate::unplug(const QRect &rect)
+void QDockWidgetPrivate::unplug( const QRect &rect )
 {
-   Q_Q(QDockWidget);
-   QRect r = rect;
+    Q_Q( QDockWidget );
+    QRect r = rect;
 
-   r.moveTopLeft(q->mapToGlobal(QPoint(0, 0)));
-   QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>(layout);
+    r.moveTopLeft( q->mapToGlobal( QPoint( 0, 0 ) ) );
+    QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>( layout );
 
-   if (dwLayout->nativeWindowDeco(true)) {
-      r.adjust(0, dwLayout->titleHeight(), 0, 0);
-   }
+    if ( dwLayout->nativeWindowDeco( true ) )
+    {
+        r.adjust( 0, dwLayout->titleHeight(), 0, 0 );
+    }
 
-   setWindowState(true, true, r);
+    setWindowState( true, true, r );
 }
 
-void QDockWidgetPrivate::plug(const QRect &rect)
+void QDockWidgetPrivate::plug( const QRect &rect )
 {
-   setWindowState(false, false, rect);
+    setWindowState( false, false, rect );
 }
 
-void QDockWidgetPrivate::setWindowState(bool floating, bool unplug, const QRect &rect)
+void QDockWidgetPrivate::setWindowState( bool floating, bool unplug, const QRect &rect )
 {
-   Q_Q(QDockWidget);
+    Q_Q( QDockWidget );
 
-   if (! floating && q->parent()) {
-      QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock(q);
+    if ( ! floating && q->parent() )
+    {
+        QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock( q );
 
-      if (mwlayout && mwlayout->dockWidgetArea(q) == Qt::NoDockWidgetArea
-         && ! qobject_cast<QDockWidgetGroupWindow *>(q->parent())) {
-         return;   // this dockwidget can't be redocked
-      }
-   }
+        if ( mwlayout && mwlayout->dockWidgetArea( q ) == Qt::NoDockWidgetArea
+                && ! qobject_cast<QDockWidgetGroupWindow *>( q->parent() ) )
+        {
+            return;   // this dockwidget can't be redocked
+        }
+    }
 
-   bool wasFloating = q->isFloating();
+    bool wasFloating = q->isFloating();
 
-   if (wasFloating) { // Prevent repetitive unplugging from nested invocations (QTBUG-42818)
-      unplug = false;
-   }
+    if ( wasFloating ) // Prevent repetitive unplugging from nested invocations (QTBUG-42818)
+    {
+        unplug = false;
+    }
 
-   bool hidden = q->isHidden();
+    bool hidden = q->isHidden();
 
-   if (q->isVisible()) {
-      q->hide();
-   }
+    if ( q->isVisible() )
+    {
+        q->hide();
+    }
 
-   Qt::WindowFlags flags = floating ? Qt::Tool : Qt::Widget;
+    Qt::WindowFlags flags = floating ? Qt::Tool : Qt::Widget;
 
-   QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>(layout);
-   const bool nativeDeco = dwLayout->nativeWindowDeco(floating);
+    QDockWidgetLayout *dwLayout = qobject_cast<QDockWidgetLayout *>( layout );
+    const bool nativeDeco = dwLayout->nativeWindowDeco( floating );
 
-   if (nativeDeco) {
-      flags |= Qt::CustomizeWindowHint | Qt::WindowTitleHint;
-      if (hasFeature(this, QDockWidget::DockWidgetClosable)) {
-         flags |= Qt::WindowCloseButtonHint;
-      }
-   } else {
-      flags |= Qt::FramelessWindowHint;
-   }
+    if ( nativeDeco )
+    {
+        flags |= Qt::CustomizeWindowHint | Qt::WindowTitleHint;
 
-   if (unplug) {
-      flags |= Qt::X11BypassWindowManagerHint;
-   }
+        if ( hasFeature( this, QDockWidget::DockWidgetClosable ) )
+        {
+            flags |= Qt::WindowCloseButtonHint;
+        }
+    }
+    else
+    {
+        flags |= Qt::FramelessWindowHint;
+    }
 
-   q->setWindowFlags(flags);
+    if ( unplug )
+    {
+        flags |= Qt::X11BypassWindowManagerHint;
+    }
 
-   if (!rect.isNull()) {
-      q->setGeometry(rect);
-   }
+    q->setWindowFlags( flags );
 
-   updateButtons();
+    if ( !rect.isNull() )
+    {
+        q->setGeometry( rect );
+    }
 
-   if (! hidden) {
-      q->show();
-   }
+    updateButtons();
 
-   if (floating != wasFloating) {
-      emit q->topLevelChanged(floating);
+    if ( ! hidden )
+    {
+        q->show();
+    }
 
-      if (! floating && q->parent()) {
-         QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock(q);
+    if ( floating != wasFloating )
+    {
+        emit q->topLevelChanged( floating );
 
-         if (mwlayout) {
-            emit q->dockLocationChanged(mwlayout->dockWidgetArea(q));
-         }
-      }
-   }
+        if ( ! floating && q->parent() )
+        {
+            QMainWindowLayout *mwlayout = qt_mainwindow_layout_from_dock( q );
 
-   setResizerActive(!unplug && floating && !nativeDeco);
+            if ( mwlayout )
+            {
+                emit q->dockLocationChanged( mwlayout->dockWidgetArea( q ) );
+            }
+        }
+    }
+
+    setResizerActive( !unplug && floating && !nativeDeco );
 }
 
-QDockWidget::QDockWidget(QWidget *parent, Qt::WindowFlags flags)
-   : QWidget(*new QDockWidgetPrivate, parent, flags)
+QDockWidget::QDockWidget( QWidget *parent, Qt::WindowFlags flags )
+    : QWidget( *new QDockWidgetPrivate, parent, flags )
 {
-   Q_D(QDockWidget);
-   d->init();
+    Q_D( QDockWidget );
+    d->init();
 }
 
-QDockWidget::QDockWidget(const QString &title, QWidget *parent, Qt::WindowFlags flags)
-   : QWidget(*new QDockWidgetPrivate, parent, flags)
+QDockWidget::QDockWidget( const QString &title, QWidget *parent, Qt::WindowFlags flags )
+    : QWidget( *new QDockWidgetPrivate, parent, flags )
 {
-   Q_D(QDockWidget);
-   d->init();
-   setWindowTitle(title);
+    Q_D( QDockWidget );
+    d->init();
+    setWindowTitle( title );
 }
 
 QDockWidget::~QDockWidget()
@@ -1160,317 +1340,374 @@ QDockWidget::~QDockWidget()
 
 QWidget *QDockWidget::widget() const
 {
-   QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>(this->layout());
-   return layout->widgetForRole(QDockWidgetLayout::Content);
+    QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>( this->layout() );
+    return layout->widgetForRole( QDockWidgetLayout::Content );
 }
 
-void QDockWidget::setWidget(QWidget *widget)
+void QDockWidget::setWidget( QWidget *widget )
 {
-   QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>(this->layout());
-   layout->setWidgetForRole(QDockWidgetLayout::Content, widget);
+    QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>( this->layout() );
+    layout->setWidgetForRole( QDockWidgetLayout::Content, widget );
 }
 
-void QDockWidget::setFeatures(QDockWidget::DockWidgetFeatures features)
+void QDockWidget::setFeatures( QDockWidget::DockWidgetFeatures features )
 {
-   Q_D(QDockWidget);
+    Q_D( QDockWidget );
 
-   features &= DockWidgetFeatureMask;
-   if (d->features == features) {
-      return;
-   }
+    features &= DockWidgetFeatureMask;
 
-   const bool closableChanged = (d->features ^ features) & DockWidgetClosable;
-   d->features = features;
-   QDockWidgetLayout *layout
-      = qobject_cast<QDockWidgetLayout *>(this->layout());
-   layout->setVerticalTitleBar(features & DockWidgetVerticalTitleBar);
-   d->updateButtons();
-   d->toggleViewAction->setEnabled((d->features & DockWidgetClosable) == DockWidgetClosable);
-   emit featuresChanged(d->features);
-   update();
+    if ( d->features == features )
+    {
+        return;
+    }
 
-   if (closableChanged && layout->nativeWindowDeco()) {
-      QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>(parent());
+    const bool closableChanged = ( d->features ^ features ) & DockWidgetClosable;
+    d->features = features;
+    QDockWidgetLayout *layout
+        = qobject_cast<QDockWidgetLayout *>( this->layout() );
+    layout->setVerticalTitleBar( features & DockWidgetVerticalTitleBar );
+    d->updateButtons();
+    d->toggleViewAction->setEnabled( ( d->features & DockWidgetClosable ) == DockWidgetClosable );
+    emit featuresChanged( d->features );
+    update();
 
-      if (floatingTab && !isFloating()) {
-         floatingTab->adjustFlags();
-      } else {
-         d->setWindowState(true /*floating*/, true /*unplug*/);
-      }
-   }
+    if ( closableChanged && layout->nativeWindowDeco() )
+    {
+        QDockWidgetGroupWindow *floatingTab = qobject_cast<QDockWidgetGroupWindow *>( parent() );
+
+        if ( floatingTab && !isFloating() )
+        {
+            floatingTab->adjustFlags();
+        }
+        else
+        {
+            d->setWindowState( true /*floating*/, true /*unplug*/ );
+        }
+    }
 }
 
 QDockWidget::DockWidgetFeatures QDockWidget::features() const
 {
-   Q_D(const QDockWidget);
-   return d->features;
+    Q_D( const QDockWidget );
+    return d->features;
 }
 
 
-void QDockWidget::setFloating(bool floating)
+void QDockWidget::setFloating( bool floating )
 {
-   Q_D(QDockWidget);
+    Q_D( QDockWidget );
 
-   // the initial click of a double-click may have started a drag...
-   if (d->state != nullptr) {
-      d->endDrag(true);
-   }
+    // the initial click of a double-click may have started a drag...
+    if ( d->state != nullptr )
+    {
+        d->endDrag( true );
+    }
 
-   QRect r = d->undockedGeometry;
-   // Keep position when undocking for the first time.
-   if (floating && isVisible() && !r.isValid()) {
-      r = QRect(mapToGlobal(QPoint(0, 0)), size());
-   }
+    QRect r = d->undockedGeometry;
 
-   d->setWindowState(floating, false, floating ? r : QRect());
+    // Keep position when undocking for the first time.
+    if ( floating && isVisible() && !r.isValid() )
+    {
+        r = QRect( mapToGlobal( QPoint( 0, 0 ) ), size() );
+    }
 
-   if (floating && r.isNull()) {
-      if (x() < 0 || y() < 0) { //may happen if we have been hidden
-         move(QPoint());
-      }
-      setAttribute(Qt::WA_Moved, false); //we want it at the default position
-   }
+    d->setWindowState( floating, false, floating ? r : QRect() );
+
+    if ( floating && r.isNull() )
+    {
+        if ( x() < 0 || y() < 0 ) //may happen if we have been hidden
+        {
+            move( QPoint() );
+        }
+
+        setAttribute( Qt::WA_Moved, false ); //we want it at the default position
+    }
 }
 
-void QDockWidget::setAllowedAreas(Qt::DockWidgetAreas areas)
+void QDockWidget::setAllowedAreas( Qt::DockWidgetAreas areas )
 {
-   Q_D(QDockWidget);
-   areas &= Qt::DockWidgetArea_Mask;
-   if (areas == d->allowedAreas) {
-      return;
-   }
-   d->allowedAreas = areas;
-   emit allowedAreasChanged(d->allowedAreas);
+    Q_D( QDockWidget );
+    areas &= Qt::DockWidgetArea_Mask;
+
+    if ( areas == d->allowedAreas )
+    {
+        return;
+    }
+
+    d->allowedAreas = areas;
+    emit allowedAreasChanged( d->allowedAreas );
 }
 
 Qt::DockWidgetAreas QDockWidget::allowedAreas() const
 {
-   Q_D(const QDockWidget);
-   return d->allowedAreas;
+    Q_D( const QDockWidget );
+    return d->allowedAreas;
 }
 
-void QDockWidget::changeEvent(QEvent *event)
+void QDockWidget::changeEvent( QEvent *event )
 {
-   Q_D(QDockWidget);
-   QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>(this->layout());
+    Q_D( QDockWidget );
+    QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>( this->layout() );
 
-   switch (event->type()) {
-      case QEvent::ModifiedChange:
-      case QEvent::WindowTitleChange:
-         update(layout->titleArea());
+    switch ( event->type() )
+    {
+        case QEvent::ModifiedChange:
+        case QEvent::WindowTitleChange:
+            update( layout->titleArea() );
 
 #ifndef QT_NO_ACTION
-         d->fixedWindowTitle = cs_internal_parseWindowTitle(windowTitle(), this);
-         d->toggleViewAction->setText(d->fixedWindowTitle);
+            d->fixedWindowTitle = lscs_internal_parseWindowTitle( windowTitle(), this );
+            d->toggleViewAction->setText( d->fixedWindowTitle );
 #endif
 
 #ifndef QT_NO_TABBAR
-         {
-            if (QMainWindowLayout *winLayout = qt_mainwindow_layout_from_dock(this)) {
-               if (QDockAreaLayoutInfo *info = winLayout->layoutState.dockAreaLayout.info(this)) {
-                  info->updateTabBar();
-               }
+            {
+                if ( QMainWindowLayout *winLayout = qt_mainwindow_layout_from_dock( this ) )
+                {
+                    if ( QDockAreaLayoutInfo *info = winLayout->layoutState.dockAreaLayout.info( this ) )
+                    {
+                        info->updateTabBar();
+                    }
+                }
             }
-         }
 #endif
 
-         break;
+            break;
 
-      default:
-         break;
-   }
-   QWidget::changeEvent(event);
+        default:
+            break;
+    }
+
+    QWidget::changeEvent( event );
 }
 
-void QDockWidget::closeEvent(QCloseEvent *event)
+void QDockWidget::closeEvent( QCloseEvent *event )
 {
-   Q_D(QDockWidget);
-   if (d->state) {
-      d->endDrag(true);
-   }
-   QWidget::closeEvent(event);
+    Q_D( QDockWidget );
+
+    if ( d->state )
+    {
+        d->endDrag( true );
+    }
+
+    QWidget::closeEvent( event );
 }
 
-void QDockWidget::paintEvent(QPaintEvent *event)
+void QDockWidget::paintEvent( QPaintEvent *event )
 {
-   (void) event;
+    ( void ) event;
 
-   QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>(this->layout());
-   bool customTitleBar = layout->widgetForRole(QDockWidgetLayout::TitleBar) != nullptr;
-   bool nativeDeco = layout->nativeWindowDeco();
+    QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>( this->layout() );
+    bool customTitleBar = layout->widgetForRole( QDockWidgetLayout::TitleBar ) != nullptr;
+    bool nativeDeco = layout->nativeWindowDeco();
 
-   if (!nativeDeco && !customTitleBar) {
-      QStylePainter p(this);
+    if ( !nativeDeco && !customTitleBar )
+    {
+        QStylePainter p( this );
 
-      // ### Add PixelMetric to change spacers, so style may show border
-      // when not floating.
+        // ### Add PixelMetric to change spacers, so style may show border
+        // when not floating.
 
-      if (isFloating()) {
-         QStyleOptionFrame framOpt;
-         framOpt.initFrom(this);
-         p.drawPrimitive(QStyle::PE_FrameDockWidget, framOpt);
-      }
+        if ( isFloating() )
+        {
+            QStyleOptionFrame framOpt;
+            framOpt.initFrom( this );
+            p.drawPrimitive( QStyle::PE_FrameDockWidget, framOpt );
+        }
 
-      // Title must be painted after the frame, since the areas overlap, and
-      // the title may wish to extend out to all sides (eg. XP style)
-      QStyleOptionDockWidget titleOpt;
-      initStyleOption(&titleOpt);
-      p.drawControl(QStyle::CE_DockWidgetTitle, titleOpt);
-   }
+        // Title must be painted after the frame, since the areas overlap, and
+        // the title may wish to extend out to all sides (eg. XP style)
+        QStyleOptionDockWidget titleOpt;
+        initStyleOption( &titleOpt );
+        p.drawControl( QStyle::CE_DockWidgetTitle, titleOpt );
+    }
 }
 
-bool QDockWidget::event(QEvent *event)
+bool QDockWidget::event( QEvent *event )
 {
-   Q_D(QDockWidget);
+    Q_D( QDockWidget );
 
-   QMainWindow *win = qobject_cast<QMainWindow *>(parentWidget());
-   QMainWindowLayout *layout = qt_mainwindow_layout_from_dock(this);
+    QMainWindow *win = qobject_cast<QMainWindow *>( parentWidget() );
+    QMainWindowLayout *layout = qt_mainwindow_layout_from_dock( this );
 
-   switch (event->type()) {
+    switch ( event->type() )
+    {
 
 #ifndef QT_NO_ACTION
-      case QEvent::Hide:
-         if (layout != nullptr) {
-            layout->keepSize(this);
-         }
 
-         d->toggleViewAction->setChecked(false);
-         emit visibilityChanged(false);
-         break;
-
-      case QEvent::Show: {
-         d->toggleViewAction->setChecked(true);
-         QPoint parentTopLeft(0, 0);
-         if (isWindow()) {
-            if (const QWindow *window = windowHandle()) {
-               parentTopLeft = window->screen()->availableVirtualGeometry().topLeft();
-            } else {
-               parentTopLeft = QGuiApplication::primaryScreen()->availableVirtualGeometry().topLeft();
+        case QEvent::Hide:
+            if ( layout != nullptr )
+            {
+                layout->keepSize( this );
             }
-         }
-         emit visibilityChanged(geometry().right() >= parentTopLeft.x() && geometry().bottom() >= parentTopLeft.y());
-      }
-      break;
+
+            d->toggleViewAction->setChecked( false );
+            emit visibilityChanged( false );
+            break;
+
+        case QEvent::Show:
+        {
+            d->toggleViewAction->setChecked( true );
+            QPoint parentTopLeft( 0, 0 );
+
+            if ( isWindow() )
+            {
+                if ( const QWindow *window = windowHandle() )
+                {
+                    parentTopLeft = window->screen()->availableVirtualGeometry().topLeft();
+                }
+                else
+                {
+                    parentTopLeft = QGuiApplication::primaryScreen()->availableVirtualGeometry().topLeft();
+                }
+            }
+
+            emit visibilityChanged( geometry().right() >= parentTopLeft.x() && geometry().bottom() >= parentTopLeft.y() );
+        }
+        break;
 #endif
 
-      case QEvent::ApplicationLayoutDirectionChange:
-      case QEvent::LayoutDirectionChange:
-      case QEvent::StyleChange:
-      case QEvent::ParentChange:
-         d->updateButtons();
-         break;
+        case QEvent::ApplicationLayoutDirectionChange:
+        case QEvent::LayoutDirectionChange:
+        case QEvent::StyleChange:
+        case QEvent::ParentChange:
+            d->updateButtons();
+            break;
 
-      case QEvent::ZOrderChange: {
-         bool onTop = false;
-         if (win != nullptr) {
-            const QObjectList &siblings = win->children();
-            onTop = siblings.count() > 0 && siblings.last() == (QObject *)this;
-         }
+        case QEvent::ZOrderChange:
+        {
+            bool onTop = false;
 
-         if (!isFloating() && layout != nullptr && onTop) {
-            layout->raise(this);
-         }
-         break;
-      }
-      case QEvent::WindowActivate:
-      case QEvent::WindowDeactivate:
-         update(qobject_cast<QDockWidgetLayout *>(this->layout())->titleArea());
-         break;
+            if ( win != nullptr )
+            {
+                const QObjectList &siblings = win->children();
+                onTop = siblings.count() > 0 && siblings.last() == ( QObject * )this;
+            }
 
-      case QEvent::ContextMenu:
-         if (d->state) {
-            event->accept();
+            if ( !isFloating() && layout != nullptr && onTop )
+            {
+                layout->raise( this );
+            }
+
+            break;
+        }
+
+        case QEvent::WindowActivate:
+        case QEvent::WindowDeactivate:
+            update( qobject_cast<QDockWidgetLayout *>( this->layout() )->titleArea() );
+            break;
+
+        case QEvent::ContextMenu:
+            if ( d->state )
+            {
+                event->accept();
+                return true;
+            }
+
+            break;
+
+        // return true after calling the handler since we don't want
+        // them to be passed onto the default handlers
+        case QEvent::MouseButtonPress:
+            if ( d->mousePressEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::MouseButtonDblClick:
+            if ( d->mouseDoubleClickEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::MouseMove:
+            if ( d->mouseMoveEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::MouseButtonRelease:
+            if ( d->mouseReleaseEvent( static_cast<QMouseEvent *>( event ) ) )
+            {
+                return true;
+            }
+
+            break;
+
+        case QEvent::NonClientAreaMouseMove:
+        case QEvent::NonClientAreaMouseButtonPress:
+        case QEvent::NonClientAreaMouseButtonRelease:
+        case QEvent::NonClientAreaMouseButtonDblClick:
+            d->nonClientAreaMouseEvent( static_cast<QMouseEvent *>( event ) );
             return true;
-         }
-         break;
 
-      // return true after calling the handler since we don't want
-      // them to be passed onto the default handlers
-      case QEvent::MouseButtonPress:
-         if (d->mousePressEvent(static_cast<QMouseEvent *>(event))) {
-            return true;
-         }
-         break;
-      case QEvent::MouseButtonDblClick:
-         if (d->mouseDoubleClickEvent(static_cast<QMouseEvent *>(event))) {
-            return true;
-         }
-         break;
-      case QEvent::MouseMove:
-         if (d->mouseMoveEvent(static_cast<QMouseEvent *>(event))) {
-            return true;
-         }
-         break;
+        case QEvent::Move:
+            d->moveEvent( static_cast<QMoveEvent *>( event ) );
+            break;
 
-      case QEvent::MouseButtonRelease:
-         if (d->mouseReleaseEvent(static_cast<QMouseEvent *>(event))) {
-            return true;
-         }
-         break;
+        case QEvent::Resize:
 
-      case QEvent::NonClientAreaMouseMove:
-      case QEvent::NonClientAreaMouseButtonPress:
-      case QEvent::NonClientAreaMouseButtonRelease:
-      case QEvent::NonClientAreaMouseButtonDblClick:
-         d->nonClientAreaMouseEvent(static_cast<QMouseEvent *>(event));
-         return true;
+            // if the mainwindow is plugging us, we don't want to update undocked geometry
+            if ( isFloating() && layout != nullptr && layout->pluggingWidget != this )
+            {
+                d->undockedGeometry = geometry();
+            }
 
-      case QEvent::Move:
-         d->moveEvent(static_cast<QMoveEvent *>(event));
-         break;
+            break;
 
-      case QEvent::Resize:
-         // if the mainwindow is plugging us, we don't want to update undocked geometry
-         if (isFloating() && layout != nullptr && layout->pluggingWidget != this) {
-            d->undockedGeometry = geometry();
-         }
-         break;
+        default:
+            break;
+    }
 
-      default:
-         break;
-   }
-   return QWidget::event(event);
+    return QWidget::event( event );
 }
 
 #ifndef QT_NO_ACTION
 QAction *QDockWidget::toggleViewAction() const
 {
-   Q_D(const QDockWidget);
-   return d->toggleViewAction;
+    Q_D( const QDockWidget );
+    return d->toggleViewAction;
 }
 #endif
 
-void QDockWidget::setTitleBarWidget(QWidget *widget)
+void QDockWidget::setTitleBarWidget( QWidget *widget )
 {
-   Q_D(QDockWidget);
+    Q_D( QDockWidget );
 
-   QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>(this->layout());
-   layout->setWidgetForRole(QDockWidgetLayout::TitleBar, widget);
-   d->updateButtons();
+    QDockWidgetLayout *layout = qobject_cast<QDockWidgetLayout *>( this->layout() );
+    layout->setWidgetForRole( QDockWidgetLayout::TitleBar, widget );
+    d->updateButtons();
 
-   if (isWindow()) {
-      // this ensures the native decoration is drawn
-      d->setWindowState(true, true);
-   }
+    if ( isWindow() )
+    {
+        // this ensures the native decoration is drawn
+        d->setWindowState( true, true );
+    }
 }
 
 QWidget *QDockWidget::titleBarWidget() const
 {
-   QDockWidgetLayout *layout
-      = qobject_cast<QDockWidgetLayout *>(this->layout());
-   return layout->widgetForRole(QDockWidgetLayout::TitleBar);
+    QDockWidgetLayout *layout
+        = qobject_cast<QDockWidgetLayout *>( this->layout() );
+    return layout->widgetForRole( QDockWidgetLayout::TitleBar );
 }
 
-void QDockWidget::_q_toggleView(bool isToggled)
+void QDockWidget::_q_toggleView( bool isToggled )
 {
-   Q_D(QDockWidget);
-   d->_q_toggleView(isToggled);
+    Q_D( QDockWidget );
+    d->_q_toggleView( isToggled );
 }
 
 void QDockWidget::_q_toggleTopLevel()
 {
-   Q_D(QDockWidget);
-   d->_q_toggleTopLevel();
+    Q_D( QDockWidget );
+    d->_q_toggleTopLevel();
 }
 
 #endif

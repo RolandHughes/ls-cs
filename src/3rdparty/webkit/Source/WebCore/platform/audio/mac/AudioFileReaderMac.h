@@ -33,31 +33,39 @@
 #include <AudioToolbox/ExtendedAudioFile.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioBus;
-    
+
 // Wrapper class for AudioFile and ExtAudioFile CoreAudio APIs for reading files and in-memory versions of them...
 
-class AudioFileReader {
+class AudioFileReader
+{
 public:
-    AudioFileReader(const char* filePath);
-    AudioFileReader(const void* data, size_t dataSize);
+    AudioFileReader( const char *filePath );
+    AudioFileReader( const void *data, size_t dataSize );
     ~AudioFileReader();
 
     // Returns 0 if error
-    PassOwnPtr<AudioBus> createBus(double sampleRate, bool mixToMono);
+    PassOwnPtr<AudioBus> createBus( double sampleRate, bool mixToMono );
 
-    const void* data() const { return m_data; }
-    size_t dataSize() const { return m_dataSize; }
+    const void *data() const
+    {
+        return m_data;
+    }
+    size_t dataSize() const
+    {
+        return m_dataSize;
+    }
 
 private:
-    static OSStatus readProc(void* clientData, SInt64 position, UInt32 requestCount, void* buffer, UInt32* actualCount);
-    static SInt64 getSizeProc(void* clientData);
+    static OSStatus readProc( void *clientData, SInt64 position, UInt32 requestCount, void *buffer, UInt32 *actualCount );
+    static SInt64 getSizeProc( void *clientData );
 
-    const void* m_data;
+    const void *m_data;
     size_t m_dataSize;
-    const char* m_filePath;
+    const char *m_filePath;
 
     AudioFileID m_audioFileID;
     ExtAudioFileRef m_extAudioFileRef;
@@ -67,5 +75,5 @@ private:
 };
 
 } // namespace WebCore
- 
+
 #endif // AudioFileReaderMac_h

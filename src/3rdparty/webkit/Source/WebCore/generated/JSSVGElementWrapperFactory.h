@@ -33,20 +33,22 @@
 #if ENABLE(SVG)
 #include <wtf/Forward.h>
 
-namespace JSC {
-    class ExecState;
-}                                            
-                                             
-namespace WebCore {
+namespace JSC
+{
+class ExecState;
+}
 
-    class JSDOMWrapper;
-    class JSDOMGlobalObject;
-    class SVGElement;
+namespace WebCore
+{
 
-    JSDOMWrapper* createJSSVGWrapper(JSC::ExecState*, JSDOMGlobalObject*, PassRefPtr<SVGElement>);
+class JSDOMWrapper;
+class JSDOMGlobalObject;
+class SVGElement;
+
+JSDOMWrapper *createJSSVGWrapper( JSC::ExecState *, JSDOMGlobalObject *, PassRefPtr<SVGElement> );
 
 }
- 
+
 #endif // ENABLE(SVG)
 
 #endif // JSSVGElementWrapperFactory_h

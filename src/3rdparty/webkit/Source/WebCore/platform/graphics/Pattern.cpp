@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,17 +29,18 @@
 
 #include "Image.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-Pattern::Pattern(PassRefPtr<Image> image, bool repeatX, bool repeatY)
-    : m_tileImage(image)
-    , m_repeatX(repeatX)
-    , m_repeatY(repeatY)
+Pattern::Pattern( PassRefPtr<Image> image, bool repeatX, bool repeatY )
+    : m_tileImage( image )
+    , m_repeatX( repeatX )
+    , m_repeatY( repeatY )
 #if USE(SKIA)
-    , m_pattern(0)
+    , m_pattern( 0 )
 #endif
 {
-    ASSERT(m_tileImage);
+    ASSERT( m_tileImage );
 }
 
 Pattern::~Pattern()
@@ -47,7 +48,7 @@ Pattern::~Pattern()
     platformDestroy();
 }
 
-void Pattern::setPatternSpaceTransform(const AffineTransform& patternSpaceTransformation)
+void Pattern::setPatternSpaceTransform( const AffineTransform &patternSpaceTransformation )
 {
     m_patternSpaceTransformation = patternSpaceTransformation;
     setPlatformPatternSpaceTransform();

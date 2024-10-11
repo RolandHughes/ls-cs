@@ -75,22 +75,30 @@ static const int gradientLightGreen = 239;
 static const int gradientLightBlue = 0;
 static const int gradientLightAlpha = 255;
 
-namespace WebKit {
-
-PassRefPtr<FindIndicator> FindIndicator::create(const FloatRect& selectionRectInWindowCoordinates, const Vector<FloatRect>& textRectsInSelectionRectCoordinates, const ShareableBitmap::Handle& contentImageHandle)
+namespace WebKit
 {
-    RefPtr<ShareableBitmap> contentImage = ShareableBitmap::create(contentImageHandle);
-    if (!contentImage)
-        return 0;
-    ASSERT(contentImage->size() == enclosingIntRect(selectionRectInWindowCoordinates).size());
 
-    return adoptRef(new FindIndicator(selectionRectInWindowCoordinates, textRectsInSelectionRectCoordinates, contentImage.release()));
+PassRefPtr<FindIndicator> FindIndicator::create( const FloatRect &selectionRectInWindowCoordinates,
+        const Vector<FloatRect> &textRectsInSelectionRectCoordinates, const ShareableBitmap::Handle &contentImageHandle )
+{
+    RefPtr<ShareableBitmap> contentImage = ShareableBitmap::create( contentImageHandle );
+
+    if ( !contentImage )
+    {
+        return 0;
+    }
+
+    ASSERT( contentImage->size() == enclosingIntRect( selectionRectInWindowCoordinates ).size() );
+
+    return adoptRef( new FindIndicator( selectionRectInWindowCoordinates, textRectsInSelectionRectCoordinates,
+                                        contentImage.release() ) );
 }
 
-FindIndicator::FindIndicator(const WebCore::FloatRect& selectionRectInWindowCoordinates, const Vector<WebCore::FloatRect>& textRectsInSelectionRectCoordinates, PassRefPtr<ShareableBitmap> contentImage)
-    : m_selectionRectInWindowCoordinates(selectionRectInWindowCoordinates)
-    , m_textRectsInSelectionRectCoordinates(textRectsInSelectionRectCoordinates)
-    , m_contentImage(contentImage)
+FindIndicator::FindIndicator( const WebCore::FloatRect &selectionRectInWindowCoordinates,
+                              const Vector<WebCore::FloatRect> &textRectsInSelectionRectCoordinates, PassRefPtr<ShareableBitmap> contentImage )
+    : m_selectionRectInWindowCoordinates( selectionRectInWindowCoordinates )
+    , m_textRectsInSelectionRectCoordinates( textRectsInSelectionRectCoordinates )
+    , m_contentImage( contentImage )
 {
 }
 
@@ -98,80 +106,83 @@ FindIndicator::~FindIndicator()
 {
 }
 
-static FloatRect inflateRect(const FloatRect& rect, float inflateX, float inflateY)
+static FloatRect inflateRect( const FloatRect &rect, float inflateX, float inflateY )
 {
     FloatRect inflatedRect = rect;
-    inflatedRect.inflateX(inflateX);
-    inflatedRect.inflateY(inflateY);
-    
+    inflatedRect.inflateX( inflateX );
+    inflatedRect.inflateY( inflateY );
+
     return inflatedRect;
 }
 
 FloatRect FindIndicator::frameRect() const
 {
-    return FloatRect(m_selectionRectInWindowCoordinates.x() - leftBorderThickness, m_selectionRectInWindowCoordinates.y() - topBorderThickness,
-                     m_selectionRectInWindowCoordinates.width() + rightBorderThickness + leftBorderThickness,
-                     m_selectionRectInWindowCoordinates.height() + topBorderThickness + bottomBorderThickness);
+    return FloatRect( m_selectionRectInWindowCoordinates.x() - leftBorderThickness,
+                      m_selectionRectInWindowCoordinates.y() - topBorderThickness,
+                      m_selectionRectInWindowCoordinates.width() + rightBorderThickness + leftBorderThickness,
+                      m_selectionRectInWindowCoordinates.height() + topBorderThickness + bottomBorderThickness );
 }
 
 static Color lightBorderColor()
 {
-    return Color(lightBorderRed, lightBorderGreen, lightBorderBlue, lightBorderAlpha);
+    return Color( lightBorderRed, lightBorderGreen, lightBorderBlue, lightBorderAlpha );
 }
 
 static Color shadowColor()
 {
-    return Color(shadowRed, shadowGreen, shadowBlue, shadowAlpha);
+    return Color( shadowRed, shadowGreen, shadowBlue, shadowAlpha );
 }
 
 static Color gradientLightColor()
 {
-    return Color(gradientLightRed, gradientLightGreen, gradientLightBlue, gradientLightAlpha);
+    return Color( gradientLightRed, gradientLightGreen, gradientLightBlue, gradientLightAlpha );
 }
 
 static Color gradientDarkColor()
 {
-    return Color(gradientDarkRed, gradientDarkGreen, gradientDarkBlue, gradientDarkAlpha);
+    return Color( gradientDarkRed, gradientDarkGreen, gradientDarkBlue, gradientDarkAlpha );
 }
 
-static Path pathWithRoundedRect(const FloatRect& pathRect, float radius)
+static Path pathWithRoundedRect( const FloatRect &pathRect, float radius )
 {
     Path path;
-    path.addRoundedRect(pathRect, FloatSize(radius, radius));
+    path.addRoundedRect( pathRect, FloatSize( radius, radius ) );
 
     return path;
 }
-    
-void FindIndicator::draw(GraphicsContext& graphicsContext, const IntRect& dirtyRect)
+
+void FindIndicator::draw( GraphicsContext &graphicsContext, const IntRect &dirtyRect )
 {
-    for (size_t i = 0; i < m_textRectsInSelectionRectCoordinates.size(); ++i) {
+    for ( size_t i = 0; i < m_textRectsInSelectionRectCoordinates.size(); ++i )
+    {
         FloatRect textRect = m_textRectsInSelectionRectCoordinates[i];
-        textRect.move(leftBorderThickness, topBorderThickness);
+        textRect.move( leftBorderThickness, topBorderThickness );
 
-        FloatRect outerPathRect = inflateRect(textRect, horizontalOutsetToCenterOfLightBorder, verticalOutsetToCenterOfLightBorder);
-        FloatRect innerPathRect = inflateRect(textRect, horizontalPaddingInsideLightBorder, verticalPaddingInsideLightBorder);
+        FloatRect outerPathRect = inflateRect( textRect, horizontalOutsetToCenterOfLightBorder, verticalOutsetToCenterOfLightBorder );
+        FloatRect innerPathRect = inflateRect( textRect, horizontalPaddingInsideLightBorder, verticalPaddingInsideLightBorder );
 
         {
-            GraphicsContextStateSaver stateSaver(graphicsContext);
-            graphicsContext.setShadow(FloatSize(shadowOffsetX, shadowOffsetY), shadowBlurRadius, shadowColor(), ColorSpaceSRGB);
-            graphicsContext.setFillColor(lightBorderColor(), ColorSpaceDeviceRGB);
-            graphicsContext.fillPath(pathWithRoundedRect(outerPathRect, cornerRadius));
+            GraphicsContextStateSaver stateSaver( graphicsContext );
+            graphicsContext.setShadow( FloatSize( shadowOffsetX, shadowOffsetY ), shadowBlurRadius, shadowColor(), ColorSpaceSRGB );
+            graphicsContext.setFillColor( lightBorderColor(), ColorSpaceDeviceRGB );
+            graphicsContext.fillPath( pathWithRoundedRect( outerPathRect, cornerRadius ) );
         }
 
         {
-            GraphicsContextStateSaver stateSaver(graphicsContext);
-            graphicsContext.clip(pathWithRoundedRect(innerPathRect, cornerRadius));
-            RefPtr<Gradient> gradient = Gradient::create(FloatPoint(innerPathRect.x(), innerPathRect.y()), FloatPoint(innerPathRect.x(), innerPathRect.maxY()));
-            gradient->addColorStop(0, gradientLightColor());
-            gradient->addColorStop(1, gradientDarkColor());
-            graphicsContext.setFillGradient(gradient);
-            graphicsContext.fillRect(outerPathRect);
+            GraphicsContextStateSaver stateSaver( graphicsContext );
+            graphicsContext.clip( pathWithRoundedRect( innerPathRect, cornerRadius ) );
+            RefPtr<Gradient> gradient = Gradient::create( FloatPoint( innerPathRect.x(), innerPathRect.y() ), FloatPoint( innerPathRect.x(),
+                                        innerPathRect.maxY() ) );
+            gradient->addColorStop( 0, gradientLightColor() );
+            gradient->addColorStop( 1, gradientDarkColor() );
+            graphicsContext.setFillGradient( gradient );
+            graphicsContext.fillRect( outerPathRect );
         }
 
         {
-            GraphicsContextStateSaver stateSaver(graphicsContext);
-            graphicsContext.translate(FloatSize(roundf(leftBorderThickness), roundf(topBorderThickness)));
-            m_contentImage->paint(graphicsContext, IntPoint(0, 0), m_contentImage->bounds());
+            GraphicsContextStateSaver stateSaver( graphicsContext );
+            graphicsContext.translate( FloatSize( roundf( leftBorderThickness ), roundf( topBorderThickness ) ) );
+            m_contentImage->paint( graphicsContext, IntPoint( 0, 0 ), m_contentImage->bounds() );
         }
     }
 }

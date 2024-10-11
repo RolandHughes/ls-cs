@@ -30,28 +30,29 @@
 #include <qxsdannotated_p.h>
 #include <qxsdxpathexpression_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class XsdAssertion : public NamedSchemaComponent, public XsdAnnotated
 {
- public:
-   typedef QExplicitlySharedDataPointer<XsdAssertion> Ptr;
-   typedef QList<XsdAssertion::Ptr> List;
+public:
+    typedef QExplicitlySharedDataPointer<XsdAssertion> Ptr;
+    typedef QList<XsdAssertion::Ptr> List;
 
-   /**
-    * Sets the @p test of the assertion.
-    *
-    * @see <a href="http://www.w3.org/TR/xmlschema11-1/#as-test">Test Definition</a>
-    */
-   void setTest(const XsdXPathExpression::Ptr &test);
+    /**
+     * Sets the @p test of the assertion.
+     *
+     * @see <a href="http://www.w3.org/TR/xmlschema11-1/#as-test">Test Definition</a>
+     */
+    void setTest( const XsdXPathExpression::Ptr &test );
 
-   /**
-    * Returns the test of the assertion.
-    */
-   XsdXPathExpression::Ptr test() const;
+    /**
+     * Returns the test of the assertion.
+     */
+    XsdXPathExpression::Ptr test() const;
 
- private:
-   XsdXPathExpression::Ptr m_test;
+private:
+    XsdXPathExpression::Ptr m_test;
 };
 
 }

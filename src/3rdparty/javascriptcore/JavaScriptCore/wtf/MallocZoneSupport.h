@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,32 +31,38 @@
 
 #include <malloc/malloc.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class RemoteMemoryReader {
+class RemoteMemoryReader
+{
     task_t m_task;
-    memory_reader_t* m_reader;
+    memory_reader_t *m_reader;
 
 public:
-    RemoteMemoryReader(task_t task, memory_reader_t* reader)
-        : m_task(task)
-        , m_reader(reader)
+    RemoteMemoryReader( task_t task, memory_reader_t *reader )
+        : m_task( task )
+        , m_reader( reader )
     { }
 
-    void* operator()(vm_address_t address, size_t size) const
+    void *operator()( vm_address_t address, size_t size ) const
     {
-        void* output;
-        kern_return_t err = (*m_reader)(m_task, address, size, static_cast<void**>(&output));
-        ASSERT(!err);
-        if (err)
+        void *output;
+        kern_return_t err = ( *m_reader )( m_task, address, size, static_cast<void **>( &output ) );
+        ASSERT( !err );
+
+        if ( err )
+        {
             output = 0;
+        }
+
         return output;
     }
 
     template <typename T>
-    T* operator()(T* address, size_t size=sizeof(T)) const
+    T *operator()( T *address, size_t size=sizeof( T ) ) const
     {
-        return static_cast<T*>((*this)(reinterpret_cast<vm_address_t>(address), size));
+        return static_cast<T *>( ( *this )( reinterpret_cast<vm_address_t>( address ), size ) );
     }
 };
 

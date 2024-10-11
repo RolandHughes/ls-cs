@@ -29,119 +29,137 @@
 
 void QSize::transpose()
 {
-   int tmp = wd;
-   wd = ht;
-   ht = tmp;
+    int tmp = wd;
+    wd = ht;
+    ht = tmp;
 }
 
-QSize QSize::scaled(const QSize &s, Qt::AspectRatioMode mode) const
+QSize QSize::scaled( const QSize &s, Qt::AspectRatioMode mode ) const
 {
-   if (mode == Qt::IgnoreAspectRatio || wd == 0 || ht == 0) {
-      return s;
+    if ( mode == Qt::IgnoreAspectRatio || wd == 0 || ht == 0 )
+    {
+        return s;
 
-   } else {
-      bool useHeight;
-      qint64 rw = qint64(s.ht) * qint64(wd) / qint64(ht);
+    }
+    else
+    {
+        bool useHeight;
+        qint64 rw = qint64( s.ht ) * qint64( wd ) / qint64( ht );
 
-      if (mode == Qt::KeepAspectRatio) {
-         useHeight = (rw <= s.wd);
-      } else {
-         // mode == Qt::KeepAspectRatioByExpanding
-         useHeight = (rw >= s.wd);
-      }
+        if ( mode == Qt::KeepAspectRatio )
+        {
+            useHeight = ( rw <= s.wd );
+        }
+        else
+        {
+            // mode == Qt::KeepAspectRatioByExpanding
+            useHeight = ( rw >= s.wd );
+        }
 
-      if (useHeight) {
-         return QSize(rw, s.ht);
-      } else {
-         return QSize(s.wd, qint32(qint64(s.wd) * qint64(ht) / qint64(wd)));
-      }
-   }
+        if ( useHeight )
+        {
+            return QSize( rw, s.ht );
+        }
+        else
+        {
+            return QSize( s.wd, qint32( qint64( s.wd ) * qint64( ht ) / qint64( wd ) ) );
+        }
+    }
 }
 
-QDataStream &operator<<(QDataStream &stream, const QSize &size)
+QDataStream &operator<<( QDataStream &stream, const QSize &size )
 {
-   stream << (qint32)size.width() << (qint32)size.height();
+    stream << ( qint32 )size.width() << ( qint32 )size.height();
 
-   return stream;
+    return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, QSize &size)
+QDataStream &operator>>( QDataStream &stream, QSize &size )
 {
-   qint32 w, h;
-   stream >> w;
-   size.rwidth() = w;
+    qint32 w, h;
+    stream >> w;
+    size.rwidth() = w;
 
-   stream >> h;
-   size.rheight() = h;
+    stream >> h;
+    size.rheight() = h;
 
-   return stream;
+    return stream;
 }
 
-QDebug operator<<(QDebug dbg, const QSize &s)
+QDebug operator<<( QDebug dbg, const QSize &s )
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   dbg << "QSize(";
-   QtDebugUtils::formatQSize(dbg, s);
-   dbg << ')';
-   return dbg;
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
+    dbg << "QSize(";
+    QtDebugUtils::formatQSize( dbg, s );
+    dbg << ')';
+    return dbg;
 }
 
 void QSizeF::transpose()
 {
-   qreal tmp = wd;
-   wd = ht;
-   ht = tmp;
+    qreal tmp = wd;
+    wd = ht;
+    ht = tmp;
 }
-QSizeF QSizeF::scaled(const QSizeF &s, Qt::AspectRatioMode mode) const
+QSizeF QSizeF::scaled( const QSizeF &s, Qt::AspectRatioMode mode ) const
 {
-   if (mode == Qt::IgnoreAspectRatio || qIsNull(wd) || qIsNull(ht)) {
-      return s;
-   } else {
-      bool useHeight;
-      qreal rw = s.ht * wd / ht;
+    if ( mode == Qt::IgnoreAspectRatio || qIsNull( wd ) || qIsNull( ht ) )
+    {
+        return s;
+    }
+    else
+    {
+        bool useHeight;
+        qreal rw = s.ht * wd / ht;
 
-      if (mode == Qt::KeepAspectRatio) {
-         useHeight = (rw <= s.wd);
-      } else { // mode == Qt::KeepAspectRatioByExpanding
-         useHeight = (rw >= s.wd);
-      }
+        if ( mode == Qt::KeepAspectRatio )
+        {
+            useHeight = ( rw <= s.wd );
+        }
+        else     // mode == Qt::KeepAspectRatioByExpanding
+        {
+            useHeight = ( rw >= s.wd );
+        }
 
-      if (useHeight) {
-         return QSizeF(rw, s.ht);
-      } else {
-         return QSizeF(s.wd, s.wd * ht / wd);
-      }
-   }
-}
-
-QDataStream &operator<<(QDataStream &stream, const QSizeF &sizeF)
-{
-   stream << double(sizeF.width()) << double(sizeF.height());
-
-   return stream;
-}
-
-QDataStream &operator>>(QDataStream &stream, QSizeF &sizeF)
-{
-   double w, h;
-   stream >> w;
-   stream >> h;
-
-   sizeF.setWidth(qreal(w));
-   sizeF.setHeight(qreal(h));
-
-   return stream;
+        if ( useHeight )
+        {
+            return QSizeF( rw, s.ht );
+        }
+        else
+        {
+            return QSizeF( s.wd, s.wd * ht / wd );
+        }
+    }
 }
 
-QDebug operator<<(QDebug dbg, const QSizeF &size)
+QDataStream &operator<<( QDataStream &stream, const QSizeF &sizeF )
 {
-   QDebugStateSaver saver(dbg);
-   dbg.nospace();
-   dbg << "QSizeF(";
+    stream << double( sizeF.width() ) << double( sizeF.height() );
 
-   QtDebugUtils::formatQSize(dbg, size);
-   dbg << ')';
+    return stream;
+}
 
-   return dbg;
+QDataStream &operator>>( QDataStream &stream, QSizeF &sizeF )
+{
+    double w, h;
+    stream >> w;
+    stream >> h;
+
+    sizeF.setWidth( qreal( w ) );
+    sizeF.setHeight( qreal( h ) );
+
+    return stream;
+}
+
+QDebug operator<<( QDebug dbg, const QSizeF &size )
+{
+    QDebugStateSaver saver( dbg );
+    dbg.nospace();
+    dbg << "QSizeF(";
+
+    QtDebugUtils::formatQSize( dbg, size );
+    dbg << ')';
+
+    return dbg;
 }

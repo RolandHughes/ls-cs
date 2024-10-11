@@ -23,34 +23,36 @@
 
 #include "InternalFunction.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class NumberPrototype;
+class NumberPrototype;
 
-    class NumberConstructor : public InternalFunction {
-    public:
-        NumberConstructor(ExecState*, JSGlobalObject*, Structure*, NumberPrototype*);
+class NumberConstructor : public InternalFunction
+{
+public:
+    NumberConstructor( ExecState *, JSGlobalObject *, Structure *, NumberPrototype * );
 
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier&, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
-        JSValue getValueProperty(ExecState*, int token) const;
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
+    JSValue getValueProperty( ExecState *, int token ) const;
 
-        static const ClassInfo s_info;
+    static const ClassInfo s_info;
 
-        static Structure* createStructure(JSGlobalData& globalData, JSValue proto) 
-        { 
-            return Structure::create(globalData, proto, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info); 
-        }
+    static Structure *createStructure( JSGlobalData &globalData, JSValue proto )
+    {
+        return Structure::create( globalData, proto, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
 
-        enum { NaNValue, NegInfinity, PosInfinity, MaxValue, MinValue };
+    enum { NaNValue, NegInfinity, PosInfinity, MaxValue, MinValue };
 
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | ImplementsHasInstance | InternalFunction::StructureFlags;
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | ImplementsHasInstance | InternalFunction::StructureFlags;
 
-    private:
-        virtual ConstructType getConstructData(ConstructData&);
-        virtual CallType getCallData(CallData&);
-    };
+private:
+    virtual ConstructType getConstructData( ConstructData & );
+    virtual CallType getCallData( CallData & );
+};
 
 } // namespace JSC
 

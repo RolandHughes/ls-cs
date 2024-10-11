@@ -80,13 +80,14 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-    
+namespace WebKit
+{
+
 void WebPage::platformInitialize()
 {
 }
 
-void WebPage::platformPreferencesDidChange(const WebPreferencesStore&)
+void WebPage::platformPreferencesDidChange( const WebPreferencesStore & )
 {
 }
 
@@ -94,19 +95,22 @@ static const unsigned CtrlKey = 1 << 0;
 static const unsigned AltKey = 1 << 1;
 static const unsigned ShiftKey = 1 << 2;
 
-struct KeyDownEntry {
+struct KeyDownEntry
+{
     unsigned virtualKey;
     unsigned modifiers;
-    const char* name;
+    const char *name;
 };
 
-struct KeyPressEntry {
+struct KeyPressEntry
+{
     unsigned charCode;
     unsigned modifiers;
-    const char* name;
+    const char *name;
 };
 
-static const KeyDownEntry keyDownEntries[] = {
+static const KeyDownEntry keyDownEntries[] =
+{
     { VK_LEFT,   0,                  "MoveLeft"                                    },
     { VK_LEFT,   ShiftKey,           "MoveLeftAndModifySelection"                  },
     { VK_LEFT,   CtrlKey,            "MoveWordLeft"                                },
@@ -127,21 +131,21 @@ static const KeyDownEntry keyDownEntries[] = {
     { VK_HOME,   ShiftKey,           "MoveToBeginningOfLineAndModifySelection"     },
     { VK_HOME,   CtrlKey,            "MoveToBeginningOfDocument"                   },
     { VK_HOME,   CtrlKey | ShiftKey, "MoveToBeginningOfDocumentAndModifySelection" },
-    
+
     { VK_END,    0,                  "MoveToEndOfLine"                             },
     { VK_END,    ShiftKey,           "MoveToEndOfLineAndModifySelection"           },
     { VK_END,    CtrlKey,            "MoveToEndOfDocument"                         },
     { VK_END,    CtrlKey | ShiftKey, "MoveToEndOfDocumentAndModifySelection"       },
-    
+
     { VK_BACK,   0,                  "DeleteBackward"                              },
     { VK_BACK,   ShiftKey,           "DeleteBackward"                              },
     { VK_DELETE, 0,                  "DeleteForward"                               },
     { VK_BACK,   CtrlKey,            "DeleteWordBackward"                          },
     { VK_DELETE, CtrlKey,            "DeleteWordForward"                           },
-    
+
     { 'B',       CtrlKey,            "ToggleBold"                                  },
     { 'I',       CtrlKey,            "ToggleItalic"                                },
-    
+
     { VK_ESCAPE, 0,                  "Cancel"                                      },
     { VK_OEM_PERIOD, CtrlKey,        "Cancel"                                      },
     { VK_TAB,    0,                  "InsertTab"                                   },
@@ -151,7 +155,7 @@ static const KeyDownEntry keyDownEntries[] = {
     { VK_RETURN, AltKey,             "InsertNewline"                               },
     { VK_RETURN, ShiftKey,           "InsertNewline"                               },
     { VK_RETURN, AltKey | ShiftKey,  "InsertNewline"                               },
-    
+
     // It's not quite clear whether clipboard shortcuts and Undo/Redo should be handled
     // in the application or in WebKit. We chose WebKit.
     { 'C',       CtrlKey,            "Copy"                                        },
@@ -165,7 +169,8 @@ static const KeyDownEntry keyDownEntries[] = {
     { 'Z',       CtrlKey | ShiftKey, "Redo"                                        },
 };
 
-static const KeyPressEntry keyPressEntries[] = {
+static const KeyPressEntry keyPressEntries[] =
+{
     { '\t',   0,                  "InsertTab"                                   },
     { '\t',   ShiftKey,           "InsertBacktab"                               },
     { '\r',   0,                  "InsertNewline"                               },
@@ -175,122 +180,156 @@ static const KeyPressEntry keyPressEntries[] = {
     { '\r',   AltKey | ShiftKey,  "InsertNewline"                               },
 };
 
-const char* WebPage::interpretKeyEvent(const KeyboardEvent* evt)
+const char *WebPage::interpretKeyEvent( const KeyboardEvent *evt )
 {
-    ASSERT(evt->type() == eventNames().keydownEvent || evt->type() == eventNames().keypressEvent);
-    
-    static HashMap<int, const char*>* keyDownCommandsMap = 0;
-    static HashMap<int, const char*>* keyPressCommandsMap = 0;
-    
-    if (!keyDownCommandsMap) {
-        keyDownCommandsMap = new HashMap<int, const char*>;
-        keyPressCommandsMap = new HashMap<int, const char*>;
-        
-        for (unsigned i = 0; i < (sizeof(keyDownEntries) / sizeof(keyDownEntries[0])); i++)
-            keyDownCommandsMap->set(keyDownEntries[i].modifiers << 16 | keyDownEntries[i].virtualKey, keyDownEntries[i].name);
-        
-        for (unsigned i = 0; i < (sizeof(keyPressEntries) / sizeof(keyPressEntries[0])); i++)
-            keyPressCommandsMap->set(keyPressEntries[i].modifiers << 16 | keyPressEntries[i].charCode, keyPressEntries[i].name);
+    ASSERT( evt->type() == eventNames().keydownEvent || evt->type() == eventNames().keypressEvent );
+
+    static HashMap<int, const char *> *keyDownCommandsMap = 0;
+    static HashMap<int, const char *> *keyPressCommandsMap = 0;
+
+    if ( !keyDownCommandsMap )
+    {
+        keyDownCommandsMap = new HashMap<int, const char *>;
+        keyPressCommandsMap = new HashMap<int, const char *>;
+
+        for ( unsigned i = 0; i < ( sizeof( keyDownEntries ) / sizeof( keyDownEntries[0] ) ); i++ )
+        {
+            keyDownCommandsMap->set( keyDownEntries[i].modifiers << 16 | keyDownEntries[i].virtualKey, keyDownEntries[i].name );
+        }
+
+        for ( unsigned i = 0; i < ( sizeof( keyPressEntries ) / sizeof( keyPressEntries[0] ) ); i++ )
+        {
+            keyPressCommandsMap->set( keyPressEntries[i].modifiers << 16 | keyPressEntries[i].charCode, keyPressEntries[i].name );
+        }
     }
-    
+
     unsigned modifiers = 0;
-    if (evt->shiftKey())
+
+    if ( evt->shiftKey() )
+    {
         modifiers |= ShiftKey;
-    if (evt->altKey())
-        modifiers |= AltKey;
-    if (evt->ctrlKey())
-        modifiers |= CtrlKey;
-    
-    if (evt->type() == eventNames().keydownEvent) {
-        int mapKey = modifiers << 16 | evt->keyEvent()->windowsVirtualKeyCode();
-        return mapKey ? keyDownCommandsMap->get(mapKey) : 0;
     }
-    
+
+    if ( evt->altKey() )
+    {
+        modifiers |= AltKey;
+    }
+
+    if ( evt->ctrlKey() )
+    {
+        modifiers |= CtrlKey;
+    }
+
+    if ( evt->type() == eventNames().keydownEvent )
+    {
+        int mapKey = modifiers << 16 | evt->keyEvent()->windowsVirtualKeyCode();
+        return mapKey ? keyDownCommandsMap->get( mapKey ) : 0;
+    }
+
     int mapKey = modifiers << 16 | evt->charCode();
-    return mapKey ? keyPressCommandsMap->get(mapKey) : 0;
+    return mapKey ? keyPressCommandsMap->get( mapKey ) : 0;
 }
 
-static inline void scroll(Page* page, ScrollDirection direction, ScrollGranularity granularity)
+static inline void scroll( Page *page, ScrollDirection direction, ScrollGranularity granularity )
 {
-    page->focusController()->focusedOrMainFrame()->eventHandler()->scrollRecursively(direction, granularity);
+    page->focusController()->focusedOrMainFrame()->eventHandler()->scrollRecursively( direction, granularity );
 }
 
-static inline void logicalScroll(Page* page, ScrollLogicalDirection direction, ScrollGranularity granularity)
+static inline void logicalScroll( Page *page, ScrollLogicalDirection direction, ScrollGranularity granularity )
 {
-    page->focusController()->focusedOrMainFrame()->eventHandler()->logicalScrollRecursively(direction, granularity);
+    page->focusController()->focusedOrMainFrame()->eventHandler()->logicalScrollRecursively( direction, granularity );
 }
 
-bool WebPage::performDefaultBehaviorForKeyEvent(const WebKeyboardEvent& keyboardEvent)
+bool WebPage::performDefaultBehaviorForKeyEvent( const WebKeyboardEvent &keyboardEvent )
 {
-    if (keyboardEvent.type() != WebEvent::KeyDown && keyboardEvent.type() != WebEvent::RawKeyDown)
+    if ( keyboardEvent.type() != WebEvent::KeyDown && keyboardEvent.type() != WebEvent::RawKeyDown )
+    {
         return false;
+    }
 
-    switch (keyboardEvent.windowsVirtualKeyCode()) {
-    case VK_BACK:
-        if (keyboardEvent.shiftKey())
-            m_page->goForward();
-        else
-            m_page->goBack();
-        break;
-    case VK_SPACE:
-        logicalScroll(m_page.get(), keyboardEvent.shiftKey() ? ScrollBlockDirectionBackward : ScrollBlockDirectionForward, ScrollByPage);
-        break;
-    case VK_LEFT:
-        scroll(m_page.get(), ScrollLeft, ScrollByLine);
-        break;
-    case VK_RIGHT:
-        scroll(m_page.get(), ScrollRight, ScrollByLine);
-        break;
-    case VK_UP:
-        scroll(m_page.get(), ScrollUp, ScrollByLine);
-        break;
-    case VK_DOWN:
-        scroll(m_page.get(), ScrollDown, ScrollByLine);
-        break;
-    case VK_HOME:
-        logicalScroll(m_page.get(), ScrollBlockDirectionBackward, ScrollByDocument);
-        break;
-    case VK_END:
-        logicalScroll(m_page.get(), ScrollBlockDirectionForward, ScrollByDocument);
-        break;
-    case VK_PRIOR:
-        logicalScroll(m_page.get(), ScrollBlockDirectionBackward, ScrollByPage);
-        break;
-    case VK_NEXT:
-        logicalScroll(m_page.get(), ScrollBlockDirectionForward, ScrollByPage);
-        break;
-    default:
-        return false;
+    switch ( keyboardEvent.windowsVirtualKeyCode() )
+    {
+        case VK_BACK:
+            if ( keyboardEvent.shiftKey() )
+            {
+                m_page->goForward();
+            }
+            else
+            {
+                m_page->goBack();
+            }
+
+            break;
+
+        case VK_SPACE:
+            logicalScroll( m_page.get(), keyboardEvent.shiftKey() ? ScrollBlockDirectionBackward : ScrollBlockDirectionForward,
+                           ScrollByPage );
+            break;
+
+        case VK_LEFT:
+            scroll( m_page.get(), ScrollLeft, ScrollByLine );
+            break;
+
+        case VK_RIGHT:
+            scroll( m_page.get(), ScrollRight, ScrollByLine );
+            break;
+
+        case VK_UP:
+            scroll( m_page.get(), ScrollUp, ScrollByLine );
+            break;
+
+        case VK_DOWN:
+            scroll( m_page.get(), ScrollDown, ScrollByLine );
+            break;
+
+        case VK_HOME:
+            logicalScroll( m_page.get(), ScrollBlockDirectionBackward, ScrollByDocument );
+            break;
+
+        case VK_END:
+            logicalScroll( m_page.get(), ScrollBlockDirectionForward, ScrollByDocument );
+            break;
+
+        case VK_PRIOR:
+            logicalScroll( m_page.get(), ScrollBlockDirectionBackward, ScrollByPage );
+            break;
+
+        case VK_NEXT:
+            logicalScroll( m_page.get(), ScrollBlockDirectionForward, ScrollByPage );
+            break;
+
+        default:
+            return false;
     }
 
     return true;
 }
 
-bool WebPage::platformHasLocalDataForURL(const KURL&)
+bool WebPage::platformHasLocalDataForURL( const KURL & )
 {
     notImplemented();
     return false;
 }
 
-String WebPage::cachedResponseMIMETypeForURL(const KURL&)
+String WebPage::cachedResponseMIMETypeForURL( const KURL & )
 {
     notImplemented();
     return String();
 }
 
-bool WebPage::platformCanHandleRequest(const ResourceRequest&)
+bool WebPage::platformCanHandleRequest( const ResourceRequest & )
 {
     notImplemented();
     return true;
 }
 
-String WebPage::cachedSuggestedFilenameForURL(const KURL&)
+String WebPage::cachedSuggestedFilenameForURL( const KURL & )
 {
     notImplemented();
     return String();
 }
 
-PassRefPtr<SharedBuffer> WebPage::cachedResponseDataForURL(const KURL&)
+PassRefPtr<SharedBuffer> WebPage::cachedResponseDataForURL( const KURL & )
 {
     notImplemented();
     return 0;

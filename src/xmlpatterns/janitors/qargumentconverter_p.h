@@ -26,25 +26,26 @@
 
 #include <quntypedatomicconverter_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ArgumentConverter : public UntypedAtomicConverter
 {
- public:
-   ArgumentConverter(const Expression::Ptr &operand,
-                     const ItemType::Ptr &reqType);
+public:
+    ArgumentConverter( const Expression::Ptr &operand,
+                       const ItemType::Ptr &reqType );
 
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
 
-   inline Item::Iterator::Ptr mapToSequence(const Item &item, const DynamicContext::Ptr &context) const;
+    inline Item::Iterator::Ptr mapToSequence( const Item &item, const DynamicContext::Ptr &context ) const;
 
-   SequenceType::List expectedOperandTypes() const override;
-   SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    SequenceType::Ptr staticType() const override;
 
- private:
-   typedef QExplicitlySharedDataPointer<const ArgumentConverter> ConstPtr;
+private:
+    typedef QExplicitlySharedDataPointer<const ArgumentConverter> ConstPtr;
 
 };
 

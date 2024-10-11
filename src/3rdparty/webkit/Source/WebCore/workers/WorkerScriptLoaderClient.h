@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -30,21 +30,23 @@
 
 #if ENABLE(WORKERS)
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ResourceResponse;
+class ResourceResponse;
 
-    class WorkerScriptLoaderClient {
-    public:
-        virtual void didReceiveResponse(const ResourceResponse&) { }
+class WorkerScriptLoaderClient
+{
+public:
+    virtual void didReceiveResponse( const ResourceResponse & ) { }
 
-        // FIXME: notifyFinished() is not currently guaranteed to be invoked if used from worker context and the worker shuts down in the middle of an operation.
-        // This will cause leaks when we support nested workers.
-        virtual void notifyFinished() { }
+    // FIXME: notifyFinished() is not currently guaranteed to be invoked if used from worker context and the worker shuts down in the middle of an operation.
+    // This will cause leaks when we support nested workers.
+    virtual void notifyFinished() { }
 
-    protected:
-        virtual ~WorkerScriptLoaderClient() { }
-    };
+protected:
+    virtual ~WorkerScriptLoaderClient() { }
+};
 
 } // namespace WebCore
 

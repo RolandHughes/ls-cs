@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JoinTextNodesCommand_h
@@ -28,19 +28,21 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Text;
 
-class JoinTextNodesCommand : public SimpleEditCommand {
+class JoinTextNodesCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<JoinTextNodesCommand> create(PassRefPtr<Text> text1, PassRefPtr<Text> text2)
+    static PassRefPtr<JoinTextNodesCommand> create( PassRefPtr<Text> text1, PassRefPtr<Text> text2 )
     {
-        return adoptRef(new JoinTextNodesCommand(text1, text2));
+        return adoptRef( new JoinTextNodesCommand( text1, text2 ) );
     }
 
 private:
-    JoinTextNodesCommand(PassRefPtr<Text>, PassRefPtr<Text>);
+    JoinTextNodesCommand( PassRefPtr<Text>, PassRefPtr<Text> );
 
     virtual void doApply();
     virtual void doUnapply();

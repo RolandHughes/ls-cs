@@ -32,10 +32,10 @@ class QScriptDebuggerStackWidgetInterface;
 
 class QScriptDebuggerStackWidgetInterfacePrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptDebuggerStackWidgetInterface)
- public:
-   QScriptDebuggerStackWidgetInterfacePrivate();
-   ~QScriptDebuggerStackWidgetInterfacePrivate();
+    Q_DECLARE_PUBLIC( QScriptDebuggerStackWidgetInterface )
+public:
+    QScriptDebuggerStackWidgetInterfacePrivate();
+    ~QScriptDebuggerStackWidgetInterfacePrivate();
 };
 
 QT_END_NAMESPACE

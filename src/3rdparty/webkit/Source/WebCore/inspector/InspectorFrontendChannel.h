@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef InspectorFrontendChannel_h
@@ -28,12 +28,14 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class InspectorFrontendChannel {
+class InspectorFrontendChannel
+{
 public:
     virtual ~InspectorFrontendChannel() { }
-    virtual bool sendMessageToFrontend(const String& message) = 0;
+    virtual bool sendMessageToFrontend( const String &message ) = 0;
 };
 
 } // namespace WebCore

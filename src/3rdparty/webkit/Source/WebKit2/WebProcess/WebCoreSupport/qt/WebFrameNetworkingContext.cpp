@@ -24,26 +24,27 @@
 #include <qnetaccess_manager.h>
 #include <qobject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-WebFrameNetworkingContext::WebFrameNetworkingContext(Frame* frame)
-    : FrameNetworkingContext(frame)
-    , m_originatingObject(0)
-    , m_mimeSniffingEnabled(true)
+WebFrameNetworkingContext::WebFrameNetworkingContext( Frame *frame )
+    : FrameNetworkingContext( frame )
+    , m_originatingObject( 0 )
+    , m_mimeSniffingEnabled( true )
 {
 }
 
-PassRefPtr<WebFrameNetworkingContext> WebFrameNetworkingContext::create(Frame* frame)
+PassRefPtr<WebFrameNetworkingContext> WebFrameNetworkingContext::create( Frame *frame )
 {
-    return adoptRef(new WebFrameNetworkingContext(frame));
+    return adoptRef( new WebFrameNetworkingContext( frame ) );
 }
 
-QObject* WebFrameNetworkingContext::originatingObject() const
+QObject *WebFrameNetworkingContext::originatingObject() const
 {
     return m_originatingObject;
 }
 
-QNetworkAccessManager* WebFrameNetworkingContext::networkAccessManager() const
+QNetworkAccessManager *WebFrameNetworkingContext::networkAccessManager() const
 {
     return WebKit::WebProcess::shared().networkAccessManager();
 }

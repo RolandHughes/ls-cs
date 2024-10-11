@@ -34,33 +34,47 @@
 #include "Event.h"
 #include "EventTarget.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-bool IDBEventDispatcher::dispatch(Event* event, Vector<RefPtr<EventTarget> >& eventTargets)
+bool IDBEventDispatcher::dispatch( Event *event, Vector<RefPtr<EventTarget> > &eventTargets )
 {
     size_t size = eventTargets.size();
-    ASSERT(size);
+    ASSERT( size );
 
-    event->setEventPhase(Event::CAPTURING_PHASE);
-    for (size_t i = size - 1; i; --i) { // Don't do the first element.
-        event->setCurrentTarget(eventTargets[i].get());
-        eventTargets[i]->fireEventListeners(event);
-        if (event->propagationStopped())
+    event->setEventPhase( Event::CAPTURING_PHASE );
+
+    for ( size_t i = size - 1; i; --i ) // Don't do the first element.
+    {
+        event->setCurrentTarget( eventTargets[i].get() );
+        eventTargets[i]->fireEventListeners( event );
+
+        if ( event->propagationStopped() )
+        {
             goto doneDispatching;
+        }
     }
 
-    event->setEventPhase(Event::AT_TARGET);
-    event->setCurrentTarget(eventTargets[0].get());
-    eventTargets[0]->fireEventListeners(event);
-    if (event->propagationStopped() || !event->bubbles() || event->cancelBubble())
-        goto doneDispatching;
+    event->setEventPhase( Event::AT_TARGET );
+    event->setCurrentTarget( eventTargets[0].get() );
+    eventTargets[0]->fireEventListeners( event );
 
-    event->setEventPhase(Event::BUBBLING_PHASE);
-    for (size_t i = 1; i < size; ++i) { // Don't do the first element.
-        event->setCurrentTarget(eventTargets[i].get());
-        eventTargets[i]->fireEventListeners(event);
-        if (event->propagationStopped() || event->cancelBubble())
+    if ( event->propagationStopped() || !event->bubbles() || event->cancelBubble() )
+    {
+        goto doneDispatching;
+    }
+
+    event->setEventPhase( Event::BUBBLING_PHASE );
+
+    for ( size_t i = 1; i < size; ++i ) // Don't do the first element.
+    {
+        event->setCurrentTarget( eventTargets[i].get() );
+        eventTargets[i]->fireEventListeners( event );
+
+        if ( event->propagationStopped() || event->cancelBubble() )
+        {
             goto doneDispatching;
+        }
     }
 
     // FIXME: "...However, we also wanted to integrate the window.onerror feature in
@@ -74,16 +88,16 @@ bool IDBEventDispatcher::dispatch(Event* event, Vector<RefPtr<EventTarget> >& ev
     //        prevent the transaction from being aborted. It's purely there for
     //        error reporting and distinctly different from the event propagating to
     //        the window.
-    //        
+    //
     //        This is similar to how "error" events are handled in workers.
-    //        
+    //
     //        (I think that so far webkit hasn't implemented the window.onerror
     //        feature yet, so you probably don't want to fire the separate error
     //        event on the window until that has been implemented)." -- Jonas Sicking
 
 doneDispatching:
-    event->setCurrentTarget(0);
-    event->setEventPhase(0);
+    event->setCurrentTarget( 0 );
+    event->setEventPhase( 0 );
     return !event->defaultPrevented();
 }
 

@@ -32,184 +32,271 @@
 #include "LocalizedStrings.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 String ValidityState::validationMessage() const
 {
-    if (!toHTMLElement(m_control)->willValidate())
+    if ( !toHTMLElement( m_control )->willValidate() )
+    {
         return String();
+    }
 
-    if (customError())
+    if ( customError() )
+    {
         return m_customErrorMessage;
-    HTMLElement* element = toHTMLElement(m_control);
-    bool isInputElement = element->isFormControlElement() && element->hasTagName(inputTag);
-    bool isTextAreaElement = element->isFormControlElement() && element->hasTagName(textareaTag);
+    }
+
+    HTMLElement *element = toHTMLElement( m_control );
+    bool isInputElement = element->isFormControlElement() && element->hasTagName( inputTag );
+    bool isTextAreaElement = element->isFormControlElement() && element->hasTagName( textareaTag );
+
     // The order of the following checks is meaningful. e.g. We'd like to show the
     // valueMissing message even if the control has other validation errors.
-    if (valueMissing()) {
-        if (element->hasTagName(selectTag))
+    if ( valueMissing() )
+    {
+        if ( element->hasTagName( selectTag ) )
+        {
             return validationMessageValueMissingForSelectText();
-        if (isInputElement)
-            return static_cast<HTMLInputElement*>(element)->valueMissingText();
+        }
+
+        if ( isInputElement )
+        {
+            return static_cast<HTMLInputElement *>( element )->valueMissingText();
+        }
+
         return validationMessageValueMissingText();
     }
-    if (typeMismatch()) {
-        if (isInputElement)
-            return static_cast<HTMLInputElement*>(element)->typeMismatchText();
+
+    if ( typeMismatch() )
+    {
+        if ( isInputElement )
+        {
+            return static_cast<HTMLInputElement *>( element )->typeMismatchText();
+        }
+
         return validationMessageTypeMismatchText();
     }
-    if (patternMismatch())
+
+    if ( patternMismatch() )
+    {
         return validationMessagePatternMismatchText();
-    if (tooLong()) {
-        if (!isInputElement && !isTextAreaElement) {
-            ASSERT_NOT_REACHED();
-            return String();
-        }
-        HTMLTextFormControlElement* text = static_cast<HTMLTextFormControlElement*>(element);
-        return validationMessageTooLongText(numGraphemeClusters(text->value()), text->maxLength());
     }
-    if (rangeUnderflow()) {
-        if (!isInputElement) {
+
+    if ( tooLong() )
+    {
+        if ( !isInputElement && !isTextAreaElement )
+        {
             ASSERT_NOT_REACHED();
             return String();
         }
-        return validationMessageRangeUnderflowText(static_cast<HTMLInputElement*>(element)->minimumString());
+
+        HTMLTextFormControlElement *text = static_cast<HTMLTextFormControlElement *>( element );
+        return validationMessageTooLongText( numGraphemeClusters( text->value() ), text->maxLength() );
     }
-    if (rangeOverflow()) {
-        if (!isInputElement) {
+
+    if ( rangeUnderflow() )
+    {
+        if ( !isInputElement )
+        {
             ASSERT_NOT_REACHED();
             return String();
         }
-        return validationMessageRangeOverflowText(static_cast<HTMLInputElement*>(element)->maximumString());
+
+        return validationMessageRangeUnderflowText( static_cast<HTMLInputElement *>( element )->minimumString() );
     }
-    if (stepMismatch()) {
-        if (!isInputElement) {
+
+    if ( rangeOverflow() )
+    {
+        if ( !isInputElement )
+        {
             ASSERT_NOT_REACHED();
             return String();
         }
-        HTMLInputElement* input = static_cast<HTMLInputElement*>(element);
-        return validationMessageStepMismatchText(input->stepBaseString(), input->stepString());
+
+        return validationMessageRangeOverflowText( static_cast<HTMLInputElement *>( element )->maximumString() );
+    }
+
+    if ( stepMismatch() )
+    {
+        if ( !isInputElement )
+        {
+            ASSERT_NOT_REACHED();
+            return String();
+        }
+
+        HTMLInputElement *input = static_cast<HTMLInputElement *>( element );
+        return validationMessageStepMismatchText( input->stepBaseString(), input->stepString() );
     }
 
     return String();
 }
 
-void ValidityState::setCustomErrorMessage(const String& message)
+void ValidityState::setCustomErrorMessage( const String &message )
 {
     m_customErrorMessage = message;
-    if (m_control->isFormControlElement())
-        static_cast<HTMLFormControlElement*>(m_control)->setNeedsValidityCheck();
+
+    if ( m_control->isFormControlElement() )
+    {
+        static_cast<HTMLFormControlElement *>( m_control )->setNeedsValidityCheck();
+    }
 }
 
 bool ValidityState::valueMissing() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
-    if (!element->willValidate())
-        return false;
+    HTMLElement *element = toHTMLElement( m_control );
 
-    if (element->hasTagName(inputTag)) {
-        HTMLInputElement* input = static_cast<HTMLInputElement*>(element);
-        return input->valueMissing(input->value());
+    if ( !element->willValidate() )
+    {
+        return false;
     }
-    if (element->hasTagName(textareaTag)) {
-        HTMLTextAreaElement* textArea = static_cast<HTMLTextAreaElement*>(element);
-        return textArea->valueMissing(textArea->value());
+
+    if ( element->hasTagName( inputTag ) )
+    {
+        HTMLInputElement *input = static_cast<HTMLInputElement *>( element );
+        return input->valueMissing( input->value() );
     }
-    if (element->hasTagName(selectTag)) {
-        HTMLSelectElement* select = static_cast<HTMLSelectElement*>(element);
+
+    if ( element->hasTagName( textareaTag ) )
+    {
+        HTMLTextAreaElement *textArea = static_cast<HTMLTextAreaElement *>( element );
+        return textArea->valueMissing( textArea->value() );
+    }
+
+    if ( element->hasTagName( selectTag ) )
+    {
+        HTMLSelectElement *select = static_cast<HTMLSelectElement *>( element );
         return select->valueMissing();
     }
+
     return false;
 }
 
 bool ValidityState::typeMismatch() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
-    if (!element->willValidate())
-        return false;
+    HTMLElement *element = toHTMLElement( m_control );
 
-    if (!element->hasTagName(inputTag))
+    if ( !element->willValidate() )
+    {
         return false;
-    return static_cast<HTMLInputElement*>(element)->typeMismatch();
+    }
+
+    if ( !element->hasTagName( inputTag ) )
+    {
+        return false;
+    }
+
+    return static_cast<HTMLInputElement *>( element )->typeMismatch();
 }
 
 bool ValidityState::patternMismatch() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
-    if (!element->willValidate())
-        return false;
+    HTMLElement *element = toHTMLElement( m_control );
 
-    if (!element->hasTagName(inputTag))
+    if ( !element->willValidate() )
+    {
         return false;
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(element);
-    return input->patternMismatch(input->value());
+    }
+
+    if ( !element->hasTagName( inputTag ) )
+    {
+        return false;
+    }
+
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( element );
+    return input->patternMismatch( input->value() );
 }
 
 bool ValidityState::tooLong() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
-    if (!element->willValidate())
-        return false;
+    HTMLElement *element = toHTMLElement( m_control );
 
-    if (element->hasTagName(inputTag)) {
-        HTMLInputElement* input = static_cast<HTMLInputElement*>(element);
-        return input->tooLong(input->value(), HTMLTextFormControlElement::CheckDirtyFlag);
+    if ( !element->willValidate() )
+    {
+        return false;
     }
-    if (element->hasTagName(textareaTag)) {
-        HTMLTextAreaElement* textArea = static_cast<HTMLTextAreaElement*>(element);
-        return textArea->tooLong(textArea->value(), HTMLTextFormControlElement::CheckDirtyFlag);
+
+    if ( element->hasTagName( inputTag ) )
+    {
+        HTMLInputElement *input = static_cast<HTMLInputElement *>( element );
+        return input->tooLong( input->value(), HTMLTextFormControlElement::CheckDirtyFlag );
     }
+
+    if ( element->hasTagName( textareaTag ) )
+    {
+        HTMLTextAreaElement *textArea = static_cast<HTMLTextAreaElement *>( element );
+        return textArea->tooLong( textArea->value(), HTMLTextFormControlElement::CheckDirtyFlag );
+    }
+
     return false;
 }
 
 bool ValidityState::rangeUnderflow() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
-    if (!element->willValidate())
-        return false;
+    HTMLElement *element = toHTMLElement( m_control );
 
-    if (!element->hasTagName(inputTag))
+    if ( !element->willValidate() )
+    {
         return false;
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(element);
-    return input->rangeUnderflow(input->value());
+    }
+
+    if ( !element->hasTagName( inputTag ) )
+    {
+        return false;
+    }
+
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( element );
+    return input->rangeUnderflow( input->value() );
 }
 
 bool ValidityState::rangeOverflow() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
-    if (!element->willValidate())
-        return false;
+    HTMLElement *element = toHTMLElement( m_control );
 
-    if (!element->hasTagName(inputTag))
+    if ( !element->willValidate() )
+    {
         return false;
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(element);
-    return input->rangeOverflow(input->value());
+    }
+
+    if ( !element->hasTagName( inputTag ) )
+    {
+        return false;
+    }
+
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( element );
+    return input->rangeOverflow( input->value() );
 }
 
 bool ValidityState::stepMismatch() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
-    if (!element->willValidate())
-        return false;
+    HTMLElement *element = toHTMLElement( m_control );
 
-    if (!element->hasTagName(inputTag))
+    if ( !element->willValidate() )
+    {
         return false;
-    HTMLInputElement* input = static_cast<HTMLInputElement*>(element);
-    return input->stepMismatch(input->value());
+    }
+
+    if ( !element->hasTagName( inputTag ) )
+    {
+        return false;
+    }
+
+    HTMLInputElement *input = static_cast<HTMLInputElement *>( element );
+    return input->stepMismatch( input->value() );
 }
 
 bool ValidityState::customError() const
 {
-    HTMLElement* element = toHTMLElement(m_control);
+    HTMLElement *element = toHTMLElement( m_control );
     return element->willValidate() && !m_customErrorMessage.isEmpty();
 }
 
 bool ValidityState::valid() const
 {
     bool someError = typeMismatch() || stepMismatch() || rangeUnderflow() || rangeOverflow()
-        || tooLong() || patternMismatch() || valueMissing() || customError();
+                     || tooLong() || patternMismatch() || valueMissing() || customError();
     return !someError;
 }
 

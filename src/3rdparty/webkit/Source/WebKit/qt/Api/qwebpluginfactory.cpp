@@ -94,7 +94,7 @@
 /*!
     Returns true if this mimetype is the same as the \a other mime type.
 */
-bool QWebPluginFactory::MimeType::operator==(const MimeType& other) const
+bool QWebPluginFactory::MimeType::operator==( const MimeType &other ) const
 {
     return name == other.name
            && description == other.description
@@ -128,8 +128,8 @@ bool QWebPluginFactory::MimeType::operator==(const MimeType& other) const
 /*!
     Constructs a QWebPluginFactory with parent \a parent.
 */
-QWebPluginFactory::QWebPluginFactory(QObject *parent)
-    : QObject(parent)
+QWebPluginFactory::QWebPluginFactory( QObject *parent )
+    : QObject( parent )
 {
 }
 
@@ -242,11 +242,11 @@ void QWebPluginFactory::refreshPlugins()
 
     \sa supportsExtension(), Extension
 */
-bool QWebPluginFactory::extension(Extension extension, const ExtensionOption *option, ExtensionReturn *output)
+bool QWebPluginFactory::extension( Extension extension, const ExtensionOption *option, ExtensionReturn *output )
 {
-    Q_UNUSED(extension)
-    Q_UNUSED(option)
-    Q_UNUSED(output)
+    Q_UNUSED( extension )
+    Q_UNUSED( option )
+    Q_UNUSED( output )
     return false;
 }
 
@@ -257,8 +257,8 @@ bool QWebPluginFactory::extension(Extension extension, const ExtensionOption *op
 
     \sa extension()
 */
-bool QWebPluginFactory::supportsExtension(Extension extension) const
+bool QWebPluginFactory::supportsExtension( Extension extension ) const
 {
-    Q_UNUSED(extension)
+    Q_UNUSED( extension )
     return false;
 }

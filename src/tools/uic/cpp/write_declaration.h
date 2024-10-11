@@ -33,25 +33,27 @@ class Uic;
 
 struct Option;
 
-namespace CPP {
+namespace CPP
+{
 
-struct WriteDeclaration : public TreeWalker {
-   WriteDeclaration(Uic *uic, bool activateScripts);
+struct WriteDeclaration : public TreeWalker
+{
+    WriteDeclaration( Uic *uic, bool activateScripts );
 
-   void acceptUI(DomUI *node) override;
-   void acceptWidget(DomWidget *node) override;
-   void acceptSpacer(DomSpacer *node) override;
-   void acceptLayout(DomLayout *node) override;
-   void acceptActionGroup(DomActionGroup *node) override;
-   void acceptAction(DomAction *node) override;
-   void acceptButtonGroup(const DomButtonGroup *buttonGroup) override;
+    void acceptUI( DomUI *node ) override;
+    void acceptWidget( DomWidget *node ) override;
+    void acceptSpacer( DomSpacer *node ) override;
+    void acceptLayout( DomLayout *node ) override;
+    void acceptActionGroup( DomActionGroup *node ) override;
+    void acceptAction( DomAction *node ) override;
+    void acceptButtonGroup( const DomButtonGroup *buttonGroup ) override;
 
- private:
-   Uic *m_uic;
-   Driver *m_driver;
-   QTextStream &m_output;
-   const Option &m_option;
-   const bool m_activateScripts;
+private:
+    Uic *m_uic;
+    Driver *m_driver;
+    QTextStream &m_output;
+    const Option &m_option;
+    const bool m_activateScripts;
 };
 
 } // namespace CPP

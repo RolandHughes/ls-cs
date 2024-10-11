@@ -32,43 +32,45 @@ class QXmlItem;
 class QXmlName;
 class QVariant;
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class AbstractXmlPullProviderPrivate;
 
 class AbstractXmlPullProvider
 {
- public:
-   AbstractXmlPullProvider();
-   virtual ~AbstractXmlPullProvider();
+public:
+    AbstractXmlPullProvider();
+    virtual ~AbstractXmlPullProvider();
 
-   enum Event {
-      StartOfInput            = 1,
-      AtomicValue             = 1 << 1,
-      StartDocument           = 1 << 2,
-      EndDocument             = 1 << 3,
-      StartElement            = 1 << 4,
-      EndElement              = 1 << 5,
-      Text                    = 1 << 6,
-      ProcessingInstruction   = 1 << 7,
-      Comment                 = 1 << 8,
-      Attribute               = 1 << 9,
-      Namespace               = 1 << 10,
-      EndOfInput              = 1 << 11
-   };
+    enum Event
+    {
+        StartOfInput            = 1,
+        AtomicValue             = 1 << 1,
+        StartDocument           = 1 << 2,
+        EndDocument             = 1 << 3,
+        StartElement            = 1 << 4,
+        EndElement              = 1 << 5,
+        Text                    = 1 << 6,
+        ProcessingInstruction   = 1 << 7,
+        Comment                 = 1 << 8,
+        Attribute               = 1 << 9,
+        Namespace               = 1 << 10,
+        EndOfInput              = 1 << 11
+    };
 
-   virtual Event next() = 0;
-   virtual Event current() const = 0;
-   virtual QXmlName name() const = 0;
-   virtual QVariant atomicValue() const = 0;
-   virtual QString stringValue() const = 0;
+    virtual Event next() = 0;
+    virtual Event current() const = 0;
+    virtual QXmlName name() const = 0;
+    virtual QVariant atomicValue() const = 0;
+    virtual QString stringValue() const = 0;
 
-   virtual QHash<QXmlName, QString> attributes() = 0;
-   virtual QHash<QXmlName, QXmlItem> attributeItems() = 0;
+    virtual QHash<QXmlName, QString> attributes() = 0;
+    virtual QHash<QXmlName, QXmlItem> attributeItems() = 0;
 
- private:
-   AbstractXmlPullProvider(const AbstractXmlPullProvider &) = delete;
-   AbstractXmlPullProvider &operator=(const AbstractXmlPullProvider &) = delete;
+private:
+    AbstractXmlPullProvider( const AbstractXmlPullProvider & ) = delete;
+    AbstractXmlPullProvider &operator=( const AbstractXmlPullProvider & ) = delete;
 };
 
 }   // end namespace

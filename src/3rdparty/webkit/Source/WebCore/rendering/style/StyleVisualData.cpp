@@ -24,12 +24,13 @@
 
 #include "RenderStyle.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 StyleVisualData::StyleVisualData()
-    : hasClip(false)
-    , textDecoration(RenderStyle::initialTextDecoration())
-    , m_zoom(RenderStyle::initialZoom())
+    : hasClip( false )
+    , textDecoration( RenderStyle::initialTextDecoration() )
+    , m_zoom( RenderStyle::initialZoom() )
 {
 }
 
@@ -37,12 +38,12 @@ StyleVisualData::~StyleVisualData()
 {
 }
 
-StyleVisualData::StyleVisualData(const StyleVisualData& o)
+StyleVisualData::StyleVisualData( const StyleVisualData &o )
     : RefCounted<StyleVisualData>()
-    , clip(o.clip)
-    , hasClip(o.hasClip)
-    , textDecoration(o.textDecoration)
-    , m_zoom(RenderStyle::initialZoom())
+    , clip( o.clip )
+    , hasClip( o.hasClip )
+    , textDecoration( o.textDecoration )
+    , m_zoom( RenderStyle::initialZoom() )
 {
 }
 

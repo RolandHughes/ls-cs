@@ -30,16 +30,18 @@
 
 class QWebPage;
 
-namespace WebCore {
-    class FrameLoaderClientQt;
+namespace WebCore
+{
+class FrameLoaderClientQt;
 }
 
 class QWebHistoryItemPrivate;
 
-class QWEBKIT_EXPORT QWebHistoryItem {
+class QWEBKIT_EXPORT QWebHistoryItem
+{
 public:
-    QWebHistoryItem(const QWebHistoryItem &other);
-    QWebHistoryItem &operator=(const QWebHistoryItem &other);
+    QWebHistoryItem( const QWebHistoryItem &other );
+    QWebHistoryItem &operator=( const QWebHistoryItem &other );
     ~QWebHistoryItem();
 
     QUrl originalUrl() const;
@@ -51,12 +53,12 @@ public:
     QIcon icon() const;
 
     QVariant userData() const;
-    void setUserData(const QVariant& userData);
+    void setUserData( const QVariant &userData );
 
     bool isValid() const;
 
 private:
-    QWebHistoryItem(QWebHistoryItemPrivate *priv);
+    QWebHistoryItem( QWebHistoryItemPrivate *priv );
     friend class QWebHistory;
     friend class QWebPage;
     friend class WebCore::FrameLoaderClientQt;
@@ -70,35 +72,36 @@ private:
 
 class QWebHistoryPrivate;
 
-class QWEBKIT_EXPORT QWebHistory {
- public:
-    QWebHistory(const QWebHistory &) = delete;
-    QWebHistory &operator=(const QWebHistory &) = delete;
+class QWEBKIT_EXPORT QWebHistory
+{
+public:
+    QWebHistory( const QWebHistory & ) = delete;
+    QWebHistory &operator=( const QWebHistory & ) = delete;
 
     void clear();
 
     QList<QWebHistoryItem> items() const;
-    QList<QWebHistoryItem> backItems(int maxItems) const;
-    QList<QWebHistoryItem> forwardItems(int maxItems) const;
+    QList<QWebHistoryItem> backItems( int maxItems ) const;
+    QList<QWebHistoryItem> forwardItems( int maxItems ) const;
 
     bool canGoBack() const;
     bool canGoForward() const;
 
     void back();
     void forward();
-    void goToItem(const QWebHistoryItem &item);
+    void goToItem( const QWebHistoryItem &item );
 
     QWebHistoryItem backItem() const;
     QWebHistoryItem currentItem() const;
     QWebHistoryItem forwardItem() const;
-    QWebHistoryItem itemAt(int i) const;
+    QWebHistoryItem itemAt( int i ) const;
 
     int currentItemIndex() const;
 
     int count() const;
 
     int maximumItemCount() const;
-    void setMaximumItemCount(int count);
+    void setMaximumItemCount( int count );
 
 private:
     QWebHistory();
@@ -106,13 +109,13 @@ private:
 
     friend class QWebPage;
     friend class QWebPagePrivate;
-    friend QWEBKIT_EXPORT QDataStream& operator>>(QDataStream &stream, QWebHistory &history);
-    friend QWEBKIT_EXPORT QDataStream& operator<<(QDataStream &stream, const QWebHistory &history);
+    friend QWEBKIT_EXPORT QDataStream &operator>>( QDataStream &stream, QWebHistory &history );
+    friend QWEBKIT_EXPORT QDataStream &operator<<( QDataStream &stream, const QWebHistory &history );
 
     QWebHistoryPrivate *d;
 };
 
-QWEBKIT_EXPORT QDataStream& operator<<(QDataStream& stream, const QWebHistory& history);
-QWEBKIT_EXPORT QDataStream& operator>>(QDataStream& stream, QWebHistory& history);
+QWEBKIT_EXPORT QDataStream &operator<<( QDataStream &stream, const QWebHistory &history );
+QWEBKIT_EXPORT QDataStream &operator>>( QDataStream &stream, QWebHistory &history );
 
 #endif

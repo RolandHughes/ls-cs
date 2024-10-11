@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,27 +31,32 @@
 
 #include "windows.h"
 
-namespace JSC {
+namespace JSC
+{
 
 void ExecutableAllocator::intializePageSize()
 {
     SYSTEM_INFO system_info;
-    GetSystemInfo(&system_info);
+    GetSystemInfo( &system_info );
     ExecutableAllocator::pageSize = system_info.dwPageSize;
 }
 
-ExecutablePool::Allocation ExecutablePool::systemAlloc(size_t n)
+ExecutablePool::Allocation ExecutablePool::systemAlloc( size_t n )
 {
-    void* allocation = VirtualAlloc(0, n, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    if (!allocation)
+    void *allocation = VirtualAlloc( 0, n, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE );
+
+    if ( !allocation )
+    {
         CRASH();
-    ExecutablePool::Allocation alloc = {reinterpret_cast<char*>(allocation), n};
+    }
+
+    ExecutablePool::Allocation alloc = {reinterpret_cast<char *>( allocation ), n};
     return alloc;
 }
 
-void ExecutablePool::systemRelease(const ExecutablePool::Allocation& alloc)
-{ 
-    VirtualFree(alloc.pages, 0, MEM_RELEASE); 
+void ExecutablePool::systemRelease( const ExecutablePool::Allocation &alloc )
+{
+    VirtualFree( alloc.pages, 0, MEM_RELEASE );
 }
 
 #if ENABLE(ASSEMBLER_WX_EXCLUSIVE)

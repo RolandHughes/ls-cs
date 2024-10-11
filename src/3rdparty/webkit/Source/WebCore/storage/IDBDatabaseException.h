@@ -30,19 +30,22 @@
 
 #include "ExceptionBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class IDBDatabaseException : public ExceptionBase {
+class IDBDatabaseException : public ExceptionBase
+{
 public:
-    static PassRefPtr<IDBDatabaseException> create(const ExceptionCodeDescription& description)
+    static PassRefPtr<IDBDatabaseException> create( const ExceptionCodeDescription &description )
     {
-        return adoptRef(new IDBDatabaseException(description));
+        return adoptRef( new IDBDatabaseException( description ) );
     }
 
     static const int IDBDatabaseExceptionOffset = 1200;
     static const int IDBDatabaseExceptionMax = 1299;
 
-    enum IDBDatabaseExceptionCode {
+    enum IDBDatabaseExceptionCode
+    {
         NO_ERR = IDBDatabaseExceptionOffset + 0,
         UNKNOWN_ERR = IDBDatabaseExceptionOffset + 1,
         NON_TRANSIENT_ERR = IDBDatabaseExceptionOffset + 2,
@@ -59,16 +62,19 @@ public:
         ABORT_ERR = IDBDatabaseExceptionOffset + 13
     };
 
-    static int ErrorCodeToExceptionCode(int errorCode)
+    static int ErrorCodeToExceptionCode( int errorCode )
     {
-        if (!errorCode)
+        if ( !errorCode )
+        {
             return 0;
+        }
+
         return errorCode + IDBDatabaseExceptionOffset;
     }
 
 private:
-    IDBDatabaseException(const ExceptionCodeDescription& description)
-        : ExceptionBase(description)
+    IDBDatabaseException( const ExceptionCodeDescription &description )
+        : ExceptionBase( description )
     {
     }
 };

@@ -31,9 +31,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSIDBDatabaseError);
+ASSERT_CLASS_FITS_IN_CELL( JSIDBDatabaseError );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -44,10 +45,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSIDBDatabaseError);
 
 static const HashTableValue JSIDBDatabaseErrorTableValues[4] =
 {
-    { "code", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseErrorCode), (intptr_t)setJSIDBDatabaseErrorCode THUNK_GENERATOR(0) },
-    { "message", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseErrorMessage), (intptr_t)setJSIDBDatabaseErrorMessage THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsIDBDatabaseErrorConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "code", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseErrorCode ), ( intptr_t )setJSIDBDatabaseErrorCode THUNK_GENERATOR( 0 ) },
+    { "message", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseErrorMessage ), ( intptr_t )setJSIDBDatabaseErrorMessage THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsIDBDatabaseErrorConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,43 +62,51 @@ static JSC_CONST_HASHTABLE HashTable JSIDBDatabaseErrorTable = { 9, 7, JSIDBData
 
 static const HashTableValue JSIDBDatabaseErrorConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBDatabaseErrorConstructorTable = { 1, 0, JSIDBDatabaseErrorConstructorTableValues, 0 };
-class JSIDBDatabaseErrorConstructor : public DOMConstructorObject {
+class JSIDBDatabaseErrorConstructor : public DOMConstructorObject
+{
 public:
-    JSIDBDatabaseErrorConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSIDBDatabaseErrorConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSIDBDatabaseErrorConstructor::s_info = { "IDBDatabaseErrorConstructor", &DOMConstructorObject::s_info, &JSIDBDatabaseErrorConstructorTable, 0 };
 
-JSIDBDatabaseErrorConstructor::JSIDBDatabaseErrorConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSIDBDatabaseErrorConstructor::JSIDBDatabaseErrorConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSIDBDatabaseErrorPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSIDBDatabaseErrorPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSIDBDatabaseErrorConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBDatabaseErrorConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBDatabaseErrorConstructor, JSDOMWrapper>(exec, &JSIDBDatabaseErrorConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBDatabaseErrorConstructor, JSDOMWrapper>( exec, &JSIDBDatabaseErrorConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSIDBDatabaseErrorConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBDatabaseErrorConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBDatabaseErrorConstructor, JSDOMWrapper>(exec, &JSIDBDatabaseErrorConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBDatabaseErrorConstructor, JSDOMWrapper>( exec, &JSIDBDatabaseErrorConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -109,102 +118,104 @@ bool JSIDBDatabaseErrorConstructor::getOwnPropertyDescriptor(ExecState* exec, co
 
 static const HashTableValue JSIDBDatabaseErrorPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSIDBDatabaseErrorPrototypeTable = { 1, 0, JSIDBDatabaseErrorPrototypeTableValues, 0 };
 const ClassInfo JSIDBDatabaseErrorPrototype::s_info = { "IDBDatabaseErrorPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSIDBDatabaseErrorPrototypeTable, 0 };
 
-JSObject* JSIDBDatabaseErrorPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBDatabaseErrorPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSIDBDatabaseError>(exec, globalObject);
+    return getDOMPrototype<JSIDBDatabaseError>( exec, globalObject );
 }
 
 const ClassInfo JSIDBDatabaseError::s_info = { "IDBDatabaseError", &JSDOMWrapper::s_info, &JSIDBDatabaseErrorTable, 0 };
 
-JSIDBDatabaseError::JSIDBDatabaseError(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<IDBDatabaseError> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSIDBDatabaseError::JSIDBDatabaseError( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<IDBDatabaseError> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSIDBDatabaseError::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSIDBDatabaseError::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSIDBDatabaseErrorPrototype(exec->globalData(), globalObject, JSIDBDatabaseErrorPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSIDBDatabaseErrorPrototype( exec->globalData(), globalObject,
+            JSIDBDatabaseErrorPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSIDBDatabaseError::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSIDBDatabaseError::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSIDBDatabaseError, Base>(exec, &JSIDBDatabaseErrorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSIDBDatabaseError, Base>( exec, &JSIDBDatabaseErrorTable, this, propertyName, slot );
 }
 
-bool JSIDBDatabaseError::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSIDBDatabaseError::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSIDBDatabaseError, Base>(exec, &JSIDBDatabaseErrorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSIDBDatabaseError, Base>( exec, &JSIDBDatabaseErrorTable, this, propertyName, descriptor );
 }
 
-JSValue jsIDBDatabaseErrorCode(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseErrorCode( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabaseError* castedThis = static_cast<JSIDBDatabaseError*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabaseError* imp = static_cast<IDBDatabaseError*>(castedThis->impl());
-    JSValue result = jsNumber(imp->code());
+    JSIDBDatabaseError *castedThis = static_cast<JSIDBDatabaseError *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabaseError *imp = static_cast<IDBDatabaseError *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->code() );
     return result;
 }
 
 
-JSValue jsIDBDatabaseErrorMessage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseErrorMessage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabaseError* castedThis = static_cast<JSIDBDatabaseError*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    IDBDatabaseError* imp = static_cast<IDBDatabaseError*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->message());
+    JSIDBDatabaseError *castedThis = static_cast<JSIDBDatabaseError *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    IDBDatabaseError *imp = static_cast<IDBDatabaseError *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->message() );
     return result;
 }
 
 
-JSValue jsIDBDatabaseErrorConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsIDBDatabaseErrorConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSIDBDatabaseError* domObject = static_cast<JSIDBDatabaseError*>(asObject(slotBase));
-    return JSIDBDatabaseError::getConstructor(exec, domObject->globalObject());
+    JSIDBDatabaseError *domObject = static_cast<JSIDBDatabaseError *>( asObject( slotBase ) );
+    return JSIDBDatabaseError::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSIDBDatabaseError::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSIDBDatabaseError::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSIDBDatabaseError, Base>(exec, propertyName, value, &JSIDBDatabaseErrorTable, this, slot);
+    lookupPut<JSIDBDatabaseError, Base>( exec, propertyName, value, &JSIDBDatabaseErrorTable, this, slot );
 }
 
-void setJSIDBDatabaseErrorCode(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSIDBDatabaseErrorCode( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSIDBDatabaseError* castedThis = static_cast<JSIDBDatabaseError*>(thisObject);
-    IDBDatabaseError* imp = static_cast<IDBDatabaseError*>(castedThis->impl());
-    imp->setCode(value.toUInt32(exec));
-}
-
-
-void setJSIDBDatabaseErrorMessage(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSIDBDatabaseError* castedThis = static_cast<JSIDBDatabaseError*>(thisObject);
-    IDBDatabaseError* imp = static_cast<IDBDatabaseError*>(castedThis->impl());
-    imp->setMessage(ustringToString(value.toString(exec)));
+    JSIDBDatabaseError *castedThis = static_cast<JSIDBDatabaseError *>( thisObject );
+    IDBDatabaseError *imp = static_cast<IDBDatabaseError *>( castedThis->impl() );
+    imp->setCode( value.toUInt32( exec ) );
 }
 
 
-JSValue JSIDBDatabaseError::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSIDBDatabaseErrorMessage( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSIDBDatabaseErrorConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSIDBDatabaseError *castedThis = static_cast<JSIDBDatabaseError *>( thisObject );
+    IDBDatabaseError *imp = static_cast<IDBDatabaseError *>( castedThis->impl() );
+    imp->setMessage( ustringToString( value.toString( exec ) ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, IDBDatabaseError* impl)
+
+JSValue JSIDBDatabaseError::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return wrap<JSIDBDatabaseError>(exec, globalObject, impl);
+    return getDOMConstructor<JSIDBDatabaseErrorConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-IDBDatabaseError* toIDBDatabaseError(JSC::JSValue value)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, IDBDatabaseError *impl )
 {
-    return value.inherits(&JSIDBDatabaseError::s_info) ? static_cast<JSIDBDatabaseError*>(asObject(value))->impl() : 0;
+    return wrap<JSIDBDatabaseError>( exec, globalObject, impl );
+}
+
+IDBDatabaseError *toIDBDatabaseError( JSC::JSValue value )
+{
+    return value.inherits( &JSIDBDatabaseError::s_info ) ? static_cast<JSIDBDatabaseError *>( asObject( value ) )->impl() : 0;
 }
 
 }

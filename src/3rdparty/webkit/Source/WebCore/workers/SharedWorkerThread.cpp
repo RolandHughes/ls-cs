@@ -36,16 +36,19 @@
 
 #include "SharedWorkerContext.h"
 
-namespace WebCore {
-
-PassRefPtr<SharedWorkerThread> SharedWorkerThread::create(const String& name, const KURL& scriptURL, const String& userAgent, const String& sourceCode, WorkerLoaderProxy& workerLoaderProxy, WorkerReportingProxy& workerReportingProxy)
+namespace WebCore
 {
-    return adoptRef(new SharedWorkerThread(name, scriptURL, userAgent, sourceCode, workerLoaderProxy, workerReportingProxy));
+
+PassRefPtr<SharedWorkerThread> SharedWorkerThread::create( const String &name, const KURL &scriptURL, const String &userAgent,
+        const String &sourceCode, WorkerLoaderProxy &workerLoaderProxy, WorkerReportingProxy &workerReportingProxy )
+{
+    return adoptRef( new SharedWorkerThread( name, scriptURL, userAgent, sourceCode, workerLoaderProxy, workerReportingProxy ) );
 }
 
-SharedWorkerThread::SharedWorkerThread(const String& name, const KURL& url, const String& userAgent, const String& sourceCode, WorkerLoaderProxy& workerLoaderProxy, WorkerReportingProxy& workerReportingProxy)
-    : WorkerThread(url, userAgent, sourceCode, workerLoaderProxy, workerReportingProxy)
-    , m_name(name.crossThreadString())
+SharedWorkerThread::SharedWorkerThread( const String &name, const KURL &url, const String &userAgent, const String &sourceCode,
+                                        WorkerLoaderProxy &workerLoaderProxy, WorkerReportingProxy &workerReportingProxy )
+    : WorkerThread( url, userAgent, sourceCode, workerLoaderProxy, workerReportingProxy )
+    , m_name( name.crossThreadString() )
 {
 }
 
@@ -53,9 +56,9 @@ SharedWorkerThread::~SharedWorkerThread()
 {
 }
 
-PassRefPtr<WorkerContext> SharedWorkerThread::createWorkerContext(const KURL& url, const String& userAgent)
+PassRefPtr<WorkerContext> SharedWorkerThread::createWorkerContext( const KURL &url, const String &userAgent )
 {
-    return SharedWorkerContext::create(m_name, url, userAgent, this);
+    return SharedWorkerContext::create( m_name, url, userAgent, this );
 }
 
 } // namespace WebCore

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef StringBuilder_h
@@ -29,66 +29,85 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class StringBuilder {
+class StringBuilder
+{
 public:
     StringBuilder()
-        : m_length(0)
+        : m_length( 0 )
     {
     }
 
-    void append(const UChar*, unsigned);
-    void append(const char*, unsigned);
+    void append( const UChar *, unsigned );
+    void append( const char *, unsigned );
 
-    void append(const String& string)
+    void append( const String &string )
     {
         // If we're appending to an empty string, and there is not buffer
         // (in case reserveCapacity has been called) then just retain the
         // string.
-        if (!m_length && !m_buffer) {
+        if ( !m_length && !m_buffer )
+        {
             m_string = string;
             m_length = string.length();
             return;
         }
-        append(string.characters(), string.length());
+
+        append( string.characters(), string.length() );
     }
 
-    void append(const char* characters)
+    void append( const char *characters )
     {
-        if (characters)
-            append(characters, strlen(characters));
+        if ( characters )
+        {
+            append( characters, strlen( characters ) );
+        }
     }
 
-    void append(UChar c)
+    void append( UChar c )
     {
-        if (m_buffer && m_length < m_buffer->length() && m_string.isNull())
+        if ( m_buffer && m_length < m_buffer->length() && m_string.isNull() )
+        {
             m_bufferCharacters[m_length++] = c;
+        }
         else
-            append(&c, 1);
+        {
+            append( &c, 1 );
+        }
     }
 
-    void append(char c)
+    void append( char c )
     {
-        if (m_buffer && m_length < m_buffer->length() && m_string.isNull())
-            m_bufferCharacters[m_length++] = (unsigned char)c;
+        if ( m_buffer && m_length < m_buffer->length() && m_string.isNull() )
+        {
+            m_bufferCharacters[m_length++] = ( unsigned char )c;
+        }
         else
-            append(&c, 1);
+        {
+            append( &c, 1 );
+        }
     }
 
     String toString()
     {
-        if (m_string.isNull()) {
+        if ( m_string.isNull() )
+        {
             shrinkToFit();
             reifyString();
         }
+
         return m_string;
     }
 
     String toStringPreserveCapacity()
     {
-        if (m_string.isNull())
+        if ( m_string.isNull() )
+        {
             reifyString();
+        }
+
         return m_string;
     }
 
@@ -97,20 +116,27 @@ public:
         return m_length;
     }
 
-    bool isEmpty() const { return !length(); }
+    bool isEmpty() const
+    {
+        return !length();
+    }
 
-    void reserveCapacity(unsigned newCapacity);
+    void reserveCapacity( unsigned newCapacity );
 
-    void resize(unsigned newSize);
+    void resize( unsigned newSize );
 
     void shrinkToFit();
 
-    UChar operator[](unsigned i) const
+    UChar operator[]( unsigned i ) const
     {
-        ASSERT(i < m_length);
-        if (!m_string.isNull())
+        ASSERT( i < m_length );
+
+        if ( !m_string.isNull() )
+        {
             return m_string[i];
-        ASSERT(m_buffer);
+        }
+
+        ASSERT( m_buffer );
         return m_buffer->characters()[i];
     }
 
@@ -122,14 +148,14 @@ public:
     }
 
 private:
-    void allocateBuffer(const UChar* currentCharacters, unsigned requiredLength);
-    UChar* appendUninitialized(unsigned length);
+    void allocateBuffer( const UChar *currentCharacters, unsigned requiredLength );
+    UChar *appendUninitialized( unsigned length );
     void reifyString();
 
     unsigned m_length;
     String m_string;
     RefPtr<StringImpl> m_buffer;
-    UChar* m_bufferCharacters;
+    UChar *m_bufferCharacters;
 };
 
 } // namespace WTF

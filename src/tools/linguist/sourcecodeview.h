@@ -30,24 +30,24 @@
 
 class SourceCodeView : public QPlainTextEdit
 {
-   CS_OBJECT(SourceCodeView)
+    LSCS_OBJECT( SourceCodeView )
 
- public:
-   SourceCodeView(QWidget *parent = nullptr);
-   void setSourceContext(const QString &fileName, const int lineNum);
+public:
+    SourceCodeView( QWidget *parent = nullptr );
+    void setSourceContext( const QString &fileName, const int lineNum );
 
-   CS_SLOT_1(Public, void setActivated(bool activated))
-   CS_SLOT_2(setActivated)
+    LSCS_SLOT_1( Public, void setActivated( bool activated ) )
+    LSCS_SLOT_2( setActivated )
 
- private:
-   void showSourceCode(const QString &fileName, const int lineNum);
+private:
+    void showSourceCode( const QString &fileName, const int lineNum );
 
-   bool m_isActive;
-   QString m_fileToLoad;
-   int m_lineNumToLoad;
-   QString m_currentFileName;
+    bool m_isActive;
+    QString m_fileToLoad;
+    int m_lineNumToLoad;
+    QString m_currentFileName;
 
-   QHash<QString, QString> fileHash;
+    QHash<QString, QString> fileHash;
 };
 
 #endif

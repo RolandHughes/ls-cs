@@ -32,50 +32,50 @@ class QStackedWidgetPrivate;
 
 class Q_GUI_EXPORT QStackedWidget : public QFrame
 {
-   GUI_CS_OBJECT(QStackedWidget)
+    GUI_LSCS_OBJECT( QStackedWidget )
 
-   GUI_CS_PROPERTY_READ(currentIndex, currentIndex)
-   GUI_CS_PROPERTY_WRITE(currentIndex, setCurrentIndex)
-   GUI_CS_PROPERTY_NOTIFY(currentIndex, currentChanged)
+    GUI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
+    GUI_LSCS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
+    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, currentChanged )
 
-   GUI_CS_PROPERTY_READ(count, count)
+    GUI_LSCS_PROPERTY_READ( count, count )
 
- public:
-   explicit QStackedWidget(QWidget *parent = nullptr);
+public:
+    explicit QStackedWidget( QWidget *parent = nullptr );
 
-   QStackedWidget(const QStackedWidget &) = delete;
-   QStackedWidget &operator=(const QStackedWidget &) = delete;
+    QStackedWidget( const QStackedWidget & ) = delete;
+    QStackedWidget &operator=( const QStackedWidget & ) = delete;
 
-   ~QStackedWidget();
+    ~QStackedWidget();
 
-   int addWidget(QWidget *widget);
-   int insertWidget(int index, QWidget *widget);
-   void removeWidget(QWidget *widget);
+    int addWidget( QWidget *widget );
+    int insertWidget( int index, QWidget *widget );
+    void removeWidget( QWidget *widget );
 
-   QWidget *currentWidget() const;
-   int currentIndex() const;
+    QWidget *currentWidget() const;
+    int currentIndex() const;
 
-   int indexOf(QWidget *widget) const;
-   QWidget *widget(int index) const;
-   int count() const;
+    int indexOf( QWidget *widget ) const;
+    QWidget *widget( int index ) const;
+    int count() const;
 
-   GUI_CS_SLOT_1(Public, void setCurrentIndex(int index))
-   GUI_CS_SLOT_2(setCurrentIndex)
+    GUI_LSCS_SLOT_1( Public, void setCurrentIndex( int index ) )
+    GUI_LSCS_SLOT_2( setCurrentIndex )
 
-   GUI_CS_SLOT_1(Public, void setCurrentWidget(QWidget *widget))
-   GUI_CS_SLOT_2(setCurrentWidget)
+    GUI_LSCS_SLOT_1( Public, void setCurrentWidget( QWidget *widget ) )
+    GUI_LSCS_SLOT_2( setCurrentWidget )
 
-   GUI_CS_SIGNAL_1(Public, void currentChanged(int index))
-   GUI_CS_SIGNAL_2(currentChanged, index)
+    GUI_LSCS_SIGNAL_1( Public, void currentChanged( int index ) )
+    GUI_LSCS_SIGNAL_2( currentChanged, index )
 
-   GUI_CS_SIGNAL_1(Public, void widgetRemoved(int index))
-   GUI_CS_SIGNAL_2(widgetRemoved, index)
+    GUI_LSCS_SIGNAL_1( Public, void widgetRemoved( int index ) )
+    GUI_LSCS_SIGNAL_2( widgetRemoved, index )
 
- protected:
-   bool event(QEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QStackedWidget)
+private:
+    Q_DECLARE_PRIVATE( QStackedWidget )
 };
 
 #endif // QT_NO_STACKEDWIDGET

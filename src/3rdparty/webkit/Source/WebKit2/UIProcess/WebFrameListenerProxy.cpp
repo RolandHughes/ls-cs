@@ -28,11 +28,12 @@
 
 #include "WebFrameProxy.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebFrameListenerProxy::WebFrameListenerProxy(WebFrameProxy* frame, uint64_t listenerID)
-    : m_frame(frame)
-    , m_listenerID(listenerID)
+WebFrameListenerProxy::WebFrameListenerProxy( WebFrameProxy *frame, uint64_t listenerID )
+    : m_frame( frame )
+    , m_listenerID( listenerID )
 {
 }
 
@@ -45,12 +46,14 @@ void WebFrameListenerProxy::invalidate()
     m_frame = 0;
 }
 
-void WebFrameListenerProxy::receivedPolicyDecision(WebCore::PolicyAction action)
+void WebFrameListenerProxy::receivedPolicyDecision( WebCore::PolicyAction action )
 {
-    if (!m_frame)
+    if ( !m_frame )
+    {
         return;
+    }
 
-    m_frame->receivedPolicyDecision(action, m_listenerID);
+    m_frame->receivedPolicyDecision( action, m_listenerID );
     m_frame = 0;
 }
 

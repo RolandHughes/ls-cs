@@ -30,162 +30,181 @@
 
 #include <string.h>
 
-using DestructorMap = QVector<void (*)(void *)>;
+using DestructorMap = QVector<void ( * )( void * )>;
 
 static QMutex *mutex()
 {
-   static QMutex retval;
-   return &retval;
+    static QMutex retval;
+    return &retval;
 }
 
 static DestructorMap *destructors()
 {
-   static DestructorMap retval;
-   return &retval;
+    static DestructorMap retval;
+    return &retval;
 }
 
-QThreadStorageData::QThreadStorageData(void (*func)(void *))
+QThreadStorageData::QThreadStorageData( void ( *func )( void * ) )
 {
-   QMutexLocker locker(mutex());
-   DestructorMap *destr = destructors();
+    QMutexLocker locker( mutex() );
+    DestructorMap *destr = destructors();
 
-   if (! destr) {
-      /*
-       the destructors vector has already been destroyed, yet a new
-       QThreadStorage is being allocated. this can only happen during global
-       destruction, at which point we assume that there is only one thread.
-       in order to keep QThreadStorage working, we need somewhere to store
-       the data, best place we have in this situation is at the tail of the
-       current thread's tls vector. the destructor is ignored, since we have
-       no where to store it, and no way to actually call it.
-       */
-      QThreadData *data = QThreadData::current();
-      id = data->tls.count();
+    if ( ! destr )
+    {
+        /*
+         the destructors vector has already been destroyed, yet a new
+         QThreadStorage is being allocated. this can only happen during global
+         destruction, at which point we assume that there is only one thread.
+         in order to keep QThreadStorage working, we need somewhere to store
+         the data, best place we have in this situation is at the tail of the
+         current thread's tls vector. the destructor is ignored, since we have
+         no where to store it, and no way to actually call it.
+         */
+        QThreadData *data = QThreadData::current();
+        id = data->tls.count();
 
-      return;
-   }
+        return;
+    }
 
-   for (id = 0; id < destr->count(); id++) {
-      if (destr->at(id) == nullptr) {
-         break;
-      }
-   }
+    for ( id = 0; id < destr->count(); id++ )
+    {
+        if ( destr->at( id ) == nullptr )
+        {
+            break;
+        }
+    }
 
-   if (id == destr->count()) {
-      destr->append(func);
-   } else {
-      (*destr)[id] = func;
-   }
+    if ( id == destr->count() )
+    {
+        destr->append( func );
+    }
+    else
+    {
+        ( *destr )[id] = func;
+    }
 }
 
 QThreadStorageData::~QThreadStorageData()
 {
-   QMutexLocker locker(mutex());
+    QMutexLocker locker( mutex() );
 
-   if (destructors()) {
-      (*destructors())[id] = nullptr;
-   }
+    if ( destructors() )
+    {
+        ( *destructors() )[id] = nullptr;
+    }
 }
 
 void **QThreadStorageData::get() const
 {
-   QThreadData *data = QThreadData::current();
+    QThreadData *data = QThreadData::current();
 
-   if (! data) {
-      qWarning("QThreadStorage::get() Only valid from threads started with QThread");
-      return nullptr;
-   }
+    if ( ! data )
+    {
+        qWarning( "QThreadStorage::get() Only valid from threads started with QThread" );
+        return nullptr;
+    }
 
-   QVector<void *> &tls = data->tls;
+    QVector<void *> &tls = data->tls;
 
-   if (tls.size() <= id) {
-      tls.resize(id + 1);
-   }
+    if ( tls.size() <= id )
+    {
+        tls.resize( id + 1 );
+    }
 
-   void **v = &tls[id];
+    void **v = &tls[id];
 
-   return *v ? v : nullptr;
+    return *v ? v : nullptr;
 }
 
-void **QThreadStorageData::set(void *p)
+void **QThreadStorageData::set( void *p )
 {
-   QThreadData *data = QThreadData::current();
+    QThreadData *data = QThreadData::current();
 
-   if (! data) {
-      qWarning("QThreadStorage::set() Only valid from threads started with QThread");
-      return nullptr;
-   }
+    if ( ! data )
+    {
+        qWarning( "QThreadStorage::set() Only valid from threads started with QThread" );
+        return nullptr;
+    }
 
-   QVector<void *> &tls = data->tls;
+    QVector<void *> &tls = data->tls;
 
-   if (tls.size() <= id) {
-      tls.resize(id + 1);
-   }
+    if ( tls.size() <= id )
+    {
+        tls.resize( id + 1 );
+    }
 
-   void *&value = tls[id];
+    void *&value = tls[id];
 
-   // delete any previous data
-   if (value != nullptr) {
-      QMutexLocker locker(mutex());
+    // delete any previous data
+    if ( value != nullptr )
+    {
+        QMutexLocker locker( mutex() );
 
-      DestructorMap *destr = destructors();
-      void (*destructor)(void *) = destr ? destr->value(id) : nullptr;
-      locker.unlock();
+        DestructorMap *destr = destructors();
+        void ( *destructor )( void * ) = destr ? destr->value( id ) : nullptr;
+        locker.unlock();
 
-      void *q = value;
-      value = nullptr;
+        void *q = value;
+        value = nullptr;
 
-      if (destructor) {
-         destructor(q);
-      }
-   }
+        if ( destructor )
+        {
+            destructor( q );
+        }
+    }
 
-   // store new data
-   value = p;
+    // store new data
+    value = p;
 
-   return &value;
+    return &value;
 }
 
-void QThreadStorageData::finish(void **p)
+void QThreadStorageData::finish( void **p )
 {
-   QVector<void *> *tls = reinterpret_cast<QVector<void *> *>(p);
+    QVector<void *> *tls = reinterpret_cast<QVector<void *> *>( p );
 
-   if (! tls || tls->isEmpty() || !mutex()) {
-      return;   // nothing to do
-   }
+    if ( ! tls || tls->isEmpty() || !mutex() )
+    {
+        return;   // nothing to do
+    }
 
-   while (! tls->isEmpty()) {
-      void *&value = tls->last();
-      void *q = value;
-      value = nullptr;
-      int i = tls->size() - 1;
-      tls->resize(i);
+    while ( ! tls->isEmpty() )
+    {
+        void *&value = tls->last();
+        void *q = value;
+        value = nullptr;
+        int i = tls->size() - 1;
+        tls->resize( i );
 
-      if (! q) {
-         // data already deleted
-         continue;
-      }
+        if ( ! q )
+        {
+            // data already deleted
+            continue;
+        }
 
-      QMutexLocker locker(mutex());
-      void (*destructor)(void *) = destructors()->value(i);
-      locker.unlock();
+        QMutexLocker locker( mutex() );
+        void ( *destructor )( void * ) = destructors()->value( i );
+        locker.unlock();
 
-      if (destructor == nullptr) {
-         if (QThread::currentThread()) {
-            qWarning("QThreadStorage::finish() Thread %p exited after QThreadStorage %d destroyed",
-                  static_cast<void *>(QThread::currentThread()), i);
-         }
+        if ( destructor == nullptr )
+        {
+            if ( QThread::currentThread() )
+            {
+                qWarning( "QThreadStorage::finish() Thread %p exited after QThreadStorage %d destroyed",
+                          static_cast<void *>( QThread::currentThread() ), i );
+            }
 
-         continue;
-      }
+            continue;
+        }
 
-      destructor(q); //crash here might mean the thread exited after qthreadstorage was destroyed
+        destructor( q ); //crash here might mean the thread exited after qthreadstorage was destroyed
 
-      if (tls->size() > i) {
-         //re reset the tls in case it has been recreated by its own destructor.
-         (*tls)[i] = nullptr;
-      }
-   }
+        if ( tls->size() > i )
+        {
+            //re reset the tls in case it has been recreated by its own destructor.
+            ( *tls )[i] = nullptr;
+        }
+    }
 
-   tls->clear();
+    tls->clear();
 }

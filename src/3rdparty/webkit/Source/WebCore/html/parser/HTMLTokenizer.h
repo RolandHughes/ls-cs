@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLTokenizer_h
@@ -33,16 +33,20 @@
 #include <wtf/Vector.h>
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Element;
 class Frame;
 class HTMLToken;
 
-class HTMLTokenizer {
-    WTF_MAKE_NONCOPYABLE(HTMLTokenizer); WTF_MAKE_FAST_ALLOCATED;
+class HTMLTokenizer
+{
+    WTF_MAKE_NONCOPYABLE( HTMLTokenizer );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    enum State {
+    enum State
+    {
         DataState,
         CharacterReferenceInDataState,
         RCDATAState,
@@ -120,7 +124,10 @@ public:
         CDATASectionDoubleRightSquareBracketState,
     };
 
-    static PassOwnPtr<HTMLTokenizer> create(bool usePreHTML5ParserQuirks) { return adoptPtr(new HTMLTokenizer(usePreHTML5ParserQuirks)); }
+    static PassOwnPtr<HTMLTokenizer> create( bool usePreHTML5ParserQuirks )
+    {
+        return adoptPtr( new HTMLTokenizer( usePreHTML5ParserQuirks ) );
+    }
     ~HTMLTokenizer();
 
     void reset();
@@ -128,13 +135,25 @@ public:
     // This function returns true if it emits a token. Otherwise, callers
     // must provide the same (in progress) token on the next call (unless
     // they call reset() first).
-    bool nextToken(SegmentedString&, HTMLToken&);
+    bool nextToken( SegmentedString &, HTMLToken & );
 
-    int lineNumber() const { return m_lineNumber; }
-    int columnNumber() const { return 1; } // Matches LegacyHTMLDocumentParser.h behavior.
+    int lineNumber() const
+    {
+        return m_lineNumber;
+    }
+    int columnNumber() const
+    {
+        return 1;    // Matches LegacyHTMLDocumentParser.h behavior.
+    }
 
-    State state() const { return m_state; }
-    void setState(State state) { m_state = state; }
+    State state() const
+    {
+        return m_state;
+    }
+    void setState( State state )
+    {
+        m_state = state;
+    }
 
     // Updates the tokenizer's state according to the given tag name. This is
     // an approximation of how the tree builder would update the tokenizer's
@@ -150,47 +169,66 @@ public:
     //  * CDATA sections in foreign content will be tokenized as bogus comments
     //    instead of as character tokens.
     //
-    void updateStateFor(const AtomicString& tagName, Frame*);
+    void updateStateFor( const AtomicString &tagName, Frame * );
 
     // Hack to skip leading newline in <pre>/<listing> for authoring ease.
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/tokenization.html#parsing-main-inbody
-    void setSkipLeadingNewLineForListing(bool value) { m_skipLeadingNewLineForListing = value; }
+    void setSkipLeadingNewLineForListing( bool value )
+    {
+        m_skipLeadingNewLineForListing = value;
+    }
 
-    bool forceNullCharacterReplacement() const { return m_forceNullCharacterReplacement; }
-    void setForceNullCharacterReplacement(bool value) { m_forceNullCharacterReplacement = value; }
+    bool forceNullCharacterReplacement() const
+    {
+        return m_forceNullCharacterReplacement;
+    }
+    void setForceNullCharacterReplacement( bool value )
+    {
+        m_forceNullCharacterReplacement = value;
+    }
 
-    bool shouldAllowCDATA() const { return m_shouldAllowCDATA; }
-    void setShouldAllowCDATA(bool value) { m_shouldAllowCDATA = value; }
+    bool shouldAllowCDATA() const
+    {
+        return m_shouldAllowCDATA;
+    }
+    void setShouldAllowCDATA( bool value )
+    {
+        m_shouldAllowCDATA = value;
+    }
 
     bool shouldSkipNullCharacters() const
     {
         return !m_forceNullCharacterReplacement
-            && (m_state == DataState
-                || m_state == RCDATAState
-                || m_state == RAWTEXTState
-                || m_state == PLAINTEXTState);
+               && ( m_state == DataState
+                    || m_state == RCDATAState
+                    || m_state == RAWTEXTState
+                    || m_state == PLAINTEXTState );
     }
 
 private:
     // http://www.whatwg.org/specs/web-apps/current-work/#preprocessing-the-input-stream
-    class InputStreamPreprocessor {
-        WTF_MAKE_NONCOPYABLE(InputStreamPreprocessor);
+    class InputStreamPreprocessor
+    {
+        WTF_MAKE_NONCOPYABLE( InputStreamPreprocessor );
     public:
-        InputStreamPreprocessor(HTMLTokenizer* tokenizer)
-            : m_tokenizer(tokenizer)
-            , m_nextInputCharacter('\0')
-            , m_skipNextNewLine(false)
+        InputStreamPreprocessor( HTMLTokenizer *tokenizer )
+            : m_tokenizer( tokenizer )
+            , m_nextInputCharacter( '\0' )
+            , m_skipNextNewLine( false )
         {
         }
 
-        UChar nextInputCharacter() const { return m_nextInputCharacter; }
+        UChar nextInputCharacter() const
+        {
+            return m_nextInputCharacter;
+        }
 
         // Returns whether we succeeded in peeking at the next character.
         // The only way we can fail to peek is if there are no more
         // characters in |source| (after collapsing \r\n, etc).
-        ALWAYS_INLINE bool peek(SegmentedString& source, int& lineNumber)
+        ALWAYS_INLINE bool peek( SegmentedString &source, int &lineNumber )
         {
-        PeekAgain:
+PeekAgain:
             m_nextInputCharacter = *source;
 
             // Every branch in this function is expensive, so we have a
@@ -198,86 +236,110 @@ private:
             // handling. Please run the parser benchmark whenever you touch
             // this function. It's very hot.
             static const UChar specialCharacterMask = '\n' | '\r' | '\0';
-            if (m_nextInputCharacter & ~specialCharacterMask) {
+
+            if ( m_nextInputCharacter & ~specialCharacterMask )
+            {
                 m_skipNextNewLine = false;
                 return true;
             }
 
-            if (m_nextInputCharacter == '\n' && m_skipNextNewLine) {
+            if ( m_nextInputCharacter == '\n' && m_skipNextNewLine )
+            {
                 m_skipNextNewLine = false;
-                source.advancePastNewline(lineNumber);
-                if (source.isEmpty())
+                source.advancePastNewline( lineNumber );
+
+                if ( source.isEmpty() )
+                {
                     return false;
+                }
+
                 m_nextInputCharacter = *source;
             }
-            if (m_nextInputCharacter == '\r') {
+
+            if ( m_nextInputCharacter == '\r' )
+            {
                 m_nextInputCharacter = '\n';
                 m_skipNextNewLine = true;
-            } else {
+            }
+            else
+            {
                 m_skipNextNewLine = false;
+
                 // FIXME: The spec indicates that the surrogate pair range as well as
                 // a number of specific character values are parse errors and should be replaced
                 // by the replacement character. We suspect this is a problem with the spec as doing
                 // that filtering breaks surrogate pair handling and causes us not to match Minefield.
-                if (m_nextInputCharacter == '\0' && !shouldTreatNullAsEndOfFileMarker(source)) {
-                    if (m_tokenizer->shouldSkipNullCharacters()) {
+                if ( m_nextInputCharacter == '\0' && !shouldTreatNullAsEndOfFileMarker( source ) )
+                {
+                    if ( m_tokenizer->shouldSkipNullCharacters() )
+                    {
                         source.advancePastNonNewline();
-                        if (source.isEmpty())
+
+                        if ( source.isEmpty() )
+                        {
                             return false;
+                        }
+
                         goto PeekAgain;
                     }
+
                     m_nextInputCharacter = 0xFFFD;
                 }
             }
+
             return true;
         }
 
         // Returns whether there are more characters in |source| after advancing.
-        bool advance(SegmentedString& source, int& lineNumber)
+        bool advance( SegmentedString &source, int &lineNumber )
         {
-            source.advance(lineNumber);
-            if (source.isEmpty())
+            source.advance( lineNumber );
+
+            if ( source.isEmpty() )
+            {
                 return false;
-            return peek(source, lineNumber);
+            }
+
+            return peek( source, lineNumber );
         }
 
         static const UChar endOfFileMarker;
 
     private:
-        bool shouldTreatNullAsEndOfFileMarker(SegmentedString& source) const
+        bool shouldTreatNullAsEndOfFileMarker( SegmentedString &source ) const
         {
             return source.isClosed() && source.length() == 1;
         }
 
-        HTMLTokenizer* m_tokenizer;
+        HTMLTokenizer *m_tokenizer;
 
         // http://www.whatwg.org/specs/web-apps/current-work/#next-input-character
         UChar m_nextInputCharacter;
         bool m_skipNextNewLine;
     };
 
-    HTMLTokenizer(bool usePreHTML5ParserQuirks);
+    HTMLTokenizer( bool usePreHTML5ParserQuirks );
 
-    inline bool processEntity(SegmentedString&);
+    inline bool processEntity( SegmentedString & );
 
     inline void parseError();
-    inline void bufferCharacter(UChar);
-    inline void bufferCodePoint(unsigned);
+    inline void bufferCharacter( UChar );
+    inline void bufferCodePoint( unsigned );
 
-    inline bool emitAndResumeIn(SegmentedString&, State);
-    inline bool emitAndReconsumeIn(SegmentedString&, State);
-    inline bool emitEndOfFile(SegmentedString&);
-    inline bool flushEmitAndResumeIn(SegmentedString&, State);
+    inline bool emitAndResumeIn( SegmentedString &, State );
+    inline bool emitAndReconsumeIn( SegmentedString &, State );
+    inline bool emitEndOfFile( SegmentedString & );
+    inline bool flushEmitAndResumeIn( SegmentedString &, State );
 
     // Return whether we need to emit a character token before dealing with
     // the buffered end tag.
-    inline bool flushBufferedEndTag(SegmentedString&);
-    inline bool temporaryBufferIs(const String&);
+    inline bool flushBufferedEndTag( SegmentedString & );
+    inline bool temporaryBufferIs( const String & );
 
     // Sometimes we speculatively consume input characters and we don't
     // know whether they represent end tags or RCDATA, etc. These
     // functions help manage these state.
-    inline void addToPossibleEndTag(UChar cc);
+    inline void addToPossibleEndTag( UChar cc );
     inline void saveEndTagNameIfNeeded();
     inline bool isAppropriateEndTag();
 
@@ -289,7 +351,7 @@ private:
 
     // m_token is owned by the caller. If nextToken is not on the stack,
     // this member might be pointing to unallocated memory.
-    HTMLToken* m_token;
+    HTMLToken *m_token;
     int m_lineNumber;
 
     bool m_skipLeadingNewLineForListing;
@@ -309,7 +371,7 @@ private:
 
     // http://www.whatwg.org/specs/web-apps/current-work/#preprocessing-the-input-stream
     InputStreamPreprocessor m_inputStreamPreprocessor;
-    
+
     bool m_usePreHTML5ParserQuirks;
 };
 

@@ -28,37 +28,39 @@
 #include <qexpression_p.h>
 #include <qabstractxmlreceiver.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class DocumentContentValidator : public QAbstractXmlReceiver
 {
- public:
+public:
 
-   DocumentContentValidator(QAbstractXmlReceiver *const receiver, const DynamicContext::Ptr &context, const Expression::ConstPtr &expr);
+    DocumentContentValidator( QAbstractXmlReceiver *const receiver, const DynamicContext::Ptr &context,
+                              const Expression::ConstPtr &expr );
 
-   void namespaceBinding(const QXmlName &nb) override;
-   void characters(QStringView value) override;
-   void comment(const QString &value) override;
+    void namespaceBinding( const QXmlName &nb ) override;
+    void characters( QStringView value ) override;
+    void comment( const QString &value ) override;
 
-   void startElement(const QXmlName &name) override;
-   void endElement() override;
+    void startElement( const QXmlName &name ) override;
+    void endElement() override;
 
-   void attribute(const QXmlName &name, QStringView value) override;
+    void attribute( const QXmlName &name, QStringView value ) override;
 
-   void processingInstruction(const QXmlName &name, const QString &value) override;
+    void processingInstruction( const QXmlName &name, const QString &value ) override;
 
-   void item(const Item &item) override;
+    void item( const Item &item ) override;
 
-   void startDocument() override;
-   void endDocument() override;
-   void atomicValue(const QVariant &value) override;
-   void startOfSequence() override;
-   void endOfSequence() override;
+    void startDocument() override;
+    void endDocument() override;
+    void atomicValue( const QVariant &value ) override;
+    void startOfSequence() override;
+    void endOfSequence() override;
 
- private:
-   QAbstractXmlReceiver *const      m_receiver;
-   const DynamicContext::Ptr       m_context;
-   const Expression::ConstPtr      m_expr;
-   xsInteger                       m_elementDepth;
+private:
+    QAbstractXmlReceiver *const      m_receiver;
+    const DynamicContext::Ptr       m_context;
+    const Expression::ConstPtr      m_expr;
+    xsInteger                       m_elementDepth;
 };
 }
 

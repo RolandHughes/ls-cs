@@ -32,12 +32,13 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSJavaScriptAudioNode::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
-    static_cast<JavaScriptAudioNode*>(impl())->visitJSEventListeners(visitor);
+
+void JSJavaScriptAudioNode::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
+    static_cast<JavaScriptAudioNode *>( impl() )->visitJSEventListeners( visitor );
 }
 
 } // namespace WebCore

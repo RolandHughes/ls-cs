@@ -35,51 +35,51 @@ class QDeclarativeFlipablePrivate;
 
 class QDeclarativeFlipable : public QDeclarativeItem
 {
-   DECL_CS_OBJECT(QDeclarativeFlipable)
+    DECL_LSCS_OBJECT( QDeclarativeFlipable )
 
-   DECL_CS_ENUM(Side)
-   DECL_CS_PROPERTY_READ(*front, front)
-   DECL_CS_PROPERTY_WRITE(*front, setFront)
-   DECL_CS_PROPERTY_NOTIFY(*front, frontChanged)
-   DECL_CS_PROPERTY_READ(*back, back)
-   DECL_CS_PROPERTY_WRITE(*back, setBack)
-   DECL_CS_PROPERTY_NOTIFY(*back, backChanged)
-   DECL_CS_PROPERTY_READ(side, side)
-   DECL_CS_PROPERTY_NOTIFY(side, sideChanged)
-   //### flipAxis
-   //### flipRotation
+    DECL_LSCS_ENUM( Side )
+    DECL_LSCS_PROPERTY_READ( *front, front )
+    DECL_LSCS_PROPERTY_WRITE( *front, setFront )
+    DECL_LSCS_PROPERTY_NOTIFY( *front, frontChanged )
+    DECL_LSCS_PROPERTY_READ( *back, back )
+    DECL_LSCS_PROPERTY_WRITE( *back, setBack )
+    DECL_LSCS_PROPERTY_NOTIFY( *back, backChanged )
+    DECL_LSCS_PROPERTY_READ( side, side )
+    DECL_LSCS_PROPERTY_NOTIFY( side, sideChanged )
+    //### flipAxis
+    //### flipRotation
 
- public:
-   QDeclarativeFlipable(QDeclarativeItem *parent = 0);
-   ~QDeclarativeFlipable();
+public:
+    QDeclarativeFlipable( QDeclarativeItem *parent = 0 );
+    ~QDeclarativeFlipable();
 
-   QGraphicsObject *front();
-   void setFront(QGraphicsObject *);
+    QGraphicsObject *front();
+    void setFront( QGraphicsObject * );
 
-   QGraphicsObject *back();
-   void setBack(QGraphicsObject *);
+    QGraphicsObject *back();
+    void setBack( QGraphicsObject * );
 
-   enum Side { Front, Back };
-   Side side() const;
+    enum Side { Front, Back };
+    Side side() const;
 
-   DECL_CS_SIGNAL_1(Public, void frontChanged())
-   DECL_CS_SIGNAL_2(frontChanged)
-   DECL_CS_SIGNAL_1(Public, void backChanged())
-   DECL_CS_SIGNAL_2(backChanged)
-   DECL_CS_SIGNAL_1(Public, void sideChanged())
-   DECL_CS_SIGNAL_2(sideChanged)
+    DECL_LSCS_SIGNAL_1( Public, void frontChanged() )
+    DECL_LSCS_SIGNAL_2( frontChanged )
+    DECL_LSCS_SIGNAL_1( Public, void backChanged() )
+    DECL_LSCS_SIGNAL_2( backChanged )
+    DECL_LSCS_SIGNAL_1( Public, void sideChanged() )
+    DECL_LSCS_SIGNAL_2( sideChanged )
 
- private :
-   DECL_CS_SLOT_1(Private, void retransformBack())
-   DECL_CS_SLOT_2(retransformBack)
+private :
+    DECL_LSCS_SLOT_1( Private, void retransformBack() )
+    DECL_LSCS_SLOT_2( retransformBack )
 
-   Q_DISABLE_COPY(QDeclarativeFlipable)
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeFlipable)
+    Q_DISABLE_COPY( QDeclarativeFlipable )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeFlipable )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeFlipable)
+QML_DECLARE_TYPE( QDeclarativeFlipable )
 
 
 #endif // QDECLARATIVEFLIPABLE_H

@@ -25,43 +25,51 @@
 
 #include "RenderBlock.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderDetails;
 
-class RenderDetailsMarker : public RenderBlock {
+class RenderDetailsMarker : public RenderBlock
+{
 public:
-    RenderDetailsMarker(Node*);
+    RenderDetailsMarker( Node * );
 
     enum Orientation { Up, Down, Left, Right };
 
     Orientation orientation() const;
 
 private:
-    virtual const char* renderName() const { return "RenderDetailsMarker"; }
-    virtual bool isDetailsMarker() const { return true; }
-    virtual void paint(PaintInfo&, int tx, int ty);
+    virtual const char *renderName() const
+    {
+        return "RenderDetailsMarker";
+    }
+    virtual bool isDetailsMarker() const
+    {
+        return true;
+    }
+    virtual void paint( PaintInfo &, int tx, int ty );
 
     bool isOpen() const;
     Path getCanonicalPath() const;
-    Path getPath(const IntPoint& origin) const;
-    RenderDetails* details() const;
+    Path getPath( const IntPoint &origin ) const;
+    RenderDetails *details() const;
 };
 
-inline RenderDetailsMarker* toRenderDetailsMarker(RenderObject* object)
+inline RenderDetailsMarker *toRenderDetailsMarker( RenderObject *object )
 {
-    ASSERT(!object || object->isDetailsMarker());
-    return static_cast<RenderDetailsMarker*>(object);
+    ASSERT( !object || object->isDetailsMarker() );
+    return static_cast<RenderDetailsMarker *>( object );
 }
 
-inline const RenderDetailsMarker* toRenderDetailsMarker(const RenderObject* object)
+inline const RenderDetailsMarker *toRenderDetailsMarker( const RenderObject *object )
 {
-    ASSERT(!object || object->isDetailsMarker());
-    return static_cast<const RenderDetailsMarker*>(object);
+    ASSERT( !object || object->isDetailsMarker() );
+    return static_cast<const RenderDetailsMarker *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderDetailsMarker(const RenderDetailsMarker*);
+void toRenderDetailsMarker( const RenderDetailsMarker * );
 
 }
 

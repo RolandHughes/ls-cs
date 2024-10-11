@@ -32,99 +32,125 @@
  * Or no system proxy. Just return a list with NoProxy.
  */
 
-static bool ignoreProxyFor(const QNetworkProxyQuery &query)
+static bool ignoreProxyFor( const QNetworkProxyQuery &query )
 {
-   const QByteArray noProxy = qgetenv("no_proxy").trimmed();
+    const QByteArray noProxy = qgetenv( "no_proxy" ).trimmed();
 
-   if (noProxy.isEmpty()) {
-      return false;
-   }
+    if ( noProxy.isEmpty() )
+    {
+        return false;
+    }
 
-   const QList<QByteArray> noProxyTokens = noProxy.split(',');
-   for (const QByteArray &rawToken : noProxyTokens) {
-      QByteArray token = rawToken.trimmed();
-      QString peerHostName = query.peerHostName();
-      if (token.startsWith('*')) {
-         token = token.mid(1);
-      }
+    const QList<QByteArray> noProxyTokens = noProxy.split( ',' );
 
-      // Harmonize trailing dot notation
-      if (token.endsWith('.') && !peerHostName.endsWith('.')) {
-         token = token.left(token.length() - 1);
-      }
+    for ( const QByteArray &rawToken : noProxyTokens )
+    {
+        QByteArray token = rawToken.trimmed();
+        QString peerHostName = query.peerHostName();
 
-      // We prepend a dot to both values, so that when we do a suffix match,
-      // we don't match "donotmatch.com" with "match.com"
-      if (!token.startsWith('.')) {
-         token.prepend('.');
-      }
+        if ( token.startsWith( '*' ) )
+        {
+            token = token.mid( 1 );
+        }
 
-      if (!peerHostName.startsWith('.')) {
-         peerHostName.prepend('.');
-      }
+        // Harmonize trailing dot notation
+        if ( token.endsWith( '.' ) && !peerHostName.endsWith( '.' ) )
+        {
+            token = token.left( token.length() - 1 );
+        }
 
-      if (peerHostName.endsWith(QString::fromLatin1(token))) {
-         return true;
-      }
-   }
+        // We prepend a dot to both values, so that when we do a suffix match,
+        // we don't match "donotmatch.com" with "match.com"
+        if ( !token.startsWith( '.' ) )
+        {
+            token.prepend( '.' );
+        }
 
-   return false;
+        if ( !peerHostName.startsWith( '.' ) )
+        {
+            peerHostName.prepend( '.' );
+        }
+
+        if ( peerHostName.endsWith( QString::fromLatin1( token ) ) )
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
-QList<QNetworkProxy> QNetworkProxyFactory::systemProxyForQuery(const QNetworkProxyQuery &query)
+QList<QNetworkProxy> QNetworkProxyFactory::systemProxyForQuery( const QNetworkProxyQuery &query )
 {
-   QList<QNetworkProxy> proxyList;
+    QList<QNetworkProxy> proxyList;
 
-   if (ignoreProxyFor(query)) {
-      return proxyList << QNetworkProxy::NoProxy;
-   }
-   const QString queryProtocol = query.protocolTag().toLower();
-   QByteArray proxy_env;
+    if ( ignoreProxyFor( query ) )
+    {
+        return proxyList << QNetworkProxy::NoProxy;
+    }
 
-   if (queryProtocol == QLatin1String("http")) {
-      proxy_env = qgetenv("http_proxy");
-   } else if (queryProtocol == QLatin1String("https")) {
-      proxy_env = qgetenv("https_proxy");
-   } else if (queryProtocol == QLatin1String("ftp")) {
-      proxy_env = qgetenv("ftp_proxy");
-   } else {
-      proxy_env = qgetenv("all_proxy");
-   }
+    const QString queryProtocol = query.protocolTag().toLower();
+    QByteArray proxy_env;
 
-   // Fallback to http_proxy is no protocol specific proxy was found
-   if (proxy_env.isEmpty()) {
-      proxy_env = qgetenv("http_proxy");
-   }
+    if ( queryProtocol == QLatin1String( "http" ) )
+    {
+        proxy_env = qgetenv( "http_proxy" );
+    }
+    else if ( queryProtocol == QLatin1String( "https" ) )
+    {
+        proxy_env = qgetenv( "https_proxy" );
+    }
+    else if ( queryProtocol == QLatin1String( "ftp" ) )
+    {
+        proxy_env = qgetenv( "ftp_proxy" );
+    }
+    else
+    {
+        proxy_env = qgetenv( "all_proxy" );
+    }
 
-   if (! proxy_env.isEmpty()) {
-      QUrl url = QUrl(QString::fromUtf8(proxy_env));
+    // Fallback to http_proxy is no protocol specific proxy was found
+    if ( proxy_env.isEmpty() )
+    {
+        proxy_env = qgetenv( "http_proxy" );
+    }
 
-      if (url.scheme() == QLatin1String("socks5")) {
-         QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, url.host(),
-                             url.port() ? url.port() : 1080, url.userName(), url.password());
-         proxyList << proxy;
+    if ( ! proxy_env.isEmpty() )
+    {
+        QUrl url = QUrl( QString::fromUtf8( proxy_env ) );
 
-      } else if (url.scheme() == QLatin1String("socks5h")) {
-         QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, url.host(),
-                             url.port() ? url.port() : 1080, url.userName(), url.password());
+        if ( url.scheme() == QLatin1String( "socks5" ) )
+        {
+            QNetworkProxy proxy( QNetworkProxy::Socks5Proxy, url.host(),
+                                 url.port() ? url.port() : 1080, url.userName(), url.password() );
+            proxyList << proxy;
 
-         proxy.setCapabilities(QNetworkProxy::HostNameLookupCapability);
-         proxyList << proxy;
+        }
+        else if ( url.scheme() == QLatin1String( "socks5h" ) )
+        {
+            QNetworkProxy proxy( QNetworkProxy::Socks5Proxy, url.host(),
+                                 url.port() ? url.port() : 1080, url.userName(), url.password() );
 
-      } else if ((url.scheme() == QLatin1String("http") || url.scheme().isEmpty())
-                 && query.queryType() != QNetworkProxyQuery::UdpSocket
-                 && query.queryType() != QNetworkProxyQuery::TcpServer) {
+            proxy.setCapabilities( QNetworkProxy::HostNameLookupCapability );
+            proxyList << proxy;
 
-         QNetworkProxy proxy(QNetworkProxy::HttpProxy, url.host(),
-                             url.port() ? url.port() : 8080, url.userName(), url.password());
-         proxyList << proxy;
-      }
-   }
+        }
+        else if ( ( url.scheme() == QLatin1String( "http" ) || url.scheme().isEmpty() )
+                  && query.queryType() != QNetworkProxyQuery::UdpSocket
+                  && query.queryType() != QNetworkProxyQuery::TcpServer )
+        {
 
-   if (proxyList.isEmpty()) {
-      proxyList << QNetworkProxy::NoProxy;
-   }
+            QNetworkProxy proxy( QNetworkProxy::HttpProxy, url.host(),
+                                 url.port() ? url.port() : 8080, url.userName(), url.password() );
+            proxyList << proxy;
+        }
+    }
 
-   return proxyList;
+    if ( proxyList.isEmpty() )
+    {
+        proxyList << QNetworkProxy::NoProxy;
+    }
+
+    return proxyList;
 }
 
 #endif

@@ -26,80 +26,126 @@
 
 #include "HTMLFormControlElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class BeforeTextInsertedEvent;
 class VisibleSelection;
 
-class HTMLTextAreaElement : public HTMLTextFormControlElement {
+class HTMLTextAreaElement : public HTMLTextFormControlElement
+{
 public:
-    static PassRefPtr<HTMLTextAreaElement> create(const QualifiedName&, Document*, HTMLFormElement*);
+    static PassRefPtr<HTMLTextAreaElement> create( const QualifiedName &, Document *, HTMLFormElement * );
 
-    int cols() const { return m_cols; }
-    int rows() const { return m_rows; }
+    int cols() const
+    {
+        return m_cols;
+    }
+    int rows() const
+    {
+        return m_rows;
+    }
 
-    bool shouldWrapText() const { return m_wrap != NoWrap; }
+    bool shouldWrapText() const
+    {
+        return m_wrap != NoWrap;
+    }
 
     virtual String value() const;
-    void setValue(const String&);
+    void setValue( const String & );
     String defaultValue() const;
-    void setDefaultValue(const String&);
-    int textLength() const { return value().length(); }
+    void setDefaultValue( const String & );
+    int textLength() const
+    {
+        return value().length();
+    }
     virtual int maxLength() const;
-    void setMaxLength(int, ExceptionCode&);
-    bool valueMissing(const String& value) const { return isRequiredFormControl() && !disabled() && !readOnly() && value.isEmpty(); }
-    bool tooLong(const String&, NeedsToCheckDirtyFlag) const;
-    bool isValidValue(const String&) const;
-    
+    void setMaxLength( int, ExceptionCode & );
+    bool valueMissing( const String &value ) const
+    {
+        return isRequiredFormControl() && !disabled() && !readOnly() && value.isEmpty();
+    }
+    bool tooLong( const String &, NeedsToCheckDirtyFlag ) const;
+    bool isValidValue( const String & ) const;
+
     void rendererWillBeDestroyed();
-    
-    void setCols(int);
-    void setRows(int);
+
+    void setCols( int );
+    void setRows( int );
 
     bool lastChangeWasUserEdit() const;
 
-    void cacheSelection(int s, int e) { m_cachedSelectionStart = s; m_cachedSelectionEnd = e; };
+    void cacheSelection( int s, int e )
+    {
+        m_cachedSelectionStart = s;
+        m_cachedSelectionEnd = e;
+    };
 
 private:
-    HTMLTextAreaElement(const QualifiedName&, Document*, HTMLFormElement*);
+    HTMLTextAreaElement( const QualifiedName &, Document *, HTMLFormElement * );
 
     enum WrapMethod { NoWrap, SoftWrap, HardWrap };
 
-    void handleBeforeTextInsertedEvent(BeforeTextInsertedEvent*) const;
-    static String sanitizeUserInputValue(const String&, unsigned maxLength);
+    void handleBeforeTextInsertedEvent( BeforeTextInsertedEvent * ) const;
+    static String sanitizeUserInputValue( const String &, unsigned maxLength );
     void updateValue() const;
-    void setNonDirtyValue(const String&);
-    void setValueCommon(const String&);
+    void setNonDirtyValue( const String & );
+    void setValueCommon( const String & );
 
-    virtual bool supportsPlaceholder() const { return true; }
-    virtual bool isEmptyValue() const { return value().isEmpty(); }
-    virtual int cachedSelectionStart() const { return m_cachedSelectionStart; }
-    virtual int cachedSelectionEnd() const { return m_cachedSelectionEnd; }
+    virtual bool supportsPlaceholder() const
+    {
+        return true;
+    }
+    virtual bool isEmptyValue() const
+    {
+        return value().isEmpty();
+    }
+    virtual int cachedSelectionStart() const
+    {
+        return m_cachedSelectionStart;
+    }
+    virtual int cachedSelectionEnd() const
+    {
+        return m_cachedSelectionEnd;
+    }
 
-    virtual bool isOptionalFormControl() const { return !isRequiredFormControl(); }
-    virtual bool isRequiredFormControl() const { return required(); }
+    virtual bool isOptionalFormControl() const
+    {
+        return !isRequiredFormControl();
+    }
+    virtual bool isRequiredFormControl() const
+    {
+        return required();
+    }
 
-    virtual void defaultEventHandler(Event*);
+    virtual void defaultEventHandler( Event * );
 
-    virtual bool isEnumeratable() const { return true; }
+    virtual bool isEnumeratable() const
+    {
+        return true;
+    }
 
-    virtual const AtomicString& formControlType() const;
+    virtual const AtomicString &formControlType() const;
 
-    virtual bool saveFormControlState(String& value) const;
-    virtual void restoreFormControlState(const String&);
+    virtual bool saveFormControlState( String &value ) const;
+    virtual void restoreFormControlState( const String & );
 
-    virtual bool isTextFormControl() const { return true; }
+    virtual bool isTextFormControl() const
+    {
+        return true;
+    }
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
-    virtual void parseMappedAttribute(Attribute*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
-    virtual bool appendFormData(FormDataList&, bool);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
+    virtual void parseMappedAttribute( Attribute * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
+    virtual bool appendFormData( FormDataList &, bool );
     virtual void reset();
     virtual bool isMouseFocusable() const;
-    virtual bool isKeyboardFocusable(KeyboardEvent*) const;
-    virtual void updateFocusAppearance(bool restorePreviousSelection);
+    virtual bool isKeyboardFocusable( KeyboardEvent * ) const;
+    virtual void updateFocusAppearance( bool restorePreviousSelection );
 
-    virtual void accessKeyAction(bool sendToAnyElement);
+    virtual void accessKeyAction( bool sendToAnyElement );
 
     virtual bool shouldUseInputMethod() const;
 

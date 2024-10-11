@@ -34,7 +34,7 @@
 extern "C" {
 #endif
 
-WK_EXPORT cairo_t* WKGraphicsContextGetGtkContext(WKGraphicsContextRef);
+WK_EXPORT cairo_t *WKGraphicsContextGetGtkContext( WKGraphicsContextRef );
 
 #ifdef __cplusplus
 }

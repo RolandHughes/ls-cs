@@ -32,51 +32,56 @@
 
 class QMediaOpenGLHelper
 {
- public:
-   static bool isANGLE();
+public:
+    static bool isANGLE();
 };
 
 inline bool QMediaOpenGLHelper::isANGLE()
 {
-   bool isANGLE = false;
+    bool isANGLE = false;
 
 # if defined(Q_OS_WIN) && (defined(QT_OPENGL_ES_2) || defined(QT_OPENGL_DYNAMIC))
-   if (QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGLES) {
-      // Although unlikely, technically LibGLES could mean a non-ANGLE EGL/GLES2 implementation too.
-      // Verify that it is indeed ANGLE.
+
+    if ( QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGLES )
+    {
+        // Although unlikely, technically LibGLES could mean a non-ANGLE EGL/GLES2 implementation too.
+        // Verify that it is indeed ANGLE.
 
 #  ifdef QT_OPENGL_ES_2_ANGLE_STATIC
-      // ANGLE linked-in statically.
-      isANGLE = true;
+        // ANGLE linked-in statically.
+        isANGLE = true;
 
 #  else
-      // configured with either -opengl es2 or -opengl desktop.
-      HMODULE eglHandle = LoadLibraryW(L"libEGL.dll");
+        // configured with either -opengl es2 or -opengl desktop.
+        HMODULE eglHandle = LoadLibraryW( L"libEGL.dll" );
 
-      if (eglHandle) {
-         typedef EGLDisplay (EGLAPIENTRYP EglGetDisplay)(EGLNativeDisplayType display_id);
-         typedef EGLBoolean (EGLAPIENTRYP EglInitialize)(EGLDisplay dpy, EGLint * major, EGLint * minor);
-         typedef const char *(EGLAPIENTRYP EglQueryString)(EGLDisplay dpy, EGLint name);
+        if ( eglHandle )
+        {
+            typedef EGLDisplay ( EGLAPIENTRYP EglGetDisplay )( EGLNativeDisplayType display_id );
+            typedef EGLBoolean ( EGLAPIENTRYP EglInitialize )( EGLDisplay dpy, EGLint * major, EGLint * minor );
+            typedef const char *( EGLAPIENTRYP EglQueryString )( EGLDisplay dpy, EGLint name );
 
-         EglGetDisplay eglGetDisplay = (EglGetDisplay) GetProcAddress(eglHandle, "eglGetDisplay");
-         EglInitialize eglInitialize = (EglInitialize) GetProcAddress(eglHandle, "eglInitialize");
-         EglQueryString eglQueryString = (EglQueryString) GetProcAddress(eglHandle, "eglQueryString");
+            EglGetDisplay eglGetDisplay = ( EglGetDisplay ) GetProcAddress( eglHandle, "eglGetDisplay" );
+            EglInitialize eglInitialize = ( EglInitialize ) GetProcAddress( eglHandle, "eglInitialize" );
+            EglQueryString eglQueryString = ( EglQueryString ) GetProcAddress( eglHandle, "eglQueryString" );
 
-         if (eglGetDisplay && eglInitialize && eglQueryString) {
-            // EGL may not be initialized at this stage.
-            EGLDisplay dpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-            eglInitialize(dpy, 0, 0);
-            const char *vendorStr = eglQueryString(dpy, EGL_VERSION);
-            isANGLE = vendorStr && strstr(vendorStr, "ANGLE");
-         }
-      }
+            if ( eglGetDisplay && eglInitialize && eglQueryString )
+            {
+                // EGL may not be initialized at this stage.
+                EGLDisplay dpy = eglGetDisplay( EGL_DEFAULT_DISPLAY );
+                eglInitialize( dpy, 0, 0 );
+                const char *vendorStr = eglQueryString( dpy, EGL_VERSION );
+                isANGLE = vendorStr && strstr( vendorStr, "ANGLE" );
+            }
+        }
+
 #  endif // QT_OPENGL_ES_2_ANGLE_STATIC
 
-   }
+    }
 
 # endif // Q_OS_WIN && (QT_OPENGL_ES_2 || QT_OPENGL_DYNAMIC)
 
-   return isANGLE;
+    return isANGLE;
 }
 
 #endif

@@ -30,13 +30,15 @@
 
 #include <WebCore/InspectorFrontendClientLocal.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPage;
 
-class WebInspectorFrontendClient : public WebCore::InspectorFrontendClientLocal {
+class WebInspectorFrontendClient : public WebCore::InspectorFrontendClientLocal
+{
 public:
-    WebInspectorFrontendClient(WebPage* page, WebPage* inspectorPage);
+    WebInspectorFrontendClient( WebPage *page, WebPage *inspectorPage );
 
 private:
     virtual void frontendLoaded();
@@ -50,11 +52,11 @@ private:
 
     virtual void attachWindow();
     virtual void detachWindow();
-    virtual void setAttachedWindowHeight(unsigned);
+    virtual void setAttachedWindowHeight( unsigned );
 
-    virtual void inspectedURLChanged(const String&);
+    virtual void inspectedURLChanged( const String & );
 
-    WebPage* m_page;
+    WebPage *m_page;
 };
 
 } // namespace WebKit

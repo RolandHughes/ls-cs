@@ -50,7 +50,7 @@
 #endif
 
 #ifndef SKIP_STATIC_CONSTRUCTORS_ON_GCC
-    // Define an global in the normal way.
+// Define an global in the normal way.
 #if COMPILER(MSVC7_OR_LOWER)
 #define DEFINE_GLOBAL(type, name) \
     const type name;

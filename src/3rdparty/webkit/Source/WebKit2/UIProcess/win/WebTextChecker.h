@@ -31,29 +31,37 @@
 #include "WebTextCheckerClient.h"
 #include <wtf/Forward.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 class WebPageProxy;
 
-class WebTextChecker : public APIObject {
+class WebTextChecker : public APIObject
+{
 public:
     static const Type APIType = TypeTextChecker;
 
-    static WebTextChecker* shared();
+    static WebTextChecker *shared();
 
-    void setClient(const WKTextCheckerClient*);
-    WebTextCheckerClient& client() { return m_client; }
+    void setClient( const WKTextCheckerClient * );
+    WebTextCheckerClient &client()
+    {
+        return m_client;
+    }
 
-    void continuousSpellCheckingEnabledStateChanged(bool);
-    void grammarCheckingEnabledStateChanged(bool);
+    void continuousSpellCheckingEnabledStateChanged( bool );
+    void grammarCheckingEnabledStateChanged( bool );
 
-    void checkSpelling(const WebPageProxy*, bool startBeforeSelection);
-    void changeSpellingToWord(const WebPageProxy*, const String&);
+    void checkSpelling( const WebPageProxy *, bool startBeforeSelection );
+    void changeSpellingToWord( const WebPageProxy *, const String & );
 
 private:
     WebTextChecker();
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebTextCheckerClient m_client;
 };

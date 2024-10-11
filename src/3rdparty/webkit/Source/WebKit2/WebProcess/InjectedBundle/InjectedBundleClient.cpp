@@ -28,38 +28,47 @@
 
 #include "WKBundleAPICast.h"
 
-namespace WebKit {
-
-void InjectedBundleClient::didCreatePage(InjectedBundle* bundle, WebPage* page)
+namespace WebKit
 {
-    if (!m_client.didCreatePage)
-        return;
 
-    m_client.didCreatePage(toAPI(bundle), toAPI(page), m_client.clientInfo);
+void InjectedBundleClient::didCreatePage( InjectedBundle *bundle, WebPage *page )
+{
+    if ( !m_client.didCreatePage )
+    {
+        return;
+    }
+
+    m_client.didCreatePage( toAPI( bundle ), toAPI( page ), m_client.clientInfo );
 }
 
-void InjectedBundleClient::willDestroyPage(InjectedBundle* bundle, WebPage* page)
+void InjectedBundleClient::willDestroyPage( InjectedBundle *bundle, WebPage *page )
 {
-    if (!m_client.willDestroyPage)
+    if ( !m_client.willDestroyPage )
+    {
         return;
+    }
 
-    m_client.willDestroyPage(toAPI(bundle), toAPI(page), m_client.clientInfo);
+    m_client.willDestroyPage( toAPI( bundle ), toAPI( page ), m_client.clientInfo );
 }
 
-void InjectedBundleClient::didInitializePageGroup(InjectedBundle* bundle, WebPageGroupProxy* pageGroup)
+void InjectedBundleClient::didInitializePageGroup( InjectedBundle *bundle, WebPageGroupProxy *pageGroup )
 {
-    if (!m_client.didInitializePageGroup)
+    if ( !m_client.didInitializePageGroup )
+    {
         return;
+    }
 
-    m_client.didInitializePageGroup(toAPI(bundle), toAPI(pageGroup), m_client.clientInfo);
+    m_client.didInitializePageGroup( toAPI( bundle ), toAPI( pageGroup ), m_client.clientInfo );
 }
 
-void InjectedBundleClient::didReceiveMessage(InjectedBundle* bundle, const String& messageName, APIObject* messageBody)
+void InjectedBundleClient::didReceiveMessage( InjectedBundle *bundle, const String &messageName, APIObject *messageBody )
 {
-    if (!m_client.didReceiveMessage)
+    if ( !m_client.didReceiveMessage )
+    {
         return;
+    }
 
-    m_client.didReceiveMessage(toAPI(bundle), toAPI(messageName.impl()), toAPI(messageBody), m_client.clientInfo);
+    m_client.didReceiveMessage( toAPI( bundle ), toAPI( messageName.impl() ), toAPI( messageBody ), m_client.clientInfo );
 }
 
 } // namespace WebKit

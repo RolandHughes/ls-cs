@@ -36,24 +36,25 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static const double fadeAnimationDuration = 0.2;
 static const double fadeAnimationFrameRate = 30;
 
-PassRefPtr<PageOverlay> PageOverlay::create(Client* client)
+PassRefPtr<PageOverlay> PageOverlay::create( Client *client )
 {
-    return adoptRef(new PageOverlay(client));
+    return adoptRef( new PageOverlay( client ) );
 }
 
-PageOverlay::PageOverlay(Client* client)
-    : m_client(client)
-    , m_webPage(0)
-    , m_fadeAnimationTimer(WebProcess::shared().runLoop(), this, &PageOverlay::fadeAnimationTimerFired)
-    , m_fadeAnimationStartTime(0.0)
-    , m_fadeAnimationDuration(fadeAnimationDuration)
-    , m_fadeAnimationType(NoAnimation)
-    , m_fractionFadedIn(1.0)
+PageOverlay::PageOverlay( Client *client )
+    : m_client( client )
+    , m_webPage( 0 )
+    , m_fadeAnimationTimer( WebProcess::shared().runLoop(), this, &PageOverlay::fadeAnimationTimerFired )
+    , m_fadeAnimationStartTime( 0.0 )
+    , m_fadeAnimationDuration( fadeAnimationDuration )
+    , m_fadeAnimationType( NoAnimation )
+    , m_fractionFadedIn( 1.0 )
 {
 }
 
@@ -63,63 +64,77 @@ PageOverlay::~PageOverlay()
 
 IntRect PageOverlay::bounds() const
 {
-    FrameView* frameView = m_webPage->corePage()->mainFrame()->view();
+    FrameView *frameView = m_webPage->corePage()->mainFrame()->view();
 
     int width = frameView->width();
     int height = frameView->height();
 
-    if (!ScrollbarTheme::nativeTheme()->usesOverlayScrollbars()) {
-        if (frameView->verticalScrollbar())
+    if ( !ScrollbarTheme::nativeTheme()->usesOverlayScrollbars() )
+    {
+        if ( frameView->verticalScrollbar() )
+        {
             width -= frameView->verticalScrollbar()->width();
-        if (frameView->horizontalScrollbar())
+        }
+
+        if ( frameView->horizontalScrollbar() )
+        {
             height -= frameView->horizontalScrollbar()->height();
-    }    
-    return IntRect(0, 0, width, height);
+        }
+    }
+
+    return IntRect( 0, 0, width, height );
 }
 
-void PageOverlay::setPage(WebPage* webPage)
+void PageOverlay::setPage( WebPage *webPage )
 {
-    m_client->willMoveToWebPage(this, webPage);
+    m_client->willMoveToWebPage( this, webPage );
     m_webPage = webPage;
-    m_client->didMoveToWebPage(this, webPage);
+    m_client->didMoveToWebPage( this, webPage );
 
     m_fadeAnimationTimer.stop();
 }
 
-void PageOverlay::setNeedsDisplay(const IntRect& dirtyRect)
+void PageOverlay::setNeedsDisplay( const IntRect &dirtyRect )
 {
-    if (m_webPage)
-        m_webPage->drawingArea()->setPageOverlayNeedsDisplay(dirtyRect);
+    if ( m_webPage )
+    {
+        m_webPage->drawingArea()->setPageOverlayNeedsDisplay( dirtyRect );
+    }
 }
 
 void PageOverlay::setNeedsDisplay()
 {
-    setNeedsDisplay(bounds());
+    setNeedsDisplay( bounds() );
 }
 
-void PageOverlay::drawRect(GraphicsContext& graphicsContext, const IntRect& dirtyRect)
+void PageOverlay::drawRect( GraphicsContext &graphicsContext, const IntRect &dirtyRect )
 {
     // If the dirty rect is outside the bounds, ignore it.
-    IntRect paintRect = intersection(dirtyRect, bounds());
-    if (paintRect.isEmpty())
+    IntRect paintRect = intersection( dirtyRect, bounds() );
+
+    if ( paintRect.isEmpty() )
+    {
         return;
+    }
 
-    GraphicsContextStateSaver stateSaver(graphicsContext);
-    graphicsContext.beginTransparencyLayer(1);
-    graphicsContext.setCompositeOperation(CompositeCopy);
+    GraphicsContextStateSaver stateSaver( graphicsContext );
+    graphicsContext.beginTransparencyLayer( 1 );
+    graphicsContext.setCompositeOperation( CompositeCopy );
 
-    m_client->drawRect(this, graphicsContext, paintRect);
+    m_client->drawRect( this, graphicsContext, paintRect );
 
     graphicsContext.endTransparencyLayer();
 }
-    
-bool PageOverlay::mouseEvent(const WebMouseEvent& mouseEvent)
+
+bool PageOverlay::mouseEvent( const WebMouseEvent &mouseEvent )
 {
     // Ignore events outside the bounds.
-    if (!bounds().contains(mouseEvent.position()))
+    if ( !bounds().contains( mouseEvent.position() ) )
+    {
         return false;
+    }
 
-    return m_client->mouseEvent(this, mouseEvent);
+    return m_client->mouseEvent( this, mouseEvent );
 }
 
 void PageOverlay::startFadeInAnimation()
@@ -141,33 +156,37 @@ void PageOverlay::startFadeOutAnimation()
 void PageOverlay::startFadeAnimation()
 {
     m_fadeAnimationStartTime = currentTime();
-    
+
     // Start the timer
-    m_fadeAnimationTimer.startRepeating(1 / fadeAnimationFrameRate);
+    m_fadeAnimationTimer.startRepeating( 1 / fadeAnimationFrameRate );
 }
 
 void PageOverlay::fadeAnimationTimerFired()
 {
-    float animationProgress = (currentTime() - m_fadeAnimationStartTime) / m_fadeAnimationDuration;
+    float animationProgress = ( currentTime() - m_fadeAnimationStartTime ) / m_fadeAnimationDuration;
 
-    if (animationProgress >= 1.0)
+    if ( animationProgress >= 1.0 )
+    {
         animationProgress = 1.0;
+    }
 
-    double sine = sin(piOverTwoFloat * animationProgress);
+    double sine = sin( piOverTwoFloat * animationProgress );
     float fadeAnimationValue = sine * sine;
 
-    m_fractionFadedIn = (m_fadeAnimationType == FadeInAnimation) ? fadeAnimationValue : 1 - fadeAnimationValue;
+    m_fractionFadedIn = ( m_fadeAnimationType == FadeInAnimation ) ? fadeAnimationValue : 1 - fadeAnimationValue;
     setNeedsDisplay();
 
-    if (animationProgress == 1.0) {
+    if ( animationProgress == 1.0 )
+    {
         m_fadeAnimationTimer.stop();
 
         bool wasFadingOut = m_fadeAnimationType == FadeOutAnimation;
         m_fadeAnimationType = NoAnimation;
 
-        if (wasFadingOut) {
+        if ( wasFadingOut )
+        {
             // If this was a fade out, go ahead and uninstall the page overlay.
-            m_webPage->uninstallPageOverlay(this, false);
+            m_webPage->uninstallPageOverlay( this, false );
         }
     }
 }

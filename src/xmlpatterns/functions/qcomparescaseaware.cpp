@@ -27,22 +27,25 @@
 
 using namespace QPatternist;
 
-ComparesCaseAware::ComparesCaseAware() : m_caseSensitivity(Qt::CaseSensitive)
+ComparesCaseAware::ComparesCaseAware() : m_caseSensitivity( Qt::CaseSensitive )
 {
 }
 
-Expression::Ptr ComparesCaseAware::compress(const StaticContext::Ptr &context)
+Expression::Ptr ComparesCaseAware::compress( const StaticContext::Ptr &context )
 {
-   Q_ASSERT(m_operands.size() >= 2);
+    Q_ASSERT( m_operands.size() >= 2 );
 
-   if (ValueComparison::isCaseInsensitiveCompare(m_operands.first(), m_operands[1])) {
-      m_caseSensitivity = Qt::CaseInsensitive;
-   } else {
-      /* Yes, we could probably skip this since m_caseSensitivity is initialized to this value,
-       * but perhaps subsequent calls to compress() can make isCaseInsensitiveCompare() return
-       * a different value. */
-      m_caseSensitivity = Qt::CaseSensitive;
-   }
+    if ( ValueComparison::isCaseInsensitiveCompare( m_operands.first(), m_operands[1] ) )
+    {
+        m_caseSensitivity = Qt::CaseInsensitive;
+    }
+    else
+    {
+        /* Yes, we could probably skip this since m_caseSensitivity is initialized to this value,
+         * but perhaps subsequent calls to compress() can make isCaseInsensitiveCompare() return
+         * a different value. */
+        m_caseSensitivity = Qt::CaseSensitive;
+    }
 
-   return FunctionCall::compress(context);
+    return FunctionCall::compress( context );
 }

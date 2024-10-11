@@ -38,39 +38,39 @@
 
 class CameraBinContainer : public QMediaContainerControl
 {
-   CS_OBJECT(CameraBinContainer)
+    LSCS_OBJECT( CameraBinContainer )
 
- public:
-   CameraBinContainer(QObject *parent);
-   virtual ~CameraBinContainer() { }
+public:
+    CameraBinContainer( QObject *parent );
+    virtual ~CameraBinContainer() { }
 
-   QStringList supportedContainers() const override;
-   QString containerDescription(const QString &formatMimeType) const override;
+    QStringList supportedContainers() const override;
+    QString containerDescription( const QString &formatMimeType ) const override;
 
-   QString containerFormat() const override;
-   void setContainerFormat(const QString &format) override;
+    QString containerFormat() const override;
+    void setContainerFormat( const QString &format ) override;
 
-   QString actualContainerFormat() const;
-   void setActualContainerFormat(const QString &containerFormat);
-   void resetActualContainerFormat();
+    QString actualContainerFormat() const;
+    void setActualContainerFormat( const QString &containerFormat );
+    void resetActualContainerFormat();
 
-   QString suggestedFileExtension(const QString &containerFormat) const;
+    QString suggestedFileExtension( const QString &containerFormat ) const;
 
 #ifdef HAVE_GST_ENCODING_PROFILES
-   GstEncodingContainerProfile *createProfile();
+    GstEncodingContainerProfile *createProfile();
 #endif
 
- public:
-   CS_SIGNAL_1(Public, void settingsChanged())
-   CS_SIGNAL_2(settingsChanged)
+public:
+    LSCS_SIGNAL_1( Public, void settingsChanged() )
+    LSCS_SIGNAL_2( settingsChanged )
 
- private:
-   QString m_format;
-   QString m_actualFormat;
-   QMap<QString, QString> m_fileExtensions;
+private:
+    QString m_format;
+    QString m_actualFormat;
+    QMap<QString, QString> m_fileExtensions;
 
 #ifdef HAVE_GST_ENCODING_PROFILES
-   QGstCodecsInfo m_supportedContainers;
+    QGstCodecsInfo m_supportedContainers;
 #endif
 };
 

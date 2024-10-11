@@ -44,37 +44,37 @@
 
 class QSplashScreenPrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QSplashScreen)
+    Q_DECLARE_PUBLIC( QSplashScreen )
 
- public:
-   QPixmap pixmap;
-   QString currStatus;
-   QColor currColor;
-   int currAlign;
+public:
+    QPixmap pixmap;
+    QString currStatus;
+    QColor currColor;
+    int currAlign;
 
-   inline QSplashScreenPrivate();
+    inline QSplashScreenPrivate();
 };
 
-QSplashScreen::QSplashScreen(const QPixmap &pixmap, Qt::WindowFlags flags)
-   : QWidget(*(new QSplashScreenPrivate()), nullptr, Qt::SplashScreen | Qt::FramelessWindowHint | flags)
+QSplashScreen::QSplashScreen( const QPixmap &pixmap, Qt::WindowFlags flags )
+    : QWidget( *( new QSplashScreenPrivate() ), nullptr, Qt::SplashScreen | Qt::FramelessWindowHint | flags )
 {
-   setPixmap(pixmap);  // Does an implicit repaint
+    setPixmap( pixmap ); // Does an implicit repaint
 }
 
-QSplashScreen::QSplashScreen(QWidget *parent, const QPixmap &pixmap, Qt::WindowFlags flags)
-   : QWidget(*new QSplashScreenPrivate, parent, Qt::SplashScreen | flags)
+QSplashScreen::QSplashScreen( QWidget *parent, const QPixmap &pixmap, Qt::WindowFlags flags )
+    : QWidget( *new QSplashScreenPrivate, parent, Qt::SplashScreen | flags )
 {
-   d_func()->pixmap = pixmap;
-   setPixmap(d_func()->pixmap);  // Does an implicit repaint
+    d_func()->pixmap = pixmap;
+    setPixmap( d_func()->pixmap ); // Does an implicit repaint
 }
 
 QSplashScreen::~QSplashScreen()
 {
 }
 
-void QSplashScreen::mousePressEvent(QMouseEvent *)
+void QSplashScreen::mousePressEvent( QMouseEvent * )
 {
-   hide();
+    hide();
 }
 
 /*!
@@ -85,134 +85,151 @@ void QSplashScreen::mousePressEvent(QMouseEvent *)
 */
 void QSplashScreen::repaint()
 {
-   QWidget::repaint();
-   QApplication::flush();
+    QWidget::repaint();
+    QApplication::flush();
 }
 
-void QSplashScreen::showMessage(const QString &message, int alignment,
-   const QColor &color)
+void QSplashScreen::showMessage( const QString &message, int alignment,
+                                 const QColor &color )
 {
-   Q_D(QSplashScreen);
-   d->currStatus = message;
-   d->currAlign = alignment;
-   d->currColor = color;
-   emit messageChanged(d->currStatus);
-   repaint();
+    Q_D( QSplashScreen );
+    d->currStatus = message;
+    d->currAlign = alignment;
+    d->currColor = color;
+    emit messageChanged( d->currStatus );
+    repaint();
 }
 
 QString QSplashScreen::message() const
 {
-   Q_D(const QSplashScreen);
-   return d->currStatus;
+    Q_D( const QSplashScreen );
+    return d->currStatus;
 }
 
 void QSplashScreen::clearMessage()
 {
-   d_func()->currStatus.clear();
-   emit messageChanged(d_func()->currStatus);
-   repaint();
+    d_func()->currStatus.clear();
+    emit messageChanged( d_func()->currStatus );
+    repaint();
 }
 
-static inline bool waitForWindowExposed(QWindow *window, int timeout = 1000)
+static inline bool waitForWindowExposed( QWindow *window, int timeout = 1000 )
 {
-   static constexpr const int TimeOutMs = 10;
+    static constexpr const int TimeOutMs = 10;
 
-   QElapsedTimer timer;
-   timer.start();
+    QElapsedTimer timer;
+    timer.start();
 
-   while (!window->isExposed()) {
-      const int remaining = timeout - int(timer.elapsed());
-      if (remaining <= 0) {
-         break;
-      }
+    while ( !window->isExposed() )
+    {
+        const int remaining = timeout - int( timer.elapsed() );
 
-      QCoreApplication::processEvents(QEventLoop::AllEvents, remaining);
-      QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+        if ( remaining <= 0 )
+        {
+            break;
+        }
+
+        QCoreApplication::processEvents( QEventLoop::AllEvents, remaining );
+        QCoreApplication::sendPostedEvents( nullptr, QEvent::DeferredDelete );
 
 #if defined(Q_OS_WIN)
-      Sleep(uint(TimeOutMs));
+        Sleep( uint( TimeOutMs ) );
 #else
-      struct timespec ts = { TimeOutMs / 1000, (TimeOutMs % 1000) * 1000 * 1000 };
-      nanosleep(&ts, nullptr);
+        struct timespec ts = { TimeOutMs / 1000, ( TimeOutMs % 1000 ) * 1000 * 1000 };
+        nanosleep( &ts, nullptr );
 #endif
-   }
+    }
 
-   return window->isExposed();
+    return window->isExposed();
 }
 
-void QSplashScreen::finish(QWidget *mainWin)
+void QSplashScreen::finish( QWidget *mainWin )
 {
-   if (mainWin) {
-      if (!mainWin->windowHandle()) {
-         mainWin->createWinId();
-      }
-      waitForWindowExposed(mainWin->windowHandle());
-   }
-   close();
+    if ( mainWin )
+    {
+        if ( !mainWin->windowHandle() )
+        {
+            mainWin->createWinId();
+        }
+
+        waitForWindowExposed( mainWin->windowHandle() );
+    }
+
+    close();
 }
 
-void QSplashScreen::setPixmap(const QPixmap &pixmap)
+void QSplashScreen::setPixmap( const QPixmap &pixmap )
 {
-   Q_D(QSplashScreen);
+    Q_D( QSplashScreen );
 
-   d->pixmap = pixmap;
-   setAttribute(Qt::WA_TranslucentBackground, pixmap.hasAlpha());
+    d->pixmap = pixmap;
+    setAttribute( Qt::WA_TranslucentBackground, pixmap.hasAlpha() );
 
-   QRect r(QPoint(), d->pixmap.size()  / d->pixmap.devicePixelRatio());
-   resize(r.size());
-   move(QApplication::desktop()->screenGeometry().center() - r.center());
+    QRect r( QPoint(), d->pixmap.size()  / d->pixmap.devicePixelRatio() );
+    resize( r.size() );
+    move( QApplication::desktop()->screenGeometry().center() - r.center() );
 
-   if (isVisible()) {
-      repaint();
-   }
+    if ( isVisible() )
+    {
+        repaint();
+    }
 }
 
 const QPixmap QSplashScreen::pixmap() const
 {
-   return d_func()->pixmap;
+    return d_func()->pixmap;
 }
 
-inline QSplashScreenPrivate::QSplashScreenPrivate() : currAlign(Qt::AlignLeft)
+inline QSplashScreenPrivate::QSplashScreenPrivate() : currAlign( Qt::AlignLeft )
 {
 }
 
-void QSplashScreen::drawContents(QPainter *painter)
+void QSplashScreen::drawContents( QPainter *painter )
 {
-   Q_D(QSplashScreen);
-   painter->setPen(d->currColor);
-   QRect r = rect().adjusted(5, 5, -5, -5);
-   if (Qt::mightBeRichText(d->currStatus)) {
-      QTextDocument doc;
+    Q_D( QSplashScreen );
+    painter->setPen( d->currColor );
+    QRect r = rect().adjusted( 5, 5, -5, -5 );
+
+    if ( Qt::mightBeRichText( d->currStatus ) )
+    {
+        QTextDocument doc;
 #ifdef QT_NO_TEXTHTMLPARSER
-      doc.setPlainText(d->currStatus);
+        doc.setPlainText( d->currStatus );
 #else
-      doc.setHtml(d->currStatus);
+        doc.setHtml( d->currStatus );
 #endif
-      doc.setTextWidth(r.width());
-      QTextCursor cursor(&doc);
-      cursor.select(QTextCursor::Document);
-      QTextBlockFormat fmt;
-      fmt.setAlignment(Qt::Alignment(d->currAlign));
-      cursor.mergeBlockFormat(fmt);
-      painter->save();
-      painter->translate(r.topLeft());
-      doc.drawContents(painter);
-      painter->restore();
-   } else {
-      painter->drawText(r, d->currAlign, d->currStatus);
-   }
+        doc.setTextWidth( r.width() );
+        QTextCursor cursor( &doc );
+        cursor.select( QTextCursor::Document );
+        QTextBlockFormat fmt;
+        fmt.setAlignment( Qt::Alignment( d->currAlign ) );
+        cursor.mergeBlockFormat( fmt );
+        painter->save();
+        painter->translate( r.topLeft() );
+        doc.drawContents( painter );
+        painter->restore();
+    }
+    else
+    {
+        painter->drawText( r, d->currAlign, d->currStatus );
+    }
 }
 
-bool QSplashScreen::event(QEvent *e)
+bool QSplashScreen::event( QEvent *e )
 {
-   if (e->type() == QEvent::Paint) {
-      Q_D(QSplashScreen);
-      QPainter painter(this);
-      if (!d->pixmap.isNull()) {
-         painter.drawPixmap(QPoint(), d->pixmap);
-      }
-      drawContents(&painter);
-   }
-   return QWidget::event(e);
+    if ( e->type() == QEvent::Paint )
+    {
+        Q_D( QSplashScreen );
+        QPainter painter( this );
+
+        if ( !d->pixmap.isNull() )
+        {
+            painter.drawPixmap( QPoint(), d->pixmap );
+        }
+
+        drawContents( &painter );
+    }
+
+    return QWidget::event( e );
 }
 #endif //QT_NO_SPLASHSCREEN

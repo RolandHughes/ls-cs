@@ -28,48 +28,56 @@
 #include "RenderStyle.h"
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLTitleElement::HTMLTitleElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLTitleElement::HTMLTitleElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(titleTag));
+    ASSERT( hasTagName( titleTag ) );
 }
 
-PassRefPtr<HTMLTitleElement> HTMLTitleElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLTitleElement> HTMLTitleElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLTitleElement(tagName, document));
+    return adoptRef( new HTMLTitleElement( tagName, document ) );
 }
 
 void HTMLTitleElement::insertedIntoDocument()
 {
     HTMLElement::insertedIntoDocument();
-    document()->setTitleElement(m_title, this);
+    document()->setTitleElement( m_title, this );
 }
 
 void HTMLTitleElement::removedFromDocument()
 {
     HTMLElement::removedFromDocument();
-    document()->removeTitle(this);
+    document()->removeTitle( this );
 }
 
-void HTMLTitleElement::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void HTMLTitleElement::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
     m_title = textWithDirection();
-    if (inDocument())
-        document()->setTitleElement(m_title, this);
-    HTMLElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
+
+    if ( inDocument() )
+    {
+        document()->setTitleElement( m_title, this );
+    }
+
+    HTMLElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
 }
 
 String HTMLTitleElement::text() const
 {
     String val = "";
-    
-    for (Node *n = firstChild(); n; n = n->nextSibling()) {
-        if (n->isTextNode())
-            val += static_cast<Text*>(n)->data();
+
+    for ( Node *n = firstChild(); n; n = n->nextSibling() )
+    {
+        if ( n->isTextNode() )
+        {
+            val += static_cast<Text *>( n )->data();
+        }
     }
 
     return val;
@@ -78,30 +86,41 @@ String HTMLTitleElement::text() const
 StringWithDirection HTMLTitleElement::textWithDirection()
 {
     TextDirection direction = LTR;
-    if (RenderStyle* style = computedStyle())
+
+    if ( RenderStyle *style = computedStyle() )
+    {
         direction = style->direction();
-    else if (RefPtr<RenderStyle> style = styleForRenderer())
+    }
+    else if ( RefPtr<RenderStyle> style = styleForRenderer() )
+    {
         direction = style->direction();
-    return StringWithDirection(text(), direction);
+    }
+
+    return StringWithDirection( text(), direction );
 }
 
-void HTMLTitleElement::setText(const String &value)
+void HTMLTitleElement::setText( const String &value )
 {
     ExceptionCode ec = 0;
     int numChildren = childNodeCount();
-    
-    if (numChildren == 1 && firstChild()->isTextNode())
-        static_cast<Text*>(firstChild())->setData(value, ec);
-    else {  
+
+    if ( numChildren == 1 && firstChild()->isTextNode() )
+    {
+        static_cast<Text *>( firstChild() )->setData( value, ec );
+    }
+    else
+    {
         // We make a copy here because entity of "value" argument can be Document::m_title,
         // which goes empty during removeChildren() invocation below,
         // which causes HTMLTitleElement::childrenChanged(), which ends up Document::setTitle().
-        String valueCopy(value);
+        String valueCopy( value );
 
-        if (numChildren > 0)
+        if ( numChildren > 0 )
+        {
             removeChildren();
+        }
 
-        appendChild(document()->createTextNode(valueCopy.impl()), ec);
+        appendChild( document()->createTextNode( valueCopy.impl() ), ec );
     }
 }
 

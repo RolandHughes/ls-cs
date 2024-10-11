@@ -28,35 +28,41 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class InjectedScriptHost;
 
-class JSInjectedScriptHost : public JSDOMWrapper {
+class JSInjectedScriptHost : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSInjectedScriptHost(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<InjectedScriptHost>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSInjectedScriptHost( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<InjectedScriptHost> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
 
     // Custom functions
-    JSC::JSValue inspect(JSC::ExecState*);
-    JSC::JSValue inspectedNode(JSC::ExecState*);
-    JSC::JSValue internalConstructorName(JSC::ExecState*);
-    JSC::JSValue isHTMLAllCollection(JSC::ExecState*);
-    JSC::JSValue type(JSC::ExecState*);
-    JSC::JSValue databaseId(JSC::ExecState*);
-    JSC::JSValue storageId(JSC::ExecState*);
-    InjectedScriptHost* impl() const { return m_impl.get(); }
+    JSC::JSValue inspect( JSC::ExecState * );
+    JSC::JSValue inspectedNode( JSC::ExecState * );
+    JSC::JSValue internalConstructorName( JSC::ExecState * );
+    JSC::JSValue isHTMLAllCollection( JSC::ExecState * );
+    JSC::JSValue type( JSC::ExecState * );
+    JSC::JSValue databaseId( JSC::ExecState * );
+    JSC::JSValue storageId( JSC::ExecState * );
+    InjectedScriptHost *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<InjectedScriptHost> m_impl;
@@ -64,42 +70,45 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, InjectedScriptHost*);
-InjectedScriptHost* toInjectedScriptHost(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, InjectedScriptHost * );
+InjectedScriptHost *toInjectedScriptHost( JSC::JSValue );
 
-class JSInjectedScriptHostPrototype : public JSC::JSObjectWithGlobalObject {
+class JSInjectedScriptHostPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSInjectedScriptHostPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSInjectedScriptHostPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                   JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionClearConsoleMessages(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionCopyText(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionInspect(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionInspectedNode(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionInternalConstructorName(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionIsHTMLAllCollection(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionType(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionDatabaseId(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionStorageId(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionDidCreateWorker(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionDidDestroyWorker(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionNextWorkerId(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionClearConsoleMessages( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionCopyText( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionInspect( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionInspectedNode( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionInternalConstructorName( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionIsHTMLAllCollection( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionType( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionDatabaseId( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionStorageId( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionDidCreateWorker( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionDidDestroyWorker( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsInjectedScriptHostPrototypeFunctionNextWorkerId( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsInjectedScriptHostConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsInjectedScriptHostConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

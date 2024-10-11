@@ -28,43 +28,60 @@
 #include "MediaList.h"
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CachedCSSStyleSheet;
 class MediaList;
 
-class CSSImportRule : public CSSRule, private CachedResourceClient {
+class CSSImportRule : public CSSRule, private CachedResourceClient
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static PassRefPtr<CSSImportRule> create(CSSStyleSheet* parent, const String& href, PassRefPtr<MediaList> media)
+    static PassRefPtr<CSSImportRule> create( CSSStyleSheet *parent, const String &href, PassRefPtr<MediaList> media )
     {
-        return adoptRef(new CSSImportRule(parent, href, media));
+        return adoptRef( new CSSImportRule( parent, href, media ) );
     }
 
     virtual ~CSSImportRule();
 
-    String href() const { return m_strHref; }
-    MediaList* media() const { return m_lstMedia.get(); }
-    CSSStyleSheet* styleSheet() const { return m_styleSheet.get(); }
+    String href() const
+    {
+        return m_strHref;
+    }
+    MediaList *media() const
+    {
+        return m_lstMedia.get();
+    }
+    CSSStyleSheet *styleSheet() const
+    {
+        return m_styleSheet.get();
+    }
 
     virtual String cssText() const;
 
     // Not part of the CSSOM
     bool isLoading() const;
 
-    virtual void addSubresourceStyleURLs(ListHashSet<KURL>& urls);
+    virtual void addSubresourceStyleURLs( ListHashSet<KURL> &urls );
 
 private:
-    CSSImportRule(CSSStyleSheet* parent, const String& href, PassRefPtr<MediaList>);
+    CSSImportRule( CSSStyleSheet *parent, const String &href, PassRefPtr<MediaList> );
 
-    virtual bool isImportRule() { return true; }
+    virtual bool isImportRule()
+    {
+        return true;
+    }
     virtual void insertedIntoParent();
 
     // from CSSRule
-    virtual unsigned short type() const { return IMPORT_RULE; }
+    virtual unsigned short type() const
+    {
+        return IMPORT_RULE;
+    }
 
     // from CachedResourceClient
-    virtual void setCSSStyleSheet(const String& href, const KURL& baseURL, const String& charset, const CachedCSSStyleSheet*);
+    virtual void setCSSStyleSheet( const String &href, const KURL &baseURL, const String &charset, const CachedCSSStyleSheet * );
 
     String m_strHref;
     RefPtr<MediaList> m_lstMedia;

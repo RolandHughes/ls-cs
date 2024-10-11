@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef QTMovieGWorld_h
@@ -42,42 +42,45 @@
 class QTMovieGWorld;
 class QTMovieGWorldPrivate;
 
-class QTMovieGWorldClient {
+class QTMovieGWorldClient
+{
 public:
-    virtual void movieNewImageAvailable(QTMovieGWorld*) = 0;
+    virtual void movieNewImageAvailable( QTMovieGWorld * ) = 0;
 };
 
-class QTMovieGWorldFullscreenClient {
+class QTMovieGWorldFullscreenClient
+{
 public:
-    virtual LRESULT fullscreenClientWndProc(HWND, UINT message, WPARAM, LPARAM) = 0;
+    virtual LRESULT fullscreenClientWndProc( HWND, UINT message, WPARAM, LPARAM ) = 0;
 };
 
-class QTMOVIEWIN_API QTMovieGWorld : public RefCounted<QTMovieGWorld> {
+class QTMOVIEWIN_API QTMovieGWorld : public RefCounted<QTMovieGWorld>
+{
 public:
-    QTMovieGWorld(QTMovieGWorldClient*);
+    QTMovieGWorld( QTMovieGWorldClient * );
     ~QTMovieGWorld();
 
-    void getNaturalSize(int& width, int& height);
-    void setSize(int width, int height);
+    void getNaturalSize( int &width, int &height );
+    void setSize( int width, int height );
 
-    void setVisible(bool);
-    void paint(HDC, int x, int y);
-    void getCurrentFrameInfo(void*& buffer, unsigned& bitsPerPixel, unsigned& rowBytes, unsigned& width, unsigned& height);
+    void setVisible( bool );
+    void paint( HDC, int x, int y );
+    void getCurrentFrameInfo( void *&buffer, unsigned &bitsPerPixel, unsigned &rowBytes, unsigned &width, unsigned &height );
 
-    void setDisabled(bool);
+    void setDisabled( bool );
     bool isDisabled() const;
 
     // Returns the full-screen window created
-    HWND enterFullscreen(QTMovieGWorldFullscreenClient*);
+    HWND enterFullscreen( QTMovieGWorldFullscreenClient * );
     void exitFullscreen();
 
-    void setMovie(PassRefPtr<QTMovie>);
-    QTMovie* movie() const;
+    void setMovie( PassRefPtr<QTMovie> );
+    QTMovie *movie() const;
 
 private:
-    static LRESULT fullscreenWndProc(HWND, UINT message, WPARAM, LPARAM);
+    static LRESULT fullscreenWndProc( HWND, UINT message, WPARAM, LPARAM );
 
-    QTMovieGWorldPrivate* m_private;
+    QTMovieGWorldPrivate *m_private;
     friend class QTMovieGWorldPrivate;
 };
 

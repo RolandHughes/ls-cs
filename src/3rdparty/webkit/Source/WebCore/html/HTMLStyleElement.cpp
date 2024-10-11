@@ -31,92 +31,106 @@
 #include "ScriptableDocumentParser.h"
 
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLStyleElement::HTMLStyleElement(const QualifiedName& tagName, Document* document, bool createdByParser)
-    : HTMLElement(tagName, document)
-    , StyleElement(document, createdByParser)
+inline HTMLStyleElement::HTMLStyleElement( const QualifiedName &tagName, Document *document, bool createdByParser )
+    : HTMLElement( tagName, document )
+    , StyleElement( document, createdByParser )
 {
-    ASSERT(hasTagName(styleTag));
+    ASSERT( hasTagName( styleTag ) );
 }
 
 HTMLStyleElement::~HTMLStyleElement()
 {
-    StyleElement::clearDocumentData(document(), this);
+    StyleElement::clearDocumentData( document(), this );
 }
 
-PassRefPtr<HTMLStyleElement> HTMLStyleElement::create(const QualifiedName& tagName, Document* document, bool createdByParser)
+PassRefPtr<HTMLStyleElement> HTMLStyleElement::create( const QualifiedName &tagName, Document *document, bool createdByParser )
 {
-    return adoptRef(new HTMLStyleElement(tagName, document, createdByParser));
+    return adoptRef( new HTMLStyleElement( tagName, document, createdByParser ) );
 }
 
-void HTMLStyleElement::parseMappedAttribute(Attribute* attr)
+void HTMLStyleElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == titleAttr && m_sheet)
-        m_sheet->setTitle(attr->value());
-    else if (attr->name() == onbeforeprocessAttr)
-        setAttributeEventListener(eventNames().beforeprocessEvent, createAttributeEventListener(this, attr));
+    if ( attr->name() == titleAttr && m_sheet )
+    {
+        m_sheet->setTitle( attr->value() );
+    }
+    else if ( attr->name() == onbeforeprocessAttr )
+    {
+        setAttributeEventListener( eventNames().beforeprocessEvent, createAttributeEventListener( this, attr ) );
+    }
     else
-        HTMLElement::parseMappedAttribute(attr);
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
 void HTMLStyleElement::finishParsingChildren()
 {
-    StyleElement::finishParsingChildren(this);
+    StyleElement::finishParsingChildren( this );
     HTMLElement::finishParsingChildren();
 }
 
 void HTMLStyleElement::insertedIntoDocument()
 {
     HTMLElement::insertedIntoDocument();
-    StyleElement::insertedIntoDocument(document(), this);
+    StyleElement::insertedIntoDocument( document(), this );
 }
 
 void HTMLStyleElement::removedFromDocument()
 {
     HTMLElement::removedFromDocument();
-    StyleElement::removedFromDocument(document(), this);
+    StyleElement::removedFromDocument( document(), this );
 }
 
-void HTMLStyleElement::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void HTMLStyleElement::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
-    StyleElement::childrenChanged(this);
-    HTMLElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
+    StyleElement::childrenChanged( this );
+    HTMLElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
 }
 
-const AtomicString& HTMLStyleElement::media() const
+const AtomicString &HTMLStyleElement::media() const
 {
-    return getAttribute(mediaAttr);
+    return getAttribute( mediaAttr );
 }
 
-const AtomicString& HTMLStyleElement::type() const
+const AtomicString &HTMLStyleElement::type() const
 {
-    return getAttribute(typeAttr);
+    return getAttribute( typeAttr );
 }
 
-void HTMLStyleElement::addSubresourceAttributeURLs(ListHashSet<KURL>& urls) const
-{    
-    HTMLElement::addSubresourceAttributeURLs(urls);
+void HTMLStyleElement::addSubresourceAttributeURLs( ListHashSet<KURL> &urls ) const
+{
+    HTMLElement::addSubresourceAttributeURLs( urls );
 
-    if (StyleSheet* styleSheet = const_cast<HTMLStyleElement*>(this)->sheet())
-        styleSheet->addSubresourceStyleURLs(urls);
+    if ( StyleSheet *styleSheet = const_cast<HTMLStyleElement *>( this )->sheet() )
+    {
+        styleSheet->addSubresourceStyleURLs( urls );
+    }
 }
 
 bool HTMLStyleElement::disabled() const
 {
-    StyleSheet* styleSheet = sheet();
-    if (!styleSheet)
+    StyleSheet *styleSheet = sheet();
+
+    if ( !styleSheet )
+    {
         return false;
+    }
 
     return styleSheet->disabled();
 }
 
-void HTMLStyleElement::setDisabled(bool setDisabled)
+void HTMLStyleElement::setDisabled( bool setDisabled )
 {
-    if (StyleSheet* styleSheet = sheet())
-        styleSheet->setDisabled(setDisabled);
+    if ( StyleSheet *styleSheet = sheet() )
+    {
+        styleSheet->setDisabled( setDisabled );
+    }
 }
 
 }

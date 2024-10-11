@@ -24,31 +24,38 @@
 
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    struct CSSNamespace {
-        WTF_MAKE_NONCOPYABLE(CSSNamespace); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        AtomicString prefix;
-        AtomicString uri;
-        OwnPtr<CSSNamespace> parent;
+struct CSSNamespace
+{
+    WTF_MAKE_NONCOPYABLE( CSSNamespace );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    AtomicString prefix;
+    AtomicString uri;
+    OwnPtr<CSSNamespace> parent;
 
-        CSSNamespace(const AtomicString& prefix, const AtomicString& uri, PassOwnPtr<CSSNamespace> parent)
-            : prefix(prefix)
-            , uri(uri)
-            , parent(parent)
+    CSSNamespace( const AtomicString &prefix, const AtomicString &uri, PassOwnPtr<CSSNamespace> parent )
+        : prefix( prefix )
+        , uri( uri )
+        , parent( parent )
+    {
+    }
+
+    CSSNamespace *namespaceForPrefix( const AtomicString &prefix )
+    {
+        for ( CSSNamespace *candidate = this; candidate; candidate = candidate->parent.get() )
         {
-        }
-
-        CSSNamespace* namespaceForPrefix(const AtomicString& prefix)
-        {
-            for (CSSNamespace* candidate = this; candidate; candidate = candidate->parent.get()) {
-                if (candidate->prefix == prefix)
-                    return candidate;
+            if ( candidate->prefix == prefix )
+            {
+                return candidate;
             }
-            return 0;
         }
-    };
+
+        return 0;
+    }
+};
 
 } // namespace WebCore
 

@@ -29,29 +29,31 @@
 
 #include <qcoloroutput_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ColoringMessageHandler : public QAbstractMessageHandler, private ColorOutput
 {
- public:
-   ColoringMessageHandler(QObject *parent = nullptr);
+public:
+    ColoringMessageHandler( QObject *parent = nullptr );
 
- protected:
-   void handleMessage(QtMsgType type, const QString &description, const QUrl &identifier,
-                  const QSourceLocation &sourceLocation) override;
+protected:
+    void handleMessage( QtMsgType type, const QString &description, const QUrl &identifier,
+                        const QSourceLocation &sourceLocation ) override;
 
- private:
-   QString colorifyDescription(const QString &in) const;
+private:
+    QString colorifyDescription( const QString &in ) const;
 
-   enum ColorType {
-      RunningText,
-      Location,
-      ErrorCode,
-      Keyword,
-      Data
-   };
+    enum ColorType
+    {
+        RunningText,
+        Location,
+        ErrorCode,
+        Keyword,
+        Data
+    };
 
-   QHash<QString, ColorType> m_classToColor;
+    QHash<QString, ColorType> m_classToColor;
 };
 }
 

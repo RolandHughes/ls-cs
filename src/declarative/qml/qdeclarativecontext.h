@@ -41,51 +41,51 @@ class QDeclarativeContextData;
 
 class Q_DECLARATIVE_EXPORT QDeclarativeContext : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeContext)
-   Q_DECLARE_PRIVATE(QDeclarativeContext)
+    DECL_LSCS_OBJECT( QDeclarativeContext )
+    Q_DECLARE_PRIVATE( QDeclarativeContext )
 
- public:
-   QDeclarativeContext(QDeclarativeEngine *parent, QObject *objParent = 0);
-   QDeclarativeContext(QDeclarativeContext *parent, QObject *objParent = 0);
-   virtual ~QDeclarativeContext();
+public:
+    QDeclarativeContext( QDeclarativeEngine *parent, QObject *objParent = 0 );
+    QDeclarativeContext( QDeclarativeContext *parent, QObject *objParent = 0 );
+    virtual ~QDeclarativeContext();
 
-   bool isValid() const;
+    bool isValid() const;
 
-   QDeclarativeEngine *engine() const;
-   QDeclarativeContext *parentContext() const;
+    QDeclarativeEngine *engine() const;
+    QDeclarativeContext *parentContext() const;
 
-   QObject *contextObject() const;
-   void setContextObject(QObject *);
+    QObject *contextObject() const;
+    void setContextObject( QObject * );
 
-   QVariant contextProperty(const QString &) const;
-   void setContextProperty(const QString &, QObject *);
-   void setContextProperty(const QString &, const QVariant &);
+    QVariant contextProperty( const QString & ) const;
+    void setContextProperty( const QString &, QObject * );
+    void setContextProperty( const QString &, const QVariant & );
 
-   QUrl resolvedUrl(const QUrl &);
+    QUrl resolvedUrl( const QUrl & );
 
-   void setBaseUrl(const QUrl &);
-   QUrl baseUrl() const;
+    void setBaseUrl( const QUrl & );
+    QUrl baseUrl() const;
 
- private:
-   friend class QDeclarativeVME;
-   friend class QDeclarativeEngine;
-   friend class QDeclarativeEnginePrivate;
-   friend class QDeclarativeExpression;
-   friend class QDeclarativeExpressionPrivate;
-   friend class QDeclarativeContextScriptClass;
-   friend class QDeclarativeObjectScriptClass;
-   friend class QDeclarativeComponent;
-   friend class QDeclarativeComponentPrivate;
-   friend class QDeclarativeScriptPrivate;
-   friend class QDeclarativeBoundSignalProxy;
-   friend class QDeclarativeContextData;
+private:
+    friend class QDeclarativeVME;
+    friend class QDeclarativeEngine;
+    friend class QDeclarativeEnginePrivate;
+    friend class QDeclarativeExpression;
+    friend class QDeclarativeExpressionPrivate;
+    friend class QDeclarativeContextScriptClass;
+    friend class QDeclarativeObjectScriptClass;
+    friend class QDeclarativeComponent;
+    friend class QDeclarativeComponentPrivate;
+    friend class QDeclarativeScriptPrivate;
+    friend class QDeclarativeBoundSignalProxy;
+    friend class QDeclarativeContextData;
 
-   QDeclarativeContext(QDeclarativeContextData *);
-   QDeclarativeContext(QDeclarativeEngine *, bool);
-   Q_DISABLE_COPY(QDeclarativeContext)
+    QDeclarativeContext( QDeclarativeContextData * );
+    QDeclarativeContext( QDeclarativeEngine *, bool );
+    Q_DISABLE_COPY( QDeclarativeContext )
 };
 QT_END_NAMESPACE
 
-Q_DECLARE_METATYPE(QList<QObject *>)
+Q_DECLARE_METATYPE( QList<QObject *> )
 
 #endif // QDECLARATIVECONTEXT_H

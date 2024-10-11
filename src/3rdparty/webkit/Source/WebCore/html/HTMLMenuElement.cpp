@@ -25,19 +25,20 @@
 
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLMenuElement::HTMLMenuElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLMenuElement::HTMLMenuElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(menuTag));
+    ASSERT( hasTagName( menuTag ) );
 }
 
-PassRefPtr<HTMLMenuElement> HTMLMenuElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLMenuElement> HTMLMenuElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLMenuElement(tagName, document));
+    return adoptRef( new HTMLMenuElement( tagName, document ) );
 }
 
 }

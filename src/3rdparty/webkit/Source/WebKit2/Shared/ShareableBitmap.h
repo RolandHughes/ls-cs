@@ -37,28 +37,36 @@
 #include <wtf/RetainPtr.h>
 #endif
 
-namespace WebCore {
-    class GraphicsContext;
+namespace WebCore
+{
+class GraphicsContext;
 }
 
-namespace WebKit {
-    
-class ShareableBitmap : public RefCounted<ShareableBitmap> {
+namespace WebKit
+{
+
+class ShareableBitmap : public RefCounted<ShareableBitmap>
+{
 public:
-    enum Flag {
+    enum Flag
+    {
         SupportsAlpha = 1 << 0,
     };
     typedef unsigned Flags;
 
-    class Handle {
-        WTF_MAKE_NONCOPYABLE(Handle);
+    class Handle
+    {
+        WTF_MAKE_NONCOPYABLE( Handle );
     public:
         Handle();
 
-        bool isNull() const { return m_handle.isNull(); }
+        bool isNull() const
+        {
+            return m_handle.isNull();
+        }
 
-        void encode(CoreIPC::ArgumentEncoder*) const;
-        static bool decode(CoreIPC::ArgumentDecoder*, Handle&);
+        void encode( CoreIPC::ArgumentEncoder * ) const;
+        static bool decode( CoreIPC::ArgumentDecoder *, Handle & );
 
     private:
         friend class ShareableBitmap;
@@ -69,34 +77,43 @@ public:
     };
 
     // Create a shareable bitmap that uses malloced memory.
-    static PassRefPtr<ShareableBitmap> create(const WebCore::IntSize&, Flags);
+    static PassRefPtr<ShareableBitmap> create( const WebCore::IntSize &, Flags );
 
     // Create a shareable bitmap whose backing memory can be shared with another process.
-    static PassRefPtr<ShareableBitmap> createShareable(const WebCore::IntSize&, Flags);
+    static PassRefPtr<ShareableBitmap> createShareable( const WebCore::IntSize &, Flags );
 
     // Create a shareable bitmap from an already existing shared memory block.
-    static PassRefPtr<ShareableBitmap> create(const WebCore::IntSize&, Flags, PassRefPtr<SharedMemory>);
+    static PassRefPtr<ShareableBitmap> create( const WebCore::IntSize &, Flags, PassRefPtr<SharedMemory> );
 
     // Create a shareable bitmap from a handle.
-    static PassRefPtr<ShareableBitmap> create(const Handle&);
+    static PassRefPtr<ShareableBitmap> create( const Handle & );
 
     // Create a handle.
-    bool createHandle(Handle&);
+    bool createHandle( Handle & );
 
     ~ShareableBitmap();
 
-    const WebCore::IntSize& size() const { return m_size; }
-    WebCore::IntRect bounds() const { return WebCore::IntRect(WebCore::IntPoint(), size()); }
+    const WebCore::IntSize &size() const
+    {
+        return m_size;
+    }
+    WebCore::IntRect bounds() const
+    {
+        return WebCore::IntRect( WebCore::IntPoint(), size() );
+    }
 
-    bool resize(const WebCore::IntSize& size);
+    bool resize( const WebCore::IntSize &size );
 
     // Create a graphics context that can be used to paint into the backing store.
     PassOwnPtr<WebCore::GraphicsContext> createGraphicsContext();
 
     // Paint the backing store into the given context.
-    void paint(WebCore::GraphicsContext&, const WebCore::IntPoint& dstPoint, const WebCore::IntRect& srcRect);
+    void paint( WebCore::GraphicsContext &, const WebCore::IntPoint &dstPoint, const WebCore::IntRect &srcRect );
 
-    bool isBackedBySharedMemory() const { return m_sharedMemory; }
+    bool isBackedBySharedMemory() const
+    {
+        return m_sharedMemory;
+    }
 
 #if USE(CG)
     // This creates a copied CGImageRef (most likely a copy-on-write) of the shareable bitmap.
@@ -108,19 +125,25 @@ public:
 #endif
 
 private:
-    ShareableBitmap(const WebCore::IntSize&, Flags, void*);
-    ShareableBitmap(const WebCore::IntSize&, Flags, PassRefPtr<SharedMemory>);
+    ShareableBitmap( const WebCore::IntSize &, Flags, void * );
+    ShareableBitmap( const WebCore::IntSize &, Flags, PassRefPtr<SharedMemory> );
 
-    static size_t numBytesForSize(const WebCore::IntSize& size) { return size.width() * size.height() * 4; }
+    static size_t numBytesForSize( const WebCore::IntSize &size )
+    {
+        return size.width() * size.height() * 4;
+    }
 
 #if USE(CG)
-    RetainPtr<CGImageRef> createCGImage(CGDataProviderRef) const;
-    static void releaseBitmapContextData(void* typelessBitmap, void* typelessData);
-    static void releaseDataProviderData(void* typelessBitmap, const void* typelessData, size_t);
+    RetainPtr<CGImageRef> createCGImage( CGDataProviderRef ) const;
+    static void releaseBitmapContextData( void *typelessBitmap, void *typelessData );
+    static void releaseDataProviderData( void *typelessBitmap, const void *typelessData, size_t );
 #endif
 
-    void* data() const;
-    size_t sizeInBytes() const { return numBytesForSize(m_size); }
+    void *data() const;
+    size_t sizeInBytes() const
+    {
+        return numBytesForSize( m_size );
+    }
 
     WebCore::IntSize m_size;
     Flags m_flags;
@@ -129,7 +152,7 @@ private:
     RefPtr<SharedMemory> m_sharedMemory;
 
     // If the shareable bitmap is backed by fastMalloced memory, this points to the data.
-    void* m_data;
+    void *m_data;
 };
 
 } // namespace WebKit

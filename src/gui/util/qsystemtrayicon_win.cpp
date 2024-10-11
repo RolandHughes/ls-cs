@@ -54,11 +54,12 @@ static constexpr const UINT q_uNOTIFYICONID = 0;
 static uint MYWM_TASKBARCREATED = 0;
 #define MYWM_NOTIFYICON (WM_APP+101)
 
-struct Q_NOTIFYICONIDENTIFIER {
-   DWORD cbSize;
-   HWND hWnd;
-   UINT uID;
-   GUID guidItem;
+struct Q_NOTIFYICONIDENTIFIER
+{
+    DWORD cbSize;
+    HWND hWnd;
+    UINT uID;
+    GUID guidItem;
 };
 
 #ifndef NOTIFYICON_VERSION_4
@@ -87,52 +88,52 @@ struct Q_NOTIFYICONIDENTIFIER {
 
 #define Q_MSGFLT_ALLOW 1
 
-typedef HRESULT (WINAPI *PtrShell_NotifyIconGetRect)(const Q_NOTIFYICONIDENTIFIER *identifier, RECT *iconLocation);
-typedef BOOL (WINAPI *PtrChangeWindowMessageFilter)(UINT message, DWORD dwFlag);
-typedef BOOL (WINAPI *PtrChangeWindowMessageFilterEx)(HWND hWnd, UINT message, DWORD action, void *pChangeFilterStruct);
+typedef HRESULT ( WINAPI *PtrShell_NotifyIconGetRect )( const Q_NOTIFYICONIDENTIFIER *identifier, RECT *iconLocation );
+typedef BOOL ( WINAPI *PtrChangeWindowMessageFilter )( UINT message, DWORD dwFlag );
+typedef BOOL ( WINAPI *PtrChangeWindowMessageFilterEx )( HWND hWnd, UINT message, DWORD action, void *pChangeFilterStruct );
 
-static void cs_internal_StringToArray(const QString &str, wchar_t *output, int length)
+static void lscs_internal_StringToArray( const QString &str, wchar_t *output, int length )
 {
-   std::wstring tmp = str.toStdWString();
-   std::wcsncpy(output, &tmp[0], length);
-   output[length - 1] = 0;
+    std::wstring tmp = str.toStdWString();
+    std::wcsncpy( output, &tmp[0], length );
+    output[length - 1] = 0;
 }
 
 class QSystemTrayIconSys
 {
- public:
-   QSystemTrayIconSys(HWND hwnd, QSystemTrayIcon *object);
-   ~QSystemTrayIconSys();
+public:
+    QSystemTrayIconSys( HWND hwnd, QSystemTrayIcon *object );
+    ~QSystemTrayIconSys();
 
-   bool winEvent(MSG *m, long *result);
-   bool trayMessage(DWORD msg);
-   void setIconContents(NOTIFYICONDATA &data);
-   bool showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon type, uint uSecs);
-   QRect findIconGeometry(UINT iconId);
-   HICON createIcon();
+    bool winEvent( MSG *m, long *result );
+    bool trayMessage( DWORD msg );
+    void setIconContents( NOTIFYICONDATA &data );
+    bool showMessage( const QString &title, const QString &message, QSystemTrayIcon::MessageIcon type, uint uSecs );
+    QRect findIconGeometry( UINT iconId );
+    HICON createIcon();
 
- private:
-   const HWND m_hwnd;
-   HICON hIcon;
-   QPoint globalPos;
-   QSystemTrayIcon *q;
+private:
+    const HWND m_hwnd;
+    HICON hIcon;
+    QPoint globalPos;
+    QSystemTrayIcon *q;
 
-   uint notifyIconSize;
+    uint notifyIconSize;
 
-   int version;
-   bool ignoreNextMouseRelease;
+    int version;
+    bool ignoreNextMouseRelease;
 };
 
 static bool allowsMessages()
 {
 #ifndef QT_NO_SETTINGS
-   const QString key = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
-   const QSettings settings(key, QSettings::NativeFormat);
+    const QString key = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced";
+    const QSettings settings( key, QSettings::NativeFormat );
 
-   return settings.value("EnableBalloonTips", true).toBool();
+    return settings.value( "EnableBalloonTips", true ).toBool();
 
 #else
-   return false;
+    return false;
 
 #endif
 }
@@ -141,30 +142,33 @@ using HandleTrayIconHash = QHash<HWND, QSystemTrayIconSys *>;
 
 static HandleTrayIconHash *handleTrayIconHash()
 {
-   static HandleTrayIconHash retval;
-   return &retval;
+    static HandleTrayIconHash retval;
+    return &retval;
 }
 
-extern "C" LRESULT QT_WIN_CALLBACK qWindowsTrayconWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+extern "C" LRESULT QT_WIN_CALLBACK qWindowsTrayconWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-   if (message == MYWM_TASKBARCREATED || message == MYWM_NOTIFYICON) {
-      if (QSystemTrayIconSys *trayIcon = handleTrayIconHash()->value(hwnd)) {
-         MSG msg;
-         msg.hwnd = hwnd;         // re-create MSG structure
-         msg.message = message;   // time and pt fields ignored
-         msg.wParam = wParam;
-         msg.lParam = lParam;
-         msg.pt.x = GET_X_LPARAM(lParam);
-         msg.pt.y = GET_Y_LPARAM(lParam);
-         long result = 0;
+    if ( message == MYWM_TASKBARCREATED || message == MYWM_NOTIFYICON )
+    {
+        if ( QSystemTrayIconSys *trayIcon = handleTrayIconHash()->value( hwnd ) )
+        {
+            MSG msg;
+            msg.hwnd = hwnd;         // re-create MSG structure
+            msg.message = message;   // time and pt fields ignored
+            msg.wParam = wParam;
+            msg.lParam = lParam;
+            msg.pt.x = GET_X_LPARAM( lParam );
+            msg.pt.y = GET_Y_LPARAM( lParam );
+            long result = 0;
 
-         if (trayIcon->winEvent(&msg, &result)) {
-            return result;
-         }
-      }
-   }
+            if ( trayIcon->winEvent( &msg, &result ) )
+            {
+                return result;
+            }
+        }
+    }
 
-   return DefWindowProc(hwnd, message, wParam, lParam);
+    return DefWindowProc( hwnd, message, wParam, lParam );
 }
 
 // Invoke a service of the native Windows interface to create
@@ -173,255 +177,285 @@ extern "C" LRESULT QT_WIN_CALLBACK qWindowsTrayconWndProc(HWND hwnd, UINT messag
 // will not receive the "TaskbarCreated" message.
 static inline HWND createTrayIconMessageWindow()
 {
-   QPlatformNativeInterface *ni = QGuiApplication::platformNativeInterface();
+    QPlatformNativeInterface *ni = QGuiApplication::platformNativeInterface();
 
-   if (! ni) {
-      return nullptr;
-   }
+    if ( ! ni )
+    {
+        return nullptr;
+    }
 
-   // Register window class in the platform plugin.
-   QString className;
-   void *wndProc = reinterpret_cast<void *>(qWindowsTrayconWndProc);
+    // Register window class in the platform plugin.
+    QString className;
+    void *wndProc = reinterpret_cast<void *>( qWindowsTrayconWndProc );
 
-   if (! QMetaObject::invokeMethod(ni, "registerWindowClass", Qt::DirectConnection, Q_RETURN_ARG(QString, className),
-         Q_ARG(const QString &, "QTrayIconMessageWindowClass"), Q_ARG(void *, wndProc))) {
+    if ( ! QMetaObject::invokeMethod( ni, "registerWindowClass", Qt::DirectConnection, Q_RETURN_ARG( QString, className ),
+                                      Q_ARG( const QString &, "QTrayIconMessageWindowClass" ), Q_ARG( void *, wndProc ) ) )
+    {
 
-      return nullptr;
-   }
+        return nullptr;
+    }
 
-   const wchar_t windowName[] = L"QTrayIconMessageWindow";
-   std::wstring tmp = className.toStdWString();
+    const wchar_t windowName[] = L"QTrayIconMessageWindow";
+    std::wstring tmp = className.toStdWString();
 
-   return CreateWindowEx(0, &tmp[0], windowName, WS_OVERLAPPED, CW_USEDEFAULT, CW_USEDEFAULT,
-         CW_USEDEFAULT, CW_USEDEFAULT, nullptr, nullptr, (HINSTANCE)GetModuleHandle(nullptr), nullptr);
+    return CreateWindowEx( 0, &tmp[0], windowName, WS_OVERLAPPED, CW_USEDEFAULT, CW_USEDEFAULT,
+                           CW_USEDEFAULT, CW_USEDEFAULT, nullptr, nullptr, ( HINSTANCE )GetModuleHandle( nullptr ), nullptr );
 }
 
-QSystemTrayIconSys::QSystemTrayIconSys(HWND hwnd, QSystemTrayIcon *object)
-   : m_hwnd(hwnd), hIcon(nullptr), q(object), notifyIconSize(NOTIFYICONDATA_V2_SIZE), version(NOTIFYICON_VERSION),
-     ignoreNextMouseRelease(false)
+QSystemTrayIconSys::QSystemTrayIconSys( HWND hwnd, QSystemTrayIcon *object )
+    : m_hwnd( hwnd ), hIcon( nullptr ), q( object ), notifyIconSize( NOTIFYICONDATA_V2_SIZE ), version( NOTIFYICON_VERSION ),
+      ignoreNextMouseRelease( false )
 {
-   handleTrayIconHash()->insert(m_hwnd, this);
+    handleTrayIconHash()->insert( m_hwnd, this );
 
-   if (QSysInfo::windowsVersion() < QSysInfo::WV_VISTA) {
-      notifyIconSize = NOTIFYICONDATA_V2_SIZE;
-      version = NOTIFYICON_VERSION;
-   }
+    if ( QSysInfo::windowsVersion() < QSysInfo::WV_VISTA )
+    {
+        notifyIconSize = NOTIFYICONDATA_V2_SIZE;
+        version = NOTIFYICON_VERSION;
+    }
 
-   // For restoring the tray icon after explorer crashes
-   if (! MYWM_TASKBARCREATED) {
-      MYWM_TASKBARCREATED = RegisterWindowMessage(L"TaskbarCreated");
-   }
+    // For restoring the tray icon after explorer crashes
+    if ( ! MYWM_TASKBARCREATED )
+    {
+        MYWM_TASKBARCREATED = RegisterWindowMessage( L"TaskbarCreated" );
+    }
 
-   // Allow the WM_TASKBARCREATED message through the UIPI filter on Windows Vista and higher
-   static PtrChangeWindowMessageFilterEx pChangeWindowMessageFilterEx =
-         (PtrChangeWindowMessageFilterEx)QSystemLibrary::resolve("user32", "ChangeWindowMessageFilterEx");
+    // Allow the WM_TASKBARCREATED message through the UIPI filter on Windows Vista and higher
+    static PtrChangeWindowMessageFilterEx pChangeWindowMessageFilterEx =
+        ( PtrChangeWindowMessageFilterEx )QSystemLibrary::resolve( "user32", "ChangeWindowMessageFilterEx" );
 
-   if (pChangeWindowMessageFilterEx) {
-      // Call the safer ChangeWindowMessageFilterEx API if available
-      pChangeWindowMessageFilterEx(m_hwnd, MYWM_TASKBARCREATED, Q_MSGFLT_ALLOW, nullptr);
+    if ( pChangeWindowMessageFilterEx )
+    {
+        // Call the safer ChangeWindowMessageFilterEx API if available
+        pChangeWindowMessageFilterEx( m_hwnd, MYWM_TASKBARCREATED, Q_MSGFLT_ALLOW, nullptr );
 
-   } else {
-      static PtrChangeWindowMessageFilter pChangeWindowMessageFilter =
-            (PtrChangeWindowMessageFilter)QSystemLibrary::resolve("user32", "ChangeWindowMessageFilter");
+    }
+    else
+    {
+        static PtrChangeWindowMessageFilter pChangeWindowMessageFilter =
+            ( PtrChangeWindowMessageFilter )QSystemLibrary::resolve( "user32", "ChangeWindowMessageFilter" );
 
-      if (pChangeWindowMessageFilter) {
-         // Call the deprecated ChangeWindowMessageFilter API otherwise
-         pChangeWindowMessageFilter(MYWM_TASKBARCREATED, Q_MSGFLT_ALLOW);
-      }
-   }
+        if ( pChangeWindowMessageFilter )
+        {
+            // Call the deprecated ChangeWindowMessageFilter API otherwise
+            pChangeWindowMessageFilter( MYWM_TASKBARCREATED, Q_MSGFLT_ALLOW );
+        }
+    }
 }
 
 QSystemTrayIconSys::~QSystemTrayIconSys()
 {
-   handleTrayIconHash()->remove(m_hwnd);
+    handleTrayIconHash()->remove( m_hwnd );
 
-   if (hIcon) {
-      DestroyIcon(hIcon);
-   }
+    if ( hIcon )
+    {
+        DestroyIcon( hIcon );
+    }
 
-   DestroyWindow(m_hwnd);
+    DestroyWindow( m_hwnd );
 }
 
-void QSystemTrayIconSys::setIconContents(NOTIFYICONDATA &tnd)
+void QSystemTrayIconSys::setIconContents( NOTIFYICONDATA &tnd )
 {
-   tnd.uFlags |= NIF_MESSAGE | NIF_ICON | NIF_TIP;
-   tnd.uCallbackMessage = MYWM_NOTIFYICON;
-   tnd.hIcon = hIcon;
+    tnd.uFlags |= NIF_MESSAGE | NIF_ICON | NIF_TIP;
+    tnd.uCallbackMessage = MYWM_NOTIFYICON;
+    tnd.hIcon = hIcon;
 
-   const QString tip = q->toolTip();
+    const QString tip = q->toolTip();
 
-   if (! tip.isEmpty()) {
-      cs_internal_StringToArray(tip, tnd.szTip, sizeof(tnd.szTip) / sizeof(wchar_t));
-   }
+    if ( ! tip.isEmpty() )
+    {
+        lscs_internal_StringToArray( tip, tnd.szTip, sizeof( tnd.szTip ) / sizeof( wchar_t ) );
+    }
 }
 
 #ifndef NIIF_LARGE_ICON
 #  define NIIF_LARGE_ICON 0x00000020
 #endif
 
-bool QSystemTrayIconSys::showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon type, uint uSecs)
+bool QSystemTrayIconSys::showMessage( const QString &title, const QString &message, QSystemTrayIcon::MessageIcon type,
+                                      uint uSecs )
 {
-   NOTIFYICONDATA tnd;
-   memset(&tnd, 0, notifyIconSize);
+    NOTIFYICONDATA tnd;
+    memset( &tnd, 0, notifyIconSize );
 
-   cs_internal_StringToArray(message, tnd.szInfo, 256);
-   cs_internal_StringToArray(title, tnd.szInfoTitle, 64);
+    lscs_internal_StringToArray( message, tnd.szInfo, 256 );
+    lscs_internal_StringToArray( title, tnd.szInfoTitle, 64 );
 
-   tnd.uID = q_uNOTIFYICONID;
+    tnd.uID = q_uNOTIFYICONID;
 
-   switch (type) {
-      case QSystemTrayIcon::Information:
-         tnd.dwInfoFlags = NIIF_INFO;
-         break;
+    switch ( type )
+    {
+        case QSystemTrayIcon::Information:
+            tnd.dwInfoFlags = NIIF_INFO;
+            break;
 
-      case QSystemTrayIcon::Warning:
-         tnd.dwInfoFlags = NIIF_WARNING;
-         break;
+        case QSystemTrayIcon::Warning:
+            tnd.dwInfoFlags = NIIF_WARNING;
+            break;
 
-      case QSystemTrayIcon::Critical:
-         tnd.dwInfoFlags = NIIF_ERROR;
-         break;
+        case QSystemTrayIcon::Critical:
+            tnd.dwInfoFlags = NIIF_ERROR;
+            break;
 
-      case QSystemTrayIcon::NoIcon:
-         tnd.dwInfoFlags = hIcon ? NIIF_USER : NIIF_NONE;
-         break;
-   }
+        case QSystemTrayIcon::NoIcon:
+            tnd.dwInfoFlags = hIcon ? NIIF_USER : NIIF_NONE;
+            break;
+    }
 
-   if (QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA) {
-      tnd.dwInfoFlags |= NIIF_LARGE_ICON;
-   }
+    if ( QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA )
+    {
+        tnd.dwInfoFlags |= NIIF_LARGE_ICON;
+    }
 
-   tnd.cbSize = notifyIconSize;
-   tnd.hWnd = m_hwnd;
-   tnd.uTimeout = uSecs;
-   tnd.uFlags = NIF_INFO | NIF_SHOWTIP;
+    tnd.cbSize = notifyIconSize;
+    tnd.hWnd = m_hwnd;
+    tnd.uTimeout = uSecs;
+    tnd.uFlags = NIF_INFO | NIF_SHOWTIP;
 
-   return Shell_NotifyIcon(NIM_MODIFY, &tnd);
+    return Shell_NotifyIcon( NIM_MODIFY, &tnd );
 }
 
-bool QSystemTrayIconSys::trayMessage(DWORD msg)
+bool QSystemTrayIconSys::trayMessage( DWORD msg )
 {
-   NOTIFYICONDATA tnd;
-   memset(&tnd, 0, notifyIconSize);
+    NOTIFYICONDATA tnd;
+    memset( &tnd, 0, notifyIconSize );
 
-   tnd.uID = q_uNOTIFYICONID;
-   tnd.cbSize = notifyIconSize;
-   tnd.hWnd = m_hwnd;
-   tnd.uFlags = NIF_SHOWTIP;
-   tnd.uVersion = version;
+    tnd.uID = q_uNOTIFYICONID;
+    tnd.cbSize = notifyIconSize;
+    tnd.hWnd = m_hwnd;
+    tnd.uFlags = NIF_SHOWTIP;
+    tnd.uVersion = version;
 
-   if (msg == NIM_ADD || msg == NIM_MODIFY) {
-      setIconContents(tnd);
-   }
+    if ( msg == NIM_ADD || msg == NIM_MODIFY )
+    {
+        setIconContents( tnd );
+    }
 
-   bool success = Shell_NotifyIcon(msg, &tnd);
+    bool success = Shell_NotifyIcon( msg, &tnd );
 
-   if (msg == NIM_ADD) {
-      return success && Shell_NotifyIcon(NIM_SETVERSION, &tnd);
-   } else {
-      return success;
-   }
+    if ( msg == NIM_ADD )
+    {
+        return success && Shell_NotifyIcon( NIM_SETVERSION, &tnd );
+    }
+    else
+    {
+        return success;
+    }
 }
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON(const QPixmap &);
+Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap & );
 
 HICON QSystemTrayIconSys::createIcon()
 {
-   const HICON oldIcon = hIcon;
-   hIcon = nullptr;
-   const QIcon icon = q->icon();
+    const HICON oldIcon = hIcon;
+    hIcon = nullptr;
+    const QIcon icon = q->icon();
 
-   if (icon.isNull()) {
-      return oldIcon;
-   }
+    if ( icon.isNull() )
+    {
+        return oldIcon;
+    }
 
-   const QSize requestedSize = QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA
-         ? QSize(GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON))
-         : QSize(GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON));
+    const QSize requestedSize = QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA
+                                ? QSize( GetSystemMetrics( SM_CXICON ), GetSystemMetrics( SM_CYICON ) )
+                                : QSize( GetSystemMetrics( SM_CXSMICON ), GetSystemMetrics( SM_CYSMICON ) );
 
-   const QSize size = icon.actualSize(requestedSize);
-   const QPixmap pm = icon.pixmap(size);
+    const QSize size = icon.actualSize( requestedSize );
+    const QPixmap pm = icon.pixmap( size );
 
-   if (pm.isNull()) {
-      return oldIcon;
-   }
+    if ( pm.isNull() )
+    {
+        return oldIcon;
+    }
 
-   hIcon = qt_pixmapToWinHICON(pm);
-   return oldIcon;
+    hIcon = qt_pixmapToWinHICON( pm );
+    return oldIcon;
 }
 
 bool QSystemTrayIconSys::winEvent( MSG *m, long *result )
 {
-   *result = 0;
+    *result = 0;
 
-   switch (m->message) {
-      case MYWM_NOTIFYICON: {
-         int message = 0;
-         QPoint gpos;
+    switch ( m->message )
+    {
+        case MYWM_NOTIFYICON:
+        {
+            int message = 0;
+            QPoint gpos;
 
-         if (version == NOTIFYICON_VERSION_4) {
-            Q_ASSERT(q_uNOTIFYICONID == HIWORD(m->lParam));
-            message = LOWORD(m->lParam);
-            gpos = QPoint(GET_X_LPARAM(m->wParam), GET_Y_LPARAM(m->wParam));
-         } else {
-            Q_ASSERT(q_uNOTIFYICONID == m->wParam);
-            message = m->lParam;
-            gpos = QCursor::pos();
-         }
+            if ( version == NOTIFYICON_VERSION_4 )
+            {
+                Q_ASSERT( q_uNOTIFYICONID == HIWORD( m->lParam ) );
+                message = LOWORD( m->lParam );
+                gpos = QPoint( GET_X_LPARAM( m->wParam ), GET_Y_LPARAM( m->wParam ) );
+            }
+            else
+            {
+                Q_ASSERT( q_uNOTIFYICONID == m->wParam );
+                message = m->lParam;
+                gpos = QCursor::pos();
+            }
 
-         switch (message) {
-            case NIN_SELECT:
-            case NIN_KEYSELECT:
-               if (ignoreNextMouseRelease) {
-                  ignoreNextMouseRelease = false;
-               } else {
-                  emit q->activated(QSystemTrayIcon::Trigger);
-               }
+            switch ( message )
+            {
+                case NIN_SELECT:
+                case NIN_KEYSELECT:
+                    if ( ignoreNextMouseRelease )
+                    {
+                        ignoreNextMouseRelease = false;
+                    }
+                    else
+                    {
+                        emit q->activated( QSystemTrayIcon::Trigger );
+                    }
 
-               break;
+                    break;
 
-            case WM_LBUTTONDBLCLK:
-               ignoreNextMouseRelease = true; // Since DBLCLICK Generates a second mouse
-               // release we must ignore it
-               emit q->activated(QSystemTrayIcon::DoubleClick);
-               break;
+                case WM_LBUTTONDBLCLK:
+                    ignoreNextMouseRelease = true; // Since DBLCLICK Generates a second mouse
+                    // release we must ignore it
+                    emit q->activated( QSystemTrayIcon::DoubleClick );
+                    break;
 
-            case WM_CONTEXTMENU:
-               if (q->contextMenu()) {
-                  q->contextMenu()->popup(gpos);
-                  q->contextMenu()->activateWindow();
-               }
+                case WM_CONTEXTMENU:
+                    if ( q->contextMenu() )
+                    {
+                        q->contextMenu()->popup( gpos );
+                        q->contextMenu()->activateWindow();
+                    }
 
-               emit q->activated(QSystemTrayIcon::Context);
-               break;
+                    emit q->activated( QSystemTrayIcon::Context );
+                    break;
 
-            case NIN_BALLOONUSERCLICK:
-               emit q->messageClicked();
-               break;
+                case NIN_BALLOONUSERCLICK:
+                    emit q->messageClicked();
+                    break;
 
-            case WM_MBUTTONUP:
-               emit q->activated(QSystemTrayIcon::MiddleClick);
-               break;
+                case WM_MBUTTONUP:
+                    emit q->activated( QSystemTrayIcon::MiddleClick );
+                    break;
 
-            default:
-               break;
-         }
+                default:
+                    break;
+            }
 
-         break;
-      }
+            break;
+        }
 
-      default:
-         if (m->message == MYWM_TASKBARCREATED) {
-            trayMessage(NIM_ADD);
-         }
+        default:
+            if ( m->message == MYWM_TASKBARCREATED )
+            {
+                trayMessage( NIM_ADD );
+            }
 
-         break;
-   }
+            break;
+    }
 
-   return false;
+    return false;
 }
 
 QSystemTrayIconPrivate::QSystemTrayIconPrivate()
-   : sys(nullptr), visible(false)
+    : sys( nullptr ), visible( false )
 {
 }
 
@@ -431,188 +465,218 @@ QSystemTrayIconPrivate::~QSystemTrayIconPrivate()
 
 void QSystemTrayIconPrivate::install_sys()
 {
-   Q_Q(QSystemTrayIcon);
+    Q_Q( QSystemTrayIcon );
 
-   if (!sys) {
-      if (const HWND hwnd = createTrayIconMessageWindow()) {
-         sys = new QSystemTrayIconSys(hwnd, q);
-         sys->createIcon();
-         sys->trayMessage(NIM_ADD);
-      } else {
-         qWarning("QSystemTrayIcon::install_sys() Platform plugin failed to create a message window");
-      }
-   }
+    if ( !sys )
+    {
+        if ( const HWND hwnd = createTrayIconMessageWindow() )
+        {
+            sys = new QSystemTrayIconSys( hwnd, q );
+            sys->createIcon();
+            sys->trayMessage( NIM_ADD );
+        }
+        else
+        {
+            qWarning( "QSystemTrayIcon::install_sys() Platform plugin failed to create a message window" );
+        }
+    }
 }
 
-QRect QSystemTrayIconSys::findIconGeometry(UINT iconId)
+QRect QSystemTrayIconSys::findIconGeometry( UINT iconId )
 {
-   struct AppData {
-      HWND hwnd;
-      UINT uID;
-   };
+    struct AppData
+    {
+        HWND hwnd;
+        UINT uID;
+    };
 
-   static PtrShell_NotifyIconGetRect Shell_NotifyIconGetRect =
-         (PtrShell_NotifyIconGetRect)QSystemLibrary::resolve("shell32", "Shell_NotifyIconGetRect");
+    static PtrShell_NotifyIconGetRect Shell_NotifyIconGetRect =
+        ( PtrShell_NotifyIconGetRect )QSystemLibrary::resolve( "shell32", "Shell_NotifyIconGetRect" );
 
-   if (Shell_NotifyIconGetRect) {
-      Q_NOTIFYICONIDENTIFIER nid;
-      memset(&nid, 0, sizeof(nid));
-      nid.cbSize = sizeof(nid);
-      nid.hWnd = m_hwnd;
-      nid.uID = iconId;
+    if ( Shell_NotifyIconGetRect )
+    {
+        Q_NOTIFYICONIDENTIFIER nid;
+        memset( &nid, 0, sizeof( nid ) );
+        nid.cbSize = sizeof( nid );
+        nid.hWnd = m_hwnd;
+        nid.uID = iconId;
 
-      RECT rect;
-      HRESULT hr = Shell_NotifyIconGetRect(&nid, &rect);
+        RECT rect;
+        HRESULT hr = Shell_NotifyIconGetRect( &nid, &rect );
 
-      if (SUCCEEDED(hr)) {
-         return QRect(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
-      }
-   }
+        if ( SUCCEEDED( hr ) )
+        {
+            return QRect( rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top );
+        }
+    }
 
-   QRect ret;
+    QRect ret;
 
-   TBBUTTON buttonData;
-   DWORD processID = 0;
-   HWND trayHandle = FindWindow(L"Shell_TrayWnd", nullptr);
+    TBBUTTON buttonData;
+    DWORD processID = 0;
+    HWND trayHandle = FindWindow( L"Shell_TrayWnd", nullptr );
 
-   //find the toolbar used in the notification area
-   if (trayHandle) {
-      trayHandle = FindWindowEx(trayHandle, nullptr, L"TrayNotifyWnd", nullptr);
+    //find the toolbar used in the notification area
+    if ( trayHandle )
+    {
+        trayHandle = FindWindowEx( trayHandle, nullptr, L"TrayNotifyWnd", nullptr );
 
-      if (trayHandle) {
-         HWND hwnd = FindWindowEx(trayHandle, nullptr, L"SysPager", nullptr);
+        if ( trayHandle )
+        {
+            HWND hwnd = FindWindowEx( trayHandle, nullptr, L"SysPager", nullptr );
 
-         if (hwnd) {
-            hwnd = FindWindowEx(hwnd, nullptr, L"ToolbarWindow32", nullptr);
+            if ( hwnd )
+            {
+                hwnd = FindWindowEx( hwnd, nullptr, L"ToolbarWindow32", nullptr );
 
-            if (hwnd) {
-               trayHandle = hwnd;
+                if ( hwnd )
+                {
+                    trayHandle = hwnd;
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   if (!trayHandle) {
-      return ret;
-   }
+    if ( !trayHandle )
+    {
+        return ret;
+    }
 
-   GetWindowThreadProcessId(trayHandle, &processID);
+    GetWindowThreadProcessId( trayHandle, &processID );
 
-   if (processID <= 0) {
-      return ret;
-   }
+    if ( processID <= 0 )
+    {
+        return ret;
+    }
 
-   HANDLE trayProcess = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ, 0, processID);
+    HANDLE trayProcess = OpenProcess( PROCESS_VM_OPERATION | PROCESS_VM_READ, 0, processID );
 
-   if (!trayProcess) {
-      return ret;
-   }
+    if ( !trayProcess )
+    {
+        return ret;
+    }
 
-   int buttonCount = SendMessage(trayHandle, TB_BUTTONCOUNT, 0, 0);
-   LPVOID data = VirtualAllocEx(trayProcess, nullptr, sizeof(TBBUTTON), MEM_COMMIT, PAGE_READWRITE);
+    int buttonCount = SendMessage( trayHandle, TB_BUTTONCOUNT, 0, 0 );
+    LPVOID data = VirtualAllocEx( trayProcess, nullptr, sizeof( TBBUTTON ), MEM_COMMIT, PAGE_READWRITE );
 
-   if ( buttonCount < 1 || !data ) {
-      CloseHandle(trayProcess);
-      return ret;
-   }
+    if ( buttonCount < 1 || !data )
+    {
+        CloseHandle( trayProcess );
+        return ret;
+    }
 
-   //search for our icon among all toolbar buttons
-   for (int toolbarButton = 0; toolbarButton  < buttonCount; ++toolbarButton ) {
-      SIZE_T numBytes = 0;
-      AppData appData = { nullptr, 0 };
+    //search for our icon among all toolbar buttons
+    for ( int toolbarButton = 0; toolbarButton  < buttonCount; ++toolbarButton )
+    {
+        SIZE_T numBytes = 0;
+        AppData appData = { nullptr, 0 };
 
-      SendMessage(trayHandle, TB_GETBUTTON, toolbarButton, (LPARAM)data);
+        SendMessage( trayHandle, TB_GETBUTTON, toolbarButton, ( LPARAM )data );
 
-      if (!ReadProcessMemory(trayProcess, data, &buttonData, sizeof(TBBUTTON), &numBytes)) {
-         continue;
-      }
+        if ( !ReadProcessMemory( trayProcess, data, &buttonData, sizeof( TBBUTTON ), &numBytes ) )
+        {
+            continue;
+        }
 
-      if (!ReadProcessMemory(trayProcess, (LPVOID) buttonData.dwData, &appData, sizeof(AppData), &numBytes)) {
-         continue;
-      }
+        if ( !ReadProcessMemory( trayProcess, ( LPVOID ) buttonData.dwData, &appData, sizeof( AppData ), &numBytes ) )
+        {
+            continue;
+        }
 
-      bool isHidden = buttonData.fsState & TBSTATE_HIDDEN;
+        bool isHidden = buttonData.fsState & TBSTATE_HIDDEN;
 
-      if (m_hwnd == appData.hwnd && appData.uID == iconId && !isHidden) {
-         SendMessage(trayHandle, TB_GETITEMRECT, toolbarButton, (LPARAM)data);
-         RECT iconRect = {0, 0, 0, 0};
+        if ( m_hwnd == appData.hwnd && appData.uID == iconId && !isHidden )
+        {
+            SendMessage( trayHandle, TB_GETITEMRECT, toolbarButton, ( LPARAM )data );
+            RECT iconRect = {0, 0, 0, 0};
 
-         if (ReadProcessMemory(trayProcess, data, &iconRect, sizeof(RECT), &numBytes)) {
-            MapWindowPoints(trayHandle, nullptr, (LPPOINT)&iconRect, 2);
+            if ( ReadProcessMemory( trayProcess, data, &iconRect, sizeof( RECT ), &numBytes ) )
+            {
+                MapWindowPoints( trayHandle, nullptr, ( LPPOINT )&iconRect, 2 );
 
-            QRect geometry(iconRect.left + 1, iconRect.top + 1,
-                  iconRect.right - iconRect.left - 2, iconRect.bottom - iconRect.top - 2);
+                QRect geometry( iconRect.left + 1, iconRect.top + 1,
+                                iconRect.right - iconRect.left - 2, iconRect.bottom - iconRect.top - 2 );
 
-            if (geometry.isValid()) {
-               ret = geometry;
+                if ( geometry.isValid() )
+                {
+                    ret = geometry;
+                }
+
+                break;
             }
+        }
+    }
 
-            break;
-         }
-      }
-   }
-
-   VirtualFreeEx(trayProcess, data, 0, MEM_RELEASE);
-   CloseHandle(trayProcess);
-   return ret;
+    VirtualFreeEx( trayProcess, data, 0, MEM_RELEASE );
+    CloseHandle( trayProcess );
+    return ret;
 }
 
-void QSystemTrayIconPrivate::showMessage_sys(const QString &title, const QString &message,
-      QSystemTrayIcon::MessageIcon type, int timeOut)
+void QSystemTrayIconPrivate::showMessage_sys( const QString &title, const QString &message,
+        QSystemTrayIcon::MessageIcon type, int timeOut )
 {
-   if (! sys || ! allowsMessages()) {
-      return;
-   }
+    if ( ! sys || ! allowsMessages() )
+    {
+        return;
+    }
 
-   uint uSecs = 0;
+    uint uSecs = 0;
 
-   if ( timeOut < 0) {
-      uSecs = 10000;   //10 sec default
-   } else {
-      uSecs = (int)timeOut;
-   }
+    if ( timeOut < 0 )
+    {
+        uSecs = 10000;   //10 sec default
+    }
+    else
+    {
+        uSecs = ( int )timeOut;
+    }
 
-   QString msg = message;
+    QString msg = message;
 
-   if (msg.isEmpty() && ! title.isEmpty()) {
-      msg.append(' ');
-   }
+    if ( msg.isEmpty() && ! title.isEmpty() )
+    {
+        msg.append( ' ' );
+    }
 
-   sys->showMessage(title, message, type, uSecs);
+    sys->showMessage( title, message, type, uSecs );
 }
 
 QRect QSystemTrayIconPrivate::geometry_sys() const
 {
-   if (! sys) {
-      return QRect();
-   }
+    if ( ! sys )
+    {
+        return QRect();
+    }
 
-   return sys->findIconGeometry(q_uNOTIFYICONID);
+    return sys->findIconGeometry( q_uNOTIFYICONID );
 }
 
 void QSystemTrayIconPrivate::remove_sys()
 {
-   if (!sys) {
-      return;
-   }
+    if ( !sys )
+    {
+        return;
+    }
 
-   sys->trayMessage(NIM_DELETE);
-   delete sys;
-   sys = nullptr;
+    sys->trayMessage( NIM_DELETE );
+    delete sys;
+    sys = nullptr;
 }
 
 void QSystemTrayIconPrivate::updateIcon_sys()
 {
-   if (! sys) {
-      return;
-   }
+    if ( ! sys )
+    {
+        return;
+    }
 
-   const HICON hIconToDestroy = sys->createIcon();
-   sys->trayMessage(NIM_MODIFY);
+    const HICON hIconToDestroy = sys->createIcon();
+    sys->trayMessage( NIM_MODIFY );
 
-   if (hIconToDestroy) {
-      DestroyIcon(hIconToDestroy);
-   }
+    if ( hIconToDestroy )
+    {
+        DestroyIcon( hIconToDestroy );
+    }
 }
 
 void QSystemTrayIconPrivate::updateMenu_sys()
@@ -622,21 +686,22 @@ void QSystemTrayIconPrivate::updateMenu_sys()
 
 void QSystemTrayIconPrivate::updateToolTip_sys()
 {
-   if (!sys) {
-      return;
-   }
+    if ( !sys )
+    {
+        return;
+    }
 
-   sys->trayMessage(NIM_MODIFY);
+    sys->trayMessage( NIM_MODIFY );
 }
 
 bool QSystemTrayIconPrivate::isSystemTrayAvailable_sys()
 {
-   return true;
+    return true;
 }
 
 bool QSystemTrayIconPrivate::supportsMessages_sys()
 {
-   return allowsMessages();
+    return allowsMessages();
 }
 
 #endif

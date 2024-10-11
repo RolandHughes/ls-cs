@@ -29,34 +29,39 @@
 
 #include "ContextMenu.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-ContextMenuItem::ContextMenuItem(ContextMenu* subMenu)
+ContextMenuItem::ContextMenuItem( ContextMenu *subMenu )
 {
     platformDescription().type = SubmenuType;
     platformDescription().action = ContextMenuItemTagNoAction;
 
-    if (subMenu)
-        setSubMenu(subMenu);
+    if ( subMenu )
+    {
+        setSubMenu( subMenu );
+    }
 }
 
-ContextMenuItem::ContextMenuItem(ContextMenuItemType type, ContextMenuAction action,
-                                 const String& title, ContextMenu* subMenu)
+ContextMenuItem::ContextMenuItem( ContextMenuItemType type, ContextMenuAction action,
+                                  const String &title, ContextMenu *subMenu )
 {
     platformDescription().type = type;
     platformDescription().action = action;
     platformDescription().title = title;
 
-    if (subMenu)
-        setSubMenu(subMenu);
+    if ( subMenu )
+    {
+        setSubMenu( subMenu );
+    }
 }
 
-ContextMenuItem::ContextMenuItem(ContextMenuItemType, ContextMenuAction, const String&, bool, bool)
+ContextMenuItem::ContextMenuItem( ContextMenuItemType, ContextMenuAction, const String &, bool, bool )
 {
     // FIXME: Implement
 }
 
-ContextMenuItem::ContextMenuItem(ContextMenuAction, const String&, bool, bool, Vector<ContextMenuItem>&)
+ContextMenuItem::ContextMenuItem( ContextMenuAction, const String &, bool, bool, Vector<ContextMenuItem> & )
 {
     // FIXME: Implement
 }
@@ -67,20 +72,20 @@ ContextMenuItem::~ContextMenuItem()
 
 #if PLATFORM(QT)
 
-ContextMenuItem::ContextMenuItem(const ContextMenuItem & other)
+ContextMenuItem::ContextMenuItem( const ContextMenuItem &other )
 {
-    m_platformDescription.reset(new PlatformMenuItemDescription(*other.m_platformDescription));
+    m_platformDescription.reset( new PlatformMenuItemDescription( *other.m_platformDescription ) );
 }
 
-ContextMenuItem& ContextMenuItem::operator=(const ContextMenuItem & other)
+ContextMenuItem &ContextMenuItem::operator=( const ContextMenuItem &other )
 {
-    m_platformDescription.reset(new PlatformMenuItemDescription(*other.m_platformDescription));
-   return *this;
+    m_platformDescription.reset( new PlatformMenuItemDescription( *other.m_platformDescription ) );
+    return *this;
 }
 
-ContextMenuItem& ContextMenuItem::operator=(ContextMenuItem && other)
+ContextMenuItem &ContextMenuItem::operator=( ContextMenuItem &&other )
 {
-    m_platformDescription.swap(other.m_platformDescription);
+    m_platformDescription.swap( other.m_platformDescription );
     other.m_platformDescription.reset();
     return *this;
 }
@@ -97,7 +102,7 @@ ContextMenuItemType ContextMenuItem::type() const
     return platformDescription().type;
 }
 
-void ContextMenuItem::setType(ContextMenuItemType type)
+void ContextMenuItem::setType( ContextMenuItemType type )
 {
     platformDescription().type = type;
 }
@@ -107,7 +112,7 @@ ContextMenuAction ContextMenuItem::action() const
     return platformDescription().action;
 }
 
-void ContextMenuItem::setAction(ContextMenuAction action)
+void ContextMenuItem::setAction( ContextMenuAction action )
 {
     platformDescription().action = action;
 }
@@ -117,7 +122,7 @@ String ContextMenuItem::title() const
     return platformDescription().title;
 }
 
-void ContextMenuItem::setTitle(const String& title)
+void ContextMenuItem::setTitle( const String &title )
 {
     platformDescription().title = title;
 }
@@ -128,17 +133,17 @@ PlatformMenuDescription ContextMenuItem::platformSubMenu() const
     return &platformDescription().subMenuItems;
 }
 
-void ContextMenuItem::setSubMenu(ContextMenu* menu)
+void ContextMenuItem::setSubMenu( ContextMenu *menu )
 {
     platformDescription().subMenuItems = *menu->platformDescription();
 }
 
-void ContextMenuItem::setSubMenu(Vector<ContextMenuItem>&)
+void ContextMenuItem::setSubMenu( Vector<ContextMenuItem> & )
 {
     // FIXME: Implement
 }
 
-void ContextMenuItem::setChecked(bool on)
+void ContextMenuItem::setChecked( bool on )
 {
     platformDescription().checked = on;
 }
@@ -149,7 +154,7 @@ bool ContextMenuItem::checked() const
     return false;
 }
 
-void ContextMenuItem::setEnabled(bool on)
+void ContextMenuItem::setEnabled( bool on )
 {
     platformDescription().enabled = on;
 }
@@ -159,24 +164,30 @@ bool ContextMenuItem::enabled() const
     return platformDescription().enabled;
 }
 
-PlatformMenuItemDescription& ContextMenuItem::platformDescription()
+PlatformMenuItemDescription &ContextMenuItem::platformDescription()
 {
 #if PLATFORM(QT)
-    if(!m_platformDescription) {
-	m_platformDescription.reset(new PlatformMenuItemDescription());
+
+    if ( !m_platformDescription )
+    {
+        m_platformDescription.reset( new PlatformMenuItemDescription() );
     }
+
     return *m_platformDescription;
 #else
     return m_platformDescription;
 #endif
 }
 
-const PlatformMenuItemDescription& ContextMenuItem::platformDescription() const
+const PlatformMenuItemDescription &ContextMenuItem::platformDescription() const
 {
 #if PLATFORM(QT)
-    if(!m_platformDescription) {
-	m_platformDescription.reset(new PlatformMenuItemDescription());
+
+    if ( !m_platformDescription )
+    {
+        m_platformDescription.reset( new PlatformMenuItemDescription() );
     }
+
     return *m_platformDescription;
 #else
     return m_platformDescription;

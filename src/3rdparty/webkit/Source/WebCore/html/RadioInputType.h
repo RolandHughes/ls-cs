@@ -33,25 +33,27 @@
 
 #include "BaseCheckableInputType.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RadioInputType : public BaseCheckableInputType {
+class RadioInputType : public BaseCheckableInputType
+{
 public:
-    static PassOwnPtr<InputType> create(HTMLInputElement*);
+    static PassOwnPtr<InputType> create( HTMLInputElement * );
 
 private:
-    RadioInputType(HTMLInputElement* element) : BaseCheckableInputType(element) { }
-    virtual const AtomicString& formControlType() const;
-    virtual bool valueMissing(const String&) const;
+    RadioInputType( HTMLInputElement *element ) : BaseCheckableInputType( element ) { }
+    virtual const AtomicString &formControlType() const;
+    virtual bool valueMissing( const String & ) const;
     virtual String valueMissingText() const;
-    virtual void handleClickEvent(MouseEvent*);
-    virtual void handleKeydownEvent(KeyboardEvent*);
-    virtual void handleKeyupEvent(KeyboardEvent*);
+    virtual void handleClickEvent( MouseEvent * );
+    virtual void handleKeydownEvent( KeyboardEvent * );
+    virtual void handleKeyupEvent( KeyboardEvent * );
     virtual bool isKeyboardFocusable() const;
     virtual void attach();
     virtual bool shouldSendChangeEventAfterCheckedChanged();
     virtual PassOwnPtr<ClickHandlingState> willDispatchClick();
-    virtual void didDispatchClick(Event*, const ClickHandlingState&);
+    virtual void didDispatchClick( Event *, const ClickHandlingState & );
     virtual bool isRadioButton() const;
 };
 

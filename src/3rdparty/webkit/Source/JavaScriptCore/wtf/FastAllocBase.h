@@ -125,293 +125,341 @@ public: \
 private: \
 typedef int ThisIsHereToForceASemicolonAfterThisMacro
 
-namespace WTF {
+namespace WTF
+{
 
-    // fastNew / fastDelete
+// fastNew / fastDelete
 
-    template <typename T>
-    inline T* fastNew()
+template <typename T>
+inline T *fastNew()
+{
+    void *p = fastMalloc( sizeof( T ) );
+
+    if ( !p )
     {
-        void* p = fastMalloc(sizeof(T));
+        return 0;
+    }
 
-        if (!p)
+    fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNew );
+    return ::new ( p ) T;
+}
+
+template <typename T, typename Arg1>
+inline T *fastNew( Arg1 arg1 )
+{
+    void *p = fastMalloc( sizeof( T ) );
+
+    if ( !p )
+    {
+        return 0;
+    }
+
+    fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNew );
+    return ::new ( p ) T( arg1 );
+}
+
+template <typename T, typename Arg1, typename Arg2>
+inline T *fastNew( Arg1 arg1, Arg2 arg2 )
+{
+    void *p = fastMalloc( sizeof( T ) );
+
+    if ( !p )
+    {
+        return 0;
+    }
+
+    fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNew );
+    return ::new ( p ) T( arg1, arg2 );
+}
+
+template <typename T, typename Arg1, typename Arg2, typename Arg3>
+inline T *fastNew( Arg1 arg1, Arg2 arg2, Arg3 arg3 )
+{
+    void *p = fastMalloc( sizeof( T ) );
+
+    if ( !p )
+    {
+        return 0;
+    }
+
+    fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNew );
+    return ::new ( p ) T( arg1, arg2, arg3 );
+}
+
+template <typename T, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
+inline T *fastNew( Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4 )
+{
+    void *p = fastMalloc( sizeof( T ) );
+
+    if ( !p )
+    {
+        return 0;
+    }
+
+    fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNew );
+    return ::new ( p ) T( arg1, arg2, arg3, arg4 );
+}
+
+template <typename T, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5>
+inline T *fastNew( Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5 )
+{
+    void *p = fastMalloc( sizeof( T ) );
+
+    if ( !p )
+    {
+        return 0;
+    }
+
+    fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNew );
+    return ::new ( p ) T( arg1, arg2, arg3, arg4, arg5 );
+}
+
+namespace Internal
+{
+
+// We define a union of pointer to an integer and pointer to T.
+// When non-POD arrays are allocated we add a few leading bytes to tell what
+// the size of the array is. We return to the user the pointer to T.
+// The way to think of it is as if we allocate a struct like so:
+//    struct Array {
+//        AllocAlignmentInteger m_size;
+//        T m_T[array count];
+//    };
+
+template <typename T>
+union ArraySize
+{
+    AllocAlignmentInteger *size;
+    T *t;
+};
+
+// This is a support template for fastNewArray.
+// This handles the case wherein T has a trivial ctor and a trivial dtor.
+template <typename T, bool trivialCtor, bool trivialDtor>
+struct NewArrayImpl
+{
+    static T *fastNewArray( size_t count )
+    {
+        T *p = static_cast<T *>( fastMalloc( sizeof( T ) * count ) );
+        fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNewArray );
+        return p;
+    }
+};
+
+// This is a support template for fastNewArray.
+// This handles the case wherein T has a non-trivial ctor and a trivial dtor.
+template <typename T>
+struct NewArrayImpl<T, false, true>
+{
+    static T *fastNewArray( size_t count )
+    {
+        T *p = static_cast<T *>( fastMalloc( sizeof( T ) * count ) );
+
+        if ( !p )
+        {
             return 0;
+        }
 
-        fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNew);
-        return ::new(p) T;
+        fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNewArray );
+
+        for ( T *pObject = p, *pObjectEnd = pObject + count; pObject != pObjectEnd; ++pObject )
+        {
+            ::new ( pObject ) T;
+        }
+
+        return p;
     }
+};
 
-    template <typename T, typename Arg1>
-    inline T* fastNew(Arg1 arg1)
+// This is a support template for fastNewArray.
+// This handles the case wherein T has a trivial ctor and a non-trivial dtor.
+template <typename T>
+struct NewArrayImpl<T, true, false>
+{
+    static T *fastNewArray( size_t count )
     {
-        void* p = fastMalloc(sizeof(T));
+        void *p = fastMalloc( sizeof( AllocAlignmentInteger ) + ( sizeof( T ) * count ) );
+        ArraySize<T> a = { static_cast<AllocAlignmentInteger *>( p ) };
 
-        if (!p)
+        if ( !p )
+        {
             return 0;
+        }
 
-        fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNew);
-        return ::new(p) T(arg1);
+        fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNewArray );
+        *a.size++ = count;
+        // No need to construct the objects in this case.
+
+        return a.t;
     }
+};
 
-    template <typename T, typename Arg1, typename Arg2>
-    inline T* fastNew(Arg1 arg1, Arg2 arg2)
+// This is a support template for fastNewArray.
+// This handles the case wherein T has a non-trivial ctor and a non-trivial dtor.
+template <typename T>
+struct NewArrayImpl<T, false, false>
+{
+    static T *fastNewArray( size_t count )
     {
-        void* p = fastMalloc(sizeof(T));
+        void *p = fastMalloc( sizeof( AllocAlignmentInteger ) + ( sizeof( T ) * count ) );
+        ArraySize<T> a = { static_cast<AllocAlignmentInteger *>( p ) };
 
-        if (!p)
+        if ( !p )
+        {
             return 0;
+        }
 
-        fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNew);
-        return ::new(p) T(arg1, arg2);
+        fastMallocMatchValidateMalloc( p, Internal::AllocTypeFastNewArray );
+        *a.size++ = count;
+
+        for ( T *pT = a.t, *pTEnd = pT + count; pT != pTEnd; ++pT )
+        {
+            ::new ( pT ) T;
+        }
+
+        return a.t;
+    }
+};
+} // namespace Internal
+
+template <typename T>
+inline T *fastNewArray( size_t count )
+{
+    return Internal::NewArrayImpl<T, WTF::HasTrivialConstructor<T>::value, WTF::HasTrivialDestructor<T>::value>::fastNewArray(
+               count );
+}
+
+template <typename T>
+inline void fastDelete( T *p )
+{
+    if ( !p )
+    {
+        return;
     }
 
-    template <typename T, typename Arg1, typename Arg2, typename Arg3>
-    inline T* fastNew(Arg1 arg1, Arg2 arg2, Arg3 arg3)
+    fastMallocMatchValidateFree( p, Internal::AllocTypeFastNew );
+    p->~T();
+    fastFree( p );
+}
+
+template <typename T>
+inline void fastDeleteSkippingDestructor( T *p )
+{
+    if ( !p )
     {
-        void* p = fastMalloc(sizeof(T));
-
-        if (!p)
-            return 0;
-
-        fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNew);
-        return ::new(p) T(arg1, arg2, arg3);
+        return;
     }
 
-    template <typename T, typename Arg1, typename Arg2, typename Arg3, typename Arg4>
-    inline T* fastNew(Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4)
+    fastMallocMatchValidateFree( p, Internal::AllocTypeFastNew );
+    fastFree( p );
+}
+
+namespace Internal
+{
+// This is a support template for fastDeleteArray.
+// This handles the case wherein T has a trivial dtor.
+template <typename T, bool trivialDtor>
+struct DeleteArrayImpl
+{
+    static void fastDeleteArray( void *p )
     {
-        void* p = fastMalloc(sizeof(T));
-
-        if (!p)
-            return 0;
-
-        fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNew);
-        return ::new(p) T(arg1, arg2, arg3, arg4);
+        // No need to destruct the objects in this case.
+        // We expect that fastFree checks for null.
+        fastMallocMatchValidateFree( p, Internal::AllocTypeFastNewArray );
+        fastFree( p );
     }
+};
 
-    template <typename T, typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5>
-    inline T* fastNew(Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5)
+// This is a support template for fastDeleteArray.
+// This handles the case wherein T has a non-trivial dtor.
+template <typename T>
+struct DeleteArrayImpl<T, false>
+{
+    static void fastDeleteArray( T *p )
     {
-        void* p = fastMalloc(sizeof(T));
-
-        if (!p)
-            return 0;
-
-        fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNew);
-        return ::new(p) T(arg1, arg2, arg3, arg4, arg5);
-    }
-
-    namespace Internal {
-
-        // We define a union of pointer to an integer and pointer to T.
-        // When non-POD arrays are allocated we add a few leading bytes to tell what
-        // the size of the array is. We return to the user the pointer to T.
-        // The way to think of it is as if we allocate a struct like so:
-        //    struct Array {
-        //        AllocAlignmentInteger m_size;
-        //        T m_T[array count];
-        //    };
-
-        template <typename T>
-        union ArraySize {
-            AllocAlignmentInteger* size;
-            T* t;
-        };
-
-        // This is a support template for fastNewArray.
-        // This handles the case wherein T has a trivial ctor and a trivial dtor.
-        template <typename T, bool trivialCtor, bool trivialDtor>
-        struct NewArrayImpl {
-            static T* fastNewArray(size_t count)
-            {
-                T* p = static_cast<T*>(fastMalloc(sizeof(T) * count));
-                fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNewArray);
-                return p;
-            }
-        };
-
-        // This is a support template for fastNewArray.
-        // This handles the case wherein T has a non-trivial ctor and a trivial dtor.
-        template <typename T>
-        struct NewArrayImpl<T, false, true> {
-            static T* fastNewArray(size_t count)
-            {
-                T* p = static_cast<T*>(fastMalloc(sizeof(T) * count));
-
-                if (!p)
-                    return 0;
-
-                fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNewArray);
-
-                for (T* pObject = p, *pObjectEnd = pObject + count; pObject != pObjectEnd; ++pObject)
-                    ::new(pObject) T;
-
-                return p;
-            }
-        };
-
-        // This is a support template for fastNewArray.
-        // This handles the case wherein T has a trivial ctor and a non-trivial dtor.
-        template <typename T>
-        struct NewArrayImpl<T, true, false> {
-            static T* fastNewArray(size_t count)
-            {
-                void* p = fastMalloc(sizeof(AllocAlignmentInteger) + (sizeof(T) * count));
-                ArraySize<T> a = { static_cast<AllocAlignmentInteger*>(p) };
-
-                if (!p)
-                    return 0;
-
-                fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNewArray);
-                *a.size++ = count;
-                // No need to construct the objects in this case.
-
-                return a.t;
-            }
-        };
-
-        // This is a support template for fastNewArray.
-        // This handles the case wherein T has a non-trivial ctor and a non-trivial dtor.
-        template <typename T>
-        struct NewArrayImpl<T, false, false> {
-            static T* fastNewArray(size_t count)
-            {
-                void* p = fastMalloc(sizeof(AllocAlignmentInteger) + (sizeof(T) * count));
-                ArraySize<T> a = { static_cast<AllocAlignmentInteger*>(p) };
-
-                if (!p)
-                    return 0;
-
-                fastMallocMatchValidateMalloc(p, Internal::AllocTypeFastNewArray);
-                *a.size++ = count;
-
-                for (T* pT = a.t, *pTEnd = pT + count; pT != pTEnd; ++pT)
-                    ::new(pT) T;
-
-                return a.t;
-            }
-        };
-    } // namespace Internal
-
-    template <typename T>
-    inline T* fastNewArray(size_t count)
-    {
-        return Internal::NewArrayImpl<T, WTF::HasTrivialConstructor<T>::value, WTF::HasTrivialDestructor<T>::value>::fastNewArray(count);
-    }
-
-    template <typename T>
-    inline void fastDelete(T* p)
-    {
-        if (!p)
+        if ( !p )
+        {
             return;
+        }
 
-        fastMallocMatchValidateFree(p, Internal::AllocTypeFastNew);
-        p->~T();
-        fastFree(p);
+        ArraySize<T> a;
+        a.t = p;
+        a.size--; // Decrement size pointer
+
+        T *pEnd = p + *a.size;
+
+        while ( pEnd-- != p )
+        {
+            pEnd->~T();
+        }
+
+        fastMallocMatchValidateFree( a.size, Internal::AllocTypeFastNewArray );
+        fastFree( a.size );
     }
+};
 
-    template <typename T>
-    inline void fastDeleteSkippingDestructor(T* p)
+} // namespace Internal
+
+template <typename T>
+void fastDeleteArray( T *p )
+{
+    Internal::DeleteArrayImpl<T, WTF::HasTrivialDestructor<T>::value>::fastDeleteArray( p );
+}
+
+
+template <typename T>
+inline void fastNonNullDelete( T *p )
+{
+    fastMallocMatchValidateFree( p, Internal::AllocTypeFastNew );
+    p->~T();
+    fastFree( p );
+}
+
+namespace Internal
+{
+// This is a support template for fastDeleteArray.
+// This handles the case wherein T has a trivial dtor.
+template <typename T, bool trivialDtor>
+struct NonNullDeleteArrayImpl
+{
+    static void fastNonNullDeleteArray( void *p )
     {
-        if (!p)
-            return;
-
-        fastMallocMatchValidateFree(p, Internal::AllocTypeFastNew);
-        fastFree(p);
+        fastMallocMatchValidateFree( p, Internal::AllocTypeFastNewArray );
+        // No need to destruct the objects in this case.
+        fastFree( p );
     }
+};
 
-    namespace Internal {
-        // This is a support template for fastDeleteArray.
-        // This handles the case wherein T has a trivial dtor.
-        template <typename T, bool trivialDtor>
-        struct DeleteArrayImpl {
-            static void fastDeleteArray(void* p)
-            {
-                // No need to destruct the objects in this case.
-                // We expect that fastFree checks for null.
-                fastMallocMatchValidateFree(p, Internal::AllocTypeFastNewArray);
-                fastFree(p);
-            }
-        };
-
-        // This is a support template for fastDeleteArray.
-        // This handles the case wherein T has a non-trivial dtor.
-        template <typename T>
-        struct DeleteArrayImpl<T, false> {
-            static void fastDeleteArray(T* p)
-            {
-                if (!p)
-                    return;
-
-                ArraySize<T> a;
-                a.t = p;
-                a.size--; // Decrement size pointer
-
-                T* pEnd = p + *a.size;
-                while (pEnd-- != p)
-                    pEnd->~T();
-
-                fastMallocMatchValidateFree(a.size, Internal::AllocTypeFastNewArray);
-                fastFree(a.size);
-            }
-        };
-
-    } // namespace Internal
-
-    template <typename T>
-    void fastDeleteArray(T* p)
+// This is a support template for fastDeleteArray.
+// This handles the case wherein T has a non-trivial dtor.
+template <typename T>
+struct NonNullDeleteArrayImpl<T, false>
+{
+    static void fastNonNullDeleteArray( T *p )
     {
-        Internal::DeleteArrayImpl<T, WTF::HasTrivialDestructor<T>::value>::fastDeleteArray(p);
+        ArraySize<T> a;
+        a.t = p;
+        a.size--;
+
+        T *pEnd = p + *a.size;
+
+        while ( pEnd-- != p )
+        {
+            pEnd->~T();
+        }
+
+        fastMallocMatchValidateFree( a.size, Internal::AllocTypeFastNewArray );
+        fastFree( a.size );
     }
+};
 
+} // namespace Internal
 
-    template <typename T>
-    inline void fastNonNullDelete(T* p)
-    {
-        fastMallocMatchValidateFree(p, Internal::AllocTypeFastNew);
-        p->~T();
-        fastFree(p);
-    }
-
-    namespace Internal {
-        // This is a support template for fastDeleteArray.
-        // This handles the case wherein T has a trivial dtor.
-        template <typename T, bool trivialDtor>
-        struct NonNullDeleteArrayImpl {
-            static void fastNonNullDeleteArray(void* p)
-            {
-                fastMallocMatchValidateFree(p, Internal::AllocTypeFastNewArray);
-                // No need to destruct the objects in this case.
-                fastFree(p);
-            }
-        };
-
-        // This is a support template for fastDeleteArray.
-        // This handles the case wherein T has a non-trivial dtor.
-        template <typename T>
-        struct NonNullDeleteArrayImpl<T, false> {
-            static void fastNonNullDeleteArray(T* p)
-            {
-                ArraySize<T> a;
-                a.t = p;
-                a.size--;
-
-                T* pEnd = p + *a.size;
-                while (pEnd-- != p)
-                    pEnd->~T();
-
-                fastMallocMatchValidateFree(a.size, Internal::AllocTypeFastNewArray);
-                fastFree(a.size);
-            }
-        };
-
-    } // namespace Internal
-
-    template <typename T>
-    void fastNonNullDeleteArray(T* p)
-    {
-        Internal::NonNullDeleteArrayImpl<T, WTF::HasTrivialDestructor<T>::value>::fastNonNullDeleteArray(p);
-    }
+template <typename T>
+void fastNonNullDeleteArray( T *p )
+{
+    Internal::NonNullDeleteArrayImpl<T, WTF::HasTrivialDestructor<T>::value>::fastNonNullDeleteArray( p );
+}
 
 
 } // namespace WTF

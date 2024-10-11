@@ -28,29 +28,31 @@
 #include "TestCallback.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSTestCallback : public TestCallback, public ActiveDOMCallback {
+class JSTestCallback : public TestCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSTestCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSTestCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSTestCallback(callback, globalObject));
+        return adoptRef( new JSTestCallback( callback, globalObject ) );
     }
 
     virtual ~JSTestCallback();
 
     // Functions
     virtual bool callbackWithNoParam();
-    virtual bool callbackWithClass1Param(Class1* class1Param);
-    virtual bool callbackWithClass2Param(Class2* class2Param, const String& strArg);
-    COMPILE_ASSERT(false)    virtual int callbackWithNonBoolReturnType(Class3* class3Param);
-    virtual int customCallback(Class5* class5Param, Class6* class6Param);
-    virtual bool callbackWithStringList(DOMStringList* listParam);
+    virtual bool callbackWithClass1Param( Class1 *class1Param );
+    virtual bool callbackWithClass2Param( Class2 *class2Param, const String &strArg );
+    COMPILE_ASSERT( false )    virtual int callbackWithNonBoolReturnType( Class3 *class3Param );
+    virtual int customCallback( Class5 *class5Param, Class6 *class6Param );
+    virtual bool callbackWithStringList( DOMStringList *listParam );
 
 private:
-    JSTestCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSTestCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

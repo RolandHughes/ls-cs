@@ -35,123 +35,125 @@ class QLocalSocketPrivate;
 
 class Q_NETWORK_EXPORT QLocalSocket : public QIODevice
 {
-   NET_CS_OBJECT(QLocalSocket)
-   Q_DECLARE_PRIVATE(QLocalSocket)
+    NET_LSCS_OBJECT( QLocalSocket )
+    Q_DECLARE_PRIVATE( QLocalSocket )
 
- public:
-   enum LocalSocketError {
-      ConnectionRefusedError = QAbstractSocket::ConnectionRefusedError,
-      PeerClosedError = QAbstractSocket::RemoteHostClosedError,
-      ServerNotFoundError = QAbstractSocket::HostNotFoundError,
-      SocketAccessError = QAbstractSocket::SocketAccessError,
-      SocketResourceError = QAbstractSocket::SocketResourceError,
-      SocketTimeoutError = QAbstractSocket::SocketTimeoutError,
-      DatagramTooLargeError = QAbstractSocket::DatagramTooLargeError,
-      ConnectionError = QAbstractSocket::NetworkError,
-      UnsupportedSocketOperationError = QAbstractSocket::UnsupportedSocketOperationError,
-      UnknownSocketError = QAbstractSocket::UnknownSocketError,
-      OperationError = QAbstractSocket::OperationError
-   };
+public:
+    enum LocalSocketError
+    {
+        ConnectionRefusedError = QAbstractSocket::ConnectionRefusedError,
+        PeerClosedError = QAbstractSocket::RemoteHostClosedError,
+        ServerNotFoundError = QAbstractSocket::HostNotFoundError,
+        SocketAccessError = QAbstractSocket::SocketAccessError,
+        SocketResourceError = QAbstractSocket::SocketResourceError,
+        SocketTimeoutError = QAbstractSocket::SocketTimeoutError,
+        DatagramTooLargeError = QAbstractSocket::DatagramTooLargeError,
+        ConnectionError = QAbstractSocket::NetworkError,
+        UnsupportedSocketOperationError = QAbstractSocket::UnsupportedSocketOperationError,
+        UnknownSocketError = QAbstractSocket::UnknownSocketError,
+        OperationError = QAbstractSocket::OperationError
+    };
 
-   enum LocalSocketState {
-      UnconnectedState = QAbstractSocket::UnconnectedState,
-      ConnectingState = QAbstractSocket::ConnectingState,
-      ConnectedState = QAbstractSocket::ConnectedState,
-      ClosingState = QAbstractSocket::ClosingState
-   };
+    enum LocalSocketState
+    {
+        UnconnectedState = QAbstractSocket::UnconnectedState,
+        ConnectingState = QAbstractSocket::ConnectingState,
+        ConnectedState = QAbstractSocket::ConnectedState,
+        ClosingState = QAbstractSocket::ClosingState
+    };
 
-   QLocalSocket(QObject *parent = nullptr);
+    QLocalSocket( QObject *parent = nullptr );
 
-   QLocalSocket(const QLocalSocket &) = delete;
-   QLocalSocket &operator=(const QLocalSocket &) = delete;
+    QLocalSocket( const QLocalSocket & ) = delete;
+    QLocalSocket &operator=( const QLocalSocket & ) = delete;
 
-   ~QLocalSocket();
+    ~QLocalSocket();
 
-   void connectToServer(OpenMode openMode = ReadWrite);
-   void connectToServer(const QString &name, OpenMode openMode = ReadWrite);
-   void disconnectFromServer();
+    void connectToServer( OpenMode openMode = ReadWrite );
+    void connectToServer( const QString &name, OpenMode openMode = ReadWrite );
+    void disconnectFromServer();
 
-   void setServerName(const QString &name);
-   QString serverName() const;
-   QString fullServerName() const;
+    void setServerName( const QString &name );
+    QString serverName() const;
+    QString fullServerName() const;
 
-   void abort();
-   bool isSequential() const override;
-   qint64 bytesAvailable() const override;
-   qint64 bytesToWrite() const override;
-   bool canReadLine() const override;
-   bool open(OpenMode openMode = ReadWrite) override;
-   void close() override;
+    void abort();
+    bool isSequential() const override;
+    qint64 bytesAvailable() const override;
+    qint64 bytesToWrite() const override;
+    bool canReadLine() const override;
+    bool open( OpenMode openMode = ReadWrite ) override;
+    void close() override;
 
-   LocalSocketError error() const;
-   bool flush();
-   bool isValid() const;
-   qint64 readBufferSize() const;
-   void setReadBufferSize(qint64 size);
+    LocalSocketError error() const;
+    bool flush();
+    bool isValid() const;
+    qint64 readBufferSize() const;
+    void setReadBufferSize( qint64 size );
 
-   bool setSocketDescriptor(qintptr socketDescriptor, LocalSocketState socketState = ConnectedState,
-                  OpenMode openMode = ReadWrite);
+    bool setSocketDescriptor( qintptr socketDescriptor, LocalSocketState socketState = ConnectedState,
+                              OpenMode openMode = ReadWrite );
 
-   qintptr socketDescriptor() const;
+    qintptr socketDescriptor() const;
 
-   LocalSocketState state() const;
-   bool waitForBytesWritten(int msecs = 30000) override;
-   bool waitForConnected(int msecs = 30000) ;
-   bool waitForDisconnected(int msecs = 30000);
-   bool waitForReadyRead(int msecs = 30000) override;
+    LocalSocketState state() const;
+    bool waitForBytesWritten( int msecs = 30000 ) override;
+    bool waitForConnected( int msecs = 30000 ) ;
+    bool waitForDisconnected( int msecs = 30000 );
+    bool waitForReadyRead( int msecs = 30000 ) override;
 
-   NET_CS_SIGNAL_1(Public, void connected())
-   NET_CS_SIGNAL_2(connected)
+    NET_LSCS_SIGNAL_1( Public, void connected() )
+    NET_LSCS_SIGNAL_2( connected )
 
-   NET_CS_SIGNAL_1(Public, void disconnected())
-   NET_CS_SIGNAL_2(disconnected)
+    NET_LSCS_SIGNAL_1( Public, void disconnected() )
+    NET_LSCS_SIGNAL_2( disconnected )
 
-   NET_CS_SIGNAL_1(Public, void error(QLocalSocket::LocalSocketError socketError))
-   NET_CS_SIGNAL_OVERLOAD(error, (QLocalSocket::LocalSocketError), socketError)
+    NET_LSCS_SIGNAL_1( Public, void error( QLocalSocket::LocalSocketError socketError ) )
+    NET_LSCS_SIGNAL_OVERLOAD( error, ( QLocalSocket::LocalSocketError ), socketError )
 
-   NET_CS_SIGNAL_1(Public, void stateChanged(QLocalSocket::LocalSocketState socketState))
-   NET_CS_SIGNAL_2(stateChanged, socketState)
+    NET_LSCS_SIGNAL_1( Public, void stateChanged( QLocalSocket::LocalSocketState socketState ) )
+    NET_LSCS_SIGNAL_2( stateChanged, socketState )
 
- protected:
-   qint64 readData(char * data, qint64 ch) override;
-   qint64 writeData(const char * data, qint64 ch) override;
+protected:
+    qint64 readData( char *data, qint64 ch ) override;
+    qint64 writeData( const char *data, qint64 ch ) override;
 
- private:
+private:
 #if defined(QT_LOCALSOCKET_TCP)
-   NET_CS_SLOT_1(Private, void _q_stateChanged(QAbstractSocket::SocketState socketState))
-   NET_CS_SLOT_2(_q_stateChanged)
+    NET_LSCS_SLOT_1( Private, void _q_stateChanged( QAbstractSocket::SocketState socketState ) )
+    NET_LSCS_SLOT_2( _q_stateChanged )
 
-   NET_CS_SLOT_1(Private, void _q_error(QAbstractSocket::SocketError socketError))
-   NET_CS_SLOT_2(_q_error)
+    NET_LSCS_SLOT_1( Private, void _q_error( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_error )
 
 #elif defined(Q_OS_WIN)
-   NET_CS_SLOT_1(Private, void _q_canWrite())
-   NET_CS_SLOT_2(_q_canWrite)
+    NET_LSCS_SLOT_1( Private, void _q_canWrite() )
+    NET_LSCS_SLOT_2( _q_canWrite )
 
-   NET_CS_SLOT_1(Private, void _q_pipeClosed())
-   NET_CS_SLOT_2(_q_pipeClosed)
+    NET_LSCS_SLOT_1( Private, void _q_pipeClosed() )
+    NET_LSCS_SLOT_2( _q_pipeClosed )
 
-   NET_CS_SLOT_1(Private, void _q_winError(ulong, const QString &))
-   NET_CS_SLOT_2(_q_winError)
+    NET_LSCS_SLOT_1( Private, void _q_winError( ulong, const QString & ) )
+    NET_LSCS_SLOT_2( _q_winError )
 
 #else
-   NET_CS_SLOT_1(Private, void _q_stateChanged(QAbstractSocket::SocketState state))
-   NET_CS_SLOT_2(_q_stateChanged)
+    NET_LSCS_SLOT_1( Private, void _q_stateChanged( QAbstractSocket::SocketState state ) )
+    NET_LSCS_SLOT_2( _q_stateChanged )
 
-   NET_CS_SLOT_1(Private, void _q_error(QAbstractSocket::SocketError socketError))
-   NET_CS_SLOT_2(_q_error)
+    NET_LSCS_SLOT_1( Private, void _q_error( QAbstractSocket::SocketError socketError ) )
+    NET_LSCS_SLOT_2( _q_error )
 
-   NET_CS_SLOT_1(Private, void _q_connectToSocket())
-   NET_CS_SLOT_2(_q_connectToSocket)
+    NET_LSCS_SLOT_1( Private, void _q_connectToSocket() )
+    NET_LSCS_SLOT_2( _q_connectToSocket )
 
-   NET_CS_SLOT_1(Private, void _q_abortConnectionAttempt())
-   NET_CS_SLOT_2(_q_abortConnectionAttempt)
+    NET_LSCS_SLOT_1( Private, void _q_abortConnectionAttempt() )
+    NET_LSCS_SLOT_2( _q_abortConnectionAttempt )
 #endif
 
 };
 
-Q_NETWORK_EXPORT QDebug operator<<(QDebug, QLocalSocket::LocalSocketError);
-Q_NETWORK_EXPORT QDebug operator<<(QDebug, QLocalSocket::LocalSocketState);
+Q_NETWORK_EXPORT QDebug operator<<( QDebug, QLocalSocket::LocalSocketError );
+Q_NETWORK_EXPORT QDebug operator<<( QDebug, QLocalSocket::LocalSocketState );
 
 #endif // QT_NO_LOCALSOCKET
 

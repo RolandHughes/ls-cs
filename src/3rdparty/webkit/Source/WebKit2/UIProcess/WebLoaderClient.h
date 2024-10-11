@@ -33,11 +33,13 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class ResourceError;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
 class APIObject;
 class AuthenticationChallengeProxy;
@@ -47,39 +49,40 @@ class WebFrameProxy;
 class WebPageProxy;
 class WebProtectionSpace;
 
-class WebLoaderClient : public APIClient<WKPageLoaderClient> {
+class WebLoaderClient : public APIClient<WKPageLoaderClient>
+{
 public:
-    void didStartProvisionalLoadForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didReceiveServerRedirectForProvisionalLoadForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didFailProvisionalLoadWithErrorForFrame(WebPageProxy*, WebFrameProxy*, const WebCore::ResourceError&, APIObject*);
-    void didCommitLoadForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didFinishDocumentLoadForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didFinishLoadForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didFailLoadWithErrorForFrame(WebPageProxy*, WebFrameProxy*, const WebCore::ResourceError&, APIObject*);
-    void didSameDocumentNavigationForFrame(WebPageProxy*, WebFrameProxy*, SameDocumentNavigationType, APIObject*);
-    void didReceiveTitleForFrame(WebPageProxy*, const String&, WebFrameProxy*, APIObject*);
-    void didFirstLayoutForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didFirstVisuallyNonEmptyLayoutForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didRemoveFrameFromHierarchy(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didDisplayInsecureContentForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    void didRunInsecureContentForFrame(WebPageProxy*, WebFrameProxy*, APIObject*);
-    
-    bool canAuthenticateAgainstProtectionSpaceInFrame(WebPageProxy*, WebFrameProxy*, WebProtectionSpace*);
-    void didReceiveAuthenticationChallengeInFrame(WebPageProxy*, WebFrameProxy*, AuthenticationChallengeProxy*);
+    void didStartProvisionalLoadForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didReceiveServerRedirectForProvisionalLoadForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didFailProvisionalLoadWithErrorForFrame( WebPageProxy *, WebFrameProxy *, const WebCore::ResourceError &, APIObject * );
+    void didCommitLoadForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didFinishDocumentLoadForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didFinishLoadForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didFailLoadWithErrorForFrame( WebPageProxy *, WebFrameProxy *, const WebCore::ResourceError &, APIObject * );
+    void didSameDocumentNavigationForFrame( WebPageProxy *, WebFrameProxy *, SameDocumentNavigationType, APIObject * );
+    void didReceiveTitleForFrame( WebPageProxy *, const String &, WebFrameProxy *, APIObject * );
+    void didFirstLayoutForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didFirstVisuallyNonEmptyLayoutForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didRemoveFrameFromHierarchy( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didDisplayInsecureContentForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
+    void didRunInsecureContentForFrame( WebPageProxy *, WebFrameProxy *, APIObject * );
 
-    void didStartProgress(WebPageProxy*);
-    void didChangeProgress(WebPageProxy*);
-    void didFinishProgress(WebPageProxy*);
+    bool canAuthenticateAgainstProtectionSpaceInFrame( WebPageProxy *, WebFrameProxy *, WebProtectionSpace * );
+    void didReceiveAuthenticationChallengeInFrame( WebPageProxy *, WebFrameProxy *, AuthenticationChallengeProxy * );
+
+    void didStartProgress( WebPageProxy * );
+    void didChangeProgress( WebPageProxy * );
+    void didFinishProgress( WebPageProxy * );
 
     // FIXME: These three functions should not be part of this client.
-    void processDidBecomeUnresponsive(WebPageProxy*);
-    void processDidBecomeResponsive(WebPageProxy*);
-    void processDidCrash(WebPageProxy*);
+    void processDidBecomeUnresponsive( WebPageProxy * );
+    void processDidBecomeResponsive( WebPageProxy * );
+    void processDidCrash( WebPageProxy * );
 
-    void didChangeBackForwardList(WebPageProxy*, WebBackForwardListItem* addedItem, Vector<RefPtr<APIObject> >* removedItems);
-    bool shouldGoToBackForwardListItem(WebPageProxy*, WebBackForwardListItem*);
+    void didChangeBackForwardList( WebPageProxy *, WebBackForwardListItem *addedItem, Vector<RefPtr<APIObject> > *removedItems );
+    bool shouldGoToBackForwardListItem( WebPageProxy *, WebBackForwardListItem * );
 
-    void didFailToInitializePlugin(WebPageProxy*, const String& mimeType);
+    void didFailToInitializePlugin( WebPageProxy *, const String &mimeType );
 };
 
 } // namespace WebKit

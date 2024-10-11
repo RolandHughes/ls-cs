@@ -20,29 +20,32 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ThreadCheck_h
 #define ThreadCheck_h
 
-namespace WebCore {
-    enum ThreadViolationBehavior {
-        NoThreadCheck,
-        LogOnFirstThreadViolation,
-        LogOnThreadViolation,
-        RaiseExceptionOnThreadViolation
-    };
-    enum ThreadViolationRound {
-        ThreadViolationRoundOne = 0,
-        ThreadViolationRoundTwo,
-        MaximumThreadViolationRound
-    };
-    void setDefaultThreadViolationBehavior(ThreadViolationBehavior, ThreadViolationRound);
-    void reportThreadViolation(const char* function, ThreadViolationRound);
+namespace WebCore
+{
+enum ThreadViolationBehavior
+{
+    NoThreadCheck,
+    LogOnFirstThreadViolation,
+    LogOnThreadViolation,
+    RaiseExceptionOnThreadViolation
+};
+enum ThreadViolationRound
+{
+    ThreadViolationRoundOne = 0,
+    ThreadViolationRoundTwo,
+    MaximumThreadViolationRound
+};
+void setDefaultThreadViolationBehavior( ThreadViolationBehavior, ThreadViolationRound );
+void reportThreadViolation( const char *function, ThreadViolationRound );
 }
 
-extern "C" void WebCoreReportThreadViolation(const char* function, WebCore::ThreadViolationRound);
+extern "C" void WebCoreReportThreadViolation( const char *function, WebCore::ThreadViolationRound );
 
 #define WebCoreThreadViolationCheckRoundOne() ::WebCore::reportThreadViolation(WTF_PRETTY_FUNCTION, WebCore::ThreadViolationRoundOne)
 #define WebCoreThreadViolationCheckRoundTwo() ::WebCore::reportThreadViolation(WTF_PRETTY_FUNCTION, WebCore::ThreadViolationRoundTwo)

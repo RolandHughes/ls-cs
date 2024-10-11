@@ -38,56 +38,57 @@ class AVFCameraRendererControl;
 
 class AVFCameraRendererControl : public QVideoRendererControl
 {
-   CS_OBJECT(AVFCameraRendererControl)
+    LSCS_OBJECT( AVFCameraRendererControl )
 
- public:
-   AVFCameraRendererControl(QObject *parent = nullptr);
-   ~AVFCameraRendererControl();
+public:
+    AVFCameraRendererControl( QObject *parent = nullptr );
+    ~AVFCameraRendererControl();
 
-   QAbstractVideoSurface *surface() const override;
-   void setSurface(QAbstractVideoSurface *surface) override;
+    QAbstractVideoSurface *surface() const override;
+    void setSurface( QAbstractVideoSurface *surface ) override;
 
-   void configureAVCaptureSession(AVFCameraSession *cameraSession);
-   void syncHandleViewfinderFrame(const QVideoFrame &frame);
+    void configureAVCaptureSession( AVFCameraSession *cameraSession );
+    void syncHandleViewfinderFrame( const QVideoFrame &frame );
 
-   AVCaptureVideoDataOutput *videoDataOutput() const;
+    AVCaptureVideoDataOutput *videoDataOutput() const;
 
-   bool supportsTextures() const {
-      return m_supportsTextures;
-   }
-
-#ifdef Q_OS_IOS
-   AVFCaptureFramesDelegate *captureDelegate() const;
-   void resetCaptureDelegate() const;
-#endif
-
-   CS_SIGNAL_1(Public, void surfaceChanged(QAbstractVideoSurface *surface))
-   CS_SIGNAL_2(surfaceChanged, surface)
-
- private:
-   CS_SLOT_1(Private, void handleViewfinderFrame())
-   CS_SLOT_2(handleViewfinderFrame)
-
-   CS_SLOT_1(Private, void updateCaptureConnection())
-   CS_SLOT_2(updateCaptureConnection)
-
-   QAbstractVideoSurface *m_surface;
-   AVFCaptureFramesDelegate *m_viewfinderFramesDelegate;
-   AVFCameraSession *m_cameraSession;
-   AVCaptureVideoDataOutput *m_videoDataOutput;
-
-   bool m_supportsTextures;
-   bool m_needsHorizontalMirroring;
+    bool supportsTextures() const
+    {
+        return m_supportsTextures;
+    }
 
 #ifdef Q_OS_IOS
-   CVOpenGLESTextureCacheRef m_textureCache;
+    AVFCaptureFramesDelegate *captureDelegate() const;
+    void resetCaptureDelegate() const;
 #endif
 
-   QVideoFrame m_lastViewfinderFrame;
-   QMutex m_vfMutex;
-   dispatch_queue_t m_delegateQueue;
+    LSCS_SIGNAL_1( Public, void surfaceChanged( QAbstractVideoSurface *surface ) )
+    LSCS_SIGNAL_2( surfaceChanged, surface )
 
-   friend class CVImageVideoBuffer;
+private:
+    LSCS_SLOT_1( Private, void handleViewfinderFrame() )
+    LSCS_SLOT_2( handleViewfinderFrame )
+
+    LSCS_SLOT_1( Private, void updateCaptureConnection() )
+    LSCS_SLOT_2( updateCaptureConnection )
+
+    QAbstractVideoSurface *m_surface;
+    AVFCaptureFramesDelegate *m_viewfinderFramesDelegate;
+    AVFCameraSession *m_cameraSession;
+    AVCaptureVideoDataOutput *m_videoDataOutput;
+
+    bool m_supportsTextures;
+    bool m_needsHorizontalMirroring;
+
+#ifdef Q_OS_IOS
+    CVOpenGLESTextureCacheRef m_textureCache;
+#endif
+
+    QVideoFrame m_lastViewfinderFrame;
+    QMutex m_vfMutex;
+    dispatch_queue_t m_delegateQueue;
+
+    friend class CVImageVideoBuffer;
 };
 
 #endif

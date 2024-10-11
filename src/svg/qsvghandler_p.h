@@ -40,118 +40,125 @@ class QSvgTinyDocument;
 class QXmlStreamReader;
 
 #ifndef QT_NO_CSSPARSER
-struct QSvgCssAttribute {
-   QString name;
-   QString value;
+struct QSvgCssAttribute
+{
+    QString name;
+    QString value;
 };
 #endif
 
 class QSvgHandler
 {
- public:
-   enum LengthType {
-      LT_PERCENT,
-      LT_PX,
-      LT_PC,
-      LT_PT,
-      LT_MM,
-      LT_CM,
-      LT_IN,
-      LT_OTHER
-   };
+public:
+    enum LengthType
+    {
+        LT_PERCENT,
+        LT_PX,
+        LT_PC,
+        LT_PT,
+        LT_MM,
+        LT_CM,
+        LT_IN,
+        LT_OTHER
+    };
 
- public:
-   QSvgHandler(QIODevice *device);
-   QSvgHandler(const QByteArray &data);
-   QSvgHandler(QXmlStreamReader *const data);
-   ~QSvgHandler();
+public:
+    QSvgHandler( QIODevice *device );
+    QSvgHandler( const QByteArray &data );
+    QSvgHandler( QXmlStreamReader *const data );
+    ~QSvgHandler();
 
-   QSvgTinyDocument *document() const;
+    QSvgTinyDocument *document() const;
 
-   inline bool ok() const {
-      return document() != nullptr && !xml->hasError();
-   }
+    inline bool ok() const
+    {
+        return document() != nullptr && !xml->hasError();
+    }
 
-   QString errorString() const {
-      return xml->errorString();
-   }
+    QString errorString() const
+    {
+        return xml->errorString();
+    }
 
-   int lineNumber() const {
-      return xml->lineNumber();
-   }
+    int lineNumber() const
+    {
+        return xml->lineNumber();
+    }
 
-   void setDefaultCoordinateSystem(LengthType type);
-   LengthType defaultCoordinateSystem() const;
+    void setDefaultCoordinateSystem( LengthType type );
+    LengthType defaultCoordinateSystem() const;
 
-   void pushColor(const QColor &color);
-   void pushColorCopy();
-   void popColor();
-   QColor currentColor() const;
-
-#ifndef QT_NO_CSSPARSER
-   void setInStyle(bool b);
-   bool inStyle() const;
-
-   QSvgStyleSelector *selector() const;
-#endif
-
-   void setAnimPeriod(int start, int end);
-   int animationDuration() const;
+    void pushColor( const QColor &color );
+    void pushColorCopy();
+    void popColor();
+    QColor currentColor() const;
 
 #ifndef QT_NO_CSSPARSER
-   void parseCSStoXMLAttrs(QString css, QVector<QSvgCssAttribute> *attributes);
+    void setInStyle( bool b );
+    bool inStyle() const;
+
+    QSvgStyleSelector *selector() const;
 #endif
 
-   inline QPen defaultPen() const {
-      return m_defaultPen;
-   }
-
- public:
-   bool startElement(const QString &localName, const QXmlStreamAttributes &attributes);
-   bool endElement(QStringView localName);
-   bool characters(QStringView str);
-   bool processingInstruction(const QString &target, const QString &data);
-
- private:
-   void init();
-
-   QSvgTinyDocument *m_doc;
-   QStack<QSvgNode *> m_nodes;
-
-   QList<QSvgNode *>  m_resolveNodes;
-
-   enum CurrentNode {
-      Unknown,
-      Graphics,
-      Style
-   };
-   QStack<CurrentNode> m_skipNodes;
-
-   QStack<QSvgText::WhitespaceMode>  m_whitespaceMode;
-   QSvgRefCounter<QSvgStyleProperty> m_style;
-
-   LengthType m_defaultCoords;
-
-   QStack<QColor> m_colorStack;
-   QStack<int>    m_colorTagCount;
+    void setAnimPeriod( int start, int end );
+    int animationDuration() const;
 
 #ifndef QT_NO_CSSPARSER
-   bool m_inStyle;
-   QSvgStyleSelector *m_selector;
-   QCss::Parser m_cssParser;
+    void parseCSStoXMLAttrs( QString css, QVector<QSvgCssAttribute> *attributes );
 #endif
 
-   int m_animEnd;
+    inline QPen defaultPen() const
+    {
+        return m_defaultPen;
+    }
 
-   QXmlStreamReader *const xml;
+public:
+    bool startElement( const QString &localName, const QXmlStreamAttributes &attributes );
+    bool endElement( QStringView localName );
+    bool characters( QStringView str );
+    bool processingInstruction( const QString &target, const QString &data );
 
-   void parse();
-   void resolveGradients(QSvgNode *node);
+private:
+    void init();
 
-   QPen m_defaultPen;
+    QSvgTinyDocument *m_doc;
+    QStack<QSvgNode *> m_nodes;
 
-   // Whether we own the variable xml, and hence whether we need to delete it.
-   const bool m_ownsReader;
+    QList<QSvgNode *>  m_resolveNodes;
+
+    enum CurrentNode
+    {
+        Unknown,
+        Graphics,
+        Style
+    };
+    QStack<CurrentNode> m_skipNodes;
+
+    QStack<QSvgText::WhitespaceMode>  m_whitespaceMode;
+    QSvgRefCounter<QSvgStyleProperty> m_style;
+
+    LengthType m_defaultCoords;
+
+    QStack<QColor> m_colorStack;
+    QStack<int>    m_colorTagCount;
+
+#ifndef QT_NO_CSSPARSER
+    bool m_inStyle;
+    QSvgStyleSelector *m_selector;
+    QCss::Parser m_cssParser;
+#endif
+
+    int m_animEnd;
+
+    QXmlStreamReader *const xml;
+
+    void parse();
+    void resolveGradients( QSvgNode *node );
+
+    QPen m_defaultPen;
+
+    // Whether we own the variable xml, and hence whether we need to delete it.
+    const bool m_ownsReader;
 };
 
 

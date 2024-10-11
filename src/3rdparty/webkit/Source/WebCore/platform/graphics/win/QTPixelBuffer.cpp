@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "config.h"
 
@@ -34,73 +34,82 @@
 #include <QuickDraw.h>
 #include <memory.h>
 
-static OSStatus SetNumberValue(CFMutableDictionaryRef inDict, CFStringRef inKey, SInt32 inValue)
+static OSStatus SetNumberValue( CFMutableDictionaryRef inDict, CFStringRef inKey, SInt32 inValue )
 {
     CFNumberRef number;
- 
-    number = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &inValue);
-    if (!number) 
+
+    number = CFNumberCreate( kCFAllocatorDefault, kCFNumberSInt32Type, &inValue );
+
+    if ( !number )
+    {
         return coreFoundationUnknownErr;
- 
-    CFDictionarySetValue(inDict, inKey, number);
-    CFRelease(number);
+    }
+
+    CFDictionarySetValue( inDict, inKey, number );
+    CFRelease( number );
 
     return noErr;
 }
 
-CFDictionaryRef QTPixelBuffer::createPixelBufferAttributesDictionary(QTPixelBuffer::Type contextType)
+CFDictionaryRef QTPixelBuffer::createPixelBufferAttributesDictionary( QTPixelBuffer::Type contextType )
 {
-    static const CFStringRef kDirect3DCompatibilityKey = CFSTR("Direct3DCompatibility");
+    static const CFStringRef kDirect3DCompatibilityKey = CFSTR( "Direct3DCompatibility" );
 
-    CFMutableDictionaryRef pixelBufferAttributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    if (contextType == QTPixelBuffer::ConfigureForCAImageQueue) {
+    CFMutableDictionaryRef pixelBufferAttributes = CFDictionaryCreateMutable( kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks,
+            &kCFTypeDictionaryValueCallBacks );
+
+    if ( contextType == QTPixelBuffer::ConfigureForCAImageQueue )
+    {
         // Ask for D3D compatible pixel buffers so no further work is needed.
-        CFDictionarySetValue(pixelBufferAttributes, kDirect3DCompatibilityKey, kCFBooleanTrue);
-    } else {
+        CFDictionarySetValue( pixelBufferAttributes, kDirect3DCompatibilityKey, kCFBooleanTrue );
+    }
+    else
+    {
         // Use the k32BGRAPixelFormat, as QuartzCore will be able to use the pixels directly,
         // without needing an additional copy or rendering pass.
-        SetNumberValue(pixelBufferAttributes, kCVPixelBufferPixelFormatTypeKey, k32BGRAPixelFormat);
-            
-        // Set kCVPixelBufferBytesPerRowAlignmentKey to 16 to ensure that each row of pixels 
+        SetNumberValue( pixelBufferAttributes, kCVPixelBufferPixelFormatTypeKey, k32BGRAPixelFormat );
+
+        // Set kCVPixelBufferBytesPerRowAlignmentKey to 16 to ensure that each row of pixels
         // starts at a 16 byte aligned address for most efficient data reading.
-        SetNumberValue(pixelBufferAttributes, kCVPixelBufferBytesPerRowAlignmentKey, 16);
-        CFDictionarySetValue(pixelBufferAttributes, kCVPixelBufferCGImageCompatibilityKey, kCFBooleanTrue);
+        SetNumberValue( pixelBufferAttributes, kCVPixelBufferBytesPerRowAlignmentKey, 16 );
+        CFDictionarySetValue( pixelBufferAttributes, kCVPixelBufferCGImageCompatibilityKey, kCFBooleanTrue );
     }
+
     return pixelBufferAttributes;
 }
 
-QTPixelBuffer::QTPixelBuffer() 
-    : m_pixelBuffer(0) 
+QTPixelBuffer::QTPixelBuffer()
+    : m_pixelBuffer( 0 )
 {
 }
 
-QTPixelBuffer::QTPixelBuffer(const QTPixelBuffer& p) 
-    : m_pixelBuffer(p.m_pixelBuffer) 
+QTPixelBuffer::QTPixelBuffer( const QTPixelBuffer &p )
+    : m_pixelBuffer( p.m_pixelBuffer )
 {
-    CVPixelBufferRetain(m_pixelBuffer);
+    CVPixelBufferRetain( m_pixelBuffer );
 }
 
-QTPixelBuffer::QTPixelBuffer(CVPixelBufferRef ref) 
-    : m_pixelBuffer(ref)
+QTPixelBuffer::QTPixelBuffer( CVPixelBufferRef ref )
+    : m_pixelBuffer( ref )
 {
-    CVPixelBufferRetain(m_pixelBuffer);
+    CVPixelBufferRetain( m_pixelBuffer );
 }
 
-QTPixelBuffer::~QTPixelBuffer() 
+QTPixelBuffer::~QTPixelBuffer()
 {
     clear();
 }
 
-QTPixelBuffer& QTPixelBuffer::operator=(const QTPixelBuffer& p) 
+QTPixelBuffer &QTPixelBuffer::operator=( const QTPixelBuffer &p )
 {
-    set(p.m_pixelBuffer);
+    set( p.m_pixelBuffer );
     return *this;
 }
 
-void QTPixelBuffer::set(CVPixelBufferRef ref)
+void QTPixelBuffer::set( CVPixelBufferRef ref )
 {
-    CVPixelBufferRetain(ref);
-    CVPixelBufferRelease(m_pixelBuffer);
+    CVPixelBufferRetain( ref );
+    CVPixelBufferRelease( m_pixelBuffer );
     m_pixelBuffer = ref;
 }
 
@@ -109,148 +118,154 @@ CVPixelBufferRef QTPixelBuffer::pixelBufferRef()
     return m_pixelBuffer;
 }
 
-void QTPixelBuffer::adopt(CVPixelBufferRef ref)
+void QTPixelBuffer::adopt( CVPixelBufferRef ref )
 {
-    if (ref == m_pixelBuffer)
+    if ( ref == m_pixelBuffer )
+    {
         return;
-    CVPixelBufferRelease(m_pixelBuffer);
+    }
+
+    CVPixelBufferRelease( m_pixelBuffer );
     m_pixelBuffer = ref;
 }
 
 void QTPixelBuffer::clear()
 {
-    CVPixelBufferRelease(m_pixelBuffer);
+    CVPixelBufferRelease( m_pixelBuffer );
     m_pixelBuffer = 0;
 }
 
 CVReturn QTPixelBuffer::lockBaseAddress()
 {
-    return CVPixelBufferLockBaseAddress(m_pixelBuffer, 0);
+    return CVPixelBufferLockBaseAddress( m_pixelBuffer, 0 );
 }
 
 CVReturn QTPixelBuffer::unlockBaseAddress()
 {
-    return CVPixelBufferUnlockBaseAddress(m_pixelBuffer, 0);
+    return CVPixelBufferUnlockBaseAddress( m_pixelBuffer, 0 );
 }
 
-void* QTPixelBuffer::baseAddress()
+void *QTPixelBuffer::baseAddress()
 {
-    return CVPixelBufferGetBaseAddress(m_pixelBuffer);
+    return CVPixelBufferGetBaseAddress( m_pixelBuffer );
 }
 
 size_t QTPixelBuffer::width() const
 {
-    return CVPixelBufferGetWidth(m_pixelBuffer);
+    return CVPixelBufferGetWidth( m_pixelBuffer );
 }
 
 size_t QTPixelBuffer::height() const
 {
-    return CVPixelBufferGetHeight(m_pixelBuffer);
+    return CVPixelBufferGetHeight( m_pixelBuffer );
 }
 
 unsigned long QTPixelBuffer::pixelFormatType() const
 {
-    return CVPixelBufferGetPixelFormatType(m_pixelBuffer);
+    return CVPixelBufferGetPixelFormatType( m_pixelBuffer );
 }
 
 bool QTPixelBuffer::pixelFormatIs32ARGB() const
 {
-    return CVPixelBufferGetPixelFormatType(m_pixelBuffer) == k32ARGBPixelFormat;
+    return CVPixelBufferGetPixelFormatType( m_pixelBuffer ) == k32ARGBPixelFormat;
 }
 
 bool QTPixelBuffer::pixelFormatIs32BGRA() const
 {
-    return CVPixelBufferGetPixelFormatType(m_pixelBuffer) == k32BGRAPixelFormat;
+    return CVPixelBufferGetPixelFormatType( m_pixelBuffer ) == k32BGRAPixelFormat;
 }
 
 size_t QTPixelBuffer::bytesPerRow() const
 {
-    return CVPixelBufferGetBytesPerRow(m_pixelBuffer);
+    return CVPixelBufferGetBytesPerRow( m_pixelBuffer );
 }
 
 size_t QTPixelBuffer::dataSize() const
 {
-    return CVPixelBufferGetDataSize(m_pixelBuffer);
+    return CVPixelBufferGetDataSize( m_pixelBuffer );
 }
 
 bool QTPixelBuffer::isPlanar() const
 {
-    return CVPixelBufferIsPlanar(m_pixelBuffer);
+    return CVPixelBufferIsPlanar( m_pixelBuffer );
 }
 
 size_t QTPixelBuffer::planeCount() const
 {
-    return CVPixelBufferGetPlaneCount(m_pixelBuffer);
+    return CVPixelBufferGetPlaneCount( m_pixelBuffer );
 }
 
-size_t QTPixelBuffer::widthOfPlane(size_t plane) const
+size_t QTPixelBuffer::widthOfPlane( size_t plane ) const
 {
-    return CVPixelBufferGetWidthOfPlane(m_pixelBuffer, plane);
+    return CVPixelBufferGetWidthOfPlane( m_pixelBuffer, plane );
 }
 
-size_t QTPixelBuffer::heightOfPlane(size_t plane) const
+size_t QTPixelBuffer::heightOfPlane( size_t plane ) const
 {
-    return CVPixelBufferGetHeightOfPlane(m_pixelBuffer, plane);
+    return CVPixelBufferGetHeightOfPlane( m_pixelBuffer, plane );
 }
 
-void* QTPixelBuffer::baseAddressOfPlane(size_t plane) const
+void *QTPixelBuffer::baseAddressOfPlane( size_t plane ) const
 {
-    return CVPixelBufferGetBaseAddressOfPlane(m_pixelBuffer, plane);
+    return CVPixelBufferGetBaseAddressOfPlane( m_pixelBuffer, plane );
 }
 
-size_t QTPixelBuffer::bytesPerRowOfPlane(size_t plane) const
+size_t QTPixelBuffer::bytesPerRowOfPlane( size_t plane ) const
 {
-    return CVPixelBufferGetBytesPerRowOfPlane(m_pixelBuffer, plane);
+    return CVPixelBufferGetBytesPerRowOfPlane( m_pixelBuffer, plane );
 }
 
-void QTPixelBuffer::getExtendedPixels(size_t* left, size_t* right, size_t* top, size_t* bottom) const
+void QTPixelBuffer::getExtendedPixels( size_t *left, size_t *right, size_t *top, size_t *bottom ) const
 {
-    return CVPixelBufferGetExtendedPixels(m_pixelBuffer, left, right, top, bottom);
+    return CVPixelBufferGetExtendedPixels( m_pixelBuffer, left, right, top, bottom );
 }
 
 CFDictionaryRef QTPixelBuffer::attachments() const
 {
-    return CVBufferGetAttachments(m_pixelBuffer, kCVAttachmentMode_ShouldPropagate);
+    return CVBufferGetAttachments( m_pixelBuffer, kCVAttachmentMode_ShouldPropagate );
 }
 
-void QTPixelBuffer::retainCallback(void* refcon)
+void QTPixelBuffer::retainCallback( void *refcon )
 {
-    CVPixelBufferRetain(static_cast<CVPixelBufferRef>(refcon));
+    CVPixelBufferRetain( static_cast<CVPixelBufferRef>( refcon ) );
 }
 
-void QTPixelBuffer::releaseCallback(void* refcon)
+void QTPixelBuffer::releaseCallback( void *refcon )
 {
-    CVPixelBufferRelease(static_cast<CVPixelBufferRef>(refcon));
+    CVPixelBufferRelease( static_cast<CVPixelBufferRef>( refcon ) );
 }
 
-void QTPixelBuffer::imageQueueReleaseCallback(unsigned int type, uint64_t id, void* refcon)
+void QTPixelBuffer::imageQueueReleaseCallback( unsigned int type, uint64_t id, void *refcon )
 {
-    CVPixelBufferRelease(static_cast<CVPixelBufferRef>(refcon));
+    CVPixelBufferRelease( static_cast<CVPixelBufferRef>( refcon ) );
 }
 
-void QTPixelBuffer::dataProviderReleaseBytePointerCallback(void* refcon, const void* pointer)
+void QTPixelBuffer::dataProviderReleaseBytePointerCallback( void *refcon, const void *pointer )
 {
-    CVPixelBufferUnlockBaseAddress(static_cast<CVPixelBufferRef>(refcon), 0);
+    CVPixelBufferUnlockBaseAddress( static_cast<CVPixelBufferRef>( refcon ), 0 );
 }
 
-const void* QTPixelBuffer::dataProviderGetBytePointerCallback(void* refcon)
+const void *QTPixelBuffer::dataProviderGetBytePointerCallback( void *refcon )
 {
-    CVPixelBufferLockBaseAddress(static_cast<CVPixelBufferRef>(refcon), 0);
-    return CVPixelBufferGetBaseAddress(static_cast<CVPixelBufferRef>(refcon));
+    CVPixelBufferLockBaseAddress( static_cast<CVPixelBufferRef>( refcon ), 0 );
+    return CVPixelBufferGetBaseAddress( static_cast<CVPixelBufferRef>( refcon ) );
 }
 
-size_t QTPixelBuffer::dataProviderGetBytesAtPositionCallback(void* refcon, void* buffer, size_t position, size_t count)
+size_t QTPixelBuffer::dataProviderGetBytesAtPositionCallback( void *refcon, void *buffer, size_t position, size_t count )
 {
-    char* data = (char*)CVPixelBufferGetBaseAddress(static_cast<CVPixelBufferRef>(refcon));
-    size_t size = CVPixelBufferGetDataSize(static_cast<CVPixelBufferRef>(refcon));
-    if (size - position < count)
+    char *data = ( char * )CVPixelBufferGetBaseAddress( static_cast<CVPixelBufferRef>( refcon ) );
+    size_t size = CVPixelBufferGetDataSize( static_cast<CVPixelBufferRef>( refcon ) );
+
+    if ( size - position < count )
+    {
         count = size - position;
+    }
 
-    memcpy(buffer, data+position, count);
+    memcpy( buffer, data+position, count );
     return count;
 }
 
-void QTPixelBuffer::dataProviderReleaseInfoCallback(void* refcon)
+void QTPixelBuffer::dataProviderReleaseInfoCallback( void *refcon )
 {
-    CVPixelBufferRelease(static_cast<CVPixelBufferRef>(refcon));
+    CVPixelBufferRelease( static_cast<CVPixelBufferRef>( refcon ) );
 }

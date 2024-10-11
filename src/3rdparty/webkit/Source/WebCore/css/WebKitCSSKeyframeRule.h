@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebKitCSSKeyframeRule_h
@@ -30,51 +30,77 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CSSMutableStyleDeclaration;
 
 typedef int ExceptionCode;
 
-class WebKitCSSKeyframeRule : public CSSRule {
+class WebKitCSSKeyframeRule : public CSSRule
+{
 public:
     static PassRefPtr<WebKitCSSKeyframeRule> create()
     {
-        return adoptRef(new WebKitCSSKeyframeRule(0));
+        return adoptRef( new WebKitCSSKeyframeRule( 0 ) );
     }
-    static PassRefPtr<WebKitCSSKeyframeRule> create(CSSStyleSheet* parent)
+    static PassRefPtr<WebKitCSSKeyframeRule> create( CSSStyleSheet *parent )
     {
-        return adoptRef(new WebKitCSSKeyframeRule(parent));
+        return adoptRef( new WebKitCSSKeyframeRule( parent ) );
     }
 
     virtual ~WebKitCSSKeyframeRule();
 
-    virtual bool isKeyframeRule() { return true; }
+    virtual bool isKeyframeRule()
+    {
+        return true;
+    }
 
     // Inherited from CSSRule
-    virtual unsigned short type() const { return WEBKIT_KEYFRAME_RULE; }
+    virtual unsigned short type() const
+    {
+        return WEBKIT_KEYFRAME_RULE;
+    }
 
-    String keyText() const              { return m_key; }
-    void setKeyText(const String& s)    { m_key = s; }
-    
-    void getKeys(Vector<float>& keys) const   { parseKeyString(m_key, keys); }
+    String keyText() const
+    {
+        return m_key;
+    }
+    void setKeyText( const String &s )
+    {
+        m_key = s;
+    }
 
-    CSSMutableStyleDeclaration* style() const { return m_style.get(); }
+    void getKeys( Vector<float> &keys ) const
+    {
+        parseKeyString( m_key, keys );
+    }
+
+    CSSMutableStyleDeclaration *style() const
+    {
+        return m_style.get();
+    }
 
     virtual String cssText() const;
 
     // Not part of the CSSOM
-    virtual bool parseString(const String&, bool = false);
-    
-    void setDeclaration(PassRefPtr<CSSMutableStyleDeclaration>);
+    virtual bool parseString( const String &, bool = false );
 
-    CSSMutableStyleDeclaration*         declaration()       { return m_style.get(); }
-    const CSSMutableStyleDeclaration*   declaration() const { return m_style.get(); }
-    
+    void setDeclaration( PassRefPtr<CSSMutableStyleDeclaration> );
+
+    CSSMutableStyleDeclaration         *declaration()
+    {
+        return m_style.get();
+    }
+    const CSSMutableStyleDeclaration   *declaration() const
+    {
+        return m_style.get();
+    }
+
 private:
-    static void parseKeyString(const String& s, Vector<float>& keys);
-    
-    WebKitCSSKeyframeRule(CSSStyleSheet* parent);
+    static void parseKeyString( const String &s, Vector<float> &keys );
+
+    WebKitCSSKeyframeRule( CSSStyleSheet *parent );
 
     RefPtr<CSSMutableStyleDeclaration> m_style;
     String m_key;        // comma separated list of keys

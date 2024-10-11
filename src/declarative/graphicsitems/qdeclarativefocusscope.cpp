@@ -40,13 +40,11 @@ QT_BEGIN_NAMESPACE
     \l {qmlfocus}{keyboard focus documentation}.
 
     \sa {declarative/keyinteraction/focus}{Keyboard focus example}
-*/
-
-QDeclarativeFocusScope::QDeclarativeFocusScope(QDeclarativeItem *parent) :
-   QDeclarativeItem(parent)
+*/ QDeclarativeFocusScope::QDeclarativeFocusScope( QDeclarativeItem *parent ) :
+    QDeclarativeItem( parent )
 {
-   Q_D(QDeclarativeItem);
-   d->flags |= QGraphicsItem::ItemIsFocusScope;
+    Q_D( QDeclarativeItem );
+    d->flags |= QGraphicsItem::ItemIsFocusScope;
 }
 
 QDeclarativeFocusScope::~QDeclarativeFocusScope()

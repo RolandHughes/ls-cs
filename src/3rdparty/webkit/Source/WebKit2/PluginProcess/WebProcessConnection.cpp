@@ -33,59 +33,65 @@
 #include "PluginProcess.h"
 #include "RunLoop.h"
 
-namespace WebKit {
-
-PassRefPtr<WebProcessConnection> WebProcessConnection::create(CoreIPC::Connection::Identifier connectionIdentifier)
+namespace WebKit
 {
-    return adoptRef(new WebProcessConnection(connectionIdentifier));
+
+PassRefPtr<WebProcessConnection> WebProcessConnection::create( CoreIPC::Connection::Identifier connectionIdentifier )
+{
+    return adoptRef( new WebProcessConnection( connectionIdentifier ) );
 }
 
 WebProcessConnection::~WebProcessConnection()
 {
-    ASSERT(m_pluginControllers.isEmpty());
-    ASSERT(!m_npRemoteObjectMap);
-    ASSERT(!m_connection);
+    ASSERT( m_pluginControllers.isEmpty() );
+    ASSERT( !m_npRemoteObjectMap );
+    ASSERT( !m_connection );
 }
-    
-WebProcessConnection::WebProcessConnection(CoreIPC::Connection::Identifier connectionIdentifier)
-{
-    m_connection = CoreIPC::Connection::createServerConnection(connectionIdentifier, this, RunLoop::main());
-    m_npRemoteObjectMap = NPRemoteObjectMap::create(m_connection.get());
 
-    m_connection->setOnlySendMessagesAsDispatchWhenWaitingForSyncReplyWhenProcessingSuchAMessage(true);
+WebProcessConnection::WebProcessConnection( CoreIPC::Connection::Identifier connectionIdentifier )
+{
+    m_connection = CoreIPC::Connection::createServerConnection( connectionIdentifier, this, RunLoop::main() );
+    m_npRemoteObjectMap = NPRemoteObjectMap::create( m_connection.get() );
+
+    m_connection->setOnlySendMessagesAsDispatchWhenWaitingForSyncReplyWhenProcessingSuchAMessage( true );
     m_connection->open();
 }
 
-void WebProcessConnection::addPluginControllerProxy(PassOwnPtr<PluginControllerProxy> pluginController)
+void WebProcessConnection::addPluginControllerProxy( PassOwnPtr<PluginControllerProxy> pluginController )
 {
     uint64_t pluginInstanceID = pluginController->pluginInstanceID();
 
-    ASSERT(!m_pluginControllers.contains(pluginInstanceID));
-    m_pluginControllers.set(pluginInstanceID, pluginController.leakPtr());
+    ASSERT( !m_pluginControllers.contains( pluginInstanceID ) );
+    m_pluginControllers.set( pluginInstanceID, pluginController.leakPtr() );
 }
 
-void WebProcessConnection::destroyPluginControllerProxy(PluginControllerProxy* pluginController)
+void WebProcessConnection::destroyPluginControllerProxy( PluginControllerProxy *pluginController )
 {
     // This may end up calling removePluginControllerProxy which ends up deleting
     // the WebProcessConnection object if this was the last object.
     pluginController->destroy();
 }
 
-void WebProcessConnection::removePluginControllerProxy(PluginControllerProxy* pluginController, Plugin* plugin)
+void WebProcessConnection::removePluginControllerProxy( PluginControllerProxy *pluginController, Plugin *plugin )
 {
     {
-        ASSERT(m_pluginControllers.contains(pluginController->pluginInstanceID()));
+        ASSERT( m_pluginControllers.contains( pluginController->pluginInstanceID() ) );
 
-        OwnPtr<PluginControllerProxy> pluginControllerOwnPtr = adoptPtr(m_pluginControllers.take(pluginController->pluginInstanceID()));
-        ASSERT(pluginControllerOwnPtr == pluginController);
+        OwnPtr<PluginControllerProxy> pluginControllerOwnPtr = adoptPtr( m_pluginControllers.take(
+                    pluginController->pluginInstanceID() ) );
+        ASSERT( pluginControllerOwnPtr == pluginController );
     }
 
     // Invalidate all objects related to this plug-in.
-    if (plugin)
-        m_npRemoteObjectMap->pluginDestroyed(plugin);
+    if ( plugin )
+    {
+        m_npRemoteObjectMap->pluginDestroyed( plugin );
+    }
 
-    if (!m_pluginControllers.isEmpty())
+    if ( !m_pluginControllers.isEmpty() )
+    {
         return;
+    }
 
     m_npRemoteObjectMap = nullptr;
 
@@ -93,89 +99,109 @@ void WebProcessConnection::removePluginControllerProxy(PluginControllerProxy* pl
     m_connection->invalidate();
     m_connection = nullptr;
 
-    // This will cause us to be deleted.    
-    PluginProcess::shared().removeWebProcessConnection(this);
+    // This will cause us to be deleted.
+    PluginProcess::shared().removeWebProcessConnection( this );
 }
 
-void WebProcessConnection::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebProcessConnection::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    if (!arguments->destinationID()) {
+    if ( !arguments->destinationID() )
+    {
         ASSERT_NOT_REACHED();
         return;
     }
 
-    PluginControllerProxy* pluginControllerProxy = m_pluginControllers.get(arguments->destinationID());
-    if (!pluginControllerProxy)
+    PluginControllerProxy *pluginControllerProxy = m_pluginControllers.get( arguments->destinationID() );
+
+    if ( !pluginControllerProxy )
+    {
         return;
+    }
 
-    PluginController::PluginDestructionProtector protector(pluginControllerProxy->asPluginController());
+    PluginController::PluginDestructionProtector protector( pluginControllerProxy->asPluginController() );
 
-    pluginControllerProxy->didReceivePluginControllerProxyMessage(connection, messageID, arguments);
+    pluginControllerProxy->didReceivePluginControllerProxyMessage( connection, messageID, arguments );
 }
 
-CoreIPC::SyncReplyMode WebProcessConnection::didReceiveSyncMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments, CoreIPC::ArgumentEncoder* reply)
+CoreIPC::SyncReplyMode WebProcessConnection::didReceiveSyncMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments, CoreIPC::ArgumentEncoder *reply )
 {
     uint64_t destinationID = arguments->destinationID();
 
-    if (!destinationID)
-        return didReceiveSyncWebProcessConnectionMessage(connection, messageID, arguments, reply);
+    if ( !destinationID )
+    {
+        return didReceiveSyncWebProcessConnectionMessage( connection, messageID, arguments, reply );
+    }
 
-    if (messageID.is<CoreIPC::MessageClassNPObjectMessageReceiver>())
-        return m_npRemoteObjectMap->didReceiveSyncMessage(connection, messageID, arguments, reply);
+    if ( messageID.is<CoreIPC::MessageClassNPObjectMessageReceiver>() )
+    {
+        return m_npRemoteObjectMap->didReceiveSyncMessage( connection, messageID, arguments, reply );
+    }
 
-    PluginControllerProxy* pluginControllerProxy = m_pluginControllers.get(arguments->destinationID());
-    if (!pluginControllerProxy)
+    PluginControllerProxy *pluginControllerProxy = m_pluginControllers.get( arguments->destinationID() );
+
+    if ( !pluginControllerProxy )
+    {
         return CoreIPC::AutomaticReply;
+    }
 
-    PluginController::PluginDestructionProtector protector(pluginControllerProxy->asPluginController());
-    CoreIPC::SyncReplyMode replyMode = pluginControllerProxy->didReceiveSyncPluginControllerProxyMessage(connection, messageID, arguments, reply);
+    PluginController::PluginDestructionProtector protector( pluginControllerProxy->asPluginController() );
+    CoreIPC::SyncReplyMode replyMode = pluginControllerProxy->didReceiveSyncPluginControllerProxyMessage( connection, messageID,
+                                       arguments, reply );
 
     return replyMode;
 }
 
-void WebProcessConnection::didClose(CoreIPC::Connection*)
+void WebProcessConnection::didClose( CoreIPC::Connection * )
 {
     // The web process crashed. Destroy all the plug-in controllers. Destroying the last plug-in controller
     // will cause the web process connection itself to be destroyed.
-    Vector<PluginControllerProxy*> pluginControllers;
-    copyValuesToVector(m_pluginControllers, pluginControllers);
+    Vector<PluginControllerProxy *> pluginControllers;
+    copyValuesToVector( m_pluginControllers, pluginControllers );
 
-    for (size_t i = 0; i < pluginControllers.size(); ++i)
-        destroyPluginControllerProxy(pluginControllers[i]);
+    for ( size_t i = 0; i < pluginControllers.size(); ++i )
+    {
+        destroyPluginControllerProxy( pluginControllers[i] );
+    }
 }
 
-void WebProcessConnection::destroyPlugin(uint64_t pluginInstanceID)
+void WebProcessConnection::destroyPlugin( uint64_t pluginInstanceID )
 {
-    PluginControllerProxy* pluginControllerProxy = m_pluginControllers.get(pluginInstanceID);
-    ASSERT(pluginControllerProxy);
+    PluginControllerProxy *pluginControllerProxy = m_pluginControllers.get( pluginInstanceID );
+    ASSERT( pluginControllerProxy );
 
-    destroyPluginControllerProxy(pluginControllerProxy);
+    destroyPluginControllerProxy( pluginControllerProxy );
 }
 
-void WebProcessConnection::didReceiveInvalidMessage(CoreIPC::Connection*, CoreIPC::MessageID)
+void WebProcessConnection::didReceiveInvalidMessage( CoreIPC::Connection *, CoreIPC::MessageID )
 {
     // FIXME: Implement.
 }
 
-void WebProcessConnection::syncMessageSendTimedOut(CoreIPC::Connection*)
+void WebProcessConnection::syncMessageSendTimedOut( CoreIPC::Connection * )
 {
 }
 
-void WebProcessConnection::createPlugin(uint64_t pluginInstanceID, const Plugin::Parameters& parameters, const String& userAgent, bool isPrivateBrowsingEnabled, bool isAcceleratedCompositingEnabled, bool& result, uint32_t& remoteLayerClientID)
+void WebProcessConnection::createPlugin( uint64_t pluginInstanceID, const Plugin::Parameters &parameters, const String &userAgent,
+        bool isPrivateBrowsingEnabled, bool isAcceleratedCompositingEnabled, bool &result, uint32_t &remoteLayerClientID )
 {
-    OwnPtr<PluginControllerProxy> pluginControllerProxy = PluginControllerProxy::create(this, pluginInstanceID, userAgent, isPrivateBrowsingEnabled, isAcceleratedCompositingEnabled);
+    OwnPtr<PluginControllerProxy> pluginControllerProxy = PluginControllerProxy::create( this, pluginInstanceID, userAgent,
+            isPrivateBrowsingEnabled, isAcceleratedCompositingEnabled );
 
-    PluginControllerProxy* pluginControllerProxyPtr = pluginControllerProxy.get();
+    PluginControllerProxy *pluginControllerProxyPtr = pluginControllerProxy.get();
 
-    // Make sure to add the proxy to the map before initializing it, since the plug-in might call out to the web process from 
+    // Make sure to add the proxy to the map before initializing it, since the plug-in might call out to the web process from
     // its NPP_New function. This will hand over ownership of the proxy to the web process connection.
-    addPluginControllerProxy(pluginControllerProxy.release());
+    addPluginControllerProxy( pluginControllerProxy.release() );
 
     // Now try to initialize the plug-in.
-    result = pluginControllerProxyPtr->initialize(parameters);
+    result = pluginControllerProxyPtr->initialize( parameters );
 
-    if (!result)
+    if ( !result )
+    {
         return;
+    }
 
 #if PLATFORM(MAC)
     remoteLayerClientID = pluginControllerProxyPtr->remoteLayerClientID();

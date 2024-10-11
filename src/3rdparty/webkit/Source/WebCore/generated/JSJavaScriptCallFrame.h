@@ -28,34 +28,40 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class JavaScriptCallFrame;
 
-class JSJavaScriptCallFrame : public JSDOMWrapper {
+class JSJavaScriptCallFrame : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSJavaScriptCallFrame(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<JavaScriptCallFrame>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSJavaScriptCallFrame( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<JavaScriptCallFrame> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 
     // Custom attributes
-    JSC::JSValue scopeChain(JSC::ExecState*) const;
-    JSC::JSValue thisObject(JSC::ExecState*) const;
-    JSC::JSValue type(JSC::ExecState*) const;
+    JSC::JSValue scopeChain( JSC::ExecState * ) const;
+    JSC::JSValue thisObject( JSC::ExecState * ) const;
+    JSC::JSValue type( JSC::ExecState * ) const;
 
     // Custom functions
-    JSC::JSValue evaluate(JSC::ExecState*);
-    JSC::JSValue scopeType(JSC::ExecState*);
-    JavaScriptCallFrame* impl() const { return m_impl.get(); }
+    JSC::JSValue evaluate( JSC::ExecState * );
+    JSC::JSValue scopeType( JSC::ExecState * );
+    JavaScriptCallFrame *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<JavaScriptCallFrame> m_impl;
@@ -63,46 +69,49 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, JavaScriptCallFrame*);
-JavaScriptCallFrame* toJavaScriptCallFrame(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, JavaScriptCallFrame * );
+JavaScriptCallFrame *toJavaScriptCallFrame( JSC::JSValue );
 
-class JSJavaScriptCallFramePrototype : public JSC::JSObjectWithGlobalObject {
+class JSJavaScriptCallFramePrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSJavaScriptCallFramePrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSJavaScriptCallFramePrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                    JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionEvaluate(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionScopeType(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionEvaluate( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsJavaScriptCallFramePrototypeFunctionScopeType( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsJavaScriptCallFrameCaller(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameSourceID(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameLine(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameColumn(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameScopeChain(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameThisObject(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameFunctionName(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsJavaScriptCallFrameCaller( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameSourceID( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameLine( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameColumn( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameScopeChain( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameThisObject( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameFunctionName( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsJavaScriptCallFrameGLOBAL_SCOPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameLOCAL_SCOPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameWITH_SCOPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameCLOSURE_SCOPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsJavaScriptCallFrameCATCH_SCOPE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsJavaScriptCallFrameGLOBAL_SCOPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameLOCAL_SCOPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameWITH_SCOPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameCLOSURE_SCOPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsJavaScriptCallFrameCATCH_SCOPE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

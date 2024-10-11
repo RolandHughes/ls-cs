@@ -26,26 +26,34 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class MediaQueryList;
 
 // See http://dev.w3.org/csswg/cssom-view/#the-mediaquerylist-interface
 
-class MediaQueryListListener : public RefCounted<MediaQueryListListener> {
+class MediaQueryListListener : public RefCounted<MediaQueryListListener>
+{
 public:
-    static PassRefPtr<MediaQueryListListener> create(ScriptValue value)
+    static PassRefPtr<MediaQueryListListener> create( ScriptValue value )
     {
-        if (!value.isFunction())
+        if ( !value.isFunction() )
+        {
             return 0;
-        return adoptRef(new MediaQueryListListener(value));
-    }
-    void queryChanged(ScriptState*, MediaQueryList*);
+        }
 
-    bool operator==(const MediaQueryListListener& other) const { return m_value == other.m_value; }
+        return adoptRef( new MediaQueryListListener( value ) );
+    }
+    void queryChanged( ScriptState *, MediaQueryList * );
+
+    bool operator==( const MediaQueryListListener &other ) const
+    {
+        return m_value == other.m_value;
+    }
 
 private:
-    MediaQueryListListener(ScriptValue value) : m_value(value) { }
+    MediaQueryListListener( ScriptValue value ) : m_value( value ) { }
 
     ScriptValue m_value;
 };

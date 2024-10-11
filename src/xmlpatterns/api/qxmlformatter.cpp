@@ -31,32 +31,32 @@ using namespace QPatternist;
 
 class QXmlFormatterPrivate : public QXmlSerializerPrivate
 {
- public:
-   inline QXmlFormatterPrivate(const QXmlQuery &q,
-                               QIODevice *const outputDevice);
+public:
+    inline QXmlFormatterPrivate( const QXmlQuery &q,
+                                 QIODevice *const outputDevice );
 
-   int             indentationDepth;
-   int             currentDepth;
-   QString         characterBuffer;
-   QString         indentString;
+    int             indentationDepth;
+    int             currentDepth;
+    QString         characterBuffer;
+    QString         indentString;
 
-   /**
-    * Whether we /have/ sent nodes like processing instructions and comments
-    * to QXmlSerializer.
-    */
-   QStack<bool>    canIndent;
+    /**
+     * Whether we /have/ sent nodes like processing instructions and comments
+     * to QXmlSerializer.
+     */
+    QStack<bool>    canIndent;
 };
 
-QXmlFormatterPrivate::QXmlFormatterPrivate(const QXmlQuery &query, QIODevice *const outputDevice)
-   : QXmlSerializerPrivate(query, outputDevice), indentationDepth(4), currentDepth(0)
+QXmlFormatterPrivate::QXmlFormatterPrivate( const QXmlQuery &query, QIODevice *const outputDevice )
+    : QXmlSerializerPrivate( query, outputDevice ), indentationDepth( 4 ), currentDepth( 0 )
 {
-   indentString = '\n';
+    indentString = '\n';
 
-   canIndent.push(false);
+    canIndent.push( false );
 }
 
-QXmlFormatter::QXmlFormatter(const QXmlQuery &query, QIODevice *outputDevice)
-   : QXmlSerializer(new QXmlFormatterPrivate(query, outputDevice))
+QXmlFormatter::QXmlFormatter( const QXmlQuery &query, QIODevice *outputDevice )
+    : QXmlSerializer( new QXmlFormatterPrivate( query, outputDevice ) )
 {
 }
 
@@ -65,35 +65,40 @@ QXmlFormatter::QXmlFormatter(const QXmlQuery &query, QIODevice *outputDevice)
  */
 void QXmlFormatter::startFormattingContent()
 {
-   Q_D(QXmlFormatter);
+    Q_D( QXmlFormatter );
 
-   if (QPatternist::XPathHelper::isWhitespaceOnly(d->characterBuffer)) {
-      if (d->canIndent.top()) {
-         QXmlSerializer::characters(QStringView(d->indentString));
-      }
+    if ( QPatternist::XPathHelper::isWhitespaceOnly( d->characterBuffer ) )
+    {
+        if ( d->canIndent.top() )
+        {
+            QXmlSerializer::characters( QStringView( d->indentString ) );
+        }
 
-   } else {
-      if (!d->characterBuffer.isEmpty()) {
-         /* Significant data, we don't touch it. */
-         QXmlSerializer::characters(QStringView(d->characterBuffer));
-      }
-   }
+    }
+    else
+    {
+        if ( !d->characterBuffer.isEmpty() )
+        {
+            /* Significant data, we don't touch it. */
+            QXmlSerializer::characters( QStringView( d->characterBuffer ) );
+        }
+    }
 
-   d->characterBuffer.clear();
+    d->characterBuffer.clear();
 }
 
 /*!
   \reimp
  */
-void QXmlFormatter::startElement(const QXmlName &name)
+void QXmlFormatter::startElement( const QXmlName &name )
 {
-   Q_D(QXmlFormatter);
-   startFormattingContent();
-   ++d->currentDepth;
-   d->indentString.append(QString(d->indentationDepth, QLatin1Char(' ')));
-   d->canIndent.push(true);
+    Q_D( QXmlFormatter );
+    startFormattingContent();
+    ++d->currentDepth;
+    d->indentString.append( QString( d->indentationDepth, QLatin1Char( ' ' ) ) );
+    d->canIndent.push( true );
 
-   QXmlSerializer::startElement(name);
+    QXmlSerializer::startElement( name );
 }
 
 /*!
@@ -101,70 +106,71 @@ void QXmlFormatter::startElement(const QXmlName &name)
  */
 void QXmlFormatter::endElement()
 {
-   Q_D(QXmlFormatter);
-   --d->currentDepth;
-   d->indentString.chop(d->indentationDepth);
+    Q_D( QXmlFormatter );
+    --d->currentDepth;
+    d->indentString.chop( d->indentationDepth );
 
-   if (!d->hasClosedElement.top().second) {
-      d->canIndent.top() = false;
-   }
+    if ( !d->hasClosedElement.top().second )
+    {
+        d->canIndent.top() = false;
+    }
 
-   startFormattingContent();
+    startFormattingContent();
 
-   d->canIndent.pop();
-   d->canIndent.top() = true;
-   QXmlSerializer::endElement();
+    d->canIndent.pop();
+    d->canIndent.top() = true;
+    QXmlSerializer::endElement();
 }
 
 /*!
   \reimp
  */
-void QXmlFormatter::attribute(const QXmlName &name, QStringView value)
+void QXmlFormatter::attribute( const QXmlName &name, QStringView value )
 {
-   QXmlSerializer::attribute(name, value);
+    QXmlSerializer::attribute( name, value );
 }
 
 /*!
  \reimp
  */
-void QXmlFormatter::comment(const QString &value)
+void QXmlFormatter::comment( const QString &value )
 {
-   Q_D(QXmlFormatter);
-   startFormattingContent();
-   QXmlSerializer::comment(value);
-   d->canIndent.top() = true;
+    Q_D( QXmlFormatter );
+    startFormattingContent();
+    QXmlSerializer::comment( value );
+    d->canIndent.top() = true;
 }
 
 /*!
  \reimp
  */
-void QXmlFormatter::characters(QStringView value)
+void QXmlFormatter::characters( QStringView value )
 {
-   Q_D(QXmlFormatter);
-   d->isPreviousAtomic = false;
-   d->characterBuffer += value.toString();
+    Q_D( QXmlFormatter );
+    d->isPreviousAtomic = false;
+    d->characterBuffer += value.toString();
 }
 
 /*!
  \reimp
  */
-void QXmlFormatter::processingInstruction(const QXmlName &name,
-      const QString &value)
+void QXmlFormatter::processingInstruction( const QXmlName &name,
+        const QString &value )
 {
-   Q_D(QXmlFormatter);
-   startFormattingContent();
-   QXmlSerializer::processingInstruction(name, value);
-   d->canIndent.top() = true;
+    Q_D( QXmlFormatter );
+    startFormattingContent();
+    QXmlSerializer::processingInstruction( name, value );
+    d->canIndent.top() = true;
 }
 
 /*!
  \reimp
  */
-void QXmlFormatter::atomicValue(const QVariant &value)
+void QXmlFormatter::atomicValue( const QVariant &value )
 {
-   Q_D(QXmlFormatter);
-   d->canIndent.top() = false;
-   QXmlSerializer::atomicValue(value);
+    Q_D( QXmlFormatter );
+    d->canIndent.top() = false;
+    QXmlSerializer::atomicValue( value );
 }
 
 /*!
@@ -172,7 +178,7 @@ void QXmlFormatter::atomicValue(const QVariant &value)
  */
 void QXmlFormatter::startDocument()
 {
-   QXmlSerializer::startDocument();
+    QXmlSerializer::startDocument();
 }
 
 /*!
@@ -180,7 +186,7 @@ void QXmlFormatter::startDocument()
  */
 void QXmlFormatter::endDocument()
 {
-   QXmlSerializer::endDocument();
+    QXmlSerializer::endDocument();
 }
 
 /*!
@@ -188,7 +194,7 @@ void QXmlFormatter::endDocument()
  */
 void QXmlFormatter::startOfSequence()
 {
-   QXmlSerializer::startOfSequence();
+    QXmlSerializer::startOfSequence();
 }
 
 /*!
@@ -196,34 +202,39 @@ void QXmlFormatter::startOfSequence()
  */
 void QXmlFormatter::endOfSequence()
 {
-   Q_D(QXmlFormatter);
+    Q_D( QXmlFormatter );
 
-   /* Flush any buffered content. */
-   if (! d->characterBuffer.isEmpty()) {
-      QXmlSerializer::characters(QStringView(d->characterBuffer));
-   }
+    /* Flush any buffered content. */
+    if ( ! d->characterBuffer.isEmpty() )
+    {
+        QXmlSerializer::characters( QStringView( d->characterBuffer ) );
+    }
 
-   d->write('\n');
-   QXmlSerializer::endOfSequence();
+    d->write( '\n' );
+    QXmlSerializer::endOfSequence();
 }
 
 /*!
  \internal
  */
-void QXmlFormatter::item(const QPatternist::Item &item)
+void QXmlFormatter::item( const QPatternist::Item &item )
 {
-   Q_D(QXmlFormatter);
+    Q_D( QXmlFormatter );
 
-   if (item.isAtomicValue()) {
-      if (QPatternist::XPathHelper::isWhitespaceOnly(item.stringValue())) {
-         return;
-      } else {
-         d->canIndent.top() = false;
-         startFormattingContent();
-      }
-   }
+    if ( item.isAtomicValue() )
+    {
+        if ( QPatternist::XPathHelper::isWhitespaceOnly( item.stringValue() ) )
+        {
+            return;
+        }
+        else
+        {
+            d->canIndent.top() = false;
+            startFormattingContent();
+        }
+    }
 
-   QXmlSerializer::item(item);
+    QXmlSerializer::item( item );
 }
 
 /*!
@@ -234,8 +245,8 @@ void QXmlFormatter::item(const QPatternist::Item &item)
  */
 int QXmlFormatter::indentationDepth() const
 {
-   Q_D(const QXmlFormatter);
-   return d->indentationDepth;
+    Q_D( const QXmlFormatter );
+    return d->indentationDepth;
 }
 
 /*!
@@ -244,8 +255,8 @@ int QXmlFormatter::indentationDepth() const
 
  \sa indentationDepth()
  */
-void QXmlFormatter::setIndentationDepth(int depth)
+void QXmlFormatter::setIndentationDepth( int depth )
 {
-   Q_D(QXmlFormatter);
-   d->indentationDepth = depth;
+    Q_D( QXmlFormatter );
+    d->indentationDepth = depth;
 }

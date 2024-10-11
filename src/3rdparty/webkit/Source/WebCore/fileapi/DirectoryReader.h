@@ -39,25 +39,30 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class EntriesCallback;
 class EntriesCallbacks;
 class ErrorCallback;
 
-class DirectoryReader : public DirectoryReaderBase {
+class DirectoryReader : public DirectoryReaderBase
+{
 public:
-    static PassRefPtr<DirectoryReader> create(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
+    static PassRefPtr<DirectoryReader> create( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
     {
-        return adoptRef(new DirectoryReader(fileSystem, fullPath));
+        return adoptRef( new DirectoryReader( fileSystem, fullPath ) );
     }
 
-    void readEntries(PassRefPtr<EntriesCallback>, PassRefPtr<ErrorCallback> = 0);
+    void readEntries( PassRefPtr<EntriesCallback>, PassRefPtr<ErrorCallback> = 0 );
 
-    DOMFileSystem* filesystem() const { return static_cast<DOMFileSystem*>(m_fileSystem.get()); }
+    DOMFileSystem *filesystem() const
+    {
+        return static_cast<DOMFileSystem *>( m_fileSystem.get() );
+    }
 
 private:
-    DirectoryReader(PassRefPtr<DOMFileSystemBase>, const String& fullPath);
+    DirectoryReader( PassRefPtr<DOMFileSystemBase>, const String &fullPath );
 };
 
 }

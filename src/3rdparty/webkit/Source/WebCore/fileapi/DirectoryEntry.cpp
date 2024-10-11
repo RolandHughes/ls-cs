@@ -39,37 +39,50 @@
 #include "FileError.h"
 #include "VoidCallback.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-DirectoryEntry::DirectoryEntry(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
-    : Entry(fileSystem, fullPath)
+DirectoryEntry::DirectoryEntry( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
+    : Entry( fileSystem, fullPath )
 {
 }
 
 PassRefPtr<DirectoryReader> DirectoryEntry::createReader()
 {
-    return DirectoryReader::create(m_fileSystem, m_fullPath);
+    return DirectoryReader::create( m_fileSystem, m_fullPath );
 }
 
-void DirectoryEntry::getFile(const String& path, PassRefPtr<WebKitFlags> flags, PassRefPtr<EntryCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef)
+void DirectoryEntry::getFile( const String &path, PassRefPtr<WebKitFlags> flags, PassRefPtr<EntryCallback> successCallback,
+                              PassRefPtr<ErrorCallback> errorCallbackRef )
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->getFile(this, path, flags, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->getFile( this, path, flags, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
-void DirectoryEntry::getDirectory(const String& path, PassRefPtr<WebKitFlags> flags, PassRefPtr<EntryCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef)
+void DirectoryEntry::getDirectory( const String &path, PassRefPtr<WebKitFlags> flags, PassRefPtr<EntryCallback> successCallback,
+                                   PassRefPtr<ErrorCallback> errorCallbackRef )
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->getDirectory(this, path, flags, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->getDirectory( this, path, flags, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
-void DirectoryEntry::removeRecursively(PassRefPtr<VoidCallback> successCallback, PassRefPtr<ErrorCallback> errorCallbackRef) const
+void DirectoryEntry::removeRecursively( PassRefPtr<VoidCallback> successCallback,
+                                        PassRefPtr<ErrorCallback> errorCallbackRef ) const
 {
-    RefPtr<ErrorCallback> errorCallback(errorCallbackRef);
-    if (!m_fileSystem->removeRecursively(this, successCallback, errorCallback))
-        filesystem()->scheduleCallback(errorCallback.release(), FileError::create(FileError::INVALID_MODIFICATION_ERR));
+    RefPtr<ErrorCallback> errorCallback( errorCallbackRef );
+
+    if ( !m_fileSystem->removeRecursively( this, successCallback, errorCallback ) )
+    {
+        filesystem()->scheduleCallback( errorCallback.release(), FileError::create( FileError::INVALID_MODIFICATION_ERR ) );
+    }
 }
 
 }

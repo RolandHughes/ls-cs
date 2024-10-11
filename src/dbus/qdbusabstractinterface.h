@@ -44,18 +44,18 @@ class QDBusAbstractInterfacePrivate;
 class Q_DBUS_EXPORT QDBusAbstractInterfaceBase: public QObject
 {
 public:
-    int qt_metacall(QMetaObject::Call, int, void**);
+    int qt_metacall( QMetaObject::Call, int, void ** );
 protected:
-    QDBusAbstractInterfaceBase(QDBusAbstractInterfacePrivate &dd, QObject *parent);
+    QDBusAbstractInterfaceBase( QDBusAbstractInterfacePrivate &dd, QObject *parent );
 private:
-    Q_DECLARE_PRIVATE(QDBusAbstractInterface)
+    Q_DECLARE_PRIVATE( QDBusAbstractInterface )
 };
 
 class Q_DBUS_EXPORT QDBusAbstractInterface:
-        public QDBusAbstractInterfaceBase
+    public QDBusAbstractInterfaceBase
 
 {
-    CS_OBJECT(QDBusAbstractInterface)
+    LSCS_OBJECT( QDBusAbstractInterface )
 
 public:
     virtual ~QDBusAbstractInterface();
@@ -69,78 +69,78 @@ public:
 
     QDBusError lastError() const;
 
-    void setTimeout(int timeout);
+    void setTimeout( int timeout );
     int timeout() const;
 
-    QDBusMessage call(const QString &method,
-                      const QVariant &arg1 = QVariant(),
-                      const QVariant &arg2 = QVariant(),
-                      const QVariant &arg3 = QVariant(),
-                      const QVariant &arg4 = QVariant(),
-                      const QVariant &arg5 = QVariant(),
-                      const QVariant &arg6 = QVariant(),
-                      const QVariant &arg7 = QVariant(),
-                      const QVariant &arg8 = QVariant());
+    QDBusMessage call( const QString &method,
+                       const QVariant &arg1 = QVariant(),
+                       const QVariant &arg2 = QVariant(),
+                       const QVariant &arg3 = QVariant(),
+                       const QVariant &arg4 = QVariant(),
+                       const QVariant &arg5 = QVariant(),
+                       const QVariant &arg6 = QVariant(),
+                       const QVariant &arg7 = QVariant(),
+                       const QVariant &arg8 = QVariant() );
 
-    QDBusMessage call(QDBus::CallMode mode,
-                      const QString &method,
-                      const QVariant &arg1 = QVariant(),
-                      const QVariant &arg2 = QVariant(),
-                      const QVariant &arg3 = QVariant(),
-                      const QVariant &arg4 = QVariant(),
-                      const QVariant &arg5 = QVariant(),
-                      const QVariant &arg6 = QVariant(),
-                      const QVariant &arg7 = QVariant(),
-                      const QVariant &arg8 = QVariant());
+    QDBusMessage call( QDBus::CallMode mode,
+                       const QString &method,
+                       const QVariant &arg1 = QVariant(),
+                       const QVariant &arg2 = QVariant(),
+                       const QVariant &arg3 = QVariant(),
+                       const QVariant &arg4 = QVariant(),
+                       const QVariant &arg5 = QVariant(),
+                       const QVariant &arg6 = QVariant(),
+                       const QVariant &arg7 = QVariant(),
+                       const QVariant &arg8 = QVariant() );
 
-    QDBusMessage callWithArgumentList(QDBus::CallMode mode,
-                                      const QString &method,
-                                      const QList<QVariant> &args);
+    QDBusMessage callWithArgumentList( QDBus::CallMode mode,
+                                       const QString &method,
+                                       const QList<QVariant> &args );
 
-    bool callWithCallback(const QString &method,
-                          const QList<QVariant> &args,
-                          QObject *receiver, const char *member, const char *errorSlot);
-    bool callWithCallback(const QString &method,
-                          const QList<QVariant> &args,
-                          QObject *receiver, const char *member);
+    bool callWithCallback( const QString &method,
+                           const QList<QVariant> &args,
+                           QObject *receiver, const char *member, const char *errorSlot );
+    bool callWithCallback( const QString &method,
+                           const QList<QVariant> &args,
+                           QObject *receiver, const char *member );
 
-    QDBusPendingCall asyncCall(const QString &method,
-                               const QVariant &arg1 = QVariant(),
-                               const QVariant &arg2 = QVariant(),
-                               const QVariant &arg3 = QVariant(),
-                               const QVariant &arg4 = QVariant(),
-                               const QVariant &arg5 = QVariant(),
-                               const QVariant &arg6 = QVariant(),
-                               const QVariant &arg7 = QVariant(),
-                               const QVariant &arg8 = QVariant());
-    QDBusPendingCall asyncCallWithArgumentList(const QString &method,
-                                               const QList<QVariant> &args);
+    QDBusPendingCall asyncCall( const QString &method,
+                                const QVariant &arg1 = QVariant(),
+                                const QVariant &arg2 = QVariant(),
+                                const QVariant &arg3 = QVariant(),
+                                const QVariant &arg4 = QVariant(),
+                                const QVariant &arg5 = QVariant(),
+                                const QVariant &arg6 = QVariant(),
+                                const QVariant &arg7 = QVariant(),
+                                const QVariant &arg8 = QVariant() );
+    QDBusPendingCall asyncCallWithArgumentList( const QString &method,
+            const QList<QVariant> &args );
 
 protected:
-    QDBusAbstractInterface(const QString &service, const QString &path, const char *interface,
-                           const QDBusConnection &connection, QObject *parent);
-    QDBusAbstractInterface(QDBusAbstractInterfacePrivate &, QObject *parent);
+    QDBusAbstractInterface( const QString &service, const QString &path, const char *interface,
+                            const QDBusConnection &connection, QObject *parent );
+    QDBusAbstractInterface( QDBusAbstractInterfacePrivate &, QObject *parent );
 
-    void connectNotify(const char *signal);
-    void disconnectNotify(const char *signal);
-    QVariant internalPropGet(const char *propname) const;
-    void internalPropSet(const char *propname, const QVariant &value);
-    QDBusMessage internalConstCall(QDBus::CallMode mode,
-                                   const QString &method,
-                                   const QList<QVariant> &args = QList<QVariant>()) const;
+    void connectNotify( const char *signal );
+    void disconnectNotify( const char *signal );
+    QVariant internalPropGet( const char *propname ) const;
+    void internalPropSet( const char *propname, const QVariant &value );
+    QDBusMessage internalConstCall( QDBus::CallMode mode,
+                                    const QString &method,
+                                    const QList<QVariant> &args = QList<QVariant>() ) const;
 
 private:
-    Q_DECLARE_PRIVATE(QDBusAbstractInterface)
-    CS_SLOT_1(Private, void _q_serviceOwnerChanged(QString un_named_arg1,QString un_named_arg2,QString un_named_arg3))
-    CS_SLOT_2(_q_serviceOwnerChanged)
+    Q_DECLARE_PRIVATE( QDBusAbstractInterface )
+    LSCS_SLOT_1( Private, void _q_serviceOwnerChanged( QString un_named_arg1,QString un_named_arg2,QString un_named_arg3 ) )
+    LSCS_SLOT_2( _q_serviceOwnerChanged )
 
-/*  PRIVATE_SLOT
-void _q_serviceOwnerChanged(QString un_named_arg1,QString un_named_arg2,QString un_named_arg3)
-{
-	Q_D(QDBusAbstractInterface);
-	d->_q_serviceOwnerChanged();
-}
-*/
+    /*  PRIVATE_SLOT
+    void _q_serviceOwnerChanged(QString un_named_arg1,QString un_named_arg2,QString un_named_arg3)
+    {
+        Q_D(QDBusAbstractInterface);
+        d->_q_serviceOwnerChanged();
+    }
+    */
 };
 
 QT_END_NAMESPACE

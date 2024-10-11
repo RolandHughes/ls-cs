@@ -40,45 +40,45 @@ class QVideoEncoderSettingsControl;
 
 class QMediaRecorderPrivate
 {
-   Q_DECLARE_NON_CONST_PUBLIC(QMediaRecorder)
+    Q_DECLARE_NON_CONST_PUBLIC( QMediaRecorder )
 
- public:
-   QMediaRecorderPrivate();
+public:
+    QMediaRecorderPrivate();
 
-   virtual ~QMediaRecorderPrivate()
-   { }
+    virtual ~QMediaRecorderPrivate()
+    { }
 
-   void applySettingsLater();
-   void restartCamera();
+    void applySettingsLater();
+    void restartCamera();
 
-   QMediaObject *mediaObject;
+    QMediaObject *mediaObject;
 
-   QMediaRecorderControl *control;
-   QMediaContainerControl *formatControl;
-   QAudioEncoderSettingsControl *audioControl;
-   QVideoEncoderSettingsControl *videoControl;
-   QMetaDataWriterControl *metaDataControl;
-   QMediaAvailabilityControl *availabilityControl;
+    QMediaRecorderControl *control;
+    QMediaContainerControl *formatControl;
+    QAudioEncoderSettingsControl *audioControl;
+    QVideoEncoderSettingsControl *videoControl;
+    QMetaDataWriterControl *metaDataControl;
+    QMediaAvailabilityControl *availabilityControl;
 
-   bool settingsChanged;
+    bool settingsChanged;
 
-   QTimer *notifyTimer;
+    QTimer *notifyTimer;
 
-   QMediaRecorder::State m_state;
-   QMediaRecorder::Error m_error;
-   QString m_errorString;
-   QUrl actualLocation;
+    QMediaRecorder::State m_state;
+    QMediaRecorder::Error m_error;
+    QString m_errorString;
+    QUrl actualLocation;
 
-   void _q_stateChanged(QMediaRecorder::State state);
-   void _q_error(int error, const QString &errorString);
-   void _q_serviceDestroyed();
-   void _q_updateActualLocation(const QUrl &url);
-   void _q_notify();
-   void _q_updateNotifyInterval(int ms);
-   void _q_applySettings();
-   void _q_availabilityChanged(QMultimedia::AvailabilityStatus availability);
+    void _q_stateChanged( QMediaRecorder::State state );
+    void _q_error( int error, const QString &errorString );
+    void _q_serviceDestroyed();
+    void _q_updateActualLocation( const QUrl &url );
+    void _q_notify();
+    void _q_updateNotifyInterval( int ms );
+    void _q_applySettings();
+    void _q_availabilityChanged( QMultimedia::AvailabilityStatus availability );
 
-   QMediaRecorder *q_ptr;
+    QMediaRecorder *q_ptr;
 };
 
 #endif

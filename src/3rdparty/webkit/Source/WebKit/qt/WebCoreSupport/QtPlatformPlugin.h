@@ -33,29 +33,31 @@ class QWebTouchModifier;
 class QWebFullScreenVideoHandler;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-class QtPlatformPlugin {
+class QtPlatformPlugin
+{
 public:
-    QtPlatformPlugin() : m_loaded(false), m_plugin(0) {}
+    QtPlatformPlugin() : m_loaded( false ), m_plugin( 0 ) {}
     ~QtPlatformPlugin();
 
-    QWebSelectMethod* createSelectInputMethod();
-    QWebNotificationPresenter* createNotificationPresenter();
-    QWebHapticFeedbackPlayer* createHapticFeedbackPlayer();
-    QWebTouchModifier* createTouchModifier();
+    QWebSelectMethod *createSelectInputMethod();
+    QWebNotificationPresenter *createNotificationPresenter();
+    QWebHapticFeedbackPlayer *createHapticFeedbackPlayer();
+    QWebTouchModifier *createTouchModifier();
 #if ENABLE(VIDEO) && USE(QT_MULTIMEDIA)
-    QWebFullScreenVideoHandler* createFullScreenVideoHandler();
+    QWebFullScreenVideoHandler *createFullScreenVideoHandler();
 #endif
 
-    QWebKitPlatformPlugin* plugin();
+    QWebKitPlatformPlugin *plugin();
 
 private:
     bool m_loaded;
-    QWebKitPlatformPlugin* m_plugin;
+    QWebKitPlatformPlugin *m_plugin;
     QPluginLoader m_loader;
     bool load();
-    bool load(const QString& file);
+    bool load( const QString &file );
     bool loadStaticallyLinkedPlugin();
 };
 

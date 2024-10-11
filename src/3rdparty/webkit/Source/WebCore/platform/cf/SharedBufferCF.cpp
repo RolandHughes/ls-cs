@@ -30,11 +30,12 @@
 
 #include "PurgeableBuffer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-SharedBuffer::SharedBuffer(CFDataRef cfData)
-    : m_size(0)
-    , m_cfData(cfData)
+SharedBuffer::SharedBuffer( CFDataRef cfData )
+    : m_size( 0 )
+    , m_cfData( cfData )
 {
 }
 
@@ -43,20 +44,21 @@ SharedBuffer::SharedBuffer(CFDataRef cfData)
 #if !PLATFORM(MAC) && !(PLATFORM(QT) && USE(QTKIT))
 CFDataRef SharedBuffer::createCFData()
 {
-    if (m_cfData) {
-        CFRetain(m_cfData.get());
+    if ( m_cfData )
+    {
+        CFRetain( m_cfData.get() );
         return m_cfData.get();
     }
 
     // Internal data in SharedBuffer can be segmented. We need to get the contiguous buffer.
-    const Vector<char>& contiguousBuffer = buffer();
-    return CFDataCreate(0, reinterpret_cast<const UInt8*>(contiguousBuffer.data()), contiguousBuffer.size());
+    const Vector<char> &contiguousBuffer = buffer();
+    return CFDataCreate( 0, reinterpret_cast<const UInt8 *>( contiguousBuffer.data() ), contiguousBuffer.size() );
 }
 #endif
 
-PassRefPtr<SharedBuffer> SharedBuffer::wrapCFData(CFDataRef data)
+PassRefPtr<SharedBuffer> SharedBuffer::wrapCFData( CFDataRef data )
 {
-    return adoptRef(new SharedBuffer(data));
+    return adoptRef( new SharedBuffer( data ) );
 }
 
 bool SharedBuffer::hasPlatformData() const
@@ -64,25 +66,27 @@ bool SharedBuffer::hasPlatformData() const
     return m_cfData;
 }
 
-const char* SharedBuffer::platformData() const
+const char *SharedBuffer::platformData() const
 {
-    return (const char*)CFDataGetBytePtr(m_cfData.get());
+    return ( const char * )CFDataGetBytePtr( m_cfData.get() );
 }
 
 unsigned SharedBuffer::platformDataSize() const
 {
-    return CFDataGetLength(m_cfData.get());
+    return CFDataGetLength( m_cfData.get() );
 }
 
 void SharedBuffer::maybeTransferPlatformData()
 {
-    if (!m_cfData)
+    if ( !m_cfData )
+    {
         return;
-    
-    ASSERT(!m_size);
-        
-    append((const char*)CFDataGetBytePtr(m_cfData.get()), CFDataGetLength(m_cfData.get()));
-        
+    }
+
+    ASSERT( !m_size );
+
+    append( ( const char * )CFDataGetBytePtr( m_cfData.get() ), CFDataGetLength( m_cfData.get() ) );
+
     m_cfData = 0;
 }
 
@@ -92,27 +96,32 @@ void SharedBuffer::clearPlatformData()
 }
 
 #if HAVE(CFNETWORK_DATA_ARRAY_CALLBACK)
-void SharedBuffer::append(CFDataRef data)
+void SharedBuffer::append( CFDataRef data )
 {
-    ASSERT(data);
-    m_dataArray.append(data);
-    m_size += CFDataGetLength(data);
+    ASSERT( data );
+    m_dataArray.append( data );
+    m_size += CFDataGetLength( data );
 }
 
-void SharedBuffer::copyDataArrayAndClear(char *destination, unsigned bytesToCopy) const
+void SharedBuffer::copyDataArrayAndClear( char *destination, unsigned bytesToCopy ) const
 {
-    if (m_dataArray.isEmpty())
+    if ( m_dataArray.isEmpty() )
+    {
         return;
+    }
 
     CFIndex bytesLeft = bytesToCopy;
     Vector<RetainPtr<CFDataRef> >::const_iterator end = m_dataArray.end();
-    for (Vector<RetainPtr<CFDataRef> >::const_iterator it = m_dataArray.begin(); it != end; ++it) {
-        CFIndex dataLen = CFDataGetLength(it->get());
-        ASSERT(bytesLeft >= dataLen);
-        memcpy(destination, CFDataGetBytePtr(it->get()), dataLen);
+
+    for ( Vector<RetainPtr<CFDataRef> >::const_iterator it = m_dataArray.begin(); it != end; ++it )
+    {
+        CFIndex dataLen = CFDataGetLength( it->get() );
+        ASSERT( bytesLeft >= dataLen );
+        memcpy( destination, CFDataGetBytePtr( it->get() ), dataLen );
         destination += dataLen;
         bytesLeft -= dataLen;
     }
+
     m_dataArray.clear();
 }
 #endif

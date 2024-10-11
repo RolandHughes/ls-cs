@@ -26,42 +26,51 @@
 #include "config.h"
 #include "HTMLSourceTracker.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 HTMLSourceTracker::HTMLSourceTracker()
 {
 }
 
-void HTMLSourceTracker::start(const HTMLInputStream& input, HTMLToken& token)
+void HTMLSourceTracker::start( const HTMLInputStream &input, HTMLToken &token )
 {
-    m_sourceFromPreviousSegments = token.type() == HTMLToken::Uninitialized ? String() : m_sourceFromPreviousSegments + m_source.toString();
+    m_sourceFromPreviousSegments = token.type() == HTMLToken::Uninitialized ? String() : m_sourceFromPreviousSegments +
+                                   m_source.toString();
     m_source = input.current();
-    token.setBaseOffset(input.current().numberOfCharactersConsumed() - m_sourceFromPreviousSegments.length());
+    token.setBaseOffset( input.current().numberOfCharactersConsumed() - m_sourceFromPreviousSegments.length() );
 }
 
-void HTMLSourceTracker::end(const HTMLInputStream& input, HTMLToken& token)
+void HTMLSourceTracker::end( const HTMLInputStream &input, HTMLToken &token )
 {
     m_cachedSourceForToken = String();
     // FIXME: This work should really be done by the HTMLTokenizer.
-    token.end(input.current().numberOfCharactersConsumed());
+    token.end( input.current().numberOfCharactersConsumed() );
 }
 
-String HTMLSourceTracker::sourceForToken(const HTMLToken& token)
+String HTMLSourceTracker::sourceForToken( const HTMLToken &token )
 {
-    if (token.type() == HTMLToken::EndOfFile)
-        return String(); // Hides the null character we use to mark the end of file.
+    if ( token.type() == HTMLToken::EndOfFile )
+    {
+        return String();    // Hides the null character we use to mark the end of file.
+    }
 
-    if (!m_cachedSourceForToken.isEmpty())
+    if ( !m_cachedSourceForToken.isEmpty() )
+    {
         return m_cachedSourceForToken;
+    }
 
-    ASSERT(!token.startIndex());
-    UChar* data = 0;
+    ASSERT( !token.startIndex() );
+    UChar *data = 0;
     int length = token.endIndex() - token.startIndex() - m_sourceFromPreviousSegments.length();
-    String source = String::createUninitialized(length, data);
-    for (int i = 0; i < length; ++i) {
+    String source = String::createUninitialized( length, data );
+
+    for ( int i = 0; i < length; ++i )
+    {
         data[i] = *m_source;
         m_source.advance();
     }
+
     m_cachedSourceForToken = m_sourceFromPreviousSegments + source;
     return m_cachedSourceForToken;
 }

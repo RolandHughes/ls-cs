@@ -31,47 +31,55 @@
 #include "RenderMathMLBlock.h"
 #include <wtf/unicode/CharacterNames.h>
 
-namespace WebCore {
-    
-class RenderMathMLOperator : public RenderMathMLBlock {
+namespace WebCore
+{
+
+class RenderMathMLOperator : public RenderMathMLBlock
+{
 public:
-    RenderMathMLOperator(Node* container);
-    RenderMathMLOperator(Node* container, UChar operatorChar);
-    virtual bool isRenderMathMLOperator() const { return true; }
-    virtual void stretchToHeight(int pixelHeight);
-    virtual void updateFromElement(); 
-    virtual bool isChildAllowed(RenderObject*, RenderStyle*) const;
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const;
-        
+    RenderMathMLOperator( Node *container );
+    RenderMathMLOperator( Node *container, UChar operatorChar );
+    virtual bool isRenderMathMLOperator() const
+    {
+        return true;
+    }
+    virtual void stretchToHeight( int pixelHeight );
+    virtual void updateFromElement();
+    virtual bool isChildAllowed( RenderObject *, RenderStyle * ) const;
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
+
 protected:
     virtual void layout();
-    virtual RefPtr<RenderStyle> createStackableStyle(int size, int topRelative);
-    virtual RenderBlock* createGlyph(UChar glyph, int size = 0, int charRelative = 0, int topRelative = 0);
-    
+    virtual RefPtr<RenderStyle> createStackableStyle( int size, int topRelative );
+    virtual RenderBlock *createGlyph( UChar glyph, int size = 0, int charRelative = 0, int topRelative = 0 );
+
 private:
     int m_stretchHeight;
     bool m_isStacked;
     UChar m_operator;
 };
 
-inline RenderMathMLOperator* toRenderMathMLOperator(RenderMathMLBlock* block)
-{ 
-    ASSERT(!block || block->isRenderMathMLOperator());
-    return static_cast<RenderMathMLOperator*>(block);
+inline RenderMathMLOperator *toRenderMathMLOperator( RenderMathMLBlock *block )
+{
+    ASSERT( !block || block->isRenderMathMLOperator() );
+    return static_cast<RenderMathMLOperator *>( block );
 }
 
-inline const RenderMathMLOperator* toRenderMathMLOperator(const RenderMathMLBlock* block)
-{ 
-    ASSERT(!block || block->isRenderMathMLOperator());
-    return static_cast<const RenderMathMLOperator*>(block);
+inline const RenderMathMLOperator *toRenderMathMLOperator( const RenderMathMLBlock *block )
+{
+    ASSERT( !block || block->isRenderMathMLOperator() );
+    return static_cast<const RenderMathMLOperator *>( block );
 }
 
-inline UChar convertHyphenMinusToMinusSign(UChar glyph)
+inline UChar convertHyphenMinusToMinusSign( UChar glyph )
 {
     // When rendered as a mathematical operator, minus glyph should be larger.
-    if (glyph == hyphenMinus)
+    if ( glyph == hyphenMinus )
+    {
         return minusSign;
-    
+    }
+
     return glyph;
 }
 

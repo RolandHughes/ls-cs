@@ -35,71 +35,71 @@ class QDeclarativeAnimatedImagePrivate;
 
 class QDeclarativeAnimatedImage : public QDeclarativeImage
 {
-   DECL_CS_OBJECT(QDeclarativeAnimatedImage)
+    DECL_LSCS_OBJECT( QDeclarativeAnimatedImage )
 
-   DECL_CS_PROPERTY_READ(playing, isPlaying)
-   DECL_CS_PROPERTY_WRITE(playing, setPlaying)
-   DECL_CS_PROPERTY_NOTIFY(playing, playingChanged)
-   DECL_CS_PROPERTY_READ(paused, isPaused)
-   DECL_CS_PROPERTY_WRITE(paused, setPaused)
-   DECL_CS_PROPERTY_NOTIFY(paused, pausedChanged)
-   DECL_CS_PROPERTY_READ(currentFrame, currentFrame)
-   DECL_CS_PROPERTY_WRITE(currentFrame, setCurrentFrame)
-   DECL_CS_PROPERTY_NOTIFY(currentFrame, frameChanged)
-   DECL_CS_PROPERTY_READ(frameCount, frameCount)
+    DECL_LSCS_PROPERTY_READ( playing, isPlaying )
+    DECL_LSCS_PROPERTY_WRITE( playing, setPlaying )
+    DECL_LSCS_PROPERTY_NOTIFY( playing, playingChanged )
+    DECL_LSCS_PROPERTY_READ( paused, isPaused )
+    DECL_LSCS_PROPERTY_WRITE( paused, setPaused )
+    DECL_LSCS_PROPERTY_NOTIFY( paused, pausedChanged )
+    DECL_LSCS_PROPERTY_READ( currentFrame, currentFrame )
+    DECL_LSCS_PROPERTY_WRITE( currentFrame, setCurrentFrame )
+    DECL_LSCS_PROPERTY_NOTIFY( currentFrame, frameChanged )
+    DECL_LSCS_PROPERTY_READ( frameCount, frameCount )
 
-   // read-only for AnimatedImage
-   DECL_CS_PROPERTY_READ(sourceSize, sourceSize)
-   DECL_CS_PROPERTY_NOTIFY(sourceSize, sourceSizeChanged)
+    // read-only for AnimatedImage
+    DECL_LSCS_PROPERTY_READ( sourceSize, sourceSize )
+    DECL_LSCS_PROPERTY_NOTIFY( sourceSize, sourceSizeChanged )
 
- public:
-   QDeclarativeAnimatedImage(QDeclarativeItem *parent = 0);
-   ~QDeclarativeAnimatedImage();
+public:
+    QDeclarativeAnimatedImage( QDeclarativeItem *parent = 0 );
+    ~QDeclarativeAnimatedImage();
 
-   bool isPlaying() const;
-   void setPlaying(bool play);
+    bool isPlaying() const;
+    void setPlaying( bool play );
 
-   bool isPaused() const;
-   void setPaused(bool pause);
+    bool isPaused() const;
+    void setPaused( bool pause );
 
-   int currentFrame() const;
-   void setCurrentFrame(int frame);
+    int currentFrame() const;
+    void setCurrentFrame( int frame );
 
-   int frameCount() const;
+    int frameCount() const;
 
-   // Extends QDeclarativeImage's src property*/
-   virtual void setSource(const QUrl &);
+    // Extends QDeclarativeImage's src property*/
+    virtual void setSource( const QUrl & );
 
- public:
-   DECL_CS_SIGNAL_1(Public, void playingChanged())
-   DECL_CS_SIGNAL_2(playingChanged)
-   DECL_CS_SIGNAL_1(Public, void pausedChanged())
-   DECL_CS_SIGNAL_2(pausedChanged)
-   DECL_CS_SIGNAL_1(Public, void frameChanged())
-   DECL_CS_SIGNAL_2(frameChanged)
-   DECL_CS_SIGNAL_1(Public, void sourceSizeChanged())
-   DECL_CS_SIGNAL_2(sourceSizeChanged)
+public:
+    DECL_LSCS_SIGNAL_1( Public, void playingChanged() )
+    DECL_LSCS_SIGNAL_2( playingChanged )
+    DECL_LSCS_SIGNAL_1( Public, void pausedChanged() )
+    DECL_LSCS_SIGNAL_2( pausedChanged )
+    DECL_LSCS_SIGNAL_1( Public, void frameChanged() )
+    DECL_LSCS_SIGNAL_2( frameChanged )
+    DECL_LSCS_SIGNAL_1( Public, void sourceSizeChanged() )
+    DECL_LSCS_SIGNAL_2( sourceSizeChanged )
 
- private :
-   DECL_CS_SLOT_1(Private, void movieUpdate())
-   DECL_CS_SLOT_2(movieUpdate)
-   DECL_CS_SLOT_1(Private, void movieRequestFinished())
-   DECL_CS_SLOT_2(movieRequestFinished)
-   DECL_CS_SLOT_1(Private, void playingStatusChanged())
-   DECL_CS_SLOT_2(playingStatusChanged)
+private :
+    DECL_LSCS_SLOT_1( Private, void movieUpdate() )
+    DECL_LSCS_SLOT_2( movieUpdate )
+    DECL_LSCS_SLOT_1( Private, void movieRequestFinished() )
+    DECL_LSCS_SLOT_2( movieRequestFinished )
+    DECL_LSCS_SLOT_1( Private, void playingStatusChanged() )
+    DECL_LSCS_SLOT_2( playingStatusChanged )
 
- protected:
-   virtual void load();
-   void componentComplete();
+protected:
+    virtual void load();
+    void componentComplete();
 
- private:
-   Q_DISABLE_COPY(QDeclarativeAnimatedImage)
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeAnimatedImage)
+private:
+    Q_DISABLE_COPY( QDeclarativeAnimatedImage )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeAnimatedImage )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeAnimatedImage)
+QML_DECLARE_TYPE( QDeclarativeAnimatedImage )
 
 #endif // QT_NO_MOVIE
 

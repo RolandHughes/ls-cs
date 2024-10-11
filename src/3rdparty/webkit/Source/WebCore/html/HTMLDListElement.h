@@ -25,14 +25,16 @@
 
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLDListElement : public HTMLElement {
+class HTMLDListElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLDListElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLDListElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLDListElement(const QualifiedName&, Document*);
+    HTMLDListElement( const QualifiedName &, Document * );
 };
 
 } //namespace

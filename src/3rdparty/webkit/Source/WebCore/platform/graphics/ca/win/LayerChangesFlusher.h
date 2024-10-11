@@ -32,28 +32,30 @@
 #include <wtf/HashSet.h>
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AbstractCACFLayerTreeHost;
 
-class LayerChangesFlusher {
-    WTF_MAKE_NONCOPYABLE(LayerChangesFlusher);
+class LayerChangesFlusher
+{
+    WTF_MAKE_NONCOPYABLE( LayerChangesFlusher );
 public:
-    static LayerChangesFlusher& shared();
+    static LayerChangesFlusher &shared();
 
-    void flushPendingLayerChangesSoon(AbstractCACFLayerTreeHost*);
-    void cancelPendingFlush(AbstractCACFLayerTreeHost*);
+    void flushPendingLayerChangesSoon( AbstractCACFLayerTreeHost * );
+    void cancelPendingFlush( AbstractCACFLayerTreeHost * );
 
 private:
     LayerChangesFlusher();
     ~LayerChangesFlusher();
 
-    static LRESULT CALLBACK hookCallback(int code, WPARAM, LPARAM);
-    LRESULT hookFired(int code, WPARAM, LPARAM);
+    static LRESULT CALLBACK hookCallback( int code, WPARAM, LPARAM );
+    LRESULT hookFired( int code, WPARAM, LPARAM );
     void setHook();
     void removeHook();
 
-    HashSet<AbstractCACFLayerTreeHost*> m_hostsWithChangesToFlush;
+    HashSet<AbstractCACFLayerTreeHost *> m_hostsWithChangesToFlush;
     HHOOK m_hook;
     bool m_isCallingHosts;
 };

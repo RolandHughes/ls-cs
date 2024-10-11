@@ -31,13 +31,13 @@ QT_BEGIN_NAMESPACE
 
 class QScriptMessageHandlerInterface
 {
- public:
-   virtual ~QScriptMessageHandlerInterface() {}
+public:
+    virtual ~QScriptMessageHandlerInterface() {}
 
-   virtual void message(QtMsgType type, const QString &text,
-                        const QString &fileName = QString(),
-                        int lineNumber = -1, int columnNumber = -1,
-                        const QVariant &data = QVariant()) = 0;
+    virtual void message( QtMsgType type, const QString &text,
+                          const QString &fileName = QString(),
+                          int lineNumber = -1, int columnNumber = -1,
+                          const QVariant &data = QVariant() ) = 0;
 };
 
 QT_END_NAMESPACE

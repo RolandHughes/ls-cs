@@ -31,52 +31,58 @@
 #include "Region.h"
 #include "RunLoop.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 class UpdateInfo;
 
-class DrawingAreaImpl : public DrawingArea {
+class DrawingAreaImpl : public DrawingArea
+{
 public:
-    static PassOwnPtr<DrawingAreaImpl> create(WebPage*, const WebPageCreationParameters&);
+    static PassOwnPtr<DrawingAreaImpl> create( WebPage *, const WebPageCreationParameters & );
     virtual ~DrawingAreaImpl();
 
     void setLayerHostNeedsDisplay();
     void layerHostDidFlushLayers();
 
 private:
-    DrawingAreaImpl(WebPage*, const WebPageCreationParameters&);
+    DrawingAreaImpl( WebPage *, const WebPageCreationParameters & );
 
     // DrawingArea
-    virtual void setNeedsDisplay(const WebCore::IntRect&);
-    virtual void scroll(const WebCore::IntRect& scrollRect, const WebCore::IntSize& scrollOffset);
+    virtual void setNeedsDisplay( const WebCore::IntRect & );
+    virtual void scroll( const WebCore::IntRect &scrollRect, const WebCore::IntSize &scrollOffset );
     virtual void forceRepaint();
 
     virtual void didInstallPageOverlay();
     virtual void didUninstallPageOverlay();
-    virtual void setPageOverlayNeedsDisplay(const WebCore::IntRect&);
-    
-    virtual void setRootCompositingLayer(WebCore::GraphicsLayer*);
+    virtual void setPageOverlayNeedsDisplay( const WebCore::IntRect & );
+
+    virtual void setRootCompositingLayer( WebCore::GraphicsLayer * );
     virtual void scheduleCompositingLayerSync();
     virtual void syncCompositingLayers();
-    virtual void didReceiveMessage(CoreIPC::Connection*, CoreIPC::MessageID, CoreIPC::ArgumentDecoder*);
+    virtual void didReceiveMessage( CoreIPC::Connection *, CoreIPC::MessageID, CoreIPC::ArgumentDecoder * );
 
     // CoreIPC message handlers.
-    virtual void updateBackingStoreState(uint64_t backingStoreStateID, bool respondImmediately, const WebCore::IntSize&, const WebCore::IntSize& scrollOffset);
+    virtual void updateBackingStoreState( uint64_t backingStoreStateID, bool respondImmediately, const WebCore::IntSize &,
+                                          const WebCore::IntSize &scrollOffset );
     virtual void didUpdate();
     virtual void suspendPainting();
     virtual void resumePainting();
 
     void sendDidUpdateBackingStoreState();
 
-    void enterAcceleratedCompositingMode(WebCore::GraphicsLayer*);
+    void enterAcceleratedCompositingMode( WebCore::GraphicsLayer * );
     void exitAcceleratedCompositingModeSoon();
-    bool exitAcceleratedCompositingModePending() const { return m_exitCompositingTimer.isActive(); }
+    bool exitAcceleratedCompositingModePending() const
+    {
+        return m_exitCompositingTimer.isActive();
+    }
     void exitAcceleratedCompositingMode();
 
     void scheduleDisplay();
     void displayTimerFired();
     void display();
-    void display(UpdateInfo&);
+    void display( UpdateInfo & );
 
     uint64_t m_backingStoreStateID;
 
@@ -91,14 +97,14 @@ private:
     // we normally send to the UI process.
     bool m_shouldSendDidUpdateBackingStoreState;
 
-    // Whether we're waiting for a DidUpdate message. Used for throttling paints so that the 
+    // Whether we're waiting for a DidUpdate message. Used for throttling paints so that the
     // web process won't paint more frequent than the UI process can handle.
     bool m_isWaitingForDidUpdate;
-    
+
     // True between sending the 'enter compositing' messages, and the 'exit compositing' message.
     bool m_compositingAccordingToProxyMessages;
 
-    // Whether painting is suspended. We'll still keep track of the dirty region but we 
+    // Whether painting is suspended. We'll still keep track of the dirty region but we
     // won't paint until painting has resumed again.
     bool m_isPaintingSuspended;
     bool m_alwaysUseCompositing;

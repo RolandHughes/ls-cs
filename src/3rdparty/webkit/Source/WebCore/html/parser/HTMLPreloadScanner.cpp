@@ -22,7 +22,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -39,102 +39,145 @@
 #include "MediaList.h"
 #include "MediaQueryEvaluator.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-namespace {
+namespace
+{
 
-class PreloadTask {
+class PreloadTask
+{
 public:
-    PreloadTask(const HTMLToken& token)
-        : m_tagName(token.name().data(), token.name().size())
-        , m_linkIsStyleSheet(false)
-        , m_linkMediaAttributeIsScreen(true)
-        , m_inputIsImage(false)
+    PreloadTask( const HTMLToken &token )
+        : m_tagName( token.name().data(), token.name().size() )
+        , m_linkIsStyleSheet( false )
+        , m_linkMediaAttributeIsScreen( true )
+        , m_inputIsImage( false )
     {
-        processAttributes(token.attributes());
+        processAttributes( token.attributes() );
     }
 
-    void processAttributes(const HTMLToken::AttributeList& attributes)
+    void processAttributes( const HTMLToken::AttributeList &attributes )
     {
-        if (m_tagName != imgTag
-            && m_tagName != inputTag
-            && m_tagName != linkTag
-            && m_tagName != scriptTag)
+        if ( m_tagName != imgTag
+                && m_tagName != inputTag
+                && m_tagName != linkTag
+                && m_tagName != scriptTag )
+        {
             return;
+        }
 
-        for (HTMLToken::AttributeList::const_iterator iter = attributes.begin();
-             iter != attributes.end(); ++iter) {
-            AtomicString attributeName(iter->m_name.data(), iter->m_name.size());
-            String attributeValue(iter->m_value.data(), iter->m_value.size());
+        for ( HTMLToken::AttributeList::const_iterator iter = attributes.begin();
+                iter != attributes.end(); ++iter )
+        {
+            AtomicString attributeName( iter->m_name.data(), iter->m_name.size() );
+            String attributeValue( iter->m_value.data(), iter->m_value.size() );
 
-            if (attributeName == charsetAttr)
+            if ( attributeName == charsetAttr )
+            {
                 m_charset = attributeValue;
+            }
 
-            if (m_tagName == scriptTag || m_tagName == imgTag) {
-                if (attributeName == srcAttr)
-                    setUrlToLoad(attributeValue);
-            } else if (m_tagName == linkTag) {
-                if (attributeName == hrefAttr)
-                    setUrlToLoad(attributeValue);
-                else if (attributeName == relAttr)
-                    m_linkIsStyleSheet = relAttributeIsStyleSheet(attributeValue);
-                else if (attributeName == mediaAttr)
-                    m_linkMediaAttributeIsScreen = linkMediaAttributeIsScreen(attributeValue);
-            } else if (m_tagName == inputTag) {
-                if (attributeName == srcAttr)
-                    setUrlToLoad(attributeValue);
-                else if (attributeName == typeAttr)
-                    m_inputIsImage = equalIgnoringCase(attributeValue, InputTypeNames::image());
+            if ( m_tagName == scriptTag || m_tagName == imgTag )
+            {
+                if ( attributeName == srcAttr )
+                {
+                    setUrlToLoad( attributeValue );
+                }
+            }
+            else if ( m_tagName == linkTag )
+            {
+                if ( attributeName == hrefAttr )
+                {
+                    setUrlToLoad( attributeValue );
+                }
+                else if ( attributeName == relAttr )
+                {
+                    m_linkIsStyleSheet = relAttributeIsStyleSheet( attributeValue );
+                }
+                else if ( attributeName == mediaAttr )
+                {
+                    m_linkMediaAttributeIsScreen = linkMediaAttributeIsScreen( attributeValue );
+                }
+            }
+            else if ( m_tagName == inputTag )
+            {
+                if ( attributeName == srcAttr )
+                {
+                    setUrlToLoad( attributeValue );
+                }
+                else if ( attributeName == typeAttr )
+                {
+                    m_inputIsImage = equalIgnoringCase( attributeValue, InputTypeNames::image() );
+                }
             }
         }
     }
 
-    static bool relAttributeIsStyleSheet(const String& attributeValue)
+    static bool relAttributeIsStyleSheet( const String &attributeValue )
     {
         HTMLLinkElement::RelAttribute rel;
-        HTMLLinkElement::tokenizeRelAttribute(attributeValue, rel);
+        HTMLLinkElement::tokenizeRelAttribute( attributeValue, rel );
         return rel.m_isStyleSheet && !rel.m_isAlternate && rel.m_iconType == InvalidIcon && !rel.m_isDNSPrefetch;
     }
 
-    static bool linkMediaAttributeIsScreen(const String& attributeValue)
+    static bool linkMediaAttributeIsScreen( const String &attributeValue )
     {
-        if (attributeValue.isEmpty())
+        if ( attributeValue.isEmpty() )
+        {
             return true;
-        RefPtr<MediaList> mediaList = MediaList::createAllowingDescriptionSyntax(attributeValue);
-    
-        // Only preload screen media stylesheets. Used this way, the evaluator evaluates to true for any 
+        }
+
+        RefPtr<MediaList> mediaList = MediaList::createAllowingDescriptionSyntax( attributeValue );
+
+        // Only preload screen media stylesheets. Used this way, the evaluator evaluates to true for any
         // rules containing complex queries (full evaluation is possible but it requires a frame and a style selector which
         // may be problematic here).
-        MediaQueryEvaluator mediaQueryEvaluator("screen");
-        return mediaQueryEvaluator.eval(mediaList.get());
+        MediaQueryEvaluator mediaQueryEvaluator( "screen" );
+        return mediaQueryEvaluator.eval( mediaList.get() );
     }
 
-    void setUrlToLoad(const String& attributeValue)
+    void setUrlToLoad( const String &attributeValue )
     {
         // We only respect the first src/href, per HTML5:
         // http://www.whatwg.org/specs/web-apps/current-work/multipage/tokenization.html#attribute-name-state
-        if (!m_urlToLoad.isEmpty())
+        if ( !m_urlToLoad.isEmpty() )
+        {
             return;
-        m_urlToLoad = stripLeadingAndTrailingHTMLSpaces(attributeValue);
+        }
+
+        m_urlToLoad = stripLeadingAndTrailingHTMLSpaces( attributeValue );
     }
 
-    void preload(Document* document, bool scanningBody)
+    void preload( Document *document, bool scanningBody )
     {
-        if (m_urlToLoad.isEmpty())
+        if ( m_urlToLoad.isEmpty() )
+        {
             return;
+        }
 
-        CachedResourceLoader* cachedResourceLoader = document->cachedResourceLoader();
-        if (m_tagName == scriptTag)
-            cachedResourceLoader->preload(CachedResource::Script, m_urlToLoad, m_charset, scanningBody);
-        else if (m_tagName == imgTag || (m_tagName == inputTag && m_inputIsImage))
-            cachedResourceLoader->preload(CachedResource::ImageResource, m_urlToLoad, String(), scanningBody);
-        else if (m_tagName == linkTag && m_linkIsStyleSheet && m_linkMediaAttributeIsScreen) 
-            cachedResourceLoader->preload(CachedResource::CSSStyleSheet, m_urlToLoad, m_charset, scanningBody);
+        CachedResourceLoader *cachedResourceLoader = document->cachedResourceLoader();
+
+        if ( m_tagName == scriptTag )
+        {
+            cachedResourceLoader->preload( CachedResource::Script, m_urlToLoad, m_charset, scanningBody );
+        }
+        else if ( m_tagName == imgTag || ( m_tagName == inputTag && m_inputIsImage ) )
+        {
+            cachedResourceLoader->preload( CachedResource::ImageResource, m_urlToLoad, String(), scanningBody );
+        }
+        else if ( m_tagName == linkTag && m_linkIsStyleSheet && m_linkMediaAttributeIsScreen )
+        {
+            cachedResourceLoader->preload( CachedResource::CSSStyleSheet, m_urlToLoad, m_charset, scanningBody );
+        }
     }
 
-    const AtomicString& tagName() const { return m_tagName; }
+    const AtomicString &tagName() const
+    {
+        return m_tagName;
+    }
 
 private:
     AtomicString m_tagName;
@@ -147,25 +190,26 @@ private:
 
 } // namespace
 
-HTMLPreloadScanner::HTMLPreloadScanner(Document* document)
-    : m_document(document)
-    , m_cssScanner(document)
-    , m_tokenizer(HTMLTokenizer::create(HTMLDocumentParser::usePreHTML5ParserQuirks(document)))
-    , m_bodySeen(false)
-    , m_inStyle(false)
+HTMLPreloadScanner::HTMLPreloadScanner( Document *document )
+    : m_document( document )
+    , m_cssScanner( document )
+    , m_tokenizer( HTMLTokenizer::create( HTMLDocumentParser::usePreHTML5ParserQuirks( document ) ) )
+    , m_bodySeen( false )
+    , m_inStyle( false )
 {
 }
 
-void HTMLPreloadScanner::appendToEnd(const SegmentedString& source)
+void HTMLPreloadScanner::appendToEnd( const SegmentedString &source )
 {
-    m_source.append(source);
+    m_source.append( source );
 }
 
 void HTMLPreloadScanner::scan()
 {
     // FIXME: We should save and re-use these tokens in HTMLDocumentParser if
     // the pending script doesn't end up calling document.write.
-    while (m_tokenizer->nextToken(m_source, m_token)) {
+    while ( m_tokenizer->nextToken( m_source, m_token ) )
+    {
         processToken();
         m_token.clear();
     }
@@ -173,28 +217,38 @@ void HTMLPreloadScanner::scan()
 
 void HTMLPreloadScanner::processToken()
 {
-    if (m_inStyle) {
-        if (m_token.type() == HTMLToken::Character)
-            m_cssScanner.scan(m_token, scanningBody());
-        else if (m_token.type() == HTMLToken::EndTag) {
+    if ( m_inStyle )
+    {
+        if ( m_token.type() == HTMLToken::Character )
+        {
+            m_cssScanner.scan( m_token, scanningBody() );
+        }
+        else if ( m_token.type() == HTMLToken::EndTag )
+        {
             m_inStyle = false;
             m_cssScanner.reset();
         }
     }
 
-    if (m_token.type() != HTMLToken::StartTag)
+    if ( m_token.type() != HTMLToken::StartTag )
+    {
         return;
+    }
 
-    PreloadTask task(m_token);
-    m_tokenizer->updateStateFor(task.tagName(), m_document->frame());
+    PreloadTask task( m_token );
+    m_tokenizer->updateStateFor( task.tagName(), m_document->frame() );
 
-    if (task.tagName() == bodyTag)
+    if ( task.tagName() == bodyTag )
+    {
         m_bodySeen = true;
+    }
 
-    if (task.tagName() == styleTag)
+    if ( task.tagName() == styleTag )
+    {
         m_inStyle = true;
+    }
 
-    task.preload(m_document, scanningBody());
+    task.preload( m_document, scanningBody() );
 }
 
 bool HTMLPreloadScanner::scanningBody() const

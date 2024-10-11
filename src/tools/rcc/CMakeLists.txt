@@ -1,9 +1,9 @@
 add_executable(rcc${TOOLS_SUFFIX} "")
-add_executable(CopperSpice::rcc ALIAS rcc${TOOLS_SUFFIX})
+add_executable(LsCs::rcc ALIAS rcc${TOOLS_SUFFIX})
 
 set(EXTRA_RCC_LIBS
-   CsCore
-   CsXml
+   LsCsCore
+   LsCsXml
 )
 
 set(EXTRA_RCC_CXXFLAGS)
@@ -56,18 +56,12 @@ set_target_properties(rcc${TOOLS_SUFFIX}
 )
 
 #
-#   If the files in bin didn't name collide with Qt binaries we could just leave them.
+#   Now that binary file names don't collide with
+#   Qt or any version of CopperSpice, we can just
+#   put them in the default binary dir
 #
-if(BUILDING_RPM OR BUILDING_DEBIAN)
-    install(
-       TARGETS rcc${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/bin
-    )
-else()
-    install(
-       TARGETS rcc${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_BINDIR}
-    )
-endif()
+install(
+    TARGETS rcc${TOOLS_SUFFIX}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)

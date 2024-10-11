@@ -39,21 +39,21 @@ QT_BEGIN_NAMESPACE
 
 class QScriptBreakpointDataPrivate
 {
- public:
-   QScriptBreakpointDataPrivate();
-   ~QScriptBreakpointDataPrivate();
+public:
+    QScriptBreakpointDataPrivate();
+    ~QScriptBreakpointDataPrivate();
 
-   void init(int ln);
+    void init( int ln );
 
-   qint64 scriptId;
-   QString fileName;
-   int lineNumber;
-   bool enabled;
-   bool singleShot;
-   int ignoreCount;
-   QString condition;
-   QVariant data;
-   int hitCount;
+    qint64 scriptId;
+    QString fileName;
+    int lineNumber;
+    bool enabled;
+    bool singleShot;
+    int ignoreCount;
+    QString condition;
+    QVariant data;
+    int hitCount;
 };
 
 QScriptBreakpointDataPrivate::QScriptBreakpointDataPrivate()
@@ -64,53 +64,53 @@ QScriptBreakpointDataPrivate::~QScriptBreakpointDataPrivate()
 {
 }
 
-void QScriptBreakpointDataPrivate::init(int ln)
+void QScriptBreakpointDataPrivate::init( int ln )
 {
-   scriptId = -1;
-   lineNumber = ln;
-   enabled = true;
-   singleShot = false;
-   ignoreCount = 0;
-   hitCount = 0;
+    scriptId = -1;
+    lineNumber = ln;
+    enabled = true;
+    singleShot = false;
+    ignoreCount = 0;
+    hitCount = 0;
 }
 
 /*!
   Constructs an empty QScriptBreakpointData.
 */
 QScriptBreakpointData::QScriptBreakpointData()
-   : d_ptr(new QScriptBreakpointDataPrivate)
+    : d_ptr( new QScriptBreakpointDataPrivate )
 {
-   d_ptr->init(/*lineNumber=*/ -1);
+    d_ptr->init( /*lineNumber=*/ -1 );
 }
 
 /*!
   Constructs a QScriptBreakpointData with the given \a lineNumber.
 */
-QScriptBreakpointData::QScriptBreakpointData(qint64 scriptId, int lineNumber)
-   : d_ptr(new QScriptBreakpointDataPrivate)
+QScriptBreakpointData::QScriptBreakpointData( qint64 scriptId, int lineNumber )
+    : d_ptr( new QScriptBreakpointDataPrivate )
 {
-   d_ptr->init(lineNumber);
-   d_ptr->scriptId = scriptId;
+    d_ptr->init( lineNumber );
+    d_ptr->scriptId = scriptId;
 }
 
 /*!
   Constructs a QScriptBreakpointData with the given \a lineNumber.
 */
-QScriptBreakpointData::QScriptBreakpointData(const QString &fileName, int lineNumber)
-   : d_ptr(new QScriptBreakpointDataPrivate)
+QScriptBreakpointData::QScriptBreakpointData( const QString &fileName, int lineNumber )
+    : d_ptr( new QScriptBreakpointDataPrivate )
 {
-   d_ptr->init(lineNumber);
-   d_ptr->fileName = fileName;
+    d_ptr->init( lineNumber );
+    d_ptr->fileName = fileName;
 }
 
 /*!
   Constructs a QScriptBreakpointData that is a copy of \a other.
 */
-QScriptBreakpointData::QScriptBreakpointData(const QScriptBreakpointData &other)
-   : d_ptr(new QScriptBreakpointDataPrivate)
+QScriptBreakpointData::QScriptBreakpointData( const QScriptBreakpointData &other )
+    : d_ptr( new QScriptBreakpointDataPrivate )
 {
-   Q_ASSERT(other.d_ptr != 0);
-   *d_ptr = *other.d_ptr;
+    Q_ASSERT( other.d_ptr != 0 );
+    *d_ptr = *other.d_ptr;
 }
 
 /*!
@@ -123,36 +123,36 @@ QScriptBreakpointData::~QScriptBreakpointData()
 /*!
   Assigns \a other to this QScriptBreakpointData.
 */
-QScriptBreakpointData &QScriptBreakpointData::operator=(const QScriptBreakpointData &other)
+QScriptBreakpointData &QScriptBreakpointData::operator=( const QScriptBreakpointData &other )
 {
-   Q_ASSERT(d_ptr != 0);
-   Q_ASSERT(other.d_ptr != 0);
-   *d_ptr = *other.d_ptr;
-   return *this;
+    Q_ASSERT( d_ptr != 0 );
+    Q_ASSERT( other.d_ptr != 0 );
+    *d_ptr = *other.d_ptr;
+    return *this;
 }
 
 qint64 QScriptBreakpointData::scriptId() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->scriptId;
+    Q_D( const QScriptBreakpointData );
+    return d->scriptId;
 }
 
-void QScriptBreakpointData::setScriptId(qint64 id)
+void QScriptBreakpointData::setScriptId( qint64 id )
 {
-   Q_D(QScriptBreakpointData);
-   d->scriptId = id;
+    Q_D( QScriptBreakpointData );
+    d->scriptId = id;
 }
 
 QString QScriptBreakpointData::fileName() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->fileName;
+    Q_D( const QScriptBreakpointData );
+    return d->fileName;
 }
 
-void QScriptBreakpointData::setFileName(const QString &fileName)
+void QScriptBreakpointData::setFileName( const QString &fileName )
 {
-   Q_D(QScriptBreakpointData);
-   d->fileName = fileName;
+    Q_D( QScriptBreakpointData );
+    d->fileName = fileName;
 }
 
 /*!
@@ -160,17 +160,17 @@ void QScriptBreakpointData::setFileName(const QString &fileName)
 */
 int QScriptBreakpointData::lineNumber() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->lineNumber;
+    Q_D( const QScriptBreakpointData );
+    return d->lineNumber;
 }
 
 /*!
   Sets the breakpoint line number to \a lineNumber.
 */
-void QScriptBreakpointData::setLineNumber(int lineNumber)
+void QScriptBreakpointData::setLineNumber( int lineNumber )
 {
-   Q_D(QScriptBreakpointData);
-   d->lineNumber = lineNumber;
+    Q_D( QScriptBreakpointData );
+    d->lineNumber = lineNumber;
 }
 
 /*!
@@ -178,17 +178,17 @@ void QScriptBreakpointData::setLineNumber(int lineNumber)
 */
 bool QScriptBreakpointData::isEnabled() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->enabled;
+    Q_D( const QScriptBreakpointData );
+    return d->enabled;
 }
 
 /*!
   Sets the \a enabled state of the breakpoint.
 */
-void QScriptBreakpointData::setEnabled(bool enabled)
+void QScriptBreakpointData::setEnabled( bool enabled )
 {
-   Q_D(QScriptBreakpointData);
-   d->enabled = enabled;
+    Q_D( QScriptBreakpointData );
+    d->enabled = enabled;
 }
 
 /*!
@@ -196,17 +196,17 @@ void QScriptBreakpointData::setEnabled(bool enabled)
 */
 bool QScriptBreakpointData::isSingleShot() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->singleShot;
+    Q_D( const QScriptBreakpointData );
+    return d->singleShot;
 }
 
 /*!
   Sets the \a singleShot state of the breakpoint.
 */
-void QScriptBreakpointData::setSingleShot(bool singleShot)
+void QScriptBreakpointData::setSingleShot( bool singleShot )
 {
-   Q_D(QScriptBreakpointData);
-   d->singleShot = singleShot;
+    Q_D( QScriptBreakpointData );
+    d->singleShot = singleShot;
 }
 
 /*!
@@ -214,17 +214,17 @@ void QScriptBreakpointData::setSingleShot(bool singleShot)
 */
 int QScriptBreakpointData::ignoreCount() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->ignoreCount;
+    Q_D( const QScriptBreakpointData );
+    return d->ignoreCount;
 }
 
 /*!
   Sets the ignore \a count of the breakpoint.
 */
-void QScriptBreakpointData::setIgnoreCount(int count)
+void QScriptBreakpointData::setIgnoreCount( int count )
 {
-   Q_D(QScriptBreakpointData);
-   d->ignoreCount = count;
+    Q_D( QScriptBreakpointData );
+    d->ignoreCount = count;
 }
 
 /*!
@@ -234,13 +234,16 @@ void QScriptBreakpointData::setIgnoreCount(int count)
 */
 bool QScriptBreakpointData::hit()
 {
-   Q_D(QScriptBreakpointData);
-   if (d->ignoreCount == 0) {
-      ++d->hitCount;
-      return true;
-   }
-   --d->ignoreCount;
-   return false;
+    Q_D( QScriptBreakpointData );
+
+    if ( d->ignoreCount == 0 )
+    {
+        ++d->hitCount;
+        return true;
+    }
+
+    --d->ignoreCount;
+    return false;
 }
 
 /*!
@@ -249,8 +252,8 @@ bool QScriptBreakpointData::hit()
 */
 int QScriptBreakpointData::hitCount() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->hitCount;
+    Q_D( const QScriptBreakpointData );
+    return d->hitCount;
 }
 
 /*!
@@ -258,17 +261,17 @@ int QScriptBreakpointData::hitCount() const
 */
 QString QScriptBreakpointData::condition() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->condition;
+    Q_D( const QScriptBreakpointData );
+    return d->condition;
 }
 
 /*!
   Sets the \a condition of the breakpoint.
 */
-void QScriptBreakpointData::setCondition(const QString &condition)
+void QScriptBreakpointData::setCondition( const QString &condition )
 {
-   Q_D(QScriptBreakpointData);
-   d->condition = condition;
+    Q_D( QScriptBreakpointData );
+    d->condition = condition;
 }
 
 /*!
@@ -276,58 +279,63 @@ void QScriptBreakpointData::setCondition(const QString &condition)
 */
 QVariant QScriptBreakpointData::data() const
 {
-   Q_D(const QScriptBreakpointData);
-   return d->data;
+    Q_D( const QScriptBreakpointData );
+    return d->data;
 }
 
 /*!
   Sets custom \a data associated with the breakpoint.
 */
-void QScriptBreakpointData::setData(const QVariant &data)
+void QScriptBreakpointData::setData( const QVariant &data )
 {
-   Q_D(QScriptBreakpointData);
-   d->data = data;
+    Q_D( QScriptBreakpointData );
+    d->data = data;
 }
 
 bool QScriptBreakpointData::isValid() const
 {
-   Q_D(const QScriptBreakpointData);
-   return (((d->scriptId != -1) || !d->fileName.isEmpty())
-           && (d->lineNumber != -1));
+    Q_D( const QScriptBreakpointData );
+    return ( ( ( d->scriptId != -1 ) || !d->fileName.isEmpty() )
+             && ( d->lineNumber != -1 ) );
 }
 
 /*!
   Returns true if this QScriptBreakpointData is equal to the \a other
   data, otherwise returns false.
 */
-bool QScriptBreakpointData::operator==(const QScriptBreakpointData &other) const
+bool QScriptBreakpointData::operator==( const QScriptBreakpointData &other ) const
 {
-   Q_D(const QScriptBreakpointData);
-   const QScriptBreakpointDataPrivate *od = other.d_func();
-   if (d == od) {
-      return true;
-   }
-   if (!d || !od) {
-      return false;
-   }
-   return ((d->scriptId == od->scriptId)
-           && (d->fileName == od->fileName)
-           && (d->lineNumber == od->lineNumber)
-           && (d->enabled == od->enabled)
-           && (d->singleShot == od->singleShot)
-           && (d->condition == od->condition)
-           && (d->ignoreCount == od->ignoreCount)
-           && (d->data == od->data)
-           && (d->hitCount == od->hitCount));
+    Q_D( const QScriptBreakpointData );
+    const QScriptBreakpointDataPrivate *od = other.d_func();
+
+    if ( d == od )
+    {
+        return true;
+    }
+
+    if ( !d || !od )
+    {
+        return false;
+    }
+
+    return ( ( d->scriptId == od->scriptId )
+             && ( d->fileName == od->fileName )
+             && ( d->lineNumber == od->lineNumber )
+             && ( d->enabled == od->enabled )
+             && ( d->singleShot == od->singleShot )
+             && ( d->condition == od->condition )
+             && ( d->ignoreCount == od->ignoreCount )
+             && ( d->data == od->data )
+             && ( d->hitCount == od->hitCount ) );
 }
 
 /*!
   Returns true if this QScriptBreakpointData is not equal to the \a
   other data, otherwise returns false.
 */
-bool QScriptBreakpointData::operator!=(const QScriptBreakpointData &other) const
+bool QScriptBreakpointData::operator!=( const QScriptBreakpointData &other ) const
 {
-   return !(*this == other);
+    return !( *this == other );
 }
 
 /*!
@@ -336,19 +344,19 @@ bool QScriptBreakpointData::operator!=(const QScriptBreakpointData &other) const
 
   Writes the given \a data to the specified \a stream.
 */
-QDataStream &operator<<(QDataStream &out, const QScriptBreakpointData &data)
+QDataStream &operator<<( QDataStream &out, const QScriptBreakpointData &data )
 {
-   const QScriptBreakpointDataPrivate *d = data.d_ptr.data();
-   out << d->scriptId;
-   out << d->fileName;
-   out << d->lineNumber;
-   out << d->enabled;
-   out << d->singleShot;
-   out << d->ignoreCount;
-   out << d->condition;
-   out << d->data;
-   out << d->hitCount;
-   return out;
+    const QScriptBreakpointDataPrivate *d = data.d_ptr.data();
+    out << d->scriptId;
+    out << d->fileName;
+    out << d->lineNumber;
+    out << d->enabled;
+    out << d->singleShot;
+    out << d->ignoreCount;
+    out << d->condition;
+    out << d->data;
+    out << d->hitCount;
+    return out;
 }
 
 /*!
@@ -358,19 +366,19 @@ QDataStream &operator<<(QDataStream &out, const QScriptBreakpointData &data)
   Reads a QScriptBreakpointData from the specified \a stream into the
   given \a data.
 */
-QDataStream &operator>>(QDataStream &in, QScriptBreakpointData &data)
+QDataStream &operator>>( QDataStream &in, QScriptBreakpointData &data )
 {
-   QScriptBreakpointDataPrivate *d = data.d_ptr.data();
-   in >> d->scriptId;
-   in >> d->fileName;
-   in >> d->lineNumber;
-   in >> d->enabled;
-   in >> d->singleShot;
-   in >> d->ignoreCount;
-   in >> d->condition;
-   in >> d->data;
-   in >> d->hitCount;
-   return in;
+    QScriptBreakpointDataPrivate *d = data.d_ptr.data();
+    in >> d->scriptId;
+    in >> d->fileName;
+    in >> d->lineNumber;
+    in >> d->enabled;
+    in >> d->singleShot;
+    in >> d->ignoreCount;
+    in >> d->condition;
+    in >> d->data;
+    in >> d->hitCount;
+    return in;
 }
 
 QT_END_NAMESPACE

@@ -40,239 +40,281 @@
 using namespace JSC;
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 
-NPRuntimeObjectMap::NPRuntimeObjectMap(PluginView* pluginView)
-    : m_pluginView(pluginView)
+NPRuntimeObjectMap::NPRuntimeObjectMap( PluginView *pluginView )
+    : m_pluginView( pluginView )
 {
 }
 
-NPRuntimeObjectMap::PluginProtector::PluginProtector(NPRuntimeObjectMap* npRuntimeObjectMap)
+NPRuntimeObjectMap::PluginProtector::PluginProtector( NPRuntimeObjectMap *npRuntimeObjectMap )
 {
     // If we're already in the plug-in view destructor, we shouldn't try to keep it alive.
-    if (!npRuntimeObjectMap->m_pluginView->isBeingDestroyed())
+    if ( !npRuntimeObjectMap->m_pluginView->isBeingDestroyed() )
+    {
         m_pluginView = npRuntimeObjectMap->m_pluginView;
+    }
 }
 
 NPRuntimeObjectMap::PluginProtector::~PluginProtector()
 {
 }
 
-NPObject* NPRuntimeObjectMap::getOrCreateNPObject(JSGlobalData& globalData, JSObject* jsObject)
+NPObject *NPRuntimeObjectMap::getOrCreateNPObject( JSGlobalData &globalData, JSObject *jsObject )
 {
     // If this is a JSNPObject, we can just get its underlying NPObject.
-    if (jsObject->classInfo() == &JSNPObject::s_info) {
-        JSNPObject* jsNPObject = static_cast<JSNPObject*>(jsObject);
-        NPObject* npObject = jsNPObject->npObject();
-        
-        retainNPObject(npObject);
+    if ( jsObject->classInfo() == &JSNPObject::s_info )
+    {
+        JSNPObject *jsNPObject = static_cast<JSNPObject *>( jsObject );
+        NPObject *npObject = jsNPObject->npObject();
+
+        retainNPObject( npObject );
         return npObject;
     }
-    
+
     // First, check if we already know about this object.
-    if (NPJSObject* npJSObject = m_npJSObjects.get(jsObject)) {
-        retainNPObject(npJSObject);
+    if ( NPJSObject *npJSObject = m_npJSObjects.get( jsObject ) )
+    {
+        retainNPObject( npJSObject );
         return npJSObject;
     }
 
-    NPJSObject* npJSObject = NPJSObject::create(globalData, this, jsObject);
-    m_npJSObjects.set(jsObject, npJSObject);
+    NPJSObject *npJSObject = NPJSObject::create( globalData, this, jsObject );
+    m_npJSObjects.set( jsObject, npJSObject );
 
     return npJSObject;
 }
 
-void NPRuntimeObjectMap::npJSObjectDestroyed(NPJSObject* npJSObject)
+void NPRuntimeObjectMap::npJSObjectDestroyed( NPJSObject *npJSObject )
 {
     // Remove the object from the map.
-    ASSERT(m_npJSObjects.contains(npJSObject->jsObject()));
-    m_npJSObjects.remove(npJSObject->jsObject());
+    ASSERT( m_npJSObjects.contains( npJSObject->jsObject() ) );
+    m_npJSObjects.remove( npJSObject->jsObject() );
 }
 
-JSObject* NPRuntimeObjectMap::getOrCreateJSObject(JSGlobalObject* globalObject, NPObject* npObject)
+JSObject *NPRuntimeObjectMap::getOrCreateJSObject( JSGlobalObject *globalObject, NPObject *npObject )
 {
     // If this is an NPJSObject, we can just get the JSObject that it's wrapping.
-    if (NPJSObject::isNPJSObject(npObject))
-        return NPJSObject::toNPJSObject(npObject)->jsObject();
-    
-    if (JSNPObject* jsNPObject = m_jsNPObjects.get(npObject))
-        return jsNPObject;
+    if ( NPJSObject::isNPJSObject( npObject ) )
+    {
+        return NPJSObject::toNPJSObject( npObject )->jsObject();
+    }
 
-    JSNPObject* jsNPObject = new (&globalObject->globalData()) JSNPObject(globalObject, this, npObject);
-    m_jsNPObjects.set(npObject, jsNPObject);
+    if ( JSNPObject *jsNPObject = m_jsNPObjects.get( npObject ) )
+    {
+        return jsNPObject;
+    }
+
+    JSNPObject *jsNPObject = new ( &globalObject->globalData() ) JSNPObject( globalObject, this, npObject );
+    m_jsNPObjects.set( npObject, jsNPObject );
 
     return jsNPObject;
 }
 
-void NPRuntimeObjectMap::jsNPObjectDestroyed(JSNPObject* jsNPObject)
+void NPRuntimeObjectMap::jsNPObjectDestroyed( JSNPObject *jsNPObject )
 {
     // Remove the object from the map.
-    ASSERT(m_jsNPObjects.contains(jsNPObject->npObject()));
-    m_jsNPObjects.remove(jsNPObject->npObject());
+    ASSERT( m_jsNPObjects.contains( jsNPObject->npObject() ) );
+    m_jsNPObjects.remove( jsNPObject->npObject() );
 }
 
-JSValue NPRuntimeObjectMap::convertNPVariantToJSValue(JSC::ExecState* exec, JSC::JSGlobalObject* globalObject, const NPVariant& variant)
+JSValue NPRuntimeObjectMap::convertNPVariantToJSValue( JSC::ExecState *exec, JSC::JSGlobalObject *globalObject,
+        const NPVariant &variant )
 {
-    switch (variant.type) {
-    case NPVariantType_Void:
-        return jsUndefined();
+    switch ( variant.type )
+    {
+        case NPVariantType_Void:
+            return jsUndefined();
 
-    case NPVariantType_Null:
-        return jsNull();
+        case NPVariantType_Null:
+            return jsNull();
 
-    case NPVariantType_Bool:
-        return jsBoolean(variant.value.boolValue);
+        case NPVariantType_Bool:
+            return jsBoolean( variant.value.boolValue );
 
-    case NPVariantType_Int32:
-        return jsNumber(variant.value.intValue);
+        case NPVariantType_Int32:
+            return jsNumber( variant.value.intValue );
 
-    case NPVariantType_Double:
-        return jsNumber(variant.value.doubleValue);
+        case NPVariantType_Double:
+            return jsNumber( variant.value.doubleValue );
 
-    case NPVariantType_String:
-        return jsString(exec, String::fromUTF8WithLatin1Fallback(variant.value.stringValue.UTF8Characters, 
-                                                                 variant.value.stringValue.UTF8Length));
-    case NPVariantType_Object:
-        return getOrCreateJSObject(globalObject, variant.value.objectValue);
+        case NPVariantType_String:
+            return jsString( exec, String::fromUTF8WithLatin1Fallback( variant.value.stringValue.UTF8Characters,
+                             variant.value.stringValue.UTF8Length ) );
+
+        case NPVariantType_Object:
+            return getOrCreateJSObject( globalObject, variant.value.objectValue );
     }
 
     ASSERT_NOT_REACHED();
     return jsUndefined();
 }
 
-void NPRuntimeObjectMap::convertJSValueToNPVariant(ExecState* exec, JSValue value, NPVariant& variant)
+void NPRuntimeObjectMap::convertJSValueToNPVariant( ExecState *exec, JSValue value, NPVariant &variant )
 {
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    VOID_TO_NPVARIANT(variant);
-    
-    if (value.isNull()) {
-        NULL_TO_NPVARIANT(variant);
+    VOID_TO_NPVARIANT( variant );
+
+    if ( value.isNull() )
+    {
+        NULL_TO_NPVARIANT( variant );
         return;
     }
 
-    if (value.isUndefined()) {
-        VOID_TO_NPVARIANT(variant);
+    if ( value.isUndefined() )
+    {
+        VOID_TO_NPVARIANT( variant );
         return;
     }
 
-    if (value.isBoolean()) {
-        BOOLEAN_TO_NPVARIANT(value.toBoolean(exec), variant);
+    if ( value.isBoolean() )
+    {
+        BOOLEAN_TO_NPVARIANT( value.toBoolean( exec ), variant );
         return;
     }
 
-    if (value.isNumber()) {
-        DOUBLE_TO_NPVARIANT(value.toNumber(exec), variant);
+    if ( value.isNumber() )
+    {
+        DOUBLE_TO_NPVARIANT( value.toNumber( exec ), variant );
         return;
     }
 
-    if (value.isString()) {
-        NPString npString = createNPString(value.toString(exec).utf8());
-        STRINGN_TO_NPVARIANT(npString.UTF8Characters, npString.UTF8Length, variant);
+    if ( value.isString() )
+    {
+        NPString npString = createNPString( value.toString( exec ).utf8() );
+        STRINGN_TO_NPVARIANT( npString.UTF8Characters, npString.UTF8Length, variant );
         return;
     }
 
-    if (value.isObject()) {
-        NPObject* npObject = getOrCreateNPObject(exec->globalData(), asObject(value));
-        OBJECT_TO_NPVARIANT(npObject, variant);
+    if ( value.isObject() )
+    {
+        NPObject *npObject = getOrCreateNPObject( exec->globalData(), asObject( value ) );
+        OBJECT_TO_NPVARIANT( npObject, variant );
         return;
     }
 
     ASSERT_NOT_REACHED();
 }
 
-bool NPRuntimeObjectMap::evaluate(NPObject* npObject, const String&scriptString, NPVariant* result)
+bool NPRuntimeObjectMap::evaluate( NPObject *npObject, const String &scriptString, NPVariant *result )
 {
-    Strong<JSGlobalObject> globalObject(this->globalObject()->globalData(), this->globalObject());
-    if (!globalObject)
-        return false;
+    Strong<JSGlobalObject> globalObject( this->globalObject()->globalData(), this->globalObject() );
 
-    ExecState* exec = globalObject->globalExec();
-    
-    JSLock lock(SilenceAssertionsOnly);
-    JSValue thisValue = getOrCreateJSObject(globalObject.get(), npObject);
+    if ( !globalObject )
+    {
+        return false;
+    }
+
+    ExecState *exec = globalObject->globalExec();
+
+    JSLock lock( SilenceAssertionsOnly );
+    JSValue thisValue = getOrCreateJSObject( globalObject.get(), npObject );
 
     globalObject->globalData().timeoutChecker.start();
-    Completion completion = JSC::evaluate(exec, globalObject->globalScopeChain(), makeSource(UString(scriptString.impl())), thisValue);
+    Completion completion = JSC::evaluate( exec, globalObject->globalScopeChain(), makeSource( UString( scriptString.impl() ) ),
+                                           thisValue );
     globalObject->globalData().timeoutChecker.stop();
 
     ComplType completionType = completion.complType();
 
     JSValue resultValue;
-    if (completionType == Normal) {
+
+    if ( completionType == Normal )
+    {
         resultValue = completion.value();
-        if (!resultValue)
+
+        if ( !resultValue )
+        {
             resultValue = jsUndefined();
-    } else
+        }
+    }
+    else
+    {
         resultValue = jsUndefined();
+    }
 
     exec->clearException();
-    
-    convertJSValueToNPVariant(exec, resultValue, *result);
+
+    convertJSValueToNPVariant( exec, resultValue, *result );
     return true;
 }
 
 void NPRuntimeObjectMap::invalidate()
 {
-    Vector<NPJSObject*> npJSObjects;
-    copyValuesToVector(m_npJSObjects, npJSObjects);
+    Vector<NPJSObject *> npJSObjects;
+    copyValuesToVector( m_npJSObjects, npJSObjects );
 
     // Deallocate all the object wrappers so we won't leak any JavaScript objects.
-    for (size_t i = 0; i < npJSObjects.size(); ++i)
-        deallocateNPObject(npJSObjects[i]);
-    
-    // We shouldn't have any NPJSObjects left now.
-    ASSERT(m_npJSObjects.isEmpty());
+    for ( size_t i = 0; i < npJSObjects.size(); ++i )
+    {
+        deallocateNPObject( npJSObjects[i] );
+    }
 
-    Vector<JSNPObject*> jsNPObjects;
-    copyValuesToVector(m_jsNPObjects, jsNPObjects);
+    // We shouldn't have any NPJSObjects left now.
+    ASSERT( m_npJSObjects.isEmpty() );
+
+    Vector<JSNPObject *> jsNPObjects;
+    copyValuesToVector( m_jsNPObjects, jsNPObjects );
 
     // Invalidate all the JSObjects that wrap NPObjects.
-    for (size_t i = 0; i < jsNPObjects.size(); ++i)
+    for ( size_t i = 0; i < jsNPObjects.size(); ++i )
+    {
         jsNPObjects[i]->invalidate();
+    }
 
     m_jsNPObjects.clear();
 }
 
-JSGlobalObject* NPRuntimeObjectMap::globalObject() const
+JSGlobalObject *NPRuntimeObjectMap::globalObject() const
 {
-    Frame* frame = m_pluginView->frame();
-    if (!frame)
-        return 0;
+    Frame *frame = m_pluginView->frame();
 
-    return frame->script()->globalObject(pluginWorld());
+    if ( !frame )
+    {
+        return 0;
+    }
+
+    return frame->script()->globalObject( pluginWorld() );
 }
 
-ExecState* NPRuntimeObjectMap::globalExec() const
+ExecState *NPRuntimeObjectMap::globalExec() const
 {
-    JSGlobalObject* globalObject = this->globalObject();
-    if (!globalObject)
+    JSGlobalObject *globalObject = this->globalObject();
+
+    if ( !globalObject )
+    {
         return 0;
-    
+    }
+
     return globalObject->globalExec();
 }
 
-static String& globalExceptionString()
+static String &globalExceptionString()
 {
-    DEFINE_STATIC_LOCAL(String, exceptionString, ());
+    DEFINE_STATIC_LOCAL( String, exceptionString, () );
     return exceptionString;
 }
 
-void NPRuntimeObjectMap::setGlobalException(const String& exceptionString)
+void NPRuntimeObjectMap::setGlobalException( const String &exceptionString )
 {
     globalExceptionString() = exceptionString;
 }
-    
-void NPRuntimeObjectMap::moveGlobalExceptionToExecState(ExecState* exec)
+
+void NPRuntimeObjectMap::moveGlobalExceptionToExecState( ExecState *exec )
 {
-    if (globalExceptionString().isNull())
+    if ( globalExceptionString().isNull() )
+    {
         return;
+    }
 
     {
-        JSLock lock(SilenceAssertionsOnly);
-        throwError(exec, createError(exec, stringToUString(globalExceptionString())));
+        JSLock lock( SilenceAssertionsOnly );
+        throwError( exec, createError( exec, stringToUString( globalExceptionString() ) ) );
     }
-    
+
     globalExceptionString() = String();
 }
 

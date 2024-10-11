@@ -32,51 +32,51 @@ class QBufferPrivate;
 
 class Q_CORE_EXPORT QBuffer : public QIODevice
 {
-   CORE_CS_OBJECT(QBuffer)
+    CORE_LSCS_OBJECT( QBuffer )
 
- public:
-   explicit QBuffer(QObject *parent = nullptr);
-   QBuffer(QByteArray *buffer, QObject *parent = nullptr);
+public:
+    explicit QBuffer( QObject *parent = nullptr );
+    QBuffer( QByteArray *buffer, QObject *parent = nullptr );
 
-   QBuffer(const QBuffer &) = delete;
-   QBuffer &operator=(const QBuffer &) = delete;
+    QBuffer( const QBuffer & ) = delete;
+    QBuffer &operator=( const QBuffer & ) = delete;
 
-   ~QBuffer();
+    ~QBuffer();
 
-   QByteArray &buffer();
-   const QByteArray &buffer() const;
-   void setBuffer(QByteArray *buffer);
+    QByteArray &buffer();
+    const QByteArray &buffer() const;
+    void setBuffer( QByteArray *buffer );
 
-   void setData(const QByteArray &buffer);
-   inline void setData(const char *data, int size);
-   const QByteArray &data() const;
+    void setData( const QByteArray &buffer );
+    inline void setData( const char *data, int size );
+    const QByteArray &data() const;
 
-   bool open(OpenMode openMode) override;
-   void close() override;
+    bool open( OpenMode openMode ) override;
+    void close() override;
 
-   qint64 size() const override;
-   qint64 pos() const override;
-   bool seek(qint64 pos) override;
-   bool atEnd() const override;
-   bool canReadLine() const override;
+    qint64 size() const override;
+    qint64 pos() const override;
+    bool seek( qint64 pos ) override;
+    bool atEnd() const override;
+    bool canReadLine() const override;
 
- protected:
-   void connectNotify(const QMetaMethod &signalMethod) const override;
-   void disconnectNotify(const QMetaMethod &signalMethod) const override;
+protected:
+    void connectNotify( const QMetaMethod &signalMethod ) const override;
+    void disconnectNotify( const QMetaMethod &signalMethod ) const override;
 
-   qint64 readData(char *data, qint64 size) override;
-   qint64 writeData(const char *data, qint64 size) override;
+    qint64 readData( char *data, qint64 size ) override;
+    qint64 writeData( const char *data, qint64 size ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QBuffer)
+private:
+    Q_DECLARE_PRIVATE( QBuffer )
 
-   CORE_CS_SLOT_1(Private, void _q_emitSignals())
-   CORE_CS_SLOT_2(_q_emitSignals)
+    CORE_LSCS_SLOT_1( Private, void _q_emitSignals() )
+    CORE_LSCS_SLOT_2( _q_emitSignals )
 };
 
-inline void QBuffer::setData(const char *data, int size)
+inline void QBuffer::setData( const char *data, int size )
 {
-   setData(QByteArray(data, size));
+    setData( QByteArray( data, size ) );
 }
 
 #endif // QBUFFER_H

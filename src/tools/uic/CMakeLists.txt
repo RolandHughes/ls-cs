@@ -1,5 +1,5 @@
 add_executable(uic${TOOLS_SUFFIX} "")
-add_executable(CopperSpice::uic ALIAS uic${TOOLS_SUFFIX})
+add_executable(LsCs::uic ALIAS uic${TOOLS_SUFFIX})
 
 add_definitions(
    -DQT_UIC
@@ -7,7 +7,7 @@ add_definitions(
 )
 
 set(EXTRA_UIC_LIBS
-   CsCore
+   LsCsCore
 )
 
 set(EXTRA_UIC_CXXFLAGS)
@@ -93,19 +93,8 @@ set_target_properties(uic${TOOLS_SUFFIX}
    EXPORT_NAME uic
 )
 
-#
-#   If the files in bin didn't name collide with Qt binaries we could just leave them.
-#
-if(BUILDING_RPM OR BUILDING_DEBIAN)
-    install(
-       TARGETS uic${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/bin
-    )
-else()
-    install(
-       TARGETS uic${TOOLS_SUFFIX}
-       EXPORT CopperSpiceBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-       DESTINATION ${CMAKE_INSTALL_BINDIR}
-    )
-endif()
+install(
+    TARGETS uic${TOOLS_SUFFIX}
+    EXPORT LsCsBinaryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)

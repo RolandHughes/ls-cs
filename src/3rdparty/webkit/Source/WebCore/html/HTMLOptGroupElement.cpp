@@ -33,19 +33,21 @@
 #include "NodeRenderStyle.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLOptGroupElement::HTMLOptGroupElement(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
-    : HTMLFormControlElement(tagName, document, form)
+inline HTMLOptGroupElement::HTMLOptGroupElement( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
+    : HTMLFormControlElement( tagName, document, form )
 {
-    ASSERT(hasTagName(optgroupTag));
+    ASSERT( hasTagName( optgroupTag ) );
 }
 
-PassRefPtr<HTMLOptGroupElement> HTMLOptGroupElement::create(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
+PassRefPtr<HTMLOptGroupElement> HTMLOptGroupElement::create( const QualifiedName &tagName, Document *document,
+        HTMLFormElement *form )
 {
-    return adoptRef(new HTMLOptGroupElement(tagName, document, form));
+    return adoptRef( new HTMLOptGroupElement( tagName, document, form ) );
 }
 
 bool HTMLOptGroupElement::supportsFocus() const
@@ -59,37 +61,46 @@ bool HTMLOptGroupElement::isFocusable() const
     return supportsFocus() && renderStyle() && renderStyle()->display() != NONE;
 }
 
-const AtomicString& HTMLOptGroupElement::formControlType() const
+const AtomicString &HTMLOptGroupElement::formControlType() const
 {
-    DEFINE_STATIC_LOCAL(const AtomicString, optgroup, ("optgroup"));
+    DEFINE_STATIC_LOCAL( const AtomicString, optgroup, ( "optgroup" ) );
     return optgroup;
 }
 
-void HTMLOptGroupElement::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void HTMLOptGroupElement::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
     recalcSelectOptions();
-    HTMLFormControlElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
+    HTMLFormControlElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
 }
 
-void HTMLOptGroupElement::parseMappedAttribute(Attribute* attr)
+void HTMLOptGroupElement::parseMappedAttribute( Attribute *attr )
 {
-    HTMLFormControlElement::parseMappedAttribute(attr);
+    HTMLFormControlElement::parseMappedAttribute( attr );
     recalcSelectOptions();
 }
 
 void HTMLOptGroupElement::recalcSelectOptions()
 {
-    ContainerNode* select = parentNode();
-    while (select && !select->hasTagName(selectTag))
+    ContainerNode *select = parentNode();
+
+    while ( select && !select->hasTagName( selectTag ) )
+    {
         select = select->parentNode();
-    if (select)
-        static_cast<HTMLSelectElement*>(select)->setRecalcListItems();
+    }
+
+    if ( select )
+    {
+        static_cast<HTMLSelectElement *>( select )->setRecalcListItems();
+    }
 }
 
 void HTMLOptGroupElement::attach()
 {
-    if (parentNode()->renderStyle())
-        setRenderStyle(styleForRenderer());
+    if ( parentNode()->renderStyle() )
+    {
+        setRenderStyle( styleForRenderer() );
+    }
+
     HTMLFormControlElement::attach();
 }
 
@@ -99,46 +110,54 @@ void HTMLOptGroupElement::detach()
     HTMLFormControlElement::detach();
 }
 
-void HTMLOptGroupElement::setRenderStyle(PassRefPtr<RenderStyle> newStyle)
+void HTMLOptGroupElement::setRenderStyle( PassRefPtr<RenderStyle> newStyle )
 {
     m_style = newStyle;
 }
-    
-RenderStyle* HTMLOptGroupElement::nonRendererRenderStyle() const 
-{ 
-    return m_style.get(); 
+
+RenderStyle *HTMLOptGroupElement::nonRendererRenderStyle() const
+{
+    return m_style.get();
 }
 
 String HTMLOptGroupElement::groupLabelText() const
 {
-    String itemText = document()->displayStringModifiedByEncoding(getAttribute(labelAttr));
-    
+    String itemText = document()->displayStringModifiedByEncoding( getAttribute( labelAttr ) );
+
     // In WinIE, leading and trailing whitespace is ignored in options and optgroups. We match this behavior.
     itemText = itemText.stripWhiteSpace();
     // We want to collapse our whitespace too.  This will match other browsers.
     itemText = itemText.simplifyWhiteSpace();
-        
+
     return itemText;
 }
-    
-HTMLSelectElement* HTMLOptGroupElement::ownerSelectElement() const
+
+HTMLSelectElement *HTMLOptGroupElement::ownerSelectElement() const
 {
-    ContainerNode* select = parentNode();
-    while (select && !select->hasTagName(selectTag))
+    ContainerNode *select = parentNode();
+
+    while ( select && !select->hasTagName( selectTag ) )
+    {
         select = select->parentNode();
-    
-    if (!select)
-       return 0;
-    
-    return static_cast<HTMLSelectElement*>(select);
+    }
+
+    if ( !select )
+    {
+        return 0;
+    }
+
+    return static_cast<HTMLSelectElement *>( select );
 }
 
-void HTMLOptGroupElement::accessKeyAction(bool)
+void HTMLOptGroupElement::accessKeyAction( bool )
 {
-    HTMLSelectElement* select = ownerSelectElement();
+    HTMLSelectElement *select = ownerSelectElement();
+
     // send to the parent to bring focus to the list box
-    if (select && !select->focused())
-        select->accessKeyAction(false);
+    if ( select && !select->focused() )
+    {
+        select->accessKeyAction( false );
+    }
 }
-    
+
 } // namespace

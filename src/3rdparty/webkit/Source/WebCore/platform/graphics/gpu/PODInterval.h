@@ -30,7 +30,8 @@
 #include <wtf/text/StringBuilder.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Class representing a closed interval which can hold an arbitrary
 // Plain Old Datatype (POD) as its endpoints and a piece of user
@@ -75,80 +76,102 @@ template<class T>
 struct ValueToString;
 #endif
 
-template<class T, class UserData = void*>
-class PODInterval {
+template<class T, class UserData = void *>
+class PODInterval
+{
 public:
     // Constructor from endpoints. This constructor only works when the
     // UserData type is a pointer or other type which can be initialized
     // with 0.
-    PODInterval(const T& low, const T& high)
-        : m_low(low)
-        , m_high(high)
-        , m_data(0)
-        , m_maxHigh(high)
+    PODInterval( const T &low, const T &high )
+        : m_low( low )
+        , m_high( high )
+        , m_data( 0 )
+        , m_maxHigh( high )
     {
     }
 
     // Constructor from two endpoints plus explicit user data.
-    PODInterval(const T& low, const T& high, const UserData data)
-        : m_low(low)
-        , m_high(high)
-        , m_data(data)
-        , m_maxHigh(high)
+    PODInterval( const T &low, const T &high, const UserData data )
+        : m_low( low )
+        , m_high( high )
+        , m_data( data )
+        , m_maxHigh( high )
     {
     }
 
-    const T& low() const { return m_low; }
-    const T& high() const { return m_high; }
-    const UserData& data() const { return m_data; }
-
-    bool overlaps(const T& low, const T& high) const
+    const T &low() const
     {
-        if (this->high() < low)
+        return m_low;
+    }
+    const T &high() const
+    {
+        return m_high;
+    }
+    const UserData &data() const
+    {
+        return m_data;
+    }
+
+    bool overlaps( const T &low, const T &high ) const
+    {
+        if ( this->high() < low )
+        {
             return false;
-        if (high < this->low())
+        }
+
+        if ( high < this->low() )
+        {
             return false;
+        }
+
         return true;
     }
 
-    bool overlaps(const PODInterval& other) const
+    bool overlaps( const PODInterval &other ) const
     {
-        return overlaps(other.low(), other.high());
+        return overlaps( other.low(), other.high() );
     }
 
     // Returns true if this interval is "less" than the other. The
     // comparison is performed on the low endpoints of the intervals.
-    bool operator<(const PODInterval& other) const
+    bool operator<( const PODInterval &other ) const
     {
         return low() < other.low();
     }
 
     // Returns true if this interval is strictly equal to the other,
     // including comparison of the user data.
-    bool operator==(const PODInterval& other) const
+    bool operator==( const PODInterval &other ) const
     {
-        return (low() == other.low()
-                && high() == other.high()
-                && data() == other.data());
+        return ( low() == other.low()
+                 && high() == other.high()
+                 && data() == other.data() );
     }
 
-    const T& maxHigh() const { return m_maxHigh; }
-    void setMaxHigh(const T& maxHigh) { m_maxHigh = maxHigh; }
+    const T &maxHigh() const
+    {
+        return m_maxHigh;
+    }
+    void setMaxHigh( const T &maxHigh )
+    {
+        m_maxHigh = maxHigh;
+    }
 
 #ifndef NDEBUG
     // Support for printing PODIntervals.
     String toString() const
     {
         StringBuilder builder;
-        builder.append("[PODInterval (");
-        builder.append(ValueToString<T>::string(low()));
-        builder.append(", ");
-        builder.append(ValueToString<T>::string(high()));
-        builder.append("), data=");
-        builder.append(ValueToString<UserData>::string(data()));
-        builder.append(", maxHigh=");
-        builder.append(ValueToString<T>::string(maxHigh()));
-        builder.append("]");
+        builder.append( "[PODInterval (" );
+        builder.append( ValueToString<T>::string( low() ) );
+        builder.append( ", " );
+        builder.append( ValueToString<T>::string( high() ) );
+        builder.append( "), data=" );
+        builder.append( ValueToString<UserData>::string( data() ) );
+        builder.append( ", maxHigh=" );
+        builder.append( ValueToString<T>::string( maxHigh() ) );
+        builder.append( "]" );
         return builder.toString();
     }
 #endif

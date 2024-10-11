@@ -26,7 +26,8 @@
 #include "config.h"
 #include "WebCoreInstanceHandle.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 HINSTANCE s_instanceHandle;
 

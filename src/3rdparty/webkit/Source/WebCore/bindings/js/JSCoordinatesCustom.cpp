@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -30,38 +30,55 @@
 
 using namespace JSC;
 
-namespace WebCore {
-    
-JSValue JSCoordinates::altitude(ExecState*) const
+namespace WebCore
 {
-    Coordinates* imp = impl();
-    if (!imp->canProvideAltitude())
+
+JSValue JSCoordinates::altitude( ExecState * ) const
+{
+    Coordinates *imp = impl();
+
+    if ( !imp->canProvideAltitude() )
+    {
         return jsNull();
-    return jsNumber(imp->altitude());
+    }
+
+    return jsNumber( imp->altitude() );
 }
 
-JSValue JSCoordinates::altitudeAccuracy(ExecState*) const
+JSValue JSCoordinates::altitudeAccuracy( ExecState * ) const
 {
-    Coordinates* imp = impl();
-    if (!imp->canProvideAltitudeAccuracy())
+    Coordinates *imp = impl();
+
+    if ( !imp->canProvideAltitudeAccuracy() )
+    {
         return jsNull();
-    return jsNumber(imp->altitudeAccuracy());
+    }
+
+    return jsNumber( imp->altitudeAccuracy() );
 }
 
-JSValue JSCoordinates::heading(ExecState*) const
+JSValue JSCoordinates::heading( ExecState * ) const
 {
-    Coordinates* imp = impl();
-    if (!imp->canProvideHeading())
+    Coordinates *imp = impl();
+
+    if ( !imp->canProvideHeading() )
+    {
         return jsNull();
-    return jsNumber(imp->heading());
+    }
+
+    return jsNumber( imp->heading() );
 }
 
-JSValue JSCoordinates::speed(ExecState*) const
+JSValue JSCoordinates::speed( ExecState * ) const
 {
-    Coordinates* imp = impl();
-    if (!imp->canProvideSpeed())
+    Coordinates *imp = impl();
+
+    if ( !imp->canProvideSpeed() )
+    {
         return jsNull();
-    return jsNumber(imp->speed());
+    }
+
+    return jsNumber( imp->speed() );
 }
 
 } // namespace WebCore

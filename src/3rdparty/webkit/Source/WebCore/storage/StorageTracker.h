@@ -27,7 +27,7 @@
 #define StorageTracker_h
 
 #if ENABLE(DOM_STORAGE)
-    
+
 #include "PlatformString.h"
 #include "SQLiteDatabase.h"
 #include <wtf/HashSet.h>
@@ -35,62 +35,64 @@
 #include <wtf/Vector.h>
 #include <wtf/text/StringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class LocalStorageTask;
 class LocalStorageThread;
 class SecurityOrigin;
-class StorageTrackerClient;    
+class StorageTrackerClient;
 
-class StorageTracker {
-    WTF_MAKE_NONCOPYABLE(StorageTracker);
+class StorageTracker
+{
+    WTF_MAKE_NONCOPYABLE( StorageTracker );
     WTF_MAKE_FAST_ALLOCATED;
 public:
-    static void initializeTracker(const String& storagePath);
-    static StorageTracker& tracker();
-    static void scheduleTask(void*);
+    static void initializeTracker( const String &storagePath );
+    static StorageTracker &tracker();
+    static void scheduleTask( void * );
 
     void importOriginIdentifiers();
-    void setOriginDetails(const String& originIdentifier, const String& databaseFile);
-    
-    void deleteAllOrigins();
-    void deleteOrigin(SecurityOrigin*);
-    void deleteOrigin(const String& originIdentifier);
-    void origins(Vector<RefPtr<SecurityOrigin> >& result);
+    void setOriginDetails( const String &originIdentifier, const String &databaseFile );
 
-    void cancelDeletingOrigin(const String& originIdentifier);
-    
-    void setClient(StorageTrackerClient*);
-    
+    void deleteAllOrigins();
+    void deleteOrigin( SecurityOrigin * );
+    void deleteOrigin( const String &originIdentifier );
+    void origins( Vector<RefPtr<SecurityOrigin> > &result );
+
+    void cancelDeletingOrigin( const String &originIdentifier );
+
+    void setClient( StorageTrackerClient * );
+
     bool isActive();
 
     // Sync to disk on background thread.
     void syncDeleteAllOrigins();
-    void syncDeleteOrigin(const String& originIdentifier);
-    void syncSetOriginDetails(const String& originIdentifier, const String& databaseFile);
+    void syncDeleteOrigin( const String &originIdentifier );
+    void syncSetOriginDetails( const String &originIdentifier, const String &databaseFile );
     void syncImportOriginIdentifiers();
     void syncFileSystemAndTrackerDatabase();
 
     void syncLocalStorage();
 
 private:
-    StorageTracker(const String& storagePath);
+    StorageTracker( const String &storagePath );
 
     String trackerDatabasePath();
-    void openTrackerDatabase(bool createIfDoesNotExist);
+    void openTrackerDatabase( bool createIfDoesNotExist );
 
-    void setStorageDirectoryPath(const String&);
+    void setStorageDirectoryPath( const String & );
 
     void deleteTrackerFiles();
 
-    bool canDeleteOrigin(const String& originIdentifier);
-    void willDeleteOrigin(const String& originIdentifier);
+    bool canDeleteOrigin( const String &originIdentifier );
+    void willDeleteOrigin( const String &originIdentifier );
     void willDeleteAllOrigins();
-    static void deleteOriginOnMainThread(void* originIdentifier);
+    static void deleteOriginOnMainThread( void *originIdentifier );
 
-    void originFilePaths(Vector<String>& paths);
-    
-    void setIsActive(bool);
+    void originFilePaths( Vector<String> &paths );
+
+    void setIsActive( bool );
 
     // Guard for m_database, m_storageDirectoryPath and static Strings in syncFileSystemAndTrackerDatabase().
     Mutex m_databaseGuard;
@@ -98,7 +100,7 @@ private:
     String m_storageDirectoryPath;
 
     Mutex m_clientGuard;
-    StorageTrackerClient* m_client;
+    StorageTrackerClient *m_client;
 
     // Guard for m_originSet and m_originsBeingDeleted.
     Mutex m_originSetGuard;
@@ -107,10 +109,10 @@ private:
     OriginSet m_originsBeingDeleted;
 
     OwnPtr<LocalStorageThread> m_thread;
-    
+
     bool m_isActive;
 };
-    
+
 } // namespace WebCore
 
 #endif // ENABLE(DOM_STORAGE)

@@ -42,145 +42,163 @@ class QGraphicsSceneBspTreeIndexPrivate;
 
 class QGraphicsSceneBspTreeIndex : public QGraphicsSceneIndex
 {
-   GUI_CS_OBJECT(QGraphicsSceneBspTreeIndex)
+    GUI_LSCS_OBJECT( QGraphicsSceneBspTreeIndex )
 
-   GUI_CS_PROPERTY_READ(bspTreeDepth, bspTreeDepth)
-   GUI_CS_PROPERTY_WRITE(bspTreeDepth, setBspTreeDepth)
+    GUI_LSCS_PROPERTY_READ( bspTreeDepth, bspTreeDepth )
+    GUI_LSCS_PROPERTY_WRITE( bspTreeDepth, setBspTreeDepth )
 
- public:
-   QGraphicsSceneBspTreeIndex(QGraphicsScene *scene = nullptr);
+public:
+    QGraphicsSceneBspTreeIndex( QGraphicsScene *scene = nullptr );
 
-   QGraphicsSceneBspTreeIndex(const QGraphicsSceneBspTreeIndex &) = delete;
-   QGraphicsSceneBspTreeIndex &operator=(const QGraphicsSceneBspTreeIndex &) = delete;
+    QGraphicsSceneBspTreeIndex( const QGraphicsSceneBspTreeIndex & ) = delete;
+    QGraphicsSceneBspTreeIndex &operator=( const QGraphicsSceneBspTreeIndex & ) = delete;
 
-   ~QGraphicsSceneBspTreeIndex();
+    ~QGraphicsSceneBspTreeIndex();
 
-   QList<QGraphicsItem *> estimateItems(const QRectF &rect, Qt::SortOrder order) const override;
-   QList<QGraphicsItem *> estimateTopLevelItems(const QRectF &rect, Qt::SortOrder order) const override;
-   QList<QGraphicsItem *> items(Qt::SortOrder order = Qt::DescendingOrder) const override;
+    QList<QGraphicsItem *> estimateItems( const QRectF &rect, Qt::SortOrder order ) const override;
+    QList<QGraphicsItem *> estimateTopLevelItems( const QRectF &rect, Qt::SortOrder order ) const override;
+    QList<QGraphicsItem *> items( Qt::SortOrder order = Qt::DescendingOrder ) const override;
 
-   int bspTreeDepth() const;
-   void setBspTreeDepth(int depth);
+    int bspTreeDepth() const;
+    void setBspTreeDepth( int depth );
 
- protected:
-   GUI_CS_SLOT_1(Protected, void updateSceneRect(const QRectF &rect) override)
-   GUI_CS_SLOT_2(updateSceneRect)
+protected:
+    GUI_LSCS_SLOT_1( Protected, void updateSceneRect( const QRectF &rect ) override )
+    GUI_LSCS_SLOT_2( updateSceneRect )
 
-   bool event(QEvent *event) override;
-   void clear() override;
+    bool event( QEvent *event ) override;
+    void clear() override;
 
-   void addItem(QGraphicsItem *item) override;
-   void removeItem(QGraphicsItem *item) override;
-   void prepareBoundingRectChange(const QGraphicsItem *item) override;
+    void addItem( QGraphicsItem *item ) override;
+    void removeItem( QGraphicsItem *item ) override;
+    void prepareBoundingRectChange( const QGraphicsItem *item ) override;
 
-   void itemChange(const QGraphicsItem *item, QGraphicsItem::GraphicsItemChange change, const void *const value) override;
+    void itemChange( const QGraphicsItem *item, QGraphicsItem::GraphicsItemChange change, const void *const value ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QGraphicsSceneBspTreeIndex)
+private:
+    Q_DECLARE_PRIVATE( QGraphicsSceneBspTreeIndex )
 
-   GUI_CS_SLOT_1(Private, void _q_updateSortCache())
-   GUI_CS_SLOT_2(_q_updateSortCache)
+    GUI_LSCS_SLOT_1( Private, void _q_updateSortCache() )
+    GUI_LSCS_SLOT_2( _q_updateSortCache )
 
-   GUI_CS_SLOT_1(Private, void _q_updateIndex())
-   GUI_CS_SLOT_2(_q_updateIndex)
+    GUI_LSCS_SLOT_1( Private, void _q_updateIndex() )
+    GUI_LSCS_SLOT_2( _q_updateIndex )
 
-   friend class QGraphicsScene;
-   friend class QGraphicsScenePrivate;
+    friend class QGraphicsScene;
+    friend class QGraphicsScenePrivate;
 };
 
 class QGraphicsSceneBspTreeIndexPrivate : public QGraphicsSceneIndexPrivate
 {
-   Q_DECLARE_PUBLIC(QGraphicsSceneBspTreeIndex)
+    Q_DECLARE_PUBLIC( QGraphicsSceneBspTreeIndex )
 
- public:
-   QGraphicsSceneBspTreeIndexPrivate(QGraphicsScene *scene);
+public:
+    QGraphicsSceneBspTreeIndexPrivate( QGraphicsScene *scene );
 
-   QGraphicsSceneBspTree bsp;
-   QRectF sceneRect;
-   int bspTreeDepth;
-   int indexTimerId;
-   bool restartIndexTimer;
-   bool regenerateIndex;
-   int lastItemCount;
+    QGraphicsSceneBspTree bsp;
+    QRectF sceneRect;
+    int bspTreeDepth;
+    int indexTimerId;
+    bool restartIndexTimer;
+    bool regenerateIndex;
+    int lastItemCount;
 
-   QList<QGraphicsItem *> indexedItems;
-   QList<QGraphicsItem *> unindexedItems;
-   QList<QGraphicsItem *> untransformableItems;
-   QList<int> freeItemIndexes;
+    QList<QGraphicsItem *> indexedItems;
+    QList<QGraphicsItem *> unindexedItems;
+    QList<QGraphicsItem *> untransformableItems;
+    QList<int> freeItemIndexes;
 
-   bool purgePending;
-   QSet<QGraphicsItem *> removedItems;
-   void purgeRemovedItems();
+    bool purgePending;
+    QSet<QGraphicsItem *> removedItems;
+    void purgeRemovedItems();
 
-   void _q_updateIndex();
-   void startIndexTimer(int interval = QGRAPHICSSCENE_INDEXTIMER_TIMEOUT);
-   void resetIndex();
+    void _q_updateIndex();
+    void startIndexTimer( int interval = QGRAPHICSSCENE_INDEXTIMER_TIMEOUT );
+    void resetIndex();
 
-   void _q_updateSortCache();
-   bool sortCacheEnabled;
-   bool updatingSortCache;
-   void invalidateSortCache();
-   void addItem(QGraphicsItem *item, bool recursive = false);
-   void removeItem(QGraphicsItem *item, bool recursive = false, bool moveToUnindexedItems = false);
-   QList<QGraphicsItem *> estimateItems(const QRectF &, Qt::SortOrder, bool b = false);
+    void _q_updateSortCache();
+    bool sortCacheEnabled;
+    bool updatingSortCache;
+    void invalidateSortCache();
+    void addItem( QGraphicsItem *item, bool recursive = false );
+    void removeItem( QGraphicsItem *item, bool recursive = false, bool moveToUnindexedItems = false );
+    QList<QGraphicsItem *> estimateItems( const QRectF &, Qt::SortOrder, bool b = false );
 
-   static void climbTree(QGraphicsItem *item, int *stackingOrder);
+    static void climbTree( QGraphicsItem *item, int *stackingOrder );
 
-   static inline bool closestItemFirst_withCache(const QGraphicsItem *item1, const QGraphicsItem *item2) {
-      return item1->d_ptr->globalStackingOrder < item2->d_ptr->globalStackingOrder;
-   }
+    static inline bool closestItemFirst_withCache( const QGraphicsItem *item1, const QGraphicsItem *item2 )
+    {
+        return item1->d_ptr->globalStackingOrder < item2->d_ptr->globalStackingOrder;
+    }
 
-   static inline bool closestItemLast_withCache(const QGraphicsItem *item1, const QGraphicsItem *item2) {
-      return item1->d_ptr->globalStackingOrder >= item2->d_ptr->globalStackingOrder;
-   }
+    static inline bool closestItemLast_withCache( const QGraphicsItem *item1, const QGraphicsItem *item2 )
+    {
+        return item1->d_ptr->globalStackingOrder >= item2->d_ptr->globalStackingOrder;
+    }
 
-   static void sortItems(QList<QGraphicsItem *> *itemList, Qt::SortOrder order, bool cached, bool onlyTopLevelItems = false);
+    static void sortItems( QList<QGraphicsItem *> *itemList, Qt::SortOrder order, bool cached, bool onlyTopLevelItems = false );
 };
 
-static inline bool QRectF_intersects(const QRectF &s, const QRectF &r)
+static inline bool QRectF_intersects( const QRectF &s, const QRectF &r )
 {
-   qreal xp = s.left();
-   qreal yp = s.top();
-   qreal w = s.width();
-   qreal h = s.height();
-   qreal l1 = xp;
-   qreal r1 = xp;
+    qreal xp = s.left();
+    qreal yp = s.top();
+    qreal w = s.width();
+    qreal h = s.height();
+    qreal l1 = xp;
+    qreal r1 = xp;
 
-   if (w < 0) {
-      l1 += w;
-   } else {
-      r1 += w;
-   }
+    if ( w < 0 )
+    {
+        l1 += w;
+    }
+    else
+    {
+        r1 += w;
+    }
 
-   qreal l2 = r.left();
-   qreal r2 = r.left();
-   if (w < 0) {
-      l2 += r.width();
-   } else {
-      r2 += r.width();
-   }
+    qreal l2 = r.left();
+    qreal r2 = r.left();
 
-   if (l1 >= r2 || l2 >= r1) {
-      return false;
-   }
+    if ( w < 0 )
+    {
+        l2 += r.width();
+    }
+    else
+    {
+        r2 += r.width();
+    }
 
-   qreal t1 = yp;
-   qreal b1 = yp;
-   if (h < 0) {
-      t1 += h;
-   } else {
-      b1 += h;
-   }
+    if ( l1 >= r2 || l2 >= r1 )
+    {
+        return false;
+    }
 
-   qreal t2 = r.top();
-   qreal b2 = r.top();
-   if (r.height() < 0) {
-      t2 += r.height();
-   } else {
-      b2 += r.height();
-   }
+    qreal t1 = yp;
+    qreal b1 = yp;
 
-   return !(t1 >= b2 || t2 >= b1);
+    if ( h < 0 )
+    {
+        t1 += h;
+    }
+    else
+    {
+        b1 += h;
+    }
+
+    qreal t2 = r.top();
+    qreal b2 = r.top();
+
+    if ( r.height() < 0 )
+    {
+        t2 += r.height();
+    }
+    else
+    {
+        b2 += r.height();
+    }
+
+    return !( t1 >= b2 || t2 >= b1 );
 }
 
 

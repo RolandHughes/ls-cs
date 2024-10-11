@@ -30,15 +30,15 @@
 
 class QCocoaIntegrationPlugin : public QPlatformIntegrationPlugin
 {
-   CS_OBJECT(QCocoaIntegrationPlugin)
-   CS_PLUGIN_IID(QPlatformIntegrationInterface_ID)
-   CS_PLUGIN_KEY("cocoa")
+   LSCS_OBJECT(QCocoaIntegrationPlugin)
+   LSCS_PLUGIN_IID(QPlatformIntegrationInterface_ID)
+   LSCS_PLUGIN_KEY("cocoa")
 
  public:
    QPlatformIntegration *create(const QString &, const QStringList &) override;
 };
 
-CS_PLUGIN_REGISTER(QCocoaIntegrationPlugin)
+LSCS_PLUGIN_REGISTER(QCocoaIntegrationPlugin)
 
 QPlatformIntegration *QCocoaIntegrationPlugin::create(const QString &system, const QStringList &paramList)
 {

@@ -25,33 +25,35 @@
 #include "SVGAnimatedNumber.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
-    
-class SVGFEDropShadowElement : public SVGFilterPrimitiveStandardAttributes {
+namespace WebCore
+{
+
+class SVGFEDropShadowElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEDropShadowElement> create(const QualifiedName&, Document*);
-    
-    void setStdDeviation(float stdDeviationX, float stdDeviationY);
-    
+    static PassRefPtr<SVGFEDropShadowElement> create( const QualifiedName &, Document * );
+
+    void setStdDeviation( float stdDeviationX, float stdDeviationY );
+
 private:
-    SVGFEDropShadowElement(const QualifiedName&, Document*);
-    
-    virtual void parseMappedAttribute(Attribute*);
-    virtual void svgAttributeChanged(const QualifiedName&);
-    virtual void synchronizeProperty(const QualifiedName&);
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
-    
-    static const AtomicString& stdDeviationXIdentifier();
-    static const AtomicString& stdDeviationYIdentifier();
-    
+    SVGFEDropShadowElement( const QualifiedName &, Document * );
+
+    virtual void parseMappedAttribute( Attribute * );
+    virtual void svgAttributeChanged( const QualifiedName & );
+    virtual void synchronizeProperty( const QualifiedName & );
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
+
+    static const AtomicString &stdDeviationXIdentifier();
+    static const AtomicString &stdDeviationYIdentifier();
+
     // Animated property declarations
-    DECLARE_ANIMATED_STRING(In1, in1)
-    DECLARE_ANIMATED_NUMBER(Dx, dx)
-    DECLARE_ANIMATED_NUMBER(Dy, dy)
-    DECLARE_ANIMATED_NUMBER(StdDeviationX, stdDeviationX)
-    DECLARE_ANIMATED_NUMBER(StdDeviationY, stdDeviationY)
+    DECLARE_ANIMATED_STRING( In1, in1 )
+    DECLARE_ANIMATED_NUMBER( Dx, dx )
+    DECLARE_ANIMATED_NUMBER( Dy, dy )
+    DECLARE_ANIMATED_NUMBER( StdDeviationX, stdDeviationX )
+    DECLARE_ANIMATED_NUMBER( StdDeviationY, stdDeviationY )
 };
-    
+
 } // namespace WebCore
 
 #endif // ENABLE(SVG)

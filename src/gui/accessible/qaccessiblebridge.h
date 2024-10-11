@@ -34,26 +34,26 @@ class QAccessibleEvent;
 
 class QAccessibleBridge
 {
- public:
-   virtual ~QAccessibleBridge()
-   {
-   }
+public:
+    virtual ~QAccessibleBridge()
+    {
+    }
 
-   virtual void setRootObject(QAccessibleInterface *object) = 0;
-   virtual void notifyAccessibilityUpdate(QAccessibleEvent *event) = 0;
+    virtual void setRootObject( QAccessibleInterface *object ) = 0;
+    virtual void notifyAccessibilityUpdate( QAccessibleEvent *event ) = 0;
 };
 
 #define QAccessibleBridgeInterface_ID "com.copperspice.CS.AccessibleBridgeInterface"
 
 class Q_GUI_EXPORT QAccessibleBridgePlugin : public QObject
 {
-   GUI_CS_OBJECT(QAccessibleBridgePlugin)
+    GUI_LSCS_OBJECT( QAccessibleBridgePlugin )
 
- public:
-   explicit QAccessibleBridgePlugin(QObject *parent = nullptr);
-   ~QAccessibleBridgePlugin();
+public:
+    explicit QAccessibleBridgePlugin( QObject *parent = nullptr );
+    ~QAccessibleBridgePlugin();
 
-   virtual QAccessibleBridge *create(const QString &key) = 0;
+    virtual QAccessibleBridge *create( const QString &key ) = 0;
 };
 
 #endif

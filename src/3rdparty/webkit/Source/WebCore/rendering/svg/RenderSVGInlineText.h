@@ -26,62 +26,91 @@
 #include "RenderText.h"
 #include "SVGTextLayoutAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGInlineTextBox;
 
-class RenderSVGInlineText : public RenderText {
+class RenderSVGInlineText : public RenderText
+{
 public:
-    RenderSVGInlineText(Node*, PassRefPtr<StringImpl>);
+    RenderSVGInlineText( Node *, PassRefPtr<StringImpl> );
 
-    bool characterStartsNewTextChunk(int position) const;
+    bool characterStartsNewTextChunk( int position ) const;
 
-    SVGTextLayoutAttributes& layoutAttributes() { return m_attributes; }
-    const SVGTextLayoutAttributes& layoutAttributes() const { return m_attributes; }
-    void storeLayoutAttributes(const SVGTextLayoutAttributes& attributes) { m_attributes = attributes; }
+    SVGTextLayoutAttributes &layoutAttributes()
+    {
+        return m_attributes;
+    }
+    const SVGTextLayoutAttributes &layoutAttributes() const
+    {
+        return m_attributes;
+    }
+    void storeLayoutAttributes( const SVGTextLayoutAttributes &attributes )
+    {
+        m_attributes = attributes;
+    }
 
-    float scalingFactor() const { return m_scalingFactor; }
-    const Font& scaledFont() const { return m_scaledFont; }
+    float scalingFactor() const
+    {
+        return m_scalingFactor;
+    }
+    const Font &scaledFont() const
+    {
+        return m_scaledFont;
+    }
     void updateScaledFont();
-    static void computeNewScaledFontForStyle(RenderObject*, const RenderStyle*, float& scalingFactor, Font& scaledFont);
+    static void computeNewScaledFontForStyle( RenderObject *, const RenderStyle *, float &scalingFactor, Font &scaledFont );
 
 private:
-    virtual const char* renderName() const { return "RenderSVGInlineText"; }
+    virtual const char *renderName() const
+    {
+        return "RenderSVGInlineText";
+    }
 
     virtual void destroy();
-    virtual void styleDidChange(StyleDifference, const RenderStyle*);
+    virtual void styleDidChange( StyleDifference, const RenderStyle * );
 
     // FIXME: We need objectBoundingBox for DRT results and filters at the moment.
     // This should be fixed to give back the objectBoundingBox of the text root.
-    virtual FloatRect objectBoundingBox() const { return FloatRect(); }
+    virtual FloatRect objectBoundingBox() const
+    {
+        return FloatRect();
+    }
 
-    virtual bool requiresLayer() const { return false; }
-    virtual bool isSVGInlineText() const { return true; }
+    virtual bool requiresLayer() const
+    {
+        return false;
+    }
+    virtual bool isSVGInlineText() const
+    {
+        return true;
+    }
 
-    virtual VisiblePosition positionForPoint(const IntPoint&);
-    virtual IntRect localCaretRect(InlineBox*, int caretOffset, int* extraWidthToEndOfLine = 0);
+    virtual VisiblePosition positionForPoint( const IntPoint & );
+    virtual IntRect localCaretRect( InlineBox *, int caretOffset, int *extraWidthToEndOfLine = 0 );
     virtual IntRect linesBoundingBox() const;
-    virtual InlineTextBox* createTextBox();
+    virtual InlineTextBox *createTextBox();
 
     float m_scalingFactor;
     Font m_scaledFont;
     SVGTextLayoutAttributes m_attributes;
 };
 
-inline RenderSVGInlineText* toRenderSVGInlineText(RenderObject* object)
+inline RenderSVGInlineText *toRenderSVGInlineText( RenderObject *object )
 {
-    ASSERT(!object || object->isSVGInlineText());
-    return static_cast<RenderSVGInlineText*>(object);
+    ASSERT( !object || object->isSVGInlineText() );
+    return static_cast<RenderSVGInlineText *>( object );
 }
 
-inline const RenderSVGInlineText* toRenderSVGInlineText(const RenderObject* object)
+inline const RenderSVGInlineText *toRenderSVGInlineText( const RenderObject *object )
 {
-    ASSERT(!object || object->isSVGInlineText());
-    return static_cast<const RenderSVGInlineText*>(object);
+    ASSERT( !object || object->isSVGInlineText() );
+    return static_cast<const RenderSVGInlineText *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderSVGInlineText(const RenderSVGInlineText*);
+void toRenderSVGInlineText( const RenderSVGInlineText * );
 
 }
 

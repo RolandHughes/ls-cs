@@ -25,29 +25,32 @@
 #include <runtime/JSValue.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class Node;
-    class NodeFilter;
+class Node;
+class NodeFilter;
 
-    class JSNodeFilterCondition : public NodeFilterCondition {
-    public:
-        static PassRefPtr<JSNodeFilterCondition> create(JSC::JSGlobalData& globalData, NodeFilter* owner, JSC::JSValue filter)
-        {
-            return adoptRef(new JSNodeFilterCondition(globalData, owner, filter));
-        }
+class JSNodeFilterCondition : public NodeFilterCondition
+{
+public:
+    static PassRefPtr<JSNodeFilterCondition> create( JSC::JSGlobalData &globalData, NodeFilter *owner, JSC::JSValue filter )
+    {
+        return adoptRef( new JSNodeFilterCondition( globalData, owner, filter ) );
+    }
 
-    private:
-        JSNodeFilterCondition(JSC::JSGlobalData&, NodeFilter* owner, JSC::JSValue filter);
+private:
+    JSNodeFilterCondition( JSC::JSGlobalData &, NodeFilter *owner, JSC::JSValue filter );
 
-        virtual short acceptNode(ScriptState*, Node*) const;
+    virtual short acceptNode( ScriptState *, Node * ) const;
 
-        class WeakOwner : public JSC::WeakHandleOwner {
-            virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-        };
-        WeakOwner m_weakOwner;
-        mutable JSC::Weak<JSC::Unknown> m_filter;
+    class WeakOwner : public JSC::WeakHandleOwner
+    {
+        virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
     };
+    WeakOwner m_weakOwner;
+    mutable JSC::Weak<JSC::Unknown> m_filter;
+};
 
 } // namespace WebCore
 

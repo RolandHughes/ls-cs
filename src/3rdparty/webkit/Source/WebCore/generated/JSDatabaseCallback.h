@@ -28,25 +28,27 @@
 #include "JSCallbackData.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSDatabaseCallback : public DatabaseCallback, public ActiveDOMCallback {
+class JSDatabaseCallback : public DatabaseCallback, public ActiveDOMCallback
+{
 public:
-    static PassRefPtr<JSDatabaseCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+    static PassRefPtr<JSDatabaseCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSDatabaseCallback(callback, globalObject));
+        return adoptRef( new JSDatabaseCallback( callback, globalObject ) );
     }
 
     virtual ~JSDatabaseCallback();
 
     // Functions
-    virtual bool handleEvent(Database* database);
-    virtual bool handleEvent(DatabaseSync* database);
+    virtual bool handleEvent( Database *database );
+    virtual bool handleEvent( DatabaseSync *database );
 
 private:
-    JSDatabaseCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
+    JSDatabaseCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
 
-    JSCallbackData* m_data;
+    JSCallbackData *m_data;
 };
 
 } // namespace WebCore

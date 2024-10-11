@@ -23,14 +23,15 @@
 
 #include <wtf/HashCountedSet.h>
 
-namespace WTF {
+namespace WTF
+{
 
 #ifdef NDEBUG
 
-void RefCountedLeakCounter::suppressMessages(const char*) { }
-void RefCountedLeakCounter::cancelMessageSuppression(const char*) { }
+void RefCountedLeakCounter::suppressMessages( const char * ) { }
+void RefCountedLeakCounter::cancelMessageSuppression( const char * ) { }
 
-RefCountedLeakCounter::RefCountedLeakCounter(const char*) { }
+RefCountedLeakCounter::RefCountedLeakCounter( const char * ) { }
 RefCountedLeakCounter::~RefCountedLeakCounter() { }
 
 void RefCountedLeakCounter::increment() { }
@@ -41,37 +42,45 @@ void RefCountedLeakCounter::decrement() { }
 #define LOG_CHANNEL_PREFIX Log
 static WTFLogChannel LogRefCountedLeaks = { 0x00000000, "", WTFLogChannelOn };
 
-typedef HashCountedSet<const char*, PtrHash<const char*> > ReasonSet;
-static ReasonSet* leakMessageSuppressionReasons;
+typedef HashCountedSet<const char *, PtrHash<const char *> > ReasonSet;
+static ReasonSet *leakMessageSuppressionReasons;
 
-void RefCountedLeakCounter::suppressMessages(const char* reason)
+void RefCountedLeakCounter::suppressMessages( const char *reason )
 {
-    if (!leakMessageSuppressionReasons)
+    if ( !leakMessageSuppressionReasons )
+    {
         leakMessageSuppressionReasons = new ReasonSet;
-    leakMessageSuppressionReasons->add(reason);
+    }
+
+    leakMessageSuppressionReasons->add( reason );
 }
 
-void RefCountedLeakCounter::cancelMessageSuppression(const char* reason)
+void RefCountedLeakCounter::cancelMessageSuppression( const char *reason )
 {
-    ASSERT(leakMessageSuppressionReasons);
-    ASSERT(leakMessageSuppressionReasons->contains(reason));
-    leakMessageSuppressionReasons->remove(reason);
+    ASSERT( leakMessageSuppressionReasons );
+    ASSERT( leakMessageSuppressionReasons->contains( reason ) );
+    leakMessageSuppressionReasons->remove( reason );
 }
 
-RefCountedLeakCounter::RefCountedLeakCounter(const char* description)
-    : m_description(description)
+RefCountedLeakCounter::RefCountedLeakCounter( const char *description )
+    : m_description( description )
 {
-}    
+}
 
 RefCountedLeakCounter::~RefCountedLeakCounter()
 {
     static bool loggedSuppressionReason;
-    if (m_count) {
-        if (!leakMessageSuppressionReasons || leakMessageSuppressionReasons->isEmpty())
-            LOG(RefCountedLeaks, "LEAK: %u %s", m_count, m_description);
-        else if (!loggedSuppressionReason) {
+
+    if ( m_count )
+    {
+        if ( !leakMessageSuppressionReasons || leakMessageSuppressionReasons->isEmpty() )
+        {
+            LOG( RefCountedLeaks, "LEAK: %u %s", m_count, m_description );
+        }
+        else if ( !loggedSuppressionReason )
+        {
             // This logs only one reason. Later we could change it so we log all the reasons.
-            LOG(RefCountedLeaks, "No leak checking done: %s", leakMessageSuppressionReasons->begin()->first);
+            LOG( RefCountedLeaks, "No leak checking done: %s", leakMessageSuppressionReasons->begin()->first );
             loggedSuppressionReason = true;
         }
     }
@@ -80,7 +89,7 @@ RefCountedLeakCounter::~RefCountedLeakCounter()
 void RefCountedLeakCounter::increment()
 {
 #if ENABLE(JSC_MULTIPLE_THREADS)
-    atomicIncrement(&m_count);
+    atomicIncrement( &m_count );
 #else
     ++m_count;
 #endif
@@ -89,7 +98,7 @@ void RefCountedLeakCounter::increment()
 void RefCountedLeakCounter::decrement()
 {
 #if ENABLE(JSC_MULTIPLE_THREADS)
-    atomicDecrement(&m_count);
+    atomicDecrement( &m_count );
 #else
     --m_count;
 #endif

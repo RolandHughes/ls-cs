@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ArrayBuffer_h
@@ -29,26 +29,28 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ArrayBuffer : public RefCounted<ArrayBuffer> {
-  public:
-    static PassRefPtr<ArrayBuffer> create(unsigned numElements, unsigned elementByteSize);
-    static PassRefPtr<ArrayBuffer> create(ArrayBuffer*);
-    static PassRefPtr<ArrayBuffer> create(void* source, unsigned byteLength);
+class ArrayBuffer : public RefCounted<ArrayBuffer>
+{
+public:
+    static PassRefPtr<ArrayBuffer> create( unsigned numElements, unsigned elementByteSize );
+    static PassRefPtr<ArrayBuffer> create( ArrayBuffer * );
+    static PassRefPtr<ArrayBuffer> create( void *source, unsigned byteLength );
 
-    void* data();
-    const void* data() const;
+    void *data();
+    const void *data() const;
     unsigned byteLength() const;
 
     ~ArrayBuffer();
 
-  private:
-    ArrayBuffer(void* data, unsigned sizeInBytes);
-    ArrayBuffer(unsigned numElements, unsigned elementByteSize);
-    static void* tryAllocate(unsigned numElements, unsigned elementByteSize);
+private:
+    ArrayBuffer( void *data, unsigned sizeInBytes );
+    ArrayBuffer( unsigned numElements, unsigned elementByteSize );
+    static void *tryAllocate( unsigned numElements, unsigned elementByteSize );
     unsigned m_sizeInBytes;
-    void* m_data;
+    void *m_data;
 };
 
 } // namespace WebCore

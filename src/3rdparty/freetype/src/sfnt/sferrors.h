@@ -16,11 +16,11 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the SFNT error enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the SFNT error enumeration constants.
+ *
+ */
 
 #ifndef SFERRORS_H_
 #define SFERRORS_H_

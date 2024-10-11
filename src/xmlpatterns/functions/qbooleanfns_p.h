@@ -26,25 +26,26 @@
 
 #include <qfunctioncall_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TrueFN : public FunctionCall
 {
- public:
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+public:
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 };
 
 class FalseFN : public FunctionCall
 {
- public:
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+public:
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 };
 
 class NotFN : public FunctionCall
 {
- public:
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
-   QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
+public:
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
+    QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
 };
 
 }

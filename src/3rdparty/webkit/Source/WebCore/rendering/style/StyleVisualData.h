@@ -29,32 +29,43 @@
 #include <wtf/RefCounted.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class StyleVisualData : public RefCounted<StyleVisualData> {
+class StyleVisualData : public RefCounted<StyleVisualData>
+{
 public:
-    static PassRefPtr<StyleVisualData> create() { return adoptRef(new StyleVisualData); }
-    PassRefPtr<StyleVisualData> copy() const { return adoptRef(new StyleVisualData(*this)); }
+    static PassRefPtr<StyleVisualData> create()
+    {
+        return adoptRef( new StyleVisualData );
+    }
+    PassRefPtr<StyleVisualData> copy() const
+    {
+        return adoptRef( new StyleVisualData( *this ) );
+    }
     ~StyleVisualData();
 
-    bool operator==(const StyleVisualData& o) const
+    bool operator==( const StyleVisualData &o ) const
     {
         return ( clip == o.clip &&
                  hasClip == o.hasClip &&
                  textDecoration == o.textDecoration &&
-                 m_zoom == o.m_zoom);
+                 m_zoom == o.m_zoom );
     }
-    bool operator!=(const StyleVisualData& o) const { return !(*this == o); }
+    bool operator!=( const StyleVisualData &o ) const
+    {
+        return !( *this == o );
+    }
 
     LengthBox clip;
     bool hasClip : 1;
     unsigned textDecoration : 4; // Text decorations defined *only* by this element.
-    
+
     float m_zoom;
 
 private:
     StyleVisualData();
-    StyleVisualData(const StyleVisualData&);    
+    StyleVisualData( const StyleVisualData & );
 };
 
 } // namespace WebCore

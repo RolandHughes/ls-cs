@@ -26,12 +26,13 @@
 #include "config.h"
 #include "UserGestureIndicator.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 ProcessingUserGestureState UserGestureIndicator::s_processingUserGesture = PossiblyProcessingUserGesture;
 
-UserGestureIndicator::UserGestureIndicator(ProcessingUserGestureState state)
-    : m_previousValue(s_processingUserGesture)
+UserGestureIndicator::UserGestureIndicator( ProcessingUserGestureState state )
+    : m_previousValue( s_processingUserGesture )
 {
     s_processingUserGesture = state;
 }

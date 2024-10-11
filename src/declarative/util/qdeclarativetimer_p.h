@@ -35,74 +35,74 @@ class QDeclarativeTimerPrivate;
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativeTimer : public QObject, public QDeclarativeParserStatus
 {
-   DECL_CS_OBJECT(QDeclarativeTimer)
+    DECL_LSCS_OBJECT( QDeclarativeTimer )
 
-   Q_DECLARE_PRIVATE(QDeclarativeTimer)
+    Q_DECLARE_PRIVATE( QDeclarativeTimer )
 
-   CS_INTERFACES(QDeclarativeParserStatus)
-   DECL_CS_PROPERTY_READ(interval, interval)
-   DECL_CS_PROPERTY_WRITE(interval, setInterval)
-   DECL_CS_PROPERTY_NOTIFY(interval, intervalChanged)
-   DECL_CS_PROPERTY_READ(running, isRunning)
-   DECL_CS_PROPERTY_WRITE(running, setRunning)
-   DECL_CS_PROPERTY_NOTIFY(running, runningChanged)
-   DECL_CS_PROPERTY_READ(repeat, isRepeating)
-   DECL_CS_PROPERTY_WRITE(repeat, setRepeating)
-   DECL_CS_PROPERTY_NOTIFY(repeat, repeatChanged)
-   DECL_CS_PROPERTY_READ(triggeredOnStart, triggeredOnStart)
-   DECL_CS_PROPERTY_WRITE(triggeredOnStart, setTriggeredOnStart)
-   DECL_CS_PROPERTY_NOTIFY(triggeredOnStart, triggeredOnStartChanged)
-   DECL_CS_PROPERTY_READ(*parent, parent)
-   DECL_CS_PROPERTY_CONSTANT(*parent)
+    LSCS_INTERFACES( QDeclarativeParserStatus )
+    DECL_LSCS_PROPERTY_READ( interval, interval )
+    DECL_LSCS_PROPERTY_WRITE( interval, setInterval )
+    DECL_LSCS_PROPERTY_NOTIFY( interval, intervalChanged )
+    DECL_LSCS_PROPERTY_READ( running, isRunning )
+    DECL_LSCS_PROPERTY_WRITE( running, setRunning )
+    DECL_LSCS_PROPERTY_NOTIFY( running, runningChanged )
+    DECL_LSCS_PROPERTY_READ( repeat, isRepeating )
+    DECL_LSCS_PROPERTY_WRITE( repeat, setRepeating )
+    DECL_LSCS_PROPERTY_NOTIFY( repeat, repeatChanged )
+    DECL_LSCS_PROPERTY_READ( triggeredOnStart, triggeredOnStart )
+    DECL_LSCS_PROPERTY_WRITE( triggeredOnStart, setTriggeredOnStart )
+    DECL_LSCS_PROPERTY_NOTIFY( triggeredOnStart, triggeredOnStartChanged )
+    DECL_LSCS_PROPERTY_READ( *parent, parent )
+    DECL_LSCS_PROPERTY_CONSTANT( *parent )
 
- public:
-   QDeclarativeTimer(QObject *parent = nullptr);
+public:
+    QDeclarativeTimer( QObject *parent = nullptr );
 
-   void setInterval(int interval);
-   int interval() const;
+    void setInterval( int interval );
+    int interval() const;
 
-   bool isRunning() const;
-   void setRunning(bool running);
+    bool isRunning() const;
+    void setRunning( bool running );
 
-   bool isRepeating() const;
-   void setRepeating(bool repeating);
+    bool isRepeating() const;
+    void setRepeating( bool repeating );
 
-   bool triggeredOnStart() const;
-   void setTriggeredOnStart(bool triggeredOnStart);
+    bool triggeredOnStart() const;
+    void setTriggeredOnStart( bool triggeredOnStart );
 
-   DECL_CS_SLOT_1(Public, void start())
-   DECL_CS_SLOT_2(start)
-   DECL_CS_SLOT_1(Public, void stop())
-   DECL_CS_SLOT_2(stop)
-   DECL_CS_SLOT_1(Public, void restart())
-   DECL_CS_SLOT_2(restart)
+    DECL_LSCS_SLOT_1( Public, void start() )
+    DECL_LSCS_SLOT_2( start )
+    DECL_LSCS_SLOT_1( Public, void stop() )
+    DECL_LSCS_SLOT_2( stop )
+    DECL_LSCS_SLOT_1( Public, void restart() )
+    DECL_LSCS_SLOT_2( restart )
 
-   DECL_CS_SIGNAL_1(Public, void triggered())
-   DECL_CS_SIGNAL_2(triggered)
-   DECL_CS_SIGNAL_1(Public, void runningChanged())
-   DECL_CS_SIGNAL_2(runningChanged)
-   DECL_CS_SIGNAL_1(Public, void intervalChanged())
-   DECL_CS_SIGNAL_2(intervalChanged)
-   DECL_CS_SIGNAL_1(Public, void repeatChanged())
-   DECL_CS_SIGNAL_2(repeatChanged)
-   DECL_CS_SIGNAL_1(Public, void triggeredOnStartChanged())
-   DECL_CS_SIGNAL_2(triggeredOnStartChanged)
+    DECL_LSCS_SIGNAL_1( Public, void triggered() )
+    DECL_LSCS_SIGNAL_2( triggered )
+    DECL_LSCS_SIGNAL_1( Public, void runningChanged() )
+    DECL_LSCS_SIGNAL_2( runningChanged )
+    DECL_LSCS_SIGNAL_1( Public, void intervalChanged() )
+    DECL_LSCS_SIGNAL_2( intervalChanged )
+    DECL_LSCS_SIGNAL_1( Public, void repeatChanged() )
+    DECL_LSCS_SIGNAL_2( repeatChanged )
+    DECL_LSCS_SIGNAL_1( Public, void triggeredOnStartChanged() )
+    DECL_LSCS_SIGNAL_2( triggeredOnStartChanged )
 
- protected:
-   void classBegin();
-   void componentComplete();
+protected:
+    void classBegin();
+    void componentComplete();
 
- private:
-   void update();
+private:
+    void update();
 
-   DECL_CS_SLOT_1(Private, void ticked())
-   DECL_CS_SLOT_2(ticked)
-   DECL_CS_SLOT_1(Private, void finished())
-   DECL_CS_SLOT_2(finished)
+    DECL_LSCS_SLOT_1( Private, void ticked() )
+    DECL_LSCS_SLOT_2( ticked )
+    DECL_LSCS_SLOT_1( Private, void finished() )
+    DECL_LSCS_SLOT_2( finished )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeTimer)
+QML_DECLARE_TYPE( QDeclarativeTimer )
 
 #endif

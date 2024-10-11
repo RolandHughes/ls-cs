@@ -56,12 +56,11 @@ QT_BEGIN_NAMESPACE
     If you want such bindings (on any platform), you will need to construct them in QML.
 
     \sa TextEdit, Text, {declarative/text/textselection}{Text Selection example}
-*/
-QDeclarativeTextInput::QDeclarativeTextInput(QDeclarativeItem *parent)
-   : QDeclarativeImplicitSizePaintedItem(*(new QDeclarativeTextInputPrivate), parent)
+*/ QDeclarativeTextInput::QDeclarativeTextInput( QDeclarativeItem *parent )
+    : QDeclarativeImplicitSizePaintedItem( *( new QDeclarativeTextInputPrivate ), parent )
 {
-   Q_D(QDeclarativeTextInput);
-   d->init();
+    Q_D( QDeclarativeTextInput );
+    d->init();
 }
 
 QDeclarativeTextInput::~QDeclarativeTextInput()
@@ -76,17 +75,20 @@ QDeclarativeTextInput::~QDeclarativeTextInput()
 
 QString QDeclarativeTextInput::text() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->text();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->text();
 }
 
-void QDeclarativeTextInput::setText(const QString &s)
+void QDeclarativeTextInput::setText( const QString &s )
 {
-   Q_D(QDeclarativeTextInput);
-   if (s == text()) {
-      return;
-   }
-   d->control->setText(s);
+    Q_D( QDeclarativeTextInput );
+
+    if ( s == text() )
+    {
+        return;
+    }
+
+    d->control->setText( s );
 }
 
 /*!
@@ -184,8 +186,8 @@ void QDeclarativeTextInput::setText(const QString &s)
     \list
     \o Font.MixedCase - This is the normal text rendering option where no capitalization change is applied.
     \o Font.AllUppercase - This alters the text to be rendered in all uppercase type.
-    \o Font.AllLowercase	 - This alters the text to be rendered in all lowercase type.
-    \o Font.SmallCaps -	This alters the text to be rendered in small-caps type.
+    \o Font.AllLowercase     - This alters the text to be rendered in all lowercase type.
+    \o Font.SmallCaps - This alters the text to be rendered in small-caps type.
     \o Font.Capitalize - This alters the text to be rendered with the first character of each word as an uppercase character.
     \endlist
 
@@ -196,35 +198,43 @@ void QDeclarativeTextInput::setText(const QString &s)
 
 QFont QDeclarativeTextInput::font() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->sourceFont;
+    Q_D( const QDeclarativeTextInput );
+    return d->sourceFont;
 }
 
-void QDeclarativeTextInput::setFont(const QFont &font)
+void QDeclarativeTextInput::setFont( const QFont &font )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->sourceFont == font) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->sourceFont = font;
-   QFont oldFont = d->font;
-   d->font = font;
-   if (d->font.pointSizeF() != -1) {
-      // 0.5pt resolution
-      qreal size = qRound(d->font.pointSizeF() * 2.0);
-      d->font.setPointSizeF(size / 2.0);
-   }
+    if ( d->sourceFont == font )
+    {
+        return;
+    }
 
-   if (oldFont != d->font) {
-      d->control->setFont(d->font);
-      updateSize();
-      updateCursorRectangle();
-      if (d->cursorItem) {
-         d->cursorItem->setHeight(QFontMetrics(d->font).height());
-      }
-   }
-   emit fontChanged(d->sourceFont);
+    d->sourceFont = font;
+    QFont oldFont = d->font;
+    d->font = font;
+
+    if ( d->font.pointSizeF() != -1 )
+    {
+        // 0.5pt resolution
+        qreal size = qRound( d->font.pointSizeF() * 2.0 );
+        d->font.setPointSizeF( size / 2.0 );
+    }
+
+    if ( oldFont != d->font )
+    {
+        d->control->setFont( d->font );
+        updateSize();
+        updateCursorRectangle();
+
+        if ( d->cursorItem )
+        {
+            d->cursorItem->setHeight( QFontMetrics( d->font ).height() );
+        }
+    }
+
+    emit fontChanged( d->sourceFont );
 }
 
 /*!
@@ -234,19 +244,21 @@ void QDeclarativeTextInput::setFont(const QFont &font)
 */
 QColor QDeclarativeTextInput::color() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->color;
+    Q_D( const QDeclarativeTextInput );
+    return d->color;
 }
 
-void QDeclarativeTextInput::setColor(const QColor &c)
+void QDeclarativeTextInput::setColor( const QColor &c )
 {
-   Q_D(QDeclarativeTextInput);
-   if (c != d->color) {
-      d->color = c;
-      clearCache();
-      update();
-      emit colorChanged(c);
-   }
+    Q_D( QDeclarativeTextInput );
+
+    if ( c != d->color )
+    {
+        d->color = c;
+        clearCache();
+        update();
+        emit colorChanged( c );
+    }
 }
 
 
@@ -257,26 +269,31 @@ void QDeclarativeTextInput::setColor(const QColor &c)
 */
 QColor QDeclarativeTextInput::selectionColor() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->selectionColor;
+    Q_D( const QDeclarativeTextInput );
+    return d->selectionColor;
 }
 
-void QDeclarativeTextInput::setSelectionColor(const QColor &color)
+void QDeclarativeTextInput::setSelectionColor( const QColor &color )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->selectionColor == color) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->selectionColor = color;
-   QPalette p = d->control->palette();
-   p.setColor(QPalette::Highlight, d->selectionColor);
-   d->control->setPalette(p);
-   if (d->control->hasSelectedText()) {
-      clearCache();
-      update();
-   }
-   emit selectionColorChanged(color);
+    if ( d->selectionColor == color )
+    {
+        return;
+    }
+
+    d->selectionColor = color;
+    QPalette p = d->control->palette();
+    p.setColor( QPalette::Highlight, d->selectionColor );
+    d->control->setPalette( p );
+
+    if ( d->control->hasSelectedText() )
+    {
+        clearCache();
+        update();
+    }
+
+    emit selectionColorChanged( color );
 }
 
 /*!
@@ -286,26 +303,31 @@ void QDeclarativeTextInput::setSelectionColor(const QColor &color)
 */
 QColor QDeclarativeTextInput::selectedTextColor() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->selectedTextColor;
+    Q_D( const QDeclarativeTextInput );
+    return d->selectedTextColor;
 }
 
-void QDeclarativeTextInput::setSelectedTextColor(const QColor &color)
+void QDeclarativeTextInput::setSelectedTextColor( const QColor &color )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->selectedTextColor == color) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->selectedTextColor = color;
-   QPalette p = d->control->palette();
-   p.setColor(QPalette::HighlightedText, d->selectedTextColor);
-   d->control->setPalette(p);
-   if (d->control->hasSelectedText()) {
-      clearCache();
-      update();
-   }
-   emit selectedTextColorChanged(color);
+    if ( d->selectedTextColor == color )
+    {
+        return;
+    }
+
+    d->selectedTextColor = color;
+    QPalette p = d->control->palette();
+    p.setColor( QPalette::HighlightedText, d->selectedTextColor );
+    d->control->setPalette( p );
+
+    if ( d->control->hasSelectedText() )
+    {
+        clearCache();
+        update();
+    }
+
+    emit selectedTextColorChanged( color );
 }
 
 /*!
@@ -332,84 +354,105 @@ void QDeclarativeTextInput::setSelectedTextColor(const QColor &color)
 */
 QDeclarativeTextInput::HAlignment QDeclarativeTextInput::hAlign() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->hAlign;
+    Q_D( const QDeclarativeTextInput );
+    return d->hAlign;
 }
 
-void QDeclarativeTextInput::setHAlign(HAlignment align)
+void QDeclarativeTextInput::setHAlign( HAlignment align )
 {
-   Q_D(QDeclarativeTextInput);
-   bool forceAlign = d->hAlignImplicit && d->effectiveLayoutMirror;
-   d->hAlignImplicit = false;
-   if (d->setHAlign(align, forceAlign) && isComponentComplete()) {
-      updateCursorRectangle();
-   }
+    Q_D( QDeclarativeTextInput );
+    bool forceAlign = d->hAlignImplicit && d->effectiveLayoutMirror;
+    d->hAlignImplicit = false;
+
+    if ( d->setHAlign( align, forceAlign ) && isComponentComplete() )
+    {
+        updateCursorRectangle();
+    }
 }
 
 void QDeclarativeTextInput::resetHAlign()
 {
-   Q_D(QDeclarativeTextInput);
-   d->hAlignImplicit = true;
-   if (d->determineHorizontalAlignment() && isComponentComplete()) {
-      updateCursorRectangle();
-   }
+    Q_D( QDeclarativeTextInput );
+    d->hAlignImplicit = true;
+
+    if ( d->determineHorizontalAlignment() && isComponentComplete() )
+    {
+        updateCursorRectangle();
+    }
 }
 
 QDeclarativeTextInput::HAlignment QDeclarativeTextInput::effectiveHAlign() const
 {
-   Q_D(const QDeclarativeTextInput);
-   QDeclarativeTextInput::HAlignment effectiveAlignment = d->hAlign;
-   if (!d->hAlignImplicit && d->effectiveLayoutMirror) {
-      switch (d->hAlign) {
-         case QDeclarativeTextInput::AlignLeft:
-            effectiveAlignment = QDeclarativeTextInput::AlignRight;
-            break;
-         case QDeclarativeTextInput::AlignRight:
-            effectiveAlignment = QDeclarativeTextInput::AlignLeft;
-            break;
-         default:
-            break;
-      }
-   }
-   return effectiveAlignment;
+    Q_D( const QDeclarativeTextInput );
+    QDeclarativeTextInput::HAlignment effectiveAlignment = d->hAlign;
+
+    if ( !d->hAlignImplicit && d->effectiveLayoutMirror )
+    {
+        switch ( d->hAlign )
+        {
+            case QDeclarativeTextInput::AlignLeft:
+                effectiveAlignment = QDeclarativeTextInput::AlignRight;
+                break;
+
+            case QDeclarativeTextInput::AlignRight:
+                effectiveAlignment = QDeclarativeTextInput::AlignLeft;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    return effectiveAlignment;
 }
 
-bool QDeclarativeTextInputPrivate::setHAlign(QDeclarativeTextInput::HAlignment alignment, bool forceAlign)
+bool QDeclarativeTextInputPrivate::setHAlign( QDeclarativeTextInput::HAlignment alignment, bool forceAlign )
 {
-   Q_Q(QDeclarativeTextInput);
-   if ((hAlign != alignment || forceAlign) && alignment <= QDeclarativeTextInput::AlignHCenter) { // justify not supported
-      hAlign = alignment;
-      emit q->horizontalAlignmentChanged(alignment);
-      return true;
-   }
-   return false;
+    Q_Q( QDeclarativeTextInput );
+
+    if ( ( hAlign != alignment || forceAlign ) && alignment <= QDeclarativeTextInput::AlignHCenter ) // justify not supported
+    {
+        hAlign = alignment;
+        emit q->horizontalAlignmentChanged( alignment );
+        return true;
+    }
+
+    return false;
 }
 
 bool QDeclarativeTextInputPrivate::determineHorizontalAlignment()
 {
-   if (hAlignImplicit) {
-      // if no explicit alignment has been set, follow the natural layout direction of the text
-      QString text = control->text();
-      if (text.isEmpty()) {
-         text = control->preeditAreaText();
-      }
-      bool isRightToLeft = text.isEmpty()
-                           ? QApplication::keyboardInputDirection() == Qt::RightToLeft
-                           : text.isRightToLeft();
-      return setHAlign(isRightToLeft ? QDeclarativeTextInput::AlignRight : QDeclarativeTextInput::AlignLeft);
-   }
-   return false;
+    if ( hAlignImplicit )
+    {
+        // if no explicit alignment has been set, follow the natural layout direction of the text
+        QString text = control->text();
+
+        if ( text.isEmpty() )
+        {
+            text = control->preeditAreaText();
+        }
+
+        bool isRightToLeft = text.isEmpty()
+                             ? QApplication::keyboardInputDirection() == Qt::RightToLeft
+                             : text.isRightToLeft();
+        return setHAlign( isRightToLeft ? QDeclarativeTextInput::AlignRight : QDeclarativeTextInput::AlignLeft );
+    }
+
+    return false;
 }
 
 void QDeclarativeTextInputPrivate::mirrorChange()
 {
-   Q_Q(QDeclarativeTextInput);
-   if (q->isComponentComplete()) {
-      if (!hAlignImplicit && (hAlign == QDeclarativeTextInput::AlignRight || hAlign == QDeclarativeTextInput::AlignLeft)) {
-         q->updateCursorRectangle();
-         updateHorizontalScroll();
-      }
-   }
+    Q_Q( QDeclarativeTextInput );
+
+    if ( q->isComponentComplete() )
+    {
+        if ( !hAlignImplicit && ( hAlign == QDeclarativeTextInput::AlignRight || hAlign == QDeclarativeTextInput::AlignLeft ) )
+        {
+            q->updateCursorRectangle();
+            updateHorizontalScroll();
+        }
+    }
 }
 
 /*!
@@ -424,21 +467,23 @@ void QDeclarativeTextInputPrivate::mirrorChange()
 
 bool QDeclarativeTextInput::isReadOnly() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->isReadOnly();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->isReadOnly();
 }
 
-void QDeclarativeTextInput::setReadOnly(bool ro)
+void QDeclarativeTextInput::setReadOnly( bool ro )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->control->isReadOnly() == ro) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   setFlag(QGraphicsItem::ItemAcceptsInputMethod, !ro);
-   d->control->setReadOnly(ro);
+    if ( d->control->isReadOnly() == ro )
+    {
+        return;
+    }
 
-   emit readOnlyChanged(ro);
+    setFlag( QGraphicsItem::ItemAcceptsInputMethod, !ro );
+    d->control->setReadOnly( ro );
+
+    emit readOnlyChanged( ro );
 }
 
 /*!
@@ -451,20 +496,22 @@ void QDeclarativeTextInput::setReadOnly(bool ro)
 */
 int QDeclarativeTextInput::maxLength() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->maxLength();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->maxLength();
 }
 
-void QDeclarativeTextInput::setMaxLength(int ml)
+void QDeclarativeTextInput::setMaxLength( int ml )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->control->maxLength() == ml) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->control->setMaxLength(ml);
+    if ( d->control->maxLength() == ml )
+    {
+        return;
+    }
 
-   emit maximumLengthChanged(ml);
+    d->control->setMaxLength( ml );
+
+    emit maximumLengthChanged( ml );
 }
 
 /*!
@@ -495,25 +542,33 @@ void QDeclarativeTextInput::setMaxLength(int ml)
 */
 bool QDeclarativeTextInput::isCursorVisible() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->cursorVisible;
+    Q_D( const QDeclarativeTextInput );
+    return d->cursorVisible;
 }
 
-void QDeclarativeTextInput::setCursorVisible(bool on)
+void QDeclarativeTextInput::setCursorVisible( bool on )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->cursorVisible == on) {
-      return;
-   }
-   d->cursorVisible = on;
-   d->control->setCursorBlinkPeriod(on ? QApplication::cursorFlashTime() : 0);
-   QRect r = d->control->cursorRect();
-   if (d->control->inputMask().isEmpty()) {
-      updateRect(r);
-   } else {
-      updateRect();
-   }
-   emit cursorVisibleChanged(d->cursorVisible);
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->cursorVisible == on )
+    {
+        return;
+    }
+
+    d->cursorVisible = on;
+    d->control->setCursorBlinkPeriod( on ? QApplication::cursorFlashTime() : 0 );
+    QRect r = d->control->cursorRect();
+
+    if ( d->control->inputMask().isEmpty() )
+    {
+        updateRect( r );
+    }
+    else
+    {
+        updateRect();
+    }
+
+    emit cursorVisibleChanged( d->cursorVisible );
 }
 
 /*!
@@ -522,16 +577,19 @@ void QDeclarativeTextInput::setCursorVisible(bool on)
 */
 int QDeclarativeTextInput::cursorPosition() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->cursor();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->cursor();
 }
-void QDeclarativeTextInput::setCursorPosition(int cp)
+void QDeclarativeTextInput::setCursorPosition( int cp )
 {
-   Q_D(QDeclarativeTextInput);
-   if (cp < 0 || cp > d->control->text().length()) {
-      return;
-   }
-   d->control->moveCursor(cp);
+    Q_D( QDeclarativeTextInput );
+
+    if ( cp < 0 || cp > d->control->text().length() )
+    {
+        return;
+    }
+
+    d->control->moveCursor( cp );
 }
 
 /*!
@@ -540,13 +598,13 @@ void QDeclarativeTextInput::setCursorPosition(int cp)
 */
 QRect QDeclarativeTextInput::cursorRectangle() const
 {
-   Q_D(const QDeclarativeTextInput);
-   QRect r = d->control->cursorRect();
-   // Scroll and make consistent with TextEdit
-   // QLineControl inexplicably adds 1 to the height and horizontal padding
-   // for unicode direction markers.
-   r.adjust(5 - d->hscroll, 0, -4 - d->hscroll, -1);
-   return r;
+    Q_D( const QDeclarativeTextInput );
+    QRect r = d->control->cursorRect();
+    // Scroll and make consistent with TextEdit
+    // QLineControl inexplicably adds 1 to the height and horizontal padding
+    // for unicode direction markers.
+    r.adjust( 5 - d->hscroll, 0, -4 - d->hscroll, -1 );
+    return r;
 }
 
 /*!
@@ -561,8 +619,8 @@ QRect QDeclarativeTextInput::cursorRectangle() const
 */
 int QDeclarativeTextInput::selectionStart() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->lastSelectionStart;
+    Q_D( const QDeclarativeTextInput );
+    return d->lastSelectionStart;
 }
 
 /*!
@@ -577,8 +635,8 @@ int QDeclarativeTextInput::selectionStart() const
 */
 int QDeclarativeTextInput::selectionEnd() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->lastSelectionEnd;
+    Q_D( const QDeclarativeTextInput );
+    return d->lastSelectionEnd;
 }
 
 /*!
@@ -594,13 +652,16 @@ int QDeclarativeTextInput::selectionEnd() const
 
     \sa selectionStart, selectionEnd
 */
-void QDeclarativeTextInput::select(int start, int end)
+void QDeclarativeTextInput::select( int start, int end )
 {
-   Q_D(QDeclarativeTextInput);
-   if (start < 0 || end < 0 || start > d->control->text().length() || end > d->control->text().length()) {
-      return;
-   }
-   d->control->setSelection(start, end - start);
+    Q_D( QDeclarativeTextInput );
+
+    if ( start < 0 || end < 0 || start > d->control->text().length() || end > d->control->text().length() )
+    {
+        return;
+    }
+
+    d->control->setSelection( start, end - start );
 }
 
 /*!
@@ -619,8 +680,8 @@ void QDeclarativeTextInput::select(int start, int end)
 */
 QString QDeclarativeTextInput::selectedText() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->selectedText();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->selectedText();
 }
 
 /*!
@@ -631,20 +692,22 @@ QString QDeclarativeTextInput::selectedText() const
 */
 bool QDeclarativeTextInput::focusOnPress() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->focusOnPress;
+    Q_D( const QDeclarativeTextInput );
+    return d->focusOnPress;
 }
 
-void QDeclarativeTextInput::setFocusOnPress(bool b)
+void QDeclarativeTextInput::setFocusOnPress( bool b )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->focusOnPress == b) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->focusOnPress = b;
+    if ( d->focusOnPress == b )
+    {
+        return;
+    }
 
-   emit activeFocusOnPressChanged(d->focusOnPress);
+    d->focusOnPress = b;
+
+    emit activeFocusOnPressChanged( d->focusOnPress );
 }
 
 /*!
@@ -655,22 +718,24 @@ void QDeclarativeTextInput::setFocusOnPress(bool b)
 */
 bool QDeclarativeTextInput::autoScroll() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->autoScroll;
+    Q_D( const QDeclarativeTextInput );
+    return d->autoScroll;
 }
 
-void QDeclarativeTextInput::setAutoScroll(bool b)
+void QDeclarativeTextInput::setAutoScroll( bool b )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->autoScroll == b) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->autoScroll = b;
-   //We need to repaint so that the scrolling is taking into account.
-   updateSize(true);
-   updateCursorRectangle();
-   emit autoScrollChanged(d->autoScroll);
+    if ( d->autoScroll == b )
+    {
+        return;
+    }
+
+    d->autoScroll = b;
+    //We need to repaint so that the scrolling is taking into account.
+    updateSize( true );
+    updateCursorRectangle();
+    emit autoScrollChanged( d->autoScroll );
 }
 
 /*!
@@ -779,25 +844,29 @@ void QDeclarativeTextInput::setAutoScroll(bool b)
 #ifndef QT_NO_VALIDATOR
 QValidator *QDeclarativeTextInput::validator() const
 {
-   Q_D(const QDeclarativeTextInput);
-   //###const cast isn't good, but needed for property system?
-   return const_cast<QValidator *>(d->control->validator());
+    Q_D( const QDeclarativeTextInput );
+    //###const cast isn't good, but needed for property system?
+    return const_cast<QValidator *>( d->control->validator() );
 }
 
-void QDeclarativeTextInput::setValidator(QValidator *v)
+void QDeclarativeTextInput::setValidator( QValidator *v )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->control->validator() == v) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->control->setValidator(v);
-   if (!d->control->hasAcceptableInput()) {
-      d->oldValidity = false;
-      emit acceptableInputChanged();
-   }
+    if ( d->control->validator() == v )
+    {
+        return;
+    }
 
-   emit validatorChanged();
+    d->control->setValidator( v );
+
+    if ( !d->control->hasAcceptableInput() )
+    {
+        d->oldValidity = false;
+        emit acceptableInputChanged();
+    }
+
+    emit validatorChanged();
 }
 #endif // QT_NO_VALIDATOR
 
@@ -812,19 +881,21 @@ void QDeclarativeTextInput::setValidator(QValidator *v)
 */
 QString QDeclarativeTextInput::inputMask() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->inputMask();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->inputMask();
 }
 
-void QDeclarativeTextInput::setInputMask(const QString &im)
+void QDeclarativeTextInput::setInputMask( const QString &im )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->control->inputMask() == im) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->control->setInputMask(im);
-   emit inputMaskChanged(d->control->inputMask());
+    if ( d->control->inputMask() == im )
+    {
+        return;
+    }
+
+    d->control->setInputMask( im );
+    emit inputMaskChanged( d->control->inputMask() );
 }
 
 /*!
@@ -837,8 +908,8 @@ void QDeclarativeTextInput::setInputMask(const QString &im)
 */
 bool QDeclarativeTextInput::hasAcceptableInput() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->hasAcceptableInput();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->hasAcceptableInput();
 }
 
 /*!
@@ -852,18 +923,25 @@ bool QDeclarativeTextInput::hasAcceptableInput() const
 
 void QDeclarativeTextInputPrivate::updateInputMethodHints()
 {
-   Q_Q(QDeclarativeTextInput);
-   Qt::InputMethodHints hints = inputMethodHints;
-   uint echo = control->echoMode();
-   if (echo == QDeclarativeTextInput::Password || echo == QDeclarativeTextInput::NoEcho) {
-      hints |= Qt::ImhHiddenText;
-   } else if (echo == QDeclarativeTextInput::PasswordEchoOnEdit) {
-      hints &= ~Qt::ImhHiddenText;
-   }
-   if (echo != QDeclarativeTextInput::Normal) {
-      hints |= (Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText);
-   }
-   q->setInputMethodHints(hints);
+    Q_Q( QDeclarativeTextInput );
+    Qt::InputMethodHints hints = inputMethodHints;
+    uint echo = control->echoMode();
+
+    if ( echo == QDeclarativeTextInput::Password || echo == QDeclarativeTextInput::NoEcho )
+    {
+        hints |= Qt::ImhHiddenText;
+    }
+    else if ( echo == QDeclarativeTextInput::PasswordEchoOnEdit )
+    {
+        hints &= ~Qt::ImhHiddenText;
+    }
+
+    if ( echo != QDeclarativeTextInput::Normal )
+    {
+        hints |= ( Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText );
+    }
+
+    q->setInputMethodHints( hints );
 }
 
 /*!
@@ -880,36 +958,42 @@ void QDeclarativeTextInputPrivate::updateInputMethodHints()
 */
 QDeclarativeTextInput::EchoMode QDeclarativeTextInput::echoMode() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return (QDeclarativeTextInput::EchoMode)d->control->echoMode();
+    Q_D( const QDeclarativeTextInput );
+    return ( QDeclarativeTextInput::EchoMode )d->control->echoMode();
 }
 
-void QDeclarativeTextInput::setEchoMode(QDeclarativeTextInput::EchoMode echo)
+void QDeclarativeTextInput::setEchoMode( QDeclarativeTextInput::EchoMode echo )
 {
-   Q_D(QDeclarativeTextInput);
-   if (echoMode() == echo) {
-      return;
-   }
-   d->control->setEchoMode((uint)echo);
-   d->updateInputMethodHints();
-   q_textChanged();
-   emit echoModeChanged(echoMode());
+    Q_D( QDeclarativeTextInput );
+
+    if ( echoMode() == echo )
+    {
+        return;
+    }
+
+    d->control->setEchoMode( ( uint )echo );
+    d->updateInputMethodHints();
+    q_textChanged();
+    emit echoModeChanged( echoMode() );
 }
 
 Qt::InputMethodHints QDeclarativeTextInput::imHints() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->inputMethodHints;
+    Q_D( const QDeclarativeTextInput );
+    return d->inputMethodHints;
 }
 
-void QDeclarativeTextInput::setIMHints(Qt::InputMethodHints hints)
+void QDeclarativeTextInput::setIMHints( Qt::InputMethodHints hints )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->inputMethodHints == hints) {
-      return;
-   }
-   d->inputMethodHints = hints;
-   d->updateInputMethodHints();
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->inputMethodHints == hints )
+    {
+        return;
+    }
+
+    d->inputMethodHints = hints;
+    d->updateInputMethodHints();
 }
 
 /*!
@@ -927,67 +1011,86 @@ void QDeclarativeTextInput::setIMHints(Qt::InputMethodHints hints)
 */
 QDeclarativeComponent *QDeclarativeTextInput::cursorDelegate() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->cursorComponent;
+    Q_D( const QDeclarativeTextInput );
+    return d->cursorComponent;
 }
 
-void QDeclarativeTextInput::setCursorDelegate(QDeclarativeComponent *c)
+void QDeclarativeTextInput::setCursorDelegate( QDeclarativeComponent *c )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->cursorComponent == c) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   d->cursorComponent = c;
-   if (!c) {
-      //note that the components are owned by something else
-      delete d->cursorItem;
-   } else {
-      d->startCreatingCursor();
-   }
+    if ( d->cursorComponent == c )
+    {
+        return;
+    }
 
-   emit cursorDelegateChanged();
+    d->cursorComponent = c;
+
+    if ( !c )
+    {
+        //note that the components are owned by something else
+        delete d->cursorItem;
+    }
+    else
+    {
+        d->startCreatingCursor();
+    }
+
+    emit cursorDelegateChanged();
 }
 
 void QDeclarativeTextInputPrivate::startCreatingCursor()
 {
-   Q_Q(QDeclarativeTextInput);
-   if (cursorComponent->isReady()) {
-      q->createCursor();
-   } else if (cursorComponent->isLoading()) {
-      q->connect(cursorComponent, SIGNAL(statusChanged(int)),
-                 q, SLOT(createCursor()));
-   } else {//isError
-      qmlInfo(q, cursorComponent->errors()) << QDeclarativeTextInput::tr("Could not load cursor delegate");
-   }
+    Q_Q( QDeclarativeTextInput );
+
+    if ( cursorComponent->isReady() )
+    {
+        q->createCursor();
+    }
+    else if ( cursorComponent->isLoading() )
+    {
+        q->connect( cursorComponent, SIGNAL( statusChanged( int ) ),
+                    q, SLOT( createCursor() ) );
+    }
+    else    //isError
+    {
+        qmlInfo( q, cursorComponent->errors() ) << QDeclarativeTextInput::tr( "Could not load cursor delegate" );
+    }
 }
 
 void QDeclarativeTextInput::createCursor()
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->cursorComponent->isError()) {
-      qmlInfo(this, d->cursorComponent->errors()) << tr("Could not load cursor delegate");
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
 
-   if (!d->cursorComponent->isReady()) {
-      return;
-   }
+    if ( d->cursorComponent->isError() )
+    {
+        qmlInfo( this, d->cursorComponent->errors() ) << tr( "Could not load cursor delegate" );
+        return;
+    }
 
-   if (d->cursorItem) {
-      delete d->cursorItem;
-   }
-   d->cursorItem = qobject_cast<QDeclarativeItem *>(d->cursorComponent->create());
-   if (!d->cursorItem) {
-      qmlInfo(this, d->cursorComponent->errors()) << tr("Could not instantiate cursor delegate");
-      return;
-   }
+    if ( !d->cursorComponent->isReady() )
+    {
+        return;
+    }
 
-   QDeclarative_setParent_noEvent(d->cursorItem, this);
-   d->cursorItem->setParentItem(this);
-   d->cursorItem->setX(d->control->cursorToX());
-   d->cursorItem->setHeight(d->control->height() -
-                            1); // -1 to counter QLineControl's +1 which is not consistent with Text.
+    if ( d->cursorItem )
+    {
+        delete d->cursorItem;
+    }
+
+    d->cursorItem = qobject_cast<QDeclarativeItem *>( d->cursorComponent->create() );
+
+    if ( !d->cursorItem )
+    {
+        qmlInfo( this, d->cursorComponent->errors() ) << tr( "Could not instantiate cursor delegate" );
+        return;
+    }
+
+    QDeclarative_setParent_noEvent( d->cursorItem, this );
+    d->cursorItem->setParentItem( this );
+    d->cursorItem->setX( d->control->cursorToX() );
+    d->cursorItem->setHeight( d->control->height() -
+                              1 ); // -1 to counter QLineControl's +1 which is not consistent with Text.
 }
 
 /*!
@@ -999,21 +1102,24 @@ void QDeclarativeTextInput::createCursor()
     This is similar to setting the cursorPosition, and then querying the cursor
     rectangle, but the cursorPosition is not changed.
 */
-QRectF QDeclarativeTextInput::positionToRectangle(int pos) const
+QRectF QDeclarativeTextInput::positionToRectangle( int pos ) const
 {
-   Q_D(const QDeclarativeTextInput);
-   if (pos > d->control->cursorPosition()) {
-      pos += d->control->preeditAreaText().length();
-   }
-   return QRectF(d->control->cursorToX(pos) - d->hscroll,
-                 0.0,
-                 d->control->cursorWidth(),
-                 cursorRectangle().height());
+    Q_D( const QDeclarativeTextInput );
+
+    if ( pos > d->control->cursorPosition() )
+    {
+        pos += d->control->preeditAreaText().length();
+    }
+
+    return QRectF( d->control->cursorToX( pos ) - d->hscroll,
+                   0.0,
+                   d->control->cursorWidth(),
+                   cursorRectangle().height() );
 }
 
-int QDeclarativeTextInput::positionAt(int x) const
+int QDeclarativeTextInput::positionAt( int x ) const
 {
-   return positionAt(x, CursorBetweenCharacters);
+    return positionAt( x, CursorBetweenCharacters );
 }
 
 /*!
@@ -1035,406 +1141,548 @@ int QDeclarativeTextInput::positionAt(int x) const
     \o TextInput.CursorOnCharacter - Returns the position before the character that is nearest x.
     \endlist
 */
-int QDeclarativeTextInput::positionAt(int x, CursorPosition position) const
+int QDeclarativeTextInput::positionAt( int x, CursorPosition position ) const
 {
-   Q_D(const QDeclarativeTextInput);
-   int pos = d->control->xToPos(x + d->hscroll, QTextLine::CursorPosition(position));
-   const int cursor = d->control->cursor();
-   if (pos > cursor) {
-      const int preeditLength = d->control->preeditAreaText().length();
-      pos = pos > cursor + preeditLength
-            ? pos - preeditLength
-            : cursor;
-   }
-   return pos;
+    Q_D( const QDeclarativeTextInput );
+    int pos = d->control->xToPos( x + d->hscroll, QTextLine::CursorPosition( position ) );
+    const int cursor = d->control->cursor();
+
+    if ( pos > cursor )
+    {
+        const int preeditLength = d->control->preeditAreaText().length();
+        pos = pos > cursor + preeditLength
+              ? pos - preeditLength
+              : cursor;
+    }
+
+    return pos;
 }
 
-void QDeclarativeTextInputPrivate::focusChanged(bool hasFocus)
+void QDeclarativeTextInputPrivate::focusChanged( bool hasFocus )
 {
-   Q_Q(QDeclarativeTextInput);
-   focused = hasFocus;
-   q->setCursorVisible(hasFocus && scene && scene->hasFocus());
-   if (!hasFocus && control->passwordEchoEditing()) {
-      control->updatePasswordEchoEditing(false);   //QLineControl sets it on key events, but doesn't deal with focus events
-   }
-   if (!hasFocus) {
-      control->deselect();
-   }
-   QDeclarativeItemPrivate::focusChanged(hasFocus);
+    Q_Q( QDeclarativeTextInput );
+    focused = hasFocus;
+    q->setCursorVisible( hasFocus && scene && scene->hasFocus() );
+
+    if ( !hasFocus && control->passwordEchoEditing() )
+    {
+        control->updatePasswordEchoEditing( false ); //QLineControl sets it on key events, but doesn't deal with focus events
+    }
+
+    if ( !hasFocus )
+    {
+        control->deselect();
+    }
+
+    QDeclarativeItemPrivate::focusChanged( hasFocus );
 }
 
-void QDeclarativeTextInput::keyPressEvent(QKeyEvent *ev)
+void QDeclarativeTextInput::keyPressEvent( QKeyEvent *ev )
 {
-   Q_D(QDeclarativeTextInput);
-   keyPressPreHandler(ev);
-   if (ev->isAccepted()) {
-      return;
-   }
+    Q_D( QDeclarativeTextInput );
+    keyPressPreHandler( ev );
 
-   // Don't allow MacOSX up/down support, and we don't allow a completer.
-   bool ignore = (ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down) && ev->modifiers() == Qt::NoModifier;
-   if (!ignore && (d->lastSelectionStart == d->lastSelectionEnd) && (ev->key() == Qt::Key_Right ||
-         ev->key() == Qt::Key_Left)) {
-      // Ignore when moving off the end unless there is a selection,
-      // because then moving will do something (deselect).
-      int cursorPosition = d->control->cursor();
-      if (cursorPosition == 0) {
-         ignore = ev->key() == (d->control->layoutDirection() == Qt::LeftToRight ? Qt::Key_Left : Qt::Key_Right);
-      }
-      if (!ignore && cursorPosition == d->control->text().length()) {
-         ignore = ev->key() == (d->control->layoutDirection() == Qt::LeftToRight ? Qt::Key_Right : Qt::Key_Left);
-      }
-   }
-   if (ignore) {
-      ev->ignore();
-   } else {
-      d->control->processKeyEvent(ev);
-   }
-   if (!ev->isAccepted()) {
-      QDeclarativePaintedItem::keyPressEvent(ev);
-   }
+    if ( ev->isAccepted() )
+    {
+        return;
+    }
+
+    // Don't allow MacOSX up/down support, and we don't allow a completer.
+    bool ignore = ( ev->key() == Qt::Key_Up || ev->key() == Qt::Key_Down ) && ev->modifiers() == Qt::NoModifier;
+
+    if ( !ignore && ( d->lastSelectionStart == d->lastSelectionEnd ) && ( ev->key() == Qt::Key_Right ||
+            ev->key() == Qt::Key_Left ) )
+    {
+        // Ignore when moving off the end unless there is a selection,
+        // because then moving will do something (deselect).
+        int cursorPosition = d->control->cursor();
+
+        if ( cursorPosition == 0 )
+        {
+            ignore = ev->key() == ( d->control->layoutDirection() == Qt::LeftToRight ? Qt::Key_Left : Qt::Key_Right );
+        }
+
+        if ( !ignore && cursorPosition == d->control->text().length() )
+        {
+            ignore = ev->key() == ( d->control->layoutDirection() == Qt::LeftToRight ? Qt::Key_Right : Qt::Key_Left );
+        }
+    }
+
+    if ( ignore )
+    {
+        ev->ignore();
+    }
+    else
+    {
+        d->control->processKeyEvent( ev );
+    }
+
+    if ( !ev->isAccepted() )
+    {
+        QDeclarativePaintedItem::keyPressEvent( ev );
+    }
 }
 
-void QDeclarativeTextInput::inputMethodEvent(QInputMethodEvent *ev)
+void QDeclarativeTextInput::inputMethodEvent( QInputMethodEvent *ev )
 {
-   Q_D(QDeclarativeTextInput);
-   ev->ignore();
-   const bool wasComposing = d->control->preeditAreaText().length() > 0;
-   inputMethodPreHandler(ev);
-   if (!ev->isAccepted()) {
-      if (d->control->isReadOnly()) {
-         ev->ignore();
-      } else {
-         d->control->processInputMethodEvent(ev);
-      }
-   }
-   if (!ev->isAccepted()) {
-      QDeclarativePaintedItem::inputMethodEvent(ev);
-   }
+    Q_D( QDeclarativeTextInput );
+    ev->ignore();
+    const bool wasComposing = d->control->preeditAreaText().length() > 0;
+    inputMethodPreHandler( ev );
 
-   if (wasComposing != (d->control->preeditAreaText().length() > 0)) {
-      emit inputMethodComposingChanged();
-   }
-}
+    if ( !ev->isAccepted() )
+    {
+        if ( d->control->isReadOnly() )
+        {
+            ev->ignore();
+        }
+        else
+        {
+            d->control->processInputMethodEvent( ev );
+        }
+    }
 
-/*!
-\overload
-Handles the given mouse \a event.
-*/
-void QDeclarativeTextInput::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
-{
-   Q_D(QDeclarativeTextInput);
-   if (d->sendMouseEventToInputContext(event, QEvent::MouseButtonDblClick)) {
-      return;
-   }
-   if (d->selectByMouse) {
-      int cursor = d->xToPos(event->pos().x());
-      d->control->selectWordAtPos(cursor);
-      event->setAccepted(true);
-   } else {
-      QDeclarativePaintedItem::mouseDoubleClickEvent(event);
-   }
-}
+    if ( !ev->isAccepted() )
+    {
+        QDeclarativePaintedItem::inputMethodEvent( ev );
+    }
 
-void QDeclarativeTextInput::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-   Q_D(QDeclarativeTextInput);
-   if (d->sendMouseEventToInputContext(event, QEvent::MouseButtonPress)) {
-      return;
-   }
-   if (d->focusOnPress) {
-      bool hadActiveFocus = hasActiveFocus();
-      forceActiveFocus();
-      if (d->showInputPanelOnFocus) {
-         if (hasActiveFocus() && hadActiveFocus && !isReadOnly()) {
-            // re-open input panel on press if already focused
-            openSoftwareInputPanel();
-         }
-      } else { // show input panel on click
-         if (hasActiveFocus() && !hadActiveFocus) {
-            d->clickCausedFocus = true;
-         }
-      }
-   }
-   if (d->selectByMouse) {
-      setKeepMouseGrab(false);
-      d->selectPressed = true;
-      d->pressPos = event->pos();
-   }
-   bool mark = (event->modifiers() & Qt::ShiftModifier) && d->selectByMouse;
-   int cursor = d->xToPos(event->pos().x());
-   d->control->moveCursor(cursor, mark);
-   event->setAccepted(true);
-}
-
-void QDeclarativeTextInput::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-   Q_D(QDeclarativeTextInput);
-   if (d->sendMouseEventToInputContext(event, QEvent::MouseMove)) {
-      return;
-   }
-   if (d->selectPressed) {
-      if (qAbs(int(event->pos().x() - d->pressPos.x())) > QApplication::startDragDistance()) {
-         setKeepMouseGrab(true);
-      }
-      moveCursorSelection(d->xToPos(event->pos().x()), d->mouseSelectionMode);
-      event->setAccepted(true);
-   } else {
-      QDeclarativePaintedItem::mouseMoveEvent(event);
-   }
+    if ( wasComposing != ( d->control->preeditAreaText().length() > 0 ) )
+    {
+        emit inputMethodComposingChanged();
+    }
 }
 
 /*!
 \overload
 Handles the given mouse \a event.
 */
-void QDeclarativeTextInput::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void QDeclarativeTextInput::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->sendMouseEventToInputContext(event, QEvent::MouseButtonRelease)) {
-      return;
-   }
-   if (d->selectPressed) {
-      d->selectPressed = false;
-      setKeepMouseGrab(false);
-   }
-   if (!d->showInputPanelOnFocus) { // input panel on click
-      if (d->focusOnPress && !isReadOnly() && boundingRect().contains(event->pos())) {
-         if (QGraphicsView *view = qobject_cast<QGraphicsView *>(qApp->focusWidget())) {
-            if (view->scene() && view->scene() == scene()) {
-               qt_widget_private(view)->handleSoftwareInputPanel(event->button(), d->clickCausedFocus);
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->sendMouseEventToInputContext( event, QEvent::MouseButtonDblClick ) )
+    {
+        return;
+    }
+
+    if ( d->selectByMouse )
+    {
+        int cursor = d->xToPos( event->pos().x() );
+        d->control->selectWordAtPos( cursor );
+        event->setAccepted( true );
+    }
+    else
+    {
+        QDeclarativePaintedItem::mouseDoubleClickEvent( event );
+    }
+}
+
+void QDeclarativeTextInput::mousePressEvent( QGraphicsSceneMouseEvent *event )
+{
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->sendMouseEventToInputContext( event, QEvent::MouseButtonPress ) )
+    {
+        return;
+    }
+
+    if ( d->focusOnPress )
+    {
+        bool hadActiveFocus = hasActiveFocus();
+        forceActiveFocus();
+
+        if ( d->showInputPanelOnFocus )
+        {
+            if ( hasActiveFocus() && hadActiveFocus && !isReadOnly() )
+            {
+                // re-open input panel on press if already focused
+                openSoftwareInputPanel();
             }
-         }
-      }
-   }
-   d->clickCausedFocus = false;
-   d->control->processEvent(event);
-   if (!event->isAccepted()) {
-      QDeclarativePaintedItem::mouseReleaseEvent(event);
-   }
+        }
+        else     // show input panel on click
+        {
+            if ( hasActiveFocus() && !hadActiveFocus )
+            {
+                d->clickCausedFocus = true;
+            }
+        }
+    }
+
+    if ( d->selectByMouse )
+    {
+        setKeepMouseGrab( false );
+        d->selectPressed = true;
+        d->pressPos = event->pos();
+    }
+
+    bool mark = ( event->modifiers() & Qt::ShiftModifier ) && d->selectByMouse;
+    int cursor = d->xToPos( event->pos().x() );
+    d->control->moveCursor( cursor, mark );
+    event->setAccepted( true );
+}
+
+void QDeclarativeTextInput::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
+{
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->sendMouseEventToInputContext( event, QEvent::MouseMove ) )
+    {
+        return;
+    }
+
+    if ( d->selectPressed )
+    {
+        if ( qAbs( int( event->pos().x() - d->pressPos.x() ) ) > QApplication::startDragDistance() )
+        {
+            setKeepMouseGrab( true );
+        }
+
+        moveCursorSelection( d->xToPos( event->pos().x() ), d->mouseSelectionMode );
+        event->setAccepted( true );
+    }
+    else
+    {
+        QDeclarativePaintedItem::mouseMoveEvent( event );
+    }
+}
+
+/*!
+\overload
+Handles the given mouse \a event.
+*/
+void QDeclarativeTextInput::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
+{
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->sendMouseEventToInputContext( event, QEvent::MouseButtonRelease ) )
+    {
+        return;
+    }
+
+    if ( d->selectPressed )
+    {
+        d->selectPressed = false;
+        setKeepMouseGrab( false );
+    }
+
+    if ( !d->showInputPanelOnFocus ) // input panel on click
+    {
+        if ( d->focusOnPress && !isReadOnly() && boundingRect().contains( event->pos() ) )
+        {
+            if ( QGraphicsView *view = qobject_cast<QGraphicsView *>( qApp->focusWidget() ) )
+            {
+                if ( view->scene() && view->scene() == scene() )
+                {
+                    qt_widget_private( view )->handleSoftwareInputPanel( event->button(), d->clickCausedFocus );
+                }
+            }
+        }
+    }
+
+    d->clickCausedFocus = false;
+    d->control->processEvent( event );
+
+    if ( !event->isAccepted() )
+    {
+        QDeclarativePaintedItem::mouseReleaseEvent( event );
+    }
 }
 
 bool QDeclarativeTextInputPrivate::sendMouseEventToInputContext(
-   QGraphicsSceneMouseEvent *event, QEvent::Type eventType)
+    QGraphicsSceneMouseEvent *event, QEvent::Type eventType )
 {
 #if !defined QT_NO_IM
-   Q_Q(QDeclarativeTextInput);
+    Q_Q( QDeclarativeTextInput );
 
-   QWidget *widget = event->widget();
-   // event->widget() is null, if this is delayed event from QDeclarativeFlickable.
-   if (!widget && qApp) {
-      QGraphicsView *view = qobject_cast<QGraphicsView *>(qApp->focusWidget());
-      if (view && view->scene() && view->scene() == q->scene()) {
-         widget = view->viewport();
-      }
-   }
+    QWidget *widget = event->widget();
 
-   if (widget && control->composeMode()) {
-      int tmp_cursor = xToPos(event->pos().x());
-      int mousePos = tmp_cursor - control->cursor();
-      if (mousePos < 0 || mousePos > control->preeditAreaText().length()) {
-         mousePos = -1;
-         // don't send move events outside the preedit area
-         if (eventType == QEvent::MouseMove) {
+    // event->widget() is null, if this is delayed event from QDeclarativeFlickable.
+    if ( !widget && qApp )
+    {
+        QGraphicsView *view = qobject_cast<QGraphicsView *>( qApp->focusWidget() );
+
+        if ( view && view->scene() && view->scene() == q->scene() )
+        {
+            widget = view->viewport();
+        }
+    }
+
+    if ( widget && control->composeMode() )
+    {
+        int tmp_cursor = xToPos( event->pos().x() );
+        int mousePos = tmp_cursor - control->cursor();
+
+        if ( mousePos < 0 || mousePos > control->preeditAreaText().length() )
+        {
+            mousePos = -1;
+
+            // don't send move events outside the preedit area
+            if ( eventType == QEvent::MouseMove )
+            {
+                return true;
+            }
+        }
+
+        QInputContext *qic = widget->inputContext();
+
+        if ( qic )
+        {
+            QMouseEvent mouseEvent(
+                eventType,
+                widget->mapFromGlobal( event->screenPos() ),
+                event->screenPos(),
+                event->button(),
+                event->buttons(),
+                event->modifiers() );
+            // may be causing reset() in some input methods
+            qic->mouseHandler( mousePos, &mouseEvent );
+            event->setAccepted( mouseEvent.isAccepted() );
+        }
+
+        if ( !control->preeditAreaText().isEmpty() )
+        {
             return true;
-         }
-      }
+        }
+    }
 
-      QInputContext *qic = widget->inputContext();
-      if (qic) {
-         QMouseEvent mouseEvent(
-            eventType,
-            widget->mapFromGlobal(event->screenPos()),
-            event->screenPos(),
-            event->button(),
-            event->buttons(),
-            event->modifiers());
-         // may be causing reset() in some input methods
-         qic->mouseHandler(mousePos, &mouseEvent);
-         event->setAccepted(mouseEvent.isAccepted());
-      }
-      if (!control->preeditAreaText().isEmpty()) {
-         return true;
-      }
-   }
 #else
-   Q_UNUSED(event);
-   Q_UNUSED(eventType)
+    Q_UNUSED( event );
+    Q_UNUSED( eventType )
 #endif
 
-   return false;
+    return false;
 }
 
-bool QDeclarativeTextInput::sceneEvent(QEvent *event)
+bool QDeclarativeTextInput::sceneEvent( QEvent *event )
 {
-   Q_D(QDeclarativeTextInput);
-   bool rv = QDeclarativeItem::sceneEvent(event);
-   if (event->type() == QEvent::UngrabMouse) {
-      d->selectPressed = false;
-      setKeepMouseGrab(false);
-   }
-   return rv;
+    Q_D( QDeclarativeTextInput );
+    bool rv = QDeclarativeItem::sceneEvent( event );
+
+    if ( event->type() == QEvent::UngrabMouse )
+    {
+        d->selectPressed = false;
+        setKeepMouseGrab( false );
+    }
+
+    return rv;
 }
 
-bool QDeclarativeTextInput::event(QEvent *ev)
+bool QDeclarativeTextInput::event( QEvent *ev )
 {
-   Q_D(QDeclarativeTextInput);
-   //Anything we don't deal with ourselves, pass to the control
-   bool handled = false;
-   switch (ev->type()) {
-      case QEvent::KeyPress:
-      case QEvent::KeyRelease://###Should the control be doing anything with release?
-      case QEvent::InputMethod:
-      case QEvent::GraphicsSceneMousePress:
-      case QEvent::GraphicsSceneMouseMove:
-      case QEvent::GraphicsSceneMouseRelease:
-      case QEvent::GraphicsSceneMouseDoubleClick:
-         break;
-      default:
-         handled = d->control->processEvent(ev);
-   }
-   if (!handled) {
-      handled = QDeclarativePaintedItem::event(ev);
-   }
-   return handled;
+    Q_D( QDeclarativeTextInput );
+    //Anything we don't deal with ourselves, pass to the control
+    bool handled = false;
+
+    switch ( ev->type() )
+    {
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease://###Should the control be doing anything with release?
+        case QEvent::InputMethod:
+        case QEvent::GraphicsSceneMousePress:
+        case QEvent::GraphicsSceneMouseMove:
+        case QEvent::GraphicsSceneMouseRelease:
+        case QEvent::GraphicsSceneMouseDoubleClick:
+            break;
+
+        default:
+            handled = d->control->processEvent( ev );
+    }
+
+    if ( !handled )
+    {
+        handled = QDeclarativePaintedItem::event( ev );
+    }
+
+    return handled;
 }
 
-void QDeclarativeTextInput::geometryChanged(const QRectF &newGeometry,
-      const QRectF &oldGeometry)
+void QDeclarativeTextInput::geometryChanged( const QRectF &newGeometry,
+        const QRectF &oldGeometry )
 {
-   if (newGeometry.width() != oldGeometry.width()) {
-      updateSize();
-      updateCursorRectangle();
-   }
-   QDeclarativePaintedItem::geometryChanged(newGeometry, oldGeometry);
+    if ( newGeometry.width() != oldGeometry.width() )
+    {
+        updateSize();
+        updateCursorRectangle();
+    }
+
+    QDeclarativePaintedItem::geometryChanged( newGeometry, oldGeometry );
 }
 
 int QDeclarativeTextInputPrivate::calculateTextWidth()
 {
-   return qRound(control->naturalTextWidth());
+    return qRound( control->naturalTextWidth() );
 }
 
 void QDeclarativeTextInputPrivate::updateHorizontalScroll()
 {
-   Q_Q(QDeclarativeTextInput);
-   const int preeditLength = control->preeditAreaText().length();
-   int cix = qRound(control->cursorToX(control->cursor() + preeditLength));
-   QRect br(q->boundingRect().toRect());
-   int widthUsed = calculateTextWidth();
+    Q_Q( QDeclarativeTextInput );
+    const int preeditLength = control->preeditAreaText().length();
+    int cix = qRound( control->cursorToX( control->cursor() + preeditLength ) );
+    QRect br( q->boundingRect().toRect() );
+    int widthUsed = calculateTextWidth();
 
-   QDeclarativeTextInput::HAlignment effectiveHAlign = q->effectiveHAlign();
-   if (autoScroll) {
-      if (widthUsed <=  br.width()) {
-         // text fits in br; use hscroll for alignment
-         switch (effectiveHAlign & ~(Qt::AlignAbsolute | Qt::AlignVertical_Mask)) {
-            case Qt::AlignRight:
-               hscroll = widthUsed - br.width() - 1;
-               break;
-            case Qt::AlignHCenter:
-               hscroll = (widthUsed - br.width()) / 2;
-               break;
-            default:
-               // Left
-               hscroll = 0;
-               break;
-         }
-      } else if (cix - hscroll >= br.width()) {
-         // text doesn't fit, cursor is to the right of br (scroll right)
-         hscroll = cix - br.width() + 1;
-      } else if (cix - hscroll < 0 && hscroll < widthUsed) {
-         // text doesn't fit, cursor is to the left of br (scroll left)
-         hscroll = cix;
-      } else if (widthUsed - hscroll < br.width()) {
-         // text doesn't fit, text document is to the left of br; align
-         // right
-         hscroll = widthUsed - br.width() + 1;
-      }
-      if (preeditLength > 0) {
-         // check to ensure long pre-edit text doesn't push the cursor
-         // off to the left
-         cix = qRound(control->cursorToX(
-                         control->cursor() + qMax(0, control->preeditCursor() - 1)));
-         if (cix < hscroll) {
+    QDeclarativeTextInput::HAlignment effectiveHAlign = q->effectiveHAlign();
+
+    if ( autoScroll )
+    {
+        if ( widthUsed <=  br.width() )
+        {
+            // text fits in br; use hscroll for alignment
+            switch ( effectiveHAlign & ~( Qt::AlignAbsolute | Qt::AlignVertical_Mask ) )
+            {
+                case Qt::AlignRight:
+                    hscroll = widthUsed - br.width() - 1;
+                    break;
+
+                case Qt::AlignHCenter:
+                    hscroll = ( widthUsed - br.width() ) / 2;
+                    break;
+
+                default:
+                    // Left
+                    hscroll = 0;
+                    break;
+            }
+        }
+        else if ( cix - hscroll >= br.width() )
+        {
+            // text doesn't fit, cursor is to the right of br (scroll right)
+            hscroll = cix - br.width() + 1;
+        }
+        else if ( cix - hscroll < 0 && hscroll < widthUsed )
+        {
+            // text doesn't fit, cursor is to the left of br (scroll left)
             hscroll = cix;
-         }
-      }
-   } else {
-      switch (effectiveHAlign) {
-         case QDeclarativeTextInput::AlignRight:
-            hscroll = q->width() - widthUsed;
-            break;
-         case QDeclarativeTextInput::AlignHCenter:
-            hscroll = (q->width() - widthUsed) / 2;
-            break;
-         default:
-            // Left
-            hscroll = 0;
-            break;
-      }
-   }
+        }
+        else if ( widthUsed - hscroll < br.width() )
+        {
+            // text doesn't fit, text document is to the left of br; align
+            // right
+            hscroll = widthUsed - br.width() + 1;
+        }
+
+        if ( preeditLength > 0 )
+        {
+            // check to ensure long pre-edit text doesn't push the cursor
+            // off to the left
+            cix = qRound( control->cursorToX(
+                              control->cursor() + qMax( 0, control->preeditCursor() - 1 ) ) );
+
+            if ( cix < hscroll )
+            {
+                hscroll = cix;
+            }
+        }
+    }
+    else
+    {
+        switch ( effectiveHAlign )
+        {
+            case QDeclarativeTextInput::AlignRight:
+                hscroll = q->width() - widthUsed;
+                break;
+
+            case QDeclarativeTextInput::AlignHCenter:
+                hscroll = ( q->width() - widthUsed ) / 2;
+                break;
+
+            default:
+                // Left
+                hscroll = 0;
+                break;
+        }
+    }
 }
 
-void QDeclarativeTextInput::drawContents(QPainter *p, const QRect &r)
+void QDeclarativeTextInput::drawContents( QPainter *p, const QRect &r )
 {
-   Q_D(QDeclarativeTextInput);
-   p->setRenderHint(QPainter::TextAntialiasing, true);
-   p->save();
-   p->setPen(QPen(d->color));
-   int flags = QLineControl::DrawText;
-   if (!isReadOnly() && d->cursorVisible && !d->cursorItem) {
-      flags |= QLineControl::DrawCursor;
-   }
-   if (d->control->hasSelectedText()) {
-      flags |= QLineControl::DrawSelections;
-   }
-   QPoint offset = QPoint(0, 0);
-   QFontMetrics fm = QFontMetrics(d->font);
-   QRect br(boundingRect().toRect());
-   if (d->autoScroll) {
-      // the y offset is there to keep the baseline constant in case we have script changes in the text.
-      offset = br.topLeft() - QPoint(d->hscroll, d->control->ascent() - fm.ascent());
-   } else {
-      offset = QPoint(d->hscroll, 0);
-   }
-   d->control->draw(p, offset, r, flags);
-   p->restore();
+    Q_D( QDeclarativeTextInput );
+    p->setRenderHint( QPainter::TextAntialiasing, true );
+    p->save();
+    p->setPen( QPen( d->color ) );
+    int flags = QLineControl::DrawText;
+
+    if ( !isReadOnly() && d->cursorVisible && !d->cursorItem )
+    {
+        flags |= QLineControl::DrawCursor;
+    }
+
+    if ( d->control->hasSelectedText() )
+    {
+        flags |= QLineControl::DrawSelections;
+    }
+
+    QPoint offset = QPoint( 0, 0 );
+    QFontMetrics fm = QFontMetrics( d->font );
+    QRect br( boundingRect().toRect() );
+
+    if ( d->autoScroll )
+    {
+        // the y offset is there to keep the baseline constant in case we have script changes in the text.
+        offset = br.topLeft() - QPoint( d->hscroll, d->control->ascent() - fm.ascent() );
+    }
+    else
+    {
+        offset = QPoint( d->hscroll, 0 );
+    }
+
+    d->control->draw( p, offset, r, flags );
+    p->restore();
 }
 
 /*!
 \overload
 Returns the value of the given \a property.
 */
-QVariant QDeclarativeTextInput::inputMethodQuery(Qt::InputMethodQuery property) const
+QVariant QDeclarativeTextInput::inputMethodQuery( Qt::InputMethodQuery property ) const
 {
-   Q_D(const QDeclarativeTextInput);
-   switch (property) {
-      case Qt::ImMicroFocus:
-         return cursorRectangle();
-      case Qt::ImFont:
-         return font();
-      case Qt::ImCursorPosition:
-         return QVariant(d->control->cursor());
-      case Qt::ImSurroundingText:
-         if (d->control->echoMode() == PasswordEchoOnEdit && !d->control->passwordEchoEditing()) {
-            return QVariant(displayText());
-         } else {
-            return QVariant(text());
-         }
-      case Qt::ImCurrentSelection:
-         return QVariant(selectedText());
-      case Qt::ImMaximumTextLength:
-         return QVariant(maxLength());
-      case Qt::ImAnchorPosition:
-         if (d->control->selectionStart() == d->control->selectionEnd()) {
-            return QVariant(d->control->cursor());
-         } else if (d->control->selectionStart() == d->control->cursor()) {
-            return QVariant(d->control->selectionEnd());
-         } else {
-            return QVariant(d->control->selectionStart());
-         }
-      default:
-         return QVariant();
-   }
+    Q_D( const QDeclarativeTextInput );
+
+    switch ( property )
+    {
+        case Qt::ImMicroFocus:
+            return cursorRectangle();
+
+        case Qt::ImFont:
+            return font();
+
+        case Qt::ImCursorPosition:
+            return QVariant( d->control->cursor() );
+
+        case Qt::ImSurroundingText:
+            if ( d->control->echoMode() == PasswordEchoOnEdit && !d->control->passwordEchoEditing() )
+            {
+                return QVariant( displayText() );
+            }
+            else
+            {
+                return QVariant( text() );
+            }
+
+        case Qt::ImCurrentSelection:
+            return QVariant( selectedText() );
+
+        case Qt::ImMaximumTextLength:
+            return QVariant( maxLength() );
+
+        case Qt::ImAnchorPosition:
+            if ( d->control->selectionStart() == d->control->selectionEnd() )
+            {
+                return QVariant( d->control->cursor() );
+            }
+            else if ( d->control->selectionStart() == d->control->cursor() )
+            {
+                return QVariant( d->control->selectionEnd() );
+            }
+            else
+            {
+                return QVariant( d->control->selectionStart() );
+            }
+
+        default:
+            return QVariant();
+    }
 }
 
 /*!
@@ -1445,8 +1693,8 @@ QVariant QDeclarativeTextInput::inputMethodQuery(Qt::InputMethodQuery property) 
 */
 void QDeclarativeTextInput::deselect()
 {
-   Q_D(QDeclarativeTextInput);
-   d->control->deselect();
+    Q_D( QDeclarativeTextInput );
+    d->control->deselect();
 }
 
 /*!
@@ -1456,8 +1704,8 @@ void QDeclarativeTextInput::deselect()
 */
 void QDeclarativeTextInput::selectAll()
 {
-   Q_D(QDeclarativeTextInput);
-   d->control->setSelection(0, d->control->text().length());
+    Q_D( QDeclarativeTextInput );
+    d->control->setSelection( 0, d->control->text().length() );
 }
 
 /*!
@@ -1466,15 +1714,19 @@ void QDeclarativeTextInput::selectAll()
     Returns true if the natural reading direction of the editor text
     found between positions \a start and \a end is right to left.
 */
-bool QDeclarativeTextInput::isRightToLeft(int start, int end)
+bool QDeclarativeTextInput::isRightToLeft( int start, int end )
 {
-   Q_D(QDeclarativeTextInput);
-   if (start > end) {
-      qmlInfo(this) << "isRightToLeft(start, end) called with the end property being smaller than the start.";
-      return false;
-   } else {
-      return d->control->text().mid(start, end - start).isRightToLeft();
-   }
+    Q_D( QDeclarativeTextInput );
+
+    if ( start > end )
+    {
+        qmlInfo( this ) << "isRightToLeft(start, end) called with the end property being smaller than the start.";
+        return false;
+    }
+    else
+    {
+        return d->control->text().mid( start, end - start ).isRightToLeft();
+    }
 }
 
 #ifndef QT_NO_CLIPBOARD
@@ -1485,9 +1737,9 @@ bool QDeclarativeTextInput::isRightToLeft(int start, int end)
 */
 void QDeclarativeTextInput::cut()
 {
-   Q_D(QDeclarativeTextInput);
-   d->control->copy();
-   d->control->del();
+    Q_D( QDeclarativeTextInput );
+    d->control->copy();
+    d->control->del();
 }
 
 /*!
@@ -1497,8 +1749,8 @@ void QDeclarativeTextInput::cut()
 */
 void QDeclarativeTextInput::copy()
 {
-   Q_D(QDeclarativeTextInput);
-   d->control->copy();
+    Q_D( QDeclarativeTextInput );
+    d->control->copy();
 }
 
 /*!
@@ -1508,10 +1760,12 @@ void QDeclarativeTextInput::copy()
 */
 void QDeclarativeTextInput::paste()
 {
-   Q_D(QDeclarativeTextInput);
-   if (!d->control->isReadOnly()) {
-      d->control->paste();
-   }
+    Q_D( QDeclarativeTextInput );
+
+    if ( !d->control->isReadOnly() )
+    {
+        d->control->paste();
+    }
 }
 #endif // QT_NO_CLIPBOARD
 
@@ -1522,8 +1776,8 @@ void QDeclarativeTextInput::paste()
 */
 void QDeclarativeTextInput::selectWord()
 {
-   Q_D(QDeclarativeTextInput);
-   d->control->selectWordAtPos(d->control->cursor());
+    Q_D( QDeclarativeTextInput );
+    d->control->selectWordAtPos( d->control->cursor() );
 }
 
 /*!
@@ -1552,22 +1806,28 @@ void QDeclarativeTextInput::selectWord()
 */
 QString QDeclarativeTextInput::passwordCharacter() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return QString(d->control->passwordCharacter());
+    Q_D( const QDeclarativeTextInput );
+    return QString( d->control->passwordCharacter() );
 }
 
-void QDeclarativeTextInput::setPasswordCharacter(const QString &str)
+void QDeclarativeTextInput::setPasswordCharacter( const QString &str )
 {
-   Q_D(QDeclarativeTextInput);
-   if (str.length() < 1) {
-      return;
-   }
-   d->control->setPasswordCharacter(str.constData()[0]);
-   EchoMode echoMode_ = echoMode();
-   if (echoMode_ == Password || echoMode_ == PasswordEchoOnEdit) {
-      updateSize();
-   }
-   emit passwordCharacterChanged();
+    Q_D( QDeclarativeTextInput );
+
+    if ( str.length() < 1 )
+    {
+        return;
+    }
+
+    d->control->setPasswordCharacter( str.constData()[0] );
+    EchoMode echoMode_ = echoMode();
+
+    if ( echoMode_ == Password || echoMode_ == PasswordEchoOnEdit )
+    {
+        updateSize();
+    }
+
+    emit passwordCharacterChanged();
 }
 
 /*!
@@ -1582,8 +1842,8 @@ void QDeclarativeTextInput::setPasswordCharacter(const QString &str)
 */
 QString QDeclarativeTextInput::displayText() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->displayText();
+    Q_D( const QDeclarativeTextInput );
+    return d->control->displayText();
 }
 
 /*!
@@ -1598,17 +1858,19 @@ QString QDeclarativeTextInput::displayText() const
 */
 bool QDeclarativeTextInput::selectByMouse() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->selectByMouse;
+    Q_D( const QDeclarativeTextInput );
+    return d->selectByMouse;
 }
 
-void QDeclarativeTextInput::setSelectByMouse(bool on)
+void QDeclarativeTextInput::setSelectByMouse( bool on )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->selectByMouse != on) {
-      d->selectByMouse = on;
-      emit selectByMouseChanged(on);
-   }
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->selectByMouse != on )
+    {
+        d->selectByMouse = on;
+        emit selectByMouseChanged( on );
+    }
 }
 
 /*!
@@ -1627,17 +1889,19 @@ void QDeclarativeTextInput::setSelectByMouse(bool on)
 
 QDeclarativeTextInput::SelectionMode QDeclarativeTextInput::mouseSelectionMode() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->mouseSelectionMode;
+    Q_D( const QDeclarativeTextInput );
+    return d->mouseSelectionMode;
 }
 
-void QDeclarativeTextInput::setMouseSelectionMode(SelectionMode mode)
+void QDeclarativeTextInput::setMouseSelectionMode( SelectionMode mode )
 {
-   Q_D(QDeclarativeTextInput);
-   if (d->mouseSelectionMode != mode) {
-      d->mouseSelectionMode = mode;
-      emit mouseSelectionModeChanged(mode);
-   }
+    Q_D( QDeclarativeTextInput );
+
+    if ( d->mouseSelectionMode != mode )
+    {
+        d->mouseSelectionMode = mode;
+        emit mouseSelectionModeChanged( mode );
+    }
 }
 
 /*!
@@ -1649,14 +1913,14 @@ void QDeclarativeTextInput::setMouseSelectionMode(SelectionMode mode)
 */
 bool QDeclarativeTextInput::canPaste() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->canPaste;
+    Q_D( const QDeclarativeTextInput );
+    return d->canPaste;
 }
 
-void QDeclarativeTextInput::moveCursorSelection(int position)
+void QDeclarativeTextInput::moveCursorSelection( int position )
 {
-   Q_D(QDeclarativeTextInput);
-   d->control->moveCursor(position, true);
+    Q_D( QDeclarativeTextInput );
+    d->control->moveCursor( position, true );
 }
 
 /*!
@@ -1697,63 +1961,87 @@ void QDeclarativeTextInput::moveCursorSelection(int position)
     The same sequence with TextInput.SelectWords will extend the selection start to a word boundary
     before or on position 5 and extend the selection end to a word boundary on or past position 9.
 */
-void QDeclarativeTextInput::moveCursorSelection(int pos, SelectionMode mode)
+void QDeclarativeTextInput::moveCursorSelection( int pos, SelectionMode mode )
 {
-   Q_D(QDeclarativeTextInput);
+    Q_D( QDeclarativeTextInput );
 
-   if (mode == SelectCharacters) {
-      d->control->moveCursor(pos, true);
-   } else if (pos != d->control->cursor()) {
-      const int cursor = d->control->cursor();
-      int anchor;
-      if (!d->control->hasSelectedText()) {
-         anchor = d->control->cursor();
-      } else if (d->control->selectionStart() == d->control->cursor()) {
-         anchor = d->control->selectionEnd();
-      } else {
-         anchor = d->control->selectionStart();
-      }
+    if ( mode == SelectCharacters )
+    {
+        d->control->moveCursor( pos, true );
+    }
+    else if ( pos != d->control->cursor() )
+    {
+        const int cursor = d->control->cursor();
+        int anchor;
 
-      if (anchor < pos || (anchor == pos && cursor < pos)) {
-         const QString text = d->control->text();
-         QTextBoundaryFinder finder(QTextBoundaryFinder::Word, text);
-         finder.setPosition(anchor);
+        if ( !d->control->hasSelectedText() )
+        {
+            anchor = d->control->cursor();
+        }
+        else if ( d->control->selectionStart() == d->control->cursor() )
+        {
+            anchor = d->control->selectionEnd();
+        }
+        else
+        {
+            anchor = d->control->selectionStart();
+        }
 
-         const QTextBoundaryFinder::BoundaryReasons reasons = finder.boundaryReasons();
-         if (anchor < text.length() && (!(reasons & QTextBoundaryFinder::StartWord)
-                                        || ((reasons & QTextBoundaryFinder::EndWord) && anchor > cursor))) {
-            finder.toPreviousBoundary();
-         }
-         anchor = finder.position() != -1 ? finder.position() : 0;
+        if ( anchor < pos || ( anchor == pos && cursor < pos ) )
+        {
+            const QString text = d->control->text();
+            QTextBoundaryFinder finder( QTextBoundaryFinder::Word, text );
+            finder.setPosition( anchor );
 
-         finder.setPosition(pos);
-         if (pos > 0 && !finder.boundaryReasons()) {
-            finder.toNextBoundary();
-         }
-         const int cursor = finder.position() != -1 ? finder.position() : text.length();
+            const QTextBoundaryFinder::BoundaryReasons reasons = finder.boundaryReasons();
 
-         d->control->setSelection(anchor, cursor - anchor);
-      } else if (anchor > pos || (anchor == pos && cursor > pos)) {
-         const QString text = d->control->text();
-         QTextBoundaryFinder finder(QTextBoundaryFinder::Word, text);
-         finder.setPosition(anchor);
+            if ( anchor < text.length() && ( !( reasons & QTextBoundaryFinder::StartWord )
+                                             || ( ( reasons & QTextBoundaryFinder::EndWord ) && anchor > cursor ) ) )
+            {
+                finder.toPreviousBoundary();
+            }
 
-         const QTextBoundaryFinder::BoundaryReasons reasons = finder.boundaryReasons();
-         if (anchor > 0 && (!(reasons & QTextBoundaryFinder::EndWord)
-                            || ((reasons & QTextBoundaryFinder::StartWord) && anchor < cursor))) {
-            finder.toNextBoundary();
-         }
-         anchor = finder.position() != -1 ? finder.position() : text.length();
+            anchor = finder.position() != -1 ? finder.position() : 0;
 
-         finder.setPosition(pos);
-         if (pos < text.length() && !finder.boundaryReasons()) {
-            finder.toPreviousBoundary();
-         }
-         const int cursor = finder.position() != -1 ? finder.position() : 0;
+            finder.setPosition( pos );
 
-         d->control->setSelection(anchor, cursor - anchor);
-      }
-   }
+            if ( pos > 0 && !finder.boundaryReasons() )
+            {
+                finder.toNextBoundary();
+            }
+
+            const int cursor = finder.position() != -1 ? finder.position() : text.length();
+
+            d->control->setSelection( anchor, cursor - anchor );
+        }
+        else if ( anchor > pos || ( anchor == pos && cursor > pos ) )
+        {
+            const QString text = d->control->text();
+            QTextBoundaryFinder finder( QTextBoundaryFinder::Word, text );
+            finder.setPosition( anchor );
+
+            const QTextBoundaryFinder::BoundaryReasons reasons = finder.boundaryReasons();
+
+            if ( anchor > 0 && ( !( reasons & QTextBoundaryFinder::EndWord )
+                                 || ( ( reasons & QTextBoundaryFinder::StartWord ) && anchor < cursor ) ) )
+            {
+                finder.toNextBoundary();
+            }
+
+            anchor = finder.position() != -1 ? finder.position() : text.length();
+
+            finder.setPosition( pos );
+
+            if ( pos < text.length() && !finder.boundaryReasons() )
+            {
+                finder.toPreviousBoundary();
+            }
+
+            const int cursor = finder.position() != -1 ? finder.position() : 0;
+
+            d->control->setSelection( anchor, cursor - anchor );
+        }
+    }
 }
 
 /*!
@@ -1797,14 +2085,18 @@ void QDeclarativeTextInput::moveCursorSelection(int pos, SelectionMode mode)
 */
 void QDeclarativeTextInput::openSoftwareInputPanel()
 {
-   QEvent event(QEvent::RequestSoftwareInputPanel);
-   if (qApp) {
-      if (QGraphicsView *view = qobject_cast<QGraphicsView *>(qApp->focusWidget())) {
-         if (view->scene() && view->scene() == scene()) {
-            QApplication::sendEvent(view, &event);
-         }
-      }
-   }
+    QEvent event( QEvent::RequestSoftwareInputPanel );
+
+    if ( qApp )
+    {
+        if ( QGraphicsView *view = qobject_cast<QGraphicsView *>( qApp->focusWidget() ) )
+        {
+            if ( view->scene() && view->scene() == scene() )
+            {
+                QApplication::sendEvent( view, &event );
+            }
+        }
+    }
 }
 
 /*!
@@ -1848,26 +2140,35 @@ void QDeclarativeTextInput::openSoftwareInputPanel()
 */
 void QDeclarativeTextInput::closeSoftwareInputPanel()
 {
-   QEvent event(QEvent::CloseSoftwareInputPanel);
-   if (qApp) {
-      QEvent event(QEvent::CloseSoftwareInputPanel);
-      if (QGraphicsView *view = qobject_cast<QGraphicsView *>(qApp->focusWidget())) {
-         if (view->scene() && view->scene() == scene()) {
-            QApplication::sendEvent(view, &event);
-         }
-      }
-   }
+    QEvent event( QEvent::CloseSoftwareInputPanel );
+
+    if ( qApp )
+    {
+        QEvent event( QEvent::CloseSoftwareInputPanel );
+
+        if ( QGraphicsView *view = qobject_cast<QGraphicsView *>( qApp->focusWidget() ) )
+        {
+            if ( view->scene() && view->scene() == scene() )
+            {
+                QApplication::sendEvent( view, &event );
+            }
+        }
+    }
 }
 
-void QDeclarativeTextInput::focusInEvent(QFocusEvent *event)
+void QDeclarativeTextInput::focusInEvent( QFocusEvent *event )
 {
-   Q_D(const QDeclarativeTextInput);
-   if (d->showInputPanelOnFocus) {
-      if (d->focusOnPress && !isReadOnly()) {
-         openSoftwareInputPanel();
-      }
-   }
-   QDeclarativePaintedItem::focusInEvent(event);
+    Q_D( const QDeclarativeTextInput );
+
+    if ( d->showInputPanelOnFocus )
+    {
+        if ( d->focusOnPress && !isReadOnly() )
+        {
+            openSoftwareInputPanel();
+        }
+    }
+
+    QDeclarativePaintedItem::focusInEvent( event );
 }
 
 /*!
@@ -1885,168 +2186,194 @@ void QDeclarativeTextInput::focusInEvent(QFocusEvent *event)
 */
 bool QDeclarativeTextInput::isInputMethodComposing() const
 {
-   Q_D(const QDeclarativeTextInput);
-   return d->control->preeditAreaText().length() > 0;
+    Q_D( const QDeclarativeTextInput );
+    return d->control->preeditAreaText().length() > 0;
 }
 
 void QDeclarativeTextInputPrivate::init()
 {
-   Q_Q(QDeclarativeTextInput);
-   control->setParent(q);
-   control->setCursorWidth(1);
-   control->setPasswordCharacter(QLatin1Char('*'));
-   q->setSmooth(smooth);
-   q->setAcceptedMouseButtons(Qt::LeftButton);
-   q->setFlag(QGraphicsItem::ItemHasNoContents, false);
-   q->setFlag(QGraphicsItem::ItemAcceptsInputMethod);
-   q->connect(control, SIGNAL(cursorPositionChanged(int, int)),
-              q, SLOT(cursorPosChanged()));
-   q->connect(control, SIGNAL(selectionChanged()),
-              q, SLOT(selectionChanged()));
-   q->connect(control, SIGNAL(textChanged(QString)),
-              q, SLOT(q_textChanged()));
-   q->connect(control, SIGNAL(accepted()),
-              q, SIGNAL(accepted()));
-   q->connect(control, SIGNAL(updateNeeded(QRect)),
-              q, SLOT(updateRect(QRect)));
+    Q_Q( QDeclarativeTextInput );
+    control->setParent( q );
+    control->setCursorWidth( 1 );
+    control->setPasswordCharacter( QLatin1Char( '*' ) );
+    q->setSmooth( smooth );
+    q->setAcceptedMouseButtons( Qt::LeftButton );
+    q->setFlag( QGraphicsItem::ItemHasNoContents, false );
+    q->setFlag( QGraphicsItem::ItemAcceptsInputMethod );
+    q->connect( control, SIGNAL( cursorPositionChanged( int, int ) ),
+                q, SLOT( cursorPosChanged() ) );
+    q->connect( control, SIGNAL( selectionChanged() ),
+                q, SLOT( selectionChanged() ) );
+    q->connect( control, SIGNAL( textChanged( QString ) ),
+                q, SLOT( q_textChanged() ) );
+    q->connect( control, SIGNAL( accepted() ),
+                q, SIGNAL( accepted() ) );
+    q->connect( control, SIGNAL( updateNeeded( QRect ) ),
+                q, SLOT( updateRect( QRect ) ) );
 #ifndef QT_NO_CLIPBOARD
-   q->connect(q, SIGNAL(readOnlyChanged(bool)),
-              q, SLOT(q_canPasteChanged()));
-   q->connect(QApplication::clipboard(), SIGNAL(dataChanged()),
-              q, SLOT(q_canPasteChanged()));
-   canPaste = !control->isReadOnly() && QApplication::clipboard()->text().length() != 0;
+    q->connect( q, SIGNAL( readOnlyChanged( bool ) ),
+                q, SLOT( q_canPasteChanged() ) );
+    q->connect( QApplication::clipboard(), SIGNAL( dataChanged() ),
+                q, SLOT( q_canPasteChanged() ) );
+    canPaste = !control->isReadOnly() && QApplication::clipboard()->text().length() != 0;
 #endif // QT_NO_CLIPBOARD
-   q->connect(control, SIGNAL(updateMicroFocus()),
-              q, SLOT(updateCursorRectangle()));
-   q->connect(control, SIGNAL(displayTextChanged(QString)),
-              q, SLOT(updateRect()));
-   q->updateSize();
-   oldValidity = control->hasAcceptableInput();
-   lastSelectionStart = 0;
-   lastSelectionEnd = 0;
-   QPalette p = control->palette();
-   selectedTextColor = p.color(QPalette::HighlightedText);
-   selectionColor = p.color(QPalette::Highlight);
-   determineHorizontalAlignment();
+    q->connect( control, SIGNAL( updateMicroFocus() ),
+                q, SLOT( updateCursorRectangle() ) );
+    q->connect( control, SIGNAL( displayTextChanged( QString ) ),
+                q, SLOT( updateRect() ) );
+    q->updateSize();
+    oldValidity = control->hasAcceptableInput();
+    lastSelectionStart = 0;
+    lastSelectionEnd = 0;
+    QPalette p = control->palette();
+    selectedTextColor = p.color( QPalette::HighlightedText );
+    selectionColor = p.color( QPalette::Highlight );
+    determineHorizontalAlignment();
 }
 
 void QDeclarativeTextInput::cursorPosChanged()
 {
-   Q_D(QDeclarativeTextInput);
-   updateCursorRectangle();
-   emit cursorPositionChanged();
-   d->control->resetCursorBlinkTimer();
+    Q_D( QDeclarativeTextInput );
+    updateCursorRectangle();
+    emit cursorPositionChanged();
+    d->control->resetCursorBlinkTimer();
 
-   if (!d->control->hasSelectedText()) {
-      if (d->lastSelectionStart != d->control->cursor()) {
-         d->lastSelectionStart = d->control->cursor();
-         emit selectionStartChanged();
-      }
-      if (d->lastSelectionEnd != d->control->cursor()) {
-         d->lastSelectionEnd = d->control->cursor();
-         emit selectionEndChanged();
-      }
-   }
+    if ( !d->control->hasSelectedText() )
+    {
+        if ( d->lastSelectionStart != d->control->cursor() )
+        {
+            d->lastSelectionStart = d->control->cursor();
+            emit selectionStartChanged();
+        }
+
+        if ( d->lastSelectionEnd != d->control->cursor() )
+        {
+            d->lastSelectionEnd = d->control->cursor();
+            emit selectionEndChanged();
+        }
+    }
 }
 
 void QDeclarativeTextInput::updateCursorRectangle()
 {
-   Q_D(QDeclarativeTextInput);
-   d->determineHorizontalAlignment();
-   d->updateHorizontalScroll();
-   updateRect();//TODO: Only update rect between pos's
-   updateMicroFocus();
-   emit cursorRectangleChanged();
-   if (d->cursorItem) {
-      d->cursorItem->setX(d->control->cursorToX() - d->hscroll);
-   }
+    Q_D( QDeclarativeTextInput );
+    d->determineHorizontalAlignment();
+    d->updateHorizontalScroll();
+    updateRect();//TODO: Only update rect between pos's
+    updateMicroFocus();
+    emit cursorRectangleChanged();
+
+    if ( d->cursorItem )
+    {
+        d->cursorItem->setX( d->control->cursorToX() - d->hscroll );
+    }
 }
 
 void QDeclarativeTextInput::selectionChanged()
 {
-   Q_D(QDeclarativeTextInput);
-   updateRect();//TODO: Only update rect in selection
-   emit selectedTextChanged();
+    Q_D( QDeclarativeTextInput );
+    updateRect();//TODO: Only update rect in selection
+    emit selectedTextChanged();
 
-   if (d->lastSelectionStart != d->control->selectionStart()) {
-      d->lastSelectionStart = d->control->selectionStart();
-      if (d->lastSelectionStart == -1) {
-         d->lastSelectionStart = d->control->cursor();
-      }
-      emit selectionStartChanged();
-   }
-   if (d->lastSelectionEnd != d->control->selectionEnd()) {
-      d->lastSelectionEnd = d->control->selectionEnd();
-      if (d->lastSelectionEnd == -1) {
-         d->lastSelectionEnd = d->control->cursor();
-      }
-      emit selectionEndChanged();
-   }
+    if ( d->lastSelectionStart != d->control->selectionStart() )
+    {
+        d->lastSelectionStart = d->control->selectionStart();
+
+        if ( d->lastSelectionStart == -1 )
+        {
+            d->lastSelectionStart = d->control->cursor();
+        }
+
+        emit selectionStartChanged();
+    }
+
+    if ( d->lastSelectionEnd != d->control->selectionEnd() )
+    {
+        d->lastSelectionEnd = d->control->selectionEnd();
+
+        if ( d->lastSelectionEnd == -1 )
+        {
+            d->lastSelectionEnd = d->control->cursor();
+        }
+
+        emit selectionEndChanged();
+    }
 }
 
 void QDeclarativeTextInput::q_textChanged()
 {
-   Q_D(QDeclarativeTextInput);
-   emit textChanged();
-   emit displayTextChanged();
-   updateSize();
-   d->determineHorizontalAlignment();
-   d->updateHorizontalScroll();
-   updateMicroFocus();
-   if (hasAcceptableInput() != d->oldValidity) {
-      d->oldValidity = hasAcceptableInput();
-      emit acceptableInputChanged();
-   }
+    Q_D( QDeclarativeTextInput );
+    emit textChanged();
+    emit displayTextChanged();
+    updateSize();
+    d->determineHorizontalAlignment();
+    d->updateHorizontalScroll();
+    updateMicroFocus();
+
+    if ( hasAcceptableInput() != d->oldValidity )
+    {
+        d->oldValidity = hasAcceptableInput();
+        emit acceptableInputChanged();
+    }
 }
 
-void QDeclarativeTextInput::updateRect(const QRect &r)
+void QDeclarativeTextInput::updateRect( const QRect &r )
 {
-   Q_D(QDeclarativeTextInput);
-   if (r == QRect()) {
-      clearCache();
-   } else {
-      dirtyCache(QRect(r.x() - d->hscroll, r.y(), r.width(), r.height()));
-   }
-   update();
+    Q_D( QDeclarativeTextInput );
+
+    if ( r == QRect() )
+    {
+        clearCache();
+    }
+    else
+    {
+        dirtyCache( QRect( r.x() - d->hscroll, r.y(), r.width(), r.height() ) );
+    }
+
+    update();
 }
 
 QRectF QDeclarativeTextInput::boundingRect() const
 {
-   Q_D(const QDeclarativeTextInput);
-   QRectF r = QDeclarativePaintedItem::boundingRect();
+    Q_D( const QDeclarativeTextInput );
+    QRectF r = QDeclarativePaintedItem::boundingRect();
 
-   int cursorWidth = d->cursorItem ? d->cursorItem->width() : d->control->cursorWidth();
+    int cursorWidth = d->cursorItem ? d->cursorItem->width() : d->control->cursorWidth();
 
-   // Could include font max left/right bearings to either side of rectangle.
+    // Could include font max left/right bearings to either side of rectangle.
 
-   r.setRight(r.right() + cursorWidth);
-   return r;
+    r.setRight( r.right() + cursorWidth );
+    return r;
 }
 
-void QDeclarativeTextInput::updateSize(bool needsRedraw)
+void QDeclarativeTextInput::updateSize( bool needsRedraw )
 {
-   Q_D(QDeclarativeTextInput);
-   int w = width();
-   int h = height();
-   setImplicitHeight(d->control->height() - 1); // -1 to counter QLineControl's +1 which is not consistent with Text.
-   setImplicitWidth(d->calculateTextWidth());
-   setContentsSize(QSize(width(), height()));//Repaints if changed
-   if (w == width() && h == height() && needsRedraw) {
-      clearCache();
-      update();
-   }
+    Q_D( QDeclarativeTextInput );
+    int w = width();
+    int h = height();
+    setImplicitHeight( d->control->height() - 1 ); // -1 to counter QLineControl's +1 which is not consistent with Text.
+    setImplicitWidth( d->calculateTextWidth() );
+    setContentsSize( QSize( width(), height() ) ); //Repaints if changed
+
+    if ( w == width() && h == height() && needsRedraw )
+    {
+        clearCache();
+        update();
+    }
 }
 
 void QDeclarativeTextInput::q_canPasteChanged()
 {
-   Q_D(QDeclarativeTextInput);
-   bool old = d->canPaste;
+    Q_D( QDeclarativeTextInput );
+    bool old = d->canPaste;
 #ifndef QT_NO_CLIPBOARD
-   d->canPaste = !d->control->isReadOnly() && QApplication::clipboard()->text().length() != 0;
+    d->canPaste = !d->control->isReadOnly() && QApplication::clipboard()->text().length() != 0;
 #endif
-   if (d->canPaste != old) {
-      emit canPasteChanged();
-   }
+
+    if ( d->canPaste != old )
+    {
+        emit canPasteChanged();
+    }
 }
 
 QT_END_NAMESPACE

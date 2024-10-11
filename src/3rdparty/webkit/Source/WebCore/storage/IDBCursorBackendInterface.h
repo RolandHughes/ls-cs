@@ -33,7 +33,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IDBAny;
 class IDBCallbacks;
@@ -41,11 +42,13 @@ class IDBKey;
 class IDBRequest;
 class SerializedScriptValue;
 
-class IDBCursorBackendInterface : public ThreadSafeRefCounted<IDBCursorBackendInterface> {
+class IDBCursorBackendInterface : public ThreadSafeRefCounted<IDBCursorBackendInterface>
+{
 public:
     virtual ~IDBCursorBackendInterface() {}
 
-    enum CursorType {
+    enum CursorType
+    {
         InvalidCursorType = 0,
         IndexCursor,
         IndexKeyCursor,
@@ -57,9 +60,9 @@ public:
     virtual PassRefPtr<IDBKey> primaryKey() const = 0;
     virtual PassRefPtr<SerializedScriptValue> value() const = 0;
 
-    virtual void update(PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBCallbacks>, ExceptionCode&) = 0;
-    virtual void continueFunction(PassRefPtr<IDBKey> key, PassRefPtr<IDBCallbacks>, ExceptionCode&) = 0;
-    virtual void deleteFunction(PassRefPtr<IDBCallbacks>, ExceptionCode&) = 0;
+    virtual void update( PassRefPtr<SerializedScriptValue>, PassRefPtr<IDBCallbacks>, ExceptionCode & ) = 0;
+    virtual void continueFunction( PassRefPtr<IDBKey> key, PassRefPtr<IDBCallbacks>, ExceptionCode & ) = 0;
+    virtual void deleteFunction( PassRefPtr<IDBCallbacks>, ExceptionCode & ) = 0;
 };
 
 } // namespace WebCore

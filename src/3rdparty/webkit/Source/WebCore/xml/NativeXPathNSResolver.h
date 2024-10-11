@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef NativeXPathNSResolver_h
@@ -32,19 +32,24 @@
 #include "Node.h"
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class NativeXPathNSResolver : public XPathNSResolver {
-    public:
-        static PassRefPtr<NativeXPathNSResolver> create(PassRefPtr<Node> node) { return adoptRef(new NativeXPathNSResolver(node)); }
-        virtual ~NativeXPathNSResolver();
+class NativeXPathNSResolver : public XPathNSResolver
+{
+public:
+    static PassRefPtr<NativeXPathNSResolver> create( PassRefPtr<Node> node )
+    {
+        return adoptRef( new NativeXPathNSResolver( node ) );
+    }
+    virtual ~NativeXPathNSResolver();
 
-        virtual String lookupNamespaceURI(const String& prefix);
+    virtual String lookupNamespaceURI( const String &prefix );
 
-    private:
-        NativeXPathNSResolver(PassRefPtr<Node>);
-        RefPtr<Node> m_node;
-    };
+private:
+    NativeXPathNSResolver( PassRefPtr<Node> );
+    RefPtr<Node> m_node;
+};
 
 } // namespace WebCore
 

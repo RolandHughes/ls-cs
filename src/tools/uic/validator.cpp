@@ -27,47 +27,47 @@
 #include <ui4.h>
 #include <uic.h>
 
-Validator::Validator(Uic *uic)
-   : m_driver(uic->driver())
+Validator::Validator( Uic *uic )
+    : m_driver( uic->driver() )
 {
 }
 
-void Validator::acceptUI(DomUI *node)
+void Validator::acceptUI( DomUI *node )
 {
-   TreeWalker::acceptUI(node);
+    TreeWalker::acceptUI( node );
 }
 
-void Validator::acceptWidget(DomWidget *node)
+void Validator::acceptWidget( DomWidget *node )
 {
-   (void) m_driver->findOrInsertWidget(node);
+    ( void ) m_driver->findOrInsertWidget( node );
 
-   TreeWalker::acceptWidget(node);
+    TreeWalker::acceptWidget( node );
 }
 
-void Validator::acceptLayoutItem(DomLayoutItem *node)
+void Validator::acceptLayoutItem( DomLayoutItem *node )
 {
-   (void) m_driver->findOrInsertLayoutItem(node);
+    ( void ) m_driver->findOrInsertLayoutItem( node );
 
-   TreeWalker::acceptLayoutItem(node);
+    TreeWalker::acceptLayoutItem( node );
 }
 
-void Validator::acceptLayout(DomLayout *node)
+void Validator::acceptLayout( DomLayout *node )
 {
-   (void) m_driver->findOrInsertLayout(node);
+    ( void ) m_driver->findOrInsertLayout( node );
 
-   TreeWalker::acceptLayout(node);
+    TreeWalker::acceptLayout( node );
 }
 
-void Validator::acceptActionGroup(DomActionGroup *node)
+void Validator::acceptActionGroup( DomActionGroup *node )
 {
-   (void) m_driver->findOrInsertActionGroup(node);
+    ( void ) m_driver->findOrInsertActionGroup( node );
 
-   TreeWalker::acceptActionGroup(node);
+    TreeWalker::acceptActionGroup( node );
 }
 
-void Validator::acceptAction(DomAction *node)
+void Validator::acceptAction( DomAction *node )
 {
-   (void) m_driver->findOrInsertAction(node);
+    ( void ) m_driver->findOrInsertAction( node );
 
-   TreeWalker::acceptAction(node);
+    TreeWalker::acceptAction( node );
 }

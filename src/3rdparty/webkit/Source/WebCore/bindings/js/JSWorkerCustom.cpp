@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -37,35 +37,43 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-JSC::JSValue JSWorker::postMessage(JSC::ExecState* exec)
+namespace WebCore
 {
-    return handlePostMessage(exec, impl());
+
+JSC::JSValue JSWorker::postMessage( JSC::ExecState *exec )
+{
+    return handlePostMessage( exec, impl() );
 }
 
-EncodedJSValue JSC_HOST_CALL JSWorkerConstructor::constructJSWorker(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL JSWorkerConstructor::constructJSWorker( ExecState *exec )
 {
-    JSWorkerConstructor* jsConstructor = static_cast<JSWorkerConstructor*>(exec->callee());
+    JSWorkerConstructor *jsConstructor = static_cast<JSWorkerConstructor *>( exec->callee() );
 
-    if (!exec->argumentCount())
-        return throwVMError(exec, createSyntaxError(exec, "Not enough arguments"));
-
-    UString scriptURL = exec->argument(0).toString(exec);
-    if (exec->hadException())
-        return JSValue::encode(JSValue());
-
-    // See section 4.8.2 step 14 of WebWorkers for why this is the lexicalGlobalObject. 
-    DOMWindow* window = asJSDOMWindow(exec->lexicalGlobalObject())->impl();
-
-    ExceptionCode ec = 0;
-    RefPtr<Worker> worker = Worker::create(ustringToString(scriptURL), window->document(), ec);
-    if (ec) {
-        setDOMException(exec, ec);
-        return JSValue::encode(JSValue());
+    if ( !exec->argumentCount() )
+    {
+        return throwVMError( exec, createSyntaxError( exec, "Not enough arguments" ) );
     }
 
-    return JSValue::encode(asObject(toJS(exec, jsConstructor->globalObject(), worker.release())));
+    UString scriptURL = exec->argument( 0 ).toString( exec );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( JSValue() );
+    }
+
+    // See section 4.8.2 step 14 of WebWorkers for why this is the lexicalGlobalObject.
+    DOMWindow *window = asJSDOMWindow( exec->lexicalGlobalObject() )->impl();
+
+    ExceptionCode ec = 0;
+    RefPtr<Worker> worker = Worker::create( ustringToString( scriptURL ), window->document(), ec );
+
+    if ( ec )
+    {
+        setDOMException( exec, ec );
+        return JSValue::encode( JSValue() );
+    }
+
+    return JSValue::encode( asObject( toJS( exec, jsConstructor->globalObject(), worker.release() ) ) );
 }
 
 } // namespace WebCore

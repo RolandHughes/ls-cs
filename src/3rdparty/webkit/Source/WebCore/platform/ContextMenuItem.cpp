@@ -30,35 +30,40 @@
 
 #if USE(CROSS_PLATFORM_CONTEXT_MENUS)
 
-namespace WebCore {
-
-ContextMenuItem::ContextMenuItem(ContextMenuItemType type, ContextMenuAction action, const String& title, ContextMenu* subMenu)
-    : m_type(type)
-    , m_action(action)
-    , m_title(title)
-    , m_enabled(true)
-    , m_checked(false)
+namespace WebCore
 {
-    if (subMenu)
-        setSubMenu(subMenu);
+
+ContextMenuItem::ContextMenuItem( ContextMenuItemType type, ContextMenuAction action, const String &title, ContextMenu *subMenu )
+    : m_type( type )
+    , m_action( action )
+    , m_title( title )
+    , m_enabled( true )
+    , m_checked( false )
+{
+    if ( subMenu )
+    {
+        setSubMenu( subMenu );
+    }
 }
 
-ContextMenuItem::ContextMenuItem(ContextMenuItemType type, ContextMenuAction action, const String& title, bool enabled, bool checked)
-    : m_type(type)
-    , m_action(action)
-    , m_title(title)
-    , m_enabled(enabled)
-    , m_checked(checked)
+ContextMenuItem::ContextMenuItem( ContextMenuItemType type, ContextMenuAction action, const String &title, bool enabled,
+                                  bool checked )
+    : m_type( type )
+    , m_action( action )
+    , m_title( title )
+    , m_enabled( enabled )
+    , m_checked( checked )
 {
 }
-        
-ContextMenuItem::ContextMenuItem(ContextMenuAction action, const String& title, bool enabled, bool checked, const Vector<ContextMenuItem>& subMenuItems)
-    : m_type(SubmenuType)
-    , m_action(action)
-    , m_title(title)
-    , m_enabled(enabled)
-    , m_checked(checked)
-    , m_subMenuItems(subMenuItems)
+
+ContextMenuItem::ContextMenuItem( ContextMenuAction action, const String &title, bool enabled, bool checked,
+                                  const Vector<ContextMenuItem> &subMenuItems )
+    : m_type( SubmenuType )
+    , m_action( action )
+    , m_title( title )
+    , m_enabled( enabled )
+    , m_checked( checked )
+    , m_subMenuItems( subMenuItems )
 {
 }
 
@@ -66,18 +71,21 @@ ContextMenuItem::~ContextMenuItem()
 {
 }
 
-void ContextMenuItem::setSubMenu(ContextMenu* subMenu)
+void ContextMenuItem::setSubMenu( ContextMenu *subMenu )
 {
-    if (subMenu) {
+    if ( subMenu )
+    {
         m_type = SubmenuType;
         m_subMenuItems = subMenu->items();
-    } else {
+    }
+    else
+    {
         m_type = ActionType;
         m_subMenuItems.clear();
     }
 }
 
-void ContextMenuItem::setType(ContextMenuItemType type)
+void ContextMenuItem::setType( ContextMenuItemType type )
 {
     m_type = type;
 }
@@ -87,7 +95,7 @@ ContextMenuItemType ContextMenuItem::type() const
     return m_type;
 }
 
-void ContextMenuItem::setAction(ContextMenuAction action)
+void ContextMenuItem::setAction( ContextMenuAction action )
 {
     m_action = action;
 }
@@ -97,7 +105,7 @@ ContextMenuAction ContextMenuItem::action() const
     return m_action;
 }
 
-void ContextMenuItem::setChecked(bool checked)
+void ContextMenuItem::setChecked( bool checked )
 {
     m_checked = checked;
 }
@@ -107,7 +115,7 @@ bool ContextMenuItem::checked() const
     return m_checked;
 }
 
-void ContextMenuItem::setEnabled(bool enabled)
+void ContextMenuItem::setEnabled( bool enabled )
 {
     m_enabled = enabled;
 }

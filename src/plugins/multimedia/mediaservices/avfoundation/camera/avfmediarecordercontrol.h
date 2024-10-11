@@ -40,72 +40,72 @@ class AVFCameraService;
 
 class AVFMediaRecorderControl : public QMediaRecorderControl
 {
-   CS_OBJECT(AVFMediaRecorderControl)
+    LSCS_OBJECT( AVFMediaRecorderControl )
 
- public:
-   AVFMediaRecorderControl(AVFCameraService *service, QObject *parent = nullptr);
-   ~AVFMediaRecorderControl();
+public:
+    AVFMediaRecorderControl( AVFCameraService *service, QObject *parent = nullptr );
+    ~AVFMediaRecorderControl();
 
-   QUrl outputLocation() const override;
-   bool setOutputLocation(const QUrl &location) override;
+    QUrl outputLocation() const override;
+    bool setOutputLocation( const QUrl &location ) override;
 
-   QMediaRecorder::State state() const override;
-   QMediaRecorder::Status status() const override;
+    QMediaRecorder::State state() const override;
+    QMediaRecorder::Status status() const override;
 
-   qint64 duration() const override;
+    qint64 duration() const override;
 
-   bool isMuted() const override;
-   qreal volume() const override;
+    bool isMuted() const override;
+    qreal volume() const override;
 
-   void applySettings() override;
-   void unapplySettings();
+    void applySettings() override;
+    void unapplySettings();
 
-   CS_SLOT_1(Public, void setState(QMediaRecorder::State state) override)
-   CS_SLOT_2(setState)
+    LSCS_SLOT_1( Public, void setState( QMediaRecorder::State state ) override )
+    LSCS_SLOT_2( setState )
 
-   CS_SLOT_1(Public, void setMuted(bool muted) override)
-   CS_SLOT_2(setMuted)
+    LSCS_SLOT_1( Public, void setMuted( bool muted ) override )
+    LSCS_SLOT_2( setMuted )
 
-   CS_SLOT_1(Public, void setVolume(qreal volume) override)
-   CS_SLOT_2(setVolume)
+    LSCS_SLOT_1( Public, void setVolume( qreal volume ) override )
+    LSCS_SLOT_2( setVolume )
 
-   CS_SLOT_1(Public, void handleRecordingStarted())
-   CS_SLOT_2(handleRecordingStarted)
+    LSCS_SLOT_1( Public, void handleRecordingStarted() )
+    LSCS_SLOT_2( handleRecordingStarted )
 
-   CS_SLOT_1(Public, void handleRecordingFinished())
-   CS_SLOT_2(handleRecordingFinished)
+    LSCS_SLOT_1( Public, void handleRecordingFinished() )
+    LSCS_SLOT_2( handleRecordingFinished )
 
-   CS_SLOT_1(Public, void handleRecordingFailed(const QString &message))
-   CS_SLOT_2(handleRecordingFailed)
+    LSCS_SLOT_1( Public, void handleRecordingFailed( const QString &message ) )
+    LSCS_SLOT_2( handleRecordingFailed )
 
- private:
-   CS_SLOT_1(Private, void setupSessionForCapture())
-   CS_SLOT_2(setupSessionForCapture)
-   CS_SLOT_1(Private, void updateStatus())
-   CS_SLOT_2(updateStatus)
+private:
+    LSCS_SLOT_1( Private, void setupSessionForCapture() )
+    LSCS_SLOT_2( setupSessionForCapture )
+    LSCS_SLOT_1( Private, void updateStatus() )
+    LSCS_SLOT_2( updateStatus )
 
-   AVFCameraService *m_service;
-   AVFCameraControl *m_cameraControl;
-   AVFAudioInputSelectorControl *m_audioInputControl;
-   AVFCameraSession *m_session;
+    AVFCameraService *m_service;
+    AVFCameraControl *m_cameraControl;
+    AVFAudioInputSelectorControl *m_audioInputControl;
+    AVFCameraSession *m_session;
 
-   bool m_connected;
-   QUrl m_outputLocation;
-   QMediaRecorder::State m_state;
-   QMediaRecorder::Status m_lastStatus;
+    bool m_connected;
+    QUrl m_outputLocation;
+    QMediaRecorder::State m_state;
+    QMediaRecorder::Status m_lastStatus;
 
-   bool m_recordingStarted;
-   bool m_recordingFinished;
+    bool m_recordingStarted;
+    bool m_recordingFinished;
 
-   bool m_muted;
-   qreal m_volume;
+    bool m_muted;
+    qreal m_volume;
 
-   AVCaptureDeviceInput *m_audioInput;
-   AVCaptureMovieFileOutput *m_movieOutput;
-   AVFMediaRecorderDelegate *m_recorderDelagate;
-   AVFStorageLocation m_storageLocation;
+    AVCaptureDeviceInput *m_audioInput;
+    AVCaptureMovieFileOutput *m_movieOutput;
+    AVFMediaRecorderDelegate *m_recorderDelagate;
+    AVFStorageLocation m_storageLocation;
 
-   AVFPSRange m_restoreFPS;
+    AVFPSRange m_restoreFPS;
 };
 
 #endif

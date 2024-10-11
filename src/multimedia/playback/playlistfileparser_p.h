@@ -30,56 +30,58 @@ class QPlaylistFileParserPrivate;
 
 class Q_MULTIMEDIA_EXPORT QPlaylistFileParser : public QObject
 {
-   MULTI_CS_OBJECT(QPlaylistFileParser)
+    MULTI_LSCS_OBJECT( QPlaylistFileParser )
 
- public:
-   enum FileType {
-      UNKNOWN,
-      M3U,
-      M3U8, // UTF-8 version of M3U
-      PLS
-   };
+public:
+    enum FileType
+    {
+        UNKNOWN,
+        M3U,
+        M3U8, // UTF-8 version of M3U
+        PLS
+    };
 
-   enum ParserError {
-      NoError,
-      FormatError,
-      FormatNotSupportedError,
-      NetworkError
-   };
+    enum ParserError
+    {
+        NoError,
+        FormatError,
+        FormatNotSupportedError,
+        NetworkError
+    };
 
-   QPlaylistFileParser(QObject *parent = nullptr);
+    QPlaylistFileParser( QObject *parent = nullptr );
 
-   QPlaylistFileParser(const QPlaylistFileParser &) = delete;
-   QPlaylistFileParser &operator=(const QPlaylistFileParser &) = delete;
+    QPlaylistFileParser( const QPlaylistFileParser & ) = delete;
+    QPlaylistFileParser &operator=( const QPlaylistFileParser & ) = delete;
 
-   static FileType findPlaylistType(const QString &uri, const QString &mime, const QByteArray &data);
+    static FileType findPlaylistType( const QString &uri, const QString &mime, const QByteArray &data );
 
-   void start(const QNetworkRequest &request, bool utf8 = false);
-   void stop();
+    void start( const QNetworkRequest &request, bool utf8 = false );
+    void stop();
 
-   MULTI_CS_SIGNAL_1(Public, void newItem(const QVariant &content))
-   MULTI_CS_SIGNAL_2(newItem, content)
-   MULTI_CS_SIGNAL_1(Public, void finished())
-   MULTI_CS_SIGNAL_2(finished)
-   MULTI_CS_SIGNAL_1(Public, void error(QPlaylistFileParser::ParserError err, const QString &errorMsg))
-   MULTI_CS_SIGNAL_2(error, err, errorMsg)
+    MULTI_LSCS_SIGNAL_1( Public, void newItem( const QVariant &content ) )
+    MULTI_LSCS_SIGNAL_2( newItem, content )
+    MULTI_LSCS_SIGNAL_1( Public, void finished() )
+    MULTI_LSCS_SIGNAL_2( finished )
+    MULTI_LSCS_SIGNAL_1( Public, void error( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
+    MULTI_LSCS_SIGNAL_2( error, err, errorMsg )
 
- private:
-   Q_DECLARE_PRIVATE(QPlaylistFileParser)
+private:
+    Q_DECLARE_PRIVATE( QPlaylistFileParser )
 
-   QPlaylistFileParserPrivate *d_ptr;
+    QPlaylistFileParserPrivate *d_ptr;
 
-   MULTI_CS_SLOT_1(Private, void _q_handleData())
-   MULTI_CS_SLOT_2(_q_handleData)
+    MULTI_LSCS_SLOT_1( Private, void _q_handleData() )
+    MULTI_LSCS_SLOT_2( _q_handleData )
 
-   MULTI_CS_SLOT_1(Private, void _q_handleError())
-   MULTI_CS_SLOT_2(_q_handleError)
+    MULTI_LSCS_SLOT_1( Private, void _q_handleError() )
+    MULTI_LSCS_SLOT_2( _q_handleError )
 
-   MULTI_CS_SLOT_1(Private, void _q_handleParserError(QPlaylistFileParser::ParserError err, const QString &errorMsg))
-   MULTI_CS_SLOT_2(_q_handleParserError)
+    MULTI_LSCS_SLOT_1( Private, void _q_handleParserError( QPlaylistFileParser::ParserError err, const QString &errorMsg ) )
+    MULTI_LSCS_SLOT_2( _q_handleParserError )
 
-   MULTI_CS_SLOT_1(Private, void _q_handleParserFinished())
-   MULTI_CS_SLOT_2(_q_handleParserFinished)
+    MULTI_LSCS_SLOT_1( Private, void _q_handleParserFinished() )
+    MULTI_LSCS_SLOT_2( _q_handleParserFinished )
 };
 
 #endif

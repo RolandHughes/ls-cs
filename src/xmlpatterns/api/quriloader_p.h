@@ -30,19 +30,20 @@
 #include <qnamepool_p.h>
 #include <qvariableloader_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class URILoader : public QNetworkAccessManager
 {
- public:
-   URILoader(QObject *const parent, const NamePool::Ptr &np, const VariableLoader::Ptr &variableLoader);
+public:
+    URILoader( QObject *const parent, const NamePool::Ptr &np, const VariableLoader::Ptr &variableLoader );
 
-   QNetworkReply *createRequest(Operation op, const QNetworkRequest &req, QIODevice *outgoingData = nullptr) override;
+    QNetworkReply *createRequest( Operation op, const QNetworkRequest &req, QIODevice *outgoingData = nullptr ) override;
 
- private:
-   const QString             m_variableNS;
-   const NamePool::Ptr       m_namePool;
-   const VariableLoader::Ptr m_variableLoader;
+private:
+    const QString             m_variableNS;
+    const NamePool::Ptr       m_namePool;
+    const VariableLoader::Ptr m_variableLoader;
 };
 
 }

@@ -29,19 +29,22 @@
 struct QCocoaNativeContext
 {
     QCocoaNativeContext()
-        : m_context(nullptr)
+        : m_context( nullptr )
     { }
 
-    QCocoaNativeContext(NSOpenGLContext *ctx)
-        : m_context(ctx)
+    QCocoaNativeContext( NSOpenGLContext *ctx )
+        : m_context( ctx )
     { }
 
-    NSOpenGLContext *context() const { return m_context; }
+    NSOpenGLContext *context() const
+    {
+        return m_context;
+    }
 
 private:
     NSOpenGLContext *m_context;
 };
 
-CS_DECLARE_METATYPE(QCocoaNativeContext)
+LSCS_DECLARE_METATYPE( QCocoaNativeContext )
 
 #endif

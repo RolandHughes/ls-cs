@@ -82,8 +82,8 @@
 
 static QGtkStyleUpdateScheduler *styleScheduler()
 {
-   static QGtkStyleUpdateScheduler retval;
-   return &retval;
+    static QGtkStyleUpdateScheduler retval;
+    return &retval;
 }
 
 Ptr_gtk_container_forall QGtkStylePrivate::gtk_container_forall = 0;
@@ -188,131 +188,153 @@ Ptr_gnome_icon_lookup_sync QGtkStylePrivate::gnome_icon_lookup_sync = 0;
 Ptr_gnome_vfs_init QGtkStylePrivate::gnome_vfs_init = 0;
 
 #ifndef Q_OS_DARWIN
-typedef int (*x11ErrorHandler)(Display *, XErrorEvent *);
+typedef int ( *x11ErrorHandler )( Display *, XErrorEvent * );
 #endif
 
-static void gtkStyleSetCallback(GtkWidget *)
+static void gtkStyleSetCallback( GtkWidget * )
 {
-   // We have to let this function return and complete the event
-   // loop to ensure that all gtk widgets have been styled before updating
-   QMetaObject::invokeMethod(styleScheduler(), "updateTheme", Qt::QueuedConnection);
+    // We have to let this function return and complete the event
+    // loop to ensure that all gtk widgets have been styled before updating
+    QMetaObject::invokeMethod( styleScheduler(), "updateTheme", Qt::QueuedConnection );
 }
 
-static void update_toolbar_style(GtkWidget *gtkToolBar, GParamSpec *, gpointer)
+static void update_toolbar_style( GtkWidget *gtkToolBar, GParamSpec *, gpointer )
 {
-   GtkToolbarStyle toolbar_style = GTK_TOOLBAR_ICONS;
-   g_object_get(gtkToolBar, "toolbar-style", &toolbar_style, NULL);
+    GtkToolbarStyle toolbar_style = GTK_TOOLBAR_ICONS;
+    g_object_get( gtkToolBar, "toolbar-style", &toolbar_style, NULL );
 
-   QWidgetList widgets = QApplication::allWidgets();
+    QWidgetList widgets = QApplication::allWidgets();
 
-   for (int i = 0; i < widgets.size(); ++i) {
-      QWidget *widget = widgets.at(i);
-      if (qobject_cast<QToolButton *>(widget)) {
-         QEvent event(QEvent::StyleChange);
-         QApplication::sendEvent(widget, &event);
-      }
-   }
+    for ( int i = 0; i < widgets.size(); ++i )
+    {
+        QWidget *widget = widgets.at( i );
+
+        if ( qobject_cast<QToolButton *>( widget ) )
+        {
+            QEvent event( QEvent::StyleChange );
+            QApplication::sendEvent( widget, &event );
+        }
+    }
 }
 
-static QHashableLatin1Literal classPath(GtkWidget *widget)
+static QHashableLatin1Literal classPath( GtkWidget *widget )
 {
-   char *class_path;
-   QGtkStylePrivate::gtk_widget_path (widget, NULL, &class_path, NULL);
+    char *class_path;
+    QGtkStylePrivate::gtk_widget_path ( widget, NULL, &class_path, NULL );
 
-   char *copy = class_path;
-   if (strncmp(copy, "GtkWindow.", 10) == 0) {
-      copy += 10;
-   }
+    char *copy = class_path;
 
-   if (strncmp(copy, "GtkFixed.", 9) == 0) {
-      copy += 9;
-   }
+    if ( strncmp( copy, "GtkWindow.", 10 ) == 0 )
+    {
+        copy += 10;
+    }
 
-   copy = strdup(copy);
+    if ( strncmp( copy, "GtkFixed.", 9 ) == 0 )
+    {
+        copy += 9;
+    }
 
-   g_free(class_path);
+    copy = strdup( copy );
 
-   return QHashableLatin1Literal::fromData(copy);
+    g_free( class_path );
+
+    return QHashableLatin1Literal::fromData( copy );
 }
 
 
 
-bool QGtkStyleFilter::eventFilter(QObject *obj, QEvent *e)
+bool QGtkStyleFilter::eventFilter( QObject *obj, QEvent *e )
 {
-   if (e->type() == QEvent::ApplicationPaletteChange) {
-      // Only do this the first time since this will also
-      // generate applicationPaletteChange events
-      if (! cs_app_palettes_hash() || cs_app_palettes_hash()->isEmpty()) {
-         stylePrivate->applyCustomPaletteHash();
-      }
-   }
-   return QObject::eventFilter(obj, e);
+    if ( e->type() == QEvent::ApplicationPaletteChange )
+    {
+        // Only do this the first time since this will also
+        // generate applicationPaletteChange events
+        if ( ! lscs_app_palettes_hash() || lscs_app_palettes_hash()->isEmpty() )
+        {
+            stylePrivate->applyCustomPaletteHash();
+        }
+    }
+
+    return QObject::eventFilter( obj, e );
 }
 
 QList<QGtkStylePrivate *> QGtkStylePrivate::instances;
 QGtkStylePrivate::WidgetMap *QGtkStylePrivate::widgetMap = 0;
 
 QGtkStylePrivate::QGtkStylePrivate()
-   : QCommonStylePrivate()
-   , filter(this)
+    : QCommonStylePrivate()
+    , filter( this )
 {
-   instances.append(this);
-   animationFps = 60;
+    instances.append( this );
+    animationFps = 60;
 }
 
 QGtkStylePrivate::~QGtkStylePrivate()
 {
-   instances.removeOne(this);
+    instances.removeOne( this );
 }
 
 void QGtkStylePrivate::init()
 {
-   resolveGtk();
-   initGtkWidgets();
+    resolveGtk();
+    initGtkWidgets();
 }
 
-QGtkPainter *QGtkStylePrivate::gtkPainter(QPainter *painter)
+QGtkPainter *QGtkStylePrivate::gtkPainter( QPainter *painter )
 {
-   // TODO: choose between gtk2 and gtk3
-   static QGtk2Painter instance;
-   instance.reset(painter);
-   return &instance;
+    // TODO: choose between gtk2 and gtk3
+    static QGtk2Painter instance;
+    instance.reset( painter );
+    return &instance;
 }
-GtkWidget *QGtkStylePrivate::gtkWidget(const QHashableLatin1Literal &path)
+GtkWidget *QGtkStylePrivate::gtkWidget( const QHashableLatin1Literal &path )
 {
-   GtkWidget *widget = gtkWidgetMap()->value(path);
-   if (!widget) {
-      // Theme might have rearranged widget internals
-      widget = gtkWidgetMap()->value(path);
-   }
-   return widget;
+    GtkWidget *widget = gtkWidgetMap()->value( path );
+
+    if ( !widget )
+    {
+        // Theme might have rearranged widget internals
+        widget = gtkWidgetMap()->value( path );
+    }
+
+    return widget;
 }
 
-GtkStyle *QGtkStylePrivate::gtkStyle(const QHashableLatin1Literal &path)
+GtkStyle *QGtkStylePrivate::gtkStyle( const QHashableLatin1Literal &path )
 {
-   if (GtkWidget *w = gtkWidgetMap()->value(path)) {
-      return QGtkStylePrivate::gtk_widget_get_style(w);
-   }
-   return 0;
+    if ( GtkWidget *w = gtkWidgetMap()->value( path ) )
+    {
+        return QGtkStylePrivate::gtk_widget_get_style( w );
+    }
+
+    return 0;
 }
 
-void QGtkStylePrivate::gtkWidgetSetFocus(GtkWidget *widget, bool focus)
+void QGtkStylePrivate::gtkWidgetSetFocus( GtkWidget *widget, bool focus )
 {
-   if (QGtkStylePrivate::gtk_widget_send_focus_change) {
-      GdkEvent *event = QGtkStylePrivate::gdk_event_new(GDK_FOCUS_CHANGE);
-      event->focus_change.type = GDK_FOCUS_CHANGE;
-      event->focus_change.in = focus;
-      QGtkStylePrivate::gtk_widget_send_focus_change(widget, event);
-      QGtkStylePrivate::gdk_event_free(event);
-   } else {
+    if ( QGtkStylePrivate::gtk_widget_send_focus_change )
+    {
+        GdkEvent *event = QGtkStylePrivate::gdk_event_new( GDK_FOCUS_CHANGE );
+        event->focus_change.type = GDK_FOCUS_CHANGE;
+        event->focus_change.in = focus;
+        QGtkStylePrivate::gtk_widget_send_focus_change( widget, event );
+        QGtkStylePrivate::gdk_event_free( event );
+    }
+    else
+    {
 #if defined(GTK_WIDGET_SET_FLAGS) && defined(GTK_WIDGET_UNSET_FLAGS)
-      if (focus) {
-         GTK_WIDGET_SET_FLAGS(widget, GTK_HAS_FOCUS);
-      } else {
-         GTK_WIDGET_UNSET_FLAGS(widget, GTK_HAS_FOCUS);
-      }
+
+        if ( focus )
+        {
+            GTK_WIDGET_SET_FLAGS( widget, GTK_HAS_FOCUS );
+        }
+        else
+        {
+            GTK_WIDGET_UNSET_FLAGS( widget, GTK_HAS_FOCUS );
+        }
+
 #endif
-   }
+    }
 }
 
 /*! \internal
@@ -320,107 +342,110 @@ void QGtkStylePrivate::gtkWidgetSetFocus(GtkWidget *widget, bool focus)
  */
 void QGtkStylePrivate::resolveGtk() const
 {
-   // enforce the "0" suffix, so we'll open libgtk-x11-2.0.so.0
-   QLibrary libgtk("gtk-x11-2.0", 0, 0);
+    // enforce the "0" suffix, so we'll open libgtk-x11-2.0.so.0
+    QLibrary libgtk( "gtk-x11-2.0", 0, 0 );
 
-   gtk_init = (Ptr_gtk_init)libgtk.resolve("gtk_init");
-   gtk_window_new = (Ptr_gtk_window_new)libgtk.resolve("gtk_window_new");
-   gtk_style_attach = (Ptr_gtk_style_attach)libgtk.resolve("gtk_style_attach");
-   gtk_widget_destroy = (Ptr_gtk_widget_destroy)libgtk.resolve("gtk_widget_destroy");
-   gtk_widget_realize = (Ptr_gtk_widget_realize)libgtk.resolve("gtk_widget_realize");
-   gdk_pixbuf_get_pixels = (Ptr_gdk_pixbuf_get_pixels)libgtk.resolve("gdk_pixbuf_get_pixels");
-   gdk_pixbuf_get_width = (Ptr_gdk_pixbuf_get_width)libgtk.resolve("gdk_pixbuf_get_width");
-   gdk_pixbuf_get_height = (Ptr_gdk_pixbuf_get_height)libgtk.resolve("gdk_pixbuf_get_height");
-   gdk_pixbuf_new = (Ptr_gdk_pixbuf_new)libgtk.resolve("gdk_pixbuf_new");
-   gdk_pixbuf_unref = (Ptr_gdk_pixbuf_unref)libgtk.resolve("gdk_pixbuf_unref");
-   gdk_color_free = (Ptr_gdk_color_free)libgtk.resolve("gdk_color_free");
-   gdk_x11_window_set_user_time = (Ptr_gdk_x11_window_set_user_time)libgtk.resolve("gdk_x11_window_set_user_time");
-   gdk_x11_drawable_get_xid = (Ptr_gdk_x11_drawable_get_xid)libgtk.resolve("gdk_x11_drawable_get_xid");
-   gdk_x11_drawable_get_xdisplay = (Ptr_gdk_x11_drawable_get_xdisplay)libgtk.resolve("gdk_x11_drawable_get_xdisplay");
+    gtk_init = ( Ptr_gtk_init )libgtk.resolve( "gtk_init" );
+    gtk_window_new = ( Ptr_gtk_window_new )libgtk.resolve( "gtk_window_new" );
+    gtk_style_attach = ( Ptr_gtk_style_attach )libgtk.resolve( "gtk_style_attach" );
+    gtk_widget_destroy = ( Ptr_gtk_widget_destroy )libgtk.resolve( "gtk_widget_destroy" );
+    gtk_widget_realize = ( Ptr_gtk_widget_realize )libgtk.resolve( "gtk_widget_realize" );
+    gdk_pixbuf_get_pixels = ( Ptr_gdk_pixbuf_get_pixels )libgtk.resolve( "gdk_pixbuf_get_pixels" );
+    gdk_pixbuf_get_width = ( Ptr_gdk_pixbuf_get_width )libgtk.resolve( "gdk_pixbuf_get_width" );
+    gdk_pixbuf_get_height = ( Ptr_gdk_pixbuf_get_height )libgtk.resolve( "gdk_pixbuf_get_height" );
+    gdk_pixbuf_new = ( Ptr_gdk_pixbuf_new )libgtk.resolve( "gdk_pixbuf_new" );
+    gdk_pixbuf_unref = ( Ptr_gdk_pixbuf_unref )libgtk.resolve( "gdk_pixbuf_unref" );
+    gdk_color_free = ( Ptr_gdk_color_free )libgtk.resolve( "gdk_color_free" );
+    gdk_x11_window_set_user_time = ( Ptr_gdk_x11_window_set_user_time )libgtk.resolve( "gdk_x11_window_set_user_time" );
+    gdk_x11_drawable_get_xid = ( Ptr_gdk_x11_drawable_get_xid )libgtk.resolve( "gdk_x11_drawable_get_xid" );
+    gdk_x11_drawable_get_xdisplay = ( Ptr_gdk_x11_drawable_get_xdisplay )libgtk.resolve( "gdk_x11_drawable_get_xdisplay" );
 
-   gtk_widget_set_default_direction = (Ptr_gtk_widget_set_default_direction)libgtk.resolve("gtk_widget_set_default_direction");
-   gtk_widget_modify_fg = (Ptr_gtk_widget_modify_color)libgtk.resolve("gtk_widget_modify_fg");
-   gtk_widget_modify_bg = (Ptr_gtk_widget_modify_color)libgtk.resolve("gtk_widget_modify_bg");
-   gtk_arrow_new = (Ptr_gtk_arrow_new)libgtk.resolve("gtk_arrow_new");
-   gtk_menu_item_new_with_label = (Ptr_gtk_menu_item_new_with_label)libgtk.resolve("gtk_menu_item_new_with_label");
-   gtk_check_menu_item_new_with_label = (Ptr_gtk_check_menu_item_new_with_label)libgtk.resolve("gtk_check_menu_item_new_with_label");
+    gtk_widget_set_default_direction = ( Ptr_gtk_widget_set_default_direction )libgtk.resolve( "gtk_widget_set_default_direction" );
+    gtk_widget_modify_fg = ( Ptr_gtk_widget_modify_color )libgtk.resolve( "gtk_widget_modify_fg" );
+    gtk_widget_modify_bg = ( Ptr_gtk_widget_modify_color )libgtk.resolve( "gtk_widget_modify_bg" );
+    gtk_arrow_new = ( Ptr_gtk_arrow_new )libgtk.resolve( "gtk_arrow_new" );
+    gtk_menu_item_new_with_label = ( Ptr_gtk_menu_item_new_with_label )libgtk.resolve( "gtk_menu_item_new_with_label" );
+    gtk_check_menu_item_new_with_label = ( Ptr_gtk_check_menu_item_new_with_label )
+                                         libgtk.resolve( "gtk_check_menu_item_new_with_label" );
 
-   gtk_menu_bar_new = (Ptr_gtk_menu_bar_new)libgtk.resolve("gtk_menu_bar_new");
-   gtk_menu_new = (Ptr_gtk_menu_new)libgtk.resolve("gtk_menu_new");
-   gtk_toolbar_new = (Ptr_gtk_toolbar_new)libgtk.resolve("gtk_toolbar_new");
-   gtk_separator_tool_item_new = (Ptr_gtk_separator_tool_item_new)libgtk.resolve("gtk_separator_tool_item_new");
-   gtk_toolbar_insert = (Ptr_gtk_toolbar_insert)libgtk.resolve("gtk_toolbar_insert");
-   gtk_button_new = (Ptr_gtk_button_new)libgtk.resolve("gtk_button_new");
-   gtk_tool_button_new = (Ptr_gtk_tool_button_new)libgtk.resolve("gtk_tool_button_new");
-   gtk_hbutton_box_new = (Ptr_gtk_hbutton_box_new)libgtk.resolve("gtk_hbutton_box_new");
-   gtk_check_button_new = (Ptr_gtk_check_button_new)libgtk.resolve("gtk_check_button_new");
-   gtk_radio_button_new = (Ptr_gtk_radio_button_new)libgtk.resolve("gtk_radio_button_new");
-   gtk_notebook_new = (Ptr_gtk_notebook_new)libgtk.resolve("gtk_notebook_new");
-   gtk_progress_bar_new = (Ptr_gtk_progress_bar_new)libgtk.resolve("gtk_progress_bar_new");
-   gtk_spin_button_new = (Ptr_gtk_spin_button_new)libgtk.resolve("gtk_spin_button_new");
-   gtk_hscale_new = (Ptr_gtk_hscale_new)libgtk.resolve("gtk_hscale_new");
-   gtk_vscale_new = (Ptr_gtk_vscale_new)libgtk.resolve("gtk_vscale_new");
-   gtk_hscrollbar_new = (Ptr_gtk_hscrollbar_new)libgtk.resolve("gtk_hscrollbar_new");
-   gtk_vscrollbar_new = (Ptr_gtk_vscrollbar_new)libgtk.resolve("gtk_vscrollbar_new");
-   gtk_scrolled_window_new = (Ptr_gtk_scrolled_window_new)libgtk.resolve("gtk_scrolled_window_new");
-   gtk_menu_shell_append = (Ptr_gtk_menu_shell_append)libgtk.resolve("gtk_menu_shell_append");
-   gtk_entry_new = (Ptr_gtk_entry_new)libgtk.resolve("gtk_entry_new");
-   gtk_tree_view_new = (Ptr_gtk_tree_view_new)libgtk.resolve("gtk_tree_view_new");
-   gtk_combo_box_new = (Ptr_gtk_combo_box_new)libgtk.resolve("gtk_combo_box_new");
-   gtk_combo_box_entry_new = (Ptr_gtk_combo_box_entry_new)libgtk.resolve("gtk_combo_box_entry_new");
-   gtk_range_get_adjustment = (Ptr_gtk_range_get_adjustment)libgtk.resolve("gtk_range_get_adjustment");
-   gtk_range_set_adjustment = (Ptr_gtk_range_set_adjustment)libgtk.resolve("gtk_range_set_adjustment");
-   gtk_range_set_inverted = (Ptr_gtk_range_set_inverted)libgtk.resolve("gtk_range_set_inverted");
-   gtk_container_add = (Ptr_gtk_container_add)libgtk.resolve("gtk_container_add");
-   gtk_icon_factory_lookup_default = (Ptr_gtk_icon_factory_lookup_default)libgtk.resolve("gtk_icon_factory_lookup_default");
-   gtk_icon_theme_get_default = (Ptr_gtk_icon_theme_get_default)libgtk.resolve("gtk_icon_theme_get_default");
-   gtk_widget_get_style = (Ptr_gtk_widget_get_style)libgtk.resolve("gtk_widget_get_style");
-   gtk_widget_style_get = (Ptr_gtk_widget_style_get)libgtk.resolve("gtk_widget_style_get");
-   gtk_icon_set_render_icon = (Ptr_gtk_icon_set_render_icon)libgtk.resolve("gtk_icon_set_render_icon");
-   gtk_fixed_new = (Ptr_gtk_fixed_new)libgtk.resolve("gtk_fixed_new");
-   gtk_tree_view_column_new = (Ptr_gtk_tree_view_column_new)libgtk.resolve("gtk_tree_view_column_new");
-   gtk_tree_view_append_column = (Ptr_gtk_tree_view_append_column )libgtk.resolve("gtk_tree_view_append_column");
-   gtk_tree_view_get_column = (Ptr_gtk_tree_view_get_column )libgtk.resolve("gtk_tree_view_get_column");
-   gtk_adjustment_configure = (Ptr_gtk_adjustment_configure)libgtk.resolve("gtk_adjustment_configure");
-   gtk_adjustment_new = (Ptr_gtk_adjustment_new)libgtk.resolve("gtk_adjustment_new");
-   gtk_menu_item_set_submenu = (Ptr_gtk_menu_item_set_submenu)libgtk.resolve("gtk_menu_item_set_submenu");
-   gtk_settings_get_default = (Ptr_gtk_settings_get_default)libgtk.resolve("gtk_settings_get_default");
-   gtk_separator_menu_item_new = (Ptr_gtk_separator_menu_item_new)libgtk.resolve("gtk_separator_menu_item_new");
-   gtk_frame_new = (Ptr_gtk_frame_new)libgtk.resolve("gtk_frame_new");
-   gtk_expander_new = (Ptr_gtk_expander_new)libgtk.resolve("gtk_expander_new");
-   gtk_statusbar_new = (Ptr_gtk_statusbar_new)libgtk.resolve("gtk_statusbar_new");
-   gtk_container_forall = (Ptr_gtk_container_forall)libgtk.resolve("gtk_container_forall");
-   gtk_widget_size_allocate = (Ptr_gtk_widget_size_allocate)libgtk.resolve("gtk_widget_size_allocate");
-   gtk_widget_size_request = (Ptr_gtk_widget_size_request)libgtk.resolve("gtk_widget_size_request");
-   gtk_widget_set_direction = (Ptr_gtk_widget_set_direction)libgtk.resolve("gtk_widget_set_direction");
-   gtk_widget_path = (Ptr_gtk_widget_path)libgtk.resolve("gtk_widget_path");
-   gtk_container_get_type = (Ptr_gtk_container_get_type)libgtk.resolve("gtk_container_get_type");
-   gtk_window_get_type = (Ptr_gtk_window_get_type)libgtk.resolve("gtk_window_get_type");
-   gtk_widget_get_type = (Ptr_gtk_widget_get_type)libgtk.resolve("gtk_widget_get_type");
-   gtk_widget_get_parent = (Ptr_gtk_widget_get_parent)libgtk.resolve("gtk_widget_get_parent");
-   gtk_widget_is_toplevel = (Ptr_gtk_widget_is_toplevel)libgtk.resolve("gtk_widget_is_toplevel");
-   gtk_widget_get_toplevel = (Ptr_gtk_widget_get_toplevel)libgtk.resolve("gtk_widget_get_toplevel");
+    gtk_menu_bar_new = ( Ptr_gtk_menu_bar_new )libgtk.resolve( "gtk_menu_bar_new" );
+    gtk_menu_new = ( Ptr_gtk_menu_new )libgtk.resolve( "gtk_menu_new" );
+    gtk_toolbar_new = ( Ptr_gtk_toolbar_new )libgtk.resolve( "gtk_toolbar_new" );
+    gtk_separator_tool_item_new = ( Ptr_gtk_separator_tool_item_new )libgtk.resolve( "gtk_separator_tool_item_new" );
+    gtk_toolbar_insert = ( Ptr_gtk_toolbar_insert )libgtk.resolve( "gtk_toolbar_insert" );
+    gtk_button_new = ( Ptr_gtk_button_new )libgtk.resolve( "gtk_button_new" );
+    gtk_tool_button_new = ( Ptr_gtk_tool_button_new )libgtk.resolve( "gtk_tool_button_new" );
+    gtk_hbutton_box_new = ( Ptr_gtk_hbutton_box_new )libgtk.resolve( "gtk_hbutton_box_new" );
+    gtk_check_button_new = ( Ptr_gtk_check_button_new )libgtk.resolve( "gtk_check_button_new" );
+    gtk_radio_button_new = ( Ptr_gtk_radio_button_new )libgtk.resolve( "gtk_radio_button_new" );
+    gtk_notebook_new = ( Ptr_gtk_notebook_new )libgtk.resolve( "gtk_notebook_new" );
+    gtk_progress_bar_new = ( Ptr_gtk_progress_bar_new )libgtk.resolve( "gtk_progress_bar_new" );
+    gtk_spin_button_new = ( Ptr_gtk_spin_button_new )libgtk.resolve( "gtk_spin_button_new" );
+    gtk_hscale_new = ( Ptr_gtk_hscale_new )libgtk.resolve( "gtk_hscale_new" );
+    gtk_vscale_new = ( Ptr_gtk_vscale_new )libgtk.resolve( "gtk_vscale_new" );
+    gtk_hscrollbar_new = ( Ptr_gtk_hscrollbar_new )libgtk.resolve( "gtk_hscrollbar_new" );
+    gtk_vscrollbar_new = ( Ptr_gtk_vscrollbar_new )libgtk.resolve( "gtk_vscrollbar_new" );
+    gtk_scrolled_window_new = ( Ptr_gtk_scrolled_window_new )libgtk.resolve( "gtk_scrolled_window_new" );
+    gtk_menu_shell_append = ( Ptr_gtk_menu_shell_append )libgtk.resolve( "gtk_menu_shell_append" );
+    gtk_entry_new = ( Ptr_gtk_entry_new )libgtk.resolve( "gtk_entry_new" );
+    gtk_tree_view_new = ( Ptr_gtk_tree_view_new )libgtk.resolve( "gtk_tree_view_new" );
+    gtk_combo_box_new = ( Ptr_gtk_combo_box_new )libgtk.resolve( "gtk_combo_box_new" );
+    gtk_combo_box_entry_new = ( Ptr_gtk_combo_box_entry_new )libgtk.resolve( "gtk_combo_box_entry_new" );
+    gtk_range_get_adjustment = ( Ptr_gtk_range_get_adjustment )libgtk.resolve( "gtk_range_get_adjustment" );
+    gtk_range_set_adjustment = ( Ptr_gtk_range_set_adjustment )libgtk.resolve( "gtk_range_set_adjustment" );
+    gtk_range_set_inverted = ( Ptr_gtk_range_set_inverted )libgtk.resolve( "gtk_range_set_inverted" );
+    gtk_container_add = ( Ptr_gtk_container_add )libgtk.resolve( "gtk_container_add" );
+    gtk_icon_factory_lookup_default = ( Ptr_gtk_icon_factory_lookup_default )libgtk.resolve( "gtk_icon_factory_lookup_default" );
+    gtk_icon_theme_get_default = ( Ptr_gtk_icon_theme_get_default )libgtk.resolve( "gtk_icon_theme_get_default" );
+    gtk_widget_get_style = ( Ptr_gtk_widget_get_style )libgtk.resolve( "gtk_widget_get_style" );
+    gtk_widget_style_get = ( Ptr_gtk_widget_style_get )libgtk.resolve( "gtk_widget_style_get" );
+    gtk_icon_set_render_icon = ( Ptr_gtk_icon_set_render_icon )libgtk.resolve( "gtk_icon_set_render_icon" );
+    gtk_fixed_new = ( Ptr_gtk_fixed_new )libgtk.resolve( "gtk_fixed_new" );
+    gtk_tree_view_column_new = ( Ptr_gtk_tree_view_column_new )libgtk.resolve( "gtk_tree_view_column_new" );
+    gtk_tree_view_append_column = ( Ptr_gtk_tree_view_append_column )libgtk.resolve( "gtk_tree_view_append_column" );
+    gtk_tree_view_get_column = ( Ptr_gtk_tree_view_get_column )libgtk.resolve( "gtk_tree_view_get_column" );
+    gtk_adjustment_configure = ( Ptr_gtk_adjustment_configure )libgtk.resolve( "gtk_adjustment_configure" );
+    gtk_adjustment_new = ( Ptr_gtk_adjustment_new )libgtk.resolve( "gtk_adjustment_new" );
+    gtk_menu_item_set_submenu = ( Ptr_gtk_menu_item_set_submenu )libgtk.resolve( "gtk_menu_item_set_submenu" );
+    gtk_settings_get_default = ( Ptr_gtk_settings_get_default )libgtk.resolve( "gtk_settings_get_default" );
+    gtk_separator_menu_item_new = ( Ptr_gtk_separator_menu_item_new )libgtk.resolve( "gtk_separator_menu_item_new" );
+    gtk_frame_new = ( Ptr_gtk_frame_new )libgtk.resolve( "gtk_frame_new" );
+    gtk_expander_new = ( Ptr_gtk_expander_new )libgtk.resolve( "gtk_expander_new" );
+    gtk_statusbar_new = ( Ptr_gtk_statusbar_new )libgtk.resolve( "gtk_statusbar_new" );
+    gtk_container_forall = ( Ptr_gtk_container_forall )libgtk.resolve( "gtk_container_forall" );
+    gtk_widget_size_allocate = ( Ptr_gtk_widget_size_allocate )libgtk.resolve( "gtk_widget_size_allocate" );
+    gtk_widget_size_request = ( Ptr_gtk_widget_size_request )libgtk.resolve( "gtk_widget_size_request" );
+    gtk_widget_set_direction = ( Ptr_gtk_widget_set_direction )libgtk.resolve( "gtk_widget_set_direction" );
+    gtk_widget_path = ( Ptr_gtk_widget_path )libgtk.resolve( "gtk_widget_path" );
+    gtk_container_get_type = ( Ptr_gtk_container_get_type )libgtk.resolve( "gtk_container_get_type" );
+    gtk_window_get_type = ( Ptr_gtk_window_get_type )libgtk.resolve( "gtk_window_get_type" );
+    gtk_widget_get_type = ( Ptr_gtk_widget_get_type )libgtk.resolve( "gtk_widget_get_type" );
+    gtk_widget_get_parent = ( Ptr_gtk_widget_get_parent )libgtk.resolve( "gtk_widget_get_parent" );
+    gtk_widget_is_toplevel = ( Ptr_gtk_widget_is_toplevel )libgtk.resolve( "gtk_widget_is_toplevel" );
+    gtk_widget_get_toplevel = ( Ptr_gtk_widget_get_toplevel )libgtk.resolve( "gtk_widget_get_toplevel" );
 
-   gtk_rc_get_style_by_paths = (Ptr_gtk_rc_get_style_by_paths)libgtk.resolve("gtk_rc_get_style_by_paths");
-   gtk_check_version = (Ptr_gtk_check_version)libgtk.resolve("gtk_check_version");
-   gtk_border_free = (Ptr_gtk_border_free)libgtk.resolve("gtk_border_free");
-   gtk_widget_get_allocation = (Ptr_gtk_widget_get_allocation)libgtk.resolve("gtk_widget_get_allocation");
-   gtk_widget_set_allocation = (Ptr_gtk_widget_set_allocation)libgtk.resolve("gtk_widget_set_allocation");
+    gtk_rc_get_style_by_paths = ( Ptr_gtk_rc_get_style_by_paths )libgtk.resolve( "gtk_rc_get_style_by_paths" );
+    gtk_check_version = ( Ptr_gtk_check_version )libgtk.resolve( "gtk_check_version" );
+    gtk_border_free = ( Ptr_gtk_border_free )libgtk.resolve( "gtk_border_free" );
+    gtk_widget_get_allocation = ( Ptr_gtk_widget_get_allocation )libgtk.resolve( "gtk_widget_get_allocation" );
+    gtk_widget_set_allocation = ( Ptr_gtk_widget_set_allocation )libgtk.resolve( "gtk_widget_set_allocation" );
 
-   gtk_widget_set_can_default = (Ptr_gtk_widget_set_can_default)libgtk.resolve("gtk_widget_set_can_default");
-   gtk_window_set_default = (Ptr_gtk_window_set_default)libgtk.resolve("gtk_window_set_default");
+    gtk_widget_set_can_default = ( Ptr_gtk_widget_set_can_default )libgtk.resolve( "gtk_widget_set_can_default" );
+    gtk_window_set_default = ( Ptr_gtk_window_set_default )libgtk.resolve( "gtk_window_set_default" );
 
-   gdk_event_new = (Ptr_gdk_event_new)libgtk.resolve("gdk_event_new");
-   gdk_event_free = (Ptr_gdk_event_free)libgtk.resolve("gdk_event_free");
-   gtk_widget_send_focus_change = (Ptr_gtk_widget_send_focus_change)libgtk.resolve("gtk_widget_send_focus_change");
+    gdk_event_new = ( Ptr_gdk_event_new )libgtk.resolve( "gdk_event_new" );
+    gdk_event_free = ( Ptr_gdk_event_free )libgtk.resolve( "gdk_event_free" );
+    gtk_widget_send_focus_change = ( Ptr_gtk_widget_send_focus_change )libgtk.resolve( "gtk_widget_send_focus_change" );
 
-   pango_font_description_get_size = (Ptr_pango_font_description_get_size)libgtk.resolve("pango_font_description_get_size");
-   pango_font_description_get_weight = (Ptr_pango_font_description_get_weight)libgtk.resolve("pango_font_description_get_weight");
-   pango_font_description_get_family = (Ptr_pango_font_description_get_family)libgtk.resolve("pango_font_description_get_family");
-   pango_font_description_get_style = (Ptr_pango_font_description_get_style)libgtk.resolve("pango_font_description_get_style");
+    pango_font_description_get_size = ( Ptr_pango_font_description_get_size )libgtk.resolve( "pango_font_description_get_size" );
+    pango_font_description_get_weight = ( Ptr_pango_font_description_get_weight )
+                                        libgtk.resolve( "pango_font_description_get_weight" );
+    pango_font_description_get_family = ( Ptr_pango_font_description_get_family )
+                                        libgtk.resolve( "pango_font_description_get_family" );
+    pango_font_description_get_style = ( Ptr_pango_font_description_get_style )libgtk.resolve( "pango_font_description_get_style" );
 
-   gnome_icon_lookup_sync = (Ptr_gnome_icon_lookup_sync)QLibrary::resolve(QLS("gnomeui-2"), 0, "gnome_icon_lookup_sync");
-   gnome_vfs_init = (Ptr_gnome_vfs_init)QLibrary::resolve(QLS("gnomevfs-2"), 0, "gnome_vfs_init");
+    gnome_icon_lookup_sync = ( Ptr_gnome_icon_lookup_sync )QLibrary::resolve( QLS( "gnomeui-2" ), 0, "gnome_icon_lookup_sync" );
+    gnome_vfs_init = ( Ptr_gnome_vfs_init )QLibrary::resolve( QLS( "gnomevfs-2" ), 0, "gnome_vfs_init" );
 }
 
 /* \internal
@@ -429,42 +454,42 @@ void QGtkStylePrivate::resolveGtk() const
  */
 void QGtkStylePrivate::initGtkMenu() const
 {
-   // Create menubar
-   GtkWidget *gtkMenuBar = QGtkStylePrivate::gtk_menu_bar_new();
-   setupGtkWidget(gtkMenuBar);
+    // Create menubar
+    GtkWidget *gtkMenuBar = QGtkStylePrivate::gtk_menu_bar_new();
+    setupGtkWidget( gtkMenuBar );
 
-   GtkWidget *gtkMenuBarItem = QGtkStylePrivate::gtk_menu_item_new_with_label("X");
-   gtk_menu_shell_append((GtkMenuShell *)(gtkMenuBar), gtkMenuBarItem);
-   gtk_widget_realize(gtkMenuBarItem);
+    GtkWidget *gtkMenuBarItem = QGtkStylePrivate::gtk_menu_item_new_with_label( "X" );
+    gtk_menu_shell_append( ( GtkMenuShell * )( gtkMenuBar ), gtkMenuBarItem );
+    gtk_widget_realize( gtkMenuBarItem );
 
-   // Create menu
-   GtkWidget *gtkMenu = QGtkStylePrivate::gtk_menu_new();
-   gtk_menu_item_set_submenu((GtkMenuItem *)(gtkMenuBarItem), gtkMenu);
-   gtk_widget_realize(gtkMenu);
+    // Create menu
+    GtkWidget *gtkMenu = QGtkStylePrivate::gtk_menu_new();
+    gtk_menu_item_set_submenu( ( GtkMenuItem * )( gtkMenuBarItem ), gtkMenu );
+    gtk_widget_realize( gtkMenu );
 
-   GtkWidget *gtkMenuItem = QGtkStylePrivate::gtk_menu_item_new_with_label("X");
-   gtk_menu_shell_append((GtkMenuShell *)gtkMenu, gtkMenuItem);
-   gtk_widget_realize(gtkMenuItem);
+    GtkWidget *gtkMenuItem = QGtkStylePrivate::gtk_menu_item_new_with_label( "X" );
+    gtk_menu_shell_append( ( GtkMenuShell * )gtkMenu, gtkMenuItem );
+    gtk_widget_realize( gtkMenuItem );
 
-   GtkWidget *gtkCheckMenuItem = QGtkStylePrivate::gtk_check_menu_item_new_with_label("X");
-   gtk_menu_shell_append((GtkMenuShell *)gtkMenu, gtkCheckMenuItem);
-   gtk_widget_realize(gtkCheckMenuItem);
+    GtkWidget *gtkCheckMenuItem = QGtkStylePrivate::gtk_check_menu_item_new_with_label( "X" );
+    gtk_menu_shell_append( ( GtkMenuShell * )gtkMenu, gtkCheckMenuItem );
+    gtk_widget_realize( gtkCheckMenuItem );
 
-   GtkWidget *gtkMenuSeparator = QGtkStylePrivate::gtk_separator_menu_item_new();
-   gtk_menu_shell_append((GtkMenuShell *)gtkMenu, gtkMenuSeparator);
+    GtkWidget *gtkMenuSeparator = QGtkStylePrivate::gtk_separator_menu_item_new();
+    gtk_menu_shell_append( ( GtkMenuShell * )gtkMenu, gtkMenuSeparator );
 
-   addAllSubWidgets(gtkMenuBar);
-   addAllSubWidgets(gtkMenu);
+    addAllSubWidgets( gtkMenuBar );
+    addAllSubWidgets( gtkMenu );
 }
 
 
 void QGtkStylePrivate::initGtkTreeview() const
 {
-   GtkWidget *gtkTreeView = gtk_tree_view_new();
-   gtk_tree_view_append_column((GtkTreeView *)gtkTreeView, gtk_tree_view_column_new());
-   gtk_tree_view_append_column((GtkTreeView *)gtkTreeView, gtk_tree_view_column_new());
-   gtk_tree_view_append_column((GtkTreeView *)gtkTreeView, gtk_tree_view_column_new());
-   addWidget(gtkTreeView);
+    GtkWidget *gtkTreeView = gtk_tree_view_new();
+    gtk_tree_view_append_column( ( GtkTreeView * )gtkTreeView, gtk_tree_view_column_new() );
+    gtk_tree_view_append_column( ( GtkTreeView * )gtkTreeView, gtk_tree_view_column_new() );
+    gtk_tree_view_append_column( ( GtkTreeView * )gtkTreeView, gtk_tree_view_column_new() );
+    addWidget( gtkTreeView );
 }
 
 
@@ -474,103 +499,115 @@ void QGtkStylePrivate::initGtkTreeview() const
  */
 void QGtkStylePrivate::initGtkWidgets() const
 {
-   // From gtkmain.c
-   uid_t ruid = getuid ();
-   uid_t rgid = getgid ();
-   uid_t euid = geteuid ();
-   uid_t egid = getegid ();
+    // From gtkmain.c
+    uid_t ruid = getuid ();
+    uid_t rgid = getgid ();
+    uid_t euid = geteuid ();
+    uid_t egid = getegid ();
 
-   if (ruid != euid || rgid != egid) {
-      qWarning("\nThis process is currently running setuid or setgid.\nGTK+ does not allow this, "
-         "the GTK+ integration will not be used.\nLaunch this app using \'gksudo\', "
-         "\'kdesudo\' or a similar tool.\n\n"
-         "Refer to https://www.gtk.org/setuid.html for more information.\n");
-      return;
-   }
+    if ( ruid != euid || rgid != egid )
+    {
+        qWarning( "\nThis process is currently running setuid or setgid.\nGTK+ does not allow this, "
+                  "the GTK+ integration will not be used.\nLaunch this app using \'gksudo\', "
+                  "\'kdesudo\' or a similar tool.\n\n"
+                  "Refer to https://www.gtk.org/setuid.html for more information.\n" );
+        return;
+    }
 
-   if (QGtkStylePrivate::gtk_init) {
+    if ( QGtkStylePrivate::gtk_init )
+    {
 #ifndef Q_OS_DARWIN
-      // Gtk will set the Qt error handler so we have to reset it afterwards
-      x11ErrorHandler qt_x_errhandler = XSetErrorHandler(0);
+        // Gtk will set the Qt error handler so we have to reset it afterwards
+        x11ErrorHandler qt_x_errhandler = XSetErrorHandler( 0 );
 #endif
 
-      QGtkStylePrivate::gtk_init (NULL, NULL);
+        QGtkStylePrivate::gtk_init ( NULL, NULL );
 
 #ifndef Q_OS_DARWIN
-      XSetErrorHandler(qt_x_errhandler);
+        XSetErrorHandler( qt_x_errhandler );
 #endif
 
-      // make a window
-      GtkWidget *gtkWindow = QGtkStylePrivate::gtk_window_new(GTK_WINDOW_POPUP);
-      QGtkStylePrivate::gtk_widget_realize(gtkWindow);
+        // make a window
+        GtkWidget *gtkWindow = QGtkStylePrivate::gtk_window_new( GTK_WINDOW_POPUP );
+        QGtkStylePrivate::gtk_widget_realize( gtkWindow );
 
-      QHashableLatin1Literal widgetPath = QHashableLatin1Literal::fromData(strdup("GtkWindow"));
-      removeWidgetFromMap(widgetPath);
-      gtkWidgetMap()->insert(widgetPath, gtkWindow);
+        QHashableLatin1Literal widgetPath = QHashableLatin1Literal::fromData( strdup( "GtkWindow" ) );
+        removeWidgetFromMap( widgetPath );
+        gtkWidgetMap()->insert( widgetPath, gtkWindow );
 
 
-      // Make all other widgets. respect the text direction
-      if (qApp->layoutDirection() == Qt::RightToLeft) {
-         QGtkStylePrivate::gtk_widget_set_default_direction(GTK_TEXT_DIR_RTL);
-      }
+        // Make all other widgets. respect the text direction
+        if ( qApp->layoutDirection() == Qt::RightToLeft )
+        {
+            QGtkStylePrivate::gtk_widget_set_default_direction( GTK_TEXT_DIR_RTL );
+        }
 
-      if (!gtkWidgetMap()->contains("GtkButton")) {
-         GtkWidget *gtkButton = QGtkStylePrivate::gtk_button_new();
-         addWidget(gtkButton);
+        if ( !gtkWidgetMap()->contains( "GtkButton" ) )
+        {
+            GtkWidget *gtkButton = QGtkStylePrivate::gtk_button_new();
+            addWidget( gtkButton );
 
-         g_signal_connect(gtkButton, "style-set", G_CALLBACK(gtkStyleSetCallback), 0);
+            g_signal_connect( gtkButton, "style-set", G_CALLBACK( gtkStyleSetCallback ), 0 );
 
-         addWidget(QGtkStylePrivate::gtk_tool_button_new(NULL, "Qt"));
-         addWidget(QGtkStylePrivate::gtk_arrow_new(GTK_ARROW_DOWN, GTK_SHADOW_NONE));
-         addWidget(QGtkStylePrivate::gtk_hbutton_box_new());
-         addWidget(QGtkStylePrivate::gtk_check_button_new());
-         addWidget(QGtkStylePrivate::gtk_radio_button_new(NULL));
-         addWidget(QGtkStylePrivate::gtk_combo_box_new());
-         addWidget(QGtkStylePrivate::gtk_combo_box_entry_new());
+            addWidget( QGtkStylePrivate::gtk_tool_button_new( NULL, "Qt" ) );
+            addWidget( QGtkStylePrivate::gtk_arrow_new( GTK_ARROW_DOWN, GTK_SHADOW_NONE ) );
+            addWidget( QGtkStylePrivate::gtk_hbutton_box_new() );
+            addWidget( QGtkStylePrivate::gtk_check_button_new() );
+            addWidget( QGtkStylePrivate::gtk_radio_button_new( NULL ) );
+            addWidget( QGtkStylePrivate::gtk_combo_box_new() );
+            addWidget( QGtkStylePrivate::gtk_combo_box_entry_new() );
 
-         GtkWidget *entry = QGtkStylePrivate::gtk_entry_new();
-         g_object_set(entry, "im-module", "gtk-im-context-none", NULL);
-         addWidget(entry);
-         addWidget(QGtkStylePrivate::gtk_frame_new(NULL));
-         addWidget(QGtkStylePrivate::gtk_expander_new(""));
-         addWidget(QGtkStylePrivate::gtk_statusbar_new());
-         addWidget(QGtkStylePrivate::gtk_hscale_new((QGtkStylePrivate::gtk_adjustment_new(1, 0, 1, 0, 0, 0))));
-         addWidget(QGtkStylePrivate::gtk_hscrollbar_new(NULL));
-         addWidget(QGtkStylePrivate::gtk_scrolled_window_new(NULL, NULL));
+            GtkWidget *entry = QGtkStylePrivate::gtk_entry_new();
+            g_object_set( entry, "im-module", "gtk-im-context-none", NULL );
+            addWidget( entry );
+            addWidget( QGtkStylePrivate::gtk_frame_new( NULL ) );
+            addWidget( QGtkStylePrivate::gtk_expander_new( "" ) );
+            addWidget( QGtkStylePrivate::gtk_statusbar_new() );
+            addWidget( QGtkStylePrivate::gtk_hscale_new( ( QGtkStylePrivate::gtk_adjustment_new( 1, 0, 1, 0, 0, 0 ) ) ) );
+            addWidget( QGtkStylePrivate::gtk_hscrollbar_new( NULL ) );
+            addWidget( QGtkStylePrivate::gtk_scrolled_window_new( NULL, NULL ) );
 
-         initGtkMenu();
-         addWidget(QGtkStylePrivate::gtk_notebook_new());
-         addWidget(QGtkStylePrivate::gtk_progress_bar_new());
-         addWidget(QGtkStylePrivate::gtk_spin_button_new((QGtkStylePrivate::gtk_adjustment_new(1, 0, 1, 0, 0, 0)), 0.1, 3));
-         GtkWidget *toolbar = gtk_toolbar_new();
-         g_signal_connect (toolbar, "notify::toolbar-style", G_CALLBACK (update_toolbar_style), toolbar);
-         gtk_toolbar_insert((GtkToolbar *)toolbar, gtk_separator_tool_item_new(), -1);
-         addWidget(toolbar);
-         initGtkTreeview();
-         addWidget(gtk_vscale_new((GtkAdjustment *)(QGtkStylePrivate::gtk_adjustment_new(1, 0, 1, 0, 0, 0))));
-         addWidget(gtk_vscrollbar_new(NULL));
-      } else {
-         // Rebuild map
+            initGtkMenu();
+            addWidget( QGtkStylePrivate::gtk_notebook_new() );
+            addWidget( QGtkStylePrivate::gtk_progress_bar_new() );
+            addWidget( QGtkStylePrivate::gtk_spin_button_new( ( QGtkStylePrivate::gtk_adjustment_new( 1, 0, 1, 0, 0, 0 ) ), 0.1, 3 ) );
+            GtkWidget *toolbar = gtk_toolbar_new();
+            g_signal_connect ( toolbar, "notify::toolbar-style", G_CALLBACK ( update_toolbar_style ), toolbar );
+            gtk_toolbar_insert( ( GtkToolbar * )toolbar, gtk_separator_tool_item_new(), -1 );
+            addWidget( toolbar );
+            initGtkTreeview();
+            addWidget( gtk_vscale_new( ( GtkAdjustment * )( QGtkStylePrivate::gtk_adjustment_new( 1, 0, 1, 0, 0, 0 ) ) ) );
+            addWidget( gtk_vscrollbar_new( NULL ) );
+        }
+        else
+        {
+            // Rebuild map
 
-         // When styles change subwidgets can get rearranged
-         // as with the combo box. We need to update the widget map
-         // to reflect this;
+            // When styles change subwidgets can get rearranged
+            // as with the combo box. We need to update the widget map
+            // to reflect this;
 
-         QHash<QHashableLatin1Literal, GtkWidget *> oldMap = *gtkWidgetMap();
-         gtkWidgetMap()->clear();
-         QHashIterator<QHashableLatin1Literal, GtkWidget *> it(oldMap);
+            QHash<QHashableLatin1Literal, GtkWidget *> oldMap = *gtkWidgetMap();
+            gtkWidgetMap()->clear();
+            QHashIterator<QHashableLatin1Literal, GtkWidget *> it( oldMap );
 
-         while (it.hasNext()) {
-            it.next();
-            if (!strchr(it.key().data(), '.')) {
-               addAllSubWidgets(it.value());
+            while ( it.hasNext() )
+            {
+                it.next();
+
+                if ( !strchr( it.key().data(), '.' ) )
+                {
+                    addAllSubWidgets( it.value() );
+                }
+
+                free( const_cast<char *>( it.key().data() ) );
             }
-            free(const_cast<char *>(it.key().data()));
-         }
-      }
-   } else {
-      qWarning("QGtkStyle could not resolve GTK. Make sure you have installed the proper libraries.");
-   }
+        }
+    }
+    else
+    {
+        qWarning( "QGtkStyle could not resolve GTK. Make sure you have installed the proper libraries." );
+    }
 }
 
 /*! \internal
@@ -578,137 +615,156 @@ void QGtkStylePrivate::initGtkWidgets() const
  */
 void QGtkStylePrivate::cleanupGtkWidgets()
 {
-   if (!widgetMap) {
-      return;
-   }
-   if (widgetMap->contains("GtkWindow")) { // Gtk will destroy all children
-      gtk_widget_destroy(widgetMap->value("GtkWindow"));
-   }
-   for (QHash<QHashableLatin1Literal, GtkWidget *>::const_iterator it = widgetMap->constBegin();
-      it != widgetMap->constEnd(); ++it) {
-      free(const_cast<char *>(it.key().data()));
-   }
+    if ( !widgetMap )
+    {
+        return;
+    }
+
+    if ( widgetMap->contains( "GtkWindow" ) ) // Gtk will destroy all children
+    {
+        gtk_widget_destroy( widgetMap->value( "GtkWindow" ) );
+    }
+
+    for ( QHash<QHashableLatin1Literal, GtkWidget *>::const_iterator it = widgetMap->constBegin();
+            it != widgetMap->constEnd(); ++it )
+    {
+        free( const_cast<char *>( it.key().data() ) );
+    }
 }
 
 static bool resolveGConf()
 {
-   if (! QGtkStylePrivate::gconf_client_get_default) {
-      QGtkStylePrivate::gconf_client_get_default = (Ptr_gconf_client_get_default)QLibrary::resolve("gconf-2", 4,
-            "gconf_client_get_default");
+    if ( ! QGtkStylePrivate::gconf_client_get_default )
+    {
+        QGtkStylePrivate::gconf_client_get_default = ( Ptr_gconf_client_get_default )QLibrary::resolve( "gconf-2", 4,
+                "gconf_client_get_default" );
 
-      QGtkStylePrivate::gconf_client_get_string =  (Ptr_gconf_client_get_string)QLibrary::resolve("gconf-2", 4,
-            "gconf_client_get_string");
+        QGtkStylePrivate::gconf_client_get_string =  ( Ptr_gconf_client_get_string )QLibrary::resolve( "gconf-2", 4,
+                "gconf_client_get_string" );
 
-      QGtkStylePrivate::gconf_client_get_bool =  (Ptr_gconf_client_get_bool)QLibrary::resolve("gconf-2", 4,
-            "gconf_client_get_bool");
-   }
-   return (QGtkStylePrivate::gconf_client_get_default != 0);
+        QGtkStylePrivate::gconf_client_get_bool =  ( Ptr_gconf_client_get_bool )QLibrary::resolve( "gconf-2", 4,
+                "gconf_client_get_bool" );
+    }
+
+    return ( QGtkStylePrivate::gconf_client_get_default != 0 );
 }
 
-QString QGtkStylePrivate::getGConfString(const QString &value, const QString &fallback)
+QString QGtkStylePrivate::getGConfString( const QString &value, const QString &fallback )
 {
-   QString retVal = fallback;
+    QString retVal = fallback;
 
-   if (resolveGConf()) {
+    if ( resolveGConf() )
+    {
 
 #if ! defined(GLIB_VERSION_2_36)
-      g_type_init();
+        g_type_init();
 #endif
 
-      GConfClient *client = gconf_client_get_default();
-      GError *err = 0;
-      char *str = gconf_client_get_string(client, csPrintable(value), &err);
+        GConfClient *client = gconf_client_get_default();
+        GError *err = 0;
+        char *str = gconf_client_get_string( client, lscsPrintable( value ), &err );
 
-      if (!err) {
-         retVal = QString::fromUtf8(str);
-         g_free(str);
-      }
+        if ( !err )
+        {
+            retVal = QString::fromUtf8( str );
+            g_free( str );
+        }
 
-      g_object_unref(client);
+        g_object_unref( client );
 
-      if (err) {
-         g_error_free (err);
-      }
-   }
-   return retVal;
+        if ( err )
+        {
+            g_error_free ( err );
+        }
+    }
+
+    return retVal;
 }
 
-bool QGtkStylePrivate::getGConfBool(const QString &key, bool fallback)
+bool QGtkStylePrivate::getGConfBool( const QString &key, bool fallback )
 {
-   bool retVal = fallback;
-   if (resolveGConf()) {
+    bool retVal = fallback;
+
+    if ( resolveGConf() )
+    {
 
 #if !defined(GLIB_VERSION_2_36)
-      g_type_init();
+        g_type_init();
 #endif
 
-      GConfClient *client = gconf_client_get_default();
-      GError *err = 0;
-      bool result = gconf_client_get_bool(client, csPrintable(key), &err);
+        GConfClient *client = gconf_client_get_default();
+        GError *err = 0;
+        bool result = gconf_client_get_bool( client, lscsPrintable( key ), &err );
 
-      g_object_unref(client);
+        g_object_unref( client );
 
-      if (!err) {
-         retVal = result;
-      } else {
-         g_error_free (err);
-      }
-   }
+        if ( !err )
+        {
+            retVal = result;
+        }
+        else
+        {
+            g_error_free ( err );
+        }
+    }
 
-   return retVal;
+    return retVal;
 }
 
 QString QGtkStylePrivate::getThemeName()
 {
-   QString themeName;
+    QString themeName;
 
-   // Read the theme name from GtkSettings
-   GtkSettings *settings = QGtkStylePrivate::gtk_settings_get_default();
-   gchararray value;
-   g_object_get(settings, "gtk-theme-name", &value, NULL);
-   themeName = QString::fromUtf8(value);
-   g_free(value);
+    // Read the theme name from GtkSettings
+    GtkSettings *settings = QGtkStylePrivate::gtk_settings_get_default();
+    gchararray value;
+    g_object_get( settings, "gtk-theme-name", &value, NULL );
+    themeName = QString::fromUtf8( value );
+    g_free( value );
 
-   return themeName;
+    return themeName;
 }
 
 // Get size of the arrow controls in a GtkSpinButton
 int QGtkStylePrivate::getSpinboxArrowSize() const
 {
-   const int MIN_ARROW_WIDTH = 6;
-   GtkWidget *spinButton = gtkWidget("GtkSpinButton");
-   GtkStyle *style = QGtkStylePrivate::gtk_widget_get_style(spinButton);
-   gint size = pango_font_description_get_size (style->font_desc);
-   gint arrow_size;
-   arrow_size = qMax(PANGO_PIXELS (size), MIN_ARROW_WIDTH) + style->xthickness;
-   arrow_size += arrow_size % 2 + 1;
-   return arrow_size;
+    const int MIN_ARROW_WIDTH = 6;
+    GtkWidget *spinButton = gtkWidget( "GtkSpinButton" );
+    GtkStyle *style = QGtkStylePrivate::gtk_widget_get_style( spinButton );
+    gint size = pango_font_description_get_size ( style->font_desc );
+    gint arrow_size;
+    arrow_size = qMax( PANGO_PIXELS ( size ), MIN_ARROW_WIDTH ) + style->xthickness;
+    arrow_size += arrow_size % 2 + 1;
+    return arrow_size;
 }
 
 
 bool QGtkStylePrivate::isKDE4Session()
 {
-   static int version = -1;
-   if (version == -1) {
-      version = qgetenv("KDE_SESSION_VERSION").toInt();
-   }
-   return (version == 4);
+    static int version = -1;
+
+    if ( version == -1 )
+    {
+        version = qgetenv( "KDE_SESSION_VERSION" ).toInt();
+    }
+
+    return ( version == 4 );
 }
 
 void QGtkStylePrivate::applyCustomPaletteHash()
 {
-   QPalette menuPal = gtkWidgetPalette("GtkMenu");
-   GdkColor gdkBg = QGtkStylePrivate::gtk_widget_get_style(gtkWidget("GtkMenu"))->bg[GTK_STATE_NORMAL];
-   QColor bgColor(gdkBg.red >> 8, gdkBg.green >> 8, gdkBg.blue >> 8);
-   menuPal.setBrush(QPalette::Base, bgColor);
-   menuPal.setBrush(QPalette::Window, bgColor);
-   qApp->setPalette(menuPal, "QMenu");
+    QPalette menuPal = gtkWidgetPalette( "GtkMenu" );
+    GdkColor gdkBg = QGtkStylePrivate::gtk_widget_get_style( gtkWidget( "GtkMenu" ) )->bg[GTK_STATE_NORMAL];
+    QColor bgColor( gdkBg.red >> 8, gdkBg.green >> 8, gdkBg.blue >> 8 );
+    menuPal.setBrush( QPalette::Base, bgColor );
+    menuPal.setBrush( QPalette::Window, bgColor );
+    qApp->setPalette( menuPal, "QMenu" );
 
-   QPalette toolbarPal = gtkWidgetPalette("GtkToolbar");
-   qApp->setPalette(toolbarPal, "QToolBar");
+    QPalette toolbarPal = gtkWidgetPalette( "GtkToolbar" );
+    qApp->setPalette( toolbarPal, "QToolBar" );
 
-   QPalette menuBarPal = gtkWidgetPalette("GtkMenuBar");
-   qApp->setPalette(menuBarPal, "QMenuBar");
+    QPalette menuBarPal = gtkWidgetPalette( "GtkMenuBar" );
+    qApp->setPalette( menuBarPal, "QMenuBar" );
 }
 
 /*! \internal
@@ -716,123 +772,141 @@ void QGtkStylePrivate::applyCustomPaletteHash()
 */
 GtkWidget *QGtkStylePrivate::getTextColorWidget() const
 {
-   return  gtkWidget("GtkEntry");
+    return  gtkWidget( "GtkEntry" );
 }
 
-void QGtkStylePrivate::setupGtkWidget(GtkWidget *widget)
+void QGtkStylePrivate::setupGtkWidget( GtkWidget *widget )
 {
-   if (Q_GTK_IS_WIDGET(widget)) {
-      GtkWidget *protoLayout = gtkWidgetMap()->value("GtkContainer");
-      if (!protoLayout) {
-         protoLayout = QGtkStylePrivate::gtk_fixed_new();
-         QGtkStylePrivate::gtk_container_add((GtkContainer *)(gtkWidgetMap()->value("GtkWindow")), protoLayout);
-         QHashableLatin1Literal widgetPath = QHashableLatin1Literal::fromData(strdup("GtkContainer"));
-         gtkWidgetMap()->insert(widgetPath, protoLayout);
-      }
-      Q_ASSERT(protoLayout);
+    if ( Q_GTK_IS_WIDGET( widget ) )
+    {
+        GtkWidget *protoLayout = gtkWidgetMap()->value( "GtkContainer" );
 
-      if (!QGtkStylePrivate::gtk_widget_get_parent(widget) && !QGtkStylePrivate::gtk_widget_is_toplevel(widget)) {
-         QGtkStylePrivate::gtk_container_add((GtkContainer *)(protoLayout), widget);
-      }
-      QGtkStylePrivate::gtk_widget_realize(widget);
-   }
+        if ( !protoLayout )
+        {
+            protoLayout = QGtkStylePrivate::gtk_fixed_new();
+            QGtkStylePrivate::gtk_container_add( ( GtkContainer * )( gtkWidgetMap()->value( "GtkWindow" ) ), protoLayout );
+            QHashableLatin1Literal widgetPath = QHashableLatin1Literal::fromData( strdup( "GtkContainer" ) );
+            gtkWidgetMap()->insert( widgetPath, protoLayout );
+        }
+
+        Q_ASSERT( protoLayout );
+
+        if ( !QGtkStylePrivate::gtk_widget_get_parent( widget ) && !QGtkStylePrivate::gtk_widget_is_toplevel( widget ) )
+        {
+            QGtkStylePrivate::gtk_container_add( ( GtkContainer * )( protoLayout ), widget );
+        }
+
+        QGtkStylePrivate::gtk_widget_realize( widget );
+    }
 }
 
-void QGtkStylePrivate::removeWidgetFromMap(const QHashableLatin1Literal &path)
+void QGtkStylePrivate::removeWidgetFromMap( const QHashableLatin1Literal &path )
 {
-   WidgetMap *map = gtkWidgetMap();
-   WidgetMap::iterator it = map->find(path);
+    WidgetMap *map = gtkWidgetMap();
+    WidgetMap::iterator it = map->find( path );
 
-   if (it != map->end()) {
-      char *keyData = const_cast<char *>(it.key().data());
-      map->erase(it);
-      free(keyData);
-   }
+    if ( it != map->end() )
+    {
+        char *keyData = const_cast<char *>( it.key().data() );
+        map->erase( it );
+        free( keyData );
+    }
 }
 
-void QGtkStylePrivate::addWidgetToMap(GtkWidget *widget)
+void QGtkStylePrivate::addWidgetToMap( GtkWidget *widget )
 {
-   if (Q_GTK_IS_WIDGET(widget)) {
-      gtk_widget_realize(widget);
-      QHashableLatin1Literal widgetPath = classPath(widget);
+    if ( Q_GTK_IS_WIDGET( widget ) )
+    {
+        gtk_widget_realize( widget );
+        QHashableLatin1Literal widgetPath = classPath( widget );
 
-      removeWidgetFromMap(widgetPath);
-      gtkWidgetMap()->insert(widgetPath, widget);
+        removeWidgetFromMap( widgetPath );
+        gtkWidgetMap()->insert( widgetPath, widget );
 #ifdef DUMP_GTK_WIDGET_TREE
-      qWarning("Inserted Gtk Widget: %s", widgetPath.data());
+        qWarning( "Inserted Gtk Widget: %s", widgetPath.data() );
 #endif
-   }
+    }
 }
 
-void QGtkStylePrivate::addAllSubWidgets(GtkWidget *widget, gpointer v)
+void QGtkStylePrivate::addAllSubWidgets( GtkWidget *widget, gpointer v )
 {
-   (void) v;
+    ( void ) v;
 
-   addWidgetToMap(widget);
+    addWidgetToMap( widget );
 
-   if (G_TYPE_CHECK_INSTANCE_TYPE ((widget), gtk_container_get_type())) {
-      gtk_container_forall((GtkContainer *)widget, addAllSubWidgets, NULL);
-   }
+    if ( G_TYPE_CHECK_INSTANCE_TYPE ( ( widget ), gtk_container_get_type() ) )
+    {
+        gtk_container_forall( ( GtkContainer * )widget, addAllSubWidgets, NULL );
+    }
 }
 
 // Updates window/windowtext palette based on the indicated gtk widget
-QPalette QGtkStylePrivate::gtkWidgetPalette(const QHashableLatin1Literal &gtkWidgetName) const
+QPalette QGtkStylePrivate::gtkWidgetPalette( const QHashableLatin1Literal &gtkWidgetName ) const
 {
-   GtkWidget *gtkWidget = QGtkStylePrivate::gtkWidget(gtkWidgetName);
-   Q_ASSERT(gtkWidget);
-   QPalette pal = QApplication::palette();
-   GdkColor gdkBg = gtk_widget_get_style(gtkWidget)->bg[GTK_STATE_NORMAL];
-   GdkColor gdkText = gtk_widget_get_style(gtkWidget)->fg[GTK_STATE_NORMAL];
-   GdkColor gdkDisabledText = gtk_widget_get_style(gtkWidget)->fg[GTK_STATE_INSENSITIVE];
-   QColor bgColor(gdkBg.red >> 8, gdkBg.green >> 8, gdkBg.blue >> 8);
-   QColor textColor(gdkText.red >> 8, gdkText.green >> 8, gdkText.blue >> 8);
-   QColor disabledTextColor(gdkDisabledText.red >> 8, gdkDisabledText.green >> 8, gdkDisabledText.blue >> 8);
-   pal.setBrush(QPalette::Window, bgColor);
-   pal.setBrush(QPalette::Button, bgColor);
-   pal.setBrush(QPalette::All, QPalette::WindowText, textColor);
-   pal.setBrush(QPalette::Disabled, QPalette::WindowText, disabledTextColor);
-   pal.setBrush(QPalette::All, QPalette::ButtonText, textColor);
-   pal.setBrush(QPalette::Disabled, QPalette::ButtonText, disabledTextColor);
-   return pal;
+    GtkWidget *gtkWidget = QGtkStylePrivate::gtkWidget( gtkWidgetName );
+    Q_ASSERT( gtkWidget );
+    QPalette pal = QApplication::palette();
+    GdkColor gdkBg = gtk_widget_get_style( gtkWidget )->bg[GTK_STATE_NORMAL];
+    GdkColor gdkText = gtk_widget_get_style( gtkWidget )->fg[GTK_STATE_NORMAL];
+    GdkColor gdkDisabledText = gtk_widget_get_style( gtkWidget )->fg[GTK_STATE_INSENSITIVE];
+    QColor bgColor( gdkBg.red >> 8, gdkBg.green >> 8, gdkBg.blue >> 8 );
+    QColor textColor( gdkText.red >> 8, gdkText.green >> 8, gdkText.blue >> 8 );
+    QColor disabledTextColor( gdkDisabledText.red >> 8, gdkDisabledText.green >> 8, gdkDisabledText.blue >> 8 );
+    pal.setBrush( QPalette::Window, bgColor );
+    pal.setBrush( QPalette::Button, bgColor );
+    pal.setBrush( QPalette::All, QPalette::WindowText, textColor );
+    pal.setBrush( QPalette::Disabled, QPalette::WindowText, disabledTextColor );
+    pal.setBrush( QPalette::All, QPalette::ButtonText, textColor );
+    pal.setBrush( QPalette::Disabled, QPalette::ButtonText, disabledTextColor );
+    return pal;
 }
 
 
 void QGtkStyleUpdateScheduler::updateTheme()
 {
-   static QString oldTheme("qt_not_set");
-   QPixmapCache::clear();
+    static QString oldTheme( "qt_not_set" );
+    QPixmapCache::clear();
 
-   QFont font = QGtkStylePrivate::getThemeFont();
-   if (QApplication::font() != font) {
-      qApp->setFont(font);
-   }
+    QFont font = QGtkStylePrivate::getThemeFont();
 
-   if (oldTheme != QGtkStylePrivate::getThemeName()) {
-      oldTheme = QGtkStylePrivate::getThemeName();
-      QPalette newPalette = qApp->style()->standardPalette();
-      QApplicationPrivate::setSystemPalette(newPalette);
-      QApplication::setPalette(newPalette);
-      if (!QGtkStylePrivate::instances.isEmpty()) {
-         QGtkStylePrivate::instances.last()->initGtkWidgets();
-         QGtkStylePrivate::instances.last()->applyCustomPaletteHash();
-      }
+    if ( QApplication::font() != font )
+    {
+        qApp->setFont( font );
+    }
 
-      QList<QWidget *> widgets = QApplication::allWidgets();
-      // Notify all widgets that size metrics might have changed
-      for (QWidget *widget : widgets) {
-         QEvent e(QEvent::StyleChange);
-         QApplication::sendEvent(widget, &e);
-      }
-   }
-   QIconLoader::instance()->updateSystemTheme();
+    if ( oldTheme != QGtkStylePrivate::getThemeName() )
+    {
+        oldTheme = QGtkStylePrivate::getThemeName();
+        QPalette newPalette = qApp->style()->standardPalette();
+        QApplicationPrivate::setSystemPalette( newPalette );
+        QApplication::setPalette( newPalette );
+
+        if ( !QGtkStylePrivate::instances.isEmpty() )
+        {
+            QGtkStylePrivate::instances.last()->initGtkWidgets();
+            QGtkStylePrivate::instances.last()->applyCustomPaletteHash();
+        }
+
+        QList<QWidget *> widgets = QApplication::allWidgets();
+
+        // Notify all widgets that size metrics might have changed
+        for ( QWidget *widget : widgets )
+        {
+            QEvent e( QEvent::StyleChange );
+            QApplication::sendEvent( widget, &e );
+        }
+    }
+
+    QIconLoader::instance()->updateSystemTheme();
 }
 
-void QGtkStylePrivate::addWidget(GtkWidget *widget)
+void QGtkStylePrivate::addWidget( GtkWidget *widget )
 {
-   if (widget) {
-      setupGtkWidget(widget);
-      addAllSubWidgets(widget);
-   }
+    if ( widget )
+    {
+        setupGtkWidget( widget );
+        addAllSubWidgets( widget );
+    }
 }
 
 
@@ -840,79 +914,98 @@ void QGtkStylePrivate::addWidget(GtkWidget *widget)
 // contained in the theme.
 QFont QGtkStylePrivate::getThemeFont()
 {
-   QFont font;
-   GtkStyle *style = gtkStyle();
+    QFont font;
+    GtkStyle *style = gtkStyle();
 
-   if (style && qApp->desktopSettingsAware()) {
-      PangoFontDescription *gtk_font = style->font_desc;
-      font.setPointSizeF((float)(pango_font_description_get_size(gtk_font)) / PANGO_SCALE);
+    if ( style && qApp->desktopSettingsAware() )
+    {
+        PangoFontDescription *gtk_font = style->font_desc;
+        font.setPointSizeF( ( float )( pango_font_description_get_size( gtk_font ) ) / PANGO_SCALE );
 
-      QString family = QString::fromLatin1(pango_font_description_get_family(gtk_font));
-      if (!family.isEmpty()) {
-         font.setFamily(family);
-      }
+        QString family = QString::fromLatin1( pango_font_description_get_family( gtk_font ) );
 
-      const int weight = pango_font_description_get_weight(gtk_font);
-      font.setWeight(QPlatformFontDatabase::weightFromInteger(weight));
+        if ( !family.isEmpty() )
+        {
+            font.setFamily( family );
+        }
 
-      PangoStyle fontstyle = pango_font_description_get_style(gtk_font);
+        const int weight = pango_font_description_get_weight( gtk_font );
+        font.setWeight( QPlatformFontDatabase::weightFromInteger( weight ) );
 
-      if (fontstyle == PANGO_STYLE_ITALIC) {
-         font.setStyle(QFont::StyleItalic);
-      } else if (fontstyle == PANGO_STYLE_OBLIQUE) {
-         font.setStyle(QFont::StyleOblique);
-      } else {
-         font.setStyle(QFont::StyleNormal);
-      }
-   }
-   return font;
+        PangoStyle fontstyle = pango_font_description_get_style( gtk_font );
+
+        if ( fontstyle == PANGO_STYLE_ITALIC )
+        {
+            font.setStyle( QFont::StyleItalic );
+        }
+        else if ( fontstyle == PANGO_STYLE_OBLIQUE )
+        {
+            font.setStyle( QFont::StyleOblique );
+        }
+        else
+        {
+            font.setStyle( QFont::StyleNormal );
+        }
+    }
+
+    return font;
 }
 
-QIcon QGtkStylePrivate::getFilesystemIcon(const QFileInfo &info)
+QIcon QGtkStylePrivate::getFilesystemIcon( const QFileInfo &info )
 {
-   QIcon icon;
-   if (isThemeAvailable() && gnome_vfs_init && gnome_icon_lookup_sync) {
-      gnome_vfs_init();
-      GtkIconTheme *theme = gtk_icon_theme_get_default();
-      QByteArray fileurl = QUrl::fromLocalFile(info.absoluteFilePath()).toEncoded();
-      char *icon_name = gnome_icon_lookup_sync(theme,
-            NULL,
-            fileurl.data(),
-            NULL,
-            GNOME_ICON_LOOKUP_FLAGS_NONE,
-            NULL);
-      QString iconName = QString::fromUtf8(icon_name);
-      g_free(icon_name);
+    QIcon icon;
 
-      if (iconName.startsWith(QLatin1Char('/'))) {
-         return QIcon(iconName);
-      }
-      return QIcon::fromTheme(iconName);
-   }
-   return icon;
+    if ( isThemeAvailable() && gnome_vfs_init && gnome_icon_lookup_sync )
+    {
+        gnome_vfs_init();
+        GtkIconTheme *theme = gtk_icon_theme_get_default();
+        QByteArray fileurl = QUrl::fromLocalFile( info.absoluteFilePath() ).toEncoded();
+        char *icon_name = gnome_icon_lookup_sync( theme,
+                          NULL,
+                          fileurl.data(),
+                          NULL,
+                          GNOME_ICON_LOOKUP_FLAGS_NONE,
+                          NULL );
+        QString iconName = QString::fromUtf8( icon_name );
+        g_free( icon_name );
+
+        if ( iconName.startsWith( QLatin1Char( '/' ) ) )
+        {
+            return QIcon( iconName );
+        }
+
+        return QIcon::fromTheme( iconName );
+    }
+
+    return icon;
 }
 
-bool operator==(const QHashableLatin1Literal &l1, const QHashableLatin1Literal &l2)
+bool operator==( const QHashableLatin1Literal &l1, const QHashableLatin1Literal &l2 )
 {
-   return l1.size() == l2.size() || qstrcmp(l1.data(), l2.data()) == 0;
+    return l1.size() == l2.size() || qstrcmp( l1.data(), l2.data() ) == 0;
 }
 
 // copied from qHash.cpp
-uint qHash(const QHashableLatin1Literal &key)
+uint qHash( const QHashableLatin1Literal &key )
 {
-   int n = key.size();
-   const uchar *p = reinterpret_cast<const uchar *>(key.data());
-   uint h = 0;
-   uint g;
+    int n = key.size();
+    const uchar *p = reinterpret_cast<const uchar *>( key.data() );
+    uint h = 0;
+    uint g;
 
-   while (n--) {
-      h = (h << 4) + *p++;
-      if ((g = (h & 0xf0000000)) != 0) {
-         h ^= g >> 23;
-      }
-      h &= ~g;
-   }
-   return h;
+    while ( n-- )
+    {
+        h = ( h << 4 ) + *p++;
+
+        if ( ( g = ( h & 0xf0000000 ) ) != 0 )
+        {
+            h ^= g >> 23;
+        }
+
+        h &= ~g;
+    }
+
+    return h;
 }
 
 #endif // !defined(QT_NO_STYLE_GTK)

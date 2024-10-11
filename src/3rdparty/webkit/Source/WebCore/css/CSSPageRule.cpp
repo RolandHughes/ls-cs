@@ -25,10 +25,11 @@
 #include "CSSMutableStyleDeclaration.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-CSSPageRule::CSSPageRule(CSSStyleSheet* parent, int sourceLine)
-    : CSSStyleRule(parent, sourceLine)
+CSSPageRule::CSSPageRule( CSSStyleSheet *parent, int sourceLine )
+    : CSSStyleRule( parent, sourceLine )
 {
 }
 
@@ -39,12 +40,18 @@ CSSPageRule::~CSSPageRule()
 String CSSPageRule::selectorText() const
 {
     String text = "@page";
-    CSSSelector* selector = selectorList().first();
-    if (selector) {
+    CSSSelector *selector = selectorList().first();
+
+    if ( selector )
+    {
         String pageSpecification = selector->selectorText();
-        if (!pageSpecification.isEmpty() && pageSpecification != starAtom)
+
+        if ( !pageSpecification.isEmpty() && pageSpecification != starAtom )
+        {
             text += " " + pageSpecification;
+        }
     }
+
     return text;
 }
 

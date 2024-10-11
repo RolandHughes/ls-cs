@@ -35,27 +35,27 @@ class QScriptDebuggerLocalsWidgetInterfacePrivate;
 
 class QScriptDebuggerLocalsWidgetInterface : public QWidget
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerLocalsWidgetInterface)
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerLocalsWidgetInterface )
 
- public:
-   ~QScriptDebuggerLocalsWidgetInterface();
+public:
+    ~QScriptDebuggerLocalsWidgetInterface();
 
-   QScriptCompletionProviderInterface *completionProvider() const;
-   void setCompletionProvider(QScriptCompletionProviderInterface *completionProvider);
+    QScriptCompletionProviderInterface *completionProvider() const;
+    void setCompletionProvider( QScriptCompletionProviderInterface *completionProvider );
 
-   virtual QScriptDebuggerLocalsModel *localsModel() const = 0;
-   virtual void setLocalsModel(QScriptDebuggerLocalsModel *model) = 0;
+    virtual QScriptDebuggerLocalsModel *localsModel() const = 0;
+    virtual void setLocalsModel( QScriptDebuggerLocalsModel *model ) = 0;
 
-   virtual void expand(const QModelIndex &index) = 0;
+    virtual void expand( const QModelIndex &index ) = 0;
 
- protected:
-   QScriptDebuggerLocalsWidgetInterface(
-      QScriptDebuggerLocalsWidgetInterfacePrivate &dd,
-      QWidget *parent, Qt::WindowFlags flags);
+protected:
+    QScriptDebuggerLocalsWidgetInterface(
+        QScriptDebuggerLocalsWidgetInterfacePrivate &dd,
+        QWidget *parent, Qt::WindowFlags flags );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerLocalsWidgetInterface)
-   Q_DISABLE_COPY(QScriptDebuggerLocalsWidgetInterface)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerLocalsWidgetInterface )
+    Q_DISABLE_COPY( QScriptDebuggerLocalsWidgetInterface )
 };
 
 QT_END_NAMESPACE

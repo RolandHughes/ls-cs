@@ -45,9 +45,11 @@
 
 #include <climits>
 
-namespace WebCore {
+namespace WebCore
+{
 
-namespace CheckedInt_internal {
+namespace CheckedInt_internal
+{
 
 /* we don't want to use std::numeric_limits here because int... types may not support it,
  * depending on the platform, e.g. on certain platform they use nonstandard built-in types
@@ -69,69 +71,127 @@ template<> struct integer_type_manually_recorded_info<T>       \
 };
 
 //                                 Type      Twice Bigger Type   Unsigned Type
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(int8_t,   int16_t,             uint8_t)
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(uint8_t,  uint16_t,            uint8_t)
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(int16_t,  int32_t,             uint16_t)
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(uint16_t, uint32_t,            uint16_t)
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(int32_t,  int64_t,             uint32_t)
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(uint32_t, uint64_t,            uint32_t)
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(int64_t,  unsupported_type,    uint64_t)
-CHECKEDINT_REGISTER_SUPPORTED_TYPE(uint64_t, unsupported_type,    uint64_t)
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( int8_t,   int16_t,             uint8_t )
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( uint8_t,  uint16_t,            uint8_t )
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( int16_t,  int32_t,             uint16_t )
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( uint16_t, uint32_t,            uint16_t )
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( int32_t,  int64_t,             uint32_t )
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( uint32_t, uint64_t,            uint32_t )
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( int64_t,  unsupported_type,    uint64_t )
+CHECKEDINT_REGISTER_SUPPORTED_TYPE( uint64_t, unsupported_type,    uint64_t )
 
 // now implement the fallback for standard types like int, long, ...
 // the difficulty is that they may or may not be equal to one of the above types, and/or
 // to each other. This is why any attempt to handle at once PRInt8... types and standard types
 // is bound to fail.
 template<typename T>
-struct is_standard_integer_type { enum { value = 0 }; };
+struct is_standard_integer_type
+{
+    enum { value = 0 };
+};
 
 template<>
-struct is_standard_integer_type<char> { enum { value = 1 }; };
+struct is_standard_integer_type<char>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<unsigned char> { enum { value = 1 }; };
+struct is_standard_integer_type<unsigned char>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<short> { enum { value = 1 }; };
+struct is_standard_integer_type<short>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<unsigned short> { enum { value = 1 }; };
+struct is_standard_integer_type<unsigned short>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<int> { enum { value = 1 }; };
+struct is_standard_integer_type<int>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<unsigned int> { enum { value = 1 }; };
+struct is_standard_integer_type<unsigned int>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<long> { enum { value = 1 }; };
+struct is_standard_integer_type<long>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<unsigned long> { enum { value = 1 }; };
+struct is_standard_integer_type<unsigned long>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<long long> { enum { value = 1 }; };
+struct is_standard_integer_type<long long>
+{
+    enum { value = 1 };
+};
 template<>
-struct is_standard_integer_type<unsigned long long> { enum { value = 1 }; };
+struct is_standard_integer_type<unsigned long long>
+{
+    enum { value = 1 };
+};
 
 template<int size, bool is_signed>
 struct explicitly_sized_integer_type {};
 
 template<>
-struct explicitly_sized_integer_type<1, true> { typedef int8_t type; };
+struct explicitly_sized_integer_type<1, true>
+{
+    typedef int8_t type;
+};
 template<>
-struct explicitly_sized_integer_type<1, false> { typedef uint8_t type; };
+struct explicitly_sized_integer_type<1, false>
+{
+    typedef uint8_t type;
+};
 template<>
-struct explicitly_sized_integer_type<2, true> { typedef int16_t type; };
+struct explicitly_sized_integer_type<2, true>
+{
+    typedef int16_t type;
+};
 template<>
-struct explicitly_sized_integer_type<2, false> { typedef uint16_t type; };
+struct explicitly_sized_integer_type<2, false>
+{
+    typedef uint16_t type;
+};
 template<>
-struct explicitly_sized_integer_type<4, true> { typedef int32_t type; };
+struct explicitly_sized_integer_type<4, true>
+{
+    typedef int32_t type;
+};
 template<>
-struct explicitly_sized_integer_type<4, false> { typedef uint32_t type; };
+struct explicitly_sized_integer_type<4, false>
+{
+    typedef uint32_t type;
+};
 template<>
-struct explicitly_sized_integer_type<8, true> { typedef int64_t type; };
+struct explicitly_sized_integer_type<8, true>
+{
+    typedef int64_t type;
+};
 template<>
-struct explicitly_sized_integer_type<8, false> { typedef uint64_t type; };
+struct explicitly_sized_integer_type<8, false>
+{
+    typedef uint64_t type;
+};
 
 template<typename T> struct integer_type_manually_recorded_info
 {
-    enum {
-      is_supported = is_standard_integer_type<T>::value,
-      size = sizeof(T),
-      is_signed = (T(-1) > T(0)) ? 0 : 1
+    enum
+    {
+        is_supported = is_standard_integer_type<T>::value,
+        size = sizeof( T ),
+        is_signed = ( T( -1 ) > T( 0 ) ) ? 0 : 1
     };
     typedef typename explicitly_sized_integer_type<size, is_signed>::type explicit_sized_type;
     typedef integer_type_manually_recorded_info<explicit_sized_type> base;
@@ -143,7 +203,10 @@ template<typename T, bool is_supported = integer_type_manually_recorded_info<T>:
 struct TYPE_NOT_SUPPORTED_BY_CheckedInt {};
 
 template<typename T>
-struct TYPE_NOT_SUPPORTED_BY_CheckedInt<T, true> { static void run() {} };
+struct TYPE_NOT_SUPPORTED_BY_CheckedInt<T, true>
+{
+    static void run() {}
+};
 
 
 /* Step 2: record some info about a given integer type,
@@ -153,28 +216,35 @@ struct TYPE_NOT_SUPPORTED_BY_CheckedInt<T, true> { static void run() {} };
           not support it, if they are defined directly from compiler built-in types).
 */
 
-template<typename T> struct is_unsupported_type { enum { answer = 0 }; };
-template<> struct is_unsupported_type<unsupported_type> { enum { answer = 1 }; };
+template<typename T> struct is_unsupported_type
+{
+    enum { answer = 0 };
+};
+template<> struct is_unsupported_type<unsupported_type>
+{
+    enum { answer = 1 };
+};
 
 template<typename T> struct integer_traits
 {
     typedef typename integer_type_manually_recorded_info<T>::twice_bigger_type twice_bigger_type;
 
-    enum {
+    enum
+    {
         is_supported = integer_type_manually_recorded_info<T>::is_supported,
         twice_bigger_type_is_supported
             = is_unsupported_type<
-                  typename integer_type_manually_recorded_info<T>::twice_bigger_type
+              typename integer_type_manually_recorded_info<T>::twice_bigger_type
               >::answer ? 0 : 1,
-        size = sizeof(T),
+        size = sizeof( T ),
         position_of_sign_bit = CHAR_BIT * size - 1,
-        is_signed = (T(-1) > T(0)) ? 0 : 1
+        is_signed = ( T( -1 ) > T( 0 ) ) ? 0 : 1
     };
 
     static T min()
     {
         // bitwise ops may return a larger type, that's why we cast explicitly to T
-        return is_signed ? T(T(1) << position_of_sign_bit) : T(0);
+        return is_signed ? T( T( 1 ) << position_of_sign_bit ) : T( 0 );
     }
 
     static T max()
@@ -188,12 +258,12 @@ template<typename T> struct integer_traits
 // bitwise ops may return a larger type, so it's good to use these inline helpers guaranteeing that
 // the result is really of type T
 
-template<typename T> inline T has_sign_bit(T x)
+template<typename T> inline T has_sign_bit( T x )
 {
     return x >> integer_traits<T>::position_of_sign_bit;
 }
 
-template<typename T> inline T binary_complement(T x)
+template<typename T> inline T binary_complement( T x )
 {
     return ~x;
 }
@@ -206,17 +276,17 @@ struct is_in_range_impl {};
 template<typename T, typename U>
 struct is_in_range_impl<T, U, true, true>
 {
-    static T run(U x)
+    static T run( U x )
     {
-        return (x <= integer_traits<T>::max()) &
-               (x >= integer_traits<T>::min());
+        return ( x <= integer_traits<T>::max() ) &
+               ( x >= integer_traits<T>::min() );
     }
 };
 
 template<typename T, typename U>
 struct is_in_range_impl<T, U, false, false>
 {
-    static T run(U x)
+    static T run( U x )
     {
         return x <= integer_traits<T>::max();
     }
@@ -225,50 +295,58 @@ struct is_in_range_impl<T, U, false, false>
 template<typename T, typename U>
 struct is_in_range_impl<T, U, true, false>
 {
-    static T run(U x)
+    static T run( U x )
     {
-        if (sizeof(T) > sizeof(U))
+        if ( sizeof( T ) > sizeof( U ) )
+        {
             return 1;
+        }
         else
-            return x <= U(integer_traits<T>::max());
+        {
+            return x <= U( integer_traits<T>::max() );
+        }
     }
 };
 
 template<typename T, typename U>
 struct is_in_range_impl<T, U, false, true>
 {
-    static T run(U x)
+    static T run( U x )
     {
-        if (sizeof(T) >= sizeof(U))
+        if ( sizeof( T ) >= sizeof( U ) )
+        {
             return x >= 0;
+        }
         else
-            return x >= 0 && x <= U(integer_traits<T>::max());
+        {
+            return x >= 0 && x <= U( integer_traits<T>::max() );
+        }
     }
 };
 
-template<typename T, typename U> inline T is_in_range(U x)
+template<typename T, typename U> inline T is_in_range( U x )
 {
-    return is_in_range_impl<T, U>::run(x);
+    return is_in_range_impl<T, U>::run( x );
 }
 
-template<typename T> inline T is_add_valid(T x, T y, T result)
+template<typename T> inline T is_add_valid( T x, T y, T result )
 {
     return integer_traits<T>::is_signed ?
-                        // addition is valid if the sign of x+y is equal to either that of x or that of y.
-                        // Beware! These bitwise operations can return a larger integer type, if T was a
-                        // small type like int8, so we explicitly cast to T.
-                        has_sign_bit(binary_complement(T((result^x) & (result^y))))
-                    :
-                        binary_complement(x) >= y;
+           // addition is valid if the sign of x+y is equal to either that of x or that of y.
+           // Beware! These bitwise operations can return a larger integer type, if T was a
+           // small type like int8, so we explicitly cast to T.
+           has_sign_bit( binary_complement( T( ( result^x ) & ( result^y ) ) ) )
+           :
+           binary_complement( x ) >= y;
 }
 
-template<typename T> inline T is_sub_valid(T x, T y, T result)
+template<typename T> inline T is_sub_valid( T x, T y, T result )
 {
     return integer_traits<T>::is_signed ?
-                        // substraction is valid if either x and y have same sign, or x-y and x have same sign
-                        has_sign_bit(binary_complement(T((result^x) & (x^y))))
-                    :
-                        x >= y;
+           // substraction is valid if either x and y have same sign, or x-y and x have same sign
+           has_sign_bit( binary_complement( T( ( result^x ) & ( x^y ) ) ) )
+           :
+           x >= y;
 }
 
 template<typename T,
@@ -279,45 +357,59 @@ struct is_mul_valid_impl {};
 template<typename T>
 struct is_mul_valid_impl<T, true, true>
 {
-    static T run(T x, T y)
+    static T run( T x, T y )
     {
         typedef typename integer_traits<T>::twice_bigger_type twice_bigger_type;
-        twice_bigger_type product = twice_bigger_type(x) * twice_bigger_type(y);
-        return is_in_range<T>(product);
+        twice_bigger_type product = twice_bigger_type( x ) * twice_bigger_type( y );
+        return is_in_range<T>( product );
     }
 };
 
 template<typename T>
 struct is_mul_valid_impl<T, false, true>
 {
-    static T run(T x, T y)
+    static T run( T x, T y )
     {
         typedef typename integer_traits<T>::twice_bigger_type twice_bigger_type;
-        twice_bigger_type product = twice_bigger_type(x) * twice_bigger_type(y);
-        return is_in_range<T>(product);
+        twice_bigger_type product = twice_bigger_type( x ) * twice_bigger_type( y );
+        return is_in_range<T>( product );
     }
 };
 
 template<typename T>
 struct is_mul_valid_impl<T, true, false>
 {
-    static T run(T x, T y)
+    static T run( T x, T y )
     {
         const T max_value = integer_traits<T>::max();
         const T min_value = integer_traits<T>::min();
 
-        if (x == 0 || y == 0) return true;
+        if ( x == 0 || y == 0 )
+        {
+            return true;
+        }
 
-        if (x > 0) {
-            if (y > 0)
+        if ( x > 0 )
+        {
+            if ( y > 0 )
+            {
                 return x <= max_value / y;
+            }
             else
+            {
                 return y >= min_value / x;
-        } else {
-            if (y > 0)
+            }
+        }
+        else
+        {
+            if ( y > 0 )
+            {
                 return x >= min_value / y;
+            }
             else
+            {
                 return y >= max_value / x;
+            }
         }
     }
 };
@@ -325,26 +417,31 @@ struct is_mul_valid_impl<T, true, false>
 template<typename T>
 struct is_mul_valid_impl<T, false, false>
 {
-    static T run(T x, T y)
+    static T run( T x, T y )
     {
         const T max_value = integer_traits<T>::max();
-        if (x == 0 || y == 0) return true;
+
+        if ( x == 0 || y == 0 )
+        {
+            return true;
+        }
+
         return x <= max_value / y;
     }
 };
 
-template<typename T> inline T is_mul_valid(T x, T y, T /*result not used*/)
+template<typename T> inline T is_mul_valid( T x, T y, T /*result not used*/ )
 {
-    return is_mul_valid_impl<T>::run(x, y);
+    return is_mul_valid_impl<T>::run( x, y );
 }
 
-template<typename T> inline T is_div_valid(T x, T y)
+template<typename T> inline T is_div_valid( T x, T y )
 {
     return integer_traits<T>::is_signed ?
-                        // keep in mind that min/-1 is invalid because abs(min)>max
-                        y != 0 && (x != integer_traits<T>::min() || y != T(-1))
-                    :
-                        y != 0;
+           // keep in mind that min/-1 is invalid because abs(min)>max
+           y != 0 && ( x != integer_traits<T>::min() || y != T( -1 ) )
+           :
+           y != 0;
 }
 
 } // end namespace CheckedInt_internal
@@ -402,10 +499,9 @@ class CheckedInt
 protected:
     T mValue;
     T mIsValid; // stored as a T to limit the number of integer conversions when
-                // evaluating nested arithmetic expressions.
+    // evaluating nested arithmetic expressions.
 
-    template<typename U>
-    CheckedInt(const U& value, bool isValid) : mValue(value), mIsValid(isValid)
+    template<typename U> CheckedInt( const U &value, bool isValid ) : mValue( value ), mIsValid( isValid )
     {
         CheckedInt_internal::TYPE_NOT_SUPPORTED_BY_CheckedInt<T>::run();
     }
@@ -419,58 +515,63 @@ public:
       * As explained in the above documentation for class CheckedInt, this constructor checks that its argument is
       * valid.
       */
-    template<typename U>
-    CheckedInt(const U& value)
-        : mValue(value),
-          mIsValid(CheckedInt_internal::is_in_range<T>(value))
+    template<typename U> CheckedInt( const U &value )
+        : mValue( value ),
+          mIsValid( CheckedInt_internal::is_in_range<T>( value ) )
     {
         CheckedInt_internal::TYPE_NOT_SUPPORTED_BY_CheckedInt<T>::run();
     }
 
     /** Constructs a valid checked integer with uninitialized value */
-    CheckedInt() : mIsValid(1)
+    CheckedInt() : mIsValid( 1 )
     {
         CheckedInt_internal::TYPE_NOT_SUPPORTED_BY_CheckedInt<T>::run();
     }
 
     /** \returns the actual value */
-    T value() const { return mValue; }
+    T value() const
+    {
+        return mValue;
+    }
 
     /** \returns true if the checked integer is valid, i.e. is not the result
       * of an invalid operation or of an operation involving an invalid checked integer
       */
-    bool valid() const { return mIsValid; }
+    bool valid() const
+    {
+        return mIsValid;
+    }
 
     /** \returns the sum. Checks for overflow. */
-    template<typename U> friend CheckedInt<U> operator +(const CheckedInt<U>& lhs, const CheckedInt<U>& rhs);
+    template<typename U> friend CheckedInt<U> operator +( const CheckedInt<U> &lhs, const CheckedInt<U> &rhs );
     /** Adds. Checks for overflow. \returns self reference */
-    template<typename U> CheckedInt& operator +=(const U &rhs);
+    template<typename U> CheckedInt &operator +=( const U &rhs );
     /** \returns the difference. Checks for overflow. */
-    template<typename U> friend CheckedInt<U> operator -(const CheckedInt<U>& lhs, const CheckedInt<U> &rhs);
+    template<typename U> friend CheckedInt<U> operator -( const CheckedInt<U> &lhs, const CheckedInt<U> &rhs );
     /** Substracts. Checks for overflow. \returns self reference */
-    template<typename U> CheckedInt& operator -=(const U &rhs);
+    template<typename U> CheckedInt &operator -=( const U &rhs );
     /** \returns the product. Checks for overflow. */
-    template<typename U> friend CheckedInt<U> operator *(const CheckedInt<U>& lhs, const CheckedInt<U> &rhs);
+    template<typename U> friend CheckedInt<U> operator *( const CheckedInt<U> &lhs, const CheckedInt<U> &rhs );
     /** Multiplies. Checks for overflow. \returns self reference */
-    template<typename U> CheckedInt& operator *=(const U &rhs);
+    template<typename U> CheckedInt &operator *=( const U &rhs );
     /** \returns the quotient. Checks for overflow and for divide-by-zero. */
-    template<typename U> friend CheckedInt<U> operator /(const CheckedInt<U>& lhs, const CheckedInt<U> &rhs);
+    template<typename U> friend CheckedInt<U> operator /( const CheckedInt<U> &lhs, const CheckedInt<U> &rhs );
     /** Divides. Checks for overflow and for divide-by-zero. \returns self reference */
-    template<typename U> CheckedInt& operator /=(const U &rhs);
+    template<typename U> CheckedInt &operator /=( const U &rhs );
 
     /** \returns the opposite value. Checks for overflow. */
     CheckedInt operator -() const
     {
         T result = -value();
         /* give the compiler a good chance to perform RVO */
-        return CheckedInt(result,
-                       mIsValid & CheckedInt_internal::is_sub_valid(T(0), value(), result));
+        return CheckedInt( result,
+                           mIsValid & CheckedInt_internal::is_sub_valid( T( 0 ), value(), result ) );
     }
 
     /** \returns true if the left and right hand sides are valid and have the same value. */
-    bool operator ==(const CheckedInt& other) const
+    bool operator ==( const CheckedInt &other ) const
     {
-        return bool(mIsValid & other.mIsValid & T(value() == other.value()));
+        return bool( mIsValid & other.mIsValid & T( value() == other.value() ) );
     }
 
 private:
@@ -478,7 +579,10 @@ private:
       * would mean that if a or b is invalid, (a!=b) is always true, which is very tricky.
       */
     template<typename U>
-    bool operator !=(const U& other) const { return !(*this == other); }
+    bool operator !=( const U &other ) const
+    {
+        return !( *this == other );
+    }
 };
 
 #define CHECKEDINT_BASIC_BINARY_OPERATOR(NAME, OP)               \
@@ -497,24 +601,24 @@ inline CheckedInt<T> operator OP(const CheckedInt<T> &lhs, const CheckedInt<T> &
                       is_op_valid);                           \
 }
 
-CHECKEDINT_BASIC_BINARY_OPERATOR(add, +)
-CHECKEDINT_BASIC_BINARY_OPERATOR(sub, -)
-CHECKEDINT_BASIC_BINARY_OPERATOR(mul, *)
+CHECKEDINT_BASIC_BINARY_OPERATOR( add, + )
+CHECKEDINT_BASIC_BINARY_OPERATOR( sub, - )
+CHECKEDINT_BASIC_BINARY_OPERATOR( mul, * )
 
 // division can't be implemented by CHECKEDINT_BASIC_BINARY_OPERATOR
 // because if rhs == 0, we are not allowed to even try to compute the quotient.
 template<typename T>
-inline CheckedInt<T> operator /(const CheckedInt<T> &lhs, const CheckedInt<T> &rhs)
+inline CheckedInt<T> operator /( const CheckedInt<T> &lhs, const CheckedInt<T> &rhs )
 {
     T x = lhs.value();
     T y = rhs.value();
-    T is_op_valid = CheckedInt_internal::is_div_valid(x, y);
-    T result = is_op_valid ? (x / y) : 0;
+    T is_op_valid = CheckedInt_internal::is_div_valid( x, y );
+    T result = is_op_valid ? ( x / y ) : 0;
     /* give the compiler a good chance to perform RVO */
-    return CheckedInt<T>(result,
-                      lhs.mIsValid &
-                      rhs.mIsValid &
-                      is_op_valid);
+    return CheckedInt<T>( result,
+                          lhs.mIsValid &
+                          rhs.mIsValid &
+                          is_op_valid );
 }
 
 // implement cast_to_CheckedInt<T>(x), making sure that
@@ -525,21 +629,26 @@ template<typename T, typename U>
 struct cast_to_CheckedInt_impl
 {
     typedef CheckedInt<T> return_type;
-    static CheckedInt<T> run(const U& u) { return u; }
+    static CheckedInt<T> run( const U &u )
+    {
+        return u;
+    }
 };
 
 template<typename T>
 struct cast_to_CheckedInt_impl<T, CheckedInt<T> >
 {
-    typedef const CheckedInt<T>& return_type;
-    static const CheckedInt<T>& run(const CheckedInt<T>& u) { return u; }
+    typedef const CheckedInt<T> &return_type;
+    static const CheckedInt<T> &run( const CheckedInt<T> &u )
+    {
+        return u;
+    }
 };
 
 template<typename T, typename U>
-inline typename cast_to_CheckedInt_impl<T, U>::return_type
-cast_to_CheckedInt(const U& u)
+inline typename cast_to_CheckedInt_impl<T, U>::return_type cast_to_CheckedInt( const U &u )
 {
-    return cast_to_CheckedInt_impl<T, U>::run(u);
+    return cast_to_CheckedInt_impl<T, U>::run( u );
 }
 
 #define CHECKEDINT_CONVENIENCE_BINARY_OPERATORS(OP, COMPOUND_OP) \
@@ -561,21 +670,21 @@ inline CheckedInt<T> operator OP(const U & lhs, const CheckedInt<T> &rhs) \
     return cast_to_CheckedInt<T>(lhs) OP rhs;                    \
 }
 
-CHECKEDINT_CONVENIENCE_BINARY_OPERATORS(+, +=)
-CHECKEDINT_CONVENIENCE_BINARY_OPERATORS(*, *=)
-CHECKEDINT_CONVENIENCE_BINARY_OPERATORS(-, -=)
-CHECKEDINT_CONVENIENCE_BINARY_OPERATORS(/, /=)
+CHECKEDINT_CONVENIENCE_BINARY_OPERATORS( +, += )
+CHECKEDINT_CONVENIENCE_BINARY_OPERATORS( *, *= )
+CHECKEDINT_CONVENIENCE_BINARY_OPERATORS( -, -= )
+CHECKEDINT_CONVENIENCE_BINARY_OPERATORS( /, /= )
 
 template<typename T, typename U>
-inline bool operator ==(const CheckedInt<T> &lhs, const U &rhs)
+inline bool operator ==( const CheckedInt<T> &lhs, const U &rhs )
 {
-    return lhs == cast_to_CheckedInt<T>(rhs);
+    return lhs == cast_to_CheckedInt<T>( rhs );
 }
 
 template<typename T, typename U>
-inline bool operator ==(const U & lhs, const CheckedInt<T> &rhs)
+inline bool operator ==( const U &lhs, const CheckedInt<T> &rhs )
 {
-    return cast_to_CheckedInt<T>(lhs) == rhs;
+    return cast_to_CheckedInt<T>( lhs ) == rhs;
 }
 
 } // end namespace WebCore

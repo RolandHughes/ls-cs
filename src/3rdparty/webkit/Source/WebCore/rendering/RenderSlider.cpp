@@ -44,19 +44,20 @@
 
 using std::min;
 
-namespace WebCore {
+namespace WebCore
+{
 
 static const int defaultTrackLength = 129;
 
 // Returns a value between 0 and 1.
-static double sliderPosition(HTMLInputElement* element)
+static double sliderPosition( HTMLInputElement *element )
 {
-    StepRange range(element);
-    return range.proportionFromValue(range.valueFromElement(element));
+    StepRange range( element );
+    return range.proportionFromValue( range.valueFromElement( element ) );
 }
 
-RenderSlider::RenderSlider(HTMLInputElement* element)
-    : RenderBlock(element)
+RenderSlider::RenderSlider( HTMLInputElement *element )
+    : RenderBlock( element )
 {
 }
 
@@ -64,7 +65,7 @@ RenderSlider::~RenderSlider()
 {
 }
 
-int RenderSlider::baselinePosition(FontBaseline, bool /*firstLine*/, LineDirectionMode, LinePositionMode) const
+int RenderSlider::baselinePosition( FontBaseline, bool /*firstLine*/, LineDirectionMode, LinePositionMode ) const
 {
     // FIXME: Patch this function for writing-mode.
     return height() + marginTop();
@@ -75,51 +76,71 @@ void RenderSlider::computePreferredLogicalWidths()
     m_minPreferredLogicalWidth = 0;
     m_maxPreferredLogicalWidth = 0;
 
-    if (style()->width().isFixed() && style()->width().value() > 0)
-        m_minPreferredLogicalWidth = m_maxPreferredLogicalWidth = computeContentBoxLogicalWidth(style()->width().value());
+    if ( style()->width().isFixed() && style()->width().value() > 0 )
+    {
+        m_minPreferredLogicalWidth = m_maxPreferredLogicalWidth = computeContentBoxLogicalWidth( style()->width().value() );
+    }
     else
+    {
         m_maxPreferredLogicalWidth = defaultTrackLength * style()->effectiveZoom();
+    }
 
-    if (style()->minWidth().isFixed() && style()->minWidth().value() > 0) {
-        m_maxPreferredLogicalWidth = max(m_maxPreferredLogicalWidth, computeContentBoxLogicalWidth(style()->minWidth().value()));
-        m_minPreferredLogicalWidth = max(m_minPreferredLogicalWidth, computeContentBoxLogicalWidth(style()->minWidth().value()));
-    } else if (style()->width().isPercent() || (style()->width().isAuto() && style()->height().isPercent()))
+    if ( style()->minWidth().isFixed() && style()->minWidth().value() > 0 )
+    {
+        m_maxPreferredLogicalWidth = max( m_maxPreferredLogicalWidth, computeContentBoxLogicalWidth( style()->minWidth().value() ) );
+        m_minPreferredLogicalWidth = max( m_minPreferredLogicalWidth, computeContentBoxLogicalWidth( style()->minWidth().value() ) );
+    }
+    else if ( style()->width().isPercent() || ( style()->width().isAuto() && style()->height().isPercent() ) )
+    {
         m_minPreferredLogicalWidth = 0;
+    }
     else
+    {
         m_minPreferredLogicalWidth = m_maxPreferredLogicalWidth;
-    
-    if (style()->maxWidth().isFixed() && style()->maxWidth().value() != undefinedLength) {
-        m_maxPreferredLogicalWidth = min(m_maxPreferredLogicalWidth, computeContentBoxLogicalWidth(style()->maxWidth().value()));
-        m_minPreferredLogicalWidth = min(m_minPreferredLogicalWidth, computeContentBoxLogicalWidth(style()->maxWidth().value()));
+    }
+
+    if ( style()->maxWidth().isFixed() && style()->maxWidth().value() != undefinedLength )
+    {
+        m_maxPreferredLogicalWidth = min( m_maxPreferredLogicalWidth, computeContentBoxLogicalWidth( style()->maxWidth().value() ) );
+        m_minPreferredLogicalWidth = min( m_minPreferredLogicalWidth, computeContentBoxLogicalWidth( style()->maxWidth().value() ) );
     }
 
     int toAdd = borderAndPaddingWidth();
     m_minPreferredLogicalWidth += toAdd;
     m_maxPreferredLogicalWidth += toAdd;
 
-    setPreferredLogicalWidthsDirty(false); 
+    setPreferredLogicalWidthsDirty( false );
 }
 
 IntRect RenderSlider::thumbRect()
 {
-    SliderThumbElement* thumbElement = shadowSliderThumb();
-    if (!thumbElement)
+    SliderThumbElement *thumbElement = shadowSliderThumb();
+
+    if ( !thumbElement )
+    {
         return IntRect();
+    }
 
     IntRect thumbRect;
-    RenderBox* thumb = toRenderBox(thumbElement->renderer());
+    RenderBox *thumb = toRenderBox( thumbElement->renderer() );
 
-    thumbRect.setWidth(thumb->style()->width().calcMinValue(contentWidth()));
-    thumbRect.setHeight(thumb->style()->height().calcMinValue(contentHeight()));
+    thumbRect.setWidth( thumb->style()->width().calcMinValue( contentWidth() ) );
+    thumbRect.setHeight( thumb->style()->height().calcMinValue( contentHeight() ) );
 
-    double fraction = sliderPosition(static_cast<HTMLInputElement*>(node()));
+    double fraction = sliderPosition( static_cast<HTMLInputElement *>( node() ) );
     IntRect contentRect = contentBoxRect();
-    if (style()->appearance() == SliderVerticalPart || style()->appearance() == MediaVolumeSliderPart) {
-        thumbRect.setX(contentRect.x() + (contentRect.width() - thumbRect.width()) / 2);
-        thumbRect.setY(contentRect.y() + static_cast<int>(nextafter((contentRect.height() - thumbRect.height()) + 1, 0) * (1 - fraction)));
-    } else {
-        thumbRect.setX(contentRect.x() + static_cast<int>(nextafter((contentRect.width() - thumbRect.width()) + 1, 0) * fraction));
-        thumbRect.setY(contentRect.y() + (contentRect.height() - thumbRect.height()) / 2);
+
+    if ( style()->appearance() == SliderVerticalPart || style()->appearance() == MediaVolumeSliderPart )
+    {
+        thumbRect.setX( contentRect.x() + ( contentRect.width() - thumbRect.width() ) / 2 );
+        thumbRect.setY( contentRect.y() + static_cast<int>( nextafter( ( contentRect.height() - thumbRect.height() ) + 1,
+                        0 ) * ( 1 - fraction ) ) );
+    }
+    else
+    {
+        thumbRect.setX( contentRect.x() + static_cast<int>( nextafter( ( contentRect.width() - thumbRect.width() ) + 1,
+                        0 ) * fraction ) );
+        thumbRect.setY( contentRect.y() + ( contentRect.height() - thumbRect.height() ) / 2 );
     }
 
     return thumbRect;
@@ -127,67 +148,75 @@ IntRect RenderSlider::thumbRect()
 
 void RenderSlider::layout()
 {
-    ASSERT(needsLayout());
+    ASSERT( needsLayout() );
 
-    SliderThumbElement* thumbElement = shadowSliderThumb();
-    RenderBox* thumb = thumbElement ? toRenderBox(thumbElement->renderer()) : 0;
+    SliderThumbElement *thumbElement = shadowSliderThumb();
+    RenderBox *thumb = thumbElement ? toRenderBox( thumbElement->renderer() ) : 0;
 
-    IntSize baseSize(borderAndPaddingWidth(), borderAndPaddingHeight());
+    IntSize baseSize( borderAndPaddingWidth(), borderAndPaddingHeight() );
 
-    if (thumb) {
+    if ( thumb )
+    {
         // Allow the theme to set the size of the thumb.
-        if (thumb->style()->hasAppearance()) {
+        if ( thumb->style()->hasAppearance() )
+        {
             // FIXME: This should pass the style, not the renderer, to the theme.
-            theme()->adjustSliderThumbSize(thumb);
+            theme()->adjustSliderThumbSize( thumb );
         }
 
-        baseSize.expand(thumb->style()->width().calcMinValue(0), thumb->style()->height().calcMinValue(0));
+        baseSize.expand( thumb->style()->width().calcMinValue( 0 ), thumb->style()->height().calcMinValue( 0 ) );
     }
 
-    LayoutRepainter repainter(*this, checkForRepaintDuringLayout());
+    LayoutRepainter repainter( *this, checkForRepaintDuringLayout() );
 
     IntSize oldSize = size();
 
-    setSize(baseSize);
+    setSize( baseSize );
     computeLogicalWidth();
     computeLogicalHeight();
     updateLayerTransform();
 
     m_overflow.clear();
 
-    if (thumb) {
-        if (oldSize != size())
-            thumb->setChildNeedsLayout(true, false);
+    if ( thumb )
+    {
+        if ( oldSize != size() )
+        {
+            thumb->setChildNeedsLayout( true, false );
+        }
 
-        LayoutStateMaintainer statePusher(view(), this, IntSize(x(), y()), style()->isFlippedBlocksWritingMode());
+        LayoutStateMaintainer statePusher( view(), this, IntSize( x(), y() ), style()->isFlippedBlocksWritingMode() );
 
         IntRect oldThumbRect = thumb->frameRect();
 
         thumb->layoutIfNeeded();
 
         IntRect rect = thumbRect();
-        thumb->setFrameRect(rect);
-        if (thumb->checkForRepaintDuringLayout())
-            thumb->repaintDuringLayoutIfMoved(oldThumbRect);
+        thumb->setFrameRect( rect );
+
+        if ( thumb->checkForRepaintDuringLayout() )
+        {
+            thumb->repaintDuringLayoutIfMoved( oldThumbRect );
+        }
 
         statePusher.pop();
-        addOverflowFromChild(thumb);
+        addOverflowFromChild( thumb );
     }
 
-    repainter.repaintAfterLayout();    
+    repainter.repaintAfterLayout();
 
-    setNeedsLayout(false);
+    setNeedsLayout( false );
 }
 
-SliderThumbElement* RenderSlider::shadowSliderThumb() const
+SliderThumbElement *RenderSlider::shadowSliderThumb() const
 {
-    Node* shadow = static_cast<Element*>(node())->shadowRoot();
-    return shadow ? toSliderThumbElement(shadow->firstChild()) : 0;
+    Node *shadow = static_cast<Element *>( node() )->shadowRoot();
+    return shadow ? toSliderThumbElement( shadow->firstChild() ) : 0;
 }
 
 bool RenderSlider::inDragMode() const
 {
-    SliderThumbElement* thumbElement = shadowSliderThumb();
+    SliderThumbElement *thumbElement = shadowSliderThumb();
     return thumbElement && thumbElement->inDragMode();
 }
 

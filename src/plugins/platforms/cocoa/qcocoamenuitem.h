@@ -43,108 +43,119 @@ class QCocoaMenu;
 
 class QCocoaMenuObject
 {
- public:
-   void setMenuParent(QObject *obj) {
-      parent = obj;
-   }
+public:
+    void setMenuParent( QObject *obj )
+    {
+        parent = obj;
+    }
 
-   QObject *menuParent() const {
-      return parent;
-   }
+    QObject *menuParent() const
+    {
+        return parent;
+    }
 
- private:
-   QPointer<QObject> parent;
+private:
+    QPointer<QObject> parent;
 };
 
 class QCocoaMenuItem : public QPlatformMenuItem, public QCocoaMenuObject
 {
- public:
-   QCocoaMenuItem();
-   ~QCocoaMenuItem();
+public:
+    QCocoaMenuItem();
+    ~QCocoaMenuItem();
 
-   void setTag(quintptr tag) override {
-      m_tag = tag;
-   }
+    void setTag( quintptr tag ) override
+    {
+        m_tag = tag;
+    }
 
-   quintptr tag() const override {
-      return m_tag;
-   }
+    quintptr tag() const override
+    {
+        return m_tag;
+    }
 
-   void setText(const QString &text) override;
-   void setIcon(const QIcon &icon) override;
-   void setMenu(QPlatformMenu *menu) override;
-   void setVisible(bool isVisible) override;
-   void setIsSeparator(bool isSeparator) override;
-   void setFont(const QFont &font) override;
-   void setRole(MenuRole role) override;
-   void setShortcut(const QKeySequence &shortcut) override;
+    void setText( const QString &text ) override;
+    void setIcon( const QIcon &icon ) override;
+    void setMenu( QPlatformMenu *menu ) override;
+    void setVisible( bool isVisible ) override;
+    void setIsSeparator( bool isSeparator ) override;
+    void setFont( const QFont &font ) override;
+    void setRole( MenuRole role ) override;
+    void setShortcut( const QKeySequence &shortcut ) override;
 
-   void setCheckable(bool checkable) override {
-      (void) checkable;
-   }
+    void setCheckable( bool checkable ) override
+    {
+        ( void ) checkable;
+    }
 
-   void setChecked(bool isChecked) override;
-   void setEnabled(bool isEnabled) override;
-   void setIconSize(int size) override;
+    void setChecked( bool isChecked ) override;
+    void setEnabled( bool isEnabled ) override;
+    void setIconSize( int size ) override;
 
-   void setNativeContents(WId item) override;
+    void setNativeContents( WId item ) override;
 
-   inline QString text() const {
-      return m_text;
-   }
+    inline QString text() const
+    {
+        return m_text;
+    }
 
-   inline NSMenuItem *nsItem() {
-      return m_native;
-   }
-   NSMenuItem *sync();
+    inline NSMenuItem *nsItem()
+    {
+        return m_native;
+    }
+    NSMenuItem *sync();
 
-   void syncMerged();
-   void setParentEnabled(bool enabled);
+    void syncMerged();
+    void setParentEnabled( bool enabled );
 
-   inline bool isMerged() const {
-      return m_merged;
-   }
+    inline bool isMerged() const
+    {
+        return m_merged;
+    }
 
-   inline bool isEnabled() const {
-      return m_enabled && m_parentEnabled;
-   }
+    inline bool isEnabled() const
+    {
+        return m_enabled && m_parentEnabled;
+    }
 
-   inline bool isSeparator() const {
-      return m_isSeparator;
-   }
+    inline bool isSeparator() const
+    {
+        return m_isSeparator;
+    }
 
-   QCocoaMenu *menu() const {
-      return m_menu;
-   }
+    QCocoaMenu *menu() const
+    {
+        return m_menu;
+    }
 
-   MenuRole effectiveRole() const;
+    MenuRole effectiveRole() const;
 
- private:
-   QString mergeText();
-   QKeySequence mergeAccel();
+private:
+    QString mergeText();
+    QKeySequence mergeAccel();
 
-   NSMenuItem *m_native;
-   NSView *m_itemView;
+    NSMenuItem *m_native;
+    NSView *m_itemView;
 
-   QString m_text;
-   QIcon m_icon;
-   QPointer<QCocoaMenu> m_menu;
-   QFont m_font;
+    QString m_text;
+    QIcon m_icon;
+    QPointer<QCocoaMenu> m_menu;
+    QFont m_font;
 
-   MenuRole m_role;
-   MenuRole m_detectedRole;
+    MenuRole m_role;
+    MenuRole m_detectedRole;
 
-   QKeySequence m_shortcut;
-   quintptr m_tag;
-   int m_iconSize;
+    QKeySequence m_shortcut;
+    quintptr m_tag;
+    int m_iconSize;
 
-   bool m_textSynced: 1;
-   bool m_isVisible: 1;
-   bool m_enabled: 1;
-   bool m_parentEnabled: 1;
-   bool m_isSeparator: 1;
-   bool m_checked: 1;
-   bool m_merged: 1;
+    bool m_textSynced: 1;
+    bool m_isVisible: 1;
+    bool m_enabled: 1;
+    bool m_parentEnabled: 1;
+    bool m_isSeparator: 1;
+    bool m_checked: 1;
+    bool m_merged: 1;
 };
 
 #endif

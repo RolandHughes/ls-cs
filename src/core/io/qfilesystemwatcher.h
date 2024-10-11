@@ -33,38 +33,38 @@ class QFileSystemWatcherPrivate;
 
 class Q_CORE_EXPORT QFileSystemWatcher : public QObject
 {
-   CORE_CS_OBJECT(QFileSystemWatcher)
-   Q_DECLARE_PRIVATE(QFileSystemWatcher)
+    CORE_LSCS_OBJECT( QFileSystemWatcher )
+    Q_DECLARE_PRIVATE( QFileSystemWatcher )
 
- public:
-   QFileSystemWatcher(QObject *parent = nullptr);
-   QFileSystemWatcher(const QStringList &pathList, QObject *parent = nullptr);
+public:
+    QFileSystemWatcher( QObject *parent = nullptr );
+    QFileSystemWatcher( const QStringList &pathList, QObject *parent = nullptr );
 
-   ~QFileSystemWatcher();
+    ~QFileSystemWatcher();
 
-   void addPath(const QString &path);
-   void addPaths(const QStringList &pathList);
-   void removePath(const QString &path);
-   void removePaths(const QStringList &pathList);
+    void addPath( const QString &path );
+    void addPaths( const QStringList &pathList );
+    void removePath( const QString &path );
+    void removePaths( const QStringList &pathList );
 
-   QStringList files() const;
-   QStringList directories() const;
+    QStringList files() const;
+    QStringList directories() const;
 
-   CORE_CS_SIGNAL_1(Public, void fileChanged(const QString &path))
-   CORE_CS_SIGNAL_2(fileChanged, path)
+    CORE_LSCS_SIGNAL_1( Public, void fileChanged( const QString &path ) )
+    CORE_LSCS_SIGNAL_2( fileChanged, path )
 
-   CORE_CS_SIGNAL_1(Public, void directoryChanged(const QString &path))
-   CORE_CS_SIGNAL_2(directoryChanged, path)
+    CORE_LSCS_SIGNAL_1( Public, void directoryChanged( const QString &path ) )
+    CORE_LSCS_SIGNAL_2( directoryChanged, path )
 
- private:
-   CORE_CS_SLOT_1(Private, void _q_fileChanged(const QString &path, bool removed))
-   CORE_CS_SLOT_2(_q_fileChanged)
+private:
+    CORE_LSCS_SLOT_1( Private, void _q_fileChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SLOT_2( _q_fileChanged )
 
-   CORE_CS_SLOT_1(Private, void _q_directoryChanged(const QString &path, bool removed))
-   CORE_CS_SLOT_2(_q_directoryChanged)
+    CORE_LSCS_SLOT_1( Private, void _q_directoryChanged( const QString &path, bool removed ) )
+    CORE_LSCS_SLOT_2( _q_directoryChanged )
 
- protected:
-   QScopedPointer<QFileSystemWatcherPrivate> d_ptr;
+protected:
+    QScopedPointer<QFileSystemWatcherPrivate> d_ptr;
 
 };
 

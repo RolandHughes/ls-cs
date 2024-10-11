@@ -24,26 +24,36 @@
 
 #include "FastMalloc.h"
 
-namespace WTF {
+namespace WTF
+{
 
-    template<class T> class OwnFastMallocPtr {
-        WTF_MAKE_NONCOPYABLE(OwnFastMallocPtr);
-    public:
-        explicit OwnFastMallocPtr(T* ptr) : m_ptr(ptr)
-        {
-        }
+template<class T> class OwnFastMallocPtr
+{
+    WTF_MAKE_NONCOPYABLE( OwnFastMallocPtr );
+public:
+    explicit OwnFastMallocPtr( T *ptr ) : m_ptr( ptr )
+    {
+    }
 
-        ~OwnFastMallocPtr()
-        {
-            fastFree(const_cast<void*>(static_cast<const void*>(const_cast<const T*>(m_ptr))));
-        }
+    ~OwnFastMallocPtr()
+    {
+        fastFree( const_cast<void *>( static_cast<const void *>( const_cast<const T *>( m_ptr ) ) ) );
+    }
 
-        T* get() const { return m_ptr; }
-        T* release() { T* ptr = m_ptr; m_ptr = 0; return ptr; }
+    T *get() const
+    {
+        return m_ptr;
+    }
+    T *release()
+    {
+        T *ptr = m_ptr;
+        m_ptr = 0;
+        return ptr;
+    }
 
-    private:
-        T* m_ptr;
-    };
+private:
+    T *m_ptr;
+};
 
 } // namespace WTF
 

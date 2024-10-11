@@ -29,25 +29,51 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class CursorList : public RefCounted<CursorList> {
+class CursorList : public RefCounted<CursorList>
+{
 public:
     static PassRefPtr<CursorList> create()
     {
-        return adoptRef(new CursorList);
+        return adoptRef( new CursorList );
     }
 
-    const CursorData& operator[](int i) const { return m_vector[i]; }
-    CursorData& operator[](int i) { return m_vector[i]; }
-    const CursorData& at(size_t i) const { return m_vector.at(i); }
-    CursorData& at(size_t i) { return m_vector.at(i); }
+    const CursorData &operator[]( int i ) const
+    {
+        return m_vector[i];
+    }
+    CursorData &operator[]( int i )
+    {
+        return m_vector[i];
+    }
+    const CursorData &at( size_t i ) const
+    {
+        return m_vector.at( i );
+    }
+    CursorData &at( size_t i )
+    {
+        return m_vector.at( i );
+    }
 
-    bool operator==(const CursorList& o) const { return m_vector == o.m_vector; }
-    bool operator!=(const CursorList& o) const { return m_vector != o.m_vector; }
+    bool operator==( const CursorList &o ) const
+    {
+        return m_vector == o.m_vector;
+    }
+    bool operator!=( const CursorList &o ) const
+    {
+        return m_vector != o.m_vector;
+    }
 
-    size_t size() const { return m_vector.size(); }
-    void append(const CursorData& cursorData) { m_vector.append(cursorData); }
+    size_t size() const
+    {
+        return m_vector.size();
+    }
+    void append( const CursorData &cursorData )
+    {
+        m_vector.append( cursorData );
+    }
 
 private:
     CursorList()

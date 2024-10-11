@@ -40,7 +40,8 @@
 #include <inttypes.h>
 #include <sqlite3.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 SQLiteFileSystem::SQLiteFileSystem()
 {
@@ -50,78 +51,97 @@ void SQLiteFileSystem::registerSQLiteVFS()
 {
 }
 
-int SQLiteFileSystem::openDatabase(const String& fileName, sqlite3** database, bool)
+int SQLiteFileSystem::openDatabase( const String &fileName, sqlite3 **database, bool )
 {
     // SQLite expects a null terminator on its UTF-16 strings.
     String path = fileName;
-    return sqlite3_open16(path.charactersWithNullTermination(), database);
+    return sqlite3_open16( path.charactersWithNullTermination(), database );
 }
 
-String SQLiteFileSystem::getFileNameForNewDatabase(const String& dbDir, const String&,
-                                                   const String&, SQLiteDatabase* db)
+String SQLiteFileSystem::getFileNameForNewDatabase( const String &dbDir, const String &,
+        const String &, SQLiteDatabase *db )
 {
     // try to get the next sequence number from the given database
     // if we can't get a number, return an empty string
-    SQLiteStatement sequenceStatement(*db, "SELECT seq FROM sqlite_sequence WHERE name='Databases';");
-    if (sequenceStatement.prepare() != SQLResultOk)
+    SQLiteStatement sequenceStatement( *db, "SELECT seq FROM sqlite_sequence WHERE name='Databases';" );
+
+    if ( sequenceStatement.prepare() != SQLResultOk )
+    {
         return String();
+    }
+
     int result = sequenceStatement.step();
     int64_t seq = 0;
-    if (result == SQLResultRow)
-        seq = sequenceStatement.getColumnInt64(0);
-    else if (result != SQLResultDone)
+
+    if ( result == SQLResultRow )
+    {
+        seq = sequenceStatement.getColumnInt64( 0 );
+    }
+    else if ( result != SQLResultDone )
+    {
         return String();
+    }
+
     sequenceStatement.finalize();
 
     // increment the number until we can use it to form a file name that doesn't exist
     String fileName;
-    do {
+
+    do
+    {
         ++seq;
-        fileName = pathByAppendingComponent(dbDir, String::format("%016" PRIx64 ".db", seq));
-    } while (fileExists(fileName));
+        fileName = pathByAppendingComponent( dbDir, String::format( "%016" PRIx64 ".db", seq ) );
+    }
+    while ( fileExists( fileName ) );
 
-    return String::format("%016" PRIx64 ".db", seq);
+    return String::format( "%016" PRIx64 ".db", seq );
 }
 
-String SQLiteFileSystem::appendDatabaseFileNameToPath(const String& path, const String& fileName)
+String SQLiteFileSystem::appendDatabaseFileNameToPath( const String &path, const String &fileName )
 {
-    return pathByAppendingComponent(path, fileName);
+    return pathByAppendingComponent( path, fileName );
 }
 
-bool SQLiteFileSystem::ensureDatabaseDirectoryExists(const String& path)
+bool SQLiteFileSystem::ensureDatabaseDirectoryExists( const String &path )
 {
-    if (path.isEmpty())
+    if ( path.isEmpty() )
+    {
         return false;
-    return makeAllDirectories(path);
-}
-
-bool SQLiteFileSystem::ensureDatabaseFileExists(const String& fileName, bool checkPathOnly)
-{
-    if (fileName.isEmpty())
-        return false;
-
-    if (checkPathOnly) {
-        String dir = directoryName(fileName);
-        return ensureDatabaseDirectoryExists(dir);
     }
 
-    return fileExists(fileName);
+    return makeAllDirectories( path );
 }
 
-bool SQLiteFileSystem::deleteEmptyDatabaseDirectory(const String& path)
+bool SQLiteFileSystem::ensureDatabaseFileExists( const String &fileName, bool checkPathOnly )
 {
-    return deleteEmptyDirectory(path);
+    if ( fileName.isEmpty() )
+    {
+        return false;
+    }
+
+    if ( checkPathOnly )
+    {
+        String dir = directoryName( fileName );
+        return ensureDatabaseDirectoryExists( dir );
+    }
+
+    return fileExists( fileName );
 }
 
-bool SQLiteFileSystem::deleteDatabaseFile(const String& fileName)
+bool SQLiteFileSystem::deleteEmptyDatabaseDirectory( const String &path )
 {
-    return deleteFile(fileName);
+    return deleteEmptyDirectory( path );
 }
 
-long long SQLiteFileSystem::getDatabaseFileSize(const String& fileName)
-{        
+bool SQLiteFileSystem::deleteDatabaseFile( const String &fileName )
+{
+    return deleteFile( fileName );
+}
+
+long long SQLiteFileSystem::getDatabaseFileSize( const String &fileName )
+{
     long long size;
-    return getFileSize(fileName, size) ? size : 0;
+    return getFileSize( fileName, size ) ? size : 0;
 }
 
 } // namespace WebCore

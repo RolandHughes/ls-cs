@@ -43,35 +43,36 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 static PassRefPtr<WebPageGroup> createInspectorPageGroup()
 {
-    RefPtr<WebPageGroup> pageGroup = WebPageGroup::create("__WebInspectorPageGroup__", false, false);
+    RefPtr<WebPageGroup> pageGroup = WebPageGroup::create( "__WebInspectorPageGroup__", false, false );
 
 #ifndef NDEBUG
     // Allow developers to inspect the Web Inspector in debug builds.
-    pageGroup->preferences()->setDeveloperExtrasEnabled(true);
+    pageGroup->preferences()->setDeveloperExtrasEnabled( true );
 #endif
 
     return pageGroup.release();
 }
 
-WebPageGroup* WebInspectorProxy::inspectorPageGroup()
+WebPageGroup *WebInspectorProxy::inspectorPageGroup()
 {
-    static WebPageGroup* pageGroup = createInspectorPageGroup().leakRef();
+    static WebPageGroup *pageGroup = createInspectorPageGroup().leakRef();
     return pageGroup;
 }
 
-WebInspectorProxy::WebInspectorProxy(WebPageProxy* page)
-    : m_page(page)
-    , m_isVisible(false)
-    , m_isAttached(false)
-    , m_isDebuggingJavaScript(false)
-    , m_isProfilingJavaScript(false)
-    , m_isProfilingPage(false)
+WebInspectorProxy::WebInspectorProxy( WebPageProxy *page )
+    : m_page( page )
+    , m_isVisible( false )
+    , m_isAttached( false )
+    , m_isDebuggingJavaScript( false )
+    , m_isProfilingJavaScript( false )
+    , m_isProfilingPage( false )
 #if PLATFORM(WIN)
-    , m_inspectorWindow(0)
+    , m_inspectorWindow( 0 )
 #endif
 {
 }
@@ -96,26 +97,32 @@ void WebInspectorProxy::invalidate()
 // Public APIs
 void WebInspectorProxy::show()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    m_page->process()->send(Messages::WebInspector::Show(), m_page->pageID());
+    m_page->process()->send( Messages::WebInspector::Show(), m_page->pageID() );
 }
 
 void WebInspectorProxy::close()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    m_page->process()->send(Messages::WebInspector::Close(), m_page->pageID());
+    m_page->process()->send( Messages::WebInspector::Close(), m_page->pageID() );
 }
 
 void WebInspectorProxy::showConsole()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    m_page->process()->send(Messages::WebInspector::ShowConsole(), m_page->pageID());
+    m_page->process()->send( Messages::WebInspector::ShowConsole(), m_page->pageID() );
 }
 
 void WebInspectorProxy::attach()
@@ -132,20 +139,26 @@ void WebInspectorProxy::detach()
     platformDetach();
 }
 
-void WebInspectorProxy::setAttachedWindowHeight(unsigned height)
+void WebInspectorProxy::setAttachedWindowHeight( unsigned height )
 {
-    platformSetAttachedWindowHeight(height);
+    platformSetAttachedWindowHeight( height );
 }
 
 void WebInspectorProxy::toggleJavaScriptDebugging()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    if (m_isDebuggingJavaScript)
-        m_page->process()->send(Messages::WebInspector::StopJavaScriptDebugging(), m_page->pageID());
+    if ( m_isDebuggingJavaScript )
+    {
+        m_page->process()->send( Messages::WebInspector::StopJavaScriptDebugging(), m_page->pageID() );
+    }
     else
-        m_page->process()->send(Messages::WebInspector::StartJavaScriptDebugging(), m_page->pageID());
+    {
+        m_page->process()->send( Messages::WebInspector::StartJavaScriptDebugging(), m_page->pageID() );
+    }
 
     // FIXME: have the WebProcess notify us on state changes.
     m_isDebuggingJavaScript = !m_isDebuggingJavaScript;
@@ -153,13 +166,19 @@ void WebInspectorProxy::toggleJavaScriptDebugging()
 
 void WebInspectorProxy::toggleJavaScriptProfiling()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    if (m_isProfilingJavaScript)
-        m_page->process()->send(Messages::WebInspector::StopJavaScriptProfiling(), m_page->pageID());
+    if ( m_isProfilingJavaScript )
+    {
+        m_page->process()->send( Messages::WebInspector::StopJavaScriptProfiling(), m_page->pageID() );
+    }
     else
-        m_page->process()->send(Messages::WebInspector::StartJavaScriptProfiling(), m_page->pageID());
+    {
+        m_page->process()->send( Messages::WebInspector::StartJavaScriptProfiling(), m_page->pageID() );
+    }
 
     // FIXME: have the WebProcess notify us on state changes.
     m_isProfilingJavaScript = !m_isProfilingJavaScript;
@@ -167,40 +186,51 @@ void WebInspectorProxy::toggleJavaScriptProfiling()
 
 void WebInspectorProxy::togglePageProfiling()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    if (m_isProfilingPage)
-        m_page->process()->send(Messages::WebInspector::StopPageProfiling(), m_page->pageID());
+    if ( m_isProfilingPage )
+    {
+        m_page->process()->send( Messages::WebInspector::StopPageProfiling(), m_page->pageID() );
+    }
     else
-        m_page->process()->send(Messages::WebInspector::StartPageProfiling(), m_page->pageID());
+    {
+        m_page->process()->send( Messages::WebInspector::StartPageProfiling(), m_page->pageID() );
+    }
 
     // FIXME: have the WebProcess notify us on state changes.
     m_isProfilingPage = !m_isProfilingPage;
 }
 
-bool WebInspectorProxy::isInspectorPage(WebPageProxy* page)
+bool WebInspectorProxy::isInspectorPage( WebPageProxy *page )
 {
     return page->pageGroup() == inspectorPageGroup();
 }
 
 // Called by WebInspectorProxy messages
-void WebInspectorProxy::createInspectorPage(uint64_t& inspectorPageID, WebPageCreationParameters& inspectorPageParameters)
+void WebInspectorProxy::createInspectorPage( uint64_t &inspectorPageID, WebPageCreationParameters &inspectorPageParameters )
 {
     inspectorPageID = 0;
 
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
-    WebPageProxy* inspectorPage = platformCreateInspectorPage();
-    ASSERT(inspectorPage);
-    if (!inspectorPage)
+    WebPageProxy *inspectorPage = platformCreateInspectorPage();
+    ASSERT( inspectorPage );
+
+    if ( !inspectorPage )
+    {
         return;
+    }
 
     inspectorPageID = inspectorPage->pageID();
     inspectorPageParameters = inspectorPage->creationParameters();
 
-    inspectorPage->loadURL(inspectorPageURL());
+    inspectorPage->loadURL( inspectorPageURL() );
 }
 
 void WebInspectorProxy::didLoadInspectorPage()
@@ -214,7 +244,8 @@ void WebInspectorProxy::didClose()
 {
     m_isVisible = false;
 
-    if (m_isAttached) {
+    if ( m_isAttached )
+    {
         // Detach here so we only need to have one code path that is responsible for cleaning up the inspector
         // state.
         detach();
@@ -228,9 +259,9 @@ void WebInspectorProxy::bringToFront()
     platformBringToFront();
 }
 
-void WebInspectorProxy::inspectedURLChanged(const String& urlString)
+void WebInspectorProxy::inspectedURLChanged( const String &urlString )
 {
-    platformInspectedURLChanged(urlString);
+    platformInspectedURLChanged( urlString );
 }
 
 } // namespace WebKit

@@ -26,7 +26,8 @@
 #include "EGLDisplayOpenVG.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 void SharedResourceOpenVG::makeSharedContextCurrent()
 {

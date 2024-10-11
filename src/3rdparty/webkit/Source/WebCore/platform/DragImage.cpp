@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,50 +31,64 @@
 
 #include "Frame.h"
 
-namespace WebCore {
-    
-DragImageRef fitDragImageToMaxSize(DragImageRef image, const IntSize& srcSize, const IntSize& size)
+namespace WebCore
+{
+
+DragImageRef fitDragImageToMaxSize( DragImageRef image, const IntSize &srcSize, const IntSize &size )
 {
     float heightResizeRatio = 0.0f;
     float widthResizeRatio = 0.0f;
     float resizeRatio = -1.0f;
-    IntSize originalSize = dragImageSize(image);
-    
-    if (srcSize.width() > size.width()) {
-        widthResizeRatio = size.width() / (float)srcSize.width();
+    IntSize originalSize = dragImageSize( image );
+
+    if ( srcSize.width() > size.width() )
+    {
+        widthResizeRatio = size.width() / ( float )srcSize.width();
         resizeRatio = widthResizeRatio;
     }
-    
-    if (srcSize.height() > size.height()) {
-        heightResizeRatio = size.height() / (float)srcSize.height();
-        if ((resizeRatio < 0.0f) || (resizeRatio > heightResizeRatio))
+
+    if ( srcSize.height() > size.height() )
+    {
+        heightResizeRatio = size.height() / ( float )srcSize.height();
+
+        if ( ( resizeRatio < 0.0f ) || ( resizeRatio > heightResizeRatio ) )
+        {
             resizeRatio = heightResizeRatio;
+        }
     }
-    
-    if (srcSize == originalSize)
-        return resizeRatio > 0.0f ? scaleDragImage(image, FloatSize(resizeRatio, resizeRatio)) : image;
-    
+
+    if ( srcSize == originalSize )
+    {
+        return resizeRatio > 0.0f ? scaleDragImage( image, FloatSize( resizeRatio, resizeRatio ) ) : image;
+    }
+
     // The image was scaled in the webpage so at minimum we must account for that scaling
-    float scalex = srcSize.width() / (float)originalSize.width();
-    float scaley = srcSize.height() / (float)originalSize.height();
-    if (resizeRatio > 0.0f) {
+    float scalex = srcSize.width() / ( float )originalSize.width();
+    float scaley = srcSize.height() / ( float )originalSize.height();
+
+    if ( resizeRatio > 0.0f )
+    {
         scalex *= resizeRatio;
         scaley *= resizeRatio;
     }
-    
-    return scaleDragImage(image, FloatSize(scalex, scaley));
+
+    return scaleDragImage( image, FloatSize( scalex, scaley ) );
 }
-    
-DragImageRef createDragImageForSelection(Frame* frame)
+
+DragImageRef createDragImageForSelection( Frame *frame )
 {
     DragImageRef image = frame->dragImageForSelection();
-    if (image)
-        image = dissolveDragImageToFraction(image, DragController::DragImageAlpha);
+
+    if ( image )
+    {
+        image = dissolveDragImageToFraction( image, DragController::DragImageAlpha );
+    }
+
     return image;
 }
 
 #if !PLATFORM(MAC) && (!PLATFORM(WIN) || OS(WINCE))
-DragImageRef createDragImageForLink(KURL&, const String&, Frame*)
+DragImageRef createDragImageForLink( KURL &, const String &, Frame * )
 {
     return 0;
 }

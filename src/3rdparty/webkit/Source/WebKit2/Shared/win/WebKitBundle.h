@@ -26,9 +26,10 @@
 #ifndef WebKitBundle_h
 #define WebKitBundle_h
 
-typedef struct __CFBundle* CFBundleRef;
+typedef struct __CFBundle *CFBundleRef;
 
-namespace WebKit {
+namespace WebKit
+{
 
 CFBundleRef webKitBundle();
 

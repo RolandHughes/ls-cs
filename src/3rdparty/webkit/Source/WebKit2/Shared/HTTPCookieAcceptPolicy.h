@@ -26,9 +26,11 @@
 #ifndef HTTPCookieAcceptPolicy_h
 #define HTTPCookieAcceptPolicy_h
 
-namespace WebKit {
+namespace WebKit
+{
 
-enum {
+enum
+{
     HTTPCookieAcceptPolicyAlways = 0,
     HTTPCookieAcceptPolicyNever = 1,
     HTTPCookieAcceptPolicyOnlyFromMainDocumentDomain = 2,

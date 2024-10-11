@@ -20,7 +20,8 @@
 #ifndef TextureMapperPlatformLayer_h
 #define TextureMapperPlatformLayer_h
 
-namespace WebCore {
+namespace WebCore
+{
 
 class GraphicsContext;
 class IntRect;
@@ -30,18 +31,21 @@ class TransformationMatrix;
 
 
 // Glue layer to connect the texmap layer to the platform specific container.
-class TextureMapperLayerClient {
+class TextureMapperLayerClient
+{
 public:
     virtual ~TextureMapperLayerClient() {}
     virtual void setNeedsDisplay() = 0;
-    virtual void setNeedsDisplayInRect(const IntRect& rect) = 0;
-    virtual void setSizeChanged(const IntSize&) = 0;
-    virtual TextureMapper* textureMapper() = 0;
+    virtual void setNeedsDisplayInRect( const IntRect &rect ) = 0;
+    virtual void setSizeChanged( const IntSize & ) = 0;
+    virtual TextureMapper *textureMapper() = 0;
 };
 
-class TextureMapperPlatformLayer {
+class TextureMapperPlatformLayer
+{
 public:
-    enum Type {
+    enum Type
+    {
         ContentLayer,
         MediaLayer
     };
@@ -50,9 +54,11 @@ public:
     virtual ~TextureMapperPlatformLayer() {}
 };
 
-class TextureMapperContentLayer : public TextureMapperPlatformLayer {
+class TextureMapperContentLayer : public TextureMapperPlatformLayer
+{
 public:
-    struct PaintOptions {
+    struct PaintOptions
+    {
         IntRect visibleRect;
         IntRect targetRect;
         IntSize viewportSize;
@@ -60,16 +66,23 @@ public:
         float opacity;
     };
 
-    virtual void setPlatformLayerClient(TextureMapperLayerClient*) = 0;
-    virtual void paint(TextureMapper*, const PaintOptions&) {}
+    virtual void setPlatformLayerClient( TextureMapperLayerClient * ) = 0;
+    virtual void paint( TextureMapper *, const PaintOptions & ) {}
     virtual IntSize size() const = 0;
-    virtual Type layerType() const { return ContentLayer; }
+    virtual Type layerType() const
+    {
+        return ContentLayer;
+    }
 };
 
-class TextureMapperMediaLayer : public TextureMapperPlatformLayer {
+class TextureMapperMediaLayer : public TextureMapperPlatformLayer
+{
 public:
-    virtual void paint(GraphicsContext*) = 0;
-    virtual Type layerType() const { return MediaLayer; }
+    virtual void paint( GraphicsContext * ) = 0;
+    virtual Type layerType() const
+    {
+        return MediaLayer;
+    }
 };
 
 }

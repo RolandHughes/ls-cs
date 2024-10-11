@@ -29,22 +29,22 @@
 #ifndef QT_NO_PRINTER
 
 QPrintDevice::QPrintDevice()
-    : d(new QPlatformPrintDevice())
+    : d( new QPlatformPrintDevice() )
 {
 }
 
-QPrintDevice::QPrintDevice(const QString &id)
-    : d(new QPlatformPrintDevice(id))
+QPrintDevice::QPrintDevice( const QString &id )
+    : d( new QPlatformPrintDevice( id ) )
 {
 }
 
-QPrintDevice::QPrintDevice(QPlatformPrintDevice *dd)
-    : d(dd)
+QPrintDevice::QPrintDevice( QPlatformPrintDevice *dd )
+    : d( dd )
 {
 }
 
-QPrintDevice::QPrintDevice(const QPrintDevice &other)
-    : d(other.d)
+QPrintDevice::QPrintDevice( const QPrintDevice &other )
+    : d( other.d )
 {
 }
 
@@ -52,16 +52,19 @@ QPrintDevice::~QPrintDevice()
 {
 }
 
-QPrintDevice &QPrintDevice::operator=(const QPrintDevice &other)
+QPrintDevice &QPrintDevice::operator=( const QPrintDevice &other )
 {
     d = other.d;
     return *this;
 }
 
-bool QPrintDevice::operator==(const QPrintDevice &other) const
+bool QPrintDevice::operator==( const QPrintDevice &other ) const
 {
-    if (d && other.d)
+    if ( d && other.d )
+    {
         return d->id() == other.d->id();
+    }
+
     return d == other.d;
 }
 
@@ -105,9 +108,9 @@ QPrint::DeviceState QPrintDevice::state() const
     return isValid() ? d->state() : QPrint::Error;
 }
 
-bool QPrintDevice::isValidPageLayout(const QPageLayout &layout, int resolution) const
+bool QPrintDevice::isValidPageLayout( const QPageLayout &layout, int resolution ) const
 {
-    return isValid() && d->isValidPageLayout(layout, resolution);
+    return isValid() && d->isValidPageLayout( layout, resolution );
 }
 
 bool QPrintDevice::supportsMultipleCopies() const
@@ -130,29 +133,29 @@ QList<QPageSize> QPrintDevice::supportedPageSizes() const
     return isValid() ? d->supportedPageSizes() : QList<QPageSize>();
 }
 
-QPageSize QPrintDevice::supportedPageSize(const QPageSize &pageSize) const
+QPageSize QPrintDevice::supportedPageSize( const QPageSize &pageSize ) const
 {
-    return isValid() ? d->supportedPageSize(pageSize) : QPageSize();
+    return isValid() ? d->supportedPageSize( pageSize ) : QPageSize();
 }
 
-QPageSize QPrintDevice::supportedPageSize(QPageSize::PageSizeId pageSizeId) const
+QPageSize QPrintDevice::supportedPageSize( QPageSize::PageSizeId pageSizeId ) const
 {
-    return isValid() ? d->supportedPageSize(pageSizeId) : QPageSize();
+    return isValid() ? d->supportedPageSize( pageSizeId ) : QPageSize();
 }
 
-QPageSize QPrintDevice::supportedPageSize(const QString &pageName) const
+QPageSize QPrintDevice::supportedPageSize( const QString &pageName ) const
 {
-    return isValid() ? d->supportedPageSize(pageName) : QPageSize();
+    return isValid() ? d->supportedPageSize( pageName ) : QPageSize();
 }
 
-QPageSize QPrintDevice::supportedPageSize(const QSize &pointSize) const
+QPageSize QPrintDevice::supportedPageSize( const QSize &pointSize ) const
 {
-    return isValid() ? d->supportedPageSize(pointSize) : QPageSize();
+    return isValid() ? d->supportedPageSize( pointSize ) : QPageSize();
 }
 
-QPageSize QPrintDevice::supportedPageSize(const QSizeF &size, QPageSize::Unit units) const
+QPageSize QPrintDevice::supportedPageSize( const QSizeF &size, QPageSize::Unit units ) const
 {
-    return isValid() ? d->supportedPageSize(size, units) : QPageSize();
+    return isValid() ? d->supportedPageSize( size, units ) : QPageSize();
 }
 
 bool QPrintDevice::supportsCustomPageSizes() const
@@ -170,11 +173,11 @@ QSize QPrintDevice::maximumPhysicalPageSize() const
     return isValid() ? d->maximumPhysicalPageSize() : QSize();
 }
 
-QMarginsF QPrintDevice::printableMargins(const QPageSize &pageSize,
-                                         QPageLayout::Orientation orientation,
-                                         int resolution) const
+QMarginsF QPrintDevice::printableMargins( const QPageSize &pageSize,
+        QPageLayout::Orientation orientation,
+        int resolution ) const
 {
-    return isValid() ? d->printableMargins(pageSize, orientation, resolution) : QMarginsF();
+    return isValid() ? d->printableMargins( pageSize, orientation, resolution ) : QMarginsF();
 }
 
 int QPrintDevice::defaultResolution() const
@@ -236,71 +239,88 @@ QList<QMimeType> QPrintDevice::supportedMimeTypes() const
 */
 #endif // QT_NO_MIMETYPE
 
-void QPrintDevice::format(QDebug debug) const
+void QPrintDevice::format( QDebug debug ) const
 {
-    QDebugStateSaver saver(debug);
+    QDebugStateSaver saver( debug );
     debug.noquote();
     debug.nospace();
 
-    if (isValid()) {
+    if ( isValid() )
+    {
         const QString deviceId = id();
         const QString deviceName = name();
         debug << "id=\"" << deviceId << "\", state=" << state();
-        if (!deviceName.isEmpty() && deviceName != deviceId)
-            debug << ", name=\"" << deviceName << '"';
-        if (!location().isEmpty())
-            debug << ", location=\"" << location() << '"';
-        debug << ", makeAndModel=\"" << makeAndModel() << '"';
-        if (isDefault())
-            debug << ", default";
 
-        if (isRemote())
+        if ( !deviceName.isEmpty() && deviceName != deviceId )
+        {
+            debug << ", name=\"" << deviceName << '"';
+        }
+
+        if ( !location().isEmpty() )
+        {
+            debug << ", location=\"" << location() << '"';
+        }
+
+        debug << ", makeAndModel=\"" << makeAndModel() << '"';
+
+        if ( isDefault() )
+        {
+            debug << ", default";
+        }
+
+        if ( isRemote() )
+        {
             debug << ", remote";
+        }
 
         debug << ", defaultPageSize=" << defaultPageSize();
 
-        if (supportsCustomPageSizes())
+        if ( supportsCustomPageSizes() )
+        {
             debug << ", supportsCustomPageSizes";
+        }
 
         debug << ", physicalPageSize=(";
 
-        QtDebugUtils::formatQSize(debug, minimumPhysicalPageSize());
+        QtDebugUtils::formatQSize( debug, minimumPhysicalPageSize() );
         debug << ")..(";
 
-        QtDebugUtils::formatQSize(debug, maximumPhysicalPageSize());
+        QtDebugUtils::formatQSize( debug, maximumPhysicalPageSize() );
         debug << "), defaultResolution=" << defaultResolution()
               << ", defaultDuplexMode=" << defaultDuplexMode()
               << ", defaultColorMode="<< defaultColorMode();
 
 #ifndef QT_NO_MIMETYPE
 
-/* emerald - mimedatabase
+        /* emerald - mimedatabase
 
-        const QList<QMimeType> mimeTypes = supportedMimeTypes();
+                const QList<QMimeType> mimeTypes = supportedMimeTypes();
 
-        if (const int mimeTypeCount = mimeTypes.size()) {
-            debug << ", supportedMimeTypes=(";
+                if (const int mimeTypeCount = mimeTypes.size()) {
+                    debug << ", supportedMimeTypes=(";
 
-            for (int i = 0; i < mimeTypeCount; ++i)
-                debug << " \"" << mimeTypes.at(i).name() << '"';
-            debug << ')';
-        }
-*/
+                    for (int i = 0; i < mimeTypeCount; ++i)
+                        debug << " \"" << mimeTypes.at(i).name() << '"';
+                    debug << ')';
+                }
+        */
 
 #endif
 
-    } else {
+    }
+    else
+    {
         debug << "null";
     }
 }
 
-QDebug operator<<(QDebug debug, const QPrintDevice &p)
+QDebug operator<<( QDebug debug, const QPrintDevice &p )
 {
-    QDebugStateSaver saver(debug);
+    QDebugStateSaver saver( debug );
     debug.nospace();
 
     debug << "QPrintDevice(";
-    p.format(debug);
+    p.format( debug );
     debug << ')';
 
     return debug;

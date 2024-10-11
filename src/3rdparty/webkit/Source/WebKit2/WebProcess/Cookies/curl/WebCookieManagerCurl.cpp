@@ -30,9 +30,10 @@
 #include <WebCore/CookieStorage.h>
 #include <WebCore/NotImplemented.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-void WebCookieManager::platformSetHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicy policy)
+void WebCookieManager::platformSetHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicy policy )
 {
     // Fixme: To be implemented
     notImplemented();

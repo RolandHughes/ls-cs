@@ -33,10 +33,13 @@
 #include <wtf/Vector.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct IDBKeyPathElement {
-    enum Type {
+struct IDBKeyPathElement
+{
+    enum Type
+    {
         IsIndexed,
         IsNamed,
     };
@@ -46,7 +49,8 @@ struct IDBKeyPathElement {
     String identifier;
 };
 
-enum IDBKeyPathParseError {
+enum IDBKeyPathParseError
+{
     IDBKeyPathParseErrorNone,
     IDBKeyPathParseErrorStart,
     IDBKeyPathParseErrorIdentifier,
@@ -55,7 +59,7 @@ enum IDBKeyPathParseError {
     IDBKeyPathParseErrorDot,
 };
 
-void IDBParseKeyPath(const String&, Vector<IDBKeyPathElement>&, IDBKeyPathParseError&);
+void IDBParseKeyPath( const String &, Vector<IDBKeyPathElement> &, IDBKeyPathParseError & );
 
 } // namespace WebCore
 

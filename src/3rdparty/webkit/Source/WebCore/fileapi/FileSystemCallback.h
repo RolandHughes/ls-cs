@@ -35,14 +35,16 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DOMFileSystem;
 
-class FileSystemCallback : public RefCounted<FileSystemCallback> {
+class FileSystemCallback : public RefCounted<FileSystemCallback>
+{
 public:
     virtual ~FileSystemCallback() { }
-    virtual bool handleEvent(DOMFileSystem*) = 0;
+    virtual bool handleEvent( DOMFileSystem * ) = 0;
 };
 
 } // namespace

@@ -37,88 +37,90 @@
 
 class QIODevice;
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class NetworkLoop : public QEventLoop
 {
-   XMLP_CS_OBJECT(NetworkLoop)
+    XMLP_LSCS_OBJECT( NetworkLoop )
 
- public:
-   NetworkLoop() : m_hasReceivedError(false) { }
+public:
+    NetworkLoop() : m_hasReceivedError( false ) { }
 
-   XMLP_CS_SLOT_1(Public, void error(QNetworkReply::NetworkError code))
-   XMLP_CS_SLOT_2(error)
+    XMLP_LSCS_SLOT_1( Public, void error( QNetworkReply::NetworkError code ) )
+    XMLP_LSCS_SLOT_2( error )
 
-   XMLP_CS_SLOT_1(Public, void finished())
-   XMLP_CS_SLOT_2(finished)
+    XMLP_LSCS_SLOT_1( Public, void finished() )
+    XMLP_LSCS_SLOT_2( finished )
 
- private:
-   bool m_hasReceivedError;
+private:
+    bool m_hasReceivedError;
 };
 
 class AccelTreeResourceLoader : public DeviceResourceLoader
 {
- public:
-   /**
-    * Describes the behaviour of the resource loader in case of an
-    * error.
-    */
-   enum ErrorHandling {
-      FailOnError,        ///< The resource loader will report the error via the report context.
-      ContinueOnError     ///< The resource loader will report no error and return an empty QNetworkReply.
-   };
+public:
+    /**
+     * Describes the behaviour of the resource loader in case of an
+     * error.
+     */
+    enum ErrorHandling
+    {
+        FailOnError,        ///< The resource loader will report the error via the report context.
+        ContinueOnError     ///< The resource loader will report no error and return an empty QNetworkReply.
+    };
 
-   /**
-    * AccelTreeResourceLoader does not own @p context.
-    */
-   AccelTreeResourceLoader(const NamePool::Ptr &np, const NetworkAccessDelegator::Ptr &networkDelegator,
-                  AccelTreeBuilder<true>::Features = AccelTreeBuilder<true>::NoneFeature);
+    /**
+     * AccelTreeResourceLoader does not own @p context.
+     */
+    AccelTreeResourceLoader( const NamePool::Ptr &np, const NetworkAccessDelegator::Ptr &networkDelegator,
+                             AccelTreeBuilder<true>::Features = AccelTreeBuilder<true>::NoneFeature );
 
-   Item openDocument(const QUrl &uri, const ReportContext::Ptr &context) override;
-   virtual Item openDocument(QIODevice *source, const QUrl &documentUri, const ReportContext::Ptr &context);
+    Item openDocument( const QUrl &uri, const ReportContext::Ptr &context ) override;
+    virtual Item openDocument( QIODevice *source, const QUrl &documentUri, const ReportContext::Ptr &context );
 
-   SequenceType::Ptr announceDocument(const QUrl &uri, const Usage usageHint) override;
-   bool isDocumentAvailable(const QUrl &uri) override;
+    SequenceType::Ptr announceDocument( const QUrl &uri, const Usage usageHint ) override;
+    bool isDocumentAvailable( const QUrl &uri ) override;
 
-   bool isUnparsedTextAvailable(const QUrl &uri, const QString &encoding) override;
+    bool isUnparsedTextAvailable( const QUrl &uri, const QString &encoding ) override;
 
-   Item openUnparsedText(const QUrl &uri, const QString &encoding, const ReportContext::Ptr &context,
-                  const SourceLocationReflection *const where) override;
+    Item openUnparsedText( const QUrl &uri, const QString &encoding, const ReportContext::Ptr &context,
+                           const SourceLocationReflection *const where ) override;
 
-   static QNetworkReply *load(const QUrl &uri, QNetworkAccessManager *const networkManager,
-                  const ReportContext::Ptr &context, ErrorHandling handling = FailOnError);
+    static QNetworkReply *load( const QUrl &uri, QNetworkAccessManager *const networkManager,
+                                const ReportContext::Ptr &context, ErrorHandling handling = FailOnError );
 
-   /**
-    * @overload
-    */
-   static QNetworkReply *load(const QUrl &uri, const NetworkAccessDelegator::Ptr &networkDelegator,
-                  const ReportContext::Ptr &context, ErrorHandling handling = FailOnError);
+    /**
+     * @overload
+     */
+    static QNetworkReply *load( const QUrl &uri, const NetworkAccessDelegator::Ptr &networkDelegator,
+                                const ReportContext::Ptr &context, ErrorHandling handling = FailOnError );
 
-   /**
-    * @short Returns the URIs this AccelTreeResourceLoader has loaded
-    * which are for devices through variable bindings.
-    */
-   QSet<QUrl> deviceURIs() const override;
+    /**
+     * @short Returns the URIs this AccelTreeResourceLoader has loaded
+     * which are for devices through variable bindings.
+     */
+    QSet<QUrl> deviceURIs() const override;
 
-   void clear(const QUrl &uri) override;
+    void clear( const QUrl &uri ) override;
 
- private:
-   static bool streamToReceiver(QIODevice *const dev, AccelTreeBuilder<true> *const receiver,
-                  const NamePool::Ptr &np, const ReportContext::Ptr &context, const QUrl &uri);
+private:
+    static bool streamToReceiver( QIODevice *const dev, AccelTreeBuilder<true> *const receiver,
+                                  const NamePool::Ptr &np, const ReportContext::Ptr &context, const QUrl &uri );
 
-   bool retrieveDocument(const QUrl &uri, const ReportContext::Ptr &context);
-   bool retrieveDocument(QIODevice *source, const QUrl &documentUri, const ReportContext::Ptr &context);
-   /**
-    * If @p context is @c null, no error reporting should be done.
-    */
-   bool retrieveUnparsedText(const QUrl &uri, const QString &encoding, const ReportContext::Ptr &context,
-                  const SourceLocationReflection *const where);
+    bool retrieveDocument( const QUrl &uri, const ReportContext::Ptr &context );
+    bool retrieveDocument( QIODevice *source, const QUrl &documentUri, const ReportContext::Ptr &context );
+    /**
+     * If @p context is @c null, no error reporting should be done.
+     */
+    bool retrieveUnparsedText( const QUrl &uri, const QString &encoding, const ReportContext::Ptr &context,
+                               const SourceLocationReflection *const where );
 
-   QHash<QUrl, AccelTree::Ptr>             m_loadedDocuments;
-   const NamePool::Ptr                     m_namePool;
-   const NetworkAccessDelegator::Ptr       m_networkAccessDelegator;
-   QHash<QPair<QUrl, QString>, QString>    m_unparsedTexts;
-   AccelTreeBuilder<true>::Features        m_features;
+    QHash<QUrl, AccelTree::Ptr>             m_loadedDocuments;
+    const NamePool::Ptr                     m_namePool;
+    const NetworkAccessDelegator::Ptr       m_networkAccessDelegator;
+    QHash<QPair<QUrl, QString>, QString>    m_unparsedTexts;
+    AccelTreeBuilder<true>::Features        m_features;
 };
 
 }

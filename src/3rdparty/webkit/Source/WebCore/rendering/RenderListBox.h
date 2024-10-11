@@ -8,13 +8,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -34,107 +34,143 @@
 #include "RenderBlock.h"
 #include "ScrollableArea.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class RenderListBox : public RenderBlock, private ScrollableArea {
+class RenderListBox : public RenderBlock, private ScrollableArea
+{
 public:
-    RenderListBox(Element*);
+    RenderListBox( Element * );
     virtual ~RenderListBox();
 
     void selectionChanged();
 
-    void setOptionsChanged(bool changed) { m_optionsChanged = changed; }
+    void setOptionsChanged( bool changed )
+    {
+        m_optionsChanged = changed;
+    }
 
-    int listIndexAtOffset(int x, int y);
-    IntRect itemBoundingBoxRect(int tx, int ty, int index);
+    int listIndexAtOffset( int x, int y );
+    IntRect itemBoundingBoxRect( int tx, int ty, int index );
 
-    bool scrollToRevealElementAtListIndex(int index);
-    bool listIndexIsVisible(int index);
+    bool scrollToRevealElementAtListIndex( int index );
+    bool listIndexIsVisible( int index );
 
-    int scrollToward(const IntPoint&); // Returns the new index or -1 if no scroll occurred
+    int scrollToward( const IntPoint & ); // Returns the new index or -1 if no scroll occurred
 
     int size() const;
 
 private:
-    virtual const char* renderName() const { return "RenderListBox"; }
+    virtual const char *renderName() const
+    {
+        return "RenderListBox";
+    }
 
-    virtual bool isListBox() const { return true; }
+    virtual bool isListBox() const
+    {
+        return true;
+    }
 
     virtual void updateFromElement();
 
-    virtual bool canHaveChildren() const { return false; }
+    virtual bool canHaveChildren() const
+    {
+        return false;
+    }
 
-    virtual bool hasControlClip() const { return true; }
-    virtual void paintObject(PaintInfo&, int tx, int ty);
-    virtual IntRect controlClipRect(int tx, int ty) const;
+    virtual bool hasControlClip() const
+    {
+        return true;
+    }
+    virtual void paintObject( PaintInfo &, int tx, int ty );
+    virtual IntRect controlClipRect( int tx, int ty ) const;
 
-    virtual bool isPointInOverflowControl(HitTestResult&, int x, int y, int tx, int ty);
+    virtual bool isPointInOverflowControl( HitTestResult &, int x, int y, int tx, int ty );
 
-    virtual bool scroll(ScrollDirection, ScrollGranularity, float multiplier = 1, Node** stopNode = 0);
-    virtual bool logicalScroll(ScrollLogicalDirection, ScrollGranularity, float multiplier = 1, Node** stopNode = 0);
+    virtual bool scroll( ScrollDirection, ScrollGranularity, float multiplier = 1, Node **stopNode = 0 );
+    virtual bool logicalScroll( ScrollLogicalDirection, ScrollGranularity, float multiplier = 1, Node **stopNode = 0 );
 
     virtual void computePreferredLogicalWidths();
-    virtual int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const;
+    virtual int baselinePosition( FontBaseline, bool firstLine, LineDirectionMode,
+                                  LinePositionMode = PositionOnContainingLine ) const;
     virtual void computeLogicalHeight();
 
     virtual void layout();
 
-    virtual void addFocusRingRects(Vector<IntRect>&, int tx, int ty);
+    virtual void addFocusRingRects( Vector<IntRect> &, int tx, int ty );
 
-    virtual bool canBeProgramaticallyScrolled(bool) const { return true; }
+    virtual bool canBeProgramaticallyScrolled( bool ) const
+    {
+        return true;
+    }
     virtual void autoscroll();
     virtual void stopAutoscroll();
 
-    virtual bool shouldPanScroll() const { return true; }
-    virtual void panScroll(const IntPoint&);
+    virtual bool shouldPanScroll() const
+    {
+        return true;
+    }
+    virtual void panScroll( const IntPoint & );
 
     virtual int verticalScrollbarWidth() const;
     virtual int scrollLeft() const;
     virtual int scrollTop() const;
     virtual int scrollWidth() const;
     virtual int scrollHeight() const;
-    virtual void setScrollLeft(int);
-    virtual void setScrollTop(int);
+    virtual void setScrollLeft( int );
+    virtual void setScrollTop( int );
 
-    virtual bool nodeAtPoint(const HitTestRequest&, HitTestResult&, int x, int y, int tx, int ty, HitTestAction);
+    virtual bool nodeAtPoint( const HitTestRequest &, HitTestResult &, int x, int y, int tx, int ty, HitTestAction );
 
     // ScrollableArea interface.
-    virtual int scrollSize(ScrollbarOrientation orientation) const;
-    virtual int scrollPosition(Scrollbar*) const;
-    virtual void setScrollOffset(const IntPoint&);
-    virtual void invalidateScrollbarRect(Scrollbar*, const IntRect&);
+    virtual int scrollSize( ScrollbarOrientation orientation ) const;
+    virtual int scrollPosition( Scrollbar * ) const;
+    virtual void setScrollOffset( const IntPoint & );
+    virtual void invalidateScrollbarRect( Scrollbar *, const IntRect & );
     virtual bool isActive() const;
-    virtual bool isScrollCornerVisible() const { return false; } // We don't support resize on list boxes yet. If we did these would have to change.
-    virtual IntRect scrollCornerRect() const { return IntRect(); }
-    virtual void invalidateScrollCornerRect(const IntRect&) { }
-    virtual IntRect convertFromScrollbarToContainingView(const Scrollbar*, const IntRect&) const;
-    virtual IntRect convertFromContainingViewToScrollbar(const Scrollbar*, const IntRect&) const;
-    virtual IntPoint convertFromScrollbarToContainingView(const Scrollbar*, const IntPoint&) const;
-    virtual IntPoint convertFromContainingViewToScrollbar(const Scrollbar*, const IntPoint&) const;
-    virtual Scrollbar* verticalScrollbar() const { return m_vBar.get(); }
+    virtual bool isScrollCornerVisible() const
+    {
+        return false;    // We don't support resize on list boxes yet. If we did these would have to change.
+    }
+    virtual IntRect scrollCornerRect() const
+    {
+        return IntRect();
+    }
+    virtual void invalidateScrollCornerRect( const IntRect & ) { }
+    virtual IntRect convertFromScrollbarToContainingView( const Scrollbar *, const IntRect & ) const;
+    virtual IntRect convertFromContainingViewToScrollbar( const Scrollbar *, const IntRect & ) const;
+    virtual IntPoint convertFromScrollbarToContainingView( const Scrollbar *, const IntPoint & ) const;
+    virtual IntPoint convertFromContainingViewToScrollbar( const Scrollbar *, const IntPoint & ) const;
+    virtual Scrollbar *verticalScrollbar() const
+    {
+        return m_vBar.get();
+    }
     virtual IntSize contentsSize() const;
     virtual int visibleHeight() const;
     virtual int visibleWidth() const;
     virtual IntPoint currentMousePosition() const;
     virtual bool shouldSuspendScrollAnimations() const;
 
-    virtual void disconnectFromPage() { m_page = 0; }
+    virtual void disconnectFromPage()
+    {
+        m_page = 0;
+    }
 
     // NOTE: This should only be called by the overriden setScrollOffset from ScrollableArea.
-    void scrollTo(int newOffset);
+    void scrollTo( int newOffset );
 
-    void setHasVerticalScrollbar(bool hasScrollbar);
+    void setHasVerticalScrollbar( bool hasScrollbar );
     PassRefPtr<Scrollbar> createScrollbar();
     void destroyScrollbar();
-    
+
     int itemHeight() const;
-    void valueChanged(unsigned listIndex);
+    void valueChanged( unsigned listIndex );
     int numVisibleItems() const;
     int numItems() const;
     int listHeight() const;
-    void paintScrollbar(PaintInfo&, int tx, int ty);
-    void paintItemForeground(PaintInfo&, int tx, int ty, int listIndex);
-    void paintItemBackground(PaintInfo&, int tx, int ty, int listIndex);
+    void paintScrollbar( PaintInfo &, int tx, int ty );
+    void paintItemForeground( PaintInfo &, int tx, int ty, int listIndex );
+    void paintItemBackground( PaintInfo &, int tx, int ty, int listIndex );
     void scrollToRevealSelection();
 
     bool m_optionsChanged;
@@ -145,17 +181,17 @@ private:
 
     RefPtr<Scrollbar> m_vBar;
 
-    Page* m_page;
+    Page *m_page;
 };
 
-inline RenderListBox* toRenderListBox(RenderObject* object)
-{ 
-    ASSERT(!object || object->isListBox());
-    return static_cast<RenderListBox*>(object);
+inline RenderListBox *toRenderListBox( RenderObject *object )
+{
+    ASSERT( !object || object->isListBox() );
+    return static_cast<RenderListBox *>( object );
 }
 
 // This will catch anyone doing an unnecessary cast.
-void toRenderListBox(const RenderListBox*);
+void toRenderListBox( const RenderListBox * );
 
 } // namepace WebCore
 

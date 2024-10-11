@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WTF_RandomNumberSeed_h
@@ -40,12 +40,13 @@
 
 #if USE(MERSENNE_TWISTER_19937)
 extern "C" {
-void init_by_array(unsigned long init_key[],int key_length);
+    void init_by_array( unsigned long init_key[],int key_length );
 }
 #endif
 
 // Internal JavaScriptCore usage only
-namespace WTF {
+namespace WTF
+{
 
 inline void initializeRandomNumberGenerator()
 {
@@ -53,7 +54,7 @@ inline void initializeRandomNumberGenerator()
     // On Darwin we use arc4random which initialises itself.
 #elif OS(WINCE)
     // initialize rand()
-    srand(GetTickCount());
+    srand( GetTickCount() );
 #elif COMPILER(MSVC) && defined(_CRT_RAND_S)
     // On Windows we use rand_s which initialises itself
 #elif PLATFORM(BREWMP)
@@ -61,20 +62,20 @@ inline void initializeRandomNumberGenerator()
 #elif OS(UNIX)
     // srandomdev is not guaranteed to exist on linux so we use this poor seed, this should be improved
     timeval time;
-    gettimeofday(&time, 0);
-    srandom(static_cast<unsigned>(time.tv_usec * getpid()));
+    gettimeofday( &time, 0 );
+    srandom( static_cast<unsigned>( time.tv_usec * getpid() ) );
 #else
-    srand(static_cast<unsigned>(time(0)));
+    srand( static_cast<unsigned>( time( 0 ) ) );
 #endif
 
 #if USE(MERSENNE_TWISTER_19937)
     // use rand() to initialize the Mersenne Twister random number generator.
     unsigned long initializationBuffer[4];
-    initializationBuffer[0] = (rand() << 16) | rand();
-    initializationBuffer[1] = (rand() << 16) | rand();
-    initializationBuffer[2] = (rand() << 16) | rand();
-    initializationBuffer[3] = (rand() << 16) | rand();
-    init_by_array(initializationBuffer, 4);
+    initializationBuffer[0] = ( rand() << 16 ) | rand();
+    initializationBuffer[1] = ( rand() << 16 ) | rand();
+    initializationBuffer[2] = ( rand() << 16 ) | rand();
+    initializationBuffer[3] = ( rand() << 16 ) | rand();
+    init_by_array( initializationBuffer, 4 );
 #endif
 }
 

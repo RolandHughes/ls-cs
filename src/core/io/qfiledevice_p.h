@@ -32,44 +32,46 @@ class QFSFileEngine;
 
 class QFileDevicePrivate : public QIODevicePrivate
 {
-   Q_DECLARE_PUBLIC(QFileDevice)
+    Q_DECLARE_PUBLIC( QFileDevice )
 
- protected:
-   QFileDevicePrivate();
-   ~QFileDevicePrivate();
+protected:
+    QFileDevicePrivate();
+    ~QFileDevicePrivate();
 
-   virtual QAbstractFileEngine *engine() const;
+    virtual QAbstractFileEngine *engine() const;
 
-   QFileDevice::FileHandleFlags handleFlags;
+    QFileDevice::FileHandleFlags handleFlags;
 
-   mutable QAbstractFileEngine *fileEngine;
-   bool lastWasWrite;
-   QRingBuffer writeBuffer;
-   inline bool ensureFlushed() const;
+    mutable QAbstractFileEngine *fileEngine;
+    bool lastWasWrite;
+    QRingBuffer writeBuffer;
+    inline bool ensureFlushed() const;
 
-   bool putCharHelper(char c) override;
+    bool putCharHelper( char c ) override;
 
-   QFileDevice::FileError error;
-   void setError(QFileDevice::FileError err);
-   void setError(QFileDevice::FileError err, const QString &errorString);
-   void setError(QFileDevice::FileError err, int errNum);
+    QFileDevice::FileError error;
+    void setError( QFileDevice::FileError err );
+    void setError( QFileDevice::FileError err, const QString &errorString );
+    void setError( QFileDevice::FileError err, int errNum );
 
-   mutable qint64 cachedSize;
+    mutable qint64 cachedSize;
 };
 
 inline bool QFileDevicePrivate::ensureFlushed() const
 {
-   // This function ensures that the write buffer has been flushed (const
-   // because certain const functions need to call it.
-   if (lastWasWrite) {
-      const_cast<QFileDevicePrivate *>(this)->lastWasWrite = false;
+    // This function ensures that the write buffer has been flushed (const
+    // because certain const functions need to call it.
+    if ( lastWasWrite )
+    {
+        const_cast<QFileDevicePrivate *>( this )->lastWasWrite = false;
 
-      if (! const_cast<QFileDevice *>(q_func())->flush()) {
-         return false;
-      }
-   }
+        if ( ! const_cast<QFileDevice *>( q_func() )->flush() )
+        {
+            return false;
+        }
+    }
 
-   return true;
+    return true;
 }
 
 #endif

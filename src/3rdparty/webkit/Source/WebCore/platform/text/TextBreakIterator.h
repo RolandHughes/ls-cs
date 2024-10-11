@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 Lars Knoll 
+ * Copyright (C) 2006 Lars Knoll
  * Copyright (C) 2007 Apple Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
@@ -24,69 +24,84 @@
 
 #include <wtf/unicode/Unicode.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class TextBreakIterator;
+class TextBreakIterator;
 
-    // Note: The returned iterator is good only until you get another iterator, with the exception of acquireLineBreakIterator.
+// Note: The returned iterator is good only until you get another iterator, with the exception of acquireLineBreakIterator.
 
-    // Iterates over "extended grapheme clusters", as defined in UAX #29.
-    // Note that platform implementations may be less sophisticated - e.g. ICU prior to
-    // version 4.0 only supports "legacy grapheme clusters".
-    // Use this for general text processing, e.g. string truncation.
-    TextBreakIterator* characterBreakIterator(const UChar*, int length);
+// Iterates over "extended grapheme clusters", as defined in UAX #29.
+// Note that platform implementations may be less sophisticated - e.g. ICU prior to
+// version 4.0 only supports "legacy grapheme clusters".
+// Use this for general text processing, e.g. string truncation.
+TextBreakIterator *characterBreakIterator( const UChar *, int length );
 
-    // This is similar to character break iterator in most cases, but is subject to
-    // platform UI conventions. One notable example where this can be different
-    // from character break iterator is Thai prepend characters, see bug 24342.
-    // Use this for insertion point and selection manipulations.
-    TextBreakIterator* cursorMovementIterator(const UChar*, int length);
+// This is similar to character break iterator in most cases, but is subject to
+// platform UI conventions. One notable example where this can be different
+// from character break iterator is Thai prepend characters, see bug 24342.
+// Use this for insertion point and selection manipulations.
+TextBreakIterator *cursorMovementIterator( const UChar *, int length );
 
-    TextBreakIterator* wordBreakIterator(const UChar*, int length);
-    TextBreakIterator* acquireLineBreakIterator(const UChar*, int length);
-    void releaseLineBreakIterator(TextBreakIterator*);
-    TextBreakIterator* sentenceBreakIterator(const UChar*, int length);
+TextBreakIterator *wordBreakIterator( const UChar *, int length );
+TextBreakIterator *acquireLineBreakIterator( const UChar *, int length );
+void releaseLineBreakIterator( TextBreakIterator * );
+TextBreakIterator *sentenceBreakIterator( const UChar *, int length );
 
-    int textBreakFirst(TextBreakIterator*);
-    int textBreakLast(TextBreakIterator*);
-    int textBreakNext(TextBreakIterator*);
-    int textBreakPrevious(TextBreakIterator*);
-    int textBreakCurrent(TextBreakIterator*);
-    int textBreakPreceding(TextBreakIterator*, int);
-    int textBreakFollowing(TextBreakIterator*, int);
-    bool isTextBreak(TextBreakIterator*, int);
+int textBreakFirst( TextBreakIterator * );
+int textBreakLast( TextBreakIterator * );
+int textBreakNext( TextBreakIterator * );
+int textBreakPrevious( TextBreakIterator * );
+int textBreakCurrent( TextBreakIterator * );
+int textBreakPreceding( TextBreakIterator *, int );
+int textBreakFollowing( TextBreakIterator *, int );
+bool isTextBreak( TextBreakIterator *, int );
 
-    const int TextBreakDone = -1;
+const int TextBreakDone = -1;
 
-class LazyLineBreakIterator {
+class LazyLineBreakIterator
+{
 public:
-    LazyLineBreakIterator(const UChar* string = 0, int length = 0)
-        : m_string(string)
-        , m_length(length)
-        , m_iterator(0)
+    LazyLineBreakIterator( const UChar *string = 0, int length = 0 )
+        : m_string( string )
+        , m_length( length )
+        , m_iterator( 0 )
     {
     }
 
     ~LazyLineBreakIterator()
     {
-        if (m_iterator)
-            releaseLineBreakIterator(m_iterator);
+        if ( m_iterator )
+        {
+            releaseLineBreakIterator( m_iterator );
+        }
     }
 
-    const UChar* string() const { return m_string; }
-    int length() const { return m_length; }
-
-    TextBreakIterator* get()
+    const UChar *string() const
     {
-        if (!m_iterator)
-            m_iterator = acquireLineBreakIterator(m_string, m_length);
+        return m_string;
+    }
+    int length() const
+    {
+        return m_length;
+    }
+
+    TextBreakIterator *get()
+    {
+        if ( !m_iterator )
+        {
+            m_iterator = acquireLineBreakIterator( m_string, m_length );
+        }
+
         return m_iterator;
     }
 
-    void reset(const UChar* string, int length)
+    void reset( const UChar *string, int length )
     {
-        if (m_iterator)
-            releaseLineBreakIterator(m_iterator);
+        if ( m_iterator )
+        {
+            releaseLineBreakIterator( m_iterator );
+        }
 
         m_string = string;
         m_length = length;
@@ -94,9 +109,9 @@ public:
     }
 
 private:
-    const UChar* m_string;
+    const UChar *m_string;
     int m_length;
-    TextBreakIterator* m_iterator;
+    TextBreakIterator *m_iterator;
 };
 
 }

@@ -34,42 +34,42 @@ class QGraphicsWidget;
 
 class Q_GUI_EXPORT QGraphicsLayout : public QGraphicsLayoutItem
 {
- public:
-   QGraphicsLayout(QGraphicsLayoutItem *parent = nullptr);
+public:
+    QGraphicsLayout( QGraphicsLayoutItem *parent = nullptr );
 
-   QGraphicsLayout(const QGraphicsLayout &) = delete;
-   QGraphicsLayout &operator=(const QGraphicsLayout &) = delete;
+    QGraphicsLayout( const QGraphicsLayout & ) = delete;
+    QGraphicsLayout &operator=( const QGraphicsLayout & ) = delete;
 
-   ~QGraphicsLayout();
+    ~QGraphicsLayout();
 
-   void setContentsMargins(qreal left, qreal top, qreal right, qreal bottom);
-   void getContentsMargins(qreal *left, qreal *top, qreal *right, qreal *bottom) const override;
+    void setContentsMargins( qreal left, qreal top, qreal right, qreal bottom );
+    void getContentsMargins( qreal *left, qreal *top, qreal *right, qreal *bottom ) const override;
 
-   void activate();
-   bool isActivated() const;
-   virtual void invalidate();
-   void updateGeometry() override;
+    void activate();
+    bool isActivated() const;
+    virtual void invalidate();
+    void updateGeometry() override;
 
-   virtual void widgetEvent(QEvent *event);
+    virtual void widgetEvent( QEvent *event );
 
-   virtual int count() const = 0;
-   virtual QGraphicsLayoutItem *itemAt(int i) const = 0;
-   virtual void removeAt(int index) = 0;
+    virtual int count() const = 0;
+    virtual QGraphicsLayoutItem *itemAt( int i ) const = 0;
+    virtual void removeAt( int index ) = 0;
 
-   static void setInstantInvalidatePropagation(bool enable);
-   static bool instantInvalidatePropagation();
+    static void setInstantInvalidatePropagation( bool enable );
+    static bool instantInvalidatePropagation();
 
- protected:
-   QGraphicsLayout(QGraphicsLayoutPrivate &, QGraphicsLayoutItem *);
-   void addChildLayoutItem(QGraphicsLayoutItem *layoutItem);
+protected:
+    QGraphicsLayout( QGraphicsLayoutPrivate &, QGraphicsLayoutItem * );
+    void addChildLayoutItem( QGraphicsLayoutItem *layoutItem );
 
- private:
-   Q_DECLARE_PRIVATE(QGraphicsLayout)
-   friend class QGraphicsWidget;
+private:
+    Q_DECLARE_PRIVATE( QGraphicsLayout )
+    friend class QGraphicsWidget;
 };
 
-CS_DECLARE_INTERFACE(QGraphicsLayout, "com.copperspice.QGraphicsLayout")
-CS_DECLARE_METATYPE(QGraphicsLayout)
+LSCS_DECLARE_INTERFACE( QGraphicsLayout, "com.copperspice.QGraphicsLayout" )
+LSCS_DECLARE_METATYPE( QGraphicsLayout )
 
 #endif
 

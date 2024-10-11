@@ -26,9 +26,10 @@
 
 class QAbstractXmlReceiverPrivate
 {
- public:
-   virtual ~QAbstractXmlReceiverPrivate() {
-   }
+public:
+    virtual ~QAbstractXmlReceiverPrivate()
+    {
+    }
 };
 
 #endif

@@ -36,26 +36,26 @@ class QScriptValuePropertyPrivate;
 
 class QScriptValueProperty
 {
- public:
-   QScriptValueProperty();
-   QScriptValueProperty(const QString &name,
-                        const QScriptValue &value,
-                        QScriptValue::PropertyFlags flags);
-   QScriptValueProperty(const QScriptValueProperty &other);
-   ~QScriptValueProperty();
+public:
+    QScriptValueProperty();
+    QScriptValueProperty( const QString &name,
+                          const QScriptValue &value,
+                          QScriptValue::PropertyFlags flags );
+    QScriptValueProperty( const QScriptValueProperty &other );
+    ~QScriptValueProperty();
 
-   QScriptValueProperty &operator=(const QScriptValueProperty &other);
+    QScriptValueProperty &operator=( const QScriptValueProperty &other );
 
-   QString name() const;
-   QScriptValue value() const;
-   QScriptValue::PropertyFlags flags() const;
+    QString name() const;
+    QScriptValue value() const;
+    QScriptValue::PropertyFlags flags() const;
 
-   bool isValid() const;
+    bool isValid() const;
 
- private:
-   QScopedSharedPointer<QScriptValuePropertyPrivate> d_ptr;
+private:
+    QScopedSharedPointer<QScriptValuePropertyPrivate> d_ptr;
 
-   Q_DECLARE_PRIVATE(QScriptValueProperty)
+    Q_DECLARE_PRIVATE( QScriptValueProperty )
 };
 
 typedef QList<QScriptValueProperty> QScriptValuePropertyList;

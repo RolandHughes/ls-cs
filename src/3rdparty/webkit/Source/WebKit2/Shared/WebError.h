@@ -30,44 +30,64 @@
 #include <WebCore/ResourceError.h>
 #include <wtf/PassRefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 // WebError - An error type suitable for vending to an API.
 
-class WebError : public APIObject {
+class WebError : public APIObject
+{
 public:
     static const Type APIType = TypeError;
 
     static PassRefPtr<WebError> create()
     {
-        return adoptRef(new WebError);
+        return adoptRef( new WebError );
     }
 
-    static PassRefPtr<WebError> create(const WebCore::ResourceError& error)
+    static PassRefPtr<WebError> create( const WebCore::ResourceError &error )
     {
-        return adoptRef(new WebError(error));
+        return adoptRef( new WebError( error ) );
     }
 
-    static const String& webKitErrorDomain();
+    static const String &webKitErrorDomain();
 
-    const String& domain() const { return m_platformError.domain(); }
-    int errorCode() const { return m_platformError.errorCode();; }
-    const String& failingURL() const { return m_platformError.failingURL(); }
-    const String& localizedDescription() const { return m_platformError.localizedDescription(); }
+    const String &domain() const
+    {
+        return m_platformError.domain();
+    }
+    int errorCode() const
+    {
+        return m_platformError.errorCode();;
+    }
+    const String &failingURL() const
+    {
+        return m_platformError.failingURL();
+    }
+    const String &localizedDescription() const
+    {
+        return m_platformError.localizedDescription();
+    }
 
-    const WebCore::ResourceError& platformError() const { return m_platformError; }
+    const WebCore::ResourceError &platformError() const
+    {
+        return m_platformError;
+    }
 
 private:
     WebError()
     {
     }
 
-    WebError(const WebCore::ResourceError& error)
-        : m_platformError(error)
+    WebError( const WebCore::ResourceError &error )
+        : m_platformError( error )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::ResourceError m_platformError;
 };

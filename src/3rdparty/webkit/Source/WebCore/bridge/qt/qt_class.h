@@ -30,30 +30,33 @@
 class QObject;
 class QMetaObject;
 
-namespace JSC {
-namespace Bindings {
+namespace JSC
+{
+namespace Bindings
+{
 
-class QtClass : public Class {
+class QtClass : public Class
+{
 
 
 public:
-    static QtClass* classForObject(QObject*);
+    static QtClass *classForObject( QObject * );
     virtual ~QtClass();
 
-    virtual const char * name() const;
-    virtual MethodList methodsNamed(const Identifier&, Instance*) const;
-    virtual Field* fieldNamed(const Identifier&, Instance*) const;
+    virtual const char *name() const;
+    virtual MethodList methodsNamed( const Identifier &, Instance * ) const;
+    virtual Field *fieldNamed( const Identifier &, Instance * ) const;
 
-    virtual JSValue fallbackObject(ExecState*, Instance*, const Identifier&);
+    virtual JSValue fallbackObject( ExecState *, Instance *, const Identifier & );
 
 protected:
-    QtClass(const QMetaObject *);
+    QtClass( const QMetaObject * );
 
 private:
-    QtClass(const QtClass &);                // prohibit copying
-    QtClass& operator=(const QtClass&);      // prohibit assignment
+    QtClass( const QtClass & );              // prohibit copying
+    QtClass &operator=( const QtClass & );   // prohibit assignment
 
-    const QMetaObject* m_metaObject;
+    const QMetaObject *m_metaObject;
 };
 
 } // namespace Bindings

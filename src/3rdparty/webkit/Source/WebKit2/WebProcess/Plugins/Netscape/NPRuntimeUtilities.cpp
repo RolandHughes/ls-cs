@@ -28,26 +28,27 @@
 
 #include <wtf/text/CString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-void* npnMemAlloc(uint32_t size)
+void *npnMemAlloc( uint32_t size )
 {
     // We could use fastMalloc here, but there might be plug-ins that mix NPN_MemAlloc/NPN_MemFree with malloc and free,
     // so having them be equivalent seems like a good idea.
-    return malloc(size);
+    return malloc( size );
 }
 
-void npnMemFree(void* ptr)
+void npnMemFree( void *ptr )
 {
     // We could use fastFree here, but there might be plug-ins that mix NPN_MemAlloc/NPN_MemFree with malloc and free,
     // so having them be equivalent seems like a good idea.
-    free(ptr);
+    free( ptr );
 }
 
-NPString createNPString(const CString& string)
+NPString createNPString( const CString &string )
 {
-    char* utf8Characters = npnMemNewArray<char>(string.length());
-    memcpy(utf8Characters, string.data(), string.length());
+    char *utf8Characters = npnMemNewArray<char>( string.length() );
+    memcpy( utf8Characters, string.data(), string.length() );
 
     NPString npString;
     npString.UTF8Characters = utf8Characters;
@@ -56,77 +57,100 @@ NPString createNPString(const CString& string)
     return npString;
 }
 
-NPObject* createNPObject(NPP npp, NPClass* npClass)
+NPObject *createNPObject( NPP npp, NPClass *npClass )
 {
-    ASSERT(npClass);
-    
-    NPObject* npObject;
-    if (npClass->allocate)
-        npObject = npClass->allocate(npp, npClass);
+    ASSERT( npClass );
+
+    NPObject *npObject;
+
+    if ( npClass->allocate )
+    {
+        npObject = npClass->allocate( npp, npClass );
+    }
     else
+    {
         npObject = npnMemNew<NPObject>();
+    }
 
     npObject->_class = npClass;
     npObject->referenceCount = 1;
-    
+
     return npObject;
 }
 
-void deallocateNPObject(NPObject* npObject)
+void deallocateNPObject( NPObject *npObject )
 {
-    ASSERT(npObject);
-    if (!npObject)
-        return;
+    ASSERT( npObject );
 
-    if (npObject->_class->deallocate)
-        npObject->_class->deallocate(npObject);
+    if ( !npObject )
+    {
+        return;
+    }
+
+    if ( npObject->_class->deallocate )
+    {
+        npObject->_class->deallocate( npObject );
+    }
     else
-        npnMemFree(npObject);
+    {
+        npnMemFree( npObject );
+    }
 }
 
-void retainNPObject(NPObject* npObject)
+void retainNPObject( NPObject *npObject )
 {
-    ASSERT(npObject);
-    if (!npObject)
+    ASSERT( npObject );
+
+    if ( !npObject )
+    {
         return;
+    }
 
     npObject->referenceCount++;
 }
 
-void releaseNPObject(NPObject* npObject)
+void releaseNPObject( NPObject *npObject )
 {
-    ASSERT(npObject);
-    if (!npObject)
+    ASSERT( npObject );
+
+    if ( !npObject )
+    {
         return;
-    
-    ASSERT(npObject->referenceCount >= 1);
+    }
+
+    ASSERT( npObject->referenceCount >= 1 );
     npObject->referenceCount--;
-    if (!npObject->referenceCount)
-        deallocateNPObject(npObject);
+
+    if ( !npObject->referenceCount )
+    {
+        deallocateNPObject( npObject );
+    }
 }
 
-void releaseNPVariantValue(NPVariant* variant)
+void releaseNPVariantValue( NPVariant *variant )
 {
-    ASSERT(variant);
-    
-    switch (variant->type) {
-    case NPVariantType_Void:
-    case NPVariantType_Null:
-    case NPVariantType_Bool:
-    case NPVariantType_Int32:
-    case NPVariantType_Double:
-        // Nothing to do.
-        break;
-        
-    case NPVariantType_String:
-        npnMemFree(const_cast<NPUTF8*>(variant->value.stringValue.UTF8Characters));
-        variant->value.stringValue.UTF8Characters = 0;
-        variant->value.stringValue.UTF8Length = 0;
-        break;
-    case NPVariantType_Object:
-        releaseNPObject(variant->value.objectValue);
-        variant->value.objectValue = 0;
-        break;
+    ASSERT( variant );
+
+    switch ( variant->type )
+    {
+        case NPVariantType_Void:
+        case NPVariantType_Null:
+        case NPVariantType_Bool:
+        case NPVariantType_Int32:
+        case NPVariantType_Double:
+            // Nothing to do.
+            break;
+
+        case NPVariantType_String:
+            npnMemFree( const_cast<NPUTF8 *>( variant->value.stringValue.UTF8Characters ) );
+            variant->value.stringValue.UTF8Characters = 0;
+            variant->value.stringValue.UTF8Length = 0;
+            break;
+
+        case NPVariantType_Object:
+            releaseNPObject( variant->value.objectValue );
+            variant->value.objectValue = 0;
+            break;
     }
 
     variant->type = NPVariantType_Void;

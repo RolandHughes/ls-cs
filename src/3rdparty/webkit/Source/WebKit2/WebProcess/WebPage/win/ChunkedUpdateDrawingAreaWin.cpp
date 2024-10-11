@@ -33,32 +33,33 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-void ChunkedUpdateDrawingArea::paintIntoUpdateChunk(UpdateChunk* updateChunk)
+namespace WebKit
 {
-    OwnPtr<HDC> hdc = adoptPtr(::CreateCompatibleDC(0));
 
-    void* bits;
-    BitmapInfo bmp = BitmapInfo::createBottomUp(updateChunk->rect().size());
-    OwnPtr<HBITMAP> hbmp = adoptPtr(::CreateDIBSection(0, &bmp, DIB_RGB_COLORS, &bits, updateChunk->memory(), 0));
+void ChunkedUpdateDrawingArea::paintIntoUpdateChunk( UpdateChunk *updateChunk )
+{
+    OwnPtr<HDC> hdc = adoptPtr( ::CreateCompatibleDC( 0 ) );
 
-    HBITMAP hbmpOld = static_cast<HBITMAP>(::SelectObject(hdc.get(), hbmp.get()));
+    void *bits;
+    BitmapInfo bmp = BitmapInfo::createBottomUp( updateChunk->rect().size() );
+    OwnPtr<HBITMAP> hbmp = adoptPtr( ::CreateDIBSection( 0, &bmp, DIB_RGB_COLORS, &bits, updateChunk->memory(), 0 ) );
 
-    GraphicsContext gc(hdc.get());
+    HBITMAP hbmpOld = static_cast<HBITMAP>( ::SelectObject( hdc.get(), hbmp.get() ) );
+
+    GraphicsContext gc( hdc.get() );
     gc.save();
 
     // FIXME: Is this white fill needed?
     RECT rect = updateChunk->rect();
-    ::FillRect(hdc.get(), &rect, (HBRUSH)::GetStockObject(WHITE_BRUSH));
-    gc.translate(-updateChunk->rect().x(), -updateChunk->rect().y());
+    ::FillRect( hdc.get(), &rect, ( HBRUSH )::GetStockObject( WHITE_BRUSH ) );
+    gc.translate( -updateChunk->rect().x(), -updateChunk->rect().y() );
 
-    m_webPage->drawRect(gc, updateChunk->rect());
+    m_webPage->drawRect( gc, updateChunk->rect() );
 
     gc.restore();
 
     // Re-select the old HBITMAP
-    ::SelectObject(hdc.get(), hbmpOld);
+    ::SelectObject( hdc.get(), hbmpOld );
 }
 
 } // namespace WebKit

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -31,32 +31,42 @@
 
 #include "ASCIICType.h"
 
-int strcasecmp(const char* s1, const char* s2)
+int strcasecmp( const char *s1, const char *s2 )
 {
-    while (toASCIIUpper(*s1) == toASCIIUpper(*s2)) {
-        if (*s1 == '\0')
+    while ( toASCIIUpper( *s1 ) == toASCIIUpper( *s2 ) )
+    {
+        if ( *s1 == '\0' )
+        {
             return 0;
+        }
+
         s1++;
         s2++;
     }
 
-    return toASCIIUpper(*s1) - toASCIIUpper(*s2);
+    return toASCIIUpper( *s1 ) - toASCIIUpper( *s2 );
 }
 
-int strncasecmp(const char* s1, const char* s2, size_t len)
+int strncasecmp( const char *s1, const char *s2, size_t len )
 {
-    while (len > 0 && toASCIIUpper(*s1) == toASCIIUpper(*s2)) {
-        if (*s1 == '\0')
+    while ( len > 0 && toASCIIUpper( *s1 ) == toASCIIUpper( *s2 ) )
+    {
+        if ( *s1 == '\0' )
+        {
             return 0;
+        }
+
         s1++;
         s2++;
         len--;
     }
 
-    if (!len)
+    if ( !len )
+    {
         return 0;
+    }
 
-    return toASCIIUpper(*s1) - toASCIIUpper(*s2);
+    return toASCIIUpper( *s1 ) - toASCIIUpper( *s2 );
 }
 
 #endif

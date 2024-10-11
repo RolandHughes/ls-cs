@@ -33,13 +33,14 @@
 
 #include "webp/decode.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-WEBPImageDecoder::WEBPImageDecoder(ImageSource::AlphaOption alphaOption,
-                                   ImageSource::GammaAndColorProfileOption gammaAndColorProfileOption)
-    : ImageDecoder(alphaOption, gammaAndColorProfileOption)
-    , m_decoder(0)
-    , m_lastVisibleRow(0)
+WEBPImageDecoder::WEBPImageDecoder( ImageSource::AlphaOption alphaOption,
+                                    ImageSource::GammaAndColorProfileOption gammaAndColorProfileOption )
+    : ImageDecoder( alphaOption, gammaAndColorProfileOption )
+    , m_decoder( 0 )
+    , m_lastVisibleRow( 0 )
 {
 }
 
@@ -49,95 +50,154 @@ WEBPImageDecoder::~WEBPImageDecoder()
 
 bool WEBPImageDecoder::isSizeAvailable()
 {
-    if (!ImageDecoder::isSizeAvailable())
-         decode(true);
+    if ( !ImageDecoder::isSizeAvailable() )
+    {
+        decode( true );
+    }
 
     return ImageDecoder::isSizeAvailable();
 }
 
-ImageFrame* WEBPImageDecoder::frameBufferAtIndex(size_t index)
+ImageFrame *WEBPImageDecoder::frameBufferAtIndex( size_t index )
 {
-    if (index)
+    if ( index )
+    {
         return 0;
-
-    if (m_frameBufferCache.isEmpty()) {
-        m_frameBufferCache.resize(1);
-        m_frameBufferCache[0].setPremultiplyAlpha(m_premultiplyAlpha);
     }
 
-    ImageFrame& frame = m_frameBufferCache[0];
-    if (frame.status() != ImageFrame::FrameComplete)
-        decode(false);
+    if ( m_frameBufferCache.isEmpty() )
+    {
+        m_frameBufferCache.resize( 1 );
+        m_frameBufferCache[0].setPremultiplyAlpha( m_premultiplyAlpha );
+    }
+
+    ImageFrame &frame = m_frameBufferCache[0];
+
+    if ( frame.status() != ImageFrame::FrameComplete )
+    {
+        decode( false );
+    }
+
     return &frame;
 }
 
 
-bool WEBPImageDecoder::decode(bool onlySize)
+bool WEBPImageDecoder::decode( bool onlySize )
 {
     // Minimum number of bytes needed to ensure one can parse size information.
     static const size_t sizeOfHeader = 30;
     // Number of bytes per pixel.
     static const int bytesPerPixel = 3;
 
-    if (failed())
+    if ( failed() )
+    {
         return false;
+    }
 
     const size_t dataSize = m_data->size();
-    if (dataSize < sizeOfHeader)
+
+    if ( dataSize < sizeOfHeader )
+    {
         return true;
+    }
 
     int width, height;
-    const uint8_t* dataBytes = reinterpret_cast<const uint8_t*>(m_data->data());
-    if (!WebPGetInfo(dataBytes, dataSize, &width, &height))
+    const uint8_t *dataBytes = reinterpret_cast<const uint8_t *>( m_data->data() );
+
+    if ( !WebPGetInfo( dataBytes, dataSize, &width, &height ) )
+    {
         return setFailed();
-    if (!ImageDecoder::isSizeAvailable() && !setSize(width, height))
+    }
+
+    if ( !ImageDecoder::isSizeAvailable() && !setSize( width, height ) )
+    {
         return setFailed();
-    if (onlySize)
+    }
+
+    if ( onlySize )
+    {
         return true;
+    }
 
     bool allDataReceived = isAllDataReceived();
     int stride = width * bytesPerPixel;
-    ASSERT(!m_frameBufferCache.isEmpty());
-    ImageFrame& buffer = m_frameBufferCache[0];
-    if (buffer.status() == ImageFrame::FrameEmpty) {
-        ASSERT(width == size().width());
-        ASSERT(height == size().height());
-        if (!buffer.setSize(width, height))
+    ASSERT( !m_frameBufferCache.isEmpty() );
+    ImageFrame &buffer = m_frameBufferCache[0];
+
+    if ( buffer.status() == ImageFrame::FrameEmpty )
+    {
+        ASSERT( width == size().width() );
+        ASSERT( height == size().height() );
+
+        if ( !buffer.setSize( width, height ) )
+        {
             return setFailed();
-        buffer.setStatus(allDataReceived ? ImageFrame::FrameComplete : ImageFrame::FramePartial);
-        // FIXME: We currently hard code false below because libwebp doesn't support alpha yet.
-        buffer.setHasAlpha(false);
-        buffer.setOriginalFrameRect(IntRect(IntPoint(), size()));
-        m_rgbOutput.resize(height * stride);
-    }
-    int newLastVisibleRow = 0; // Last completed row.
-    if (allDataReceived) {
-        if (!WebPDecodeRGBInto(dataBytes, dataSize, m_rgbOutput.data(), m_rgbOutput.size(), stride))
-            return setFailed();
-        newLastVisibleRow = height;
-    } else {
-        if (!m_decoder) {
-            m_decoder = WebPINewRGB(MODE_RGB, m_rgbOutput.data(), m_rgbOutput.size(), stride);
-            if (!m_decoder)
-                return setFailed();
         }
-        const VP8StatusCode status = WebPIUpdate(m_decoder, dataBytes, dataSize);
-        if (status != VP8_STATUS_OK && status != VP8_STATUS_SUSPENDED)
-            return setFailed();
-        if (!WebPIDecGetRGB(m_decoder, &newLastVisibleRow, 0, 0, 0))
-            return setFailed();
-        ASSERT(newLastVisibleRow >= 0);
-        ASSERT(newLastVisibleRow <= height);
+
+        buffer.setStatus( allDataReceived ? ImageFrame::FrameComplete : ImageFrame::FramePartial );
+        // FIXME: We currently hard code false below because libwebp doesn't support alpha yet.
+        buffer.setHasAlpha( false );
+        buffer.setOriginalFrameRect( IntRect( IntPoint(), size() ) );
+        m_rgbOutput.resize( height * stride );
     }
+
+    int newLastVisibleRow = 0; // Last completed row.
+
+    if ( allDataReceived )
+    {
+        if ( !WebPDecodeRGBInto( dataBytes, dataSize, m_rgbOutput.data(), m_rgbOutput.size(), stride ) )
+        {
+            return setFailed();
+        }
+
+        newLastVisibleRow = height;
+    }
+    else
+    {
+        if ( !m_decoder )
+        {
+            m_decoder = WebPINewRGB( MODE_RGB, m_rgbOutput.data(), m_rgbOutput.size(), stride );
+
+            if ( !m_decoder )
+            {
+                return setFailed();
+            }
+        }
+
+        const VP8StatusCode status = WebPIUpdate( m_decoder, dataBytes, dataSize );
+
+        if ( status != VP8_STATUS_OK && status != VP8_STATUS_SUSPENDED )
+        {
+            return setFailed();
+        }
+
+        if ( !WebPIDecGetRGB( m_decoder, &newLastVisibleRow, 0, 0, 0 ) )
+        {
+            return setFailed();
+        }
+
+        ASSERT( newLastVisibleRow >= 0 );
+        ASSERT( newLastVisibleRow <= height );
+    }
+
     // FIXME: remove this data copy.
-    for (int y = m_lastVisibleRow; y < newLastVisibleRow; ++y) {
-        const uint8_t* const src = &m_rgbOutput[y * stride];
-        for (int x = 0; x < width; ++x)
-            buffer.setRGBA(x, y, src[bytesPerPixel * x + 0], src[bytesPerPixel * x + 1], src[bytesPerPixel * x + 2], 0xff);
+    for ( int y = m_lastVisibleRow; y < newLastVisibleRow; ++y )
+    {
+        const uint8_t *const src = &m_rgbOutput[y * stride];
+
+        for ( int x = 0; x < width; ++x )
+        {
+            buffer.setRGBA( x, y, src[bytesPerPixel * x + 0], src[bytesPerPixel * x + 1], src[bytesPerPixel * x + 2], 0xff );
+        }
     }
+
     m_lastVisibleRow = newLastVisibleRow;
-    if (m_lastVisibleRow == height)
-         buffer.setStatus(ImageFrame::FrameComplete);
+
+    if ( m_lastVisibleRow == height )
+    {
+        buffer.setStatus( ImageFrame::FrameComplete );
+    }
+
     return m_lastVisibleRow == height;
 }
 

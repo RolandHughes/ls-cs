@@ -26,11 +26,12 @@
 
 #include <qstaticbaseuricontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class UnparsedTextAvailableFN : public StaticBaseUriContainer
 {
- public:
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+public:
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 };
 
 }

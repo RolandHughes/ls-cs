@@ -45,72 +45,102 @@
 // This file provides plugin-related utility functions for iframe shims and is shared by platforms that inherit
 // from PluginView (e.g. Qt) and those that do not (e.g. Chromium).
 
-namespace WebCore {
+namespace WebCore
+{
 
-static void getObjectStack(const RenderObject* ro, Vector<const RenderObject*>* roStack)
+static void getObjectStack( const RenderObject *ro, Vector<const RenderObject *> *roStack )
 {
     roStack->clear();
-    while (ro) {
-        roStack->append(ro);
+
+    while ( ro )
+    {
+        roStack->append( ro );
         ro = ro->parent();
     }
 }
 
 // Returns true if stack1 is at or above stack2
-static bool iframeIsAbovePlugin(const Vector<const RenderObject*>& iframeZstack, const Vector<const RenderObject*>& pluginZstack)
+static bool iframeIsAbovePlugin( const Vector<const RenderObject *> &iframeZstack,
+                                 const Vector<const RenderObject *> &pluginZstack )
 {
-    for (size_t i = 0; i < iframeZstack.size() && i < pluginZstack.size(); i++) {
+    for ( size_t i = 0; i < iframeZstack.size() && i < pluginZstack.size(); i++ )
+    {
         // The root is at the end of these stacks.  We want to iterate
         // root-downwards so we index backwards from the end.
-        const RenderObject* ro1 = iframeZstack[iframeZstack.size() - 1 - i];
-        const RenderObject* ro2 = pluginZstack[pluginZstack.size() - 1 - i];
+        const RenderObject *ro1 = iframeZstack[iframeZstack.size() - 1 - i];
+        const RenderObject *ro2 = pluginZstack[pluginZstack.size() - 1 - i];
 
-        if (ro1 != ro2) {
+        if ( ro1 != ro2 )
+        {
             // When we find nodes in the stack that are not the same, then
             // we've found the nodes just below the lowest comment ancestor.
             // Determine which should be on top.
 
             // See if z-index determines an order.
-            if (ro1->style() && ro2->style()) {
+            if ( ro1->style() && ro2->style() )
+            {
                 int z1 = ro1->style()->zIndex();
                 int z2 = ro2->style()->zIndex();
-                if (z1 > z2)
+
+                if ( z1 > z2 )
+                {
                     return true;
-                if (z1 < z2)
+                }
+
+                if ( z1 < z2 )
+                {
                     return false;
+                }
             }
 
             // If the plugin does not have an explicit z-index it stacks behind the iframe.
             // This is for maintaining compatibility with IE.
-            if (ro2->style()->position() == StaticPosition) {
+            if ( ro2->style()->position() == StaticPosition )
+            {
                 // The 0'th elements of these RenderObject arrays represent the plugin node and
                 // the iframe.
-                const RenderObject* pluginRenderObject = pluginZstack[0];
-                const RenderObject* iframeRenderObject = iframeZstack[0];
+                const RenderObject *pluginRenderObject = pluginZstack[0];
+                const RenderObject *iframeRenderObject = iframeZstack[0];
 
-                if (pluginRenderObject->style() && iframeRenderObject->style()) {
-                    if (pluginRenderObject->style()->zIndex() > iframeRenderObject->style()->zIndex())
+                if ( pluginRenderObject->style() && iframeRenderObject->style() )
+                {
+                    if ( pluginRenderObject->style()->zIndex() > iframeRenderObject->style()->zIndex() )
+                    {
                         return false;
+                    }
                 }
+
                 return true;
             }
 
             // Inspect the document order.  Later order means higher stacking.
-            const RenderObject* parent = ro1->parent();
-            if (!parent)
-                return false;
-            ASSERT(parent == ro2->parent());
+            const RenderObject *parent = ro1->parent();
 
-            for (const RenderObject* ro = parent->firstChild(); ro; ro = ro->nextSibling()) {
-                if (ro == ro1)
-                    return false;
-                if (ro == ro2)
-                    return true;
+            if ( !parent )
+            {
+                return false;
             }
-            ASSERT(false); // We should have seen ro1 and ro2 by now.
+
+            ASSERT( parent == ro2->parent() );
+
+            for ( const RenderObject *ro = parent->firstChild(); ro; ro = ro->nextSibling() )
+            {
+                if ( ro == ro1 )
+                {
+                    return false;
+                }
+
+                if ( ro == ro2 )
+                {
+                    return true;
+                }
+            }
+
+            ASSERT( false ); // We should have seen ro1 and ro2 by now.
             return false;
         }
     }
+
     return true;
 }
 
@@ -119,46 +149,62 @@ static bool iframeIsAbovePlugin(const Vector<const RenderObject*>& iframeZstack,
 // technique of overlaying a windowed plugin with content from the
 // page.  In a nutshell, iframe elements should occlude plugins when
 // they occur higher in the stacking order.
-void getPluginOcclusions(Element* element, Widget* parentWidget, const IntRect& frameRect, Vector<IntRect>& occlusions)
+void getPluginOcclusions( Element *element, Widget *parentWidget, const IntRect &frameRect, Vector<IntRect> &occlusions )
 {
-    RenderObject* pluginNode = element->renderer();
-    ASSERT(pluginNode);
-    if (!pluginNode->style())
+    RenderObject *pluginNode = element->renderer();
+    ASSERT( pluginNode );
+
+    if ( !pluginNode->style() )
+    {
         return;
-    Vector<const RenderObject*> pluginZstack;
-    Vector<const RenderObject*> iframeZstack;
-    getObjectStack(pluginNode, &pluginZstack);
+    }
 
-    if (!parentWidget->isFrameView())
+    Vector<const RenderObject *> pluginZstack;
+    Vector<const RenderObject *> iframeZstack;
+    getObjectStack( pluginNode, &pluginZstack );
+
+    if ( !parentWidget->isFrameView() )
+    {
         return;
+    }
 
-    FrameView* parentFrameView = static_cast<FrameView*>(parentWidget);
+    FrameView *parentFrameView = static_cast<FrameView *>( parentWidget );
 
-    const HashSet<RefPtr<Widget> >* children = parentFrameView->children();
-    for (HashSet<RefPtr<Widget> >::const_iterator it = children->begin(); it != children->end(); ++it) {
+    const HashSet<RefPtr<Widget> > *children = parentFrameView->children();
+
+    for ( HashSet<RefPtr<Widget> >::const_iterator it = children->begin(); it != children->end(); ++it )
+    {
         // We only care about FrameView's because iframes show up as FrameViews.
-        if (!(*it)->isFrameView())
+        if ( !( *it )->isFrameView() )
+        {
             continue;
+        }
 
-        const FrameView* frameView = static_cast<const FrameView*>((*it).get());
+        const FrameView *frameView = static_cast<const FrameView *>( ( *it ).get() );
+
         // Check to make sure we can get both the element and the RenderObject
         // for this FrameView, if we can't just move on to the next object.
-        if (!frameView->frame() || !frameView->frame()->ownerElement()
-            || !frameView->frame()->ownerElement()->renderer())
+        if ( !frameView->frame() || !frameView->frame()->ownerElement()
+                || !frameView->frame()->ownerElement()->renderer() )
+        {
             continue;
+        }
 
-        HTMLElement* element = frameView->frame()->ownerElement();
-        RenderObject* iframeRenderer = element->renderer();
+        HTMLElement *element = frameView->frame()->ownerElement();
+        RenderObject *iframeRenderer = element->renderer();
 
-        if (element->hasTagName(HTMLNames::iframeTag)
-            && iframeRenderer->absoluteBoundingBoxRect().intersects(frameRect)
-            && (!iframeRenderer->style() || iframeRenderer->style()->visibility() == VISIBLE)) {
-            getObjectStack(iframeRenderer, &iframeZstack);
-            if (iframeIsAbovePlugin(iframeZstack, pluginZstack)) {
-                IntPoint point = roundedIntPoint(iframeRenderer->localToAbsolute());
-                RenderBox* rbox = toRenderBox(iframeRenderer);
-                IntSize size(rbox->width(), rbox->height());
-                occlusions.append(IntRect(point, size));
+        if ( element->hasTagName( HTMLNames::iframeTag )
+                && iframeRenderer->absoluteBoundingBoxRect().intersects( frameRect )
+                && ( !iframeRenderer->style() || iframeRenderer->style()->visibility() == VISIBLE ) )
+        {
+            getObjectStack( iframeRenderer, &iframeZstack );
+
+            if ( iframeIsAbovePlugin( iframeZstack, pluginZstack ) )
+            {
+                IntPoint point = roundedIntPoint( iframeRenderer->localToAbsolute() );
+                RenderBox *rbox = toRenderBox( iframeRenderer );
+                IntSize size( rbox->width(), rbox->height() );
+                occlusions.append( IntRect( point, size ) );
             }
         }
     }

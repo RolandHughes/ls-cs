@@ -35,49 +35,57 @@
 #include "ShadowRoot.h"
 #include <wtf/StdLibExtras.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 const double HTMLProgressElement::IndeterminatePosition = -1;
 const double HTMLProgressElement::InvalidPosition = -2;
 
-HTMLProgressElement::HTMLProgressElement(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
-    : HTMLFormControlElement(tagName, document, form)
+HTMLProgressElement::HTMLProgressElement( const QualifiedName &tagName, Document *document, HTMLFormElement *form )
+    : HTMLFormControlElement( tagName, document, form )
 {
-    ASSERT(hasTagName(progressTag));
+    ASSERT( hasTagName( progressTag ) );
 }
 
 HTMLProgressElement::~HTMLProgressElement()
 {
 }
 
-PassRefPtr<HTMLProgressElement> HTMLProgressElement::create(const QualifiedName& tagName, Document* document, HTMLFormElement* form)
+PassRefPtr<HTMLProgressElement> HTMLProgressElement::create( const QualifiedName &tagName, Document *document,
+        HTMLFormElement *form )
 {
-    RefPtr<HTMLProgressElement> progress = adoptRef(new HTMLProgressElement(tagName, document, form));
+    RefPtr<HTMLProgressElement> progress = adoptRef( new HTMLProgressElement( tagName, document, form ) );
     progress->createShadowSubtree();
     return progress;
 }
 
-RenderObject* HTMLProgressElement::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *HTMLProgressElement::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderProgress(this);
+    return new ( arena ) RenderProgress( this );
 }
 
-const AtomicString& HTMLProgressElement::formControlType() const
+const AtomicString &HTMLProgressElement::formControlType() const
 {
-    DEFINE_STATIC_LOCAL(const AtomicString, progress, ("progress"));
+    DEFINE_STATIC_LOCAL( const AtomicString, progress, ( "progress" ) );
     return progress;
 }
 
-void HTMLProgressElement::parseMappedAttribute(Attribute* attribute)
+void HTMLProgressElement::parseMappedAttribute( Attribute *attribute )
 {
-    if (attribute->name() == valueAttr)
+    if ( attribute->name() == valueAttr )
+    {
         didElementStateChange();
-    else if (attribute->name() == maxAttr)
+    }
+    else if ( attribute->name() == maxAttr )
+    {
         didElementStateChange();
+    }
     else
-        HTMLFormControlElement::parseMappedAttribute(attribute);
+    {
+        HTMLFormControlElement::parseMappedAttribute( attribute );
+    }
 }
 
 void HTMLProgressElement::attach()
@@ -88,62 +96,80 @@ void HTMLProgressElement::attach()
 
 double HTMLProgressElement::value() const
 {
-    const AtomicString& valueString = getAttribute(valueAttr);
+    const AtomicString &valueString = getAttribute( valueAttr );
     double value;
-    bool ok = parseToDoubleForNumberType(valueString, &value);
-    if (!ok || value < 0)
+    bool ok = parseToDoubleForNumberType( valueString, &value );
+
+    if ( !ok || value < 0 )
+    {
         return valueString.isNull() ? 1 : 0;
-    return (value > max()) ? max() : value;
+    }
+
+    return ( value > max() ) ? max() : value;
 }
 
-void HTMLProgressElement::setValue(double value, ExceptionCode& ec)
+void HTMLProgressElement::setValue( double value, ExceptionCode &ec )
 {
-    if (!std::isfinite(value)) {
+    if ( !std::isfinite( value ) )
+    {
         ec = NOT_SUPPORTED_ERR;
         return;
     }
-    setAttribute(valueAttr, String::number(value >= 0 ? value : 0));
+
+    setAttribute( valueAttr, String::number( value >= 0 ? value : 0 ) );
 }
 
 double HTMLProgressElement::max() const
 {
     double max;
-    bool ok = parseToDoubleForNumberType(getAttribute(maxAttr), &max);
-    if (!ok || max <= 0)
+    bool ok = parseToDoubleForNumberType( getAttribute( maxAttr ), &max );
+
+    if ( !ok || max <= 0 )
+    {
         return 1;
+    }
+
     return max;
 }
 
-void HTMLProgressElement::setMax(double max, ExceptionCode& ec)
+void HTMLProgressElement::setMax( double max, ExceptionCode &ec )
 {
-    if (! std::isfinite(max)) {
+    if ( ! std::isfinite( max ) )
+    {
         ec = NOT_SUPPORTED_ERR;
         return;
     }
-    setAttribute(maxAttr, String::number(max > 0 ? max : 1));
+
+    setAttribute( maxAttr, String::number( max > 0 ? max : 1 ) );
 }
 
 double HTMLProgressElement::position() const
 {
-    if (!hasAttribute(valueAttr))
+    if ( !hasAttribute( valueAttr ) )
+    {
         return HTMLProgressElement::IndeterminatePosition;
+    }
+
     return value() / max();
 }
 
 void HTMLProgressElement::didElementStateChange()
 {
-    m_value->setWidthPercentage(position()*100);
-    if (renderer())
+    m_value->setWidthPercentage( position()*100 );
+
+    if ( renderer() )
+    {
         renderer()->updateFromElement();
+    }
 }
 
 void HTMLProgressElement::createShadowSubtree()
 {
-    RefPtr<ProgressBarElement> bar = ProgressBarElement::create(document());
-    m_value = ProgressValueElement::create(document());
+    RefPtr<ProgressBarElement> bar = ProgressBarElement::create( document() );
+    m_value = ProgressValueElement::create( document() );
     ExceptionCode ec = 0;
-    bar->appendChild(m_value, ec);
-    ensureShadowRoot()->appendChild(bar, ec);
+    bar->appendChild( m_value, ec );
+    ensureShadowRoot()->appendChild( bar, ec );
 }
 
 } // namespace

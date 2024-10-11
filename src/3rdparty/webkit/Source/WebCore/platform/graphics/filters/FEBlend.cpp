@@ -33,19 +33,20 @@
 
 #include <wtf/ByteArray.h>
 
-typedef unsigned char (*BlendType)(unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB);
+typedef unsigned char ( *BlendType )( unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB );
 
-namespace WebCore {
+namespace WebCore
+{
 
-FEBlend::FEBlend(Filter* filter, BlendModeType mode)
-    : FilterEffect(filter)
-    , m_mode(mode)
+FEBlend::FEBlend( Filter *filter, BlendModeType mode )
+    : FilterEffect( filter )
+    , m_mode( mode )
 {
 }
 
-PassRefPtr<FEBlend> FEBlend::create(Filter* filter, BlendModeType mode)
+PassRefPtr<FEBlend> FEBlend::create( Filter *filter, BlendModeType mode )
 {
-    return adoptRef(new FEBlend(filter, mode));
+    return adoptRef( new FEBlend( filter, mode ) );
 }
 
 BlendModeType FEBlend::blendMode() const
@@ -53,85 +54,104 @@ BlendModeType FEBlend::blendMode() const
     return m_mode;
 }
 
-bool FEBlend::setBlendMode(BlendModeType mode)
+bool FEBlend::setBlendMode( BlendModeType mode )
 {
-    if (m_mode == mode)
+    if ( m_mode == mode )
+    {
         return false;
+    }
+
     m_mode = mode;
     return true;
 }
 
-static unsigned char unknown(unsigned char, unsigned char, unsigned char, unsigned char)
+static unsigned char unknown( unsigned char, unsigned char, unsigned char, unsigned char )
 {
     return 0;
 }
 
-static unsigned char normal(unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char)
+static unsigned char normal( unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char )
 {
-    return (((255 - alphaA) * colorB + colorA * 255) / 255);
+    return ( ( ( 255 - alphaA ) * colorB + colorA * 255 ) / 255 );
 }
 
-static unsigned char multiply(unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB)
+static unsigned char multiply( unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB )
 {
-    return (((255 - alphaA) * colorB + (255 - alphaB + colorB) * colorA) / 255);
+    return ( ( ( 255 - alphaA ) * colorB + ( 255 - alphaB + colorB ) * colorA ) / 255 );
 }
 
-static unsigned char screen(unsigned char colorA, unsigned char colorB, unsigned char, unsigned char)
+static unsigned char screen( unsigned char colorA, unsigned char colorB, unsigned char, unsigned char )
 {
-    return (((colorB + colorA) * 255 - colorA * colorB) / 255);
+    return ( ( ( colorB + colorA ) * 255 - colorA * colorB ) / 255 );
 }
 
-static unsigned char darken(unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB)
+static unsigned char darken( unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB )
 {
-    return ((std::min((255 - alphaA) * colorB + colorA * 255, (255 - alphaB) * colorA + colorB * 255)) / 255);
+    return ( ( std::min( ( 255 - alphaA ) * colorB + colorA * 255, ( 255 - alphaB ) * colorA + colorB * 255 ) ) / 255 );
 }
 
-static unsigned char lighten(unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB)
+static unsigned char lighten( unsigned char colorA, unsigned char colorB, unsigned char alphaA, unsigned char alphaB )
 {
-    return ((std::max((255 - alphaA) * colorB + colorA * 255, (255 - alphaB) * colorA + colorB * 255)) / 255);
+    return ( ( std::max( ( 255 - alphaA ) * colorB + colorA * 255, ( 255 - alphaB ) * colorA + colorB * 255 ) ) / 255 );
 }
 
 void FEBlend::apply()
 {
-    if (hasResult())
+    if ( hasResult() )
+    {
         return;
-    FilterEffect* in = inputEffect(0);
-    FilterEffect* in2 = inputEffect(1);
+    }
+
+    FilterEffect *in = inputEffect( 0 );
+    FilterEffect *in2 = inputEffect( 1 );
     in->apply();
     in2->apply();
-    if (!in->hasResult() || !in2->hasResult())
+
+    if ( !in->hasResult() || !in2->hasResult() )
+    {
         return;
+    }
 
-    if (m_mode <= FEBLEND_MODE_UNKNOWN || m_mode > FEBLEND_MODE_LIGHTEN)
+    if ( m_mode <= FEBLEND_MODE_UNKNOWN || m_mode > FEBLEND_MODE_LIGHTEN )
+    {
         return;
+    }
 
-    ByteArray* dstPixelArray = createPremultipliedImageResult();
-    if (!dstPixelArray)
+    ByteArray *dstPixelArray = createPremultipliedImageResult();
+
+    if ( !dstPixelArray )
+    {
         return;
+    }
 
-    IntRect effectADrawingRect = requestedRegionOfInputImageData(in->absolutePaintRect());
-    RefPtr<ByteArray> srcPixelArrayA = in->asPremultipliedImage(effectADrawingRect);
+    IntRect effectADrawingRect = requestedRegionOfInputImageData( in->absolutePaintRect() );
+    RefPtr<ByteArray> srcPixelArrayA = in->asPremultipliedImage( effectADrawingRect );
 
-    IntRect effectBDrawingRect = requestedRegionOfInputImageData(in2->absolutePaintRect());
-    RefPtr<ByteArray> srcPixelArrayB = in2->asPremultipliedImage(effectBDrawingRect);
+    IntRect effectBDrawingRect = requestedRegionOfInputImageData( in2->absolutePaintRect() );
+    RefPtr<ByteArray> srcPixelArrayB = in2->asPremultipliedImage( effectBDrawingRect );
 
     // Keep synchronized with BlendModeType
     static const BlendType callEffect[] = {unknown, normal, multiply, screen, darken, lighten};
 
     unsigned pixelArrayLength = srcPixelArrayA->length();
-    ASSERT(pixelArrayLength == srcPixelArrayB->length());
-    for (unsigned pixelOffset = 0; pixelOffset < pixelArrayLength; pixelOffset += 4) {
-        unsigned char alphaA = srcPixelArrayA->get(pixelOffset + 3);
-        unsigned char alphaB = srcPixelArrayB->get(pixelOffset + 3);
-        for (unsigned channel = 0; channel < 3; ++channel) {
-            unsigned char colorA = srcPixelArrayA->get(pixelOffset + channel);
-            unsigned char colorB = srcPixelArrayB->get(pixelOffset + channel);
+    ASSERT( pixelArrayLength == srcPixelArrayB->length() );
 
-            unsigned char result = (*callEffect[m_mode])(colorA, colorB, alphaA, alphaB);
-            dstPixelArray->set(pixelOffset + channel, result);
+    for ( unsigned pixelOffset = 0; pixelOffset < pixelArrayLength; pixelOffset += 4 )
+    {
+        unsigned char alphaA = srcPixelArrayA->get( pixelOffset + 3 );
+        unsigned char alphaB = srcPixelArrayB->get( pixelOffset + 3 );
+
+        for ( unsigned channel = 0; channel < 3; ++channel )
+        {
+            unsigned char colorA = srcPixelArrayA->get( pixelOffset + channel );
+            unsigned char colorB = srcPixelArrayB->get( pixelOffset + channel );
+
+            unsigned char result = ( *callEffect[m_mode] )( colorA, colorB, alphaA, alphaB );
+            dstPixelArray->set( pixelOffset + channel, result );
         }
-        unsigned char alphaR = 255 - ((255 - alphaA) * (255 - alphaB)) / 255;
-        dstPixelArray->set(pixelOffset + 3, alphaR);
+
+        unsigned char alphaR = 255 - ( ( 255 - alphaA ) * ( 255 - alphaB ) ) / 255;
+        dstPixelArray->set( pixelOffset + 3, alphaR );
     }
 }
 
@@ -139,39 +159,46 @@ void FEBlend::dump()
 {
 }
 
-static TextStream& operator<<(TextStream& ts, const BlendModeType& type)
+static TextStream &operator<<( TextStream &ts, const BlendModeType &type )
 {
-    switch (type) {
-    case FEBLEND_MODE_UNKNOWN:
-        ts << "UNKNOWN";
-        break;
-    case FEBLEND_MODE_NORMAL:
-        ts << "NORMAL";
-        break;
-    case FEBLEND_MODE_MULTIPLY:
-        ts << "MULTIPLY";
-        break;
-    case FEBLEND_MODE_SCREEN:
-        ts << "SCREEN";
-        break;
-    case FEBLEND_MODE_DARKEN:
-        ts << "DARKEN";
-        break;
-    case FEBLEND_MODE_LIGHTEN:
-        ts << "LIGHTEN";
-        break;
+    switch ( type )
+    {
+        case FEBLEND_MODE_UNKNOWN:
+            ts << "UNKNOWN";
+            break;
+
+        case FEBLEND_MODE_NORMAL:
+            ts << "NORMAL";
+            break;
+
+        case FEBLEND_MODE_MULTIPLY:
+            ts << "MULTIPLY";
+            break;
+
+        case FEBLEND_MODE_SCREEN:
+            ts << "SCREEN";
+            break;
+
+        case FEBLEND_MODE_DARKEN:
+            ts << "DARKEN";
+            break;
+
+        case FEBLEND_MODE_LIGHTEN:
+            ts << "LIGHTEN";
+            break;
     }
+
     return ts;
 }
 
-TextStream& FEBlend::externalRepresentation(TextStream& ts, int indent) const
+TextStream &FEBlend::externalRepresentation( TextStream &ts, int indent ) const
 {
-    writeIndent(ts, indent);
+    writeIndent( ts, indent );
     ts << "[feBlend";
-    FilterEffect::externalRepresentation(ts);
+    FilterEffect::externalRepresentation( ts );
     ts << " mode=\"" << m_mode << "\"]\n";
-    inputEffect(0)->externalRepresentation(ts, indent + 1);
-    inputEffect(1)->externalRepresentation(ts, indent + 1);
+    inputEffect( 0 )->externalRepresentation( ts, indent + 1 );
+    inputEffect( 1 )->externalRepresentation( ts, indent + 1 );
     return ts;
 }
 

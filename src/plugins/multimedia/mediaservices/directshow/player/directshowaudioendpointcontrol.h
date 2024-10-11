@@ -32,31 +32,31 @@ class DirectShowPlayerService;
 
 class DirectShowAudioEndpointControl : public QAudioOutputSelectorControl
 {
-   CS_OBJECT(DirectShowAudioEndpointControl)
+    LSCS_OBJECT( DirectShowAudioEndpointControl )
 
- public:
-   DirectShowAudioEndpointControl(DirectShowPlayerService *service, QObject *parent = nullptr);
-   ~DirectShowAudioEndpointControl();
+public:
+    DirectShowAudioEndpointControl( DirectShowPlayerService *service, QObject *parent = nullptr );
+    ~DirectShowAudioEndpointControl();
 
-   QList<QString> availableOutputs() const override;
+    QList<QString> availableOutputs() const override;
 
-   QString outputDescription(const QString &name) const override;
+    QString outputDescription( const QString &name ) const override;
 
-   QString defaultOutput() const override;
-   QString activeOutput() const override;
+    QString defaultOutput() const override;
+    QString activeOutput() const override;
 
-   void setActiveOutput(const QString &name) override;
+    void setActiveOutput( const QString &name ) override;
 
- private:
-   void updateEndpoints();
+private:
+    void updateEndpoints();
 
-   DirectShowPlayerService *m_service;
-   IBindCtx *m_bindContext;
-   ICreateDevEnum *m_deviceEnumerator;
+    DirectShowPlayerService *m_service;
+    IBindCtx *m_bindContext;
+    ICreateDevEnum *m_deviceEnumerator;
 
-   QMap<QString, IMoniker *> m_devices;
-   QString m_defaultEndpoint;
-   QString m_activeEndpoint;
+    QMap<QString, IMoniker *> m_devices;
+    QString m_defaultEndpoint;
+    QString m_activeEndpoint;
 };
 
 #endif

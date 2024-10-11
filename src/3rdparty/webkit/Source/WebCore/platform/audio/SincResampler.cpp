@@ -40,15 +40,15 @@ using namespace std;
 //
 // |----------------|----------------------------------------------------------------|----------------|
 //
-//                                              blockSize + kernelSize / 2                           
+//                                              blockSize + kernelSize / 2
 //                   <-------------------------------------------------------------------------------->
 //                                                  r0
 //
-//   kernelSize / 2   kernelSize / 2                                 kernelSize / 2     kernelSize / 2 
+//   kernelSize / 2   kernelSize / 2                                 kernelSize / 2     kernelSize / 2
 // <---------------> <--------------->                              <---------------> <--------------->
 //         r1                r2                                             r3                r4
-// 
-//                                              blockSize                           
+//
+//                                              blockSize
 //                                     <-------------------------------------------------------------->
 //                                                  r5
 
@@ -63,18 +63,19 @@ using namespace std;
 //
 // note: we're glossing over how the sub-sample handling works with m_virtualSourceIndex, etc.
 
-namespace WebCore {
+namespace WebCore
+{
 
-SincResampler::SincResampler(double scaleFactor, unsigned kernelSize, unsigned numberOfKernelOffsets)
-    : m_scaleFactor(scaleFactor)
-    , m_kernelSize(kernelSize)
-    , m_numberOfKernelOffsets(numberOfKernelOffsets)
-    , m_kernelStorage(m_kernelSize * (m_numberOfKernelOffsets + 1))
-    , m_virtualSourceIndex(0.0)
-    , m_blockSize(512)
-    , m_inputBuffer(m_blockSize + m_kernelSize) // See input buffer layout above.
-    , m_source(0)
-    , m_sourceFramesAvailable(0)
+SincResampler::SincResampler( double scaleFactor, unsigned kernelSize, unsigned numberOfKernelOffsets )
+    : m_scaleFactor( scaleFactor )
+    , m_kernelSize( kernelSize )
+    , m_numberOfKernelOffsets( numberOfKernelOffsets )
+    , m_kernelStorage( m_kernelSize * ( m_numberOfKernelOffsets + 1 ) )
+    , m_virtualSourceIndex( 0.0 )
+    , m_blockSize( 512 )
+    , m_inputBuffer( m_blockSize + m_kernelSize ) // See input buffer layout above.
+    , m_source( 0 )
+    , m_sourceFramesAvailable( 0 )
 {
     initializeKernel();
 }
@@ -83,7 +84,7 @@ void SincResampler::initializeKernel()
 {
     // Blackman window parameters.
     double alpha = 0.16;
-    double a0 = 0.5 * (1.0 - alpha);
+    double a0 = 0.5 * ( 1.0 - alpha );
     double a1 = 0.5;
     double a2 = 0.5 * alpha;
 
@@ -101,18 +102,20 @@ void SincResampler::initializeKernel()
 
     // Generates a set of windowed sinc() kernels.
     // We generate a range of sub-sample offsets from 0.0 to 1.0.
-    for (unsigned offsetIndex = 0; offsetIndex <= m_numberOfKernelOffsets; ++offsetIndex) {
-        double subsampleOffset = static_cast<double>(offsetIndex) / m_numberOfKernelOffsets;
+    for ( unsigned offsetIndex = 0; offsetIndex <= m_numberOfKernelOffsets; ++offsetIndex )
+    {
+        double subsampleOffset = static_cast<double>( offsetIndex ) / m_numberOfKernelOffsets;
 
-        for (int i = 0; i < n; ++i) {
+        for ( int i = 0; i < n; ++i )
+        {
             // Compute the sinc() with offset.
-            double s = sincScaleFactor * piDouble * (i - halfSize - subsampleOffset);
-            double sinc = !s ? 1.0 : sin(s) / s;
+            double s = sincScaleFactor * piDouble * ( i - halfSize - subsampleOffset );
+            double sinc = !s ? 1.0 : sin( s ) / s;
             sinc *= sincScaleFactor;
 
             // Compute Blackman window, matching the offset of the sinc().
-            double x = (i - subsampleOffset) / n;
-            double window = a0 - a1 * cos(2.0 * piDouble * x) + a2 * cos(4.0 * piDouble * x);
+            double x = ( i - subsampleOffset ) / n;
+            double window = a0 - a1 * cos( 2.0 * piDouble * x ) + a2 * cos( 4.0 * piDouble * x );
 
             // Window the sinc() function and store at the correct offset.
             m_kernelStorage[i + offsetIndex * m_kernelSize] = sinc * window;
@@ -120,64 +123,71 @@ void SincResampler::initializeKernel()
     }
 }
 
-void SincResampler::consumeSource(float* buffer, unsigned numberOfSourceFrames)
+void SincResampler::consumeSource( float *buffer, unsigned numberOfSourceFrames )
 {
-    ASSERT(m_source);
-    if (!m_source)
+    ASSERT( m_source );
+
+    if ( !m_source )
+    {
         return;
-    
+    }
+
     // Clamp to number of frames available and zero-pad.
-    unsigned framesToCopy = min(m_sourceFramesAvailable, numberOfSourceFrames);
-    memcpy(buffer, m_source, sizeof(float) * framesToCopy);
-    
+    unsigned framesToCopy = min( m_sourceFramesAvailable, numberOfSourceFrames );
+    memcpy( buffer, m_source, sizeof( float ) * framesToCopy );
+
     // Zero-pad if necessary.
-    if (framesToCopy < numberOfSourceFrames)
-        memset(buffer + framesToCopy, 0, sizeof(float) * (numberOfSourceFrames - framesToCopy));
-    
+    if ( framesToCopy < numberOfSourceFrames )
+    {
+        memset( buffer + framesToCopy, 0, sizeof( float ) * ( numberOfSourceFrames - framesToCopy ) );
+    }
+
     m_sourceFramesAvailable -= framesToCopy;
     m_source += numberOfSourceFrames;
 }
 
-void SincResampler::process(float* source, float* destination, unsigned numberOfSourceFrames)
+void SincResampler::process( float *source, float *destination, unsigned numberOfSourceFrames )
 {
-    ASSERT(m_blockSize > m_kernelSize);
-    ASSERT(m_inputBuffer.size() >= m_blockSize + m_kernelSize);
-    ASSERT(!(m_kernelSize % 2));
-    
+    ASSERT( m_blockSize > m_kernelSize );
+    ASSERT( m_inputBuffer.size() >= m_blockSize + m_kernelSize );
+    ASSERT( !( m_kernelSize % 2 ) );
+
     // Setup various region pointers in the buffer (see diagram above).
-    float* r0 = m_inputBuffer.data() + m_kernelSize / 2;
-    float* r1 = m_inputBuffer.data();
-    float* r2 = r0;
-    float* r3 = r0 + m_blockSize - m_kernelSize / 2;
-    float* r4 = r0 + m_blockSize;
-    float* r5 = r0 + m_kernelSize / 2;
+    float *r0 = m_inputBuffer.data() + m_kernelSize / 2;
+    float *r1 = m_inputBuffer.data();
+    float *r2 = r0;
+    float *r3 = r0 + m_blockSize - m_kernelSize / 2;
+    float *r4 = r0 + m_blockSize;
+    float *r5 = r0 + m_kernelSize / 2;
 
     m_source = source;
     m_sourceFramesAvailable = numberOfSourceFrames;
 
-    unsigned numberOfDestinationFrames = static_cast<unsigned>(numberOfSourceFrames / m_scaleFactor);
+    unsigned numberOfDestinationFrames = static_cast<unsigned>( numberOfSourceFrames / m_scaleFactor );
 
     // Step (1)
     // Prime the input buffer.
-    consumeSource(r0, m_blockSize + m_kernelSize / 2);
-    
+    consumeSource( r0, m_blockSize + m_kernelSize / 2 );
+
     // Step (2)
     m_virtualSourceIndex = 0;
 
-    while (numberOfDestinationFrames) {
-        while (m_virtualSourceIndex < m_blockSize) {
+    while ( numberOfDestinationFrames )
+    {
+        while ( m_virtualSourceIndex < m_blockSize )
+        {
             // m_virtualSourceIndex lies in between two kernel offsets so figure out what they are.
-            int sourceIndexI = static_cast<int>(m_virtualSourceIndex);
+            int sourceIndexI = static_cast<int>( m_virtualSourceIndex );
             double subsampleRemainder = m_virtualSourceIndex - sourceIndexI;
 
             double virtualOffsetIndex = subsampleRemainder * m_numberOfKernelOffsets;
-            int offsetIndex = static_cast<int>(virtualOffsetIndex);
-            
-            float* k1 = m_kernelStorage.data() + offsetIndex * m_kernelSize;
-            float* k2 = k1 + m_kernelSize;
+            int offsetIndex = static_cast<int>( virtualOffsetIndex );
+
+            float *k1 = m_kernelStorage.data() + offsetIndex * m_kernelSize;
+            float *k2 = k1 + m_kernelSize;
 
             // Initialize input pointer based on quantized m_virtualSourceIndex.
-            float* inputP = r1 + sourceIndexI;
+            float *inputP = r1 + sourceIndexI;
 
             // We'll compute "convolutions" for the two kernels which straddle m_virtualSourceIndex
             float sum1 = 0;
@@ -186,7 +196,7 @@ void SincResampler::process(float* source, float* destination, unsigned numberOf
             // Figure out how much to weight each kernel's "convolution".
             double kernelInterpolationFactor = virtualOffsetIndex - offsetIndex;
 
-            // Generate a single output sample. 
+            // Generate a single output sample.
             int n = m_kernelSize;
 
             // FIXME: add SIMD optimizations for the following. The scalar code-path can probably also be optimized better.
@@ -200,11 +210,12 @@ void SincResampler::process(float* source, float* destination, unsigned numberOf
 
             {
                 float input;
-                
+
                 // Optimize size 32 and size 64 kernels by unrolling the while loop.
                 // A 20 - 30% speed improvement was measured in some cases by using this approach.
-                
-                if (n == 32) {
+
+                if ( n == 32 )
+                {
                     CONVOLVE_ONE_SAMPLE // 1
                     CONVOLVE_ONE_SAMPLE // 2
                     CONVOLVE_ONE_SAMPLE // 3
@@ -237,7 +248,9 @@ void SincResampler::process(float* source, float* destination, unsigned numberOf
                     CONVOLVE_ONE_SAMPLE // 30
                     CONVOLVE_ONE_SAMPLE // 31
                     CONVOLVE_ONE_SAMPLE // 32
-                } else if (n == 64) {
+                }
+                else if ( n == 64 )
+                {
                     CONVOLVE_ONE_SAMPLE // 1
                     CONVOLVE_ONE_SAMPLE // 2
                     CONVOLVE_ONE_SAMPLE // 3
@@ -302,8 +315,11 @@ void SincResampler::process(float* source, float* destination, unsigned numberOf
                     CONVOLVE_ONE_SAMPLE // 62
                     CONVOLVE_ONE_SAMPLE // 63
                     CONVOLVE_ONE_SAMPLE // 64
-                } else {
-                    while (n--) {
+                }
+                else
+                {
+                    while ( n-- )
+                    {
                         // Non-optimized using actual while loop.
                         CONVOLVE_ONE_SAMPLE
                     }
@@ -311,13 +327,16 @@ void SincResampler::process(float* source, float* destination, unsigned numberOf
             }
 
             // Linearly interpolate the two "convolutions".
-            double result = (1.0 - kernelInterpolationFactor) * sum1 + kernelInterpolationFactor * sum2;
+            double result = ( 1.0 - kernelInterpolationFactor ) * sum1 + kernelInterpolationFactor * sum2;
 
             *destination++ = result;
 
             --numberOfDestinationFrames;
-            if (!numberOfDestinationFrames)
+
+            if ( !numberOfDestinationFrames )
+            {
                 return;
+            }
 
             // Advance the virtual index.
             m_virtualSourceIndex += m_scaleFactor;
@@ -328,12 +347,12 @@ void SincResampler::process(float* source, float* destination, unsigned numberOf
 
         // Step (3) Copy r3 to r1 and r4 to r2.
         // This wraps the last input frames back to the start of the buffer.
-        memcpy(r1, r3, sizeof(float) * (m_kernelSize / 2));
-        memcpy(r2, r4, sizeof(float) * (m_kernelSize / 2));
+        memcpy( r1, r3, sizeof( float ) * ( m_kernelSize / 2 ) );
+        memcpy( r2, r4, sizeof( float ) * ( m_kernelSize / 2 ) );
 
         // Step (4)
         // Refresh the buffer with more input.
-        consumeSource(r5, m_blockSize);
+        consumeSource( r5, m_blockSize );
     }
 }
 

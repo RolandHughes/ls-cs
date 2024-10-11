@@ -28,65 +28,70 @@ class QListWidgetItem;
 class QListWidget;
 
 
-namespace WebCore {
+namespace WebCore
+{
 
-class Maemo5Popup : public QDialog {
-    WEB_CS_OBJECT(Maemo5Popup)
+class Maemo5Popup : public QDialog
+{
+    WEB_LSCS_OBJECT( Maemo5Popup )
 public:
-    Maemo5Popup(const QWebSelectData& data) : m_data(data) {}
+    Maemo5Popup( const QWebSelectData &data ) : m_data( data ) {}
 
-    WEB_CS_SIGNAL_1(Public, void itemClicked(int idx))
-    WEB_CS_SIGNAL_2(itemClicked,idx) 
+    WEB_LSCS_SIGNAL_1( Public, void itemClicked( int idx ) )
+    WEB_LSCS_SIGNAL_2( itemClicked,idx )
 
 protected :
-    WEB_CS_SLOT_1(Protected, void onItemSelected(QListWidgetItem * item))
-    WEB_CS_SLOT_2(onItemSelected) 
+    WEB_LSCS_SLOT_1( Protected, void onItemSelected( QListWidgetItem *item ) )
+    WEB_LSCS_SLOT_2( onItemSelected )
 
 protected:
     void populateList();
 
-    const QWebSelectData& m_data;
-    QListWidget* m_list;
+    const QWebSelectData &m_data;
+    QListWidget *m_list;
 };
 
 
-class QtMaemoWebPopup : public QWebSelectMethod {
-    WEB_CS_OBJECT(QtMaemoWebPopup)
+class QtMaemoWebPopup : public QWebSelectMethod
+{
+    WEB_LSCS_OBJECT( QtMaemoWebPopup )
 public:
     QtMaemoWebPopup();
     ~QtMaemoWebPopup();
 
-    virtual void show(const QWebSelectData& data);
+    virtual void show( const QWebSelectData &data );
     virtual void hide();
 
 private :
-    WEB_CS_SLOT_1(Private, void popupClosed())
-    WEB_CS_SLOT_2(popupClosed) 
-    WEB_CS_SLOT_1(Private, void itemClicked(int idx))
-    WEB_CS_SLOT_2(itemClicked) 
+    WEB_LSCS_SLOT_1( Private, void popupClosed() )
+    WEB_LSCS_SLOT_2( popupClosed )
+    WEB_LSCS_SLOT_1( Private, void itemClicked( int idx ) )
+    WEB_LSCS_SLOT_2( itemClicked )
 
 private:
-    Maemo5Popup* m_popup;
+    Maemo5Popup *m_popup;
 
-    Maemo5Popup* createPopup(const QWebSelectData& data);
-    Maemo5Popup* createSingleSelectionPopup(const QWebSelectData& data);
-    Maemo5Popup* createMultipleSelectionPopup(const QWebSelectData& data);
+    Maemo5Popup *createPopup( const QWebSelectData &data );
+    Maemo5Popup *createSingleSelectionPopup( const QWebSelectData &data );
+    Maemo5Popup *createMultipleSelectionPopup( const QWebSelectData &data );
 };
 
 
-class Maemo5SingleSelectionPopup : public Maemo5Popup {
-    WEB_CS_OBJECT(Maemo5SingleSelectionPopup)
+class Maemo5SingleSelectionPopup : public Maemo5Popup
+{
+    WEB_LSCS_OBJECT( Maemo5SingleSelectionPopup )
 
 public:
-    Maemo5SingleSelectionPopup(const QWebSelectData& data);
+    Maemo5SingleSelectionPopup( const QWebSelectData &data );
 };
 
 
-class Maemo5MultipleSelectionPopup : public Maemo5Popup {
-    WEB_CS_OBJECT(Maemo5MultipleSelectionPopup)
+class Maemo5MultipleSelectionPopup : public Maemo5Popup
+{
+    WEB_LSCS_OBJECT( Maemo5MultipleSelectionPopup )
 
 public:
-    Maemo5MultipleSelectionPopup(const QWebSelectData& data);
+    Maemo5MultipleSelectionPopup( const QWebSelectData &data );
 };
 
 }

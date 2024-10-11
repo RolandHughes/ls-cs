@@ -32,7 +32,8 @@
 #if ENABLE(DATABASE)
 #include <sqlite3.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 const int SQLAuthAllow = SQLITE_OK;
 const int SQLAuthIgnore = SQLITE_IGNORE;

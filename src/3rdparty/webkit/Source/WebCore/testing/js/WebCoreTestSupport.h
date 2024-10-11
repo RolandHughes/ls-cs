@@ -26,12 +26,13 @@
 #ifndef WebCoreTestSupport_h
 #define WebCoreTestSupport_h
 
-typedef const struct OpaqueJSContext* JSContextRef;
+typedef const struct OpaqueJSContext *JSContextRef;
 
-namespace WebCoreTestSupport {
+namespace WebCoreTestSupport
+{
 
-void injectInternalsObject(JSContextRef);
-void resetInternalsObject(JSContextRef);
+void injectInternalsObject( JSContextRef );
+void resetInternalsObject( JSContextRef );
 
 } // namespace WebCore
 

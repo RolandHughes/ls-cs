@@ -34,34 +34,42 @@
 #include "NodeList.h"
 #include "Text.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLTableRowElement::HTMLTableRowElement(const QualifiedName& tagName, Document* document)
-    : HTMLTablePartElement(tagName, document)
+HTMLTableRowElement::HTMLTableRowElement( const QualifiedName &tagName, Document *document )
+    : HTMLTablePartElement( tagName, document )
 {
-    ASSERT(hasTagName(trTag));
+    ASSERT( hasTagName( trTag ) );
 }
 
-PassRefPtr<HTMLTableRowElement> HTMLTableRowElement::create(Document* document)
+PassRefPtr<HTMLTableRowElement> HTMLTableRowElement::create( Document *document )
 {
-    return adoptRef(new HTMLTableRowElement(trTag, document));
+    return adoptRef( new HTMLTableRowElement( trTag, document ) );
 }
 
-PassRefPtr<HTMLTableRowElement> HTMLTableRowElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLTableRowElement> HTMLTableRowElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLTableRowElement(tagName, document));
+    return adoptRef( new HTMLTableRowElement( tagName, document ) );
 }
 
 int HTMLTableRowElement::rowIndex() const
 {
-    ContainerNode* table = parentNode();
-    if (!table)
+    ContainerNode *table = parentNode();
+
+    if ( !table )
+    {
         return -1;
+    }
+
     table = table->parentNode();
-    if (!table || !table->hasTagName(tableTag))
+
+    if ( !table || !table->hasTagName( tableTag ) )
+    {
         return -1;
+    }
 
     // To match Firefox, the row indices work like this:
     //   Rows from the first <thead> are numbered before all <tbody> rows.
@@ -70,33 +78,56 @@ int HTMLTableRowElement::rowIndex() const
 
     int rIndex = 0;
 
-    if (HTMLTableSectionElement* head = static_cast<HTMLTableElement*>(table)->tHead()) {
-        for (Node *row = head->firstChild(); row; row = row->nextSibling()) {
-            if (row == this)
+    if ( HTMLTableSectionElement *head = static_cast<HTMLTableElement *>( table )->tHead() )
+    {
+        for ( Node *row = head->firstChild(); row; row = row->nextSibling() )
+        {
+            if ( row == this )
+            {
                 return rIndex;
-            if (row->hasTagName(trTag))
+            }
+
+            if ( row->hasTagName( trTag ) )
+            {
                 ++rIndex;
-        }
-    }
-    
-    for (Node *node = table->firstChild(); node; node = node->nextSibling()) {
-        if (node->hasTagName(tbodyTag)) {
-            HTMLTableSectionElement* section = static_cast<HTMLTableSectionElement*>(node);
-            for (Node* row = section->firstChild(); row; row = row->nextSibling()) {
-                if (row == this)
-                    return rIndex;
-                if (row->hasTagName(trTag))
-                    ++rIndex;
             }
         }
     }
 
-    if (HTMLTableSectionElement* foot = static_cast<HTMLTableElement*>(table)->tFoot()) {
-        for (Node *row = foot->firstChild(); row; row = row->nextSibling()) {
-            if (row == this)
+    for ( Node *node = table->firstChild(); node; node = node->nextSibling() )
+    {
+        if ( node->hasTagName( tbodyTag ) )
+        {
+            HTMLTableSectionElement *section = static_cast<HTMLTableSectionElement *>( node );
+
+            for ( Node *row = section->firstChild(); row; row = row->nextSibling() )
+            {
+                if ( row == this )
+                {
+                    return rIndex;
+                }
+
+                if ( row->hasTagName( trTag ) )
+                {
+                    ++rIndex;
+                }
+            }
+        }
+    }
+
+    if ( HTMLTableSectionElement *foot = static_cast<HTMLTableElement *>( table )->tFoot() )
+    {
+        for ( Node *row = foot->firstChild(); row; row = row->nextSibling() )
+        {
+            if ( row == this )
+            {
                 return rIndex;
-            if (row->hasTagName(trTag))
+            }
+
+            if ( row->hasTagName( trTag ) )
+            {
                 ++rIndex;
+            }
         }
     }
 
@@ -108,58 +139,84 @@ int HTMLTableRowElement::sectionRowIndex() const
 {
     int rIndex = 0;
     const Node *n = this;
-    do {
+
+    do
+    {
         n = n->previousSibling();
-        if (n && n->hasTagName(trTag))
+
+        if ( n && n->hasTagName( trTag ) )
+        {
             rIndex++;
+        }
     }
-    while (n);
+    while ( n );
 
     return rIndex;
 }
 
-PassRefPtr<HTMLElement> HTMLTableRowElement::insertCell(int index, ExceptionCode& ec)
+PassRefPtr<HTMLElement> HTMLTableRowElement::insertCell( int index, ExceptionCode &ec )
 {
     RefPtr<HTMLCollection> children = cells();
     int numCells = children ? children->length() : 0;
-    if (index < -1 || index > numCells) {
+
+    if ( index < -1 || index > numCells )
+    {
         ec = INDEX_SIZE_ERR;
         return 0;
     }
 
-    RefPtr<HTMLTableCellElement> cell = HTMLTableCellElement::create(tdTag, document());
-    if (index < 0 || index >= numCells)
-        appendChild(cell, ec);
-    else {
-        Node* n;
-        if (index < 1)
-            n = firstChild();
-        else
-            n = children->item(index);
-        insertBefore(cell, n, ec);
+    RefPtr<HTMLTableCellElement> cell = HTMLTableCellElement::create( tdTag, document() );
+
+    if ( index < 0 || index >= numCells )
+    {
+        appendChild( cell, ec );
     }
+    else
+    {
+        Node *n;
+
+        if ( index < 1 )
+        {
+            n = firstChild();
+        }
+        else
+        {
+            n = children->item( index );
+        }
+
+        insertBefore( cell, n, ec );
+    }
+
     return cell.release();
 }
 
-void HTMLTableRowElement::deleteCell(int index, ExceptionCode& ec)
+void HTMLTableRowElement::deleteCell( int index, ExceptionCode &ec )
 {
     RefPtr<HTMLCollection> children = cells();
     int numCells = children ? children->length() : 0;
-    if (index == -1)
+
+    if ( index == -1 )
+    {
         index = numCells-1;
-    if (index >= 0 && index < numCells) {
-        RefPtr<Node> cell = children->item(index);
-        HTMLElement::removeChild(cell.get(), ec);
-    } else
+    }
+
+    if ( index >= 0 && index < numCells )
+    {
+        RefPtr<Node> cell = children->item( index );
+        HTMLElement::removeChild( cell.get(), ec );
+    }
+    else
+    {
         ec = INDEX_SIZE_ERR;
+    }
 }
 
 PassRefPtr<HTMLCollection> HTMLTableRowElement::cells()
 {
-    return HTMLCollection::create(this, TRCells);
+    return HTMLCollection::create( this, TRCells );
 }
 
-void HTMLTableRowElement::setCells(HTMLCollection*, ExceptionCode& ec)
+void HTMLTableRowElement::setCells( HTMLCollection *, ExceptionCode &ec )
 {
     ec = NO_MODIFICATION_ALLOWED_ERR;
 }

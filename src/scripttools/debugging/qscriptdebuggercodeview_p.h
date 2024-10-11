@@ -32,35 +32,35 @@ class QScriptDebuggerCodeViewPrivate;
 
 class QScriptDebuggerCodeView : public QScriptDebuggerCodeViewInterface
 {
-   SCRIPT_T_CS_OBJECT(QScriptDebuggerCodeView)
+    SCRIPT_T_LSCS_OBJECT( QScriptDebuggerCodeView )
 
- public:
-   QScriptDebuggerCodeView(QWidget *parent = nullptr);
-   ~QScriptDebuggerCodeView();
+public:
+    QScriptDebuggerCodeView( QWidget *parent = nullptr );
+    ~QScriptDebuggerCodeView();
 
-   QString text() const;
-   void setText(const QString &text);
+    QString text() const;
+    void setText( const QString &text );
 
-   int cursorLineNumber() const;
-   void gotoLine(int lineNumber);
+    int cursorLineNumber() const;
+    void gotoLine( int lineNumber );
 
-   int find(const QString &exp, int options = 0);
+    int find( const QString &exp, int options = 0 );
 
-   void setExecutionLineNumber(int lineNumber, bool error);
-   void setExecutableLineNumbers(const QSet<int> &lineNumbers);
+    void setExecutionLineNumber( int lineNumber, bool error );
+    void setExecutableLineNumbers( const QSet<int> &lineNumbers );
 
-   int baseLineNumber() const;
-   void setBaseLineNumber(int lineNumber);
+    int baseLineNumber() const;
+    void setBaseLineNumber( int lineNumber );
 
-   void setBreakpoint(int lineNumber);
-   void deleteBreakpoint(int lineNumber);
-   void setBreakpointEnabled(int lineNumber, bool enable);
+    void setBreakpoint( int lineNumber );
+    void deleteBreakpoint( int lineNumber );
+    void setBreakpointEnabled( int lineNumber, bool enable );
 
-   bool event(QEvent *e);
+    bool event( QEvent *e );
 
- private:
-   Q_DECLARE_PRIVATE(QScriptDebuggerCodeView)
-   Q_DISABLE_COPY(QScriptDebuggerCodeView)
+private:
+    Q_DECLARE_PRIVATE( QScriptDebuggerCodeView )
+    Q_DISABLE_COPY( QScriptDebuggerCodeView )
 };
 
 QT_END_NAMESPACE

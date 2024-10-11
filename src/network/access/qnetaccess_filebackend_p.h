@@ -32,37 +32,37 @@
 
 class QNetworkAccessFileBackend: public QNetworkAccessBackend
 {
-   NET_CS_OBJECT(QNetworkAccessFileBackend)
+    NET_LSCS_OBJECT( QNetworkAccessFileBackend )
 
- public:
-   QNetworkAccessFileBackend();
-   virtual ~QNetworkAccessFileBackend();
+public:
+    QNetworkAccessFileBackend();
+    virtual ~QNetworkAccessFileBackend();
 
-   void open() override;
-   void closeDownstreamChannel() override;
+    void open() override;
+    void closeDownstreamChannel() override;
 
-   void downstreamReadyWrite() override;
+    void downstreamReadyWrite() override;
 
-   NET_CS_SLOT_1(Public, void uploadReadyReadSlot())
-   NET_CS_SLOT_2(uploadReadyReadSlot)
+    NET_LSCS_SLOT_1( Public, void uploadReadyReadSlot() )
+    NET_LSCS_SLOT_2( uploadReadyReadSlot )
 
- protected:
-   QNonContiguousByteDevice *uploadByteDevice;
+protected:
+    QNonContiguousByteDevice *uploadByteDevice;
 
- private:
-   QFile file;
-   qint64 totalBytes;
-   bool hasUploadFinished;
+private:
+    QFile file;
+    qint64 totalBytes;
+    bool hasUploadFinished;
 
-   bool loadFileInfo();
-   bool readMoreFromFile();
+    bool loadFileInfo();
+    bool readMoreFromFile();
 };
 
 class QNetworkAccessFileBackendFactory: public QNetworkAccessBackendFactory
 {
- public:
+public:
     QStringList supportedSchemes() const override;
-    QNetworkAccessBackend *create(QNetworkAccessManager::Operation op, const QNetworkRequest &request) const override;
+    QNetworkAccessBackend *create( QNetworkAccessManager::Operation op, const QNetworkRequest &request ) const override;
 };
 
 #endif

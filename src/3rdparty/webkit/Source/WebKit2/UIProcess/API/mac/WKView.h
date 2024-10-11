@@ -29,20 +29,21 @@
 @class WKViewData;
 
 WK_EXPORT
-@interface WKView : NSView <NSTextInputClient> {
+@interface WKView : NSView <NSTextInputClient>
+{
     WKViewData *_data;
     unsigned _frameSizeUpdatesDisabledCount;
 }
 
-- (id)initWithFrame:(NSRect)frame contextRef:(WKContextRef)contextRef;
-- (id)initWithFrame:(NSRect)frame contextRef:(WKContextRef)contextRef pageGroupRef:(WKPageGroupRef)pageGroupRef;
+- ( id )initWithFrame:( NSRect )frame contextRef:( WKContextRef )contextRef;
+- ( id )initWithFrame:( NSRect )frame contextRef:( WKContextRef )contextRef pageGroupRef:( WKPageGroupRef )pageGroupRef;
 
-- (NSPrintOperation *)printOperationWithPrintInfo:(NSPrintInfo *)printInfo forFrame:(WKFrameRef)frameRef;
-- (BOOL)canChangeFrameLayout:(WKFrameRef)frameRef;
+- ( NSPrintOperation * )printOperationWithPrintInfo:( NSPrintInfo * )printInfo forFrame:( WKFrameRef )frameRef;
+- ( BOOL )canChangeFrameLayout:( WKFrameRef )frameRef;
 
-- (void)setFrame:(NSRect)rect andScrollBy:(NSSize)offset;
+- ( void )setFrame:( NSRect )rect andScrollBy:( NSSize )offset;
 
-@property(readonly) WKPageRef pageRef;
+@property( readonly ) WKPageRef pageRef;
 
 @property BOOL drawsBackground;
 @property BOOL drawsTransparentBackground;

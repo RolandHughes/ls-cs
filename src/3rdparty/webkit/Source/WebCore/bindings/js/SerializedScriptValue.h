@@ -33,13 +33,15 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-typedef const struct OpaqueJSContext* JSContextRef;
-typedef const struct OpaqueJSValue* JSValueRef;
+typedef const struct OpaqueJSContext *JSContextRef;
+typedef const struct OpaqueJSValue *JSValueRef;
 
-namespace WebCore {
+namespace WebCore
+{
 
- 
-enum SerializationReturnCode {
+
+enum SerializationReturnCode
+{
     SuccessfullyCompleted,
     StackOverflowError,
     InterruptedExecutionError,
@@ -47,38 +49,42 @@ enum SerializationReturnCode {
     ExistingExceptionError,
     UnspecifiedError
 };
-    
+
 enum SerializationErrorMode { NonThrowing, Throwing };
 
 class SharedBuffer;
 
-class SerializedScriptValue : public RefCounted<SerializedScriptValue> {
+class SerializedScriptValue : public RefCounted<SerializedScriptValue>
+{
 public:
-    static PassRefPtr<SerializedScriptValue> create(JSC::ExecState*, JSC::JSValue, SerializationErrorMode = Throwing);
-    static PassRefPtr<SerializedScriptValue> create(JSContextRef, JSValueRef value, JSValueRef* exception);
-    static PassRefPtr<SerializedScriptValue> create(String string);
-    static PassRefPtr<SerializedScriptValue> adopt(Vector<uint8_t>& buffer)
+    static PassRefPtr<SerializedScriptValue> create( JSC::ExecState *, JSC::JSValue, SerializationErrorMode = Throwing );
+    static PassRefPtr<SerializedScriptValue> create( JSContextRef, JSValueRef value, JSValueRef *exception );
+    static PassRefPtr<SerializedScriptValue> create( String string );
+    static PassRefPtr<SerializedScriptValue> adopt( Vector<uint8_t> &buffer )
     {
-        return adoptRef(new SerializedScriptValue(buffer));
+        return adoptRef( new SerializedScriptValue( buffer ) );
     }
 
     static PassRefPtr<SerializedScriptValue> create();
-    static SerializedScriptValue* nullValue();
+    static SerializedScriptValue *nullValue();
 
     String toString();
-    
-    JSC::JSValue deserialize(JSC::ExecState*, JSC::JSGlobalObject*, SerializationErrorMode = Throwing);
-    JSValueRef deserialize(JSContextRef, JSValueRef* exception);
 
-    const Vector<uint8_t>& data() { return m_data; }
+    JSC::JSValue deserialize( JSC::ExecState *, JSC::JSGlobalObject *, SerializationErrorMode = Throwing );
+    JSValueRef deserialize( JSContextRef, JSValueRef *exception );
+
+    const Vector<uint8_t> &data()
+    {
+        return m_data;
+    }
 
     ~SerializedScriptValue();
 
 private:
-    static void maybeThrowExceptionIfSerializationFailed(JSC::ExecState*, SerializationReturnCode);
-    static bool serializationDidCompleteSuccessfully(SerializationReturnCode);
-    
-    SerializedScriptValue(Vector<unsigned char>&);
+    static void maybeThrowExceptionIfSerializationFailed( JSC::ExecState *, SerializationReturnCode );
+    static bool serializationDidCompleteSuccessfully( SerializationReturnCode );
+
+    SerializedScriptValue( Vector<unsigned char> & );
     Vector<unsigned char> m_data;
 };
 

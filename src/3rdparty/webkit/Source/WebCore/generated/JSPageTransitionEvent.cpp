@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSPageTransitionEvent);
+ASSERT_CLASS_FITS_IN_CELL( JSPageTransitionEvent );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,9 +43,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSPageTransitionEvent);
 
 static const HashTableValue JSPageTransitionEventTableValues[3] =
 {
-    { "persisted", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPageTransitionEventPersisted), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsPageTransitionEventConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "persisted", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPageTransitionEventPersisted ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsPageTransitionEventConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -58,43 +59,51 @@ static JSC_CONST_HASHTABLE HashTable JSPageTransitionEventTable = { 4, 3, JSPage
 
 static const HashTableValue JSPageTransitionEventConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSPageTransitionEventConstructorTable = { 1, 0, JSPageTransitionEventConstructorTableValues, 0 };
-class JSPageTransitionEventConstructor : public DOMConstructorObject {
+class JSPageTransitionEventConstructor : public DOMConstructorObject
+{
 public:
-    JSPageTransitionEventConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSPageTransitionEventConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSPageTransitionEventConstructor::s_info = { "PageTransitionEventConstructor", &DOMConstructorObject::s_info, &JSPageTransitionEventConstructorTable, 0 };
 
-JSPageTransitionEventConstructor::JSPageTransitionEventConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSPageTransitionEventConstructor::JSPageTransitionEventConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSPageTransitionEventPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSPageTransitionEventPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSPageTransitionEventConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPageTransitionEventConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPageTransitionEventConstructor, JSDOMWrapper>(exec, &JSPageTransitionEventConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPageTransitionEventConstructor, JSDOMWrapper>( exec, &JSPageTransitionEventConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSPageTransitionEventConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPageTransitionEventConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPageTransitionEventConstructor, JSDOMWrapper>(exec, &JSPageTransitionEventConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPageTransitionEventConstructor, JSDOMWrapper>( exec, &JSPageTransitionEventConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -106,95 +115,118 @@ bool JSPageTransitionEventConstructor::getOwnPropertyDescriptor(ExecState* exec,
 
 static const HashTableValue JSPageTransitionEventPrototypeTableValues[2] =
 {
-    { "initPageTransitionEvent", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsPageTransitionEventPrototypeFunctionInitPageTransitionEvent), (intptr_t)4 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "initPageTransitionEvent", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsPageTransitionEventPrototypeFunctionInitPageTransitionEvent ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSPageTransitionEventPrototypeTable = { 2, 1, JSPageTransitionEventPrototypeTableValues, 0 };
 const ClassInfo JSPageTransitionEventPrototype::s_info = { "PageTransitionEventPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSPageTransitionEventPrototypeTable, 0 };
 
-JSObject* JSPageTransitionEventPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPageTransitionEventPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSPageTransitionEvent>(exec, globalObject);
+    return getDOMPrototype<JSPageTransitionEvent>( exec, globalObject );
 }
 
-bool JSPageTransitionEventPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPageTransitionEventPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSPageTransitionEventPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSPageTransitionEventPrototypeTable, this, propertyName, slot );
 }
 
-bool JSPageTransitionEventPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPageTransitionEventPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSPageTransitionEventPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSPageTransitionEventPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSPageTransitionEvent::s_info = { "PageTransitionEvent", &JSEvent::s_info, &JSPageTransitionEventTable, 0 };
 
-JSPageTransitionEvent::JSPageTransitionEvent(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<PageTransitionEvent> impl)
-    : JSEvent(structure, globalObject, impl)
+JSPageTransitionEvent::JSPageTransitionEvent( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<PageTransitionEvent> impl )
+    : JSEvent( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSPageTransitionEvent::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSPageTransitionEvent::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSPageTransitionEventPrototype(exec->globalData(), globalObject, JSPageTransitionEventPrototype::createStructure(exec->globalData(), JSEventPrototype::self(exec, globalObject)));
+    return new ( exec ) JSPageTransitionEventPrototype( exec->globalData(), globalObject,
+            JSPageTransitionEventPrototype::createStructure( exec->globalData(), JSEventPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSPageTransitionEvent::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSPageTransitionEvent::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSPageTransitionEvent, Base>(exec, &JSPageTransitionEventTable, this, propertyName, slot);
+    return getStaticValueSlot<JSPageTransitionEvent, Base>( exec, &JSPageTransitionEventTable, this, propertyName, slot );
 }
 
-bool JSPageTransitionEvent::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSPageTransitionEvent::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSPageTransitionEvent, Base>(exec, &JSPageTransitionEventTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSPageTransitionEvent, Base>( exec, &JSPageTransitionEventTable, this, propertyName, descriptor );
 }
 
-JSValue jsPageTransitionEventPersisted(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPageTransitionEventPersisted( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPageTransitionEvent* castedThis = static_cast<JSPageTransitionEvent*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    PageTransitionEvent* imp = static_cast<PageTransitionEvent*>(castedThis->impl());
-    JSValue result = jsBoolean(imp->persisted());
+    JSPageTransitionEvent *castedThis = static_cast<JSPageTransitionEvent *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    PageTransitionEvent *imp = static_cast<PageTransitionEvent *>( castedThis->impl() );
+    JSValue result = jsBoolean( imp->persisted() );
     return result;
 }
 
 
-JSValue jsPageTransitionEventConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsPageTransitionEventConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSPageTransitionEvent* domObject = static_cast<JSPageTransitionEvent*>(asObject(slotBase));
-    return JSPageTransitionEvent::getConstructor(exec, domObject->globalObject());
+    JSPageTransitionEvent *domObject = static_cast<JSPageTransitionEvent *>( asObject( slotBase ) );
+    return JSPageTransitionEvent::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSPageTransitionEvent::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSPageTransitionEvent::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSPageTransitionEventConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSPageTransitionEventConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsPageTransitionEventPrototypeFunctionInitPageTransitionEvent(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsPageTransitionEventPrototypeFunctionInitPageTransitionEvent( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSPageTransitionEvent::s_info))
-        return throwVMTypeError(exec);
-    JSPageTransitionEvent* castedThis = static_cast<JSPageTransitionEvent*>(asObject(thisValue));
-    PageTransitionEvent* imp = static_cast<PageTransitionEvent*>(castedThis->impl());
-    const String& typeArg(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool canBubbleArg(exec->argument(1).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool cancelableArg(exec->argument(2).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
-    bool persisted(exec->argument(3).toBoolean(exec));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
 
-    imp->initPageTransitionEvent(typeArg, canBubbleArg, cancelableArg, persisted);
-    return JSValue::encode(jsUndefined());
+    if ( !thisValue.inherits( &JSPageTransitionEvent::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSPageTransitionEvent *castedThis = static_cast<JSPageTransitionEvent *>( asObject( thisValue ) );
+    PageTransitionEvent *imp = static_cast<PageTransitionEvent *>( castedThis->impl() );
+    const String &typeArg( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool canBubbleArg( exec->argument( 1 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool cancelableArg( exec->argument( 2 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    bool persisted( exec->argument( 3 ).toBoolean( exec ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
+
+    imp->initPageTransitionEvent( typeArg, canBubbleArg, cancelableArg, persisted );
+    return JSValue::encode( jsUndefined() );
 }
 
 

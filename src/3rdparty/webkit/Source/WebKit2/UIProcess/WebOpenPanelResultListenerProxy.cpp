@@ -33,10 +33,11 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
-WebOpenPanelResultListenerProxy::WebOpenPanelResultListenerProxy(WebPageProxy* page)
-    : m_page(page)
+WebOpenPanelResultListenerProxy::WebOpenPanelResultListenerProxy( WebPageProxy *page )
+    : m_page( page )
 {
 }
 
@@ -44,31 +45,38 @@ WebOpenPanelResultListenerProxy::~WebOpenPanelResultListenerProxy()
 {
 }
 
-void WebOpenPanelResultListenerProxy::chooseFiles(ImmutableArray* fileURLsArray)
+void WebOpenPanelResultListenerProxy::chooseFiles( ImmutableArray *fileURLsArray )
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
     size_t size = fileURLsArray->size();
 
     Vector<String> filePaths;
-    filePaths.reserveInitialCapacity(size);
+    filePaths.reserveInitialCapacity( size );
 
-    for (size_t i = 0; i < size; ++i) {
-        WebURL* webURL = fileURLsArray->at<WebURL>(i);
-        if (webURL) {
-            KURL url(KURL(), webURL->string()); 
-            filePaths.uncheckedAppend(url.fileSystemPath());
+    for ( size_t i = 0; i < size; ++i )
+    {
+        WebURL *webURL = fileURLsArray->at<WebURL>( i );
+
+        if ( webURL )
+        {
+            KURL url( KURL(), webURL->string() );
+            filePaths.uncheckedAppend( url.fileSystemPath() );
         }
     }
 
-    m_page->didChooseFilesForOpenPanel(filePaths);
+    m_page->didChooseFilesForOpenPanel( filePaths );
 }
 
 void WebOpenPanelResultListenerProxy::cancel()
 {
-    if (!m_page)
+    if ( !m_page )
+    {
         return;
+    }
 
     m_page->didCancelForOpenPanel();
 }

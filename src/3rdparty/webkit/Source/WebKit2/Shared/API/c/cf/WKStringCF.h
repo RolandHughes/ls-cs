@@ -33,8 +33,8 @@
 extern "C" {
 #endif
 
-WK_EXPORT WKStringRef WKStringCreateWithCFString(CFStringRef string);
-WK_EXPORT CFStringRef WKStringCopyCFString(CFAllocatorRef alloc, WKStringRef string);
+WK_EXPORT WKStringRef WKStringCreateWithCFString( CFStringRef string );
+WK_EXPORT CFStringRef WKStringCopyCFString( CFAllocatorRef alloc, WKStringRef string );
 
 #ifdef __cplusplus
 }

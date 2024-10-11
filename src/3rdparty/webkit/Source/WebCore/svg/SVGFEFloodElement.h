@@ -25,19 +25,21 @@
 #include "FEFlood.h"
 #include "SVGFilterPrimitiveStandardAttributes.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEFloodElement : public SVGFilterPrimitiveStandardAttributes {
+class SVGFEFloodElement : public SVGFilterPrimitiveStandardAttributes
+{
 public:
-    static PassRefPtr<SVGFEFloodElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEFloodElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFEFloodElement(const QualifiedName&, Document*);
+    SVGFEFloodElement( const QualifiedName &, Document * );
 
     virtual void fillAttributeToPropertyTypeMap();
-    virtual AttributeToPropertyTypeMap& attributeToPropertyTypeMap();
-    virtual bool setFilterEffectAttribute(FilterEffect*, const QualifiedName& attrName);
-    virtual PassRefPtr<FilterEffect> build(SVGFilterBuilder*, Filter*);
+    virtual AttributeToPropertyTypeMap &attributeToPropertyTypeMap();
+    virtual bool setFilterEffectAttribute( FilterEffect *, const QualifiedName &attrName );
+    virtual PassRefPtr<FilterEffect> build( SVGFilterBuilder *, Filter * );
 };
 
 } // namespace WebCore

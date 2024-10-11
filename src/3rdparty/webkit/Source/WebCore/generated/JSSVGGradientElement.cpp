@@ -41,9 +41,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGGradientElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGGradientElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -54,15 +55,15 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGGradientElement);
 
 static const HashTableValue JSSVGGradientElementTableValues[9] =
 {
-    { "gradientUnits", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementGradientUnits), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "gradientTransform", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementGradientTransform), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "spreadMethod", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSpreadMethod), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "href", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementHref), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "externalResourcesRequired", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementExternalResourcesRequired), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "gradientUnits", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementGradientUnits ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "gradientTransform", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementGradientTransform ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "spreadMethod", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSpreadMethod ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "href", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementHref ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "externalResourcesRequired", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementExternalResourcesRequired ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -76,47 +77,55 @@ static JSC_CONST_HASHTABLE HashTable JSSVGGradientElementTable = { 16, 15, JSSVG
 
 static const HashTableValue JSSVGGradientElementConstructorTableValues[5] =
 {
-    { "SVG_SPREADMETHOD_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_SPREADMETHOD_PAD", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_PAD), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_SPREADMETHOD_REFLECT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_REFLECT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_SPREADMETHOD_REPEAT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_REPEAT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "SVG_SPREADMETHOD_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_SPREADMETHOD_PAD", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_PAD ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_SPREADMETHOD_REFLECT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_REFLECT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_SPREADMETHOD_REPEAT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_REPEAT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGGradientElementConstructorTable = { 8, 7, JSSVGGradientElementConstructorTableValues, 0 };
-class JSSVGGradientElementConstructor : public DOMConstructorObject {
+class JSSVGGradientElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGGradientElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGGradientElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGGradientElementConstructor::s_info = { "SVGGradientElementConstructor", &DOMConstructorObject::s_info, &JSSVGGradientElementConstructorTable, 0 };
 
-JSSVGGradientElementConstructor::JSSVGGradientElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGGradientElementConstructor::JSSVGGradientElementConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGGradientElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGGradientElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGGradientElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGGradientElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGGradientElementConstructor, JSDOMWrapper>(exec, &JSSVGGradientElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGGradientElementConstructor, JSDOMWrapper>( exec, &JSSVGGradientElementConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGGradientElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGGradientElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGGradientElementConstructor, JSDOMWrapper>(exec, &JSSVGGradientElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGGradientElementConstructor, JSDOMWrapper>( exec, &JSSVGGradientElementConstructorTable, this,
+            propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -128,183 +137,196 @@ bool JSSVGGradientElementConstructor::getOwnPropertyDescriptor(ExecState* exec, 
 
 static const HashTableValue JSSVGGradientElementPrototypeTableValues[6] =
 {
-    { "SVG_SPREADMETHOD_UNKNOWN", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_UNKNOWN), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_SPREADMETHOD_PAD", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_PAD), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_SPREADMETHOD_REFLECT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_REFLECT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "SVG_SPREADMETHOD_REPEAT", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGGradientElementSVG_SPREADMETHOD_REPEAT), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGGradientElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "SVG_SPREADMETHOD_UNKNOWN", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_UNKNOWN ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_SPREADMETHOD_PAD", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_PAD ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_SPREADMETHOD_REFLECT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_REFLECT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "SVG_SPREADMETHOD_REPEAT", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGGradientElementSVG_SPREADMETHOD_REPEAT ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGGradientElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGGradientElementPrototypeTable = { 17, 15, JSSVGGradientElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGGradientElementPrototype::s_info = { "SVGGradientElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGGradientElementPrototypeTable, 0 };
 
-JSObject* JSSVGGradientElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGGradientElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGGradientElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGGradientElement>( exec, globalObject );
 }
 
-bool JSSVGGradientElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGGradientElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticPropertySlot<JSSVGGradientElementPrototype, JSObject>(exec, &JSSVGGradientElementPrototypeTable, this, propertyName, slot);
+    return getStaticPropertySlot<JSSVGGradientElementPrototype, JSObject>( exec, &JSSVGGradientElementPrototypeTable, this,
+            propertyName, slot );
 }
 
-bool JSSVGGradientElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGGradientElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticPropertyDescriptor<JSSVGGradientElementPrototype, JSObject>(exec, &JSSVGGradientElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticPropertyDescriptor<JSSVGGradientElementPrototype, JSObject>( exec, &JSSVGGradientElementPrototypeTable, this,
+            propertyName, descriptor );
 }
 
 const ClassInfo JSSVGGradientElement::s_info = { "SVGGradientElement", &JSSVGElement::s_info, &JSSVGGradientElementTable, 0 };
 
-JSSVGGradientElement::JSSVGGradientElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGGradientElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGGradientElement::JSSVGGradientElement( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGGradientElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGGradientElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGGradientElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGGradientElementPrototype(exec->globalData(), globalObject, JSSVGGradientElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGGradientElementPrototype( exec->globalData(), globalObject,
+            JSSVGGradientElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGGradientElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGGradientElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGGradientElement, Base>(exec, &JSSVGGradientElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGGradientElement, Base>( exec, &JSSVGGradientElementTable, this, propertyName, slot );
 }
 
-bool JSSVGGradientElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGGradientElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGGradientElement, Base>(exec, &JSSVGGradientElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGGradientElement, Base>( exec, &JSSVGGradientElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGGradientElementGradientUnits(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementGradientUnits( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedEnumeration> obj = imp->gradientUnitsAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGGradientElementGradientTransform(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementGradientTransform( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedTransformList> obj = imp->gradientTransformAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGGradientElementSpreadMethod(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementSpreadMethod( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedEnumeration> obj = imp->spreadMethodAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGGradientElementHref(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementHref( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->hrefAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGGradientElementExternalResourcesRequired(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementExternalResourcesRequired( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedBoolean> obj = imp->externalResourcesRequiredAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGGradientElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGGradientElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGGradientElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGGradientElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGGradientElement* domObject = static_cast<JSSVGGradientElement*>(asObject(slotBase));
-    return JSSVGGradientElement::getConstructor(exec, domObject->globalObject());
+    JSSVGGradientElement *domObject = static_cast<JSSVGGradientElement *>( asObject( slotBase ) );
+    return JSSVGGradientElement::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGGradientElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGGradientElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGGradientElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGGradientElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGGradientElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGGradientElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGGradientElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGGradientElement* castedThis = static_cast<JSSVGGradientElement*>(asObject(thisValue));
-    SVGGradientElement* imp = static_cast<SVGGradientElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGGradientElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGGradientElement *castedThis = static_cast<JSSVGGradientElement *>( asObject( thisValue ) );
+    SVGGradientElement *imp = static_cast<SVGGradientElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
 // Constant getters
 
-JSValue jsSVGGradientElementSVG_SPREADMETHOD_UNKNOWN(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGGradientElementSVG_SPREADMETHOD_UNKNOWN( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(0));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 0 ) );
 }
 
-JSValue jsSVGGradientElementSVG_SPREADMETHOD_PAD(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGGradientElementSVG_SPREADMETHOD_PAD( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(1));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 1 ) );
 }
 
-JSValue jsSVGGradientElementSVG_SPREADMETHOD_REFLECT(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGGradientElementSVG_SPREADMETHOD_REFLECT( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(2));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 2 ) );
 }
 
-JSValue jsSVGGradientElementSVG_SPREADMETHOD_REPEAT(ExecState* exec, JSValue, const Identifier&)
+JSValue jsSVGGradientElementSVG_SPREADMETHOD_REPEAT( ExecState *exec, JSValue, const Identifier & )
 {
-    UNUSED_PARAM(exec);
-    return jsNumber(static_cast<int>(3));
+    UNUSED_PARAM( exec );
+    return jsNumber( static_cast<int>( 3 ) );
 }
 
 

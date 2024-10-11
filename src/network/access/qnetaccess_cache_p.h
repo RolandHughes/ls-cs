@@ -39,86 +39,90 @@ class QUrl;
 
 class QNetworkAccessCache : public QObject
 {
-   NET_CS_OBJECT(QNetworkAccessCache)
+    NET_LSCS_OBJECT( QNetworkAccessCache )
 
- public:
+public:
 
-   class CacheableObject
-   {
+    class CacheableObject
+    {
     public:
-       CacheableObject();
-       virtual ~CacheableObject();
+        CacheableObject();
+        virtual ~CacheableObject();
 
-       virtual void dispose() = 0;
+        virtual void dispose() = 0;
 
-       QByteArray cacheKey() const {
-          return key;
-       }
+        QByteArray cacheKey() const
+        {
+            return key;
+        }
 
     protected:
-      void setExpires(bool enable);
-      void setShareable(bool enable);
+        void setExpires( bool enable );
+        void setShareable( bool enable );
 
     private:
-      QByteArray key;
-      bool expires;
-      bool shareable;
+        QByteArray key;
+        bool expires;
+        bool shareable;
 
-      friend class QNetworkAccessCache;
-   };
+        friend class QNetworkAccessCache;
+    };
 
-   struct Receiver {
-      QPointer<QObject> object;
-      QString member;
-   };
+    struct Receiver
+    {
+        QPointer<QObject> object;
+        QString member;
+    };
 
-   struct Node {
-      QDateTime timestamp;
-      QQueue<Receiver> receiverQueue;
-      QByteArray key;
+    struct Node
+    {
+        QDateTime timestamp;
+        QQueue<Receiver> receiverQueue;
+        QByteArray key;
 
-      Node *older;
-      Node *newer;
-      CacheableObject *object;
+        Node *older;
+        Node *newer;
+        CacheableObject *object;
 
-      int useCount;
+        int useCount;
 
-      Node()
-         : older(nullptr), newer(nullptr), object(nullptr), useCount(0) {
-      }
-   };
+        Node()
+            : older( nullptr ), newer( nullptr ), object( nullptr ), useCount( 0 )
+        {
+        }
+    };
 
-   QNetworkAccessCache();
-   ~QNetworkAccessCache();
+    QNetworkAccessCache();
+    ~QNetworkAccessCache();
 
-   void clear();
+    void clear();
 
-   void addEntry(const QByteArray &key, CacheableObject *entry);
-   bool hasEntry(const QByteArray &key) const;
-   bool requestEntry(const QByteArray &key, QObject *target, const QString &member);
+    void addEntry( const QByteArray &key, CacheableObject *entry );
+    bool hasEntry( const QByteArray &key ) const;
+    bool requestEntry( const QByteArray &key, QObject *target, const QString &member );
 
-   CacheableObject *requestEntryNow(const QByteArray &key);
-   void releaseEntry(const QByteArray &key);
-   void removeEntry(const QByteArray &key);
+    CacheableObject *requestEntryNow( const QByteArray &key );
+    void releaseEntry( const QByteArray &key );
+    void removeEntry( const QByteArray &key );
 
-   NET_CS_SIGNAL_1(Public, void entryReady(QNetworkAccessCache::CacheableObject *object))
-   NET_CS_SIGNAL_2(entryReady, object)
+    NET_LSCS_SIGNAL_1( Public, void entryReady( QNetworkAccessCache::CacheableObject *object ) )
+    NET_LSCS_SIGNAL_2( entryReady, object )
 
- protected:
-   void timerEvent(QTimerEvent *) override;
+protected:
+    void timerEvent( QTimerEvent * ) override;
 
- private:
-   // idea copied from qcache.h
-   QHash<QByteArray, Node> hash;
-   Node *oldest;
-   Node *newest;
+private:
+    // idea copied from qcache.h
+    QHash<QByteArray, Node> hash;
+    Node *oldest;
+    Node *newest;
 
-   QBasicTimer timer;
+    QBasicTimer timer;
 
-   void linkEntry(const QByteArray &key);
-   bool unlinkEntry(const QByteArray &key);
-   void updateTimer();
-   bool emitEntryReady(Node *node, QObject *target, const QString &member);
+    void linkEntry( const QByteArray &key );
+    bool unlinkEntry( const QByteArray &key );
+    void updateTimer();
+    bool emitEntryReady( Node *node, QObject *target, const QString &member );
 };
 
 #endif

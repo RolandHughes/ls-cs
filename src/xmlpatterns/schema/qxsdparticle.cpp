@@ -26,48 +26,48 @@
 using namespace QPatternist;
 
 XsdParticle::XsdParticle()
-   : m_minimumOccurs(1)
-   , m_maximumOccurs(1)
-   , m_maximumOccursUnbounded(false)
+    : m_minimumOccurs( 1 )
+    , m_maximumOccurs( 1 )
+    , m_maximumOccursUnbounded( false )
 {
 }
 
-void XsdParticle::setMinimumOccurs(unsigned int occurs)
+void XsdParticle::setMinimumOccurs( unsigned int occurs )
 {
-   m_minimumOccurs = occurs;
+    m_minimumOccurs = occurs;
 }
 
 unsigned int XsdParticle::minimumOccurs() const
 {
-   return m_minimumOccurs;
+    return m_minimumOccurs;
 }
 
-void XsdParticle::setMaximumOccurs(unsigned int occurs)
+void XsdParticle::setMaximumOccurs( unsigned int occurs )
 {
-   m_maximumOccurs = occurs;
+    m_maximumOccurs = occurs;
 }
 
 unsigned int XsdParticle::maximumOccurs() const
 {
-   return m_maximumOccurs;
+    return m_maximumOccurs;
 }
 
-void XsdParticle::setMaximumOccursUnbounded(bool unbounded)
+void XsdParticle::setMaximumOccursUnbounded( bool unbounded )
 {
-   m_maximumOccursUnbounded = unbounded;
+    m_maximumOccursUnbounded = unbounded;
 }
 
 bool XsdParticle::maximumOccursUnbounded() const
 {
-   return m_maximumOccursUnbounded;
+    return m_maximumOccursUnbounded;
 }
 
-void XsdParticle::setTerm(const XsdTerm::Ptr &term)
+void XsdParticle::setTerm( const XsdTerm::Ptr &term )
 {
-   m_term = term;
+    m_term = term;
 }
 
 XsdTerm::Ptr XsdParticle::term() const
 {
-   return m_term;
+    return m_term;
 }

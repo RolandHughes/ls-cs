@@ -31,55 +31,58 @@
 
 #include <qgstutils_p.h>
 
-CS_PLUGIN_REGISTER(QGstreamerAudioDecoderServicePlugin)
+LSCS_PLUGIN_REGISTER( QGstreamerAudioDecoderServicePlugin )
 
-QMediaService *QGstreamerAudioDecoderServicePlugin::create(const QString &key)
+QMediaService *QGstreamerAudioDecoderServicePlugin::create( const QString &key )
 {
-   QGstUtils::initializeGst();
+    QGstUtils::initializeGst();
 
-   if (key == Q_MEDIASERVICE_AUDIODECODER) {
-      return new QGstreamerAudioDecoderService;
-   }
+    if ( key == Q_MEDIASERVICE_AUDIODECODER )
+    {
+        return new QGstreamerAudioDecoderService;
+    }
 
-   qWarning() << "GStreamer audio decoder service plugin, unsupported key:" << key;
+    qWarning() << "GStreamer audio decoder service plugin, unsupported key:" << key;
 
-   return nullptr;
+    return nullptr;
 }
 
-void QGstreamerAudioDecoderServicePlugin::release(QMediaService *service)
+void QGstreamerAudioDecoderServicePlugin::release( QMediaService *service )
 {
-   delete service;
+    delete service;
 }
 
-QMultimedia::SupportEstimate QGstreamerAudioDecoderServicePlugin::hasSupport(const QString &mimeType, const QStringList &codecs) const
+QMultimedia::SupportEstimate QGstreamerAudioDecoderServicePlugin::hasSupport( const QString &mimeType,
+        const QStringList &codecs ) const
 {
-   if (m_supportedMimeTypeSet.isEmpty()) {
-      updateSupportedMimeTypes();
-   }
+    if ( m_supportedMimeTypeSet.isEmpty() )
+    {
+        updateSupportedMimeTypes();
+    }
 
-   return QGstUtils::hasSupport(mimeType, codecs, m_supportedMimeTypeSet);
+    return QGstUtils::hasSupport( mimeType, codecs, m_supportedMimeTypeSet );
 }
 
-static bool isDecoderOrDemuxer(GstElementFactory *factory)
+static bool isDecoderOrDemuxer( GstElementFactory *factory )
 {
 #if GST_CHECK_VERSION(0, 10, 31)
 
-   return gst_element_factory_list_is_type(factory, GST_ELEMENT_FACTORY_TYPE_DEMUXER)
-      || gst_element_factory_list_is_type(factory, GST_ELEMENT_FACTORY_TYPE_DECODER
-         | GST_ELEMENT_FACTORY_TYPE_MEDIA_AUDIO);
+    return gst_element_factory_list_is_type( factory, GST_ELEMENT_FACTORY_TYPE_DEMUXER )
+           || gst_element_factory_list_is_type( factory, GST_ELEMENT_FACTORY_TYPE_DECODER
+                   | GST_ELEMENT_FACTORY_TYPE_MEDIA_AUDIO );
 #else
-   return (factory && (qstrcmp(factory->details.klass, "Codec/Decoder/Audio") == 0
-            || qstrcmp(factory->details.klass, "Codec/Demux") == 0));
+    return ( factory && ( qstrcmp( factory->details.klass, "Codec/Decoder/Audio" ) == 0
+                          || qstrcmp( factory->details.klass, "Codec/Demux" ) == 0 ) );
 #endif
 }
 
 void QGstreamerAudioDecoderServicePlugin::updateSupportedMimeTypes() const
 {
-   m_supportedMimeTypeSet = QGstUtils::supportedMimeTypes(isDecoderOrDemuxer);
+    m_supportedMimeTypeSet = QGstUtils::supportedMimeTypes( isDecoderOrDemuxer );
 }
 
 QStringList QGstreamerAudioDecoderServicePlugin::supportedMimeTypes() const
 {
-   return QStringList();
+    return QStringList();
 }
 

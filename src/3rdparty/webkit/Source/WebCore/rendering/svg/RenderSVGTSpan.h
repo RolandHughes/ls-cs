@@ -25,11 +25,16 @@
 #if ENABLE(SVG)
 #include "RenderSVGInline.h"
 
-namespace WebCore {
-class RenderSVGTSpan : public RenderSVGInline {
+namespace WebCore
+{
+class RenderSVGTSpan : public RenderSVGInline
+{
 public:
-    explicit RenderSVGTSpan(Node*);
-    virtual const char* renderName() const { return "RenderSVGTSpan"; }
+    explicit RenderSVGTSpan( Node * );
+    virtual const char *renderName() const
+    {
+        return "RenderSVGTSpan";
+    }
 };
 }
 

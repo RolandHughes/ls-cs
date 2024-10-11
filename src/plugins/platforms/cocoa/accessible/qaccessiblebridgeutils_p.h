@@ -29,9 +29,10 @@
 
 #ifndef QT_NO_ACCESSIBILITY
 
-namespace QAccessibleBridgeUtils {
-    QStringList effectiveActionNames(QAccessibleInterface *iface);
-    bool performEffectiveAction(QAccessibleInterface *iface, const QString &actionName);
+namespace QAccessibleBridgeUtils
+{
+QStringList effectiveActionNames( QAccessibleInterface *iface );
+bool performEffectiveAction( QAccessibleInterface *iface, const QString &actionName );
 }
 
 #endif

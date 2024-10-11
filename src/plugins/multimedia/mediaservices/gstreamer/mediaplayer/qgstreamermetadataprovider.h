@@ -30,24 +30,24 @@ class QGstreamerPlayerSession;
 
 class QGstreamerMetaDataProvider : public QMetaDataReaderControl
 {
-   CS_OBJECT(QGstreamerMetaDataProvider)
+    LSCS_OBJECT( QGstreamerMetaDataProvider )
 
- public:
-   QGstreamerMetaDataProvider(QGstreamerPlayerSession *session, QObject *parent);
-   virtual ~QGstreamerMetaDataProvider();
+public:
+    QGstreamerMetaDataProvider( QGstreamerPlayerSession *session, QObject *parent );
+    virtual ~QGstreamerMetaDataProvider();
 
-   bool isMetaDataAvailable() const override;
-   bool isWritable() const;
+    bool isMetaDataAvailable() const override;
+    bool isWritable() const;
 
-   QVariant metaData(const QString &key) const override;
-   QStringList availableMetaData() const override;
+    QVariant metaData( const QString &key ) const override;
+    QStringList availableMetaData() const override;
 
- private:
-   QGstreamerPlayerSession *m_session;
-   QVariantMap m_tags;
+private:
+    QGstreamerPlayerSession *m_session;
+    QVariantMap m_tags;
 
-   CS_SLOT_1(Private, void updateTags())
-   CS_SLOT_2(updateTags)
+    LSCS_SLOT_1( Private, void updateTags() )
+    LSCS_SLOT_2( updateTags )
 };
 
 #endif

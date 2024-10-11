@@ -27,60 +27,66 @@
 #include "JSWorkerContext.h"
 #include <runtime/JSObjectWithGlobalObject.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DedicatedWorkerContext;
 
-class JSDedicatedWorkerContext : public JSWorkerContext {
+class JSDedicatedWorkerContext : public JSWorkerContext
+{
     typedef JSWorkerContext Base;
 public:
-    JSDedicatedWorkerContext(JSC::JSGlobalData&, JSC::Structure*, PassRefPtr<DedicatedWorkerContext>);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
+    JSDedicatedWorkerContext( JSC::JSGlobalData &, JSC::Structure *, PassRefPtr<DedicatedWorkerContext> );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
 
     // Custom functions
-    JSC::JSValue postMessage(JSC::ExecState*);
-    DedicatedWorkerContext* impl() const
+    JSC::JSValue postMessage( JSC::ExecState * );
+    DedicatedWorkerContext *impl() const
     {
-        return static_cast<DedicatedWorkerContext*>(Base::impl());
+        return static_cast<DedicatedWorkerContext *>( Base::impl() );
     }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-DedicatedWorkerContext* toDedicatedWorkerContext(JSC::JSValue);
+DedicatedWorkerContext *toDedicatedWorkerContext( JSC::JSValue );
 
-class JSDedicatedWorkerContextPrototype : public JSC::JSObjectWithGlobalObject {
+class JSDedicatedWorkerContextPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    void* operator new(size_t, JSC::JSGlobalData*);
+    void *operator new ( size_t, JSC::JSGlobalData * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSDedicatedWorkerContextPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSDedicatedWorkerContextPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                                       JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsDedicatedWorkerContextPrototypeFunctionPostMessage(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsDedicatedWorkerContextPrototypeFunctionPostMessage( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsDedicatedWorkerContextOnmessage(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-void setJSDedicatedWorkerContextOnmessage(JSC::ExecState*, JSC::JSObject*, JSC::JSValue);
+JSC::JSValue jsDedicatedWorkerContextOnmessage( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+void setJSDedicatedWorkerContextOnmessage( JSC::ExecState *, JSC::JSObject *, JSC::JSValue );
 
 } // namespace WebCore
 

@@ -23,7 +23,8 @@
 #if ENABLE(SVG)
 #include "SVGAnimatedTransformListPropertyTearOff.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 typedef SVGAnimatedTransformListPropertyTearOff SVGAnimatedTransformList;
 

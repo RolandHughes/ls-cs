@@ -35,53 +35,53 @@ class QDeclarativeSmoothedAnimationPrivate;
 
 class QDeclarativeSmoothedAnimation : public QDeclarativeNumberAnimation
 {
-   DECL_CS_OBJECT(QDeclarativeSmoothedAnimation)
+    DECL_LSCS_OBJECT( QDeclarativeSmoothedAnimation )
 
-   Q_DECLARE_PRIVATE(QDeclarativeSmoothedAnimation)
-   CS_ENUM(ReversingMode)
+    Q_DECLARE_PRIVATE( QDeclarativeSmoothedAnimation )
+    LSCS_ENUM( ReversingMode )
 
-   DECL_CS_PROPERTY_READ(velocity, velocity)
-   DECL_CS_PROPERTY_WRITE(velocity, setVelocity)
-   DECL_CS_PROPERTY_NOTIFY(velocity, velocityChanged)
-   DECL_CS_PROPERTY_READ(reversingMode, reversingMode)
-   DECL_CS_PROPERTY_WRITE(reversingMode, setReversingMode)
-   DECL_CS_PROPERTY_NOTIFY(reversingMode, reversingModeChanged)
-   DECL_CS_PROPERTY_READ(maximumEasingTime, maximumEasingTime)
-   DECL_CS_PROPERTY_WRITE(maximumEasingTime, setMaximumEasingTime)
-   DECL_CS_PROPERTY_NOTIFY(maximumEasingTime, maximumEasingTimeChanged)
+    DECL_LSCS_PROPERTY_READ( velocity, velocity )
+    DECL_LSCS_PROPERTY_WRITE( velocity, setVelocity )
+    DECL_LSCS_PROPERTY_NOTIFY( velocity, velocityChanged )
+    DECL_LSCS_PROPERTY_READ( reversingMode, reversingMode )
+    DECL_LSCS_PROPERTY_WRITE( reversingMode, setReversingMode )
+    DECL_LSCS_PROPERTY_NOTIFY( reversingMode, reversingModeChanged )
+    DECL_LSCS_PROPERTY_READ( maximumEasingTime, maximumEasingTime )
+    DECL_LSCS_PROPERTY_WRITE( maximumEasingTime, setMaximumEasingTime )
+    DECL_LSCS_PROPERTY_NOTIFY( maximumEasingTime, maximumEasingTimeChanged )
 
- public:
-   enum ReversingMode { Eased, Immediate, Sync };
+public:
+    enum ReversingMode { Eased, Immediate, Sync };
 
-   QDeclarativeSmoothedAnimation(QObject *parent = nullptr);
-   ~QDeclarativeSmoothedAnimation();
+    QDeclarativeSmoothedAnimation( QObject *parent = nullptr );
+    ~QDeclarativeSmoothedAnimation();
 
-   ReversingMode reversingMode() const;
-   void setReversingMode(ReversingMode);
+    ReversingMode reversingMode() const;
+    void setReversingMode( ReversingMode );
 
-   virtual int duration() const;
-   virtual void setDuration(int);
+    virtual int duration() const;
+    virtual void setDuration( int );
 
-   qreal velocity() const;
-   void setVelocity(qreal);
+    qreal velocity() const;
+    void setVelocity( qreal );
 
-   int maximumEasingTime() const;
-   void setMaximumEasingTime(int);
+    int maximumEasingTime() const;
+    void setMaximumEasingTime( int );
 
-   virtual void transition(QDeclarativeStateActions &actions, QDeclarativeProperties &modified,
-                           TransitionDirection direction);
-   QAbstractAnimation *qtAnimation();
+    virtual void transition( QDeclarativeStateActions &actions, QDeclarativeProperties &modified,
+                             TransitionDirection direction );
+    QAbstractAnimation *qtAnimation();
 
-   DECL_CS_SIGNAL_1(Public, void velocityChanged())
-   DECL_CS_SIGNAL_2(velocityChanged)
-   DECL_CS_SIGNAL_1(Public, void reversingModeChanged())
-   DECL_CS_SIGNAL_2(reversingModeChanged)
-   DECL_CS_SIGNAL_1(Public, void maximumEasingTimeChanged())
-   DECL_CS_SIGNAL_2(maximumEasingTimeChanged)
+    DECL_LSCS_SIGNAL_1( Public, void velocityChanged() )
+    DECL_LSCS_SIGNAL_2( velocityChanged )
+    DECL_LSCS_SIGNAL_1( Public, void reversingModeChanged() )
+    DECL_LSCS_SIGNAL_2( reversingModeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void maximumEasingTimeChanged() )
+    DECL_LSCS_SIGNAL_2( maximumEasingTimeChanged )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeSmoothedAnimation)
+QML_DECLARE_TYPE( QDeclarativeSmoothedAnimation )
 
 #endif // QDECLARATIVESMOOTHEDANIMATION_H

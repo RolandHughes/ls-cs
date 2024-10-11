@@ -16,12 +16,12 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the monochrome renderer error enumeration
-   * constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the monochrome renderer error enumeration
+ * constants.
+ *
+ */
 
 #ifndef RASTERRS_H_
 #define RASTERRS_H_

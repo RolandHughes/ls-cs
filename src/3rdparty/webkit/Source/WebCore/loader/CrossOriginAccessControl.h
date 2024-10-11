@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -29,18 +29,19 @@
 
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class HTTPHeaderMap;
-    class ResourceResponse;
-    class SecurityOrigin;
+class HTTPHeaderMap;
+class ResourceResponse;
+class SecurityOrigin;
 
-    bool isSimpleCrossOriginAccessRequest(const String& method, const HTTPHeaderMap&);
-    bool isOnAccessControlSimpleRequestMethodWhitelist(const String&);
-    bool isOnAccessControlSimpleRequestHeaderWhitelist(const String& name, const String& value);
-    bool isOnAccessControlResponseHeaderWhitelist(const String&);
+bool isSimpleCrossOriginAccessRequest( const String &method, const HTTPHeaderMap & );
+bool isOnAccessControlSimpleRequestMethodWhitelist( const String & );
+bool isOnAccessControlSimpleRequestHeaderWhitelist( const String &name, const String &value );
+bool isOnAccessControlResponseHeaderWhitelist( const String & );
 
-    bool passesAccessControlCheck(const ResourceResponse&, bool includeCredentials, SecurityOrigin*, String& errorDescription);
+bool passesAccessControlCheck( const ResourceResponse &, bool includeCredentials, SecurityOrigin *, String &errorDescription );
 
 } // namespace WebCore
 

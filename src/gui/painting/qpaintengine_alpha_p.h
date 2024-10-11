@@ -32,79 +32,80 @@ class QAlphaPaintEnginePrivate;
 
 class QAlphaPaintEngine : public QPaintEngine
 {
-   Q_DECLARE_PRIVATE(QAlphaPaintEngine)
+    Q_DECLARE_PRIVATE( QAlphaPaintEngine )
 
- public:
-   ~QAlphaPaintEngine();
+public:
+    ~QAlphaPaintEngine();
 
-   bool begin(QPaintDevice *pdev) override;
-   bool end() override;
+    bool begin( QPaintDevice *pdev ) override;
+    bool end() override;
 
-   void updateState(const QPaintEngineState &state) override;
+    void updateState( const QPaintEngineState &state ) override;
 
-   void drawPath(const QPainterPath &path) override;
-   void drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode) override;
+    void drawPath( const QPainterPath &path ) override;
+    void drawPolygon( const QPointF *points, int pointCount, PolygonDrawMode mode ) override;
 
-   void drawPixmap(const QRectF &rect, const QPixmap &pixmap, const QRectF &srcRect) override;
-   void drawTextItem(const QPointF &point, const QTextItem &textItem) override;
-   void drawTiledPixmap(const QRectF &rect, const QPixmap &pixmap, const QPointF &point) override;
+    void drawPixmap( const QRectF &rect, const QPixmap &pixmap, const QRectF &srcRect ) override;
+    void drawTextItem( const QPointF &point, const QTextItem &textItem ) override;
+    void drawTiledPixmap( const QRectF &rect, const QPixmap &pixmap, const QPointF &point ) override;
 
- protected:
-   QAlphaPaintEngine(QAlphaPaintEnginePrivate &data, PaintEngineFeatures devcaps = Qt::EmptyFlag);
-   QRegion alphaClipping() const;
-   bool continueCall() const;
-   void flushAndInit(bool init = true);
-   void cleanUp();
+protected:
+    QAlphaPaintEngine( QAlphaPaintEnginePrivate &data, PaintEngineFeatures devcaps = Qt::EmptyFlag );
+    QRegion alphaClipping() const;
+    bool continueCall() const;
+    void flushAndInit( bool init = true );
+    void cleanUp();
 };
 
 class QAlphaPaintEnginePrivate : public QPaintEnginePrivate
 {
-   Q_DECLARE_PUBLIC(QAlphaPaintEngine)
+    Q_DECLARE_PUBLIC( QAlphaPaintEngine )
 
- public:
-   QAlphaPaintEnginePrivate();
-   ~QAlphaPaintEnginePrivate();
+public:
+    QAlphaPaintEnginePrivate();
+    ~QAlphaPaintEnginePrivate();
 
-   int m_pass;
-   QPicture *m_pic;
-   QPaintEngine *m_picengine;
-   QPainter *m_picpainter;
+    int m_pass;
+    QPicture *m_pic;
+    QPaintEngine *m_picengine;
+    QPainter *m_picpainter;
 
-   QPaintEngine::PaintEngineFeatures m_savedcaps;
-   QPaintDevice *m_pdev;
+    QPaintEngine::PaintEngineFeatures m_savedcaps;
+    QPaintDevice *m_pdev;
 
-   QRegion m_alphargn;
-   QRegion m_cliprgn;
+    QRegion m_alphargn;
+    QRegion m_cliprgn;
 
-   mutable QRegion m_cachedDirtyRgn;
-   mutable int m_numberOfCachedRects;
-   QVector<QRect> m_dirtyRects;
+    mutable QRegion m_cachedDirtyRgn;
+    mutable int m_numberOfCachedRects;
+    QVector<QRect> m_dirtyRects;
 
-   bool m_hasalpha;
-   bool m_alphaPen;
-   bool m_alphaBrush;
-   bool m_alphaOpacity;
-   bool m_advancedPen;
-   bool m_advancedBrush;
-   bool m_complexTransform;
-   bool m_emulateProjectiveTransforms;
-   bool m_continueCall;
+    bool m_hasalpha;
+    bool m_alphaPen;
+    bool m_alphaBrush;
+    bool m_alphaOpacity;
+    bool m_advancedPen;
+    bool m_advancedBrush;
+    bool m_complexTransform;
+    bool m_emulateProjectiveTransforms;
+    bool m_continueCall;
 
-   QTransform m_transform;
-   QPen m_pen;
+    QTransform m_transform;
+    QPen m_pen;
 
-   void addAlphaRect(const QRectF &rect);
+    void addAlphaRect( const QRectF &rect );
 
-   void addDirtyRect(const QRectF &rect) {
-      m_dirtyRects.append(rect.toAlignedRect());
-   }
-   bool canSeeTroughBackground(bool somethingInRectHasAlpha, const QRectF &rect) const;
-   QRectF addPenWidth(const QPainterPath &path);
-   void drawAlphaImage(const QRectF &rect);
-   QRect toRect(const QRectF &rect) const;
-   bool fullyContained(const QRectF &rect) const;
+    void addDirtyRect( const QRectF &rect )
+    {
+        m_dirtyRects.append( rect.toAlignedRect() );
+    }
+    bool canSeeTroughBackground( bool somethingInRectHasAlpha, const QRectF &rect ) const;
+    QRectF addPenWidth( const QPainterPath &path );
+    void drawAlphaImage( const QRectF &rect );
+    QRect toRect( const QRectF &rect ) const;
+    bool fullyContained( const QRectF &rect ) const;
 
-   void resetState(QPainter *p);
+    void resetState( QPainter *p );
 };
 
 #endif // QT_NO_PRINTER

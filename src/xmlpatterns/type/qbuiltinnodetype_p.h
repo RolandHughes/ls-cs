@@ -28,35 +28,36 @@
 #include <qanynodetype_p.h>
 #include <qbuiltintypes_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 template <const QXmlNodeModelIndex::NodeKind kind>
 class BuiltinNodeType : public AnyNodeType
 {
- public:
-   bool xdtTypeMatches(const ItemType::Ptr &other) const override;
-   bool itemMatches(const Item &item) const override;
+public:
+    bool xdtTypeMatches( const ItemType::Ptr &other ) const override;
+    bool itemMatches( const Item &item ) const override;
 
-   /**
-    * @returns for example "text()", depending on what the constructor was passed
-    */
-   QString displayName(const NamePool::Ptr &np) const override;
+    /**
+     * @returns for example "text()", depending on what the constructor was passed
+     */
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   ItemType::Ptr xdtSuperType() const override;
-   ItemType::Ptr atomizedType() const override;
+    ItemType::Ptr xdtSuperType() const override;
+    ItemType::Ptr atomizedType() const override;
 
-   QXmlNodeModelIndex::NodeKind nodeKind() const override;
+    QXmlNodeModelIndex::NodeKind nodeKind() const override;
 
-   PatternPriority patternPriority() const override;
+    PatternPriority patternPriority() const override;
 
- protected:
-   friend class BuiltinTypes;
+protected:
+    friend class BuiltinTypes;
 
-   /**
-    * This constructor does nothing, but exists in order to make it impossible to
-    * instantiate this class from anywhere but from BuiltinTypes.
-    */
-   BuiltinNodeType();
+    /**
+     * This constructor does nothing, but exists in order to make it impossible to
+     * instantiate this class from anywhere but from BuiltinTypes.
+     */
+    BuiltinNodeType();
 };
 
 #include "qbuiltinnodetype.cpp"

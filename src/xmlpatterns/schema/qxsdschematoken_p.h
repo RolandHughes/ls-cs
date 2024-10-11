@@ -30,146 +30,146 @@
 
 class XsdSchemaToken
 {
- public:
-   enum NodeName
+public:
+    enum NodeName
 
-   {
-      NoKeyword,
-      Abstract,
-      All,
-      Alternative,
-      Annotation,
-      Any,
-      AnyAttribute,
-      Appinfo,
-      AppliesToEmpty,
-      Assert,
-      Assertion,
-      Attribute,
-      AttributeFormDefault,
-      AttributeGroup,
-      Base,
-      Block,
-      BlockDefault,
-      Choice,
-      Collapse,
-      ComplexContent,
-      ComplexType,
-      Default,
-      DefaultAttributes,
-      DefaultAttributesApply,
-      DefaultOpenContent,
-      Documentation,
-      Element,
-      ElementFormDefault,
-      Enumeration,
-      Extension,
-      Field,
-      Final,
-      FinalDefault,
-      Fixed,
-      Form,
-      FractionDigits,
-      Group,
-      Id,
-      Import,
-      Include,
-      ItemType,
-      Key,
-      Keyref,
-      Length,
-      List,
-      MaxExclusive,
-      MaxInclusive,
-      MaxLength,
-      MaxOccurs,
-      MemberTypes,
-      MinExclusive,
-      MinInclusive,
-      MinLength,
-      MinOccurs,
-      Mixed,
-      Mode,
-      Name,
-      Namespace,
-      Nillable,
-      NotNamespace,
-      NotQName,
-      Notation,
-      OpenContent,
-      Override,
-      Pattern,
-      Preserve,
-      ProcessContents,
-      Public,
-      Redefine,
-      Ref,
-      Refer,
-      Replace,
-      Restriction,
-      Schema,
-      SchemaLocation,
-      Selector,
-      Sequence,
-      SimpleContent,
-      SimpleType,
-      Source,
-      SubstitutionGroup,
-      System,
-      TargetNamespace,
-      Test,
-      TotalDigits,
-      Type,
-      Union,
-      Unique,
-      Use,
-      Value,
-      Version,
-      WhiteSpace,
-      XML_NS_SCHEMA_URI,
-      XPathDefaultNamespace,
-      XmlLanguage,
-      Xpath
-   };
+    {
+        NoKeyword,
+        Abstract,
+        All,
+        Alternative,
+        Annotation,
+        Any,
+        AnyAttribute,
+        Appinfo,
+        AppliesToEmpty,
+        Assert,
+        Assertion,
+        Attribute,
+        AttributeFormDefault,
+        AttributeGroup,
+        Base,
+        Block,
+        BlockDefault,
+        Choice,
+        Collapse,
+        ComplexContent,
+        ComplexType,
+        Default,
+        DefaultAttributes,
+        DefaultAttributesApply,
+        DefaultOpenContent,
+        Documentation,
+        Element,
+        ElementFormDefault,
+        Enumeration,
+        Extension,
+        Field,
+        Final,
+        FinalDefault,
+        Fixed,
+        Form,
+        FractionDigits,
+        Group,
+        Id,
+        Import,
+        Include,
+        ItemType,
+        Key,
+        Keyref,
+        Length,
+        List,
+        MaxExclusive,
+        MaxInclusive,
+        MaxLength,
+        MaxOccurs,
+        MemberTypes,
+        MinExclusive,
+        MinInclusive,
+        MinLength,
+        MinOccurs,
+        Mixed,
+        Mode,
+        Name,
+        Namespace,
+        Nillable,
+        NotNamespace,
+        NotQName,
+        Notation,
+        OpenContent,
+        Override,
+        Pattern,
+        Preserve,
+        ProcessContents,
+        Public,
+        Redefine,
+        Ref,
+        Refer,
+        Replace,
+        Restriction,
+        Schema,
+        SchemaLocation,
+        Selector,
+        Sequence,
+        SimpleContent,
+        SimpleType,
+        Source,
+        SubstitutionGroup,
+        System,
+        TargetNamespace,
+        Test,
+        TotalDigits,
+        Type,
+        Union,
+        Unique,
+        Use,
+        Value,
+        Version,
+        WhiteSpace,
+        XML_NS_SCHEMA_URI,
+        XPathDefaultNamespace,
+        XmlLanguage,
+        Xpath
+    };
 
-   static inline NodeName toToken(const QString &value);
-   static inline NodeName toToken(QStringView value);
-   static NodeName toToken(QStringView data, int length);
+    static inline NodeName toToken( const QString &value );
+    static inline NodeName toToken( QStringView value );
+    static NodeName toToken( QStringView data, int length );
 
-   static QString toString(NodeName token);
+    static QString toString( NodeName token );
 
- private:
-   static inline NodeName classifier2(QStringView data);
-   static inline NodeName classifier3(QStringView data);
-   static inline NodeName classifier4(QStringView data);
-   static inline NodeName classifier5(QStringView data);
-   static inline NodeName classifier6(QStringView data);
-   static inline NodeName classifier7(QStringView data);
-   static inline NodeName classifier8(QStringView data);
-   static inline NodeName classifier9(QStringView data);
-   static inline NodeName classifier10(QStringView data);
-   static inline NodeName classifier11(QStringView data);
-   static inline NodeName classifier12(QStringView data);
-   static inline NodeName classifier13(QStringView data);
-   static inline NodeName classifier14(QStringView data);
-   static inline NodeName classifier15(QStringView data);
-   static inline NodeName classifier17(QStringView data);
-   static inline NodeName classifier18(QStringView data);
-   static inline NodeName classifier20(QStringView data);
-   static inline NodeName classifier21(QStringView data);
-   static inline NodeName classifier22(QStringView data);
-   static inline NodeName classifier32(QStringView data);
+private:
+    static inline NodeName classifier2( QStringView data );
+    static inline NodeName classifier3( QStringView data );
+    static inline NodeName classifier4( QStringView data );
+    static inline NodeName classifier5( QStringView data );
+    static inline NodeName classifier6( QStringView data );
+    static inline NodeName classifier7( QStringView data );
+    static inline NodeName classifier8( QStringView data );
+    static inline NodeName classifier9( QStringView data );
+    static inline NodeName classifier10( QStringView data );
+    static inline NodeName classifier11( QStringView data );
+    static inline NodeName classifier12( QStringView data );
+    static inline NodeName classifier13( QStringView data );
+    static inline NodeName classifier14( QStringView data );
+    static inline NodeName classifier15( QStringView data );
+    static inline NodeName classifier17( QStringView data );
+    static inline NodeName classifier18( QStringView data );
+    static inline NodeName classifier20( QStringView data );
+    static inline NodeName classifier21( QStringView data );
+    static inline NodeName classifier22( QStringView data );
+    static inline NodeName classifier32( QStringView data );
 
 };
 
-inline XsdSchemaToken::NodeName XsdSchemaToken::toToken(const QString &value)
+inline XsdSchemaToken::NodeName XsdSchemaToken::toToken( const QString &value )
 {
-   return toToken(QStringView(value), value.length());
+    return toToken( QStringView( value ), value.length() );
 }
 
-inline XsdSchemaToken::NodeName XsdSchemaToken::toToken(QStringView value)
+inline XsdSchemaToken::NodeName XsdSchemaToken::toToken( QStringView value )
 {
-   return toToken(value, value.length());
+    return toToken( value, value.length() );
 }
 
 #endif

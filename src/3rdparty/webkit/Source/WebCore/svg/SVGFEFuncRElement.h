@@ -24,14 +24,16 @@
 #if ENABLE(SVG) && ENABLE(FILTERS)
 #include "SVGComponentTransferFunctionElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SVGFEFuncRElement : public SVGComponentTransferFunctionElement {
+class SVGFEFuncRElement : public SVGComponentTransferFunctionElement
+{
 public:
-    static PassRefPtr<SVGFEFuncRElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGFEFuncRElement> create( const QualifiedName &, Document * );
 
 private:
-    SVGFEFuncRElement(const QualifiedName&, Document*);
+    SVGFEFuncRElement( const QualifiedName &, Document * );
 };
 
 } // namespace WebCore

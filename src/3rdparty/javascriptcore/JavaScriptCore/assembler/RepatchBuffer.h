@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef RepatchBuffer_h
@@ -33,7 +33,8 @@
 #include <MacroAssembler.h>
 #include <wtf/Noncopyable.h>
 
-namespace JSC {
+namespace JSC
+{
 
 // RepatchBuffer:
 //
@@ -41,91 +42,92 @@ namespace JSC {
 // and after the code has potentially already been executed.  This mechanism is
 // used to apply optimizations to the code.
 //
-class RepatchBuffer {
+class RepatchBuffer
+{
     typedef MacroAssemblerCodePtr CodePtr;
 
 public:
-    RepatchBuffer(CodeBlock* codeBlock)
+    RepatchBuffer( CodeBlock *codeBlock )
     {
-        JITCode& code = codeBlock->getJITCode();
+        JITCode &code = codeBlock->getJITCode();
         m_start = code.start();
         m_size = code.size();
 
-        ExecutableAllocator::makeWritable(m_start, m_size);
+        ExecutableAllocator::makeWritable( m_start, m_size );
     }
 
     ~RepatchBuffer()
     {
-        ExecutableAllocator::makeExecutable(m_start, m_size);
+        ExecutableAllocator::makeExecutable( m_start, m_size );
     }
 
-    void relink(CodeLocationJump jump, CodeLocationLabel destination)
+    void relink( CodeLocationJump jump, CodeLocationLabel destination )
     {
-        MacroAssembler::repatchJump(jump, destination);
+        MacroAssembler::repatchJump( jump, destination );
     }
 
-    void relink(CodeLocationCall call, CodeLocationLabel destination)
+    void relink( CodeLocationCall call, CodeLocationLabel destination )
     {
-        MacroAssembler::repatchCall(call, destination);
+        MacroAssembler::repatchCall( call, destination );
     }
 
-    void relink(CodeLocationCall call, FunctionPtr destination)
+    void relink( CodeLocationCall call, FunctionPtr destination )
     {
-        MacroAssembler::repatchCall(call, destination);
+        MacroAssembler::repatchCall( call, destination );
     }
 
-    void relink(CodeLocationNearCall nearCall, CodePtr destination)
+    void relink( CodeLocationNearCall nearCall, CodePtr destination )
     {
-        MacroAssembler::repatchNearCall(nearCall, CodeLocationLabel(destination));
+        MacroAssembler::repatchNearCall( nearCall, CodeLocationLabel( destination ) );
     }
 
-    void relink(CodeLocationNearCall nearCall, CodeLocationLabel destination)
+    void relink( CodeLocationNearCall nearCall, CodeLocationLabel destination )
     {
-        MacroAssembler::repatchNearCall(nearCall, destination);
+        MacroAssembler::repatchNearCall( nearCall, destination );
     }
 
-    void repatch(CodeLocationDataLabel32 dataLabel32, int32_t value)
+    void repatch( CodeLocationDataLabel32 dataLabel32, int32_t value )
     {
-        MacroAssembler::repatchInt32(dataLabel32, value);
+        MacroAssembler::repatchInt32( dataLabel32, value );
     }
 
-    void repatch(CodeLocationDataLabelPtr dataLabelPtr, void* value)
+    void repatch( CodeLocationDataLabelPtr dataLabelPtr, void *value )
     {
-        MacroAssembler::repatchPointer(dataLabelPtr, value);
+        MacroAssembler::repatchPointer( dataLabelPtr, value );
     }
 
-    void repatchLoadPtrToLEA(CodeLocationInstruction instruction)
+    void repatchLoadPtrToLEA( CodeLocationInstruction instruction )
     {
-        MacroAssembler::repatchLoadPtrToLEA(instruction);
+        MacroAssembler::repatchLoadPtrToLEA( instruction );
     }
 
-    void relinkCallerToTrampoline(ReturnAddressPtr returnAddress, CodeLocationLabel label)
+    void relinkCallerToTrampoline( ReturnAddressPtr returnAddress, CodeLocationLabel label )
     {
-        relink(CodeLocationCall(CodePtr(returnAddress)), label);
-    }
-    
-    void relinkCallerToTrampoline(ReturnAddressPtr returnAddress, CodePtr newCalleeFunction)
-    {
-        relinkCallerToTrampoline(returnAddress, CodeLocationLabel(newCalleeFunction));
+        relink( CodeLocationCall( CodePtr( returnAddress ) ), label );
     }
 
-    void relinkCallerToFunction(ReturnAddressPtr returnAddress, FunctionPtr function)
+    void relinkCallerToTrampoline( ReturnAddressPtr returnAddress, CodePtr newCalleeFunction )
     {
-        relink(CodeLocationCall(CodePtr(returnAddress)), function);
+        relinkCallerToTrampoline( returnAddress, CodeLocationLabel( newCalleeFunction ) );
     }
-    
-    void relinkNearCallerToTrampoline(ReturnAddressPtr returnAddress, CodeLocationLabel label)
+
+    void relinkCallerToFunction( ReturnAddressPtr returnAddress, FunctionPtr function )
     {
-        relink(CodeLocationNearCall(CodePtr(returnAddress)), label);
+        relink( CodeLocationCall( CodePtr( returnAddress ) ), function );
     }
-    
-    void relinkNearCallerToTrampoline(ReturnAddressPtr returnAddress, CodePtr newCalleeFunction)
+
+    void relinkNearCallerToTrampoline( ReturnAddressPtr returnAddress, CodeLocationLabel label )
     {
-        relinkNearCallerToTrampoline(returnAddress, CodeLocationLabel(newCalleeFunction));
+        relink( CodeLocationNearCall( CodePtr( returnAddress ) ), label );
+    }
+
+    void relinkNearCallerToTrampoline( ReturnAddressPtr returnAddress, CodePtr newCalleeFunction )
+    {
+        relinkNearCallerToTrampoline( returnAddress, CodeLocationLabel( newCalleeFunction ) );
     }
 
 private:
-    void* m_start;
+    void *m_start;
     size_t m_size;
 };
 

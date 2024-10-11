@@ -28,7 +28,7 @@
 #include <qfile.h>
 
 QNonContiguousByteDevice::QNonContiguousByteDevice()
-   : QObject((QObject *)nullptr), resetDisabled(false)
+    : QObject( ( QObject * )nullptr ), resetDisabled( false )
 {
 }
 
@@ -38,317 +38,344 @@ QNonContiguousByteDevice::~QNonContiguousByteDevice()
 
 void QNonContiguousByteDevice::disableReset()
 {
-   resetDisabled = true;
+    resetDisabled = true;
 }
 
 // FIX we should scrap this whole implementation and instead change the ByteArrayImpl to be able to cope with sub-arrays?
-QNonContiguousByteDeviceBufferImpl::QNonContiguousByteDeviceBufferImpl(QBuffer *b) : QNonContiguousByteDevice()
+QNonContiguousByteDeviceBufferImpl::QNonContiguousByteDeviceBufferImpl( QBuffer *b ) : QNonContiguousByteDevice()
 {
-   buffer = b;
-   byteArray = QByteArray::fromRawData(buffer->buffer().constData() + buffer->pos(), buffer->size() - buffer->pos());
-   arrayImpl = new QNonContiguousByteDeviceByteArrayImpl(&byteArray);
-   arrayImpl->setParent(this);
+    buffer = b;
+    byteArray = QByteArray::fromRawData( buffer->buffer().constData() + buffer->pos(), buffer->size() - buffer->pos() );
+    arrayImpl = new QNonContiguousByteDeviceByteArrayImpl( &byteArray );
+    arrayImpl->setParent( this );
 
-   connect(arrayImpl, &QNonContiguousByteDeviceByteArrayImpl::readyRead,    this, &QNonContiguousByteDeviceBufferImpl::readyRead);
-   connect(arrayImpl, &QNonContiguousByteDeviceByteArrayImpl::readProgress, this, &QNonContiguousByteDeviceBufferImpl::readProgress);
+    connect( arrayImpl, &QNonContiguousByteDeviceByteArrayImpl::readyRead,    this, &QNonContiguousByteDeviceBufferImpl::readyRead );
+    connect( arrayImpl, &QNonContiguousByteDeviceByteArrayImpl::readProgress, this,
+             &QNonContiguousByteDeviceBufferImpl::readProgress );
 }
 
 QNonContiguousByteDeviceBufferImpl::~QNonContiguousByteDeviceBufferImpl()
 {
 }
 
-const char *QNonContiguousByteDeviceBufferImpl::readPointer(qint64 maximumLength, qint64 &len)
+const char *QNonContiguousByteDeviceBufferImpl::readPointer( qint64 maximumLength, qint64 &len )
 {
-   return arrayImpl->readPointer(maximumLength, len);
+    return arrayImpl->readPointer( maximumLength, len );
 }
 
-bool QNonContiguousByteDeviceBufferImpl::advanceReadPointer(qint64 amount)
+bool QNonContiguousByteDeviceBufferImpl::advanceReadPointer( qint64 amount )
 {
-   return arrayImpl->advanceReadPointer(amount);
+    return arrayImpl->advanceReadPointer( amount );
 }
 
 bool QNonContiguousByteDeviceBufferImpl::atEnd()
 {
-   return arrayImpl->atEnd();
+    return arrayImpl->atEnd();
 }
 
 bool QNonContiguousByteDeviceBufferImpl::reset()
 {
-   if (resetDisabled) {
-      return false;
-   }
+    if ( resetDisabled )
+    {
+        return false;
+    }
 
-   return arrayImpl->reset();
+    return arrayImpl->reset();
 }
 
 qint64 QNonContiguousByteDeviceBufferImpl::size()
 {
-   return arrayImpl->size();
+    return arrayImpl->size();
 }
 
-QNonContiguousByteDeviceByteArrayImpl::QNonContiguousByteDeviceByteArrayImpl(QByteArray *ba) :
-   QNonContiguousByteDevice(), currentPosition(0)
+QNonContiguousByteDeviceByteArrayImpl::QNonContiguousByteDeviceByteArrayImpl( QByteArray *ba ) :
+    QNonContiguousByteDevice(), currentPosition( 0 )
 {
-   byteArray = ba;
+    byteArray = ba;
 }
 
 QNonContiguousByteDeviceByteArrayImpl::~QNonContiguousByteDeviceByteArrayImpl()
 {
 }
 
-const char *QNonContiguousByteDeviceByteArrayImpl::readPointer(qint64 maximumLength, qint64 &len)
+const char *QNonContiguousByteDeviceByteArrayImpl::readPointer( qint64 maximumLength, qint64 &len )
 {
-   if (atEnd()) {
-      len = -1;
-      return nullptr;
-   }
+    if ( atEnd() )
+    {
+        len = -1;
+        return nullptr;
+    }
 
-   if (maximumLength != -1) {
-      len = qMin(maximumLength, size() - currentPosition);
-   } else {
-      len = size() - currentPosition;
-   }
+    if ( maximumLength != -1 )
+    {
+        len = qMin( maximumLength, size() - currentPosition );
+    }
+    else
+    {
+        len = size() - currentPosition;
+    }
 
-   return byteArray->constData() + currentPosition;
+    return byteArray->constData() + currentPosition;
 }
 
-bool QNonContiguousByteDeviceByteArrayImpl::advanceReadPointer(qint64 amount)
+bool QNonContiguousByteDeviceByteArrayImpl::advanceReadPointer( qint64 amount )
 {
-   currentPosition += amount;
-   emit readProgress(currentPosition, size());
-   return true;
+    currentPosition += amount;
+    emit readProgress( currentPosition, size() );
+    return true;
 }
 
 bool QNonContiguousByteDeviceByteArrayImpl::atEnd()
 {
-   return currentPosition >= size();
+    return currentPosition >= size();
 }
 
 bool QNonContiguousByteDeviceByteArrayImpl::reset()
 {
-   if (resetDisabled) {
-      return false;
-   }
+    if ( resetDisabled )
+    {
+        return false;
+    }
 
-   currentPosition = 0;
-   return true;
+    currentPosition = 0;
+    return true;
 }
 
 qint64 QNonContiguousByteDeviceByteArrayImpl::size()
 {
-   return byteArray->size();
+    return byteArray->size();
 }
 
 qint64 QNonContiguousByteDeviceByteArrayImpl::pos()
 {
-   return currentPosition;
+    return currentPosition;
 }
 
-QNonContiguousByteDeviceRingBufferImpl::QNonContiguousByteDeviceRingBufferImpl(QSharedPointer<QRingBuffer> rb)
-   : QNonContiguousByteDevice(), currentPosition(0)
+QNonContiguousByteDeviceRingBufferImpl::QNonContiguousByteDeviceRingBufferImpl( QSharedPointer<QRingBuffer> rb )
+    : QNonContiguousByteDevice(), currentPosition( 0 )
 {
-   ringBuffer = rb;
+    ringBuffer = rb;
 }
 
 QNonContiguousByteDeviceRingBufferImpl::~QNonContiguousByteDeviceRingBufferImpl()
 {
 }
 
-const char *QNonContiguousByteDeviceRingBufferImpl::readPointer(qint64 maximumLength, qint64 &len)
+const char *QNonContiguousByteDeviceRingBufferImpl::readPointer( qint64 maximumLength, qint64 &len )
 {
-   if (atEnd()) {
-      len = -1;
-      return nullptr;
-   }
+    if ( atEnd() )
+    {
+        len = -1;
+        return nullptr;
+    }
 
-   const char *returnValue = ringBuffer->readPointerAtPosition(currentPosition, len);
+    const char *returnValue = ringBuffer->readPointerAtPosition( currentPosition, len );
 
-   if (maximumLength != -1) {
-      len = qMin(len, maximumLength);
-   }
+    if ( maximumLength != -1 )
+    {
+        len = qMin( len, maximumLength );
+    }
 
-   return returnValue;
+    return returnValue;
 }
 
-bool QNonContiguousByteDeviceRingBufferImpl::advanceReadPointer(qint64 amount)
+bool QNonContiguousByteDeviceRingBufferImpl::advanceReadPointer( qint64 amount )
 {
-   currentPosition += amount;
-   emit readProgress(currentPosition, size());
-   return true;
+    currentPosition += amount;
+    emit readProgress( currentPosition, size() );
+    return true;
 }
 
 bool QNonContiguousByteDeviceRingBufferImpl::atEnd()
 {
-   return currentPosition >= size();
+    return currentPosition >= size();
 }
 
 bool QNonContiguousByteDeviceRingBufferImpl::reset()
 {
-   if (resetDisabled) {
-      return false;
-   }
+    if ( resetDisabled )
+    {
+        return false;
+    }
 
-   currentPosition = 0;
-   return true;
+    currentPosition = 0;
+    return true;
 }
 
 qint64 QNonContiguousByteDeviceRingBufferImpl::size()
 {
-   return ringBuffer->size();
+    return ringBuffer->size();
 }
 
 qint64 QNonContiguousByteDeviceRingBufferImpl::pos()
 {
-   return currentPosition;
+    return currentPosition;
 }
 
-QNonContiguousByteDeviceIoDeviceImpl::QNonContiguousByteDeviceIoDeviceImpl(QIODevice *d)
-   : QNonContiguousByteDevice(), currentReadBuffer(nullptr), currentReadBufferSize(16 * 1024),
-     currentReadBufferAmount(0), currentReadBufferPosition(0), totalAdvancements(0), eof(false)
+QNonContiguousByteDeviceIoDeviceImpl::QNonContiguousByteDeviceIoDeviceImpl( QIODevice *d )
+    : QNonContiguousByteDevice(), currentReadBuffer( nullptr ), currentReadBufferSize( 16 * 1024 ),
+      currentReadBufferAmount( 0 ), currentReadBufferPosition( 0 ), totalAdvancements( 0 ), eof( false )
 {
-   device = d;
-   initialPosition = d->pos();
+    device = d;
+    initialPosition = d->pos();
 
-   connect(device, &QIODevice::readyRead,           this, &QNonContiguousByteDeviceIoDeviceImpl::readyRead, Qt::QueuedConnection);
-   connect(device, &QIODevice::readChannelFinished, this, &QNonContiguousByteDeviceIoDeviceImpl::readyRead, Qt::QueuedConnection);
+    connect( device, &QIODevice::readyRead,           this, &QNonContiguousByteDeviceIoDeviceImpl::readyRead, Qt::QueuedConnection );
+    connect( device, &QIODevice::readChannelFinished, this, &QNonContiguousByteDeviceIoDeviceImpl::readyRead, Qt::QueuedConnection );
 }
 
 QNonContiguousByteDeviceIoDeviceImpl::~QNonContiguousByteDeviceIoDeviceImpl()
 {
-   delete currentReadBuffer;
+    delete currentReadBuffer;
 }
 
-const char *QNonContiguousByteDeviceIoDeviceImpl::readPointer(qint64 maximumLength, qint64 &len)
+const char *QNonContiguousByteDeviceIoDeviceImpl::readPointer( qint64 maximumLength, qint64 &len )
 {
-   if (eof == true) {
-      len = -1;
-      return nullptr;
-   }
+    if ( eof == true )
+    {
+        len = -1;
+        return nullptr;
+    }
 
-   if (currentReadBuffer == nullptr) {
-      currentReadBuffer = new QByteArray(currentReadBufferSize, '\0');   // lazy alloc
-   }
+    if ( currentReadBuffer == nullptr )
+    {
+        currentReadBuffer = new QByteArray( currentReadBufferSize, '\0' ); // lazy alloc
+    }
 
-   if (maximumLength == -1) {
-      maximumLength = currentReadBufferSize;
-   }
+    if ( maximumLength == -1 )
+    {
+        maximumLength = currentReadBufferSize;
+    }
 
-   if (currentReadBufferAmount - currentReadBufferPosition > 0) {
-      len = currentReadBufferAmount - currentReadBufferPosition;
-      return currentReadBuffer->data() + currentReadBufferPosition;
-   }
+    if ( currentReadBufferAmount - currentReadBufferPosition > 0 )
+    {
+        len = currentReadBufferAmount - currentReadBufferPosition;
+        return currentReadBuffer->data() + currentReadBufferPosition;
+    }
 
-   qint64 haveRead = device->read(currentReadBuffer->data(), qMin(maximumLength, currentReadBufferSize));
+    qint64 haveRead = device->read( currentReadBuffer->data(), qMin( maximumLength, currentReadBufferSize ) );
 
-   if ((haveRead == -1) || (haveRead == 0 && device->atEnd() && !device->isSequential())) {
-      eof = true;
-      len = -1;
+    if ( ( haveRead == -1 ) || ( haveRead == 0 && device->atEnd() && !device->isSequential() ) )
+    {
+        eof = true;
+        len = -1;
 
-      // size was unknown before, emit a readProgress with the final size
-      if (size() == -1) {
-         emit readProgress(totalAdvancements, totalAdvancements);
-      }
+        // size was unknown before, emit a readProgress with the final size
+        if ( size() == -1 )
+        {
+            emit readProgress( totalAdvancements, totalAdvancements );
+        }
 
-      return nullptr;
-   }
+        return nullptr;
+    }
 
-   currentReadBufferAmount = haveRead;
-   currentReadBufferPosition = 0;
+    currentReadBufferAmount = haveRead;
+    currentReadBufferPosition = 0;
 
-   len = haveRead;
-   return currentReadBuffer->data();
+    len = haveRead;
+    return currentReadBuffer->data();
 }
 
-bool QNonContiguousByteDeviceIoDeviceImpl::advanceReadPointer(qint64 amount)
+bool QNonContiguousByteDeviceIoDeviceImpl::advanceReadPointer( qint64 amount )
 {
-   totalAdvancements += amount;
+    totalAdvancements += amount;
 
-   // normal advancement
-   currentReadBufferPosition += amount;
+    // normal advancement
+    currentReadBufferPosition += amount;
 
-   if (size() == -1) {
-      emit readProgress(totalAdvancements, totalAdvancements);
-   } else {
-      emit readProgress(totalAdvancements, size());
-   }
+    if ( size() == -1 )
+    {
+        emit readProgress( totalAdvancements, totalAdvancements );
+    }
+    else
+    {
+        emit readProgress( totalAdvancements, size() );
+    }
 
-   // advancing over that what has actually been read before
-   if (currentReadBufferPosition > currentReadBufferAmount) {
-      qint64 i = currentReadBufferPosition - currentReadBufferAmount;
+    // advancing over that what has actually been read before
+    if ( currentReadBufferPosition > currentReadBufferAmount )
+    {
+        qint64 i = currentReadBufferPosition - currentReadBufferAmount;
 
-      while (i > 0) {
-         if (device->getChar(nullptr) == false) {
-            emit readProgress(totalAdvancements - i, size());
-            return false; // ### FIXME handle eof
-         }
+        while ( i > 0 )
+        {
+            if ( device->getChar( nullptr ) == false )
+            {
+                emit readProgress( totalAdvancements - i, size() );
+                return false; // ### FIXME handle eof
+            }
 
-         i--;
-      }
+            i--;
+        }
 
-      currentReadBufferPosition = 0;
-      currentReadBufferAmount = 0;
-   }
+        currentReadBufferPosition = 0;
+        currentReadBufferAmount = 0;
+    }
 
-   return true;
+    return true;
 }
 
 bool QNonContiguousByteDeviceIoDeviceImpl::atEnd()
 {
-   return eof == true;
+    return eof == true;
 }
 
 bool QNonContiguousByteDeviceIoDeviceImpl::reset()
 {
-   if (resetDisabled) {
-      return false;
-   }
+    if ( resetDisabled )
+    {
+        return false;
+    }
 
-   bool reset = (initialPosition == 0) ? device->reset() : device->seek(initialPosition);
+    bool reset = ( initialPosition == 0 ) ? device->reset() : device->seek( initialPosition );
 
-   if (reset) {
-      eof = false; // assume eof is false, it will be true after a read has been attempted
-      totalAdvancements = 0; //reset the progress counter
+    if ( reset )
+    {
+        eof = false; // assume eof is false, it will be true after a read has been attempted
+        totalAdvancements = 0; //reset the progress counter
 
-      if (currentReadBuffer) {
-         delete currentReadBuffer;
-         currentReadBuffer = nullptr;
-      }
+        if ( currentReadBuffer )
+        {
+            delete currentReadBuffer;
+            currentReadBuffer = nullptr;
+        }
 
-      currentReadBufferAmount = 0;
-      currentReadBufferPosition = 0;
-      return true;
-   }
+        currentReadBufferAmount = 0;
+        currentReadBufferPosition = 0;
+        return true;
+    }
 
-   return false;
+    return false;
 }
 
 qint64 QNonContiguousByteDeviceIoDeviceImpl::size()
 {
-   // note that this is different from the size() implementation of QIODevice!
+    // note that this is different from the size() implementation of QIODevice!
 
-   if (device->isSequential()) {
-      return -1;
-   }
+    if ( device->isSequential() )
+    {
+        return -1;
+    }
 
-   return device->size() - initialPosition;
+    return device->size() - initialPosition;
 }
 
 qint64 QNonContiguousByteDeviceIoDeviceImpl::pos()
 {
-   if (device->isSequential()) {
-      return -1;
-   }
+    if ( device->isSequential() )
+    {
+        return -1;
+    }
 
-   return device->pos();
+    return device->pos();
 }
 
-QByteDeviceWrappingIoDevice::QByteDeviceWrappingIoDevice(QNonContiguousByteDevice *bd)
-   : QIODevice((QObject *)nullptr)
+QByteDeviceWrappingIoDevice::QByteDeviceWrappingIoDevice( QNonContiguousByteDevice *bd )
+    : QIODevice( ( QObject * )nullptr )
 {
-   byteDevice = bd;
-   connect(bd, &QNonContiguousByteDevice::readyRead, this, &QByteDeviceWrappingIoDevice::readyRead);
+    byteDevice = bd;
+    connect( bd, &QNonContiguousByteDevice::readyRead, this, &QByteDeviceWrappingIoDevice::readyRead );
 
-   open(ReadOnly);
+    open( ReadOnly );
 }
 
 QByteDeviceWrappingIoDevice::~QByteDeviceWrappingIoDevice()
@@ -357,94 +384,97 @@ QByteDeviceWrappingIoDevice::~QByteDeviceWrappingIoDevice()
 
 bool QByteDeviceWrappingIoDevice::isSequential() const
 {
-   return (byteDevice->size() == -1);
+    return ( byteDevice->size() == -1 );
 }
 
 bool QByteDeviceWrappingIoDevice::atEnd() const
 {
-   return byteDevice->atEnd();
+    return byteDevice->atEnd();
 }
 
 bool QByteDeviceWrappingIoDevice::reset()
 {
-   return byteDevice->reset();
+    return byteDevice->reset();
 }
 
 qint64 QByteDeviceWrappingIoDevice::size() const
 {
-   if (isSequential()) {
-      return 0;
-   }
+    if ( isSequential() )
+    {
+        return 0;
+    }
 
-   return byteDevice->size();
+    return byteDevice->size();
 }
 
-qint64 QByteDeviceWrappingIoDevice::readData( char *data, qint64 maxSize)
+qint64 QByteDeviceWrappingIoDevice::readData( char *data, qint64 maxSize )
 {
-   qint64 len;
-   const char *readPointer = byteDevice->readPointer(maxSize, len);
+    qint64 len;
+    const char *readPointer = byteDevice->readPointer( maxSize, len );
 
-   if (len == -1) {
-      return -1;
-   }
+    if ( len == -1 )
+    {
+        return -1;
+    }
 
-   memcpy(data, readPointer, len);
-   byteDevice->advanceReadPointer(len);
+    memcpy( data, readPointer, len );
+    byteDevice->advanceReadPointer( len );
 
-   return len;
+    return len;
 }
 
-qint64 QByteDeviceWrappingIoDevice::writeData( const char *data, qint64 maxSize)
+qint64 QByteDeviceWrappingIoDevice::writeData( const char *data, qint64 maxSize )
 {
-   (void) data;
-   (void) maxSize;
+    ( void ) data;
+    ( void ) maxSize;
 
-   return -1;
+    return -1;
 }
 
-QNonContiguousByteDevice *QNonContiguousByteDeviceFactory::create(QIODevice *device)
+QNonContiguousByteDevice *QNonContiguousByteDeviceFactory::create( QIODevice *device )
 {
-   // shortcut if it is a QBuffer
-   if (QBuffer *buffer = qobject_cast<QBuffer *>(device)) {
-      return new QNonContiguousByteDeviceBufferImpl(buffer);
-   }
+    // shortcut if it is a QBuffer
+    if ( QBuffer *buffer = qobject_cast<QBuffer *>( device ) )
+    {
+        return new QNonContiguousByteDeviceBufferImpl( buffer );
+    }
 
-   // ### FIXME special case if device is a QFile that supports map()
-   // then we can actually deal with the file without using read/peek
+    // ### FIXME special case if device is a QFile that supports map()
+    // then we can actually deal with the file without using read/peek
 
-   // generic QIODevice
-   return new QNonContiguousByteDeviceIoDeviceImpl(device); // FIXME
+    // generic QIODevice
+    return new QNonContiguousByteDeviceIoDeviceImpl( device ); // FIXME
 }
 
-QNonContiguousByteDevice *QNonContiguousByteDeviceFactory::create(QByteArray *byteArray)
+QNonContiguousByteDevice *QNonContiguousByteDeviceFactory::create( QByteArray *byteArray )
 {
-   return new QNonContiguousByteDeviceByteArrayImpl(byteArray);
+    return new QNonContiguousByteDeviceByteArrayImpl( byteArray );
 }
 
-QNonContiguousByteDevice *QNonContiguousByteDeviceFactory::create(QSharedPointer<QRingBuffer> ringBuffer)
+QNonContiguousByteDevice *QNonContiguousByteDeviceFactory::create( QSharedPointer<QRingBuffer> ringBuffer )
 {
-   return new QNonContiguousByteDeviceRingBufferImpl(ringBuffer);
+    return new QNonContiguousByteDeviceRingBufferImpl( ringBuffer );
 }
 
-QSharedPointer<QNonContiguousByteDevice> QNonContiguousByteDeviceFactory::createShared(QIODevice *device)
+QSharedPointer<QNonContiguousByteDevice> QNonContiguousByteDeviceFactory::createShared( QIODevice *device )
 {
-   return QSharedPointer<QNonContiguousByteDevice>(create(device));
+    return QSharedPointer<QNonContiguousByteDevice>( create( device ) );
 }
 
-QSharedPointer<QNonContiguousByteDevice> QNonContiguousByteDeviceFactory::createShared(QByteArray *byteArray)
+QSharedPointer<QNonContiguousByteDevice> QNonContiguousByteDeviceFactory::createShared( QByteArray *byteArray )
 {
-   return QSharedPointer<QNonContiguousByteDevice>(create(byteArray));
+    return QSharedPointer<QNonContiguousByteDevice>( create( byteArray ) );
 }
 
-QSharedPointer<QNonContiguousByteDevice> QNonContiguousByteDeviceFactory::createShared(QSharedPointer<QRingBuffer> ringBuffer)
+QSharedPointer<QNonContiguousByteDevice> QNonContiguousByteDeviceFactory::createShared( QSharedPointer<QRingBuffer> ringBuffer )
 {
-   return QSharedPointer<QNonContiguousByteDevice>(create(ringBuffer));
+    return QSharedPointer<QNonContiguousByteDevice>( create( ringBuffer ) );
 }
 
-QIODevice *QNonContiguousByteDeviceFactory::wrap(QNonContiguousByteDevice *byteDevice)
+QIODevice *QNonContiguousByteDeviceFactory::wrap( QNonContiguousByteDevice *byteDevice )
 {
-   // ### FIXME if the parameter inherits from QIoDevice, we could just return it
-   // needed for FTP backend
+    // ### FIXME if the parameter inherits from QIoDevice, we could just return it
+    // needed for FTP backend
 
-   return new QByteDeviceWrappingIoDevice(byteDevice);
+    return new QByteDeviceWrappingIoDevice( byteDevice );
 }

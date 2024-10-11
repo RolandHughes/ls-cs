@@ -33,29 +33,29 @@
 
 class QInotifyFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-   CORE_CS_OBJECT(QInotifyFileSystemWatcherEngine)
+    CORE_LSCS_OBJECT( QInotifyFileSystemWatcherEngine )
 
- public:
-   ~QInotifyFileSystemWatcherEngine();
+public:
+    ~QInotifyFileSystemWatcherEngine();
 
-   static QInotifyFileSystemWatcherEngine *create();
+    static QInotifyFileSystemWatcherEngine *create();
 
-   void run() override;
+    void run() override;
 
-   QStringList addPaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
-   QStringList removePaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
+    QStringList addPaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
+    QStringList removePaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
 
-   void stop() override;
+    void stop() override;
 
- private :
-   CORE_CS_SLOT_1(Private, void readFromInotify())
-   CORE_CS_SLOT_2(readFromInotify)
+private :
+    CORE_LSCS_SLOT_1( Private, void readFromInotify() )
+    CORE_LSCS_SLOT_2( readFromInotify )
 
-   QInotifyFileSystemWatcherEngine(int fd);
-   int inotifyFd;
-   QMutex mutex;
-   QHash<QString, int> pathToID;
-   QHash<int, QString> idToPath;
+    QInotifyFileSystemWatcherEngine( int fd );
+    int inotifyFd;
+    QMutex mutex;
+    QHash<QString, int> pathToID;
+    QHash<int, QString> idToPath;
 };
 
 #endif // QT_NO_FILESYSTEMWATCHER

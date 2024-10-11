@@ -32,12 +32,12 @@ class QScriptDebuggerJob;
 
 class QScriptDebuggerJobSchedulerInterface
 {
- public:
-   virtual ~QScriptDebuggerJobSchedulerInterface() {}
+public:
+    virtual ~QScriptDebuggerJobSchedulerInterface() {}
 
-   virtual int scheduleJob(QScriptDebuggerJob *job) = 0;
-   virtual void finishJob(QScriptDebuggerJob *job) = 0;
-   virtual void hibernateUntilEvaluateFinished(QScriptDebuggerJob *job) = 0;
+    virtual int scheduleJob( QScriptDebuggerJob *job ) = 0;
+    virtual void finishJob( QScriptDebuggerJob *job ) = 0;
+    virtual void hibernateUntilEvaluateFinished( QScriptDebuggerJob *job ) = 0;
 };
 
 QT_END_NAMESPACE

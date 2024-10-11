@@ -28,31 +28,38 @@
 #include "WKAPICast.h"
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
-
-void WebFindClient::didFindString(WebPageProxy* page, const String& string, uint32_t matchCount)
+namespace WebKit
 {
-    if (!m_client.didFindString)
-        return;
 
-    m_client.didFindString(toAPI(page), toAPI(string.impl()), matchCount, m_client.clientInfo);
+void WebFindClient::didFindString( WebPageProxy *page, const String &string, uint32_t matchCount )
+{
+    if ( !m_client.didFindString )
+    {
+        return;
+    }
+
+    m_client.didFindString( toAPI( page ), toAPI( string.impl() ), matchCount, m_client.clientInfo );
 
 }
 
-void WebFindClient::didFailToFindString(WebPageProxy* page, const String& string)
+void WebFindClient::didFailToFindString( WebPageProxy *page, const String &string )
 {
-    if (!m_client.didFailToFindString)
+    if ( !m_client.didFailToFindString )
+    {
         return;
-    
-    m_client.didFailToFindString(toAPI(page), toAPI(string.impl()), m_client.clientInfo);
+    }
+
+    m_client.didFailToFindString( toAPI( page ), toAPI( string.impl() ), m_client.clientInfo );
 }
 
-void WebFindClient::didCountStringMatches(WebPageProxy* page, const String& string, uint32_t matchCount)
+void WebFindClient::didCountStringMatches( WebPageProxy *page, const String &string, uint32_t matchCount )
 {
-    if (!m_client.didCountStringMatches)
+    if ( !m_client.didCountStringMatches )
+    {
         return;
+    }
 
-    m_client.didCountStringMatches(toAPI(page), toAPI(string.impl()), matchCount, m_client.clientInfo);
+    m_client.didCountStringMatches( toAPI( page ), toAPI( string.impl() ), matchCount, m_client.clientInfo );
 }
 
 } // namespace WebKit

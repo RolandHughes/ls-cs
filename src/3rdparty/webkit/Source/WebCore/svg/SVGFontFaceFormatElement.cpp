@@ -25,34 +25,43 @@
 #include "SVGFontFaceElement.h"
 #include "SVGNames.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace SVGNames;
-    
-inline SVGFontFaceFormatElement::SVGFontFaceFormatElement(const QualifiedName& tagName, Document* document)
-    : SVGElement(tagName, document)
+
+inline SVGFontFaceFormatElement::SVGFontFaceFormatElement( const QualifiedName &tagName, Document *document )
+    : SVGElement( tagName, document )
 {
 }
 
-PassRefPtr<SVGFontFaceFormatElement> SVGFontFaceFormatElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<SVGFontFaceFormatElement> SVGFontFaceFormatElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new SVGFontFaceFormatElement(tagName, document));
+    return adoptRef( new SVGFontFaceFormatElement( tagName, document ) );
 }
 
-void SVGFontFaceFormatElement::childrenChanged(bool changedByParser, Node* beforeChange, Node* afterChange, int childCountDelta)
+void SVGFontFaceFormatElement::childrenChanged( bool changedByParser, Node *beforeChange, Node *afterChange, int childCountDelta )
 {
-    SVGElement::childrenChanged(changedByParser, beforeChange, afterChange, childCountDelta);
+    SVGElement::childrenChanged( changedByParser, beforeChange, afterChange, childCountDelta );
 
-    if (!parentNode() || !parentNode()->hasTagName(font_face_uriTag))
+    if ( !parentNode() || !parentNode()->hasTagName( font_face_uriTag ) )
+    {
         return;
-    
-    ContainerNode* ancestor = parentNode()->parentNode();
-    if (!ancestor || !ancestor->hasTagName(font_face_srcTag))
+    }
+
+    ContainerNode *ancestor = parentNode()->parentNode();
+
+    if ( !ancestor || !ancestor->hasTagName( font_face_srcTag ) )
+    {
         return;
-    
+    }
+
     ancestor = ancestor->parentNode();
-    if (ancestor && ancestor->hasTagName(font_faceTag))
-        static_cast<SVGFontFaceElement*>(ancestor)->rebuildFontFace();
+
+    if ( ancestor && ancestor->hasTagName( font_faceTag ) )
+    {
+        static_cast<SVGFontFaceElement *>( ancestor )->rebuildFontFace();
+    }
 }
 
 }

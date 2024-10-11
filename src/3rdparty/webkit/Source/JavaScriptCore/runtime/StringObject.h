@@ -24,44 +24,49 @@
 #include "JSWrapperObject.h"
 #include "JSString.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class StringObject : public JSWrapperObject {
-    public:
-        StringObject(ExecState*, Structure*);
-        StringObject(ExecState*, Structure*, const UString&);
+class StringObject : public JSWrapperObject
+{
+public:
+    StringObject( ExecState *, Structure * );
+    StringObject( ExecState *, Structure *, const UString & );
 
-        static StringObject* create(ExecState*, JSGlobalObject*, JSString*);
+    static StringObject *create( ExecState *, JSGlobalObject *, JSString * );
 
-        virtual bool getOwnPropertySlot(ExecState*, const Identifier& propertyName, PropertySlot&);
-        virtual bool getOwnPropertySlot(ExecState*, unsigned propertyName, PropertySlot&);
-        virtual bool getOwnPropertyDescriptor(ExecState*, const Identifier&, PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( ExecState *, const Identifier &propertyName, PropertySlot & );
+    virtual bool getOwnPropertySlot( ExecState *, unsigned propertyName, PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( ExecState *, const Identifier &, PropertyDescriptor & );
 
-        virtual void put(ExecState* exec, const Identifier& propertyName, JSValue, PutPropertySlot&);
-        virtual bool deleteProperty(ExecState*, const Identifier& propertyName);
-        virtual void getOwnPropertyNames(ExecState*, PropertyNameArray&, EnumerationMode mode = ExcludeDontEnumProperties);
+    virtual void put( ExecState *exec, const Identifier &propertyName, JSValue, PutPropertySlot & );
+    virtual bool deleteProperty( ExecState *, const Identifier &propertyName );
+    virtual void getOwnPropertyNames( ExecState *, PropertyNameArray &, EnumerationMode mode = ExcludeDontEnumProperties );
 
-        static const JS_EXPORTDATA ClassInfo s_info;
+    static const JS_EXPORTDATA ClassInfo s_info;
 
-        JSString* internalValue() const { return asString(JSWrapperObject::internalValue());}
-
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
-
-    protected:
-        static const unsigned StructureFlags = OverridesGetOwnPropertySlot | OverridesGetPropertyNames | JSWrapperObject::StructureFlags;
-        StringObject(JSGlobalData&, Structure*, JSString*);
-    };
-
-    StringObject* asStringObject(JSValue);
-
-    inline StringObject* asStringObject(JSValue value)
+    JSString *internalValue() const
     {
-        ASSERT(asObject(value)->inherits(&StringObject::s_info));
-        return static_cast<StringObject*>(asObject(value));
+        return asString( JSWrapperObject::internalValue() );
     }
+
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
+
+protected:
+    static const unsigned StructureFlags = OverridesGetOwnPropertySlot | OverridesGetPropertyNames | JSWrapperObject::StructureFlags;
+    StringObject( JSGlobalData &, Structure *, JSString * );
+};
+
+StringObject *asStringObject( JSValue );
+
+inline StringObject *asStringObject( JSValue value )
+{
+    ASSERT( asObject( value )->inherits( &StringObject::s_info ) );
+    return static_cast<StringObject *>( asObject( value ) );
+}
 
 } // namespace JSC
 

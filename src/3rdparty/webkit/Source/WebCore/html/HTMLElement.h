@@ -25,107 +25,114 @@
 
 #include "StyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class DocumentFragment;
 class HTMLCollection;
 class HTMLFormElement;
-                       
-class HTMLElement : public StyledElement {
+
+class HTMLElement : public StyledElement
+{
 public:
-    static PassRefPtr<HTMLElement> create(const QualifiedName& tagName, Document*);
+    static PassRefPtr<HTMLElement> create( const QualifiedName &tagName, Document * );
 
     PassRefPtr<HTMLCollection> children();
-    
+
     virtual String title() const;
 
     virtual short tabIndex() const;
-    void setTabIndex(int);
+    void setTabIndex( int );
 
     String innerHTML() const;
     String outerHTML() const;
     // deprecatedCreateContextualFragment logic should be moved into Range::createContextualFragment
-    PassRefPtr<DocumentFragment> deprecatedCreateContextualFragment(const String&, FragmentScriptingPermission = FragmentScriptingAllowed);
-    void setInnerHTML(const String&, ExceptionCode&);
-    void setOuterHTML(const String&, ExceptionCode&);
-    void setInnerText(const String&, ExceptionCode&);
-    void setOuterText(const String&, ExceptionCode&);
+    PassRefPtr<DocumentFragment> deprecatedCreateContextualFragment( const String &,
+            FragmentScriptingPermission = FragmentScriptingAllowed );
+    void setInnerHTML( const String &, ExceptionCode & );
+    void setOuterHTML( const String &, ExceptionCode & );
+    void setInnerText( const String &, ExceptionCode & );
+    void setOuterText( const String &, ExceptionCode & );
 
-    Element* insertAdjacentElement(const String& where, Element* newChild, ExceptionCode&);
-    void insertAdjacentHTML(const String& where, const String& html, ExceptionCode&);
-    void insertAdjacentText(const String& where, const String& text, ExceptionCode&);
+    Element *insertAdjacentElement( const String &where, Element *newChild, ExceptionCode & );
+    void insertAdjacentHTML( const String &where, const String &html, ExceptionCode & );
+    void insertAdjacentText( const String &where, const String &text, ExceptionCode & );
 
     virtual bool supportsFocus() const;
 
     String contentEditable() const;
-    void setContentEditable(const String&, ExceptionCode&);
+    void setContentEditable( const String &, ExceptionCode & );
 
     virtual bool draggable() const;
-    void setDraggable(bool);
+    void setDraggable( bool );
 
     bool spellcheck() const;
-    void setSpellcheck(bool);
+    void setSpellcheck( bool );
 
     void click();
 
-    virtual void accessKeyAction(bool sendToAnyElement);
+    virtual void accessKeyAction( bool sendToAnyElement );
 
     bool ieForbidsInsertHTML() const;
 
-    virtual bool rendererIsNeeded(RenderStyle*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 
-    HTMLFormElement* form() const { return virtualForm(); }
+    HTMLFormElement *form() const
+    {
+        return virtualForm();
+    }
 
-    static void addHTMLAlignmentToStyledElement(StyledElement*, Attribute*);
+    static void addHTMLAlignmentToStyledElement( StyledElement *, Attribute * );
 
-    HTMLFormElement* findFormAncestor() const;
+    HTMLFormElement *findFormAncestor() const;
 
-    TextDirection directionalityIfhasDirAutoAttribute(bool& isAuto) const;
+    TextDirection directionalityIfhasDirAutoAttribute( bool &isAuto ) const;
 
 protected:
-    HTMLElement(const QualifiedName& tagName, Document*);
+    HTMLElement( const QualifiedName &tagName, Document * );
 
-    void addHTMLAlignment(Attribute*);
+    void addHTMLAlignment( Attribute * );
 
-    virtual bool mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const;
-    virtual void parseMappedAttribute(Attribute*);
+    virtual bool mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const;
+    virtual void parseMappedAttribute( Attribute * );
 
-    virtual void childrenChanged(bool changedByParser = false, Node* beforeChange = 0, Node* afterChange = 0, int childCountDelta = 0);
+    virtual void childrenChanged( bool changedByParser = false, Node *beforeChange = 0, Node *afterChange = 0,
+                                  int childCountDelta = 0 );
 
 private:
     virtual String nodeName() const;
 
-    void setContentEditable(Attribute*);
+    void setContentEditable( Attribute * );
 
-    virtual HTMLFormElement* virtualForm() const;
+    virtual HTMLFormElement *virtualForm() const;
 
-    Node* insertAdjacent(const String& where, Node* newChild, ExceptionCode&);
-    PassRefPtr<DocumentFragment> textToFragment(const String&, ExceptionCode&);
+    Node *insertAdjacent( const String &where, Node *newChild, ExceptionCode & );
+    PassRefPtr<DocumentFragment> textToFragment( const String &, ExceptionCode & );
 
-    void dirAttributeChanged(Attribute*);
-    void adjustDirectionalityIfNeededAfterChildAttributeChanged(Element* child);
+    void dirAttributeChanged( Attribute * );
+    void adjustDirectionalityIfNeededAfterChildAttributeChanged( Element *child );
     void calculateAndAdjustDirectionality();
-    void adjustDirectionalityIfNeededAfterChildrenChanged(Node* beforeChange, int childCountDelta);
-    TextDirection directionality(Node** strongDirectionalityTextNode= 0) const;
+    void adjustDirectionalityIfNeededAfterChildrenChanged( Node *beforeChange, int childCountDelta );
+    TextDirection directionality( Node **strongDirectionalityTextNode= 0 ) const;
 };
 
-inline HTMLElement* toHTMLElement(Node* node)
+inline HTMLElement *toHTMLElement( Node *node )
 {
-    ASSERT(!node || node->isHTMLElement());
-    return static_cast<HTMLElement*>(node);
+    ASSERT( !node || node->isHTMLElement() );
+    return static_cast<HTMLElement *>( node );
 }
 
-inline const HTMLElement* toHTMLElement(const Node* node)
+inline const HTMLElement *toHTMLElement( const Node *node )
 {
-    ASSERT(!node || node->isHTMLElement());
-    return static_cast<const HTMLElement*>(node);
+    ASSERT( !node || node->isHTMLElement() );
+    return static_cast<const HTMLElement *>( node );
 }
 
-inline HTMLElement::HTMLElement(const QualifiedName& tagName, Document* document)
-    : StyledElement(tagName, document, CreateHTMLElement)
+inline HTMLElement::HTMLElement( const QualifiedName &tagName, Document *document )
+    : StyledElement( tagName, document, CreateHTMLElement )
 {
-    ASSERT(tagName.localName().impl());
+    ASSERT( tagName.localName().impl() );
 }
 
 } // namespace WebCore

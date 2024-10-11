@@ -28,63 +28,70 @@
 #import <wtf/Forward.h>
 #import <wtf/Vector.h>
 
-namespace CoreIPC {
-    class DataReference;
+namespace CoreIPC
+{
+class DataReference;
 }
 
-namespace WebCore {
-    struct KeypressCommand;
+namespace WebCore
+{
+struct KeypressCommand;
 }
 
-namespace WebKit {
-    class DrawingAreaProxy;
-    class FindIndicator;
-    class LayerTreeContext;
-    struct EditorState;
+namespace WebKit
+{
+class DrawingAreaProxy;
+class FindIndicator;
+class LayerTreeContext;
+struct EditorState;
 }
 
 @class WKFullScreenWindowController;
 
-@interface WKView (Internal)
-- (PassOwnPtr<WebKit::DrawingAreaProxy>)_createDrawingAreaProxy;
-- (BOOL)_isFocused;
-- (void)_processDidCrash;
-- (void)_pageClosed;
-- (void)_didRelaunchProcess;
-- (void)_toolTipChangedFrom:(NSString *)oldToolTip to:(NSString *)newToolTip;
-- (void)_setCursor:(NSCursor *)cursor;
-- (void)_setUserInterfaceItemState:(NSString *)commandName enabled:(BOOL)isEnabled state:(int)newState;
-- (BOOL)_interpretKeyEvent:(NSEvent *)theEvent savingCommandsTo:(Vector<WebCore::KeypressCommand>&)commands;
-- (void)_resendKeyDownEvent:(NSEvent *)event;
-- (bool)_executeSavedCommandBySelector:(SEL)selector;
-- (NSRect)_convertToDeviceSpace:(NSRect)rect;
-- (NSRect)_convertToUserSpace:(NSRect)rect;
-- (void)_setFindIndicator:(PassRefPtr<WebKit::FindIndicator>)findIndicator fadeOut:(BOOL)fadeOut;
+@interface WKView ( Internal )
+- ( PassOwnPtr<WebKit::DrawingAreaProxy> )_createDrawingAreaProxy;
+- ( BOOL )_isFocused;
+- ( void )_processDidCrash;
+- ( void )_pageClosed;
+- ( void )_didRelaunchProcess;
+- ( void )_toolTipChangedFrom:( NSString * )oldToolTip to:( NSString * )newToolTip;
+- ( void )_setCursor:( NSCursor * )cursor;
+- ( void )_setUserInterfaceItemState:( NSString * )commandName enabled:( BOOL )isEnabled state:( int )newState;
+- ( BOOL )_interpretKeyEvent:( NSEvent * )theEvent savingCommandsTo:( Vector<WebCore::KeypressCommand> & )commands;
+- ( void )_resendKeyDownEvent:( NSEvent * )event;
+- ( bool )_executeSavedCommandBySelector:( SEL )selector;
+- ( NSRect )_convertToDeviceSpace:( NSRect )rect;
+- ( NSRect )_convertToUserSpace:( NSRect )rect;
+- ( void )_setFindIndicator:( PassRefPtr<WebKit::FindIndicator> )findIndicator fadeOut:( BOOL )fadeOut;
 
-- (void)_enterAcceleratedCompositingMode:(const WebKit::LayerTreeContext&)layerTreeContext;
-- (void)_exitAcceleratedCompositingMode;
+- ( void )_enterAcceleratedCompositingMode:( const WebKit::LayerTreeContext & )layerTreeContext;
+- ( void )_exitAcceleratedCompositingMode;
 
-- (void)_setAccessibilityWebProcessToken:(NSData *)data;
-- (void)_setComplexTextInputEnabled:(BOOL)complexTextInputEnabled pluginComplexTextInputIdentifier:(uint64_t)pluginComplexTextInputIdentifier;
+- ( void )_setAccessibilityWebProcessToken:( NSData * )data;
+- ( void )_setComplexTextInputEnabled:( BOOL )complexTextInputEnabled pluginComplexTextInputIdentifier:
+    ( uint64_t )pluginComplexTextInputIdentifier;
 
-- (void)_setPageHasCustomRepresentation:(BOOL)pageHasCustomRepresentation;
-- (void)_didFinishLoadingDataForCustomRepresentationWithSuggestedFilename:(const String&)suggestedFilename dataReference:(const CoreIPC::DataReference&)dataReference;
-- (double)_customRepresentationZoomFactor;
-- (void)_setCustomRepresentationZoomFactor:(double)zoomFactor;
-- (void)_findStringInCustomRepresentation:(NSString *)string withFindOptions:(WebKit::FindOptions)options maxMatchCount:(NSUInteger)count;
-- (void)_countStringMatchesInCustomRepresentation:(NSString *)string withFindOptions:(WebKit::FindOptions)options maxMatchCount:(NSUInteger)count;
-- (void)_setDragImage:(NSImage *)image at:(NSPoint)clientPoint linkDrag:(BOOL)linkDrag;
-- (void)_updateSecureInputState;
-- (void)_updateTextInputStateIncludingSecureInputState:(BOOL)updateSecureInputState;
-- (void)_resetTextInputState;
+- ( void )_setPageHasCustomRepresentation:( BOOL )pageHasCustomRepresentation;
+- ( void )_didFinishLoadingDataForCustomRepresentationWithSuggestedFilename:( const String & )suggestedFilename dataReference:
+    ( const CoreIPC::DataReference & )dataReference;
+- ( double )_customRepresentationZoomFactor;
+- ( void )_setCustomRepresentationZoomFactor:( double )zoomFactor;
+- ( void )_findStringInCustomRepresentation:( NSString * )string withFindOptions:( WebKit::FindOptions )options maxMatchCount:
+    ( NSUInteger )count;
+- ( void )_countStringMatchesInCustomRepresentation:( NSString * )string withFindOptions:( WebKit::FindOptions )options
+    maxMatchCount:( NSUInteger )count;
+- ( void )_setDragImage:( NSImage * )image at:( NSPoint )clientPoint linkDrag:( BOOL )linkDrag;
+- ( void )_updateSecureInputState;
+- ( void )_updateTextInputStateIncludingSecureInputState:( BOOL )updateSecureInputState;
+- ( void )_resetTextInputState;
 
-- (void)_setDrawingAreaSize:(NSSize)size;
+- ( void )_setDrawingAreaSize:( NSSize )size;
 
-- (void)_didChangeScrollbarsForMainFrame;
+- ( void )_didChangeScrollbarsForMainFrame;
 
 #if ENABLE(FULLSCREEN_API)
-- (WKFullScreenWindowController*)fullScreenWindowController;
+- ( WKFullScreenWindowController * )fullScreenWindowController;
 #endif
 
-- (void)_cacheWindowBottomCornerRect;
+- ( void )_cacheWindowBottomCornerRect;
 @end

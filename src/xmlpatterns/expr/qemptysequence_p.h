@@ -26,52 +26,54 @@
 
 #include <qemptycontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class EmptySequence : public EmptyContainer
 {
- public:
+public:
 
-   static Expression::Ptr create(const Expression *const replacementFor, const StaticContext::Ptr &context);
+    static Expression::Ptr create( const Expression *const replacementFor, const StaticContext::Ptr &context );
 
-   inline EmptySequence() {
-   }
+    inline EmptySequence()
+    {
+    }
 
-   virtual QString stringValue() const;
+    virtual QString stringValue() const;
 
-   /**
-    * @returns always an empty iterator, an instance of EmptyIterator.
-    */
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &) const override;
+    /**
+     * @returns always an empty iterator, an instance of EmptyIterator.
+     */
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr & ) const override;
 
-   /**
-    * @returns always @c null.
-    */
-   Item evaluateSingleton(const DynamicContext::Ptr &) const override;
+    /**
+     * @returns always @c null.
+     */
+    Item evaluateSingleton( const DynamicContext::Ptr & ) const override;
 
-   /**
-    * Does nothing.
-    */
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &) const override;
+    /**
+     * Does nothing.
+     */
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr & ) const override;
 
-   /**
-    * @returns always @c false.
-    */
-   bool evaluateEBV(const DynamicContext::Ptr &context) const override;
+    /**
+     * @returns always @c false.
+     */
+    bool evaluateEBV( const DynamicContext::Ptr &context ) const override;
 
-   /**
-    * @returns always CommonSequenceTypes::Empty
-    */
-   virtual ItemType::Ptr type() const;
+    /**
+     * @returns always CommonSequenceTypes::Empty
+     */
+    virtual ItemType::Ptr type() const;
 
-   /**
-    * @returns always CommonSequenceTypes::Empty
-    */
-   SequenceType::Ptr staticType() const override;
+    /**
+     * @returns always CommonSequenceTypes::Empty
+     */
+    SequenceType::Ptr staticType() const override;
 
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   ID id() const override;
-   Properties properties() const override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    ID id() const override;
+    Properties properties() const override;
 };
 
 }

@@ -32,11 +32,11 @@ class QScriptErrorLogWidgetInterface;
 
 class QScriptErrorLogWidgetInterfacePrivate : public QWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QScriptErrorLogWidgetInterface)
+    Q_DECLARE_PUBLIC( QScriptErrorLogWidgetInterface )
 
- public:
-   QScriptErrorLogWidgetInterfacePrivate();
-   ~QScriptErrorLogWidgetInterfacePrivate();
+public:
+    QScriptErrorLogWidgetInterfacePrivate();
+    ~QScriptErrorLogWidgetInterfacePrivate();
 };
 
 QT_END_NAMESPACE

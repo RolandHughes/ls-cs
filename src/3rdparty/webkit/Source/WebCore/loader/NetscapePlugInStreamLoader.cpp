@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,11 +32,12 @@
 #include "FrameLoader.h"
 #include "DocumentLoader.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-NetscapePlugInStreamLoader::NetscapePlugInStreamLoader(Frame* frame, NetscapePlugInStreamLoaderClient* client)
-    : ResourceLoader(frame, true, true)
-    , m_client(client)
+NetscapePlugInStreamLoader::NetscapePlugInStreamLoader( Frame *frame, NetscapePlugInStreamLoaderClient *client )
+    : ResourceLoader( frame, true, true )
+    , m_client( client )
 {
 }
 
@@ -44,13 +45,17 @@ NetscapePlugInStreamLoader::~NetscapePlugInStreamLoader()
 {
 }
 
-PassRefPtr<NetscapePlugInStreamLoader> NetscapePlugInStreamLoader::create(Frame* frame, NetscapePlugInStreamLoaderClient* client, const ResourceRequest& request)
+PassRefPtr<NetscapePlugInStreamLoader> NetscapePlugInStreamLoader::create( Frame *frame, NetscapePlugInStreamLoaderClient *client,
+        const ResourceRequest &request )
 {
-    RefPtr<NetscapePlugInStreamLoader> loader(adoptRef(new NetscapePlugInStreamLoader(frame, client)));
-    loader->setShouldBufferData(false);
-    loader->documentLoader()->addPlugInStreamLoader(loader.get());
-    if (!loader->init(request))
+    RefPtr<NetscapePlugInStreamLoader> loader( adoptRef( new NetscapePlugInStreamLoader( frame, client ) ) );
+    loader->setShouldBufferData( false );
+    loader->documentLoader()->addPlugInStreamLoader( loader.get() );
+
+    if ( !loader->init( request ) )
+    {
         return 0;
+    }
 
     return loader.release();
 }
@@ -66,76 +71,88 @@ void NetscapePlugInStreamLoader::releaseResources()
     ResourceLoader::releaseResources();
 }
 
-void NetscapePlugInStreamLoader::didReceiveResponse(const ResourceResponse& response)
+void NetscapePlugInStreamLoader::didReceiveResponse( const ResourceResponse &response )
 {
-    RefPtr<NetscapePlugInStreamLoader> protect(this);
+    RefPtr<NetscapePlugInStreamLoader> protect( this );
 
-    m_client->didReceiveResponse(this, response);
+    m_client->didReceiveResponse( this, response );
 
     // Don't continue if the stream is cancelled
-    if (!m_client)
+    if ( !m_client )
+    {
         return;
+    }
 
-    ResourceLoader::didReceiveResponse(response);
+    ResourceLoader::didReceiveResponse( response );
 
     // Don't continue if the stream is cancelled
-    if (!m_client)
+    if ( !m_client )
+    {
         return;
+    }
 
-    if (!response.isHTTP())
+    if ( !response.isHTTP() )
+    {
         return;
-    
-    if (m_client->wantsAllStreams())
+    }
+
+    if ( m_client->wantsAllStreams() )
+    {
         return;
-    
-    if (response.httpStatusCode() < 100 || response.httpStatusCode() >= 400)
-        didCancel(frameLoader()->fileDoesNotExistError(response));
+    }
+
+    if ( response.httpStatusCode() < 100 || response.httpStatusCode() >= 400 )
+    {
+        didCancel( frameLoader()->fileDoesNotExistError( response ) );
+    }
 }
 
-void NetscapePlugInStreamLoader::didReceiveData(const char* data, int length, long long encodedDataLength, bool allAtOnce)
+void NetscapePlugInStreamLoader::didReceiveData( const char *data, int length, long long encodedDataLength, bool allAtOnce )
 {
-    RefPtr<NetscapePlugInStreamLoader> protect(this);
+    RefPtr<NetscapePlugInStreamLoader> protect( this );
 
-    m_client->didReceiveData(this, data, length);
-    
-    ResourceLoader::didReceiveData(data, length, encodedDataLength, allAtOnce);
+    m_client->didReceiveData( this, data, length );
+
+    ResourceLoader::didReceiveData( data, length, encodedDataLength, allAtOnce );
 }
 
-void NetscapePlugInStreamLoader::didFinishLoading(double finishTime)
+void NetscapePlugInStreamLoader::didFinishLoading( double finishTime )
 {
-    RefPtr<NetscapePlugInStreamLoader> protect(this);
+    RefPtr<NetscapePlugInStreamLoader> protect( this );
 
-    m_documentLoader->removePlugInStreamLoader(this);
-    m_client->didFinishLoading(this);
-    ResourceLoader::didFinishLoading(finishTime);
+    m_documentLoader->removePlugInStreamLoader( this );
+    m_client->didFinishLoading( this );
+    ResourceLoader::didFinishLoading( finishTime );
 }
 
-void NetscapePlugInStreamLoader::didFail(const ResourceError& error)
+void NetscapePlugInStreamLoader::didFail( const ResourceError &error )
 {
-    RefPtr<NetscapePlugInStreamLoader> protect(this);
+    RefPtr<NetscapePlugInStreamLoader> protect( this );
 
-    m_documentLoader->removePlugInStreamLoader(this);
-    m_client->didFail(this, error);
-    ResourceLoader::didFail(error);
+    m_documentLoader->removePlugInStreamLoader( this );
+    m_client->didFail( this, error );
+    ResourceLoader::didFail( error );
 }
 
-void NetscapePlugInStreamLoader::didCancel(const ResourceError& error)
+void NetscapePlugInStreamLoader::didCancel( const ResourceError &error )
 {
-    RefPtr<NetscapePlugInStreamLoader> protect(this);
+    RefPtr<NetscapePlugInStreamLoader> protect( this );
 
-    m_client->didFail(this, error);
+    m_client->didFail( this, error );
 
     // If calling didFail spins the run loop the stream loader can reach the terminal state.
     // If that's the case we just return early.
-    if (reachedTerminalState())
+    if ( reachedTerminalState() )
+    {
         return;
-    
-    // We need to remove the stream loader after the call to didFail, since didFail can 
+    }
+
+    // We need to remove the stream loader after the call to didFail, since didFail can
     // spawn a new run loop and if the loader has been removed it won't be deferred when
     // the document loader is asked to defer loading.
-    m_documentLoader->removePlugInStreamLoader(this);
+    m_documentLoader->removePlugInStreamLoader( this );
 
-    ResourceLoader::didCancel(error);
+    ResourceLoader::didCancel( error );
 }
 
 }

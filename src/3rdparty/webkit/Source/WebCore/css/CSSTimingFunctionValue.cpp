@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -28,7 +28,8 @@
 
 #include "PlatformString.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 String CSSLinearTimingFunctionValue::cssText() const
 {
@@ -37,22 +38,22 @@ String CSSLinearTimingFunctionValue::cssText() const
 
 String CSSCubicBezierTimingFunctionValue::cssText() const
 {
-    String text("cubic-bezier(");
-    text += String::number(m_x1);
+    String text( "cubic-bezier(" );
+    text += String::number( m_x1 );
     text += ", ";
-    text += String::number(m_y1);
+    text += String::number( m_y1 );
     text += ", ";
-    text += String::number(m_x2);
+    text += String::number( m_x2 );
     text += ", ";
-    text += String::number(m_y2);
+    text += String::number( m_y2 );
     text += ")";
     return text;
 }
 
 String CSSStepsTimingFunctionValue::cssText() const
 {
-    String text("steps(");
-    text += String::number(m_steps);
+    String text( "steps(" );
+    text += String::number( m_steps );
     text += ", ";
     text += m_stepAtStart ? "start" : "end";
     text += ")";

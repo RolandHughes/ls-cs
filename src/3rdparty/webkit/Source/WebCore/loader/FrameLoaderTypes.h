@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -29,100 +29,113 @@
 #ifndef FrameLoaderTypes_h
 #define FrameLoaderTypes_h
 
-namespace WebCore {
+namespace WebCore
+{
 
-    enum FrameState {
-        FrameStateProvisional,
-        // This state indicates we are ready to commit to a page,
-        // which means the view will transition to use the new data source.
-        FrameStateCommittedPage,
-        FrameStateComplete
-    };
+enum FrameState
+{
+    FrameStateProvisional,
+    // This state indicates we are ready to commit to a page,
+    // which means the view will transition to use the new data source.
+    FrameStateCommittedPage,
+    FrameStateComplete
+};
 
-    enum PolicyAction {
-        PolicyUse,
-        PolicyDownload,
-        PolicyIgnore
-    };
+enum PolicyAction
+{
+    PolicyUse,
+    PolicyDownload,
+    PolicyIgnore
+};
 
-    // NOTE: Keep in sync with WebKit/mac/WebView/WebFramePrivate.h and WebKit/win/Interfaces/IWebFramePrivate.idl
-    enum FrameLoadType {
-        FrameLoadTypeStandard,
-        FrameLoadTypeBack,
-        FrameLoadTypeForward,
-        FrameLoadTypeIndexedBackForward, // a multi-item hop in the backforward list
-        FrameLoadTypeReload,
-        // Skipped value: 'FrameLoadTypeReloadAllowingStaleData', still present in mac/win public API. Ready to be reused
-        FrameLoadTypeSame = FrameLoadTypeReload + 2, // user loads same URL again (but not reload button)
-        FrameLoadTypeRedirectWithLockedBackForwardList, // FIXME: Merge "lockBackForwardList", "lockHistory", "quickRedirect" and "clientRedirect" into a single concept of redirect.
-        FrameLoadTypeReplace,
-        FrameLoadTypeReloadFromOrigin,
-    };
+// NOTE: Keep in sync with WebKit/mac/WebView/WebFramePrivate.h and WebKit/win/Interfaces/IWebFramePrivate.idl
+enum FrameLoadType
+{
+    FrameLoadTypeStandard,
+    FrameLoadTypeBack,
+    FrameLoadTypeForward,
+    FrameLoadTypeIndexedBackForward, // a multi-item hop in the backforward list
+    FrameLoadTypeReload,
+    // Skipped value: 'FrameLoadTypeReloadAllowingStaleData', still present in mac/win public API. Ready to be reused
+    FrameLoadTypeSame = FrameLoadTypeReload + 2, // user loads same URL again (but not reload button)
+    FrameLoadTypeRedirectWithLockedBackForwardList, // FIXME: Merge "lockBackForwardList", "lockHistory", "quickRedirect" and "clientRedirect" into a single concept of redirect.
+    FrameLoadTypeReplace,
+    FrameLoadTypeReloadFromOrigin,
+};
 
-    enum NavigationType {
-        NavigationTypeLinkClicked,
-        NavigationTypeFormSubmitted,
-        NavigationTypeBackForward,
-        NavigationTypeReload,
-        NavigationTypeFormResubmitted,
-        NavigationTypeOther
-    };
+enum NavigationType
+{
+    NavigationTypeLinkClicked,
+    NavigationTypeFormSubmitted,
+    NavigationTypeBackForward,
+    NavigationTypeReload,
+    NavigationTypeFormResubmitted,
+    NavigationTypeOther
+};
 
-    enum ClearProvisionalItemPolicy {
-        ShouldClearProvisionalItem,
-        ShouldNotClearProvisionalItem
-    };
+enum ClearProvisionalItemPolicy
+{
+    ShouldClearProvisionalItem,
+    ShouldNotClearProvisionalItem
+};
 
-    enum ObjectContentType {
-        ObjectContentNone,
-        ObjectContentImage,
-        ObjectContentFrame,
-        ObjectContentNetscapePlugin,
-        ObjectContentOtherPlugin
-    };
-    
-    enum UnloadEventPolicy {
-        UnloadEventPolicyNone,
-        UnloadEventPolicyUnloadOnly,
-        UnloadEventPolicyUnloadAndPageHide
-    };
+enum ObjectContentType
+{
+    ObjectContentNone,
+    ObjectContentImage,
+    ObjectContentFrame,
+    ObjectContentNetscapePlugin,
+    ObjectContentOtherPlugin
+};
 
-    enum ReferrerPolicy {
-        SendReferrer,
-        NoReferrer
-    };
+enum UnloadEventPolicy
+{
+    UnloadEventPolicyNone,
+    UnloadEventPolicyUnloadOnly,
+    UnloadEventPolicyUnloadAndPageHide
+};
 
-    enum SandboxFlag {
-        SandboxNone = 0,
-        SandboxNavigation = 1,
-        SandboxPlugins = 1 << 1,
-        SandboxOrigin = 1 << 2,
-        SandboxForms = 1 << 3,
-        SandboxScripts = 1 << 4,
-        SandboxTopNavigation = 1 << 5,
-        SandboxAll = -1 // Mask with all bits set to 1.
-    };
+enum ReferrerPolicy
+{
+    SendReferrer,
+    NoReferrer
+};
 
-    enum SecurityCheckPolicy {
-        SkipSecurityCheck,
-        DoSecurityCheck
-    };
+enum SandboxFlag
+{
+    SandboxNone = 0,
+    SandboxNavigation = 1,
+    SandboxPlugins = 1 << 1,
+    SandboxOrigin = 1 << 2,
+    SandboxForms = 1 << 3,
+    SandboxScripts = 1 << 4,
+    SandboxTopNavigation = 1 << 5,
+    SandboxAll = -1 // Mask with all bits set to 1.
+};
 
-    // Passed to FrameLoader::urlSelected() and ScriptController::executeIfJavaScriptURL()
-    // to control whether, in the case of a JavaScript URL, executeIfJavaScriptURL() should
-    // replace the document.  It is a FIXME to eliminate this extra parameter from
-    // executeIfJavaScriptURL(), in which case this enum can go away.
-    enum ShouldReplaceDocumentIfJavaScriptURL {
-        ReplaceDocumentIfJavaScriptURL,
-        DoNotReplaceDocumentIfJavaScriptURL
-    };
+enum SecurityCheckPolicy
+{
+    SkipSecurityCheck,
+    DoSecurityCheck
+};
 
-    enum ReasonForCallingAllowPlugins {
-        AboutToInstantiatePlugin,
-        NotAboutToInstantiatePlugin
-    };
+// Passed to FrameLoader::urlSelected() and ScriptController::executeIfJavaScriptURL()
+// to control whether, in the case of a JavaScript URL, executeIfJavaScriptURL() should
+// replace the document.  It is a FIXME to eliminate this extra parameter from
+// executeIfJavaScriptURL(), in which case this enum can go away.
+enum ShouldReplaceDocumentIfJavaScriptURL
+{
+    ReplaceDocumentIfJavaScriptURL,
+    DoNotReplaceDocumentIfJavaScriptURL
+};
 
-    typedef int SandboxFlags;
+enum ReasonForCallingAllowPlugins
+{
+    AboutToInstantiatePlugin,
+    NotAboutToInstantiatePlugin
+};
+
+typedef int SandboxFlags;
 }
 
 #endif

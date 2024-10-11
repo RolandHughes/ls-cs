@@ -24,7 +24,8 @@
 #ifndef QSCRIPTCONTEXT_P_H
 #define QSCRIPTCONTEXT_P_H
 
-namespace JSC {
+namespace JSC
+{
 class JSObject;
 class ArgList;
 class ExecState;

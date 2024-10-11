@@ -31,16 +31,16 @@ using namespace QPatternist;
 
 DynamicContext::Ptr DynamicContext::createFocus()
 {
-   return Ptr(new Focus(Ptr(this)));
+    return Ptr( new Focus( Ptr( this ) ) );
 }
 
 DynamicContext::Ptr DynamicContext::createStack()
 {
-   return Ptr(new StackContext(Ptr(this)));
+    return Ptr( new StackContext( Ptr( this ) ) );
 }
 
-DynamicContext::Ptr DynamicContext::createReceiverContext(QAbstractXmlReceiver *const receiver)
+DynamicContext::Ptr DynamicContext::createReceiverContext( QAbstractXmlReceiver *const receiver )
 {
-   Q_ASSERT(receiver);
-   return Ptr(new ReceiverDynamicContext(Ptr(this), receiver));
+    Q_ASSERT( receiver );
+    return Ptr( new ReceiverDynamicContext( Ptr( this ), receiver ) );
 }

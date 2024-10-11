@@ -25,21 +25,22 @@
 
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-inline HTMLModElement::HTMLModElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLModElement::HTMLModElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
 }
 
-PassRefPtr<HTMLModElement> HTMLModElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLModElement> HTMLModElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLModElement(tagName, document));
+    return adoptRef( new HTMLModElement( tagName, document ) );
 }
 
-bool HTMLModElement::isURLAttribute(Attribute* attribute) const
+bool HTMLModElement::isURLAttribute( Attribute *attribute ) const
 {
     return attribute->name() == citeAttr;
 }

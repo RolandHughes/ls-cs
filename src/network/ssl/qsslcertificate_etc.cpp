@@ -31,112 +31,119 @@
 #include <qsslcertificate_p.h>
 #include <qsslcertificate_extension_p.h>
 
-bool QSslCertificate::operator==(const QSslCertificate &other) const
+bool QSslCertificate::operator==( const QSslCertificate &other ) const
 {
-   if (d == other.d) {
-      return true;
-   }
+    if ( d == other.d )
+    {
+        return true;
+    }
 
-   if (d->null && other.d->null) {
-      return true;
-   }
+    if ( d->null && other.d->null )
+    {
+        return true;
+    }
 
-   return d->derData == other.d->derData;
+    return d->derData == other.d->derData;
 }
 
-uint qHash(const QSslCertificate &key, uint seed) {
-   // DER is the native encoding here, so toDer() is just "return d->derData":
-   return qHash(key.toDer(), seed);
+uint qHash( const QSslCertificate &key, uint seed )
+{
+    // DER is the native encoding here, so toDer() is just "return d->derData":
+    return qHash( key.toDer(), seed );
 }
 
 bool QSslCertificate::isNull() const
 {
-   return d->null;
+    return d->null;
 }
 
 bool QSslCertificate::isSelfSigned() const
 {
-   if (d->null) {
-      return false;
-   }
+    if ( d->null )
+    {
+        return false;
+    }
 
-   return d->subjectMatchesIssuer;
+    return d->subjectMatchesIssuer;
 }
 
 QByteArray QSslCertificate::version() const
 {
-   return d->versionString;
+    return d->versionString;
 }
 
 QByteArray QSslCertificate::serialNumber() const
 {
-   return d->serialNumberString;
+    return d->serialNumberString;
 }
 
-QStringList QSslCertificate::issuerInfo(SubjectInfo info) const
+QStringList QSslCertificate::issuerInfo( SubjectInfo info ) const
 {
-   return issuerInfo(QSslCertificatePrivate::subjectInfoToString(info));
+    return issuerInfo( QSslCertificatePrivate::subjectInfoToString( info ) );
 }
 
-QStringList QSslCertificate::issuerInfo(const QByteArray &attribute) const
+QStringList QSslCertificate::issuerInfo( const QByteArray &attribute ) const
 {
-   return d->issuerInfo.values(attribute);
+    return d->issuerInfo.values( attribute );
 }
 
-QStringList QSslCertificate::subjectInfo(SubjectInfo info) const
+QStringList QSslCertificate::subjectInfo( SubjectInfo info ) const
 {
-   return subjectInfo(QSslCertificatePrivate::subjectInfoToString(info));
+    return subjectInfo( QSslCertificatePrivate::subjectInfoToString( info ) );
 }
 
-QStringList QSslCertificate::subjectInfo(const QByteArray &attribute) const
+QStringList QSslCertificate::subjectInfo( const QByteArray &attribute ) const
 {
-   return d->subjectInfo.values(attribute);
+    return d->subjectInfo.values( attribute );
 }
 
 QList<QByteArray> QSslCertificate::subjectInfoAttributes() const
 {
-   return d->subjectInfo.uniqueKeys();
+    return d->subjectInfo.uniqueKeys();
 }
 
 QList<QByteArray> QSslCertificate::issuerInfoAttributes() const
 {
-   return d->issuerInfo.uniqueKeys();
+    return d->issuerInfo.uniqueKeys();
 }
 
 QMultiMap<QSsl::AlternativeNameEntryType, QString> QSslCertificate::subjectAlternativeNames() const
 {
-   return d->subjectAlternativeNames;
+    return d->subjectAlternativeNames;
 }
 
 QDateTime QSslCertificate::effectiveDate() const
 {
-   return d->notValidBefore;
+    return d->notValidBefore;
 }
 
 QDateTime QSslCertificate::expiryDate() const
 {
-   return d->notValidAfter;
+    return d->notValidAfter;
 }
 
 Qt::HANDLE QSslCertificate::handle() const
 {
-   return 0;
+    return 0;
 }
 
 QSslKey QSslCertificate::publicKey() const
 {
-   QSslKey key;
-   key.d->type = QSsl::PublicKey;
-   if (d->publicKeyAlgorithm != QSsl::Opaque) {
-      key.d->algorithm = d->publicKeyAlgorithm;
-      key.d->decodeDer(d->publicKeyDerData);
-   }
-   return key;
+    QSslKey key;
+    key.d->type = QSsl::PublicKey;
+
+    if ( d->publicKeyAlgorithm != QSsl::Opaque )
+    {
+        key.d->algorithm = d->publicKeyAlgorithm;
+        key.d->decodeDer( d->publicKeyDerData );
+    }
+
+    return key;
 }
 
 QList<QSslCertificateExtension> QSslCertificate::extensions() const
 {
-   return d->extensions;
+    return d->extensions;
 }
 
 #define BEGINCERTSTRING "-----BEGIN CERTIFICATE-----"
@@ -144,403 +151,529 @@ QList<QSslCertificateExtension> QSslCertificate::extensions() const
 
 QByteArray QSslCertificate::toPem() const
 {
-   QByteArray array = toDer();
+    QByteArray array = toDer();
 
-   // Convert to Base64 - wrap at 64 characters.
-   array = array.toBase64();
-   QByteArray tmp;
-   for (int i = 0; i <= array.size() - 64; i += 64) {
-      tmp += QByteArray::fromRawData(array.data() + i, 64);
-      tmp += '\n';
-   }
-   if (int remainder = array.size() % 64) {
-      tmp += QByteArray::fromRawData(array.data() + array.size() - remainder, remainder);
-      tmp += '\n';
-   }
+    // Convert to Base64 - wrap at 64 characters.
+    array = array.toBase64();
+    QByteArray tmp;
 
-   return BEGINCERTSTRING "\n" + tmp + ENDCERTSTRING "\n";
+    for ( int i = 0; i <= array.size() - 64; i += 64 )
+    {
+        tmp += QByteArray::fromRawData( array.data() + i, 64 );
+        tmp += '\n';
+    }
+
+    if ( int remainder = array.size() % 64 )
+    {
+        tmp += QByteArray::fromRawData( array.data() + array.size() - remainder, remainder );
+        tmp += '\n';
+    }
+
+    return BEGINCERTSTRING "\n" + tmp + ENDCERTSTRING "\n";
 }
 
 QByteArray QSslCertificate::toDer() const
 {
-   return d->derData;
+    return d->derData;
 }
 
 QString QSslCertificate::toText() const
 {
-   return QString();
+    return QString();
 }
 
-void QSslCertificatePrivate::init(const QByteArray &data, QSsl::EncodingFormat format)
+void QSslCertificatePrivate::init( const QByteArray &data, QSsl::EncodingFormat format )
 {
-   if (!data.isEmpty()) {
-      QList<QSslCertificate> certs = (format == QSsl::Pem)
-                                     ? certificatesFromPem(data, 1)
-                                     : certificatesFromDer(data, 1);
-      if (!certs.isEmpty()) {
-         *this = *certs.first().d;
-      }
-   }
+    if ( !data.isEmpty() )
+    {
+        QList<QSslCertificate> certs = ( format == QSsl::Pem )
+                                       ? certificatesFromPem( data, 1 )
+                                       : certificatesFromDer( data, 1 );
+
+        if ( !certs.isEmpty() )
+        {
+            *this = *certs.first().d;
+        }
+    }
 }
 
-static bool matchLineFeed(const QByteArray &pem, int *offset)
+static bool matchLineFeed( const QByteArray &pem, int *offset )
 {
-   char ch = 0;
+    char ch = 0;
 
-   // ignore extra whitespace at the end of the line
-   while (*offset < pem.size() && (ch = pem.at(*offset)) == ' ') {
-      ++*offset;
-   }
+    // ignore extra whitespace at the end of the line
+    while ( *offset < pem.size() && ( ch = pem.at( *offset ) ) == ' ' )
+    {
+        ++*offset;
+    }
 
-   if (ch == '\n') {
-      *offset += 1;
-      return true;
-   }
-   if (ch == '\r' && pem.size() > (*offset + 1) && pem.at(*offset + 1) == '\n') {
-      *offset += 2;
-      return true;
-   }
-   return false;
+    if ( ch == '\n' )
+    {
+        *offset += 1;
+        return true;
+    }
+
+    if ( ch == '\r' && pem.size() > ( *offset + 1 ) && pem.at( *offset + 1 ) == '\n' )
+    {
+        *offset += 2;
+        return true;
+    }
+
+    return false;
 }
 
-QList<QSslCertificate> QSslCertificatePrivate::certificatesFromPem(const QByteArray &pem, int count)
+QList<QSslCertificate> QSslCertificatePrivate::certificatesFromPem( const QByteArray &pem, int count )
 {
-   QList<QSslCertificate> certificates;
-   int offset = 0;
-   while (count == -1 || certificates.size() < count) {
-      int startPos = pem.indexOf(BEGINCERTSTRING, offset);
-      if (startPos == -1) {
-         break;
-      }
-      startPos += sizeof(BEGINCERTSTRING) - 1;
-      if (!matchLineFeed(pem, &startPos)) {
-         break;
-      }
+    QList<QSslCertificate> certificates;
+    int offset = 0;
 
-      int endPos = pem.indexOf(ENDCERTSTRING, startPos);
-      if (endPos == -1) {
-         break;
-      }
+    while ( count == -1 || certificates.size() < count )
+    {
+        int startPos = pem.indexOf( BEGINCERTSTRING, offset );
 
-      offset = endPos + sizeof(ENDCERTSTRING) - 1;
-      if (offset < pem.size() && !matchLineFeed(pem, &offset)) {
-         break;
-      }
+        if ( startPos == -1 )
+        {
+            break;
+        }
 
-      QByteArray decoded = QByteArray::fromBase64(
-                              QByteArray::fromRawData(pem.data() + startPos, endPos - startPos));
-      certificates << certificatesFromDer(decoded, 1);;
-   }
+        startPos += sizeof( BEGINCERTSTRING ) - 1;
 
-   return certificates;
+        if ( !matchLineFeed( pem, &startPos ) )
+        {
+            break;
+        }
+
+        int endPos = pem.indexOf( ENDCERTSTRING, startPos );
+
+        if ( endPos == -1 )
+        {
+            break;
+        }
+
+        offset = endPos + sizeof( ENDCERTSTRING ) - 1;
+
+        if ( offset < pem.size() && !matchLineFeed( pem, &offset ) )
+        {
+            break;
+        }
+
+        QByteArray decoded = QByteArray::fromBase64(
+                                 QByteArray::fromRawData( pem.data() + startPos, endPos - startPos ) );
+        certificates << certificatesFromDer( decoded, 1 );;
+    }
+
+    return certificates;
 }
 
-QList<QSslCertificate> QSslCertificatePrivate::certificatesFromDer(const QByteArray &der, int count)
+QList<QSslCertificate> QSslCertificatePrivate::certificatesFromDer( const QByteArray &der, int count )
 {
-   QList<QSslCertificate> certificates;
+    QList<QSslCertificate> certificates;
 
-   QByteArray data = der;
-   while (count == -1 || certificates.size() < count) {
-      QSslCertificate cert;
-      if (!cert.d->parse(data)) {
-         break;
-      }
+    QByteArray data = der;
 
-      certificates << cert;
-      data.remove(0, cert.d->derData.size());
-   }
+    while ( count == -1 || certificates.size() < count )
+    {
+        QSslCertificate cert;
 
-   return certificates;
+        if ( !cert.d->parse( data ) )
+        {
+            break;
+        }
+
+        certificates << cert;
+        data.remove( 0, cert.d->derData.size() );
+    }
+
+    return certificates;
 }
 
-static QByteArray colonSeparatedHex(const QByteArray &value)
+static QByteArray colonSeparatedHex( const QByteArray &value )
 {
-   QByteArray hexString;
-   hexString.reserve(value.size() * 3);
-   for (int a = 0; a < value.size(); ++a) {
-      const quint8 b = value.at(a);
-      if (b || !hexString.isEmpty()) { // skip leading zeros
-         hexString += QByteArray::number(b, 16).rightJustified(2, '0');
-         hexString += ':';
-      }
-   }
-   hexString.chop(1);
-   return hexString;
+    QByteArray hexString;
+    hexString.reserve( value.size() * 3 );
+
+    for ( int a = 0; a < value.size(); ++a )
+    {
+        const quint8 b = value.at( a );
+
+        if ( b || !hexString.isEmpty() ) // skip leading zeros
+        {
+            hexString += QByteArray::number( b, 16 ).rightJustified( 2, '0' );
+            hexString += ':';
+        }
+    }
+
+    hexString.chop( 1 );
+    return hexString;
 }
 
-bool QSslCertificatePrivate::parse(const QByteArray &data)
+bool QSslCertificatePrivate::parse( const QByteArray &data )
 {
-   QAsn1Element root;
+    QAsn1Element root;
 
-   QDataStream dataStream(data);
-   if (!root.read(dataStream) || root.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+    QDataStream dataStream( data );
 
-   QDataStream rootStream(root.value());
-   QAsn1Element cert;
-   if (!cert.read(rootStream) || cert.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+    if ( !root.read( dataStream ) || root.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-   // version or serial number
-   QAsn1Element elem;
-   QDataStream certStream(cert.value());
-   if (!elem.read(certStream)) {
-      return false;
-   }
+    QDataStream rootStream( root.value() );
+    QAsn1Element cert;
 
-   if (elem.type() == QAsn1Element::Context0Type) {
-      QDataStream versionStream(elem.value());
-      if (!elem.read(versionStream) || elem.type() != QAsn1Element::IntegerType) {
-         return false;
-      }
+    if ( !cert.read( rootStream ) || cert.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-      versionString = QByteArray::number(elem.value()[0] + 1);
-      if (!elem.read(certStream)) {
-         return false;
-      }
-   } else {
-      versionString = QByteArray::number(1);
-   }
+    // version or serial number
+    QAsn1Element elem;
+    QDataStream certStream( cert.value() );
 
-   // serial number
-   if (elem.type() != QAsn1Element::IntegerType) {
-      return false;
-   }
-   serialNumberString = colonSeparatedHex(elem.value());
+    if ( !elem.read( certStream ) )
+    {
+        return false;
+    }
 
-   // algorithm ID
-   if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+    if ( elem.type() == QAsn1Element::Context0Type )
+    {
+        QDataStream versionStream( elem.value() );
 
-   // issuer info
-   if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+        if ( !elem.read( versionStream ) || elem.type() != QAsn1Element::IntegerType )
+        {
+            return false;
+        }
 
-   QByteArray issuerDer = data.mid(dataStream.device()->pos() - elem.value().length(), elem.value().length());
-   issuerInfo = elem.toInfo();
+        versionString = QByteArray::number( elem.value()[0] + 1 );
 
-   // validity period
-   if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+        if ( !elem.read( certStream ) )
+        {
+            return false;
+        }
+    }
+    else
+    {
+        versionString = QByteArray::number( 1 );
+    }
 
-   QDataStream validityStream(elem.value());
-   if (!elem.read(validityStream) || (elem.type() != QAsn1Element::UtcTimeType && elem.type() != QAsn1Element::GeneralizedTimeType)) {
-      return false;
-   }
+    // serial number
+    if ( elem.type() != QAsn1Element::IntegerType )
+    {
+        return false;
+    }
 
-   notValidBefore = elem.toDateTime();
-   if (!elem.read(validityStream) || (elem.type() != QAsn1Element::UtcTimeType && elem.type() != QAsn1Element::GeneralizedTimeType)) {
-      return false;
-   }
+    serialNumberString = colonSeparatedHex( elem.value() );
 
-   notValidAfter = elem.toDateTime();
+    // algorithm ID
+    if ( !elem.read( certStream ) || elem.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-   // subject name
-   if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+    // issuer info
+    if ( !elem.read( certStream ) || elem.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-   QByteArray subjectDer = data.mid(dataStream.device()->pos() - elem.value().length(), elem.value().length());
-   subjectInfo = elem.toInfo();
-   subjectMatchesIssuer = issuerDer == subjectDer;
+    QByteArray issuerDer = data.mid( dataStream.device()->pos() - elem.value().length(), elem.value().length() );
+    issuerInfo = elem.toInfo();
 
-   // public key
-   qint64 keyStart = certStream.device()->pos();
-   if (!elem.read(certStream) || elem.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+    // validity period
+    if ( !elem.read( certStream ) || elem.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-   publicKeyDerData.resize(certStream.device()->pos() - keyStart);
-   QDataStream keyStream(elem.value());
-   if (!elem.read(keyStream) || elem.type() != QAsn1Element::SequenceType) {
-      return false;
-   }
+    QDataStream validityStream( elem.value() );
 
-   // key algorithm
-   if (!elem.read(elem.value()) || elem.type() != QAsn1Element::ObjectIdentifierType) {
-      return false;
-   }
+    if ( !elem.read( validityStream ) || ( elem.type() != QAsn1Element::UtcTimeType
+                                           && elem.type() != QAsn1Element::GeneralizedTimeType ) )
+    {
+        return false;
+    }
 
-   const QByteArray oid = elem.toObjectId();
-   if (oid == RSA_ENCRYPTION_OID) {
-      publicKeyAlgorithm = QSsl::Rsa;
+    notValidBefore = elem.toDateTime();
 
-   } else if (oid == DSA_ENCRYPTION_OID) {
-      publicKeyAlgorithm = QSsl::Dsa;
+    if ( !elem.read( validityStream ) || ( elem.type() != QAsn1Element::UtcTimeType
+                                           && elem.type() != QAsn1Element::GeneralizedTimeType ) )
+    {
+        return false;
+    }
 
-   } else if (oid == EC_ENCRYPTION_OID) {
-      publicKeyAlgorithm = QSsl::Ec;
+    notValidAfter = elem.toDateTime();
 
-   } else {
-      publicKeyAlgorithm = QSsl::Opaque;
+    // subject name
+    if ( !elem.read( certStream ) || elem.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-   }
+    QByteArray subjectDer = data.mid( dataStream.device()->pos() - elem.value().length(), elem.value().length() );
+    subjectInfo = elem.toInfo();
+    subjectMatchesIssuer = issuerDer == subjectDer;
 
-   certStream.device()->seek(keyStart);
-   certStream.readRawData(publicKeyDerData.data(), publicKeyDerData.size());
+    // public key
+    qint64 keyStart = certStream.device()->pos();
 
-   // extensions
-   while (elem.read(certStream)) {
-      if (elem.type() == QAsn1Element::Context3Type) {
-         if (elem.read(elem.value()) && elem.type() == QAsn1Element::SequenceType) {
-            QDataStream extStream(elem.value());
+    if ( !elem.read( certStream ) || elem.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-            while (elem.read(extStream) && elem.type() == QAsn1Element::SequenceType) {
-               QSslCertificateExtension extension;
+    publicKeyDerData.resize( certStream.device()->pos() - keyStart );
+    QDataStream keyStream( elem.value() );
 
-               if (!parseExtension(elem.value(), &extension)) {
-                  return false;
-               }
-               extensions << extension;
+    if ( !elem.read( keyStream ) || elem.type() != QAsn1Element::SequenceType )
+    {
+        return false;
+    }
 
-               if (extension.oid() == QLatin1String("2.5.29.17")) {
-                  // subjectAltName
-                  QAsn1Element sanElem;
+    // key algorithm
+    if ( !elem.read( elem.value() ) || elem.type() != QAsn1Element::ObjectIdentifierType )
+    {
+        return false;
+    }
 
-                  if (sanElem.read(extension.value().toByteArray()) && sanElem.type() == QAsn1Element::SequenceType) {
-                     QDataStream nameStream(sanElem.value());
-                     QAsn1Element nameElem;
+    const QByteArray oid = elem.toObjectId();
 
-                     while (nameElem.read(nameStream)) {
-                        if (nameElem.type() == QAsn1Element::Rfc822NameType) {
-                           subjectAlternativeNames.insert(QSsl::EmailEntry, nameElem.toString());
-                        } else if (nameElem.type() == QAsn1Element::DnsNameType) {
-                           subjectAlternativeNames.insert(QSsl::DnsEntry, nameElem.toString());
+    if ( oid == RSA_ENCRYPTION_OID )
+    {
+        publicKeyAlgorithm = QSsl::Rsa;
+
+    }
+    else if ( oid == DSA_ENCRYPTION_OID )
+    {
+        publicKeyAlgorithm = QSsl::Dsa;
+
+    }
+    else if ( oid == EC_ENCRYPTION_OID )
+    {
+        publicKeyAlgorithm = QSsl::Ec;
+
+    }
+    else
+    {
+        publicKeyAlgorithm = QSsl::Opaque;
+
+    }
+
+    certStream.device()->seek( keyStart );
+    certStream.readRawData( publicKeyDerData.data(), publicKeyDerData.size() );
+
+    // extensions
+    while ( elem.read( certStream ) )
+    {
+        if ( elem.type() == QAsn1Element::Context3Type )
+        {
+            if ( elem.read( elem.value() ) && elem.type() == QAsn1Element::SequenceType )
+            {
+                QDataStream extStream( elem.value() );
+
+                while ( elem.read( extStream ) && elem.type() == QAsn1Element::SequenceType )
+                {
+                    QSslCertificateExtension extension;
+
+                    if ( !parseExtension( elem.value(), &extension ) )
+                    {
+                        return false;
+                    }
+
+                    extensions << extension;
+
+                    if ( extension.oid() == QLatin1String( "2.5.29.17" ) )
+                    {
+                        // subjectAltName
+                        QAsn1Element sanElem;
+
+                        if ( sanElem.read( extension.value().toByteArray() ) && sanElem.type() == QAsn1Element::SequenceType )
+                        {
+                            QDataStream nameStream( sanElem.value() );
+                            QAsn1Element nameElem;
+
+                            while ( nameElem.read( nameStream ) )
+                            {
+                                if ( nameElem.type() == QAsn1Element::Rfc822NameType )
+                                {
+                                    subjectAlternativeNames.insert( QSsl::EmailEntry, nameElem.toString() );
+                                }
+                                else if ( nameElem.type() == QAsn1Element::DnsNameType )
+                                {
+                                    subjectAlternativeNames.insert( QSsl::DnsEntry, nameElem.toString() );
+                                }
+                            }
                         }
-                     }
-                  }
-               }
+                    }
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   derData = data.left(dataStream.device()->pos());
-   null = false;
-   return true;
+    derData = data.left( dataStream.device()->pos() );
+    null = false;
+    return true;
 }
 
-bool QSslCertificatePrivate::parseExtension(const QByteArray &data, QSslCertificateExtension *extension)
+bool QSslCertificatePrivate::parseExtension( const QByteArray &data, QSslCertificateExtension *extension )
 {
-   bool ok;
-   bool critical = false;
-   QAsn1Element oidElem, valElem;
+    bool ok;
+    bool critical = false;
+    QAsn1Element oidElem, valElem;
 
-   QDataStream seqStream(data);
+    QDataStream seqStream( data );
 
-   // oid
-   if (! oidElem.read(seqStream) || oidElem.type() != QAsn1Element::ObjectIdentifierType) {
-      return false;
-   }
-   const QByteArray oid = oidElem.toObjectId();
+    // oid
+    if ( ! oidElem.read( seqStream ) || oidElem.type() != QAsn1Element::ObjectIdentifierType )
+    {
+        return false;
+    }
 
-   // critical and value
-   if (! valElem.read(seqStream)) {
-      return false;
-   }
+    const QByteArray oid = oidElem.toObjectId();
 
-   if (valElem.type() == QAsn1Element::BooleanType) {
-      critical = valElem.toBool(&ok);
-      if (!ok || !valElem.read(seqStream)) {
-         return false;
-      }
-   }
+    // critical and value
+    if ( ! valElem.read( seqStream ) )
+    {
+        return false;
+    }
 
-   if (valElem.type() != QAsn1Element::OctetStringType) {
-      return false;
-   }
+    if ( valElem.type() == QAsn1Element::BooleanType )
+    {
+        critical = valElem.toBool( &ok );
 
-   // interpret value
-   QAsn1Element val;
-   bool supported = true;
-   QVariant value;
-
-   if (oid == "1.3.6.1.5.5.7.1.1") {
-      // authorityInfoAccess
-      if (!val.read(valElem.value()) || val.type() != QAsn1Element::SequenceType) {
-         return false;
-      }
-
-      QVariantMap result;
-      for (const QAsn1Element &el : val.toVector()) {
-         QVector<QAsn1Element> items = el.toVector();
-         if (items.size() != 2) {
+        if ( !ok || !valElem.read( seqStream ) )
+        {
             return false;
-         }
-         const QString key = QString::fromLatin1(items.at(0).toObjectName());
-         switch (items.at(1).type()) {
-            case QAsn1Element::Rfc822NameType:
-            case QAsn1Element::DnsNameType:
-            case QAsn1Element::UniformResourceIdentifierType:
-               result[key] = items.at(1).toString();
-               break;
-         }
-      }
-      value = result;
+        }
+    }
 
-   } else if (oid == "2.5.29.14") {
-      // subjectKeyIdentifier
-      if (!val.read(valElem.value()) || val.type() != QAsn1Element::OctetStringType) {
-         return false;
-      }
-      value = colonSeparatedHex(val.value()).toUpper();
+    if ( valElem.type() != QAsn1Element::OctetStringType )
+    {
+        return false;
+    }
 
-   } else if (oid == "2.5.29.19") {
-      // basicConstraints
-      if (!val.read(valElem.value()) || val.type() != QAsn1Element::SequenceType) {
-         return false;
-      }
+    // interpret value
+    QAsn1Element val;
+    bool supported = true;
+    QVariant value;
 
-      QVariantMap result;
-      QVector<QAsn1Element> items = val.toVector();
-
-      if (items.size() > 0) {
-         result["ca"] = items.at(0).toBool(&ok);
-
-         if (!ok) {
+    if ( oid == "1.3.6.1.5.5.7.1.1" )
+    {
+        // authorityInfoAccess
+        if ( !val.read( valElem.value() ) || val.type() != QAsn1Element::SequenceType )
+        {
             return false;
-         }
+        }
 
-      } else {
-         result["ca"] = false;
-      }
-      if (items.size() > 1) {
-         result["pathLenConstraint"] = items.at(1).toInteger(&ok);
-         if (!ok) {
+        QVariantMap result;
+
+        for ( const QAsn1Element &el : val.toVector() )
+        {
+            QVector<QAsn1Element> items = el.toVector();
+
+            if ( items.size() != 2 )
+            {
+                return false;
+            }
+
+            const QString key = QString::fromLatin1( items.at( 0 ).toObjectName() );
+
+            switch ( items.at( 1 ).type() )
+            {
+                case QAsn1Element::Rfc822NameType:
+                case QAsn1Element::DnsNameType:
+                case QAsn1Element::UniformResourceIdentifierType:
+                    result[key] = items.at( 1 ).toString();
+                    break;
+            }
+        }
+
+        value = result;
+
+    }
+    else if ( oid == "2.5.29.14" )
+    {
+        // subjectKeyIdentifier
+        if ( !val.read( valElem.value() ) || val.type() != QAsn1Element::OctetStringType )
+        {
             return false;
-         }
-      }
-      value = result;
-   } else if (oid == "2.5.29.35") {
-      // authorityKeyIdentifier
-      if (!val.read(valElem.value()) || val.type() != QAsn1Element::SequenceType) {
-         return false;
-      }
+        }
 
-      QVariantMap result;
-      for (const QAsn1Element &el : val.toVector()) {
-         if (el.type() == 0x80) {
-            result["keyid"] = el.value().toHex();
-         } else if (el.type() == 0x82) {
-            result["serial"] = colonSeparatedHex(el.value());
-         }
-      }
-      value = result;
-   } else {
-      supported = false;
-      value = valElem.value();
-   }
+        value = colonSeparatedHex( val.value() ).toUpper();
 
-   extension->d->critical = critical;
-   extension->d->supported = supported;
-   extension->d->oid = QString::fromLatin1(oid);
-   extension->d->name = QString::fromLatin1(oidElem.toObjectName());
-   extension->d->value = value;
+    }
+    else if ( oid == "2.5.29.19" )
+    {
+        // basicConstraints
+        if ( !val.read( valElem.value() ) || val.type() != QAsn1Element::SequenceType )
+        {
+            return false;
+        }
 
-   return true;
+        QVariantMap result;
+        QVector<QAsn1Element> items = val.toVector();
+
+        if ( items.size() > 0 )
+        {
+            result["ca"] = items.at( 0 ).toBool( &ok );
+
+            if ( !ok )
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            result["ca"] = false;
+        }
+
+        if ( items.size() > 1 )
+        {
+            result["pathLenConstraint"] = items.at( 1 ).toInteger( &ok );
+
+            if ( !ok )
+            {
+                return false;
+            }
+        }
+
+        value = result;
+    }
+    else if ( oid == "2.5.29.35" )
+    {
+        // authorityKeyIdentifier
+        if ( !val.read( valElem.value() ) || val.type() != QAsn1Element::SequenceType )
+        {
+            return false;
+        }
+
+        QVariantMap result;
+
+        for ( const QAsn1Element &el : val.toVector() )
+        {
+            if ( el.type() == 0x80 )
+            {
+                result["keyid"] = el.value().toHex();
+            }
+            else if ( el.type() == 0x82 )
+            {
+                result["serial"] = colonSeparatedHex( el.value() );
+            }
+        }
+
+        value = result;
+    }
+    else
+    {
+        supported = false;
+        value = valElem.value();
+    }
+
+    extension->d->critical = critical;
+    extension->d->supported = supported;
+    extension->d->oid = QString::fromLatin1( oid );
+    extension->d->name = QString::fromLatin1( oidElem.toObjectName() );
+    extension->d->value = value;
+
+    return true;
 }

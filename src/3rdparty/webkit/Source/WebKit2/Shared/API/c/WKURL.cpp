@@ -32,30 +32,30 @@ using namespace WebKit;
 
 WKTypeID WKURLGetTypeID()
 {
-    return toAPI(WebURL::APIType);
+    return toAPI( WebURL::APIType );
 }
 
-WKURLRef WKURLCreateWithUTF8CString(const char* string)
+WKURLRef WKURLCreateWithUTF8CString( const char *string )
 {
-    return toAPI(WebURL::create(String::fromUTF8(string)).leakRef());
+    return toAPI( WebURL::create( String::fromUTF8( string ) ).leakRef() );
 }
 
-WKStringRef WKURLCopyString(WKURLRef url)
+WKStringRef WKURLCopyString( WKURLRef url )
 {
-    return toCopiedAPI(toImpl(url)->string());
+    return toCopiedAPI( toImpl( url )->string() );
 }
 
-bool WKURLIsEqual(WKURLRef a, WKURLRef b)
+bool WKURLIsEqual( WKURLRef a, WKURLRef b )
 {
-    return toImpl(a)->string() == toImpl(b)->string();
+    return toImpl( a )->string() == toImpl( b )->string();
 }
 
-WKStringRef WKURLCopyHostName(WKURLRef url)
+WKStringRef WKURLCopyHostName( WKURLRef url )
 {
-    return toCopiedAPI(toImpl(url)->host());
+    return toCopiedAPI( toImpl( url )->host() );
 }
 
-WKStringRef WKURLCopyScheme(WKURLRef url)
+WKStringRef WKURLCopyScheme( WKURLRef url )
 {
-    return toCopiedAPI(toImpl(url)->protocol());
+    return toCopiedAPI( toImpl( url )->protocol() );
 }

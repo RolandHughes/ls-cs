@@ -38,133 +38,147 @@
 
 #include <wtf/HashMap.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class CodeBlock;
-    class EvalExecutable;
-    class FunctionExecutable;
-    class JSFunction;
-    class JSGlobalObject;
-    class ProgramExecutable;
-    class Register;
-    class ScopeChainNode;
-    class SamplingTool;
-    struct CallFrameClosure;
-    struct HandlerInfo;
-    struct Instruction;
-    
-    enum DebugHookID {
-        WillExecuteProgram,
-        DidExecuteProgram,
-        DidEnterCallFrame,
-        DidReachBreakpoint,
-        WillLeaveCallFrame,
-        WillExecuteStatement
-    };
+class CodeBlock;
+class EvalExecutable;
+class FunctionExecutable;
+class JSFunction;
+class JSGlobalObject;
+class ProgramExecutable;
+class Register;
+class ScopeChainNode;
+class SamplingTool;
+struct CallFrameClosure;
+struct HandlerInfo;
+struct Instruction;
 
-    enum { MaxLargeThreadReentryDepth = 256, MaxSmallThreadReentryDepth = 32 };
+enum DebugHookID
+{
+    WillExecuteProgram,
+    DidExecuteProgram,
+    DidEnterCallFrame,
+    DidReachBreakpoint,
+    WillLeaveCallFrame,
+    WillExecuteStatement
+};
 
-    class Interpreter {
-        WTF_MAKE_FAST_ALLOCATED;
-        friend class JIT;
-        friend class CachedCall;
-    public:
-        Interpreter(JSGlobalData&);
+enum { MaxLargeThreadReentryDepth = 256, MaxSmallThreadReentryDepth = 32 };
 
-        RegisterFile& registerFile() { return m_registerFile; }
-        
-        Opcode getOpcode(OpcodeID id)
-        {
-            #if ENABLE(COMPUTED_GOTO_INTERPRETER)
-                return m_opcodeTable[id];
-            #else
-                return id;
-            #endif
-        }
+class Interpreter
+{
+    WTF_MAKE_FAST_ALLOCATED;
+    friend class JIT;
+    friend class CachedCall;
+public:
+    Interpreter( JSGlobalData & );
 
-        OpcodeID getOpcodeID(Opcode opcode)
-        {
-            #if ENABLE(COMPUTED_GOTO_INTERPRETER)
-                ASSERT(isOpcode(opcode));
-                return m_opcodeIDTable.get(opcode);
-            #else
-                return opcode;
-            #endif
-        }
+    RegisterFile &registerFile()
+    {
+        return m_registerFile;
+    }
 
-        bool isOpcode(Opcode);
+    Opcode getOpcode( OpcodeID id )
+    {
+#if ENABLE(COMPUTED_GOTO_INTERPRETER)
+        return m_opcodeTable[id];
+#else
+        return id;
+#endif
+    }
 
-        JSValue execute(ProgramExecutable*, CallFrame*, ScopeChainNode*, JSObject* thisObj);
-        JSValue executeCall(CallFrame*, JSObject* function, CallType, const CallData&, JSValue thisValue, const ArgList&);
-        JSObject* executeConstruct(CallFrame*, JSObject* function, ConstructType, const ConstructData&, const ArgList&);
-        JSValue execute(EvalExecutable* evalNode, CallFrame* exec, JSObject* thisObj, ScopeChainNode* scopeChain);
+    OpcodeID getOpcodeID( Opcode opcode )
+    {
+#if ENABLE(COMPUTED_GOTO_INTERPRETER)
+        ASSERT( isOpcode( opcode ) );
+        return m_opcodeIDTable.get( opcode );
+#else
+        return opcode;
+#endif
+    }
 
-        JSValue retrieveArguments(CallFrame*, JSFunction*) const;
-        JSValue retrieveCaller(CallFrame*, JSFunction*) const;
-        void retrieveLastCaller(CallFrame*, int& lineNumber, intptr_t& sourceID, UString& sourceURL, JSValue& function) const;
-        
-        void getArgumentsData(CallFrame*, JSFunction*&, ptrdiff_t& firstParameterIndex, Register*& argv, int& argc);
-        
-        SamplingTool* sampler() { return m_sampler.get(); }
+    bool isOpcode( Opcode );
 
-        NEVER_INLINE JSValue callEval(CallFrame*, RegisterFile*, Register* argv, int argc, int registerOffset);
-        NEVER_INLINE HandlerInfo* throwException(CallFrame*&, JSValue&, unsigned bytecodeOffset);
-        NEVER_INLINE void debug(CallFrame*, DebugHookID, int firstLine, int lastLine);
+    JSValue execute( ProgramExecutable *, CallFrame *, ScopeChainNode *, JSObject *thisObj );
+    JSValue executeCall( CallFrame *, JSObject *function, CallType, const CallData &, JSValue thisValue, const ArgList & );
+    JSObject *executeConstruct( CallFrame *, JSObject *function, ConstructType, const ConstructData &, const ArgList & );
+    JSValue execute( EvalExecutable *evalNode, CallFrame *exec, JSObject *thisObj, ScopeChainNode *scopeChain );
 
-        void dumpSampleData(ExecState* exec);
-        void startSampling();
-        void stopSampling();
-    private:
-        enum ExecutionFlag { Normal, InitializeAndReturn };
+    JSValue retrieveArguments( CallFrame *, JSFunction * ) const;
+    JSValue retrieveCaller( CallFrame *, JSFunction * ) const;
+    void retrieveLastCaller( CallFrame *, int &lineNumber, intptr_t &sourceID, UString &sourceURL, JSValue &function ) const;
 
-        CallFrameClosure prepareForRepeatCall(FunctionExecutable*, CallFrame*, JSFunction*, int argCount, ScopeChainNode*);
-        void endRepeatCall(CallFrameClosure&);
-        JSValue execute(CallFrameClosure&);
+    void getArgumentsData( CallFrame *, JSFunction *&, ptrdiff_t &firstParameterIndex, Register *&argv, int &argc );
 
-        JSValue execute(EvalExecutable*, CallFrame*, JSObject* thisObject, int globalRegisterOffset, ScopeChainNode*);
+    SamplingTool *sampler()
+    {
+        return m_sampler.get();
+    }
+
+    NEVER_INLINE JSValue callEval( CallFrame *, RegisterFile *, Register *argv, int argc, int registerOffset );
+    NEVER_INLINE HandlerInfo *throwException( CallFrame *&, JSValue &, unsigned bytecodeOffset );
+    NEVER_INLINE void debug( CallFrame *, DebugHookID, int firstLine, int lastLine );
+
+    void dumpSampleData( ExecState *exec );
+    void startSampling();
+    void stopSampling();
+private:
+    enum ExecutionFlag { Normal, InitializeAndReturn };
+
+    CallFrameClosure prepareForRepeatCall( FunctionExecutable *, CallFrame *, JSFunction *, int argCount, ScopeChainNode * );
+    void endRepeatCall( CallFrameClosure & );
+    JSValue execute( CallFrameClosure & );
+
+    JSValue execute( EvalExecutable *, CallFrame *, JSObject *thisObject, int globalRegisterOffset, ScopeChainNode * );
 
 #if ENABLE(INTERPRETER)
-        NEVER_INLINE bool resolve(CallFrame*, Instruction*, JSValue& exceptionValue);
-        NEVER_INLINE bool resolveSkip(CallFrame*, Instruction*, JSValue& exceptionValue);
-        NEVER_INLINE bool resolveGlobal(CallFrame*, Instruction*, JSValue& exceptionValue);
-        NEVER_INLINE bool resolveGlobalDynamic(CallFrame*, Instruction*, JSValue& exceptionValue);
-        NEVER_INLINE void resolveBase(CallFrame*, Instruction* vPC);
-        NEVER_INLINE bool resolveBaseAndProperty(CallFrame*, Instruction*, JSValue& exceptionValue);
-        NEVER_INLINE ScopeChainNode* createExceptionScope(CallFrame*, const Instruction* vPC);
+    NEVER_INLINE bool resolve( CallFrame *, Instruction *, JSValue &exceptionValue );
+    NEVER_INLINE bool resolveSkip( CallFrame *, Instruction *, JSValue &exceptionValue );
+    NEVER_INLINE bool resolveGlobal( CallFrame *, Instruction *, JSValue &exceptionValue );
+    NEVER_INLINE bool resolveGlobalDynamic( CallFrame *, Instruction *, JSValue &exceptionValue );
+    NEVER_INLINE void resolveBase( CallFrame *, Instruction *vPC );
+    NEVER_INLINE bool resolveBaseAndProperty( CallFrame *, Instruction *, JSValue &exceptionValue );
+    NEVER_INLINE ScopeChainNode *createExceptionScope( CallFrame *, const Instruction *vPC );
 
-        void tryCacheGetByID(CallFrame*, CodeBlock*, Instruction*, JSValue baseValue, const Identifier& propertyName, const PropertySlot&);
-        void uncacheGetByID(CodeBlock*, Instruction* vPC);
-        void tryCachePutByID(CallFrame*, CodeBlock*, Instruction*, JSValue baseValue, const PutPropertySlot&);
-        void uncachePutByID(CodeBlock*, Instruction* vPC);        
+    void tryCacheGetByID( CallFrame *, CodeBlock *, Instruction *, JSValue baseValue, const Identifier &propertyName,
+                          const PropertySlot & );
+    void uncacheGetByID( CodeBlock *, Instruction *vPC );
+    void tryCachePutByID( CallFrame *, CodeBlock *, Instruction *, JSValue baseValue, const PutPropertySlot & );
+    void uncachePutByID( CodeBlock *, Instruction *vPC );
 #endif // ENABLE(INTERPRETER)
 
-        NEVER_INLINE bool unwindCallFrame(CallFrame*&, JSValue, unsigned& bytecodeOffset, CodeBlock*&);
+    NEVER_INLINE bool unwindCallFrame( CallFrame *&, JSValue, unsigned &bytecodeOffset, CodeBlock*& );
 
-        static ALWAYS_INLINE CallFrame* slideRegisterWindowForCall(CodeBlock*, RegisterFile*, CallFrame*, size_t registerOffset, int argc);
+    static ALWAYS_INLINE CallFrame *slideRegisterWindowForCall( CodeBlock *, RegisterFile *, CallFrame *, size_t registerOffset,
+            int argc );
 
-        static CallFrame* findFunctionCallFrame(CallFrame*, JSFunction*);
+    static CallFrame *findFunctionCallFrame( CallFrame *, JSFunction * );
 
-        JSValue privateExecute(ExecutionFlag, RegisterFile*, CallFrame*);
+    JSValue privateExecute( ExecutionFlag, RegisterFile *, CallFrame * );
 
-        void dumpCallFrame(CallFrame*);
-        void dumpRegisters(CallFrame*);
-        
-        bool isCallBytecode(Opcode opcode) { return opcode == getOpcode(op_call) || opcode == getOpcode(op_construct) || opcode == getOpcode(op_call_eval); }
+    void dumpCallFrame( CallFrame * );
+    void dumpRegisters( CallFrame * );
 
-        void enableSampler();
-        int m_sampleEntryDepth;
-        OwnPtr<SamplingTool> m_sampler;
+    bool isCallBytecode( Opcode opcode )
+    {
+        return opcode == getOpcode( op_call ) || opcode == getOpcode( op_construct ) || opcode == getOpcode( op_call_eval );
+    }
 
-        int m_reentryDepth;
+    void enableSampler();
+    int m_sampleEntryDepth;
+    OwnPtr<SamplingTool> m_sampler;
 
-        RegisterFile m_registerFile;
-        
+    int m_reentryDepth;
+
+    RegisterFile m_registerFile;
+
 #if ENABLE(COMPUTED_GOTO_INTERPRETER)
-        Opcode m_opcodeTable[numOpcodeIDs]; // Maps OpcodeID => Opcode for compiling
-        HashMap<Opcode, OpcodeID> m_opcodeIDTable; // Maps Opcode => OpcodeID for decompiling
+    Opcode m_opcodeTable[numOpcodeIDs]; // Maps OpcodeID => Opcode for compiling
+    HashMap<Opcode, OpcodeID> m_opcodeIDTable; // Maps Opcode => OpcodeID for decompiling
 #endif
-    };
-    
+};
+
 } // namespace JSC
 
 #endif // Interpreter_h

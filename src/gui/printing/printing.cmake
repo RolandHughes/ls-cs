@@ -45,7 +45,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qprintengine_win_p.h
 )
 
-target_sources(CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qabstractprintdialog.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagedpaintdevice.cpp
@@ -64,7 +64,7 @@ target_sources(CsGui
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagesetupdialog_mac.mm
       ${CMAKE_CURRENT_SOURCE_DIR}/printing/qprintdialog_mac.mm
@@ -72,7 +72,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/printing/qcups.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/printing/qcupsjobwidget.cpp
@@ -86,7 +86,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD)")
     )
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/printing/qpagesetupdialog_win.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/printing/qprintdialog_win.cpp

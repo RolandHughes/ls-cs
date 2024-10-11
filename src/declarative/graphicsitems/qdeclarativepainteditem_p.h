@@ -31,72 +31,72 @@ QT_BEGIN_NAMESPACE
 class QDeclarativePaintedItemPrivate;
 class QDeclarativePaintedItem : public QDeclarativeItem
 {
-   DECL_CS_OBJECT(QDeclarativePaintedItem)
+    DECL_LSCS_OBJECT( QDeclarativePaintedItem )
 
-   DECL_CS_PROPERTY_READ(contentsSize, contentsSize)
-   DECL_CS_PROPERTY_WRITE(contentsSize, setContentsSize)
-   DECL_CS_PROPERTY_NOTIFY(contentsSize, contentsSizeChanged)
-   DECL_CS_PROPERTY_READ(fillColor, fillColor)
-   DECL_CS_PROPERTY_WRITE(fillColor, setFillColor)
-   DECL_CS_PROPERTY_NOTIFY(fillColor, fillColorChanged)
-   DECL_CS_PROPERTY_READ(pixelCacheSize, pixelCacheSize)
-   DECL_CS_PROPERTY_WRITE(pixelCacheSize, setPixelCacheSize)
-   DECL_CS_PROPERTY_READ(smoothCache, smoothCache)
-   DECL_CS_PROPERTY_WRITE(smoothCache, setSmoothCache)
-   DECL_CS_PROPERTY_READ(contentsScale, contentsScale)
-   DECL_CS_PROPERTY_WRITE(contentsScale, setContentsScale)
-   DECL_CS_PROPERTY_NOTIFY(contentsScale, contentsScaleChanged)
+    DECL_LSCS_PROPERTY_READ( contentsSize, contentsSize )
+    DECL_LSCS_PROPERTY_WRITE( contentsSize, setContentsSize )
+    DECL_LSCS_PROPERTY_NOTIFY( contentsSize, contentsSizeChanged )
+    DECL_LSCS_PROPERTY_READ( fillColor, fillColor )
+    DECL_LSCS_PROPERTY_WRITE( fillColor, setFillColor )
+    DECL_LSCS_PROPERTY_NOTIFY( fillColor, fillColorChanged )
+    DECL_LSCS_PROPERTY_READ( pixelCacheSize, pixelCacheSize )
+    DECL_LSCS_PROPERTY_WRITE( pixelCacheSize, setPixelCacheSize )
+    DECL_LSCS_PROPERTY_READ( smoothCache, smoothCache )
+    DECL_LSCS_PROPERTY_WRITE( smoothCache, setSmoothCache )
+    DECL_LSCS_PROPERTY_READ( contentsScale, contentsScale )
+    DECL_LSCS_PROPERTY_WRITE( contentsScale, setContentsScale )
+    DECL_LSCS_PROPERTY_NOTIFY( contentsScale, contentsScaleChanged )
 
- public:
-   QDeclarativePaintedItem(QDeclarativeItem *parent = 0);
-   ~QDeclarativePaintedItem();
+public:
+    QDeclarativePaintedItem( QDeclarativeItem *parent = 0 );
+    ~QDeclarativePaintedItem();
 
-   QSize contentsSize() const;
-   void setContentsSize(const QSize &);
+    QSize contentsSize() const;
+    void setContentsSize( const QSize & );
 
-   qreal contentsScale() const;
-   void setContentsScale(qreal);
+    qreal contentsScale() const;
+    void setContentsScale( qreal );
 
-   int pixelCacheSize() const;
-   void setPixelCacheSize(int pixels);
+    int pixelCacheSize() const;
+    void setPixelCacheSize( int pixels );
 
-   bool smoothCache() const;
-   void setSmoothCache(bool on);
+    bool smoothCache() const;
+    void setSmoothCache( bool on );
 
-   QColor fillColor() const;
-   void setFillColor(const QColor &);
+    QColor fillColor() const;
+    void setFillColor( const QColor & );
 
-   void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+    void paint( QPainter *, const QStyleOptionGraphicsItem *, QWidget * );
 
-   DECL_CS_SIGNAL_1(Public, void fillColorChanged())
-   DECL_CS_SIGNAL_2(fillColorChanged)
-   DECL_CS_SIGNAL_1(Public, void contentsSizeChanged())
-   DECL_CS_SIGNAL_2(contentsSizeChanged)
-   DECL_CS_SIGNAL_1(Public, void contentsScaleChanged())
-   DECL_CS_SIGNAL_2(contentsScaleChanged)
+    DECL_LSCS_SIGNAL_1( Public, void fillColorChanged() )
+    DECL_LSCS_SIGNAL_2( fillColorChanged )
+    DECL_LSCS_SIGNAL_1( Public, void contentsSizeChanged() )
+    DECL_LSCS_SIGNAL_2( contentsSizeChanged )
+    DECL_LSCS_SIGNAL_1( Public, void contentsScaleChanged() )
+    DECL_LSCS_SIGNAL_2( contentsScaleChanged )
 
- protected:
-   QDeclarativePaintedItem(QDeclarativePaintedItemPrivate &dd, QDeclarativeItem *parent);
+protected:
+    QDeclarativePaintedItem( QDeclarativePaintedItemPrivate &dd, QDeclarativeItem *parent );
 
-   virtual void drawContents(QPainter *p, const QRect &) = 0;
-   virtual void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
-   virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void drawContents( QPainter *p, const QRect & ) = 0;
+    virtual void geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry );
+    virtual QVariant itemChange( GraphicsItemChange change, const QVariant &value );
 
-   void setCacheFrozen(bool);
-   QRectF boundingRect() const;
+    void setCacheFrozen( bool );
+    QRectF boundingRect() const;
 
-   DECL_CS_SLOT_1(Protected, void dirtyCache(const QRect &un_named_arg1))
-   DECL_CS_SLOT_2(dirtyCache)
-   DECL_CS_SLOT_1(Protected, void clearCache())
-   DECL_CS_SLOT_2(clearCache)
+    DECL_LSCS_SLOT_1( Protected, void dirtyCache( const QRect &un_named_arg1 ) )
+    DECL_LSCS_SLOT_2( dirtyCache )
+    DECL_LSCS_SLOT_1( Protected, void clearCache() )
+    DECL_LSCS_SLOT_2( clearCache )
 
- private:
-   Q_DISABLE_COPY(QDeclarativePaintedItem)
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativePaintedItem)
+private:
+    Q_DISABLE_COPY( QDeclarativePaintedItem )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativePaintedItem )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativePaintedItem)
+QML_DECLARE_TYPE( QDeclarativePaintedItem )
 
 #endif

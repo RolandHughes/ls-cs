@@ -34,14 +34,14 @@ class QDataStream;
 
 class QScriptDebuggerObjectSnapshotDelta
 {
- public:
-   QStringList removedProperties;
-   QScriptDebuggerValuePropertyList changedProperties;
-   QScriptDebuggerValuePropertyList addedProperties;
+public:
+    QStringList removedProperties;
+    QScriptDebuggerValuePropertyList changedProperties;
+    QScriptDebuggerValuePropertyList addedProperties;
 };
 
-QDataStream &operator<<(QDataStream &, const QScriptDebuggerObjectSnapshotDelta &);
-QDataStream &operator>>(QDataStream &, QScriptDebuggerObjectSnapshotDelta &);
+QDataStream &operator<<( QDataStream &, const QScriptDebuggerObjectSnapshotDelta & );
+QDataStream &operator>>( QDataStream &, QScriptDebuggerObjectSnapshotDelta & );
 
 QT_END_NAMESPACE
 

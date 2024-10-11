@@ -33,22 +33,22 @@ class QAtomicPointer;
 
 class QSimpleTextCodec: public QTextCodec
 {
- public:
-   static constexpr const int numSimpleCodecs = 30;
+public:
+    static constexpr const int numSimpleCodecs = 30;
 
-   explicit QSimpleTextCodec(int);
-   ~QSimpleTextCodec();
+    explicit QSimpleTextCodec( int );
+    ~QSimpleTextCodec();
 
-   QString convertToUnicode(const char *, int, ConverterState *) const override;
-   QByteArray convertFromUnicode(QStringView str, ConverterState *) const override;
+    QString convertToUnicode( const char *, int, ConverterState * ) const override;
+    QByteArray convertFromUnicode( QStringView str, ConverterState * ) const override;
 
-   QString name() const override;
-   QStringList aliases() const override;
-   int mibEnum() const override;
+    QString name() const override;
+    QStringList aliases() const override;
+    int mibEnum() const override;
 
- private:
-   int forwardIndex;
-   mutable QAtomicPointer<QByteArray> reverseMap;
+private:
+    int forwardIndex;
+    mutable QAtomicPointer<QByteArray> reverseMap;
 };
 
 #endif // QT_NO_TEXTCODEC

@@ -29,22 +29,22 @@
 
 const int QNetworkReplyPrivate::progressSignalInterval = 100;
 QNetworkReplyPrivate::QNetworkReplyPrivate()
-   : readBufferMaxSize(0), emitAllUploadProgressSignals(false),
-     operation(QNetworkAccessManager::UnknownOperation),
-     m_errorCode(QNetworkReply::NoError), isFinished(false)
+    : readBufferMaxSize( 0 ), emitAllUploadProgressSignals( false ),
+      operation( QNetworkAccessManager::UnknownOperation ),
+      m_errorCode( QNetworkReply::NoError ), isFinished( false )
 {
-   // set the default attribute values
-   attributes.insert(QNetworkRequest::ConnectionEncryptedAttribute, false);
+    // set the default attribute values
+    attributes.insert( QNetworkRequest::ConnectionEncryptedAttribute, false );
 }
 
-QNetworkReply::QNetworkReply(QObject *parent)
-   : QIODevice(*new QNetworkReplyPrivate, parent)
+QNetworkReply::QNetworkReply( QObject *parent )
+    : QIODevice( *new QNetworkReplyPrivate, parent )
 {
 }
 
 // internal
-QNetworkReply::QNetworkReply(QNetworkReplyPrivate &dd, QObject *parent)
-   : QIODevice(dd, parent)
+QNetworkReply::QNetworkReply( QNetworkReplyPrivate &dd, QObject *parent )
+    : QIODevice( dd, parent )
 {
 }
 
@@ -54,97 +54,99 @@ QNetworkReply::~QNetworkReply()
 
 void QNetworkReply::close()
 {
-   QIODevice::close();
+    QIODevice::close();
 }
 
 // internal
 bool QNetworkReply::isSequential() const
 {
-   return true;
+    return true;
 }
 
 qint64 QNetworkReply::readBufferSize() const
 {
-   return d_func()->readBufferMaxSize;
+    return d_func()->readBufferMaxSize;
 }
 
-void QNetworkReply::setReadBufferSize(qint64 size)
+void QNetworkReply::setReadBufferSize( qint64 size )
 {
-   Q_D(QNetworkReply);
-   d->readBufferMaxSize = size;
+    Q_D( QNetworkReply );
+    d->readBufferMaxSize = size;
 }
 
 QNetworkAccessManager *QNetworkReply::manager() const
 {
-   return d_func()->manager;
+    return d_func()->manager;
 }
 
 QNetworkRequest QNetworkReply::request() const
 {
-   return d_func()->originalRequest;
+    return d_func()->originalRequest;
 }
 
 QNetworkAccessManager::Operation QNetworkReply::operation() const
 {
-   return d_func()->operation;
+    return d_func()->operation;
 }
 
 QNetworkReply::NetworkError QNetworkReply::error() const
 {
-   return d_func()->m_errorCode;
+    return d_func()->m_errorCode;
 }
 
 bool QNetworkReply::isFinished() const
 {
-   return d_func()->isFinished;
+    return d_func()->isFinished;
 }
 
 bool QNetworkReply::isRunning() const
 {
-   return !isFinished();
+    return !isFinished();
 }
 
 QUrl QNetworkReply::url() const
 {
-   return d_func()->url;
+    return d_func()->url;
 }
 
-QVariant QNetworkReply::header(QNetworkRequest::KnownHeaders header) const
+QVariant QNetworkReply::header( QNetworkRequest::KnownHeaders header ) const
 {
-   return d_func()->cookedHeaders.value(header);
+    return d_func()->cookedHeaders.value( header );
 }
 
-bool QNetworkReply::hasRawHeader(const QByteArray &headerName) const
+bool QNetworkReply::hasRawHeader( const QByteArray &headerName ) const
 {
-   Q_D(const QNetworkReply);
-   return d->findRawHeader(headerName) != d->rawHeaders.constEnd();
+    Q_D( const QNetworkReply );
+    return d->findRawHeader( headerName ) != d->rawHeaders.constEnd();
 }
 
-QByteArray QNetworkReply::rawHeader(const QByteArray &headerName) const
+QByteArray QNetworkReply::rawHeader( const QByteArray &headerName ) const
 {
-   Q_D(const QNetworkReply);
-   QNetworkHeadersPrivate::RawHeadersList::const_iterator it = d->findRawHeader(headerName);
+    Q_D( const QNetworkReply );
+    QNetworkHeadersPrivate::RawHeadersList::const_iterator it = d->findRawHeader( headerName );
 
-   if (it != d->rawHeaders.constEnd()) {
-      return it->second;
-   }
-   return QByteArray();
+    if ( it != d->rawHeaders.constEnd() )
+    {
+        return it->second;
+    }
+
+    return QByteArray();
 }
 
 const QList<QNetworkReply::RawHeaderPair> &QNetworkReply::rawHeaderPairs() const
 {
-   Q_D(const QNetworkReply);
-   return d->rawHeaders;
+    Q_D( const QNetworkReply );
+    return d->rawHeaders;
 }
 
 QList<QByteArray> QNetworkReply::rawHeaderList() const
 {
-   return d_func()->rawHeadersKeys();
+    return d_func()->rawHeadersKeys();
 }
 
-QVariant QNetworkReply::attribute(QNetworkRequest::Attribute code) const
+QVariant QNetworkReply::attribute( QNetworkRequest::Attribute code ) const
 {
-   return d_func()->attributes.value(code);
+    return d_func()->attributes.value( code );
 }
 
 #ifdef QT_SSL
@@ -159,33 +161,33 @@ QVariant QNetworkReply::attribute(QNetworkRequest::Attribute code) const
 */
 QSslConfiguration QNetworkReply::sslConfiguration() const
 {
-   QSslConfiguration config;
-   sslConfigurationImplementation(config);
-   return config;
+    QSslConfiguration config;
+    sslConfigurationImplementation( config );
+    return config;
 }
 
-void QNetworkReply::setSslConfiguration(const QSslConfiguration &config)
+void QNetworkReply::setSslConfiguration( const QSslConfiguration &config )
 {
-   setSslConfigurationImplementation(config);
+    setSslConfigurationImplementation( config );
 }
 
-void QNetworkReply::ignoreSslErrors(const QList<QSslError> &errors)
+void QNetworkReply::ignoreSslErrors( const QList<QSslError> &errors )
 {
-   ignoreSslErrorsImplementation(errors);
+    ignoreSslErrorsImplementation( errors );
 }
 #endif
 
-void QNetworkReply::sslConfigurationImplementation(QSslConfiguration &) const
+void QNetworkReply::sslConfigurationImplementation( QSslConfiguration & ) const
 {
 
 }
-void QNetworkReply::setSslConfigurationImplementation(const QSslConfiguration &)
+void QNetworkReply::setSslConfigurationImplementation( const QSslConfiguration & )
 {
 }
 
-void QNetworkReply::ignoreSslErrorsImplementation(const QList<QSslError> &errors)
+void QNetworkReply::ignoreSslErrorsImplementation( const QList<QSslError> &errors )
 {
-   (void) errors;
+    ( void ) errors;
 }
 
 void QNetworkReply::ignoreSslErrors()
@@ -193,61 +195,64 @@ void QNetworkReply::ignoreSslErrors()
 }
 
 // internal
-qint64 QNetworkReply::writeData(const char *, qint64)
+qint64 QNetworkReply::writeData( const char *, qint64 )
 {
-   return -1;                  // unable to write
+    return -1;                  // unable to write
 }
 
-void QNetworkReply::setOperation(QNetworkAccessManager::Operation operation)
+void QNetworkReply::setOperation( QNetworkAccessManager::Operation operation )
 {
-   Q_D(QNetworkReply);
-   d->operation = operation;
+    Q_D( QNetworkReply );
+    d->operation = operation;
 }
 
-void QNetworkReply::setRequest(const QNetworkRequest &request)
+void QNetworkReply::setRequest( const QNetworkRequest &request )
 {
-   Q_D(QNetworkReply);
-   d->originalRequest = request;
+    Q_D( QNetworkReply );
+    d->originalRequest = request;
 }
 
-void QNetworkReply::setError(NetworkError errorCode, const QString &errorString)
+void QNetworkReply::setError( NetworkError errorCode, const QString &errorString )
 {
-   Q_D(QNetworkReply);
-   d->m_errorCode = errorCode;
-   setErrorString(errorString); // in QIODevice
+    Q_D( QNetworkReply );
+    d->m_errorCode = errorCode;
+    setErrorString( errorString ); // in QIODevice
 }
 
-void QNetworkReply::setFinished(bool finished)
+void QNetworkReply::setFinished( bool finished )
 {
-   Q_D(QNetworkReply);
-   d->isFinished = finished;
+    Q_D( QNetworkReply );
+    d->isFinished = finished;
 }
 
-void QNetworkReply::setUrl(const QUrl &url)
+void QNetworkReply::setUrl( const QUrl &url )
 {
-   Q_D(QNetworkReply);
-   d->url = url;
+    Q_D( QNetworkReply );
+    d->url = url;
 }
 
-void QNetworkReply::setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value)
+void QNetworkReply::setHeader( QNetworkRequest::KnownHeaders header, const QVariant &value )
 {
-   Q_D(QNetworkReply);
-   d->setCookedHeader(header, value);
+    Q_D( QNetworkReply );
+    d->setCookedHeader( header, value );
 }
 
-void QNetworkReply::setRawHeader(const QByteArray &headerName, const QByteArray &value)
+void QNetworkReply::setRawHeader( const QByteArray &headerName, const QByteArray &value )
 {
-   Q_D(QNetworkReply);
-   d->setRawHeader(headerName, value);
+    Q_D( QNetworkReply );
+    d->setRawHeader( headerName, value );
 }
 
-void QNetworkReply::setAttribute(QNetworkRequest::Attribute code, const QVariant &value)
+void QNetworkReply::setAttribute( QNetworkRequest::Attribute code, const QVariant &value )
 {
-   Q_D(QNetworkReply);
+    Q_D( QNetworkReply );
 
-   if (value.isValid()) {
-      d->attributes.insert(code, value);
-   } else {
-      d->attributes.remove(code);
-   }
+    if ( value.isValid() )
+    {
+        d->attributes.insert( code, value );
+    }
+    else
+    {
+        d->attributes.remove( code );
+    }
 }

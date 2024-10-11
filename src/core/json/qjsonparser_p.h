@@ -30,43 +30,44 @@
 
 class QJsonParser
 {
- public:
-   enum TokenType {
-      Null           = 0x00,
-      Space          = 0x20,
-      Tab            = 0x09,
-      LineFeed       = 0x0a,
-      Return         = 0x0d,
-      BeginArray     = 0x5b,
-      BeginObject    = 0x7b,
-      EndArray       = 0x5d,
-      EndObject      = 0x7d,
-      NameSeparator  = 0x3a,
-      ValueSeparator = 0x2c,
-      Quote          = 0x22
-   };
+public:
+    enum TokenType
+    {
+        Null           = 0x00,
+        Space          = 0x20,
+        Tab            = 0x09,
+        LineFeed       = 0x0a,
+        Return         = 0x0d,
+        BeginArray     = 0x5b,
+        BeginObject    = 0x7b,
+        EndArray       = 0x5d,
+        EndObject      = 0x7d,
+        NameSeparator  = 0x3a,
+        ValueSeparator = 0x2c,
+        Quote          = 0x22
+    };
 
-   QJsonParser(QStringView data);
-   QJsonDocument parse(QJsonParseError *error);
+    QJsonParser( QStringView data );
+    QJsonDocument parse( QJsonParseError *error );
 
- private:
-   void eatBOM();
-   bool eatWhiteSpace();
-   TokenType nextToken();
+private:
+    void eatBOM();
+    bool eatWhiteSpace();
+    TokenType nextToken();
 
-   bool parseArray(QJsonArray &array);
-   bool parseObject(QJsonObject &object);
-   bool parseMember(QJsonObject &object);
-   bool parseString(QString &str);
+    bool parseArray( QJsonArray &array );
+    bool parseObject( QJsonObject &object );
+    bool parseMember( QJsonObject &object );
+    bool parseString( QString &str );
 
-   bool parseValue(QJsonValue &value);
-   bool parseNumber(QJsonValue &value);
+    bool parseValue( QJsonValue &value );
+    bool parseNumber( QJsonValue &value );
 
-   QStringView m_data;
-   QString::const_iterator m_position;
+    QStringView m_data;
+    QString::const_iterator m_position;
 
-   int nestingLevel;
-   QJsonParseError::ParseError lastError;
+    int nestingLevel;
+    QJsonParseError::ParseError lastError;
 };
 
 #endif

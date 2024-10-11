@@ -33,20 +33,22 @@
 
 #include <wtf/Vector.h>
 
-namespace WTF {
+namespace WTF
+{
 
-class MD5 {
+class MD5
+{
 public:
     MD5();
 
-    void addBytes(const Vector<uint8_t>& input)
+    void addBytes( const Vector<uint8_t> &input )
     {
-        addBytes(input.data(), input.size());
+        addBytes( input.data(), input.size() );
     }
-    void addBytes(const uint8_t* input, size_t length);
+    void addBytes( const uint8_t *input, size_t length );
 
     // checksum has a side effect of resetting the state of the object.
-    void checksum(Vector<uint8_t, 16>&);
+    void checksum( Vector<uint8_t, 16> & );
 
 private:
     uint32_t m_buf[4];

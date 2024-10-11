@@ -41,23 +41,23 @@ class QDeclarativeContextData;
 class QDeclarativeVMEObjectStack;
 class QDeclarativeVME
 {
- public:
-   QDeclarativeVME();
+public:
+    QDeclarativeVME();
 
-   QObject *run(QDeclarativeContextData *, QDeclarativeCompiledData *,
-                int start = -1, int count = -1,
-                const QBitField & = QBitField());
-   void runDeferred(QObject *);
+    QObject *run( QDeclarativeContextData *, QDeclarativeCompiledData *,
+                  int start = -1, int count = -1,
+                  const QBitField & = QBitField() );
+    void runDeferred( QObject * );
 
-   bool isError() const;
-   QList<QDeclarativeError> errors() const;
+    bool isError() const;
+    QList<QDeclarativeError> errors() const;
 
- private:
-   QObject *run(QDeclarativeVMEObjectStack &,
-                QDeclarativeContextData *, QDeclarativeCompiledData *,
-                int start, int count,
-                const QBitField &);
-   QList<QDeclarativeError> vmeErrors;
+private:
+    QObject *run( QDeclarativeVMEObjectStack &,
+                  QDeclarativeContextData *, QDeclarativeCompiledData *,
+                  int start, int count,
+                  const QBitField & );
+    QList<QDeclarativeError> vmeErrors;
 };
 
 QT_END_NAMESPACE

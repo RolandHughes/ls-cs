@@ -34,11 +34,14 @@
 #include <PluginStrategy.h>
 #include <VisitedLinkStrategy.h>
 
-namespace WebCore {
+namespace WebCore
+{
 class Page;
 }
 
-class WebPlatformStrategies : public WebCore::PlatformStrategies, private WebCore::CookiesStrategy, private WebCore::PluginStrategy, private WebCore::LocalizationStrategy, private WebCore::VisitedLinkStrategy {
+class WebPlatformStrategies : public WebCore::PlatformStrategies, private WebCore::CookiesStrategy,
+    private WebCore::PluginStrategy, private WebCore::LocalizationStrategy, private WebCore::VisitedLinkStrategy
+{
 public:
     static void initialize();
 
@@ -46,17 +49,17 @@ private:
     WebPlatformStrategies();
 
     // WebCore::PlatformStrategies
-    virtual WebCore::CookiesStrategy* createCookiesStrategy();
-    virtual WebCore::PluginStrategy* createPluginStrategy();
-    virtual WebCore::LocalizationStrategy* createLocalizationStrategy();
-    virtual WebCore::VisitedLinkStrategy* createVisitedLinkStrategy();
-    
+    virtual WebCore::CookiesStrategy *createCookiesStrategy();
+    virtual WebCore::PluginStrategy *createPluginStrategy();
+    virtual WebCore::LocalizationStrategy *createLocalizationStrategy();
+    virtual WebCore::VisitedLinkStrategy *createVisitedLinkStrategy();
+
     // WebCore::CookiesStrategy
     virtual void notifyCookiesChanged();
 
     // WebCore::PluginStrategy
     virtual void refreshPlugins();
-    virtual void getPluginInfo(const WebCore::Page*, Vector<WebCore::PluginInfo>&);
+    virtual void getPluginInfo( const WebCore::Page *, Vector<WebCore::PluginInfo> & );
 
     // WebCore::LocalizationStrategy
     virtual WTF::String inputElementAltText();
@@ -86,11 +89,11 @@ private:
     virtual WTF::String contextMenuItemTagIgnoreSpelling();
     virtual WTF::String contextMenuItemTagLearnSpelling();
     virtual WTF::String contextMenuItemTagSearchWeb();
-    virtual WTF::String contextMenuItemTagLookUpInDictionary(const String&);
+    virtual WTF::String contextMenuItemTagLookUpInDictionary( const String & );
     virtual WTF::String contextMenuItemTagOpenLink();
     virtual WTF::String contextMenuItemTagIgnoreGrammar();
     virtual WTF::String contextMenuItemTagSpellingMenu();
-    virtual WTF::String contextMenuItemTagShowSpellingPanel(bool show);
+    virtual WTF::String contextMenuItemTagShowSpellingPanel( bool show );
     virtual WTF::String contextMenuItemTagCheckSpelling();
     virtual WTF::String contextMenuItemTagCheckSpellingWhileTyping();
     virtual WTF::String contextMenuItemTagCheckGrammarWithSpelling();
@@ -135,14 +138,14 @@ private:
     virtual WTF::String AXLinkActionVerb();
     virtual WTF::String missingPluginText();
     virtual WTF::String crashedPluginText();
-    virtual WTF::String multipleFileUploadText(unsigned numberOfFiles);
+    virtual WTF::String multipleFileUploadText( unsigned numberOfFiles );
     virtual WTF::String unknownFileSizeText();
-    virtual WTF::String imageTitle(const WTF::String& filename, const WebCore::IntSize&);
+    virtual WTF::String imageTitle( const WTF::String &filename, const WebCore::IntSize & );
     virtual WTF::String mediaElementLoadingStateText();
     virtual WTF::String mediaElementLiveBroadcastStateText();
-    virtual WTF::String localizedMediaControlElementString(const WTF::String&);
-    virtual WTF::String localizedMediaControlElementHelpText(const WTF::String&);
-    virtual WTF::String localizedMediaTimeDescription(float);
+    virtual WTF::String localizedMediaControlElementString( const WTF::String & );
+    virtual WTF::String localizedMediaControlElementHelpText( const WTF::String & );
+    virtual WTF::String localizedMediaTimeDescription( float );
     virtual WTF::String validationMessageValueMissingText();
     virtual WTF::String validationMessageTypeMismatchText();
     virtual WTF::String validationMessagePatternMismatchText();
@@ -152,8 +155,8 @@ private:
     virtual WTF::String validationMessageStepMismatchText();
 
     // WebCore::VisitedLinkStrategy
-    virtual bool isLinkVisited(WebCore::Page*, WebCore::LinkHash);
-    virtual void addVisitedLink(WebCore::Page*, WebCore::LinkHash);
+    virtual bool isLinkVisited( WebCore::Page *, WebCore::LinkHash );
+    virtual void addVisitedLink( WebCore::Page *, WebCore::LinkHash );
 };
 
 #endif // WebPlatformStrategies_h

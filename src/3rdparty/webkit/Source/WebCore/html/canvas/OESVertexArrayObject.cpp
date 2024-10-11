@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,10 +33,11 @@
 #include "WebGLRenderingContext.h"
 #include "WebGLVertexArrayObjectOES.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-OESVertexArrayObject::OESVertexArrayObject(WebGLRenderingContext* context)
-    : WebGLExtension(context)
+OESVertexArrayObject::OESVertexArrayObject( WebGLRenderingContext *context )
+    : WebGLExtension( context )
 {
 }
 
@@ -49,65 +50,81 @@ WebGLExtension::ExtensionName OESVertexArrayObject::getName() const
     return OESVertexArrayObjectName;
 }
 
-PassOwnPtr<OESVertexArrayObject> OESVertexArrayObject::create(WebGLRenderingContext* context)
+PassOwnPtr<OESVertexArrayObject> OESVertexArrayObject::create( WebGLRenderingContext *context )
 {
-    return adoptPtr(new OESVertexArrayObject(context));
+    return adoptPtr( new OESVertexArrayObject( context ) );
 }
 
 PassRefPtr<WebGLVertexArrayObjectOES> OESVertexArrayObject::createVertexArrayOES()
 {
-    if (m_context->isContextLost())
+    if ( m_context->isContextLost() )
+    {
         return 0;
-    
-    RefPtr<WebGLVertexArrayObjectOES> o = WebGLVertexArrayObjectOES::create(m_context, WebGLVertexArrayObjectOES::VaoTypeUser);
-    m_context->addObject(o.get());
+    }
+
+    RefPtr<WebGLVertexArrayObjectOES> o = WebGLVertexArrayObjectOES::create( m_context, WebGLVertexArrayObjectOES::VaoTypeUser );
+    m_context->addObject( o.get() );
     return o.release();
 }
 
-void OESVertexArrayObject::deleteVertexArrayOES(WebGLVertexArrayObjectOES* arrayObject)
+void OESVertexArrayObject::deleteVertexArrayOES( WebGLVertexArrayObjectOES *arrayObject )
 {
-    if (!arrayObject || m_context->isContextLost())
+    if ( !arrayObject || m_context->isContextLost() )
+    {
         return;
-    
+    }
+
     arrayObject->deleteObject();
 }
 
-GC3Dboolean OESVertexArrayObject::isVertexArrayOES(WebGLVertexArrayObjectOES* arrayObject)
+GC3Dboolean OESVertexArrayObject::isVertexArrayOES( WebGLVertexArrayObjectOES *arrayObject )
 {
-    if (!arrayObject || m_context->isContextLost())
+    if ( !arrayObject || m_context->isContextLost() )
+    {
         return 0;
-    
-    if (!arrayObject->hasEverBeenBound())
+    }
+
+    if ( !arrayObject->hasEverBeenBound() )
+    {
         return 0;
-    
-    Extensions3D* extensions = m_context->graphicsContext3D()->getExtensions();
-    return extensions->isVertexArrayOES(arrayObject->object());
+    }
+
+    Extensions3D *extensions = m_context->graphicsContext3D()->getExtensions();
+    return extensions->isVertexArrayOES( arrayObject->object() );
 }
 
-void OESVertexArrayObject::bindVertexArrayOES(WebGLVertexArrayObjectOES* arrayObject, ExceptionCode& ec)
+void OESVertexArrayObject::bindVertexArrayOES( WebGLVertexArrayObjectOES *arrayObject, ExceptionCode &ec )
 {
-    UNUSED_PARAM(ec);
-    if (m_context->isContextLost())
-        return;
-    
-    if (arrayObject && arrayObject->context() != m_context) {
-        m_context->graphicsContext3D()->synthesizeGLError(GraphicsContext3D::INVALID_OPERATION);
+    UNUSED_PARAM( ec );
+
+    if ( m_context->isContextLost() )
+    {
         return;
     }
-    
-    Extensions3D* extensions = m_context->graphicsContext3D()->getExtensions();
-    if (arrayObject && !arrayObject->isDefaultObject() && arrayObject->object()) {
-        extensions->bindVertexArrayOES(arrayObject->object());
-        
+
+    if ( arrayObject && arrayObject->context() != m_context )
+    {
+        m_context->graphicsContext3D()->synthesizeGLError( GraphicsContext3D::INVALID_OPERATION );
+        return;
+    }
+
+    Extensions3D *extensions = m_context->graphicsContext3D()->getExtensions();
+
+    if ( arrayObject && !arrayObject->isDefaultObject() && arrayObject->object() )
+    {
+        extensions->bindVertexArrayOES( arrayObject->object() );
+
         arrayObject->setHasEverBeenBound();
-        m_context->setBoundVertexArrayObject(arrayObject);
-    } else {
-        extensions->bindVertexArrayOES(0);
-        
-        m_context->setBoundVertexArrayObject(0);
+        m_context->setBoundVertexArrayObject( arrayObject );
     }
-    
-    m_context->cleanupAfterGraphicsCall(false);
+    else
+    {
+        extensions->bindVertexArrayOES( 0 );
+
+        m_context->setBoundVertexArrayObject( 0 );
+    }
+
+    m_context->cleanupAfterGraphicsCall( false );
 }
 
 } // namespace WebCore

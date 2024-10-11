@@ -31,78 +31,83 @@
 
 class QClipboardData
 {
- public:
-   QClipboardData();
-   ~QClipboardData();
+public:
+    QClipboardData();
+    ~QClipboardData();
 
-   void setSource(QMimeData *s) {
-      if (s == src) {
-         return;
-      }
-      delete src;
-      src = s;
-   }
-   QMimeData *source() {
-      return src;
-   }
+    void setSource( QMimeData *s )
+    {
+        if ( s == src )
+        {
+            return;
+        }
 
- private:
-   QMimeData *src;
+        delete src;
+        src = s;
+    }
+    QMimeData *source()
+    {
+        return src;
+    }
+
+private:
+    QMimeData *src;
 };
 
 QClipboardData::QClipboardData()
 {
-   src = nullptr;
+    src = nullptr;
 }
 
 QClipboardData::~QClipboardData()
 {
-   delete src;
+    delete src;
 }
 
 static QClipboardData *q_clipboardData()
 {
-   static QClipboardData retval;
-   return &retval;
+    static QClipboardData retval;
+    return &retval;
 }
 
 QPlatformClipboard::~QPlatformClipboard()
 {
 }
 
-QMimeData *QPlatformClipboard::mimeData(QClipboard::Mode mode)
+QMimeData *QPlatformClipboard::mimeData( QClipboard::Mode mode )
 {
-   //we know its clipboard
-   (void) mode;
-   return q_clipboardData()->source();
+    //we know its clipboard
+    ( void ) mode;
+    return q_clipboardData()->source();
 }
 
-void QPlatformClipboard::setMimeData(QMimeData *data, QClipboard::Mode mode)
+void QPlatformClipboard::setMimeData( QMimeData *data, QClipboard::Mode mode )
 {
-   //we know its clipboard
-   (void) mode;
+    //we know its clipboard
+    ( void ) mode;
 
-   q_clipboardData()->setSource(data);
-   emitChanged(mode);
+    q_clipboardData()->setSource( data );
+    emitChanged( mode );
 }
 
-bool QPlatformClipboard::supportsMode(QClipboard::Mode mode) const
+bool QPlatformClipboard::supportsMode( QClipboard::Mode mode ) const
 {
-   return mode == QClipboard::Clipboard;
+    return mode == QClipboard::Clipboard;
 }
 
-bool QPlatformClipboard::ownsMode(QClipboard::Mode mode) const
+bool QPlatformClipboard::ownsMode( QClipboard::Mode mode ) const
 {
-   (void) mode;
-   return false;
+    ( void ) mode;
+    return false;
 }
 
-void QPlatformClipboard::emitChanged(QClipboard::Mode mode)
+void QPlatformClipboard::emitChanged( QClipboard::Mode mode )
 {
-   if (!QGuiApplicationPrivate::is_app_closing)  {
-      //  prevent emission when closing down.
-      QGuiApplication::clipboard()->emitChanged(mode);
-   }
+    if ( !QGuiApplicationPrivate::is_app_closing )
+    {
+        //  prevent emission when closing down.
+        QGuiApplication::clipboard()->emitChanged( mode );
+    }
 }
 
 #endif //QT_NO_CLIPBOARD

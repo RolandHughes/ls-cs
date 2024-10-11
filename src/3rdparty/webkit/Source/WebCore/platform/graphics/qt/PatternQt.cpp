@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,17 +29,21 @@
 #include "AffineTransform.h"
 #include "GraphicsContext.h"
 
-namespace WebCore {
-
-QBrush Pattern::createPlatformPattern(const AffineTransform&) const
+namespace WebCore
 {
-    QPixmap* pixmap = tileImage()->nativeImageForCurrentFrame();
-    if (!pixmap)
+
+QBrush Pattern::createPlatformPattern( const AffineTransform & ) const
+{
+    QPixmap *pixmap = tileImage()->nativeImageForCurrentFrame();
+
+    if ( !pixmap )
+    {
         return QBrush();
+    }
 
     // Qt merges patter space and user space itself
-    QBrush brush(*pixmap);
-    brush.setTransform(m_patternSpaceTransformation);
+    QBrush brush( *pixmap );
+    brush.setTransform( m_patternSpaceTransformation );
 
     return brush;
 }

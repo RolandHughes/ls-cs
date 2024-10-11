@@ -32,31 +32,37 @@
 #include "HTMLFormElement.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-static HTMLFormControlElement* nodeAsLabelableFormControl(Node* node)
+static HTMLFormControlElement *nodeAsLabelableFormControl( Node *node )
 {
-    if (!node || !node->isElementNode() || !static_cast<Element*>(node)->isFormControlElement())
+    if ( !node || !node->isElementNode() || !static_cast<Element *>( node )->isFormControlElement() )
+    {
         return 0;
-    
-    HTMLFormControlElement* formControlElement = static_cast<HTMLFormControlElement*>(node);
-    if (!formControlElement->isLabelable())
+    }
+
+    HTMLFormControlElement *formControlElement = static_cast<HTMLFormControlElement *>( node );
+
+    if ( !formControlElement->isLabelable() )
+    {
         return 0;
+    }
 
     return formControlElement;
 }
 
-inline HTMLLabelElement::HTMLLabelElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLLabelElement::HTMLLabelElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(labelTag));
+    ASSERT( hasTagName( labelTag ) );
 }
 
-PassRefPtr<HTMLLabelElement> HTMLLabelElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLLabelElement> HTMLLabelElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLLabelElement(tagName, document));
+    return adoptRef( new HTMLLabelElement( tagName, document ) );
 }
 
 bool HTMLLabelElement::isFocusable() const
@@ -64,105 +70,137 @@ bool HTMLLabelElement::isFocusable() const
     return false;
 }
 
-HTMLFormControlElement* HTMLLabelElement::control()
+HTMLFormControlElement *HTMLLabelElement::control()
 {
-    const AtomicString& controlId = getAttribute(forAttr);
-    if (controlId.isNull()) {
+    const AtomicString &controlId = getAttribute( forAttr );
+
+    if ( controlId.isNull() )
+    {
         // Search the children and descendants of the label element for a form element.
         // per http://dev.w3.org/html5/spec/Overview.html#the-label-element
         // the form element must be "labelable form-associated element".
-        Node* node = this;
-        while ((node = node->traverseNextNode(this))) {
-            if (HTMLFormControlElement* formControlElement = nodeAsLabelableFormControl(node))
+        Node *node = this;
+
+        while ( ( node = node->traverseNextNode( this ) ) )
+        {
+            if ( HTMLFormControlElement *formControlElement = nodeAsLabelableFormControl( node ) )
+            {
                 return formControlElement;
+            }
         }
+
         return 0;
     }
-    
+
     // Find the first element whose id is controlId. If it is found and it is a labelable form control,
     // return it, otherwise return 0.
-    return nodeAsLabelableFormControl(treeScope()->getElementById(controlId));
+    return nodeAsLabelableFormControl( treeScope()->getElementById( controlId ) );
 }
 
-void HTMLLabelElement::setActive(bool down, bool pause)
+void HTMLLabelElement::setActive( bool down, bool pause )
 {
-    if (down == active())
+    if ( down == active() )
+    {
         return;
+    }
 
     // Update our status first.
-    HTMLElement::setActive(down, pause);
+    HTMLElement::setActive( down, pause );
 
     // Also update our corresponding control.
-    if (HTMLElement* element = control())
-        element->setActive(down, pause);
+    if ( HTMLElement *element = control() )
+    {
+        element->setActive( down, pause );
+    }
 }
 
-void HTMLLabelElement::setHovered(bool over)
+void HTMLLabelElement::setHovered( bool over )
 {
-    if (over == hovered())
+    if ( over == hovered() )
+    {
         return;
-        
+    }
+
     // Update our status first.
-    HTMLElement::setHovered(over);
+    HTMLElement::setHovered( over );
 
     // Also update our corresponding control.
-    if (HTMLElement* element = control())
-        element->setHovered(over);
+    if ( HTMLElement *element = control() )
+    {
+        element->setHovered( over );
+    }
 }
 
-void HTMLLabelElement::defaultEventHandler(Event* evt)
+void HTMLLabelElement::defaultEventHandler( Event *evt )
 {
     static bool processingClick = false;
 
-    if (evt->type() == eventNames().clickEvent && !processingClick) {
+    if ( evt->type() == eventNames().clickEvent && !processingClick )
+    {
         RefPtr<HTMLElement> element = control();
 
         // If we can't find a control or if the control received the click
         // event, then there's no need for us to do anything.
-        if (!element || (evt->target() && element->containsIncludingShadowDOM(evt->target()->toNode())))
+        if ( !element || ( evt->target() && element->containsIncludingShadowDOM( evt->target()->toNode() ) ) )
+        {
             return;
+        }
 
         processingClick = true;
 
         // Click the corresponding control.
-        element->dispatchSimulatedClick(evt);
+        element->dispatchSimulatedClick( evt );
 
         // If the control can be focused via the mouse, then do that too.
-        if (element->isMouseFocusable())
+        if ( element->isMouseFocusable() )
+        {
             element->focus();
+        }
 
         processingClick = false;
-        
+
         evt->setDefaultHandled();
     }
-    
-    HTMLElement::defaultEventHandler(evt);
+
+    HTMLElement::defaultEventHandler( evt );
 }
 
-void HTMLLabelElement::focus(bool)
+void HTMLLabelElement::focus( bool )
 {
     // to match other browsers, always restore previous selection
-    if (HTMLElement* element = control())
+    if ( HTMLElement *element = control() )
+    {
         element->focus();
+    }
 }
 
-void HTMLLabelElement::accessKeyAction(bool sendToAnyElement)
+void HTMLLabelElement::accessKeyAction( bool sendToAnyElement )
 {
-    if (HTMLElement* element = control())
-        element->accessKeyAction(sendToAnyElement);
+    if ( HTMLElement *element = control() )
+    {
+        element->accessKeyAction( sendToAnyElement );
+    }
     else
-        HTMLElement::accessKeyAction(sendToAnyElement);
+    {
+        HTMLElement::accessKeyAction( sendToAnyElement );
+    }
 }
 
-void HTMLLabelElement::parseMappedAttribute(Attribute* attribute)
+void HTMLLabelElement::parseMappedAttribute( Attribute *attribute )
 {
-    if (attribute->name() == forAttr) {
+    if ( attribute->name() == forAttr )
+    {
         // htmlFor attribute change affects other nodes than this.
         // Clear the caches to ensure that the labels caches are cleared.
-        if (document())
+        if ( document() )
+        {
             document()->notifyLocalNodeListsLabelChanged();
-    } else
-        HTMLElement::parseMappedAttribute(attribute);
+        }
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attribute );
+    }
 }
-                
+
 } // namespace

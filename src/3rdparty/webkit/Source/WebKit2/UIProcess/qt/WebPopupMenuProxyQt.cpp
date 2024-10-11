@@ -31,10 +31,11 @@
 
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 WebPopupMenuProxyQt::WebPopupMenuProxyQt()
-    : WebPopupMenuProxy(0)
+    : WebPopupMenuProxy( 0 )
 {
 }
 
@@ -42,7 +43,8 @@ WebPopupMenuProxyQt::~WebPopupMenuProxyQt()
 {
 }
 
-void WebPopupMenuProxyQt::showPopupMenu(const IntRect& rect, WebCore::TextDirection, double, const Vector<WebPopupItem>& items, const PlatformPopupMenuData&, int32_t selectedIndex)
+void WebPopupMenuProxyQt::showPopupMenu( const IntRect &rect, WebCore::TextDirection, double, const Vector<WebPopupItem> &items,
+        const PlatformPopupMenuData &, int32_t selectedIndex )
 {
 }
 

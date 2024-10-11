@@ -37,42 +37,48 @@
 using namespace JSC;
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 const ClassInfo JSNPMethod::s_info = { "NPMethod", &InternalFunction::s_info, 0, 0 };
 
-JSNPMethod::JSNPMethod(ExecState* exec, JSGlobalObject* globalObject, const Identifier& name, NPIdentifier npIdentifier)
-    : InternalFunction(&exec->globalData(), globalObject, createStructure(exec->globalData(), globalObject->functionPrototype()), name)
-    , m_npIdentifier(npIdentifier)
+JSNPMethod::JSNPMethod( ExecState *exec, JSGlobalObject *globalObject, const Identifier &name, NPIdentifier npIdentifier )
+    : InternalFunction( &exec->globalData(), globalObject, createStructure( exec->globalData(), globalObject->functionPrototype() ),
+                        name )
+    , m_npIdentifier( npIdentifier )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-static EncodedJSValue JSC_HOST_CALL callMethod(ExecState* exec)
+static EncodedJSValue JSC_HOST_CALL callMethod( ExecState *exec )
 {
-    JSNPMethod* jsNPMethod = static_cast<JSNPMethod*>(exec->callee());
+    JSNPMethod *jsNPMethod = static_cast<JSNPMethod *>( exec->callee() );
 
     JSValue thisValue = exec->hostThisValue();
 
     // Check if we're calling a method on the plug-in script object.
-    if (thisValue.inherits(&JSHTMLElement::s_info)) {
-        JSHTMLElement* element = static_cast<JSHTMLElement*>(asObject(thisValue));
+    if ( thisValue.inherits( &JSHTMLElement::s_info ) )
+    {
+        JSHTMLElement *element = static_cast<JSHTMLElement *>( asObject( thisValue ) );
 
         // Try to get the script object from the element
-        if (JSObject* scriptObject = pluginScriptObject(exec, element))
+        if ( JSObject *scriptObject = pluginScriptObject( exec, element ) )
+        {
             thisValue = scriptObject;
+        }
     }
 
-    if (thisValue.inherits(&JSNPObject::s_info)) {
-        JSNPObject* jsNPObject = static_cast<JSNPObject*>(asObject(thisValue));
+    if ( thisValue.inherits( &JSNPObject::s_info ) )
+    {
+        JSNPObject *jsNPObject = static_cast<JSNPObject *>( asObject( thisValue ) );
 
-        return JSValue::encode(jsNPObject->callMethod(exec, jsNPMethod->npIdentifier()));
+        return JSValue::encode( jsNPObject->callMethod( exec, jsNPMethod->npIdentifier() ) );
     }
 
-    return throwVMTypeError(exec);
+    return throwVMTypeError( exec );
 }
 
-CallType JSNPMethod::getCallData(CallData& callData)
+CallType JSNPMethod::getCallData( CallData &callData )
 {
     callData.native.function = callMethod;
     return CallTypeHost;

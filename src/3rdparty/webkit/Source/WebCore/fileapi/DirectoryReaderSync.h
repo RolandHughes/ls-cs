@@ -39,19 +39,21 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DirectoryReaderSync : public DirectoryReaderBase {
+class DirectoryReaderSync : public DirectoryReaderBase
+{
 public:
-    static PassRefPtr<DirectoryReaderSync> create(PassRefPtr<DOMFileSystemBase> fileSystem, const String& fullPath)
+    static PassRefPtr<DirectoryReaderSync> create( PassRefPtr<DOMFileSystemBase> fileSystem, const String &fullPath )
     {
-        return adoptRef(new DirectoryReaderSync(fileSystem, fullPath));
+        return adoptRef( new DirectoryReaderSync( fileSystem, fullPath ) );
     }
 
-    PassRefPtr<EntryArraySync> readEntries(ExceptionCode&);
+    PassRefPtr<EntryArraySync> readEntries( ExceptionCode & );
 
 private:
-    DirectoryReaderSync(PassRefPtr<DOMFileSystemBase>, const String& fullPath);
+    DirectoryReaderSync( PassRefPtr<DOMFileSystemBase>, const String &fullPath );
 };
 
 } // namespace

@@ -28,11 +28,12 @@
 #include <qstringlist.h>
 #include <qreadwritelock.h>
 
-struct QCoreGlobalData {
-   QMap<QString, QStringList> dirSearchPaths;
-   QReadWriteLock dirSearchPathsLock;
+struct QCoreGlobalData
+{
+    QMap<QString, QStringList> dirSearchPaths;
+    QReadWriteLock dirSearchPathsLock;
 
-   static QCoreGlobalData *instance();
+    static QCoreGlobalData *instance();
 };
 
 #endif

@@ -22,29 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #ifndef DecodedDataDocumentParser_h
 #define DecodedDataDocumentParser_h
 
 #include "DocumentParser.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DecodedDataDocumentParser : public DocumentParser {
+class DecodedDataDocumentParser : public DocumentParser
+{
 public:
     // Only used by the XMLDocumentParser to communicate back to
     // XMLHttpRequest if the responseXML was well formed.
-    virtual bool wellFormed() const { return true; }
+    virtual bool wellFormed() const
+    {
+        return true;
+    }
 
 protected:
-    explicit DecodedDataDocumentParser(Document*);
+    explicit DecodedDataDocumentParser( Document * );
 
 private:
     // append is used by DocumentWriter::replaceDocument
-    virtual void append(const SegmentedString&) = 0;
+    virtual void append( const SegmentedString & ) = 0;
 
     // appendBytes is used by DocumentWriter (the loader)
-    virtual void appendBytes(DocumentWriter*, const char* bytes, int length, bool flush);
+    virtual void appendBytes( DocumentWriter *, const char *bytes, int length, bool flush );
 };
 
 }

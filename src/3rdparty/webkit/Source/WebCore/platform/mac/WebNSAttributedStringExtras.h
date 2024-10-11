@@ -23,8 +23,9 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace WebCore {
+namespace WebCore
+{
 
-NSAttributedString *attributedStringByStrippingAttachmentCharacters(NSAttributedString *);
+NSAttributedString *attributedStringByStrippingAttachmentCharacters( NSAttributedString * );
 
 }

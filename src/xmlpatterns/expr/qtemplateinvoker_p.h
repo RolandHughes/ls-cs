@@ -27,29 +27,30 @@
 #include <qcallsite_p.h>
 #include <qwithparam_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class TemplateInvoker : public CallSite
 {
- public:
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+public:
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
-   inline const WithParam::Hash &withParams() const;
-   WithParam::Hash m_withParams;
+    inline const WithParam::Hash &withParams() const;
+    WithParam::Hash m_withParams;
 
-   SequenceType::List expectedOperandTypes() const override;
+    SequenceType::List expectedOperandTypes() const override;
 
- protected:
-   TemplateInvoker(const WithParam::Hash &withParams, const QXmlName &name = QXmlName());
+protected:
+    TemplateInvoker( const WithParam::Hash &withParams, const QXmlName &name = QXmlName() );
 
- private:
-   TemplateInvoker(const TemplateInvoker &) = delete;
-   TemplateInvoker &operator=(const TemplateInvoker &) = delete;
+private:
+    TemplateInvoker( const TemplateInvoker & ) = delete;
+    TemplateInvoker &operator=( const TemplateInvoker & ) = delete;
 };
 
 const WithParam::Hash &TemplateInvoker::withParams() const
 {
-   return m_withParams;
+    return m_withParams;
 }
 
 }

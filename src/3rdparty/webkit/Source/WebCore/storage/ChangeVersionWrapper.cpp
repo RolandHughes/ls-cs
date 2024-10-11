@@ -34,46 +34,50 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-ChangeVersionWrapper::ChangeVersionWrapper(const String& oldVersion, const String& newVersion)
-    : m_oldVersion(oldVersion.crossThreadString())
-    , m_newVersion(newVersion.crossThreadString())
+ChangeVersionWrapper::ChangeVersionWrapper( const String &oldVersion, const String &newVersion )
+    : m_oldVersion( oldVersion.crossThreadString() )
+    , m_newVersion( newVersion.crossThreadString() )
 {
 }
 
-bool ChangeVersionWrapper::performPreflight(SQLTransaction* transaction)
+bool ChangeVersionWrapper::performPreflight( SQLTransaction *transaction )
 {
-    ASSERT(transaction && transaction->database());
+    ASSERT( transaction && transaction->database() );
 
     String actualVersion;
 
-    if (!transaction->database()->getVersionFromDatabase(actualVersion)) {
-        LOG_ERROR("Unable to retrieve actual current version from database");
-        m_sqlError = SQLError::create(SQLError::UNKNOWN_ERR, "unable to verify current version of database");
+    if ( !transaction->database()->getVersionFromDatabase( actualVersion ) )
+    {
+        LOG_ERROR( "Unable to retrieve actual current version from database" );
+        m_sqlError = SQLError::create( SQLError::UNKNOWN_ERR, "unable to verify current version of database" );
         return false;
     }
 
-    if (actualVersion != m_oldVersion) {
-        LOG_ERROR("Old version doesn't match actual version");
-        m_sqlError = SQLError::create(SQLError::VERSION_ERR, "current version of the database and `oldVersion` argument do not match");
+    if ( actualVersion != m_oldVersion )
+    {
+        LOG_ERROR( "Old version doesn't match actual version" );
+        m_sqlError = SQLError::create( SQLError::VERSION_ERR, "current version of the database and `oldVersion` argument do not match" );
         return false;
     }
 
     return true;
 }
 
-bool ChangeVersionWrapper::performPostflight(SQLTransaction* transaction)
+bool ChangeVersionWrapper::performPostflight( SQLTransaction *transaction )
 {
-    ASSERT(transaction && transaction->database());
+    ASSERT( transaction && transaction->database() );
 
-    if (!transaction->database()->setVersionInDatabase(m_newVersion)) {
-        LOG_ERROR("Unable to set new version in database");
-        m_sqlError = SQLError::create(SQLError::UNKNOWN_ERR, "unable to set new version in database");
+    if ( !transaction->database()->setVersionInDatabase( m_newVersion ) )
+    {
+        LOG_ERROR( "Unable to set new version in database" );
+        m_sqlError = SQLError::create( SQLError::UNKNOWN_ERR, "unable to set new version in database" );
         return false;
     }
 
-    transaction->database()->setExpectedVersion(m_newVersion);
+    transaction->database()->setExpectedVersion( m_newVersion );
 
     return true;
 }

@@ -25,92 +25,92 @@
 
 using namespace QPatternist;
 
-QString XsdSimpleType::displayName(const NamePool::Ptr &np) const
+QString XsdSimpleType::displayName( const NamePool::Ptr &np ) const
 {
-   return np->displayName(name(np));
+    return np->displayName( name( np ) );
 }
 
-void XsdSimpleType::setWxsSuperType(const SchemaType::Ptr &type)
+void XsdSimpleType::setWxsSuperType( const SchemaType::Ptr &type )
 {
-   m_superType = type;
+    m_superType = type;
 }
 
 SchemaType::Ptr XsdSimpleType::wxsSuperType() const
 {
-   return m_superType;
+    return m_superType;
 }
 
-void XsdSimpleType::setContext(const NamedSchemaComponent::Ptr &component)
+void XsdSimpleType::setContext( const NamedSchemaComponent::Ptr &component )
 {
-   m_context = component.data();
+    m_context = component.data();
 }
 
 NamedSchemaComponent::Ptr XsdSimpleType::context() const
 {
-   return NamedSchemaComponent::Ptr(m_context);
+    return NamedSchemaComponent::Ptr( m_context );
 }
 
-void XsdSimpleType::setPrimitiveType(const AnySimpleType::Ptr &type)
+void XsdSimpleType::setPrimitiveType( const AnySimpleType::Ptr &type )
 {
-   m_primitiveType = type;
+    m_primitiveType = type;
 }
 
 AnySimpleType::Ptr XsdSimpleType::primitiveType() const
 {
-   return m_primitiveType;
+    return m_primitiveType;
 }
 
-void XsdSimpleType::setItemType(const AnySimpleType::Ptr &type)
+void XsdSimpleType::setItemType( const AnySimpleType::Ptr &type )
 {
-   m_itemType = type;
+    m_itemType = type;
 }
 
 AnySimpleType::Ptr XsdSimpleType::itemType() const
 {
-   return m_itemType;
+    return m_itemType;
 }
 
-void XsdSimpleType::setMemberTypes(const AnySimpleType::List &types)
+void XsdSimpleType::setMemberTypes( const AnySimpleType::List &types )
 {
-   m_memberTypes = types;
+    m_memberTypes = types;
 }
 
 AnySimpleType::List XsdSimpleType::memberTypes() const
 {
-   return m_memberTypes;
+    return m_memberTypes;
 }
 
-void XsdSimpleType::setFacets(const XsdFacet::Hash &facets)
+void XsdSimpleType::setFacets( const XsdFacet::Hash &facets )
 {
-   m_facets = facets;
+    m_facets = facets;
 }
 
 XsdFacet::Hash XsdSimpleType::facets() const
 {
-   return m_facets;
+    return m_facets;
 }
 
-void XsdSimpleType::setCategory(TypeCategory category)
+void XsdSimpleType::setCategory( TypeCategory category )
 {
-   m_typeCategory = category;
+    m_typeCategory = category;
 }
 
 XsdSimpleType::TypeCategory XsdSimpleType::category() const
 {
-   return m_typeCategory;
+    return m_typeCategory;
 }
 
-void XsdSimpleType::setDerivationMethod(DerivationMethod method)
+void XsdSimpleType::setDerivationMethod( DerivationMethod method )
 {
-   m_derivationMethod = method;
+    m_derivationMethod = method;
 }
 
 XsdSimpleType::DerivationMethod XsdSimpleType::derivationMethod() const
 {
-   return m_derivationMethod;
+    return m_derivationMethod;
 }
 
 bool XsdSimpleType::isDefinedBySchema() const
 {
-   return true;
+    return true;
 }

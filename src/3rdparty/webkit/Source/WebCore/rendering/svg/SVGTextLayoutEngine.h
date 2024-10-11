@@ -28,7 +28,8 @@
 #include "SVGTextMetrics.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class RenderObject;
 class RenderStyle;
@@ -45,40 +46,44 @@ class SVGRenderStyle;
 // RenderSVGInlineText renderers to compute the final positions for each character
 // which are stored in the SVGInlineTextBox objects.
 
-class SVGTextLayoutEngine {
-    WTF_MAKE_NONCOPYABLE(SVGTextLayoutEngine);
+class SVGTextLayoutEngine
+{
+    WTF_MAKE_NONCOPYABLE( SVGTextLayoutEngine );
 public:
-    SVGTextLayoutEngine(Vector<SVGTextLayoutAttributes>&);
-    SVGTextChunkBuilder& chunkLayoutBuilder() { return m_chunkLayoutBuilder; }
+    SVGTextLayoutEngine( Vector<SVGTextLayoutAttributes> & );
+    SVGTextChunkBuilder &chunkLayoutBuilder()
+    {
+        return m_chunkLayoutBuilder;
+    }
 
-    void beginTextPathLayout(RenderObject*, SVGTextLayoutEngine& lineLayout);
+    void beginTextPathLayout( RenderObject *, SVGTextLayoutEngine &lineLayout );
     void endTextPathLayout();
 
-    void layoutInlineTextBox(SVGInlineTextBox*);
+    void layoutInlineTextBox( SVGInlineTextBox * );
     void finishLayout();
 
 private:
-    void updateCharacerPositionIfNeeded(float& x, float& y);
-    void updateCurrentTextPosition(float x, float y, float glyphAdvance);
-    void updateRelativePositionAdjustmentsIfNeeded(Vector<float>& dxValues, Vector<float>& dyValues);
+    void updateCharacerPositionIfNeeded( float &x, float &y );
+    void updateCurrentTextPosition( float x, float y, float glyphAdvance );
+    void updateRelativePositionAdjustmentsIfNeeded( Vector<float> &dxValues, Vector<float> &dyValues );
 
-    void recordTextFragment(SVGInlineTextBox*, Vector<SVGTextMetrics>& textMetricValues);
-    bool parentDefinesTextLength(RenderObject*) const;
+    void recordTextFragment( SVGInlineTextBox *, Vector<SVGTextMetrics> &textMetricValues );
+    bool parentDefinesTextLength( RenderObject * ) const;
 
-    void layoutTextOnLineOrPath(SVGInlineTextBox*, RenderSVGInlineText*, const RenderStyle*);
-    void finalizeTransformMatrices(Vector<SVGInlineTextBox*>&);
+    void layoutTextOnLineOrPath( SVGInlineTextBox *, RenderSVGInlineText *, const RenderStyle * );
+    void finalizeTransformMatrices( Vector<SVGInlineTextBox *> & );
 
-    bool currentLogicalCharacterAttributes(SVGTextLayoutAttributes&);
-    bool currentLogicalCharacterMetrics(SVGTextLayoutAttributes&, SVGTextMetrics&);
-    bool currentVisualCharacterMetrics(SVGInlineTextBox*, RenderSVGInlineText*, SVGTextMetrics&);
+    bool currentLogicalCharacterAttributes( SVGTextLayoutAttributes & );
+    bool currentLogicalCharacterMetrics( SVGTextLayoutAttributes &, SVGTextMetrics & );
+    bool currentVisualCharacterMetrics( SVGInlineTextBox *, RenderSVGInlineText *, SVGTextMetrics & );
 
-    void advanceToNextLogicalCharacter(const SVGTextMetrics&);
-    void advanceToNextVisualCharacter(const SVGTextMetrics&);
+    void advanceToNextLogicalCharacter( const SVGTextMetrics & );
+    void advanceToNextVisualCharacter( const SVGTextMetrics & );
 
 private:
     Vector<SVGTextLayoutAttributes> m_layoutAttributes;
-    Vector<SVGInlineTextBox*> m_lineLayoutBoxes;
-    Vector<SVGInlineTextBox*> m_pathLayoutBoxes;
+    Vector<SVGInlineTextBox *> m_lineLayoutBoxes;
+    Vector<SVGInlineTextBox *> m_pathLayoutBoxes;
     SVGTextChunkBuilder m_chunkLayoutBuilder;
 
     SVGTextFragment m_currentTextFragment;

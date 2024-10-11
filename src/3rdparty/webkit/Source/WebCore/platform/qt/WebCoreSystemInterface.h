@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebCoreSystemInterface_h
@@ -59,36 +59,37 @@ class QTMovieView;
 extern "C" {
 
 // In alphabetical order.
-extern NSView *(*wkCreateMediaUIBackgroundView)(void);
-extern NSControl *(*wkCreateMediaUIControl)(int);
-extern unsigned (*wkQTIncludeOnlyModernMediaFileTypes)(void);
-extern int (*wkQTMovieDataRate)(QTMovie*);
-extern void (*wkQTMovieDisableComponent)(uint32_t[5]);
-extern float (*wkQTMovieMaxTimeLoaded)(QTMovie*);
-extern NSString *(*wkQTMovieMaxTimeLoadedChangeNotification)(void);
-extern float (*wkQTMovieMaxTimeSeekable)(QTMovie*);
-extern int (*wkQTMovieGetType)(QTMovie*);
-extern BOOL (*wkQTMovieHasClosedCaptions)(QTMovie*);
-extern NSURL *(*wkQTMovieResolvedURL)(QTMovie*);
-extern void (*wkQTMovieSetShowClosedCaptions)(QTMovie*, BOOL);
-extern void (*wkQTMovieSelectPreferredAlternates)(QTMovie*);
-extern void (*wkQTMovieViewSetDrawSynchronously)(QTMovieView*, BOOL);
-extern NSArray *(*wkQTGetSitesInMediaDownloadCache)();
-extern void (*wkQTClearMediaDownloadCacheForSite)(NSString *site);
-extern void (*wkQTClearMediaDownloadCache)();
-extern void (*wkWindowSetAlpha)(NSWindow *, float);
-extern void (*wkWindowSetScaledFrame)(NSWindow *, NSRect, NSRect);
+    extern NSView *( *wkCreateMediaUIBackgroundView )( void );
+    extern NSControl *( *wkCreateMediaUIControl )( int );
+    extern unsigned ( *wkQTIncludeOnlyModernMediaFileTypes )( void );
+    extern int ( *wkQTMovieDataRate )( QTMovie * );
+    extern void ( *wkQTMovieDisableComponent )( uint32_t[5] );
+    extern float ( *wkQTMovieMaxTimeLoaded )( QTMovie * );
+    extern NSString *( *wkQTMovieMaxTimeLoadedChangeNotification )( void );
+    extern float ( *wkQTMovieMaxTimeSeekable )( QTMovie * );
+    extern int ( *wkQTMovieGetType )( QTMovie * );
+    extern BOOL ( *wkQTMovieHasClosedCaptions )( QTMovie * );
+    extern NSURL *( *wkQTMovieResolvedURL )( QTMovie * );
+    extern void ( *wkQTMovieSetShowClosedCaptions )( QTMovie *, BOOL );
+    extern void ( *wkQTMovieSelectPreferredAlternates )( QTMovie * );
+    extern void ( *wkQTMovieViewSetDrawSynchronously )( QTMovieView *, BOOL );
+    extern NSArray *( *wkQTGetSitesInMediaDownloadCache )();
+    extern void ( *wkQTClearMediaDownloadCacheForSite )( NSString *site );
+    extern void ( *wkQTClearMediaDownloadCache )();
+    extern void ( *wkWindowSetAlpha )( NSWindow *, float );
+    extern void ( *wkWindowSetScaledFrame )( NSWindow *, NSRect, NSRect );
 
-typedef enum {
-    wkMediaUIControlTimeline,
-    wkMediaUIControlSlider,
-    wkMediaUIControlPlayPauseButton,
-    wkMediaUIControlExitFullscreenButton,
-    wkMediaUIControlRewindButton,
-    wkMediaUIControlFastForwardButton,
-    wkMediaUIControlVolumeUpButton,
-    wkMediaUIControlVolumeDownButton
-} wkMediaUIControlType;
+    typedef enum
+    {
+        wkMediaUIControlTimeline,
+        wkMediaUIControlSlider,
+        wkMediaUIControlPlayPauseButton,
+        wkMediaUIControlExitFullscreenButton,
+        wkMediaUIControlRewindButton,
+        wkMediaUIControlFastForwardButton,
+        wkMediaUIControlVolumeUpButton,
+        wkMediaUIControlVolumeDownButton
+    } wkMediaUIControlType;
 
 }
 

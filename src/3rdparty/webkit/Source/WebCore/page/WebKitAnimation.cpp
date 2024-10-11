@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -32,10 +32,11 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-WebKitAnimation::WebKitAnimation(PassRefPtr<KeyframeAnimation> keyframeAnimation)
-    : m_keyframeAnimation(keyframeAnimation)
+WebKitAnimation::WebKitAnimation( PassRefPtr<KeyframeAnimation> keyframeAnimation )
+    : m_keyframeAnimation( keyframeAnimation )
 {
 }
 
@@ -54,9 +55,9 @@ double WebKitAnimation::elapsedTime() const
     return m_keyframeAnimation->getElapsedTime();
 }
 
-void WebKitAnimation::setElapsedTime(double time)
+void WebKitAnimation::setElapsedTime( double time )
 {
-    m_keyframeAnimation->setElapsedTime(time);
+    m_keyframeAnimation->setElapsedTime( time );
 }
 
 double WebKitAnimation::delay() const
@@ -77,33 +78,44 @@ bool WebKitAnimation::paused() const
 bool WebKitAnimation::ended() const
 {
     int iterations = iterationCount();
-    if (iterations == Animation::IterationCountInfinite)
+
+    if ( iterations == Animation::IterationCountInfinite )
+    {
         return false;
-    return m_keyframeAnimation->getElapsedTime() > (m_keyframeAnimation->duration() * iterations);
+    }
+
+    return m_keyframeAnimation->getElapsedTime() > ( m_keyframeAnimation->duration() * iterations );
 }
 
 WebKitAnimation::Direction WebKitAnimation::direction() const
 {
-    if (m_keyframeAnimation->animation()->direction() == Animation::AnimationDirectionNormal)
+    if ( m_keyframeAnimation->animation()->direction() == Animation::AnimationDirectionNormal )
+    {
         return DIRECTION_NORMAL;
+    }
+
     return DIRECTION_ALTERNATE;
 }
 
 WebKitAnimation::FillMode WebKitAnimation::fillMode() const
 {
-    switch (m_keyframeAnimation->animation()->fillMode()) {
-    case AnimationFillModeNone:
-        return FILL_NONE;
-        break;
-    case AnimationFillModeForwards:
-        return FILL_FORWARDS;
-        break;
-    case AnimationFillModeBackwards:
-        return FILL_BACKWARDS;
-        break;
-    default:
-        return FILL_BOTH;
-        break;
+    switch ( m_keyframeAnimation->animation()->fillMode() )
+    {
+        case AnimationFillModeNone:
+            return FILL_NONE;
+            break;
+
+        case AnimationFillModeForwards:
+            return FILL_FORWARDS;
+            break;
+
+        case AnimationFillModeBackwards:
+            return FILL_BACKWARDS;
+            break;
+
+        default:
+            return FILL_BOTH;
+            break;
     }
 }
 

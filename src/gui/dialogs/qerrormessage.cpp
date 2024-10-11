@@ -46,190 +46,207 @@
 
 class QErrorMessagePrivate : public QDialogPrivate
 {
-   Q_DECLARE_PUBLIC(QErrorMessage)
+    Q_DECLARE_PUBLIC( QErrorMessage )
 
- public:
-   QPushButton *ok;
-   QCheckBox *again;
-   QTextEdit *errors;
-   QLabel *icon;
+public:
+    QPushButton *ok;
+    QCheckBox *again;
+    QTextEdit *errors;
+    QLabel *icon;
 
-   std::queue<QPair<QString, QString>> pending;
-   QSet<QString> doNotShow;
-   QSet<QString> doNotShowType;
-   QString currentMessage;
-   QString currentType;
+    std::queue<QPair<QString, QString>> pending;
+    QSet<QString> doNotShow;
+    QSet<QString> doNotShowType;
+    QString currentMessage;
+    QString currentType;
 
-   bool isMessageToBeShown(const QString &message, const QString &type) const;
-   bool nextPending();
-   void retranslateStrings();
+    bool isMessageToBeShown( const QString &message, const QString &type ) const;
+    bool nextPending();
+    void retranslateStrings();
 };
 
 class QErrorMessageTextView : public QTextEdit
 {
- public:
-   QErrorMessageTextView(QWidget *parent)
-      : QTextEdit(parent)
-   {
-      setReadOnly(true);
-   }
+public:
+    QErrorMessageTextView( QWidget *parent )
+        : QTextEdit( parent )
+    {
+        setReadOnly( true );
+    }
 
-   QSize minimumSizeHint() const override;
-   QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
+    QSize sizeHint() const override;
 };
 
 QSize QErrorMessageTextView::minimumSizeHint() const
 {
-   return QSize(50, 50);
+    return QSize( 50, 50 );
 }
 
 QSize QErrorMessageTextView::sizeHint() const
 {
-   return QSize(250, 75);
+    return QSize( 250, 75 );
 }
 
-QErrorMessage::QErrorMessage(QWidget *parent)
-   : QDialog(*new QErrorMessagePrivate, parent)
+QErrorMessage::QErrorMessage( QWidget *parent )
+    : QDialog( *new QErrorMessagePrivate, parent )
 {
-   Q_D(QErrorMessage);
-   d->icon   = new QLabel(this);
-   d->errors = new QErrorMessageTextView(this);
-   d->again  = new QCheckBox(this);
-   d->ok     = new QPushButton(this);
+    Q_D( QErrorMessage );
+    d->icon   = new QLabel( this );
+    d->errors = new QErrorMessageTextView( this );
+    d->again  = new QCheckBox( this );
+    d->ok     = new QPushButton( this );
 
-   QGridLayout *grid = new QGridLayout(this);
-   connect(d->ok, &QPushButton::clicked, this, &QErrorMessage::accept);
+    QGridLayout *grid = new QGridLayout( this );
+    connect( d->ok, &QPushButton::clicked, this, &QErrorMessage::accept );
 
-   grid->addWidget(d->icon,   0,  0, Qt::AlignTop);
-   grid->addWidget(d->errors, 0,  1);
-   grid->addWidget(d->again,  1,  1, Qt::AlignTop);
-   grid->addWidget(d->ok,     2, 0, 1, 2, Qt::AlignCenter);
+    grid->addWidget( d->icon,   0,  0, Qt::AlignTop );
+    grid->addWidget( d->errors, 0,  1 );
+    grid->addWidget( d->again,  1,  1, Qt::AlignTop );
+    grid->addWidget( d->ok,     2, 0, 1, 2, Qt::AlignCenter );
 
-   grid->setColumnStretch(1, 42);
-   grid->setRowStretch(0, 42);
+    grid->setColumnStretch( 1, 42 );
+    grid->setRowStretch( 0, 42 );
 
 #ifndef QT_NO_MESSAGEBOX
-   d->icon->setPixmap(QMessageBox::standardIcon(QMessageBox::Information));
-   d->icon->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    d->icon->setPixmap( QMessageBox::standardIcon( QMessageBox::Information ) );
+    d->icon->setAlignment( Qt::AlignHCenter | Qt::AlignTop );
 #endif
 
-   d->again->setChecked(true);
-   d->ok->setFocus();
-   d->retranslateStrings();
+    d->again->setChecked( true );
+    d->ok->setFocus();
+    d->retranslateStrings();
 }
 
 QErrorMessage::~QErrorMessage()
 {
 }
 
-void QErrorMessage::done(int a)
+void QErrorMessage::done( int a )
 {
-   Q_D(QErrorMessage);
+    Q_D( QErrorMessage );
 
-   if (! d->again->isChecked())  {
-      if (d->currentType.isEmpty()) {
+    if ( ! d->again->isChecked() )
+    {
+        if ( d->currentType.isEmpty() )
+        {
 
-         if (! d->currentMessage.isEmpty()) {
-            d->doNotShow.insert(d->currentMessage);
-         }
+            if ( ! d->currentMessage.isEmpty() )
+            {
+                d->doNotShow.insert( d->currentMessage );
+            }
 
-      } else {
-         d->doNotShowType.insert(d->currentType);
-      }
-   }
+        }
+        else
+        {
+            d->doNotShowType.insert( d->currentType );
+        }
+    }
 
-   d->currentMessage.clear();
-   d->currentType.clear();
+    d->currentMessage.clear();
+    d->currentType.clear();
 
-   if (! d->nextPending()) {
-      QDialog::done(a);
-   }
+    if ( ! d->nextPending() )
+    {
+        QDialog::done( a );
+    }
 }
 
-bool QErrorMessagePrivate::isMessageToBeShown(const QString &message, const QString &type) const
+bool QErrorMessagePrivate::isMessageToBeShown( const QString &message, const QString &type ) const
 {
-   if (message.isEmpty()) {
-      // nothing to show
-      return false;
-   }
+    if ( message.isEmpty() )
+    {
+        // nothing to show
+        return false;
+    }
 
-   if (type.isEmpty()) {
+    if ( type.isEmpty() )
+    {
 
-      if (doNotShow.contains(message)) {
-         return false;
-      }
+        if ( doNotShow.contains( message ) )
+        {
+            return false;
+        }
 
-   } else {
+    }
+    else
+    {
 
-      if (doNotShowType.contains(type)) {
-         return false;
-      }
-   }
+        if ( doNotShowType.contains( type ) )
+        {
+            return false;
+        }
+    }
 
-   return true;
+    return true;
 }
 
 bool QErrorMessagePrivate::nextPending()
 {
-   while (! pending.empty()) {
-      QPair<QString, QString> &pendingMessage = pending.front();
+    while ( ! pending.empty() )
+    {
+        QPair<QString, QString> &pendingMessage = pending.front();
 
-      QString message = std::move(pendingMessage.first);
-      QString type    = std::move(pendingMessage.second);
+        QString message = std::move( pendingMessage.first );
+        QString type    = std::move( pendingMessage.second );
 
-      pending.pop();
+        pending.pop();
 
-      if (isMessageToBeShown(message, type)) {
+        if ( isMessageToBeShown( message, type ) )
+        {
 #ifndef QT_NO_TEXTHTMLPARSER
-         errors->setHtml(message);
+            errors->setHtml( message );
 #else
-         errors->setPlainText(message);
+            errors->setPlainText( message );
 #endif
 
-         currentMessage = std::move(message);
-         currentType    = std::move(type);
-         return true;
-      }
-   }
+            currentMessage = std::move( message );
+            currentType    = std::move( type );
+            return true;
+        }
+    }
 
-   return false;
+    return false;
 }
 
-void QErrorMessage::showMessage(const QString &message)
+void QErrorMessage::showMessage( const QString &message )
 {
-   showMessage(message, QString());
+    showMessage( message, QString() );
 }
 
-void QErrorMessage::showMessage(const QString &message, const QString &type)
+void QErrorMessage::showMessage( const QString &message, const QString &type )
 {
-   Q_D(QErrorMessage);
+    Q_D( QErrorMessage );
 
-   if (! d->isMessageToBeShown(message, type)) {
-      return;
-   }
+    if ( ! d->isMessageToBeShown( message, type ) )
+    {
+        return;
+    }
 
-   d->pending.push(qMakePair(message, type));
+    d->pending.push( qMakePair( message, type ) );
 
-   if (! isVisible() && d->nextPending()) {
-      show();
-   }
+    if ( ! isVisible() && d->nextPending() )
+    {
+        show();
+    }
 }
 
-void QErrorMessage::changeEvent(QEvent *e)
+void QErrorMessage::changeEvent( QEvent *e )
 {
-   Q_D(QErrorMessage);
+    Q_D( QErrorMessage );
 
-   if (e->type() == QEvent::LanguageChange) {
-      d->retranslateStrings();
-   }
+    if ( e->type() == QEvent::LanguageChange )
+    {
+        d->retranslateStrings();
+    }
 
-   QDialog::changeEvent(e);
+    QDialog::changeEvent( e );
 }
 
 void QErrorMessagePrivate::retranslateStrings()
 {
-   again->setText(QErrorMessage::tr("&Show this message again"));
-   ok->setText(QErrorMessage::tr("&OK"));
+    again->setText( QErrorMessage::tr( "&Show this message again" ) );
+    ok->setText( QErrorMessage::tr( "&OK" ) );
 }
 
 #endif

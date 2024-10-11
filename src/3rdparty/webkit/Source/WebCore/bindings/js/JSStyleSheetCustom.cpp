@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -33,27 +33,37 @@
 
 using namespace JSC;
 
-namespace WebCore {
-
-void JSStyleSheet::visitChildren(SlotVisitor& visitor)
+namespace WebCore
 {
-    Base::visitChildren(visitor);
-    visitor.addOpaqueRoot(root(impl()));
+
+void JSStyleSheet::visitChildren( SlotVisitor &visitor )
+{
+    Base::visitChildren( visitor );
+    visitor.addOpaqueRoot( root( impl() ) );
 }
 
-JSValue toJS(ExecState* exec, JSDOMGlobalObject* globalObject, StyleSheet* styleSheet)
+JSValue toJS( ExecState *exec, JSDOMGlobalObject *globalObject, StyleSheet *styleSheet )
 {
-    if (!styleSheet)
+    if ( !styleSheet )
+    {
         return jsNull();
+    }
 
-    JSDOMWrapper* wrapper = getCachedWrapper(currentWorld(exec), styleSheet);
-    if (wrapper)
+    JSDOMWrapper *wrapper = getCachedWrapper( currentWorld( exec ), styleSheet );
+
+    if ( wrapper )
+    {
         return wrapper;
+    }
 
-    if (styleSheet->isCSSStyleSheet())
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, CSSStyleSheet, styleSheet);
+    if ( styleSheet->isCSSStyleSheet() )
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, CSSStyleSheet, styleSheet );
+    }
     else
-        wrapper = CREATE_DOM_WRAPPER(exec, globalObject, StyleSheet, styleSheet);
+    {
+        wrapper = CREATE_DOM_WRAPPER( exec, globalObject, StyleSheet, styleSheet );
+    }
 
     return wrapper;
 }

@@ -28,7 +28,8 @@
 
 #include "NotImplemented.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 LayerTreeContext::LayerTreeContext()
 {
@@ -40,12 +41,12 @@ LayerTreeContext::~LayerTreeContext()
     notImplemented();
 }
 
-void LayerTreeContext::encode(CoreIPC::ArgumentEncoder*) const
+void LayerTreeContext::encode( CoreIPC::ArgumentEncoder * ) const
 {
     notImplemented();
 }
 
-bool LayerTreeContext::decode(CoreIPC::ArgumentDecoder*, LayerTreeContext&)
+bool LayerTreeContext::decode( CoreIPC::ArgumentDecoder *, LayerTreeContext & )
 {
     notImplemented();
     return true;
@@ -57,7 +58,7 @@ bool LayerTreeContext::isEmpty() const
     return true;
 }
 
-bool operator==(const LayerTreeContext&, const LayerTreeContext&)
+bool operator==( const LayerTreeContext &, const LayerTreeContext & )
 {
     notImplemented();
     return true;

@@ -33,24 +33,32 @@
 #include <wtf/PassRefPtr.h>
 #include <wtf/RefCounted.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class CallbackBase : public RefCounted<CallbackBase> {
+class CallbackBase : public RefCounted<CallbackBase>
+{
 public:
     virtual ~CallbackBase()
     {
     }
 
-    uint64_t callbackID() const { return m_callbackID; }
+    uint64_t callbackID() const
+    {
+        return m_callbackID;
+    }
 
 protected:
-    CallbackBase(void* context)
-        : m_context(context)
-        , m_callbackID(generateCallbackID())
+    CallbackBase( void *context )
+        : m_context( context )
+        , m_callbackID( generateCallbackID() )
     {
     }
 
-    void* context() const { return m_context; }
+    void *context() const
+    {
+        return m_context;
+    }
 
 private:
     static uint64_t generateCallbackID()
@@ -59,47 +67,48 @@ private:
         return uniqueCallbackID++;
     }
 
-    void* m_context;
+    void *m_context;
     uint64_t m_callbackID;
 };
 
-class VoidCallback : public CallbackBase {
+class VoidCallback : public CallbackBase
+{
 public:
-    typedef void (*CallbackFunction)(WKErrorRef, void*);
+    typedef void ( *CallbackFunction )( WKErrorRef, void * );
 
-    static PassRefPtr<VoidCallback> create(void* context, CallbackFunction callback)
+    static PassRefPtr<VoidCallback> create( void *context, CallbackFunction callback )
     {
-        return adoptRef(new VoidCallback(context, callback));
+        return adoptRef( new VoidCallback( context, callback ) );
     }
 
     virtual ~VoidCallback()
     {
-        ASSERT(!m_callback);
+        ASSERT( !m_callback );
     }
 
     void performCallback()
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
 
-        m_callback(0, context());
+        m_callback( 0, context() );
 
         m_callback = 0;
     }
-    
+
     void invalidate()
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
 
         RefPtr<WebError> error = WebError::create();
-        m_callback(toAPI(error.get()), context());
-        
+        m_callback( toAPI( error.get() ), context() );
+
         m_callback = 0;
     }
 
 private:
-    VoidCallback(void* context, CallbackFunction callback)
-        : CallbackBase(context)
-        , m_callback(callback)
+    VoidCallback( void *context, CallbackFunction callback )
+        : CallbackBase( context )
+        , m_callback( callback )
     {
     }
 
@@ -107,43 +116,44 @@ private:
 };
 
 template<typename APIReturnValueType, typename InternalReturnValueType = typename APITypeInfo<APIReturnValueType>::ImplType>
-class GenericCallback : public CallbackBase {
+class GenericCallback : public CallbackBase
+{
 public:
-    typedef void (*CallbackFunction)(APIReturnValueType, WKErrorRef, void*);
+    typedef void ( *CallbackFunction )( APIReturnValueType, WKErrorRef, void * );
 
-    static PassRefPtr<GenericCallback> create(void* context, CallbackFunction callback)
+    static PassRefPtr<GenericCallback> create( void *context, CallbackFunction callback )
     {
-        return adoptRef(new GenericCallback(context, callback));
+        return adoptRef( new GenericCallback( context, callback ) );
     }
 
     virtual ~GenericCallback()
     {
-        ASSERT(!m_callback);
+        ASSERT( !m_callback );
     }
 
-    void performCallbackWithReturnValue(InternalReturnValueType returnValue)
+    void performCallbackWithReturnValue( InternalReturnValueType returnValue )
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
 
-        m_callback(toAPI(returnValue), 0, context());
+        m_callback( toAPI( returnValue ), 0, context() );
 
         m_callback = 0;
     }
-    
+
     void invalidate()
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
 
         RefPtr<WebError> error = WebError::create();
-        m_callback(0, toAPI(error.get()), context());
-        
+        m_callback( 0, toAPI( error.get() ), context() );
+
         m_callback = 0;
     }
 
 private:
-    GenericCallback(void* context, CallbackFunction callback)
-        : CallbackBase(context)
-        , m_callback(callback)
+    GenericCallback( void *context, CallbackFunction callback )
+        : CallbackBase( context )
+        , m_callback( callback )
     {
     }
 
@@ -151,44 +161,45 @@ private:
 };
 
 // FIXME: Make a version of CallbackBase with two arguments, and define ComputedPagesCallback as a specialization.
-class ComputedPagesCallback : public CallbackBase {
+class ComputedPagesCallback : public CallbackBase
+{
 public:
-    typedef void (*CallbackFunction)(const Vector<WebCore::IntRect>&, double, WKErrorRef, void*);
+    typedef void ( *CallbackFunction )( const Vector<WebCore::IntRect> &, double, WKErrorRef, void * );
 
-    static PassRefPtr<ComputedPagesCallback> create(void* context, CallbackFunction callback)
+    static PassRefPtr<ComputedPagesCallback> create( void *context, CallbackFunction callback )
     {
-        return adoptRef(new ComputedPagesCallback(context, callback));
+        return adoptRef( new ComputedPagesCallback( context, callback ) );
     }
 
     virtual ~ComputedPagesCallback()
     {
-        ASSERT(!m_callback);
+        ASSERT( !m_callback );
     }
 
-    void performCallbackWithReturnValue(const Vector<WebCore::IntRect>& returnValue1, double returnValue2)
+    void performCallbackWithReturnValue( const Vector<WebCore::IntRect> &returnValue1, double returnValue2 )
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
 
-        m_callback(returnValue1, returnValue2, 0, context());
+        m_callback( returnValue1, returnValue2, 0, context() );
 
         m_callback = 0;
     }
-    
+
     void invalidate()
     {
-        ASSERT(m_callback);
+        ASSERT( m_callback );
 
         RefPtr<WebError> error = WebError::create();
-        m_callback(Vector<WebCore::IntRect>(), 0, toAPI(error.get()), context());
-        
+        m_callback( Vector<WebCore::IntRect>(), 0, toAPI( error.get() ), context() );
+
         m_callback = 0;
     }
 
 private:
 
-    ComputedPagesCallback(void* context, CallbackFunction callback)
-        : CallbackBase(context)
-        , m_callback(callback)
+    ComputedPagesCallback( void *context, CallbackFunction callback )
+        : CallbackBase( context )
+        , m_callback( callback )
     {
     }
 
@@ -196,12 +207,16 @@ private:
 };
 
 template<typename T>
-void invalidateCallbackMap(HashMap<uint64_t, T>& map)
+void invalidateCallbackMap( HashMap<uint64_t, T> &map )
 {
     Vector<T> callbacksVector;
-    copyValuesToVector(map, callbacksVector);
-    for (size_t i = 0, size = callbacksVector.size(); i < size; ++i)
+    copyValuesToVector( map, callbacksVector );
+
+    for ( size_t i = 0, size = callbacksVector.size(); i < size; ++i )
+    {
         callbacksVector[i]->invalidate();
+    }
+
     map.clear();
 }
 

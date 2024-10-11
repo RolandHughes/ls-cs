@@ -28,20 +28,22 @@
 
 #include "HTMLDocumentParser.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class TextDocumentParser : public HTMLDocumentParser {
+class TextDocumentParser : public HTMLDocumentParser
+{
 public:
-    static PassRefPtr<TextDocumentParser> create(HTMLDocument* document)
+    static PassRefPtr<TextDocumentParser> create( HTMLDocument *document )
     {
-        return adoptRef(new TextDocumentParser(document));
+        return adoptRef( new TextDocumentParser( document ) );
     }
     virtual ~TextDocumentParser();
 
 private:
-    explicit TextDocumentParser(HTMLDocument*);
+    explicit TextDocumentParser( HTMLDocument * );
 
-    virtual void append(const SegmentedString&);
+    virtual void append( const SegmentedString & );
     void insertFakePreElement();
 
     bool m_haveInsertedFakePreElement;

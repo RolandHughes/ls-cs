@@ -28,49 +28,63 @@
 
 #if USE(PLATFORM_STRATEGIES)
 
-namespace WebCore {
+namespace WebCore
+{
 
 class CookiesStrategy;
 class PluginStrategy;
 class LocalizationStrategy;
 class VisitedLinkStrategy;
 
-class PlatformStrategies {
+class PlatformStrategies
+{
 public:
-    CookiesStrategy* cookiesStrategy()
+    CookiesStrategy *cookiesStrategy()
     {
-        if (!m_cookiesStrategy)
+        if ( !m_cookiesStrategy )
+        {
             m_cookiesStrategy = createCookiesStrategy();
+        }
+
         return m_cookiesStrategy;
     }
 
-    PluginStrategy* pluginStrategy()
+    PluginStrategy *pluginStrategy()
     {
-        if (!m_pluginStrategy)
+        if ( !m_pluginStrategy )
+        {
             m_pluginStrategy = createPluginStrategy();
+        }
+
         return m_pluginStrategy;
     }
 
-    LocalizationStrategy* localizationStrategy()
+    LocalizationStrategy *localizationStrategy()
     {
-        if (!m_localizationStrategy)
+        if ( !m_localizationStrategy )
+        {
             m_localizationStrategy = createLocalizationStrategy();
+        }
+
         return m_localizationStrategy;
     }
 
-    VisitedLinkStrategy* visitedLinkStrategy()
+    VisitedLinkStrategy *visitedLinkStrategy()
     {
-        if (!m_visitedLinkStrategy)
+        if ( !m_visitedLinkStrategy )
+        {
             m_visitedLinkStrategy = createVisitedLinkStrategy();
+        }
+
         return m_visitedLinkStrategy;
     }
 
 protected:
     PlatformStrategies()
-        : m_cookiesStrategy(0)
-        , m_pluginStrategy(0)
-        , m_localizationStrategy(0)
-        , m_visitedLinkStrategy(0)
+        : m_cookiesStrategy( 0 )
+        , m_pluginStrategy( 0 )
+        , m_localizationStrategy( 0 )
+        , m_visitedLinkStrategy( 0 )
     {
     }
 
@@ -79,20 +93,20 @@ protected:
     }
 
 private:
-    virtual CookiesStrategy* createCookiesStrategy() = 0;
-    virtual PluginStrategy* createPluginStrategy() = 0;
-    virtual LocalizationStrategy* createLocalizationStrategy();
-    virtual VisitedLinkStrategy* createVisitedLinkStrategy() = 0;
+    virtual CookiesStrategy *createCookiesStrategy() = 0;
+    virtual PluginStrategy *createPluginStrategy() = 0;
+    virtual LocalizationStrategy *createLocalizationStrategy();
+    virtual VisitedLinkStrategy *createVisitedLinkStrategy() = 0;
 
-    CookiesStrategy* m_cookiesStrategy;
-    PluginStrategy* m_pluginStrategy;
-    LocalizationStrategy* m_localizationStrategy;
-    VisitedLinkStrategy* m_visitedLinkStrategy;
+    CookiesStrategy *m_cookiesStrategy;
+    PluginStrategy *m_pluginStrategy;
+    LocalizationStrategy *m_localizationStrategy;
+    VisitedLinkStrategy *m_visitedLinkStrategy;
 };
 
-PlatformStrategies* platformStrategies();
-void setPlatformStrategies(PlatformStrategies*);
-    
+PlatformStrategies *platformStrategies();
+void setPlatformStrategies( PlatformStrategies * );
+
 } // namespace WebCore
 
 #endif // USE(PLATFORM_STRATEGIES)

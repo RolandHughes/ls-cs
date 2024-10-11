@@ -33,47 +33,64 @@
 #include "HTMLElement.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AccessibilityListBox;
 class Element;
 class HTMLElement;
 class HTMLSelectElement;
-    
-class AccessibilityListBoxOption : public AccessibilityObject {
+
+class AccessibilityListBoxOption : public AccessibilityObject
+{
 
 private:
     AccessibilityListBoxOption();
 public:
     static PassRefPtr<AccessibilityListBoxOption> create();
     virtual ~AccessibilityListBoxOption();
-    
-    void setHTMLElement(HTMLElement* element) { m_optionElement = element; }
-    
-    virtual AccessibilityRole roleValue() const { return ListBoxOptionRole; }
+
+    void setHTMLElement( HTMLElement *element )
+    {
+        m_optionElement = element;
+    }
+
+    virtual AccessibilityRole roleValue() const
+    {
+        return ListBoxOptionRole;
+    }
     virtual bool accessibilityIsIgnored() const;
     virtual bool isSelected() const;
     virtual bool isEnabled() const;
     virtual String stringValue() const;
-    virtual Element* actionElement() const;
-    virtual Node* node() const { return m_optionElement; }
-    virtual void setSelected(bool);
+    virtual Element *actionElement() const;
+    virtual Node *node() const
+    {
+        return m_optionElement;
+    }
+    virtual void setSelected( bool );
     virtual bool canSetSelectedAttribute() const;
 
     virtual IntRect elementRect() const;
-    virtual AccessibilityObject* parentObject() const;
-    bool isListBoxOption() const { return true; }
-    
+    virtual AccessibilityObject *parentObject() const;
+    bool isListBoxOption() const
+    {
+        return true;
+    }
+
 private:
-    HTMLElement* m_optionElement;
-    
-    virtual bool canHaveChildren() const { return false; }
-    HTMLSelectElement* listBoxOptionParentNode() const;
+    HTMLElement *m_optionElement;
+
+    virtual bool canHaveChildren() const
+    {
+        return false;
+    }
+    HTMLSelectElement *listBoxOptionParentNode() const;
     int listBoxOptionIndex() const;
     IntRect listBoxOptionRect() const;
-    AccessibilityObject* listBoxOptionAccessibilityObject(HTMLElement*) const;
+    AccessibilityObject *listBoxOptionAccessibilityObject( HTMLElement * ) const;
 };
-    
-} // namespace WebCore 
+
+} // namespace WebCore
 
 #endif // AccessibilityListBoxOption_h

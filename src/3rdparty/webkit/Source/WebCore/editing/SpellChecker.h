@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef SpellChecker_h
@@ -30,32 +30,34 @@
 #include "TextCheckerClient.h"
 #include <wtf/Noncopyable.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class TextCheckerClient;
 class Frame;
 class Node;
 
-class SpellChecker {
-    WTF_MAKE_NONCOPYABLE(SpellChecker);
+class SpellChecker
+{
+    WTF_MAKE_NONCOPYABLE( SpellChecker );
 public:
-    explicit SpellChecker(Frame*);
+    explicit SpellChecker( Frame * );
     ~SpellChecker();
 
     bool isAsynchronousEnabled() const;
-    bool canCheckAsynchronously(Node*) const;
+    bool canCheckAsynchronously( Node * ) const;
     bool isBusy() const;
-    bool isValid(int sequence) const;
-    bool isCheckable(Node*) const;
-    void requestCheckingFor(TextCheckingTypeMask, Node*);
-    void didCheck(int sequence, const Vector<TextCheckingResult>&);
+    bool isValid( int sequence ) const;
+    bool isCheckable( Node * ) const;
+    void requestCheckingFor( TextCheckingTypeMask, Node * );
+    void didCheck( int sequence, const Vector<TextCheckingResult> & );
 
 private:
-    bool initRequest(Node*);
+    bool initRequest( Node * );
     void clearRequest();
-    TextCheckerClient* client() const;
+    TextCheckerClient *client() const;
 
-    Frame* m_frame;
+    Frame *m_frame;
 
     RefPtr<Node> m_requestNode;
     String m_requestText;

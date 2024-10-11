@@ -31,74 +31,79 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace QDeclarativeRewrite {
+namespace QDeclarativeRewrite
+{
 using namespace QDeclarativeJS;
 
 class SharedBindingTester : protected AST::Visitor
 {
-   bool _sharable;
- public:
-   bool isSharable(const QString &code);
-   bool isSharable(AST::Node *Node);
+    bool _sharable;
+public:
+    bool isSharable( const QString &code );
+    bool isSharable( AST::Node *Node );
 
-   virtual bool visit(AST::FunctionDeclaration *) {
-      _sharable = false;
-      return false;
-   }
-   virtual bool visit(AST::FunctionExpression *) {
-      _sharable = false;
-      return false;
-   }
-   virtual bool visit(AST::CallExpression *) {
-      _sharable = false;
-      return false;
-   }
+    virtual bool visit( AST::FunctionDeclaration * )
+    {
+        _sharable = false;
+        return false;
+    }
+    virtual bool visit( AST::FunctionExpression * )
+    {
+        _sharable = false;
+        return false;
+    }
+    virtual bool visit( AST::CallExpression * )
+    {
+        _sharable = false;
+        return false;
+    }
 };
 
 class RewriteBinding: protected AST::Visitor
 {
-   unsigned _position;
-   TextWriter *_writer;
-   QByteArray _name;
+    unsigned _position;
+    TextWriter *_writer;
+    QByteArray _name;
 
- public:
-   QString operator()(const QString &code, bool *ok = 0, bool *sharable = 0);
-   QString operator()(QDeclarativeJS::AST::Node *node, const QString &code, bool *sharable = 0);
+public:
+    QString operator()( const QString &code, bool *ok = 0, bool *sharable = 0 );
+    QString operator()( QDeclarativeJS::AST::Node *node, const QString &code, bool *sharable = 0 );
 
-   //name of the function:  used for the debugger
-   void setName(const QByteArray &name) {
-      _name = name;
-   }
+    //name of the function:  used for the debugger
+    void setName( const QByteArray &name )
+    {
+        _name = name;
+    }
 
- protected:
-   using AST::Visitor::visit;
+protected:
+    using AST::Visitor::visit;
 
-   void accept(AST::Node *node);
-   QString rewrite(QString code, unsigned position, AST::Statement *node);
+    void accept( AST::Node *node );
+    QString rewrite( QString code, unsigned position, AST::Statement *node );
 
-   virtual bool visit(AST::Block *ast);
-   virtual bool visit(AST::ExpressionStatement *ast);
+    virtual bool visit( AST::Block *ast );
+    virtual bool visit( AST::ExpressionStatement *ast );
 
-   virtual bool visit(AST::DoWhileStatement *ast);
-   virtual void endVisit(AST::DoWhileStatement *ast);
+    virtual bool visit( AST::DoWhileStatement *ast );
+    virtual void endVisit( AST::DoWhileStatement *ast );
 
-   virtual bool visit(AST::WhileStatement *ast);
-   virtual void endVisit(AST::WhileStatement *ast);
+    virtual bool visit( AST::WhileStatement *ast );
+    virtual void endVisit( AST::WhileStatement *ast );
 
-   virtual bool visit(AST::ForStatement *ast);
-   virtual void endVisit(AST::ForStatement *ast);
+    virtual bool visit( AST::ForStatement *ast );
+    virtual void endVisit( AST::ForStatement *ast );
 
-   virtual bool visit(AST::LocalForStatement *ast);
-   virtual void endVisit(AST::LocalForStatement *ast);
+    virtual bool visit( AST::LocalForStatement *ast );
+    virtual void endVisit( AST::LocalForStatement *ast );
 
-   virtual bool visit(AST::ForEachStatement *ast);
-   virtual void endVisit(AST::ForEachStatement *ast);
+    virtual bool visit( AST::ForEachStatement *ast );
+    virtual void endVisit( AST::ForEachStatement *ast );
 
-   virtual bool visit(AST::LocalForEachStatement *ast);
-   virtual void endVisit(AST::LocalForEachStatement *ast);
+    virtual bool visit( AST::LocalForEachStatement *ast );
+    virtual void endVisit( AST::LocalForEachStatement *ast );
 
- private:
-   int _inLoop;
+private:
+    int _inLoop;
 };
 
 } // namespace QDeclarativeRewrite

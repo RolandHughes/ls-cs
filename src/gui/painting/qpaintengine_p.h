@@ -32,68 +32,82 @@ class QPaintDevice;
 
 class QPaintEnginePrivate
 {
-   Q_DECLARE_PUBLIC(QPaintEngine)
+    Q_DECLARE_PUBLIC( QPaintEngine )
 
- public:
-   QPaintEnginePrivate()
-      : pdev(nullptr), q_ptr(nullptr), currentClipDevice(nullptr), hasSystemTransform(0), hasSystemViewport(0)
-   {
-   }
+public:
+    QPaintEnginePrivate()
+        : pdev( nullptr ), q_ptr( nullptr ), currentClipDevice( nullptr ), hasSystemTransform( 0 ), hasSystemViewport( 0 )
+    {
+    }
 
-   virtual ~QPaintEnginePrivate()
-   {
-   }
+    virtual ~QPaintEnginePrivate()
+    {
+    }
 
-   QPaintDevice *pdev;
-   QPaintEngine *q_ptr;
-   QRegion systemClip;
-   QRect systemRect;
-   QRegion systemViewport;
-   QTransform systemTransform;
-   QPaintDevice *currentClipDevice;
+    QPaintDevice *pdev;
+    QPaintEngine *q_ptr;
+    QRegion systemClip;
+    QRect systemRect;
+    QRegion systemViewport;
+    QTransform systemTransform;
+    QPaintDevice *currentClipDevice;
 
-   uint hasSystemTransform : 1;
-   uint hasSystemViewport : 1;
+    uint hasSystemTransform : 1;
+    uint hasSystemViewport : 1;
 
-   inline void transformSystemClip() {
-      if (systemClip.isEmpty()) {
-         return;
-      }
+    inline void transformSystemClip()
+    {
+        if ( systemClip.isEmpty() )
+        {
+            return;
+        }
 
-      if (hasSystemTransform) {
-         if (systemTransform.type() <= QTransform::TxTranslate) {
-            systemClip.translate(qRound(systemTransform.dx()), qRound(systemTransform.dy()));
-         } else {
-            systemClip = systemTransform.map(systemClip);
-         }
-      }
+        if ( hasSystemTransform )
+        {
+            if ( systemTransform.type() <= QTransform::TxTranslate )
+            {
+                systemClip.translate( qRound( systemTransform.dx() ), qRound( systemTransform.dy() ) );
+            }
+            else
+            {
+                systemClip = systemTransform.map( systemClip );
+            }
+        }
 
-      // Make sure we're inside the viewport.
-      if (hasSystemViewport) {
-         systemClip &= systemViewport;
-         if (systemClip.isEmpty()) {
-            // We don't want to paint without system clip, so set it to 1 pixel :)
-            systemClip = QRect(systemViewport.boundingRect().topLeft(), QSize(1, 1));
-         }
-      }
-   }
+        // Make sure we're inside the viewport.
+        if ( hasSystemViewport )
+        {
+            systemClip &= systemViewport;
 
-   inline void setSystemTransform(const QTransform &xform) {
-      systemTransform = xform;
-      if ((hasSystemTransform = !xform.isIdentity()) || hasSystemViewport) {
-         transformSystemClip();
-      }
-      systemStateChanged();
-   }
+            if ( systemClip.isEmpty() )
+            {
+                // We don't want to paint without system clip, so set it to 1 pixel :)
+                systemClip = QRect( systemViewport.boundingRect().topLeft(), QSize( 1, 1 ) );
+            }
+        }
+    }
 
-   inline void setSystemViewport(const QRegion &region) {
-      systemViewport = region;
-      hasSystemViewport = !systemViewport.isEmpty();
-   }
+    inline void setSystemTransform( const QTransform &xform )
+    {
+        systemTransform = xform;
 
-   virtual void systemStateChanged() { }
+        if ( ( hasSystemTransform = !xform.isIdentity() ) || hasSystemViewport )
+        {
+            transformSystemClip();
+        }
 
-   void drawBoxTextItem(const QPointF &p, const QTextItemInt &ti);
+        systemStateChanged();
+    }
+
+    inline void setSystemViewport( const QRegion &region )
+    {
+        systemViewport = region;
+        hasSystemViewport = !systemViewport.isEmpty();
+    }
+
+    virtual void systemStateChanged() { }
+
+    void drawBoxTextItem( const QPointF &p, const QTextItemInt &ti );
 };
 
 

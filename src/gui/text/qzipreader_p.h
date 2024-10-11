@@ -35,61 +35,64 @@ class QZipReaderPrivate;
 
 class Q_GUI_EXPORT QZipReader
 {
- public:
-   enum Status {
-      NoError,
-      FileReadError,
-      FileOpenError,
-      FilePermissionsError,
-      FileError
-   };
+public:
+    enum Status
+    {
+        NoError,
+        FileReadError,
+        FileOpenError,
+        FilePermissionsError,
+        FileError
+    };
 
-   explicit QZipReader(const QString &fileName, QIODevice::OpenMode mode = QIODevice::ReadOnly );
-   explicit QZipReader(QIODevice *device);
+    explicit QZipReader( const QString &fileName, QIODevice::OpenMode mode = QIODevice::ReadOnly );
+    explicit QZipReader( QIODevice *device );
 
-   QZipReader(const QZipReader &) = delete;
-   QZipReader &operator=(const QZipReader &) = delete;
+    QZipReader( const QZipReader & ) = delete;
+    QZipReader &operator=( const QZipReader & ) = delete;
 
-   ~QZipReader();
+    ~QZipReader();
 
-   QIODevice *device() const;
+    QIODevice *device() const;
 
-   bool isReadable() const;
-   bool exists() const;
+    bool isReadable() const;
+    bool exists() const;
 
-   struct FileInfo {
-      FileInfo()
-         : isDir(false), isFile(false), isSymLink(false), crc(0), size(0)
-      {
-      }
+    struct FileInfo
+    {
+        FileInfo()
+            : isDir( false ), isFile( false ), isSymLink( false ), crc( 0 ), size( 0 )
+        {
+        }
 
-      bool isValid() const {
-         return isDir || isFile || isSymLink;
-      }
+        bool isValid() const
+        {
+            return isDir || isFile || isSymLink;
+        }
 
-      QString filePath;
-      uint isDir : 1;
-      uint isFile : 1;
-      uint isSymLink : 1;
-      QFile::Permissions permissions;
+        QString filePath;
+        uint isDir : 1;
+        uint isFile : 1;
+        uint isSymLink : 1;
+        QFile::Permissions permissions;
 
-      uint crc;
-      qint64 size;
-      QDateTime lastModified;
-   };
+        uint crc;
+        qint64 size;
+        QDateTime lastModified;
+    };
 
-   QVector<FileInfo> fileInfoList() const;
-   int count() const;
+    QVector<FileInfo> fileInfoList() const;
+    int count() const;
 
-   FileInfo entryInfoAt(int index) const;
-   QByteArray fileData(const QString &fileName) const;
-   bool extractAll(const QString &destinationDir) const;
+    FileInfo entryInfoAt( int index ) const;
+    QByteArray fileData( const QString &fileName ) const;
+    bool extractAll( const QString &destinationDir ) const;
 
-   Status status() const;
-   void close();
+    Status status() const;
+    void close();
 
- private:
-   QZipReaderPrivate *d;
+private:
+    QZipReaderPrivate *d;
 };
 
 #endif // QT_NO_TEXTODFWRITER

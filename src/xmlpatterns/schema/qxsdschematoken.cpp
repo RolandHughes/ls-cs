@@ -25,1384 +25,1746 @@
 
 #include "qxsdschematoken_p.h"
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier2(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier2( QStringView data )
 {
-   if (data.startsWith("id"))   {
-      return Id;
-   }
+    if ( data.startsWith( "id" ) )
+    {
+        return Id;
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier3(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier3( QStringView data )
 {
-   if (data.startsWith("all"))  {
-      return All;
+    if ( data.startsWith( "all" ) )
+    {
+        return All;
 
-   } else if (data.startsWith("any"))   {
-      return Any;
+    }
+    else if ( data.startsWith( "any" ) )
+    {
+        return Any;
 
-   } else if (data.startsWith("key"))   {
-      return Key;
+    }
+    else if ( data.startsWith( "key" ) )
+    {
+        return Key;
 
-   } else if (data.startsWith("ref"))   {
-      return Ref;
+    }
+    else if ( data.startsWith( "ref" ) )
+    {
+        return Ref;
 
-   } else if (data.startsWith("use"))   {
-      return Use;
+    }
+    else if ( data.startsWith( "use" ) )
+    {
+        return Use;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier4(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier4( QStringView data )
 {
-   if (data.startsWith("base"))   {
-      return Base;
+    if ( data.startsWith( "base" ) )
+    {
+        return Base;
 
-   } else if (data.startsWith("form"))   {
-      return Form;
+    }
+    else if ( data.startsWith( "form" ) )
+    {
+        return Form;
 
-   } else if (data.startsWith("list"))   {
-      return List;
+    }
+    else if ( data.startsWith( "list" ) )
+    {
+        return List;
 
-   } else if (data.startsWith("mode"))   {
-      return Mode;
+    }
+    else if ( data.startsWith( "mode" ) )
+    {
+        return Mode;
 
-   } else if (data.startsWith("name"))   {
-      return Name;
+    }
+    else if ( data.startsWith( "name" ) )
+    {
+        return Name;
 
-   } else if (data.startsWith("test"))   {
-      return Test;
+    }
+    else if ( data.startsWith( "test" ) )
+    {
+        return Test;
 
-   } else if (data.startsWith("type"))   {
-      return Type;
+    }
+    else if ( data.startsWith( "type" ) )
+    {
+        return Type;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier5(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier5( QStringView data )
 {
-   if (data.startsWith("block"))   {
-      return Block;
+    if ( data.startsWith( "block" ) )
+    {
+        return Block;
 
-   } else if (data.startsWith("field"))   {
-      return Field;
+    }
+    else if ( data.startsWith( "field" ) )
+    {
+        return Field;
 
-   } else if (data.startsWith("final"))   {
-      return Final;
+    }
+    else if ( data.startsWith( "final" ) )
+    {
+        return Final;
 
-   } else if (data.startsWith("fixed"))   {
-      return Fixed;
+    }
+    else if ( data.startsWith( "fixed" ) )
+    {
+        return Fixed;
 
-   } else if (data.startsWith("group"))   {
-      return Group;
+    }
+    else if ( data.startsWith( "group" ) )
+    {
+        return Group;
 
-   } else if (data.startsWith("mixed"))   {
-      return Mixed;
+    }
+    else if ( data.startsWith( "mixed" ) )
+    {
+        return Mixed;
 
-   } else if (data.startsWith("refer"))   {
-      return Refer;
+    }
+    else if ( data.startsWith( "refer" ) )
+    {
+        return Refer;
 
-   } else if (data.startsWith("union"))   {
-      return Union;
+    }
+    else if ( data.startsWith( "union" ) )
+    {
+        return Union;
 
-   } else if (data.startsWith("value"))   {
-      return Value;
+    }
+    else if ( data.startsWith( "value" ) )
+    {
+        return Value;
 
-   } else if (data.startsWith("xpath"))   {
-      return Xpath;
+    }
+    else if ( data.startsWith( "xpath" ) )
+    {
+        return Xpath;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier6(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier6( QStringView data )
 {
-   if (data.startsWith("assert"))   {
-      return Assert;
+    if ( data.startsWith( "assert" ) )
+    {
+        return Assert;
 
-   } else if (data.startsWith("choice"))   {
-      return Choice;
+    }
+    else if ( data.startsWith( "choice" ) )
+    {
+        return Choice;
 
-   } else if (data.startsWith("import"))   {
-      return Import;
+    }
+    else if ( data.startsWith( "import" ) )
+    {
+        return Import;
 
-   } else if (data.startsWith("keyref"))   {
-      return Keyref;
+    }
+    else if ( data.startsWith( "keyref" ) )
+    {
+        return Keyref;
 
-   } else if (data.startsWith("length"))   {
-      return Length;
+    }
+    else if ( data.startsWith( "length" ) )
+    {
+        return Length;
 
-   } else if (data.startsWith("public"))   {
-      return Public;
+    }
+    else if ( data.startsWith( "public" ) )
+    {
+        return Public;
 
-   } else if (data.startsWith("schema"))   {
-      return Schema;
+    }
+    else if ( data.startsWith( "schema" ) )
+    {
+        return Schema;
 
-   } else if (data.startsWith("source"))   {
-      return Source;
+    }
+    else if ( data.startsWith( "source" ) )
+    {
+        return Source;
 
-   } else if (data.startsWith("system"))   {
-      return System;
+    }
+    else if ( data.startsWith( "system" ) )
+    {
+        return System;
 
-   } else if (data.startsWith("unique"))   {
-      return Unique;
+    }
+    else if ( data.startsWith( "unique" ) )
+    {
+        return Unique;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier7(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier7( QStringView data )
 {
-   if (data.startsWith("appinfo"))   {
-      return Appinfo;
+    if ( data.startsWith( "appinfo" ) )
+    {
+        return Appinfo;
 
-   } else if (data.startsWith("default"))   {
-      return Default;
+    }
+    else if ( data.startsWith( "default" ) )
+    {
+        return Default;
 
-   } else if (data.startsWith("element"))   {
-      return Element;
+    }
+    else if ( data.startsWith( "element" ) )
+    {
+        return Element;
 
-   } else if (data.startsWith("include"))   {
-      return Include;
+    }
+    else if ( data.startsWith( "include" ) )
+    {
+        return Include;
 
-   } else if (data.startsWith("pattern"))   {
-      return Pattern;
+    }
+    else if ( data.startsWith( "pattern" ) )
+    {
+        return Pattern;
 
-   } else if (data.startsWith("replace"))   {
-      return Replace;
+    }
+    else if ( data.startsWith( "replace" ) )
+    {
+        return Replace;
 
-   } else if (data.startsWith("version"))   {
-      return Version;
+    }
+    else if ( data.startsWith( "version" ) )
+    {
+        return Version;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier8(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier8( QStringView data )
 {
-  if (data.startsWith("abstract"))   {
-      return Abstract;
+    if ( data.startsWith( "abstract" ) )
+    {
+        return Abstract;
 
-   } else if (data.startsWith("collapse"))   {
-      return Collapse;
+    }
+    else if ( data.startsWith( "collapse" ) )
+    {
+        return Collapse;
 
-   } else if (data.startsWith("itemType"))   {
-      return ItemType;
+    }
+    else if ( data.startsWith( "itemType" ) )
+    {
+        return ItemType;
 
-   } else if (data.startsWith("nillable"))   {
-      return Nillable;
+    }
+    else if ( data.startsWith( "nillable" ) )
+    {
+        return Nillable;
 
-   } else if (data.startsWith("notation"))   {
-      return Notation;
+    }
+    else if ( data.startsWith( "notation" ) )
+    {
+        return Notation;
 
-   } else if (data.startsWith("notQName"))   {
-      return NotQName;
+    }
+    else if ( data.startsWith( "notQName" ) )
+    {
+        return NotQName;
 
-   } else if (data.startsWith("override"))   {
-      return Override;
+    }
+    else if ( data.startsWith( "override" ) )
+    {
+        return Override;
 
-   } else if (data.startsWith("preserve"))   {
-      return Preserve;
+    }
+    else if ( data.startsWith( "preserve" ) )
+    {
+        return Preserve;
 
-   } else if (data.startsWith("redefine"))   {
-      return Redefine;
+    }
+    else if ( data.startsWith( "redefine" ) )
+    {
+        return Redefine;
 
-   } else if (data.startsWith("selector"))   {
-      return Selector;
+    }
+    else if ( data.startsWith( "selector" ) )
+    {
+        return Selector;
 
-   } else if (data.startsWith("sequence"))   {
-      return Sequence;
+    }
+    else if ( data.startsWith( "sequence" ) )
+    {
+        return Sequence;
 
-   } else if (data.startsWith("xmlXlang"))   {
-      return XmlLanguage;
+    }
+    else if ( data.startsWith( "xmlXlang" ) )
+    {
+        return XmlLanguage;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier9(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier9( QStringView data )
 {
-   if (data.startsWith("assertion"))   {
-      return Assertion;
+    if ( data.startsWith( "assertion" ) )
+    {
+        return Assertion;
 
-   } else if (data.startsWith("attribute"))   {
-      return Attribute;
+    }
+    else if ( data.startsWith( "attribute" ) )
+    {
+        return Attribute;
 
-   } else if (data.startsWith("extension"))   {
-      return Extension;
+    }
+    else if ( data.startsWith( "extension" ) )
+    {
+        return Extension;
 
-   } else if (data.startsWith("maxLength"))   {
-      return MaxLength;
+    }
+    else if ( data.startsWith( "maxLength" ) )
+    {
+        return MaxLength;
 
-   } else if (data.startsWith("maxOccurs"))   {
-      return MaxOccurs;
+    }
+    else if ( data.startsWith( "maxOccurs" ) )
+    {
+        return MaxOccurs;
 
-   } else if (data.startsWith("minLength"))   {
-      return MinLength;
+    }
+    else if ( data.startsWith( "minLength" ) )
+    {
+        return MinLength;
 
-   } else if (data.startsWith("minOccurs"))   {
-      return MinOccurs;
+    }
+    else if ( data.startsWith( "minOccurs" ) )
+    {
+        return MinOccurs;
 
-   } else if (data.startsWith("namespace"))   {
-      return Namespace;
-   }
+    }
+    else if ( data.startsWith( "namespace" ) )
+    {
+        return Namespace;
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier10(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier10( QStringView data )
 {
-   if (data.startsWith("annotation"))   {
-      return Annotation;
+    if ( data.startsWith( "annotation" ) )
+    {
+        return Annotation;
 
-   } else if (data.startsWith("simpleType"))   {
-      return SimpleType;
+    }
+    else if ( data.startsWith( "simpleType" ) )
+    {
+        return SimpleType;
 
-   } else if (data.startsWith("whiteSpace"))   {
-      return WhiteSpace;
+    }
+    else if ( data.startsWith( "whiteSpace" ) )
+    {
+        return WhiteSpace;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier11(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier11( QStringView data )
 {
-   if (data.startsWith("alternative"))   {
-      return Alternative;
+    if ( data.startsWith( "alternative" ) )
+    {
+        return Alternative;
 
-   } else if (data.startsWith("complexType"))   {
-      return ComplexType;
+    }
+    else if ( data.startsWith( "complexType" ) )
+    {
+        return ComplexType;
 
-   } else if (data.startsWith("enumeration"))   {
-      return Enumeration;
+    }
+    else if ( data.startsWith( "enumeration" ) )
+    {
+        return Enumeration;
 
-   } else if (data.startsWith("memberTypes"))   {
-      return MemberTypes;
+    }
+    else if ( data.startsWith( "memberTypes" ) )
+    {
+        return MemberTypes;
 
-   } else if (data.startsWith("openContent"))   {
-      return OpenContent;
+    }
+    else if ( data.startsWith( "openContent" ) )
+    {
+        return OpenContent;
 
-   } else if (data.startsWith("restriction"))   {
-      return Restriction;
+    }
+    else if ( data.startsWith( "restriction" ) )
+    {
+        return Restriction;
 
-   } else if (data.startsWith("totalDigits"))   {
-      return TotalDigits;
+    }
+    else if ( data.startsWith( "totalDigits" ) )
+    {
+        return TotalDigits;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier12(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier12( QStringView data )
 {
-   if (data.startsWith("anyAttribute"))   {
-      return AnyAttribute;
+    if ( data.startsWith( "anyAttribute" ) )
+    {
+        return AnyAttribute;
 
-   } else if (data.startsWith("blockDefault"))   {
-      return BlockDefault;
+    }
+    else if ( data.startsWith( "blockDefault" ) )
+    {
+        return BlockDefault;
 
-   } else if (data.startsWith("finalDefault"))   {
-      return FinalDefault;
+    }
+    else if ( data.startsWith( "finalDefault" ) )
+    {
+        return FinalDefault;
 
-   } else if (data.startsWith("maxExclusive"))   {
-      return MaxExclusive;
+    }
+    else if ( data.startsWith( "maxExclusive" ) )
+    {
+        return MaxExclusive;
 
-   } else if (data.startsWith("maxInclusive"))   {
-      return MaxInclusive;
+    }
+    else if ( data.startsWith( "maxInclusive" ) )
+    {
+        return MaxInclusive;
 
-   } else if (data.startsWith("minExclusive"))   {
-      return MinExclusive;
+    }
+    else if ( data.startsWith( "minExclusive" ) )
+    {
+        return MinExclusive;
 
-   } else if (data.startsWith("minInclusive"))   {
-      return MinInclusive;
+    }
+    else if ( data.startsWith( "minInclusive" ) )
+    {
+        return MinInclusive;
 
-   } else if (data.startsWith("notNamespace"))   {
-      return NotNamespace;
+    }
+    else if ( data.startsWith( "notNamespace" ) )
+    {
+        return NotNamespace;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier13(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier13( QStringView data )
 {
-  if (data.startsWith("documentation"))   {
-      return Documentation;
+    if ( data.startsWith( "documentation" ) )
+    {
+        return Documentation;
 
-   } else if (data.startsWith("simpleContent"))   {
-      return SimpleContent;
+    }
+    else if ( data.startsWith( "simpleContent" ) )
+    {
+        return SimpleContent;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier14(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier14( QStringView data )
 {
-  if (data.startsWith("appliesToEmpty"))   {
-      return AppliesToEmpty;
+    if ( data.startsWith( "appliesToEmpty" ) )
+    {
+        return AppliesToEmpty;
 
-   } else if (data.startsWith("attributeGroup"))   {
-      return AttributeGroup;
+    }
+    else if ( data.startsWith( "attributeGroup" ) )
+    {
+        return AttributeGroup;
 
-   } else if (data.startsWith("complexContent"))   {
-      return ComplexContent;
+    }
+    else if ( data.startsWith( "complexContent" ) )
+    {
+        return ComplexContent;
 
-   } else if (data.startsWith("fractionDigits"))   {
-      return FractionDigits;
+    }
+    else if ( data.startsWith( "fractionDigits" ) )
+    {
+        return FractionDigits;
 
-   } else if (data.startsWith("schemaLocation"))   {
-      return SchemaLocation;
+    }
+    else if ( data.startsWith( "schemaLocation" ) )
+    {
+        return SchemaLocation;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier15(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier15( QStringView data )
 {
-   if (data.startsWith("processContents"))   {
-      return ProcessContents;
+    if ( data.startsWith( "processContents" ) )
+    {
+        return ProcessContents;
 
-   } else if (data.startsWith("targetNamespace"))   {
-      return TargetNamespace;
+    }
+    else if ( data.startsWith( "targetNamespace" ) )
+    {
+        return TargetNamespace;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier17(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier17( QStringView data )
 {
-  if (data.startsWith("defaultAttributes"))   {
-      return DefaultAttributes;
+    if ( data.startsWith( "defaultAttributes" ) )
+    {
+        return DefaultAttributes;
 
-   } else if (data.startsWith("substitutionGroup"))   {
-      return SubstitutionGroup;
+    }
+    else if ( data.startsWith( "substitutionGroup" ) )
+    {
+        return SubstitutionGroup;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier18(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier18( QStringView data )
 {
-   if (data.startsWith("defaulOpenContent"))   {
-      return DefaultOpenContent;
+    if ( data.startsWith( "defaulOpenContent" ) )
+    {
+        return DefaultOpenContent;
 
-   } else if (data.startsWith("elementFormDefault"))   {
-      return ElementFormDefault;
+    }
+    else if ( data.startsWith( "elementFormDefault" ) )
+    {
+        return ElementFormDefault;
 
-   }
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier20(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier20( QStringView data )
 {
-   if (data.startsWith("attributeFormDefault"))  {
-      return AttributeFormDefault;
-   }
+    if ( data.startsWith( "attributeFormDefault" ) )
+    {
+        return AttributeFormDefault;
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier21(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier21( QStringView data )
 {
-  if (data.startsWith("xpathDefaultNamespace"))   {
-      return XPathDefaultNamespace;
-   }
+    if ( data.startsWith( "xpathDefaultNamespace" ) )
+    {
+        return XPathDefaultNamespace;
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier22(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier22( QStringView data )
 {
-  if (data.startsWith("defaultAttributesApply"))   {
-      return DefaultAttributesApply;
-   }
+    if ( data.startsWith( "defaultAttributesApply" ) )
+    {
+        return DefaultAttributesApply;
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::classifier32(QStringView data)
+XsdSchemaToken::NodeName XsdSchemaToken::classifier32( QStringView data )
 {
-   if (data.startsWith("http://www.w3.org/2001/XMLSchema"))   {
-      return XML_NS_SCHEMA_URI;
-   }
+    if ( data.startsWith( "http://www.w3.org/2001/XMLSchema" ) )
+    {
+        return XML_NS_SCHEMA_URI;
+    }
 
-   return NoKeyword;
+    return NoKeyword;
 }
 
-XsdSchemaToken::NodeName XsdSchemaToken::toToken(QStringView data, int length)
+XsdSchemaToken::NodeName XsdSchemaToken::toToken( QStringView data, int length )
 {
-   switch (length) {
+    switch ( length )
+    {
 
-      case 2:
-         return classifier2(data);
-
-
-      case 3:
-         return classifier3(data);
+        case 2:
+            return classifier2( data );
 
 
-      case 4:
-         return classifier4(data);
+        case 3:
+            return classifier3( data );
 
 
-      case 5:
-         return classifier5(data);
+        case 4:
+            return classifier4( data );
 
 
-      case 6:
-         return classifier6(data);
+        case 5:
+            return classifier5( data );
 
 
-      case 7:
-         return classifier7(data);
+        case 6:
+            return classifier6( data );
 
 
-      case 8:
-         return classifier8(data);
+        case 7:
+            return classifier7( data );
 
 
-      case 9:
-         return classifier9(data);
+        case 8:
+            return classifier8( data );
 
 
-      case 10:
-         return classifier10(data);
+        case 9:
+            return classifier9( data );
 
 
-      case 11:
-         return classifier11(data);
+        case 10:
+            return classifier10( data );
 
 
-      case 12:
-         return classifier12(data);
+        case 11:
+            return classifier11( data );
 
 
-      case 13:
-         return classifier13(data);
+        case 12:
+            return classifier12( data );
 
 
-      case 14:
-         return classifier14(data);
+        case 13:
+            return classifier13( data );
 
 
-      case 15:
-         return classifier15(data);
+        case 14:
+            return classifier14( data );
 
 
-      case 17:
-         return classifier17(data);
+        case 15:
+            return classifier15( data );
 
 
-      case 18:
-         return classifier18(data);
+        case 17:
+            return classifier17( data );
 
 
-      case 20:
-         return classifier20(data);
+        case 18:
+            return classifier18( data );
 
 
-      case 21:
-         return classifier21(data);
+        case 20:
+            return classifier20( data );
 
 
-      case 22:
-         return classifier22(data);
+        case 21:
+            return classifier21( data );
 
 
-      case 32:
-         return classifier32(data);
+        case 22:
+            return classifier22( data );
 
 
-      default:
-         return NoKeyword;
-   }
+        case 32:
+            return classifier32( data );
+
+
+        default:
+            return NoKeyword;
+    }
 }
 
 
-QString XsdSchemaToken::toString(NodeName token)
+QString XsdSchemaToken::toString( NodeName token )
 {
-   const char *data = nullptr;
-   int length = 0;
-
-   switch (token) {
-
-      case Abstract: {
-         static const char staticallyStoredAbstract[] = {
-            97, 98, 115, 116, 114, 97, 99, 116, 0
-         };
-         data = staticallyStoredAbstract;
-         length = 8;
-         break;
-      }
-
-      case All: {
-         static const char staticallyStoredAll[] = {
-            97, 108, 108, 0
-         };
-         data = staticallyStoredAll;
-         length = 3;
-         break;
-      }
-
-      case Alternative: {
-         static const char staticallyStoredAlternative[] = {
-            97, 108, 116, 101, 114, 110, 97, 116, 105, 118, 101, 0
-         };
-         data = staticallyStoredAlternative;
-         length = 11;
-         break;
-      }
-
-      case Annotation: {
-         static const char staticallyStoredAnnotation[] = {
-            97, 110, 110, 111, 116, 97, 116, 105, 111, 110, 0
-         };
-         data = staticallyStoredAnnotation;
-         length = 10;
-         break;
-      }
-
-      case Any: {
-         static const char staticallyStoredAny[] = {
-            97, 110, 121, 0
-         };
-         data = staticallyStoredAny;
-         length = 3;
-         break;
-      }
-
-      case AnyAttribute: {
-         static const char staticallyStoredAnyAttribute[] = {
-            97, 110, 121, 65, 116, 116, 114, 105, 98, 117, 116, 101, 0
-         };
-         data = staticallyStoredAnyAttribute;
-         length = 12;
-         break;
-      }
-
-      case Appinfo: {
-         static const char staticallyStoredAppinfo[] = {
-            97, 112, 112, 105, 110, 102, 111, 0
-         };
-         data = staticallyStoredAppinfo;
-         length = 7;
-         break;
-      }
-
-      case AppliesToEmpty: {
-         static const char staticallyStoredAppliesToEmpty[] = {
-            97, 112, 112, 108, 105, 101, 115, 84, 111, 69, 109, 112, 116, 121, 0
-         };
-         data = staticallyStoredAppliesToEmpty;
-         length = 14;
-         break;
-      }
-
-      case Assert: {
-         static const char staticallyStoredAssert[] = {
-            97, 115, 115, 101, 114, 116, 0
-         };
-         data = staticallyStoredAssert;
-         length = 6;
-         break;
-      }
-
-      case Assertion: {
-         static const char staticallyStoredAssertion[] = {
-            97, 115, 115, 101, 114, 116, 105, 111, 110, 0
-         };
-         data = staticallyStoredAssertion;
-         length = 9;
-         break;
-      }
-
-      case Attribute: {
-         static const char staticallyStoredAttribute[] = {
-            97, 116, 116, 114, 105, 98, 117, 116, 101, 0
-         };
-         data = staticallyStoredAttribute;
-         length = 9;
-         break;
-      }
-
-      case AttributeFormDefault: {
-         static const char staticallyStoredAttributeFormDefault[] = {
-            97, 116, 116, 114, 105, 98, 117, 116, 101, 70, 111, 114, 109, 68, 101, 102, 97, 117, 108, 116, 0
-         };
-         data = staticallyStoredAttributeFormDefault;
-         length = 20;
-         break;
-      }
-
-      case AttributeGroup: {
-         static const char staticallyStoredAttributeGroup[] = {
-            97, 116, 116, 114, 105, 98, 117, 116, 101, 71, 114, 111, 117, 112, 0
-         };
-         data = staticallyStoredAttributeGroup;
-         length = 14;
-         break;
-      }
-
-      case Base: {
-         static const char staticallyStoredBase[] = {
-            98, 97, 115, 101, 0
-         };
-         data = staticallyStoredBase;
-         length = 4;
-         break;
-      }
-
-      case Block: {
-         static const char staticallyStoredBlock[] = {
-            98, 108, 111, 99, 107, 0
-         };
-         data = staticallyStoredBlock;
-         length = 5;
-         break;
-      }
-
-      case BlockDefault: {
-         static const char staticallyStoredBlockDefault[] = {
-            98, 108, 111, 99, 107, 68, 101, 102, 97, 117, 108, 116, 0
-         };
-         data = staticallyStoredBlockDefault;
-         length = 12;
-         break;
-      }
-
-      case Choice: {
-         static const char staticallyStoredChoice[] = {
-            99, 104, 111, 105, 99, 101, 0
-         };
-         data = staticallyStoredChoice;
-         length = 6;
-         break;
-      }
-
-      case Collapse: {
-         static const char staticallyStoredCollapse[] = {
-            99, 111, 108, 108, 97, 112, 115, 101, 0
-         };
-         data = staticallyStoredCollapse;
-         length = 8;
-         break;
-      }
-
-      case ComplexContent: {
-         static const char staticallyStoredComplexContent[] = {
-            99, 111, 109, 112, 108, 101, 120, 67, 111, 110, 116, 101, 110, 116, 0
-         };
-         data = staticallyStoredComplexContent;
-         length = 14;
-         break;
-      }
-
-      case ComplexType: {
-         static const char staticallyStoredComplexType[] = {
-            99, 111, 109, 112, 108, 101, 120, 84, 121, 112, 101, 0
-         };
-         data = staticallyStoredComplexType;
-         length = 11;
-         break;
-      }
-
-      case Default: {
-         static const char staticallyStoredDefault[] = {
-            100, 101, 102, 97, 117, 108, 116, 0
-         };
-         data = staticallyStoredDefault;
-         length = 7;
-         break;
-      }
-
-      case DefaultAttributes: {
-         static const char staticallyStoredDefaultAttributes[] = {
-            100, 101, 102, 97, 117, 108, 116, 65, 116, 116, 114, 105, 98, 117, 116, 101, 115, 0
-         };
-         data = staticallyStoredDefaultAttributes;
-         length = 17;
-         break;
-      }
-
-      case DefaultAttributesApply: {
-         static const char staticallyStoredDefaultAttributesApply[] = {
-            100, 101, 102, 97, 117, 108, 116, 65, 116, 116, 114, 105, 98, 117, 116, 101, 115, 65, 112, 112, 108, 121, 0
-         };
-         data = staticallyStoredDefaultAttributesApply;
-         length = 22;
-         break;
-      }
-
-      case DefaultOpenContent: {
-         static const char staticallyStoredDefaultOpenContent[] = {
-            100, 101, 102, 97, 117, 108, 116, 79, 112, 101, 110, 67, 111, 110, 116, 101, 110, 116, 0
-         };
-         data = staticallyStoredDefaultOpenContent;
-         length = 18;
-         break;
-      }
-
-      case Documentation: {
-         static const char staticallyStoredDocumentation[] = {
-            100, 111, 99, 117, 109, 101, 110, 116, 97, 116, 105, 111, 110, 0
-         };
-         data = staticallyStoredDocumentation;
-         length = 13;
-         break;
-      }
-
-      case Element: {
-         static const char staticallyStoredElement[] = {
-            101, 108, 101, 109, 101, 110, 116, 0
-         };
-         data = staticallyStoredElement;
-         length = 7;
-         break;
-      }
-
-      case ElementFormDefault: {
-         static const char staticallyStoredElementFormDefault[] = {
-            101, 108, 101, 109, 101, 110, 116, 70, 111, 114, 109, 68, 101, 102, 97, 117, 108, 116, 0
-         };
-         data = staticallyStoredElementFormDefault;
-         length = 18;
-         break;
-      }
-
-      case Enumeration: {
-         static const char staticallyStoredEnumeration[] = {
-            101, 110, 117, 109, 101, 114, 97, 116, 105, 111, 110, 0
-         };
-         data = staticallyStoredEnumeration;
-         length = 11;
-         break;
-      }
-
-      case Extension: {
-         static const char staticallyStoredExtension[] = {
-            101, 120, 116, 101, 110, 115, 105, 111, 110, 0
-         };
-         data = staticallyStoredExtension;
-         length = 9;
-         break;
-      }
-
-      case Field: {
-         static const char staticallyStoredField[] = {
-            102, 105, 101, 108, 100, 0
-         };
-         data = staticallyStoredField;
-         length = 5;
-         break;
-      }
-
-      case Final: {
-         static const char staticallyStoredFinal[] = {
-            102, 105, 110, 97, 108, 0
-         };
-         data = staticallyStoredFinal;
-         length = 5;
-         break;
-      }
-
-      case FinalDefault: {
-         static const char staticallyStoredFinalDefault[] = {
-            102, 105, 110, 97, 108, 68, 101, 102, 97, 117, 108, 116, 0
-         };
-         data = staticallyStoredFinalDefault;
-         length = 12;
-         break;
-      }
-
-      case Fixed: {
-         static const char staticallyStoredFixed[] = {
-            102, 105, 120, 101, 100, 0
-         };
-         data = staticallyStoredFixed;
-         length = 5;
-         break;
-      }
-
-      case Form: {
-         static const char staticallyStoredForm[] = {
-            102, 111, 114, 109, 0
-         };
-         data = staticallyStoredForm;
-         length = 4;
-         break;
-      }
-
-      case FractionDigits: {
-         static const char staticallyStoredFractionDigits[] = {
-            102, 114, 97, 99, 116, 105, 111, 110, 68, 105, 103, 105, 116, 115, 0
-         };
-         data = staticallyStoredFractionDigits;
-         length = 14;
-         break;
-      }
-
-      case Group: {
-         static const char staticallyStoredGroup[] = {
-            103, 114, 111, 117, 112, 0
-         };
-         data = staticallyStoredGroup;
-         length = 5;
-         break;
-      }
-
-      case Id: {
-         static const char staticallyStoredId[] = {
-            105, 100, 0
-         };
-         data = staticallyStoredId;
-         length = 2;
-         break;
-      }
-
-      case Import: {
-         static const char staticallyStoredImport[] = {
-            105, 109, 112, 111, 114, 116, 0
-         };
-         data = staticallyStoredImport;
-         length = 6;
-         break;
-      }
-
-      case Include: {
-         static const char staticallyStoredInclude[] = {
-            105, 110, 99, 108, 117, 100, 101, 0
-         };
-         data = staticallyStoredInclude;
-         length = 7;
-         break;
-      }
-
-      case ItemType: {
-         static const char staticallyStoredItemType[] = {
-            105, 116, 101, 109, 84, 121, 112, 101, 0
-         };
-         data = staticallyStoredItemType;
-         length = 8;
-         break;
-      }
-
-      case Key: {
-         static const char staticallyStoredKey[] = {
-            107, 101, 121, 0
-         };
-         data = staticallyStoredKey;
-         length = 3;
-         break;
-      }
-
-      case Keyref: {
-         static const char staticallyStoredKeyref[] = {
-            107, 101, 121, 114, 101, 102, 0
-         };
-         data = staticallyStoredKeyref;
-         length = 6;
-         break;
-      }
-
-      case Length: {
-         static const char staticallyStoredLength[] = {
-            108, 101, 110, 103, 116, 104, 0
-         };
-         data = staticallyStoredLength;
-         length = 6;
-         break;
-      }
-
-      case List: {
-         static const char staticallyStoredList[] = {
-            108, 105, 115, 116, 0
-         };
-         data = staticallyStoredList;
-         length = 4;
-         break;
-      }
-
-      case MaxExclusive: {
-         static const char staticallyStoredMaxExclusive[] = {
-            109, 97, 120, 69, 120, 99, 108, 117, 115, 105, 118, 101, 0
-         };
-         data = staticallyStoredMaxExclusive;
-         length = 12;
-         break;
-      }
-
-      case MaxInclusive: {
-         static const char staticallyStoredMaxInclusive[] = {
-            109, 97, 120, 73, 110, 99, 108, 117, 115, 105, 118, 101, 0
-         };
-         data = staticallyStoredMaxInclusive;
-         length = 12;
-         break;
-      }
-
-      case MaxLength: {
-         static const char staticallyStoredMaxLength[] = {
-            109, 97, 120, 76, 101, 110, 103, 116, 104, 0
-         };
-         data = staticallyStoredMaxLength;
-         length = 9;
-         break;
-      }
-
-      case MaxOccurs: {
-         static const char staticallyStoredMaxOccurs[] = {
-            109, 97, 120, 79, 99, 99, 117, 114, 115, 0
-         };
-         data = staticallyStoredMaxOccurs;
-         length = 9;
-         break;
-      }
-
-      case MemberTypes: {
-         static const char staticallyStoredMemberTypes[] = {
-            109, 101, 109, 98, 101, 114, 84, 121, 112, 101, 115, 0
-         };
-         data = staticallyStoredMemberTypes;
-         length = 11;
-         break;
-      }
-
-      case MinExclusive: {
-         static const char staticallyStoredMinExclusive[] = {
-            109, 105, 110, 69, 120, 99, 108, 117, 115, 105, 118, 101, 0
-         };
-         data = staticallyStoredMinExclusive;
-         length = 12;
-         break;
-      }
-
-      case MinInclusive: {
-         static const char staticallyStoredMinInclusive[] = {
-            109, 105, 110, 73, 110, 99, 108, 117, 115, 105, 118, 101, 0
-         };
-         data = staticallyStoredMinInclusive;
-         length = 12;
-         break;
-      }
-
-      case MinLength: {
-         static const char staticallyStoredMinLength[] = {
-            109, 105, 110, 76, 101, 110, 103, 116, 104, 0
-         };
-         data = staticallyStoredMinLength;
-         length = 9;
-         break;
-      }
-
-      case MinOccurs: {
-         static const char staticallyStoredMinOccurs[] = {
-            109, 105, 110, 79, 99, 99, 117, 114, 115, 0
-         };
-         data = staticallyStoredMinOccurs;
-         length = 9;
-         break;
-      }
-
-      case Mixed: {
-         static const char staticallyStoredMixed[] = {
-            109, 105, 120, 101, 100, 0
-         };
-         data = staticallyStoredMixed;
-         length = 5;
-         break;
-      }
-
-      case Mode: {
-         static const char staticallyStoredMode[] = {
-            109, 111, 100, 101, 0
-         };
-         data = staticallyStoredMode;
-         length = 4;
-         break;
-      }
-
-      case Name: {
-         static const char staticallyStoredName[] = {
-            110, 97, 109, 101, 0
-         };
-         data = staticallyStoredName;
-         length = 4;
-         break;
-      }
-
-      case Namespace: {
-         static const char staticallyStoredNamespace[] = {
-            110, 97, 109, 101, 115, 112, 97, 99, 101, 0
-         };
-         data = staticallyStoredNamespace;
-         length = 9;
-         break;
-      }
-
-      case Nillable: {
-         static const char staticallyStoredNillable[] = {
-            110, 105, 108, 108, 97, 98, 108, 101, 0
-         };
-         data = staticallyStoredNillable;
-         length = 8;
-         break;
-      }
-
-      case NotNamespace: {
-         static const char staticallyStoredNotNamespace[] = {
-            110, 111, 116, 78, 97, 109, 101, 115, 112, 97, 99, 101, 0
-         };
-         data = staticallyStoredNotNamespace;
-         length = 12;
-         break;
-      }
-
-      case NotQName: {
-         static const char staticallyStoredNotQName[] = {
-            110, 111, 116, 81, 78, 97, 109, 101, 0
-         };
-         data = staticallyStoredNotQName;
-         length = 8;
-         break;
-      }
-
-      case Notation: {
-         static const char staticallyStoredNotation[] = {
-            110, 111, 116, 97, 116, 105, 111, 110, 0
-         };
-         data = staticallyStoredNotation;
-         length = 8;
-         break;
-      }
-
-      case OpenContent: {
-         static const char staticallyStoredOpenContent[] = {
-            111, 112, 101, 110, 67, 111, 110, 116, 101, 110, 116, 0
-         };
-         data = staticallyStoredOpenContent;
-         length = 11;
-         break;
-      }
-
-      case Override: {
-         static const char staticallyStoredOverride[] = {
-            111, 118, 101, 114, 114, 105, 100, 101, 0
-         };
-         data = staticallyStoredOverride;
-         length = 8;
-         break;
-      }
-
-      case Pattern: {
-         static const char staticallyStoredPattern[] = {
-            112, 97, 116, 116, 101, 114, 110, 0
-         };
-         data = staticallyStoredPattern;
-         length = 7;
-         break;
-      }
-
-      case Preserve: {
-         static const char staticallyStoredPreserve[] = {
-            112, 114, 101, 115, 101, 114, 118, 101, 0
-         };
-         data = staticallyStoredPreserve;
-         length = 8;
-         break;
-      }
-
-      case ProcessContents: {
-         static const char staticallyStoredProcessContents[] = {
-            112, 114, 111, 99, 101, 115, 115, 67, 111, 110, 116, 101, 110, 116, 115, 0
-         };
-         data = staticallyStoredProcessContents;
-         length = 15;
-         break;
-      }
-
-      case Public: {
-         static const char staticallyStoredPublic[] = {
-            112, 117, 98, 108, 105, 99, 0
-         };
-         data = staticallyStoredPublic;
-         length = 6;
-         break;
-      }
-
-      case Redefine: {
-         static const char staticallyStoredRedefine[] = {
-            114, 101, 100, 101, 102, 105, 110, 101, 0
-         };
-         data = staticallyStoredRedefine;
-         length = 8;
-         break;
-      }
-
-      case Ref: {
-         static const char staticallyStoredRef[] = {
-            114, 101, 102, 0
-         };
-         data = staticallyStoredRef;
-         length = 3;
-         break;
-      }
-
-      case Refer: {
-         static const char staticallyStoredRefer[] = {
-            114, 101, 102, 101, 114, 0
-         };
-         data = staticallyStoredRefer;
-         length = 5;
-         break;
-      }
-
-      case Replace: {
-         static const char staticallyStoredReplace[] = {
-            114, 101, 112, 108, 97, 99, 101, 0
-         };
-         data = staticallyStoredReplace;
-         length = 7;
-         break;
-      }
-
-      case Restriction: {
-         static const char staticallyStoredRestriction[] = {
-            114, 101, 115, 116, 114, 105, 99, 116, 105, 111, 110, 0
-         };
-         data = staticallyStoredRestriction;
-         length = 11;
-         break;
-      }
-
-      case Schema: {
-         static const char staticallyStoredSchema[] = {
-            115, 99, 104, 101, 109, 97, 0
-         };
-         data = staticallyStoredSchema;
-         length = 6;
-         break;
-      }
-
-      case SchemaLocation: {
-         static const char staticallyStoredSchemaLocation[] = {
-            115, 99, 104, 101, 109, 97, 76, 111, 99, 97, 116, 105, 111, 110, 0
-         };
-         data = staticallyStoredSchemaLocation;
-         length = 14;
-         break;
-      }
-
-      case Selector: {
-         static const char staticallyStoredSelector[] = {
-            115, 101, 108, 101, 99, 116, 111, 114, 0
-         };
-         data = staticallyStoredSelector;
-         length = 8;
-         break;
-      }
-
-      case Sequence: {
-         static const char staticallyStoredSequence[] = {
-            115, 101, 113, 117, 101, 110, 99, 101, 0
-         };
-         data = staticallyStoredSequence;
-         length = 8;
-         break;
-      }
-
-      case SimpleContent: {
-         static const char staticallyStoredSimpleContent[] = {
-            115, 105, 109, 112, 108, 101, 67, 111, 110, 116, 101, 110, 116, 0
-         };
-         data = staticallyStoredSimpleContent;
-         length = 13;
-         break;
-      }
-
-      case SimpleType: {
-         static const char staticallyStoredSimpleType[] = {
-            115, 105, 109, 112, 108, 101, 84, 121, 112, 101, 0
-         };
-         data = staticallyStoredSimpleType;
-         length = 10;
-         break;
-      }
-
-      case Source: {
-         static const char staticallyStoredSource[] = {
-            115, 111, 117, 114, 99, 101, 0
-         };
-         data = staticallyStoredSource;
-         length = 6;
-         break;
-      }
-
-      case SubstitutionGroup: {
-         static const char staticallyStoredSubstitutionGroup[] = {
-            115, 117, 98, 115, 116, 105, 116, 117, 116, 105, 111, 110, 71, 114, 111, 117, 112, 0
-         };
-         data = staticallyStoredSubstitutionGroup;
-         length = 17;
-         break;
-      }
-
-      case System: {
-         static const char staticallyStoredSystem[] = {
-            115, 121, 115, 116, 101, 109, 0
-         };
-         data = staticallyStoredSystem;
-         length = 6;
-         break;
-      }
-
-      case TargetNamespace: {
-         static const char staticallyStoredTargetNamespace[] = {
-            116, 97, 114, 103, 101, 116, 78, 97, 109, 101, 115, 112, 97, 99, 101, 0
-         };
-         data = staticallyStoredTargetNamespace;
-         length = 15;
-         break;
-      }
-
-      case Test: {
-         static const char staticallyStoredTest[] = {
-            116, 101, 115, 116, 0
-         };
-         data = staticallyStoredTest;
-         length = 4;
-         break;
-      }
-
-      case TotalDigits: {
-         static const char staticallyStoredTotalDigits[] = {
-            116, 111, 116, 97, 108, 68, 105, 103, 105, 116, 115, 0
-         };
-         data = staticallyStoredTotalDigits;
-         length = 11;
-         break;
-      }
-
-      case Type: {
-         static const char staticallyStoredType[] = {
-            116, 121, 112, 101, 0
-         };
-         data = staticallyStoredType;
-         length = 4;
-         break;
-      }
-
-      case Union: {
-         static const char staticallyStoredUnion[] = {
-            117, 110, 105, 111, 110, 0
-         };
-         data = staticallyStoredUnion;
-         length = 5;
-         break;
-      }
-
-      case Unique: {
-         static const char staticallyStoredUnique[] = {
-            117, 110, 105, 113, 117, 101, 0
-         };
-         data = staticallyStoredUnique;
-         length = 6;
-         break;
-      }
-
-      case Use: {
-         static const char staticallyStoredUse[] = {
-            117, 115, 101, 0
-         };
-         data = staticallyStoredUse;
-         length = 3;
-         break;
-      }
-
-      case Value: {
-         static const char staticallyStoredValue[] = {
-            118, 97, 108, 117, 101, 0
-         };
-         data = staticallyStoredValue;
-         length = 5;
-         break;
-      }
-
-      case Version: {
-         static const char staticallyStoredVersion[] = {
-            118, 101, 114, 115, 105, 111, 110, 0
-         };
-         data = staticallyStoredVersion;
-         length = 7;
-         break;
-      }
-
-      case WhiteSpace: {
-         static const char staticallyStoredWhiteSpace[] = {
-            119, 104, 105, 116, 101, 83, 112, 97, 99, 101, 0
-         };
-         data = staticallyStoredWhiteSpace;
-         length = 10;
-         break;
-      }
-
-      case XML_NS_SCHEMA_URI: {
-         static const char staticallyStoredXML_NS_SCHEMA_URI[] = {
-            104, 116, 116, 112, 58, 47, 47, 119, 119, 119, 46, 119, 51, 46, 111, 114, 103, 47, 50, 48, 48, 49, 47, 88, 77, 76, 83, 99, 104, 101, 109, 97, 0
-         };
-         data = staticallyStoredXML_NS_SCHEMA_URI;
-         length = 32;
-         break;
-      }
-
-      case XPathDefaultNamespace: {
-         static const char staticallyStoredXPathDefaultNamespace[] = {
-            120, 112, 97, 116, 104, 68, 101, 102, 97, 117, 108, 116, 78, 97, 109, 101, 115, 112, 97, 99, 101, 0
-         };
-         data = staticallyStoredXPathDefaultNamespace;
-         length = 21;
-         break;
-      }
-
-      case XmlLanguage: {
-         static const char staticallyStoredXmlLanguage[] = {
-            120, 109, 108, 58, 108, 97, 110, 103, 0
-         };
-         data = staticallyStoredXmlLanguage;
-         length = 8;
-         break;
-      }
-
-      case Xpath: {
-         static const char staticallyStoredXpath[] = {
-            120, 112, 97, 116, 104, 0
-         };
-         data = staticallyStoredXpath;
-         length = 5;
-         break;
-      }
-
-      default:
-         /* It's either the default token, or an undefined enum
-          * value. We silence a compiler warning, and return the
-          * empty string. */
-         ;
-   }
-
-   return QString::fromLatin1(data, length);
+    const char *data = nullptr;
+    int length = 0;
+
+    switch ( token )
+    {
+
+        case Abstract:
+        {
+            static const char staticallyStoredAbstract[] =
+            {
+                97, 98, 115, 116, 114, 97, 99, 116, 0
+            };
+            data = staticallyStoredAbstract;
+            length = 8;
+            break;
+        }
+
+        case All:
+        {
+            static const char staticallyStoredAll[] =
+            {
+                97, 108, 108, 0
+            };
+            data = staticallyStoredAll;
+            length = 3;
+            break;
+        }
+
+        case Alternative:
+        {
+            static const char staticallyStoredAlternative[] =
+            {
+                97, 108, 116, 101, 114, 110, 97, 116, 105, 118, 101, 0
+            };
+            data = staticallyStoredAlternative;
+            length = 11;
+            break;
+        }
+
+        case Annotation:
+        {
+            static const char staticallyStoredAnnotation[] =
+            {
+                97, 110, 110, 111, 116, 97, 116, 105, 111, 110, 0
+            };
+            data = staticallyStoredAnnotation;
+            length = 10;
+            break;
+        }
+
+        case Any:
+        {
+            static const char staticallyStoredAny[] =
+            {
+                97, 110, 121, 0
+            };
+            data = staticallyStoredAny;
+            length = 3;
+            break;
+        }
+
+        case AnyAttribute:
+        {
+            static const char staticallyStoredAnyAttribute[] =
+            {
+                97, 110, 121, 65, 116, 116, 114, 105, 98, 117, 116, 101, 0
+            };
+            data = staticallyStoredAnyAttribute;
+            length = 12;
+            break;
+        }
+
+        case Appinfo:
+        {
+            static const char staticallyStoredAppinfo[] =
+            {
+                97, 112, 112, 105, 110, 102, 111, 0
+            };
+            data = staticallyStoredAppinfo;
+            length = 7;
+            break;
+        }
+
+        case AppliesToEmpty:
+        {
+            static const char staticallyStoredAppliesToEmpty[] =
+            {
+                97, 112, 112, 108, 105, 101, 115, 84, 111, 69, 109, 112, 116, 121, 0
+            };
+            data = staticallyStoredAppliesToEmpty;
+            length = 14;
+            break;
+        }
+
+        case Assert:
+        {
+            static const char staticallyStoredAssert[] =
+            {
+                97, 115, 115, 101, 114, 116, 0
+            };
+            data = staticallyStoredAssert;
+            length = 6;
+            break;
+        }
+
+        case Assertion:
+        {
+            static const char staticallyStoredAssertion[] =
+            {
+                97, 115, 115, 101, 114, 116, 105, 111, 110, 0
+            };
+            data = staticallyStoredAssertion;
+            length = 9;
+            break;
+        }
+
+        case Attribute:
+        {
+            static const char staticallyStoredAttribute[] =
+            {
+                97, 116, 116, 114, 105, 98, 117, 116, 101, 0
+            };
+            data = staticallyStoredAttribute;
+            length = 9;
+            break;
+        }
+
+        case AttributeFormDefault:
+        {
+            static const char staticallyStoredAttributeFormDefault[] =
+            {
+                97, 116, 116, 114, 105, 98, 117, 116, 101, 70, 111, 114, 109, 68, 101, 102, 97, 117, 108, 116, 0
+            };
+            data = staticallyStoredAttributeFormDefault;
+            length = 20;
+            break;
+        }
+
+        case AttributeGroup:
+        {
+            static const char staticallyStoredAttributeGroup[] =
+            {
+                97, 116, 116, 114, 105, 98, 117, 116, 101, 71, 114, 111, 117, 112, 0
+            };
+            data = staticallyStoredAttributeGroup;
+            length = 14;
+            break;
+        }
+
+        case Base:
+        {
+            static const char staticallyStoredBase[] =
+            {
+                98, 97, 115, 101, 0
+            };
+            data = staticallyStoredBase;
+            length = 4;
+            break;
+        }
+
+        case Block:
+        {
+            static const char staticallyStoredBlock[] =
+            {
+                98, 108, 111, 99, 107, 0
+            };
+            data = staticallyStoredBlock;
+            length = 5;
+            break;
+        }
+
+        case BlockDefault:
+        {
+            static const char staticallyStoredBlockDefault[] =
+            {
+                98, 108, 111, 99, 107, 68, 101, 102, 97, 117, 108, 116, 0
+            };
+            data = staticallyStoredBlockDefault;
+            length = 12;
+            break;
+        }
+
+        case Choice:
+        {
+            static const char staticallyStoredChoice[] =
+            {
+                99, 104, 111, 105, 99, 101, 0
+            };
+            data = staticallyStoredChoice;
+            length = 6;
+            break;
+        }
+
+        case Collapse:
+        {
+            static const char staticallyStoredCollapse[] =
+            {
+                99, 111, 108, 108, 97, 112, 115, 101, 0
+            };
+            data = staticallyStoredCollapse;
+            length = 8;
+            break;
+        }
+
+        case ComplexContent:
+        {
+            static const char staticallyStoredComplexContent[] =
+            {
+                99, 111, 109, 112, 108, 101, 120, 67, 111, 110, 116, 101, 110, 116, 0
+            };
+            data = staticallyStoredComplexContent;
+            length = 14;
+            break;
+        }
+
+        case ComplexType:
+        {
+            static const char staticallyStoredComplexType[] =
+            {
+                99, 111, 109, 112, 108, 101, 120, 84, 121, 112, 101, 0
+            };
+            data = staticallyStoredComplexType;
+            length = 11;
+            break;
+        }
+
+        case Default:
+        {
+            static const char staticallyStoredDefault[] =
+            {
+                100, 101, 102, 97, 117, 108, 116, 0
+            };
+            data = staticallyStoredDefault;
+            length = 7;
+            break;
+        }
+
+        case DefaultAttributes:
+        {
+            static const char staticallyStoredDefaultAttributes[] =
+            {
+                100, 101, 102, 97, 117, 108, 116, 65, 116, 116, 114, 105, 98, 117, 116, 101, 115, 0
+            };
+            data = staticallyStoredDefaultAttributes;
+            length = 17;
+            break;
+        }
+
+        case DefaultAttributesApply:
+        {
+            static const char staticallyStoredDefaultAttributesApply[] =
+            {
+                100, 101, 102, 97, 117, 108, 116, 65, 116, 116, 114, 105, 98, 117, 116, 101, 115, 65, 112, 112, 108, 121, 0
+            };
+            data = staticallyStoredDefaultAttributesApply;
+            length = 22;
+            break;
+        }
+
+        case DefaultOpenContent:
+        {
+            static const char staticallyStoredDefaultOpenContent[] =
+            {
+                100, 101, 102, 97, 117, 108, 116, 79, 112, 101, 110, 67, 111, 110, 116, 101, 110, 116, 0
+            };
+            data = staticallyStoredDefaultOpenContent;
+            length = 18;
+            break;
+        }
+
+        case Documentation:
+        {
+            static const char staticallyStoredDocumentation[] =
+            {
+                100, 111, 99, 117, 109, 101, 110, 116, 97, 116, 105, 111, 110, 0
+            };
+            data = staticallyStoredDocumentation;
+            length = 13;
+            break;
+        }
+
+        case Element:
+        {
+            static const char staticallyStoredElement[] =
+            {
+                101, 108, 101, 109, 101, 110, 116, 0
+            };
+            data = staticallyStoredElement;
+            length = 7;
+            break;
+        }
+
+        case ElementFormDefault:
+        {
+            static const char staticallyStoredElementFormDefault[] =
+            {
+                101, 108, 101, 109, 101, 110, 116, 70, 111, 114, 109, 68, 101, 102, 97, 117, 108, 116, 0
+            };
+            data = staticallyStoredElementFormDefault;
+            length = 18;
+            break;
+        }
+
+        case Enumeration:
+        {
+            static const char staticallyStoredEnumeration[] =
+            {
+                101, 110, 117, 109, 101, 114, 97, 116, 105, 111, 110, 0
+            };
+            data = staticallyStoredEnumeration;
+            length = 11;
+            break;
+        }
+
+        case Extension:
+        {
+            static const char staticallyStoredExtension[] =
+            {
+                101, 120, 116, 101, 110, 115, 105, 111, 110, 0
+            };
+            data = staticallyStoredExtension;
+            length = 9;
+            break;
+        }
+
+        case Field:
+        {
+            static const char staticallyStoredField[] =
+            {
+                102, 105, 101, 108, 100, 0
+            };
+            data = staticallyStoredField;
+            length = 5;
+            break;
+        }
+
+        case Final:
+        {
+            static const char staticallyStoredFinal[] =
+            {
+                102, 105, 110, 97, 108, 0
+            };
+            data = staticallyStoredFinal;
+            length = 5;
+            break;
+        }
+
+        case FinalDefault:
+        {
+            static const char staticallyStoredFinalDefault[] =
+            {
+                102, 105, 110, 97, 108, 68, 101, 102, 97, 117, 108, 116, 0
+            };
+            data = staticallyStoredFinalDefault;
+            length = 12;
+            break;
+        }
+
+        case Fixed:
+        {
+            static const char staticallyStoredFixed[] =
+            {
+                102, 105, 120, 101, 100, 0
+            };
+            data = staticallyStoredFixed;
+            length = 5;
+            break;
+        }
+
+        case Form:
+        {
+            static const char staticallyStoredForm[] =
+            {
+                102, 111, 114, 109, 0
+            };
+            data = staticallyStoredForm;
+            length = 4;
+            break;
+        }
+
+        case FractionDigits:
+        {
+            static const char staticallyStoredFractionDigits[] =
+            {
+                102, 114, 97, 99, 116, 105, 111, 110, 68, 105, 103, 105, 116, 115, 0
+            };
+            data = staticallyStoredFractionDigits;
+            length = 14;
+            break;
+        }
+
+        case Group:
+        {
+            static const char staticallyStoredGroup[] =
+            {
+                103, 114, 111, 117, 112, 0
+            };
+            data = staticallyStoredGroup;
+            length = 5;
+            break;
+        }
+
+        case Id:
+        {
+            static const char staticallyStoredId[] =
+            {
+                105, 100, 0
+            };
+            data = staticallyStoredId;
+            length = 2;
+            break;
+        }
+
+        case Import:
+        {
+            static const char staticallyStoredImport[] =
+            {
+                105, 109, 112, 111, 114, 116, 0
+            };
+            data = staticallyStoredImport;
+            length = 6;
+            break;
+        }
+
+        case Include:
+        {
+            static const char staticallyStoredInclude[] =
+            {
+                105, 110, 99, 108, 117, 100, 101, 0
+            };
+            data = staticallyStoredInclude;
+            length = 7;
+            break;
+        }
+
+        case ItemType:
+        {
+            static const char staticallyStoredItemType[] =
+            {
+                105, 116, 101, 109, 84, 121, 112, 101, 0
+            };
+            data = staticallyStoredItemType;
+            length = 8;
+            break;
+        }
+
+        case Key:
+        {
+            static const char staticallyStoredKey[] =
+            {
+                107, 101, 121, 0
+            };
+            data = staticallyStoredKey;
+            length = 3;
+            break;
+        }
+
+        case Keyref:
+        {
+            static const char staticallyStoredKeyref[] =
+            {
+                107, 101, 121, 114, 101, 102, 0
+            };
+            data = staticallyStoredKeyref;
+            length = 6;
+            break;
+        }
+
+        case Length:
+        {
+            static const char staticallyStoredLength[] =
+            {
+                108, 101, 110, 103, 116, 104, 0
+            };
+            data = staticallyStoredLength;
+            length = 6;
+            break;
+        }
+
+        case List:
+        {
+            static const char staticallyStoredList[] =
+            {
+                108, 105, 115, 116, 0
+            };
+            data = staticallyStoredList;
+            length = 4;
+            break;
+        }
+
+        case MaxExclusive:
+        {
+            static const char staticallyStoredMaxExclusive[] =
+            {
+                109, 97, 120, 69, 120, 99, 108, 117, 115, 105, 118, 101, 0
+            };
+            data = staticallyStoredMaxExclusive;
+            length = 12;
+            break;
+        }
+
+        case MaxInclusive:
+        {
+            static const char staticallyStoredMaxInclusive[] =
+            {
+                109, 97, 120, 73, 110, 99, 108, 117, 115, 105, 118, 101, 0
+            };
+            data = staticallyStoredMaxInclusive;
+            length = 12;
+            break;
+        }
+
+        case MaxLength:
+        {
+            static const char staticallyStoredMaxLength[] =
+            {
+                109, 97, 120, 76, 101, 110, 103, 116, 104, 0
+            };
+            data = staticallyStoredMaxLength;
+            length = 9;
+            break;
+        }
+
+        case MaxOccurs:
+        {
+            static const char staticallyStoredMaxOccurs[] =
+            {
+                109, 97, 120, 79, 99, 99, 117, 114, 115, 0
+            };
+            data = staticallyStoredMaxOccurs;
+            length = 9;
+            break;
+        }
+
+        case MemberTypes:
+        {
+            static const char staticallyStoredMemberTypes[] =
+            {
+                109, 101, 109, 98, 101, 114, 84, 121, 112, 101, 115, 0
+            };
+            data = staticallyStoredMemberTypes;
+            length = 11;
+            break;
+        }
+
+        case MinExclusive:
+        {
+            static const char staticallyStoredMinExclusive[] =
+            {
+                109, 105, 110, 69, 120, 99, 108, 117, 115, 105, 118, 101, 0
+            };
+            data = staticallyStoredMinExclusive;
+            length = 12;
+            break;
+        }
+
+        case MinInclusive:
+        {
+            static const char staticallyStoredMinInclusive[] =
+            {
+                109, 105, 110, 73, 110, 99, 108, 117, 115, 105, 118, 101, 0
+            };
+            data = staticallyStoredMinInclusive;
+            length = 12;
+            break;
+        }
+
+        case MinLength:
+        {
+            static const char staticallyStoredMinLength[] =
+            {
+                109, 105, 110, 76, 101, 110, 103, 116, 104, 0
+            };
+            data = staticallyStoredMinLength;
+            length = 9;
+            break;
+        }
+
+        case MinOccurs:
+        {
+            static const char staticallyStoredMinOccurs[] =
+            {
+                109, 105, 110, 79, 99, 99, 117, 114, 115, 0
+            };
+            data = staticallyStoredMinOccurs;
+            length = 9;
+            break;
+        }
+
+        case Mixed:
+        {
+            static const char staticallyStoredMixed[] =
+            {
+                109, 105, 120, 101, 100, 0
+            };
+            data = staticallyStoredMixed;
+            length = 5;
+            break;
+        }
+
+        case Mode:
+        {
+            static const char staticallyStoredMode[] =
+            {
+                109, 111, 100, 101, 0
+            };
+            data = staticallyStoredMode;
+            length = 4;
+            break;
+        }
+
+        case Name:
+        {
+            static const char staticallyStoredName[] =
+            {
+                110, 97, 109, 101, 0
+            };
+            data = staticallyStoredName;
+            length = 4;
+            break;
+        }
+
+        case Namespace:
+        {
+            static const char staticallyStoredNamespace[] =
+            {
+                110, 97, 109, 101, 115, 112, 97, 99, 101, 0
+            };
+            data = staticallyStoredNamespace;
+            length = 9;
+            break;
+        }
+
+        case Nillable:
+        {
+            static const char staticallyStoredNillable[] =
+            {
+                110, 105, 108, 108, 97, 98, 108, 101, 0
+            };
+            data = staticallyStoredNillable;
+            length = 8;
+            break;
+        }
+
+        case NotNamespace:
+        {
+            static const char staticallyStoredNotNamespace[] =
+            {
+                110, 111, 116, 78, 97, 109, 101, 115, 112, 97, 99, 101, 0
+            };
+            data = staticallyStoredNotNamespace;
+            length = 12;
+            break;
+        }
+
+        case NotQName:
+        {
+            static const char staticallyStoredNotQName[] =
+            {
+                110, 111, 116, 81, 78, 97, 109, 101, 0
+            };
+            data = staticallyStoredNotQName;
+            length = 8;
+            break;
+        }
+
+        case Notation:
+        {
+            static const char staticallyStoredNotation[] =
+            {
+                110, 111, 116, 97, 116, 105, 111, 110, 0
+            };
+            data = staticallyStoredNotation;
+            length = 8;
+            break;
+        }
+
+        case OpenContent:
+        {
+            static const char staticallyStoredOpenContent[] =
+            {
+                111, 112, 101, 110, 67, 111, 110, 116, 101, 110, 116, 0
+            };
+            data = staticallyStoredOpenContent;
+            length = 11;
+            break;
+        }
+
+        case Override:
+        {
+            static const char staticallyStoredOverride[] =
+            {
+                111, 118, 101, 114, 114, 105, 100, 101, 0
+            };
+            data = staticallyStoredOverride;
+            length = 8;
+            break;
+        }
+
+        case Pattern:
+        {
+            static const char staticallyStoredPattern[] =
+            {
+                112, 97, 116, 116, 101, 114, 110, 0
+            };
+            data = staticallyStoredPattern;
+            length = 7;
+            break;
+        }
+
+        case Preserve:
+        {
+            static const char staticallyStoredPreserve[] =
+            {
+                112, 114, 101, 115, 101, 114, 118, 101, 0
+            };
+            data = staticallyStoredPreserve;
+            length = 8;
+            break;
+        }
+
+        case ProcessContents:
+        {
+            static const char staticallyStoredProcessContents[] =
+            {
+                112, 114, 111, 99, 101, 115, 115, 67, 111, 110, 116, 101, 110, 116, 115, 0
+            };
+            data = staticallyStoredProcessContents;
+            length = 15;
+            break;
+        }
+
+        case Public:
+        {
+            static const char staticallyStoredPublic[] =
+            {
+                112, 117, 98, 108, 105, 99, 0
+            };
+            data = staticallyStoredPublic;
+            length = 6;
+            break;
+        }
+
+        case Redefine:
+        {
+            static const char staticallyStoredRedefine[] =
+            {
+                114, 101, 100, 101, 102, 105, 110, 101, 0
+            };
+            data = staticallyStoredRedefine;
+            length = 8;
+            break;
+        }
+
+        case Ref:
+        {
+            static const char staticallyStoredRef[] =
+            {
+                114, 101, 102, 0
+            };
+            data = staticallyStoredRef;
+            length = 3;
+            break;
+        }
+
+        case Refer:
+        {
+            static const char staticallyStoredRefer[] =
+            {
+                114, 101, 102, 101, 114, 0
+            };
+            data = staticallyStoredRefer;
+            length = 5;
+            break;
+        }
+
+        case Replace:
+        {
+            static const char staticallyStoredReplace[] =
+            {
+                114, 101, 112, 108, 97, 99, 101, 0
+            };
+            data = staticallyStoredReplace;
+            length = 7;
+            break;
+        }
+
+        case Restriction:
+        {
+            static const char staticallyStoredRestriction[] =
+            {
+                114, 101, 115, 116, 114, 105, 99, 116, 105, 111, 110, 0
+            };
+            data = staticallyStoredRestriction;
+            length = 11;
+            break;
+        }
+
+        case Schema:
+        {
+            static const char staticallyStoredSchema[] =
+            {
+                115, 99, 104, 101, 109, 97, 0
+            };
+            data = staticallyStoredSchema;
+            length = 6;
+            break;
+        }
+
+        case SchemaLocation:
+        {
+            static const char staticallyStoredSchemaLocation[] =
+            {
+                115, 99, 104, 101, 109, 97, 76, 111, 99, 97, 116, 105, 111, 110, 0
+            };
+            data = staticallyStoredSchemaLocation;
+            length = 14;
+            break;
+        }
+
+        case Selector:
+        {
+            static const char staticallyStoredSelector[] =
+            {
+                115, 101, 108, 101, 99, 116, 111, 114, 0
+            };
+            data = staticallyStoredSelector;
+            length = 8;
+            break;
+        }
+
+        case Sequence:
+        {
+            static const char staticallyStoredSequence[] =
+            {
+                115, 101, 113, 117, 101, 110, 99, 101, 0
+            };
+            data = staticallyStoredSequence;
+            length = 8;
+            break;
+        }
+
+        case SimpleContent:
+        {
+            static const char staticallyStoredSimpleContent[] =
+            {
+                115, 105, 109, 112, 108, 101, 67, 111, 110, 116, 101, 110, 116, 0
+            };
+            data = staticallyStoredSimpleContent;
+            length = 13;
+            break;
+        }
+
+        case SimpleType:
+        {
+            static const char staticallyStoredSimpleType[] =
+            {
+                115, 105, 109, 112, 108, 101, 84, 121, 112, 101, 0
+            };
+            data = staticallyStoredSimpleType;
+            length = 10;
+            break;
+        }
+
+        case Source:
+        {
+            static const char staticallyStoredSource[] =
+            {
+                115, 111, 117, 114, 99, 101, 0
+            };
+            data = staticallyStoredSource;
+            length = 6;
+            break;
+        }
+
+        case SubstitutionGroup:
+        {
+            static const char staticallyStoredSubstitutionGroup[] =
+            {
+                115, 117, 98, 115, 116, 105, 116, 117, 116, 105, 111, 110, 71, 114, 111, 117, 112, 0
+            };
+            data = staticallyStoredSubstitutionGroup;
+            length = 17;
+            break;
+        }
+
+        case System:
+        {
+            static const char staticallyStoredSystem[] =
+            {
+                115, 121, 115, 116, 101, 109, 0
+            };
+            data = staticallyStoredSystem;
+            length = 6;
+            break;
+        }
+
+        case TargetNamespace:
+        {
+            static const char staticallyStoredTargetNamespace[] =
+            {
+                116, 97, 114, 103, 101, 116, 78, 97, 109, 101, 115, 112, 97, 99, 101, 0
+            };
+            data = staticallyStoredTargetNamespace;
+            length = 15;
+            break;
+        }
+
+        case Test:
+        {
+            static const char staticallyStoredTest[] =
+            {
+                116, 101, 115, 116, 0
+            };
+            data = staticallyStoredTest;
+            length = 4;
+            break;
+        }
+
+        case TotalDigits:
+        {
+            static const char staticallyStoredTotalDigits[] =
+            {
+                116, 111, 116, 97, 108, 68, 105, 103, 105, 116, 115, 0
+            };
+            data = staticallyStoredTotalDigits;
+            length = 11;
+            break;
+        }
+
+        case Type:
+        {
+            static const char staticallyStoredType[] =
+            {
+                116, 121, 112, 101, 0
+            };
+            data = staticallyStoredType;
+            length = 4;
+            break;
+        }
+
+        case Union:
+        {
+            static const char staticallyStoredUnion[] =
+            {
+                117, 110, 105, 111, 110, 0
+            };
+            data = staticallyStoredUnion;
+            length = 5;
+            break;
+        }
+
+        case Unique:
+        {
+            static const char staticallyStoredUnique[] =
+            {
+                117, 110, 105, 113, 117, 101, 0
+            };
+            data = staticallyStoredUnique;
+            length = 6;
+            break;
+        }
+
+        case Use:
+        {
+            static const char staticallyStoredUse[] =
+            {
+                117, 115, 101, 0
+            };
+            data = staticallyStoredUse;
+            length = 3;
+            break;
+        }
+
+        case Value:
+        {
+            static const char staticallyStoredValue[] =
+            {
+                118, 97, 108, 117, 101, 0
+            };
+            data = staticallyStoredValue;
+            length = 5;
+            break;
+        }
+
+        case Version:
+        {
+            static const char staticallyStoredVersion[] =
+            {
+                118, 101, 114, 115, 105, 111, 110, 0
+            };
+            data = staticallyStoredVersion;
+            length = 7;
+            break;
+        }
+
+        case WhiteSpace:
+        {
+            static const char staticallyStoredWhiteSpace[] =
+            {
+                119, 104, 105, 116, 101, 83, 112, 97, 99, 101, 0
+            };
+            data = staticallyStoredWhiteSpace;
+            length = 10;
+            break;
+        }
+
+        case XML_NS_SCHEMA_URI:
+        {
+            static const char staticallyStoredXML_NS_SCHEMA_URI[] =
+            {
+                104, 116, 116, 112, 58, 47, 47, 119, 119, 119, 46, 119, 51, 46, 111, 114, 103, 47, 50, 48, 48, 49, 47, 88, 77, 76, 83, 99, 104, 101, 109, 97, 0
+            };
+            data = staticallyStoredXML_NS_SCHEMA_URI;
+            length = 32;
+            break;
+        }
+
+        case XPathDefaultNamespace:
+        {
+            static const char staticallyStoredXPathDefaultNamespace[] =
+            {
+                120, 112, 97, 116, 104, 68, 101, 102, 97, 117, 108, 116, 78, 97, 109, 101, 115, 112, 97, 99, 101, 0
+            };
+            data = staticallyStoredXPathDefaultNamespace;
+            length = 21;
+            break;
+        }
+
+        case XmlLanguage:
+        {
+            static const char staticallyStoredXmlLanguage[] =
+            {
+                120, 109, 108, 58, 108, 97, 110, 103, 0
+            };
+            data = staticallyStoredXmlLanguage;
+            length = 8;
+            break;
+        }
+
+        case Xpath:
+        {
+            static const char staticallyStoredXpath[] =
+            {
+                120, 112, 97, 116, 104, 0
+            };
+            data = staticallyStoredXpath;
+            length = 5;
+            break;
+        }
+
+        default:
+            /* It's either the default token, or an undefined enum
+             * value. We silence a compiler warning, and return the
+             * empty string. */
+            ;
+    }
+
+    return QString::fromLatin1( data, length );
 }
 

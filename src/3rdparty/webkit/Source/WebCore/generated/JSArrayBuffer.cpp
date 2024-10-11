@@ -26,9 +26,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSArrayBuffer);
+ASSERT_CLASS_FITS_IN_CELL( JSArrayBuffer );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -39,9 +40,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSArrayBuffer);
 
 static const HashTableValue JSArrayBufferTableValues[3] =
 {
-    { "byteLength", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsArrayBufferByteLength), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsArrayBufferConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "byteLength", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsArrayBufferByteLength ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsArrayBufferConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -55,31 +56,35 @@ static JSC_CONST_HASHTABLE HashTable JSArrayBufferTable = { 5, 3, JSArrayBufferT
 
 static const HashTableValue JSArrayBufferConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSArrayBufferConstructorTable = { 1, 0, JSArrayBufferConstructorTableValues, 0 };
 const ClassInfo JSArrayBufferConstructor::s_info = { "ArrayBufferConstructor", &DOMConstructorObject::s_info, &JSArrayBufferConstructorTable, 0 };
 
-JSArrayBufferConstructor::JSArrayBufferConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSArrayBufferConstructor::JSArrayBufferConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSArrayBufferPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSArrayBufferPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSArrayBufferConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSArrayBufferConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSArrayBufferConstructor, JSDOMWrapper>(exec, &JSArrayBufferConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSArrayBufferConstructor, JSDOMWrapper>( exec, &JSArrayBufferConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSArrayBufferConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSArrayBufferConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSArrayBufferConstructor, JSDOMWrapper>(exec, &JSArrayBufferConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSArrayBufferConstructor, JSDOMWrapper>( exec, &JSArrayBufferConstructorTable, this, propertyName,
+            descriptor );
 }
 
-ConstructType JSArrayBufferConstructor::getConstructData(ConstructData& constructData)
+ConstructType JSArrayBufferConstructor::getConstructData( ConstructData &constructData )
 {
     constructData.native.function = constructJSArrayBuffer;
     return ConstructTypeHost;
@@ -94,104 +99,112 @@ ConstructType JSArrayBufferConstructor::getConstructData(ConstructData& construc
 
 static const HashTableValue JSArrayBufferPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSArrayBufferPrototypeTable = { 1, 0, JSArrayBufferPrototypeTableValues, 0 };
-static const HashTable* getJSArrayBufferPrototypeTable(ExecState* exec)
+static const HashTable *getJSArrayBufferPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSArrayBufferPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSArrayBufferPrototypeTable );
 }
 
 const ClassInfo JSArrayBufferPrototype::s_info = { "ArrayBufferPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSArrayBufferPrototypeTable };
 
-JSObject* JSArrayBufferPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSArrayBufferPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSArrayBuffer>(exec, globalObject);
+    return getDOMPrototype<JSArrayBuffer>( exec, globalObject );
 }
 
-static const HashTable* getJSArrayBufferTable(ExecState* exec)
+static const HashTable *getJSArrayBufferTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSArrayBufferTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSArrayBufferTable );
 }
 
 const ClassInfo JSArrayBuffer::s_info = { "ArrayBuffer", &JSDOMWrapper::s_info, 0, getJSArrayBufferTable };
 
-JSArrayBuffer::JSArrayBuffer(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<ArrayBuffer> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSArrayBuffer::JSArrayBuffer( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<ArrayBuffer> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSArrayBuffer::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSArrayBuffer::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSArrayBufferPrototype(exec->globalData(), globalObject, JSArrayBufferPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSArrayBufferPrototype( exec->globalData(), globalObject,
+            JSArrayBufferPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSArrayBuffer::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSArrayBuffer::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSArrayBuffer, Base>(exec, getJSArrayBufferTable(exec), this, propertyName, slot);
+    return getStaticValueSlot<JSArrayBuffer, Base>( exec, getJSArrayBufferTable( exec ), this, propertyName, slot );
 }
 
-bool JSArrayBuffer::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSArrayBuffer::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSArrayBuffer, Base>(exec, getJSArrayBufferTable(exec), this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSArrayBuffer, Base>( exec, getJSArrayBufferTable( exec ), this, propertyName, descriptor );
 }
 
-JSValue jsArrayBufferByteLength(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsArrayBufferByteLength( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSArrayBuffer* castedThis = static_cast<JSArrayBuffer*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    ArrayBuffer* imp = static_cast<ArrayBuffer*>(castedThis->impl());
-    JSValue result = jsNumber(imp->byteLength());
+    JSArrayBuffer *castedThis = static_cast<JSArrayBuffer *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    ArrayBuffer *imp = static_cast<ArrayBuffer *>( castedThis->impl() );
+    JSValue result = jsNumber( imp->byteLength() );
     return result;
 }
 
 
-JSValue jsArrayBufferConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsArrayBufferConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSArrayBuffer* domObject = static_cast<JSArrayBuffer*>(asObject(slotBase));
-    return JSArrayBuffer::getConstructor(exec, domObject->globalObject());
+    JSArrayBuffer *domObject = static_cast<JSArrayBuffer *>( asObject( slotBase ) );
+    return JSArrayBuffer::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSArrayBuffer::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSArrayBuffer::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSArrayBufferConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSArrayBufferConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-static inline bool isObservable(JSArrayBuffer* jsArrayBuffer)
+static inline bool isObservable( JSArrayBuffer *jsArrayBuffer )
 {
-    if (jsArrayBuffer->hasCustomProperties())
+    if ( jsArrayBuffer->hasCustomProperties() )
+    {
         return true;
+    }
+
     return false;
 }
 
-bool JSArrayBufferOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void*, SlotVisitor& visitor)
+bool JSArrayBufferOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown> handle, void *, SlotVisitor &visitor )
 {
-    JSArrayBuffer* jsArrayBuffer = static_cast<JSArrayBuffer*>(handle.get().asCell());
-    if (!isObservable(jsArrayBuffer))
+    JSArrayBuffer *jsArrayBuffer = static_cast<JSArrayBuffer *>( handle.get().asCell() );
+
+    if ( !isObservable( jsArrayBuffer ) )
+    {
         return false;
-    ArrayBuffer* root = jsArrayBuffer->impl();
-    return visitor.containsOpaqueRoot(root);
+    }
+
+    ArrayBuffer *root = jsArrayBuffer->impl();
+    return visitor.containsOpaqueRoot( root );
 }
 
-void JSArrayBufferOwner::finalize(JSC::Handle<JSC::Unknown> handle, void* context)
+void JSArrayBufferOwner::finalize( JSC::Handle<JSC::Unknown> handle, void *context )
 {
-    JSArrayBuffer* jsArrayBuffer = static_cast<JSArrayBuffer*>(handle.get().asCell());
-    DOMWrapperWorld* world = static_cast<DOMWrapperWorld*>(context);
-    uncacheWrapper(world, jsArrayBuffer->impl(), jsArrayBuffer);
+    JSArrayBuffer *jsArrayBuffer = static_cast<JSArrayBuffer *>( handle.get().asCell() );
+    DOMWrapperWorld *world = static_cast<DOMWrapperWorld *>( context );
+    uncacheWrapper( world, jsArrayBuffer->impl(), jsArrayBuffer );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, ArrayBuffer* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, ArrayBuffer *impl )
 {
-    return wrap<JSArrayBuffer>(exec, globalObject, impl);
+    return wrap<JSArrayBuffer>( exec, globalObject, impl );
 }
 
-ArrayBuffer* toArrayBuffer(JSC::JSValue value)
+ArrayBuffer *toArrayBuffer( JSC::JSValue value )
 {
-    return value.inherits(&JSArrayBuffer::s_info) ? static_cast<JSArrayBuffer*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSArrayBuffer::s_info ) ? static_cast<JSArrayBuffer *>( asObject( value ) )->impl() : 0;
 }
 
 }

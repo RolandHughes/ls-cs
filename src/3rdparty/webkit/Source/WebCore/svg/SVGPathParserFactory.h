@@ -29,31 +29,33 @@
 
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGPathElement;
 
-class SVGPathParserFactory {
+class SVGPathParserFactory
+{
 public:
-    static SVGPathParserFactory* self();
+    static SVGPathParserFactory *self();
 
     // String/SVGPathByteStream -> Path
-    bool buildPathFromString(const String&, Path&);
-    bool buildPathFromByteStream(SVGPathByteStream*, Path&);
+    bool buildPathFromString( const String &, Path & );
+    bool buildPathFromByteStream( SVGPathByteStream *, Path & );
 
     // SVGPathSegList/String -> SVGPathByteStream
-    bool buildSVGPathByteStreamFromSVGPathSegList(const SVGPathSegList&, OwnPtr<SVGPathByteStream>&, PathParsingMode);
-    bool buildSVGPathByteStreamFromString(const String&, OwnPtr<SVGPathByteStream>&, PathParsingMode);
+    bool buildSVGPathByteStreamFromSVGPathSegList( const SVGPathSegList &, OwnPtr<SVGPathByteStream> &, PathParsingMode );
+    bool buildSVGPathByteStreamFromString( const String &, OwnPtr<SVGPathByteStream> &, PathParsingMode );
 
     // SVGPathByteStream/SVGPathSegList -> String
-    bool buildStringFromByteStream(SVGPathByteStream*, String&, PathParsingMode);
-    bool buildStringFromSVGPathSegList(const SVGPathSegList&, String&, PathParsingMode);
+    bool buildStringFromByteStream( SVGPathByteStream *, String &, PathParsingMode );
+    bool buildStringFromSVGPathSegList( const SVGPathSegList &, String &, PathParsingMode );
 
     // SVGPathByteStream -> SVGPathSegList
-    bool buildSVGPathSegListFromByteStream(SVGPathByteStream*, SVGPathElement*, SVGPathSegList&, PathParsingMode);
+    bool buildSVGPathSegListFromByteStream( SVGPathByteStream *, SVGPathElement *, SVGPathSegList &, PathParsingMode );
 
-    bool buildAnimatedSVGPathByteStream(SVGPathByteStream*, SVGPathByteStream*, OwnPtr<SVGPathByteStream>&, float);
-    bool getSVGPathSegAtLengthFromSVGPathByteStream(SVGPathByteStream*, float length, unsigned long& pathSeg);
+    bool buildAnimatedSVGPathByteStream( SVGPathByteStream *, SVGPathByteStream *, OwnPtr<SVGPathByteStream> &, float );
+    bool getSVGPathSegAtLengthFromSVGPathByteStream( SVGPathByteStream *, float length, unsigned long &pathSeg );
 
 private:
     SVGPathParserFactory();

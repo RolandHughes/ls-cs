@@ -28,44 +28,45 @@
 
 #ifndef QT_NO_SHORTCUT
 
-struct QKeyBinding {
-   QKeySequence::StandardKey standardKey;
-   uchar priority;
-   uint shortcut;
-   uint platform;
+struct QKeyBinding
+{
+    QKeySequence::StandardKey standardKey;
+    uchar priority;
+    uint shortcut;
+    uint platform;
 };
 
 class QKeySequencePrivate
 {
- public:
-   static constexpr int MaxKeyCount = 4;
+public:
+    static constexpr int MaxKeyCount = 4;
 
-   QKeySequencePrivate()
-      : ref(1)
-   {
-      key[0] = 0;
-      key[1] = 0;
-      key[2] = 0;
-      key[3] = 0;
-   }
+    QKeySequencePrivate()
+        : ref( 1 )
+    {
+        key[0] = 0;
+        key[1] = 0;
+        key[2] = 0;
+        key[3] = 0;
+    }
 
-   QKeySequencePrivate(const QKeySequencePrivate &copy)
-      : ref(1)
-   {
-      key[0] = copy.key[0];
-      key[1] = copy.key[1];
-      key[2] = copy.key[2];
-      key[3] = copy.key[3];
-   }
+    QKeySequencePrivate( const QKeySequencePrivate &copy )
+        : ref( 1 )
+    {
+        key[0] = copy.key[0];
+        key[1] = copy.key[1];
+        key[2] = copy.key[2];
+        key[3] = copy.key[3];
+    }
 
-   QAtomicInt ref;
-   int key[MaxKeyCount];
-   static QString encodeString(int key, QKeySequence::SequenceFormat format);
+    QAtomicInt ref;
+    int key[MaxKeyCount];
+    static QString encodeString( int key, QKeySequence::SequenceFormat format );
 
-   // used in dbusmenu
-   Q_GUI_EXPORT static QString keyName(int key, QKeySequence::SequenceFormat format);
+    // used in dbusmenu
+    Q_GUI_EXPORT static QString keyName( int key, QKeySequence::SequenceFormat format );
 
-   static int decodeString(const QString &keyStr, QKeySequence::SequenceFormat format);
+    static int decodeString( const QString &keyStr, QKeySequence::SequenceFormat format );
 };
 
 #endif // QT_NO_SHORTCUT

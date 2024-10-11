@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedTransformList);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAnimatedTransformList );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -43,10 +44,10 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAnimatedTransformList);
 
 static const HashTableValue JSSVGAnimatedTransformListTableValues[4] =
 {
-    { "baseVal", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedTransformListBaseVal), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "animVal", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedTransformListAnimVal), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAnimatedTransformListConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "baseVal", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedTransformListBaseVal ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "animVal", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedTransformListAnimVal ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAnimatedTransformListConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -60,43 +61,52 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedTransformListTable = { 8, 7, J
 
 static const HashTableValue JSSVGAnimatedTransformListConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedTransformListConstructorTable = { 1, 0, JSSVGAnimatedTransformListConstructorTableValues, 0 };
-class JSSVGAnimatedTransformListConstructor : public DOMConstructorObject {
+class JSSVGAnimatedTransformListConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGAnimatedTransformListConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGAnimatedTransformListConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGAnimatedTransformListConstructor::s_info = { "SVGAnimatedTransformListConstructor", &DOMConstructorObject::s_info, &JSSVGAnimatedTransformListConstructorTable, 0 };
 
-JSSVGAnimatedTransformListConstructor::JSSVGAnimatedTransformListConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGAnimatedTransformListConstructor::JSSVGAnimatedTransformListConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedTransformListPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGAnimatedTransformListPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGAnimatedTransformListConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedTransformListConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName,
+        PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedTransformListConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedTransformListConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedTransformListConstructor, JSDOMWrapper>( exec, &JSSVGAnimatedTransformListConstructorTable,
+            this, propertyName, slot );
 }
 
-bool JSSVGAnimatedTransformListConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedTransformListConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedTransformListConstructor, JSDOMWrapper>(exec, &JSSVGAnimatedTransformListConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedTransformListConstructor, JSDOMWrapper>( exec,
+            &JSSVGAnimatedTransformListConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -108,81 +118,88 @@ bool JSSVGAnimatedTransformListConstructor::getOwnPropertyDescriptor(ExecState* 
 
 static const HashTableValue JSSVGAnimatedTransformListPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAnimatedTransformListPrototypeTable = { 1, 0, JSSVGAnimatedTransformListPrototypeTableValues, 0 };
 const ClassInfo JSSVGAnimatedTransformListPrototype::s_info = { "SVGAnimatedTransformListPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAnimatedTransformListPrototypeTable, 0 };
 
-JSObject* JSSVGAnimatedTransformListPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedTransformListPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAnimatedTransformList>(exec, globalObject);
+    return getDOMPrototype<JSSVGAnimatedTransformList>( exec, globalObject );
 }
 
 const ClassInfo JSSVGAnimatedTransformList::s_info = { "SVGAnimatedTransformList", &JSDOMWrapper::s_info, &JSSVGAnimatedTransformListTable, 0 };
 
-JSSVGAnimatedTransformList::JSSVGAnimatedTransformList(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAnimatedTransformList> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSVGAnimatedTransformList::JSSVGAnimatedTransformList( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<SVGAnimatedTransformList> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAnimatedTransformList::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAnimatedTransformList::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAnimatedTransformListPrototype(exec->globalData(), globalObject, JSSVGAnimatedTransformListPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSVGAnimatedTransformListPrototype( exec->globalData(), globalObject,
+            JSSVGAnimatedTransformListPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSSVGAnimatedTransformList::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAnimatedTransformList::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAnimatedTransformList, Base>(exec, &JSSVGAnimatedTransformListTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAnimatedTransformList, Base>( exec, &JSSVGAnimatedTransformListTable, this, propertyName, slot );
 }
 
-bool JSSVGAnimatedTransformList::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAnimatedTransformList::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAnimatedTransformList, Base>(exec, &JSSVGAnimatedTransformListTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAnimatedTransformList, Base>( exec, &JSSVGAnimatedTransformListTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsSVGAnimatedTransformListBaseVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedTransformListBaseVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedTransformList* castedThis = static_cast<JSSVGAnimatedTransformList*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedTransformList* imp = static_cast<SVGAnimatedTransformList*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(static_cast<SVGTransformListPropertyTearOff*>(imp->baseVal())));
+    JSSVGAnimatedTransformList *castedThis = static_cast<JSSVGAnimatedTransformList *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedTransformList *imp = static_cast<SVGAnimatedTransformList *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( static_cast<SVGTransformListPropertyTearOff *>( imp->baseVal() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAnimatedTransformListAnimVal(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedTransformListAnimVal( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedTransformList* castedThis = static_cast<JSSVGAnimatedTransformList*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAnimatedTransformList* imp = static_cast<SVGAnimatedTransformList*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(static_cast<SVGTransformListPropertyTearOff*>(imp->animVal())));
+    JSSVGAnimatedTransformList *castedThis = static_cast<JSSVGAnimatedTransformList *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAnimatedTransformList *imp = static_cast<SVGAnimatedTransformList *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( static_cast<SVGTransformListPropertyTearOff *>( imp->animVal() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAnimatedTransformListConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAnimatedTransformListConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAnimatedTransformList* domObject = static_cast<JSSVGAnimatedTransformList*>(asObject(slotBase));
-    return JSSVGAnimatedTransformList::getConstructor(exec, domObject->globalObject());
+    JSSVGAnimatedTransformList *domObject = static_cast<JSSVGAnimatedTransformList *>( asObject( slotBase ) );
+    return JSSVGAnimatedTransformList::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSSVGAnimatedTransformList::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSSVGAnimatedTransformList::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSSVGAnimatedTransformListConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSSVGAnimatedTransformListConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SVGAnimatedTransformList* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SVGAnimatedTransformList *impl )
 {
-    return wrap<JSSVGAnimatedTransformList>(exec, globalObject, impl);
+    return wrap<JSSVGAnimatedTransformList>( exec, globalObject, impl );
 }
 
-SVGAnimatedTransformList* toSVGAnimatedTransformList(JSC::JSValue value)
+SVGAnimatedTransformList *toSVGAnimatedTransformList( JSC::JSValue value )
 {
-    return value.inherits(&JSSVGAnimatedTransformList::s_info) ? static_cast<JSSVGAnimatedTransformList*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSVGAnimatedTransformList::s_info ) ? static_cast<JSSVGAnimatedTransformList *>( asObject(
+                value ) )->impl() : 0;
 }
 
 }

@@ -25,6 +25,6 @@
 #define QHASHFWD_H
 
 template <class T>
-unsigned int qHash(const T *key, unsigned int seed = 0);
+unsigned int qHash( const T *key, unsigned int seed = 0 );
 
 #endif

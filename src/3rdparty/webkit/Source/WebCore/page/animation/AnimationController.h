@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -32,7 +32,8 @@
 #include "CSSPropertyNames.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AnimationBase;
 class AnimationControllerPrivate;
@@ -44,40 +45,41 @@ class RenderObject;
 class RenderStyle;
 class WebKitAnimationList;
 
-class AnimationController {
+class AnimationController
+{
 public:
-    AnimationController(Frame*);
+    AnimationController( Frame * );
     ~AnimationController();
 
-    void cancelAnimations(RenderObject*);
-    PassRefPtr<RenderStyle> updateAnimations(RenderObject*, RenderStyle* newStyle);
-    PassRefPtr<RenderStyle> getAnimatedStyleForRenderer(RenderObject*);
+    void cancelAnimations( RenderObject * );
+    PassRefPtr<RenderStyle> updateAnimations( RenderObject *, RenderStyle *newStyle );
+    PassRefPtr<RenderStyle> getAnimatedStyleForRenderer( RenderObject * );
 
     // This is called when an accelerated animation or transition has actually started to animate.
-    void notifyAnimationStarted(RenderObject*, double startTime);
+    void notifyAnimationStarted( RenderObject *, double startTime );
 
-    bool pauseAnimationAtTime(RenderObject*, const String& name, double t); // To be used only for testing
-    bool pauseTransitionAtTime(RenderObject*, const String& property, double t); // To be used only for testing
+    bool pauseAnimationAtTime( RenderObject *, const String &name, double t ); // To be used only for testing
+    bool pauseTransitionAtTime( RenderObject *, const String &property, double t ); // To be used only for testing
     unsigned numberOfActiveAnimations() const; // To be used only for testing
-    
-    bool isRunningAnimationOnRenderer(RenderObject*, CSSPropertyID, bool isRunningNow = true) const;
-    bool isRunningAcceleratedAnimationOnRenderer(RenderObject*, CSSPropertyID, bool isRunningNow = true) const;
+
+    bool isRunningAnimationOnRenderer( RenderObject *, CSSPropertyID, bool isRunningNow = true ) const;
+    bool isRunningAcceleratedAnimationOnRenderer( RenderObject *, CSSPropertyID, bool isRunningNow = true ) const;
 
     void suspendAnimations();
     void resumeAnimations();
 
-    void suspendAnimationsForDocument(Document*);
-    void resumeAnimationsForDocument(Document*);
+    void suspendAnimationsForDocument( Document * );
+    void resumeAnimationsForDocument( Document * );
 
     void beginAnimationUpdate();
     void endAnimationUpdate();
-    
-    static bool supportsAcceleratedAnimationOfProperty(CSSPropertyID);
 
-    PassRefPtr<WebKitAnimationList> animationsForRenderer(RenderObject*) const;
+    static bool supportsAcceleratedAnimationOfProperty( CSSPropertyID );
+
+    PassRefPtr<WebKitAnimationList> animationsForRenderer( RenderObject * ) const;
 
 private:
-    AnimationControllerPrivate* m_data;
+    AnimationControllerPrivate *m_data;
 };
 
 } // namespace WebCore

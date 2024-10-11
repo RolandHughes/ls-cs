@@ -1,0 +1,93 @@
+Name:       @CPACK_PACKAGE_NAME@
+Version:    @RPM_VERSION@
+Release:    @RPM_RELEASE@
+Summary:    @CPACK_PACKAGE_DESCRIPTION_SUMMARY@
+License:    GPL V2 + restriction
+Group:      Development/Libraries/C and C++
+URL:        https://github.com/RolandHughes/ls-cs
+Vendor:     @CPACK_PACKAGE_CONTACT@
+Packager:   Roland Hughes <roland@logikalsolutions.com>
+
+%define _build_id_links none
+
+%description
+@CPACK_PACKAGE_DESCRIPTION_TEXT@
+
+%prep
+# Cleanup any left over build files
+#
+rm -rf *
+
+# Populate the build directory
+
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_SKIP_BUILD_RPATH=TRUE \
+      -DBUILDING_RPM=ON \
+      -DCMAKE_INSTALL_PREFIX="%{buildroot}/usr" \
+      "@CMAKE_SOURCE_DIR@"
+
+%package devel
+Summary: Development files for @CPACK_PACKAGE_DESCRIPTION_SUMMARY@
+
+%description devel
+Development files for
+@CPACK_PACKAGE_DESCRIPTION_TEXT@
+
+%build
+ninja
+
+%install
+
+# This variable gets rid of bogus RPATH error message
+#
+# The default build has .. in RPATH for lconvert and other binaries.
+# This QA_RPATHS variable is a bitmask override for certain checks.
+#
+# TODO:: See if we cannot completely remove $ORIGIN for BUILDING_RPM
+#        Should be able to
+#
+QA_RPATHS=\$[0x0023]
+
+ninja install
+
+#  Sweep up what CopperSpice gets wrong in their default build.
+#  They should not have let CMake generate this file.
+#
+sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/LsCs;#g' "%{buildroot}/usr/%{_lib}/cmake/LsCs/LsCsLibraryTargets.cmake"
+sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/LsCs/Qt#g' "%{buildroot}/usr/%{_lib}/cmake/LsCs/LsCsLibraryTargets.cmake"
+sed -i 's#/usr/lib64/glib-2.0/include/LsCs#/usr/lib64/glib-2.0/include#g' "%{buildroot}/usr/%{_lib}/cmake/LsCs/LsCsLibraryTargets.cmake"
+
+#
+#  Run-time only
+#
+%files
+%exclude %{_libdir}/cmake
+%exclude %{_libdir}/pkgconfig
+%exclude %{_includedir}
+%exclude %{_bindir}
+
+%{_libdir}
+%{_datadir}
+
+#
+#  Development
+#
+%files devel
+%{_includedir}
+%{_bindir}
+%{_libdir}
+%{_datadir}
+
+%post
+
+ldconfig
+
+
+%postun
+# No difference between upgrade and uninstall for these
+#
+# We did not do anything kinky like create links or files for ldconfig to consume
+# May have to force an entry in $PATH but unknown right now. cmake files should already look there
+
+%changelog
+# let's skip this for now -- really need to include

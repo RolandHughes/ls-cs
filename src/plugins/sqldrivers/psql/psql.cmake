@@ -11,34 +11,34 @@ list(APPEND SQL_INCLUDES
 
 if(WITH_PSQL_PLUGIN AND PostgreSQL_FOUND)
 
-   add_library(CsSqlPsql MODULE "")
-   add_library(CopperSpice::CsSqlPsql ALIAS CsSqlPsql)
+   add_library(LsCsSqlPsql MODULE "")
+   add_library(LsCs::CsSqlPsql ALIAS LsCsSqlPsql)
 
-   set_target_properties(CsSqlPsql PROPERTIES OUTPUT_NAME CsSqlPsql${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlPsql PROPERTIES OUTPUT_NAME LsCsSqlPsql${BUILD_ABI} PREFIX "")
 
    include_directories(${PostgreSQL_INCLUDE_DIRS})
 
-   target_sources(CsSqlPsql
+   target_sources(LsCsSqlPsql
       PRIVATE
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/psql/qsql_psql.cpp
       ${CMAKE_SOURCE_DIR}/src/plugins/sqldrivers/psql/main.cpp
    )
 
-   target_link_libraries(CsSqlPsql
-      CsCore
-      CsSql
+   target_link_libraries(LsCsSqlPsql
+      LsCsCore
+      LsCsSql
       ${PostgreSQL_LIBRARY}
    )
 
-   target_compile_definitions(CsSqlPsql
+   target_compile_definitions(LsCsSqlPsql
       PRIVATE
       -DIN_TRUE
       -DQT_PLUGIN
    )
 
-   if(BUILDING_RPM OR BUILDING_DEBIAN)
-      install(TARGETS CsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR}/copperspice/plugins/sqldrivers)
-   else()
-      install(TARGETS CsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR})
-   endif()
+#   if(BUILDING_RPM OR BUILDING_DEBIAN)
+      install(TARGETS LsCsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/sqldrivers)
+#   else()
+#      install(TARGETS LsCsSqlPsql DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#   endif()
 endif()

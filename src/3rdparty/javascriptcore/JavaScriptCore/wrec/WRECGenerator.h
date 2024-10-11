@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WRECGenerator_h
@@ -36,92 +36,99 @@
 #include <wtf/unicode/Unicode.h>
 #include "WREC.h"
 
-namespace JSC { 
+namespace JSC
+{
 
-    class JSGlobalData;
+class JSGlobalData;
 
-    namespace WREC {
+namespace WREC
+{
 
-    class CharacterRange;
-    class GenerateAtomFunctor;
-    class Parser;
-    struct CharacterClass;
+class CharacterRange;
+class GenerateAtomFunctor;
+class Parser;
+struct CharacterClass;
 
-    class Generator : private MacroAssembler {
-    public:
-        using MacroAssembler::Jump;
-        using MacroAssembler::JumpList;
-        using MacroAssembler::Label;
+class Generator : private MacroAssembler
+{
+public:
+    using MacroAssembler::Jump;
+    using MacroAssembler::JumpList;
+    using MacroAssembler::Label;
 
-        enum ParenthesesType { Capturing, NonCapturing, Assertion, InvertedAssertion, Error };
+    enum ParenthesesType { Capturing, NonCapturing, Assertion, InvertedAssertion, Error };
 
-        static CompiledRegExp compileRegExp(JSGlobalData*, const UString& pattern, unsigned* numSubpatterns_ptr, const char** error_ptr, RefPtr<ExecutablePool>& pool, bool ignoreCase = false, bool multiline = false);
-    
-        Generator(Parser& parser)
-            : m_parser(parser)
-        {
-        }
+    static CompiledRegExp compileRegExp( JSGlobalData *, const UString &pattern, unsigned *numSubpatterns_ptr, const char **error_ptr,
+                                         RefPtr<ExecutablePool> &pool, bool ignoreCase = false, bool multiline = false );
+
+    Generator( Parser &parser )
+        : m_parser( parser )
+    {
+    }
 
 #if CPU(X86)
-        static const RegisterID input = X86Registers::eax;
-        static const RegisterID index = X86Registers::edx;
-        static const RegisterID length = X86Registers::ecx;
-        static const RegisterID output = X86Registers::edi;
+    static const RegisterID input = X86Registers::eax;
+    static const RegisterID index = X86Registers::edx;
+    static const RegisterID length = X86Registers::ecx;
+    static const RegisterID output = X86Registers::edi;
 
-        static const RegisterID character = X86Registers::esi;
-        static const RegisterID repeatCount = X86Registers::ebx; // How many times the current atom repeats in the current match.
+    static const RegisterID character = X86Registers::esi;
+    static const RegisterID repeatCount = X86Registers::ebx; // How many times the current atom repeats in the current match.
 
-        static const RegisterID returnRegister = X86Registers::eax;
+    static const RegisterID returnRegister = X86Registers::eax;
 #endif
 #if CPU(X86_64)
-        static const RegisterID input = X86Registers::edi;
-        static const RegisterID index = X86Registers::esi;
-        static const RegisterID length = X86Registers::edx;
-        static const RegisterID output = X86Registers::ecx;
+    static const RegisterID input = X86Registers::edi;
+    static const RegisterID index = X86Registers::esi;
+    static const RegisterID length = X86Registers::edx;
+    static const RegisterID output = X86Registers::ecx;
 
-        static const RegisterID character = X86Registers::eax;
-        static const RegisterID repeatCount = X86Registers::ebx; // How many times the current atom repeats in the current match.
+    static const RegisterID character = X86Registers::eax;
+    static const RegisterID repeatCount = X86Registers::ebx; // How many times the current atom repeats in the current match.
 
-        static const RegisterID returnRegister = X86Registers::eax;
+    static const RegisterID returnRegister = X86Registers::eax;
 #endif
 
-        void generateEnter();
-        void generateSaveIndex();
-        void generateIncrementIndex(Jump* failure = 0);
-        void generateLoadCharacter(JumpList& failures);
-        void generateJumpIfNotEndOfInput(Label);
-        void generateReturnSuccess();
-        void generateReturnFailure();
+    void generateEnter();
+    void generateSaveIndex();
+    void generateIncrementIndex( Jump *failure = 0 );
+    void generateLoadCharacter( JumpList &failures );
+    void generateJumpIfNotEndOfInput( Label );
+    void generateReturnSuccess();
+    void generateReturnFailure();
 
-        void generateGreedyQuantifier(JumpList& failures, GenerateAtomFunctor& functor, unsigned min, unsigned max);
-        void generateNonGreedyQuantifier(JumpList& failures, GenerateAtomFunctor& functor, unsigned min, unsigned max);
-        void generateBacktrack1();
-        void generateBacktrackBackreference(unsigned subpatternId);
-        void generateCharacterClass(JumpList& failures, const CharacterClass& charClass, bool invert);
-        void generateCharacterClassInverted(JumpList& failures, const CharacterClass& charClass);
-        void generateCharacterClassInvertedRange(JumpList& failures, JumpList& matchDest, const CharacterRange* ranges, unsigned count, unsigned* matchIndex, const UChar* matches, unsigned matchCount);
-        void generatePatternCharacter(JumpList& failures, int ch);
-        void generatePatternCharacterSequence(JumpList& failures, int* sequence, size_t count);
-        void generateAssertionWordBoundary(JumpList& failures, bool invert);
-        void generateAssertionBOL(JumpList& failures);
-        void generateAssertionEOL(JumpList& failures);
-        void generateBackreference(JumpList& failures, unsigned subpatternID);
-        void generateBackreferenceQuantifier(JumpList& failures, Quantifier::Type quantifierType, unsigned subpatternId, unsigned min, unsigned max);
-        void generateParenthesesAssertion(JumpList& failures);
-        void generateParenthesesInvertedAssertion(JumpList& failures);
-        Jump generateParenthesesResetTrampoline(JumpList& newFailures, unsigned subpatternIdBefore, unsigned subpatternIdAfter);
-        void generateParenthesesNonGreedy(JumpList& failures, Label start, Jump success, Jump fail);
+    void generateGreedyQuantifier( JumpList &failures, GenerateAtomFunctor &functor, unsigned min, unsigned max );
+    void generateNonGreedyQuantifier( JumpList &failures, GenerateAtomFunctor &functor, unsigned min, unsigned max );
+    void generateBacktrack1();
+    void generateBacktrackBackreference( unsigned subpatternId );
+    void generateCharacterClass( JumpList &failures, const CharacterClass &charClass, bool invert );
+    void generateCharacterClassInverted( JumpList &failures, const CharacterClass &charClass );
+    void generateCharacterClassInvertedRange( JumpList &failures, JumpList &matchDest, const CharacterRange *ranges, unsigned count,
+            unsigned *matchIndex, const UChar *matches, unsigned matchCount );
+    void generatePatternCharacter( JumpList &failures, int ch );
+    void generatePatternCharacterSequence( JumpList &failures, int *sequence, size_t count );
+    void generateAssertionWordBoundary( JumpList &failures, bool invert );
+    void generateAssertionBOL( JumpList &failures );
+    void generateAssertionEOL( JumpList &failures );
+    void generateBackreference( JumpList &failures, unsigned subpatternID );
+    void generateBackreferenceQuantifier( JumpList &failures, Quantifier::Type quantifierType, unsigned subpatternId, unsigned min,
+                                          unsigned max );
+    void generateParenthesesAssertion( JumpList &failures );
+    void generateParenthesesInvertedAssertion( JumpList &failures );
+    Jump generateParenthesesResetTrampoline( JumpList &newFailures, unsigned subpatternIdBefore, unsigned subpatternIdAfter );
+    void generateParenthesesNonGreedy( JumpList &failures, Label start, Jump success, Jump fail );
 
-        void terminateAlternative(JumpList& successes, JumpList& failures);
-        void terminateDisjunction(JumpList& successes);
+    void terminateAlternative( JumpList &successes, JumpList &failures );
+    void terminateDisjunction( JumpList &successes );
 
-    private:
-        bool generatePatternCharacterPair(JumpList& failures, int ch1, int ch2);
+private:
+    bool generatePatternCharacterPair( JumpList &failures, int ch1, int ch2 );
 
-        Parser& m_parser;
-    };
+    Parser &m_parser;
+};
 
-} } // namespace JSC::WREC
+}
+} // namespace JSC::WREC
 
 #endif // ENABLE(WREC)
 

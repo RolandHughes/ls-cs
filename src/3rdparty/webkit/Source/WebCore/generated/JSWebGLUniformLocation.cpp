@@ -29,9 +29,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSWebGLUniformLocation);
+ASSERT_CLASS_FITS_IN_CELL( JSWebGLUniformLocation );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -42,8 +43,8 @@ ASSERT_CLASS_FITS_IN_CELL(JSWebGLUniformLocation);
 
 static const HashTableValue JSWebGLUniformLocationTableValues[2] =
 {
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsWebGLUniformLocationConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsWebGLUniformLocationConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -57,43 +58,51 @@ static JSC_CONST_HASHTABLE HashTable JSWebGLUniformLocationTable = { 2, 1, JSWeb
 
 static const HashTableValue JSWebGLUniformLocationConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLUniformLocationConstructorTable = { 1, 0, JSWebGLUniformLocationConstructorTableValues, 0 };
-class JSWebGLUniformLocationConstructor : public DOMConstructorObject {
+class JSWebGLUniformLocationConstructor : public DOMConstructorObject
+{
 public:
-    JSWebGLUniformLocationConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSWebGLUniformLocationConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSWebGLUniformLocationConstructor::s_info = { "WebGLUniformLocationConstructor", &DOMConstructorObject::s_info, &JSWebGLUniformLocationConstructorTable, 0 };
 
-JSWebGLUniformLocationConstructor::JSWebGLUniformLocationConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSWebGLUniformLocationConstructor::JSWebGLUniformLocationConstructor( ExecState *exec, Structure *structure,
+        JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSWebGLUniformLocationPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSWebGLUniformLocationPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSWebGLUniformLocationConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLUniformLocationConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLUniformLocationConstructor, JSDOMWrapper>(exec, &JSWebGLUniformLocationConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLUniformLocationConstructor, JSDOMWrapper>( exec, &JSWebGLUniformLocationConstructorTable, this,
+            propertyName, slot );
 }
 
-bool JSWebGLUniformLocationConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLUniformLocationConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLUniformLocationConstructor, JSDOMWrapper>(exec, &JSWebGLUniformLocationConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLUniformLocationConstructor, JSDOMWrapper>( exec, &JSWebGLUniformLocationConstructorTable,
+            this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -105,61 +114,65 @@ bool JSWebGLUniformLocationConstructor::getOwnPropertyDescriptor(ExecState* exec
 
 static const HashTableValue JSWebGLUniformLocationPrototypeTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSWebGLUniformLocationPrototypeTable = { 1, 0, JSWebGLUniformLocationPrototypeTableValues, 0 };
 const ClassInfo JSWebGLUniformLocationPrototype::s_info = { "WebGLUniformLocationPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSWebGLUniformLocationPrototypeTable, 0 };
 
-JSObject* JSWebGLUniformLocationPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLUniformLocationPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSWebGLUniformLocation>(exec, globalObject);
+    return getDOMPrototype<JSWebGLUniformLocation>( exec, globalObject );
 }
 
 const ClassInfo JSWebGLUniformLocation::s_info = { "WebGLUniformLocation", &JSDOMWrapper::s_info, &JSWebGLUniformLocationTable, 0 };
 
-JSWebGLUniformLocation::JSWebGLUniformLocation(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<WebGLUniformLocation> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSWebGLUniformLocation::JSWebGLUniformLocation( Structure *structure, JSDOMGlobalObject *globalObject,
+        PassRefPtr<WebGLUniformLocation> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSWebGLUniformLocation::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSWebGLUniformLocation::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSWebGLUniformLocationPrototype(exec->globalData(), globalObject, JSWebGLUniformLocationPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSWebGLUniformLocationPrototype( exec->globalData(), globalObject,
+            JSWebGLUniformLocationPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-bool JSWebGLUniformLocation::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSWebGLUniformLocation::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSWebGLUniformLocation, Base>(exec, &JSWebGLUniformLocationTable, this, propertyName, slot);
+    return getStaticValueSlot<JSWebGLUniformLocation, Base>( exec, &JSWebGLUniformLocationTable, this, propertyName, slot );
 }
 
-bool JSWebGLUniformLocation::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSWebGLUniformLocation::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSWebGLUniformLocation, Base>(exec, &JSWebGLUniformLocationTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSWebGLUniformLocation, Base>( exec, &JSWebGLUniformLocationTable, this, propertyName,
+            descriptor );
 }
 
-JSValue jsWebGLUniformLocationConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsWebGLUniformLocationConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSWebGLUniformLocation* domObject = static_cast<JSWebGLUniformLocation*>(asObject(slotBase));
-    return JSWebGLUniformLocation::getConstructor(exec, domObject->globalObject());
+    JSWebGLUniformLocation *domObject = static_cast<JSWebGLUniformLocation *>( asObject( slotBase ) );
+    return JSWebGLUniformLocation::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSWebGLUniformLocation::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSWebGLUniformLocation::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSWebGLUniformLocationConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSWebGLUniformLocationConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, WebGLUniformLocation* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, WebGLUniformLocation *impl )
 {
-    return wrap<JSWebGLUniformLocation>(exec, globalObject, impl);
+    return wrap<JSWebGLUniformLocation>( exec, globalObject, impl );
 }
 
-WebGLUniformLocation* toWebGLUniformLocation(JSC::JSValue value)
+WebGLUniformLocation *toWebGLUniformLocation( JSC::JSValue value )
 {
-    return value.inherits(&JSWebGLUniformLocation::s_info) ? static_cast<JSWebGLUniformLocation*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSWebGLUniformLocation::s_info ) ? static_cast<JSWebGLUniformLocation *>( asObject( value ) )->impl() : 0;
 }
 
 }

@@ -30,36 +30,40 @@
 #include "RenderObject.h"
 #include "RenderProgress.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace HTMLNames;
 
-AccessibilityProgressIndicator::AccessibilityProgressIndicator(RenderProgress* renderer)
-    : AccessibilityRenderObject(renderer)
+AccessibilityProgressIndicator::AccessibilityProgressIndicator( RenderProgress *renderer )
+    : AccessibilityRenderObject( renderer )
 {
 }
 
-PassRefPtr<AccessibilityProgressIndicator> AccessibilityProgressIndicator::create(RenderProgress* renderer)
+PassRefPtr<AccessibilityProgressIndicator> AccessibilityProgressIndicator::create( RenderProgress *renderer )
 {
-    return adoptRef(new AccessibilityProgressIndicator(renderer));
+    return adoptRef( new AccessibilityProgressIndicator( renderer ) );
 }
 
 bool AccessibilityProgressIndicator::accessibilityIsIgnored() const
 {
     return accessibilityIsIgnoredBase() == IgnoreObject;
 }
-    
+
 float AccessibilityProgressIndicator::valueForRange() const
 {
-    if (element()->position() >= 0)
-        return narrowPrecisionToFloat(element()->value());
+    if ( element()->position() >= 0 )
+    {
+        return narrowPrecisionToFloat( element()->value() );
+    }
+
     // Indeterminate progress bar should return 0.
     return 0.0f;
 }
 
 float AccessibilityProgressIndicator::maxValueForRange() const
 {
-    return narrowPrecisionToFloat(element()->max());
+    return narrowPrecisionToFloat( element()->max() );
 }
 
 float AccessibilityProgressIndicator::minValueForRange() const
@@ -67,9 +71,9 @@ float AccessibilityProgressIndicator::minValueForRange() const
     return 0.0f;
 }
 
-HTMLProgressElement* AccessibilityProgressIndicator::element() const
+HTMLProgressElement *AccessibilityProgressIndicator::element() const
 {
-    return toRenderProgress(m_renderer)->progressElement();
+    return toRenderProgress( m_renderer )->progressElement();
 }
 
 

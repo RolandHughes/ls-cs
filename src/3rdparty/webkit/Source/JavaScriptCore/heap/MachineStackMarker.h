@@ -29,44 +29,46 @@
 #include <pthread.h>
 #endif
 
-namespace JSC {
+namespace JSC
+{
 
-    class Heap;
-    class ConservativeRoots;
+class Heap;
+class ConservativeRoots;
 
-    class MachineThreads {
-        WTF_MAKE_NONCOPYABLE(MachineThreads);
-    public:
-        MachineThreads(Heap*);
-        ~MachineThreads();
+class MachineThreads
+{
+    WTF_MAKE_NONCOPYABLE( MachineThreads );
+public:
+    MachineThreads( Heap * );
+    ~MachineThreads();
 
-        void gatherConservativeRoots(ConservativeRoots&, void* stackCurrent);
-
-#if ENABLE(JSC_MULTIPLE_THREADS)
-        void makeUsableFromMultipleThreads();
-        void addCurrentThread(); // Only needs to be called by clients that can use the same heap from multiple threads.
-#endif
-
-    private:
-        void gatherFromCurrentThread(ConservativeRoots&, void* stackCurrent);
+    void gatherConservativeRoots( ConservativeRoots &, void *stackCurrent );
 
 #if ENABLE(JSC_MULTIPLE_THREADS)
-        class Thread;
-
-        static void removeThread(void*);
-        void removeCurrentThread();
-
-        void gatherFromOtherThread(ConservativeRoots&, Thread*);
+    void makeUsableFromMultipleThreads();
+    void addCurrentThread(); // Only needs to be called by clients that can use the same heap from multiple threads.
 #endif
 
-        Heap* m_heap;
+private:
+    void gatherFromCurrentThread( ConservativeRoots &, void *stackCurrent );
 
 #if ENABLE(JSC_MULTIPLE_THREADS)
-        Mutex m_registeredThreadsMutex;
-        Thread* m_registeredThreads;
-        pthread_key_t m_threadSpecific;
+    class Thread;
+
+    static void removeThread( void * );
+    void removeCurrentThread();
+
+    void gatherFromOtherThread( ConservativeRoots &, Thread * );
 #endif
-    };
+
+    Heap *m_heap;
+
+#if ENABLE(JSC_MULTIPLE_THREADS)
+    Mutex m_registeredThreadsMutex;
+    Thread *m_registeredThreads;
+    pthread_key_t m_threadSpecific;
+#endif
+};
 
 } // namespace JSC
 

@@ -26,22 +26,28 @@
 #include "SVGPropertyTraits.h"
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
 
-class SVGPointList : public Vector<FloatPoint> {
+class SVGPointList : public Vector<FloatPoint>
+{
 public:
     SVGPointList() { }
 
     String valueAsString() const;
 
-    static bool createAnimated(const SVGPointList& fromList, const SVGPointList& toList, SVGPointList& resultList, float progress);
+    static bool createAnimated( const SVGPointList &fromList, const SVGPointList &toList, SVGPointList &resultList, float progress );
 };
 
 template<>
-struct SVGPropertyTraits<SVGPointList> {
-    static SVGPointList initialValue() { return SVGPointList(); }
+struct SVGPropertyTraits<SVGPointList>
+{
+    static SVGPointList initialValue()
+    {
+        return SVGPointList();
+    }
     typedef FloatPoint ListItemType;
 };
 

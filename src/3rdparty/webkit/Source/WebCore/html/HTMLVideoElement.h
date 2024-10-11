@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef HTMLVideoElement_h
@@ -30,30 +30,38 @@
 
 #include "HTMLMediaElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLImageLoader;
 
-class HTMLVideoElement : public HTMLMediaElement {
+class HTMLVideoElement : public HTMLMediaElement
+{
 public:
-    static PassRefPtr<HTMLVideoElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLVideoElement> create( const QualifiedName &, Document * );
 
     unsigned width() const;
     unsigned height() const;
-    
+
     unsigned videoWidth() const;
     unsigned videoHeight() const;
-    
+
     // Fullscreen
-    void webkitEnterFullscreen(bool isUserGesture, ExceptionCode&);
+    void webkitEnterFullscreen( bool isUserGesture, ExceptionCode & );
     void webkitExitFullscreen();
     bool webkitSupportsFullscreen();
     bool webkitDisplayingFullscreen();
 
     // FIXME: Maintain "FullScreen" capitalization scheme for backwards compatibility.
     // https://bugs.webkit.org/show_bug.cgi?id=36081
-    void webkitEnterFullScreen(bool isUserGesture, ExceptionCode& ec) { webkitEnterFullscreen(isUserGesture, ec); }
-    void webkitExitFullScreen() { webkitExitFullscreen(); }
+    void webkitEnterFullScreen( bool isUserGesture, ExceptionCode &ec )
+    {
+        webkitEnterFullscreen( isUserGesture, ec );
+    }
+    void webkitExitFullScreen()
+    {
+        webkitExitFullscreen();
+    }
 
 #if ENABLE(MEDIA_STATISTICS)
     // Statistics
@@ -62,32 +70,41 @@ public:
 #endif
 
     // Used by canvas to gain raw pixel access
-    void paintCurrentFrameInContext(GraphicsContext*, const IntRect&);
+    void paintCurrentFrameInContext( GraphicsContext *, const IntRect & );
 
-    bool shouldDisplayPosterImage() const { return displayMode() == Poster || displayMode() == PosterWaitingForVideo; }
+    bool shouldDisplayPosterImage() const
+    {
+        return displayMode() == Poster || displayMode() == PosterWaitingForVideo;
+    }
 
 private:
-    HTMLVideoElement(const QualifiedName&, Document*);
+    HTMLVideoElement( const QualifiedName &, Document * );
 
-    virtual bool rendererIsNeeded(RenderStyle*);
+    virtual bool rendererIsNeeded( RenderStyle * );
 #if !ENABLE(PLUGIN_PROXY_FOR_VIDEO)
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
 #endif
     virtual void attach();
     virtual void detach();
-    virtual void parseMappedAttribute(Attribute*);
-    virtual bool isVideo() const { return true; }
-    virtual bool hasVideo() const { return player() && player()->hasVideo(); }
+    virtual void parseMappedAttribute( Attribute * );
+    virtual bool isVideo() const
+    {
+        return true;
+    }
+    virtual bool hasVideo() const
+    {
+        return player() && player()->hasVideo();
+    }
     virtual bool supportsFullscreen() const;
-    virtual bool isURLAttribute(Attribute*) const;
-    virtual const QualifiedName& imageSourceAttributeName() const;
+    virtual bool isURLAttribute( Attribute * ) const;
+    virtual const QualifiedName &imageSourceAttributeName() const;
 
     virtual bool hasAvailableVideoFrame() const;
     virtual void updateDisplayState();
 
     virtual void willMoveToNewOwnerDocument();
 
-    virtual void setDisplayMode(DisplayMode);
+    virtual void setDisplayMode( DisplayMode );
 
     OwnPtr<HTMLImageLoader> m_imageLoader;
 

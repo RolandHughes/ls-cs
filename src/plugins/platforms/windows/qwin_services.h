@@ -28,9 +28,9 @@
 
 class QWindowsServices : public QPlatformServices
 {
- public:
-   bool openUrl(const QUrl &url) override;
-   bool openDocument(const QUrl &url) override;
+public:
+    bool openUrl( const QUrl &url ) override;
+    bool openDocument( const QUrl &url ) override;
 };
 
 #endif

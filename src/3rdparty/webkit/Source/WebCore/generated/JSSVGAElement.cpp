@@ -50,9 +50,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSVGAElement);
+ASSERT_CLASS_FITS_IN_CELL( JSSVGAElement );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -63,21 +64,21 @@ ASSERT_CLASS_FITS_IN_CELL(JSSVGAElement);
 
 static const HashTableValue JSSVGAElementTableValues[15] =
 {
-    { "target", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementTarget), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "href", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementHref), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "requiredFeatures", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementRequiredFeatures), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "requiredExtensions", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementRequiredExtensions), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "systemLanguage", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementSystemLanguage), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "xmllang", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementXmllang), (intptr_t)setJSSVGAElementXmllang THUNK_GENERATOR(0) },
-    { "xmlspace", DontDelete, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementXmlspace), (intptr_t)setJSSVGAElementXmlspace THUNK_GENERATOR(0) },
-    { "externalResourcesRequired", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementExternalResourcesRequired), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "className", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementClassName), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "style", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementStyle), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "transform", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementTransform), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "nearestViewportElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementNearestViewportElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "farthestViewportElement", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementFarthestViewportElement), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsSVGAElementConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "target", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementTarget ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "href", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementHref ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "requiredFeatures", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementRequiredFeatures ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "requiredExtensions", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementRequiredExtensions ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "systemLanguage", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementSystemLanguage ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "xmllang", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementXmllang ), ( intptr_t )setJSSVGAElementXmllang THUNK_GENERATOR( 0 ) },
+    { "xmlspace", DontDelete, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementXmlspace ), ( intptr_t )setJSSVGAElementXmlspace THUNK_GENERATOR( 0 ) },
+    { "externalResourcesRequired", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementExternalResourcesRequired ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "className", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementClassName ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "style", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementStyle ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "transform", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementTransform ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "nearestViewportElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementNearestViewportElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "farthestViewportElement", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementFarthestViewportElement ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsSVGAElementConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -91,43 +92,50 @@ static JSC_CONST_HASHTABLE HashTable JSSVGAElementTable = { 34, 31, JSSVGAElemen
 
 static const HashTableValue JSSVGAElementConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAElementConstructorTable = { 1, 0, JSSVGAElementConstructorTableValues, 0 };
-class JSSVGAElementConstructor : public DOMConstructorObject {
+class JSSVGAElementConstructor : public DOMConstructorObject
+{
 public:
-    JSSVGAElementConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSSVGAElementConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSSVGAElementConstructor::s_info = { "SVGAElementConstructor", &DOMConstructorObject::s_info, &JSSVGAElementConstructorTable, 0 };
 
-JSSVGAElementConstructor::JSSVGAElementConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSSVGAElementConstructor::JSSVGAElementConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSSVGAElementPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSSVGAElementPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSSVGAElementConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAElementConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAElementConstructor, JSDOMWrapper>(exec, &JSSVGAElementConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAElementConstructor, JSDOMWrapper>( exec, &JSSVGAElementConstructorTable, this, propertyName,
+            slot );
 }
 
-bool JSSVGAElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAElementConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAElementConstructor, JSDOMWrapper>(exec, &JSSVGAElementConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAElementConstructor, JSDOMWrapper>( exec, &JSSVGAElementConstructorTable, this, propertyName,
+            descriptor );
 }
 
 /* Hash table for prototype */
@@ -139,311 +147,359 @@ bool JSSVGAElementConstructor::getOwnPropertyDescriptor(ExecState* exec, const I
 
 static const HashTableValue JSSVGAElementPrototypeTableValues[7] =
 {
-    { "hasExtension", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAElementPrototypeFunctionHasExtension), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getPresentationAttribute", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAElementPrototypeFunctionGetPresentationAttribute), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "getBBox", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAElementPrototypeFunctionGetBBox), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getCTM", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAElementPrototypeFunctionGetCTM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getScreenCTM", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAElementPrototypeFunctionGetScreenCTM), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "getTransformToElement", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSVGAElementPrototypeFunctionGetTransformToElement), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "hasExtension", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAElementPrototypeFunctionHasExtension ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getPresentationAttribute", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAElementPrototypeFunctionGetPresentationAttribute ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "getBBox", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAElementPrototypeFunctionGetBBox ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getCTM", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAElementPrototypeFunctionGetCTM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getScreenCTM", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAElementPrototypeFunctionGetScreenCTM ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "getTransformToElement", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSVGAElementPrototypeFunctionGetTransformToElement ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSVGAElementPrototypeTable = { 17, 15, JSSVGAElementPrototypeTableValues, 0 };
 const ClassInfo JSSVGAElementPrototype::s_info = { "SVGAElementPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSSVGAElementPrototypeTable, 0 };
 
-JSObject* JSSVGAElementPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAElementPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSVGAElement>(exec, globalObject);
+    return getDOMPrototype<JSSVGAElement>( exec, globalObject );
 }
 
-bool JSSVGAElementPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAElementPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSSVGAElementPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSSVGAElementPrototypeTable, this, propertyName, slot );
 }
 
-bool JSSVGAElementPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAElementPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSSVGAElementPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSSVGAElementPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSSVGAElement::s_info = { "SVGAElement", &JSSVGElement::s_info, &JSSVGAElementTable, 0 };
 
-JSSVGAElement::JSSVGAElement(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SVGAElement> impl)
-    : JSSVGElement(structure, globalObject, impl)
+JSSVGAElement::JSSVGAElement( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SVGAElement> impl )
+    : JSSVGElement( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSVGAElement::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSVGAElement::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSVGAElementPrototype(exec->globalData(), globalObject, JSSVGAElementPrototype::createStructure(exec->globalData(), JSSVGElementPrototype::self(exec, globalObject)));
+    return new ( exec ) JSSVGAElementPrototype( exec->globalData(), globalObject,
+            JSSVGAElementPrototype::createStructure( exec->globalData(), JSSVGElementPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSSVGAElement::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSVGAElement::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSSVGAElement, Base>(exec, &JSSVGAElementTable, this, propertyName, slot);
+    return getStaticValueSlot<JSSVGAElement, Base>( exec, &JSSVGAElementTable, this, propertyName, slot );
 }
 
-bool JSSVGAElement::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSVGAElement::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSSVGAElement, Base>(exec, &JSSVGAElementTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSSVGAElement, Base>( exec, &JSSVGAElementTable, this, propertyName, descriptor );
 }
 
-JSValue jsSVGAElementTarget(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementTarget( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->svgTargetAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGAElementHref(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementHref( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->hrefAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGAElementRequiredFeatures(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementRequiredFeatures( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGAElement, IsDerivedFromSVGElement<SVGAElement>::value>::ownerElement(imp), imp->requiredFeatures())));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGAElement, IsDerivedFromSVGElement<SVGAElement>::value>::ownerElement( imp ),
+                                            imp->requiredFeatures() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAElementRequiredExtensions(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementRequiredExtensions( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGAElement, IsDerivedFromSVGElement<SVGAElement>::value>::ownerElement(imp), imp->requiredExtensions())));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGAElement, IsDerivedFromSVGElement<SVGAElement>::value>::ownerElement( imp ),
+                                            imp->requiredExtensions() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAElementSystemLanguage(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementSystemLanguage( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGStaticListPropertyTearOff<SVGStringList>::create(GetOwnerElementForType<SVGAElement, IsDerivedFromSVGElement<SVGAElement>::value>::ownerElement(imp), imp->systemLanguage())));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(),
+                           WTF::getPtr( SVGStaticListPropertyTearOff<SVGStringList>::create(
+                                            GetOwnerElementForType<SVGAElement, IsDerivedFromSVGElement<SVGAElement>::value>::ownerElement( imp ),
+                                            imp->systemLanguage() ) ) );
     return result;
 }
 
 
-JSValue jsSVGAElementXmllang(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementXmllang( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmllang());
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmllang() );
     return result;
 }
 
 
-JSValue jsSVGAElementXmlspace(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementXmlspace( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->xmlspace());
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->xmlspace() );
     return result;
 }
 
 
-JSValue jsSVGAElementExternalResourcesRequired(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementExternalResourcesRequired( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedBoolean> obj = imp->externalResourcesRequiredAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGAElementClassName(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementClassName( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedString> obj = imp->classNameAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGAElementStyle(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementStyle( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->style()));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->style() ) );
     return result;
 }
 
 
-JSValue jsSVGAElementTransform(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementTransform( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
     RefPtr<SVGAnimatedTransformList> obj = imp->transformAnimated();
-    JSValue result =  toJS(exec, castedThis->globalObject(), obj.get());
+    JSValue result =  toJS( exec, castedThis->globalObject(), obj.get() );
     return result;
 }
 
 
-JSValue jsSVGAElementNearestViewportElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementNearestViewportElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->nearestViewportElement()));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->nearestViewportElement() ) );
     return result;
 }
 
 
-JSValue jsSVGAElementFarthestViewportElement(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementFarthestViewportElement( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->farthestViewportElement()));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->farthestViewportElement() ) );
     return result;
 }
 
 
-JSValue jsSVGAElementConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsSVGAElementConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSSVGAElement* domObject = static_cast<JSSVGAElement*>(asObject(slotBase));
-    return JSSVGAElement::getConstructor(exec, domObject->globalObject());
+    JSSVGAElement *domObject = static_cast<JSSVGAElement *>( asObject( slotBase ) );
+    return JSSVGAElement::getConstructor( exec, domObject->globalObject() );
 }
 
-void JSSVGAElement::put(ExecState* exec, const Identifier& propertyName, JSValue value, PutPropertySlot& slot)
+void JSSVGAElement::put( ExecState *exec, const Identifier &propertyName, JSValue value, PutPropertySlot &slot )
 {
-    lookupPut<JSSVGAElement, Base>(exec, propertyName, value, &JSSVGAElementTable, this, slot);
+    lookupPut<JSSVGAElement, Base>( exec, propertyName, value, &JSSVGAElementTable, this, slot );
 }
 
-void setJSSVGAElementXmllang(ExecState* exec, JSObject* thisObject, JSValue value)
+void setJSSVGAElementXmllang( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(thisObject);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    imp->setXmllang(ustringToString(value.toString(exec)));
-}
-
-
-void setJSSVGAElementXmlspace(ExecState* exec, JSObject* thisObject, JSValue value)
-{
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(thisObject);
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    imp->setXmlspace(ustringToString(value.toString(exec)));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( thisObject );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    imp->setXmllang( ustringToString( value.toString( exec ) ) );
 }
 
 
-JSValue JSSVGAElement::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+void setJSSVGAElementXmlspace( ExecState *exec, JSObject *thisObject, JSValue value )
 {
-    return getDOMConstructor<JSSVGAElementConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( thisObject );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    imp->setXmlspace( ustringToString( value.toString( exec ) ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionHasExtension(ExecState* exec)
+
+JSValue JSSVGAElement::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
+{
+    return getDOMConstructor<JSSVGAElementConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
+}
+
+EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionHasExtension( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(thisValue));
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    const String& extension(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGAElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( thisValue ) );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    const String &extension( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = jsBoolean(imp->hasExtension(extension));
-    return JSValue::encode(result);
+    JSC::JSValue result = jsBoolean( imp->hasExtension( extension ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetPresentationAttribute(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetPresentationAttribute( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(thisValue));
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
-    const String& name(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSSVGAElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( thisValue ) );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
+    const String &name( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->getPresentationAttribute(name)));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->getPresentationAttribute( name ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetBBox(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetBBox( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(thisValue));
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( thisValue ) );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<FloatRect>::create(imp->getBBox())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<FloatRect>::create( imp->getBBox() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetCTM(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetCTM( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(thisValue));
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( thisValue ) );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getCTM())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getCTM() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetScreenCTM(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetScreenCTM( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(thisValue));
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( thisValue ) );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getScreenCTM())));
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getScreenCTM() ) ) );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetTransformToElement(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSVGAElementPrototypeFunctionGetTransformToElement( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSVGAElement::s_info))
-        return throwVMTypeError(exec);
-    JSSVGAElement* castedThis = static_cast<JSSVGAElement*>(asObject(thisValue));
-    SVGAElement* imp = static_cast<SVGAElement*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSSVGAElement::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSVGAElement *castedThis = static_cast<JSSVGAElement *>( asObject( thisValue ) );
+    SVGAElement *imp = static_cast<SVGAElement *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    SVGElement* element(toSVGElement(exec->argument(0)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    SVGElement *element( toSVGElement( exec->argument( 0 ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(SVGPropertyTearOff<SVGMatrix>::create(imp->getTransformToElement(element, ec))));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(),
+                                WTF::getPtr( SVGPropertyTearOff<SVGMatrix>::create( imp->getTransformToElement( element, ec ) ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
 

@@ -20,17 +20,18 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WTF_RandomNumber_h
 #define WTF_RandomNumber_h
 
-namespace WTF {
+namespace WTF
+{
 
-    // Returns a pseudo-random number in the range [0, 1), attempts to be
-    // cryptographically secure if possible on the target platform
-    double randomNumber();
+// Returns a pseudo-random number in the range [0, 1), attempts to be
+// cryptographically secure if possible on the target platform
+double randomNumber();
 
 }
 

@@ -32,9 +32,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSText);
+ASSERT_CLASS_FITS_IN_CELL( JSText );
 
 /* Hash table */
 #if ENABLE(JIT)
@@ -45,9 +46,9 @@ ASSERT_CLASS_FITS_IN_CELL(JSText);
 
 static const HashTableValue JSTextTableValues[3] =
 {
-    { "wholeText", DontDelete | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsTextWholeText), (intptr_t)0 THUNK_GENERATOR(0) },
-    { "constructor", DontEnum | ReadOnly, (intptr_t)static_cast<PropertySlot::GetValueFunc>(jsTextConstructor), (intptr_t)0 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "wholeText", DontDelete | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsTextWholeText ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { "constructor", DontEnum | ReadOnly, ( intptr_t )static_cast<PropertySlot::GetValueFunc>( jsTextConstructor ), ( intptr_t )0 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
@@ -61,43 +62,48 @@ static JSC_CONST_HASHTABLE HashTable JSTextTable = { 5, 3, JSTextTableValues, 0 
 
 static const HashTableValue JSTextConstructorTableValues[1] =
 {
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSTextConstructorTable = { 1, 0, JSTextConstructorTableValues, 0 };
-class JSTextConstructor : public DOMConstructorObject {
+class JSTextConstructor : public DOMConstructorObject
+{
 public:
-    JSTextConstructor(JSC::ExecState*, JSC::Structure*, JSDOMGlobalObject*);
+    JSTextConstructor( JSC::ExecState *, JSC::Structure *, JSDOMGlobalObject * );
 
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 protected:
-    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance | DOMConstructorObject::StructureFlags;
+    static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | JSC::ImplementsHasInstance |
+                                           DOMConstructorObject::StructureFlags;
 };
 
 const ClassInfo JSTextConstructor::s_info = { "TextConstructor", &DOMConstructorObject::s_info, &JSTextConstructorTable, 0 };
 
-JSTextConstructor::JSTextConstructor(ExecState* exec, Structure* structure, JSDOMGlobalObject* globalObject)
-    : DOMConstructorObject(structure, globalObject)
+JSTextConstructor::JSTextConstructor( ExecState *exec, Structure *structure, JSDOMGlobalObject *globalObject )
+    : DOMConstructorObject( structure, globalObject )
 {
-    ASSERT(inherits(&s_info));
-    putDirect(exec->globalData(), exec->propertyNames().prototype, JSTextPrototype::self(exec, globalObject), DontDelete | ReadOnly);
+    ASSERT( inherits( &s_info ) );
+    putDirect( exec->globalData(), exec->propertyNames().prototype, JSTextPrototype::self( exec, globalObject ),
+               DontDelete | ReadOnly );
 }
 
-bool JSTextConstructor::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSTextConstructor::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSTextConstructor, JSDOMWrapper>(exec, &JSTextConstructorTable, this, propertyName, slot);
+    return getStaticValueSlot<JSTextConstructor, JSDOMWrapper>( exec, &JSTextConstructorTable, this, propertyName, slot );
 }
 
-bool JSTextConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSTextConstructor::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSTextConstructor, JSDOMWrapper>(exec, &JSTextConstructorTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSTextConstructor, JSDOMWrapper>( exec, &JSTextConstructorTable, this, propertyName, descriptor );
 }
 
 /* Hash table for prototype */
@@ -109,112 +115,129 @@ bool JSTextConstructor::getOwnPropertyDescriptor(ExecState* exec, const Identifi
 
 static const HashTableValue JSTextPrototypeTableValues[3] =
 {
-    { "splitText", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsTextPrototypeFunctionSplitText), (intptr_t)1 THUNK_GENERATOR(0) },
-    { "replaceWholeText", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsTextPrototypeFunctionReplaceWholeText), (intptr_t)1 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "splitText", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsTextPrototypeFunctionSplitText ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { "replaceWholeText", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsTextPrototypeFunctionReplaceWholeText ), ( intptr_t )1 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSTextPrototypeTable = { 4, 3, JSTextPrototypeTableValues, 0 };
 const ClassInfo JSTextPrototype::s_info = { "TextPrototype", &JSC::JSObjectWithGlobalObject::s_info, &JSTextPrototypeTable, 0 };
 
-JSObject* JSTextPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSTextPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSText>(exec, globalObject);
+    return getDOMPrototype<JSText>( exec, globalObject );
 }
 
-bool JSTextPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSTextPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, &JSTextPrototypeTable, this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, &JSTextPrototypeTable, this, propertyName, slot );
 }
 
-bool JSTextPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSTextPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, &JSTextPrototypeTable, this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, &JSTextPrototypeTable, this, propertyName, descriptor );
 }
 
 const ClassInfo JSText::s_info = { "Text", &JSCharacterData::s_info, &JSTextTable, 0 };
 
-JSText::JSText(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<Text> impl)
-    : JSCharacterData(structure, globalObject, impl)
+JSText::JSText( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<Text> impl )
+    : JSCharacterData( structure, globalObject, impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSText::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSText::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSTextPrototype(exec->globalData(), globalObject, JSTextPrototype::createStructure(exec->globalData(), JSCharacterDataPrototype::self(exec, globalObject)));
+    return new ( exec ) JSTextPrototype( exec->globalData(), globalObject, JSTextPrototype::createStructure( exec->globalData(),
+                                         JSCharacterDataPrototype::self( exec, globalObject ) ) );
 }
 
-bool JSText::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSText::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticValueSlot<JSText, Base>(exec, &JSTextTable, this, propertyName, slot);
+    return getStaticValueSlot<JSText, Base>( exec, &JSTextTable, this, propertyName, slot );
 }
 
-bool JSText::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSText::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName, PropertyDescriptor &descriptor )
 {
-    return getStaticValueDescriptor<JSText, Base>(exec, &JSTextTable, this, propertyName, descriptor);
+    return getStaticValueDescriptor<JSText, Base>( exec, &JSTextTable, this, propertyName, descriptor );
 }
 
-JSValue jsTextWholeText(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsTextWholeText( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSText* castedThis = static_cast<JSText*>(asObject(slotBase));
-    UNUSED_PARAM(exec);
-    Text* imp = static_cast<Text*>(castedThis->impl());
-    JSValue result = jsString(exec, imp->wholeText());
+    JSText *castedThis = static_cast<JSText *>( asObject( slotBase ) );
+    UNUSED_PARAM( exec );
+    Text *imp = static_cast<Text *>( castedThis->impl() );
+    JSValue result = jsString( exec, imp->wholeText() );
     return result;
 }
 
 
-JSValue jsTextConstructor(ExecState* exec, JSValue slotBase, const Identifier&)
+JSValue jsTextConstructor( ExecState *exec, JSValue slotBase, const Identifier & )
 {
-    JSText* domObject = static_cast<JSText*>(asObject(slotBase));
-    return JSText::getConstructor(exec, domObject->globalObject());
+    JSText *domObject = static_cast<JSText *>( asObject( slotBase ) );
+    return JSText::getConstructor( exec, domObject->globalObject() );
 }
 
-JSValue JSText::getConstructor(ExecState* exec, JSGlobalObject* globalObject)
+JSValue JSText::getConstructor( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMConstructor<JSTextConstructor>(exec, static_cast<JSDOMGlobalObject*>(globalObject));
+    return getDOMConstructor<JSTextConstructor>( exec, static_cast<JSDOMGlobalObject *>( globalObject ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsTextPrototypeFunctionSplitText(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsTextPrototypeFunctionSplitText( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSText::s_info))
-        return throwVMTypeError(exec);
-    JSText* castedThis = static_cast<JSText*>(asObject(thisValue));
-    Text* imp = static_cast<Text*>(castedThis->impl());
-    ExceptionCode ec = 0;
-    int offset(exec->argument(0).toUInt32(exec));
-    if (offset < 0) {
-        setDOMException(exec, INDEX_SIZE_ERR);
-        return JSValue::encode(jsUndefined());
+
+    if ( !thisValue.inherits( &JSText::s_info ) )
+    {
+        return throwVMTypeError( exec );
     }
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+
+    JSText *castedThis = static_cast<JSText *>( asObject( thisValue ) );
+    Text *imp = static_cast<Text *>( castedThis->impl() );
+    ExceptionCode ec = 0;
+    int offset( exec->argument( 0 ).toUInt32( exec ) );
+
+    if ( offset < 0 )
+    {
+        setDOMException( exec, INDEX_SIZE_ERR );
+        return JSValue::encode( jsUndefined() );
+    }
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->splitText(offset, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->splitText( offset, ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
-EncodedJSValue JSC_HOST_CALL jsTextPrototypeFunctionReplaceWholeText(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsTextPrototypeFunctionReplaceWholeText( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSText::s_info))
-        return throwVMTypeError(exec);
-    JSText* castedThis = static_cast<JSText*>(asObject(thisValue));
-    Text* imp = static_cast<Text*>(castedThis->impl());
+
+    if ( !thisValue.inherits( &JSText::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSText *castedThis = static_cast<JSText *>( asObject( thisValue ) );
+    Text *imp = static_cast<Text *>( castedThis->impl() );
     ExceptionCode ec = 0;
-    const String& content(ustringToString(exec->argument(0).toString(exec)));
-    if (exec->hadException())
-        return JSValue::encode(jsUndefined());
+    const String &content( ustringToString( exec->argument( 0 ).toString( exec ) ) );
+
+    if ( exec->hadException() )
+    {
+        return JSValue::encode( jsUndefined() );
+    }
 
 
-    JSC::JSValue result = toJS(exec, castedThis->globalObject(), WTF::getPtr(imp->replaceWholeText(content, ec)));
-    setDOMException(exec, ec);
-    return JSValue::encode(result);
+    JSC::JSValue result = toJS( exec, castedThis->globalObject(), WTF::getPtr( imp->replaceWholeText( content, ec ) ) );
+    setDOMException( exec, ec );
+    return JSValue::encode( result );
 }
 
 

@@ -32,44 +32,44 @@ class QKeySequenceEditPrivate;
 
 class Q_GUI_EXPORT QKeySequenceEdit : public QWidget
 {
-   GUI_CS_OBJECT(QKeySequenceEdit)
+    GUI_LSCS_OBJECT( QKeySequenceEdit )
 
-   GUI_CS_PROPERTY_READ(keySequence, keySequence)
-   GUI_CS_PROPERTY_WRITE(keySequence, setKeySequence)
-   GUI_CS_PROPERTY_NOTIFY(keySequence, keySequenceChanged)
-   GUI_CS_PROPERTY_USER(keySequence, true)
+    GUI_LSCS_PROPERTY_READ( keySequence, keySequence )
+    GUI_LSCS_PROPERTY_WRITE( keySequence, setKeySequence )
+    GUI_LSCS_PROPERTY_NOTIFY( keySequence, keySequenceChanged )
+    GUI_LSCS_PROPERTY_USER( keySequence, true )
 
- public:
-   explicit QKeySequenceEdit(QWidget *parent = nullptr);
-   explicit QKeySequenceEdit(const QKeySequence &keySequence, QWidget *parent = nullptr);
+public:
+    explicit QKeySequenceEdit( QWidget *parent = nullptr );
+    explicit QKeySequenceEdit( const QKeySequence &keySequence, QWidget *parent = nullptr );
 
-   QKeySequenceEdit(const QKeySequenceEdit &) = delete;
-   QKeySequenceEdit &operator=(const QKeySequenceEdit &) = delete;
+    QKeySequenceEdit( const QKeySequenceEdit & ) = delete;
+    QKeySequenceEdit &operator=( const QKeySequenceEdit & ) = delete;
 
-   ~QKeySequenceEdit();
+    ~QKeySequenceEdit();
 
-   QKeySequence keySequence() const;
+    QKeySequence keySequence() const;
 
-   GUI_CS_SLOT_1(Public, void setKeySequence(const QKeySequence &keySequence))
-   GUI_CS_SLOT_2(setKeySequence)
-   GUI_CS_SLOT_1(Public, void clear())
-   GUI_CS_SLOT_2(clear)
+    GUI_LSCS_SLOT_1( Public, void setKeySequence( const QKeySequence &keySequence ) )
+    GUI_LSCS_SLOT_2( setKeySequence )
+    GUI_LSCS_SLOT_1( Public, void clear() )
+    GUI_LSCS_SLOT_2( clear )
 
-   GUI_CS_SIGNAL_1(Public, void editingFinished())
-   GUI_CS_SIGNAL_2(editingFinished)
-   GUI_CS_SIGNAL_1(Public, void keySequenceChanged(const QKeySequence &keySequence))
-   GUI_CS_SIGNAL_2(keySequenceChanged, keySequence)
+    GUI_LSCS_SIGNAL_1( Public, void editingFinished() )
+    GUI_LSCS_SIGNAL_2( editingFinished )
+    GUI_LSCS_SIGNAL_1( Public, void keySequenceChanged( const QKeySequence &keySequence ) )
+    GUI_LSCS_SIGNAL_2( keySequenceChanged, keySequence )
 
- protected:
-   QKeySequenceEdit(QKeySequenceEditPrivate &d, QWidget *parent, Qt::WindowFlags flags);
+protected:
+    QKeySequenceEdit( QKeySequenceEditPrivate &d, QWidget *parent, Qt::WindowFlags flags );
 
-   bool event(QEvent *event) override;
-   void keyPressEvent(QKeyEvent *event) override;
-   void keyReleaseEvent(QKeyEvent *event) override;
-   void timerEvent(QTimerEvent *event) override;
+    bool event( QEvent *event ) override;
+    void keyPressEvent( QKeyEvent *event ) override;
+    void keyReleaseEvent( QKeyEvent *event ) override;
+    void timerEvent( QTimerEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QKeySequenceEdit)
+private:
+    Q_DECLARE_PRIVATE( QKeySequenceEdit )
 };
 
 #endif // QT_NO_KEYSEQUENCEEDIT

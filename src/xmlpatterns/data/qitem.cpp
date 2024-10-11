@@ -26,10 +26,13 @@
 
 QPatternist::Item::Iterator::Ptr QPatternist::Item::sequencedTypedValue() const
 {
-   if (isAtomicValue()) {
-      return makeSingletonIterator(QPatternist::Item(std::get<const AtomicValue *>(m_data)));
-   } else {
-      return asNode().sequencedTypedValue();
-   }
+    if ( isAtomicValue() )
+    {
+        return makeSingletonIterator( QPatternist::Item( std::get<const AtomicValue *>( m_data ) ) );
+    }
+    else
+    {
+        return asNode().sequencedTypedValue();
+    }
 }
 

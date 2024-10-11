@@ -9,13 +9,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -39,19 +39,27 @@
 
 using namespace WTF;
 
-namespace WebCore {
+namespace WebCore
+{
 
 // true if there is more to parse
-static inline bool skipWhiteSpace(const String& str, unsigned& pos, bool fromHttpEquivMeta)
+static inline bool skipWhiteSpace( const String &str, unsigned &pos, bool fromHttpEquivMeta )
 {
     unsigned len = str.length();
 
-    if (fromHttpEquivMeta) {
-        while (pos != len && str[pos] <= ' ')
+    if ( fromHttpEquivMeta )
+    {
+        while ( pos != len && str[pos] <= ' ' )
+        {
             ++pos;
-    } else {
-        while (pos != len && (str[pos] == '\t' || str[pos] == ' '))
+        }
+    }
+    else
+    {
+        while ( pos != len && ( str[pos] == '\t' || str[pos] == ' ' ) )
+        {
             ++pos;
+        }
     }
 
     return pos != len;
@@ -59,134 +67,182 @@ static inline bool skipWhiteSpace(const String& str, unsigned& pos, bool fromHtt
 
 // Returns true if the function can match the whole token (case insensitive).
 // Note: Might return pos == str.length()
-static inline bool skipToken(const String& str, unsigned& pos, const char* token)
+static inline bool skipToken( const String &str, unsigned &pos, const char *token )
 {
     unsigned len = str.length();
 
-    while (pos != len && *token) {
-        if (toASCIILower(str[pos]) != *token++)
+    while ( pos != len && *token )
+    {
+        if ( toASCIILower( str[pos] ) != *token++ )
+        {
             return false;
+        }
+
         ++pos;
     }
 
     return true;
 }
 
-ContentDispositionType contentDispositionType(const String& contentDisposition)
-{   
-    if (contentDisposition.isEmpty())
+ContentDispositionType contentDispositionType( const String &contentDisposition )
+{
+    if ( contentDisposition.isEmpty() )
+    {
         return ContentDispositionNone;
+    }
 
     // Some broken sites just send
     // Content-Disposition: ; filename="file"
     // screen those out here.
-    if (contentDisposition.startsWith(";"))
+    if ( contentDisposition.startsWith( ";" ) )
+    {
         return ContentDispositionNone;
+    }
 
-    if (contentDisposition.startsWith("inline", false))
+    if ( contentDisposition.startsWith( "inline", false ) )
+    {
         return ContentDispositionInline;
+    }
 
     // Some broken sites just send
     // Content-Disposition: filename="file"
     // without a disposition token... screen those out.
-    if (contentDisposition.startsWith("filename", false))
+    if ( contentDisposition.startsWith( "filename", false ) )
+    {
         return ContentDispositionNone;
+    }
 
     // Also in use is Content-Disposition: name="file"
-    if (contentDisposition.startsWith("name", false))
+    if ( contentDisposition.startsWith( "name", false ) )
+    {
         return ContentDispositionNone;
+    }
 
     // We have a content-disposition of "attachment" or unknown.
     // RFC 2183, section 2.8 says that an unknown disposition
     // value should be treated as "attachment"
-    return ContentDispositionAttachment;  
+    return ContentDispositionAttachment;
 }
 
-bool parseHTTPRefresh(const String& refresh, bool fromHttpEquivMeta, double& delay, String& url)
+bool parseHTTPRefresh( const String &refresh, bool fromHttpEquivMeta, double &delay, String &url )
 {
     unsigned len = refresh.length();
     unsigned pos = 0;
-    
-    if (!skipWhiteSpace(refresh, pos, fromHttpEquivMeta))
+
+    if ( !skipWhiteSpace( refresh, pos, fromHttpEquivMeta ) )
+    {
         return false;
-    
-    while (pos != len && refresh[pos] != ',' && refresh[pos] != ';')
+    }
+
+    while ( pos != len && refresh[pos] != ',' && refresh[pos] != ';' )
+    {
         ++pos;
-    
-    if (pos == len) { // no URL
+    }
+
+    if ( pos == len ) // no URL
+    {
         url = String();
         bool ok;
-        delay = refresh.stripWhiteSpace().toDouble(&ok);
+        delay = refresh.stripWhiteSpace().toDouble( &ok );
         return ok;
-    } else {
+    }
+    else
+    {
         bool ok;
-        delay = refresh.left(pos).stripWhiteSpace().toDouble(&ok);
-        if (!ok)
+        delay = refresh.left( pos ).stripWhiteSpace().toDouble( &ok );
+
+        if ( !ok )
+        {
             return false;
-        
+        }
+
         ++pos;
-        skipWhiteSpace(refresh, pos, fromHttpEquivMeta);
+        skipWhiteSpace( refresh, pos, fromHttpEquivMeta );
         unsigned urlStartPos = pos;
-        if (refresh.find("url", urlStartPos, false) == urlStartPos) {
+
+        if ( refresh.find( "url", urlStartPos, false ) == urlStartPos )
+        {
             urlStartPos += 3;
-            skipWhiteSpace(refresh, urlStartPos, fromHttpEquivMeta);
-            if (refresh[urlStartPos] == '=') {
+            skipWhiteSpace( refresh, urlStartPos, fromHttpEquivMeta );
+
+            if ( refresh[urlStartPos] == '=' )
+            {
                 ++urlStartPos;
-                skipWhiteSpace(refresh, urlStartPos, fromHttpEquivMeta);
-            } else
-                urlStartPos = pos;  // e.g. "Refresh: 0; url.html"
+                skipWhiteSpace( refresh, urlStartPos, fromHttpEquivMeta );
+            }
+            else
+            {
+                urlStartPos = pos;    // e.g. "Refresh: 0; url.html"
+            }
         }
 
         unsigned urlEndPos = len;
 
-        if (refresh[urlStartPos] == '"' || refresh[urlStartPos] == '\'') {
+        if ( refresh[urlStartPos] == '"' || refresh[urlStartPos] == '\'' )
+        {
             UChar quotationMark = refresh[urlStartPos];
             urlStartPos++;
-            while (urlEndPos > urlStartPos) {
+
+            while ( urlEndPos > urlStartPos )
+            {
                 urlEndPos--;
-                if (refresh[urlEndPos] == quotationMark)
+
+                if ( refresh[urlEndPos] == quotationMark )
+                {
                     break;
+                }
             }
-            
+
             // https://bugs.webkit.org/show_bug.cgi?id=27868
             // Sometimes there is no closing quote for the end of the URL even though there was an opening quote.
             // If we looped over the entire alleged URL string back to the opening quote, just go ahead and use everything
             // after the opening quote instead.
-            if (urlEndPos == urlStartPos)
+            if ( urlEndPos == urlStartPos )
+            {
                 urlEndPos = len;
+            }
         }
 
-        url = refresh.substring(urlStartPos, urlEndPos - urlStartPos).stripWhiteSpace();
+        url = refresh.substring( urlStartPos, urlEndPos - urlStartPos ).stripWhiteSpace();
         return true;
     }
 }
 
-double parseDate(const String& value)
+double parseDate( const String &value )
 {
-    return parseDateFromNullTerminatedCharacters(value.utf8().data());
+    return parseDateFromNullTerminatedCharacters( value.utf8().data() );
 }
 
-String filenameFromHTTPContentDisposition(const String& value)
+String filenameFromHTTPContentDisposition( const String &value )
 {
     Vector<String> keyValuePairs;
-    value.split(';', keyValuePairs);
+    value.split( ';', keyValuePairs );
 
     unsigned length = keyValuePairs.size();
-    for (unsigned i = 0; i < length; i++) {
-        size_t valueStartPos = keyValuePairs[i].find('=');
-        if (valueStartPos == notFound)
-            continue;
 
-        String key = keyValuePairs[i].left(valueStartPos).stripWhiteSpace();
+    for ( unsigned i = 0; i < length; i++ )
+    {
+        size_t valueStartPos = keyValuePairs[i].find( '=' );
 
-        if (key.isEmpty() || key != "filename")
+        if ( valueStartPos == notFound )
+        {
             continue;
-        
-        String value = keyValuePairs[i].substring(valueStartPos + 1).stripWhiteSpace();
+        }
+
+        String key = keyValuePairs[i].left( valueStartPos ).stripWhiteSpace();
+
+        if ( key.isEmpty() || key != "filename" )
+        {
+            continue;
+        }
+
+        String value = keyValuePairs[i].substring( valueStartPos + 1 ).stripWhiteSpace();
 
         // Remove quotes if there are any
-        if (value[0] == '\"')
-            value = value.substring(1, value.length() - 2);
+        if ( value[0] == '\"' )
+        {
+            value = value.substring( 1, value.length() - 2 );
+        }
 
         return value;
     }
@@ -194,16 +250,20 @@ String filenameFromHTTPContentDisposition(const String& value)
     return String();
 }
 
-String extractMIMETypeFromMediaType(const String& mediaType)
+String extractMIMETypeFromMediaType( const String &mediaType )
 {
     Vector<UChar, 64> mimeType;
     unsigned length = mediaType.length();
-    mimeType.reserveCapacity(length);
-    for (unsigned i = 0; i < length; i++) {
+    mimeType.reserveCapacity( length );
+
+    for ( unsigned i = 0; i < length; i++ )
+    {
         UChar c = mediaType[i];
 
-        if (c == ';')
+        if ( c == ';' )
+        {
             break;
+        }
 
         // While RFC 2616 does not allow it, other browsers allow multiple values in the HTTP media
         // type header field, Content-Type. In such cases, the media type string passed here may contain
@@ -211,68 +271,89 @@ String extractMIMETypeFromMediaType(const String& mediaType)
         // which prevents it from simply failing to parse such types altogether. Later for better
         // compatibility we could consider using the first or last valid MIME type instead.
         // See https://bugs.webkit.org/show_bug.cgi?id=25352 for more discussion.
-        if (c == ',')
+        if ( c == ',' )
+        {
             break;
+        }
 
         // FIXME: The following is not correct. RFC 2616 allows linear white space before and
         // after the MIME type, but not within the MIME type itself. And linear white space
         // includes only a few specific ASCII characters; a small subset of isSpaceOrNewline.
         // See https://bugs.webkit.org/show_bug.cgi?id=8644 for a bug tracking part of this.
-        if (isSpaceOrNewline(c))
+        if ( isSpaceOrNewline( c ) )
+        {
             continue;
+        }
 
-        mimeType.append(c);
+        mimeType.append( c );
     }
 
-    if (mimeType.size() == length)
+    if ( mimeType.size() == length )
+    {
         return mediaType;
-    return String(mimeType.data(), mimeType.size());
+    }
+
+    return String( mimeType.data(), mimeType.size() );
 }
 
-String extractCharsetFromMediaType(const String& mediaType)
+String extractCharsetFromMediaType( const String &mediaType )
 {
     unsigned int pos, len;
-    findCharsetInMediaType(mediaType, pos, len);
-    return mediaType.substring(pos, len);
+    findCharsetInMediaType( mediaType, pos, len );
+    return mediaType.substring( pos, len );
 }
 
-void findCharsetInMediaType(const String& mediaType, unsigned int& charsetPos, unsigned int& charsetLen, unsigned int start)
+void findCharsetInMediaType( const String &mediaType, unsigned int &charsetPos, unsigned int &charsetLen, unsigned int start )
 {
     charsetPos = start;
     charsetLen = 0;
 
     size_t pos = start;
     unsigned length = mediaType.length();
-    
-    while (pos < length) {
-        pos = mediaType.find("charset", pos, false);
-        if (pos == notFound || pos == 0) {
+
+    while ( pos < length )
+    {
+        pos = mediaType.find( "charset", pos, false );
+
+        if ( pos == notFound || pos == 0 )
+        {
             charsetLen = 0;
             return;
         }
-        
+
         // is what we found a beginning of a word?
-        if (mediaType[pos-1] > ' ' && mediaType[pos-1] != ';') {
+        if ( mediaType[pos-1] > ' ' && mediaType[pos-1] != ';' )
+        {
             pos += 7;
             continue;
         }
-        
+
         pos += 7;
 
         // skip whitespace
-        while (pos != length && mediaType[pos] <= ' ')
+        while ( pos != length && mediaType[pos] <= ' ' )
+        {
             ++pos;
-    
-        if (mediaType[pos++] != '=') // this "charset" substring wasn't a parameter name, but there may be others
-            continue;
+        }
 
-        while (pos != length && (mediaType[pos] <= ' ' || mediaType[pos] == '"' || mediaType[pos] == '\''))
+        if ( mediaType[pos++] != '=' ) // this "charset" substring wasn't a parameter name, but there may be others
+        {
+            continue;
+        }
+
+        while ( pos != length && ( mediaType[pos] <= ' ' || mediaType[pos] == '"' || mediaType[pos] == '\'' ) )
+        {
             ++pos;
+        }
 
         // we don't handle spaces within quoted parameter values, because charset names cannot have any
         unsigned endpos = pos;
-        while (pos != length && mediaType[endpos] > ' ' && mediaType[endpos] != '"' && mediaType[endpos] != '\'' && mediaType[endpos] != ';')
+
+        while ( pos != length && mediaType[endpos] > ' ' && mediaType[endpos] != '"' && mediaType[endpos] != '\''
+                && mediaType[endpos] != ';' )
+        {
             ++endpos;
+        }
 
         charsetPos = pos;
         charsetLen = endpos - pos;
@@ -280,42 +361,49 @@ void findCharsetInMediaType(const String& mediaType, unsigned int& charsetPos, u
     }
 }
 
-XSSProtectionDisposition parseXSSProtectionHeader(const String& header)
+XSSProtectionDisposition parseXSSProtectionHeader( const String &header )
 {
     String stippedHeader = header.stripWhiteSpace();
 
-    if (stippedHeader.isEmpty())
+    if ( stippedHeader.isEmpty() )
+    {
         return XSSProtectionEnabled;
+    }
 
-    if (stippedHeader[0] == '0')
+    if ( stippedHeader[0] == '0' )
+    {
         return XSSProtectionDisabled;
+    }
 
     unsigned length = header.length();
     unsigned pos = 0;
-    if (stippedHeader[pos++] == '1'
-        && skipWhiteSpace(stippedHeader, pos, false)
-        && stippedHeader[pos++] == ';'
-        && skipWhiteSpace(stippedHeader, pos, false)
-        && skipToken(stippedHeader, pos, "mode")
-        && skipWhiteSpace(stippedHeader, pos, false)
-        && stippedHeader[pos++] == '='
-        && skipWhiteSpace(stippedHeader, pos, false)
-        && skipToken(stippedHeader, pos, "block")
-        && pos == length)
+
+    if ( stippedHeader[pos++] == '1'
+            && skipWhiteSpace( stippedHeader, pos, false )
+            && stippedHeader[pos++] == ';'
+            && skipWhiteSpace( stippedHeader, pos, false )
+            && skipToken( stippedHeader, pos, "mode" )
+            && skipWhiteSpace( stippedHeader, pos, false )
+            && stippedHeader[pos++] == '='
+            && skipWhiteSpace( stippedHeader, pos, false )
+            && skipToken( stippedHeader, pos, "block" )
+            && pos == length )
+    {
         return XSSProtectionBlockEnabled;
+    }
 
     return XSSProtectionEnabled;
 }
 
-String extractReasonPhraseFromHTTPStatusLine(const String& statusLine)
+String extractReasonPhraseFromHTTPStatusLine( const String &statusLine )
 {
-    size_t spacePos = statusLine.find(' ');
+    size_t spacePos = statusLine.find( ' ' );
     // Remove status code from the status line.
-    spacePos = statusLine.find(' ', spacePos + 1);
-    return statusLine.substring(spacePos + 1);
+    spacePos = statusLine.find( ' ', spacePos + 1 );
+    return statusLine.substring( spacePos + 1 );
 }
 
-bool parseRange(const String& range, long long& rangeOffset, long long& rangeEnd, long long& rangeSuffixLength)
+bool parseRange( const String &range, long long &rangeOffset, long long &rangeEnd, long long &rangeSuffixLength )
 {
     // The format of "Range" header is defined in RFC 2616 Section 14.35.1.
     // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35.1
@@ -324,25 +412,37 @@ bool parseRange(const String& range, long long& rangeOffset, long long& rangeEnd
     rangeOffset = rangeEnd = rangeSuffixLength = -1;
 
     // The "bytes" unit identifier should be present.
-    static const char bytesStart[] = "bytes="; 
-    if (!range.startsWith(bytesStart, false))
+    static const char bytesStart[] = "bytes=";
+
+    if ( !range.startsWith( bytesStart, false ) )
+    {
         return false;
-    String byteRange = range.substring(sizeof(bytesStart) - 1);
+    }
+
+    String byteRange = range.substring( sizeof( bytesStart ) - 1 );
 
     // The '-' character needs to be present.
-    int index = byteRange.find('-');
-    if (index == -1)
+    int index = byteRange.find( '-' );
+
+    if ( index == -1 )
+    {
         return false;
+    }
 
     // If the '-' character is at the beginning, the suffix length, which specifies the last N bytes, is provided.
     // Example:
     //     -500
-    if (!index) {
-        String suffixLengthString = byteRange.substring(index + 1).stripWhiteSpace();
+    if ( !index )
+    {
+        String suffixLengthString = byteRange.substring( index + 1 ).stripWhiteSpace();
         bool ok;
-        long long value = suffixLengthString.toInt64Strict(&ok);
-        if (ok)
+        long long value = suffixLengthString.toInt64Strict( &ok );
+
+        if ( ok )
+        {
             rangeSuffixLength = value;
+        }
+
         return true;
     }
 
@@ -350,22 +450,32 @@ bool parseRange(const String& range, long long& rangeOffset, long long& rangeEnd
     // Examples:
     //     0-499
     //     500-
-    String firstBytePosStr = byteRange.left(index).stripWhiteSpace();
+    String firstBytePosStr = byteRange.left( index ).stripWhiteSpace();
     bool ok;
-    long long firstBytePos = firstBytePosStr.toInt64Strict(&ok);
-    if (!ok)
-        return false;
+    long long firstBytePos = firstBytePosStr.toInt64Strict( &ok );
 
-    String lastBytePosStr = byteRange.substring(index + 1).stripWhiteSpace();
-    long long lastBytePos = -1;
-    if (!lastBytePosStr.isEmpty()) {
-        lastBytePos = lastBytePosStr.toInt64Strict(&ok);
-        if (!ok)
-            return false;
+    if ( !ok )
+    {
+        return false;
     }
 
-    if (firstBytePos < 0 || !(lastBytePos == -1 || lastBytePos >= firstBytePos))
+    String lastBytePosStr = byteRange.substring( index + 1 ).stripWhiteSpace();
+    long long lastBytePos = -1;
+
+    if ( !lastBytePosStr.isEmpty() )
+    {
+        lastBytePos = lastBytePosStr.toInt64Strict( &ok );
+
+        if ( !ok )
+        {
+            return false;
+        }
+    }
+
+    if ( firstBytePos < 0 || !( lastBytePos == -1 || lastBytePos >= firstBytePos ) )
+    {
         return false;
+    }
 
     rangeOffset = firstBytePos;
     rangeEnd = lastBytePos;

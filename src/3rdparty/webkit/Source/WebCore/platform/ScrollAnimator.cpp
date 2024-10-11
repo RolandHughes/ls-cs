@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2010, Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -39,19 +39,20 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if !ENABLE(SMOOTH_SCROLLING)
-PassOwnPtr<ScrollAnimator> ScrollAnimator::create(ScrollableArea* scrollableArea)
+PassOwnPtr<ScrollAnimator> ScrollAnimator::create( ScrollableArea *scrollableArea )
 {
-    return adoptPtr(new ScrollAnimator(scrollableArea));
+    return adoptPtr( new ScrollAnimator( scrollableArea ) );
 }
 #endif
 
-ScrollAnimator::ScrollAnimator(ScrollableArea* scrollableArea)
-    : m_scrollableArea(scrollableArea)
-    , m_currentPosX(0)
-    , m_currentPosY(0)
+ScrollAnimator::ScrollAnimator( ScrollableArea *scrollableArea )
+    : m_scrollableArea( scrollableArea )
+    , m_currentPosX( 0 )
+    , m_currentPosY( 0 )
 {
 }
 
@@ -59,12 +60,17 @@ ScrollAnimator::~ScrollAnimator()
 {
 }
 
-bool ScrollAnimator::scroll(ScrollbarOrientation orientation, ScrollGranularity, float step, float multiplier)
+bool ScrollAnimator::scroll( ScrollbarOrientation orientation, ScrollGranularity, float step, float multiplier )
 {
-    float* currentPos = (orientation == HorizontalScrollbar) ? &m_currentPosX : &m_currentPosY;
-    float newPos = std::max(std::min(*currentPos + (step * multiplier), static_cast<float>(m_scrollableArea->scrollSize(orientation))), 0.0f);
-    if (*currentPos == newPos)
+    float *currentPos = ( orientation == HorizontalScrollbar ) ? &m_currentPosX : &m_currentPosY;
+    float newPos = std::max( std::min( *currentPos + ( step * multiplier ),
+                                       static_cast<float>( m_scrollableArea->scrollSize( orientation ) ) ), 0.0f );
+
+    if ( *currentPos == newPos )
+    {
         return false;
+    }
+
     *currentPos = newPos;
 
     notityPositionChanged();
@@ -72,19 +78,20 @@ bool ScrollAnimator::scroll(ScrollbarOrientation orientation, ScrollGranularity,
     return true;
 }
 
-void ScrollAnimator::scrollToOffsetWithoutAnimation(const FloatPoint& offset)
+void ScrollAnimator::scrollToOffsetWithoutAnimation( const FloatPoint &offset )
 {
-    if (m_currentPosX != offset.x() || m_currentPosY != offset.y()) {
+    if ( m_currentPosX != offset.x() || m_currentPosY != offset.y() )
+    {
         m_currentPosX = offset.x();
         m_currentPosY = offset.y();
         notityPositionChanged();
     }
 }
 
-void ScrollAnimator::handleWheelEvent(PlatformWheelEvent& e)
+void ScrollAnimator::handleWheelEvent( PlatformWheelEvent &e )
 {
-    Scrollbar* horizontalScrollbar = m_scrollableArea->horizontalScrollbar();
-    Scrollbar* verticalScrollbar = m_scrollableArea->verticalScrollbar();
+    Scrollbar *horizontalScrollbar = m_scrollableArea->horizontalScrollbar();
+    Scrollbar *verticalScrollbar = m_scrollableArea->verticalScrollbar();
 
     // Accept the event if we have a scrollbar in that direction and can still
     // scroll any further.
@@ -93,40 +100,53 @@ void ScrollAnimator::handleWheelEvent(PlatformWheelEvent& e)
 
     IntSize maxForwardScrollDelta = m_scrollableArea->maximumScrollPosition() - m_scrollableArea->scrollPosition();
     IntSize maxBackwardScrollDelta = m_scrollableArea->scrollPosition() - m_scrollableArea->minimumScrollPosition();
-    if ((deltaX < 0 && maxForwardScrollDelta.width() > 0)
-        || (deltaX > 0 && maxBackwardScrollDelta.width() > 0)
-        || (deltaY < 0 && maxForwardScrollDelta.height() > 0)
-        || (deltaY > 0 && maxBackwardScrollDelta.height() > 0)) {
+
+    if ( ( deltaX < 0 && maxForwardScrollDelta.width() > 0 )
+            || ( deltaX > 0 && maxBackwardScrollDelta.width() > 0 )
+            || ( deltaY < 0 && maxForwardScrollDelta.height() > 0 )
+            || ( deltaY > 0 && maxBackwardScrollDelta.height() > 0 ) )
+    {
         e.accept();
-        if (e.granularity() == ScrollByPageWheelEvent) {
-            ASSERT(!e.deltaX());
+
+        if ( e.granularity() == ScrollByPageWheelEvent )
+        {
+            ASSERT( !e.deltaX() );
             bool negative = deltaY < 0;
-            deltaY = max(max(static_cast<float>(m_scrollableArea->visibleHeight()) * Scrollbar::minFractionToStepWhenPaging(), static_cast<float>(m_scrollableArea->visibleHeight() - Scrollbar::maxOverlapBetweenPages())), 1.0f);
-            if (negative)
+            deltaY = max( max( static_cast<float>( m_scrollableArea->visibleHeight() ) * Scrollbar::minFractionToStepWhenPaging(),
+                               static_cast<float>( m_scrollableArea->visibleHeight() - Scrollbar::maxOverlapBetweenPages() ) ), 1.0f );
+
+            if ( negative )
+            {
                 deltaY = -deltaY;
+            }
         }
 
-        if (deltaY)
-            scroll(VerticalScrollbar, ScrollByPixel, verticalScrollbar->pixelStep(), -deltaY);
-        if (deltaX)
-            scroll(HorizontalScrollbar, ScrollByPixel, horizontalScrollbar->pixelStep(), -deltaX);
+        if ( deltaY )
+        {
+            scroll( VerticalScrollbar, ScrollByPixel, verticalScrollbar->pixelStep(), -deltaY );
+        }
+
+        if ( deltaX )
+        {
+            scroll( HorizontalScrollbar, ScrollByPixel, horizontalScrollbar->pixelStep(), -deltaX );
+        }
     }
 }
 
 #if ENABLE(GESTURE_EVENTS)
-void ScrollAnimator::handleGestureEvent(const PlatformGestureEvent&)
+void ScrollAnimator::handleGestureEvent( const PlatformGestureEvent & )
 {
 }
 #endif
 
 FloatPoint ScrollAnimator::currentPosition() const
 {
-    return FloatPoint(m_currentPosX, m_currentPosY);
+    return FloatPoint( m_currentPosX, m_currentPosY );
 }
 
 void ScrollAnimator::notityPositionChanged()
 {
-    m_scrollableArea->setScrollOffsetFromAnimation(IntPoint(m_currentPosX, m_currentPosY));
+    m_scrollableArea->setScrollOffsetFromAnimation( IntPoint( m_currentPosX, m_currentPosY ) );
 }
 
 } // namespace WebCore

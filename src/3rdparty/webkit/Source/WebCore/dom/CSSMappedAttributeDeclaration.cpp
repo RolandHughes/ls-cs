@@ -25,12 +25,15 @@
 
 #include "StyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 CSSMappedAttributeDeclaration::~CSSMappedAttributeDeclaration()
 {
-    if (m_entryType != ePersistent)
-        StyledElement::removeMappedAttributeDecl(m_entryType, m_attrName, m_attrValue);
+    if ( m_entryType != ePersistent )
+    {
+        StyledElement::removeMappedAttributeDecl( m_entryType, m_attrName, m_attrValue );
+    }
 }
 
 }

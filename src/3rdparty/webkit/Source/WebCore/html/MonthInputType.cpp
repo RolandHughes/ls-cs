@@ -39,19 +39,20 @@
 #include <wtf/MathExtras.h>
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
 static const double monthDefaultStep = 1.0;
 static const double monthStepScaleFactor = 1.0;
 
-PassOwnPtr<InputType> MonthInputType::create(HTMLInputElement* element)
+PassOwnPtr<InputType> MonthInputType::create( HTMLInputElement *element )
 {
-    return adoptPtr(new MonthInputType(element));
+    return adoptPtr( new MonthInputType( element ) );
 }
 
-const AtomicString& MonthInputType::formControlType() const
+const AtomicString &MonthInputType::formControlType() const
 {
     return InputTypeNames::month();
 }
@@ -64,42 +65,50 @@ DateComponents::Type MonthInputType::dateType() const
 double MonthInputType::valueAsDate() const
 {
     DateComponents date;
-    if (!parseToDateComponents(element()->value(), &date))
+
+    if ( !parseToDateComponents( element()->value(), &date ) )
+    {
         return DateComponents::invalidMilliseconds();
+    }
+
     double msec = date.millisecondsSinceEpoch();
-    ASSERT(std::isfinite(msec));
+    ASSERT( std::isfinite( msec ) );
     return msec;
 }
 
-String MonthInputType::serializeWithMilliseconds(double value) const
+String MonthInputType::serializeWithMilliseconds( double value ) const
 {
     DateComponents date;
-    if (!date.setMillisecondsSinceEpochForMonth(value))
+
+    if ( !date.setMillisecondsSinceEpochForMonth( value ) )
+    {
         return String();
-    return serializeWithComponents(date);
+    }
+
+    return serializeWithComponents( date );
 }
 
 double MonthInputType::defaultValueForStepUp() const
 {
     double current = currentTimeMS();
-    int offset = calculateLocalTimeOffset(current).offset / msPerMinute;
+    int offset = calculateLocalTimeOffset( current ).offset / msPerMinute;
     current += offset * msPerMinute;
 
     DateComponents date;
-    date.setMillisecondsSinceEpochForMonth(current);
+    date.setMillisecondsSinceEpochForMonth( current );
     double months = date.monthsSinceEpoch();
-    ASSERT(std::isfinite(months));
+    ASSERT( std::isfinite( months ) );
     return months;
 }
 
 double MonthInputType::minimum() const
 {
-    return parseToDouble(element()->fastGetAttribute(minAttr), DateComponents::minimumMonth());
+    return parseToDouble( element()->fastGetAttribute( minAttr ), DateComponents::minimumMonth() );
 }
 
 double MonthInputType::maximum() const
 {
-    return parseToDouble(element()->fastGetAttribute(maxAttr), DateComponents::maximumMonth());
+    return parseToDouble( element()->fastGetAttribute( maxAttr ), DateComponents::maximumMonth() );
 }
 
 double MonthInputType::defaultStep() const
@@ -117,27 +126,31 @@ bool MonthInputType::parsedStepValueShouldBeInteger() const
     return true;
 }
 
-double MonthInputType::parseToDouble(const String& src, double defaultValue) const
+double MonthInputType::parseToDouble( const String &src, double defaultValue ) const
 {
     DateComponents date;
-    if (!parseToDateComponents(src, &date))
+
+    if ( !parseToDateComponents( src, &date ) )
+    {
         return defaultValue;
+    }
+
     double months = date.monthsSinceEpoch();
-    ASSERT(std::isfinite(months));
+    ASSERT( std::isfinite( months ) );
     return months;
 }
 
-bool MonthInputType::parseToDateComponentsInternal(const UChar* characters, unsigned length, DateComponents* out) const
+bool MonthInputType::parseToDateComponentsInternal( const UChar *characters, unsigned length, DateComponents *out ) const
 {
-    ASSERT(out);
+    ASSERT( out );
     unsigned end;
-    return out->parseMonth(characters, length, 0, end) && end == length;
+    return out->parseMonth( characters, length, 0, end ) && end == length;
 }
 
-bool MonthInputType::setMillisecondToDateComponents(double value, DateComponents* date) const
+bool MonthInputType::setMillisecondToDateComponents( double value, DateComponents *date ) const
 {
-    ASSERT(date);
-    return date->setMonthsSinceEpoch(value);
+    ASSERT( date );
+    return date->setMonthsSinceEpoch( value );
 }
 
 } // namespace WebCore

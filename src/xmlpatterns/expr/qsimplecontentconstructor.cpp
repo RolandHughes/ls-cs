@@ -28,64 +28,73 @@
 
 using namespace QPatternist;
 
-SimpleContentConstructor::SimpleContentConstructor(const Expression::Ptr &operand) : SingleContainer(operand)
+SimpleContentConstructor::SimpleContentConstructor( const Expression::Ptr &operand ) : SingleContainer( operand )
 {
 }
 
-Item SimpleContentConstructor::evaluateSingleton(const DynamicContext::Ptr &context) const
+Item SimpleContentConstructor::evaluateSingleton( const DynamicContext::Ptr &context ) const
 {
-   const Item::Iterator::Ptr it(m_operand->evaluateSequence(context));
-   Item next(it->next());
-   QString result;
+    const Item::Iterator::Ptr it( m_operand->evaluateSequence( context ) );
+    Item next( it->next() );
+    QString result;
 
-   if (next) {
-      result = next.stringValue();
-      next = it->next();
-   } else {
-      return Item();
-   }
+    if ( next )
+    {
+        result = next.stringValue();
+        next = it->next();
+    }
+    else
+    {
+        return Item();
+    }
 
-   while (next) {
-      result += QLatin1Char(' ');
-      result += next.stringValue();
-      next = it->next();
-   }
+    while ( next )
+    {
+        result += QLatin1Char( ' ' );
+        result += next.stringValue();
+        next = it->next();
+    }
 
-   return AtomicString::fromValue(result);
+    return AtomicString::fromValue( result );
 }
 
-Expression::Ptr SimpleContentConstructor::compress(const StaticContext::Ptr &context)
+Expression::Ptr SimpleContentConstructor::compress( const StaticContext::Ptr &context )
 {
-   const Expression::Ptr me(SingleContainer::compress(context));
+    const Expression::Ptr me( SingleContainer::compress( context ) );
 
-   if (me.data() == this) {
-      /* Optimization: if we will evaluate to a single string, we're not
-       * necessary. */
-      if (CommonSequenceTypes::ExactlyOneString->matches(m_operand->staticType())) {
-         return m_operand;
-      }
-   }
+    if ( me.data() == this )
+    {
+        /* Optimization: if we will evaluate to a single string, we're not
+         * necessary. */
+        if ( CommonSequenceTypes::ExactlyOneString->matches( m_operand->staticType() ) )
+        {
+            return m_operand;
+        }
+    }
 
-   return me;
+    return me;
 }
 
 SequenceType::List SimpleContentConstructor::expectedOperandTypes() const
 {
-   SequenceType::List result;
-   result.append(CommonSequenceTypes::ZeroOrMoreAtomicTypes);
-   return result;
+    SequenceType::List result;
+    result.append( CommonSequenceTypes::ZeroOrMoreAtomicTypes );
+    return result;
 }
 
 SequenceType::Ptr SimpleContentConstructor::staticType() const
 {
-   if (m_operand->staticType()->cardinality().allowsEmpty()) {
-      return CommonSequenceTypes::ZeroOrOneString;
-   } else {
-      return CommonSequenceTypes::ExactlyOneString;
-   }
+    if ( m_operand->staticType()->cardinality().allowsEmpty() )
+    {
+        return CommonSequenceTypes::ZeroOrOneString;
+    }
+    else
+    {
+        return CommonSequenceTypes::ExactlyOneString;
+    }
 }
 
-ExpressionVisitorResult::Ptr SimpleContentConstructor::accept(const ExpressionVisitor::Ptr &visitor) const
+ExpressionVisitorResult::Ptr SimpleContentConstructor::accept( const ExpressionVisitor::Ptr &visitor ) const
 {
-   return visitor->visit(this);
+    return visitor->visit( this );
 }

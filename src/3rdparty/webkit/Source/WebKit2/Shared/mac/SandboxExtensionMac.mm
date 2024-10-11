@@ -165,7 +165,7 @@ String SandboxExtension::createHandleForTemporaryFile(const String& prefix, Type
     ASSERT(!handle.m_sandboxExtension);
     
     Vector<char> path(PATH_MAX);
-    if (!confstr(_CS_DARWIN_USER_TEMP_DIR, path.data(), path.size()))
+    if (!confstr(_LSCS_DARWIN_USER_TEMP_DIR, path.data(), path.size()))
         return String();
     
     // Shrink the vector.   

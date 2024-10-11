@@ -35,9 +35,9 @@
 class wxBitmap;
 class wxGraphicsBitmap;
 #elif USE(CG)
-typedef struct CGImageSource* CGImageSourceRef;
-typedef struct CGImage* CGImageRef;
-typedef const struct __CFData* CFDataRef;
+typedef struct CGImageSource *CGImageSourceRef;
+typedef struct CGImage *CGImageRef;
+typedef const struct __CFData *CFDataRef;
 #elif PLATFORM(QT)
 #include <qglobal.h>
 class QPixmap;
@@ -45,7 +45,8 @@ class QPixmap;
 struct _cairo_surface;
 typedef struct _cairo_surface cairo_surface_t;
 #elif USE(SKIA)
-namespace WebCore {
+namespace WebCore
+{
 class NativeImageSkia;
 }
 #elif PLATFORM(HAIKU)
@@ -54,7 +55,8 @@ class BBitmap;
 #include "SharedBitmap.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class IntPoint;
 class IntSize;
@@ -63,7 +65,7 @@ class SharedBuffer;
 #if USE(CG)
 #if USE(WEBKIT_IMAGE_DECODERS)
 class ImageDecoder;
-typedef ImageDecoder* NativeImageSourcePtr;
+typedef ImageDecoder *NativeImageSourcePtr;
 #else
 typedef CGImageSourceRef NativeImageSourcePtr;
 #endif
@@ -71,27 +73,27 @@ typedef CGImageRef NativeImagePtr;
 #elif PLATFORM(OPENVG)
 class ImageDecoder;
 class TiledImageOpenVG;
-typedef ImageDecoder* NativeImageSourcePtr;
-typedef TiledImageOpenVG* NativeImagePtr;
+typedef ImageDecoder *NativeImageSourcePtr;
+typedef TiledImageOpenVG *NativeImagePtr;
 #elif PLATFORM(QT)
 class ImageDecoderQt;
-typedef ImageDecoderQt* NativeImageSourcePtr;
-typedef QPixmap* NativeImagePtr;
+typedef ImageDecoderQt *NativeImageSourcePtr;
+typedef QPixmap *NativeImagePtr;
 #else
 class ImageDecoder;
-typedef ImageDecoder* NativeImageSourcePtr;
+typedef ImageDecoder *NativeImageSourcePtr;
 #if PLATFORM(WX)
 #if USE(WXGC)
-typedef wxGraphicsBitmap* NativeImagePtr;
+typedef wxGraphicsBitmap *NativeImagePtr;
 #else
-typedef wxBitmap* NativeImagePtr;
+typedef wxBitmap *NativeImagePtr;
 #endif
 #elif USE(CAIRO)
-typedef cairo_surface_t* NativeImagePtr;
+typedef cairo_surface_t *NativeImagePtr;
 #elif USE(SKIA)
-typedef WebCore::NativeImageSkia* NativeImagePtr;
+typedef WebCore::NativeImageSkia *NativeImagePtr;
 #elif PLATFORM(HAIKU)
-typedef BBitmap* NativeImagePtr;
+typedef BBitmap *NativeImagePtr;
 #elif OS(WINCE)
 typedef RefPtr<SharedBitmap> NativeImagePtr;
 #endif
@@ -115,20 +117,24 @@ const int cAnimationLoopOnce = 0;
 const int cAnimationLoopInfinite = -1;
 const int cAnimationNone = -2;
 
-class ImageSource {
-    WTF_MAKE_NONCOPYABLE(ImageSource);
+class ImageSource
+{
+    WTF_MAKE_NONCOPYABLE( ImageSource );
 public:
-    enum AlphaOption {
+    enum AlphaOption
+    {
         AlphaPremultiplied,
         AlphaNotPremultiplied
     };
 
-    enum GammaAndColorProfileOption {
+    enum GammaAndColorProfileOption
+    {
         GammaAndColorProfileApplied,
         GammaAndColorProfileIgnored
     };
 
-    ImageSource(AlphaOption alphaOption = AlphaPremultiplied, GammaAndColorProfileOption gammaAndColorProfileOption = GammaAndColorProfileApplied);
+    ImageSource( AlphaOption alphaOption = AlphaPremultiplied,
+                 GammaAndColorProfileOption gammaAndColorProfileOption = GammaAndColorProfileApplied );
     ~ImageSource();
 
     // Tells the ImageSource that the Image no longer cares about decoded frame
@@ -152,20 +158,20 @@ public:
     // who set |destroyAll| to true if they wish to be able to continue using
     // the ImageSource.  This way implementations which choose to destroy their
     // decoders in some cases can reconstruct them correctly.
-    void clear(bool destroyAll,
-               size_t clearBeforeFrame = 0,
-               SharedBuffer* data = NULL,
-               bool allDataReceived = false);
+    void clear( bool destroyAll,
+                size_t clearBeforeFrame = 0,
+                SharedBuffer *data = NULL,
+                bool allDataReceived = false );
 
     bool initialized() const;
 
-    void setData(SharedBuffer* data, bool allDataReceived);
+    void setData( SharedBuffer *data, bool allDataReceived );
     String filenameExtension() const;
 
     bool isSizeAvailable();
     IntSize size() const;
-    IntSize frameSizeAtIndex(size_t) const;
-    bool getHotSpot(IntPoint&) const;
+    IntSize frameSizeAtIndex( size_t ) const;
+    bool getHotSpot( IntPoint & ) const;
 
     size_t bytesDecodedToDetermineProperties() const;
 
@@ -175,15 +181,21 @@ public:
 
     // Callers should not call this after calling clear() with a higher index;
     // see comments on clear() above.
-    NativeImagePtr createFrameAtIndex(size_t);
+    NativeImagePtr createFrameAtIndex( size_t );
 
-    float frameDurationAtIndex(size_t);
-    bool frameHasAlphaAtIndex(size_t); // Whether or not the frame actually used any alpha.
-    bool frameIsCompleteAtIndex(size_t); // Whether or not the frame is completely decoded.
+    float frameDurationAtIndex( size_t );
+    bool frameHasAlphaAtIndex( size_t ); // Whether or not the frame actually used any alpha.
+    bool frameIsCompleteAtIndex( size_t ); // Whether or not the frame is completely decoded.
 
 #if ENABLE(IMAGE_DECODER_DOWN_SAMPLING)
-    static unsigned maxPixelsPerDecodedImage() { return s_maxPixelsPerDecodedImage; }
-    static void setMaxPixelsPerDecodedImage(unsigned maxPixels) { s_maxPixelsPerDecodedImage = maxPixels; }
+    static unsigned maxPixelsPerDecodedImage()
+    {
+        return s_maxPixelsPerDecodedImage;
+    }
+    static void setMaxPixelsPerDecodedImage( unsigned maxPixels )
+    {
+        s_maxPixelsPerDecodedImage = maxPixels;
+    }
 #endif
 
 private:

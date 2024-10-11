@@ -92,7 +92,7 @@ list(APPEND GUI_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_vistastyle_p.h
 )
 
-target_sources(CsGui
+target_sources(LsCsGui
    PRIVATE
    ${CMAKE_CURRENT_SOURCE_DIR}/styles/qstyleanimation.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/styles/qcommonstyle.cpp
@@ -110,14 +110,14 @@ target_sources(CsGui
 )
 
 if(X11_FOUND)
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_style.cpp
    )
 endif()
 
 if(GTK2_FOUND)
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qgtkstyle.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qgtkpainter.cpp
@@ -139,7 +139,7 @@ endif()
 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_style.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qmacstyle.mm
@@ -151,7 +151,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
    add_definitions(-DQT_NO_STYLE_MAC -DQT_NO_STYLE_WINDOWSXP)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_sources(CsGui
+   target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_style.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qwindows_xpstyle.cpp

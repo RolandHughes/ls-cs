@@ -32,28 +32,28 @@ class QErrorMessagePrivate;
 
 class Q_GUI_EXPORT QErrorMessage: public QDialog
 {
-   GUI_CS_OBJECT(QErrorMessage)
+    GUI_LSCS_OBJECT( QErrorMessage )
 
- public:
-   explicit QErrorMessage(QWidget *parent = nullptr);
+public:
+    explicit QErrorMessage( QWidget *parent = nullptr );
 
-   QErrorMessage(const QErrorMessage &) = delete;
-   QErrorMessage &operator=(const QErrorMessage &) = delete;
+    QErrorMessage( const QErrorMessage & ) = delete;
+    QErrorMessage &operator=( const QErrorMessage & ) = delete;
 
-   ~QErrorMessage();
+    ~QErrorMessage();
 
-   GUI_CS_SLOT_1(Public, void showMessage(const QString &message))
-   GUI_CS_SLOT_OVERLOAD(showMessage, (const QString &))
+    GUI_LSCS_SLOT_1( Public, void showMessage( const QString &message ) )
+    GUI_LSCS_SLOT_OVERLOAD( showMessage, ( const QString & ) )
 
-   GUI_CS_SLOT_1(Public, void showMessage(const QString &message, const QString &type))
-   GUI_CS_SLOT_OVERLOAD(showMessage, (const QString &, const QString &))
+    GUI_LSCS_SLOT_1( Public, void showMessage( const QString &message, const QString &type ) )
+    GUI_LSCS_SLOT_OVERLOAD( showMessage, ( const QString &, const QString & ) )
 
- protected:
-   void done(int status) override;
-   void changeEvent(QEvent *event) override;
+protected:
+    void done( int status ) override;
+    void changeEvent( QEvent *event ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QErrorMessage)
+private:
+    Q_DECLARE_PRIVATE( QErrorMessage )
 };
 
 #endif // QT_NO_ERRORMESSAGE

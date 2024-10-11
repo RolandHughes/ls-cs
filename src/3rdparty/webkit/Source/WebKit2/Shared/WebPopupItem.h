@@ -29,25 +29,30 @@
 #include <WebCore/TextDirection.h>
 #include <wtf/text/WTFString.h>
 
-namespace CoreIPC {
-    class ArgumentDecoder;
-    class ArgumentEncoder;
+namespace CoreIPC
+{
+class ArgumentDecoder;
+class ArgumentEncoder;
 }
 
-namespace WebKit {
+namespace WebKit
+{
 
-struct WebPopupItem {
-    enum Type {
+struct WebPopupItem
+{
+    enum Type
+    {
         Separator,
         Item
     };
 
     WebPopupItem();
-    WebPopupItem(Type);
-    WebPopupItem(Type, const String& text, WebCore::TextDirection, bool hasTextDirectionOverride, const String& toolTip, const String& accessibilityText, bool isEnabled, bool isLabel);
+    WebPopupItem( Type );
+    WebPopupItem( Type, const String &text, WebCore::TextDirection, bool hasTextDirectionOverride, const String &toolTip,
+                  const String &accessibilityText, bool isEnabled, bool isLabel );
 
-    void encode(CoreIPC::ArgumentEncoder*) const;
-    static bool decode(CoreIPC::ArgumentDecoder*, WebPopupItem&);
+    void encode( CoreIPC::ArgumentEncoder * ) const;
+    static bool decode( CoreIPC::ArgumentDecoder *, WebPopupItem & );
 
     Type m_type;
     String m_text;

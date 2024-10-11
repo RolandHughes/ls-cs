@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -37,7 +37,8 @@
 #include <wtf/RefCounted.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class ContextMenuItem;
 class Event;
@@ -50,9 +51,9 @@ class Page;
 class InspectorFrontendHost : public RefCounted<InspectorFrontendHost>
 {
 public:
-    static PassRefPtr<InspectorFrontendHost> create(InspectorFrontendClient* client, Page* frontendPage)
+    static PassRefPtr<InspectorFrontendHost> create( InspectorFrontendClient *client, Page *frontendPage )
     {
-        return adoptRef(new InspectorFrontendHost(client, frontendPage));
+        return adoptRef( new InspectorFrontendHost( client, frontendPage ) );
     }
 
     ~InspectorFrontendHost();
@@ -64,35 +65,35 @@ public:
     void closeWindow();
     void disconnectFromBackend();
     void bringToFront();
-    void inspectedURLChanged(const String&);
+    void inspectedURLChanged( const String & );
 
-    void setAttachedWindowHeight(unsigned height);
-    void moveWindowBy(float x, float y) const;
-    void setExtensionAPI(const String& script);
+    void setAttachedWindowHeight( unsigned height );
+    void moveWindowBy( float x, float y ) const;
+    void setExtensionAPI( const String &script );
 
     String localizedStringsURL();
     String hiddenPanels();
 
-    void copyText(const String& text);
-    void saveAs(const String& fileName, const String& content);
+    void copyText( const String &text );
+    void saveAs( const String &fileName, const String &content );
 
-    void saveSessionSetting(const String& key, const String& value);
-    String loadSessionSetting(const String& key);
+    void saveSessionSetting( const String &key, const String &value );
+    String loadSessionSetting( const String &key );
 
     // Called from [Custom] implementations.
-    void showContextMenu(Event*, const Vector<ContextMenuItem*>& items);
-    void sendMessageToBackend(const String& message);
+    void showContextMenu( Event *, const Vector<ContextMenuItem *> &items );
+    void sendMessageToBackend( const String &message );
 
 private:
 #if ENABLE(CONTEXT_MENUS)
     friend class FrontendMenuProvider;
 #endif
-    InspectorFrontendHost(InspectorFrontendClient* client, Page* frontendPage);
+    InspectorFrontendHost( InspectorFrontendClient *client, Page *frontendPage );
 
-    InspectorFrontendClient* m_client;
-    Page* m_frontendPage;
+    InspectorFrontendClient *m_client;
+    Page *m_frontendPage;
 #if ENABLE(CONTEXT_MENUS)
-    FrontendMenuProvider* m_menuProvider;
+    FrontendMenuProvider *m_menuProvider;
 #endif
 };
 

@@ -23,219 +23,290 @@
 
 #include "FastAllocBase.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class JSGlobalData;
-    class JSGlobalObject;
-    class JSObject;
-    class MarkStack;
-    class ScopeChainIterator;
+class JSGlobalData;
+class JSGlobalObject;
+class JSObject;
+class MarkStack;
+class ScopeChainIterator;
 
-    class ScopeChainNode : public FastAllocBase {
-    public:
-        ScopeChainNode(ScopeChainNode* next, JSObject* object, JSGlobalData* globalData, JSGlobalObject* globalObject, JSObject* globalThis)
-            : next(next)
-            , object(object)
-            , globalData(globalData)
-            , globalObject(globalObject)
-            , globalThis(globalThis)
-            , refCount(1)
-        {
-            ASSERT(globalData);
-            ASSERT(globalObject);
-        }
+class ScopeChainNode : public FastAllocBase
+{
+public:
+    ScopeChainNode( ScopeChainNode *next, JSObject *object, JSGlobalData *globalData, JSGlobalObject *globalObject,
+                    JSObject *globalThis )
+        : next( next )
+        , object( object )
+        , globalData( globalData )
+        , globalObject( globalObject )
+        , globalThis( globalThis )
+        , refCount( 1 )
+    {
+        ASSERT( globalData );
+        ASSERT( globalObject );
+    }
 #ifndef NDEBUG
-        // Due to the number of subtle and timing dependent bugs that have occurred due
-        // to deleted but still "valid" ScopeChainNodes we now deliberately clobber the
-        // contents in debug builds.
-        ~ScopeChainNode()
-        {
-            next = 0;
-            object = 0;
-            globalData = 0;
-            globalObject = 0;
-            globalThis = 0;
-        }
+    // Due to the number of subtle and timing dependent bugs that have occurred due
+    // to deleted but still "valid" ScopeChainNodes we now deliberately clobber the
+    // contents in debug builds.
+    ~ScopeChainNode()
+    {
+        next = 0;
+        object = 0;
+        globalData = 0;
+        globalObject = 0;
+        globalThis = 0;
+    }
 #endif
 
-        ScopeChainNode* next;
-        JSObject* object;
-        JSGlobalData* globalData;
-        JSGlobalObject* globalObject;
-        JSObject* globalThis;
-        int refCount;
+    ScopeChainNode *next;
+    JSObject *object;
+    JSGlobalData *globalData;
+    JSGlobalObject *globalObject;
+    JSObject *globalThis;
+    int refCount;
 
-        void deref() { ASSERT(refCount); if (--refCount == 0) { release();} }
-        void ref() { ASSERT(refCount); ++refCount; }
-        void release();
+    void deref()
+    {
+        ASSERT( refCount );
 
-        // Before calling "push" on a bare ScopeChainNode, a client should
-        // logically "copy" the node. Later, the client can "deref" the head
-        // of its chain of ScopeChainNodes to reclaim all the nodes it added
-        // after the logical copy, leaving nodes added before the logical copy
-        // (nodes shared with other clients) untouched.
-        ScopeChainNode* copy()
+        if ( --refCount == 0 )
         {
-            ref();
-            return this;
+            release();
         }
+    }
+    void ref()
+    {
+        ASSERT( refCount );
+        ++refCount;
+    }
+    void release();
 
-        ScopeChainNode* push(JSObject*);
-        ScopeChainNode* pop();
+    // Before calling "push" on a bare ScopeChainNode, a client should
+    // logically "copy" the node. Later, the client can "deref" the head
+    // of its chain of ScopeChainNodes to reclaim all the nodes it added
+    // after the logical copy, leaving nodes added before the logical copy
+    // (nodes shared with other clients) untouched.
+    ScopeChainNode *copy()
+    {
+        ref();
+        return this;
+    }
 
-        ScopeChainIterator begin() const;
-        ScopeChainIterator end() const;
+    ScopeChainNode *push( JSObject * );
+    ScopeChainNode *pop();
+
+    ScopeChainIterator begin() const;
+    ScopeChainIterator end() const;
 
 #ifndef NDEBUG
-        void print() const;
+    void print() const;
 #endif
-    };
+};
 
-    inline ScopeChainNode* ScopeChainNode::push(JSObject* o)
+inline ScopeChainNode *ScopeChainNode::push( JSObject *o )
+{
+    ASSERT( o );
+    return new ScopeChainNode( this, o, globalData, globalObject, globalThis );
+}
+
+inline ScopeChainNode *ScopeChainNode::pop()
+{
+    ASSERT( next );
+    ScopeChainNode *result = next;
+
+    if ( --refCount != 0 )
     {
-        ASSERT(o);
-        return new ScopeChainNode(this, o, globalData, globalObject, globalThis);
+        ++result->refCount;
+    }
+    else
+    {
+        delete this;
     }
 
-    inline ScopeChainNode* ScopeChainNode::pop()
+    return result;
+}
+
+inline void ScopeChainNode::release()
+{
+    // This function is only called by deref(),
+    // Deref ensures these conditions are true.
+    ASSERT( refCount == 0 );
+    ScopeChainNode *n = this;
+
+    do
     {
-        ASSERT(next);
-        ScopeChainNode* result = next;
+        ScopeChainNode *next = n->next;
+        delete n;
+        n = next;
+    }
+    while ( n && --n->refCount == 0 );
+}
 
-        if (--refCount != 0)
-            ++result->refCount;
-        else
-            delete this;
-
-        return result;
+class ScopeChainIterator
+{
+public:
+    ScopeChainIterator( const ScopeChainNode *node )
+        : m_node( node )
+    {
     }
 
-    inline void ScopeChainNode::release()
+    JSObject *const &operator*() const
     {
-        // This function is only called by deref(),
-        // Deref ensures these conditions are true.
-        ASSERT(refCount == 0);
-        ScopeChainNode* n = this;
-        do {
-            ScopeChainNode* next = n->next;
-            delete n;
-            n = next;
-        } while (n && --n->refCount == 0);
+        return m_node->object;
+    }
+    JSObject *const *operator->() const
+    {
+        return &( operator*() );
     }
 
-    class ScopeChainIterator {
-    public:
-        ScopeChainIterator(const ScopeChainNode* node)
-            : m_node(node)
-        {
-        }
-
-        JSObject* const & operator*() const { return m_node->object; }
-        JSObject* const * operator->() const { return &(operator*()); }
-
-        ScopeChainIterator& operator++() { m_node = m_node->next; return *this; }
-
-        // postfix ++ intentionally omitted
-
-        bool operator==(const ScopeChainIterator& other) const { return m_node == other.m_node; }
-        bool operator!=(const ScopeChainIterator& other) const { return m_node != other.m_node; }
-
-    private:
-        const ScopeChainNode* m_node;
-    };
-
-    inline ScopeChainIterator ScopeChainNode::begin() const
+    ScopeChainIterator &operator++()
     {
-        return ScopeChainIterator(this);
-    }
-
-    inline ScopeChainIterator ScopeChainNode::end() const
-    {
-        return ScopeChainIterator(nullptr);
-    }
-
-    class NoScopeChain {};
-
-    class ScopeChain {
-        friend class JIT;
-    public:
-        ScopeChain(NoScopeChain)
-            : m_node(nullptr)
-        {
-        }
-
-        ScopeChain(JSObject* o, JSGlobalData* globalData, JSGlobalObject* globalObject, JSObject* globalThis)
-            : m_node(new ScopeChainNode(nullptr, o, globalData, globalObject, globalThis))
-        {
-        }
-
-        ScopeChain(const ScopeChain& c)
-            : m_node(c.m_node->copy())
-        {
-        }
-
-        ScopeChain& operator=(const ScopeChain& c);
-
-        explicit ScopeChain(ScopeChainNode* node)
-            : m_node(node->copy())
-        {
-        }
-
-        ~ScopeChain()
-        {
-            if (m_node)
-                m_node->deref();
-#ifndef NDEBUG
-            m_node = nullptr;
-#endif
-        }
-
-        void swap(ScopeChain&);
-
-        ScopeChainNode* node() const { return m_node; }
-
-        JSObject* top() const { return m_node->object; }
-
-        ScopeChainIterator begin() const { return m_node->begin(); }
-        ScopeChainIterator end() const { return m_node->end(); }
-
-        void push(JSObject* o) { m_node = m_node->push(o); }
-
-        void pop() { m_node = m_node->pop(); }
-        void clear() { m_node->deref(); m_node = nullptr; }
-
-        JSGlobalObject* globalObject() const { return m_node->globalObject; }
-
-        void markAggregate(MarkStack&) const;
-
-        // Caution: this should only be used if the codeblock this is being used
-        // with needs a full scope chain, otherwise this returns the depth of
-        // the preceeding call frame
-        //
-        // Returns the depth of the current call frame's scope chain
-        int localDepth() const;
-
-#ifndef NDEBUG
-        void print() const { m_node->print(); }
-#endif
-
-    private:
-        ScopeChainNode* m_node;
-    };
-
-    inline void ScopeChain::swap(ScopeChain& o)
-    {
-        ScopeChainNode* tmp = m_node;
-        m_node = o.m_node;
-        o.m_node = tmp;
-    }
-
-    inline ScopeChain& ScopeChain::operator=(const ScopeChain& c)
-    {
-        ScopeChain tmp(c);
-        swap(tmp);
+        m_node = m_node->next;
         return *this;
     }
+
+    // postfix ++ intentionally omitted
+
+    bool operator==( const ScopeChainIterator &other ) const
+    {
+        return m_node == other.m_node;
+    }
+    bool operator!=( const ScopeChainIterator &other ) const
+    {
+        return m_node != other.m_node;
+    }
+
+private:
+    const ScopeChainNode *m_node;
+};
+
+inline ScopeChainIterator ScopeChainNode::begin() const
+{
+    return ScopeChainIterator( this );
+}
+
+inline ScopeChainIterator ScopeChainNode::end() const
+{
+    return ScopeChainIterator( nullptr );
+}
+
+class NoScopeChain {};
+
+class ScopeChain
+{
+    friend class JIT;
+public:
+    ScopeChain( NoScopeChain )
+        : m_node( nullptr )
+    {
+    }
+
+    ScopeChain( JSObject *o, JSGlobalData *globalData, JSGlobalObject *globalObject, JSObject *globalThis )
+        : m_node( new ScopeChainNode( nullptr, o, globalData, globalObject, globalThis ) )
+    {
+    }
+
+    ScopeChain( const ScopeChain &c )
+        : m_node( c.m_node->copy() )
+    {
+    }
+
+    ScopeChain &operator=( const ScopeChain &c );
+
+    explicit ScopeChain( ScopeChainNode *node )
+        : m_node( node->copy() )
+    {
+    }
+
+    ~ScopeChain()
+    {
+        if ( m_node )
+        {
+            m_node->deref();
+        }
+
+#ifndef NDEBUG
+        m_node = nullptr;
+#endif
+    }
+
+    void swap( ScopeChain & );
+
+    ScopeChainNode *node() const
+    {
+        return m_node;
+    }
+
+    JSObject *top() const
+    {
+        return m_node->object;
+    }
+
+    ScopeChainIterator begin() const
+    {
+        return m_node->begin();
+    }
+    ScopeChainIterator end() const
+    {
+        return m_node->end();
+    }
+
+    void push( JSObject *o )
+    {
+        m_node = m_node->push( o );
+    }
+
+    void pop()
+    {
+        m_node = m_node->pop();
+    }
+    void clear()
+    {
+        m_node->deref();
+        m_node = nullptr;
+    }
+
+    JSGlobalObject *globalObject() const
+    {
+        return m_node->globalObject;
+    }
+
+    void markAggregate( MarkStack & ) const;
+
+    // Caution: this should only be used if the codeblock this is being used
+    // with needs a full scope chain, otherwise this returns the depth of
+    // the preceeding call frame
+    //
+    // Returns the depth of the current call frame's scope chain
+    int localDepth() const;
+
+#ifndef NDEBUG
+    void print() const
+    {
+        m_node->print();
+    }
+#endif
+
+private:
+    ScopeChainNode *m_node;
+};
+
+inline void ScopeChain::swap( ScopeChain &o )
+{
+    ScopeChainNode *tmp = m_node;
+    m_node = o.m_node;
+    o.m_node = tmp;
+}
+
+inline ScopeChain &ScopeChain::operator=( const ScopeChain &c )
+{
+    ScopeChain tmp( c );
+    swap( tmp );
+    return *this;
+}
 
 } // namespace JSC
 

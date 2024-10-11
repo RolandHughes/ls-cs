@@ -32,29 +32,40 @@
 #include <WebCore/UserContentURLPattern.h>
 #include <wtf/RefPtr.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
-class WebUserContentURLPattern : public APIObject {
+class WebUserContentURLPattern : public APIObject
+{
 public:
     static const Type APIType = TypeUserContentURLPattern;
 
-    static PassRefPtr<WebUserContentURLPattern> create(const String& pattern)
+    static PassRefPtr<WebUserContentURLPattern> create( const String &pattern )
     {
-        return adoptRef(new WebUserContentURLPattern(pattern));
+        return adoptRef( new WebUserContentURLPattern( pattern ) );
     }
 
-    bool matchesURL(const String& url) const { return m_pattern.matches(WebCore::KURL(WebCore::ParsedURLString, url)); }
+    bool matchesURL( const String &url ) const
+    {
+        return m_pattern.matches( WebCore::KURL( WebCore::ParsedURLString, url ) );
+    }
 
-    const String& patternString() const { return m_patternString; }
+    const String &patternString() const
+    {
+        return m_patternString;
+    }
 
 private:
-    explicit WebUserContentURLPattern(const String& pattern)
-        : m_pattern(WebCore::UserContentURLPattern(pattern))
-        , m_patternString(pattern)
+    explicit WebUserContentURLPattern( const String &pattern )
+        : m_pattern( WebCore::UserContentURLPattern( pattern ) )
+        , m_patternString( pattern )
     {
     }
 
-    virtual Type type() const { return APIType; }
+    virtual Type type() const
+    {
+        return APIType;
+    }
 
     WebCore::UserContentURLPattern m_pattern;
     String m_patternString;

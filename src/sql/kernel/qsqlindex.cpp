@@ -26,23 +26,23 @@
 #include <qsqlfield.h>
 #include <qstringlist.h>
 
-QSqlIndex::QSqlIndex(const QString &cursorname, const QString &name)
-   : cursor(cursorname), nm(name)
+QSqlIndex::QSqlIndex( const QString &cursorname, const QString &name )
+    : cursor( cursorname ), nm( name )
 {
 }
 
-QSqlIndex::QSqlIndex(const QSqlIndex &other)
-   : QSqlRecord(other), cursor(other.cursor), nm(other.nm), sorts(other.sorts)
+QSqlIndex::QSqlIndex( const QSqlIndex &other )
+    : QSqlRecord( other ), cursor( other.cursor ), nm( other.nm ), sorts( other.sorts )
 {
 }
 
-QSqlIndex &QSqlIndex::operator=(const QSqlIndex &other)
+QSqlIndex &QSqlIndex::operator=( const QSqlIndex &other )
 {
-   cursor = other.cursor;
-   nm = other.nm;
-   sorts = other.sorts;
-   QSqlRecord::operator=(other);
-   return *this;
+    cursor = other.cursor;
+    nm = other.nm;
+    sorts = other.sorts;
+    QSqlRecord::operator=( other );
+    return *this;
 }
 
 
@@ -51,35 +51,38 @@ QSqlIndex::~QSqlIndex()
 
 }
 
-void QSqlIndex::setName(const QString &name)
+void QSqlIndex::setName( const QString &name )
 {
-   nm = name;
+    nm = name;
 }
 
-void QSqlIndex::append(const QSqlField &field)
+void QSqlIndex::append( const QSqlField &field )
 {
-   append(field, false);
+    append( field, false );
 }
 
-void QSqlIndex::append(const QSqlField &field, bool desc)
+void QSqlIndex::append( const QSqlField &field, bool desc )
 {
-   sorts.append(desc);
-   QSqlRecord::append(field);
+    sorts.append( desc );
+    QSqlRecord::append( field );
 }
 
-bool QSqlIndex::isDescending(int i) const
+bool QSqlIndex::isDescending( int i ) const
 {
-   if (i >= 0 && i < sorts.size()) {
-      return sorts[i];
-   }
-   return false;
+    if ( i >= 0 && i < sorts.size() )
+    {
+        return sorts[i];
+    }
+
+    return false;
 }
 
-void QSqlIndex::setDescending(int i, bool desc)
+void QSqlIndex::setDescending( int i, bool desc )
 {
-   if (i >= 0 && i < sorts.size()) {
-      sorts[i] = desc;
-   }
+    if ( i >= 0 && i < sorts.size() )
+    {
+        sorts[i] = desc;
+    }
 }
 
 
@@ -90,20 +93,25 @@ void QSqlIndex::setDescending(int i, bool desc)
   description if the field is sorted in ASCending or DESCending order.
 */
 
-QString QSqlIndex::createField(int i, const QString &prefix, bool verbose) const
+QString QSqlIndex::createField( int i, const QString &prefix, bool verbose ) const
 {
-   QString f;
-   if (!prefix.isEmpty()) {
-      f += prefix + QLatin1Char('.');
-   }
-   f += field(i).name();
-   if (verbose)
-      f += QLatin1Char(' ') + QString((isDescending(i)
-               ? QLatin1String("DESC") : QLatin1String("ASC")));
-   return f;
+    QString f;
+
+    if ( !prefix.isEmpty() )
+    {
+        f += prefix + QLatin1Char( '.' );
+    }
+
+    f += field( i ).name();
+
+    if ( verbose )
+        f += QLatin1Char( ' ' ) + QString( ( isDescending( i )
+                                             ? QLatin1String( "DESC" ) : QLatin1String( "ASC" ) ) );
+
+    return f;
 }
 
-void QSqlIndex::setCursorName(const QString &cursorName)
+void QSqlIndex::setCursorName( const QString &cursorName )
 {
-   cursor = cursorName;
+    cursor = cursorName;
 }

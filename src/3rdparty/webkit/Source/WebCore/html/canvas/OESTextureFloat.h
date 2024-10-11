@@ -29,17 +29,19 @@
 #include "WebGLExtension.h"
 #include <wtf/PassOwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class OESTextureFloat : public WebGLExtension {
+class OESTextureFloat : public WebGLExtension
+{
 public:
-    static PassOwnPtr<OESTextureFloat> create(WebGLRenderingContext*);
+    static PassOwnPtr<OESTextureFloat> create( WebGLRenderingContext * );
 
     virtual ~OESTextureFloat();
     virtual ExtensionName getName() const;
 
 private:
-    OESTextureFloat(WebGLRenderingContext*);
+    OESTextureFloat( WebGLRenderingContext * );
 };
 
 } // namespace WebCore

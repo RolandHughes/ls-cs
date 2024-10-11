@@ -63,10 +63,11 @@
 using namespace JSC;
 using namespace WebCore;
 
-namespace WebKit {
+namespace WebKit
+{
 
 #ifndef NDEBUG
-static WTF::RefCountedLeakCounter webFrameCounter("WebFrame");
+static WTF::RefCountedLeakCounter webFrameCounter( "WebFrame" );
 #endif
 
 static uint64_t generateFrameID()
@@ -81,32 +82,32 @@ static uint64_t generateListenerID()
     return uniqueListenerID++;
 }
 
-PassRefPtr<WebFrame> WebFrame::createMainFrame(WebPage* page)
+PassRefPtr<WebFrame> WebFrame::createMainFrame( WebPage *page )
 {
     RefPtr<WebFrame> frame = create();
 
-    page->send(Messages::WebPageProxy::DidCreateMainFrame(frame->frameID()));
+    page->send( Messages::WebPageProxy::DidCreateMainFrame( frame->frameID() ) );
 
-    frame->init(page, String(), 0);
+    frame->init( page, String(), 0 );
 
     return frame.release();
 }
 
-PassRefPtr<WebFrame> WebFrame::createSubframe(WebPage* page, const String& frameName, HTMLFrameOwnerElement* ownerElement)
+PassRefPtr<WebFrame> WebFrame::createSubframe( WebPage *page, const String &frameName, HTMLFrameOwnerElement *ownerElement )
 {
     RefPtr<WebFrame> frame = create();
 
-    WebFrame* parentFrame = static_cast<WebFrameLoaderClient*>(ownerElement->document()->frame()->loader()->client())->webFrame();
-    page->send(Messages::WebPageProxy::DidCreateSubframe(frame->frameID(), parentFrame->frameID()));
+    WebFrame *parentFrame = static_cast<WebFrameLoaderClient *>( ownerElement->document()->frame()->loader()->client() )->webFrame();
+    page->send( Messages::WebPageProxy::DidCreateSubframe( frame->frameID(), parentFrame->frameID() ) );
 
-    frame->init(page, frameName, ownerElement);
+    frame->init( page, frameName, ownerElement );
 
     return frame.release();
 }
 
 PassRefPtr<WebFrame> WebFrame::create()
 {
-    RefPtr<WebFrame> frame = adoptRef(new WebFrame);
+    RefPtr<WebFrame> frame = adoptRef( new WebFrame );
 
     // Add explict ref() that will be balanced in WebFrameLoaderClient::frameLoaderDestroyed().
     frame->ref();
@@ -115,15 +116,15 @@ PassRefPtr<WebFrame> WebFrame::create()
 }
 
 WebFrame::WebFrame()
-    : m_coreFrame(0)
-    , m_policyListenerID(0)
-    , m_policyFunction(0)
-    , m_policyDownloadID(0)
-    , m_frameLoaderClient(this)
-    , m_loadListener(0)
-    , m_frameID(generateFrameID())
+    : m_coreFrame( 0 )
+    , m_policyListenerID( 0 )
+    , m_policyFunction( 0 )
+    , m_policyDownloadID( 0 )
+    , m_frameLoaderClient( this )
+    , m_loadListener( 0 )
+    , m_frameID( generateFrameID() )
 {
-    WebProcess::shared().addWebFrame(m_frameID, this);
+    WebProcess::shared().addWebFrame( m_frameID, this );
 
 #ifndef NDEBUG
     webFrameCounter.increment();
@@ -132,46 +133,51 @@ WebFrame::WebFrame()
 
 WebFrame::~WebFrame()
 {
-    ASSERT(!m_coreFrame);
+    ASSERT( !m_coreFrame );
 
 #ifndef NDEBUG
     webFrameCounter.decrement();
 #endif
 }
 
-void WebFrame::init(WebPage* page, const String& frameName, HTMLFrameOwnerElement* ownerElement)
+void WebFrame::init( WebPage *page, const String &frameName, HTMLFrameOwnerElement *ownerElement )
 {
-    RefPtr<Frame> frame = Frame::create(page->corePage(), ownerElement, &m_frameLoaderClient);
+    RefPtr<Frame> frame = Frame::create( page->corePage(), ownerElement, &m_frameLoaderClient );
     m_coreFrame = frame.get();
 
-    frame->tree()->setName(frameName);
+    frame->tree()->setName( frameName );
 
-    if (ownerElement) {
-        ASSERT(ownerElement->document()->frame());
-        ownerElement->document()->frame()->tree()->appendChild(frame);
+    if ( ownerElement )
+    {
+        ASSERT( ownerElement->document()->frame() );
+        ownerElement->document()->frame()->tree()->appendChild( frame );
     }
 
     frame->init();
 }
 
-WebPage* WebFrame::page() const
-{ 
-    if (!m_coreFrame)
+WebPage *WebFrame::page() const
+{
+    if ( !m_coreFrame )
+    {
         return 0;
-    
-    if (WebCore::Page* page = m_coreFrame->page())
-        return static_cast<WebChromeClient*>(page->chrome()->client())->page();
+    }
+
+    if ( WebCore::Page *page = m_coreFrame->page() )
+    {
+        return static_cast<WebChromeClient *>( page->chrome()->client() )->page();
+    }
 
     return 0;
 }
 
 void WebFrame::invalidate()
 {
-    WebProcess::shared().removeWebFrame(m_frameID);
+    WebProcess::shared().removeWebFrame( m_frameID );
     m_coreFrame = 0;
 }
 
-uint64_t WebFrame::setUpPolicyListener(WebCore::FramePolicyFunction policyFunction)
+uint64_t WebFrame::setUpPolicyListener( WebCore::FramePolicyFunction policyFunction )
 {
     // FIXME: <rdar://5634381> We need to support multiple active policy listeners.
 
@@ -184,26 +190,34 @@ uint64_t WebFrame::setUpPolicyListener(WebCore::FramePolicyFunction policyFuncti
 
 void WebFrame::invalidatePolicyListener()
 {
-    if (!m_policyListenerID)
+    if ( !m_policyListenerID )
+    {
         return;
+    }
 
     m_policyDownloadID = 0;
     m_policyListenerID = 0;
     m_policyFunction = 0;
 }
 
-void WebFrame::didReceivePolicyDecision(uint64_t listenerID, PolicyAction action, uint64_t downloadID)
+void WebFrame::didReceivePolicyDecision( uint64_t listenerID, PolicyAction action, uint64_t downloadID )
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return;
+    }
 
-    if (!m_policyListenerID)
+    if ( !m_policyListenerID )
+    {
         return;
+    }
 
-    if (listenerID != m_policyListenerID)
+    if ( listenerID != m_policyListenerID )
+    {
         return;
+    }
 
-    ASSERT(m_policyFunction);
+    ASSERT( m_policyFunction );
 
     FramePolicyFunction function = m_policyFunction;
 
@@ -211,460 +225,634 @@ void WebFrame::didReceivePolicyDecision(uint64_t listenerID, PolicyAction action
 
     m_policyDownloadID = downloadID;
 
-    (m_coreFrame->loader()->policyChecker()->*function)(action);
+    ( m_coreFrame->loader()->policyChecker()->*function )( action );
 }
 
-void WebFrame::startDownload(const WebCore::ResourceRequest& request)
+void WebFrame::startDownload( const WebCore::ResourceRequest &request )
 {
-    ASSERT(m_policyDownloadID);
+    ASSERT( m_policyDownloadID );
 
-    DownloadManager::shared().startDownload(m_policyDownloadID, page(), request);
+    DownloadManager::shared().startDownload( m_policyDownloadID, page(), request );
 
     m_policyDownloadID = 0;
 }
 
-void WebFrame::convertHandleToDownload(ResourceHandle* handle, const ResourceRequest& request, const ResourceRequest& initialRequest, const ResourceResponse& response)
+void WebFrame::convertHandleToDownload( ResourceHandle *handle, const ResourceRequest &request,
+                                        const ResourceRequest &initialRequest, const ResourceResponse &response )
 {
-    ASSERT(m_policyDownloadID);
+    ASSERT( m_policyDownloadID );
 
-    DownloadManager::shared().convertHandleToDownload(m_policyDownloadID, page(), handle, request, initialRequest, response);
+    DownloadManager::shared().convertHandleToDownload( m_policyDownloadID, page(), handle, request, initialRequest, response );
     m_policyDownloadID = 0;
 }
 
-String WebFrame::source() const 
+String WebFrame::source() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
-    Document* document = m_coreFrame->document();
-    if (!document)
+    }
+
+    Document *document = m_coreFrame->document();
+
+    if ( !document )
+    {
         return String();
-    TextResourceDecoder* decoder = document->decoder();
-    if (!decoder)
+    }
+
+    TextResourceDecoder *decoder = document->decoder();
+
+    if ( !decoder )
+    {
         return String();
-    DocumentLoader* documentLoader = m_coreFrame->loader()->activeDocumentLoader();
-    if (!documentLoader)
+    }
+
+    DocumentLoader *documentLoader = m_coreFrame->loader()->activeDocumentLoader();
+
+    if ( !documentLoader )
+    {
         return String();
+    }
+
     RefPtr<SharedBuffer> mainResourceData = documentLoader->mainResourceData();
-    if (!mainResourceData)
+
+    if ( !mainResourceData )
+    {
         return String();
-    return decoder->encoding().decode(mainResourceData->data(), mainResourceData->size());
+    }
+
+    return decoder->encoding().decode( mainResourceData->data(), mainResourceData->size() );
 }
 
-String WebFrame::contentsAsString() const 
+String WebFrame::contentsAsString() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
-    if (isFrameSet()) {
+    if ( isFrameSet() )
+    {
         StringBuilder builder;
-        for (Frame* child = m_coreFrame->tree()->firstChild(); child; child = child->tree()->nextSibling()) {
-            if (!builder.isEmpty())
-                builder.append(' ');
-            builder.append(static_cast<WebFrameLoaderClient*>(child->loader()->client())->webFrame()->contentsAsString());
+
+        for ( Frame *child = m_coreFrame->tree()->firstChild(); child; child = child->tree()->nextSibling() )
+        {
+            if ( !builder.isEmpty() )
+            {
+                builder.append( ' ' );
+            }
+
+            builder.append( static_cast<WebFrameLoaderClient *>( child->loader()->client() )->webFrame()->contentsAsString() );
         }
+
         // FIXME: It may make sense to use toStringPreserveCapacity() here.
         return builder.toString();
     }
 
-    Document* document = m_coreFrame->document();
-    if (!document)
+    Document *document = m_coreFrame->document();
+
+    if ( !document )
+    {
         return String();
+    }
 
     RefPtr<Element> documentElement = document->documentElement();
-    if (!documentElement)
+
+    if ( !documentElement )
+    {
         return String();
+    }
 
     RefPtr<Range> range = document->createRange();
 
     ExceptionCode ec = 0;
-    range->selectNode(documentElement.get(), ec);
-    if (ec)
-        return String();
+    range->selectNode( documentElement.get(), ec );
 
-    return plainText(range.get());
+    if ( ec )
+    {
+        return String();
+    }
+
+    return plainText( range.get() );
 }
 
-String WebFrame::selectionAsString() const 
+String WebFrame::selectionAsString() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
-    return m_coreFrame->displayStringModifiedByEncoding(m_coreFrame->editor()->selectedText());
+    return m_coreFrame->displayStringModifiedByEncoding( m_coreFrame->editor()->selectedText() );
 }
 
 IntSize WebFrame::size() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return IntSize();
+    }
 
-    FrameView* frameView = m_coreFrame->view();
-    if (!frameView)
+    FrameView *frameView = m_coreFrame->view();
+
+    if ( !frameView )
+    {
         return IntSize();
+    }
 
     return frameView->contentsSize();
 }
 
 bool WebFrame::isFrameSet() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return false;
+    }
 
-    Document* document = m_coreFrame->document();
-    if (!document)
+    Document *document = m_coreFrame->document();
+
+    if ( !document )
+    {
         return false;
+    }
+
     return document->isFrameSet();
 }
 
 bool WebFrame::isMainFrame() const
 {
-    if (WebPage* p = page())
+    if ( WebPage *p = page() )
+    {
         return p->mainFrame() == this;
+    }
 
     return false;
 }
 
 String WebFrame::name() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
     return m_coreFrame->tree()->uniqueName();
 }
 
 String WebFrame::url() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
-    DocumentLoader* documentLoader = m_coreFrame->loader()->documentLoader();
-    if (!documentLoader)
+    DocumentLoader *documentLoader = m_coreFrame->loader()->documentLoader();
+
+    if ( !documentLoader )
+    {
         return String();
+    }
 
     return documentLoader->url().string();
 }
 
 String WebFrame::innerText() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
-    if (!m_coreFrame->document()->documentElement())
+    if ( !m_coreFrame->document()->documentElement() )
+    {
         return String();
+    }
 
     return m_coreFrame->document()->documentElement()->innerText();
 }
 
 PassRefPtr<ImmutableArray> WebFrame::childFrames()
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return ImmutableArray::create();
-
-    size_t size = m_coreFrame->tree()->childCount();
-    if (!size)
-        return ImmutableArray::create();
-
-    Vector<RefPtr<APIObject> > vector;
-    vector.reserveInitialCapacity(size);
-
-    for (Frame* child = m_coreFrame->tree()->firstChild(); child; child = child->tree()->nextSibling()) {
-        WebFrame* webFrame = static_cast<WebFrameLoaderClient*>(child->loader()->client())->webFrame();
-        vector.uncheckedAppend(webFrame);
     }
 
-    return ImmutableArray::adopt(vector);
+    size_t size = m_coreFrame->tree()->childCount();
+
+    if ( !size )
+    {
+        return ImmutableArray::create();
+    }
+
+    Vector<RefPtr<APIObject> > vector;
+    vector.reserveInitialCapacity( size );
+
+    for ( Frame *child = m_coreFrame->tree()->firstChild(); child; child = child->tree()->nextSibling() )
+    {
+        WebFrame *webFrame = static_cast<WebFrameLoaderClient *>( child->loader()->client() )->webFrame();
+        vector.uncheckedAppend( webFrame );
+    }
+
+    return ImmutableArray::adopt( vector );
 }
 
 unsigned WebFrame::numberOfActiveAnimations() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return 0;
+    }
 
-    AnimationController* controller = m_coreFrame->animation();
-    if (!controller)
+    AnimationController *controller = m_coreFrame->animation();
+
+    if ( !controller )
+    {
         return 0;
+    }
 
     return controller->numberOfActiveAnimations();
 }
 
-bool WebFrame::pauseAnimationOnElementWithId(const String& animationName, const String& elementID, double time)
+bool WebFrame::pauseAnimationOnElementWithId( const String &animationName, const String &elementID, double time )
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return false;
+    }
 
-    AnimationController* controller = m_coreFrame->animation();
-    if (!controller)
+    AnimationController *controller = m_coreFrame->animation();
+
+    if ( !controller )
+    {
         return false;
+    }
 
-    if (!m_coreFrame->document())
+    if ( !m_coreFrame->document() )
+    {
         return false;
+    }
 
-    Node* coreNode = m_coreFrame->document()->getElementById(elementID);
-    if (!coreNode || !coreNode->renderer())
+    Node *coreNode = m_coreFrame->document()->getElementById( elementID );
+
+    if ( !coreNode || !coreNode->renderer() )
+    {
         return false;
+    }
 
-    return controller->pauseAnimationAtTime(coreNode->renderer(), animationName, time);
+    return controller->pauseAnimationAtTime( coreNode->renderer(), animationName, time );
 }
 
 void WebFrame::suspendAnimations()
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return;
+    }
 
-    AnimationController* controller = m_coreFrame->animation();
-    if (!controller)
+    AnimationController *controller = m_coreFrame->animation();
+
+    if ( !controller )
+    {
         return;
+    }
 
     controller->suspendAnimations();
 }
 
 void WebFrame::resumeAnimations()
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return;
+    }
 
-    AnimationController* controller = m_coreFrame->animation();
-    if (!controller)
+    AnimationController *controller = m_coreFrame->animation();
+
+    if ( !controller )
+    {
         return;
+    }
 
     controller->resumeAnimations();
 }
 
 String WebFrame::layerTreeAsText() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return "";
+    }
 
     return m_coreFrame->layerTreeAsText();
 }
 
 unsigned WebFrame::pendingUnloadCount() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return 0;
+    }
 
     return m_coreFrame->domWindow()->pendingUnloadEventListeners();
 }
 
-bool WebFrame::allowsFollowingLink(const WebCore::KURL& url) const
+bool WebFrame::allowsFollowingLink( const WebCore::KURL &url ) const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return true;
-        
-    return m_coreFrame->document()->securityOrigin()->canDisplay(url);
+    }
+
+    return m_coreFrame->document()->securityOrigin()->canDisplay( url );
 }
 
 JSGlobalContextRef WebFrame::jsContext()
 {
-    return toGlobalRef(m_coreFrame->script()->globalObject(mainThreadNormalWorld())->globalExec());
+    return toGlobalRef( m_coreFrame->script()->globalObject( mainThreadNormalWorld() )->globalExec() );
 }
 
-JSGlobalContextRef WebFrame::jsContextForWorld(InjectedBundleScriptWorld* world)
+JSGlobalContextRef WebFrame::jsContextForWorld( InjectedBundleScriptWorld *world )
 {
-    return toGlobalRef(m_coreFrame->script()->globalObject(world->coreWorld())->globalExec());
+    return toGlobalRef( m_coreFrame->script()->globalObject( world->coreWorld() )->globalExec() );
 }
 
 IntRect WebFrame::contentBounds() const
-{    
-    if (!m_coreFrame)
+{
+    if ( !m_coreFrame )
+    {
         return IntRect();
-    
-    FrameView* view = m_coreFrame->view();
-    if (!view)
+    }
+
+    FrameView *view = m_coreFrame->view();
+
+    if ( !view )
+    {
         return IntRect();
-    
-    return IntRect(0, 0, view->contentsWidth(), view->contentsHeight());
+    }
+
+    return IntRect( 0, 0, view->contentsWidth(), view->contentsHeight() );
 }
 
 IntRect WebFrame::visibleContentBounds() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return IntRect();
-    
-    FrameView* view = m_coreFrame->view();
-    if (!view)
+    }
+
+    FrameView *view = m_coreFrame->view();
+
+    if ( !view )
+    {
         return IntRect();
-    
-    IntRect contentRect = view->visibleContentRect(true);
-    return IntRect(0, 0, contentRect.width(), contentRect.height());
+    }
+
+    IntRect contentRect = view->visibleContentRect( true );
+    return IntRect( 0, 0, contentRect.width(), contentRect.height() );
 }
 
 IntRect WebFrame::visibleContentBoundsExcludingScrollbars() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return IntRect();
-    
-    FrameView* view = m_coreFrame->view();
-    if (!view)
+    }
+
+    FrameView *view = m_coreFrame->view();
+
+    if ( !view )
+    {
         return IntRect();
-    
-    IntRect contentRect = view->visibleContentRect(false);
-    return IntRect(0, 0, contentRect.width(), contentRect.height());
+    }
+
+    IntRect contentRect = view->visibleContentRect( false );
+    return IntRect( 0, 0, contentRect.width(), contentRect.height() );
 }
 
 IntSize WebFrame::scrollOffset() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return IntSize();
-    
-    FrameView* view = m_coreFrame->view();
-    if (!view)
+    }
+
+    FrameView *view = m_coreFrame->view();
+
+    if ( !view )
+    {
         return IntSize();
+    }
 
     return view->scrollOffset();
 }
 
 bool WebFrame::hasHorizontalScrollbar() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return false;
+    }
 
-    FrameView* view = m_coreFrame->view();
-    if (!view)
+    FrameView *view = m_coreFrame->view();
+
+    if ( !view )
+    {
         return false;
+    }
 
     return view->horizontalScrollbar();
 }
 
 bool WebFrame::hasVerticalScrollbar() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return false;
+    }
 
-    FrameView* view = m_coreFrame->view();
-    if (!view)
+    FrameView *view = m_coreFrame->view();
+
+    if ( !view )
+    {
         return false;
+    }
 
     return view->verticalScrollbar();
 }
 
-bool WebFrame::getDocumentBackgroundColor(double* red, double* green, double* blue, double* alpha)
+bool WebFrame::getDocumentBackgroundColor( double *red, double *green, double *blue, double *alpha )
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return false;
-    Color bgColor = m_coreFrame->getDocumentBackgroundColor();
-    if (!bgColor.isValid())
-        return false;
+    }
 
-    bgColor.getRGBA(*red, *green, *blue, *alpha);
+    Color bgColor = m_coreFrame->getDocumentBackgroundColor();
+
+    if ( !bgColor.isValid() )
+    {
+        return false;
+    }
+
+    bgColor.getRGBA( *red, *green, *blue, *alpha );
     return true;
 }
 
-WebFrame* WebFrame::frameForContext(JSContextRef context)
+WebFrame *WebFrame::frameForContext( JSContextRef context )
 {
-    JSObjectRef globalObjectRef = JSContextGetGlobalObject(context);
-    JSC::JSObject* globalObjectObj = toJS(globalObjectRef);
-    if (strcmp(globalObjectObj->classInfo()->className, "JSDOMWindowShell") != 0)
-        return 0;
+    JSObjectRef globalObjectRef = JSContextGetGlobalObject( context );
+    JSC::JSObject *globalObjectObj = toJS( globalObjectRef );
 
-    Frame* coreFrame = static_cast<JSDOMWindowShell*>(globalObjectObj)->window()->impl()->frame();
-    return static_cast<WebFrameLoaderClient*>(coreFrame->loader()->client())->webFrame();
+    if ( strcmp( globalObjectObj->classInfo()->className, "JSDOMWindowShell" ) != 0 )
+    {
+        return 0;
+    }
+
+    Frame *coreFrame = static_cast<JSDOMWindowShell *>( globalObjectObj )->window()->impl()->frame();
+    return static_cast<WebFrameLoaderClient *>( coreFrame->loader()->client() )->webFrame();
 }
 
-JSValueRef WebFrame::jsWrapperForWorld(InjectedBundleNodeHandle* nodeHandle, InjectedBundleScriptWorld* world)
+JSValueRef WebFrame::jsWrapperForWorld( InjectedBundleNodeHandle *nodeHandle, InjectedBundleScriptWorld *world )
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return 0;
+    }
 
-    JSDOMWindow* globalObject = m_coreFrame->script()->globalObject(world->coreWorld());
-    ExecState* exec = globalObject->globalExec();
+    JSDOMWindow *globalObject = m_coreFrame->script()->globalObject( world->coreWorld() );
+    ExecState *exec = globalObject->globalExec();
 
-    JSLock lock(SilenceAssertionsOnly);
-    return toRef(exec, toJS(exec, globalObject, nodeHandle->coreNode()));
+    JSLock lock( SilenceAssertionsOnly );
+    return toRef( exec, toJS( exec, globalObject, nodeHandle->coreNode() ) );
 }
 
-JSValueRef WebFrame::jsWrapperForWorld(InjectedBundleRangeHandle* rangeHandle, InjectedBundleScriptWorld* world)
+JSValueRef WebFrame::jsWrapperForWorld( InjectedBundleRangeHandle *rangeHandle, InjectedBundleScriptWorld *world )
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return 0;
+    }
 
-    JSDOMWindow* globalObject = m_coreFrame->script()->globalObject(world->coreWorld());
-    ExecState* exec = globalObject->globalExec();
+    JSDOMWindow *globalObject = m_coreFrame->script()->globalObject( world->coreWorld() );
+    ExecState *exec = globalObject->globalExec();
 
-    JSLock lock(SilenceAssertionsOnly);
-    return toRef(exec, toJS(exec, globalObject, rangeHandle->coreRange()));
+    JSLock lock( SilenceAssertionsOnly );
+    return toRef( exec, toJS( exec, globalObject, rangeHandle->coreRange() ) );
 }
 
-JSValueRef WebFrame::computedStyleIncludingVisitedInfo(JSObjectRef element)
+JSValueRef WebFrame::computedStyleIncludingVisitedInfo( JSObjectRef element )
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return 0;
+    }
 
-    JSDOMWindow* globalObject = m_coreFrame->script()->globalObject(mainThreadNormalWorld());
-    ExecState* exec = globalObject->globalExec();
+    JSDOMWindow *globalObject = m_coreFrame->script()->globalObject( mainThreadNormalWorld() );
+    ExecState *exec = globalObject->globalExec();
 
-    if (!toJS(element)->inherits(&JSElement::s_info))
-        return JSValueMakeUndefined(toRef(exec));
+    if ( !toJS( element )->inherits( &JSElement::s_info ) )
+    {
+        return JSValueMakeUndefined( toRef( exec ) );
+    }
 
-    RefPtr<CSSComputedStyleDeclaration> style = computedStyle(static_cast<JSElement*>(toJS(element))->impl(), true);
+    RefPtr<CSSComputedStyleDeclaration> style = computedStyle( static_cast<JSElement *>( toJS( element ) )->impl(), true );
 
-    JSLock lock(SilenceAssertionsOnly);
-    return toRef(exec, toJS(exec, globalObject, style.get()));
+    JSLock lock( SilenceAssertionsOnly );
+    return toRef( exec, toJS( exec, globalObject, style.get() ) );
 }
 
-String WebFrame::counterValue(JSObjectRef element)
+String WebFrame::counterValue( JSObjectRef element )
 {
-    if (!toJS(element)->inherits(&JSElement::s_info))
+    if ( !toJS( element )->inherits( &JSElement::s_info ) )
+    {
         return String();
+    }
 
-    return counterValueForElement(static_cast<JSElement*>(toJS(element))->impl());
+    return counterValueForElement( static_cast<JSElement *>( toJS( element ) )->impl() );
 }
 
-String WebFrame::markerText(JSObjectRef element)
+String WebFrame::markerText( JSObjectRef element )
 {
-    if (!toJS(element)->inherits(&JSElement::s_info))
+    if ( !toJS( element )->inherits( &JSElement::s_info ) )
+    {
         return String();
+    }
 
-    return markerTextForListItem(static_cast<JSElement*>(toJS(element))->impl());
+    return markerTextForListItem( static_cast<JSElement *>( toJS( element ) )->impl() );
 }
 
 String WebFrame::provisionalURL() const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
     return m_coreFrame->loader()->provisionalDocumentLoader()->url().string();
 }
 
-String WebFrame::suggestedFilenameForResourceWithURL(const KURL& url) const
+String WebFrame::suggestedFilenameForResourceWithURL( const KURL &url ) const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
-    DocumentLoader* loader = m_coreFrame->loader()->documentLoader();
-    if (!loader)
+    DocumentLoader *loader = m_coreFrame->loader()->documentLoader();
+
+    if ( !loader )
+    {
         return String();
+    }
 
     // First, try the main resource.
-    if (loader->url() == url)
+    if ( loader->url() == url )
+    {
         return loader->response().suggestedFilename();
+    }
 
     // Next, try subresources.
-    RefPtr<ArchiveResource> resource = loader->subresource(url);
-    if (resource)
-        return resource->response().suggestedFilename();
+    RefPtr<ArchiveResource> resource = loader->subresource( url );
 
-    return page()->cachedSuggestedFilenameForURL(url);
+    if ( resource )
+    {
+        return resource->response().suggestedFilename();
+    }
+
+    return page()->cachedSuggestedFilenameForURL( url );
 }
 
-String WebFrame::mimeTypeForResourceWithURL(const KURL& url) const
+String WebFrame::mimeTypeForResourceWithURL( const KURL &url ) const
 {
-    if (!m_coreFrame)
+    if ( !m_coreFrame )
+    {
         return String();
+    }
 
-    DocumentLoader* loader = m_coreFrame->loader()->documentLoader();
-    if (!loader)
+    DocumentLoader *loader = m_coreFrame->loader()->documentLoader();
+
+    if ( !loader )
+    {
         return String();
+    }
 
     // First, try the main resource.
-    if (loader->url() == url)
+    if ( loader->url() == url )
+    {
         return loader->response().mimeType();
+    }
 
     // Next, try subresources.
-    RefPtr<ArchiveResource> resource = loader->subresource(url);
-    if (resource)
-        return resource->mimeType();
+    RefPtr<ArchiveResource> resource = loader->subresource( url );
 
-    return page()->cachedResponseMIMETypeForURL(url);
+    if ( resource )
+    {
+        return resource->mimeType();
+    }
+
+    return page()->cachedResponseMIMETypeForURL( url );
 }
 
 } // namespace WebKit

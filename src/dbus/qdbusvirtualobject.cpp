@@ -25,10 +25,8 @@
 
 #ifndef QT_NO_DBUS
 
-QT_BEGIN_NAMESPACE
-
-QDBusVirtualObject::QDBusVirtualObject(QObject *parent) :
-    QObject(parent)
+QT_BEGIN_NAMESPACE QDBusVirtualObject::QDBusVirtualObject( QObject *parent ) :
+    QObject( parent )
 {
 }
 

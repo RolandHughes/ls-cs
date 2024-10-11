@@ -44,24 +44,30 @@
 
 #include <QWidget>
 
-namespace WebCore {
-
-PassRefPtr<JSC::Bindings::Instance> ScriptController::createScriptInstanceForWidget(WebCore::Widget* widget)
+namespace WebCore
 {
-    if (widget->isPluginView()) {
-        PluginView* pluginView = static_cast<PluginView*>(widget);
+
+PassRefPtr<JSC::Bindings::Instance> ScriptController::createScriptInstanceForWidget( WebCore::Widget *widget )
+{
+    if ( widget->isPluginView() )
+    {
+        PluginView *pluginView = static_cast<PluginView *>( widget );
         return pluginView->bindingInstance();
     }
 
-    QObject* object = widget->bindingObject();
+    QObject *object = widget->bindingObject();
 
-    if (!object)
+    if ( !object )
+    {
         object = widget->platformWidget();
+    }
 
-    if (!object)
+    if ( !object )
+    {
         return 0;
+    }
 
-    return JSC::Bindings::QtInstance::getQtInstance(object, bindingRootObject(), QScriptEngine::QtOwnership);
+    return JSC::Bindings::QtInstance::getQtInstance( object, bindingRootObject(), QScriptEngine::QtOwnership );
 }
 
 }

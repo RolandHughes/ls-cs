@@ -34,20 +34,20 @@ QT_BEGIN_NAMESPACE
 class QDBusAbstractAdaptorPrivate;
 class Q_DBUS_EXPORT QDBusAbstractAdaptor: public QObject
 {
-    CS_OBJECT(QDBusAbstractAdaptor)
+    LSCS_OBJECT( QDBusAbstractAdaptor )
 
 protected:
-    QDBusAbstractAdaptor(QObject *parent);
+    QDBusAbstractAdaptor( QObject *parent );
 
 public:
     ~QDBusAbstractAdaptor();
 
 protected:
-    void setAutoRelaySignals(bool enable);
+    void setAutoRelaySignals( bool enable );
     bool autoRelaySignals() const;
 
 private:
-    Q_DECLARE_PRIVATE(QDBusAbstractAdaptor)
+    Q_DECLARE_PRIVATE( QDBusAbstractAdaptor )
 };
 
 QT_END_NAMESPACE

@@ -37,36 +37,37 @@
 #include "HTMLSummaryElement.h"
 #include "RenderDetailsMarker.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-DetailsMarkerControl::DetailsMarkerControl(Document* document) 
-    : HTMLDivElement(divTag, document)
+DetailsMarkerControl::DetailsMarkerControl( Document *document )
+    : HTMLDivElement( divTag, document )
 {
 }
 
-RenderObject* DetailsMarkerControl::createRenderer(RenderArena* arena, RenderStyle*)
+RenderObject *DetailsMarkerControl::createRenderer( RenderArena *arena, RenderStyle * )
 {
-    return new (arena) RenderDetailsMarker(this);
+    return new ( arena ) RenderDetailsMarker( this );
 }
 
-bool DetailsMarkerControl::rendererIsNeeded(RenderStyle* style)
+bool DetailsMarkerControl::rendererIsNeeded( RenderStyle *style )
 {
-    return summaryElement()->isMainSummary() && HTMLDivElement::rendererIsNeeded(style);
+    return summaryElement()->isMainSummary() && HTMLDivElement::rendererIsNeeded( style );
 }
 
-const AtomicString& DetailsMarkerControl::shadowPseudoId() const
+const AtomicString &DetailsMarkerControl::shadowPseudoId() const
 {
-    DEFINE_STATIC_LOCAL(AtomicString, pseudId, ("-webkit-details-marker"));
+    DEFINE_STATIC_LOCAL( AtomicString, pseudId, ( "-webkit-details-marker" ) );
     return pseudId;
 }
 
-HTMLSummaryElement* DetailsMarkerControl::summaryElement()
+HTMLSummaryElement *DetailsMarkerControl::summaryElement()
 {
-    Node* node = this->shadowAncestorNode();
-    ASSERT(!node || toElement(node)->hasTagName(summaryTag));
-    return static_cast<HTMLSummaryElement*>(node);
+    Node *node = this->shadowAncestorNode();
+    ASSERT( !node || toElement( node )->hasTagName( summaryTag ) );
+    return static_cast<HTMLSummaryElement *>( node );
 }
 
 }

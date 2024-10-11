@@ -21,15 +21,16 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 #include "ResourceError.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-const char* const errorDomainWebKitInternal = "WebKitInternal";
+const char *const errorDomainWebKitInternal = "WebKitInternal";
 
 ResourceError ResourceErrorBase::copy() const
 {
@@ -42,39 +43,53 @@ ResourceError ResourceErrorBase::copy() const
     errorCopy.m_localizedDescription = m_localizedDescription.crossThreadString();
     errorCopy.m_isNull = m_isNull;
     errorCopy.m_isCancellation = m_isCancellation;
-    platformCopy(errorCopy);
+    platformCopy( errorCopy );
     return errorCopy;
 }
 
 void ResourceErrorBase::lazyInit() const
 {
-    const_cast<ResourceError*>(static_cast<const ResourceError*>(this))->platformLazyInit();
+    const_cast<ResourceError *>( static_cast<const ResourceError *>( this ) )->platformLazyInit();
 }
 
-bool ResourceErrorBase::compare(const ResourceError& a, const ResourceError& b)
+bool ResourceErrorBase::compare( const ResourceError &a, const ResourceError &b )
 {
-    if (a.isNull() && b.isNull())
+    if ( a.isNull() && b.isNull() )
+    {
         return true;
+    }
 
-    if (a.isNull() || b.isNull())
+    if ( a.isNull() || b.isNull() )
+    {
         return false;
+    }
 
-    if (a.domain() != b.domain())
+    if ( a.domain() != b.domain() )
+    {
         return false;
+    }
 
-    if (a.errorCode() != b.errorCode())
+    if ( a.errorCode() != b.errorCode() )
+    {
         return false;
+    }
 
-    if (a.failingURL() != b.failingURL())
+    if ( a.failingURL() != b.failingURL() )
+    {
         return false;
+    }
 
-    if (a.localizedDescription() != b.localizedDescription())
+    if ( a.localizedDescription() != b.localizedDescription() )
+    {
         return false;
+    }
 
-    if (a.isCancellation() != b.isCancellation())
+    if ( a.isCancellation() != b.isCancellation() )
+    {
         return false;
+    }
 
-    return platformCompare(a, b);
+    return platformCompare( a, b );
 }
 
 } // namespace WebCore

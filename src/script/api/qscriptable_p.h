@@ -28,20 +28,22 @@ class QScriptable;
 
 class QScriptablePrivate
 {
-   Q_DECLARE_PUBLIC(QScriptable)
+    Q_DECLARE_PUBLIC( QScriptable )
 
- public:
-   inline QScriptablePrivate()
-      : engine(nullptr) {
-   }
+public:
+    inline QScriptablePrivate()
+        : engine( nullptr )
+    {
+    }
 
-   static inline QScriptablePrivate *get(QScriptable *q) {
-      return q->d_func();
-   }
+    static inline QScriptablePrivate *get( QScriptable *q )
+    {
+        return q->d_func();
+    }
 
-   QScriptEngine *engine;
+    QScriptEngine *engine;
 
-   QScriptable *q_ptr;
+    QScriptable *q_ptr;
 };
 
 #endif

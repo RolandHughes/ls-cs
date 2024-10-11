@@ -35,24 +35,24 @@ class QAudioFormat;
 
 class Q_MULTIMEDIA_EXPORT QAudioEncoderSettingsControl : public QMediaControl
 {
-    MULTI_CS_OBJECT(QAudioEncoderSettingsControl)
+    MULTI_LSCS_OBJECT( QAudioEncoderSettingsControl )
 
 public:
     virtual ~QAudioEncoderSettingsControl();
 
     virtual QStringList supportedAudioCodecs() const = 0;
-    virtual QString codecDescription(const QString &codecName) const = 0;
+    virtual QString codecDescription( const QString &codecName ) const = 0;
 
-    virtual QList<int> supportedSampleRates(const QAudioEncoderSettings &settings, bool *continuous = nullptr) const = 0;
+    virtual QList<int> supportedSampleRates( const QAudioEncoderSettings &settings, bool *continuous = nullptr ) const = 0;
 
     virtual QAudioEncoderSettings audioSettings() const = 0;
-    virtual void setAudioSettings(const QAudioEncoderSettings &settings) = 0;
+    virtual void setAudioSettings( const QAudioEncoderSettings &settings ) = 0;
 
 protected:
-    explicit QAudioEncoderSettingsControl(QObject *parent = nullptr);
+    explicit QAudioEncoderSettingsControl( QObject *parent = nullptr );
 };
 
 #define QAudioEncoderSettingsControl_iid "com.copperspice.CS.audioEncoderSettingsControl/1.0"
-CS_DECLARE_INTERFACE(QAudioEncoderSettingsControl, QAudioEncoderSettingsControl_iid)
+LSCS_DECLARE_INTERFACE( QAudioEncoderSettingsControl, QAudioEncoderSettingsControl_iid )
 
 #endif

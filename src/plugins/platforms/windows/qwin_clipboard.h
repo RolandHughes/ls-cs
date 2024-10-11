@@ -31,46 +31,47 @@ class QWindowsOleDataObject;
 
 class QWindowsClipboardRetrievalMimeData : public QWindowsInternalMimeData
 {
- protected:
-   IDataObject *retrieveDataObject() const override;
-   void releaseDataObject(IDataObject *) const override;
+protected:
+    IDataObject *retrieveDataObject() const override;
+    void releaseDataObject( IDataObject * ) const override;
 };
 
 class QWindowsClipboard : public QPlatformClipboard
 {
- public:
-   QWindowsClipboard();
-   ~QWindowsClipboard();
+public:
+    QWindowsClipboard();
+    ~QWindowsClipboard();
 
-   void registerViewer();    // Call in initialization, when context is up.
-   void cleanup();
+    void registerViewer();    // Call in initialization, when context is up.
+    void cleanup();
 
-   QMimeData *mimeData(QClipboard::Mode mode = QClipboard::Clipboard) override;
-   void setMimeData(QMimeData *data, QClipboard::Mode mode = QClipboard::Clipboard) override;
-   bool supportsMode(QClipboard::Mode mode) const override;
-   bool ownsMode(QClipboard::Mode mode) const override;
+    QMimeData *mimeData( QClipboard::Mode mode = QClipboard::Clipboard ) override;
+    void setMimeData( QMimeData *data, QClipboard::Mode mode = QClipboard::Clipboard ) override;
+    bool supportsMode( QClipboard::Mode mode ) const override;
+    bool ownsMode( QClipboard::Mode mode ) const override;
 
-   inline bool clipboardViewerWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT *result);
+    inline bool clipboardViewerWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam, LRESULT *result );
 
-   static QWindowsClipboard *instance() {
-      return m_instance;
-   }
+    static QWindowsClipboard *instance()
+    {
+        return m_instance;
+    }
 
- private:
-   void clear();
-   void releaseIData();
+private:
+    void clear();
+    void releaseIData();
 
-   inline void propagateClipboardMessage(UINT message, WPARAM wParam, LPARAM lParam) const;
-   inline void unregisterViewer();
-   inline bool ownsClipboard() const;
+    inline void propagateClipboardMessage( UINT message, WPARAM wParam, LPARAM lParam ) const;
+    inline void unregisterViewer();
+    inline bool ownsClipboard() const;
 
-   static QWindowsClipboard *m_instance;
+    static QWindowsClipboard *m_instance;
 
-   QWindowsClipboardRetrievalMimeData m_retrievalData;
-   QWindowsOleDataObject *m_data;
-   HWND m_clipboardViewer;
-   HWND m_nextClipboardViewer;
-   bool m_formatListenerRegistered;
+    QWindowsClipboardRetrievalMimeData m_retrievalData;
+    QWindowsOleDataObject *m_data;
+    HWND m_clipboardViewer;
+    HWND m_nextClipboardViewer;
+    bool m_formatListenerRegistered;
 };
 
 #endif

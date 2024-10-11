@@ -30,22 +30,22 @@ class QGstreamerPlayerSession;
 
 class QGstreamerStreamsControl : public QMediaStreamsControl
 {
-   CS_OBJECT(QGstreamerStreamsControl)
+    LSCS_OBJECT( QGstreamerStreamsControl )
 
- public:
-   QGstreamerStreamsControl(QGstreamerPlayerSession *session, QObject *parent);
-   virtual ~QGstreamerStreamsControl();
+public:
+    QGstreamerStreamsControl( QGstreamerPlayerSession *session, QObject *parent );
+    virtual ~QGstreamerStreamsControl();
 
-   int streamCount() override;
-   StreamType streamType(int streamNumber) override;
+    int streamCount() override;
+    StreamType streamType( int streamNumber ) override;
 
-   QVariant metaData(int streamNumber, const QString &key) override;
+    QVariant metaData( int streamNumber, const QString &key ) override;
 
-   bool isActive(int streamNumber) override;
-   void setActive(int streamNumber, bool state) override;
+    bool isActive( int streamNumber ) override;
+    void setActive( int streamNumber, bool state ) override;
 
- private:
-   QGstreamerPlayerSession *m_session;
+private:
+    QGstreamerPlayerSession *m_session;
 };
 
 #endif

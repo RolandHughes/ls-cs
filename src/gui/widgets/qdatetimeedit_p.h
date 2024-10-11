@@ -42,150 +42,159 @@ class QCalendarPopup;
 
 class QDateTimeEditPrivate : public QAbstractSpinBoxPrivate, public QDateTimeParser
 {
-   Q_DECLARE_PUBLIC(QDateTimeEdit)
+    Q_DECLARE_PUBLIC( QDateTimeEdit )
 
- public:
-   QDateTimeEditPrivate();
-   ~QDateTimeEditPrivate();
+public:
+    QDateTimeEditPrivate();
+    ~QDateTimeEditPrivate();
 
-   void init(const QVariant &var);
-   void readLocaleSettings();
+    void init( const QVariant &var );
+    void readLocaleSettings();
 
-   void emitSignals(EmitPolicy ep, const QVariant &old) override;
-   QString textFromValue(const QVariant &f) const override;
-   QVariant valueFromText(const QString &f) const override;
-   void _q_editorCursorPositionChanged(int oldpos, int newpos) override;
-   void interpret(EmitPolicy ep) override;
-   void clearCache() const override;
+    void emitSignals( EmitPolicy ep, const QVariant &old ) override;
+    QString textFromValue( const QVariant &f ) const override;
+    QVariant valueFromText( const QString &f ) const override;
+    void _q_editorCursorPositionChanged( int oldpos, int newpos ) override;
+    void interpret( EmitPolicy ep ) override;
+    void clearCache() const override;
 
-   QStyle::SubControl newHoverControl(const QPoint &pos) override;
-   void updateEditFieldGeometry() override;
-   QVariant getZeroVariant() const override;
-   void setRange(const QVariant &min, const QVariant &max) override;
-   void updateEdit() override;
+    QStyle::SubControl newHoverControl( const QPoint &pos ) override;
+    void updateEditFieldGeometry() override;
+    QVariant getZeroVariant() const override;
+    void setRange( const QVariant &min, const QVariant &max ) override;
+    void updateEdit() override;
 
-   QDateTime validateAndInterpret(QString &input, int &, QValidator::State &state, bool fixup = false) const;
-   void clearSection(int index);
+    QDateTime validateAndInterpret( QString &input, int &, QValidator::State &state, bool fixup = false ) const;
+    void clearSection( int index );
 
-   QString displayText() const override {
-      return edit->text();
-   }
+    QString displayText() const override
+    {
+        return edit->text();
+    }
 
-   QDateTime getMinimum() const override {
-      return minimum.toDateTime();
-   }
+    QDateTime getMinimum() const override
+    {
+        return minimum.toDateTime();
+    }
 
-   QDateTime getMaximum() const override {
-      return maximum.toDateTime();
-   }
+    QDateTime getMaximum() const override
+    {
+        return maximum.toDateTime();
+    }
 
-   QLocale locale() const override {
-      return q_func()->locale();
-   }
+    QLocale locale() const override
+    {
+        return q_func()->locale();
+    }
 
-   QString getAmPmText(AmPm ap, Case cs) const override;
+    QString getAmPmText( AmPm ap, Case cs ) const override;
 
-   int cursorPosition() const override {
-      return edit ? edit->cursorPosition() : -1;
-   }
+    int cursorPosition() const override
+    {
+        return edit ? edit->cursorPosition() : -1;
+    }
 
-   int absoluteIndex(QDateTimeEdit::Section s, int index) const;
-   int absoluteIndex(const SectionNode &s) const;
+    int absoluteIndex( QDateTimeEdit::Section s, int index ) const;
+    int absoluteIndex( const SectionNode &s ) const;
 
-   QDateTime stepBy(int index, int steps, bool test = false) const;
-   int sectionAt(int pos) const;
-   int closestSection(int index, bool forward) const;
-   int nextPrevSection(int index, bool forward) const;
-   void setSelected(int index, bool forward = false);
+    QDateTime stepBy( int index, int steps, bool test = false ) const;
+    int sectionAt( int pos ) const;
+    int closestSection( int index, bool forward ) const;
+    int nextPrevSection( int index, bool forward ) const;
+    void setSelected( int index, bool forward = false );
 
-   void updateCache(const QVariant &val, const QString &str) const;
-   void updateTimeZone();
+    void updateCache( const QVariant &val, const QString &str ) const;
+    void updateTimeZone();
 
-   QString valueToText(const QVariant &var) const {
-      return textFromValue(var);
-   }
+    QString valueToText( const QVariant &var ) const
+    {
+        return textFromValue( var );
+    }
 
-   void _q_resetButton();
-   void updateArrow(QStyle::StateFlag state);
-   bool calendarPopupEnabled() const;
-   void syncCalendarWidget();
+    void _q_resetButton();
+    void updateArrow( QStyle::StateFlag state );
+    bool calendarPopupEnabled() const;
+    void syncCalendarWidget();
 
-   bool isSeparatorKey(const QKeyEvent *k) const;
+    bool isSeparatorKey( const QKeyEvent *k ) const;
 
-   static QDateTimeEdit::Sections convertSections(QDateTimeParser::Sections s);
-   static QDateTimeEdit::Section convertToPublic(QDateTimeParser::Section s);
+    static QDateTimeEdit::Sections convertSections( QDateTimeParser::Sections s );
+    static QDateTimeEdit::Section convertToPublic( QDateTimeParser::Section s );
 
-   void initCalendarPopup(QCalendarWidget *cw = nullptr);
-   void positionCalendarPopup();
+    void initCalendarPopup( QCalendarWidget *cw = nullptr );
+    void positionCalendarPopup();
 
-   QDateTimeEdit::Sections sections;
-   mutable bool cacheGuard;
+    QDateTimeEdit::Sections sections;
+    mutable bool cacheGuard;
 
-   QString defaultDateFormat, defaultTimeFormat, defaultDateTimeFormat, unreversedFormat;
-   mutable QVariant conflictGuard;
-   bool hasHadFocus, formatExplicitlySet, calendarPopup;
-   QStyle::StateFlag arrowState;
-   QCalendarPopup *monthCalendar;
+    QString defaultDateFormat, defaultTimeFormat, defaultDateTimeFormat, unreversedFormat;
+    mutable QVariant conflictGuard;
+    bool hasHadFocus, formatExplicitlySet, calendarPopup;
+    QStyle::StateFlag arrowState;
+    QCalendarPopup *monthCalendar;
 
 #ifdef QT_KEYPAD_NAVIGATION
-   bool focusOnButton;
+    bool focusOnButton;
 #endif
 };
 
 class QCalendarPopup : public QWidget
 {
-   GUI_CS_OBJECT(QCalendarPopup)
+    GUI_LSCS_OBJECT( QCalendarPopup )
 
- public:
-   explicit  QCalendarPopup(QWidget *parent = nullptr, QCalendarWidget *cw = nullptr);
+public:
+    explicit  QCalendarPopup( QWidget *parent = nullptr, QCalendarWidget *cw = nullptr );
 
-   QDate selectedDate() {
-      return verifyCalendarInstance()->selectedDate();
-   }
+    QDate selectedDate()
+    {
+        return verifyCalendarInstance()->selectedDate();
+    }
 
-   void setDate(const QDate &date);
-   void setDateRange(const QDate &min, const QDate &max);
+    void setDate( const QDate &date );
+    void setDateRange( const QDate &min, const QDate &max );
 
-   void setFirstDayOfWeek(Qt::DayOfWeek dow) {
-      verifyCalendarInstance()->setFirstDayOfWeek(dow);
-   }
+    void setFirstDayOfWeek( Qt::DayOfWeek dow )
+    {
+        verifyCalendarInstance()->setFirstDayOfWeek( dow );
+    }
 
-   QCalendarWidget *calendarWidget() const {
-      return const_cast<QCalendarPopup *>(this)->verifyCalendarInstance();
-   }
+    QCalendarWidget *calendarWidget() const
+    {
+        return const_cast<QCalendarPopup *>( this )->verifyCalendarInstance();
+    }
 
-   void setCalendarWidget(QCalendarWidget *cw);
+    void setCalendarWidget( QCalendarWidget *cw );
 
-   GUI_CS_SIGNAL_1(Public, void activated(const QDate &date))
-   GUI_CS_SIGNAL_2(activated, date)
+    GUI_LSCS_SIGNAL_1( Public, void activated( const QDate &date ) )
+    GUI_LSCS_SIGNAL_2( activated, date )
 
-   GUI_CS_SIGNAL_1(Public, void newDateSelected(const QDate &newDate))
-   GUI_CS_SIGNAL_2(newDateSelected, newDate)
+    GUI_LSCS_SIGNAL_1( Public, void newDateSelected( const QDate &newDate ) )
+    GUI_LSCS_SIGNAL_2( newDateSelected, newDate )
 
-   GUI_CS_SIGNAL_1(Public, void hidingCalendar(const QDate &oldDate))
-   GUI_CS_SIGNAL_2(hidingCalendar, oldDate)
+    GUI_LSCS_SIGNAL_1( Public, void hidingCalendar( const QDate &oldDate ) )
+    GUI_LSCS_SIGNAL_2( hidingCalendar, oldDate )
 
-   GUI_CS_SIGNAL_1(Public, void resetButton())
-   GUI_CS_SIGNAL_2(resetButton)
+    GUI_LSCS_SIGNAL_1( Public, void resetButton() )
+    GUI_LSCS_SIGNAL_2( resetButton )
 
- protected:
-   void hideEvent(QHideEvent *) override;
-   void mousePressEvent(QMouseEvent *e) override;
-   void mouseReleaseEvent(QMouseEvent *) override;
-   bool event(QEvent *e) override;
+protected:
+    void hideEvent( QHideEvent * ) override;
+    void mousePressEvent( QMouseEvent *e ) override;
+    void mouseReleaseEvent( QMouseEvent * ) override;
+    bool event( QEvent *e ) override;
 
- private:
-   GUI_CS_SLOT_1(Private, void dateSelected(const QDate &date))
-   GUI_CS_SLOT_2(dateSelected)
+private:
+    GUI_LSCS_SLOT_1( Private, void dateSelected( const QDate &date ) )
+    GUI_LSCS_SLOT_2( dateSelected )
 
-   GUI_CS_SLOT_1(Private, void dateSelectionChanged())
-   GUI_CS_SLOT_2(dateSelectionChanged)
+    GUI_LSCS_SLOT_1( Private, void dateSelectionChanged() )
+    GUI_LSCS_SLOT_2( dateSelectionChanged )
 
-   QCalendarWidget *verifyCalendarInstance();
+    QCalendarWidget *verifyCalendarInstance();
 
-   QPointer<QCalendarWidget> calendar;
-   QDate oldDate;
-   bool dateChanged;
+    QPointer<QCalendarWidget> calendar;
+    QDate oldDate;
+    bool dateChanged;
 };
 
 #endif // QT_NO_DATETIMEEDIT

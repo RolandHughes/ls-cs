@@ -37,82 +37,85 @@ class QFilePrivate;
 
 class Q_CORE_EXPORT QFile : public QFileDevice
 {
-   CORE_CS_OBJECT(QFile)
-   Q_DECLARE_PRIVATE(QFile)
+    CORE_LSCS_OBJECT( QFile )
+    Q_DECLARE_PRIVATE( QFile )
 
- public:
-   QFile();
-   QFile(const QString &name);
+public:
+    QFile();
+    QFile( const QString &name );
 
-   explicit QFile(QObject *parent);
-   QFile(const QString &name, QObject *parent);
+    explicit QFile( QObject *parent );
+    QFile( const QString &name, QObject *parent );
 
-   QFile(const QFile &) = delete;
-   QFile &operator=(const QFile &) = delete;
+    QFile( const QFile & ) = delete;
+    QFile &operator=( const QFile & ) = delete;
 
-   ~QFile();
+    ~QFile();
 
-   QString fileName() const override;
-   void setFileName(const QString &name);
+    QString fileName() const override;
+    void setFileName( const QString &name );
 
-   using EncoderFn = QByteArray (*)(const QString &fileName);
-   using DecoderFn = QString (*)(const QByteArray &localfileName);
+    using EncoderFn = QByteArray ( * )( const QString &fileName );
+    using DecoderFn = QString ( * )( const QByteArray &localfileName );
 
-   static QByteArray encodeName(const QString &fileName);
-   static QString decodeName(const QByteArray &localFileName);
+    static QByteArray encodeName( const QString &fileName );
+    static QString decodeName( const QByteArray &localFileName );
 
-   static QString decodeName(const char *localFileName) {
-      return decodeName(QByteArray(localFileName));
-   }
+    static QString decodeName( const char *localFileName )
+    {
+        return decodeName( QByteArray( localFileName ) );
+    }
 
-   static void setEncodingFunction(EncoderFn function);
-   static void setDecodingFunction(DecoderFn function);
+    static void setEncodingFunction( EncoderFn function );
+    static void setDecodingFunction( DecoderFn function );
 
-   bool exists() const;
-   static bool exists(const QString &fileName);
+    bool exists() const;
+    static bool exists( const QString &fileName );
 
-   QString readLink() const;
-   static QString readLink(const QString &fileName);
+    QString readLink() const;
+    static QString readLink( const QString &fileName );
 
-   QString symLinkTarget() const {
-      return readLink();
-   }
+    QString symLinkTarget() const
+    {
+        return readLink();
+    }
 
-   static QString symLinkTarget(const QString &fileName) {
-      return readLink(fileName);
-   }
+    static QString symLinkTarget( const QString &fileName )
+    {
+        return readLink( fileName );
+    }
 
-   bool remove();
-   static bool remove(const QString &fileName);
+    bool remove();
+    static bool remove( const QString &fileName );
 
-   bool rename(const QString &newName);
-   static bool rename(const QString &oldName, const QString &newName);
+    bool rename( const QString &newName );
+    static bool rename( const QString &oldName, const QString &newName );
 
-   bool link(const QString &newName);
-   static bool link(const QString &oldName, const QString &newName);
+    bool link( const QString &newName );
+    static bool link( const QString &oldName, const QString &newName );
 
-   bool copy(const QString &newName);
-   static bool copy(const QString &oldName, const QString &newName);
+    bool copy( const QString &newName );
+    static bool copy( const QString &oldName, const QString &newName );
 
-   bool open(OpenMode mode) override;
-   bool open(FILE *fHandle, OpenMode mode, FileHandleFlags handleFlags = DontCloseHandle);
-   bool open(int fd, OpenMode mode, FileHandleFlags handleFlags = DontCloseHandle);
+    bool open( OpenMode mode ) override;
+    bool open( FILE *fHandle, OpenMode mode, FileHandleFlags handleFlags = DontCloseHandle );
+    bool open( int fd, OpenMode mode, FileHandleFlags handleFlags = DontCloseHandle );
 
-   qint64 size() const override;
+    qint64 size() const override;
 
-   bool resize(qint64 sz) override;
-   static bool resize(const QString &filename, qint64 sz);
+    bool resize( qint64 sz ) override;
+    static bool resize( const QString &filename, qint64 sz );
 
-   Permissions permissions() const override;
-   static Permissions permissions(const QString &fileName);
-   bool setPermissions(Permissions permissions) override;
-   static bool setPermissions(const QString &fileName, Permissions permissions);
+    Permissions permissions() const override;
+    static Permissions permissions( const QString &fileName );
+    bool setPermissions( Permissions permissions ) override;
+    static bool setPermissions( const QString &fileName, Permissions permissions );
 
- protected:
-   QFile(QFilePrivate &dd, QObject *parent = nullptr);
+protected:
+    QFile( QFilePrivate &dd, QObject *parent = nullptr );
 
- private:
-   friend class QTemporaryFile;
+private:
+    friend class QTemporaryFile;
 };
 
 #endif

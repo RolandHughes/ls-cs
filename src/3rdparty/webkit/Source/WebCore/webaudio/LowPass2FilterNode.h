@@ -28,24 +28,35 @@
 #include "AudioBasicProcessorNode.h"
 #include "BiquadProcessor.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class AudioParam;
-    
-class LowPass2FilterNode : public AudioBasicProcessorNode {
+
+class LowPass2FilterNode : public AudioBasicProcessorNode
+{
 public:
-    static PassRefPtr<LowPass2FilterNode> create(AudioContext* context, double sampleRate)
+    static PassRefPtr<LowPass2FilterNode> create( AudioContext *context, double sampleRate )
     {
-        return adoptRef(new LowPass2FilterNode(context, sampleRate));      
+        return adoptRef( new LowPass2FilterNode( context, sampleRate ) );
     }
 
-    AudioParam* cutoff() { return biquadProcessor()->parameter1(); }
-    AudioParam* resonance() { return biquadProcessor()->parameter2(); }
-    
-private:
-    LowPass2FilterNode(AudioContext*, double sampleRate);
+    AudioParam *cutoff()
+    {
+        return biquadProcessor()->parameter1();
+    }
+    AudioParam *resonance()
+    {
+        return biquadProcessor()->parameter2();
+    }
 
-    BiquadProcessor* biquadProcessor() { return static_cast<BiquadProcessor*>(processor()); }
+private:
+    LowPass2FilterNode( AudioContext *, double sampleRate );
+
+    BiquadProcessor *biquadProcessor()
+    {
+        return static_cast<BiquadProcessor *>( processor() );
+    }
 };
 
 } // namespace WebCore

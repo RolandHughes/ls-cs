@@ -39,7 +39,8 @@
 
 QT_BEGIN_NAMESPACE
 
-struct WLAN_NOTIFICATION_DATA {
+struct WLAN_NOTIFICATION_DATA
+{
     DWORD NotificationSource;
     DWORD NotificationCode;
     GUID InterfaceGuid;
@@ -47,7 +48,8 @@ struct WLAN_NOTIFICATION_DATA {
     PVOID pData;
 };
 
-enum WLAN_INTERFACE_STATE {
+enum WLAN_INTERFACE_STATE
+{
     wlan_interface_state_not_ready = 0,
     wlan_interface_state_connected,
     wlan_interface_state_ad_hoc_network_formed,
@@ -58,44 +60,51 @@ enum WLAN_INTERFACE_STATE {
     wlan_interface_state_authenticating
 };
 
-struct WLAN_INTERFACE_INFO {
+struct WLAN_INTERFACE_INFO
+{
     GUID InterfaceGuid;
     WCHAR strInterfaceDescription[WLAN_MAX_NAME_LENGTH];
     WLAN_INTERFACE_STATE isState;
 };
 
-struct WLAN_INTERFACE_INFO_LIST {
+struct WLAN_INTERFACE_INFO_LIST
+{
     DWORD dwNumberOfItems;
     DWORD dwIndex;
     WLAN_INTERFACE_INFO InterfaceInfo[1];
 };
 
-struct DOT11_SSID {
+struct DOT11_SSID
+{
     ULONG uSSIDLength;
     UCHAR ucSSID[DOT11_SSID_MAX_LENGTH];
 };
 
-struct NDIS_OBJECT_HEADER {
+struct NDIS_OBJECT_HEADER
+{
     UCHAR Type;
     UCHAR Revision;
     USHORT Size;
 };
 
 typedef UCHAR DOT11_MAC_ADDRESS[6];
-struct DOT11_BSSID_LIST {
+struct DOT11_BSSID_LIST
+{
     NDIS_OBJECT_HEADER Header;
     ULONG uNumberOfEntries;
     ULONG uTotalNumOfEntries;
     DOT11_MAC_ADDRESS BSSIDs[1];
 };
 
-enum DOT11_BSS_TYPE {
+enum DOT11_BSS_TYPE
+{
     dot11_BSS_type_infrastructure = 1,
     dot11_BSS_type_independent = 2,
     dot11_BSS_type_any = 3
 };
 
-enum DOT11_PHY_TYPE {
+enum DOT11_PHY_TYPE
+{
     dot11_phy_type_unknown = 0,
     dot11_phy_type_any = dot11_phy_type_unknown,
     dot11_phy_type_fhss = 1,
@@ -109,7 +118,8 @@ enum DOT11_PHY_TYPE {
     dot11_phy_type_IHV_end = 0xffffffff
 };
 
-enum DOT11_AUTH_ALGORITHM {
+enum DOT11_AUTH_ALGORITHM
+{
     DOT11_AUTH_ALGO_80211_OPEN = 1,
     DOT11_AUTH_ALGO_80211_SHARED_KEY = 2,
     DOT11_AUTH_ALGO_WPA = 3,
@@ -121,7 +131,8 @@ enum DOT11_AUTH_ALGORITHM {
     DOT11_AUTH_ALGO_IHV_END = 0xffffffff
 };
 
-enum DOT11_CIPHER_ALGORITHM {
+enum DOT11_CIPHER_ALGORITHM
+{
     DOT11_CIPHER_ALGO_NONE = 0x00,
     DOT11_CIPHER_ALGO_WEP40 = 0x01,
     DOT11_CIPHER_ALGO_TKIP = 0x02,
@@ -134,7 +145,8 @@ enum DOT11_CIPHER_ALGORITHM {
     DOT11_CIPHER_ALGO_IHV_END = 0xffffffff
 };
 
-struct WLAN_AVAILABLE_NETWORK {
+struct WLAN_AVAILABLE_NETWORK
+{
     WCHAR strProfileName[WLAN_MAX_NAME_LENGTH];
     DOT11_SSID dot11Ssid;
     DOT11_BSS_TYPE dot11BssType;
@@ -152,13 +164,15 @@ struct WLAN_AVAILABLE_NETWORK {
     DWORD dwReserved;
 };
 
-struct WLAN_AVAILABLE_NETWORK_LIST {
+struct WLAN_AVAILABLE_NETWORK_LIST
+{
     DWORD dwNumberOfItems;
     DWORD dwIndex;
     WLAN_AVAILABLE_NETWORK Network[1];
 };
 
-enum WLAN_INTF_OPCODE {
+enum WLAN_INTF_OPCODE
+{
     wlan_intf_opcode_autoconf_start = 0x000000000,
     wlan_intf_opcode_autoconf_enabled,
     wlan_intf_opcode_background_scan_enabled,
@@ -185,14 +199,16 @@ enum WLAN_INTF_OPCODE {
     wlan_intf_opcode_ihv_end = 0x3fffffff
 };
 
-enum WLAN_OPCODE_VALUE_TYPE {
+enum WLAN_OPCODE_VALUE_TYPE
+{
     wlan_opcode_value_type_query_only = 0,
     wlan_opcode_value_type_set_by_group_policy,
     wlan_opcode_value_type_set_by_user,
     wlan_opcode_value_type_invalid
 };
 
-enum WLAN_CONNECTION_MODE {
+enum WLAN_CONNECTION_MODE
+{
     wlan_connection_mode_profile = 0,
     wlan_connection_mode_temporary_profile,
     wlan_connection_mode_discovery_secure,
@@ -201,7 +217,8 @@ enum WLAN_CONNECTION_MODE {
     wlan_connection_mode_invalid
 };
 
-struct WLAN_CONNECTION_PARAMETERS {
+struct WLAN_CONNECTION_PARAMETERS
+{
     WLAN_CONNECTION_MODE wlanConnectionMode;
     LPCWSTR strProfile;
     DOT11_SSID *pDot11Ssid;
@@ -210,12 +227,14 @@ struct WLAN_CONNECTION_PARAMETERS {
     DWORD dwFlags;
 };
 
-struct WLAN_RAW_DATA {
+struct WLAN_RAW_DATA
+{
     DWORD dwDataSize;
     BYTE DataBlob[1];
 };
 
-enum WLAN_NOTIFICATION_ACM {
+enum WLAN_NOTIFICATION_ACM
+{
     wlan_notification_acm_start = 0,
     wlan_notification_acm_autoconf_enabled,
     wlan_notification_acm_autoconf_disabled,
@@ -242,7 +261,8 @@ enum WLAN_NOTIFICATION_ACM {
     wlan_notification_acm_end
 };
 
-struct WLAN_ASSOCIATION_ATTRIBUTES {
+struct WLAN_ASSOCIATION_ATTRIBUTES
+{
     DOT11_SSID dot11Ssid;
     DOT11_BSS_TYPE dot11BssType;
     DOT11_MAC_ADDRESS dot11Bssid;
@@ -253,14 +273,16 @@ struct WLAN_ASSOCIATION_ATTRIBUTES {
     ULONG ulTxRate;
 };
 
-struct WLAN_SECURITY_ATTRIBUTES {
+struct WLAN_SECURITY_ATTRIBUTES
+{
     BOOL bSecurityEnabled;
     BOOL bOneXEnabled;
     DOT11_AUTH_ALGORITHM dot11AuthAlgorithm;
     DOT11_CIPHER_ALGORITHM dot11CipherAlgorithm;
 };
 
-struct WLAN_CONNECTION_ATTRIBUTES {
+struct WLAN_CONNECTION_ATTRIBUTES
+{
     WLAN_INTERFACE_STATE isState;
     WLAN_CONNECTION_MODE wlanConnectionMode;
     WCHAR strProfileName[WLAN_MAX_NAME_LENGTH];
@@ -268,32 +290,32 @@ struct WLAN_CONNECTION_ATTRIBUTES {
     WLAN_SECURITY_ATTRIBUTES wlanSecurityAttributes;
 };
 
-typedef void (WINAPI *WLAN_NOTIFICATION_CALLBACK)(WLAN_NOTIFICATION_DATA *, PVOID);
+typedef void ( WINAPI *WLAN_NOTIFICATION_CALLBACK )( WLAN_NOTIFICATION_DATA *, PVOID );
 
-typedef DWORD (WINAPI *WlanOpenHandleProto)
-    (DWORD dwClientVersion, PVOID pReserved, PDWORD pdwNegotiatedVersion, PHANDLE phClientHandle);
-typedef DWORD (WINAPI *WlanRegisterNotificationProto)
-    (HANDLE hClientHandle, DWORD dwNotifSource, BOOL bIgnoreDuplicate,
-     WLAN_NOTIFICATION_CALLBACK funcCallback, PVOID pCallbackContext,
-     PVOID pReserved, PDWORD pdwPrevNotifSource);
-typedef DWORD (WINAPI *WlanEnumInterfacesProto)
-    (HANDLE hClientHandle, PVOID pReserved, WLAN_INTERFACE_INFO_LIST **ppInterfaceList);
-typedef DWORD (WINAPI *WlanGetAvailableNetworkListProto)
-    (HANDLE hClientHandle, const GUID* pInterfaceGuid, DWORD dwFlags, PVOID pReserved,
-     WLAN_AVAILABLE_NETWORK_LIST **ppAvailableNetworkList);
-typedef DWORD (WINAPI *WlanQueryInterfaceProto)
-    (HANDLE hClientHandle, const GUID *pInterfaceGuid, WLAN_INTF_OPCODE OpCode, PVOID pReserved,
-     PDWORD pdwDataSize, PVOID *ppData, WLAN_OPCODE_VALUE_TYPE *pWlanOpcodeValueType);
-typedef DWORD (WINAPI *WlanConnectProto)
-    (HANDLE hClientHandle, const GUID *pInterfaceGuid,
-     const WLAN_CONNECTION_PARAMETERS *pConnectionParameters, PVOID pReserved);
-typedef DWORD (WINAPI *WlanDisconnectProto)
-    (HANDLE hClientHandle, const GUID *pInterfaceGuid, PVOID pReserved);
-typedef DWORD (WINAPI *WlanScanProto)
-    (HANDLE hClientHandle, const GUID *pInterfaceGuid, const DOT11_SSID *pDot11Ssid,
-     const WLAN_RAW_DATA *pIeData, PVOID pReserved);
-typedef VOID (WINAPI *WlanFreeMemoryProto)(PVOID pMemory);
-typedef DWORD (WINAPI *WlanCloseHandleProto)(HANDLE hClientHandle, PVOID pReserved);
+typedef DWORD ( WINAPI *WlanOpenHandleProto )
+( DWORD dwClientVersion, PVOID pReserved, PDWORD pdwNegotiatedVersion, PHANDLE phClientHandle );
+typedef DWORD ( WINAPI *WlanRegisterNotificationProto )
+( HANDLE hClientHandle, DWORD dwNotifSource, BOOL bIgnoreDuplicate,
+  WLAN_NOTIFICATION_CALLBACK funcCallback, PVOID pCallbackContext,
+  PVOID pReserved, PDWORD pdwPrevNotifSource );
+typedef DWORD ( WINAPI *WlanEnumInterfacesProto )
+( HANDLE hClientHandle, PVOID pReserved, WLAN_INTERFACE_INFO_LIST **ppInterfaceList );
+typedef DWORD ( WINAPI *WlanGetAvailableNetworkListProto )
+( HANDLE hClientHandle, const GUID *pInterfaceGuid, DWORD dwFlags, PVOID pReserved,
+  WLAN_AVAILABLE_NETWORK_LIST **ppAvailableNetworkList );
+typedef DWORD ( WINAPI *WlanQueryInterfaceProto )
+( HANDLE hClientHandle, const GUID *pInterfaceGuid, WLAN_INTF_OPCODE OpCode, PVOID pReserved,
+  PDWORD pdwDataSize, PVOID *ppData, WLAN_OPCODE_VALUE_TYPE *pWlanOpcodeValueType );
+typedef DWORD ( WINAPI *WlanConnectProto )
+( HANDLE hClientHandle, const GUID *pInterfaceGuid,
+  const WLAN_CONNECTION_PARAMETERS *pConnectionParameters, PVOID pReserved );
+typedef DWORD ( WINAPI *WlanDisconnectProto )
+( HANDLE hClientHandle, const GUID *pInterfaceGuid, PVOID pReserved );
+typedef DWORD ( WINAPI *WlanScanProto )
+( HANDLE hClientHandle, const GUID *pInterfaceGuid, const DOT11_SSID *pDot11Ssid,
+  const WLAN_RAW_DATA *pIeData, PVOID pReserved );
+typedef VOID ( WINAPI *WlanFreeMemoryProto )( PVOID pMemory );
+typedef DWORD ( WINAPI *WlanCloseHandleProto )( HANDLE hClientHandle, PVOID pReserved );
 
 extern WlanOpenHandleProto local_WlanOpenHandle;
 extern WlanRegisterNotificationProto local_WlanRegisterNotification;

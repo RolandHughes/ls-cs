@@ -33,45 +33,45 @@ using namespace WebKit;
 
 WKTypeID WKBackForwardListGetTypeID()
 {
-    return toAPI(WebBackForwardList::APIType);
+    return toAPI( WebBackForwardList::APIType );
 }
 
-WKBackForwardListItemRef WKBackForwardListGetCurrentItem(WKBackForwardListRef listRef)
+WKBackForwardListItemRef WKBackForwardListGetCurrentItem( WKBackForwardListRef listRef )
 {
-    return toAPI(toImpl(listRef)->currentItem());
+    return toAPI( toImpl( listRef )->currentItem() );
 }
 
-WKBackForwardListItemRef WKBackForwardListGetBackItem(WKBackForwardListRef listRef)
+WKBackForwardListItemRef WKBackForwardListGetBackItem( WKBackForwardListRef listRef )
 {
-    return toAPI(toImpl(listRef)->backItem());
+    return toAPI( toImpl( listRef )->backItem() );
 }
 
-WKBackForwardListItemRef WKBackForwardListGetForwardItem(WKBackForwardListRef listRef)
+WKBackForwardListItemRef WKBackForwardListGetForwardItem( WKBackForwardListRef listRef )
 {
-    return toAPI(toImpl(listRef)->forwardItem());
+    return toAPI( toImpl( listRef )->forwardItem() );
 }
 
-WKBackForwardListItemRef WKBackForwardListGetItemAtIndex(WKBackForwardListRef listRef, int index)
+WKBackForwardListItemRef WKBackForwardListGetItemAtIndex( WKBackForwardListRef listRef, int index )
 {
-    return toAPI(toImpl(listRef)->itemAtIndex(index));
+    return toAPI( toImpl( listRef )->itemAtIndex( index ) );
 }
 
-unsigned WKBackForwardListGetBackListCount(WKBackForwardListRef listRef)
+unsigned WKBackForwardListGetBackListCount( WKBackForwardListRef listRef )
 {
-    return toImpl(listRef)->backListCount();
+    return toImpl( listRef )->backListCount();
 }
 
-unsigned WKBackForwardListGetForwardListCount(WKBackForwardListRef listRef)
+unsigned WKBackForwardListGetForwardListCount( WKBackForwardListRef listRef )
 {
-    return toImpl(listRef)->forwardListCount();
+    return toImpl( listRef )->forwardListCount();
 }
 
-WKArrayRef WKBackForwardListCopyBackListWithLimit(WKBackForwardListRef listRef, unsigned limit)
+WKArrayRef WKBackForwardListCopyBackListWithLimit( WKBackForwardListRef listRef, unsigned limit )
 {
-    return toAPI(toImpl(listRef)->backListAsImmutableArrayWithLimit(limit).releaseRef());
+    return toAPI( toImpl( listRef )->backListAsImmutableArrayWithLimit( limit ).releaseRef() );
 }
 
-WKArrayRef WKBackForwardListCopyForwardListWithLimit(WKBackForwardListRef listRef, unsigned limit)
+WKArrayRef WKBackForwardListCopyForwardListWithLimit( WKBackForwardListRef listRef, unsigned limit )
 {
-    return toAPI(toImpl(listRef)->forwardListAsImmutableArrayWithLimit(limit).releaseRef());    
+    return toAPI( toImpl( listRef )->forwardListAsImmutableArrayWithLimit( limit ).releaseRef() );
 }

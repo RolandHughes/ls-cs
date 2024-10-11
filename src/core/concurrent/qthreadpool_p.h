@@ -33,44 +33,44 @@ class QThreadPoolThread;
 
 class QThreadPoolPrivate
 {
- public:
-   QThreadPoolPrivate();
-   virtual ~QThreadPoolPrivate() {}
+public:
+    QThreadPoolPrivate();
+    virtual ~QThreadPoolPrivate() {}
 
-   bool tryStart(QRunnable *task);
-   void enqueueTask(QRunnable *task, int priority = 0);
-   int activeThreadCount() const;
+    bool tryStart( QRunnable *task );
+    void enqueueTask( QRunnable *task, int priority = 0 );
+    int activeThreadCount() const;
 
-   void tryToStartMoreThreads();
-   bool tooManyThreadsActive() const;
+    void tryToStartMoreThreads();
+    bool tooManyThreadsActive() const;
 
-   void startThread(QRunnable *runnable = nullptr);
-   void reset();
-   bool waitForDone(int msecs);
+    void startThread( QRunnable *runnable = nullptr );
+    void reset();
+    bool waitForDone( int msecs );
 
-   void clear();
-   bool stealRunnable(QRunnable *runnable);
-   void stealAndRunRunnable(QRunnable *runnable);
+    void clear();
+    bool stealRunnable( QRunnable *runnable );
+    void stealAndRunRunnable( QRunnable *runnable );
 
-   mutable QMutex mutex;
-   QSet<QThreadPoolThread *> allThreads;
-   QQueue<QThreadPoolThread *> waitingThreads;
-   QQueue<QThreadPoolThread *> expiredThreads;
-   QVector<QPair<QRunnable *, int>> queue;
-   QWaitCondition noActiveThreads;
+    mutable QMutex mutex;
+    QSet<QThreadPoolThread *> allThreads;
+    QQueue<QThreadPoolThread *> waitingThreads;
+    QQueue<QThreadPoolThread *> expiredThreads;
+    QVector<QPair<QRunnable *, int>> queue;
+    QWaitCondition noActiveThreads;
 
-   bool isExiting;
-   int expiryTimeout;
-   int maxThreadCount;
-   int reservedThreads;
-   int activeThreads;
+    bool isExiting;
+    int expiryTimeout;
+    int maxThreadCount;
+    int reservedThreads;
+    int activeThreads;
 
- protected:
-   QThreadPool *q_ptr;
+protected:
+    QThreadPool *q_ptr;
 
- private:
-   Q_DECLARE_PUBLIC(QThreadPool)
-   friend class QThreadPoolThread;
+private:
+    Q_DECLARE_PUBLIC( QThreadPool )
+    friend class QThreadPoolThread;
 };
 
 #endif

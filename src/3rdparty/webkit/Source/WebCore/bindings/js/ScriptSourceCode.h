@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2008, Google Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
@@ -14,7 +14,7 @@
  *     * Neither the name of Google Inc. nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -38,38 +38,56 @@
 #include <wtf/text/TextPosition.h>
 #include <wtf/RefPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ScriptSourceCode {
+class ScriptSourceCode
+{
 public:
-    ScriptSourceCode(const String& source, const KURL& url = KURL(), const TextPosition1& startPosition = TextPosition1::minimumPosition())
-        : m_provider(StringSourceProvider::create(source, url.isNull() ? String() : url.string(), startPosition))
-        , m_code(m_provider, startPosition.m_line.oneBasedInt())
-        , m_url(url)
+    ScriptSourceCode( const String &source, const KURL &url = KURL(),
+                      const TextPosition1 &startPosition = TextPosition1::minimumPosition() )
+        : m_provider( StringSourceProvider::create( source, url.isNull() ? String() : url.string(), startPosition ) )
+        , m_code( m_provider, startPosition.m_line.oneBasedInt() )
+        , m_url( url )
     {
     }
 
-    ScriptSourceCode(CachedScript* cs)
-        : m_provider(CachedScriptSourceProvider::create(cs))
-        , m_code(m_provider)
+    ScriptSourceCode( CachedScript *cs )
+        : m_provider( CachedScriptSourceProvider::create( cs ) )
+        , m_code( m_provider )
     {
     }
 
-    bool isEmpty() const { return m_code.length() == 0; }
+    bool isEmpty() const
+    {
+        return m_code.length() == 0;
+    }
 
-    const JSC::SourceCode& jsSourceCode() const { return m_code; }
+    const JSC::SourceCode &jsSourceCode() const
+    {
+        return m_code;
+    }
 
-    const String& source() const { return m_provider->source(); }
+    const String &source() const
+    {
+        return m_provider->source();
+    }
 
-    int startLine() const { return m_code.firstLine(); }
+    int startLine() const
+    {
+        return m_code.firstLine();
+    }
 
-    const KURL& url() const { return m_url; }
-    
+    const KURL &url() const
+    {
+        return m_url;
+    }
+
 private:
     RefPtr<ScriptSourceProvider> m_provider;
-    
+
     JSC::SourceCode m_code;
-    
+
     KURL m_url;
 
 };

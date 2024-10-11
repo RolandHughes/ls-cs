@@ -26,6 +26,7 @@
 #include "NumberObject.h"
 #include "UString.h"
 
-namespace JSC {
+namespace JSC
+{
 
 } // namespace JSC

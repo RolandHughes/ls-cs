@@ -37,527 +37,529 @@ using namespace WebKit;
 
 WKTypeID WKPreferencesGetTypeID()
 {
-    return toAPI(WebPreferences::APIType);
+    return toAPI( WebPreferences::APIType );
 }
 
 WKPreferencesRef WKPreferencesCreate()
 {
     RefPtr<WebPreferences> preferences = WebPreferences::create();
-    return toAPI(preferences.release().leakRef());
+    return toAPI( preferences.release().leakRef() );
 }
 
-WKPreferencesRef WKPreferencesCreateWithIdentifier(WKStringRef identifierRef)
+WKPreferencesRef WKPreferencesCreateWithIdentifier( WKStringRef identifierRef )
 {
-    RefPtr<WebPreferences> preferences = WebPreferences::create(toWTFString(identifierRef));
-    return toAPI(preferences.release().releaseRef());
+    RefPtr<WebPreferences> preferences = WebPreferences::create( toWTFString( identifierRef ) );
+    return toAPI( preferences.release().releaseRef() );
 }
 
-void WKPreferencesSetJavaScriptEnabled(WKPreferencesRef preferencesRef, bool javaScriptEnabled)
+void WKPreferencesSetJavaScriptEnabled( WKPreferencesRef preferencesRef, bool javaScriptEnabled )
 {
-    toImpl(preferencesRef)->setJavaScriptEnabled(javaScriptEnabled);
+    toImpl( preferencesRef )->setJavaScriptEnabled( javaScriptEnabled );
 }
 
-bool WKPreferencesGetJavaScriptEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetJavaScriptEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->javaScriptEnabled();
+    return toImpl( preferencesRef )->javaScriptEnabled();
 }
 
-void WKPreferencesSetLoadsImagesAutomatically(WKPreferencesRef preferencesRef, bool loadsImagesAutomatically)
+void WKPreferencesSetLoadsImagesAutomatically( WKPreferencesRef preferencesRef, bool loadsImagesAutomatically )
 {
-    toImpl(preferencesRef)->setLoadsImagesAutomatically(loadsImagesAutomatically);
+    toImpl( preferencesRef )->setLoadsImagesAutomatically( loadsImagesAutomatically );
 }
 
-bool WKPreferencesGetLoadsImagesAutomatically(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetLoadsImagesAutomatically( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->loadsImagesAutomatically();
+    return toImpl( preferencesRef )->loadsImagesAutomatically();
 }
 
-void WKPreferencesSetLoadsSiteIconsIgnoringImageLoadingPreference(WKPreferencesRef preferencesRef, bool loadsSiteIconsIgnoringImageLoadingPreference)
+void WKPreferencesSetLoadsSiteIconsIgnoringImageLoadingPreference( WKPreferencesRef preferencesRef,
+        bool loadsSiteIconsIgnoringImageLoadingPreference )
 {
-    toImpl(preferencesRef)->setLoadsSiteIconsIgnoringImageLoadingPreference(loadsSiteIconsIgnoringImageLoadingPreference);
+    toImpl( preferencesRef )->setLoadsSiteIconsIgnoringImageLoadingPreference( loadsSiteIconsIgnoringImageLoadingPreference );
 }
 
-bool WKPreferencesGetLoadsSiteIconsIgnoringImageLoadingPreference(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetLoadsSiteIconsIgnoringImageLoadingPreference( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->loadsSiteIconsIgnoringImageLoadingPreference();
+    return toImpl( preferencesRef )->loadsSiteIconsIgnoringImageLoadingPreference();
 }
 
-void WKPreferencesSetOfflineWebApplicationCacheEnabled(WKPreferencesRef preferencesRef, bool offlineWebApplicationCacheEnabled)
+void WKPreferencesSetOfflineWebApplicationCacheEnabled( WKPreferencesRef preferencesRef, bool offlineWebApplicationCacheEnabled )
 {
-    toImpl(preferencesRef)->setOfflineWebApplicationCacheEnabled(offlineWebApplicationCacheEnabled);
+    toImpl( preferencesRef )->setOfflineWebApplicationCacheEnabled( offlineWebApplicationCacheEnabled );
 }
 
-bool WKPreferencesGetOfflineWebApplicationCacheEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetOfflineWebApplicationCacheEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->offlineWebApplicationCacheEnabled();
+    return toImpl( preferencesRef )->offlineWebApplicationCacheEnabled();
 }
 
-void WKPreferencesSetLocalStorageEnabled(WKPreferencesRef preferencesRef, bool localStorageEnabled)
+void WKPreferencesSetLocalStorageEnabled( WKPreferencesRef preferencesRef, bool localStorageEnabled )
 {
-    toImpl(preferencesRef)->setLocalStorageEnabled(localStorageEnabled);
+    toImpl( preferencesRef )->setLocalStorageEnabled( localStorageEnabled );
 }
 
-bool WKPreferencesGetLocalStorageEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetLocalStorageEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->localStorageEnabled();
+    return toImpl( preferencesRef )->localStorageEnabled();
 }
 
-void WKPreferencesSetDatabasesEnabled(WKPreferencesRef preferencesRef, bool databasesEnabled)
+void WKPreferencesSetDatabasesEnabled( WKPreferencesRef preferencesRef, bool databasesEnabled )
 {
-    toImpl(preferencesRef)->setDatabasesEnabled(databasesEnabled);
+    toImpl( preferencesRef )->setDatabasesEnabled( databasesEnabled );
 }
 
-bool WKPreferencesGetDatabasesEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetDatabasesEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->databasesEnabled();
+    return toImpl( preferencesRef )->databasesEnabled();
 }
 
-void WKPreferencesSetXSSAuditorEnabled(WKPreferencesRef preferencesRef, bool xssAuditorEnabled)
+void WKPreferencesSetXSSAuditorEnabled( WKPreferencesRef preferencesRef, bool xssAuditorEnabled )
 {
-    toImpl(preferencesRef)->setXSSAuditorEnabled(xssAuditorEnabled);
+    toImpl( preferencesRef )->setXSSAuditorEnabled( xssAuditorEnabled );
 }
 
-bool WKPreferencesGetXSSAuditorEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetXSSAuditorEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->xssAuditorEnabled();
+    return toImpl( preferencesRef )->xssAuditorEnabled();
 }
 
-void WKPreferencesSetFrameFlatteningEnabled(WKPreferencesRef preferencesRef, bool frameFlatteningEnabled)
+void WKPreferencesSetFrameFlatteningEnabled( WKPreferencesRef preferencesRef, bool frameFlatteningEnabled )
 {
-    toImpl(preferencesRef)->setFrameFlatteningEnabled(frameFlatteningEnabled);
+    toImpl( preferencesRef )->setFrameFlatteningEnabled( frameFlatteningEnabled );
 }
 
-bool WKPreferencesGetFrameFlatteningEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetFrameFlatteningEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->frameFlatteningEnabled();
+    return toImpl( preferencesRef )->frameFlatteningEnabled();
 }
 
-void WKPreferencesSetPluginsEnabled(WKPreferencesRef preferencesRef, bool pluginsEnabled)
+void WKPreferencesSetPluginsEnabled( WKPreferencesRef preferencesRef, bool pluginsEnabled )
 {
-    toImpl(preferencesRef)->setPluginsEnabled(pluginsEnabled);
+    toImpl( preferencesRef )->setPluginsEnabled( pluginsEnabled );
 }
 
-bool WKPreferencesGetPluginsEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetPluginsEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->pluginsEnabled();
+    return toImpl( preferencesRef )->pluginsEnabled();
 }
 
-void WKPreferencesSetJavaEnabled(WKPreferencesRef preferencesRef, bool javaEnabled)
+void WKPreferencesSetJavaEnabled( WKPreferencesRef preferencesRef, bool javaEnabled )
 {
-    toImpl(preferencesRef)->setJavaEnabled(javaEnabled);
+    toImpl( preferencesRef )->setJavaEnabled( javaEnabled );
 }
 
-bool WKPreferencesGetJavaEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetJavaEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->javaEnabled();
+    return toImpl( preferencesRef )->javaEnabled();
 }
 
-void WKPreferencesSetJavaScriptCanOpenWindowsAutomatically(WKPreferencesRef preferencesRef, bool javaScriptCanOpenWindowsAutomatically)
+void WKPreferencesSetJavaScriptCanOpenWindowsAutomatically( WKPreferencesRef preferencesRef,
+        bool javaScriptCanOpenWindowsAutomatically )
 {
-    toImpl(preferencesRef)->setJavaScriptCanOpenWindowsAutomatically(javaScriptCanOpenWindowsAutomatically);
+    toImpl( preferencesRef )->setJavaScriptCanOpenWindowsAutomatically( javaScriptCanOpenWindowsAutomatically );
 }
 
-bool WKPreferencesGetJavaScriptCanOpenWindowsAutomatically(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetJavaScriptCanOpenWindowsAutomatically( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->javaScriptCanOpenWindowsAutomatically();
+    return toImpl( preferencesRef )->javaScriptCanOpenWindowsAutomatically();
 }
 
-void WKPreferencesSetHyperlinkAuditingEnabled(WKPreferencesRef preferencesRef, bool hyperlinkAuditingEnabled)
+void WKPreferencesSetHyperlinkAuditingEnabled( WKPreferencesRef preferencesRef, bool hyperlinkAuditingEnabled )
 {
-    toImpl(preferencesRef)->setHyperlinkAuditingEnabled(hyperlinkAuditingEnabled);
+    toImpl( preferencesRef )->setHyperlinkAuditingEnabled( hyperlinkAuditingEnabled );
 }
 
-bool WKPreferencesGetHyperlinkAuditingEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetHyperlinkAuditingEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->hyperlinkAuditingEnabled();
+    return toImpl( preferencesRef )->hyperlinkAuditingEnabled();
 }
 
-void WKPreferencesSetStandardFontFamily(WKPreferencesRef preferencesRef, WKStringRef family)
+void WKPreferencesSetStandardFontFamily( WKPreferencesRef preferencesRef, WKStringRef family )
 {
-    toImpl(preferencesRef)->setStandardFontFamily(toWTFString(family));
+    toImpl( preferencesRef )->setStandardFontFamily( toWTFString( family ) );
 }
 
-WKStringRef WKPreferencesCopyStandardFontFamily(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopyStandardFontFamily( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->standardFontFamily());
+    return toCopiedAPI( toImpl( preferencesRef )->standardFontFamily() );
 }
 
-void WKPreferencesSetFixedFontFamily(WKPreferencesRef preferencesRef, WKStringRef family)
+void WKPreferencesSetFixedFontFamily( WKPreferencesRef preferencesRef, WKStringRef family )
 {
-    toImpl(preferencesRef)->setFixedFontFamily(toWTFString(family));
+    toImpl( preferencesRef )->setFixedFontFamily( toWTFString( family ) );
 }
 
-WKStringRef WKPreferencesCopyFixedFontFamily(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopyFixedFontFamily( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->fixedFontFamily());
+    return toCopiedAPI( toImpl( preferencesRef )->fixedFontFamily() );
 }
 
-void WKPreferencesSetSerifFontFamily(WKPreferencesRef preferencesRef, WKStringRef family)
+void WKPreferencesSetSerifFontFamily( WKPreferencesRef preferencesRef, WKStringRef family )
 {
-    toImpl(preferencesRef)->setSerifFontFamily(toWTFString(family));
+    toImpl( preferencesRef )->setSerifFontFamily( toWTFString( family ) );
 }
 
-WKStringRef WKPreferencesCopySerifFontFamily(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopySerifFontFamily( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->serifFontFamily());
+    return toCopiedAPI( toImpl( preferencesRef )->serifFontFamily() );
 }
 
-void WKPreferencesSetSansSerifFontFamily(WKPreferencesRef preferencesRef, WKStringRef family)
+void WKPreferencesSetSansSerifFontFamily( WKPreferencesRef preferencesRef, WKStringRef family )
 {
-    toImpl(preferencesRef)->setSansSerifFontFamily(toWTFString(family));
+    toImpl( preferencesRef )->setSansSerifFontFamily( toWTFString( family ) );
 }
 
-WKStringRef WKPreferencesCopySansSerifFontFamily(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopySansSerifFontFamily( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->sansSerifFontFamily());
+    return toCopiedAPI( toImpl( preferencesRef )->sansSerifFontFamily() );
 }
 
-void WKPreferencesSetCursiveFontFamily(WKPreferencesRef preferencesRef, WKStringRef family)
+void WKPreferencesSetCursiveFontFamily( WKPreferencesRef preferencesRef, WKStringRef family )
 {
-    toImpl(preferencesRef)->setCursiveFontFamily(toWTFString(family));
+    toImpl( preferencesRef )->setCursiveFontFamily( toWTFString( family ) );
 }
 
-WKStringRef WKPreferencesCopyCursiveFontFamily(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopyCursiveFontFamily( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->cursiveFontFamily());
+    return toCopiedAPI( toImpl( preferencesRef )->cursiveFontFamily() );
 }
 
-void WKPreferencesSetFantasyFontFamily(WKPreferencesRef preferencesRef, WKStringRef family)
+void WKPreferencesSetFantasyFontFamily( WKPreferencesRef preferencesRef, WKStringRef family )
 {
-    toImpl(preferencesRef)->setFantasyFontFamily(toWTFString(family));
+    toImpl( preferencesRef )->setFantasyFontFamily( toWTFString( family ) );
 }
 
-WKStringRef WKPreferencesCopyFantasyFontFamily(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopyFantasyFontFamily( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->fantasyFontFamily());
+    return toCopiedAPI( toImpl( preferencesRef )->fantasyFontFamily() );
 }
 
-void WKPreferencesSetDefaultFontSize(WKPreferencesRef preferencesRef, uint32_t size)
+void WKPreferencesSetDefaultFontSize( WKPreferencesRef preferencesRef, uint32_t size )
 {
-    toImpl(preferencesRef)->setDefaultFontSize(size);
+    toImpl( preferencesRef )->setDefaultFontSize( size );
 }
 
-uint32_t WKPreferencesGetDefaultFontSize(WKPreferencesRef preferencesRef)
+uint32_t WKPreferencesGetDefaultFontSize( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->defaultFontSize();
+    return toImpl( preferencesRef )->defaultFontSize();
 }
 
-void WKPreferencesSetDefaultFixedFontSize(WKPreferencesRef preferencesRef, uint32_t size)
+void WKPreferencesSetDefaultFixedFontSize( WKPreferencesRef preferencesRef, uint32_t size )
 {
-    toImpl(preferencesRef)->setDefaultFixedFontSize(size);
+    toImpl( preferencesRef )->setDefaultFixedFontSize( size );
 }
 
-uint32_t WKPreferencesGetDefaultFixedFontSize(WKPreferencesRef preferencesRef)
+uint32_t WKPreferencesGetDefaultFixedFontSize( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->defaultFixedFontSize();
+    return toImpl( preferencesRef )->defaultFixedFontSize();
 }
 
-void WKPreferencesSetMinimumFontSize(WKPreferencesRef preferencesRef, uint32_t size)
+void WKPreferencesSetMinimumFontSize( WKPreferencesRef preferencesRef, uint32_t size )
 {
-    toImpl(preferencesRef)->setMinimumFontSize(size);
+    toImpl( preferencesRef )->setMinimumFontSize( size );
 }
 
-uint32_t WKPreferencesGetMinimumFontSize(WKPreferencesRef preferencesRef)
+uint32_t WKPreferencesGetMinimumFontSize( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->minimumFontSize();
+    return toImpl( preferencesRef )->minimumFontSize();
 }
 
-void WKPreferencesSetEditableLinkBehavior(WKPreferencesRef preferencesRef, WKEditableLinkBehavior wkBehavior)
+void WKPreferencesSetEditableLinkBehavior( WKPreferencesRef preferencesRef, WKEditableLinkBehavior wkBehavior )
 {
-    toImpl(preferencesRef)->setEditableLinkBehavior(toEditableLinkBehavior(wkBehavior));
+    toImpl( preferencesRef )->setEditableLinkBehavior( toEditableLinkBehavior( wkBehavior ) );
 }
 
-WKEditableLinkBehavior WKPreferencesGetEditableLinkBehavior(WKPreferencesRef preferencesRef)
+WKEditableLinkBehavior WKPreferencesGetEditableLinkBehavior( WKPreferencesRef preferencesRef )
 {
-    return toAPI(static_cast<WebCore::EditableLinkBehavior>(toImpl(preferencesRef)->editableLinkBehavior()));
+    return toAPI( static_cast<WebCore::EditableLinkBehavior>( toImpl( preferencesRef )->editableLinkBehavior() ) );
 }
 
-void WKPreferencesSetDefaultTextEncodingName(WKPreferencesRef preferencesRef, WKStringRef name)
+void WKPreferencesSetDefaultTextEncodingName( WKPreferencesRef preferencesRef, WKStringRef name )
 {
-    toImpl(preferencesRef)->setDefaultTextEncodingName(toWTFString(name));
+    toImpl( preferencesRef )->setDefaultTextEncodingName( toWTFString( name ) );
 }
 
-WKStringRef WKPreferencesCopyDefaultTextEncodingName(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopyDefaultTextEncodingName( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->defaultTextEncodingName());
+    return toCopiedAPI( toImpl( preferencesRef )->defaultTextEncodingName() );
 }
 
-void WKPreferencesSetPrivateBrowsingEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetPrivateBrowsingEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setPrivateBrowsingEnabled(enabled);
+    toImpl( preferencesRef )->setPrivateBrowsingEnabled( enabled );
 }
 
-bool WKPreferencesGetPrivateBrowsingEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetPrivateBrowsingEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->privateBrowsingEnabled();
+    return toImpl( preferencesRef )->privateBrowsingEnabled();
 }
 
-void WKPreferencesSetDeveloperExtrasEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetDeveloperExtrasEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setDeveloperExtrasEnabled(enabled);
+    toImpl( preferencesRef )->setDeveloperExtrasEnabled( enabled );
 }
 
-bool WKPreferencesGetDeveloperExtrasEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetDeveloperExtrasEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->developerExtrasEnabled();
+    return toImpl( preferencesRef )->developerExtrasEnabled();
 }
 
-void WKPreferencesSetTextAreasAreResizable(WKPreferencesRef preferencesRef, bool resizable)
+void WKPreferencesSetTextAreasAreResizable( WKPreferencesRef preferencesRef, bool resizable )
 {
-    toImpl(preferencesRef)->setTextAreasAreResizable(resizable);
+    toImpl( preferencesRef )->setTextAreasAreResizable( resizable );
 }
 
-bool WKPreferencesGetTextAreasAreResizable(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetTextAreasAreResizable( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->textAreasAreResizable();
+    return toImpl( preferencesRef )->textAreasAreResizable();
 }
 
-void WKPreferencesSetFontSmoothingLevel(WKPreferencesRef preferencesRef, WKFontSmoothingLevel wkLevel)
+void WKPreferencesSetFontSmoothingLevel( WKPreferencesRef preferencesRef, WKFontSmoothingLevel wkLevel )
 {
-    toImpl(preferencesRef)->setFontSmoothingLevel(toFontSmoothingLevel(wkLevel));
+    toImpl( preferencesRef )->setFontSmoothingLevel( toFontSmoothingLevel( wkLevel ) );
 }
 
-WKFontSmoothingLevel WKPreferencesGetFontSmoothingLevel(WKPreferencesRef preferencesRef)
+WKFontSmoothingLevel WKPreferencesGetFontSmoothingLevel( WKPreferencesRef preferencesRef )
 {
-    return toAPI(static_cast<FontSmoothingLevel>(toImpl(preferencesRef)->fontSmoothingLevel()));
+    return toAPI( static_cast<FontSmoothingLevel>( toImpl( preferencesRef )->fontSmoothingLevel() ) );
 }
 
-void WKPreferencesSetAcceleratedDrawingEnabled(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetAcceleratedDrawingEnabled( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setAcceleratedDrawingEnabled(flag);
+    toImpl( preferencesRef )->setAcceleratedDrawingEnabled( flag );
 }
 
-bool WKPreferencesGetAcceleratedDrawingEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetAcceleratedDrawingEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->acceleratedDrawingEnabled();
+    return toImpl( preferencesRef )->acceleratedDrawingEnabled();
 }
 
-void WKPreferencesSetCanvasUsesAcceleratedDrawing(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetCanvasUsesAcceleratedDrawing( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setCanvasUsesAcceleratedDrawing(flag);
+    toImpl( preferencesRef )->setCanvasUsesAcceleratedDrawing( flag );
 }
 
-bool WKPreferencesGetCanvasUsesAcceleratedDrawing(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetCanvasUsesAcceleratedDrawing( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->canvasUsesAcceleratedDrawing();
+    return toImpl( preferencesRef )->canvasUsesAcceleratedDrawing();
 }
 
-void WKPreferencesSetAcceleratedCompositingEnabled(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetAcceleratedCompositingEnabled( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setAcceleratedCompositingEnabled(flag);
+    toImpl( preferencesRef )->setAcceleratedCompositingEnabled( flag );
 }
 
-bool WKPreferencesGetAcceleratedCompositingEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetAcceleratedCompositingEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->acceleratedCompositingEnabled();
+    return toImpl( preferencesRef )->acceleratedCompositingEnabled();
 }
 
-void WKPreferencesSetCompositingBordersVisible(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetCompositingBordersVisible( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setCompositingBordersVisible(flag);
+    toImpl( preferencesRef )->setCompositingBordersVisible( flag );
 }
 
-bool WKPreferencesGetCompositingBordersVisible(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetCompositingBordersVisible( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->compositingBordersVisible();
+    return toImpl( preferencesRef )->compositingBordersVisible();
 }
 
-void WKPreferencesSetCompositingRepaintCountersVisible(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetCompositingRepaintCountersVisible( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setCompositingRepaintCountersVisible(flag);
+    toImpl( preferencesRef )->setCompositingRepaintCountersVisible( flag );
 }
 
-bool WKPreferencesGetCompositingRepaintCountersVisible(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetCompositingRepaintCountersVisible( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->compositingRepaintCountersVisible();
+    return toImpl( preferencesRef )->compositingRepaintCountersVisible();
 }
 
-void WKPreferencesSetWebGLEnabled(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetWebGLEnabled( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setWebGLEnabled(flag);
+    toImpl( preferencesRef )->setWebGLEnabled( flag );
 }
 
-bool WKPreferencesGetWebGLEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetWebGLEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->webGLEnabled();
+    return toImpl( preferencesRef )->webGLEnabled();
 }
 
-void WKPreferencesSetNeedsSiteSpecificQuirks(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetNeedsSiteSpecificQuirks( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setNeedsSiteSpecificQuirks(flag);
+    toImpl( preferencesRef )->setNeedsSiteSpecificQuirks( flag );
 }
 
-bool WKPreferencesGetNeedsSiteSpecificQuirks(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetNeedsSiteSpecificQuirks( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->needsSiteSpecificQuirks();
+    return toImpl( preferencesRef )->needsSiteSpecificQuirks();
 }
 
-void WKPreferencesSetForceFTPDirectoryListings(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetForceFTPDirectoryListings( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setForceFTPDirectoryListings(flag);
+    toImpl( preferencesRef )->setForceFTPDirectoryListings( flag );
 }
 
-bool WKPreferencesGetForceFTPDirectoryListings(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetForceFTPDirectoryListings( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->forceFTPDirectoryListings();
+    return toImpl( preferencesRef )->forceFTPDirectoryListings();
 }
 
-void WKPreferencesSetFTPDirectoryTemplatePath(WKPreferencesRef preferencesRef, WKStringRef pathRef)
+void WKPreferencesSetFTPDirectoryTemplatePath( WKPreferencesRef preferencesRef, WKStringRef pathRef )
 {
-    toImpl(preferencesRef)->setFTPDirectoryTemplatePath(toWTFString(pathRef));
+    toImpl( preferencesRef )->setFTPDirectoryTemplatePath( toWTFString( pathRef ) );
 }
 
-WKStringRef WKPreferencesCopyFTPDirectoryTemplatePath(WKPreferencesRef preferencesRef)
+WKStringRef WKPreferencesCopyFTPDirectoryTemplatePath( WKPreferencesRef preferencesRef )
 {
-    return toCopiedAPI(toImpl(preferencesRef)->ftpDirectoryTemplatePath());
+    return toCopiedAPI( toImpl( preferencesRef )->ftpDirectoryTemplatePath() );
 }
 
-void WKPreferencesSetTabsToLinks(WKPreferencesRef preferencesRef, bool tabsToLinks)
+void WKPreferencesSetTabsToLinks( WKPreferencesRef preferencesRef, bool tabsToLinks )
 {
-    toImpl(preferencesRef)->setTabsToLinks(tabsToLinks);
+    toImpl( preferencesRef )->setTabsToLinks( tabsToLinks );
 }
 
-bool WKPreferencesGetTabsToLinks(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetTabsToLinks( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->tabsToLinks();
+    return toImpl( preferencesRef )->tabsToLinks();
 }
 
-void WKPreferencesSetDNSPrefetchingEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetDNSPrefetchingEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setDNSPrefetchingEnabled(enabled);
+    toImpl( preferencesRef )->setDNSPrefetchingEnabled( enabled );
 }
 
-bool WKPreferencesGetDNSPrefetchingEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetDNSPrefetchingEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->dnsPrefetchingEnabled();
+    return toImpl( preferencesRef )->dnsPrefetchingEnabled();
 }
 
-void WKPreferencesSetAuthorAndUserStylesEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetAuthorAndUserStylesEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setAuthorAndUserStylesEnabled(enabled);
+    toImpl( preferencesRef )->setAuthorAndUserStylesEnabled( enabled );
 }
 
-bool WKPreferencesGetAuthorAndUserStylesEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetAuthorAndUserStylesEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->authorAndUserStylesEnabled();
+    return toImpl( preferencesRef )->authorAndUserStylesEnabled();
 }
 
-void WKPreferencesSetShouldPrintBackgrounds(WKPreferencesRef preferencesRef, bool flag)
+void WKPreferencesSetShouldPrintBackgrounds( WKPreferencesRef preferencesRef, bool flag )
 {
-    toImpl(preferencesRef)->setShouldPrintBackgrounds(flag);
+    toImpl( preferencesRef )->setShouldPrintBackgrounds( flag );
 }
 
-bool WKPreferencesGetShouldPrintBackgrounds(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetShouldPrintBackgrounds( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->shouldPrintBackgrounds();
+    return toImpl( preferencesRef )->shouldPrintBackgrounds();
 }
 
-void WKPreferencesSetWebArchiveDebugModeEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetWebArchiveDebugModeEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setWebArchiveDebugModeEnabled(enabled);
+    toImpl( preferencesRef )->setWebArchiveDebugModeEnabled( enabled );
 }
 
-bool WKPreferencesGetWebArchiveDebugModeEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetWebArchiveDebugModeEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->webArchiveDebugModeEnabled();
+    return toImpl( preferencesRef )->webArchiveDebugModeEnabled();
 }
 
-void WKPreferencesSetLocalFileContentSniffingEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetLocalFileContentSniffingEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setLocalFileContentSniffingEnabled(enabled);
+    toImpl( preferencesRef )->setLocalFileContentSniffingEnabled( enabled );
 }
 
-bool WKPreferencesGetLocalFileContentSniffingEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetLocalFileContentSniffingEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->localFileContentSniffingEnabled();
+    return toImpl( preferencesRef )->localFileContentSniffingEnabled();
 }
 
-void WKPreferencesSetPageCacheEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetPageCacheEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setUsesPageCache(enabled);
+    toImpl( preferencesRef )->setUsesPageCache( enabled );
 }
 
-bool WKPreferencesGetPageCacheEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetPageCacheEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->usesPageCache();
+    return toImpl( preferencesRef )->usesPageCache();
 }
 
-void WKPreferencesSetPaginateDuringLayoutEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetPaginateDuringLayoutEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setPaginateDuringLayoutEnabled(enabled);
+    toImpl( preferencesRef )->setPaginateDuringLayoutEnabled( enabled );
 }
 
-bool WKPreferencesGetPaginateDuringLayoutEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetPaginateDuringLayoutEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->paginateDuringLayoutEnabled();
+    return toImpl( preferencesRef )->paginateDuringLayoutEnabled();
 }
 
-void WKPreferencesSetDOMPasteAllowed(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetDOMPasteAllowed( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setDOMPasteAllowed(enabled);
+    toImpl( preferencesRef )->setDOMPasteAllowed( enabled );
 }
 
-bool WKPreferencesGetDOMPasteAllowed(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetDOMPasteAllowed( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->domPasteAllowed();
+    return toImpl( preferencesRef )->domPasteAllowed();
 }
 
-void WKPreferencesSetJavaScriptCanAccessClipboard(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetJavaScriptCanAccessClipboard( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setJavaScriptCanAccessClipboard(enabled);
+    toImpl( preferencesRef )->setJavaScriptCanAccessClipboard( enabled );
 }
 
-bool WKPreferencesGetJavaScriptCanAccessClipboard(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetJavaScriptCanAccessClipboard( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->javaScriptCanAccessClipboard();
+    return toImpl( preferencesRef )->javaScriptCanAccessClipboard();
 }
 
-void WKPreferencesSetFullScreenEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetFullScreenEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setFullScreenEnabled(enabled);
+    toImpl( preferencesRef )->setFullScreenEnabled( enabled );
 }
 
-bool WKPreferencesGetFullScreenEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetFullScreenEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->fullScreenEnabled();
+    return toImpl( preferencesRef )->fullScreenEnabled();
 }
 
-void WKPreferencesSetAVFoundationEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetAVFoundationEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setAVFoundationEnabled(enabled);
+    toImpl( preferencesRef )->setAVFoundationEnabled( enabled );
 }
 
-bool WKPreferencesGetAVFoundationEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetAVFoundationEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->isAVFoundationEnabled();
+    return toImpl( preferencesRef )->isAVFoundationEnabled();
 }
 
-void WKPreferencesSetWebSecurityEnabled(WKPreferencesRef preferencesRef, bool enabled)
+void WKPreferencesSetWebSecurityEnabled( WKPreferencesRef preferencesRef, bool enabled )
 {
-    toImpl(preferencesRef)->setWebSecurityEnabled(enabled);
+    toImpl( preferencesRef )->setWebSecurityEnabled( enabled );
 }
 
-bool WKPreferencesGetWebSecurityEnabled(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetWebSecurityEnabled( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->webSecurityEnabled();
+    return toImpl( preferencesRef )->webSecurityEnabled();
 }
 
-void WKPreferencesSetUniversalAccessFromFileURLsAllowed(WKPreferencesRef preferencesRef, bool allowed)
+void WKPreferencesSetUniversalAccessFromFileURLsAllowed( WKPreferencesRef preferencesRef, bool allowed )
 {
-    toImpl(preferencesRef)->setAllowUniversalAccessFromFileURLs(allowed);
+    toImpl( preferencesRef )->setAllowUniversalAccessFromFileURLs( allowed );
 }
 
-bool WKPreferencesGetUniversalAccessFromFileURLsAllowed(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetUniversalAccessFromFileURLsAllowed( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->allowUniversalAccessFromFileURLs();
+    return toImpl( preferencesRef )->allowUniversalAccessFromFileURLs();
 }
 
-void WKPreferencesSetFileAccessFromFileURLsAllowed(WKPreferencesRef preferencesRef, bool allowed)
+void WKPreferencesSetFileAccessFromFileURLsAllowed( WKPreferencesRef preferencesRef, bool allowed )
 {
-    toImpl(preferencesRef)->setAllowFileAccessFromFileURLs(allowed);
+    toImpl( preferencesRef )->setAllowFileAccessFromFileURLs( allowed );
 }
 
-bool WKPreferencesGetFileAccessFromFileURLsAllowed(WKPreferencesRef preferencesRef)
+bool WKPreferencesGetFileAccessFromFileURLsAllowed( WKPreferencesRef preferencesRef )
 {
-    return toImpl(preferencesRef)->allowFileAccessFromFileURLs();
+    return toImpl( preferencesRef )->allowFileAccessFromFileURLs();
 }

@@ -26,35 +26,42 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class History;
 
-class JSHistory : public JSDOMWrapper {
+class JSHistory : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSHistory(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<History>);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
-    bool getOwnPropertySlotDelegate(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    bool getOwnPropertyDescriptorDelegate(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    virtual void put(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::JSValue, JSC::PutPropertySlot&);
-    bool putDelegate(JSC::ExecState*, const JSC::Identifier&, JSC::JSValue, JSC::PutPropertySlot&);
+    JSHistory( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<History> );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
+    bool getOwnPropertySlotDelegate( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    bool getOwnPropertyDescriptorDelegate( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    virtual void put( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::JSValue, JSC::PutPropertySlot & );
+    bool putDelegate( JSC::ExecState *, const JSC::Identifier &, JSC::JSValue, JSC::PutPropertySlot & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    virtual bool deleteProperty(JSC::ExecState*, const JSC::Identifier&);
-    virtual void getOwnPropertyNames(JSC::ExecState*, JSC::PropertyNameArray&, JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties);
+    virtual bool deleteProperty( JSC::ExecState *, const JSC::Identifier & );
+    virtual void getOwnPropertyNames( JSC::ExecState *, JSC::PropertyNameArray &,
+                                      JSC::EnumerationMode mode = JSC::ExcludeDontEnumProperties );
 
     // Custom functions
-    JSC::JSValue pushState(JSC::ExecState*);
-    JSC::JSValue replaceState(JSC::ExecState*);
-    History* impl() const { return m_impl.get(); }
+    JSC::JSValue pushState( JSC::ExecState * );
+    JSC::JSValue replaceState( JSC::ExecState * );
+    History *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<History> m_impl;
@@ -62,51 +69,55 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetPropertyNames | JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-class JSHistoryOwner : public JSC::WeakHandleOwner {
-    virtual bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, JSC::SlotVisitor&);
-    virtual void finalize(JSC::Handle<JSC::Unknown>, void* context);
+class JSHistoryOwner : public JSC::WeakHandleOwner
+{
+    virtual bool isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context, JSC::SlotVisitor & );
+    virtual void finalize( JSC::Handle<JSC::Unknown>, void *context );
 };
 
-inline JSC::WeakHandleOwner* wrapperOwner(DOMWrapperWorld*, History*)
+inline JSC::WeakHandleOwner *wrapperOwner( DOMWrapperWorld *, History * )
 {
-    DEFINE_STATIC_LOCAL(JSHistoryOwner, jsHistoryOwner, ());
+    DEFINE_STATIC_LOCAL( JSHistoryOwner, jsHistoryOwner, () );
     return &jsHistoryOwner;
 }
 
-inline void* wrapperContext(DOMWrapperWorld* world, History*)
+inline void *wrapperContext( DOMWrapperWorld *world, History * )
 {
     return world;
 }
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, History*);
-History* toHistory(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, History * );
+History *toHistory( JSC::JSValue );
 
-class JSHistoryPrototype : public JSC::JSObjectWithGlobalObject {
+class JSHistoryPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSHistoryPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSHistoryPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                        JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionBack(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionForward(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionGo(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionPushState(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionReplaceState(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionBack( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionForward( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionGo( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionPushState( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsHistoryPrototypeFunctionReplaceState( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsHistoryLength(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsHistoryLength( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

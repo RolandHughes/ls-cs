@@ -8,13 +8,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -36,13 +36,14 @@
 #include "FrameLoader.h"
 #include "HTMLFormElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 PolicyCallback::PolicyCallback()
-    : m_navigationFunction(0)
-    , m_newWindowFunction(0)
-    , m_contentFunction(0)
-    , m_argument(0)
+    : m_navigationFunction( 0 )
+    , m_newWindowFunction( 0 )
+    , m_contentFunction( 0 )
+    , m_argument( 0 )
 {
 }
 
@@ -58,8 +59,8 @@ void PolicyCallback::clear()
     m_contentFunction = 0;
 }
 
-void PolicyCallback::set(const ResourceRequest& request, PassRefPtr<FormState> formState,
-    NavigationPolicyDecisionFunction function, void* argument)
+void PolicyCallback::set( const ResourceRequest &request, PassRefPtr<FormState> formState,
+                          NavigationPolicyDecisionFunction function, void *argument )
 {
     m_request = request;
     m_formState = formState;
@@ -71,8 +72,8 @@ void PolicyCallback::set(const ResourceRequest& request, PassRefPtr<FormState> f
     m_argument = argument;
 }
 
-void PolicyCallback::set(const ResourceRequest& request, PassRefPtr<FormState> formState,
-    const String& frameName, const NavigationAction& navigationAction, NewWindowPolicyDecisionFunction function, void* argument)
+void PolicyCallback::set( const ResourceRequest &request, PassRefPtr<FormState> formState,
+                          const String &frameName, const NavigationAction &navigationAction, NewWindowPolicyDecisionFunction function, void *argument )
 {
     m_request = request;
     m_formState = formState;
@@ -85,7 +86,7 @@ void PolicyCallback::set(const ResourceRequest& request, PassRefPtr<FormState> f
     m_argument = argument;
 }
 
-void PolicyCallback::set(ContentPolicyDecisionFunction function, void* argument)
+void PolicyCallback::set( ContentPolicyDecisionFunction function, void *argument )
 {
     m_request = ResourceRequest();
     m_formState = 0;
@@ -97,21 +98,27 @@ void PolicyCallback::set(ContentPolicyDecisionFunction function, void* argument)
     m_argument = argument;
 }
 
-void PolicyCallback::call(bool shouldContinue)
+void PolicyCallback::call( bool shouldContinue )
 {
-    if (m_navigationFunction)
-        m_navigationFunction(m_argument, m_request, m_formState.get(), shouldContinue);
-    if (m_newWindowFunction)
-        m_newWindowFunction(m_argument, m_request, m_formState.get(), m_frameName, m_navigationAction, shouldContinue);
-    ASSERT(!m_contentFunction);
+    if ( m_navigationFunction )
+    {
+        m_navigationFunction( m_argument, m_request, m_formState.get(), shouldContinue );
+    }
+
+    if ( m_newWindowFunction )
+    {
+        m_newWindowFunction( m_argument, m_request, m_formState.get(), m_frameName, m_navigationAction, shouldContinue );
+    }
+
+    ASSERT( !m_contentFunction );
 }
 
-void PolicyCallback::call(PolicyAction action)
+void PolicyCallback::call( PolicyAction action )
 {
-    ASSERT(!m_navigationFunction);
-    ASSERT(!m_newWindowFunction);
-    ASSERT(m_contentFunction);
-    m_contentFunction(m_argument, action);
+    ASSERT( !m_navigationFunction );
+    ASSERT( !m_newWindowFunction );
+    ASSERT( m_contentFunction );
+    m_contentFunction( m_argument, action );
 }
 
 void PolicyCallback::clearRequest()
@@ -124,12 +131,21 @@ void PolicyCallback::clearRequest()
 void PolicyCallback::cancel()
 {
     clearRequest();
-    if (m_navigationFunction)
-        m_navigationFunction(m_argument, m_request, m_formState.get(), false);
-    if (m_newWindowFunction)
-        m_newWindowFunction(m_argument, m_request, m_formState.get(), m_frameName, m_navigationAction, false);
-    if (m_contentFunction)
-        m_contentFunction(m_argument, PolicyIgnore);
+
+    if ( m_navigationFunction )
+    {
+        m_navigationFunction( m_argument, m_request, m_formState.get(), false );
+    }
+
+    if ( m_newWindowFunction )
+    {
+        m_newWindowFunction( m_argument, m_request, m_formState.get(), m_frameName, m_navigationAction, false );
+    }
+
+    if ( m_contentFunction )
+    {
+        m_contentFunction( m_argument, PolicyIgnore );
+    }
 }
 
 } // namespace WebCore

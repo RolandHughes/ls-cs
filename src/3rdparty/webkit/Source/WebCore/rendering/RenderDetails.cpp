@@ -27,34 +27,39 @@
 #include "HTMLDetailsElement.h"
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-RenderDetails::RenderDetails(Node* node)
-    : RenderBlock(node)
+RenderDetails::RenderDetails( Node *node )
+    : RenderBlock( node )
 {
 }
 
-void RenderDetails::addChild(RenderObject* newChild, RenderObject* beforeChild)
+void RenderDetails::addChild( RenderObject *newChild, RenderObject *beforeChild )
 {
-    if (static_cast<HTMLDetailsElement*>(node())->mainSummary() == newChild->node())
-        RenderBlock::addChild(newChild, firstChild());
+    if ( static_cast<HTMLDetailsElement *>( node() )->mainSummary() == newChild->node() )
+    {
+        RenderBlock::addChild( newChild, firstChild() );
+    }
     else
-        RenderBlock::addChild(newChild, beforeChild);
+    {
+        RenderBlock::addChild( newChild, beforeChild );
+    }
 }
 
-void RenderDetails::styleDidChange(StyleDifference diff, const RenderStyle* oldStyle)
+void RenderDetails::styleDidChange( StyleDifference diff, const RenderStyle *oldStyle )
 {
-    RenderBlock::styleDidChange(diff, oldStyle);
+    RenderBlock::styleDidChange( diff, oldStyle );
     // Ensure that if we ended up being inline that we set our replaced flag
     // so that we're treated like an inline-block.
-    setReplaced(isInline());
+    setReplaced( isInline() );
 }
 
 bool RenderDetails::isOpen() const
 {
-    return node() && node()->isElementNode() ? !static_cast<Element*>(node())->getAttribute(openAttr).isNull() : false;
+    return node() && node()->isElementNode() ? !static_cast<Element *>( node() )->getAttribute( openAttr ).isNull() : false;
 }
 
 } // namespace WebCore

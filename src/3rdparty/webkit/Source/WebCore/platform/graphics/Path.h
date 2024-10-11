@@ -22,7 +22,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Path_h
@@ -35,7 +35,8 @@
 #if USE(CG)
 typedef struct CGPath PlatformPath;
 #elif PLATFORM(OPENVG)
-namespace WebCore {
+namespace WebCore
+{
 class PlatformPathOpenVG;
 }
 typedef WebCore::PlatformPathOpenVG PlatformPath;
@@ -46,7 +47,8 @@ typedef QPainterPath PlatformPath;
 class wxGraphicsPath;
 typedef wxGraphicsPath PlatformPath;
 #elif USE(CAIRO)
-namespace WebCore {
+namespace WebCore
+{
 class CairoPath;
 }
 typedef WebCore::CairoPath PlatformPath;
@@ -57,8 +59,9 @@ typedef SkPath PlatformPath;
 class BRegion;
 typedef BRegion PlatformPath;
 #elif OS(WINCE)
-namespace WebCore {
-    class PlatformPath;
+namespace WebCore
+{
+class PlatformPath;
 }
 typedef WebCore::PlatformPath PlatformPath;
 #else
@@ -69,87 +72,96 @@ typedef void PlatformPath;
 /* QPainterPath is valued based */
 typedef PlatformPath PlatformPathPtr;
 #else
-typedef PlatformPath* PlatformPathPtr;
+typedef PlatformPath *PlatformPathPtr;
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class AffineTransform;
-    class FloatPoint;
-    class FloatRect;
-    class FloatSize;
-    class GraphicsContext;
-    class StrokeStyleApplier;
+class AffineTransform;
+class FloatPoint;
+class FloatRect;
+class FloatSize;
+class GraphicsContext;
+class StrokeStyleApplier;
 
-    enum WindRule {
-        RULE_NONZERO = 0,
-        RULE_EVENODD = 1
-    };
+enum WindRule
+{
+    RULE_NONZERO = 0,
+    RULE_EVENODD = 1
+};
 
-    enum PathElementType {
-        PathElementMoveToPoint,
-        PathElementAddLineToPoint,
-        PathElementAddQuadCurveToPoint,
-        PathElementAddCurveToPoint,
-        PathElementCloseSubpath
-    };
+enum PathElementType
+{
+    PathElementMoveToPoint,
+    PathElementAddLineToPoint,
+    PathElementAddQuadCurveToPoint,
+    PathElementAddCurveToPoint,
+    PathElementCloseSubpath
+};
 
-    struct PathElement {
-        PathElementType type;
-        FloatPoint* points;
-    };
+struct PathElement
+{
+    PathElementType type;
+    FloatPoint *points;
+};
 
-    typedef void (*PathApplierFunction)(void* info, const PathElement*);
+typedef void ( *PathApplierFunction )( void *info, const PathElement * );
 
-    class Path {
-        WTF_MAKE_FAST_ALLOCATED;
-    public:
-        Path();
-        ~Path();
+class Path
+{
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    Path();
+    ~Path();
 
-        Path(const Path&);
-        Path& operator=(const Path&);
+    Path( const Path & );
+    Path &operator=( const Path & );
 
-        bool contains(const FloatPoint&, WindRule rule = RULE_NONZERO) const;
-        bool strokeContains(StrokeStyleApplier*, const FloatPoint&) const;
-        FloatRect boundingRect() const;
-        FloatRect strokeBoundingRect(StrokeStyleApplier* = 0) const;
-        
-        float length() const;
-        FloatPoint pointAtLength(float length, bool& ok) const;
-        float normalAngleAtLength(float length, bool& ok) const;
+    bool contains( const FloatPoint &, WindRule rule = RULE_NONZERO ) const;
+    bool strokeContains( StrokeStyleApplier *, const FloatPoint & ) const;
+    FloatRect boundingRect() const;
+    FloatRect strokeBoundingRect( StrokeStyleApplier * = 0 ) const;
 
-        void clear();
-        bool isEmpty() const;
-        // Gets the current point of the current path, which is conceptually the final point reached by the path so far.
-        // Note the Path can be empty (isEmpty() == true) and still have a current point.
-        bool hasCurrentPoint() const;
-        FloatPoint currentPoint() const;
+    float length() const;
+    FloatPoint pointAtLength( float length, bool &ok ) const;
+    float normalAngleAtLength( float length, bool &ok ) const;
 
-        void moveTo(const FloatPoint&);
-        void addLineTo(const FloatPoint&);
-        void addQuadCurveTo(const FloatPoint& controlPoint, const FloatPoint& endPoint);
-        void addBezierCurveTo(const FloatPoint& controlPoint1, const FloatPoint& controlPoint2, const FloatPoint& endPoint);
-        void addArcTo(const FloatPoint&, const FloatPoint&, float radius);
-        void closeSubpath();
+    void clear();
+    bool isEmpty() const;
+    // Gets the current point of the current path, which is conceptually the final point reached by the path so far.
+    // Note the Path can be empty (isEmpty() == true) and still have a current point.
+    bool hasCurrentPoint() const;
+    FloatPoint currentPoint() const;
 
-        void addArc(const FloatPoint&, float radius, float startAngle, float endAngle, bool anticlockwise);
-        void addRect(const FloatRect&);
-        void addEllipse(const FloatRect&);
-        void addRoundedRect(const FloatRect&, const FloatSize& roundingRadii);
-        void addRoundedRect(const FloatRect&, const FloatSize& topLeftRadius, const FloatSize& topRightRadius, const FloatSize& bottomLeftRadius, const FloatSize& bottomRightRadius);
-        void addRoundedRect(const RoundedIntRect&);
+    void moveTo( const FloatPoint & );
+    void addLineTo( const FloatPoint & );
+    void addQuadCurveTo( const FloatPoint &controlPoint, const FloatPoint &endPoint );
+    void addBezierCurveTo( const FloatPoint &controlPoint1, const FloatPoint &controlPoint2, const FloatPoint &endPoint );
+    void addArcTo( const FloatPoint &, const FloatPoint &, float radius );
+    void closeSubpath();
 
-        void translate(const FloatSize&);
+    void addArc( const FloatPoint &, float radius, float startAngle, float endAngle, bool anticlockwise );
+    void addRect( const FloatRect & );
+    void addEllipse( const FloatRect & );
+    void addRoundedRect( const FloatRect &, const FloatSize &roundingRadii );
+    void addRoundedRect( const FloatRect &, const FloatSize &topLeftRadius, const FloatSize &topRightRadius,
+                         const FloatSize &bottomLeftRadius, const FloatSize &bottomRightRadius );
+    void addRoundedRect( const RoundedIntRect & );
 
-        PlatformPathPtr platformPath() const { return m_path; }
+    void translate( const FloatSize & );
 
-        void apply(void* info, PathApplierFunction) const;
-        void transform(const AffineTransform&);
+    PlatformPathPtr platformPath() const
+    {
+        return m_path;
+    }
 
-    private:
-        PlatformPathPtr m_path;
-    };
+    void apply( void *info, PathApplierFunction ) const;
+    void transform( const AffineTransform & );
+
+private:
+    PlatformPathPtr m_path;
+};
 
 }
 

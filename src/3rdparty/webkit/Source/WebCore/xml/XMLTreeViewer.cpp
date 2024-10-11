@@ -44,26 +44,35 @@
 
 using namespace std;
 
-namespace WebCore {
+namespace WebCore
+{
 
-XMLTreeViewer::XMLTreeViewer(Document* document)
-    : m_document(document)
+XMLTreeViewer::XMLTreeViewer( Document *document )
+    : m_document( document )
 {
 }
 
 bool XMLTreeViewer::hasNoStyleInformation() const
 {
-    if (m_document->sawElementsInKnownNamespaces() || m_document->transformSourceDocument())
+    if ( m_document->sawElementsInKnownNamespaces() || m_document->transformSourceDocument() )
+    {
         return false;
+    }
 
-    if (!m_document->frame() || !m_document->frame()->page())
+    if ( !m_document->frame() || !m_document->frame()->page() )
+    {
         return false;
+    }
 
-    if (!m_document->frame()->page()->settings()->developerExtrasEnabled())
+    if ( !m_document->frame()->page()->settings()->developerExtrasEnabled() )
+    {
         return false;
+    }
 
-    if (m_document->frame()->tree()->parent(true))
-        return false; // This document is not in a top frame
+    if ( m_document->frame()->tree()->parent( true ) )
+    {
+        return false;    // This document is not in a top frame
+    }
 
     return true;
 }
@@ -73,21 +82,23 @@ void XMLTreeViewer::transformDocumentToTreeView()
     // FIXME: Temporary hack to ensure that we still display some of the document (and don't crash)
     // when script is disabled. See https://bugs.webkit.org/show_bug.cgi?id=59113 for work on a
     // better solution.
-    if (!m_document->frame()->script()->canExecuteScripts(NotAboutToExecuteScript))
+    if ( !m_document->frame()->script()->canExecuteScripts( NotAboutToExecuteScript ) )
+    {
         return;
+    }
 
-    String scriptString(reinterpret_cast<const char*>(XMLViewer_js), sizeof(XMLViewer_js));
-    m_document->frame()->script()->evaluate(ScriptSourceCode(scriptString));
-    String noStyleMessage("This XML file does not appear to have any style information associated with it. The document tree is shown below.");
-    m_document->frame()->script()->evaluate(ScriptSourceCode("prepareWebKitXMLViewer('" + noStyleMessage + "');"));
+    String scriptString( reinterpret_cast<const char *>( XMLViewer_js ), sizeof( XMLViewer_js ) );
+    m_document->frame()->script()->evaluate( ScriptSourceCode( scriptString ) );
+    String noStyleMessage( "This XML file does not appear to have any style information associated with it. The document tree is shown below." );
+    m_document->frame()->script()->evaluate( ScriptSourceCode( "prepareWebKitXMLViewer('" + noStyleMessage + "');" ) );
 
-    String cssString(reinterpret_cast<const char*>(XMLViewer_css), sizeof(XMLViewer_css));
-    RefPtr<Text> text = m_document->createTextNode(cssString);
+    String cssString( reinterpret_cast<const char *>( XMLViewer_css ), sizeof( XMLViewer_css ) );
+    RefPtr<Text> text = m_document->createTextNode( cssString );
     ExceptionCode exceptionCode;
-    m_document->getElementById("xml-viewer-style")->appendChild(text, exceptionCode);
+    m_document->getElementById( "xml-viewer-style" )->appendChild( text, exceptionCode );
 
-    m_document->setUsesViewSourceStyles(true);
-    m_document->styleSelectorChanged(RecalcStyleImmediately);
+    m_document->setUsesViewSourceStyles( true );
+    m_document->styleSelectorChanged( RecalcStyleImmediately );
 }
 
 } // namespace WebCore

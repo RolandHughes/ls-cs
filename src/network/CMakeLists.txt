@@ -1,9 +1,9 @@
-add_library(CsNetwork SHARED "")
-add_library(CopperSpice::CsNetwork ALIAS CsNetwork)
+add_library(LsCsNetwork SHARED "")
+add_library(LsCs::LsCsNetwork ALIAS LsCsNetwork)
 
-set_target_properties(CsNetwork PROPERTIES OUTPUT_NAME CsNetwork${BUILD_ABI})
+set_target_properties(LsCsNetwork PROPERTIES OUTPUT_NAME LsCsNetwork${BUILD_ABI})
 
-target_compile_definitions(CsNetwork
+target_compile_definitions(LsCsNetwork
    PRIVATE
    -DQT_BUILD_NETWORK_LIB
 )
@@ -13,27 +13,27 @@ set(EXTRA_NETWORK_LDFLAGS)
 
 if (SECURETRANSPORT_FOUND)
    # darwin
-   target_compile_definitions(CsNetwork
+   target_compile_definitions(LsCsNetwork
       PUBLIC
       -DQT_SSL
       -DQT_SECURETRANSPORT
    )
 
 elseif (OPENSSL_FOUND)
-   target_compile_definitions(CsNetwork
+   target_compile_definitions(LsCsNetwork
       PUBLIC
       -DQT_SSL
       -DQT_OPENSSL
    )
    include_directories(${OPENSSL_INCLUDE_DIR})
 
-   target_link_libraries(CsNetwork
+   target_link_libraries(LsCsNetwork
       PRIVATE
       ${OPENSSL_LIBRARIES}
    )
 endif()
 
-target_include_directories(CsNetwork
+target_include_directories(LsCsNetwork
    PUBLIC
    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/QtNetwork>
    $<INSTALL_INTERFACE:include/QtNetwork>
@@ -73,7 +73,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   target_link_libraries(CsNetwork
+   target_link_libraries(LsCsNetwork
       PRIVATE
       ws2_32
       crypt32
@@ -86,38 +86,48 @@ endif()
 function_variable_fixup("${EXTRA_NETWORK_CXXFLAGS}" EXTRA_NETWORK_CXXFLAGS)
 function_variable_fixup("${EXTRA_NETWORK_LDFLAGS}"  EXTRA_NETWORK_LDFLAGS)
 
-target_sources(CsNetwork
+target_sources(LsCsNetwork
    PRIVATE
    ${NETWORK_INCLUDES}
 )
 
-target_link_libraries(CsNetwork
+target_link_libraries(LsCsNetwork
    PUBLIC
-   CsCore
+   LsCsCore
 )
 
-set_target_properties(CsNetwork
+set_target_properties(LsCsNetwork
    PROPERTIES
    COMPILE_FLAGS ${EXTRA_NETWORK_CXXFLAGS}
    LINK_FLAGS ${EXTRA_NETWORK_LDFLAGS}
 )
 
-function_generate_resources(CsNetwork)
+function_generate_resources(LsCsNetwork)
 
 macro_generate_package(
-   CsNetwork
+   LsCsNetwork
    QtNetwork
    "${EXTRA_NETWORK_CXXFLAGS}"
-   "CsCore"
+   "LsCsCore"
 )
 
-install(
-   TARGETS CsNetwork
-   EXPORT CopperSpiceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
-   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (DEBIAN_FOUND)
+    install(
+        TARGETS LsCsNetwork
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+    )
+else()  
+    install(
+        TARGETS LsCsNetwork
+        EXPORT LsCsLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif() 
 
 install(
    DIRECTORY ${CMAKE_BINARY_DIR}/include/QtNetwork

@@ -32,60 +32,61 @@
 
 class QGraphicsProxyWidgetPrivate : public QGraphicsWidgetPrivate
 {
-   Q_DECLARE_PUBLIC(QGraphicsProxyWidget)
+    Q_DECLARE_PUBLIC( QGraphicsProxyWidget )
 
- public:
-   QGraphicsProxyWidgetPrivate()
-      : dragDropWidget(nullptr), posChangeMode(NoMode), sizeChangeMode(NoMode), visibleChangeMode(NoMode),
-        enabledChangeMode(NoMode), styleChangeMode(NoMode), paletteChangeMode(NoMode),
-        tooltipChangeMode(NoMode), focusFromWidgetToProxy(0)
-   {
-   }
+public:
+    QGraphicsProxyWidgetPrivate()
+        : dragDropWidget( nullptr ), posChangeMode( NoMode ), sizeChangeMode( NoMode ), visibleChangeMode( NoMode ),
+          enabledChangeMode( NoMode ), styleChangeMode( NoMode ), paletteChangeMode( NoMode ),
+          tooltipChangeMode( NoMode ), focusFromWidgetToProxy( 0 )
+    {
+    }
 
-   void init();
-   void sendWidgetMouseEvent(QGraphicsSceneMouseEvent *event);
-   void sendWidgetMouseEvent(QGraphicsSceneHoverEvent *event);
-   void sendWidgetKeyEvent(QKeyEvent *event);
-   void setWidget_helper(QWidget *widget, bool autoShow);
+    void init();
+    void sendWidgetMouseEvent( QGraphicsSceneMouseEvent *event );
+    void sendWidgetMouseEvent( QGraphicsSceneHoverEvent *event );
+    void sendWidgetKeyEvent( QKeyEvent *event );
+    void setWidget_helper( QWidget *widget, bool autoShow );
 
-   QWidget *findFocusChild(QWidget *child, bool next) const;
-   void removeSubFocusHelper(QWidget *widget, Qt::FocusReason reason);
+    QWidget *findFocusChild( QWidget *child, bool next ) const;
+    void removeSubFocusHelper( QWidget *widget, Qt::FocusReason reason );
 
-   void _q_removeWidgetSlot();
+    void _q_removeWidgetSlot();
 
-   void embedSubWindow(QWidget *);
-   void unembedSubWindow(QWidget *);
+    void embedSubWindow( QWidget * );
+    void unembedSubWindow( QWidget * );
 
-   bool isProxyWidget() const override;
+    bool isProxyWidget() const override;
 
-   QPointer<QWidget> widget;
-   QPointer<QWidget> lastWidgetUnderMouse;
-   QPointer<QWidget> embeddedMouseGrabber;
-   QWidget *dragDropWidget;
-   Qt::DropAction lastDropAction;
+    QPointer<QWidget> widget;
+    QPointer<QWidget> lastWidgetUnderMouse;
+    QPointer<QWidget> embeddedMouseGrabber;
+    QWidget *dragDropWidget;
+    Qt::DropAction lastDropAction;
 
-   void updateWidgetGeometryFromProxy();
-   void updateProxyGeometryFromWidget();
+    void updateWidgetGeometryFromProxy();
+    void updateProxyGeometryFromWidget();
 
-   void updateProxyInputMethodAcceptanceFromWidget();
+    void updateProxyInputMethodAcceptanceFromWidget();
 
-   QPointF mapToReceiver(const QPointF &pos, const QWidget *receiver) const;
+    QPointF mapToReceiver( const QPointF &pos, const QWidget *receiver ) const;
 
-   enum ChangeMode {
-      NoMode,
-      ProxyToWidgetMode,
-      WidgetToProxyMode
-   };
+    enum ChangeMode
+    {
+        NoMode,
+        ProxyToWidgetMode,
+        WidgetToProxyMode
+    };
 
-   quint32 posChangeMode : 2;
-   quint32 sizeChangeMode : 2;
-   quint32 visibleChangeMode : 2;
-   quint32 enabledChangeMode : 2;
-   quint32 styleChangeMode : 2;
-   quint32 paletteChangeMode : 2;
-   quint32 tooltipChangeMode : 2;
-   quint32 focusFromWidgetToProxy : 1;
-   quint32 proxyIsGivingFocus : 1;
+    quint32 posChangeMode : 2;
+    quint32 sizeChangeMode : 2;
+    quint32 visibleChangeMode : 2;
+    quint32 enabledChangeMode : 2;
+    quint32 styleChangeMode : 2;
+    quint32 paletteChangeMode : 2;
+    quint32 tooltipChangeMode : 2;
+    quint32 focusFromWidgetToProxy : 1;
+    quint32 proxyIsGivingFocus : 1;
 };
 
 #endif

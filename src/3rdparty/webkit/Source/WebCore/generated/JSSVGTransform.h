@@ -31,24 +31,30 @@
 #include <runtime/JSObjectWithGlobalObject.h>
 #include <runtime/ObjectPrototype.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class JSSVGTransform : public JSDOMWrapper {
+class JSSVGTransform : public JSDOMWrapper
+{
     typedef JSDOMWrapper Base;
 public:
-    JSSVGTransform(JSC::Structure*, JSDOMGlobalObject*, PassRefPtr<SVGPropertyTearOff<SVGTransform> >);
-    static JSC::JSObject* createPrototype(JSC::ExecState*, JSC::JSGlobalObject*);
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier& propertyName, JSC::PropertyDescriptor&);
+    JSSVGTransform( JSC::Structure *, JSDOMGlobalObject *, PassRefPtr<SVGPropertyTearOff<SVGTransform> > );
+    static JSC::JSObject *createPrototype( JSC::ExecState *, JSC::JSGlobalObject * );
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &propertyName, JSC::PropertyDescriptor & );
     static const JSC::ClassInfo s_info;
 
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
 
-    static JSC::JSValue getConstructor(JSC::ExecState*, JSC::JSGlobalObject*);
-    SVGPropertyTearOff<SVGTransform> * impl() const { return m_impl.get(); }
+    static JSC::JSValue getConstructor( JSC::ExecState *, JSC::JSGlobalObject * );
+    SVGPropertyTearOff<SVGTransform> *impl() const
+    {
+        return m_impl.get();
+    }
 
 private:
     RefPtr<SVGPropertyTearOff<SVGTransform> > m_impl;
@@ -56,48 +62,51 @@ protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
-JSC::JSValue toJS(JSC::ExecState*, JSDOMGlobalObject*, SVGPropertyTearOff<SVGTransform> *);
-SVGPropertyTearOff<SVGTransform> * toSVGTransform(JSC::JSValue);
+JSC::JSValue toJS( JSC::ExecState *, JSDOMGlobalObject *, SVGPropertyTearOff<SVGTransform> * );
+SVGPropertyTearOff<SVGTransform> *toSVGTransform( JSC::JSValue );
 
-class JSSVGTransformPrototype : public JSC::JSObjectWithGlobalObject {
+class JSSVGTransformPrototype : public JSC::JSObjectWithGlobalObject
+{
     typedef JSC::JSObjectWithGlobalObject Base;
 public:
-    static JSC::JSObject* self(JSC::ExecState*, JSC::JSGlobalObject*);
+    static JSC::JSObject *self( JSC::ExecState *, JSC::JSGlobalObject * );
     static const JSC::ClassInfo s_info;
-    virtual bool getOwnPropertySlot(JSC::ExecState*, const JSC::Identifier&, JSC::PropertySlot&);
-    virtual bool getOwnPropertyDescriptor(JSC::ExecState*, const JSC::Identifier&, JSC::PropertyDescriptor&);
-    static JSC::Structure* createStructure(JSC::JSGlobalData& globalData, JSC::JSValue prototype)
+    virtual bool getOwnPropertySlot( JSC::ExecState *, const JSC::Identifier &, JSC::PropertySlot & );
+    virtual bool getOwnPropertyDescriptor( JSC::ExecState *, const JSC::Identifier &, JSC::PropertyDescriptor & );
+    static JSC::Structure *createStructure( JSC::JSGlobalData &globalData, JSC::JSValue prototype )
     {
-        return JSC::Structure::create(globalData, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
+        return JSC::Structure::create( globalData, prototype, JSC::TypeInfo( JSC::ObjectType, StructureFlags ), AnonymousSlotCount,
+                                       &s_info );
     }
-    JSSVGTransformPrototype(JSC::JSGlobalData& globalData, JSC::JSGlobalObject* globalObject, JSC::Structure* structure) : JSC::JSObjectWithGlobalObject(globalData, globalObject, structure) { }
+    JSSVGTransformPrototype( JSC::JSGlobalData &globalData, JSC::JSGlobalObject *globalObject,
+                             JSC::Structure *structure ) : JSC::JSObjectWithGlobalObject( globalData, globalObject, structure ) { }
 protected:
     static const unsigned StructureFlags = JSC::OverridesGetOwnPropertySlot | Base::StructureFlags;
 };
 
 // Functions
 
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetMatrix(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetTranslate(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetScale(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetRotate(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetSkewX(JSC::ExecState*);
-JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetSkewY(JSC::ExecState*);
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetMatrix( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetTranslate( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetScale( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetRotate( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetSkewX( JSC::ExecState * );
+JSC::EncodedJSValue JSC_HOST_CALL jsSVGTransformPrototypeFunctionSetSkewY( JSC::ExecState * );
 // Attributes
 
-JSC::JSValue jsSVGTransformType(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformMatrix(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformAngle(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformConstructor(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGTransformType( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformMatrix( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformAngle( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformConstructor( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 // Constants
 
-JSC::JSValue jsSVGTransformSVG_TRANSFORM_UNKNOWN(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformSVG_TRANSFORM_MATRIX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformSVG_TRANSFORM_TRANSLATE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformSVG_TRANSFORM_SCALE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformSVG_TRANSFORM_ROTATE(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformSVG_TRANSFORM_SKEWX(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
-JSC::JSValue jsSVGTransformSVG_TRANSFORM_SKEWY(JSC::ExecState*, JSC::JSValue, const JSC::Identifier&);
+JSC::JSValue jsSVGTransformSVG_TRANSFORM_UNKNOWN( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformSVG_TRANSFORM_MATRIX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformSVG_TRANSFORM_TRANSLATE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformSVG_TRANSFORM_SCALE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformSVG_TRANSFORM_ROTATE( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformSVG_TRANSFORM_SKEWX( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
+JSC::JSValue jsSVGTransformSVG_TRANSFORM_SKEWY( JSC::ExecState *, JSC::JSValue, const JSC::Identifier & );
 
 } // namespace WebCore
 

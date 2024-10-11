@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
 
@@ -43,45 +43,56 @@
 #include <wtf/RefPtr.h>
 #include <wtf/text/AtomicStringHash.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ScriptExecutionContext;
-    class WorkerContextProxy;
-    class WorkerScriptLoader;
+class ScriptExecutionContext;
+class WorkerContextProxy;
+class WorkerScriptLoader;
 
-    typedef int ExceptionCode;
+typedef int ExceptionCode;
 
-    class Worker : public AbstractWorker, private WorkerScriptLoaderClient {
-    public:
-        static PassRefPtr<Worker> create(const String& url, ScriptExecutionContext*, ExceptionCode&);
-        virtual ~Worker();
+class Worker : public AbstractWorker, private WorkerScriptLoaderClient
+{
+public:
+    static PassRefPtr<Worker> create( const String &url, ScriptExecutionContext *, ExceptionCode & );
+    virtual ~Worker();
 
-        virtual Worker* toWorker() { return this; }
+    virtual Worker *toWorker()
+    {
+        return this;
+    }
 
-        void postMessage(PassRefPtr<SerializedScriptValue> message, ExceptionCode&);
-        void postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray*, ExceptionCode&);
-        // FIXME: remove this when we update the ObjC bindings (bug #28774).
-        void postMessage(PassRefPtr<SerializedScriptValue> message, MessagePort*, ExceptionCode&);
+    void postMessage( PassRefPtr<SerializedScriptValue> message, ExceptionCode & );
+    void postMessage( PassRefPtr<SerializedScriptValue> message, const MessagePortArray *, ExceptionCode & );
+    // FIXME: remove this when we update the ObjC bindings (bug #28774).
+    void postMessage( PassRefPtr<SerializedScriptValue> message, MessagePort *, ExceptionCode & );
 
-        void terminate();
+    void terminate();
 
-        virtual bool canSuspend() const;
-        virtual void stop();
-        virtual bool hasPendingActivity() const;
-    
-        DEFINE_ATTRIBUTE_EVENT_LISTENER(message);
+    virtual bool canSuspend() const;
+    virtual void stop();
+    virtual bool hasPendingActivity() const;
 
-    private:
-        Worker(ScriptExecutionContext*);
+    DEFINE_ATTRIBUTE_EVENT_LISTENER( message );
 
-        virtual void notifyFinished();
+private:
+    Worker( ScriptExecutionContext * );
 
-        virtual void refEventTarget() { ref(); }
-        virtual void derefEventTarget() { deref(); }
+    virtual void notifyFinished();
 
-        OwnPtr<WorkerScriptLoader> m_scriptLoader;
-        WorkerContextProxy* m_contextProxy; // The proxy outlives the worker to perform thread shutdown.
-    };
+    virtual void refEventTarget()
+    {
+        ref();
+    }
+    virtual void derefEventTarget()
+    {
+        deref();
+    }
+
+    OwnPtr<WorkerScriptLoader> m_scriptLoader;
+    WorkerContextProxy *m_contextProxy; // The proxy outlives the worker to perform thread shutdown.
+};
 
 } // namespace WebCore
 

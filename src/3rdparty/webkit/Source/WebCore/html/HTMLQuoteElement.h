@@ -27,17 +27,19 @@
 #include <wtf/Forward.h>
 #include "HTMLElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class HTMLQuoteElement : public HTMLElement {
+class HTMLQuoteElement : public HTMLElement
+{
 public:
-    static PassRefPtr<HTMLQuoteElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<HTMLQuoteElement> create( const QualifiedName &, Document * );
 
 private:
-    HTMLQuoteElement(const QualifiedName&, Document*);
-    
+    HTMLQuoteElement( const QualifiedName &, Document * );
+
     virtual void insertedIntoDocument();
-    virtual bool isURLAttribute(Attribute*) const;
+    virtual bool isURLAttribute( Attribute * ) const;
 };
 
 } //namespace

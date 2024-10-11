@@ -34,108 +34,115 @@
 
 #if ! defined(Q_OS_WIN) && defined(_POSIX_THREAD_SAFE_FUNCTIONS) && _POSIX_VERSION >= 200112L
 
-namespace {
-
-static inline QString fromstrerror_helper(int, const QByteArray &buf)
+namespace
 {
-   return QString::fromUtf8(buf);
+
+static inline QString fromstrerror_helper( int, const QByteArray &buf )
+{
+    return QString::fromUtf8( buf );
 }
 
-static inline QString fromstrerror_helper(const char *str, const QByteArray &)
+static inline QString fromstrerror_helper( const char *str, const QByteArray & )
 {
-   return QString::fromUtf8(str);
+    return QString::fromUtf8( str );
 }
 
 }     // end namespace
 #endif
 
 #ifdef Q_OS_WIN
-static QString windowsErrorString(int errorCode)
+static QString windowsErrorString( int errorCode )
 {
-   QString ret;
-   wchar_t *buffer = nullptr;
+    QString ret;
+    wchar_t *buffer = nullptr;
 
-   FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-         nullptr, errorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&buffer, 0, nullptr);
+    FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                   nullptr, errorCode, MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ), ( LPWSTR )&buffer, 0, nullptr );
 
-   if (buffer != nullptr) {
-      ret = QString::fromStdWString(std::wstring(buffer));
-      LocalFree((HLOCAL)buffer);
-   }
+    if ( buffer != nullptr )
+    {
+        ret = QString::fromStdWString( std::wstring( buffer ) );
+        LocalFree( ( HLOCAL )buffer );
+    }
 
-   if (ret.isEmpty() && errorCode == ERROR_MOD_NOT_FOUND) {
-      ret = QString("The specified module could not be found.");
-   }
+    if ( ret.isEmpty() && errorCode == ERROR_MOD_NOT_FOUND )
+    {
+        ret = QString( "The specified module could not be found." );
+    }
 
-   return ret;
+    return ret;
 }
 #endif
 
-static QString standardLibraryErrorString(int errorCode)
+static QString standardLibraryErrorString( int errorCode )
 {
-   const char *s = nullptr;
-   QString ret;
+    const char *s = nullptr;
+    QString ret;
 
-   switch (errorCode) {
-      case 0:
-         break;
+    switch ( errorCode )
+    {
+        case 0:
+            break;
 
-      case EACCES:
-         s = cs_mark_tr("QIODevice", "Permission denied");
-         break;
+        case EACCES:
+            s = lscs_mark_tr( "QIODevice", "Permission denied" );
+            break;
 
-      case EMFILE:
-         s = cs_mark_tr("QIODevice", "Too many open files");
-         break;
+        case EMFILE:
+            s = lscs_mark_tr( "QIODevice", "Too many open files" );
+            break;
 
-      case ENOENT:
-         s = cs_mark_tr("QIODevice", "No such file or directory");
-         break;
+        case ENOENT:
+            s = lscs_mark_tr( "QIODevice", "No such file or directory" );
+            break;
 
-      case ENOSPC:
-         s = cs_mark_tr("QIODevice", "No space left on device");
-         break;
+        case ENOSPC:
+            s = lscs_mark_tr( "QIODevice", "No space left on device" );
+            break;
 
-      default: {
+        default:
+        {
 
 #if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && _POSIX_VERSION >= 200112L
-         QByteArray buf(1024, '\0');
-         ret = fromstrerror_helper(strerror_r(errorCode, buf.data(), buf.size()), buf);
+            QByteArray buf( 1024, '\0' );
+            ret = fromstrerror_helper( strerror_r( errorCode, buf.data(), buf.size() ), buf );
 #else
-         ret = QString::fromUtf8(strerror(errorCode));
+            ret = QString::fromUtf8( strerror( errorCode ) );
 #endif
 
-         break;
-      }
-   }
+            break;
+        }
+    }
 
-   if (s) {
-      ret = QString::fromLatin1(s);
-   }
+    if ( s )
+    {
+        ret = QString::fromLatin1( s );
+    }
 
-   return ret.trimmed();
+    return ret.trimmed();
 }
 
 QString QSystemError::toString()
 {
-   switch (errorScope) {
-      case NativeError:
+    switch ( errorScope )
+    {
+        case NativeError:
 
 #if defined (Q_OS_WIN)
-         return windowsErrorString(errorCode);
+            return windowsErrorString( errorCode );
 #else
-         // unix: native and standard library are the same
-         [[fallthrough]];
+            // unix: native and standard library are the same
+            [[fallthrough]];
 #endif
 
-      case StandardLibraryError:
-         return standardLibraryErrorString(errorCode);
+        case StandardLibraryError:
+            return standardLibraryErrorString( errorCode );
 
-      case NoError:
-         return QString("No error");
+        case NoError:
+            return QString( "No error" );
 
-      default:
-         qWarning("QSystemError::toString() Invalid error scope");
-         return QString("Unrecognized error");
-   }
+        default:
+            qWarning( "QSystemError::toString() Invalid error scope" );
+            return QString( "Unrecognized error" );
+    }
 }

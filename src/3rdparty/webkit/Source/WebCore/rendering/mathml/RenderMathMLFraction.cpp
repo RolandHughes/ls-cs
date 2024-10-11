@@ -35,8 +35,9 @@
 #include "PaintInfo.h"
 #include "RenderText.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 using namespace MathMLNames;
 
 static const float gHorizontalPad = 0.2f;
@@ -46,76 +47,108 @@ static const float gLineThick = 3.f;
 static const float gFractionBarWidth = 0.05f;
 static const float gDenominatorPad = 0.1f;
 
-RenderMathMLFraction::RenderMathMLFraction(Element* fraction) 
-    : RenderMathMLBlock(fraction)
-    , m_lineThickness(gLineMedium)
+RenderMathMLFraction::RenderMathMLFraction( Element *fraction )
+    : RenderMathMLBlock( fraction )
+    , m_lineThickness( gLineMedium )
 {
-    setChildrenInline(false);
+    setChildrenInline( false );
 }
 
 void RenderMathMLFraction::updateFromElement()
 {
     // FIXME: mfrac where bevelled=true will need to reorganize the descendants
-    if (isEmpty()) 
+    if ( isEmpty() )
+    {
         return;
-    
-    Element* fraction = static_cast<Element*>(node());
-    
-    RenderObject* numerator = firstChild();
-    String nalign = fraction->getAttribute(MathMLNames::numalignAttr);
-    if (equalIgnoringCase(nalign, "left"))
-        numerator->style()->setTextAlign(LEFT);
-    else if (equalIgnoringCase(nalign, "right"))
-        numerator->style()->setTextAlign(RIGHT);
+    }
+
+    Element *fraction = static_cast<Element *>( node() );
+
+    RenderObject *numerator = firstChild();
+    String nalign = fraction->getAttribute( MathMLNames::numalignAttr );
+
+    if ( equalIgnoringCase( nalign, "left" ) )
+    {
+        numerator->style()->setTextAlign( LEFT );
+    }
+    else if ( equalIgnoringCase( nalign, "right" ) )
+    {
+        numerator->style()->setTextAlign( RIGHT );
+    }
     else
-        numerator->style()->setTextAlign(CENTER);
-    
-    RenderObject* denominator = numerator->nextSibling();
-    if (!denominator)
+    {
+        numerator->style()->setTextAlign( CENTER );
+    }
+
+    RenderObject *denominator = numerator->nextSibling();
+
+    if ( !denominator )
+    {
         return;
-    
-    String dalign = fraction->getAttribute(MathMLNames::denomalignAttr);
-    if (equalIgnoringCase(dalign, "left"))
-        denominator->style()->setTextAlign(LEFT);
-    else if (equalIgnoringCase(dalign, "right"))
-        denominator->style()->setTextAlign(RIGHT);
+    }
+
+    String dalign = fraction->getAttribute( MathMLNames::denomalignAttr );
+
+    if ( equalIgnoringCase( dalign, "left" ) )
+    {
+        denominator->style()->setTextAlign( LEFT );
+    }
+    else if ( equalIgnoringCase( dalign, "right" ) )
+    {
+        denominator->style()->setTextAlign( RIGHT );
+    }
     else
-        denominator->style()->setTextAlign(CENTER);
-    
+    {
+        denominator->style()->setTextAlign( CENTER );
+    }
+
     // FIXME: parse units
-    String thickness = fraction->getAttribute(MathMLNames::linethicknessAttr);
+    String thickness = fraction->getAttribute( MathMLNames::linethicknessAttr );
     m_lineThickness = gLineMedium;
-    if (equalIgnoringCase(thickness, "thin"))
+
+    if ( equalIgnoringCase( thickness, "thin" ) )
+    {
         m_lineThickness = gLineThin;
-    else if (equalIgnoringCase(thickness, "medium"))
+    }
+    else if ( equalIgnoringCase( thickness, "medium" ) )
+    {
         m_lineThickness = gLineMedium;
-    else if (equalIgnoringCase(thickness, "thick"))
+    }
+    else if ( equalIgnoringCase( thickness, "thick" ) )
+    {
         m_lineThickness = gLineThick;
-    else if (equalIgnoringCase(thickness, "0"))
+    }
+    else if ( equalIgnoringCase( thickness, "0" ) )
+    {
         m_lineThickness = 0;
+    }
 
     // Update the style for the padding of the denominator for the line thickness
-    lastChild()->style()->setPaddingTop(Length(static_cast<int>(m_lineThickness + style()->fontSize() * gDenominatorPad), Fixed));
+    lastChild()->style()->setPaddingTop( Length( static_cast<int>( m_lineThickness + style()->fontSize() * gDenominatorPad ),
+                                         Fixed ) );
 }
 
-void RenderMathMLFraction::addChild(RenderObject* child, RenderObject* beforeChild)
+void RenderMathMLFraction::addChild( RenderObject *child, RenderObject *beforeChild )
 {
-    RenderBlock* row = new (renderArena()) RenderMathMLBlock(node());
+    RenderBlock *row = new ( renderArena() ) RenderMathMLBlock( node() );
     RefPtr<RenderStyle> rowStyle = makeBlockStyle();
-    
-    rowStyle->setTextAlign(CENTER);
-    Length pad(static_cast<int>(rowStyle->fontSize() * gHorizontalPad), Fixed);
-    rowStyle->setPaddingLeft(pad);
-    rowStyle->setPaddingRight(pad);
-    
+
+    rowStyle->setTextAlign( CENTER );
+    Length pad( static_cast<int>( rowStyle->fontSize() * gHorizontalPad ), Fixed );
+    rowStyle->setPaddingLeft( pad );
+    rowStyle->setPaddingRight( pad );
+
     // Only add padding for rows as denominators
     bool isNumerator = isEmpty();
-    if (!isNumerator) 
-        rowStyle->setPaddingTop(Length(2, Fixed));
-    
-    row->setStyle(rowStyle.release());
-    RenderBlock::addChild(row, beforeChild);
-    row->addChild(child);
+
+    if ( !isNumerator )
+    {
+        rowStyle->setPaddingTop( Length( 2, Fixed ) );
+    }
+
+    row->setStyle( rowStyle.release() );
+    RenderBlock::addChild( row, beforeChild );
+    row->addChild( child );
     updateFromElement();
 }
 
@@ -124,60 +157,87 @@ void RenderMathMLFraction::layout()
     updateFromElement();
 
     // Adjust the fraction line thickness for the zoom
-    if (lastChild() && lastChild()->isRenderBlock())
-        m_lineThickness *= ceilf(gFractionBarWidth * style()->fontSize());
+    if ( lastChild() && lastChild()->isRenderBlock() )
+    {
+        m_lineThickness *= ceilf( gFractionBarWidth * style()->fontSize() );
+    }
 
     RenderBlock::layout();
 
 }
 
-void RenderMathMLFraction::paint(PaintInfo& info, int tx, int ty)
+void RenderMathMLFraction::paint( PaintInfo &info, int tx, int ty )
 {
-    RenderMathMLBlock::paint(info, tx, ty);
-    if (info.context->paintingDisabled() || info.phase != PaintPhaseForeground)
+    RenderMathMLBlock::paint( info, tx, ty );
+
+    if ( info.context->paintingDisabled() || info.phase != PaintPhaseForeground )
+    {
         return;
-    
-    if (!firstChild() ||!m_lineThickness)
+    }
+
+    if ( !firstChild() ||!m_lineThickness )
+    {
         return;
+    }
 
     int verticalOffset = 0;
+
     // The children are always RenderMathMLBlock instances
-    if (firstChild()->isRenderMathMLBlock()) {
-        int adjustForThickness = m_lineThickness > 1 ? int(m_lineThickness / 2) : 1;
-        if (int(m_lineThickness) % 2 == 1)
+    if ( firstChild()->isRenderMathMLBlock() )
+    {
+        int adjustForThickness = m_lineThickness > 1 ? int( m_lineThickness / 2 ) : 1;
+
+        if ( int( m_lineThickness ) % 2 == 1 )
+        {
             adjustForThickness++;
-        RenderMathMLBlock* numerator = toRenderMathMLBlock(firstChild());
-        if (numerator->isRenderMathMLRow())
+        }
+
+        RenderMathMLBlock *numerator = toRenderMathMLBlock( firstChild() );
+
+        if ( numerator->isRenderMathMLRow() )
+        {
             verticalOffset = numerator->offsetHeight() + adjustForThickness;
-        else 
-            verticalOffset = numerator->offsetHeight();        
+        }
+        else
+        {
+            verticalOffset = numerator->offsetHeight();
+        }
     }
-    
+
     tx += x();
     ty += y() + verticalOffset;
-    
-    GraphicsContextStateSaver stateSaver(*info.context);
-    
-    info.context->setStrokeThickness(m_lineThickness);
-    info.context->setStrokeStyle(SolidStroke);
-    info.context->setStrokeColor(style()->visitedDependentColor(CSSPropertyColor), ColorSpaceSRGB);
-    
-    info.context->drawLine(IntPoint(tx, ty), IntPoint(tx + offsetWidth(), ty));
+
+    GraphicsContextStateSaver stateSaver( *info.context );
+
+    info.context->setStrokeThickness( m_lineThickness );
+    info.context->setStrokeStyle( SolidStroke );
+    info.context->setStrokeColor( style()->visitedDependentColor( CSSPropertyColor ), ColorSpaceSRGB );
+
+    info.context->drawLine( IntPoint( tx, ty ), IntPoint( tx + offsetWidth(), ty ) );
 }
 
-int RenderMathMLFraction::baselinePosition(FontBaseline, bool firstLine, LineDirectionMode lineDirection, LinePositionMode linePositionMode) const
+int RenderMathMLFraction::baselinePosition( FontBaseline, bool firstLine, LineDirectionMode lineDirection,
+        LinePositionMode linePositionMode ) const
 {
-    if (firstChild() && firstChild()->isRenderMathMLBlock()) {
-        RenderMathMLBlock* numerator = toRenderMathMLBlock(firstChild());
-        RenderStyle* refStyle = style();
-        if (previousSibling())
+    if ( firstChild() && firstChild()->isRenderMathMLBlock() )
+    {
+        RenderMathMLBlock *numerator = toRenderMathMLBlock( firstChild() );
+        RenderStyle *refStyle = style();
+
+        if ( previousSibling() )
+        {
             refStyle = previousSibling()->style();
-        else if (nextSibling())
+        }
+        else if ( nextSibling() )
+        {
             refStyle = nextSibling()->style();
-        int shift = int(ceil((refStyle->fontMetrics().xHeight() + 1) / 2));
+        }
+
+        int shift = int( ceil( ( refStyle->fontMetrics().xHeight() + 1 ) / 2 ) );
         return numerator->offsetHeight() + shift;
     }
-    return RenderBlock::baselinePosition(AlphabeticBaseline, firstLine, lineDirection, linePositionMode);
+
+    return RenderBlock::baselinePosition( AlphabeticBaseline, firstLine, lineDirection, linePositionMode );
 }
 
 }

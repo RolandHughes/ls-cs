@@ -35,31 +35,37 @@
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 #if USE(SAFARI_THEME)
 #ifdef DEBUG_ALL
-SOFT_LINK_DEBUG_LIBRARY(SafariTheme)
+SOFT_LINK_DEBUG_LIBRARY( SafariTheme )
 #else
-SOFT_LINK_LIBRARY(SafariTheme)
+SOFT_LINK_LIBRARY( SafariTheme )
 #endif
 
-SOFT_LINK(SafariTheme, STInitialize, void, APIENTRY, (), ())
+SOFT_LINK( SafariTheme, STInitialize, void, APIENTRY, (), () )
 
 static void initializeSafariTheme()
 {
     static bool didInitializeSafariTheme;
-    if (!didInitializeSafariTheme) {
-        if (SafariThemeLibrary())
+
+    if ( !didInitializeSafariTheme )
+    {
+        if ( SafariThemeLibrary() )
+        {
             STInitialize();
+        }
+
         didInitializeSafariTheme = true;
     }
 }
 #endif // USE(SAFARI_THEME)
 
-int WebProcessMain(const CommandLine& commandLine)
+int WebProcessMain( const CommandLine &commandLine )
 {
-    ::OleInitialize(0);
+    ::OleInitialize( 0 );
 
 #if USE(SAFARI_THEME)
     initializeSafariTheme();
@@ -69,14 +75,17 @@ int WebProcessMain(const CommandLine& commandLine)
     WTF::initializeMainThread();
     RunLoop::initializeMainRunLoop();
 
-    const String& identifierString = commandLine["clientIdentifier"];
+    const String &identifierString = commandLine["clientIdentifier"];
 
     // FIXME: Should we return an error code here?
-    HANDLE clientIdentifier = reinterpret_cast<HANDLE>(identifierString.toUInt64Strict());
-    if (!clientIdentifier)
-        return 0;
+    HANDLE clientIdentifier = reinterpret_cast<HANDLE>( identifierString.toUInt64Strict() );
 
-    WebProcess::shared().initialize(clientIdentifier, RunLoop::main());
+    if ( !clientIdentifier )
+    {
+        return 0;
+    }
+
+    WebProcess::shared().initialize( clientIdentifier, RunLoop::main() );
     RunLoop::run();
 
     return 0;

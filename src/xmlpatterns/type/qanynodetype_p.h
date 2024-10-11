@@ -27,40 +27,42 @@
 #include <qatomictype_p.h>
 #include <qitem_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class AnyNodeType : public ItemType
 {
- public:
+public:
 
-   typedef QExplicitlySharedDataPointer<AnyNodeType> Ptr;
+    typedef QExplicitlySharedDataPointer<AnyNodeType> Ptr;
 
-   bool xdtTypeMatches(const ItemType::Ptr &other) const override;
-   bool itemMatches(const Item &item) const override;
-   QString displayName(const NamePool::Ptr &np) const override;
+    bool xdtTypeMatches( const ItemType::Ptr &other ) const override;
+    bool itemMatches( const Item &item ) const override;
+    QString displayName( const NamePool::Ptr &np ) const override;
 
-   ItemType::Ptr xdtSuperType() const override;
+    ItemType::Ptr xdtSuperType() const override;
 
-   bool isNodeType() const override;
-   bool isAtomicType() const override;
+    bool isNodeType() const override;
+    bool isAtomicType() const override;
 
-   /**
-    * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">XQuery 1.0
-    * and XPath 2.0 Data Model, G.15 dm:typed-value Accessor</a>
-    */
-   ItemType::Ptr atomizedType() const override;
+    /**
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">XQuery 1.0
+     * and XPath 2.0 Data Model, G.15 dm:typed-value Accessor</a>
+     */
+    ItemType::Ptr atomizedType() const override;
 
-   /**
-    * @returns the node kind this node ItemType tests for. If it matches any node, zero is returned.
-    */
-   virtual QXmlNodeModelIndex::NodeKind nodeKind() const;
+    /**
+     * @returns the node kind this node ItemType tests for. If it matches any node, zero is returned.
+     */
+    virtual QXmlNodeModelIndex::NodeKind nodeKind() const;
 
-   virtual PatternPriority patternPriority() const;
+    virtual PatternPriority patternPriority() const;
 
- protected:
-   friend class BuiltinTypes;
+protected:
+    friend class BuiltinTypes;
 
-   inline AnyNodeType() {
-   }
+    inline AnyNodeType()
+    {
+    }
 
 };
 

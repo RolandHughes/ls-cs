@@ -22,15 +22,18 @@
 
 #include "DeviceOrientationClientMockQt.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 DeviceOrientationProviderQt::DeviceOrientationProviderQt()
 {
-    m_rotation.addFilter(this);
+    m_rotation.addFilter( this );
     m_orientation = DeviceOrientation::create();
 
-    if (DeviceOrientationClientMockQt::mockIsActive)
+    if ( DeviceOrientationClientMockQt::mockIsActive )
+    {
         activeClientMock();
+    }
 }
 
 DeviceOrientationProviderQt::~DeviceOrientationProviderQt()
@@ -48,7 +51,7 @@ void DeviceOrientationProviderQt::stop()
     m_rotation.stop();
 }
 
-bool DeviceOrientationProviderQt::filter(QRotationReading* reading)
+bool DeviceOrientationProviderQt::filter( QRotationReading *reading )
 {
     // Provide device orientation data according W3C spec:
     // http://dev.w3.org/geo/api/spec-source-orientation.html
@@ -61,22 +64,23 @@ bool DeviceOrientationProviderQt::filter(QRotationReading* reading)
     // The Z (alpha) rotation angle is checked via hasAlpha() private method,
     // depending if the device is able do detect the alpha rotation. X (beta) and
     // Y (gamma) axis are availble in this context.
-    m_orientation = DeviceOrientation::create(hasAlpha(), reading->z(),
-            /* x available */ true, reading->x(),
-            /* y available */ true, reading->y());
-    emit deviceOrientationChanged(m_orientation.get());
+    m_orientation = DeviceOrientation::create( hasAlpha(), reading->z(),
+                    /* x available */ true, reading->x(),
+                    /* y available */ true, reading->y() );
+    emit deviceOrientationChanged( m_orientation.get() );
 
     return false;
 }
 
-void DeviceOrientationProviderQt::changeDeviceOrientation(DeviceOrientation* orientation)
+void DeviceOrientationProviderQt::changeDeviceOrientation( DeviceOrientation *orientation )
 {
     m_orientation = orientation;
 }
 
 void DeviceOrientationProviderQt::activeClientMock()
 {
-    connect(DeviceOrientationClientMockQt::client(), SIGNAL(mockOrientationChanged(DeviceOrientation*)), SLOT(changeDeviceOrientation(DeviceOrientation*)));
+    connect( DeviceOrientationClientMockQt::client(), SIGNAL( mockOrientationChanged( DeviceOrientation * ) ),
+             SLOT( changeDeviceOrientation( DeviceOrientation * ) ) );
 }
 
 }

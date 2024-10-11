@@ -26,12 +26,12 @@
 
 #include <qglobal.h>
 
-Q_CORE_EXPORT bool qIsInf(double d);
-Q_CORE_EXPORT bool qIsNaN(double d);
-Q_CORE_EXPORT bool qIsFinite(double d);
-Q_CORE_EXPORT bool qIsInf(float f);
-Q_CORE_EXPORT bool qIsNaN(float f);
-Q_CORE_EXPORT bool qIsFinite(float f);
+Q_CORE_EXPORT bool qIsInf( double d );
+Q_CORE_EXPORT bool qIsNaN( double d );
+Q_CORE_EXPORT bool qIsFinite( double d );
+Q_CORE_EXPORT bool qIsInf( float f );
+Q_CORE_EXPORT bool qIsNaN( float f );
+Q_CORE_EXPORT bool qIsFinite( float f );
 Q_CORE_EXPORT double qSNaN();
 Q_CORE_EXPORT double qQNaN();
 Q_CORE_EXPORT double qInf();

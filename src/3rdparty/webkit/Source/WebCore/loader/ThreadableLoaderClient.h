@@ -32,31 +32,37 @@
 #define ThreadableLoaderClient_h
 
 
-namespace WebCore {
+namespace WebCore
+{
 
-    class ResourceError;
-    class ResourceResponse;
+class ResourceError;
+class ResourceResponse;
 
-    class ThreadableLoaderClient {
-        WTF_MAKE_NONCOPYABLE(ThreadableLoaderClient); WTF_MAKE_FAST_ALLOCATED;
-    public:
-        virtual void didSendData(unsigned long long /*bytesSent*/, unsigned long long /*totalBytesToBeSent*/) { }
+class ThreadableLoaderClient
+{
+    WTF_MAKE_NONCOPYABLE( ThreadableLoaderClient );
+    WTF_MAKE_FAST_ALLOCATED;
+public:
+    virtual void didSendData( unsigned long long /*bytesSent*/, unsigned long long /*totalBytesToBeSent*/ ) { }
 
-        virtual void didReceiveResponse(const ResourceResponse&) { }
-        virtual void didReceiveData(const char*, int /*dataLength*/) { }
-        virtual void didReceiveCachedMetadata(const char*, int /*dataLength*/) { }
-        virtual void didFinishLoading(unsigned long /*identifier*/, double /*finishTime*/) { }
-        virtual void didFail(const ResourceError&) { }
-        virtual void didFailRedirectCheck() { }
+    virtual void didReceiveResponse( const ResourceResponse & ) { }
+    virtual void didReceiveData( const char *, int /*dataLength*/ ) { }
+    virtual void didReceiveCachedMetadata( const char *, int /*dataLength*/ ) { }
+    virtual void didFinishLoading( unsigned long /*identifier*/, double /*finishTime*/ ) { }
+    virtual void didFail( const ResourceError & ) { }
+    virtual void didFailRedirectCheck() { }
 
-        virtual void didReceiveAuthenticationCancellation(const ResourceResponse&) { }
+    virtual void didReceiveAuthenticationCancellation( const ResourceResponse & ) { }
 
-        virtual bool isDocumentThreadableLoaderClient() { return false; }
+    virtual bool isDocumentThreadableLoaderClient()
+    {
+        return false;
+    }
 
-    protected:
-        ThreadableLoaderClient() { }
-        virtual ~ThreadableLoaderClient() { }
-    };
+protected:
+    ThreadableLoaderClient() { }
+    virtual ~ThreadableLoaderClient() { }
+};
 
 } // namespace WebCore
 

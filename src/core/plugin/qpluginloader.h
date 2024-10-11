@@ -31,43 +31,43 @@ class QLibraryHandle;
 
 class Q_CORE_EXPORT QPluginLoader : public QObject
 {
-   CORE_CS_OBJECT(QPluginLoader)
+    CORE_LSCS_OBJECT( QPluginLoader )
 
-   CORE_CS_PROPERTY_READ(fileName, fileName)
-   CORE_CS_PROPERTY_WRITE(fileName, setFileName)
+    CORE_LSCS_PROPERTY_READ( fileName, fileName )
+    CORE_LSCS_PROPERTY_WRITE( fileName, setFileName )
 
-   CORE_CS_PROPERTY_READ(loadHints, loadHints)
-   CORE_CS_PROPERTY_WRITE(loadHints, setLoadHints)
+    CORE_LSCS_PROPERTY_READ( loadHints, loadHints )
+    CORE_LSCS_PROPERTY_WRITE( loadHints, setLoadHints )
 
- public:
-   explicit QPluginLoader(QObject *parent = nullptr);
-   explicit QPluginLoader(const QString &fileName, QObject *parent = nullptr);
+public:
+    explicit QPluginLoader( QObject *parent = nullptr );
+    explicit QPluginLoader( const QString &fileName, QObject *parent = nullptr );
 
-   QPluginLoader(const QPluginLoader &) = delete;
-   QPluginLoader &operator=(const QPluginLoader &) = delete;
+    QPluginLoader( const QPluginLoader & ) = delete;
+    QPluginLoader &operator=( const QPluginLoader & ) = delete;
 
-   ~QPluginLoader();
+    ~QPluginLoader();
 
-   QObject *instance();
+    QObject *instance();
 
-   static QObjectList staticInstances();
-   static QVector<QMetaObject *> staticPlugins();
+    static QObjectList staticInstances();
+    static QVector<QMetaObject *> staticPlugins();
 
-   bool load();
-   bool unload();
-   bool isLoaded() const;
+    bool load();
+    bool unload();
+    bool isLoaded() const;
 
-   void setFileName(const QString &fileName);
-   QString fileName() const;
+    void setFileName( const QString &fileName );
+    QString fileName() const;
 
-   QString errorString() const;
+    QString errorString() const;
 
-   void setLoadHints(QLibrary::LoadHints loadHints);
-   QLibrary::LoadHints loadHints() const;
+    void setLoadHints( QLibrary::LoadHints loadHints );
+    QLibrary::LoadHints loadHints() const;
 
- private:
-   QLibraryHandle *mp_handle;
-   bool mp_loaded;
+private:
+    QLibraryHandle *mp_handle;
+    bool mp_loaded;
 };
 
 #endif

@@ -30,61 +30,71 @@
 #include "SVGNames.h"
 #include "SVGSVGElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-RenderSVGViewportContainer::RenderSVGViewportContainer(SVGStyledElement* node)
-    : RenderSVGContainer(node)
+RenderSVGViewportContainer::RenderSVGViewportContainer( SVGStyledElement *node )
+    : RenderSVGContainer( node )
 {
 }
 
-void RenderSVGViewportContainer::applyViewportClip(PaintInfo& paintInfo)
+void RenderSVGViewportContainer::applyViewportClip( PaintInfo &paintInfo )
 {
-    if (SVGRenderSupport::isOverflowHidden(this))
-        paintInfo.context->clip(m_viewport);
+    if ( SVGRenderSupport::isOverflowHidden( this ) )
+    {
+        paintInfo.context->clip( m_viewport );
+    }
 }
 
 void RenderSVGViewportContainer::calcViewport()
 {
-     SVGElement* element = static_cast<SVGElement*>(node());
-     if (element->hasTagName(SVGNames::svgTag)) {
-         SVGSVGElement* svg = static_cast<SVGSVGElement*>(element);
+    SVGElement *element = static_cast<SVGElement *>( node() );
 
-         FloatRect oldViewport = m_viewport;
-         m_viewport = FloatRect(svg->x().value(svg)
-                                , svg->y().value(svg)
-                                , svg->width().value(svg)
-                                , svg->height().value(svg));
+    if ( element->hasTagName( SVGNames::svgTag ) )
+    {
+        SVGSVGElement *svg = static_cast<SVGSVGElement *>( element );
 
-        if (oldViewport != m_viewport)
+        FloatRect oldViewport = m_viewport;
+        m_viewport = FloatRect( svg->x().value( svg )
+                                , svg->y().value( svg )
+                                , svg->width().value( svg )
+                                , svg->height().value( svg ) );
+
+        if ( oldViewport != m_viewport )
+        {
             setNeedsBoundariesUpdate();
+        }
     }
 }
 
 AffineTransform RenderSVGViewportContainer::viewportTransform() const
 {
-    if (node()->hasTagName(SVGNames::svgTag)) {
-        SVGSVGElement* svg = static_cast<SVGSVGElement*>(node());
-        return svg->viewBoxToViewTransform(m_viewport.width(), m_viewport.height());
+    if ( node()->hasTagName( SVGNames::svgTag ) )
+    {
+        SVGSVGElement *svg = static_cast<SVGSVGElement *>( node() );
+        return svg->viewBoxToViewTransform( m_viewport.width(), m_viewport.height() );
     }
 
     return AffineTransform();
 }
 
-const AffineTransform& RenderSVGViewportContainer::localToParentTransform() const
+const AffineTransform &RenderSVGViewportContainer::localToParentTransform() const
 {
-    m_localToParentTransform = AffineTransform::translation(m_viewport.x(), m_viewport.y()) * viewportTransform();
+    m_localToParentTransform = AffineTransform::translation( m_viewport.x(), m_viewport.y() ) * viewportTransform();
     return m_localToParentTransform;
     // If this class were ever given a localTransform(), then the above would read:
     // return viewportTranslation * localTransform() * viewportTransform()
 }
 
-bool RenderSVGViewportContainer::pointIsInsideViewportClip(const FloatPoint& pointInParent)
+bool RenderSVGViewportContainer::pointIsInsideViewportClip( const FloatPoint &pointInParent )
 {
     // Respect the viewport clip (which is in parent coords)
-    if (!SVGRenderSupport::isOverflowHidden(this))
+    if ( !SVGRenderSupport::isOverflowHidden( this ) )
+    {
         return true;
-    
-    return m_viewport.contains(pointInParent);
+    }
+
+    return m_viewport.contains( pointInParent );
 }
 
 }

@@ -29,18 +29,18 @@
 
 QMediaControl::~QMediaControl()
 {
-   delete d_ptr;
+    delete d_ptr;
 }
 
-QMediaControl::QMediaControl(QObject *parent)
-   : QObject(parent), d_ptr(new QMediaControlPrivate)
+QMediaControl::QMediaControl( QObject *parent )
+    : QObject( parent ), d_ptr( new QMediaControlPrivate )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 
-QMediaControl::QMediaControl(QMediaControlPrivate &dd, QObject *parent)
-   : QObject(parent), d_ptr(&dd)
+QMediaControl::QMediaControl( QMediaControlPrivate &dd, QObject *parent )
+    : QObject( parent ), d_ptr( &dd )
 {
-   d_ptr->q_ptr = this;
+    d_ptr->q_ptr = this;
 }
 

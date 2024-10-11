@@ -24,23 +24,25 @@
 #include "RenderBlock.h"
 #include "SVGRenderSupport.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGElement;
 
-class RenderSVGBlock : public RenderBlock {
+class RenderSVGBlock : public RenderBlock
+{
 public:
-    explicit RenderSVGBlock(SVGElement*);
+    explicit RenderSVGBlock( SVGElement * );
 
 private:
-    virtual void setStyle(PassRefPtr<RenderStyle>);
+    virtual void setStyle( PassRefPtr<RenderStyle> );
     virtual void updateBoxModelInfoFromStyle();
 
-    virtual void absoluteRects(Vector<IntRect>&, int tx, int ty);
+    virtual void absoluteRects( Vector<IntRect> &, int tx, int ty );
 
     virtual void destroy();
-    virtual void styleWillChange(StyleDifference, const RenderStyle* newStyle);
-    virtual void styleDidChange(StyleDifference, const RenderStyle* oldStyle);
+    virtual void styleWillChange( StyleDifference, const RenderStyle *newStyle );
+    virtual void styleDidChange( StyleDifference, const RenderStyle *oldStyle );
     virtual void updateFromElement();
 };
 

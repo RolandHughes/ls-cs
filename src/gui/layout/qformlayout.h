@@ -30,126 +30,129 @@ class QFormLayoutPrivate;
 
 class Q_GUI_EXPORT QFormLayout : public QLayout
 {
-   GUI_CS_OBJECT(QFormLayout)
+    GUI_LSCS_OBJECT( QFormLayout )
 
-   Q_DECLARE_PRIVATE(QFormLayout)
+    Q_DECLARE_PRIVATE( QFormLayout )
 
-   GUI_CS_ENUM(FieldGrowthPolicy)
-   GUI_CS_ENUM(RowWrapPolicy)
-   GUI_CS_ENUM(ItemRole)
+    GUI_LSCS_ENUM( FieldGrowthPolicy )
+    GUI_LSCS_ENUM( RowWrapPolicy )
+    GUI_LSCS_ENUM( ItemRole )
 
-   GUI_CS_PROPERTY_READ(fieldGrowthPolicy, fieldGrowthPolicy)
-   GUI_CS_PROPERTY_WRITE(fieldGrowthPolicy, setFieldGrowthPolicy)
-   GUI_CS_PROPERTY_RESET(fieldGrowthPolicy, resetFieldGrowthPolicy)
+    GUI_LSCS_PROPERTY_READ( fieldGrowthPolicy, fieldGrowthPolicy )
+    GUI_LSCS_PROPERTY_WRITE( fieldGrowthPolicy, setFieldGrowthPolicy )
+    GUI_LSCS_PROPERTY_RESET( fieldGrowthPolicy, resetFieldGrowthPolicy )
 
-   GUI_CS_PROPERTY_READ(rowWrapPolicy, rowWrapPolicy)
-   GUI_CS_PROPERTY_WRITE(rowWrapPolicy, setRowWrapPolicy)
-   GUI_CS_PROPERTY_RESET(rowWrapPolicy, resetRowWrapPolicy)
+    GUI_LSCS_PROPERTY_READ( rowWrapPolicy, rowWrapPolicy )
+    GUI_LSCS_PROPERTY_WRITE( rowWrapPolicy, setRowWrapPolicy )
+    GUI_LSCS_PROPERTY_RESET( rowWrapPolicy, resetRowWrapPolicy )
 
-   GUI_CS_PROPERTY_READ(labelAlignment, labelAlignment)
-   GUI_CS_PROPERTY_WRITE(labelAlignment, setLabelAlignment)
-   GUI_CS_PROPERTY_RESET(labelAlignment, resetLabelAlignment)
+    GUI_LSCS_PROPERTY_READ( labelAlignment, labelAlignment )
+    GUI_LSCS_PROPERTY_WRITE( labelAlignment, setLabelAlignment )
+    GUI_LSCS_PROPERTY_RESET( labelAlignment, resetLabelAlignment )
 
-   GUI_CS_PROPERTY_READ(formAlignment, formAlignment)
-   GUI_CS_PROPERTY_WRITE(formAlignment, setFormAlignment)
-   GUI_CS_PROPERTY_RESET(formAlignment, resetFormAlignment)
+    GUI_LSCS_PROPERTY_READ( formAlignment, formAlignment )
+    GUI_LSCS_PROPERTY_WRITE( formAlignment, setFormAlignment )
+    GUI_LSCS_PROPERTY_RESET( formAlignment, resetFormAlignment )
 
-   GUI_CS_PROPERTY_READ(horizontalSpacing, horizontalSpacing)
-   GUI_CS_PROPERTY_WRITE(horizontalSpacing, setHorizontalSpacing)
+    GUI_LSCS_PROPERTY_READ( horizontalSpacing, horizontalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( horizontalSpacing, setHorizontalSpacing )
 
-   GUI_CS_PROPERTY_READ(verticalSpacing, verticalSpacing)
-   GUI_CS_PROPERTY_WRITE(verticalSpacing, setVerticalSpacing)
+    GUI_LSCS_PROPERTY_READ( verticalSpacing, verticalSpacing )
+    GUI_LSCS_PROPERTY_WRITE( verticalSpacing, setVerticalSpacing )
 
- public:
+public:
 
-   GUI_CS_REGISTER_ENUM(
-      enum FieldGrowthPolicy {
-         FieldsStayAtSizeHint,
-         ExpandingFieldsGrow,
-         AllNonFixedFieldsGrow
-      };
-   )
+    GUI_LSCS_REGISTER_ENUM(
+        enum FieldGrowthPolicy
+    {
+        FieldsStayAtSizeHint,
+        ExpandingFieldsGrow,
+        AllNonFixedFieldsGrow
+    };
+    )
 
-   GUI_CS_REGISTER_ENUM(
-      enum RowWrapPolicy {
-         DontWrapRows,
-         WrapLongRows,
-         WrapAllRows
-      };
-   )
+    GUI_LSCS_REGISTER_ENUM(
+        enum RowWrapPolicy
+    {
+        DontWrapRows,
+        WrapLongRows,
+        WrapAllRows
+    };
+    )
 
-   enum ItemRole {
-      LabelRole    = 0,
-      FieldRole    = 1,
-      SpanningRole = 2
-   };
+    enum ItemRole
+    {
+        LabelRole    = 0,
+        FieldRole    = 1,
+        SpanningRole = 2
+    };
 
-   explicit QFormLayout(QWidget *parent = nullptr);
-   ~QFormLayout();
+    explicit QFormLayout( QWidget *parent = nullptr );
+    ~QFormLayout();
 
-   void setFieldGrowthPolicy(FieldGrowthPolicy policy);
-   FieldGrowthPolicy fieldGrowthPolicy() const;
-   void setRowWrapPolicy(RowWrapPolicy policy);
-   RowWrapPolicy rowWrapPolicy() const;
-   void setLabelAlignment(Qt::Alignment alignment);
-   Qt::Alignment labelAlignment() const;
-   void setFormAlignment(Qt::Alignment alignment);
-   Qt::Alignment formAlignment() const;
+    void setFieldGrowthPolicy( FieldGrowthPolicy policy );
+    FieldGrowthPolicy fieldGrowthPolicy() const;
+    void setRowWrapPolicy( RowWrapPolicy policy );
+    RowWrapPolicy rowWrapPolicy() const;
+    void setLabelAlignment( Qt::Alignment alignment );
+    Qt::Alignment labelAlignment() const;
+    void setFormAlignment( Qt::Alignment alignment );
+    Qt::Alignment formAlignment() const;
 
-   void setHorizontalSpacing(int spacing);
-   int horizontalSpacing() const;
-   void setVerticalSpacing(int spacing);
-   int verticalSpacing() const;
+    void setHorizontalSpacing( int spacing );
+    int horizontalSpacing() const;
+    void setVerticalSpacing( int spacing );
+    int verticalSpacing() const;
 
-   int spacing() const;
-   void setSpacing(int spacing);
+    int spacing() const;
+    void setSpacing( int spacing );
 
-   void addRow(QWidget *label, QWidget *field);
-   void addRow(QWidget *label, QLayout *field);
-   void addRow(const QString &labelText, QWidget *field);
-   void addRow(const QString &labelText, QLayout *field);
-   void addRow(QWidget *widget);
-   void addRow(QLayout *layout);
+    void addRow( QWidget *label, QWidget *field );
+    void addRow( QWidget *label, QLayout *field );
+    void addRow( const QString &labelText, QWidget *field );
+    void addRow( const QString &labelText, QLayout *field );
+    void addRow( QWidget *widget );
+    void addRow( QLayout *layout );
 
-   void insertRow(int row, QWidget *label, QWidget *field);
-   void insertRow(int row, QWidget *label, QLayout *field);
-   void insertRow(int row, const QString &labelText, QWidget *field);
-   void insertRow(int row, const QString &labelText, QLayout *field);
-   void insertRow(int row, QWidget *widget);
-   void insertRow(int row, QLayout *layout);
+    void insertRow( int row, QWidget *label, QWidget *field );
+    void insertRow( int row, QWidget *label, QLayout *field );
+    void insertRow( int row, const QString &labelText, QWidget *field );
+    void insertRow( int row, const QString &labelText, QLayout *field );
+    void insertRow( int row, QWidget *widget );
+    void insertRow( int row, QLayout *layout );
 
-   void setItem(int row, ItemRole role, QLayoutItem *item);
-   void setWidget(int row, ItemRole role, QWidget *widget);
-   void setLayout(int row, ItemRole role, QLayout *layout);
+    void setItem( int row, ItemRole role, QLayoutItem *item );
+    void setWidget( int row, ItemRole role, QWidget *widget );
+    void setLayout( int row, ItemRole role, QLayout *layout );
 
-   QLayoutItem *itemAt(int row, ItemRole role) const;
-   void getItemPosition(int index, int *rowPtr, ItemRole *rolePtr) const;
-   void getWidgetPosition(QWidget *widget, int *rowPtr, ItemRole *rolePtr) const;
-   void getLayoutPosition(QLayout *layout, int *rowPtr, ItemRole *rolePtr) const;
-   QWidget *labelForField(QWidget *field) const;
-   QWidget *labelForField(QLayout *field) const;
+    QLayoutItem *itemAt( int row, ItemRole role ) const;
+    void getItemPosition( int index, int *rowPtr, ItemRole *rolePtr ) const;
+    void getWidgetPosition( QWidget *widget, int *rowPtr, ItemRole *rolePtr ) const;
+    void getLayoutPosition( QLayout *layout, int *rowPtr, ItemRole *rolePtr ) const;
+    QWidget *labelForField( QWidget *field ) const;
+    QWidget *labelForField( QLayout *field ) const;
 
-   void addItem(QLayoutItem *item) override;
-   QLayoutItem *itemAt(int index) const override;
-   QLayoutItem *takeAt(int index) override;
+    void addItem( QLayoutItem *item ) override;
+    QLayoutItem *itemAt( int index ) const override;
+    QLayoutItem *takeAt( int index ) override;
 
-   void setGeometry(const QRect &rect) override;
-   QSize minimumSize() const override;
-   QSize sizeHint() const override;
-   void invalidate() override;
+    void setGeometry( const QRect &rect ) override;
+    QSize minimumSize() const override;
+    QSize sizeHint() const override;
+    void invalidate() override;
 
-   bool hasHeightForWidth() const override;
-   int heightForWidth(int width) const override;
-   Qt::Orientations expandingDirections() const override;
-   int count() const override;
+    bool hasHeightForWidth() const override;
+    int heightForWidth( int width ) const override;
+    Qt::Orientations expandingDirections() const override;
+    int count() const override;
 
-   int rowCount() const;
+    int rowCount() const;
 
- private:
-   void resetFieldGrowthPolicy();
-   void resetRowWrapPolicy();
-   void resetLabelAlignment();
-   void resetFormAlignment();
+private:
+    void resetFieldGrowthPolicy();
+    void resetRowWrapPolicy();
+    void resetLabelAlignment();
+    void resetFormAlignment();
 };
 
 #endif

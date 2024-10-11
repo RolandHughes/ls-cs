@@ -25,22 +25,27 @@
 #include "SVGPropertyTraits.h"
 #include <wtf/text/StringBuilder.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 template<>
-struct SVGPropertyTraits<FloatRect> {
-    static FloatRect initialValue() { return FloatRect(); }
-    static String toString(const FloatRect& type)
+struct SVGPropertyTraits<FloatRect>
+{
+    static FloatRect initialValue()
+    {
+        return FloatRect();
+    }
+    static String toString( const FloatRect &type )
     {
         StringBuilder builder;
-        builder.append(String::number(type.x()));
-        builder.append(' ');
-        builder.append(String::number(type.y()));
-        builder.append(' ');
-        builder.append(String::number(type.width()));
-        builder.append(' ');
-        builder.append(String::number(type.height()));
-        builder.append(' ');
+        builder.append( String::number( type.x() ) );
+        builder.append( ' ' );
+        builder.append( String::number( type.y() ) );
+        builder.append( ' ' );
+        builder.append( String::number( type.width() ) );
+        builder.append( ' ' );
+        builder.append( String::number( type.height() ) );
+        builder.append( ' ' );
         return builder.toString();
     }
 };

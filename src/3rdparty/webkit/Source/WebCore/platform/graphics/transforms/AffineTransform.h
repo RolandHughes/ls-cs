@@ -21,7 +21,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef AffineTransform_h
@@ -46,7 +46,8 @@
 #include <wx/graphics.h>
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 class FloatPoint;
 class FloatQuad;
@@ -55,60 +56,97 @@ class IntPoint;
 class IntRect;
 class TransformationMatrix;
 
-class AffineTransform {
+class AffineTransform
+{
     WTF_MAKE_FAST_ALLOCATED;
 public:
     typedef double Transform[6];
 
     AffineTransform();
-    AffineTransform(double a, double b, double c, double d, double e, double f);
+    AffineTransform( double a, double b, double c, double d, double e, double f );
 
-    void setMatrix(double a, double b, double c, double d, double e, double f);
+    void setMatrix( double a, double b, double c, double d, double e, double f );
 
-    void map(double x, double y, double& x2, double& y2) const;
+    void map( double x, double y, double &x2, double &y2 ) const;
 
     // Rounds the mapped point to the nearest integer value.
-    IntPoint mapPoint(const IntPoint&) const;
+    IntPoint mapPoint( const IntPoint & ) const;
 
-    FloatPoint mapPoint(const FloatPoint&) const;
+    FloatPoint mapPoint( const FloatPoint & ) const;
 
     // Rounds the resulting mapped rectangle out. This is helpful for bounding
     // box computations but may not be what is wanted in other contexts.
-    IntRect mapRect(const IntRect&) const;
+    IntRect mapRect( const IntRect & ) const;
 
-    FloatRect mapRect(const FloatRect&) const;
-    FloatQuad mapQuad(const FloatQuad&) const;
+    FloatRect mapRect( const FloatRect & ) const;
+    FloatQuad mapQuad( const FloatQuad & ) const;
 
     bool isIdentity() const;
 
-    double a() const { return m_transform[0]; }
-    void setA(double a) { m_transform[0] = a; }
-    double b() const { return m_transform[1]; }
-    void setB(double b) { m_transform[1] = b; }
-    double c() const { return m_transform[2]; }
-    void setC(double c) { m_transform[2] = c; }
-    double d() const { return m_transform[3]; }
-    void setD(double d) { m_transform[3] = d; }
-    double e() const { return m_transform[4]; }
-    void setE(double e) { m_transform[4] = e; }
-    double f() const { return m_transform[5]; }
-    void setF(double f) { m_transform[5] = f; }
+    double a() const
+    {
+        return m_transform[0];
+    }
+    void setA( double a )
+    {
+        m_transform[0] = a;
+    }
+    double b() const
+    {
+        return m_transform[1];
+    }
+    void setB( double b )
+    {
+        m_transform[1] = b;
+    }
+    double c() const
+    {
+        return m_transform[2];
+    }
+    void setC( double c )
+    {
+        m_transform[2] = c;
+    }
+    double d() const
+    {
+        return m_transform[3];
+    }
+    void setD( double d )
+    {
+        m_transform[3] = d;
+    }
+    double e() const
+    {
+        return m_transform[4];
+    }
+    void setE( double e )
+    {
+        m_transform[4] = e;
+    }
+    double f() const
+    {
+        return m_transform[5];
+    }
+    void setF( double f )
+    {
+        m_transform[5] = f;
+    }
 
     void makeIdentity();
 
-    AffineTransform& multiply(const AffineTransform& other);
-    AffineTransform& scale(double); 
-    AffineTransform& scale(double sx, double sy); 
-    AffineTransform& scaleNonUniform(double sx, double sy);
-    AffineTransform& rotate(double d);
-    AffineTransform& rotateFromVector(double x, double y);
-    AffineTransform& translate(double tx, double ty);
-    AffineTransform& shear(double sx, double sy);
-    AffineTransform& flipX();
-    AffineTransform& flipY();
-    AffineTransform& skew(double angleX, double angleY);
-    AffineTransform& skewX(double angle);
-    AffineTransform& skewY(double angle);
+    AffineTransform &multiply( const AffineTransform &other );
+    AffineTransform &scale( double );
+    AffineTransform &scale( double sx, double sy );
+    AffineTransform &scaleNonUniform( double sx, double sy );
+    AffineTransform &rotate( double d );
+    AffineTransform &rotateFromVector( double x, double y );
+    AffineTransform &translate( double tx, double ty );
+    AffineTransform &shear( double sx, double sy );
+    AffineTransform &flipX();
+    AffineTransform &flipY();
+    AffineTransform &skew( double angleX, double angleY );
+    AffineTransform &skewX( double angle );
+    AffineTransform &skewY( double angle );
 
     double xScale() const;
     double yScale() const;
@@ -117,7 +155,7 @@ public:
     bool isInvertible() const;
     AffineTransform inverse() const;
 
-    void blend(const AffineTransform& from, double progress);
+    void blend( const AffineTransform &from, double progress );
 
     TransformationMatrix toTransformationMatrix() const;
 
@@ -125,32 +163,35 @@ public:
     {
         return m_transform[0] == 1 && m_transform[1] == 0 && m_transform[2] == 0 && m_transform[3] == 1;
     }
-    
+
     bool isIdentityOrTranslationOrFlipped() const
     {
-        return m_transform[0] == 1 && m_transform[1] == 0 && m_transform[2] == 0 && (m_transform[3] == 1 || m_transform[3] == -1);
+        return m_transform[0] == 1 && m_transform[1] == 0 && m_transform[2] == 0 && ( m_transform[3] == 1 || m_transform[3] == -1 );
     }
 
-    bool operator== (const AffineTransform& m2) const
+    bool operator== ( const AffineTransform &m2 ) const
     {
-        return (m_transform[0] == m2.m_transform[0]
-             && m_transform[1] == m2.m_transform[1]
-             && m_transform[2] == m2.m_transform[2]
-             && m_transform[3] == m2.m_transform[3]
-             && m_transform[4] == m2.m_transform[4]
-             && m_transform[5] == m2.m_transform[5]);
+        return ( m_transform[0] == m2.m_transform[0]
+                 && m_transform[1] == m2.m_transform[1]
+                 && m_transform[2] == m2.m_transform[2]
+                 && m_transform[3] == m2.m_transform[3]
+                 && m_transform[4] == m2.m_transform[4]
+                 && m_transform[5] == m2.m_transform[5] );
     }
 
-    bool operator!=(const AffineTransform& other) const { return !(*this == other); }
+    bool operator!=( const AffineTransform &other ) const
+    {
+        return !( *this == other );
+    }
 
     // *this = *this * t (i.e., a multRight)
-    AffineTransform& operator*=(const AffineTransform& t)
+    AffineTransform &operator*=( const AffineTransform &t )
     {
-        return multiply(t);
+        return multiply( t );
     }
-    
+
     // result = *this * t (i.e., a multRight)
-    AffineTransform operator*(const AffineTransform& t) const
+    AffineTransform operator*( const AffineTransform &t ) const
     {
         AffineTransform result = *this;
         result *= t;
@@ -171,22 +212,24 @@ public:
     operator wxGraphicsMatrix() const;
 #endif
 
-    static AffineTransform translation(double x, double y)
+    static AffineTransform translation( double x, double y )
     {
-        return AffineTransform(1, 0, 0, 1, x, y);
+        return AffineTransform( 1, 0, 0, 1, x, y );
     }
 
 private:
-    void setMatrix(const Transform m)
+    void setMatrix( const Transform m )
     {
-        if (m && m != m_transform)
-            memcpy(m_transform, m, sizeof(Transform));
+        if ( m && m != m_transform )
+        {
+            memcpy( m_transform, m, sizeof( Transform ) );
+        }
     }
 
     Transform m_transform;
 };
 
-AffineTransform makeMapBetweenRects(const FloatRect& source, const FloatRect& dest);
+AffineTransform makeMapBetweenRects( const FloatRect &source, const FloatRect &dest );
 
 }
 

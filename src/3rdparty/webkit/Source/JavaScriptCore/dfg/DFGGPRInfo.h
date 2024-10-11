@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef DFGGPRInfo_h
@@ -31,12 +31,16 @@
 #include <assembler/MacroAssembler.h>
 #include <dfg/DFGRegisterBank.h>
 
-namespace JSC { namespace DFG {
+namespace JSC
+{
+namespace DFG
+{
 
 typedef MacroAssembler::RegisterID GPRReg;
 #define InvalidGPRReg ((GPRReg)-1)
 
-class GPRInfo {
+class GPRInfo
+{
 public:
     typedef GPRReg RegisterType;
     static const unsigned numberOfRegisters = 9;
@@ -64,29 +68,30 @@ public:
     static const GPRReg returnValueGPR = X86Registers::eax; // regT0
     static const GPRReg returnValueGPR2 = X86Registers::edx; // regT1
 
-    static GPRReg toRegister(unsigned index)
+    static GPRReg toRegister( unsigned index )
     {
-        ASSERT(index < numberOfRegisters);
+        ASSERT( index < numberOfRegisters );
         static const GPRReg registerForIndex[numberOfRegisters] = { regT0, regT1, regT2, regT3, regT4, regT5, regT6, regT7, regT8 };
         return registerForIndex[index];
     }
 
-    static unsigned toIndex(GPRReg reg)
+    static unsigned toIndex( GPRReg reg )
     {
-        ASSERT(reg != InvalidGPRReg);
-        ASSERT(reg < 16);
+        ASSERT( reg != InvalidGPRReg );
+        ASSERT( reg < 16 );
         static const unsigned indexForRegister[16] = { 0, 2, 1, 3, InvalidIndex, InvalidIndex, 5, 4, 6, 7, 8, InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex, InvalidIndex };
         unsigned result = indexForRegister[reg];
-        ASSERT(result != InvalidIndex);
+        ASSERT( result != InvalidIndex );
         return result;
     }
 
 #ifndef NDEBUG
-    static const char* debugName(GPRReg reg)
+    static const char *debugName( GPRReg reg )
     {
-        ASSERT(reg != InvalidGPRReg);
-        ASSERT(reg < 16);
-        static const char* nameForRegister[16] = {
+        ASSERT( reg != InvalidGPRReg );
+        ASSERT( reg < 16 );
+        static const char *nameForRegister[16] =
+        {
             "rax", "rcx", "rdx", "rbx",
             "rsp", "rbp", "rsi", "rdi",
             "r8", "r9", "r10", "r11",
@@ -102,7 +107,8 @@ private:
 
 typedef RegisterBank<GPRInfo>::iterator gpr_iterator;
 
-} } // namespace JSC::DFG
+}
+} // namespace JSC::DFG
 
 #endif
 #endif

@@ -31,60 +31,94 @@
 
 #include "JSType.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    // WebCore uses MasqueradesAsUndefined to make document.all and style.filter undetectable.
-    static const unsigned MasqueradesAsUndefined = 1;
-    static const unsigned ImplementsHasInstance = 1 << 1;
-    static const unsigned OverridesHasInstance = 1 << 2;
-    static const unsigned ImplementsDefaultHasInstance = 1 << 3;
-    static const unsigned NeedsThisConversion = 1 << 4;
-    static const unsigned OverridesGetOwnPropertySlot = 1 << 5;
-    static const unsigned OverridesVisitChildren = 1 << 6;
-    static const unsigned OverridesGetPropertyNames = 1 << 7;
-    static const unsigned IsJSFinalObject = 1 << 8;
+// WebCore uses MasqueradesAsUndefined to make document.all and style.filter undetectable.
+static const unsigned MasqueradesAsUndefined = 1;
+static const unsigned ImplementsHasInstance = 1 << 1;
+static const unsigned OverridesHasInstance = 1 << 2;
+static const unsigned ImplementsDefaultHasInstance = 1 << 3;
+static const unsigned NeedsThisConversion = 1 << 4;
+static const unsigned OverridesGetOwnPropertySlot = 1 << 5;
+static const unsigned OverridesVisitChildren = 1 << 6;
+static const unsigned OverridesGetPropertyNames = 1 << 7;
+static const unsigned IsJSFinalObject = 1 << 8;
 
-    class TypeInfo {
-    public:
-        TypeInfo(JSType type, unsigned flags = 0)
-            : m_type(type), m_flags(flags & 0xFF) , m_flags2(flags >> 8)
+class TypeInfo
+{
+public:
+    TypeInfo( JSType type, unsigned flags = 0 )
+        : m_type( type ), m_flags( flags & 0xFF ), m_flags2( flags >> 8 )
+    {
+        ASSERT( flags <= 0x1FF );
+        ASSERT( static_cast<unsigned int>( type ) <= 0xFF );
+        ASSERT( type >= CompoundType || ! ( flags & OverridesVisitChildren ) );
+
+        // ImplementsDefaultHasInstance means (ImplementsHasInstance & !OverridesHasInstance)
+        if ( ( m_flags & ( ImplementsHasInstance | OverridesHasInstance ) ) == ImplementsHasInstance )
         {
-            ASSERT(flags <= 0x1FF);
-            ASSERT(static_cast<unsigned int>(type) <= 0xFF);
-            ASSERT(type >= CompoundType || ! (flags & OverridesVisitChildren));
-
-            // ImplementsDefaultHasInstance means (ImplementsHasInstance & !OverridesHasInstance)
-            if ((m_flags & (ImplementsHasInstance | OverridesHasInstance)) == ImplementsHasInstance)
-                m_flags |= ImplementsDefaultHasInstance;
+            m_flags |= ImplementsDefaultHasInstance;
         }
+    }
 
-        JSType type() const { return (JSType)m_type; }
+    JSType type() const
+    {
+        return ( JSType )m_type;
+    }
 
-        bool masqueradesAsUndefined() const { return m_flags & MasqueradesAsUndefined; }
-        bool implementsHasInstance() const { return m_flags & ImplementsHasInstance; }
-        bool overridesHasInstance() const { return m_flags & OverridesHasInstance; }
-        bool needsThisConversion() const { return m_flags & NeedsThisConversion; }
-        bool overridesGetOwnPropertySlot() const { return m_flags & OverridesGetOwnPropertySlot; }
-        bool overridesVisitChildren() const { return m_flags & OverridesVisitChildren; }
-        bool overridesGetPropertyNames() const { return m_flags & OverridesGetPropertyNames; }
-        unsigned flags() const { return m_flags; }
-        unsigned isFinal() const { return m_flags2 & (IsJSFinalObject >> 8); }
+    bool masqueradesAsUndefined() const
+    {
+        return m_flags & MasqueradesAsUndefined;
+    }
+    bool implementsHasInstance() const
+    {
+        return m_flags & ImplementsHasInstance;
+    }
+    bool overridesHasInstance() const
+    {
+        return m_flags & OverridesHasInstance;
+    }
+    bool needsThisConversion() const
+    {
+        return m_flags & NeedsThisConversion;
+    }
+    bool overridesGetOwnPropertySlot() const
+    {
+        return m_flags & OverridesGetOwnPropertySlot;
+    }
+    bool overridesVisitChildren() const
+    {
+        return m_flags & OverridesVisitChildren;
+    }
+    bool overridesGetPropertyNames() const
+    {
+        return m_flags & OverridesGetPropertyNames;
+    }
+    unsigned flags() const
+    {
+        return m_flags;
+    }
+    unsigned isFinal() const
+    {
+        return m_flags2 & ( IsJSFinalObject >> 8 );
+    }
 
-        static ptrdiff_t flagsOffset()
-        {
-            return OBJECT_OFFSETOF(TypeInfo, m_flags);
-        }
+    static ptrdiff_t flagsOffset()
+    {
+        return OBJECT_OFFSETOF( TypeInfo, m_flags );
+    }
 
-        static ptrdiff_t typeOffset()
-        {
-            return OBJECT_OFFSETOF(TypeInfo, m_type);
-        }
+    static ptrdiff_t typeOffset()
+    {
+        return OBJECT_OFFSETOF( TypeInfo, m_type );
+    }
 
-    private:
-        unsigned char m_type;
-        unsigned char m_flags;
-        unsigned char m_flags2;
-    };
+private:
+    unsigned char m_type;
+    unsigned char m_flags;
+    unsigned char m_flags2;
+};
 
 }
 

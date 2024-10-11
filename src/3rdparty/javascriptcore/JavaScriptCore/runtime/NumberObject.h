@@ -23,33 +23,38 @@
 
 #include "JSWrapperObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class NumberObject : public JSWrapperObject {
-    public:
-        explicit NumberObject(NonNullPassRefPtr<Structure>);
+class NumberObject : public JSWrapperObject
+{
+public:
+    explicit NumberObject( NonNullPassRefPtr<Structure> );
 
-        static const ClassInfo info;
+    static const ClassInfo info;
 
-        static PassRefPtr<Structure> createStructure(JSValue prototype)
-        {
-            return Structure::create(prototype, TypeInfo(ObjectType, StructureFlags));
-        }
+    static PassRefPtr<Structure> createStructure( JSValue prototype )
+    {
+        return Structure::create( prototype, TypeInfo( ObjectType, StructureFlags ) );
+    }
 
-    protected:
+protected:
 #if USE(JSVALUE32)
-        static const unsigned StructureFlags = OverridesMarkChildren | JSWrapperObject::StructureFlags;
+    static const unsigned StructureFlags = OverridesMarkChildren | JSWrapperObject::StructureFlags;
 #else
-        static const unsigned StructureFlags = JSWrapperObject::StructureFlags;
+    static const unsigned StructureFlags = JSWrapperObject::StructureFlags;
 #endif
 
-    private:
-        virtual const ClassInfo* classInfo() const { return &info; }
+private:
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
 
-        virtual JSValue getJSNumber();
-    };
+    virtual JSValue getJSNumber();
+};
 
-    NumberObject* constructNumber(ExecState*, JSValue);
+NumberObject *constructNumber( ExecState *, JSValue );
 
 } // namespace JSC
 

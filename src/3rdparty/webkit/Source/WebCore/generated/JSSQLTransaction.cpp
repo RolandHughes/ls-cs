@@ -30,9 +30,10 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
-ASSERT_CLASS_FITS_IN_CELL(JSSQLTransaction);
+ASSERT_CLASS_FITS_IN_CELL( JSSQLTransaction );
 
 /* Hash table for prototype */
 #if ENABLE(JIT)
@@ -43,65 +44,71 @@ ASSERT_CLASS_FITS_IN_CELL(JSSQLTransaction);
 
 static const HashTableValue JSSQLTransactionPrototypeTableValues[2] =
 {
-    { "executeSql", DontDelete | Function, (intptr_t)static_cast<NativeFunction>(jsSQLTransactionPrototypeFunctionExecuteSql), (intptr_t)4 THUNK_GENERATOR(0) },
-    { 0, 0, 0, 0 THUNK_GENERATOR(0) }
+    { "executeSql", DontDelete | Function, ( intptr_t )static_cast<NativeFunction>( jsSQLTransactionPrototypeFunctionExecuteSql ), ( intptr_t )4 THUNK_GENERATOR( 0 ) },
+    { 0, 0, 0, 0 THUNK_GENERATOR( 0 ) }
 };
 
 #undef THUNK_GENERATOR
 static JSC_CONST_HASHTABLE HashTable JSSQLTransactionPrototypeTable = { 2, 1, JSSQLTransactionPrototypeTableValues, 0 };
-static const HashTable* getJSSQLTransactionPrototypeTable(ExecState* exec)
+static const HashTable *getJSSQLTransactionPrototypeTable( ExecState *exec )
 {
-    return getHashTableForGlobalData(exec->globalData(), &JSSQLTransactionPrototypeTable);
+    return getHashTableForGlobalData( exec->globalData(), &JSSQLTransactionPrototypeTable );
 }
 
 const ClassInfo JSSQLTransactionPrototype::s_info = { "SQLTransactionPrototype", &JSC::JSObjectWithGlobalObject::s_info, 0, getJSSQLTransactionPrototypeTable };
 
-JSObject* JSSQLTransactionPrototype::self(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSQLTransactionPrototype::self( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return getDOMPrototype<JSSQLTransaction>(exec, globalObject);
+    return getDOMPrototype<JSSQLTransaction>( exec, globalObject );
 }
 
-bool JSSQLTransactionPrototype::getOwnPropertySlot(ExecState* exec, const Identifier& propertyName, PropertySlot& slot)
+bool JSSQLTransactionPrototype::getOwnPropertySlot( ExecState *exec, const Identifier &propertyName, PropertySlot &slot )
 {
-    return getStaticFunctionSlot<JSObject>(exec, getJSSQLTransactionPrototypeTable(exec), this, propertyName, slot);
+    return getStaticFunctionSlot<JSObject>( exec, getJSSQLTransactionPrototypeTable( exec ), this, propertyName, slot );
 }
 
-bool JSSQLTransactionPrototype::getOwnPropertyDescriptor(ExecState* exec, const Identifier& propertyName, PropertyDescriptor& descriptor)
+bool JSSQLTransactionPrototype::getOwnPropertyDescriptor( ExecState *exec, const Identifier &propertyName,
+        PropertyDescriptor &descriptor )
 {
-    return getStaticFunctionDescriptor<JSObject>(exec, getJSSQLTransactionPrototypeTable(exec), this, propertyName, descriptor);
+    return getStaticFunctionDescriptor<JSObject>( exec, getJSSQLTransactionPrototypeTable( exec ), this, propertyName, descriptor );
 }
 
 const ClassInfo JSSQLTransaction::s_info = { "SQLTransaction", &JSDOMWrapper::s_info, 0, 0 };
 
-JSSQLTransaction::JSSQLTransaction(Structure* structure, JSDOMGlobalObject* globalObject, PassRefPtr<SQLTransaction> impl)
-    : JSDOMWrapper(structure, globalObject)
-    , m_impl(impl)
+JSSQLTransaction::JSSQLTransaction( Structure *structure, JSDOMGlobalObject *globalObject, PassRefPtr<SQLTransaction> impl )
+    : JSDOMWrapper( structure, globalObject )
+    , m_impl( impl )
 {
-    ASSERT(inherits(&s_info));
+    ASSERT( inherits( &s_info ) );
 }
 
-JSObject* JSSQLTransaction::createPrototype(ExecState* exec, JSGlobalObject* globalObject)
+JSObject *JSSQLTransaction::createPrototype( ExecState *exec, JSGlobalObject *globalObject )
 {
-    return new (exec) JSSQLTransactionPrototype(exec->globalData(), globalObject, JSSQLTransactionPrototype::createStructure(globalObject->globalData(), globalObject->objectPrototype()));
+    return new ( exec ) JSSQLTransactionPrototype( exec->globalData(), globalObject,
+            JSSQLTransactionPrototype::createStructure( globalObject->globalData(), globalObject->objectPrototype() ) );
 }
 
-EncodedJSValue JSC_HOST_CALL jsSQLTransactionPrototypeFunctionExecuteSql(ExecState* exec)
+EncodedJSValue JSC_HOST_CALL jsSQLTransactionPrototypeFunctionExecuteSql( ExecState *exec )
 {
     JSValue thisValue = exec->hostThisValue();
-    if (!thisValue.inherits(&JSSQLTransaction::s_info))
-        return throwVMTypeError(exec);
-    JSSQLTransaction* castedThis = static_cast<JSSQLTransaction*>(asObject(thisValue));
-    return JSValue::encode(castedThis->executeSql(exec));
+
+    if ( !thisValue.inherits( &JSSQLTransaction::s_info ) )
+    {
+        return throwVMTypeError( exec );
+    }
+
+    JSSQLTransaction *castedThis = static_cast<JSSQLTransaction *>( asObject( thisValue ) );
+    return JSValue::encode( castedThis->executeSql( exec ) );
 }
 
-JSC::JSValue toJS(JSC::ExecState* exec, JSDOMGlobalObject* globalObject, SQLTransaction* impl)
+JSC::JSValue toJS( JSC::ExecState *exec, JSDOMGlobalObject *globalObject, SQLTransaction *impl )
 {
-    return wrap<JSSQLTransaction>(exec, globalObject, impl);
+    return wrap<JSSQLTransaction>( exec, globalObject, impl );
 }
 
-SQLTransaction* toSQLTransaction(JSC::JSValue value)
+SQLTransaction *toSQLTransaction( JSC::JSValue value )
 {
-    return value.inherits(&JSSQLTransaction::s_info) ? static_cast<JSSQLTransaction*>(asObject(value))->impl() : 0;
+    return value.inherits( &JSSQLTransaction::s_info ) ? static_cast<JSSQLTransaction *>( asObject( value ) )->impl() : 0;
 }
 
 }

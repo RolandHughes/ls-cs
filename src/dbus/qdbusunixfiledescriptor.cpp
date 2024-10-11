@@ -28,42 +28,52 @@
 # include <qcore_unix_p.h>
 #endif
 
-class QDBusUnixFileDescriptorPrivate : public QSharedData {
+class QDBusUnixFileDescriptorPrivate : public QSharedData
+{
 public:
-    QDBusUnixFileDescriptorPrivate() : fd(-1) { }
-    QDBusUnixFileDescriptorPrivate(const QDBusUnixFileDescriptorPrivate &other)
-        : QSharedData(other), fd(-1)
+    QDBusUnixFileDescriptorPrivate() : fd( -1 ) { }
+    QDBusUnixFileDescriptorPrivate( const QDBusUnixFileDescriptorPrivate &other )
+        : QSharedData( other ), fd( -1 )
     {  }
     ~QDBusUnixFileDescriptorPrivate();
 
     QAtomicInt fd;
 };
 
-template<> inline
-QExplicitlySharedDataPointer<QDBusUnixFileDescriptorPrivate>::~QExplicitlySharedDataPointer()
-{ if (d && !d->ref.deref()) delete d; }
+template<> inline QExplicitlySharedDataPointer<QDBusUnixFileDescriptorPrivate>::~QExplicitlySharedDataPointer()
+{
+    if ( d && !d->ref.deref() )
+    {
+        delete d;
+    }
+}
 
 QDBusUnixFileDescriptor::QDBusUnixFileDescriptor()
-    : d(0)
+    : d( 0 )
 {
 }
 
-QDBusUnixFileDescriptor::QDBusUnixFileDescriptor(int fileDescriptor)
-    : d(0)
+QDBusUnixFileDescriptor::QDBusUnixFileDescriptor( int fileDescriptor )
+    : d( 0 )
 {
-    if (fileDescriptor != -1)
-        setFileDescriptor(fileDescriptor);
+    if ( fileDescriptor != -1 )
+    {
+        setFileDescriptor( fileDescriptor );
+    }
 }
 
-QDBusUnixFileDescriptor::QDBusUnixFileDescriptor(const QDBusUnixFileDescriptor &other)
-    : d(other.d)
+QDBusUnixFileDescriptor::QDBusUnixFileDescriptor( const QDBusUnixFileDescriptor &other )
+    : d( other.d )
 {
 }
 
-QDBusUnixFileDescriptor &QDBusUnixFileDescriptor::operator=(const QDBusUnixFileDescriptor &other)
+QDBusUnixFileDescriptor &QDBusUnixFileDescriptor::operator=( const QDBusUnixFileDescriptor &other )
 {
-    if (this != &other)
-        d.operator=(other.d);
+    if ( this != &other )
+    {
+        d.operator=( other.d );
+    }
+
     return *this;
 }
 
@@ -89,26 +99,36 @@ bool QDBusUnixFileDescriptor::isSupported()
     return true;
 }
 
-void QDBusUnixFileDescriptor::setFileDescriptor(int fileDescriptor)
+void QDBusUnixFileDescriptor::setFileDescriptor( int fileDescriptor )
 {
-    if (fileDescriptor != -1)
-        giveFileDescriptor(qt_safe_dup(fileDescriptor));
+    if ( fileDescriptor != -1 )
+    {
+        giveFileDescriptor( qt_safe_dup( fileDescriptor ) );
+    }
 }
 
-void QDBusUnixFileDescriptor::giveFileDescriptor(int fileDescriptor)
+void QDBusUnixFileDescriptor::giveFileDescriptor( int fileDescriptor )
 {
     // if we are the sole ref, d remains unchanged
     // if detaching happens, d->fd will be -1
-    if (d)
+    if ( d )
+    {
         d.detach();
+    }
     else
+    {
         d = new QDBusUnixFileDescriptorPrivate;
+    }
 
-    if (d->fd != -1)
-        qt_safe_close(d->fd);
+    if ( d->fd != -1 )
+    {
+        qt_safe_close( d->fd );
+    }
 
-    if (fileDescriptor != -1)
+    if ( fileDescriptor != -1 )
+    {
         d->fd = fileDescriptor;
+    }
 }
 
 /*!
@@ -121,16 +141,20 @@ void QDBusUnixFileDescriptor::giveFileDescriptor(int fileDescriptor)
 */
 int QDBusUnixFileDescriptor::takeFileDescriptor()
 {
-    if (!d)
+    if ( !d )
+    {
         return -1;
+    }
 
-    return d->fd.fetchAndStoreRelaxed(-1);
+    return d->fd.fetchAndStoreRelaxed( -1 );
 }
 
 QDBusUnixFileDescriptorPrivate::~QDBusUnixFileDescriptorPrivate()
 {
-    if (fd != -1)
-        qt_safe_close(fd);
+    if ( fd != -1 )
+    {
+        qt_safe_close( fd );
+    }
 }
 
 #else
@@ -139,11 +163,11 @@ bool QDBusUnixFileDescriptor::isSupported()
     return false;
 }
 
-void QDBusUnixFileDescriptor::setFileDescriptor(int)
+void QDBusUnixFileDescriptor::setFileDescriptor( int )
 {
 }
 
-void QDBusUnixFileDescriptor::giveFileDescriptor(int)
+void QDBusUnixFileDescriptor::giveFileDescriptor( int )
 {
 }
 

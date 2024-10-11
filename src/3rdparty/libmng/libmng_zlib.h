@@ -30,26 +30,26 @@
 
 /* ************************************************************************** */
 
-mng_retcode mngzlib_initialize  (mng_datap pData);
-mng_retcode mngzlib_cleanup     (mng_datap pData);
+mng_retcode mngzlib_initialize  ( mng_datap pData );
+mng_retcode mngzlib_cleanup     ( mng_datap pData );
 
-mng_retcode mngzlib_inflateinit (mng_datap pData);
-mng_retcode mngzlib_inflaterows (mng_datap  pData,
-                                 mng_uint32 iInlen,
-                                 mng_uint8p pIndata);
-mng_retcode mngzlib_inflatedata (mng_datap  pData,
-                                 mng_uint32 iInlen,
-                                 mng_uint8p pIndata);
-mng_retcode mngzlib_inflatefree (mng_datap pData);
+mng_retcode mngzlib_inflateinit ( mng_datap pData );
+mng_retcode mngzlib_inflaterows ( mng_datap  pData,
+                                  mng_uint32 iInlen,
+                                  mng_uint8p pIndata );
+mng_retcode mngzlib_inflatedata ( mng_datap  pData,
+                                  mng_uint32 iInlen,
+                                  mng_uint8p pIndata );
+mng_retcode mngzlib_inflatefree ( mng_datap pData );
 
-mng_retcode mngzlib_deflateinit (mng_datap pData);
-mng_retcode mngzlib_deflaterows (mng_datap  pData,
-                                 mng_uint32 iInlen,
-                                 mng_uint8p pIndata);
-mng_retcode mngzlib_deflatedata (mng_datap  pData,
-                                 mng_uint32 iInlen,
-                                 mng_uint8p pIndata);
-mng_retcode mngzlib_deflatefree (mng_datap pData);
+mng_retcode mngzlib_deflateinit ( mng_datap pData );
+mng_retcode mngzlib_deflaterows ( mng_datap  pData,
+                                  mng_uint32 iInlen,
+                                  mng_uint8p pIndata );
+mng_retcode mngzlib_deflatedata ( mng_datap  pData,
+                                  mng_uint32 iInlen,
+                                  mng_uint8p pIndata );
+mng_retcode mngzlib_deflatefree ( mng_datap pData );
 
 /* ************************************************************************** */
 

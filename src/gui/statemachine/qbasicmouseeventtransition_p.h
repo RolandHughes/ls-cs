@@ -35,35 +35,35 @@ class QPainterPath;
 
 class QBasicMouseEventTransition : public QAbstractTransition
 {
-   GUI_CS_OBJECT(QBasicMouseEventTransition)
+    GUI_LSCS_OBJECT( QBasicMouseEventTransition )
 
- public:
-   QBasicMouseEventTransition(QState *sourceState = nullptr);
-   QBasicMouseEventTransition(QEvent::Type type, Qt::MouseButton button, QState *sourceState = nullptr);
+public:
+    QBasicMouseEventTransition( QState *sourceState = nullptr );
+    QBasicMouseEventTransition( QEvent::Type type, Qt::MouseButton button, QState *sourceState = nullptr );
 
-   QBasicMouseEventTransition(const QBasicMouseEventTransition &) = delete;
-   QBasicMouseEventTransition &operator=(const QBasicMouseEventTransition &) = delete;
+    QBasicMouseEventTransition( const QBasicMouseEventTransition & ) = delete;
+    QBasicMouseEventTransition &operator=( const QBasicMouseEventTransition & ) = delete;
 
-   ~QBasicMouseEventTransition();
+    ~QBasicMouseEventTransition();
 
-   QEvent::Type eventType() const;
-   void setEventType(QEvent::Type type);
+    QEvent::Type eventType() const;
+    void setEventType( QEvent::Type type );
 
-   Qt::MouseButton button() const;
-   void setButton(Qt::MouseButton button);
+    Qt::MouseButton button() const;
+    void setButton( Qt::MouseButton button );
 
-   Qt::KeyboardModifiers modifierMask() const;
-   void setModifierMask(Qt::KeyboardModifiers modifiers);
+    Qt::KeyboardModifiers modifierMask() const;
+    void setModifierMask( Qt::KeyboardModifiers modifiers );
 
-   QPainterPath hitTestPath() const;
-   void setHitTestPath(const QPainterPath &path);
+    QPainterPath hitTestPath() const;
+    void setHitTestPath( const QPainterPath &path );
 
- protected:
-   bool eventTest(QEvent *event) override;
-   void onTransition(QEvent *) override;
+protected:
+    bool eventTest( QEvent *event ) override;
+    void onTransition( QEvent * ) override;
 
- private:
-   Q_DECLARE_PRIVATE(QBasicMouseEventTransition)
+private:
+    Q_DECLARE_PRIVATE( QBasicMouseEventTransition )
 };
 
 #endif //QT_NO_STATEMACHINE

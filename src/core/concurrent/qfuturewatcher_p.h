@@ -31,26 +31,26 @@ class QFutureWatcherBase;
 
 class QFutureWatcherBasePrivate : public QFutureCallOutInterface
 {
- public:
-   QFutureWatcherBasePrivate();
-   virtual ~QFutureWatcherBasePrivate() {}
+public:
+    QFutureWatcherBasePrivate();
+    virtual ~QFutureWatcherBasePrivate() {}
 
-   void postCallOutEvent(const QFutureCallOutEvent &callOutEvent) override;
-   void callOutInterfaceDisconnected() override;
+    void postCallOutEvent( const QFutureCallOutEvent &callOutEvent ) override;
+    void callOutInterfaceDisconnected() override;
 
-   void sendCallOutEvent(QFutureCallOutEvent *event);
+    void sendCallOutEvent( QFutureCallOutEvent *event );
 
-   QList<QFutureCallOutEvent *> pendingCallOutEvents;
-   QAtomicInt pendingResultsReady;
-   int maximumPendingResultsReady;
+    QList<QFutureCallOutEvent *> pendingCallOutEvents;
+    QAtomicInt pendingResultsReady;
+    int maximumPendingResultsReady;
 
-   mutable QAtomicInt resultAtConnected;
-   bool finished;
+    mutable QAtomicInt resultAtConnected;
+    bool finished;
 
- protected:
-   QFutureWatcherBase *q_ptr;
+protected:
+    QFutureWatcherBase *q_ptr;
 
-   Q_DECLARE_PUBLIC(QFutureWatcherBase)
+    Q_DECLARE_PUBLIC( QFutureWatcherBase )
 };
 
 #endif

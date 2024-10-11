@@ -47,15 +47,15 @@ QT_BEGIN_NAMESPACE
 class QDBusInterfacePrivate: public QDBusAbstractInterfacePrivate
 {
 public:
-    Q_DECLARE_PUBLIC(QDBusInterface)
+    Q_DECLARE_PUBLIC( QDBusInterface )
 
     QDBusMetaObject *metaObject;
 
-    QDBusInterfacePrivate(const QString &serv, const QString &p, const QString &iface,
-                          const QDBusConnection &con);
+    QDBusInterfacePrivate( const QString &serv, const QString &p, const QString &iface,
+                           const QDBusConnection &con );
     ~QDBusInterfacePrivate();
 
-    int metacall(QMetaObject::Call c, int id, void **argv);
+    int metacall( QMetaObject::Call c, int id, void **argv );
 };
 
 QT_END_NAMESPACE

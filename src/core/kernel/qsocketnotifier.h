@@ -30,39 +30,40 @@ class QSocketNotifierPrivate;
 
 class Q_CORE_EXPORT QSocketNotifier : public QObject
 {
-   CORE_CS_OBJECT(QSocketNotifier)
+    CORE_LSCS_OBJECT( QSocketNotifier )
 
- public:
-   enum Type {
-      Read,
-      Write,
-      Exception
-   };
+public:
+    enum Type
+    {
+        Read,
+        Write,
+        Exception
+    };
 
-   QSocketNotifier(qintptr socket, Type type, QObject *parent = nullptr);
+    QSocketNotifier( qintptr socket, Type type, QObject *parent = nullptr );
 
-   QSocketNotifier(const QSocketNotifier &) = delete;
-   QSocketNotifier &operator=(const QSocketNotifier &) = delete;
+    QSocketNotifier( const QSocketNotifier & ) = delete;
+    QSocketNotifier &operator=( const QSocketNotifier & ) = delete;
 
-   ~QSocketNotifier();
+    ~QSocketNotifier();
 
-   qintptr socket() const;
-   Type type() const;
-   bool isEnabled() const;
+    qintptr socket() const;
+    Type type() const;
+    bool isEnabled() const;
 
-   CORE_CS_SLOT_1(Public, void setEnabled(bool enable))
-   CORE_CS_SLOT_2(setEnabled)
+    CORE_LSCS_SLOT_1( Public, void setEnabled( bool enable ) )
+    CORE_LSCS_SLOT_2( setEnabled )
 
-   CORE_CS_SIGNAL_1(Public, void activated(int socket))
-   CORE_CS_SIGNAL_2(activated, socket)
+    CORE_LSCS_SIGNAL_1( Public, void activated( int socket ) )
+    CORE_LSCS_SIGNAL_2( activated, socket )
 
- protected:
-   bool event(QEvent *event) override;
+protected:
+    bool event( QEvent *event ) override;
 
- private:
-   qintptr sockfd;
-   QSocketNotifier::Type sntype;
-   bool snenabled;
+private:
+    qintptr sockfd;
+    QSocketNotifier::Type sntype;
+    bool snenabled;
 };
 
 #endif

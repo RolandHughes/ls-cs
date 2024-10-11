@@ -40,7 +40,7 @@ list(APPEND NETWORK_PRIVATE_INCLUDES
 )
 
 if(OPENSSL_FOUND OR SECURETRANSPORT_FOUND)
-   target_sources(CsNetwork
+   target_sources(LsCsNetwork
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/ssl/qasn1element.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/ssl/qssl.cpp
@@ -57,7 +57,7 @@ if(OPENSSL_FOUND OR SECURETRANSPORT_FOUND)
 endif()
 
 if(OPENSSL_FOUND AND NOT SECURETRANSPORT_FOUND)
-   target_sources(CsNetwork
+   target_sources(LsCsNetwork
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/ssl/qsslcertificate_openssl.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/ssl/qsslcontext_openssl.cpp
@@ -69,7 +69,7 @@ if(OPENSSL_FOUND AND NOT SECURETRANSPORT_FOUND)
 endif()
 
 if(SECURETRANSPORT_FOUND)
-   target_sources(CsNetwork
+   target_sources(LsCsNetwork
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/ssl/qsslkey_mac.cpp
       ${CMAKE_CURRENT_SOURCE_DIR}/ssl/qsslsocket_mac.cpp

@@ -37,41 +37,47 @@ static const char screenFactorsEnvVar[]     = "QT_SCREEN_SCALE_FACTORS";
 
 static inline qreal initialGlobalScaleFactor()
 {
-   qreal result     = 1;
-   QByteArray env_1 = qgetenv(scaleFactorEnvVar);
+    qreal result     = 1;
+    QByteArray env_1 = qgetenv( scaleFactorEnvVar );
 
-   if (! env_1.isEmpty()) {
-      bool ok;
+    if ( ! env_1.isEmpty() )
+    {
+        bool ok;
 
-      const qreal f = env_1.toDouble(&ok);
+        const qreal f = env_1.toDouble( &ok );
 
-      if (ok && f > 0) {
+        if ( ok && f > 0 )
+        {
 
-#if defined(CS_SHOW_DEBUG_GUI_DPI)
-         qDebug() << "QHighDpiScaling initialGlobalScaleFactor() Factor =" << scaleFactorEnvVar << f;
+#if defined(LSCS_SHOW_DEBUG_GUI_DPI)
+            qDebug() << "QHighDpiScaling initialGlobalScaleFactor() Factor =" << scaleFactorEnvVar << f;
 #endif
 
-         result = f;
-      }
+            result = f;
+        }
 
-   } else {
-      QByteArray env_2 = qgetenv(legacyDevicePixelEnvVar);
+    }
+    else
+    {
+        QByteArray env_2 = qgetenv( legacyDevicePixelEnvVar );
 
-      if (! env_2.isEmpty()) {
-         qWarning() << "Warning:" << legacyDevicePixelEnvVar << "is deprecated. Instead use: " << endl
-            << "   " << autoScreenEnvVar << "to enable platform plugin controlled per-screen factors." << endl
-            << "   " << screenFactorsEnvVar << "to set per-screen factors." << endl
-            << "   " << scaleFactorEnvVar << "to set the application global scale factor.";
+        if ( ! env_2.isEmpty() )
+        {
+            qWarning() << "Warning:" << legacyDevicePixelEnvVar << "is deprecated. Instead use: " << endl
+                       << "   " << autoScreenEnvVar << "to enable platform plugin controlled per-screen factors." << endl
+                       << "   " << screenFactorsEnvVar << "to set per-screen factors." << endl
+                       << "   " << scaleFactorEnvVar << "to set the application global scale factor.";
 
-         int dpr = env_2.toInt();
+            int dpr = env_2.toInt();
 
-         if (dpr > 0) {
-            result = dpr;
-         }
-      }
-   }
+            if ( dpr > 0 )
+            {
+                result = dpr;
+            }
+        }
+    }
 
-   return result;
+    return result;
 }
 
 /*!
@@ -180,14 +186,14 @@ static inline qreal initialGlobalScaleFactor()
         T toNativePixels(T, QWindow *)
         T fromNativePixels(T, QWindow*)
 
-    The following classes in CsGui use native pixels, for the convenience of the
+    The following classes in LsCsGui use native pixels, for the convenience of the
     plataform plugins:
         QPlatformWindow
         QPlatformScreen
         QWindowSystemInterface (API only - Events are in device independent pixels)
 
     As a special consideration platform plugin code should be careful about
-    calling CsGui geometry accessor functions:
+    calling LsCsGui geometry accessor functions:
         QRect r = window->geometry();
 
     Here the returned geometry is in device independent pixels. Add a conversion call:
@@ -204,130 +210,153 @@ bool QHighDpiScaling::m_pixelDensityScalingActive = false;   // pixel density sc
 bool QHighDpiScaling::m_globalScalingActive       = false;   // global scale factor is active
 bool QHighDpiScaling::m_screenFactorSet           = false;   // QHighDpiScaling::setScreenFactor has been used
 
-QDpi QHighDpiScaling::m_logicalDpi = QDpi(-1, -1);           // scaled logical DPI of the primary screen
+QDpi QHighDpiScaling::m_logicalDpi = QDpi( -1, -1 );         // scaled logical DPI of the primary screen
 
 static inline bool usePixelDensity()
 {
-   // call before the platform plugin is created.
+    // call before the platform plugin is created.
 
-   // Determine if we should set a scale factor based on the pixel density
-   // reported by the platform plugin. There are several enablers and several
-   // disablers. A single disable may veto all other enablers.
+    // Determine if we should set a scale factor based on the pixel density
+    // reported by the platform plugin. There are several enablers and several
+    // disablers. A single disable may veto all other enablers.
 
-   if (QCoreApplication::testAttribute(Qt::AA_DisableHighDpiScaling)) {
-      return false;
-   }
+    if ( QCoreApplication::testAttribute( Qt::AA_DisableHighDpiScaling ) )
+    {
+        return false;
+    }
 
-   bool screenEnvValueOk;
-   const int screenEnvValue = qgetenv(autoScreenEnvVar).toInt(&screenEnvValueOk);
+    bool screenEnvValueOk;
+    const int screenEnvValue = qgetenv( autoScreenEnvVar ).toInt( &screenEnvValueOk );
 
-   if (screenEnvValueOk && screenEnvValue < 1) {
-      return false;
-   }
+    if ( screenEnvValueOk && screenEnvValue < 1 )
+    {
+        return false;
+    }
 
-   return QCoreApplication::testAttribute(Qt::AA_EnableHighDpiScaling)
-      || (screenEnvValueOk && screenEnvValue > 0)
-      || (qgetenv(legacyDevicePixelEnvVar).toLower() == "auto");
+    return QCoreApplication::testAttribute( Qt::AA_EnableHighDpiScaling )
+           || ( screenEnvValueOk && screenEnvValue > 0 )
+           || ( qgetenv( legacyDevicePixelEnvVar ).toLower() == "auto" );
 }
 
 void QHighDpiScaling::initHighDpiScaling()
 {
-   // Determine if there is a global scale factor set.
-   m_factor = initialGlobalScaleFactor();
-   m_globalScalingActive = !qFuzzyCompare(m_factor, qreal(1));
+    // Determine if there is a global scale factor set.
+    m_factor = initialGlobalScaleFactor();
+    m_globalScalingActive = !qFuzzyCompare( m_factor, qreal( 1 ) );
 
-   m_usePixelDensity = usePixelDensity();
+    m_usePixelDensity = usePixelDensity();
 
-   m_pixelDensityScalingActive = false; //set in updateHighDpiScaling below
+    m_pixelDensityScalingActive = false; //set in updateHighDpiScaling below
 
-   // we update m_active in updateHighDpiScaling, but while we create the
-   // screens, we have to assume that m_usePixelDensity implies scaling
-   m_active = m_globalScalingActive || m_usePixelDensity;
+    // we update m_active in updateHighDpiScaling, but while we create the
+    // screens, we have to assume that m_usePixelDensity implies scaling
+    m_active = m_globalScalingActive || m_usePixelDensity;
 }
 
 void QHighDpiScaling::updateHighDpiScaling()
 {
-   if (QCoreApplication::testAttribute(Qt::AA_DisableHighDpiScaling)) {
-      return;
-   }
+    if ( QCoreApplication::testAttribute( Qt::AA_DisableHighDpiScaling ) )
+    {
+        return;
+    }
 
-   if (m_usePixelDensity && !m_pixelDensityScalingActive) {
-      for (QScreen *screen : QApplication::screens()) {
-         if (!qFuzzyCompare(screenSubfactor(screen->handle()), qreal(1))) {
-            m_pixelDensityScalingActive = true;
-            break;
-         }
-      }
-   }
-
-   QByteArray env = qgetenv(screenFactorsEnvVar);
-
-   if (! env.isEmpty()) {
-      int i = 0;
-
-      for (const QByteArray &spec : env.split(';')) {
-         QScreen *screen = nullptr;
-         int equalsPos = spec.lastIndexOf('=');
-         double factor = 0;
-
-         if (equalsPos > 0) {
-            // support "name=factor"
-            QByteArray name = spec.mid(0, equalsPos);
-            QByteArray f = spec.mid(equalsPos + 1);
-            bool ok;
-            factor = f.toDouble(&ok);
-
-            if (ok) {
-               for (QScreen *s : QApplication::screens()) {
-                  if (s->name() == QString::fromUtf8(name)) {
-                     screen = s;
-                     break;
-                  }
-               }
+    if ( m_usePixelDensity && !m_pixelDensityScalingActive )
+    {
+        for ( QScreen *screen : QApplication::screens() )
+        {
+            if ( !qFuzzyCompare( screenSubfactor( screen->handle() ), qreal( 1 ) ) )
+            {
+                m_pixelDensityScalingActive = true;
+                break;
             }
-         } else {
-            // listing screens in order
-            bool ok;
-            factor = spec.toDouble(&ok);
-            if (ok && i < QApplication::screens().count()) {
-               screen = QApplication::screens().at(i);
+        }
+    }
+
+    QByteArray env = qgetenv( screenFactorsEnvVar );
+
+    if ( ! env.isEmpty() )
+    {
+        int i = 0;
+
+        for ( const QByteArray &spec : env.split( ';' ) )
+        {
+            QScreen *screen = nullptr;
+            int equalsPos = spec.lastIndexOf( '=' );
+            double factor = 0;
+
+            if ( equalsPos > 0 )
+            {
+                // support "name=factor"
+                QByteArray name = spec.mid( 0, equalsPos );
+                QByteArray f = spec.mid( equalsPos + 1 );
+                bool ok;
+                factor = f.toDouble( &ok );
+
+                if ( ok )
+                {
+                    for ( QScreen *s : QApplication::screens() )
+                    {
+                        if ( s->name() == QString::fromUtf8( name ) )
+                        {
+                            screen = s;
+                            break;
+                        }
+                    }
+                }
             }
-         }
-         if (screen) {
-            setScreenFactor(screen, factor);
-         }
-         ++i;
-      }
-   }
-   m_active = m_globalScalingActive || m_screenFactorSet || m_pixelDensityScalingActive;
+            else
+            {
+                // listing screens in order
+                bool ok;
+                factor = spec.toDouble( &ok );
 
-   QPlatformScreen *primaryScreen = QApplication::primaryScreen()->handle();
-   qreal sf = screenSubfactor(primaryScreen);
+                if ( ok && i < QApplication::screens().count() )
+                {
+                    screen = QApplication::screens().at( i );
+                }
+            }
 
-   QDpi primaryDpi = primaryScreen->logicalDpi();
-   m_logicalDpi = QDpi(primaryDpi.first / sf, primaryDpi.second / sf);
+            if ( screen )
+            {
+                setScreenFactor( screen, factor );
+            }
+
+            ++i;
+        }
+    }
+
+    m_active = m_globalScalingActive || m_screenFactorSet || m_pixelDensityScalingActive;
+
+    QPlatformScreen *primaryScreen = QApplication::primaryScreen()->handle();
+    qreal sf = screenSubfactor( primaryScreen );
+
+    QDpi primaryDpi = primaryScreen->logicalDpi();
+    m_logicalDpi = QDpi( primaryDpi.first / sf, primaryDpi.second / sf );
 }
 
 /*
     Sets the global scale factor which is applied to all windows.
 */
-void QHighDpiScaling::setGlobalFactor(qreal factor)
+void QHighDpiScaling::setGlobalFactor( qreal factor )
 {
-   if (qFuzzyCompare(factor, m_factor)) {
-      return;
-   }
+    if ( qFuzzyCompare( factor, m_factor ) )
+    {
+        return;
+    }
 
-   if (! QApplication::allWindows().isEmpty()) {
-      qWarning("QHighDpiScaling::setFactor() Only call this methdod when no windows exist");
-   }
+    if ( ! QApplication::allWindows().isEmpty() )
+    {
+        qWarning( "QHighDpiScaling::setFactor() Only call this methdod when no windows exist" );
+    }
 
-   m_globalScalingActive = ! qFuzzyCompare(factor, qreal(1));
-   m_factor = m_globalScalingActive ? factor : qreal(1);
-   m_active = m_globalScalingActive || m_screenFactorSet || m_pixelDensityScalingActive;
+    m_globalScalingActive = ! qFuzzyCompare( factor, qreal( 1 ) );
+    m_factor = m_globalScalingActive ? factor : qreal( 1 );
+    m_active = m_globalScalingActive || m_screenFactorSet || m_pixelDensityScalingActive;
 
-   for (QScreen *screen : QApplication::screens()) {
-      screen->d_func()->updateHighDpi();
-   }
+    for ( QScreen *screen : QApplication::screens() )
+    {
+        screen->d_func()->updateHighDpi();
+    }
 }
 
 static const char scaleFactorProperty[] = "_q_scaleFactor";
@@ -335,107 +364,124 @@ static const char scaleFactorProperty[] = "_q_scaleFactor";
 /*
     Sets a per-screen scale factor.
 */
-void QHighDpiScaling::setScreenFactor(QScreen *screen, qreal factor)
+void QHighDpiScaling::setScreenFactor( QScreen *screen, qreal factor )
 {
-   if (!qFuzzyCompare(factor, qreal(1))) {
-      m_screenFactorSet = true;
-      m_active = true;
-   }
-   screen->setProperty(scaleFactorProperty, QVariant(factor));
+    if ( !qFuzzyCompare( factor, qreal( 1 ) ) )
+    {
+        m_screenFactorSet = true;
+        m_active = true;
+    }
 
-   // hack to force re-evaluation of screen geometry
-   if (screen->handle()) {
-      screen->d_func()->setPlatformScreen(screen->handle());   // updates geometries based on scale factor
-   }
+    screen->setProperty( scaleFactorProperty, QVariant( factor ) );
+
+    // hack to force re-evaluation of screen geometry
+    if ( screen->handle() )
+    {
+        screen->d_func()->setPlatformScreen( screen->handle() ); // updates geometries based on scale factor
+    }
 }
 
-QPoint QHighDpiScaling::mapPositionToNative(const QPoint &pos, const QPlatformScreen *platformScreen)
+QPoint QHighDpiScaling::mapPositionToNative( const QPoint &pos, const QPlatformScreen *platformScreen )
 {
-   if (!platformScreen) {
-      return pos;
-   }
+    if ( !platformScreen )
+    {
+        return pos;
+    }
 
-   const qreal scaleFactor = factor(platformScreen);
-   const QPoint topLeft    = platformScreen->geometry().topLeft();
-   return (pos - topLeft) * scaleFactor + topLeft;
+    const qreal scaleFactor = factor( platformScreen );
+    const QPoint topLeft    = platformScreen->geometry().topLeft();
+    return ( pos - topLeft ) * scaleFactor + topLeft;
 }
 
-QPoint QHighDpiScaling::mapPositionFromNative(const QPoint &pos, const QPlatformScreen *platformScreen)
+QPoint QHighDpiScaling::mapPositionFromNative( const QPoint &pos, const QPlatformScreen *platformScreen )
 {
-   if (!platformScreen) {
-      return pos;
-   }
+    if ( !platformScreen )
+    {
+        return pos;
+    }
 
-   const qreal scaleFactor = factor(platformScreen);
-   const QPoint topLeft    = platformScreen->geometry().topLeft();
-   return (pos - topLeft) / scaleFactor + topLeft;
+    const qreal scaleFactor = factor( platformScreen );
+    const QPoint topLeft    = platformScreen->geometry().topLeft();
+    return ( pos - topLeft ) / scaleFactor + topLeft;
 }
 
-qreal QHighDpiScaling::screenSubfactor(const QPlatformScreen *screen)
+qreal QHighDpiScaling::screenSubfactor( const QPlatformScreen *screen )
 {
-   qreal factor = qreal(1.0);
+    qreal factor = qreal( 1.0 );
 
-   if (screen) {
-      if (m_usePixelDensity) {
-         factor *= screen->pixelDensity();
-      }
-      if (m_screenFactorSet) {
-         QVariant screenFactor = screen->screen()->property(scaleFactorProperty);
-         if (screenFactor.isValid()) {
-            factor *= screenFactor.toReal();
-         }
-      }
-   }
-   return factor;
+    if ( screen )
+    {
+        if ( m_usePixelDensity )
+        {
+            factor *= screen->pixelDensity();
+        }
+
+        if ( m_screenFactorSet )
+        {
+            QVariant screenFactor = screen->screen()->property( scaleFactorProperty );
+
+            if ( screenFactor.isValid() )
+            {
+                factor *= screenFactor.toReal();
+            }
+        }
+    }
+
+    return factor;
 }
 
 QDpi QHighDpiScaling::logicalDpi()
 {
-   return m_logicalDpi;
+    return m_logicalDpi;
 }
 
-qreal QHighDpiScaling::factor(const QScreen *screen)
+qreal QHighDpiScaling::factor( const QScreen *screen )
 {
-   // Fast path for when scaling is not used at all
-   if (! m_active) {
-      return qreal(1.0);
-   }
+    // Fast path for when scaling is not used at all
+    if ( ! m_active )
+    {
+        return qreal( 1.0 );
+    }
 
-   // The effective factor for a given screen is the product of the
-   // screen and global sub-factors
-   qreal factor = m_factor;
+    // The effective factor for a given screen is the product of the
+    // screen and global sub-factors
+    qreal factor = m_factor;
 
-   if (screen) {
-      factor *= screenSubfactor(screen->handle());
-   }
-   return factor;
+    if ( screen )
+    {
+        factor *= screenSubfactor( screen->handle() );
+    }
+
+    return factor;
 }
 
-qreal QHighDpiScaling::factor(const QPlatformScreen *platformScreen)
+qreal QHighDpiScaling::factor( const QPlatformScreen *platformScreen )
 {
-   if (! m_active) {
-      return qreal(1.0);
-   }
+    if ( ! m_active )
+    {
+        return qreal( 1.0 );
+    }
 
-   return m_factor * screenSubfactor(platformScreen);
+    return m_factor * screenSubfactor( platformScreen );
 }
 
-qreal QHighDpiScaling::factor(const QWindow *window)
+qreal QHighDpiScaling::factor( const QWindow *window )
 {
-   if (!m_active) {
-      return qreal(1.0);
-   }
+    if ( !m_active )
+    {
+        return qreal( 1.0 );
+    }
 
-   return factor(window ? window->screen() : QApplication::primaryScreen());
+    return factor( window ? window->screen() : QApplication::primaryScreen() );
 }
 
-QPoint QHighDpiScaling::origin(const QScreen *screen)
+QPoint QHighDpiScaling::origin( const QScreen *screen )
 {
-   return screen->geometry().topLeft();
+    return screen->geometry().topLeft();
 }
 
-QPoint QHighDpiScaling::origin(const QPlatformScreen *platformScreen)
+QPoint QHighDpiScaling::origin( const QPlatformScreen *platformScreen )
 {
-   return platformScreen->geometry().topLeft();
+    return platformScreen->geometry().topLeft();
 }
 

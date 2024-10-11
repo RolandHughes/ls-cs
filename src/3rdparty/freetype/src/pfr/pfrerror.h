@@ -16,11 +16,11 @@
  */
 
 
-  /**************************************************************************
-   *
-   * This file is used to define the PFR error enumeration constants.
-   *
-   */
+/**************************************************************************
+ *
+ * This file is used to define the PFR error enumeration constants.
+ *
+ */
 
 #ifndef PFRERROR_H_
 #define PFRERROR_H_

@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -31,15 +31,16 @@
 
 #include "Icon.h"
 
-namespace WebCore {
-    
+namespace WebCore
+{
+
 FileChooserClient::~FileChooserClient()
 {
 }
 
-inline FileChooser::FileChooser(FileChooserClient* client, const Vector<String>& initialFilenames)
-    : m_client(client)
-    , m_isInitializing(true)
+inline FileChooser::FileChooser( FileChooserClient *client, const Vector<String> &initialFilenames )
+    : m_client( client )
+    , m_isInitializing( true )
 {
     m_filenames = initialFilenames;
 }
@@ -50,9 +51,9 @@ void FileChooser::initialize()
     m_isInitializing = false;
 }
 
-PassRefPtr<FileChooser> FileChooser::create(FileChooserClient* client, const Vector<String>& initialFilenames)
+PassRefPtr<FileChooser> FileChooser::create( FileChooserClient *client, const Vector<String> &initialFilenames )
 {
-    RefPtr<FileChooser> chooser(adoptRef(new FileChooser(client, initialFilenames)));
+    RefPtr<FileChooser> chooser( adoptRef( new FileChooser( client, initialFilenames ) ) );
     chooser->initialize();
     return chooser;
 }
@@ -67,34 +68,45 @@ void FileChooser::clear()
     m_icon = 0;
 }
 
-void FileChooser::chooseFile(const String& filename)
+void FileChooser::chooseFile( const String &filename )
 {
     Vector<String> filenames;
-    filenames.append(filename);
-    chooseFiles(filenames);
+    filenames.append( filename );
+    chooseFiles( filenames );
 }
 
-void FileChooser::chooseFiles(const Vector<String>& filenames)
+void FileChooser::chooseFiles( const Vector<String> &filenames )
 {
-    if (m_filenames == filenames)
+    if ( m_filenames == filenames )
+    {
         return;
+    }
+
     m_filenames = filenames;
     loadIcon();
-    if (m_client)
+
+    if ( m_client )
+    {
         m_client->valueChanged();
+    }
 }
 
 void FileChooser::loadIcon()
 {
-    if (m_filenames.size() && m_client)
-        m_client->chooseIconForFiles(this, m_filenames);
+    if ( m_filenames.size() && m_client )
+    {
+        m_client->chooseIconForFiles( this, m_filenames );
+    }
 }
 
-void FileChooser::iconLoaded(PassRefPtr<Icon> icon)
+void FileChooser::iconLoaded( PassRefPtr<Icon> icon )
 {
     m_icon = icon;
-    if (!m_isInitializing && m_icon && m_client)
+
+    if ( !m_isInitializing && m_icon && m_client )
+    {
         m_client->repaint();
+    }
 }
 
 }

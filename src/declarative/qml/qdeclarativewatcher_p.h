@@ -40,25 +40,25 @@ class QMetaProperty;
 
 class QDeclarativeWatcher : public QObject
 {
-   DECL_CS_OBJECT(QDeclarativeWatcher)
- public:
-   QDeclarativeWatcher(QObject * = 0);
+    DECL_LSCS_OBJECT( QDeclarativeWatcher )
+public:
+    QDeclarativeWatcher( QObject * = 0 );
 
-   bool addWatch(int id, quint32 objectId);
-   bool addWatch(int id, quint32 objectId, const QByteArray &property);
-   bool addWatch(int id, quint32 objectId, const QString &expr);
+    bool addWatch( int id, quint32 objectId );
+    bool addWatch( int id, quint32 objectId, const QByteArray &property );
+    bool addWatch( int id, quint32 objectId, const QString &expr );
 
-   void removeWatch(int id);
+    void removeWatch( int id );
 
- public:
-   DECL_CS_SIGNAL_1(Public, void propertyChanged(int id, int objectId, const QMetaProperty &property, const QVariant &value))
-   DECL_CS_SIGNAL_2(propertyChanged, id, objectId, property, value)
+public:
+    DECL_LSCS_SIGNAL_1( Public, void propertyChanged( int id, int objectId, const QMetaProperty &property, const QVariant &value ) )
+    DECL_LSCS_SIGNAL_2( propertyChanged, id, objectId, property, value )
 
- private:
-   friend class QDeclarativeWatchProxy;
-   void addPropertyWatch(int id, QObject *object, quint32 objectId, const QMetaProperty &property);
+private:
+    friend class QDeclarativeWatchProxy;
+    void addPropertyWatch( int id, QObject *object, quint32 objectId, const QMetaProperty &property );
 
-   QHash<int, QList<QPointer<QDeclarativeWatchProxy> > > m_proxies;
+    QHash<int, QList<QPointer<QDeclarativeWatchProxy> > > m_proxies;
 };
 
 QT_END_NAMESPACE

@@ -28,8 +28,8 @@ QAudioDecoderControl::~QAudioDecoderControl()
 {
 }
 
-QAudioDecoderControl::QAudioDecoderControl(QObject *parent):
-   QMediaControl(*new QMediaControlPrivate, parent)
+QAudioDecoderControl::QAudioDecoderControl( QObject *parent ):
+    QMediaControl( *new QMediaControlPrivate, parent )
 {
 }
 

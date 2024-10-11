@@ -32,275 +32,306 @@
 #include <qnetworkconfigmanager_p.h>
 
 #ifdef interface
-   // avoid conflict with our method named interface()
+// avoid conflict with our method named interface()
 #  undef interface
 #endif
 
 #ifndef QT_NO_BEARERMANAGEMENT
 
-QNetworkSession::QNetworkSession(const QNetworkConfiguration &connectionConfig, QObject *parent)
-   : QObject(parent), d(nullptr)
+QNetworkSession::QNetworkSession( const QNetworkConfiguration &connectionConfig, QObject *parent )
+    : QObject( parent ), d( nullptr )
 {
-   // invalid configuration
-   if (! connectionConfig.identifier().isEmpty()) {
-      for (QBearerEngine *engine : qNetworkConfigurationManagerPrivate()->engines()) {
-         if (engine->hasIdentifier(connectionConfig.identifier())) {
-            d = engine->createSessionBackend();
-            d->q = this;
-            d->publicConfig = connectionConfig;
-            d->syncStateWithInterface();
+    // invalid configuration
+    if ( ! connectionConfig.identifier().isEmpty() )
+    {
+        for ( QBearerEngine *engine : qNetworkConfigurationManagerPrivate()->engines() )
+        {
+            if ( engine->hasIdentifier( connectionConfig.identifier() ) )
+            {
+                d = engine->createSessionBackend();
+                d->q = this;
+                d->publicConfig = connectionConfig;
+                d->syncStateWithInterface();
 
-            connect(d, &QNetworkSessionPrivate::quitPendingWaitsForOpened,
-                  this, &QNetworkSession::opened);
+                connect( d, &QNetworkSessionPrivate::quitPendingWaitsForOpened,
+                         this, &QNetworkSession::opened );
 
-            connect(d, &QNetworkSessionPrivate::error,
-                  this, &QNetworkSession::error);
+                connect( d, &QNetworkSessionPrivate::error,
+                         this, &QNetworkSession::error );
 
-            connect(d, &QNetworkSessionPrivate::stateChanged,
-                  this, &QNetworkSession::stateChanged);
+                connect( d, &QNetworkSessionPrivate::stateChanged,
+                         this, &QNetworkSession::stateChanged );
 
-            connect(d, &QNetworkSessionPrivate::closed,
-                  this, &QNetworkSession::closed);
+                connect( d, &QNetworkSessionPrivate::closed,
+                         this, &QNetworkSession::closed );
 
-            connect(d, &QNetworkSessionPrivate::preferredConfigurationChanged,
-                  this, &QNetworkSession::preferredConfigurationChanged);
+                connect( d, &QNetworkSessionPrivate::preferredConfigurationChanged,
+                         this, &QNetworkSession::preferredConfigurationChanged );
 
-            connect(d, &QNetworkSessionPrivate::newConfigurationActivated,
-                  this, &QNetworkSession::newConfigurationActivated);
+                connect( d, &QNetworkSessionPrivate::newConfigurationActivated,
+                         this, &QNetworkSession::newConfigurationActivated );
 
-            connect(d, &QNetworkSessionPrivate::usagePoliciesChanged,
-                  this, &QNetworkSession::usagePoliciesChanged);
+                connect( d, &QNetworkSessionPrivate::usagePoliciesChanged,
+                         this, &QNetworkSession::usagePoliciesChanged );
 
-            break;
-         }
-      }
-   }
+                break;
+            }
+        }
+    }
 }
 
 QNetworkSession::~QNetworkSession()
 {
-   delete d;
+    delete d;
 }
 
 void QNetworkSession::open()
 {
-   if (d) {
-      d->open();
-   } else {
-      emit error(InvalidConfigurationError);
-   }
+    if ( d )
+    {
+        d->open();
+    }
+    else
+    {
+        emit error( InvalidConfigurationError );
+    }
 }
 
-bool QNetworkSession::waitForOpened(int msecs)
+bool QNetworkSession::waitForOpened( int msecs )
 {
-   if (!d) {
-      return false;
-   }
+    if ( !d )
+    {
+        return false;
+    }
 
-   if (d->isOpen) {
-      return true;
-   }
+    if ( d->isOpen )
+    {
+        return true;
+    }
 
-   if (!(d->state == Connecting || d->state == Connected)) {
-      return false;
-   }
+    if ( !( d->state == Connecting || d->state == Connected ) )
+    {
+        return false;
+    }
 
-   QEventLoop loop;
+    QEventLoop loop;
 
-   QObject::connect(d,    &QNetworkSessionPrivate::quitPendingWaitsForOpened, &loop, &QEventLoop::quit);
-   QObject::connect(this, &QNetworkSession::error, &loop, &QEventLoop::quit);
+    QObject::connect( d,    &QNetworkSessionPrivate::quitPendingWaitsForOpened, &loop, &QEventLoop::quit );
+    QObject::connect( this, &QNetworkSession::error, &loop, &QEventLoop::quit );
 
-   //final call
-   if (msecs >= 0) {
-      QTimer::singleShot(msecs, &loop, SLOT(quit()));
-   }
+    //final call
+    if ( msecs >= 0 )
+    {
+        QTimer::singleShot( msecs, &loop, SLOT( quit() ) );
+    }
 
-   // enter the event loop and wait for opened/error/timeout
-   loop.exec(QEventLoop::ExcludeUserInputEvents | QEventLoop::WaitForMoreEvents);
+    // enter the event loop and wait for opened/error/timeout
+    loop.exec( QEventLoop::ExcludeUserInputEvents | QEventLoop::WaitForMoreEvents );
 
-   return d->isOpen;
+    return d->isOpen;
 }
 
 void QNetworkSession::close()
 {
-   if (d) {
-      d->close();
-   }
+    if ( d )
+    {
+        d->close();
+    }
 }
 
 void QNetworkSession::stop()
 {
-   if (d) {
-      d->stop();
-   }
+    if ( d )
+    {
+        d->stop();
+    }
 }
 
 QNetworkConfiguration QNetworkSession::configuration() const
 {
-   return d ? d->publicConfig : QNetworkConfiguration();
+    return d ? d->publicConfig : QNetworkConfiguration();
 }
 
 #ifndef QT_NO_NETWORKINTERFACE
 
 QNetworkInterface QNetworkSession::interface() const
 {
-   return d ? d->currentInterface() : QNetworkInterface();
+    return d ? d->currentInterface() : QNetworkInterface();
 }
 #endif
 
 bool QNetworkSession::isOpen() const
 {
-   return d ? d->isOpen : false;
+    return d ? d->isOpen : false;
 }
 
 QNetworkSession::State QNetworkSession::state() const
 {
-   return d ? d->state : QNetworkSession::Invalid;
+    return d ? d->state : QNetworkSession::Invalid;
 }
 
 QNetworkSession::SessionError QNetworkSession::error() const
 {
-   return d ? d->error() : InvalidConfigurationError;
+    return d ? d->error() : InvalidConfigurationError;
 }
 
 QString QNetworkSession::errorString() const
 {
-   return d ? d->errorString() : tr("Invalid configuration.");
+    return d ? d->errorString() : tr( "Invalid configuration." );
 }
 
-QVariant QNetworkSession::sessionProperty(const QString &key) const
+QVariant QNetworkSession::sessionProperty( const QString &key ) const
 {
-   if (!d || !d->publicConfig.isValid()) {
-      return QVariant();
-   }
+    if ( !d || !d->publicConfig.isValid() )
+    {
+        return QVariant();
+    }
 
-   if (key == QLatin1String("ActiveConfiguration")) {
-      return d->isOpen ? d->activeConfig.identifier() : QString();
-   }
+    if ( key == QLatin1String( "ActiveConfiguration" ) )
+    {
+        return d->isOpen ? d->activeConfig.identifier() : QString();
+    }
 
-   if (key == QLatin1String("UserChoiceConfiguration")) {
-      if (!d->isOpen || d->publicConfig.type() != QNetworkConfiguration::UserChoice) {
-         return QString();
-      }
+    if ( key == QLatin1String( "UserChoiceConfiguration" ) )
+    {
+        if ( !d->isOpen || d->publicConfig.type() != QNetworkConfiguration::UserChoice )
+        {
+            return QString();
+        }
 
-      if (d->serviceConfig.isValid()) {
-         return d->serviceConfig.identifier();
-      } else {
-         return d->activeConfig.identifier();
-      }
-   }
+        if ( d->serviceConfig.isValid() )
+        {
+            return d->serviceConfig.identifier();
+        }
+        else
+        {
+            return d->activeConfig.identifier();
+        }
+    }
 
-   return d->sessionProperty(key);
+    return d->sessionProperty( key );
 }
 
-void QNetworkSession::setSessionProperty(const QString &key, const QVariant &value)
+void QNetworkSession::setSessionProperty( const QString &key, const QVariant &value )
 {
-   if (!d) {
-      return;
-   }
+    if ( !d )
+    {
+        return;
+    }
 
-   if (key == QLatin1String("ActiveConfiguration") ||
-         key == QLatin1String("UserChoiceConfiguration")) {
-      return;
-   }
+    if ( key == QLatin1String( "ActiveConfiguration" ) ||
+            key == QLatin1String( "UserChoiceConfiguration" ) )
+    {
+        return;
+    }
 
-   d->setSessionProperty(key, value);
+    d->setSessionProperty( key, value );
 }
 
 void QNetworkSession::migrate()
 {
-   if (d) {
-      d->migrate();
-   }
+    if ( d )
+    {
+        d->migrate();
+    }
 }
 
 void QNetworkSession::ignore()
 {
-   // Needed on at least Symbian platform: the roaming must be explicitly
-   // ignore()'d or migrate()'d
-   if (d) {
-      d->ignore();
-   }
+    // Needed on at least Symbian platform: the roaming must be explicitly
+    // ignore()'d or migrate()'d
+    if ( d )
+    {
+        d->ignore();
+    }
 }
 
 void QNetworkSession::accept()
 {
-   if (d) {
-      d->accept();
-   }
+    if ( d )
+    {
+        d->accept();
+    }
 }
 
 void QNetworkSession::reject()
 {
-   if (d) {
-      d->reject();
-   }
+    if ( d )
+    {
+        d->reject();
+    }
 }
 quint64 QNetworkSession::bytesWritten() const
 {
-   return d ? d->bytesWritten() : Q_UINT64_C(0);
+    return d ? d->bytesWritten() : Q_UINT64_C( 0 );
 }
 
 quint64 QNetworkSession::bytesReceived() const
 {
-   return d ? d->bytesReceived() : Q_UINT64_C(0);
+    return d ? d->bytesReceived() : Q_UINT64_C( 0 );
 }
 
 quint64 QNetworkSession::activeTime() const
 {
-   return d ? d->activeTime() : Q_UINT64_C(0);
+    return d ? d->activeTime() : Q_UINT64_C( 0 );
 }
 
 QNetworkSession::UsagePolicies QNetworkSession::usagePolicies() const
 {
-   return d ? d->usagePolicies() : QNetworkSession::NoPolicy;
+    return d ? d->usagePolicies() : QNetworkSession::NoPolicy;
 }
 
-void QNetworkSessionPrivate::setUsagePolicies(QNetworkSession &session, QNetworkSession::UsagePolicies policies)
+void QNetworkSessionPrivate::setUsagePolicies( QNetworkSession &session, QNetworkSession::UsagePolicies policies )
 {
-   if (! session.d) {
-      return;
-   }
-   session.d->setUsagePolicies(policies);
-}
+    if ( ! session.d )
+    {
+        return;
+    }
 
-// internal
-void QNetworkSession::connectNotify(const QMetaMethod &signal) const
-{
-   QObject::connectNotify(signal);
-
-   if (! d) {
-      return;
-   }
-
-   // check for preferredConfigurationChanged() signal connect notification
-   // This is not required on all platforms
-
-   static const QMetaMethod preferredConfigurationChangedSignal =
-      QMetaMethod::fromSignal(&QNetworkSession::preferredConfigurationChanged);
-
-   if (signal == preferredConfigurationChangedSignal) {
-      d->setALREnabled(true);
-   }
+    session.d->setUsagePolicies( policies );
 }
 
 // internal
-void QNetworkSession::disconnectNotify(const QMetaMethod &signal) const
+void QNetworkSession::connectNotify( const QMetaMethod &signal ) const
 {
-   QObject::disconnectNotify(signal);
+    QObject::connectNotify( signal );
 
-   if (! d) {
-      return;
-   }
+    if ( ! d )
+    {
+        return;
+    }
 
-   //check for preferredConfigurationChanged() signal disconnect notification
-   // not required on all platforms
-   static const QMetaMethod preferredConfigurationChangedSignal =
-      QMetaMethod::fromSignal(&QNetworkSession::preferredConfigurationChanged);
+    // check for preferredConfigurationChanged() signal connect notification
+    // This is not required on all platforms
 
-   if (signal == preferredConfigurationChangedSignal) {
-      d->setALREnabled(false);
-   }
+    static const QMetaMethod preferredConfigurationChangedSignal =
+        QMetaMethod::fromSignal( &QNetworkSession::preferredConfigurationChanged );
+
+    if ( signal == preferredConfigurationChangedSignal )
+    {
+        d->setALREnabled( true );
+    }
+}
+
+// internal
+void QNetworkSession::disconnectNotify( const QMetaMethod &signal ) const
+{
+    QObject::disconnectNotify( signal );
+
+    if ( ! d )
+    {
+        return;
+    }
+
+    //check for preferredConfigurationChanged() signal disconnect notification
+    // not required on all platforms
+    static const QMetaMethod preferredConfigurationChangedSignal =
+        QMetaMethod::fromSignal( &QNetworkSession::preferredConfigurationChanged );
+
+    if ( signal == preferredConfigurationChangedSignal )
+    {
+        d->setALREnabled( false );
+    }
 }
 
 #endif // QT_NO_BEARERMANAGEMENT

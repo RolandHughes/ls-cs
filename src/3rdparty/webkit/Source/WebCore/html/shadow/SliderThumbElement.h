@@ -38,52 +38,57 @@
 #include "RenderStyleConstants.h"
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class HTMLElement;
 class HTMLInputElement;
 class Event;
 class FloatPoint;
 
-class SliderThumbElement : public HTMLDivElement {
+class SliderThumbElement : public HTMLDivElement
+{
 public:
-    static PassRefPtr<SliderThumbElement> create(Document*);
+    static PassRefPtr<SliderThumbElement> create( Document * );
 
-    bool inDragMode() const { return m_inDragMode; }
+    bool inDragMode() const
+    {
+        return m_inDragMode;
+    }
     void setPositionFromValue();
 
-    void dragFrom(const IntPoint&);
-    virtual void defaultEventHandler(Event*);
+    void dragFrom( const IntPoint & );
+    virtual void defaultEventHandler( Event * );
     virtual void detach();
-    virtual const AtomicString& shadowPseudoId() const;
+    virtual const AtomicString &shadowPseudoId() const;
 
 private:
-    SliderThumbElement(Document*);
-    virtual RenderObject* createRenderer(RenderArena*, RenderStyle*);
+    SliderThumbElement( Document * );
+    virtual RenderObject *createRenderer( RenderArena *, RenderStyle * );
     void startDragging();
     void stopDragging();
-    void setPositionFromPoint(const IntPoint&);
-    HTMLInputElement* hostInput();
+    void setPositionFromPoint( const IntPoint & );
+    HTMLInputElement *hostInput();
 
     FloatPoint m_offsetToThumb;
     bool m_inDragMode;
 };
 
-inline SliderThumbElement::SliderThumbElement(Document* document)
-    : HTMLDivElement(HTMLNames::divTag, document)
-    , m_inDragMode(false)
+inline SliderThumbElement::SliderThumbElement( Document *document )
+    : HTMLDivElement( HTMLNames::divTag, document )
+    , m_inDragMode( false )
 {
 }
 
-inline PassRefPtr<SliderThumbElement> SliderThumbElement::create(Document* document)
+inline PassRefPtr<SliderThumbElement> SliderThumbElement::create( Document *document )
 {
-    return adoptRef(new SliderThumbElement(document));
+    return adoptRef( new SliderThumbElement( document ) );
 }
 
-inline SliderThumbElement* toSliderThumbElement(Node* node)
+inline SliderThumbElement *toSliderThumbElement( Node *node )
 {
-    ASSERT(!node || node->isHTMLElement());
-    return static_cast<SliderThumbElement*>(node);
+    ASSERT( !node || node->isHTMLElement() );
+    return static_cast<SliderThumbElement *>( node );
 }
 
 }

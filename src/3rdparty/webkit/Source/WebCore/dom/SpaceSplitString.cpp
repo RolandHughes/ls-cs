@@ -27,43 +27,60 @@
 
 using namespace WTF;
 
-namespace WebCore {
-
-static bool hasNonASCIIOrUpper(const String& string)
+namespace WebCore
 {
-    const UChar* characters = string.characters();
+
+static bool hasNonASCIIOrUpper( const String &string )
+{
+    const UChar *characters = string.characters();
     unsigned length = string.length();
     bool hasUpper = false;
     UChar ored = 0;
-    for (unsigned i = 0; i < length; i++) {
+
+    for ( unsigned i = 0; i < length; i++ )
+    {
         UChar c = characters[i];
-        hasUpper |= isASCIIUpper(c);
+        hasUpper |= isASCIIUpper( c );
         ored |= c;
     }
-    return hasUpper || (ored & ~0x7F);
+
+    return hasUpper || ( ored & ~0x7F );
 }
 
 void SpaceSplitStringData::createVector()
 {
-    ASSERT(!m_createdVector);
-    ASSERT(m_vector.isEmpty());
+    ASSERT( !m_createdVector );
+    ASSERT( m_vector.isEmpty() );
 
-    if (m_shouldFoldCase && hasNonASCIIOrUpper(m_string))
+    if ( m_shouldFoldCase && hasNonASCIIOrUpper( m_string ) )
+    {
         m_string = m_string.foldCase();
+    }
 
-    const UChar* characters = m_string.characters();
+    const UChar *characters = m_string.characters();
     unsigned length = m_string.length();
     unsigned start = 0;
-    while (true) {
-        while (start < length && isHTMLSpace(characters[start]))
-            ++start;
-        if (start >= length)
-            break;
-        unsigned end = start + 1;
-        while (end < length && isNotHTMLSpace(characters[end]))
-            ++end;
 
-        m_vector.append(AtomicString(characters + start, end - start));
+    while ( true )
+    {
+        while ( start < length && isHTMLSpace( characters[start] ) )
+        {
+            ++start;
+        }
+
+        if ( start >= length )
+        {
+            break;
+        }
+
+        unsigned end = start + 1;
+
+        while ( end < length && isNotHTMLSpace( characters[end] ) )
+        {
+            ++end;
+        }
+
+        m_vector.append( AtomicString( characters + start, end - start ) );
 
         start = end + 1;
     }
@@ -72,56 +89,78 @@ void SpaceSplitStringData::createVector()
     m_createdVector = true;
 }
 
-bool SpaceSplitStringData::containsAll(SpaceSplitStringData& other)
+bool SpaceSplitStringData::containsAll( SpaceSplitStringData &other )
 {
     ensureVector();
     other.ensureVector();
     size_t thisSize = m_vector.size();
     size_t otherSize = other.m_vector.size();
-    for (size_t i = 0; i < otherSize; ++i) {
-        const AtomicString& name = other.m_vector[i];
+
+    for ( size_t i = 0; i < otherSize; ++i )
+    {
+        const AtomicString &name = other.m_vector[i];
         size_t j;
-        for (j = 0; j < thisSize; ++j) {
-            if (m_vector[j] == name)
+
+        for ( j = 0; j < thisSize; ++j )
+        {
+            if ( m_vector[j] == name )
+            {
                 break;
+            }
         }
-        if (j == thisSize)
+
+        if ( j == thisSize )
+        {
             return false;
+        }
     }
+
     return true;
 }
 
-void SpaceSplitStringData::add(const AtomicString& string)
+void SpaceSplitStringData::add( const AtomicString &string )
 {
-    if (contains(string))
+    if ( contains( string ) )
+    {
         return;
+    }
 
-    m_vector.append(string);
+    m_vector.append( string );
 }
 
-void SpaceSplitStringData::remove(const AtomicString& string)
+void SpaceSplitStringData::remove( const AtomicString &string )
 {
     ensureVector();
 
     size_t position = 0;
-    while (position < m_vector.size()) {
-        if (m_vector[position] == string)
-            m_vector.remove(position);
+
+    while ( position < m_vector.size() )
+    {
+        if ( m_vector[position] == string )
+        {
+            m_vector.remove( position );
+        }
         else
+        {
             ++position;
+        }
     }
 }
 
-void SpaceSplitString::add(const AtomicString& string)
+void SpaceSplitString::add( const AtomicString &string )
 {
-    if (m_data)
-        m_data->add(string);
+    if ( m_data )
+    {
+        m_data->add( string );
+    }
 }
 
-void SpaceSplitString::remove(const AtomicString& string)
+void SpaceSplitString::remove( const AtomicString &string )
 {
-    if (m_data)
-        m_data->remove(string);
+    if ( m_data )
+    {
+        m_data->remove( string );
+    }
 }
 
 } // namespace WebCore

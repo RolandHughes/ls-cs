@@ -33,22 +33,26 @@ using namespace WebKit;
 
 WKTypeID WKGeolocationManagerGetTypeID()
 {
-    return toAPI(WebGeolocationManagerProxy::APIType);
+    return toAPI( WebGeolocationManagerProxy::APIType );
 }
 
-void WKGeolocationManagerSetProvider(WKGeolocationManagerRef geolocationManagerRef, const WKGeolocationProvider* wkProvider)
+void WKGeolocationManagerSetProvider( WKGeolocationManagerRef geolocationManagerRef, const WKGeolocationProvider *wkProvider )
 {
-    if (wkProvider && wkProvider->version)
+    if ( wkProvider && wkProvider->version )
+    {
         return;
-    toImpl(geolocationManagerRef)->initializeProvider(wkProvider);
+    }
+
+    toImpl( geolocationManagerRef )->initializeProvider( wkProvider );
 }
 
-void WKGeolocationManagerProviderDidChangePosition(WKGeolocationManagerRef geolocationManagerRef, WKGeolocationPositionRef positionRef)
+void WKGeolocationManagerProviderDidChangePosition( WKGeolocationManagerRef geolocationManagerRef,
+        WKGeolocationPositionRef positionRef )
 {
-    toImpl(geolocationManagerRef)->providerDidChangePosition(toImpl(positionRef));
+    toImpl( geolocationManagerRef )->providerDidChangePosition( toImpl( positionRef ) );
 }
 
-void WKGeolocationManagerProviderDidFailToDeterminePosition(WKGeolocationManagerRef geolocationManagerRef)
+void WKGeolocationManagerProviderDidFailToDeterminePosition( WKGeolocationManagerRef geolocationManagerRef )
 {
-    toImpl(geolocationManagerRef)->providerDidFailToDeterminePosition();
+    toImpl( geolocationManagerRef )->providerDidFailToDeterminePosition();
 }

@@ -6,13 +6,13 @@
  * are met:
  *
  * 1.  Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer. 
+ *     notice, this list of conditions and the following disclaimer.
  * 2.  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution. 
+ *     documentation and/or other materials provided with the distribution.
  * 3.  Neither the name of Apple Computer, Inc. ("Apple") nor the names of
  *     its contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission. 
+ *     from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY APPLE AND ITS CONTRIBUTORS "AS IS" AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -36,124 +36,163 @@
 #include <wtf/OwnArrayPtr.h>
 #include <wtf/UnusedParam.h>
 
-namespace JSC {
+namespace JSC
+{
 
-    class Register;
+class Register;
 
-    class JSVariableObject : public JSNonFinalObject {
-        friend class JIT;
+class JSVariableObject : public JSNonFinalObject
+{
+    friend class JIT;
 
-    public:
-        SymbolTable& symbolTable() const { return *m_symbolTable; }
-
-        virtual void putWithAttributes(ExecState*, const Identifier&, JSValue, unsigned attributes) = 0;
-
-        virtual bool deleteProperty(ExecState*, const Identifier&);
-        virtual void getOwnPropertyNames(ExecState*, PropertyNameArray&, EnumerationMode mode = ExcludeDontEnumProperties);
-        
-        virtual bool isVariableObject() const;
-        virtual bool isDynamicScope(bool& requiresDynamicChecks) const = 0;
-
-        WriteBarrier<Unknown>& registerAt(int index) const { return m_registers[index]; }
-
-        WriteBarrier<Unknown>* const * addressOfRegisters() const { return &m_registers; }
-
-        static Structure* createStructure(JSGlobalData& globalData, JSValue prototype)
-        {
-            return Structure::create(globalData, prototype, TypeInfo(ObjectType, StructureFlags), AnonymousSlotCount, &s_info);
-        }
-        
-    protected:
-        static const unsigned StructureFlags = OverridesGetPropertyNames | JSObject::StructureFlags;
-
-        JSVariableObject(JSGlobalData& globalData, Structure* structure, SymbolTable* symbolTable, Register* registers)
-            : JSNonFinalObject(globalData, structure)
-            , m_symbolTable(symbolTable)
-            , m_registers(reinterpret_cast<WriteBarrier<Unknown>*>(registers))
-        {
-            ASSERT(m_symbolTable);
-            COMPILE_ASSERT(sizeof(WriteBarrier<Unknown>) == sizeof(Register), Register_should_be_same_size_as_WriteBarrier);
-        }
-
-        PassOwnArrayPtr<WriteBarrier<Unknown> > copyRegisterArray(JSGlobalData&, WriteBarrier<Unknown>* src, size_t count, size_t callframeStarts);
-        void setRegisters(WriteBarrier<Unknown>* registers, PassOwnArrayPtr<WriteBarrier<Unknown> > registerArray);
-
-        bool symbolTableGet(const Identifier&, PropertySlot&);
-        bool symbolTableGet(const Identifier&, PropertyDescriptor&);
-        bool symbolTableGet(const Identifier&, PropertySlot&, bool& slotIsWriteable);
-        bool symbolTablePut(JSGlobalData&, const Identifier&, JSValue);
-        bool symbolTablePutWithAttributes(JSGlobalData&, const Identifier&, JSValue, unsigned attributes);
-
-        SymbolTable* m_symbolTable; // Maps name -> offset from "r" in register file.
-        WriteBarrier<Unknown>* m_registers; // "r" in the register file.
-        OwnArrayPtr<WriteBarrier<Unknown> > m_registerArray; // Independent copy of registers, used when a variable object copies its registers out of the register file.
-    };
-
-    inline bool JSVariableObject::symbolTableGet(const Identifier& propertyName, PropertySlot& slot)
+public:
+    SymbolTable &symbolTable() const
     {
-        SymbolTableEntry entry = symbolTable().inlineGet(propertyName.impl());
-        if (!entry.isNull()) {
-            slot.setValue(registerAt(entry.getIndex()).get());
-            return true;
-        }
-        return false;
+        return *m_symbolTable;
     }
 
-    inline bool JSVariableObject::symbolTableGet(const Identifier& propertyName, PropertySlot& slot, bool& slotIsWriteable)
+    virtual void putWithAttributes( ExecState *, const Identifier &, JSValue, unsigned attributes ) = 0;
+
+    virtual bool deleteProperty( ExecState *, const Identifier & );
+    virtual void getOwnPropertyNames( ExecState *, PropertyNameArray &, EnumerationMode mode = ExcludeDontEnumProperties );
+
+    virtual bool isVariableObject() const;
+    virtual bool isDynamicScope( bool &requiresDynamicChecks ) const = 0;
+
+    WriteBarrier<Unknown> &registerAt( int index ) const
     {
-        SymbolTableEntry entry = symbolTable().inlineGet(propertyName.impl());
-        if (!entry.isNull()) {
-            slot.setValue(registerAt(entry.getIndex()).get());
-            slotIsWriteable = !entry.isReadOnly();
-            return true;
-        }
-        return false;
+        return m_registers[index];
     }
 
-    inline bool JSVariableObject::symbolTablePut(JSGlobalData& globalData, const Identifier& propertyName, JSValue value)
+    WriteBarrier<Unknown> *const *addressOfRegisters() const
     {
-        ASSERT(!Heap::heap(value) || Heap::heap(value) == Heap::heap(this));
+        return &m_registers;
+    }
 
-        SymbolTableEntry entry = symbolTable().inlineGet(propertyName.impl());
-        if (entry.isNull())
-            return false;
-        if (entry.isReadOnly())
-            return true;
-        registerAt(entry.getIndex()).set(globalData, this, value);
+    static Structure *createStructure( JSGlobalData &globalData, JSValue prototype )
+    {
+        return Structure::create( globalData, prototype, TypeInfo( ObjectType, StructureFlags ), AnonymousSlotCount, &s_info );
+    }
+
+protected:
+    static const unsigned StructureFlags = OverridesGetPropertyNames | JSObject::StructureFlags;
+
+    JSVariableObject( JSGlobalData &globalData, Structure *structure, SymbolTable *symbolTable, Register *registers )
+        : JSNonFinalObject( globalData, structure )
+        , m_symbolTable( symbolTable )
+        , m_registers( reinterpret_cast<WriteBarrier<Unknown>*>( registers ) )
+    {
+        ASSERT( m_symbolTable );
+        COMPILE_ASSERT( sizeof( WriteBarrier<Unknown> ) == sizeof( Register ), Register_should_be_same_size_as_WriteBarrier );
+    }
+
+    PassOwnArrayPtr<WriteBarrier<Unknown> > copyRegisterArray( JSGlobalData &, WriteBarrier<Unknown> *src, size_t count,
+            size_t callframeStarts );
+    void setRegisters( WriteBarrier<Unknown> *registers, PassOwnArrayPtr<WriteBarrier<Unknown> > registerArray );
+
+    bool symbolTableGet( const Identifier &, PropertySlot & );
+    bool symbolTableGet( const Identifier &, PropertyDescriptor & );
+    bool symbolTableGet( const Identifier &, PropertySlot &, bool &slotIsWriteable );
+    bool symbolTablePut( JSGlobalData &, const Identifier &, JSValue );
+    bool symbolTablePutWithAttributes( JSGlobalData &, const Identifier &, JSValue, unsigned attributes );
+
+    SymbolTable *m_symbolTable; // Maps name -> offset from "r" in register file.
+    WriteBarrier<Unknown> *m_registers; // "r" in the register file.
+    OwnArrayPtr<WriteBarrier<Unknown> >
+    m_registerArray; // Independent copy of registers, used when a variable object copies its registers out of the register file.
+};
+
+inline bool JSVariableObject::symbolTableGet( const Identifier &propertyName, PropertySlot &slot )
+{
+    SymbolTableEntry entry = symbolTable().inlineGet( propertyName.impl() );
+
+    if ( !entry.isNull() )
+    {
+        slot.setValue( registerAt( entry.getIndex() ).get() );
         return true;
     }
 
-    inline bool JSVariableObject::symbolTablePutWithAttributes(JSGlobalData& globalData, const Identifier& propertyName, JSValue value, unsigned attributes)
-    {
-        ASSERT(!Heap::heap(value) || Heap::heap(value) == Heap::heap(this));
+    return false;
+}
 
-        SymbolTable::iterator iter = symbolTable().find(propertyName.impl());
-        if (iter == symbolTable().end())
-            return false;
-        SymbolTableEntry& entry = iter->second;
-        ASSERT(!entry.isNull());
-        entry.setAttributes(attributes);
-        registerAt(entry.getIndex()).set(globalData, this, value);
+inline bool JSVariableObject::symbolTableGet( const Identifier &propertyName, PropertySlot &slot, bool &slotIsWriteable )
+{
+    SymbolTableEntry entry = symbolTable().inlineGet( propertyName.impl() );
+
+    if ( !entry.isNull() )
+    {
+        slot.setValue( registerAt( entry.getIndex() ).get() );
+        slotIsWriteable = !entry.isReadOnly();
         return true;
     }
 
-    inline PassOwnArrayPtr<WriteBarrier<Unknown> > JSVariableObject::copyRegisterArray(JSGlobalData& globalData, WriteBarrier<Unknown>* src, size_t count, size_t callframeStarts)
-    {
-        OwnArrayPtr<WriteBarrier<Unknown> > registerArray = adoptArrayPtr(new WriteBarrier<Unknown>[count]);
-        for (size_t i = 0; i < callframeStarts; i++)
-            registerArray[i].set(globalData, this, src[i].get());
-        for (size_t i = callframeStarts + RegisterFile::CallFrameHeaderSize; i < count; i++)
-            registerArray[i].set(globalData, this, src[i].get());
+    return false;
+}
 
-        return registerArray.release();
+inline bool JSVariableObject::symbolTablePut( JSGlobalData &globalData, const Identifier &propertyName, JSValue value )
+{
+    ASSERT( !Heap::heap( value ) || Heap::heap( value ) == Heap::heap( this ) );
+
+    SymbolTableEntry entry = symbolTable().inlineGet( propertyName.impl() );
+
+    if ( entry.isNull() )
+    {
+        return false;
     }
 
-    inline void JSVariableObject::setRegisters(WriteBarrier<Unknown>* registers, PassOwnArrayPtr<WriteBarrier<Unknown> > registerArray)
+    if ( entry.isReadOnly() )
     {
-        ASSERT(registerArray != m_registerArray);
-        m_registerArray = registerArray;
-        m_registers = registers;
+        return true;
     }
+
+    registerAt( entry.getIndex() ).set( globalData, this, value );
+    return true;
+}
+
+inline bool JSVariableObject::symbolTablePutWithAttributes( JSGlobalData &globalData, const Identifier &propertyName,
+        JSValue value, unsigned attributes )
+{
+    ASSERT( !Heap::heap( value ) || Heap::heap( value ) == Heap::heap( this ) );
+
+    SymbolTable::iterator iter = symbolTable().find( propertyName.impl() );
+
+    if ( iter == symbolTable().end() )
+    {
+        return false;
+    }
+
+    SymbolTableEntry &entry = iter->second;
+    ASSERT( !entry.isNull() );
+    entry.setAttributes( attributes );
+    registerAt( entry.getIndex() ).set( globalData, this, value );
+    return true;
+}
+
+inline PassOwnArrayPtr<WriteBarrier<Unknown> > JSVariableObject::copyRegisterArray( JSGlobalData &globalData,
+        WriteBarrier<Unknown> *src, size_t count, size_t callframeStarts )
+{
+    OwnArrayPtr<WriteBarrier<Unknown> > registerArray = adoptArrayPtr( new WriteBarrier<Unknown>[count] );
+
+    for ( size_t i = 0; i < callframeStarts; i++ )
+    {
+        registerArray[i].set( globalData, this, src[i].get() );
+    }
+
+    for ( size_t i = callframeStarts + RegisterFile::CallFrameHeaderSize; i < count; i++ )
+    {
+        registerArray[i].set( globalData, this, src[i].get() );
+    }
+
+    return registerArray.release();
+}
+
+inline void JSVariableObject::setRegisters( WriteBarrier<Unknown> *registers,
+        PassOwnArrayPtr<WriteBarrier<Unknown> > registerArray )
+{
+    ASSERT( registerArray != m_registerArray );
+    m_registerArray = registerArray;
+    m_registers = registers;
+}
 
 } // namespace JSC
 

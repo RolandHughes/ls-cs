@@ -30,29 +30,29 @@ QT_BEGIN_NAMESPACE
 
 class QDeclarativeFocusPanel : public QDeclarativeItem
 {
-   DECL_CS_OBJECT(QDeclarativeFocusPanel)
+    DECL_LSCS_OBJECT( QDeclarativeFocusPanel )
 
-   DECL_CS_PROPERTY_READ(active, isActive)
-   DECL_CS_PROPERTY_WRITE(active, setActive)
-   DECL_CS_PROPERTY_NOTIFY(active, activeChanged)
+    DECL_LSCS_PROPERTY_READ( active, isActive )
+    DECL_LSCS_PROPERTY_WRITE( active, setActive )
+    DECL_LSCS_PROPERTY_NOTIFY( active, activeChanged )
 
- public:
-   QDeclarativeFocusPanel(QDeclarativeItem *parent = 0);
-   virtual ~QDeclarativeFocusPanel();
+public:
+    QDeclarativeFocusPanel( QDeclarativeItem *parent = 0 );
+    virtual ~QDeclarativeFocusPanel();
 
-   DECL_CS_SIGNAL_1(Public, void activeChanged())
-   DECL_CS_SIGNAL_2(activeChanged)
+    DECL_LSCS_SIGNAL_1( Public, void activeChanged() )
+    DECL_LSCS_SIGNAL_2( activeChanged )
 
- protected:
-   bool sceneEvent(QEvent *event);
+protected:
+    bool sceneEvent( QEvent *event );
 
- private:
-   Q_DISABLE_COPY(QDeclarativeFocusPanel)
-   Q_DECLARE_PRIVATE_D(QGraphicsItem::d_ptr.data(), QDeclarativeItem)
+private:
+    Q_DISABLE_COPY( QDeclarativeFocusPanel )
+    Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeItem )
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QDeclarativeFocusPanel)
+QML_DECLARE_TYPE( QDeclarativeFocusPanel )
 
 #endif // QDECLARATIVEFOCUSPANEL_H

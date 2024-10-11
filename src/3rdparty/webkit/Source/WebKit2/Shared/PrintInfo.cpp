@@ -30,23 +30,24 @@
 #include "ArgumentEncoder.h"
 #include "Arguments.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
 PrintInfo::PrintInfo()
-    : pageSetupScaleFactor(0)
-    , availablePaperWidth(0)
-    , availablePaperHeight(0)
+    : pageSetupScaleFactor( 0 )
+    , availablePaperWidth( 0 )
+    , availablePaperHeight( 0 )
 {
 }
 
-void PrintInfo::encode(CoreIPC::ArgumentEncoder* encoder) const
+void PrintInfo::encode( CoreIPC::ArgumentEncoder *encoder ) const
 {
-    encoder->encode(CoreIPC::In(pageSetupScaleFactor, availablePaperWidth, availablePaperHeight));
+    encoder->encode( CoreIPC::In( pageSetupScaleFactor, availablePaperWidth, availablePaperHeight ) );
 }
 
-bool PrintInfo::decode(CoreIPC::ArgumentDecoder* decoder, PrintInfo& info)
+bool PrintInfo::decode( CoreIPC::ArgumentDecoder *decoder, PrintInfo &info )
 {
-    return decoder->decode(CoreIPC::Out(info.pageSetupScaleFactor, info.availablePaperWidth, info.availablePaperHeight));
+    return decoder->decode( CoreIPC::Out( info.pageSetupScaleFactor, info.availablePaperWidth, info.availablePaperHeight ) );
 }
 
 }

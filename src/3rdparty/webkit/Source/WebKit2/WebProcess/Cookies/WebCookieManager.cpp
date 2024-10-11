@@ -35,11 +35,12 @@
 
 using namespace WebCore;
 
-namespace WebKit {
-
-WebCookieManager& WebCookieManager::shared()
+namespace WebKit
 {
-    DEFINE_STATIC_LOCAL(WebCookieManager, shared, ());
+
+WebCookieManager &WebCookieManager::shared()
+{
+    DEFINE_STATIC_LOCAL( WebCookieManager, shared, () );
     return shared;
 }
 
@@ -47,42 +48,44 @@ WebCookieManager::WebCookieManager()
 {
 }
 
-void WebCookieManager::didReceiveMessage(CoreIPC::Connection* connection, CoreIPC::MessageID messageID, CoreIPC::ArgumentDecoder* arguments)
+void WebCookieManager::didReceiveMessage( CoreIPC::Connection *connection, CoreIPC::MessageID messageID,
+        CoreIPC::ArgumentDecoder *arguments )
 {
-    didReceiveWebCookieManagerMessage(connection, messageID, arguments);
+    didReceiveWebCookieManagerMessage( connection, messageID, arguments );
 }
 
-void WebCookieManager::getHostnamesWithCookies(uint64_t callbackID)
+void WebCookieManager::getHostnamesWithCookies( uint64_t callbackID )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
     HashSet<String> hostnames;
 
-    WebCore::getHostnamesWithCookies(hostnames);
+    WebCore::getHostnamesWithCookies( hostnames );
 
     Vector<String> hostnameList;
-    copyToVector(hostnames, hostnameList);
+    copyToVector( hostnames, hostnameList );
 
-    WebProcess::shared().connection()->send(Messages::WebCookieManagerProxy::DidGetHostnamesWithCookies(hostnameList, callbackID), 0);
+    WebProcess::shared().connection()->send( Messages::WebCookieManagerProxy::DidGetHostnamesWithCookies( hostnameList, callbackID ),
+            0 );
 }
 
-void WebCookieManager::deleteCookiesForHostname(const String& hostname)
+void WebCookieManager::deleteCookiesForHostname( const String &hostname )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
-    WebCore::deleteCookiesForHostname(hostname);
+    WebCore::deleteCookiesForHostname( hostname );
 }
 
 void WebCookieManager::deleteAllCookies()
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
     WebCore::deleteAllCookies();
 }
 
 void WebCookieManager::startObservingCookieChanges()
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
 
     WebCore::startObservingCookieChanges();
 }
@@ -94,19 +97,20 @@ void WebCookieManager::stopObservingCookieChanges()
 
 void WebCookieManager::dispatchCookiesDidChange()
 {
-    WebProcess::shared().connection()->send(Messages::WebCookieManagerProxy::CookiesDidChange(), 0);
+    WebProcess::shared().connection()->send( Messages::WebCookieManagerProxy::CookiesDidChange(), 0 );
 }
 
-void WebCookieManager::setHTTPCookieAcceptPolicy(HTTPCookieAcceptPolicy policy)
+void WebCookieManager::setHTTPCookieAcceptPolicy( HTTPCookieAcceptPolicy policy )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
-    platformSetHTTPCookieAcceptPolicy(policy);
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
+    platformSetHTTPCookieAcceptPolicy( policy );
 }
 
-void WebCookieManager::getHTTPCookieAcceptPolicy(uint64_t callbackID)
+void WebCookieManager::getHTTPCookieAcceptPolicy( uint64_t callbackID )
 {
-    WebProcess::LocalTerminationDisabler terminationDisabler(WebProcess::shared());
-    WebProcess::shared().connection()->send(Messages::WebCookieManagerProxy::DidGetHTTPCookieAcceptPolicy(platformGetHTTPCookieAcceptPolicy(), callbackID), 0);
+    WebProcess::LocalTerminationDisabler terminationDisabler( WebProcess::shared() );
+    WebProcess::shared().connection()->send( Messages::WebCookieManagerProxy::DidGetHTTPCookieAcceptPolicy(
+                platformGetHTTPCookieAcceptPolicy(), callbackID ), 0 );
 }
 
 } // namespace WebKit

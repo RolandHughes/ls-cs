@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -9,7 +9,7 @@
  * 2.  Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY APPLE INC. AND ITS CONTRIBUTORS ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,13 +21,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *  The MemorySampler class samples a number of internal and external memory 
- *  metrics every second while running. Sample data is written to a log file. 
- *  Sampling occurs over a duration specified when started. If duration is set 
- *  to 0 (default), the memory sampler will run indefinitely until the stop 
- *  function is called. MemorySampler allows the option of sampling "in use" 
+ *  The MemorySampler class samples a number of internal and external memory
+ *  metrics every second while running. Sample data is written to a log file.
+ *  Sampling occurs over a duration specified when started. If duration is set
+ *  to 0 (default), the memory sampler will run indefinitely until the stop
+ *  function is called. MemorySampler allows the option of sampling "in use"
  *  memory (committed memory minus free list byte count) or committed memory for
- *  any allocator which keeps a free list. This includes FastMalloc and the 
+ *  any allocator which keeps a free list. This includes FastMalloc and the
  *  JavaScriptCore heap at this time.
  *  The following memory metrics are recorded:
  *
@@ -59,7 +59,8 @@
 #include <wtf/text/WTFString.h>
 #include <wtf/Vector.h>
 
-namespace WebKit {
+namespace WebKit
+{
 
 struct SystemMallocStats;
 
@@ -68,33 +69,34 @@ struct WebMemoryStatistics
     Vector<String> keys;
     Vector<size_t> values;
 };
-    
-class WebMemorySampler {
-    WTF_MAKE_NONCOPYABLE(WebMemorySampler);
+
+class WebMemorySampler
+{
+    WTF_MAKE_NONCOPYABLE( WebMemorySampler );
 public:
-    static WebMemorySampler* shared();
-    void start(const double interval=0);
-    void start(const SandboxExtension::Handle&, const String&, const double interval=0);
+    static WebMemorySampler *shared();
+    void start( const double interval=0 );
+    void start( const SandboxExtension::Handle &, const String &, const double interval=0 );
     void stop();
     bool isRunning() const;
-    
+
 private:
     WebMemorySampler();
     ~WebMemorySampler();
-    
+
     void initializeTempLogFile();
-    void initializeSandboxedLogFile(const SandboxExtension::Handle&, const String&);
+    void initializeSandboxedLogFile( const SandboxExtension::Handle &, const String & );
     void writeHeaders();
-    void initializeTimers(double);
-    void sampleTimerFired(WebCore::Timer<WebMemorySampler>*);
-    void stopTimerFired(WebCore::Timer<WebMemorySampler>*);
-    void appendCurrentMemoryUsageToFile(WebCore::PlatformFileHandle&);
-    
+    void initializeTimers( double );
+    void sampleTimerFired( WebCore::Timer<WebMemorySampler> * );
+    void stopTimerFired( WebCore::Timer<WebMemorySampler> * );
+    void appendCurrentMemoryUsageToFile( WebCore::PlatformFileHandle & );
+
     SystemMallocStats sampleSystemMalloc() const;
     size_t sampleProcessCommittedBytes() const;
     WebMemoryStatistics sampleWebKit() const;
     String processName() const;
-    
+
     WebCore::PlatformFileHandle m_sampleLogFile;
     String m_sampleLogFilePath;
     String m_separator;

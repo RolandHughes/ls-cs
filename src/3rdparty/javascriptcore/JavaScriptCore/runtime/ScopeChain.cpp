@@ -27,25 +27,31 @@
 #include "PropertyNameArray.h"
 #include <stdio.h>
 
-namespace JSC {
+namespace JSC
+{
 
 #ifndef NDEBUG
 
 void ScopeChainNode::print() const
 {
     ScopeChainIterator scopeEnd = end();
-    for (ScopeChainIterator scopeIter = begin(); scopeIter != scopeEnd; ++scopeIter) {
-        JSObject* o = *scopeIter;
-        PropertyNameArray propertyNames(globalObject->globalExec());
-        o->getPropertyNames(globalObject->globalExec(), propertyNames);
+
+    for ( ScopeChainIterator scopeIter = begin(); scopeIter != scopeEnd; ++scopeIter )
+    {
+        JSObject *o = *scopeIter;
+        PropertyNameArray propertyNames( globalObject->globalExec() );
+        o->getPropertyNames( globalObject->globalExec(), propertyNames );
         PropertyNameArray::const_iterator propEnd = propertyNames.end();
 
-        fprintf(stderr, "----- [scope %p] -----\n", o);
-        for (PropertyNameArray::const_iterator propIter = propertyNames.begin(); propIter != propEnd; propIter++) {
+        fprintf( stderr, "----- [scope %p] -----\n", o );
+
+        for ( PropertyNameArray::const_iterator propIter = propertyNames.begin(); propIter != propEnd; propIter++ )
+        {
             Identifier name = *propIter;
-            fprintf(stderr, "%s, ", name.ascii());
+            fprintf( stderr, "%s, ", name.ascii() );
         }
-        fprintf(stderr, "\n");
+
+        fprintf( stderr, "\n" );
     }
 }
 
@@ -56,12 +62,19 @@ int ScopeChain::localDepth() const
     int scopeDepth = 0;
     ScopeChainIterator iter = this->begin();
     ScopeChainIterator end = this->end();
-    while (!(*iter)->inherits(&JSActivation::info)) {
+
+    while ( !( *iter )->inherits( &JSActivation::info ) )
+    {
         ++iter;
-        if (iter == end)
+
+        if ( iter == end )
+        {
             break;
+        }
+
         ++scopeDepth;
     }
+
     return scopeDepth;
 }
 

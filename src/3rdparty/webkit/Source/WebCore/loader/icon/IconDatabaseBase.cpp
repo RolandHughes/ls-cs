@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -29,9 +29,10 @@
 #include "IconDatabase.h"
 #include "SharedBuffer.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-String IconDatabaseBase::synchronousIconURLForPageURL(const String&)
+String IconDatabaseBase::synchronousIconURLForPageURL( const String & )
 {
     return String();
 }
@@ -41,27 +42,32 @@ String IconDatabaseBase::databasePath() const
     return String();
 }
 
-bool IconDatabaseBase::open(const String&, const String&)
+bool IconDatabaseBase::open( const String &, const String & )
 {
     return false;
 }
 
-static IconDatabaseBase* globalDatabase = 0;
+static IconDatabaseBase *globalDatabase = 0;
 
 // Functions to get/set the global icon database.
-IconDatabaseBase& iconDatabase()
+IconDatabaseBase &iconDatabase()
 {
-    if (globalDatabase)
+    if ( globalDatabase )
+    {
         return *globalDatabase;
+    }
 
-    static IconDatabaseBase* defaultDatabase = 0;        
-    if (!defaultDatabase)
+    static IconDatabaseBase *defaultDatabase = 0;
+
+    if ( !defaultDatabase )
+    {
         defaultDatabase = new IconDatabase;
+    }
 
     return *defaultDatabase;
 }
 
-void setGlobalIconDatabase(IconDatabaseBase* newGlobalDatabase)
+void setGlobalIconDatabase( IconDatabaseBase *newGlobalDatabase )
 {
     globalDatabase = newGlobalDatabase;
 }

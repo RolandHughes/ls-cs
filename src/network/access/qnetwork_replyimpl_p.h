@@ -43,185 +43,188 @@ class QNetworkReplyImplPrivate;
 
 class QNetworkReplyImpl: public QNetworkReply
 {
-   NET_CS_OBJECT(QNetworkReplyImpl)
+    NET_LSCS_OBJECT( QNetworkReplyImpl )
 
- public:
-   QNetworkReplyImpl(QObject *parent = nullptr);
-   ~QNetworkReplyImpl();
+public:
+    QNetworkReplyImpl( QObject *parent = nullptr );
+    ~QNetworkReplyImpl();
 
-   void abort() override;
+    void abort() override;
 
-   void close() override;
-   qint64 bytesAvailable() const override;
-   void setReadBufferSize(qint64 size) override;
-   bool canReadLine () const override;
+    void close() override;
+    qint64 bytesAvailable() const override;
+    void setReadBufferSize( qint64 size ) override;
+    bool canReadLine () const override;
 
-   qint64 readData(char *data, qint64 maxlen) override;
-   bool event(QEvent *) override;
+    qint64 readData( char *data, qint64 maxlen ) override;
+    bool event( QEvent * ) override;
 
-   Q_DECLARE_PRIVATE(QNetworkReplyImpl)
+    Q_DECLARE_PRIVATE( QNetworkReplyImpl )
 
-   NET_CS_SLOT_1(Private, void _q_startOperation())
-   NET_CS_SLOT_2(_q_startOperation)
+    NET_LSCS_SLOT_1( Private, void _q_startOperation() )
+    NET_LSCS_SLOT_2( _q_startOperation )
 
-   NET_CS_SLOT_1(Private, void _q_copyReadyRead())
-   NET_CS_SLOT_2(_q_copyReadyRead)
+    NET_LSCS_SLOT_1( Private, void _q_copyReadyRead() )
+    NET_LSCS_SLOT_2( _q_copyReadyRead )
 
-   NET_CS_SLOT_1(Private, void _q_copyReadChannelFinished())
-   NET_CS_SLOT_2(_q_copyReadChannelFinished)
+    NET_LSCS_SLOT_1( Private, void _q_copyReadChannelFinished() )
+    NET_LSCS_SLOT_2( _q_copyReadChannelFinished )
 
-   NET_CS_SLOT_1(Private, void _q_bufferOutgoingData())
-   NET_CS_SLOT_2(_q_bufferOutgoingData)
+    NET_LSCS_SLOT_1( Private, void _q_bufferOutgoingData() )
+    NET_LSCS_SLOT_2( _q_bufferOutgoingData )
 
-   NET_CS_SLOT_1(Private, void _q_bufferOutgoingDataFinished())
-   NET_CS_SLOT_2(_q_bufferOutgoingDataFinished)
+    NET_LSCS_SLOT_1( Private, void _q_bufferOutgoingDataFinished() )
+    NET_LSCS_SLOT_2( _q_bufferOutgoingDataFinished )
 
 #ifndef QT_NO_BEARERMANAGEMENT
-   NET_CS_SLOT_1(Private, void _q_networkSessionConnected())
-   NET_CS_SLOT_2(_q_networkSessionConnected)
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionConnected() )
+    NET_LSCS_SLOT_2( _q_networkSessionConnected )
 
-   NET_CS_SLOT_1(Private, void _q_networkSessionFailed())
-   NET_CS_SLOT_2(_q_networkSessionFailed)
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionFailed() )
+    NET_LSCS_SLOT_2( _q_networkSessionFailed )
 
-   NET_CS_SLOT_1(Private, void _q_networkSessionStateChanged(QNetworkSession::State))
-   NET_CS_SLOT_2(_q_networkSessionStateChanged)
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionStateChanged( QNetworkSession::State ) )
+    NET_LSCS_SLOT_2( _q_networkSessionStateChanged )
 
-   NET_CS_SLOT_1(Private, void _q_networkSessionUsagePoliciesChanged(QNetworkSession::UsagePolicies))
-   NET_CS_SLOT_2(_q_networkSessionUsagePoliciesChanged)
+    NET_LSCS_SLOT_1( Private, void _q_networkSessionUsagePoliciesChanged( QNetworkSession::UsagePolicies ) )
+    NET_LSCS_SLOT_2( _q_networkSessionUsagePoliciesChanged )
 #endif
 
 #ifdef QT_SSL
 
- protected:
-   void ignoreSslErrors() override;
-   void ignoreSslErrorsImplementation(const QList<QSslError> &errors) override;
+protected:
+    void ignoreSslErrors() override;
+    void ignoreSslErrorsImplementation( const QList<QSslError> &errors ) override;
 
-   void sslConfigurationImplementation(QSslConfiguration &configuration) const override;
-   void setSslConfigurationImplementation(const QSslConfiguration &configuration) override;
+    void sslConfigurationImplementation( QSslConfiguration &configuration ) const override;
+    void setSslConfigurationImplementation( const QSslConfiguration &configuration ) override;
 #endif
 
 };
 
 class QNetworkReplyImplPrivate: public QNetworkReplyPrivate
 {
- public:
-   enum InternalNotifications {
-      NotifyDownstreamReadyWrite,
-      NotifyCloseDownstreamChannel,
-      NotifyCopyFinished
-   };
+public:
+    enum InternalNotifications
+    {
+        NotifyDownstreamReadyWrite,
+        NotifyCloseDownstreamChannel,
+        NotifyCopyFinished
+    };
 
-   typedef QQueue<InternalNotifications> NotificationQueue;
+    typedef QQueue<InternalNotifications> NotificationQueue;
 
-   QNetworkReplyImplPrivate();
+    QNetworkReplyImplPrivate();
 
-   void _q_startOperation();
+    void _q_startOperation();
 
-   void _q_copyReadyRead();
-   void _q_copyReadChannelFinished();
-   void _q_bufferOutgoingData();
-   void _q_bufferOutgoingDataFinished();
+    void _q_copyReadyRead();
+    void _q_copyReadChannelFinished();
+    void _q_bufferOutgoingData();
+    void _q_bufferOutgoingDataFinished();
 
 #ifndef QT_NO_BEARERMANAGEMENT
-   void _q_networkSessionConnected();
-   void _q_networkSessionFailed();
-   void _q_networkSessionStateChanged(QNetworkSession::State);
-   void _q_networkSessionUsagePoliciesChanged(QNetworkSession::UsagePolicies);
+    void _q_networkSessionConnected();
+    void _q_networkSessionFailed();
+    void _q_networkSessionStateChanged( QNetworkSession::State );
+    void _q_networkSessionUsagePoliciesChanged( QNetworkSession::UsagePolicies );
 #endif
 
-   void setup(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData);
+    void setup( QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData );
 
-   void pauseNotificationHandling();
-   void resumeNotificationHandling();
-   void backendNotify(InternalNotifications notification);
-   void handleNotifications();
-   void createCache();
-   void completeCacheSave();
+    void pauseNotificationHandling();
+    void resumeNotificationHandling();
+    void backendNotify( InternalNotifications notification );
+    void handleNotifications();
+    void createCache();
+    void completeCacheSave();
 
-   // callbacks from the backend (through the manager):
-   void setCachingEnabled(bool enable);
-   bool isCachingEnabled() const;
-   void consume(qint64 count);
-   void emitUploadProgress(qint64 bytesSent, qint64 bytesTotal);
-   qint64 nextDownstreamBlockSize() const;
+    // callbacks from the backend (through the manager):
+    void setCachingEnabled( bool enable );
+    bool isCachingEnabled() const;
+    void consume( qint64 count );
+    void emitUploadProgress( qint64 bytesSent, qint64 bytesTotal );
+    qint64 nextDownstreamBlockSize() const;
 
-   void initCacheSaveDevice();
-   void appendDownstreamDataSignalEmissions();
-   void appendDownstreamData(QByteDataBuffer &data);
-   void appendDownstreamData(QIODevice *data);
-   void appendDownstreamData(const QByteArray &data);
+    void initCacheSaveDevice();
+    void appendDownstreamDataSignalEmissions();
+    void appendDownstreamData( QByteDataBuffer &data );
+    void appendDownstreamData( QIODevice *data );
+    void appendDownstreamData( const QByteArray &data );
 
-   void setDownloadBuffer(QSharedPointer<char> sp, qint64 size);
-   char *getDownloadBuffer(qint64 size);
-   void appendDownstreamDataDownloadBuffer(qint64, qint64);
+    void setDownloadBuffer( QSharedPointer<char> sp, qint64 size );
+    char *getDownloadBuffer( qint64 size );
+    void appendDownstreamDataDownloadBuffer( qint64, qint64 );
 
-   void finished();
-   void error(QNetworkReply::NetworkError code, const QString &errorString);
-   void metaDataChanged();
-   void redirectionRequested(const QUrl &target);
-   void encrypted();
-   void sslErrors(const QList<QSslError> &errors);
+    void finished();
+    void error( QNetworkReply::NetworkError code, const QString &errorString );
+    void metaDataChanged();
+    void redirectionRequested( const QUrl &target );
+    void encrypted();
+    void sslErrors( const QList<QSslError> &errors );
 
-   QNetworkAccessBackend *backend;
-   QIODevice *outgoingData;
-   QSharedPointer<QRingBuffer> outgoingDataBuffer;
-   QIODevice *copyDevice;
-   QAbstractNetworkCache *networkCache() const;
+    QNetworkAccessBackend *backend;
+    QIODevice *outgoingData;
+    QSharedPointer<QRingBuffer> outgoingDataBuffer;
+    QIODevice *copyDevice;
+    QAbstractNetworkCache *networkCache() const;
 
-   bool migrateBackend();
+    bool migrateBackend();
 
-   bool cacheEnabled;
-   QIODevice *cacheSaveDevice;
+    bool cacheEnabled;
+    QIODevice *cacheSaveDevice;
 
-   NotificationQueue pendingNotifications;
-   bool notificationHandlingPaused;
+    NotificationQueue pendingNotifications;
+    bool notificationHandlingPaused;
 
-   QUrl urlForLastAuthentication;
+    QUrl urlForLastAuthentication;
 
 #ifndef QT_NO_NETWORKPROXY
-   QNetworkProxy lastProxyAuthentication;
-   QList<QNetworkProxy> proxyList;
+    QNetworkProxy lastProxyAuthentication;
+    QList<QNetworkProxy> proxyList;
 #endif
 
-   // Used for normal downloading. For "zero copy" the downloadBuffer is used
-   QByteDataBuffer readBuffer;
-   qint64 bytesDownloaded;
-   qint64 lastBytesDownloaded;
-   qint64 bytesUploaded;
-   qint64 preMigrationDownloaded;
+    // Used for normal downloading. For "zero copy" the downloadBuffer is used
+    QByteDataBuffer readBuffer;
+    qint64 bytesDownloaded;
+    qint64 lastBytesDownloaded;
+    qint64 bytesUploaded;
+    qint64 preMigrationDownloaded;
 
-   QString httpReasonPhrase;
-   int httpStatusCode;
+    QString httpReasonPhrase;
+    int httpStatusCode;
 
-   ReplyState state;
+    ReplyState state;
 
-   // only used when the "zero copy" style is used. Else readBuffer is used.
-   // Please note that the whole "zero copy" download buffer API is private right now. Do not use it.
-   qint64 downloadBufferReadPosition;
-   qint64 downloadBufferCurrentSize;
-   qint64 downloadBufferMaximumSize;
-   QSharedPointer<char> downloadBufferPointer;
-   char *downloadBuffer;
+    // only used when the "zero copy" style is used. Else readBuffer is used.
+    // Please note that the whole "zero copy" download buffer API is private right now. Do not use it.
+    qint64 downloadBufferReadPosition;
+    qint64 downloadBufferCurrentSize;
+    qint64 downloadBufferMaximumSize;
+    QSharedPointer<char> downloadBufferPointer;
+    char *downloadBuffer;
 
-   Q_DECLARE_PUBLIC(QNetworkReplyImpl)
+    Q_DECLARE_PUBLIC( QNetworkReplyImpl )
 };
 
 #ifndef QT_NO_BEARERMANAGEMENT
 class QDisabledNetworkReply : public QNetworkReply
 {
-   NET_CS_OBJECT(QDisabledNetworkReply)
+    NET_LSCS_OBJECT( QDisabledNetworkReply )
 
- public:
-   QDisabledNetworkReply(QObject *parent, const QNetworkRequest &req, QNetworkAccessManager::Operation op);
-   ~QDisabledNetworkReply();
+public:
+    QDisabledNetworkReply( QObject *parent, const QNetworkRequest &req, QNetworkAccessManager::Operation op );
+    ~QDisabledNetworkReply();
 
-   void abort() override {
-   }
+    void abort() override
+    {
+    }
 
- protected:
-   qint64 readData(char *, qint64) override {
-      return -1;
-   }
+protected:
+    qint64 readData( char *, qint64 ) override
+    {
+        return -1;
+    }
 };
 #endif
 

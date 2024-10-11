@@ -29,10 +29,12 @@
 #include "Connection.h"
 #include "RunLoop.h"
 
-namespace WebKit {
+namespace WebKit
+{
 
-class ChildProcess : protected CoreIPC::Connection::Client {
-    WTF_MAKE_NONCOPYABLE(ChildProcess);
+class ChildProcess : protected CoreIPC::Connection::Client
+{
+    WTF_MAKE_NONCOPYABLE( ChildProcess );
 
 public:
     // disable and enable termination of the process. when disableTermination is called, the
@@ -40,10 +42,11 @@ public:
     void disableTermination();
     void enableTermination();
 
-    class LocalTerminationDisabler {
+    class LocalTerminationDisabler
+    {
     public:
-        explicit LocalTerminationDisabler(ChildProcess& childProcess)
-            : m_childProcess(childProcess)
+        explicit LocalTerminationDisabler( ChildProcess &childProcess )
+            : m_childProcess( childProcess )
         {
             m_childProcess.disableTermination();
         }
@@ -54,14 +57,14 @@ public:
         }
 
     private:
-        ChildProcess& m_childProcess;
+        ChildProcess &m_childProcess;
     };
 
 protected:
-    explicit ChildProcess(double terminationTimeout);
+    explicit ChildProcess( double terminationTimeout );
     ~ChildProcess();
 
-    static void didCloseOnConnectionWorkQueue(WorkQueue&, CoreIPC::Connection*);
+    static void didCloseOnConnectionWorkQueue( WorkQueue &, CoreIPC::Connection * );
 
 private:
     void terminationTimerFired();

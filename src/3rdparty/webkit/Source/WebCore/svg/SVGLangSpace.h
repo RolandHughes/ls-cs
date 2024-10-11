@@ -24,21 +24,26 @@
 #if ENABLE(SVG)
 #include <wtf/text/AtomicString.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class Attribute;
 class QualifiedName;
 
-class SVGLangSpace {
+class SVGLangSpace
+{
 public:
-    const AtomicString& xmllang() const { return m_lang; }
-    void setXmllang(const AtomicString& xmlLang);
+    const AtomicString &xmllang() const
+    {
+        return m_lang;
+    }
+    void setXmllang( const AtomicString &xmlLang );
 
-    const AtomicString& xmlspace() const;
-    void setXmlspace(const AtomicString& xmlSpace);
+    const AtomicString &xmlspace() const;
+    void setXmlspace( const AtomicString &xmlSpace );
 
-    bool parseMappedAttribute(Attribute*);
-    bool isKnownAttribute(const QualifiedName&);
+    bool parseMappedAttribute( Attribute * );
+    bool isKnownAttribute( const QualifiedName & );
 
 private:
     AtomicString m_lang;

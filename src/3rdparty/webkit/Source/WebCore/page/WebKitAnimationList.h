@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef WebKitAnimationList_h
@@ -31,24 +31,26 @@
 #include <wtf/RefPtr.h>
 #include <wtf/Vector.h>
 
-namespace WebCore {
-  
+namespace WebCore
+{
+
 class WebKitAnimation;
 
-class WebKitAnimationList : public RefCounted<WebKitAnimationList> {
+class WebKitAnimationList : public RefCounted<WebKitAnimationList>
+{
 public:
     static PassRefPtr<WebKitAnimationList> create()
     {
-        return adoptRef(new WebKitAnimationList());
+        return adoptRef( new WebKitAnimationList() );
     }
     ~WebKitAnimationList();
 
     unsigned length() const;
-    WebKitAnimation* item(unsigned index);
+    WebKitAnimation *item( unsigned index );
 
-    unsigned insertAnimation(RefPtr<WebKitAnimation>, unsigned index);
-    void deleteAnimation(unsigned index);
-    void append(RefPtr<WebKitAnimation>);
+    unsigned insertAnimation( RefPtr<WebKitAnimation>, unsigned index );
+    void deleteAnimation( unsigned index );
+    void append( RefPtr<WebKitAnimation> );
 
 private:
     WebKitAnimationList();

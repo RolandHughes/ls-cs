@@ -27,11 +27,11 @@ using namespace QPatternist;
 
 bool XsdAttributeTerm::isAttributeUse() const
 {
-   return false;
+    return false;
 }
 
 bool XsdAttributeTerm::isReference() const
 {
-   return false;
+    return false;
 }
 

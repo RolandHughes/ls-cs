@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef AppendNodeCommand_h
@@ -28,17 +28,19 @@
 
 #include "EditCommand.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class AppendNodeCommand : public SimpleEditCommand {
+class AppendNodeCommand : public SimpleEditCommand
+{
 public:
-    static PassRefPtr<AppendNodeCommand> create(PassRefPtr<ContainerNode> parent, PassRefPtr<Node> node)
+    static PassRefPtr<AppendNodeCommand> create( PassRefPtr<ContainerNode> parent, PassRefPtr<Node> node )
     {
-        return adoptRef(new AppendNodeCommand(parent, node));
+        return adoptRef( new AppendNodeCommand( parent, node ) );
     }
 
 private:
-    AppendNodeCommand(PassRefPtr<ContainerNode> parent, PassRefPtr<Node>);
+    AppendNodeCommand( PassRefPtr<ContainerNode> parent, PassRefPtr<Node> );
 
     virtual void doApply();
     virtual void doUnapply();

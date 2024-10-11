@@ -28,58 +28,72 @@
 #include "HTMLNames.h"
 #include "RenderBR.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace HTMLNames;
 
-HTMLBRElement::HTMLBRElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+HTMLBRElement::HTMLBRElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
-    ASSERT(hasTagName(brTag));
+    ASSERT( hasTagName( brTag ) );
 }
 
-PassRefPtr<HTMLBRElement> HTMLBRElement::create(Document* document)
+PassRefPtr<HTMLBRElement> HTMLBRElement::create( Document *document )
 {
-    return adoptRef(new HTMLBRElement(brTag, document));
+    return adoptRef( new HTMLBRElement( brTag, document ) );
 }
 
-PassRefPtr<HTMLBRElement> HTMLBRElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLBRElement> HTMLBRElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLBRElement(tagName, document));
+    return adoptRef( new HTMLBRElement( tagName, document ) );
 }
 
-bool HTMLBRElement::mapToEntry(const QualifiedName& attrName, MappedAttributeEntry& result) const
+bool HTMLBRElement::mapToEntry( const QualifiedName &attrName, MappedAttributeEntry &result ) const
 {
-    if (attrName == clearAttr) {
+    if ( attrName == clearAttr )
+    {
         result = eUniversal;
         return false;
     }
-    
-    return HTMLElement::mapToEntry(attrName, result);
+
+    return HTMLElement::mapToEntry( attrName, result );
 }
 
-void HTMLBRElement::parseMappedAttribute(Attribute* attr)
+void HTMLBRElement::parseMappedAttribute( Attribute *attr )
 {
-    if (attr->name() == clearAttr) {
-        // If the string is empty, then don't add the clear property. 
+    if ( attr->name() == clearAttr )
+    {
+        // If the string is empty, then don't add the clear property.
         // <br clear> and <br clear=""> are just treated like <br> by Gecko, Mac IE, etc. -dwh
-        const AtomicString& str = attr->value();
-        if (!str.isEmpty()) {
-            if (equalIgnoringCase(str, "all"))
-                addCSSProperty(attr, CSSPropertyClear, "both");
+        const AtomicString &str = attr->value();
+
+        if ( !str.isEmpty() )
+        {
+            if ( equalIgnoringCase( str, "all" ) )
+            {
+                addCSSProperty( attr, CSSPropertyClear, "both" );
+            }
             else
-                addCSSProperty(attr, CSSPropertyClear, str);
+            {
+                addCSSProperty( attr, CSSPropertyClear, str );
+            }
         }
-    } else
-        HTMLElement::parseMappedAttribute(attr);
+    }
+    else
+    {
+        HTMLElement::parseMappedAttribute( attr );
+    }
 }
 
-RenderObject* HTMLBRElement::createRenderer(RenderArena* arena, RenderStyle* style)
+RenderObject *HTMLBRElement::createRenderer( RenderArena *arena, RenderStyle *style )
 {
-     if (style->contentData())
-        return RenderObject::createObject(this, style);
+    if ( style->contentData() )
+    {
+        return RenderObject::createObject( this, style );
+    }
 
-     return new (arena) RenderBR(this);
+    return new ( arena ) RenderBR( this );
 }
 
 }

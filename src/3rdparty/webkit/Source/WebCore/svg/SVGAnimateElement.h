@@ -30,37 +30,40 @@
 #include "SVGPointList.h"
 #include <wtf/OwnPtr.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class SVGPathSegList;
 
-class SVGAnimateElement : public SVGAnimationElement {
+class SVGAnimateElement : public SVGAnimationElement
+{
 public:
-    static PassRefPtr<SVGAnimateElement> create(const QualifiedName&, Document*);
+    static PassRefPtr<SVGAnimateElement> create( const QualifiedName &, Document * );
 
     virtual ~SVGAnimateElement();
 
 protected:
-    SVGAnimateElement(const QualifiedName&, Document*);
+    SVGAnimateElement( const QualifiedName &, Document * );
 
-    virtual void resetToBaseValue(const String&);
-    virtual bool calculateFromAndToValues(const String& fromString, const String& toString);
-    virtual bool calculateFromAndByValues(const String& fromString, const String& byString);
-    virtual void calculateAnimatedValue(float percentage, unsigned repeat, SVGSMILElement* resultElement);
+    virtual void resetToBaseValue( const String & );
+    virtual bool calculateFromAndToValues( const String &fromString, const String &toString );
+    virtual bool calculateFromAndByValues( const String &fromString, const String &byString );
+    virtual void calculateAnimatedValue( float percentage, unsigned repeat, SVGSMILElement *resultElement );
     virtual void applyResultsToTarget();
-    virtual float calculateDistance(const String& fromString, const String& toString);
+    virtual float calculateDistance( const String &fromString, const String &toString );
 
 private:
     // If we have 'currentColor' or 'inherit' as animation value, we need to grab the value during the animation
     // since the value can be animated itself.
-    enum AnimatedPropertyValueType {
+    enum AnimatedPropertyValueType
+    {
         RegularPropertyValue,
         CurrentColorValue,
         InheritValue
     };
-    
+
     virtual bool hasValidAttributeType() const;
-    AnimatedAttributeType determineAnimatedAttributeType(SVGElement*) const;
+    AnimatedAttributeType determineAnimatedAttributeType( SVGElement * ) const;
     AnimatedAttributeType m_animatedAttributeType;
 
     AnimatedPropertyValueType m_fromPropertyValueType;
@@ -78,7 +81,7 @@ private:
     OwnPtr<SVGPathByteStream> m_fromPath;
     OwnPtr<SVGPathByteStream> m_toPath;
     OwnPtr<SVGPathByteStream> m_animatedPath;
-    SVGPathByteStream* m_animatedPathPointer;
+    SVGPathByteStream *m_animatedPathPointer;
     SVGPointList m_fromPoints;
     SVGPointList m_toPoints;
     SVGPointList m_animatedPoints;

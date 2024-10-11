@@ -31,21 +31,26 @@
 #if ENABLE(MATHML)
 #include "StyledElement.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class MathMLElement : public StyledElement {
+class MathMLElement : public StyledElement
+{
 public:
-    static PassRefPtr<MathMLElement> create(const QualifiedName& tagName, Document*);
+    static PassRefPtr<MathMLElement> create( const QualifiedName &tagName, Document * );
 
 protected:
-    MathMLElement(const QualifiedName& tagName, Document*);
+    MathMLElement( const QualifiedName &tagName, Document * );
 
-private:    
-    virtual bool isMathMLElement() const { return true; }
-    virtual bool mapToEntry(const QualifiedName&, MappedAttributeEntry&) const;
-    virtual void parseMappedAttribute(Attribute*);
+private:
+    virtual bool isMathMLElement() const
+    {
+        return true;
+    }
+    virtual bool mapToEntry( const QualifiedName &, MappedAttributeEntry & ) const;
+    virtual void parseMappedAttribute( Attribute * );
 };
-    
+
 }
 
 #endif // ENABLE(MATHML)

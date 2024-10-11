@@ -25,30 +25,31 @@
 #include "EventListener.h"
 #include "WebDOMEventListener.h"
 
-class WebNativeEventListener : public WebCore::EventListener {
+class WebNativeEventListener : public WebCore::EventListener
+{
 public:
-    static PassRefPtr<WebNativeEventListener> create(WebUserEventListener* listener)
+    static PassRefPtr<WebNativeEventListener> create( WebUserEventListener *listener )
     {
-        return adoptRef(new WebNativeEventListener(listener));
+        return adoptRef( new WebNativeEventListener( listener ) );
     }
 
-    static const WebNativeEventListener* cast(const WebCore::EventListener* listener)
+    static const WebNativeEventListener *cast( const WebCore::EventListener *listener )
     {
         return listener->type() == CPPEventListenerType
-                ? static_cast<const WebNativeEventListener*>(listener)
-                : 0;
+               ? static_cast<const WebNativeEventListener *>( listener )
+               : 0;
     }
 
     virtual ~WebNativeEventListener();
-    virtual bool operator==(const WebCore::EventListener& other);
+    virtual bool operator==( const WebCore::EventListener &other );
 
 private:
-    virtual void handleEvent(WebCore::ScriptExecutionContext*, WebCore::Event*);
-    virtual bool reportError(WebCore::ScriptExecutionContext*, const WTF::String& message, const WTF::String& url, int lineNumber);
+    virtual void handleEvent( WebCore::ScriptExecutionContext *, WebCore::Event * );
+    virtual bool reportError( WebCore::ScriptExecutionContext *, const WTF::String &message, const WTF::String &url, int lineNumber );
 
 protected:
-    WebNativeEventListener(WebUserEventListener*);
-    WebUserEventListener* m_listener;
+    WebNativeEventListener( WebUserEventListener * );
+    WebUserEventListener *m_listener;
 };
 
 #endif

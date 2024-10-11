@@ -30,7 +30,7 @@
 
 #ifndef QT_NO_PRINTER
 
-extern QPrinter::PaperSize mapDevmodePaperSize(int s);
+extern QPrinter::PaperSize mapDevmodePaperSize( int s );
 
 //QList<QPrinterInfo> QPrinterInfo::availablePrinters()
 //{

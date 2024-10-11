@@ -23,39 +23,47 @@
 #if ENABLE(SVG)
 #include "AffineTransform.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // A SVGTextFragment describes a text fragment of a RenderSVGInlineText which can be rendered at once.
-struct SVGTextFragment {
+struct SVGTextFragment
+{
     SVGTextFragment()
-        : characterOffset(0)
-        , metricsListOffset(0)
-        , length(0)
-        , isTextOnPath(false)
-        , x(0)
-        , y(0)
-        , width(0)
-        , height(0)
+        : characterOffset( 0 )
+        , metricsListOffset( 0 )
+        , length( 0 )
+        , isTextOnPath( false )
+        , x( 0 )
+        , y( 0 )
+        , width( 0 )
+        , height( 0 )
     {
     }
 
-    enum TransformType {
+    enum TransformType
+    {
         TransformRespectingTextLength,
         TransformIgnoringTextLength
     };
 
-    void buildFragmentTransform(AffineTransform& result, TransformType type = TransformRespectingTextLength) const
+    void buildFragmentTransform( AffineTransform &result, TransformType type = TransformRespectingTextLength ) const
     {
-        if (type == TransformIgnoringTextLength) {
+        if ( type == TransformIgnoringTextLength )
+        {
             result = transform;
-            transformAroundOrigin(result);
+            transformAroundOrigin( result );
             return;
         }
 
-        if (isTextOnPath)
-            buildTransformForTextOnPath(result);
+        if ( isTextOnPath )
+        {
+            buildTransformForTextOnPath( result );
+        }
         else
-            buildTransformForTextOnLine(result);
+        {
+            buildTransformForTextOnLine( result );
+        }
     }
 
     // The first rendered character starts at RenderSVGInlineText::characters() + characterOffset.
@@ -77,35 +85,41 @@ struct SVGTextFragment {
     AffineTransform lengthAdjustTransform;
 
 private:
-    void transformAroundOrigin(AffineTransform& result) const
+    void transformAroundOrigin( AffineTransform &result ) const
     {
         // Returns (translate(x, y) * result) * translate(-x, -y).
-        result.setE(result.e() + x);
-        result.setF(result.f() + y);
-        result.translate(-x, -y);
+        result.setE( result.e() + x );
+        result.setF( result.f() + y );
+        result.translate( -x, -y );
     }
 
-    void buildTransformForTextOnPath(AffineTransform& result) const
+    void buildTransformForTextOnPath( AffineTransform &result ) const
     {
         // For text-on-path layout, multiply the transform with the lengthAdjustTransform before orienting the resulting transform.
         result = lengthAdjustTransform.isIdentity() ? transform : transform * lengthAdjustTransform;
-        if (!result.isIdentity())
-            transformAroundOrigin(result);
+
+        if ( !result.isIdentity() )
+        {
+            transformAroundOrigin( result );
+        }
     }
 
-    void buildTransformForTextOnLine(AffineTransform& result) const
+    void buildTransformForTextOnLine( AffineTransform &result ) const
     {
         // For text-on-line layout, orient the transform first, then multiply the lengthAdjustTransform with the oriented transform.
-        if (transform.isIdentity()) {
+        if ( transform.isIdentity() )
+        {
             result = lengthAdjustTransform;
             return;
         }
 
         result = transform;
-        transformAroundOrigin(result);
+        transformAroundOrigin( result );
 
-        if (!lengthAdjustTransform.isIdentity())
+        if ( !lengthAdjustTransform.isIdentity() )
+        {
             result = lengthAdjustTransform * result;
+        }
     }
 };
 

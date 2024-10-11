@@ -29,23 +29,24 @@
 
 class DSImageCaptureControl : public QCameraImageCaptureControl
 {
-   CS_OBJECT(DSImageCaptureControl)
+    LSCS_OBJECT( DSImageCaptureControl )
 
- public:
-   DSImageCaptureControl(DSCameraSession *session);
-   ~DSImageCaptureControl();
+public:
+    DSImageCaptureControl( DSCameraSession *session );
+    ~DSImageCaptureControl();
 
-   bool isReadyForCapture() const override;
-   int capture(const QString &fileName) override;
+    bool isReadyForCapture() const override;
+    int capture( const QString &fileName ) override;
 
-   QCameraImageCapture::DriveMode driveMode() const override;
-   void setDriveMode(QCameraImageCapture::DriveMode mode) override;
+    QCameraImageCapture::DriveMode driveMode() const override;
+    void setDriveMode( QCameraImageCapture::DriveMode mode ) override;
 
-   void cancelCapture() override {
-   }
+    void cancelCapture() override
+    {
+    }
 
- private:
-   DSCameraSession *m_session;
+private:
+    DSCameraSession *m_session;
 };
 
 #endif

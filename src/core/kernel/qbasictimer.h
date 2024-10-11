@@ -31,31 +31,35 @@ class QObject;
 
 class Q_CORE_EXPORT QBasicTimer
 {
- public:
-   QBasicTimer()
-      : id(0)
-   { }
+public:
+    QBasicTimer()
+        : id( 0 )
+    { }
 
-   ~QBasicTimer() {
-      if (id) {
-         stop();
-      }
-   }
+    ~QBasicTimer()
+    {
+        if ( id )
+        {
+            stop();
+        }
+    }
 
-   bool isActive() const {
-      return id != 0;
-   }
+    bool isActive() const
+    {
+        return id != 0;
+    }
 
-   int timerId() const {
-      return id;
-   }
+    int timerId() const
+    {
+        return id;
+    }
 
-   void start(int msec, QObject *object);
-   void start(int msec, Qt::TimerType timerType, QObject *object);
-   void stop();
+    void start( int msec, QObject *object );
+    void start( int msec, Qt::TimerType timerType, QObject *object );
+    void stop();
 
- private:
-   int id;
+private:
+    int id;
 };
 
 #endif

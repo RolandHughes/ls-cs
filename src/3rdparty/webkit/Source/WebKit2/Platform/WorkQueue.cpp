@@ -26,24 +26,24 @@
 #include "config.h"
 #include "WorkQueue.h"
 
-WorkQueue::WorkQueue(const char* name)
-    : m_isValid(true)
+WorkQueue::WorkQueue( const char *name )
+    : m_isValid( true )
 {
-    platformInitialize(name);
+    platformInitialize( name );
 }
 
 WorkQueue::~WorkQueue()
 {
 #if !ASSERT_DISABLED
-    MutexLocker locker(m_isValidMutex);
-    ASSERT(!m_isValid);
+    MutexLocker locker( m_isValidMutex );
+    ASSERT( !m_isValid );
 #endif
 }
 
 void WorkQueue::invalidate()
 {
     {
-        MutexLocker locker(m_isValidMutex);
+        MutexLocker locker( m_isValidMutex );
         m_isValid = false;
     }
 

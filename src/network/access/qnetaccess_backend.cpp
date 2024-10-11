@@ -39,121 +39,138 @@
 
 class QNetworkAccessBackendFactoryData: public QList<QNetworkAccessBackendFactory *>
 {
- public:
-   QNetworkAccessBackendFactoryData()
-   {
-      valid.ref();
-   }
+public:
+    QNetworkAccessBackendFactoryData()
+    {
+        valid.ref();
+    }
 
-   ~QNetworkAccessBackendFactoryData()
-   {
-      QRecursiveMutexLocker locker(&mutex); // why do we need to lock?
-      valid.deref();
-   }
+    ~QNetworkAccessBackendFactoryData()
+    {
+        QRecursiveMutexLocker locker( &mutex ); // why do we need to lock?
+        valid.deref();
+    }
 
-   QRecursiveMutex mutex;
+    QRecursiveMutex mutex;
 
-   //this is used to avoid (re)constructing factory data from destructors of other global classes
-   static QAtomicInt valid;
+    //this is used to avoid (re)constructing factory data from destructors of other global classes
+    static QAtomicInt valid;
 };
 
 static QNetworkAccessBackendFactoryData *factoryData()
 {
-   static QNetworkAccessBackendFactoryData retval;
-   return &retval;
+    static QNetworkAccessBackendFactoryData retval;
+    return &retval;
 }
 
 QAtomicInt QNetworkAccessBackendFactoryData::valid = 0;
 
 QNetworkAccessBackendFactory::QNetworkAccessBackendFactory()
 {
-   QRecursiveMutexLocker locker(&factoryData()->mutex);
-   factoryData()->append(this);
+    QRecursiveMutexLocker locker( &factoryData()->mutex );
+    factoryData()->append( this );
 }
 
 QNetworkAccessBackendFactory::~QNetworkAccessBackendFactory()
 {
-   if (QNetworkAccessBackendFactoryData::valid.load()) {
-      QRecursiveMutexLocker locker(&factoryData()->mutex);
-      factoryData()->removeAll(this);
-   }
+    if ( QNetworkAccessBackendFactoryData::valid.load() )
+    {
+        QRecursiveMutexLocker locker( &factoryData()->mutex );
+        factoryData()->removeAll( this );
+    }
 }
 
-QNetworkAccessBackend *QNetworkAccessManagerPrivate::findBackend(QNetworkAccessManager::Operation op,
-      const QNetworkRequest &request)
+QNetworkAccessBackend *QNetworkAccessManagerPrivate::findBackend( QNetworkAccessManager::Operation op,
+        const QNetworkRequest &request )
 {
-   if (QNetworkAccessBackendFactoryData::valid.load()) {
-      QRecursiveMutexLocker locker(&factoryData()->mutex);
+    if ( QNetworkAccessBackendFactoryData::valid.load() )
+    {
+        QRecursiveMutexLocker locker( &factoryData()->mutex );
 
-      auto it  = factoryData()->constBegin();
-      auto end = factoryData()->constEnd();
+        auto it  = factoryData()->constBegin();
+        auto end = factoryData()->constEnd();
 
-      while (it != end) {
-         QNetworkAccessBackend *backend = (*it)->create(op, request);
-         if (backend) {
-            backend->manager = this;
-            return backend; // found a factory that handled our request
-         }
-         ++it;
-      }
-   }
+        while ( it != end )
+        {
+            QNetworkAccessBackend *backend = ( *it )->create( op, request );
 
-   return nullptr;
+            if ( backend )
+            {
+                backend->manager = this;
+                return backend; // found a factory that handled our request
+            }
+
+            ++it;
+        }
+    }
+
+    return nullptr;
 }
 
 QStringList QNetworkAccessManagerPrivate::backendSupportedSchemes() const
 {
-   if (QNetworkAccessBackendFactoryData::valid.load()) {
-      QRecursiveMutexLocker locker(&factoryData()->mutex);
+    if ( QNetworkAccessBackendFactoryData::valid.load() )
+    {
+        QRecursiveMutexLocker locker( &factoryData()->mutex );
 
-      auto it  = factoryData()->constBegin();
-      auto end = factoryData()->constEnd();
+        auto it  = factoryData()->constBegin();
+        auto end = factoryData()->constEnd();
 
-      QStringList schemes;
+        QStringList schemes;
 
-      while (it != end) {
-         schemes += (*it)->supportedSchemes();
-         ++it;
-      }
-      return schemes;
-   }
+        while ( it != end )
+        {
+            schemes += ( *it )->supportedSchemes();
+            ++it;
+        }
 
-   return QStringList();
+        return schemes;
+    }
+
+    return QStringList();
 }
 
 QNonContiguousByteDevice *QNetworkAccessBackend::createUploadByteDevice()
 {
-   if (reply->outgoingDataBuffer) {
-      uploadByteDevice = QNonContiguousByteDeviceFactory::createShared(reply->outgoingDataBuffer);
+    if ( reply->outgoingDataBuffer )
+    {
+        uploadByteDevice = QNonContiguousByteDeviceFactory::createShared( reply->outgoingDataBuffer );
 
-   } else if (reply->outgoingData) {
-      uploadByteDevice = QNonContiguousByteDeviceFactory::createShared(reply->outgoingData);
+    }
+    else if ( reply->outgoingData )
+    {
+        uploadByteDevice = QNonContiguousByteDeviceFactory::createShared( reply->outgoingData );
 
-   } else {
-      return nullptr;
-   }
+    }
+    else
+    {
+        return nullptr;
+    }
 
-   // We want signal emissions only for normal asynchronous uploads
-   if (!isSynchronous()) {
-      connect(uploadByteDevice.data(), &QNonContiguousByteDevice::readProgress,
-         this, &QNetworkAccessBackend::emitReplyUploadProgress);
-   }
+    // We want signal emissions only for normal asynchronous uploads
+    if ( !isSynchronous() )
+    {
+        connect( uploadByteDevice.data(), &QNonContiguousByteDevice::readProgress,
+                 this, &QNetworkAccessBackend::emitReplyUploadProgress );
+    }
 
-   return uploadByteDevice.data();
+    return uploadByteDevice.data();
 }
 
 // need to have this function since the reply is a private member variable
 // and the special backends need to access this.
-void QNetworkAccessBackend::emitReplyUploadProgress(qint64 bytesSent, qint64 bytesTotal)
+void QNetworkAccessBackend::emitReplyUploadProgress( qint64 bytesSent, qint64 bytesTotal )
 {
-   if (reply->isFinished) {
-      return;
-   }
-   reply->emitUploadProgress(bytesSent, bytesTotal);
+    if ( reply->isFinished )
+    {
+        return;
+    }
+
+    reply->emitUploadProgress( bytesSent, bytesTotal );
 }
 
 QNetworkAccessBackend::QNetworkAccessBackend()
-   : manager(nullptr), reply(nullptr), synchronous(false)
+    : manager( nullptr ), reply( nullptr ), synchronous( false )
 {
 }
 
@@ -165,12 +182,12 @@ void QNetworkAccessBackend::downstreamReadyWrite()
 {
 }
 
-void QNetworkAccessBackend::setDownstreamLimited(bool b)
+void QNetworkAccessBackend::setDownstreamLimited( bool b )
 {
-   (void) b;
+    ( void ) b;
 }
 
-void QNetworkAccessBackend::copyFinished(QIODevice *)
+void QNetworkAccessBackend::copyFinished( QIODevice * )
 {
 }
 
@@ -178,255 +195,273 @@ void QNetworkAccessBackend::ignoreSslErrors()
 {
 }
 
-void QNetworkAccessBackend::ignoreSslErrors(const QList<QSslError> &errors)
+void QNetworkAccessBackend::ignoreSslErrors( const QList<QSslError> &errors )
 {
-   (void) errors;
+    ( void ) errors;
 }
 
-void QNetworkAccessBackend::fetchSslConfiguration(QSslConfiguration &) const
-{
-}
-
-void QNetworkAccessBackend::setSslConfiguration(const QSslConfiguration &)
+void QNetworkAccessBackend::fetchSslConfiguration( QSslConfiguration & ) const
 {
 }
 
-QNetworkCacheMetaData QNetworkAccessBackend::fetchCacheMetaData(const QNetworkCacheMetaData &) const
+void QNetworkAccessBackend::setSslConfiguration( const QSslConfiguration & )
 {
-   return QNetworkCacheMetaData();
+}
+
+QNetworkCacheMetaData QNetworkAccessBackend::fetchCacheMetaData( const QNetworkCacheMetaData & ) const
+{
+    return QNetworkCacheMetaData();
 }
 
 QNetworkAccessManager::Operation QNetworkAccessBackend::operation() const
 {
-   return reply->operation;
+    return reply->operation;
 }
 
 QNetworkRequest QNetworkAccessBackend::request() const
 {
-   return reply->request;
+    return reply->request;
 }
 
 #ifndef QT_NO_NETWORKPROXY
 QList<QNetworkProxy> QNetworkAccessBackend::proxyList() const
 {
-   return reply->proxyList;
+    return reply->proxyList;
 }
 #endif
 
 QAbstractNetworkCache *QNetworkAccessBackend::networkCache() const
 {
-   if (! manager) {
-      return nullptr;
-   }
+    if ( ! manager )
+    {
+        return nullptr;
+    }
 
-   return manager->networkCache;
+    return manager->networkCache;
 }
 
-void QNetworkAccessBackend::setCachingEnabled(bool enable)
+void QNetworkAccessBackend::setCachingEnabled( bool enable )
 {
-   reply->setCachingEnabled(enable);
+    reply->setCachingEnabled( enable );
 }
 
 bool QNetworkAccessBackend::isCachingEnabled() const
 {
-   return reply->isCachingEnabled();
+    return reply->isCachingEnabled();
 }
 
 qint64 QNetworkAccessBackend::nextDownstreamBlockSize() const
 {
-   return reply->nextDownstreamBlockSize();
+    return reply->nextDownstreamBlockSize();
 }
 
-void QNetworkAccessBackend::writeDownstreamData(QByteDataBuffer &list)
+void QNetworkAccessBackend::writeDownstreamData( QByteDataBuffer &list )
 {
-   reply->appendDownstreamData(list);
+    reply->appendDownstreamData( list );
 }
 
-void QNetworkAccessBackend::writeDownstreamData(QIODevice *data)
+void QNetworkAccessBackend::writeDownstreamData( QIODevice *data )
 {
-   reply->appendDownstreamData(data);
+    reply->appendDownstreamData( data );
 }
 
 // not actually appending data, it was already written to the user buffer
-void QNetworkAccessBackend::writeDownstreamDataDownloadBuffer(qint64 bytesReceived, qint64 bytesTotal)
+void QNetworkAccessBackend::writeDownstreamDataDownloadBuffer( qint64 bytesReceived, qint64 bytesTotal )
 {
-   reply->appendDownstreamDataDownloadBuffer(bytesReceived, bytesTotal);
+    reply->appendDownstreamDataDownloadBuffer( bytesReceived, bytesTotal );
 }
 
-char *QNetworkAccessBackend::getDownloadBuffer(qint64 size)
+char *QNetworkAccessBackend::getDownloadBuffer( qint64 size )
 {
-   return reply->getDownloadBuffer(size);
+    return reply->getDownloadBuffer( size );
 }
 
-QVariant QNetworkAccessBackend::header(QNetworkRequest::KnownHeaders header) const
+QVariant QNetworkAccessBackend::header( QNetworkRequest::KnownHeaders header ) const
 {
-   return reply->q_func()->header(header);
+    return reply->q_func()->header( header );
 }
 
-void QNetworkAccessBackend::setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value)
+void QNetworkAccessBackend::setHeader( QNetworkRequest::KnownHeaders header, const QVariant &value )
 {
-   reply->setCookedHeader(header, value);
+    reply->setCookedHeader( header, value );
 }
 
-bool QNetworkAccessBackend::hasRawHeader(const QByteArray &headerName) const
+bool QNetworkAccessBackend::hasRawHeader( const QByteArray &headerName ) const
 {
-   return reply->q_func()->hasRawHeader(headerName);
+    return reply->q_func()->hasRawHeader( headerName );
 }
 
-QByteArray QNetworkAccessBackend::rawHeader(const QByteArray &headerName) const
+QByteArray QNetworkAccessBackend::rawHeader( const QByteArray &headerName ) const
 {
-   return reply->q_func()->rawHeader(headerName);
+    return reply->q_func()->rawHeader( headerName );
 }
 
 QList<QByteArray> QNetworkAccessBackend::rawHeaderList() const
 {
-   return reply->q_func()->rawHeaderList();
+    return reply->q_func()->rawHeaderList();
 }
 
-void QNetworkAccessBackend::setRawHeader(const QByteArray &headerName, const QByteArray &headerValue)
+void QNetworkAccessBackend::setRawHeader( const QByteArray &headerName, const QByteArray &headerValue )
 {
-   reply->setRawHeader(headerName, headerValue);
+    reply->setRawHeader( headerName, headerValue );
 }
 
-QVariant QNetworkAccessBackend::attribute(QNetworkRequest::Attribute code) const
+QVariant QNetworkAccessBackend::attribute( QNetworkRequest::Attribute code ) const
 {
-   return reply->q_func()->attribute(code);
+    return reply->q_func()->attribute( code );
 }
 
-void QNetworkAccessBackend::setAttribute(QNetworkRequest::Attribute code, const QVariant &value)
+void QNetworkAccessBackend::setAttribute( QNetworkRequest::Attribute code, const QVariant &value )
 {
-   if (value.isValid()) {
-      reply->attributes.insert(code, value);
-   } else {
-      reply->attributes.remove(code);
-   }
+    if ( value.isValid() )
+    {
+        reply->attributes.insert( code, value );
+    }
+    else
+    {
+        reply->attributes.remove( code );
+    }
 }
 
 QUrl QNetworkAccessBackend::url() const
 {
-   return reply->url;
+    return reply->url;
 }
 
-void QNetworkAccessBackend::setUrl(const QUrl &url)
+void QNetworkAccessBackend::setUrl( const QUrl &url )
 {
-   reply->url = url;
+    reply->url = url;
 }
 
 void QNetworkAccessBackend::finished()
 {
-   reply->finished();
+    reply->finished();
 }
 
-void QNetworkAccessBackend::error(QNetworkReply::NetworkError errorCode, const QString &errorMsg)
+void QNetworkAccessBackend::error( QNetworkReply::NetworkError errorCode, const QString &errorMsg )
 {
-   reply->error(errorCode, errorMsg);
+    reply->error( errorCode, errorMsg );
 }
 
 #ifndef QT_NO_NETWORKPROXY
-void QNetworkAccessBackend::proxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
+void QNetworkAccessBackend::proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator )
 {
-   manager->proxyAuthenticationRequired(QUrl(), proxy, synchronous, authenticator, &reply->lastProxyAuthentication);
+    manager->proxyAuthenticationRequired( QUrl(), proxy, synchronous, authenticator, &reply->lastProxyAuthentication );
 }
 #endif
 
-void QNetworkAccessBackend::authenticationRequired(QAuthenticator *authenticator)
+void QNetworkAccessBackend::authenticationRequired( QAuthenticator *authenticator )
 {
-   manager->authenticationRequired(authenticator, reply->q_func(), synchronous, reply->url, &reply->urlForLastAuthentication);
+    manager->authenticationRequired( authenticator, reply->q_func(), synchronous, reply->url, &reply->urlForLastAuthentication );
 }
 
 void QNetworkAccessBackend::metaDataChanged()
 {
-   reply->metaDataChanged();
+    reply->metaDataChanged();
 }
 
-void QNetworkAccessBackend::redirectionRequested(const QUrl &target)
+void QNetworkAccessBackend::redirectionRequested( const QUrl &target )
 {
-   reply->redirectionRequested(target);
+    reply->redirectionRequested( target );
 }
 
 void QNetworkAccessBackend::encrypted()
 {
 #ifdef QT_SSL
-   reply->encrypted();
+    reply->encrypted();
 #endif
 }
 
-void QNetworkAccessBackend::sslErrors(const QList<QSslError> &errors)
+void QNetworkAccessBackend::sslErrors( const QList<QSslError> &errors )
 {
 #ifdef QT_SSL
-   reply->sslErrors(errors);
+    reply->sslErrors( errors );
 #else
-   (void) errors;
+    ( void ) errors;
 #endif
 }
 
 bool QNetworkAccessBackend::start()
 {
 #ifndef QT_NO_BEARERMANAGEMENT
-   // For bearer, check if session start is required
-   QSharedPointer<QNetworkSession> networkSession(manager->getNetworkSession());
+    // For bearer, check if session start is required
+    QSharedPointer<QNetworkSession> networkSession( manager->getNetworkSession() );
 
-   if (networkSession) {
-      // session required
+    if ( networkSession )
+    {
+        // session required
 
-      if (networkSession->isOpen() && networkSession->state() == QNetworkSession::Connected) {
-         // Session is already open and ready to use.
-         // copy network session down to the backend
-         setProperty("_q_networksession", QVariant::fromValue(networkSession));
+        if ( networkSession->isOpen() && networkSession->state() == QNetworkSession::Connected )
+        {
+            // Session is already open and ready to use.
+            // copy network session down to the backend
+            setProperty( "_q_networksession", QVariant::fromValue( networkSession ) );
 
-      } else {
-         // Session not ready, but can skip for loopback connections
+        }
+        else
+        {
+            // Session not ready, but can skip for loopback connections
 
-         // This is not ideal.
-         const QString host = reply->url.host();
+            // This is not ideal.
+            const QString host = reply->url.host();
 
-         if (host == QLatin1String("localhost") || QHostAddress(host).isLoopback() || reply->url.isLocalFile()) {
-            // Don't need an open session for localhost access.
+            if ( host == QLatin1String( "localhost" ) || QHostAddress( host ).isLoopback() || reply->url.isLocalFile() )
+            {
+                // Don't need an open session for localhost access.
 
-         } else {
-            // need to wait for session to be opened
-            return false;
-         }
-      }
-   }
+            }
+            else
+            {
+                // need to wait for session to be opened
+                return false;
+            }
+        }
+    }
+
 #endif
 
 #ifndef QT_NO_NETWORKPROXY
 
 #ifndef QT_NO_BEARERMANAGEMENT
-   // Get the proxy settings from the network session (in the case of service networks,
-   // the proxy settings change depending which AP was activated)
-   QNetworkSession *session = networkSession.data();
-   QNetworkConfiguration config;
+    // Get the proxy settings from the network session (in the case of service networks,
+    // the proxy settings change depending which AP was activated)
+    QNetworkSession *session = networkSession.data();
+    QNetworkConfiguration config;
 
-   if (session) {
-      QNetworkConfigurationManager configManager;
-      // The active configuration tells us what IAP is in use
-      QVariant v = session->sessionProperty(QLatin1String("ActiveConfiguration"));
-      if (v.isValid()) {
-         config = configManager.configurationFromIdentifier(v.value<QString>());
-      }
+    if ( session )
+    {
+        QNetworkConfigurationManager configManager;
+        // The active configuration tells us what IAP is in use
+        QVariant v = session->sessionProperty( QLatin1String( "ActiveConfiguration" ) );
 
-      // Fallback to using the configuration if no active configuration
-      if (! config.isValid()) {
-         config = session->configuration();
-      }
+        if ( v.isValid() )
+        {
+            config = configManager.configurationFromIdentifier( v.value<QString>() );
+        }
 
-      // or unspecified configuration if that is no good either
-      if (! config.isValid()) {
-         config = QNetworkConfiguration();
-      }
-   }
-   reply->proxyList = manager->queryProxy(QNetworkProxyQuery(config, url()));
+        // Fallback to using the configuration if no active configuration
+        if ( ! config.isValid() )
+        {
+            config = session->configuration();
+        }
+
+        // or unspecified configuration if that is no good either
+        if ( ! config.isValid() )
+        {
+            config = QNetworkConfiguration();
+        }
+    }
+
+    reply->proxyList = manager->queryProxy( QNetworkProxyQuery( config, url() ) );
 
 #else
-   // Without bearer management, the proxy depends only on the url
-   reply->proxyList = manager->queryProxy(QNetworkProxyQuery(url()));
+    // Without bearer management, the proxy depends only on the url
+    reply->proxyList = manager->queryProxy( QNetworkProxyQuery( url() ) );
 #endif
 
 #endif
 
-   // now start the request
-   open();
-   return true;
+    // now start the request
+    open();
+    return true;
 }

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef ResourceResponse_h
@@ -28,27 +28,34 @@
 
 #include "ResourceResponseBase.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class ResourceResponse : public ResourceResponseBase {
+class ResourceResponse : public ResourceResponseBase
+{
 public:
     ResourceResponse()
     {
     }
 
-    ResourceResponse(const KURL& url, const String& mimeType, long long expectedLength, const String& textEncodingName, const String& filename)
-        : ResourceResponseBase(url, mimeType, expectedLength, textEncodingName, filename)
+    ResourceResponse( const KURL &url, const String &mimeType, long long expectedLength, const String &textEncodingName,
+                      const String &filename )
+        : ResourceResponseBase( url, mimeType, expectedLength, textEncodingName, filename )
     {
     }
 
 private:
     friend class ResourceResponseBase;
 
-    PassOwnPtr<CrossThreadResourceResponseData> doPlatformCopyData(PassOwnPtr<CrossThreadResourceResponseData> data) const { return data; }
-    void doPlatformAdopt(PassOwnPtr<CrossThreadResourceResponseData>) { }
+    PassOwnPtr<CrossThreadResourceResponseData> doPlatformCopyData( PassOwnPtr<CrossThreadResourceResponseData> data ) const
+    {
+        return data;
+    }
+    void doPlatformAdopt( PassOwnPtr<CrossThreadResourceResponseData> ) { }
 };
 
-struct CrossThreadResourceResponseData : public CrossThreadResourceResponseDataBase {
+struct CrossThreadResourceResponseData : public CrossThreadResourceResponseDataBase
+{
 };
 
 }

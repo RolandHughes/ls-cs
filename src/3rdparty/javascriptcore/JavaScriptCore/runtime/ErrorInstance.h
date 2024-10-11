@@ -23,15 +23,20 @@
 
 #include "JSObject.h"
 
-namespace JSC {
+namespace JSC
+{
 
-    class ErrorInstance : public JSObject {
-    public:
-        explicit ErrorInstance(NonNullPassRefPtr<Structure>);
+class ErrorInstance : public JSObject
+{
+public:
+    explicit ErrorInstance( NonNullPassRefPtr<Structure> );
 
-        virtual const ClassInfo* classInfo() const { return &info; }
-        static const ClassInfo info;
-    };
+    virtual const ClassInfo *classInfo() const
+    {
+        return &info;
+    }
+    static const ClassInfo info;
+};
 
 } // namespace JSC
 

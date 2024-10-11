@@ -36,63 +36,74 @@
 #include <wtf/text/CString.h>
 #include <wtf/RandomNumber.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Helper functions
-static inline void append(Vector<char>& buffer, char string)
+static inline void append( Vector<char> &buffer, char string )
 {
-    buffer.append(string);
+    buffer.append( string );
 }
 
-static inline void append(Vector<char>& buffer, const char* string)
+static inline void append( Vector<char> &buffer, const char *string )
 {
-    buffer.append(string, strlen(string));
+    buffer.append( string, strlen( string ) );
 }
 
-static inline void append(Vector<char>& buffer, const CString& string)
+static inline void append( Vector<char> &buffer, const CString &string )
 {
-    buffer.append(string.data(), string.length());
+    buffer.append( string.data(), string.length() );
 }
 
-static void appendQuotedString(Vector<char>& buffer, const CString& string)
+static void appendQuotedString( Vector<char> &buffer, const CString &string )
 {
     // Append a string as a quoted value, escaping quotes and line breaks.
     // FIXME: Is it correct to use percent escaping here? Other browsers do not encode these characters yet,
     // so we should test popular servers to find out if there is an encoding form they can handle.
     unsigned length = string.length();
-    for (unsigned i = 0; i < length; ++i) {
+
+    for ( unsigned i = 0; i < length; ++i )
+    {
         unsigned char c = string.data()[i];
 
-        switch (c) {
-        case  0x0a:
-            append(buffer, "%0A");
-            break;
-        case 0x0d:
-            append(buffer, "%0D");
-            break;
-        case '"':
-            append(buffer, "%22");
-            break;
-        default:
-            append(buffer, c);
+        switch ( c )
+        {
+            case  0x0a:
+                append( buffer, "%0A" );
+                break;
+
+            case 0x0d:
+                append( buffer, "%0D" );
+                break;
+
+            case '"':
+                append( buffer, "%22" );
+                break;
+
+            default:
+                append( buffer, c );
         }
     }
 }
 
-TextEncoding FormDataBuilder::encodingFromAcceptCharset(const String& acceptCharset, Document* document)
+TextEncoding FormDataBuilder::encodingFromAcceptCharset( const String &acceptCharset, Document *document )
 {
     String normalizedAcceptCharset = acceptCharset;
-    normalizedAcceptCharset.replace(',', ' ');
+    normalizedAcceptCharset.replace( ',', ' ' );
 
     Vector<String> charsets;
-    normalizedAcceptCharset.split(' ', charsets);
+    normalizedAcceptCharset.split( ' ', charsets );
 
     TextEncoding encoding;
 
     Vector<String>::const_iterator end = charsets.end();
-    for (Vector<String>::const_iterator it = charsets.begin(); it != end; ++it) {
-        if ((encoding = TextEncoding(*it)).isValid())
+
+    for ( Vector<String>::const_iterator it = charsets.begin(); it != end; ++it )
+    {
+        if ( ( encoding = TextEncoding( *it ) ).isValid() )
+        {
             return encoding;
+        }
     }
 
     return document->inputEncoding();
@@ -109,7 +120,8 @@ Vector<char> FormDataBuilder::generateUniqueBoundaryString()
     // Note that our algorithm makes it twice as much likely for 'A' or 'B'
     // to appear in the boundary string, because 0x41 and 0x42 are present in
     // the below array twice.
-    static const char alphaNumericEncodingMap[64] = {
+    static const char alphaNumericEncodingMap[64] =
+    {
         0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48,
         0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50,
         0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58,
@@ -121,95 +133,109 @@ Vector<char> FormDataBuilder::generateUniqueBoundaryString()
     };
 
     // Start with an informative prefix.
-    append(boundary, "----WebKitFormBoundary");
+    append( boundary, "----WebKitFormBoundary" );
 
     // Append 16 random 7bit ascii AlphaNumeric characters.
     Vector<char> randomBytes;
 
-    for (unsigned i = 0; i < 4; ++i) {
-        unsigned randomness = static_cast<unsigned>(randomNumber() * (std::numeric_limits<unsigned>::max() + 1.0));
-        randomBytes.append(alphaNumericEncodingMap[(randomness >> 24) & 0x3F]);
-        randomBytes.append(alphaNumericEncodingMap[(randomness >> 16) & 0x3F]);
-        randomBytes.append(alphaNumericEncodingMap[(randomness >> 8) & 0x3F]);
-        randomBytes.append(alphaNumericEncodingMap[randomness & 0x3F]);
+    for ( unsigned i = 0; i < 4; ++i )
+    {
+        unsigned randomness = static_cast<unsigned>( randomNumber() * ( std::numeric_limits<unsigned>::max() + 1.0 ) );
+        randomBytes.append( alphaNumericEncodingMap[( randomness >> 24 ) & 0x3F] );
+        randomBytes.append( alphaNumericEncodingMap[( randomness >> 16 ) & 0x3F] );
+        randomBytes.append( alphaNumericEncodingMap[( randomness >> 8 ) & 0x3F] );
+        randomBytes.append( alphaNumericEncodingMap[randomness & 0x3F] );
     }
 
-    boundary.append(randomBytes);
-    boundary.append(0); // Add a 0 at the end so we can use this as a C-style string.
+    boundary.append( randomBytes );
+    boundary.append( 0 ); // Add a 0 at the end so we can use this as a C-style string.
     return boundary;
 }
 
-void FormDataBuilder::beginMultiPartHeader(Vector<char>& buffer, const CString& boundary, const CString& name)
+void FormDataBuilder::beginMultiPartHeader( Vector<char> &buffer, const CString &boundary, const CString &name )
 {
-    addBoundaryToMultiPartHeader(buffer, boundary);
+    addBoundaryToMultiPartHeader( buffer, boundary );
 
     // FIXME: This loses data irreversibly if the input name includes characters you can't encode
     // in the website's character set.
-    append(buffer, "Content-Disposition: form-data; name=\"");
-    appendQuotedString(buffer, name);
-    append(buffer, '"');
+    append( buffer, "Content-Disposition: form-data; name=\"" );
+    appendQuotedString( buffer, name );
+    append( buffer, '"' );
 }
 
-void FormDataBuilder::addBoundaryToMultiPartHeader(Vector<char>& buffer, const CString& boundary, bool isLastBoundary)
+void FormDataBuilder::addBoundaryToMultiPartHeader( Vector<char> &buffer, const CString &boundary, bool isLastBoundary )
 {
-    append(buffer, "--");
-    append(buffer, boundary);
+    append( buffer, "--" );
+    append( buffer, boundary );
 
-    if (isLastBoundary)
-        append(buffer, "--");
+    if ( isLastBoundary )
+    {
+        append( buffer, "--" );
+    }
 
-    append(buffer, "\r\n");
+    append( buffer, "\r\n" );
 }
 
-void FormDataBuilder::addFilenameToMultiPartHeader(Vector<char>& buffer, const TextEncoding& encoding, const String& filename)
+void FormDataBuilder::addFilenameToMultiPartHeader( Vector<char> &buffer, const TextEncoding &encoding, const String &filename )
 {
     // FIXME: This loses data irreversibly if the filename includes characters you can't encode
     // in the website's character set.
-    append(buffer, "; filename=\"");
-    appendQuotedString(buffer, encoding.encode(filename.characters(), filename.length(), QuestionMarksForUnencodables));
-    append(buffer, '"');
+    append( buffer, "; filename=\"" );
+    appendQuotedString( buffer, encoding.encode( filename.characters(), filename.length(), QuestionMarksForUnencodables ) );
+    append( buffer, '"' );
 }
 
-void FormDataBuilder::addContentTypeToMultiPartHeader(Vector<char>& buffer, const CString& mimeType)
+void FormDataBuilder::addContentTypeToMultiPartHeader( Vector<char> &buffer, const CString &mimeType )
 {
-    append(buffer, "\r\nContent-Type: ");
-    append(buffer, mimeType);
+    append( buffer, "\r\nContent-Type: " );
+    append( buffer, mimeType );
 }
 
-void FormDataBuilder::finishMultiPartHeader(Vector<char>& buffer)
+void FormDataBuilder::finishMultiPartHeader( Vector<char> &buffer )
 {
-    append(buffer, "\r\n\r\n");
+    append( buffer, "\r\n\r\n" );
 }
 
-void FormDataBuilder::addKeyValuePairAsFormData(Vector<char>& buffer, const CString& key, const CString& value)
+void FormDataBuilder::addKeyValuePairAsFormData( Vector<char> &buffer, const CString &key, const CString &value )
 {
-    if (!buffer.isEmpty())
-        append(buffer, '&');
+    if ( !buffer.isEmpty() )
+    {
+        append( buffer, '&' );
+    }
 
-    encodeStringAsFormData(buffer, key);
-    append(buffer, '=');
-    encodeStringAsFormData(buffer, value);
+    encodeStringAsFormData( buffer, key );
+    append( buffer, '=' );
+    encodeStringAsFormData( buffer, value );
 }
 
-void FormDataBuilder::encodeStringAsFormData(Vector<char>& buffer, const CString& string)
+void FormDataBuilder::encodeStringAsFormData( Vector<char> &buffer, const CString &string )
 {
     // Same safe characters as Netscape for compatibility.
     static const char safeCharacters[] = "-._*";
 
     // http://www.w3.org/TR/html4/interact/forms.html#h-17.13.4.1
     unsigned length = string.length();
-    for (unsigned i = 0; i < length; ++i) {
+
+    for ( unsigned i = 0; i < length; ++i )
+    {
         unsigned char c = string.data()[i];
 
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || strchr(safeCharacters, c))
-            append(buffer, c);
-        else if (c == ' ')
-            append(buffer, '+');
-        else if (c == '\n' || (c == '\r' && (i + 1 >= length || string.data()[i + 1] != '\n')))
-            append(buffer, "%0D%0A");
-        else if (c != '\r') {
-            append(buffer, '%');
-            appendByteAsHex(c, buffer);
+        if ( ( c >= 'A' && c <= 'Z' ) || ( c >= 'a' && c <= 'z' ) || ( c >= '0' && c <= '9' ) || strchr( safeCharacters, c ) )
+        {
+            append( buffer, c );
+        }
+        else if ( c == ' ' )
+        {
+            append( buffer, '+' );
+        }
+        else if ( c == '\n' || ( c == '\r' && ( i + 1 >= length || string.data()[i + 1] != '\n' ) ) )
+        {
+            append( buffer, "%0D%0A" );
+        }
+        else if ( c != '\r' )
+        {
+            append( buffer, '%' );
+            appendByteAsHex( c, buffer );
         }
     }
 }

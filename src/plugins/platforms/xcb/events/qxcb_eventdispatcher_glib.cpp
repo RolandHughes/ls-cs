@@ -31,68 +31,70 @@
 
 #include <glib.h>
 
-struct GUserEventSource {
-   GSource source;
-   QXcbEventDispatcherGlib *q;
+struct GUserEventSource
+{
+    GSource source;
+    QXcbEventDispatcherGlib *q;
 };
 
-static gboolean userEventSourcePrepare(GSource *s, gint *timeout)
+static gboolean userEventSourcePrepare( GSource *s, gint *timeout )
 {
-   return QWindowSystemInterface::windowSystemEventsQueued() > 0;
+    return QWindowSystemInterface::windowSystemEventsQueued() > 0;
 }
 
-static gboolean userEventSourceCheck(GSource *source)
+static gboolean userEventSourceCheck( GSource *source )
 {
-   return userEventSourcePrepare(source, 0);
+    return userEventSourcePrepare( source, 0 );
 }
 
-static gboolean userEventSourceDispatch(GSource *source, GSourceFunc, gpointer)
+static gboolean userEventSourceDispatch( GSource *source, GSourceFunc, gpointer )
 {
-   GUserEventSource *userEventSource   = reinterpret_cast<GUserEventSource *>(source);
-   QXcbEventDispatcherGlib *dispatcher = userEventSource->q;
-   QWindowSystemInterface::sendWindowSystemEvents(dispatcher->m_flags);
-   return true;
+    GUserEventSource *userEventSource   = reinterpret_cast<GUserEventSource *>( source );
+    QXcbEventDispatcherGlib *dispatcher = userEventSource->q;
+    QWindowSystemInterface::sendWindowSystemEvents( dispatcher->m_flags );
+    return true;
 }
 
-static GSourceFuncs userEventSourceFuncs = {
-   userEventSourcePrepare,
-   userEventSourceCheck,
-   userEventSourceDispatch,
-   NULL,
-   NULL,
-   NULL
+static GSourceFuncs userEventSourceFuncs =
+{
+    userEventSourcePrepare,
+    userEventSourceCheck,
+    userEventSourceDispatch,
+    NULL,
+    NULL,
+    NULL
 };
 
-QXcbEventDispatcherGlibPrivate::QXcbEventDispatcherGlibPrivate(GMainContext *context)
-   : QEventDispatcherGlibPrivate(context)
+QXcbEventDispatcherGlibPrivate::QXcbEventDispatcherGlibPrivate( GMainContext *context )
+    : QEventDispatcherGlibPrivate( context )
 {
-   Q_Q(QXcbEventDispatcherGlib);
-   userEventSource = reinterpret_cast<GUserEventSource *>(g_source_new(&userEventSourceFuncs, sizeof(GUserEventSource)));
-   userEventSource->q = q;
+    Q_Q( QXcbEventDispatcherGlib );
+    userEventSource = reinterpret_cast<GUserEventSource *>( g_source_new( &userEventSourceFuncs, sizeof( GUserEventSource ) ) );
+    userEventSource->q = q;
 
-   g_source_set_can_recurse(&userEventSource->source, true);
-   g_source_attach(&userEventSource->source, mainContext);
+    g_source_set_can_recurse( &userEventSource->source, true );
+    g_source_attach( &userEventSource->source, mainContext );
 }
 
-QXcbEventDispatcherGlib::QXcbEventDispatcherGlib(QObject *parent)
-   : QEventDispatcherGlib(*new QXcbEventDispatcherGlibPrivate, parent), m_flags(QEventLoop::AllEvents)
+QXcbEventDispatcherGlib::QXcbEventDispatcherGlib( QObject *parent )
+    : QEventDispatcherGlib( *new QXcbEventDispatcherGlibPrivate, parent ), m_flags( QEventLoop::AllEvents )
 {
-   Q_D(QXcbEventDispatcherGlib);
-   d->userEventSource->q = this;
+    Q_D( QXcbEventDispatcherGlib );
+    d->userEventSource->q = this;
 }
 
 QXcbEventDispatcherGlib::~QXcbEventDispatcherGlib()
 {
-   Q_D(QXcbEventDispatcherGlib);
+    Q_D( QXcbEventDispatcherGlib );
 
-   g_source_destroy(&d->userEventSource->source);
-   g_source_unref(&d->userEventSource->source);
-   d->userEventSource = 0;
+    g_source_destroy( &d->userEventSource->source );
+    g_source_unref( &d->userEventSource->source );
+    d->userEventSource = 0;
 }
 
-bool QXcbEventDispatcherGlib::processEvents(QEventLoop::ProcessEventsFlags flags)
+bool QXcbEventDispatcherGlib::processEvents( QEventLoop::ProcessEventsFlags flags )
 {
-   m_flags = flags;
-   return QEventDispatcherGlib::processEvents(m_flags);
+    m_flags = flags;
+    return QEventDispatcherGlib::processEvents( m_flags );
 }
 

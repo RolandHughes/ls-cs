@@ -35,21 +35,22 @@
 
 #include "HTMLNames.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-inline HTMLDataListElement::HTMLDataListElement(const QualifiedName& tagName, Document* document)
-    : HTMLElement(tagName, document)
+inline HTMLDataListElement::HTMLDataListElement( const QualifiedName &tagName, Document *document )
+    : HTMLElement( tagName, document )
 {
 }
 
-PassRefPtr<HTMLDataListElement> HTMLDataListElement::create(const QualifiedName& tagName, Document* document)
+PassRefPtr<HTMLDataListElement> HTMLDataListElement::create( const QualifiedName &tagName, Document *document )
 {
-    return adoptRef(new HTMLDataListElement(tagName, document));
+    return adoptRef( new HTMLDataListElement( tagName, document ) );
 }
 
 PassRefPtr<HTMLCollection> HTMLDataListElement::options()
 {
-    return HTMLCollection::create(this, DataListOptions);
+    return HTMLCollection::create( this, DataListOptions );
 }
 
 }  // namespace WebCore

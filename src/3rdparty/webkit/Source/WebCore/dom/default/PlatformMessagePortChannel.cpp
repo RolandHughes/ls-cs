@@ -34,21 +34,22 @@
 #include "MessagePort.h"
 #include "ScriptExecutionContext.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 // MessagePortChannel implementations - just delegate to the PlatformMessagePortChannel.
-void MessagePortChannel::createChannel(PassRefPtr<MessagePort> port1, PassRefPtr<MessagePort> port2)
+void MessagePortChannel::createChannel( PassRefPtr<MessagePort> port1, PassRefPtr<MessagePort> port2 )
 {
-    PlatformMessagePortChannel::createChannel(port1, port2);
+    PlatformMessagePortChannel::createChannel( port1, port2 );
 }
 
-PassOwnPtr<MessagePortChannel> MessagePortChannel::create(PassRefPtr<PlatformMessagePortChannel> channel)
+PassOwnPtr<MessagePortChannel> MessagePortChannel::create( PassRefPtr<PlatformMessagePortChannel> channel )
 {
-    return adoptPtr(new MessagePortChannel(channel));
+    return adoptPtr( new MessagePortChannel( channel ) );
 }
 
-MessagePortChannel::MessagePortChannel(PassRefPtr<PlatformMessagePortChannel> channel)
-    : m_channel(channel)
+MessagePortChannel::MessagePortChannel( PassRefPtr<PlatformMessagePortChannel> channel )
+    : m_channel( channel )
 {
 }
 
@@ -58,9 +59,9 @@ MessagePortChannel::~MessagePortChannel()
     m_channel->close();
 }
 
-bool MessagePortChannel::entangleIfOpen(MessagePort* port)
+bool MessagePortChannel::entangleIfOpen( MessagePort *port )
 {
-    return m_channel->entangleIfOpen(port);
+    return m_channel->entangleIfOpen( port );
 }
 
 void MessagePortChannel::disentangle()
@@ -68,14 +69,14 @@ void MessagePortChannel::disentangle()
     m_channel->disentangle();
 }
 
-void MessagePortChannel::postMessageToRemote(PassOwnPtr<MessagePortChannel::EventData> message)
+void MessagePortChannel::postMessageToRemote( PassOwnPtr<MessagePortChannel::EventData> message )
 {
-    m_channel->postMessageToRemote(message);
+    m_channel->postMessageToRemote( message );
 }
 
-bool MessagePortChannel::tryGetMessageFromRemote(OwnPtr<MessagePortChannel::EventData>& result)
+bool MessagePortChannel::tryGetMessageFromRemote( OwnPtr<MessagePortChannel::EventData> &result )
 {
-    return m_channel->tryGetMessageFromRemote(result);
+    return m_channel->tryGetMessageFromRemote( result );
 }
 
 void MessagePortChannel::close()
@@ -83,9 +84,9 @@ void MessagePortChannel::close()
     m_channel->close();
 }
 
-bool MessagePortChannel::isConnectedTo(MessagePort* port)
+bool MessagePortChannel::isConnectedTo( MessagePort *port )
 {
-    return m_channel->isConnectedTo(port);
+    return m_channel->isConnectedTo( port );
 }
 
 bool MessagePortChannel::hasPendingActivity()
@@ -93,21 +94,23 @@ bool MessagePortChannel::hasPendingActivity()
     return m_channel->hasPendingActivity();
 }
 
-MessagePort* MessagePortChannel::locallyEntangledPort(const ScriptExecutionContext* context)
+MessagePort *MessagePortChannel::locallyEntangledPort( const ScriptExecutionContext *context )
 {
-    return m_channel->locallyEntangledPort(context);
+    return m_channel->locallyEntangledPort( context );
 }
 
-PassRefPtr<PlatformMessagePortChannel> PlatformMessagePortChannel::create(PassRefPtr<MessagePortQueue> incoming, PassRefPtr<MessagePortQueue> outgoing)
+PassRefPtr<PlatformMessagePortChannel> PlatformMessagePortChannel::create( PassRefPtr<MessagePortQueue> incoming,
+        PassRefPtr<MessagePortQueue> outgoing )
 {
-    return adoptRef(new PlatformMessagePortChannel(incoming, outgoing));
+    return adoptRef( new PlatformMessagePortChannel( incoming, outgoing ) );
 }
 
-PlatformMessagePortChannel::PlatformMessagePortChannel(PassRefPtr<MessagePortQueue> incoming, PassRefPtr<MessagePortQueue> outgoing)
-    : m_entangledChannel(0)
-    , m_incomingQueue(incoming)
-    , m_outgoingQueue(outgoing)
-    , m_remotePort(0)
+PlatformMessagePortChannel::PlatformMessagePortChannel( PassRefPtr<MessagePortQueue> incoming,
+        PassRefPtr<MessagePortQueue> outgoing )
+    : m_entangledChannel( 0 )
+    , m_incomingQueue( incoming )
+    , m_outgoingQueue( outgoing )
+    , m_remotePort( 0 )
 {
 }
 
@@ -115,91 +118,109 @@ PlatformMessagePortChannel::~PlatformMessagePortChannel()
 {
 }
 
-void PlatformMessagePortChannel::createChannel(PassRefPtr<MessagePort> port1, PassRefPtr<MessagePort> port2)
+void PlatformMessagePortChannel::createChannel( PassRefPtr<MessagePort> port1, PassRefPtr<MessagePort> port2 )
 {
     // Create incoming/outgoing queues.
     RefPtr<PlatformMessagePortChannel::MessagePortQueue> queue1 = PlatformMessagePortChannel::MessagePortQueue::create();
     RefPtr<PlatformMessagePortChannel::MessagePortQueue> queue2 = PlatformMessagePortChannel::MessagePortQueue::create();
 
     // Create proxies for each endpoint.
-    RefPtr<PlatformMessagePortChannel> channel1 = PlatformMessagePortChannel::create(queue1, queue2);
-    RefPtr<PlatformMessagePortChannel> channel2 = PlatformMessagePortChannel::create(queue2, queue1);
+    RefPtr<PlatformMessagePortChannel> channel1 = PlatformMessagePortChannel::create( queue1, queue2 );
+    RefPtr<PlatformMessagePortChannel> channel2 = PlatformMessagePortChannel::create( queue2, queue1 );
 
     // Entangle the two endpoints.
-    channel1->setEntangledChannel(channel2);
-    channel2->setEntangledChannel(channel1);
+    channel1->setEntangledChannel( channel2 );
+    channel2->setEntangledChannel( channel1 );
 
     // Now entangle the proxies with the appropriate local ports.
-    port1->entangle(MessagePortChannel::create(channel2));
-    port2->entangle(MessagePortChannel::create(channel1));
+    port1->entangle( MessagePortChannel::create( channel2 ) );
+    port2->entangle( MessagePortChannel::create( channel1 ) );
 }
 
-bool PlatformMessagePortChannel::entangleIfOpen(MessagePort* port)
+bool PlatformMessagePortChannel::entangleIfOpen( MessagePort *port )
 {
     // We can't call member functions on our remote pair while holding our mutex or we'll deadlock, but we need to guard against the remote port getting closed/freed, so create a standalone reference.
     RefPtr<PlatformMessagePortChannel> remote = entangledChannel();
-    if (!remote)
+
+    if ( !remote )
+    {
         return false;
-    remote->setRemotePort(port);
+    }
+
+    remote->setRemotePort( port );
     return true;
 }
 
 void PlatformMessagePortChannel::disentangle()
 {
     RefPtr<PlatformMessagePortChannel> remote = entangledChannel();
-    if (remote)
-        remote->setRemotePort(0);
+
+    if ( remote )
+    {
+        remote->setRemotePort( 0 );
+    }
 }
 
-void PlatformMessagePortChannel::setRemotePort(MessagePort* port)
+void PlatformMessagePortChannel::setRemotePort( MessagePort *port )
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
     // Should never set port if it is already set.
-    ASSERT(!port || !m_remotePort);
+    ASSERT( !port || !m_remotePort );
     m_remotePort = port;
 }
 
-MessagePort* PlatformMessagePortChannel::remotePort()
+MessagePort *PlatformMessagePortChannel::remotePort()
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
     return m_remotePort;
 }
 
 PassRefPtr<PlatformMessagePortChannel> PlatformMessagePortChannel::entangledChannel()
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
     return m_entangledChannel;
 }
 
-void PlatformMessagePortChannel::setEntangledChannel(PassRefPtr<PlatformMessagePortChannel> remote)
+void PlatformMessagePortChannel::setEntangledChannel( PassRefPtr<PlatformMessagePortChannel> remote )
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
+
     // Should only be set as part of initial creation/entanglement.
-    if (remote)
-        ASSERT(!m_entangledChannel.get());
+    if ( remote )
+    {
+        ASSERT( !m_entangledChannel.get() );
+    }
+
     m_entangledChannel = remote;
 }
 
-void PlatformMessagePortChannel::postMessageToRemote(PassOwnPtr<MessagePortChannel::EventData> message)
+void PlatformMessagePortChannel::postMessageToRemote( PassOwnPtr<MessagePortChannel::EventData> message )
 {
-    MutexLocker lock(m_mutex);
-    if (!m_outgoingQueue)
+    MutexLocker lock( m_mutex );
+
+    if ( !m_outgoingQueue )
+    {
         return;
-    bool wasEmpty = m_outgoingQueue->appendAndCheckEmpty(message);
-    if (wasEmpty && m_remotePort)
+    }
+
+    bool wasEmpty = m_outgoingQueue->appendAndCheckEmpty( message );
+
+    if ( wasEmpty && m_remotePort )
+    {
         m_remotePort->messageAvailable();
+    }
 }
 
-bool PlatformMessagePortChannel::tryGetMessageFromRemote(OwnPtr<MessagePortChannel::EventData>& result)
+bool PlatformMessagePortChannel::tryGetMessageFromRemote( OwnPtr<MessagePortChannel::EventData> &result )
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
     result = m_incomingQueue->tryGetMessage();
     return result;
 }
 
-bool PlatformMessagePortChannel::isConnectedTo(MessagePort* port)
+bool PlatformMessagePortChannel::isConnectedTo( MessagePort *port )
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
     return m_remotePort == port;
 }
 
@@ -207,15 +228,19 @@ bool PlatformMessagePortChannel::isConnectedTo(MessagePort* port)
 void PlatformMessagePortChannel::close()
 {
     RefPtr<PlatformMessagePortChannel> remote = entangledChannel();
-    if (!remote)
+
+    if ( !remote )
+    {
         return;
+    }
+
     closeInternal();
     remote->closeInternal();
 }
 
 void PlatformMessagePortChannel::closeInternal()
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
     // Disentangle ourselves from the other end. We still maintain a reference to our incoming queue, since previously-existing messages should still be delivered.
     m_remotePort = 0;
     m_entangledChannel = 0;
@@ -224,20 +249,26 @@ void PlatformMessagePortChannel::closeInternal()
 
 bool PlatformMessagePortChannel::hasPendingActivity()
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
     return !m_incomingQueue->isEmpty();
 }
 
-MessagePort* PlatformMessagePortChannel::locallyEntangledPort(const ScriptExecutionContext* context)
+MessagePort *PlatformMessagePortChannel::locallyEntangledPort( const ScriptExecutionContext *context )
 {
-    MutexLocker lock(m_mutex);
+    MutexLocker lock( m_mutex );
+
     // See if both contexts are run by the same thread (are the same context, or are both documents).
-    if (m_remotePort) {
+    if ( m_remotePort )
+    {
         // The remote port's ScriptExecutionContext is guaranteed not to change here - MessagePort::contextDestroyed() will close the port before the context goes away, and close() will block because we are holding the mutex.
-        ScriptExecutionContext* remoteContext = m_remotePort->scriptExecutionContext();
-        if (remoteContext == context || (remoteContext && remoteContext->isDocument() && context->isDocument()))
+        ScriptExecutionContext *remoteContext = m_remotePort->scriptExecutionContext();
+
+        if ( remoteContext == context || ( remoteContext && remoteContext->isDocument() && context->isDocument() ) )
+        {
             return m_remotePort;
+        }
     }
+
     return 0;
 }
 

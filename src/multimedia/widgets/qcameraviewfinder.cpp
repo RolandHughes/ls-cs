@@ -32,17 +32,18 @@
 
 class QCameraViewfinderPrivate : public QVideoWidgetPrivate
 {
- public:
-   QCameraViewfinderPrivate()
-      : QVideoWidgetPrivate() {
-   }
+public:
+    QCameraViewfinderPrivate()
+        : QVideoWidgetPrivate()
+    {
+    }
 
- private:
-   Q_DECLARE_NON_CONST_PUBLIC(QCameraViewfinder)
+private:
+    Q_DECLARE_NON_CONST_PUBLIC( QCameraViewfinder )
 };
 
-QCameraViewfinder::QCameraViewfinder(QWidget *parent)
-   : QVideoWidget(*new QCameraViewfinderPrivate, parent)
+QCameraViewfinder::QCameraViewfinder( QWidget *parent )
+    : QVideoWidget( *new QCameraViewfinderPrivate, parent )
 {
 }
 
@@ -52,10 +53,10 @@ QCameraViewfinder::~QCameraViewfinder()
 
 QMediaObject *QCameraViewfinder::mediaObject() const
 {
-   return QVideoWidget::mediaObject();
+    return QVideoWidget::mediaObject();
 }
 
-bool QCameraViewfinder::setMediaObject(QMediaObject *object)
+bool QCameraViewfinder::setMediaObject( QMediaObject *object )
 {
-   return QVideoWidget::setMediaObject(object);
+    return QVideoWidget::setMediaObject( object );
 }

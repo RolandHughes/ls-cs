@@ -20,9 +20,9 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #include "config.h"
 #include "CachedPage.h"
 
@@ -50,23 +50,24 @@
 #include "Page.h"
 #endif
 
-namespace WebCore {
+namespace WebCore
+{
 
 #ifndef NDEBUG
-static WTF::RefCountedLeakCounter& cachedFrameCounter()
+static WTF::RefCountedLeakCounter &cachedFrameCounter()
 {
-    DEFINE_STATIC_LOCAL(WTF::RefCountedLeakCounter, counter, ("CachedFrame"));
+    DEFINE_STATIC_LOCAL( WTF::RefCountedLeakCounter, counter, ( "CachedFrame" ) );
     return counter;
 }
 #endif
 
-CachedFrameBase::CachedFrameBase(Frame* frame)
-    : m_document(frame->document())
-    , m_documentLoader(frame->loader()->documentLoader())
-    , m_view(frame->view())
-    , m_mousePressNode(frame->eventHandler()->mousePressNode())
-    , m_url(frame->document()->url())
-    , m_isMainFrame(!frame->tree()->parent())
+CachedFrameBase::CachedFrameBase( Frame *frame )
+    : m_document( frame->document() )
+    , m_documentLoader( frame->loader()->documentLoader() )
+    , m_view( frame->view() )
+    , m_mousePressNode( frame->eventHandler()->mousePressNode() )
+    , m_url( frame->document()->url() )
+    , m_isMainFrame( !frame->tree()->parent() )
 {
 }
 
@@ -76,26 +77,32 @@ CachedFrameBase::~CachedFrameBase()
     cachedFrameCounter().decrement();
 #endif
     // CachedFrames should always have had destroy() called by their parent CachedPage
-    ASSERT(!m_document);
+    ASSERT( !m_document );
 }
 
 void CachedFrameBase::restore()
 {
-    ASSERT(m_document->view() == m_view);
+    ASSERT( m_document->view() == m_view );
 
-    if (m_isMainFrame)
-        m_view->setParentVisible(true);
+    if ( m_isMainFrame )
+    {
+        m_view->setParentVisible( true );
+    }
 
-    Frame* frame = m_view->frame();
-    m_cachedFrameScriptData->restore(frame);
+    Frame *frame = m_view->frame();
+    m_cachedFrameScriptData->restore( frame );
 
 #if ENABLE(SVG)
-    if (m_document->svgExtensions())
+
+    if ( m_document->svgExtensions() )
+    {
         m_document->accessSVGExtensions()->unpauseAnimations();
+    }
+
 #endif
 
-    frame->animation()->resumeAnimationsForDocument(m_document.get());
-    frame->eventHandler()->setMousePressNode(m_mousePressNode.get());
+    frame->animation()->resumeAnimationsForDocument( m_document.get() );
+    frame->eventHandler()->setMousePressNode( m_mousePressNode.get() );
     m_document->resumeActiveDOMObjects();
     m_document->resumeScriptedAnimationControllerCallbacks();
 
@@ -106,50 +113,63 @@ void CachedFrameBase::restore()
     frame->loader()->client()->didRestoreFromPageCache();
 
     // Reconstruct the FrameTree
-    for (unsigned i = 0; i < m_childFrames.size(); ++i)
-        frame->tree()->appendChild(m_childFrames[i]->view()->frame());
+    for ( unsigned i = 0; i < m_childFrames.size(); ++i )
+    {
+        frame->tree()->appendChild( m_childFrames[i]->view()->frame() );
+    }
 
     // Open the child CachedFrames in their respective FrameLoaders.
-    for (unsigned i = 0; i < m_childFrames.size(); ++i)
+    for ( unsigned i = 0; i < m_childFrames.size(); ++i )
+    {
         m_childFrames[i]->open();
+    }
 
-    m_document->enqueuePageshowEvent(PageshowEventPersisted);
-    
-    HistoryItem* historyItem = frame->loader()->history()->currentItem();
-    m_document->enqueuePopstateEvent(historyItem && historyItem->stateObject() ? historyItem->stateObject() : SerializedScriptValue::nullValue());
-    
+    m_document->enqueuePageshowEvent( PageshowEventPersisted );
+
+    HistoryItem *historyItem = frame->loader()->history()->currentItem();
+    m_document->enqueuePopstateEvent( historyItem
+                                      && historyItem->stateObject() ? historyItem->stateObject() : SerializedScriptValue::nullValue() );
+
 #if ENABLE(TOUCH_EVENTS)
-    if (m_document->hasListenerType(Document::TOUCH_LISTENER))
-        m_document->page()->chrome()->client()->needTouchEvents(true);
+
+    if ( m_document->hasListenerType( Document::TOUCH_LISTENER ) )
+    {
+        m_document->page()->chrome()->client()->needTouchEvents( true );
+    }
+
 #endif
 
     m_document->documentDidBecomeActive();
 }
 
-CachedFrame::CachedFrame(Frame* frame)
-    : CachedFrameBase(frame)
+CachedFrame::CachedFrame( Frame *frame )
+    : CachedFrameBase( frame )
 {
 #ifndef NDEBUG
     cachedFrameCounter().increment();
 #endif
-    ASSERT(m_document);
-    ASSERT(m_documentLoader);
-    ASSERT(m_view);
+    ASSERT( m_document );
+    ASSERT( m_documentLoader );
+    ASSERT( m_view );
 
-    if (frame->page()->focusController()->focusedFrame() == frame)
-        frame->page()->focusController()->setFocusedFrame(frame->page()->mainFrame());
+    if ( frame->page()->focusController()->focusedFrame() == frame )
+    {
+        frame->page()->focusController()->setFocusedFrame( frame->page()->mainFrame() );
+    }
 
     // Custom scrollbar renderers will get reattached when the document comes out of the page cache
     m_view->detachCustomScrollbars();
 
     m_document->documentWillBecomeInactive();
     frame->clearTimers();
-    m_document->setInPageCache(true);
-    frame->loader()->stopLoading(UnloadEventPolicyUnloadAndPageHide);
+    m_document->setInPageCache( true );
+    frame->loader()->stopLoading( UnloadEventPolicyUnloadAndPageHide );
 
     // Create the CachedFrames for all Frames in the FrameTree.
-    for (Frame* child = frame->tree()->firstChild(); child; child = child->tree()->nextSibling())
-        m_childFrames.append(CachedFrame::create(child));
+    for ( Frame *child = frame->tree()->firstChild(); child; child = child->tree()->nextSibling() )
+    {
+        m_childFrames.append( CachedFrame::create( child ) );
+    }
 
     // Active DOM objects must be suspended before we cache the frame script data,
     // but after we've fired the pagehide event, in case that creates more objects.
@@ -157,60 +177,82 @@ CachedFrame::CachedFrame(Frame* frame)
     // those create more objects.
     // FIXME: It's still possible to have objects created after suspending in some cases, see http://webkit.org/b/53733 for more details.
     m_document->suspendScriptedAnimationControllerCallbacks();
-    m_document->suspendActiveDOMObjects(ActiveDOMObject::DocumentWillBecomeInactive);
-    m_cachedFrameScriptData = adoptPtr(new ScriptCachedFrameData(frame));
+    m_document->suspendActiveDOMObjects( ActiveDOMObject::DocumentWillBecomeInactive );
+    m_cachedFrameScriptData = adoptPtr( new ScriptCachedFrameData( frame ) );
 
-    frame->loader()->client()->savePlatformDataToCachedFrame(this);
+    frame->loader()->client()->savePlatformDataToCachedFrame( this );
 
     // Deconstruct the FrameTree, to restore it later.
     // We do this for two reasons:
     // 1 - We reuse the main frame, so when it navigates to a new page load it needs to start with a blank FrameTree.
     // 2 - It's much easier to destroy a CachedFrame while it resides in the PageCache if it is disconnected from its parent.
-    for (unsigned i = 0; i < m_childFrames.size(); ++i)
-        frame->tree()->removeChild(m_childFrames[i]->view()->frame());
+    for ( unsigned i = 0; i < m_childFrames.size(); ++i )
+    {
+        frame->tree()->removeChild( m_childFrames[i]->view()->frame() );
+    }
 
-    if (!m_isMainFrame)
+    if ( !m_isMainFrame )
+    {
         frame->page()->decrementFrameCount();
+    }
 
     frame->loader()->client()->didSaveToPageCache();
 
 #ifndef NDEBUG
-    if (m_isMainFrame)
-        LOG(PageCache, "Finished creating CachedFrame for main frame url '%s' and DocumentLoader %p\n", m_url.string().utf8().data(), m_documentLoader.get());
+
+    if ( m_isMainFrame )
+    {
+        LOG( PageCache, "Finished creating CachedFrame for main frame url '%s' and DocumentLoader %p\n", m_url.string().utf8().data(),
+             m_documentLoader.get() );
+    }
     else
-        LOG(PageCache, "Finished creating CachedFrame for child frame with url '%s' and DocumentLoader %p\n", m_url.string().utf8().data(), m_documentLoader.get());
+    {
+        LOG( PageCache, "Finished creating CachedFrame for child frame with url '%s' and DocumentLoader %p\n",
+             m_url.string().utf8().data(), m_documentLoader.get() );
+    }
+
 #endif
 
 #if ENABLE(TOUCH_EVENTS)
-    if (m_document->hasListenerType(Document::TOUCH_LISTENER))
-        m_document->page()->chrome()->client()->needTouchEvents(false);
+
+    if ( m_document->hasListenerType( Document::TOUCH_LISTENER ) )
+    {
+        m_document->page()->chrome()->client()->needTouchEvents( false );
+    }
+
 #endif
 }
 
 void CachedFrame::open()
 {
-    ASSERT(m_view);
-    m_view->frame()->loader()->open(*this);
+    ASSERT( m_view );
+    m_view->frame()->loader()->open( *this );
 
-    if (!m_isMainFrame)
+    if ( !m_isMainFrame )
+    {
         m_view->frame()->page()->incrementFrameCount();
+    }
 }
 
 void CachedFrame::clear()
 {
-    if (!m_document)
+    if ( !m_document )
+    {
         return;
+    }
 
     // clear() should only be called for Frames representing documents that are no longer in the page cache.
     // This means the CachedFrame has been:
     // 1 - Successfully restore()'d by going back/forward.
     // 2 - destroy()'ed because the PageCache is pruning or the WebView was closed.
-    ASSERT(!m_document->inPageCache());
-    ASSERT(m_view);
-    ASSERT(m_document->frame() == m_view->frame());
+    ASSERT( !m_document->inPageCache() );
+    ASSERT( m_view );
+    ASSERT( m_document->frame() == m_view->frame() );
 
-    for (int i = m_childFrames.size() - 1; i >= 0; --i)
+    for ( int i = m_childFrames.size() - 1; i >= 0; --i )
+    {
         m_childFrames[i]->clear();
+    }
 
     m_document = 0;
     m_view = 0;
@@ -223,32 +265,39 @@ void CachedFrame::clear()
 
 void CachedFrame::destroy()
 {
-    if (!m_document)
+    if ( !m_document )
+    {
         return;
-    
-    // Only CachedFrames that are still in the PageCache should be destroyed in this manner
-    ASSERT(m_document->inPageCache());
-    ASSERT(m_view);
-    ASSERT(m_document->frame() == m_view->frame());
+    }
 
-    if (!m_isMainFrame) {
+    // Only CachedFrames that are still in the PageCache should be destroyed in this manner
+    ASSERT( m_document->inPageCache() );
+    ASSERT( m_view );
+    ASSERT( m_document->frame() == m_view->frame() );
+
+    if ( !m_isMainFrame )
+    {
         m_view->frame()->detachFromPage();
         m_view->frame()->loader()->detachViewsAndDocumentLoader();
     }
-    
-    for (int i = m_childFrames.size() - 1; i >= 0; --i)
+
+    for ( int i = m_childFrames.size() - 1; i >= 0; --i )
+    {
         m_childFrames[i]->destroy();
+    }
 
-    if (m_cachedFramePlatformData)
+    if ( m_cachedFramePlatformData )
+    {
         m_cachedFramePlatformData->clear();
+    }
 
-    Frame::clearTimers(m_view.get(), m_document.get());
+    Frame::clearTimers( m_view.get(), m_document.get() );
 
     // FIXME: Why do we need to call removeAllEventListeners here? When the document is in page cache, this method won't work
     // fully anyway, because the document won't be able to access its DOMWindow object (due to being frameless).
     m_document->removeAllEventListeners();
 
-    m_document->setInPageCache(false);
+    m_document->setInPageCache( false );
     // FIXME: We don't call willRemove here. Why is that OK?
     m_document->detach();
     m_view->clearFrame();
@@ -256,12 +305,12 @@ void CachedFrame::destroy()
     clear();
 }
 
-void CachedFrame::setCachedFramePlatformData(PassOwnPtr<CachedFramePlatformData> data)
+void CachedFrame::setCachedFramePlatformData( PassOwnPtr<CachedFramePlatformData> data )
 {
     m_cachedFramePlatformData = data;
 }
 
-CachedFramePlatformData* CachedFrame::cachedFramePlatformData()
+CachedFramePlatformData *CachedFrame::cachedFramePlatformData()
 {
     return m_cachedFramePlatformData.get();
 }
@@ -269,9 +318,12 @@ CachedFramePlatformData* CachedFrame::cachedFramePlatformData()
 int CachedFrame::descendantFrameCount() const
 {
     int count = m_childFrames.size();
-    for (size_t i = 0; i < m_childFrames.size(); ++i)
+
+    for ( size_t i = 0; i < m_childFrames.size(); ++i )
+    {
         count += m_childFrames[i]->descendantFrameCount();
-    
+    }
+
     return count;
 }
 

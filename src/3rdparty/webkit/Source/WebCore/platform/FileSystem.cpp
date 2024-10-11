@@ -28,7 +28,8 @@
 
 #include <wtf/HexNumber.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // The following lower-ASCII characters need escaping to be used in a filename
 // across all systems, including Windows:
@@ -46,58 +47,65 @@ namespace WebCore {
 //     - Pipe              (7C)
 //     - Delete            (7F)
 
-static const bool needsEscaping[128] = {
-    /* 00-07 */ true,  true,  true,  true,  true,  true,  true,  true, 
-    /* 08-0F */ true,  true,  true,  true,  true,  true,  true,  true, 
+static const bool needsEscaping[128] =
+{
+    /* 00-07 */ true,  true,  true,  true,  true,  true,  true,  true,
+    /* 08-0F */ true,  true,  true,  true,  true,  true,  true,  true,
 
-    /* 10-17 */ true,  true,  true,  true,  true,  true,  true,  true, 
-    /* 18-1F */ true,  true,  true,  true,  true,  true,  true,  true, 
+    /* 10-17 */ true,  true,  true,  true,  true,  true,  true,  true,
+    /* 18-1F */ true,  true,  true,  true,  true,  true,  true,  true,
 
-    /* 20-27 */ true,  false, true,  false, false, true,  false, false, 
-    /* 28-2F */ false, false, true,  false, false, false, false, true, 
-    
-    /* 30-37 */ false, false, false, false, false, false, false, false, 
-    /* 38-3F */ false, false, true,  false, true,  false, true,  true, 
-    
-    /* 40-47 */ false, false, false, false, false, false, false, false, 
+    /* 20-27 */ true,  false, true,  false, false, true,  false, false,
+    /* 28-2F */ false, false, true,  false, false, false, false, true,
+
+    /* 30-37 */ false, false, false, false, false, false, false, false,
+    /* 38-3F */ false, false, true,  false, true,  false, true,  true,
+
+    /* 40-47 */ false, false, false, false, false, false, false, false,
     /* 48-4F */ false, false, false, false, false, false, false, false,
-    
-    /* 50-57 */ false, false, false, false, false, false, false, false, 
+
+    /* 50-57 */ false, false, false, false, false, false, false, false,
     /* 58-5F */ false, false, false, false, true,  false, false, false,
-    
-    /* 60-67 */ false, false, false, false, false, false, false, false, 
+
+    /* 60-67 */ false, false, false, false, false, false, false, false,
     /* 68-6F */ false, false, false, false, false, false, false, false,
-    
-    /* 70-77 */ false, false, false, false, false, false, false, false, 
-    /* 78-7F */ false, false, false, false, true,  false, false, true, 
+
+    /* 70-77 */ false, false, false, false, false, false, false, false,
+    /* 78-7F */ false, false, false, false, true,  false, false, true,
 };
 
-static inline bool shouldEscapeUChar(UChar c)
+static inline bool shouldEscapeUChar( UChar c )
 {
     return c > 127 ? false : needsEscaping[c];
 }
 
-String encodeForFileName(const String& inputStr)
+String encodeForFileName( const String &inputStr )
 {
     unsigned length = inputStr.length();
-    Vector<UChar, 512> buffer(length * 3 + 1);
-    UChar* p = buffer.data();
+    Vector<UChar, 512> buffer( length * 3 + 1 );
+    UChar *p = buffer.data();
 
-    const UChar* str = inputStr.characters();
-    const UChar* strEnd = str + length;
+    const UChar *str = inputStr.characters();
+    const UChar *strEnd = str + length;
 
-    while (str < strEnd) {
+    while ( str < strEnd )
+    {
         UChar c = *str++;
-        if (shouldEscapeUChar(c)) {
+
+        if ( shouldEscapeUChar( c ) )
+        {
             *p++ = '%';
-            placeByteAsHex(c, p);
-        } else
+            placeByteAsHex( c, p );
+        }
+        else
+        {
             *p++ = c;
+        }
     }
 
-    ASSERT(p - buffer.data() <= static_cast<int>(buffer.size()));
+    ASSERT( p - buffer.data() <= static_cast<int>( buffer.size() ) );
 
-    return String(buffer.data(), p - buffer.data());
+    return String( buffer.data(), p - buffer.data() );
 }
 
 #if !PLATFORM(MAC)
@@ -107,7 +115,7 @@ bool canExcludeFromBackup()
     return false;
 }
 
-bool excludeFromBackup(const String&)
+bool excludeFromBackup( const String & )
 {
     return false;
 }

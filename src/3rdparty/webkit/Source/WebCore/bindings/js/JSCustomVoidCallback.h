@@ -34,26 +34,28 @@
 #include <heap/Strong.h>
 #include <wtf/Forward.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 class JSCallbackData;
 
-class JSCustomVoidCallback : public VoidCallback {
-public: 
-    static PassRefPtr<JSCustomVoidCallback> create(JSC::JSObject* callback, JSDOMGlobalObject* globalObject)
+class JSCustomVoidCallback : public VoidCallback
+{
+public:
+    static PassRefPtr<JSCustomVoidCallback> create( JSC::JSObject *callback, JSDOMGlobalObject *globalObject )
     {
-        return adoptRef(new JSCustomVoidCallback(callback, globalObject));
+        return adoptRef( new JSCustomVoidCallback( callback, globalObject ) );
     }
-    
-    virtual ~JSCustomVoidCallback();
-    
-    virtual void handleEvent();
-    
-private:
-    JSCustomVoidCallback(JSC::JSObject* callback, JSDOMGlobalObject*);
 
-    JSCallbackData* m_data;
-    ScriptExecutionContext* m_scriptExecutionContext;
+    virtual ~JSCustomVoidCallback();
+
+    virtual void handleEvent();
+
+private:
+    JSCustomVoidCallback( JSC::JSObject *callback, JSDOMGlobalObject * );
+
+    JSCallbackData *m_data;
+    ScriptExecutionContext *m_scriptExecutionContext;
 };
 
 } // namespace WebCore

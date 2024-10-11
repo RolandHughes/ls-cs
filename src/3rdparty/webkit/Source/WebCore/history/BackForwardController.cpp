@@ -30,28 +30,31 @@
 #include "HistoryItem.h"
 #include "Page.h"
 
-namespace WebCore {
-
-BackForwardController::BackForwardController(Page* page, PassRefPtr<BackForwardList> client)
-    : m_page(page)
-    , m_client(client)
+namespace WebCore
 {
-    if (!m_client)
-        m_client = BackForwardListImpl::create(page);
+
+BackForwardController::BackForwardController( Page *page, PassRefPtr<BackForwardList> client )
+    : m_page( page )
+    , m_client( client )
+{
+    if ( !m_client )
+    {
+        m_client = BackForwardListImpl::create( page );
+    }
 }
 
 BackForwardController::~BackForwardController()
 {
 }
 
-bool BackForwardController::canGoBackOrForward(int distance) const
+bool BackForwardController::canGoBackOrForward( int distance ) const
 {
-    return m_page->canGoBackOrForward(distance);
+    return m_page->canGoBackOrForward( distance );
 }
 
-void BackForwardController::goBackOrForward(int distance)
+void BackForwardController::goBackOrForward( int distance )
 {
-    m_page->goBackOrForward(distance);
+    m_page->goBackOrForward( distance );
 }
 
 bool BackForwardController::goBack()
@@ -64,14 +67,14 @@ bool BackForwardController::goForward()
     return m_page->goForward();
 }
 
-void BackForwardController::addItem(PassRefPtr<HistoryItem> item)
+void BackForwardController::addItem( PassRefPtr<HistoryItem> item )
 {
-    m_client->addItem(item);
+    m_client->addItem( item );
 }
 
-void BackForwardController::setCurrentItem(HistoryItem* item)
+void BackForwardController::setCurrentItem( HistoryItem *item )
 {
-    m_client->goToItem(item);
+    m_client->goToItem( item );
 }
 
 int BackForwardController::count() const
@@ -89,9 +92,9 @@ int BackForwardController::forwardCount() const
     return m_client->forwardListCount();
 }
 
-HistoryItem* BackForwardController::itemAtIndex(int i)
+HistoryItem *BackForwardController::itemAtIndex( int i )
 {
-    return m_client->itemAtIndex(i);
+    return m_client->itemAtIndex( i );
 }
 
 bool BackForwardController::isActive()

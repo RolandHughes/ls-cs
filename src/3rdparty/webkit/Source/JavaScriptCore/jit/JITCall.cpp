@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
@@ -44,69 +44,70 @@
 
 using namespace std;
 
-namespace JSC {
+namespace JSC
+{
 
 void JIT::compileOpCallInitializeCallFrame()
 {
     // regT0 holds callee, regT1 holds argCount
-    loadPtr(Address(regT0, OBJECT_OFFSETOF(JSFunction, m_scopeChain)), regT3); // scopeChain
-    emitPutIntToCallFrameHeader(regT1, RegisterFile::ArgumentCount);
-    emitPutCellToCallFrameHeader(regT0, RegisterFile::Callee);
-    emitPutCellToCallFrameHeader(regT3, RegisterFile::ScopeChain);
+    loadPtr( Address( regT0, OBJECT_OFFSETOF( JSFunction, m_scopeChain ) ), regT3 ); // scopeChain
+    emitPutIntToCallFrameHeader( regT1, RegisterFile::ArgumentCount );
+    emitPutCellToCallFrameHeader( regT0, RegisterFile::Callee );
+    emitPutCellToCallFrameHeader( regT3, RegisterFile::ScopeChain );
 }
 
-void JIT::emit_op_call_put_result(Instruction* instruction)
+void JIT::emit_op_call_put_result( Instruction *instruction )
 {
     int dst = instruction[1].u.operand;
-    emitPutVirtualRegister(dst);
+    emitPutVirtualRegister( dst );
 }
 
-void JIT::compileOpCallVarargs(Instruction* instruction)
+void JIT::compileOpCallVarargs( Instruction *instruction )
 {
     int callee = instruction[1].u.operand;
     int argCountRegister = instruction[2].u.operand;
     int registerOffset = instruction[3].u.operand;
 
-    emitGetVirtualRegister(argCountRegister, regT1);
-    emitFastArithImmToInt(regT1);
-    emitGetVirtualRegister(callee, regT0);
-    addPtr(Imm32(registerOffset), regT1, regT2);
+    emitGetVirtualRegister( argCountRegister, regT1 );
+    emitFastArithImmToInt( regT1 );
+    emitGetVirtualRegister( callee, regT0 );
+    addPtr( Imm32( registerOffset ), regT1, regT2 );
 
     // Check for JSFunctions.
-    emitJumpSlowCaseIfNotJSCell(regT0);
-    addSlowCase(branchPtr(NotEqual, Address(regT0), TrustedImmPtr(m_globalData->jsFunctionVPtr)));
+    emitJumpSlowCaseIfNotJSCell( regT0 );
+    addSlowCase( branchPtr( NotEqual, Address( regT0 ), TrustedImmPtr( m_globalData->jsFunctionVPtr ) ) );
 
     // Speculatively roll the callframe, assuming argCount will match the arity.
-    mul32(TrustedImm32(sizeof(Register)), regT2, regT2);
-    intptr_t offset = (intptr_t)sizeof(Register) * (intptr_t)RegisterFile::CallerFrame;
-    addPtr(Imm32((int32_t)offset), regT2, regT3);
-    addPtr(callFrameRegister, regT3);
-    storePtr(callFrameRegister, regT3);
-    addPtr(regT2, callFrameRegister);
-    emitNakedCall(m_globalData->jitStubs->ctiVirtualCall());
+    mul32( TrustedImm32( sizeof( Register ) ), regT2, regT2 );
+    intptr_t offset = ( intptr_t )sizeof( Register ) * ( intptr_t )RegisterFile::CallerFrame;
+    addPtr( Imm32( ( int32_t )offset ), regT2, regT3 );
+    addPtr( callFrameRegister, regT3 );
+    storePtr( callFrameRegister, regT3 );
+    addPtr( regT2, callFrameRegister );
+    emitNakedCall( m_globalData->jitStubs->ctiVirtualCall() );
 
-    sampleCodeBlock(m_codeBlock);
+    sampleCodeBlock( m_codeBlock );
 }
 
-void JIT::compileOpCallVarargsSlowCase(Instruction*, Vector<SlowCaseEntry>::iterator& iter)
+void JIT::compileOpCallVarargsSlowCase( Instruction *, Vector<SlowCaseEntry>::iterator &iter )
 {
-    linkSlowCase(iter);
-    linkSlowCase(iter);
+    linkSlowCase( iter );
+    linkSlowCase( iter );
 
-    JITStubCall stubCall(this, cti_op_call_NotJSFunction);
-    stubCall.addArgument(regT0);
-    stubCall.addArgument(regT2);
-    stubCall.addArgument(regT1);
+    JITStubCall stubCall( this, cti_op_call_NotJSFunction );
+    stubCall.addArgument( regT0 );
+    stubCall.addArgument( regT2 );
+    stubCall.addArgument( regT1 );
     stubCall.call();
-    
-    sampleCodeBlock(m_codeBlock);
+
+    sampleCodeBlock( m_codeBlock );
 }
-    
+
 #if !ENABLE(JIT_OPTIMIZE_CALL)
 
 /* ------------------------------ BEGIN: !ENABLE(JIT_OPTIMIZE_CALL) ------------------------------ */
 
-void JIT::compileOpCall(OpcodeID opcodeID, Instruction* instruction, unsigned)
+void JIT::compileOpCall( OpcodeID opcodeID, Instruction *instruction, unsigned )
 {
     int callee = instruction[1].u.operand;
     int argCount = instruction[2].u.operand;
@@ -114,56 +115,62 @@ void JIT::compileOpCall(OpcodeID opcodeID, Instruction* instruction, unsigned)
 
     // Handle eval
     Jump wasEval;
-    if (opcodeID == op_call_eval) {
-        JITStubCall stubCall(this, cti_op_call_eval);
-        stubCall.addArgument(callee, regT0);
-        stubCall.addArgument(JIT::Imm32(registerOffset));
-        stubCall.addArgument(JIT::Imm32(argCount));
+
+    if ( opcodeID == op_call_eval )
+    {
+        JITStubCall stubCall( this, cti_op_call_eval );
+        stubCall.addArgument( callee, regT0 );
+        stubCall.addArgument( JIT::Imm32( registerOffset ) );
+        stubCall.addArgument( JIT::Imm32( argCount ) );
         stubCall.call();
-        wasEval = branchPtr(NotEqual, regT0, TrustedImmPtr(JSValue::encode(JSValue())));
+        wasEval = branchPtr( NotEqual, regT0, TrustedImmPtr( JSValue::encode( JSValue() ) ) );
     }
 
-    emitGetVirtualRegister(callee, regT0);
+    emitGetVirtualRegister( callee, regT0 );
 
     // Check for JSFunctions.
-    emitJumpSlowCaseIfNotJSCell(regT0);
-    addSlowCase(branchPtr(NotEqual, Address(regT0), TrustedImmPtr(m_globalData->jsFunctionVPtr)));
+    emitJumpSlowCaseIfNotJSCell( regT0 );
+    addSlowCase( branchPtr( NotEqual, Address( regT0 ), TrustedImmPtr( m_globalData->jsFunctionVPtr ) ) );
 
     // Speculatively roll the callframe, assuming argCount will match the arity.
-    storePtr(callFrameRegister, Address(callFrameRegister, (RegisterFile::CallerFrame + registerOffset) * static_cast<int>(sizeof(Register))));
-    addPtr(Imm32(registerOffset * static_cast<int>(sizeof(Register))), callFrameRegister);
-    move(Imm32(argCount), regT1);
+    storePtr( callFrameRegister, Address( callFrameRegister,
+                                          ( RegisterFile::CallerFrame + registerOffset ) * static_cast<int>( sizeof( Register ) ) ) );
+    addPtr( Imm32( registerOffset * static_cast<int>( sizeof( Register ) ) ), callFrameRegister );
+    move( Imm32( argCount ), regT1 );
 
-    emitNakedCall(opcodeID == op_construct ? m_globalData->jitStubs->ctiVirtualConstruct() : m_globalData->jitStubs->ctiVirtualCall());
+    emitNakedCall( opcodeID == op_construct ? m_globalData->jitStubs->ctiVirtualConstruct() :
+                   m_globalData->jitStubs->ctiVirtualCall() );
 
-    if (opcodeID == op_call_eval)
-        wasEval.link(this);
+    if ( opcodeID == op_call_eval )
+    {
+        wasEval.link( this );
+    }
 
-    sampleCodeBlock(m_codeBlock);
+    sampleCodeBlock( m_codeBlock );
 }
 
-void JIT::compileOpCallSlowCase(Instruction* instruction, Vector<SlowCaseEntry>::iterator& iter, unsigned, OpcodeID opcodeID)
+void JIT::compileOpCallSlowCase( Instruction *instruction, Vector<SlowCaseEntry>::iterator &iter, unsigned, OpcodeID opcodeID )
 {
     int argCount = instruction[2].u.operand;
     int registerOffset = instruction[3].u.operand;
 
-    linkSlowCase(iter);
-    linkSlowCase(iter);
+    linkSlowCase( iter );
+    linkSlowCase( iter );
 
-    JITStubCall stubCall(this, opcodeID == op_construct ? cti_op_construct_NotJSConstruct : cti_op_call_NotJSFunction);
-    stubCall.addArgument(regT0);
-    stubCall.addArgument(JIT::Imm32(registerOffset));
-    stubCall.addArgument(JIT::Imm32(argCount));
+    JITStubCall stubCall( this, opcodeID == op_construct ? cti_op_construct_NotJSConstruct : cti_op_call_NotJSFunction );
+    stubCall.addArgument( regT0 );
+    stubCall.addArgument( JIT::Imm32( registerOffset ) );
+    stubCall.addArgument( JIT::Imm32( argCount ) );
     stubCall.call();
 
-    sampleCodeBlock(m_codeBlock);
+    sampleCodeBlock( m_codeBlock );
 }
 
 #else // !ENABLE(JIT_OPTIMIZE_CALL)
 
 /* ------------------------------ BEGIN: ENABLE(JIT_OPTIMIZE_CALL) ------------------------------ */
 
-void JIT::compileOpCall(OpcodeID opcodeID, Instruction* instruction, unsigned callLinkInfoIndex)
+void JIT::compileOpCall( OpcodeID opcodeID, Instruction *instruction, unsigned callLinkInfoIndex )
 {
     int callee = instruction[1].u.operand;
     int argCount = instruction[2].u.operand;
@@ -171,28 +178,31 @@ void JIT::compileOpCall(OpcodeID opcodeID, Instruction* instruction, unsigned ca
 
     // Handle eval
     Jump wasEval;
-    if (opcodeID == op_call_eval) {
-        JITStubCall stubCall(this, cti_op_call_eval);
-        stubCall.addArgument(callee, regT0);
-        stubCall.addArgument(JIT::Imm32(registerOffset));
-        stubCall.addArgument(JIT::Imm32(argCount));
+
+    if ( opcodeID == op_call_eval )
+    {
+        JITStubCall stubCall( this, cti_op_call_eval );
+        stubCall.addArgument( callee, regT0 );
+        stubCall.addArgument( JIT::Imm32( registerOffset ) );
+        stubCall.addArgument( JIT::Imm32( argCount ) );
         stubCall.call();
-        wasEval = branchPtr(NotEqual, regT0, TrustedImmPtr(JSValue::encode(JSValue())));
+        wasEval = branchPtr( NotEqual, regT0, TrustedImmPtr( JSValue::encode( JSValue() ) ) );
     }
 
     // This plants a check for a cached JSFunction value, so we can plant a fast link to the callee.
     // This deliberately leaves the callee in ecx, used when setting up the stack frame below
-    emitGetVirtualRegister(callee, regT0);
+    emitGetVirtualRegister( callee, regT0 );
     DataLabelPtr addressOfLinkedFunctionCheck;
 
-    BEGIN_UNINTERRUPTED_SEQUENCE(sequenceOpCall);
+    BEGIN_UNINTERRUPTED_SEQUENCE( sequenceOpCall );
 
-    Jump jumpToSlow = branchPtrWithPatch(NotEqual, regT0, addressOfLinkedFunctionCheck, TrustedImmPtr(JSValue::encode(JSValue())));
+    Jump jumpToSlow = branchPtrWithPatch( NotEqual, regT0, addressOfLinkedFunctionCheck,
+                                          TrustedImmPtr( JSValue::encode( JSValue() ) ) );
 
-    END_UNINTERRUPTED_SEQUENCE(sequenceOpCall);
+    END_UNINTERRUPTED_SEQUENCE( sequenceOpCall );
 
-    addSlowCase(jumpToSlow);
-    ASSERT_JIT_OFFSET(differenceBetween(addressOfLinkedFunctionCheck, jumpToSlow), patchOffsetOpCallCompareToJump);
+    addSlowCase( jumpToSlow );
+    ASSERT_JIT_OFFSET( differenceBetween( addressOfLinkedFunctionCheck, jumpToSlow ), patchOffsetOpCallCompareToJump );
     m_callStructureStubCompilationInfo[callLinkInfoIndex].hotPathBegin = addressOfLinkedFunctionCheck;
 
     // The following is the fast case, only used whan a callee can be linked.
@@ -200,58 +210,66 @@ void JIT::compileOpCall(OpcodeID opcodeID, Instruction* instruction, unsigned ca
     // Fast version of stack frame initialization, directly relative to edi.
     // Note that this omits to set up RegisterFile::CodeBlock, which is set in the callee
 
-    loadPtr(Address(regT0, OBJECT_OFFSETOF(JSFunction, m_scopeChain)), regT1); // newScopeChain
-    
-    store32(TrustedImm32(Int32Tag), intTagFor(registerOffset + RegisterFile::ArgumentCount));
-    store32(Imm32(argCount), intPayloadFor(registerOffset + RegisterFile::ArgumentCount));
-    storePtr(callFrameRegister, Address(callFrameRegister, (registerOffset + RegisterFile::CallerFrame) * static_cast<int>(sizeof(Register))));
-    storePtr(regT0, Address(callFrameRegister, (registerOffset + RegisterFile::Callee) * static_cast<int>(sizeof(Register))));
-    storePtr(regT1, Address(callFrameRegister, (registerOffset + RegisterFile::ScopeChain) * static_cast<int>(sizeof(Register))));
-    addPtr(Imm32(registerOffset * sizeof(Register)), callFrameRegister);
+    loadPtr( Address( regT0, OBJECT_OFFSETOF( JSFunction, m_scopeChain ) ), regT1 ); // newScopeChain
+
+    store32( TrustedImm32( Int32Tag ), intTagFor( registerOffset + RegisterFile::ArgumentCount ) );
+    store32( Imm32( argCount ), intPayloadFor( registerOffset + RegisterFile::ArgumentCount ) );
+    storePtr( callFrameRegister, Address( callFrameRegister,
+                                          ( registerOffset + RegisterFile::CallerFrame ) * static_cast<int>( sizeof( Register ) ) ) );
+    storePtr( regT0, Address( callFrameRegister,
+                              ( registerOffset + RegisterFile::Callee ) * static_cast<int>( sizeof( Register ) ) ) );
+    storePtr( regT1, Address( callFrameRegister,
+                              ( registerOffset + RegisterFile::ScopeChain ) * static_cast<int>( sizeof( Register ) ) ) );
+    addPtr( Imm32( registerOffset * sizeof( Register ) ), callFrameRegister );
 
     // Call to the callee
     m_callStructureStubCompilationInfo[callLinkInfoIndex].hotPathOther = emitNakedCall();
-    
-    if (opcodeID == op_call_eval)
-        wasEval.link(this);
 
-    sampleCodeBlock(m_codeBlock);
+    if ( opcodeID == op_call_eval )
+    {
+        wasEval.link( this );
+    }
+
+    sampleCodeBlock( m_codeBlock );
 }
 
-void JIT::compileOpCallSlowCase(Instruction* instruction, Vector<SlowCaseEntry>::iterator& iter, unsigned callLinkInfoIndex, OpcodeID opcodeID)
+void JIT::compileOpCallSlowCase( Instruction *instruction, Vector<SlowCaseEntry>::iterator &iter, unsigned callLinkInfoIndex,
+                                 OpcodeID opcodeID )
 {
     int argCount = instruction[2].u.operand;
     int registerOffset = instruction[3].u.operand;
 
-    linkSlowCase(iter);
+    linkSlowCase( iter );
 
     // Fast check for JS function.
-    Jump callLinkFailNotObject = emitJumpIfNotJSCell(regT0);
-    Jump callLinkFailNotJSFunction = branchPtr(NotEqual, Address(regT0), TrustedImmPtr(m_globalData->jsFunctionVPtr));
+    Jump callLinkFailNotObject = emitJumpIfNotJSCell( regT0 );
+    Jump callLinkFailNotJSFunction = branchPtr( NotEqual, Address( regT0 ), TrustedImmPtr( m_globalData->jsFunctionVPtr ) );
 
     // Speculatively roll the callframe, assuming argCount will match the arity.
-    storePtr(callFrameRegister, Address(callFrameRegister, (RegisterFile::CallerFrame + registerOffset) * static_cast<int>(sizeof(Register))));
-    addPtr(Imm32(registerOffset * static_cast<int>(sizeof(Register))), callFrameRegister);
-    move(Imm32(argCount), regT1);
+    storePtr( callFrameRegister, Address( callFrameRegister,
+                                          ( RegisterFile::CallerFrame + registerOffset ) * static_cast<int>( sizeof( Register ) ) ) );
+    addPtr( Imm32( registerOffset * static_cast<int>( sizeof( Register ) ) ), callFrameRegister );
+    move( Imm32( argCount ), regT1 );
 
-    m_callStructureStubCompilationInfo[callLinkInfoIndex].callReturnLocation = emitNakedCall(opcodeID == op_construct ? m_globalData->jitStubs->ctiVirtualConstructLink() : m_globalData->jitStubs->ctiVirtualCallLink());
+    m_callStructureStubCompilationInfo[callLinkInfoIndex].callReturnLocation = emitNakedCall( opcodeID == op_construct ?
+            m_globalData->jitStubs->ctiVirtualConstructLink() : m_globalData->jitStubs->ctiVirtualCallLink() );
 
     // Done! - return back to the hot path.
-    ASSERT(OPCODE_LENGTH(op_call) == OPCODE_LENGTH(op_call_eval));
-    ASSERT(OPCODE_LENGTH(op_call) == OPCODE_LENGTH(op_construct));
-    emitJumpSlowToHot(jump(), OPCODE_LENGTH(op_call));
+    ASSERT( OPCODE_LENGTH( op_call ) == OPCODE_LENGTH( op_call_eval ) );
+    ASSERT( OPCODE_LENGTH( op_call ) == OPCODE_LENGTH( op_construct ) );
+    emitJumpSlowToHot( jump(), OPCODE_LENGTH( op_call ) );
 
     // This handles host functions
-    callLinkFailNotObject.link(this);
-    callLinkFailNotJSFunction.link(this);
+    callLinkFailNotObject.link( this );
+    callLinkFailNotJSFunction.link( this );
 
-    JITStubCall stubCall(this, opcodeID == op_construct ? cti_op_construct_NotJSConstruct : cti_op_call_NotJSFunction);
-    stubCall.addArgument(regT0);
-    stubCall.addArgument(JIT::Imm32(registerOffset));
-    stubCall.addArgument(JIT::Imm32(argCount));
+    JITStubCall stubCall( this, opcodeID == op_construct ? cti_op_construct_NotJSConstruct : cti_op_call_NotJSFunction );
+    stubCall.addArgument( regT0 );
+    stubCall.addArgument( JIT::Imm32( registerOffset ) );
+    stubCall.addArgument( JIT::Imm32( argCount ) );
     stubCall.call();
 
-    sampleCodeBlock(m_codeBlock);
+    sampleCodeBlock( m_codeBlock );
 }
 
 /* ------------------------------ END: !ENABLE / ENABLE(JIT_OPTIMIZE_CALL) ------------------------------ */

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef Timer_h
@@ -29,31 +29,50 @@
 #include <wtf/Noncopyable.h>
 #include <wtf/Threading.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 // Time intervals are all in seconds.
 
 class TimerHeapElement;
 
-class TimerBase {
-    WTF_MAKE_NONCOPYABLE(TimerBase); WTF_MAKE_FAST_ALLOCATED;
+class TimerBase
+{
+    WTF_MAKE_NONCOPYABLE( TimerBase );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
     TimerBase();
     virtual ~TimerBase();
 
-    void start(double nextFireInterval, double repeatInterval);
+    void start( double nextFireInterval, double repeatInterval );
 
-    void startRepeating(double repeatInterval) { start(repeatInterval, repeatInterval); }
-    void startOneShot(double interval) { start(interval, 0); }
+    void startRepeating( double repeatInterval )
+    {
+        start( repeatInterval, repeatInterval );
+    }
+    void startOneShot( double interval )
+    {
+        start( interval, 0 );
+    }
 
     void stop();
     bool isActive() const;
 
     double nextFireInterval() const;
-    double repeatInterval() const { return m_repeatInterval; }
+    double repeatInterval() const
+    {
+        return m_repeatInterval;
+    }
 
-    void augmentFireInterval(double delta) { setNextFireTime(m_nextFireTime + delta); }
-    void augmentRepeatInterval(double delta) { augmentFireInterval(delta); m_repeatInterval += delta; }
+    void augmentFireInterval( double delta )
+    {
+        setNextFireTime( m_nextFireTime + delta );
+    }
+    void augmentRepeatInterval( double delta )
+    {
+        augmentFireInterval( delta );
+        m_repeatInterval += delta;
+    }
 
     static void fireTimersInNestedEventLoop();
 
@@ -63,9 +82,12 @@ private:
     void checkConsistency() const;
     void checkHeapIndex() const;
 
-    void setNextFireTime(double);
+    void setNextFireTime( double );
 
-    bool inHeap() const { return m_heapIndex != -1; }
+    bool inHeap() const
+    {
+        return m_heapIndex != -1;
+    }
 
     void heapDecreaseKey();
     void heapDelete();
@@ -89,23 +111,27 @@ private:
     friend class TimerHeapReference;
 };
 
-template <typename TimerFiredClass> class Timer : public TimerBase {
+template <typename TimerFiredClass> class Timer : public TimerBase
+{
 public:
-    typedef void (TimerFiredClass::*TimerFiredFunction)(Timer*);
+    typedef void ( TimerFiredClass::*TimerFiredFunction )( Timer * );
 
-    Timer(TimerFiredClass* o, TimerFiredFunction f)
-        : m_object(o), m_function(f) { }
+    Timer( TimerFiredClass *o, TimerFiredFunction f )
+        : m_object( o ), m_function( f ) { }
 
 private:
-    virtual void fired() { (m_object->*m_function)(this); }
+    virtual void fired()
+    {
+        ( m_object->*m_function )( this );
+    }
 
-    TimerFiredClass* m_object;
+    TimerFiredClass *m_object;
     TimerFiredFunction m_function;
 };
 
 inline bool TimerBase::isActive() const
 {
-    ASSERT(m_thread == currentThread());
+    ASSERT( m_thread == currentThread() );
     return m_nextFireTime;
 }
 

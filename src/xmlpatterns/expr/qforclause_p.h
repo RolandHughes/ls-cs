@@ -26,50 +26,51 @@
 
 #include <qpaircontainer_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 
 class ForClause : public PairContainer
 {
- public:
-   /**
-    * If @p positionSlot is -1, no positional variable will be used.
-    */
-   ForClause(const VariableSlotID varSlot,
-             const Expression::Ptr &bindingSequence,
-             const Expression::Ptr &returnExpression,
-             const VariableSlotID positionSlot);
+public:
+    /**
+     * If @p positionSlot is -1, no positional variable will be used.
+     */
+    ForClause( const VariableSlotID varSlot,
+               const Expression::Ptr &bindingSequence,
+               const Expression::Ptr &returnExpression,
+               const VariableSlotID positionSlot );
 
-   Item::Iterator::Ptr evaluateSequence(const DynamicContext::Ptr &context) const override;
-   Item evaluateSingleton(const DynamicContext::Ptr &context) const override;
-   void evaluateToSequenceReceiver(const DynamicContext::Ptr &context) const override;
+    Item::Iterator::Ptr evaluateSequence( const DynamicContext::Ptr &context ) const override;
+    Item evaluateSingleton( const DynamicContext::Ptr &context ) const override;
+    void evaluateToSequenceReceiver( const DynamicContext::Ptr &context ) const override;
 
-   SequenceType::Ptr staticType() const override;
-   SequenceType::List expectedOperandTypes() const override;
-   Expression::Ptr typeCheck(const StaticContext::Ptr &context, const SequenceType::Ptr &reqType) override;
-   ExpressionVisitorResult::Ptr accept(const ExpressionVisitor::Ptr &visitor) const override;
-   QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
+    SequenceType::Ptr staticType() const override;
+    SequenceType::List expectedOperandTypes() const override;
+    Expression::Ptr typeCheck( const StaticContext::Ptr &context, const SequenceType::Ptr &reqType ) override;
+    ExpressionVisitorResult::Ptr accept( const ExpressionVisitor::Ptr &visitor ) const override;
+    QList<QExplicitlySharedDataPointer<OptimizationPass> > optimizationPasses() const override;
 
-   inline Item mapToItem(const Item &item, const DynamicContext::Ptr &context) const;
-   ID id() const override;
+    inline Item mapToItem( const Item &item, const DynamicContext::Ptr &context ) const;
+    ID id() const override;
 
-   inline Item::Iterator::Ptr mapToSequence(const Item &item, const DynamicContext::Ptr &context) const;
+    inline Item::Iterator::Ptr mapToSequence( const Item &item, const DynamicContext::Ptr &context ) const;
 
-   /**
-    * Sets m_allowsMany properly.
-    */
-   Expression::Ptr compress(const StaticContext::Ptr &context) override;
+    /**
+     * Sets m_allowsMany properly.
+     */
+    Expression::Ptr compress( const StaticContext::Ptr &context ) override;
 
- private:
-   inline void riggPositionalVariable(const DynamicContext::Ptr &context,
-                                      const Item::Iterator::Ptr &source) const;
+private:
+    inline void riggPositionalVariable( const DynamicContext::Ptr &context,
+                                        const Item::Iterator::Ptr &source ) const;
 
-   typedef QExplicitlySharedDataPointer<const ForClause> ConstPtr;
-   const VariableSlotID m_varSlot;
-   const VariableSlotID m_positionSlot;
-   /**
-    * Initialized to @c false. This default is always safe.
-    */
-   bool m_allowsMany;
+    typedef QExplicitlySharedDataPointer<const ForClause> ConstPtr;
+    const VariableSlotID m_varSlot;
+    const VariableSlotID m_positionSlot;
+    /**
+     * Initialized to @c false. This default is always safe.
+     */
+    bool m_allowsMany;
 };
 
 }

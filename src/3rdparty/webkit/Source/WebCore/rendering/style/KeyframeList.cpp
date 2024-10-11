@@ -23,7 +23,8 @@
 #include "KeyframeList.h"
 #include "RenderObject.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
 KeyframeList::~KeyframeList()
 {
@@ -36,61 +37,90 @@ void KeyframeList::clear()
     m_properties.clear();
 }
 
-bool KeyframeList::operator==(const KeyframeList& o) const
+bool KeyframeList::operator==( const KeyframeList &o ) const
 {
-    if (m_keyframes.size() != o.m_keyframes.size())
+    if ( m_keyframes.size() != o.m_keyframes.size() )
+    {
         return false;
+    }
 
     Vector<KeyframeValue>::const_iterator it2 = o.m_keyframes.begin();
-    for (Vector<KeyframeValue>::const_iterator it1 = m_keyframes.begin(); it1 != m_keyframes.end(); ++it1) {
-        if (it1->key() != it2->key())
+
+    for ( Vector<KeyframeValue>::const_iterator it1 = m_keyframes.begin(); it1 != m_keyframes.end(); ++it1 )
+    {
+        if ( it1->key() != it2->key() )
+        {
             return false;
-        const RenderStyle& style1 = *it1->style();
-        const RenderStyle& style2 = *it2->style();
-        if (style1 != style2)
+        }
+
+        const RenderStyle &style1 = *it1->style();
+        const RenderStyle &style2 = *it2->style();
+
+        if ( style1 != style2 )
+        {
             return false;
+        }
+
         ++it2;
     }
 
     return true;
 }
 
-void KeyframeList::insert(const KeyframeValue& keyframe)
+void KeyframeList::insert( const KeyframeValue &keyframe )
 {
-    if (keyframe.key() < 0 || keyframe.key() > 1)
+    if ( keyframe.key() < 0 || keyframe.key() > 1 )
+    {
         return;
+    }
 
     bool inserted = false;
     bool replaced = false;
-    for (size_t i = 0; i < m_keyframes.size(); ++i) {
-        if (m_keyframes[i].key() == keyframe.key()) {
+
+    for ( size_t i = 0; i < m_keyframes.size(); ++i )
+    {
+        if ( m_keyframes[i].key() == keyframe.key() )
+        {
             m_keyframes[i] = keyframe;
             replaced = true;
             break;
         }
 
-        if (m_keyframes[i].key() > keyframe.key()) {
+        if ( m_keyframes[i].key() > keyframe.key() )
+        {
             // insert before
-            m_keyframes.insert(i, keyframe);
+            m_keyframes.insert( i, keyframe );
             inserted = true;
             break;
         }
     }
-    
-    if (!replaced && !inserted)
-        m_keyframes.append(keyframe);
 
-    if (replaced) {
+    if ( !replaced && !inserted )
+    {
+        m_keyframes.append( keyframe );
+    }
+
+    if ( replaced )
+    {
         // We have to rebuild the properties list from scratch.
         m_properties.clear();
-        for (Vector<KeyframeValue>::const_iterator it = m_keyframes.begin(); it != m_keyframes.end(); ++it) {
-            const KeyframeValue& currKeyframe = *it;
-            for (HashSet<int>::const_iterator it = currKeyframe.properties().begin(); it != currKeyframe.properties().end(); ++it)
-                m_properties.add(*it);
+
+        for ( Vector<KeyframeValue>::const_iterator it = m_keyframes.begin(); it != m_keyframes.end(); ++it )
+        {
+            const KeyframeValue &currKeyframe = *it;
+
+            for ( HashSet<int>::const_iterator it = currKeyframe.properties().begin(); it != currKeyframe.properties().end(); ++it )
+            {
+                m_properties.add( *it );
+            }
         }
-    } else {
-        for (HashSet<int>::const_iterator it = keyframe.properties().begin(); it != keyframe.properties().end(); ++it)
-            m_properties.add(*it);
+    }
+    else
+    {
+        for ( HashSet<int>::const_iterator it = keyframe.properties().begin(); it != keyframe.properties().end(); ++it )
+        {
+            m_properties.add( *it );
+        }
     }
 }
 

@@ -34,14 +34,15 @@
 #include "qdir.h"
 #include "qfile.h"
 
-class QWebViewPrivate {
+class QWebViewPrivate
+{
 public:
-    QWebViewPrivate(QWebView *view)
-        : view(view)
-        , page(0)
-        , renderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform)
+    QWebViewPrivate( QWebView *view )
+        : view( view )
+        , page( 0 )
+        , renderHints( QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform )
     {
-        Q_ASSERT(view);
+        Q_ASSERT( view );
     }
 
     virtual ~QWebViewPrivate();
@@ -63,7 +64,7 @@ QWebViewPrivate::~QWebViewPrivate()
 void QWebViewPrivate::_q_pageDestroyed()
 {
     page = 0;
-    view->setPage(0);
+    view->setPage( 0 );
 }
 
 
@@ -154,20 +155,20 @@ void QWebViewPrivate::_q_pageDestroyed()
 
     \sa load()
 */
-QWebView::QWebView(QWidget *parent)
-    : QWidget(parent)
+QWebView::QWebView( QWidget *parent )
+    : QWidget( parent )
 {
-    d = new QWebViewPrivate(this);
+    d = new QWebViewPrivate( this );
 
 #if !defined(Q_WS_QWS)
-    setAttribute(Qt::WA_InputMethodEnabled);
+    setAttribute( Qt::WA_InputMethodEnabled );
 #endif
 
-    setAttribute(Qt::WA_AcceptTouchEvents);
-    setAcceptDrops(true);
+    setAttribute( Qt::WA_AcceptTouchEvents );
+    setAcceptDrops( true );
 
-    setMouseTracking(true);
-    setFocusPolicy(Qt::WheelFocus);
+    setMouseTracking( true );
+    setFocusPolicy( Qt::WheelFocus );
 }
 
 /*!
@@ -185,17 +186,21 @@ QWebView::~QWebView()
 */
 QWebPage *QWebView::page() const
 {
-    if (!d->page) {
-        QWebView *that = const_cast<QWebView *>(this);
-        that->setPage(new QWebPage(that));
+    if ( !d->page )
+    {
+        QWebView *that = const_cast<QWebView *>( this );
+        that->setPage( new QWebPage( that ) );
     }
+
     return d->page;
 }
 
 void QWebViewPrivate::detachCurrentPage()
 {
-    if (!page)
+    if ( !page )
+    {
         return;
+    }
 
     page->d->view.clear();
 
@@ -203,18 +208,24 @@ void QWebViewPrivate::detachCurrentPage()
     // delegating the responsibilities to a QWidget, we need
     // to destroy it.
 
-    if (page->d->client && page->d->client->isQWidgetClient())
+    if ( page->d->client && page->d->client->isQWidgetClient() )
+    {
         page->d->client.clear();
+    }
 
     page->d->client.release();
 
     // if the page was created by us, we own it and need to
     // destroy it as well.
 
-    if (page->parent() == view)
+    if ( page->parent() == view )
+    {
         delete page;
+    }
     else
-        page->disconnect(view);
+    {
+        page->disconnect( view );
+    }
 
     page = 0;
 }
@@ -228,47 +239,50 @@ void QWebViewPrivate::detachCurrentPage()
 
     \sa page()
 */
-void QWebView::setPage(QWebPage* page)
+void QWebView::setPage( QWebPage *page )
 {
-    if (d->page == page)
+    if ( d->page == page )
+    {
         return;
+    }
 
     d->detachCurrentPage();
     d->page = page;
 
-    if (d->page) {
-        d->page->setView(this);
-        d->page->setPalette(palette());
+    if ( d->page )
+    {
+        d->page->setView( this );
+        d->page->setPalette( palette() );
 
         // #### connect signals
         QWebFrame *mainFrame = d->page->mainFrame();
-        connect(mainFrame, SIGNAL(titleChanged(const QString &)),   this, SLOT(titleChanged(const QString &)));
-        connect(mainFrame, SIGNAL(iconChanged()),                   this, SLOT(iconChanged()));
-        connect(mainFrame, SIGNAL(urlChanged(const QUrl &)),        this, SLOT(urlChanged(const QUrl &)));
+        connect( mainFrame, SIGNAL( titleChanged( const QString & ) ),   this, SLOT( titleChanged( const QString & ) ) );
+        connect( mainFrame, SIGNAL( iconChanged() ),                   this, SLOT( iconChanged() ) );
+        connect( mainFrame, SIGNAL( urlChanged( const QUrl & ) ),        this, SLOT( urlChanged( const QUrl & ) ) );
 
-        connect(d->page, SIGNAL(loadStarted()),                     this, SLOT(loadStarted()));
-        connect(d->page, SIGNAL(loadProgress(int)),                 this, SLOT(loadProgress(int)));
-        connect(d->page, SIGNAL(loadFinished(bool)),                this, SLOT(loadFinished(bool)));
-        connect(d->page, SIGNAL(statusBarMessage(const QString &)), this, SLOT(statusBarMessage(const QString &)));
-        connect(d->page, SIGNAL(linkClicked(const QUrl &)),         this, SLOT(linkClicked(const QUrl &)));
-        connect(d->page, SIGNAL(selectionChanged()),                this, SLOT(selectionChanged()));
+        connect( d->page, SIGNAL( loadStarted() ),                     this, SLOT( loadStarted() ) );
+        connect( d->page, SIGNAL( loadProgress( int ) ),                 this, SLOT( loadProgress( int ) ) );
+        connect( d->page, SIGNAL( loadFinished( bool ) ),                this, SLOT( loadFinished( bool ) ) );
+        connect( d->page, SIGNAL( statusBarMessage( const QString & ) ), this, SLOT( statusBarMessage( const QString & ) ) );
+        connect( d->page, SIGNAL( linkClicked( const QUrl & ) ),         this, SLOT( linkClicked( const QUrl & ) ) );
+        connect( d->page, SIGNAL( selectionChanged() ),                this, SLOT( selectionChanged() ) );
 
-        connect(d->page, SIGNAL(microFocusChanged()),               this, SLOT(updateMicroFocus()));
-        connect(d->page, SIGNAL(destroyed()),                       this, SLOT(_q_pageDestroyed()));
+        connect( d->page, SIGNAL( microFocusChanged() ),               this, SLOT( updateMicroFocus() ) );
+        connect( d->page, SIGNAL( destroyed() ),                       this, SLOT( _q_pageDestroyed() ) );
     }
 
-    setAttribute(Qt::WA_OpaquePaintEvent, d->page);
+    setAttribute( Qt::WA_OpaquePaintEvent, d->page );
     update();
 }
 
-void QWebView::load(const QUrl &url)
+void QWebView::load( const QUrl &url )
 {
-    page()->mainFrame()->load(url);
+    page()->mainFrame()->load( url );
 }
 
-void QWebView::load(const QNetworkRequest &request, QNetworkAccessManager::Operation operation, const QByteArray &body)
+void QWebView::load( const QNetworkRequest &request, QNetworkAccessManager::Operation operation, const QByteArray &body )
 {
-    page()->mainFrame()->load(request, operation, body);
+    page()->mainFrame()->load( request, operation, body );
 }
 
 /*!
@@ -292,9 +306,9 @@ void QWebView::load(const QNetworkRequest &request, QNetworkAccessManager::Opera
 
     \sa load(), setContent(), QWebFrame::toHtml(), QWebFrame::setContent()
 */
-void QWebView::setHtml(const QString &html, const QUrl &baseUrl)
+void QWebView::setHtml( const QString &html, const QUrl &baseUrl )
 {
-    page()->mainFrame()->setHtml(html, baseUrl);
+    page()->mainFrame()->setHtml( html, baseUrl );
 }
 
 /*!
@@ -308,9 +322,9 @@ void QWebView::setHtml(const QString &html, const QUrl &baseUrl)
 
     \sa load(), setHtml(), QWebFrame::toHtml()
 */
-void QWebView::setContent(const QByteArray &data, const QString &mimeType, const QUrl &baseUrl)
+void QWebView::setContent( const QByteArray &data, const QString &mimeType, const QUrl &baseUrl )
 {
-    page()->mainFrame()->setContent(data, mimeType, baseUrl);
+    page()->mainFrame()->setContent( data, mimeType, baseUrl );
 }
 
 /*!
@@ -349,8 +363,11 @@ QWebSettings *QWebView::settings() const
 */
 QString QWebView::title() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->mainFrame()->title();
+    }
+
     return QString();
 }
 
@@ -365,15 +382,18 @@ QString QWebView::title() const
     \sa load(), urlChanged()
 */
 
-void QWebView::setUrl(const QUrl &url)
+void QWebView::setUrl( const QUrl &url )
 {
-    page()->mainFrame()->setUrl(url);
+    page()->mainFrame()->setUrl( url );
 }
 
 QUrl QWebView::url() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->mainFrame()->url();
+    }
+
     return QUrl();
 }
 
@@ -387,8 +407,11 @@ QUrl QWebView::url() const
 */
 QIcon QWebView::icon() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->mainFrame()->icon();
+    }
+
     return QIcon();
 }
 
@@ -402,8 +425,11 @@ QIcon QWebView::icon() const
 */
 bool QWebView::hasSelection() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->hasSelection();
+    }
+
     return false;
 }
 
@@ -417,8 +443,11 @@ bool QWebView::hasSelection() const
 */
 QString QWebView::selectedText() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->selectedText();
+    }
+
     return QString();
 }
 
@@ -433,8 +462,11 @@ QString QWebView::selectedText() const
 */
 QString QWebView::selectedHtml() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->selectedHtml();
+    }
+
     return QString();
 }
 
@@ -442,9 +474,9 @@ QString QWebView::selectedHtml() const
 /*!
     Returns a pointer to a QAction that encapsulates the specified web action \a action.
 */
-QAction *QWebView::pageAction(QWebPage::WebAction action) const
+QAction *QWebView::pageAction( QWebPage::WebAction action ) const
 {
-    return page()->action(action);
+    return page()->action( action );
 }
 #endif
 
@@ -459,9 +491,9 @@ QAction *QWebView::pageAction(QWebPage::WebAction action) const
 
     \sa pageAction()
 */
-void QWebView::triggerPageAction(QWebPage::WebAction action, bool checked)
+void QWebView::triggerPageAction( QWebPage::WebAction action, bool checked )
 {
-    page()->triggerAction(action, checked);
+    page()->triggerAction( action, checked );
 }
 
 /*!
@@ -475,8 +507,11 @@ void QWebView::triggerPageAction(QWebPage::WebAction action, bool checked)
 */
 bool QWebView::isModified() const
 {
-    if (d->page)
+    if ( d->page )
+    {
         return d->page->isModified();
+    }
+
     return false;
 }
 
@@ -508,7 +543,7 @@ void QWebView::setTextInteractionFlags(Qt::TextInteractionFlags flags)
 */
 QSize QWebView::sizeHint() const
 {
-    return QSize(800, 600); // ####...
+    return QSize( 800, 600 ); // ####...
 }
 
 /*!
@@ -517,9 +552,9 @@ QSize QWebView::sizeHint() const
     \brief the zoom factor for the view
 */
 
-void QWebView::setZoomFactor(qreal factor)
+void QWebView::setZoomFactor( qreal factor )
 {
-    page()->mainFrame()->setZoomFactor(factor);
+    page()->mainFrame()->setZoomFactor( factor );
 }
 
 qreal QWebView::zoomFactor() const
@@ -545,9 +580,9 @@ qreal QWebView::zoomFactor() const
     Sets the value of the multiplier used to scale the text in a Web page to
     the \a factor specified.
 */
-void QWebView::setTextSizeMultiplier(qreal factor)
+void QWebView::setTextSizeMultiplier( qreal factor )
 {
-    page()->mainFrame()->setTextSizeMultiplier(factor);
+    page()->mainFrame()->setTextSizeMultiplier( factor );
 }
 
 /*!
@@ -590,10 +625,13 @@ QPainter::RenderHints QWebView::renderHints() const
 
     \sa QPainter::setRenderHints()
 */
-void QWebView::setRenderHints(QPainter::RenderHints hints)
+void QWebView::setRenderHints( QPainter::RenderHints hints )
 {
-    if (hints == d->renderHints)
+    if ( hints == d->renderHints )
+    {
         return;
+    }
+
     d->renderHints = hints;
     update();
 }
@@ -605,15 +643,23 @@ void QWebView::setRenderHints(QPainter::RenderHints hints)
 
     \sa renderHints, QPainter::renderHints()
 */
-void QWebView::setRenderHint(QPainter::RenderHint hint, bool enabled)
+void QWebView::setRenderHint( QPainter::RenderHint hint, bool enabled )
 {
     QPainter::RenderHints oldHints = d->renderHints;
-    if (enabled)
+
+    if ( enabled )
+    {
         d->renderHints |= hint;
+    }
     else
+    {
         d->renderHints &= ~hint;
-    if (oldHints != d->renderHints)
+    }
+
+    if ( oldHints != d->renderHints )
+    {
         update();
+    }
 }
 
 
@@ -633,57 +679,81 @@ void QWebView::setRenderHint(QPainter::RenderHint hint, bool enabled)
 
     \sa selectedText(), selectionChanged()
 */
-bool QWebView::findText(const QString &subString, QWebPage::FindFlags options)
+bool QWebView::findText( const QString &subString, QWebPage::FindFlags options )
 {
-    if (d->page)
-        return d->page->findText(subString, options);
+    if ( d->page )
+    {
+        return d->page->findText( subString, options );
+    }
+
     return false;
 }
 
 /*! \reimp
 */
-bool QWebView::event(QEvent *e)
+bool QWebView::event( QEvent *e )
 {
-    if (d->page) {
+    if ( d->page )
+    {
 #ifndef QT_NO_CONTEXTMENU
-        if (e->type() == QEvent::ContextMenu) {
-            if (!isEnabled())
+
+        if ( e->type() == QEvent::ContextMenu )
+        {
+            if ( !isEnabled() )
+            {
                 return false;
-            QContextMenuEvent *event = static_cast<QContextMenuEvent *>(e);
-            if (d->page->swallowContextMenuEvent(event)) {
+            }
+
+            QContextMenuEvent *event = static_cast<QContextMenuEvent *>( e );
+
+            if ( d->page->swallowContextMenuEvent( event ) )
+            {
                 e->accept();
                 return true;
             }
-            d->page->updatePositionDependentActions(event->pos());
-        } else
-#endif // QT_NO_CONTEXTMENU
-        if (e->type() == QEvent::ShortcutOverride) {
-            d->page->event(e);
-#ifndef QT_NO_CURSOR
-        } else if (e->type() == QEvent::CursorChange) {
-            // An unsetCursor will set the cursor to Qt::ArrowCursor.
-            // Thus this cursor change might be a QWidget::unsetCursor()
-            // If this is not the case and it came from WebCore, the
-            // QWebPageClient already has set its cursor internally
-            // to Qt::ArrowCursor, so updating the cursor is always
-            // right, as it falls back to the last cursor set by
-            // WebCore.
-            // FIXME: Add a QEvent::CursorUnset or similar to Qt.
-            if (cursor().shape() == Qt::ArrowCursor)
-                d->page->d->client->resetCursor();
-#endif
-        } else if (e->type() == QEvent::TouchBegin
-                   || e->type() == QEvent::TouchEnd
-                   || e->type() == QEvent::TouchUpdate) {
-            d->page->event(e);
 
-            // Always return true so that we'll receive also TouchUpdate and TouchEnd events
-            return true;
-        } else if (e->type() == QEvent::Leave)
-            d->page->event(e);
+            d->page->updatePositionDependentActions( event->pos() );
+        }
+        else
+#endif // QT_NO_CONTEXTMENU
+            if ( e->type() == QEvent::ShortcutOverride )
+            {
+                d->page->event( e );
+#ifndef QT_NO_CURSOR
+            }
+            else if ( e->type() == QEvent::CursorChange )
+            {
+                // An unsetCursor will set the cursor to Qt::ArrowCursor.
+                // Thus this cursor change might be a QWidget::unsetCursor()
+                // If this is not the case and it came from WebCore, the
+                // QWebPageClient already has set its cursor internally
+                // to Qt::ArrowCursor, so updating the cursor is always
+                // right, as it falls back to the last cursor set by
+                // WebCore.
+                // FIXME: Add a QEvent::CursorUnset or similar to Qt.
+                if ( cursor().shape() == Qt::ArrowCursor )
+                {
+                    d->page->d->client->resetCursor();
+                }
+
+#endif
+            }
+            else if ( e->type() == QEvent::TouchBegin
+                      || e->type() == QEvent::TouchEnd
+                      || e->type() == QEvent::TouchUpdate )
+            {
+                d->page->event( e );
+
+                // Always return true so that we'll receive also TouchUpdate and TouchEnd events
+                return true;
+            }
+            else if ( e->type() == QEvent::Leave )
+            {
+                d->page->event( e );
+            }
     }
 
-    return QWidget::event(e);
+    return QWidget::event( e );
 }
 
 /*!
@@ -691,63 +761,76 @@ bool QWebView::event(QEvent *e)
 
     \sa QWebFrame::print(), QPrintPreviewDialog
 */
-void QWebView::print(QPrinter *printer)
+void QWebView::print( QPrinter *printer )
 {
 #ifndef QT_NO_PRINTER
-    page()->mainFrame()->print(printer);
+    page()->mainFrame()->print( printer );
 #endif
 }
 
 void QWebView::stop()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Stop);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Stop );
+    }
 }
 
 void QWebView::back()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Back);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Back );
+    }
 }
 
 
 void QWebView::forward()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Forward);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Forward );
+    }
 }
 
 
 void QWebView::reload()
 {
-    if (d->page)
-        d->page->triggerAction(QWebPage::Reload);
+    if ( d->page )
+    {
+        d->page->triggerAction( QWebPage::Reload );
+    }
 }
 
 /*! \reimp
 */
-void QWebView::resizeEvent(QResizeEvent *e)
+void QWebView::resizeEvent( QResizeEvent *e )
 {
-    if (d->page)
-        d->page->setViewportSize(e->size());
+    if ( d->page )
+    {
+        d->page->setViewportSize( e->size() );
+    }
 }
 
 /*! \reimp
 */
-void QWebView::paintEvent(QPaintEvent *ev)
+void QWebView::paintEvent( QPaintEvent *ev )
 {
-    if (!d->page)
+    if ( !d->page )
+    {
         return;
+    }
+
 #ifdef QWEBKIT_TIME_RENDERING
     QTime time;
     time.start();
 #endif
 
     QWebFrame *frame = d->page->mainFrame();
-    QPainter p(this);
-    p.setRenderHints(d->renderHints);
+    QPainter p( this );
+    p.setRenderHints( d->renderHints );
 
-    frame->render(&p, ev->region());
+    frame->render( &p, ev->region() );
 
 #ifdef    QWEBKIT_TIME_RENDERING
     int elapsed = time.elapsed();
@@ -769,65 +852,70 @@ void QWebView::paintEvent(QPaintEvent *ev)
 
     \sa QWebPage::createWindow(), QWebPage::acceptNavigationRequest()
 */
-QWebView *QWebView::createWindow(QWebPage::WebWindowType type)
+QWebView *QWebView::createWindow( QWebPage::WebWindowType type )
 {
-    Q_UNUSED(type)
+    Q_UNUSED( type )
     return 0;
 }
 
 /*! \reimp
 */
-void QWebView::mouseMoveEvent(QMouseEvent* ev)
+void QWebView::mouseMoveEvent( QMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 }
 
 /*! \reimp
 */
-void QWebView::mousePressEvent(QMouseEvent* ev)
+void QWebView::mousePressEvent( QMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 }
 
 /*! \reimp
 */
-void QWebView::mouseDoubleClickEvent(QMouseEvent* ev)
+void QWebView::mouseDoubleClickEvent( QMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 }
 
 /*! \reimp
 */
-void QWebView::mouseReleaseEvent(QMouseEvent* ev)
+void QWebView::mouseReleaseEvent( QMouseEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 }
 
 #ifndef QT_NO_CONTEXTMENU
 /*! \reimp
 */
-void QWebView::contextMenuEvent(QContextMenuEvent* ev)
+void QWebView::contextMenuEvent( QContextMenuEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 }
 #endif // QT_NO_CONTEXTMENU
@@ -835,134 +923,180 @@ void QWebView::contextMenuEvent(QContextMenuEvent* ev)
 #ifndef QT_NO_WHEELEVENT
 /*! \reimp
 */
-void QWebView::wheelEvent(QWheelEvent* ev)
+void QWebView::wheelEvent( QWheelEvent *ev )
 {
-    if (d->page) {
+    if ( d->page )
+    {
         const bool accepted = ev->isAccepted();
-        d->page->event(ev);
-        ev->setAccepted(accepted);
+        d->page->event( ev );
+        ev->setAccepted( accepted );
     }
 }
 #endif // QT_NO_WHEELEVENT
 
 /*! \reimp
 */
-void QWebView::keyPressEvent(QKeyEvent* ev)
+void QWebView::keyPressEvent( QKeyEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
-    if (!ev->isAccepted())
-        QWidget::keyPressEvent(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
+
+    if ( !ev->isAccepted() )
+    {
+        QWidget::keyPressEvent( ev );
+    }
 }
 
 /*! \reimp
 */
-void QWebView::keyReleaseEvent(QKeyEvent* ev)
+void QWebView::keyReleaseEvent( QKeyEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
-    if (!ev->isAccepted())
-        QWidget::keyReleaseEvent(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
+
+    if ( !ev->isAccepted() )
+    {
+        QWidget::keyReleaseEvent( ev );
+    }
 }
 
 /*! \reimp
 */
-void QWebView::focusInEvent(QFocusEvent* ev)
+void QWebView::focusInEvent( QFocusEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
     else
-        QWidget::focusInEvent(ev);
+    {
+        QWidget::focusInEvent( ev );
+    }
 }
 
 /*! \reimp
 */
-void QWebView::focusOutEvent(QFocusEvent* ev)
+void QWebView::focusOutEvent( QFocusEvent *ev )
 {
-    if (d->page)
-        d->page->event(ev);
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
     else
-        QWidget::focusOutEvent(ev);
+    {
+        QWidget::focusOutEvent( ev );
+    }
 }
 
 /*! \reimp
 */
-void QWebView::dragEnterEvent(QDragEnterEvent* ev)
+void QWebView::dragEnterEvent( QDragEnterEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page)
-        d->page->event(ev);
+
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
+
 #endif
 }
 
 /*! \reimp
 */
-void QWebView::dragLeaveEvent(QDragLeaveEvent* ev)
+void QWebView::dragLeaveEvent( QDragLeaveEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page)
-        d->page->event(ev);
+
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
+
 #endif
 }
 
 /*! \reimp
 */
-void QWebView::dragMoveEvent(QDragMoveEvent* ev)
+void QWebView::dragMoveEvent( QDragMoveEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page)
-        d->page->event(ev);
+
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
+
 #endif
 }
 
 /*! \reimp
 */
-void QWebView::dropEvent(QDropEvent* ev)
+void QWebView::dropEvent( QDropEvent *ev )
 {
 #ifndef QT_NO_DRAGANDDROP
-    if (d->page)
-        d->page->event(ev);
+
+    if ( d->page )
+    {
+        d->page->event( ev );
+    }
+
 #endif
 }
 
 /*! \reimp
 */
-bool QWebView::focusNextPrevChild(bool next)
+bool QWebView::focusNextPrevChild( bool next )
 {
-    if (d->page && d->page->focusNextPrevChild(next))
+    if ( d->page && d->page->focusNextPrevChild( next ) )
+    {
         return true;
-    return QWidget::focusNextPrevChild(next);
+    }
+
+    return QWidget::focusNextPrevChild( next );
 }
 
 /*!\reimp
 */
-QVariant QWebView::inputMethodQuery(Qt::InputMethodQuery property) const
+QVariant QWebView::inputMethodQuery( Qt::InputMethodQuery property ) const
 {
-    if (d->page)
-        return d->page->inputMethodQuery(property);
+    if ( d->page )
+    {
+        return d->page->inputMethodQuery( property );
+    }
+
     return QVariant();
 }
 
 /*!\reimp
 */
-void QWebView::inputMethodEvent(QInputMethodEvent *e)
+void QWebView::inputMethodEvent( QInputMethodEvent *e )
 {
-    if (d->page)
-       d->page->event(e);
+    if ( d->page )
+    {
+        d->page->event( e );
+    }
 }
 
 /*!\reimp
 */
-void QWebView::changeEvent(QEvent *e)
+void QWebView::changeEvent( QEvent *e )
 {
-    if (d->page && e->type() == QEvent::PaletteChange)
-        d->page->setPalette(palette());
-    QWidget::changeEvent(e);
+    if ( d->page && e->type() == QEvent::PaletteChange )
+    {
+        d->page->setPalette( palette() );
+    }
+
+    QWidget::changeEvent( e );
 }
 
 void QWebView::_q_pageDestroyed()
-{	
-	d->_q_pageDestroyed();
+{
+    d->_q_pageDestroyed();
 }
 
 

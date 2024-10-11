@@ -34,17 +34,34 @@
 #include <wtf/PassRefPtr.h>
 #include "SQLValue.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-class SQLResultSetRowList : public RefCounted<SQLResultSetRowList> {
+class SQLResultSetRowList : public RefCounted<SQLResultSetRowList>
+{
 public:
-    static PassRefPtr<SQLResultSetRowList> create() { return adoptRef(new SQLResultSetRowList); }
+    static PassRefPtr<SQLResultSetRowList> create()
+    {
+        return adoptRef( new SQLResultSetRowList );
+    }
 
-    const Vector<String>& columnNames() const { return m_columns; }
-    const Vector<SQLValue>& values() const { return m_result; }
+    const Vector<String> &columnNames() const
+    {
+        return m_columns;
+    }
+    const Vector<SQLValue> &values() const
+    {
+        return m_result;
+    }
 
-    void addColumn(const String& name) { m_columns.append(name); }
-    void addResult(const SQLValue& result) { m_result.append(result); }
+    void addColumn( const String &name )
+    {
+        m_columns.append( name );
+    }
+    void addResult( const SQLValue &result )
+    {
+        m_result.append( result );
+    }
 
     unsigned length() const;
 

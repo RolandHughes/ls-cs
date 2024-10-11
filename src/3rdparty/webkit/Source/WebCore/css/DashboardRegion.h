@@ -25,11 +25,16 @@
 
 #if ENABLE(DASHBOARD_SUPPORT)
 
-namespace WebCore {
+namespace WebCore
+{
 
-class DashboardRegion : public RectBase, public RefCounted<DashboardRegion> {
+class DashboardRegion : public RectBase, public RefCounted<DashboardRegion>
+{
 public:
-    static PassRefPtr<DashboardRegion> create() { return adoptRef(new DashboardRegion); }
+    static PassRefPtr<DashboardRegion> create()
+    {
+        return adoptRef( new DashboardRegion );
+    }
 
     RefPtr<DashboardRegion> m_next;
     String m_label;
@@ -38,7 +43,7 @@ public:
     bool m_isRectangle : 1;
 
 private:
-    DashboardRegion() : m_isCircle(false), m_isRectangle(false) { }
+    DashboardRegion() : m_isCircle( false ), m_isRectangle( false ) { }
 };
 
 } // namespace

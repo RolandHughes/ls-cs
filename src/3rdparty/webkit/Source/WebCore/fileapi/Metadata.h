@@ -35,26 +35,31 @@
 
 #include <wtf/RefCounted.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
-class Metadata : public RefCounted<Metadata> {
+class Metadata : public RefCounted<Metadata>
+{
 public:
-    static PassRefPtr<Metadata> create(double modificationTime)
+    static PassRefPtr<Metadata> create( double modificationTime )
     {
-        return adoptRef(new Metadata(modificationTime));
+        return adoptRef( new Metadata( modificationTime ) );
     }
 
-    static PassRefPtr<Metadata> create(Metadata* metadata)
+    static PassRefPtr<Metadata> create( Metadata *metadata )
     {
-        return adoptRef(new Metadata(metadata->m_modificationTime));
+        return adoptRef( new Metadata( metadata->m_modificationTime ) );
     }
 
     // Needs to return epoch time in milliseconds for Date.
-    double modificationTime() const { return m_modificationTime * 1000.0; }
+    double modificationTime() const
+    {
+        return m_modificationTime * 1000.0;
+    }
 
 private:
-    Metadata(double modificationTime)
-        : m_modificationTime(modificationTime)
+    Metadata( double modificationTime )
+        : m_modificationTime( modificationTime )
     {
     }
 

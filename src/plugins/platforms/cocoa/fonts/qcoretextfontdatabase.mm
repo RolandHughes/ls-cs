@@ -388,7 +388,7 @@ static QByteArray filenameForCFUrl(CFURLRef url)
 
    if (! CFURLGetFileSystemRepresentation(url, true, buffer, sizeof(buffer))) {
       qWarning("QCoreTextFontDatabase::filenameForCFUrl: could not resolve file for URL %s",
-         url ? csPrintable(QString::fromCFString(CFURLGetString(url))) : "(null)");
+         url ? lscsPrintable(QString::fromCFString(CFURLGetString(url))) : "(null)");
 
    } else {
       QCFType<CFStringRef> scheme = CFURLCopyScheme(url);
@@ -975,5 +975,5 @@ QFontEngine *QCoreTextFontDatabase::freeTypeFontEngine(const QFontDef &fontDef, 
 }
 #endif
 
-CS_DECLARE_METATYPE(QCFType<CGFontRef>)
-CS_DECLARE_METATYPE(QCFType<CFURLRef>)
+LSCS_DECLARE_METATYPE(QCFType<CGFontRef>)
+LSCS_DECLARE_METATYPE(QCFType<CFURLRef>)

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 
@@ -29,12 +29,14 @@
 
 #include "HTTPHeaderMap.h"
 
-namespace WebCore {
+namespace WebCore
+{
 
-struct ResourceLoadInfo : RefCounted<ResourceLoadInfo> {
+struct ResourceLoadInfo : RefCounted<ResourceLoadInfo>
+{
     ResourceLoadInfo()
-        : httpStatusCode(0)
-        , encodedDataLength(-1) { }
+        : httpStatusCode( 0 )
+        , encodedDataLength( -1 ) { }
 
     int httpStatusCode;
     String httpStatusText;

@@ -26,41 +26,42 @@
 
 #include <qanytype_p.h>
 
-namespace QPatternist {
+namespace QPatternist
+{
 class AtomicType;
 
 class Untyped : public AnyType
 {
- public:
+public:
 
-   typedef QExplicitlySharedDataPointer<Untyped> Ptr;
+    typedef QExplicitlySharedDataPointer<Untyped> Ptr;
 
-   /**
-    * @returns always BuiltinTypes::xsAnyType.
-    */
-   SchemaType::Ptr wxsSuperType() const override;
+    /**
+     * @returns always BuiltinTypes::xsAnyType.
+     */
+    SchemaType::Ptr wxsSuperType() const override;
 
-   QXmlName name(const NamePool::Ptr &np) const override;
+    QXmlName name( const NamePool::Ptr &np ) const override;
 
-   /**
-    * @returns always <tt>xs:untypedAtomic</tt>
-    */
-   virtual ItemType::Ptr atomizedType() const;
+    /**
+     * @returns always <tt>xs:untypedAtomic</tt>
+     */
+    virtual ItemType::Ptr atomizedType() const;
 
-   /**
-    * @returns always SchemaType::ComplexType
-    */
-   TypeCategory category() const override;
+    /**
+     * @returns always SchemaType::ComplexType
+     */
+    TypeCategory category() const override;
 
-   /**
-    * @returns always NoDerivation
-    */
-   DerivationMethod derivationMethod() const override;
+    /**
+     * @returns always NoDerivation
+     */
+    DerivationMethod derivationMethod() const override;
 
- protected:
-   friend class BuiltinTypes;
+protected:
+    friend class BuiltinTypes;
 
-   Untyped();
+    Untyped();
 };
 }
 

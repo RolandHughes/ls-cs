@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef BINDINGS_C_INSTANCE_H_
@@ -34,51 +34,57 @@
 
 typedef struct NPObject NPObject;
 
-namespace JSC {
+namespace JSC
+{
 
 class UString;
 
-namespace Bindings {
+namespace Bindings
+{
 
 class CClass;
 
-class CInstance : public Instance {
+class CInstance : public Instance
+{
 public:
-    static PassRefPtr<CInstance> create(NPObject* object, PassRefPtr<RootObject> rootObject)
+    static PassRefPtr<CInstance> create( NPObject *object, PassRefPtr<RootObject> rootObject )
     {
-        return adoptRef(new CInstance(object, rootObject));
+        return adoptRef( new CInstance( object, rootObject ) );
     }
 
-    static void setGlobalException(JSC::UString exception);
-    static void moveGlobalExceptionToExecState(ExecState*);
+    static void setGlobalException( JSC::UString exception );
+    static void moveGlobalExceptionToExecState( ExecState * );
 
     ~CInstance ();
 
     virtual Class *getClass() const;
 
-    virtual JSValue valueOf(ExecState*) const;
-    virtual JSValue defaultValue(ExecState*, PreferredPrimitiveType) const;
+    virtual JSValue valueOf( ExecState * ) const;
+    virtual JSValue defaultValue( ExecState *, PreferredPrimitiveType ) const;
 
-    virtual JSValue getMethod(ExecState* exec, const Identifier& propertyName);
-    virtual JSValue invokeMethod(ExecState*, RuntimeMethod* method);
+    virtual JSValue getMethod( ExecState *exec, const Identifier &propertyName );
+    virtual JSValue invokeMethod( ExecState *, RuntimeMethod *method );
     virtual bool supportsInvokeDefaultMethod() const;
-    virtual JSValue invokeDefaultMethod(ExecState*);
+    virtual JSValue invokeDefaultMethod( ExecState * );
 
     virtual bool supportsConstruct() const;
-    virtual JSValue invokeConstruct(ExecState*, const ArgList&);
+    virtual JSValue invokeConstruct( ExecState *, const ArgList & );
 
-    virtual void getPropertyNames(ExecState*, PropertyNameArray&);
+    virtual void getPropertyNames( ExecState *, PropertyNameArray & );
 
-    JSValue stringValue(ExecState*) const;
-    JSValue numberValue(ExecState*) const;
+    JSValue stringValue( ExecState * ) const;
+    JSValue numberValue( ExecState * ) const;
     JSValue booleanValue() const;
 
-    NPObject *getObject() const { return _object; }
+    NPObject *getObject() const
+    {
+        return _object;
+    }
 
 private:
-    CInstance(NPObject*, PassRefPtr<RootObject>);
+    CInstance( NPObject *, PassRefPtr<RootObject> );
 
-    virtual RuntimeObject* newRuntimeObject(ExecState*);
+    virtual RuntimeObject *newRuntimeObject( ExecState * );
 
     mutable CClass *_class;
     NPObject *_object;

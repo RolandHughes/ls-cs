@@ -1,5 +1,5 @@
-extern "C" EncodedJSValue JITStubThunked_op_create_this(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_create_this(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_create_this( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_create_this( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_create_this
@@ -9,8 +9,8 @@ __asm EncodedJSValue cti_op_create_this(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_convert_this(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_convert_this(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_convert_this( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_convert_this( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_convert_this
@@ -20,8 +20,8 @@ __asm EncodedJSValue cti_op_convert_this(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_convert_this_strict(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_convert_this_strict(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_convert_this_strict( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_convert_this_strict( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_convert_this_strict
@@ -31,8 +31,8 @@ __asm EncodedJSValue cti_op_convert_this_strict(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_add(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_add(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_add( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_add( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_add
@@ -42,8 +42,8 @@ __asm EncodedJSValue cti_op_add(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_pre_inc(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_pre_inc(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_pre_inc( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_pre_inc( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_pre_inc
@@ -53,8 +53,8 @@ __asm EncodedJSValue cti_op_pre_inc(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_timeout_check(STUB_ARGS_DECLARATION);
-__asm int cti_timeout_check(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_timeout_check( STUB_ARGS_DECLARATION );
+__asm int cti_timeout_check( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_timeout_check
@@ -64,8 +64,8 @@ __asm int cti_timeout_check(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_register_file_check(STUB_ARGS_DECLARATION);
-__asm void* cti_register_file_check(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_register_file_check( STUB_ARGS_DECLARATION );
+__asm void *cti_register_file_check( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_register_file_check
@@ -75,8 +75,8 @@ __asm void* cti_register_file_check(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_op_loop_if_lesseq(STUB_ARGS_DECLARATION);
-__asm int cti_op_loop_if_lesseq(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_op_loop_if_lesseq( STUB_ARGS_DECLARATION );
+__asm int cti_op_loop_if_lesseq( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_loop_if_lesseq
@@ -86,8 +86,8 @@ __asm int cti_op_loop_if_lesseq(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_new_object(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_new_object(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_new_object( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_new_object( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_new_object
@@ -97,8 +97,8 @@ __asm JSObject* cti_op_new_object(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_id_generic(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_id_generic(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_id_generic( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_id_generic( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_id_generic
@@ -108,8 +108,8 @@ __asm void cti_op_put_by_id_generic(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_id_direct_generic(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_id_direct_generic(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_id_direct_generic( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_id_direct_generic( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_id_direct_generic
@@ -119,8 +119,8 @@ __asm void cti_op_put_by_id_direct_generic(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_generic(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_generic(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_generic( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_generic( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_generic
@@ -130,8 +130,8 @@ __asm EncodedJSValue cti_op_get_by_id_generic(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_id(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_id(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_id( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_id( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_id
@@ -141,8 +141,8 @@ __asm void cti_op_put_by_id(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_id_direct(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_id_direct(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_id_direct( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_id_direct( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_id_direct
@@ -152,8 +152,8 @@ __asm void cti_op_put_by_id_direct(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_id_fail(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_id_fail(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_id_fail( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_id_fail( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_id_fail
@@ -163,8 +163,8 @@ __asm void cti_op_put_by_id_fail(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_id_direct_fail(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_id_direct_fail(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_id_direct_fail( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_id_direct_fail( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_id_direct_fail
@@ -174,8 +174,8 @@ __asm void cti_op_put_by_id_direct_fail(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_put_by_id_transition_realloc(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_put_by_id_transition_realloc(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_put_by_id_transition_realloc( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_put_by_id_transition_realloc( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_id_transition_realloc
@@ -185,8 +185,8 @@ __asm JSObject* cti_op_put_by_id_transition_realloc(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_method_check(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_method_check(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_method_check( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_method_check( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_method_check
@@ -196,8 +196,8 @@ __asm EncodedJSValue cti_op_get_by_id_method_check(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id
@@ -207,8 +207,8 @@ __asm EncodedJSValue cti_op_get_by_id(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_self_fail(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_self_fail(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_self_fail( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_self_fail( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_self_fail
@@ -218,8 +218,8 @@ __asm EncodedJSValue cti_op_get_by_id_self_fail(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_getter_stub(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_getter_stub(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_getter_stub( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_getter_stub( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_getter_stub
@@ -229,8 +229,8 @@ __asm EncodedJSValue cti_op_get_by_id_getter_stub(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_custom_stub(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_custom_stub(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_custom_stub( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_custom_stub( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_custom_stub
@@ -240,8 +240,8 @@ __asm EncodedJSValue cti_op_get_by_id_custom_stub(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_proto_list(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_proto_list(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_proto_list( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_proto_list( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_proto_list
@@ -251,8 +251,8 @@ __asm EncodedJSValue cti_op_get_by_id_proto_list(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_proto_list_full(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_proto_list_full(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_proto_list_full( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_proto_list_full( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_proto_list_full
@@ -262,8 +262,8 @@ __asm EncodedJSValue cti_op_get_by_id_proto_list_full(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_proto_fail(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_proto_fail(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_proto_fail( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_proto_fail( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_proto_fail
@@ -273,8 +273,8 @@ __asm EncodedJSValue cti_op_get_by_id_proto_fail(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_array_fail(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_array_fail(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_array_fail( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_array_fail( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_array_fail
@@ -284,8 +284,8 @@ __asm EncodedJSValue cti_op_get_by_id_array_fail(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_id_string_fail(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_id_string_fail(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_id_string_fail( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_id_string_fail( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_id_string_fail
@@ -295,8 +295,8 @@ __asm EncodedJSValue cti_op_get_by_id_string_fail(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_check_has_instance(STUB_ARGS_DECLARATION);
-__asm void cti_op_check_has_instance(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_check_has_instance( STUB_ARGS_DECLARATION );
+__asm void cti_op_check_has_instance( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_check_has_instance
@@ -306,8 +306,8 @@ __asm void cti_op_check_has_instance(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_instanceof(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_instanceof(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_instanceof( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_instanceof( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_instanceof
@@ -317,8 +317,8 @@ __asm EncodedJSValue cti_op_instanceof(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_del_by_id(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_del_by_id(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_del_by_id( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_del_by_id( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_del_by_id
@@ -328,8 +328,8 @@ __asm EncodedJSValue cti_op_del_by_id(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_mul(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_mul(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_mul( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_mul( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_mul
@@ -339,8 +339,8 @@ __asm EncodedJSValue cti_op_mul(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_new_func(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_new_func(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_new_func( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_new_func( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_new_func
@@ -350,8 +350,8 @@ __asm JSObject* cti_op_new_func(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_call_jitCompile(STUB_ARGS_DECLARATION);
-__asm void* cti_op_call_jitCompile(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_call_jitCompile( STUB_ARGS_DECLARATION );
+__asm void *cti_op_call_jitCompile( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_call_jitCompile
@@ -361,8 +361,8 @@ __asm void* cti_op_call_jitCompile(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_construct_jitCompile(STUB_ARGS_DECLARATION);
-__asm void* cti_op_construct_jitCompile(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_construct_jitCompile( STUB_ARGS_DECLARATION );
+__asm void *cti_op_construct_jitCompile( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_construct_jitCompile
@@ -372,8 +372,8 @@ __asm void* cti_op_construct_jitCompile(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_call_arityCheck(STUB_ARGS_DECLARATION);
-__asm void* cti_op_call_arityCheck(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_call_arityCheck( STUB_ARGS_DECLARATION );
+__asm void *cti_op_call_arityCheck( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_call_arityCheck
@@ -383,8 +383,8 @@ __asm void* cti_op_call_arityCheck(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_construct_arityCheck(STUB_ARGS_DECLARATION);
-__asm void* cti_op_construct_arityCheck(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_construct_arityCheck( STUB_ARGS_DECLARATION );
+__asm void *cti_op_construct_arityCheck( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_construct_arityCheck
@@ -394,8 +394,8 @@ __asm void* cti_op_construct_arityCheck(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_vm_lazyLinkCall(STUB_ARGS_DECLARATION);
-__asm void* cti_vm_lazyLinkCall(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_vm_lazyLinkCall( STUB_ARGS_DECLARATION );
+__asm void *cti_vm_lazyLinkCall( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_vm_lazyLinkCall
@@ -405,8 +405,8 @@ __asm void* cti_vm_lazyLinkCall(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_vm_lazyLinkConstruct(STUB_ARGS_DECLARATION);
-__asm void* cti_vm_lazyLinkConstruct(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_vm_lazyLinkConstruct( STUB_ARGS_DECLARATION );
+__asm void *cti_vm_lazyLinkConstruct( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_vm_lazyLinkConstruct
@@ -416,8 +416,8 @@ __asm void* cti_vm_lazyLinkConstruct(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_push_activation(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_push_activation(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_push_activation( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_push_activation( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_push_activation
@@ -427,8 +427,8 @@ __asm JSObject* cti_op_push_activation(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_call_NotJSFunction(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_call_NotJSFunction(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_call_NotJSFunction( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_call_NotJSFunction( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_call_NotJSFunction
@@ -438,8 +438,8 @@ __asm EncodedJSValue cti_op_call_NotJSFunction(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_create_arguments(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_create_arguments(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_create_arguments( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_create_arguments( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_create_arguments
@@ -449,8 +449,8 @@ __asm EncodedJSValue cti_op_create_arguments(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_create_arguments_no_params(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_create_arguments_no_params(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_create_arguments_no_params( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_create_arguments_no_params( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_create_arguments_no_params
@@ -460,8 +460,8 @@ __asm EncodedJSValue cti_op_create_arguments_no_params(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_tear_off_activation(STUB_ARGS_DECLARATION);
-__asm void cti_op_tear_off_activation(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_tear_off_activation( STUB_ARGS_DECLARATION );
+__asm void cti_op_tear_off_activation( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_tear_off_activation
@@ -471,8 +471,8 @@ __asm void cti_op_tear_off_activation(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_tear_off_arguments(STUB_ARGS_DECLARATION);
-__asm void cti_op_tear_off_arguments(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_tear_off_arguments( STUB_ARGS_DECLARATION );
+__asm void cti_op_tear_off_arguments( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_tear_off_arguments
@@ -482,8 +482,8 @@ __asm void cti_op_tear_off_arguments(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_profile_will_call(STUB_ARGS_DECLARATION);
-__asm void cti_op_profile_will_call(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_profile_will_call( STUB_ARGS_DECLARATION );
+__asm void cti_op_profile_will_call( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_profile_will_call
@@ -493,8 +493,8 @@ __asm void cti_op_profile_will_call(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_profile_did_call(STUB_ARGS_DECLARATION);
-__asm void cti_op_profile_did_call(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_profile_did_call( STUB_ARGS_DECLARATION );
+__asm void cti_op_profile_did_call( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_profile_did_call
@@ -504,8 +504,8 @@ __asm void cti_op_profile_did_call(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_new_array(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_new_array(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_new_array( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_new_array( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_new_array
@@ -515,8 +515,8 @@ __asm JSObject* cti_op_new_array(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_resolve(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_resolve(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_resolve( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_resolve( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_resolve
@@ -526,8 +526,8 @@ __asm EncodedJSValue cti_op_resolve(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_construct_NotJSConstruct(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_construct_NotJSConstruct(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_construct_NotJSConstruct( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_construct_NotJSConstruct( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_construct_NotJSConstruct
@@ -537,8 +537,8 @@ __asm EncodedJSValue cti_op_construct_NotJSConstruct(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_val(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_val(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_val( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_val( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_val
@@ -548,8 +548,8 @@ __asm EncodedJSValue cti_op_get_by_val(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_val_string(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_val_string(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_val_string( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_val_string( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_val_string
@@ -559,8 +559,8 @@ __asm EncodedJSValue cti_op_get_by_val_string(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_get_by_val_byte_array(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_get_by_val_byte_array(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_get_by_val_byte_array( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_get_by_val_byte_array( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_by_val_byte_array
@@ -570,8 +570,8 @@ __asm EncodedJSValue cti_op_get_by_val_byte_array(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_sub(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_sub(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_sub( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_sub( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_sub
@@ -581,8 +581,8 @@ __asm EncodedJSValue cti_op_sub(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_val(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_val(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_val( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_val( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_val
@@ -592,8 +592,8 @@ __asm void cti_op_put_by_val(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_val_byte_array(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_val_byte_array(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_val_byte_array( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_val_byte_array( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_val_byte_array
@@ -603,8 +603,8 @@ __asm void cti_op_put_by_val_byte_array(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_lesseq(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_lesseq(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_lesseq( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_lesseq( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_lesseq
@@ -614,8 +614,8 @@ __asm EncodedJSValue cti_op_lesseq(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_op_load_varargs(STUB_ARGS_DECLARATION);
-__asm int cti_op_load_varargs(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_op_load_varargs( STUB_ARGS_DECLARATION );
+__asm int cti_op_load_varargs( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_load_varargs
@@ -625,8 +625,8 @@ __asm int cti_op_load_varargs(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_negate(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_negate(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_negate( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_negate( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_negate
@@ -636,8 +636,8 @@ __asm EncodedJSValue cti_op_negate(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_resolve_base(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_resolve_base(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_resolve_base( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_resolve_base( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_resolve_base
@@ -647,8 +647,8 @@ __asm EncodedJSValue cti_op_resolve_base(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_resolve_base_strict_put(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_resolve_base_strict_put(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_resolve_base_strict_put( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_resolve_base_strict_put( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_resolve_base_strict_put
@@ -658,8 +658,8 @@ __asm EncodedJSValue cti_op_resolve_base_strict_put(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_ensure_property_exists(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_ensure_property_exists(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_ensure_property_exists( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_ensure_property_exists( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_ensure_property_exists
@@ -669,8 +669,8 @@ __asm EncodedJSValue cti_op_ensure_property_exists(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_resolve_skip(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_resolve_skip(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_resolve_skip( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_resolve_skip( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_resolve_skip
@@ -680,8 +680,8 @@ __asm EncodedJSValue cti_op_resolve_skip(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_resolve_global(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_resolve_global(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_resolve_global( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_resolve_global( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_resolve_global
@@ -691,8 +691,8 @@ __asm EncodedJSValue cti_op_resolve_global(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_div(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_div(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_div( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_div( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_div
@@ -702,8 +702,8 @@ __asm EncodedJSValue cti_op_div(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_pre_dec(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_pre_dec(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_pre_dec( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_pre_dec( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_pre_dec
@@ -713,8 +713,8 @@ __asm EncodedJSValue cti_op_pre_dec(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_op_jless(STUB_ARGS_DECLARATION);
-__asm int cti_op_jless(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_op_jless( STUB_ARGS_DECLARATION );
+__asm int cti_op_jless( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_jless
@@ -724,8 +724,8 @@ __asm int cti_op_jless(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_op_jlesseq(STUB_ARGS_DECLARATION);
-__asm int cti_op_jlesseq(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_op_jlesseq( STUB_ARGS_DECLARATION );
+__asm int cti_op_jlesseq( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_jlesseq
@@ -735,8 +735,8 @@ __asm int cti_op_jlesseq(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_not(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_not(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_not( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_not( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_not
@@ -746,8 +746,8 @@ __asm EncodedJSValue cti_op_not(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_op_jtrue(STUB_ARGS_DECLARATION);
-__asm int cti_op_jtrue(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_op_jtrue( STUB_ARGS_DECLARATION );
+__asm int cti_op_jtrue( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_jtrue
@@ -757,8 +757,8 @@ __asm int cti_op_jtrue(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_post_inc(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_post_inc(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_post_inc( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_post_inc( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_post_inc
@@ -768,8 +768,8 @@ __asm EncodedJSValue cti_op_post_inc(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_op_eq(STUB_ARGS_DECLARATION);
-__asm int cti_op_eq(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_op_eq( STUB_ARGS_DECLARATION );
+__asm int cti_op_eq( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_eq
@@ -779,8 +779,8 @@ __asm int cti_op_eq(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_op_eq_strings(STUB_ARGS_DECLARATION);
-__asm int cti_op_eq_strings(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_op_eq_strings( STUB_ARGS_DECLARATION );
+__asm int cti_op_eq_strings( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_eq_strings
@@ -790,8 +790,8 @@ __asm int cti_op_eq_strings(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_lshift(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_lshift(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_lshift( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_lshift( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_lshift
@@ -801,8 +801,8 @@ __asm EncodedJSValue cti_op_lshift(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_bitand(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_bitand(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_bitand( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_bitand( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_bitand
@@ -812,8 +812,8 @@ __asm EncodedJSValue cti_op_bitand(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_rshift(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_rshift(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_rshift( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_rshift( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_rshift
@@ -823,8 +823,8 @@ __asm EncodedJSValue cti_op_rshift(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_bitnot(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_bitnot(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_bitnot( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_bitnot( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_bitnot
@@ -834,8 +834,8 @@ __asm EncodedJSValue cti_op_bitnot(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_resolve_with_base(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_resolve_with_base(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_resolve_with_base( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_resolve_with_base( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_resolve_with_base
@@ -845,8 +845,8 @@ __asm EncodedJSValue cti_op_resolve_with_base(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_new_func_exp(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_new_func_exp(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_new_func_exp( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_new_func_exp( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_new_func_exp
@@ -856,8 +856,8 @@ __asm JSObject* cti_op_new_func_exp(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_mod(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_mod(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_mod( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_mod( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_mod
@@ -867,8 +867,8 @@ __asm EncodedJSValue cti_op_mod(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_less(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_less(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_less( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_less( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_less
@@ -878,8 +878,8 @@ __asm EncodedJSValue cti_op_less(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_post_dec(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_post_dec(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_post_dec( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_post_dec( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_post_dec
@@ -889,8 +889,8 @@ __asm EncodedJSValue cti_op_post_dec(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_urshift(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_urshift(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_urshift( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_urshift( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_urshift
@@ -900,8 +900,8 @@ __asm EncodedJSValue cti_op_urshift(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_bitxor(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_bitxor(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_bitxor( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_bitxor( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_bitxor
@@ -911,8 +911,8 @@ __asm EncodedJSValue cti_op_bitxor(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_new_regexp(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_new_regexp(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_new_regexp( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_new_regexp( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_new_regexp
@@ -922,8 +922,8 @@ __asm JSObject* cti_op_new_regexp(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_bitor(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_bitor(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_bitor( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_bitor( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_bitor
@@ -933,8 +933,8 @@ __asm EncodedJSValue cti_op_bitor(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_call_eval(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_call_eval(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_call_eval( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_call_eval( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_call_eval
@@ -944,8 +944,8 @@ __asm EncodedJSValue cti_op_call_eval(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_throw(STUB_ARGS_DECLARATION);
-__asm void* cti_op_throw(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_throw( STUB_ARGS_DECLARATION );
+__asm void *cti_op_throw( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_throw
@@ -955,8 +955,8 @@ __asm void* cti_op_throw(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSPropertyNameIterator* JITStubThunked_op_get_pnames(STUB_ARGS_DECLARATION);
-__asm JSPropertyNameIterator* cti_op_get_pnames(STUB_ARGS_DECLARATION)
+extern "C" JSPropertyNameIterator *JITStubThunked_op_get_pnames( STUB_ARGS_DECLARATION );
+__asm JSPropertyNameIterator *cti_op_get_pnames( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_get_pnames
@@ -966,8 +966,8 @@ __asm JSPropertyNameIterator* cti_op_get_pnames(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" int JITStubThunked_has_property(STUB_ARGS_DECLARATION);
-__asm int cti_has_property(STUB_ARGS_DECLARATION)
+extern "C" int JITStubThunked_has_property( STUB_ARGS_DECLARATION );
+__asm int cti_has_property( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_has_property
@@ -977,8 +977,8 @@ __asm int cti_has_property(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_push_scope(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_push_scope(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_push_scope( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_push_scope( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_push_scope
@@ -988,8 +988,8 @@ __asm JSObject* cti_op_push_scope(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_pop_scope(STUB_ARGS_DECLARATION);
-__asm void cti_op_pop_scope(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_pop_scope( STUB_ARGS_DECLARATION );
+__asm void cti_op_pop_scope( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_pop_scope
@@ -999,8 +999,8 @@ __asm void cti_op_pop_scope(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_typeof(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_typeof(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_typeof( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_typeof( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_typeof
@@ -1010,8 +1010,8 @@ __asm EncodedJSValue cti_op_typeof(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_is_undefined(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_is_undefined(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_is_undefined( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_is_undefined( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_is_undefined
@@ -1021,8 +1021,8 @@ __asm EncodedJSValue cti_op_is_undefined(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_is_boolean(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_is_boolean(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_is_boolean( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_is_boolean( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_is_boolean
@@ -1032,8 +1032,8 @@ __asm EncodedJSValue cti_op_is_boolean(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_is_number(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_is_number(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_is_number( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_is_number( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_is_number
@@ -1043,8 +1043,8 @@ __asm EncodedJSValue cti_op_is_number(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_is_string(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_is_string(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_is_string( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_is_string( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_is_string
@@ -1054,8 +1054,8 @@ __asm EncodedJSValue cti_op_is_string(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_is_object(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_is_object(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_is_object( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_is_object( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_is_object
@@ -1065,8 +1065,8 @@ __asm EncodedJSValue cti_op_is_object(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_is_function(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_is_function(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_is_function( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_is_function( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_is_function
@@ -1076,8 +1076,8 @@ __asm EncodedJSValue cti_op_is_function(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_stricteq(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_stricteq(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_stricteq( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_stricteq( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_stricteq
@@ -1087,8 +1087,8 @@ __asm EncodedJSValue cti_op_stricteq(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_to_primitive(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_to_primitive(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_to_primitive( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_to_primitive( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_to_primitive
@@ -1098,8 +1098,8 @@ __asm EncodedJSValue cti_op_to_primitive(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_strcat(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_strcat(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_strcat( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_strcat( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_strcat
@@ -1109,8 +1109,8 @@ __asm EncodedJSValue cti_op_strcat(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_nstricteq(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_nstricteq(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_nstricteq( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_nstricteq( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_nstricteq
@@ -1120,8 +1120,8 @@ __asm EncodedJSValue cti_op_nstricteq(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_to_jsnumber(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_to_jsnumber(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_to_jsnumber( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_to_jsnumber( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_to_jsnumber
@@ -1131,8 +1131,8 @@ __asm EncodedJSValue cti_op_to_jsnumber(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_in(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_in(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_in( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_in( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_in
@@ -1142,8 +1142,8 @@ __asm EncodedJSValue cti_op_in(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" JSObject* JITStubThunked_op_push_new_scope(STUB_ARGS_DECLARATION);
-__asm JSObject* cti_op_push_new_scope(STUB_ARGS_DECLARATION)
+extern "C" JSObject *JITStubThunked_op_push_new_scope( STUB_ARGS_DECLARATION );
+__asm JSObject *cti_op_push_new_scope( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_push_new_scope
@@ -1153,8 +1153,8 @@ __asm JSObject* cti_op_push_new_scope(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_jmp_scopes(STUB_ARGS_DECLARATION);
-__asm void cti_op_jmp_scopes(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_jmp_scopes( STUB_ARGS_DECLARATION );
+__asm void cti_op_jmp_scopes( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_jmp_scopes
@@ -1164,8 +1164,8 @@ __asm void cti_op_jmp_scopes(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_by_index(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_by_index(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_by_index( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_by_index( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_by_index
@@ -1175,8 +1175,8 @@ __asm void cti_op_put_by_index(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_switch_imm(STUB_ARGS_DECLARATION);
-__asm void* cti_op_switch_imm(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_switch_imm( STUB_ARGS_DECLARATION );
+__asm void *cti_op_switch_imm( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_switch_imm
@@ -1186,8 +1186,8 @@ __asm void* cti_op_switch_imm(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_switch_char(STUB_ARGS_DECLARATION);
-__asm void* cti_op_switch_char(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_switch_char( STUB_ARGS_DECLARATION );
+__asm void *cti_op_switch_char( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_switch_char
@@ -1197,8 +1197,8 @@ __asm void* cti_op_switch_char(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_op_switch_string(STUB_ARGS_DECLARATION);
-__asm void* cti_op_switch_string(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_op_switch_string( STUB_ARGS_DECLARATION );
+__asm void *cti_op_switch_string( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_switch_string
@@ -1208,8 +1208,8 @@ __asm void* cti_op_switch_string(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_op_del_by_val(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_op_del_by_val(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_op_del_by_val( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_op_del_by_val( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_del_by_val
@@ -1219,8 +1219,8 @@ __asm EncodedJSValue cti_op_del_by_val(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_getter(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_getter(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_getter( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_getter( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_getter
@@ -1230,8 +1230,8 @@ __asm void cti_op_put_getter(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_put_setter(STUB_ARGS_DECLARATION);
-__asm void cti_op_put_setter(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_put_setter( STUB_ARGS_DECLARATION );
+__asm void cti_op_put_setter( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_put_setter
@@ -1241,8 +1241,8 @@ __asm void cti_op_put_setter(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_throw_reference_error(STUB_ARGS_DECLARATION);
-__asm void cti_op_throw_reference_error(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_throw_reference_error( STUB_ARGS_DECLARATION );
+__asm void cti_op_throw_reference_error( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_throw_reference_error
@@ -1252,8 +1252,8 @@ __asm void cti_op_throw_reference_error(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void JITStubThunked_op_debug(STUB_ARGS_DECLARATION);
-__asm void cti_op_debug(STUB_ARGS_DECLARATION)
+extern "C" void JITStubThunked_op_debug( STUB_ARGS_DECLARATION );
+__asm void cti_op_debug( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_op_debug
@@ -1263,8 +1263,8 @@ __asm void cti_op_debug(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" void* JITStubThunked_vm_throw(STUB_ARGS_DECLARATION);
-__asm void* cti_vm_throw(STUB_ARGS_DECLARATION)
+extern "C" void *JITStubThunked_vm_throw( STUB_ARGS_DECLARATION );
+__asm void *cti_vm_throw( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_vm_throw
@@ -1274,8 +1274,8 @@ __asm void* cti_vm_throw(STUB_ARGS_DECLARATION)
     bx lr
 }
 
-extern "C" EncodedJSValue JITStubThunked_to_object(STUB_ARGS_DECLARATION);
-__asm EncodedJSValue cti_to_object(STUB_ARGS_DECLARATION)
+extern "C" EncodedJSValue JITStubThunked_to_object( STUB_ARGS_DECLARATION );
+__asm EncodedJSValue cti_to_object( STUB_ARGS_DECLARATION )
 {
     PRESERVE8
     IMPORT JITStubThunked_to_object

@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef PluginMainThreadScheduler_h
@@ -32,21 +32,24 @@
 #include <wtf/Threading.h>
 
 typedef struct _NPP NPP_t;
-typedef NPP_t* NPP;
+typedef NPP_t *NPP;
 
-namespace WebCore {
+namespace WebCore
+{
 
-class PluginMainThreadScheduler {
-    WTF_MAKE_NONCOPYABLE(PluginMainThreadScheduler); WTF_MAKE_FAST_ALLOCATED;
+class PluginMainThreadScheduler
+{
+    WTF_MAKE_NONCOPYABLE( PluginMainThreadScheduler );
+    WTF_MAKE_FAST_ALLOCATED;
 public:
-    typedef void MainThreadFunction(void*);
+    typedef void MainThreadFunction( void * );
 
-    static PluginMainThreadScheduler& scheduler();
+    static PluginMainThreadScheduler &scheduler();
 
-    void scheduleCall(NPP, MainThreadFunction*, void* userData);
+    void scheduleCall( NPP, MainThreadFunction *, void *userData );
 
-    void registerPlugin(NPP);
-    void unregisterPlugin(NPP);
+    void registerPlugin( NPP );
+    void unregisterPlugin( NPP );
 
 private:
     PluginMainThreadScheduler();
@@ -54,27 +57,28 @@ private:
 
     class Call;
 
-    void dispatchCallsForPlugin(NPP, const Deque<Call>& calls);
+    void dispatchCallsForPlugin( NPP, const Deque<Call> &calls );
     typedef HashMap<NPP, Deque<Call> > CallQueueMap;
 
-    static void mainThreadCallback(void* context);
+    static void mainThreadCallback( void *context );
 
-    class Call {
+    class Call
+    {
     public:
-        Call(MainThreadFunction* function, void* userData)
-            : m_function(function)
-            , m_userData(userData)
+        Call( MainThreadFunction *function, void *userData )
+            : m_function( function )
+            , m_userData( userData )
         {
         }
 
         void performCall() const
         {
-            m_function(m_userData);
+            m_function( m_userData );
         }
 
     private:
-        MainThreadFunction* m_function;
-        void* m_userData;
+        MainThreadFunction *m_function;
+        void *m_userData;
     };
 
     bool m_callPending;

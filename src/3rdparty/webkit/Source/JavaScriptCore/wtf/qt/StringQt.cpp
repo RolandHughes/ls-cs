@@ -36,40 +36,43 @@
 #include <qstring16.h>
 #include <qstringview.h>
 
-namespace WTF {
-
-String::String(const QString &str)
+namespace WTF
 {
-   if (str.isEmpty()) {
-      return;
-   }
 
-   QString16 tmp = str.toUtf16();
-   m_impl = StringImpl::create(reinterpret_cast<const UChar *>(tmp.constData()), tmp.size_storage());
+String::String( const QString &str )
+{
+    if ( str.isEmpty() )
+    {
+        return;
+    }
+
+    QString16 tmp = str.toUtf16();
+    m_impl = StringImpl::create( reinterpret_cast<const UChar *>( tmp.constData() ), tmp.size_storage() );
 }
 
-String::String(QStringView view)
+String::String( QStringView view )
 {
-   if (view.isEmpty()) {
-      return;
-   }
+    if ( view.isEmpty() )
+    {
+        return;
+    }
 
-   QString16 tmp(view.begin(), view.end());
-   m_impl = StringImpl::create(reinterpret_cast<const UChar*>(tmp.constData()), tmp.size_storage());
+    QString16 tmp( view.begin(), view.end() );
+    m_impl = StringImpl::create( reinterpret_cast<const UChar *>( tmp.constData() ), tmp.size_storage() );
 }
 
 String::operator QString() const
 {
-   return QString::fromUtf16(reinterpret_cast<const char16_t *>(characters()), length());
+    return QString::fromUtf16( reinterpret_cast<const char16_t *>( characters() ), length() );
 }
 
-QDataStream & operator<<(QDataStream &stream, const String &str)
+QDataStream &operator<<( QDataStream &stream, const String &str )
 {
-    stream << QString(str);
+    stream << QString( str );
     return stream;
 }
 
-QDataStream& operator>>(QDataStream &stream, String &str)
+QDataStream &operator>>( QDataStream &stream, String &str )
 {
     QString tmp;
 

@@ -36,29 +36,29 @@ struct kevent;
 
 class QKqueueFileSystemWatcherEngine : public QFileSystemWatcherEngine
 {
-   CORE_CS_OBJECT(QKqueueFileSystemWatcherEngine)
+    CORE_LSCS_OBJECT( QKqueueFileSystemWatcherEngine )
 
- public:
-   ~QKqueueFileSystemWatcherEngine();
+public:
+    ~QKqueueFileSystemWatcherEngine();
 
-   static QKqueueFileSystemWatcherEngine *create();
+    static QKqueueFileSystemWatcherEngine *create();
 
-   QStringList addPaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
-   QStringList removePaths(const QStringList &paths, QStringList *files, QStringList *directories) override;
+    QStringList addPaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
+    QStringList removePaths( const QStringList &paths, QStringList *files, QStringList *directories ) override;
 
-   void stop() override;
+    void stop() override;
 
- private:
-   QKqueueFileSystemWatcherEngine(int kqfd);
+private:
+    QKqueueFileSystemWatcherEngine( int kqfd );
 
-   void run() override;
+    void run() override;
 
-   int kqfd;
-   int kqpipe[2];
+    int kqfd;
+    int kqpipe[2];
 
-   QMutex mutex;
-   QHash<QString, int> pathToID;
-   QHash<int, QString> idToPath;
+    QMutex mutex;
+    QHash<QString, int> pathToID;
+    QHash<int, QString> idToPath;
 };
 
 #endif //QT_NO_FILESYSTEMWATCHER

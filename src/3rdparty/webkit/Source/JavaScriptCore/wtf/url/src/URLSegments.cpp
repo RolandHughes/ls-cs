@@ -37,67 +37,109 @@
 #include "config.h"
 #include "URLSegments.h"
 
-namespace WTF {
+namespace WTF
+{
 
 int URLSegments::length() const
 {
-    if (fragment.isValid())
+    if ( fragment.isValid() )
+    {
         return fragment.end();
-    return charactersBefore(Fragment, false);
+    }
+
+    return charactersBefore( Fragment, false );
 }
 
-int URLSegments::charactersBefore(ComponentType type, bool includeDelimiter) const
+int URLSegments::charactersBefore( ComponentType type, bool includeDelimiter ) const
 {
-    if (type == Scheme)
+    if ( type == Scheme )
+    {
         return scheme.begin();
+    }
 
     int current = 0;
-    if (scheme.isValid())
-        current = scheme.end() + 1; // Advance over the ':' at the end of the scheme.
 
-    if (username.isValid()) {
-        if (type <= Username)
+    if ( scheme.isValid() )
+    {
+        current = scheme.end() + 1;    // Advance over the ':' at the end of the scheme.
+    }
+
+    if ( username.isValid() )
+    {
+        if ( type <= Username )
+        {
             return username.begin();
+        }
+
         current = username.end() + 1; // Advance over the '@' or ':' at the end.
     }
 
-    if (password.isValid()) {
-        if (type <= Password)
+    if ( password.isValid() )
+    {
+        if ( type <= Password )
+        {
             return password.begin();
+        }
+
         current = password.end() + 1; // Advance over the '@' at the end.
     }
 
-    if (host.isValid()) {
-        if (type <= Host)
+    if ( host.isValid() )
+    {
+        if ( type <= Host )
+        {
             return host.begin();
+        }
+
         current = host.end();
     }
 
-    if (port.isValid()) {
-        if (type < Port || (type == Port && includeDelimiter))
-            return port.begin() - 1; // Back over delimiter.
-        if (type == Port)
-            return port.begin(); // Don't want delimiter counted.
+    if ( port.isValid() )
+    {
+        if ( type < Port || ( type == Port && includeDelimiter ) )
+        {
+            return port.begin() - 1;    // Back over delimiter.
+        }
+
+        if ( type == Port )
+        {
+            return port.begin();    // Don't want delimiter counted.
+        }
+
         current = port.end();
     }
 
-    if (path.isValid()) {
-        if (type <= Path)
+    if ( path.isValid() )
+    {
+        if ( type <= Path )
+        {
             return path.begin();
+        }
+
         current = path.end();
     }
 
-    if (query.isValid()) {
-        if (type < Query || (type == Query && includeDelimiter))
-            return query.begin() - 1; // Back over delimiter.
-        if (type == Query)
-            return query.begin(); // Don't want delimiter counted.
+    if ( query.isValid() )
+    {
+        if ( type < Query || ( type == Query && includeDelimiter ) )
+        {
+            return query.begin() - 1;    // Back over delimiter.
+        }
+
+        if ( type == Query )
+        {
+            return query.begin();    // Don't want delimiter counted.
+        }
+
         current = query.end();
     }
 
-    if (fragment.isValid()) {
-        if (type == Fragment && !includeDelimiter)
-            return fragment.begin(); // Back over delimiter.
+    if ( fragment.isValid() )
+    {
+        if ( type == Fragment && !includeDelimiter )
+        {
+            return fragment.begin();    // Back over delimiter.
+        }
 
         // When there is a fragment and we get here, the component we wanted was before
         // this and not found, so we always know the beginning of the fragment is right.

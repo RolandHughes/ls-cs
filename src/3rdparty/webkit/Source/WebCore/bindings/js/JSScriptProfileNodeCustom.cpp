@@ -36,28 +36,32 @@
 
 using namespace JSC;
 
-namespace WebCore {
+namespace WebCore
+{
 
 #if ENABLE(JAVASCRIPT_DEBUGGER)
 
-JSValue JSScriptProfileNode::callUID(ExecState*) const
+JSValue JSScriptProfileNode::callUID( ExecState * ) const
 {
-    JSValue result = jsNumber(impl()->callIdentifier().hash());
+    JSValue result = jsNumber( impl()->callIdentifier().hash() );
     return result;
 }
 
 typedef Vector<RefPtr<ProfileNode> > ProfileNodesList;
 
-JSValue JSScriptProfileNode::children(ExecState* exec) const
+JSValue JSScriptProfileNode::children( ExecState *exec ) const
 {
-    const ProfileNodesList& children = impl()->children();
+    const ProfileNodesList &children = impl()->children();
     MarkedArgumentBuffer list;
 
     ProfileNodesList::const_iterator end = children.end();
-    for (ProfileNodesList::const_iterator iter = children.begin(); iter != end; ++iter)
-        list.append(toJS(exec, globalObject(), iter->get()));
 
-    return constructArray(exec, globalObject(), list);
+    for ( ProfileNodesList::const_iterator iter = children.begin(); iter != end; ++iter )
+    {
+        list.append( toJS( exec, globalObject(), iter->get() ) );
+    }
+
+    return constructArray( exec, globalObject(), list );
 }
 
 #endif

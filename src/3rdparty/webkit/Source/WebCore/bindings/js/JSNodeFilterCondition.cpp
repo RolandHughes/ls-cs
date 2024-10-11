@@ -26,41 +26,50 @@
 #include <runtime/Error.h>
 #include <runtime/JSLock.h>
 
-namespace WebCore {
+namespace WebCore
+{
 
 using namespace JSC;
 
-ASSERT_CLASS_FITS_IN_CELL(JSNodeFilterCondition);
+ASSERT_CLASS_FITS_IN_CELL( JSNodeFilterCondition );
 
-JSNodeFilterCondition::JSNodeFilterCondition(JSGlobalData& globalData, NodeFilter* owner, JSValue filter)
-    : m_filter(globalData, filter, &m_weakOwner, owner)
+JSNodeFilterCondition::JSNodeFilterCondition( JSGlobalData &globalData, NodeFilter *owner, JSValue filter )
+    : m_filter( globalData, filter, &m_weakOwner, owner )
 {
 }
 
-short JSNodeFilterCondition::acceptNode(JSC::ExecState* exec, Node* filterNode) const
+short JSNodeFilterCondition::acceptNode( JSC::ExecState *exec, Node *filterNode ) const
 {
-    JSLock lock(SilenceAssertionsOnly);
+    JSLock lock( SilenceAssertionsOnly );
 
-    if (!m_filter.isObject())
+    if ( !m_filter.isObject() )
+    {
         return NodeFilter::FILTER_ACCEPT;
+    }
 
-   // The exec argument here should only be null if this was called from a
-   // non-JavaScript language, and this is a JavaScript filter, and the document
-   // in question is not associated with the frame. In that case, we're going to
-   // behave incorrectly, and just reject nodes instead of calling the filter function.
-   // To fix that we'd need to come up with a way to find a suitable JavaScript
-   // execution context for the filter function to run in.
-    if (!exec)
+    // The exec argument here should only be null if this was called from a
+    // non-JavaScript language, and this is a JavaScript filter, and the document
+    // in question is not associated with the frame. In that case, we're going to
+    // behave incorrectly, and just reject nodes instead of calling the filter function.
+    // To fix that we'd need to come up with a way to find a suitable JavaScript
+    // execution context for the filter function to run in.
+    if ( !exec )
+    {
         return NodeFilter::FILTER_REJECT;
+    }
 
     JSValue function = m_filter.get();
     CallData callData;
-    CallType callType = getCallData(function, callData);
-    if (callType == CallTypeNone) {
-        function = m_filter.get().get(exec, Identifier(exec, "acceptNode"));
-        callType = getCallData(function, callData);
-        if (callType == CallTypeNone) {
-            throwError(exec, createTypeError(exec, "NodeFilter object does not have an acceptNode function"));
+    CallType callType = getCallData( function, callData );
+
+    if ( callType == CallTypeNone )
+    {
+        function = m_filter.get().get( exec, Identifier( exec, "acceptNode" ) );
+        callType = getCallData( function, callData );
+
+        if ( callType == CallTypeNone )
+        {
+            throwError( exec, createTypeError( exec, "NodeFilter object does not have an acceptNode function" ) );
             return NodeFilter::FILTER_REJECT;
         }
     }
@@ -68,24 +77,34 @@ short JSNodeFilterCondition::acceptNode(JSC::ExecState* exec, Node* filterNode) 
     MarkedArgumentBuffer args;
     // FIXME: The node should have the prototype chain that came from its document, not
     // whatever prototype chain might be on the window this filter came from. Bug 27662
-    args.append(toJS(exec, deprecatedGlobalObjectForPrototype(exec), filterNode));
-    if (exec->hadException())
-        return NodeFilter::FILTER_REJECT;
+    args.append( toJS( exec, deprecatedGlobalObjectForPrototype( exec ), filterNode ) );
 
-    JSValue result = JSC::call(exec, function, callType, callData, m_filter.get(), args);
-    if (exec->hadException())
+    if ( exec->hadException() )
+    {
         return NodeFilter::FILTER_REJECT;
+    }
 
-    int intResult = result.toInt32(exec);
-    if (exec->hadException())
+    JSValue result = JSC::call( exec, function, callType, callData, m_filter.get(), args );
+
+    if ( exec->hadException() )
+    {
         return NodeFilter::FILTER_REJECT;
+    }
+
+    int intResult = result.toInt32( exec );
+
+    if ( exec->hadException() )
+    {
+        return NodeFilter::FILTER_REJECT;
+    }
 
     return intResult;
 }
 
-bool JSNodeFilterCondition::WeakOwner::isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown>, void* context, SlotVisitor& visitor)
+bool JSNodeFilterCondition::WeakOwner::isReachableFromOpaqueRoots( JSC::Handle<JSC::Unknown>, void *context,
+        SlotVisitor &visitor )
 {
-    return visitor.containsOpaqueRoot(context);
+    return visitor.containsOpaqueRoot( context );
 }
 
 } // namespace WebCore
