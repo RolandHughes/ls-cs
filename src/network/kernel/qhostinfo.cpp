@@ -39,7 +39,7 @@
 #  include <unistd.h>
 #endif
 
-QHostInfoLookupManager *cs_HostInfoLookupManager()
+QHostInfoLookupManager *lscs_HostInfoLookupManager()
 {
     static QHostInfoLookupManager retval;
     return &retval;
@@ -82,7 +82,7 @@ int QHostInfo::lookupHost( const QString &name, QObject *receiver, const QString
         return id;
     }
 
-    QHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
     if ( manager )
     {
@@ -127,14 +127,14 @@ int QHostInfo::lookupHost( const QString &name, QObject *receiver, const QString
 
 void QHostInfo::abortHostLookup( int id )
 {
-    cs_HostInfoLookupManager()->abortLookup( id );
+    lscs_HostInfoLookupManager()->abortLookup( id );
 }
 
 QHostInfo QHostInfo::fromName( const QString &name )
 {
     QHostInfo hostInfo = QHostInfoAgent::fromName( name );
 
-    QAbstractHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
     manager->cache.put( name, hostInfo );
 
     return hostInfo;
@@ -148,7 +148,7 @@ QHostInfo QHostInfoPrivate::fromName( const QString &name, QSharedPointer<QNetwo
 #endif
 
     QHostInfo hostInfo = QHostInfoAgent::fromName( name, session );
-    QAbstractHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
     manager->cache.put( name, hostInfo );
     return hostInfo;
 }
@@ -256,7 +256,7 @@ QHostInfoRunnable::QHostInfoRunnable( const QString &hn, int i ) : toBeLookedUp(
 // QHostInfoLookupManager will at some point call this via a QThreadPool
 void QHostInfoRunnable::run()
 {
-    QHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
     // check aborted
     if ( manager->wasAborted( id ) )
@@ -536,7 +536,7 @@ QHostInfo qt_qhostinfo_lookup( const QString &name, QObject *receiver, const QSt
     *id = -1;
 
     // check cache
-    QAbstractHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
     if ( manager && manager->cache.isEnabled() )
     {
@@ -557,7 +557,7 @@ QHostInfo qt_qhostinfo_lookup( const QString &name, QObject *receiver, const QSt
 
 void qt_qhostinfo_clear_cache()
 {
-    QAbstractHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
     if ( manager )
     {
@@ -567,7 +567,7 @@ void qt_qhostinfo_clear_cache()
 
 void qt_qhostinfo_enable_cache( bool e )
 {
-    QAbstractHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
     if ( manager )
     {
@@ -577,7 +577,7 @@ void qt_qhostinfo_enable_cache( bool e )
 
 void qt_qhostinfo_cache_inject( const QString &hostname, const QHostInfo &resolution )
 {
-    QAbstractHostInfoLookupManager *manager = cs_HostInfoLookupManager();
+    QAbstractHostInfoLookupManager *manager = lscs_HostInfoLookupManager();
 
     if ( ! manager || ! manager->cache.isEnabled() )
     {
@@ -654,5 +654,5 @@ void QHostInfoCache::clear()
 
 QAbstractHostInfoLookupManager *QAbstractHostInfoLookupManager::globalInstance()
 {
-    return cs_HostInfoLookupManager();
+    return lscs_HostInfoLookupManager();
 }

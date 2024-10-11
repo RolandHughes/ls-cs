@@ -49,8 +49,8 @@ class QGLTexture;
 class QGLTextureDestroyer;
 class QGLContextResourceBase;
 
-QString cs_glGetString( GLenum data );
-QString cs_glGetStringI( GLenum data, GLuint index );
+QString lscs_glGetString( GLenum data );
+QString lscs_glGetStringI( GLenum data, GLuint index );
 
 class QGLFormatPrivate
 {

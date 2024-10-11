@@ -31,13 +31,13 @@
 
 #include <algorithm>
 
-QDnsLookupThreadPool *cs_DnsLookupThreadPool()
+QDnsLookupThreadPool *lscs_DnsLookupThreadPool()
 {
     static QDnsLookupThreadPool retval;
     return &retval;
 }
 
-QThreadStorage<bool *> *cs_DnsLookupSeedStorage()
+QThreadStorage<bool *> *lscs_DnsLookupSeedStorage()
 {
     static QThreadStorage<bool *> retval;
     return &retval;
@@ -165,7 +165,7 @@ static void qt_qdnsservicerecord_sort( QList<QDnsServiceRecord> &records )
 }
 
 const char *QDnsLookupPrivate::msgNoIpV6NameServerAdresses =
-    cs_mark_tr( "QDnsLookupRunnable", "IPv6 addresses for nameservers are currently not supported" );
+    lscs_mark_tr( "QDnsLookupRunnable", "IPv6 addresses for nameservers are currently not supported" );
 
 QDnsLookup::QDnsLookup( QObject *parent )
     : QObject( parent ), d_ptr( new QDnsLookupPrivate )
@@ -323,7 +323,7 @@ void QDnsLookup::lookup()
     connect( d->runnable, &QDnsLookupRunnable::finished,
              this, &QDnsLookup::_q_lookupFinished, Qt::BlockingQueuedConnection );
 
-    cs_DnsLookupThreadPool()->start( d->runnable );
+    lscs_DnsLookupThreadPool()->start( d->runnable );
 }
 
 QDnsDomainNameRecord::QDnsDomainNameRecord()
@@ -557,10 +557,10 @@ void QDnsLookupRunnable::run()
     query( requestType, requestName, nameserver, &reply );
 
     // Sort results.
-    if ( ! cs_DnsLookupSeedStorage()->hasLocalData() )
+    if ( ! lscs_DnsLookupSeedStorage()->hasLocalData() )
     {
         qsrand( QTime( 0, 0, 0 ).msecsTo( QTime::currentTime() ) ^ reinterpret_cast<quintptr>( this ) );
-        cs_DnsLookupSeedStorage()->setLocalData( new bool( true ) );
+        lscs_DnsLookupSeedStorage()->setLocalData( new bool( true ) );
     }
 
     qt_qdnsmailexchangerecord_sort( reply.mailExchangeRecords );

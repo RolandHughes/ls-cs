@@ -33,7 +33,7 @@
 namespace QUnicodeTables
 {
 
-extern bool cs_isTurkishLocale;
+extern bool lscs_isTurkishLocale;
 
 struct NormalizationCorrection
 {

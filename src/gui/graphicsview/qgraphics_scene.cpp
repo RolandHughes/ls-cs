@@ -4836,7 +4836,7 @@ static inline bool updateHelper( QGraphicsViewPrivate *view, QGraphicsItemPrivat
     Q_ASSERT( view );
     Q_ASSERT( item );
 
-    QWidget *tmp = QWidgetPrivate::cs_getPublic( view );
+    QWidget *tmp = QWidgetPrivate::lscs_getPublic( view );
 
     QGraphicsItem *itemq = static_cast<QGraphicsItem *>( item->q_ptr );
     QGraphicsView *viewq = static_cast<QGraphicsView *>( tmp );

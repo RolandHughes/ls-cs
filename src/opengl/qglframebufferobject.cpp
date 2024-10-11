@@ -33,7 +33,7 @@
 #include <qfont_p.h>
 #include <qpaintengineex_opengl2_p.h>
 
-QImage cs_glRead_frameBuffer( const QSize &, bool, bool );
+QImage lscs_glRead_frameBuffer( const QSize &, bool, bool );
 
 #define QGL_FUNC_CONTEXT  const QGLContext *ctx = QGLContext::currentContext();
 #define QGL_FUNCP_CONTEXT const QGLContext *ctx = QGLContext::currentContext();
@@ -937,7 +937,7 @@ QImage QGLFramebufferObject::toImage() const
         return QImage();
     }
 
-    // cs_glRead_frameBuffer does not work on a multisample FBO
+    // lscs_glRead_frameBuffer does not work on a multisample FBO
     if ( format().samples() != 0 )
     {
         QGLFramebufferObject temp( size(), QGLFramebufferObjectFormat() );
@@ -955,7 +955,7 @@ QImage QGLFramebufferObject::toImage() const
         const_cast<QGLFramebufferObject *>( this )->bind();
     }
 
-    QImage image = cs_glRead_frameBuffer( d->size, format().internalTextureFormat() != GL_RGB, true );
+    QImage image = lscs_glRead_frameBuffer( d->size, format().internalTextureFormat() != GL_RGB, true );
 
     if ( !wasBound )
     {

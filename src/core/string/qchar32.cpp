@@ -59,7 +59,7 @@ unsigned char QChar32::combiningClass() const
 }
 
 // buffer has to have a length of 3, required for Hangul decomposition
-static const char32_t *cs_internal_decomposition( uint value, int *length, int *tag, char32_t *buffer )
+static const char32_t *lscs_internal_decomposition( uint value, int *length, int *tag, char32_t *buffer )
 {
     if ( value >= Hangul_Constants::Hangul_SBase && value < Hangul_Constants::Hangul_SBase + Hangul_Constants::Hangul_SCount )
     {
@@ -100,7 +100,7 @@ QString8 QChar32::decomposition() const
     int tag;
 
     uint32_t value = unicode();
-    const char32_t *d = cs_internal_decomposition( value, &length, &tag, buffer );
+    const char32_t *d = lscs_internal_decomposition( value, &length, &tag, buffer );
 
     return QString8( d, d + length );
 }

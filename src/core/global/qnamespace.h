@@ -38,7 +38,7 @@ class QMetaObject_T;
 class Q_CORE_EXPORT Qt
 {
 public:
-    // simulate cs_gadget to avoid circular dependencies
+    // simulate lscs_gadget to avoid circular dependencies
 
     using lscs_parent = LSCSGadget_Fake_Parent;
     using lscs_class  = Qt;

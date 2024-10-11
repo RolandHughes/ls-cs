@@ -30,16 +30,16 @@ import sys
 import re
 from xml.sax.saxutils import escape, unescape
 
-import cs_enumdata
-import cs_findpath
+import lscs_enumdata
+import lscs_findpath
 
-from cs_dateconverter import convert_date
-from cs_findpath import DraftResolution
+from lscs_dateconverter import convert_date
+from lscs_findpath import DraftResolution
 
-findAlias       = cs_findpath.findAlias
-findEntry       = cs_findpath.findEntry
-findEntryInFile = cs_findpath._findEntryInFile
-findTagsInFile  = cs_findpath.findTagsInFile
+findAlias       = lscs_findpath.findAlias
+findEntry       = lscs_findpath.findEntry
+findEntryInFile = lscs_findpath._findEntryInFile
+findTagsInFile  = lscs_findpath.findTagsInFile
 
 def parse_number_format(patterns, data):
     # this is a very limited parsing of the number format for currency only.
@@ -82,7 +82,7 @@ def parse_list_pattern_part_format(pattern):
 def ordStr(c):
     if len(c) == 1:
         return str(ord(c))
-    raise cs_findpath.Error("Unable to handle value \"%s\"" % addEscapes(c))
+    raise lscs_findpath.Error("Unable to handle value \"%s\"" % addEscapes(c))
     return "##########"
 
 # the following functions are supposed to fix the problem with QLocale
@@ -120,7 +120,7 @@ def generateLocaleInfo(path):
     # skip legacy/compatibility ones
     alias = findAlias(path)
     if alias:
-        raise cs_findpath.Error("alias to \"%s\"" % alias)
+        raise lscs_findpath.Error("alias to \"%s\"" % alias)
 
     language_code = findEntryInFile(path, "identity/language",  attribute="type")[0]
     country_code  = findEntryInFile(path, "identity/territory", attribute="type")[0]
@@ -140,25 +140,25 @@ def _generateLocaleInfo(path, language_code, script_code, country_code, variant_
     # do not support variants
     # ### actually there is only one locale with variant: en_US_POSIX
     if variant_code:
-        raise cs_findpath.Error("Varients are not supported (\"%s\")" % variant_code)
+        raise lscs_findpath.Error("Varients are not supported (\"%s\")" % variant_code)
 
-    language_id = cs_enumdata.languageCodeToId(language_code)
+    language_id = lscs_enumdata.languageCodeToId(language_code)
     if language_id <= 0:
-        raise cs_findpath.Error("Unknown language code \"%s\"" % language_code)
-    language = cs_enumdata.language_list[language_id][0]
+        raise lscs_findpath.Error("Unknown language code \"%s\"" % language_code)
+    language = lscs_enumdata.language_list[language_id][0]
 
-    script_id = cs_enumdata.scriptCodeToId(script_code)
+    script_id = lscs_enumdata.scriptCodeToId(script_code)
     if script_id == -1:
-        raise cs_findpath.Error("Unknown script code \"%s\"" % script_code)
-    script = cs_enumdata.script_list[script_id][0]
+        raise lscs_findpath.Error("Unknown script code \"%s\"" % script_code)
+    script = lscs_enumdata.script_list[script_id][0]
 
     # handle fully qualified names with the territory
     if not country_code:
         return {}
-    country_id = cs_enumdata.countryCodeToId(country_code)
+    country_id = lscs_enumdata.countryCodeToId(country_code)
     if country_id <= 0:
-        raise cs_findpath.Error("Unknown country code \"%s\"" % country_code)
-    country = cs_enumdata.country_list[country_id][0]
+        raise lscs_findpath.Error("Unknown country code \"%s\"" % country_code)
+    country = lscs_enumdata.country_list[country_id][0]
 
     draft = DraftResolution.contributed
 
@@ -200,13 +200,13 @@ def _generateLocaleInfo(path, language_code, script_code, country_code, variant_
     numbering_system = None
     try:
         numbering_system = findEntry(CLDR_INPUT, path, "numbers/defaultNumberingSystem")
-    except cs_findpath.Error:
+    except lscs_findpath.Error:
         pass
 
     def findEntryDef(path, xpath, value=''):
         try:
             return findEntry(CLDR_MAIN, path, xpath)
-        except cs_findpath.Error:
+        except lscs_findpath.Error:
             return value
 
     def get_number_in_system(path, xpath, numbering_system):
@@ -214,11 +214,11 @@ def _generateLocaleInfo(path, language_code, script_code, country_code, variant_
             try:
                 return findEntry(CLDR_INPUT, path, xpath + "[numberSystem=" + numbering_system + "]")
 
-            except cs_findpath.Error:
+            except lscs_findpath.Error:
                 try:
                     return findEntry(CLDR_INPUT, path, xpath.replace("/symbols/", "/symbols[numberSystem=" + numbering_system + "]/"))
 
-                except cs_findpath.Error:
+                except lscs_findpath.Error:
                     # fallback to default
                     pass
         return findEntry(CLDR_INPUT, path, xpath)
@@ -563,15 +563,15 @@ def _parseLocale(l):
     country  = "AnyCountry"
 
     if l == "und":
-        raise cs_findpath.Error("we are treating unknown locale like C")
+        raise lscs_findpath.Error("we are treating unknown locale like C")
 
     items = l.split("_")
     language_code = items[0]
     if language_code != "und":
-        language_id = cs_enumdata.languageCodeToId(language_code)
+        language_id = lscs_enumdata.languageCodeToId(language_code)
         if language_id == -1:
-            raise cs_findpath.Error("unknown language code \"%s\"" % language_code)
-        language = cs_enumdata.language_list[language_id][0]
+            raise lscs_findpath.Error("unknown language code \"%s\"" % language_code)
+        language = lscs_enumdata.language_list[language_id][0]
 
     if len(items) > 1:
         script_code = items[1]
@@ -579,17 +579,17 @@ def _parseLocale(l):
         if len(items) > 2:
             country_code = items[2]
         if len(script_code) == 4:
-            script_id = cs_enumdata.scriptCodeToId(script_code)
+            script_id = lscs_enumdata.scriptCodeToId(script_code)
             if script_id == -1:
-                raise cs_findpath.Error("unknown script code \"%s\"" % script_code)
-            script = cs_enumdata.script_list[script_id][0]
+                raise lscs_findpath.Error("unknown script code \"%s\"" % script_code)
+            script = lscs_enumdata.script_list[script_id][0]
         else:
             country_code = script_code
         if country_code:
-            country_id = cs_enumdata.countryCodeToId(country_code)
+            country_id = lscs_enumdata.countryCodeToId(country_code)
             if country_id == -1:
-                raise cs_findpath.Error("unknown country code \"%s\"" % country_code)
-            country = cs_enumdata.country_list[country_id][0]
+                raise lscs_findpath.Error("unknown country code \"%s\"" % country_code)
+            country = lscs_enumdata.country_list[country_id][0]
 
     return (language, script, country)
 
@@ -645,7 +645,7 @@ def main():
            if not l:
                sys.stderr.write("skipping defaultContent locale \"" + file + "\"\n")
                continue
-       except cs_findpath.Error as e:
+       except lscs_findpath.Error as e:
            sys.stderr.write("skipping defaultContent locale \"%s\" (%s)\n" % (file, str(e)))
            continue
 
@@ -657,7 +657,7 @@ def main():
            if not l:
                sys.stderr.write("skipping file \"" + file + "\"\n")
                continue
-       except cs_findpath.Error as e:
+       except lscs_findpath.Error as e:
            sys.stderr.write("skipping file \"%s\" (%s)\n" % (file, str(e)))
            continue
 
@@ -677,8 +677,8 @@ def main():
    print( "    <version>" + cldr_version + "</version>")
    print( "    <languageList>")
 
-   for id in range(len(cs_enumdata.language_list)):
-       l = cs_enumdata.language_list[id]
+   for id in range(len(lscs_enumdata.language_list)):
+       l = lscs_enumdata.language_list[id]
        print("        <language>")
        print("            <name>" + l[0] + "</name>")
        print("            <id>" + str(id) + "</id>")
@@ -687,8 +687,8 @@ def main():
    print("    </languageList>")
 
    print("    <scriptList>")
-   for id in range(len(cs_enumdata.script_list)):
-       l = cs_enumdata.script_list[id]
+   for id in range(len(lscs_enumdata.script_list)):
+       l = lscs_enumdata.script_list[id]
        print("        <script>")
        print("            <name>" + l[0] + "</name>")
        print("            <id>" + str(id) + "</id>")
@@ -697,8 +697,8 @@ def main():
    print("    </scriptList>")
 
    print("    <countryList>")
-   for id in range(len(cs_enumdata.country_list)):
-       l = cs_enumdata.country_list[id]
+   for id in range(len(lscs_enumdata.country_list)):
+       l = lscs_enumdata.country_list[id]
        print("        <country>")
        print("            <name>" + l[0] + "</name>")
        print("            <id>" + str(id) + "</id>")
@@ -714,12 +714,12 @@ def main():
 
        try:
            (from_language, from_script, from_country) = _parseLocale(tmp[u"from"])
-       except cs_findpath.Error as e:
+       except lscs_findpath.Error as e:
            sys.stderr.write("skipping likelySubtag \"%s\" -> \"%s\" (%s)\n" % (tmp[u"from"], tmp[u"to"], str(e)))
            continue
        try:
            (to_language, to_script, to_country) = _parseLocale(tmp[u"to"])
-       except cs_findpath.Error as e:
+       except lscs_findpath.Error as e:
            sys.stderr.write("skipping likelySubtag \"%s\" -> \"%s\" (%s)\n" % (tmp[u"from"], tmp[u"to"], str(e)))
            continue
        # substitute according to https://www.unicode.org/reports/tr35/#Likely_Subtags

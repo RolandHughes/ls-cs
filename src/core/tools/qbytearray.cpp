@@ -67,7 +67,7 @@ static int findChar( const char *str, int len, char ch, int from )
     return -1;
 }
 
-static int cs_internal_FindByteArray( const char *haystack_X, uint haystackLen, int from, const char *needle, uint needleLen )
+static int lscs_internal_FindByteArray( const char *haystack_X, uint haystackLen, int from, const char *needle, uint needleLen )
 {
     if ( from < 0 )
     {
@@ -1375,7 +1375,7 @@ int QByteArray::indexOf( const QByteArray &ba, int from ) const
         return -1;
     }
 
-    return cs_internal_FindByteArray( d->data(), static_cast<uint>( d->size ), from,
+    return lscs_internal_FindByteArray( d->data(), static_cast<uint>( d->size ), from,
                                       ba.d->data(), static_cast<uint>( origLen ) );
 }
 
@@ -1400,7 +1400,7 @@ int QByteArray::indexOf( const char *c, int from ) const
         return from;
     }
 
-    return cs_internal_FindByteArray( d->data(), static_cast<uint>( d->size ), from,
+    return lscs_internal_FindByteArray( d->data(), static_cast<uint>( d->size ), from,
                                       c, static_cast<uint>( origLen ) );
 }
 

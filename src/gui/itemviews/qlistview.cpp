@@ -2591,7 +2591,7 @@ bool QListModeViewBase::doBatchedItemLayout( const QListViewLayoutInfo &info, in
 }
 
 // internal only
-static inline int cs_vector_query( const QVector<int> &vector, int item, int start, int end )
+static inline int lscs_vector_query( const QVector<int> &vector, int item, int start, int end )
 {
     int i = ( start + end + 1 ) >> 1;
 
@@ -2621,7 +2621,7 @@ QListViewItem QListModeViewBase::indexToListViewItem( const QModelIndex &index )
         return QListViewItem();
     }
 
-    const int segment = cs_vector_query( segmentStartRows, index.row(), 0, segmentStartRows.count() - 1 );
+    const int segment = lscs_vector_query( segmentStartRows, index.row(), 0, segmentStartRows.count() - 1 );
 
     QStyleOptionViewItem options = viewOptions();
     options.rect.setSize( contentsSize );
@@ -2877,7 +2877,7 @@ QVector<QModelIndex> QListModeViewBase::intersectingSet( const QRect &area ) con
 
     // the last segment position is actually the edge of the last segment
     const int segLast = segmentPositions.count() - 2;
-    int seg = cs_vector_query( segmentPositions, segStartPosition, 0, segLast + 1 );
+    int seg = lscs_vector_query( segmentPositions, segStartPosition, 0, segLast + 1 );
 
     for ( ; seg <= segLast && segmentPositions.at( seg ) <= segEndPosition; ++seg )
     {
@@ -2889,7 +2889,7 @@ QVector<QModelIndex> QListModeViewBase::intersectingSet( const QRect &area ) con
             continue;
         }
 
-        int row = cs_vector_query( flowPositions, flowStartPosition, first, last );
+        int row = lscs_vector_query( flowPositions, flowStartPosition, first, last );
 
         for ( ; row <= last && flowPositions.at( row ) <= flowEndPosition; ++row )
         {
@@ -3069,7 +3069,7 @@ int QListModeViewBase::perItemScrollToValue( int index, int scrollValue, int vie
         else if ( ! segmentStartRows.isEmpty() )
         {
             // we are scrolling in the "segment" direction
-            int segment = cs_vector_query( segmentStartRows, index, 0, segmentStartRows.count() - 1 );
+            int segment = lscs_vector_query( segmentStartRows, index, 0, segmentStartRows.count() - 1 );
 
             int leftSegment            = segment;
             const int rightSegment     = leftSegment;

@@ -37,7 +37,7 @@ class Q_MULTIMEDIA_EXPORT QVideoWidget : public QWidget, public QMediaBindableIn
     LSCS_INTERFACES( QMediaBindableInterface )
 
     MULTI_LSCS_PROPERTY_READ( mediaObject, mediaObject )
-    MULTI_LSCS_PROPERTY_WRITE( mediaObject, cs_setMediaObject )
+    MULTI_LSCS_PROPERTY_WRITE( mediaObject, lscs_setMediaObject )
 
     MULTI_LSCS_PROPERTY_READ( fullScreen, isFullScreen )
     MULTI_LSCS_PROPERTY_WRITE( fullScreen, setFullScreen )
@@ -146,7 +146,7 @@ private:
     Q_DECLARE_PRIVATE( QVideoWidget )
 
     // wrapper
-    void cs_setMediaObject( QMediaObject *object )
+    void lscs_setMediaObject( QMediaObject *object )
     {
         setMediaObject( object );
     }

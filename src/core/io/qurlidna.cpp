@@ -2518,7 +2518,7 @@ static QSet<QString> idn_whitelist =
 
 static QStringList *user_idn_whitelist = nullptr;
 
-static bool cs_internal_idn_enabled( QStringView domain )
+static bool lscs_internal_idn_enabled( QStringView domain )
 {
     QString::const_iterator iter = domain.lastIndexOfFast( '.' );
 
@@ -2574,7 +2574,7 @@ QString qt_ACE_do( QStringView domain, AceOperation op, AceLeadingDot dot )
 
     if ( op == NormalizeAce )
     {
-        isIdnEnabled = cs_internal_idn_enabled( domain );
+        isIdnEnabled = lscs_internal_idn_enabled( domain );
     }
 
     QString retval;

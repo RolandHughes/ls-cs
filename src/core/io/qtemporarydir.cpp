@@ -69,7 +69,7 @@ static QString defaultTemplateName()
     if ( baseName.isEmpty() )
     {
 
-        baseName = "cs_temp";
+        baseName = "lscs_temp";
     }
 
     return QDir::tempPath() + '/' + baseName + "-XXXXXX";

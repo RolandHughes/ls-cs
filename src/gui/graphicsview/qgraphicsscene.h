@@ -90,7 +90,7 @@ class Q_GUI_EXPORT QGraphicsScene : public QObject
     GUI_LSCS_PROPERTY_WRITE( itemIndexMethod, setItemIndexMethod )
 
     GUI_LSCS_PROPERTY_READ( sceneRect, sceneRect )
-    GUI_LSCS_PROPERTY_WRITE( sceneRect, cs_setSceneRect )
+    GUI_LSCS_PROPERTY_WRITE( sceneRect, lscs_setSceneRect )
 
     GUI_LSCS_PROPERTY_READ( bspTreeDepth, bspTreeDepth )
     GUI_LSCS_PROPERTY_WRITE( bspTreeDepth, setBspTreeDepth )
@@ -151,7 +151,7 @@ public:
     }
 
     // wrapper for overloaded method
-    inline void cs_setSceneRect( const QRectF &rect );
+    inline void lscs_setSceneRect( const QRectF &rect );
 
     void render( QPainter *painter, const QRectF &target = QRectF(), const QRectF &source = QRectF(),
                  Qt::AspectRatioMode aspectRatioMode = Qt::KeepAspectRatio );
@@ -375,7 +375,7 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QGraphicsScene::SceneLayers )
 
-void QGraphicsScene::cs_setSceneRect( const QRectF &rect )
+void QGraphicsScene::lscs_setSceneRect( const QRectF &rect )
 {
     setSceneRect( rect );
 }

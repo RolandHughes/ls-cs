@@ -2955,7 +2955,7 @@ void QTableView::setSortingEnabled( bool enable )
         disconnect( horizontalHeader(),  &QHeaderView::sectionPressed,       this, &QTableView::selectColumn );
 
         connect( horizontalHeader(),     &QHeaderView::sortIndicatorChanged,
-                 this, cs_mp_cast<int>( &QTableView::sortByColumn ), Qt::UniqueConnection );
+                 this, lscs_mp_cast<int>( &QTableView::sortByColumn ), Qt::UniqueConnection );
 
         sortByColumn( horizontalHeader()->sortIndicatorSection(), horizontalHeader()->sortIndicatorOrder() );
 
@@ -2969,7 +2969,7 @@ void QTableView::setSortingEnabled( bool enable )
                  this, &QTableView::selectColumn, Qt::UniqueConnection );
 
         disconnect( horizontalHeader(), &QHeaderView::sortIndicatorChanged,
-                    this, cs_mp_cast<int>( &QTableView::sortByColumn ) );
+                    this, lscs_mp_cast<int>( &QTableView::sortByColumn ) );
     }
 }
 

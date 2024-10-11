@@ -211,11 +211,11 @@ int qRegisterGuiStateMachine();
 int qUnregisterGuiStateMachine();
 #endif
 
-PaletteHash *cs_app_palettes_hash();
-FontHash *cs_app_fonts_hash();
+PaletteHash *lscs_app_palettes_hash();
+FontHash *lscs_app_fonts_hash();
 
 // set up for variant system, animations
-void cs_addGuiFormulas();
+void lscs_addGuiFormulas();
 
 static bool qt_detectRTLLanguage()
 {
@@ -551,21 +551,21 @@ QApplication::~QApplication()
 
     delete QApplicationPrivate::set_palette;
     QApplicationPrivate::set_palette = nullptr;
-    cs_app_palettes_hash()->clear();
+    lscs_app_palettes_hash()->clear();
 
     delete QApplicationPrivate::sys_font;
     QApplicationPrivate::sys_font = nullptr;
 
     delete QApplicationPrivate::set_font;
     QApplicationPrivate::set_font = nullptr;
-    cs_app_fonts_hash()->clear();
+    lscs_app_fonts_hash()->clear();
 
     delete QApplicationPrivate::app_style;
     QApplicationPrivate::app_style = nullptr;
 
 #ifndef QT_NO_DRAGANDDROP
 
-    if ( cs_isRealGuiApp() )
+    if ( lscs_isRealGuiApp() )
     {
         delete QDragManager::self();
     }
@@ -1528,7 +1528,7 @@ void QGuiApplicationPrivate::init()
     QVariant::registerClient( &objVariant );
 
     // set up for variant system, animations
-    cs_addGuiFormulas();
+    lscs_addGuiFormulas();
 
 // set a global share context when enabled unless there is already one
 #ifndef QT_NO_OPENGL
@@ -3870,7 +3870,7 @@ void QApplicationPrivate::setPalette_helper( const QPalette &palette, const QStr
     }
 
     bool all = false;
-    PaletteHash *hash = cs_app_palettes_hash();
+    PaletteHash *hash = lscs_app_palettes_hash();
 
     if ( className.isEmpty() )
     {
@@ -3957,7 +3957,7 @@ void QApplicationPrivate::setPalette_helper( const QPalette &palette, const QStr
 void QApplication::setFont( const QFont &font, const QString &className )
 {
     bool all = false;
-    FontHash *hash = cs_app_fonts_hash();
+    FontHash *hash = lscs_app_fonts_hash();
 
     if ( className.isEmpty() )
     {

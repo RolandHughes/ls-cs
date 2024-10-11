@@ -29,7 +29,7 @@
 
 #ifndef QT_NO_NETWORKINTERFACE
 
-QNetworkInterfaceManager *cs_Manager()
+QNetworkInterfaceManager *lscs_Manager()
 {
     static QNetworkInterfaceManager retval;
     return &retval;
@@ -289,7 +289,7 @@ QList<QNetworkAddressEntry> QNetworkInterface::addressEntries() const
 QNetworkInterface QNetworkInterface::interfaceFromName( const QString &name )
 {
     QNetworkInterface result;
-    result.d = cs_Manager()->interfaceFromName( name );
+    result.d = lscs_Manager()->interfaceFromName( name );
 
     return result;
 }
@@ -297,14 +297,14 @@ QNetworkInterface QNetworkInterface::interfaceFromName( const QString &name )
 QNetworkInterface QNetworkInterface::interfaceFromIndex( int index )
 {
     QNetworkInterface result;
-    result.d = cs_Manager()->interfaceFromIndex( index );
+    result.d = lscs_Manager()->interfaceFromIndex( index );
 
     return result;
 }
 
 QList<QNetworkInterface> QNetworkInterface::allInterfaces()
 {
-    QList<QSharedDataPointer<QNetworkInterfacePrivate> > privs = cs_Manager()->allInterfaces();
+    QList<QSharedDataPointer<QNetworkInterfacePrivate> > privs = lscs_Manager()->allInterfaces();
     QList<QNetworkInterface> result;
 
     for ( const QSharedDataPointer<QNetworkInterfacePrivate> &p : privs )
@@ -319,7 +319,7 @@ QList<QNetworkInterface> QNetworkInterface::allInterfaces()
 
 QList<QHostAddress> QNetworkInterface::allAddresses()
 {
-    QList<QSharedDataPointer<QNetworkInterfacePrivate> > privs = cs_Manager()->allInterfaces();
+    QList<QSharedDataPointer<QNetworkInterfacePrivate> > privs = lscs_Manager()->allInterfaces();
     QList<QHostAddress> result;
 
     for ( const QSharedDataPointer<QNetworkInterfacePrivate> &p : privs )

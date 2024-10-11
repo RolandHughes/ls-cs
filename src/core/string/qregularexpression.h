@@ -635,7 +635,7 @@ private:
 
 template <typename S> QRegularExpression<S>::QRegularExpression( const S &pattern, QPatternOptionFlags options )
 {
-    S regex_pattern = cs_internal_regexp_toCanonical( pattern, options );
+    S regex_pattern = lscs_internal_regexp_toCanonical( pattern, options );
 
     m_patternOptions = options;
     setPattern( regex_pattern );
@@ -1537,7 +1537,7 @@ static S wc2rx( const S &str, bool enableEscaping )
 }
 
 template <typename S>
-S cs_internal_regexp_toCanonical( const S &pattern, QPatternOptionFlags flags )
+S lscs_internal_regexp_toCanonical( const S &pattern, QPatternOptionFlags flags )
 {
     if ( flags & QPatternOption::WildcardOption )
     {

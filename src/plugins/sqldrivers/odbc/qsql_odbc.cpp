@@ -248,7 +248,7 @@ void QODBCResultPrivate::updateStmtHandleState( const QSqlDriver *driver )
     disconnectCount = obj->disconnectCount;
 }
 
-static QString cs_warnHandle( int handleType, SQLHANDLE handle, int *nativeCode = nullptr )
+static QString lscs_warnHandle( int handleType, SQLHANDLE handle, int *nativeCode = nullptr )
 {
     SQLINTEGER nativeCode_ = 0;
     SQLSMALLINT msgLen     = 0;
@@ -307,19 +307,19 @@ static QString cs_warnHandle( int handleType, SQLHANDLE handle, int *nativeCode 
     return result;
 }
 
-static QString cs_warnODBC( const SQLHANDLE hStmt, const SQLHANDLE envHandle = nullptr,
+static QString lscs_warnODBC( const SQLHANDLE hStmt, const SQLHANDLE envHandle = nullptr,
                             const SQLHANDLE pDbC = nullptr, int *nativeCode = nullptr )
 {
     QString result;
 
     if ( envHandle != nullptr )
     {
-        result += cs_warnHandle( SQL_HANDLE_ENV, envHandle, nativeCode );
+        result += lscs_warnHandle( SQL_HANDLE_ENV, envHandle, nativeCode );
     }
 
     if ( pDbC != nullptr )
     {
-        const QString dMessage = cs_warnHandle( SQL_HANDLE_DBC, pDbC, nativeCode );
+        const QString dMessage = lscs_warnHandle( SQL_HANDLE_DBC, pDbC, nativeCode );
 
         if ( ! dMessage.isEmpty() )
         {
@@ -334,7 +334,7 @@ static QString cs_warnODBC( const SQLHANDLE hStmt, const SQLHANDLE envHandle = n
 
     if ( hStmt != nullptr )
     {
-        const QString hMessage = cs_warnHandle( SQL_HANDLE_STMT, hStmt, nativeCode );
+        const QString hMessage = lscs_warnHandle( SQL_HANDLE_STMT, hStmt, nativeCode );
 
         if ( ! hMessage.isEmpty() )
         {
@@ -350,35 +350,35 @@ static QString cs_warnODBC( const SQLHANDLE hStmt, const SQLHANDLE envHandle = n
     return result;
 }
 
-static QString cs_warnODBC( const QODBCResultPrivate *odbc, int *nativeCode = nullptr )
+static QString lscs_warnODBC( const QODBCResultPrivate *odbc, int *nativeCode = nullptr )
 {
-    return cs_warnODBC( odbc->hStmt, odbc->dpEnv(), odbc->dpDbc(), nativeCode );
+    return lscs_warnODBC( odbc->hStmt, odbc->dpEnv(), odbc->dpDbc(), nativeCode );
 }
 
-static QString cs_warnODBC( const QODBCDriverPrivate *odbc, int *nativeCode = nullptr )
+static QString lscs_warnODBC( const QODBCDriverPrivate *odbc, int *nativeCode = nullptr )
 {
-    return cs_warnODBC( nullptr, odbc->hEnv, odbc->hDbc, nativeCode );
+    return lscs_warnODBC( nullptr, odbc->hEnv, odbc->hDbc, nativeCode );
 }
 
 static void qSqlWarning( const QString &message, const QODBCResultPrivate *odbc )
 {
-    qWarning() << message << " Error:" << cs_warnODBC( odbc );
+    qWarning() << message << " Error:" << lscs_warnODBC( odbc );
 }
 
 static void qSqlWarning( const QString &message, const QODBCDriverPrivate *odbc )
 {
-    qWarning() << message << " Error:" << cs_warnODBC( odbc );
+    qWarning() << message << " Error:" << lscs_warnODBC( odbc );
 }
 
 static void qSqlWarning( const QString &message, const SQLHANDLE hStmt )
 {
-    qWarning() << message << " Error:" << cs_warnODBC( hStmt );
+    qWarning() << message << " Error:" << lscs_warnODBC( hStmt );
 }
 
 static QSqlError qMakeError( const QString &err, QSqlError::ErrorType type, const QODBCResultPrivate *p )
 {
     int nativeCode  = -1;
-    QString message = cs_warnODBC( p, &nativeCode );
+    QString message = lscs_warnODBC( p, &nativeCode );
 
     return QSqlError( "QODBC: " + err, message, type, QString::number( nativeCode ) );
 }
@@ -386,9 +386,9 @@ static QSqlError qMakeError( const QString &err, QSqlError::ErrorType type, cons
 static QSqlError qMakeError( const QString &err, QSqlError::ErrorType type, const QODBCDriverPrivate *p )
 {
     int nativeCode = -1;
-    QString message = cs_warnODBC( p, &nativeCode );
+    QString message = lscs_warnODBC( p, &nativeCode );
 
-    return QSqlError( "QODBC: " + err, cs_warnODBC( p ), type, QString::number( nativeCode ) );
+    return QSqlError( "QODBC: " + err, lscs_warnODBC( p ), type, QString::number( nativeCode ) );
 }
 
 static QVariant::Type qDecodeODBCType( SQLSMALLINT sqltype, bool isSigned = true )
@@ -538,7 +538,7 @@ static QString qGetStringData( SQLHANDLE hStmt, int column, int colSize, bool un
             }
             else
             {
-                qWarning() << "qGetStringData: Error while fetching data (" << cs_warnHandle( SQL_HANDLE_STMT, hStmt ) << ')';
+                qWarning() << "qGetStringData: Error while fetching data (" << lscs_warnHandle( SQL_HANDLE_STMT, hStmt ) << ')';
                 fieldVal.clear();
                 break;
             }
@@ -591,7 +591,7 @@ static QString qGetStringData( SQLHANDLE hStmt, int column, int colSize, bool un
             }
             else
             {
-                qWarning() << "qGetStringData: Error while fetching data (" << cs_warnHandle( SQL_HANDLE_STMT, hStmt ) << ')';
+                qWarning() << "qGetStringData: Error while fetching data (" << lscs_warnHandle( SQL_HANDLE_STMT, hStmt ) << ')';
                 fieldVal.clear();
                 break;
             }
@@ -2031,7 +2031,7 @@ bool QODBCResult::exec()
 
         if ( r != SQL_SUCCESS )
         {
-            qWarning() << "QODBCResult::exec: unable to bind variable:" << cs_warnODBC( d );
+            qWarning() << "QODBCResult::exec: unable to bind variable:" << lscs_warnODBC( d );
             setLastError( qMakeError( QCoreApplication::translate( "QODBCResult",
                                       "Unable to bind variable" ), QSqlError::StatementError, d ) );
             return false;
@@ -2042,7 +2042,7 @@ bool QODBCResult::exec()
 
     if ( r != SQL_SUCCESS && r != SQL_SUCCESS_WITH_INFO && r != SQL_NO_DATA )
     {
-        qWarning() << "QODBCResult::exec: Unable to execute statement:" << cs_warnODBC( d );
+        qWarning() << "QODBCResult::exec: Unable to execute statement:" << lscs_warnODBC( d );
         setLastError( qMakeError( QCoreApplication::translate( "QODBCResult",
                                   "Unable to execute statement" ), QSqlError::StatementError, d ) );
         return false;
@@ -2239,7 +2239,7 @@ bool QODBCResult::nextResult()
         if ( r == SQL_SUCCESS_WITH_INFO )
         {
             int nativeCode  = -1;
-            QString message = cs_warnODBC( d, &nativeCode );
+            QString message = lscs_warnODBC( d, &nativeCode );
             qWarning() << "QODBCResult::nextResult():" << message;
 
         }
@@ -2965,7 +2965,7 @@ QStringList QODBCDriver::tables( QSql::TableType type ) const
     if ( r != SQL_SUCCESS && r != SQL_SUCCESS_WITH_INFO && r != SQL_NO_DATA )
     {
         qWarning() << "QODBCDriver::tables failed to retrieve table/view list: (" << r << ","
-                   << cs_warnHandle( SQL_HANDLE_STMT, hStmt ) << ")";
+                   << lscs_warnHandle( SQL_HANDLE_STMT, hStmt ) << ")";
         return QStringList();
     }
 

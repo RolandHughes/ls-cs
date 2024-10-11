@@ -219,7 +219,7 @@ public:
     static void split( const QItemSelectionRange &range, const QItemSelectionRange &other, QItemSelection *result );
 
 private:
-    void cs_internal_merge( const QItemSelection &other, uint command );
+    void lscs_internal_merge( const QItemSelection &other, uint command );
 };
 
 class Q_GUI_EXPORT QItemSelectionModel : public QObject
@@ -374,7 +374,7 @@ inline uint qHash( const QItemSelectionRange & )
 template <typename T>
 void QItemSelection::merge( const QItemSelection &other, typename T::SelectionFlags command )
 {
-    cs_internal_merge( other, command );
+    lscs_internal_merge( other, command );
 }
 
 #endif

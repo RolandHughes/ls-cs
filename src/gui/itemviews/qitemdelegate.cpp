@@ -848,7 +848,7 @@ QPixmap QItemDelegate::decoration( const QStyleOptionViewItem &option, const QVa
 }
 
 // hacky but faster version of "QString::sprintf("%d-%d", i, enabled)"
-static QString cs_internal_PixmapSerial( quint64 i, bool enabled )
+static QString lscs_internal_PixmapSerial( quint64 i, bool enabled )
 {
     char32_t arr[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '-', char32_t( '0' + enabled ) };
     char32_t *ptr  = std::end( arr );
@@ -867,7 +867,7 @@ static QString cs_internal_PixmapSerial( quint64 i, bool enabled )
 
 QPixmap *QItemDelegate::selected( const QPixmap &pixmap, const QPalette &palette, bool enabled ) const
 {
-    QString key = cs_internal_PixmapSerial( pixmap.cacheKey(), enabled );
+    QString key = lscs_internal_PixmapSerial( pixmap.cacheKey(), enabled );
     QPixmap *pm = QPixmapCache::find( key );
 
     if ( ! pm )

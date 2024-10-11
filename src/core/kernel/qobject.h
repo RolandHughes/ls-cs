@@ -171,8 +171,8 @@ public:
 
     int startTimer( int interval, Qt::TimerType timerType  = Qt::CoarseTimer );
 
-    bool cs_InstanceOf( const QString &iid );
-    virtual bool cs_interface_query( const QString &data ) const;
+    bool lscs_InstanceOf( const QString &iid );
+    virtual bool lscs_interface_query( const QString &data ) const;
 
     QThread *thread() const;
 
@@ -227,10 +227,10 @@ public:
     CORE_LSCS_SLOT_2( deleteLater )
 
 protected:
-    virtual bool cs_isWidgetType() const;
-    virtual bool cs_isWindowType() const;
+    virtual bool lscs_isWidgetType() const;
+    virtual bool lscs_isWindowType() const;
 
-    void cs_forceRemoveChild();
+    void lscs_forceRemoveChild();
 
     virtual void childEvent( QChildEvent *event );
     virtual void connectNotify( const QMetaMethod &signalMethod ) const;

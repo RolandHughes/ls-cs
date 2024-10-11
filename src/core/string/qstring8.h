@@ -488,7 +488,7 @@ public:
         }
         else
         {
-            return cs_internal_find_fast( c, from );
+            return lscs_internal_find_fast( c, from );
 
         }
     }
@@ -508,7 +508,7 @@ public:
         }
         else
         {
-            return cs_internal_find_fast( str, from );
+            return lscs_internal_find_fast( str, from );
         }
     }
 
@@ -522,7 +522,7 @@ public:
         }
         else
         {
-            return cs_internal_find_fast( str, from );
+            return lscs_internal_find_fast( str, from );
         }
     }
 
@@ -548,7 +548,7 @@ public:
         }
         else
         {
-            return cs_internal_rfind_fast( c, from );
+            return lscs_internal_rfind_fast( c, from );
 
         }
     }
@@ -568,7 +568,7 @@ public:
         }
         else
         {
-            return cs_internal_rfind_fast( str, from );
+            return lscs_internal_rfind_fast( str, from );
         }
     }
 
@@ -582,7 +582,7 @@ public:
         }
         else
         {
-            return cs_internal_rfind_fast( str, from );
+            return lscs_internal_rfind_fast( str, from );
         }
     }
 
@@ -1182,10 +1182,10 @@ public:
 #endif
 
 private:
-    const_iterator cs_internal_find_fast( QChar32 c, const_iterator iter_begin ) const;
-    const_iterator cs_internal_find_fast( const QString8 &str, const_iterator iter_begin ) const;
-    const_iterator cs_internal_rfind_fast( QChar32 c, const_iterator iter_begin ) const;
-    const_iterator cs_internal_rfind_fast( const QString8 &str, const_iterator iter_begin ) const;
+    const_iterator lscs_internal_find_fast( QChar32 c, const_iterator iter_begin ) const;
+    const_iterator lscs_internal_find_fast( const QString8 &str, const_iterator iter_begin ) const;
+    const_iterator lscs_internal_rfind_fast( QChar32 c, const_iterator iter_begin ) const;
+    const_iterator lscs_internal_rfind_fast( const QString8 &str, const_iterator iter_begin ) const;
 
     iterator replace( const_iterator iter_begin, const QString8 &str )
     {
@@ -1428,7 +1428,7 @@ inline void swap( QString8 &a, QString8 &b )
     a.swap( b );
 }
 
-QString8 cs_internal_string_normalize( const QString8 &data, QString8::NormalizationForm mode,
+QString8 lscs_internal_string_normalize( const QString8 &data, QString8::NormalizationForm mode,
                                        QChar32::UnicodeVersion version, int from );
 
 #if defined(__cpp_char8_t)

@@ -44,7 +44,7 @@
 #include <qt_windows.h>
 #endif
 
-QUrl *cs_internal_lastVisitedDir()
+QUrl *lscs_internal_lastVisitedDir()
 {
     static QUrl retval;
     return &retval;
@@ -124,7 +124,7 @@ QByteArray QFileDialog::saveState() const
     }
 
     stream << history();
-    stream << *cs_internal_lastVisitedDir();
+    stream << *lscs_internal_lastVisitedDir();
 
     if ( d->usingWidgets() )
     {
@@ -182,7 +182,7 @@ bool QFileDialog::restoreState( const QByteArray &state )
 
     stream >> d->headerData >> viewMode;
 
-    setDirectoryUrl( cs_internal_lastVisitedDir()->isEmpty() ? currentDirectory : *cs_internal_lastVisitedDir() );
+    setDirectoryUrl( lscs_internal_lastVisitedDir()->isEmpty() ? currentDirectory : *lscs_internal_lastVisitedDir() );
     setViewMode( static_cast<QFileDialog::ViewMode>( viewMode ) );
 
     if ( !d->usingWidgets() )

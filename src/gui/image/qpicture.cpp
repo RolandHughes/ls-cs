@@ -1112,8 +1112,8 @@ bool QPicturePrivate::checkFormat()
         return false;
     }
 
-    int cs_start = sizeof( quint32 );             // pos of checksum word
-    int data_start = cs_start + sizeof( quint16 );
+    int lscs_start = sizeof( quint32 );             // pos of checksum word
+    int data_start = lscs_start + sizeof( quint16 );
     quint16 cs, ccs;
     QByteArray buf = pictb.buffer();              // pointer to data
 

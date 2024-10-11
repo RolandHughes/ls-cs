@@ -42,7 +42,7 @@ class QGradientPrivate;
 
 struct QBrushData;
 
-namespace cs_internal
+namespace lscs_internal
 {
 struct QBrushDataPointerDeleter
 {
@@ -116,7 +116,7 @@ public:
 
     inline bool isDetached() const;
 
-    using DataPtr = QScopedPointer<QBrushData, cs_internal::QBrushDataPointerDeleter>;
+    using DataPtr = QScopedPointer<QBrushData, lscs_internal::QBrushDataPointerDeleter>;
 
     inline DataPtr &data_ptr()
     {
@@ -133,7 +133,7 @@ private:
 
     void detach( Qt::BrushStyle newStyle );
     void init( const QColor &color, Qt::BrushStyle style );
-    QScopedPointer<QBrushData, cs_internal::QBrushDataPointerDeleter> d;
+    QScopedPointer<QBrushData, lscs_internal::QBrushDataPointerDeleter> d;
     void cleanUp( QBrushData *data );
 };
 

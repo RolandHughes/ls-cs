@@ -38,7 +38,7 @@
 #include <algorithm>
 
 // source code located in qdir.cpp
-extern QString cs_internal_normalizePath( const QString &name, bool allowUncPaths );
+extern QString lscs_internal_normalizePath( const QString &name, bool allowUncPaths );
 
 int minPositive( int value1, int value2 )
 {
@@ -547,7 +547,7 @@ inline void QUrlPrivate::appendPath( QString &appendTo, QUrl::FormattingOptions 
 
     if ( options & QUrl::NormalizePathSegments )
     {
-        thePath = cs_internal_normalizePath( path, false );
+        thePath = lscs_internal_normalizePath( path, false );
     }
 
     if ( options & QUrl::RemoveFilename )

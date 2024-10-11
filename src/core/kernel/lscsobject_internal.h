@@ -75,7 +75,7 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
         const QMetaObject *receiverMetaObject = receiver->metaObject();
         QString receiverClass = receiverMetaObject->className();
 
-        qWarning( "QObject::connect() Invalid Signal, sender: %s signalName: %s  receiver: %s", lscsPrintable( senderClass ),
+        qWarning( "QObject::connect() Invalid Signal (signal & slot method one), sender: %s signalName: %s  receiver: %s", lscsPrintable( senderClass ),
                   lscsPrintable( signalName),
                   lscsPrintable( receiverClass ) );
         return false;
@@ -84,7 +84,7 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
     // is signalMethod a signal
     if ( signalMetaMethod.methodType() != QMetaMethod::Signal )
     {
-        qWarning( "QObject::connect() Invalid Signal, sender: %s signalName: %s  signature: %s", lscsPrintable( senderClass ), lscsPrintable( signalName), lscsPrintable( signature ) );
+        qWarning( "QObject::connect() Invalid Signal (signal method not signal), sender: %s signalName: %s  signature: %s", lscsPrintable( senderClass ), lscsPrintable( signalName), lscsPrintable( signature ) );
         return false;
     }
 
@@ -143,7 +143,7 @@ bool QObject::connect( const Sender *sender, void ( SignalClass::*signalMethod )
         const QMetaObject *receiverMetaObject = receiver->metaObject();
         QString receiverClass = receiverMetaObject->className();
 
-        qWarning( "QObject::connect() Invalid Signal, sender: %s signalName: %s receiver: %s", lscsPrintable( senderClass ),
+        qWarning( "QObject::connect() Invalid Signal (146 lambda one), sender: %s signalName: %s receiver: %s", lscsPrintable( senderClass ),
                   lscsPrintable( signalName ),
                   lscsPrintable( receiverClass ) );
         return false;
@@ -258,7 +258,7 @@ bool QObject::disconnect( const Sender *sender, void ( SignalClass::*signalMetho
 }
 
 template<class ...Ts>
-bool cs_factory_interface_query( const QString &data )
+bool lscs_factory_interface_query( const QString &data )
 {
     std::vector<QString> vector = { qobject_interface_iid<Ts *>()... };
 
@@ -293,7 +293,7 @@ bool QMetaObject::invokeMethod( QObject *object, const QString &member, Qt::Conn
     }
 
     // signature of the method being invoked
-    QString sig = member + "(" + cs_argName( Vs... ) + ")";
+    QString sig = member + "(" + lscs_argName( Vs... ) + ")";
 
     const QMetaObject *metaObject = object->metaObject();
     int index = metaObject->indexOfMethod( sig );
@@ -347,7 +347,7 @@ bool QMetaObject::invokeMethod( QObject *object, const QString &member, Qt::Conn
         return false;
     }
 
-    QString sig = member + "(" + cs_argName( Vs... ) + ")";
+    QString sig = member + "(" + lscs_argName( Vs... ) + ")";
 
     const QMetaObject *metaObject = object->metaObject();
     int index = metaObject->indexOfMethod( sig );

@@ -142,7 +142,7 @@ Q_GUI_EXPORT int qt_defaultDpiX()
         return 96;
     }
 
-    if ( ! qApp->cs_isRealGuiApp() )
+    if ( ! qApp->lscs_isRealGuiApp() )
     {
         return 75;
     }
@@ -163,7 +163,7 @@ Q_GUI_EXPORT int qt_defaultDpiY()
         return 96;
     }
 
-    if ( ! qApp->cs_isRealGuiApp() )
+    if ( ! qApp->lscs_isRealGuiApp() )
     {
         return 75;
     }

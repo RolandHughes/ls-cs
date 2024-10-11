@@ -113,7 +113,7 @@ private:
     QHttpSocketEngineHandler *httpSocketEngineHandler;
 };
 
-QGlobalNetworkProxy *cs_GlobalNetworkProxy()
+QGlobalNetworkProxy *lscs_GlobalNetworkProxy()
 {
     static QGlobalNetworkProxy retval;
     return &retval;
@@ -257,7 +257,7 @@ QNetworkProxy::QNetworkProxy()
     // you don't have any socket engine handler created when directly setting
     // a proxy to the socket
 
-    cs_GlobalNetworkProxy();
+    lscs_GlobalNetworkProxy();
 }
 
 QNetworkProxy::QNetworkProxy( ProxyType type, const QString &hostName, quint16 port,
@@ -267,7 +267,7 @@ QNetworkProxy::QNetworkProxy( ProxyType type, const QString &hostName, quint16 p
     // make sure we have QGlobalNetworkProxy singleton created, otherwise you don't have
     // any socket engine handler created when directly setting a proxy to a socket
 
-    cs_GlobalNetworkProxy();
+    lscs_GlobalNetworkProxy();
 }
 
 QNetworkProxy::QNetworkProxy( const QNetworkProxy &other )
@@ -369,7 +369,7 @@ quint16 QNetworkProxy::port() const
 
 void QNetworkProxy::setApplicationProxy( const QNetworkProxy &networkProxy )
 {
-    QGlobalNetworkProxy *obj = cs_GlobalNetworkProxy();
+    QGlobalNetworkProxy *obj = lscs_GlobalNetworkProxy();
 
     // do not allow setting the proxy to DefaultProxy
 
@@ -385,7 +385,7 @@ void QNetworkProxy::setApplicationProxy( const QNetworkProxy &networkProxy )
 
 QNetworkProxy QNetworkProxy::applicationProxy()
 {
-    QGlobalNetworkProxy *obj = cs_GlobalNetworkProxy();
+    QGlobalNetworkProxy *obj = lscs_GlobalNetworkProxy();
 
     return obj->applicationProxy();
 }
@@ -669,13 +669,13 @@ void QNetworkProxyFactory::setUseSystemConfiguration( bool enable )
 
 void QNetworkProxyFactory::setApplicationProxyFactory( QNetworkProxyFactory *factory )
 {
-    QGlobalNetworkProxy *obj = cs_GlobalNetworkProxy();
+    QGlobalNetworkProxy *obj = lscs_GlobalNetworkProxy();
     obj->setApplicationProxyFactory( factory );
 }
 
 QList<QNetworkProxy> QNetworkProxyFactory::proxyForQuery( const QNetworkProxyQuery &query )
 {
-    QGlobalNetworkProxy *obj = cs_GlobalNetworkProxy();
+    QGlobalNetworkProxy *obj = lscs_GlobalNetworkProxy();
     return obj->proxyForQuery( query );
 }
 

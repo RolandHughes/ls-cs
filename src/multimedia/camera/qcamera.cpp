@@ -283,7 +283,7 @@ void QCameraPrivate::updateLockStatus()
 
     if ( ! supressLockChangedSignal && oldStatus != lockStatus )
     {
-        emit q->cs_lockStatusChanged( lockStatus, lockChangeReason );
+        emit q->lscs_lockStatusChanged( lockStatus, lockChangeReason );
         emit q->lockStatusChanged( lockStatus, lockChangeReason );
 
         if ( lockStatus == QCamera::Locked )

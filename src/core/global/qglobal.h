@@ -1073,52 +1073,52 @@ typename Wrapper::pointer qGetPtrHelper( const Wrapper &p )
 
 
 // not used in copperspice
-#define QT_TR_NOOP(text)                            cs_mark_tr_old(text)
-#define QT_TRANSLATE_NOOP3(context, text, comment)  cs_mark_tr_old(text, comment)
+#define QT_TR_NOOP(text)                            lscs_mark_tr_old(text)
+#define QT_TRANSLATE_NOOP3(context, text, comment)  lscs_mark_tr_old(text, comment)
 
 // used internally
-#define QT_TRANSLATE_NOOP(context, text)            cs_mark_tr_old(text)
+#define QT_TRANSLATE_NOOP(context, text)            lscs_mark_tr_old(text)
 
 // not used in copperspice
-#define QT_TRID_NOOP(id)                            cs_mark_tr_old(id)
+#define QT_TRID_NOOP(id)                            lscs_mark_tr_old(id)
 
 
-[[deprecated]] constexpr const char *cs_mark_tr_old( const char *text )
+[[deprecated]] constexpr const char *lscs_mark_tr_old( const char *text )
 {
     return text;
 }
 
-[[deprecated]] constexpr std::pair<const char *, const char *> cs_mark_tr_old( const char *text, const char *comment )
+[[deprecated]] constexpr std::pair<const char *, const char *> lscs_mark_tr_old( const char *text, const char *comment )
 {
     return {text, comment};
 }
 
-constexpr const char *cs_mark_tr( const char *text )
+constexpr const char *lscs_mark_tr( const char *text )
 {
     return text;
 }
 
 // used internally in copperspice
-constexpr const char *cs_mark_tr( const char *context, const char *text )
+constexpr const char *lscs_mark_tr( const char *context, const char *text )
 {
     ( void ) context;
     return text;
 }
 
 template <typename S = QString>
-S cs_mark_string_tr( const char *context, const char *text )
+S lscs_mark_string_tr( const char *context, const char *text )
 {
     ( void ) context;
     return S::fromUtf8( text );
 }
 
-constexpr std::pair<const char *, const char *> cs_mark_tr( const char *context, const char *text, const char *comment )
+constexpr std::pair<const char *, const char *> lscs_mark_tr( const char *context, const char *text, const char *comment )
 {
     ( void ) context;
     return {text, comment};
 }
 
-constexpr const char *cs_mark_tr_id( const char *id )
+constexpr const char *lscs_mark_tr_id( const char *id )
 {
     return id;
 }

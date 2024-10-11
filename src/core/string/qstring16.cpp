@@ -38,14 +38,14 @@
 
 #include <array>
 
-static bool cs_internal_quickCheck( QString16::const_iterator &first_iter, QString16::const_iterator last_iter,
+static bool lscs_internal_quickCheck( QString16::const_iterator &first_iter, QString16::const_iterator last_iter,
                                     QString16::NormalizationForm mode );
 
-static QString16 cs_internal_decompose( QString16::const_iterator first_iter, QString16::const_iterator last_iter,
+static QString16 lscs_internal_decompose( QString16::const_iterator first_iter, QString16::const_iterator last_iter,
                                         bool canonical, QChar32::UnicodeVersion version );
 
-static QString16 cs_internal_canonicalOrder( const QString16 &str, QChar32::UnicodeVersion version );
-static QString16 cs_internal_compose( const QString16 &str, QChar32::UnicodeVersion version );
+static QString16 lscs_internal_canonicalOrder( const QString16 &str, QChar32::UnicodeVersion version );
+static QString16 lscs_internal_compose( const QString16 &str, QChar32::UnicodeVersion version );
 
 #if ! defined(CSTR_LESS_THAN)
 #define CSTR_LESS_THAN       1
@@ -63,7 +63,7 @@ QString16::QString16( size_type numOfChars, QChar32 c )
 {
 }
 
-QString16::const_iterator QString16::cs_internal_find_fast( QChar32 c, const_iterator iter_begin ) const
+QString16::const_iterator QString16::lscs_internal_find_fast( QChar32 c, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -93,14 +93,14 @@ QString16::const_iterator QString16::cs_internal_find_fast( QChar32 c, const_ite
     }
     else
     {
-        return cs_internal_find_fast( strFolded, iter_begin );
+        return lscs_internal_find_fast( strFolded, iter_begin );
 
     }
 
     return iter_end;
 }
 
-QString16::const_iterator QString16::cs_internal_find_fast( const QString16 &str, const_iterator iter_begin ) const
+QString16::const_iterator QString16::lscs_internal_find_fast( const QString16 &str, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -155,7 +155,7 @@ QString16::const_iterator QString16::cs_internal_find_fast( const QString16 &str
     return iter_end;
 }
 
-QString16::const_iterator QString16::cs_internal_rfind_fast( QChar32 c, const_iterator iter_begin ) const
+QString16::const_iterator QString16::lscs_internal_rfind_fast( QChar32 c, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -185,14 +185,14 @@ QString16::const_iterator QString16::cs_internal_rfind_fast( QChar32 c, const_it
     }
     else
     {
-        return cs_internal_rfind_fast( strFolded, iter_begin );
+        return lscs_internal_rfind_fast( strFolded, iter_begin );
 
     }
 
     return iter_end;
 }
 
-QString16::const_iterator QString16::cs_internal_rfind_fast( const QString16 &str, const_iterator iter_begin ) const
+QString16::const_iterator QString16::lscs_internal_rfind_fast( const QString16 &str, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -975,7 +975,7 @@ QStringView16 QString16::midView( const_iterator iter, size_type numOfChars ) co
 
 QString16 QString16::normalized( QString16::NormalizationForm mode, QChar32::UnicodeVersion version ) const
 {
-    QString16 retval = cs_internal_string_normalize( *this, mode, version, 0 );
+    QString16 retval = lscs_internal_string_normalize( *this, mode, version, 0 );
     return retval;
 }
 
@@ -1996,7 +1996,7 @@ QDataStream &operator<<( QDataStream &stream, const QString16 &str )
 }
 
 // normalization functions
-QString16 cs_internal_string_normalize( const QString16 &data, QString16::NormalizationForm mode,
+QString16 lscs_internal_string_normalize( const QString16 &data, QString16::NormalizationForm mode,
                                         QChar32::UnicodeVersion version, int from )
 {
     QString16 retval;
@@ -2054,7 +2054,7 @@ QString16 cs_internal_string_normalize( const QString16 &data, QString16::Normal
 
 
     // ** 1
-    if ( cs_internal_quickCheck( first_iter, last_iter, mode ) )
+    if ( lscs_internal_quickCheck( first_iter, last_iter, mode ) )
     {
         // nothing to normalize
         return data;
@@ -2063,10 +2063,10 @@ QString16 cs_internal_string_normalize( const QString16 &data, QString16::Normal
     // ** 2
     retval.assign( data.begin(), first_iter );
 
-    retval += cs_internal_decompose( first_iter, last_iter, mode < QString16::NormalizationForm_KD, version );
+    retval += lscs_internal_decompose( first_iter, last_iter, mode < QString16::NormalizationForm_KD, version );
 
     // ** 3
-    retval = cs_internal_canonicalOrder( retval, version );
+    retval = lscs_internal_canonicalOrder( retval, version );
 
     if ( mode == QString16::NormalizationForm_D || mode == QString16::NormalizationForm_KD )
     {
@@ -2074,12 +2074,12 @@ QString16 cs_internal_string_normalize( const QString16 &data, QString16::Normal
     }
 
     // ** 4
-    retval = cs_internal_compose( retval, version );
+    retval = lscs_internal_compose( retval, version );
 
     return retval;
 }
 
-bool cs_internal_quickCheck( QString16::const_iterator &first_iter, QString16::const_iterator last_iter,
+bool lscs_internal_quickCheck( QString16::const_iterator &first_iter, QString16::const_iterator last_iter,
                              QString16::NormalizationForm mode )
 {
     // method one
@@ -2133,7 +2133,7 @@ bool cs_internal_quickCheck( QString16::const_iterator &first_iter, QString16::c
 }
 
 // buffer has to have a length of 3, required for Hangul decomposition
-static const char32_t *cs_internal_decompose_2( char32_t ucs4, int *length, int *tag, char32_t *buffer )
+static const char32_t *lscs_internal_decompose_2( char32_t ucs4, int *length, int *tag, char32_t *buffer )
 {
     if ( ucs4 >= Hangul_Constants::Hangul_SBase && ucs4 < Hangul_Constants::Hangul_SBase + Hangul_Constants::Hangul_SCount )
     {
@@ -2166,7 +2166,7 @@ static const char32_t *cs_internal_decompose_2( char32_t ucs4, int *length, int 
     return decomposition + 1;
 }
 
-QString16 cs_internal_decompose( QString16::const_iterator first_iter, QString16::const_iterator last_iter,
+QString16 lscs_internal_decompose( QString16::const_iterator first_iter, QString16::const_iterator last_iter,
                                  bool canonical, QChar32::UnicodeVersion version )
 {
     // method two
@@ -2192,7 +2192,7 @@ QString16 cs_internal_decompose( QString16::const_iterator first_iter, QString16
             continue;
         }
 
-        const char32_t *strDecomp = cs_internal_decompose_2( uc.unicode(), &length, &tag, buffer );
+        const char32_t *strDecomp = lscs_internal_decompose_2( uc.unicode(), &length, &tag, buffer );
 
         if ( ! strDecomp || ( canonical && tag != QChar32::Canonical ) )
         {
@@ -2215,7 +2215,7 @@ QString16 cs_internal_decompose( QString16::const_iterator first_iter, QString16
             else
             {
                 QString16 tmp = c;
-                tmp = cs_internal_decompose( tmp.cbegin(), tmp.cend(), canonical, version );
+                tmp = lscs_internal_decompose( tmp.cbegin(), tmp.cend(), canonical, version );
                 retval.append( tmp );
 
             }
@@ -2225,7 +2225,7 @@ QString16 cs_internal_decompose( QString16::const_iterator first_iter, QString16
     return retval;
 }
 
-QString16 cs_internal_canonicalOrder( const QString16 &str, QChar32::UnicodeVersion version )
+QString16 lscs_internal_canonicalOrder( const QString16 &str, QChar32::UnicodeVersion version )
 {
     // method three
     QString16 retval;
@@ -2286,7 +2286,7 @@ QString16 cs_internal_canonicalOrder( const QString16 &str, QChar32::UnicodeVers
     return retval;
 }
 
-static char32_t inline cs_internal_ligature( char32_t u1, char32_t u2 )
+static char32_t inline lscs_internal_ligature( char32_t u1, char32_t u2 )
 {
     char32_t retval = U'\0';
 
@@ -2344,7 +2344,7 @@ static char32_t inline cs_internal_ligature( char32_t u1, char32_t u2 )
     return retval;
 }
 
-static QString16 cs_internal_compose( const QString16 &str, QChar32::UnicodeVersion version )
+static QString16 lscs_internal_compose( const QString16 &str, QChar32::UnicodeVersion version )
 {
     // method four
     QString16 retval;
@@ -2381,7 +2381,7 @@ static QString16 cs_internal_compose( const QString16 &str, QChar32::UnicodeVers
         if ( iterBeg >= first_iter && ( iter == iterEnd || combining > lastCombining ) )
         {
             // form ligature with prior code point
-            char32_t ligature = cs_internal_ligature( codePointBeg, ucValue );
+            char32_t ligature = lscs_internal_ligature( codePointBeg, ucValue );
 
             if ( ligature != U'\0' )
             {

@@ -446,7 +446,7 @@ void QNetworkConfigurationManagerPrivate::updateConfigurations()
 
         for ( auto item : keySet )
         {
-            if ( QBearerEngine *engine = cs_load_plugin<QBearerEngine, QBearerEnginePlugin>( pluginLoader, item ) )
+            if ( QBearerEngine *engine = lscs_load_plugin<QBearerEngine, QBearerEnginePlugin>( pluginLoader, item ) )
             {
 
                 if ( item == "generic" )
@@ -464,15 +464,15 @@ void QNetworkConfigurationManagerPrivate::updateConfigurations()
                          this, &QNetworkConfigurationManagerPrivate::updateConfigurations, Qt::QueuedConnection );
 
                 connect( engine, &QBearerEngine::configurationAdded,
-                         this, cs_mp_cast<QNetworkConfigurationPrivatePointer>( &QNetworkConfigurationManagerPrivate::configurationAdded ),
+                         this, lscs_mp_cast<QNetworkConfigurationPrivatePointer>( &QNetworkConfigurationManagerPrivate::configurationAdded ),
                          Qt::QueuedConnection );
 
                 connect( engine, &QBearerEngine::configurationRemoved,
-                         this, cs_mp_cast<QNetworkConfigurationPrivatePointer>( &QNetworkConfigurationManagerPrivate::configurationRemoved ),
+                         this, lscs_mp_cast<QNetworkConfigurationPrivatePointer>( &QNetworkConfigurationManagerPrivate::configurationRemoved ),
                          Qt::QueuedConnection );
 
                 connect( engine, &QBearerEngine::configurationChanged,
-                         this, cs_mp_cast<QNetworkConfigurationPrivatePointer>( &QNetworkConfigurationManagerPrivate::configurationChanged ),
+                         this, lscs_mp_cast<QNetworkConfigurationPrivatePointer>( &QNetworkConfigurationManagerPrivate::configurationChanged ),
                          Qt::QueuedConnection );
             }
         }

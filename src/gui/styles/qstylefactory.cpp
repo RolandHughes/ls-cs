@@ -112,7 +112,7 @@ QStyle *QStyleFactory::create( const QString &key )
 
     if ( ! retval )
     {
-        retval = cs_load_plugin<QStyle, QStylePlugin>( loader(), style );
+        retval = lscs_load_plugin<QStyle, QStylePlugin>( loader(), style );
     }
 
     if ( retval )

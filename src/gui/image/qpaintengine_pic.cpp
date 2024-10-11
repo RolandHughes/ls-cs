@@ -118,8 +118,8 @@ bool QPicturePaintEngine::end()
 
     d->pic_d->trecs++;
     d->s << ( quint8 ) QPicturePrivate::PdcEnd << ( quint8 ) 0;
-    int cs_start = sizeof( quint32 );              // pos of checksum word
-    int data_start = cs_start + sizeof( quint16 );
+    int lscs_start = sizeof( quint32 );              // pos of checksum word
+    int data_start = lscs_start + sizeof( quint16 );
     int brect_start = data_start + 2 * sizeof( qint16 ) + 2 * sizeof( quint8 );
     int pos = d->pic_d->pictb.pos();
     d->pic_d->pictb.seek( brect_start );
@@ -132,7 +132,7 @@ bool QPicturePaintEngine::end()
     }
 
     d->s << ( quint32 ) d->pic_d->trecs;                      // write number of records
-    d->pic_d->pictb.seek( cs_start );
+    d->pic_d->pictb.seek( lscs_start );
     QByteArray buf = d->pic_d->pictb.buffer();
     quint16 cs = ( quint16 ) qChecksum( buf.constData() + data_start, pos - data_start );
     d->s << cs;                                // write checksum

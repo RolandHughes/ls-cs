@@ -356,7 +356,7 @@ QStringList QLibraryInfo::platformPluginArguments( const QString &platformName )
     return QStringList();
 }
 
-Q_CORE_EXPORT void cs_print_build_info()
+Q_CORE_EXPORT void lscs_print_build_info()
 {
     QDate build_Date = QLibraryInfo::buildDate();
 
@@ -367,8 +367,8 @@ Q_CORE_EXPORT void cs_print_build_info()
             "   Built For:        %s\n",
             LSCS_VERSION_STR,
             build_Date.toString( "MM/dd/yyyy" ).toLatin1().constData(),
-            CsLibraryInfo::install_prefix,
-            CsLibraryInfo::built_for );
+            LsCsLibraryInfo::install_prefix,
+            LsCsLibraryInfo::built_for );
 
     fflush( stdout );
 }

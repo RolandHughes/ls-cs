@@ -8575,49 +8575,49 @@ void QGraphicsTextItem::_q_ensureVisible( const QRectF &rectF )
 }
 
 // wrapper for overloaded method
-QDeclarativeListProperty<QGraphicsObject> QGraphicsObject::cs_childrenList() const
+QDeclarativeListProperty<QGraphicsObject> QGraphicsObject::lscs_childrenList() const
 {
     Q_D( const QGraphicsItem );
     return const_cast<QGraphicsItemPrivate *>( d )->childrenList();
 }
 
 // wrapper for overloaded method
-qreal QGraphicsObject::cs_width() const
+qreal QGraphicsObject::lscs_width() const
 {
     Q_D( const QGraphicsItem );
     return d->width();
 }
 
 // wrapper for overloaded method
-void QGraphicsObject::cs_setWidth( qreal width )
+void QGraphicsObject::lscs_setWidth( qreal width )
 {
     Q_D( QGraphicsItem );
     d->setWidth( width );
 }
 
 // wrapper for overloaded method
-void QGraphicsObject::cs_resetWidth()
+void QGraphicsObject::lscs_resetWidth()
 {
     Q_D( QGraphicsItem );
     d->resetWidth();
 }
 
 // wrapper for overloaded method
-qreal QGraphicsObject::cs_height() const
+qreal QGraphicsObject::lscs_height() const
 {
     Q_D( const QGraphicsItem );
     return d->height();
 }
 
 // wrapper for overloaded method
-void QGraphicsObject::cs_setHeight( qreal height )
+void QGraphicsObject::lscs_setHeight( qreal height )
 {
     Q_D( QGraphicsItem );
     d->setHeight( height );
 }
 
 // wrapper for overloaded method
-void QGraphicsObject::cs_resetHeight()
+void QGraphicsObject::lscs_resetHeight()
 {
     Q_D( QGraphicsItem );
     d->resetHeight();

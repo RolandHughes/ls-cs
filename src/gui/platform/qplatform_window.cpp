@@ -462,7 +462,7 @@ void QPlatformWindow::requestUpdate()
     // emerald - obj->startTimer(timeout, Qt::PreciseTimer);
 
     int updateTimer = obj->startTimer( timeout );
-    obj->cs_internal_updateTimer( updateTimer );
+    obj->lscs_internal_updateTimer( updateTimer );
 }
 
 QSize QPlatformWindow::windowMinimumSize() const

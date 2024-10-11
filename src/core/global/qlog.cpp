@@ -74,19 +74,19 @@ QString qt_error_string( int errorCode )
             break;
 
         case EACCES:
-            s = cs_mark_tr( "QIODevice", "Permission denied" );
+            s = lscs_mark_tr( "QIODevice", "Permission denied" );
             break;
 
         case EMFILE:
-            s = cs_mark_tr( "QIODevice", "Too many open files" );
+            s = lscs_mark_tr( "QIODevice", "Too many open files" );
             break;
 
         case ENOENT:
-            s = cs_mark_tr( "QIODevice", "No such file or directory" );
+            s = lscs_mark_tr( "QIODevice", "No such file or directory" );
             break;
 
         case ENOSPC:
-            s = cs_mark_tr( "QIODevice", "No space left on device" );
+            s = lscs_mark_tr( "QIODevice", "No space left on device" );
             break;
 
         default:

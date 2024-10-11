@@ -228,11 +228,11 @@ QAccessibleSpinBox::QAccessibleSpinBox( QWidget *w )
 
     const QMetaObject &metaObj = QSpinBox::staticMetaObject();
 
-    int signalIndex1          = metaObj.indexOfSignal( cs_mp_cast<int>( &QSpinBox::valueChanged ) );
+    int signalIndex1          = metaObj.indexOfSignal( lscs_mp_cast<int>( &QSpinBox::valueChanged ) );
     QMetaMethod signalMethod1 = metaObj.method( signalIndex1 );
     addControllingSignal( signalMethod1 );
 
-    int signalIndex2          = metaObj.indexOfSignal( cs_mp_cast<const QString &>( &QSpinBox::valueChanged ) );
+    int signalIndex2          = metaObj.indexOfSignal( lscs_mp_cast<const QString &>( &QSpinBox::valueChanged ) );
     QMetaMethod signalMethod2 = metaObj.method( signalIndex2 );
     addControllingSignal( signalMethod2 );
 }
@@ -251,11 +251,11 @@ QAccessibleDoubleSpinBox::QAccessibleDoubleSpinBox( QWidget *widget )
 
     const QMetaObject &metaObj = QDoubleSpinBox::staticMetaObject();
 
-    int signalIndex1          = metaObj.indexOfSignal( cs_mp_cast<double>( &QDoubleSpinBox::valueChanged ) );
+    int signalIndex1          = metaObj.indexOfSignal( lscs_mp_cast<double>( &QDoubleSpinBox::valueChanged ) );
     QMetaMethod signalMethod1 = metaObj.method( signalIndex1 );
     addControllingSignal( signalMethod1 );
 
-    int signalIndex2          = metaObj.indexOfSignal( cs_mp_cast<const QString &>( &QDoubleSpinBox::valueChanged ) );
+    int signalIndex2          = metaObj.indexOfSignal( lscs_mp_cast<const QString &>( &QDoubleSpinBox::valueChanged ) );
     QMetaMethod signalMethod2 = metaObj.method( signalIndex2 );
     addControllingSignal( signalMethod2 );
 }

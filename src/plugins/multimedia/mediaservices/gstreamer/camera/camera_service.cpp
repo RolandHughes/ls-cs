@@ -76,7 +76,7 @@ CameraBinService::CameraBinService( GstElementFactory *sourceFactory, QObject *p
     m_videoInputDevice    = new QGstreamerVideoInputDeviceControl( sourceFactory, m_captureSession );
     m_imageCaptureControl = new CameraBinImageCapture( m_captureSession );
 
-    connect( m_videoInputDevice, cs_mp_cast<const QString &>( &QVideoDeviceSelectorControl::selectedDeviceChanged ),
+    connect( m_videoInputDevice, lscs_mp_cast<const QString &>( &QVideoDeviceSelectorControl::selectedDeviceChanged ),
              m_captureSession, &CameraBinSession::setDevice );
 
     if ( m_videoInputDevice->deviceCount() )

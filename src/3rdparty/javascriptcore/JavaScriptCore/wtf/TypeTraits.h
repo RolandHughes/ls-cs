@@ -246,9 +246,9 @@ template <typename T> struct RemovePointer<T *>
 
 
 // copperspice solution for type traits (used in javascript and webkit)
-class cs_alternate {};
+class lscs_alternate {};
 
-class cs_preferred : public cs_alternate {};
+class lscs_preferred : public lscs_alternate {};
 
 namespace WTF
 {

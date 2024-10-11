@@ -114,7 +114,7 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
     GUI_LSCS_PROPERTY_WRITE( enabled, setEnabled )
 
     GUI_LSCS_PROPERTY_READ( geometry, geometry )
-    GUI_LSCS_PROPERTY_WRITE( geometry, cs_setGeometry )
+    GUI_LSCS_PROPERTY_WRITE( geometry, lscs_setGeometry )
 
     GUI_LSCS_PROPERTY_READ( frameGeometry, frameGeometry )
     GUI_LSCS_PROPERTY_READ( normalGeometry, normalGeometry )
@@ -123,12 +123,12 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
     GUI_LSCS_PROPERTY_READ( y, y )
 
     GUI_LSCS_PROPERTY_READ( pos, pos )
-    GUI_LSCS_PROPERTY_WRITE( pos, cs_move )
+    GUI_LSCS_PROPERTY_WRITE( pos, lscs_move )
     GUI_LSCS_PROPERTY_DESIGNABLE( pos, false )
     GUI_LSCS_PROPERTY_STORED( pos, false )
 
     GUI_LSCS_PROPERTY_READ( size, size )
-    GUI_LSCS_PROPERTY_WRITE( size, cs_resize )
+    GUI_LSCS_PROPERTY_WRITE( size, lscs_resize )
     GUI_LSCS_PROPERTY_DESIGNABLE( size, false )
     GUI_LSCS_PROPERTY_STORED( size, false )
 
@@ -145,13 +145,13 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
     GUI_LSCS_PROPERTY_READ( minimumSizeHint, minimumSizeHint )
 
     GUI_LSCS_PROPERTY_READ( sizePolicy, sizePolicy )
-    GUI_LSCS_PROPERTY_WRITE( sizePolicy, cs_setSizePolicy )
+    GUI_LSCS_PROPERTY_WRITE( sizePolicy, lscs_setSizePolicy )
 
     GUI_LSCS_PROPERTY_READ( minimumSize, minimumSize )
-    GUI_LSCS_PROPERTY_WRITE( minimumSize, cs_setMinimumSize )
+    GUI_LSCS_PROPERTY_WRITE( minimumSize, lscs_setMinimumSize )
 
     GUI_LSCS_PROPERTY_READ( maximumSize, maximumSize )
-    GUI_LSCS_PROPERTY_WRITE( maximumSize, cs_setMaximumSize )
+    GUI_LSCS_PROPERTY_WRITE( maximumSize, lscs_setMaximumSize )
 
     GUI_LSCS_PROPERTY_READ( minimumWidth, minimumWidth )
     GUI_LSCS_PROPERTY_WRITE( minimumWidth, setMinimumWidth )
@@ -174,10 +174,10 @@ class Q_GUI_EXPORT QWidget : public QObject, public QPaintDevice
     GUI_LSCS_PROPERTY_DESIGNABLE( maximumHeight, false )
 
     GUI_LSCS_PROPERTY_READ( sizeIncrement, sizeIncrement )
-    GUI_LSCS_PROPERTY_WRITE( sizeIncrement, cs_setSizeIncrement )
+    GUI_LSCS_PROPERTY_WRITE( sizeIncrement, lscs_setSizeIncrement )
 
     GUI_LSCS_PROPERTY_READ( baseSize, baseSize )
-    GUI_LSCS_PROPERTY_WRITE( baseSize, cs_setBaseSize )
+    GUI_LSCS_PROPERTY_WRITE( baseSize, lscs_setBaseSize )
 
     GUI_LSCS_PROPERTY_READ( palette, palette )
     GUI_LSCS_PROPERTY_WRITE( palette, setPalette )
@@ -374,13 +374,13 @@ public:
     void setMinimumSize( int minw, int minh );
 
     // wrapper for overloaded property
-    inline void cs_setMinimumSize( const QSize &size );
+    inline void lscs_setMinimumSize( const QSize &size );
 
     inline void setMaximumSize( const QSize &size );
     void setMaximumSize( int maxw, int maxh );
 
     // wrapper for overloaded property
-    inline void cs_setMaximumSize( const QSize &size );
+    inline void lscs_setMaximumSize( const QSize &size );
 
     void setMinimumWidth( int minw );
     void setMinimumHeight( int minh );
@@ -392,14 +392,14 @@ public:
     void setSizeIncrement( int w, int h );
 
     // wrapper for overloaded property
-    inline void cs_setSizeIncrement( const QSize &size );
+    inline void lscs_setSizeIncrement( const QSize &size );
 
     QSize baseSize() const;
     inline void setBaseSize( const QSize &size );
     void setBaseSize( int basew, int baseh );
 
     // wrapper for overloaded property
-    inline void cs_setBaseSize( const QSize &size );
+    inline void lscs_setBaseSize( const QSize &size );
 
     void setFixedSize( const QSize &size );
     void setFixedSize( int w, int h );
@@ -650,19 +650,19 @@ public:
     void move( const QPoint &point );
 
     // wrapper for overloaded property
-    inline void cs_move( const QPoint &point );
+    inline void lscs_move( const QPoint &point );
 
     inline void resize( int w, int h );
     void resize( const QSize &size );
 
     // wrapper for overloaded property
-    inline void cs_resize( const QSize &size );
+    inline void lscs_resize( const QSize &size );
 
     inline void setGeometry( int x, int y, int w, int h );
     void setGeometry( const QRect &rect );
 
     // wrapper for overloaded property
-    inline void cs_setGeometry( const QRect &rect );
+    inline void lscs_setGeometry( const QRect &rect );
 
     QByteArray saveGeometry() const;
     bool restoreGeometry( const QByteArray &geometry );
@@ -689,7 +689,7 @@ public:
     inline void setSizePolicy( QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical );
 
     // wrapper for overloaded property
-    inline void cs_setSizePolicy( const QSizePolicy policy );
+    inline void lscs_setSizePolicy( const QSizePolicy policy );
 
     virtual int heightForWidth( int width ) const;
     virtual bool hasHeightForWidth() const;
@@ -835,7 +835,7 @@ protected:
     virtual void inputMethodEvent( QInputMethodEvent *event );
 
 protected:
-    bool cs_isWidgetType() const override;
+    bool lscs_isWidgetType() const override;
 
     void create( WId window = 0, bool initializeWindow = true, bool destroyOldWindow = true );
     void destroy( bool destroyWindow = true, bool destroySubWindows = true );
@@ -1137,42 +1137,42 @@ inline bool QWidget::testAttribute( Qt::WidgetAttribute attribute ) const
     return testAttribute_helper( attribute );
 }
 
-void QWidget::cs_setMinimumSize( const QSize &size )
+void QWidget::lscs_setMinimumSize( const QSize &size )
 {
     setMinimumSize( size );
 }
 
-void QWidget::cs_setMaximumSize( const QSize &size )
+void QWidget::lscs_setMaximumSize( const QSize &size )
 {
     setMaximumSize( size );
 }
 
-void QWidget::cs_setSizePolicy( const QSizePolicy sizePolicy )
+void QWidget::lscs_setSizePolicy( const QSizePolicy sizePolicy )
 {
     return setSizePolicy( sizePolicy );
 }
 
-void QWidget::cs_setSizeIncrement( const QSize &size )
+void QWidget::lscs_setSizeIncrement( const QSize &size )
 {
     setSizeIncrement( size );
 }
 
-void QWidget::cs_setBaseSize( const QSize &size )
+void QWidget::lscs_setBaseSize( const QSize &size )
 {
     setBaseSize( size );
 }
 
-void QWidget::cs_move( const QPoint &point )
+void QWidget::lscs_move( const QPoint &point )
 {
     return move( point );
 }
 
-void QWidget::cs_resize( const QSize &size )
+void QWidget::lscs_resize( const QSize &size )
 {
     return resize( size );
 }
 
-void QWidget::cs_setGeometry( const QRect &rect )
+void QWidget::lscs_setGeometry( const QRect &rect )
 {
     return setGeometry( rect );
 }

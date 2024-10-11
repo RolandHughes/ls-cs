@@ -32,7 +32,7 @@
 
 static bool containsTLDEntry( const QString &entry )
 {
-    int index = cs_stable_hash( entry ) % tldCount;
+    int index = lscs_stable_hash( entry ) % tldCount;
 
     // select the right chunk from the big table
     short chunk     = 0;

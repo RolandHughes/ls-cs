@@ -2248,7 +2248,7 @@ void QCalendarWidgetPrivate::setNavigatorEnabled( bool enable )
         m_navigator->setWidget( q );
 
         q->connect( m_navigator, &QCalendarTextNavigator::dateChanged,        q,
-                    cs_mp_cast<const QDate &>( &QCalendarWidget::_q_slotChangeDate ) );
+                    lscs_mp_cast<const QDate &>( &QCalendarWidget::_q_slotChangeDate ) );
 
         q->connect( m_navigator, &QCalendarTextNavigator::editingFinished,    q, &QCalendarWidget::_q_editingFinished );
         m_view->installEventFilter( m_navigator );
@@ -2259,7 +2259,7 @@ void QCalendarWidgetPrivate::setNavigatorEnabled( bool enable )
         m_navigator->setWidget( nullptr );
 
         q->disconnect( m_navigator, &QCalendarTextNavigator::dateChanged,     q,
-                       cs_mp_cast<const QDate &>( &QCalendarWidget::_q_slotChangeDate ) );
+                       lscs_mp_cast<const QDate &>( &QCalendarWidget::_q_slotChangeDate ) );
 
         q->disconnect( m_navigator, &QCalendarTextNavigator::editingFinished, q, &QCalendarWidget::_q_editingFinished );
         m_view->removeEventFilter( m_navigator );
@@ -2619,7 +2619,7 @@ QCalendarWidget::QCalendarWidget( QWidget *parent )
     connect( d->m_view,     &QCalendarView::showDate,        this, &QCalendarWidget::_q_slotShowDate );
 
     connect( d->m_view,     &QCalendarView::changeDate,      this,
-             cs_mp_cast<const QDate &>( &QCalendarWidget::_q_slotChangeDate ) );
+             lscs_mp_cast<const QDate &>( &QCalendarWidget::_q_slotChangeDate ) );
 
     connect( d->m_view,     &QCalendarView::clicked,         this, &QCalendarWidget::clicked );
     connect( d->m_view,     &QCalendarView::editingFinished, this, &QCalendarWidget::_q_editingFinished );

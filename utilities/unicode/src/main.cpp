@@ -2897,7 +2897,7 @@ static QByteArray create_PropertyTables()
         {
             // very special case for Turkish
 
-            out += "if (value < " + QByteArray::number( uc ) + " && cs_isTurkishLocale) {\n";
+            out += "if (value < " + QByteArray::number( uc ) + " && lscs_isTurkishLocale) {\n";
             out += "       // letter I, ignore for all other locales\n";
             out += "       return value + " + QByteArray::number( oldDiff ) + ";\n\n";
             out += "    } else ";
@@ -3932,7 +3932,7 @@ int main( int, char ** )
     f.write( "#include \"qunicodetables_p.h\"\n\n" );
     f.write( "namespace QUnicodeTables {\n\n" );
 
-    f.write( "bool cs_isTurkishLocale = false;\n\n" );
+    f.write( "bool lscs_isTurkishLocale = false;\n\n" );
 
     f.write( property_tables );
     f.write( "\n" );
@@ -3961,7 +3961,7 @@ int main( int, char ** )
     f.write( "#define UNICODE_DATA_VERSION " DATA_VERSION_STR "\n\n" );
     f.write( "namespace QUnicodeTables {\n\n" );
 
-    f.write( "extern bool cs_isTurkishLocale;\n\n" );
+    f.write( "extern bool lscs_isTurkishLocale;\n\n" );
 
     f.write( normalizationCorrections.second );
     f.write( property_string );

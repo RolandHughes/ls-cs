@@ -32,7 +32,7 @@
 #include <qglpixelbuffer_p.h>
 #include <qfont_p.h>
 
-QImage cs_glRead_frameBuffer( const QSize &, bool, bool );
+QImage lscs_glRead_frameBuffer( const QSize &, bool, bool );
 
 QGLContext *QGLPBufferGLPaintDevice::context() const
 {
@@ -240,7 +240,7 @@ QImage QGLPixelBuffer::toImage() const
         d->fbo->bind();
     }
 
-    return cs_glRead_frameBuffer( d->req_size, d->format.alpha(), true );
+    return lscs_glRead_frameBuffer( d->req_size, d->format.alpha(), true );
 }
 
 Qt::HANDLE QGLPixelBuffer::handle() const

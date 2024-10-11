@@ -967,8 +967,8 @@ QFtpPI::QFtpPI( QObject *parent )
     connect( &commandSocket, &QTcpSocket::disconnected, this, &QFtpPI::connectionClosed );
     connect( &commandSocket, &QTcpSocket::readyRead,    this, &QFtpPI::readyRead );
 
-    connect( &commandSocket, cs_mp_cast<QAbstractSocket::SocketError>( &QTcpSocket::error ),
-             this, cs_mp_cast<QAbstractSocket::SocketError>( &QFtpPI::error ) );
+    connect( &commandSocket, lscs_mp_cast<QAbstractSocket::SocketError>( &QTcpSocket::error ),
+             this, lscs_mp_cast<QAbstractSocket::SocketError>( &QFtpPI::error ) );
 
     connect( &dtp,           &QFtpDTP::connectState,    this, &QFtpPI::dtpConnectState );
 }
@@ -1620,8 +1620,8 @@ QFtp::QFtp( QObject *parent )
     connect( &d->pi,     &QFtpPI::connectState,          this, &QFtp::_q_piConnectState );
     connect( &d->pi,     &QFtpPI::finished,              this, &QFtp::_q_piFinished );
 
-    connect( &d->pi,     cs_mp_cast<int, const QString &>( &QFtpPI::error ),
-             this, cs_mp_cast<int, const QString &>( &QFtp::_q_piError ) );
+    connect( &d->pi,     lscs_mp_cast<int, const QString &>( &QFtpPI::error ),
+             this, lscs_mp_cast<int, const QString &>( &QFtp::_q_piError ) );
 
     connect( &d->pi,     &QFtpPI::rawFtpReply,           this, &QFtp::_q_piFtpReply );
     connect( &d->pi.dtp, &QFtpDTP::readyRead,            this, &QFtp::readyRead );
@@ -1889,7 +1889,7 @@ void QFtpPrivate::_q_startNextCommand()
     QFtpCommand *c = pending.first();
 
     error = QFtp::NoError;
-    errorString = cs_mark_tr( "QFtp", "Unknown error" );
+    errorString = lscs_mark_tr( "QFtp", "Unknown error" );
 
     if ( q->bytesAvailable() )
     {
@@ -2063,39 +2063,39 @@ void QFtpPrivate::_q_piError( int errorCode, const QString &textMsg )
     switch ( q->currentCommand() )
     {
         case QFtp::ConnectToHost:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Connecting to host failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Connecting to host failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::Login:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Login failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Login failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::List:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Listing directory failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Listing directory failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::Cd:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Changing directory failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Changing directory failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::Get:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Downloading file failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Downloading file failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::Put:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Uploading file failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Uploading file failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::Remove:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Removing file failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Removing file failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::Mkdir:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Creating directory failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Creating directory failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         case QFtp::Rmdir:
-            errorString = QString::fromLatin1( cs_mark_tr( "QFtp", "Removing directory failed:\n%1" ) ).formatArg( textMsg );
+            errorString = QString::fromLatin1( lscs_mark_tr( "QFtp", "Removing directory failed:\n%1" ) ).formatArg( textMsg );
             break;
 
         default:
@@ -2128,7 +2128,7 @@ void QFtpPrivate::_q_piConnectState( int connectState )
     if ( close_waitForStateChange )
     {
         close_waitForStateChange = false;
-        _q_piFinished( QString::fromLatin1( cs_mark_tr( "QFtp", "Connection closed" ) ) );
+        _q_piFinished( QString::fromLatin1( lscs_mark_tr( "QFtp", "Connection closed" ) ) );
     }
 }
 

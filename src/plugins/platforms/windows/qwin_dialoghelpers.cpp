@@ -2330,9 +2330,9 @@ QList<QUrl> QWindowsXpNativeFileDialog::execFileNames( HWND owner, int *selected
     *selectedFilterIndex = -1;
 
     OPENFILENAME ofn;
-    FileStructData cs_fileData;
+    FileStructData lscs_fileData;
 
-    populateOpenFileName( &ofn, owner, cs_fileData );
+    populateOpenFileName( &ofn, owner, lscs_fileData );
 
     QList<QUrl> result;
     const bool isSave = m_options->acceptMode() == QPlatformFileDialogOptions::AcceptSave;

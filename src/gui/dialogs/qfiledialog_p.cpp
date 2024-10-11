@@ -44,7 +44,7 @@
 #include <qt_windows.h>
 #endif
 
-QUrl *cs_internal_lastVisitedDir();
+QUrl *lscs_internal_lastVisitedDir();
 
 QFileDialogPrivate::QFileDialogPrivate()
     :
@@ -145,7 +145,7 @@ void QFileDialogPrivate::retranslateWindowTitle()
 
 void QFileDialogPrivate::setLastVisitedDirectory( const QUrl &dir )
 {
-    *cs_internal_lastVisitedDir() = dir;
+    *lscs_internal_lastVisitedDir() = dir;
 }
 
 void QFileDialogPrivate::updateLookInLabel()
@@ -331,7 +331,7 @@ void QFileDialogPrivate::_q_goToUrl( const QUrl &url )
 }
 
 #ifdef Q_OS_UNIX
-QString cs_tildeExpansion( const QString &path, bool *expanded = nullptr )
+QString lscs_tildeExpansion( const QString &path, bool *expanded = nullptr )
 {
     if ( expanded != nullptr )
     {
@@ -416,7 +416,7 @@ QStringList QFileDialogPrivate::typedFiles() const
         }
         else
         {
-            files << cs_tildeExpansion( editText );
+            files << lscs_tildeExpansion( editText );
         }
 
 #else
@@ -447,7 +447,7 @@ QStringList QFileDialogPrivate::typedFiles() const
             }
             else
             {
-                files << cs_tildeExpansion( token );
+                files << lscs_tildeExpansion( token );
             }
 
 #else
@@ -712,7 +712,7 @@ QUrl QFileDialogPrivate::workingDirectory( const QUrl &url )
         }
     }
 
-    QUrl directory = _qt_get_directory( *cs_internal_lastVisitedDir() );
+    QUrl directory = _qt_get_directory( *lscs_internal_lastVisitedDir() );
 
     if ( !directory.isEmpty() )
     {
@@ -770,7 +770,7 @@ void QFileDialogPrivate::saveSettings()
     }
 
     settings.setValue( "history",     historyUrls );
-    settings.setValue( "lastVisited", cs_internal_lastVisitedDir()->toString() );
+    settings.setValue( "lastVisited", lscs_internal_lastVisitedDir()->toString() );
 
     const QMetaEnum &viewModeMeta = q->metaObject()->enumerator( q->metaObject()->indexOfEnumerator( "ViewMode" ) );
 
@@ -790,8 +790,8 @@ bool QFileDialogPrivate::restoreFromSettings()
     }
 
     settings.beginGroup( "FileDialog" );
-    q->setDirectoryUrl( cs_internal_lastVisitedDir()->isEmpty() ? settings.value( "lastVisited" ).toUrl() :
-                        *cs_internal_lastVisitedDir() );
+    q->setDirectoryUrl( lscs_internal_lastVisitedDir()->isEmpty() ? settings.value( "lastVisited" ).toUrl() :
+                        *lscs_internal_lastVisitedDir() );
 
     QString viewModeStr = settings.value( "viewMode" ).toString();
     const QMetaEnum &viewModeMeta = q->metaObject()->enumerator( q->metaObject()->indexOfEnumerator( "ViewMode" ) );
@@ -990,7 +990,7 @@ void QFileDialogPrivate::createWidgets()
     QObject::connect( qFileDialogUi->buttonBox, &QDialogButtonBox::rejected, q, &QFileDialog::reject );
 
     qFileDialogUi->lookInCombo->setFileDialogPrivate( this );
-    QObject::connect( qFileDialogUi->lookInCombo, cs_mp_cast<const QString &>( &QComboBox::activated ), q,
+    QObject::connect( qFileDialogUi->lookInCombo, lscs_mp_cast<const QString &>( &QComboBox::activated ), q,
                       &QFileDialog::_q_goToDirectory );
 
     qFileDialogUi->lookInCombo->setInsertPolicy( QComboBox::NoInsert );
@@ -1017,8 +1017,8 @@ void QFileDialogPrivate::createWidgets()
     qFileDialogUi->fileTypeCombo->setSizeAdjustPolicy( QComboBox::AdjustToContentsOnFirstShow );
     qFileDialogUi->fileTypeCombo->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
-    QObject::connect( qFileDialogUi->fileTypeCombo, cs_mp_cast<int>( &QComboBox::activated ), q, &QFileDialog::_q_useNameFilter );
-    QObject::connect( qFileDialogUi->fileTypeCombo, cs_mp_cast<const QString &>( &QComboBox::activated ), q,
+    QObject::connect( qFileDialogUi->fileTypeCombo, lscs_mp_cast<int>( &QComboBox::activated ), q, &QFileDialog::_q_useNameFilter );
+    QObject::connect( qFileDialogUi->fileTypeCombo, lscs_mp_cast<const QString &>( &QComboBox::activated ), q,
                       &QFileDialog::filterSelected );
 
     qFileDialogUi->listView->setFileDialogPrivate( this );
@@ -1992,7 +1992,7 @@ void QFileDialogPrivate::_q_nativeEnterDirectory( const QUrl &directory )
     if ( !directory.isEmpty() )
     {
         // Windows native dialogs occasionally emit signals with empty strings.
-        *cs_internal_lastVisitedDir() = directory;
+        *lscs_internal_lastVisitedDir() = directory;
 
         if ( directory.isLocalFile() )
         {

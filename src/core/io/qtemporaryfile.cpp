@@ -354,7 +354,7 @@ static QString defaultTemplateName()
 
     if ( baseName.isEmpty() )
     {
-        baseName = "cs_temp";
+        baseName = "lscs_temp";
     }
 
     return QDir::tempPath() + QChar( '/' ) + baseName + QString( ".XXXXXX" );
@@ -382,7 +382,7 @@ QTemporaryFile::QTemporaryFile( QObject *parent )
     Q_D( QTemporaryFile );
     d->templateName = defaultTemplateName();
 
-    // uses the form "cs_temp.XXXXXX"
+    // uses the form "lscs_temp.XXXXXX"
 }
 
 QTemporaryFile::QTemporaryFile( const QString &templateName, QObject *parent )

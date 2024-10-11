@@ -458,7 +458,7 @@ int QAccessibleWidget::indexOfChild( const QAccessibleInterface *child ) const
 }
 
 // from qwidget.cpp
-extern QString cs_internal_parseWindowTitle( const QString &, const QWidget * );
+extern QString lscs_internal_parseWindowTitle( const QString &, const QWidget * );
 
 QString QAccessibleWidget::text( QAccessible::Text t ) const
 {
@@ -481,11 +481,11 @@ QString QAccessibleWidget::text( QAccessible::Text t ) const
             {
                 if ( widget()->isMinimized() )
                 {
-                    str = cs_internal_parseWindowTitle( widget()->windowIconText(), widget() );
+                    str = lscs_internal_parseWindowTitle( widget()->windowIconText(), widget() );
                 }
                 else
                 {
-                    str = cs_internal_parseWindowTitle( widget()->windowTitle(), widget() );
+                    str = lscs_internal_parseWindowTitle( widget()->windowTitle(), widget() );
                 }
 
             }

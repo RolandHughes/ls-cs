@@ -105,10 +105,10 @@ public:
     virtual ~QVariantBase()
     { }
 
-    virtual bool cs_internal_convert( uint current_userType, uint new_userType, QVariant &self ) const = 0;
-    virtual bool cs_internal_create( uint typeId, const void *other, QVariant &self ) const = 0;
-    virtual bool cs_internal_load( QDataStream &stream, uint type, QVariant &self ) const = 0;
-    virtual bool cs_internal_save( QDataStream &stream, uint type, const QVariant &self ) const = 0;
+    virtual bool lscs_internal_convert( uint current_userType, uint new_userType, QVariant &self ) const = 0;
+    virtual bool lscs_internal_create( uint typeId, const void *other, QVariant &self ) const = 0;
+    virtual bool lscs_internal_load( QDataStream &stream, uint type, QVariant &self ) const = 0;
+    virtual bool lscs_internal_save( QDataStream &stream, uint type, const QVariant &self ) const = 0;
 };
 
 class Q_CORE_EXPORT QVariant
@@ -448,12 +448,12 @@ public:
 
     bool operator==( const QVariant &other ) const
     {
-        return cs_internal_compare( other );
+        return lscs_internal_compare( other );
     }
 
     bool operator!=( const QVariant &other ) const
     {
-        return ! cs_internal_compare( other );
+        return ! lscs_internal_compare( other );
     }
 
     class CustomType
@@ -497,18 +497,18 @@ protected:
     static bool compareValues( const QVariant &a, const QVariant &b );
 
 private:
-    bool cs_internal_convert( uint current_userType, uint new_userType );
-    void cs_internal_create( uint typeId, const void *other );
-    bool cs_internal_compare( const QVariant &other ) const;
+    bool lscs_internal_convert( uint current_userType, uint new_userType );
+    void lscs_internal_create( uint typeId, const void *other );
+    bool lscs_internal_compare( const QVariant &other ) const;
 
     void load( QDataStream &stream );
     void save( QDataStream &stream ) const;
 
-    bool cs_internal_load( QDataStream &stream, uint type );
-    bool cs_internal_save( QDataStream &stream, uint type ) const;
+    bool lscs_internal_load( QDataStream &stream, uint type );
+    bool lscs_internal_save( QDataStream &stream, uint type ) const;
 
     template <typename T>
-    T cs_internal_VariantToType( QVariant::Type type, bool *ok = nullptr ) const;
+    T lscs_internal_VariantToType( QVariant::Type type, bool *ok = nullptr ) const;
 
     static uint getTypeId( const std::type_index &index );
     static uint getTypeId( QString name );
@@ -542,33 +542,33 @@ Q_CORE_EXPORT QDebug &operator<<( QDebug &debug, const QVariant &value );
 
 //
 template <class T>
-struct cs_is_flag : public std::integral_constant<bool, false>
+struct lscs_is_flag : public std::integral_constant<bool, false>
 {
 };
 
 template <class T>
-struct cs_is_flag<QFlags<T>>
+struct lscs_is_flag<QFlags<T>>
                               : public std::integral_constant<bool, true>
 {
 };
 
 template <class T>
-constexpr const bool cs_is_flag_v = cs_is_flag<T>::value;
+constexpr const bool lscs_is_flag_v = lscs_is_flag<T>::value;
 
 //
 template <class T>
-struct cs_flagEnum
+struct lscs_flagEnum
 {
 };
 
 template <class T>
-struct cs_flagEnum<QFlags<T>>
+struct lscs_flagEnum<QFlags<T>>
 {
     using type = T;
 };
 
 template <class T>
-using cs_flagEnum_t = typename cs_flagEnum<T>::type;
+using lscs_flagEnum_t = typename lscs_flagEnum<T>::type;
 
 //
 template <typename T>
@@ -613,7 +613,7 @@ public:
 
     bool isEnum() const override
     {
-        return std::is_enum_v<T> || cs_is_flag_v<T>;
+        return std::is_enum_v<T> || lscs_is_flag_v<T>;
     }
 
     int64_t enumToInt() const override
@@ -624,9 +624,9 @@ public:
             return static_cast<int64_t>( static_cast<SType>( m_value ) );
 
         }
-        else if constexpr ( cs_is_flag_v<T> )
+        else if constexpr ( lscs_is_flag_v<T> )
         {
-            using SType = std::make_signed_t<std::underlying_type_t<cs_flagEnum_t<T>>>;
+            using SType = std::make_signed_t<std::underlying_type_t<lscs_flagEnum_t<T>>>;
             return static_cast<int64_t>( static_cast<SType>( m_value ) );
 
         }
@@ -644,7 +644,7 @@ public:
             return static_cast<uint64_t>( m_value );
 
         }
-        else if constexpr ( cs_is_flag_v<T> )
+        else if constexpr ( lscs_is_flag_v<T> )
         {
             return static_cast<uint64_t>( m_value );
 

@@ -804,8 +804,8 @@ public:
     bool stealKeyboardGrab( bool grab );
     bool stealMouseGrab( bool grab );
 
-    static QWidgetPrivate *cs_getPrivate( QWidget *object );
-    static QWidget *cs_getPublic( QWidgetPrivate *object );
+    static QWidgetPrivate *lscs_getPrivate( QWidget *object );
+    static QWidget *lscs_getPublic( QWidgetPrivate *object );
 
 protected:
     QWidget *q_ptr;

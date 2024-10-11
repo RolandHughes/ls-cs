@@ -65,7 +65,7 @@ QPlatformPrinterSupport *QPlatformPrinterSupportPlugin::get()
 
         if ( ! keySet.isEmpty() )
         {
-            printerSupport = cs_load_plugin<QPlatformPrinterSupport, QPlatformPrinterSupportPlugin>( factoryObj, *( keySet.constBegin() ) );
+            printerSupport = lscs_load_plugin<QPlatformPrinterSupport, QPlatformPrinterSupportPlugin>( factoryObj, *( keySet.constBegin() ) );
         }
 
         if ( printerSupport )

@@ -28,7 +28,7 @@
 namespace QUnicodeTables
 {
 
-bool cs_isTurkishLocale = false;
+bool lscs_isTurkishLocale = false;
 
 static const unsigned short uc_property_trie[] =
 {
@@ -9877,7 +9877,7 @@ char32_t uc_caseFold( char32_t value )
         return value + 32;
 
     }
-    else if ( value < 74 && cs_isTurkishLocale )
+    else if ( value < 74 && lscs_isTurkishLocale )
     {
         // letter I, ignore for all other locales
         return value + 232;

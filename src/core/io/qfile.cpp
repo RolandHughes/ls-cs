@@ -495,7 +495,7 @@ bool QFile::copy( const QString &newName )
             }
             else
             {
-                QString fileTemplate = "%1/cs_temp.XXXXXX";
+                QString fileTemplate = "%1/lscs_temp.XXXXXX";
 
 #ifdef QT_NO_TEMPORARYFILE
                 QFile out( fileTemplate.formatArg( QFileInfo( newName ).path() ) );

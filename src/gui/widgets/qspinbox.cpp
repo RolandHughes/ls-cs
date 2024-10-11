@@ -473,7 +473,7 @@ void QSpinBoxPrivate::emitSignals( EmitPolicy ep, const QVariant &old )
         {
             emit q->valueChanged( edit->displayText() );
 
-            emit q->cs_valueChanged( value.toInt() );
+            emit q->lscs_valueChanged( value.toInt() );
             emit q->valueChanged( value.toInt() );
         }
     }
@@ -607,7 +607,7 @@ void QDoubleSpinBoxPrivate::emitSignals( EmitPolicy ep, const QVariant &old )
         {
             emit q->valueChanged( edit->displayText() );
 
-            emit q->cs_valueChanged( value.toDouble() );
+            emit q->lscs_valueChanged( value.toDouble() );
             emit q->valueChanged( value.toDouble() );
         }
     }

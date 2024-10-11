@@ -293,7 +293,7 @@ public:
     struct FaceData
     {
         void *user_data;
-        cs_fontTable_func_ptr  m_fontTable_funcPtr;
+        lscs_fontTable_func_ptr  m_fontTable_funcPtr;
     } faceData;
 
     QAtomicInt m_refCount;

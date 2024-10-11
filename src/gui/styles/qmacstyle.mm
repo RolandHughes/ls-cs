@@ -811,7 +811,7 @@ static QSize qt_aqua_get_known_size(QStyle::ContentsType ct, const QWidget *widg
    if ((widg && widg->testAttribute(Qt::WA_SetFont)) || !QApplication::desktopSettingsAware()) {
       // If you're using a custom font and it's bigger than the default font,
       // then no constraints for you. If you are smaller, we can try to help you out
-      QFont font = cs_app_fonts_hash()->value(widg->metaObject()->className(), QFont());
+      QFont font = lscs_app_fonts_hash()->value(widg->metaObject()->className(), QFont());
 
       if (widg->font().pointSize() > font.pointSize()) {
          return ret;
@@ -2437,7 +2437,7 @@ void QMacStyle::polish(QWidget * w) {
    if (QTabBar *tb = qobject_cast<QTabBar *>(w)) {
       if (tb->documentMode()) {
          w->setAttribute(Qt::WA_Hover);
-         w->setFont(cs_app_fonts_hash()->value("QSmallFont", QFont()));
+         w->setFont(lscs_app_fonts_hash()->value("QSmallFont", QFont()));
          QPalette p = w->palette();
          p.setColor(QPalette::WindowText, QColor(17, 17, 17));
          w->setPalette(p);
@@ -4254,7 +4254,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                // ### this is really overly difficult, simplify.
                // It basically tries to get the right font for "small" and "mini" icons.
                QFont oldFont = p->font();
-               QFont newFont = cs_app_fonts_hash()->value("QPushButton", QFont());
+               QFont newFont = lscs_app_fonts_hash()->value("QPushButton", QFont());
                ThemeFontID themeId = kThemePushButtonFont;
 
                if (oldFont == newFont) {  // Yes, use HITheme to draw the text for small sizes.
@@ -4497,7 +4497,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
 
             bool verticalTabs = (ttd == kThemeTabWest || ttd == kThemeTabEast);
 
-            bool nonDefaultFont = p->font() != cs_app_fonts_hash()->value("QComboMenuItem");
+            bool nonDefaultFont = p->font() != lscs_app_fonts_hash()->value("QComboMenuItem");
             bool isSelectedAndNeedsShadow = false;
 
             if (isSelectedAndNeedsShadow || verticalTabs || nonDefaultFont || ! tab->icon.isNull()
@@ -4644,7 +4644,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                }
 
                QFont oldFont = p->font();
-               p->setFont(cs_app_fonts_hash()->value("QToolButton", p->font()));
+               p->setFont(lscs_app_fonts_hash()->value("QToolButton", p->font()));
                QString text = p->fontMetrics().elidedText(dwOpt->title, Qt::ElideRight,
                                                           titleRect.width());
                drawItemText(p, titleRect,
@@ -4819,7 +4819,7 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption * opt, QPainte
                }
                p->save();
                if (t >= 0) {
-                  p->setFont(cs_app_fonts_hash()->value("QMenuItem", p->font()));
+                  p->setFont(lscs_app_fonts_hash()->value("QMenuItem", p->font()));
 
                   int xp = contentRect.right() - tabwidth - macRightBorder
                         - macItemHMargin - macItemFrame + 1;
@@ -6812,7 +6812,7 @@ QRect QMacStyle::subControlRect(ComplexControl cc, const QStyleOptionComplex *op
                   if (!flat) {
                      if (widget && !widget->testAttribute(Qt::WA_SetFont)
                          && QApplication::desktopSettingsAware()) {
-                        fm = QFontMetrics(cs_app_fonts_hash()->value("QSmallFont", QFont()));
+                        fm = QFontMetrics(lscs_app_fonts_hash()->value("QSmallFont", QFont()));
                      }
                      yOffset = 5;
                   }

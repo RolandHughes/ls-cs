@@ -55,7 +55,7 @@ class QLibraryStore
 public:
     inline ~QLibraryStore();
 
-    static inline QLibraryHandle *cs_findLibrary( const QString &fileName, const QString &version, QLibrary::LoadHints loadHints );
+    static inline QLibraryHandle *lscs_findLibrary( const QString &fileName, const QString &version, QLibrary::LoadHints loadHints );
     static inline void releaseLibrary( QLibraryHandle *lib );
 
     static inline void cleanup();
@@ -129,7 +129,7 @@ QLibraryStore *QLibraryStore::instance()
     return qt_library_data;
 }
 
-inline QLibraryHandle *QLibraryStore::cs_findLibrary( const QString &fileName, const QString &version,
+inline QLibraryHandle *QLibraryStore::lscs_findLibrary( const QString &fileName, const QString &version,
         QLibrary::LoadHints loadHints )
 {
     QMutexLocker locker( &qt_library_mutex );
@@ -201,7 +201,7 @@ QLibraryHandle::QLibraryHandle( const QString &canonicalFileName, const QString 
 
 QLibraryHandle *QLibraryHandle::findOrLoad( const QString &fileName, const QString &version, QLibrary::LoadHints loadHints )
 {
-    return QLibraryStore::cs_findLibrary( fileName, version, loadHints );
+    return QLibraryStore::lscs_findLibrary( fileName, version, loadHints );
 }
 
 QLibraryHandle::~QLibraryHandle()
@@ -391,7 +391,7 @@ static bool qt_get_metadata( QPluginMetadataPtr ptrFunc, QLibraryHandle *ptr )
         return false;
     }
 
-    QMetaObject *meta = ptrFunc();      // calls cs_internal_plugin_metaobject()
+    QMetaObject *meta = ptrFunc();      // calls lscs_internal_plugin_metaobject()
     ptr->m_metaObject = meta;
 
     if ( meta == nullptr )
@@ -456,7 +456,7 @@ void QLibraryHandle::updatePluginState()
         QPluginMetadataPtr metaPtr = nullptr;
 
         // returns a function pointer so we can retrieve the meta data object
-        metaPtr = ( QPluginMetadataPtr ) resolve( "cs_internal_plugin_metaobject" );
+        metaPtr = ( QPluginMetadataPtr ) resolve( "lscs_internal_plugin_metaobject" );
 
         if ( metaPtr )
         {

@@ -1462,13 +1462,13 @@ bool QCoreApplication::event( QEvent *e )
     return QObject::event( e );
 }
 
-void QCoreApplication::cs_internal_maybeQuit()
+void QCoreApplication::lscs_internal_maybeQuit()
 {
     Q_D( QCoreApplication );
     d->maybeQuit();
 }
 
-bool QCoreApplication::cs_isRealGuiApp()
+bool QCoreApplication::lscs_isRealGuiApp()
 {
 
     Q_D( QCoreApplication );

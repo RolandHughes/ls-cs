@@ -60,7 +60,7 @@ static QLocaleData *s_system_data     = nullptr;
 
 static QSystemLocale *global_SystemLocale()
 {
-    static QSystemLocale retval = QSystemLocale::cs_internal_tag();
+    static QSystemLocale retval = QSystemLocale::lscs_internal_tag();
     return &retval;
 }
 
@@ -730,7 +730,7 @@ QSystemLocale::QSystemLocale()
     }
 }
 
-QSystemLocale::QSystemLocale( QSystemLocale::cs_internal_tag )
+QSystemLocale::QSystemLocale( QSystemLocale::lscs_internal_tag )
 {
 }
 
@@ -1164,10 +1164,10 @@ QString QLocale::name() const
 }
 
 template <typename T>
-static T cs_internal_integral( const QLocalePrivate *d, const QString &data, int base, bool *ok )
+static T lscs_internal_integral( const QLocalePrivate *d, const QString &data, int base, bool *ok )
 {
     using Int64 = typename std::conditional<std::is_unsigned<T>::value, quint64, qint64>::type;
-    Int64 val = cs_internal_integral<Int64>( d, data, base, ok );
+    Int64 val = lscs_internal_integral<Int64>( d, data, base, ok );
 
     if ( val < std::numeric_limits<T>::min() || val > std::numeric_limits<T>::max() )
     {
@@ -1183,7 +1183,7 @@ static T cs_internal_integral( const QLocalePrivate *d, const QString &data, int
 }
 
 template <>
-qint64 cs_internal_integral<qint64>( const QLocalePrivate *d, const QString &data, int base, bool *ok )
+qint64 lscs_internal_integral<qint64>( const QLocalePrivate *d, const QString &data, int base, bool *ok )
 {
     QLocaleData::GroupSeparatorMode mode = d->m_numberOptions & QLocale::RejectGroupSeparator
                                            ? QLocaleData::FailOnGroupSeparators : QLocaleData::ParseGroupSeparators;
@@ -1192,7 +1192,7 @@ qint64 cs_internal_integral<qint64>( const QLocalePrivate *d, const QString &dat
 }
 
 template <>
-quint64 cs_internal_integral<quint64>( const QLocalePrivate *d, const QString &data, int base, bool *ok )
+quint64 lscs_internal_integral<quint64>( const QLocalePrivate *d, const QString &data, int base, bool *ok )
 {
     QLocaleData::GroupSeparatorMode mode = d->m_numberOptions & QLocale::RejectGroupSeparator
                                            ? QLocaleData::FailOnGroupSeparators : QLocaleData::ParseGroupSeparators;
@@ -1237,32 +1237,32 @@ QString QLocale::scriptToString( QLocale::Script script )
 
 short QLocale::toShort( const QString &s, bool *ok, int base ) const
 {
-    return cs_internal_integral<short>( d, s, base, ok );
+    return lscs_internal_integral<short>( d, s, base, ok );
 }
 
 ushort QLocale::toUShort( const QString &s, bool *ok, int base ) const
 {
-    return cs_internal_integral<ushort>( d, s, base, ok );
+    return lscs_internal_integral<ushort>( d, s, base, ok );
 }
 
 int QLocale::toInt( const QString &s, bool *ok, int base ) const
 {
-    return cs_internal_integral<int>( d, s, base, ok );
+    return lscs_internal_integral<int>( d, s, base, ok );
 }
 
 uint QLocale::toUInt( const QString &s, bool *ok, int base ) const
 {
-    return cs_internal_integral<uint>( d, s, base, ok );
+    return lscs_internal_integral<uint>( d, s, base, ok );
 }
 
 qint64 QLocale::toLongLong( const QString &s, bool *ok, int base ) const
 {
-    return cs_internal_integral<qint64>( d, s, base, ok );
+    return lscs_internal_integral<qint64>( d, s, base, ok );
 }
 
 quint64 QLocale::toULongLong( const QString &s, bool *ok, int base ) const
 {
-    return cs_internal_integral<quint64>( d, s, base, ok );
+    return lscs_internal_integral<quint64>( d, s, base, ok );
 }
 
 float QLocale::toFloat( const QString &s, bool *ok ) const

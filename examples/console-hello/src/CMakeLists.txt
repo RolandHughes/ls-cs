@@ -37,16 +37,21 @@ else()
    install(TARGETS console-hello DESTINATION .)
 endif()
 
-lscs_copy_library(LsCsCore)
-lscs_copy_library(LsCsGui)
-lscs_copy_library(LsCsNetwork)
-
-if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+#  If you are using RPATH in the main CMakeLists.txt
+#  then you need to copy the libraries and plugins
+#  where the executable looks for them.
+#
+#  This flies in the face of shared libraries but
+#  could be handy if you are testing library changes.
+#
+# lscs_copy_library(LsCsCore)
+# lscs_copy_library(LsCsGui)
+# lscs_copy_library(LsCsNetwork)
+#
+# if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    # copy required plugins to the bundle
-   lscs_copy_plugins(LsCsGui ../plugins)
-   #cs_copy_plugins(CsPrinterDriver ../plugins)
-else()
+   # lscs_copy_plugins(LsCsGui ../plugins)
+# else()
    # installs required plugins
-   lscs_copy_plugins(LsCsGui)
-   #cs_copy_plugins(CsPrinterDriver)
-endif()
+   #lscs_copy_plugins(LsCsGui)
+# endif()

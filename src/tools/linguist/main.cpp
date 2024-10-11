@@ -139,7 +139,7 @@ int main( int argc, char **argv )
     {
         app.installTranslator( &translator );
 
-        if ( qtTranslator.load( QString( "cs_" ) + sysLocale, resourceDir ) )
+        if ( qtTranslator.load( QString( "lscs_" ) + sysLocale, resourceDir ) )
         {
             app.installTranslator( &qtTranslator );
         }

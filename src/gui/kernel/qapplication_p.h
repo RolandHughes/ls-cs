@@ -83,10 +83,10 @@ extern QSysInfo::MacVersion qt_macver;
 #endif
 
 typedef QHash<QString, QFont> FontHash;
-FontHash *cs_app_fonts_hash();
+FontHash *lscs_app_fonts_hash();
 
 typedef QHash<QString, QPalette> PaletteHash;
-PaletteHash *cs_app_palettes_hash();
+PaletteHash *lscs_app_palettes_hash();
 
 class Q_GUI_EXPORT QApplicationPrivate : public QCoreApplicationPrivate
 {
@@ -145,7 +145,7 @@ public:
         return platform_theme;
     }
 
-    static QAbstractEventDispatcher *cs_internal_core_dispatcher()
+    static QAbstractEventDispatcher *lscs_internal_core_dispatcher()
     {
         if ( QCoreApplication::instance() )
         {
@@ -518,6 +518,6 @@ Q_GUI_EXPORT uint qHash( const QApplicationPrivate::ActiveTouchPointsKey &k );
 Q_GUI_EXPORT bool operator==( const QApplicationPrivate::ActiveTouchPointsKey &a,
                               const QApplicationPrivate::ActiveTouchPointsKey &b );
 
-extern void cs_internal_set_cursor( QWidget *w, bool force );
+extern void lscs_internal_set_cursor( QWidget *w, bool force );
 
 #endif

@@ -313,7 +313,7 @@ bool connect( const Sender &sender, void ( SignalClass::*signalMethod )( SignalA
                    "connect():  Slot was not a child class of Receiver" );
 
     // compare signal and slot parameter list
-    static_assert( Internal::cs_check_connect_args<void ( * )( SignalArgs... ), void ( * )( SlotArgs... ) >::value,
+    static_assert( Internal::lscs_check_connect_args<void ( * )( SignalArgs... ), void ( * )( SlotArgs... ) >::value,
                    "connect():  Incompatible signal/slot arguments" );
 
     if ( signalMethod == nullptr )
@@ -372,10 +372,10 @@ bool connect( const Sender &sender, void ( SignalClass::*signalMethod )( SignalA
               T slotLambda, ConnectionKind type, bool uniqueConnection )
 {
     // Sender must be the same class as SignalClass and Sender is a child of SignalClass
-    Internal::cs_testConnect_SenderSignal<Sender, SignalClass>();
+    Internal::lscs_testConnect_SenderSignal<Sender, SignalClass>();
 
     // compare signal and slot parameter list
-    Internal::cs_testConnect_SignalSlotArgs_1<T, SignalArgs...>();
+    Internal::lscs_testConnect_SignalSlotArgs_1<T, SignalArgs...>();
 
     if ( signalMethod == nullptr )
     {
@@ -464,13 +464,13 @@ bool disconnect( const Sender &sender, void ( SignalClass::*signalMethod )( Sign
                  SlotReturn ( SlotClass::*slotMethod )( SlotArgs... ) )
 {
     // Sender must be the same class as SignalClass and Sender is a child of SignalClass
-    Internal::cs_testConnect_SenderSignal<Sender, SignalClass>();
+    Internal::lscs_testConnect_SenderSignal<Sender, SignalClass>();
 
     // Receiver must be the same class as SlotClass and Receiver is a child of SlotClass
-    Internal::cs_testConnect_ReceiverSlot<SlotClass, Receiver>();
+    Internal::lscs_testConnect_ReceiverSlot<SlotClass, Receiver>();
 
     // signal & slot arguments do not agree
-    Internal::cs_testConnect_SignalSlotArgs_2< void ( * )( SignalArgs... ), void ( * )( SlotArgs... ) >();
+    Internal::lscs_testConnect_SignalSlotArgs_2< void ( * )( SignalArgs... ), void ( * )( SlotArgs... ) >();
 
     Internal::Bento<void ( SignalClass::* )( SignalArgs... )> signalMethod_Bento( signalMethod );
     Internal::Bento<SlotReturn ( SlotClass::* )( SlotArgs... )> slotMethod_Bento( slotMethod );
@@ -576,7 +576,7 @@ bool internal_disconnect( const Sender &sender, const Internal::BentoAbstract *s
 
 // 1
 template<class... Args>
-class cs_mp_cast_internal
+class lscs_mp_cast_internal
 {
 public:
     template<class className>
@@ -587,12 +587,12 @@ public:
 };
 
 template<class... Args>
-constexpr cs_mp_cast_internal<Args...> cs_mp_cast;
+constexpr lscs_mp_cast_internal<Args...> lscs_mp_cast;
 
 
 // 2
 template<class... Args>
-class cs_cmp_cast_internal
+class lscs_cmp_cast_internal
 {
 public:
     template<class className>
@@ -603,6 +603,6 @@ public:
 };
 
 template<class... Args>
-constexpr cs_cmp_cast_internal<Args...> cs_cmp_cast;
+constexpr lscs_cmp_cast_internal<Args...> lscs_cmp_cast;
 
 #endif

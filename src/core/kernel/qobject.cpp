@@ -857,19 +857,19 @@ bool QObject::isSignalConnected( const QMetaMethod &signalMetaMethod ) const
 
 bool QObject::isWidgetType() const
 {
-    return cs_isWidgetType();
+    return lscs_isWidgetType();
 }
-bool QObject::cs_isWidgetType() const
+bool QObject::lscs_isWidgetType() const
 {
     return false;
 }
 
 bool QObject::isWindowType() const
 {
-    return cs_isWindowType();
+    return lscs_isWindowType();
 }
 
-bool QObject::cs_isWindowType() const
+bool QObject::lscs_isWindowType() const
 {
     return false;
 }
@@ -1167,7 +1167,7 @@ void QObject::setObjectName( const QString8 &name )
     }
 }
 
-void QObject::cs_forceRemoveChild()
+void QObject::lscs_forceRemoveChild()
 {
     if ( m_parent && m_parent->m_receiveChildEvents )
     {
@@ -1406,7 +1406,7 @@ void QObject::timerEvent( QTimerEvent * )
     // no code should appear here
 }
 
-bool QObject::cs_InstanceOf( const QString8 &iid )
+bool QObject::lscs_InstanceOf( const QString8 &iid )
 {
     // check if the iid is part of this class
 
@@ -1429,7 +1429,7 @@ bool QObject::cs_InstanceOf( const QString8 &iid )
     }
 
     // test 2
-    if ( this->cs_interface_query( iid ) )
+    if ( this->lscs_interface_query( iid ) )
     {
         return true;
     }
@@ -1437,7 +1437,7 @@ bool QObject::cs_InstanceOf( const QString8 &iid )
     return false;
 }
 
-bool QObject::cs_interface_query( const QString8 & ) const
+bool QObject::lscs_interface_query( const QString8 & ) const
 {
     return false;
 }

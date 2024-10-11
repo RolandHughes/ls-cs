@@ -58,7 +58,7 @@ class Q_MULTIMEDIA_EXPORT QMediaRecorder : public QObject, public QMediaBindable
     MULTI_LSCS_PROPERTY_NOTIFY( duration, durationChanged )
 
     MULTI_LSCS_PROPERTY_READ( outputLocation, outputLocation )
-    MULTI_LSCS_PROPERTY_WRITE( outputLocation, cs_setOutputLocation )
+    MULTI_LSCS_PROPERTY_WRITE( outputLocation, lscs_setOutputLocation )
 
     MULTI_LSCS_PROPERTY_READ( actualLocation, actualLocation )
     MULTI_LSCS_PROPERTY_NOTIFY( actualLocation, actualLocationChanged )
@@ -233,7 +233,7 @@ private:
     Q_DECLARE_PRIVATE( QMediaRecorder )
 
     // wrapper
-    void cs_setOutputLocation( const QUrl &location )
+    void lscs_setOutputLocation( const QUrl &location )
     {
         setOutputLocation( location );
     }

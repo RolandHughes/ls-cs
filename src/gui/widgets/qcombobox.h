@@ -55,7 +55,7 @@ class Q_GUI_EXPORT QComboBox : public QWidget
 
     GUI_LSCS_PROPERTY_READ( currentIndex, currentIndex )
     GUI_LSCS_PROPERTY_WRITE( currentIndex, setCurrentIndex )
-    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, cs_currentIndexChanged )
+    GUI_LSCS_PROPERTY_NOTIFY( currentIndex, lscs_currentIndexChanged )
 
     GUI_LSCS_PROPERTY_READ( maxVisibleItems, maxVisibleItems )
     GUI_LSCS_PROPERTY_WRITE( maxVisibleItems, setMaxVisibleItems )
@@ -267,8 +267,8 @@ public:
     GUI_LSCS_SIGNAL_1( Public, void currentIndexChanged( const QString &text ) )
     GUI_LSCS_SIGNAL_OVERLOAD( currentIndexChanged, ( const QString & ), text )
 
-    GUI_LSCS_SIGNAL_1( Public, void cs_currentIndexChanged( int index ) )
-    GUI_LSCS_SIGNAL_2( cs_currentIndexChanged, index )
+    GUI_LSCS_SIGNAL_1( Public, void lscs_currentIndexChanged( int index ) )
+    GUI_LSCS_SIGNAL_2( lscs_currentIndexChanged, index )
 
     GUI_LSCS_SIGNAL_1( Public, void currentTextChanged( const QString &str ) )
     GUI_LSCS_SIGNAL_2( currentTextChanged, str )

@@ -35,13 +35,13 @@
 class Q_CORE_EXPORT QSystemLocale
 {
 public:
-    class cs_internal_tag
+    class lscs_internal_tag
     {
         // empty
     };
 
     QSystemLocale();
-    QSystemLocale( cs_internal_tag unused );
+    QSystemLocale( lscs_internal_tag unused );
 
     virtual ~QSystemLocale();
 

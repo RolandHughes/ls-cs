@@ -98,7 +98,7 @@ public:
     void waitForResume();
 
     QMutex *mutex() const;
-    QtConcurrent::cs_internal::ExceptionStore &exceptionStore();
+    QtConcurrent::lscs_internal::ExceptionStore &exceptionStore();
     QtConcurrent::ResultStoreBase &resultStoreBase();
     const QtConcurrent::ResultStoreBase &resultStoreBase() const;
 

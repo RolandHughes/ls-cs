@@ -64,7 +64,7 @@
 #include <qurl.h>
 #include <quuid.h>
 
-bool QVariantGui::cs_internal_convert( uint current_userType, uint new_userType, QVariant &self ) const
+bool QVariantGui::lscs_internal_convert( uint current_userType, uint new_userType, QVariant &self ) const
 {
     bool retval = true;
 
@@ -297,7 +297,7 @@ bool QVariantGui::cs_internal_convert( uint current_userType, uint new_userType,
     return retval;
 }
 
-bool QVariantGui::cs_internal_create( uint newUserType, const void *other, QVariant &self ) const
+bool QVariantGui::lscs_internal_create( uint newUserType, const void *other, QVariant &self ) const
 {
     switch ( newUserType )
     {
@@ -620,7 +620,7 @@ bool QVariantGui::cs_internal_create( uint newUserType, const void *other, QVari
     return true;
 }
 
-bool QVariantGui::cs_internal_load( QDataStream &stream, uint type, QVariant &self ) const
+bool QVariantGui::lscs_internal_load( QDataStream &stream, uint type, QVariant &self ) const
 {
     bool retval = true;
 
@@ -849,7 +849,7 @@ bool QVariantGui::cs_internal_load( QDataStream &stream, uint type, QVariant &se
     return retval;
 }
 
-bool QVariantGui::cs_internal_save( QDataStream &stream, uint type, const QVariant &self ) const
+bool QVariantGui::lscs_internal_save( QDataStream &stream, uint type, const QVariant &self ) const
 {
     bool retval = true;
 

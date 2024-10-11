@@ -54,7 +54,7 @@ class Q_GUI_EXPORT QSpinBox : public QAbstractSpinBox
 
     GUI_LSCS_PROPERTY_READ( value, value )
     GUI_LSCS_PROPERTY_WRITE( value, setValue )
-    GUI_LSCS_PROPERTY_NOTIFY( value, cs_valueChanged )
+    GUI_LSCS_PROPERTY_NOTIFY( value, lscs_valueChanged )
     GUI_LSCS_PROPERTY_USER( value, true )
 
     GUI_LSCS_PROPERTY_READ( displayIntegerBase, displayIntegerBase )
@@ -102,8 +102,8 @@ public:
     GUI_LSCS_SIGNAL_OVERLOAD( valueChanged, ( const QString & ), text )
 
     // wrapper for property
-    GUI_LSCS_SIGNAL_1( Public, void cs_valueChanged( int newValue ) )
-    GUI_LSCS_SIGNAL_2( cs_valueChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void lscs_valueChanged( int newValue ) )
+    GUI_LSCS_SIGNAL_2( lscs_valueChanged, newValue )
 
 protected:
     bool event( QEvent *event ) override;
@@ -142,7 +142,7 @@ class Q_GUI_EXPORT QDoubleSpinBox : public QAbstractSpinBox
 
     GUI_LSCS_PROPERTY_READ( value, value )
     GUI_LSCS_PROPERTY_WRITE( value, setValue )
-    GUI_LSCS_PROPERTY_NOTIFY( value, cs_valueChanged )
+    GUI_LSCS_PROPERTY_NOTIFY( value, lscs_valueChanged )
     GUI_LSCS_PROPERTY_USER( value, true )
 
 public:
@@ -192,8 +192,8 @@ public:
     GUI_LSCS_SIGNAL_OVERLOAD( valueChanged, ( const QString & ), text )
 
     // wrapper for property
-    GUI_LSCS_SIGNAL_1( Public, void cs_valueChanged( double newValue ) )
-    GUI_LSCS_SIGNAL_2( cs_valueChanged, newValue )
+    GUI_LSCS_SIGNAL_1( Public, void lscs_valueChanged( double newValue ) )
+    GUI_LSCS_SIGNAL_2( lscs_valueChanged, newValue )
 
 private:
     Q_DECLARE_PRIVATE( QDoubleSpinBox )

@@ -26,7 +26,7 @@
 #include <qstring.h>
 #include <qvector.h>
 
-static const hb_script_t cs_internal_scriptTable[] =
+static const hb_script_t lscs_internal_scriptTable[] =
 {
     HB_SCRIPT_UNKNOWN,
     HB_SCRIPT_INHERITED,
@@ -229,10 +229,10 @@ static const hb_script_t cs_internal_scriptTable[] =
     // Unicode 15.1
     // nothing was added
 };
-static_assert( QChar::ScriptCount == sizeof( cs_internal_scriptTable ) / sizeof( cs_internal_scriptTable[0] ),
+static_assert( QChar::ScriptCount == sizeof( lscs_internal_scriptTable ) / sizeof( lscs_internal_scriptTable[0] ),
                "QChar script count mismatch" );
 
-static const hb_unicode_general_category_t cs_internal_categoryTable[] =
+static const hb_unicode_general_category_t lscs_internal_categoryTable[] =
 {
     HB_UNICODE_GENERAL_CATEGORY_NON_SPACING_MARK,    //   Mn
     HB_UNICODE_GENERAL_CATEGORY_SPACING_MARK,        //   Mc
@@ -271,36 +271,36 @@ static const hb_unicode_general_category_t cs_internal_categoryTable[] =
     HB_UNICODE_GENERAL_CATEGORY_MODIFIER_SYMBOL,     //   Sk
     HB_UNICODE_GENERAL_CATEGORY_OTHER_SYMBOL         //   So
 };
-static_assert( QChar::CategoryCount == sizeof( cs_internal_categoryTable ) / sizeof( cs_internal_categoryTable[0] ),
+static_assert( QChar::CategoryCount == sizeof( lscs_internal_categoryTable ) / sizeof( lscs_internal_categoryTable[0] ),
                "QChar category count mismatch" );
 
 
-hb_script_t cs_script_to_hb_script( QChar::Script script )
+hb_script_t lscs_script_to_hb_script( QChar::Script script )
 {
-    return cs_internal_scriptTable[script];
+    return lscs_internal_scriptTable[script];
 }
 
-static hb_unicode_combining_class_t cs_combining_class( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
+static hb_unicode_combining_class_t lscs_combining_class( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
 {
     return hb_unicode_combining_class_t( QChar( char32_t( unicode ) ).combiningClass() );
 }
 
-static hb_codepoint_t cs_mirroring( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
+static hb_codepoint_t lscs_mirroring( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
 {
     return QChar( char32_t( unicode ) ).mirroredChar().unicode();
 }
 
-static hb_unicode_general_category_t cs_category( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
+static hb_unicode_general_category_t lscs_category( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
 {
-    return cs_internal_categoryTable[QChar( char32_t( unicode ) ).category()];
+    return lscs_internal_categoryTable[QChar( char32_t( unicode ) ).category()];
 }
 
-static hb_script_t cs_script( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
+static hb_script_t lscs_script( hb_unicode_funcs_t *, hb_codepoint_t unicode, void * )
 {
-    return cs_internal_scriptTable[QChar( char32_t( unicode ) ).script()];
+    return lscs_internal_scriptTable[QChar( char32_t( unicode ) ).script()];
 }
 
-static hb_bool_t cs_compose( hb_unicode_funcs_t *, hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab, void * )
+static hb_bool_t lscs_compose( hb_unicode_funcs_t *, hb_codepoint_t a, hb_codepoint_t b, hb_codepoint_t *ab, void * )
 {
     QString s = QString( char32_t( a ) ) + QString( char32_t( b ) );
 
@@ -312,7 +312,7 @@ static hb_bool_t cs_compose( hb_unicode_funcs_t *, hb_codepoint_t a, hb_codepoin
     return normalized.size() == 1;
 }
 
-static hb_bool_t cs_decompose( hb_unicode_funcs_t *, hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *b, void * )
+static hb_bool_t lscs_decompose( hb_unicode_funcs_t *, hb_codepoint_t ab, hb_codepoint_t *a, hb_codepoint_t *b, void * )
 {
     QChar ch_ab = QChar( char32_t( ab ) );
 
@@ -373,7 +373,7 @@ static hb_bool_t cs_decompose( hb_unicode_funcs_t *, hb_codepoint_t ab, hb_codep
 
 /* not used right now
 
-static unsigned int cs_decompose_compatibility(hb_unicode_funcs_t *, hb_codepoint_t u,
+static unsigned int lscs_decompose_compatibility(hb_unicode_funcs_t *, hb_codepoint_t u,
    hb_codepoint_t *decomposed, void *)
 {
    const QString normalized = QChar(char32_t(u)).decomposition();
@@ -390,22 +390,22 @@ static unsigned int cs_decompose_compatibility(hb_unicode_funcs_t *, hb_codepoin
 
 */
 
-struct cs_hb_unicode_funcs_t
+struct lscs_hb_unicode_funcs_t
 {
 
-    cs_hb_unicode_funcs_t()
+    lscs_hb_unicode_funcs_t()
     {
         funcs = hb_unicode_funcs_create( nullptr );
 
-        hb_unicode_funcs_set_combining_class_func( funcs,   cs_combining_class, nullptr, nullptr );
-        hb_unicode_funcs_set_general_category_func( funcs,  cs_category, nullptr, nullptr );
-        hb_unicode_funcs_set_mirroring_func( funcs,         cs_mirroring, nullptr, nullptr );
-        hb_unicode_funcs_set_script_func( funcs,            cs_script, nullptr, nullptr );
-        hb_unicode_funcs_set_compose_func( funcs,           cs_compose, nullptr, nullptr );
-        hb_unicode_funcs_set_decompose_func( funcs,         cs_decompose, nullptr, nullptr );
+        hb_unicode_funcs_set_combining_class_func( funcs,   lscs_combining_class, nullptr, nullptr );
+        hb_unicode_funcs_set_general_category_func( funcs,  lscs_category, nullptr, nullptr );
+        hb_unicode_funcs_set_mirroring_func( funcs,         lscs_mirroring, nullptr, nullptr );
+        hb_unicode_funcs_set_script_func( funcs,            lscs_script, nullptr, nullptr );
+        hb_unicode_funcs_set_compose_func( funcs,           lscs_compose, nullptr, nullptr );
+        hb_unicode_funcs_set_decompose_func( funcs,         lscs_decompose, nullptr, nullptr );
     }
 
-    ~cs_hb_unicode_funcs_t()
+    ~lscs_hb_unicode_funcs_t()
     {
         hb_unicode_funcs_destroy( funcs );
     }
@@ -413,8 +413,8 @@ struct cs_hb_unicode_funcs_t
     hb_unicode_funcs_t *funcs;
 };
 
-hb_unicode_funcs_t *cs_get_unicode_funcs()
+hb_unicode_funcs_t *lscs_get_unicode_funcs()
 {
-    static cs_hb_unicode_funcs_t retval;
+    static lscs_hb_unicode_funcs_t retval;
     return retval.funcs;
 }

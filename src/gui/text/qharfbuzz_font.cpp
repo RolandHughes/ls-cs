@@ -28,7 +28,7 @@
 #include <qfontengine_p.h>
 
 // Font routines
-static hb_bool_t cs_font_get_nominal_glyph( hb_font_t *, void *font_data, hb_codepoint_t unicode,
+static hb_bool_t lscs_font_get_nominal_glyph( hb_font_t *, void *font_data, hb_codepoint_t unicode,
         hb_codepoint_t *glyph, void *unused )
 {
     ( void ) unused;
@@ -41,7 +41,7 @@ static hb_bool_t cs_font_get_nominal_glyph( hb_font_t *, void *font_data, hb_cod
     return *glyph != 0;
 }
 
-static hb_bool_t cs_font_get_variation_glyph( hb_font_t *, void *font_data, hb_codepoint_t unicode,
+static hb_bool_t lscs_font_get_variation_glyph( hb_font_t *, void *font_data, hb_codepoint_t unicode,
         hb_codepoint_t variation_selector, hb_codepoint_t *glyph, void *unused )
 {
     ( void ) variation_selector;
@@ -55,7 +55,7 @@ static hb_bool_t cs_font_get_variation_glyph( hb_font_t *, void *font_data, hb_c
     return *glyph != 0;
 }
 
-static hb_position_t cs_font_get_glyph_h_advance( hb_font_t *font, void *font_data, hb_codepoint_t glyph, void * )
+static hb_position_t lscs_font_get_glyph_h_advance( hb_font_t *font, void *font_data, hb_codepoint_t glyph, void * )
 {
     QFontEngine *fe = static_cast<QFontEngine *>( font_data );
     Q_ASSERT( fe );
@@ -67,12 +67,12 @@ static hb_position_t cs_font_get_glyph_h_advance( hb_font_t *font, void *font_da
     g.glyphs    = &glyph;
     g.advances  = &advance;
 
-    fe->recalcAdvances( &g, QFontEngine::ShaperFlags( cs_font_get_use_design_metrics( font ) ) );
+    fe->recalcAdvances( &g, QFontEngine::ShaperFlags( lscs_font_get_use_design_metrics( font ) ) );
 
     return advance.value();
 }
 
-static hb_position_t cs_font_get_glyph_v_advance( hb_font_t *font, void *font_data,
+static hb_position_t lscs_font_get_glyph_v_advance( hb_font_t *font, void *font_data,
         hb_codepoint_t glyph, void *user_data )
 {
     ( void ) font;
@@ -80,12 +80,12 @@ static hb_position_t cs_font_get_glyph_v_advance( hb_font_t *font, void *font_da
     ( void ) glyph;
     ( void ) user_data;
 
-    qCritical( "cs_font_get_glyph_v_advance: vertical writing is not supported" );
+    qCritical( "lscs_font_get_glyph_v_advance: vertical writing is not supported" );
 
     return 0;
 }
 
-static hb_bool_t cs_font_get_glyph_h_origin( hb_font_t *, void *font_data,
+static hb_bool_t lscs_font_get_glyph_h_origin( hb_font_t *, void *font_data,
         hb_codepoint_t, hb_position_t *x, hb_position_t *y, void *user_data )
 {
     ( void ) font_data;
@@ -97,7 +97,7 @@ static hb_bool_t cs_font_get_glyph_h_origin( hb_font_t *, void *font_data,
     return true;
 }
 
-static hb_bool_t cs_font_get_glyph_v_origin( hb_font_t *, void *font_data,
+static hb_bool_t lscs_font_get_glyph_v_origin( hb_font_t *, void *font_data,
         hb_codepoint_t glyph, hb_position_t *x, hb_position_t *y, void *user_data )
 {
     ( void ) font_data;
@@ -106,12 +106,12 @@ static hb_bool_t cs_font_get_glyph_v_origin( hb_font_t *, void *font_data,
     ( void ) y;
     ( void ) user_data;
 
-    qCritical( "cs_font_get_glyph_v_origin: vertical writing is not supported" );
+    qCritical( "lscs_font_get_glyph_v_origin: vertical writing is not supported" );
 
     return false;
 }
 
-static hb_position_t cs_font_get_glyph_h_kerning( hb_font_t *font, void *font_data,
+static hb_position_t lscs_font_get_glyph_h_kerning( hb_font_t *font, void *font_data,
         hb_codepoint_t first_glyph, hb_codepoint_t second_glyph, void * )
 {
     QFontEngine *fe = static_cast<QFontEngine *>( font_data );
@@ -125,18 +125,18 @@ static hb_position_t cs_font_get_glyph_h_kerning( hb_font_t *font, void *font_da
     g.glyphs    = glyphs;
     g.advances  = &advance;
 
-    fe->doKerning( &g, QFontEngine::ShaperFlags( cs_font_get_use_design_metrics( font ) ) );
+    fe->doKerning( &g, QFontEngine::ShaperFlags( lscs_font_get_use_design_metrics( font ) ) );
 
     return advance.value();
 }
 
-static hb_position_t cs_font_get_glyph_v_kerning( hb_font_t *, void *, hb_codepoint_t, hb_codepoint_t, void * )
+static hb_position_t lscs_font_get_glyph_v_kerning( hb_font_t *, void *, hb_codepoint_t, hb_codepoint_t, void * )
 {
     qCritical( "hb_qt_get_glyph_v_kerning: vertical writing is not supported" );
     return 0;
 }
 
-static hb_bool_t cs_font_get_glyph_extents( hb_font_t *, void *font_data,
+static hb_bool_t lscs_font_get_glyph_extents( hb_font_t *, void *font_data,
         hb_codepoint_t glyph, hb_glyph_extents_t *extents, void * )
 {
     QFontEngine *fe = static_cast<QFontEngine *>( font_data );
@@ -152,7 +152,7 @@ static hb_bool_t cs_font_get_glyph_extents( hb_font_t *, void *font_data,
     return true;
 }
 
-static hb_bool_t cs_font_get_glyph_contour_point( hb_font_t *, void *font_data, hb_codepoint_t glyph,
+static hb_bool_t lscs_font_get_glyph_contour_point( hb_font_t *, void *font_data, hb_codepoint_t glyph,
         unsigned int point_index, hb_position_t *x, hb_position_t *y, void * )
 {
     QFontEngine *fe = static_cast<QFontEngine *>( font_data );
@@ -176,14 +176,14 @@ static hb_bool_t cs_font_get_glyph_contour_point( hb_font_t *, void *font_data, 
     return false;
 }
 
-static hb_bool_t cs_font_get_glyph_name( hb_font_t *, void *font_data,
+static hb_bool_t lscs_font_get_glyph_name( hb_font_t *, void *font_data,
         hb_codepoint_t glyph, char *name, unsigned int size, void *user_data )
 {
     ( void ) font_data;
     ( void ) glyph;
     ( void ) user_data;
 
-    qCritical( "cs_font_get_glyph_name: not implemented" );
+    qCritical( "lscs_font_get_glyph_name: not implemented" );
 
     if ( size != 0 )
     {
@@ -193,14 +193,14 @@ static hb_bool_t cs_font_get_glyph_name( hb_font_t *, void *font_data,
     return false;
 }
 
-static hb_bool_t cs_font_get_glyph_from_name( hb_font_t *, void *font_data, const char *name, int,
+static hb_bool_t lscs_font_get_glyph_from_name( hb_font_t *, void *font_data, const char *name, int,
         hb_codepoint_t *glyph, void *user_data )
 {
     ( void ) font_data;
     ( void ) name;
     ( void ) user_data;
 
-    qCritical( "cs_font_get_glyph_from_name: not implemented" );
+    qCritical( "lscs_font_get_glyph_from_name: not implemented" );
 
     *glyph = 0;
 
@@ -209,43 +209,43 @@ static hb_bool_t cs_font_get_glyph_from_name( hb_font_t *, void *font_data, cons
 
 static hb_user_data_key_t internal_useDesignMetricsKey;
 
-void cs_font_set_use_design_metrics( hb_font_t *font, uint value )
+void lscs_font_set_use_design_metrics( hb_font_t *font, uint value )
 {
     hb_font_set_user_data( font, &internal_useDesignMetricsKey, ( void * )quintptr( value ), nullptr, true );
 }
 
-uint cs_font_get_use_design_metrics( hb_font_t *font )
+uint lscs_font_get_use_design_metrics( hb_font_t *font )
 {
     return quintptr( hb_font_get_user_data( font, &internal_useDesignMetricsKey ) );
 }
 
-struct cs_hb_font_funcs_t
+struct lscs_hb_font_funcs_t
 {
 
-    cs_hb_font_funcs_t()
+    lscs_hb_font_funcs_t()
     {
         funcs = hb_font_funcs_create();
 
-        hb_font_funcs_set_nominal_glyph_func( funcs,       cs_font_get_nominal_glyph, nullptr, nullptr );
-        hb_font_funcs_set_variation_glyph_func( funcs,     cs_font_get_variation_glyph, nullptr, nullptr );
+        hb_font_funcs_set_nominal_glyph_func( funcs,       lscs_font_get_nominal_glyph, nullptr, nullptr );
+        hb_font_funcs_set_variation_glyph_func( funcs,     lscs_font_get_variation_glyph, nullptr, nullptr );
 
-        hb_font_funcs_set_glyph_h_advance_func( funcs,     cs_font_get_glyph_h_advance, nullptr, nullptr );
-        hb_font_funcs_set_glyph_v_advance_func( funcs,     cs_font_get_glyph_v_advance, nullptr, nullptr );
+        hb_font_funcs_set_glyph_h_advance_func( funcs,     lscs_font_get_glyph_h_advance, nullptr, nullptr );
+        hb_font_funcs_set_glyph_v_advance_func( funcs,     lscs_font_get_glyph_v_advance, nullptr, nullptr );
 
-        hb_font_funcs_set_glyph_h_origin_func( funcs,      cs_font_get_glyph_h_origin, nullptr, nullptr );
-        hb_font_funcs_set_glyph_v_origin_func( funcs,      cs_font_get_glyph_v_origin, nullptr, nullptr );
+        hb_font_funcs_set_glyph_h_origin_func( funcs,      lscs_font_get_glyph_h_origin, nullptr, nullptr );
+        hb_font_funcs_set_glyph_v_origin_func( funcs,      lscs_font_get_glyph_v_origin, nullptr, nullptr );
 
-        hb_font_funcs_set_glyph_h_kerning_func( funcs,     cs_font_get_glyph_h_kerning, nullptr, nullptr );
-        hb_font_funcs_set_glyph_v_kerning_func( funcs,     cs_font_get_glyph_v_kerning, nullptr, nullptr );
-        hb_font_funcs_set_glyph_extents_func( funcs,       cs_font_get_glyph_extents, nullptr, nullptr );
+        hb_font_funcs_set_glyph_h_kerning_func( funcs,     lscs_font_get_glyph_h_kerning, nullptr, nullptr );
+        hb_font_funcs_set_glyph_v_kerning_func( funcs,     lscs_font_get_glyph_v_kerning, nullptr, nullptr );
+        hb_font_funcs_set_glyph_extents_func( funcs,       lscs_font_get_glyph_extents, nullptr, nullptr );
 
-        hb_font_funcs_set_glyph_contour_point_func( funcs, cs_font_get_glyph_contour_point, nullptr, nullptr );
+        hb_font_funcs_set_glyph_contour_point_func( funcs, lscs_font_get_glyph_contour_point, nullptr, nullptr );
 
-        hb_font_funcs_set_glyph_name_func( funcs,          cs_font_get_glyph_name, nullptr, nullptr );
-        hb_font_funcs_set_glyph_from_name_func( funcs,     cs_font_get_glyph_from_name, nullptr, nullptr );
+        hb_font_funcs_set_glyph_name_func( funcs,          lscs_font_get_glyph_name, nullptr, nullptr );
+        hb_font_funcs_set_glyph_from_name_func( funcs,     lscs_font_get_glyph_from_name, nullptr, nullptr );
     }
 
-    ~cs_hb_font_funcs_t()
+    ~lscs_hb_font_funcs_t()
     {
         hb_font_funcs_destroy( funcs );
     }
@@ -253,9 +253,9 @@ struct cs_hb_font_funcs_t
     hb_font_funcs_t *funcs;
 };
 
-static hb_font_funcs_t *cs_get_font_funcs()
+static hb_font_funcs_t *lscs_get_font_funcs()
 {
-    static cs_hb_font_funcs_t retval;
+    static lscs_hb_font_funcs_t retval;
     return retval.funcs;
 }
 
@@ -265,7 +265,7 @@ static hb_blob_t *internal_hb_reference_table( hb_face_t *, hb_tag_t tag, void *
     QFontEngine::FaceData *data = static_cast<QFontEngine::FaceData *>( user_data );
     Q_ASSERT( data );
 
-    cs_fontTable_func_ptr funcPtr = data->m_fontTable_funcPtr;
+    lscs_fontTable_func_ptr funcPtr = data->m_fontTable_funcPtr;
     Q_ASSERT( funcPtr );
 
     uint length = 0;
@@ -318,7 +318,7 @@ static std::shared_ptr<hb_face_t> internal_hb_face_create( QFontEngine *fe )
     return retval;
 }
 
-std::shared_ptr<hb_face_t> cs_face_get_for_engine( QFontEngine *fe )
+std::shared_ptr<hb_face_t> lscs_face_get_for_engine( QFontEngine *fe )
 {
     Q_ASSERT( fe && fe->type() != QFontEngine::Multi );
 
@@ -332,7 +332,7 @@ std::shared_ptr<hb_face_t> cs_face_get_for_engine( QFontEngine *fe )
 
 static std::shared_ptr<hb_font_t> internal_hb_font_create( QFontEngine *fe )
 {
-    std::shared_ptr<hb_face_t> face = cs_face_get_for_engine( fe );
+    std::shared_ptr<hb_face_t> face = lscs_face_get_for_engine( fe );
 
     if ( face == nullptr )
     {
@@ -351,7 +351,7 @@ static std::shared_ptr<hb_font_t> internal_hb_font_create( QFontEngine *fe )
     const double y_ppem = fe->fontDef.pixelSize;
     const double x_ppem = ( fe->fontDef.pixelSize * fe->fontDef.stretch ) / 100.0;
 
-    hb_font_set_funcs( font, cs_get_font_funcs(), fe, nullptr );
+    hb_font_set_funcs( font, lscs_get_font_funcs(), fe, nullptr );
 
 #ifdef Q_OS_DARWIN
     hb_font_set_scale( font, QFixed::fromReal( x_ppem ).value(),  QFixed::fromReal( y_ppem ).value() );
@@ -365,7 +365,7 @@ static std::shared_ptr<hb_font_t> internal_hb_font_create( QFontEngine *fe )
     return retval;
 }
 
-std::shared_ptr<hb_font_t> cs_font_get_for_engine( QFontEngine *fe )
+std::shared_ptr<hb_font_t> lscs_font_get_for_engine( QFontEngine *fe )
 {
     Q_ASSERT( fe && fe->type() != QFontEngine::Multi );
 

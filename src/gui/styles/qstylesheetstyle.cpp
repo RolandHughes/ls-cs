@@ -3536,10 +3536,10 @@ void QStyleSheetStyle::polish( QWidget *w )
         {
 
             QObject::connect( sa->horizontalScrollBar(), &QAbstractSlider::valueChanged, sa,
-                              cs_mp_cast<>( &QAbstractScrollArea::update ), Qt::UniqueConnection );
+                              lscs_mp_cast<>( &QAbstractScrollArea::update ), Qt::UniqueConnection );
 
             QObject::connect( sa->verticalScrollBar(),   &QAbstractSlider::valueChanged, sa,
-                              cs_mp_cast<>( &QAbstractScrollArea::update ), Qt::UniqueConnection );
+                              lscs_mp_cast<>( &QAbstractScrollArea::update ), Qt::UniqueConnection );
         }
     }
 
@@ -3660,8 +3660,8 @@ void QStyleSheetStyle::unpolish( QWidget *w )
 
     if ( QAbstractScrollArea *sa = qobject_cast<QAbstractScrollArea *>( w ) )
     {
-        QObject::disconnect( sa->horizontalScrollBar(), &QScrollBar::valueChanged, sa, cs_mp_cast<>( &QAbstractScrollArea::update ) );
-        QObject::disconnect( sa->verticalScrollBar(),   &QScrollBar::valueChanged, sa, cs_mp_cast<>( &QAbstractScrollArea::update ) );
+        QObject::disconnect( sa->horizontalScrollBar(), &QScrollBar::valueChanged, sa, lscs_mp_cast<>( &QAbstractScrollArea::update ) );
+        QObject::disconnect( sa->verticalScrollBar(),   &QScrollBar::valueChanged, sa, lscs_mp_cast<>( &QAbstractScrollArea::update ) );
     }
 
 #endif

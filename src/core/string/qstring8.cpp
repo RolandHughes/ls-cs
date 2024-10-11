@@ -39,14 +39,14 @@
 
 #include <array>
 
-static bool cs_internal_quickCheck( QString8::const_iterator &first_iter, QString8::const_iterator last_iter,
+static bool lscs_internal_quickCheck( QString8::const_iterator &first_iter, QString8::const_iterator last_iter,
                                     QString8::NormalizationForm mode );
 
-static QString8 cs_internal_decompose( QString8::const_iterator first_iter, QString8::const_iterator last_iter,
+static QString8 lscs_internal_decompose( QString8::const_iterator first_iter, QString8::const_iterator last_iter,
                                        bool canonical, QChar32::UnicodeVersion version );
 
-static QString8 cs_internal_canonicalOrder( const QString8 &str, QChar32::UnicodeVersion version );
-static QString8 cs_internal_compose( const QString8 &str, QChar32::UnicodeVersion version );
+static QString8 lscs_internal_canonicalOrder( const QString8 &str, QChar32::UnicodeVersion version );
+static QString8 lscs_internal_compose( const QString8 &str, QChar32::UnicodeVersion version );
 
 #if ! defined(CSTR_LESS_THAN)
 #define CSTR_LESS_THAN       1
@@ -64,7 +64,7 @@ QString8::QString8( size_type numOfChars, QChar32 c )
 {
 }
 
-QString8::const_iterator QString8::cs_internal_find_fast( QChar32 c, const_iterator iter_begin ) const
+QString8::const_iterator QString8::lscs_internal_find_fast( QChar32 c, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -94,14 +94,14 @@ QString8::const_iterator QString8::cs_internal_find_fast( QChar32 c, const_itera
     }
     else
     {
-        return cs_internal_find_fast( strFolded, iter_begin );
+        return lscs_internal_find_fast( strFolded, iter_begin );
 
     }
 
     return iter_end;
 }
 
-QString8::const_iterator QString8::cs_internal_find_fast( const QString8 &str, const_iterator iter_begin ) const
+QString8::const_iterator QString8::lscs_internal_find_fast( const QString8 &str, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -156,7 +156,7 @@ QString8::const_iterator QString8::cs_internal_find_fast( const QString8 &str, c
     return iter_end;
 }
 
-QString8::const_iterator QString8::cs_internal_rfind_fast( QChar32 c, const_iterator iter_begin ) const
+QString8::const_iterator QString8::lscs_internal_rfind_fast( QChar32 c, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -186,14 +186,14 @@ QString8::const_iterator QString8::cs_internal_rfind_fast( QChar32 c, const_iter
     }
     else
     {
-        return cs_internal_rfind_fast( strFolded, iter_begin );
+        return lscs_internal_rfind_fast( strFolded, iter_begin );
 
     }
 
     return iter_end;
 }
 
-QString8::const_iterator QString8::cs_internal_rfind_fast( const QString8 &str, const_iterator iter_begin ) const
+QString8::const_iterator QString8::lscs_internal_rfind_fast( const QString8 &str, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -976,7 +976,7 @@ QStringView8 QString8::midView( const_iterator iter, size_type numOfChars ) cons
 
 QString8 QString8::normalized( QString8::NormalizationForm mode, QChar32::UnicodeVersion version ) const
 {
-    QString8 retval = cs_internal_string_normalize( *this, mode, version, 0 );
+    QString8 retval = lscs_internal_string_normalize( *this, mode, version, 0 );
     return retval;
 }
 
@@ -1999,7 +1999,7 @@ QDataStream &operator<<( QDataStream &stream, const QString8 &str )
 }
 
 // normalization functions
-QString8 cs_internal_string_normalize( const QString8 &data, QString8::NormalizationForm mode,
+QString8 lscs_internal_string_normalize( const QString8 &data, QString8::NormalizationForm mode,
                                        QChar32::UnicodeVersion version, int from )
 {
     QString8 retval;
@@ -2057,7 +2057,7 @@ QString8 cs_internal_string_normalize( const QString8 &data, QString8::Normaliza
 
 
     // ** 1
-    if ( cs_internal_quickCheck( first_iter, last_iter, mode ) )
+    if ( lscs_internal_quickCheck( first_iter, last_iter, mode ) )
     {
         // nothing to normalize
         return data;
@@ -2066,10 +2066,10 @@ QString8 cs_internal_string_normalize( const QString8 &data, QString8::Normaliza
     // ** 2
     retval.assign( data.begin(), first_iter );
 
-    retval += cs_internal_decompose( first_iter, last_iter, mode < QString8::NormalizationForm_KD, version );
+    retval += lscs_internal_decompose( first_iter, last_iter, mode < QString8::NormalizationForm_KD, version );
 
     // ** 3
-    retval = cs_internal_canonicalOrder( retval, version );
+    retval = lscs_internal_canonicalOrder( retval, version );
 
     if ( mode == QString8::NormalizationForm_D || mode == QString8::NormalizationForm_KD )
     {
@@ -2077,12 +2077,12 @@ QString8 cs_internal_string_normalize( const QString8 &data, QString8::Normaliza
     }
 
     // ** 4
-    retval = cs_internal_compose( retval, version );
+    retval = lscs_internal_compose( retval, version );
 
     return retval;
 }
 
-bool cs_internal_quickCheck( QString8::const_iterator &first_iter, QString8::const_iterator last_iter,
+bool lscs_internal_quickCheck( QString8::const_iterator &first_iter, QString8::const_iterator last_iter,
                              QString8::NormalizationForm mode )
 {
     // method one
@@ -2136,7 +2136,7 @@ bool cs_internal_quickCheck( QString8::const_iterator &first_iter, QString8::con
 }
 
 // buffer has to have a length of 3, required for Hangul decomposition
-static const char32_t *cs_internal_decompose_2( char32_t ucs4, int *length, int *tag, char32_t *buffer )
+static const char32_t *lscs_internal_decompose_2( char32_t ucs4, int *length, int *tag, char32_t *buffer )
 {
     if ( ucs4 >= Hangul_Constants::Hangul_SBase && ucs4 < Hangul_Constants::Hangul_SBase + Hangul_Constants::Hangul_SCount )
     {
@@ -2169,7 +2169,7 @@ static const char32_t *cs_internal_decompose_2( char32_t ucs4, int *length, int 
     return decomposition + 1;
 }
 
-QString8 cs_internal_decompose( QString8::const_iterator first_iter, QString8::const_iterator last_iter,
+QString8 lscs_internal_decompose( QString8::const_iterator first_iter, QString8::const_iterator last_iter,
                                 bool canonical, QChar32::UnicodeVersion version )
 {
     // method two
@@ -2195,7 +2195,7 @@ QString8 cs_internal_decompose( QString8::const_iterator first_iter, QString8::c
             continue;
         }
 
-        const char32_t *strDecomp = cs_internal_decompose_2( uc.unicode(), &length, &tag, buffer );
+        const char32_t *strDecomp = lscs_internal_decompose_2( uc.unicode(), &length, &tag, buffer );
 
         if ( ! strDecomp || ( canonical && tag != QChar32::Canonical ) )
         {
@@ -2218,7 +2218,7 @@ QString8 cs_internal_decompose( QString8::const_iterator first_iter, QString8::c
             else
             {
                 QString8 tmp = c;
-                tmp = cs_internal_decompose( tmp.cbegin(), tmp.cend(), canonical, version );
+                tmp = lscs_internal_decompose( tmp.cbegin(), tmp.cend(), canonical, version );
                 retval.append( tmp );
 
             }
@@ -2228,7 +2228,7 @@ QString8 cs_internal_decompose( QString8::const_iterator first_iter, QString8::c
     return retval;
 }
 
-QString8 cs_internal_canonicalOrder( const QString8 &str, QChar32::UnicodeVersion version )
+QString8 lscs_internal_canonicalOrder( const QString8 &str, QChar32::UnicodeVersion version )
 {
     // method three
     QString8 retval;
@@ -2289,7 +2289,7 @@ QString8 cs_internal_canonicalOrder( const QString8 &str, QChar32::UnicodeVersio
     return retval;
 }
 
-static char32_t inline cs_internal_ligature( char32_t u1, char32_t u2 )
+static char32_t inline lscs_internal_ligature( char32_t u1, char32_t u2 )
 {
     char32_t retval = U'\0';
 
@@ -2347,7 +2347,7 @@ static char32_t inline cs_internal_ligature( char32_t u1, char32_t u2 )
     return retval;
 }
 
-static QString8 cs_internal_compose( const QString8 &str, QChar32::UnicodeVersion version )
+static QString8 lscs_internal_compose( const QString8 &str, QChar32::UnicodeVersion version )
 {
     // method four
     QString8 retval;
@@ -2385,7 +2385,7 @@ static QString8 cs_internal_compose( const QString8 &str, QChar32::UnicodeVersio
         {
 
             // form ligature with prior code point
-            char32_t ligature = cs_internal_ligature( codePointBeg, ucValue );
+            char32_t ligature = lscs_internal_ligature( codePointBeg, ucValue );
 
             if ( ligature != U'\0' )
             {

@@ -91,7 +91,7 @@ const uchar *qt_patternForBrush( int brushStyle, bool invert )
 QPixmap qt_pixmapForBrush( int brushStyle, bool invert )
 {
     QPixmap pm;
-    QString key = "$cs_brush$" + HexString<uint>( brushStyle ) + QChar( invert ? '1' : '0' );
+    QString key = "$lscs_brush$" + HexString<uint>( brushStyle ) + QChar( invert ? '1' : '0' );
 
     if ( ! QPixmapCache::find( key, pm ) )
     {
@@ -251,7 +251,7 @@ struct QGradientBrushData : public QBrushData
     QGradient gradient;
 };
 
-namespace cs_internal
+namespace lscs_internal
 {
 void QBrushDataPointerDeleter::deleteData( QBrushData *d )
 {
@@ -472,7 +472,7 @@ QBrush::~QBrush()
 
 void QBrush::cleanUp( QBrushData *x )
 {
-    cs_internal::QBrushDataPointerDeleter::deleteData( x );
+    lscs_internal::QBrushDataPointerDeleter::deleteData( x );
 }
 
 void QBrush::detach( Qt::BrushStyle newStyle )
@@ -482,7 +482,7 @@ void QBrush::detach( Qt::BrushStyle newStyle )
         return;
     }
 
-    QScopedPointer<QBrushData, cs_internal::QBrushDataPointerDeleter> x;
+    QScopedPointer<QBrushData, lscs_internal::QBrushDataPointerDeleter> x;
 
     switch ( newStyle )
     {

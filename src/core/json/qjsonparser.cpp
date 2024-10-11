@@ -30,20 +30,20 @@
 static constexpr const int NESTING_LIMIT = 1024;
 
 // error strings for the JSON parser
-#define JSONERR_OK          cs_mark_tr("QJsonParseError", "no error occurred")
-#define JSONERR_UNTERM_OBJ  cs_mark_tr("QJsonParseError", "unterminated object")
-#define JSONERR_MISS_NSEP   cs_mark_tr("QJsonParseError", "missing name separator")
-#define JSONERR_UNTERM_AR   cs_mark_tr("QJsonParseError", "unterminated array")
-#define JSONERR_MISS_VSEP   cs_mark_tr("QJsonParseError", "missing value separator")
-#define JSONERR_ILLEGAL_VAL cs_mark_tr("QJsonParseError", "illegal value")
-#define JSONERR_END_OF_NUM  cs_mark_tr("QJsonParseError", "invalid termination by number")
-#define JSONERR_ILLEGAL_NUM cs_mark_tr("QJsonParseError", "illegal number")
-#define JSONERR_STR_ESC_SEQ cs_mark_tr("QJsonParseError", "invalid escape sequence")
-#define JSONERR_STR_UTF8    cs_mark_tr("QJsonParseError", "invalid UTF8 string")
-#define JSONERR_UTERM_STR   cs_mark_tr("QJsonParseError", "unterminated string")
-#define JSONERR_MISS_OBJ    cs_mark_tr("QJsonParseError", "object is missing after a comma")
-#define JSONERR_DEEP_NEST   cs_mark_tr("QJsonParseError", "too deeply nested document")
-#define JSONERR_DOC_LARGE   cs_mark_tr("QJsonParseError", "too large document")
+#define JSONERR_OK          lscs_mark_tr("QJsonParseError", "no error occurred")
+#define JSONERR_UNTERM_OBJ  lscs_mark_tr("QJsonParseError", "unterminated object")
+#define JSONERR_MISS_NSEP   lscs_mark_tr("QJsonParseError", "missing name separator")
+#define JSONERR_UNTERM_AR   lscs_mark_tr("QJsonParseError", "unterminated array")
+#define JSONERR_MISS_VSEP   lscs_mark_tr("QJsonParseError", "missing value separator")
+#define JSONERR_ILLEGAL_VAL lscs_mark_tr("QJsonParseError", "illegal value")
+#define JSONERR_END_OF_NUM  lscs_mark_tr("QJsonParseError", "invalid termination by number")
+#define JSONERR_ILLEGAL_NUM lscs_mark_tr("QJsonParseError", "illegal number")
+#define JSONERR_STR_ESC_SEQ lscs_mark_tr("QJsonParseError", "invalid escape sequence")
+#define JSONERR_STR_UTF8    lscs_mark_tr("QJsonParseError", "invalid UTF8 string")
+#define JSONERR_UTERM_STR   lscs_mark_tr("QJsonParseError", "unterminated string")
+#define JSONERR_MISS_OBJ    lscs_mark_tr("QJsonParseError", "object is missing after a comma")
+#define JSONERR_DEEP_NEST   lscs_mark_tr("QJsonParseError", "too deeply nested document")
+#define JSONERR_DOC_LARGE   lscs_mark_tr("QJsonParseError", "too large document")
 
 QString QJsonParseError::errorString() const
 {

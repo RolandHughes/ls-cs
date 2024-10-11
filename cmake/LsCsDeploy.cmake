@@ -90,14 +90,14 @@ function(lscs_copy_plugins LIB_NAME)
    if(LIB_NAME STREQUAL "LsCsGui")
 
       if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsGuiCocoa${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/platforms)
+         install(FILES ${LSCS_PLUGIN_DIR}/platforms/LsCsGuiCocoa${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/platforms)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsGuiXcb${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/platforms)
+         install(FILES ${LSCS_PLUGIN_DIR}/platforms/LsCsGuiXcb${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/platforms)
          install(FILES ${LSCS_INSTALLED_LIB_DIR}/libLsCsXcbSupport${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR})
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsGuiWin${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/platforms)
+         install(FILES ${LSCS_PLUGIN_DIR}/platforms/LsCsGuiWin${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/platforms)
 
       endif()
    endif()
@@ -110,15 +110,15 @@ function(lscs_copy_plugins LIB_NAME)
          install(FILES ${LSCS_PLUGIN_DIR}/LsCsMultimedia_m3u${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/playlistformats)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsMultimedia_gst_audiodecoder${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/audio)
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsMultimedia_gst_camerabin${LSCS_VERSION_API}.so    DESTINATION ${APP_INSTALL_DIR}/mediaservices)
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsMultimedia_gst_mediaplayer${LSCS_VERSION_API}.so  DESTINATION ${APP_INSTALL_DIR}/mediaservices)
+         install(FILES ${LSCS_PLUGIN_DIR}/mediaservices/LsCsMultimedia_gst_audiodecoder${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/audio)
+         install(FILES ${LSCS_PLUGIN_DIR}/mediaservices/LsCsMultimedia_gst_camerabin${LSCS_VERSION_API}.so    DESTINATION ${APP_INSTALL_DIR}/mediaservices)
+         install(FILES ${LSCS_PLUGIN_DIR}/mediaservices/LsCsMultimedia_gst_mediaplayer${LSCS_VERSION_API}.so  DESTINATION ${APP_INSTALL_DIR}/mediaservices)
 
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsMultimedia_m3u${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/playlistformats)
+         install(FILES ${LSCS_PLUGIN_DIR}/playlistformats/LsCsMultimedia_m3u${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/playlistformats)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsMultimedia_DirectShow${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/mediaservices)
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsMultimedia_m3u${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/playlistformats)
+         install(FILES ${LSCS_PLUGIN_DIR}/mediaservices/LsCsMultimedia_DirectShow${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/mediaservices)
+         install(FILES ${LSCS_PLUGIN_DIR}/playlistformats/LsCsMultimedia_m3u${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/playlistformats)
 
       endif()
    endif()
@@ -126,20 +126,20 @@ function(lscs_copy_plugins LIB_NAME)
    if(LIB_NAME STREQUAL "LsCsOpenGL")
 
       if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsGuiXcb_Glx${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/xcbglintegrations)
+         install(FILES ${LSCS_PLUGIN_DIR}/xcbglintegrations/LsCsGuiXcb_Glx${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/xcbglintegrations)
       endif()
    endif()
 
    if(LIB_NAME STREQUAL "LsCsSqlMySql")
 
       if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlMySql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlMySql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlMySql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlMySql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlMySql${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlMySql${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       endif()
    endif()
@@ -147,13 +147,13 @@ function(lscs_copy_plugins LIB_NAME)
    if(LIB_NAME STREQUAL "LsCsSqlOdbc")
 
       if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlOdbc${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlOdbc${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlOdbc${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlOdbc${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlOdbc${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlOdbc${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       endif()
    endif()
@@ -161,13 +161,13 @@ function(lscs_copy_plugins LIB_NAME)
    if(LIB_NAME STREQUAL "LsCsSqlPsql")
 
       if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlPsql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlPsql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlPsql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlPsql${LSCS_VERSION_API}.so DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-         install(FILES ${LSCS_PLUGIN_DIR}/LsCsSqlPsql${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
+         install(FILES ${LSCS_PLUGIN_DIR}/sqldrivers/LsCsSqlPsql${LSCS_VERSION_API}.dll DESTINATION ${APP_INSTALL_DIR}/sqldrivers)
 
       endif()
    endif()
@@ -175,13 +175,13 @@ function(lscs_copy_plugins LIB_NAME)
    if(LIB_NAME STREQUAL "LsCsPrinterDriver")
 
       if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         set(file ${LSCS_PLUGIN_DIR}/LsCsPrinterDriverCups${LSCS_VERSION_API}.so)
+         set(file ${LSCS_PLUGIN_DIR}/printerdrivers/LsCsPrinterDriverCups${LSCS_VERSION_API}.so)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         set(file ${LSCS_PLUGIN_DIR}/LsCsPrinterDriverCups${LSCS_VERSION_API}.so)
+         set(file ${LSCS_PLUGIN_DIR}/printerdrivers/LsCsPrinterDriverCups${LSCS_VERSION_API}.so)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-         set(file ${LSCS_PLUGIN_DIR}/LsCsPrinterDriverWin${LSCS_VERSION_API}.dll)
+         set(file ${LSCS_PLUGIN_DIR}/printerdrivers/LsCsPrinterDriverWin${LSCS_VERSION_API}.dll)
 
       endif()
 
@@ -196,13 +196,13 @@ function(lscs_copy_plugins LIB_NAME)
    if(LIB_NAME STREQUAL "LsCsImageFormatsSvg")
 
       if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-         set(file ${LSCS_PLUGIN_DIR}/LsCsImageFormatsSvg${LSCS_VERSION_API}.so)
+         set(file ${LSCS_PLUGIN_DIR}/imageformats/LsCsImageFormatsSvg${LSCS_VERSION_API}.so)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
-         set(file ${LSCS_PLUGIN_DIR}/LsCsImageFormatsSvg${LSCS_VERSION_API}.so)
+         set(file ${LSCS_PLUGIN_DIR}/imageformats/LsCsImageFormatsSvg${LSCS_VERSION_API}.so)
 
       elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
-         set(file ${LSCS_PLUGIN_DIR}/LsCsImageFormatsSvg${LSCS_VERSION_API}.dll)
+         set(file ${LSCS_PLUGIN_DIR}/imageformats/LsCsImageFormatsSvg${LSCS_VERSION_API}.dll)
 
       endif()
 

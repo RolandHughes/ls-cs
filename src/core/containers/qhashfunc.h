@@ -33,8 +33,8 @@
 class QBitArray;
 class QByteArray;
 
-Q_CORE_EXPORT uint cs_getHashSeed();
-Q_CORE_EXPORT uint cs_stable_hash( const QString &key );
+Q_CORE_EXPORT uint lscs_getHashSeed();
+Q_CORE_EXPORT uint lscs_stable_hash( const QString &key );
 
 Q_CORE_EXPORT uint qHashBits( const void *p, size_t len, uint seed );
 
@@ -191,7 +191,7 @@ class qHashFunc
 public:
     uint operator()( const Key &key ) const
     {
-        return qHash( key, cs_getHashSeed() );
+        return qHash( key, lscs_getHashSeed() );
     }
 };
 

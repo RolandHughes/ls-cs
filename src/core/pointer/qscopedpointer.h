@@ -50,7 +50,7 @@ void swap( QScopedPointer<T, Deleter> &ptr1, QScopedPointer<T, Deleter> &ptr2 ) 
 template <typename T, typename... Args, typename = typename std::enable_if_t<! std::is_array_v<T>>>
           QScopedPointer<T> QMakeScoped( Args && ... args )
 {
-    return CsPointer::make_unique<T>( std::forward<Args>( args )... );
+    return LsCsPointer::make_unique<T>( std::forward<Args>( args )... );
 }
 
 #endif

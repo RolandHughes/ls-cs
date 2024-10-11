@@ -42,8 +42,8 @@ import re
 
 sys.path.append("..")
 
-import cs_enumdata
-import cs_extra_enums
+import lscs_enumdata
+import lscs_extra_enums
 
 remove_space_table = str.maketrans("", "", " -")
 
@@ -54,7 +54,7 @@ def print_language(output, name, code, extra_map):
     if name in extra_map:
         id = "Use " + extra_map[name]
     else:
-        id = cs_enumdata.languageCodeToId(code)
+        id = lscs_enumdata.languageCodeToId(code)
 
     if name == "C":
         extratext = "Refer to QLocale::c()"
@@ -73,7 +73,7 @@ def print_country(output, name, code, extra_map):
     if name in extra_map:
         id = "Use " + extra_map[name]
     else:
-        id = cs_enumdata.countryCodeToId(code)
+        id = lscs_enumdata.countryCodeToId(code)
 
     output.write("""
    <tr><td><tt>QLocale::%s</tt></td>
@@ -89,7 +89,7 @@ def print_script(output, name, code, extra_map):
     if name in extra_map:
         id = "Use " + extra_map[name]
     else:
-        id = cs_enumdata.scriptCodeToId(code)
+        id = lscs_enumdata.scriptCodeToId(code)
 
     output.write("""
    <tr><td><tt>QLocale::%s</tt></td>
@@ -122,13 +122,13 @@ def main():
 
     language_file = open("doxy_language.txt", "w")
 
-    print_block(cs_enumdata.language_list, parse_string(cs_extra_enums.extra_language_string), print_language, language_file)
+    print_block(lscs_enumdata.language_list, parse_string(lscs_extra_enums.extra_language_string), print_language, language_file)
 
     country_file = open("doxy_country.txt", "w")
-    print_block(cs_enumdata.country_list, parse_string(cs_extra_enums.extra_country_string), print_country, country_file)
+    print_block(lscs_enumdata.country_list, parse_string(lscs_extra_enums.extra_country_string), print_country, country_file)
 
     script_file = open("doxy_script.txt", "w")
-    print_block(cs_enumdata.script_list, parse_string(cs_extra_enums.extra_script_string), print_script, script_file)
+    print_block(lscs_enumdata.script_list, parse_string(lscs_extra_enums.extra_script_string), print_script, script_file)
 
 
 if __name__ == "__main__":

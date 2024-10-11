@@ -71,9 +71,9 @@ static const QString text_QT_TRANSLATE_NOOP      = "QT_TRANSLATE_NOOP";
 static const QString text_QT_TRANSLATE_NOOP3     = "QT_TRANSLATE_NOOP3";
 static const QString text_QT_TRID_NOOP           = "QT_TRID_NOOP";
 
-static const QString text_cs_mark_tr             = "cs_mark_tr";
-static const QString text_cs_mark_string_tr      = "cs_mark_string_tr";
-static const QString text_cs_mark_tr_id          = "cs_mark_tr_id";
+static const QString text_lscs_mark_tr           = "lscs_mark_tr";
+static const QString text_lscs_mark_string_tr    = "lscs_mark_string_tr";
+static const QString text_lscs_mark_tr_id        = "lscs_mark_tr_id";
 static const QString text_qtTrId                 = "qtTrId";
 
 class HashString
@@ -1023,7 +1023,7 @@ restart:
                     break;
             }
 
-            // gui_cs_object, net_cs_object, etc
+            // gui_lscs_object, net_lscs_object, etc
             if ( yyWord.contains( text_LSCS_OBJECT ) )
             {
                 return Tok_LSCS_OBJECT;
@@ -2815,7 +2815,7 @@ incOk:
                         handleDeclareTrFunctions();
 
                     }
-                    else if ( yyWord == text_cs_mark_tr || yyWord == text_cs_mark_string_tr )
+                    else if ( yyWord == text_lscs_mark_tr || yyWord == text_lscs_mark_string_tr )
                     {
 
                         if ( m_translator != nullptr )
@@ -2843,7 +2843,7 @@ incOk:
                         }
 
                     }
-                    else if ( yyWord == text_qtTrId || yyWord == text_QT_TRID_NOOP || yyWord == text_cs_mark_tr_id )
+                    else if ( yyWord == text_qtTrId || yyWord == text_QT_TRID_NOOP || yyWord == text_lscs_mark_tr_id )
                     {
 
                         if ( m_translator != nullptr )

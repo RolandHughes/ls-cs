@@ -1094,7 +1094,7 @@ QWidget::~QWidget()
 #endif
 
     // ensure parent is notified while 'this' is still a widget
-    QObject::cs_forceRemoveChild();
+    QObject::lscs_forceRemoveChild();
 
     // delete layout while we still are a valid widget
     delete d->layout;
@@ -1217,7 +1217,7 @@ QWidget::~QWidget()
     }
 }
 
-bool QWidget::cs_isWidgetType() const
+bool QWidget::lscs_isWidgetType() const
 {
     return true;
 }
@@ -2872,7 +2872,7 @@ void QWidgetPrivate::setEnabled_helper( bool enable )
     if ( q->testAttribute( Qt::WA_SetCursor ) || q->isWindow() )
     {
         // enforce the windows behavior of clearing the cursor on disabled widgets
-        cs_internal_set_cursor( q, false );
+        lscs_internal_set_cursor( q, false );
     }
 
 #endif
@@ -3963,7 +3963,7 @@ void QWidgetPrivate::setCursor_sys( const QCursor &cursor )
     ( void ) cursor;
 
     Q_Q( QWidget );
-    cs_internal_set_cursor( q, false );
+    lscs_internal_set_cursor( q, false );
 }
 
 void QWidget::unsetCursor()
@@ -3990,7 +3990,7 @@ void QWidget::unsetCursor()
 void QWidgetPrivate::unsetCursor_sys()
 {
     Q_Q( QWidget );
-    cs_internal_set_cursor( q, false );
+    lscs_internal_set_cursor( q, false );
 }
 
 static inline void applyCursor( QWidget *w, QCursor c )
@@ -4009,7 +4009,7 @@ static inline void unsetCursor( QWidget *w )
     }
 }
 
-void cs_internal_set_cursor( QWidget *w, bool force )
+void lscs_internal_set_cursor( QWidget *w, bool force )
 {
     if ( ! w->testAttribute( Qt::WA_WState_Created ) )
     {
@@ -5147,7 +5147,7 @@ QString QWidget::windowTitle() const
     return QString();
 }
 
-QString cs_internal_parseWindowTitle( const QString &title, const QWidget *widget )
+QString lscs_internal_parseWindowTitle( const QString &title, const QWidget *widget )
 {
     Q_ASSERT( widget );
 
@@ -5201,7 +5201,7 @@ void QWidgetPrivate::setWindowTitle_helper( const QString &title )
 
     if ( q->testAttribute( Qt::WA_WState_Created ) )
     {
-        setWindowTitle_sys( cs_internal_parseWindowTitle( title, q ) );
+        setWindowTitle_sys( lscs_internal_parseWindowTitle( title, q ) );
     }
 }
 
@@ -5226,7 +5226,7 @@ void QWidgetPrivate::setWindowIconText_helper( const QString &title )
 
     if ( q->testAttribute( Qt::WA_WState_Created ) )
     {
-        setWindowIconText_sys( cs_internal_parseWindowTitle( title, q ) );
+        setWindowIconText_sys( lscs_internal_parseWindowTitle( title, q ) );
     }
 }
 
@@ -7052,7 +7052,7 @@ void QWidgetPrivate::show_sys()
         }
 
 #ifndef QT_NO_CURSOR
-        cs_internal_set_cursor( q, false ); // Needed in case cursor was set before show
+        lscs_internal_set_cursor( q, false ); // Needed in case cursor was set before show
 #endif
 
         invalidateBuffer( q->rect() );
@@ -7541,7 +7541,7 @@ bool QWidgetPrivate::close_helper( CloseMode mode )
         {
             QGuiApplicationPrivate::emitLastWindowClosed();
 
-            qApp->cs_internal_maybeQuit();
+            qApp->lscs_internal_maybeQuit();
         }
     }
 
@@ -11639,12 +11639,12 @@ QDebug operator<<( QDebug debug, const QWidget *widget )
     return debug;
 }
 
-QWidgetPrivate *QWidgetPrivate::cs_getPrivate( QWidget *object )
+QWidgetPrivate *QWidgetPrivate::lscs_getPrivate( QWidget *object )
 {
     return object->d_ptr.data();
 }
 
-QWidget *QWidgetPrivate::cs_getPublic( QWidgetPrivate *object )
+QWidget *QWidgetPrivate::lscs_getPublic( QWidgetPrivate *object )
 {
     return object->q_ptr;
 }

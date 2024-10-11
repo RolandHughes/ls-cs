@@ -21,17 +21,27 @@ include(CheckTypeSize)
 
 find_package(LsCs REQUIRED)
 
+# When building your own stand alone executables
+# you really shouldn't use RPATH. That's only for
+# locally built libraries you are testing/debugging.
+# If you choose to use RPATH you need to comment this
+# line out and uncomment one or more of the lines
+# assigning a value to CMAKE_INSTALL_RPATH.
+#
+#set(CMAKE_SKIP_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
 
    # indicates where libraries are located relative to the executable
-   set(CMAKE_INSTALL_RPATH "@executable_path/../Resources")
+   #set(CMAKE_INSTALL_RPATH "@executable_path/../Resources")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
-   set(CMAKE_INSTALL_RPATH "\$ORIGIN")
+   #set(CMAKE_INSTALL_RPATH "\$ORIGIN")
 
    # lots of warnings and all warnings as errors
    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
@@ -94,9 +104,6 @@ configure_file(
    src/console-hello_build_info.h
 )
 
-# location for building binary files
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
 add_subdirectory(src)
 
 if(${CMAKE_SIZEOF_VOID_P} EQUAL 4)
@@ -106,6 +113,7 @@ else()
 endif()
 
 message("")
+message("CMAKE_INSTALL_RPATH:                 ${CMAKE_INSTALL_RPATH}" )
 message("console-hello configured to run on:  ${CMAKE_SYSTEM_NAME} ${TARGETBITS} bit, ${CMAKE_BUILD_TYPE} Mode")
 message("console-hello will be built in:      ${CMAKE_BINARY_DIR}")
 message("console-hello will be installed in:  ${CMAKE_INSTALL_PREFIX}")

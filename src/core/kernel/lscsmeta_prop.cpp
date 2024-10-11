@@ -84,7 +84,7 @@ bool QMetaProperty::hasStdCppSet() const
         }
         else
         {
-            setName.prepend( "cs_" );
+            setName.prepend( "lscs_" );
 
             if ( setName == m_writeMethodName )
             {

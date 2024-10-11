@@ -53,6 +53,6 @@ private:
 
 };
 
-Q_CORE_EXPORT void cs_print_build_info();
+Q_CORE_EXPORT void lscs_print_build_info();
 
 #endif

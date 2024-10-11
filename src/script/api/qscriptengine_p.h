@@ -394,7 +394,7 @@ public:
 
     QHash<QObject *, QScript::QObjectData *> m_qobjectData;
 
-    static QScriptEnginePrivate *cs_getPrivate( QScriptEngine *object );
+    static QScriptEnginePrivate *lscs_getPrivate( QScriptEngine *object );
 
 protected:
     QScriptEngine *q_ptr;

@@ -39,7 +39,7 @@ class Q_GUI_EXPORT QSortFilterProxyModel : public QAbstractProxyModel
     GUI_LSCS_OBJECT( QSortFilterProxyModel )
 
     GUI_LSCS_PROPERTY_READ( filterRegExp, filterRegExp )
-    GUI_LSCS_PROPERTY_WRITE( filterRegExp, cs_setFilterRegExp )
+    GUI_LSCS_PROPERTY_WRITE( filterRegExp, lscs_setFilterRegExp )
 
     GUI_LSCS_PROPERTY_READ( filterKeyColumn, filterKeyColumn )
     GUI_LSCS_PROPERTY_WRITE( filterKeyColumn, setFilterKeyColumn )
@@ -85,7 +85,7 @@ public:
     void setFilterRegExp( const QRegularExpression &regExp );
 
     // wrapper for overloaded method
-    inline void cs_setFilterRegExp( const QRegularExpression &regExp );
+    inline void lscs_setFilterRegExp( const QRegularExpression &regExp );
 
     int filterKeyColumn() const;
     void setFilterKeyColumn( int column );
@@ -237,7 +237,7 @@ private:
     GUI_LSCS_SLOT_2( _q_clearMapping )
 };
 
-void QSortFilterProxyModel::cs_setFilterRegExp( const QRegularExpression &regExp )
+void QSortFilterProxyModel::lscs_setFilterRegExp( const QRegularExpression &regExp )
 {
     setFilterRegExp( regExp );
 }

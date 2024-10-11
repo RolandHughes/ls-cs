@@ -48,7 +48,7 @@ Exception *UnhandledException::clone() const
     return new UnhandledException( *this );
 }
 
-namespace cs_internal
+namespace lscs_internal
 {
 
 class Base

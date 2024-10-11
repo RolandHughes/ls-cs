@@ -132,7 +132,7 @@ QWindowsOpengl32DLL QOpenGLStaticContext::opengl32;
 
 template <typename T, typename U>
 std::enable_if_t<sizeof( T ) == sizeof( U ) &&
-std::is_trivially_copyable_v<T> &&std::is_trivially_copyable_v<U>, T> cs_bitCast( const U &input ) noexcept
+std::is_trivially_copyable_v<T> &&std::is_trivially_copyable_v<U>, T> lscs_bitCast( const U &input ) noexcept
 {
     static_assert( std::is_trivially_constructible_v<T> );
 
@@ -1250,19 +1250,19 @@ QOpenGLStaticContext::QOpenGLStaticContext()
       extensionNames( QOpenGLStaticContext::getGlString( GL_EXTENSIONS ) ), extensions( 0 ),
       m_defaultFormat( QWindowsOpenGLContextFormat::current() ),
 
-      wglGetPixelFormatAttribIVARB( cs_bitCast<WglGetPixelFormatAttribIVARB>(
+      wglGetPixelFormatAttribIVARB( lscs_bitCast<WglGetPixelFormatAttribIVARB>(
                                         QOpenGLStaticContext::opengl32.wglGetProcAddress( "wglGetPixelFormatAttribivARB" ) ) ),
 
-      wglChoosePixelFormatARB( cs_bitCast<WglChoosePixelFormatARB>(
+      wglChoosePixelFormatARB( lscs_bitCast<WglChoosePixelFormatARB>(
                                    QOpenGLStaticContext::opengl32.wglGetProcAddress( "wglChoosePixelFormatARB" ) ) ),
 
-      wglCreateContextAttribsARB( cs_bitCast<WglCreateContextAttribsARB>(
+      wglCreateContextAttribsARB( lscs_bitCast<WglCreateContextAttribsARB>(
                                       QOpenGLStaticContext::opengl32.wglGetProcAddress( "wglCreateContextAttribsARB" ) ) ),
 
-      wglSwapInternalExt( cs_bitCast<WglSwapInternalExt>(
+      wglSwapInternalExt( lscs_bitCast<WglSwapInternalExt>(
                               QOpenGLStaticContext::opengl32.wglGetProcAddress( "wglSwapIntervalEXT" ) ) ),
 
-      wglGetSwapInternalExt( cs_bitCast<WglGetSwapInternalExt>(
+      wglGetSwapInternalExt( lscs_bitCast<WglGetSwapInternalExt>(
                                  QOpenGLStaticContext::opengl32.wglGetProcAddress( "wglGetSwapIntervalEXT" ) ) )
 {
     if ( extensionNames.startsWith( SAMPLE_BUFFER_EXTENSION " " )
@@ -1590,7 +1590,7 @@ bool QWindowsGLContext::updateObtainedParams( HDC hdc, int *obtainedSwapInterval
     else
     {
         typedef const GLubyte * ( APIENTRY * glGetStringi_t )( GLenum, GLuint );
-        glGetStringi_t glGetStringi = cs_bitCast<glGetStringi_t>( QOpenGLStaticContext::opengl32.wglGetProcAddress( "glGetStringi" ) );
+        glGetStringi_t glGetStringi = lscs_bitCast<glGetStringi_t>( QOpenGLStaticContext::opengl32.wglGetProcAddress( "glGetStringi" ) );
 
         if ( glGetStringi )
         {
@@ -1612,7 +1612,7 @@ bool QWindowsGLContext::updateObtainedParams( HDC hdc, int *obtainedSwapInterval
 
     if ( hasRobustness )
     {
-        m_getGraphicsResetStatus = cs_bitCast<GLenum ( APIENTRY * )()>
+        m_getGraphicsResetStatus = lscs_bitCast<GLenum ( APIENTRY * )()>
                                    ( QOpenGLStaticContext::opengl32.wglGetProcAddress( "glGetGraphicsResetStatusARB" ) );
     }
 

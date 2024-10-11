@@ -41,7 +41,7 @@ class QPainterPathData;
 class QPainterPathPrivate;
 class QPainterPathStrokerPrivate;
 
-namespace cs_internal
+namespace lscs_internal
 {
 struct QPainterPathPrivateDeleter
 {
@@ -218,7 +218,7 @@ public:
     QPainterPath &operator-=( const QPainterPath &other );
 
 private:
-    QScopedPointer<QPainterPathPrivate, cs_internal::QPainterPathPrivateDeleter> d_ptr;
+    QScopedPointer<QPainterPathPrivate, lscs_internal::QPainterPathPrivateDeleter> d_ptr;
 
     void ensureData()
     {

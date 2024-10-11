@@ -34,13 +34,13 @@ QString msgAboutCs()
 
 static const char *application_menu_strings[] =
 {
-    cs_mark_tr( "MAC_APPLICATION_MENU", "Services" ),
-    cs_mark_tr( "MAC_APPLICATION_MENU", "Hide %1" ),
-    cs_mark_tr( "MAC_APPLICATION_MENU", "Hide Others" ),
-    cs_mark_tr( "MAC_APPLICATION_MENU", "Show All" ),
-    cs_mark_tr( "MAC_APPLICATION_MENU", "Preferences..." ),
-    cs_mark_tr( "MAC_APPLICATION_MENU", "Quit %1" ),
-    cs_mark_tr( "MAC_APPLICATION_MENU", "About %1" )
+    lscs_mark_tr( "MAC_APPLICATION_MENU", "Services" ),
+    lscs_mark_tr( "MAC_APPLICATION_MENU", "Hide %1" ),
+    lscs_mark_tr( "MAC_APPLICATION_MENU", "Hide Others" ),
+    lscs_mark_tr( "MAC_APPLICATION_MENU", "Show All" ),
+    lscs_mark_tr( "MAC_APPLICATION_MENU", "Preferences..." ),
+    lscs_mark_tr( "MAC_APPLICATION_MENU", "Quit %1" ),
+    lscs_mark_tr( "MAC_APPLICATION_MENU", "About %1" )
 };
 
 QString qt_mac_applicationmenu_string( int type )

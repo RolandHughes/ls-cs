@@ -49,20 +49,20 @@ class Q_CORE_EXPORT QCoreApplication : public QObject
 {
     CORE_LSCS_OBJECT( QCoreApplication )
 
-    CORE_LSCS_PROPERTY_READ( applicationName, cs_applicationName )
-    CORE_LSCS_PROPERTY_WRITE( applicationName, cs_setApplicationName )
+    CORE_LSCS_PROPERTY_READ( applicationName, lscs_applicationName )
+    CORE_LSCS_PROPERTY_WRITE( applicationName, lscs_setApplicationName )
 
-    CORE_LSCS_PROPERTY_READ( applicationVersion, cs_applicationVersion )
-    CORE_LSCS_PROPERTY_WRITE( applicationVersion, cs_setApplicationVersion )
+    CORE_LSCS_PROPERTY_READ( applicationVersion, lscs_applicationVersion )
+    CORE_LSCS_PROPERTY_WRITE( applicationVersion, lscs_setApplicationVersion )
 
-    CORE_LSCS_PROPERTY_READ( organizationName, cs_organizationName )
-    CORE_LSCS_PROPERTY_WRITE( organizationName, cs_setOrganizationName )
+    CORE_LSCS_PROPERTY_READ( organizationName, lscs_organizationName )
+    CORE_LSCS_PROPERTY_WRITE( organizationName, lscs_setOrganizationName )
 
-    CORE_LSCS_PROPERTY_READ( organizationDomain, cs_organizationDomain )
-    CORE_LSCS_PROPERTY_WRITE( organizationDomain, cs_setOrganizationDomain )
+    CORE_LSCS_PROPERTY_READ( organizationDomain, lscs_organizationDomain )
+    CORE_LSCS_PROPERTY_WRITE( organizationDomain, lscs_setOrganizationDomain )
 
-    CORE_LSCS_PROPERTY_READ( quitLockEnabled, cs_isQuitLockEnabled )
-    CORE_LSCS_PROPERTY_WRITE( quitLockEnabled, cs_setQuitLockEnabled )
+    CORE_LSCS_PROPERTY_READ( quitLockEnabled, lscs_isQuitLockEnabled )
+    CORE_LSCS_PROPERTY_WRITE( quitLockEnabled, lscs_setQuitLockEnabled )
 
     Q_DECLARE_PRIVATE( QCoreApplication )
 
@@ -85,23 +85,23 @@ public:
     static QString organizationDomain();
 
     // wrapper for static method
-    inline void cs_setOrganizationDomain( const QString &orgDomain );
-    inline QString cs_organizationDomain() const;
+    inline void lscs_setOrganizationDomain( const QString &orgDomain );
+    inline QString lscs_organizationDomain() const;
 
     static void setOrganizationName( const QString &orgName );
     static QString organizationName();
-    inline void cs_setOrganizationName( const QString &orgName );
-    inline QString cs_organizationName() const;
+    inline void lscs_setOrganizationName( const QString &orgName );
+    inline QString lscs_organizationName() const;
 
     static void setApplicationName( const QString &application );
     static QString applicationName();
-    inline void cs_setApplicationName( const QString &application );
-    inline QString cs_applicationName() const;
+    inline void lscs_setApplicationName( const QString &application );
+    inline QString lscs_applicationName() const;
 
     static void setApplicationVersion( const QString &version );
     static QString applicationVersion();
-    inline void cs_setApplicationVersion( const QString &version );
-    inline QString cs_applicationVersion() const;
+    inline void lscs_setApplicationVersion( const QString &version );
+    inline QString lscs_applicationVersion() const;
 
     static void setSetuidAllowed( bool allow );
     static bool isSetuidAllowed();
@@ -151,15 +151,15 @@ public:
     void installNativeEventFilter( QAbstractNativeEventFilter *filterObj );
     void removeNativeEventFilter( QAbstractNativeEventFilter *filterObj );
 
-    void cs_internal_maybeQuit();
-    bool cs_isRealGuiApp();
+    void lscs_internal_maybeQuit();
+    bool lscs_isRealGuiApp();
 
     static bool isQuitLockEnabled();
     static void setQuitLockEnabled( bool enabled );
 
     // wrapper for static method
-    inline bool cs_isQuitLockEnabled() const;
-    inline void cs_setQuitLockEnabled( bool enabled );
+    inline bool lscs_isQuitLockEnabled() const;
+    inline void lscs_setQuitLockEnabled( bool enabled );
 
     CORE_LSCS_SLOT_1( Public, static void quit() )
     CORE_LSCS_SLOT_2( quit )
@@ -199,52 +199,52 @@ private:
 };
 
 // wrappers for static method
-void QCoreApplication::cs_setApplicationName( const QString &application )
+void QCoreApplication::lscs_setApplicationName( const QString &application )
 {
     QCoreApplication::setApplicationName( application );
 }
 
-QString QCoreApplication::cs_applicationName() const
+QString QCoreApplication::lscs_applicationName() const
 {
     return QCoreApplication::applicationName();
 }
 
-void QCoreApplication::cs_setOrganizationName( const QString &orgName )
+void QCoreApplication::lscs_setOrganizationName( const QString &orgName )
 {
     QCoreApplication::setOrganizationName( orgName );
 }
 
-QString QCoreApplication::cs_organizationName() const
+QString QCoreApplication::lscs_organizationName() const
 {
     return QCoreApplication::organizationName();
 }
 
-void QCoreApplication::cs_setApplicationVersion( const QString &version )
+void QCoreApplication::lscs_setApplicationVersion( const QString &version )
 {
     QCoreApplication::setApplicationVersion( version );
 }
 
-QString QCoreApplication::cs_applicationVersion() const
+QString QCoreApplication::lscs_applicationVersion() const
 {
     return QCoreApplication::applicationVersion();
 }
 
-void QCoreApplication::cs_setOrganizationDomain( const QString &orgDomain )
+void QCoreApplication::lscs_setOrganizationDomain( const QString &orgDomain )
 {
     QCoreApplication::setOrganizationDomain( orgDomain );
 }
 
-QString QCoreApplication::cs_organizationDomain() const
+QString QCoreApplication::lscs_organizationDomain() const
 {
     return QCoreApplication::organizationDomain();
 }
 
-bool QCoreApplication::cs_isQuitLockEnabled() const
+bool QCoreApplication::lscs_isQuitLockEnabled() const
 {
     return QCoreApplication::isQuitLockEnabled();
 }
 
-void QCoreApplication::cs_setQuitLockEnabled( bool enabled )
+void QCoreApplication::lscs_setQuitLockEnabled( bool enabled )
 {
     return QCoreApplication::setQuitLockEnabled( enabled );
 }

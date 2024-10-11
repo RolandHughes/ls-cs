@@ -130,11 +130,11 @@ class QDeclarativeMouseArea : public QDeclarativeItem
     DECL_LSCS_PROPERTY_READ( containsMouse, hovered )
     DECL_LSCS_PROPERTY_NOTIFY( containsMouse, hoveredChanged )
 
-    DECL_LSCS_PROPERTY_READ( pressed, cs_pressed )
+    DECL_LSCS_PROPERTY_READ( pressed, lscs_pressed )
     DECL_LSCS_PROPERTY_NOTIFY( pressed, pressedChanged )
 
     // wrapper for overloaded method
-    bool cs_pressed() const
+    bool lscs_pressed() const
     {
         return pressed();
     }

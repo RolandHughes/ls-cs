@@ -77,7 +77,7 @@ class QHostInfoPrivate
 {
 public:
     QHostInfoPrivate()
-        : err( QHostInfo::NoError ), errorStr( QString::fromLatin1( cs_mark_tr( "QHostInfo", "Unknown error" ) ) ), lookupId( 0 )
+        : err( QHostInfo::NoError ), errorStr( QString::fromLatin1( lscs_mark_tr( "QHostInfo", "Unknown error" ) ) ), lookupId( 0 )
     {
     }
 

@@ -420,7 +420,7 @@ void QGLTextureGlyphCache::fillTexture( const Coord &c, glyph_t glyph, QFixed su
         if ( !ctx->d_ptr->workaround_brokenAlphaTexSubImage_init )
         {
             // do not know which driver versions exhibit this bug, so be conservative for now
-            const QString &vendorStr = cs_glGetString( GL_VENDOR );
+            const QString &vendorStr = lscs_glGetString( GL_VENDOR );
 
             ctx->d_ptr->workaround_brokenAlphaTexSubImage = vendorStr.indexOf( "NVIDIA" ) >= 0;
             ctx->d_ptr->workaround_brokenAlphaTexSubImage_init = true;

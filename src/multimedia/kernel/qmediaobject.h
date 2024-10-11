@@ -95,7 +95,7 @@ private:
 
     Q_DECLARE_PRIVATE( QMediaObject )
 
-    void cs_internal_addPropertyWatch( const QString &name, std::function<void ()> callBack );
+    void lscs_internal_addPropertyWatch( const QString &name, std::function<void ()> callBack );
 
     MULTI_LSCS_SLOT_1( Private, void _q_notify() )
     MULTI_LSCS_SLOT_2( _q_notify )
@@ -122,7 +122,7 @@ void QMediaObject::addPropertyWatch( const QString &name )
             signalMethod.invoke( this, data.value<T>() );
         };
 
-        cs_internal_addPropertyWatch( name, callBack );
+        lscs_internal_addPropertyWatch( name, callBack );
     }
 }
 

@@ -186,13 +186,13 @@ bool Q_GUI_EXPORT qt_tab_all_widgets()
 }
 
 // Default application palettes and fonts (per widget type)
-PaletteHash *cs_app_palettes_hash()
+PaletteHash *lscs_app_palettes_hash()
 {
     static PaletteHash retval;
     return &retval;
 }
 
-FontHash *cs_app_fonts_hash()
+FontHash *lscs_app_fonts_hash()
 {
     static FontHash retval;
     return &retval;
@@ -363,7 +363,7 @@ void QApplicationPrivate::initializeWidgetPaletteHash()
         return;
     }
 
-    cs_app_palettes_hash()->clear();
+    lscs_app_palettes_hash()->clear();
 
     setPossiblePalette( platformTheme->palette( QPlatformTheme::ToolButtonPalette ), "QToolButton" );
     setPossiblePalette( platformTheme->palette( QPlatformTheme::ButtonPalette ), "QAbstractButton" );
@@ -391,7 +391,7 @@ void QApplicationPrivate::initializeWidgetFontHash()
         return;
     }
 
-    FontHash *fontHash = cs_app_fonts_hash();
+    FontHash *fontHash = lscs_app_fonts_hash();
     fontHash->clear();
 
     if ( const QFont *font = theme->font( QPlatformTheme::MenuFont ) )
@@ -762,7 +762,7 @@ void QApplication::setGlobalStrut( const QSize &strut )
 
 QPalette QApplication::palette( const QWidget *w )
 {
-    PaletteHash *hash = cs_app_palettes_hash();
+    PaletteHash *hash = lscs_app_palettes_hash();
 
     if ( w && hash && hash->size() )
     {
@@ -793,7 +793,7 @@ QPalette QApplication::palette( const QString &className )
         palette();
     }
 
-    PaletteHash *hash = cs_app_palettes_hash();
+    PaletteHash *hash = lscs_app_palettes_hash();
 
     if ( ! className.isEmpty() && hash && hash->size() )
     {
@@ -853,7 +853,7 @@ void QApplicationPrivate::setSystemPalette( const QPalette &pal )
 
 QFont QApplication::font( const QWidget *widget )
 {
-    FontHash *hash = cs_app_fonts_hash();
+    FontHash *hash = lscs_app_fonts_hash();
 
     if ( widget && hash  && hash->size() )
     {
@@ -895,7 +895,7 @@ QFont QApplication::font( const QWidget *widget )
 
 QFont QApplication::font( const QString &className )
 {
-    FontHash *hash = cs_app_fonts_hash();
+    FontHash *hash = lscs_app_fonts_hash();
 
     if ( ! className.isEmpty() && hash && hash->size() )
     {
@@ -1720,11 +1720,11 @@ void QApplicationPrivate::dispatchEnterLeave( QWidget *enter, QWidget *leave, co
         {
             if ( enter == QApplication::desktop() )
             {
-                cs_internal_set_cursor( enter, true );
+                lscs_internal_set_cursor( enter, true );
             }
             else
             {
-                cs_internal_set_cursor( parentOfLeavingCursor, true );
+                lscs_internal_set_cursor( parentOfLeavingCursor, true );
             }
         }
     }
@@ -1752,7 +1752,7 @@ void QApplicationPrivate::dispatchEnterLeave( QWidget *enter, QWidget *leave, co
         else
 #endif
         {
-            cs_internal_set_cursor( cursorWidget, true );
+            lscs_internal_set_cursor( cursorWidget, true );
         }
     }
 
@@ -4226,7 +4226,7 @@ QGestureManager *QGestureManager::instance()
 }
 #endif
 
-QPixmap QApplication::cs_internal_applyQIconStyle( QIcon::Mode mode, const QPixmap &base ) const
+QPixmap QApplication::lscs_internal_applyQIconStyle( QIcon::Mode mode, const QPixmap &base ) const
 {
     Q_D( const QApplication );
     return d->applyQIconStyleHelper( mode, base );
