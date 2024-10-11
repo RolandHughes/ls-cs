@@ -43,7 +43,7 @@ class Q_SVG_EXPORT QSvgRenderer : public QObject
     SVG_LSCS_OBJECT( QSvgRenderer )
 
     SVG_LSCS_PROPERTY_READ( viewBox, viewBoxF )
-    SVG_LSCS_PROPERTY_WRITE( viewBox, cs_setViewBox )
+    SVG_LSCS_PROPERTY_WRITE( viewBox, lscs_setViewBox )
 
     SVG_LSCS_PROPERTY_READ( framesPerSecond, framesPerSecond )
     SVG_LSCS_PROPERTY_WRITE( framesPerSecond, setFramesPerSecond )
@@ -68,7 +68,7 @@ public:
     void setViewBox( const QRectF &viewBox );
 
     // wrapper for overloaded method
-    inline void cs_setViewBox( const QRectF &viewBox );
+    inline void lscs_setViewBox( const QRectF &viewBox );
 
     bool animated() const;
     int framesPerSecond() const;
@@ -110,7 +110,7 @@ private:
 
 };
 
-void QSvgRenderer::cs_setViewBox( const QRectF &viewbox )
+void QSvgRenderer::lscs_setViewBox( const QRectF &viewbox )
 {
     setViewBox( viewbox );
 }

@@ -339,17 +339,17 @@ static constexpr const quint64 qCompilerCpuFeatures = 0
 #endif
         ;
 
-extern Q_CORE_EXPORT std::atomic<quint64> cs_cpu_features;
+extern Q_CORE_EXPORT std::atomic<quint64> lscs_cpu_features;
 
 Q_CORE_EXPORT void qDetectCpuFeatures();
 static inline quint64 qCpuFeatures()
 {
-    quint64 features = cs_cpu_features.load();
+    quint64 features = lscs_cpu_features.load();
 
     if ( features == 0 )
     {
         qDetectCpuFeatures();
-        features = cs_cpu_features.load();
+        features = lscs_cpu_features.load();
     }
 
     return features;

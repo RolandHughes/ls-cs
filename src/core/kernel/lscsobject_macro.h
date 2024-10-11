@@ -57,12 +57,12 @@ class QMetaObject;
       \
       QString cname = QString::fromUtf8(lscs_className());                            \
       meta.register_method<QObject * (*)()>(                                        \
-            cname, &lscs_class::LSCS_TOKENPASTE2(cs_fauxConstructor, __LINE__),         \
+            cname, &lscs_class::LSCS_TOKENPASTE2(lscs_fauxConstructor, __LINE__),         \
             QMetaMethod::Constructor, cname + " " + cname + "()", QMetaMethod::Public);  \
       \
       lscs_regTrigger(lscs_number<cntValue + 1>{});                                     \
    }                                                                                \
-   static QObject * LSCS_TOKENPASTE2(cs_fauxConstructor, __LINE__)()                  \
+   static QObject * LSCS_TOKENPASTE2(lscs_fauxConstructor, __LINE__)()                  \
    {                                                                                \
       return new lscs_class;                                                          \
    }
@@ -70,7 +70,7 @@ class QMetaObject;
 #define LSCS_PLUGIN_KEY(y)  LSCS_CLASSINFO("plugin_key", y)
 
 #define LSCS_PLUGIN_REGISTER(classname)                                                \
-   extern "C" Q_DECL_EXPORT QMetaObject *cs_internal_plugin_metaobject() {           \
+   extern "C" Q_DECL_EXPORT QMetaObject *lscs_internal_plugin_metaobject() {           \
       return const_cast<QMetaObject_T<classname> *>(&classname::staticMetaObject()); \
    }
 
@@ -96,7 +96,7 @@ public:
    static inline QString tr(const char *text, const char *comment = nullptr, std::optional<int> numArg = std::optional<int>()) \
    { return staticMetaObject().tr(text, comment, numArg); }
 
-// ** cs_object
+// ** lscs_object
 #define LSCS_OBJECT(classNameX)      \
  public:                           \
    using lscs_parent = lscs_class;     \
@@ -190,7 +190,7 @@ public:
    LSCS_TR_FUNCTIONS \
  private:
 
-// ** cs_gadget
+// ** lscs_gadget
 #define LSCS_GADGET(classNameX)                \
  public:                                     \
    using lscs_parent = LSCSGadget_Fake_Parent;   \
@@ -272,9 +272,9 @@ public:
 
 #define LSCS_INTERFACES(...)                     \
  public: \
-   bool cs_interface_query(const QString &interfaceData) const override \
+   bool lscs_interface_query(const QString &interfaceData) const override \
    {  \
-      if (cs_factory_interface_query<__VA_ARGS__>(interfaceData)) { \
+      if (lscs_factory_interface_query<__VA_ARGS__>(interfaceData)) { \
          return true;                          \
       }  \
       return false;                            \
@@ -326,7 +326,7 @@ public:
          decltype( lscs_counter(lscs_number<255>{}) )::value;                            \
    static constexpr lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>        \
    lscs_counter(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>);            \
-   static void cs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__)>)  \
+   static void lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__)>)  \
    {  \
       lscs_namespace_register_flag<lscs_class>(#enumName, lscs_className(),                \
             #flagName, typeid(flagName));                                            \
@@ -351,12 +351,12 @@ public:
 #define LSCS_INVOKABLE_CONSTRUCTOR_2(className, ...)                                  \
    const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject()).register_method       \
    <QObject * (*)(__VA_ARGS__)>(                                                            \
-         #className, &lscs_class::LSCS_TOKENPASTE2(cs_fauxConstructor, __LINE__)<__VA_ARGS__>,  \
+         #className, &lscs_class::LSCS_TOKENPASTE2(lscs_fauxConstructor, __LINE__)<__VA_ARGS__>,  \
          QMetaMethod::Constructor, QString(#className) + " " + va_args, accessType);        \
    lscs_regTrigger(lscs_number<cntValue + 1>{} );                                               \
    } \
    template <class... Ts>                                                 \
-   static QObject * LSCS_TOKENPASTE2(cs_fauxConstructor, __LINE__)(Ts...Vs) \
+   static QObject * LSCS_TOKENPASTE2(lscs_fauxConstructor, __LINE__)(Ts...Vs) \
    { \
       return new className{Vs...};                                        \
    }
@@ -602,7 +602,7 @@ public:
    }
 
 #define LSCS_PROPERTY_DESIGNABLE(name, data)                 \
-   static bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)()   \
+   static bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)()   \
    {                                                    \
       return data;                                      \
    }                                                    \
@@ -614,12 +614,12 @@ public:
    {                                                                                  \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())              \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>           \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::DESIGNABLE); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::DESIGNABLE); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});     \
    }
 
 #define LSCS_PROPERTY_DESIGNABLE_NONSTATIC(name, data)       \
-   bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)() const    \
+   bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)() const    \
    {                                                       \
       return data;                                         \
    }                                                       \
@@ -631,12 +631,12 @@ public:
    {                                                                                  \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())              \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>           \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::DESIGNABLE); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::DESIGNABLE); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});     \
    }
 
 #define LSCS_PROPERTY_SCRIPTABLE(name, data)                 \
-   static bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)()   \
+   static bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)()   \
    {                                                       \
       return data;                                         \
    }                                                       \
@@ -648,12 +648,12 @@ public:
    {                                                                                   \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())               \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>            \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::SCRIPTABLE); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::SCRIPTABLE); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});      \
    }
 
 #define LSCS_PROPERTY_SCRIPTABLE_NONSTATIC(name, data)       \
-   bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)() const    \
+   bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)() const    \
    {                                                       \
       return data;                                         \
    }                                                       \
@@ -665,12 +665,12 @@ public:
    {                                                                                  \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())              \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>           \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::SCRIPTABLE); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::SCRIPTABLE); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});     \
    }
 
 #define LSCS_PROPERTY_STORED(name, data)                     \
-   static bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)()   \
+   static bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)()   \
    {                                                       \
       return data;                                         \
    }                                                       \
@@ -682,12 +682,12 @@ public:
    {                                                                                   \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())               \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>            \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::STORED); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::STORED); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});      \
    }
 
 #define LSCS_PROPERTY_STORED_NONSTATIC(name, data)           \
-   bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)() const    \
+   bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)() const    \
    {                                                       \
       return data;                                         \
    }                                                       \
@@ -699,12 +699,12 @@ public:
    {                                                                                  \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())              \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>           \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::STORED); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::STORED); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});     \
    }
 
 #define LSCS_PROPERTY_USER(name, data)                       \
-   static bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)()   \
+   static bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)()   \
    {                                                       \
       return data;                                         \
    }                                                       \
@@ -716,12 +716,12 @@ public:
    {                                                                                  \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())              \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>           \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::USER); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::USER); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});     \
    }
 
 #define LSCS_PROPERTY_USER_NONSTATIC(name, data)             \
-   bool LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)()  const   \
+   bool LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)()  const   \
    {                                                       \
       return data;                                         \
    }                                                       \
@@ -733,7 +733,7 @@ public:
    {                                                                                  \
       const_cast<QMetaObject_T<lscs_class>&>(lscs_class::staticMetaObject())              \
             .register_property_bool(#name, new SpiceJarRead<lscs_class, bool>             \
-            (&lscs_class::LSCS_TOKENPASTE2(cs_fauxMethod, __LINE__)), QMetaProperty::USER); \
+            (&lscs_class::LSCS_TOKENPASTE2(lscs_fauxMethod, __LINE__)), QMetaProperty::USER); \
       lscs_regTrigger(lscs_number<LSCS_TOKENPASTE2(lscs_counter_value, __LINE__) + 1>{});      \
    }
 

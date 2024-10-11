@@ -113,14 +113,14 @@ static inline quint64 detectProcessorFeatures()
 #ifdef Q_PROCESSOR_X86_32
 # define PICreg "%%ebx"
 
-using cs_word  = qint32;
-using cs_uword = quint32;
+using lscs_word  = qint32;
+using lscs_uword = quint32;
 
 #else
 # define PICreg "%%rbx"
 
-using cs_word  = qint64;
-using cs_uword = quint64;
+using lscs_word  = qint64;
+using lscs_uword = quint64;
 
 #endif
 
@@ -128,7 +128,7 @@ static int maxBasicCpuidSupported()
 {
 
 #if defined(Q_CC_GNU)
-    cs_word tmp1;
+    lscs_word tmp1;
 
 # if Q_PROCESSOR_X86 < 5
     long cpuid_supported;
@@ -174,7 +174,7 @@ static int maxBasicCpuidSupported()
 static void cpuidFeatures01( uint &ecx, uint &edx )
 {
 #if defined(Q_CC_GNU)
-    cs_word tmp1;
+    lscs_word tmp1;
 
     asm ( "xchg " PICreg", %2\n"
           "cpuid\n"
@@ -202,8 +202,8 @@ static void cpuidFeatures07_00( uint &ebx, uint &ecx )
 {
 #if defined(Q_CC_GNU)
 
-    cs_uword rbx;             // in case it's 64-bit
-    cs_uword rcx = 0;
+    lscs_uword rbx;             // in case it's 64-bit
+    lscs_uword rcx = 0;
 
     asm ( "xchg " PICreg", %0\n"
           "cpuid\n"
@@ -678,7 +678,7 @@ int ffsll( quint64 i )
 
 #endif
 
-Q_CORE_EXPORT std::atomic<quint64> cs_cpu_features{ 0 };
+Q_CORE_EXPORT std::atomic<quint64> lscs_cpu_features{ 0 };
 
 void qDetectCpuFeatures()
 {
@@ -698,7 +698,7 @@ void qDetectCpuFeatures()
         }
     }
 
-    cs_cpu_features.store( f | quint32( QSimdInitialized ) );
+    lscs_cpu_features.store( f | quint32( QSimdInitialized ) );
 
 }
 

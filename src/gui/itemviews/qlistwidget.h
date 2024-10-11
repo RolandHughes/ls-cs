@@ -254,7 +254,7 @@ class Q_GUI_EXPORT QListWidget : public QListView
     GUI_LSCS_PROPERTY_READ( count, count )
 
     GUI_LSCS_PROPERTY_READ( currentRow, currentRow )
-    GUI_LSCS_PROPERTY_WRITE( currentRow, cs_setCurrentRow )
+    GUI_LSCS_PROPERTY_WRITE( currentRow, lscs_setCurrentRow )
     GUI_LSCS_PROPERTY_NOTIFY( currentRow, currentRowChanged )
     GUI_LSCS_PROPERTY_USER( currentRow, true )
 
@@ -302,7 +302,7 @@ public:
     void setCurrentRow( int row, QItemSelectionModel::SelectionFlags command );
 
     // wrapper for overloaded method
-    inline void cs_setCurrentRow( int row );
+    inline void lscs_setCurrentRow( int row );
 
     QListWidgetItem *itemAt( const QPoint &p ) const;
     inline QListWidgetItem *itemAt( int x, int y ) const;
@@ -414,7 +414,7 @@ private:
     GUI_LSCS_SLOT_2( _q_dataChanged )
 };
 
-void QListWidget::cs_setCurrentRow( int row )
+void QListWidget::lscs_setCurrentRow( int row )
 {
     setCurrentRow( row );
 }

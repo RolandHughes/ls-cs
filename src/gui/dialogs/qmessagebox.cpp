@@ -88,7 +88,7 @@ enum DetailButtonLabel
     HideLabel = 1
 };
 
-void cs_require_version( int argc, char *argv[], const char *str )
+void lscs_require_version( int argc, char *argv[], const char *str )
 {
     QString cur_version = QString( LSCS_VERSION_STR );
     QString req_version = QString::fromLatin1( str );
@@ -1766,7 +1766,7 @@ void QMessageBox::setInformativeText( const QString &text )
             label->setWordWrap( true );
 #ifdef Q_OS_DARWIN
             // apply a smaller font the information label on the mac
-            label->setFont( cs_app_fonts_hash()->value( "QTipLabel" ) );
+            label->setFont( lscs_app_fonts_hash()->value( "QTipLabel" ) );
 #endif
             label->setWordWrap( true );
             d->informativeLabel = label;

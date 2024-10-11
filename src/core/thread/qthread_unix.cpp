@@ -95,7 +95,7 @@ static void destroy_current_thread_data( void *p )
         QThread *thread = data->thread;
         Q_ASSERT( thread );
 
-        QThreadPrivate *thread_p = static_cast<QThreadPrivate *>( QThreadPrivate::cs_getPrivate( thread ) );
+        QThreadPrivate *thread_p = static_cast<QThreadPrivate *>( QThreadPrivate::lscs_getPrivate( thread ) );
         Q_ASSERT( !thread_p->finished );
 
         thread_p->finish( thread );

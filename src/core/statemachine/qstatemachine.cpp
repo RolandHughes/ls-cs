@@ -2413,7 +2413,7 @@ void QStateMachinePrivate::startupHook()
 {
 }
 
-namespace cs_internal_stateMachine
+namespace lscs_internal_stateMachine
 {
 
 class GoToStateTransition : public QAbstractTransition
@@ -2441,7 +2441,7 @@ protected:
 
 } // namespace
 
-using namespace cs_internal_stateMachine;
+using namespace lscs_internal_stateMachine;
 
 void QStateMachinePrivate::goToState( QAbstractState *targetState )
 {

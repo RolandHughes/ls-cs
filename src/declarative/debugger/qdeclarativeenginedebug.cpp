@@ -72,7 +72,7 @@ public:
 
     QHash<int, QDeclarativeDebugWatch *> watched;
 
-    static QDeclarativeEngineDebugPrivate *cs_getPrivate( QDeclarativeEngineDebug *object );
+    static QDeclarativeEngineDebugPrivate *lscs_getPrivate( QDeclarativeEngineDebug *object );
 
 protected:
     QDeclarativeEngineDebug *q_ptr;
@@ -182,7 +182,7 @@ void QDeclarativeEngineDebugPrivate::remove( QDeclarativeEngineDebug *c, QDeclar
     if ( c && q )
     {
         QDeclarativeEngineDebugPrivate *p = static_cast<QDeclarativeEngineDebugPrivate *>
-                                            ( QDeclarativeEngineDebugPrivate::cs_getPrivate( c ) );
+                                            ( QDeclarativeEngineDebugPrivate::lscs_getPrivate( c ) );
         p->enginesQuery.remove( q->m_queryId );
     }
 }
@@ -192,7 +192,7 @@ void QDeclarativeEngineDebugPrivate::remove( QDeclarativeEngineDebug *c, QDeclar
     if ( c && q )
     {
         QDeclarativeEngineDebugPrivate *p = static_cast<QDeclarativeEngineDebugPrivate *>
-                                            ( QDeclarativeEngineDebugPrivate::cs_getPrivate( c ) );
+                                            ( QDeclarativeEngineDebugPrivate::lscs_getPrivate( c ) );
         p->rootContextQuery.remove( q->m_queryId );
     }
 }
@@ -202,7 +202,7 @@ void QDeclarativeEngineDebugPrivate::remove( QDeclarativeEngineDebug *c, QDeclar
     if ( c && q )
     {
         QDeclarativeEngineDebugPrivate *p = static_cast<QDeclarativeEngineDebugPrivate *>
-                                            ( QDeclarativeEngineDebugPrivate::cs_getPrivate( c ) );
+                                            ( QDeclarativeEngineDebugPrivate::lscs_getPrivate( c ) );
         p->objectQuery.remove( q->m_queryId );
     }
 }
@@ -212,7 +212,7 @@ void QDeclarativeEngineDebugPrivate::remove( QDeclarativeEngineDebug *c, QDeclar
     if ( c && q )
     {
         QDeclarativeEngineDebugPrivate *p = static_cast<QDeclarativeEngineDebugPrivate *>
-                                            ( QDeclarativeEngineDebugPrivate::cs_getPrivate( c ) );
+                                            ( QDeclarativeEngineDebugPrivate::lscs_getPrivate( c ) );
         p->expressionQuery.remove( q->m_queryId );
     }
 }
@@ -222,7 +222,7 @@ void QDeclarativeEngineDebugPrivate::remove( QDeclarativeEngineDebug *c, QDeclar
     if ( c && w )
     {
         QDeclarativeEngineDebugPrivate *p = static_cast<QDeclarativeEngineDebugPrivate *>
-                                            ( QDeclarativeEngineDebugPrivate::cs_getPrivate( c ) );
+                                            ( QDeclarativeEngineDebugPrivate::lscs_getPrivate( c ) );
         p->watched.remove( w->m_queryId );
     }
 }
@@ -1248,7 +1248,7 @@ bool QDeclarativeDebugPropertyReference::hasNotifySignal() const
     return m_hasNotifySignal;
 }
 
-QDeclarativeEngineDebugPrivate *QDeclarativeEngineDebugPrivate::cs_getPrivate( QDeclarativeEngineDebug *object )
+QDeclarativeEngineDebugPrivate *QDeclarativeEngineDebugPrivate::lscs_getPrivate( QDeclarativeEngineDebug *object )
 {
     return object->d_ptr.data();
 }

@@ -43,7 +43,7 @@ class Q_SVG_EXPORT QSvgGenerator : public QPaintDevice
     SVG_LSCS_PROPERTY_WRITE( size, setSize )
 
     SVG_LSCS_PROPERTY_READ( viewBox, viewBoxF )
-    SVG_LSCS_PROPERTY_WRITE( viewBox, cs_setViewBox )
+    SVG_LSCS_PROPERTY_WRITE( viewBox, lscs_setViewBox )
 
     SVG_LSCS_PROPERTY_READ( title, title )
     SVG_LSCS_PROPERTY_WRITE( title, setTitle )
@@ -79,7 +79,7 @@ public:
     void setViewBox( const QRectF &viewBox );
 
     // wrapper for overloaded method
-    inline void cs_setViewBox( const QRectF &viewBox );
+    inline void lscs_setViewBox( const QRectF &viewBox );
 
     QString fileName() const;
     void setFileName( const QString &fileName );
@@ -98,7 +98,7 @@ private:
     QScopedPointer<QSvgGeneratorPrivate> d_ptr;
 };
 
-void QSvgGenerator::cs_setViewBox( const QRectF &viewBox )
+void QSvgGenerator::lscs_setViewBox( const QRectF &viewBox )
 {
     setViewBox( viewBox );
 }

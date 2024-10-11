@@ -50,7 +50,7 @@
 #include "RenderWidget.h"
 #include "Scrollbar.h"
 
-// from qapplication_cs.cpp
+// from qapplication_lscs.cpp
 Q_GUI_EXPORT extern bool qt_tab_all_widgets();
 
 namespace WebCore

@@ -69,9 +69,9 @@ struct cff2_top_dict_op_serializer_t : cff_top_dict_op_serializer_t<>
   }
 };
 
-struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatten_param_t, blend_arg_t>
+struct cff2_lscs_opset_flatten_t : cff2_lscs_opset_t<cff2_lscs_opset_flatten_t, flatten_param_t, blend_arg_t>
 {
-  static void flush_args_and_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flush_args_and_op (op_code_t op, cff2_lscs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     switch (op)
     {
@@ -99,7 +99,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     }
   }
 
-  static void flush_args (cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flush_args (cff2_lscs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     for (unsigned int i = 0; i < env.argStack.get_count ();)
     {
@@ -124,7 +124,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     SUPER::flush_args (env, param);
   }
 
-  static void flatten_blends (const blend_arg_t &arg, unsigned int i, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flatten_blends (const blend_arg_t &arg, unsigned int i, cff2_lscs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     /* flatten the default values */
     str_encoder_t  encoder (param.flatStr);
@@ -151,7 +151,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     encoder.encode_op (OpCode_blendcs);
   }
 
-  static void flush_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flush_op (op_code_t op, cff2_lscs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     switch (op)
     {
@@ -164,7 +164,7 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
     }
   }
 
-  static void flush_hintmask (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
+  static void flush_hintmask (op_code_t op, cff2_lscs_interp_env_t<blend_arg_t> &env, flatten_param_t& param)
   {
     SUPER::flush_hintmask (op, env, param);
     if (!param.drop_hints)
@@ -176,13 +176,13 @@ struct cff2_cs_opset_flatten_t : cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatte
   }
 
   private:
-  typedef cff2_cs_opset_t<cff2_cs_opset_flatten_t, flatten_param_t, blend_arg_t> SUPER;
-  typedef cs_opset_t<blend_arg_t, cff2_cs_opset_flatten_t, cff2_cs_opset_flatten_t, cff2_cs_interp_env_t<blend_arg_t>, flatten_param_t> CSOPSET;
+  typedef cff2_lscs_opset_t<cff2_lscs_opset_flatten_t, flatten_param_t, blend_arg_t> SUPER;
+  typedef lscs_opset_t<blend_arg_t, cff2_lscs_opset_flatten_t, cff2_lscs_opset_flatten_t, cff2_lscs_interp_env_t<blend_arg_t>, flatten_param_t> CSOPSET;
 };
 
-struct cff2_cs_opset_subr_subset_t : cff2_cs_opset_t<cff2_cs_opset_subr_subset_t, subr_subset_param_t, blend_arg_t>
+struct cff2_lscs_opset_subr_subset_t : cff2_lscs_opset_t<cff2_lscs_opset_subr_subset_t, subr_subset_param_t, blend_arg_t>
 {
-  static void process_op (op_code_t op, cff2_cs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param)
+  static void process_op (op_code_t op, cff2_lscs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param)
   {
     switch (op) {
 
@@ -213,8 +213,8 @@ struct cff2_cs_opset_subr_subset_t : cff2_cs_opset_t<cff2_cs_opset_subr_subset_t
   }
 
   protected:
-  static void process_call_subr (op_code_t op, cs_type_t type,
-				 cff2_cs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param,
+  static void process_call_subr (op_code_t op, lscs_type_t type,
+				 cff2_lscs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param,
 				 cff2_biased_subrs_t& subrs, hb_set_t *closure)
   {
     byte_str_ref_t    str_ref = env.str_ref;
@@ -225,15 +225,15 @@ struct cff2_cs_opset_subr_subset_t : cff2_cs_opset_t<cff2_cs_opset_subr_subset_t
   }
 
   private:
-  typedef cff2_cs_opset_t<cff2_cs_opset_subr_subset_t, subr_subset_param_t, blend_arg_t> SUPER;
+  typedef cff2_lscs_opset_t<cff2_lscs_opset_subr_subset_t, subr_subset_param_t, blend_arg_t> SUPER;
 };
 
-struct cff2_subr_subsetter_t : subr_subsetter_t<cff2_subr_subsetter_t, CFF2Subrs, const OT::cff2::accelerator_subset_t, cff2_cs_interp_env_t<blend_arg_t>, cff2_cs_opset_subr_subset_t>
+struct cff2_subr_subsetter_t : subr_subsetter_t<cff2_subr_subsetter_t, CFF2Subrs, const OT::cff2::accelerator_subset_t, cff2_lscs_interp_env_t<blend_arg_t>, cff2_lscs_opset_subr_subset_t>
 {
   cff2_subr_subsetter_t (const OT::cff2::accelerator_subset_t &acc_, const hb_subset_plan_t *plan_)
     : subr_subsetter_t (acc_, plan_) {}
 
-  static void complete_parsed_str (cff2_cs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param, parsed_cs_str_t &charstring)
+  static void complete_parsed_str (cff2_lscs_interp_env_t<blend_arg_t> &env, subr_subset_param_t& param, parsed_lscs_str_t &charstring)
   {
     /* vsindex is inserted at the beginning of the charstring as necessary */
     if (env.seen_vsindex ())
@@ -442,7 +442,7 @@ struct cff2_subset_plan
     if (desubroutinize)
     {
       /* Flatten global & local subrs */
-      subr_flattener_t<const OT::cff2::accelerator_subset_t, cff2_cs_interp_env_t<blend_arg_t>, cff2_cs_opset_flatten_t>
+      subr_flattener_t<const OT::cff2::accelerator_subset_t, cff2_lscs_interp_env_t<blend_arg_t>, cff2_lscs_opset_flatten_t>
 		    flattener(acc, plan);
       if (!flattener.flatten (subset_charstrings))
 	return false;

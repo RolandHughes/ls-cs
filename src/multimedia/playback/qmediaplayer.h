@@ -40,7 +40,7 @@ class Q_MULTIMEDIA_EXPORT QMediaPlayer : public QMediaObject
     MULTI_LSCS_OBJECT( QMediaPlayer )
 
     MULTI_LSCS_PROPERTY_READ( media,   media )
-    MULTI_LSCS_PROPERTY_WRITE( media,  cs_setMedia )
+    MULTI_LSCS_PROPERTY_WRITE( media,  lscs_setMedia )
     MULTI_LSCS_PROPERTY_NOTIFY( media, mediaChanged )
 
     MULTI_LSCS_PROPERTY_READ( currentMedia, currentMedia )
@@ -256,7 +256,7 @@ private:
     Q_DECLARE_PRIVATE( QMediaPlayer )
 
     // wrapper for overloaded property
-    void cs_setMedia ( const QMediaContent &media )
+    void lscs_setMedia ( const QMediaContent &media )
     {
         setMedia( media );
     }

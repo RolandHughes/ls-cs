@@ -48,7 +48,7 @@
 #include <limits.h>
 #include <stdlib.h>
 
-static std::atomic<uint> cs_seed_value{0};
+static std::atomic<uint> lscs_seed_value{0};
 
 static inline uint hash( const uchar *p, int len, uint seed )
 {
@@ -90,7 +90,7 @@ uint qHash( const QBitArray &bitArray, uint seed )
     return result;
 }
 
-uint cs_stable_hash( const QString &key )
+uint lscs_stable_hash( const QString &key )
 {
     uint h = 0;
 
@@ -104,7 +104,7 @@ uint cs_stable_hash( const QString &key )
     return h;
 }
 
-static uint cs_create_seed()
+static uint lscs_create_seed()
 {
     uint seed = 0;
 
@@ -142,9 +142,9 @@ static uint cs_create_seed()
     return seed;
 }
 
-uint cs_getHashSeed()
+uint lscs_getHashSeed()
 {
-    uint value = cs_seed_value.load( std::memory_order_relaxed );
+    uint value = lscs_seed_value.load( std::memory_order_relaxed );
 
     if ( value != 0 )
     {
@@ -152,7 +152,7 @@ uint cs_getHashSeed()
         return value;
     }
 
-    value = cs_create_seed();
+    value = lscs_create_seed();
 
     if ( value == 0 )
     {
@@ -162,7 +162,7 @@ uint cs_getHashSeed()
 
     uint expectedValue = 0;
 
-    if ( cs_seed_value.compare_exchange_strong( expectedValue, value, std::memory_order_relaxed ) )
+    if ( lscs_seed_value.compare_exchange_strong( expectedValue, value, std::memory_order_relaxed ) )
     {
         // succeeded, value is correct
         return value;

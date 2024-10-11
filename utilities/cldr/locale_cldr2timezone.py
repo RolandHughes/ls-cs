@@ -48,14 +48,14 @@ import datetime
 import tempfile
 import re
 
-import cs_enumdata
-import cs_findpath
-# from cs_findpath import DraftResolution
+import lscs_enumdata
+import lscs_findpath
+# from lscs_findpath import DraftResolution
 
-findAlias       = cs_findpath.findAlias
-findEntry       = cs_findpath.findEntry
-findEntryInFile = cs_findpath._findEntryInFile
-findTagsInFile  = cs_findpath.findTagsInFile
+findAlias       = lscs_findpath.findAlias
+findEntry       = lscs_findpath.findEntry
+findEntryInFile = lscs_findpath._findEntryInFile
+findTagsInFile  = lscs_findpath.findTagsInFile
 
 # next two are identical to those in locale_xml2locale.py
 def unicode2hex(s):
@@ -304,9 +304,9 @@ def main():
        print("Missing CopperSpice path parameter")
        usage()
 
-   cs_source  = sys.argv[1]
+   lscs_source  = sys.argv[1]
 
-   if not os.path.isdir(cs_source):
+   if not os.path.isdir(lscs_source):
        print("Issue: Path to CopperSpice source does not exist")
        usage()
 
@@ -314,7 +314,7 @@ def main():
    sys.stdout.reconfigure(encoding='utf-8')
 
    windowsZonesPath = CLDR_INPUT + "supplemental/windowsZones.xml"
-   dataFilePath     = cs_source  + "/src/core/datetime/qtimezone_data_p.h"
+   dataFilePath     = lscs_source  + "/src/core/datetime/qtimezone_data_p.h"
 
    if not os.path.isfile(windowsZonesPath):
        print("Issue: windowsZones.xml is missing")
@@ -352,16 +352,16 @@ def main():
 
                data['windowsKey'] = windowsIdToKey(data['windowsId'])
                if data['windowsKey'] <= 0:
-                   raise cs_findpath.Error("Unknown Windows ID, please add \"%s\"" % data['windowsId'])
+                   raise lscs_findpath.Error("Unknown Windows ID, please add \"%s\"" % data['windowsId'])
 
                countryId = 0
                if data['countryCode'] == u'001':
                    defaultDict[data['windowsKey']] = data['ianaList']
                else:
-                   data['countryId'] = cs_enumdata.countryCodeToId(data['countryCode'])
+                   data['countryId'] = lscs_enumdata.countryCodeToId(data['countryCode'])
                    if data['countryId'] < 0:
-                       raise cs_findpath.Error("Unknown Country Code \"%s\"" % data['countryCode'])
-                   data['country'] = cs_enumdata.country_list[data['countryId']][0]
+                       raise lscs_findpath.Error("Unknown Country Code \"%s\"" % data['countryCode'])
+                   data['country'] = lscs_enumdata.country_list[data['countryId']][0]
                    windowsIdDict[data['windowsKey'], data['countryId']] = data
 
    print("Input file parsed, writing data...")

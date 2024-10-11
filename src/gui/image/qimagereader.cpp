@@ -70,7 +70,7 @@ static QFactoryLoader *loader()
     return &retval;
 }
 
-struct cs_BuiltInFormatStruct
+struct lscs_BuiltInFormatStruct
 {
     using TestDevice = QImageIOHandler * ( * )( QIODevice * );
 
@@ -79,7 +79,7 @@ struct cs_BuiltInFormatStruct
     TestDevice checkFormat;
 };
 
-static const cs_BuiltInFormatStruct cs_BuiltInFormats[] =
+static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
 {
 
 #ifndef QT_NO_IMAGEFORMAT_PNG
@@ -424,14 +424,14 @@ static QImageIOHandler *createReadHandlerHelper( QIODevice *device,
             // if reading from a file with a suffix, start testing our
             // built-in handler for that suffix first
 
-            for ( int i = 0; cs_BuiltInFormats[i].checkFormat != nullptr; ++i )
+            for ( int i = 0; lscs_BuiltInFormats[i].checkFormat != nullptr; ++i )
             {
 
-                if ( cs_BuiltInFormats[i].extension == suffix )
+                if ( lscs_BuiltInFormats[i].extension == suffix )
                 {
                     const qint64 pos = device->pos();
 
-                    handler = cs_BuiltInFormats[i].checkFormat( device );
+                    handler = lscs_BuiltInFormats[i].checkFormat( device );
 
                     if ( ! device->isSequential() )
                     {
@@ -447,11 +447,11 @@ static QImageIOHandler *createReadHandlerHelper( QIODevice *device,
         {
             QByteArray subType;
 
-            for ( int i = 0; cs_BuiltInFormats[i].checkFormat != nullptr; ++i )
+            for ( int i = 0; lscs_BuiltInFormats[i].checkFormat != nullptr; ++i )
             {
                 const qint64 pos = device->pos();
 
-                handler = cs_BuiltInFormats[i].checkFormat( device );
+                handler = lscs_BuiltInFormats[i].checkFormat( device );
 
                 if ( ! device->isSequential() )
                 {
@@ -1256,9 +1256,9 @@ QList<QString> QImageReader::supportedImageFormats()
 {
     QList<QString> formats;
 
-    for ( int i = 0; cs_BuiltInFormats[i].checkFormat != nullptr; ++i )
+    for ( int i = 0; lscs_BuiltInFormats[i].checkFormat != nullptr; ++i )
     {
-        formats << cs_BuiltInFormats[i].extension;
+        formats << lscs_BuiltInFormats[i].extension;
     }
 
     supportedImageHandlerFormats( loader(), QImageIOPlugin::CanRead, &formats );
@@ -1273,9 +1273,9 @@ QList<QString> QImageReader::supportedMimeTypes()
 {
     QList<QString> mimeTypes;
 
-    for ( int i = 0; cs_BuiltInFormats[i].checkFormat != nullptr; ++i )
+    for ( int i = 0; lscs_BuiltInFormats[i].checkFormat != nullptr; ++i )
     {
-        mimeTypes << cs_BuiltInFormats[i].mimeType;
+        mimeTypes << lscs_BuiltInFormats[i].mimeType;
     }
 
     supportedImageHandlerMimeTypes( loader(), QImageIOPlugin::CanRead, &mimeTypes );

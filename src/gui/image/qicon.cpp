@@ -334,7 +334,7 @@ QPixmap QPixmapIconEngine::pixmap( const QSize &size, QIcon::Mode mode, QIcon::S
         actualSize.scale( size, Qt::KeepAspectRatio );
     }
 
-    QString key = "cs_"
+    QString key = "lscs_"
                   + HexString<quint64>( pm.cacheKey() )
                   + HexString<uint>( pe ? pe->mode : QIcon::Normal )
                   + HexString<quint64>( QGuiApplication::palette().cacheKey() )
@@ -354,7 +354,7 @@ QPixmap QPixmapIconEngine::pixmap( const QSize &size, QIcon::Mode mode, QIcon::S
 
             if ( QGuiApplication *guiApp = qobject_cast<QGuiApplication *>( qApp ) )
             {
-                active = guiApp->cs_internal_applyQIconStyle( QIcon::Active, pm );
+                active = guiApp->lscs_internal_applyQIconStyle( QIcon::Active, pm );
             }
 
             if ( pm.cacheKey() == active.cacheKey() )
@@ -377,7 +377,7 @@ QPixmap QPixmapIconEngine::pixmap( const QSize &size, QIcon::Mode mode, QIcon::S
 
             if ( QGuiApplication *guiApp = qobject_cast<QGuiApplication *>( qApp ) )
             {
-                generated = guiApp->cs_internal_applyQIconStyle( mode, pm );
+                generated = guiApp->lscs_internal_applyQIconStyle( mode, pm );
             }
 
             if ( !generated.isNull() )
@@ -687,7 +687,7 @@ static QFactoryLoader *loader()
     return &retval;
 }
 
-QFactoryLoader *cs_internal_iconLoader()
+QFactoryLoader *lscs_internal_iconLoader()
 {
     return loader();
 }

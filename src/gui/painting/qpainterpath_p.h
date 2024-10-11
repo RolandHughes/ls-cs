@@ -44,7 +44,7 @@ public:
     friend class QTransform;
     friend class QVectorPath;
 
-    friend struct cs_internal::QPainterPathPrivateDeleter;
+    friend struct lscs_internal::QPainterPathPrivateDeleter;
 
     friend Q_GUI_EXPORT QDataStream &operator<<( QDataStream &, const QPainterPath & );
     friend Q_GUI_EXPORT QDataStream &operator>>( QDataStream &, QPainterPath & );

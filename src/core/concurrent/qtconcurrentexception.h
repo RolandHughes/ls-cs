@@ -46,7 +46,7 @@ public:
     Exception *clone() const override;
 };
 
-namespace cs_internal
+namespace lscs_internal
 {
 
 class Base;

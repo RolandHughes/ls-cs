@@ -342,7 +342,7 @@ void QInputDialogPrivate::ensureComboBox()
 
         comboBox->hide();
         QObject::connect( comboBox, &QComboBox::editTextChanged, q, &QInputDialog::_q_textChanged );
-        QObject::connect( comboBox, cs_mp_cast<const QString &>( &QComboBox::currentIndexChanged ), q, &QInputDialog::_q_textChanged );
+        QObject::connect( comboBox, lscs_mp_cast<const QString &>( &QComboBox::currentIndexChanged ), q, &QInputDialog::_q_textChanged );
     }
 }
 
@@ -374,7 +374,7 @@ void QInputDialogPrivate::ensureIntSpinBox()
         intSpinBox = new QInputDialogSpinBox( q );
         intSpinBox->hide();
 
-        QObject::connect( intSpinBox, cs_mp_cast<int>( &QSpinBox::valueChanged ), q, &QInputDialog::intValueChanged );
+        QObject::connect( intSpinBox, lscs_mp_cast<int>( &QSpinBox::valueChanged ), q, &QInputDialog::intValueChanged );
     }
 }
 
@@ -387,7 +387,7 @@ void QInputDialogPrivate::ensureDoubleSpinBox()
         doubleSpinBox = new QInputDialogDoubleSpinBox( q );
         doubleSpinBox->hide();
 
-        QObject::connect( doubleSpinBox, cs_mp_cast<double>( &QDoubleSpinBox::valueChanged ), q, &QInputDialog::doubleValueChanged );
+        QObject::connect( doubleSpinBox, lscs_mp_cast<double>( &QDoubleSpinBox::valueChanged ), q, &QInputDialog::doubleValueChanged );
     }
 }
 

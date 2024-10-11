@@ -312,7 +312,7 @@ struct subr_flattener_t
 
       ENV env (str, acc, fd,
 	       plan->normalized_coords.arrayZ, plan->normalized_coords.length);
-      cs_interpreter_t<ENV, OPSET, flatten_param_t> interp (env);
+      lscs_interpreter_t<ENV, OPSET, flatten_param_t> interp (env);
       flatten_param_t  param = {
         flat_charstrings.arrayZ[i],
         (bool) (plan->flags & HB_SUBSET_FLAGS_NO_HINTING),
@@ -347,9 +347,9 @@ struct subr_closures_t
   hb_vector_t<hb_set_t> local_closures;
 };
 
-struct parsed_cs_op_t : op_str_t
+struct parsed_lscs_op_t : op_str_t
 {
-  parsed_cs_op_t (unsigned int subr_num_ = 0) :
+  parsed_lscs_op_t (unsigned int subr_num_ = 0) :
     subr_num (subr_num_) {}
 
   bool is_hinting () const { return hinting_flag; }
@@ -365,9 +365,9 @@ struct parsed_cs_op_t : op_str_t
   uint16_t subr_num;
 };
 
-struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
+struct parsed_lscs_str_t : parsed_values_t<parsed_lscs_op_t>
 {
-  parsed_cs_str_t () :
+  parsed_lscs_str_t () :
     parsed (false),
     hint_dropped (false),
     has_prefix_ (false),
@@ -462,22 +462,22 @@ struct parsed_cs_str_t : parsed_values_t<parsed_cs_op_t>
   number_t	prefix_num_;
 
   private:
-  typedef parsed_values_t<parsed_cs_op_t> SUPER;
+  typedef parsed_values_t<parsed_lscs_op_t> SUPER;
 };
 
-struct parsed_cs_str_vec_t : hb_vector_t<parsed_cs_str_t>
+struct parsed_lscs_str_vec_t : hb_vector_t<parsed_lscs_str_t>
 {
   private:
-  typedef hb_vector_t<parsed_cs_str_t> SUPER;
+  typedef hb_vector_t<parsed_lscs_str_t> SUPER;
 };
 
 struct cff_subset_accelerator_t
 {
   static cff_subset_accelerator_t* create (
       hb_blob_t* original_blob,
-      const parsed_cs_str_vec_t& parsed_charstrings,
-      const parsed_cs_str_vec_t& parsed_global_subrs,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs) {
+      const parsed_lscs_str_vec_t& parsed_charstrings,
+      const parsed_lscs_str_vec_t& parsed_global_subrs,
+      const hb_vector_t<parsed_lscs_str_vec_t>& parsed_local_subrs) {
     cff_subset_accelerator_t* accel =
         (cff_subset_accelerator_t*) hb_malloc (sizeof(cff_subset_accelerator_t));
     if (unlikely (!accel)) return nullptr;
@@ -498,9 +498,9 @@ struct cff_subset_accelerator_t
 
   cff_subset_accelerator_t(
       hb_blob_t* original_blob_,
-      const parsed_cs_str_vec_t& parsed_charstrings_,
-      const parsed_cs_str_vec_t& parsed_global_subrs_,
-      const hb_vector_t<parsed_cs_str_vec_t>& parsed_local_subrs_)
+      const parsed_lscs_str_vec_t& parsed_charstrings_,
+      const parsed_lscs_str_vec_t& parsed_global_subrs_,
+      const hb_vector_t<parsed_lscs_str_vec_t>& parsed_local_subrs_)
   {
     parsed_charstrings = parsed_charstrings_;
     parsed_global_subrs = parsed_global_subrs_;
@@ -522,9 +522,9 @@ struct cff_subset_accelerator_t
     }
   }
 
-  parsed_cs_str_vec_t parsed_charstrings;
-  parsed_cs_str_vec_t parsed_global_subrs;
-  hb_vector_t<parsed_cs_str_vec_t> parsed_local_subrs;
+  parsed_lscs_str_vec_t parsed_charstrings;
+  parsed_lscs_str_vec_t parsed_global_subrs;
+  hb_vector_t<parsed_lscs_str_vec_t> parsed_local_subrs;
   mutable hb_atomic_ptr_t<glyph_to_sid_map_t> glyph_to_sid_map;
 
  private:
@@ -533,9 +533,9 @@ struct cff_subset_accelerator_t
 
 struct subr_subset_param_t
 {
-  subr_subset_param_t (parsed_cs_str_t *parsed_charstring_,
-		       parsed_cs_str_vec_t *parsed_global_subrs_,
-		       parsed_cs_str_vec_t *parsed_local_subrs_,
+  subr_subset_param_t (parsed_lscs_str_t *parsed_charstring_,
+		       parsed_lscs_str_vec_t *parsed_global_subrs_,
+		       parsed_lscs_str_vec_t *parsed_local_subrs_,
 		       hb_set_t *global_closure_,
 		       hb_set_t *local_closure_,
 		       bool drop_hints_) :
@@ -547,7 +547,7 @@ struct subr_subset_param_t
       local_closure (local_closure_),
       drop_hints (drop_hints_) {}
 
-  parsed_cs_str_t *get_parsed_str_for_context (call_context_t &context)
+  parsed_lscs_str_t *get_parsed_str_for_context (call_context_t &context)
   {
     switch (context.type)
     {
@@ -570,7 +570,7 @@ struct subr_subset_param_t
   template <typename ENV>
   void set_current_str (ENV &env, bool calling)
   {
-    parsed_cs_str_t *parsed_str = get_parsed_str_for_context (env.context);
+    parsed_lscs_str_t *parsed_str = get_parsed_str_for_context (env.context);
     if (unlikely (!parsed_str))
     {
       env.set_error ();
@@ -589,11 +589,11 @@ struct subr_subset_param_t
     }
   }
 
-  parsed_cs_str_t	*current_parsed_str;
+  parsed_lscs_str_t	*current_parsed_str;
 
-  parsed_cs_str_t	*parsed_charstring;
-  parsed_cs_str_vec_t	*parsed_global_subrs;
-  parsed_cs_str_vec_t	*parsed_local_subrs;
+  parsed_lscs_str_t	*parsed_charstring;
+  parsed_lscs_str_vec_t	*parsed_global_subrs;
+  parsed_lscs_str_vec_t	*parsed_local_subrs;
   hb_set_t      *global_closure;
   hb_set_t      *local_closure;
   bool	  drop_hints;
@@ -738,7 +738,7 @@ struct subr_subsetter_t
       }
 
       ENV env (str, acc, fd);
-      cs_interpreter_t<ENV, OPSET, subr_subset_param_t> interp (env);
+      lscs_interpreter_t<ENV, OPSET, subr_subset_param_t> interp (env);
 
       parsed_charstrings[new_glyph].alloc (str.length);
       subr_subset_param_t  param (&parsed_charstrings[new_glyph],
@@ -839,7 +839,7 @@ struct subr_subsetter_t
     return true;
   }
 
-  bool encode_subrs (const parsed_cs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
+  bool encode_subrs (const parsed_lscs_str_vec_t &subrs, const subr_remap_t& remap, unsigned int fd, str_buff_vec_t &buffArray) const
   {
     unsigned int  count = remap.get_population ();
 
@@ -881,8 +881,8 @@ struct subr_subsetter_t
     bool  vsindex_dropped;
   };
 
-  bool drop_hints_in_subr (parsed_cs_str_t &str, unsigned int pos,
-			   parsed_cs_str_vec_t &subrs, unsigned int subr_num,
+  bool drop_hints_in_subr (parsed_lscs_str_t &str, unsigned int pos,
+			   parsed_lscs_str_vec_t &subrs, unsigned int subr_num,
 			   const subr_subset_param_t &param, drop_hints_param_t &drop)
   {
     drop.ends_in_hint = false;
@@ -907,7 +907,7 @@ struct subr_subsetter_t
   }
 
   /* returns true if it sees a hint op before the first moveto */
-  bool drop_hints_in_str (parsed_cs_str_t &str, const subr_subset_param_t &param, drop_hints_param_t &drop)
+  bool drop_hints_in_str (parsed_lscs_str_t &str, const subr_subset_param_t &param, drop_hints_param_t &drop)
   {
     bool  seen_hint = false;
 
@@ -967,7 +967,7 @@ struct subr_subsetter_t
       {
 	for (int i = pos - 1; i >= 0; i--)
 	{
-	  parsed_cs_op_t  &csop = values[(unsigned)i];
+	  parsed_lscs_op_t  &csop = values[(unsigned)i];
 	  if (csop.is_hinting ())
 	    break;
 	  csop.set_hinting ();
@@ -985,7 +985,7 @@ struct subr_subsetter_t
     drop.all_dropped = true;
     for (unsigned int pos = 0; pos < count; pos++)
     {
-      parsed_cs_op_t  &csop = values[pos];
+      parsed_lscs_op_t  &csop = values[pos];
       if (csop.op == OpCode_return)
 	break;
       if (!csop.is_hinting ())
@@ -998,8 +998,8 @@ struct subr_subsetter_t
     return seen_hint;
   }
 
-  bool closure_subroutines (const parsed_cs_str_vec_t& global_subrs,
-                            const hb_vector_t<parsed_cs_str_vec_t>& local_subrs)
+  bool closure_subroutines (const parsed_lscs_str_vec_t& global_subrs,
+                            const hb_vector_t<parsed_lscs_str_vec_t>& local_subrs)
   {
     closures.reset ();
     for (auto _ : plan->new_to_old_gid_list)
@@ -1012,9 +1012,9 @@ struct subr_subsetter_t
 
       // Note: const cast is safe here because the collect_subr_refs_in_str only performs a
       //       closure and does not modify any of the charstrings.
-      subr_subset_param_t  param (const_cast<parsed_cs_str_t*> (&get_parsed_charstring (new_glyph)),
-                                  const_cast<parsed_cs_str_vec_t*> (&global_subrs),
-                                  const_cast<parsed_cs_str_vec_t*> (&local_subrs[fd]),
+      subr_subset_param_t  param (const_cast<parsed_lscs_str_t*> (&get_parsed_charstring (new_glyph)),
+                                  const_cast<parsed_lscs_str_vec_t*> (&global_subrs),
+                                  const_cast<parsed_lscs_str_vec_t*> (&local_subrs[fd]),
                                   &closures.global_closure,
                                   &closures.local_closures[fd],
                                   plan->flags & HB_SUBSET_FLAGS_NO_HINTING);
@@ -1024,7 +1024,7 @@ struct subr_subsetter_t
     return true;
   }
 
-  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_cs_str_vec_t &subrs,
+  void collect_subr_refs_in_subr (unsigned int subr_num, parsed_lscs_str_vec_t &subrs,
 				  hb_set_t *closure,
 				  const subr_subset_param_t &param)
   {
@@ -1034,7 +1034,7 @@ struct subr_subsetter_t
     collect_subr_refs_in_str (subrs[subr_num], param);
   }
 
-  void collect_subr_refs_in_str (const parsed_cs_str_t &str,
+  void collect_subr_refs_in_str (const parsed_lscs_str_t &str,
                                  const subr_subset_param_t &param)
   {
     if (!str.has_calls ())
@@ -1062,7 +1062,7 @@ struct subr_subsetter_t
     }
   }
 
-  bool encode_str (const parsed_cs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
+  bool encode_str (const parsed_lscs_str_t &str, const unsigned int fd, str_buff_t &buff, bool encode_prefix = true) const
   {
     str_encoder_t  encoder (buff);
     encoder.reset ();
@@ -1133,7 +1133,7 @@ struct subr_subsetter_t
                                          parsed_local_subrs_storage);
   }
 
-  const parsed_cs_str_t& get_parsed_charstring (unsigned i) const
+  const parsed_lscs_str_t& get_parsed_charstring (unsigned i) const
   {
     if (cached_charstrings) return *(cached_charstrings[i]);
     return parsed_charstrings[i];
@@ -1145,17 +1145,17 @@ struct subr_subsetter_t
 
   subr_closures_t		closures;
 
-  hb_vector_t<const parsed_cs_str_t*>     cached_charstrings;
-  const parsed_cs_str_vec_t*              parsed_global_subrs;
-  const hb_vector_t<parsed_cs_str_vec_t>* parsed_local_subrs;
+  hb_vector_t<const parsed_lscs_str_t*>     cached_charstrings;
+  const parsed_lscs_str_vec_t*              parsed_global_subrs;
+  const hb_vector_t<parsed_lscs_str_vec_t>* parsed_local_subrs;
 
   subr_remaps_t			remaps;
 
   private:
 
-  parsed_cs_str_vec_t		parsed_charstrings;
-  parsed_cs_str_vec_t		parsed_global_subrs_storage;
-  hb_vector_t<parsed_cs_str_vec_t>  parsed_local_subrs_storage;
+  parsed_lscs_str_vec_t		parsed_charstrings;
+  parsed_lscs_str_vec_t		parsed_global_subrs_storage;
+  hb_vector_t<parsed_lscs_str_vec_t>  parsed_local_subrs_storage;
   typedef typename SUBRS::count_type subr_count_type;
 };
 

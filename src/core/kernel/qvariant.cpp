@@ -265,12 +265,12 @@ QVariant::QVariant( QDataStream &stream )
 QVariant::QVariant( QVariant::Type type )
 {
     // deprecated
-    cs_internal_create( static_cast<uint>( type ), nullptr );
+    lscs_internal_create( static_cast<uint>( type ), nullptr );
 }
 
 QVariant::QVariant( uint typeId, const void *copy )
 {
-    cs_internal_create( typeId, copy );
+    lscs_internal_create( typeId, copy );
 }
 
 QVariant::QVariant( bool value )
@@ -473,19 +473,19 @@ QVariant::QVariant( QJsonDocument value )
     m_data = std::make_shared<CustomType_T<QJsonDocument>>( std::move( value ) );
 }
 
-static bool cs_internal_isNumericType( uint type )
+static bool lscs_internal_isNumericType( uint type )
 {
     return ( type == QVariant::Int  || type == QVariant::UInt ||
              type == QVariant::LongLong  || type == QVariant::ULongLong ||
              type == QVariant::Double    || type == QVariant::Float );
 }
 
-static bool cs_internal_isFloatingPoint( uint type )
+static bool lscs_internal_isFloatingPoint( uint type )
 {
     return type == QVariant::Double || type == QVariant::Float;
 }
 
-static int64_t cs_internal_convertToInt64( const QVariant &data, bool *ok )
+static int64_t lscs_internal_convertToInt64( const QVariant &data, bool *ok )
 {
     *ok = true;
 
@@ -575,7 +575,7 @@ static int64_t cs_internal_convertToInt64( const QVariant &data, bool *ok )
     return 0;
 }
 
-static uint64_t cs_internal_convertToUInt64( const QVariant &data, bool *ok )
+static uint64_t lscs_internal_convertToUInt64( const QVariant &data, bool *ok )
 {
     *ok = true;
 
@@ -665,7 +665,7 @@ static uint64_t cs_internal_convertToUInt64( const QVariant &data, bool *ok )
     return 0;
 }
 
-bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
+bool QVariant::lscs_internal_convert( uint current_userType, uint new_userType )
 {
     bool retval = true;
 
@@ -690,7 +690,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
                 case QVariant::SChar:
                 case QVariant::UChar:
                 {
-                    bool tmp = cs_internal_convertToUInt64( *this, &retval ) != 0;
+                    bool tmp = lscs_internal_convertToUInt64( *this, &retval ) != 0;
                     setValue( tmp );
                     break;
                 }
@@ -813,7 +813,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::Int:
         {
-            int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
             int data    = 0;
 
             if ( retval )
@@ -827,7 +827,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::UInt:
         {
-            uint64_t tmp = cs_internal_convertToUInt64( *this, &retval );
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
             uint data    = 0;
 
             if ( retval )
@@ -841,7 +841,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::Short:
         {
-            int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
             short data  = 0;
 
             if ( retval )
@@ -855,7 +855,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::UShort:
         {
-            uint64_t tmp = cs_internal_convertToUInt64( *this, &retval );
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
             ushort data  = 0;
 
             if ( retval )
@@ -869,7 +869,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::Long:
         {
-            int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
             long data   = 0;
 
             if ( retval )
@@ -883,7 +883,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::ULong:
         {
-            uint64_t tmp = cs_internal_convertToUInt64( *this, &retval );
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
             ulong data   = 0;
 
             if ( retval )
@@ -897,7 +897,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::LongLong:
         {
-            int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
             qint64 data = 0;
 
             if ( retval )
@@ -911,7 +911,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::ULongLong:
         {
-            uint64_t tmp = cs_internal_convertToUInt64( *this, &retval );
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
             quint64 data = 0;
 
             if ( retval )
@@ -948,7 +948,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
                 case QVariant::SChar:
                 case QVariant::UChar:
                 {
-                    int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+                    int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
                     double data  = 0;
 
                     if ( retval )
@@ -1045,7 +1045,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
                 case QVariant::SChar:
                 case QVariant::UChar:
                 {
-                    int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+                    int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
                     float data  = 0;
 
                     if ( retval )
@@ -1123,7 +1123,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
             if constexpr ( std::is_signed_v<char> )
             {
-                int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+                int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
 
                 if ( retval )
                 {
@@ -1133,7 +1133,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
             }
             else
             {
-                uint64_t tmp = cs_internal_convertToUInt64( *this, &retval );
+                uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
 
                 if ( retval )
                 {
@@ -1147,7 +1147,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::SChar:
         {
-            int64_t tmp = cs_internal_convertToInt64( *this, &retval );
+            int64_t tmp = lscs_internal_convertToInt64( *this, &retval );
             signed char data = 0;
 
             if ( retval )
@@ -1161,7 +1161,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
         case QVariant::UChar:
         {
-            uint64_t tmp = cs_internal_convertToUInt64( *this, &retval );
+            uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
             uchar data   = 0;
 
             if ( retval )
@@ -1195,7 +1195,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
                 case QVariant::String16:
                 case QVariant::JsonValue:
                 {
-                    uint64_t tmp = cs_internal_convertToUInt64( *this, &retval );
+                    uint64_t tmp = lscs_internal_convertToUInt64( *this, &retval );
                     QChar32 data = 0;
 
                     if ( retval )
@@ -2118,12 +2118,12 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
 
     if ( ! retval )
     {
-        // call cs_internal_convert() in gui, etc
+        // call lscs_internal_convert() in gui, etc
         bool done = false;
 
         for ( const auto ptr : m_variantClients )
         {
-            done = ptr->cs_internal_convert( current_userType, new_userType, *this );
+            done = ptr->lscs_internal_convert( current_userType, new_userType, *this );
 
             if ( done )
             {
@@ -2136,7 +2136,7 @@ bool QVariant::cs_internal_convert( uint current_userType, uint new_userType )
     return retval;
 }
 
-void QVariant::cs_internal_create( uint typeId, const void *other )
+void QVariant::lscs_internal_create( uint typeId, const void *other )
 {
     switch ( typeId )
     {
@@ -2610,12 +2610,12 @@ void QVariant::cs_internal_create( uint typeId, const void *other )
             break;
 
         default:
-            // call cs_internal_create in gui, etc
+            // call lscs_internal_create in gui, etc
             bool done = false;
 
             for ( const auto ptr : m_variantClients )
             {
-                done = ptr->cs_internal_create( typeId, other, *this );
+                done = ptr->lscs_internal_create( typeId, other, *this );
 
                 if ( done )
                 {
@@ -3694,7 +3694,7 @@ bool QVariant::canConvert( uint newType ) const
     return false;
 }
 
-bool QVariant::cs_internal_compare( const QVariant &other ) const
+bool QVariant::lscs_internal_compare( const QVariant &other ) const
 {
     QVariant::Type current_type = type();
     QVariant::Type other_type   = other.type();
@@ -3702,10 +3702,10 @@ bool QVariant::cs_internal_compare( const QVariant &other ) const
     if ( current_type != other_type )
     {
 
-        if ( cs_internal_isNumericType( current_type ) && cs_internal_isNumericType( other_type ) )
+        if ( lscs_internal_isNumericType( current_type ) && lscs_internal_isNumericType( other_type ) )
         {
 
-            if ( cs_internal_isFloatingPoint( current_type ) || cs_internal_isFloatingPoint( other_type ) )
+            if ( lscs_internal_isFloatingPoint( current_type ) || lscs_internal_isFloatingPoint( other_type ) )
             {
                 return qFuzzyCompare( toReal(), other.toReal() );
 
@@ -3775,14 +3775,14 @@ void QVariant::load( QDataStream &stream )
         }
     }
 
-    cs_internal_create( static_cast<uint>( inputType ), nullptr );
+    lscs_internal_create( static_cast<uint>( inputType ), nullptr );
 
     if ( ! isValid() )
     {
         return;
     }
 
-    if ( ! cs_internal_load( stream, userType() ) )
+    if ( ! lscs_internal_load( stream, userType() ) )
     {
         stream.setStatus( QDataStream::ReadCorruptData );
         qWarning( "QVariant::load() Unable to load Variant::Type %d from stream", userType() );
@@ -3806,13 +3806,13 @@ void QVariant::save( QDataStream &stream ) const
         return;
     }
 
-    if ( ! cs_internal_save( stream, userType() ) )
+    if ( ! lscs_internal_save( stream, userType() ) )
     {
         qWarning( "QVariant::save() Unable to save Variant::Type %d to data stream", userType() );
     }
 }
 
-bool QVariant::cs_internal_load( QDataStream &stream, uint type )
+bool QVariant::lscs_internal_load( QDataStream &stream, uint type )
 {
     bool retval = true;
 
@@ -4208,12 +4208,12 @@ bool QVariant::cs_internal_load( QDataStream &stream, uint type )
             return false;
 
         default:
-            // call cs_internal_save in gui, etc
+            // call lscs_internal_save in gui, etc
             bool done = false;
 
             for ( const auto ptr : m_variantClients )
             {
-                done = ptr->cs_internal_load( stream, type, *this );
+                done = ptr->lscs_internal_load( stream, type, *this );
 
                 if ( done )
                 {
@@ -4232,7 +4232,7 @@ bool QVariant::cs_internal_load( QDataStream &stream, uint type )
     return retval;
 }
 
-bool QVariant::cs_internal_save( QDataStream &stream, uint type ) const
+bool QVariant::lscs_internal_save( QDataStream &stream, uint type ) const
 {
     bool retval = true;
 
@@ -4422,12 +4422,12 @@ bool QVariant::cs_internal_save( QDataStream &stream, uint type ) const
             return false;
 
         default:
-            // call cs_internal_save in gui, etc
+            // call lscs_internal_save in gui, etc
             bool done = false;
 
             for ( const auto ptr : m_variantClients )
             {
-                done = ptr->cs_internal_save( stream, type, *this );
+                done = ptr->lscs_internal_save( stream, type, *this );
 
                 if ( done )
                 {
@@ -4447,7 +4447,7 @@ bool QVariant::cs_internal_save( QDataStream &stream, uint type ) const
 }
 
 template <typename T>
-T QVariant::cs_internal_VariantToType( QVariant::Type type, bool *ok ) const
+T QVariant::lscs_internal_VariantToType( QVariant::Type type, bool *ok ) const
 {
     uint new_userType = static_cast<uint>( type );
 
@@ -4496,21 +4496,21 @@ bool QVariant::convert( uint newType )
 
     if ( ! isValid() )
     {
-        cs_internal_create( newType, nullptr );
+        lscs_internal_create( newType, nullptr );
         return false;
 
     }
     else if ( ! canConvert( newType ) )
     {
-        cs_internal_create( newType, nullptr );
+        lscs_internal_create( newType, nullptr );
         return false;
     }
 
     bool isOk = true;
 
-    if ( ! cs_internal_convert( current_userType, newType ) )
+    if ( ! lscs_internal_convert( current_userType, newType ) )
     {
-        cs_internal_create( newType, nullptr );
+        lscs_internal_create( newType, nullptr );
         isOk = false;
     }
 
@@ -4543,7 +4543,7 @@ std::optional<QVariant> QVariant::maybeConvert( uint requested_type ) const
     {
         QVariant tmp = *this;
 
-        if ( tmp.cs_internal_convert( current_userType, requested_type ) )
+        if ( tmp.lscs_internal_convert( current_userType, requested_type ) )
         {
             retval = tmp;
         }
@@ -4729,217 +4729,217 @@ uint QVariant::nameToType( const QString &name )
 //
 bool QVariant::toBool( bool *ok ) const
 {
-    return cs_internal_VariantToType<bool>( QVariant::Bool, ok );
+    return lscs_internal_VariantToType<bool>( QVariant::Bool, ok );
 }
 
 int QVariant::toInt( bool *ok ) const
 {
-    return cs_internal_VariantToType<int>( QVariant::Int, ok );
+    return lscs_internal_VariantToType<int>( QVariant::Int, ok );
 }
 
 uint QVariant::toUInt( bool *ok ) const
 {
-    return cs_internal_VariantToType<uint>( QVariant::UInt, ok );
+    return lscs_internal_VariantToType<uint>( QVariant::UInt, ok );
 }
 
 long QVariant::toLong( bool *ok ) const
 {
-    return cs_internal_VariantToType<long>( QVariant::Long, ok );
+    return lscs_internal_VariantToType<long>( QVariant::Long, ok );
 }
 
 ulong QVariant::toULong( bool *ok ) const
 {
-    return cs_internal_VariantToType<ulong>( QVariant::ULong, ok );
+    return lscs_internal_VariantToType<ulong>( QVariant::ULong, ok );
 }
 
 qint64 QVariant::toLongLong( bool *ok ) const
 {
-    return cs_internal_VariantToType<qint64>( QVariant::LongLong, ok );
+    return lscs_internal_VariantToType<qint64>( QVariant::LongLong, ok );
 }
 
 quint64 QVariant::toULongLong( bool *ok ) const
 {
-    return cs_internal_VariantToType<quint64>( QVariant::ULongLong, ok );
+    return lscs_internal_VariantToType<quint64>( QVariant::ULongLong, ok );
 }
 
 double QVariant::toDouble( bool *ok ) const
 {
-    return cs_internal_VariantToType<double>( QVariant::Double, ok );
+    return lscs_internal_VariantToType<double>( QVariant::Double, ok );
 }
 
 float QVariant::toFloat( bool *ok ) const
 {
-    return cs_internal_VariantToType<float>( QVariant::Float, ok );
+    return lscs_internal_VariantToType<float>( QVariant::Float, ok );
 }
 
 qreal QVariant::toReal( bool *ok ) const
 {
-    return cs_internal_VariantToType<double>( QVariant::Double, ok );
+    return lscs_internal_VariantToType<double>( QVariant::Double, ok );
 }
 
 QChar32 QVariant::toChar() const
 {
-    return cs_internal_VariantToType<QChar32>( QVariant::QChar );
+    return lscs_internal_VariantToType<QChar32>( QVariant::QChar );
 }
 
 QString QVariant::toString() const
 {
-    return cs_internal_VariantToType<QString>( QVariant::String );
+    return lscs_internal_VariantToType<QString>( QVariant::String );
 }
 
 QString16 QVariant::toString16() const
 {
-    return cs_internal_VariantToType<QString16>( QVariant::String16 );
+    return lscs_internal_VariantToType<QString16>( QVariant::String16 );
 }
 
 QByteArray QVariant::toByteArray() const
 {
-    return cs_internal_VariantToType<QByteArray>( QVariant::ByteArray );
+    return lscs_internal_VariantToType<QByteArray>( QVariant::ByteArray );
 }
 
 QBitArray QVariant::toBitArray() const
 {
-    return cs_internal_VariantToType<QBitArray>( QVariant::BitArray );
+    return lscs_internal_VariantToType<QBitArray>( QVariant::BitArray );
 }
 
 QStringList QVariant::toStringList() const
 {
-    return cs_internal_VariantToType<QStringList>( QVariant::StringList );
+    return lscs_internal_VariantToType<QStringList>( QVariant::StringList );
 }
 
 QRegularExpression8 QVariant::toRegularExpression() const
 {
-    return cs_internal_VariantToType<QRegularExpression8>( QVariant::RegularExpression );
+    return lscs_internal_VariantToType<QRegularExpression8>( QVariant::RegularExpression );
 }
 
 QDate QVariant::toDate() const
 {
-    return cs_internal_VariantToType<QDate>( QVariant::Date );
+    return lscs_internal_VariantToType<QDate>( QVariant::Date );
 }
 
 QTime QVariant::toTime() const
 {
-    return cs_internal_VariantToType<QTime>( QVariant::Time );
+    return lscs_internal_VariantToType<QTime>( QVariant::Time );
 }
 
 QDateTime QVariant::toDateTime() const
 {
-    return cs_internal_VariantToType<QDateTime>( QVariant::DateTime );
+    return lscs_internal_VariantToType<QDateTime>( QVariant::DateTime );
 }
 
 QLocale QVariant::toLocale() const
 {
-    return cs_internal_VariantToType<QLocale>( QVariant::Locale );
+    return lscs_internal_VariantToType<QLocale>( QVariant::Locale );
 }
 
 QVariantList QVariant::toList() const
 {
-    return cs_internal_VariantToType<QVariantList>( QVariant::List );
+    return lscs_internal_VariantToType<QVariantList>( QVariant::List );
 }
 
 QVariantMap QVariant::toMap() const
 {
-    return cs_internal_VariantToType<QVariantMap>( QVariant::Map );
+    return lscs_internal_VariantToType<QVariantMap>( QVariant::Map );
 }
 
 QVariantMultiMap QVariant::toMultiMap() const
 {
-    return cs_internal_VariantToType<QVariantMultiMap>( QVariant::MultiMap );
+    return lscs_internal_VariantToType<QVariantMultiMap>( QVariant::MultiMap );
 }
 
 QVariantHash QVariant::toHash() const
 {
-    return cs_internal_VariantToType<QVariantHash>( QVariant::Hash );
+    return lscs_internal_VariantToType<QVariantHash>( QVariant::Hash );
 }
 
 QVariantMultiHash QVariant::toMultiHash() const
 {
-    return cs_internal_VariantToType<QVariantMultiHash>( QVariant::MultiHash );
+    return lscs_internal_VariantToType<QVariantMultiHash>( QVariant::MultiHash );
 }
 
 QJsonValue QVariant::toJsonValue() const
 {
-    return cs_internal_VariantToType<QJsonValue>( QVariant::JsonValue );
+    return lscs_internal_VariantToType<QJsonValue>( QVariant::JsonValue );
 }
 
 QJsonObject QVariant::toJsonObject() const
 {
-    return cs_internal_VariantToType<QJsonObject>( QVariant::JsonObject );
+    return lscs_internal_VariantToType<QJsonObject>( QVariant::JsonObject );
 }
 
 QJsonArray QVariant::toJsonArray() const
 {
-    return cs_internal_VariantToType<QJsonArray>( JsonArray );
+    return lscs_internal_VariantToType<QJsonArray>( JsonArray );
 }
 
 QJsonDocument QVariant::toJsonDocument() const
 {
-    return cs_internal_VariantToType<QJsonDocument>( QVariant::JsonDocument );
+    return lscs_internal_VariantToType<QJsonDocument>( QVariant::JsonDocument );
 }
 
 QLine QVariant::toLine() const
 {
-    return cs_internal_VariantToType<QLine>( QVariant::Line );
+    return lscs_internal_VariantToType<QLine>( QVariant::Line );
 }
 
 QLineF QVariant::toLineF() const
 {
-    return cs_internal_VariantToType<QLineF>( QVariant::LineF );
+    return lscs_internal_VariantToType<QLineF>( QVariant::LineF );
 }
 
 QPoint QVariant::toPoint() const
 {
-    return cs_internal_VariantToType<QPoint>( QVariant::Point );
+    return lscs_internal_VariantToType<QPoint>( QVariant::Point );
 }
 
 QPointF QVariant::toPointF() const
 {
-    return cs_internal_VariantToType<QPointF>( QVariant::PointF );
+    return lscs_internal_VariantToType<QPointF>( QVariant::PointF );
 }
 
 QRect QVariant::toRect() const
 {
-    return cs_internal_VariantToType<QRect>( QVariant::Rect );
+    return lscs_internal_VariantToType<QRect>( QVariant::Rect );
 }
 
 QRectF QVariant::toRectF() const
 {
-    return cs_internal_VariantToType<QRectF>( QVariant::RectF );
+    return lscs_internal_VariantToType<QRectF>( QVariant::RectF );
 }
 
 QSize QVariant::toSize() const
 {
-    return cs_internal_VariantToType<QSize>( QVariant::Size );
+    return lscs_internal_VariantToType<QSize>( QVariant::Size );
 }
 
 QSizeF QVariant::toSizeF() const
 {
-    return cs_internal_VariantToType<QSizeF>( QVariant::SizeF );
+    return lscs_internal_VariantToType<QSizeF>( QVariant::SizeF );
 }
 
 QEasingCurve QVariant::toEasingCurve() const
 {
-    return cs_internal_VariantToType<QEasingCurve>( QVariant::EasingCurve );
+    return lscs_internal_VariantToType<QEasingCurve>( QVariant::EasingCurve );
 }
 
 QModelIndex QVariant::toModelIndex() const
 {
-    return cs_internal_VariantToType<QModelIndex>( QVariant::ModelIndex );
+    return lscs_internal_VariantToType<QModelIndex>( QVariant::ModelIndex );
 }
 
 QPersistentModelIndex QVariant::toPersistentModelIndex() const
 {
-    return cs_internal_VariantToType<QPersistentModelIndex>( QVariant::PersistentModelIndex );
+    return lscs_internal_VariantToType<QPersistentModelIndex>( QVariant::PersistentModelIndex );
 }
 
 QUrl QVariant::toUrl() const
 {
-    return cs_internal_VariantToType<QUrl>( QVariant::Url );
+    return lscs_internal_VariantToType<QUrl>( QVariant::Url );
 }
 
 QUuid QVariant::toUuid() const
 {
-    return cs_internal_VariantToType<QUuid>( QVariant::Uuid );
+    return lscs_internal_VariantToType<QUuid>( QVariant::Uuid );
 }
 
 QVariant::Type QVariant::type() const

@@ -29,7 +29,7 @@
 template<class T>
 QVariant lscs_convertToQVariant( T data )
 {
-    if constexpr ( cs_is_enum_or_flag<T>::value )
+    if constexpr ( lscs_is_enum_or_flag<T>::value )
     {
         // used to avoid implicitly converting an enum to an int
         return QVariant::fromValue( data );
@@ -50,10 +50,10 @@ QVariant lscs_convertToQVariant( T data )
 template<class T>
 std::pair<T, bool> convertFromQVariant( QVariant data )
 {
-    if constexpr ( cs_is_enum_or_flag<T>::value )
+    if constexpr ( lscs_is_enum_or_flag<T>::value )
     {
         // T is an enum or  flag
-        using intType = typename cs_underlying_type<T>::type;
+        using intType = typename lscs_underlying_type<T>::type;
 
         intType retval = 0;
         bool ok = true;

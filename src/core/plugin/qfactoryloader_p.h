@@ -89,7 +89,7 @@ private:
 };
 
 template <class PluginInterface, class FactoryInterface, class ...Ts>
-PluginInterface *cs_load_plugin( const QFactoryLoader *loader, const QString &key, const Ts &... Vs )
+PluginInterface *lscs_load_plugin( const QFactoryLoader *loader, const QString &key, const Ts &... Vs )
 {
     QObject *factoryObject = loader->instance( key );
 

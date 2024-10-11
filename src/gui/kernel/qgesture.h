@@ -103,12 +103,12 @@ class Q_GUI_EXPORT QPanGesture : public QGesture
     GUI_LSCS_PROPERTY_WRITE( acceleration, setAcceleration )
 
     // private properties
-    GUI_LSCS_PROPERTY_READ( horizontalVelocity, cs_horizontalVelocity )
-    GUI_LSCS_PROPERTY_WRITE( horizontalVelocity, cs_setHorizontalVelocity )
+    GUI_LSCS_PROPERTY_READ( horizontalVelocity, lscs_horizontalVelocity )
+    GUI_LSCS_PROPERTY_WRITE( horizontalVelocity, lscs_setHorizontalVelocity )
 
     // private properties
-    GUI_LSCS_PROPERTY_READ( verticalVelocity, cs_verticalVelocity )
-    GUI_LSCS_PROPERTY_WRITE( verticalVelocity, cs_setVerticalVelocity )
+    GUI_LSCS_PROPERTY_READ( verticalVelocity, lscs_verticalVelocity )
+    GUI_LSCS_PROPERTY_WRITE( verticalVelocity, lscs_setVerticalVelocity )
 
 public:
     explicit QPanGesture( QObject *parent = nullptr );
@@ -128,16 +128,16 @@ public:
 
 private:
     // wrapper for overloaded method
-    qreal cs_horizontalVelocity() const;
+    qreal lscs_horizontalVelocity() const;
 
     // wrapper for overloaded method
-    void cs_setHorizontalVelocity( qreal velocity );
+    void lscs_setHorizontalVelocity( qreal velocity );
 
     // wrapper for overloaded method
-    qreal cs_verticalVelocity() const;
+    qreal lscs_verticalVelocity() const;
 
     // wrapper for overloaded method
-    void cs_setVerticalVelocity( qreal velocity );
+    void lscs_setVerticalVelocity( qreal velocity );
 };
 
 class Q_GUI_EXPORT QPinchGesture : public QGesture
@@ -232,8 +232,8 @@ class Q_GUI_EXPORT QSwipeGesture : public QGesture
     GUI_LSCS_PROPERTY_WRITE( swipeAngle, setSwipeAngle )
 
     // private properties
-    GUI_LSCS_PROPERTY_READ( velocity, cs_velocity )
-    GUI_LSCS_PROPERTY_WRITE( velocity, cs_setVelocity )
+    GUI_LSCS_PROPERTY_READ( velocity, lscs_velocity )
+    GUI_LSCS_PROPERTY_WRITE( velocity, lscs_setVelocity )
 
 public:
     enum SwipeDirection
@@ -258,10 +258,10 @@ public:
 
 private:
     // wrapper for overloaded method
-    qreal cs_velocity() const;
+    qreal lscs_velocity() const;
 
     // wrapper for overloaded method
-    void cs_setVelocity( qreal velocity );
+    void lscs_setVelocity( qreal velocity );
 };
 
 class Q_GUI_EXPORT QTapGesture : public QGesture

@@ -59,47 +59,47 @@ class Q_GUI_EXPORT QApplication : public QCoreApplication
 {
     GUI_LSCS_OBJECT( QApplication )
 
-    GUI_LSCS_PROPERTY_READ( applicationDisplayName,  cs_applicationDisplayName )
-    GUI_LSCS_PROPERTY_WRITE( applicationDisplayName, cs_setApplicationDisplayName )
+    GUI_LSCS_PROPERTY_READ( applicationDisplayName,  lscs_applicationDisplayName )
+    GUI_LSCS_PROPERTY_WRITE( applicationDisplayName, lscs_setApplicationDisplayName )
 
-    GUI_LSCS_PROPERTY_READ( platformName,   cs_platformName )
+    GUI_LSCS_PROPERTY_READ( platformName,   lscs_platformName )
     GUI_LSCS_PROPERTY_STORED( platformName, false )
 
-    GUI_LSCS_PROPERTY_READ( primaryScreen,   cs_primaryScreen )
+    GUI_LSCS_PROPERTY_READ( primaryScreen,   lscs_primaryScreen )
     GUI_LSCS_PROPERTY_NOTIFY( primaryScreen, primaryScreenChanged )
     GUI_LSCS_PROPERTY_STORED( primaryScreen, false )
 
-    GUI_LSCS_PROPERTY_READ( layoutDirection,  cs_layoutDirection )
-    GUI_LSCS_PROPERTY_WRITE( layoutDirection, cs_setLayoutDirection )
+    GUI_LSCS_PROPERTY_READ( layoutDirection,  lscs_layoutDirection )
+    GUI_LSCS_PROPERTY_WRITE( layoutDirection, lscs_setLayoutDirection )
 
-    GUI_LSCS_PROPERTY_READ( windowIcon,  cs_windowIcon )
-    GUI_LSCS_PROPERTY_WRITE( windowIcon, cs_setWindowIcon )
+    GUI_LSCS_PROPERTY_READ( windowIcon,  lscs_windowIcon )
+    GUI_LSCS_PROPERTY_WRITE( windowIcon, lscs_setWindowIcon )
 
-    GUI_LSCS_PROPERTY_READ( cursorFlashTime,  cs_cursorFlashTime )
-    GUI_LSCS_PROPERTY_WRITE( cursorFlashTime, cs_setCursorFlashTime )
+    GUI_LSCS_PROPERTY_READ( cursorFlashTime,  lscs_cursorFlashTime )
+    GUI_LSCS_PROPERTY_WRITE( cursorFlashTime, lscs_setCursorFlashTime )
 
-    GUI_LSCS_PROPERTY_READ( doubleClickInterval,  cs_doubleClickInterval )
-    GUI_LSCS_PROPERTY_WRITE( doubleClickInterval, cs_setDoubleClickInterval )
+    GUI_LSCS_PROPERTY_READ( doubleClickInterval,  lscs_doubleClickInterval )
+    GUI_LSCS_PROPERTY_WRITE( doubleClickInterval, lscs_setDoubleClickInterval )
 
-    GUI_LSCS_PROPERTY_READ( keyboardInputInterval,  cs_keyboardInputInterval )
-    GUI_LSCS_PROPERTY_WRITE( keyboardInputInterval, cs_setKeyboardInputInterval )
+    GUI_LSCS_PROPERTY_READ( keyboardInputInterval,  lscs_keyboardInputInterval )
+    GUI_LSCS_PROPERTY_WRITE( keyboardInputInterval, lscs_setKeyboardInputInterval )
 
 #ifndef QT_NO_WHEELEVENT
-    GUI_LSCS_PROPERTY_READ( wheelScrollLines,  cs_wheelScrollLines )
-    GUI_LSCS_PROPERTY_WRITE( wheelScrollLines, cs_setWheelScrollLines )
+    GUI_LSCS_PROPERTY_READ( wheelScrollLines,  lscs_wheelScrollLines )
+    GUI_LSCS_PROPERTY_WRITE( wheelScrollLines, lscs_setWheelScrollLines )
 #endif
 
-    GUI_LSCS_PROPERTY_READ( globalStrut,  cs_globalStrut )
-    GUI_LSCS_PROPERTY_WRITE( globalStrut, cs_setGlobalStrut )
+    GUI_LSCS_PROPERTY_READ( globalStrut,  lscs_globalStrut )
+    GUI_LSCS_PROPERTY_WRITE( globalStrut, lscs_setGlobalStrut )
 
-    GUI_LSCS_PROPERTY_READ( startDragTime,  cs_startDragTime )
-    GUI_LSCS_PROPERTY_WRITE( startDragTime, cs_setStartDragTime )
+    GUI_LSCS_PROPERTY_READ( startDragTime,  lscs_startDragTime )
+    GUI_LSCS_PROPERTY_WRITE( startDragTime, lscs_setStartDragTime )
 
-    GUI_LSCS_PROPERTY_READ( startDragDistance,  cs_startDragDistance )
-    GUI_LSCS_PROPERTY_WRITE( startDragDistance, cs_setStartDragDistance )
+    GUI_LSCS_PROPERTY_READ( startDragDistance,  lscs_startDragDistance )
+    GUI_LSCS_PROPERTY_WRITE( startDragDistance, lscs_setStartDragDistance )
 
-    GUI_LSCS_PROPERTY_READ( quitOnLastWindowClosed,  cs_quitOnLastWindowClosed )
-    GUI_LSCS_PROPERTY_WRITE( quitOnLastWindowClosed, cs_setQuitOnLastWindowClosed )
+    GUI_LSCS_PROPERTY_READ( quitOnLastWindowClosed,  lscs_quitOnLastWindowClosed )
+    GUI_LSCS_PROPERTY_WRITE( quitOnLastWindowClosed, lscs_setQuitOnLastWindowClosed )
 
 #ifndef QT_NO_STYLE_STYLESHEET
     GUI_LSCS_PROPERTY_READ( styleSheet,  styleSheet )
@@ -130,10 +130,10 @@ public:
     static QString applicationDisplayName();
 
     // wrapper for static method
-    inline void cs_setApplicationDisplayName( const QString &name );
+    inline void lscs_setApplicationDisplayName( const QString &name );
 
     // wrapper for static method
-    inline QString cs_applicationDisplayName() const;
+    inline QString lscs_applicationDisplayName() const;
 
     static QApplication *instance()
     {
@@ -149,7 +149,7 @@ public:
     static QString platformName();
 
     // wrapper for static method
-    inline QString cs_platformName() const;
+    inline QString lscs_platformName() const;
 
     static QWindow *modalWindow();
 
@@ -159,7 +159,7 @@ public:
     static QScreen *primaryScreen();
 
     // wrapper for static method
-    inline QScreen *cs_primaryScreen() const;
+    inline QScreen *lscs_primaryScreen() const;
 
     static QList<QScreen *> screens();
     qreal devicePixelRatio() const;
@@ -195,10 +195,10 @@ public:
     static QIcon windowIcon();
 
     // wrapper for static method
-    inline void cs_setWindowIcon( const QIcon &icon );
+    inline void lscs_setWindowIcon( const QIcon &icon );
 
     // wrapper for static method
-    inline QIcon cs_windowIcon() const;
+    inline QIcon lscs_windowIcon() const;
 
     static QWidgetList allWidgets();
     static QWidgetList topLevelWidgets();
@@ -234,75 +234,75 @@ public:
     static int cursorFlashTime();
 
     // wrapper for static method
-    inline void cs_setCursorFlashTime( int duration );
+    inline void lscs_setCursorFlashTime( int duration );
 
     // wrapper for static method
-    inline int cs_cursorFlashTime() const;
+    inline int lscs_cursorFlashTime() const;
 
     static void setDoubleClickInterval( int interval );
     static int doubleClickInterval();
 
     // wrapper for static method
-    inline void cs_setDoubleClickInterval( int interval );
+    inline void lscs_setDoubleClickInterval( int interval );
 
     // wrapper for static method
-    inline int cs_doubleClickInterval() const;
+    inline int lscs_doubleClickInterval() const;
 
     static void setKeyboardInputInterval( int interval );
     static int keyboardInputInterval();
 
     // wrapper for static method
-    inline void cs_setKeyboardInputInterval( int interval );
+    inline void lscs_setKeyboardInputInterval( int interval );
 
     // wrapper for static method
-    inline int cs_keyboardInputInterval() const;
+    inline int lscs_keyboardInputInterval() const;
 
 #ifndef QT_NO_WHEELEVENT
     static void setWheelScrollLines( int lines );
     static int wheelScrollLines();
 
     // wrapper for overloaded property
-    inline void cs_setWheelScrollLines( int lines );
+    inline void lscs_setWheelScrollLines( int lines );
 
     // wrapper for overloaded property
-    inline int cs_wheelScrollLines()  const;
+    inline int lscs_wheelScrollLines()  const;
 #endif
 
     static void setGlobalStrut( const QSize &size );
     static QSize globalStrut();
 
     // wrapper for static method
-    inline void cs_setGlobalStrut( const QSize &size );
+    inline void lscs_setGlobalStrut( const QSize &size );
 
     // wrapper for static method
-    inline QSize cs_globalStrut() const;
+    inline QSize lscs_globalStrut() const;
 
     static void setStartDragTime( int time );
     static int startDragTime();
 
     // wrapper for static method
-    inline void cs_setStartDragTime( int time );
+    inline void lscs_setStartDragTime( int time );
 
     // wrapper for static method
-    inline int cs_startDragTime() const;
+    inline int lscs_startDragTime() const;
 
     static void setStartDragDistance( int distance );
     static int startDragDistance();
 
     // wrapper for static method
-    inline void cs_setStartDragDistance( int distance );
+    inline void lscs_setStartDragDistance( int distance );
 
     // wrapper for static method
-    inline int cs_startDragDistance() const;
+    inline int lscs_startDragDistance() const;
 
     static void setLayoutDirection( Qt::LayoutDirection direction );
     static Qt::LayoutDirection layoutDirection();
 
     // wrapper for static method
-    inline void cs_setLayoutDirection( Qt::LayoutDirection direction );
+    inline void lscs_setLayoutDirection( Qt::LayoutDirection direction );
 
     // wrapper for static method
-    inline Qt::LayoutDirection cs_layoutDirection() const;
+    inline Qt::LayoutDirection lscs_layoutDirection() const;
 
     static inline bool isRightToLeft()
     {
@@ -347,14 +347,14 @@ public:
     static bool quitOnLastWindowClosed();
 
     // wrapper for static method
-    inline void cs_setQuitOnLastWindowClosed( bool quit );
+    inline void lscs_setQuitOnLastWindowClosed( bool quit );
 
     // wrapper for static method
-    inline bool cs_quitOnLastWindowClosed() const;
+    inline bool lscs_quitOnLastWindowClosed() const;
 
     static void sync();
 
-    QPixmap cs_internal_applyQIconStyle( QIcon::Mode mode, const QPixmap &basePixmap ) const;
+    QPixmap lscs_internal_applyQIconStyle( QIcon::Mode mode, const QPixmap &basePixmap ) const;
 
     GUI_LSCS_SIGNAL_1( Public, void screenAdded( QScreen *screen ) )
     GUI_LSCS_SIGNAL_2( screenAdded, screen )
@@ -462,124 +462,124 @@ private:
     GUI_LSCS_SLOT_2( _q_updateFocusObject )
 };
 
-void QApplication::cs_setApplicationDisplayName( const QString &name )
+void QApplication::lscs_setApplicationDisplayName( const QString &name )
 {
     setApplicationDisplayName( name );
 }
 
-QString QApplication::cs_applicationDisplayName() const
+QString QApplication::lscs_applicationDisplayName() const
 {
     return applicationDisplayName();
 }
 
-QString QApplication::cs_platformName() const
+QString QApplication::lscs_platformName() const
 {
     return platformName();
 }
 
-QScreen *QApplication::cs_primaryScreen() const
+QScreen *QApplication::lscs_primaryScreen() const
 {
     return primaryScreen();
 }
 
-void QApplication::cs_setWindowIcon( const QIcon &icon )
+void QApplication::lscs_setWindowIcon( const QIcon &icon )
 {
     setWindowIcon( icon );
 }
 
-QIcon QApplication::cs_windowIcon() const
+QIcon QApplication::lscs_windowIcon() const
 {
     return windowIcon();
 }
 
-void QApplication::cs_setCursorFlashTime( int duration )
+void QApplication::lscs_setCursorFlashTime( int duration )
 {
     setCursorFlashTime( duration );
 }
 
-int QApplication::cs_cursorFlashTime() const
+int QApplication::lscs_cursorFlashTime() const
 {
     return cursorFlashTime();
 }
 
-void QApplication::cs_setDoubleClickInterval( int interval )
+void QApplication::lscs_setDoubleClickInterval( int interval )
 {
     setDoubleClickInterval( interval );
 }
 
-int QApplication::cs_doubleClickInterval() const
+int QApplication::lscs_doubleClickInterval() const
 {
     return doubleClickInterval();
 }
 
-void QApplication::cs_setKeyboardInputInterval( int interval )
+void QApplication::lscs_setKeyboardInputInterval( int interval )
 {
     setKeyboardInputInterval( interval );
 }
 
-int QApplication::cs_keyboardInputInterval() const
+int QApplication::lscs_keyboardInputInterval() const
 {
     return keyboardInputInterval();
 }
 
 #ifndef QT_NO_WHEELEVENT
-void QApplication::cs_setWheelScrollLines( int lines )
+void QApplication::lscs_setWheelScrollLines( int lines )
 {
     setWheelScrollLines( lines );
 }
 
-int QApplication::cs_wheelScrollLines()  const
+int QApplication::lscs_wheelScrollLines()  const
 {
     return wheelScrollLines();
 }
 #endif
 
-void QApplication::cs_setGlobalStrut( const QSize &size )
+void QApplication::lscs_setGlobalStrut( const QSize &size )
 {
     setGlobalStrut( size );
 }
 
-QSize QApplication::cs_globalStrut() const
+QSize QApplication::lscs_globalStrut() const
 {
     return globalStrut();
 }
 
-void QApplication::cs_setStartDragTime( int time )
+void QApplication::lscs_setStartDragTime( int time )
 {
     setStartDragTime( time );
 }
 
-int QApplication::cs_startDragTime() const
+int QApplication::lscs_startDragTime() const
 {
     return startDragTime();
 }
 
-void QApplication::cs_setStartDragDistance( int distance )
+void QApplication::lscs_setStartDragDistance( int distance )
 {
     setStartDragDistance( distance );
 }
 
-int QApplication::cs_startDragDistance() const
+int QApplication::lscs_startDragDistance() const
 {
     return startDragDistance();
 }
 
-void QApplication::cs_setLayoutDirection( Qt::LayoutDirection direction )
+void QApplication::lscs_setLayoutDirection( Qt::LayoutDirection direction )
 {
     setLayoutDirection( direction );
 }
 
-void QApplication::cs_setQuitOnLastWindowClosed( bool quit )
+void QApplication::lscs_setQuitOnLastWindowClosed( bool quit )
 {
     setQuitOnLastWindowClosed( quit );
 }
 
-bool QApplication::cs_quitOnLastWindowClosed() const
+bool QApplication::lscs_quitOnLastWindowClosed() const
 {
     return quitOnLastWindowClosed();
 }
 
-Qt::LayoutDirection QApplication::cs_layoutDirection() const
+Qt::LayoutDirection QApplication::lscs_layoutDirection() const
 {
     return layoutDirection();
 }

@@ -25,7 +25,7 @@
 #define QMACSTYLE_P_H
 
 #include <lscs_carbon_wrapper_p.h>
-#include <cs_mac_p.h>
+#include <lscs_mac_p.h>
 
 #include <qmacstyle.h>
 #include <qcommonstyle_p.h>

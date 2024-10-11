@@ -138,7 +138,7 @@ static const char *const filedialog_end_xpm[] =
 };
 
 /* XPM */
-static const char *const cs_menu_xpm[] =
+static const char *const lscs_menu_xpm[] =
 {
     "16 16 145 2 ",
     "   c #754B00",

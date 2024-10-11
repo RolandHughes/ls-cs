@@ -1475,7 +1475,7 @@ int QTextEngine::shapeTextWithHarfbuzz( const QScriptItem &si, QStringView str, 
     auto strLength     = str.size();
 
     hb_buffer_t *buffer = hb_buffer_create();
-    hb_buffer_set_unicode_funcs( buffer, cs_get_unicode_funcs() );
+    hb_buffer_set_unicode_funcs( buffer, lscs_get_unicode_funcs() );
     hb_buffer_pre_allocate( buffer, strLength );
 
     if ( ! hb_buffer_allocation_successful( buffer ) )
@@ -1488,7 +1488,7 @@ int QTextEngine::shapeTextWithHarfbuzz( const QScriptItem &si, QStringView str, 
     props.direction = si.analysis.bidiLevel % 2 ? HB_DIRECTION_RTL : HB_DIRECTION_LTR;
 
     QChar::Script script = QChar::Script( si.analysis.script );
-    props.script         = cs_script_to_hb_script( script );
+    props.script         = lscs_script_to_hb_script( script );
     props.language       = hb_language_get_default();
 
     uint current_cluster  = 0;
@@ -1534,10 +1534,10 @@ int QTextEngine::shapeTextWithHarfbuzz( const QScriptItem &si, QStringView str, 
 
         // shape
         {
-            std::shared_ptr<hb_font_t> hb_font = cs_font_get_for_engine( actualFontEngine );
+            std::shared_ptr<hb_font_t> hb_font = lscs_font_get_for_engine( actualFontEngine );
             Q_ASSERT( hb_font );
 
-            cs_font_set_use_design_metrics( hb_font.get(), option.useDesignMetrics() ? uint( QFontEngine::DesignMetrics ) : 0 );
+            lscs_font_set_use_design_metrics( hb_font.get(), option.useDesignMetrics() ? uint( QFontEngine::DesignMetrics ) : 0 );
 
             // ligatures are incompatible with custom letter spacing, so when a letter spacing is set
             // disable them for writing systems where they are purely cosmetic

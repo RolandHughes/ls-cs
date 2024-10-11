@@ -200,7 +200,7 @@ QAction *QLineEdit::addAction( const QIcon &icon, ActionPosition position )
     return result;
 }
 
-static const QString clearButtonAction = QString( "_cs_clearActionEnabled" );
+static const QString clearButtonAction = QString( "_lscs_clearActionEnabled" );
 
 void QLineEdit::setClearButtonEnabled( bool enable )
 {
@@ -338,10 +338,10 @@ void QLineEdit::setCompleter( QCompleter *c )
 
     if ( hasFocus() )
     {
-        QObject::connect( d->control->completer(), cs_mp_cast<const QString &>( &QCompleter::activated ),
+        QObject::connect( d->control->completer(), lscs_mp_cast<const QString &>( &QCompleter::activated ),
                           this, &QLineEdit::setText );
 
-        QObject::connect( d->control->completer(), cs_mp_cast<const QString &>( &QCompleter::highlighted ),
+        QObject::connect( d->control->completer(), lscs_mp_cast<const QString &>( &QCompleter::highlighted ),
                           this, &QLineEdit::_q_completionHighlighted );
     }
 }
@@ -1283,10 +1283,10 @@ void QLineEdit::focusInEvent( QFocusEvent *e )
     {
         d->control->completer()->setWidget( this );
 
-        QObject::connect( d->control->completer(), cs_mp_cast<const QString &>( &QCompleter::activated ),
+        QObject::connect( d->control->completer(), lscs_mp_cast<const QString &>( &QCompleter::activated ),
                           this, &QLineEdit::setText );
 
-        QObject::connect( d->control->completer(), cs_mp_cast<const QString &>( &QCompleter::highlighted ),
+        QObject::connect( d->control->completer(), lscs_mp_cast<const QString &>( &QCompleter::highlighted ),
                           this, &QLineEdit::_q_completionHighlighted );
     }
 

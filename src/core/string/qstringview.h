@@ -35,7 +35,7 @@
 
 class QStringParser;
 
-Q_CORE_EXPORT std::pair<char32_t, const char32_t *> cs_internal_convertCaseTrait( int trait, char32_t value );
+Q_CORE_EXPORT std::pair<char32_t, const char32_t *> lscs_internal_convertCaseTrait( int trait, char32_t value );
 
 #if ! defined (LSCS_DOXYPRESS)
 namespace Cs
@@ -161,7 +161,7 @@ public:
         }
         else
         {
-            return cs_internal_find_fast( ch, from );
+            return lscs_internal_find_fast( ch, from );
 
         }
     }
@@ -181,7 +181,7 @@ public:
         }
         else
         {
-            return cs_internal_find_fast( str, from );
+            return lscs_internal_find_fast( str, from );
         }
     }
 
@@ -195,7 +195,7 @@ public:
         }
         else
         {
-            return cs_internal_find_fast( str, from );
+            return lscs_internal_find_fast( str, from );
         }
     }
 
@@ -213,7 +213,7 @@ public:
         }
         else
         {
-            return cs_internal_rfind_fast( ch, from );
+            return lscs_internal_rfind_fast( ch, from );
 
         }
     }
@@ -233,7 +233,7 @@ public:
         }
         else
         {
-            return cs_internal_rfind_fast( str, from );
+            return lscs_internal_rfind_fast( str, from );
         }
     }
 
@@ -247,7 +247,7 @@ public:
         }
         else
         {
-            return cs_internal_rfind_fast( str, from );
+            return lscs_internal_rfind_fast( str, from );
         }
     }
 
@@ -398,20 +398,20 @@ public:
 
 private:
     template <typename C = value_type>
-    const_iterator cs_internal_find_fast( value_type ch,  const_iterator iter_begin ) const;
+    const_iterator lscs_internal_find_fast( value_type ch,  const_iterator iter_begin ) const;
 
     template <typename C = value_type>
-    const_iterator cs_internal_rfind_fast( value_type ch, const_iterator iter_begin ) const;
+    const_iterator lscs_internal_rfind_fast( value_type ch, const_iterator iter_begin ) const;
 
-    const_iterator cs_internal_find_fast( const S &str,  const_iterator iter_begin ) const;
-    const_iterator cs_internal_rfind_fast( const S &str, const_iterator iter_begin ) const;
+    const_iterator lscs_internal_find_fast( const S &str,  const_iterator iter_begin ) const;
+    const_iterator lscs_internal_rfind_fast( const S &str, const_iterator iter_begin ) const;
 
     S convertCase( int trait ) const;
 };
 
 template <typename S>
 template <typename C>
-typename QStringView<S>::const_iterator QStringView<S>::cs_internal_find_fast( value_type ch, const_iterator iter_begin ) const
+typename QStringView<S>::const_iterator QStringView<S>::lscs_internal_find_fast( value_type ch, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -441,7 +441,7 @@ typename QStringView<S>::const_iterator QStringView<S>::cs_internal_find_fast( v
     }
     else
     {
-        return cs_internal_find_fast( strFolded, iter_begin );
+        return lscs_internal_find_fast( strFolded, iter_begin );
 
     }
 
@@ -449,7 +449,7 @@ typename QStringView<S>::const_iterator QStringView<S>::cs_internal_find_fast( v
 }
 
 template <typename S>
-typename QStringView<S>::const_iterator QStringView<S>::cs_internal_find_fast( const S &str, const_iterator iter_begin ) const
+typename QStringView<S>::const_iterator QStringView<S>::lscs_internal_find_fast( const S &str, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -506,7 +506,7 @@ typename QStringView<S>::const_iterator QStringView<S>::cs_internal_find_fast( c
 
 template <typename S>
 template <typename C>
-typename QStringView<S>::const_iterator QStringView<S>::cs_internal_rfind_fast( value_type ch, const_iterator iter_begin ) const
+typename QStringView<S>::const_iterator QStringView<S>::lscs_internal_rfind_fast( value_type ch, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -536,7 +536,7 @@ typename QStringView<S>::const_iterator QStringView<S>::cs_internal_rfind_fast( 
     }
     else
     {
-        return cs_internal_rfind_fast( strFolded, iter_begin );
+        return lscs_internal_rfind_fast( strFolded, iter_begin );
 
     }
 
@@ -544,7 +544,7 @@ typename QStringView<S>::const_iterator QStringView<S>::cs_internal_rfind_fast( 
 }
 
 template <typename S>
-typename QStringView<S>::const_iterator QStringView<S>::cs_internal_rfind_fast( const S &str, const_iterator iter_begin ) const
+typename QStringView<S>::const_iterator QStringView<S>::lscs_internal_rfind_fast( const S &str, const_iterator iter_begin ) const
 {
     const_iterator iter_end = cend();
 
@@ -1014,7 +1014,7 @@ S QStringView<S>::convertCase( int trait ) const
     for ( auto ch : *this )
     {
         char32_t value = ch.unicode();
-        std::pair<char32_t, const char32_t *> unicodeLookUp = cs_internal_convertCaseTrait( trait, value );
+        std::pair<char32_t, const char32_t *> unicodeLookUp = lscs_internal_convertCaseTrait( trait, value );
 
         char32_t caseValue = unicodeLookUp.first;
 

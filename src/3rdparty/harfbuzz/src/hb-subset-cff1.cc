@@ -225,9 +225,9 @@ struct cff1_font_dict_op_serializer_t : cff_font_dict_op_serializer_t
   typedef cff_font_dict_op_serializer_t SUPER;
 };
 
-struct cff1_cs_opset_flatten_t : cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatten_param_t>
+struct cff1_lscs_opset_flatten_t : cff1_lscs_opset_t<cff1_lscs_opset_flatten_t, flatten_param_t>
 {
-  static void flush_args_and_op (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
+  static void flush_args_and_op (op_code_t op, cff1_lscs_interp_env_t &env, flatten_param_t& param)
   {
     if (env.arg_start > 0)
       flush_width (env, param);
@@ -253,7 +253,7 @@ struct cff1_cs_opset_flatten_t : cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatte
 	break;
     }
   }
-  static void flush_args (cff1_cs_interp_env_t &env, flatten_param_t& param)
+  static void flush_args (cff1_lscs_interp_env_t &env, flatten_param_t& param)
   {
     str_encoder_t  encoder (param.flatStr);
     for (unsigned int i = env.arg_start; i < env.argStack.get_count (); i++)
@@ -261,20 +261,20 @@ struct cff1_cs_opset_flatten_t : cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatte
     SUPER::flush_args (env, param);
   }
 
-  static void flush_op (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
+  static void flush_op (op_code_t op, cff1_lscs_interp_env_t &env, flatten_param_t& param)
   {
     str_encoder_t  encoder (param.flatStr);
     encoder.encode_op (op);
   }
 
-  static void flush_width (cff1_cs_interp_env_t &env, flatten_param_t& param)
+  static void flush_width (cff1_lscs_interp_env_t &env, flatten_param_t& param)
   {
     assert (env.has_width);
     str_encoder_t  encoder (param.flatStr);
     encoder.encode_num_cs (env.width);
   }
 
-  static void flush_hintmask (op_code_t op, cff1_cs_interp_env_t &env, flatten_param_t& param)
+  static void flush_hintmask (op_code_t op, cff1_lscs_interp_env_t &env, flatten_param_t& param)
   {
     SUPER::flush_hintmask (op, env, param);
     if (!param.drop_hints)
@@ -286,7 +286,7 @@ struct cff1_cs_opset_flatten_t : cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatte
   }
 
   private:
-  typedef cff1_cs_opset_t<cff1_cs_opset_flatten_t, flatten_param_t> SUPER;
+  typedef cff1_lscs_opset_t<cff1_lscs_opset_flatten_t, flatten_param_t> SUPER;
 };
 
 struct range_list_t : hb_vector_t<code_pair_t>
@@ -309,9 +309,9 @@ struct range_list_t : hb_vector_t<code_pair_t>
   }
 };
 
-struct cff1_cs_opset_subr_subset_t : cff1_cs_opset_t<cff1_cs_opset_subr_subset_t, subr_subset_param_t>
+struct cff1_lscs_opset_subr_subset_t : cff1_lscs_opset_t<cff1_lscs_opset_subr_subset_t, subr_subset_param_t>
 {
-  static void process_op (op_code_t op, cff1_cs_interp_env_t &env, subr_subset_param_t& param)
+  static void process_op (op_code_t op, cff1_lscs_interp_env_t &env, subr_subset_param_t& param)
   {
     switch (op) {
 
@@ -344,8 +344,8 @@ struct cff1_cs_opset_subr_subset_t : cff1_cs_opset_t<cff1_cs_opset_subr_subset_t
   }
 
   protected:
-  static void process_call_subr (op_code_t op, cs_type_t type,
-				 cff1_cs_interp_env_t &env, subr_subset_param_t& param,
+  static void process_call_subr (op_code_t op, lscs_type_t type,
+				 cff1_lscs_interp_env_t &env, subr_subset_param_t& param,
 				 cff1_biased_subrs_t& subrs, hb_set_t *closure)
   {
     byte_str_ref_t    str_ref = env.str_ref;
@@ -356,7 +356,7 @@ struct cff1_cs_opset_subr_subset_t : cff1_cs_opset_t<cff1_cs_opset_subr_subset_t
   }
 
   private:
-  typedef cff1_cs_opset_t<cff1_cs_opset_subr_subset_t, subr_subset_param_t> SUPER;
+  typedef cff1_lscs_opset_t<cff1_lscs_opset_subr_subset_t, subr_subset_param_t> SUPER;
 };
 
 struct cff1_private_dict_op_serializer_t : op_serializer_t
@@ -389,12 +389,12 @@ struct cff1_private_dict_op_serializer_t : op_serializer_t
   const bool drop_hints;
 };
 
-struct cff1_subr_subsetter_t : subr_subsetter_t<cff1_subr_subsetter_t, CFF1Subrs, const OT::cff1::accelerator_subset_t, cff1_cs_interp_env_t, cff1_cs_opset_subr_subset_t, OpCode_endchar>
+struct cff1_subr_subsetter_t : subr_subsetter_t<cff1_subr_subsetter_t, CFF1Subrs, const OT::cff1::accelerator_subset_t, cff1_lscs_interp_env_t, cff1_lscs_opset_subr_subset_t, OpCode_endchar>
 {
   cff1_subr_subsetter_t (const OT::cff1::accelerator_subset_t &acc_, const hb_subset_plan_t *plan_)
     : subr_subsetter_t (acc_, plan_) {}
 
-  static void complete_parsed_str (cff1_cs_interp_env_t &env, subr_subset_param_t& param, parsed_cs_str_t &charstring)
+  static void complete_parsed_str (cff1_lscs_interp_env_t &env, subr_subset_param_t& param, parsed_lscs_str_t &charstring)
   {
     /* insert width at the beginning of the charstring as necessary */
     if (env.has_width)
@@ -406,7 +406,7 @@ struct cff1_subr_subsetter_t : subr_subsetter_t<cff1_subr_subsetter_t, CFF1Subrs
     param.current_parsed_str->set_parsed ();
     for (unsigned int i = 0; i < env.callStack.get_count (); i++)
     {
-      parsed_cs_str_t *parsed_str = param.get_parsed_str_for_context (env.callStack[i]);
+      parsed_lscs_str_t *parsed_str = param.get_parsed_str_for_context (env.callStack[i]);
       if (likely (parsed_str))
 	parsed_str->set_parsed ();
       else
@@ -682,7 +682,7 @@ struct cff1_subset_plan
     if (desubroutinize)
     {
       /* Flatten global & local subrs */
-      subr_flattener_t<const OT::cff1::accelerator_subset_t, cff1_cs_interp_env_t, cff1_cs_opset_flatten_t, OpCode_endchar>
+      subr_flattener_t<const OT::cff1::accelerator_subset_t, cff1_lscs_interp_env_t, cff1_lscs_opset_flatten_t, OpCode_endchar>
 		    flattener(acc, plan);
       if (!flattener.flatten (subset_charstrings))
 	return false;

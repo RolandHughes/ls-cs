@@ -222,7 +222,7 @@ static QVector<QPair<QPersistentModelIndex, uint>> qSelectionPersistentRowLength
     return result;
 }
 
-void QItemSelection::cs_internal_merge( const QItemSelection &other, uint commandInt )
+void QItemSelection::lscs_internal_merge( const QItemSelection &other, uint commandInt )
 {
     QItemSelectionModel::SelectionFlags command = static_cast<QItemSelectionModel::SelectionFlags>( commandInt );
 

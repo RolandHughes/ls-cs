@@ -73,7 +73,7 @@ public:
     explicit QUIntSpinBox( QWidget *parent = nullptr )
         : QSpinBox( parent )
     {
-        connect( this, cs_mp_cast<int>( &QUIntSpinBox::valueChanged ), this, &QUIntSpinBox::uintValueChanged );
+        connect( this, lscs_mp_cast<int>( &QUIntSpinBox::valueChanged ), this, &QUIntSpinBox::uintValueChanged );
     }
 
     uint uintValue() const

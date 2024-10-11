@@ -249,7 +249,7 @@ bool QGtkStyleFilter::eventFilter( QObject *obj, QEvent *e )
     {
         // Only do this the first time since this will also
         // generate applicationPaletteChange events
-        if ( ! cs_app_palettes_hash() || cs_app_palettes_hash()->isEmpty() )
+        if ( ! lscs_app_palettes_hash() || lscs_app_palettes_hash()->isEmpty() )
         {
             stylePrivate->applyCustomPaletteHash();
         }

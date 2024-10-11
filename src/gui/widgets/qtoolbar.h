@@ -40,17 +40,17 @@ class Q_GUI_EXPORT QToolBar : public QWidget
 
     GUI_LSCS_PROPERTY_READ( movable, isMovable )
     GUI_LSCS_PROPERTY_WRITE( movable, setMovable )
-    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( movable, cs_isMainWindow() )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( movable, lscs_isMainWindow() )
     GUI_LSCS_PROPERTY_NOTIFY( movable, movableChanged )
 
     GUI_LSCS_PROPERTY_READ( allowedAreas, allowedAreas )
     GUI_LSCS_PROPERTY_WRITE( allowedAreas, setAllowedAreas )
-    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( allowedAreas, cs_isMainWindow() )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( allowedAreas, lscs_isMainWindow() )
     GUI_LSCS_PROPERTY_NOTIFY( allowedAreas, allowedAreasChanged )
 
     GUI_LSCS_PROPERTY_READ( orientation, orientation )
     GUI_LSCS_PROPERTY_WRITE( orientation, setOrientation )
-    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( orientation, cs_isMainWindow() )
+    GUI_LSCS_PROPERTY_DESIGNABLE_NONSTATIC( orientation, lscs_isMainWindow() )
     GUI_LSCS_PROPERTY_NOTIFY( orientation, orientationChanged )
 
     GUI_LSCS_PROPERTY_READ( iconSize, iconSize )
@@ -207,7 +207,7 @@ private:
     GUI_LSCS_SLOT_1( Private, void _q_updateToolButtonStyle( Qt::ToolButtonStyle style ) )
     GUI_LSCS_SLOT_2( _q_updateToolButtonStyle )
 
-    bool cs_isMainWindow() const;
+    bool lscs_isMainWindow() const;
 
     friend class QMainWindow;
     friend class QMainWindowLayout;

@@ -213,7 +213,7 @@ void QFontDialogPrivate::init()
     size = 0;
     smoothScalable = false;
 
-    QObject::connect( writingSystemCombo, cs_mp_cast<int>( &QComboBox::activated ), q,
+    QObject::connect( writingSystemCombo, lscs_mp_cast<int>( &QComboBox::activated ), q,
                       &QFontDialog::_q_writingSystemHighlighted );
 
     QObject::connect( familyList,         &QFontListView::highlighted, q, &QFontDialog::_q_familyHighlighted );

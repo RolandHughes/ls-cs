@@ -46,12 +46,12 @@
 
 static const char *language_strings[] =
 {
-    cs_mark_tr( "MessageEditor", "Russian" ),
-    cs_mark_tr( "MessageEditor", "German" ),
-    cs_mark_tr( "MessageEditor", "Japanese" ),
-    cs_mark_tr( "MessageEditor", "French" ),
-    cs_mark_tr( "MessageEditor", "Polish" ),
-    cs_mark_tr( "MessageEditor", "Chinese" )
+    lscs_mark_tr( "MessageEditor", "Russian" ),
+    lscs_mark_tr( "MessageEditor", "German" ),
+    lscs_mark_tr( "MessageEditor", "Japanese" ),
+    lscs_mark_tr( "MessageEditor", "French" ),
+    lscs_mark_tr( "MessageEditor", "Polish" ),
+    lscs_mark_tr( "MessageEditor", "Chinese" )
 };
 #endif
 

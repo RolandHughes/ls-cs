@@ -622,42 +622,42 @@ Q_GUI_EXPORT QDebug operator<<( QDebug debug, const QGestureEvent *gestureEvent 
 }
 
 // wrapper for overloaded method
-qreal QPanGesture::cs_horizontalVelocity() const
+qreal QPanGesture::lscs_horizontalVelocity() const
 {
     Q_D( const QPanGesture );
     return d->horizontalVelocity();
 }
 
 // wrapper for overloaded method
-void QPanGesture::cs_setHorizontalVelocity( qreal velocity )
+void QPanGesture::lscs_setHorizontalVelocity( qreal velocity )
 {
     Q_D( QPanGesture );
     d->setHorizontalVelocity( velocity );
 }
 
 // wrapper for overloaded method
-qreal QPanGesture::cs_verticalVelocity() const
+qreal QPanGesture::lscs_verticalVelocity() const
 {
     Q_D( const QPanGesture );
     return d->verticalVelocity();
 }
 
 // wrapper for overloaded method
-void QPanGesture::cs_setVerticalVelocity( qreal velocity )
+void QPanGesture::lscs_setVerticalVelocity( qreal velocity )
 {
     Q_D( QPanGesture );
     d->setVerticalVelocity( velocity );
 }
 
 // wrapper for overloaded method
-qreal QSwipeGesture::cs_velocity() const
+qreal QSwipeGesture::lscs_velocity() const
 {
     Q_D( const QSwipeGesture );
     return d->velocity();
 }
 
 // wrapper for overloaded method
-void QSwipeGesture::cs_setVelocity( qreal velocity )
+void QSwipeGesture::lscs_setVelocity( qreal velocity )
 {
     Q_D( QSwipeGesture );
     d->setVelocity( velocity );

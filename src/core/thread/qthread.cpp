@@ -399,7 +399,7 @@ QDaemonThread::~QDaemonThread()
 {
 }
 
-QThreadPrivate *QThreadPrivate::cs_getPrivate( QThread *object )
+QThreadPrivate *QThreadPrivate::lscs_getPrivate( QThread *object )
 {
     return object->d_ptr.data();
 }

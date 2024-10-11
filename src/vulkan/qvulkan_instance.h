@@ -58,7 +58,7 @@ template <typename T>
 using QDynamicUniqueHandle = vk::UniqueHandle<T, vk::DispatchLoaderDynamic>;
 
 template <typename T, typename U>
-QDynamicUniqueHandle<T> cs_makeDynamicUnique( U object, const vk::DispatchLoaderDynamic &dld )
+QDynamicUniqueHandle<T> lscs_makeDynamicUnique( U object, const vk::DispatchLoaderDynamic &dld )
 {
     return QDynamicUniqueHandle<T>( object, typename vk::UniqueHandleTraits<T, vk::DispatchLoaderDynamic>::deleter( nullptr, dld ) );
 }

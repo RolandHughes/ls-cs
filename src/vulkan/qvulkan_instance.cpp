@@ -108,7 +108,7 @@ bool QVulkanInstance::create()
         return false;
     }
 
-    m_vkInstance = cs_makeDynamicUnique<vk::Instance>( instance, m_dld );
+    m_vkInstance = lscs_makeDynamicUnique<vk::Instance>( instance, m_dld );
 
     m_dld.init( *m_vkInstance );
 
@@ -364,7 +364,7 @@ void QVulkanInstance::setLayers( const QStringList &layers )
 
 void QVulkanInstance::setVkInstance( VkInstance existingVkInstance )
 {
-    m_vkInstance = cs_makeDynamicUnique<vk::Instance>( existingVkInstance, m_dld );
+    m_vkInstance = lscs_makeDynamicUnique<vk::Instance>( existingVkInstance, m_dld );
 }
 
 QVersionNumber QVulkanInstance::supportedApiVersion() const

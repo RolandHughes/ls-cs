@@ -42,12 +42,39 @@ void Task::run()
 
     QTextStream out(stdout);
 
-    out << "Hello World!\n";
+    char bold [] = { 0x1b, '[', '1', 'm', '\0'};
+    char endFormat [] = { 0x1b, '[', '0', 'm', '\0'};
+
+    out << bold << "Hello World!" << endFormat << "\n\n";
     out << "Version:    " << versionString << endl;
-    out << "Build Date: " << buildDate << endl;
-    out << "m_ptr->name(): " << m_ptr->name() << "\n";
+    out << "Build Date: " << "\n\n" << buildDate << endl;
 
+    out << bold << "Sizes on your machine:" << endFormat << "\n";
+    out << "     unsigned char      " << sizeof( unsigned char ) << endl;
+    out << "     qint8              " << sizeof( qint8 ) << endl;
+    out << "     qint16             " << sizeof( qint16 ) << endl;
+    out << "     qint32             " << sizeof( qint32 ) << endl;
+    out << "     qint64             " << sizeof( qint64 ) << endl;
+    out << "     short int          " << sizeof( short int ) << endl;
+    out << "     int                " << sizeof( int ) << endl;
+    out << "     long               " << sizeof( long ) << endl;
+    out << "     long long          " << sizeof( long long ) << endl;
+    out << "     float              " << sizeof( float ) << endl;
+    out << "     double             " << sizeof( double ) << endl;
+    out << "     long double        " << sizeof( long double) << endl;
 
+    out << "\n\nNext we will do some regular expression matching.\n";
+    out << "This section can be useful if you want to try out some\n";
+    out << "regular expressions for your own programs.\n" << endl;  // use endl to flush
+    out << "\n\n";
+    out << "str1:   MOVE =fred 1234 thru 5678 TO =Ethyl 5\n";
+    out << "str2:   MOVE 1:5 TO 108\n";
+    out << "str3:   MOVE =JANE 543 THRU 643 TO .\n";
+    out << "\n\n\n";
+    // extra slashes due to string escape sequences
+    out << "rangeExpression( \"(\\\\d+ THRU \\\\d+)|(\\\\d+:\\\\d+)\", QPatternOption::CaseInsensitiveOption )\n\n";
+
+        
     // Some regular expression experiments.
     //
     QString str1 = "MOVE =fred 1234 thru 5678 TO =Ethyl 5";
@@ -70,7 +97,7 @@ void Task::run()
 
     if ( match2.hasMatch() )
     {
-        out << "match2: " << endl;
+        out << "str2 matches: " << endl;
         for ( QString txt : match2.capturedTexts())
         {
             out << "    " << txt << endl;
@@ -79,137 +106,13 @@ void Task::run()
 
     if ( match3.hasMatch() )
     {
-        out << "match3: " << endl;
+        out << "str3 matches:: " << endl;
         for ( QString txt : match3.capturedTexts())
         {
             out << "    " << txt << endl;
         }
     }
 
-    // More Regular Expression experiments
-    //
-    QRegularExpression dupExpression( "(/DUP.*:\\d+)", QPatternOption::CaseInsensitiveOption );
-    QRegularExpression badDupExpression( "(/DUP.*)", QPatternOption::CaseInsensitiveOption );
-    QRegularExpression queryExpression( "/Q.*", QPatternOption::CaseInsensitiveOption );
-    QString str4 = "COPY =main.cpp 8:10 TO =overlord.cpp 12 /duplicate:9";
-    QString str5 = "COPY . TO 9 /DUP:22";
-    QString str6 = "COPY BEFORE TO 100 /DUPLICATE:100";
-    QString str7 = "COPY 4 TO 120/DUP:12";
-    QString str8 = "COPY 6 TO 110 /DUP:";
-    QString str9 = "COPY . TO 9 /DUP:22/Q";
-    QString str10 = "MOVE 20:30 TO 140 /Q";
-
-    QRegularExpressionMatch match4 = dupExpression.match( str4 );
-    QRegularExpressionMatch match5 = dupExpression.match( str5 );
-    QRegularExpressionMatch match6 = dupExpression.match( str6 );
-    QRegularExpressionMatch match7 = dupExpression.match( str7 );
-    QRegularExpressionMatch match8 = badDupExpression.match( str8 );
-    QRegularExpressionMatch match9 = queryExpression.match( str9 );
-    QRegularExpressionMatch match10 = queryExpression.match( str10 );
-
-    if ( match4.hasMatch() )
-    {
-        out << "match4: " << endl;
-        for ( QString txt : match4.capturedTexts())
-        {
-            out << "    " << txt << endl;
-        }
-    }
-    else
-    {
-        out << "match4 had no matches\n";
-    }
-
-    if ( match5.hasMatch() )
-    {
-        out << "match5: " << endl;
-        for ( QString txt : match5.capturedTexts())
-        {
-            out << "    " << txt << endl;
-        }
-    }
-    else
-    {
-        out << "match5 had no matches\n";
-    }
-
-    if ( match6.hasMatch() )
-    {
-        out << "match6: " << endl;
-        for ( QString txt : match6.capturedTexts())
-        {
-            out << "    " << txt << endl;
-        }
-    }
-    else
-    {
-        out << "match6 had no matches\n";
-    }
-
-    if ( match7.hasMatch() )
-    {
-        out << "match7: " << endl;
-        for ( QString txt : match7.capturedTexts())
-        {
-            out << "    " << txt << endl;
-        }
-    }
-    else
-    {
-        out << "match7 had no matches\n";
-    }
-
-    if ( match8.hasMatch() )
-    {
-        out << "match8: " << endl;
-        for ( QString txt : match8.capturedTexts())
-        {
-            out << "    " << txt << endl;
-        }
-    }
-    else
-    {
-        out << "match8 had no matches\n";
-    }
-
-    if ( match9.hasMatch() )
-    {
-        out << "match9: " << endl;
-        for ( QString txt : match9.capturedTexts())
-        {
-            out << "    " << txt << endl;
-        }
-    }
-    else
-    {
-        out << "match9 had no matches\n";
-    }
-
-    if ( match10.hasMatch() )
-    {
-        out << "match10: " << endl;
-        for ( QString txt : match10.capturedTexts())
-        {
-            out << "    " << txt << endl;
-        }
-    }
-    else
-    {
-        out << "match10 had no matches\n";
-    }
-
-    out << "    *****  \n";
-    out << "    *****  \n";
-    out << "    *****  \n";
-    out << " Sizes on your machine: \n";
-    out << "     unsigned char      " << sizeof( unsigned char ) << endl;
-    out << "     short int          " << sizeof( short int ) << endl;
-    out << "     int                " << sizeof( int ) << endl;
-    out << "     long               " << sizeof( long ) << endl;
-    out << "     long long          " << sizeof( long long ) << endl;
-    out << "     float              " << sizeof( float ) << endl;
-    out << "     double             " << sizeof( double ) << endl;
-    
 
     emit finished();
 }

@@ -124,7 +124,7 @@ class Q_GUI_EXPORT QGraphicsRotation : public QGraphicsTransform
     GUI_LSCS_PROPERTY_NOTIFY( angle, angleChanged )
 
     GUI_LSCS_PROPERTY_READ( axis, axis )
-    GUI_LSCS_PROPERTY_WRITE( axis, cs_setAxis )
+    GUI_LSCS_PROPERTY_WRITE( axis, lscs_setAxis )
     GUI_LSCS_PROPERTY_NOTIFY( axis, axisChanged )
 
 public:
@@ -153,13 +153,13 @@ public:
     GUI_LSCS_SIGNAL_2( axisChanged )
 
     // wrapper for static method
-    inline void cs_setAxis( const QVector3D &axis );
+    inline void lscs_setAxis( const QVector3D &axis );
 
 private:
     Q_DECLARE_PRIVATE( QGraphicsRotation )
 };
 
-void QGraphicsRotation::cs_setAxis( const QVector3D &axis )
+void QGraphicsRotation::lscs_setAxis( const QVector3D &axis )
 {
     setAxis( axis );
 }

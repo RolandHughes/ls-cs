@@ -97,7 +97,7 @@ static inline QStringList systemIconSearchPaths()
     return QStringList();
 }
 
-extern QFactoryLoader *cs_internal_iconLoader();    // qicon.cpp
+extern QFactoryLoader *lscs_internal_iconLoader();    // qicon.cpp
 
 void QIconLoader::ensureInitialized()
 {
@@ -113,7 +113,7 @@ void QIconLoader::ensureInitialized()
             m_systemTheme = fallbackTheme();
         }
 
-        if ( cs_internal_iconLoader()->keySet().contains( "svg" ) )
+        if ( lscs_internal_iconLoader()->keySet().contains( "svg" ) )
         {
             m_supportsSvg = true;
         }
@@ -633,7 +633,7 @@ QPixmap PixmapEntry::pixmap( const QSize &size, QIcon::Mode mode, QIcon::State s
         actualSize.scale( size, Qt::KeepAspectRatio );
     }
 
-    QString key = "$cs_theme_"
+    QString key = "$lscs_theme_"
                   + HexString<qint64>( basePixmap.cacheKey() )
                   + HexString<int>( mode )
                   + HexString<qint64>( QGuiApplication::palette().cacheKey() )
@@ -660,7 +660,7 @@ QPixmap PixmapEntry::pixmap( const QSize &size, QIcon::Mode mode, QIcon::State s
 
         if ( QGuiApplication *guiApp = qobject_cast<QGuiApplication *>( qApp ) )
         {
-            cachedPixmap = guiApp->cs_internal_applyQIconStyle( mode, cachedPixmap );
+            cachedPixmap = guiApp->lscs_internal_applyQIconStyle( mode, cachedPixmap );
         }
 
         QPixmapCache::insert( key, cachedPixmap );

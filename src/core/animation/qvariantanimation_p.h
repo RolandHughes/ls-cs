@@ -38,10 +38,10 @@ class QVariantAnimationPrivate : public QAbstractAnimationPrivate
 public:
     QVariantAnimationPrivate();
 
-    void cs_updateCustomType();
+    void lscs_updateCustomType();
 
     // might be used in declarative, add Q_CORE_EXPORT
-    static QVariantAnimation::CustomFormula cs_getCustomType( uint typeId );
+    static QVariantAnimation::CustomFormula lscs_getCustomType( uint typeId );
 
     void convertValues( uint typeId );
 
@@ -79,15 +79,15 @@ private:
 };
 
 template <typename T>
-T cs_genericFormula( const T &from, const T &to, double progress )
+T lscs_genericFormula( const T &from, const T &to, double progress )
 {
     return T( from + ( to - from ) * progress );
 }
 
 template <typename T>
-QVariant cs_variantFormula( const QVariant &from, const QVariant &to, double progress )
+QVariant lscs_variantFormula( const QVariant &from, const QVariant &to, double progress )
 {
-    return cs_genericFormula( from.getData<T>(), to.getData<T>(), progress );
+    return lscs_genericFormula( from.getData<T>(), to.getData<T>(), progress );
 }
 
 #endif // QT_NO_ANIMATION

@@ -1130,7 +1130,7 @@ void QToolBar::_q_updateToolButtonStyle( Qt::ToolButtonStyle style )
     d->_q_updateToolButtonStyle( style );
 }
 
-bool QToolBar::cs_isMainWindow() const
+bool QToolBar::lscs_isMainWindow() const
 {
     return ( qobject_cast<QMainWindow *>( parentWidget() ) != nullptr );
 }

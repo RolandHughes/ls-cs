@@ -167,7 +167,7 @@ QMediaObject::QMediaObject( QMediaObjectPrivate &dd, QObject *parent, QMediaServ
     setupControls();
 }
 
-void QMediaObject::cs_internal_addPropertyWatch( const QString &name, std::function<void ()> callBack )
+void QMediaObject::lscs_internal_addPropertyWatch( const QString &name, std::function<void ()> callBack )
 {
     Q_D( QMediaObject );
 
@@ -223,11 +223,11 @@ void QMediaObject::setupControls()
         if ( d->metaDataControl )
         {
 
-            connect( d->metaDataControl, cs_mp_cast<>( &QMetaDataReaderControl::metaDataChanged ),
-                     this, cs_mp_cast<>( &QMediaObject::metaDataChanged ) );
+            connect( d->metaDataControl, lscs_mp_cast<>( &QMetaDataReaderControl::metaDataChanged ),
+                     this, lscs_mp_cast<>( &QMediaObject::metaDataChanged ) );
 
-            connect( d->metaDataControl, cs_mp_cast<const QString &, const QVariant &>( &QMetaDataReaderControl::metaDataChanged ),
-                     this, cs_mp_cast<const QString &, const QVariant &>( &QMediaObject::metaDataChanged ) );
+            connect( d->metaDataControl, lscs_mp_cast<const QString &, const QVariant &>( &QMetaDataReaderControl::metaDataChanged ),
+                     this, lscs_mp_cast<const QString &, const QVariant &>( &QMediaObject::metaDataChanged ) );
 
             connect( d->metaDataControl, &QMetaDataReaderControl::metaDataAvailableChanged, this, &QMediaObject::metaDataAvailableChanged );
         }

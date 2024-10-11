@@ -245,11 +245,11 @@ bool QMediaRecorder::setMediaObject( QMediaObject *object )
             if ( d->metaDataControl )
             {
 
-                disconnect( d->metaDataControl, cs_mp_cast<>( &QMetaDataWriterControl::metaDataChanged ),
-                            this, cs_mp_cast<>( &QMediaRecorder::metaDataChanged ) );
+                disconnect( d->metaDataControl, lscs_mp_cast<>( &QMetaDataWriterControl::metaDataChanged ),
+                            this, lscs_mp_cast<>( &QMediaRecorder::metaDataChanged ) );
 
-                disconnect( d->metaDataControl, cs_mp_cast<const QString &, const QVariant &>( &QMetaDataWriterControl::metaDataChanged ),
-                            this, cs_mp_cast<const QString &, const QVariant &>( &QMediaRecorder::metaDataChanged ) );
+                disconnect( d->metaDataControl, lscs_mp_cast<const QString &, const QVariant &>( &QMetaDataWriterControl::metaDataChanged ),
+                            this, lscs_mp_cast<const QString &, const QVariant &>( &QMediaRecorder::metaDataChanged ) );
 
                 disconnect( d->metaDataControl, &QMetaDataWriterControl::metaDataAvailableChanged,
                             this, &QMediaRecorder::metaDataAvailableChanged );
@@ -308,11 +308,11 @@ bool QMediaRecorder::setMediaObject( QMediaObject *object )
                     }
                     else
                     {
-                        connect( d->metaDataControl, cs_mp_cast<>( &QMetaDataWriterControl::metaDataChanged ),
-                                 this, cs_mp_cast<>( &QMediaRecorder::metaDataChanged ) );
+                        connect( d->metaDataControl, lscs_mp_cast<>( &QMetaDataWriterControl::metaDataChanged ),
+                                 this, lscs_mp_cast<>( &QMediaRecorder::metaDataChanged ) );
 
-                        connect( d->metaDataControl, cs_mp_cast<const QString &, const QVariant &>( &QMetaDataWriterControl::metaDataChanged ),
-                                 this, cs_mp_cast<const QString &, const QVariant &>( &QMediaRecorder::metaDataChanged ) );
+                        connect( d->metaDataControl, lscs_mp_cast<const QString &, const QVariant &>( &QMetaDataWriterControl::metaDataChanged ),
+                                 this, lscs_mp_cast<const QString &, const QVariant &>( &QMediaRecorder::metaDataChanged ) );
 
                         connect( d->metaDataControl, &QMetaDataWriterControl::metaDataAvailableChanged,
                                  this, &QMediaRecorder::metaDataAvailableChanged );

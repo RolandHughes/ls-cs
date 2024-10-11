@@ -957,7 +957,7 @@ QGLFormat::OpenGLVersionFlags QGLFormat::openGLVersionFlags()
         }
     }
 
-    const QString &versionStr = cs_glGetString( GL_VERSION );
+    const QString &versionStr = lscs_glGetString( GL_VERSION );
     OpenGLVersionFlags versionFlags = qOpenGLVersionFlagsFromString( versionStr );
 
     if ( currentCtx )
@@ -1287,7 +1287,7 @@ static void convertFromGLImage( QImage &img, int w, int h, bool alpha_format, bo
     img = img.mirrored();
 }
 
-QImage cs_glRead_frameBuffer( const QSize &size, bool alpha_format, bool include_alpha )
+QImage lscs_glRead_frameBuffer( const QSize &size, bool alpha_format, bool include_alpha )
 {
     QImage img( size, ( alpha_format && include_alpha ) ? QImage::Format_ARGB32_Premultiplied
                 : QImage::Format_RGB32 );
@@ -3154,7 +3154,7 @@ QImage QGLWidget::grabFrameBuffer( bool withAlpha )
 
     if ( format().rgba() )
     {
-        res = cs_glRead_frameBuffer( QSize( w, h ), format().alpha(), withAlpha );
+        res = lscs_glRead_frameBuffer( QSize( w, h ), format().alpha(), withAlpha );
     }
 
     res.setDevicePixelRatio( pixelRatio );
@@ -4243,7 +4243,7 @@ QSize QGLTexture::bindCompressedTexturePVR( const char *buf, int len )
     return QSize( pvrHeader->width, pvrHeader->height );
 }
 
-QString cs_glGetString( GLenum data )
+QString lscs_glGetString( GLenum data )
 {
     const GLubyte *begin = glGetString( data );
 
@@ -4267,7 +4267,7 @@ QString cs_glGetString( GLenum data )
 
 using qt_glGetStringi = const GLubyte * ( QOPENGLF_APIENTRYP )( GLenum, GLuint );
 
-QString cs_glGetStringI( GLenum data, GLuint index )
+QString lscs_glGetStringI( GLenum data, GLuint index )
 {
     static qt_glGetStringi funcPtr = nullptr;
 

@@ -57,8 +57,8 @@ class Q_MULTIMEDIA_EXPORT QCamera : public QMediaObject
     MULTI_LSCS_PROPERTY_WRITE( captureMode, setCaptureMode )
     MULTI_LSCS_PROPERTY_NOTIFY( captureMode, captureModeChanged )
 
-    MULTI_LSCS_PROPERTY_READ( lockStatus, cs_lockStatus )
-    MULTI_LSCS_PROPERTY_NOTIFY( lockStatus, cs_lockStatusChanged )
+    MULTI_LSCS_PROPERTY_READ( lockStatus, lscs_lockStatus )
+    MULTI_LSCS_PROPERTY_NOTIFY( lockStatus, lscs_lockStatusChanged )
 
     MULTI_LSCS_ENUM( Status )
     MULTI_LSCS_ENUM( State )
@@ -203,7 +203,7 @@ public:
     QCamera::LockTypes requestedLocks() const;
 
     // wrapper for overloaded method
-    QCamera::LockStatus cs_lockStatus() const
+    QCamera::LockStatus lscs_lockStatus() const
     {
         return lockStatus();
     }
@@ -257,8 +257,8 @@ public:
     MULTI_LSCS_SIGNAL_1( Public, void lockFailed() )
     MULTI_LSCS_SIGNAL_2( lockFailed )
 
-    MULTI_LSCS_SIGNAL_1( Public, void cs_lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
-    MULTI_LSCS_SIGNAL_2( cs_lockStatusChanged, status, reason )
+    MULTI_LSCS_SIGNAL_1( Public, void lscs_lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
+    MULTI_LSCS_SIGNAL_2( lscs_lockStatusChanged, status, reason )
 
     MULTI_LSCS_SIGNAL_1( Public, void lockStatusChanged( QCamera::LockStatus status, QCamera::LockChangeReason reason ) )
     MULTI_LSCS_SIGNAL_OVERLOAD( lockStatusChanged, ( QCamera::LockStatus, QCamera::LockChangeReason ), status, reason )

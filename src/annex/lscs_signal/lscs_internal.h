@@ -35,29 +35,29 @@ namespace Internal
 
 // 1
 template<class T, class U, class = void>
-class cs_check_connect_args
-    : public cs_check_connect_args<T, decltype( &U::operator() )>
+class lscs_check_connect_args
+    : public lscs_check_connect_args<T, decltype( &U::operator() )>
 {
 };
 
 
 // 2 slot is a func ptr, first signal and first slot parameters match
 template<class T, class ...ArgsX, class ...ArgsY>
-class cs_check_connect_args<void ( * )( T, ArgsX... ), void ( * )( T, ArgsY... )>
-    : public cs_check_connect_args<void ( * ) ( ArgsX... ), void ( * ) ( ArgsY... )>
+class lscs_check_connect_args<void ( * )( T, ArgsX... ), void ( * )( T, ArgsY... )>
+    : public lscs_check_connect_args<void ( * ) ( ArgsX... ), void ( * ) ( ArgsY... )>
 {
 };
 
 //  slot is a func ptr, slot has no parameters
 template<class ...ArgsX>
-class cs_check_connect_args<void ( * )( ArgsX... ), void ( * )()>
+class lscs_check_connect_args<void ( * )( ArgsX... ), void ( * )()>
     : public std::integral_constant<bool, true>
 {
 };
 
 //  slot is a func ptr, signal has the same number of parms as the slot, types mismatch
 template<class ...ArgsX, class ...ArgsY>
-class cs_check_connect_args < void ( * )( ArgsX... ), void ( * )( ArgsY... ),
+class lscs_check_connect_args < void ( * )( ArgsX... ), void ( * )( ArgsY... ),
           typename std::enable_if< sizeof...( ArgsX ) == sizeof...( ArgsY ) &&
           ! std::is_same<std::tuple<ArgsX...>, std::tuple<ArgsY...>>::value >::type>
           : public std::integral_constant<bool, false>
@@ -66,7 +66,7 @@ class cs_check_connect_args < void ( * )( ArgsX... ), void ( * )( ArgsY... ),
 
 //  slot is a func ptr, signal has fewer number of parms than the slot
 template<class ...ArgsX, class ...ArgsY>
-class cs_check_connect_args < void ( * )( ArgsX... ), void ( * )( ArgsY... ),
+class lscs_check_connect_args < void ( * )( ArgsX... ), void ( * )( ArgsY... ),
           typename std::enable_if<sizeof...( ArgsX ) < sizeof...( ArgsY )>::type >
           : public std::integral_constant<bool, false>
 {
@@ -75,45 +75,45 @@ class cs_check_connect_args < void ( * )( ArgsX... ), void ( * )( ArgsY... ),
 
 // 3 slot is a method ptr
 template<class T, class...ArgsX, class...ArgsY>
-class cs_check_connect_args<void ( * )( ArgsX... ), void ( T::* )( ArgsY... ) >
-    : public cs_check_connect_args<void ( * )( ArgsX... ), void ( * ) ( ArgsY... )>
+class lscs_check_connect_args<void ( * )( ArgsX... ), void ( T::* )( ArgsY... ) >
+    : public lscs_check_connect_args<void ( * )( ArgsX... ), void ( * ) ( ArgsY... )>
 {
 };
 
 //  slot is a const method ptr
 template<class T, class...ArgsX, class...ArgsY>
-class cs_check_connect_args<void ( * )( ArgsX... ), void ( T::* )( ArgsY... ) const>
-        : public cs_check_connect_args<void ( * )( ArgsX... ), void ( * ) ( ArgsY... )>
+class lscs_check_connect_args<void ( * )( ArgsX... ), void ( T::* )( ArgsY... ) const>
+        : public lscs_check_connect_args<void ( * )( ArgsX... ), void ( * ) ( ArgsY... )>
 {
 };
 
 
 // compile time tests
 template<class Sender, class SignalClass>
-void cs_testConnect_SenderSignal()
+void lscs_testConnect_SenderSignal()
 {
     static_assert( std::is_base_of<SignalClass, Sender>::value,
                    "Signal is not defined in the sender class" );
 }
 
 template<class Slot_LambdaType, class ...SignalArgs>
-void cs_testConnect_SignalSlotArgs_1()
+void lscs_testConnect_SignalSlotArgs_1()
 {
-    static_assert( cs_check_connect_args<void ( * )( SignalArgs... ), Slot_LambdaType>::value,
+    static_assert( lscs_check_connect_args<void ( * )( SignalArgs... ), Slot_LambdaType>::value,
                    "Incompatible signal/slot arguments" );
 }
 
 template<class SlotClass, class Receiver>
-void cs_testConnect_ReceiverSlot()
+void lscs_testConnect_ReceiverSlot()
 {
     static_assert( std::is_base_of<SlotClass, Receiver>::value,
                    "Slot is not defined in the receiver class" );
 }
 
 template<class Signal_ArgType, class Slot_ArgType>
-void cs_testConnect_SignalSlotArgs_2()
+void lscs_testConnect_SignalSlotArgs_2()
 {
-    static_assert( cs_check_connect_args<Signal_ArgType, Slot_ArgType>::value,
+    static_assert( lscs_check_connect_args<Signal_ArgType, Slot_ArgType>::value,
                    "Incompatible signal/slot arguments" );
 }
 
@@ -127,7 +127,7 @@ class CSVoidReturn
 // ** index_sequence unpacks a tuple into arguments for function pointer
 
 template<typename ...FunctionArgTypes, typename FunctionReturn, typename ...TupleTypes, size_t ...Ks>
-FunctionReturn cs_unpack_function_args_internal( FunctionReturn ( *functionPtr )( FunctionArgTypes... ),
+FunctionReturn lscs_unpack_function_args_internal( FunctionReturn ( *functionPtr )( FunctionArgTypes... ),
         const std::tuple<TupleTypes...> &data, std::index_sequence<Ks...> )
 {
     return functionPtr( std::get<Ks>( data )... );
@@ -135,17 +135,17 @@ FunctionReturn cs_unpack_function_args_internal( FunctionReturn ( *functionPtr )
 
 // (api) specialization function pointer
 template<typename ...FunctionArgTypes, typename FunctionReturn, typename ...TupleTypes>
-FunctionReturn cs_unpack_function_args( FunctionReturn ( *functionPtr )( FunctionArgTypes... ),
+FunctionReturn lscs_unpack_function_args( FunctionReturn ( *functionPtr )( FunctionArgTypes... ),
                                         const std::tuple<TupleTypes...> &data )
 {
-    return cs_unpack_function_args_internal( functionPtr, data, std::index_sequence_for<TupleTypes...> {} );
+    return lscs_unpack_function_args_internal( functionPtr, data, std::index_sequence_for<TupleTypes...> {} );
 }
 
 // (api) specialization function pointer, return type is void
 template<typename ...FunctionArgTypes, typename ...TupleTypes>
-CSVoidReturn cs_unpack_function_args( void ( *functionPtr )( FunctionArgTypes... ), const std::tuple<TupleTypes...> &data )
+CSVoidReturn lscs_unpack_function_args( void ( *functionPtr )( FunctionArgTypes... ), const std::tuple<TupleTypes...> &data )
 {
-    cs_unpack_function_args_internal( functionPtr, data, std::index_sequence_for<TupleTypes...> {} );
+    lscs_unpack_function_args_internal( functionPtr, data, std::index_sequence_for<TupleTypes...> {} );
     return CSVoidReturn {};
 }
 
@@ -154,7 +154,7 @@ CSVoidReturn cs_unpack_function_args( void ( *functionPtr )( FunctionArgTypes...
 // ** index_sequence unpacks a tuple into arguments for a method pointer
 
 template<typename MethodClass, class MethodReturn, typename ...MethodArgTypes, typename ...TupleTypes, size_t ...Ks>
-MethodReturn cs_unpack_method_args_internal( MethodClass *obj, MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ),
+MethodReturn lscs_unpack_method_args_internal( MethodClass *obj, MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ),
         const std::tuple<TupleTypes...> &data, std::index_sequence<Ks...> )
 {
     return ( obj->*methodPtr )( std::get<Ks>( data )... );
@@ -162,25 +162,25 @@ MethodReturn cs_unpack_method_args_internal( MethodClass *obj, MethodReturn ( Me
 
 // (api) specialization method pointer
 template<typename MethodClass, class MethodReturn, typename ...MethodArgTypes, typename ...TupleTypes>
-MethodReturn cs_unpack_method_args( MethodClass *obj, MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ),
+MethodReturn lscs_unpack_method_args( MethodClass *obj, MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ),
                                     const std::tuple<TupleTypes...> &data )
 {
-    return cs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
+    return lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
 }
 
 // (api) specialization for method pointer, return type is void
 template<typename MethodClass, typename ...MethodArgTypes, typename ...TupleTypes>
-CSVoidReturn cs_unpack_method_args( MethodClass *obj, void ( MethodClass::*methodPtr )( MethodArgTypes... ),
+CSVoidReturn lscs_unpack_method_args( MethodClass *obj, void ( MethodClass::*methodPtr )( MethodArgTypes... ),
                                     const std::tuple<TupleTypes...> &data )
 {
-    cs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
+    lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
     return CSVoidReturn {};
 }
 
 // ** index_sequence unpacks a tuple into arguments for a const method pointer
 
 template<typename MethodClass, class MethodReturn, typename ...MethodArgTypes, typename ...TupleTypes, size_t ...Ks>
-MethodReturn cs_unpack_method_args_internal( const MethodClass *obj,
+MethodReturn lscs_unpack_method_args_internal( const MethodClass *obj,
         MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ) const,
         const std::tuple<TupleTypes...> &data, std::index_sequence<Ks...> )
 {
@@ -189,19 +189,19 @@ MethodReturn cs_unpack_method_args_internal( const MethodClass *obj,
 
 // (api) specialization for const method pointer
 template<typename MethodClass, class MethodReturn, typename ...MethodArgTypes, typename ...TupleTypes>
-MethodReturn cs_unpack_method_args( const MethodClass *obj,
+MethodReturn lscs_unpack_method_args( const MethodClass *obj,
                                     MethodReturn ( MethodClass::*methodPtr )( MethodArgTypes... ) const,
                                     const std::tuple<TupleTypes...> &data )
 {
-    return cs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
+    return lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
 }
 
 // (api) specialization for const method pointer, return type is void
 template<typename MethodClass, typename ...MethodArgTypes, typename ...TupleTypes>
-CSVoidReturn cs_unpack_method_args( const MethodClass *obj, void ( MethodClass::*methodPtr )( MethodArgTypes... ) const,
+CSVoidReturn lscs_unpack_method_args( const MethodClass *obj, void ( MethodClass::*methodPtr )( MethodArgTypes... ) const,
                                     const std::tuple<TupleTypes...> &data )
 {
-    cs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
+    lscs_unpack_method_args_internal( obj, methodPtr, data, std::index_sequence_for<TupleTypes...> {} );
     return CSVoidReturn {};
 }
 
@@ -528,7 +528,7 @@ void Bento<T>::invoke_internal( const TeaCupAbstract *dataPack, MethodReturn ( T
         std::tuple<MethodArgs...> &&args = teaCup->getData();
 
         // unpack the tuple, then call the methodPtr
-        cs_unpack_method_args( &m_lambda, methodPtr, args );
+        lscs_unpack_method_args( &m_lambda, methodPtr, args );
     }
 }
 
@@ -550,7 +550,7 @@ void Bento<T>::invoke_internal( const TeaCupAbstract *dataPack, MethodReturn ( T
         auto object = const_cast<typename std::remove_const<T>::type *>( &m_lambda );
 
         // unpack the tuple, then call the methodPtr
-        cs_unpack_method_args( object, methodPtr, args );
+        lscs_unpack_method_args( object, methodPtr, args );
     }
 }
 
@@ -598,7 +598,7 @@ void Bento<FunctionReturn ( * )( FunctionArgs... )>::invoke( SlotBase *, const T
         std::tuple<FunctionArgs...> &&args = teaCup->getData();
 
         // unpack the tuple, then call the methodPtr
-        cs_unpack_function_args( m_methodPtr, args );
+        lscs_unpack_function_args( m_methodPtr, args );
     }
 }
 
@@ -654,7 +654,7 @@ void Bento<MethodReturn( MethodClass::* )( MethodArgs... )>::invoke( SlotBase *r
             std::tuple<MethodArgs...> &&args = teaCup->getData();
 
             // unpacks the tuple, then calls the methodPtr
-            cs_unpack_method_args( t_receiver, m_methodPtr, args );
+            lscs_unpack_method_args( t_receiver, m_methodPtr, args );
         }
     }
 }
@@ -714,7 +714,7 @@ void Bento<MethodReturn( MethodClass::* )( MethodArgs... ) const>::invoke( SlotB
             std::tuple<MethodArgs...> &&args = teaCup->getData();
 
             // unpacks the tuple, then calls the methodPtr
-            cs_unpack_method_args( t_receiver, m_methodPtr, args );
+            lscs_unpack_method_args( t_receiver, m_methodPtr, args );
         }
     }
 }

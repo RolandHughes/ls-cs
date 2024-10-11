@@ -199,7 +199,7 @@ QScriptValue QScriptDeclarativeClass::newObject( QScriptEngine *engine,
     Q_ASSERT( engine );
     Q_ASSERT( scriptClass );
 
-    QScriptEnginePrivate *p = QScriptEnginePrivate::cs_getPrivate( engine );
+    QScriptEnginePrivate *p = QScriptEnginePrivate::lscs_getPrivate( engine );
 
     QScript::APIShim shim( p );
 
@@ -216,7 +216,7 @@ QScriptDeclarativeClass::Value QScriptDeclarativeClass::newObjectValue( QScriptE
     Q_ASSERT( engine );
     Q_ASSERT( scriptClass );
 
-    QScriptEnginePrivate *p = QScriptEnginePrivate::cs_getPrivate( engine );
+    QScriptEnginePrivate *p = QScriptEnginePrivate::lscs_getPrivate( engine );
     QScript::APIShim shim( p );
 
     JSC::ExecState *exec = p->currentFrame;
@@ -462,7 +462,7 @@ void QScriptDeclarativeClass::setSupportsCall( bool c )
 
 QScriptDeclarativeClass::PersistentIdentifier QScriptDeclarativeClass::createPersistentIdentifier( const QString &str )
 {
-    QScriptEnginePrivate *p = QScriptEnginePrivate::cs_getPrivate( d_ptr->engine );
+    QScriptEnginePrivate *p = QScriptEnginePrivate::lscs_getPrivate( d_ptr->engine );
 
     QScript::APIShim shim( p );
     JSC::ExecState *exec = p->currentFrame;
@@ -476,7 +476,7 @@ QScriptDeclarativeClass::PersistentIdentifier QScriptDeclarativeClass::createPer
 
 QScriptDeclarativeClass::PersistentIdentifier QScriptDeclarativeClass::createPersistentIdentifier( const Identifier &id )
 {
-    QScriptEnginePrivate *p = QScriptEnginePrivate::cs_getPrivate( d_ptr->engine );
+    QScriptEnginePrivate *p = QScriptEnginePrivate::lscs_getPrivate( d_ptr->engine );
 
     QScript::APIShim shim( p );
     JSC::ExecState *exec = p->currentFrame;

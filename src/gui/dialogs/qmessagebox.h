@@ -295,9 +295,9 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMessageBox::StandardButtons )
 
 #define QT_REQUIRE_VERSION(argc, argv, str) static_assert(0, "Macro QT_REQUIRE_VERSION(argc, argv, str) has been" \
-   " removed, use function cs_require_version(argc, argv, str) instead");
+   " removed, use function lscs_require_version(argc, argv, str) instead");
 
-Q_GUI_EXPORT void cs_require_version( int argc, char *argv[], const char *str );
+Q_GUI_EXPORT void lscs_require_version( int argc, char *argv[], const char *str );
 
 #endif // QT_NO_MESSAGEBOX
 

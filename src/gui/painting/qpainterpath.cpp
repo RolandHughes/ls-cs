@@ -48,7 +48,7 @@
 #define PM_MEASURE(x)
 #define PM_DISPLAY
 
-namespace cs_internal
+namespace lscs_internal
 {
 void QPainterPathPrivateDeleter::operator()( QPainterPathPrivate *d ) const
 {

@@ -7167,7 +7167,7 @@ static QPixmap cachedPixmapFromXPM( const char *const *xpm )
 }
 static inline QPixmap titleBarMenuCachedPixmapFromXPM()
 {
-    return cachedPixmapFromXPM( cs_menu_xpm );
+    return cachedPixmapFromXPM( lscs_menu_xpm );
 }
 
 #ifndef QT_NO_IMAGEFORMAT_PNG

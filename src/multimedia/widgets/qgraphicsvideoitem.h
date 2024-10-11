@@ -39,7 +39,7 @@ class Q_MULTIMEDIA_EXPORT QGraphicsVideoItem : public QGraphicsObject, public QM
     LSCS_INTERFACES( QMediaBindableInterface )
 
     MULTI_LSCS_PROPERTY_READ( mediaObject, mediaObject )
-    MULTI_LSCS_PROPERTY_WRITE( mediaObject, cs_setMediaObject )
+    MULTI_LSCS_PROPERTY_WRITE( mediaObject, lscs_setMediaObject )
 
     MULTI_LSCS_PROPERTY_READ( aspectRatioMode, aspectRatioMode )
     MULTI_LSCS_PROPERTY_WRITE( aspectRatioMode, setAspectRatioMode )
@@ -89,7 +89,7 @@ private:
     Q_DECLARE_PRIVATE( QGraphicsVideoItem )
 
     // wrapper
-    void cs_setMediaObject( QMediaObject *object )
+    void lscs_setMediaObject( QMediaObject *object )
     {
         setMediaObject( object );
     }

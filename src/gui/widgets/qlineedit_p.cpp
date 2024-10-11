@@ -198,9 +198,9 @@ void QLineEditPrivate::init( const QString &txt )
     QObject::connect( control, &QLineControl::cursorPositionChanged, q, &QLineEdit::updateMicroFocus );
     QObject::connect( control, &QLineControl::textChanged,           q, &QLineEdit::updateMicroFocus );
 
-    QObject::connect( control, &QLineControl::selectionChanged,      q, cs_mp_cast<>( &QLineEdit::update ) );
+    QObject::connect( control, &QLineControl::selectionChanged,      q, lscs_mp_cast<>( &QLineEdit::update ) );
     QObject::connect( control, &QLineControl::selectionChanged,      q, &QLineEdit::updateMicroFocus );
-    QObject::connect( control, &QLineControl::displayTextChanged,    q, cs_mp_cast<>( &QLineEdit::update ) );
+    QObject::connect( control, &QLineControl::displayTextChanged,    q, lscs_mp_cast<>( &QLineEdit::update ) );
     QObject::connect( control, &QLineControl::updateNeeded,          q, &QLineEdit::_q_updateNeeded );
 
     QStyleOptionFrame opt;

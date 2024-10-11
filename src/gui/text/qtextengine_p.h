@@ -174,7 +174,7 @@ struct hb_font_t;
 
 using glyph_t = uint32_t;
 
-using cs_fontTable_func_ptr = bool ( * )( void *, uint, uchar *, uint * );
+using lscs_fontTable_func_ptr = bool ( * )( void *, uint, uchar *, uint * );
 #endif
 
 struct QGlyphLayout

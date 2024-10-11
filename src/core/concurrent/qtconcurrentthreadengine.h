@@ -110,7 +110,7 @@ protected:
     QFutureInterfaceBase *futureInterface;
     QThreadPool *threadPool;
     ThreadEngineBarrier barrier;
-    QtConcurrent::cs_internal::ExceptionStore exceptionStore;
+    QtConcurrent::lscs_internal::ExceptionStore exceptionStore;
 
 private:
     bool startThreadInternal();

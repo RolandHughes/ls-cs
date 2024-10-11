@@ -42,7 +42,7 @@ QObject *QGenericPluginFactory::create( const QString &key, const QString &speci
 #if (! defined(Q_OS_WIN) || defined(QT_SHARED))
     const QString driver = key.toLower();
 
-    if ( QObject *object = cs_load_plugin<QObject, QGenericPlugin>( loader(), driver, specification ) )
+    if ( QObject *object = lscs_load_plugin<QObject, QGenericPlugin>( loader(), driver, specification ) )
     {
         return object;
     }

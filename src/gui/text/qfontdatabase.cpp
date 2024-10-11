@@ -2173,139 +2173,139 @@ QString QFontDatabase::writingSystemName( WritingSystem writingSystem )
     switch ( writingSystem )
     {
         case Any:
-            name = cs_mark_tr( "QFontDatabase", "Any" );
+            name = lscs_mark_tr( "QFontDatabase", "Any" );
             break;
 
         case Latin:
-            name = cs_mark_tr( "QFontDatabase", "Latin" );
+            name = lscs_mark_tr( "QFontDatabase", "Latin" );
             break;
 
         case Greek:
-            name = cs_mark_tr( "QFontDatabase", "Greek" );
+            name = lscs_mark_tr( "QFontDatabase", "Greek" );
             break;
 
         case Cyrillic:
-            name = cs_mark_tr( "QFontDatabase", "Cyrillic" );
+            name = lscs_mark_tr( "QFontDatabase", "Cyrillic" );
             break;
 
         case Armenian:
-            name = cs_mark_tr( "QFontDatabase", "Armenian" );
+            name = lscs_mark_tr( "QFontDatabase", "Armenian" );
             break;
 
         case Hebrew:
-            name = cs_mark_tr( "QFontDatabase", "Hebrew" );
+            name = lscs_mark_tr( "QFontDatabase", "Hebrew" );
             break;
 
         case Arabic:
-            name = cs_mark_tr( "QFontDatabase", "Arabic" );
+            name = lscs_mark_tr( "QFontDatabase", "Arabic" );
             break;
 
         case Syriac:
-            name = cs_mark_tr( "QFontDatabase", "Syriac" );
+            name = lscs_mark_tr( "QFontDatabase", "Syriac" );
             break;
 
         case Thaana:
-            name = cs_mark_tr( "QFontDatabase", "Thaana" );
+            name = lscs_mark_tr( "QFontDatabase", "Thaana" );
             break;
 
         case Devanagari:
-            name = cs_mark_tr( "QFontDatabase", "Devanagari" );
+            name = lscs_mark_tr( "QFontDatabase", "Devanagari" );
             break;
 
         case Bengali:
-            name = cs_mark_tr( "QFontDatabase", "Bengali" );
+            name = lscs_mark_tr( "QFontDatabase", "Bengali" );
             break;
 
         case Gurmukhi:
-            name = cs_mark_tr( "QFontDatabase", "Gurmukhi" );
+            name = lscs_mark_tr( "QFontDatabase", "Gurmukhi" );
             break;
 
         case Gujarati:
-            name = cs_mark_tr( "QFontDatabase", "Gujarati" );
+            name = lscs_mark_tr( "QFontDatabase", "Gujarati" );
             break;
 
         case Oriya:
-            name = cs_mark_tr( "QFontDatabase", "Oriya" );
+            name = lscs_mark_tr( "QFontDatabase", "Oriya" );
             break;
 
         case Tamil:
-            name = cs_mark_tr( "QFontDatabase", "Tamil" );
+            name = lscs_mark_tr( "QFontDatabase", "Tamil" );
             break;
 
         case Telugu:
-            name = cs_mark_tr( "QFontDatabase", "Telugu" );
+            name = lscs_mark_tr( "QFontDatabase", "Telugu" );
             break;
 
         case Kannada:
-            name = cs_mark_tr( "QFontDatabase", "Kannada" );
+            name = lscs_mark_tr( "QFontDatabase", "Kannada" );
             break;
 
         case Malayalam:
-            name = cs_mark_tr( "QFontDatabase", "Malayalam" );
+            name = lscs_mark_tr( "QFontDatabase", "Malayalam" );
             break;
 
         case Sinhala:
-            name = cs_mark_tr( "QFontDatabase", "Sinhala" );
+            name = lscs_mark_tr( "QFontDatabase", "Sinhala" );
             break;
 
         case Thai:
-            name = cs_mark_tr( "QFontDatabase", "Thai" );
+            name = lscs_mark_tr( "QFontDatabase", "Thai" );
             break;
 
         case Lao:
-            name = cs_mark_tr( "QFontDatabase", "Lao" );
+            name = lscs_mark_tr( "QFontDatabase", "Lao" );
             break;
 
         case Tibetan:
-            name = cs_mark_tr( "QFontDatabase", "Tibetan" );
+            name = lscs_mark_tr( "QFontDatabase", "Tibetan" );
             break;
 
         case Myanmar:
-            name = cs_mark_tr( "QFontDatabase", "Myanmar" );
+            name = lscs_mark_tr( "QFontDatabase", "Myanmar" );
             break;
 
         case Georgian:
-            name = cs_mark_tr( "QFontDatabase", "Georgian" );
+            name = lscs_mark_tr( "QFontDatabase", "Georgian" );
             break;
 
         case Khmer:
-            name = cs_mark_tr( "QFontDatabase", "Khmer" );
+            name = lscs_mark_tr( "QFontDatabase", "Khmer" );
             break;
 
         case SimplifiedChinese:
-            name = cs_mark_tr( "QFontDatabase", "Simplified Chinese" );
+            name = lscs_mark_tr( "QFontDatabase", "Simplified Chinese" );
             break;
 
         case TraditionalChinese:
-            name = cs_mark_tr( "QFontDatabase", "Traditional Chinese" );
+            name = lscs_mark_tr( "QFontDatabase", "Traditional Chinese" );
             break;
 
         case Japanese:
-            name = cs_mark_tr( "QFontDatabase", "Japanese" );
+            name = lscs_mark_tr( "QFontDatabase", "Japanese" );
             break;
 
         case Korean:
-            name = cs_mark_tr( "QFontDatabase", "Korean" );
+            name = lscs_mark_tr( "QFontDatabase", "Korean" );
             break;
 
         case Vietnamese:
-            name = cs_mark_tr( "QFontDatabase", "Vietnamese" );
+            name = lscs_mark_tr( "QFontDatabase", "Vietnamese" );
             break;
 
         case Symbol:
-            name = cs_mark_tr( "QFontDatabase", "Symbol" );
+            name = lscs_mark_tr( "QFontDatabase", "Symbol" );
             break;
 
         case Ogham:
-            name = cs_mark_tr( "QFontDatabase", "Ogham" );
+            name = lscs_mark_tr( "QFontDatabase", "Ogham" );
             break;
 
         case Runic:
-            name = cs_mark_tr( "QFontDatabase", "Runic" );
+            name = lscs_mark_tr( "QFontDatabase", "Runic" );
             break;
 
         case Nko:
-            name = cs_mark_tr( "QFontDatabase", "N'Ko" );
+            name = lscs_mark_tr( "QFontDatabase", "N'Ko" );
             break;
 
         default:

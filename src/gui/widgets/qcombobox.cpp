@@ -173,7 +173,7 @@ QStyleOptionMenuItem QComboMenuDelegate::getStyleOption( const QStyleOptionViewI
     if ( mCombo->testAttribute( Qt::WA_SetFont )
             || mCombo->testAttribute( Qt::WA_MacSmallSize )
             || mCombo->testAttribute( Qt::WA_MacMiniSize )
-            || mCombo->font() != cs_app_fonts_hash()->value( "QComboBox", QFont() ) )
+            || mCombo->font() != lscs_app_fonts_hash()->value( "QComboBox", QFont() ) )
     {
         menuOption.font = mCombo->font();
 
@@ -188,7 +188,7 @@ QStyleOptionMenuItem QComboMenuDelegate::getStyleOption( const QStyleOptionViewI
         }
         else
         {
-            menuOption.font = cs_app_fonts_hash()->value( "QComboMenuItem", mCombo->font() );
+            menuOption.font = lscs_app_fonts_hash()->value( "QComboMenuItem", mCombo->font() );
         }
     }
 
@@ -1441,7 +1441,7 @@ void QComboBoxPrivate::_q_emitCurrentIndexChanged( const QModelIndex &index )
     Q_Q( QComboBox );
     const QString text = itemText( index );
 
-    emit q->cs_currentIndexChanged( index.row() );
+    emit q->lscs_currentIndexChanged( index.row() );
     emit q->currentIndexChanged( index.row() );
 
     emit q->currentIndexChanged( text );
@@ -1572,7 +1572,7 @@ void QComboBox::setAutoCompletion( bool enable )
 
         d->completer = new QCompleter( d->model, d->lineEdit );
 
-        connect( d->completer.data(), cs_mp_cast<const QModelIndex &>( &QCompleter::activated ),
+        connect( d->completer.data(), lscs_mp_cast<const QModelIndex &>( &QCompleter::activated ),
                  this, &QComboBox::_q_completerActivated );
 
         d->completer->setCaseSensitivity( d->autoCompletionCaseSensitivity );
@@ -1925,7 +1925,7 @@ void QComboBox::setCompleter( QCompleter *c )
 
     if ( c != nullptr )
     {
-        connect( c, cs_mp_cast<const QModelIndex &>( &QCompleter::activated ), this, &QComboBox::_q_completerActivated );
+        connect( c, lscs_mp_cast<const QModelIndex &>( &QCompleter::activated ), this, &QComboBox::_q_completerActivated );
         c->setWidget( this );
     }
 }

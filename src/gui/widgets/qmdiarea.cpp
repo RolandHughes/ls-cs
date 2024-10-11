@@ -205,8 +205,8 @@ static inline QString tabTextFor( QMdiSubWindow *subWindow )
     }
     else
     {
-        extern QString cs_internal_parseWindowTitle( const QString &, const QWidget * );
-        title = cs_internal_parseWindowTitle( title, subWindow );
+        extern QString lscs_internal_parseWindowTitle( const QString &, const QWidget * );
+        title = lscs_internal_parseWindowTitle( title, subWindow );
     }
 
     return title.isEmpty() ? QMdiArea::tr( "(Untitled)" ) : title;

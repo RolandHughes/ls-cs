@@ -1872,7 +1872,7 @@ JSC::JSValue QScriptEnginePrivate::newRegExp( JSC::ExecState *exec, const QRegul
     JSC::JSValue buf[2];
     JSC::ArgList args( buf, sizeof( buf ) );
 
-    QString pattern = cs_internal_regexp_toCanonical( regexp.pattern(), regexp.patternOptions() );
+    QString pattern = lscs_internal_regexp_toCanonical( regexp.pattern(), regexp.patternOptions() );
 
     JSC::UString jscPattern = pattern;
     QString flags;
@@ -4155,7 +4155,7 @@ void QScriptEngine::_q_objectDestroyed( QObject *object )
     d->_q_objectDestroyed( object );
 }
 
-QScriptEnginePrivate *QScriptEnginePrivate::cs_getPrivate( QScriptEngine *object )
+QScriptEnginePrivate *QScriptEnginePrivate::lscs_getPrivate( QScriptEngine *object )
 {
     return object->d_ptr.data();
 }

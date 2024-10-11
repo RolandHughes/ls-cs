@@ -28,8 +28,8 @@
 
 #include <cmath>
 
-static void cs_internal_objectToStr( const QJsonObject &data, QString &retval, int indent, bool compact );
-static void cs_internal_arrayToStr( const QJsonArray &data,   QString &retval, int indent, bool compact );
+static void lscs_internal_objectToStr( const QJsonObject &data, QString &retval, int indent, bool compact );
+static void lscs_internal_arrayToStr( const QJsonArray &data,   QString &retval, int indent, bool compact );
 
 static uchar hexdig( uint u )
 {
@@ -169,13 +169,13 @@ static void valueToJson( const QJsonValue &value, QString &retval, int indent, b
 
         case QJsonValue::Array:
             retval += compact ? "[" : "[\n";
-            cs_internal_arrayToStr( value.toArray(), retval, indent + ( compact ? 0 : 1 ), compact );
+            lscs_internal_arrayToStr( value.toArray(), retval, indent + ( compact ? 0 : 1 ), compact );
             retval += QString( 4 * indent, ' ' ) + "]";
             break;
 
         case QJsonValue::Object:
             retval += compact ? "{" : "{\n";
-            cs_internal_objectToStr( value.toObject(), retval, indent + ( compact ? 0 : 1 ), compact );
+            lscs_internal_objectToStr( value.toObject(), retval, indent + ( compact ? 0 : 1 ), compact );
             retval += QString( 4 * indent, ' ' ) + "}";
             break;
 
@@ -185,7 +185,7 @@ static void valueToJson( const QJsonValue &value, QString &retval, int indent, b
     }
 }
 
-static void cs_internal_arrayToStr( const QJsonArray &data, QString &retval, int indent, bool compact )
+static void lscs_internal_arrayToStr( const QJsonArray &data, QString &retval, int indent, bool compact )
 {
     if ( data.isEmpty() )
     {
@@ -214,7 +214,7 @@ static void cs_internal_arrayToStr( const QJsonArray &data, QString &retval, int
     }
 }
 
-static void cs_internal_objectToStr( const QJsonObject &data, QString  &retval, int indent, bool compact )
+static void lscs_internal_objectToStr( const QJsonObject &data, QString  &retval, int indent, bool compact )
 {
     if ( data.isEmpty() )
     {
@@ -251,7 +251,7 @@ QString QJsonWriter::arrayToString( const QJsonArray &data, int indent, QJsonDoc
     QString retval;
     retval += compact ? QString( "[" ) : QString( "[\n" );
 
-    cs_internal_arrayToStr( data, retval, indent + ( compact ? 0 : 1 ), compact );
+    lscs_internal_arrayToStr( data, retval, indent + ( compact ? 0 : 1 ), compact );
 
     retval += QString( 4 * indent, ' ' );
     retval += compact ? QString( "]" ) : QString( "]\n" );
@@ -266,7 +266,7 @@ QString QJsonWriter::objectToString( const QJsonObject &data,  int indent, QJson
     QString retval;
     retval += compact ? QString( "{" ) : QString( "{\n" );
 
-    cs_internal_objectToStr( data, retval, indent + ( compact ? 0 : 1 ), compact );
+    lscs_internal_objectToStr( data, retval, indent + ( compact ? 0 : 1 ), compact );
 
     retval += QString( 4 * indent, ' ' );
     retval += compact ? QString( "}" ) : QString( "}\n" );

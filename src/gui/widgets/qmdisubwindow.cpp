@@ -1817,7 +1817,7 @@ QMdiSubWindowPrivate::Operation QMdiSubWindowPrivate::getOperation( const QPoint
     return None;
 }
 
-extern QString cs_internal_parseWindowTitle( const QString &, const QWidget * );
+extern QString lscs_internal_parseWindowTitle( const QString &, const QWidget * );
 
 QStyleOptionTitleBar QMdiSubWindowPrivate::titleBarOptions() const
 {
@@ -2573,7 +2573,7 @@ void QMdiSubWindowPrivate::updateInternalWindowTitle()
     }
     else
     {
-        windowTitle = cs_internal_parseWindowTitle( q->windowTitle(), q );
+        windowTitle = lscs_internal_parseWindowTitle( q->windowTitle(), q );
     }
 
     q->update( 0, 0, q->width(), titleBarHeight() );

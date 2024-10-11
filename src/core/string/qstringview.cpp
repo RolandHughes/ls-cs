@@ -28,7 +28,7 @@
 
 #include <qunicodetables_p.h>
 
-std::pair<char32_t, const char32_t *> cs_internal_convertCaseTrait( int trait, char32_t value )
+std::pair<char32_t, const char32_t *> lscs_internal_convertCaseTrait( int trait, char32_t value )
 {
     char32_t caseValue = value;
     const char32_t *caseSpecial = nullptr;

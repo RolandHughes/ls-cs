@@ -1748,7 +1748,7 @@ bool QSocks5SocketEngine::bind( const QHostAddress &addr, quint16 port )
     }
 
     // binding timed out
-    setError( QAbstractSocket::SocketTimeoutError, QString::fromLatin1( cs_mark_tr( "QSocks5SocketEngine",
+    setError( QAbstractSocket::SocketTimeoutError, QString::fromLatin1( lscs_mark_tr( "QSocks5SocketEngine",
               "Network operation timed out" ) ) );
 
     ///###    delete d->udpSocket;

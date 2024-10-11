@@ -53,13 +53,13 @@ QPlatformTheme *QPlatformThemeFactory::create( const QString &key, const QString
     {
         QCoreApplication::addLibraryPath( platformPluginPath );
 
-        if ( QPlatformTheme *ret = cs_load_plugin<QPlatformTheme, QPlatformThemePlugin>( directLoader(), platform, paramList ) )
+        if ( QPlatformTheme *ret = lscs_load_plugin<QPlatformTheme, QPlatformThemePlugin>( directLoader(), platform, paramList ) )
         {
             return ret;
         }
     }
 
-    if ( QPlatformTheme *ret = cs_load_plugin<QPlatformTheme, QPlatformThemePlugin>( loader(), platform, paramList ) )
+    if ( QPlatformTheme *ret = lscs_load_plugin<QPlatformTheme, QPlatformThemePlugin>( loader(), platform, paramList ) )
     {
         return ret;
     }

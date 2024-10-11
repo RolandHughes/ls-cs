@@ -36,7 +36,7 @@
 #include <stdlib.h>                // for RAND_MAX
 
 template <class Integral>
-void cs_internal_toHex( QByteArray &retval, Integral value )
+void lscs_internal_toHex( QByteArray &retval, Integral value )
 {
     static const char digits[] = "0123456789abcdef";
 
@@ -91,31 +91,31 @@ bool _q_fromHex( const Char *&src, Integral &value )
     return true;
 }
 
-QByteArray cs_internal_uuidToHex( const uint &d1, const ushort &d2, const ushort &d3, const uchar ( &d4 )[8] )
+QByteArray lscs_internal_uuidToHex( const uint &d1, const ushort &d2, const ushort &d3, const uchar ( &d4 )[8] )
 {
     QByteArray retval;
 
     retval.append( '{' );
 
-    cs_internal_toHex( retval, d1 );
+    lscs_internal_toHex( retval, d1 );
     retval.append( '-' );
 
-    cs_internal_toHex( retval, d2 );
+    lscs_internal_toHex( retval, d2 );
     retval.append( '-' );
 
-    cs_internal_toHex( retval, d3 );
+    lscs_internal_toHex( retval, d3 );
     retval.append( '-' );
 
     for ( int i = 0; i < 2; ++i )
     {
-        cs_internal_toHex( retval, d4[i] );
+        lscs_internal_toHex( retval, d4[i] );
     }
 
     retval.append( '-' );
 
     for ( int i = 2; i < 8; i++ )
     {
-        cs_internal_toHex( retval, d4[i] );
+        lscs_internal_toHex( retval, d4[i] );
     }
 
     retval.append( '}' );
@@ -270,7 +270,7 @@ QString QUuid::toString() const
 
 QByteArray QUuid::toByteArray() const
 {
-    QByteArray retval = cs_internal_uuidToHex( data1, data2, data3, data4 );
+    QByteArray retval = lscs_internal_uuidToHex( data1, data2, data3, data4 );
     return retval;
 }
 

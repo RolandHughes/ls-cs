@@ -64,7 +64,7 @@ QSocketEngineHandler::~QSocketEngineHandler()
 
 QAbstractSocketEnginePrivate::QAbstractSocketEnginePrivate()
     : socketError( QAbstractSocket::UnknownSocketError ), hasSetSocketError( false ),
-      socketErrorString( QString::fromLatin1( cs_mark_tr( "QSocketLayer", "Unknown error" ) ) ),
+      socketErrorString( QString::fromLatin1( lscs_mark_tr( "QSocketLayer", "Unknown error" ) ) ),
       socketState( QAbstractSocket::UnconnectedState ), socketType( QAbstractSocket::UnknownSocketType ),
       socketProtocol( QAbstractSocket::UnknownNetworkLayerProtocol ), localPort( 0 ), peerPort( 0 ), receiver( nullptr )
 {

@@ -51,10 +51,10 @@ class Q_GUI_EXPORT QLCDNumber : public QFrame
     GUI_LSCS_PROPERTY_WRITE( segmentStyle, setSegmentStyle )
 
     GUI_LSCS_PROPERTY_READ( value, value )
-    GUI_LSCS_PROPERTY_WRITE( value, cs_displayD )
+    GUI_LSCS_PROPERTY_WRITE( value, lscs_displayD )
 
     GUI_LSCS_PROPERTY_READ( intValue, intValue )
-    GUI_LSCS_PROPERTY_WRITE( intValue, cs_displayI )
+    GUI_LSCS_PROPERTY_WRITE( intValue, lscs_displayI )
 
 public:
     GUI_LSCS_REGISTER_ENUM(
@@ -103,10 +103,10 @@ public:
     QSize sizeHint() const override;
 
     // wrapper for overloaded method
-    inline void cs_displayD( double num );
+    inline void lscs_displayD( double num );
 
     // wrapper for overloaded method
-    inline void cs_displayI( int num );
+    inline void lscs_displayI( int num );
 
     GUI_LSCS_SLOT_1( Public, void display( const QString &str ) )
     GUI_LSCS_SLOT_OVERLOAD( display, ( const QString & ) )
@@ -143,12 +143,12 @@ private:
     Q_DECLARE_PRIVATE( QLCDNumber )
 };
 
-void QLCDNumber::cs_displayD( double num )
+void QLCDNumber::lscs_displayD( double num )
 {
     display( num );
 }
 
-void QLCDNumber::cs_displayI( int num )
+void QLCDNumber::lscs_displayI( int num )
 {
     display( num );
 }

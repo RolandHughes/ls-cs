@@ -512,7 +512,7 @@ bool QWindow::isModal() const
     return d->modality != Qt::NonModal;
 }
 
-bool QWindow::cs_isWindowType() const
+bool QWindow::lscs_isWindowType() const
 {
     return true;
 }
@@ -1789,12 +1789,12 @@ void QWindowPrivate::maybeQuitOnLastWindowClosed()
 
         if ( quitOnClose )
         {
-            qApp->cs_internal_maybeQuit();
+            qApp->lscs_internal_maybeQuit();
         }
     }
 }
 
-void QWindow::cs_internal_updateTimer( int value )
+void QWindow::lscs_internal_updateTimer( int value )
 {
     Q_D( QWindow );
 

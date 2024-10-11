@@ -1198,18 +1198,18 @@ QAccessibleActionInterface::~QAccessibleActionInterface()
 struct QAccessibleActionStrings
 {
     QAccessibleActionStrings()
-        : pressAction(        QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Press" ) ) ),
-          increaseAction(     QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Increase" ) ) ),
-          decreaseAction(     QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Decrease" ) ) ),
-          showMenuAction(     QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "ShowMenu" ) ) ),
-          setFocusAction(     QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "SetFocus" ) ) ),
-          toggleAction(       QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Toggle" ) ) ),
-          scrollLeftAction(   QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Scroll Left" ) ) ),
-          scrollRightAction(  QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Scroll Right" ) ) ),
-          scrollUpAction(     QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Scroll Up" ) ) ),
-          scrollDownAction(   QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Scroll Down" ) ) ),
-          previousPageAction( QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Previous Page" ) ) ),
-          nextPageAction(     QString::fromLatin1( cs_mark_tr( "QAccessibleActionInterface", "Next Page" ) ) )
+        : pressAction(        QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Press" ) ) ),
+          increaseAction(     QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Increase" ) ) ),
+          decreaseAction(     QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Decrease" ) ) ),
+          showMenuAction(     QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "ShowMenu" ) ) ),
+          setFocusAction(     QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "SetFocus" ) ) ),
+          toggleAction(       QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Toggle" ) ) ),
+          scrollLeftAction(   QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Scroll Left" ) ) ),
+          scrollRightAction(  QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Scroll Right" ) ) ),
+          scrollUpAction(     QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Scroll Up" ) ) ),
+          scrollDownAction(   QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Scroll Down" ) ) ),
+          previousPageAction( QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Previous Page" ) ) ),
+          nextPageAction(     QString::fromLatin1( lscs_mark_tr( "QAccessibleActionInterface", "Next Page" ) ) )
     {
     }
 

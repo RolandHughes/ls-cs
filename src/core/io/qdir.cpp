@@ -1289,7 +1289,7 @@ bool QDir::match( const QString &filter, const QString &fileName )
     return match( nameFiltersFromString( filter ), fileName );
 }
 
-QString cs_internal_normalizePath( const QString &name, bool allowUncPaths )
+QString lscs_internal_normalizePath( const QString &name, bool allowUncPaths )
 {
     if ( name.isEmpty() )
     {
@@ -1501,7 +1501,7 @@ QString QDir::cleanPath( const QString &path )
     allowUncPaths = true;
 #endif
 
-    QString retval = cs_internal_normalizePath( name, allowUncPaths );
+    QString retval = lscs_internal_normalizePath( name, allowUncPaths );
 
     // Strip away last slash except for root directories
     if ( retval.length() > 1 && retval.endsWith( '/' ) )

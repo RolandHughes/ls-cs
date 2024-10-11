@@ -50,14 +50,14 @@
 #include <qnetwork_reply_p.h>
 #include <qhttp_multipart_p.h>
 
-QNetworkAccessFileBackendFactory *cs_FileBackend()
+QNetworkAccessFileBackendFactory *lscs_FileBackend()
 {
     static QNetworkAccessFileBackendFactory retval;
     return &retval;
 }
 
 #ifndef QT_NO_FTP
-QNetworkAccessFtpBackendFactory *cs_FtpBackend()
+QNetworkAccessFtpBackendFactory *lscs_FtpBackend()
 {
     static QNetworkAccessFtpBackendFactory retval;
     return &retval;
@@ -132,11 +132,11 @@ static void ensureInitialized()
 {
 
 #ifndef QT_NO_FTP
-    ( void ) cs_FtpBackend();
+    ( void ) lscs_FtpBackend();
 #endif
 
     // leave this one last since it will query the special QAbstractFileEngines
-    ( void ) cs_FileBackend();
+    ( void ) lscs_FileBackend();
 }
 
 QNetworkAccessManager::QNetworkAccessManager( QObject *parent )

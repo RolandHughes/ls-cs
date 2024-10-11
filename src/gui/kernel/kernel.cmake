@@ -202,7 +202,7 @@ target_sources(LsCsGui
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qaction.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qactiongroup.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qapplication.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qapplication_cs.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qapplication_lscs.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qclipboard.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qcursor.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qdrag.cpp
@@ -254,7 +254,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    target_sources(LsCsGui
       PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/kernel/qmacgesturerecognizer.cpp
-      ${CMAKE_CURRENT_SOURCE_DIR}/kernel/cs_carbon_wrapper.mm
+      ${CMAKE_CURRENT_SOURCE_DIR}/kernel/lscs_carbon_wrapper.mm
    )
 
    list(APPEND EXTRA_GUI_LDFLAGS

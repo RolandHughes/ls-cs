@@ -58,20 +58,20 @@ class Q_GUI_EXPORT QGraphicsWidget : public QGraphicsObject, public QGraphicsLay
     GUI_LSCS_PROPERTY_RESET( layoutDirection, unsetLayoutDirection )
 
     GUI_LSCS_PROPERTY_READ( size, size )
-    GUI_LSCS_PROPERTY_WRITE( size, cs_resize )
+    GUI_LSCS_PROPERTY_WRITE( size, lscs_resize )
     GUI_LSCS_PROPERTY_NOTIFY( size, geometryChanged )
 
     GUI_LSCS_PROPERTY_READ( minimumSize, minimumSize )
-    GUI_LSCS_PROPERTY_WRITE( minimumSize, cs_setMinimumSize )
+    GUI_LSCS_PROPERTY_WRITE( minimumSize, lscs_setMinimumSize )
 
     GUI_LSCS_PROPERTY_READ( preferredSize, preferredSize )
-    GUI_LSCS_PROPERTY_WRITE( preferredSize, cs_setPreferredSize )
+    GUI_LSCS_PROPERTY_WRITE( preferredSize, lscs_setPreferredSize )
 
     GUI_LSCS_PROPERTY_READ( maximumSize, maximumSize )
-    GUI_LSCS_PROPERTY_WRITE( maximumSize, cs_setMaximumSize )
+    GUI_LSCS_PROPERTY_WRITE( maximumSize, lscs_setMaximumSize )
 
     GUI_LSCS_PROPERTY_READ( sizePolicy, sizePolicy )
-    GUI_LSCS_PROPERTY_WRITE( sizePolicy, cs_setSizePolicy )
+    GUI_LSCS_PROPERTY_WRITE( sizePolicy, lscs_setSizePolicy )
 
     GUI_LSCS_PROPERTY_READ( focusPolicy, focusPolicy )
     GUI_LSCS_PROPERTY_WRITE( focusPolicy, setFocusPolicy )
@@ -83,7 +83,7 @@ class Q_GUI_EXPORT QGraphicsWidget : public QGraphicsObject, public QGraphicsLay
     GUI_LSCS_PROPERTY_WRITE( windowTitle, setWindowTitle )
 
     GUI_LSCS_PROPERTY_READ( geometry, geometry )
-    GUI_LSCS_PROPERTY_WRITE( geometry, cs_setGeometry )
+    GUI_LSCS_PROPERTY_WRITE( geometry, lscs_setGeometry )
     GUI_LSCS_PROPERTY_NOTIFY( geometry, geometryChanged )
 
     GUI_LSCS_PROPERTY_READ( autoFillBackground, autoFillBackground )
@@ -130,7 +130,7 @@ public:
     QSizeF size() const;
 
     // wrapper for overloaded method
-    inline void cs_resize( const QSizeF &size );
+    inline void lscs_resize( const QSizeF &size );
 
     void setGeometry( const QRectF &rect ) override;
     inline void setGeometry( qreal x, qreal y, qreal width, qreal height );
@@ -141,19 +141,19 @@ public:
     }
 
     // wrapper for overloaded method
-    inline void cs_setGeometry( const QRectF &size );
+    inline void lscs_setGeometry( const QRectF &size );
 
     // wrapper for overloaded method
-    inline void cs_setMinimumSize( const QSizeF &size );
+    inline void lscs_setMinimumSize( const QSizeF &size );
 
     // wrapper for overloaded method
-    inline void cs_setPreferredSize( const QSizeF &size );
+    inline void lscs_setPreferredSize( const QSizeF &size );
 
     // wrapper for overloaded method
-    inline void cs_setMaximumSize( const QSizeF &size );
+    inline void lscs_setMaximumSize( const QSizeF &size );
 
     // wrapper for overloaded method
-    inline void cs_setSizePolicy( const QSizePolicy &policy );
+    inline void lscs_setSizePolicy( const QSizePolicy &policy );
 
     void setContentsMargins( qreal left, qreal top, qreal right, qreal bottom );
     void getContentsMargins( qreal *left, qreal *top, qreal *right, qreal *bottom ) const override;
@@ -290,32 +290,32 @@ inline void QGraphicsWidget::setGeometry( qreal x, qreal y, qreal width, qreal h
     setGeometry( QRectF( x, y, width, height ) );
 }
 
-inline void QGraphicsWidget::cs_resize( const QSizeF &size )
+inline void QGraphicsWidget::lscs_resize( const QSizeF &size )
 {
     resize( size );
 }
 
-inline void QGraphicsWidget::cs_setGeometry( const QRectF &size )
+inline void QGraphicsWidget::lscs_setGeometry( const QRectF &size )
 {
     setGeometry( size );
 }
 
-inline void QGraphicsWidget::cs_setMinimumSize( const QSizeF &size )
+inline void QGraphicsWidget::lscs_setMinimumSize( const QSizeF &size )
 {
     setMinimumSize( size );
 }
 
-inline void QGraphicsWidget::cs_setPreferredSize( const QSizeF &size )
+inline void QGraphicsWidget::lscs_setPreferredSize( const QSizeF &size )
 {
     setPreferredSize( size );
 }
 
-inline void QGraphicsWidget::cs_setMaximumSize( const QSizeF &size )
+inline void QGraphicsWidget::lscs_setMaximumSize( const QSizeF &size )
 {
     setMaximumSize( size );
 }
 
-inline void QGraphicsWidget::cs_setSizePolicy( const QSizePolicy &policy )
+inline void QGraphicsWidget::lscs_setSizePolicy( const QSizePolicy &policy )
 {
     setSizePolicy( policy );
 }

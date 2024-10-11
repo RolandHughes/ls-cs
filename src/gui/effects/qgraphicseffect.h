@@ -214,7 +214,7 @@ class Q_GUI_EXPORT QGraphicsDropShadowEffect : public QGraphicsEffect
     GUI_LSCS_OBJECT( QGraphicsDropShadowEffect )
 
     GUI_LSCS_PROPERTY_READ( offset, offset )
-    GUI_LSCS_PROPERTY_WRITE( offset, cs_setOffset )
+    GUI_LSCS_PROPERTY_WRITE( offset, lscs_setOffset )
     GUI_LSCS_PROPERTY_NOTIFY( offset, offsetChanged )
 
     GUI_LSCS_PROPERTY_READ( xOffset, xOffset )
@@ -281,7 +281,7 @@ public:
     GUI_LSCS_SIGNAL_2( colorChanged, color )
 
     // wrapper for static method
-    inline void cs_setOffset( const QPointF &ofs );
+    inline void lscs_setOffset( const QPointF &ofs );
 
 protected:
     void draw( QPainter *painter ) override;
@@ -350,7 +350,7 @@ inline void QGraphicsDropShadowEffect::setYOffset( qreal dy )
     setOffset( QPointF( xOffset(), dy ) );
 }
 
-inline void QGraphicsDropShadowEffect::cs_setOffset( const QPointF &ofs )
+inline void QGraphicsDropShadowEffect::lscs_setOffset( const QPointF &ofs )
 {
     setOffset( ofs );
 }

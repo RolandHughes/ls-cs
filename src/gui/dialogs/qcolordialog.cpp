@@ -1492,13 +1492,13 @@ QColorShower::QColorShower( QColorDialog *parent )
     gl->addWidget( htEd, 5, 2, 1, 3 );
 #endif
 
-    connect( hEd,     cs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::hsvEd );
-    connect( sEd,     cs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::hsvEd );
-    connect( vEd,     cs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::hsvEd );
-    connect( rEd,     cs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
-    connect( gEd,     cs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
-    connect( bEd,     cs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
-    connect( alphaEd, cs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
+    connect( hEd,     lscs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::hsvEd );
+    connect( sEd,     lscs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::hsvEd );
+    connect( vEd,     lscs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::hsvEd );
+    connect( rEd,     lscs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
+    connect( gEd,     lscs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
+    connect( bEd,     lscs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
+    connect( alphaEd, lscs_mp_cast<int>( &QColSpinBox::valueChanged ), this, &QColorShower::rgbEd );
 
     connect( htEd,    &QLineEdit::textEdited,     this, &QColorShower::htmlEd );
 
@@ -2032,7 +2032,7 @@ void QColorDialogPrivate::initWidgets()
     pickLay->addStretch();
 #endif
 
-    QObject::connect( cp, &QColorPicker::newCol,          lp, cs_mp_cast<int, int>( &QColorLuminancePicker::setCol ) );
+    QObject::connect( cp, &QColorPicker::newCol,          lp, lscs_mp_cast<int, int>( &QColorLuminancePicker::setCol ) );
     QObject::connect( lp, &QColorLuminancePicker::newHsv, q,  &QColorDialog::_q_newHsv );
 
     rightLay->addStretch();

@@ -137,7 +137,7 @@ public:
 
     static QThread *threadForId( int id );
 
-    static QThreadPrivate *cs_getPrivate( QThread *object );
+    static QThreadPrivate *lscs_getPrivate( QThread *object );
 
 #ifdef Q_OS_UNIX
     pthread_t thread_id;

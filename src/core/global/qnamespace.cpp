@@ -106,7 +106,7 @@ static bool lookupElement_X( const QString &element )
 
 }
 
-// ** simulate cs_gadget
+// ** simulate lscs_gadget
 const char *Qt::lscs_className()
 {
     static const char *retval( "Qt" );

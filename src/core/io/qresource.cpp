@@ -629,7 +629,7 @@ int QResourceRoot::findNode( const QString &xPath, const QLocale &locale ) const
         const QString &segment = *iter;
         ++iter;
 
-        const int hashValue = cs_stable_hash( segment );
+        const int hashValue = lscs_stable_hash( segment );
 
         // do the binary search for the hash
         int l = 0;

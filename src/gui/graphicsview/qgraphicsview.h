@@ -59,7 +59,7 @@ class Q_GUI_EXPORT QGraphicsView : public QAbstractScrollArea
     GUI_LSCS_PROPERTY_WRITE( interactive, setInteractive )
 
     GUI_LSCS_PROPERTY_READ( sceneRect, sceneRect )
-    GUI_LSCS_PROPERTY_WRITE( sceneRect, cs_setSceneRect )
+    GUI_LSCS_PROPERTY_WRITE( sceneRect, lscs_setSceneRect )
 
     GUI_LSCS_PROPERTY_READ( alignment, alignment )
     GUI_LSCS_PROPERTY_WRITE( alignment, setAlignment )
@@ -194,7 +194,7 @@ public:
     inline void setSceneRect( qreal x, qreal y, qreal width, qreal height );
 
     // wrapper for overloaded method
-    inline void cs_setSceneRect( const QRectF &rect );
+    inline void lscs_setSceneRect( const QRectF &rect );
 
     QMatrix matrix() const;
     void setMatrix( const QMatrix &matrix, bool combine = false );
@@ -333,7 +333,7 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS( QGraphicsView::CacheMode )
 Q_DECLARE_OPERATORS_FOR_FLAGS( QGraphicsView::OptimizationFlags )
 
-inline void QGraphicsView::cs_setSceneRect( const QRectF &rect )
+inline void QGraphicsView::lscs_setSceneRect( const QRectF &rect )
 {
     setSceneRect( rect );
 }

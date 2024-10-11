@@ -87,7 +87,7 @@ public:
     using CustomFormula = std::function<QVariant ( const QVariant &, const QVariant &, double )>;
 
     template <typename T>
-    static void cs_addCustomType( CustomFormula callback );
+    static void lscs_addCustomType( CustomFormula callback );
 
     CORE_LSCS_SIGNAL_1( Public, void valueChanged( const QVariant &value ) )
     CORE_LSCS_SIGNAL_2( valueChanged, value )
@@ -109,7 +109,7 @@ private:
 };
 
 template <typename T>
-void QVariantAnimation::cs_addCustomType( CustomFormula callback )
+void QVariantAnimation::lscs_addCustomType( CustomFormula callback )
 {
     // add a custom formula for a given T, this must occur before any annimation which uses this T is constructed
     // to remove and use the default formula, pass nulptr for func, overrides any existing formula

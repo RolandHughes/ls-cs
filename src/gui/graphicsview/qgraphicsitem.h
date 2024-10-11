@@ -297,7 +297,7 @@ public:
     inline void setPos( qreal x, qreal y );
 
     // wrapper for static method
-    void cs_setPos( const QPointF &pos )
+    void lscs_setPos( const QPointF &pos )
     {
         setPos( pos );
     }
@@ -329,7 +329,7 @@ public:
     qreal scale() const;
 
     // wrapper for static method
-    qreal cs_scale() const
+    qreal lscs_scale() const
     {
         return scale();
     }
@@ -346,7 +346,7 @@ public:
     }
 
     // wrapper for overloaded method
-    void cs_setTransformOriginPoint( const QPointF &origin )
+    void lscs_setTransformOriginPoint( const QPointF &origin )
     {
         setTransformOriginPoint( origin );
     }
@@ -660,7 +660,7 @@ class Q_GUI_EXPORT QGraphicsObject : public QObject, public QGraphicsItem
     GUI_LSCS_PROPERTY_FINAL( visible )
 
     GUI_LSCS_PROPERTY_READ( pos, pos )
-    GUI_LSCS_PROPERTY_WRITE( pos, cs_setPos )
+    GUI_LSCS_PROPERTY_WRITE( pos, lscs_setPos )
     GUI_LSCS_PROPERTY_FINAL( pos )
 
     GUI_LSCS_PROPERTY_READ( x, x )
@@ -682,32 +682,32 @@ class Q_GUI_EXPORT QGraphicsObject : public QObject, public QGraphicsItem
     GUI_LSCS_PROPERTY_WRITE( rotation, setRotation )
     GUI_LSCS_PROPERTY_NOTIFY( rotation, rotationChanged )
 
-    GUI_LSCS_PROPERTY_READ( scale, cs_scale )
+    GUI_LSCS_PROPERTY_READ( scale, lscs_scale )
     GUI_LSCS_PROPERTY_WRITE( scale, setScale )
     GUI_LSCS_PROPERTY_NOTIFY( scale, scaleChanged )
 
     GUI_LSCS_PROPERTY_READ( transformOriginPoint, transformOriginPoint )
-    GUI_LSCS_PROPERTY_WRITE( transformOriginPoint, cs_setTransformOriginPoint )
+    GUI_LSCS_PROPERTY_WRITE( transformOriginPoint, lscs_setTransformOriginPoint )
 
 #ifndef QT_NO_GRAPHICSEFFECT
     GUI_LSCS_PROPERTY_READ( effect, graphicsEffect )
     GUI_LSCS_PROPERTY_WRITE( effect, setGraphicsEffect )
 #endif
 
-    GUI_LSCS_PROPERTY_READ( children, cs_childrenList )
+    GUI_LSCS_PROPERTY_READ( children, lscs_childrenList )
     GUI_LSCS_PROPERTY_DESIGNABLE( children, false )
     GUI_LSCS_PROPERTY_NOTIFY( children, childrenChanged )
 
-    GUI_LSCS_PROPERTY_READ( width, cs_width )
-    GUI_LSCS_PROPERTY_WRITE( width, cs_setWidth )
+    GUI_LSCS_PROPERTY_READ( width, lscs_width )
+    GUI_LSCS_PROPERTY_WRITE( width, lscs_setWidth )
     GUI_LSCS_PROPERTY_NOTIFY( width, widthChanged )
-    GUI_LSCS_PROPERTY_RESET( width, cs_resetWidth )
+    GUI_LSCS_PROPERTY_RESET( width, lscs_resetWidth )
     GUI_LSCS_PROPERTY_FINAL( width )
 
-    GUI_LSCS_PROPERTY_READ( height, cs_height )
-    GUI_LSCS_PROPERTY_WRITE( height, cs_setHeight )
+    GUI_LSCS_PROPERTY_READ( height, lscs_height )
+    GUI_LSCS_PROPERTY_WRITE( height, lscs_setHeight )
     GUI_LSCS_PROPERTY_NOTIFY( height, heightChanged )
-    GUI_LSCS_PROPERTY_RESET( height, cs_resetHeight )
+    GUI_LSCS_PROPERTY_RESET( height, lscs_resetHeight )
     GUI_LSCS_PROPERTY_FINAL( height )
 
     GUI_LSCS_CLASSINFO( "DefaultProperty", "children" )
@@ -772,25 +772,25 @@ private:
     friend class QGraphicsItemPrivate;
 
     // wrapper for overloaded method
-    QDeclarativeListProperty<QGraphicsObject> cs_childrenList() const;
+    QDeclarativeListProperty<QGraphicsObject> lscs_childrenList() const;
 
     // wrapper for overloaded method
-    qreal cs_width() const;
+    qreal lscs_width() const;
 
     // wrapper for overloaded method
-    void cs_setWidth( qreal width );
+    void lscs_setWidth( qreal width );
 
     // wrapper for overloaded method
-    void cs_resetWidth();
+    void lscs_resetWidth();
 
     // wrapper for overloaded method
-    qreal cs_height() const;
+    qreal lscs_height() const;
 
     // wrapper for overloaded method
-    void cs_setHeight( qreal height );
+    void lscs_setHeight( qreal height );
 
     // wrapper for overloaded method
-    void cs_resetHeight();
+    void lscs_resetHeight();
 
 };
 

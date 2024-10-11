@@ -313,7 +313,7 @@ public:
     void setVulkanInstance( QVulkanInstance *instance );
     QVulkanInstance *vulkanInstance() const;
 
-    void cs_internal_updateTimer( int value );
+    void lscs_internal_updateTimer( int value );
 
     static QWindow *fromWinId( WId id );
 
@@ -427,7 +427,7 @@ protected:
     // emerald  add closeEvent virtual handler
 
     bool event( QEvent *event ) override;
-    bool cs_isWindowType() const override;
+    bool lscs_isWindowType() const override;
 
     virtual void keyPressEvent( QKeyEvent *event );
     virtual void keyReleaseEvent( QKeyEvent *event );

@@ -38,7 +38,7 @@ static QPrinterInfoPrivate *shared_null()
     return &retval;
 }
 
-namespace cs_internal
+namespace lscs_internal
 {
 void QPrinterInfoPrivateDeleter::operator()( QPrinterInfoPrivate *d ) const
 {

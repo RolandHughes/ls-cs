@@ -79,23 +79,23 @@ const QString &LSCSArgument<T>::getTypeName() const
     return m_typeName;
 }
 
-inline const QString &cs_argName()
+inline const QString &lscs_argName()
 {
     static QString retval( "" );
     return retval;
 }
 
 template <typename T>
-const QString &cs_argName( const LSCSArgument<T> &data )
+const QString &lscs_argName( const LSCSArgument<T> &data )
 {
     return data.getTypeName();
 }
 
 template<class T1, class T2, class ...Ts>
-const QString &cs_argName( const LSCSArgument<T1> &data1, const LSCSArgument<T2> &data2, const LSCSArgument<Ts> &... dataX )
+const QString &lscs_argName( const LSCSArgument<T1> &data1, const LSCSArgument<T2> &data2, const LSCSArgument<Ts> &... dataX )
 {
     static thread_local QString argName;
-    argName = cs_argName( data1 ) + "," + cs_argName( data2, dataX... );
+    argName = lscs_argName( data1 ) + "," + lscs_argName( data2, dataX... );
 
     return argName;
 }
@@ -154,24 +154,24 @@ inline void LSCSReturnArgument<void>::setData( LsCsSignal::Internal::CSVoidRetur
 
 // registration of enums and flags
 template<class T>
-struct cs_is_enum_or_flag : public std::is_enum<T>
+struct lscs_is_enum_or_flag : public std::is_enum<T>
 {
 };
 
 template<class T>
-struct cs_is_enum_or_flag<QFlags<T>>
+struct lscs_is_enum_or_flag<QFlags<T>>
                                       : public std::integral_constant<bool, true>
 {
 };
 
 template<class T>
-struct cs_underlying_type
+struct lscs_underlying_type
     : public std::underlying_type<T>
 {
 };
 
 template<class T>
-struct cs_underlying_type<QFlags<T>>
+struct lscs_underlying_type<QFlags<T>>
                                       : public std::underlying_type<T>
 {
 };
@@ -599,7 +599,7 @@ void CSBento<FunctionReturn ( * )( FunctionArgs... )>::invoke( QObject *,
         if ( returnData )
         {
             // unpack the tuple, then call the method or slot
-            returnData->setData( LsCsSignal::Internal::cs_unpack_function_args( this->m_methodPtr, args ) );
+            returnData->setData( LsCsSignal::Internal::lscs_unpack_function_args( this->m_methodPtr, args ) );
 
         }
         else
@@ -608,7 +608,7 @@ void CSBento<FunctionReturn ( * )( FunctionArgs... )>::invoke( QObject *,
             // assume user does not want a return value
 
             // unpack the tuple, then call the method or slot
-            LsCsSignal::Internal::cs_unpack_function_args( this->m_methodPtr, args );
+            LsCsSignal::Internal::lscs_unpack_function_args( this->m_methodPtr, args );
         }
     }
 }
@@ -671,7 +671,7 @@ void CSBento<MethodReturn ( MethodClass::* )( MethodArgs... )>::invoke( QObject 
             if ( returnData )
             {
                 // unpacks the tuple, then calls the method or slot
-                returnData->setData( LsCsSignal::Internal::cs_unpack_method_args( t_receiver, this->m_methodPtr, args ) );
+                returnData->setData( LsCsSignal::Internal::lscs_unpack_method_args( t_receiver, this->m_methodPtr, args ) );
 
             }
             else
@@ -680,7 +680,7 @@ void CSBento<MethodReturn ( MethodClass::* )( MethodArgs... )>::invoke( QObject 
                 // assume user does not want a return value
 
                 // unpacks the tuple, then calls the method or slot
-                LsCsSignal::Internal::cs_unpack_method_args( t_receiver, this->m_methodPtr, args );
+                LsCsSignal::Internal::lscs_unpack_method_args( t_receiver, this->m_methodPtr, args );
             }
 
         }
@@ -746,7 +746,7 @@ void CSBento<MethodReturn( MethodClass::* )( MethodArgs... ) const>::invoke( QOb
             if ( returnData )
             {
                 // unpacks the tuple, then calls the method or slot
-                returnData->setData( LsCsSignal::Internal::cs_unpack_method_args( t_receiver, this->m_methodPtr, args ) );
+                returnData->setData( LsCsSignal::Internal::lscs_unpack_method_args( t_receiver, this->m_methodPtr, args ) );
 
             }
             else
@@ -755,7 +755,7 @@ void CSBento<MethodReturn( MethodClass::* )( MethodArgs... ) const>::invoke( QOb
                 // assume user does not want a return value
 
                 // unpacks the tuple, then calls the method or slot
-                LsCsSignal::Internal::cs_unpack_method_args( t_receiver, this->m_methodPtr, args );
+                LsCsSignal::Internal::lscs_unpack_method_args( t_receiver, this->m_methodPtr, args );
 
             }
         }

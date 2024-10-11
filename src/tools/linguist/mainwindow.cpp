@@ -484,7 +484,7 @@ MainWindow::MainWindow()
 
     connect( m_messageView, &QTreeView::clicked,   this,            &MainWindow::toggleFinished );
     connect( m_messageView, &QTreeView::activated, m_messageEditor, &MessageEditor::setEditorFocus );
-    connect( m_contextView, &QTreeView::activated, m_messageView,   cs_mp_cast<>( &QTreeView::setFocus ) );
+    connect( m_contextView, &QTreeView::activated, m_messageView,   lscs_mp_cast<>( &QTreeView::setFocus ) );
 
     connect( m_messageEditor,   &MessageEditor::translationChanged,       this, &MainWindow::updateTranslation );
     connect( m_messageEditor,   &MessageEditor::translatorCommentChanged, this, &MainWindow::updateTranslatorComment );
@@ -1641,6 +1641,7 @@ void MainWindow::resetSorting()
 
 void MainWindow::manual()
 {
+    // TODO:: create new manual and host it
     QString url( "https://www.copperspice.com/docs/cs_api/tools-linguist.html" );
 
     bool ok = QDesktopServices::openUrl( QUrl( url ) );
@@ -1659,7 +1660,8 @@ void MainWindow::about()
     QString version = tr( "Version %1" ).formatArg( LSCS_VERSION_STR );
 
     box.setText( tr( "<p>Linguist is a program to add or modify translations in a TS file. The compiled file "
-                     "can be used in CopperSpice applications to provide internationalization.</p>"
+                     "can be used in LsCs applications to provide internationalization.</p>"
+                     "<p>Copyright (c) 2024 Roland Hughes and Logikal Solutions</p>"
                      "<p>Copyright (c) 2012-2024 Barbara Geller and Ansel Sermersheim</p>"
                      "<p>Copyright (c) 2015 The Qt Company Ltd</p>"
                      "<p>Copyright (c) 2012-2016 Digia Plc and/or its subsidiary(-ies)</p>"

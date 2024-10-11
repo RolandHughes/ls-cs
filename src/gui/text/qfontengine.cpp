@@ -96,7 +96,7 @@ int QFontEngine::getPointInOutline( glyph_t glyph, int flags, quint32 point, QFi
     return -1;
 }
 
-static bool cs_get_fontTable( void *user_data, uint tag, uchar *buffer, uint *length )
+static bool lscs_get_fontTable( void *user_data, uint tag, uchar *buffer, uint *length )
 {
     QFontEngine *fe = ( QFontEngine * )user_data;
     return fe->getSfntTableData( tag, buffer, length );
@@ -108,7 +108,7 @@ QFontEngine::QFontEngine( Type type )
     : m_refCount( 0 ), m_type( type ), m_minLeftBearing( kBearingNotInitialized ), m_minRightBearing( kBearingNotInitialized )
 {
     faceData.user_data = this;
-    faceData.m_fontTable_funcPtr = cs_get_fontTable;
+    faceData.m_fontTable_funcPtr = lscs_get_fontTable;
 
     cache_cost = 0;
     fsType     = 0;
@@ -153,7 +153,7 @@ std::shared_ptr<hb_face_t> QFontEngine::harfbuzzFace() const
 {
     // harfbuzz
     Q_ASSERT( type() != QFontEngine::Multi );
-    return cs_face_get_for_engine( const_cast<QFontEngine *>( this ) );
+    return lscs_face_get_for_engine( const_cast<QFontEngine *>( this ) );
 }
 
 bool QFontEngine::supportsScript( QChar::Script script ) const
@@ -185,14 +185,14 @@ bool QFontEngine::supportsScript( QChar::Script script ) const
     bool retval = false;
 
     // harfbuzz
-    std::shared_ptr<hb_face_t> face = cs_face_get_for_engine( const_cast<QFontEngine *>( this ) );
+    std::shared_ptr<hb_face_t> face = lscs_face_get_for_engine( const_cast<QFontEngine *>( this ) );
 
     if ( face != nullptr )
     {
         uint script_count = HB_OT_MAX_TAGS_PER_SCRIPT;
         hb_tag_t script_tag[HB_OT_MAX_TAGS_PER_SCRIPT];
 
-        hb_ot_tags_from_script_and_language( cs_script_to_hb_script( script ), HB_LANGUAGE_INVALID, &script_count,
+        hb_ot_tags_from_script_and_language( lscs_script_to_hb_script( script ), HB_LANGUAGE_INVALID, &script_count,
                                              script_tag, nullptr, nullptr );
 
         retval = hb_ot_layout_table_select_script( face.get(), HB_OT_TAG_GSUB, script_count, script_tag, nullptr, nullptr );

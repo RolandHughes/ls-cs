@@ -319,7 +319,7 @@ qint64 RCCFileInfo::writeDataName( RCCResourceLibrary &lib, qint64 offset )
     offset += 2;
 
     // write the hash
-    lib.writeNumber4( cs_stable_hash( m_name ) );
+    lib.writeNumber4( lscs_stable_hash( m_name ) );
 
     if ( text )
     {
@@ -1072,7 +1072,7 @@ bool RCCResourceLibrary::writeDataNames()
 
 static bool qt_rcc_compare_hash( const RCCFileInfo *left, const RCCFileInfo *right )
 {
-    return cs_stable_hash( left->m_name ) < cs_stable_hash( right->m_name );
+    return lscs_stable_hash( left->m_name ) < lscs_stable_hash( right->m_name );
 }
 
 bool RCCResourceLibrary::writeDataStructure()
