@@ -30,10 +30,23 @@
 // LSCS Version  0x010000  (major << 16) + (minor << 8) + patch
 #define LSCS_VERSION      @HEX_VERSION@
 
+/* TODO:: 
+ *      See if we need to deploy default translations and include 
+ *      tem.
+ *
+ *      Do not duplicate things from QStandardPaths
+ *
+ *      DocumentationPath
+ *      ExamplesPath        path to examples upon install once we install examples
+ */
 #if defined(__cplusplus)
    struct LsCsLibraryInfo {
-      static constexpr const char *install_prefix = "@prefix@";
-      static constexpr const char *built_for = "@target@";
+       static constexpr const char *install_prefix = "@prefix@";
+       static constexpr const char *built_for = "@target@";
+       static constexpr const char *plugins = "@LSCS_INST_LIB@/plugins";
+       static constexpr const char *libraries = "@LSCS_INST_LIB@";
+       static constexpr const char *binaries = "@LSCS_INST_BIN@";
+       static constexpr const char *headers = "@LSCS_INST_INCLUDE@";
    };
 #endif
 

@@ -5,9 +5,12 @@ int main( int argc, char *argv[] )
 {
     QApplication a( argc, argv );
 
-    MainWindow *mw = new MainWindow();
+    QStringList paths = a.libraryPaths();
+    qDebug() << paths << endl;
 
-    mw->show();
+    //MainWindow *mw = new MainWindow();
+
+    //mw->show();
 
     return a.exec();
 }

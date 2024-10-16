@@ -105,9 +105,11 @@ void QFactoryLoader::setup()
     QStringList libDirs = QCoreApplication::libraryPaths();
     // mp_pluginsFound.clear();
 
+    QTextStream out( stdout );    
+    out << "setup() found: \n" << endl;
     for ( const QString &pluginDir : libDirs )
     {
-
+        out << pluginDir << endl;
         // already looked in this path
         if ( d->loadedPaths.contains( pluginDir ) )
         {

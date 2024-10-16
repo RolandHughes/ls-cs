@@ -35,7 +35,10 @@ public:
     {
         NoIteratorFlags = 0x0,
         FollowSymlinks = 0x1,
-        Subdirectories = 0x2
+        Subdirectories = 0x2,
+        NoDot          = 0x4,
+        NoDotDot       = 0x8,
+        NoDotAndDotDot = 0x10,
     };
     using IteratorFlags = QFlags<IteratorFlag>;
 

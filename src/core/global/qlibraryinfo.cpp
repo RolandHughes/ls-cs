@@ -193,7 +193,7 @@ QString QLibraryInfo::location( LibraryLocation loc )
 
         switch ( loc )
         {
-
+            // TODO:: see if this needs to be LsCsLibraryInfo::install_prefix
             case PrefixPath:
                 key = "Prefix";
                 defaultValue = ".";
@@ -201,9 +201,9 @@ QString QLibraryInfo::location( LibraryLocation loc )
 
             case PluginsPath:
                 key = "Plugins";
-                defaultValue = "plugins";
+                defaultValue = LsCsLibraryInfo::plugins;
                 break;
-
+#if 0
             case ImportsPath:
                 key = "Imports";
                 defaultValue = "imports";
@@ -213,7 +213,7 @@ QString QLibraryInfo::location( LibraryLocation loc )
                 key = "Qml2Imports";
                 defaultValue = "qml";
                 break;
-
+#endif
             case TranslationsPath:
                 key = "Translations";
                 defaultValue = "translations";
@@ -223,7 +223,16 @@ QString QLibraryInfo::location( LibraryLocation loc )
                 key = "Settings";
                 defaultValue = ".";
                 break;
-
+                
+            case LibrariesPath:
+                key = "Libraries";
+                defaultValue = LsCsLibraryInfo::libraries;
+                break;
+            case BinariesPath:
+                key = "Binaries";
+                defaultValue = LsCsLibraryInfo::binaries;
+                break;
+                
             default:
                 break;
         }
@@ -262,9 +271,9 @@ QString QLibraryInfo::location( LibraryLocation loc )
                 break;
 
             case PluginsPath:
-                retval = "plugins";
+                retval = LsCsLibraryInfo::plugins;
                 break;
-
+#if 0
             case ImportsPath:
                 retval = "imports";
                 break;
@@ -272,7 +281,7 @@ QString QLibraryInfo::location( LibraryLocation loc )
             case Qml2ImportsPath:
                 retval = "qml";
                 break;
-
+#endif
             case TranslationsPath:
                 retval = "translations";
                 break;
@@ -281,6 +290,12 @@ QString QLibraryInfo::location( LibraryLocation loc )
                 retval = "settings";
                 break;
 
+            case LibrariesPath:
+                retval = LsCsLibraryInfo::libraries;
+                break;
+            case BinariesPath:
+                retval = LsCsLibraryInfo::binaries;
+                break;
             default:
                 break;
         }

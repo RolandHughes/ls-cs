@@ -49,6 +49,7 @@
 #include <qprocess_p.h>
 #include <qprocess_p.h>
 #include <qthread_p.h>
+#include <qdiriterator.h>
 
 #if defined(Q_OS_UNIX)
 #  if defined(Q_OS_DARWIN)
@@ -618,17 +619,21 @@ void QCoreApplicationPrivate::init()
     // emerald - may want to adjust the library path
 #if ! defined(QT_NO_SETTINGS)
 
-    if ( ! coreappdata()->app_libpaths )
+    QStringList *app_libpaths = coreappdata()->app_libpaths;
+
+    if ( ! app_libpaths )
     {
         // make sure library paths is initialized
         q->libraryPaths();
-
+        app_libpaths = coreappdata()->app_libpaths;
     }
     else
     {
         appendApplicationPathToLibraryPaths();
     }
 
+    app_libpaths->append( QString::fromUtf8(LsCsLibraryInfo::libraries ));
+    app_libpaths->append( QString::fromUtf8(LsCsLibraryInfo::plugins ));
 #endif
 
     // threads
@@ -1861,22 +1866,72 @@ QStringList QCoreApplication::libraryPaths()
 {
     QRecursiveMutexLocker locker( libraryPathMutex() );
 
+    /*  Original code was really bad design. It ass-u-me-d all libraries
+     * and plugins had been forcibly copied into a single directory. While 
+     * that should still be supported in case someone wants to test 
+     * not-yet-released library changes, the logic really needs to support
+     * the distribution directory tree. File and directory names are
+     * subject to change so just walk the tree.
+     *
+     * /usr/lib/LsCs/plugins
+     * ├── iconengines
+     * ├── imageformats
+     * │   └── LsCsImageFormatsSvg0.1.so
+     * ├── mediaservices
+     * │   ├── LsCsMultimedia_gst_audiodecoder0.1.so
+     * │   ├── LsCsMultimedia_gst_camerabin0.1.so
+     * │   └── LsCsMultimedia_gst_mediaplayer0.1.so
+     * ├── pictureformats
+     * ├── platforms
+     * │   └── LsCsGuiXcb0.1.so
+     * ├── playlistformats
+     * │   └── LsCsMultimedia_m3u0.1.so
+     * ├── printerdrivers
+     * │   └── LsCsPrinterDriverCups0.1.so
+     * ├── sqldrivers
+     * │   ├── LsCsSqlMySql0.1.so
+     * │   ├── LsCsSqlOdbc0.1.so
+     * │   └── LsCsSqlPsql0.1.so
+     * └── xcbglintegrations
+     *    └── LsCsGuiXcb_Glx0.1.so
+     */
+    
     if ( ! coreappdata()->app_libpaths )
     {
         QStringList *app_libpaths   = new QStringList;
         coreappdata()->app_libpaths = app_libpaths;
 
-        // retrives the plugins path from cs.conf
-        QString installPathPlugins = QLibraryInfo::location( QLibraryInfo::PluginsPath );
-
-        if ( QFile::exists( installPathPlugins ) )
+        // retrives the plugins path from cs.conf or the compiled in directory
+        QString basePluginPath = QLibraryInfo::location( QLibraryInfo::PluginsPath );
+        if ( QFile::exists( basePluginPath ) )
         {
             // make sure we convert from backslashes to slashes
-            installPathPlugins = QDir( installPathPlugins ).canonicalPath();
+            basePluginPath = QDir( basePluginPath ).canonicalPath();
 
-            if ( ! app_libpaths->contains( installPathPlugins ) )
+            if ( ! app_libpaths->contains( basePluginPath ) )
             {
-                app_libpaths->append( installPathPlugins );
+                app_libpaths->append( basePluginPath );
+            }
+        }
+
+        QTextStream out(stdout);
+        out << "basePluginPath: " << basePluginPath << endl;
+        
+        QDirIterator it(basePluginPath, QDirIterator::Subdirectories | QDirIterator::NoDotAndDotDot);
+        while (it.hasNext())
+        {
+            QString installPathPlugins = it.next();
+            out << "installPathPlugins: " << installPathPlugins << endl;    
+
+            if ( QFile::exists( installPathPlugins ) )
+            {
+                // make sure we convert from backslashes to slashes
+                installPathPlugins = QDir( installPathPlugins ).canonicalPath();
+
+                if ( ! app_libpaths->contains( installPathPlugins ) )
+                {
+                    app_libpaths->append( installPathPlugins );
+                }
             }
         }
 

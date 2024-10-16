@@ -5,6 +5,7 @@
 #include <QTemporaryDir>
 #include <QRegularExpression>
 #include <QStringList>
+#include <QLibraryInfo>
 #include "console-hello_build_info.h"
 
 class SomeClass
@@ -70,7 +71,7 @@ void Task::run()
     out << "str1:   MOVE =fred 1234 thru 5678 TO =Ethyl 5\n";
     out << "str2:   MOVE 1:5 TO 108\n";
     out << "str3:   MOVE =JANE 543 THRU 643 TO .\n";
-    out << "\n\n\n";
+    out << "\n";
     // extra slashes due to string escape sequences
     out << "rangeExpression( \"(\\\\d+ THRU \\\\d+)|(\\\\d+:\\\\d+)\", QPatternOption::CaseInsensitiveOption )\n\n";
 
@@ -120,6 +121,15 @@ void Task::run()
 int main( int argc, char *argv[] )
 {
     QCoreApplication a( argc, argv );
+
+    qDebug() << "*************\n\nPaths:\n" << endl;
+    QString paths = QLibraryInfo::location(QLibraryInfo::PluginsPath);
+    qDebug() << "plugins paths: " << paths << endl;
+    paths = QLibraryInfo::location(QLibraryInfo::LibrariesPath);
+    qDebug() << "LibrariesPath: " << paths << endl;
+    paths = QLibraryInfo::location(QLibraryInfo::BinariesPath);
+    qDebug() << "BinariesPath: " << paths << endl;
+
 
     // parent task to application so it will be cleaned up
     //

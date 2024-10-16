@@ -7,7 +7,7 @@ class QPlainTextEdit;
 
 class MainWindow : public QMainWindow
 {
-    CS_OBJECT( MainWindow )
+    LSCS_OBJECT( MainWindow )
 public:
     MainWindow( QWidget *parent=0 );
     ~MainWindow();

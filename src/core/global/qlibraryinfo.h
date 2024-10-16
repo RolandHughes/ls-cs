@@ -39,10 +39,10 @@ public:
     {
         PrefixPath,
         PluginsPath,
-        ImportsPath,
-        Qml2ImportsPath,
         TranslationsPath,
         SettingsPath,
+        LibrariesPath,
+        BinariesPath,
     };
 
     static QString location( LibraryLocation location );

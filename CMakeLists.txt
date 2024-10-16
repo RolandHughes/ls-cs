@@ -103,51 +103,23 @@ if (BUILDING_DEBIAN)
     set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
     set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" )
+    set(LSCS_INST_BIN     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_BINDIR}")
 elseif (BUILDING_RPM)
     message(STATUS "** We are building RPM package ***")
     set(LSCS_INST_PREFIX  "/usr")    
     set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
+    set(LSCS_INST_BIN     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_BINDIR}")
 else()
     set(LSCS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")    
     set(LSCS_INST_LIB     "${CMAKE_INSTALL_FULL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
+    set(LSCS_INST_BIN     "${CMAKE_INSTALL_FULL_BINDIR}")
 endif()
 
 # Note: webkit2.pc.in also uses prefix
 #
 set(prefix "${LSCS_INST_PREFIX}")
-
-
-message(STATUS "   ***   ")
-message(STATUS "   ***   ")
-message(STATUS "   ***   ")
-message(STATUS "   LSCS_INST_PREFIX     ${LSCS_INST_PREFIX}")
-message(STATUS "   LSCS_INST_LIB        ${LSCS_INST_LIB}")
-message(STATUS "   LSCS_INST_INCLUDE    ${LSCS_INST_INCLUDE}")
-message(STATUS "   CMAKE_BINARY_DIR     ${CMAKE_BINARY_DIR}")
-
-message( STATUS, "CMAKE_INSTALL_RPATH            ${CMAKE_INSTALL_RPATH}" )
-message( STATUS, "CMAKE_INSTALL_BINDIR           ${CMAKE_INSTALL_BINDIR}" )
-message( STATUS, "CMAKE_INSTALL_INCLUDEDIR       ${CMAKE_INSTALL_INCLUDE_DIR}" )
-message( STATUS, "CMAKE_INSTALL_FULL_LIBDIR      ${CMAKE_INSTALL_FULL_LIBDIR}" )
-message( STATUS, "CMAKE_INSTALL_FULL_INCLUDEDIR  ${CMAKE_INSTALL_FULL_INCLUDEDIR}" )
-message( STATUS, "CMAKE_INSTALL_LIBDIR           ${CMAKE_INSTALL_LIBDIR}" )
-message( STATUS, "LIB_ARCHITECTURE               ${LIB_ARCHITECTURE}" )
-message( STATUS, "CPACK_PACKAGE_ARCHITECTURE     ${CPACK_PACKAGE_ARCHITECTURE}" )
-message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
-message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
-message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
-
-# get_cmake_property(_variableNames VARIABLES)
-# list (SORT _variableNames)
-# foreach (_variableName ${_variableNames})
-#     message(STATUS "${_variableName}=${${_variableName}}")
-# endforeach()
-
-message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
-message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
-message(STATUS "   ***      ***      ***      ***      ***      ***      ***   ")
 
 # required libraries
 set(BUILD_COMPONENTS "Core Xml")
@@ -714,16 +686,18 @@ configure_file(
    ${CMAKE_SOURCE_DIR}/cmake/lscs_config.h.cmake
    ${CMAKE_BINARY_DIR}/include/lscs_config.h
 )
-configure_file(
-   ${CMAKE_SOURCE_DIR}/src/core/global/LsCs_build_info.h.in
-   ${CMAKE_BINARY_DIR}/include/QtCore/LsCs_build_info.h
-)
 
 # file locations for building
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/${CMAKE_PROJECT})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+
+configure_file(
+   ${CMAKE_SOURCE_DIR}/src/core/global/LsCs_build_info.h.in
+   ${CMAKE_BINARY_DIR}/include/QtCore/LsCs_build_info.h
+)
 
 # Ninja generator does not yet know how to build archives in pieces, so response
 # files must be used to deal with very long linker command lines.
@@ -925,6 +899,28 @@ if (${CMAKE_SIZEOF_VOID_P} EQUAL 4)
 else()
    set(TARGETBITS 64)
 endif()
+
+message("   ***   ")
+message("   ***   ")
+message("   ***   ")
+message("   LSCS_INST_PREFIX     ${LSCS_INST_PREFIX}")
+message("   LSCS_INST_LIB        ${LSCS_INST_LIB}")
+message("   LSCS_INST_INCLUDE    ${LSCS_INST_INCLUDE}")
+message("   LSCS_INST_BIN        ${LSCS_INST_BIN}")
+message( " ")
+message("CMAKE_INSTALL_RPATH            ${CMAKE_INSTALL_RPATH}" )
+message("CMAKE_INSTALL_BINDIR           ${CMAKE_INSTALL_BINDIR}" )
+message("CMAKE_INSTALL_LIBDIR           ${CMAKE_INSTALL_LIBDIR}" )
+message("CMAKE_INSTALL_INCLUDEDIR       ${CMAKE_INSTALL_INCLUDE_DIR}" )
+message("CMAKE_INSTALL_FULL_LIBDIR      ${CMAKE_INSTALL_FULL_LIBDIR}" )
+message("CMAKE_INSTALL_FULL_INCLUDEDIR  ${CMAKE_INSTALL_FULL_INCLUDEDIR}" )
+message("CMAKE_INSTALL_FULL_BINDIR      ${CMAKE_INSTALL_FULL_BINDIR}")
+message(" ")
+message("LIB_ARCHITECTURE               ${LIB_ARCHITECTURE}" )
+message("CPACK_PACKAGE_ARCHITECTURE     ${CPACK_PACKAGE_ARCHITECTURE}" )
+message("   ***      ***      ***      ***      ***      ***      ***   ")
+message("   ***      ***      ***      ***      ***      ***      ***   ")
+message("   ***      ***      ***      ***      ***      ***      ***   ")
 
 message("")
 message("LsCs configured to run on:  ${CMAKE_SYSTEM_NAME} ${TARGETBITS} bit, ${CMAKE_BUILD_TYPE} Mode")

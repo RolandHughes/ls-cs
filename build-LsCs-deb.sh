@@ -100,7 +100,7 @@ function build_from_source()
     echo "*** Prepping build directory"
     cd "$BUILD_DIR"
 
-    cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release \
+    cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug \
         -DBUILDING_DEBIAN=ON \
         -DCMAKE_INSTALL_PREFIX="$RELEASE_DIR" \
         "$SCRIPT_DIR"

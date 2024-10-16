@@ -149,6 +149,7 @@ static QString locatePlugin( const QString &fileName )
     {
         paths = QCoreApplication::libraryPaths();
         paths.prepend( "." );                       // search in current dir first
+        paths.append( QString::fromUtf8(LsCsLibraryInfo::plugins ));
     }
 
     for ( const QString &path : paths )
