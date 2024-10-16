@@ -9,7 +9,7 @@ list(APPEND GUI_HELLO_SOURCES
 
 )
 
-add_executable(gui-hello ${CS_GUI_HELLO_SOURCES})
+add_executable(gui-hello ${GUI_HELLO_SOURCES})
 
 target_include_directories(gui-hello
    PRIVATE
