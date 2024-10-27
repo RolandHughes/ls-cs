@@ -29,7 +29,7 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qplatformdefs.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qvarlengtharray.h>
 
 #include <qfilesystemengine_p.h>
@@ -112,7 +112,7 @@ bool QFSFileEnginePrivate::nativeOpen( QIODevice::OpenMode openMode )
     // Bail out on error
     if ( fileHandle == INVALID_HANDLE_VALUE )
     {
-        q->setError( QFile::OpenError, qt_error_string() );
+        q->setError( QFile::OpenError, lscs_error_string() );
         return false;
     }
 
@@ -142,7 +142,7 @@ bool QFSFileEnginePrivate::nativeClose()
     {
         if ( ::_close( cachedFd ) && !::CloseHandle( fileHandle ) )
         {
-            q->setError( QFile::UnspecifiedError, qt_error_string() );
+            q->setError( QFile::UnspecifiedError, lscs_error_string() );
             ok = false;
         }
 
@@ -155,7 +155,7 @@ bool QFSFileEnginePrivate::nativeClose()
 
     if ( ( fileHandle == INVALID_HANDLE_VALUE || !::CloseHandle( fileHandle ) ) )
     {
-        q->setError( QFile::UnspecifiedError, qt_error_string() );
+        q->setError( QFile::UnspecifiedError, lscs_error_string() );
         ok = false;
     }
 
@@ -220,7 +220,7 @@ qint64 QFSFileEnginePrivate::nativeSize() const
     {
         // file is most likely not open
 
-        self_FileEngine->setError( QFile::UnspecifiedError, qt_error_string( errno ) );
+        self_FileEngine->setError( QFile::UnspecifiedError, lscs_error_string( errno ) );
         return 0;
     }
 
@@ -250,7 +250,7 @@ qint64 QFSFileEnginePrivate::nativePos() const
 
     if ( ! ::SetFilePointerEx( fileHandle, offset, &currentFilePos, FILE_CURRENT ) )
     {
-        self_FileEngine->setError( QFile::UnspecifiedError, qt_error_string() );
+        self_FileEngine->setError( QFile::UnspecifiedError, lscs_error_string() );
         return 0;
     }
 
@@ -273,7 +273,7 @@ bool QFSFileEnginePrivate::nativeSeek( qint64 pos )
 
     if ( !::SetFilePointerEx( fileHandle, offset, &currentFilePos, FILE_BEGIN ) )
     {
-        q->setError( QFile::UnspecifiedError, qt_error_string() );
+        q->setError( QFile::UnspecifiedError, lscs_error_string() );
         return false;
     }
 
@@ -289,7 +289,7 @@ qint64 QFSFileEnginePrivate::nativeRead( char *data, qint64 maxlen )
         // stdio / stdlib mode.
         if ( fh && nativeIsSequential() && feof( fh ) )
         {
-            q->setError( QFile::ReadError, qt_error_string( int( errno ) ) );
+            q->setError( QFile::ReadError, lscs_error_string( int( errno ) ) );
             return -1;
         }
 
@@ -320,7 +320,7 @@ qint64 QFSFileEnginePrivate::nativeRead( char *data, qint64 maxlen )
             if ( totalRead == 0 )
             {
                 // Note: only return failure if the first ReadFile fails.
-                q->setError( QFile::ReadError, qt_error_string() );
+                q->setError( QFile::ReadError, lscs_error_string() );
                 return -1;
             }
 
@@ -395,7 +395,7 @@ qint64 QFSFileEnginePrivate::nativeWrite( const char *data, qint64 len )
             if ( totalWritten == 0 )
             {
                 // Note: Only return error if the first WriteFile failed.
-                q->setError( QFile::WriteError, qt_error_string() );
+                q->setError( QFile::WriteError, lscs_error_string() );
                 return -1;
             }
 
@@ -419,7 +419,7 @@ int QFSFileEnginePrivate::nativeHandle() const
 {
     if ( fh || fd != -1 )
     {
-        return fh ? QT_FILENO( fh ) : fd;
+        return fh ? LSCS_FILENO( fh ) : fd;
     }
 
     if ( cachedFd != -1 )
@@ -451,7 +451,7 @@ bool QFSFileEnginePrivate::nativeIsSequential() const
 
     if ( fh || fd != -1 )
     {
-        handle = ( HANDLE )_get_osfhandle( fh ? QT_FILENO( fh ) : fd );
+        handle = ( HANDLE )_get_osfhandle( fh ? LSCS_FILENO( fh ) : fd );
     }
 
     if ( handle == INVALID_HANDLE_VALUE )
@@ -628,7 +628,7 @@ bool QFSFileEnginePrivate::doStat( QFileSystemMetaData::MetaDataFlags flags ) co
 
         if ( fh && fileEntry.isEmpty() )
         {
-            localFd = QT_FILENO( fh );
+            localFd = LSCS_FILENO( fh );
         }
 
         if ( localFd != -1 )
@@ -699,7 +699,7 @@ bool QFSFileEngine::link( const QString &newName )
 
     if ( ! retval )
     {
-        setError( QFile::RenameError, qt_error_string() );
+        setError( QFile::RenameError, lscs_error_string() );
     }
 
     if ( neededCoInit )
@@ -953,7 +953,7 @@ bool QFSFileEngine::setSize( qint64 size )
         {
             if ( d->fh )
             {
-                fh = ( HANDLE )_get_osfhandle( QT_FILENO( d->fh ) );
+                fh = ( HANDLE )_get_osfhandle( LSCS_FILENO( d->fh ) );
             }
             else
             {
@@ -1019,13 +1019,13 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
     if ( openMode == QFile::NotOpen )
     {
-        q->setError( QFile::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+        q->setError( QFile::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
         return nullptr;
     }
 
     if ( offset == 0 && size == 0 )
     {
-        q->setError( QFile::UnspecifiedError, qt_error_string( ERROR_INVALID_PARAMETER ) );
+        q->setError( QFile::UnspecifiedError, lscs_error_string( ERROR_INVALID_PARAMETER ) );
         return nullptr;
     }
 
@@ -1036,12 +1036,12 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
         if ( handle == INVALID_HANDLE_VALUE && fh )
         {
-            handle = ( HANDLE )::_get_osfhandle( QT_FILENO( fh ) );
+            handle = ( HANDLE )::_get_osfhandle( LSCS_FILENO( fh ) );
         }
 
         if ( handle == INVALID_HANDLE_VALUE )
         {
-            q->setError( QFile::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+            q->setError( QFile::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
             return nullptr;
         }
 
@@ -1051,7 +1051,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
 
         if ( mapHandle == nullptr )
         {
-            q->setError( QFile::PermissionsError, qt_error_string() );
+            q->setError( QFile::PermissionsError, lscs_error_string() );
             return nullptr;
         }
     }
@@ -1094,7 +1094,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
     switch ( GetLastError() )
     {
         case ERROR_ACCESS_DENIED:
-            q->setError( QFile::PermissionsError, qt_error_string() );
+            q->setError( QFile::PermissionsError, lscs_error_string() );
             break;
 
         case ERROR_INVALID_PARAMETER:
@@ -1102,7 +1102,7 @@ uchar *QFSFileEnginePrivate::map( qint64 offset, qint64 size, QFile::MemoryMapFl
             [[fallthrough]];
 
         default:
-            q->setError( QFile::UnspecifiedError, qt_error_string() );
+            q->setError( QFile::UnspecifiedError, lscs_error_string() );
     }
 
     ::CloseHandle( mapHandle );
@@ -1117,7 +1117,7 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
 
     if ( ! maps.contains( ptr ) )
     {
-        q->setError( QFile::PermissionsError, qt_error_string( ERROR_ACCESS_DENIED ) );
+        q->setError( QFile::PermissionsError, lscs_error_string( ERROR_ACCESS_DENIED ) );
         return false;
     }
 
@@ -1125,7 +1125,7 @@ bool QFSFileEnginePrivate::unmap( uchar *ptr )
 
     if ( !UnmapViewOfFile( start ) )
     {
-        q->setError( QFile::PermissionsError, qt_error_string() );
+        q->setError( QFile::PermissionsError, lscs_error_string() );
         return false;
     }
 

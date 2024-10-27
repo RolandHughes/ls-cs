@@ -35,7 +35,7 @@
 #include <qmath_p.h>
 #include <qstyle_p.h>
 
-Q_GUI_EXPORT int qt_defaultDpiX();
+Q_GUI_EXPORT int lscs_defaultDpiX();
 
 namespace QStyleHelper
 {
@@ -49,7 +49,7 @@ QString uniqueName( const QString &key, const QStyleOption *option, const QSize 
                   + HexString<uint>( size.width() )
                   + HexString<uint>( size.height() );
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
     if ( const QStyleOptionSpinBox *spinBox = qstyleoption_cast<const QStyleOptionSpinBox *>( option ) )
     {
@@ -85,12 +85,12 @@ qreal dpiScaled( qreal value )
     // On mac the DPI is always 72 so we should not scale it
     return value;
 #else
-    static const qreal scale = qreal( qt_defaultDpiX() ) / 96.0;
+    static const qreal scale = qreal( lscs_defaultDpiX() ) / 96.0;
     return value * scale;
 #endif
 }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 bool isInstanceOf( QObject *obj, QAccessible::Role role )
 {
     bool match = false;
@@ -117,9 +117,9 @@ bool hasAncestor( QObject *obj, QAccessible::Role role )
 
     return found;
 }
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 
 int calcBigLineSize( int radius )
 {
@@ -413,7 +413,7 @@ void drawDial( const QStyleOptionSlider *option, QPainter *painter )
     painter->drawEllipse( dialRect );
     painter->restore();
 }
-#endif //QT_NO_DIAL
+#endif //LSCS_NO_DIAL
 
 void drawBorderPixmap( const QPixmap &pixmap, QPainter *painter, const QRect &rect,
                        int left, int top, int right,

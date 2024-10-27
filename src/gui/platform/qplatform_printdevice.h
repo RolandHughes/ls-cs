@@ -31,7 +31,7 @@
 
 // emerald   #include <qmimetype.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 class Q_GUI_EXPORT QPlatformPrintDevice
 {
@@ -92,7 +92,7 @@ public:
     virtual QPrint::ColorMode defaultColorMode() const;
     virtual QList<QPrint::ColorMode> supportedColorModes() const;
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
     // emerald   virtual QList<QMimeType> supportedMimeTypes() const;
 #endif
 
@@ -107,7 +107,7 @@ protected:
     virtual void loadDuplexModes() const;
     virtual void loadColorModes() const;
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
     // emerald   virtual void loadMimeTypes() const;
 #endif
 
@@ -146,12 +146,12 @@ protected:
     mutable bool m_haveColorModes;
     mutable QVector<QPrint::ColorMode> m_colorModes;
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
     // emerald    mutable bool m_haveMimeTypes;
     // emerald    mutable QVector<QMimeType> m_mimeTypes;
 #endif
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

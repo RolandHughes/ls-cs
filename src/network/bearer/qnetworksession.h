@@ -30,7 +30,7 @@
 #include <qstring.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 #if defined(Q_OS_WIN) && defined(interface)
 #undef interface
@@ -78,7 +78,7 @@ public:
     bool isOpen() const;
     QNetworkConfiguration configuration() const;
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     QNetworkInterface interface() const;
 #endif
 
@@ -149,6 +149,6 @@ private:
 
 LSCS_DECLARE_METATYPE( QNetworkSession )
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif

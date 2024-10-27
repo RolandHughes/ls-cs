@@ -25,7 +25,7 @@
 #include <qstringparser.h>
 #include <qtextcodecplugin.h>
 
-#ifndef QT_NO_TEXTCODECPLUGIN
+#ifndef LSCS_NO_TEXTCODECPLUGIN
 
 QTextCodecPlugin::QTextCodecPlugin( QObject *parent )
     : QObject( parent )
@@ -61,4 +61,4 @@ QTextCodec *QTextCodecPlugin::create( const QString &name )
     return createForName( name );
 }
 
-#endif // QT_NO_TEXTCODECPLUGIN
+#endif // LSCS_NO_TEXTCODECPLUGIN

@@ -37,7 +37,7 @@
 #include <QPainter>
 #include <qtextcontrol_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass TextEdit QDeclarativeTextEdit
@@ -101,7 +101,7 @@ QString QDeclarativeTextEdit::text() const
 {
     Q_D( const QDeclarativeTextEdit );
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
     if ( d->richText )
     {
@@ -238,7 +238,7 @@ void QDeclarativeTextEdit::setText( const QString &text )
 
     if ( d->richText )
     {
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
         d->control->setHtml( text );
 #else
         d->control->setPlainText( text );
@@ -316,7 +316,7 @@ void QDeclarativeTextEdit::setTextFormat( TextFormat format )
     }
     else if ( !wasRich && d->richText )
     {
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
         d->control->setHtml( d->text );
 #else
         d->control->setPlainText( d->text );
@@ -1488,7 +1488,7 @@ bool QDeclarativeTextEdit::isRightToLeft( int start, int end )
     }
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 /*!
     \qmlmethod TextEdit::cut()
 
@@ -1521,7 +1521,7 @@ void QDeclarativeTextEdit::paste()
     Q_D( QDeclarativeTextEdit );
     d->control->paste();
 }
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD
 
 /*!
 \overload
@@ -1578,7 +1578,7 @@ void QDeclarativeTextEdit::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
             {
                 if ( view->scene() && view->scene() == scene() )
                 {
-                    qt_widget_private( view )->handleSoftwareInputPanel( event->button(), d->clickCausedFocus );
+                    lscs_widget_private( view )->handleSoftwareInputPanel( event->button(), d->clickCausedFocus );
                 }
             }
         }
@@ -1781,7 +1781,7 @@ void QDeclarativeTextEditPrivate::init()
     QObject::connect( control, SIGNAL( cursorPositionChanged() ), q, SIGNAL( cursorPositionChanged() ) );
     QObject::connect( control, SIGNAL( microFocusChanged() ), q, SLOT( moveCursorDelegate() ) );
     QObject::connect( control, SIGNAL( linkActivated( QString ) ), q, SIGNAL( linkActivated( QString ) ) );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QObject::connect( q, SIGNAL( readOnlyChanged( bool ) ), q, SLOT( q_canPasteChanged() ) );
     QObject::connect( QApplication::clipboard(), SIGNAL( dataChanged() ), q, SLOT( q_canPasteChanged() ) );
     canPaste = control->canPaste();
@@ -2213,4 +2213,4 @@ void QDeclarativeTextEdit::q_canPasteChanged()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

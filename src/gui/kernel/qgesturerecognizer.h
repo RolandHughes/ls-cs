@@ -27,7 +27,7 @@
 #include <qglobal.h>
 #include <qnamespace.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 class QObject;
 class QEvent;
@@ -67,6 +67,6 @@ public:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QGestureRecognizer::Result )
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 #endif // QGESTURERECOGNIZER_H

@@ -26,7 +26,7 @@
 
 #include <qaccessiblewidget.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QAbstractSpinBox;
 class QAbstractSlider;
@@ -37,7 +37,7 @@ class QDoubleSpinBox;
 class QDial;
 class QAccessibleLineEdit;
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 class QAccessibleAbstractSpinBox : public QAccessibleWidget, public QAccessibleValueInterface,
     public QAccessibleTextInterface, public QAccessibleEditableTextInterface
@@ -112,7 +112,7 @@ public:
 protected:
     QDoubleSpinBox *doubleSpinBox() const;
 };
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX
 
 class QAccessibleAbstractSlider: public QAccessibleWidget, public QAccessibleValueInterface
 {
@@ -131,7 +131,7 @@ protected:
     QAbstractSlider *abstractSlider() const;
 };
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 class QAccessibleScrollBar : public QAccessibleAbstractSlider
 {
 public:
@@ -143,7 +143,7 @@ protected:
 };
 #endif
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 class QAccessibleSlider : public QAccessibleAbstractSlider
 {
 public:
@@ -155,7 +155,7 @@ protected:
 };
 #endif
 
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 class QAccessibleDial : public QAccessibleAbstractSlider
 {
 public:
@@ -168,6 +168,6 @@ protected:
 };
 #endif
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif

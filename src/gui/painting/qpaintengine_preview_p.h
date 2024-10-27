@@ -27,7 +27,7 @@
 #include <qpaintengine.h>
 #include <qprintengine.h>
 
-#ifndef QT_NO_PRINTPREVIEWWIDGET
+#ifndef LSCS_NO_PRINTPREVIEWWIDGET
 
 class QPreviewPaintEnginePrivate;
 
@@ -71,6 +71,6 @@ public:
     QPrinter::PrinterState printerState() const override;
 };
 
-#endif // QT_NO_PRINTPREVIEWWIDGET
+#endif // LSCS_NO_PRINTPREVIEWWIDGET
 
 #endif

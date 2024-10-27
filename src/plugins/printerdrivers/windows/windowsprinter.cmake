@@ -29,7 +29,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
    target_compile_definitions(LsCsPrinterDriverWin
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    install(TARGETS LsCsPrinterDriverWin DESTINATION ${CMAKE_INSTALL_LIBDIR})

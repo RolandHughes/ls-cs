@@ -26,13 +26,13 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qpaintengine.h>
 #include <qpagelayout.h>
 #include <qprinter.h>
 #include <qprintengine.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qpaintengine_alpha_p.h>
 #include <qprintdevice_p.h>
@@ -204,6 +204,6 @@ public:
     QTransform matrix;
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif // QPRINTENGINE_WIN_P_H

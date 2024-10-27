@@ -42,7 +42,7 @@
 
 namespace {
 
-bool qt_framerates_sane(const QCameraViewfinderSettings &settings)
+bool lscs_framerates_sane(const QCameraViewfinderSettings &settings)
 {
     const qreal minFPS = settings.minimumFrameRate();
     const qreal maxFPS = settings.maximumFrameRate();
@@ -83,19 +83,19 @@ QList<QCameraViewfinderSettings> AVFCameraViewfinderSettingsControl2::supportedV
             return supportedSettings;
         }
 
-        const QVector<AVCaptureDeviceFormat *> formats(qt_unique_device_formats(captureDevice,
+        const QVector<AVCaptureDeviceFormat *> formats(lscs_unique_device_formats(captureDevice,
                                                        m_service->session()->defaultCodec()));
         for (int i = 0; i < formats.size(); ++i) {
             AVCaptureDeviceFormat *format = formats[i];
 
-            const QSize res(qt_device_format_resolution(format));
+            const QSize res(lscs_device_format_resolution(format));
             if (res.isNull() || !res.isValid())
                 continue;
-            const QSize par(qt_device_format_pixel_aspect_ratio(format));
+            const QSize par(lscs_device_format_pixel_aspect_ratio(format));
             if (par.isNull() || !par.isValid())
                 continue;
 
-            framerates = qt_device_format_framerates(format);
+            framerates = lscs_device_format_framerates(format);
             if (!framerates.size())
                 framerates << AVFPSRange(); // The default value.
 
@@ -135,8 +135,8 @@ QCameraViewfinderSettings AVFCameraViewfinderSettingsControl2::viewfinderSetting
          return settings;
      }
 
-     const QSize res(qt_device_format_resolution(captureDevice.activeFormat));
-     const QSize par(qt_device_format_pixel_aspect_ratio(captureDevice.activeFormat));
+     const QSize res(lscs_device_format_resolution(captureDevice.activeFormat));
+     const QSize par(lscs_device_format_pixel_aspect_ratio(captureDevice.activeFormat));
      if (res.isNull() || !res.isValid() || par.isNull() || !par.isValid()) {
          qDebugCamera() << Q_FUNC_INFO << "failed to obtain resolution/pixel aspect ratio";
          return settings;
@@ -146,7 +146,7 @@ QCameraViewfinderSettings AVFCameraViewfinderSettingsControl2::viewfinderSetting
      settings.setPixelAspectRatio(par);
 
     // TODO: resolution and PAR before 7.0.
-    const AVFPSRange fps = qt_current_framerates(captureDevice, videoConnection());
+    const AVFPSRange fps = lscs_current_framerates(captureDevice, videoConnection());
     settings.setMinimumFrameRate(fps.first);
     settings.setMaximumFrameRate(fps.second);
 
@@ -238,12 +238,12 @@ AVCaptureDeviceFormat *AVFCameraViewfinderSettingsControl2::findBestFormatMatch(
         if (!resolution.isNull() && resolution.isValid()) {
             // Either the exact match (including high resolution for images on iOS)
             // or a format with a resolution close to the requested one.
-            return qt_find_best_resolution_match(captureDevice, resolution,
+            return lscs_find_best_resolution_match(captureDevice, resolution,
                                                  m_service->session()->defaultCodec());
         }
 
         // No resolution requested, what about framerates?
-        if (!qt_framerates_sane(settings)) {
+        if (!lscs_framerates_sane(settings)) {
             qDebugCamera() << Q_FUNC_INFO << "invalid framerate requested (min/max):"
                            << settings.minimumFrameRate() << settings.maximumFrameRate();
             return nil;
@@ -252,7 +252,7 @@ AVCaptureDeviceFormat *AVFCameraViewfinderSettingsControl2::findBestFormatMatch(
         const qreal minFPS(settings.minimumFrameRate());
         const qreal maxFPS(settings.maximumFrameRate());
         if (minFPS || maxFPS)
-            return qt_find_best_framerate_match(captureDevice,
+            return lscs_find_best_framerate_match(captureDevice,
                                                 m_service->session()->defaultCodec(),
                                                 maxFPS ? maxFPS : minFPS);
         // Ignore PAR for the moment (PAR without resolution can
@@ -342,7 +342,7 @@ bool AVFCameraViewfinderSettingsControl2::applySettings(const QCameraViewfinderS
     AVCaptureDeviceFormat *match = findBestFormatMatch(settings);
 
     if (match) {
-        activeFormatChanged = qt_set_active_format(captureDevice, match, false);
+        activeFormatChanged = lscs_set_active_format(captureDevice, match, false);
     } else {
         qDebugCamera() << Q_FUNC_INFO << "matching device format not found";
         // We still can update the pixel format at least.
@@ -387,7 +387,7 @@ bool AVFCameraViewfinderSettingsControl2::applySettings(const QCameraViewfinderS
         }
     }
 
-    qt_set_framerate_limits(captureDevice, videoConnection(), settings.minimumFrameRate(), settings.maximumFrameRate());
+    lscs_set_framerate_limits(captureDevice, videoConnection(), settings.minimumFrameRate(), settings.maximumFrameRate());
 
     return activeFormatChanged;
 }

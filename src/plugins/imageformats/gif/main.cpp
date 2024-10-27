@@ -24,10 +24,10 @@
 #include <qimageiohandler.h>
 #include <qstringlist.h>
 
-#ifndef QT_NO_IMAGEFORMATPLUGIN
+#ifndef LSCS_NO_IMAGEFORMATPLUGIN
 
-#ifdef QT_NO_IMAGEFORMAT_GIF
-#undef QT_NO_IMAGEFORMAT_GIF
+#ifdef LSCS_NO_IMAGEFORMAT_GIF
+#undef LSCS_NO_IMAGEFORMAT_GIF
 #endif
 #include <qgifhandler_p.h>
 

@@ -26,7 +26,7 @@
 
 #include <qwindows_xpstyle_p.h>
 
-#if ! defined(QT_NO_STYLE_WINDOWSVISTA)
+#if ! defined(LSCS_NO_STYLE_WINDOWSVISTA)
 
 #include <qlibrary.h>
 #include <qpaintengine.h>
@@ -211,5 +211,5 @@ public:
     bool transitionsEnabled() const;
 };
 
-#endif // QT_NO_STYLE_WINDOWSVISTA
+#endif // LSCS_NO_STYLE_WINDOWSVISTA
 #endif

@@ -816,14 +816,14 @@ qreal QWindowsFontEngine::minRightBearing() const
     return rbearing;
 }
 
-static inline double qt_fixed_to_double( const FIXED &p )
+static inline double lscs_fixed_to_double( const FIXED &p )
 {
     return ( ( p.value << 16 ) + p.fract ) / 65536.0;
 }
 
-static inline QPointF qt_to_qpointf( const POINTFX &pt, qreal scale )
+static inline QPointF lscs_to_qpointf( const POINTFX &pt, qreal scale )
 {
-    return QPointF( qt_fixed_to_double( pt.x ) * scale, -qt_fixed_to_double( pt.y ) * scale );
+    return QPointF( lscs_fixed_to_double( pt.x ) * scale, -lscs_fixed_to_double( pt.y ) * scale );
 }
 
 #ifndef GGO_UNHINTED
@@ -898,7 +898,7 @@ static bool addGlyphToPath( glyph_t glyph, const QFixedPoint &position, HDC hdc,
     {
         const TTPOLYGONHEADER *ttph = reinterpret_cast<const TTPOLYGONHEADER *>( dataBuffer + headerOffset );
 
-        QPointF lastPoint( qt_to_qpointf( ttph->pfxStart, scale ) );
+        QPointF lastPoint( lscs_to_qpointf( ttph->pfxStart, scale ) );
         path->moveTo( lastPoint + oset );
         offset += sizeof( TTPOLYGONHEADER );
 
@@ -912,7 +912,7 @@ static bool addGlyphToPath( glyph_t glyph, const QFixedPoint &position, HDC hdc,
                 {
                     for ( int i = 0; i < curve->cpfx; ++i )
                     {
-                        QPointF p = qt_to_qpointf( curve->apfx[i], scale ) + oset;
+                        QPointF p = lscs_to_qpointf( curve->apfx[i], scale ) + oset;
                         path->lineTo( p );
                     }
 
@@ -927,8 +927,8 @@ static bool addGlyphToPath( glyph_t glyph, const QFixedPoint &position, HDC hdc,
 
                     for ( int i = 0; i < curve->cpfx - 1; ++i )
                     {
-                        QPointF p1 = qt_to_qpointf( curve->apfx[i], scale ) + oset;
-                        QPointF p2 = qt_to_qpointf( curve->apfx[i + 1], scale ) + oset;
+                        QPointF p1 = lscs_to_qpointf( curve->apfx[i], scale ) + oset;
+                        QPointF p2 = lscs_to_qpointf( curve->apfx[i + 1], scale ) + oset;
 
                         if ( i < curve->cpfx - 2 )
                         {
@@ -950,9 +950,9 @@ static bool addGlyphToPath( glyph_t glyph, const QFixedPoint &position, HDC hdc,
                 {
                     for ( int i = 0; i < curve->cpfx; )
                     {
-                        QPointF p2 = qt_to_qpointf( curve->apfx[i++], scale ) + oset;
-                        QPointF p3 = qt_to_qpointf( curve->apfx[i++], scale ) + oset;
-                        QPointF p4 = qt_to_qpointf( curve->apfx[i++], scale ) + oset;
+                        QPointF p2 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
+                        QPointF p3 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
+                        QPointF p4 = lscs_to_qpointf( curve->apfx[i++], scale ) + oset;
                         path->cubicTo( p2, p3, p4 );
                     }
 

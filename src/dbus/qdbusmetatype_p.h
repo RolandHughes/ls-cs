@@ -26,7 +26,7 @@
 
 #include <qdbusmetatype.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct QDBusMetaTypeId
 {
@@ -41,6 +41,6 @@ struct QDBusMetaTypeId
     static void init();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

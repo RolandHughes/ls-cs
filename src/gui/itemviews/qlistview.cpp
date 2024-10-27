@@ -23,7 +23,7 @@
 
 #include <qlistview.h>
 
-#ifndef QT_NO_LISTVIEW
+#ifndef LSCS_NO_LISTVIEW
 
 #include <qabstractitemdelegate.h>
 #include <qapplication.h>
@@ -39,11 +39,11 @@
 
 #include <qlistview_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
-extern bool qt_sendSpontaneousEvent( QObject *receiver, QEvent *event );
+extern bool lscs_sendSpontaneousEvent( QObject *receiver, QEvent *event );
 
 QListView::QListView( QWidget *parent )
     : QAbstractItemView( *new QListViewPrivate, parent )
@@ -75,7 +75,7 @@ void QListView::setMovement( Movement movement )
     d->modeProperties |= uint( QListViewPrivate::Movement );
     d->movement = movement;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     bool movable = ( movement != Static );
     setDragEnabled( movable );
     d->viewport->setAcceptDrops( movable );
@@ -284,7 +284,7 @@ void QListView::setViewMode( ViewMode mode )
         }
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     bool movable = ( d->movement != Static );
     setDragEnabled( movable );
     setAcceptDrops( movable );
@@ -590,7 +590,7 @@ void QListView::mouseReleaseEvent( QMouseEvent *e )
     }
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QListView::wheelEvent( QWheelEvent *e )
 {
     Q_D( QListView );
@@ -608,7 +608,7 @@ void QListView::wheelEvent( QWheelEvent *e )
 
             if ( e->spontaneous() )
             {
-                qt_sendSpontaneousEvent( d->hbar, &hwe );
+                lscs_sendSpontaneousEvent( d->hbar, &hwe );
             }
             else
             {
@@ -684,7 +684,7 @@ void QListView::resizeEvent( QResizeEvent *e )
     }
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QListView::dragMoveEvent( QDragMoveEvent *e )
 {
@@ -726,7 +726,7 @@ void QListView::startDrag( Qt::DropActions supportedActions )
         QAbstractItemView::startDrag( supportedActions );
     }
 }
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 QStyleOptionViewItem QListView::viewOptions() const
 {
@@ -897,11 +897,11 @@ void QListView::paintEvent( QPaintEvent *e )
         d->delegateForIndex( *it )->paint( &painter, option, *it );
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     d->commonListView->paintDragDrop( &painter );
 #endif
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
     // #### move this implementation into a dynamic class
     if ( d->showElasticBand && d->elasticBand.isValid() )
@@ -1057,7 +1057,7 @@ QModelIndex QListView::moveCursor( CursorAction cursorAction, Qt::KeyboardModifi
 
                 if ( rect.bottom() <= 0 )
                 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
                     if ( QApplication::keypadNavigationEnabled() )
                     {
@@ -1109,7 +1109,7 @@ QModelIndex QListView::moveCursor( CursorAction cursorAction, Qt::KeyboardModifi
 
                 if ( rect.top() >= contents.height() )
                 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
                     if ( QApplication::keypadNavigationEnabled() )
                     {
@@ -1873,7 +1873,7 @@ QItemSelection QListViewPrivate::selection( const QRect &rect ) const
     return selection;
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QAbstractItemView::DropIndicatorPosition QListViewPrivate::position( const QPoint &pos, const QRect &rect,
         const QModelIndex &idx ) const
 {
@@ -1910,7 +1910,7 @@ void QCommonListViewBase::removeHiddenRow( int row )
     dd->hiddenRows.remove( dd->model->index( row, 0, qq->rootIndex() ) );
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 void QCommonListViewBase::paintDragDrop( QPainter *painter )
 {
     // FIXME: Until the we can provide a proper drop indicator
@@ -2081,7 +2081,7 @@ QListModeViewBase::QListModeViewBase( QListView *q, QListViewPrivate *d )
     dd->defaultDropAction = Qt::CopyAction;
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QAbstractItemView::DropIndicatorPosition QListModeViewBase::position( const QPoint &pos, const QRect &rect,
         const QModelIndex &index ) const
 {
@@ -2301,7 +2301,7 @@ bool QListModeViewBase::dropOn( QDropEvent *event, int *dropRow, int *dropCol, Q
     return false;
 }
 
-#endif //QT_NO_DRAGANDDROP
+#endif //LSCS_NO_DRAGANDDROP
 
 void QListModeViewBase::updateVerticalScrollBar( const QSize &step )
 {
@@ -3154,7 +3154,7 @@ void QIconModeViewBase::removeHiddenRow( int row )
     }
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 bool QIconModeViewBase::filterStartDrag( Qt::DropActions supportedActions )
 {
     // This function does the same thing as in QAbstractItemView::startDrag(),
@@ -3326,7 +3326,7 @@ bool QIconModeViewBase::filterDragMoveEvent( QDragMoveEvent *e )
 
     return true;
 }
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 void QIconModeViewBase::setRowCount( int rowCount )
 {
@@ -3864,7 +3864,7 @@ void QIconModeViewBase::updateContentsSize()
 
 void QListView::currentChanged( const QModelIndex &current, const QModelIndex &previous )
 {
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -3886,7 +3886,7 @@ void QListView::currentChanged( const QModelIndex &current, const QModelIndex &p
 
 void QListView::selectionChanged( const QItemSelection &selected, const QItemSelection &deselected )
 {
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -3942,4 +3942,4 @@ QSize QListView::viewportSizeHint() const
     return QAbstractItemView::viewportSizeHint();
 }
 
-#endif // QT_NO_LISTVIEW
+#endif // LSCS_NO_LISTVIEW

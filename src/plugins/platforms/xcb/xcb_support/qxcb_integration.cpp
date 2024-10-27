@@ -39,14 +39,14 @@
 #include <qxcb_screen.h>
 #include <qxcb_window.h>
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 #include <qxcb_sessionmanager.h>
 #endif
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qplatform_accessibility.h>
 
-#ifndef QT_NO_ACCESSIBILITY_ATSPI_BRIDGE
+#ifndef LSCS_NO_ACCESSIBILITY_ATSPI_BRIDGE
 #include <bridge_p.h>
 #endif
 
@@ -205,7 +205,7 @@ QXcbIntegration::QXcbIntegration( const QStringList &parameters, int &argc, char
 
     m_canGrab = ( !underDebugger && !noGrabArg ) || ( underDebugger && doGrabArg );
 
-    static bool canNotGrabEnv = qgetenv( "QT_XCB_NO_GRAB_SERVER" ).isEmpty();
+    static bool canNotGrabEnv = qgetenv( "LSCS_XCB_NO_GRAB_SERVER" ).isEmpty();
 
     if ( canNotGrabEnv )
     {
@@ -257,7 +257,7 @@ QPlatformWindow *QXcbIntegration::createPlatformWindow( QWindow *window ) const
     return xcbWindow;
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 QPlatformOpenGLContext *QXcbIntegration::createPlatformOpenGLContext( QOpenGLContext *context ) const
 {
     QXcbScreen *screen = static_cast<QXcbScreen *>( context->screen()->handle() );
@@ -373,14 +373,14 @@ QPlatformNativeInterface *QXcbIntegration::nativeInterface() const
     return m_nativeInterface.data();
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 QPlatformClipboard *QXcbIntegration::clipboard() const
 {
     return m_connections.at( 0 )->clipboard();
 }
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QPlatformDrag *QXcbIntegration::drag() const
 {
     return m_connections.at( 0 )->drag();
@@ -392,10 +392,10 @@ QPlatformInputContext *QXcbIntegration::inputContext() const
     return m_inputContext.data();
 }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 QPlatformAccessibility *QXcbIntegration::accessibility() const
 {
-#ifndef QT_NO_ACCESSIBILITY_ATSPI_BRIDGE
+#ifndef LSCS_NO_ACCESSIBILITY_ATSPI_BRIDGE
 
     if ( ! m_accessibility )
     {
@@ -570,7 +570,7 @@ QByteArray QXcbIntegration::wmClass() const
     return m_wmClass;
 }
 
-#if ! defined(QT_NO_SESSIONMANAGER) && defined(XCB_USE_SM)
+#if ! defined(LSCS_NO_SESSIONMANAGER) && defined(XCB_USE_SM)
 QPlatformSessionManager *QXcbIntegration::createPlatformSessionManager( const QString &id, const QString &key ) const
 {
     return new QXcbSessionManager( id, key );

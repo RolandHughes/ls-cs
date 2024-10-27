@@ -28,7 +28,7 @@
 #include <QtCore/qlist.h>
 #include <QtCore/qmap.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCommandSchedulerInterface;
 class QScriptDebuggerJobSchedulerInterface;
@@ -55,6 +55,6 @@ private:
     Q_DISABLE_COPY( QScriptCompletionTask )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

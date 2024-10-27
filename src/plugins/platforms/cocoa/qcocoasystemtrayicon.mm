@@ -28,7 +28,7 @@
 * Refer to APPLE_LICENSE.TXT (in this directory) for license terms
 ***********************************************************************/
 
-#define QT_MAC_SYSTEMTRAY_USE_GROWL
+#define LSCS_MAC_SYSTEMTRAY_USE_GROWL
 
 #include <qcocoasystemtrayicon.h>
 #include <qtemporaryfile.h>
@@ -37,7 +37,7 @@
 
 #include <qcocoamenu.h>
 
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 #include <qcocoahelpers.h>
 
 #import <AppKit/AppKit.h>
@@ -218,7 +218,7 @@ void QCocoaSystemTrayIcon::updateIcon(const QIcon &icon)
       p.drawPixmap(r, pixmap);
    }
 
-   NSImage *nsimage = static_cast<NSImage *>(qt_mac_create_nsimage(fullHeightPixmap));
+   NSImage *nsimage = static_cast<NSImage *>(lscs_mac_create_nsimage(fullHeightPixmap));
    [nsimage setTemplate: icon.isMask()];
    [(NSImageView *)[[m_sys->item item] view] setImage: nsimage];
    [nsimage release];

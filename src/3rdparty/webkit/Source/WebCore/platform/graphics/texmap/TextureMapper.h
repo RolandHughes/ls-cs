@@ -21,8 +21,8 @@
 #define TextureMapper_h
 
 #if USE(ACCELERATED_COMPOSITING)
-#if (defined(QT_OPENGL_LIB))
-#if defined(QT_OPENGL_ES_2) && !defined(TEXMAP_OPENGL_ES_2)
+#if (defined(LSCS_OPENGL_LIB))
+#if defined(LSCS_OPENGL_ES_2) && !defined(TEXMAP_OPENGL_ES_2)
 #define TEXMAP_OPENGL_ES_2
 #endif
 #endif

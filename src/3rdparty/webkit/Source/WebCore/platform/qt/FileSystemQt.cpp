@@ -123,7 +123,7 @@ Vector<String> listDirectory( const String &path, const String &filter )
 
 String openTemporaryFile( const String &prefix, PlatformFileHandle &handle )
 {
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
     QTemporaryFile *tempFile = new QTemporaryFile( QDir::tempPath() + QLatin1Char( '/' ) + QString( prefix ) );
     tempFile->setAutoRemove( false );
     QFile *temp = tempFile;

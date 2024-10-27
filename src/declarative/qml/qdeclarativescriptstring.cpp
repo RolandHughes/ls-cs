@@ -23,7 +23,7 @@
 
 #include "qdeclarativescriptstring.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeScriptStringPrivate : public QSharedData
 {
@@ -144,5 +144,5 @@ void QDeclarativeScriptString::setScript( const QString &script )
     d->script = script;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

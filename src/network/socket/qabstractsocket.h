@@ -187,7 +187,7 @@ public:
     bool waitForBytesWritten( int msecs = 30000 ) override;
     virtual bool waitForDisconnected( int msecs = 30000 );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     void setProxy( const QNetworkProxy &networkProxy );
     QNetworkProxy proxy() const;
 #endif
@@ -207,7 +207,7 @@ public:
     NET_LSCS_SIGNAL_1( Public, void error( QAbstractSocket::SocketError socketError ) )
     NET_LSCS_SIGNAL_OVERLOAD( error, ( QAbstractSocket::SocketError ), socketError )
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
     NET_LSCS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
 #endif
@@ -255,7 +255,7 @@ Q_NETWORK_EXPORT QDebug operator<<( QDebug, QAbstractSocket::SocketState );
 // moved here to avoid recursive include issues
 #include <qhostinfo.h>
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 #include <qnetworkproxy.h>
 #endif
 

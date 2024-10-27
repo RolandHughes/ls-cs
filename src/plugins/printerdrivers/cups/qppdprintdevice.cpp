@@ -28,7 +28,7 @@
 #include <qdebug.h>
 #include <qstringlist.h>
 
-#ifndef QT_LINUXBASE
+#ifndef LSCS_LINUXBASE
 // LSB merges everything into cups.h
 #include <cups/language.h>
 #endif
@@ -589,7 +589,7 @@ QPrint::ColorMode QPpdPrintDevice::defaultColorMode() const
     return QPrint::GrayScale;
 }
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
 void QPpdPrintDevice::loadMimeTypes() const
 {
     // TODO No CUPS api? Need to manually load CUPS mime.types file?

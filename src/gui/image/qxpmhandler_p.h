@@ -26,7 +26,7 @@
 
 #include <qimageiohandler.h>
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
 
 
 
@@ -70,6 +70,6 @@ private:
 
 
 
-#endif // QT_NO_IMAGEFORMAT_XPM
+#endif // LSCS_NO_IMAGEFORMAT_XPM
 
 #endif

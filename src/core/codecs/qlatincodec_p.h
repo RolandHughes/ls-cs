@@ -26,7 +26,7 @@
 
 #include <qtextcodec.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 class QLatin1Codec : public QTextCodec
 {
@@ -54,6 +54,6 @@ public:
     int mibEnum() const override;
 };
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
 #endif

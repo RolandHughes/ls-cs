@@ -40,7 +40,7 @@
 #define INT_MAX 2147483647
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 #define PI_SQR 9.8696044
 // parabolic approximation
 inline qreal fastSin( qreal theta )
@@ -1485,4 +1485,4 @@ void QDeclarativeParticles::componentComplete()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

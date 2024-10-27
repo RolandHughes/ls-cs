@@ -269,7 +269,7 @@ QPolygonF QMatrix::map( const QPolygonF &a ) const
     return p;
 }
 
-extern QPainterPath qt_regionToPath( const QRegion &region );
+extern QPainterPath lscs_regionToPath( const QRegion &region );
 
 QRegion QMatrix::map( const QRegion &r ) const
 {
@@ -286,7 +286,7 @@ QRegion QMatrix::map( const QRegion &r ) const
         return copy;
     }
 
-    QPainterPath p = map( qt_regionToPath( r ) );
+    QPainterPath p = map( lscs_regionToPath( r ) );
     return p.toFillPolygon().toPolygon();
 }
 

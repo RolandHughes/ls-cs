@@ -395,7 +395,7 @@ public:
     QTextOption defaultTextOption;
     Qt::CursorMoveStyle defaultCursorMoveStyle;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     QCss::StyleSheet parsedDefaultStyleSheet;
 #endif
 

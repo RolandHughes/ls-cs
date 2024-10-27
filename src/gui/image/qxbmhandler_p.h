@@ -26,7 +26,7 @@
 
 #include <qimageiohandler.h>
 
-#ifndef QT_NO_IMAGEFORMAT_XBM
+#ifndef LSCS_NO_IMAGEFORMAT_XBM
 
 
 
@@ -65,6 +65,6 @@ private:
 
 
 
-#endif // QT_NO_IMAGEFORMAT_XBM
+#endif // LSCS_NO_IMAGEFORMAT_XBM
 
 #endif // QXBMHANDLER_P_H

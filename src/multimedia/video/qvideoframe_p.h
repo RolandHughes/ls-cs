@@ -28,7 +28,7 @@
 
 
 
-Q_MULTIMEDIA_EXPORT QImage qt_imageFromVideoFrame( const QVideoFrame &frame );
+Q_MULTIMEDIA_EXPORT QImage lscs_imageFromVideoFrame( const QVideoFrame &frame );
 
 
 #endif

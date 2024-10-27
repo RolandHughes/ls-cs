@@ -27,7 +27,7 @@
 #include <qmath.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_QUATERNION
+#ifndef LSCS_NO_QUATERNION
 
 qreal QQuaternion::length() const
 {
@@ -87,7 +87,7 @@ QVector3D QQuaternion::rotatedVector( const QVector3D &vector ) const
     return ( *this * QQuaternion( 0, vector ) * conjugate() ).vector();
 }
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 QQuaternion QQuaternion::fromAxisAndAngle( const QVector3D &axis, qreal angle )
 {

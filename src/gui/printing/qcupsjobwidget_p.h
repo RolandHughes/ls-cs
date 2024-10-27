@@ -27,7 +27,7 @@
 #include <ui_qcupsjobwidget.h>
 #include <qcups_p.h>
 
-#if ! defined(QT_NO_PRINTER) && ! defined(QT_NO_CUPS)
+#if ! defined(LSCS_NO_PRINTER) && ! defined(LSCS_NO_CUPS)
 
 class QTime;
 class QPrinter;
@@ -76,6 +76,6 @@ private:
     GUI_LSCS_SLOT_2( toggleJobHoldTime )
 };
 
-#endif // QT_NO_PRINTER / QT_NO_CUPS
+#endif // LSCS_NO_PRINTER / LSCS_NO_CUPS
 
 #endif

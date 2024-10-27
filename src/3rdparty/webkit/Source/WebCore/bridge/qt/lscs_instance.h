@@ -21,8 +21,8 @@
 *
 ***********************************************************************/
 
-#ifndef qt_instance_h
-#define qt_instance_h
+#ifndef lscs_instance_h
+#define lscs_instance_h
 
 #include "BridgeJSC.h"
 #include "runtime_root.h"

@@ -60,7 +60,7 @@ public:
 private:
     void populateFromDescriptor( CTFontDescriptorRef font );
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
     bool m_useFreeType;
     QFontEngine *freeTypeFontEngine( const QFontDef &fontDef, const QString &filename, const QByteArray &fontData = QByteArray() );
 #endif

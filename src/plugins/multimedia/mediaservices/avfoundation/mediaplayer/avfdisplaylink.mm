@@ -25,7 +25,7 @@
 
 #include <qcoreapplication.h>
 
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
 #include <qdebug.h>
 #endif
 
@@ -127,7 +127,7 @@ AVFDisplayLink::AVFDisplayLink(QObject *parent)
 
 AVFDisplayLink::~AVFDisplayLink()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
 

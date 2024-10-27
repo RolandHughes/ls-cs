@@ -4,7 +4,7 @@ add_library(LsCs::LsCsSvg ALIAS LsCsSvg)
 set_target_properties(LsCsSvg PROPERTIES OUTPUT_NAME LsCsSvg${BUILD_ABI})
 
 add_definitions(
-   -DQT_BUILD_SVG_LIB
+   -DLSCS_BUILD_SVG_LIB
 )
 
 set(EXTRA_SVG_CXXFLAGS)

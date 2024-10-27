@@ -54,7 +54,7 @@ public:
 
     int maxConnections;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy proxy;
     QNetworkProxy resolveProxy( const QHostAddress &address, quint16 port );
 #endif
@@ -72,7 +72,7 @@ public:
     void exceptionNotification() override {}
     void connectionNotification() override {}
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator * ) override
     {
         ( void ) proxy;

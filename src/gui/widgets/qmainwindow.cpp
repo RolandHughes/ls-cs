@@ -24,7 +24,7 @@
 #include <qmainwindow.h>
 #include <qmainwindowlayout_p.h>
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 
 #include <qdockwidget.h>
 #include <qtoolbar.h>
@@ -39,7 +39,7 @@
 #include <qtoolbar_p.h>
 #include <qwidgetanimator_p.h>
 
-// #define QT_EXPERIMENTAL_CLIENT_DECORATIONS
+// #define LSCS_EXPERIMENTAL_CLIENT_DECORATIONS
 
 #ifdef Q_OS_DARWIN
 #include <qplatform_nativeinterface.h>
@@ -57,7 +57,7 @@ public:
         , useUnifiedToolBar( false )
 #endif
 
-#if !defined(QT_NO_DOCKWIDGET) && !defined(QT_NO_CURSOR)
+#if !defined(LSCS_NO_DOCKWIDGET) && !defined(LSCS_NO_CURSOR)
         , hasOldCursor( false ), cursorAdjusted( false )
 #endif
     {
@@ -75,7 +75,7 @@ public:
     QList<int> hoverSeparator;
     QPoint hoverPos;
 
-#if ! defined(QT_NO_DOCKWIDGET) && !defined(QT_NO_CURSOR)
+#if ! defined(LSCS_NO_DOCKWIDGET) && !defined(LSCS_NO_CURSOR)
     QCursor separatorCursor( const QList<int> &path ) const;
     void adjustCursor( const QPoint &pos );
     QCursor oldCursor;
@@ -90,13 +90,13 @@ public:
     }
 };
 
-QMainWindowLayout *qt_mainwindow_layout( const QMainWindow *mainWindow )
+QMainWindowLayout *lscs_mainwindow_layout( const QMainWindow *mainWindow )
 {
     return QMainWindowPrivate::mainWindowLayout( mainWindow );
 }
 
-#ifdef QT_EXPERIMENTAL_CLIENT_DECORATIONS
-Q_GUI_EXPORT void qt_setMainWindowTitleWidget( QMainWindow *mainWindow, Qt::DockWidgetArea area, QWidget *widget )
+#ifdef LSCS_EXPERIMENTAL_CLIENT_DECORATIONS
+Q_GUI_EXPORT void lscs_setMainWindowTitleWidget( QMainWindow *mainWindow, Qt::DockWidgetArea area, QWidget *widget )
 {
     QGridLayout *topLayout = qobject_cast<QGridLayout *>( mainWindow->layout() );
     Q_ASSERT( topLayout );
@@ -127,7 +127,7 @@ Q_GUI_EXPORT void qt_setMainWindowTitleWidget( QMainWindow *mainWindow, Qt::Dock
             break;
 
         default:
-            Q_ASSERT_X( false, "qt_setMainWindowTitleWidget", "Unknown area" );
+            Q_ASSERT_X( false, "lscs_setMainWindowTitleWidget", "Unknown area" );
             return;
     }
 
@@ -144,7 +144,7 @@ void QMainWindowPrivate::init()
 {
     Q_Q( QMainWindow );
 
-#ifdef QT_EXPERIMENTAL_CLIENT_DECORATIONS
+#ifdef LSCS_EXPERIMENTAL_CLIENT_DECORATIONS
     QGridLayout *topLayout = new QGridLayout( q );
     topLayout->setContentsMargins( 0, 0, 0, 0 );
 
@@ -258,7 +258,7 @@ void QMainWindow::setToolButtonStyle( Qt::ToolButtonStyle toolButtonStyle )
     emit toolButtonStyleChanged( d->toolButtonStyle );
 }
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
 QMenuBar *QMainWindow::menuBar() const
 {
@@ -327,9 +327,9 @@ void QMainWindow::setMenuWidget( QWidget *menuBar )
 
     d->layout->setMenuBar( menuBar );
 }
-#endif // QT_NO_MENUBAR
+#endif // LSCS_NO_MENUBAR
 
-#ifndef QT_NO_STATUSBAR
+#ifndef LSCS_NO_STATUSBAR
 QStatusBar *QMainWindow::statusBar() const
 {
     QStatusBar *statusbar = d_func()->layout->statusBar();
@@ -392,7 +392,7 @@ QWidget *QMainWindow::takeCentralWidget()
     return oldcentralwidget;
 }
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
 void QMainWindow::setCorner( Qt::Corner corner, Qt::DockWidgetArea area )
 {
@@ -433,7 +433,7 @@ Qt::DockWidgetArea QMainWindow::corner( Qt::Corner corner ) const
 }
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 static bool checkToolBarArea( Qt::ToolBarArea area, const char *where )
 {
@@ -491,14 +491,14 @@ void QMainWindow::addToolBar( Qt::ToolBarArea area, QToolBar *toolbar )
     {
         //removing a toolbar which is dragging will cause crash
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
         bool animated = isAnimated();
         setAnimated( false );
 #endif
 
         toolbar->d_func()->endDrag();
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
         setAnimated( animated );
 #endif
 
@@ -570,9 +570,9 @@ bool QMainWindow::toolBarBreak( QToolBar *toolbar ) const
     return d_func()->layout->toolBarBreak( toolbar );
 }
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
 bool QMainWindow::isAnimated() const
 {
@@ -641,7 +641,7 @@ static bool checkDockWidgetArea( Qt::DockWidgetArea area, const char *where )
     return false;
 }
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 bool QMainWindow::documentMode() const
 {
@@ -654,7 +654,7 @@ void QMainWindow::setDocumentMode( bool enabled )
 }
 #endif
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
 QTabWidget::TabShape QMainWindow::tabShape() const
 {
@@ -738,7 +738,7 @@ QList<QDockWidget *> QMainWindow::tabifiedDockWidgets( QDockWidget *dockwidget )
 {
     QList<QDockWidget *> ret;
 
-#if defined(QT_NO_TABBAR)
+#if defined(LSCS_NO_TABBAR)
     ( void ) dockwidget;
 
 #else
@@ -789,7 +789,7 @@ void QMainWindow::resizeDocks( const QList<QDockWidget *> &docks,
     d_func()->layout->invalidate();
 }
 
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
 QByteArray QMainWindow::saveState( int version ) const
 {
@@ -829,7 +829,7 @@ bool QMainWindow::restoreState( const QByteArray &state, int version )
     return restored;
 }
 
-#if !defined(QT_NO_DOCKWIDGET) && !defined(QT_NO_CURSOR)
+#if !defined(LSCS_NO_DOCKWIDGET) && !defined(LSCS_NO_CURSOR)
 QCursor QMainWindowPrivate::separatorCursor( const QList<int> &path ) const
 {
     QDockAreaLayoutInfo *info = layout->layoutState.dockAreaLayout.info( path );
@@ -947,7 +947,7 @@ bool QMainWindow::event( QEvent *event )
     switch ( event->type() )
     {
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
         case QEvent::Paint:
         {
@@ -957,7 +957,7 @@ bool QMainWindow::event( QEvent *event )
             break;
         }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
         case QEvent::HoverMove:
         {
@@ -997,7 +997,7 @@ bool QMainWindow::event( QEvent *event )
         {
             QMouseEvent *e = static_cast<QMouseEvent *>( event );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
             d->adjustCursor( e->pos() );
 #endif
 
@@ -1030,7 +1030,7 @@ bool QMainWindow::event( QEvent *event )
 
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case QEvent::ToolBarChange:
         {
@@ -1040,11 +1040,11 @@ bool QMainWindow::event( QEvent *event )
 
 #endif
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 
         case QEvent::StatusTip:
 
-#ifndef QT_NO_STATUSBAR
+#ifndef LSCS_NO_STATUSBAR
             if ( QStatusBar *sb = d->layout->statusBar() )
             {
                 sb->showMessage( static_cast<QStatusTipEvent *>( event )->tip() );
@@ -1058,7 +1058,7 @@ bool QMainWindow::event( QEvent *event )
 
         case QEvent::StyleChange:
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
             d->layout->layoutState.dockAreaLayout.styleChangedEvent();
 #endif
 
@@ -1069,7 +1069,7 @@ bool QMainWindow::event( QEvent *event )
 
             break;
 
-#if !defined(QT_NO_DOCKWIDGET) && !defined(QT_NO_CURSOR)
+#if !defined(LSCS_NO_DOCKWIDGET) && !defined(LSCS_NO_CURSOR)
 
         case QEvent::CursorChange:
 
@@ -1095,7 +1095,7 @@ bool QMainWindow::event( QEvent *event )
     return QWidget::event( event );
 }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 void QMainWindow::setUnifiedTitleAndToolBarOnMac( bool set )
 {
@@ -1140,7 +1140,7 @@ bool QMainWindow::unifiedTitleAndToolBarOnMac() const
 
 bool QMainWindow::isSeparator( const QPoint &pos ) const
 {
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
     Q_D( const QMainWindow );
     return !d->layout->layoutState.dockAreaLayout.findSeparator( pos ).isEmpty();
 #else
@@ -1149,7 +1149,7 @@ bool QMainWindow::isSeparator( const QPoint &pos ) const
 #endif
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
 void QMainWindow::contextMenuEvent( QContextMenuEvent *event )
 {
@@ -1160,7 +1160,7 @@ void QMainWindow::contextMenuEvent( QContextMenuEvent *event )
 
     while ( child && child != this )
     {
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         if ( QMenuBar *mb = qobject_cast<QMenuBar *>( child ) )
         {
@@ -1174,7 +1174,7 @@ void QMainWindow::contextMenuEvent( QContextMenuEvent *event )
 
 #endif
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
         if ( QDockWidget *dw = qobject_cast<QDockWidget *>( child ) )
         {
@@ -1195,7 +1195,7 @@ void QMainWindow::contextMenuEvent( QContextMenuEvent *event )
 
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         if ( QToolBar *tb = qobject_cast<QToolBar *>( child ) )
         {
@@ -1216,7 +1216,7 @@ void QMainWindow::contextMenuEvent( QContextMenuEvent *event )
         return;
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     QMenu *popup = createPopupMenu();
 
     if ( popup )
@@ -1235,9 +1235,9 @@ void QMainWindow::contextMenuEvent( QContextMenuEvent *event )
 
 #endif
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
 QMenu *QMainWindow::createPopupMenu()
 {
@@ -1245,7 +1245,7 @@ QMenu *QMainWindow::createPopupMenu()
 
     QMenu *menu = nullptr;
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
     QList<QDockWidget *> dockwidgets = findChildren<QDockWidget *>();
 
     if ( dockwidgets.size() )
@@ -1292,7 +1292,7 @@ QMenu *QMainWindow::createPopupMenu()
 
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
     QList<QToolBar *> toolbars = findChildren<QToolBar *>();
 
     if ( toolbars.size() )
@@ -1318,6 +1318,6 @@ QMenu *QMainWindow::createPopupMenu()
 
     return menu;
 }
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
-#endif // QT_NO_MAINWINDOW
+#endif // LSCS_NO_MAINWINDOW

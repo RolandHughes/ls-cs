@@ -70,7 +70,7 @@ QFilePrivate::~QFilePrivate()
 
 bool QFilePrivate::openExternalFile( int flags, int fd, QFile::FileHandleFlags handleFlags )
 {
-#ifdef QT_NO_FSFILEENGINE
+#ifdef LSCS_NO_FSFILEENGINE
     ( void ) flags;
     ( void ) fd;
 
@@ -88,7 +88,7 @@ bool QFilePrivate::openExternalFile( int flags, int fd, QFile::FileHandleFlags h
 
 bool QFilePrivate::openExternalFile( int flags, FILE *fh, QFile::FileHandleFlags handleFlags )
 {
-#ifdef QT_NO_FSFILEENGINE
+#ifdef LSCS_NO_FSFILEENGINE
     ( void ) flags;
     ( void ) fh;
 
@@ -497,7 +497,7 @@ bool QFile::copy( const QString &newName )
             {
                 QString fileTemplate = "%1/lscs_temp.XXXXXX";
 
-#ifdef QT_NO_TEMPORARYFILE
+#ifdef LSCS_NO_TEMPORARYFILE
                 QFile out( fileTemplate.formatArg( QFileInfo( newName ).path() ) );
 
                 if ( ! out.open( QIODevice::ReadWrite ) )
@@ -565,7 +565,7 @@ bool QFile::copy( const QString &newName )
                         d->setError( QFile::CopyError, tr( "Can not create %1 for output" ).formatArg( newName ) );
                     }
 
-#ifdef QT_NO_TEMPORARYFILE
+#ifdef LSCS_NO_TEMPORARYFILE
 
                     if ( error )
                     {
@@ -683,7 +683,7 @@ bool QFile::open( FILE *fh, OpenMode mode, FileHandleFlags handleFlags )
         }
         else
         {
-            qint64 pos = ( qint64 )QT_FTELL( fh );
+            qint64 pos = ( qint64 )LSCS_FTELL( fh );
 
             if ( pos != -1 )
             {
@@ -731,7 +731,7 @@ bool QFile::open( int fd, OpenMode mode, FileHandleFlags handleFlags )
         }
         else
         {
-            qint64 pos = ( qint64 )QT_LSEEK( fd, QT_OFF_T( 0 ), SEEK_CUR );
+            qint64 pos = ( qint64 )LSCS_LSEEK( fd, LSCS_OFF_T( 0 ), SEEK_CUR );
 
             if ( pos != -1 )
             {

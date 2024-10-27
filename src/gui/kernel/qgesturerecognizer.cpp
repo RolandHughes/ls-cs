@@ -25,7 +25,7 @@
 #include <qgesture_p.h>
 #include <qgesturemanager_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 QGestureRecognizer::QGestureRecognizer()
 {
@@ -65,4 +65,4 @@ void QGestureRecognizer::unregisterRecognizer( Qt::GestureType type )
 
 
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES

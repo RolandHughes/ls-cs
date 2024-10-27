@@ -24,7 +24,7 @@
 #include <qfilesystemwatcher.h>
 #include <qfilesystemwatcher_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qdatetime.h>
 #include <qdebug.h>
@@ -479,7 +479,7 @@ void QFileSystemWatcher::addPaths( const QStringList &paths )
     QStringList p = paths;
     QFileSystemWatcherEngine *engine = nullptr;
 
-    if ( ! objectName().startsWith( QLatin1String( "_qt_autotest_force_engine_" ) ) )
+    if ( ! objectName().startsWith( QLatin1String( "_lscs_autotest_force_engine_" ) ) )
     {
         // normal runtime case - search intelligently for best engine
         if ( d->native )
@@ -590,4 +590,4 @@ QStringList QFileSystemWatcher::files() const
     return d->files;
 }
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER

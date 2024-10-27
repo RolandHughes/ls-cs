@@ -25,7 +25,7 @@
 
 #include "qdeclarative.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \class QDeclarativePropertyValueSource
@@ -54,4 +54,4 @@ QDeclarativePropertyValueSource::~QDeclarativePropertyValueSource()
     be called by the QML engine when assigning a value source.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

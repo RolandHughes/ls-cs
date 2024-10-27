@@ -35,7 +35,7 @@
 
 namespace {
 
-bool qt_is_writable_file_URL(NSURL *fileURL)
+bool lscs_is_writable_file_URL(NSURL *fileURL)
 {
     Q_ASSERT(fileURL);
 
@@ -50,7 +50,7 @@ bool qt_is_writable_file_URL(NSURL *fileURL)
     return false;
 }
 
-bool qt_file_exists(NSURL *fileURL)
+bool lscs_file_exists(NSURL *fileURL)
 {
     Q_ASSERT(fileURL);
 
@@ -220,13 +220,13 @@ void AVFMediaRecorderControlIOS::setState(QMediaRecorder::State state)
             Q_EMIT error(QMediaRecorder::ResourceError, tr("Invalid output file URL"));
             return;
         }
-        if (!qt_is_writable_file_URL(nsFileURL)) {
+        if (!lscs_is_writable_file_URL(nsFileURL)) {
             qWarning() << Q_FUNC_INFO << "invalid output URL:" << fileURL
                        << "(the location is not writable)";
             Q_EMIT error(QMediaRecorder::ResourceError, tr("Non-writeable file location"));
             return;
         }
-        if (qt_file_exists(nsFileURL)) {
+        if (lscs_file_exists(nsFileURL)) {
             // We test for/handle this error here since AWAssetWriter will raise an
             // Objective-C exception, which is not good at all.
             qWarning() << Q_FUNC_INFO << "invalid output URL:" << fileURL

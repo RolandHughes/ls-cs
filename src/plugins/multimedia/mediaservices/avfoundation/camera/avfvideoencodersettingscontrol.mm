@@ -88,10 +88,10 @@ QList<QSize> AVFVideoEncoderSettingsControl::supportedResolutions(const QVideoEn
         AVCaptureDevice *device = m_service->session()->videoCaptureDevice();
         if (device) {
             int maximumWidth = 0;
-            const QVector<AVCaptureDeviceFormat *> formats(qt_unique_device_formats(device,
+            const QVector<AVCaptureDeviceFormat *> formats(lscs_unique_device_formats(device,
                                                                                     m_service->session()->defaultCodec()));
             for (int i = 0; i < formats.size(); ++i) {
-                const QSize res(qt_device_format_resolution(formats[i]));
+                const QSize res(lscs_device_format_resolution(formats[i]));
                 if (res.width() > maximumWidth)
                     maximumWidth = res.width();
             }
@@ -123,17 +123,17 @@ QList<qreal> AVFVideoEncoderSettingsControl::supportedFrameRates(const QVideoEnc
         QVector<AVFPSRange> allRates;
 
         if (!settings.resolution().isValid()) {
-            const QVector<AVCaptureDeviceFormat *> formats(qt_unique_device_formats(device, 0));
+            const QVector<AVCaptureDeviceFormat *> formats(lscs_unique_device_formats(device, 0));
             for (int i = 0; i < formats.size(); ++i) {
                 AVCaptureDeviceFormat *format = formats.at(i);
-                allRates += qt_device_format_framerates(format);
+                allRates += lscs_device_format_framerates(format);
             }
         } else {
-            AVCaptureDeviceFormat *format = qt_find_best_resolution_match(device,
+            AVCaptureDeviceFormat *format = lscs_find_best_resolution_match(device,
                                                                           settings.resolution(),
                                                                           m_service->session()->defaultCodec());
             if (format)
-                allRates = qt_device_format_framerates(format);
+                allRates = lscs_device_format_framerates(format);
         }
 
         for (int j = 0; j < allRates.size(); ++j) {
@@ -194,7 +194,7 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
     if (!device)
         return nil;
 
-    AVFPSRange currentFps = qt_current_framerates(device, connection);
+    AVFPSRange currentFps = lscs_current_framerates(device, connection);
     const bool needFpsChange = m_requestedSettings.frameRate() > 0
                                && m_requestedSettings.frameRate() != currentFps.second;
 
@@ -230,12 +230,12 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
                 && m_requestedSettings.frameRate() > 0
                 && !format_supports_framerate(currentFormat, m_requestedSettings.frameRate())) {
 
-            newFormat = qt_find_best_framerate_match(device,
+            newFormat = lscs_find_best_framerate_match(device,
                                                      m_service->session()->defaultCodec(),
                                                      m_requestedSettings.frameRate());
 
         } else if (w > 0 && h > 0) {
-            AVCaptureDeviceFormat *f = qt_find_best_resolution_match(device,
+            AVCaptureDeviceFormat *f = lscs_find_best_resolution_match(device,
                                                                      m_requestedSettings.resolution(),
                                                                      m_service->session()->defaultCodec());
 
@@ -250,7 +250,7 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
             }
         }
 
-        if (qt_set_active_format(device, newFormat, !needFpsChange)) {
+        if (lscs_set_active_format(device, newFormat, !needFpsChange)) {
             m_restoreFormat = [currentFormat retain];
             formatDesc = newFormat.formatDescription;
             dim = CMVideoFormatDescriptionGetDimensions(formatDesc);
@@ -283,7 +283,7 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
         [videoSettings setObject:[NSNumber numberWithInt:h] forKey:AVVideoHeightKey];
         m_actualSettings.setResolution(w, h);
     } else {
-        m_actualSettings.setResolution(qt_device_format_resolution(device.activeFormat));
+        m_actualSettings.setResolution(lscs_device_format_resolution(device.activeFormat));
     }
 
     // -- FPS
@@ -291,9 +291,9 @@ NSDictionary *AVFVideoEncoderSettingsControl::applySettings(AVCaptureConnection 
     if (needFpsChange) {
         m_restoreFps = currentFps;
         const qreal fps = m_requestedSettings.frameRate();
-        qt_set_framerate_limits(device, connection, fps, fps);
+        lscs_set_framerate_limits(device, connection, fps, fps);
     }
-    m_actualSettings.setFrameRate(qt_current_framerates(device, connection).second);
+    m_actualSettings.setFrameRate(lscs_current_framerates(device, connection).second);
 
     // -- Codec Settings
 
@@ -355,14 +355,14 @@ void AVFVideoEncoderSettingsControl::unapplySettings(AVCaptureConnection *connec
     const bool needFpsChanged = m_restoreFps.first || m_restoreFps.second;
 
     if (m_restoreFormat) {
-        qt_set_active_format(device, m_restoreFormat, !needFpsChanged);
+        lscs_set_active_format(device, m_restoreFormat, !needFpsChanged);
         [m_restoreFormat release];
         m_restoreFormat = nil;
     }
 
 
     if (needFpsChanged) {
-        qt_set_framerate_limits(device, connection, m_restoreFps.first, m_restoreFps.second);
+        lscs_set_framerate_limits(device, connection, m_restoreFps.first, m_restoreFps.second);
         m_restoreFps = AVFPSRange();
     }
 }

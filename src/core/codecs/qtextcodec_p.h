@@ -27,7 +27,7 @@
 #include <string.h>
 #include <qtextcodec.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 using QTextCodecStateFreeFunction = void ( * )( QTextCodec::ConverterState * );
 
@@ -82,6 +82,6 @@ public:
     };
 };
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
 #endif

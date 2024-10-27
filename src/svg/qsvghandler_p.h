@@ -39,7 +39,7 @@ class QSvgStyleSelector;
 class QSvgTinyDocument;
 class QXmlStreamReader;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 struct QSvgCssAttribute
 {
     QString name;
@@ -93,7 +93,7 @@ public:
     void popColor();
     QColor currentColor() const;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     void setInStyle( bool b );
     bool inStyle() const;
 
@@ -103,7 +103,7 @@ public:
     void setAnimPeriod( int start, int end );
     int animationDuration() const;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     void parseCSStoXMLAttrs( QString css, QVector<QSvgCssAttribute> *attributes );
 #endif
 
@@ -142,7 +142,7 @@ private:
     QStack<QColor> m_colorStack;
     QStack<int>    m_colorTagCount;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     bool m_inStyle;
     QSvgStyleSelector *m_selector;
     QCss::Parser m_cssParser;

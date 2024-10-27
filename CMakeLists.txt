@@ -230,7 +230,7 @@ else()
 endif()
 
 string(TIMESTAMP BUILD_DATE "%Y-%m-%d")
-add_definitions(-DQT_SHARED)
+add_definitions(-DLSCS_SHARED)
 
 check_include_file(dlfcn.h       HAVE_DLFCN_H)
 check_include_file(dirent.h      HAVE_DIRENT_H)
@@ -657,11 +657,11 @@ if (WIN32)
 endif()
 
 if (NOT Cups_FOUND)
-   add_definitions(-DQT_NO_CUPS)
+   add_definitions(-DLSCS_NO_CUPS)
 endif()
 
 if (NOT GLIB2_FOUND)
-   add_definitions(-DQT_NO_GLIB)
+   add_definitions(-DLSCS_NO_GLIB)
 endif()
 
 if (NOT ZLIB_FOUND)

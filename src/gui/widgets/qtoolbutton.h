@@ -26,7 +26,7 @@
 
 #include <qabstractbutton.h>
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
 class QToolButtonPrivate;
 class QMenu;
@@ -38,7 +38,7 @@ class Q_GUI_EXPORT QToolButton : public QAbstractButton
 
     GUI_LSCS_ENUM( ToolButtonPopupMode )
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     GUI_LSCS_PROPERTY_READ( popupMode, popupMode )
     GUI_LSCS_PROPERTY_WRITE( popupMode, setPopupMode )
 #endif
@@ -77,7 +77,7 @@ public:
     Qt::ArrowType arrowType() const;
     void setArrowType( Qt::ArrowType type );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     void setMenu( QMenu *menu );
     QMenu *menu() const;
 
@@ -90,7 +90,7 @@ public:
     void setAutoRaise( bool enable );
     bool autoRaise() const;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     GUI_LSCS_SLOT_1( Public, void showMenu() )
     GUI_LSCS_SLOT_2( showMenu )
 #endif
@@ -125,7 +125,7 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QToolButton )
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     GUI_LSCS_SLOT_1( Private, void _q_buttonPressed() )
     GUI_LSCS_SLOT_2( _q_buttonPressed )
 
@@ -143,6 +143,6 @@ private:
     GUI_LSCS_SLOT_2( _q_actionTriggered )
 };
 
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON
 
 #endif // QTOOLBUTTON_H

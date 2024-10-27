@@ -33,7 +33,7 @@
 #include <QPaintEngine>
 #include <qmath.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \class QDeclarativePaintedItem
@@ -71,7 +71,7 @@ QT_BEGIN_NAMESPACE
 static int inpaint = 0;
 static int inpaint_clearcache = 0;
 
-extern Q_GUI_EXPORT bool qt_applefontsmoothing_enabled;
+extern Q_GUI_EXPORT bool lscs_applefontsmoothing_enabled;
 
 /*!
     Marks areas of the cache that intersect with the given \a rect as dirty and
@@ -327,12 +327,12 @@ void QDeclarativePaintedItem::paint( QPainter *p, const QStyleOptionGraphicsItem
                 if ( !d->imagecache[i]->dirty.isNull() && topaint.contains( d->imagecache[i]->dirty ) )
                 {
 #ifdef Q_OS_DARWIN
-                    bool oldSmooth = qt_applefontsmoothing_enabled;
-                    qt_applefontsmoothing_enabled = false;
+                    bool oldSmooth = lscs_applefontsmoothing_enabled;
+                    lscs_applefontsmoothing_enabled = false;
 #endif
                     QPainter qp( &d->imagecache[i]->image );
 #ifdef Q_OS_DARWIN
-                    qt_applefontsmoothing_enabled = oldSmooth;
+                    lscs_applefontsmoothing_enabled = oldSmooth;
 #endif
                     qp.setRenderHints( QPainter::HighQualityAntialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform,
                                        d->smoothCache );
@@ -423,12 +423,12 @@ void QDeclarativePaintedItem::paint( QPainter *p, const QStyleOptionGraphicsItem
 
                 {
 #ifdef Q_OS_DARWIN
-                    bool oldSmooth = qt_applefontsmoothing_enabled;
-                    qt_applefontsmoothing_enabled = false;
+                    bool oldSmooth = lscs_applefontsmoothing_enabled;
+                    lscs_applefontsmoothing_enabled = false;
 #endif
                     QPainter qp( &img );
 #ifdef Q_OS_DARWIN
-                    qt_applefontsmoothing_enabled = oldSmooth;
+                    lscs_applefontsmoothing_enabled = oldSmooth;
 #endif
                     qp.setRenderHints( QPainter::HighQualityAntialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform,
                                        d->smoothCache );
@@ -585,4 +585,4 @@ void QDeclarativePaintedItem::setSmoothCache( bool on )
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

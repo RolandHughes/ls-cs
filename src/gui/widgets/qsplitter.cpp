@@ -23,7 +23,7 @@
 
 #include <qsplitter.h>
 
-#ifndef QT_NO_SPLITTER
+#ifndef LSCS_NO_SPLITTER
 
 #include <qapplication.h>
 #include <qcursor.h>
@@ -67,7 +67,7 @@ void QSplitterHandle::setOrientation( Qt::Orientation orientation )
     Q_D( QSplitterHandle );
     d->orient = orientation;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     setCursor( orientation == Qt::Horizontal ? Qt::SplitHCursor : Qt::SplitVCursor );
 #endif
 
@@ -989,7 +989,7 @@ QSplitterLayoutStruct *QSplitterPrivate::insertWidget( int index, QWidget *w )
     {
         QSplitterHandle *newHandle = nullptr;
         sls = new QSplitterLayoutStruct;
-        QString tmp = QLatin1String( "qt_splithandle_" );
+        QString tmp = QLatin1String( "lscs_splithandle_" );
         tmp += w->objectName();
         newHandle = q->createHandle();
         newHandle->setObjectName( tmp );
@@ -1265,7 +1265,7 @@ void QSplitter::setRubberBand( int pos )
         d->rubberBand = new QRubberBand( QRubberBand::Line, this );
 
         // For accessibility to identify this special widget.
-        d->rubberBand->setObjectName( QLatin1String( "qt_rubberband" ) );
+        d->rubberBand->setObjectName( QLatin1String( "lscs_rubberband" ) );
 
         d->blockChildAdd = temp;
     }
@@ -1638,4 +1638,4 @@ QTextStream &operator>>( QTextStream &ts, QSplitter &splitter )
     return ts;
 }
 
-#endif // QT_NO_SPLITTER
+#endif // LSCS_NO_SPLITTER

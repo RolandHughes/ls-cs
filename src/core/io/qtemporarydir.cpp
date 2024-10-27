@@ -23,7 +23,7 @@
 
 #include <qtemporarydir.h>
 
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
 
 #include <qcoreapplication.h>
 #include <qdebug.h>
@@ -209,4 +209,4 @@ bool QTemporaryDir::remove()
     return result;
 }
 
-#endif // QT_NO_TEMPORARYFILE
+#endif // LSCS_NO_TEMPORARYFILE

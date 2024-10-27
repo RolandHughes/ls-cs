@@ -35,7 +35,7 @@
 #include <qfilesystemmetadata_p.h>
 #include <qresource_p.h>
 
-static bool qt_file_engine_handlers_in_use = false;
+static bool lscs_file_engine_handlers_in_use = false;
 
 static QReadWriteLock *fileEngineHandlerMutex()
 {
@@ -43,7 +43,7 @@ static QReadWriteLock *fileEngineHandlerMutex()
     return &retval;
 }
 
-static bool qt_abstractfileenginehandlerlist_shutDown = false;
+static bool lscs_abstractfileenginehandlerlist_shutDown = false;
 
 class QAbstractFileEngineHandlerList : public QList<QAbstractFileEngineHandler *>
 {
@@ -51,7 +51,7 @@ public:
     ~QAbstractFileEngineHandlerList()
     {
         QWriteLocker locker( fileEngineHandlerMutex() );
-        qt_abstractfileenginehandlerlist_shutDown = true;
+        lscs_abstractfileenginehandlerlist_shutDown = true;
     }
 };
 
@@ -64,7 +64,7 @@ static QAbstractFileEngineHandlerList *fileEngineHandlers()
 QAbstractFileEngineHandler::QAbstractFileEngineHandler()
 {
     QWriteLocker locker( fileEngineHandlerMutex() );
-    qt_file_engine_handlers_in_use = true;
+    lscs_file_engine_handlers_in_use = true;
     fileEngineHandlers()->prepend( this );
 }
 
@@ -73,23 +73,23 @@ QAbstractFileEngineHandler::~QAbstractFileEngineHandler()
     QWriteLocker locker( fileEngineHandlerMutex() );
 
     // Remove this handler from the handler list only if the list is valid.
-    if ( ! qt_abstractfileenginehandlerlist_shutDown )
+    if ( ! lscs_abstractfileenginehandlerlist_shutDown )
     {
         QAbstractFileEngineHandlerList *handlers = fileEngineHandlers();
         handlers->removeOne( this );
 
         if ( handlers->isEmpty() )
         {
-            qt_file_engine_handlers_in_use = false;
+            lscs_file_engine_handlers_in_use = false;
         }
     }
 }
 
-QAbstractFileEngine *qt_custom_file_engine_handler_create( const QString &path )
+QAbstractFileEngine *lscs_custom_file_engine_handler_create( const QString &path )
 {
     QAbstractFileEngine *engine = nullptr;
 
-    if ( qt_file_engine_handlers_in_use )
+    if ( lscs_file_engine_handlers_in_use )
     {
         QReadLocker locker( fileEngineHandlerMutex() );
 
@@ -114,7 +114,7 @@ QAbstractFileEngine *QAbstractFileEngine::create( const QString &fileName )
     QFileSystemMetaData metaData;
     QAbstractFileEngine *engine = QFileSystemEngine::resolveEntryAndCreateLegacyEngine( entry, metaData );
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
 
     if ( ! engine )
     {

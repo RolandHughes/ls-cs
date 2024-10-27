@@ -101,18 +101,18 @@ static inline void checkXcbPollForQueuedEvent()
 // - "pad0" became "extension"
 // - "pad1" and "pad" became "pad0"
 // New and old version of this struct share the following fields:
-typedef struct qt_xcb_ge_event_t
+typedef struct lscs_xcb_ge_event_t
 {
     uint8_t  response_type;
     uint8_t  extension;
     uint16_t sequence;
     uint32_t length;
     uint16_t event_type;
-} qt_xcb_ge_event_t;
+} lscs_xcb_ge_event_t;
 
 static inline bool isXIEvent( xcb_generic_event_t *event, int opCode )
 {
-    qt_xcb_ge_event_t *e = ( qt_xcb_ge_event_t * )event;
+    lscs_xcb_ge_event_t *e = ( lscs_xcb_ge_event_t * )event;
     return e->extension == opCode;
 }
 #endif // XCB_USE_XINPUT2
@@ -773,7 +773,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
     {
         &xcb_shm_id, &xcb_xfixes_id, &xcb_randr_id, &xcb_shape_id, &xcb_sync_id,
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
         &xcb_xkb_id,
 #endif
 
@@ -796,7 +796,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
     m_time = XCB_CURRENT_TIME;
     m_netWmUserTime = XCB_CURRENT_TIME;
 
-    if ( ! qgetenv( "QT_XCB_NO_XRANDR" ).isEmpty() )
+    if ( ! qgetenv( "LSCS_XCB_NO_XRANDR" ).isEmpty() )
     {
         initializeXRandr();
     }
@@ -814,7 +814,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
 #if defined(XCB_USE_XINPUT2)
     m_xi2Enabled = false;
 
-    if ( ! qgetenv( "QT_XCB_NO_XI2" ).isEmpty() )
+    if ( ! qgetenv( "LSCS_XCB_NO_XI2" ).isEmpty() )
     {
         initializeXInput2();
     }
@@ -827,11 +827,11 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
     m_wmSupport.reset( new QXcbWMSupport( this ) );
     m_keyboard = new QXcbKeyboard( this );
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     m_clipboard = new QXcbClipboard( this );
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     m_drag = new QXcbDrag( this );
 #endif
 
@@ -845,7 +845,7 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
     QStringList glIntegrationNames;
     glIntegrationNames << QString( "xcb_glx" ) << QString( "xcb_egl" );
 
-    QString glIntegrationName = QString::fromUtf8( qgetenv( "QT_XCB_GL_INTEGRATION" ) );
+    QString glIntegrationName = QString::fromUtf8( qgetenv( "LSCS_XCB_GL_INTEGRATION" ) );
 
     if ( ! glIntegrationName.isEmpty() )
     {
@@ -897,11 +897,11 @@ QXcbConnection::QXcbConnection( QXcbNativeInterface *nativeInterface, bool canGr
 
 QXcbConnection::~QXcbConnection()
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     delete m_clipboard;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     delete m_drag;
 #endif
 
@@ -911,7 +911,7 @@ QXcbConnection::~QXcbConnection()
 
     if ( m_reader->isRunning() )
     {
-        sendConnectionEvent( QXcbAtom::_QT_CLOSE_CONNECTION );
+        sendConnectionEvent( QXcbAtom::_LSCS_CLOSE_CONNECTION );
         m_reader->wait();
     }
 
@@ -1382,7 +1382,7 @@ Qt::MouseButton QXcbConnection::translateMouseButton( xcb_button_t s )
     }
 }
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
 namespace
 {
 typedef union
@@ -1563,7 +1563,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
             {
                 xcb_selection_request_event_t *sr = ( xcb_selection_request_event_t * )event;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
                 if ( sr->selection == atom( QXcbAtom::XdndSelection ) )
                 {
@@ -1572,7 +1572,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
                 else
 #endif
                 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
                     m_clipboard->handleSelectionRequest( sr );
 #endif
                 }
@@ -1582,7 +1582,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
 
             case XCB_SELECTION_CLEAR:
                 setTime( ( ( xcb_selection_clear_event_t * )event )->time );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
                 m_clipboard->handleSelectionClearRequest( ( xcb_selection_clear_event_t * )event );
 #endif
                 handled = true;
@@ -1642,7 +1642,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
             xcb_xfixes_selection_notify_event_t *notify_event = ( xcb_xfixes_selection_notify_event_t * )event;
             setTime( notify_event->timestamp );
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
             m_clipboard->handleXFixesSelectionRequest( notify_event );
 #endif
 
@@ -1674,7 +1674,7 @@ void QXcbConnection::handleXcbEvent( xcb_generic_event_t *event )
 
             handled = true;
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
         }
         else if ( response_type == xkb_first_event )   // https://bugs.freedesktop.org/show_bug.cgi?id=51295
         {
@@ -1817,7 +1817,7 @@ void QXcbEventReader::run()
 void QXcbEventReader::addEvent( xcb_generic_event_t *event )
 {
     if ( ( event->response_type & ~0x80 ) == XCB_CLIENT_MESSAGE
-            && ( ( xcb_client_message_event_t * )event )->type == m_connection->atom( QXcbAtom::_QT_CLOSE_CONNECTION ) )
+            && ( ( xcb_client_message_event_t * )event )->type == m_connection->atom( QXcbAtom::_LSCS_CLOSE_CONNECTION ) )
     {
         m_connection = nullptr;
     }
@@ -2019,7 +2019,7 @@ xcb_window_t QXcbConnection::clientLeader()
         Q_XCB_CALL( xcb_change_property( xcb_connection(), XCB_PROP_MODE_REPLACE, m_clientLeader,
                                          atom( QXcbAtom::WM_CLIENT_LEADER ), XCB_ATOM_WINDOW, 32, 1, &m_clientLeader ) );
 
-#if ! defined(QT_NO_SESSIONMANAGER) && defined(XCB_USE_SM)
+#if ! defined(LSCS_NO_SESSIONMANAGER) && defined(XCB_USE_SM)
         // If we are session managed, inform the window manager about it
         QByteArray session = qGuiApp->sessionId().toLatin1();
 
@@ -2139,7 +2139,7 @@ bool QXcbConnection::compressEvent( xcb_generic_event_t *event, int currentIndex
         // compress XI_Motion, but not from tablet devices
         if ( isXIType( event, m_xiOpCode, XI_Motion ) )
         {
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
             xXIDeviceEvent *xdev = reinterpret_cast<xXIDeviceEvent *>( event );
 
             if ( const_cast<QXcbConnection *>( this )->tabletDataForDevice( xdev->sourceid ) )
@@ -2147,7 +2147,7 @@ bool QXcbConnection::compressEvent( xcb_generic_event_t *event, int currentIndex
                 return false;
             }
 
-#endif // QT_NO_TABLETEVENT
+#endif // LSCS_NO_TABLETEVENT
 
             for ( int j = nextIndex; j < eventqueue->size(); ++j )
             {
@@ -2315,7 +2315,7 @@ void QXcbConnection::handleClientMessageEvent( const xcb_client_message_event_t 
         return;
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( event->type == atom( QXcbAtom::XdndStatus ) )
     {
@@ -2396,19 +2396,19 @@ static const char *xcb_atomnames =
     "TIMESTAMP\0"
     "SAVE_TARGETS\0"
     "CLIP_TEMPORARY\0"
-    "_QT_SELECTION\0"
-    "_QT_CLIPBOARD_SENTINEL\0"
-    "_QT_SELECTION_SENTINEL\0"
+    "_LSCS_SELECTION\0"
+    "_LSCS_CLIPBOARD_SENTINEL\0"
+    "_LSCS_SELECTION_SENTINEL\0"
     "CLIPBOARD_MANAGER\0"
 
     "RESOURCE_MANAGER\0"
 
     "_XSETROOT_ID\0"
 
-    "_QT_SCROLL_DONE\0"
-    "_QT_INPUT_ENCODING\0"
+    "_LSCS_SCROLL_DONE\0"
+    "_LSCS_INPUT_ENCODING\0"
 
-    "_QT_CLOSE_CONNECTION\0"
+    "_LSCS_CLOSE_CONNECTION\0"
 
     "_MOTIF_WM_HINTS\0"
 
@@ -2587,7 +2587,7 @@ void QXcbConnection::initializeAllAtoms()
 
     Q_ASSERT( i == QXcbAtom::NPredefinedAtoms );
 
-    QByteArray settings_atom_name( "_QT_SETTINGS_TIMESTAMP_" );
+    QByteArray settings_atom_name( "_LSCS_SETTINGS_TIMESTAMP_" );
     settings_atom_name += m_displayName;
     names[i++] = settings_atom_name.constData();
 
@@ -2824,7 +2824,7 @@ void QXcbConnection::initializeXShape()
 
 void QXcbConnection::initializeXKB()
 {
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
     const xcb_query_extension_reply_t *reply = xcb_get_extension_data( m_connection, &xcb_xkb_id );
 
     if ( !reply || !reply->present )
@@ -2896,7 +2896,7 @@ void QXcbConnection::initializeXKB()
 #if defined(XCB_USE_XINPUT22)
 bool QXcbConnection::xi2MouseEvents() const
 {
-    static bool mouseViaXI2 = ! qgetenv( "QT_XCB_NO_XI2_MOUSE" ).isEmpty();
+    static bool mouseViaXI2 = ! qgetenv( "LSCS_XCB_NO_XI2_MOUSE" ).isEmpty();
 
     // FIXME: Don't use XInput2 mouse events when Xinerama extension
     // is enabled, because it causes problems with multi-monitor setup.

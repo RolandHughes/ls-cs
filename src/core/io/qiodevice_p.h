@@ -34,7 +34,7 @@
 #define QIODEVICE_BUFFERSIZE Q_INT64_C(16384)
 #endif
 
-Q_CORE_EXPORT int qt_subtract_from_timeout( int timeout, int elapsed );
+Q_CORE_EXPORT int lscs_subtract_from_timeout( int timeout, int elapsed );
 
 // This is QIODevice's read buffer, optimized for read(), isEmpty() and getChar()
 class QIODevicePrivateLinearBuffer

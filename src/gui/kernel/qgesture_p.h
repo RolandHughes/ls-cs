@@ -29,7 +29,7 @@
 #include <qgesture.h>
 #include <qelapsedtimer.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 
 class QGesturePrivate
@@ -185,6 +185,6 @@ public:
     static int Timeout;
 };
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 #endif

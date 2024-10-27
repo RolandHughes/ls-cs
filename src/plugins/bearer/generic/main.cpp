@@ -25,9 +25,9 @@
 #include <qbearerplugin_p.h>
 #include <qdebug.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QGenericEnginePlugin : public QBearerEnginePlugin
 {
@@ -67,6 +67,6 @@ QBearerEngine *QGenericEnginePlugin::create( const QString &key ) const
 Q_EXPORT_STATIC_PLUGIN( QGenericEnginePlugin )
 Q_EXPORT_PLUGIN2( qgenericbearer, QGenericEnginePlugin )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

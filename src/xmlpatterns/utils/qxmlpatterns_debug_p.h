@@ -26,7 +26,7 @@
 
 #include <qdebug.h>
 
-#ifdef QT_DEBUG
+#ifdef LSCS_DEBUG
 #   define Patternist_DEBUG_PARSER
 #   define Patternist_DEBUG
 #endif

@@ -33,7 +33,7 @@
 
 // Conversion Functions
 
-QStringList qt_mac_NSArrayToQStringList(void *nsarray)
+QStringList lscs_mac_NSArrayToQStringList(void *nsarray)
 {
    QStringList result;
    NSArray *array = static_cast<NSArray *>(nsarray);
@@ -43,7 +43,7 @@ QStringList qt_mac_NSArrayToQStringList(void *nsarray)
    return result;
 }
 
-void *qt_mac_QStringListToNSMutableArrayVoid(const QStringList &list)
+void *lscs_mac_QStringListToNSMutableArrayVoid(const QStringList &list)
 {
    NSMutableArray *result = [NSMutableArray arrayWithCapacity: list.size()];
    for (int i = 0; i < list.size(); ++i) {
@@ -52,19 +52,19 @@ void *qt_mac_QStringListToNSMutableArrayVoid(const QStringList &list)
    return result;
 }
 
-static void qt_mac_deleteImage(void *image, const void *, size_t)
+static void lscs_mac_deleteImage(void *image, const void *, size_t)
 {
    delete static_cast<QImage *>(image);
 }
 
 // Creates a CGDataProvider with the data from the given image.
 // The data provider retains a copy of the image.
-CGDataProviderRef qt_mac_CGDataProvider(const QImage &image)
+CGDataProviderRef lscs_mac_CGDataProvider(const QImage &image)
 {
-   return CGDataProviderCreateWithData(new QImage(image), image.bits(), image.byteCount(), qt_mac_deleteImage);
+   return CGDataProviderCreateWithData(new QImage(image), image.bits(), image.byteCount(), lscs_mac_deleteImage);
 }
 
-CGImageRef qt_mac_toCGImage(const QImage &inImage)
+CGImageRef lscs_mac_toCGImage(const QImage &inImage)
 {
    if (inImage.isNull()) {
       return nullptr;
@@ -101,40 +101,40 @@ CGImageRef qt_mac_toCGImage(const QImage &inImage)
          break;
    }
 
-   QCFType<CGDataProviderRef> dataProvider = qt_mac_CGDataProvider(image);
+   QCFType<CGDataProviderRef> dataProvider = lscs_mac_CGDataProvider(image);
 
    return CGImageCreate(image.width(), image.height(), 8, 32, image.bytesPerLine(),
-         qt_mac_genericColorSpace(), cgflags, dataProvider, nullptr, false, kCGRenderingIntentDefault);
+         lscs_mac_genericColorSpace(), cgflags, dataProvider, nullptr, false, kCGRenderingIntentDefault);
 }
 
-CGImageRef qt_mac_toCGImageMask(const QImage &image)
+CGImageRef lscs_mac_toCGImageMask(const QImage &image)
 {
-   QCFType<CGDataProviderRef> dataProvider = qt_mac_CGDataProvider(image);
+   QCFType<CGDataProviderRef> dataProvider = lscs_mac_CGDataProvider(image);
    return CGImageMaskCreate(image.width(), image.height(), 8, image.depth(),
          image.bytesPerLine(), dataProvider, nullptr, false);
 }
 
-NSImage *qt_mac_cgimage_to_nsimage(CGImageRef image)
+NSImage *lscs_mac_cgimage_to_nsimage(CGImageRef image)
 {
    NSImage *newImage = [[NSImage alloc] initWithCGImage: image size: NSZeroSize];
    return newImage;
 }
 
-NSImage *qt_mac_create_nsimage(const QPixmap &pm)
+NSImage *lscs_mac_create_nsimage(const QPixmap &pm)
 {
    if (pm.isNull()) {
       return nullptr;
    }
 
    QImage image = pm.toImage();
-   CGImageRef cgImage = qt_mac_toCGImage(image);
-   NSImage *nsImage = qt_mac_cgimage_to_nsimage(cgImage);
+   CGImageRef cgImage = lscs_mac_toCGImage(image);
+   NSImage *nsImage = lscs_mac_cgimage_to_nsimage(cgImage);
    CGImageRelease(cgImage);
 
    return nsImage;
 }
 
-NSImage *qt_mac_create_nsimage(const QIcon &icon, int defaultSize)
+NSImage *lscs_mac_create_nsimage(const QIcon &icon, int defaultSize)
 {
    if (icon.isNull()) {
       return nil;
@@ -149,7 +149,7 @@ NSImage *qt_mac_create_nsimage(const QIcon &icon, int defaultSize)
    for (QSize size : availableSizes) {
       QPixmap pm = icon.pixmap(size);
       QImage image = pm.toImage();
-      CGImageRef cgImage = qt_mac_toCGImage(image);
+      CGImageRef cgImage = lscs_mac_toCGImage(image);
       NSBitmapImageRep *imageRep = [[NSBitmapImageRep alloc] initWithCGImage: cgImage];
       [nsImage addRepresentation: imageRep];
       [imageRep release];
@@ -158,38 +158,38 @@ NSImage *qt_mac_create_nsimage(const QIcon &icon, int defaultSize)
    return nsImage;
 }
 
-HIMutableShapeRef qt_mac_QRegionToHIMutableShape(const QRegion &region)
+HIMutableShapeRef lscs_mac_QRegionToHIMutableShape(const QRegion &region)
 {
    HIMutableShapeRef shape = HIShapeCreateMutable();
    QVector<QRect> rects = region.rects();
    if (!rects.isEmpty()) {
       int n = rects.count();
-      const QRect *qt_r = rects.constData();
+      const QRect *lscs_r = rects.constData();
       while (n--) {
-         CGRect cgRect = CGRectMake(qt_r->x(), qt_r->y(), qt_r->width(), qt_r->height());
+         CGRect cgRect = CGRectMake(lscs_r->x(), lscs_r->y(), lscs_r->width(), lscs_r->height());
          HIShapeUnionWithRect(shape, &cgRect);
-         ++qt_r;
+         ++lscs_r;
       }
    }
    return shape;
 }
 
-NSSize qt_mac_toNSSize(const QSize &qtSize)
+NSSize lscs_mac_toNSSize(const QSize &qtSize)
 {
    return NSMakeSize(qtSize.width(), qtSize.height());
 }
 
-NSRect qt_mac_toNSRect(const QRect &rect)
+NSRect lscs_mac_toNSRect(const QRect &rect)
 {
    return NSMakeRect(rect.x(), rect.y(), rect.width(), rect.height());
 }
 
-QRect qt_mac_toQRect(const NSRect &rect)
+QRect lscs_mac_toQRect(const NSRect &rect)
 {
    return QRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
-QColor qt_mac_toQColor(const NSColor *color)
+QColor lscs_mac_toQColor(const NSColor *color)
 {
    QColor qtColor;
    NSString *colorSpace = [color colorSpaceName];
@@ -207,7 +207,7 @@ QColor qt_mac_toQColor(const NSColor *color)
    return qtColor;
 }
 
-QColor qt_mac_toQColor(CGColorRef color)
+QColor lscs_mac_toQColor(CGColorRef color)
 {
    QColor qtColor;
    CGColorSpaceModel model = CGColorSpaceGetModel(CGColorGetColorSpace(color));
@@ -220,7 +220,7 @@ QColor qt_mac_toQColor(CGColorRef color)
       qtColor.setRgbF(components[0], components[0], components[0], components[1]);
    } else {
       // Colorspace we can't deal with.
-      qWarning("Qt: qt_mac_toQColor: cannot convert from colorspace model: %d", model);
+      qWarning("Qt: lscs_mac_toQColor: cannot convert from colorspace model: %d", model);
       Q_ASSERT(false);
    }
    return qtColor;
@@ -228,7 +228,7 @@ QColor qt_mac_toQColor(CGColorRef color)
 
 struct dndenum_mapper {
    NSDragOperation mac_code;
-   Qt::DropAction qt_code;
+   Qt::DropAction lscs_code;
    bool Qt2Mac;
 };
 
@@ -241,39 +241,39 @@ static dndenum_mapper dnd_enums[] = {
    { NSDragOperationNone, Qt::IgnoreAction, false }
 };
 
-NSDragOperation qt_mac_mapDropAction(Qt::DropAction action)
+NSDragOperation lscs_mac_mapDropAction(Qt::DropAction action)
 {
-   for (int i = 0; dnd_enums[i].qt_code; i++) {
-      if (dnd_enums[i].Qt2Mac && (action & dnd_enums[i].qt_code)) {
+   for (int i = 0; dnd_enums[i].lscs_code; i++) {
+      if (dnd_enums[i].Qt2Mac && (action & dnd_enums[i].lscs_code)) {
          return dnd_enums[i].mac_code;
       }
    }
    return NSDragOperationNone;
 }
 
-NSDragOperation qt_mac_mapDropActions(Qt::DropActions actions)
+NSDragOperation lscs_mac_mapDropActions(Qt::DropActions actions)
 {
    NSDragOperation nsActions = NSDragOperationNone;
-   for (int i = 0; dnd_enums[i].qt_code; i++) {
-      if (dnd_enums[i].Qt2Mac && (actions & dnd_enums[i].qt_code)) {
+   for (int i = 0; dnd_enums[i].lscs_code; i++) {
+      if (dnd_enums[i].Qt2Mac && (actions & dnd_enums[i].lscs_code)) {
          nsActions |= dnd_enums[i].mac_code;
       }
    }
    return nsActions;
 }
 
-Qt::DropAction qt_mac_mapNSDragOperation(NSDragOperation nsActions)
+Qt::DropAction lscs_mac_mapNSDragOperation(NSDragOperation nsActions)
 {
    Qt::DropAction action = Qt::IgnoreAction;
    for (int i = 0; dnd_enums[i].mac_code; i++) {
       if (nsActions & dnd_enums[i].mac_code) {
-         return dnd_enums[i].qt_code;
+         return dnd_enums[i].lscs_code;
       }
    }
    return action;
 }
 
-Qt::DropActions qt_mac_mapNSDragOperations(NSDragOperation nsActions)
+Qt::DropActions lscs_mac_mapNSDragOperations(NSDragOperation nsActions)
 {
    Qt::DropActions actions = Qt::IgnoreAction;
 
@@ -283,7 +283,7 @@ Qt::DropActions qt_mac_mapNSDragOperations(NSDragOperation nsActions)
       }
 
       if (nsActions & dnd_enums[i].mac_code) {
-         actions |= dnd_enums[i].qt_code;
+         actions |= dnd_enums[i].lscs_code;
       }
    }
    return actions;
@@ -291,7 +291,7 @@ Qt::DropActions qt_mac_mapNSDragOperations(NSDragOperation nsActions)
 
 // Changes the process type for this process to kProcessTransformToForegroundApplication,
 // unless either LSUIElement or LSBackgroundOnly is set in the Info.plist.
-void qt_mac_transformProccessToForegroundApplication()
+void lscs_mac_transformProccessToForegroundApplication()
 {
    ProcessSerialNumber psn;
 
@@ -343,7 +343,7 @@ void qt_mac_transformProccessToForegroundApplication()
    }
 }
 
-QString qt_mac_removeMnemonics(const QString &str)
+QString lscs_mac_removeMnemonics(const QString &str)
 {
    QString retval;
 
@@ -383,7 +383,7 @@ static CGColorSpaceRef m_genericColorSpace = nullptr;
 static QHash<CGDirectDisplayID, CGColorSpaceRef> m_displayColorSpaceHash;
 static bool m_postRoutineRegistered = false;
 
-CGColorSpaceRef qt_mac_genericColorSpace()
+CGColorSpaceRef lscs_mac_genericColorSpace()
 {
 #if 0
    if (! m_genericColorSpace) {
@@ -399,7 +399,7 @@ CGColorSpaceRef qt_mac_genericColorSpace()
 
 #else
    // Just return the main display colorspace for the moment.
-   return qt_mac_displayColorSpace(nullptr);
+   return lscs_mac_displayColorSpace(nullptr);
 #endif
 }
 
@@ -407,7 +407,7 @@ CGColorSpaceRef qt_mac_genericColorSpace()
     Ideally we should pass the widget in here and use CGGetDisplaysWithRect() etc.
     to support multiple displays correctly.
 */
-CGColorSpaceRef qt_mac_displayColorSpace(const QWidget *widget)
+CGColorSpaceRef lscs_mac_displayColorSpace(const QWidget *widget)
 {
    CGColorSpaceRef colorSpace;
 
@@ -441,14 +441,14 @@ CGColorSpaceRef qt_mac_displayColorSpace(const QWidget *widget)
 
    if (!m_postRoutineRegistered) {
       m_postRoutineRegistered = true;
-      void qt_mac_cleanUpMacColorSpaces();
-      qAddPostRoutine(qt_mac_cleanUpMacColorSpaces);
+      void lscs_mac_cleanUpMacColorSpaces();
+      qAddPostRoutine(lscs_mac_cleanUpMacColorSpaces);
    }
 
    return colorSpace;
 }
 
-void qt_mac_cleanUpMacColorSpaces()
+void lscs_mac_cleanUpMacColorSpaces()
 {
    if (m_genericColorSpace) {
       CFRelease(m_genericColorSpace);
@@ -467,7 +467,7 @@ void qt_mac_cleanUpMacColorSpaces()
    m_displayColorSpaceHash.clear();
 }
 
-QString qt_mac_applicationName()
+QString lscs_mac_applicationName()
 {
    QString appName;
    CFTypeRef string = CFBundleGetValueForInfoDictionaryKey(CFBundleGetMainBundle(), CFSTR("CFBundleName"));
@@ -491,7 +491,7 @@ QString qt_mac_applicationName()
    return appName;
 }
 
-int qt_mac_mainScreenHeight()
+int lscs_mac_mainScreenHeight()
 {
    QMacAutoReleasePool pool;
    NSArray *screens = [NSScreen screens];
@@ -504,38 +504,38 @@ int qt_mac_mainScreenHeight()
    return 0;
 }
 
-int qt_mac_flipYCoordinate(int y)
+int lscs_mac_flipYCoordinate(int y)
 {
-   return qt_mac_mainScreenHeight() - y;
+   return lscs_mac_mainScreenHeight() - y;
 }
 
-qreal qt_mac_flipYCoordinate(qreal y)
+qreal lscs_mac_flipYCoordinate(qreal y)
 {
-   return qt_mac_mainScreenHeight() - y;
+   return lscs_mac_mainScreenHeight() - y;
 }
 
-QPointF qt_mac_flipPoint(const NSPoint &p)
+QPointF lscs_mac_flipPoint(const NSPoint &p)
 {
-   return QPointF(p.x, qt_mac_flipYCoordinate(p.y));
+   return QPointF(p.x, lscs_mac_flipYCoordinate(p.y));
 }
 
-NSPoint qt_mac_flipPoint(const QPoint &p)
+NSPoint lscs_mac_flipPoint(const QPoint &p)
 {
-   return NSMakePoint(p.x(), qt_mac_flipYCoordinate(p.y()));
+   return NSMakePoint(p.x(), lscs_mac_flipYCoordinate(p.y()));
 }
 
-NSPoint qt_mac_flipPoint(const QPointF &p)
+NSPoint lscs_mac_flipPoint(const QPointF &p)
 {
-   return NSMakePoint(p.x(), qt_mac_flipYCoordinate(p.y()));
+   return NSMakePoint(p.x(), lscs_mac_flipYCoordinate(p.y()));
 }
 
-NSRect qt_mac_flipRect(const QRect &rect)
+NSRect lscs_mac_flipRect(const QRect &rect)
 {
-   int flippedY = qt_mac_flipYCoordinate(rect.y() + rect.height());
+   int flippedY = lscs_mac_flipYCoordinate(rect.y() + rect.height());
    return NSMakeRect(rect.x(), flippedY, rect.width(), rect.height());
 }
 
-void qt_mac_drawCGImage(CGContextRef inContext, const CGRect *inBounds, CGImageRef inImage)
+void lscs_mac_drawCGImage(CGContextRef inContext, const CGRect *inBounds, CGImageRef inImage)
 {
    CGContextSaveGState( inContext );
    CGContextTranslateCTM (inContext, 0, inBounds->origin.y + CGRectGetMaxY(*inBounds));
@@ -564,7 +564,7 @@ Qt::MouseButton cocoaButton2QtButton(NSInteger buttonNum)
    return Qt::NoButton;
 }
 
-bool qt_mac_execute_apple_script(const char *script, long script_len, AEDesc *ret)
+bool lscs_mac_execute_apple_script(const char *script, long script_len, AEDesc *ret)
 {
    OSStatus err;
    AEDesc scriptTextDesc;
@@ -622,20 +622,20 @@ bail:
    return err == noErr;
 }
 
-bool qt_mac_execute_apple_script(const char *script, AEDesc *ret)
+bool lscs_mac_execute_apple_script(const char *script, AEDesc *ret)
 {
-   return qt_mac_execute_apple_script(script, qstrlen(script), ret);
+   return lscs_mac_execute_apple_script(script, qstrlen(script), ret);
 }
 
-bool qt_mac_execute_apple_script(const QString &script, AEDesc *ret)
+bool lscs_mac_execute_apple_script(const QString &script, AEDesc *ret)
 {
    const QByteArray l = script.toUtf8();
-   return qt_mac_execute_apple_script(l.constData(), l.size(), ret);
+   return lscs_mac_execute_apple_script(l.constData(), l.size(), ret);
 }
 
-QString qt_mac_removeAmpersandEscapes(QString s)
+QString lscs_mac_removeAmpersandEscapes(QString s)
 {
-   return qt_mac_removeMnemonics(s).trimmed();
+   return lscs_mac_removeMnemonics(s).trimmed();
 }
 
 /*! \internal
@@ -647,7 +647,7 @@ QString qt_mac_removeAmpersandEscapes(QString s)
    \warning This function is duplicated in qmacstyle_mac.mm
 */
 
-CGContextRef qt_mac_cg_context(QPaintDevice *pdev)
+CGContextRef lscs_mac_cg_context(QPaintDevice *pdev)
 {
    // QWidget and QPixmap (and QImage) paint devices are all QImages under the hood
    QImage *image = nullptr;
@@ -665,13 +665,13 @@ CGContextRef qt_mac_cg_context(QPaintDevice *pdev)
 
       } else {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-         qDebug("qt_mac_cg_context() Unsupported pixmap class");
+         qDebug("lscs_mac_cg_context() Unsupported pixmap class");
 #endif
       }
 
    } else if (pdev->devType() == QInternal::Widget) {
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)
-      qDebug("qt_mac_cg_context() Not implemented for Widget class");
+      qDebug("lscs_mac_cg_context() Not implemented for Widget class");
 #endif
 
    }
@@ -695,15 +695,15 @@ CGContextRef qt_mac_cg_context(QPaintDevice *pdev)
    return ret;
 }
 
-QImage qt_mac_toQImage(CGImageRef image)
+QImage lscs_mac_toQImage(CGImageRef image)
 {
    const size_t w = CGImageGetWidth(image), h = CGImageGetHeight(image);
    QImage ret(w, h, QImage::Format_ARGB32_Premultiplied);
    ret.fill(Qt::transparent);
 
    CGRect rect = CGRectMake(0, 0, w, h);
-   CGContextRef ctx = qt_mac_cg_context(&ret);
-   qt_mac_drawCGImage(ctx, &rect, image);
+   CGContextRef ctx = lscs_mac_cg_context(&ret);
+   lscs_mac_drawCGImage(ctx, &rect, image);
    CGContextRelease(ctx);
 
    return ret;

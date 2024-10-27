@@ -30,7 +30,7 @@
 
 
 
-#ifndef QT_NO_TABLEWIDGET
+#ifndef LSCS_NO_TABLEWIDGET
 
 class QTableWidget;
 class QTableModel;
@@ -130,7 +130,7 @@ public:
     }
     inline void setStatusTip( const QString &statusTip );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     inline QString toolTip() const
     {
         return data( Qt::ToolTipRole ).toString();
@@ -139,7 +139,7 @@ public:
     inline void setToolTip( const QString &toolTip );
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     inline QString whatsThis() const
     {
         return data( Qt::WhatsThisRole ).toString();
@@ -228,7 +228,7 @@ public:
 
     virtual bool operator<( const QTableWidgetItem &other ) const;
 
-#ifndef QT_NO_DATASTREAM
+#ifndef LSCS_NO_DATASTREAM
     virtual void read( QDataStream &in );
     virtual void write( QDataStream &out ) const;
 #endif
@@ -262,14 +262,14 @@ inline void QTableWidgetItem::setStatusTip( const QString &statusTip )
     setData( Qt::StatusTipRole, statusTip );
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 inline void QTableWidgetItem::setToolTip( const QString &toolTip )
 {
     setData( Qt::ToolTipRole, toolTip );
 }
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 inline void QTableWidgetItem::setWhatsThis( const QString &whatsThis )
 {
     setData( Qt::WhatsThisRole, whatsThis );
@@ -507,6 +507,6 @@ inline bool QTableWidgetItem::isSelected() const
     return ( view ? view->isItemSelected( this ) : false );
 }
 
-#endif // QT_NO_TABLEWIDGET
+#endif // LSCS_NO_TABLEWIDGET
 
 #endif // QTABLEWIDGET_H

@@ -30,7 +30,7 @@
 #include <qabstractsocketengine_p.h>
 #include <qauthenticator_p.h>
 
-#if ! defined(QT_NO_NETWORKPROXY)
+#if ! defined(LSCS_NO_NETWORKPROXY)
 
 class QHttpNetworkReply;
 class QHttpSocketEnginePrivate;
@@ -79,9 +79,9 @@ public:
     qint64 read( char *data, qint64 maxlen ) override;
     qint64 write( const char *data, qint64 len ) override;
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
     bool joinMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &interface ) override;
     bool leaveMulticastGroup( const QHostAddress &groupAddress, const QNetworkInterface &interface ) override;
     QNetworkInterface multicastInterface() const override;

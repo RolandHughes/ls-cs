@@ -95,7 +95,7 @@ protected:
         if ( AST::IdentifierExpression *idExpr = AST::cast<AST::IdentifierExpression *>( node->base ) )
         {
             if ( idExpr->name->asString() == QLatin1String( "qsTr" ) ||
-                    idExpr->name->asString() == QLatin1String( "QT_TR_NOOP" ) )
+                    idExpr->name->asString() == QLatin1String( "LSCS_TR_NOOP" ) )
             {
                 if ( !node->arguments )
                 {
@@ -158,7 +158,7 @@ protected:
                 }
             }
             else if ( idExpr->name->asString() == QLatin1String( "qsTranslate" ) ||
-                      idExpr->name->asString() == QLatin1String( "QT_TRANSLATE_NOOP" ) )
+                      idExpr->name->asString() == QLatin1String( "LSCS_TRANSLATE_NOOP" ) )
             {
                 if ( node->arguments && AST::cast<AST::StringLiteral *>( node->arguments->expression ) )
                 {
@@ -230,7 +230,7 @@ protected:
                 }
             }
             else if ( idExpr->name->asString() == QLatin1String( "qsTrId" ) ||
-                      idExpr->name->asString() == QLatin1String( "QT_TRID_NOOP" ) )
+                      idExpr->name->asString() == QLatin1String( "LSCS_TRID_NOOP" ) )
             {
                 if ( !node->arguments )
                 {

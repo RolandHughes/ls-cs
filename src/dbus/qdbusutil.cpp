@@ -30,9 +30,9 @@
 #include "qdbusargument.h"
 #include "qdbusunixfiledescriptor.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static inline bool isValidCharacterNoDash( const QChar &c )
 {
@@ -720,6 +720,6 @@ bool isValidSingleSignature( const QString &signature )
 
 } // namespace QDBusUtil
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

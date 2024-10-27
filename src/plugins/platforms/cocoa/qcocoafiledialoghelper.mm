@@ -23,7 +23,7 @@
 
 #include <qcocoafiledialoghelper.h>
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
 #include <qabstracteventdispatcher.h>
 #include <qapplication.h>
@@ -40,7 +40,7 @@
 #include <qvarlengtharray.h>
 
 #include <qapplication_p.h>
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 
 #include <stdlib.h>
 
@@ -175,7 +175,7 @@ class QWindow;
 static QString strippedText(QString s)
 {
    s.remove( QString::fromLatin1("...") );
-   return qt_mac_removeMnemonics(s).trimmed();
+   return lscs_mac_removeMnemonics(s).trimmed();
 }
 
 - (NSString *)strip: (const QString &)label
@@ -208,7 +208,7 @@ static QString strippedText(QString s)
 
       QCocoaMenuBar::redirectKnownMenuItemsToFirstResponder();
       [mOpenPanel setAllowedFileTypes: nil];
-      [mSavePanel setNameFieldStringValue: selectable ? QT_PREPEND_NAMESPACE(QCFString::toNSString)(info.fileName()) : @""];
+      [mSavePanel setNameFieldStringValue: selectable ? LSCS_PREPEND_NAMESPACE(QCFString::toNSString)(info.fileName()) : @""];
 
       [mOpenPanel beginWithCompletionHandler: ^ (NSInteger result) {
                     mReturnCode = result;
@@ -368,7 +368,7 @@ static QString strippedText(QString s)
 
    // User has clicked save, and no overwrite confirmation should occur.
    // To get the latter, we need to change the name we return (hence the prefix):
-   return [@"___qt_very_unlikely_prefix_" stringByAppendingString: filename];
+   return [@"___lscs_very_unlikely_prefix_" stringByAppendingString: filename];
 }
 
 - (void)setNameFilters: (const QStringList &)filters hideDetails: (BOOL)hideDetails
@@ -422,7 +422,7 @@ static QString strippedText(QString s)
    } else {
       QList<QUrl> result;
       QString filename = QCFString::toQString([[mSavePanel URL] path]).normalized(QString::NormalizationForm_C);
-      result << QUrl::fromLocalFile(filename.remove(QLatin1String("___qt_very_unlikely_prefix_")));
+      result << QUrl::fromLocalFile(filename.remove(QLatin1String("___lscs_very_unlikely_prefix_")));
       return result;
    }
 }
@@ -455,7 +455,7 @@ static QString strippedText(QString s)
    if (!ext.isEmpty() && !defaultSuffix.isEmpty()) {
       ext.prepend(defaultSuffix);
    }
-   [mSavePanel setAllowedFileTypes: ext.isEmpty() ? nil : qt_mac_QStringListToNSMutableArray(ext)];
+   [mSavePanel setAllowedFileTypes: ext.isEmpty() ? nil : lscs_mac_QStringListToNSMutableArray(ext)];
 
    if ([mSavePanel respondsToSelector: @selector(isVisible)] && [mSavePanel isVisible]) {
       if ([mSavePanel respondsToSelector: @selector(validateVisibleColumns)]) {
@@ -809,4 +809,4 @@ bool QCocoaFileDialogHelper::defaultNameFilterDisables() const
    return true;
 }
 
-#endif // QT_NO_FILEDIALOG
+#endif // LSCS_NO_FILEDIALOG

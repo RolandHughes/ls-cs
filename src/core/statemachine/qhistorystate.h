@@ -26,7 +26,7 @@
 
 #include <qabstractstate.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 class QAbstractTransition;
 class QHistoryStatePrivate;
@@ -92,6 +92,6 @@ private:
     Q_DECLARE_PRIVATE( QHistoryState )
 };
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE
 
 #endif

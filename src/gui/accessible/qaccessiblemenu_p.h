@@ -27,9 +27,9 @@
 #include <qaccessiblewidget.h>
 #include <qpointer.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 class QMenu;
 class QMenuBar;
 class QAction;
@@ -52,7 +52,7 @@ protected:
     QMenu *menu() const;
 };
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 class QAccessibleMenuBar : public QAccessibleWidget
 {
 public:
@@ -66,7 +66,7 @@ public:
 protected:
     QMenuBar *menuBar() const;
 };
-#endif // QT_NO_MENUBAR
+#endif // LSCS_NO_MENUBAR
 
 
 class QAccessibleMenuItem : public QAccessibleInterface, public QAccessibleActionInterface
@@ -108,7 +108,7 @@ private:
     QPointer<QWidget> m_owner; // can hold either QMenu or the QMenuBar that contains the action
 };
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 #endif // QACCESSIBLEMENU_H

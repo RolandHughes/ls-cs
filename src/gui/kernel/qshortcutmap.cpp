@@ -33,7 +33,7 @@
 
 #include <algorithm>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 struct QShortcutEntry
 {
@@ -774,4 +774,4 @@ void QShortcutMap::dumpMap() const
 }
 #endif
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT

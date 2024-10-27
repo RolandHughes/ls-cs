@@ -29,7 +29,7 @@
 #include <qdeclarativecontext_p.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 int QDeclarativeCompiledData::pack( const char *data, size_t size )
 {
@@ -299,4 +299,4 @@ void QDeclarativeCompiledData::dumpInstructions()
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

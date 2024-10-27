@@ -61,13 +61,13 @@
 #include <qstyleanimation_p.h>
 #include <qstylehelper_p.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 #   include <qtextengine_p.h>
 #endif
 
 #include <limits.h>
 
-static QWindow *qt_getWindow( const QWidget *widget )
+static QWindow *lscs_getWindow( const QWidget *widget )
 {
     return widget ? widget->window()->windowHandle() : nullptr;
 }
@@ -235,7 +235,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
 
             break;
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case PE_PanelMenuBar:
             if ( widget && qobject_cast<QToolBar *>( widget->parentWidget() ) )
@@ -264,7 +264,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             break;
 #endif
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
 
         case PE_IndicatorProgressChunk:
         {
@@ -394,7 +394,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
 
             break;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case PE_FrameTabBarBase:
             if ( const QStyleOptionTabBarBase * tbb
@@ -468,7 +468,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             }
 
             QIcon::State state = opt->state & State_Sunken ? QIcon::On : QIcon::Off;
-            QPixmap pixmap = d->tabBarcloseButtonIcon.pixmap( qt_getWindow( widget ), QSize( size, size ), mode, state );
+            QPixmap pixmap = d->tabBarcloseButtonIcon.pixmap( lscs_getWindow( widget ), QSize( size, size ), mode, state );
             proxy()->drawItemPixmap( p, opt->rect, Qt::AlignCenter, pixmap );
             break;
         }
@@ -484,7 +484,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             proxy()->drawPrimitive( PE_Frame, opt, p, widget );
             break;
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
         case PE_FrameGroupBox:
             if ( const QStyleOptionFrame *frame = qstyleoption_cast<const QStyleOptionFrame *>( opt ) )
@@ -509,7 +509,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             break;
 #endif
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
         case PE_FrameDockWidget:
             if ( const QStyleOptionFrame *frame = qstyleoption_cast<const QStyleOptionFrame *>( opt ) )
@@ -527,7 +527,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             break;
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case PE_IndicatorToolBarHandle:
             p->save();
@@ -583,7 +583,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
 
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case PE_IndicatorSpinPlus:
         case PE_IndicatorSpinMinus:
@@ -678,7 +678,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             break;
         }
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case PE_IndicatorTabTear:
             if ( const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>( opt ) )
@@ -707,7 +707,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             break;
 #endif
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
         case PE_PanelLineEdit:
             if ( const QStyleOptionFrame *panel = qstyleoption_cast<const QStyleOptionFrame *>( opt ) )
@@ -724,7 +724,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             break;
 #endif
 
-#ifndef QT_NO_COLUMNVIEW
+#ifndef LSCS_NO_COLUMNVIEW
 
         case PE_IndicatorColumnViewArrow:
         {
@@ -817,7 +817,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             break;
         }
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case PE_PanelItemViewRow:
             if ( const QStyleOptionViewItem *vopt = qstyleoption_cast<const QStyleOptionViewItem *>( opt ) )
@@ -901,7 +901,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
             int size = qMin( r.height(), r.width() );
             QPixmap pixmap;
 
-            QString pixmapName = QStyleHelper::uniqueName( "$qt_ia-"
+            QString pixmapName = QStyleHelper::uniqueName( "$lscs_ia-"
                                  + metaObject()->className(), opt, QSize( size, size ) )
                                  + HexString<uint>( pe );
 
@@ -981,7 +981,7 @@ void QCommonStyle::drawPrimitive( PrimitiveElement pe, const QStyleOption *opt, 
     }
 }
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 static void drawArrow( const QStyle *style, const QStyleOptionToolButton *toolbutton,
                        const QRect &rect, QPainter *painter, const QWidget *widget = nullptr )
 {
@@ -1016,7 +1016,7 @@ static void drawArrow( const QStyle *style, const QStyleOptionToolButton *toolbu
 }
 #endif
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 static QSizeF viewItemTextLayout( QTextLayout &textLayout, int lineWidth )
 {
@@ -1403,7 +1403,7 @@ void QCommonStylePrivate::viewItemLayout( const QStyleOptionViewItem *opt,  QRec
 }
 #endif
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 void QCommonStylePrivate::tabLayout( const QStyleOptionTab *opt, const QWidget *widget,
                                      QRect *textRect, QRect *iconRect ) const
 {
@@ -1493,7 +1493,7 @@ void QCommonStylePrivate::tabLayout( const QStyleOptionTab *opt, const QWidget *
 }
 #endif
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 QList<const QObject *> QCommonStylePrivate::animationKeys() const
 {
     return animations.keys();
@@ -1629,7 +1629,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
                         state = QIcon::On;
                     }
 
-                    QPixmap pixmap = button->icon.pixmap( qt_getWindow( widget ), button->iconSize, mode, state );
+                    QPixmap pixmap = button->icon.pixmap( lscs_getWindow( widget ), button->iconSize, mode, state );
 
                     int pixmapWidth = pixmap.width() / pixmap.devicePixelRatio();
                     int pixmapHeight = pixmap.height() / pixmap.devicePixelRatio();
@@ -1738,7 +1738,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
 
                 if ( !btn->icon.isNull() )
                 {
-                    pix = btn->icon.pixmap( qt_getWindow( widget ), btn->iconSize, btn->state & State_Enabled ? QIcon::Normal : QIcon::Disabled );
+                    pix = btn->icon.pixmap( lscs_getWindow( widget ), btn->iconSize, btn->state & State_Enabled ? QIcon::Normal : QIcon::Disabled );
                     proxy()->drawItemPixmap( p, btn->rect, alignment, pix );
 
                     if ( btn->direction == Qt::RightToLeft )
@@ -1760,7 +1760,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
 
             break;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         case CE_MenuScroller:
         {
@@ -1792,7 +1792,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             break;
 #endif
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
         case CE_MenuBarItem:
             if ( const QStyleOptionMenuItem *mbi = qstyleoption_cast<const QStyleOptionMenuItem *>( opt ) )
@@ -1806,7 +1806,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
                 }
 
                 int iconExtent = proxy()->pixelMetric( PM_SmallIconSize );
-                QPixmap pix = mbi->icon.pixmap( qt_getWindow( widget ), QSize( iconExtent, iconExtent ),
+                QPixmap pix = mbi->icon.pixmap( lscs_getWindow( widget ), QSize( iconExtent, iconExtent ),
                                                 ( mbi->state & State_Enabled ) ? QIcon::Normal : QIcon::Disabled );
 
                 if ( !pix.isNull() )
@@ -1832,7 +1832,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             break;
 #endif
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
 
         case CE_ProgressBar:
             if ( const QStyleOptionProgressBar *pb = qstyleoption_cast<const QStyleOptionProgressBar *>( opt ) )
@@ -2032,7 +2032,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
                     int iconExtent = proxy()->pixelMetric( PM_SmallIconSize );
 
                     QPixmap pixmap
-                        = header->icon.pixmap( qt_getWindow( widget ), QSize( iconExtent, iconExtent ),
+                        = header->icon.pixmap( lscs_getWindow( widget ), QSize( iconExtent, iconExtent ),
                                                ( header->state & State_Enabled ) ? QIcon::Normal : QIcon::Disabled );
 
                     int pixw = pixmap.width() / pixmap.devicePixelRatio();
@@ -2067,7 +2067,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
 
             break;
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
         case CE_ToolButtonLabel:
             if ( const QStyleOptionToolButton * toolbutton
@@ -2125,7 +2125,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
                             mode = QIcon::Normal;
                         }
 
-                        pm = toolbutton->icon.pixmap( qt_getWindow( widget ), toolbutton->rect.size().boundedTo( toolbutton->iconSize ),
+                        pm = toolbutton->icon.pixmap( lscs_getWindow( widget ), toolbutton->rect.size().boundedTo( toolbutton->iconSize ),
                                                       mode, state );
                         pmSize = pm.size() / pm.devicePixelRatio();
                     }
@@ -2199,9 +2199,9 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON
 
-#ifndef QT_NO_TOOLBOX
+#ifndef LSCS_NO_TOOLBOX
 
         case CE_ToolBoxTab:
             if ( const QStyleOptionToolBox *tb = qstyleoption_cast<const QStyleOptionToolBox *>( opt ) )
@@ -2271,9 +2271,9 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_TOOLBOX
+#endif // LSCS_NO_TOOLBOX
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case CE_TabBarTab:
             if ( const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>( opt ) )
@@ -2452,7 +2452,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
                 bool enabled = tb->state & State_Enabled;
                 bool selected = tb->state & State_Selected;
                 int iconExtent = proxy()->pixelMetric( QStyle::PM_SmallIconSize, tb, widget );
-                QPixmap pm = tb->icon.pixmap( qt_getWindow( widget ), QSize( iconExtent, iconExtent ),
+                QPixmap pm = tb->icon.pixmap( lscs_getWindow( widget ), QSize( iconExtent, iconExtent ),
                                               enabled ? QIcon::Normal : QIcon::Disabled );
 
                 QRect cr = subElementRect( QStyle::SE_ToolBoxTabContents, tb, widget );
@@ -2553,7 +2553,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
 
                 if ( !tab->icon.isNull() )
                 {
-                    QPixmap tabIcon = tab->icon.pixmap( qt_getWindow( widget ), tab->iconSize,
+                    QPixmap tabIcon = tab->icon.pixmap( lscs_getWindow( widget ), tab->iconSize,
                                                         ( tab->state & State_Enabled ) ? QIcon::Normal : QIcon::Disabled,
                                                         ( tab->state & State_Selected ) ? QIcon::On : QIcon::Off );
                     p->drawPixmap( iconRect.x(), iconRect.y(), tabIcon );
@@ -2582,9 +2582,9 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
         case CE_SizeGrip:
         {
@@ -2690,9 +2690,9 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             break;
         }
 
-#endif // QT_NO_SIZEGRIP
+#endif // LSCS_NO_SIZEGRIP
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         case CE_RubberBand:
         {
@@ -2734,8 +2734,8 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             break;
         }
 
-#endif // QT_NO_RUBBERBAND
-#ifndef QT_NO_DOCKWIDGET
+#endif // LSCS_NO_RUBBERBAND
+#ifndef LSCS_NO_DOCKWIDGET
 
         case CE_DockWidgetTitle:
             if ( const QStyleOptionDockWidget *dwOpt = qstyleoption_cast<const QStyleOptionDockWidget *>( opt ) )
@@ -2776,7 +2776,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
         case CE_Header:
             if ( const QStyleOptionHeader *header = qstyleoption_cast<const QStyleOptionHeader *>( opt ) )
@@ -2816,7 +2816,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
         case CE_HeaderEmptyArea:
             p->fillRect( opt->rect, opt->palette.background() );
             break;
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CE_ComboBoxLabel:
             if ( const QStyleOptionComboBox *cb = qstyleoption_cast<const QStyleOptionComboBox *>( opt ) )
@@ -2829,7 +2829,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
                 {
                     QIcon::Mode mode = cb->state & State_Enabled ? QIcon::Normal
                                        : QIcon::Disabled;
-                    QPixmap pixmap = cb->currentIcon.pixmap( qt_getWindow( widget ), cb->iconSize, mode );
+                    QPixmap pixmap = cb->currentIcon.pixmap( lscs_getWindow( widget ), cb->iconSize, mode );
                     QRect iconRect( editRect );
                     iconRect.setWidth( cb->iconSize.width() + 4 );
                     iconRect = alignedRect( cb->direction,
@@ -2864,8 +2864,8 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_COMBOBOX
-#ifndef QT_NO_TOOLBAR
+#endif // LSCS_NO_COMBOBOX
+#ifndef LSCS_NO_TOOLBAR
 
         case CE_ToolBar:
             if ( const QStyleOptionToolBar *toolBar = qstyleoption_cast<const QStyleOptionToolBar *>( opt ) )
@@ -2887,7 +2887,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
         case CE_ColumnViewGrip:
         {
@@ -2912,7 +2912,7 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
         }
         break;
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case CE_ItemViewItem:
             if ( const QStyleOptionViewItem *vopt = qstyleoption_cast<const QStyleOptionViewItem *>( opt ) )
@@ -3016,8 +3016,8 @@ void QCommonStyle::drawControl( ControlElement element, const QStyleOption *opt,
 
             break;
 
-#endif // QT_NO_ITEMVIEWS
-#ifndef QT_NO_FRAME
+#endif // LSCS_NO_ITEMVIEWS
+#ifndef LSCS_NO_FRAME
 
         case CE_ShapedFrame:
             if ( const QStyleOptionFrame *f = qstyleoption_cast<const QStyleOptionFrame *>( opt ) )
@@ -3309,7 +3309,7 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             }
 
             break;
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case SE_SliderFocusRect:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -3331,9 +3331,9 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
-#ifndef QT_NO_PROGRESSBAR
+#ifndef LSCS_NO_PROGRESSBAR
 
         case SE_ProgressBarGroove:
         case SE_ProgressBarContents:
@@ -3369,9 +3369,9 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_PROGRESSBAR
+#endif // LSCS_NO_PROGRESSBAR
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case SE_ComboBoxFocusRect:
             if ( const QStyleOptionComboBox *cb = qstyleoption_cast<const QStyleOptionComboBox *>( opt ) )
@@ -3383,15 +3383,15 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
-#ifndef QT_NO_TOOLBOX
+#ifndef LSCS_NO_TOOLBOX
 
         case SE_ToolBoxTabContents:
             r = opt->rect;
             r.adjust( 0, 0, -30, 0 );
             break;
-#endif // QT_NO_TOOLBOX
+#endif // LSCS_NO_TOOLBOX
 
         case SE_HeaderLabel:
         {
@@ -3453,7 +3453,7 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             r = subElementRect( SE_CheckBoxFocusRect, opt, widget );
             r |= subElementRect( SE_CheckBoxIndicator, opt, widget );
             break;
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
         case SE_TabWidgetTabBar:
             if ( const QStyleOptionTabWidgetFrame * twf
@@ -3785,9 +3785,9 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             }
 
             break;
-#endif // QT_NO_TABWIDGET
+#endif // LSCS_NO_TABWIDGET
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case SE_TabBarTearIndicator:
             if ( const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>( opt ) )
@@ -3917,7 +3917,7 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
 
             break;
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
         case SE_DockWidgetCloseButton:
         case SE_DockWidgetFloatButton:
@@ -4060,7 +4060,7 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
 
 #endif
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case SE_ItemViewItemCheckIndicator:
             if ( !qstyleoption_cast<const QStyleOptionViewItem *>( opt ) )
@@ -4108,7 +4108,7 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             break;
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case SE_ToolBarHandle:
             if ( const QStyleOptionToolBar *tbopt = qstyleoption_cast<const QStyleOptionToolBar *>( opt ) )
@@ -4134,7 +4134,7 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
             }
 
             break;
-#endif //QT_NO_TOOLBAR
+#endif //LSCS_NO_TOOLBAR
 
         default:
             break;
@@ -4143,7 +4143,7 @@ QRect QCommonStyle::subElementRect( SubElement sr, const QStyleOption *opt,
     return r;
 }
 
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 
 // in lieu of std::array, minimal API
 template <int N>
@@ -4212,7 +4212,7 @@ static StaticPolygonF<3> calcArrow( const QStyleOptionSlider *dial, qreal &a )
     return arrow;
 }
 
-#endif // QT_NO_DIAL
+#endif // LSCS_NO_DIAL
 
 void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComplex *opt,
                                        QPainter *p, const QWidget *widget ) const
@@ -4220,7 +4220,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
     switch ( cc )
     {
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -4310,9 +4310,9 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
             }
 
             break;
-#endif // QT_NO_SLIDER
+#endif // LSCS_NO_SLIDER
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case CC_ScrollBar:
             if ( const QStyleOptionSlider *scrollbar = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -4451,9 +4451,9 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
             }
 
             break;
-#endif // QT_NO_SCROLLBAR
+#endif // LSCS_NO_SCROLLBAR
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *sb = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
@@ -4536,8 +4536,8 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
             }
 
             break;
-#endif // QT_NO_SPINBOX
-#ifndef QT_NO_TOOLBUTTON
+#endif // LSCS_NO_SPINBOX
+#ifndef LSCS_NO_TOOLBUTTON
 
         case CC_ToolButton:
             if ( const QStyleOptionToolButton * toolbutton
@@ -4623,7 +4623,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
             }
 
             break;
-#endif // QT_NO_TOOLBUTTON
+#endif // LSCS_NO_TOOLBUTTON
 
         case CC_TitleBar:
             if ( const QStyleOptionTitleBar *tb = qstyleoption_cast<const QStyleOptionTitleBar *>( opt ) )
@@ -4667,7 +4667,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                     down = tb->activeSubControls & SC_TitleBarCloseButton && ( opt->state & State_Sunken );
 
                     if ( ( tb->titleBarFlags & Qt::WindowType_Mask ) == Qt::Tool
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
                             || qobject_cast<const QDockWidget *>( widget )
 #endif
                        )
@@ -4701,7 +4701,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                     ir = proxy()->subControlRect( CC_TitleBar, tb, SC_TitleBarMaxButton, widget );
 
                     down = tb->activeSubControls & SC_TitleBarMaxButton && ( opt->state & State_Sunken );
-                    pm = proxy()->standardIcon( SP_TitleBarMaxButton, &tool, widget ).pixmap( qt_getWindow( widget ), QSize( 10, 10 ) );
+                    pm = proxy()->standardIcon( SP_TitleBarMaxButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( 10, 10 ) );
                     tool.rect = ir;
                     tool.state = down ? State_Sunken : State_Raised;
                     proxy()->drawPrimitive( PE_PanelButtonTool, &tool, p, widget );
@@ -4722,7 +4722,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                 {
                     ir = proxy()->subControlRect( CC_TitleBar, tb, SC_TitleBarMinButton, widget );
                     down = tb->activeSubControls & SC_TitleBarMinButton && ( opt->state & State_Sunken );
-                    pm = proxy()->standardIcon( SP_TitleBarMinButton, &tool, widget ).pixmap( qt_getWindow( widget ), QSize( 10, 10 ) );
+                    pm = proxy()->standardIcon( SP_TitleBarMinButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( 10, 10 ) );
                     tool.rect = ir;
                     tool.state = down ? State_Sunken : State_Raised;
                     proxy()->drawPrimitive( PE_PanelButtonTool, &tool, p, widget );
@@ -4747,7 +4747,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                 {
                     ir = proxy()->subControlRect( CC_TitleBar, tb, SC_TitleBarNormalButton, widget );
                     down = tb->activeSubControls & SC_TitleBarNormalButton && ( opt->state & State_Sunken );
-                    pm = proxy()->standardIcon( SP_TitleBarNormalButton, &tool, widget ).pixmap( qt_getWindow( widget ), QSize( 10, 10 ) );
+                    pm = proxy()->standardIcon( SP_TitleBarNormalButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( 10, 10 ) );
                     tool.rect = ir;
                     tool.state = down ? State_Sunken : State_Raised;
                     proxy()->drawPrimitive( PE_PanelButtonTool, &tool, p, widget );
@@ -4768,7 +4768,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                 {
                     ir = proxy()->subControlRect( CC_TitleBar, tb, SC_TitleBarShadeButton, widget );
                     down = ( tb->activeSubControls & SC_TitleBarShadeButton && ( opt->state & State_Sunken ) );
-                    pm = proxy()->standardIcon( SP_TitleBarShadeButton, &tool, widget ).pixmap( qt_getWindow( widget ), QSize( 10, 10 ) );
+                    pm = proxy()->standardIcon( SP_TitleBarShadeButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( 10, 10 ) );
                     tool.rect = ir;
                     tool.state = down ? State_Sunken : State_Raised;
                     proxy()->drawPrimitive( PE_PanelButtonTool, &tool, p, widget );
@@ -4789,7 +4789,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                     ir = proxy()->subControlRect( CC_TitleBar, tb, SC_TitleBarUnshadeButton, widget );
 
                     down = tb->activeSubControls & SC_TitleBarUnshadeButton  && ( opt->state & State_Sunken );
-                    pm = proxy()->standardIcon( SP_TitleBarUnshadeButton, &tool, widget ).pixmap( qt_getWindow( widget ), QSize( 10, 10 ) );
+                    pm = proxy()->standardIcon( SP_TitleBarUnshadeButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( 10, 10 ) );
                     tool.rect = ir;
                     tool.state = down ? State_Sunken : State_Raised;
                     proxy()->drawPrimitive( PE_PanelButtonTool, &tool, p, widget );
@@ -4809,7 +4809,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                     ir = proxy()->subControlRect( CC_TitleBar, tb, SC_TitleBarContextHelpButton, widget );
 
                     down = tb->activeSubControls & SC_TitleBarContextHelpButton  && ( opt->state & State_Sunken );
-                    pm = proxy()->standardIcon( SP_TitleBarContextHelpButton, &tool, widget ).pixmap( qt_getWindow( widget ), QSize( 10, 10 ) );
+                    pm = proxy()->standardIcon( SP_TitleBarContextHelpButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( 10, 10 ) );
                     tool.rect = ir;
                     tool.state = down ? State_Sunken : State_Raised;
                     proxy()->drawPrimitive( PE_PanelButtonTool, &tool, p, widget );
@@ -4834,7 +4834,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
                     else
                     {
                         int iconSize = proxy()->pixelMetric( PM_SmallIconSize, tb, widget );
-                        pm = proxy()->standardIcon( SP_TitleBarMenuButton, &tool, widget ).pixmap( qt_getWindow( widget ), QSize( iconSize, iconSize ) );
+                        pm = proxy()->standardIcon( SP_TitleBarMenuButton, &tool, widget ).pixmap( lscs_getWindow( widget ), QSize( iconSize, iconSize ) );
                         tool.rect = ir;
                         p->save();
                         proxy()->drawItemPixmap( p, ir, Qt::AlignCenter, pm );
@@ -4844,7 +4844,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
             }
 
             break;
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 
         case CC_Dial:
             if ( const QStyleOptionSlider *dial = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -4959,8 +4959,8 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
             }
 
             break;
-#endif // QT_NO_DIAL
-#ifndef QT_NO_GROUPBOX
+#endif // LSCS_NO_DIAL
+#ifndef LSCS_NO_GROUPBOX
 
         case CC_GroupBox:
             if ( const QStyleOptionGroupBox *groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>( opt ) )
@@ -5044,9 +5044,9 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
             }
 
             break;
-#endif // QT_NO_GROUPBOX
+#endif // LSCS_NO_GROUPBOX
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
         case CC_MdiControls:
         {
@@ -5075,7 +5075,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
 
                 btnOpt.rect = proxy()->subControlRect( CC_MdiControls, opt, SC_MdiCloseButton, widget );
                 proxy()->drawPrimitive( PE_PanelButtonCommand, &btnOpt, p, widget );
-                QPixmap pm = proxy()->standardIcon( SP_TitleBarCloseButton ).pixmap( qt_getWindow( widget ), QSize( 16, 16 ) );
+                QPixmap pm = proxy()->standardIcon( SP_TitleBarCloseButton ).pixmap( lscs_getWindow( widget ), QSize( 16, 16 ) );
                 proxy()->drawItemPixmap( p, btnOpt.rect.translated( bsx, bsy ), Qt::AlignCenter, pm );
             }
 
@@ -5098,7 +5098,7 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
 
                 btnOpt.rect = proxy()->subControlRect( CC_MdiControls, opt, SC_MdiNormalButton, widget );
                 proxy()->drawPrimitive( PE_PanelButtonCommand, &btnOpt, p, widget );
-                QPixmap pm = proxy()->standardIcon( SP_TitleBarNormalButton ).pixmap( qt_getWindow( widget ), QSize( 16, 16 ) );
+                QPixmap pm = proxy()->standardIcon( SP_TitleBarNormalButton ).pixmap( lscs_getWindow( widget ), QSize( 16, 16 ) );
                 proxy()->drawItemPixmap( p, btnOpt.rect.translated( bsx, bsy ), Qt::AlignCenter, pm );
             }
 
@@ -5121,12 +5121,12 @@ void QCommonStyle::drawComplexControl( ComplexControl cc, const QStyleOptionComp
 
                 btnOpt.rect = proxy()->subControlRect( CC_MdiControls, opt, SC_MdiMinButton, widget );
                 proxy()->drawPrimitive( PE_PanelButtonCommand, &btnOpt, p, widget );
-                QPixmap pm = proxy()->standardIcon( SP_TitleBarMinButton ).pixmap( qt_getWindow( widget ), QSize( 16, 16 ) );
+                QPixmap pm = proxy()->standardIcon( SP_TitleBarMinButton ).pixmap( lscs_getWindow( widget ), QSize( 16, 16 ) );
                 proxy()->drawItemPixmap( p, btnOpt.rect.translated( bsx, bsy ), Qt::AlignCenter, pm );
             }
         }
         break;
-#endif // QT_NO_WORKSPACE
+#endif // LSCS_NO_WORKSPACE
 
         default:
             qWarning( "QCommonStyle::drawComplexControl() Control %d was not handled", cc );
@@ -5140,7 +5140,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl( ComplexControl cc, const
 
     switch ( cc )
     {
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -5165,7 +5165,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl( ComplexControl cc, const
             break;
 #endif
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case CC_ScrollBar:
             if ( const QStyleOptionSlider *scrollbar = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -5190,7 +5190,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl( ComplexControl cc, const
             break;
 #endif
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
         case CC_ToolButton:
             if ( const QStyleOptionToolButton *toolbutton = qstyleoption_cast<const QStyleOptionToolButton *>( opt ) )
@@ -5215,7 +5215,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl( ComplexControl cc, const
             break;
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
@@ -5262,7 +5262,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl( ComplexControl cc, const
 
             break;
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CC_ComboBox:
             if ( const QStyleOptionComboBox *cb = qstyleoption_cast<const QStyleOptionComboBox *>( opt ) )
@@ -5285,9 +5285,9 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl( ComplexControl cc, const
             }
 
             break;
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
         case CC_GroupBox:
             if ( const QStyleOptionGroupBox *groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>( opt ) )
@@ -5310,7 +5310,7 @@ QStyle::SubControl QCommonStyle::hitTestComplexControl( ComplexControl cc, const
             }
 
             break;
-#endif // QT_NO_GROUPBOX
+#endif // LSCS_NO_GROUPBOX
 
         case CC_MdiControls:
         {
@@ -5346,7 +5346,7 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
 
     switch ( cc )
     {
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case CC_Slider:
             if ( const QStyleOptionSlider *slider = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -5399,7 +5399,7 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
             break;
 #endif
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case CC_ScrollBar:
             if ( const QStyleOptionSlider *scrollbar = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -5530,7 +5530,7 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
             break;
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CC_SpinBox:
             if ( const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
@@ -5592,7 +5592,7 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
             break;
 #endif
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
         case CC_ToolButton:
             if ( const QStyleOptionToolButton *tb = qstyleoption_cast<const QStyleOptionToolButton *>( opt ) )
@@ -5632,7 +5632,7 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
             break;
 #endif
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CC_ComboBox:
             if ( const QStyleOptionComboBox *cb = qstyleoption_cast<const QStyleOptionComboBox *>( opt ) )
@@ -5821,7 +5821,7 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
 
             break;
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
         case CC_GroupBox:
         {
@@ -5925,9 +5925,9 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
             break;
         }
 
-#endif // QT_NO_GROUPBOX
+#endif // LSCS_NO_GROUPBOX
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
         case CC_MdiControls:
         {
@@ -6002,7 +6002,7 @@ QRect QCommonStyle::subControlRect( ComplexControl cc, const QStyleOptionComplex
             break;
         }
 
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA
 
         default:
             qWarning( "QCommonStyle::subControlRect() Control %d was not handled", cc );
@@ -6047,7 +6047,7 @@ int QCommonStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const QWi
                 {
                     ret = qMax( widget ? widget->fontMetrics().height() : opt->fontMetrics.height(), 16 );
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
                 }
                 else if ( qobject_cast<const QDockWidget *>( widget ) )
                 {
@@ -6112,7 +6112,7 @@ int QCommonStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const QWi
             ret = int( QStyleHelper::dpiScaled( 196. ) );
             break;
 
-#ifndef QT_NO_SCROLLBAR
+#ifndef LSCS_NO_SCROLLBAR
 
         case PM_ScrollBarExtent:
             if ( const QStyleOptionSlider *sb = qstyleoption_cast<const QStyleOptionSlider *>( opt ) )
@@ -6134,7 +6134,7 @@ int QCommonStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const QWi
             ret = QGuiApplicationPrivate::platformTheme()->themeHint( QPlatformTheme::MaximumScrollBarDragDistance ).toInt();
             break;
 
-#ifndef QT_NO_SLIDER
+#ifndef LSCS_NO_SLIDER
 
         case PM_SliderThickness:
             ret = int( QStyleHelper::dpiScaled( 16. ) );
@@ -6186,8 +6186,8 @@ int QCommonStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const QWi
             }
 
             break;
-#endif // QT_NO_SLIDER
-#ifndef QT_NO_DOCKWIDGET
+#endif // LSCS_NO_SLIDER
+#ifndef LSCS_NO_DOCKWIDGET
 
         case PM_DockWidgetSeparatorExtent:
             ret = int( QStyleHelper::dpiScaled( 6. ) );
@@ -6204,7 +6204,7 @@ int QCommonStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const QWi
         case PM_DockWidgetFrameWidth:
             ret = 1;
             break;
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
         case PM_SpinBoxSliderHeight:
         case PM_MenuBarPanelWidth:
@@ -6215,7 +6215,7 @@ int QCommonStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const QWi
             ret = 0;
             break;
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case PM_ToolBarFrameWidth:
             ret = 1;
@@ -6240,9 +6240,9 @@ int QCommonStyle::pixelMetric( PixelMetric m, const QStyleOption *opt, const QWi
         case PM_ToolBarExtensionExtent:
             ret = int( QStyleHelper::dpiScaled( 12. ) );
             break;
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case PM_TabBarTabOverlap:
             ret = 3;
@@ -6530,7 +6530,7 @@ QSize QCommonStyle::sizeFromContents( ContentsType ct, const QStyleOption *opt,
 
             break;
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
         case CT_MenuItem:
             if ( const QStyleOptionMenuItem *mi = qstyleoption_cast<const QStyleOptionMenuItem *>( opt ) )
@@ -6581,16 +6581,16 @@ QSize QCommonStyle::sizeFromContents( ContentsType ct, const QStyleOption *opt,
 
             break;
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
-#ifndef QT_NO_TOOLBUTTON
+#ifndef LSCS_NO_TOOLBUTTON
 
         case CT_ToolButton:
             sz = QSize( sz.width() + 6, sz.height() + 5 );
             break;
 #endif
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 
         case CT_ComboBox:
             if ( const QStyleOptionComboBox *cmb = qstyleoption_cast<const QStyleOptionComboBox *>( opt ) )
@@ -6648,7 +6648,7 @@ QSize QCommonStyle::sizeFromContents( ContentsType ct, const QStyleOption *opt,
 
             break;
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
         case CT_GroupBox:
             if ( const QGroupBox *grb = static_cast<const QGroupBox *>( widget ) )
@@ -6688,7 +6688,7 @@ QSize QCommonStyle::sizeFromContents( ContentsType ct, const QStyleOption *opt,
 
             break;
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
         case CT_ItemViewItem:
             if ( const QStyleOptionViewItem *vopt = qstyleoption_cast<const QStyleOptionViewItem *>( opt ) )
@@ -6705,7 +6705,7 @@ QSize QCommonStyle::sizeFromContents( ContentsType ct, const QStyleOption *opt,
             break;
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
         case CT_SpinBox:
             if ( const QStyleOptionSpinBox *vopt = qstyleoption_cast<const QStyleOptionSpinBox *>( opt ) )
@@ -6763,7 +6763,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
             ret = QDialogButtonBox::AcceptRole;
             break;
 
-#ifndef QT_NO_GROUPBOX
+#ifndef LSCS_NO_GROUPBOX
 
         case SH_GroupBox_TextLabelVerticalAlignment:
             ret = Qt::AlignVCenter;
@@ -6915,7 +6915,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
             }
 
             break;
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
         case SH_RubberBand_Mask:
             if ( const QStyleOptionRubberBand *rbOpt = qstyleoption_cast<const QStyleOptionRubberBand *>( opt ) )
@@ -6936,7 +6936,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
             }
 
             break;
-#endif // QT_NO_RUBBERBAND
+#endif // LSCS_NO_RUBBERBAND
 
         case SH_SpinControls_DisableOnBounds:
             ret = 1;
@@ -7025,7 +7025,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
             ret = false;
             break;
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
 
         case SH_TabWidget_DefaultTabPosition:
             ret = QTabWidget::North;
@@ -7049,7 +7049,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
 
             break;
 
-#ifndef QT_NO_WIZARD
+#ifndef LSCS_NO_WIZARD
 
         case SH_WizardStyle:
             ret = QWizard::ClassicStyle;
@@ -7079,7 +7079,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
         case SH_ItemView_DrawDelegateFrame:
             ret = 0;
             break;
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
         case SH_TabBar_CloseButtonPosition:
             ret = QTabBar::RightSide;
@@ -7115,7 +7115,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
         case SH_Menu_SupportsSections:
             ret = false;
             break;
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case SH_ToolTip_WakeUpDelay:
             ret = 700;
@@ -7127,7 +7127,7 @@ int QCommonStyle::styleHint( StyleHint sh, const QStyleOption *opt, const QWidge
 #endif
 
         case SH_Widget_Animate:
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
             if ( qobject_cast<const QTreeView *>( widget ) )
             {
                 ret = false;
@@ -7170,13 +7170,13 @@ static inline QPixmap titleBarMenuCachedPixmapFromXPM()
     return cachedPixmapFromXPM( lscs_menu_xpm );
 }
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 static inline QString clearText16IconPath()
 {
 
     return QString( ":LsCs/styles/commonstyle/images/cleartext-16.png" );
 }
-#endif // !QT_NO_IMAGEFORMAT_PNG
+#endif // !LSCS_NO_IMAGEFORMAT_PNG
 
 static QIcon clearTextIcon( bool rtl )
 {
@@ -7195,7 +7195,7 @@ static QIcon clearTextIcon( bool rtl )
     }
 
     QIcon icon;
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
     QPixmap clearText16( clearText16IconPath() );
     Q_ASSERT( !clearText16.size().isEmpty() );
     icon.addPixmap( clearText16 );
@@ -7206,7 +7206,7 @@ static QIcon clearTextIcon( bool rtl )
     icon.addPixmap( clearText32 );
     clearText32.setDevicePixelRatio( 2 ); // The 32x32 pixmap can also be used for 16x16/devicePixelRatio=2
     icon.addPixmap( clearText32 );
-#endif // !QT_NO_IMAGEFORMAT_PNG
+#endif // !LSCS_NO_IMAGEFORMAT_PNG
 
     return icon;
 }
@@ -7216,7 +7216,7 @@ QPixmap QCommonStyle::standardPixmap( StandardPixmap sp, const QStyleOption *opt
 {
     const bool rtl = ( option && option->direction == Qt::RightToLeft ) || ( !option && QApplication::isRightToLeft() );
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 
     QPixmap pixmap;
 
@@ -7451,11 +7451,11 @@ QPixmap QCommonStyle::standardPixmap( StandardPixmap sp, const QStyleOption *opt
         return pixmap;
     }
 
-#endif //QT_NO_IMAGEFORMAT_PNG
+#endif //LSCS_NO_IMAGEFORMAT_PNG
 
     switch ( sp )
     {
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
 
         case SP_ToolBarHorizontalExtensionButton:
             if ( rtl )
@@ -7477,7 +7477,7 @@ QPixmap QCommonStyle::standardPixmap( StandardPixmap sp, const QStyleOption *opt
             return cachedPixmapFromXPM( filedialog_end_xpm );
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 
         case SP_CommandLink:
         case SP_ArrowForward:
@@ -7638,13 +7638,13 @@ QPixmap QCommonStyle::standardPixmap( StandardPixmap sp, const QStyleOption *opt
 
         case SP_LineEditClearButton:
             return QPixmap( clearText16IconPath() );
-#endif // QT_NO_IMAGEFORMAT_PNG
+#endif // LSCS_NO_IMAGEFORMAT_PNG
 
         default:
             break;
     }
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
 
     switch ( sp )
     {
@@ -7652,25 +7652,25 @@ QPixmap QCommonStyle::standardPixmap( StandardPixmap sp, const QStyleOption *opt
             return titleBarMenuCachedPixmapFromXPM();
 
         case SP_TitleBarShadeButton:
-            return cachedPixmapFromXPM( qt_shade_xpm );
+            return cachedPixmapFromXPM( lscs_shade_xpm );
 
         case SP_TitleBarUnshadeButton:
-            return cachedPixmapFromXPM( qt_unshade_xpm );
+            return cachedPixmapFromXPM( lscs_unshade_xpm );
 
         case SP_TitleBarNormalButton:
-            return cachedPixmapFromXPM( qt_normalizeup_xpm );
+            return cachedPixmapFromXPM( lscs_normalizeup_xpm );
 
         case SP_TitleBarMinButton:
-            return cachedPixmapFromXPM( qt_minimize_xpm );
+            return cachedPixmapFromXPM( lscs_minimize_xpm );
 
         case SP_TitleBarMaxButton:
-            return cachedPixmapFromXPM( qt_maximize_xpm );
+            return cachedPixmapFromXPM( lscs_maximize_xpm );
 
         case SP_TitleBarCloseButton:
-            return cachedPixmapFromXPM( qt_close_xpm );
+            return cachedPixmapFromXPM( lscs_close_xpm );
 
         case SP_TitleBarContextHelpButton:
-            return cachedPixmapFromXPM( qt_help_xpm );
+            return cachedPixmapFromXPM( lscs_help_xpm );
 
         case SP_DockWidgetCloseButton:
             return cachedPixmapFromXPM( dock_widget_close_xpm );
@@ -7691,7 +7691,7 @@ QPixmap QCommonStyle::standardPixmap( StandardPixmap sp, const QStyleOption *opt
             break;
     }
 
-#endif //QT_NO_IMAGEFORMAT_XPM
+#endif //LSCS_NO_IMAGEFORMAT_XPM
     return QPixmap();
 }
 
@@ -7974,8 +7974,8 @@ QIcon QCommonStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
                     for ( int i = 0 ; i < sizes.size() ; ++i )
                     {
                         int size = sizes[i].width();
-                        QPixmap basePixmap = baseIcon.pixmap( qt_getWindow( widget ), QSize( size, size ) );
-                        QPixmap linkPixmap = linkIcon.pixmap( qt_getWindow( widget ), QSize( size / 2, size / 2 ) );
+                        QPixmap basePixmap = baseIcon.pixmap( lscs_getWindow( widget ), QSize( size, size ) );
+                        QPixmap linkPixmap = linkIcon.pixmap( lscs_getWindow( widget ), QSize( size / 2, size / 2 ) );
                         QPainter painter( &basePixmap );
                         painter.drawPixmap( size / 2, size / 2, linkPixmap );
                         icon.addPixmap( basePixmap );
@@ -7996,8 +7996,8 @@ QIcon QCommonStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
                     for ( int i = 0 ; i < sizes.size() ; ++i )
                     {
                         int size = sizes[i].width();
-                        QPixmap basePixmap = baseIcon.pixmap( qt_getWindow( widget ), QSize( size, size ) );
-                        QPixmap linkPixmap = linkIcon.pixmap( qt_getWindow( widget ), QSize( size / 2, size / 2 ) );
+                        QPixmap basePixmap = baseIcon.pixmap( lscs_getWindow( widget ), QSize( size, size ) );
+                        QPixmap linkPixmap = linkIcon.pixmap( lscs_getWindow( widget ), QSize( size / 2, size / 2 ) );
                         QPainter painter( &basePixmap );
                         painter.drawPixmap( size / 2, size / 2, linkPixmap );
                         icon.addPixmap( basePixmap );
@@ -8084,7 +8084,7 @@ QIcon QCommonStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
                     for ( int size : sizes )
                     {
                         QPixmap mainIcon;
-                        const QString cacheKey = QLatin1String( "qt_mac_constructQIconFromIconRef" ) + QString::number( standardIcon ) + QString::number(
+                        const QString cacheKey = QLatin1String( "lscs_mac_constructQIconFromIconRef" ) + QString::number( standardIcon ) + QString::number(
                                                      size );
 
                         if ( standardIcon >= QStyle::SP_CustomBase )
@@ -8116,7 +8116,7 @@ QIcon QCommonStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
     switch ( standardIcon )
     {
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 
         case SP_FileDialogNewFolder:
             icon.addFile( QLatin1String( ":LsCs/styles/commonstyle/images/newdirectory-16.png" ), QSize( 16, 16 ) );
@@ -8361,7 +8361,7 @@ QIcon QCommonStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
             break;
 
         case SP_TitleBarMenuButton:
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
             icon.addPixmap( titleBarMenuCachedPixmapFromXPM() );
 #endif
             icon.addFile( ":LsCs/dialogs/images/cslogo-64.png" );
@@ -8377,7 +8377,7 @@ QIcon QCommonStyle::standardIcon( StandardPixmap standardIcon, const QStyleOptio
     return icon;
 }
 
-static inline uint qt_intensity( uint r, uint g, uint b )
+static inline uint lscs_intensity( uint r, uint g, uint b )
 {
     // 30% red, 59% green, 11% blue
     return ( 77 * r + 150 * g + 28 * b ) / 255;
@@ -8413,7 +8413,7 @@ QPixmap QCommonStyle::generatedIconPixmap( QIcon::Mode iconMode, const QPixmap &
                 blues[i + 128]  = uchar( qMin( blue  + ( i << 1 ), 255 ) );
             }
 
-            int intensity = qt_intensity( red, green, blue );
+            int intensity = lscs_intensity( red, green, blue );
             const int factor = 191;
 
             // High intensity colors needs dark shifting in the color table, while
@@ -8503,7 +8503,7 @@ void QCommonStyle::unpolish( QApplication *application )
     QStyle::unpolish( application );
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 void QCommonStyle::_q_removeAnimation( QObject *obj )
 {
     Q_D( QCommonStyle );

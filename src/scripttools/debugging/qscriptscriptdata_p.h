@@ -29,7 +29,7 @@
 #include <QtCore/qdatetime.h>
 #include <QtCore/qmap.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDataStream;
 class QString;
@@ -72,6 +72,6 @@ typedef QMap<qint64, QScriptScriptData> QScriptScriptMap;
 QDataStream &operator<<( QDataStream &, const QScriptScriptData & );
 QDataStream &operator>>( QDataStream &, QScriptScriptData & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

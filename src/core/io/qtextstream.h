@@ -104,7 +104,7 @@ public:
 
     virtual ~QTextStream();
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     void setCodec( QTextCodec *codec );
     void setCodec( const char *codecName );
     QTextCodec *codec() const;

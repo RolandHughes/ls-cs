@@ -39,7 +39,7 @@
 
 #ifdef Q_OS_WIN
 
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 using Q_PIPE = HANDLE;
 #define INVALID_Q_PIPE INVALID_HANDLE_VALUE
@@ -51,7 +51,7 @@ using Q_PIPE = int;
 
 #endif
 
-#ifndef QT_NO_PROCESS
+#ifndef LSCS_NO_PROCESS
 
 class QSocketNotifier;
 class QTimer;
@@ -454,6 +454,6 @@ public:
     void setErrorAndEmit( QProcess::ProcessError error, const QString &description = QString() );
 };
 
-#endif // QT_NO_PROCESS
+#endif // LSCS_NO_PROCESS
 
 #endif

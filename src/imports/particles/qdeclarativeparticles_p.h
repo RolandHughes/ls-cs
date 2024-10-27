@@ -26,7 +26,7 @@
 
 #include <QtDeclarative/qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeParticle;
 class QDeclarativeParticles;
@@ -242,7 +242,7 @@ private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeParticles )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeParticleMotion )
 QML_DECLARE_TYPE( QDeclarativeParticleMotionLinear )

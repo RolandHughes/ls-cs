@@ -34,11 +34,11 @@
 #include <qtextstream.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qopengl_p.h>
 #endif
 
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qsystemlibrary_p.h>
 
 #include <d3d9.h>
@@ -145,7 +145,7 @@ QVariant GpuDescription::toVariant() const
 
 QWindowsOpenGLTester::Renderer QWindowsOpenGLTester::requestedGlesRenderer()
 {
-    const char platformVar[] = "QT_ANGLE_PLATFORM";
+    const char platformVar[] = "LSCS_ANGLE_PLATFORM";
     const QByteArray anglePlatform = qgetenv( platformVar );
 
     if ( ! anglePlatform.isEmpty() )
@@ -174,7 +174,7 @@ QWindowsOpenGLTester::Renderer QWindowsOpenGLTester::requestedGlesRenderer()
 
 QWindowsOpenGLTester::Renderer QWindowsOpenGLTester::requestedRenderer()
 {
-    const char openGlVar[] = "QT_OPENGL";
+    const char openGlVar[] = "LSCS_OPENGL";
 
     if ( QCoreApplication::testAttribute( Qt::AA_UseOpenGLES ) )
     {
@@ -245,7 +245,7 @@ static inline QString resolveBugListFile( const QString &fileName )
     return QStandardPaths::locate( QStandardPaths::ConfigLocation, fileName );
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 using SupportedRenderersCache = QHash<QOpenGLConfig::Gpu, QWindowsOpenGLTester::Renderers>;
 
@@ -259,7 +259,7 @@ static SupportedRenderersCache *supportedRenderersCache()
 
 QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::detectSupportedRenderers( const GpuDescription &gpu, bool glesOnly )
 {
-#if defined(QT_NO_OPENGL)
+#if defined(LSCS_NO_OPENGL)
     return Qt::EmptyFlag;
 
 #else
@@ -284,7 +284,7 @@ QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::detectSupportedRenderers( 
     }
 
     QSet<QString> features;
-    const char bugListFileVar[] = "QT_OPENGL_BUGLIST";
+    const char bugListFileVar[] = "LSCS_OPENGL_BUGLIST";
 
     QByteArray bugList = qgetenv( bugListFileVar );
 
@@ -351,7 +351,7 @@ QWindowsOpenGLTester::Renderers QWindowsOpenGLTester::supportedRenderers()
 
 bool QWindowsOpenGLTester::testDesktopGL()
 {
-#if ! defined(QT_NO_OPENGL)
+#if ! defined(LSCS_NO_OPENGL)
     HMODULE lib = nullptr;
     HWND wnd = nullptr;
     HDC dc   = nullptr;

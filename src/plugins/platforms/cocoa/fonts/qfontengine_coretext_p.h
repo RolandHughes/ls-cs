@@ -115,6 +115,6 @@ private:
     QFontEngine::FaceId face_id;
 };
 
-CGAffineTransform qt_transform_from_fontdef( const QFontDef &fontDef );
+CGAffineTransform lscs_transform_from_fontdef( const QFontDef &fontDef );
 
 #endif

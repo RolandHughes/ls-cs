@@ -23,7 +23,7 @@
 
 #include <qfontcombobox.h>
 
-#ifndef QT_NO_FONTCOMBOBOX
+#ifndef LSCS_NO_FONTCOMBOBOX
 
 #include <qstringlistmodel.h>
 #include <qitemdelegate.h>
@@ -587,4 +587,4 @@ void QFontComboBox::_q_updateModel()
     d->_q_updateModel();
 }
 
-#endif // QT_NO_FONTCOMBOBOX
+#endif // LSCS_NO_FONTCOMBOBOX

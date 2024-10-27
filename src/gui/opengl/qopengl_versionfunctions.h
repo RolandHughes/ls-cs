@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qhashfunc.h>
 #include <qpair.h>
@@ -136,7 +136,7 @@ inline QAbstractOpenGLFunctionsPrivate *QAbstractOpenGLFunctionsPrivate::get( QA
     return q->d_func();
 }
 
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
 
 class QOpenGLFunctions_1_0_CoreBackend : public QOpenGLVersionFunctionsBackend
 {
@@ -1737,8 +1737,8 @@ public:
 // No need for backend classes with function pointers with ES2.
 // All function addresses are independent of context and display.
 
-#endif // !QT_OPENGL_ES_2
+#endif // !LSCS_OPENGL_ES_2
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

@@ -26,7 +26,7 @@
 
 #include <qgridlayoutengine_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qsizepolicy.h>
 #include <qstyle.h>
@@ -119,6 +119,6 @@ public:
 
 };
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

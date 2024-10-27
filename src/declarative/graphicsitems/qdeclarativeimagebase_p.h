@@ -26,7 +26,7 @@
 
 #include <qdeclarativeimplicitsizeitem_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeImageBasePrivate;
 
@@ -117,6 +117,6 @@ private :
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeImageBase )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEIMAGEBASE_H

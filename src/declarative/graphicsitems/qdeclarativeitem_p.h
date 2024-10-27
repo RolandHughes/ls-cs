@@ -39,7 +39,7 @@
 #include <QtCore/qdebug.h>
 #include <qgraphicsitem_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNetworkReply;
 class QDeclarativeItemKeyFilter;
@@ -701,7 +701,7 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativeItemPrivate::ChangeTypes );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeKeysAttached )
 QML_DECLARE_TYPEINFO( QDeclarativeKeysAttached, QML_HAS_ATTACHED_PROPERTIES )

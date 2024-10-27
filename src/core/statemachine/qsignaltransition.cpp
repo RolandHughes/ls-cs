@@ -23,7 +23,7 @@
 
 #include <qsignaltransition.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qstate.h>
 #include <qstate_p.h>
@@ -114,4 +114,4 @@ void QSignalTransitionPrivate::callOnTransition( QEvent *e )
     q->onTransition( e );
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

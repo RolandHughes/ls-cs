@@ -36,7 +36,7 @@
 
 #include <qnetworkconfiguration_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 class QNetworkConfiguration;
 
@@ -84,6 +84,6 @@ protected:
     mutable QRecursiveMutex mutex;
 };
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif // QBEARERENGINE_P_H

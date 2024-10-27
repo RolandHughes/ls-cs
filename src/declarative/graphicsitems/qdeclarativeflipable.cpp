@@ -27,7 +27,7 @@
 #include <qdeclarativeinfo.h>
 #include <QtGui/qgraphicstransform.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeFlipablePrivate : public QDeclarativeItemPrivate
 {
@@ -272,4 +272,4 @@ void QDeclarativeFlipablePrivate::setBackTransform()
     back->setTransform( mat );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

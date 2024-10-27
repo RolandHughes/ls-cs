@@ -26,7 +26,7 @@
 
 #include <qframe.h>
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
 class QMargins;
 class QScrollBar;
@@ -108,15 +108,15 @@ protected:
     void mouseDoubleClickEvent( QMouseEvent *event ) override;
     void mouseMoveEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *event ) override;
     void dragMoveEvent( QDragMoveEvent *event ) override;
     void dragLeaveEvent( QDragLeaveEvent *event ) override;
@@ -144,6 +144,6 @@ private:
     friend class QWidgetPrivate;
 };
 
-#endif // QT_NO_SCROLLAREA
+#endif // LSCS_NO_SCROLLAREA
 
 #endif

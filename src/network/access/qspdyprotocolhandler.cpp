@@ -28,7 +28,7 @@
 #include <qnoncontiguousbytedevice_p.h>
 #include <qhttp_networkconnectionchannel_p.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 static const char spdyDictionary[] =
 {
@@ -496,7 +496,7 @@ QByteArray QSpdyProtocolHandler::composeHeader( const QHttpNetworkRequest &reque
 
     uncompressedHeader.append( headerField( ":method", request.methodName() ) );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     bool useProxy = m_connection->d_func()->networkProxy.type() != QNetworkProxy::NoProxy;
     uncompressedHeader.append( headerField( ":path", request.uri( useProxy ) ) );
 #else

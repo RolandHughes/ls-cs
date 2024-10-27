@@ -28,7 +28,7 @@
 #include <qdeclarativeguard_p.h>
 #include <QtCore/qmetaobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeAbstractBoundSignal : public QObject
 {
@@ -70,7 +70,7 @@ public:
 
 protected:
     void unregisterScopeObject();
-    virtual int qt_metacall( QMetaObject::Call c, int id, void **a );
+    virtual int lscs_metacall( QMetaObject::Call c, int id, void **a );
 
 private:
     class ScopeGuard : public QDeclarativeGuard<QObject>
@@ -101,6 +101,6 @@ private:
     ScopeGuard m_scope;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEBOUNDSIGNAL_P_H

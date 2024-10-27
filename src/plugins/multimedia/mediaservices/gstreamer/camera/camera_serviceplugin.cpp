@@ -131,7 +131,7 @@ GstElementFactory *CameraBinServicePlugin::sourceFactory() const
     {
         GstElementFactory *factory = nullptr;
 
-        const QByteArray envCandidate = qgetenv( "QT_GSTREAMER_CAMERABIN_SRC" );
+        const QByteArray envCandidate = qgetenv( "LSCS_GSTREAMER_CAMERABIN_SRC" );
 
         if ( !envCandidate.isEmpty() )
         {

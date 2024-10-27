@@ -32,7 +32,7 @@
 #include <qcoreapplication_p.h>
 #include <qnetworkconfigmanager_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 static QAtomicPointer<QNetworkConfigurationManagerPrivate> connManager_ptr;
 static QAtomicInt appShutdown;
@@ -210,4 +210,4 @@ void QNetworkConfigurationManager::updateConfigurations()
     }
 }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

@@ -153,14 +153,14 @@
 #include <qnetaccess_manager.h>
 #include <qnetwork_request.h>
 
-#if USE(QT_MOBILITY_SYSTEMINFO)
+#if USE(LSCS_MOBILITY_SYSTEMINFO)
 #include <qsysteminfo.h>
 #endif
 
 using namespace WebCore;
 
 // from text/qfont.cpp
-extern Q_GUI_EXPORT int qt_defaultDpi();
+extern Q_GUI_EXPORT int lscs_defaultDpi();
 
 bool QWebPagePrivate::drtRun = false;
 
@@ -325,7 +325,7 @@ QWebPagePrivate::QWebPagePrivate( QWebPage *qq )
     : q( qq )
     , page( 0 )
     , mainFrame( 0 )
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     , undoStack( 0 )
 #endif
     , insideOpenCall( false )
@@ -339,7 +339,7 @@ QWebPagePrivate::QWebPagePrivate( QWebPage *qq )
     , linkPolicy( QWebPage::DontDelegateLinks )
     , viewportSize( QSize( 0, 0 ) )
     , pixelRatio( 1 )
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     , currentContextMenu( 0 )
 #endif
     , settings( 0 )
@@ -422,10 +422,10 @@ QWebPagePrivate::~QWebPagePrivate()
         setInspector( 0 );
     }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     delete currentContextMenu;
 #endif
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
     delete undoStack;
 #endif
     delete settings;
@@ -563,7 +563,7 @@ static QWebPage::WebAction webActionForContextMenuAction( WebCore::ContextMenuAc
     return QWebPage::NoWebAction;
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 QMenu *QWebPagePrivate::createContextMenu( const WebCore::ContextMenu *webcoreMenu,
         const QList<WebCore::ContextMenuItem> *items, QBitArray *visitedWebActions )
 {
@@ -640,9 +640,9 @@ QMenu *QWebPagePrivate::createContextMenu( const WebCore::ContextMenu *webcoreMe
 
     return menu;
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 void QWebPagePrivate::_q_webActionTriggered( bool checked )
 {
     QAction *a = qobject_cast<QAction *>( q->sender() );
@@ -655,7 +655,7 @@ void QWebPagePrivate::_q_webActionTriggered( bool checked )
     QWebPage::WebAction action = static_cast<QWebPage::WebAction>( a->data().toInt() );
     q->triggerAction( action, checked );
 }
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 void QWebPagePrivate::_q_cleanupLeakMessages()
 {
@@ -667,7 +667,7 @@ void QWebPagePrivate::_q_cleanupLeakMessages()
 
 void QWebPagePrivate::updateAction( QWebPage::WebAction action )
 {
-#ifdef QT_NO_ACTION
+#ifdef LSCS_NO_ACTION
     Q_UNUSED( action )
 #else
     QAction *a = actions[action];
@@ -701,13 +701,13 @@ void QWebPagePrivate::updateAction( QWebPage::WebAction action )
         case QWebPage::ReloadAndBypassCache:
             enabled = !loader->isLoading();
             break;
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
 
         case QWebPage::Undo:
         case QWebPage::Redo:
             // those two are handled by QUndoStack
             break;
-#endif // QT_NO_UNDOSTACK
+#endif // LSCS_NO_UNDOSTACK
 
         case QWebPage::SelectAll: // editor command is always enabled
             break;
@@ -751,7 +751,7 @@ void QWebPagePrivate::updateAction( QWebPage::WebAction action )
         a->setChecked( checked );
     }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 }
 
 void QWebPagePrivate::updateNavigationActions()
@@ -946,7 +946,7 @@ void QWebPagePrivate::mouseTripleClickEvent( T *ev )
 
 void QWebPagePrivate::handleClipboard( QEvent *ev, Qt::MouseButton button )
 {
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( QApplication::clipboard()->supportsSelection() )
     {
@@ -1035,7 +1035,7 @@ void QWebPagePrivate::handleSoftwareInputPanel( Qt::MouseButton button, const QP
     clickCausedFocus = false;
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QWebPagePrivate::contextMenuEvent( const QPoint &globalPos )
 {
     QMenu *menu = q->createStandardContextMenu();
@@ -1046,7 +1046,7 @@ void QWebPagePrivate::contextMenuEvent( const QPoint &globalPos )
         delete menu;
     }
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 /*!
     \since 4.5
@@ -1057,7 +1057,7 @@ void QWebPagePrivate::contextMenuEvent( const QPoint &globalPos )
  */
 QMenu *QWebPage::createStandardContextMenu()
 {
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QMenu *menu = d->currentContextMenu;
     d->currentContextMenu = 0;
     return menu;
@@ -1066,7 +1066,7 @@ QMenu *QWebPage::createStandardContextMenu()
 #endif
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 template<class T>
 void QWebPagePrivate::wheelEvent( T *ev )
 {
@@ -1081,9 +1081,9 @@ void QWebPagePrivate::wheelEvent( T *ev )
     bool accepted = frame->eventHandler()->handleWheelEvent( pev );
     ev->setAccepted( accepted );
 }
-#endif // QT_NO_WHEELEVENT
+#endif // LSCS_NO_WHEELEVENT
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 QWebPage::WebAction QWebPagePrivate::editorActionForKeyEvent( QKeyEvent *event )
 {
     static struct
@@ -1137,7 +1137,7 @@ QWebPage::WebAction QWebPagePrivate::editorActionForKeyEvent( QKeyEvent *event )
 
     return QWebPage::NoWebAction;
 }
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 void QWebPagePrivate::keyPressEvent( QKeyEvent *ev )
 {
@@ -1237,7 +1237,7 @@ void QWebPagePrivate::focusOutEvent( QFocusEvent * )
 template<class T>
 void QWebPagePrivate::dragEnterEvent( T *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     DragData dragData( ev->mimeData(), QPointF( ev->pos() ).toPoint(),
                        QCursor::pos(), dropActionToDragOp( ev->possibleActions() ) );
     Qt::DropAction action = dragOpToDropAction( page->dragController()->dragEntered( &dragData ) );
@@ -1249,7 +1249,7 @@ void QWebPagePrivate::dragEnterEvent( T *ev )
 template<class T>
 void QWebPagePrivate::dragLeaveEvent( T *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     DragData dragData( 0, IntPoint(), QCursor::pos(), DragOperationNone );
     page->dragController()->dragExited( &dragData );
     ev->accept();
@@ -1259,7 +1259,7 @@ void QWebPagePrivate::dragLeaveEvent( T *ev )
 template<class T>
 void QWebPagePrivate::dragMoveEvent( T *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     DragData dragData( ev->mimeData(), QPointF( ev->pos() ).toPoint(),
                        QCursor::pos(), dropActionToDragOp( ev->possibleActions() ) );
     m_lastDropAction = dragOpToDropAction( page->dragController()->dragUpdated( &dragData ) );
@@ -1276,7 +1276,7 @@ void QWebPagePrivate::dragMoveEvent( T *ev )
 template<class T>
 void QWebPagePrivate::dropEvent( T *ev )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     DragData dragData( ev->mimeData(), QPointF( ev->pos() ).toPoint(),
                        QCursor::pos(), dropActionToDragOp( ev->possibleActions() ) );
 
@@ -1443,7 +1443,7 @@ void QWebPagePrivate::inputMethodEvent( QInputMethodEvent *ev )
     ev->accept();
 }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
 typedef struct
 {
     const char *name;
@@ -1635,7 +1635,7 @@ void QWebPagePrivate::shortcutOverrideEvent( QKeyEvent *event )
             }
         }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         else if ( editorActionForKeyEvent( event ) != QWebPage::NoWebAction )
         {
             event->accept();
@@ -1650,7 +1650,7 @@ bool QWebPagePrivate::handleScrolling( QKeyEvent *ev, Frame *frame )
     ScrollDirection direction;
     ScrollGranularity granularity;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( ev == QKeySequence::MoveToNextPage
             || ( ev->key() == Qt::Key_Space && !( ev->modifiers() & Qt::ShiftModifier ) ) )
@@ -1665,7 +1665,7 @@ bool QWebPagePrivate::handleScrolling( QKeyEvent *ev, Frame *frame )
         direction = ScrollUp;
     }
     else
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
         if ( ( ev->key() == Qt::Key_Up && ev->modifiers() & Qt::ControlModifier )
                 || ev->key() == Qt::Key_Home )
         {
@@ -1715,7 +1715,7 @@ void QWebPagePrivate::adjustPointForClicking( QMouseEvent * )
     notImplemented();
 }
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 void QWebPagePrivate::adjustPointForClicking( QGraphicsSceneMouseEvent *ev )
 {
     QtPlatformPlugin platformPlugin;
@@ -1979,7 +1979,7 @@ InspectorController *QWebPagePrivate::inspectorController()
 
 quint16 QWebPagePrivate::inspectorServerPort()
 {
-#if ENABLE(INSPECTOR) && !defined(QT_NO_PROPERTIES)
+#if ENABLE(INSPECTOR) && !defined(LSCS_NO_PROPERTIES)
 
     if ( q && q->property( "_q_webInspectorServerPort" ).isValid() )
     {
@@ -2612,7 +2612,7 @@ void QWebPage::javaScriptConsoleMessage( const QString &message, int lineNumber,
 void QWebPage::javaScriptAlert( QWebFrame *frame, const QString &msg )
 {
     Q_UNUSED( frame )
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
     QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
     QMessageBox::information( parent, tr( "JavaScript Alert - %1" ).formatArg( mainFrame()->url().host() ), msg.toHtmlEscaped(),
                               QMessageBox::Ok );
@@ -2628,7 +2628,7 @@ void QWebPage::javaScriptAlert( QWebFrame *frame, const QString &msg )
 bool QWebPage::javaScriptConfirm( QWebFrame *frame, const QString &msg )
 {
     Q_UNUSED( frame )
-#ifdef QT_NO_MESSAGEBOX
+#ifdef LSCS_NO_MESSAGEBOX
     return true;
 #else
     QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
@@ -2652,7 +2652,7 @@ bool QWebPage::javaScriptPrompt( QWebFrame *frame, const QString &msg, const QSt
     Q_UNUSED( frame )
     bool ok = false;
 
-#ifndef QT_NO_INPUTDIALOG
+#ifndef LSCS_NO_INPUTDIALOG
     QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
     QString x = QInputDialog::getText( parent, tr( "JavaScript Prompt - %1" )
                                        .formatArg( mainFrame()->url().host() ), msg.toHtmlEscaped(), QLineEdit::Normal, defaultValue, &ok );
@@ -2681,7 +2681,7 @@ bool QWebPage::javaScriptPrompt( QWebFrame *frame, const QString &msg, const QSt
 */
 bool QWebPage::shouldInterruptJavaScript()
 {
-#ifdef QT_NO_MESSAGEBOX
+#ifdef LSCS_NO_MESSAGEBOX
     return false;
 #else
     QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
@@ -2955,7 +2955,7 @@ void QWebPage::triggerAction( WebAction action, bool )
             frame->loader()->client()->startDownload( WebCore::ResourceRequest( d->hitTestResult.linkUrl(),
                     frame->loader()->outgoingReferrer() ) );
             break;
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
         case CopyImageToClipboard:
             QApplication::clipboard()->setPixmap( d->hitTestResult.pixmap() );
@@ -3170,7 +3170,7 @@ QWebPage::ViewportAttributes QWebPage::viewportAttributesForSize( const QSize &a
     }
 
     WebCore::ViewportAttributes conf = WebCore::computeViewportAttributes( d->viewportArguments(), desktopWidth, deviceWidth,
-                                       deviceHeight, qt_defaultDpi(), availableSize );
+                                       deviceHeight, lscs_defaultDpi(), availableSize );
 
     result.m_isValid = true;
     result.m_size = conf.layoutSize;
@@ -3370,7 +3370,7 @@ QString QWebPage::selectedHtml() const
     return d->page->focusController()->focusedOrMainFrame()->editor()->selectedRange()->toHTML();
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 /*!
    Returns a QAction for the specified WebAction \a action.
 
@@ -3472,7 +3472,7 @@ QAction *QWebPage::action( WebAction action ) const
         case SelectAll:
             text = contextMenuItemTagSelectAll();
             break;
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
 
         case Undo:
         {
@@ -3488,7 +3488,7 @@ QAction *QWebPage::action( WebAction action ) const
             return a;
         }
 
-#endif // QT_NO_UNDOSTACK
+#endif // LSCS_NO_UNDOSTACK
 
         case MoveToNextChar:
             text = tr( "Move the cursor to the next character" );
@@ -3717,7 +3717,7 @@ QAction *QWebPage::action( WebAction action ) const
     d->updateAction( action );
     return a;
 }
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 /*!
     \property QWebPage::modified
@@ -3729,7 +3729,7 @@ QAction *QWebPage::action( WebAction action ) const
 */
 bool QWebPage::isModified() const
 {
-#ifdef QT_NO_UNDOSTACK
+#ifdef LSCS_NO_UNDOSTACK
     return false;
 #else
 
@@ -3739,10 +3739,10 @@ bool QWebPage::isModified() const
     }
 
     return d->undoStack->canUndo();
-#endif // QT_NO_UNDOSTACK
+#endif // LSCS_NO_UNDOSTACK
 }
 
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
 /*!
     Returns a pointer to the undo stack used for editable content.
 
@@ -3757,7 +3757,7 @@ QUndoStack *QWebPage::undoStack() const
 
     return d->undoStack;
 }
-#endif // QT_NO_UNDOSTACK
+#endif // LSCS_NO_UNDOSTACK
 
 /*! \reimp
 */
@@ -3784,7 +3784,7 @@ bool QWebPage::event( QEvent *ev )
         case QEvent::MouseButtonRelease:
             d->mouseReleaseEvent( static_cast<QMouseEvent *>( ev ) );
             break;
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
         case QEvent::GraphicsSceneMouseMove:
             d->mouseMoveEvent( static_cast<QGraphicsSceneMouseEvent *>( ev ) );
@@ -3802,24 +3802,24 @@ bool QWebPage::event( QEvent *ev )
             d->mouseReleaseEvent( static_cast<QGraphicsSceneMouseEvent *>( ev ) );
             break;
 #endif
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case QEvent::ContextMenu:
             d->contextMenuEvent( static_cast<QContextMenuEvent *>( ev )->globalPos() );
             break;
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
         case QEvent::GraphicsSceneContextMenu:
             d->contextMenuEvent( static_cast<QGraphicsSceneContextMenuEvent *>( ev )->screenPos() );
             break;
 #endif
 #endif
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
         case QEvent::Wheel:
             d->wheelEvent( static_cast<QWheelEvent *>( ev ) );
             break;
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
         case QEvent::GraphicsSceneWheel:
             d->wheelEvent( static_cast<QGraphicsSceneWheelEvent *>( ev ) );
@@ -3842,7 +3842,7 @@ bool QWebPage::event( QEvent *ev )
         case QEvent::FocusOut:
             d->focusOutEvent( static_cast<QFocusEvent *>( ev ) );
             break;
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
         case QEvent::DragEnter:
             d->dragEnterEvent( static_cast<QDragEnterEvent *>( ev ) );
@@ -3859,7 +3859,7 @@ bool QWebPage::event( QEvent *ev )
         case QEvent::Drop:
             d->dropEvent( static_cast<QDropEvent *>( ev ) );
             break;
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
         case QEvent::GraphicsSceneDragEnter:
             d->dragEnterEvent( static_cast<QGraphicsSceneDragDropEvent *>( ev ) );
@@ -3897,7 +3897,7 @@ bool QWebPage::event( QEvent *ev )
         case QEvent::TouchEnd:
             // Return whether the default action was cancelled in the JS event handler
             return d->touchEvent( static_cast<QTouchEvent *>( ev ) );
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
 
         case QEvent::DynamicPropertyChange:
             d->dynamicPropertyChangeEvent( static_cast<QDynamicPropertyChangeEvent *>( ev ) );
@@ -4013,7 +4013,7 @@ QWebPage::LinkDelegationPolicy QWebPage::linkDelegationPolicy() const
     return d->linkPolicy;
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 /*!
     Filters the context menu event, \a event, through handlers for scrollbars and
     custom event handlers in the web page. Returns true if the event was handled;
@@ -4046,7 +4046,7 @@ bool QWebPage::swallowContextMenuEvent( QContextMenuEvent *event )
 
     return !menu;
 }
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
 /*!
     Updates the page's actions depending on the position \a pos. For example if \a pos is over an image
@@ -4054,7 +4054,7 @@ bool QWebPage::swallowContextMenuEvent( QContextMenuEvent *event )
 */
 void QWebPage::updatePositionDependentActions( const QPoint &pos )
 {
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     // First we disable all actions, but keep track of which ones were originally enabled.
     QBitArray originallyEnabledWebActions( QWebPage::WebActionCount );
 
@@ -4069,7 +4069,7 @@ void QWebPage::updatePositionDependentActions( const QPoint &pos )
         }
     }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
     d->createMainFrame();
     WebCore::Frame *focusedFrame = d->page->focusController()->focusedOrMainFrame();
@@ -4099,15 +4099,15 @@ void QWebPage::updatePositionDependentActions( const QPoint &pos )
 
     QBitArray visitedWebActions( QWebPage::WebActionCount );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     delete d->currentContextMenu;
 
     // Then we let createContextMenu() enable the actions that are put into the menu
     d->currentContextMenu = d->createContextMenu( d->page->contextMenuController()->contextMenu(),
                             d->page->contextMenuController()->contextMenu()->platformDescription(), &visitedWebActions );
-#endif // QT_NO_CONTEXTMENU
+#endif // LSCS_NO_CONTEXTMENU
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     // Finally, we restore the original enablement for the actions that were not put into the menu.
     originallyEnabledWebActions &= ~visitedWebActions; // Mask out visited actions (they're part of the menu)
 
@@ -4122,7 +4122,7 @@ void QWebPage::updatePositionDependentActions( const QPoint &pos )
         }
     }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
     // This whole process ensures that any actions put into to the context menu has the right
     // enablement, while also keeping the correct enablement for actions that were left out of
@@ -4333,7 +4333,7 @@ void QWebPage::updatePositionDependentActions( const QPoint &pos )
 */
 bool QWebPage::extension( Extension extension, const ExtensionOption *option, ExtensionReturn *output )
 {
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
     if ( extension == ChooseMultipleFilesExtension )
     {
@@ -4357,7 +4357,7 @@ bool QWebPage::extension( Extension extension, const ExtensionOption *option, Ex
 */
 bool QWebPage::supportsExtension( Extension extension ) const
 {
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
     return extension == ChooseMultipleFilesExtension;
 #else
     Q_UNUSED( extension );
@@ -4450,7 +4450,7 @@ QString QWebPage::chooseFile( QWebFrame *parentFrame, const QString &suggestedFi
 {
     Q_UNUSED( parentFrame )
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
     QWidget *parent = ( d->client ) ? d->client->ownerWidget() : 0;
     return QFileDialog::getOpenFileName( parent, QString(), suggestedFile );
 #else
@@ -4566,7 +4566,7 @@ QString QWebPage::userAgentForUrl( const QUrl & ) const
 #endif
                                             );
 
-#if ! defined(QT_SSL)
+#if ! defined(LSCS_SSL)
         // No SSL support
         firstPartTemp += QString::fromLatin1( "N; " );
 #endif
@@ -4615,7 +4615,7 @@ QString QWebPage::userAgentForUrl( const QUrl & ) const
         firstPartTemp += QString::fromLatin1( "Unknown" );
 #endif
 
-#if USE(QT_MOBILITY_SYSTEMINFO)
+#if USE(LSCS_MOBILITY_SYSTEMINFO)
         // adding Model Number
         QtMobility::QSystemDeviceInfo systemDeviceInfo;
 
@@ -4722,7 +4722,7 @@ void QWebPage::_q_cleanupLeakMessages()
     d->_q_cleanupLeakMessages();
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 void QWebPage::_q_webActionTriggered( bool checked )
 {
     //Q_D(ErrorPageExtensionReturn);

@@ -185,7 +185,7 @@ bool QColor::setColorFromString( const QString &name )
     {
         QRgb rgba;
 
-        if ( qt_get_hex_rgb( name, &rgba ) )
+        if ( lscs_get_hex_rgb( name, &rgba ) )
         {
             setRgba( rgba );
             return true;
@@ -198,10 +198,10 @@ bool QColor::setColorFromString( const QString &name )
         }
     }
 
-#ifndef QT_NO_COLORNAMES
+#ifndef LSCS_NO_COLORNAMES
     QRgb rgb;
 
-    if ( qt_get_named_rgb( name, &rgb ) )
+    if ( lscs_get_named_rgb( name, &rgb ) )
     {
         setRgba( rgb );
         return true;
@@ -218,8 +218,8 @@ bool QColor::setColorFromString( const QString &name )
 
 QStringList QColor::colorNames()
 {
-#ifndef QT_NO_COLORNAMES
-    return qt_get_colornames();
+#ifndef LSCS_NO_COLORNAMES
+    return lscs_get_colornames();
 #else
     return QStringList();
 #endif
@@ -1789,7 +1789,7 @@ QDataStream &operator>>( QDataStream &stream, QColor &color )
 }
 
 // A table of precalculated results of 0x00ff00ff/alpha use by qUnpremultiply:
-const uint qt_inv_premul_factor[256] =
+const uint lscs_inv_premul_factor[256] =
 {
     0, 16711935, 8355967, 5570645, 4177983, 3342387, 2785322, 2387419,
     2088991, 1856881, 1671193, 1519266, 1392661, 1285533, 1193709, 1114129,

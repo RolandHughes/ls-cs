@@ -25,7 +25,7 @@
 #include "qdbusconnection.h"
 #include <stdlib.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 template <typename T>
 static inline T qIterGet( DBusMessageIter *it )
@@ -466,4 +466,4 @@ QDBusArgument QDBusDemarshaller::duplicate()
     return QDBusArgumentPrivate::create( d );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

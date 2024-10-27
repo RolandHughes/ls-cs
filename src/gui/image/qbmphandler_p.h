@@ -26,7 +26,7 @@
 
 #include <qimageiohandler.h>
 
-#ifndef QT_NO_IMAGEFORMAT_BMP
+#ifndef LSCS_NO_IMAGEFORMAT_BMP
 
 
 struct BMP_FILEHDR                      // BMP file header
@@ -94,6 +94,6 @@ private:
     int startpos;
 };
 
-#endif // QT_NO_IMAGEFORMAT_BMP
+#endif // LSCS_NO_IMAGEFORMAT_BMP
 
 #endif

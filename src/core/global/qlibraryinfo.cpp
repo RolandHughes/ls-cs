@@ -36,7 +36,7 @@
 #  include <qcore_mac_p.h>
 #endif
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
 static const char platformsSection[] = "Platforms";
 
@@ -49,7 +49,7 @@ struct QLibrarySettings
     bool reloadOnQAppAvailable;
 };
 
-static QLibrarySettings *qt_library_settings()
+static QLibrarySettings *lscs_library_settings()
 {
     static QLibrarySettings retval;
     return &retval;
@@ -62,7 +62,7 @@ public:
 
     static QSettings *configuration()
     {
-        QLibrarySettings *ls = qt_library_settings();
+        QLibrarySettings *ls = lscs_library_settings();
 
         if ( ls )
         {
@@ -118,7 +118,7 @@ void QLibrarySettings::load()
 
 QSettings *QLibraryInfoPrivate::findConfiguration()
 {
-    QString qtconfig( ":/cs/etc/cs.conf" );
+    QString qtconfig( ":/lscs/etc/lscs.conf" );
 
     if ( ! QFile::exists( qtconfig ) && QCoreApplication::instance() )
     {
@@ -128,8 +128,8 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 
         if ( bundleRef )
         {
-            // locates the cs.conf file in foo.app/Contents/Resources
-            QCFType<CFURLRef> urlRef = CFBundleCopyResourceURL( bundleRef, QCFString( "cs.conf" ).toCFStringRef(), nullptr, nullptr );
+            // locates the lscs.conf file in foo.app/Contents/Resources
+            QCFType<CFURLRef> urlRef = CFBundleCopyResourceURL( bundleRef, QCFString( "lscs.conf" ).toCFStringRef(), nullptr, nullptr );
 
             if ( urlRef )
             {
@@ -142,7 +142,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 #endif
         {
             QDir pwd( QCoreApplication::applicationDirPath() );
-            qtconfig = pwd.filePath( "cs.conf" );
+            qtconfig = pwd.filePath( "lscs.conf" );
         }
     }
 
@@ -155,7 +155,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
     return nullptr;     // no luck
 }
 
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS
 
 QLibraryInfo::QLibraryInfo()
 {
@@ -181,8 +181,8 @@ QString QLibraryInfo::location( LibraryLocation loc )
     QString retval;
     QSettings *config = nullptr;
 
-#if ! defined(QT_NO_SETTINGS)
-    // raw pointer to a QSettings object, this is a ptr to the cs.conf data
+#if ! defined(LSCS_NO_SETTINGS)
+    // raw pointer to a QSettings object, this is a ptr to the lscs.conf data
     config = QLibraryInfoPrivate::configuration();
 #endif
 
@@ -201,19 +201,9 @@ QString QLibraryInfo::location( LibraryLocation loc )
 
             case PluginsPath:
                 key = "Plugins";
-                defaultValue = LsCsLibraryInfo::plugins;
-                break;
-#if 0
-            case ImportsPath:
-                key = "Imports";
-                defaultValue = "imports";
+                defaultValue = ".";  //LsCsLibraryInfo::plugins;
                 break;
 
-            case Qml2ImportsPath:
-                key = "Qml2Imports";
-                defaultValue = "qml";
-                break;
-#endif
             case TranslationsPath:
                 key = "Translations";
                 defaultValue = "translations";
@@ -223,16 +213,17 @@ QString QLibraryInfo::location( LibraryLocation loc )
                 key = "Settings";
                 defaultValue = ".";
                 break;
-                
+
             case LibrariesPath:
                 key = "Libraries";
-                defaultValue = LsCsLibraryInfo::libraries;
+                defaultValue = ".";    //LsCsLibraryInfo::libraries;
                 break;
+
             case BinariesPath:
                 key = "Binaries";
-                defaultValue = LsCsLibraryInfo::binaries;
+                defaultValue = ".";    //LsCsLibraryInfo::binaries;
                 break;
-                
+
             default:
                 break;
         }
@@ -261,7 +252,7 @@ QString QLibraryInfo::location( LibraryLocation loc )
     }
     else
     {
-        // no cs.conf file just use default values
+        // no lscs.conf file just use default values
 
         switch ( loc )
         {
@@ -271,17 +262,9 @@ QString QLibraryInfo::location( LibraryLocation loc )
                 break;
 
             case PluginsPath:
-                retval = LsCsLibraryInfo::plugins;
-                break;
-#if 0
-            case ImportsPath:
-                retval = "imports";
+                retval = ".";    //LsCsLibraryInfo::plugins;
                 break;
 
-            case Qml2ImportsPath:
-                retval = "qml";
-                break;
-#endif
             case TranslationsPath:
                 retval = "translations";
                 break;
@@ -291,11 +274,13 @@ QString QLibraryInfo::location( LibraryLocation loc )
                 break;
 
             case LibrariesPath:
-                retval = LsCsLibraryInfo::libraries;
+                retval = ".";    //LsCsLibraryInfo::libraries;
                 break;
+
             case BinariesPath:
-                retval = LsCsLibraryInfo::binaries;
+                retval = ".";    //LsCsLibraryInfo::binaries;
                 break;
+
             default:
                 break;
         }
@@ -356,7 +341,7 @@ QString QLibraryInfo::location( LibraryLocation loc )
 
 QStringList QLibraryInfo::platformPluginArguments( const QString &platformName )
 {
-#if ! defined(QT_NO_SETTINGS)
+#if ! defined(LSCS_NO_SETTINGS)
     QScopedPointer<const QSettings> settings( QLibraryInfoPrivate::findConfiguration() );
 
     if ( ! settings.isNull() )

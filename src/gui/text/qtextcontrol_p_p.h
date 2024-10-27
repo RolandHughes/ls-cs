@@ -77,7 +77,7 @@ public:
 
     void _q_updateCurrentCharFormatAndSelection();
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     void setClipboardSelection();
 #endif
 
@@ -122,7 +122,7 @@ public:
     void contextMenuEvent( const QPoint &screenPos, const QPointF &docPos, QWidget *contextWidget );
     void focusEvent( QFocusEvent *e );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     void editFocusEvent( QEvent *e );
 #endif
 
@@ -135,7 +135,7 @@ public:
 
     void activateLinkUnderCursor( QString href = QString() );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     void showToolTip( const QPoint &globalPos, const QPointF &pos, QWidget *contextWidget );
 #endif
 
@@ -184,7 +184,7 @@ public:
     QPalette palette;
     bool hasFocus;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     bool hasEditFocus;
 #endif
 

@@ -329,7 +329,7 @@ QEventDispatcherGlibPrivate::QEventDispatcherGlibPrivate( GMainContext *context 
 {
 #if GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 32
 
-    if ( qgetenv( "QT_NO_THREADED_GLIB" ).isEmpty() )
+    if ( qgetenv( "LSCS_NO_THREADED_GLIB" ).isEmpty() )
     {
 
         static QMutex mutex;

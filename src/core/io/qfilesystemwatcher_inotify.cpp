@@ -25,7 +25,7 @@
 
 #include <qfilesystemwatcher_inotify_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qdebug.h>
 #include <qfile.h>
@@ -42,7 +42,7 @@
 #include <unistd.h>
 #endif
 
-#if defined(QT_NO_INOTIFY)
+#if defined(LSCS_NO_INOTIFY)
 #include <linux/types.h>
 
 #if defined(__i386__)
@@ -130,7 +130,7 @@
 # define IN_CLOEXEC O_CLOEXEC
 #endif
 
-#ifdef QT_LINUXBASE
+#ifdef LSCS_LINUXBASE
 // ### the LSB doesn't standardize syscall, need to wait until glib2.4 is standardized
 static inline int syscall( ... )
 {
@@ -198,7 +198,7 @@ extern "C" {
 
 // --------- inotify.h end ----------
 
-#else // QT_NO_INOTIFY
+#else // LSCS_NO_INOTIFY
 
 #include <sys/inotify.h>
 
@@ -436,4 +436,4 @@ void QInotifyFileSystemWatcherEngine::readFromInotify()
     }
 }
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER

@@ -24,7 +24,7 @@
 #include "qscriptstdmessagehandler_p.h"
 #include <stdio.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \since 4.5
@@ -90,4 +90,4 @@ void QScriptStdMessageHandler::message( QtMsgType type, const QString &text,
     fflush( fp );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

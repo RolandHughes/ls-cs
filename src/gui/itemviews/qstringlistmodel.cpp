@@ -26,7 +26,7 @@
 
 #include <algorithm>
 
-#ifndef QT_NO_STRINGLISTMODEL
+#ifndef LSCS_NO_STRINGLISTMODEL
 
 QStringListModel::QStringListModel( QObject *parent )
     : QAbstractListModel( parent )
@@ -212,4 +212,4 @@ Qt::DropActions QStringListModel::supportedDropActions() const
     return QAbstractItemModel::supportedDropActions() | Qt::MoveAction;
 }
 
-#endif // QT_NO_STRINGLISTMODEL
+#endif // LSCS_NO_STRINGLISTMODEL

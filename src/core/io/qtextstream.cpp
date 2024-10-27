@@ -27,7 +27,7 @@
 #include <qfile.h>
 #include <qnumeric.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 #include <qtextcodec.h>
 #endif
 
@@ -135,7 +135,7 @@ public:
     int stringOffset;
     QIODevice::OpenMode stringOpenMode;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     QTextCodec *codec;
     QTextCodec::ConverterState readConverterState;
     QTextCodec::ConverterState writeConverterState;
@@ -198,7 +198,7 @@ public:
 
 QTextStreamPrivate::QTextStreamPrivate( QTextStream *stream )
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     :  readConverterSavedState( nullptr ), readConverterSavedStateOffset( 0 ), locale( QLocale::c() )
 # else
     : readConverterSavedStateOffset( 0 ), locale( QLocale::c() )
@@ -217,12 +217,12 @@ QTextStreamPrivate::~QTextStreamPrivate()
         delete device;
     }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     delete readConverterSavedState;
 #endif
 }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 static void resetCodecConverterStateHelper( QTextCodec::ConverterState *state )
 {
     state->~ConverterState();
@@ -292,7 +292,7 @@ void QTextStreamPrivate::reset()
     readBufferStartDevicePos = 0;
     lastTokenSize = 0;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     codec = QTextCodec::codecForLocale();
     resetCodecConverterStateHelper( &readConverterState );
     resetCodecConverterStateHelper( &writeConverterState );
@@ -366,7 +366,7 @@ bool QTextStreamPrivate::fillReadBuffer( qint64 maxBytes )
         return false;
     }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     // codec auto detection, explicitly defaults to locale encoding if the codec has been set to 0.
 
     if ( ! codec || autoDetectUnicode )
@@ -386,7 +386,7 @@ bool QTextStreamPrivate::fillReadBuffer( qint64 maxBytes )
 
     QString tmpBuffer;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     // convert to unicode
     tmpBuffer = codec->toUnicode( buf, bytesRead, &readConverterState );
 #else
@@ -441,7 +441,7 @@ void QTextStreamPrivate::flushWriteBuffer()
 
 #endif
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
     if ( ! codec )
     {
@@ -681,7 +681,7 @@ inline void QTextStreamPrivate::consume( int size )
 
 inline void QTextStreamPrivate::saveConverterState( qint64 newPos )
 {
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
     if ( readConverterState.m_data )
     {
@@ -704,7 +704,7 @@ inline void QTextStreamPrivate::saveConverterState( qint64 newPos )
 
 inline void QTextStreamPrivate::restoreToSavedConverterState()
 {
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
     if ( readConverterSavedState )
     {
@@ -966,7 +966,7 @@ bool QTextStream::seek( qint64 pos )
 
         d->resetReadBuffer();
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         // Reset the codec converter states.
         resetCodecConverterStateHelper( &d->readConverterState );
         resetCodecConverterStateHelper( &d->writeConverterState );
@@ -1014,7 +1014,7 @@ qint64 QTextStream::pos() const
         QTextStreamPrivate *thatd = const_cast<QTextStreamPrivate *>( d );
         thatd->readBuffer.clear();
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
         thatd->restoreToSavedConverterState();
 
         if ( d->readBufferStartDevicePos == 0 )
@@ -2351,7 +2351,7 @@ QTextStream &ws( QTextStream &stream )
     return stream;
 }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 QTextStream &bom( QTextStream &stream )
 {

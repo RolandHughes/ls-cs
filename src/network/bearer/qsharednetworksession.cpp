@@ -27,7 +27,7 @@
 
 #include <qbearerengine_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 QThreadStorage<QSharedNetworkSessionManager *> tls;
 
@@ -81,4 +81,4 @@ uint qHash( const QNetworkConfiguration &config )
     return ( ( uint )config.type() ) | ( ( ( uint )config.bearerType() ) << 8 ) | ( ( ( uint )config.purpose() ) << 16 );
 }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

@@ -23,7 +23,7 @@
 
 #include <qplatform_systemtrayicon.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 QPlatformSystemTrayIcon::QPlatformSystemTrayIcon()
 {

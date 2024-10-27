@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-#ifndef  QT_NO_CURSOR
+#ifndef  LSCS_NO_CURSOR
 
 #include <qwin_cursor.h>
 #include <qwin_context.h>
@@ -41,7 +41,7 @@
 
 static bool initResources()
 {
-#if ! defined(QT_NO_IMAGEFORMAT_PNG)
+#if ! defined(LSCS_NO_IMAGEFORMAT_PNG)
     extern int qInitResources_cursors();
     qInitResources_cursors();
 #endif
@@ -49,8 +49,8 @@ static bool initResources()
     return true;
 }
 
-Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat = 0 );
-Q_GUI_EXPORT HBITMAP qt_createIconMask( const QBitmap &bitmap );
+Q_GUI_EXPORT HBITMAP lscs_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat = 0 );
+Q_GUI_EXPORT HBITMAP lscs_createIconMask( const QBitmap &bitmap );
 
 QWindowsPixmapCursorCacheKey::QWindowsPixmapCursorCacheKey( const QCursor &c )
     : bitmapCacheKey( c.pixmap().cacheKey() ), maskCacheKey( 0 )
@@ -85,8 +85,8 @@ HCURSOR QWindowsCursor::createPixmapCursor( QPixmap pixmap, const QPoint &hotSpo
         mask.fill( Qt::color1 );
     }
 
-    HBITMAP ic = qt_pixmapToWinHBITMAP( pixmap, /* HBitmapAlpha */ 2 );
-    const HBITMAP im = qt_createIconMask( mask );
+    HBITMAP ic = lscs_pixmapToWinHBITMAP( pixmap, /* HBitmapAlpha */ 2 );
+    const HBITMAP im = lscs_createIconMask( mask );
 
     ICONINFO ii;
     ii.fIcon     = 0;
@@ -206,7 +206,7 @@ static QSize systemCursorSize( const QPlatformScreen *screen = nullptr )
     return primaryScreenCursorSize;
 }
 
-#if defined (QT_NO_IMAGEFORMAT_PNG)
+#if defined (LSCS_NO_IMAGEFORMAT_PNG)
 
 static inline QSize standardCursorSize()
 {
@@ -465,7 +465,7 @@ QWindowsCursor::PixmapCursor QWindowsCursor::customCursor( Qt::CursorShape curso
     return QWindowsCursor::PixmapCursor();
 }
 
-#else //  QT_NO_IMAGEFORMAT_PNG
+#else //  LSCS_NO_IMAGEFORMAT_PNG
 
 struct QWindowsCustomPngCursor
 {
@@ -540,7 +540,7 @@ QWindowsCursor::PixmapCursor QWindowsCursor::customCursor( Qt::CursorShape curso
 
     return PixmapCursor( rawImage, QPoint( bestFit->hotSpotX, bestFit->hotSpotY ) );
 }
-#endif // QT_NO_IMAGEFORMAT_PNG
+#endif // LSCS_NO_IMAGEFORMAT_PNG
 
 struct QWindowsStandardCursorMapping
 {
@@ -859,4 +859,4 @@ QPixmap QWindowsCursor::dragDefaultCursor( Qt::DropAction action ) const
     return m_ignoreDragCursor;
 }
 
-#endif // !QT_NO_CURSOR
+#endif // !LSCS_NO_CURSOR

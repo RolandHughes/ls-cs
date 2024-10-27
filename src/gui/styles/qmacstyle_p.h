@@ -123,7 +123,7 @@ typedef void ( ^QCocoaDrawRectBlock )( NSRect, CGContextRef );
         return sizes[controlSize]; \
     } while (false)
 
-bool qt_mac_buttonIsRenderedFlat( const QPushButton *pushButton, const QStyleOptionButton *option );
+bool lscs_mac_buttonIsRenderedFlat( const QPushButton *pushButton, const QStyleOptionButton *option );
 
 class QMacStylePrivate : public QCommonStylePrivate
 {

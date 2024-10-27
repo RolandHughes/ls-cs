@@ -41,7 +41,7 @@ class QPlatformTextureListPrivate;
 class QOpenGLContext;
 class QPlatformGraphicsBuffer;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 class Q_GUI_EXPORT QPlatformTextureList : public QObject
 {
     GUI_LSCS_OBJECT( QPlatformTextureList )
@@ -102,7 +102,7 @@ public:
     // offset is the (child) window's offset in relation to the window surface.
     virtual void flush( QWindow *window, const QRegion &region, const QPoint &offset ) = 0;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     virtual void composeAndFlush( QWindow *window, const QRegion &region, const QPoint &offset,
                                   QPlatformTextureList *textures, QOpenGLContext *context,
                                   bool translucentBackground );
@@ -132,7 +132,7 @@ private:
     QPlatformBackingStorePrivate *d_ptr;
 };
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 Q_DECLARE_OPERATORS_FOR_FLAGS( QPlatformBackingStore::TextureFlags )
 #endif
 

@@ -24,7 +24,7 @@
 #include "qdeclarativeapplication_p.h"
 #include <QtGui/QApplication>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeApplicationPrivate
 {
@@ -107,4 +107,4 @@ bool QDeclarativeApplication::eventFilter( QObject *obj, QEvent *event )
     return false;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

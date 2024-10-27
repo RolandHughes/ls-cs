@@ -24,7 +24,7 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
 
    target_compile_definitions(LsCsGuiXcb
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
       -DXCB_USE_XINPUT2
    )
 

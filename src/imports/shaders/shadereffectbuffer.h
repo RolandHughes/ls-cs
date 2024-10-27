@@ -26,7 +26,7 @@
 
 #include <QtOpenGL>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class ShaderEffectBuffer : public QGLFramebufferObject
 {
@@ -36,6 +36,6 @@ public:
     ~ShaderEffectBuffer();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // SHADEREFFECTBUFFER_H

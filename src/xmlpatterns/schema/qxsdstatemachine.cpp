@@ -40,7 +40,7 @@ template <typename TransitionType> XsdStateMachine<TransitionType>::XsdStateMach
 template <typename TransitionType>
 typename XsdStateMachine<TransitionType>::StateId XsdStateMachine<TransitionType>::addState( StateType type )
 {
-#if defined(QT_DEBUG)
+#if defined(LSCS_DEBUG)
 
     // make sure we don't have two start states
     if ( type == StartState )

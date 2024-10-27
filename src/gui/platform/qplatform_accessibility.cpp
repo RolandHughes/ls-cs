@@ -32,7 +32,7 @@
 
 #include <qfactoryloader_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 static QFactoryLoader *bridgeloader()
 {
@@ -134,4 +134,4 @@ void QPlatformAccessibility::setActive( bool active )
     QAccessible::setActive( active );
 }
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY

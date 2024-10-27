@@ -138,7 +138,7 @@ public:
     QVariant attribute( Attribute code, const QVariant &defaultValue = QVariant() ) const;
     void setAttribute( Attribute code, const QVariant &value );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     QSslConfiguration sslConfiguration() const;
     void setSslConfiguration( const QSslConfiguration &configuration );
 #endif

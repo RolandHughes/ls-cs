@@ -28,7 +28,7 @@
 #include <QtCore/qpair.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerScriptsModelPrivate
     : public QAbstractItemModelPrivate
@@ -447,4 +447,4 @@ QVariant QScriptDebuggerScriptsModel::data( const QModelIndex &index, int role )
     return QVariant();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

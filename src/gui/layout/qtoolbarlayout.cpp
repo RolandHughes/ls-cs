@@ -40,10 +40,10 @@
 #include <qtoolbarlayout_p.h>
 #include <qtoolbarseparator_p.h>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 // qmainwindow.cpp
-extern QMainWindowLayout *qt_mainwindow_layout( const QMainWindow *window );
+extern QMainWindowLayout *lscs_mainwindow_layout( const QMainWindow *window );
 
 QToolBarItem::QToolBarItem( QWidget *widget )
     : QWidgetItem( widget ), action( nullptr ), customWidget( false )
@@ -861,12 +861,12 @@ void QToolBarLayout::setExpanded( bool exp )
 
     if ( QMainWindow *win = qobject_cast<QMainWindow *>( tb->parentWidget() ) )
     {
-#ifdef QT_NO_DOCKWIDGET
+#ifdef LSCS_NO_DOCKWIDGET
         animating = false;
 #else
         animating = !tb->isWindow() && win->isAnimated();
 #endif
-        QMainWindowLayout *layout = qt_mainwindow_layout( win );
+        QMainWindowLayout *layout = lscs_mainwindow_layout( win );
 
         if ( expanded )
         {
@@ -970,4 +970,4 @@ QToolBarItem *QToolBarLayout::createItem( QAction *action )
 }
 
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR

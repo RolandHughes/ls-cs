@@ -27,7 +27,7 @@
 #include <qstring.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 class QSystemSemaphorePrivate;
 
@@ -72,7 +72,7 @@ private:
     QScopedPointer<QSystemSemaphorePrivate> d;
 };
 
-#endif // QT_NO_SYSTEMSEMAPHORE
+#endif // LSCS_NO_SYSTEMSEMAPHORE
 
 #endif
 

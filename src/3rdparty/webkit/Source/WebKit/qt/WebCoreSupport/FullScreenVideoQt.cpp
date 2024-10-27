@@ -22,7 +22,7 @@
 #include "FullScreenVideoQt.h"
 
 #include "ChromeClientQt.h"
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
 #include "FullScreenVideoWidget.h"
 #include "MediaPlayerPrivateQt.h"
 #endif
@@ -39,7 +39,7 @@
 #include "QTKitFullScreenVideoHandler.h"
 #endif
 
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
 #include <QGraphicsVideoItem>
 #include <QMediaPlayer>
 #endif
@@ -97,7 +97,7 @@ void GStreamerFullScreenVideoHandler::exitFullScreen()
 }
 #endif
 
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
 bool DefaultFullScreenVideoHandler::s_shouldForceFullScreenVideoPlayback = false;
 
 DefaultFullScreenVideoHandler::DefaultFullScreenVideoHandler()
@@ -121,7 +121,7 @@ bool DefaultFullScreenVideoHandler::requiresFullScreenForVideoPlayback() const
 
     if ( !initialized )
     {
-        QByteArray forceFullScreen = qgetenv( "QT_WEBKIT_FORCE_FULLSCREEN_VIDEO" );
+        QByteArray forceFullScreen = qgetenv( "LSCS_WEBKIT_FORCE_FULLSCREEN_VIDEO" );
 
         if ( !forceFullScreen.isEmpty() )
         {
@@ -151,7 +151,7 @@ FullScreenVideoQt::FullScreenVideoQt( ChromeClientQt *chromeClient )
 {
     Q_ASSERT( m_chromeClient );
 
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     m_FullScreenVideoHandler = m_chromeClient->m_platformPlugin.createFullScreenVideoHandler();
 
     if ( !m_FullScreenVideoHandler )
@@ -177,7 +177,7 @@ FullScreenVideoQt::FullScreenVideoQt( ChromeClientQt *chromeClient )
 
 FullScreenVideoQt::~FullScreenVideoQt()
 {
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     delete m_FullScreenVideoHandler;
 #endif
 #if USE(GSTREAMER)
@@ -193,7 +193,7 @@ void FullScreenVideoQt::enterFullScreenForNode( Node *node )
     Q_ASSERT( node );
     m_videoElement = static_cast<HTMLVideoElement *>( node );
 
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     Q_ASSERT( m_FullScreenVideoHandler );
     HTMLVideoElement *videoElement = static_cast<HTMLVideoElement *>( node );
     PlatformMedia platformMedia = videoElement->platformMedia();
@@ -229,7 +229,7 @@ void FullScreenVideoQt::exitFullScreenForNode( Node *node )
 {
     Q_ASSERT( node );
 
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     HTMLVideoElement *videoElement = static_cast<HTMLVideoElement *>( node );
     PlatformMedia platformMedia = videoElement->platformMedia();
 
@@ -267,7 +267,7 @@ void FullScreenVideoQt::aboutToClose()
     m_videoElement->exitFullscreen();
 }
 
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
 MediaPlayerPrivateQt *FullScreenVideoQt::mediaPlayer()
 {
     Q_ASSERT( m_videoElement );
@@ -278,7 +278,7 @@ MediaPlayerPrivateQt *FullScreenVideoQt::mediaPlayer()
 
 bool FullScreenVideoQt::requiresFullScreenForVideoPlayback()
 {
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     return m_FullScreenVideoHandler ? m_FullScreenVideoHandler->requiresFullScreenForVideoPlayback() : false;
 #else
     return false;
@@ -287,7 +287,7 @@ bool FullScreenVideoQt::requiresFullScreenForVideoPlayback()
 
 bool FullScreenVideoQt::isValid() const
 {
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
     return m_FullScreenVideoHandler;
 #endif
 #if USE(GSTREAMER)

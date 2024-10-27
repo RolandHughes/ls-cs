@@ -31,7 +31,7 @@
 
 #include <qmediaopenglhelper_p.h>
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_1_CL) && ! defined(QT_OPENGL_ES_1)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_1_CL) && ! defined(LSCS_OPENGL_ES_1)
 
 #include <qglshaderprogram.h>
 #include <qopenglcontext.h>
@@ -89,7 +89,7 @@ QVideoSurfaceGenericPainter::QVideoSurfaceGenericPainter()
     m_imagePixelFormats << QVideoFrame::Format_RGB32;
 
     // The raster formats should be a subset of the GL formats.
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
     if ( QOpenGLContext::openGLModuleType() != QOpenGLContext::LibGLES )
 #endif
@@ -147,7 +147,7 @@ QAbstractVideoSurface::Error QVideoSurfaceGenericPainter::start( const QVideoSur
     {
         bool ok = m_imageFormat != QImage::Format_Invalid && !m_imageSize.isEmpty();
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
         if ( QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGLES )
         {
@@ -247,7 +247,7 @@ void QVideoSurfaceGenericPainter::updateColors( int, int, int, int )
 {
 }
 
-#if ! defined(QT_NO_OPENGL) && !defined(QT_OPENGL_ES_1_CL) && !defined(QT_OPENGL_ES_1)
+#if ! defined(LSCS_NO_OPENGL) && !defined(LSCS_OPENGL_ES_1_CL) && !defined(LSCS_OPENGL_ES_1)
 
 #ifndef APIENTRYP
 #  ifdef APIENTRY
@@ -305,7 +305,7 @@ protected:
                     || format.pixelFormat() == QVideoFrame::Format_ARGB32 );
     }
 
-#if ! defined(QT_OPENGL_ES) && !defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_OPENGL_ES) && !defined(LSCS_OPENGL_DYNAMIC)
     typedef void ( APIENTRY *_glActiveTexture ) ( GLenum );
     _glActiveTexture glActiveTexture;
 #endif
@@ -340,7 +340,7 @@ QVideoSurfaceGLPainter::QVideoSurfaceGLPainter( QGLContext *context )
       m_colorSpace( QVideoSurfaceFormat::YCbCr_BT601 ), m_textureFormat( 0 ),
       m_textureInternalFormat( 0 ), m_textureType( 0 ), m_textureCount( 0 ), m_yuv( false )
 {
-#if ! defined(QT_OPENGL_ES) && !defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_OPENGL_ES) && !defined(LSCS_OPENGL_DYNAMIC)
     glActiveTexture = ( _glActiveTexture )m_context->getProcAddress( "glActiveTexture" );
 #endif
 
@@ -622,7 +622,7 @@ void QVideoSurfaceGLPainter::initYv12TextureInfo( const QSize &size )
     m_textureOffsets[2] = bytesPerLine * size.height();
 }
 
-#if !defined(QT_OPENGL_ES) && !defined(QT_OPENGL_DYNAMIC)
+#if !defined(LSCS_OPENGL_ES) && !defined(LSCS_OPENGL_DYNAMIC)
 
 # ifndef GL_FRAGMENT_PROGRAM_ARB
 #  define GL_FRAGMENT_PROGRAM_ARB           0x8804
@@ -630,7 +630,7 @@ void QVideoSurfaceGLPainter::initYv12TextureInfo( const QSize &size )
 # endif
 
 // Paints an RGB32 frame
-static const char *qt_arbfp_xrgbShaderProgram =
+static const char *lscs_arbfp_xrgbShaderProgram =
     "!!ARBfp1.0\n"
     "PARAM matrix[4] = { program.local[0..2],"
     "{ 0.0, 0.0, 0.0, 1.0 } };\n"
@@ -643,7 +643,7 @@ static const char *qt_arbfp_xrgbShaderProgram =
     "END";
 
 // Paints an ARGB frame.
-static const char *qt_arbfp_argbShaderProgram =
+static const char *lscs_arbfp_argbShaderProgram =
     "!!ARBfp1.0\n"
     "PARAM matrix[4] = { program.local[0..2],"
     "{ 0.0, 0.0, 0.0, 1.0 } };\n"
@@ -657,7 +657,7 @@ static const char *qt_arbfp_argbShaderProgram =
     "END";
 
 // Paints an RGB(A) frame.
-static const char *qt_arbfp_rgbShaderProgram =
+static const char *lscs_arbfp_rgbShaderProgram =
     "!!ARBfp1.0\n"
     "PARAM matrix[4] = { program.local[0..2],"
     "{ 0.0, 0.0, 0.0, 1.0 } };\n"
@@ -671,7 +671,7 @@ static const char *qt_arbfp_rgbShaderProgram =
     "END";
 
 // Paints a YUV420P or YV12 frame.
-static const char *qt_arbfp_yuvPlanarShaderProgram =
+static const char *lscs_arbfp_yuvPlanarShaderProgram =
     "!!ARBfp1.0\n"
     "PARAM matrix[4] = { program.local[0..2],"
     "{ 0.0, 0.0, 0.0, 1.0 } };\n"
@@ -686,7 +686,7 @@ static const char *qt_arbfp_yuvPlanarShaderProgram =
     "END";
 
 // Paints a YUV444 frame.
-static const char *qt_arbfp_xyuvShaderProgram =
+static const char *lscs_arbfp_xyuvShaderProgram =
     "!!ARBfp1.0\n"
     "PARAM matrix[4] = { program.local[0..2],"
     "{ 0.0, 0.0, 0.0, 1.0 } };\n"
@@ -699,7 +699,7 @@ static const char *qt_arbfp_xyuvShaderProgram =
     "END";
 
 // Paints a AYUV444 frame.
-static const char *qt_arbfp_ayuvShaderProgram =
+static const char *lscs_arbfp_ayuvShaderProgram =
     "!!ARBfp1.0\n"
     "PARAM matrix[4] = { program.local[0..2],"
     "{ 0.0, 0.0, 0.0, 1.0 } };\n"
@@ -785,54 +785,54 @@ QAbstractVideoSurface::Error QVideoSurfaceArbFpPainter::start( const QVideoSurfa
         {
             case QVideoFrame::Format_RGB32:
                 initRgbTextureInfo( GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                program = qt_arbfp_xrgbShaderProgram;
+                program = lscs_arbfp_xrgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_BGR32:
                 initRgbTextureInfo( GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                program = qt_arbfp_rgbShaderProgram;
+                program = lscs_arbfp_rgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_ARGB32:
                 initRgbTextureInfo( GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                program = qt_arbfp_argbShaderProgram;
+                program = lscs_arbfp_argbShaderProgram;
                 break;
 
             case QVideoFrame::Format_RGB24:
                 initRgbTextureInfo( GL_RGB8, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                program = qt_arbfp_rgbShaderProgram;
+                program = lscs_arbfp_rgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_BGR24:
                 initRgbTextureInfo( GL_RGB8, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                program = qt_arbfp_xrgbShaderProgram;
+                program = lscs_arbfp_xrgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_RGB565:
                 initRgbTextureInfo( GL_RGB, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, format.frameSize() );
-                program = qt_arbfp_rgbShaderProgram;
+                program = lscs_arbfp_rgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_YUV444:
                 initRgbTextureInfo( GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, format.frameSize() );
-                program = qt_arbfp_xyuvShaderProgram;
+                program = lscs_arbfp_xyuvShaderProgram;
                 m_yuv = true;
                 break;
 
             case QVideoFrame::Format_AYUV444:
                 initRgbTextureInfo( GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                program = qt_arbfp_ayuvShaderProgram;
+                program = lscs_arbfp_ayuvShaderProgram;
                 m_yuv = true;
                 break;
 
             case QVideoFrame::Format_YV12:
                 initYv12TextureInfo( format.frameSize() );
-                program = qt_arbfp_yuvPlanarShaderProgram;
+                program = lscs_arbfp_yuvPlanarShaderProgram;
                 break;
 
             case QVideoFrame::Format_YUV420P:
                 initYuv420PTextureInfo( format.frameSize() );
-                program = qt_arbfp_yuvPlanarShaderProgram;
+                program = lscs_arbfp_yuvPlanarShaderProgram;
                 break;
 
             default:
@@ -853,11 +853,11 @@ QAbstractVideoSurface::Error QVideoSurfaceArbFpPainter::start( const QVideoSurfa
 
                 if ( needsSwizzling( format ) )
                 {
-                    program = qt_arbfp_xrgbShaderProgram;
+                    program = lscs_arbfp_xrgbShaderProgram;
                 }
                 else
                 {
-                    program = qt_arbfp_rgbShaderProgram;
+                    program = lscs_arbfp_rgbShaderProgram;
                 }
 
                 break;
@@ -1071,9 +1071,9 @@ QAbstractVideoSurface::Error QVideoSurfaceArbFpPainter::paint(
     return QVideoSurfaceGLPainter::paint( target, painter, source );
 }
 
-#endif // !QT_OPENGL_ES && !QT_OPENGL_DYNAMIC
+#endif // !LSCS_OPENGL_ES && !LSCS_OPENGL_DYNAMIC
 
-static const char *qt_glsl_vertexShaderProgram =
+static const char *lscs_glsl_vertexShaderProgram =
     "attribute highp vec4 vertexCoordArray;\n"
     "attribute highp vec2 textureCoordArray;\n"
     "uniform highp mat4 positionMatrix;\n"
@@ -1085,7 +1085,7 @@ static const char *qt_glsl_vertexShaderProgram =
     "}\n";
 
 // Paints an RGB32 frame
-static const char *qt_glsl_xrgbShaderProgram =
+static const char *lscs_glsl_xrgbShaderProgram =
     "uniform sampler2D texRgb;\n"
     "uniform mediump mat4 colorMatrix;\n"
     "varying highp vec2 textureCoord;\n"
@@ -1096,7 +1096,7 @@ static const char *qt_glsl_xrgbShaderProgram =
     "}\n";
 
 // Paints an ARGB frame.
-static const char *qt_glsl_argbShaderProgram =
+static const char *lscs_glsl_argbShaderProgram =
     "uniform sampler2D texRgb;\n"
     "uniform mediump mat4 colorMatrix;\n"
     "varying highp vec2 textureCoord;\n"
@@ -1108,7 +1108,7 @@ static const char *qt_glsl_argbShaderProgram =
     "}\n";
 
 // Paints an RGB(A) frame.
-static const char *qt_glsl_rgbShaderProgram =
+static const char *lscs_glsl_rgbShaderProgram =
     "uniform sampler2D texRgb;\n"
     "uniform mediump mat4 colorMatrix;\n"
     "varying highp vec2 textureCoord;\n"
@@ -1120,7 +1120,7 @@ static const char *qt_glsl_rgbShaderProgram =
     "}\n";
 
 // Paints a YUV420P or YV12 frame.
-static const char *qt_glsl_yuvPlanarShaderProgram =
+static const char *lscs_glsl_yuvPlanarShaderProgram =
     "uniform sampler2D texY;\n"
     "uniform sampler2D texU;\n"
     "uniform sampler2D texV;\n"
@@ -1137,7 +1137,7 @@ static const char *qt_glsl_yuvPlanarShaderProgram =
     "}\n";
 
 // Paints a YUV444 frame.
-static const char *qt_glsl_xyuvShaderProgram =
+static const char *lscs_glsl_xyuvShaderProgram =
     "uniform sampler2D texRgb;\n"
     "uniform mediump mat4 colorMatrix;\n"
     "varying highp vec2 textureCoord;\n"
@@ -1148,7 +1148,7 @@ static const char *qt_glsl_xyuvShaderProgram =
     "}\n";
 
 // Paints a AYUV444 frame.
-static const char *qt_glsl_ayuvShaderProgram =
+static const char *lscs_glsl_ayuvShaderProgram =
     "uniform sampler2D texRgb;\n"
     "uniform mediump mat4 colorMatrix;\n"
     "varying highp vec2 textureCoord;\n"
@@ -1220,24 +1220,24 @@ QAbstractVideoSurface::Error QVideoSurfaceGlslPainter::start( const QVideoSurfac
         {
             case QVideoFrame::Format_RGB32:
                 initRgbTextureInfo( GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                fragmentProgram = qt_glsl_xrgbShaderProgram;
+                fragmentProgram = lscs_glsl_xrgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_BGR32:
                 initRgbTextureInfo( GL_RGB, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                fragmentProgram = qt_glsl_rgbShaderProgram;
+                fragmentProgram = lscs_glsl_rgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_ARGB32:
                 initRgbTextureInfo( GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                fragmentProgram = qt_glsl_argbShaderProgram;
+                fragmentProgram = lscs_glsl_argbShaderProgram;
                 break;
 
             case QVideoFrame::Format_RGB24:
                 if ( !m_context->contextHandle()->isOpenGLES() )
                 {
                     initRgbTextureInfo( GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, format.frameSize() );
-                    fragmentProgram = qt_glsl_rgbShaderProgram;
+                    fragmentProgram = lscs_glsl_rgbShaderProgram;
                 }
 
                 break;
@@ -1246,36 +1246,36 @@ QAbstractVideoSurface::Error QVideoSurfaceGlslPainter::start( const QVideoSurfac
                 if ( !m_context->contextHandle()->isOpenGLES() )
                 {
                     initRgbTextureInfo( GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, format.frameSize() );
-                    fragmentProgram = qt_glsl_argbShaderProgram;
+                    fragmentProgram = lscs_glsl_argbShaderProgram;
                 }
 
                 break;
 
             case QVideoFrame::Format_RGB565:
                 initRgbTextureInfo( GL_RGB, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, format.frameSize() );
-                fragmentProgram = qt_glsl_rgbShaderProgram;
+                fragmentProgram = lscs_glsl_rgbShaderProgram;
                 break;
 
             case QVideoFrame::Format_YUV444:
                 initRgbTextureInfo( GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, format.frameSize() );
-                fragmentProgram = qt_glsl_xyuvShaderProgram;
+                fragmentProgram = lscs_glsl_xyuvShaderProgram;
                 m_yuv = true;
                 break;
 
             case QVideoFrame::Format_AYUV444:
                 initRgbTextureInfo( GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, format.frameSize() );
-                fragmentProgram = qt_glsl_ayuvShaderProgram;
+                fragmentProgram = lscs_glsl_ayuvShaderProgram;
                 m_yuv = true;
                 break;
 
             case QVideoFrame::Format_YV12:
                 initYv12TextureInfo( format.frameSize() );
-                fragmentProgram = qt_glsl_yuvPlanarShaderProgram;
+                fragmentProgram = lscs_glsl_yuvPlanarShaderProgram;
                 break;
 
             case QVideoFrame::Format_YUV420P:
                 initYuv420PTextureInfo( format.frameSize() );
-                fragmentProgram = qt_glsl_yuvPlanarShaderProgram;
+                fragmentProgram = lscs_glsl_yuvPlanarShaderProgram;
                 break;
 
             default:
@@ -1296,11 +1296,11 @@ QAbstractVideoSurface::Error QVideoSurfaceGlslPainter::start( const QVideoSurfac
 
                 if ( needsSwizzling( format ) )
                 {
-                    fragmentProgram = qt_glsl_xrgbShaderProgram;
+                    fragmentProgram = lscs_glsl_xrgbShaderProgram;
                 }
                 else
                 {
-                    fragmentProgram = qt_glsl_rgbShaderProgram;
+                    fragmentProgram = lscs_glsl_rgbShaderProgram;
                 }
 
                 break;
@@ -1321,7 +1321,7 @@ QAbstractVideoSurface::Error QVideoSurfaceGlslPainter::start( const QVideoSurfac
         error = QAbstractVideoSurface::UnsupportedFormatError;
 
     }
-    else if ( !m_program.addShaderFromSourceCode( QGLShader::Vertex, qt_glsl_vertexShaderProgram ) )
+    else if ( !m_program.addShaderFromSourceCode( QGLShader::Vertex, lscs_glsl_vertexShaderProgram ) )
     {
         qWarning( "QPainterVideoSurface: Vertex shader compile error %s", lscsPrintable( m_program.log() ) );
         error = QAbstractVideoSurface::ResourceError;
@@ -1516,7 +1516,7 @@ QAbstractVideoSurface::Error QVideoSurfaceGlslPainter::paint(
 QPainterVideoSurface::QPainterVideoSurface( QObject *parent )
     : QAbstractVideoSurface( parent ), m_painter( nullptr ),
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_1_CL) && ! defined(QT_OPENGL_ES_1)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_1_CL) && ! defined(LSCS_OPENGL_ES_1)
       m_glContext( nullptr ), m_shaderTypes( NoShaders ), m_shaderType( NoShaders ),
 #endif
 
@@ -1768,7 +1768,7 @@ void QPainterVideoSurface::paint( QPainter *painter, const QRectF &target, const
     \fn QPainterVideoSurface::frameChanged()
 */
 
-#if !defined(QT_NO_OPENGL) && !defined(QT_OPENGL_ES_1_CL) && !defined(QT_OPENGL_ES_1)
+#if !defined(LSCS_NO_OPENGL) && !defined(LSCS_OPENGL_ES_1_CL) && !defined(LSCS_OPENGL_ES_1)
 
 /*!
 */
@@ -1800,7 +1800,7 @@ void QPainterVideoSurface::setGLContext( QGLContext *context )
         const QByteArray extensions( reinterpret_cast<const char *>(
                                          context->contextHandle()->functions()->glGetString( GL_EXTENSIONS ) ) );
 
-#if ! defined(QT_OPENGL_ES) && !defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_OPENGL_ES) && !defined(LSCS_OPENGL_DYNAMIC)
 
         if ( extensions.contains( "ARB_fragment_program" ) )
         {
@@ -1810,7 +1810,7 @@ void QPainterVideoSurface::setGLContext( QGLContext *context )
 #endif
 
         if ( QGLShaderProgram::hasOpenGLShaderPrograms( m_glContext )
-#if !defined(QT_OPENGL_ES_2) && !defined(QT_OPENGL_DYNAMIC)
+#if !defined(LSCS_OPENGL_ES_2) && !defined(LSCS_OPENGL_DYNAMIC)
                 && extensions.contains( "ARB_shader_objects" )
 #endif
            )
@@ -1902,12 +1902,12 @@ void QPainterVideoSurface::createPainter()
 {
     Q_ASSERT( !m_painter );
 
-#if !defined(QT_NO_OPENGL) && !defined(QT_OPENGL_ES_1_CL) && !defined(QT_OPENGL_ES_1)
+#if !defined(LSCS_NO_OPENGL) && !defined(LSCS_OPENGL_ES_1_CL) && !defined(LSCS_OPENGL_ES_1)
 
     switch ( m_shaderType )
     {
 
-#if ! defined(QT_OPENGL_ES) && ! defined(QT_OPENGL_DYNAMIC)
+#if ! defined(LSCS_OPENGL_ES) && ! defined(LSCS_OPENGL_DYNAMIC)
 
         case FragmentProgramShader:
             Q_ASSERT( m_glContext );

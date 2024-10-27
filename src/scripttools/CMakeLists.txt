@@ -5,7 +5,7 @@ set_target_properties(LsCsScriptTools PROPERTIES OUTPUT_NAME LsCsScriptTools${BU
 
 target_add_definitions(LsCsScriptTools
    PRIVATE
-   -DQT_BUILD_SCRIPTTOOLS_LIB
+   -DLSCS_BUILD_SCRIPTTOOLS_LIB
 )
 
 set(EXTRA_SCRIPTTOOLS_CXXFLAGS)

@@ -26,7 +26,7 @@
 
 #include <qabstractanimation.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QAnimationGroupPrivate;
 
@@ -63,6 +63,6 @@ private:
     }
 };
 
-#endif // QT_NO_ANIMATION
+#endif // LSCS_NO_ANIMATION
 
 #endif

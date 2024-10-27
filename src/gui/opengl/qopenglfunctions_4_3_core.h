@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if !defined(QT_NO_OPENGL) && !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_NO_OPENGL) && !defined(LSCS_OPENGL_ES_2)
 
 #include <qopengl_versionfunctions.h>
 #include <qopenglcontext.h>
@@ -3100,6 +3100,6 @@ inline void QOpenGLFunctions_4_3_Core::glClearBufferData( GLenum target, GLenum 
     d_4_3_Core->ClearBufferData( target, internalformat, format, type, data );
 }
 
-#endif // QT_NO_OPENGL && !QT_OPENGL_ES_2
+#endif // LSCS_NO_OPENGL && !LSCS_OPENGL_ES_2
 
 #endif

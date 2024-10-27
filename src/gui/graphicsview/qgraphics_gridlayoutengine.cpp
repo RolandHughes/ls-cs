@@ -23,7 +23,7 @@
 
 #include <qgraphics_gridlayoutengine_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgraphicswidget.h>
 
@@ -107,4 +107,4 @@ int QGraphicsGridLayoutEngine::stretchFactor( QGraphicsLayoutItem *layoutItem, Q
     return 0;
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

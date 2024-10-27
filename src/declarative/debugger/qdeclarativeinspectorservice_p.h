@@ -28,7 +28,7 @@
 #include <qdeclarativeglobal_p.h>
 #include <QtCore/QList>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeView;
 class QDeclarativeInspectorInterface;
@@ -66,6 +66,6 @@ private:
     QDeclarativeInspectorInterface *m_inspectorPlugin;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEOBSERVERSERVICE_H

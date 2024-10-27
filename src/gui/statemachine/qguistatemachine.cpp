@@ -23,7 +23,7 @@
 
 #include <qstatemachine.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qevent.h>
 #include <qgraphicssceneevent.h>
@@ -106,7 +106,7 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::HideToParent:
             return new QEvent( *e );
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
         case QEvent::Wheel:
             return new QWheelEvent( *static_cast<QWheelEvent *>( e ) );
@@ -153,7 +153,7 @@ static QEvent *cloneEvent( QEvent *e )
 
         case QEvent::DeferredDelete:
             return new QEvent( *e );
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
         case QEvent::DragEnter:
             return new QDragEnterEvent( *static_cast<QDragEnterEvent *>( e ) );
@@ -204,7 +204,7 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::DeactivateControl:
             return new QEvent( *e );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case QEvent::ContextMenu:
             return new QContextMenuEvent( *static_cast<QContextMenuEvent *>( e ) );
@@ -225,7 +225,7 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::Style:
             return new QEvent( *e );
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
         case QEvent::TabletMove:
         case QEvent::TabletPress:
@@ -278,13 +278,13 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::WhatsThis:
             return new QHelpEvent( *static_cast<QHelpEvent *>( e ) );
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 
         case QEvent::StatusTip:
             return new QStatusTipEvent( *static_cast<QStatusTipEvent *>( e ) );
 #endif
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
         case QEvent::ActionChanged:
         case QEvent::ActionAdded:
@@ -295,7 +295,7 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::FileOpen:
             return new QFileOpenEvent( *static_cast<QFileOpenEvent *>( e ) );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
         case QEvent::Shortcut:
             return new QShortcutEvent( *static_cast<QShortcutEvent *>( e ) );
@@ -304,13 +304,13 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::ShortcutOverride:
             return new QKeyEvent( *static_cast<QKeyEvent *>( e ) );
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         case QEvent::WhatsThisClicked:
             return new QWhatsThisClickedEvent( *static_cast<QWhatsThisClickedEvent *>( e ) );
 #endif
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
         case QEvent::ToolBarChange:
             return new QToolBarChangeEvent( *static_cast<QToolBarChangeEvent *>( e ) );
@@ -339,7 +339,7 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::HoverMove:
             return new QHoverEvent( *static_cast<QHoverEvent *>( e ) );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         case QEvent::EnterEditFocus:
             return new QEvent( *e );
@@ -355,7 +355,7 @@ static QEvent *cloneEvent( QEvent *e )
             Q_ASSERT_X( false, "cloneEvent()", "not implemented" );
             break;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
         case QEvent::GraphicsSceneMouseMove:
         case QEvent::GraphicsSceneMousePress:
@@ -453,7 +453,7 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::DynamicPropertyChange:
             return new QDynamicPropertyChangeEvent( *static_cast<QDynamicPropertyChangeEvent *>( e ) );
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
         case QEvent::TabletEnterProximity:
         case QEvent::TabletLeaveProximity:
@@ -479,7 +479,7 @@ static QEvent *cloneEvent( QEvent *e )
             Q_ASSERT_X( false, "cloneEvent()", "not implemented" );
             break;
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
         case QEvent::GraphicsSceneResize:
         {
@@ -523,7 +523,7 @@ static QEvent *cloneEvent( QEvent *e )
         case QEvent::TouchEnd:
             return new QTouchEvent( *static_cast<QTouchEvent *>( e ) );
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
         case QEvent::NativeGesture:
             Q_ASSERT_X( false, "cloneEvent()", "not implemented" );
@@ -542,27 +542,27 @@ static QEvent *cloneEvent( QEvent *e )
     return qcoreStateMachineHandler()->cloneEvent( e );
 }
 
-const QStateMachinePrivate::Handler qt_gui_statemachine_handler =
+const QStateMachinePrivate::Handler lscs_gui_statemachine_handler =
 {
     cloneEvent
 };
 
-static const QStateMachinePrivate::Handler *qt_guistatemachine_last_handler = nullptr;
+static const QStateMachinePrivate::Handler *lscs_guistatemachine_last_handler = nullptr;
 
 int qRegisterGuiStateMachine()
 {
-    qt_guistatemachine_last_handler = QStateMachinePrivate::handler;
-    QStateMachinePrivate::handler = &qt_gui_statemachine_handler;
+    lscs_guistatemachine_last_handler = QStateMachinePrivate::handler;
+    QStateMachinePrivate::handler = &lscs_gui_statemachine_handler;
     return 1;
 }
 Q_CONSTRUCTOR_FUNCTION( qRegisterGuiStateMachine )
 
 int qUnregisterGuiStateMachine()
 {
-    QStateMachinePrivate::handler = qt_guistatemachine_last_handler;
+    QStateMachinePrivate::handler = lscs_guistatemachine_last_handler;
     return 1;
 }
 Q_DESTRUCTOR_FUNCTION( qUnregisterGuiStateMachine )
 
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

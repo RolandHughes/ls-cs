@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qopenglfunctions.h>
 
@@ -2067,6 +2067,6 @@ inline void QOpenGLExtraFunctions::glVertexBindingDivisor( GLuint bindingindex, 
     Q_OPENGL_FUNCTIONS_DEBUG
 }
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

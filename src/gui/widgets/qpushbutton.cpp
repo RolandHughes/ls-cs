@@ -44,7 +44,7 @@
 #include <qmenu_p.h>
 #include <qpushbutton_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -117,7 +117,7 @@ void QPushButton::initStyleOption( QStyleOptionButton *option ) const
         option->features |= QStyleOptionButton::Flat;
     }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( d->menu )
     {
@@ -206,7 +206,7 @@ void QPushButton::setDefault( bool enable )
 
     update();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessible::State s;
     s.defaultButton = true;
     QAccessibleStateChangeEvent event( this, s );
@@ -238,7 +238,7 @@ QSize QPushButton::sizeHint() const
     initStyleOption( &opt );
 
     // calculate contents size
-#ifndef QT_NO_ICON
+#ifndef LSCS_NO_ICON
 
     bool showButtonBoxIcons = qobject_cast<QDialogButtonBox *>( parentWidget() )
                               && style()->styleHint( QStyle::SH_DialogButtonBox_ButtonsHaveIcons );
@@ -276,7 +276,7 @@ QSize QPushButton::sizeHint() const
 
     opt.rect.setSize( QSize( w, h ) ); // PM_MenuButtonIndicator depends on the height
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( menu() )
     {
@@ -362,7 +362,7 @@ void QPushButton::focusOutEvent( QFocusEvent *e )
 
     QAbstractButton::focusOutEvent( e );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
     if ( d->menu && d->menu->isVisible() )
     {
@@ -373,7 +373,7 @@ void QPushButton::focusOutEvent( QFocusEvent *e )
 #endif
 }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
 void QPushButton::setMenu( QMenu *menu )
 {
@@ -460,7 +460,7 @@ QPoint QPushButtonPrivate::adjustedMenuPosition()
 
     bool horizontal = true;
 
-#if !defined(QT_NO_TOOLBAR)
+#if !defined(LSCS_NO_TOOLBAR)
     QToolBar *tb = qobject_cast<QToolBar *>( q->parent() );
 
     if ( tb && tb->orientation() == Qt::Vertical )
@@ -510,7 +510,7 @@ QPoint QPushButtonPrivate::adjustedMenuPosition()
     return QPoint( x, y );
 }
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
 void QPushButtonPrivate::resetLayoutItemMargins()
 {

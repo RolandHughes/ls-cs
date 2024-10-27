@@ -35,7 +35,7 @@
 #include <qgraphics_transform_p.h>
 #include <qgraphicseffect_p.h>
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsItemPrivate;
 
@@ -154,7 +154,7 @@ public:
     virtual void transformChanged() {}
     int depth() const;
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
     enum InvalidateReason
     {
         OpacityChanged
@@ -462,7 +462,7 @@ public:
     Qt::InputMethodHints imHints;
     QGraphicsItem::PanelModality panelModality;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     QMap<Qt::GestureType, Qt::GestureFlags> gestureContext;
 #endif
 
@@ -612,7 +612,7 @@ struct QGraphicsItemPaintInfo
     quint32 drawItem : 1;
 };
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 class QGraphicsItemEffectSourcePrivate : public QGraphicsEffectSourcePrivate
 {
 public:
@@ -683,9 +683,9 @@ public:
     QGraphicsItemPaintInfo *info;
     QTransform lastEffectTransform;
 };
-#endif //QT_NO_GRAPHICSEFFECT
+#endif //LSCS_NO_GRAPHICSEFFECT
 
-inline bool qt_closestItemFirst( const QGraphicsItem *item1, const QGraphicsItem *item2 )
+inline bool lscs_closestItemFirst( const QGraphicsItem *item1, const QGraphicsItem *item2 )
 {
     // Siblings? Just check their z-values.
     const QGraphicsItemPrivate *d1 = item1->d_ptr.data();
@@ -693,7 +693,7 @@ inline bool qt_closestItemFirst( const QGraphicsItem *item1, const QGraphicsItem
 
     if ( d1->parent == d2->parent )
     {
-        return qt_closestLeaf( item1, item2 );
+        return lscs_closestLeaf( item1, item2 );
     }
 
     // Find common ancestor, and each item's ancestor closest to the common ancestor
@@ -743,15 +743,15 @@ inline bool qt_closestItemFirst( const QGraphicsItem *item1, const QGraphicsItem
 
     // in case we have a common ancestor, we compare the immediate children in the ancestor's path.
     // otherwise we compare the respective items' topLevelItems directly.
-    return qt_closestLeaf( p1, p2 );
+    return lscs_closestLeaf( p1, p2 );
 }
 
-inline bool qt_closestItemLast( const QGraphicsItem *item1, const QGraphicsItem *item2 )
+inline bool lscs_closestItemLast( const QGraphicsItem *item1, const QGraphicsItem *item2 )
 {
-    return qt_closestItemFirst( item2, item1 );
+    return lscs_closestItemFirst( item2, item1 );
 }
 
-inline bool qt_closestLeaf( const QGraphicsItem *item1, const QGraphicsItem *item2 )
+inline bool lscs_closestLeaf( const QGraphicsItem *item1, const QGraphicsItem *item2 )
 {
     // Return true if sibling item1 is on top of item2.
     const QGraphicsItemPrivate *d1 = item1->d_ptr.data();
@@ -773,9 +773,9 @@ inline bool qt_closestLeaf( const QGraphicsItem *item1, const QGraphicsItem *ite
     return d1->siblingIndex > d2->siblingIndex;
 }
 
-inline bool qt_notclosestLeaf( const QGraphicsItem *item1, const QGraphicsItem *item2 )
+inline bool lscs_notclosestLeaf( const QGraphicsItem *item1, const QGraphicsItem *item2 )
 {
-    return qt_closestLeaf( item2, item1 );
+    return lscs_closestLeaf( item2, item1 );
 }
 
 /*
@@ -801,7 +801,7 @@ inline void QGraphicsItemPrivate::ensureSortedChildren()
             return;
         }
 
-        std::sort( children.begin(), children.end(), qt_notclosestLeaf );
+        std::sort( children.begin(), children.end(), lscs_notclosestLeaf );
 
         for ( int i = 0; i < children.size(); ++i )
         {
@@ -823,7 +823,7 @@ inline bool QGraphicsItemPrivate::insertionOrder( QGraphicsItem *a, QGraphicsIte
 inline void QGraphicsItemPrivate::markParentDirty( bool updateBoundingRect )
 {
     QGraphicsItemPrivate *parentp = this;
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
     if ( updateBoundingRect && parentp->graphicsEffect && !parentp->inSetPosHelper )
     {
@@ -846,7 +846,7 @@ inline void QGraphicsItemPrivate::markParentDirty( bool updateBoundingRect )
             parentp->notifyBoundingRectChanged = 1;
         }
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
         if ( parentp->graphicsEffect )
         {
@@ -869,6 +869,6 @@ inline void QGraphicsItemPrivate::markParentDirty( bool updateBoundingRect )
 }
 
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

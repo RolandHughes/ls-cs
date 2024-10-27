@@ -25,7 +25,7 @@
 
 #include <qfilesystemiterator_p.h>
 
-#ifndef QT_NO_FILESYSTEMITERATOR
+#ifndef LSCS_NO_FILESYSTEMITERATOR
 
 #include <stdlib.h>
 #include <errno.h>
@@ -67,7 +67,7 @@ bool QFileSystemIterator::advance( QFileSystemEntry &fileEntry, QFileSystemMetaD
         return false;
     }
 
-    dirEntry = QT_READDIR( dir );
+    dirEntry = LSCS_READDIR( dir );
 
     if ( dirEntry )
     {
@@ -80,4 +80,4 @@ bool QFileSystemIterator::advance( QFileSystemEntry &fileEntry, QFileSystemMetaD
     return false;
 }
 
-#endif // QT_NO_FILESYSTEMITERATOR
+#endif // LSCS_NO_FILESYSTEMITERATOR

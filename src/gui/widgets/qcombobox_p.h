@@ -26,7 +26,7 @@
 
 #include <qcombobox.h>
 
-#ifndef QT_NO_COMBOBOX
+#ifndef LSCS_NO_COMBOBOX
 #include <qabstractslider.h>
 #include <qapplication.h>
 #include <qitemdelegate.h>
@@ -384,7 +384,7 @@ public:
     void _q_modelDestroyed();
     void _q_modelReset();
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     void _q_completerActivated( const QModelIndex &index );
 #endif
 
@@ -446,7 +446,7 @@ public:
     QPlatformMenu *m_platformMenu;
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     QPointer<QCompleter> completer;
 #endif
 
@@ -456,6 +456,6 @@ public:
     }
 };
 
-#endif // QT_NO_COMBOBOX
+#endif // LSCS_NO_COMBOBOX
 
 #endif

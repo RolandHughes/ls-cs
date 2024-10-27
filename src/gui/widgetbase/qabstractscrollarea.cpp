@@ -23,7 +23,7 @@
 
 #include <qabstractscrollarea.h>
 
-#ifndef QT_NO_SCROLLAREA
+#ifndef LSCS_NO_SCROLLAREA
 
 #include <qapplication.h>
 #include <qboxlayout.h>
@@ -43,7 +43,7 @@
 
 #ifdef Q_OS_WIN
 #  include <qlibrary.h>
-#  include <qt_windows.h>
+#  include <lscs_windows.h>
 #endif
 
 QAbstractScrollAreaPrivate::QAbstractScrollAreaPrivate()
@@ -189,12 +189,12 @@ void QAbstractScrollAreaPrivate::init()
     Q_Q( QAbstractScrollArea );
 
     viewport = new QWidget( q );
-    viewport->setObjectName( "qt_scrollarea_viewport" );
+    viewport->setObjectName( "lscs_scrollarea_viewport" );
     viewport->setBackgroundRole( QPalette::Base );
     viewport->setAutoFillBackground( true );
 
     scrollBarContainers[Qt::Horizontal] = new QAbstractScrollAreaScrollBarContainer( Qt::Horizontal, q );
-    scrollBarContainers[Qt::Horizontal]->setObjectName( "qt_scrollarea_hcontainer" );
+    scrollBarContainers[Qt::Horizontal]->setObjectName( "lscs_scrollarea_hcontainer" );
     hbar = scrollBarContainers[Qt::Horizontal]->scrollBar;
     hbar->setRange( 0, 0 );
 
@@ -205,7 +205,7 @@ void QAbstractScrollAreaPrivate::init()
     QObject::connect( hbar, &QScrollBar::rangeChanged, q, &QAbstractScrollArea::_q_showOrHideScrollBars, Qt::QueuedConnection );
 
     scrollBarContainers[Qt::Vertical] = new QAbstractScrollAreaScrollBarContainer( Qt::Vertical, q );
-    scrollBarContainers[Qt::Vertical]->setObjectName( "qt_scrollarea_vcontainer" );
+    scrollBarContainers[Qt::Vertical]->setObjectName( "lscs_scrollarea_vcontainer" );
     vbar = scrollBarContainers[Qt::Vertical]->scrollBar;
     vbar->setRange( 0, 0 );
 
@@ -225,7 +225,7 @@ void QAbstractScrollAreaPrivate::init()
 
     layoutChildren();
 
-#if ! defined(Q_OS_DARWIN) && ! defined(QT_NO_GESTURES)
+#if ! defined(Q_OS_DARWIN) && ! defined(LSCS_NO_GESTURES)
     viewport->grabGesture( Qt::PanGesture );
 #endif
 }
@@ -454,12 +454,12 @@ void QAbstractScrollArea::setViewport( QWidget *widget )
         d->viewport->setFocusProxy( this );
         d->viewport->installEventFilter( d->viewportFilter.data() );
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
         d->viewport->grabGesture( Qt::PanGesture );
 #endif
         d->layoutChildren();
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
         QWidgetPrivate::get( d->viewport )->initializeViewportFramebuffer();
 #endif
 
@@ -785,7 +785,7 @@ bool QAbstractScrollArea::event( QEvent *e )
         QFrame::paintEvent( ( QPaintEvent * )e );
         break;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case QEvent::ContextMenu:
             if ( static_cast<QContextMenuEvent *>( e )->reason() == QContextMenuEvent::Keyboard )
@@ -803,7 +803,7 @@ bool QAbstractScrollArea::event( QEvent *e )
         case QEvent::MouseMove:
         case QEvent::Wheel:
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         case QEvent::Drop:
         case QEvent::DragEnter:
         case QEvent::DragMove:
@@ -816,7 +816,7 @@ bool QAbstractScrollArea::event( QEvent *e )
         case QEvent::TouchEnd:
             return false;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
         case QEvent::Gesture:
         {
@@ -919,18 +919,18 @@ bool QAbstractScrollArea::viewportEvent( QEvent *e )
         case QEvent::MouseMove:
         case QEvent::ContextMenu:
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
         case QEvent::Wheel:
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         case QEvent::Drop:
         case QEvent::DragEnter:
         case QEvent::DragMove:
         case QEvent::DragLeave:
 #endif
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
             // QOpenGLWidget needs special support because it has to know
             // its size has changed, so that it can resize its fbo
@@ -945,7 +945,7 @@ bool QAbstractScrollArea::viewportEvent( QEvent *e )
 
         case QEvent::LayoutRequest:
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
         case QEvent::Gesture:
         case QEvent::GestureOverride:
             return event( e );
@@ -990,7 +990,7 @@ void QAbstractScrollArea::mouseMoveEvent( QMouseEvent *e )
     e->ignore();
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QAbstractScrollArea::wheelEvent( QWheelEvent *e )
 {
     Q_D( QAbstractScrollArea );
@@ -1006,7 +1006,7 @@ void QAbstractScrollArea::wheelEvent( QWheelEvent *e )
 }
 #endif
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 void QAbstractScrollArea::contextMenuEvent( QContextMenuEvent *e )
 {
     e->ignore();
@@ -1020,7 +1020,7 @@ void QAbstractScrollArea::keyPressEvent( QKeyEvent *e )
     if ( false )
     {
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     }
     else if ( e == QKeySequence::MoveToPreviousPage )
     {
@@ -1036,7 +1036,7 @@ void QAbstractScrollArea::keyPressEvent( QKeyEvent *e )
     else
     {
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         if ( QApplication::keypadNavigationEnabled() && !hasEditFocus() )
         {
@@ -1057,7 +1057,7 @@ void QAbstractScrollArea::keyPressEvent( QKeyEvent *e )
                 break;
 
             case Qt::Key_Left:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                 if ( QApplication::keypadNavigationEnabled() && hasEditFocus()
                         && ( ! d->hbar->isVisible() || d->hbar->value() == d->hbar->minimum() ) )
                 {
@@ -1072,7 +1072,7 @@ void QAbstractScrollArea::keyPressEvent( QKeyEvent *e )
                 break;
 
             case Qt::Key_Right:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                 if ( QApplication::keypadNavigationEnabled() && hasEditFocus()
                         && ( ! d->hbar->isVisible() || d->hbar->value() == d->hbar->maximum() ) )
                 {
@@ -1095,7 +1095,7 @@ void QAbstractScrollArea::keyPressEvent( QKeyEvent *e )
     e->accept();
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 void QAbstractScrollArea::dragEnterEvent( QDragEnterEvent * )
 {
 }
@@ -1122,7 +1122,7 @@ bool QAbstractScrollAreaPrivate::canStartScrollingAt( const QPoint &startPos )
 {
     Q_Q( QAbstractScrollArea );
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
     // do not start scrolling when a drag mode has been set
     // do not start scrolling on a movable item.
@@ -1325,4 +1325,4 @@ void QAbstractScrollArea::_q_showOrHideScrollBars()
     d->_q_showOrHideScrollBars();
 }
 
-#endif // QT_NO_SCROLLAREA
+#endif // LSCS_NO_SCROLLAREA

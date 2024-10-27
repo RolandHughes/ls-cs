@@ -26,7 +26,7 @@
 
 #include "qdeclarativegesturearea_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class GestureAreaQmlPlugin : public QDeclarativeExtensionPlugin
 {
@@ -35,7 +35,7 @@ public:
     virtual void registerTypes( const char *uri )
     {
         Q_ASSERT( QLatin1String( uri ) == QLatin1String( "Qt.labs.gestures" ) );
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
         qmlRegisterCustomType<QDeclarativeGestureArea>( uri,1,0, "GestureArea", new QDeclarativeGestureAreaParser );
 
         qmlRegisterUncreatableType<QGesture>( uri, 1, 0, "Gesture", QLatin1String( "Do not create objects of this type." ) );
@@ -49,6 +49,6 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2( qmlgesturesplugin, QT_PREPEND_NAMESPACE( GestureAreaQmlPlugin ) );
+Q_EXPORT_PLUGIN2( qmlgesturesplugin, LSCS_PREPEND_NAMESPACE( GestureAreaQmlPlugin ) );

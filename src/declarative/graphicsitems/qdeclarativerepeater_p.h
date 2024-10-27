@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeRepeaterPrivate;
 class QDeclarativeRepeater : public QDeclarativeItem
@@ -101,7 +101,7 @@ private :
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeRepeater )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeRepeater )
 

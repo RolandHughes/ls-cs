@@ -45,13 +45,13 @@
 #  include <gnu/lib-names.h>
 #endif
 
-#if defined (QT_NO_GETADDRINFO)
+#if defined (LSCS_NO_GETADDRINFO)
 static QMutex getHostByNameMutex;
 #endif
 
 // Almost always the same. If not, specify in qplatformdefs.h.
-#if ! defined(QT_SOCKOPTLEN_T)
-# define QT_SOCKOPTLEN_T QT_SOCKLEN_T
+#if ! defined(LSCS_SOCKOPTLEN_T)
+# define LSCS_SOCKOPTLEN_T LSCS_SOCKLEN_T
 #endif
 
 #if defined(AI_ADDRCONFIG)
@@ -150,12 +150,12 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
         // Reverse lookup
 
         // Reverse lookups using getnameinfo are broken on darwin, use gethostbyaddr instead.
-#if ! defined (QT_NO_GETADDRINFO) && !defined (Q_OS_DARWIN)
+#if ! defined (LSCS_NO_GETADDRINFO) && !defined (Q_OS_DARWIN)
         sockaddr_in sa4;
         sockaddr_in6 sa6;
         sockaddr *sa = nullptr;
 
-        QT_SOCKLEN_T saSize = 0;
+        LSCS_SOCKLEN_T saSize = 0;
 
         if ( address.protocol() == QAbstractSocket::IPv4Protocol )
         {
@@ -183,7 +183,7 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
         }
 
 #else
-        in_addr_t inetaddr = qt_safe_inet_addr( hostName.toLatin1().constData() );
+        in_addr_t inetaddr = lscs_safe_inet_addr( hostName.toLatin1().constData() );
         struct hostent *ent = gethostbyaddr( ( const char * )&inetaddr, sizeof( inetaddr ), AF_INET );
 
         if ( ent )
@@ -215,7 +215,7 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
         return results;
     }
 
-#if !defined (QT_NO_GETADDRINFO)
+#if !defined (LSCS_NO_GETADDRINFO)
     // Call getaddrinfo, and place all IPv4 addresses at the start and
     // the IPv6 addresses at the end of the address list in results.
     addrinfo *res = nullptr;
@@ -363,7 +363,7 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
         results.setErrorString( tr( "Unknown error" ) );
     }
 
-#endif //  ! defined (QT_NO_GETADDRINFO)
+#endif //  ! defined (LSCS_NO_GETADDRINFO)
 
 #if defined(LSCS_SHOW_DEBUG_NETWORK)
 
@@ -427,7 +427,7 @@ QString QHostInfo::localDomainName()
     {
         // using thread-unsafe version
 
-#if defined(QT_NO_GETADDRINFO)
+#if defined(LSCS_NO_GETADDRINFO)
         // We have to call res_init to be sure that _res was initialized
         // So, for systems without getaddrinfo (which is thread-safe), we lock the mutex too
         QMutexLocker locker( &getHostByNameMutex );

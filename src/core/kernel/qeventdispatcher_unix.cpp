@@ -48,8 +48,8 @@
 
 QEventDispatcherUNIXPrivate::QEventDispatcherUNIXPrivate()
 {
-    extern Qt::HANDLE qt_application_thread_id;
-    mainThread = ( QThread::currentThreadId() == qt_application_thread_id );
+    extern Qt::HANDLE lscs_application_thread_id;
+    mainThread = ( QThread::currentThreadId() == lscs_application_thread_id );
     bool pipefail = false;
 
     // initialize the common parts of the event loop
@@ -70,7 +70,7 @@ QEventDispatcherUNIXPrivate::QEventDispatcherUNIXPrivate()
         // continue
 #endif
 
-        if ( qt_safe_pipe( thread_pipe, O_NONBLOCK ) == -1 )
+        if ( lscs_safe_pipe( thread_pipe, O_NONBLOCK ) == -1 )
         {
             perror( "QEventDispatcherUNIXPrivate(): Unable to create thread pipe" );
             pipefail = true;
@@ -304,7 +304,7 @@ QEventDispatcherUNIX::~QEventDispatcherUNIX()
 int QEventDispatcherUNIX::select( int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
                                   timespec *timeout )
 {
-    return qt_safe_select( nfds, readfds, writefds, exceptfds, timeout );
+    return lscs_safe_select( nfds, readfds, writefds, exceptfds, timeout );
 }
 
 void QEventDispatcherUNIX::registerTimer( int timerId, int interval, Qt::TimerType timerType, QObject *obj )
@@ -723,7 +723,7 @@ void QEventDispatcherUNIX::wakeUp()
 #endif
 
         char c = 0;
-        qt_safe_write( d->thread_pipe[1], &c, 1 );
+        lscs_safe_write( d->thread_pipe[1], &c, 1 );
     }
 }
 

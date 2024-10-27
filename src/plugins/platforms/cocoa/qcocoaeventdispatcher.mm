@@ -268,7 +268,7 @@ static bool IsMouseOrKeyEvent( NSEvent *event )
       case NSEventTypeOtherMouseUp:
       case NSEventTypeOtherMouseDragged:
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
       case NSEventTypeGesture:            // touch events
       case NSEventTypeMagnify:
       case NSEventTypeSwipe:
@@ -285,7 +285,7 @@ static bool IsMouseOrKeyEvent( NSEvent *event )
    return result;
 }
 
-static inline void qt_mac_waitForMoreEvents(NSString *runLoopMode = NSDefaultRunLoopMode)
+static inline void lscs_mac_waitForMoreEvents(NSString *runLoopMode = NSDefaultRunLoopMode)
 {
    // If no event exist in the cocoa event que, wait (and free up cpu time) until
    // at least one event occur. Setting 'dequeuing' to 'no' in the following call
@@ -368,7 +368,7 @@ bool QCocoaEventDispatcher::processEvents(QEventLoop::ProcessEventsFlags flags)
             d->currentExecIsNSAppRun = false;
 
             while ([NSApp runModalSession: session] == NSModalResponseContinue && ! d->interrupt) {
-               qt_mac_waitForMoreEvents(NSModalPanelRunLoopMode);
+               lscs_mac_waitForMoreEvents(NSModalPanelRunLoopMode);
             }
 
             if (! d->interrupt && session == d->currentModalSessionCached) {
@@ -413,7 +413,7 @@ bool QCocoaEventDispatcher::processEvents(QEventLoop::ProcessEventsFlags flags)
                // Since we can dispatch all kinds of events, we choose
                // to use cocoa's native way of running modal sessions:
                if (flags & QEventLoop::WaitForMoreEvents) {
-                  qt_mac_waitForMoreEvents(NSModalPanelRunLoopMode);
+                  lscs_mac_waitForMoreEvents(NSModalPanelRunLoopMode);
                }
 
                NSInteger status = [NSApp runModalSession: session];
@@ -510,7 +510,7 @@ bool QCocoaEventDispatcher::processEvents(QEventLoop::ProcessEventsFlags flags)
       if (canWait) {
          // INVARIANT: We have not processed any events yet. And we're told
          // to stay inside this function until at least one event is processed.
-         qt_mac_waitForMoreEvents();
+         lscs_mac_waitForMoreEvents();
          d->processEventsFlags &= ~QEventLoop::WaitForMoreEvents;
 
       } else {
@@ -689,7 +689,7 @@ static void setChildrenWorksWhenModal(QWindow *window, bool worksWhenModal)
        ### not ported
        QList<QDialog *> dialogs = window->findChildren<QDialog *>();
        for (int i=0; i<dialogs.size(); ++i){
-           NSWindow *window = qt_mac_window_for(dialogs[i]);
+           NSWindow *window = lscs_mac_window_for(dialogs[i]);
            if (window && [window isKindOfClass:[NSPanel class]]) {
                [static_cast<NSPanel *>(window) setWorksWhenModal:worksWhenModal];
                if (worksWhenModal && [window isVisible]){
@@ -825,7 +825,7 @@ QCocoaEventDispatcherPrivate::QCocoaEventDispatcherPrivate()
 {
 }
 
-void qt_mac_maybeCancelWaitForMoreEventsForwarder(QAbstractEventDispatcher *eventDispatcher)
+void lscs_mac_maybeCancelWaitForMoreEventsForwarder(QAbstractEventDispatcher *eventDispatcher)
 {
    static_cast<QCocoaEventDispatcher *>(eventDispatcher)->d_func()->maybeCancelWaitForMoreEvents();
 }
@@ -836,7 +836,7 @@ QCocoaEventDispatcher::QCocoaEventDispatcher(QObject *parent)
    Q_D(QCocoaEventDispatcher);
 
    d->cfSocketNotifier.setHostEventDispatcher(this);
-   d->cfSocketNotifier.setMaybeCancelWaitForMoreEventsCallback(qt_mac_maybeCancelWaitForMoreEventsForwarder);
+   d->cfSocketNotifier.setMaybeCancelWaitForMoreEventsCallback(lscs_mac_maybeCancelWaitForMoreEventsForwarder);
 
    // keep our sources running when modal loops are running
    CFRunLoopAddCommonMode(mainRunLoop(), (CFStringRef) NSModalPanelRunLoopMode);

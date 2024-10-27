@@ -34,7 +34,7 @@
 
 #include <qdebug.h>
 
-QT_BEGIN_NAMESPACE QTsLibMouseHandler::QTsLibMouseHandler( const QString &key,
+LSCS_BEGIN_NAMESPACE QTsLibMouseHandler::QTsLibMouseHandler( const QString &key,
         const QString &specification )
     : m_notify( 0 ), m_x( 0 ), m_y( 0 ), m_pressed( 0 ), m_rawMode( false )
 {

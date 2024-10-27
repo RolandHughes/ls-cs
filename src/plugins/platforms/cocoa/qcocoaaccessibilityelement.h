@@ -25,9 +25,9 @@
 #define QCOCOAACCESIBILITYELEMENT_H
 
 #include <qglobal.h>
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #import <Cocoa/Cocoa.h>
 #import <AppKit/NSAccessibility.h>
@@ -47,6 +47,6 @@
 
 @end
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif // QCOCOAACCESIBILITYELEMENT_H

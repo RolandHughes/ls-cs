@@ -33,13 +33,13 @@
 
 #include <qcoreapplication_p.h>
 
-QList<QFactoryLoader *> *qt_factory_loaders()
+QList<QFactoryLoader *> *lscs_factory_loaders()
 {
     static QList<QFactoryLoader *> retval;
     return &retval;
 }
 
-QRecursiveMutex *qt_factoryloader_mutex()
+QRecursiveMutex *lscs_factoryloader_mutex()
 {
     static QRecursiveMutex retval;
     return &retval;
@@ -91,25 +91,27 @@ QFactoryLoader::QFactoryLoader( const QString &iid, const QString &pluginDir, Qt
     d->cs     = cs;
     d->suffix = pluginDir;
 
-    QRecursiveMutexLocker locker( qt_factoryloader_mutex() );
+    QRecursiveMutexLocker locker( lscs_factoryloader_mutex() );
     setup();
 
-    qt_factory_loaders()->append( this );
+    lscs_factory_loaders()->append( this );
 }
 
 void QFactoryLoader::setup()
 {
-#ifdef QT_SHARED
+#ifdef LSCS_SHARED
     Q_D( QFactoryLoader );
 
     QStringList libDirs = QCoreApplication::libraryPaths();
     // mp_pluginsFound.clear();
 
-    QTextStream out( stdout );    
+    QTextStream out( stdout );
     out << "setup() found: \n" << endl;
+
     for ( const QString &pluginDir : libDirs )
     {
         out << pluginDir << endl;
+
         // already looked in this path
         if ( d->loadedPaths.contains( pluginDir ) )
         {
@@ -126,11 +128,14 @@ void QFactoryLoader::setup()
             continue;
         }
 
-        QStringList plugins = QDir( path ).entryList( QDir::Files );
+        out << "   path: " << path << endl;
+        QStringList plugins = QDir( path ).entryList( QDir::Files | QDir::Readable );
+        out << "     plugins.count(): " << plugins.count() << endl;
         QLibraryHandle *library = nullptr;
 
         for ( int j = 0; j < plugins.count(); ++j )
         {
+            out << "  j: " << j << "   plugin: " << plugins.at( j ) << endl;
             QString fname = QDir::cleanPath( path + '/' + plugins.at( j ) );
 
             /*       if (j > 0) {
@@ -280,8 +285,8 @@ void QFactoryLoader::setup()
 
 QFactoryLoader::~QFactoryLoader()
 {
-    QRecursiveMutexLocker locker( qt_factoryloader_mutex() );
-    qt_factory_loaders()->removeAll( this );
+    QRecursiveMutexLocker locker( lscs_factoryloader_mutex() );
+    lscs_factory_loaders()->removeAll( this );
 }
 
 QObject *QFactoryLoader::instance( QString key ) const
@@ -388,8 +393,8 @@ QLibraryHandle *QFactoryLoader::library( const QString &key ) const
 
 void QFactoryLoader::refreshAll()
 {
-    QRecursiveMutexLocker locker( qt_factoryloader_mutex() );
-    QList<QFactoryLoader *> *loaders = qt_factory_loaders();
+    QRecursiveMutexLocker locker( lscs_factoryloader_mutex() );
+    QList<QFactoryLoader *> *loaders = lscs_factory_loaders();
 
     for ( auto item : *loaders )
     {

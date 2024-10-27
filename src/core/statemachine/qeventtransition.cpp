@@ -23,7 +23,7 @@
 
 #include <qeventtransition.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qdebug.h>
 #include <qstate.h>
@@ -167,4 +167,4 @@ bool QEventTransition::event( QEvent *e )
     return QAbstractTransition::event( e );
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

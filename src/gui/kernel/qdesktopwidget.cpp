@@ -53,7 +53,7 @@ void QDesktopScreenWidget::setScreenGeometry( const QRect &geometry )
 int QDesktopScreenWidget::screenNumber() const
 {
     const QDesktopWidgetPrivate *desktopWidgetP
-        = static_cast<const QDesktopWidgetPrivate *>( qt_widget_private( QApplication::desktop() ) );
+        = static_cast<const QDesktopWidgetPrivate *>( lscs_widget_private( QApplication::desktop() ) );
     return desktopWidgetP->screens.indexOf( const_cast<QDesktopScreenWidget *>( this ) );
 }
 

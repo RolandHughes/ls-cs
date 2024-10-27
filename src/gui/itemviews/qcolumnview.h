@@ -26,7 +26,7 @@
 
 #include <qabstractitemview.h>
 
-#ifndef QT_NO_COLUMNVIEW
+#ifndef LSCS_NO_COLUMNVIEW
 
 class QColumnViewPrivate;
 
@@ -101,7 +101,7 @@ private:
     GUI_LSCS_SLOT_2( _q_clicked )
 };
 
-#endif // QT_NO_COLUMNVIEW
+#endif // LSCS_NO_COLUMNVIEW
 
 #endif // QCOLUMNVIEW_H
 

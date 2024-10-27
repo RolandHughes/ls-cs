@@ -30,7 +30,7 @@
 
 class QScreen;
 
-#ifdef QT_NO_CURSOR
+#ifdef LSCS_NO_CURSOR
 // fake class, used on touchscreen devices
 
 class Q_GUI_EXPORT QCursor
@@ -55,7 +55,7 @@ private:
 #endif
 
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
 class QCursorData;
 class QBitmap;
@@ -132,6 +132,6 @@ inline bool CustomType_T<QCursor>::compare( const CustomType &other ) const
     return false;
 }
 
-#endif // QT_NO_CURSOR
+#endif // LSCS_NO_CURSOR
 
 #endif

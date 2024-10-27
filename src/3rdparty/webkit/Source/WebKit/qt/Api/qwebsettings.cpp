@@ -55,9 +55,9 @@
 
 #include "NetworkStateNotifier.h"
 
-void QWEBKIT_EXPORT qt_networkAccessAllowed( bool isAllowed )
+void QWEBKIT_EXPORT lscs_networkAccessAllowed( bool isAllowed )
 {
-#if USE(QT_BEARER)
+#if USE(LSCS_BEARER)
     WebCore::networkStateNotifier().setNetworkAccessAllowed( isAllowed );
 #endif
 }
@@ -1144,7 +1144,7 @@ QString QWebSettings::localStoragePath() const
 */
 void QWebSettings::enablePersistentStorage( const QString &path )
 {
-#ifndef QT_NO_DESKTOPSERVICES
+#ifndef LSCS_NO_DESKTOPSERVICES
     QString storagePath;
 
     if ( path.isEmpty() )

@@ -23,7 +23,7 @@
 
 #include "qsggeometry.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 
 const QSGGeometry::AttributeSet &QSGGeometry::defaultAttributes_Point2D()
@@ -185,4 +185,4 @@ void QSGGeometry::updateTexturedRectGeometry( QSGGeometry *g, const QRectF &rect
     v[3].ty = textureRect.bottom();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -33,9 +33,9 @@
 
 #include "qdbus_symbols_p.h"          // for the DBUS_* constants
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*
  * Implementation of interface class QDBusConnectionInterface
@@ -421,6 +421,6 @@ void QDBusConnectionInterface::disconnectNotify( const char *signalName )
   \sa QDBusConnection::callWithCallback()
  */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

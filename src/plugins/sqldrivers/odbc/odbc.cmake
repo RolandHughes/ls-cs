@@ -32,7 +32,7 @@ if (WITH_ODBC_PLUGIN AND ODBC_FOUND)
    target_compile_definitions(LsCsSqlOdbc
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)

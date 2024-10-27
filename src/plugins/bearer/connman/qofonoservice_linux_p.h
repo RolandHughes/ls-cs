@@ -36,8 +36,8 @@
 
 #include <QMap>
 
-#ifndef QT_NO_BEARERMANAGEMENT
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_DBUS
 
 #define OFONO_SERVICE                            "org.ofono"
 #define OFONO_MANAGER_INTERFACE                  "org.ofono.Manager"
@@ -55,9 +55,9 @@
 
 
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 struct ObjectPathProperties
 {
@@ -68,7 +68,7 @@ typedef QList<ObjectPathProperties> PathPropertiesList;
 Q_DECLARE_METATYPE( ObjectPathProperties )
 Q_DECLARE_METATYPE ( PathPropertiesList )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QOfonoManagerInterface : public  QDBusAbstractInterface
 {
@@ -311,9 +311,9 @@ Q_SIGNALS:
     void incomingMessage( const QString &message, const QVariantMap &info );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_DBUS
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif //QOFONOSERVICE_H

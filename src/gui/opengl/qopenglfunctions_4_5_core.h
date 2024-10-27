@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_2)
 
 #include <qopengl_versionfunctions.h>
 #include <qopenglcontext.h>
@@ -4265,6 +4265,6 @@ inline void QOpenGLFunctions_4_5_Core::glClipControl( GLenum origin, GLenum dept
     d_4_5_Core->ClipControl( origin, depth );
 }
 
-#endif // QT_NO_OPENGL && !QT_OPENGL_ES_2
+#endif // LSCS_NO_OPENGL && !LSCS_OPENGL_ES_2
 
 #endif

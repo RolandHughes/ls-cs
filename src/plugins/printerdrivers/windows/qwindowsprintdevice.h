@@ -25,7 +25,7 @@
 #define QWINDOWSPRINTDEVICE_H
 
 #include <qplatform_printdevice.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 class QWindowsPrintDevice : public QPlatformPrintDevice
 {

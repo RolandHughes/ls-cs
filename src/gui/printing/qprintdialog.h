@@ -26,7 +26,7 @@
 
 #include <qabstractprintdialog.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 class QPrintDialogPrivate;
 class QPushButton;
@@ -89,7 +89,7 @@ private:
 
 };
 
-#endif // QT_NO_PRINTDIALOG
+#endif // LSCS_NO_PRINTDIALOG
 
 
 

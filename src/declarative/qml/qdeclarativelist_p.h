@@ -27,7 +27,7 @@
 #include "qdeclarativelist.h"
 #include "qdeclarativeguard_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeListReferencePrivate
 {
@@ -52,6 +52,6 @@ public:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVELIST_P_H

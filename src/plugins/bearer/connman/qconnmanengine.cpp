@@ -37,10 +37,10 @@
 #include <QtDBus/QDBusMessage>
 #include <QtDBus/QDBusReply>
 
-#ifndef QT_NO_BEARERMANAGEMENT
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE QConnmanEngine::QConnmanEngine( QObject *parent )
+LSCS_BEGIN_NAMESPACE QConnmanEngine::QConnmanEngine( QObject *parent )
     :   QBearerEngineImpl( parent ),
         connmanManager( new QConnmanManagerInterface( this ) )
 {
@@ -704,7 +704,7 @@ bool QConnmanEngine::requiresPolling() const
     return false;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_DBUS
+#endif // LSCS_NO_BEARERMANAGEMENT

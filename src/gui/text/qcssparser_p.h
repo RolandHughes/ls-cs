@@ -35,7 +35,7 @@
 
 #include <qshareddata.h>
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
 namespace QCss
 {
@@ -1034,6 +1034,6 @@ LSCS_DECLARE_METATYPE( QCss::BackgroundData )
 LSCS_DECLARE_METATYPE( QCss::LengthData )
 LSCS_DECLARE_METATYPE( QCss::BorderData )
 
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 
 #endif

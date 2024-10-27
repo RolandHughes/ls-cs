@@ -300,7 +300,7 @@ bool QWindowsPipeReader::waitForNotification( int timeout )
         }
 
         // Some other I/O completion routine was called. Wait some more.
-        msecs = qt_subtract_from_timeout( timeout, t.elapsed() );
+        msecs = lscs_subtract_from_timeout( timeout, t.elapsed() );
 
         if ( !msecs )
         {

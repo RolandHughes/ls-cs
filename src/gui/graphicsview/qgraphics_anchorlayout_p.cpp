@@ -30,7 +30,7 @@
 
 #include <qgraphics_anchorlayout_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 // To ensure that all variables inside the simplex solver are non-negative,
 // we limit the size of anchors in the interval [-limit, limit]. Then before
@@ -2357,7 +2357,7 @@ void QGraphicsAnchorLayoutPrivate::calculateGraphs(
     QGraphicsAnchorLayoutPrivate::Orientation orientation )
 {
 
-    static bool simplificationEnabled = qgetenv( "QT_ANCHORLAYOUT_NO_SIMPLIFICATION" ).isEmpty();
+    static bool simplificationEnabled = qgetenv( "LSCS_ANCHORLAYOUT_NO_SIMPLIFICATION" ).isEmpty();
 
     // Reset the nominal sizes of each anchor based on the current item sizes
     refreshAllSizeHints( orientation );
@@ -3397,4 +3397,4 @@ void QGraphicsAnchorLayoutPrivate::dumpGraph( const QString &name )
 }
 #endif
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

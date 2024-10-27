@@ -26,7 +26,7 @@
 #include <QtCore/qatomic.h>
 #include <QtCore/qstring.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptValuePropertyPrivate
 {
@@ -156,4 +156,4 @@ bool QScriptValueProperty::isValid() const
     return ( d != 0 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

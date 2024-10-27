@@ -30,7 +30,7 @@
 #include <qprinterinfo_p.h>
 #include <qprintdevice_p.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 QPlatformPrinterSupport::QPlatformPrinterSupport()
 {
@@ -88,4 +88,4 @@ QPageSize QPlatformPrinterSupport::createPageSize( const QString &id, QSize size
     return QPageSize();
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER

@@ -37,13 +37,13 @@
 #include <qwindow.h>
 #include <qwindowsysteminterface.h>
 
-#ifdef QT_OPENGL_DYNAMIC
+#ifdef LSCS_OPENGL_DYNAMIC
 #  include <qwin_gl_context.h>
 #else
 #  include <qwin_opengl_context.h>
 #endif
 
-#ifdef QT_NO_CURSOR
+#ifdef LSCS_NO_CURSOR
 #  include <qwindowscursor.h>
 #endif
 
@@ -54,7 +54,7 @@
 static constexpr const int defaultWindowWidth  = 160;
 static constexpr const int defaultWindowHeight = 160;
 
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap & );
+Q_GUI_EXPORT HICON lscs_pixmapToWinHICON( const QPixmap & );
 
 static QByteArray debugWinStyle( DWORD style )
 {
@@ -312,7 +312,7 @@ static inline bool windowIsOpenGL( const QWindow *w )
             return true;
 
         case QSurface::RasterGLSurface:
-            return qt_window_private( const_cast<QWindow *>( w ) )->compositing;
+            return lscs_window_private( const_cast<QWindow *>( w ) )->compositing;
 
         default:
             return false;
@@ -1056,7 +1056,7 @@ void QWindowsGeometryHint::applyToMinMaxInfo( DWORD style, DWORD exStyle, MINMAX
 
 bool QWindowsGeometryHint::positionIncludesFrame( const QWindow *w )
 {
-    return qt_window_private( const_cast<QWindow *>( w ) )->positionPolicy
+    return lscs_window_private( const_cast<QWindow *>( w ) )->positionPolicy
            == QWindowPrivate::WindowFrameInclusive;
 }
 
@@ -1113,7 +1113,7 @@ QWindowsWindow::QWindowsWindow( QWindow *aWindow, const QWindowsWindowData &data
         return;   // No further handling
     }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
     if ( aWindow->surfaceType() == QWindow::OpenGLSurface )
     {
@@ -1133,7 +1133,7 @@ QWindowsWindow::QWindowsWindow( QWindow *aWindow, const QWindowsWindowData &data
 
     registerTouchWindow();
     setWindowState( aWindow->windowState() );
-    const qreal opacity = qt_window_private( aWindow )->opacity;
+    const qreal opacity = lscs_window_private( aWindow )->opacity;
 
     if ( !qFuzzyCompare( opacity, qreal( 1.0 ) ) )
     {
@@ -1216,7 +1216,7 @@ void QWindowsWindow::destroyWindow()
 
         setDropSiteEnabled( false );
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
         if ( m_surface )
         {
@@ -1285,7 +1285,7 @@ void QWindowsWindow::setDropSiteEnabled( bool dropEnabled )
         return;
     }
 
-#if ! defined(QT_NO_CLIPBOARD) && ! defined(QT_NO_DRAGANDDROP)
+#if ! defined(LSCS_NO_CLIPBOARD) && ! defined(LSCS_NO_DRAGANDDROP)
 
     if ( dropEnabled )
     {
@@ -1927,7 +1927,7 @@ bool QWindowsWindow::handleWmPaint( HWND hwnd, UINT message, WPARAM, LPARAM )
 
     PAINTSTRUCT ps;
 
-#ifdef QT_OPENGL_DYNAMIC
+#ifdef LSCS_OPENGL_DYNAMIC
     // QTBUG-58178: GL software rendering needs InvalidateRect() to suppress
     // artifacts while resizing.
 
@@ -2680,7 +2680,7 @@ bool QWindowsWindow::handleNonClientHitTest( const QPoint &globalPos, LRESULT *r
     return false;
 }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
 // Return the default cursor (Arrow) from QWindowsCursor's cache.
 static inline CursorHandlePtr defaultCursor( const QWindow *w )
@@ -2726,11 +2726,11 @@ static inline bool applyNewCursor( const QWindow *w )
 
     return false;
 }
-#endif // !QT_NO_CURSOR
+#endif // !LSCS_NO_CURSOR
 
 void QWindowsWindow::applyCursor()
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( m_cursor->isNull() )
     {
@@ -2755,7 +2755,7 @@ void QWindowsWindow::applyCursor()
 
 void QWindowsWindow::setCursor( const CursorHandlePtr &c )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( c->handle() != m_cursor->handle() )
     {
@@ -2853,7 +2853,7 @@ static HICON createHIcon( const QIcon &icon, int xSize, int ySize )
 
         if ( ! pm.isNull() )
         {
-            return qt_pixmapToWinHICON( pm );
+            return lscs_pixmapToWinHICON( pm );
         }
     }
 
@@ -2904,7 +2904,7 @@ void QWindowsWindow::setCustomMargins( const QMargins &newCustomMargins )
 
 void *QWindowsWindow::surface( void *nativeConfig, int *err )
 {
-#ifdef QT_NO_OPENGL
+#ifdef LSCS_NO_OPENGL
     return nullptr;
 #else
 
@@ -2922,7 +2922,7 @@ void *QWindowsWindow::surface( void *nativeConfig, int *err )
 
 void QWindowsWindow::invalidateSurface()
 {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
     if ( m_surface )
     {
@@ -2974,12 +2974,12 @@ void QWindowsWindow::registerTouchWindow( QWindowsWindowFunctions::TouchWindowTo
 
 void QWindowsWindow::aboutToMakeCurrent()
 {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     // For RasterGLSurface windows, that become OpenGL windows dynamically, it might be
     // time to set up some GL specifics.  This is particularly important for layered
     // windows (WS_EX_LAYERED due to alpha > 0).
 
-    const bool isCompositing = qt_window_private( window() )->compositing;
+    const bool isCompositing = lscs_window_private( window() )->compositing;
 
     if ( isCompositing != testFlag( Compositing ) )
     {

@@ -131,7 +131,7 @@ inline timespec operator*( const timespec &t1, int mul )
     return normalizedTimespec( tmp );
 }
 
-inline void qt_ignore_sigpipe()
+inline void lscs_ignore_sigpipe()
 {
     // Set to ignore SIGPIPE once only.
     static std::atomic<bool> atom( false );
@@ -150,16 +150,16 @@ inline void qt_ignore_sigpipe()
     }
 }
 
-// do not call QT_OPEN or ::open
-// call qt_safe_open
-static inline int qt_safe_open( const char *pathname, int flags, mode_t mode = 0777 )
+// do not call LSCS_OPEN or ::open
+// call lscs_safe_open
+static inline int lscs_safe_open( const char *pathname, int flags, mode_t mode = 0777 )
 {
 #ifdef O_CLOEXEC
     flags |= O_CLOEXEC;
 #endif
 
     int fd;
-    EINTR_LOOP( fd, QT_OPEN( pathname, flags, mode ) );
+    EINTR_LOOP( fd, LSCS_OPEN( pathname, flags, mode ) );
 
     // unknown flags are ignored, so we have no way of verifying if
     // O_CLOEXEC was accepted
@@ -171,14 +171,14 @@ static inline int qt_safe_open( const char *pathname, int flags, mode_t mode = 0
     return fd;
 }
 
-#undef QT_OPEN
-#define QT_OPEN  qt_safe_open
+#undef LSCS_OPEN
+#define LSCS_OPEN  lscs_safe_open
 
-static inline int qt_safe_pipe( int pipefd[2], int flags = 0 )
+static inline int lscs_safe_pipe( int pipefd[2], int flags = 0 )
 {
     Q_ASSERT( ( flags & ~O_NONBLOCK ) == 0 );
 
-#ifdef QT_THREADSAFE_CLOEXEC
+#ifdef LSCS_THREADSAFE_CLOEXEC
     // use pipe2
     flags |= O_CLOEXEC;
     return ::pipe2( pipefd, flags ); // pipe2 is documented not to return EINTR
@@ -205,7 +205,7 @@ static inline int qt_safe_pipe( int pipefd[2], int flags = 0 )
 }
 
 // don't call dup or fcntl(F_DUPFD)
-static inline int qt_safe_dup( int oldfd, int atleast = 0, int flags = FD_CLOEXEC )
+static inline int lscs_safe_dup( int oldfd, int atleast = 0, int flags = FD_CLOEXEC )
 {
     Q_ASSERT( flags == FD_CLOEXEC || flags == 0 );
 
@@ -232,14 +232,14 @@ static inline int qt_safe_dup( int oldfd, int atleast = 0, int flags = FD_CLOEXE
 #endif
 }
 
-// do not call dup2, call qt_safe_dup2
-static inline int qt_safe_dup2( int oldfd, int newfd, int flags = FD_CLOEXEC )
+// do not call dup2, call lscs_safe_dup2
+static inline int lscs_safe_dup2( int oldfd, int newfd, int flags = FD_CLOEXEC )
 {
     Q_ASSERT( flags == FD_CLOEXEC || flags == 0 );
 
     int ret;
 
-#ifdef QT_THREADSAFE_CLOEXEC
+#ifdef LSCS_THREADSAFE_CLOEXEC
     // use dup3
     EINTR_LOOP( ret, ::dup3( oldfd, newfd, flags ? O_CLOEXEC : 0 ) );
     return ret;
@@ -261,43 +261,43 @@ static inline int qt_safe_dup2( int oldfd, int newfd, int flags = FD_CLOEXEC )
 #endif
 }
 
-static inline qint64 qt_safe_read( int fd, void *data, qint64 maxlen )
+static inline qint64 lscs_safe_read( int fd, void *data, qint64 maxlen )
 {
     qint64 ret = 0;
-    EINTR_LOOP( ret, QT_READ( fd, data, maxlen ) );
+    EINTR_LOOP( ret, LSCS_READ( fd, data, maxlen ) );
     return ret;
 }
 
-#undef QT_READ
-#define QT_READ qt_safe_read
+#undef LSCS_READ
+#define LSCS_READ lscs_safe_read
 
-static inline qint64 qt_safe_write( int fd, const void *data, qint64 len )
+static inline qint64 lscs_safe_write( int fd, const void *data, qint64 len )
 {
     qint64 ret = 0;
-    EINTR_LOOP( ret, QT_WRITE( fd, data, len ) );
+    EINTR_LOOP( ret, LSCS_WRITE( fd, data, len ) );
     return ret;
 }
 
-#undef QT_WRITE
-#define QT_WRITE qt_safe_write
+#undef LSCS_WRITE
+#define LSCS_WRITE lscs_safe_write
 
-static inline qint64 qt_safe_write_nosignal( int fd, const void *data, qint64 len )
+static inline qint64 lscs_safe_write_nosignal( int fd, const void *data, qint64 len )
 {
-    qt_ignore_sigpipe();
-    return qt_safe_write( fd, data, len );
+    lscs_ignore_sigpipe();
+    return lscs_safe_write( fd, data, len );
 }
 
-static inline int qt_safe_close( int fd )
+static inline int lscs_safe_close( int fd )
 {
     int ret;
-    EINTR_LOOP( ret, QT_CLOSE( fd ) );
+    EINTR_LOOP( ret, LSCS_CLOSE( fd ) );
     return ret;
 }
 
-#undef QT_CLOSE
-#define QT_CLOSE qt_safe_close
+#undef LSCS_CLOSE
+#define LSCS_CLOSE lscs_safe_close
 
-static inline int qt_safe_execve( const char *filename, char *const argv[],
+static inline int lscs_safe_execve( const char *filename, char *const argv[],
                                   char *const envp[] )
 {
     int ret;
@@ -305,21 +305,21 @@ static inline int qt_safe_execve( const char *filename, char *const argv[],
     return ret;
 }
 
-static inline int qt_safe_execv( const char *path, char *const argv[] )
+static inline int lscs_safe_execv( const char *path, char *const argv[] )
 {
     int ret;
     EINTR_LOOP( ret, ::execv( path, argv ) );
     return ret;
 }
 
-static inline int qt_safe_execvp( const char *file, char *const argv[] )
+static inline int lscs_safe_execvp( const char *file, char *const argv[] )
 {
     int ret;
     EINTR_LOOP( ret, ::execvp( file, argv ) );
     return ret;
 }
 
-static inline pid_t qt_safe_waitpid( pid_t pid, int *status, int options )
+static inline pid_t lscs_safe_waitpid( pid_t pid, int *status, int options )
 {
     int ret;
     EINTR_LOOP( ret, ::waitpid( pid, status, options ) );
@@ -331,36 +331,36 @@ static inline pid_t qt_safe_waitpid( pid_t pid, int *status, int options )
 #endif
 
 // in qelapsedtimer_mac.cpp or qtimestamp_unix.cpp
-timespec qt_gettime();
+timespec lscs_gettime();
 
-void qt_nanosleep( timespec amount );
+void lscs_nanosleep( timespec amount );
 
-Q_CORE_EXPORT int qt_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
+Q_CORE_EXPORT int lscs_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
                                   const struct timespec *tv );
 
-int qt_select_msecs( int nfds, fd_set *fdread, fd_set *fdwrite, int timeout );
+int lscs_select_msecs( int nfds, fd_set *fdread, fd_set *fdwrite, int timeout );
 
 // according to X/OPEN we have to define semun ourselves
 // we use prefix as on some systems sem.h will have it
 struct semid_ds;
-union qt_semun
+union lscs_semun
 {
     int val;                    /* value for SETVAL */
     struct semid_ds *buf;       /* buffer for IPC_STAT, IPC_SET */
     unsigned short *array;      /* array for GETALL, SETALL */
 };
 
-#ifndef QT_POSIX_IPC
-#ifndef QT_NO_SHAREDMEMORY
+#ifndef LSCS_POSIX_IPC
+#ifndef LSCS_NO_SHAREDMEMORY
 
-static inline key_t qt_safe_ftok( const QByteArray &filename, int proj_id )
+static inline key_t lscs_safe_ftok( const QByteArray &filename, int proj_id )
 {
     // Unfortunately ftok can return colliding keys even for different files.
     // Try to add some more entropy via qHash.
     return ::ftok( filename.constData(), qHash( filename, proj_id ) );
 }
 
-#endif // QT_NO_SHAREDMEMORY
-#endif // QT_POSIX_IPC
+#endif // LSCS_NO_SHAREDMEMORY
+#endif // LSCS_POSIX_IPC
 
 #endif

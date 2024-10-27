@@ -222,9 +222,9 @@ struct QDirSortItem
 
 class QDirSortItemComparator
 {
-    int qt_cmp_si_sort_flags;
+    int lscs_cmp_si_sort_flags;
 public:
-    QDirSortItemComparator( int flags ) : qt_cmp_si_sort_flags( flags ) {}
+    QDirSortItemComparator( int flags ) : lscs_cmp_si_sort_flags( flags ) {}
     bool operator()( const QDirSortItem &, const QDirSortItem & ) const;
 };
 
@@ -233,18 +233,18 @@ bool QDirSortItemComparator::operator()( const QDirSortItem &n1, const QDirSortI
     const QDirSortItem *f1 = &n1;
     const QDirSortItem *f2 = &n2;
 
-    if ( ( qt_cmp_si_sort_flags & QDir::DirsFirst ) && ( f1->item.isDir() != f2->item.isDir() ) )
+    if ( ( lscs_cmp_si_sort_flags & QDir::DirsFirst ) && ( f1->item.isDir() != f2->item.isDir() ) )
     {
         return f1->item.isDir();
     }
 
-    if ( ( qt_cmp_si_sort_flags & QDir::DirsLast ) && ( f1->item.isDir() != f2->item.isDir() ) )
+    if ( ( lscs_cmp_si_sort_flags & QDir::DirsLast ) && ( f1->item.isDir() != f2->item.isDir() ) )
     {
         return !f1->item.isDir();
     }
 
     qint64 r = 0;
-    int sortBy = ( qt_cmp_si_sort_flags & QDir::SortByMask ) | ( qt_cmp_si_sort_flags & QDir::Type );
+    int sortBy = ( lscs_cmp_si_sort_flags & QDir::SortByMask ) | ( lscs_cmp_si_sort_flags & QDir::Type );
 
     switch ( sortBy )
     {
@@ -266,7 +266,7 @@ bool QDirSortItemComparator::operator()( const QDirSortItem &n1, const QDirSortI
 
         case QDir::Type:
         {
-            bool ic = qt_cmp_si_sort_flags & QDir::IgnoreCase;
+            bool ic = lscs_cmp_si_sort_flags & QDir::IgnoreCase;
 
             if ( f1->suffix_cache.isEmpty() )
             {
@@ -278,7 +278,7 @@ bool QDirSortItemComparator::operator()( const QDirSortItem &n1, const QDirSortI
                 f2->suffix_cache = ic ? f2->item.suffix().toLower() : f2->item.suffix();
             }
 
-            r = qt_cmp_si_sort_flags & QDir::LocaleAware
+            r = lscs_cmp_si_sort_flags & QDir::LocaleAware
                 ? f1->suffix_cache.localeAwareCompare( f2->suffix_cache ) : f1->suffix_cache.compare( f2->suffix_cache );
         }
         break;
@@ -290,7 +290,7 @@ bool QDirSortItemComparator::operator()( const QDirSortItem &n1, const QDirSortI
     if ( r == 0 && sortBy != QDir::Unsorted )
     {
         // Still not sorted - sort by name
-        bool ic = qt_cmp_si_sort_flags & QDir::IgnoreCase;
+        bool ic = lscs_cmp_si_sort_flags & QDir::IgnoreCase;
 
         if ( f1->filename_cache.isEmpty() )
         {
@@ -302,7 +302,7 @@ bool QDirSortItemComparator::operator()( const QDirSortItem &n1, const QDirSortI
             f2->filename_cache = ic ? f2->item.fileName().toLower() : f2->item.fileName();
         }
 
-        r = qt_cmp_si_sort_flags & QDir::LocaleAware
+        r = lscs_cmp_si_sort_flags & QDir::LocaleAware
             ? f1->filename_cache.localeAwareCompare( f2->filename_cache ) : f1->filename_cache.compare( f2->filename_cache );
     }
 
@@ -312,7 +312,7 @@ bool QDirSortItemComparator::operator()( const QDirSortItem &n1, const QDirSortI
         r = ( &n1 ) - ( &n2 );
     }
 
-    if ( qt_cmp_si_sort_flags & QDir::Reversed )
+    if ( lscs_cmp_si_sort_flags & QDir::Reversed )
     {
         return r > 0;
     }
@@ -832,7 +832,9 @@ QStringList QDir::entryList( const QStringList &nameFilters, Filters filters, So
         return d->files;
     }
 
+    QTextStream out(stdout);
     QFileInfoList list;
+    out << "d->dirEntry.filePath(): " << d->dirEntry.filePath() << endl;
     QDirIterator it( d->dirEntry.filePath(), nameFilters, filters );
 
     while ( it.hasNext() )
@@ -1224,7 +1226,7 @@ bool QDir::exists( const QString &name ) const
 
 QFileInfoList QDir::drives()
 {
-#ifdef QT_NO_FSFILEENGINE
+#ifdef LSCS_NO_FSFILEENGINE
     return QFileInfoList();
 #else
     return QFSFileEngine::drives();

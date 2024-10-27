@@ -49,7 +49,7 @@ list(APPEND CORE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/global/qplatformdefs.h
    ${CMAKE_CURRENT_SOURCE_DIR}/global/qplatformposix.h
    ${CMAKE_CURRENT_SOURCE_DIR}/global/qsysinfo.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/global/qt_windows.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/global/lscs_windows.h
    ${CMAKE_CURRENT_SOURCE_DIR}/global/qtcore.h
 )
 

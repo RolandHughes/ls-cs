@@ -29,9 +29,9 @@
 #include <qtreeview.h>
 #include <qtreewidget_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 /*
 Implementation of the IAccessible2 table2 interface. Much simpler than
 the other table interfaces since there is only the main table and cells:
@@ -104,13 +104,13 @@ QHeaderView *QAccessibleTable::horizontalHeader() const
 
     if ( false )
     {
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
     }
     else if ( const QTableView *tv = qobject_cast<const QTableView *>( view() ) )
     {
         header = tv->horizontalHeader();
 #endif
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
     }
     else if ( const QTreeView *tv = qobject_cast<const QTreeView *>( view() ) )
     {
@@ -127,7 +127,7 @@ QHeaderView *QAccessibleTable::verticalHeader() const
 
     if ( false )
     {
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
     }
     else if ( const QTableView *tv = qobject_cast<const QTableView *>( view() ) )
     {
@@ -1156,13 +1156,13 @@ QHeaderView *QAccessibleTableCell::horizontalHeader() const
 
     if ( false )
     {
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
     }
     else if ( const QTableView *tv = qobject_cast<const QTableView *>( view ) )
     {
         header = tv->horizontalHeader();
 #endif
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
     }
     else if ( const QTreeView *tv = qobject_cast<const QTreeView *>( view ) )
     {
@@ -1177,7 +1177,7 @@ QHeaderView *QAccessibleTableCell::verticalHeader() const
 {
     QHeaderView *header = nullptr;
 
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
 
     if ( const QTableView *tv = qobject_cast<const QTableView *>( view ) )
     {
@@ -1510,7 +1510,7 @@ QRect QAccessibleTableHeaderCell::rect() const
 
     if ( false )
     {
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
     }
     else if ( const QTableView *tv = qobject_cast<const QTableView *>( view ) )
     {
@@ -1524,7 +1524,7 @@ QRect QAccessibleTableHeaderCell::rect() const
         }
 
 #endif
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
     }
     else if ( const QTreeView *tv = qobject_cast<const QTreeView *>( view ) )
     {
@@ -1602,7 +1602,7 @@ QHeaderView *QAccessibleTableHeaderCell::headerView() const
     {
         // here for readability
 
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
     }
     else if ( const QTableView *tv = qobject_cast<const QTableView *>( view ) )
     {
@@ -1618,7 +1618,7 @@ QHeaderView *QAccessibleTableHeaderCell::headerView() const
 
 #endif
 
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
     }
     else if ( const QTreeView *tv = qobject_cast<const QTreeView *>( view ) )
     {
@@ -1630,6 +1630,6 @@ QHeaderView *QAccessibleTableHeaderCell::headerView() const
     return header;
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY

@@ -33,7 +33,7 @@ if(WITH_PSQL_PLUGIN AND PostgreSQL_FOUND)
    target_compile_definitions(LsCsSqlPsql
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)

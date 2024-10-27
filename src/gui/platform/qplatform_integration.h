@@ -80,7 +80,7 @@ public:
     virtual QPlatformWindow *createPlatformWindow( QWindow *window ) const = 0;
     virtual QPlatformBackingStore *createPlatformBackingStore( QWindow *window ) const = 0;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     virtual QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const;
 #endif
 
@@ -93,17 +93,17 @@ public:
     //Deeper window system integrations
     virtual QPlatformFontDatabase *fontDatabase() const;
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     virtual QPlatformClipboard *clipboard() const;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     virtual QPlatformDrag *drag() const;
 #endif
 
     virtual QPlatformInputContext *inputContext() const;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     virtual QPlatformAccessibility *accessibility() const;
 #endif
 
@@ -141,13 +141,13 @@ public:
 
     virtual QPlatformOffscreenSurface *createPlatformOffscreenSurface( QOffscreenSurface *surface ) const;
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     virtual QPlatformSessionManager *createPlatformSessionManager( const QString &id, const QString &key ) const;
 #endif
 
     virtual void sync();
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     virtual QOpenGLContext::OpenGLModuleType openGLModuleType();
 #endif
 

@@ -26,7 +26,7 @@
 
 #include <qpaintdevice.h>
 
-#ifndef QT_NO_SVGGENERATOR
+#ifndef LSCS_NO_SVGGENERATOR
 
 #include <qiodevice.h>
 #include <qnamespace.h>
@@ -104,5 +104,5 @@ void QSvgGenerator::lscs_setViewBox( const QRectF &viewBox )
 }
 
 
-#endif // QT_NO_SVGGENERATOR
+#endif // LSCS_NO_SVGGENERATOR
 #endif

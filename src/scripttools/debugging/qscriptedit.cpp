@@ -34,7 +34,7 @@
 #include <QtGui/qwidgetaction.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptEditExtraArea : public QWidget
 {
@@ -100,7 +100,7 @@ QScriptEdit::QScriptEdit( QWidget *parent )
 
     updateExtraAreaWidth();
 
-#ifndef QT_NO_SYNTAXHIGHLIGHTER
+#ifndef LSCS_NO_SYNTAXHIGHLIGHTER
     ( void ) new QScriptSyntaxHighlighter( document() );
 #endif
 }
@@ -337,8 +337,8 @@ void QScriptEdit::extraAreaPaintEvent( QPaintEvent *e )
 
     QString imagesPath = QString::fromLatin1( ":/qt/scripttools/debugging/images" );
     QString imageExt;
-    // SVGs don't work on all platforms, even when QT_NO_SVG is not defined, so disable SVG usage for now.
-    // #ifndef QT_NO_SVG
+    // SVGs don't work on all platforms, even when LSCS_NO_SVG is not defined, so disable SVG usage for now.
+    // #ifndef LSCS_NO_SVG
 #if 0
     imageExt = QString::fromLatin1( "svg" );
 #else
@@ -404,7 +404,7 @@ void QScriptEdit::extraAreaMouseEvent( QMouseEvent *e )
         bool hand = ( e->pos().x() <= markWidth );
         int lineNumber = cursor.blockNumber() + m_baseLineNumber;
         hand = hand && isExecutableLine( lineNumber );
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
         if ( hand != ( m_extraArea->cursor().shape() == Qt::PointingHandCursor ) )
         {
@@ -509,4 +509,4 @@ bool QScriptEdit::extraAreaEvent( QEvent *e )
     return false;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

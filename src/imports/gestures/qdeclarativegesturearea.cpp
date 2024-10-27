@@ -32,9 +32,9 @@
 #include <QtGui/qevent.h>
 #include <qobject_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeGestureAreaPrivate : public QDeclarativeItemPrivate
 {
@@ -293,6 +293,6 @@ bool QDeclarativeGestureAreaPrivate::gestureEvent( QGestureEvent *event )
     return accept;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES

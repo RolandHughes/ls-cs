@@ -165,7 +165,7 @@ void JSObject::put( ExecState *exec, const Identifier &propertyName, JSValue val
 
     for ( JSObject *obj = this; ; obj = asObject( prototype ) )
     {
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
         PropertyDescriptor descriptor;
 
         if ( obj->getPropertyDescriptor( exec, propertyName, descriptor ) )
@@ -699,7 +699,7 @@ NEVER_INLINE void JSObject::fillGetterPropertySlot( PropertySlot &slot, JSValue 
 
 Structure *JSObject::createInheritorID()
 {
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     // ### QtScript needs the hasOwnProperty() calls etc. for QScriptObject
     m_inheritorID = Structure::create( this, TypeInfo( ObjectType,
                                        ImplementsHasInstance | JSC::OverridesHasInstance | JSC::OverridesGetOwnPropertySlot | JSC::OverridesMarkChildren |

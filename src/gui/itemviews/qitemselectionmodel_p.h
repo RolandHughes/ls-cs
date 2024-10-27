@@ -24,7 +24,7 @@
 #ifndef QITEMSELECTIONMODEL_P_H
 #define QITEMSELECTIONMODEL_P_H
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QItemSelectionModelPrivate
 {
@@ -92,7 +92,7 @@ protected:
 
 };
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 
 #endif // QITEMSELECTIONMODEL_P_H

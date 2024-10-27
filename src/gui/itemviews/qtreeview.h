@@ -26,7 +26,7 @@
 
 #include <qabstractitemview.h>
 
-#ifndef QT_NO_TREEVIEW
+#ifndef LSCS_NO_TREEVIEW
 
 class QTreeViewPrivate;
 class QHeaderView;
@@ -205,7 +205,7 @@ protected:
     void mouseMoveEvent( QMouseEvent *event ) override;
     void keyPressEvent( QKeyEvent *event ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragMoveEvent( QDragMoveEvent *event ) override;
 #endif
 
@@ -245,7 +245,7 @@ private:
 
     int visualIndex( const QModelIndex &index ) const;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     GUI_LSCS_SLOT_1( Private, void _q_endAnimatedOperation() )
     GUI_LSCS_SLOT_2( _q_endAnimatedOperation )
 #endif
@@ -261,6 +261,6 @@ private:
     friend class QAccessibleTableCell;
 };
 
-#endif // QT_NO_TREEVIEW
+#endif // LSCS_NO_TREEVIEW
 
 #endif

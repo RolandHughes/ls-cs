@@ -28,7 +28,7 @@
 #include <qsqlresult.h>
 
 
-#ifdef QT_PLUGIN
+#ifdef LSCS_PLUGIN
 #define Q_EXPORT_SQLDRIVER_PSQL
 #else
 #define Q_EXPORT_SQLDRIVER_PSQL Q_SQL_EXPORT

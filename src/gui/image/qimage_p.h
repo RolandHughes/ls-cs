@@ -89,10 +89,10 @@ bool convert_generic_inplace( QImageData *data, QImage::Format dst_format, Qt::I
 
 void dither_to_Mono( QImageData *dst, const QImageData *src, Qt::ImageConversionFlags flags, bool fromalpha );
 
-const uchar *qt_get_bitflip_array();
+const uchar *lscs_get_bitflip_array();
 Q_GUI_EXPORT void qGamma_correct_back_to_linear_cs( QImage *image );
 
-inline int qt_depthForFormat( QImage::Format format )
+inline int lscs_depthForFormat( QImage::Format format )
 {
     int depth = 0;
 
@@ -146,7 +146,7 @@ inline int qt_depthForFormat( QImage::Format format )
     return depth;
 }
 
-inline QImage::Format qt_alphaVersion( QImage::Format format )
+inline QImage::Format lscs_alphaVersion( QImage::Format format )
 {
     switch ( format )
     {
@@ -178,20 +178,20 @@ inline QImage::Format qt_alphaVersion( QImage::Format format )
     return QImage::Format_ARGB32_Premultiplied;
 }
 
-inline QImage::Format qt_maybeAlphaVersionWithSameDepth( QImage::Format format )
+inline QImage::Format lscs_maybeAlphaVersionWithSameDepth( QImage::Format format )
 {
-    const QImage::Format toFormat = qt_alphaVersion( format );
-    return qt_depthForFormat( format ) == qt_depthForFormat( toFormat ) ? toFormat : format;
+    const QImage::Format toFormat = lscs_alphaVersion( format );
+    return lscs_depthForFormat( format ) == lscs_depthForFormat( toFormat ) ? toFormat : format;
 }
 
-inline QImage::Format qt_alphaVersionForPainting( QImage::Format format )
+inline QImage::Format lscs_alphaVersionForPainting( QImage::Format format )
 {
-    QImage::Format toFormat = qt_alphaVersion( format );
+    QImage::Format toFormat = lscs_alphaVersion( format );
 
 #if defined(__ARM_NEON__) || defined(__SSE2__)
 
     // If we are switching depth anyway and we have optimized ARGB32PM routines, upgrade to that.
-    if ( qt_depthForFormat( format ) != qt_depthForFormat( toFormat ) )
+    if ( lscs_depthForFormat( format ) != lscs_depthForFormat( toFormat ) )
     {
         toFormat = QImage::Format_ARGB32_Premultiplied;
     }

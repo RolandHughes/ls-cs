@@ -83,9 +83,9 @@ void QPaintEngine::syncState()
     }
 }
 
-static QPaintEngine *qt_polygon_recursion = nullptr;
+static QPaintEngine *lscs_polygon_recursion = nullptr;
 
-struct QT_Point
+struct LSCS_Point
 {
     int x;
     int y;
@@ -93,12 +93,12 @@ struct QT_Point
 
 void QPaintEngine::drawPolygon( const QPointF *pointPtr, int pointCount, PolygonDrawMode mode )
 {
-    Q_ASSERT_X( qt_polygon_recursion != this, "QPaintEngine::drawPolygon",
+    Q_ASSERT_X( lscs_polygon_recursion != this, "QPaintEngine::drawPolygon",
                 "At least one drawPolygon function must be implemented" );
 
-    qt_polygon_recursion = this;
-    Q_ASSERT( sizeof( QT_Point ) == sizeof( QPoint ) );
-    QVarLengthArray<QT_Point> p( pointCount );
+    lscs_polygon_recursion = this;
+    Q_ASSERT( sizeof( LSCS_Point ) == sizeof( QPoint ) );
+    QVarLengthArray<LSCS_Point> p( pointCount );
 
     for ( int i = 0; i < pointCount; ++i )
     {
@@ -107,10 +107,10 @@ void QPaintEngine::drawPolygon( const QPointF *pointPtr, int pointCount, Polygon
     }
 
     drawPolygon( ( QPoint * )p.data(), pointCount, mode );
-    qt_polygon_recursion = nullptr;
+    lscs_polygon_recursion = nullptr;
 }
 
-struct QT_PointF
+struct LSCS_PointF
 {
     qreal x;
     qreal y;
@@ -118,13 +118,13 @@ struct QT_PointF
 
 void QPaintEngine::drawPolygon( const QPoint *pointPtr, int pointCount, PolygonDrawMode mode )
 {
-    Q_ASSERT_X( qt_polygon_recursion != this, "QPaintEngine::drawPolygon",
+    Q_ASSERT_X( lscs_polygon_recursion != this, "QPaintEngine::drawPolygon",
                 "At least one drawPolygon function must be implemented" );
 
-    qt_polygon_recursion = this;
+    lscs_polygon_recursion = this;
 
-    Q_ASSERT( sizeof( QT_PointF ) == sizeof( QPointF ) );
-    QVarLengthArray<QT_PointF> p( pointCount );
+    Q_ASSERT( sizeof( LSCS_PointF ) == sizeof( QPointF ) );
+    QVarLengthArray<LSCS_PointF> p( pointCount );
 
     for ( int i = 0; i < pointCount; ++i )
     {
@@ -133,7 +133,7 @@ void QPaintEngine::drawPolygon( const QPoint *pointPtr, int pointCount, PolygonD
     }
 
     drawPolygon( ( QPointF * )p.data(), pointCount, mode );
-    qt_polygon_recursion = nullptr;
+    lscs_polygon_recursion = nullptr;
 }
 
 void QPaintEngine::drawPoints( const QPointF *pointPtr, int pointCount )
@@ -158,7 +158,7 @@ void QPaintEngine::drawPoints( const QPointF *pointPtr, int pointCount )
 
     QTransform transform;
 
-    if ( qt_pen_is_cosmetic( p->pen(), p->renderHints() ) )
+    if ( lscs_pen_is_cosmetic( p->pen(), p->renderHints() ) )
     {
         transform = p->transform();
         p->setTransform( QTransform() );
@@ -187,8 +187,8 @@ void QPaintEngine::drawPoints( const QPointF *pointPtr, int pointCount )
 
 void QPaintEngine::drawPoints( const QPoint *pointPtr, int pointCount )
 {
-    Q_ASSERT( sizeof( QT_PointF ) == sizeof( QPointF ) );
-    QT_PointF fp[256];
+    Q_ASSERT( sizeof( LSCS_PointF ) == sizeof( QPointF ) );
+    LSCS_PointF fp[256];
 
     while ( pointCount )
     {
@@ -228,7 +228,7 @@ void QPaintEngine::drawEllipse( const QRect &rect )
     drawEllipse( QRectF( rect ) );
 }
 
-void qt_fill_tile( QPixmap *tile, const QPixmap &pixmap )
+void lscs_fill_tile( QPixmap *tile, const QPixmap &pixmap )
 {
     QPainter p( tile );
     p.drawPixmap( 0, 0, pixmap );
@@ -249,7 +249,7 @@ void qt_fill_tile( QPixmap *tile, const QPixmap &pixmap )
     }
 }
 
-void qt_draw_tile( QPaintEngine *gc, qreal x, qreal y, qreal w, qreal h,
+void lscs_draw_tile( QPaintEngine *gc, qreal x, qreal y, qreal w, qreal h,
                    const QPixmap &pixmap, qreal xOffset, qreal yOffset )
 {
     qreal yPos, xPos, drawH, drawW, yOff, xOff;
@@ -326,13 +326,13 @@ void QPaintEngine::drawTiledPixmap( const QRectF &rect, const QPixmap &pixmap, c
             }
         }
 
-        qt_fill_tile( &tile, pixmap );
-        qt_draw_tile( this, rect.x(), rect.y(), rect.width(), rect.height(), tile, p.x(), p.y() );
+        lscs_fill_tile( &tile, pixmap );
+        lscs_draw_tile( this, rect.x(), rect.y(), rect.width(), rect.height(), tile, p.x(), p.y() );
 
     }
     else
     {
-        qt_draw_tile( this, rect.x(), rect.y(), rect.width(), rect.height(), pixmap, p.x(), p.y() );
+        lscs_draw_tile( this, rect.x(), rect.y(), rect.width(), rect.height(), pixmap, p.x(), p.y() );
     }
 }
 

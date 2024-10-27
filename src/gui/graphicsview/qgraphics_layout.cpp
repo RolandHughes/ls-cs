@@ -23,7 +23,7 @@
 
 #include <qapplication.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgraphicslayout.h>
 #include <qgraphicslayoutitem.h>

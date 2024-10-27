@@ -23,7 +23,7 @@
 
 #include <qdial.h>
 
-#ifndef QT_NO_DIAL
+#ifndef LSCS_NO_DIAL
 
 #include <qapplication.h>
 #include <qbitmap.h>
@@ -40,7 +40,7 @@
 #include <qabstractslider_p.h>
 #include <qmath_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -355,4 +355,4 @@ bool QDial::event( QEvent *e )
     return QAbstractSlider::event( e );
 }
 
-#endif // QT_NO_DIAL
+#endif // LSCS_NO_DIAL

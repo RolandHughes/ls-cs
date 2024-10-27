@@ -65,7 +65,7 @@ static bool sm_isshutdown;
 static bool sm_phase2;
 static bool sm_in_phase2;
 
-bool qt_sm_blockUserInput = false;
+bool lscs_sm_blockUserInput = false;
 
 static QSmSocketReceiver *sm_receiver = nullptr;
 
@@ -86,7 +86,7 @@ static void resetSmState()
     sm_interactionActive = false;
     sm_interactStyle = SmInteractStyleNone;
     sm_smActive = false;
-    qt_sm_blockUserInput = false;
+    lscs_sm_blockUserInput = false;
     sm_isshutdown = false;
     sm_phase2 = false;
     sm_in_phase2 = false;
@@ -147,7 +147,7 @@ static void sm_setProperty( const QString &name, const QStringList &value )
 
 
 // workaround for broken libsm, see below
-struct QT_smcConn
+struct LSCS_smcConn
 {
     unsigned int save_yourself_in_progress : 1;
     unsigned int shutdown_in_progress : 1;
@@ -169,11 +169,11 @@ static void sm_saveYourselfCallback( SmcConn smcConn, SmPointer clientData,
 
     // ugly workaround for broken libSM. libSM should do that _before_
     // actually invoking the callback in sm_process.c
-    ( ( QT_smcConn * )smcConn )->save_yourself_in_progress = true;
+    ( ( LSCS_smcConn * )smcConn )->save_yourself_in_progress = true;
 
     if ( sm_isshutdown )
     {
-        ( ( QT_smcConn * )smcConn )->shutdown_in_progress = true;
+        ( ( LSCS_smcConn * )smcConn )->shutdown_in_progress = true;
     }
 
     sm_performSaveYourself( ( QXcbSessionManager * ) clientData );
@@ -189,7 +189,7 @@ static void sm_performSaveYourself( QXcbSessionManager *sm )
 {
     if ( sm_isshutdown )
     {
-        qt_sm_blockUserInput = true;
+        lscs_sm_blockUserInput = true;
     }
 
     // generate a new session key
@@ -277,7 +277,7 @@ static void sm_performSaveYourself( QXcbSessionManager *sm )
     if ( sm_phase2 && ! sm_in_phase2 )
     {
         SmcRequestSaveYourselfPhase2( smcConnection, sm_saveYourselfPhase2Callback, ( SmPointer * ) sm );
-        qt_sm_blockUserInput = false;
+        lscs_sm_blockUserInput = false;
 
     }
     else
@@ -475,7 +475,7 @@ bool QXcbSessionManager::allowsInteraction()
         {
             // not cancelled
             sm_interactionActive = true;
-            qt_sm_blockUserInput = false;
+            lscs_sm_blockUserInput = false;
             return true;
         }
     }
@@ -514,7 +514,7 @@ bool QXcbSessionManager::allowsErrorInteraction()
         {
             // not cancelled
             sm_interactionActive = true;
-            qt_sm_blockUserInput = false;
+            lscs_sm_blockUserInput = false;
             return true;
         }
     }
@@ -531,7 +531,7 @@ void QXcbSessionManager::release()
 
         if ( sm_smActive && sm_isshutdown )
         {
-            qt_sm_blockUserInput = true;
+            lscs_sm_blockUserInput = true;
         }
     }
 }

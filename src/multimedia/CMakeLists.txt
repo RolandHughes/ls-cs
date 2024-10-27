@@ -5,7 +5,7 @@ set_target_properties(LsCsMultimedia PROPERTIES OUTPUT_NAME LsCsMultimedia${BUIL
 
 target_compile_definitions(LsCsMultimedia
    PRIVATE
-   -DQT_BUILD_MULTIMEDIA_LIB
+   -DLSCS_BUILD_MULTIMEDIA_LIB
 )
 
 set(EXTRA_MULTIMEDIA_CXXFLAGS)

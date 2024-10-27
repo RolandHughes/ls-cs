@@ -257,7 +257,7 @@ inline QtWindows::WindowsEventType windowsEventType( UINT message, WPARAM wParam
 
         case WM_DWMCOMPOSITIONCHANGED:
             return QtWindows::CompositionSettingsChanged;
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
         case WM_CONTEXTMENU:
 
@@ -272,7 +272,7 @@ inline QtWindows::WindowsEventType windowsEventType( UINT message, WPARAM wParam
 
             break;
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
 
         case WM_QUERYENDSESSION:
             return QtWindows::QueryEndSessionApplicationEvent;

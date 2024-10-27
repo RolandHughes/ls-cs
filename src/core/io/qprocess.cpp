@@ -43,7 +43,7 @@
 #include <errno.h>
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
-static QByteArray qt_prettyDebug( const char *data, int len, int maxSize )
+static QByteArray lscs_prettyDebug( const char *data, int len, int maxSize )
 {
     if ( ! data )
     {
@@ -95,7 +95,7 @@ static QByteArray qt_prettyDebug( const char *data, int len, int maxSize )
 }
 #endif
 
-#ifndef QT_NO_PROCESS
+#ifndef LSCS_NO_PROCESS
 
 QStringList QProcessEnvironmentPrivate::toList() const
 {
@@ -465,7 +465,7 @@ void QProcessPrivate::cleanup()
 
     if ( forkfd != -1 )
     {
-        qt_safe_close( forkfd );
+        lscs_safe_close( forkfd );
     }
 
     forkfd = -1;
@@ -1187,7 +1187,7 @@ bool QProcess::waitForBytesWritten( int msecs )
             return false;
         }
 
-        msecs = qt_subtract_from_timeout( msecs, stopWatch.elapsed() );
+        msecs = lscs_subtract_from_timeout( msecs, stopWatch.elapsed() );
     }
 
     return d->waitForBytesWritten( msecs );
@@ -1214,7 +1214,7 @@ bool QProcess::waitForFinished( int msecs )
             return false;
         }
 
-        msecs = qt_subtract_from_timeout( msecs, stopWatch.elapsed() );
+        msecs = lscs_subtract_from_timeout( msecs, stopWatch.elapsed() );
     }
 
     return d->waitForFinished( msecs );
@@ -1258,7 +1258,7 @@ qint64 QProcess::readData( char *data, qint64 maxlen )
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
             qDebug( "QProcess::readData(%p \"%s\", %d) == -1",
-                    data, qt_prettyDebug( data, 1, maxlen ).constData(), 1 );
+                    data, lscs_prettyDebug( data, 1, maxlen ).constData(), 1 );
 #endif
 
             return -1;
@@ -1268,7 +1268,7 @@ qint64 QProcess::readData( char *data, qint64 maxlen )
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
         qDebug( "QProcess::readData(%p \"%s\", %d) == 1",
-                data, qt_prettyDebug( data, 1, maxlen ).constData(), 1 );
+                data, lscs_prettyDebug( data, 1, maxlen ).constData(), 1 );
 #endif
 
         return 1;
@@ -1364,7 +1364,7 @@ qint64 QProcess::writeData( const char *data, qint64 len )
 
 #if defined(LSCS_SHOW_DEBUG_CORE_IO)
     qDebug( "QProcess::writeData(%p \"%s\", %lld) == %lld (written to buffer)",
-            data, qt_prettyDebug( data, len, 16 ).constData(), len, len );
+            data, lscs_prettyDebug( data, len, 16 ).constData(), len, len );
 #endif
 
     return len;
@@ -1727,4 +1727,4 @@ QString QProcess::nullDevice()
 #endif
 }
 
-#endif // QT_NO_PROCESS
+#endif // LSCS_NO_PROCESS

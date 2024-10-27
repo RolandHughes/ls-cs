@@ -23,7 +23,7 @@
 
 #include <qerrormessage.h>
 
-#ifndef QT_NO_ERRORMESSAGE
+#ifndef LSCS_NO_ERRORMESSAGE
 
 #include <qapplication.h>
 #include <qcheckbox.h>
@@ -108,7 +108,7 @@ QErrorMessage::QErrorMessage( QWidget *parent )
     grid->setColumnStretch( 1, 42 );
     grid->setRowStretch( 0, 42 );
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
     d->icon->setPixmap( QMessageBox::standardIcon( QMessageBox::Information ) );
     d->icon->setAlignment( Qt::AlignHCenter | Qt::AlignTop );
 #endif
@@ -194,7 +194,7 @@ bool QErrorMessagePrivate::nextPending()
 
         if ( isMessageToBeShown( message, type ) )
         {
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
             errors->setHtml( message );
 #else
             errors->setPlainText( message );

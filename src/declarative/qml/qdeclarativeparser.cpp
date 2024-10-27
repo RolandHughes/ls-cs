@@ -41,7 +41,7 @@
 #include <QStringBuilder>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 using namespace QDeclarativeJS;
 using namespace QDeclarativeParser;
@@ -532,4 +532,4 @@ QStringList QDeclarativeParser::Variant::asStringList() const
     return  rv;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -29,7 +29,7 @@
 #include <QNetworkReply>
 #include <QFile>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass BorderImage QDeclarativeBorderImage
@@ -308,7 +308,7 @@ void QDeclarativeBorderImage::load()
 
         if ( d->url.path().endsWith( QLatin1String( "sci" ) ) )
         {
-#ifndef QT_NO_LOCALFILE_OPTIMIZED_QML
+#ifndef LSCS_NO_LOCALFILE_OPTIMIZED_QML
             QString lf = QDeclarativeEnginePrivate::urlToLocalFileOrQrc( d->url );
 
             if ( !lf.isEmpty() )
@@ -691,4 +691,4 @@ void QDeclarativeBorderImage::paint( QPainter *p, const QStyleOptionGraphicsItem
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

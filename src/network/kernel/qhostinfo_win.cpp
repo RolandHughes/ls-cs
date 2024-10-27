@@ -35,7 +35,7 @@
 
 // Older SDKs do not include the addrinfo struct declaration, so we
 // include a copy of it here.
-struct qt_addrinfo
+struct lscs_addrinfo
 {
     int ai_flags;
     int ai_family;
@@ -44,7 +44,7 @@ struct qt_addrinfo
     size_t ai_addrlen;
     char *ai_canonname;
     sockaddr *ai_addr;
-    qt_addrinfo *ai_next;
+    lscs_addrinfo *ai_next;
 };
 
 #ifndef NI_MAXHOST // already defined to 1025 in ws2tcpip.h?
@@ -52,8 +52,8 @@ struct qt_addrinfo
 #endif
 
 typedef int ( __stdcall *getnameinfoProto )( const sockaddr *, int, const char *, DWORD, const char *, DWORD, int );
-typedef int ( __stdcall *getaddrinfoProto )( const char *, const char *, const qt_addrinfo *, qt_addrinfo ** );
-typedef int ( __stdcall *freeaddrinfoProto )( qt_addrinfo * );
+typedef int ( __stdcall *getaddrinfoProto )( const char *, const char *, const lscs_addrinfo *, lscs_addrinfo ** );
+typedef int ( __stdcall *freeaddrinfoProto )( lscs_addrinfo * );
 
 static getnameinfoProto local_getnameinfo   = nullptr;
 static getaddrinfoProto local_getaddrinfo   = nullptr;
@@ -184,14 +184,14 @@ QHostInfo QHostInfoAgent::fromName( const QString &hostName )
     {
         // Call getaddrinfo, and place all IPv4 addresses at the start
         // and the IPv6 addresses at the end of the address list in results.
-        qt_addrinfo *res;
+        lscs_addrinfo *res;
         int err = local_getaddrinfo( aceHostname.constData(), nullptr, nullptr, &res );
 
         if ( err == 0 )
         {
             QList<QHostAddress> addresses;
 
-            for ( qt_addrinfo *p = res; p != nullptr; p = p->ai_next )
+            for ( lscs_addrinfo *p = res; p != nullptr; p = p->ai_next )
             {
                 switch ( p->ai_family )
                 {

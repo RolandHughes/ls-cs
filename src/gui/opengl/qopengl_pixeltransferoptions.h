@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if !defined(QT_NO_OPENGL)
+#if !defined(LSCS_NO_OPENGL)
 
 #include <QSharedDataPointer>
 
@@ -81,6 +81,6 @@ private:
     QSharedDataPointer<QOpenGLPixelTransferOptionsData> data;
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

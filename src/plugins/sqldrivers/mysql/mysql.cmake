@@ -39,7 +39,7 @@ if(WITH_MYSQL_PLUGIN AND MySQL_FOUND)
    target_compile_definitions(LsCsSqlMySql
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)

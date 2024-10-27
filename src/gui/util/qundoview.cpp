@@ -24,7 +24,7 @@
 #include <qundoview.h>
 #include <qlistview_p.h>
 
-#ifndef QT_NO_UNDOVIEW
+#ifndef LSCS_NO_UNDOVIEW
 
 #include <qabstractitemmodel.h>
 #include <qicon.h>
@@ -281,7 +281,7 @@ class QUndoViewPrivate : public QListViewPrivate
 
 public:
 
-#ifdef QT_NO_UNDOGROUP
+#ifdef LSCS_NO_UNDOGROUP
     QUndoViewPrivate()
         : model( nullptr )
     {
@@ -326,7 +326,7 @@ QUndoView::QUndoView( QUndoStack *stack, QWidget *parent )
     setStack( stack );
 }
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
 QUndoView::QUndoView( QUndoGroup *group, QWidget *parent )
     : QListView( *new QUndoViewPrivate(), parent )
 {
@@ -350,14 +350,14 @@ void QUndoView::setStack( QUndoStack *stack )
 {
     Q_D( QUndoView );
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
     setGroup( nullptr );
 #endif
 
     d->model->setStack( stack );
 }
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
 
 void QUndoView::setGroup( QUndoGroup *group )
 {
@@ -420,4 +420,4 @@ QIcon QUndoView::cleanIcon() const
     return d->model->cleanIcon();
 }
 
-#endif // QT_NO_UNDOVIEW
+#endif // LSCS_NO_UNDOVIEW

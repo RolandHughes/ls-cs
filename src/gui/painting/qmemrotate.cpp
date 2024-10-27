@@ -25,20 +25,20 @@
 
 
 
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_TILED
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_TILED
 static constexpr const int tileSize = 32;
 #endif
 
 #if Q_BYTE_ORDER == Q_BIG_ENDIAN
 
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_PACKED || QT_ROTATION_ALGORITHM == QT_ROTATION_TILED
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_PACKED || LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_TILED
 #error Big endian version not implemented for the transformed driver!
 #endif
 
 #endif
 
 template <class T>
-static inline void qt_memrotate90_cachedRead( const T *src, int w, int h, int sstride, T *dest,
+static inline void lscs_memrotate90_cachedRead( const T *src, int w, int h, int sstride, T *dest,
         int dstride )
 {
     const char *s = reinterpret_cast<const char *>( src );
@@ -58,7 +58,7 @@ static inline void qt_memrotate90_cachedRead( const T *src, int w, int h, int ss
 }
 
 template <class T>
-static inline void qt_memrotate270_cachedRead( const T *src, int w, int h, int sstride, T *dest,
+static inline void lscs_memrotate270_cachedRead( const T *src, int w, int h, int sstride, T *dest,
         int dstride )
 
 {
@@ -80,10 +80,10 @@ static inline void qt_memrotate270_cachedRead( const T *src, int w, int h, int s
     }
 }
 
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_CACHEDWRITE
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDWRITE
 
 template <class T>
-static inline void qt_memrotate90_cachedWrite( const T *src, int w, int h, int sstride, T *dest,
+static inline void lscs_memrotate90_cachedWrite( const T *src, int w, int h, int sstride, T *dest,
         int dstride )
 {
     for ( int x = w - 1; x >= 0; --x )
@@ -99,7 +99,7 @@ static inline void qt_memrotate90_cachedWrite( const T *src, int w, int h, int s
 }
 
 template <class T>
-static inline void qt_memrotate270_cachedWrite( const T *src, int w, int h, int sstride, T *dest,
+static inline void lscs_memrotate270_cachedWrite( const T *src, int w, int h, int sstride, T *dest,
         int dstride )
 {
     for ( int x = 0; x < w; ++x )
@@ -113,14 +113,14 @@ static inline void qt_memrotate270_cachedWrite( const T *src, int w, int h, int 
     }
 }
 
-#endif // QT_ROTATION_CACHEDWRITE
+#endif // LSCS_ROTATION_CACHEDWRITE
 
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_PACKING
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_PACKING
 
 // TODO: packing algorithms should probably be modified on 64-bit architectures
 
 template <class T>
-static inline void qt_memrotate90_packing( const T *src, int w, int h, int sstride, T *dest, int dstride )
+static inline void lscs_memrotate90_packing( const T *src, int w, int h, int sstride, T *dest, int dstride )
 
 {
     sstride /= sizeof( T );
@@ -165,7 +165,7 @@ static inline void qt_memrotate90_packing( const T *src, int w, int h, int sstri
 }
 
 template <class T>
-static inline void qt_memrotate270_packing( const T *src, int w, int h, int sstride, T *dest, int dstride )
+static inline void lscs_memrotate270_packing( const T *src, int w, int h, int sstride, T *dest, int dstride )
 {
     sstride /= sizeof( T );
     dstride /= sizeof( T );
@@ -208,11 +208,11 @@ static inline void qt_memrotate270_packing( const T *src, int w, int h, int sstr
     }
 }
 
-#endif // QT_ROTATION_PACKING
+#endif // LSCS_ROTATION_PACKING
 
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_TILED
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_TILED
 template <class T>
-static inline void qt_memrotate90_tiled( const T *src, int w, int h, int sstride, T *dest, int dstride )
+static inline void lscs_memrotate90_tiled( const T *src, int w, int h, int sstride, T *dest, int dstride )
 
 {
     sstride /= sizeof( T );
@@ -288,7 +288,7 @@ static inline void qt_memrotate90_tiled( const T *src, int w, int h, int sstride
 }
 
 template <class T>
-static inline void qt_memrotate90_tiled_unpacked( const T *src, int w, int h, int sstride, T *dest,
+static inline void lscs_memrotate90_tiled_unpacked( const T *src, int w, int h, int sstride, T *dest,
         int dstride )
 {
     const int numTilesX = ( w + tileSize - 1 ) / tileSize;
@@ -320,7 +320,7 @@ static inline void qt_memrotate90_tiled_unpacked( const T *src, int w, int h, in
 }
 
 template <class T>
-static inline void qt_memrotate270_tiled( const T *src, int w, int h, int sstride, T *dest, int dstride )
+static inline void lscs_memrotate270_tiled( const T *src, int w, int h, int sstride, T *dest, int dstride )
 {
     sstride /= sizeof( T );
     dstride /= sizeof( T );
@@ -396,7 +396,7 @@ static inline void qt_memrotate270_tiled( const T *src, int w, int h, int sstrid
 }
 
 template <class T>
-static inline void qt_memrotate270_tiled_unpacked( const T *src, int w, int h, int sstride, T *dest,
+static inline void lscs_memrotate270_tiled_unpacked( const T *src, int w, int h, int sstride, T *dest,
         int dstride )
 {
     const int numTilesX = ( w + tileSize - 1 ) / tileSize;
@@ -427,25 +427,25 @@ static inline void qt_memrotate270_tiled_unpacked( const T *src, int w, int h, i
     }
 }
 
-#endif // QT_ROTATION_ALGORITHM
+#endif // LSCS_ROTATION_ALGORITHM
 
 template <class T>
-static inline void qt_memrotate90_template( const T *src, int srcWidth, int srcHeight, int srcStride,
+static inline void lscs_memrotate90_template( const T *src, int srcWidth, int srcHeight, int srcStride,
         T *dest, int dstStride )
 {
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_CACHEDREAD
-    qt_memrotate90_cachedRead<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_CACHEDWRITE
-    qt_memrotate90_cachedWrite<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_PACKING
-    qt_memrotate90_packing<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_TILED
-    qt_memrotate90_tiled<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDREAD
+    lscs_memrotate90_cachedRead<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDWRITE
+    lscs_memrotate90_cachedWrite<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_PACKING
+    lscs_memrotate90_packing<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_TILED
+    lscs_memrotate90_tiled<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
 #endif
 }
 
 template <class T>
-static inline void qt_memrotate180_template( const T *src, int w, int h, int sstride, T *dest, int dstride )
+static inline void lscs_memrotate180_template( const T *src, int w, int h, int sstride, T *dest, int dstride )
 {
     const char *s = ( const char * )( src ) + ( h - 1 ) * sstride;
 
@@ -466,122 +466,122 @@ static inline void qt_memrotate180_template( const T *src, int w, int h, int sst
 
 template <class T>
 static
-inline void qt_memrotate270_template( const T *src, int srcWidth, int srcHeight, int srcStride,
+inline void lscs_memrotate270_template( const T *src, int srcWidth, int srcHeight, int srcStride,
                                       T *dest, int dstStride )
 {
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_CACHEDREAD
-    qt_memrotate270_cachedRead<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_CACHEDWRITE
-    qt_memrotate270_cachedWrite<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_PACKING
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDREAD
+    lscs_memrotate270_cachedRead<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDWRITE
+    lscs_memrotate270_cachedWrite<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_PACKING
     // packed algorithm not implemented
-    qt_memrotate270_packing<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_TILED
+    lscs_memrotate270_packing<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_TILED
     // packed algorithm not implemented
-    qt_memrotate270_tiled_unpacked<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+    lscs_memrotate270_tiled_unpacked<T>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
 #endif
 }
 
 template <>
-inline void qt_memrotate90_template<quint24>( const quint24 *src, int srcWidth, int srcHeight,
+inline void lscs_memrotate90_template<quint24>( const quint24 *src, int srcWidth, int srcHeight,
         int srcStride, quint24 *dest, int dstStride )
 {
-#if QT_ROTATION_ALGORITHM == QT_ROTATION_CACHEDREAD
-    qt_memrotate90_cachedRead<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_CACHEDWRITE
-    qt_memrotate90_cachedWrite<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_PACKING
+#if LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDREAD
+    lscs_memrotate90_cachedRead<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_CACHEDWRITE
+    lscs_memrotate90_cachedWrite<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_PACKING
     // packed algorithm not implemented
-    qt_memrotate90_cachedRead<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
-#elif QT_ROTATION_ALGORITHM == QT_ROTATION_TILED
+    lscs_memrotate90_cachedRead<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+#elif LSCS_ROTATION_ALGORITHM == LSCS_ROTATION_TILED
     // packed algorithm not implemented
-    qt_memrotate90_tiled_unpacked<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
+    lscs_memrotate90_tiled_unpacked<quint24>( src, srcWidth, srcHeight, srcStride, dest, dstStride );
 #endif
 }
 
 
-#define QT_IMPL_MEMROTATE(type)                                     \
-Q_GUI_EXPORT void qt_memrotate90(const type *src, int w, int h, int sstride, \
+#define LSCS_IMPL_MEMROTATE(type)                                     \
+Q_GUI_EXPORT void lscs_memrotate90(const type *src, int w, int h, int sstride, \
                                  type *dest, int dstride)           \
 {                                                                   \
-    qt_memrotate90_template(src, w, h, sstride, dest, dstride);     \
+    lscs_memrotate90_template(src, w, h, sstride, dest, dstride);     \
 }                                                                   \
-Q_GUI_EXPORT void qt_memrotate180(const type *src, int w, int h, int sstride, \
+Q_GUI_EXPORT void lscs_memrotate180(const type *src, int w, int h, int sstride, \
                                   type *dest, int dstride)          \
 {                                                                   \
-    qt_memrotate180_template(src, w, h, sstride, dest, dstride);    \
+    lscs_memrotate180_template(src, w, h, sstride, dest, dstride);    \
 }                                                                   \
-Q_GUI_EXPORT void qt_memrotate270(const type *src, int w, int h, int sstride, \
+Q_GUI_EXPORT void lscs_memrotate270(const type *src, int w, int h, int sstride, \
                                   type *dest, int dstride)          \
 {                                                                   \
-    qt_memrotate270_template(src, w, h, sstride, dest, dstride);    \
+    lscs_memrotate270_template(src, w, h, sstride, dest, dstride);    \
 }
 
-#define QT_IMPL_SIMPLE_MEMROTATE(type)                              \
-Q_GUI_EXPORT void qt_memrotate90(const type *src, int w, int h, int sstride,  \
+#define LSCS_IMPL_SIMPLE_MEMROTATE(type)                              \
+Q_GUI_EXPORT void lscs_memrotate90(const type *src, int w, int h, int sstride,  \
                                  type *dest, int dstride)           \
 {                                                                   \
-    qt_memrotate90_tiled_unpacked<type>(src, w, h, sstride, dest, dstride); \
+    lscs_memrotate90_tiled_unpacked<type>(src, w, h, sstride, dest, dstride); \
 }                                                                   \
-Q_GUI_EXPORT void qt_memrotate180(const type *src, int w, int h, int sstride, \
+Q_GUI_EXPORT void lscs_memrotate180(const type *src, int w, int h, int sstride, \
                                   type *dest, int dstride)          \
 {                                                                   \
-    qt_memrotate180_template(src, w, h, sstride, dest, dstride);    \
+    lscs_memrotate180_template(src, w, h, sstride, dest, dstride);    \
 }                                                                   \
-Q_GUI_EXPORT void qt_memrotate270(const type *src, int w, int h, int sstride, \
+Q_GUI_EXPORT void lscs_memrotate270(const type *src, int w, int h, int sstride, \
                                   type *dest, int dstride)          \
 {                                                                   \
-    qt_memrotate270_tiled_unpacked<type>(src, w, h, sstride, dest, dstride); \
+    lscs_memrotate270_tiled_unpacked<type>(src, w, h, sstride, dest, dstride); \
 }
 
-QT_IMPL_MEMROTATE( quint32 )
-QT_IMPL_MEMROTATE( quint16 )
-QT_IMPL_MEMROTATE( quint24 )
-QT_IMPL_MEMROTATE( quint8 )
+LSCS_IMPL_MEMROTATE( quint32 )
+LSCS_IMPL_MEMROTATE( quint16 )
+LSCS_IMPL_MEMROTATE( quint24 )
+LSCS_IMPL_MEMROTATE( quint8 )
 
-void qt_memrotate90_8( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate90_8( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate90( srcPixels, w, h, sbpl, destPixels, dbpl );
+    lscs_memrotate90( srcPixels, w, h, sbpl, destPixels, dbpl );
 }
 
-void qt_memrotate180_8( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate180_8( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate180( srcPixels, w, h, sbpl, destPixels, dbpl );
+    lscs_memrotate180( srcPixels, w, h, sbpl, destPixels, dbpl );
 }
 
-void qt_memrotate270_8( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate270_8( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate270( srcPixels, w, h, sbpl, destPixels, dbpl );
+    lscs_memrotate270( srcPixels, w, h, sbpl, destPixels, dbpl );
 }
 
-void qt_memrotate90_16( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate90_16( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate90( ( const ushort * )srcPixels, w, h, sbpl, ( ushort * )destPixels, dbpl );
+    lscs_memrotate90( ( const ushort * )srcPixels, w, h, sbpl, ( ushort * )destPixels, dbpl );
 }
 
-void qt_memrotate180_16( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate180_16( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate180( ( const ushort * )srcPixels, w, h, sbpl, ( ushort * )destPixels, dbpl );
+    lscs_memrotate180( ( const ushort * )srcPixels, w, h, sbpl, ( ushort * )destPixels, dbpl );
 }
 
-void qt_memrotate270_16( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate270_16( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate270( ( const ushort * )srcPixels, w, h, sbpl, ( ushort * )destPixels, dbpl );
+    lscs_memrotate270( ( const ushort * )srcPixels, w, h, sbpl, ( ushort * )destPixels, dbpl );
 }
 
-void qt_memrotate90_32( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate90_32( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate90( ( const uint * )srcPixels, w, h, sbpl, ( uint * )destPixels, dbpl );
+    lscs_memrotate90( ( const uint * )srcPixels, w, h, sbpl, ( uint * )destPixels, dbpl );
 }
 
-void qt_memrotate180_32( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate180_32( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate180( ( const uint * )srcPixels, w, h, sbpl, ( uint * )destPixels, dbpl );
+    lscs_memrotate180( ( const uint * )srcPixels, w, h, sbpl, ( uint * )destPixels, dbpl );
 }
 
-void qt_memrotate270_32( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
+void lscs_memrotate270_32( const uchar *srcPixels, int w, int h, int sbpl, uchar *destPixels, int dbpl )
 {
-    qt_memrotate270( ( const uint * )srcPixels, w, h, sbpl, ( uint * )destPixels, dbpl );
+    lscs_memrotate270( ( const uint * )srcPixels, w, h, sbpl, ( uint * )destPixels, dbpl );
 }
 
 MemRotateFunc qMemRotateFunctions[QImage::NImageFormats][3] =
@@ -592,10 +592,10 @@ MemRotateFunc qMemRotateFunctions[QImage::NImageFormats][3] =
     { nullptr, nullptr, nullptr },      // Format_Mono,
     { nullptr, nullptr, nullptr },      // Format_MonoLSB,
     { nullptr, nullptr, nullptr },      // Format_Indexed8,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_RGB32,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_ARGB32,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_ARGB32_Premultiplied,
-    { qt_memrotate90_16, qt_memrotate180_16, qt_memrotate270_16 },      // Format_RGB16,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_RGB32,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_ARGB32,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_ARGB32_Premultiplied,
+    { lscs_memrotate90_16, lscs_memrotate180_16, lscs_memrotate270_16 },      // Format_RGB16,
     { nullptr, nullptr, nullptr },      // Format_ARGB8565_Premultiplied,
     { nullptr, nullptr, nullptr },      // Format_RGB666,
     { nullptr, nullptr, nullptr },      // Format_ARGB6666_Premultiplied,
@@ -604,15 +604,15 @@ MemRotateFunc qMemRotateFunctions[QImage::NImageFormats][3] =
     { nullptr, nullptr, nullptr },      // Format_RGB888,
     { nullptr, nullptr, nullptr },      // Format_RGB444,
     { nullptr, nullptr, nullptr },      // Format_ARGB4444_Premultiplied,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_RGBX8888,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_RGBA8888,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_RGBA8888_Premultiplied,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_BGB30,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_A2BGR30_Premultiplied,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_RGB30,
-    { qt_memrotate90_32, qt_memrotate180_32, qt_memrotate270_32 },      // Format_A2RGB30_Premultiplied,
-    { qt_memrotate90_8,  qt_memrotate180_8,  qt_memrotate270_8  },      // Format_Alpha8,
-    { qt_memrotate90_8,  qt_memrotate180_8,  qt_memrotate270_8  },      // Format_Grayscale8,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_RGBX8888,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_RGBA8888,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_RGBA8888_Premultiplied,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_BGB30,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_A2BGR30_Premultiplied,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_RGB30,
+    { lscs_memrotate90_32, lscs_memrotate180_32, lscs_memrotate270_32 },      // Format_A2RGB30_Premultiplied,
+    { lscs_memrotate90_8,  lscs_memrotate180_8,  lscs_memrotate270_8  },      // Format_Alpha8,
+    { lscs_memrotate90_8,  lscs_memrotate180_8,  lscs_memrotate270_8  },      // Format_Grayscale8,
 };
 
 void QDrawHelperFunctions::initMemRotate()

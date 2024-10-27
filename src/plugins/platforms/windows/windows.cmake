@@ -112,8 +112,8 @@ if(BUILD_PLATFORMS_WINDOWS_PLUGIN)
 
    target_compile_definitions(LsCsGuiWin
       PRIVATE
-      -DQT_PLUGIN
-      -DQT_USE_FREETYPE
+      -DLSCS_PLUGIN
+      -DLSCS_USE_FREETYPE
    )
 
    function_generate_resources(LsCsGuiWin)

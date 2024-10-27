@@ -25,7 +25,7 @@
 #include <qnetworkproxy.h>
 #include <qurl.h>
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 /*
  * Construct a proxy from the environment variable http_proxy.

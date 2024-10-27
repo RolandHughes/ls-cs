@@ -28,7 +28,7 @@
 #include <QtGui/qbrush.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DECLARATIVE_PRIVATE_EXPORT QDeclarativePen : public QObject
 {
@@ -199,7 +199,7 @@ private :
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeRectangle )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativePen )
 QML_DECLARE_TYPE( QDeclarativeGradientStop )

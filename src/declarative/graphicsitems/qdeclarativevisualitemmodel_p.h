@@ -30,7 +30,7 @@
 
 Q_DECLARE_METATYPE( QModelIndex )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeItem;
 class QDeclarativeComponent;
@@ -274,7 +274,7 @@ public:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeVisualModel )
 QML_DECLARE_TYPE( QDeclarativeVisualItemModel )

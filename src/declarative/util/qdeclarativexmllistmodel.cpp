@@ -42,7 +42,7 @@
 
 Q_DECLARE_METATYPE( QDeclarativeXmlQueryResult )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 typedef QPair<int, int> QDeclarativeXmlListRange;
 
@@ -1310,4 +1310,4 @@ void QDeclarativeXmlListModel::queryCompleted( const QDeclarativeXmlQueryResult 
     emit statusChanged( d->status );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

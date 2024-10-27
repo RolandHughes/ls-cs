@@ -31,7 +31,7 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamAttribute>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QPHReader : public QXmlStreamReader
 {
@@ -245,4 +245,4 @@ int initQPH()
 
 Q_CONSTRUCTOR_FUNCTION( initQPH )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

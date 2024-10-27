@@ -23,7 +23,7 @@
 
 #include <qsocks5socketengine_p.h>
 
-#ifndef QT_NO_SOCKS5
+#ifndef LSCS_NO_SOCKS5
 
 #include <qauthenticator.h>
 #include <qcoreapplication.h>
@@ -177,7 +177,7 @@ static inline QString dump( const QByteArray & )
    inserts the host address in buf at pos and updates pos.
    if the func fails the data in buf and the vallue of pos is undefined
 */
-static bool qt_socks5_set_host_address_and_port( const QHostAddress &address, quint16 port, QByteArray *pBuf )
+static bool lscs_socks5_set_host_address_and_port( const QHostAddress &address, quint16 port, QByteArray *pBuf )
 {
     QSOCKS5_DEBUG << "setting [" << address << ':' << port << ']';
 
@@ -218,7 +218,7 @@ static bool qt_socks5_set_host_address_and_port( const QHostAddress &address, qu
 /*
    like above, but for a hostname
 */
-static bool qt_socks5_set_host_name_and_port( const QString &hostname, quint16 port, QByteArray *pBuf )
+static bool lscs_socks5_set_host_name_and_port( const QString &hostname, quint16 port, QByteArray *pBuf )
 {
     QSOCKS5_DEBUG << "setting [" << hostname << ':' << port << ']';
 
@@ -246,7 +246,7 @@ static bool qt_socks5_set_host_name_and_port( const QString &hostname, quint16 p
     return true;
 }
 
-static int qt_socks5_get_host_address_and_port( const QByteArray &buf, QHostAddress *pAddress, quint16 *pPort, int *pPos )
+static int lscs_socks5_get_host_address_and_port( const QByteArray &buf, QHostAddress *pAddress, quint16 *pPort, int *pPos )
 {
     int ret = -1;
     int pos = *pPos;
@@ -366,7 +366,7 @@ struct QSocks5RevivedDatagram
     quint16 port;
 };
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 struct QSocks5UdpAssociateData : public QSocks5Data
 {
     QUdpSocket *udpSocket;
@@ -609,7 +609,7 @@ QSocks5SocketEnginePrivate::QSocks5SocketEnginePrivate()
     , socketDescriptor( -1 )
     , data( nullptr )
     , connectData( nullptr )
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     , udpData( nullptr )
 #endif
     , bindData( nullptr )
@@ -637,7 +637,7 @@ void QSocks5SocketEnginePrivate::initialize( Socks5Mode socks5Mode )
         connectData = new QSocks5ConnectData;
         data = connectData;
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     }
     else if ( mode == UdpAssociateMode )
     {
@@ -645,7 +645,7 @@ void QSocks5SocketEnginePrivate::initialize( Socks5Mode socks5Mode )
         data    = udpData;
         udpData->udpSocket = new QUdpSocket( q );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         udpData->udpSocket->setProperty( "_q_networksession", q->property( "_q_networksession" ) );
 #endif
 
@@ -665,7 +665,7 @@ void QSocks5SocketEnginePrivate::initialize( Socks5Mode socks5Mode )
 
     data->controlSocket = new QTcpSocket( q );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     data->controlSocket->setProperty( "_q_networksession", q->property( "_q_networksession" ) );
 #endif
 
@@ -967,7 +967,7 @@ void QSocks5SocketEnginePrivate::sendRequestMethod()
     }
     else
     {
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
         command = S5_UDP_ASSOCIATE;
         address = localAddress; //data->controlSocket->localAddress();
         port = localPort;
@@ -980,13 +980,13 @@ void QSocks5SocketEnginePrivate::sendRequestMethod()
     buf[1] = command;
     buf[2] = 0x00;
 
-    if ( peerName.isEmpty() && !qt_socks5_set_host_address_and_port( address, port, &buf ) )
+    if ( peerName.isEmpty() && !lscs_socks5_set_host_address_and_port( address, port, &buf ) )
     {
         QSOCKS5_DEBUG << "error setting address" << address << " : " << port;
         //### set error code ....
         return;
     }
-    else if ( !peerName.isEmpty() && !qt_socks5_set_host_name_and_port( peerName, port, &buf ) )
+    else if ( !peerName.isEmpty() && !lscs_socks5_set_host_name_and_port( peerName, port, &buf ) )
     {
         QSOCKS5_DEBUG << "error setting peer name" << peerName << " : " << port;
         //### set error code ....
@@ -1061,7 +1061,7 @@ void QSocks5SocketEnginePrivate::parseRequestMethodReply()
     {
         // connection success, retrieve the remote addresses
         int pos = 3;
-        int err = qt_socks5_get_host_address_and_port( inBuf, &address, &port, &pos );
+        int err = lscs_socks5_get_host_address_and_port( inBuf, &address, &port, &pos );
 
         if ( err == -1 )
         {
@@ -1225,7 +1225,7 @@ QSocks5SocketEngine::~QSocks5SocketEngine()
         delete d->connectData;
     }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 
     if ( d->udpData )
     {
@@ -1355,7 +1355,7 @@ bool QSocks5SocketEngine::connectInternal()
         if ( socketType() == QAbstractSocket::TcpSocket )
         {
             d->initialize( QSocks5SocketEnginePrivate::ConnectMode );
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
         }
         else if ( socketType() == QAbstractSocket::UdpSocket )
         {
@@ -1558,7 +1558,7 @@ void QSocks5SocketEnginePrivate::_q_controlSocketStateChanged( QAbstractSocket::
     QSOCKS5_D_DEBUG << "_q_controlSocketStateChanged" << state;
 }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 void QSocks5SocketEnginePrivate::checkForDatagrams() const
 {
     // udp should be unbuffered so we need to do some polling at certain points
@@ -1617,7 +1617,7 @@ void QSocks5SocketEnginePrivate::_q_udpSocketReadNotification()
             return;
         }
 
-        if ( qt_socks5_get_host_address_and_port( inBuf, &datagram.address, &datagram.port, &pos ) != 1 )
+        if ( lscs_socks5_get_host_address_and_port( inBuf, &datagram.address, &datagram.port, &pos ) != 1 )
         {
             QSOCKS5_D_DEBUG << "failed to get address from datagram disgarding";
             return;
@@ -1629,7 +1629,7 @@ void QSocks5SocketEnginePrivate::_q_udpSocketReadNotification()
 
     emitReadNotification();
 }
-#endif // QT_NO_UDPSOCKET
+#endif // LSCS_NO_UDPSOCKET
 
 bool QSocks5SocketEngine::bind( const QHostAddress &addr, quint16 port )
 {
@@ -1653,7 +1653,7 @@ bool QSocks5SocketEngine::bind( const QHostAddress &addr, quint16 port )
         if ( socketType() == QAbstractSocket::TcpSocket )
         {
             d->initialize( QSocks5SocketEnginePrivate::BindMode );
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
         }
         else if ( socketType() == QAbstractSocket::UdpSocket )
         {
@@ -1667,7 +1667,7 @@ bool QSocks5SocketEngine::bind( const QHostAddress &addr, quint16 port )
         }
     }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 
     if ( d->mode == QSocks5SocketEnginePrivate::UdpAssociateMode )
     {
@@ -1711,7 +1711,7 @@ bool QSocks5SocketEngine::bind( const QHostAddress &addr, quint16 port )
     {
         setState( QAbstractSocket::BoundState );
         return true;
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     }
     else if ( d->socks5State == QSocks5SocketEnginePrivate::UdpAssociateSuccess )
     {
@@ -1722,7 +1722,7 @@ bool QSocks5SocketEngine::bind( const QHostAddress &addr, quint16 port )
         d->localPort = 0;
         QUdpSocket dummy;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         dummy.setProperty( "_q_networksession", property( "_q_networksession" ) );
 #endif
 
@@ -1730,7 +1730,7 @@ bool QSocks5SocketEngine::bind( const QHostAddress &addr, quint16 port )
 
         if ( !dummy.bind()
                 || writeDatagram( nullptr, 0, QIpPacketHeader( d->data->controlSocket->localAddress(), dummy.localPort() ) ) != 0
-                || ! dummy.waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) )
+                || ! dummy.waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) )
                 || dummy.readDatagram( nullptr, 0, &d->localAddress, &d->localPort ) != 0 )
         {
             QSOCKS5_DEBUG << "udp actual address and port lookup failed";
@@ -1837,7 +1837,7 @@ void QSocks5SocketEngine::close()
 
             while ( !d->data->controlSocket->bytesToWrite() )
             {
-                if ( !d->data->controlSocket->waitForBytesWritten( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+                if ( !d->data->controlSocket->waitForBytesWritten( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
                 {
                     break;
                 }
@@ -1847,7 +1847,7 @@ void QSocks5SocketEngine::close()
         d->data->controlSocket->close();
     }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 
     if ( d->udpData && d->udpData->udpSocket )
     {
@@ -1866,7 +1866,7 @@ qint64 QSocks5SocketEngine::bytesAvailable() const
         return d->connectData->readBuffer.size();
     }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     else if ( d->mode == QSocks5SocketEnginePrivate::UdpAssociateMode
               && !d->udpData->pendingDatagrams.isEmpty() )
     {
@@ -1909,7 +1909,7 @@ qint64 QSocks5SocketEngine::read( char *data, qint64 maxlen )
         QSOCKS5_DEBUG << "read" << dump( QByteArray( data, copy ) );
         return copy;
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     }
     else if ( d->mode == QSocks5SocketEnginePrivate::UdpAssociateMode )
     {
@@ -1955,7 +1955,7 @@ qint64 QSocks5SocketEngine::write( const char *data, qint64 len )
         //NB: returning len rather than written for the OK case, because the "sealing" may increase the length
         return len;
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     }
     else if ( d->mode == QSocks5SocketEnginePrivate::UdpAssociateMode )
     {
@@ -1968,8 +1968,8 @@ qint64 QSocks5SocketEngine::write( const char *data, qint64 len )
     return -1;
 }
 
-#ifndef QT_NO_UDPSOCKET
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_UDPSOCKET
+#ifndef LSCS_NO_NETWORKINTERFACE
 bool QSocks5SocketEngine::joinMulticastGroup( const QHostAddress &,
         const QNetworkInterface & )
 {
@@ -1998,7 +1998,7 @@ bool QSocks5SocketEngine::setMulticastInterface( const QNetworkInterface & )
               QLatin1String( "Operation on socket is not supported" ) );
     return false;
 }
-#endif // QT_NO_NETWORKINTERFACE
+#endif // LSCS_NO_NETWORKINTERFACE
 
 qint64 QSocks5SocketEngine::readDatagram( char *data, qint64 maxlen, QIpPacketHeader *header, PacketHeaderOptions )
 {
@@ -2044,7 +2044,7 @@ qint64 QSocks5SocketEngine::writeDatagram( const char *data, qint64 len, const Q
     outBuf[1] = 0x00;
     outBuf[2] = 0x00;
 
-    if ( ! qt_socks5_set_host_address_and_port( header.destinationAddress, header.destinationPort, &outBuf ) )
+    if ( ! lscs_socks5_set_host_address_and_port( header.destinationAddress, header.destinationPort, &outBuf ) )
     {
     }
 
@@ -2098,7 +2098,7 @@ qint64 QSocks5SocketEngine::pendingDatagramSize() const
 
     return 0;
 }
-#endif // QT_NO_UDPSOCKET
+#endif // LSCS_NO_UDPSOCKET
 
 qint64 QSocks5SocketEngine::bytesToWrite() const
 {
@@ -2175,7 +2175,7 @@ bool QSocks5SocketEnginePrivate::waitForConnected( int msecs, bool *timedOut )
 
     while ( socks5State != wantedState )
     {
-        if ( !data->controlSocket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+        if ( !data->controlSocket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
         {
             if ( data->controlSocket->state() == QAbstractSocket::UnconnectedState )
             {
@@ -2223,7 +2223,7 @@ bool QSocks5SocketEngine::waitForRead( int msecs, bool *timedOut )
     {
         while ( !d->readNotificationActivated )
         {
-            if ( !d->data->controlSocket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+            if ( !d->data->controlSocket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
             {
                 if ( d->data->controlSocket->state() == QAbstractSocket::UnconnectedState )
                 {
@@ -2241,13 +2241,13 @@ bool QSocks5SocketEngine::waitForRead( int msecs, bool *timedOut )
             }
         }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
     }
     else
     {
         while ( ! d->readNotificationActivated )
         {
-            if ( ! d->udpData->udpSocket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+            if ( ! d->udpData->udpSocket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
             {
                 setError( d->udpData->udpSocket->error(), d->udpData->udpSocket->errorString() );
 
@@ -2295,14 +2295,14 @@ bool QSocks5SocketEngine::waitForWrite( int msecs, bool *timedOut )
     // flush any bytes we may still have buffered in the time that we have left
     if ( d->data->controlSocket->bytesToWrite() )
     {
-        d->data->controlSocket->waitForBytesWritten( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
+        d->data->controlSocket->waitForBytesWritten( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
     }
 
     while ( ( msecs == -1 || stopWatch.elapsed() < msecs )
             && d->data->controlSocket->state() == QAbstractSocket::ConnectedState
             && d->data->controlSocket->bytesToWrite() >= MaxWriteBufferSize )
     {
-        d->data->controlSocket->waitForBytesWritten( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
+        d->data->controlSocket->waitForBytesWritten( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) );
     }
 
     return d->data->controlSocket->bytesToWrite() < MaxWriteBufferSize;
@@ -2358,7 +2358,7 @@ void QSocks5SocketEngine::setReadNotificationEnabled( bool enable )
             emitSignal = !d->connectData->readBuffer.isEmpty();
         }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
         else if ( d->mode == QSocks5SocketEnginePrivate::UdpAssociateMode )
         {
             emitSignal = ! d->udpData->pendingDatagrams.isEmpty();
@@ -2465,7 +2465,7 @@ void QSocks5SocketEngine::_q_controlSocketError( QAbstractSocket::SocketError so
     d->_q_controlSocketError( socketError );
 }
 
-#ifndef QT_NO_UDPSOCKET
+#ifndef LSCS_NO_UDPSOCKET
 void QSocks5SocketEngine::_q_udpSocketReadNotification()
 {
     Q_D( QSocks5SocketEngine );
@@ -2509,5 +2509,5 @@ void QSocks5SocketEngine::_q_controlSocketStateChanged( QAbstractSocket::SocketS
     d->_q_controlSocketStateChanged( socketState );
 }
 
-#endif // QT_NO_SOCKS5
+#endif // LSCS_NO_SOCKS5
 

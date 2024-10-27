@@ -33,7 +33,7 @@
 
 #import <AppKit/NSAccessibility.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 static void convertLineOffset(QAccessibleTextInterface *text, int *line, int *offset,
             NSUInteger *start = nullptr, NSUInteger *end = nullptr)
@@ -303,7 +303,7 @@ static void convertLineOffset(QAccessibleTextInterface *text, int *line, int *of
    } else if ([attribute isEqualToString: NSAccessibilityPositionAttribute]) {
       QPoint qtPosition = iface->rect().topLeft();
       QSize qtSize = iface->rect().size();
-      return [NSValue valueWithPoint: NSMakePoint(qtPosition.x(), qt_mac_flipYCoordinate(qtPosition.y() + qtSize.height()))];
+      return [NSValue valueWithPoint: NSMakePoint(qtPosition.x(), lscs_mac_flipYCoordinate(qtPosition.y() + qtSize.height()))];
    } else if ([attribute isEqualToString: NSAccessibilitySizeAttribute]) {
       QSize qtSize = iface->rect().size();
       return [NSValue valueWithSize: NSMakeSize(qtSize.width(), qtSize.height())];
@@ -454,7 +454,7 @@ static void convertLineOffset(QAccessibleTextInterface *text, int *line, int *of
          rect = firstRect;
          rect.setWidth(1);
       }
-      return [NSValue valueWithRect: NSMakeRect((CGFloat) rect.x(), (CGFloat) qt_mac_flipYCoordinate(rect.y() + rect.height()), rect.width(),
+      return [NSValue valueWithRect: NSMakeRect((CGFloat) rect.x(), (CGFloat) lscs_mac_flipYCoordinate(rect.y() + rect.height()), rect.width(),
                        rect.height())];
    }
    if ([attribute isEqualToString: NSAccessibilityAttributedStringForRangeParameterizedAttribute]) {
@@ -463,7 +463,7 @@ static void convertLineOffset(QAccessibleTextInterface *text, int *line, int *of
       return [[NSAttributedString alloc] initWithString: text.toNSString()];
    } else if ([attribute isEqualToString: NSAccessibilityRangeForPositionParameterizedAttribute]) {
       NSPoint nsPoint = [parameter pointValue];
-      QPoint point(static_cast<int>(nsPoint.x), static_cast<int>(qt_mac_flipYCoordinate(nsPoint.y)));
+      QPoint point(static_cast<int>(nsPoint.x), static_cast<int>(lscs_mac_flipYCoordinate(nsPoint.y)));
       int offset = iface->textInterface()->offsetAtPoint(point);
       return [NSValue valueWithRange: NSMakeRange(static_cast<NSUInteger>(offset), 1)];
    } else if ([attribute isEqualToString: NSAccessibilityStyleRangeForIndexParameterizedAttribute]) {
@@ -596,7 +596,7 @@ static void convertLineOffset(QAccessibleTextInterface *text, int *line, int *of
       return NSAccessibilityUnignoredAncestor(self);
    }
 
-   int y = qt_mac_flipYCoordinate(point.y);
+   int y = lscs_mac_flipYCoordinate(point.y);
    QAccessibleInterface *childInterface = iface->childAt(point.x, y);
 
    // No child found, meaning we hit this element.
@@ -643,4 +643,4 @@ static void convertLineOffset(QAccessibleTextInterface *text, int *line, int *of
 
 @end
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY

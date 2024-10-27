@@ -29,7 +29,7 @@
 #include <QtCore/qdatastream.h>
 #include <QtCore/qstring.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \internal
@@ -232,4 +232,4 @@ QDataStream &operator>>( QDataStream &in, QScriptDebuggerObjectSnapshotDelta &de
     return in;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

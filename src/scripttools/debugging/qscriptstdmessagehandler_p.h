@@ -28,7 +28,7 @@
 #include <QtCore/qscopedpointer.h>
 #include "qscriptmessagehandlerinterface_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptStdMessageHandlerPrivate;
 class QScriptStdMessageHandler
@@ -51,6 +51,6 @@ private:
     Q_DISABLE_COPY( QScriptStdMessageHandler )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

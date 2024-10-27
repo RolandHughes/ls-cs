@@ -27,7 +27,7 @@
 #include <QtCore/qglobal.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptEngine;
 class QDeclarativeEngine;
@@ -45,6 +45,6 @@ public:
     static void enableDebugging();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDEBUGHELPER_P_H

@@ -29,9 +29,9 @@
 #include <qcoreapplication.h>
 #include <qdebug.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
-extern QMarginsF qt_convertMargins(const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits);
+extern QMarginsF lscs_convertMargins(const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits);
 
 QMacPrintEngine::QMacPrintEngine(QPrinter::PrinterMode mode) : QPaintEngine(*(new QMacPrintEnginePrivate))
 {
@@ -261,7 +261,7 @@ void QMacPrintEnginePrivate::initialize()
       }
 
    } else {
-      resolution.hRes = resolution.vRes = qt_defaultDpi();
+      resolution.hRes = resolution.vRes = lscs_defaultDpi();
    }
 
    setPageSize(m_pageLayout.pageSize());
@@ -362,7 +362,7 @@ void QMacPrintEnginePrivate::setPageSize(const QPageSize &pageSize)
    }
 
    QMarginsF printable = m_printDevice->printableMargins(usePageSize, m_pageLayout.orientation(), resolution.hRes);
-   m_pageLayout.setPageSize(usePageSize, qt_convertMargins(printable, QPageSize::Point, m_pageLayout.units()));
+   m_pageLayout.setPageSize(usePageSize, lscs_convertMargins(printable, QPageSize::Point, m_pageLayout.units()));
 
    // You cannot set the page size on a PMPageFormat, you must create a new PMPageFormat
    PMPageFormat pageFormat;
@@ -837,4 +837,4 @@ QVariant QMacPrintEngine::property(PrintEnginePropertyKey key) const
    return ret;
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER

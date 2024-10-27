@@ -40,7 +40,7 @@ public:
     QPaintDevice *paintDevice() override;
     void flush( QWindow *widget, const QRegion &region, const QPoint &offset ) override;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QImage toImage() const override;
 #else
     QImage toImage() const; // No QPlatformBackingStore::toImage() for NO_OPENGL builds.

@@ -38,17 +38,17 @@
 
 @implementation NSApplication (QApplicationIntegration)
 
-- (void) qt_setDockMenu: (NSMenu *)newMenu
+- (void) lscs_setDockMenu: (NSMenu *)newMenu
 {
    [[QCocoaApplicationDelegate sharedDelegate] setDockMenu: newMenu];
 }
 
-- (QCocoaMenuLoader *) qt_qcocoamenuLoader
+- (QCocoaMenuLoader *) lscs_qcocoamenuLoader
 {
    return [[QCocoaApplicationDelegate sharedDelegate] menuLoader];
 }
 
-- (int)qt_validModesForFontPanel: (NSFontPanel *)fontPanel
+- (int)lscs_validModesForFontPanel: (NSFontPanel *)fontPanel
 {
    // only display those things that QFont can handle
 
@@ -59,7 +59,7 @@
       | NSFontPanelStrikethroughEffectModeMask;
 }
 
-- (void) qt_sendPostedMessage: (NSEvent *)event
+- (void) lscs_sendPostedMessage: (NSEvent *)event
 {
    // WARNING: data1 and data2 is truncated to from 64-bit to 32-bit on OS 10.5
    // That is why we need to split the address in two parts:
@@ -93,7 +93,7 @@
 
 static const QByteArray q_macLocalEventType = "mac_generic_NSEvent";
 
-- (BOOL) qt_filterEvent: (NSEvent *)event
+- (BOOL) lscs_filterEvent: (NSEvent *)event
 {
    if (qApp && qApp->eventDispatcher()->filterNativeEvent(q_macLocalEventType, static_cast<void *>(event), nullptr)) {
       return true;
@@ -102,7 +102,7 @@ static const QByteArray q_macLocalEventType = "mac_generic_NSEvent";
    if ([event type] == NSEventTypeApplicationDefined) {
       switch (static_cast<short>([event subtype])) {
          case QtCocoaEventSubTypePostMessage:
-            [NSApp qt_sendPostedMessage: event];
+            [NSApp lscs_sendPostedMessage: event];
             return true;
 
          default:
@@ -117,7 +117,7 @@ static const QByteArray q_macLocalEventType = "mac_generic_NSEvent";
 
 @implementation QNSApplication
 
-- (void) qt_sendEvent_original: (NSEvent *)event
+- (void) lscs_sendEvent_original: (NSEvent *)event
 {
    (void) event;
    // This method will only be used as a signature
@@ -125,15 +125,15 @@ static const QByteArray q_macLocalEventType = "mac_generic_NSEvent";
    // containing the original [NSApplication sendEvent:] implementation
 }
 
-- (void) qt_sendEvent_replacement: (NSEvent *)event
+- (void) lscs_sendEvent_replacement: (NSEvent *)event
 {
    // This method (or its implementation to be precise) will
    // be called instead of sendEvent if redirection occurs.
    // 'self' will then be an instance of NSApplication
    // (and not QNSApplication)
 
-   if (! [NSApp qt_filterEvent: event]) {
-      [self qt_sendEvent_original: event];
+   if (! [NSApp lscs_filterEvent: event]) {
+      [self lscs_sendEvent_original: event];
    }
 }
 
@@ -141,14 +141,14 @@ static const QByteArray q_macLocalEventType = "mac_generic_NSEvent";
 {
    // This method will be called if
    // no redirection occurs
-   if (! [NSApp qt_filterEvent: event]) {
+   if (! [NSApp lscs_filterEvent: event]) {
       [super sendEvent: event];
    }
 }
 
 @end
 
-void qt_redirectNSApplicationSendEvent()
+void lscs_redirectNSApplicationSendEvent()
 {
    if (QCoreApplication::testAttribute(Qt::AA_MacPluginApplication)) {
       // In a plugin we can not chain sendEvent hooks: a second plugin could store
@@ -164,26 +164,26 @@ void qt_redirectNSApplicationSendEvent()
    }
 
    // Change the implementation of [NSApplication sendEvent] to the
-   // implementation of qt_sendEvent_replacement found in QNSApplication.
+   // implementation of lscs_sendEvent_replacement found in QNSApplication.
    // And keep the old implementation that gets overwritten inside a new
-   // method 'qt_sendEvent_original' that we add to NSApplication
+   // method 'lscs_sendEvent_original' that we add to NSApplication
 
-   qt_cocoa_change_implementation(
+   lscs_cocoa_change_implementation(
       [NSApplication class],
       @selector(sendEvent:),
       [QNSApplication class],
-      @selector(qt_sendEvent_replacement:),
-      @selector(qt_sendEvent_original:));
+      @selector(lscs_sendEvent_replacement:),
+      @selector(lscs_sendEvent_original:));
 }
 
-void qt_resetNSApplicationSendEvent()
+void lscs_resetNSApplicationSendEvent()
 {
    if (QCoreApplication::testAttribute(Qt::AA_MacPluginApplication)) {
       return;
    }
 
-   qt_cocoa_change_back_implementation([NSApplication class],
+   lscs_cocoa_change_back_implementation([NSApplication class],
       @selector(sendEvent:),
-      @selector(qt_sendEvent_original:));
+      @selector(lscs_sendEvent_original:));
 }
 

@@ -39,7 +39,7 @@
 #include <qbytedata_p.h>
 #include <qnetwork_reply_p.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 #include <qsslconfiguration.h>
 #endif
 
@@ -80,7 +80,7 @@ public:
     NET_LSCS_SLOT_1( Private, void _q_bufferOutgoingDataFinished() )
     NET_LSCS_SLOT_2( _q_bufferOutgoingDataFinished )
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     NET_LSCS_SLOT_1( Private, void _q_networkSessionConnected() )
     NET_LSCS_SLOT_2( _q_networkSessionConnected )
 
@@ -120,7 +120,7 @@ public:
     NET_LSCS_SLOT_1( Private, void httpError( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
     NET_LSCS_SLOT_2( httpError )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     NET_LSCS_SLOT_1( Private, void replyEncrypted() )
     NET_LSCS_SLOT_2( replyEncrypted )
 
@@ -134,7 +134,7 @@ public:
     NET_LSCS_SLOT_2( replyPreSharedKeyAuthenticationRequiredSlot )
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SLOT_1( Private, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
     NET_LSCS_SLOT_2( proxyAuthenticationRequired )
 #endif
@@ -184,7 +184,7 @@ public:
 
     Q_DECLARE_PRIVATE( QNetworkReplyHttpImpl )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 protected:
     void ignoreSslErrors() override;
@@ -213,7 +213,7 @@ public:
 
     void _q_cacheSaveDeviceAboutToClose();
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     void _q_networkSessionConnected();
     void _q_networkSessionFailed();
     void _q_networkSessionStateChanged( QNetworkSession::State sessionState );
@@ -269,7 +269,7 @@ public:
 
     QUrl urlForLastAuthentication;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy lastProxyAuthentication;
 #endif
 
@@ -295,7 +295,7 @@ public:
     QSharedPointer<QAtomicInt> pendingDownloadDataEmissions;
     QSharedPointer<QAtomicInt> pendingDownloadProgressEmissions;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     QSslConfiguration sslConfiguration;
     bool pendingIgnoreAllSslErrors;
     QList<QSslError> pendingIgnoreSslErrorsList;
@@ -319,14 +319,14 @@ public:
     void httpAuthenticationRequired( const QHttpNetworkRequest &request, QAuthenticator *auth );
     void httpError( QNetworkReply::NetworkError errorCode, const QString &errorMsg );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     void replyEncrypted();
     void replySslErrors( const QList<QSslError> &errorList, bool *ignoreAll, QList<QSslError> *toBeIgnored );
     void replySslConfigurationChanged( QSslConfiguration sslConfig );
     void replyPreSharedKeyAuthenticationRequiredSlot( QSslPreSharedKeyAuthenticator *authenticator );
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth );
 #endif
 

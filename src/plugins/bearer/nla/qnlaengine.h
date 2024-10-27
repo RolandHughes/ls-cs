@@ -28,7 +28,7 @@
 #include <qnativesocketengine_p.h>
 #include <QMap>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QNetworkConfigurationPrivate;
 class QNlaThread;
@@ -76,6 +76,6 @@ private:
     QMap<uint, QString> configurationInterface;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

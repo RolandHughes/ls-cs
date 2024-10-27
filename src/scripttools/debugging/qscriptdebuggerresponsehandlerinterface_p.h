@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerResponse;
 
@@ -38,6 +38,6 @@ public:
     virtual void handleResponse( const QScriptDebuggerResponse &response, int commandId ) = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -81,7 +81,7 @@ void AVFMediaPlayerServicePlugin::buildSupportedTypes()
    for (NSString * mimeType in mimeTypes) {
       m_supportedMimeTypes.append(QString::fromUtf8([mimeType UTF8String]));
    }
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << "AVFMediaPlayerServicePlugin::buildSupportedTypes";
    qDebug() << "Supported Types: " << m_supportedMimeTypes;
 #endif

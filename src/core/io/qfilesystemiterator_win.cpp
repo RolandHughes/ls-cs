@@ -25,11 +25,11 @@
 
 #include <qplatformdefs.h>
 #include <qstringparser.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qfilesystemengine_p.h>
 
-#ifndef  QT_NO_FILESYSTEMITERATOR
+#ifndef  LSCS_NO_FILESYSTEMITERATOR
 
 bool done = true;
 
@@ -173,4 +173,4 @@ bool QFileSystemIterator::advance( QFileSystemEntry &fileEntry, QFileSystemMetaD
     return false;
 }
 
-#endif //  QT_NO_FILESYSTEMITERATOR
+#endif //  LSCS_NO_FILESYSTEMITERATOR

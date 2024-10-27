@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 #include <qlineedit.h>
 #include <qtoolbutton.h>
@@ -62,7 +62,7 @@ public:
     }
     void setOpacity( qreal value );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     void animateShow( bool visible )
     {
         startOpacityAnimation( visible ? 1.0 : 0.0 );
@@ -77,7 +77,7 @@ private :
     GUI_LSCS_SLOT_1( Private, void updateCursor() )
     GUI_LSCS_SLOT_2( updateCursor )
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     void startOpacityAnimation( qreal endValue );
 #endif
 
@@ -133,7 +133,7 @@ public:
 
     QLineControl *control;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QPointer<QAction> selectAllAction;
 #endif
 
@@ -186,20 +186,20 @@ public:
     void _q_textEdited( const QString & );
     void _q_cursorPositionChanged( int, int );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     void _q_editFocusChange( bool isFocusChanged );
 #endif
 
     void _q_selectionChanged();
     void _q_updateNeeded( const QRect & );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     void _q_completionHighlighted( const QString & );
 #endif
 
     QPoint mousePressPos;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     QBasicTimer dndTimer;
     void drag();
 #endif
@@ -283,6 +283,6 @@ inline int QLineEditPrivate::effectiveRightTextMargin() const
     return result;
 }
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
 #endif // QLINEEDIT_P_H

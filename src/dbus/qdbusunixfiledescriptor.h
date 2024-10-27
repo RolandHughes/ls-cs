@@ -27,10 +27,10 @@
 #include <QtCore/QSharedDataPointer>
 #include <QtDBus/qdbusmacros.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 # include <utility>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusUnixFileDescriptorPrivate;
 template<> QExplicitlySharedDataPointer<QDBusUnixFileDescriptorPrivate>::~QExplicitlySharedDataPointer();
@@ -67,10 +67,10 @@ protected:
     Data d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDBusUnixFileDescriptor )
 Q_DECLARE_METATYPE( QList<QDBusUnixFileDescriptor> )
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif // QDBUSUNIXFILEDESCRIPTOR_H

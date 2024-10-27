@@ -27,7 +27,7 @@
 #include <qplatform_cursor.h>
 #include <qxcb_screen.h>
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
 struct QXcbCursorCacheKey
 {
@@ -50,7 +50,7 @@ inline uint qHash( const QXcbCursorCacheKey &k, uint seed )
     return ( uint( k.shape ) + uint( k.bitmapCacheKey ) + uint( k.maskCacheKey ) ) ^ seed;
 }
 
-#endif // !QT_NO_CURSOR
+#endif // !LSCS_NO_CURSOR
 
 class QXcbCursor : public QXcbObject, public QPlatformCursor
 {
@@ -58,7 +58,7 @@ public:
     QXcbCursor( QXcbConnection *conn, QXcbScreen *screen );
     ~QXcbCursor();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     void changeCursor( QCursor *cursor, QWindow *widget ) override;
 #endif
 
@@ -69,7 +69,7 @@ public:
 
 private:
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     typedef QHash<QXcbCursorCacheKey, xcb_cursor_t> CursorHash;
 
     xcb_cursor_t createFontCursor( int cshape );
@@ -79,7 +79,7 @@ private:
 
     QXcbScreen *m_screen;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     CursorHash m_cursorHash;
 #endif
 

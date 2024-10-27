@@ -27,7 +27,7 @@
 #include <qdeclarativejsastfwd_p.h>
 #include <qdeclarativejsglobal_p.h>
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 namespace QDeclarativeJS
 {
@@ -578,6 +578,6 @@ public:
 }
 } // namespace AST
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 #endif // QDECLARATIVEJSASTVISITOR_P_H

@@ -28,7 +28,7 @@
 #include <qobject.h>
 #include <qwaitcondition.h>
 
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 class DirectShowPostedEvent;
 

@@ -27,9 +27,9 @@
 #include <QtCore/qobject.h>
 #include <QtDBus/qdbusmacros.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusAbstractAdaptorPrivate;
 class Q_DBUS_EXPORT QDBusAbstractAdaptor: public QObject
@@ -50,9 +50,9 @@ private:
     Q_DECLARE_PRIVATE( QDBusAbstractAdaptor )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 
 #endif

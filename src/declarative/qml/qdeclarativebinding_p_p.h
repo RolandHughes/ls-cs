@@ -28,7 +28,7 @@
 #include "qdeclarativeproperty.h"
 #include "qdeclarativeexpression_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeBindingPrivate : public QDeclarativeExpressionPrivate
 {
@@ -50,6 +50,6 @@ private:
     bool *deleted;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEBINDING_P_P_H

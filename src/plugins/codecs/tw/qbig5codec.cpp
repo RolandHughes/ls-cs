@@ -23,11 +23,11 @@
 
 #include "qbig5codec.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#ifndef QT_NO_TEXTCODEC
-static int qt_Big5hkscsToUnicode( const uchar *s, uint *pwc );
-static int qt_UnicodeToBig5hkscs( uint wc, uchar *r );
+#ifndef LSCS_NO_TEXTCODEC
+static int lscs_Big5hkscsToUnicode( const uchar *s, uint *pwc );
+static int lscs_UnicodeToBig5hkscs( uint wc, uchar *r );
 
 #define InRange(c, lower, upper)  (((c) >= (lower)) && ((c) <= (upper)))
 #define IsLatin(c)        ((c) < 0x80)
@@ -1654,7 +1654,7 @@ static B5Index b5_map_table[5] =
     {uc_to_b5_map, sizeof( uc_to_b5_map )/sizeof( B5Map )}
 };
 
-static int qt_Big5ToUnicode( const uchar *buf, uint *u )
+static int lscs_Big5ToUnicode( const uchar *buf, uint *u )
 {
     //for this conversion only first 4 tables are used.
     for ( int i = 0; i < 4; i++ )
@@ -1684,10 +1684,10 @@ static int qt_Big5ToUnicode( const uchar *buf, uint *u )
         }
     }
 
-    return qt_Big5hkscsToUnicode( buf, u );
+    return lscs_Big5hkscsToUnicode( buf, u );
 }
 
-static int qt_UnicodeToBig5( ushort ch, uchar *buf )
+static int lscs_UnicodeToBig5( ushort ch, uchar *buf )
 {
     //all the tables are individually sorted on Y
     for ( int i = 0; i < 5; i++ )
@@ -1716,7 +1716,7 @@ static int qt_UnicodeToBig5( ushort ch, uchar *buf )
         }
     }
 
-    return qt_UnicodeToBig5hkscs( ch, buf );
+    return lscs_UnicodeToBig5hkscs( ch, buf );
 }
 
 QString QBig5Codec::convertToUnicode( const char *chars, int len, ConverterState *state ) const
@@ -1776,7 +1776,7 @@ QString QBig5Codec::convertToUnicode( const char *chars, int len, ConverterState
                     uint u;
                     buf[1] = ch;
 
-                    if ( qt_Big5ToUnicode( buf, &u ) == 2 )
+                    if ( lscs_Big5ToUnicode( buf, &u ) == 2 )
                     {
                         result += QValidChar( u );
                     }
@@ -1840,7 +1840,7 @@ QByteArray QBig5Codec::convertFromUnicode( const QChar *uc, int len, ConverterSt
             // ASCII
             *cursor++ = ch;
         }
-        else if ( qt_UnicodeToBig5( ch, c ) == 2 && c[0] >= 0xa1 && c[0] <= 0xf9 )
+        else if ( lscs_UnicodeToBig5( ch, c ) == 2 && c[0] >= 0xa1 && c[0] <= 0xf9 )
         {
             *cursor++ = c[0];
             *cursor++ = c[1];
@@ -1939,7 +1939,7 @@ QString QBig5hkscsCodec::convertToUnicode( const char *chars, int len, Converter
                     uint u;
                     buf[1] = ch;
 
-                    if ( qt_Big5hkscsToUnicode( buf, &u ) == 2 )
+                    if ( lscs_Big5hkscsToUnicode( buf, &u ) == 2 )
                     {
                         result += QValidChar( u );
                     }
@@ -2003,7 +2003,7 @@ QByteArray QBig5hkscsCodec::convertFromUnicode( const QChar *uc, int len, Conver
             // ASCII
             *cursor++ = ch;
         }
-        else if ( qt_UnicodeToBig5hkscs( ch, c ) == 2 )
+        else if ( lscs_UnicodeToBig5hkscs( ch, c ) == 2 )
         {
             // Big5-HKSCS
             *cursor++ = c[0];
@@ -2083,7 +2083,7 @@ QByteArray QFontBig5Codec::convertFromUnicode( const QChar *uc, int len, Convert
 
 #endif
 
-        if ( qt_UnicodeToBig5hkscs( ch.unicode(), c ) == 2 &&
+        if ( lscs_UnicodeToBig5hkscs( ch.unicode(), c ) == 2 &&
                 c[0] >= 0xa1 && c[0] <= 0xf9 )
         {
             *rdata++ = c[0];
@@ -2155,7 +2155,7 @@ QByteArray QFontBig5hkscsCodec::convertFromUnicode( const QChar *uc, int len, Co
 
 #endif
 
-        if ( qt_UnicodeToBig5hkscs( ch.unicode(), c ) == 2 )
+        if ( lscs_UnicodeToBig5hkscs( ch.unicode(), c ) == 2 )
         {
             *rdata++ = c[0];
             *rdata++ = c[1];
@@ -4958,7 +4958,7 @@ static ushort const big5hkscs_to_ucs[] =
 
 
 /* Returns the number of bytes of Bytes consumed. */
-static int qt_Big5hkscsToUnicode( const uchar *s, uint *pwc )
+static int lscs_Big5hkscsToUnicode( const uchar *s, uint *pwc )
 {
     uchar c1 = s[0];
 
@@ -12875,7 +12875,7 @@ static const Summary16 big5hkscs_uni2index_page2f8[30] =
     { 24907, 0x0000 }, { 24907, 0x0010 },
 };
 
-int qt_UnicodeToBig5hkscs ( uint wc, uchar *r )
+int lscs_UnicodeToBig5hkscs ( uint wc, uchar *r )
 {
     const Summary16 *summary = NULL;
 
@@ -12962,6 +12962,6 @@ int qt_UnicodeToBig5hkscs ( uint wc, uchar *r )
 
 
 /* ====================================================================== */
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

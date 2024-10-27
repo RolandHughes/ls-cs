@@ -23,7 +23,7 @@
 
 #include <qidentityproxymodel.h>
 
-#ifndef QT_NO_IDENTITYPROXYMODEL
+#ifndef LSCS_NO_IDENTITYPROXYMODEL
 
 #include <qitemselectionmodel.h>
 #include <qabstractproxymodel_p.h>
@@ -703,4 +703,4 @@ void QIdentityProxyModel::_q_sourceModelReset()
     d->_q_sourceModelReset();
 }
 
-#endif // QT_NO_IDENTITYPROXYMODEL
+#endif // LSCS_NO_IDENTITYPROXYMODEL

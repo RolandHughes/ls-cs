@@ -36,7 +36,7 @@
 #include <QtCore/qset.h>
 #include "qdeclarativeguard_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeContext;
 class QDeclarativeExpression;
@@ -283,6 +283,6 @@ QDeclarativeGuardedContextData &QDeclarativeGuardedContextData::operator=( QDecl
     return *this;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVECONTEXT_P_H

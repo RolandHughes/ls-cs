@@ -33,7 +33,7 @@
 
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 DEFINE_BOOL_CONFIG_OPTION( stateChangeDebug, STATECHANGE_DEBUG );
 
@@ -864,4 +864,4 @@ void QDeclarativeStateOperation::setState( QDeclarativeState *state )
     d->m_state = state;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

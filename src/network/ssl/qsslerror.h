@@ -24,7 +24,7 @@
 #ifndef QSSLERROR_H
 #define QSSLERROR_H
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 #include <qsslcertificate.h>
 #include <qvariant.h>
@@ -111,6 +111,6 @@ class QSslError
 {
 };
 
-#endif   // QT_SSL
+#endif   // LSCS_SSL
 
 #endif

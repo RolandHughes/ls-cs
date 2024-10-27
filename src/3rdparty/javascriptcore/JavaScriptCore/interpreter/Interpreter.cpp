@@ -66,7 +66,7 @@
 #include "JIT.h"
 #endif
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 #include "bridge/qscriptobject_p.h"
 #endif
 
@@ -586,7 +586,7 @@ NEVER_INLINE bool Interpreter::unwindCallFrame( CallFrame *&callFrame, JSValue e
         if ( callFrame->callee() )
         {
             debugger->returnEvent( debuggerCallFrame, codeBlock->ownerExecutable()->sourceID(), codeBlock->ownerExecutable()->lastLine() );
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
             debugger->functionExit( exceptionValue, codeBlock->ownerExecutable()->sourceID() );
 #endif
         }
@@ -752,7 +752,7 @@ NEVER_INLINE HandlerInfo *Interpreter::throwException( CallFrame *&callFrame, JS
 
     HandlerInfo *handler = 0;
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     //try to find handler
     bool hasHandler = true;
     CallFrame *callFrameTemp = callFrame;
@@ -1119,7 +1119,7 @@ JSValue Interpreter::execute( EvalExecutable *eval, CallFrame *callFrame, JSObje
     }
 
     Register *oldEnd = m_registerFile.end();
-#ifdef  QT_BUILD_SCRIPT_LIB //with QtScript, we do not necesserly start from scratch
+#ifdef  LSCS_BUILD_SCRIPT_LIB //with QtScript, we do not necesserly start from scratch
     Register *newEnd = oldEnd + globalRegisterOffset + codeBlock->m_numCalleeRegisters;
 #else
     Register *newEnd = m_registerFile.start() + globalRegisterOffset + codeBlock->m_numCalleeRegisters;
@@ -1131,7 +1131,7 @@ JSValue Interpreter::execute( EvalExecutable *eval, CallFrame *callFrame, JSObje
         return jsNull();
     }
 
-#ifdef QT_BUILD_SCRIPT_LIB //with QtScript, we do not necesserly start from scratch
+#ifdef LSCS_BUILD_SCRIPT_LIB //with QtScript, we do not necesserly start from scratch
     CallFrame *newCallFrame = CallFrame::create( oldEnd + globalRegisterOffset );
 #else
     CallFrame *newCallFrame = CallFrame::create( m_registerFile.start() + globalRegisterOffset );
@@ -3777,7 +3777,7 @@ interpreterLoopStart:
             {
                 ScopeChainNode *scopeChain = callFrame->scopeChain();
                 CallFrame *newCallFrame = CallFrame::create( callFrame->registers() + registerOffset );
-#ifdef QT_BUILD_SCRIPT_LIB //we need the returnValue to be 0 as it is used as flags
+#ifdef LSCS_BUILD_SCRIPT_LIB //we need the returnValue to be 0 as it is used as flags
                 newCallFrame->init( 0, vPC + 5, scopeChain, callFrame, 0, argCount, asObject( v ) );
 #else
                 newCallFrame->init( 0, vPC + 5, scopeChain, callFrame, dst, argCount, asObject( v ) );
@@ -3980,7 +3980,7 @@ interpreterLoopStart:
             {
                 ScopeChainNode *scopeChain = callFrame->scopeChain();
                 CallFrame *newCallFrame = CallFrame::create( callFrame->registers() + registerOffset );
-#ifdef QT_BUILD_SCRIPT_LIB //we need the returnValue to be 0 as it is used as flags
+#ifdef LSCS_BUILD_SCRIPT_LIB //we need the returnValue to be 0 as it is used as flags
                 newCallFrame->init( 0, vPC + 5, scopeChain, callFrame, 0, argCount, asObject( v ) );
 #else
                 newCallFrame->init( 0, vPC + 5, scopeChain, callFrame, dst, argCount, asObject( v ) );
@@ -4073,7 +4073,7 @@ interpreterLoopStart:
                register base to those of the calling function.
             */
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
             Debugger *debugger = callFrame->dynamicGlobalObject()->debugger();
             intptr_t sourceId = callFrame->codeBlock()->source()->asID();
 #endif
@@ -4086,7 +4086,7 @@ interpreterLoopStart:
             }
 
             JSValue returnValue = callFrame->r( result ).jsValue();
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 
             if ( debugger )
             {
@@ -4265,9 +4265,9 @@ interpreterLoopStart:
                     structure = callDataScopeChain->globalObject->emptyObjectStructure();
                 }
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
                 // ### world-class hack
-                QT_PREPEND_NAMESPACE( QScriptObject )* newObject = new ( globalData ) QT_PREPEND_NAMESPACE( QScriptObject )( structure );
+                LSCS_PREPEND_NAMESPACE( QScriptObject )* newObject = new ( globalData ) LSCS_PREPEND_NAMESPACE( QScriptObject )( structure );
 #else
                 JSObject *newObject = new ( globalData ) JSObject( structure );
 #endif
@@ -4300,7 +4300,7 @@ interpreterLoopStart:
 
                 ScopeChainNode *scopeChain = callFrame->scopeChain();
                 CallFrame *newCallFrame = CallFrame::create( callFrame->registers() + registerOffset );
-#ifdef QT_BUILD_SCRIPT_LIB //we need the returnValue to be 0 as it is used as flags
+#ifdef LSCS_BUILD_SCRIPT_LIB //we need the returnValue to be 0 as it is used as flags
                 newCallFrame->init( 0, vPC + 7, scopeChain, callFrame, 0, argCount, asObject( v ) );
 #else
                 newCallFrame->init( 0, vPC + 7, scopeChain, callFrame, dst, argCount, asObject( v ) );
@@ -4525,7 +4525,7 @@ skip_new_scope:
             ASSERT( exceptionValue );
             ASSERT( !globalData->exception );
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
             CodeBlock *codeBlock = callFrame->codeBlock();
             Debugger *debugger = callFrame->dynamicGlobalObject()->debugger();
 

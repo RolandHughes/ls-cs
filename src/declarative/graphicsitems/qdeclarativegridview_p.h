@@ -27,7 +27,7 @@
 #include <qdeclarativeflickable_p.h>
 #include <qdeclarativeguard_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeVisualModel;
 class QDeclarativeGridViewAttached;
@@ -372,7 +372,7 @@ public:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeGridView )
 QML_DECLARE_TYPEINFO( QDeclarativeGridView, QML_HAS_ATTACHED_PROPERTIES )

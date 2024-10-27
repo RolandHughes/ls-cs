@@ -27,7 +27,7 @@
 #include <qdeclarativejsglobal_p.h>
 #include <QtCore/qglobal.h>
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 namespace QDeclarativeJS
 {
@@ -168,6 +168,6 @@ class UiSignature;
 }
 } // namespace AST
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 #endif

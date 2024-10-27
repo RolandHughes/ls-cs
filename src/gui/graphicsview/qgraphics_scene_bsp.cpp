@@ -23,7 +23,7 @@
 
 #include <qgraphics_scene_bsp_p.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qstring.h>
 
@@ -344,4 +344,4 @@ QRectF QGraphicsSceneBspTree::rectForIndex( int index ) const
 
 
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

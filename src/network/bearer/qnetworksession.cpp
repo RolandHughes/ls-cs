@@ -36,7 +36,7 @@
 #  undef interface
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 QNetworkSession::QNetworkSession( const QNetworkConfiguration &connectionConfig, QObject *parent )
     : QObject( parent ), d( nullptr )
@@ -152,7 +152,7 @@ QNetworkConfiguration QNetworkSession::configuration() const
     return d ? d->publicConfig : QNetworkConfiguration();
 }
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 
 QNetworkInterface QNetworkSession::interface() const
 {
@@ -334,4 +334,4 @@ void QNetworkSession::disconnectNotify( const QMetaMethod &signal ) const
     }
 }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

@@ -5,7 +5,7 @@ set_target_properties(LsCsVulkan PROPERTIES OUTPUT_NAME LsCsVulkan${BUILD_ABI})
 
 target_compile_definitions(LsCsVulkan
    PRIVATE
-   -DQT_BUILD_VULKAN_LIB
+   -DLSCS_BUILD_VULKAN_LIB
 )
 
 set(EXTRA_VULKAN_CXXFLAGS)

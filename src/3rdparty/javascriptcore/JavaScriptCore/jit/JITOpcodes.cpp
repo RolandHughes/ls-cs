@@ -1381,7 +1381,7 @@ void JIT::emit_op_catch( Instruction *currentInstruction )
     // Now store the exception returned by cti_op_throw.
     emitStore( exception, regT1, regT0 );
     map( m_bytecodeIndex + OPCODE_LENGTH( op_catch ), exception, regT1, regT0 );
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     JITStubCall stubCall( this, cti_op_debug_catch );
     stubCall.addArgument( Imm32( currentInstruction[1].u.operand ) );
     stubCall.call();
@@ -2145,7 +2145,7 @@ void JIT::emit_op_tear_off_arguments( Instruction * )
 
 void JIT::emit_op_ret( Instruction *currentInstruction )
 {
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     JITStubCall stubCall( this, cti_op_debug_return );
     stubCall.addArgument( Imm32( currentInstruction[1].u.operand ) );
     stubCall.call();
@@ -2670,7 +2670,7 @@ void JIT::emit_op_catch( Instruction *currentInstruction )
     killLastResultRegister(); // FIXME: Implicitly treat op_catch as a labeled statement, and remove this line of code.
     peek( callFrameRegister, OBJECT_OFFSETOF( struct JITStackFrame, callFrame ) / sizeof ( void * ) );
     emitPutVirtualRegister( currentInstruction[1].u.operand );
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     JITStubCall stubCall( this, cti_op_debug_catch );
     stubCall.addArgument( Imm32( currentInstruction[1].u.operand ) );
     stubCall.call();

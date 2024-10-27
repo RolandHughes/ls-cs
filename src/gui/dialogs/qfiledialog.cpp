@@ -23,7 +23,7 @@
 
 #include <qfiledialog.h>
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
 #include <qmessagebox.h>
 #include <qstylepainter.h>
@@ -32,7 +32,7 @@
 
 #include <ui_qfiledialog.h>
 
-#if ! defined(QT_NO_MIMETYPE)
+#if ! defined(LSCS_NO_MIMETYPE)
 // emerald   #include <qmimedatabase.h>
 #endif
 
@@ -41,8 +41,10 @@
 #include <unistd.h>        // for pathconf() on OS X
 
 #elif defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
+
+#include <lscsioutils.h>
 
 QUrl *lscs_internal_lastVisitedDir()
 {
@@ -51,6 +53,8 @@ QUrl *lscs_internal_lastVisitedDir()
 }
 
 static constexpr const qint32 QFileDialogMagic = 0xbe;
+
+
 
 QFileDialog::QFileDialog( QWidget *parent, Qt::WindowFlags flags )
     : QDialog( *new QFileDialogPrivate, parent, flags )
@@ -80,7 +84,7 @@ QFileDialog::QFileDialog( const QFileDialogArgs &args )
 
 QFileDialog::~QFileDialog()
 {
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
     Q_D( QFileDialog );
     d->saveSettings();
 #endif
@@ -341,7 +345,7 @@ void QFileDialog::setVisible( bool visible )
             // updates the state correctly, but skips showing the non-native version:
             setAttribute( Qt::WA_DontShowOnScreen );
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
 
             //So the completer don't try to complete and therefore to show a popup
             if ( !d->nativeDialogInUse )
@@ -357,7 +361,7 @@ void QFileDialog::setVisible( bool visible )
             d->createWidgets();
             setAttribute( Qt::WA_DontShowOnScreen, false );
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
 
             if ( !d->nativeDialogInUse )
             {
@@ -425,7 +429,7 @@ void QFileDialog::setDirectory( const QString &directory )
         if ( root != d->rootIndex() )
         {
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
 
             if ( directory.endsWith( '/' ) )
             {
@@ -620,68 +624,6 @@ void QFileDialog::selectUrl( const QUrl &url )
     }
 }
 
-#ifdef Q_OS_UNIX
-QString qt_tildeExpansion( const QString &path, bool *expanded = nullptr )
-{
-    if ( expanded != nullptr )
-    {
-        *expanded = false;
-    }
-
-    if ( ! path.startsWith( '~' ) )
-    {
-        return path;
-    }
-
-    QString ret = path;
-
-    QStringList tokens = ret.split( QDir::separator() );
-
-    if ( tokens.first() == "~" )
-    {
-        ret.replace( 0, 1, QDir::homePath() );
-
-    }
-    else
-    {
-        QString userName = tokens.first();
-        userName.remove( 0, 1 );
-
-#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_OPENBSD)
-        passwd pw;
-        passwd *tmpPw;
-        char buf[200];
-        const int bufSize = sizeof( buf );
-
-        int err = getpwnam_r( userName.toUtf8().constData(), &pw, buf, bufSize, &tmpPw );
-
-        if ( err || !tmpPw )
-        {
-            return ret;
-        }
-
-        const QString homePath = QString::fromUtf8( pw.pw_dir );
-#else
-        passwd *pw = getpwnam( userName.toUtf8().constData() );
-
-        if ( ! pw )
-        {
-            return ret;
-        }
-
-        const QString homePath = QString::fromUtf8( pw->pw_dir );
-#endif
-        ret.replace( 0, tokens.first().length(), homePath );
-    }
-
-    if ( expanded != nullptr )
-    {
-        *expanded = true;
-    }
-
-    return ret;
-}
-#endif
 
 QStringList QFileDialog::selectedFiles() const
 {
@@ -731,7 +673,7 @@ QList<QUrl> QFileDialog::selectedUrls() const
     }
 }
 
-QStringList qt_make_filter_list( const QString &filter )
+QStringList lscs_make_filter_list( const QString &filter )
 {
     QString f( filter );
 
@@ -757,7 +699,7 @@ QStringList qt_make_filter_list( const QString &filter )
 
 void QFileDialog::setNameFilter( const QString &filter )
 {
-    setNameFilters( qt_make_filter_list( filter ) );
+    setNameFilters( lscs_make_filter_list( filter ) );
 }
 
 void QFileDialog::setNameFilterDetailsVisible( bool enabled )
@@ -770,7 +712,7 @@ bool QFileDialog::isNameFilterDetailsVisible() const
     return ! testOption( FileDialogOption::HideNameFilterDetails );
 }
 
-QStringList qt_strip_filters( const QStringList &filters )
+QStringList lscs_strip_filters( const QStringList &filters )
 {
     QStringList strippedFilters;
 
@@ -821,7 +763,7 @@ void QFileDialog::setNameFilters( const QStringList &filters )
 
     if ( testOption( FileDialogOption::HideNameFilterDetails ) )
     {
-        d->qFileDialogUi->fileTypeCombo->addItems( qt_strip_filters( cleanedFilters ) );
+        d->qFileDialogUi->fileTypeCombo->addItems( lscs_strip_filters( cleanedFilters ) );
     }
     else
     {
@@ -852,7 +794,7 @@ void QFileDialog::selectNameFilter( const QString &filter )
 
     if ( testOption( FileDialogOption::HideNameFilterDetails ) )
     {
-        const QStringList filters = qt_strip_filters( qt_make_filter_list( filter ) );
+        const QStringList filters = lscs_strip_filters( lscs_make_filter_list( filter ) );
 
         if ( ! filters.isEmpty() )
         {
@@ -912,7 +854,7 @@ void QFileDialog::setFilter( QDir::Filters filters )
     d->showHiddenAction->setChecked( ( filters & QDir::Hidden ) );
 }
 
-#if ! defined(QT_NO_MIMETYPE)
+#if ! defined(LSCS_NO_MIMETYPE)
 static QString nameFilterForMime( const QString &mimeType )
 {
     ( void ) mimeType;
@@ -971,7 +913,7 @@ void QFileDialog::selectMimeTypeFilter( const QString &filter )
         selectNameFilter( text );
     }
 }
-#endif // QT_NO_MIMETYPE
+#endif // LSCS_NO_MIMETYPE
 
 void QFileDialog::setViewMode( QFileDialog::ViewMode mode )
 {
@@ -1568,7 +1510,7 @@ void QFileDialog::accept()
 
             if ( !info.exists() )
             {
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
                 QString message = tr( "%1\nDirectory not found" );
                 QMessageBox::warning( this, windowTitle(), message.formatArg( info.fileName() ) );
 #endif
@@ -1611,7 +1553,7 @@ void QFileDialog::accept()
                 d->emitFilesSelected( QStringList( fn ) );
                 QDialog::accept();
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
             }
             else
             {
@@ -1645,7 +1587,7 @@ void QFileDialog::accept()
 
                 if ( !info.exists() )
                 {
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
                     QString message = tr( "%1\nFile not found." );
                     QMessageBox::warning( this, windowTitle(), message.formatArg( info.fileName() ) );
 #endif
@@ -1666,7 +1608,7 @@ void QFileDialog::accept()
     }
 }
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
 void QFileDialog::setProxyModel( QAbstractProxyModel *proxyModel )
 {
     Q_D( QFileDialog );
@@ -1702,7 +1644,7 @@ void QFileDialog::setProxyModel( QAbstractProxyModel *proxyModel )
         d->qFileDialogUi->listView->setModel( d->proxyModel );
         d->qFileDialogUi->treeView->setModel( d->proxyModel );
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
         d->completer->setModel( d->proxyModel );
         d->completer->proxyModel = d->proxyModel;
 #endif
@@ -1716,7 +1658,7 @@ void QFileDialog::setProxyModel( QAbstractProxyModel *proxyModel )
         d->qFileDialogUi->listView->setModel( d->model );
         d->qFileDialogUi->treeView->setModel( d->model );
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
         d->completer->setModel( d->model );
         d->completer->sourceModel = d->model;
         d->completer->proxyModel  = nullptr;
@@ -1743,7 +1685,7 @@ QAbstractProxyModel *QFileDialog::proxyModel() const
     return d->proxyModel;
 }
 
-#endif // QT_NO_PROXYMODEL
+#endif // LSCS_NO_PROXYMODEL
 
 bool QFileDialogPrivate::itemViewKeyboardEvent( QKeyEvent *event )
 {
@@ -1762,7 +1704,7 @@ bool QFileDialogPrivate::itemViewKeyboardEvent( QKeyEvent *event )
             return true;
 
         case Qt::Key_Back:
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( QApplication::keypadNavigationEnabled() )
             {
                 return false;
@@ -1913,7 +1855,7 @@ void QFileDialogListView::setFileDialogPrivate( QFileDialogPrivate *d_pointer )
     setEditTriggers( QAbstractItemView::EditKeyPressed );
     setContextMenuPolicy( Qt::CustomContextMenu );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     setDragDropMode( QAbstractItemView::InternalMove );
 #endif
 }
@@ -1926,7 +1868,7 @@ QSize QFileDialogListView::sizeHint() const
 
 void QFileDialogListView::keyPressEvent( QKeyEvent *e )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional )
     {
@@ -1961,14 +1903,14 @@ void QFileDialogTreeView::setFileDialogPrivate( QFileDialogPrivate *d_pointer )
     setEditTriggers( QAbstractItemView::EditKeyPressed );
     setContextMenuPolicy( Qt::CustomContextMenu );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     setDragDropMode( QAbstractItemView::InternalMove );
 #endif
 }
 
 void QFileDialogTreeView::keyPressEvent( QKeyEvent *e )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional )
     {
@@ -1976,7 +1918,7 @@ void QFileDialogTreeView::keyPressEvent( QKeyEvent *e )
         return;
     }
 
-#endif // QT_KEYPAD_NAVIGATION
+#endif // LSCS_KEYPAD_NAVIGATION
 
     if ( !d_ptr->itemViewKeyboardEvent( e ) )
     {
@@ -1999,7 +1941,7 @@ QSize QFileDialogTreeView::sizeHint() const
 */
 void QFileDialogLineEdit::keyPressEvent( QKeyEvent *e )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional )
     {
@@ -2007,7 +1949,7 @@ void QFileDialogLineEdit::keyPressEvent( QKeyEvent *e )
         return;
     }
 
-#endif // QT_KEYPAD_NAVIGATION
+#endif // LSCS_KEYPAD_NAVIGATION
 
     int key = e->key();
     QLineEdit::keyPressEvent( e );
@@ -2018,7 +1960,7 @@ void QFileDialogLineEdit::keyPressEvent( QKeyEvent *e )
     }
 }
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
 
 QString QFSCompleter::pathFromIndex( const QModelIndex &index ) const
 {
@@ -2091,7 +2033,7 @@ QStringList QFSCompleter::splitPath( const QString &path ) const
 
 #elif defined(Q_OS_UNIX)
     bool expanded;
-    pathCopy = qt_tildeExpansion( pathCopy, &expanded );
+    pathCopy = lscs_tildeExpansion( pathCopy, &expanded );
 
     if ( expanded )
     {
@@ -2188,7 +2130,7 @@ QStringList QFSCompleter::splitPath( const QString &path ) const
     return parts;
 }
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER
 
 void QFileDialog::_q_pathChanged( const QString &path )
 {
@@ -2352,4 +2294,4 @@ void QFileDialog::_q_fileRenamed( const QString &path, const QString &oldName, c
     d->_q_fileRenamed( path, oldName, newName );
 }
 
-#endif // QT_NO_FILEDIALOG
+#endif // LSCS_NO_FILEDIALOG

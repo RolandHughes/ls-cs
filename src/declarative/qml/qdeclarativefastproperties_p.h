@@ -27,7 +27,7 @@
 #include <QtCore/qvector.h>
 #include <QtCore/qhash.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QObject;
 class QDeclarativeNotifierEndpoint;
@@ -52,6 +52,6 @@ private:
     QVector<Accessor> m_accessors;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEFASTPROPERTIES_P_H

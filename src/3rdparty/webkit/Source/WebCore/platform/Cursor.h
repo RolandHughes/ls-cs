@@ -97,7 +97,7 @@ typedef NSCursor *PlatformCursor;
 typedef GRefPtr<GdkCursor> PlatformCursor;
 #elif PLATFORM(EFL)
 typedef const char *PlatformCursor;
-#elif PLATFORM(QT) && !defined(QT_NO_CURSOR)
+#elif PLATFORM(QT) && !defined(LSCS_NO_CURSOR)
 // Do not need to be shared but need to be created dynamically via ensurePlatformCursor.
 typedef QCursor *PlatformCursor;
 #elif PLATFORM(WX)

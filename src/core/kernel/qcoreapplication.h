@@ -194,7 +194,7 @@ private:
     friend class QWidgetWindow;
     friend class QWidgetPrivate;
 
-    friend bool qt_sendSpontaneousEvent( QObject *, QEvent * );
+    friend bool lscs_sendSpontaneousEvent( QObject *, QEvent * );
     friend Q_CORE_EXPORT QString qAppName();
 };
 

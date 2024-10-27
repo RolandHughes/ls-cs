@@ -26,7 +26,7 @@
 
 #include <qscriptdebuggercodefinderwidgetinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCodeFinderWidgetPrivate;
 
@@ -67,6 +67,6 @@ private:
 
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

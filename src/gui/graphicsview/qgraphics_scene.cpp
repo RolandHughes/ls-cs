@@ -23,7 +23,7 @@
 
 #include <qgraphicsscene.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qapplication.h>
 #include <qdebug.h>
@@ -68,7 +68,7 @@
 #include <qgraphicseffect_p.h>
 #include <qpathclipper_p.h>
 
-bool qt_sendSpontaneousEvent( QObject *receiver, QEvent *event );
+bool lscs_sendSpontaneousEvent( QObject *receiver, QEvent *event );
 
 static void _q_hoverFromMouseEvent( QGraphicsSceneHoverEvent *hover, const QGraphicsSceneMouseEvent *mouseEvent )
 {
@@ -584,7 +584,7 @@ void QGraphicsScenePrivate::removeItemHelper( QGraphicsItem *item )
         emit q->selectionChanged();
     }
 
-#if ! defined(QT_NO_GESTURES)
+#if ! defined(LSCS_NO_GESTURES)
     QHash<QGesture *, QGraphicsObject *>::iterator it;
 
     for ( it = gestureTargets.begin(); it != gestureTargets.end(); )
@@ -767,7 +767,7 @@ void QGraphicsScenePrivate::setFocusItemHelper( QGraphicsItem *newItem,
     {
         lastFocusItem = focusItem;
 
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 
         if ( lastFocusItem->flags() & QGraphicsItem::ItemAcceptsInputMethod )
         {
@@ -1206,7 +1206,7 @@ bool QGraphicsScenePrivate::sendEvent( QGraphicsItem *item, QEvent *event )
 {
     if ( QGraphicsObject *object = item->toGraphicsObject() )
     {
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
         QGestureManager *gestureManager = QApplicationPrivate::instance()->gestureManager;
 
         if ( gestureManager )
@@ -1239,7 +1239,7 @@ bool QGraphicsScenePrivate::sendEvent( QGraphicsItem *item, QEvent *event )
     {
         bool spont = event->spontaneous();
 
-        if ( spont ? qt_sendSpontaneousEvent( o, event ) : QApplication::sendEvent( o, event ) )
+        if ( spont ? lscs_sendSpontaneousEvent( o, event ) : QApplication::sendEvent( o, event ) )
         {
             return true;
         }
@@ -2260,7 +2260,7 @@ void QGraphicsScene::addItem( QGraphicsItem *item )
         d->enableMouseTrackingOnViews();
     }
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( d->allItemsUseDefaultCursor && item->d_ptr->hasCursor )
     {
@@ -2281,7 +2281,7 @@ void QGraphicsScene::addItem( QGraphicsItem *item )
         d->enableTouchEventsOnViews();
     }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
     for ( Qt::GestureType gesture : item->d_ptr->gestureContext.keys() )
     {
@@ -3026,7 +3026,7 @@ bool QGraphicsScene::event( QEvent *event )
             d->touchEventHandler( static_cast<QTouchEvent *>( event ) );
             break;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
         case QEvent::Gesture:
         case QEvent::GestureOverride:
@@ -3269,7 +3269,7 @@ void QGraphicsScene::focusOutEvent( QFocusEvent *focusEvent )
 
 void QGraphicsScene::helpEvent( QGraphicsSceneHelpEvent *helpEvent )
 {
-#ifdef QT_NO_TOOLTIP
+#ifdef LSCS_NO_TOOLTIP
     ( void ) helpEvent;
 
 #else
@@ -3423,7 +3423,7 @@ bool QGraphicsScenePrivate::dispatchHoverEvent( QGraphicsSceneHoverEvent *hoverE
 
 void QGraphicsScenePrivate::leaveScene( QWidget *viewport )
 {
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     QToolTip::hideText();
 #endif
 
@@ -4418,7 +4418,7 @@ void QGraphicsScenePrivate::drawSubtreeRecursive( QGraphicsItem *item, QPainter 
         ENSURE_TRANSFORM_PTR;
     }
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
     if ( item->d_ptr->graphicsEffect && item->d_ptr->graphicsEffect->isEnabled() )
     {
@@ -4473,7 +4473,7 @@ void QGraphicsScenePrivate::drawSubtreeRecursive( QGraphicsItem *item, QPainter 
     }
     else
 
-#endif //QT_NO_GRAPHICSEFFECT
+#endif //LSCS_NO_GRAPHICSEFFECT
     {
         draw( item, painter, viewTransform, transformPtr, exposedRegion, widget, opacity,
               effectTransform, wasDirtyParentSceneTransform, drawItem );
@@ -4642,7 +4642,7 @@ void QGraphicsScenePrivate::draw( QGraphicsItem *item, QPainter *painter, const 
             painter->restore();
         }
 
-        static int drawRect = qgetenv( "QT_DRAW_SCENE_ITEM_RECTS" ).toInt();
+        static int drawRect = qgetenv( "LSCS_DRAW_SCENE_ITEM_RECTS" ).toInt();
 
         if ( drawRect )
         {
@@ -5506,7 +5506,7 @@ void QGraphicsScenePrivate::addView( QGraphicsView *view )
 {
     views << view;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
     for ( Qt::GestureType gesture : grabbedGestures.keys() )
     {
@@ -5967,7 +5967,7 @@ void QGraphicsScenePrivate::leaveModal( QGraphicsItem *panel )
     dispatchHoverEvent( &hoverEvent );
 }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 void QGraphicsScenePrivate::gestureTargetsAtHotSpots( const QSet<QGesture *> &gestures, Qt::GestureFlag flag,
         QHash<QGraphicsObject *, QSet<QGesture *>> *targets, QSet<QGraphicsObject *> *itemsSet,
         QSet<QGesture *> *normal, QSet<QGesture *> *conflicts )
@@ -6102,7 +6102,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
                                   &normalGestures, &conflictedGestures );
 
         cachedTargetItems = cachedItemGestures.keys();
-        std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), qt_closestItemFirst );
+        std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), lscs_closestItemFirst );
 
 #if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
         qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
@@ -6244,7 +6244,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
         }
     }
 
-    std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), qt_closestItemFirst );
+    std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), lscs_closestItemFirst );
 
     for ( int i = 0; i < cachedTargetItems.size(); ++i )
     {
@@ -6357,7 +6357,7 @@ void QGraphicsScenePrivate::gestureEventHandler( QGestureEvent *event )
                                       &targetsSet, nullptr, nullptr );
 
             cachedTargetItems = targetsSet.toList();
-            std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), qt_closestItemFirst );
+            std::sort( cachedTargetItems.begin(), cachedTargetItems.end(), lscs_closestItemFirst );
 
 #if defined(LSCS_SHOW_DEBUG_GUI_GRAPHICSVIEW)
             qDebug() << "QGraphicsScenePrivate::gestureEventHandler:"
@@ -6559,7 +6559,7 @@ void QGraphicsScenePrivate::ungrabGesture( QGraphicsItem *item, Qt::GestureType 
         }
     }
 }
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
 void QGraphicsScene::_q_emitUpdated()
 {
@@ -6585,4 +6585,4 @@ void QGraphicsScene::_q_updateScenePosDescendants()
     d->_q_updateScenePosDescendants();
 }
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW

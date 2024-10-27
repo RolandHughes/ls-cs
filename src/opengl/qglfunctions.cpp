@@ -56,13 +56,13 @@ struct QGLFunctionsPrivateEx : public QGLFunctionsPrivate, public QOpenGLSharedR
     int m_features;
 };
 
-static QOpenGLMultiGroupSharedResource *qt_gl_functions_resource()
+static QOpenGLMultiGroupSharedResource *lscs_gl_functions_resource()
 {
     static QOpenGLMultiGroupSharedResource retval;
     return &retval;
 }
 
-static QGLFunctionsPrivateEx *qt_gl_functions( const QGLContext *context = nullptr )
+static QGLFunctionsPrivateEx *lscs_gl_functions( const QGLContext *context = nullptr )
 {
     if ( !context )
     {
@@ -72,7 +72,7 @@ static QGLFunctionsPrivateEx *qt_gl_functions( const QGLContext *context = nullp
     Q_ASSERT( context );
 
     QGLFunctionsPrivateEx *funcs = reinterpret_cast<QGLFunctionsPrivateEx *>
-                                   ( qt_gl_functions_resource()->value<QGLFunctionsPrivateEx>( context->contextHandle() ) );
+                                   ( lscs_gl_functions_resource()->value<QGLFunctionsPrivateEx>( context->contextHandle() ) );
 
     return funcs;
 }
@@ -83,11 +83,11 @@ QGLFunctions::QGLFunctions()
 }
 
 QGLFunctions::QGLFunctions( const QGLContext *context )
-    : d_ptr( qt_gl_functions( context ) )
+    : d_ptr( lscs_gl_functions( context ) )
 {
 }
 
-static int qt_gl_resolve_features()
+static int lscs_gl_resolve_features()
 {
     QOpenGLContext *ctx = QOpenGLContext::currentContext();
 
@@ -227,7 +227,7 @@ QGLFunctions::OpenGLFeatures QGLFunctions::openGLFeatures() const
 
     if ( d->m_features == -1 )
     {
-        d->m_features = qt_gl_resolve_features();
+        d->m_features = lscs_gl_resolve_features();
     }
 
     return QGLFunctions::OpenGLFeatures( d->m_features );
@@ -244,7 +244,7 @@ bool QGLFunctions::hasOpenGLFeature( QGLFunctions::OpenGLFeature feature ) const
 
     if ( d->m_features == -1 )
     {
-        d->m_features = qt_gl_resolve_features();
+        d->m_features = lscs_gl_resolve_features();
     }
 
     return ( d->m_features & int( feature ) ) != 0;
@@ -252,7 +252,7 @@ bool QGLFunctions::hasOpenGLFeature( QGLFunctions::OpenGLFeature feature ) const
 
 void QGLFunctions::initializeGLFunctions( const QGLContext *context )
 {
-    d_ptr = qt_gl_functions( context );
+    d_ptr = lscs_gl_functions( context );
 }
 
 QGLFunctionsPrivate::QGLFunctionsPrivate( const QGLContext * )

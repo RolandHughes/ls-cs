@@ -26,7 +26,7 @@
 
 #include <qscriptdebuggerstackwidgetinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerStackWidgetPrivate;
 
@@ -52,6 +52,6 @@ private:
     LSCS_SLOT_2( _q_onCurrentChanged )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

@@ -26,7 +26,7 @@
 
 #include <QImageIOHandler>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QTgaFile;
 
@@ -51,6 +51,6 @@ private:
     mutable QTgaFile *tga;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QTGAHANDLER_H

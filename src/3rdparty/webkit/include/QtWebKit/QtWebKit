@@ -1,5 +1,5 @@
-#ifndef QT_QTWEBKIT_MODULE_H
-#define QT_QTWEBKIT_MODULE_H
+#ifndef LSCS_QTWEBKIT_MODULE_H
+#define LSCS_QTWEBKIT_MODULE_H
 #include <QtNetwork/QtNetwork>
 #include "qwebframe.h"
 #include "qgraphicswebview.h"
@@ -16,4 +16,4 @@
 #include "qwebhistory.h"
 #include "qwebinspector.h"
 #include "qwebkitversion.h"
-#endif // QT_QTWEBKIT_MODULE_H
+#endif // LSCS_QTWEBKIT_MODULE_H

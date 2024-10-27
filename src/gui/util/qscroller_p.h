@@ -40,11 +40,11 @@
 
 #include <qscrollerproperties_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 class QFlickGestureRecognizer;
 #endif
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 class QScrollTimer;
 #endif
 
@@ -131,7 +131,7 @@ public:
     QObject *target;
     QScrollerProperties properties;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     QFlickGestureRecognizer *recognizer;
     Qt::GestureType recognizerType;
 #endif
@@ -175,7 +175,7 @@ public:
 
     QPointF releaseVelocity;   // the starting velocity of the scrolling state
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     QScrollTimer *scrollTimer;
 #endif
 

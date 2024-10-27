@@ -32,7 +32,7 @@
 #include <qhttp_networkreply_p.h>
 #include <qiodevice_p.h>
 
-#if ! defined(QT_NO_NETWORKPROXY)
+#if ! defined(LSCS_NO_NETWORKPROXY)
 
 #include <qdebug.h>
 
@@ -60,7 +60,7 @@ bool QHttpSocketEngine::initialize( QAbstractSocket::SocketType type, QAbstractS
     d->socket = new QTcpSocket( this );
     d->reply  = new QHttpNetworkReply( QUrl(), this );
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     d->socket->setProperty( "_q_networkSession", property( "_q_networkSession" ) );
 #endif
 
@@ -251,8 +251,8 @@ qint64 QHttpSocketEngine::write( const char *data, qint64 len )
     return d->socket->write( data, len );
 }
 
-#ifndef QT_NO_UDPSOCKET
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_UDPSOCKET
+#ifndef LSCS_NO_NETWORKINTERFACE
 bool QHttpSocketEngine::joinMulticastGroup( const QHostAddress &, const QNetworkInterface & )
 {
     setError( QAbstractSocket::UnsupportedSocketOperationError,
@@ -279,7 +279,7 @@ bool QHttpSocketEngine::setMulticastInterface( const QNetworkInterface & )
               QLatin1String( "Operation on socket is not supported" ) );
     return false;
 }
-#endif // QT_NO_NETWORKINTERFACE
+#endif // LSCS_NO_NETWORKINTERFACE
 
 qint64 QHttpSocketEngine::readDatagram( char *, qint64, QIpPacketHeader *, PacketHeaderOptions )
 {
@@ -299,7 +299,7 @@ qint64 QHttpSocketEngine::pendingDatagramSize() const
 {
     return 0;
 }
-#endif // QT_NO_UDPSOCKET
+#endif // LSCS_NO_UDPSOCKET
 
 qint64 QHttpSocketEngine::bytesToWrite() const
 {
@@ -375,7 +375,7 @@ bool QHttpSocketEngine::waitForRead( int msecs, bool *timedOut )
     // Wait for more data if nothing is available.
     if ( !d->socket->bytesAvailable() )
     {
-        if ( !d->socket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+        if ( !d->socket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
         {
             if ( d->socket->state() == QAbstractSocket::UnconnectedState )
             {
@@ -395,7 +395,7 @@ bool QHttpSocketEngine::waitForRead( int msecs, bool *timedOut )
 
     // If we're not connected yet, wait until we are, or until an error
     // occurs.
-    while ( d->state != Connected && d->socket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+    while ( d->state != Connected && d->socket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
     {
         // Loop while the protocol handshake is taking place.
     }
@@ -445,7 +445,7 @@ bool QHttpSocketEngine::waitForWrite( int msecs, bool *timedOut )
     // If we're not connected yet, wait until we are, and until bytes have
     // been received (i.e., the socket has connected, we have sent the
     // greeting, and then received the response).
-    while ( d->state != Connected && d->socket->waitForReadyRead( qt_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
+    while ( d->state != Connected && d->socket->waitForReadyRead( lscs_subtract_from_timeout( msecs, stopWatch.elapsed() ) ) )
     {
         // Loop while the protocol handshake is taking place.
     }

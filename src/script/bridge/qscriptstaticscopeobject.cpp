@@ -26,7 +26,7 @@
 
 namespace JSC
 {
-ASSERT_CLASS_FITS_IN_CELL( QT_PREPEND_NAMESPACE( QScriptStaticScopeObject ) );
+ASSERT_CLASS_FITS_IN_CELL( LSCS_PREPEND_NAMESPACE( QScriptStaticScopeObject ) );
 }
 
 const JSC::ClassInfo QScriptStaticScopeObject::info = { "QScriptStaticScopeObject", nullptr, nullptr, nullptr };

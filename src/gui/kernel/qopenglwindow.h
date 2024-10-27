@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qimage.h>
 #include <qopenglcontext.h>
@@ -87,6 +87,6 @@ private:
     Q_DECLARE_PRIVATE( QOpenGLWindow )
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

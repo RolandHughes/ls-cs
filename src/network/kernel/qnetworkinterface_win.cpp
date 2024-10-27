@@ -25,7 +25,7 @@
 
 #include <qnetworkinterface_p.h>
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 
 #include <qhash.h>
 #include <qhostinfo.h>
@@ -38,7 +38,7 @@
 #include <ws2tcpip.h>
 
 // order dependent, must be after winsock2.h
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #ifndef NETIO_STATUS
 #define NETIO_STATUS DWORD
@@ -318,4 +318,4 @@ QString QHostInfo::localDomainName()
     return domainName;
 }
 
-#endif // QT_NO_NETWORKINTERFACE
+#endif // LSCS_NO_NETWORKINTERFACE

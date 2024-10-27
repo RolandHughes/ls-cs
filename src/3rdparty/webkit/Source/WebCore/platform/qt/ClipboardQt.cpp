@@ -94,7 +94,7 @@ ClipboardQt::ClipboardQt( ClipboardAccessPolicy policy, ClipboardType clipboardT
 {
     Q_ASSERT( policy == ClipboardReadable || policy == ClipboardWritable || policy == ClipboardNumb );
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( policy != ClipboardWritable )
     {
@@ -141,7 +141,7 @@ void ClipboardQt::clearData( const String &type )
         }
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( isForCopyAndPaste() )
     {
@@ -158,7 +158,7 @@ void ClipboardQt::clearAllData()
         return;
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( isForCopyAndPaste() )
     {
@@ -225,7 +225,7 @@ bool ClipboardQt::setData( const String &type, const String &data )
         m_writableData->setData( QString( type ), array );
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( isForCopyAndPaste() )
     {
@@ -391,7 +391,7 @@ void ClipboardQt::declareAndWriteDragImage( Element *element, const KURL &url, c
     m_writableData->setText( title );
     m_writableData->setUrls( urls );
     m_writableData->setHtml( imageToMarkup( fullURL, element ) );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( isForCopyAndPaste() )
     {
@@ -415,7 +415,7 @@ void ClipboardQt::writeURL( const KURL &url, const String &title, Frame *frame )
 
     m_writableData->setUrls( urls );
     m_writableData->setText( title );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( isForCopyAndPaste() )
     {
@@ -439,7 +439,7 @@ void ClipboardQt::writeRange( Range *range, Frame *frame )
     text.replace( QChar( 0xa0 ), QLatin1Char( ' ' ) );
     m_writableData->setText( text );
     m_writableData->setHtml( createMarkup( range, 0, AnnotateForInterchange, false, AbsoluteURLs ) );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( isForCopyAndPaste() )
     {
@@ -459,7 +459,7 @@ void ClipboardQt::writePlainText( const String &str )
     QString text = str;
     text.replace( QChar( 0xa0 ), QLatin1Char( ' ' ) );
     m_writableData->setText( text );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
     if ( isForCopyAndPaste() )
     {

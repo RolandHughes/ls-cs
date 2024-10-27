@@ -36,7 +36,7 @@ AVFMediaPlayerMetaDataControl::AVFMediaPlayerMetaDataControl(AVFMediaPlayerSessi
 
 AVFMediaPlayerMetaDataControl::~AVFMediaPlayerMetaDataControl()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
 }
@@ -98,7 +98,7 @@ static QString itemKey(AVMetadataItem *item)
 
 void AVFMediaPlayerMetaDataControl::updateTags()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
 

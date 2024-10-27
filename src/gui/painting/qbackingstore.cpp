@@ -65,7 +65,7 @@ void QBackingStore::flush( const QRegion &region, QWindow *win, const QPoint &of
         return;
     }
 
-    if ( win && win->isTopLevel() && ! qt_window_private( win )->receivedExpose )
+    if ( win && win->isTopLevel() && ! lscs_window_private( win )->receivedExpose )
     {
 #if defined(LSCS_SHOW_DEBUG_GUI_PAINTING)
         qDebug( "QBackingStore::flush() Unable to flush a non-exposed window" );
@@ -202,7 +202,7 @@ bool QBackingStore::hasStaticContents() const
     return !d_ptr->staticContents.isEmpty();
 }
 
-void Q_GUI_EXPORT qt_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset )
+void Q_GUI_EXPORT lscs_scrollRectInImage( QImage &img, const QRect &rect, const QPoint &offset )
 {
     // make sure we do not detach
     uchar *mem = const_cast<uchar *>( const_cast<const QImage &>( img ).bits() );

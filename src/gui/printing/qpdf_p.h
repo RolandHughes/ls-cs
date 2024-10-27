@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_PDF
+#ifndef LSCS_NO_PDF
 
 #include <qmatrix.h>
 #include <qstring.h>
@@ -38,8 +38,8 @@
 #include <qpaintengine_p.h>
 #include <qpagelayout.h>
 
-const char *qt_real_to_string( qreal val, char *buf );
-const char *qt_int_to_string( int val, char *buf );
+const char *lscs_real_to_string( qreal val, char *buf );
+const char *lscs_int_to_string( int val, char *buf );
 
 namespace QPdf
 {
@@ -309,7 +309,7 @@ private:
     QHash<QPair<uint, uint>, uint > alphaCache;
 };
 
-#endif // QT_NO_PDF
+#endif // LSCS_NO_PDF
 
 #endif // QPDF_P_H
 

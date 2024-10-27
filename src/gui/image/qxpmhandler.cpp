@@ -23,7 +23,7 @@
 
 #include <qxpmhandler_p.h>
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
 
 #include <qimage.h>
 #include <qmap.h>
@@ -733,7 +733,7 @@ inline bool operator<( const XPMRGBData &data, const char *name )
     return qstrcmp( data.name, name ) < 0;
 }
 
-static inline bool qt_get_named_xpm_rgb( const char *name_no_space, QRgb *rgb )
+static inline bool lscs_get_named_xpm_rgb( const char *name_no_space, QRgb *rgb )
 {
     const XPMRGBData *r = std::lower_bound( xpmRgbTbl, xpmRgbTbl + xpmRgbTblSize, name_no_space );
 
@@ -994,11 +994,11 @@ static bool read_xpm_body( QIODevice *device, const char *const *source, int &in
 
             if ( buf[0] == '#' )
             {
-                qt_get_hex_rgb( buf.constData(), &c_rgb );
+                lscs_get_hex_rgb( buf.constData(), &c_rgb );
             }
             else
             {
-                qt_get_named_xpm_rgb( buf.constData(), &c_rgb );
+                lscs_get_named_xpm_rgb( buf.constData(), &c_rgb );
             }
 
             if ( ncols <= 256 )
@@ -1129,7 +1129,7 @@ static bool read_xpm_body( QIODevice *device, const char *const *source, int &in
 // One of the two HAS to be 0, the other one is used.
 //
 
-bool qt_read_xpm_image_or_array( QIODevice *device, const char *const *source, QImage &image )
+bool lscs_read_xpm_image_or_array( QIODevice *device, const char *const *source, QImage &image )
 {
     if ( !source )
     {
@@ -1509,4 +1509,4 @@ QString QXpmHandler::name() const
     return "xpm";
 }
 
-#endif // QT_NO_IMAGEFORMAT_XPM
+#endif // LSCS_NO_IMAGEFORMAT_XPM

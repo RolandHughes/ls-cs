@@ -56,7 +56,7 @@ typedef char GLchar;
 #define APIENTRY
 #endif
 
-#ifdef QT_OPENGL_ES_2
+#ifdef LSCS_OPENGL_ES_2
 typedef GLsizeiptr GLsizeiptrType;
 typedef GLintptr GLintptrType;
 #else
@@ -282,7 +282,7 @@ private:
     bool m_valid;
 };
 
-#if defined (QT_OPENGL_ES_2)
+#if defined (LSCS_OPENGL_ES_2)
 #define GET_PROC_ADDRESS(Proc) Proc
 #else
 #define GET_PROC_ADDRESS(Proc) reinterpret_cast<Proc##Type>(getProcAddress(#Proc));
@@ -290,7 +290,7 @@ private:
 
 bool GraphicsContext3D::isGLES2Compliant() const
 {
-#if defined (QT_OPENGL_ES_2)
+#if defined (LSCS_OPENGL_ES_2)
     return true;
 #else
     return false;
@@ -330,7 +330,7 @@ GraphicsContext3DInternal::GraphicsContext3DInternal( GraphicsContext3D::Attribu
     // Geometry can be set to zero because m_glWidget is used only for its QGLContext.
     m_glWidget->setGeometry( 0, 0, 0, 0 );
 
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
     m_attrs.stencil = false;
 #else
 
@@ -533,7 +533,7 @@ void GraphicsContext3DInternal::reshape( int width, int height )
     {
         // Create depth and stencil buffers.
         bindRenderbuffer( GraphicsContext3D::RENDERBUFFER, m_depthBuffer );
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
         renderbufferStorage( GraphicsContext3D::RENDERBUFFER, GraphicsContext3D::DEPTH_COMPONENT16, width, height );
 #else
 
@@ -561,7 +561,7 @@ void GraphicsContext3DInternal::reshape( int width, int height )
                                  m_depthBuffer );
     }
 
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
 
     if ( m_attrs.stencil )
     {
@@ -890,7 +890,7 @@ void GraphicsContext3D::clear( GC3Dbitfield mask )
 void GraphicsContext3D::clearDepth( GC3Dclampf depth )
 {
     m_internal->m_glWidget->makeCurrent();
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
     glClearDepthf( depth );
 #else
     glClearDepth( depth );
@@ -951,7 +951,7 @@ void GraphicsContext3D::depthMask( GC3Dboolean flag )
 void GraphicsContext3D::depthRange( GC3Dclampf zNear, GC3Dclampf zFar )
 {
     m_internal->m_glWidget->makeCurrent();
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
     glDepthRangef( zNear, zFar );
 #else
     glDepthRange( zNear, zFar );
@@ -1269,7 +1269,7 @@ void GraphicsContext3D::releaseShaderCompiler()
 void GraphicsContext3D::renderbufferStorage( GC3Denum target, GC3Denum internalformat, GC3Dsizei width, GC3Dsizei height )
 {
     m_internal->m_glWidget->makeCurrent();
-#if !defined(QT_OPENGL_ES_2)
+#if !defined(LSCS_OPENGL_ES_2)
 
     switch ( internalformat )
     {
@@ -1315,7 +1315,7 @@ void GraphicsContext3D::shaderSource( Platform3DObject shader, const String &sou
 
     String prefixedSource;
 
-#if defined (QT_OPENGL_ES_2)
+#if defined (LSCS_OPENGL_ES_2)
     prefixedSource.append( "precision mediump float;\n" );
 #endif
 

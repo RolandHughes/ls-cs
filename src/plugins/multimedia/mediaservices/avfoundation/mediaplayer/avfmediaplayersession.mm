@@ -151,7 +151,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
    for (NSString * thisKey in requestedKeys) {
       NSError *error = nil;
       AVKeyValueStatus keyStatus = [asset statusOfValueForKey: thisKey error: &error];
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
       qDebug() << Q_FUNC_INFO << [thisKey UTF8String] << " status: " << keyStatus;
 #endif
       if (keyStatus == AVKeyValueStatusFailed) {
@@ -161,7 +161,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
    }
 
    //Use the AVAsset playable property to detect whether the asset can be played.
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << "isPlayable: " << [asset isPlayable];
 #endif
    if (!asset.playable) {
@@ -248,7 +248,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
 
    QMetaObject::invokeMethod(m_session, "processMediaLoadError", Qt::AutoConnection);
 
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
    qDebug() << [[error localizedDescription] UTF8String];
    qDebug() << [[error localizedFailureReason] UTF8String];
@@ -333,7 +333,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
 
 - (void) detatchSession
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    m_session = nullptr;
@@ -341,7 +341,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
 
 - (void) dealloc
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    [self unloadMedia];
@@ -382,7 +382,7 @@ AVFMediaPlayerSession::AVFMediaPlayerSession(AVFMediaPlayerService *service, QOb
 
 AVFMediaPlayerSession::~AVFMediaPlayerSession()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    //Detatch the session from the sessionObserver (which could still be alive trying to communicate with this session).
@@ -392,7 +392,7 @@ AVFMediaPlayerSession::~AVFMediaPlayerSession()
 
 void AVFMediaPlayerSession::setVideoOutput(AVFVideoOutput *output)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << output;
 #endif
 
@@ -414,7 +414,7 @@ void AVFMediaPlayerSession::setVideoOutput(AVFVideoOutput *output)
 
 void *AVFMediaPlayerSession::currentAssetHandle()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    AVAsset *currentAsset = [[(AVFMediaPlayerSessionObserver *)m_observer playerItem] asset];
@@ -443,7 +443,7 @@ const QIODevice *AVFMediaPlayerSession::mediaStream() const
 
 void AVFMediaPlayerSession::setMedia(const QMediaContent &content, QIODevice *stream)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << content.canonicalUrl();
 #endif
 
@@ -503,7 +503,7 @@ qint64 AVFMediaPlayerSession::position() const
 
 qint64 AVFMediaPlayerSession::duration() const
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    AVPlayerItem *playerItem = [(AVFMediaPlayerSessionObserver *)m_observer playerItem];
@@ -519,7 +519,7 @@ qint64 AVFMediaPlayerSession::duration() const
 int AVFMediaPlayerSession::bufferStatus() const
 {
    //BUG: bufferStatus may be relevant?
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    return 100;
@@ -608,7 +608,7 @@ qreal AVFMediaPlayerSession::playbackRate() const
 
 void AVFMediaPlayerSession::setPlaybackRate(qreal rate)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << rate;
 #endif
 
@@ -628,7 +628,7 @@ void AVFMediaPlayerSession::setPlaybackRate(qreal rate)
 
 void AVFMediaPlayerSession::setPosition(qint64 pos)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << pos;
 #endif
 
@@ -666,7 +666,7 @@ void AVFMediaPlayerSession::setPosition(qint64 pos)
 
 void AVFMediaPlayerSession::play()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << "currently: " << m_state;
 #endif
 
@@ -697,7 +697,7 @@ void AVFMediaPlayerSession::play()
 
 void AVFMediaPlayerSession::pause()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << "currently: " << m_state;
 #endif
 
@@ -724,7 +724,7 @@ void AVFMediaPlayerSession::pause()
 
 void AVFMediaPlayerSession::stop()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << "currently: " << m_state;
 #endif
 
@@ -748,7 +748,7 @@ void AVFMediaPlayerSession::stop()
 
 void AVFMediaPlayerSession::setVolume(int volume)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << volume;
 #endif
 
@@ -773,7 +773,7 @@ void AVFMediaPlayerSession::setVolume(int volume)
 
 void AVFMediaPlayerSession::setMuted(bool muted)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << muted;
 #endif
 
@@ -799,7 +799,7 @@ void AVFMediaPlayerSession::setMuted(bool muted)
 void AVFMediaPlayerSession::processEOS()
 {
    //AVPlayerItem has reached end of track/stream
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    Q_EMIT positionChanged(position());
@@ -820,7 +820,7 @@ void AVFMediaPlayerSession::processLoadStateChange()
 {
    AVPlayerStatus currentStatus = [[(AVFMediaPlayerSessionObserver *)m_observer player] status];
 
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << currentStatus;
 #endif
 

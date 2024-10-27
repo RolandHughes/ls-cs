@@ -75,7 +75,7 @@ public:
     NET_LSCS_SIGNAL_1( Public, void acceptError( QAbstractSocket::SocketError socketError ) )
     NET_LSCS_SIGNAL_2( acceptError, socketError )
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     void setProxy( const QNetworkProxy &networkProxy );
     QNetworkProxy proxy() const;
 #endif

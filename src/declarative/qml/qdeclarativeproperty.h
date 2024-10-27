@@ -26,7 +26,7 @@
 
 #include <QtCore/qmetaobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QObject;
 class QVariant;
@@ -116,6 +116,6 @@ inline uint qHash ( const QDeclarativeProperty &key )
     return qHash( key.object() ) + qHash( key.name() );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPROPERTY_H

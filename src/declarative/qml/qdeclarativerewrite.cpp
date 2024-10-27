@@ -27,7 +27,7 @@
 
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 DEFINE_BOOL_CONFIG_OPTION( rewriteDump, QML_REWRITE_DUMP );
 
@@ -288,4 +288,4 @@ void RewriteBinding::endVisit( AST::LocalForEachStatement * )
 
 } // namespace QDeclarativeRewrite
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

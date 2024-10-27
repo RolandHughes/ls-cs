@@ -28,7 +28,7 @@
 #include <QtCore/qobject.h>
 #include <QtCore/qurl.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeFontLoaderPrivate;
 class QDeclarativeFontLoader : public QObject
@@ -74,7 +74,7 @@ public:
     DECL_LSCS_SIGNAL_2( statusChanged )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeFontLoader )
 

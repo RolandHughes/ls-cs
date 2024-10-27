@@ -26,7 +26,7 @@
 
 #include <qgraphicslayoutitem.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsLayoutPrivate;
 class QGraphicsLayoutItem;

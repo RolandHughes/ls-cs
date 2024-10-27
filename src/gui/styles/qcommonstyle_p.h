@@ -39,7 +39,7 @@ class QCommonStylePrivate : public QStylePrivate
 public:
     QCommonStylePrivate()
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
         : cachedOption( nullptr ), animationFps( 30 )
 #else
         : animationFps( 30 )
@@ -48,16 +48,16 @@ public:
 
     ~QCommonStylePrivate()
     {
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
         qDeleteAll( animations );
 #endif
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
         delete cachedOption;
 #endif
     }
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
     void viewItemDrawText( QPainter *painter, const QStyleOptionViewItem *option, const QRect &rect ) const;
     void viewItemLayout( const QStyleOptionViewItem *option,  QRect *checkRect,
                          QRect *pixmapRect, QRect *textRect, bool sizehint ) const;
@@ -87,13 +87,13 @@ public:
 #endif
     mutable QIcon tabBarcloseButtonIcon;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     void tabLayout( const QStyleOptionTab *option, const QWidget *widget, QRect *textRect, QRect *pixmapRect ) const;
 #endif
 
     int animationFps;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     void _q_removeAnimation( QObject *obj );
 
     QList<const QObject *> animationKeys() const;

@@ -27,7 +27,7 @@
 #include <QtCore/qplugin.h>
 #include <QtDeclarative/qdeclarativeextensioninterface.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 
@@ -46,6 +46,6 @@ private:
     Q_DISABLE_COPY( QDeclarativeExtensionPlugin )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEEXTENSIONPLUGIN_H

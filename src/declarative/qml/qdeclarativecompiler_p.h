@@ -39,7 +39,7 @@
 #include <QtCore/qset.h>
 #include <QtCore/QCoreApplication>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QDeclarativeComponent;
@@ -323,6 +323,6 @@ private:
     QDeclarativeParser::Object *unitRoot;
     QDeclarativeTypeData *unit;
 };
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVECOMPILER_P_H

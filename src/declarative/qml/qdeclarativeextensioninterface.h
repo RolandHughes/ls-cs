@@ -26,7 +26,7 @@
 
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 
@@ -39,6 +39,6 @@ struct Q_DECLARATIVE_EXPORT QDeclarativeExtensionInterface
 
 LSCS_DECLARE_INTERFACE( QDeclarativeExtensionInterface, "com.copperspice.QDeclarativeExtensionInterface/1.0" )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEEXTENSIONINTERFACE_H

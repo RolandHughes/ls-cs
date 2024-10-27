@@ -26,9 +26,9 @@
 
 #include <qplatform_printersupport.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 
 class QCocoaPrinterSupport : public QPlatformPrinterSupport
 {
@@ -44,6 +44,6 @@ public:
     QString defaultPrintDeviceId() const override;
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

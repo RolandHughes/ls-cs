@@ -26,7 +26,7 @@
 #include <QtGui/qgraphicsscene.h>
 #include <QEvent>
 
-QT_BEGIN_NAMESPACE QDeclarativeFocusPanel::QDeclarativeFocusPanel( QDeclarativeItem *parent ) : QDeclarativeItem( parent )
+LSCS_BEGIN_NAMESPACE QDeclarativeFocusPanel::QDeclarativeFocusPanel( QDeclarativeItem *parent ) : QDeclarativeItem( parent )
 {
     Q_D( QDeclarativeItem );
     d->flags |= QGraphicsItem::ItemIsPanel;
@@ -53,4 +53,4 @@ bool QDeclarativeFocusPanel::sceneEvent( QEvent *event )
     return QDeclarativeItem::sceneEvent( event );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -28,7 +28,7 @@
 #include <qguiapplication.h>
 #include <qeventloop.h>
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 QPlatformDropQtResponse::QPlatformDropQtResponse( bool accepted, Qt::DropAction acceptedAction )
     : m_accepted( accepted ), m_accepted_action( acceptedAction )
@@ -162,7 +162,7 @@ static const char *const default_pm[] =
     "X X X X X X X",
 };
 
-static QPixmap *qt_drag_default_pixmap()
+static QPixmap *lscs_drag_default_pixmap()
 {
     static QPixmap retval( default_pm );
     return &retval;
@@ -170,7 +170,7 @@ static QPixmap *qt_drag_default_pixmap()
 
 QPixmap QPlatformDrag::defaultPixmap()
 {
-    return *qt_drag_default_pixmap();
+    return *lscs_drag_default_pixmap();
 }
 
 bool QPlatformDrag::ownsDragObject() const

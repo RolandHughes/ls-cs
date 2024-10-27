@@ -30,7 +30,7 @@
 #include <qdeclarative.h>
 #include <QtCore/QAbstractAnimation>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeAbstractAnimation;
 class QDeclarativeBehaviorPrivate;
@@ -73,7 +73,7 @@ private :
     DECL_LSCS_SLOT_2( qtAnimationStateChanged )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeBehavior )
 

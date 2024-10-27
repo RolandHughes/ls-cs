@@ -27,7 +27,7 @@
 #include <qvector3d.h>
 #include <qvector4d.h>
 
-#ifndef QT_NO_QUATERNION
+#ifndef LSCS_NO_QUATERNION
 
 class QMatrix4x4;
 class QVariant;
@@ -39,18 +39,18 @@ public:
     QQuaternion();
     QQuaternion( qreal scalar, qreal xpos, qreal ypos, qreal zpos );
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     QQuaternion( qreal scalar, const QVector3D &vector );
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
     explicit QQuaternion( const QVector4D &vector );
 #endif
 
     bool isNull() const;
     bool isIdentity() const;
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     QVector3D vector() const;
     void setVector( const QVector3D &vector );
 #endif
@@ -95,13 +95,13 @@ public:
 
     friend inline bool qFuzzyCompare( const QQuaternion &q1, const QQuaternion &q2 );
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
     QVector4D toVector4D() const;
 #endif
 
     operator QVariant() const;
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     static QQuaternion fromAxisAndAngle( const QVector3D &axis, qreal angle );
 #endif
 
@@ -289,7 +289,7 @@ inline bool qFuzzyCompare( const QQuaternion &q1, const QQuaternion &q2 )
            qFuzzyCompare( q1.wp, q2.wp );
 }
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 inline QQuaternion::QQuaternion( qreal scalar, const QVector3D &vector )
     : wp( scalar ), xp( vector.x() ), yp( vector.y() ), zp( vector.z() ) {}
@@ -315,7 +315,7 @@ inline void QQuaternion::setVector( qreal x, qreal y, qreal z )
     zp = z;
 }
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 inline QQuaternion::QQuaternion( const QVector4D &vector )
     : wp( vector.w() ), xp( vector.x() ), yp( vector.y() ), zp( vector.z() )

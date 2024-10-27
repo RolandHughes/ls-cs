@@ -42,13 +42,13 @@
 
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
 static inline int themeDialogType( const QDialog *dialog )
 {
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
     if ( qobject_cast<const QFileDialog *>( dialog ) )
     {
@@ -57,7 +57,7 @@ static inline int themeDialogType( const QDialog *dialog )
 
 #endif
 
-#ifndef QT_NO_COLORDIALOG
+#ifndef LSCS_NO_COLORDIALOG
 
     if ( qobject_cast<const QColorDialog *>( dialog ) )
     {
@@ -66,7 +66,7 @@ static inline int themeDialogType( const QDialog *dialog )
 
 #endif
 
-#ifndef QT_NO_FONTDIALOG
+#ifndef LSCS_NO_FONTDIALOG
 
     if ( qobject_cast<const QFontDialog *>( dialog ) )
     {
@@ -75,7 +75,7 @@ static inline int themeDialogType( const QDialog *dialog )
 
 #endif
 
-#ifndef QT_NO_MESSAGEBOX
+#ifndef LSCS_NO_MESSAGEBOX
 
     if ( qobject_cast<const QMessageBox *>( dialog ) )
     {
@@ -84,7 +84,7 @@ static inline int themeDialogType( const QDialog *dialog )
 
 #endif
 
-#ifndef QT_NO_ERRORMESSAGE
+#ifndef LSCS_NO_ERRORMESSAGE
 
     if ( qobject_cast<const QErrorMessage *>( dialog ) )
     {
@@ -413,11 +413,11 @@ bool QDialog::eventFilter( QObject *o, QEvent *e )
     return QWidget::eventFilter( o, e );
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
 void QDialog::contextMenuEvent( QContextMenuEvent *e )
 {
-#if defined(QT_NO_WHATSTHIS) || defined(QT_NO_MENU)
+#if defined(LSCS_NO_WHATSTHIS) || defined(LSCS_NO_MENU)
     ( void ) e;
 
 #else
@@ -510,7 +510,7 @@ void QDialog::keyPressEvent( QKeyEvent *e )
 
 void QDialog::closeEvent( QCloseEvent *e )
 {
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
     if ( isModal() && QWhatsThis::inWhatsThisMode() )
     {
@@ -608,7 +608,7 @@ void QDialog::setVisible( bool visible )
             QApplication::sendEvent( fw, &e );
         }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
         QAccessibleEvent event( this, QAccessible::DialogStart );
         QAccessible::updateAccessibility( &event );
 #endif
@@ -621,7 +621,7 @@ void QDialog::setVisible( bool visible )
             return;
         }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
         if ( isVisible() )
         {
@@ -868,7 +868,7 @@ void QDialog::showExtension( bool showIt )
 
         d->extension->show();
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
         const bool sizeGripEnabled = isSizeGripEnabled();
         setSizeGripEnabled( false );
         d->sizeGripEnabled = sizeGripEnabled;
@@ -888,7 +888,7 @@ void QDialog::showExtension( bool showIt )
             layout()->setEnabled( true );
         }
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
         setSizeGripEnabled( d->sizeGripEnabled );
 #endif
 
@@ -937,7 +937,7 @@ void QDialog::setModal( bool modal )
 
 bool QDialog::isSizeGripEnabled() const
 {
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     Q_D( const QDialog );
 
     return !! d->resizer;
@@ -951,7 +951,7 @@ void QDialog::setSizeGripEnabled( bool enabled )
 {
     Q_D( QDialog );
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     d->sizeGripEnabled = enabled;
 
     if ( enabled && d->doShowExtension )
@@ -991,7 +991,7 @@ void QDialog::setSizeGripEnabled( bool enabled )
 
 void QDialog::resizeEvent( QResizeEvent * )
 {
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
     Q_D( QDialog );
 
     if ( d->resizer )

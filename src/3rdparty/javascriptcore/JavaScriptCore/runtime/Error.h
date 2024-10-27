@@ -66,7 +66,7 @@ JSObject *throwError( ExecState *, ErrorType, const char *message );
 JSObject *throwError( ExecState *, ErrorType );
 JSObject *throwError( ExecState *, JSObject * );
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 #  define JSC_ERROR_FILENAME_PROPERTYNAME "fileName"
 #  define JSC_ERROR_LINENUMBER_PROPERTYNAME "lineNumber"
 #else

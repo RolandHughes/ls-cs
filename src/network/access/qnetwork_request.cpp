@@ -44,7 +44,7 @@ public:
     QNetworkRequestPrivate()
         : priority( QNetworkRequest::NormalPriority ),
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
           sslConfiguration( nullptr ),
 #endif
           maxRedirectsAllowed( maxRedirectCount )
@@ -53,7 +53,7 @@ public:
     ~QNetworkRequestPrivate()
     {
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         delete sslConfiguration;
 #endif
     }
@@ -65,7 +65,7 @@ public:
         priority = other.priority;
         maxRedirectsAllowed = other.maxRedirectsAllowed;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         sslConfiguration = nullptr;
 
         if ( other.sslConfiguration )
@@ -87,7 +87,7 @@ public:
     QUrl url;
     QNetworkRequest::Priority priority;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     mutable QSslConfiguration *sslConfiguration;
 #endif
 
@@ -186,7 +186,7 @@ void QNetworkRequest::setAttribute( Attribute code, const QVariant &value )
     }
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 QSslConfiguration QNetworkRequest::sslConfiguration() const
 {

@@ -38,7 +38,7 @@
 
 class QPaintEngine;
 
-extern const char  *qt_mfhdr_tag;
+extern const char  *lscs_mfhdr_tag;
 
 class QPicturePrivate
 {

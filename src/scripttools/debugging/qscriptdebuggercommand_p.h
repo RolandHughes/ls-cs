@@ -29,7 +29,7 @@
 #include <QtCore/qhash.h>
 #include <QtCore/qvariant.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDataStream;
 class QScriptBreakpointData;
@@ -236,6 +236,6 @@ private:
 QDataStream &operator<<( QDataStream &, const QScriptDebuggerCommand & );
 QDataStream &operator>>( QDataStream &, QScriptDebuggerCommand & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

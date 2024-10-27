@@ -29,7 +29,7 @@
 #include <qdebug.h>
 
 // multiplier for converting units to points.
-Q_GUI_EXPORT qreal qt_pointMultiplier( QPageLayout::Unit unit )
+Q_GUI_EXPORT qreal lscs_pointMultiplier( QPageLayout::Unit unit )
 {
     switch ( unit )
     {
@@ -57,9 +57,9 @@ Q_GUI_EXPORT qreal qt_pointMultiplier( QPageLayout::Unit unit )
 }
 
 // Multiplier for converting pixels to points.
-extern qreal qt_pixelMultiplier( int resolution );
+extern qreal lscs_pixelMultiplier( int resolution );
 
-QPointF qt_convertPoint( const QPointF &xy, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits )
+QPointF lscs_convertPoint( const QPointF &xy, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits )
 {
     // If the size have the same units, or are all 0, then don't need to convert
     if ( fromUnits == toUnits || xy.isNull() )
@@ -70,21 +70,21 @@ QPointF qt_convertPoint( const QPointF &xy, QPageLayout::Unit fromUnits, QPageLa
     // If converting to points then convert and round to 0 decimal places
     if ( toUnits == QPageSize::Unit::Point )
     {
-        const qreal multiplier = qt_pointMultiplier( fromUnits );
+        const qreal multiplier = lscs_pointMultiplier( fromUnits );
         return QPointF( qRound( xy.x() * multiplier ),
                         qRound( xy.y() * multiplier ) );
     }
 
     // If converting to other units, need to convert to unrounded points first
-    QPointF pointXy = ( fromUnits == QPageSize::Unit::Point ) ? xy : xy * qt_pointMultiplier( fromUnits );
+    QPointF pointXy = ( fromUnits == QPageSize::Unit::Point ) ? xy : xy * lscs_pointMultiplier( fromUnits );
 
     // Then convert from points to required units rounded to 2 decimal places
-    const qreal multiplier = qt_pointMultiplier( toUnits );
+    const qreal multiplier = lscs_pointMultiplier( toUnits );
     return QPointF( qRound( pointXy.x() * 100 / multiplier ) / 100.0,
                     qRound( pointXy.y() * 100 / multiplier ) / 100.0 );
 }
 
-Q_GUI_EXPORT QMarginsF qt_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits )
+Q_GUI_EXPORT QMarginsF lscs_convertMargins( const QMarginsF &margins, QPageLayout::Unit fromUnits, QPageLayout::Unit toUnits )
 {
     // If the margins have the same units, or are all 0, then don't need to convert
     if ( fromUnits == toUnits || margins.isNull() )
@@ -95,7 +95,7 @@ Q_GUI_EXPORT QMarginsF qt_convertMargins( const QMarginsF &margins, QPageLayout:
     // If converting to points then convert and round to 0 decimal places
     if ( toUnits == QPageSize::Unit::Point )
     {
-        const qreal multiplier = qt_pointMultiplier( fromUnits );
+        const qreal multiplier = lscs_pointMultiplier( fromUnits );
         return QMarginsF( qRound( margins.left()   * multiplier ),
                           qRound( margins.top()    * multiplier ),
                           qRound( margins.right()  * multiplier ),
@@ -103,10 +103,10 @@ Q_GUI_EXPORT QMarginsF qt_convertMargins( const QMarginsF &margins, QPageLayout:
     }
 
     // If converting to other units, need to convert to unrounded points first
-    QMarginsF pointMargins = fromUnits == QPageSize::Unit::Point ? margins : margins * qt_pointMultiplier( fromUnits );
+    QMarginsF pointMargins = fromUnits == QPageSize::Unit::Point ? margins : margins * lscs_pointMultiplier( fromUnits );
 
     // Then convert from points to required units rounded to 2 decimal places
-    const qreal multiplier = qt_pointMultiplier( toUnits );
+    const qreal multiplier = lscs_pointMultiplier( toUnits );
     return QMarginsF( qRound( pointMargins.left() * 100 / multiplier ) / 100.0,
                       qRound( pointMargins.top() * 100 / multiplier ) / 100.0,
                       qRound( pointMargins.right() * 100 / multiplier ) / 100.0,
@@ -197,8 +197,8 @@ bool QPageLayoutPrivate::isEquivalentTo( const QPageLayoutPrivate &other ) const
 {
     return m_pageSize.isEquivalentTo( other.m_pageSize )
            && m_orientation == other.m_orientation
-           && qt_convertMargins( m_margins, m_units, QPageSize::Unit::Point )
-           == qt_convertMargins( other.m_margins, other.m_units, QPageSize::Unit::Point );
+           && lscs_convertMargins( m_margins, m_units, QPageSize::Unit::Point )
+           == lscs_convertMargins( other.m_margins, other.m_units, QPageSize::Unit::Point );
 }
 
 bool QPageLayoutPrivate::isValid() const
@@ -216,17 +216,17 @@ void QPageLayoutPrivate::clampMargins( const QMarginsF &margins )
 
 QMarginsF QPageLayoutPrivate::margins( QPageLayout::Unit units ) const
 {
-    return qt_convertMargins( m_margins, m_units, units );
+    return lscs_convertMargins( m_margins, m_units, units );
 }
 
 QMargins QPageLayoutPrivate::marginsPoints() const
 {
-    return qt_convertMargins( m_margins, m_units, QPageSize::Unit::Point ).toMargins();
+    return lscs_convertMargins( m_margins, m_units, QPageSize::Unit::Point ).toMargins();
 }
 
 QMargins QPageLayoutPrivate::marginsPixels( int resolution ) const
 {
-    return marginsPoints() / qt_pixelMultiplier( resolution );
+    return marginsPoints() / lscs_pixelMultiplier( resolution );
 }
 
 void QPageLayoutPrivate::setDefaultMargins( const QMarginsF &minMargins )
@@ -385,9 +385,9 @@ void QPageLayout::setUnits( Unit units )
     if ( units != d->m_units )
     {
         d.detach();
-        d->m_margins = qt_convertMargins( d->m_margins, d->m_units, units );
-        d->m_minMargins = qt_convertMargins( d->m_minMargins, d->m_units, units );
-        d->m_maxMargins = qt_convertMargins( d->m_maxMargins, d->m_units, units );
+        d->m_margins = lscs_convertMargins( d->m_margins, d->m_units, units );
+        d->m_minMargins = lscs_convertMargins( d->m_minMargins, d->m_units, units );
+        d->m_maxMargins = lscs_convertMargins( d->m_maxMargins, d->m_units, units );
         d->m_units = units;
         d->m_fullSize = d->fullSizeUnits( d->m_units );
     }

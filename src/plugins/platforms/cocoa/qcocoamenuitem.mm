@@ -27,7 +27,7 @@
 #include <qcocoamenubar.h>
 #include <messages.h>
 #include <qcocoahelpers.h>
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 #include <qcocoaapplication.h>          // for custom application category
 #include <qcocoamenuloader.h>
 
@@ -35,7 +35,7 @@
 
 static inline QCocoaMenuLoader *getMenuLoader()
 {
-   return [NSApp qt_qcocoamenuLoader];
+   return [NSApp lscs_qcocoamenuLoader];
 }
 
 static quint32 constructModifierMask(quint32 accel_key)
@@ -66,13 +66,13 @@ static quint32 constructModifierMask(quint32 accel_key)
 NSString *keySequenceToKeyEqivalent(const QKeySequence &accel)
 {
    quint32 accel_key = (accel[0] & ~(Qt::KeyboardModifierMask));
-   QChar cocoa_key   = qt_mac_qtKey2CocoaKey(Qt::Key(accel_key));
+   QChar cocoa_key   = lscs_mac_qtKey2CocoaKey(Qt::Key(accel_key));
 
    if (cocoa_key.isNull()) {
       cocoa_key = QChar(char32_t(accel_key)).toLower()[0];
    }
 
-   // Similar to qt_mac_removePrivateUnicode change the delete key so the symbol is correctly seen in native menubar
+   // Similar to lscs_mac_removePrivateUnicode change the delete key so the symbol is correctly seen in native menubar
    if (cocoa_key.unicode() == NSDeleteFunctionKey) {
       cocoa_key = NSDeleteCharacter;
    }
@@ -345,7 +345,7 @@ NSMenuItem *QCocoaMenuItem::sync()
       text += QLatin1String(" (") + accel.toString(QKeySequence::NativeText) + QLatin1String(")");
    }
 
-   QString finalString = qt_mac_removeMnemonics(text);
+   QString finalString = lscs_mac_removeMnemonics(text);
    bool useAttributedTitle = false;
    // Cocoa Font and title
    if (m_font.resolve()) {
@@ -375,7 +375,7 @@ NSMenuItem *QCocoaMenuItem::sync()
 
    NSImage *img = nil;
    if (!m_icon.isNull()) {
-      img = qt_mac_create_nsimage(m_icon, m_iconSize);
+      img = lscs_mac_create_nsimage(m_icon, m_iconSize);
       [img setSize: NSMakeSize(m_iconSize, m_iconSize)];
    }
    [m_native setImage: img];
@@ -385,14 +385,14 @@ NSMenuItem *QCocoaMenuItem::sync()
    return m_native;
 }
 
-extern QString qt_mac_applicationmenu_string(int type);
+extern QString lscs_mac_applicationmenu_string(int type);
 
 QString QCocoaMenuItem::mergeText()
 {
    QCocoaMenuLoader *loader = getMenuLoader();
 
    if (m_native == [loader aboutMenuItem]) {
-      return qt_mac_applicationmenu_string(6).formatArg(qt_mac_applicationName());
+      return lscs_mac_applicationmenu_string(6).formatArg(lscs_mac_applicationName());
 
    } else if (m_native == [loader aboutCsMenuItem]) {
       if (m_text == QString("About CS")) {
@@ -403,10 +403,10 @@ QString QCocoaMenuItem::mergeText()
       }
 
    } else if (m_native == [loader preferencesMenuItem]) {
-      return qt_mac_applicationmenu_string(4);
+      return lscs_mac_applicationmenu_string(4);
 
    } else if (m_native == [loader quitMenuItem]) {
-      return qt_mac_applicationmenu_string(5).formatArg(qt_mac_applicationName());
+      return lscs_mac_applicationmenu_string(5).formatArg(lscs_mac_applicationName());
 
    } else if (m_text.contains('\t')) {
       return m_text.left(m_text.indexOf('\t'));

@@ -35,7 +35,7 @@
 #include <qwindow.h>
 #include <qwindowsysteminterface.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qcocoaglcontext.h>
 #endif
 
@@ -432,7 +432,7 @@ QCocoaWindow::QCocoaWindow(QWindow *tlw)
      m_windowUnderMouse(false), m_inConstructor(true), m_inSetVisible(false), m_inSetGeometry(false),
      m_inSetStyleMask(false),
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
      m_glContext(nullptr),
 #endif
 
@@ -463,12 +463,12 @@ QCocoaWindow::QCocoaWindow(QWindow *tlw)
       // (like the hellogl example)
 
       if (tlw->supportsOpenGL()) {
-         BOOL enable = qt_mac_resolveOption(YES, tlw, "_q_mac_wantsBestResolutionOpenGLSurface",
-               "QT_MAC_WANTS_BEST_RESOLUTION_OPENGL_SURFACE");
+         BOOL enable = lscs_mac_resolveOption(YES, tlw, "_q_mac_wantsBestResolutionOpenGLSurface",
+               "LSCS_MAC_WANTS_BEST_RESOLUTION_OPENGL_SURFACE");
          [m_contentView setWantsBestResolutionOpenGLSurface: enable];
       }
 
-      BOOL enable = qt_mac_resolveOption(NO, tlw, "_q_mac_wantsLayer", "QT_MAC_WANTS_LAYER");
+      BOOL enable = lscs_mac_resolveOption(NO, tlw, "_q_mac_wantsLayer", "LSCS_MAC_WANTS_LAYER");
       [m_contentView setWantsLayer: enable];
    }
 
@@ -556,7 +556,7 @@ void QCocoaWindow::setGeometry(const QRect &rectIn)
    // This means it is a call from QWindow::setFramePosition() and
    // the coordinates include the frame (size is still the contents rectangle)
 
-   if (qt_window_private(const_cast<QWindow *>(window()))->positionPolicy == QWindowPrivate::WindowFrameInclusive) {
+   if (lscs_window_private(const_cast<QWindow *>(window()))->positionPolicy == QWindowPrivate::WindowFrameInclusive) {
       const QMargins margins = frameMargins();
       rect.moveTopLeft(rect.topLeft() + QPoint(margins.left(), margins.top()));
    }
@@ -585,8 +585,8 @@ QRect QCocoaWindow::geometry() const
       NSRect screenRect = [[m_contentView window] convertRectToScreen: NSMakeRect(windowPoint.x, windowPoint.y, 1, 1)];
       NSPoint screenPoint = screenRect.origin;
 
-      QPoint position = qt_mac_flipPoint(screenPoint).toPoint();
-      QSize size = qt_mac_toQRect([m_contentView bounds]).size();
+      QPoint position = lscs_mac_flipPoint(screenPoint).toPoint();
+      QSize size = lscs_mac_toQRect([m_contentView bounds]).size();
 
       return QRect(position, size);
    }
@@ -618,7 +618,7 @@ void QCocoaWindow::setCocoaGeometry(const QRect &rect)
       QWindowSystemInterface::handleExposeEvent(window(), QRect(QPoint(0, 0), rect.size()));
 
    } else if (m_nsWindow) {
-      NSRect bounds = qt_mac_flipRect(rect);
+      NSRect bounds = lscs_mac_flipRect(rect);
       [m_nsWindow setFrame: [m_nsWindow frameRectForContentRect: bounds] display: YES animate: NO];
 
    } else {
@@ -647,7 +647,7 @@ void QCocoaWindow::clipWindow(const NSRect &clipRect)
 
    NSRect clippedWindowRect = NSZeroRect;
    if (!NSIsEmptyRect(clipRect)) {
-      NSRect windowFrame = qt_mac_flipRect(QRect(window()->mapToGlobal(QPoint(0, 0)), geometry().size()));
+      NSRect windowFrame = lscs_mac_flipRect(QRect(window()->mapToGlobal(QPoint(0, 0)), geometry().size()));
       clippedWindowRect = NSIntersectionRect(windowFrame, clipRect);
       // Clipping top/left offsets the content. Move it back.
       NSPoint contentViewOffset = NSMakePoint(qMax(CGFloat(0), NSMinX(clippedWindowRect) - NSMinX(windowFrame)),
@@ -842,7 +842,7 @@ void QCocoaWindow::setVisible(bool visible)
                         NSEventMaskOtherMouseDown | NSEventMaskMouseMoved
                         handler: ^ (NSEvent * e) {
 
-                     QPointF localPoint = qt_mac_flipPoint([NSEvent mouseLocation]);
+                     QPointF localPoint = lscs_mac_flipPoint([NSEvent mouseLocation]);
                      QWindowSystemInterface::handleMouseEvent(window(), window()->mapFromGlobal(localPoint.toPoint()),
                         localPoint, cocoaButton2QtButton([e buttonNumber]));
                   }];
@@ -860,7 +860,7 @@ void QCocoaWindow::setVisible(bool visible)
 
    } else {
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
       if (m_glContext) {
          m_glContext->windowWasHidden();
       }
@@ -1148,7 +1148,7 @@ void QCocoaWindow::setWindowIcon(const QIcon &icon)
       [iconButton setImage: nil];
    } else {
       QPixmap pixmap = icon.pixmap(QSize(22, 22));
-      NSImage *image = static_cast<NSImage *>(qt_mac_create_nsimage(pixmap));
+      NSImage *image = static_cast<NSImage *>(lscs_mac_create_nsimage(pixmap));
       [iconButton setImage: image];
       [image release];
    }
@@ -1204,7 +1204,7 @@ void QCocoaWindow::raise()
             QMacAutoReleasePool pool;
             [m_nsWindow orderFront: m_nsWindow];
          }
-         static bool raiseProcess = qt_mac_resolveOption(true, "QT_MAC_SET_RAISE_PROCESS");
+         static bool raiseProcess = lscs_mac_resolveOption(true, "LSCS_MAC_SET_RAISE_PROCESS");
          if (raiseProcess) {
             ProcessSerialNumber psn;
             GetCurrentProcess(&psn);
@@ -1256,7 +1256,7 @@ bool QCocoaWindow::isOpaque() const
 {
    // OpenGL surfaces can be ordered either above(default) or below the NSWindow.
    // When ordering below the window must be tranclucent.
-   static GLint openglSourfaceOrder = qt_mac_resolveOption(1, "QT_MAC_OPENGL_SURFACE_ORDER");
+   static GLint openglSourfaceOrder = lscs_mac_resolveOption(1, "LSCS_MAC_OPENGL_SURFACE_ORDER");
 
    bool translucent = (window()->format().alphaBufferSize() > 0
          || window()->opacity() < 1
@@ -1298,7 +1298,7 @@ void QCocoaWindow::propagateSizeHints()
    // resizable and that have no specific size increment set. Cocoa expects (1.0, 1.0) in this case.
    const QSize sizeIncrement = windowSizeIncrement();
    if (!sizeIncrement.isEmpty()) {
-      [m_nsWindow setResizeIncrements: qt_mac_toNSSize(sizeIncrement)];
+      [m_nsWindow setResizeIncrements: lscs_mac_toNSSize(sizeIncrement)];
    } else {
       [m_nsWindow setResizeIncrements: NSMakeSize(1.0, 1.0)];
    }
@@ -1483,7 +1483,7 @@ bool QCocoaWindow::windowIsPopupType(Qt::WindowType type) const
    return ((type & Qt::Popup) == Qt::Popup);
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 void QCocoaWindow::setCurrentContext(QCocoaGLContext *context)
 {
    m_glContext = context;
@@ -1498,7 +1498,7 @@ QCocoaGLContext *QCocoaWindow::currentContext() const
 void QCocoaWindow::recreateWindow(const QPlatformWindow *parentWindow)
 {
    bool wasNSWindowChild = m_isNSWindowChild;
-   BOOL requestNSWindowChild = qt_mac_resolveOption(NO, window(), "_q_platform_MacUseNSWindow", "QT_MAC_USE_NSWINDOW");
+   BOOL requestNSWindowChild = lscs_mac_resolveOption(NO, window(), "_q_platform_MacUseNSWindow", "LSCS_MAC_USE_NSWINDOW");
    m_isNSWindowChild = parentWindow && requestNSWindowChild;
    bool needsNSWindow = m_isNSWindowChild || !parentWindow;
 
@@ -1615,7 +1615,7 @@ void QCocoaWindow::recreateWindow(const QPlatformWindow *parentWindow)
       }
    }
 
-   const qreal opacity = qt_window_private(window())->opacity;
+   const qreal opacity = lscs_window_private(window())->opacity;
    if (! qFuzzyCompare(opacity, qreal(1.0))) {
       setOpacity(opacity);
    }
@@ -1661,7 +1661,7 @@ QCocoaNSWindow *QCocoaWindow::createNSWindow()
    QMacAutoReleasePool pool;
 
    QRect rect = initialGeometry(window(), windowGeometry(), defaultWindowWidth, defaultWindowHeight);
-   NSRect frame = qt_mac_flipRect(rect);
+   NSRect frame = lscs_mac_flipRect(rect);
 
    Qt::WindowType type = window()->type();
    Qt::WindowFlags flags = window()->flags();
@@ -1713,7 +1713,7 @@ QCocoaNSWindow *QCocoaWindow::createNSWindow()
 
    // OpenGL surfaces can be ordered either above(default) or below the NSWindow.
    // When ordering below the window must be tranclucent and have a clear background color.
-   static GLint openglSourfaceOrder = qt_mac_resolveOption(1, "QT_MAC_OPENGL_SURFACE_ORDER");
+   static GLint openglSourfaceOrder = lscs_mac_resolveOption(1, "LSCS_MAC_OPENGL_SURFACE_ORDER");
 
    bool isTranslucent = window()->format().alphaBufferSize() > 0
       || (surface()->supportsOpenGL() && openglSourfaceOrder == -1);
@@ -1754,7 +1754,7 @@ void QCocoaWindow::removeChildWindow(QCocoaWindow *child)
 
 bool QCocoaWindow::alwaysShowToolWindow() const
 {
-   return qt_mac_resolveOption(false, window(), "_q_macAlwaysShowToolWindow", "");
+   return lscs_mac_resolveOption(false, window(), "_q_macAlwaysShowToolWindow", "");
 }
 
 void QCocoaWindow::removeMonitor()

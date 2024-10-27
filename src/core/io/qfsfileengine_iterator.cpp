@@ -25,8 +25,8 @@
 #include <qfileinfo_p.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_FSFILEENGINE
-#ifndef QT_NO_FILESYSTEMITERATOR
+#ifndef LSCS_NO_FSFILEENGINE
+#ifndef LSCS_NO_FILESYSTEMITERATOR
 
 QFSFileEngineIterator::QFSFileEngineIterator( QDir::Filters filters, const QStringList &filterNames )
     : QAbstractFileEngineIterator( filters, filterNames ), done( false )
@@ -87,6 +87,6 @@ QFileInfo QFSFileEngineIterator::currentFileInfo() const
     return currentInfo;
 }
 
-#endif // QT_NO_FILESYSTEMITERATOR
+#endif // LSCS_NO_FILESYSTEMITERATOR
 
 #endif

@@ -22,7 +22,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
    target_compile_definitions(LsCsPrinterDriverCocoa
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    install(TARGETS LsCsPrinterDriverCocoa DESTINATION ${CMAKE_INSTALL_LIBDIR})

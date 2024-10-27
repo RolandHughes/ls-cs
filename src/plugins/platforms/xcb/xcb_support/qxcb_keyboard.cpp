@@ -712,7 +712,7 @@ void QXcbKeyboard::printKeymapError( const char *error ) const
         }
     }
 
-    qWarning() << "Use QT_XKB_CONFIG_ROOT environmental variable to provide an additional search path, "
+    qWarning() << "Use LSCS_XKB_CONFIG_ROOT environmental variable to provide an additional search path, "
                "add ':' as separator to provide several search paths and/or make sure that XKB configuration data "
                "directory contains recent enough contents, to update please see http://cgit.freedesktop.org/xkeyboard-config/ .";
 }
@@ -725,7 +725,7 @@ void QXcbKeyboard::updateKeymap()
     if ( ! xkb_context )
     {
 
-        QString xkb_config = qgetenv( "QT_XKB_CONFIG_ROOT" );
+        QString xkb_config = qgetenv( "LSCS_XKB_CONFIG_ROOT" );
 
         if ( xkb_config.isEmpty() )
         {
@@ -761,7 +761,7 @@ void QXcbKeyboard::updateKeymap()
 
     struct xkb_state *new_state = nullptr;
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
 
     if ( connection()->hasXKB() )
     {
@@ -820,7 +820,7 @@ void QXcbKeyboard::updateKeymap()
     checkForLatinLayout();
 }
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
 void QXcbKeyboard::updateXKBState( xcb_xkb_state_notify_event_t *state )
 {
     if ( m_config && connection()->hasXKB() )
@@ -1297,7 +1297,7 @@ int QXcbKeyboard::keysymToQtKey( xcb_keysym_t keysym, Qt::KeyboardModifiers &mod
 {
     int code = 0;
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     QTextCodec *systemCodec = QTextCodec::codecForLocale();
 #endif
 
@@ -1308,7 +1308,7 @@ int QXcbKeyboard::keysymToQtKey( xcb_keysym_t keysym, Qt::KeyboardModifiers &mod
     // rather use the QKeyEvent::text().
 
     if ( keysym < 128 || ( keysym < 256
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
                            && systemCodec->mibEnum() == 4
 #endif
                          ) )
@@ -1359,7 +1359,7 @@ QXcbKeyboard::QXcbKeyboard( QXcbConnection *connection )
 {
     memset( &xkb_names, 0, sizeof( xkb_names ) );
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
     core_device_id = 0;
 
     if ( connection->hasXKB() )
@@ -1382,7 +1382,7 @@ QXcbKeyboard::QXcbKeyboard( QXcbConnection *connection )
         m_key_symbols = xcb_key_symbols_alloc( xcb_connection() );
         updateModifiers();
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
     }
 
 #endif
@@ -1406,7 +1406,7 @@ QXcbKeyboard::~QXcbKeyboard()
 
 void QXcbKeyboard::updateVModMapping()
 {
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
     xcb_xkb_get_names_cookie_t names_cookie;
     xcb_xkb_get_names_reply_t *name_reply;
     xcb_xkb_get_names_value_list_t names_list;
@@ -1498,7 +1498,7 @@ void QXcbKeyboard::updateVModMapping()
 
 void QXcbKeyboard::updateVModToRModMapping()
 {
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
     xcb_xkb_get_map_cookie_t map_cookie;
     xcb_xkb_get_map_reply_t *map_reply;
     xcb_xkb_get_map_map_t map;

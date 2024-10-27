@@ -50,7 +50,7 @@ public:
 
     virtual QXcbWindow *createWindow( QWindow *window ) const = 0;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     virtual QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const = 0;
 #endif
 

@@ -30,7 +30,7 @@
 
 #include <qaccessible.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #ifdef __OBJC__
 @class QMacAccessibilityElement;
@@ -75,6 +75,6 @@ private:
     friend class QAccessibleInterface;
 };
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif

@@ -84,7 +84,7 @@ class Q_GUI_EXPORT QApplication : public QCoreApplication
     GUI_LSCS_PROPERTY_READ( keyboardInputInterval,  lscs_keyboardInputInterval )
     GUI_LSCS_PROPERTY_WRITE( keyboardInputInterval, lscs_setKeyboardInputInterval )
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     GUI_LSCS_PROPERTY_READ( wheelScrollLines,  lscs_wheelScrollLines )
     GUI_LSCS_PROPERTY_WRITE( wheelScrollLines, lscs_setWheelScrollLines )
 #endif
@@ -101,7 +101,7 @@ class Q_GUI_EXPORT QApplication : public QCoreApplication
     GUI_LSCS_PROPERTY_READ( quitOnLastWindowClosed,  lscs_quitOnLastWindowClosed )
     GUI_LSCS_PROPERTY_WRITE( quitOnLastWindowClosed, lscs_setQuitOnLastWindowClosed )
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     GUI_LSCS_PROPERTY_READ( styleSheet,  styleSheet )
     GUI_LSCS_PROPERTY_WRITE( styleSheet, setStyleSheet )
 #endif
@@ -171,7 +171,7 @@ public:
     static int colorSpec();
     static void setColorSpec( int spec );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     static QCursor *overrideCursor();
     static void setOverrideCursor( const QCursor &cursor );
     static void changeOverrideCursor( const QCursor &cursor );
@@ -208,7 +208,7 @@ public:
     static QWidget *activePopupWidget();
     static QWidget *activeModalWidget();
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     static QClipboard *clipboard();
 #endif
 
@@ -257,7 +257,7 @@ public:
     // wrapper for static method
     inline int lscs_keyboardInputInterval() const;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     static void setWheelScrollLines( int lines );
     static int wheelScrollLines();
 
@@ -332,7 +332,7 @@ public:
     static bool isEffectEnabled( Qt::UIEffect effect );
     static void setEffectEnabled( Qt::UIEffect effect, bool enable = true );
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     // session management
     bool isSessionRestored() const;
     QString sessionId() const;
@@ -389,7 +389,7 @@ public:
     GUI_LSCS_SIGNAL_1( Public, void fontDatabaseChanged() )
     GUI_LSCS_SIGNAL_2( fontDatabaseChanged )
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     // CopperSpice - api change to pass a pointer instead of a reference
     GUI_LSCS_SIGNAL_1( Public, void commitDataRequest( QSessionManager *sessionManager ) )
     GUI_LSCS_SIGNAL_2( commitDataRequest, sessionManager )
@@ -401,7 +401,7 @@ public:
 
     QString styleSheet() const;
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     GUI_LSCS_SLOT_1( Public, void setStyleSheet( const QString &sheet ) )
     GUI_LSCS_SLOT_2( setStyleSheet )
 #endif
@@ -444,17 +444,17 @@ private:
     friend class QFontDatabasePrivate;
     friend class QPlatformIntegration;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     friend class QShortcut;
     friend class QLineEdit;
     friend class QTextControl;
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     friend class QGestureManager;
 #endif
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
     friend class QPlatformSessionManager;
 #endif
 
@@ -522,7 +522,7 @@ int QApplication::lscs_keyboardInputInterval() const
     return keyboardInputInterval();
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QApplication::lscs_setWheelScrollLines( int lines )
 {
     setWheelScrollLines( lines );

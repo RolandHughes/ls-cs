@@ -34,7 +34,7 @@ public:
     {
         fontEngine->m_refCount.ref();
 
-#ifndef QT_NO_PDF
+#ifndef LSCS_NO_PDF
         addGlyph( 0 );
 #endif
     }
@@ -49,7 +49,7 @@ public:
 
     QByteArray toTruetype() const;
 
-#ifndef QT_NO_PDF
+#ifndef LSCS_NO_PDF
     QByteArray widthArray() const;
     QByteArray createToUnicodeMap() const;
     QVector<int> getReverseMap() const;

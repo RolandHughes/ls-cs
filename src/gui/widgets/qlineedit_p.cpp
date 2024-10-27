@@ -24,7 +24,7 @@
 #include <qlineedit.h>
 #include <qlineedit_p.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 #include <qabstractitemview.h>
 #include <qclipboard.h>
@@ -34,11 +34,11 @@
 #include <qvariant.h>
 #include <qwidgetaction.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
-#ifndef QT_NO_IM
+#ifndef LSCS_NO_IM
 #include <qinputmethod.h>
 #include <qlist.h>
 #endif
@@ -74,7 +74,7 @@ QRect QLineEditPrivate::cursorRect() const
     return adjustedControlRect( control->cursorRect() );
 }
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
 void QLineEditPrivate::_q_completionHighlighted( const QString &newText )
 {
@@ -102,7 +102,7 @@ void QLineEditPrivate::_q_completionHighlighted( const QString &newText )
     }
 }
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER
 
 void QLineEditPrivate::_q_handleWindowActivate()
 {
@@ -119,7 +119,7 @@ void QLineEditPrivate::_q_textEdited( const QString &text )
     Q_Q( QLineEdit );
     emit q->textEdited( text );
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
     if ( control->completer()
             && control->completer()->completionMode() != QCompleter::InlineCompletion )
@@ -137,7 +137,7 @@ void QLineEditPrivate::_q_cursorPositionChanged( int from, int to )
     emit q->cursorPositionChanged( from, to );
 }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 void QLineEditPrivate::_q_editFocusChange( bool isFocusChanged )
 {
     Q_Q( QLineEdit );
@@ -163,7 +163,7 @@ void QLineEditPrivate::_q_selectionChanged()
 
     emit q->selectionChanged();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QAccessibleTextSelectionEvent ev( q, control->selectionStart(), control->selectionEnd() );
     ev.setCursorPosition( control->cursorPosition() );
     QAccessible::updateAccessibility( &ev );
@@ -191,7 +191,7 @@ void QLineEditPrivate::init( const QString &txt )
     QObject::connect( control, &QLineControl::accepted,              q, &QLineEdit::returnPressed );
     QObject::connect( control, &QLineControl::editingFinished,       q, &QLineEdit::editingFinished );
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     QObject::connect( control, &QLineControl::editFocusChange,       q, &QLineEdit::_q_editFocusChange );
 #endif
 
@@ -209,7 +209,7 @@ void QLineEditPrivate::init( const QString &txt )
     control->setPasswordCharacter( q->style()->styleHint( QStyle::SH_LineEdit_PasswordCharacter, &opt, q ) );
     control->setPasswordMaskDelay( q->style()->styleHint( QStyle::SH_LineEdit_PasswordMaskDelay, &opt, q ) );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     q->setCursor( Qt::IBeamCursor );
 #endif
 
@@ -288,7 +288,7 @@ void QLineEditPrivate::resetInputMethod()
 */
 bool QLineEditPrivate::sendMouseEventToInputContext( QMouseEvent *e )
 {
-#if !defined QT_NO_IM
+#if !defined LSCS_NO_IM
 
     if ( control->composeMode() )
     {
@@ -317,7 +317,7 @@ bool QLineEditPrivate::sendMouseEventToInputContext( QMouseEvent *e )
     return false;
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 void QLineEditPrivate::drag()
 {
     Q_Q( QLineEdit );
@@ -348,7 +348,7 @@ QLineEditIconButton::QLineEditIconButton( QWidget *parent )
 QLineEditPrivate *QLineEditIconButton::lineEditPrivate() const
 {
     QLineEdit *le = qobject_cast<QLineEdit *>( parentWidget() );
-    return le ? static_cast<QLineEditPrivate *>( qt_widget_private( le ) ) : nullptr;
+    return le ? static_cast<QLineEditPrivate *>( lscs_widget_private( le ) ) : nullptr;
 }
 
 void QLineEditIconButton::paintEvent( QPaintEvent * )
@@ -417,7 +417,7 @@ void QLineEditIconButton::setOpacity( qreal value )
     }
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 void QLineEditIconButton::startOpacityAnimation( qreal endValue )
 {
     QPropertyAnimation *animation = new QPropertyAnimation( this, "opacity" );
@@ -429,7 +429,7 @@ void QLineEditIconButton::startOpacityAnimation( qreal endValue )
 
 void QLineEditIconButton::updateCursor()
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     setCursor( qFuzzyCompare( m_opacity, qreal( 1.0 ) ) || !parentWidget() ? QCursor( Qt::ArrowCursor ) : parentWidget()->cursor() );
 #endif
 }
@@ -444,7 +444,7 @@ void QLineEditPrivate::_q_textChanged( const QString &text )
         {
             lastTextSize = newTextSize;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
             const bool fadeIn = newTextSize > 0;
 
             for ( const SideWidgetEntry &e : leadingSideWidgets )

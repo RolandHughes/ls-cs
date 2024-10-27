@@ -24,7 +24,7 @@
 #include <qpaintengine.h>
 #include <qpixmap.h>
 
-#ifdef QT_OPENGL_LIB
+#ifdef LSCS_OPENGL_LIB
 # include "opengl/TextureMapperGL.h"
 #endif
 
@@ -202,7 +202,7 @@ void TextureMapperQt::drawTexture( const BitmapTexture &texture, const IntRect &
 
 PassOwnPtr<TextureMapper> TextureMapper::create( GraphicsContext *context )
 {
-#ifdef QT_OPENGL_LIB
+#ifdef LSCS_OPENGL_LIB
 
     if ( context && context->platformContext()->paintEngine()->type() == QPaintEngine::OpenGL2 )
     {
@@ -224,7 +224,7 @@ BitmapTextureQt::BitmapTextureQt()
 
 }
 
-#ifdef QT_OPENGL_LIB
+#ifdef LSCS_OPENGL_LIB
 class RGBA32PremultimpliedBufferQt : public RGBA32PremultimpliedBuffer
 {
 public:

@@ -23,7 +23,7 @@
 
 #include <qlistwidget.h>
 
-#ifndef QT_NO_LISTWIDGET
+#ifndef LSCS_NO_LISTWIDGET
 
 #include <qitemdelegate.h>
 
@@ -547,7 +547,7 @@ QMimeData *QListModel::mimeData( const QModelIndexList &indexes ) const
     return mimeData;
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 bool QListModel::dropMimeData( const QMimeData *data, Qt::DropAction action,
                                int row, int column, const QModelIndex &index )
 {
@@ -571,7 +571,7 @@ Qt::DropActions QListModel::supportedDropActions() const
     const QListWidget *view = qobject_cast<const QListWidget *>( QObject::parent() );
     return view->supportedDropActions();
 }
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 QListWidgetItem::QListWidgetItem( QListWidget *view, int type )
     : rtti( type ), view( view ), d( new QListWidgetItemPrivate( this ) ),
@@ -1111,7 +1111,7 @@ QMimeData *QListWidget::mimeData( const QList<QListWidgetItem *> &items ) const
     return d->listModel()->internalMimeData();
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 bool QListWidget::dropMimeData( int index, const QMimeData *data, Qt::DropAction action )
 {
@@ -1190,7 +1190,7 @@ Qt::DropActions QListWidget::supportedDropActions() const
     Q_D( const QListWidget );
     return d->listModel()->QAbstractListModel::supportedDropActions() | Qt::MoveAction;
 }
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 QList<QListWidgetItem *> QListWidget::items( const QMimeData *data ) const
 {
@@ -1286,4 +1286,4 @@ void QListWidget::_q_dataChanged( const QModelIndex &topLeft, const QModelIndex 
     d->_q_dataChanged( topLeft, bottomRight );
 }
 
-#endif // QT_NO_LISTWIDGET
+#endif // LSCS_NO_LISTWIDGET

@@ -26,7 +26,7 @@
 
 #include <qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptCompletionTaskInterface;
 
@@ -45,6 +45,6 @@ public:
         int frameIndex, int options ) = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

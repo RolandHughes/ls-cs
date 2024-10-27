@@ -34,7 +34,7 @@
 #include <QtCore/qlist.h>
 #include <QtScript/qscriptvalue.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
   \class QScriptEngineDebuggerFrontend
@@ -358,4 +358,4 @@ void QScriptEngineDebuggerFrontend::processCommand( int id, const QScriptDebugge
     d->backend->processCommand( id, command );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

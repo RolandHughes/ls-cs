@@ -31,7 +31,7 @@
 
 #include <qimage_p.h>
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 
 #include <qabstractfileengine.h>
 #include <qfile.h>
@@ -59,15 +59,15 @@
 #endif
 
 #if defined(FT_LCD_FILTER_H)
-#define QT_USE_FREETYPE_LCDFILTER
+#define LSCS_USE_FREETYPE_LCDFILTER
 #endif
 
-#ifdef QT_LINUXBASE
+#ifdef LSCS_LINUXBASE
 #include FT_ERRORS_H
 #endif
 
-#if !defined(QT_MAX_CACHED_GLYPH_SIZE)
-#define QT_MAX_CACHED_GLYPH_SIZE 64
+#if !defined(LSCS_MAX_CACHED_GLYPH_SIZE)
+#define LSCS_MAX_CACHED_GLYPH_SIZE 64
 #endif
 
 #define FLOOR(x)    ((x) & -64)
@@ -134,7 +134,7 @@ static QThreadStorage<QtFreetypeData *> *theFreetypeData()
     return &retval;
 }
 
-QtFreetypeData *qt_getFreetypeData()
+QtFreetypeData *lscs_getFreetypeData()
 {
     QtFreetypeData *&freetypeData = theFreetypeData()->localData();
 
@@ -146,9 +146,9 @@ QtFreetypeData *qt_getFreetypeData()
     return freetypeData;
 }
 
-FT_Library qt_getFreetype()
+FT_Library lscs_getFreetype()
 {
-    QtFreetypeData *freetypeData = qt_getFreetypeData();
+    QtFreetypeData *freetypeData = lscs_getFreetypeData();
 
     if ( !freetypeData->library )
     {
@@ -203,7 +203,7 @@ int QFreetypeFace::getPointInOutline( glyph_t glyph, int flags, quint32 point, Q
     return 0;
 }
 
-extern QByteArray qt_fontdata_from_index( int );
+extern QByteArray lscs_fontdata_from_index( int );
 
 /*
  * One font file can contain more than one font (bold/italic for example)
@@ -220,7 +220,7 @@ QFreetypeFace *QFreetypeFace::getFace( const QFontEngine::FaceId &face_id, const
         return nullptr;
     }
 
-    QtFreetypeData *freetypeData = qt_getFreetypeData();
+    QtFreetypeData *freetypeData = lscs_getFreetypeData();
 
     if ( ! freetypeData->library )
     {
@@ -256,7 +256,7 @@ QFreetypeFace *QFreetypeFace::getFace( const QFontEngine::FaceId &face_id, const
                 idx.remove( 0, 14 );                    // remove ':qmemoryfonts/'
 
                 bool ok = false;
-                newFreetype->fontData = qt_fontdata_from_index( idx.toInteger<int>( &ok ) );
+                newFreetype->fontData = lscs_fontdata_from_index( idx.toInteger<int>( &ok ) );
 
                 if ( ! ok )
                 {
@@ -381,7 +381,7 @@ void QFreetypeFace::release( const QFontEngine::FaceId &face_id )
     {
         if ( face )
         {
-            QtFreetypeData *freetypeData = qt_getFreetypeData();
+            QtFreetypeData *freetypeData = lscs_getFreetypeData();
 
             cleanup();
 
@@ -458,7 +458,7 @@ void QFreetypeFace::computeSize( const QFontDef &fontDef, int *xsize, int *ysize
     }
     else
     {
-        *outline_drawing = ( *xsize > ( QT_MAX_CACHED_GLYPH_SIZE << 6 ) || *ysize > ( QT_MAX_CACHED_GLYPH_SIZE << 6 ) );
+        *outline_drawing = ( *xsize > ( LSCS_MAX_CACHED_GLYPH_SIZE << 6 ) || *ysize > ( LSCS_MAX_CACHED_GLYPH_SIZE << 6 ) );
     }
 }
 
@@ -663,7 +663,7 @@ void QFreetypeFace::addGlyphToPath( FT_Face face, FT_GlyphSlot g, const QFixedPo
     }
 }
 
-extern void qt_addBitmapToPath( qreal x0, qreal y0, const uchar *image_data, int bpl, int w, int h, QPainterPath *path );
+extern void lscs_addBitmapToPath( qreal x0, qreal y0, const uchar *image_data, int bpl, int w, int h, QPainterPath *path );
 
 void QFreetypeFace::addBitmapToPath( FT_GlyphSlot slot, const QFixedPoint &point, QPainterPath *path )
 {
@@ -673,7 +673,7 @@ void QFreetypeFace::addBitmapToPath( FT_GlyphSlot slot, const QFixedPoint &point
     }
 
     QPointF cp = point.toPointF();
-    qt_addBitmapToPath( cp.x() + TRUNC( slot->metrics.horiBearingX ), cp.y() - TRUNC( slot->metrics.horiBearingY ),
+    lscs_addBitmapToPath( cp.x() + TRUNC( slot->metrics.horiBearingX ), cp.y() - TRUNC( slot->metrics.horiBearingY ),
                         slot->bitmap.buffer, slot->bitmap.pitch, slot->bitmap.width, slot->bitmap.rows, path );
 }
 
@@ -842,7 +842,7 @@ QFontEngineFT::QFontEngineFT( const QFontDef &fd )
     defaultFormat = Format_None;
 
     embeddedbitmap = false;
-    const QByteArray env = qgetenv( "QT_NO_FT_CACHE" );
+    const QByteArray env = qgetenv( "LSCS_NO_FT_CACHE" );
     cacheEnabled = env.isEmpty() || env.toInt() == 0;
     m_subPixelPositionCount = 4;
     forceAutoHint = false;
@@ -1252,7 +1252,7 @@ QFontEngineFT::Glyph *QFontEngineFT::loadGlyph( QGlyphSet *set, uint glyph,
     int glyph_buffer_size = 0;
     QScopedArrayPointer<uchar> glyph_buffer;
 
-#if defined(QT_USE_FREETYPE_LCDFILTER)
+#if defined(LSCS_USE_FREETYPE_LCDFILTER)
     bool useFreetypeRenderGlyph = false;
 
     if ( slot->format == FT_GLYPH_FORMAT_OUTLINE && ( hsubpixel || vfactor != 1 ) )
@@ -1821,8 +1821,8 @@ QFontEngineFT::QGlyphSet *QFontEngineFT::loadGlyphSet( const QTransform &matrix 
         gs = &transformedGlyphSets[0];
         gs->clear();
         gs->transformationMatrix = m;
-        gs->outline_drawing = fontDef.pixelSize * fontDef.pixelSize * qAbs( matrix.det() ) >= QT_MAX_CACHED_GLYPH_SIZE *
-                              QT_MAX_CACHED_GLYPH_SIZE;
+        gs->outline_drawing = fontDef.pixelSize * fontDef.pixelSize * qAbs( matrix.det() ) >= LSCS_MAX_CACHED_GLYPH_SIZE *
+                              LSCS_MAX_CACHED_GLYPH_SIZE;
     }
 
     Q_ASSERT( gs != nullptr );

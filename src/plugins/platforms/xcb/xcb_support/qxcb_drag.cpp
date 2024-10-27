@@ -46,7 +46,7 @@
 
 #include <xcb/xcb.h>
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 const int xdnd_version = 5;
 
@@ -813,7 +813,7 @@ static bool checkEmbedded( QWidget *w, const XEvent *xe )
     {
         current_target = ( ( QExtraWidget * )current_embedding_widget )->extraData()->xDndProxy;
         current_proxy_target = current_target;
-        qt_xdnd_send_leave();
+        lscs_xdnd_send_leave();
         current_target = 0;
         current_proxy_target = 0;
         current_embedding_widget = 0;
@@ -962,9 +962,9 @@ void QXcbDrag::handle_xdnd_position( QPlatformWindow *w, const xcb_client_messag
         supported_actions = Qt::DropActions( toDropAction( e->data.data32[4] ) );
     }
 
-    QPlatformDragQtResponse qt_response = QWindowSystemInterface::handleDrag( w->window(), dropData, p, supported_actions );
+    QPlatformDragQtResponse lscs_response = QWindowSystemInterface::handleDrag( w->window(), dropData, p, supported_actions );
     QRect answerRect( p + geometry.topLeft(), QSize( 1, 1 ) );
-    answerRect = qt_response.answerRect().translated( geometry.topLeft() ).intersected( geometry );
+    answerRect = lscs_response.answerRect().translated( geometry.topLeft() ).intersected( geometry );
 
     xcb_client_message_event_t response;
     response.response_type = XCB_CLIENT_MESSAGE;
@@ -974,12 +974,12 @@ void QXcbDrag::handle_xdnd_position( QPlatformWindow *w, const xcb_client_messag
 
     response.type = atom( QXcbAtom::XdndStatus );
     response.data.data32[0] = xcb_window( w );
-    response.data.data32[1] = qt_response.isAccepted(); // flags
+    response.data.data32[1] = lscs_response.isAccepted(); // flags
     response.data.data32[2] = 0; // x, y
     response.data.data32[3] = 0; // w, h
-    response.data.data32[4] = toXdndAction( qt_response.acceptedAction() ); // action
+    response.data.data32[4] = toXdndAction( lscs_response.acceptedAction() ); // action
 
-    accepted_drop_action = qt_response.acceptedAction();
+    accepted_drop_action = lscs_response.acceptedAction();
 
     if ( answerRect.left() < 0 )
     {
@@ -1698,5 +1698,5 @@ QStringList QXcbDropData::formats_sys() const
     return formats;
 }
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 

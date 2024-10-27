@@ -35,7 +35,7 @@
 
 
 #if PLATFORM(QT)
-#include "qt_instance.h"
+#include "lscs_instance.h"
 #endif
 
 namespace JSC

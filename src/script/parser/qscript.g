@@ -6,7 +6,7 @@
 --
 -- This file is part of the QtScript module of the Qt Toolkit.
 --
--- $QT_BEGIN_LICENSE:LGPL-ONLY$
+-- $LSCS_BEGIN_LICENSE:LGPL-ONLY$
 -- GNU Lesser General Public License Usage
 -- This file may be used under the terms of the GNU Lesser
 -- General Public License version 2.1 as published by the Free Software
@@ -17,7 +17,7 @@
 --
 -- If you have questions regarding the use of this file, please contact
 -- Nokia at qt-info@nokia.com.
--- $QT_END_LICENSE$
+-- $LSCS_END_LICENSE$
 --
 ----------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@
 **
 ** This file is part of the QtScript module of the Qt Toolkit.
 **
-** $QT_BEGIN_LICENSE:LGPL$
+** $LSCS_BEGIN_LICENSE:LGPL$
 ** GNU Lesser General Public License Usage
 ** This file may be used under the terms of the GNU Lesser General Public
 ** License version 2.1 as published by the Free Software Foundation and
@@ -97,7 +97,7 @@
 **
 **
 **
-** $QT_END_LICENSE$
+** $LSCS_END_LICENSE$
 **
 ****************************************************************************/
 
@@ -124,7 +124,7 @@
 **
 ** This file is part of the QtScript module of the Qt Toolkit.
 **
-** $QT_BEGIN_LICENSE:LGPL$
+** $LSCS_BEGIN_LICENSE:LGPL$
 ** GNU Lesser General Public License Usage
 ** This file may be used under the terms of the GNU Lesser General Public
 ** License version 2.1 as published by the Free Software Foundation and
@@ -153,7 +153,7 @@
 **
 **
 **
-** $QT_END_LICENSE$
+** $LSCS_END_LICENSE$
 **
 ****************************************************************************/
 

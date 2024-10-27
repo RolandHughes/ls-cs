@@ -8,7 +8,7 @@ list(APPEND PLATFORMS_COCOA_PRIVATE_INCLUDES
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qnswindowdelegate.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qpaintengine_mac_p.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qprintengine_mac_p.h
-   ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qt_mac_p.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/lscs_mac_p.h
 
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoaaccessibilityelement.h
    ${CMAKE_CURRENT_SOURCE_DIR}/cocoa/qcocoaaccessibility.h
@@ -140,8 +140,8 @@ if(BUILD_PLATFORMS_COCOA_PLUGIN)
 
    target_compile_definitions(LsCsGuiCocoa
       PRIVATE
-      -DQT_PLUGIN
-      -DQT_USE_FREETYPE
+      -DLSCS_PLUGIN
+      -DLSCS_USE_FREETYPE
    )
 
    set_target_properties(LsCsGuiCocoa

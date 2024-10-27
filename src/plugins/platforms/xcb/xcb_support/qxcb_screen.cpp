@@ -474,7 +474,7 @@ QDpi QXcbScreen::virtualDpi() const
 
 QDpi QXcbScreen::logicalDpi() const
 {
-    static const int overrideDpi = qgetenv( "QT_FONT_DPI" ).toInt();
+    static const int overrideDpi = qgetenv( "LSCS_FONT_DPI" ).toInt();
 
     if ( overrideDpi )
     {
@@ -805,7 +805,7 @@ QPixmap QXcbScreen::grabWindow( WId window, int x, int y, int width, int height 
 
     xcb_copy_area( xcb_connection(), window, pixmap, gc, x, y, 0, 0, width, height );
 
-    QPixmap result = qt_xcb_pixmapFromXPixmap( connection(), pixmap, width, height, reply->depth, visual );
+    QPixmap result = lscs_xcb_pixmapFromXPixmap( connection(), pixmap, width, height, reply->depth, visual );
 
     free( reply );
     xcb_free_gc( xcb_connection(), gc );

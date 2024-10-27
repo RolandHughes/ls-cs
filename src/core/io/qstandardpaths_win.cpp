@@ -26,7 +26,7 @@
 #include <qdir.h>
 #include <qstringlist.h>
 #include <qcoreapplication.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qsystemlibrary_p.h>
 
@@ -40,7 +40,7 @@ const GUID qCLSID_FOLDERID_Downloads = { 0x374de290, 0x123f, 0x4565, { 0x91, 0x6
 #define CSIDL_MYVIDEO 14
 #endif
 
-#ifndef QT_NO_STANDARDPATHS
+#ifndef LSCS_NO_STANDARDPATHS
 
 static QString convertCharArray( const std::wstring &path )
 {

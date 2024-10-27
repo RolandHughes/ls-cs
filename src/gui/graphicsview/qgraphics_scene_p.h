@@ -26,7 +26,7 @@
 
 #include <qgraphicsscene.h>
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 #include <qgraphicssceneevent.h>
 #include <qgraphicsview.h>
@@ -220,7 +220,7 @@ public:
         item->d_ptr->ignoreVisible = 0;
         item->d_ptr->ignoreOpacity = 0;
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
         QGraphicsEffect::ChangeFlags flags;
 
         if ( item->d_ptr->notifyBoundingRectChanged )
@@ -245,7 +245,7 @@ public:
             }
         }
 
-#ifndef QT_NO_GRAPHICSEFFECT
+#ifndef LSCS_NO_GRAPHICSEFFECT
 
         if ( flags && item->d_ptr->graphicsEffect )
         {
@@ -260,7 +260,7 @@ public:
     {
         if ( needSortTopLevelItems )
         {
-            std::sort( topLevelItems.begin(), topLevelItems.end(), qt_notclosestLeaf );
+            std::sort( topLevelItems.begin(), topLevelItems.end(), lscs_notclosestLeaf );
             topLevelSequentialOrdering = false;
             needSortTopLevelItems = false;
         }
@@ -290,7 +290,7 @@ public:
 
     QList<QGraphicsObject *> cachedTargetItems;
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     QHash<QGraphicsObject *, QSet<QGesture *>> cachedItemGestures;
     QHash<QGraphicsObject *, QSet<QGesture *>> cachedAlreadyDeliveredGestures;
     QHash<QGesture *, QGraphicsObject *> gestureTargets;
@@ -355,6 +355,6 @@ static inline QRectF adjustedItemEffectiveBoundingRect( const QGraphicsItem *ite
 }
 
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

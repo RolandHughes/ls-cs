@@ -186,7 +186,7 @@ void QGLXContext::init( QXcbScreen *screen, QPlatformOpenGLContext *share )
 {
     if ( m_format.renderableType() == QSurfaceFormat::DefaultRenderableType )
 
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
         m_format.setRenderableType( QSurfaceFormat::OpenGLES );
 
 #else
@@ -635,11 +635,11 @@ bool QGLXContext::makeCurrent( QPlatformSurface *surface )
         if ( interval >= 0 && m_swapInterval != interval && screen )
         {
             m_swapInterval = interval;
-            typedef void ( *qt_glXSwapIntervalEXT )( Display *, GLXDrawable, int );
-            typedef void ( *qt_glXSwapIntervalMESA )( unsigned int );
+            typedef void ( *lscs_glXSwapIntervalEXT )( Display *, GLXDrawable, int );
+            typedef void ( *lscs_glXSwapIntervalMESA )( unsigned int );
 
-            static qt_glXSwapIntervalEXT glXSwapIntervalEXT   = nullptr;
-            static qt_glXSwapIntervalMESA glXSwapIntervalMESA = nullptr;
+            static lscs_glXSwapIntervalEXT glXSwapIntervalEXT   = nullptr;
+            static lscs_glXSwapIntervalMESA glXSwapIntervalMESA = nullptr;
             static bool resolved = false;
 
             if ( !resolved )
@@ -650,12 +650,12 @@ bool QGLXContext::makeCurrent( QPlatformSurface *surface )
 
                 if ( glxExt.contains( "GLX_EXT_swap_control" ) )
                 {
-                    glXSwapIntervalEXT = ( qt_glXSwapIntervalEXT ) getProcAddress( "glXSwapIntervalEXT" );
+                    glXSwapIntervalEXT = ( lscs_glXSwapIntervalEXT ) getProcAddress( "glXSwapIntervalEXT" );
                 }
 
                 if ( glxExt.contains( "GLX_MESA_swap_control" ) )
                 {
-                    glXSwapIntervalMESA = ( qt_glXSwapIntervalMESA ) getProcAddress( "glXSwapIntervalMESA" );
+                    glXSwapIntervalMESA = ( lscs_glXSwapIntervalMESA ) getProcAddress( "glXSwapIntervalMESA" );
                 }
             }
 
@@ -719,13 +719,13 @@ void QGLXContext::swapBuffers( QPlatformSurface *surface )
 
 void ( *QGLXContext::getProcAddress( const QByteArray &procName ) ) ()
 {
-#ifdef QT_STATIC
+#ifdef LSCS_STATIC
     return glXGetProcAddressARB( reinterpret_cast<const GLubyte *>( procName.constData() ) );
 
 #else
-    typedef void *( *qt_glXGetProcAddressARB )( const GLubyte * );
+    typedef void *( *lscs_glXGetProcAddressARB )( const GLubyte * );
 
-    static qt_glXGetProcAddressARB glXGetProcAddressARB = nullptr;
+    static lscs_glXGetProcAddressARB glXGetProcAddressARB = nullptr;
     static bool resolved = false;
 
     if ( resolved && ! glXGetProcAddressARB )
@@ -745,7 +745,7 @@ void ( *QGLXContext::getProcAddress( const QByteArray &procName ) ) ()
 
             if ( handle )
             {
-                glXGetProcAddressARB = ( qt_glXGetProcAddressARB ) dlsym( handle, "glXGetProcAddressARB" );
+                glXGetProcAddressARB = ( lscs_glXGetProcAddressARB ) dlsym( handle, "glXGetProcAddressARB" );
                 dlclose( handle );
             }
 
@@ -753,10 +753,10 @@ void ( *QGLXContext::getProcAddress( const QByteArray &procName ) ) ()
 
             if ( glXGetProcAddressARB == nullptr )
             {
-                extern const QString qt_gl_library_name();
+                extern const QString lscs_gl_library_name();
 
                 QLibrary lib( QString( "GL" ) );
-                glXGetProcAddressARB = ( qt_glXGetProcAddressARB ) lib.resolve( "glXGetProcAddressARB" );
+                glXGetProcAddressARB = ( lscs_glXGetProcAddressARB ) lib.resolve( "glXGetProcAddressARB" );
             }
         }
 
@@ -834,7 +834,7 @@ void QGLXContext::queryDummyContext()
 
     m_queriedDummyContext = true;
 
-    static bool skip = qgetenv( "QT_OPENGL_NO_SANITY_CHECK" ).isEmpty();
+    static bool skip = qgetenv( "LSCS_OPENGL_NO_SANITY_CHECK" ).isEmpty();
 
     if ( skip )
     {

@@ -27,7 +27,7 @@
 #include <qsslkey.h>
 #include <qsslsocket_p.h>       // includes wincrypt.h
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
 #include <openssl/rsa.h>
 #include <openssl/dsa.h>
 #endif
@@ -56,7 +56,7 @@ public:
         clear();
     }
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
     bool fromEVP_PKEY( EVP_PKEY *pkey );
 #endif
 
@@ -81,7 +81,7 @@ public:
     static QByteArray decrypt( Cipher cipher, const QByteArray &data, const QByteArray &key, const QByteArray &iv );
     static QByteArray encrypt( Cipher cipher, const QByteArray &data, const QByteArray &key, const QByteArray &iv );
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
     union
     {
         EVP_PKEY *opaque;

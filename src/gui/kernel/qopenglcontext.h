@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qnamespace.h>
 #include <qobject.h>
@@ -240,6 +240,6 @@ private:
     GUI_LSCS_SLOT_2( _q_screenDestroyed )
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

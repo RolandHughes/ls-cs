@@ -24,7 +24,7 @@
 #include <qaction.h>
 #include <qactiongroup.h>
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 #include <qaction_p.h>
 #include <qapplication.h>
 #include <qevent.h>
@@ -44,7 +44,7 @@
 /*
   internal: guesses a descriptive text from a text suited for a menu entry
  */
-static QString qt_strippedText( QString s )
+static QString lscs_strippedText( QString s )
 {
     s.remove( "..." );
 
@@ -76,7 +76,7 @@ QActionPrivate::QActionPrivate()
       menuRole( QAction::TextHeuristicRole ),  priority( QAction::NormalPriority )
 {
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     shortcutId = 0;
     shortcutContext = Qt::WindowShortcut;
     autorepeat = true;
@@ -91,7 +91,7 @@ bool QActionPrivate::showStatusText( QWidget *widget, const QString &str )
 {
     Q_Q( QAction );
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 
     if ( QObject *object = widget ? widget : q->parent() )
     {
@@ -117,7 +117,7 @@ void QActionPrivate::sendDataChanged()
         QApplication::sendEvent( w, &e );
     }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
     for ( int i = 0; i < graphicsWidgets.size(); ++i )
     {
@@ -132,7 +132,7 @@ void QActionPrivate::sendDataChanged()
     emit q->changed();
 }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 void QActionPrivate::redoGrab( QShortcutMap &map )
 {
     Q_Q( QAction );
@@ -229,7 +229,7 @@ void QActionPrivate::setShortcutEnabled( bool enable, QShortcutMap &map )
         }
     }
 }
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 
 QAction::QAction( QObject *parent )
@@ -310,7 +310,7 @@ QList<QWidget *> QAction::associatedWidgets() const
     return d->widgets;
 }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 QList<QGraphicsWidget *> QAction::associatedGraphicsWidgets() const
 {
     Q_D( const QAction );
@@ -318,7 +318,7 @@ QList<QGraphicsWidget *> QAction::associatedGraphicsWidgets() const
 }
 #endif
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 void QAction::setShortcut( const QKeySequence &shortcut )
 {
@@ -438,7 +438,7 @@ bool QAction::autoRepeat() const
     Q_D( const QAction );
     return d->autorepeat;
 }
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 void QAction::setFont( const QFont &font )
 {
@@ -470,7 +470,7 @@ QAction::~QAction()
         w->removeAction( this );
     }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
     for ( int i = d->graphicsWidgets.size() - 1; i >= 0; --i )
     {
@@ -485,7 +485,7 @@ QAction::~QAction()
         d->group->removeAction( this );
     }
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( d->shortcutId && qApp )
     {
@@ -542,7 +542,7 @@ QIcon QAction::icon() const
     return d->icon;
 }
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 QMenu *QAction::menu() const
 {
     Q_D( const QAction );
@@ -635,7 +635,7 @@ QString QAction::iconText() const
 
     if ( d->iconText.isEmpty() )
     {
-        return qt_strippedText( d->text );
+        return lscs_strippedText( d->text );
     }
 
     return d->iconText;
@@ -662,10 +662,10 @@ QString QAction::toolTip() const
     {
         if ( !d->text.isEmpty() )
         {
-            return qt_strippedText( d->text );
+            return lscs_strippedText( d->text );
         }
 
-        return qt_strippedText( d->iconText );
+        return lscs_strippedText( d->iconText );
     }
 
     return d->tooltip;
@@ -798,7 +798,7 @@ void QAction::setEnabled( bool b )
     QAPP_CHECK( "setEnabled" );
     d->enabled = b;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     d->setShortcutEnabled( b, qApp->d_func()->shortcutMap );
 #endif
 
@@ -825,7 +825,7 @@ void QAction::setVisible( bool b )
     d->visible = b;
     d->enabled = b && !d->forceDisabled && ( !d->group || d->group->isEnabled() );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     d->setShortcutEnabled( d->enabled, qApp->d_func()->shortcutMap );
 #endif
 
@@ -840,7 +840,7 @@ bool QAction::isVisible() const
 
 bool QAction::event( QEvent *e )
 {
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( e->type() == QEvent::Shortcut )
     {

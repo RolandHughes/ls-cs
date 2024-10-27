@@ -39,7 +39,7 @@
 
 #include <stdlib.h>
 
-#define QT_INIT_TEXTUNDOCOMMAND(c, a1, a2, a3, a4, a5, a6, a7, a8) \
+#define LSCS_INIT_TEXTUNDOCOMMAND(c, a1, a2, a3, a4, a5, a6, a7, a8) \
       QTextUndoCommand c = { a1, a2, 0, 0, quint8(a3), a4, quint32(a5), quint32(a6), { int(a7) }, quint32(a8) }
 
 /*
@@ -450,7 +450,7 @@ int QTextDocumentPrivate::insertBlock( QChar blockSeparator, int pos, int blockF
     int b = blocks.findNode( pos );
     QTextBlockData *tmpBlock = blocks.fragment( b );
 
-    QT_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::BlockInserted, ( editBlock != 0 ),
+    LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::BlockInserted, ( editBlock != 0 ),
                              op, charFormat, strPos, pos, blockFormat, static_cast<quint32>( tmpBlock->revision ) );
 
     appendUndoItem( c );
@@ -497,7 +497,7 @@ void QTextDocumentPrivate::insert( int pos, int strPos, int strLength, int forma
         int b = blocks.findNode( pos );
         QTextBlockData *tmpBlock = blocks.fragment( b );
 
-        QT_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::Inserted, ( editBlock != 0 ),
+        LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::Inserted, ( editBlock != 0 ),
                                  QTextUndoCommand::MoveCursor, format, strPos, pos, strLength,
                                  static_cast<quint32>( tmpBlock->revision ) );
 
@@ -680,11 +680,11 @@ void QTextDocumentPrivate::move( int pos, int to, int length, QTextUndoCommand::
         quint32 blockRevision = static_cast<quint32>( tmpBlock->revision );
 
         QTextFragmentData *X = fragments.fragment( x );
-        QT_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::Removed, ( editBlock != 0 ),
+        LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::Removed, ( editBlock != 0 ),
                                  op, X->format, X->stringPosition, static_cast<int>( key ), static_cast<int>( X->size_array[0] ),
                                  blockRevision );
 
-        QT_INIT_TEXTUNDOCOMMAND( cInsert, QTextUndoCommand::Inserted, ( editBlock != 0 ),
+        LSCS_INIT_TEXTUNDOCOMMAND( cInsert, QTextUndoCommand::Inserted, ( editBlock != 0 ),
                                  op, X->format, X->stringPosition, dstKey, static_cast<int>( X->size_array[0] ),
                                  blockRevision );
 
@@ -850,7 +850,7 @@ void QTextDocumentPrivate::setCharFormat( int pos, int length, const QTextCharFo
             fragment->format = newFormatIdx;
         }
 
-        QT_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::CharFormatChanged, true, QTextUndoCommand::MoveCursor, oldFormat,
+        LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::CharFormatChanged, true, QTextUndoCommand::MoveCursor, oldFormat,
                                  0, pos, length, 0 );
         appendUndoItem( c );
 
@@ -933,7 +933,7 @@ void QTextDocumentPrivate::setBlockFormat( const QTextBlock &from, const QTextBl
 
         block( it )->invalidate();
 
-        QT_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::BlockFormatChanged, true, QTextUndoCommand::MoveCursor, oldFormat,
+        LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::BlockFormatChanged, true, QTextUndoCommand::MoveCursor, oldFormat,
                                  0, it.position(), 1, 0 );
         appendUndoItem( c );
 
@@ -1326,7 +1326,7 @@ void QTextDocumentPrivate::appendUndoItem( const QTextUndoCommand &c )
             // and that cursor position is different from the command
             // generate a CursorMoved undo item
 
-            QT_INIT_TEXTUNDOCOMMAND( cc, QTextUndoCommand::CursorMoved, true, QTextUndoCommand::MoveCursor,
+            LSCS_INIT_TEXTUNDOCOMMAND( cc, QTextUndoCommand::CursorMoved, true, QTextUndoCommand::MoveCursor,
                                      0, 0, editBlockCursorPosition, 0, 0 );
 
             undoStack.append( cc );
@@ -1793,7 +1793,7 @@ void QTextDocumentPrivate::changeObjectFormat( QTextObject *obj, int format )
         documentChange( f->firstPosition(), f->lastPosition() - f->firstPosition() );
     }
 
-    QT_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::GroupFormatChange, ( editBlock != 0 ), QTextUndoCommand::MoveCursor,
+    LSCS_INIT_TEXTUNDOCOMMAND( c, QTextUndoCommand::GroupFormatChange, ( editBlock != 0 ), QTextUndoCommand::MoveCursor,
                              oldFormatIndex, 0, 0, obj->d_func()->objectIndex, 0 );
     appendUndoItem( c );
 

@@ -88,7 +88,7 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QCommonStyle )
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     void _q_removeAnimation( QObject *obj );
 #endif
 };

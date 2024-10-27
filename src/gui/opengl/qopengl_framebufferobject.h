@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qopengl.h>
 #include <qpaintdevice.h>
@@ -162,6 +162,6 @@ private:
     void detach();
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif // QOPENGLFRAMEBUFFEROBJECT_H

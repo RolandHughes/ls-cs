@@ -358,7 +358,7 @@ static inline const QScreen *effectiveScreen( const QWindow *window )
 
     const QList<QScreen *> siblings = screen->virtualSiblings();
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( siblings.size() > 1 )
     {
@@ -418,7 +418,7 @@ QRect QPlatformWindow::initialGeometry( const QWindow *w,
     QRect rect( QHighDpi::fromNativePixels( initialGeometry, w ) );
     rect.setSize( fixInitialSize( rect.size(), w, defaultWidth, defaultHeight ) );
 
-    if ( qt_window_private( const_cast<QWindow *>( w ) )->positionAutomatic
+    if ( lscs_window_private( const_cast<QWindow *>( w ) )->positionAutomatic
             && w->type() != Qt::Popup )
     {
         const QRect availableGeometry = screen->availableGeometry();
@@ -449,7 +449,7 @@ void QPlatformWindow::requestUpdate()
     if ( timeout == -1 )
     {
         bool ok = false;
-        timeout = qgetenv( "QT_QPA_UPDATE_IDLE_TIME" ).toInt( &ok );
+        timeout = qgetenv( "LSCS_QPA_UPDATE_IDLE_TIME" ).toInt( &ok );
 
         if ( ! ok )
         {
@@ -510,7 +510,7 @@ QRect QPlatformWindow::windowFrameGeometry() const
 QRectF QPlatformWindow::closestAcceptableGeometry( const QWindow *qWindow, const QRectF &nativeRect )
 {
     const QRectF rectF = QHighDpi::fromNativePixels( nativeRect, qWindow );
-    const QRectF correctedGeometryF = qt_window_private( const_cast<QWindow *>( qWindow ) )->closestAcceptableGeometry( rectF );
+    const QRectF correctedGeometryF = lscs_window_private( const_cast<QWindow *>( qWindow ) )->closestAcceptableGeometry( rectF );
     return !correctedGeometryF.isEmpty() && rectF != correctedGeometryF
            ? QHighDpi::toNativePixels( correctedGeometryF, qWindow ) : nativeRect;
 }

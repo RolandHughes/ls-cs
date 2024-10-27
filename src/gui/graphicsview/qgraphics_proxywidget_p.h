@@ -28,7 +28,7 @@
 
 #include <qgraphics_widget_p.h>
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsProxyWidgetPrivate : public QGraphicsWidgetPrivate
 {

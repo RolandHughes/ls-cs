@@ -29,7 +29,7 @@
 #include <qxcb_integration.h>
 #include <qxcb_connection.h>
 
-#if ! (defined(QT_NO_DRAGANDDROP) && defined(QT_NO_CLIPBOARD))
+#if ! (defined(LSCS_NO_DRAGANDDROP) && defined(LSCS_NO_CLIPBOARD))
 
 class QXcbMime : public QInternalMimeData
 {

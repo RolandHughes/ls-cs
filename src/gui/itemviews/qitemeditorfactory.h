@@ -29,7 +29,7 @@
 #include <qhash.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QWidget;
 
@@ -108,7 +108,7 @@ private:
     QHash<QVariant::Type, QItemEditorCreatorBase *> creatorMap;
 };
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 
 

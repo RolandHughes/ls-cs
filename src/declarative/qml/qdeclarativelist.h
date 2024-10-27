@@ -28,7 +28,7 @@
 #include <QtCore/qlist.h>
 #include <QtCore/qvariant.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QObject;
 class QMetaObject;
@@ -129,7 +129,7 @@ private:
     QDeclarativeListReferencePrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeListReference )
 

@@ -26,7 +26,7 @@
 
 #include <qvariantanimation.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 class QPropertyAnimationPrivate;
 

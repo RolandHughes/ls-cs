@@ -52,7 +52,7 @@
 #include <QtCore/qmutex.h>
 #include <QtScript/qscriptengine.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeContext;
 class QDeclarativeEngine;
@@ -284,7 +284,7 @@ public:
     static QScriptValue consoleLog( QScriptContext *, QScriptEngine * );
     static QScriptValue quit( QScriptContext *, QScriptEngine * );
 
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
     static QScriptValue formatDate( QScriptContext *, QScriptEngine * );
     static QScriptValue formatTime( QScriptContext *, QScriptEngine * );
     static QScriptValue formatDateTime( QScriptContext *, QScriptEngine * );
@@ -407,6 +407,6 @@ QDeclarativePropertyCache *QDeclarativeEnginePrivate::cache( QDeclarativeType *t
     return rv;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEENGINE_P_H

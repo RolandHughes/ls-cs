@@ -24,7 +24,7 @@
 #include "qscriptdebuggerstackwidgetinterface_p.h"
 #include "qscriptdebuggerstackwidgetinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptDebuggerStackWidgetInterfacePrivate::QScriptDebuggerStackWidgetInterfacePrivate()
+LSCS_BEGIN_NAMESPACE QScriptDebuggerStackWidgetInterfacePrivate::QScriptDebuggerStackWidgetInterfacePrivate()
 {
 }
 
@@ -43,4 +43,4 @@ QScriptDebuggerStackWidgetInterface::QScriptDebuggerStackWidgetInterface(
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

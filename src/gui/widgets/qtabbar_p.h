@@ -31,7 +31,7 @@
 #include <qdebug.h>
 #include <qvariantanimation.h>
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 #define ANIMATION_DURATION 250
 
@@ -77,7 +77,7 @@ public:
             : enabled( true ), shortcutId( 0 ), text( txt ), icon( ico ), leftWidget( nullptr ), rightWidget( nullptr ),
               lastTab( -1 ), dragOffset( 0 )
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
             , animation( nullptr )
 #endif
         {}
@@ -91,11 +91,11 @@ public:
         int shortcutId;
         QString text;
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
         QString toolTip;
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
         QString whatsThis;
 #endif
 
@@ -111,7 +111,7 @@ public:
         int lastTab;
         int dragOffset;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
         ~Tab()
         {
@@ -160,7 +160,7 @@ public:
             priv->moveTabFinished( priv->tabList.indexOf( sharedFromThis() ) );
         }
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION
 
     }; //struct Tab
 

@@ -197,7 +197,7 @@ GstEncodingProfile *CameraBinVideoEncoder::createProfile()
 void CameraBinVideoEncoder::applySettings( GstElement *encoder )
 {
     GObjectClass *const objectClass = G_OBJECT_GET_CLASS( encoder );
-    const char *const name = qt_gst_element_get_factory_name( encoder );
+    const char *const name = lscs_gst_element_get_factory_name( encoder );
 
     const int bitRate = m_actualVideoSettings.bitRate();
 

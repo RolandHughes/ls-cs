@@ -29,7 +29,7 @@
 #include <QtGui/qplaintextedit.h>
 #include <QtGui/qscrollbar.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 namespace
 {
@@ -89,7 +89,7 @@ QScriptDebugOutputWidget::QScriptDebugOutputWidget( QWidget *parent )
     vbox->setSpacing( 0 );
     vbox->addWidget( d->outputEdit );
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
     QString sheet = QString::fromLatin1( "font-size: 14px; font-family: \"Monospace\";" );
     setStyleSheet( sheet );
 #endif
@@ -154,4 +154,4 @@ void QScriptDebugOutputWidget::clear()
     d->outputEdit->clear();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

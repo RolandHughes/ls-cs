@@ -78,7 +78,7 @@ static inline void planarYUV420_to_ARGB32( const uchar *y, int yStride,
     }
 }
 
-void qt_convert_YUV420P_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_YUV420P_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_TRIPLANAR( frame )
     planarYUV420_to_ARGB32( plane1, plane1Stride,
@@ -89,7 +89,7 @@ void qt_convert_YUV420P_to_ARGB32( const QVideoFrame &frame, uchar *output )
                             width, height );
 }
 
-void qt_convert_YV12_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_YV12_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_TRIPLANAR( frame )
     planarYUV420_to_ARGB32( plane1, plane1Stride,
@@ -100,7 +100,7 @@ void qt_convert_YV12_to_ARGB32( const QVideoFrame &frame, uchar *output )
                             width, height );
 }
 
-void qt_convert_AYUV444_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_AYUV444_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 4 )
@@ -127,7 +127,7 @@ void qt_convert_AYUV444_to_ARGB32( const QVideoFrame &frame, uchar *output )
     }
 }
 
-void qt_convert_YUV444_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_YUV444_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 3 )
@@ -153,7 +153,7 @@ void qt_convert_YUV444_to_ARGB32( const QVideoFrame &frame, uchar *output )
     }
 }
 
-void qt_convert_UYVY_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_UYVY_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 2 )
@@ -181,7 +181,7 @@ void qt_convert_UYVY_to_ARGB32( const QVideoFrame &frame, uchar *output )
     }
 }
 
-void qt_convert_YUYV_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_YUYV_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 2 )
@@ -209,7 +209,7 @@ void qt_convert_YUYV_to_ARGB32( const QVideoFrame &frame, uchar *output )
     }
 }
 
-void qt_convert_NV12_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_NV12_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_BIPLANAR( frame )
     planarYUV420_to_ARGB32( plane1, plane1Stride,
@@ -220,7 +220,7 @@ void qt_convert_NV12_to_ARGB32( const QVideoFrame &frame, uchar *output )
                             width, height );
 }
 
-void qt_convert_NV21_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_NV21_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_BIPLANAR( frame )
     planarYUV420_to_ARGB32( plane1, plane1Stride,
@@ -231,7 +231,7 @@ void qt_convert_NV21_to_ARGB32( const QVideoFrame &frame, uchar *output )
                             width, height );
 }
 
-void qt_convert_BGRA32_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_BGRA32_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 4 )
@@ -262,7 +262,7 @@ void qt_convert_BGRA32_to_ARGB32( const QVideoFrame &frame, uchar *output )
     }
 }
 
-void qt_convert_BGR24_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_BGR24_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 3 )
@@ -298,7 +298,7 @@ void qt_convert_BGR24_to_ARGB32( const QVideoFrame &frame, uchar *output )
     }
 }
 
-void qt_convert_BGR565_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_BGR565_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 2 )
@@ -329,7 +329,7 @@ void qt_convert_BGR565_to_ARGB32( const QVideoFrame &frame, uchar *output )
     }
 }
 
-void qt_convert_BGR555_to_ARGB32( const QVideoFrame &frame, uchar *output )
+void lscs_convert_BGR555_to_ARGB32( const QVideoFrame &frame, uchar *output )
 {
     FETCH_INFO_PACKED( frame )
     MERGE_LOOPS( width, height, stride, 2 )

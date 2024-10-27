@@ -48,7 +48,7 @@ enum ConstructType
 
 typedef JSObject *( *NativeConstructor )( ExecState *, JSObject *, const ArgList & );
 
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 class NativeConstrWrapper
 {
     NativeConstructor ptr;
@@ -81,7 +81,7 @@ public:
 };
 #endif
 
-#if defined(QT_BUILD_SCRIPT_LIB) && OS(SOLARIS)
+#if defined(LSCS_BUILD_SCRIPT_LIB) && OS(SOLARIS)
 struct
 #else
 union
@@ -90,7 +90,7 @@ union
 {
     struct
     {
-#ifndef QT_BUILD_SCRIPT_LIB
+#ifndef LSCS_BUILD_SCRIPT_LIB
         NativeConstructor function;
 #else
         NativeConstrWrapper function;

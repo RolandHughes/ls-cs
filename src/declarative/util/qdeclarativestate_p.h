@@ -30,7 +30,7 @@
 #include <QtCore/qsharedpointer.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeActionEvent;
 class QDeclarativeAbstractBinding;
@@ -188,7 +188,7 @@ private:
     Q_DISABLE_COPY( QDeclarativeState )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeStateOperation )
 QML_DECLARE_TYPE( QDeclarativeState )

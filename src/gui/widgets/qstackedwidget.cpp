@@ -23,7 +23,7 @@
 
 #include <qstackedwidget.h>
 
-#ifndef QT_NO_STACKEDWIDGET
+#ifndef LSCS_NO_STACKEDWIDGET
 
 #include <qstackedlayout.h>
 #include <qevent.h>
@@ -121,4 +121,4 @@ bool QStackedWidget::event( QEvent *e )
     return QFrame::event( e );
 }
 
-#endif // QT_NO_STACKEDWIDGET
+#endif // LSCS_NO_STACKEDWIDGET

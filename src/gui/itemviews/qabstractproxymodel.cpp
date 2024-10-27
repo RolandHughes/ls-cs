@@ -23,7 +23,7 @@
 
 #include <qabstractproxymodel.h>
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
 
 #include <qitemselectionmodel.h>
 #include <qsize.h>
@@ -345,4 +345,4 @@ void QAbstractProxyModel::_q_sourceModelDestroyed()
     d->_q_sourceModelDestroyed();
 }
 
-#endif // QT_NO_PROXYMODEL
+#endif // LSCS_NO_PROXYMODEL

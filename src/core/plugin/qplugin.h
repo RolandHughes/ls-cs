@@ -40,11 +40,11 @@
 void Q_CORE_EXPORT qRegisterStaticPluginFunction(QStaticPlugin staticPlugin);
 
 #define Q_IMPORT_PLUGIN(PLUGIN) \
-   extern const QT_PREPEND_NAMESPACE(QStaticPlugin) qt_static_plugin_##PLUGIN(); \
+   extern const LSCS_PREPEND_NAMESPACE(QStaticPlugin) lscs_static_plugin_##PLUGIN(); \
    class Static##PLUGIN##PluginInstance{ \
    public: \
           Static##PLUGIN##PluginInstance() { \
-              qRegisterStaticPluginFunction(qt_static_plugin_##PLUGIN()); \
+              qRegisterStaticPluginFunction(lscs_static_plugin_##PLUGIN()); \
           } \
    }; \
    static Static##PLUGIN##PluginInstance static##PLUGIN##Instance;

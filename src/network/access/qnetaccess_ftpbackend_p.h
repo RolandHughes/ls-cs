@@ -32,7 +32,7 @@
 #include <qnetaccess_backend_p.h>
 #include <qnetaccess_cache_p.h>
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
 
 class QNetworkAccessFtpIODevice;
 class QNetworkAccessCachedFtpConnection;
@@ -100,6 +100,6 @@ public:
     QNetworkAccessBackend *create( QNetworkAccessManager::Operation op, const QNetworkRequest &request ) const override;
 };
 
-#endif // QT_NO_FTP
+#endif // LSCS_NO_FTP
 
 #endif

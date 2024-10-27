@@ -55,13 +55,13 @@ void qtInitializeVertexArrayObjectHelper( QOpenGLVertexArrayObjectHelper *helper
         }
         else if ( context->hasExtension( QByteArrayLiteral( "GL_OES_vertex_array_object" ) ) )
         {
-            helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>( context->getProcAddress(
+            helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_GenVertexArrays_t>( context->getProcAddress(
                                           QByteArrayLiteral( "glGenVertexArraysOES" ) ) );
-            helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>( context->getProcAddress(
+            helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_DeleteVertexArrays_t>( context->getProcAddress(
                                              QByteArrayLiteral( "glDeleteVertexArraysOES" ) ) );
-            helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>( context->getProcAddress(
+            helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_BindVertexArray_t>( context->getProcAddress(
                                           QByteArrayLiteral( "glBindVertexArrayOES" ) ) );
-            helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>( context->getProcAddress(
+            helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_IsVertexArray_t>( context->getProcAddress(
                                         QByteArrayLiteral( "glIsVertexArrayOES" ) ) );
             tryARB = false;
         }
@@ -69,26 +69,26 @@ void qtInitializeVertexArrayObjectHelper( QOpenGLVertexArrayObjectHelper *helper
     else if ( context->hasExtension( QByteArrayLiteral( "GL_APPLE_vertex_array_object" ) ) &&
               !context->hasExtension( QByteArrayLiteral( "GL_ARB_vertex_array_object" ) ) )
     {
-        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>( context->getProcAddress(
+        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_GenVertexArrays_t>( context->getProcAddress(
                                       QByteArrayLiteral( "glGenVertexArraysAPPLE" ) ) );
-        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>( context->getProcAddress(
+        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_DeleteVertexArrays_t>( context->getProcAddress(
                                          QByteArrayLiteral( "glDeleteVertexArraysAPPLE" ) ) );
-        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>( context->getProcAddress(
+        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_BindVertexArray_t>( context->getProcAddress(
                                       QByteArrayLiteral( "glBindVertexArrayAPPLE" ) ) );
-        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>( context->getProcAddress(
+        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_IsVertexArray_t>( context->getProcAddress(
                                     QByteArrayLiteral( "glIsVertexArrayAPPLE" ) ) );
         tryARB = false;
     }
 
     if ( tryARB && context->hasExtension( QByteArrayLiteral( "GL_ARB_vertex_array_object" ) ) )
     {
-        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_GenVertexArrays_t>( context->getProcAddress(
+        helper->GenVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_GenVertexArrays_t>( context->getProcAddress(
                                       QByteArrayLiteral( "glGenVertexArrays" ) ) );
-        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_DeleteVertexArrays_t>( context->getProcAddress(
+        helper->DeleteVertexArrays = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_DeleteVertexArrays_t>( context->getProcAddress(
                                          QByteArrayLiteral( "glDeleteVertexArrays" ) ) );
-        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_BindVertexArray_t>( context->getProcAddress(
+        helper->BindVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_BindVertexArray_t>( context->getProcAddress(
                                       QByteArrayLiteral( "glBindVertexArray" ) ) );
-        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::qt_IsVertexArray_t>( context->getProcAddress(
+        helper->IsVertexArray = reinterpret_cast<QOpenGLVertexArrayObjectHelper::lscs_IsVertexArray_t>( context->getProcAddress(
                                     QByteArrayLiteral( "glIsVertexArray" ) ) );
     }
 }
@@ -184,7 +184,7 @@ bool QOpenGLVertexArrayObjectPrivate::create()
         vaoFuncsType = NotSupported;
 
         QSurfaceFormat format = ctx->format();
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
         if ( format.version() >= qMakePair<int, int>( 3,2 ) )
         {
@@ -234,7 +234,7 @@ void QOpenGLVertexArrayObjectPrivate::destroy()
 
     switch ( vaoFuncsType )
     {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
         case Core_3_2:
             vaoFuncs.core_3_2->glDeleteVertexArrays( 1, &vao );
@@ -268,7 +268,7 @@ void QOpenGLVertexArrayObjectPrivate::bind()
 {
     switch ( vaoFuncsType )
     {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
         case Core_3_2:
             vaoFuncs.core_3_2->glBindVertexArray( vao );
@@ -294,7 +294,7 @@ void QOpenGLVertexArrayObjectPrivate::release()
 {
     switch ( vaoFuncsType )
     {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
         case Core_3_2:
             vaoFuncs.core_3_2->glBindVertexArray( 0 );

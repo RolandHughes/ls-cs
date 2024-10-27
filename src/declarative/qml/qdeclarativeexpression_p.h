@@ -29,7 +29,7 @@
 #include <qdeclarativeguard_p.h>
 #include <QtScript/qscriptvalue.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeAbstractExpression
 {
@@ -218,6 +218,6 @@ bool QDeclarativeQtScriptExpression::DeleteWatcher::wasDeleted() const
     return *m_wasDeleted;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEEXPRESSION_P_H

@@ -43,7 +43,7 @@ QAccessibleInterface::~QAccessibleInterface()
 {
 }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 using QAccessiblePluginsHash = QHash<QString, QAccessiblePlugin *>;
 
@@ -1374,5 +1374,5 @@ QString qAccessibleLocalizedActionDescription( const QString &actionName )
     return accessibleActionStrings()->localizedDescription( actionName );
 }
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 

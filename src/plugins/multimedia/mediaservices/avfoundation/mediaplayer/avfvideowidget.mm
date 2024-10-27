@@ -44,7 +44,7 @@ AVFVideoWidget::AVFVideoWidget(QWidget *parent)
 
 AVFVideoWidget::~AVFVideoWidget()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
 
@@ -108,7 +108,7 @@ void AVFVideoWidget::setPlayerLayer(AVPlayerLayer *layer)
       [nativeLayer addSublayer: m_playerLayer];
       updatePlayerLayerBounds(this->size());
    }
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    NSArray *sublayers = [nativeLayer sublayers];
    qDebug() << "playerlayer: " << "at z:" << [m_playerLayer zPosition]
       << " frame: " << m_playerLayer.frame.size.width << "x"  << m_playerLayer.frame.size.height;

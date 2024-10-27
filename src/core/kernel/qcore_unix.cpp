@@ -46,12 +46,12 @@ static inline bool time_update( struct timespec *tv, const struct timespec &star
 {
     // clock source is (hopefully) monotonic, so we can recalculate how much timeout is left;
     // if it isn't monotonic, we'll simply hope that it hasn't jumped, because we have no alternative
-    struct timespec now = qt_gettime();
+    struct timespec now = lscs_gettime();
     *tv = timeout + start - now;
     return tv->tv_sec >= 0;
 }
 
-int qt_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
+int lscs_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
                     const struct timespec *orig_timeout )
 {
     if ( ! orig_timeout )
@@ -62,7 +62,7 @@ int qt_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
         return ret;
     }
 
-    timespec start   = qt_gettime();
+    timespec start   = lscs_gettime();
     timespec timeout = *orig_timeout;
 
     // loop and recalculate the timeout as needed
@@ -88,11 +88,11 @@ int qt_safe_select( int nfds, fd_set *fdread, fd_set *fdwrite, fd_set *fdexcept,
     }
 }
 
-int qt_select_msecs( int nfds, fd_set *fdread, fd_set *fdwrite, int timeout )
+int lscs_select_msecs( int nfds, fd_set *fdread, fd_set *fdwrite, int timeout )
 {
     if ( timeout < 0 )
     {
-        return qt_safe_select( nfds, fdread, fdwrite, nullptr, nullptr );
+        return lscs_safe_select( nfds, fdread, fdwrite, nullptr, nullptr );
     }
 
     struct timespec tv;
@@ -101,5 +101,5 @@ int qt_select_msecs( int nfds, fd_set *fdread, fd_set *fdwrite, int timeout )
 
     tv.tv_nsec = ( timeout % 1000 ) * 1000 * 1000;
 
-    return qt_safe_select( nfds, fdread, fdwrite, nullptr, &tv );
+    return lscs_safe_select( nfds, fdread, fdwrite, nullptr, &tv );
 }

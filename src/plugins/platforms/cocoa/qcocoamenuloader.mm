@@ -44,7 +44,7 @@ class QCFString;
 - (instancetype)init
 {
    if ((self = [super init])) {
-     NSString *appName = qt_mac_applicationName().toNSString();
+     NSString *appName = lscs_mac_applicationName().toNSString();
 
      // Menubar as menu.
      theMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
@@ -293,13 +293,13 @@ class QCFString;
 
 - (void)qtTranslateApplicationMenu
 {
-   [servicesItem setTitle: QCFString::toNSString(qt_mac_applicationmenu_string(0))];
-   [hideItem setTitle: QCFString::toNSString(qt_mac_applicationmenu_string(1).formatArg(qt_mac_applicationName()))];
-   [hideAllOthersItem setTitle: QCFString::toNSString(qt_mac_applicationmenu_string(2))];
-   [showAllItem setTitle: QCFString::toNSString(qt_mac_applicationmenu_string(3))];
-   [preferencesItem setTitle: QCFString::toNSString(qt_mac_applicationmenu_string(4))];
-   [quitItem setTitle: QCFString::toNSString(qt_mac_applicationmenu_string(5).formatArg(qt_mac_applicationName()))];
-   [aboutItem setTitle: QCFString::toNSString(qt_mac_applicationmenu_string(6).formatArg(qt_mac_applicationName()))];
+   [servicesItem setTitle: QCFString::toNSString(lscs_mac_applicationmenu_string(0))];
+   [hideItem setTitle: QCFString::toNSString(lscs_mac_applicationmenu_string(1).formatArg(lscs_mac_applicationName()))];
+   [hideAllOthersItem setTitle: QCFString::toNSString(lscs_mac_applicationmenu_string(2))];
+   [showAllItem setTitle: QCFString::toNSString(lscs_mac_applicationmenu_string(3))];
+   [preferencesItem setTitle: QCFString::toNSString(lscs_mac_applicationmenu_string(4))];
+   [quitItem setTitle: QCFString::toNSString(lscs_mac_applicationmenu_string(5).formatArg(lscs_mac_applicationName()))];
+   [aboutItem setTitle: QCFString::toNSString(lscs_mac_applicationmenu_string(6).formatArg(lscs_mac_applicationName()))];
 }
 
 - (IBAction)qtDispatcherToQPAMenuItem: (id)sender

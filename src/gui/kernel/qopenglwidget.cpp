@@ -444,7 +444,7 @@ void QOpenGLWidgetPrivate::invalidateFbo()
     }
 }
 
-extern Q_GUI_EXPORT QImage qt_gl_read_framebuffer( const QSize &size, bool alpha_format, bool include_alpha );
+extern Q_GUI_EXPORT QImage lscs_gl_read_framebuffer( const QSize &size, bool alpha_format, bool include_alpha );
 
 QImage QOpenGLWidgetPrivate::grabFramebuffer()
 {
@@ -471,7 +471,7 @@ QImage QOpenGLWidgetPrivate::grabFramebuffer()
         q->makeCurrent();
     }
 
-    QImage res = qt_gl_read_framebuffer( q->size() * q->devicePixelRatioF(), false, false );
+    QImage res = lscs_gl_read_framebuffer( q->size() * q->devicePixelRatioF(), false, false );
     res.setDevicePixelRatio( q->devicePixelRatioF() );
 
     // While we give no guarantees of what is going to be left bound, prefer the
@@ -691,8 +691,8 @@ int QOpenGLWidget::metric( QPaintDevice::PaintDeviceMetric metric ) const
         screen = QGuiApplication::primaryScreen();
     }
 
-    const float dpmx = qt_defaultDpiX() * 100. / 2.54;
-    const float dpmy = qt_defaultDpiY() * 100. / 2.54;
+    const float dpmx = lscs_defaultDpiX() * 100. / 2.54;
+    const float dpmy = lscs_defaultDpiY() * 100. / 2.54;
 
     switch ( metric )
     {

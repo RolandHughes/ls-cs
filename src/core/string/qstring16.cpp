@@ -29,7 +29,7 @@
 #include <qunicodetables_p.h>
 
 #if defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 #ifdef Q_OS_DARWIN

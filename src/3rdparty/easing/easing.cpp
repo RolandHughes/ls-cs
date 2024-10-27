@@ -747,12 +747,12 @@ static qreal easeOutInBounce( qreal t, qreal a )
     return 1.0 - easeOutBounce_helper ( 2.0-2*t, 0.5, a );
 }
 
-static inline qreal qt_sinProgress( qreal value )
+static inline qreal lscs_sinProgress( qreal value )
 {
     return qSin( ( value * M_PI ) - M_PI_2 ) / 2 + qreal( 0.5 );
 }
 
-static inline qreal qt_smoothBeginEndMixFactor( qreal value )
+static inline qreal lscs_smoothBeginEndMixFactor( qreal value )
 {
     return qMin( qMax( 1 - value * 2 + qreal( 0.3 ), qreal( 0.0 ) ), qreal( 1.0 ) );
 }
@@ -767,8 +767,8 @@ static inline qreal qt_smoothBeginEndMixFactor( qreal value )
  */
 static qreal easeInCurve( qreal t )
 {
-    const qreal sinProgress = qt_sinProgress( t );
-    const qreal mix = qt_smoothBeginEndMixFactor( t );
+    const qreal sinProgress = lscs_sinProgress( t );
+    const qreal mix = lscs_smoothBeginEndMixFactor( t );
     return sinProgress * mix + t * ( 1 - mix );
 }
 
@@ -777,8 +777,8 @@ static qreal easeInCurve( qreal t )
  */
 static qreal easeOutCurve( qreal t )
 {
-    const qreal sinProgress = qt_sinProgress( t );
-    const qreal mix = qt_smoothBeginEndMixFactor( 1 - t );
+    const qreal sinProgress = lscs_sinProgress( t );
+    const qreal mix = lscs_smoothBeginEndMixFactor( 1 - t );
     return sinProgress * mix + t * ( 1 - mix );
 }
 

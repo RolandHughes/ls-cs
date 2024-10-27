@@ -26,7 +26,7 @@
 
 #include <qcommonstyle.h>
 
-#if ! defined(QT_NO_STYLE_PROXY)
+#if ! defined(LSCS_NO_STYLE_PROXY)
 
 class QProxyStylePrivate;
 
@@ -101,6 +101,6 @@ private:
     Q_DECLARE_PRIVATE( QProxyStyle )
 };
 
-#endif // QT_NO_STYLE_PROXY
+#endif // LSCS_NO_STYLE_PROXY
 
 #endif

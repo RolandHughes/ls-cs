@@ -24,7 +24,7 @@
 #ifndef QCOMPLETER_P_H
 #define QCOMPLETER_P_H
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
 
 #include <qabstractproxymodel.h>
 #include <qcompleter.h>
@@ -341,6 +341,6 @@ class QCompletionModelPrivate : public QAbstractProxyModelPrivate
     Q_DECLARE_PUBLIC( QCompletionModel )
 };
 
-#endif // QT_NO_COMPLETER
+#endif // LSCS_NO_COMPLETER
 
 #endif

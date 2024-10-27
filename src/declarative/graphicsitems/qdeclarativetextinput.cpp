@@ -34,9 +34,9 @@
 #include <QInputContext>
 #include <qstyle.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass TextInput QDeclarativeTextInput
@@ -841,7 +841,7 @@ void QDeclarativeTextInput::setAutoScroll( bool b )
 
     \sa acceptableInput, inputMask
 */
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 QValidator *QDeclarativeTextInput::validator() const
 {
     Q_D( const QDeclarativeTextInput );
@@ -868,7 +868,7 @@ void QDeclarativeTextInput::setValidator( QValidator *v )
 
     emit validatorChanged();
 }
-#endif // QT_NO_VALIDATOR
+#endif // LSCS_NO_VALIDATOR
 
 /*!
     \qmlproperty string TextInput::inputMask
@@ -1374,7 +1374,7 @@ void QDeclarativeTextInput::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
             {
                 if ( view->scene() && view->scene() == scene() )
                 {
-                    qt_widget_private( view )->handleSoftwareInputPanel( event->button(), d->clickCausedFocus );
+                    lscs_widget_private( view )->handleSoftwareInputPanel( event->button(), d->clickCausedFocus );
                 }
             }
         }
@@ -1392,7 +1392,7 @@ void QDeclarativeTextInput::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 bool QDeclarativeTextInputPrivate::sendMouseEventToInputContext(
     QGraphicsSceneMouseEvent *event, QEvent::Type eventType )
 {
-#if !defined QT_NO_IM
+#if !defined LSCS_NO_IM
     Q_Q( QDeclarativeTextInput );
 
     QWidget *widget = event->widget();
@@ -1729,7 +1729,7 @@ bool QDeclarativeTextInput::isRightToLeft( int start, int end )
     }
 }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 /*!
     \qmlmethod TextInput::cut()
 
@@ -1767,7 +1767,7 @@ void QDeclarativeTextInput::paste()
         d->control->paste();
     }
 }
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD
 
 /*!
     \qmlmethod void TextInput::selectWord()
@@ -2210,13 +2210,13 @@ void QDeclarativeTextInputPrivate::init()
                 q, SIGNAL( accepted() ) );
     q->connect( control, SIGNAL( updateNeeded( QRect ) ),
                 q, SLOT( updateRect( QRect ) ) );
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     q->connect( q, SIGNAL( readOnlyChanged( bool ) ),
                 q, SLOT( q_canPasteChanged() ) );
     q->connect( QApplication::clipboard(), SIGNAL( dataChanged() ),
                 q, SLOT( q_canPasteChanged() ) );
     canPaste = !control->isReadOnly() && QApplication::clipboard()->text().length() != 0;
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD
     q->connect( control, SIGNAL( updateMicroFocus() ),
                 q, SLOT( updateCursorRectangle() ) );
     q->connect( control, SIGNAL( displayTextChanged( QString ) ),
@@ -2366,7 +2366,7 @@ void QDeclarativeTextInput::q_canPasteChanged()
 {
     Q_D( QDeclarativeTextInput );
     bool old = d->canPaste;
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     d->canPaste = !d->control->isReadOnly() && QApplication::clipboard()->text().length() != 0;
 #endif
 
@@ -2376,7 +2376,7 @@ void QDeclarativeTextInput::q_canPasteChanged()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 

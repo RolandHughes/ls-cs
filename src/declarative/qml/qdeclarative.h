@@ -51,7 +51,7 @@ enum   /* TYPEINFO flags */
 };
 
 #define QML_DECLARE_TYPEINFO(TYPE, FLAGS) \
-QT_BEGIN_NAMESPACE \
+LSCS_BEGIN_NAMESPACE \
 template <> \
 class QDeclarativeTypeInfo<TYPE > \
 { \
@@ -60,9 +60,9 @@ public: \
         hasAttachedProperties = (((FLAGS) & QML_HAS_ATTACHED_PROPERTIES) == QML_HAS_ATTACHED_PROPERTIES) \
     }; \
 }; \
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 template<typename T>
 int qmlRegisterType()
@@ -394,7 +394,7 @@ QObject *qmlAttachedPropertiesObject( const QObject *obj, bool create = true )
     return qmlAttachedPropertiesObject( &idx, obj, &T::staticMetaObject, create );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QObject )
 Q_DECLARE_METATYPE( QVariant )

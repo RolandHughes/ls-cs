@@ -4,7 +4,7 @@ add_library(LsCs::LsCsXml ALIAS LsCsXml)
 set_target_properties(LsCsXml PROPERTIES OUTPUT_NAME LsCsXml${BUILD_ABI})
 
 add_definitions(
-   -DQT_BUILD_XML_LIB
+   -DLSCS_BUILD_XML_LIB
 )
 
 set(EXTRA_XML_CXXFLAGS)

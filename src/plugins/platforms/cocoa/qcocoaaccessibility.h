@@ -28,7 +28,7 @@
 
 #include <qplatform_accessibility.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QCocoaAccessibility : public QPlatformAccessibility
 {
@@ -74,6 +74,6 @@ id getValueAttribute( QAccessibleInterface *interface );
 
 }
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif // QCOCOAACCESIBILITY_H

@@ -101,7 +101,7 @@ public:
         {
             if (
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
                 qobject_cast<QMdiSubWindow *>( p ) != nullptr ||
 #endif
 
@@ -285,7 +285,7 @@ bool QWindowContainer::event( QEvent *e )
             }
 
             break;
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
         case QEvent::Drop:
         case QEvent::DragMove:

@@ -94,7 +94,7 @@ public:
     struct ClientData
     {
         virtual ~ClientData() = 0;
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
         virtual void mark( MarkStack & ) {}
 #endif
     };

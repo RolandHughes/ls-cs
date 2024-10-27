@@ -26,7 +26,7 @@
 
 #include "qdeclarativefolderlistmodel.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 //![class decl]
 class QmlFolderListModelPlugin : public QDeclarativeExtensionPlugin
@@ -36,12 +36,12 @@ public:
     virtual void registerTypes( const char *uri )
     {
         Q_ASSERT( QLatin1String( uri ) == QLatin1String( "Qt.labs.folderlistmodel" ) );
-#ifndef QT_NO_DIRMODEL
+#ifndef LSCS_NO_DIRMODEL
         qmlRegisterType<QDeclarativeFolderListModel>( uri,1,0,"FolderListModel" );
 #endif
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2( qmlfolderlistmodelplugin, QT_PREPEND_NAMESPACE( QmlFolderListModelPlugin ) );
+Q_EXPORT_PLUGIN2( qmlfolderlistmodelplugin, LSCS_PREPEND_NAMESPACE( QmlFolderListModelPlugin ) );

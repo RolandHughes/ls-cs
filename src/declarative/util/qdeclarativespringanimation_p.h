@@ -28,7 +28,7 @@
 #include <qdeclarativeanimation_p.h>
 #include <QtCore/qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeSpringAnimationPrivate;
 
@@ -91,7 +91,7 @@ protected:
 
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeSpringAnimation )
 

@@ -26,7 +26,7 @@
 
 #include <qaccessibleobject.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 class QAccessibleWidgetPrivate;
 
@@ -77,6 +77,6 @@ private:
     QAccessibleWidgetPrivate *d;
 };
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif

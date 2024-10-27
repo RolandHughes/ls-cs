@@ -185,7 +185,7 @@ void QGLBuffer::destroy()
 
 bool QGLBuffer::read( int offset, void *data, int count )
 {
-#if ! defined(QT_OPENGL_ES)
+#if ! defined(LSCS_OPENGL_ES)
     Q_D( QGLBuffer );
 
     if ( ! d->funcs->hasOpenGLFeature( QOpenGLFunctions::Buffers ) || !d->guard->id() )

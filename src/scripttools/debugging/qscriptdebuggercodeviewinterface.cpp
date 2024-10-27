@@ -24,7 +24,7 @@
 #include "qscriptdebuggercodeviewinterface_p.h"
 #include "qscriptdebuggercodeviewinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptDebuggerCodeViewInterfacePrivate::QScriptDebuggerCodeViewInterfacePrivate()
+LSCS_BEGIN_NAMESPACE QScriptDebuggerCodeViewInterfacePrivate::QScriptDebuggerCodeViewInterfacePrivate()
 {
 }
 
@@ -43,4 +43,4 @@ QScriptDebuggerCodeViewInterface::QScriptDebuggerCodeViewInterface(
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

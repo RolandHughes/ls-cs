@@ -29,7 +29,7 @@
 #include <qwidget_p.h>
 #include <qbasictimer.h>
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 class QToolBarLayout;
 class QTimer;
@@ -98,6 +98,6 @@ public:
     QBasicTimer waitForPopupTimer;
 };
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 
 #endif // QDYNAMICTOOLBAR_P_H

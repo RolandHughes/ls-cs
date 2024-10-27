@@ -57,9 +57,9 @@
 
 #include "qeucjpcodec.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 static const uchar Ss2 = 0x8e;        // Single Shift 2
 static const uchar Ss3 = 0x8f;        // Single Shift 3
@@ -306,6 +306,6 @@ QByteArray QEucJpCodec::_name()
 {
     return "EUC-JP";
 }
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

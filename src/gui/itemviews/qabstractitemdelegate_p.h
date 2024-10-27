@@ -26,7 +26,7 @@
 
 #include <qabstractitemdelegate.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QAbstractItemDelegatePrivate
 {
@@ -45,6 +45,6 @@ protected:
     QAbstractItemDelegate *q_ptr;
 };
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif

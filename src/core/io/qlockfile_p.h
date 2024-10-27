@@ -32,7 +32,7 @@
 #include <qfile.h>
 
 #ifdef Q_OS_WIN
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 class QLockFilePrivate

@@ -32,7 +32,7 @@
 
 #include <zlib.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 class QHttpNetworkRequest;
 using HttpMessagePair = QPair<QHttpNetworkRequest, QHttpNetworkReply *>;

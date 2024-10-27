@@ -28,7 +28,7 @@
 #include <qiodevice.h>
 #include <qstring.h>
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
 
 class QUrl;
 class QUrlInfoPrivate;
@@ -105,6 +105,6 @@ private:
     QUrlInfoPrivate *d;
 };
 
-#endif // QT_NO_FTP
+#endif // LSCS_NO_FTP
 
 #endif // QURLINFO_H

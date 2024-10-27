@@ -40,7 +40,7 @@ private:
     QMutex m_mutex;
 };
 
-static QGL2GradientCacheWrapper *qt_gradient_caches()
+static QGL2GradientCacheWrapper *lscs_gradient_caches()
 {
     static QGL2GradientCacheWrapper retval;
     return &retval;
@@ -58,7 +58,7 @@ QGL2GradientCache::~QGL2GradientCache()
 
 QGL2GradientCache *QGL2GradientCache::cacheForContext( const QGLContext *context )
 {
-    return qt_gradient_caches()->cacheForContext( context );
+    return lscs_gradient_caches()->cacheForContext( context );
 }
 
 void QGL2GradientCache::invalidateResource()

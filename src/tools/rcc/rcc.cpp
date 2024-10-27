@@ -967,7 +967,7 @@ bool RCCResourceLibrary::writeDataBlobs()
 
     if ( m_format == C_Code )
     {
-        writeString( "static const unsigned char qt_resource_data[] = {\n" );
+        writeString( "static const unsigned char lscs_resource_data[] = {\n" );
     }
     else if ( m_format == Binary )
     {
@@ -1021,7 +1021,7 @@ bool RCCResourceLibrary::writeDataNames()
 {
     if ( m_format == C_Code )
     {
-        writeString( "static const unsigned char qt_resource_name[] = {\n" );
+        writeString( "static const unsigned char lscs_resource_name[] = {\n" );
     }
     else if ( m_format == Binary )
     {
@@ -1070,7 +1070,7 @@ bool RCCResourceLibrary::writeDataNames()
     return true;
 }
 
-static bool qt_rcc_compare_hash( const RCCFileInfo *left, const RCCFileInfo *right )
+static bool lscs_rcc_compare_hash( const RCCFileInfo *left, const RCCFileInfo *right )
 {
     return lscs_stable_hash( left->m_name ) < lscs_stable_hash( right->m_name );
 }
@@ -1079,7 +1079,7 @@ bool RCCResourceLibrary::writeDataStructure()
 {
     if ( m_format == C_Code )
     {
-        writeString( "static const unsigned char qt_resource_struct[] = {\n" );
+        writeString( "static const unsigned char lscs_resource_struct[] = {\n" );
     }
     else if ( m_format == Binary )
     {
@@ -1104,7 +1104,7 @@ bool RCCResourceLibrary::writeDataStructure()
 
         // sort by hash value for binary lookup
         QList<RCCFileInfo *> m_children = file->m_children.values();
-        std::sort( m_children.begin(), m_children.end(), qt_rcc_compare_hash );
+        std::sort( m_children.begin(), m_children.end(), lscs_rcc_compare_hash );
 
         // write out the actual data
         for ( auto child : m_children )
@@ -1128,7 +1128,7 @@ bool RCCResourceLibrary::writeDataStructure()
 
         // sort by hash value for binary lookup
         QList<RCCFileInfo *> m_children = file->m_children.values();
-        std::sort( m_children.begin(), m_children.end(), qt_rcc_compare_hash );
+        std::sort( m_children.begin(), m_children.end(), lscs_rcc_compare_hash );
 
         // write out the actual data
         for ( auto child : m_children )
@@ -1184,7 +1184,7 @@ bool RCCResourceLibrary::writeInitializer()
         {
             writeString( "    " );
             writeByteArray( "qRegisterResourceData" );
-            writeString( "\n        (0x01, qt_resource_struct, qt_resource_name, qt_resource_data);\n" );
+            writeString( "\n        (0x01, lscs_resource_struct, lscs_resource_name, lscs_resource_data);\n" );
         }
 
         writeString( "    return 1;\n" );
@@ -1206,7 +1206,7 @@ bool RCCResourceLibrary::writeInitializer()
         {
             writeString( "    " );
             writeByteArray( "qUnregisterResourceData" );
-            writeString( "\n       (0x01, qt_resource_struct, qt_resource_name, qt_resource_data);\n" );
+            writeString( "\n       (0x01, lscs_resource_struct, lscs_resource_name, lscs_resource_data);\n" );
         }
 
         writeString( "    return 1;\n" );

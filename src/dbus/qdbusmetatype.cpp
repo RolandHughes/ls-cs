@@ -37,7 +37,7 @@
 #include "qdbusmetatype_p.h"
 #include "qdbusargument_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 #ifndef DBUS_TYPE_UNIX_FD
 # define DBUS_TYPE_UNIX_FD int('h')
@@ -52,7 +52,7 @@ Q_DECLARE_METATYPE( QList<qint64> )
 Q_DECLARE_METATYPE( QList<quint64> )
 Q_DECLARE_METATYPE( QList<double> )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusCustomTypeInfo
 {
@@ -504,6 +504,6 @@ const char *QDBusMetaType::typeToSignature( int type )
     return info->signature;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

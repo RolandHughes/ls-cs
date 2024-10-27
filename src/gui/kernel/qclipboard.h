@@ -27,7 +27,7 @@
 #include <qobject.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 class QImage;
 class QMimeData;
@@ -98,6 +98,6 @@ private:
     void emitChanged( Mode mode );
 };
 
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD
 
 #endif

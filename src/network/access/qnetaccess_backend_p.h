@@ -103,7 +103,7 @@ public:
     QNetworkAccessManager::Operation operation() const;
     QNetworkRequest request() const;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QList<QNetworkProxy> proxyList() const;
 #endif
 
@@ -187,7 +187,7 @@ protected:
     NET_LSCS_SLOT_1( Protected, void error( QNetworkReply::NetworkError errorCode, const QString &errorMsg ) )
     NET_LSCS_SLOT_2( error )
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SLOT_1( Protected, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *auth ) )
     NET_LSCS_SLOT_2( proxyAuthenticationRequired )
 #endif

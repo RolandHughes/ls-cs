@@ -5,7 +5,7 @@ set_target_properties(LsCsNetwork PROPERTIES OUTPUT_NAME LsCsNetwork${BUILD_ABI}
 
 target_compile_definitions(LsCsNetwork
    PRIVATE
-   -DQT_BUILD_NETWORK_LIB
+   -DLSCS_BUILD_NETWORK_LIB
 )
 
 set(EXTRA_NETWORK_CXXFLAGS)
@@ -15,15 +15,15 @@ if (SECURETRANSPORT_FOUND)
    # darwin
    target_compile_definitions(LsCsNetwork
       PUBLIC
-      -DQT_SSL
-      -DQT_SECURETRANSPORT
+      -DLSCS_SSL
+      -DLSCS_SECURETRANSPORT
    )
 
 elseif (OPENSSL_FOUND)
    target_compile_definitions(LsCsNetwork
       PUBLIC
-      -DQT_SSL
-      -DQT_OPENSSL
+      -DLSCS_SSL
+      -DLSCS_OPENSSL
    )
    include_directories(${OPENSSL_INCLUDE_DIR})
 

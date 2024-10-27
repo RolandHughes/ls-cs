@@ -28,9 +28,9 @@
 
 #include "qgb18030codec.h"
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define InRange(c, lower, upper)  (((c) >= (lower)) && ((c) <= (upper)))
 #define IsLatin(c)        ((c) <= 0x7F)
@@ -59,9 +59,9 @@ typedef struct
     quint16        algOffset;
 } indexTbl_t;
 
-static uint qt_Gb18030ToUnicode( const uchar *gbstr, int &len );
-static int qt_UnicodeToGb18030( uint unicode, uchar *gbchar );
-int qt_UnicodeToGbk( uint unicode, uchar *gbchar );
+static uint lscs_Gb18030ToUnicode( const uchar *gbstr, int &len );
+static int lscs_UnicodeToGb18030( uint unicode, uchar *gbchar );
+int lscs_UnicodeToGbk( uint unicode, uchar *gbchar );
 
 QGb18030Codec::QGb18030Codec()
 {
@@ -107,7 +107,7 @@ QByteArray QGb18030Codec::convertFromUnicode( const QChar *uc, int len, Converte
                 // valid surrogate pair
                 ++i;
                 uint u = QChar::surrogateToUcs4( high, uc[i].unicode() );
-                len = qt_UnicodeToGb18030( u, buf );
+                len = lscs_UnicodeToGb18030( u, buf );
 
                 if ( len >= 2 )
                 {
@@ -144,7 +144,7 @@ QByteArray QGb18030Codec::convertFromUnicode( const QChar *uc, int len, Converte
             // we need at least one more character, first the high surrogate, then the low one
             high = ch;
         }
-        else if ( ( len = qt_UnicodeToGb18030( ch, buf ) ) >= 2 )
+        else if ( ( len = lscs_UnicodeToGb18030( ch, buf ) ) >= 2 )
         {
             for ( int j=0; j<len; j++ )
             {
@@ -239,7 +239,7 @@ QString QGb18030Codec::convertToUnicode( const char *chars, int len, ConverterSt
                 {
                     buf[1] = ch;
                     int clen = 2;
-                    uint u = qt_Gb18030ToUnicode( buf, clen );
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
 
                     if ( clen == 2 )
                     {
@@ -296,7 +296,7 @@ QString QGb18030Codec::convertToUnicode( const char *chars, int len, ConverterSt
                 {
                     buf[3] = ch;
                     int clen = 4;
-                    uint u = qt_Gb18030ToUnicode( buf, clen );
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
 
                     if ( clen == 4 )
                     {
@@ -444,7 +444,7 @@ QString QGbkCodec::convertToUnicode( const char *chars, int len, ConverterState 
                 {
                     buf[1] = ch;
                     int clen = 2;
-                    uint u = qt_Gb18030ToUnicode( buf, clen );
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
 
                     if ( clen == 2 )
                     {
@@ -516,7 +516,7 @@ QByteArray QGbkCodec::convertFromUnicode( const QChar *uc, int len, ConverterSta
             // ASCII
             *cursor++ = ch.cell();
         }
-        else if ( qt_UnicodeToGbk( ch.unicode(), buf ) == 2 )
+        else if ( lscs_UnicodeToGbk( ch.unicode(), buf ) == 2 )
         {
             *cursor++ = buf[0];
             *cursor++ = buf[1];
@@ -636,7 +636,7 @@ QString QGb2312Codec::convertToUnicode( const char *chars, int len, ConverterSta
                 {
                     buf[1] = ch;
                     int clen = 2;
-                    uint u = qt_Gb18030ToUnicode( buf, clen );
+                    uint u = lscs_Gb18030ToUnicode( buf, clen );
 
                     if ( clen == 2 )
                     {
@@ -709,7 +709,7 @@ QByteArray QGb2312Codec::convertFromUnicode( const QChar *uc, int len, Converter
             // ASCII
             *cursor++ = ch.cell();
         }
-        else if ( ( qt_UnicodeToGbk( ch.unicode(), buf ) == 2 ) &&
+        else if ( ( lscs_UnicodeToGbk( ch.unicode(), buf ) == 2 ) &&
                   ( buf[0] >= 0xA1 ) && ( buf[1] >= 0xA1 ) )
         {
             *cursor++ = buf[0];
@@ -772,7 +772,7 @@ QByteArray QFontGb2312Codec::convertFromUnicode( const QChar *uc, int len, Conve
     {
         QChar ch( *ucp++ );
 
-        int len = qt_UnicodeToGbk( ch.unicode(), buf );
+        int len = lscs_UnicodeToGbk( ch.unicode(), buf );
 
         if ( len == 2 && buf[0] > 0xa0 && buf[1] > 0xa0 )
         {
@@ -825,7 +825,7 @@ QByteArray QFontGbkCodec::convertFromUnicode( const QChar *uc, int len, Converte
         QChar ch( *ucp++ );
         uchar buf[8];
 
-        int len = qt_UnicodeToGbk( ch.unicode(), buf );
+        int len = lscs_UnicodeToGbk( ch.unicode(), buf );
 
         if ( len == 2 )
         {
@@ -9190,7 +9190,7 @@ static inline uint gb4lin_to_gb( uint gb4lin )
     return ( ( a << 24 ) | ( b << 16 ) | ( c << 8 ) | d );
 }
 
-static uint qt_Gb18030ToUnicode( const uchar *gbstr, int &len )
+static uint lscs_Gb18030ToUnicode( const uchar *gbstr, int &len )
 {
     /* Returns Unicode. */
     uint    uni;
@@ -9322,7 +9322,7 @@ static uint qt_Gb18030ToUnicode( const uchar *gbstr, int &len )
 }
 
 
-int qt_UnicodeToGb18030( uint uni, uchar *gbchar )
+int lscs_UnicodeToGb18030( uint uni, uchar *gbchar )
 {
     /* Returns the bytesize of the GB18030 character. */
     uint        gb, gb4lin;
@@ -9449,7 +9449,7 @@ int qt_UnicodeToGb18030( uint uni, uchar *gbchar )
 }
 
 
-int qt_UnicodeToGbk( uint uni, uchar *gbchar )
+int lscs_UnicodeToGbk( uint uni, uchar *gbchar )
 {
     /* Returns the bytesize of the GBK character. */
     /* Intended for improving performance of GB2312 and GBK functions. */
@@ -9525,6 +9525,6 @@ int qt_UnicodeToGbk( uint uni, uchar *gbchar )
     return 2;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC

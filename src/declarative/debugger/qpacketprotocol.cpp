@@ -26,7 +26,7 @@
 #include <QBuffer>
 #include <QElapsedTimer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #define MAX_PACKET_SIZE 0x7FFFFFFF
 
@@ -257,7 +257,7 @@ QPacket QPacketProtocol::read()
    Returns the difference between msecs and elapsed. If msecs is -1,
    however, -1 is returned.
 */
-static int qt_timeout_value( int msecs, int elapsed )
+static int lscs_timeout_value( int msecs, int elapsed )
 {
     if ( msecs == -1 )
     {
@@ -303,7 +303,7 @@ bool QPacketProtocol::waitForReadyRead( int msecs )
             return true;
         }
 
-        msecs = qt_timeout_value( msecs, stopWatch.elapsed() );
+        msecs = lscs_timeout_value( msecs, stopWatch.elapsed() );
     }
     while ( true );
 }
@@ -582,4 +582,4 @@ void QPacketProtocolPrivate::readyToRead()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

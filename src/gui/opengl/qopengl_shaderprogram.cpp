@@ -34,7 +34,7 @@
 #include <qvarlengtharray.h>
 #include <qvector.h>
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 #include <qopenglfunctions_4_0_core.h>
 #endif
 
@@ -49,12 +49,12 @@ class QOpenGLShaderPrivate
 public:
     QOpenGLShaderPrivate( QOpenGLContext *ctx, QOpenGLShader::ShaderType type )
         : shaderGuard( nullptr ), shaderType( type ), compiled( false ), glfuncs( new QOpenGLFunctions( ctx ) )
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
         , supportsGeometryShaders( false ), supportsTessellationShaders( false )
 #endif
 
     {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
 
         if ( ! ctx->isOpenGLES() )
         {
@@ -83,7 +83,7 @@ public:
 
     QOpenGLFunctions *glfuncs;
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
     // Support for geometry shaders
     bool supportsGeometryShaders;
 
@@ -133,14 +133,14 @@ bool QOpenGLShaderPrivate::create()
     {
         shader = glfuncs->glCreateShader( GL_VERTEX_SHADER );
 
-#if defined(QT_OPENGL_3_2)
+#if defined(LSCS_OPENGL_3_2)
     }
     else if ( shaderType == QOpenGLShader::Geometry && supportsGeometryShaders )
     {
         shader = glfuncs->glCreateShader( GL_GEOMETRY_SHADER );
 #endif
 
-#if defined(QT_OPENGL_4)
+#if defined(LSCS_OPENGL_4)
     }
     else if ( shaderType == QOpenGLShader::TessellationControl && supportsTessellationShaders )
     {
@@ -152,7 +152,7 @@ bool QOpenGLShaderPrivate::create()
         shader = glfuncs->glCreateShader( GL_TESS_EVALUATION_SHADER );
 #endif
 
-#if defined(QT_OPENGL_4_3)
+#if defined(LSCS_OPENGL_4_3)
     }
     else if ( shaderType == QOpenGLShader::Compute )
     {
@@ -332,7 +332,7 @@ static const char qualifierDefines[] =
     "#define mediump\n"
     "#define highp\n";
 
-#if defined(QT_OPENGL_ES) && !defined(QT_OPENGL_FORCE_SHADER_DEFINES)
+#if defined(LSCS_OPENGL_ES) && !defined(LSCS_OPENGL_FORCE_SHADER_DEFINES)
 // The "highp" qualifier doesn't exist in fragment shaders
 // on all ES platforms.  When it doesn't exist, use "mediump".
 #define QOpenGL_REDEFINE_HIGHP 1
@@ -530,7 +530,7 @@ bool QOpenGLShader::compileSourceCode( const char *source )
 
         if ( currentSurfaceFormat.renderableType() == QSurfaceFormat::OpenGL
                 || ctx_d->workaround_missingPrecisionQualifiers
-#ifdef QT_OPENGL_FORCE_SHADER_DEFINES
+#ifdef LSCS_OPENGL_FORCE_SHADER_DEFINES
                 || true
 #endif
            )
@@ -657,7 +657,7 @@ public:
     QOpenGLShaderProgramPrivate()
         : programGuard( nullptr ), linked( false ), inited( false ), removingShaders( false ), glfuncs( new QOpenGLFunctions )
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
         , tessellationFuncs( nullptr )
 #endif
 
@@ -677,7 +677,7 @@ public:
 
     QOpenGLFunctions *glfuncs;
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
     // Tessellation shader support
     QOpenGLFunctions_4_0_Core *tessellationFuncs;
 #endif
@@ -754,7 +754,7 @@ bool QOpenGLShaderProgram::init()
 
     d->glfuncs->initializeOpenGLFunctions();
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
     // Resolve OpenGL 4 functions for tessellation shader support
     QSurfaceFormat format = context->format();
 
@@ -2221,7 +2221,7 @@ int QOpenGLShaderProgram::maxGeometryOutputVertices() const
 {
     GLint n = 0;
 
-#if defined(QT_OPENGL_3_2)
+#if defined(LSCS_OPENGL_3_2)
     Q_D( const QOpenGLShaderProgram );
     d->glfuncs->glGetIntegerv( GL_MAX_GEOMETRY_OUTPUT_VERTICES, &n );
 #endif
@@ -2231,7 +2231,7 @@ int QOpenGLShaderProgram::maxGeometryOutputVertices() const
 
 void QOpenGLShaderProgram::setPatchVertexCount( int count )
 {
-#if defined(QT_OPENGL_4)
+#if defined(LSCS_OPENGL_4)
     Q_D( QOpenGLShaderProgram );
 
     if ( d->tessellationFuncs )
@@ -2247,7 +2247,7 @@ int QOpenGLShaderProgram::patchVertexCount() const
 {
     int patchVertices = 0;
 
-#if defined(QT_OPENGL_4)
+#if defined(LSCS_OPENGL_4)
     Q_D( const QOpenGLShaderProgram );
 
     if ( d->tessellationFuncs )
@@ -2262,7 +2262,7 @@ int QOpenGLShaderProgram::patchVertexCount() const
 
 void QOpenGLShaderProgram::setDefaultOuterTessellationLevels( const QVector<float> &levels )
 {
-#if defined(QT_OPENGL_4)
+#if defined(LSCS_OPENGL_4)
     QVector<float> tessLevels = levels;
 
     // Ensure we have the required 4 outer tessellation levels
@@ -2295,7 +2295,7 @@ QVector<float> QOpenGLShaderProgram::defaultOuterTessellationLevels() const
 {
     QVector<float> tessLevels( 4, 1.0f );
 
-#if defined(QT_OPENGL_4)
+#if defined(LSCS_OPENGL_4)
     Q_D( const QOpenGLShaderProgram );
 
     if ( d->tessellationFuncs )
@@ -2310,7 +2310,7 @@ QVector<float> QOpenGLShaderProgram::defaultOuterTessellationLevels() const
 
 void QOpenGLShaderProgram::setDefaultInnerTessellationLevels( const QVector<float> &levels )
 {
-#if defined(QT_OPENGL_4)
+#if defined(LSCS_OPENGL_4)
     QVector<float> tessLevels = levels;
 
     // Ensure we have the required 2 inner tessellation levels
@@ -2343,7 +2343,7 @@ QVector<float> QOpenGLShaderProgram::defaultInnerTessellationLevels() const
 {
     QVector<float> tessLevels( 2, 1.0f );
 
-#if defined(QT_OPENGL_4)
+#if defined(LSCS_OPENGL_4)
     Q_D( const QOpenGLShaderProgram );
 
     if ( d->tessellationFuncs )
@@ -2358,7 +2358,7 @@ QVector<float> QOpenGLShaderProgram::defaultInnerTessellationLevels() const
 
 bool QOpenGLShaderProgram::hasOpenGLShaderPrograms( QOpenGLContext *context )
 {
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 
     if ( ! context )
     {
@@ -2410,7 +2410,7 @@ bool QOpenGLShader::hasOpenGLShaders( ShaderType type, QOpenGLContext *context )
 
     if ( type == Geometry )
     {
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
         // Geometry shaders require OpenGL 3.2 or newer
         QSurfaceFormat format = context->format();
         return ( ! context->isOpenGLES() ) && ( format.version() >= qMakePair<int, int>( 3, 2 ) );
@@ -2422,7 +2422,7 @@ bool QOpenGLShader::hasOpenGLShaders( ShaderType type, QOpenGLContext *context )
     }
     else if ( type == TessellationControl || type == TessellationEvaluation )
     {
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
         return ( !context->isOpenGLES() ) && ( format.version() >= qMakePair<int, int>( 4, 0 ) );
 #else
         // No tessellation shader support in OpenGL ES2
@@ -2432,7 +2432,7 @@ bool QOpenGLShader::hasOpenGLShaders( ShaderType type, QOpenGLContext *context )
     }
     else if ( type == Compute )
     {
-#if defined(QT_OPENGL_4_3)
+#if defined(LSCS_OPENGL_4_3)
         return ( format.version() >= qMakePair<int, int>( 4, 3 ) );
 #else
         // No compute shader support without OpenGL 4.3 or newer

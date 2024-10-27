@@ -26,7 +26,7 @@
 
 #include <qabstractspinbox.h>
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 class QSpinBoxPrivate;
 class QDoubleSpinBoxPrivate;

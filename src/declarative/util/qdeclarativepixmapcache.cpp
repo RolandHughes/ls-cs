@@ -48,7 +48,7 @@
 #define CACHE_EXPIRE_TIME 30
 #define CACHE_REMOVAL_FRACTION 4
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // The cache limit describes the maximum "junk" in the cache.
 // These are the same defaults as QPixmapCache
@@ -1348,4 +1348,4 @@ void QDeclarativePixmap::flushCache()
     pixmapStore()->flushCache();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

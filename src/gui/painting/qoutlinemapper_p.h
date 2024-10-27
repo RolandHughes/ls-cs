@@ -34,9 +34,9 @@
 
 // This limitations comes from qgrayraster.c. Any higher and
 // rasterization of shapes will produce incorrect results.
-static constexpr const int QT_RASTER_COORD_LIMIT = 32767;
+static constexpr const int LSCS_RASTER_COORD_LIMIT = 32767;
 
-Q_GUI_EXPORT bool qt_scaleForTransform( const QTransform &transform, qreal *scale );
+Q_GUI_EXPORT bool lscs_scaleForTransform( const QTransform &transform, qreal *scale );
 
 class QOutlineMapper
 {
@@ -47,7 +47,7 @@ public:
     }
 
     //  Sets up the matrix to be used for conversion. This also
-    //  sets up the qt_path_iterator function that is used as a callback to get points.
+    //  sets up the lscs_path_iterator function that is used as a callback to get points.
     void setMatrix( const QTransform &m )
     {
         m_m11 = m.m11();
@@ -61,7 +61,7 @@ public:
         m_dy = m.dy();
         m_txop = m.type();
         qreal scale;
-        qt_scaleForTransform( m, &scale );
+        lscs_scaleForTransform( m, &scale );
         m_curve_threshold = scale == 0 ? qreal( 0.25 ) : ( qreal( 0.25 ) / scale );
     }
 
@@ -80,7 +80,7 @@ public:
         m_contours.clear();
 
         m_outline.flags = fillRule == Qt::WindingFill
-                          ? QT_FT_OUTLINE_NONE : QT_FT_OUTLINE_EVEN_ODD_FILL;
+                          ? LSCS_FT_OUTLINE_NONE : LSCS_FT_OUTLINE_EVEN_ODD_FILL;
 
         m_subpath_start = 0;
     }
@@ -143,7 +143,7 @@ public:
         }
     }
 
-    QT_FT_Outline *outline()
+    LSCS_FT_Outline *outline()
     {
         if ( m_valid )
         {
@@ -153,8 +153,8 @@ public:
         return nullptr;
     }
 
-    QT_FT_Outline *convertPath( const QPainterPath &path );
-    QT_FT_Outline *convertPath( const QVectorPath &path );
+    LSCS_FT_Outline *convertPath( const QPainterPath &path );
+    LSCS_FT_Outline *convertPath( const QVectorPath &path );
 
     inline const QPainterPath::ElementType *elementTypes() const
     {
@@ -172,14 +172,14 @@ public:
     QVector<QPainterPath::ElementType> m_element_types;
     QVector<QPointF> m_elements;
 
-    QVector<QT_FT_Vector> m_points;
+    QVector<LSCS_FT_Vector> m_points;
     QVector<char> m_tags;
     QVector<int> m_contours;
 
     QRect m_clip_rect;
     QRectF controlPointRect;          // only valid after endOutline()
 
-    QT_FT_Outline m_outline;
+    LSCS_FT_Outline m_outline;
     uint m_txop;
 
     int m_subpath_start;

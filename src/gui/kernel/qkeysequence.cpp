@@ -28,7 +28,7 @@
 #include <qapplication_p.h>
 #include <qkeysequence_p.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 #include <qdatastream.h>
 #include <qdatastream.h>
@@ -44,7 +44,7 @@
 #include <qcore_mac_p.h>
 #include <Carbon/Carbon.h>
 
-static bool qt_sequence_no_mnemonics = true;
+static bool lscs_sequence_no_mnemonics = true;
 
 struct MacSpecialKey
 {
@@ -90,7 +90,7 @@ static bool operator<( int key, const MacSpecialKey &entry )
 
 static const MacSpecialKey *const MacSpecialKeyEntriesEnd = entries + NumEntries;
 
-QChar qt_macSymbolForQtKey( int key )
+QChar lscs_macSymbolForQtKey( int key )
 {
     const MacSpecialKey *i = std::lower_bound( entries, MacSpecialKeyEntriesEnd, key );
 
@@ -152,12 +152,12 @@ static int qtkeyForMacSymbol( const QChar ch )
 }
 
 #else
-static bool qt_sequence_no_mnemonics = false;
+static bool lscs_sequence_no_mnemonics = false;
 #endif
 
-void Q_GUI_EXPORT qt_set_sequence_auto_mnemonic( bool b )
+void Q_GUI_EXPORT lscs_set_sequence_auto_mnemonic( bool b )
 {
-    qt_sequence_no_mnemonics = !b;
+    lscs_sequence_no_mnemonics = !b;
 }
 
 static const struct
@@ -552,7 +552,7 @@ QKeySequence QKeySequence::mnemonic( const QString &text )
 {
     QKeySequence ret;
 
-    if ( qt_sequence_no_mnemonics )
+    if ( lscs_sequence_no_mnemonics )
     {
         return ret;
     }
@@ -657,9 +657,9 @@ int QKeySequence::assign( const QString &ks, QKeySequence::SequenceFormat format
 struct QModifKeyName
 {
     QModifKeyName() { }
-    QModifKeyName( int q, QChar n ) : qt_key( q ), name( n ) { }
-    QModifKeyName( int q, const QString &n ) : qt_key( q ), name( n ) { }
-    int qt_key;
+    QModifKeyName( int q, QChar n ) : lscs_key( q ), name( n ) { }
+    QModifKeyName( int q, const QString &n ) : lscs_key( q ), name( n ) { }
+    int lscs_key;
     QString name;
 };
 
@@ -773,7 +773,7 @@ int QKeySequencePrivate::decodeString( const QString &str, QKeySequence::Sequenc
 
         if ( sl.contains( mkf.name ) )
         {
-            ret |= mkf.qt_key;
+            ret |= mkf.lscs_key;
             accel.remove( mkf.name );
             sl = accel;
         }
@@ -817,7 +817,7 @@ int QKeySequencePrivate::decodeString( const QString &str, QKeySequence::Sequenc
 
                 if ( sub == mkf.name )
                 {
-                    ret |= mkf.qt_key;
+                    ret |= mkf.lscs_key;
                     validModifier = true;
                     break; // Shortcut, since if we find an other it would/should just be a dup
                 }
@@ -991,7 +991,7 @@ QString QKeySequencePrivate::encodeString( int key, QKeySequence::SequenceFormat
         {
             if ( key & modifierOrder[i] )
             {
-                s += qt_macSymbolForQtKey( qtkeyOrder[i] );
+                s += lscs_macSymbolForQtKey( qtkeyOrder[i] );
             }
         }
 
@@ -1070,7 +1070,7 @@ QString QKeySequencePrivate::keyName( int key, QKeySequence::SequenceFormat form
 
         if ( nativeText )
         {
-            QChar ch = qt_macSymbolForQtKey( key );
+            QChar ch = lscs_macSymbolForQtKey( key );
 
             if ( !ch.isNull() )
             {
@@ -1297,4 +1297,4 @@ QDebug operator<<( QDebug dbg, const QKeySequence &p )
     return dbg.space();
 }
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT

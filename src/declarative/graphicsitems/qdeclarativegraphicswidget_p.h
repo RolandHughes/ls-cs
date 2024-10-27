@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QtDeclarative/qdeclarativecomponent.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeAnchorLine;
 class QDeclarativeAnchors;
@@ -85,6 +85,6 @@ public:
     Q_DECLARE_PRIVATE( QDeclarativeGraphicsWidget )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEGRAPHICSWIDGET_P_H

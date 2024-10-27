@@ -27,7 +27,7 @@
 #include <qdeclarativeitem_p.h>
 #include <qdeclarativepainteditem_p_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeImplicitSizeItemPrivate : public QDeclarativeItemPrivate
 {
@@ -56,6 +56,6 @@ public:
     virtual void implicitHeightChanged();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEIMPLICITSIZEITEM_P_H

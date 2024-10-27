@@ -29,7 +29,7 @@
 #include <QFile>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE QDeclarativeDirParser::QDeclarativeDirParser()
+LSCS_BEGIN_NAMESPACE QDeclarativeDirParser::QDeclarativeDirParser()
     : _isParsed( false )
 {
 }
@@ -216,7 +216,7 @@ bool QDeclarativeDirParser::parse()
                 continue;
             }
 
-#ifdef QT_CREATOR
+#ifdef LSCS_CREATOR
             TypeInfo typeInfo( sections[1] );
             _typeInfos.append( typeInfo );
 #endif
@@ -314,11 +314,11 @@ QList<QDeclarativeDirParser::Component> QDeclarativeDirParser::components() cons
     return _components;
 }
 
-#ifdef QT_CREATOR
+#ifdef LSCS_CREATOR
 QList<QDeclarativeDirParser::TypeInfo> QDeclarativeDirParser::typeInfos() const
 {
     return _typeInfos;
 }
 #endif
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

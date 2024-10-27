@@ -95,12 +95,12 @@ class UString
 
 public:
 #if PLATFORM(QT)
-    operator QT_PREPEND_NAMESPACE( QString )() const
+    operator LSCS_PREPEND_NAMESPACE( QString )() const
     {
-        return QT_PREPEND_NAMESPACE( QString )( reinterpret_cast<const QT_PREPEND_NAMESPACE( QChar ) *>( this->data() ), this->size() );
+        return LSCS_PREPEND_NAMESPACE( QString )( reinterpret_cast<const LSCS_PREPEND_NAMESPACE( QChar ) *>( this->data() ), this->size() );
     }
 
-    UString( const QT_PREPEND_NAMESPACE( QString )& str )
+    UString( const LSCS_PREPEND_NAMESPACE( QString )& str )
     {
         *this = JSC::UString( reinterpret_cast<const UChar *>( str.constData() ), str.length() );
     }

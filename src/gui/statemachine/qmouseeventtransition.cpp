@@ -23,7 +23,7 @@
 
 #include <qmouseeventtransition.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qpainterpath.h>
 #include <qstatemachine.h>
@@ -122,4 +122,4 @@ void QMouseEventTransition::onTransition( QEvent *event )
     QEventTransition::onTransition( event );
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

@@ -36,7 +36,7 @@
 #include "qwebpage.h"
 #include "qwebsettings.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeWebViewPrivate
 {
@@ -724,7 +724,7 @@ void QDeclarativeWebView::setPressGrabTime( int millis )
     emit pressGrabTimeChanged();
 }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 /*!
     \qmlproperty action WebView::back
     This property holds the action for causing the previous URL in the history to be displayed.
@@ -760,7 +760,7 @@ QAction *QDeclarativeWebView::stopAction() const
 {
     return page()->action( QWebPage::Stop );
 }
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
 /*!
     \qmlproperty string WebView::title
@@ -1244,5 +1244,5 @@ QWebPage *QDeclarativeWebPage::createWindow( WebWindowType type )
     return 0;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-#define QT_NO_URL_CAST_FROM_STRING 1
+#define LSCS_NO_URL_CAST_FROM_STRING 1
 
 #define _WIN32_WINNT 0x0600
 
@@ -119,7 +119,7 @@ typedef int GETPROPERTYSTOREFLAGS;
 #define GPS_MASK_VALID            0x0000007F
 #endif
 
-typedef int ( QT_WIN_CALLBACK *BFFCALLBACK )( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData );
+typedef int ( LSCS_WIN_CALLBACK *BFFCALLBACK )( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData );
 
 // message from browser
 #define BFFM_INITIALIZED        1
@@ -177,38 +177,38 @@ typedef struct
 {
     LPCWSTR pszName;
     LPCWSTR pszSpec;
-} qt_COMDLG_FILTERSPEC;
+} lscs_COMDLG_FILTERSPEC;
 
 typedef struct
 {
     GUID fmtid;
     DWORD pid;
-} qt_PROPERTYKEY;
+} lscs_PROPERTYKEY;
 
 typedef struct
 {
     USHORT      cb;
     BYTE        abID[1];
-} qt_SHITEMID, *qt_LPSHITEMID;
+} lscs_SHITEMID, *lscs_LPSHITEMID;
 
 typedef struct
 {
-    qt_SHITEMID mkid;
-} qt_ITEMIDLIST, *qt_LPITEMIDLIST;
+    lscs_SHITEMID mkid;
+} lscs_ITEMIDLIST, *lscs_LPITEMIDLIST;
 
-typedef const qt_ITEMIDLIST *qt_LPCITEMIDLIST;
+typedef const lscs_ITEMIDLIST *lscs_LPCITEMIDLIST;
 
 typedef struct
 {
     HWND          hwndOwner;
-    qt_LPCITEMIDLIST pidlRoot;
+    lscs_LPCITEMIDLIST pidlRoot;
     LPWSTR        pszDisplayName;
     LPCWSTR       lpszTitle;
     UINT          ulFlags;
     BFFCALLBACK   lpfn;
     LPARAM        lParam;
     int           iImage;
-} qt_BROWSEINFO;
+} lscs_BROWSEINFO;
 
 #endif // __IShellLibrary_FWD_DEFINED__
 
@@ -250,7 +250,7 @@ DECLARE_INTERFACE_( IShellItemArray, IUnknown )
 {
     STDMETHOD( BindToHandler )( THIS_ IBindCtx * pbc, REFGUID rbhid, REFIID riid, void **ppvOut ) PURE;
     STDMETHOD( GetPropertyStore )( THIS_ GETPROPERTYSTOREFLAGS flags, REFIID riid, void **ppv ) PURE;
-    STDMETHOD( GetPropertyDescriptionList )( THIS_ const qt_PROPERTYKEY * keyType, REFIID riid, void **ppv ) PURE;
+    STDMETHOD( GetPropertyDescriptionList )( THIS_ const lscs_PROPERTYKEY * keyType, REFIID riid, void **ppv ) PURE;
     STDMETHOD( GetAttributes )( THIS_ SIATTRIBFLAGS dwAttribFlags, ULONG sfgaoMask, ULONG * psfgaoAttribs ) PURE;
     STDMETHOD( GetCount )( THIS_ DWORD * pdwNumItems ) PURE;
     STDMETHOD( GetItemAt )( THIS_ DWORD dwIndex, IShellItem **ppsi ) PURE;
@@ -643,7 +643,7 @@ struct FindDialogContext
     HWND hwnd;                    // contains the HWND of the window found
 };
 
-static BOOL QT_WIN_CALLBACK findDialogEnumWindowsProc( HWND hwnd, LPARAM lParam )
+static BOOL LSCS_WIN_CALLBACK findDialogEnumWindowsProc( HWND hwnd, LPARAM lParam )
 {
     FindDialogContext *context = reinterpret_cast<FindDialogContext *>( lParam );
     DWORD winPid = 0;
@@ -2161,13 +2161,13 @@ void QWindowsXpNativeFileDialog::doExec( HWND owner )
 // Callback for QWindowsNativeXpFileDialog directory dialog.
 // MFC Directory Dialog. Contrib: Steve Williams (minor parts from Scott Powers)
 
-static int QT_WIN_CALLBACK xpFileDialogGetExistingDirCallbackProc( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData )
+static int LSCS_WIN_CALLBACK xpFileDialogGetExistingDirCallbackProc( HWND hwnd, UINT uMsg, LPARAM lParam, LPARAM lpData )
 {
     QWindowsXpNativeFileDialog *dialog = reinterpret_cast<QWindowsXpNativeFileDialog *>( lpData );
     return dialog->existingDirCallback( hwnd, uMsg, lParam );
 }
 
-typedef PIDLIST_ABSOLUTE qt_LpItemIdList;
+typedef PIDLIST_ABSOLUTE lscs_LpItemIdList;
 
 int QWindowsXpNativeFileDialog::existingDirCallback( HWND hwnd, UINT uMsg, LPARAM lParam )
 {
@@ -2192,7 +2192,7 @@ int QWindowsXpNativeFileDialog::existingDirCallback( HWND hwnd, UINT uMsg, LPARA
         case BFFM_SELCHANGED:
         {
             wchar_t path[MAX_PATH];
-            const bool ok = SHGetPathFromIDList( reinterpret_cast<qt_LpItemIdList>( lParam ), path ) && path[0];
+            const bool ok = SHGetPathFromIDList( reinterpret_cast<lscs_LpItemIdList>( lParam ), path ) && path[0];
             SendMessage( hwnd, BFFM_ENABLEOK, ok ? 1 : 0, 1 );
         }
         break;
@@ -2217,7 +2217,7 @@ QList<QUrl> QWindowsXpNativeFileDialog::execExistingDir( HWND owner )
 
     QList<QUrl> selectedFiles;
 
-    if ( qt_LpItemIdList pItemIDList = SHBrowseForFolder( &bi ) )
+    if ( lscs_LpItemIdList pItemIDList = SHBrowseForFolder( &bi ) )
     {
         wchar_t path[MAX_PATH];
         path[0] = 0;

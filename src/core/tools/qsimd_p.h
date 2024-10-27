@@ -32,32 +32,32 @@
 #include <intrin.h>
 #endif
 
-#define QT_COMPILER_SUPPORTS(x)     (QT_COMPILER_SUPPORTS_ ## x - 0)
+#define LSCS_COMPILER_SUPPORTS(x)     (LSCS_COMPILER_SUPPORTS_ ## x - 0)
 
 #if defined(Q_CC_INTEL) || defined(Q_CC_MSVC) || (defined(Q_CC_GNU) && ! defined(Q_CC_CLANG))
 
-#  define QT_COMPILER_SUPPORTS_SIMD_ALWAYS
-#  define QT_COMPILER_SUPPORTS_HERE(x)    QT_COMPILER_SUPPORTS(x)
+#  define LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS
+#  define LSCS_COMPILER_SUPPORTS_HERE(x)    LSCS_COMPILER_SUPPORTS(x)
 
 #  if defined(Q_CC_GNU) && ! defined(Q_CC_INTEL)
 // GCC requires attributes for a function
-#    define QT_FUNCTION_TARGET(x)  __attribute__((__target__(QT_FUNCTION_TARGET_STRING_ ## x)))
+#    define LSCS_FUNCTION_TARGET(x)  __attribute__((__target__(LSCS_FUNCTION_TARGET_STRING_ ## x)))
 #  else
-#    define QT_FUNCTION_TARGET(x)
+#    define LSCS_FUNCTION_TARGET(x)
 #  endif
 
 #else
-#  define QT_COMPILER_SUPPORTS_HERE(x)    (__ ## x ## __)
-#  define QT_FUNCTION_TARGET(x)
+#  define LSCS_COMPILER_SUPPORTS_HERE(x)    (__ ## x ## __)
+#  define LSCS_FUNCTION_TARGET(x)
 
 #endif
 
 // SSE intrinsics
-#define QT_FUNCTION_TARGET_STRING_SSE2      "sse2"
+#define LSCS_FUNCTION_TARGET_STRING_SSE2      "sse2"
 
-#if defined(__SSE2__) || (defined(QT_COMPILER_SUPPORTS_SSE2) && defined(QT_COMPILER_SUPPORTS_SIMD_ALWAYS))
+#if defined(__SSE2__) || (defined(LSCS_COMPILER_SUPPORTS_SSE2) && defined(LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS))
 
-#if defined(QT_LINUXBASE) || defined(Q_OS_ANDROID_NO_SDK)
+#if defined(LSCS_LINUXBASE) || defined(Q_OS_ANDROID_NO_SDK)
 /// posix_memalign declaration in LSB is incorrect
 //  http://bugs.linuxbase.org/show_bug.cgi?id=2431
 #  define posix_memalign _lsb_hack_posix_memalign
@@ -76,34 +76,34 @@
 #endif
 
 // SSE3 intrinsics
-#define QT_FUNCTION_TARGET_STRING_SSE3      "sse3"
-#if defined(__SSE3__) || (defined(QT_COMPILER_SUPPORTS_SSE3) && defined(QT_COMPILER_SUPPORTS_SIMD_ALWAYS))
+#define LSCS_FUNCTION_TARGET_STRING_SSE3      "sse3"
+#if defined(__SSE3__) || (defined(LSCS_COMPILER_SUPPORTS_SSE3) && defined(LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS))
 #include <pmmintrin.h>
 #endif
 
 // SSSE3 intrinsics
-#define QT_FUNCTION_TARGET_STRING_SSSE3     "ssse3"
-#if defined(__SSSE3__) || (defined(QT_COMPILER_SUPPORTS_SSSE3) && defined(QT_COMPILER_SUPPORTS_SIMD_ALWAYS))
+#define LSCS_FUNCTION_TARGET_STRING_SSSE3     "ssse3"
+#if defined(__SSSE3__) || (defined(LSCS_COMPILER_SUPPORTS_SSSE3) && defined(LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS))
 #include <tmmintrin.h>
 #endif
 
 // SSE4.1 intrinsics
-#define QT_FUNCTION_TARGET_STRING_SSE4_1    "sse4.1"
-#if defined(__SSE4_1__) || (defined(QT_COMPILER_SUPPORTS_SSE4_1) && defined(QT_COMPILER_SUPPORTS_SIMD_ALWAYS))
+#define LSCS_FUNCTION_TARGET_STRING_SSE4_1    "sse4.1"
+#if defined(__SSE4_1__) || (defined(LSCS_COMPILER_SUPPORTS_SSE4_1) && defined(LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS))
 #include <smmintrin.h>
 #endif
 
 // SSE4.2 intrinsics
-#define QT_FUNCTION_TARGET_STRING_SSE4_2    "sse4.2"
-#if defined(__SSE4_2__) || (defined(QT_COMPILER_SUPPORTS_SSE4_2) && defined(QT_COMPILER_SUPPORTS_SIMD_ALWAYS))
+#define LSCS_FUNCTION_TARGET_STRING_SSE4_2    "sse4.2"
+#if defined(__SSE4_2__) || (defined(LSCS_COMPILER_SUPPORTS_SSE4_2) && defined(LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS))
 #include <nmmintrin.h>
 #endif
 
 // AVX intrinsics
-#define QT_FUNCTION_TARGET_STRING_AVX       "avx"
-#define QT_FUNCTION_TARGET_STRING_AVX2      "avx2"
+#define LSCS_FUNCTION_TARGET_STRING_AVX       "avx"
+#define LSCS_FUNCTION_TARGET_STRING_AVX2      "avx2"
 
-#if defined(__AVX__) || (defined(QT_COMPILER_SUPPORTS_AVX) && defined(QT_COMPILER_SUPPORTS_SIMD_ALWAYS))
+#if defined(__AVX__) || (defined(LSCS_COMPILER_SUPPORTS_AVX) && defined(LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS))
 // immintrin.h is the ultimate header, we do not need anything else after this
 #include <immintrin.h>
 
@@ -125,26 +125,26 @@
 #  endif
 #endif
 
-#define QT_FUNCTION_TARGET_STRING_AVX512F       "avx512f"
-#define QT_FUNCTION_TARGET_STRING_AVX512CD      "avx512cd"
-#define QT_FUNCTION_TARGET_STRING_AVX512ER      "avx512er"
-#define QT_FUNCTION_TARGET_STRING_AVX512PF      "avx512pf"
-#define QT_FUNCTION_TARGET_STRING_AVX512BW      "avx512bw"
-#define QT_FUNCTION_TARGET_STRING_AVX512DQ      "avx512dq"
-#define QT_FUNCTION_TARGET_STRING_AVX512VL      "avx512vl"
-#define QT_FUNCTION_TARGET_STRING_AVX512IFMA    "avx512ifma"
-#define QT_FUNCTION_TARGET_STRING_AVX512VBMI    "avx512vbmi"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512F       "avx512f"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512CD      "avx512cd"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512ER      "avx512er"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512PF      "avx512pf"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512BW      "avx512bw"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512DQ      "avx512dq"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512VL      "avx512vl"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512IFMA    "avx512ifma"
+#define LSCS_FUNCTION_TARGET_STRING_AVX512VBMI    "avx512vbmi"
 
-#define QT_FUNCTION_TARGET_STRING_F16C          "f16c"
-#define QT_FUNCTION_TARGET_STRING_RDRAND        "rdrnd"
-#define QT_FUNCTION_TARGET_STRING_BMI           "bmi"
-#define QT_FUNCTION_TARGET_STRING_BMI2          "bmi2"
-#define QT_FUNCTION_TARGET_STRING_RDSEED        "rdseed"
-#define QT_FUNCTION_TARGET_STRING_SHA           "sha"
+#define LSCS_FUNCTION_TARGET_STRING_F16C          "f16c"
+#define LSCS_FUNCTION_TARGET_STRING_RDRAND        "rdrnd"
+#define LSCS_FUNCTION_TARGET_STRING_BMI           "bmi"
+#define LSCS_FUNCTION_TARGET_STRING_BMI2          "bmi2"
+#define LSCS_FUNCTION_TARGET_STRING_RDSEED        "rdseed"
+#define LSCS_FUNCTION_TARGET_STRING_SHA           "sha"
 
 #if defined(Q_PROCESSOR_X86) && (defined(Q_CC_GNU) || defined(Q_CC_CLANG) || defined(Q_CC_INTEL))
 
-#  define QT_COMPILER_SUPPORTS_X86INTRIN
+#  define LSCS_COMPILER_SUPPORTS_X86INTRIN
 
 #  ifdef Q_CC_INTEL
 #    include <immintrin.h>
@@ -157,7 +157,7 @@
 // NEON intrinsics
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
 #include <arm_neon.h>
-#define QT_FUNCTION_TARGET_STRING_ARM_NEON      "neon"
+#define LSCS_FUNCTION_TARGET_STRING_ARM_NEON      "neon"
 
 #ifndef __ARM_NEON__
 // __ARM_NEON__ is not defined on AArch64, required in our NEON detection
@@ -166,7 +166,7 @@
 
 #endif
 
-#undef QT_COMPILER_SUPPORTS_SIMD_ALWAYS
+#undef LSCS_COMPILER_SUPPORTS_SIMD_ALWAYS
 
 enum CPUFeatures
 {

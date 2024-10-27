@@ -315,7 +315,7 @@ bool Driver::uic( const QString &fileName, DomUI *ui, QTextStream *out )
     Uic tool( this );
     bool retval = false;
 
-#ifdef QT_UIC_CPP_GENERATOR
+#ifdef LSCS_UIC_CPP_GENERATOR
     retval = tool.write( ui );
 #else
     ( void ) ui;

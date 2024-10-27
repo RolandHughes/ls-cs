@@ -6,6 +6,7 @@
 #include <QRegularExpression>
 #include <QStringList>
 #include <QLibraryInfo>
+#include <QDir>
 #include "console-hello_build_info.h"
 
 class SomeClass
@@ -63,7 +64,30 @@ void Task::run()
     out << "     float              " << sizeof( float ) << endl;
     out << "     double             " << sizeof( double ) << endl;
     out << "     long double        " << sizeof( long double) << endl;
-
+    
+    QString home = QString::fromUtf8(qgetenv( "HOME"));
+    QString path = home + "/platforms";
+    QDir f1( path);
+    out << "first dir: " << path << endl;
+    QFileInfoList list = f1.entryInfoList();
+    for (QFileInfo info : list )
+    {
+    	out << "Name: " << info.fileName() << "  readable: " << info.isReadable()
+    		<< "  writable: " << info.isWritable() 
+    		<< "  isFile: " << info.isFile() << endl;
+    }
+    
+    path += "/usr/lib/LsCs/plugins/platforms/";
+    QDir f2( path );
+    out << "second dir: " << path << endl;
+    list = f2.entryInfoList();
+    for (QFileInfo info : list )
+    {
+    	out << "Name: " << info.fileName() << "  readable: " << info.isReadable()
+    		<< "  writable: " << info.isWritable() 
+    		<< "  isFile: " << info.isFile() << endl;
+    }
+    
     out << "\n\nNext we will do some regular expression matching.\n";
     out << "This section can be useful if you want to try out some\n";
     out << "regular expressions for your own programs.\n" << endl;  // use endl to flush

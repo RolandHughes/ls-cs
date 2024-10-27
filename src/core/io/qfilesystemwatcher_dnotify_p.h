@@ -26,7 +26,7 @@
 
 #include <qfilesystemwatcher_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qdatetime.h>
 #include <qfile.h>
@@ -89,6 +89,6 @@ private:
     QHash<int, int> parentToFD;
 };
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER
 
 #endif

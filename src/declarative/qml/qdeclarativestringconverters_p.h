@@ -28,7 +28,7 @@
 #include <QtCore/qvariant.h>
 #include <qdeclarativeglobal_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QColor;
 class QPointF;
@@ -45,7 +45,7 @@ QVariant Q_DECLARATIVE_PRIVATE_EXPORT variantFromString( const QString & );
 QVariant Q_DECLARATIVE_PRIVATE_EXPORT variantFromString( const QString &, int preferredType, bool *ok = 0 );
 
 QColor Q_DECLARATIVE_PRIVATE_EXPORT colorFromString( const QString &, bool *ok = 0 );
-#ifndef QT_NO_DATESTRING
+#ifndef LSCS_NO_DATESTRING
 QDate Q_DECLARATIVE_PRIVATE_EXPORT dateFromString( const QString &, bool *ok = 0 );
 QTime Q_DECLARATIVE_PRIVATE_EXPORT timeFromString( const QString &, bool *ok = 0 );
 QDateTime Q_DECLARATIVE_PRIVATE_EXPORT dateTimeFromString( const QString &, bool *ok = 0 );
@@ -56,6 +56,6 @@ QRectF Q_DECLARATIVE_PRIVATE_EXPORT rectFFromString( const QString &, bool *ok =
 QVector3D Q_DECLARATIVE_PRIVATE_EXPORT vector3DFromString( const QString &, bool *ok = 0 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVESTRINGCONVERTERS_P_H

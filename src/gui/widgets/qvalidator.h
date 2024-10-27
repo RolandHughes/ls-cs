@@ -30,7 +30,7 @@
 #include <qlocale.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 
 class QValidatorPrivate;
 class QDoubleValidatorPrivate;
@@ -241,6 +241,6 @@ int QDoubleValidator::decimals() const
     return dec;
 }
 
-#endif // QT_NO_VALIDATOR
+#endif // LSCS_NO_VALIDATOR
 
 #endif

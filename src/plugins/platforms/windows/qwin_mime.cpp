@@ -141,7 +141,7 @@ static QByteArray writeDib( const QImage &img )
     return ba;
 }
 
-static bool qt_write_dibv5( QDataStream &s, QImage image )
+static bool lscs_write_dibv5( QDataStream &s, QImage image )
 {
     QIODevice *d = s.device();
 
@@ -245,7 +245,7 @@ static int calc_shift( int mask )
 }
 
 //Supports only 32 bit DIBV5
-static bool qt_read_dibv5( QDataStream &s, QImage &image )
+static bool lscs_read_dibv5( QDataStream &s, QImage &image )
 {
     BMP_BITMAPV5HEADER bi;
     QIODevice *d = s.device();
@@ -1203,7 +1203,7 @@ bool QWindowsMimeHtml::convertFromMime( const FORMATETC &formatetc, const QMimeD
 }
 
 
-#ifndef QT_NO_IMAGEFORMAT_BMP
+#ifndef LSCS_NO_IMAGEFORMAT_BMP
 class QWindowsMimeImage : public QWindowsMime
 {
 public:
@@ -1344,7 +1344,7 @@ bool QWindowsMimeImage::convertFromMime( const FORMATETC &formatetc, const QMime
             QDataStream s( &ba, QIODevice::WriteOnly );
             s.setByteOrder( QDataStream::LittleEndian ); // Intel byte order ####
 
-            if ( qt_write_dibv5( s, img ) )
+            if ( lscs_write_dibv5( s, img ) )
             {
                 return setData( ba, pmedium );
             }
@@ -1409,7 +1409,7 @@ QVariant QWindowsMimeImage::convertToMime( const QString &mimeType, IDataObject 
 
         s.setByteOrder( QDataStream::LittleEndian );
 
-        if ( qt_read_dibv5( s, img ) )
+        if ( lscs_read_dibv5( s, img ) )
         {
             // #### supports only 32bit DIBV5
             return img;
@@ -1524,7 +1524,7 @@ bool QBuiltInMimes::convertFromMime( const FORMATETC &formatetc, const QMimeData
         else
         {
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
             data = QInternalMimeData::renderDataHelper( outFormats.value( getCf( formatetc ) ), mimeData );
 #endif
         }
@@ -1643,7 +1643,7 @@ QLastResortMimes::QLastResortMimes()
 bool QLastResortMimes::canConvertFromMime( const FORMATETC &formatetc, const QMimeData *mimeData ) const
 {
 // really check
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     return formatetc.tymed & TYMED_HGLOBAL && ( formats.contains( formatetc.cfFormat )
             && QInternalMimeData::hasFormatHelper( formats.value( formatetc.cfFormat ), mimeData ) );
 
@@ -1655,7 +1655,7 @@ bool QLastResortMimes::canConvertFromMime( const FORMATETC &formatetc, const QMi
 
 bool QLastResortMimes::convertFromMime( const FORMATETC &formatetc, const QMimeData *mimeData, STGMEDIUM *pmedium ) const
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     return canConvertFromMime( formatetc, mimeData )
            && setData( QInternalMimeData::renderDataHelper( formats.value( getCf( formatetc ) ), mimeData ), pmedium );
 #else
@@ -1693,16 +1693,16 @@ QVector<FORMATETC> QLastResortMimes::formatsForMime( const QString &mimeType, co
     return formatetcs;
 }
 
-static const char x_qt_windows_mime[] = "application/x-qt-windows-mime;value=\"";
+static const char x_lscs_windows_mime[] = "application/x-qt-windows-mime;value=\"";
 
 static bool isCustomMimeType( const QString &mimeType )
 {
-    return mimeType.startsWith( QString( x_qt_windows_mime ), Qt::CaseInsensitive );
+    return mimeType.startsWith( QString( x_lscs_windows_mime ), Qt::CaseInsensitive );
 }
 
 static QString customMimeType( const QString &mimeType, int *lindex = nullptr )
 {
-    int len = sizeof( x_qt_windows_mime ) - 1;
+    int len = sizeof( x_lscs_windows_mime ) - 1;
     int n = mimeType.lastIndexOf( '\"' ) - len;
 
     QString ret = mimeType.mid( len, n );
@@ -1812,7 +1812,7 @@ QString QLastResortMimes::mimeForFormat( const FORMATETC &formatetc ) const
     if ( ! clipFormat.isEmpty() )
     {
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
         if ( QInternalMimeData::canReadData( clipFormat ) )
         {
@@ -1840,7 +1840,7 @@ QString QLastResortMimes::mimeForFormat( const FORMATETC &formatetc ) const
 
                 if ( ! ianaType )
                 {
-                    format = x_qt_windows_mime + clipFormat + '\"';
+                    format = x_lscs_windows_mime + clipFormat + '\"';
                 }
                 else
                 {
@@ -1938,7 +1938,7 @@ QVector<FORMATETC> QWindowsMimeConverter::allFormatsForMime( const QMimeData *mi
     ensureInitialized();
     QVector<FORMATETC> formatics;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     formatics.reserve( 20 );
 
     const QStringList formats = QInternalMimeData::formatsHelper( mimeData );
@@ -1961,7 +1961,7 @@ void QWindowsMimeConverter::ensureInitialized() const
     if ( m_mimes.isEmpty() )
     {
 
-#ifndef QT_NO_IMAGEFORMAT_BMP
+#ifndef LSCS_NO_IMAGEFORMAT_BMP
         m_mimes << new QWindowsMimeImage;
 #endif
 

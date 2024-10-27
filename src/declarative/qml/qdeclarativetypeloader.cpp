@@ -33,7 +33,7 @@
 #include <QtCore/qdiriterator.h>
 #include <QtCore/qfile.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*
 Returns the set of QML files in path (qmldir, *.qml, *.js).  The caller
@@ -1379,5 +1379,5 @@ void QDeclarativeQmldirData::dataReceived( const QByteArray &data )
     m_components = parser.components();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

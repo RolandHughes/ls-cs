@@ -49,7 +49,7 @@ SocketStreamHandlePrivate::SocketStreamHandlePrivate( SocketStreamHandle *stream
 
     if ( isSecure )
     {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         m_socket = new QSslSocket( this );
 #endif
     }
@@ -79,7 +79,7 @@ SocketStreamHandlePrivate::SocketStreamHandlePrivate( SocketStreamHandle *stream
 
     if ( isSecure )
     {
-#ifdef QT_SSL
+#ifdef LSCS_SSL
         static_cast<QSslSocket *>( m_socket )->connectToHostEncrypted( host, port );
 #endif
     }
@@ -173,7 +173,7 @@ void SocketStreamHandlePrivate::socketErrorCallback( int error )
     }
 }
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 void SocketStreamHandlePrivate::socketSslErrors( const QList<QSslError> &error )
 {
     QMetaObject::invokeMethod( this, "socketErrorCallback", Qt::QueuedConnection, Q_ARG( int, error[0].error() ) );

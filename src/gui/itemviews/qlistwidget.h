@@ -29,7 +29,7 @@
 #include <qvariant.h>
 #include <qvector.h>
 
-#ifndef QT_NO_LISTWIDGET
+#ifndef LSCS_NO_LISTWIDGET
 
 class QEvent;
 class QListModel;
@@ -95,7 +95,7 @@ public:
     }
     inline void setStatusTip( const QString &statusTip );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     inline QString toolTip() const
     {
         return data( Qt::ToolTipRole ).toString();
@@ -103,7 +103,7 @@ public:
     inline void setToolTip( const QString &toolTip );
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     inline QString whatsThis() const
     {
         return data( Qt::WhatsThisRole ).toString();
@@ -225,14 +225,14 @@ inline void QListWidgetItem::setStatusTip( const QString &statusTip )
     setData( Qt::StatusTipRole, statusTip );
 }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 inline void QListWidgetItem::setToolTip( const QString &toolTip )
 {
     setData( Qt::ToolTipRole, toolTip );
 }
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 inline void QListWidgetItem::setWhatsThis( const QString &whatsThis )
 {
     setData( Qt::WhatsThisRole, whatsThis );
@@ -370,7 +370,7 @@ protected:
     virtual QStringList mimeTypes() const;
     virtual QMimeData *mimeData( const QList<QListWidgetItem *> &items ) const;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     virtual bool dropMimeData( int index, const QMimeData *data, Qt::DropAction action );
     virtual Qt::DropActions supportedDropActions() const;
 #endif
@@ -460,6 +460,6 @@ bool QListWidgetItem::isHidden() const
     return ( view ? view->isItemHidden( this ) : false );
 }
 
-#endif // QT_NO_LISTWIDGET
+#endif // LSCS_NO_LISTWIDGET
 
 #endif // QLISTWIDGET_H

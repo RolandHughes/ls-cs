@@ -28,7 +28,7 @@
 #include <QElapsedTimer>
 #include "qdeclarativedebugservice_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QJSDebuggerAgent;
@@ -81,6 +81,6 @@ private :
     QList<JSAgentCoverageData> m_data;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QJSDEBUGSERVICE_P_H

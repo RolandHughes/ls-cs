@@ -31,9 +31,9 @@
 #include "qdbusinterface_p.h"
 #include "qdbusconnection_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static void copyArgument( void *to, int id, const QVariant &arg )
 {
@@ -241,9 +241,9 @@ const QMetaObject *QDBusInterface::metaObject() const
 
 /*!
     \internal
-    Override QObject::qt_metacast to catch the interface name too.
+    Override QObject::lscs_metacast to catch the interface name too.
 */
-void *QDBusInterface::qt_metacast( const char *_clname )
+void *QDBusInterface::lscs_metacast( const char *_clname )
 {
     if ( !_clname )
     {
@@ -260,16 +260,16 @@ void *QDBusInterface::qt_metacast( const char *_clname )
         return static_cast<void *>( const_cast<QDBusInterface *>( this ) );
     }
 
-    return QDBusAbstractInterface::qt_metacast( _clname );
+    return QDBusAbstractInterface::lscs_metacast( _clname );
 }
 
 /*!
     \internal
     Dispatch the call through the private.
 */
-int QDBusInterface::qt_metacall( QMetaObject::Call _c, int _id, void **_a )
+int QDBusInterface::lscs_metacall( QMetaObject::Call _c, int _id, void **_a )
 {
-    _id = QDBusAbstractInterface::qt_metacall( _c, _id, _a );
+    _id = QDBusAbstractInterface::lscs_metacall( _c, _id, _a );
 
     if ( _id < 0 || !d_func()->isValid || !d_func()->metaObject )
     {
@@ -350,6 +350,6 @@ int QDBusInterfacePrivate::metacall( QMetaObject::Call c, int id, void **argv )
     return id;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

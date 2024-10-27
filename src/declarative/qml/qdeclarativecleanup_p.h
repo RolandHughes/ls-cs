@@ -26,7 +26,7 @@
 
 #include <QtCore/qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 
@@ -45,7 +45,7 @@ private:
     QDeclarativeCleanup  *next;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVECLEANUP_P_H
 

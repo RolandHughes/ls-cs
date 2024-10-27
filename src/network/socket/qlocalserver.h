@@ -27,7 +27,7 @@
 #include <qabstractsocket.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_LOCALSERVER
+#ifndef LSCS_NO_LOCALSERVER
 
 class QLocalServerPrivate;
 class QLocalSocket;
@@ -89,7 +89,7 @@ private:
     NET_LSCS_SLOT_2( _q_onNewConnection )
 };
 
-#endif // QT_NO_LOCALSERVER
+#endif // LSCS_NO_LOCALSERVER
 
 #endif // QLOCALSERVER_H
 

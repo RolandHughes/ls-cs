@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
 class QDockAreaLayout;
 class QDockWidgetPrivate;
@@ -102,7 +102,7 @@ public:
         return ( allowedAreas() & area ) == area;
     }
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QAction *toggleViewAction() const;
 #endif
 
@@ -146,6 +146,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDockWidget::DockWidgetFeatures )
 
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
 #endif // QDYNAMICDOCKWIDGET_H

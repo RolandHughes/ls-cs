@@ -87,7 +87,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
     target_compile_definitions(LsCsMultimedia_DirectShow
        PRIVATE
-       -DQT_PLUGIN
+       -DLSCS_PLUGIN
        -DQMEDIA_DIRECTSHOW_CAMERA
        -DQMEDIA_DIRECTSHOW_PLAYER
        -DNO_DSHOW_STRSAFE

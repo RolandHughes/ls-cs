@@ -32,7 +32,7 @@
 #include <qdeclarativedirparser_p.h>
 #include <qdeclarativeimport_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeScriptData;
 class QDeclarativeQmldirData;
@@ -306,6 +306,6 @@ private:
 
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVETYPELOADER_P_H

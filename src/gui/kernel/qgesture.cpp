@@ -28,7 +28,7 @@
 
 #include <qdebug_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 QGesture::QGesture( QObject *parent )
     : QObject( parent ), d_ptr( new QGesturePrivate )
@@ -484,7 +484,7 @@ QWidget *QGestureEvent::widget() const
     return m_widget;
 }
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 QPointF QGestureEvent::mapToGraphicsScene( const QPointF &gesturePoint ) const
 {
     QWidget *w = widget();
@@ -663,4 +663,4 @@ void QSwipeGesture::lscs_setVelocity( qreal velocity )
     d->setVelocity( velocity );
 }
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES

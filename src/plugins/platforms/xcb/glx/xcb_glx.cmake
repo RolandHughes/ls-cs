@@ -43,8 +43,8 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
 
    target_compile_definitions(LsCsGuiXcb_Glx
       PRIVATE
-      -DQT_PLUGIN
-      -DQT_NO_XRENDER
+      -DLSCS_PLUGIN
+      -DLSCS_NO_XRENDER
       -DXCB_HAS_XCB_GLX
       -DXCB_USE_GLX
       -DXCB_USE_XLIB

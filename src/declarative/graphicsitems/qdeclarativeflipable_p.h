@@ -29,7 +29,7 @@
 #include <QtGui/QTransform>
 #include <QtGui/qvector3d.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeFlipablePrivate;
 
@@ -77,7 +77,7 @@ private :
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativeFlipable )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeFlipable )
 

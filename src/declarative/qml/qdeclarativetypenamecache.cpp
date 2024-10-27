@@ -24,7 +24,7 @@
 #include <qdeclarativetypenamecache_p.h>
 #include <qdeclarativeengine_p.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeTypeNameCache::QDeclarativeTypeNameCache( QDeclarativeEngine *e )
+LSCS_BEGIN_NAMESPACE QDeclarativeTypeNameCache::QDeclarativeTypeNameCache( QDeclarativeEngine *e )
     : QDeclarativeCleanup( e ), engine( e )
 {
 }
@@ -99,5 +99,5 @@ QDeclarativeTypeNameCache::Data *QDeclarativeTypeNameCache::data( const QString 
     return stringCache.value( id );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

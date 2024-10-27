@@ -74,16 +74,16 @@
 #include <QtGui/qtoolbar.h>
 #include <QtGui/qtooltip.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 typedef QPair<QList<qint64>, QList<qint64> > QScriptScriptsDelta;
 typedef QPair<QList<qint64>, QList<qint64> > QScriptContextsDelta;
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QScriptScriptsDelta )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-Q_SCRIPT_EXPORT QString qt_scriptToXml( const QString &program, int lineNumber = 1 );
+Q_SCRIPT_EXPORT QString lscs_scriptToXml( const QString &program, int lineNumber = 1 );
 
 namespace
 {
@@ -1092,7 +1092,7 @@ void QScriptDebuggerPrivate::_q_goToLine()
         return;
     }
 
-#ifndef QT_NO_INPUTDIALOG
+#ifndef LSCS_NO_INPUTDIALOG
     bool ok = false;
     int lineNumber = QInputDialog::getInteger( 0, QScriptDebugger::tr( "Go to Line" ),
                      QScriptDebugger::tr( "Line:" ),
@@ -1231,7 +1231,7 @@ public:
 
             // ### could be slow, might want to do this in a separate thread
             //            Q_ASSERT_X(false, Q_FUNC_INFO, "implement me");
-            QString xml; // = qt_scriptToXml(data.contents(), data.baseLineNumber());
+            QString xml; // = lscs_scriptToXml(data.contents(), data.baseLineNumber());
             QScriptXmlParser::Result extraInfo = QScriptXmlParser::parse( xml );
             m_debugger->scriptsModel->addExtraScriptInfo(
                 scriptId, extraInfo.functionsInfo, extraInfo.executableLineNumbers );
@@ -2453,7 +2453,7 @@ QMenu *QScriptDebugger::createStandardMenu( QWidget *widgetParent, QObject *acti
     return menu;
 }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 QToolBar *QScriptDebugger::createStandardToolBar( QWidget *widgetParent, QObject *actionParent )
 {
     QToolBar *tb = new QToolBar( widgetParent );
@@ -2645,4 +2645,4 @@ void QScriptDebugger::_q_goToLine()
     d->_q_goToLine();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

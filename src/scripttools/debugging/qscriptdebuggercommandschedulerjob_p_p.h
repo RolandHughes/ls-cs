@@ -26,7 +26,7 @@
 
 #include <qscriptdebuggerjob_p_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerCommandSchedulerInterface;
 class QScriptDebuggerCommandSchedulerJob;
@@ -42,6 +42,6 @@ public:
     QScriptDebuggerCommandSchedulerInterface *commandScheduler;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

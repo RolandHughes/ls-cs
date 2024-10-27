@@ -26,7 +26,7 @@
 
 #include <qabstractitemview.h>
 
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
 
 class QHeaderView;
 class QTableViewPrivate;
@@ -216,6 +216,6 @@ private:
     GUI_LSCS_SLOT_2( _q_updateSpanRemovedColumns )
 };
 
-#endif // QT_NO_TABLEVIEW
+#endif // LSCS_NO_TABLEVIEW
 
 #endif // QTABLEVIEW_H

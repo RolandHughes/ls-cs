@@ -35,13 +35,13 @@
 #include <qicon_p.h>
 
 #if defined(Q_OS_WIN)
-#  include <qt_windows.h>
+#  include <lscs_windows.h>
 
 #  include <commctrl.h>
 #  include <objbase.h>
 #endif
 
-#if defined(Q_OS_UNIX) && ! defined(QT_NO_STYLE_GTK)
+#if defined(Q_OS_UNIX) && ! defined(LSCS_NO_STYLE_GTK)
 #  include <qgtkstyle_p.h>
 #endif
 
@@ -73,7 +73,7 @@ public:
             return pixmap;
         }
 
-        const QString &keyBase = "qt_." + m_fileInfo.suffix().toUpper();
+        const QString &keyBase = "lscs_." + m_fileInfo.suffix().toUpper();
 
         bool cacheable = isCacheable( m_fileInfo );
 
@@ -393,7 +393,7 @@ QIcon QFileIconProvider::icon( const QFileInfo &info ) const
     Q_D( const QFileIconProvider );
 
 
-#if defined(Q_OS_UNIX) && !defined(QT_NO_STYLE_GTK)
+#if defined(Q_OS_UNIX) && !defined(LSCS_NO_STYLE_GTK)
     const QByteArray desktopEnvironment = QGuiApplicationPrivate::platformIntegration()->services()->desktopEnvironment();
 
     if ( desktopEnvironment != "KDE" )

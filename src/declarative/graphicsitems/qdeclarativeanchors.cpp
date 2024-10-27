@@ -30,7 +30,7 @@
 
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 //TODO: should we cache relationships, so we don't have to check each time (parent-child or sibling)?
 //TODO: support non-parent, non-sibling (need to find lowest common ancestor)
@@ -1492,4 +1492,4 @@ void QDeclarativeAnchors::_q_widgetDestroyed( QObject *obj )
     d->_q_widgetDestroyed( obj );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

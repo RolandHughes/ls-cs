@@ -33,7 +33,7 @@
 #include <qfilesystementry_p.h>
 #include <qfilesystemmetadata_p.h>
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
 
 class QFSFileEnginePrivate : public QAbstractFileEnginePrivate
 {
@@ -142,6 +142,6 @@ protected:
     QAbstractFileEngine::FileFlags getPermissions( QAbstractFileEngine::FileFlags type ) const;
 };
 
-#endif // QT_NO_FSFILEENGINE
+#endif // LSCS_NO_FSFILEENGINE
 
 #endif

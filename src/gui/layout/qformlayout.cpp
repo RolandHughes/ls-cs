@@ -1407,7 +1407,7 @@ void QFormLayout::insertRow( int row, const QString &labelText, QWidget *field )
     {
         label = new QLabel( labelText );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         label->setBuddy( field );
 #endif
 

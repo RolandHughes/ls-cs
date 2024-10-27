@@ -23,7 +23,7 @@
 
 #include <qlcdnumber.h>
 
-#ifndef QT_NO_LCDNUMBER
+#ifndef LSCS_NO_LCDNUMBER
 
 #include <qbitarray.h>
 #include <qpainter.h>
@@ -1186,4 +1186,4 @@ bool QLCDNumber::event( QEvent *e )
     return QFrame::event( e );
 }
 
-#endif // QT_NO_LCDNUMBER
+#endif // LSCS_NO_LCDNUMBER

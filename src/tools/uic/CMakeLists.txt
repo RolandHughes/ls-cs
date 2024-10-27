@@ -2,8 +2,8 @@ add_executable(uic${TOOLS_SUFFIX} "")
 add_executable(LsCs::uic ALIAS uic${TOOLS_SUFFIX})
 
 add_definitions(
-   -DQT_UIC
-   -DQT_UIC_CPP_GENERATOR
+   -DLSCS_UIC
+   -DLSCS_UIC_CPP_GENERATOR
 )
 
 set(EXTRA_UIC_LIBS

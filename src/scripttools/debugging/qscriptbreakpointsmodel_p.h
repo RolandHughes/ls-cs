@@ -27,7 +27,7 @@
 #include <QtCore/qabstractitemmodel.h>
 #include "qscriptbreakpointdata_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerJobSchedulerInterface;
 class QScriptDebuggerCommandSchedulerInterface;
@@ -72,6 +72,6 @@ private:
     Q_DISABLE_COPY( QScriptBreakpointsModel )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

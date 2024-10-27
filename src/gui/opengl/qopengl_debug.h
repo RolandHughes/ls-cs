@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qshareddata.h>
 #include <qflags.h>
@@ -215,6 +215,6 @@ private:
     GUI_LSCS_SLOT_2( _q_contextAboutToBeDestroyed )
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

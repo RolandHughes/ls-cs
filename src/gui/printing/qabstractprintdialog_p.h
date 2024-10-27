@@ -26,11 +26,11 @@
 
 #include <qdialog_p.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 #include <qabstractprintdialog.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 class QPrinter;
 class QPrinterPrivate;
@@ -62,9 +62,9 @@ public:
     int maxPage;
 };
 
-#endif //QT_NO_PRINTER
+#endif //LSCS_NO_PRINTER
 
 
-#endif // QT_NO_PRINTDIALOG
+#endif // LSCS_NO_PRINTDIALOG
 
 #endif

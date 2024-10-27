@@ -25,7 +25,7 @@
 
 #include <QtCore/qstring.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerConsoleCommandGroupDataPrivate
 {
@@ -101,4 +101,4 @@ bool QScriptDebuggerConsoleCommandGroupData::isValid() const
     return ( d != 0 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

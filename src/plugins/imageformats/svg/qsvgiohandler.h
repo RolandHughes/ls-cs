@@ -26,7 +26,7 @@
 
 #include <qimageiohandler.h>
 
-#ifndef QT_NO_SVGRENDERER
+#ifndef LSCS_NO_SVGRENDERER
 
 class QImage;
 class QByteArray;
@@ -54,5 +54,5 @@ private:
     QSvgIOHandlerPrivate *d;
 };
 
-#endif // QT_NO_SVGRENDERER
+#endif // LSCS_NO_SVGRENDERER
 #endif

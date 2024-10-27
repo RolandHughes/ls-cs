@@ -31,7 +31,7 @@
 #include <qfilesystemengine_p.h>
 #include <qfsfileengine_iterator_p.h>
 
-#ifndef QT_NO_FSFILEENGINE
+#ifndef LSCS_NO_FSFILEENGINE
 #include <errno.h>
 
 #if defined(Q_OS_UNIX)
@@ -135,7 +135,7 @@ QFSFileEngine::~QFSFileEngine()
 
             do
             {
-                ret = QT_CLOSE( d->fd );
+                ret = LSCS_CLOSE( d->fd );
             }
             while ( ret == -1 && errno == EINTR );
         }
@@ -243,14 +243,14 @@ bool QFSFileEnginePrivate::openFh( QIODevice::OpenMode openMode, FILE *fh )
 
         do
         {
-            ret = QT_FSEEK( fh, 0, SEEK_END );
+            ret = LSCS_FSEEK( fh, 0, SEEK_END );
         }
         while ( ret != 0 && errno == EINTR );
 
         if ( ret != 0 )
         {
             q->setError( errno == EMFILE ? QFile::ResourceError : QFile::OpenError,
-                         qt_error_string( int( errno ) ) );
+                         lscs_error_string( int( errno ) ) );
 
             this->openMode = QIODevice::NotOpen;
             this->fh = nullptr;
@@ -307,14 +307,14 @@ bool QFSFileEnginePrivate::openFd( QIODevice::OpenMode openMode, int fd )
 
         do
         {
-            ret = QT_LSEEK( fd, 0, SEEK_END );
+            ret = LSCS_LSEEK( fd, 0, SEEK_END );
         }
         while ( ret == -1 && errno == EINTR );
 
         if ( ret == -1 )
         {
             q->setError( errno == EMFILE ? QFile::ResourceError : QFile::OpenError,
-                         qt_error_string( int( errno ) ) );
+                         lscs_error_string( int( errno ) ) );
 
             this->openMode = QIODevice::NotOpen;
             this->fd = -1;
@@ -362,7 +362,7 @@ bool QFSFileEnginePrivate::closeFdFh()
             else
             {
                 // Close unbuffered file.
-                ret = QT_CLOSE( fd );
+                ret = LSCS_CLOSE( fd );
             }
         }
         while ( ret == -1 && errno == EINTR );
@@ -380,7 +380,7 @@ bool QFSFileEnginePrivate::closeFdFh()
         if ( flushed )
         {
             // if not flushed, flush all errors
-            q->setError( QFile::UnspecifiedError, qt_error_string( errno ) );
+            q->setError( QFile::UnspecifiedError, lscs_error_string( errno ) );
         }
 
         return false;
@@ -434,7 +434,7 @@ bool QFSFileEnginePrivate::flushFh()
     if ( ret != 0 )
     {
         q->setError( errno == ENOSPC ? QFile::ResourceError : QFile::WriteError,
-                     qt_error_string( errno ) );
+                     lscs_error_string( errno ) );
         return false;
     }
 
@@ -475,10 +475,10 @@ qint64 QFSFileEnginePrivate::posFdFh() const
 {
     if ( fh )
     {
-        return qint64( QT_FTELL( fh ) );
+        return qint64( LSCS_FTELL( fh ) );
     }
 
-    return QT_LSEEK( fd, 0, SEEK_CUR );
+    return LSCS_LSEEK( fd, 0, SEEK_CUR );
 }
 
 bool QFSFileEngine::seek( qint64 pos )
@@ -499,7 +499,7 @@ bool QFSFileEnginePrivate::seekFdFh( qint64 pos )
         return false;
     }
 
-    if ( pos < 0 || pos != qint64( QT_OFF_T( pos ) ) )
+    if ( pos < 0 || pos != qint64( LSCS_OFF_T( pos ) ) )
     {
         return false;
     }
@@ -511,13 +511,13 @@ bool QFSFileEnginePrivate::seekFdFh( qint64 pos )
 
         do
         {
-            ret = QT_FSEEK( fh, QT_OFF_T( pos ), SEEK_SET );
+            ret = LSCS_FSEEK( fh, LSCS_OFF_T( pos ), SEEK_SET );
         }
         while ( ret != 0 && errno == EINTR );
 
         if ( ret != 0 )
         {
-            q->setError( QFile::ReadError, qt_error_string( int( errno ) ) );
+            q->setError( QFile::ReadError, lscs_error_string( int( errno ) ) );
             return false;
         }
 
@@ -525,14 +525,14 @@ bool QFSFileEnginePrivate::seekFdFh( qint64 pos )
     else
     {
         // Unbuffered stdio mode.
-        if ( QT_LSEEK( fd, QT_OFF_T( pos ), SEEK_SET ) == -1 )
+        if ( LSCS_LSEEK( fd, LSCS_OFF_T( pos ), SEEK_SET ) == -1 )
         {
 
 #if defined(LSCS_SHOW_DEBUG_CORE)
             qDebug() << "QFSFileEngine::seekFdFh() Unable to set file position" << pos;
 #endif
 
-            q->setError( QFile::PositionError, qt_error_string( errno ) );
+            q->setError( QFile::PositionError, lscs_error_string( errno ) );
             return false;
         }
     }
@@ -569,7 +569,7 @@ qint64 QFSFileEnginePrivate::readFdFh( char *data, qint64 len )
 
     if ( len < 0 || len != qint64( size_t( len ) ) )
     {
-        q->setError( QFile::ReadError, qt_error_string( EINVAL ) );
+        q->setError( QFile::ReadError, lscs_error_string( EINVAL ) );
         return -1;
     }
 
@@ -594,7 +594,7 @@ qint64 QFSFileEnginePrivate::readFdFh( char *data, qint64 len )
                 // through another stream since our last read. See test
                 // tst_QFile::appendAndRead
 
-                QT_FSEEK( fh, QT_FTELL( fh ), SEEK_SET ); // re-sync stream.
+                LSCS_FSEEK( fh, LSCS_FTELL( fh ), SEEK_SET ); // re-sync stream.
                 retry = false;
                 continue;
             }
@@ -616,7 +616,7 @@ qint64 QFSFileEnginePrivate::readFdFh( char *data, qint64 len )
 
         do
         {
-            result = QT_READ( fd, data + readBytes, size_t( len - readBytes ) );
+            result = LSCS_READ( fd, data + readBytes, size_t( len - readBytes ) );
         }
         while ( ( result == -1 && errno == EINTR ) || ( result > 0 && ( readBytes += result ) < len ) );
 
@@ -626,7 +626,7 @@ qint64 QFSFileEnginePrivate::readFdFh( char *data, qint64 len )
     if ( !eof && readBytes == 0 )
     {
         readBytes = -1;
-        q->setError( QFile::ReadError, qt_error_string( errno ) );
+        q->setError( QFile::ReadError, lscs_error_string( errno ) );
     }
 
     return readBytes;
@@ -657,13 +657,13 @@ qint64 QFSFileEnginePrivate::readLineFdFh( char *data, qint64 maxlen )
         return q->QAbstractFileEngine::readLine( data, maxlen );
     }
 
-    QT_OFF_T oldPos = 0;
+    LSCS_OFF_T oldPos = 0;
 #ifdef Q_OS_WIN
     bool seq = q->isSequential();
 
     if ( !seq )
 #endif
-        oldPos = QT_FTELL( fh );
+        oldPos = LSCS_FTELL( fh );
 
     // QIODevice::readLine() passes maxlen - 1 to QFile::readLineData()
     // because it has made space for the '\0' at the end of data.  But fgets
@@ -672,7 +672,7 @@ qint64 QFSFileEnginePrivate::readLineFdFh( char *data, qint64 maxlen )
     {
         if ( !feof( fh ) )
         {
-            q->setError( QFile::ReadError, qt_error_string( int( errno ) ) );
+            q->setError( QFile::ReadError, lscs_error_string( int( errno ) ) );
         }
 
         return -1;              // error
@@ -687,7 +687,7 @@ qint64 QFSFileEnginePrivate::readLineFdFh( char *data, qint64 maxlen )
 
 #endif
 
-    qint64 lineLength = QT_FTELL( fh ) - oldPos;
+    qint64 lineLength = LSCS_FTELL( fh ) - oldPos;
     return lineLength > 0 ? lineLength : qstrlen( data );
 }
 
@@ -713,7 +713,7 @@ qint64 QFSFileEnginePrivate::writeFdFh( const char *data, qint64 len )
 
     if ( len < 0 || len != qint64( size_t( len ) ) )
     {
-        q->setError( QFile::WriteError, qt_error_string( EINVAL ) );
+        q->setError( QFile::WriteError, lscs_error_string( EINVAL ) );
         return -1;
     }
 
@@ -745,7 +745,7 @@ qint64 QFSFileEnginePrivate::writeFdFh( const char *data, qint64 len )
 
         do
         {
-            result = QT_WRITE( fd, data + writtenBytes, size_t( len - writtenBytes ) );
+            result = LSCS_WRITE( fd, data + writtenBytes, size_t( len - writtenBytes ) );
         }
         while ( ( result == -1 && errno == EINTR )
                 || ( result > 0 && ( writtenBytes += result ) < len ) );
@@ -754,13 +754,13 @@ qint64 QFSFileEnginePrivate::writeFdFh( const char *data, qint64 len )
     if ( len &&  writtenBytes == 0 )
     {
         writtenBytes = -1;
-        q->setError( errno == ENOSPC ? QFile::ResourceError : QFile::WriteError, qt_error_string( errno ) );
+        q->setError( errno == ENOSPC ? QFile::ResourceError : QFile::WriteError, lscs_error_string( errno ) );
     }
 
     return writtenBytes;
 }
 
-#ifndef QT_NO_FILESYSTEMITERATOR
+#ifndef LSCS_NO_FILESYSTEMITERATOR
 QAbstractFileEngineIterator *QFSFileEngine::beginEntryList( QDir::Filters filters, const QStringList &filterNames )
 {
     return new QFSFileEngineIterator( filters, filterNames );
@@ -854,4 +854,4 @@ bool QFSFileEngine::supportsExtension( Extension extension ) const
     return false;
 }
 
-#endif // QT_NO_FSFILEENGINE
+#endif // LSCS_NO_FSFILEENGINE

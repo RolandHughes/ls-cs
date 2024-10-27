@@ -23,7 +23,7 @@
 
 #include <qstyleditemdelegate.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 #include <qabstractitemmodel.h>
 #include <qapplication.h>
@@ -277,7 +277,7 @@ void QStyledItemDelegate::setEditorData( QWidget *editor, const QModelIndex &ind
 
 void QStyledItemDelegate::setModelData( QWidget *editor, QAbstractItemModel *model, const QModelIndex &index ) const
 {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
 
     Q_D( const QStyledItemDelegate );
 
@@ -317,7 +317,7 @@ void QStyledItemDelegate::updateEditorGeometry( QWidget *editor, const QStyleOpt
     // let the editor take up all available space
     //if the editor is not a QLineEdit or it is in a QTableView
 
-#if ! defined(QT_NO_TABLEVIEW) && !defined(QT_NO_LINEEDIT)
+#if ! defined(LSCS_NO_TABLEVIEW) && !defined(LSCS_NO_LINEEDIT)
 
     if ( qobject_cast<QExpandingLineEdit *>( editor ) && !qobject_cast<const QTableView *>( widget ) )
     {
@@ -438,4 +438,4 @@ bool QStyledItemDelegate::editorEvent( QEvent *event,
     return model->setData( index, state, Qt::CheckStateRole );
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS

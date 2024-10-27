@@ -47,7 +47,7 @@ GstElement *QGstreamerVideoRenderer::videoSink()
     if ( !m_videoSink && m_surface )
     {
         m_videoSink = QVideoSurfaceGstSink::createSink( m_surface );
-        qt_gst_object_ref_sink( GST_OBJECT( m_videoSink ) ); //Take ownership
+        lscs_gst_object_ref_sink( GST_OBJECT( m_videoSink ) ); //Take ownership
     }
 
     return reinterpret_cast<GstElement *>( m_videoSink );

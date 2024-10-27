@@ -111,7 +111,7 @@ bool QPluginLoader::isLoaded() const
     return mp_handle && mp_handle->pHnd && mp_handle->m_metaObject;
 }
 
-#if ! defined(QT_STATIC)
+#if ! defined(LSCS_STATIC)
 
 static QString locatePlugin( const QString &fileName )
 {
@@ -149,7 +149,6 @@ static QString locatePlugin( const QString &fileName )
     {
         paths = QCoreApplication::libraryPaths();
         paths.prepend( "." );                       // search in current dir first
-        paths.append( QString::fromUtf8(LsCsLibraryInfo::plugins ));
     }
 
     for ( const QString &path : paths )
@@ -178,7 +177,7 @@ static QString locatePlugin( const QString &fileName )
 
 void QPluginLoader::setFileName( const QString &fileName )
 {
-#if ! defined(QT_STATIC)
+#if ! defined(LSCS_STATIC)
     QLibrary::LoadHints lh = QLibrary::PreventUnloadHint;
 
     if ( mp_handle )

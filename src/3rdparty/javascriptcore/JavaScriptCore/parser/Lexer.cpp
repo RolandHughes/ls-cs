@@ -326,7 +326,7 @@ start:
 
     if ( m_current == -1 )
     {
-#ifndef QT_BUILD_SCRIPT_LIB /* the parser takes cate about automatic semicolon.
+#ifndef LSCS_BUILD_SCRIPT_LIB /* the parser takes cate about automatic semicolon.
                               this might add incorrect semicolons */
 
         //m_delimited and m_isReparsing are now useless

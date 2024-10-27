@@ -36,7 +36,7 @@
 
 #include <qdatetimeparser_p.h>
 
-#ifndef QT_NO_DATETIMEEDIT
+#ifndef LSCS_NO_DATETIMEEDIT
 
 class QCalendarPopup;
 
@@ -133,7 +133,7 @@ public:
     QStyle::StateFlag arrowState;
     QCalendarPopup *monthCalendar;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     bool focusOnButton;
 #endif
 };
@@ -197,6 +197,6 @@ private:
     bool dateChanged;
 };
 
-#endif // QT_NO_DATETIMEEDIT
+#endif // LSCS_NO_DATETIMEEDIT
 
 #endif // QDATETIMEEDIT_P_H

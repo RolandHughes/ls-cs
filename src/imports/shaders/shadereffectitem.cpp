@@ -28,28 +28,28 @@
 #include <QPainter>
 #include <QtOpenGL>
 
-static const char qt_default_vertex_code[] =
-    "uniform highp mat4 qt_ModelViewProjectionMatrix;\n"
-    "attribute highp vec4 qt_Vertex;\n"
-    "attribute highp vec2 qt_MultiTexCoord0;\n"
-    "varying highp vec2 qt_TexCoord0;\n"
+static const char lscs_default_vertex_code[] =
+    "uniform highp mat4 lscs_ModelViewProjectionMatrix;\n"
+    "attribute highp vec4 lscs_Vertex;\n"
+    "attribute highp vec2 lscs_MultiTexCoord0;\n"
+    "varying highp vec2 lscs_TexCoord0;\n"
     "void main(void)\n"
     "{\n"
-    "qt_TexCoord0 = qt_MultiTexCoord0;\n"
-    "gl_Position = qt_ModelViewProjectionMatrix * qt_Vertex;\n"
+    "lscs_TexCoord0 = lscs_MultiTexCoord0;\n"
+    "gl_Position = lscs_ModelViewProjectionMatrix * lscs_Vertex;\n"
     "}\n";
 
-static const char qt_default_fragment_code[] =
-    "varying highp vec2 qt_TexCoord0;\n"
+static const char lscs_default_fragment_code[] =
+    "varying highp vec2 lscs_TexCoord0;\n"
     "uniform lowp sampler2D source;\n"
     "void main(void)\n"
     "{\n"
-    "gl_FragColor = texture2D(source, qt_TexCoord0.st);\n"
+    "gl_FragColor = texture2D(source, lscs_TexCoord0.st);\n"
     "}\n";
 
-static const char qt_postion_attribute_name[] = "qt_Vertex";
-static const char qt_texcoord_attribute_name[] = "qt_MultiTexCoord0";
-static const char qt_emptyAttributeName[] = "";
+static const char lscs_postion_attribute_name[] = "lscs_Vertex";
+static const char lscs_texcoord_attribute_name[] = "lscs_MultiTexCoord0";
+static const char lscs_emptyAttributeName[] = "";
 
 
 /*!
@@ -81,15 +81,15 @@ static const char qt_emptyAttributeName[] = "";
     A standard set of vertex attributes are provided for the shaders:
 
     \list
-    \o qt_Vertex - The primary position of the vertex.
-    \o qt_MultiTexCoord0 - The texture co-ordinate at each vertex for texture unit 0.
+    \o lscs_Vertex - The primary position of the vertex.
+    \o lscs_MultiTexCoord0 - The texture co-ordinate at each vertex for texture unit 0.
     \endlist
 
     Additionally following uniforms are available for shaders:
 
     \list
-    \o qt_Opacity - Effective opacity of the item.
-    \o qt_ModelViewProjectionMatrix - current 4x4 transformation matrix of the item.
+    \o lscs_Opacity - Effective opacity of the item.
+    \o lscs_ModelViewProjectionMatrix - current 4x4 transformation matrix of the item.
     \endlist
 
     Furthermore, it is possible to utilize automatic QML propertybinding into vertex- and fragment shader
@@ -164,12 +164,12 @@ Rectangle {
         anchors.fill: textLabel
 
         fragmentShader: "
-        varying highp vec2 qt_TexCoord0;
+        varying highp vec2 lscs_TexCoord0;
         uniform sampler2D source;
         uniform highp float wiggleAmount;
         void main(void)
         {
-            highp vec2 wiggledTexCoord = qt_TexCoord0;
+            highp vec2 wiggledTexCoord = lscs_TexCoord0;
             wiggledTexCoord.s += sin(4.0 * 3.141592653589 * wiggledTexCoord.t) * wiggleAmount;
             gl_FragColor = texture2D(source, wiggledTexCoord.st);
         }
@@ -216,11 +216,11 @@ ShaderEffectItem::~ShaderEffectItem()
     The default fragment shader is following:
 
     \code
-        varying highp vec2 qt_TexCoord0;
+        varying highp vec2 lscs_TexCoord0;
         uniform sampler2D source;
         void main(void)
         {
-            gl_FragColor = texture2D(source, qt_TexCoord0.st);
+            gl_FragColor = texture2D(source, lscs_TexCoord0.st);
         }
     \endcode
 
@@ -251,14 +251,14 @@ void ShaderEffectItem::setFragmentShader( const QString &code )
     The default vertex shader is following:
 
     \code
-        uniform highp mat4 qt_ModelViewProjectionMatrix;
-        attribute highp vec4 qt_Vertex;
-        attribute highp vec2 qt_MultiTexCoord0;
-        varying highp vec2 qt_TexCoord0;
+        uniform highp mat4 lscs_ModelViewProjectionMatrix;
+        attribute highp vec4 lscs_Vertex;
+        attribute highp vec2 lscs_MultiTexCoord0;
+        varying highp vec2 lscs_TexCoord0;
         void main(void)
         {
-            qt_TexCoord0 = qt_MultiTexCoord0;
-            gl_Position = qt_ModelViewProjectionMatrix * qt_Vertex;
+            lscs_TexCoord0 = lscs_MultiTexCoord0;
+            gl_Position = lscs_ModelViewProjectionMatrix * lscs_Vertex;
         }
     \endcode
 
@@ -473,7 +473,7 @@ void ShaderEffectItem::renderEffect( QPainter *painter, const QMatrix4x4 &matrix
         glEnable( GL_DEPTH_TEST );
         glDepthFunc( GL_GREATER );
         glDepthMask( true );
-#if defined(QT_OPENGL_ES)
+#if defined(LSCS_OPENGL_ES)
         glClearDepthf( 0 );
 #else
         glClearDepth( 0 );
@@ -532,12 +532,12 @@ void ShaderEffectItem::updateEffectState( const QMatrix4x4 &matrix )
 
     if ( m_respectsOpacity )
     {
-        m_program->setUniformValue( "qt_Opacity", static_cast<float> ( effectiveOpacity() ) );
+        m_program->setUniformValue( "lscs_Opacity", static_cast<float> ( effectiveOpacity() ) );
     }
 
     if ( m_respectsMatrix )
     {
-        m_program->setUniformValue( "qt_ModelViewProjectionMatrix", matrix );
+        m_program->setUniformValue( "lscs_ModelViewProjectionMatrix", matrix );
     }
 
     QSet<QByteArray>::const_iterator it;
@@ -637,7 +637,7 @@ void ShaderEffectItem::bindGeometry()
                     "Geometry lacks attribute required by material" );
         const QSGGeometry::Attribute &a = m_geometry.attributes()[j];
         Q_ASSERT_X( j == a.position, "ShaderEffectItem::bindGeometry()", "Geometry does not have continuous attribute positions" );
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
         GLboolean normalize = a.type != GL_FLOAT;
 #else
         GLboolean normalize = a.type != GL_FLOAT && a.type != GL_DOUBLE;
@@ -954,30 +954,30 @@ void ShaderEffectItem::updateProperties()
 
     if ( vertexCode.isEmpty() )
     {
-        vertexCode = qt_default_vertex_code;
+        vertexCode = lscs_default_vertex_code;
     }
 
     if ( fragmentCode.isEmpty() )
     {
-        fragmentCode = qt_default_fragment_code;
+        fragmentCode = lscs_default_fragment_code;
     }
 
     lookThroughShaderCode( vertexCode );
     lookThroughShaderCode( fragmentCode );
 
-    if ( !m_attributeNames.contains( qt_postion_attribute_name ) )
+    if ( !m_attributeNames.contains( lscs_postion_attribute_name ) )
     {
-        qWarning( "ShaderEffectItem: Missing reference to \'%s\'.", qt_postion_attribute_name );
+        qWarning( "ShaderEffectItem: Missing reference to \'%s\'.", lscs_postion_attribute_name );
     }
 
-    if ( !m_attributeNames.contains( qt_texcoord_attribute_name ) )
+    if ( !m_attributeNames.contains( lscs_texcoord_attribute_name ) )
     {
-        qWarning( "ShaderEffectItem: Missing reference to \'%s\'.", qt_texcoord_attribute_name );
+        qWarning( "ShaderEffectItem: Missing reference to \'%s\'.", lscs_texcoord_attribute_name );
     }
 
     if ( !m_respectsMatrix )
     {
-        qWarning( "ShaderEffectItem: Missing reference to \'qt_ModelViewProjectionMatrix\'." );
+        qWarning( "ShaderEffectItem: Missing reference to \'lscs_ModelViewProjectionMatrix\'." );
     }
 
     for ( int i = 0; i < m_sources.size(); ++i )
@@ -1001,12 +1001,12 @@ void ShaderEffectItem::updateShaderProgram()
 
     if ( vertexCode.isEmpty() )
     {
-        vertexCode = QString::fromLatin1( qt_default_vertex_code );
+        vertexCode = QString::fromLatin1( lscs_default_vertex_code );
     }
 
     if ( fragmentCode.isEmpty() )
     {
-        fragmentCode = QString::fromLatin1( qt_default_fragment_code );
+        fragmentCode = QString::fromLatin1( lscs_default_fragment_code );
     }
 
     m_program->addShaderFromSourceCode( QGLShader::Vertex, vertexCode );
@@ -1023,19 +1023,19 @@ void ShaderEffectItem::updateShaderProgram()
         qWarning() << m_program->log();
     }
 
-    if ( !m_attributeNames.contains( qt_postion_attribute_name ) )
+    if ( !m_attributeNames.contains( lscs_postion_attribute_name ) )
     {
-        qWarning( "ShaderEffectItem: Missing reference to \'qt_Vertex\'." );
+        qWarning( "ShaderEffectItem: Missing reference to \'lscs_Vertex\'." );
     }
 
-    if ( !m_attributeNames.contains( qt_texcoord_attribute_name ) )
+    if ( !m_attributeNames.contains( lscs_texcoord_attribute_name ) )
     {
-        qWarning( "ShaderEffectItem: Missing reference to \'qt_MultiTexCoord0\'." );
+        qWarning( "ShaderEffectItem: Missing reference to \'lscs_MultiTexCoord0\'." );
     }
 
     if ( !m_respectsMatrix )
     {
-        qWarning( "ShaderEffectItem: Missing reference to \'qt_ModelViewProjectionMatrix\'." );
+        qWarning( "ShaderEffectItem: Missing reference to \'lscs_ModelViewProjectionMatrix\'." );
     }
 
     if ( m_program->isLinked() )
@@ -1071,18 +1071,18 @@ void ShaderEffectItem::lookThroughShaderCode( const QString &code )
 
         if ( decl == "attribute" )
         {
-            if ( name == qt_postion_attribute_name )
+            if ( name == lscs_postion_attribute_name )
             {
-                m_attributeNames.insert( 0, qt_postion_attribute_name );
+                m_attributeNames.insert( 0, lscs_postion_attribute_name );
             }
-            else if ( name == "qt_MultiTexCoord0" )
+            else if ( name == "lscs_MultiTexCoord0" )
             {
                 if ( m_attributeNames.at( 0 ) == 0 )
                 {
-                    m_attributeNames.insert( 0, qt_emptyAttributeName );
+                    m_attributeNames.insert( 0, lscs_emptyAttributeName );
                 }
 
-                m_attributeNames.insert( 1, qt_texcoord_attribute_name );
+                m_attributeNames.insert( 1, lscs_texcoord_attribute_name );
             }
             else
             {
@@ -1094,11 +1094,11 @@ void ShaderEffectItem::lookThroughShaderCode( const QString &code )
         {
             Q_ASSERT( decl == "uniform" );
 
-            if ( name == "qt_ModelViewProjectionMatrix" )
+            if ( name == "lscs_ModelViewProjectionMatrix" )
             {
                 m_respectsMatrix = true;
             }
-            else if ( name == "qt_Opacity" )
+            else if ( name == "lscs_Opacity" )
             {
                 m_respectsOpacity = true;
             }

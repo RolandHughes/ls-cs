@@ -29,7 +29,7 @@
 #include <QtGui/qpixmap.h>
 #include <QtCore/qurl.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QDeclarativePixmapData;
@@ -98,6 +98,6 @@ inline QDeclarativePixmap::operator const QPixmap &() const
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDeclarativePixmap::Options )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEPIXMAPCACHE_H

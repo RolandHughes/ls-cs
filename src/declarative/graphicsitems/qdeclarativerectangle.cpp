@@ -27,7 +27,7 @@
 #include <QStringBuilder>
 #include <QtCore/qmath.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \internal
@@ -693,4 +693,4 @@ QRectF QDeclarativeRectangle::boundingRect() const
     return QRectF( -d->paintmargin, -d->paintmargin, d->width() + d->paintmargin * 2, d->height() + d->paintmargin * 2 );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

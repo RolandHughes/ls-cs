@@ -28,7 +28,7 @@
 #include <qapplication.h>
 #include <qdesktopwidget.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 # include <qaccessible.h>
 #endif
 
@@ -44,7 +44,7 @@
 
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
 #include <qmenu_p.h>
 #include <qmenubar_p.h>
@@ -62,10 +62,10 @@ public:
 QMenuBarExtension::QMenuBarExtension( QWidget *parent )
     : QToolButton( parent )
 {
-    setObjectName( QLatin1String( "qt_menubar_ext_button" ) );
+    setObjectName( QLatin1String( "lscs_menubar_ext_button" ) );
     setAutoRaise( true );
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     setPopupMode( QToolButton::InstantPopup );
 #endif
     setIcon( style()->standardIcon( QStyle::SP_ToolBarHorizontalExtensionButton, nullptr, parentWidget() ) );
@@ -211,7 +211,7 @@ void QMenuBarPrivate::updateGeometries()
     calcActionRects( q_width, q_start );
     currentAction = nullptr;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
     if ( itemsDirty )
     {
@@ -486,7 +486,7 @@ void QMenuBarPrivate::setCurrentAction( QAction *action, bool popup, bool activa
 
     popupState = popup;
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     QAction *previousAction = currentAction;
 #endif
 
@@ -503,7 +503,7 @@ void QMenuBarPrivate::setCurrentAction( QAction *action, bool popup, bool activa
 
         q->update( actionRect( action ) );
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
     }
     else if ( previousAction )
     {
@@ -692,7 +692,7 @@ void QMenuBarPrivate::_q_actionHovered()
     {
         emit q->hovered( action );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
         if ( QAccessible::isActive() )
         {
@@ -1013,7 +1013,7 @@ void QMenuBar::mousePressEvent( QMouseEvent *e )
     {
         d->setCurrentAction( nullptr );
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         if ( QWhatsThis::inWhatsThisMode() )
         {
@@ -1534,7 +1534,7 @@ bool QMenuBar::event( QEvent *e )
         }
         break;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
         case QEvent::Shortcut:
         {
@@ -1569,7 +1569,7 @@ bool QMenuBar::event( QEvent *e )
         }
         break;
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         case QEvent::QueryWhatsThis:
             e->setAccepted( d->whatsThis.size() );
@@ -2050,4 +2050,4 @@ void QMenuBar::_q_updateLayout()
     d->_q_updateLayout();
 }
 
-#endif // QT_NO_MENUBAR
+#endif // LSCS_NO_MENUBAR

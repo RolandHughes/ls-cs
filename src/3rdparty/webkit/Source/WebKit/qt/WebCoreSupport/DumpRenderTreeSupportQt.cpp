@@ -95,7 +95,7 @@
 #include "qwebpage_p.h"
 #include "qwebscriptworld.h"
 
-#if ENABLE(VIDEO) && USE(QT_MULTIMEDIA)
+#if ENABLE(VIDEO) && USE(LSCS_MULTIMEDIA)
 #include "HTMLVideoElement.h"
 #include "MediaPlayerPrivateQt.h"
 #endif
@@ -1252,7 +1252,7 @@ static QStringList iterateContextMenu( QMenu *menu )
 
 QStringList DumpRenderTreeSupportQt::contextMenu( QWebPage *page )
 {
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     return iterateContextMenu( page->d->currentContextMenu );
 #else
     return QStringList();
@@ -1280,7 +1280,7 @@ QUrl DumpRenderTreeSupportQt::mediaContentUrlByElementId( QWebFrame *frame, cons
 {
     QUrl res;
 
-#if ENABLE(VIDEO) && USE(QT_MULTIMEDIA)
+#if ENABLE(VIDEO) && USE(LSCS_MULTIMEDIA)
     Frame *coreFrame = QWebFramePrivate::core( frame );
 
     if ( !coreFrame )
@@ -1418,105 +1418,105 @@ void DumpRenderTreeSupportQt::resetInternalsObject( QWebFrame *frame )
 
 // Provide a backward compatibility with previously exported private symbols as of QtWebKit 4.6 release
 
-void QWEBKIT_EXPORT qt_resumeActiveDOMObjects( QWebFrame *frame )
+void QWEBKIT_EXPORT lscs_resumeActiveDOMObjects( QWebFrame *frame )
 {
     DumpRenderTreeSupportQt::resumeActiveDOMObjects( frame );
 }
 
-void QWEBKIT_EXPORT qt_suspendActiveDOMObjects( QWebFrame *frame )
+void QWEBKIT_EXPORT lscs_suspendActiveDOMObjects( QWebFrame *frame )
 {
     DumpRenderTreeSupportQt::suspendActiveDOMObjects( frame );
 }
 
-void QWEBKIT_EXPORT qt_drt_clearFrameName( QWebFrame *frame )
+void QWEBKIT_EXPORT lscs_drt_clearFrameName( QWebFrame *frame )
 {
     DumpRenderTreeSupportQt::clearFrameName( frame );
 }
 
-void QWEBKIT_EXPORT qt_drt_garbageCollector_collect()
+void QWEBKIT_EXPORT lscs_drt_garbageCollector_collect()
 {
     DumpRenderTreeSupportQt::garbageCollectorCollect();
 }
 
-void QWEBKIT_EXPORT qt_drt_garbageCollector_collectOnAlternateThread( bool waitUntilDone )
+void QWEBKIT_EXPORT lscs_drt_garbageCollector_collectOnAlternateThread( bool waitUntilDone )
 {
     DumpRenderTreeSupportQt::garbageCollectorCollectOnAlternateThread( waitUntilDone );
 }
 
-int QWEBKIT_EXPORT qt_drt_javaScriptObjectsCount()
+int QWEBKIT_EXPORT lscs_drt_javaScriptObjectsCount()
 {
     return DumpRenderTreeSupportQt::javaScriptObjectsCount();
 }
 
-int QWEBKIT_EXPORT qt_drt_numberOfActiveAnimations( QWebFrame *frame )
+int QWEBKIT_EXPORT lscs_drt_numberOfActiveAnimations( QWebFrame *frame )
 {
     return DumpRenderTreeSupportQt::numberOfActiveAnimations( frame );
 }
 
-void QWEBKIT_EXPORT qt_drt_overwritePluginDirectories()
+void QWEBKIT_EXPORT lscs_drt_overwritePluginDirectories()
 {
     DumpRenderTreeSupportQt::overwritePluginDirectories();
 }
 
-bool QWEBKIT_EXPORT qt_drt_pauseAnimation( QWebFrame *frame, const QString &animationName, double time, const QString &elementId )
+bool QWEBKIT_EXPORT lscs_drt_pauseAnimation( QWebFrame *frame, const QString &animationName, double time, const QString &elementId )
 {
     return DumpRenderTreeSupportQt::pauseAnimation( frame, animationName, time, elementId );
 }
 
-bool QWEBKIT_EXPORT qt_drt_pauseTransitionOfProperty( QWebFrame *frame, const QString &propertyName, double time,
+bool QWEBKIT_EXPORT lscs_drt_pauseTransitionOfProperty( QWebFrame *frame, const QString &propertyName, double time,
         const QString &elementId )
 {
     return DumpRenderTreeSupportQt::pauseTransitionOfProperty( frame, propertyName, time, elementId );
 }
 
-void QWEBKIT_EXPORT qt_drt_resetOriginAccessWhiteLists()
+void QWEBKIT_EXPORT lscs_drt_resetOriginAccessWhiteLists()
 {
     DumpRenderTreeSupportQt::resetOriginAccessWhiteLists();
 }
 
-void QWEBKIT_EXPORT qt_drt_run( bool b )
+void QWEBKIT_EXPORT lscs_drt_run( bool b )
 {
     DumpRenderTreeSupportQt::setDumpRenderTreeModeEnabled( b );
 }
 
-void QWEBKIT_EXPORT qt_drt_setJavaScriptProfilingEnabled( QWebFrame *frame, bool enabled )
+void QWEBKIT_EXPORT lscs_drt_setJavaScriptProfilingEnabled( QWebFrame *frame, bool enabled )
 {
     DumpRenderTreeSupportQt::setJavaScriptProfilingEnabled( frame, enabled );
 }
 
-void QWEBKIT_EXPORT qt_drt_whiteListAccessFromOrigin( const QString &sourceOrigin, const QString &destinationProtocol,
+void QWEBKIT_EXPORT lscs_drt_whiteListAccessFromOrigin( const QString &sourceOrigin, const QString &destinationProtocol,
         const QString &destinationHost, bool allowDestinationSubdomains )
 {
     DumpRenderTreeSupportQt::whiteListAccessFromOrigin( sourceOrigin, destinationProtocol, destinationHost,
             allowDestinationSubdomains );
 }
 
-QString QWEBKIT_EXPORT qt_webpage_groupName( QWebPage *page )
+QString QWEBKIT_EXPORT lscs_webpage_groupName( QWebPage *page )
 {
     return DumpRenderTreeSupportQt::webPageGroupName( page );
 }
 
-void QWEBKIT_EXPORT qt_webpage_setGroupName( QWebPage *page, const QString &groupName )
+void QWEBKIT_EXPORT lscs_webpage_setGroupName( QWebPage *page, const QString &groupName )
 {
     DumpRenderTreeSupportQt::webPageSetGroupName( page, groupName );
 }
 
-void QWEBKIT_EXPORT qt_dump_frame_loader( bool b )
+void QWEBKIT_EXPORT lscs_dump_frame_loader( bool b )
 {
     DumpRenderTreeSupportQt::dumpFrameLoader( b );
 }
 
-void QWEBKIT_EXPORT qt_dump_resource_load_callbacks( bool b )
+void QWEBKIT_EXPORT lscs_dump_resource_load_callbacks( bool b )
 {
     DumpRenderTreeSupportQt::dumpResourceLoadCallbacks( b );
 }
 
-void QWEBKIT_EXPORT qt_dump_editing_callbacks( bool b )
+void QWEBKIT_EXPORT lscs_dump_editing_callbacks( bool b )
 {
     DumpRenderTreeSupportQt::dumpEditingCallbacks( b );
 }
 
-void QWEBKIT_EXPORT qt_dump_set_accepts_editing( bool b )
+void QWEBKIT_EXPORT lscs_dump_set_accepts_editing( bool b )
 {
     DumpRenderTreeSupportQt::dumpSetAcceptsEditing( b );
 }

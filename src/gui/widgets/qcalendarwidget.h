@@ -27,7 +27,7 @@
 #include <qwidget.h>
 #include <qdatetime.h>
 
-#ifndef QT_NO_CALENDARWIDGET
+#ifndef LSCS_NO_CALENDARWIDGET
 
 class QDate;
 class QTextCharFormat;
@@ -241,7 +241,7 @@ private:
     GUI_LSCS_SLOT_2( _q_monthChanged )
 };
 
-#endif // QT_NO_CALENDARWIDGET
+#endif // LSCS_NO_CALENDARWIDGET
 
 
 

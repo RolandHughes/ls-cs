@@ -32,14 +32,14 @@
 #include <qstringlist.h>
 
 #ifdef Q_OS_WIN
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #endif
 
 #if ! defined(Q_OS_WIN)
-#define QT_QSETTINGS_ALWAYS_CASE_SENSITIVE_AND_FORGET_ORIGINAL_KEY_ORDER
+#define LSCS_QSETTINGS_ALWAYS_CASE_SENSITIVE_AND_FORGET_ORIGINAL_KEY_ORDER
 #endif
 
-#ifdef QT_QSETTINGS_ALWAYS_CASE_SENSITIVE_AND_FORGET_ORIGINAL_KEY_ORDER
+#ifdef LSCS_QSETTINGS_ALWAYS_CASE_SENSITIVE_AND_FORGET_ORIGINAL_KEY_ORDER
 static const Qt::CaseSensitivity IniCaseSensitivity = Qt::CaseSensitive;
 
 class QSettingsKey : public QString

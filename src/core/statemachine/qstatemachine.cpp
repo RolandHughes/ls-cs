@@ -23,7 +23,7 @@
 
 #include <qstatemachine.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qabstractstate.h>
 #include <qabstracttransition.h>
@@ -44,12 +44,12 @@
 #include <qstatemachine_p.h>
 #include <qthread_p.h>
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
 #include <qeventtransition.h>
 #include <qeventtransition_p.h>
 #endif
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 #include <qanimationgroup.h>
 #include <qpropertyanimation.h>
 
@@ -283,7 +283,7 @@ QStateMachinePrivate::QStateMachinePrivate()
 
     m_signalEventGenerator = nullptr;
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     animated = true;
 #endif
 }
@@ -332,16 +332,16 @@ static QEvent *cloneEvent( QEvent *e )
     return nullptr;
 }
 
-const QStateMachinePrivate::Handler qt_kernel_statemachine_handler =
+const QStateMachinePrivate::Handler lscs_kernel_statemachine_handler =
 {
     cloneEvent
 };
 
-const QStateMachinePrivate::Handler *QStateMachinePrivate::handler = &qt_kernel_statemachine_handler;
+const QStateMachinePrivate::Handler *QStateMachinePrivate::handler = &lscs_kernel_statemachine_handler;
 
 Q_CORE_EXPORT const QStateMachinePrivate::Handler *qcoreStateMachineHandler()
 {
-    return &qt_kernel_statemachine_handler;
+    return &lscs_kernel_statemachine_handler;
 }
 
 static int indexOfDescendant( QState *s, QAbstractState *desc )
@@ -680,7 +680,7 @@ void QStateMachinePrivate::microstep( QEvent *event, const QList<QAbstractTransi
 
     executeTransitionContent( event, enabledTransitions );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     QList<QAbstractAnimation *> selectedAnimations = selectAnimations( enabledTransitions );
     enterStates( event, exitedStates, enteredStates, statesForDefaultEntry, assignmentsForEnteredStates, selectedAnimations );
 
@@ -825,7 +825,7 @@ void QStateMachinePrivate::exitStates( QEvent *event, const QList<QAbstractState
 
         QAbstractStatePrivate::get( s )->callOnExit( event );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
         terminateActiveAnimations( s, assignmentsForEnteredStates );
 #else
         ( void ) assignmentsForEnteredStates;
@@ -951,7 +951,7 @@ void QStateMachinePrivate::enterStates( QEvent *event, const QList<QAbstractStat
                                         const QList<QAbstractState *> &statesToEnter_sorted,
                                         const QSet<QAbstractState *> &statesForDefaultEntry,
                                         QHash<QAbstractState *, QVector<QPropertyAssignment>> &propertyAssignmentsForState
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                                         , const QList<QAbstractAnimation *> &selectedAnimations
 #endif
                                       )
@@ -971,7 +971,7 @@ void QStateMachinePrivate::enterStates( QEvent *event, const QList<QAbstractStat
         configuration.insert( s );
         registerTransitions( s );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
         initializeAnimations( s, selectedAnimations, exitedStates_sorted, propertyAssignmentsForState );
 #endif
 
@@ -1028,7 +1028,7 @@ void QStateMachinePrivate::enterStates( QEvent *event, const QList<QAbstractStat
             QState *ss = toStandardState( s );
 
             if ( ss
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                     && ! animationsForState.contains( s )
 #endif
                )
@@ -1638,7 +1638,7 @@ void QStateMachinePrivate::setError( QStateMachine::Error errorCode, QAbstractSt
     }
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 QPair<QList<QAbstractAnimation *>, QList<QAbstractAnimation *>> QStateMachinePrivate::initializeAnimation(
             QAbstractAnimation *abstractAnimation, const QPropertyAssignment &prop )
@@ -1913,7 +1913,7 @@ void QStateMachinePrivate::initializeAnimations( QAbstractState *state, const QL
     }
 }
 
-#endif // ! QT_NO_ANIMATION
+#endif // ! LSCS_NO_ANIMATION
 
 QAbstractTransition *QStateMachinePrivate::createInitialTransition() const
 {
@@ -2030,7 +2030,7 @@ void QStateMachinePrivate::_q_start()
     QHash<QAbstractState *, QVector<QPropertyAssignment>> assignmentsForEnteredStates =
                 computePropertyAssignments( enteredStates, pendingRestorables );
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
     QList<QAbstractAnimation *> selectedAnimations = selectAnimations( transitions );
 #endif
 
@@ -2038,7 +2038,7 @@ void QStateMachinePrivate::_q_start()
     stopProcessingReason = EventQueueEmpty;
 
     enterStates( &nullEvent, exitedStates, enteredStates, statesForDefaultEntry, assignmentsForEnteredStates
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
                  , selectedAnimations
 #endif
                );
@@ -2516,7 +2516,7 @@ void QStateMachinePrivate::maybeRegisterTransition( QAbstractTransition *transit
         maybeRegisterSignalTransition( st );
     }
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
     else if ( QEventTransition *et = dynamic_cast<QEventTransition * >( transition ) )
     {
         maybeRegisterEventTransition( et );
@@ -2532,7 +2532,7 @@ void QStateMachinePrivate::registerTransition( QAbstractTransition *transition )
         registerSignalTransition( st );
     }
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
     else if ( QEventTransition *oet = dynamic_cast<QEventTransition * >( transition ) )
     {
         registerEventTransition( oet );
@@ -2548,7 +2548,7 @@ void QStateMachinePrivate::unregisterTransition( QAbstractTransition *transition
         unregisterSignalTransition( st );
     }
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
     else if ( QEventTransition *oet = qobject_cast<QEventTransition *>( transition ) )
     {
         unregisterEventTransition( oet );
@@ -2662,7 +2662,7 @@ void QSignalEventGenerator::execute()
     QStateMachinePrivate::get( machine )->handleTransitionSignal( sender, sender_signalIndex );
 }
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
 
 void QStateMachinePrivate::maybeRegisterEventTransition( QEventTransition *transition )
 {
@@ -3119,7 +3119,7 @@ bool QStateMachine::event( QEvent *e )
     return QState::event( e );
 }
 
-#ifndef QT_NO_STATEMACHINE_EVENTFILTER
+#ifndef LSCS_NO_STATEMACHINE_EVENTFILTER
 
 bool QStateMachine::eventFilter( QObject *watched, QEvent *event )
 {
@@ -3161,7 +3161,7 @@ void QStateMachine::onExit( QEvent *event )
     QState::onExit( event );
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 bool QStateMachine::isAnimated() const
 {
     Q_D( const QStateMachine );
@@ -3218,4 +3218,4 @@ QStateMachine::WrappedEvent::~WrappedEvent()
     delete m_event;
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

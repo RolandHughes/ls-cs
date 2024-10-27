@@ -27,7 +27,7 @@
 #include <qdeclarativeanchors_p.h>
 #include <qdeclarativeitemchangelistener_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeAnchorLine
 {
@@ -139,7 +139,7 @@ public:
     qreal baselineOffset;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDeclarativeAnchorLine )
 

@@ -27,7 +27,7 @@
 #include <QtGui/qimage.h>
 #include <QtGui/qpixmap.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeImageProviderPrivate;
 
@@ -52,6 +52,6 @@ private:
     QDeclarativeImageProviderPrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEIMAGEPROVIDER

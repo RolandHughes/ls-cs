@@ -27,7 +27,7 @@
 #include <qabstractscrollarea.h>
 #include <qtabwidget.h>
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 
 class QMdiSubWindow;
 class QMdiAreaPrivate;
@@ -47,7 +47,7 @@ class Q_GUI_EXPORT QMdiArea : public QAbstractScrollArea
     GUI_LSCS_PROPERTY_READ( viewMode, viewMode )
     GUI_LSCS_PROPERTY_WRITE( viewMode, setViewMode )
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     GUI_LSCS_PROPERTY_READ( documentMode, documentMode )
     GUI_LSCS_PROPERTY_WRITE( documentMode, setDocumentMode )
     GUI_LSCS_PROPERTY_READ( tabsClosable, tabsClosable )
@@ -56,7 +56,7 @@ class Q_GUI_EXPORT QMdiArea : public QAbstractScrollArea
     GUI_LSCS_PROPERTY_WRITE( tabsMovable, setTabsMovable )
 #endif
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     GUI_LSCS_PROPERTY_READ( tabShape, tabShape )
     GUI_LSCS_PROPERTY_WRITE( tabShape, setTabShape )
     GUI_LSCS_PROPERTY_READ( tabPosition, tabPosition )
@@ -118,7 +118,7 @@ public:
     void setViewMode( ViewMode mode );
     ViewMode viewMode() const;
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
     bool documentMode() const;
     void setDocumentMode( bool enable );
 
@@ -129,7 +129,7 @@ public:
     bool tabsMovable() const;
 #endif
 
-#ifndef QT_NO_TABWIDGET
+#ifndef LSCS_NO_TABWIDGET
     void setTabShape( QTabWidget::TabShape shape );
     QTabWidget::TabShape tabShape() const;
 
@@ -196,6 +196,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QMdiArea::AreaOptions )
 
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA
 
 #endif

@@ -30,10 +30,10 @@
 
 #include <qscreen_p.h>
 
-static const char legacyDevicePixelEnvVar[] = "QT_DEVICE_PIXEL_RATIO";
-static const char scaleFactorEnvVar[]       = "QT_SCALE_FACTOR";
-static const char autoScreenEnvVar[]        = "QT_AUTO_SCREEN_SCALE_FACTOR";
-static const char screenFactorsEnvVar[]     = "QT_SCREEN_SCALE_FACTORS";
+static const char legacyDevicePixelEnvVar[] = "LSCS_DEVICE_PIXEL_RATIO";
+static const char scaleFactorEnvVar[]       = "LSCS_SCALE_FACTOR";
+static const char autoScreenEnvVar[]        = "LSCS_AUTO_SCREEN_SCALE_FACTOR";
+static const char screenFactorsEnvVar[]     = "LSCS_SCREEN_SCALE_FACTORS";
 
 static inline qreal initialGlobalScaleFactor()
 {
@@ -150,7 +150,7 @@ static inline qreal initialGlobalScaleFactor()
     end users. All scale factors are of type qreal.
 
     1) A global scale factor
-        The QT_SCALE_FACTOR environment variable can be used to set
+        The LSCS_SCALE_FACTOR environment variable can be used to set
         a global scale factor for all windows in the processs. This
         is useful for testing and debugging (you can simulate any
         devicePixelRatio without needing access to special hardware),
@@ -163,7 +163,7 @@ static inline qreal initialGlobalScaleFactor()
         include X11, Windows, and Android.
 
         There are two APIs for enabling or disabling this behavior:
-            - The QT_AUTO_SCREEN_SCALE_FACTOR environment variable.
+            - The LSCS_AUTO_SCREEN_SCALE_FACTOR environment variable.
             - The AA_EnableHighDpiScaling and AA_DisableHighDpiScaling
               application attributes
 
@@ -175,7 +175,7 @@ static inline qreal initialGlobalScaleFactor()
         information' and 'My application needs to work in display pixels',
         respectively.
 
-        The QT_SCREEN_SCALE_FACTORS environment variable can be used to set the screen
+        The LSCS_SCREEN_SCALE_FACTORS environment variable can be used to set the screen
         scale factors manually. Set this to a semicolon-separated
         list of scale factors (matching the order of QApplications::screens()),
         or to a list of name=value pairs (where name matches QScreen::name()).

@@ -28,7 +28,7 @@
 
 #include "../../3rdparty/rfc6234/sha.h"
 
-static int qt_hash_block_size( QCryptographicHash::Algorithm method )
+static int lscs_hash_block_size( QCryptographicHash::Algorithm method )
 {
     switch ( method )
     {
@@ -100,7 +100,7 @@ void QMessageAuthenticationCodePrivate::initMessageHash()
 
     messageHashInited = true;
 
-    const int blockSize = qt_hash_block_size( method );
+    const int blockSize = lscs_hash_block_size( method );
 
     if ( key.size() > blockSize )
     {
@@ -180,7 +180,7 @@ QByteArray QMessageAuthenticationCode::result() const
 
     d->initMessageHash();
 
-    const int blockSize = qt_hash_block_size( d->method );
+    const int blockSize = lscs_hash_block_size( d->method );
 
     QByteArray hashedMessage = d->messageHash.result();
 

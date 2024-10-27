@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePaintedItemPrivate;
 class QDeclarativePaintedItem : public QDeclarativeItem
@@ -95,7 +95,7 @@ private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativePaintedItem )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativePaintedItem )
 

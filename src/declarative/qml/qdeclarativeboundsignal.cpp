@@ -35,7 +35,7 @@
 #include <QtCore/qstringbuilder.h>
 #include <QtCore/qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeBoundSignalParameters : public QObject
 {
@@ -165,7 +165,7 @@ QDeclarativeBoundSignal *QDeclarativeBoundSignal::cast( QObject *o )
     return static_cast<QDeclarativeBoundSignal *>( s );
 }
 
-int QDeclarativeBoundSignal::qt_metacall( QMetaObject::Call c, int id, void **a )
+int QDeclarativeBoundSignal::lscs_metacall( QMetaObject::Call c, int id, void **a )
 {
     if ( c == QMetaObject::InvokeMetaMethod && id == evaluateIdx )
     {
@@ -221,7 +221,7 @@ int QDeclarativeBoundSignal::qt_metacall( QMetaObject::Call c, int id, void **a 
     }
     else
     {
-        return QObject::qt_metacall( c, id, a );
+        return QObject::lscs_metacall( c, id, a );
     }
 }
 
@@ -376,8 +376,8 @@ int QDeclarativeBoundSignalParameters::metaCall( QMetaObject::Call c, int id, vo
     }
     else
     {
-        return qt_metacall( c, id, a );
+        return lscs_metacall( c, id, a );
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

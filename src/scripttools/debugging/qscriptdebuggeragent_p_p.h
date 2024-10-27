@@ -33,7 +33,7 @@
 #include <qscriptscriptdata_p.h>
 #include <qscriptbreakpointdata_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerAgent;
 class QScriptDebuggerAgentPrivate
@@ -93,6 +93,6 @@ public:
     QScriptDebuggerBackendPrivate *backend;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

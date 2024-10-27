@@ -123,7 +123,7 @@ void QPlatformInputContext::emitInputPanelVisibleChanged()
 
 QLocale QPlatformInputContext::locale() const
 {
-    return qt_keymapper_private()->keyboardInputLocale;
+    return lscs_keymapper_private()->keyboardInputLocale;
 }
 
 void QPlatformInputContext::emitLocaleChanged()
@@ -133,7 +133,7 @@ void QPlatformInputContext::emitLocaleChanged()
 
 Qt::LayoutDirection QPlatformInputContext::inputDirection() const
 {
-    return qt_keymapper_private()->keyboardInputDirection;
+    return lscs_keymapper_private()->keyboardInputDirection;
 }
 
 void QPlatformInputContext::emitInputDirectionChanged( Qt::LayoutDirection newDirection )

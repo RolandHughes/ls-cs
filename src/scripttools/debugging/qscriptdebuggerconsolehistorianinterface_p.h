@@ -26,7 +26,7 @@
 
 #include <QtCore/qobjectdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 
@@ -40,6 +40,6 @@ public:
     virtual void changeHistoryAt( int index, const QString &newHistory ) = 0;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

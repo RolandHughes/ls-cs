@@ -38,7 +38,7 @@ public:
           target( GL_TEXTURE_2D ), mipmap( false )
     {
 
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
         QOpenGLContext *ctx = QOpenGLContext::currentContext();
         const bool isES = ctx ? ctx->isOpenGLES() : QOpenGLContext::openGLModuleType() != QOpenGLContext::LibGL;
         internal_format = isES ? GL_RGBA : GL_RGBA8;

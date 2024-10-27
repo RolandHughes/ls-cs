@@ -23,7 +23,7 @@
 
 #include <qcocoacolordialoghelper.h>
 
-#ifndef QT_NO_COLORDIALOG
+#ifndef LSCS_NO_COLORDIALOG
 
 #include <qdebug.h>
 #include <qtimer.h>
@@ -40,7 +40,7 @@ static NSButton *macCreateButton(const char *text, NSView *superview)
    [button setButtonType: NSMomentaryLightButton];
    [button setBezelStyle: NSRoundedBezelStyle];
 
-   QCFString tmp = qt_mac_removeMnemonics(QCoreApplication::translate("QPlatformTheme", text));
+   QCFString tmp = lscs_mac_removeMnemonics(QCoreApplication::translate("QPlatformTheme", text));
    [button setTitle: (NSString *) tmp.toCFStringRef()];
 
    [[button cell] setFont: [NSFont systemFontOfSize: [NSFont systemFontSizeForControlSize: NSControlSizeRegular]]];

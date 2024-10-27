@@ -33,7 +33,7 @@
 
 #include <qhostaddress_p.h>
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 
 class QNetworkAddressEntryPrivate
 {
@@ -89,6 +89,6 @@ private:
     QList<QNetworkInterfacePrivate *> scan();
 };
 
-#endif // QT_NO_NETWORKINTERFACE
+#endif // LSCS_NO_NETWORKINTERFACE
 
 #endif

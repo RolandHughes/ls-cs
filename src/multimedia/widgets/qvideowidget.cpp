@@ -183,7 +183,7 @@ void QRendererVideoWidgetBackend::showEvent()
 
 void QRendererVideoWidgetBackend::hideEvent( QHideEvent * )
 {
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_1_CL) && ! defined(QT_OPENGL_ES_1)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_1_CL) && ! defined(LSCS_OPENGL_ES_1)
     m_updatePaintDevice = true;
     m_surface->setGLContext( nullptr );
 #endif
@@ -227,7 +227,7 @@ void QRendererVideoWidgetBackend::paintEvent( QPaintEvent *event )
     else
     {
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_1_CL) && ! defined(QT_OPENGL_ES_1)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_1_CL) && ! defined(LSCS_OPENGL_ES_1)
 
         if ( m_updatePaintDevice && ( painter.paintEngine()->type() == QPaintEngine::OpenGL
                                       || painter.paintEngine()->type() == QPaintEngine::OpenGL2 ) )

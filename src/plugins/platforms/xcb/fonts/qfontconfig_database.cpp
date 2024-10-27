@@ -992,7 +992,7 @@ static FcPattern *queryFont( const FcChar8 *file, const QByteArray &data, int id
         return FcFreeTypeQuery( file, id, blanks, count );
     }
 
-    FT_Library lib = qt_getFreetype();
+    FT_Library lib = lscs_getFreetype();
 
     FcPattern *pattern = nullptr;
 

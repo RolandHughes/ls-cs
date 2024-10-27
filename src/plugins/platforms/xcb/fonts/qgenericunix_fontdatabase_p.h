@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifdef QT_FONTCONFIGDATABASE
+#ifdef LSCS_FONTCONFIGDATABASE
 
 #include <qfontconfig_database_p.h>
 using QGenericUnixFontDatabase = QFontconfigDatabase;

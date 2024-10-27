@@ -26,7 +26,7 @@
 
 #include <qdebug_p.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 QPrintDevice::QPrintDevice()
     : d( new QPlatformPrintDevice() )
@@ -230,14 +230,14 @@ QList<QPrint::ColorMode> QPrintDevice::supportedColorModes() const
     return isValid() ? d->supportedColorModes() : QList<QPrint::ColorMode>();
 }
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
 /* emerald - mimedatabase
 QList<QMimeType> QPrintDevice::supportedMimeTypes() const
 {
     return isValid() ? d->supportedMimeTypes() : QList<QMimeType>();
 }
 */
-#endif // QT_NO_MIMETYPE
+#endif // LSCS_NO_MIMETYPE
 
 void QPrintDevice::format( QDebug debug ) const
 {
@@ -290,7 +290,7 @@ void QPrintDevice::format( QDebug debug ) const
               << ", defaultDuplexMode=" << defaultDuplexMode()
               << ", defaultColorMode="<< defaultColorMode();
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
 
         /* emerald - mimedatabase
 
@@ -326,6 +326,6 @@ QDebug operator<<( QDebug debug, const QPrintDevice &p )
     return debug;
 }
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 

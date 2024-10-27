@@ -23,7 +23,7 @@
 
 #include <qbasicmouseeventtransition_p.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qdebug.h>
 #include <qevent.h>
@@ -143,4 +143,4 @@ void QBasicMouseEventTransition::onTransition( QEvent * )
 {
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

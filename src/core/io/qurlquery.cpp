@@ -145,7 +145,7 @@ inline QString QUrlQueryPrivate::recodeFromUser( const QString &input ) const
         0
     };
 
-    if ( qt_urlRecode( output, input.begin(), input.end(), QUrl::DecodeReserved, prettyDecodedActions ) )
+    if ( lscs_urlRecode( output, input.begin(), input.end(), QUrl::DecodeReserved, prettyDecodedActions ) )
     {
 
         return output;
@@ -173,7 +173,7 @@ inline QString QUrlQueryPrivate::recodeToUser( const QString &input, QUrl::Forma
     {
         QString output;
 
-        if ( qt_urlRecode( output, input.begin(), input.end(), encoding, nullptr ) )
+        if ( lscs_urlRecode( output, input.begin(), input.end(), encoding, nullptr ) )
         {
             return output;
         }
@@ -186,7 +186,7 @@ inline QString QUrlQueryPrivate::recodeToUser( const QString &input, QUrl::Forma
 
     QString output;
 
-    if ( qt_urlRecode( output, input.begin(), input.end(), encoding, actions ) )
+    if ( lscs_urlRecode( output, input.begin(), input.end(), encoding, actions ) )
     {
         return output;
     }
@@ -240,7 +240,7 @@ void QUrlQueryPrivate::setQuery( const QString &query )
 
         QString key;
 
-        if ( ! qt_urlRecode( key, begin, delimiter, QUrl::DecodeReserved, prettyDecodedActions ) )
+        if ( ! lscs_urlRecode( key, begin, delimiter, QUrl::DecodeReserved, prettyDecodedActions ) )
         {
             key = QString( begin, delimiter );
         }
@@ -260,7 +260,7 @@ void QUrlQueryPrivate::setQuery( const QString &query )
         {
             QString value;
 
-            if ( ! qt_urlRecode( value, delimiter + 1, iter, QUrl::DecodeReserved, prettyDecodedActions ) )
+            if ( ! lscs_urlRecode( value, delimiter + 1, iter, QUrl::DecodeReserved, prettyDecodedActions ) )
             {
                 value = QString( delimiter + 1, iter );
             }
@@ -374,7 +374,7 @@ void QUrlQuery::setQuery( const QString &queryString )
 static void recodeAndAppend( QString &to, const QString &input, QUrl::FormattingOptions encoding,
                              const ushort *tableModifications )
 {
-    if ( !qt_urlRecode( to, input.constBegin(), input.constEnd(), encoding, tableModifications ) )
+    if ( !lscs_urlRecode( to, input.constBegin(), input.constEnd(), encoding, tableModifications ) )
     {
         to += input;
     }

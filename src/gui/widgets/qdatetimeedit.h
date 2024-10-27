@@ -29,7 +29,7 @@
 #include <qtimezone.h>
 #include <qvariant.h>
 
-#ifndef QT_NO_DATETIMEEDIT
+#ifndef LSCS_NO_DATETIMEEDIT
 
 class QDateTimeEditPrivate;
 class QStyleOptionSpinBox;
@@ -216,7 +216,7 @@ public:
 protected:
     void keyPressEvent( QKeyEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -280,6 +280,6 @@ public:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QDateTimeEdit::Sections )
 
-#endif // QT_NO_DATETIMEEDIT
+#endif // LSCS_NO_DATETIMEEDIT
 
 #endif

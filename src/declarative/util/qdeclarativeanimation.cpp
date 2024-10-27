@@ -51,7 +51,7 @@
 
 #include <qvariantanimation_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass Animation QDeclarativeAbstractAnimation
@@ -3313,4 +3313,4 @@ QDeclarativeScriptActionPrivate::QDeclarativeScriptActionPrivate()
     : QDeclarativeAbstractAnimationPrivate(), hasRunScriptScript( false ), reversing( false ), proxy( this ), rsa( 0 ) {}
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

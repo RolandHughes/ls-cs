@@ -29,7 +29,7 @@
 #include <qabstractscrollarea.h>
 #include <qitemselectionmodel.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 class QAbstractItemViewPrivate;
 class QDrag;
@@ -61,7 +61,7 @@ class Q_GUI_EXPORT QAbstractItemView : public QAbstractScrollArea
     GUI_LSCS_PROPERTY_READ( tabKeyNavigation, tabKeyNavigation )
     GUI_LSCS_PROPERTY_WRITE( tabKeyNavigation, setTabKeyNavigation )
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     GUI_LSCS_PROPERTY_READ( showDropIndicator, showDropIndicator )
     GUI_LSCS_PROPERTY_WRITE( showDropIndicator, setDropIndicatorShown )
 
@@ -151,7 +151,7 @@ public:
     };
     )
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     GUI_LSCS_REGISTER_ENUM(
         enum DragDropMode
     {
@@ -207,7 +207,7 @@ public:
     void setTabKeyNavigation( bool enable );
     bool tabKeyNavigation() const;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void setDropIndicatorShown( bool enable );
     bool showDropIndicator() const;
 
@@ -338,7 +338,7 @@ protected:
         AnimatingState
     };
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     enum DropIndicatorPosition
     {
         OnItem,
@@ -441,7 +441,7 @@ protected:
     void mouseReleaseEvent( QMouseEvent *event ) override;
     void mouseDoubleClickEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *event ) override;
     void dragMoveEvent( QDragMoveEvent *event ) override;
     void dragLeaveEvent( QDragLeaveEvent *event ) override;
@@ -491,7 +491,7 @@ private:
     void _q_layoutChanged();
     void _q_headerDataChanged();
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     GUI_LSCS_SLOT_1( Private, void _q_scrollerStateChanged() )
     GUI_LSCS_SLOT_2( _q_scrollerStateChanged )
 #endif
@@ -504,6 +504,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QAbstractItemView::EditTriggers )
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS
 
 #endif

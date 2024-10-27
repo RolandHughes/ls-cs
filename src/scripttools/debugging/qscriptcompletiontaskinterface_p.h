@@ -26,7 +26,7 @@
 
 #include <qobject.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QString;
 class QScriptCompletionTaskInterfacePrivate;
@@ -74,6 +74,6 @@ private:
     Q_DISABLE_COPY( QScriptCompletionTaskInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

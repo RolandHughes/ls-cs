@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 #include <qgraphicsproxywidget.h>
 #include <qgraphics_proxywidget_p.h>
@@ -44,8 +44,8 @@
 #include <qwidget_p.h>
 #include <qapplication_p.h>
 
-extern bool qt_sendSpontaneousEvent( QObject *, QEvent * );
-Q_GUI_EXPORT extern bool qt_tab_all_widgets();
+extern bool lscs_sendSpontaneousEvent( QObject *, QEvent * );
+Q_GUI_EXPORT extern bool lscs_tab_all_widgets();
 
 // internal
 void QGraphicsProxyWidgetPrivate::init()
@@ -184,7 +184,7 @@ void QGraphicsProxyWidgetPrivate::sendWidgetMouseEvent( QGraphicsSceneMouseEvent
         QApplicationPrivate::dispatchEnterLeave( lastWidgetUnderMouse, embeddedMouseGrabber, event->screenPos() );
         embeddedMouseGrabber = nullptr;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
         // ### Restore the cursor, do not override
         if ( ! lastWidgetUnderMouse )
@@ -272,7 +272,7 @@ QWidget *QGraphicsProxyWidgetPrivate::findFocusChild( QWidget *child, bool next 
     }
 
     QWidget *oldChild = child;
-    uint focus_flag = qt_tab_all_widgets() ? Qt::TabFocus : Qt::StrongFocus;
+    uint focus_flag = lscs_tab_all_widgets() ? Qt::TabFocus : Qt::StrongFocus;
 
     do
     {
@@ -505,7 +505,7 @@ void QGraphicsProxyWidgetPrivate::setWidget_helper( QWidget *newWidget, bool aut
 
         widget = nullptr;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         q->unsetCursor();
 #endif
 
@@ -592,7 +592,7 @@ void QGraphicsProxyWidgetPrivate::setWidget_helper( QWidget *newWidget, bool aut
     }
 
     // Copy the state from the widget onto the proxy.
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( newWidget->testAttribute( Qt::WA_SetCursor ) )
     {
@@ -876,7 +876,7 @@ bool QGraphicsProxyWidget::event( QEvent *event )
             break;
         }
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         case QEvent::GraphicsSceneHelp:
         {
@@ -915,7 +915,7 @@ bool QGraphicsProxyWidget::event( QEvent *event )
         {
             if ( event->spontaneous() )
             {
-                qt_sendSpontaneousEvent( d->widget, event );
+                lscs_sendSpontaneousEvent( d->widget, event );
             }
             else
             {
@@ -1007,7 +1007,7 @@ bool QGraphicsProxyWidget::eventFilter( QObject *object, QEvent *event )
                 }
 
                 break;
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
             case QEvent::ToolTipChange:
 
@@ -1040,7 +1040,7 @@ void QGraphicsProxyWidget::hideEvent( QHideEvent *event )
     ( void ) event;
 }
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
 
 void QGraphicsProxyWidget::contextMenuEvent( QGraphicsSceneContextMenuEvent *event )
 {
@@ -1081,7 +1081,7 @@ void QGraphicsProxyWidget::contextMenuEvent( QGraphicsSceneContextMenuEvent *eve
 }
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QGraphicsProxyWidget::dragEnterEvent( QGraphicsSceneDragDropEvent *event )
 {
@@ -1217,7 +1217,7 @@ void QGraphicsProxyWidget::dropEvent( QGraphicsSceneDragDropEvent *event )
     }
 }
 
-#endif  // QT_NO_DRAGANDDROP
+#endif  // LSCS_NO_DRAGANDDROP
 
 void QGraphicsProxyWidget::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
@@ -1306,7 +1306,7 @@ void QGraphicsProxyWidget::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *even
     d->sendWidgetMouseEvent( event );
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 
 void QGraphicsProxyWidget::wheelEvent( QGraphicsSceneWheelEvent *event )
 {
@@ -1336,8 +1336,8 @@ void QGraphicsProxyWidget::wheelEvent( QGraphicsSceneWheelEvent *event )
     QWheelEvent wheelEvent( pos.toPoint(), event->screenPos(), event->delta(),
                             event->buttons(), event->modifiers(), event->orientation() );
     QPointer<QWidget> focusWidget = d->widget->focusWidget();
-    extern bool qt_sendSpontaneousEvent( QObject *, QEvent * );
-    qt_sendSpontaneousEvent( receiver, &wheelEvent );
+    extern bool lscs_sendSpontaneousEvent( QObject *, QEvent * );
+    lscs_sendSpontaneousEvent( receiver, &wheelEvent );
     event->setAccepted( wheelEvent.isAccepted() );
 
     // ### Remove, this should be done by proper focusIn/focusOut events.
@@ -1353,7 +1353,7 @@ void QGraphicsProxyWidget::wheelEvent( QGraphicsSceneWheelEvent *event )
     }
 }
 
-#endif // QT_NO_WHEELEVENT
+#endif // LSCS_NO_WHEELEVENT
 
 
 void QGraphicsProxyWidget::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
@@ -1682,4 +1682,4 @@ void QGraphicsProxyWidget::_q_removeWidgetSlot()
     d->_q_removeWidgetSlot();
 }
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW

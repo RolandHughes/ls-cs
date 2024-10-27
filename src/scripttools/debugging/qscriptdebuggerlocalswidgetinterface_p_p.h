@@ -26,7 +26,7 @@
 
 #include <qwidget_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptCompletionProviderInterface;
 class QScriptDebuggerLocalsWidgetInterface;
@@ -42,6 +42,6 @@ public:
     QScriptCompletionProviderInterface *completionProvider;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

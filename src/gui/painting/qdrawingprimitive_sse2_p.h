@@ -214,8 +214,8 @@
 
 // emerald - review sse4
 
-#if QT_COMPILER_SUPPORTS_HERE(SSE4_1)
-QT_FUNCTION_TARGET( SSE4_1 )
+#if LSCS_COMPILER_SUPPORTS_HERE(SSE4_1)
+LSCS_FUNCTION_TARGET( SSE4_1 )
 
 inline QRgb qUnpremultiply_sse4( QRgb p )
 {
@@ -226,7 +226,7 @@ inline QRgb qUnpremultiply_sse4( QRgb p )
         return p;
     }
 
-    const uint invAlpha = qt_inv_premul_factor[alpha];
+    const uint invAlpha = lscs_inv_premul_factor[alpha];
     const __m128i via = _mm_set1_epi32( invAlpha );
     const __m128i vr = _mm_set1_epi32( 0x8000 );
     __m128i vl = _mm_cvtepu8_epi32( _mm_cvtsi32_si128( p ) );
@@ -239,7 +239,7 @@ inline QRgb qUnpremultiply_sse4( QRgb p )
     return _mm_cvtsi128_si32( vl );
 }
 
-template <enum QtPixelOrder PixelOrder> QT_FUNCTION_TARGET( SSE4_1 )
+template <enum QtPixelOrder PixelOrder> LSCS_FUNCTION_TARGET( SSE4_1 )
 inline uint qConvertArgb32ToA2rgb30_sse4( QRgb p )
 {
     const uint alpha = qAlpha( p );
@@ -255,7 +255,7 @@ inline uint qConvertArgb32ToA2rgb30_sse4( QRgb p )
     }
 
     uint mult = 255 / ( 255 >> 6 );
-    const uint invAlpha = qt_inv_premul_factor[alpha];
+    const uint invAlpha = lscs_inv_premul_factor[alpha];
     const uint newalpha = ( alpha >> 6 );
     const __m128i via = _mm_set1_epi32( invAlpha );
     const __m128i vna = _mm_set1_epi32( mult * newalpha );

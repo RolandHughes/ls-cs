@@ -39,7 +39,7 @@
 #include <QtGui/qgraphicsitem.h>
 #include <QtCore/qmath.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeParentChangePrivate : public QDeclarativeStateOperationPrivate
 {
@@ -1885,5 +1885,5 @@ void QDeclarativeAnchorChanges::saveTargetValues()
     d->toHeight = d->target->height();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

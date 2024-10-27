@@ -27,12 +27,12 @@
 #include <QtScript/qscriptengine.h>
 #include <QtCore/qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptEngine;
-void qt_add_qmlsqldatabase( QScriptEngine *engine );
+void lscs_add_qmlsqldatabase( QScriptEngine *engine );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVESQLDATABASE_P_H
 

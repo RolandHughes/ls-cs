@@ -29,7 +29,7 @@
 #include <qdeclarativeanchors_p.h>
 #include <qdeclarativescriptstring.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeParentChangePrivate;
 
@@ -296,7 +296,7 @@ public:
     virtual void saveTargetValues();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeParentChange )
 QML_DECLARE_TYPE( QDeclarativeStateChangeScript )

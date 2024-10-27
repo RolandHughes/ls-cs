@@ -29,7 +29,7 @@
 #include <qbasictimer.h>
 #include <qgraphicssceneevent.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeMouseAreaPrivate : public QDeclarativeItemPrivate
 {
@@ -94,6 +94,6 @@ public:
     QBasicTimer pressAndHoldTimer;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEMOUSEREGION_P_H

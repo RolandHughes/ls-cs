@@ -134,9 +134,9 @@ typedef GOwnPtr<GMutex> PlatformMutex;
 typedef void *PlatformReadWriteLock; // FIXME: Implement.
 typedef GOwnPtr<GCond> PlatformCondition;
 #elif PLATFORM(QT)
-typedef QT_PREPEND_NAMESPACE( QMutex ) *PlatformMutex;
+typedef LSCS_PREPEND_NAMESPACE( QMutex ) *PlatformMutex;
 typedef void *PlatformReadWriteLock; // FIXME: Implement.
-typedef QT_PREPEND_NAMESPACE( QWaitCondition ) *PlatformCondition;
+typedef LSCS_PREPEND_NAMESPACE( QWaitCondition ) *PlatformCondition;
 #elif OS(WINDOWS)
 struct PlatformMutex
 {

@@ -26,7 +26,7 @@
 
 #include <qstack.h>
 
-#ifndef QT_NO_TREEWIDGET
+#ifndef LSCS_NO_TREEWIDGET
 #include <qtreewidgetitemiterator.h>
 
 
@@ -79,6 +79,6 @@ private:
 
 
 
-#endif // QT_NO_TREEWIDGET
+#endif // LSCS_NO_TREEWIDGET
 
 #endif //QTREEWIDGETITEMITERATOR_P_H

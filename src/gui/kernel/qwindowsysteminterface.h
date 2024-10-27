@@ -135,7 +135,7 @@ public:
     // region is in local coordinates, do not confuse with geometry which is parent-relative
     static void handleExposeEvent( QWindow *tlw, const QRegion &region );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     // Drag and drop. These events are sent immediately.
     static QPlatformDragQtResponse handleDrag( QWindow *w, const QMimeData *dropData, const QPoint &p,
             Qt::DropActions supportedActions );
@@ -181,24 +181,24 @@ public:
     static void handleTabletLeaveProximityEvent( ulong timestamp, int device, int pointerType, qint64 uid );
     static void handleTabletLeaveProximityEvent( int device, int pointerType, qint64 uid );
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
     static void handleGestureEvent( QWindow *window,  ulong timestamp, Qt::NativeGestureType type,
                                     QPointF &local, QPointF &global );
     static void handleGestureEventWithRealValue( QWindow *window,  ulong timestamp, Qt::NativeGestureType type,
             qreal value, QPointF &local, QPointF &global );
     static void handleGestureEventWithSequenceIdAndValue( QWindow *window, ulong timestamp, Qt::NativeGestureType type,
             ulong sequenceId, quint64 value, QPointF &local, QPointF &global );
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
     static void handlePlatformPanelEvent( QWindow *w );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     static void handleContextMenuEvent( QWindow *w, bool mouseTriggered,
                                         const QPoint &pos, const QPoint &globalPos,
                                         Qt::KeyboardModifiers modifiers );
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     static void handleEnterWhatsThisEvent();
 #endif
 

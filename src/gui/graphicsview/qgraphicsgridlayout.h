@@ -27,7 +27,7 @@
 #include <qgraphicsitem.h>
 #include <qgraphicslayout.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW)
+#if ! defined(LSCS_NO_GRAPHICSVIEW)
 
 class QGraphicsGridLayoutPrivate;
 

@@ -24,7 +24,7 @@
 
 #include <qopengl_version_functions_p.h>
 
-#if ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_OPENGL_ES_2)
 #include "qopenglfunctions_3_1.h"
 #include "qopenglfunctions_3_0.h"
 #include "qopenglfunctions_2_1.h"

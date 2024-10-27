@@ -65,7 +65,7 @@ static Ptr_iconv ptr_iconv = nullptr;
 static Ptr_iconv_close ptr_iconv_close = nullptr;
 #endif
 
-extern bool qt_locale_initialized;
+extern bool lscs_locale_initialized;
 
 QIconvCodec::QIconvCodec()
     : utf16Codec( nullptr )
@@ -208,7 +208,7 @@ QString QIconvCodec::convertToUnicode( const char *chars, int len, ConverterStat
     {
         QThreadStorage<QIconvCodec::IconvState *> *ts = toUnicodeState();
 
-        if ( ! qt_locale_initialized || ! ts )
+        if ( ! lscs_locale_initialized || ! ts )
         {
             // might be running before the QCoreApplication initialization
 
@@ -408,7 +408,7 @@ QByteArray QIconvCodec::convertFromUnicode( QStringView str, ConverterState *con
 
     IconvState *temporaryState = nullptr;
     QThreadStorage<QIconvCodec::IconvState *> *ts = fromUnicodeState();
-    IconvState *&state = ( qt_locale_initialized && ts ) ? ts->localData() : temporaryState;
+    IconvState *&state = ( lscs_locale_initialized && ts ) ? ts->localData() : temporaryState;
 
     if ( ! state )
     {

@@ -30,7 +30,7 @@
 #include <qmutex.h>
 #include <qset.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 class QBearerEngine;
 class QTimer;
@@ -119,6 +119,6 @@ private :
 Q_NETWORK_EXPORT QNetworkConfigurationManagerPrivate *qNetworkConfigurationManagerPrivate();
 
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT
 
 #endif // QNETWORKCONFIGURATIONMANAGERPRIVATE_H

@@ -4,7 +4,7 @@ add_library(LsCs::LsCsXmlPatterns ALIAS LsCsXmlPatterns)
 set_target_properties(LsCsXmlPatterns PROPERTIES OUTPUT_NAME LsCsXmlPatterns${BUILD_ABI})
 
 add_definitions(
-   -DQT_BUILD_XMLPATTERNS_LIB
+   -DLSCS_BUILD_XMLPATTERNS_LIB
 )
 
 set(EXTRA_XMLPATTERNS_CXXFLAGS)

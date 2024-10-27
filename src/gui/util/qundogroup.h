@@ -32,7 +32,7 @@ class QAction;
 class QUndoGroupPrivate;
 class QUndoStack;
 
-#ifndef QT_NO_UNDOGROUP
+#ifndef LSCS_NO_UNDOGROUP
 
 class Q_GUI_EXPORT QUndoGroup : public QObject
 {
@@ -51,7 +51,7 @@ public:
     QList<QUndoStack *> stacks() const;
     QUndoStack *activeStack() const;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QAction *createUndoAction( QObject *parent, const QString &prefix = QString() ) const;
     QAction *createRedoAction( QObject *parent, const QString &prefix = QString() ) const;
 #endif
@@ -93,6 +93,6 @@ private:
     Q_DECLARE_PRIVATE( QUndoGroup )
 };
 
-#endif // QT_NO_UNDOGROUP
+#endif // LSCS_NO_UNDOGROUP
 
 #endif // QUNDOGROUP_H

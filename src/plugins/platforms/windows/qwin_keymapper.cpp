@@ -117,7 +117,7 @@ struct KeyRecord
 
 // We need to record the pressed keys in order to decide, whether the key event is an autorepeat
 // event. As soon as its state changes, the chain of autorepeat events will be broken.
-static const int QT_MAX_KEY_RECORDINGS = 64; // User has LOTS of fingers...
+static const int LSCS_MAX_KEY_RECORDINGS = 64; // User has LOTS of fingers...
 struct KeyRecorder
 {
     KeyRecorder()
@@ -130,7 +130,7 @@ struct KeyRecorder
 
     int nrecs;
     KeyRecord deleted_record; // A copy of last entry removed from records[]
-    KeyRecord records[QT_MAX_KEY_RECORDINGS];
+    KeyRecord records[LSCS_MAX_KEY_RECORDINGS];
 };
 static KeyRecorder key_recorder;
 
@@ -179,10 +179,10 @@ KeyRecord *KeyRecorder::findKey( int code, bool remove )
 
 void KeyRecorder::storeKey( int code, int ascii, int state, const QString &text )
 {
-    Q_ASSERT_X( nrecs != QT_MAX_KEY_RECORDINGS, "Internal KeyRecorder",
-                "Keyboard recorder buffer overflow, consider increasing QT_MAX_KEY_RECORDINGS" );
+    Q_ASSERT_X( nrecs != LSCS_MAX_KEY_RECORDINGS, "Internal KeyRecorder",
+                "Keyboard recorder buffer overflow, consider increasing LSCS_MAX_KEY_RECORDINGS" );
 
-    if ( nrecs == QT_MAX_KEY_RECORDINGS )
+    if ( nrecs == LSCS_MAX_KEY_RECORDINGS )
     {
         qWarning( "Internal keyboard buffer overflow" );
         return;
@@ -625,7 +625,7 @@ void QWindowsKeyMapper::changeKeyboard()
      * returns a DWORD. */
 
     LCID newLCID = MAKELCID( quintptr( GetKeyboardLayout( 0 ) ), SORT_DEFAULT );
-    //    keyboardInputLocale = qt_localeFromLCID(newLCID);
+    //    keyboardInputLocale = lscs_localeFromLCID(newLCID);
 
     bool bidi = false;
     wchar_t LCIDFontSig[16];
@@ -1337,7 +1337,7 @@ bool QWindowsKeyMapper::translateKeyEventInternal( QWindow *window, const MSG &m
 
             const Qt::KeyboardModifiers modifiers( state );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
             // are we  interested in the context menu key?
 
             if ( modifiers == Qt::ShiftModifier && code == Qt::Key_F10

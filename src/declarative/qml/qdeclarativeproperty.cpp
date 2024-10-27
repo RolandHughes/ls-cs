@@ -40,7 +40,7 @@
 
 #include <math.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
 \class QDeclarativeProperty
@@ -1375,10 +1375,10 @@ bool QDeclarativePropertyPrivate::writeEnumProperty( const QMetaProperty &prop, 
         v.convert( QVariant::Int );
     }
 
-    // the status variable is changed by qt_metacall to indicate what it did
+    // the status variable is changed by lscs_metacall to indicate what it did
     // this feature is currently only used by QtDBus and should not be depended
     // upon. Don't change it without looking into QDBusAbstractInterface first
-    // -1 (unchanged): normal qt_metacall, result stored in argv[0]
+    // -1 (unchanged): normal lscs_metacall, result stored in argv[0]
     // changed: result stored directly in value, return the value of status
     int status = -1;
     void *argv[] = { v.data(), &v, &status, &flags };
@@ -2162,4 +2162,4 @@ const QMetaObject *QDeclarativePropertyPrivate::metaObjectForProperty( const QMe
     return metaObject;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

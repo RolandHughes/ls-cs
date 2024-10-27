@@ -26,7 +26,7 @@
 
 #include <QtGui/qwidget.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerScriptsModel;
 class QScriptBreakpointsModel;
@@ -66,6 +66,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerCodeWidgetInterface )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

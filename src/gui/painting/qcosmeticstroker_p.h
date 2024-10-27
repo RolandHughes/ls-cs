@@ -110,7 +110,7 @@ public:
     int patternOffset;
     bool legacyRounding;
 
-    QT_FT_Span spans[SpanCount];
+    LSCS_FT_Span spans[SpanCount];
 
     int current_span;
     ProcessSpans blend;

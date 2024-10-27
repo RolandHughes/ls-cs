@@ -73,7 +73,7 @@ static inline int &rperp( Qt::Orientation o, QSize &size )
     return o == Qt::Vertical ? size.rwidth() : size.rheight();
 }
 
-#ifndef QT_NO_TOOLBAR
+#ifndef LSCS_NO_TOOLBAR
 
 class QToolBar;
 class QLayoutItem;
@@ -236,5 +236,5 @@ public:
     bool isEmpty() const;
 };
 
-#endif // QT_NO_TOOLBAR
+#endif // LSCS_NO_TOOLBAR
 #endif // QTOOLBARAREALAYOUT_P_H

@@ -26,7 +26,7 @@
 
 #include <qgraphicsview.h>
 
-#if !defined(QT_NO_GRAPHICSVIEW)
+#if !defined(LSCS_NO_GRAPHICSVIEW)
 
 #include <qevent.h>
 #include <qcoreapplication.h>
@@ -108,7 +108,7 @@ public:
 
     QPointer<QGraphicsScene> scene;
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
     QRect rubberBandRect;
     QRegion rubberBandRegion( const QWidget *widget, const QRect &rect ) const;
     void updateRubberBand( const QMouseEvent *event );
@@ -130,7 +130,7 @@ public:
     QPixmap backgroundPixmap;
     QRegion backgroundPixmapExposed;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor originalCursor;
     bool hasStoredOriginalCursor;
     void _q_setViewportCursor( const QCursor &cursor );
@@ -159,7 +159,7 @@ public:
 
 
         {
-            if ( qt_widget_private( viewport )->paintOnScreen() )
+            if ( lscs_widget_private( viewport )->paintOnScreen() )
             {
                 QCoreApplication::sendPostedEvents( viewport, QEvent::UpdateRequest );
             }
@@ -202,6 +202,6 @@ public:
 };
 
 
-#endif // QT_NO_GRAPHICSVIEW
+#endif // LSCS_NO_GRAPHICSVIEW
 
 #endif

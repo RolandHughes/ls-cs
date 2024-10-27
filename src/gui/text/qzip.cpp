@@ -23,7 +23,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_TEXTODFWRITER
+#ifndef LSCS_NO_TEXTODFWRITER
 
 #include <qdatetime.h>
 #include <qdebug.h>
@@ -1455,4 +1455,4 @@ void QZipWriter::close()
     d->device->close();
 }
 
-#endif // QT_NO_TEXTODFWRITER
+#endif // LSCS_NO_TEXTODFWRITER

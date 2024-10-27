@@ -23,7 +23,7 @@
 
 #include <qabstractitemview.h>
 
-#ifndef QT_NO_ITEMVIEWS
+#ifndef LSCS_NO_ITEMVIEWS
 
 #include <qpointer.h>
 #include <qapplication.h>
@@ -47,11 +47,11 @@
 #include <qabstractitemmodel_p.h>
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 #include <qscroller.h>
 #endif
 
@@ -66,7 +66,7 @@ QAbstractItemViewPrivate::QAbstractItemViewPrivate()
         editTriggers( QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed ),
         lastTrigger( QAbstractItemView::NoEditTriggers ), tabKeyNavigation( false ),
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         showDropIndicator( true ),
         dragEnabled( false ),
         dragDropMode( QAbstractItemView::NoDragDrop ),
@@ -147,7 +147,7 @@ void QAbstractItemViewPrivate::checkMouseMove( const QPersistentModelIndex &inde
         {
             emit q->entered( index );
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
             QString statustip = model->data( index, Qt::StatusTipRole ).toString();
 
             if ( q->parent() && ( shouldClearStatusTip || !statustip.isEmpty() ) )
@@ -162,7 +162,7 @@ void QAbstractItemViewPrivate::checkMouseMove( const QPersistentModelIndex &inde
         }
         else
         {
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 
             if ( q->parent() && shouldClearStatusTip )
             {
@@ -179,7 +179,7 @@ void QAbstractItemViewPrivate::checkMouseMove( const QPersistentModelIndex &inde
     }
 }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 // stores and restores the selection and current item when flicking
 void QAbstractItemViewPrivate::_q_scrollerStateChanged()
@@ -577,7 +577,7 @@ void QAbstractItemView::reset()
         d->selectionModel->reset();
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -709,7 +709,7 @@ QAbstractItemView::ScrollMode QAbstractItemView::horizontalScrollMode() const
     return d->horizontalScrollMode;
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QAbstractItemView::setDragDropOverwriteMode( bool overwrite )
 {
@@ -766,7 +766,7 @@ QSize QAbstractItemView::viewportSizeHint() const
     return QAbstractScrollArea::viewportSizeHint();
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QAbstractItemView::setDropIndicatorShown( bool enable )
 {
@@ -995,7 +995,7 @@ bool QAbstractItemView::viewportEvent( QEvent *event )
 
         case QEvent::Leave:
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
             if ( d->shouldClearStatusTip && this->parent() )
             {
                 QString empty;
@@ -1043,7 +1043,7 @@ bool QAbstractItemView::viewportEvent( QEvent *event )
         case QEvent::ScrollPrepare:
             executeDelayedItemsLayout();
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
             connect( QScroller::scroller( d->viewport ), &QScroller::stateChanged, this,
                      &QAbstractItemView::_q_scrollerStateChanged, Qt::UniqueConnection );
 #endif
@@ -1152,7 +1152,7 @@ void QAbstractItemView::mouseMoveEvent( QMouseEvent *event )
         return;
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( state() == DraggingState )
     {
@@ -1191,7 +1191,7 @@ void QAbstractItemView::mouseMoveEvent( QMouseEvent *event )
 
     d->checkMouseMove( index );
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( d->pressedIndex.isValid()
             && d->dragEnabled
@@ -1319,7 +1319,7 @@ void QAbstractItemView::mouseDoubleClickEvent( QMouseEvent *event )
     }
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QAbstractItemView::dragEnterEvent( QDragEnterEvent *event )
 {
@@ -1688,7 +1688,7 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
     Q_D( QAbstractItemView );
     d->delayedAutoScroll.stop(); //any interaction with the view cancel the auto scrolling
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     switch ( event->key() )
     {
@@ -1754,7 +1754,7 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
 
 #endif
 
-#if ! defined(QT_NO_CLIPBOARD) && ! defined(QT_NO_SHORTCUT)
+#if ! defined(LSCS_NO_CLIPBOARD) && ! defined(LSCS_NO_SHORTCUT)
 
     if ( event == QKeySequence::Copy )
     {
@@ -1881,7 +1881,7 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
         case Qt::Key_Down:
         case Qt::Key_Up:
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( QApplication::keypadNavigationEnabled() && QWidgetPrivate::canKeypadNavigate( Qt::Vertical ) )
             {
                 event->accept(); // don't change focus
@@ -1894,7 +1894,7 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
         case Qt::Key_Left:
         case Qt::Key_Right:
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
             if ( QApplication::navigationMode() == Qt::NavigationModeKeypadDirectional
                     && ( QWidgetPrivate::canKeypadNavigate( Qt::Horizontal )
                          || ( QWidgetPrivate::inTabWidget( this ) && d->model->columnCount( d->root ) > 1 ) ) )
@@ -1925,7 +1925,7 @@ void QAbstractItemView::keyPressEvent( QKeyEvent *event )
                 d->selectionModel->select( currentIndex(), selectionCommand( currentIndex(), event ) );
             }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             if ( event->key() == Qt::Key_Select )
             {
@@ -2113,7 +2113,7 @@ void QAbstractItemView::inputMethodEvent( QInputMethodEvent *event )
     }
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 QAbstractItemView::DropIndicatorPosition QAbstractItemView::dropIndicatorPosition() const
 {
     Q_D( const QAbstractItemView );
@@ -2869,7 +2869,7 @@ void QAbstractItemView::dataChanged( const QModelIndex &topLeft, const QModelInd
         }
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -2992,7 +2992,7 @@ void QAbstractItemViewPrivate::_q_rowsRemoved( const QModelIndex &index, int sta
 
     q->setState( QAbstractItemView::NoState );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -3093,7 +3093,7 @@ void QAbstractItemViewPrivate::_q_columnsRemoved( const QModelIndex &index, int 
 
     q->setState( QAbstractItemView::NoState );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -3112,7 +3112,7 @@ void QAbstractItemViewPrivate::_q_rowsInserted( const QModelIndex &index, int st
 {
     ( void ) index;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     Q_Q( QAbstractItemView );
 
@@ -3140,7 +3140,7 @@ void QAbstractItemViewPrivate::_q_columnsInserted( const QModelIndex &index, int
         q->updateEditorGeometries();
     }
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -3165,7 +3165,7 @@ void QAbstractItemViewPrivate::_q_layoutChanged()
 {
     doDelayedItemsLayout();
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     Q_Q( QAbstractItemView );
 
     if ( QAccessible::isActive() )
@@ -3251,7 +3251,7 @@ void QAbstractItemView::currentChanged( const QModelIndex &current, const QModel
     }
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QAbstractItemView::startDrag( Qt::DropActions supportedActions )
 {
@@ -3489,7 +3489,7 @@ void QAbstractItemView::doAutoScroll()
     else
     {
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
         d->dropIndicatorRect = QRect();
         d->dropIndicatorPosition = QAbstractItemView::OnViewport;
 #endif
@@ -3702,7 +3702,7 @@ QItemSelectionModel::SelectionFlags QAbstractItemViewPrivate::extendedSelectionC
 
                     case Qt::Key_Tab:
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
                         if ( modifiers & Qt::ControlModifier ||
                                 QApplication::navigationMode() == Qt::NavigationModeKeypadTabOrder )
                         {
@@ -3961,7 +3961,7 @@ QWidget *QAbstractItemViewPrivate::editor( const QModelIndex &index, const QStyl
                 focusWidget = fp;
             }
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
             if ( QLineEdit *le = qobject_cast<QLineEdit *>( focusWidget ) )
             {
@@ -3970,7 +3970,7 @@ QWidget *QAbstractItemViewPrivate::editor( const QModelIndex &index, const QStyl
 
 #endif
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
             if ( QSpinBox *sb = qobject_cast<QSpinBox *>( focusWidget ) )
             {
@@ -4020,7 +4020,7 @@ void QAbstractItemViewPrivate::updateEditorData( const QModelIndex &tl, const QM
 
 void QAbstractItemViewPrivate::clearOrRemove()
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     const QItemSelection selection = selectionModel->selection();
     QList<QItemSelectionRange>::const_iterator it = selection.constBegin();
 
@@ -4357,4 +4357,4 @@ void QAbstractItemView::_q_scrollerStateChanged()
     d->_q_scrollerStateChanged();
 }
 
-#endif // QT_NO_ITEMVIEWS
+#endif // LSCS_NO_ITEMVIEWS

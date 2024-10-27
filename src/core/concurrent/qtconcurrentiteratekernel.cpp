@@ -35,7 +35,7 @@
 #include <unistd.h>
 
 #elif defined(Q_OS_WIN)
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #endif
 

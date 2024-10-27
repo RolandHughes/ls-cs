@@ -37,9 +37,9 @@
 #include <qmath.h>
 #include <limits.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-extern Q_GUI_EXPORT bool qt_applefontsmoothing_enabled;
+extern Q_GUI_EXPORT bool lscs_applefontsmoothing_enabled;
 
 class QTextDocumentWithImageResources : public QTextDocument
 {
@@ -148,7 +148,7 @@ void QTextDocumentWithImageResources::requestFinished()
     {
         QDeclarativeText *textItem = static_cast<QDeclarativeText *>( parent() );
         QString text = textItem->text();
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
         setHtml( text );
 #else
         setPlainText( text );
@@ -167,7 +167,7 @@ void QTextDocumentWithImageResources::setText( const QString &text )
         outstanding = 0;
     }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     setHtml( text );
 #else
     setPlainText( text );
@@ -607,12 +607,12 @@ QPixmap QDeclarativeTextPrivate::textLayoutImage( bool drawStyle )
     {
         img.fill( Qt::transparent );
 #ifdef Q_OS_DARWIN
-        bool oldSmooth = qt_applefontsmoothing_enabled;
-        qt_applefontsmoothing_enabled = false;
+        bool oldSmooth = lscs_applefontsmoothing_enabled;
+        lscs_applefontsmoothing_enabled = false;
 #endif
         QPainter p( &img );
 #ifdef Q_OS_DARWIN
-        qt_applefontsmoothing_enabled = oldSmooth;
+        lscs_applefontsmoothing_enabled = oldSmooth;
 #endif
         drawTextLayout( &p, QPointF( -layedOutTextRect.x(), 0 ), drawStyle );
     }
@@ -656,12 +656,12 @@ QPixmap QDeclarativeTextPrivate::textDocumentImage( bool drawStyle )
     QPixmap img( size );
     img.fill( Qt::transparent );
 #ifdef Q_OS_DARWIN
-    bool oldSmooth = qt_applefontsmoothing_enabled;
-    qt_applefontsmoothing_enabled = false;
+    bool oldSmooth = lscs_applefontsmoothing_enabled;
+    lscs_applefontsmoothing_enabled = false;
 #endif
     QPainter p( &img );
 #ifdef Q_OS_DARWIN
-    qt_applefontsmoothing_enabled = oldSmooth;
+    lscs_applefontsmoothing_enabled = oldSmooth;
 #endif
 
     QAbstractTextDocumentLayout::PaintContext context;
@@ -1786,4 +1786,4 @@ void QDeclarativeText::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

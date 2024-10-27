@@ -28,7 +28,7 @@
 #include <qfont.h>
 #include <qwindowdefs.h>
 
-#ifndef QT_NO_FONTDIALOG
+#ifndef LSCS_NO_FONTDIALOG
 
 class QFontDialogPrivate;
 
@@ -120,7 +120,7 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QFontDialog::FontDialogOptions )
 
-#endif // QT_NO_FONTDIALOG
+#endif // LSCS_NO_FONTDIALOG
 
 
 #endif // QFONTDIALOG_H

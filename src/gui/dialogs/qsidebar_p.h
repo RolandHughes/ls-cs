@@ -29,7 +29,7 @@
 #include <qstyleditemdelegate.h>
 #include <qurl.h>
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
 class QFileSystemModel;
 
@@ -56,7 +56,7 @@ public:
     QStringList mimeTypes() const override;
     QMimeData *mimeData( const QModelIndexList &indexes ) const override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     bool canDrop( QDragEnterEvent *event );
     bool dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent ) override;
 #endif
@@ -118,7 +118,7 @@ protected:
     bool event( QEvent *event ) override;
     void focusInEvent( QFocusEvent *event ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *event ) override;
 #endif
 
@@ -126,7 +126,7 @@ private:
     GUI_LSCS_SLOT_1( Private, void clicked( const QModelIndex &index ) )
     GUI_LSCS_SLOT_2( clicked )
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
     GUI_LSCS_SLOT_1( Private, void showContextMenu( const QPoint &position ) )
     GUI_LSCS_SLOT_2( showContextMenu )
 #endif
@@ -137,7 +137,7 @@ private:
     QUrlModel *urlModel;
 };
 
-#endif // QT_NO_FILEDIALOG
+#endif // LSCS_NO_FILEDIALOG
 
 #endif
 

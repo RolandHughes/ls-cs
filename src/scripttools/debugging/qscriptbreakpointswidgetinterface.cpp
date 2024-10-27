@@ -24,7 +24,7 @@
 #include "qscriptbreakpointswidgetinterface_p.h"
 #include "qscriptbreakpointswidgetinterface_p_p.h"
 
-QT_BEGIN_NAMESPACE QScriptBreakpointsWidgetInterfacePrivate::QScriptBreakpointsWidgetInterfacePrivate()
+LSCS_BEGIN_NAMESPACE QScriptBreakpointsWidgetInterfacePrivate::QScriptBreakpointsWidgetInterfacePrivate()
 {
 }
 
@@ -43,4 +43,4 @@ QScriptBreakpointsWidgetInterface::QScriptBreakpointsWidgetInterface(
 {
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

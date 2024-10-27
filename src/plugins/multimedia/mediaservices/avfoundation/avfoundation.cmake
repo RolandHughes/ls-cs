@@ -87,7 +87,7 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
    target_compile_definitions(LsCsMultimedia_avf_camera
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
       -DQMEDIA_AVF_CAMERA
    )
 
@@ -128,7 +128,7 @@ if(WITH_MULTIMEDIA AND CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
    target_compile_definitions(LsCsMultimedia_avf_mediaplayer
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
       -DQMEDIA_AVF_MEDIAPLAYER
    )
 

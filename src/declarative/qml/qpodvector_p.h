@@ -27,7 +27,7 @@
 #include <QtCore/qglobal.h>
 #include <QDebug>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 template<class T, int Increment = 1024>
 class QPODVector
@@ -185,6 +185,6 @@ private:
     T *m_data;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

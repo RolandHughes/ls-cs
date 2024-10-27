@@ -33,7 +33,7 @@
 
 #include <limits.h>
 
-#ifndef QT_NO_LISTVIEW
+#ifndef LSCS_NO_LISTVIEW
 
 class QListView;
 class QListViewPrivate;
@@ -164,7 +164,7 @@ public:
     virtual void removeHiddenRow( int row );
     virtual void setPositionForIndex( const QPoint &, const QModelIndex & ) { }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void paintDragDrop( QPainter *painter );
     virtual bool filterDragMoveEvent( QDragMoveEvent * )
     {
@@ -269,7 +269,7 @@ public:
     void updateHorizontalScrollBar( const QSize &step ) override;
     void updateVerticalScrollBar( const QSize &step ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     // The next two methods are to be used on LefToRight flow only.
     // WARNING: Plenty of duplicated code from QAbstractItemView{,Private}.
     QAbstractItemView::DropIndicatorPosition position( const QPoint &pos, const QRect &rect, const QModelIndex &idx ) const;
@@ -318,7 +318,7 @@ public:
     void removeHiddenRow( int row ) override;
     void setPositionForIndex( const QPoint &position, const QModelIndex &index ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     bool filterDragMoveEvent( QDragMoveEvent * ) override;
     bool filterDragLeaveEvent( QDragLeaveEvent * ) override;
     bool filterDropEvent( QDropEvent *e ) override;
@@ -448,7 +448,7 @@ public:
     QItemSelection selection( const QRect &rect ) const;
     void selectAll( QItemSelectionModel::SelectionFlags command ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     virtual QAbstractItemView::DropIndicatorPosition position( const QPoint &pos, const QRect &rect,
             const QModelIndex &idx ) const override;
 
@@ -689,6 +689,6 @@ inline bool QCommonListViewBase::isRightToLeft() const
     return qq->isRightToLeft();
 }
 
-#endif // QT_NO_LISTVIEW
+#endif // LSCS_NO_LISTVIEW
 
 #endif // QLISTVIEW_P_H

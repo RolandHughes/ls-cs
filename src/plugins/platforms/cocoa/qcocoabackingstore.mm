@@ -78,13 +78,13 @@ void QCocoaBackingStore::resize(const QSize &size, const QRegion &)
 
 bool QCocoaBackingStore::scroll(const QRegion &area, int dx, int dy)
 {
-   extern void qt_scrollRectInImage(QImage & img, const QRect & rect, const QPoint & offset);
+   extern void lscs_scrollRectInImage(QImage & img, const QRect & rect, const QPoint & offset);
    const qreal devicePixelRatio = m_qImage.devicePixelRatio();
    QPoint qpoint(dx * devicePixelRatio, dy * devicePixelRatio);
    const QVector<QRect> qrects = area.rects();
    for (int i = 0; i < qrects.count(); ++i) {
       const QRect &qrect = QRect(qrects.at(i).topLeft() * devicePixelRatio, qrects.at(i).size() * devicePixelRatio);
-      qt_scrollRectInImage(m_qImage, qrect, qpoint);
+      lscs_scrollRectInImage(m_qImage, qrect, qpoint);
    }
    return true;
 }

@@ -28,7 +28,7 @@
 #include <qvector.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 class QKeyEvent;
 class QShortcutMapPrivate;
@@ -75,7 +75,7 @@ private:
     QScopedPointer<QShortcutMapPrivate> d_ptr;
 };
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 
 

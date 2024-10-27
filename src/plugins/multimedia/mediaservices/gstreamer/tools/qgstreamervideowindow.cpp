@@ -28,7 +28,7 @@
 
 QGstreamerVideoWindow::QGstreamerVideoWindow( QObject *parent, const QByteArray &elementName )
     : QVideoWindowControl( parent )
-    , m_videoOverlay( this, !elementName.isEmpty() ? elementName : qgetenv( "QT_GSTREAMER_WINDOW_VIDEOSINK" ) )
+    , m_videoOverlay( this, !elementName.isEmpty() ? elementName : qgetenv( "LSCS_GSTREAMER_WINDOW_VIDEOSINK" ) )
     , m_windowId( 0 ), m_fullScreen( false ), m_colorKey( QColor::Invalid )
 {
     connect( &m_videoOverlay, &QGstreamerVideoOverlay::nativeVideoSizeChanged,

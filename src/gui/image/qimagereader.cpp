@@ -42,23 +42,23 @@
 #include <qxbmhandler_p.h>
 #include <qxpmhandler_p.h>
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
 #include <qpnghandler_p.h>
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_JPEG
+#ifndef LSCS_NO_IMAGEFORMAT_JPEG
 #include <qjpeghandler_p.h>
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_TIFF
+#ifndef LSCS_NO_IMAGEFORMAT_TIFF
 #include <qtiffhandler_p.h>
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_ICO
+#ifndef LSCS_NO_IMAGEFORMAT_ICO
 #include <qicohandler_p.h>
 #endif
 
-#ifdef QT_BUILTIN_GIF_READER
+#ifdef LSCS_BUILTIN_GIF_READER
 #include <qgifhandler_p.h>
 #endif
 
@@ -82,7 +82,7 @@ struct lscs_BuiltInFormatStruct
 static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
 {
 
-#ifndef QT_NO_IMAGEFORMAT_PNG
+#ifndef LSCS_NO_IMAGEFORMAT_PNG
     {
         "png", "image/png",
         []( QIODevice * device ) -> QImageIOHandler *
@@ -97,7 +97,7 @@ static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
     },
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_JPEG
+#ifndef LSCS_NO_IMAGEFORMAT_JPEG
     {
         "jpg",  "image/jpeg",
         []( QIODevice * device ) -> QImageIOHandler *
@@ -125,7 +125,7 @@ static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
     },
 #endif
 
-#ifdef QT_BUILTIN_GIF_READER
+#ifdef LSCS_BUILTIN_GIF_READER
     {
         "gif", "image/gif",
         []( QIODevice * device ) -> QImageIOHandler *
@@ -153,7 +153,7 @@ static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
         }
     },
 
-#ifndef QT_NO_IMAGEFORMAT_PPM
+#ifndef LSCS_NO_IMAGEFORMAT_PPM
 
     // emerald - support additional image formats
 
@@ -215,7 +215,7 @@ static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
     },
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XBM
+#ifndef LSCS_NO_IMAGEFORMAT_XBM
     {
         "xbm", "image/x-xbitmap",
         []( QIODevice * device ) -> QImageIOHandler *
@@ -233,7 +233,7 @@ static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
     },
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_XPM
+#ifndef LSCS_NO_IMAGEFORMAT_XPM
     {
         "xpm", "image/x-xpixmap",
         []( QIODevice * device ) -> QImageIOHandler *
@@ -248,7 +248,7 @@ static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
     },
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_ICO
+#ifndef LSCS_NO_IMAGEFORMAT_ICO
     {
         "ico", "image/x-icon",
         []( QIODevice * device ) -> QImageIOHandler *
@@ -263,7 +263,7 @@ static const lscs_BuiltInFormatStruct lscs_BuiltInFormats[] =
     },
 #endif
 
-#ifndef QT_NO_IMAGEFORMAT_TIFF
+#ifndef LSCS_NO_IMAGEFORMAT_TIFF
     {
         "tif", "image/tiff",
         []( QIODevice * device ) -> QImageIOHandler *
@@ -962,7 +962,7 @@ QImage QImageReader::read()
     return read( &image ) ? image : QImage();
 }
 
-extern void qt_imageTransform( QImage &src, QImageIOHandler::Transformations orient );
+extern void lscs_imageTransform( QImage &src, QImageIOHandler::Transformations orient );
 
 bool QImageReader::read( QImage *image )
 {
@@ -1108,7 +1108,7 @@ bool QImageReader::read( QImage *image )
         }
     }
 
-    static bool disable2xImageLoading = ! qgetenv( "QT_HIGHDPI_DISABLE_2X_IMAGE_LOADING" ).isEmpty();
+    static bool disable2xImageLoading = ! qgetenv( "LSCS_HIGHDPI_DISABLE_2X_IMAGE_LOADING" ).isEmpty();
 
     if ( ! disable2xImageLoading && QFileInfo( fileName() ).baseName().endsWith( "@2x" ) )
     {
@@ -1117,7 +1117,7 @@ bool QImageReader::read( QImage *image )
 
     if ( autoTransform() )
     {
-        qt_imageTransform( *image, transformation() );
+        lscs_imageTransform( *image, transformation() );
     }
 
     return true;

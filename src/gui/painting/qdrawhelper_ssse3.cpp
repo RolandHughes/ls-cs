@@ -125,7 +125,7 @@ static inline void blend_pixel( quint32 &dst, const quint32 src )
         blend_pixel(dst[x], src[x]); \
 }
 
-void qt_blend_argb32_on_argb32_ssse3( uchar *destPixels, int dbpl,
+void lscs_blend_argb32_on_argb32_ssse3( uchar *destPixels, int dbpl,
                                       const uchar *srcPixels, int sbpl,
                                       int w, int h,
                                       int const_alpha )

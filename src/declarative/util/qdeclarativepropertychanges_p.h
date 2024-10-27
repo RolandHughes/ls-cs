@@ -27,7 +27,7 @@
 #include <qdeclarativestateoperations_p.h>
 #include <qdeclarativecustomparser_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePropertyChangesPrivate;
 
@@ -87,7 +87,7 @@ public:
 };
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativePropertyChanges )
 

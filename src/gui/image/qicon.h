@@ -146,7 +146,7 @@ Q_GUI_EXPORT QDataStream &operator>>( QDataStream &stream, QIcon &icon );
 
 Q_GUI_EXPORT QDebug operator<<( QDebug dbg, const QIcon &icon );
 
-Q_GUI_EXPORT QString qt_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
+Q_GUI_EXPORT QString lscs_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
                                       qreal *sourceDevicePixelRatio = nullptr );
 
 template <>

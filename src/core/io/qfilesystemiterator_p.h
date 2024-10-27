@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_FILESYSTEMITERATOR
+#ifndef LSCS_NO_FILESYSTEMITERATOR
 
 #include <qdir.h>
 #include <qdiriterator.h>
@@ -63,13 +63,13 @@ private:
     int uncShareIndex;
     bool onlyDirs;
 #else
-    QT_DIR *dir;
-    QT_DIRENT *dirEntry;
+    LSCS_DIR *dir;
+    LSCS_DIRENT *dirEntry;
 
     int lastError;
 #endif
 };
 
-#endif // QT_NO_FILESYSTEMITERATOR
+#endif // LSCS_NO_FILESYSTEMITERATOR
 
 #endif

@@ -31,7 +31,7 @@
 #include <private/qdeclarativeengine_p.h>
 #include <private/qdeclarativeglobalscriptclass_p.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeInclude::QDeclarativeInclude( const QUrl &url,
+LSCS_BEGIN_NAMESPACE QDeclarativeInclude::QDeclarativeInclude( const QUrl &url,
         QDeclarativeEngine *engine,
         QScriptContext *ctxt )
     : QObject( engine ), m_engine( engine ), m_network( 0 ), m_reply( 0 ), m_url( url ), m_redirectCount( 0 )
@@ -338,4 +338,4 @@ QScriptValue QDeclarativeInclude::worker_include( QScriptContext *ctxt, QScriptE
     return result;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

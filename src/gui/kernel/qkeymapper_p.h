@@ -57,7 +57,7 @@ protected:
 
 private:
     Q_DECLARE_PRIVATE( QKeyMapper )
-    friend QKeyMapperPrivate *qt_keymapper_private();
+    friend QKeyMapperPrivate *lscs_keymapper_private();
 };
 
 class QKeyMapperPrivate
@@ -77,6 +77,6 @@ protected:
     QKeyMapper *q_ptr;
 };
 
-QKeyMapperPrivate *qt_keymapper_private(); // from qkeymapper.cpp
+QKeyMapperPrivate *lscs_keymapper_private(); // from qkeymapper.cpp
 
 #endif

@@ -218,7 +218,7 @@ public:
 private:
     void handleFocusEvent( QtWindows::WindowsEventType et, QWindowsWindow *w );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     bool handleContextMenuEvent( QWindow *window, const MSG &msg );
 #endif
 
@@ -228,6 +228,6 @@ private:
     static QWindowsContext *m_instance;
 };
 
-extern "C" LRESULT QT_WIN_CALLBACK qWindowsWndProc( HWND, UINT, WPARAM, LPARAM );
+extern "C" LRESULT LSCS_WIN_CALLBACK qWindowsWndProc( HWND, UINT, WPARAM, LPARAM );
 
 #endif

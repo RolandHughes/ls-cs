@@ -100,7 +100,7 @@ void QXcbConnection::initializeXInput2()
 
 void QXcbConnection::xi2SetupDevices()
 {
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     m_tabletData.clear();
 #endif
 
@@ -127,7 +127,7 @@ void QXcbConnection::xi2SetupDevices()
         qDebug() << "QXcbConnection::xi2SetupDevices() input device = " << devices[i].name << "id = " << devices[i].deviceid;
 #endif
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
         TabletData tabletData;
 #endif
 
@@ -147,7 +147,7 @@ void QXcbConnection::xi2SetupDevices()
                              << "recognized = " << ( valuatorAtom < QXcbAtom::NAtoms );
 #endif
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
                     if ( valuatorAtom < QXcbAtom::NAtoms )
                     {
@@ -257,7 +257,7 @@ void QXcbConnection::xi2SetupDevices()
 
         bool isTablet = false;
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
         // If we have found the valuators which we expect a tablet to have, it might be a tablet.
         if ( tabletData.valuatorInfo.contains( QXcbAtom::AbsX ) &&
@@ -330,7 +330,7 @@ void QXcbConnection::xi2SetupDevices()
 #endif
         }
 
-#endif // QT_NO_TABLETEVENT
+#endif // LSCS_NO_TABLETEVENT
 
 #ifdef XCB_USE_XINPUT21
 
@@ -461,7 +461,7 @@ void QXcbConnection::xi2Select( xcb_window_t window )
 
     QSet<int> tabletDevices;
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
     if ( !m_tabletData.isEmpty() )
     {
@@ -487,7 +487,7 @@ void QXcbConnection::xi2Select( xcb_window_t window )
         XISelectEvents( xDisplay, window, xiEventMask.data(), m_tabletData.count() );
     }
 
-#endif // QT_NO_TABLETEVENT
+#endif // LSCS_NO_TABLETEVENT
 
 #ifdef XCB_USE_XINPUT21
 
@@ -698,7 +698,7 @@ XInput2TouchDeviceData *QXcbConnection::touchDeviceForId( int id )
     return dev;
 }
 
-#if defined(XCB_USE_XINPUT21) || !defined(QT_NO_TABLETEVENT)
+#if defined(XCB_USE_XINPUT21) || !defined(LSCS_NO_TABLETEVENT)
 static inline qreal fixed1616ToReal( FP1616 val )
 {
     return qreal( val ) / 0x10000;
@@ -764,7 +764,7 @@ void QXcbConnection::xi2HandleEvent( xcb_ge_event_t *event )
         }
     }
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 
     if ( !xiEnterEvent )
     {
@@ -1533,7 +1533,7 @@ static QTabletEvent::TabletDevice toolIdToTabletDevice( quint32 toolId )
     return QTabletEvent::Stylus;  // Safe default assumption if nonzero
 }
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 bool QXcbConnection::xi2HandleTabletEvent( void *event, TabletData *tabletData, QXcbWindowEventListener *eventListener )
 {
     bool handled = true;
@@ -1766,6 +1766,6 @@ QXcbConnection::TabletData *QXcbConnection::tabletDataForDevice( int id )
     return nullptr;
 }
 
-#endif // QT_NO_TABLETEVENT
+#endif // LSCS_NO_TABLETEVENT
 
 #endif // XCB_USE_XINPUT2

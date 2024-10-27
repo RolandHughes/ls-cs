@@ -72,12 +72,12 @@
 #include <qtooltip.h>
 #include <wtf/OwnPtr.h>
 
-#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(QT_MULTIMEDIA) || USE(QTKIT))
+#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(LSCS_MULTIMEDIA) || USE(QTKIT))
 #include "FullScreenVideoQt.h"
 #include "HTMLMediaElement.h"
 #include "HTMLNames.h"
 #include "HTMLVideoElement.h"
-#if USE(QT_MULTIMEDIA)
+#if USE(LSCS_MULTIMEDIA)
 #include "MediaPlayerPrivateQt.h"
 #endif
 #endif
@@ -90,7 +90,7 @@ bool ChromeClientQt::dumpVisitedLinksCallbacks = false;
 ChromeClientQt::ChromeClientQt( QWebPage *webPage )
     : m_webPage( webPage )
     , m_eventLoop( 0 )
-#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(QT_MULTIMEDIA) || USE(QTKIT))
+#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(LSCS_MULTIMEDIA) || USE(QTKIT))
     , m_fullScreenVideo( 0 )
 #endif
 {
@@ -104,7 +104,7 @@ ChromeClientQt::~ChromeClientQt()
         m_eventLoop->exit();
     }
 
-#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(QT_MULTIMEDIA) || USE(QTKIT))
+#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(LSCS_MULTIMEDIA) || USE(QTKIT))
     delete m_fullScreenVideo;
 #endif
 }
@@ -596,7 +596,7 @@ void ChromeClientQt::mouseDidMoveOverElement( const HitTestResult &result, unsig
 
 void ChromeClientQt::setToolTip( const String &tip, TextDirection )
 {
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     QWidget *view = m_webPage->view();
 
     if ( ! view )
@@ -726,7 +726,7 @@ void ChromeClientQt::chooseIconForFiles( const Vector<String> &filenames, FileCh
 
 void ChromeClientQt::setCursor( const Cursor &cursor )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QWebPageClient *pageClient = platformPageClient();
 
     if ( !pageClient )
@@ -797,7 +797,7 @@ IntRect ChromeClientQt::visibleRectForTiledBackingStore() const
 }
 #endif
 
-#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(QT_MULTIMEDIA) || USE(QTKIT))
+#if ENABLE(VIDEO) && (USE(GSTREAMER) || USE(LSCS_MULTIMEDIA) || USE(QTKIT))
 FullScreenVideoQt *ChromeClientQt::fullScreenVideo()
 {
     if ( !m_fullScreenVideo )
@@ -843,7 +843,7 @@ QWebSelectMethod *ChromeClientQt::createSelectPopup() const
         return result;
     }
 
-#if !defined(QT_NO_COMBOBOX)
+#if !defined(LSCS_NO_COMBOBOX)
     return new QtFallbackWebPopup( this );
 #else
     return 0;

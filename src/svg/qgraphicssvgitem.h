@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_GRAPHICSVIEW) && ! defined(QT_NO_SVGWIDGET)
+#if ! defined(LSCS_NO_GRAPHICSVIEW) && ! defined(LSCS_NO_SVGWIDGET)
 
 #include <qgraphicsitem.h>
 
@@ -77,6 +77,6 @@ private:
     SVG_LSCS_SLOT_2( _q_repaintItem )
 };
 
-#endif // QT_NO_GRAPHICSVIEW or QT_NO_SVGWIDGETS
+#endif // LSCS_NO_GRAPHICSVIEW or LSCS_NO_SVGWIDGETS
 
 #endif

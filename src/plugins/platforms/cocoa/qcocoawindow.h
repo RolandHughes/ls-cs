@@ -30,12 +30,12 @@
 #include <qrect.h>
 #include <qpointer.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qcocoaglcontext.h>
 #endif
 
 #include <qnsview.h>
-#include <qt_mac_p.h>
+#include <lscs_mac_p.h>
 
 class QCocoaWindow;
 
@@ -150,7 +150,7 @@ typedef NSWindow<QNSWindowProtocol> QCocoaNSWindow;
 // NSView *qtView = (NSView *)platformNativeInterface->nativeResourceForWindow("nsview", qtWindow);
 // [parentView addSubview:qtView];
 //
-// See the qt_on_cocoa manual tests for a working example, located
+// See the lscs_on_cocoa manual tests for a working example, located
 // in tests/manual/cocoa at the time of writing.
 
 class QCocoaMenuBar;
@@ -214,7 +214,7 @@ public:
     void setWindowShadow( Qt::WindowFlags flags );
     void setWindowZoomButton( Qt::WindowFlags flags );
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     void setCurrentContext( QCocoaGLContext *context );
     QCocoaGLContext *currentContext() const;
 #endif
@@ -299,7 +299,7 @@ public: // for QNSView
     bool m_inSetGeometry;
     bool m_inSetStyleMask;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QCocoaGLContext *m_glContext;
 #endif
 

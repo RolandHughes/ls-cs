@@ -26,7 +26,7 @@
 
 #include <qabstracttransition.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qevent.h>
 
@@ -66,6 +66,6 @@ private:
     Q_DECLARE_PRIVATE( QBasicMouseEventTransition )
 };
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE
 
 #endif

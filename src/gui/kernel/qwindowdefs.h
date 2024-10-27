@@ -74,7 +74,7 @@ using QWidgetList   = QList<QWidget *>;
 using QWidgetSet    = QSet<QWidget *>;
 using QWindowList   = QList<QWindow *>;
 
-#if defined(QT_NEEDS_QMAIN)
+#if defined(LSCS_NEEDS_QMAIN)
 #define main qMain
 #endif
 

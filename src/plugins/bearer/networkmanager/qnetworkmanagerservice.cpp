@@ -36,9 +36,9 @@
 #include "qnetworkmanagerservice.h"
 #include "qnmdbushelper.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 static QDBusConnection dbusConnection = QDBusConnection::systemBus();
 
@@ -992,6 +992,6 @@ QStringList QNetworkManagerIp4Config::domains() const
     return d->connectionInterface->property( "Domains" ).toStringList();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

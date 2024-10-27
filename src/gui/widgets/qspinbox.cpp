@@ -24,7 +24,7 @@
 #include <qabstractspinbox_p.h>
 #include <qspinbox.h>
 
-#ifndef QT_NO_SPINBOX
+#ifndef LSCS_NO_SPINBOX
 
 #include <qlineedit.h>
 #include <qlocale.h>
@@ -840,4 +840,4 @@ bool QSpinBox::event( QEvent *event )
     return QAbstractSpinBox::event( event );
 }
 
-#endif // QT_NO_SPINBOX
+#endif // LSCS_NO_SPINBOX

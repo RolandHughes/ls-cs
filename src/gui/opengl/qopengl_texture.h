@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qopengl.h>
 #include <qimage.h>
@@ -544,6 +544,6 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QOpenGLTexture::Features )
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif // QOPENGLABSTRACTTEXTURE_H

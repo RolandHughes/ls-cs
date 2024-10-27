@@ -26,7 +26,7 @@
 #include <qbytearray.h>
 #include <qvarlengtharray.h>
 
-#ifndef QT_NO_XRENDER
+#ifndef LSCS_NO_XRENDER
 #include <X11/extensions/Xrender.h>
 #endif
 
@@ -128,7 +128,7 @@ GLXFBConfig qglx_findConfig( Display *display, int screen, const QSurfaceFormat 
         // We want to unset LIBGL_ALWAYS_SOFTWARE at the end so it does not
         // get inherited by other processes, of course only if it was not already set before.
 
-        if ( ! qgetenv( "QT_XCB_FORCE_SOFTWARE_OPENGL" ).isEmpty() && ! qgetenv( "LIBGL_ALWAYS_SOFTWARE" ).isEmpty() )
+        if ( ! qgetenv( "LSCS_XCB_FORCE_SOFTWARE_OPENGL" ).isEmpty() && ! qgetenv( "LIBGL_ALWAYS_SOFTWARE" ).isEmpty() )
         {
             forceSoftwareOpenGL = true;
         }
@@ -169,7 +169,7 @@ GLXFBConfig qglx_findConfig( Display *display, int screen, const QSurfaceFormat 
                         XVisualInfo *visual = glXGetVisualFromFBConfig( display, chosenConfig );
                         bool hasAlpha = false;
 
-#if ! defined(QT_NO_XRENDER)
+#if ! defined(LSCS_NO_XRENDER)
                         XRenderPictFormat *pictFormat = XRenderFindVisualFormat( display, visual->visual );
                         hasAlpha = pictFormat->direct.alphaMask > 0;
 #else

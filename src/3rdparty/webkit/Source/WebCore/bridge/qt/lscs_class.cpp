@@ -22,11 +22,11 @@
 ***********************************************************************/
 
 #include "config.h"
-#include "qt_class.h"
+#include "lscs_class.h"
 
 #include "Identifier.h"
-#include "qt_instance.h"
-#include "qt_runtime.h"
+#include "lscs_instance.h"
+#include "lscs_runtime.h"
 
 #include <qdebug.h>
 #include <qmetaobject.h>
@@ -178,7 +178,7 @@ Field *QtClass::fieldNamed( const Identifier &identifier, Instance *instance ) c
                 return f;
             }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
 
             if ( f->fieldType() == QtField::QtFieldType::DynamicProperty )
             {
@@ -230,7 +230,7 @@ Field *QtClass::fieldNamed( const Identifier &identifier, Instance *instance ) c
             }
         }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
         // Dynamic properties
         index = obj->dynamicPropertyNames().indexOf( name );
 
@@ -272,7 +272,7 @@ Field *QtClass::fieldNamed( const Identifier &identifier, Instance *instance ) c
         return 0;
     }
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     // deleted qobject, but can't throw an error from here (no exec)
     // create a fake QtField that will throw upon access
 

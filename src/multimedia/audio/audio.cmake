@@ -64,7 +64,7 @@ target_sources(LsCsMultimedia
 if (PulseAudio_FOUND)
 
    list(APPEND EXTRA_MULTIMEDIA_CXXFLAGS
-      -DQT_MULTIMEDIA_PULSEAUDIO
+      -DLSCS_MULTIMEDIA_PULSEAUDIO
       -DQTM_PULSEAUDIO_DEFAULTBUFFER
    )
 
@@ -81,7 +81,7 @@ if (PulseAudio_FOUND)
 else()
 
    list(APPEND EXTRA_MULTIMEDIA_CXXFLAGS
-      -DQT_MULTIMEDIA_QAUDIO
+      -DLSCS_MULTIMEDIA_QAUDIO
    )
 
    target_sources(LsCsMultimedia

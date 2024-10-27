@@ -45,7 +45,7 @@
 #include <qcrashhandler_p.h>
 // file is only compiled for unix ( not windows or darwin )
 
-#if ! defined(QT_NO_CRASHHANDLER)
+#if ! defined(LSCS_NO_CRASHHANDLER)
 
 #include <stdio.h>
 #include <signal.h>
@@ -53,7 +53,7 @@
 
 FP_Void QSegfaultHandler::callback = nullptr;
 
-#if defined(__GLIBC__) && (__GLIBC__ >= 2) && ! defined(__UCLIBC__) && ! defined(QT_LINUXBASE)
+#if defined(__GLIBC__) && (__GLIBC__ >= 2) && ! defined(__UCLIBC__) && ! defined(LSCS_LINUXBASE)
 
 #include <execinfo.h>
 
@@ -299,7 +299,7 @@ static void print_backtrace( FILE *outb )
 }
 #endif
 
-void qt_signal_handler( int sig )
+void lscs_signal_handler( int sig )
 {
     signal( sig, SIG_DFL );
 
@@ -311,7 +311,7 @@ void qt_signal_handler( int sig )
 
     FILE *outb = stderr;
 
-    if ( char *crash_loc = ::getenv( "QT_CRASH_OUTPUT" ) )
+    if ( char *crash_loc = ::getenv( "LSCS_CRASH_OUTPUT" ) )
     {
         if ( FILE *new_outb = fopen( crash_loc, "w" ) )
         {
@@ -341,10 +341,10 @@ void QSegfaultHandler::initialize( char **argv, int argc )
 
     struct sigaction SignalAction;
     SignalAction.sa_flags = 0;
-    SignalAction.sa_handler = qt_signal_handler;
+    SignalAction.sa_handler = lscs_signal_handler;
     sigemptyset( &SignalAction.sa_mask );
     sigaction( SIGSEGV, &SignalAction, nullptr );
     sigaction( SIGBUS, &SignalAction, nullptr );
 }
 
-#endif // QT_NO_CRASHHANDLER
+#endif // LSCS_NO_CRASHHANDLER

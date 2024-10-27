@@ -30,7 +30,7 @@
 #include <qvector3d.h>
 #include <qvector4d.h>
 
-#ifndef QT_NO_MATRIX4X4
+#ifndef LSCS_NO_MATRIX4X4
 
 class QMatrix;
 class QTransform;
@@ -60,7 +60,7 @@ public:
     inline const qreal &operator()( int row, int column ) const;
     inline qreal &operator()( int row, int column );
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
     inline QVector4D column( int index ) const;
     inline void setColumn( int index, const QVector4D &value );
 
@@ -92,12 +92,12 @@ public:
     friend QMatrix4x4 operator-( const QMatrix4x4 &m1, const QMatrix4x4 &m2 );
     friend QMatrix4x4 operator*( const QMatrix4x4 &m1, const QMatrix4x4 &m2 );
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     friend QVector3D operator*( const QMatrix4x4 &matrix, const QVector3D &vector );
     friend QVector3D operator*( const QVector3D &vector, const QMatrix4x4 &matrix );
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
     friend QVector4D operator*( const QVector4D &vector, const QMatrix4x4 &matrix );
     friend QVector4D operator*( const QMatrix4x4 &matrix, const QVector4D &vector );
 #endif
@@ -113,7 +113,7 @@ public:
 
     friend inline bool qFuzzyCompare( const QMatrix4x4 &m1, const QMatrix4x4 &m2 );
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     void scale( const QVector3D &vector );
     void translate( const QVector3D &vector );
     void rotate( qreal angle, const QVector3D &vector );
@@ -126,7 +126,7 @@ public:
     void translate( qreal x, qreal y, qreal z );
     void rotate( qreal angle, qreal x, qreal y, qreal z = 0.0f );
 
-#ifndef QT_NO_QUATERNION
+#ifndef LSCS_NO_QUATERNION
     void rotate( const QQuaternion &quaternion );
 #endif
 
@@ -136,7 +136,7 @@ public:
     void frustum( qreal left, qreal right, qreal bottom, qreal top, qreal nearPlane, qreal farPlane );
     void perspective( qreal angle, qreal aspect, qreal nearPlane, qreal farPlane );
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     void lookAt( const QVector3D &eye, const QVector3D &center, const QVector3D &up );
 #endif
 
@@ -153,12 +153,12 @@ public:
     QPoint map( const QPoint &point ) const;
     QPointF map( const QPointF &point ) const;
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
     QVector3D map( const QVector3D &point ) const;
     QVector3D mapVector( const QVector3D &vector ) const;
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
     QVector4D map( const QVector4D &point ) const;
 #endif
 
@@ -305,7 +305,7 @@ inline qreal &QMatrix4x4::operator()( int row, int column )
     return m[column][row];
 }
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 inline QVector4D QMatrix4x4::column( int index ) const
 {
     Q_ASSERT( index >= 0 && index < 4 );
@@ -768,7 +768,7 @@ inline QMatrix4x4 operator*( const QMatrix4x4 &m1, const QMatrix4x4 &m2 )
     return m;
 }
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 inline QVector3D operator*( const QVector3D &vector, const QMatrix4x4 &matrix )
 {
@@ -854,7 +854,7 @@ inline QVector3D operator*( const QMatrix4x4 &matrix, const QVector3D &vector )
 
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 inline QVector4D operator*( const QVector4D &vector, const QMatrix4x4 &matrix )
 {
@@ -1153,7 +1153,7 @@ inline QPointF QMatrix4x4::map( const QPointF &point ) const
     return *this * point;
 }
 
-#ifndef QT_NO_VECTOR3D
+#ifndef LSCS_NO_VECTOR3D
 
 inline QVector3D QMatrix4x4::map( const QVector3D &point ) const
 {
@@ -1189,7 +1189,7 @@ inline QVector3D QMatrix4x4::mapVector( const QVector3D &vector ) const
 
 #endif
 
-#ifndef QT_NO_VECTOR4D
+#ifndef LSCS_NO_VECTOR4D
 
 inline QVector4D QMatrix4x4::map( const QVector4D &point ) const
 {

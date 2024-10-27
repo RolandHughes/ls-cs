@@ -5,8 +5,8 @@ set_target_properties(LsCsOpenGL PROPERTIES OUTPUT_NAME LsCsOpenGL${BUILD_ABI})
 
 target_compile_definitions(LsCsOpenGL
    PRIVATE
-   -DQT_BUILD_OPENGL_LIB
-   -DQT_NO_EGL
+   -DLSCS_BUILD_OPENGL_LIB
+   -DLSCS_NO_EGL
 )
 
 set(EXTRA_OPENGL_CXXFLAGS)
@@ -117,8 +117,8 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
    target_compile_definitions(LsCsOpenGL
       PRIVATE
-      -DQT_NO_STYLE_GTK
-      -DQT_NO_STYLE_WINDOWSVISTA
+      -DLSCS_NO_STYLE_GTK
+      -DLSCS_NO_STYLE_WINDOWSVISTA
    )
 
 endif()

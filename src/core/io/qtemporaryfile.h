@@ -31,7 +31,7 @@
 #error qtemporaryfile.h must be included before any header file that defines open
 #endif
 
-#ifndef QT_NO_TEMPORARYFILE
+#ifndef LSCS_NO_TEMPORARYFILE
 
 class QTemporaryFilePrivate;
 class QLockFilePrivate;
@@ -83,6 +83,6 @@ private:
     friend class QLockFilePrivate;
 };
 
-#endif // QT_NO_TEMPORARYFILE
+#endif // LSCS_NO_TEMPORARYFILE
 
 #endif

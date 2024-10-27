@@ -28,7 +28,7 @@
 #include <qstringlist.h>
 #include <qshareddata.h>
 
-#ifndef QT_NO_PROCESS
+#ifndef LSCS_NO_PROCESS
 
 #if ! defined(Q_OS_WIN)
 using Q_PID = qint64;
@@ -282,6 +282,6 @@ private:
     QSharedDataPointer<QProcessEnvironmentPrivate> d;
 };
 
-#endif // QT_NO_PROCESS
+#endif // LSCS_NO_PROCESS
 
 #endif

@@ -31,7 +31,7 @@
 #include <QtScript/qscriptvalue.h>
 #include <qlistmodelinterface_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeContext;
 class QDeclarativeXmlListModelRole;
@@ -236,7 +236,7 @@ private:
     bool m_isKey;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeXmlListModel )
 QML_DECLARE_TYPE( QDeclarativeXmlListModelRole )

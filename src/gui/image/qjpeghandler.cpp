@@ -56,7 +56,7 @@ extern "C" {
 #endif
 }
 
-Q_GUI_EXPORT void qt_convert_rgb888_to_rgb32( quint32 *dst, const uchar *src, int len );
+Q_GUI_EXPORT void lscs_convert_rgb888_to_rgb32( quint32 *dst, const uchar *src, int len );
 
 typedef void ( *Rgb888ToRgb32Converter )( quint32 *dst, const uchar *src, int len );
 
@@ -100,11 +100,11 @@ public:
 
 extern "C" {
 
-    static void qt_init_source( j_decompress_ptr )
+    static void lscs_init_source( j_decompress_ptr )
     {
     }
 
-    static boolean qt_fill_input_buffer( j_decompress_ptr cinfo )
+    static boolean lscs_fill_input_buffer( j_decompress_ptr cinfo )
     {
         my_jpeg_source_mgr *src = ( my_jpeg_source_mgr * )cinfo->src;
         qint64 num_read = 0;
@@ -137,7 +137,7 @@ extern "C" {
         return TRUE;
     }
 
-    static void qt_skip_input_data( j_decompress_ptr cinfo, long num_bytes )
+    static void lscs_skip_input_data( j_decompress_ptr cinfo, long num_bytes )
     {
         my_jpeg_source_mgr *src = ( my_jpeg_source_mgr * )cinfo->src;
 
@@ -152,8 +152,8 @@ extern "C" {
             while ( num_bytes > ( long ) src->bytes_in_buffer ) // Should not happen in case of memDevice
             {
                 num_bytes -= ( long ) src->bytes_in_buffer;
-                ( void ) qt_fill_input_buffer( cinfo );
-                /* note we assume that qt_fill_input_buffer will never return false,
+                ( void ) lscs_fill_input_buffer( cinfo );
+                /* note we assume that lscs_fill_input_buffer will never return false,
                 * so suspension need not be handled.
                 */
             }
@@ -163,7 +163,7 @@ extern "C" {
         }
     }
 
-    static void qt_term_source( j_decompress_ptr cinfo )
+    static void lscs_term_source( j_decompress_ptr cinfo )
     {
         my_jpeg_source_mgr *src = ( my_jpeg_source_mgr * )cinfo->src;
 
@@ -177,11 +177,11 @@ extern "C" {
 
 inline my_jpeg_source_mgr::my_jpeg_source_mgr( QIODevice *device )
 {
-    jpeg_source_mgr::init_source = qt_init_source;
-    jpeg_source_mgr::fill_input_buffer = qt_fill_input_buffer;
-    jpeg_source_mgr::skip_input_data = qt_skip_input_data;
+    jpeg_source_mgr::init_source = lscs_init_source;
+    jpeg_source_mgr::fill_input_buffer = lscs_fill_input_buffer;
+    jpeg_source_mgr::skip_input_data = lscs_skip_input_data;
     jpeg_source_mgr::resync_to_restart = jpeg_resync_to_restart;
-    jpeg_source_mgr::term_source = qt_term_source;
+    jpeg_source_mgr::term_source = lscs_term_source;
     this->device = device;
     memDevice = qobject_cast<QBuffer *>( device );
     bytes_in_buffer = 0;
@@ -527,11 +527,11 @@ public:
 
 
 extern "C" {
-    static void qt_init_destination( j_compress_ptr )
+    static void lscs_init_destination( j_compress_ptr )
     {
     }
 
-    static boolean qt_empty_output_buffer( j_compress_ptr cinfo )
+    static boolean lscs_empty_output_buffer( j_compress_ptr cinfo )
     {
         my_jpeg_destination_mgr *dest = ( my_jpeg_destination_mgr * )cinfo->dest;
 
@@ -548,7 +548,7 @@ extern "C" {
         return TRUE;
     }
 
-    static void qt_term_destination( j_compress_ptr cinfo )
+    static void lscs_term_destination( j_compress_ptr cinfo )
     {
         my_jpeg_destination_mgr *dest = ( my_jpeg_destination_mgr * )cinfo->dest;
         qint64 n = max_buf - dest->free_in_buffer;
@@ -565,9 +565,9 @@ extern "C" {
 
 inline my_jpeg_destination_mgr::my_jpeg_destination_mgr( QIODevice *device )
 {
-    jpeg_destination_mgr::init_destination = qt_init_destination;
-    jpeg_destination_mgr::empty_output_buffer = qt_empty_output_buffer;
-    jpeg_destination_mgr::term_destination = qt_term_destination;
+    jpeg_destination_mgr::init_destination = lscs_init_destination;
+    jpeg_destination_mgr::empty_output_buffer = lscs_empty_output_buffer;
+    jpeg_destination_mgr::term_destination = lscs_term_destination;
     this->device = device;
     next_output_byte = buffer;
     free_in_buffer = max_buf;
@@ -897,7 +897,7 @@ public:
 
     QJpegHandlerPrivate( QJpegHandler *qq )
         : quality( 75 ), transformation( QImageIOHandler::TransformationNone ), iod_src( nullptr ),
-          rgb888ToRgb32ConverterPtr( qt_convert_rgb888_to_rgb32 ), state( Ready ), optimize( false ),
+          rgb888ToRgb32ConverterPtr( lscs_convert_rgb888_to_rgb32 ), state( Ready ), optimize( false ),
           progressive( false ), q( qq )
     {
     }
@@ -1234,9 +1234,9 @@ bool QJpegHandlerPrivate::read( QImage *image )
 
 }
 
-Q_GUI_EXPORT void qt_convert_rgb888_to_rgb32_neon( quint32 *dst, const uchar *src, int len );
-Q_GUI_EXPORT void qt_convert_rgb888_to_rgb32_ssse3( quint32 *dst, const uchar *src, int len );
-extern "C" void qt_convert_rgb888_to_rgb32_mips_dspr2_asm( quint32 *dst, const uchar *src, int len );
+Q_GUI_EXPORT void lscs_convert_rgb888_to_rgb32_neon( quint32 *dst, const uchar *src, int len );
+Q_GUI_EXPORT void lscs_convert_rgb888_to_rgb32_ssse3( quint32 *dst, const uchar *src, int len );
+extern "C" void lscs_convert_rgb888_to_rgb32_mips_dspr2_asm( quint32 *dst, const uchar *src, int len );
 QJpegHandler::QJpegHandler()
     : d( new QJpegHandlerPrivate( this ) )
 {
@@ -1246,26 +1246,26 @@ QJpegHandler::QJpegHandler()
     // from qimage_neon.cpp
     if ( qCpuHasFeature( NEON ) )
     {
-        d->rgb888ToRgb32ConverterPtr = qt_convert_rgb888_to_rgb32_neon;
+        d->rgb888ToRgb32ConverterPtr = lscs_convert_rgb888_to_rgb32_neon;
     }
 
 #endif
 
-#if defined(QT_COMPILER_SUPPORTS_SSSE3)
+#if defined(LSCS_COMPILER_SUPPORTS_SSSE3)
 
     // from qimage_ssse3.cpps
     if ( qCpuHasFeature( SSSE3 ) )
     {
-        d->rgb888ToRgb32ConverterPtr = qt_convert_rgb888_to_rgb32_ssse3;
+        d->rgb888ToRgb32ConverterPtr = lscs_convert_rgb888_to_rgb32_ssse3;
     }
 
 #endif
 
-#if defined(QT_COMPILER_SUPPORTS_MIPS_DSPR2)
+#if defined(LSCS_COMPILER_SUPPORTS_MIPS_DSPR2)
 
     if ( qCpuHasFeature( DSPR2 ) )
     {
-        d->rgb888ToRgb32ConverterPtr = qt_convert_rgb888_to_rgb32_mips_dspr2_asm;
+        d->rgb888ToRgb32ConverterPtr = lscs_convert_rgb888_to_rgb32_mips_dspr2_asm;
     }
 
 #endif
@@ -1320,14 +1320,14 @@ bool QJpegHandler::read( QImage *image )
     return d->read( image );
 }
 
-extern void qt_imageTransform( QImage &src, QImageIOHandler::Transformations orient );
+extern void lscs_imageTransform( QImage &src, QImageIOHandler::Transformations orient );
 bool QJpegHandler::write( const QImage &image )
 {
     if ( d->transformation != QImageIOHandler::TransformationNone )
     {
         // We don't support writing EXIF headers so apply the transform to the data.
         QImage img = image;
-        qt_imageTransform( img, d->transformation );
+        lscs_imageTransform( img, d->transformation );
         return write_jpeg_image( img, device(), d->quality, d->description, d->optimize, d->progressive );
     }
 

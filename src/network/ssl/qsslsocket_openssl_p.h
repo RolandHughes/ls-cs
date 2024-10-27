@@ -28,7 +28,7 @@
 
 #ifdef Q_OS_WIN
 
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #if defined(OCSP_RESPONSE)
 #undef OCSP_RESPONSE

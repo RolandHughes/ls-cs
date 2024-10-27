@@ -62,7 +62,7 @@ static inline quint64 detectProcessorFeatures()
     quint64 features = 0;
 
 #if defined(Q_OS_LINUX)
-    int auxv = ::qt_safe_open( "/proc/self/auxv", O_RDONLY );
+    int auxv = ::lscs_safe_open( "/proc/self/auxv", O_RDONLY );
 
     if ( auxv != -1 )
     {
@@ -71,7 +71,7 @@ static inline quint64 detectProcessorFeatures()
 
         while ( features == 0 )
         {
-            nread = ::qt_safe_read( auxv, ( char * )vector, sizeof vector );
+            nread = ::lscs_safe_read( auxv, ( char * )vector, sizeof vector );
 
             if ( nread <= 0 )
             {
@@ -94,7 +94,7 @@ static inline quint64 detectProcessorFeatures()
                 }
         }
 
-        ::qt_safe_close( auxv );
+        ::lscs_safe_close( auxv );
         return features;
     }
 
@@ -458,7 +458,7 @@ static void bufReadLine( int fd, QSimpleBuffer &line, QSimpleBuffer &buffer )
             buffer.size = oldsize;
         }
 
-        ssize_t read_bytes = ::qt_safe_read( fd, buffer.data + buffer.size, QSimpleBuffer::chunk_size );
+        ssize_t read_bytes = ::lscs_safe_read( fd, buffer.data + buffer.size, QSimpleBuffer::chunk_size );
 
         if ( read_bytes > 0 )
         {
@@ -477,7 +477,7 @@ static void bufReadLine( int fd, QSimpleBuffer &line, QSimpleBuffer &buffer )
 
 static bool procCpuinfoContains( const char *prefix, const char *string )
 {
-    int cpuinfo_fd = ::qt_safe_open( "/proc/cpuinfo", O_RDONLY );
+    int cpuinfo_fd = ::lscs_safe_open( "/proc/cpuinfo", O_RDONLY );
 
     if ( cpuinfo_fd == -1 )
     {
@@ -519,7 +519,7 @@ static bool procCpuinfoContains( const char *prefix, const char *string )
     }
     while ( line.size );
 
-    ::qt_safe_close( cpuinfo_fd );
+    ::lscs_safe_close( cpuinfo_fd );
 
     return present;
 }
@@ -683,7 +683,7 @@ Q_CORE_EXPORT std::atomic<quint64> lscs_cpu_features{ 0 };
 void qDetectCpuFeatures()
 {
     quint64 f = detectProcessorFeatures();
-    QByteArray disable = qgetenv( "QT_NO_CPU_FEATURE" );
+    QByteArray disable = qgetenv( "LSCS_NO_CPU_FEATURE" );
 
     if ( ! disable.isEmpty() )
     {

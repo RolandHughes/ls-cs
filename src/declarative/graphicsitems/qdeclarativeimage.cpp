@@ -27,7 +27,7 @@
 #include <QKeyEvent>
 #include <QPainter>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 
 /*!
@@ -641,4 +641,4 @@ void QDeclarativeImage::pixmapChange()
     updatePaintedGeometry();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

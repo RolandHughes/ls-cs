@@ -401,7 +401,7 @@ bool QHttpProtocolHandler::sendRequest()
                 m_connection->d_func()->createAuthorization( m_socket, m_channel->request );
             }
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
             QByteArray header = QHttpNetworkRequestPrivate::header( m_channel->request,
                                 ( m_connection->d_func()->networkProxy.type() != QNetworkProxy::NoProxy ) );
 #else
@@ -455,7 +455,7 @@ bool QHttpProtocolHandler::sendRequest()
             const qint64 socketBufferFill   = 32 * 1024;
             const qint64 socketWriteMaxSize = 16 * 1024;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
             QSslSocket *sslSocket = dynamic_cast<QSslSocket *>( m_socket );
 
             // if it is really an ssl socket, check more than just bytesToWrite()

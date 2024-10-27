@@ -1,5 +1,5 @@
-#ifndef QT_GUI_H
-#define QT_GUI_H
+#ifndef LSCS_GUI_H
+#define LSCS_GUI_H
 
 #include <qtcore.h>
 

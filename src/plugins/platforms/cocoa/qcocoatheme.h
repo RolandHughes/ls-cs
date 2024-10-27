@@ -39,7 +39,7 @@ public:
     QPlatformMenu *createPlatformMenu() const override;
     QPlatformMenuBar *createPlatformMenuBar() const override;
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
     QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
 

@@ -26,7 +26,7 @@
 
 #include <QOpenGLContext>
 
-#if defined(Q_OS_WIN) && (defined(QT_OPENGL_ES_2) || defined(QT_OPENGL_DYNAMIC))
+#if defined(Q_OS_WIN) && (defined(LSCS_OPENGL_ES_2) || defined(LSCS_OPENGL_DYNAMIC))
 #include <EGL/egl.h>
 #endif
 
@@ -40,14 +40,14 @@ inline bool QMediaOpenGLHelper::isANGLE()
 {
     bool isANGLE = false;
 
-# if defined(Q_OS_WIN) && (defined(QT_OPENGL_ES_2) || defined(QT_OPENGL_DYNAMIC))
+# if defined(Q_OS_WIN) && (defined(LSCS_OPENGL_ES_2) || defined(LSCS_OPENGL_DYNAMIC))
 
     if ( QOpenGLContext::openGLModuleType() == QOpenGLContext::LibGLES )
     {
         // Although unlikely, technically LibGLES could mean a non-ANGLE EGL/GLES2 implementation too.
         // Verify that it is indeed ANGLE.
 
-#  ifdef QT_OPENGL_ES_2_ANGLE_STATIC
+#  ifdef LSCS_OPENGL_ES_2_ANGLE_STATIC
         // ANGLE linked-in statically.
         isANGLE = true;
 
@@ -75,11 +75,11 @@ inline bool QMediaOpenGLHelper::isANGLE()
             }
         }
 
-#  endif // QT_OPENGL_ES_2_ANGLE_STATIC
+#  endif // LSCS_OPENGL_ES_2_ANGLE_STATIC
 
     }
 
-# endif // Q_OS_WIN && (QT_OPENGL_ES_2 || QT_OPENGL_DYNAMIC)
+# endif // Q_OS_WIN && (LSCS_OPENGL_ES_2 || LSCS_OPENGL_DYNAMIC)
 
     return isANGLE;
 }

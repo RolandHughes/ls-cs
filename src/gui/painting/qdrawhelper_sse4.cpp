@@ -24,18 +24,18 @@
 #include <qdrawhelper_p.h>
 #include <qdrawingprimitive_sse2_p.h>
 
-#if defined(QT_COMPILER_SUPPORTS_SSE4_1)
+#if defined(LSCS_COMPILER_SUPPORTS_SSE4_1)
 
 const uint *convertARGB32ToARGB32PM_sse4( uint *buffer, const uint *src, int count,
         const QPixelLayout *, const QRgb * )
 {
-    return qt_convertARGB32ToARGB32PM( buffer, src, count );
+    return lscs_convertARGB32ToARGB32PM( buffer, src, count );
 }
 
 const uint *convertRGBA8888ToARGB32PM_sse4( uint *buffer, const uint *src, int count,
         const QPixelLayout *, const QRgb * )
 {
-    return qt_convertRGBA8888ToARGB32PM( buffer, src, count );
+    return lscs_convertRGBA8888ToARGB32PM( buffer, src, count );
 }
 
 const uint *convertARGB32FromARGB32PM_sse4( uint *buffer, const uint *src, int count,

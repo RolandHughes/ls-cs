@@ -33,7 +33,7 @@
 
 #include <qdatetime.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeOpenMetaObjectType;
 class QDeclarativePathViewAttached;
@@ -165,6 +165,6 @@ public:
     int modelCount;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

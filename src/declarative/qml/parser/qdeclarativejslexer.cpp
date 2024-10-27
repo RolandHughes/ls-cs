@@ -36,11 +36,11 @@
 #include <stdio.h>
 #include <string.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 Q_CORE_EXPORT double qstrtod( const char *s00, char const **se, bool *ok );
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-QT_QML_BEGIN_NAMESPACE
+LSCS_QML_BEGIN_NAMESPACE
 
 #define shiftWindowsLineBreak() \
     do { \
@@ -1802,6 +1802,6 @@ void Lexer::syncProhibitAutomaticSemicolon()
     }
 }
 
-QT_QML_END_NAMESPACE
+LSCS_QML_END_NAMESPACE
 
 

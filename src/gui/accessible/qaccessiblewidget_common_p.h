@@ -26,7 +26,7 @@
 
 #include <qaccessiblewidget.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #include <qpointer.h>
 #include <qpair.h>
@@ -47,7 +47,7 @@ class QPlainTextEdit;
 class QTextCursor;
 class QTextDocument;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 class QAccessibleTextWidget : public QAccessibleWidget,
     public QAccessibleTextInterface,
     public QAccessibleEditableTextInterface
@@ -102,7 +102,7 @@ protected:
     virtual QWidget *viewport() const = 0;
 };
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 class QAccessiblePlainTextEdit : public QAccessibleTextWidget
 {
 public:
@@ -154,8 +154,8 @@ protected:
     QTextDocument *textDocument() const override;
     QWidget *viewport() const override;
 };
-#endif // QT_NO_TEXTEDIT
-#endif  //QT_NO_CURSOR
+#endif // LSCS_NO_TEXTEDIT
+#endif  //LSCS_NO_CURSOR
 
 class QAccessibleStackedWidget : public QAccessibleWidget
 {
@@ -186,7 +186,7 @@ protected:
     QToolBox *toolBox() const;
 };
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 class QAccessibleMdiArea : public QAccessibleWidget
 {
 public:
@@ -216,7 +216,7 @@ public:
 protected:
     QMdiSubWindow *mdiSubWindow() const;
 };
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA
 
 class QAccessibleDialogButtonBox : public QAccessibleWidget
 {
@@ -224,7 +224,7 @@ public:
     explicit QAccessibleDialogButtonBox( QWidget *widget );
 };
 
-#if !defined(QT_NO_TEXTBROWSER) && !defined(QT_NO_CURSOR)
+#if !defined(LSCS_NO_TEXTBROWSER) && !defined(LSCS_NO_CURSOR)
 class QAccessibleTextBrowser : public QAccessibleTextEdit
 {
 public:
@@ -232,9 +232,9 @@ public:
 
     QAccessible::Role role() const override;
 };
-#endif // QT_NO_TEXTBROWSER && QT_NO_CURSOR
+#endif // LSCS_NO_TEXTBROWSER && LSCS_NO_CURSOR
 
-#ifndef QT_NO_CALENDARWIDGET
+#ifndef LSCS_NO_CALENDARWIDGET
 class QAccessibleCalendarWidget : public QAccessibleWidget
 {
 public:
@@ -252,9 +252,9 @@ private:
     QAbstractItemView *calendarView() const;
     QWidget *navigationBar() const;
 };
-#endif // QT_NO_CALENDARWIDGET
+#endif // LSCS_NO_CALENDARWIDGET
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 class QAccessibleDockWidget: public QAccessibleWidget
 {
 public:
@@ -270,9 +270,9 @@ protected:
     QDockWidgetLayout *dockWidgetLayout() const;
 };
 
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 class QAccessibleMainWindow : public QAccessibleWidget
 {
 public:
@@ -285,8 +285,8 @@ public:
     QMainWindow *mainWindow() const;
 
 };
-#endif //QT_NO_MAINWINDOW
+#endif //LSCS_NO_MAINWINDOW
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif // QACESSIBLEWIDGETS_H

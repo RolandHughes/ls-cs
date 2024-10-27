@@ -26,7 +26,7 @@
 
 #include <qstring.h>
 
-#ifndef QT_NO_DOM
+#ifndef LSCS_NO_DOM
 
 class QDomAttr;
 class QDomAttrPrivate;
@@ -766,6 +766,6 @@ private:
 
 Q_XML_EXPORT QTextStream &operator<<( QTextStream &, const QDomNode & );
 
-#endif // QT_NO_DOM
+#endif // LSCS_NO_DOM
 
 #endif

@@ -55,8 +55,8 @@
   /*     cc -c -D_STANDALONE_ ftgrays.c                                    */
   /*                                                                       */
   /* The renderer can be initialized with a call to                        */
-  /* `qt_ft_gray_raster.raster_new'; an anti-aliased bitmap can be generated  */
-  /* with a call to `qt_ft_gray_raster.raster_render'.                        */
+  /* `lscs_ft_gray_raster.raster_new'; an anti-aliased bitmap can be generated  */
+  /* with a call to `lscs_ft_gray_raster.raster_render'.                        */
   /*                                                                       */
   /* See the comments and documentation in the file `ftimage.h' for more   */
   /* details on how the raster works.                                      */
@@ -109,26 +109,26 @@
 
   /*************************************************************************/
   /*                                                                       */
-  /* The macro QT_FT_COMPONENT is used in trace mode.  It is an implicit      */
-  /* parameter of the QT_FT_TRACE() and QT_FT_ERROR() macros, used to print/log  */
+  /* The macro LSCS_FT_COMPONENT is used in trace mode.  It is an implicit      */
+  /* parameter of the LSCS_FT_TRACE() and LSCS_FT_ERROR() macros, used to print/log  */
   /* messages during execution.                                            */
   /*                                                                       */
-#undef  QT_FT_COMPONENT
-#define QT_FT_COMPONENT  trace_smooth
+#undef  LSCS_FT_COMPONENT
+#define LSCS_FT_COMPONENT  trace_smooth
 
 #define ErrRaster_MemoryOverflow   -4
 
-#include <string.h>             /* for qt_ft_memcpy() */
+#include <string.h>             /* for lscs_ft_memcpy() */
 #include <setjmp.h>
 #include <limits.h>
 
-#define QT_FT_UINT_MAX  UINT_MAX
+#define LSCS_FT_UINT_MAX  UINT_MAX
 
-#define qt_ft_memset   memset
+#define lscs_ft_memset   memset
 
-#define qt_ft_setjmp   setjmp
-#define qt_ft_longjmp  longjmp
-#define qt_ft_jmp_buf  jmp_buf
+#define lscs_ft_setjmp   setjmp
+#define lscs_ft_longjmp  longjmp
+#define lscs_ft_jmp_buf  jmp_buf
 
 #define ErrRaster_Invalid_Mode      -2
 #define ErrRaster_Invalid_Outline   -1
@@ -146,24 +146,24 @@
   /* Its purpose is simply to reduce compiler warnings.  Note also that  */
   /* simply defining it as `(void)x' doesn't avoid warnings with certain */
   /* ANSI compilers (e.g. LCC).                                          */
-#define QT_FT_UNUSED( x )  (x) = (x)
+#define LSCS_FT_UNUSED( x )  (x) = (x)
 
   /* Disable the tracing mechanism for simplicity -- developers can      */
   /* activate it easily by redefining these two macros.                  */
-#ifndef QT_FT_ERROR
-#define QT_FT_ERROR( x )  do ; while ( 0 )     /* nothing */
+#ifndef LSCS_FT_ERROR
+#define LSCS_FT_ERROR( x )  do ; while ( 0 )     /* nothing */
 #endif
 
-#ifndef QT_FT_TRACE
-#define QT_FT_TRACE( x )  do ; while ( 0 )     /* nothing */
+#ifndef LSCS_FT_TRACE
+#define LSCS_FT_TRACE( x )  do ; while ( 0 )     /* nothing */
 #endif
 
-#ifndef QT_FT_MEM_SET
-#define QT_FT_MEM_SET( d, s, c )  qt_ft_memset( d, s, c )
+#ifndef LSCS_FT_MEM_SET
+#define LSCS_FT_MEM_SET( d, s, c )  lscs_ft_memset( d, s, c )
 #endif
 
-#ifndef QT_FT_MEM_ZERO
-#define QT_FT_MEM_ZERO( dest, count )  QT_FT_MEM_SET( dest, 0, count )
+#ifndef LSCS_FT_MEM_ZERO
+#define LSCS_FT_MEM_ZERO( dest, count )  LSCS_FT_MEM_SET( dest, 0, count )
 #endif
 
 /* define this to dump debugging information */
@@ -210,7 +210,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 #else
 
   /* approximately determine the size of integers using an ANSI-C header */
-#if QT_FT_UINT_MAX == 0xFFFFU
+#if LSCS_FT_UINT_MAX == 0xFFFFU
   typedef long  TArea;
 #else
   typedef int   TArea;
@@ -219,7 +219,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 #endif
 
   /* maximal number of gray spans in a call to the span callback */
-#define QT_FT_MAX_GRAY_SPANS  256
+#define LSCS_FT_MAX_GRAY_SPANS  256
 
 
   typedef struct TCell_*  PCell;
@@ -254,17 +254,17 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
     TPos    last_ey;
 
-    QT_FT_Vector   bez_stack[32 * 3 + 1];
+    LSCS_FT_Vector   bez_stack[32 * 3 + 1];
     int         lev_stack[32];
 
-    QT_FT_Outline  outline;
-    QT_FT_Bitmap   target;
-    QT_FT_BBox     clip_box;
+    LSCS_FT_Outline  outline;
+    LSCS_FT_Bitmap   target;
+    LSCS_FT_BBox     clip_box;
 
-    QT_FT_Span     gray_spans[QT_FT_MAX_GRAY_SPANS];
+    LSCS_FT_Span     gray_spans[LSCS_FT_MAX_GRAY_SPANS];
     int         num_gray_spans;
 
-    QT_FT_Raster_Span_Func  render_span;
+    LSCS_FT_Raster_Span_Func  render_span;
     void*                render_span_data;
 
     int  band_size;
@@ -272,7 +272,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     int  conic_level;
     int  cubic_level;
 
-    qt_ft_jmp_buf  jump_buffer;
+    lscs_ft_jmp_buf  jump_buffer;
 
     void*       buffer;
     long        buffer_size;
@@ -330,9 +330,9 @@ typedef int   TPos;     /* sub-pixel coordinate              */
   static void
   gray_compute_cbox( RAS_ARG )
   {
-    QT_FT_Outline*  outline = &ras.outline;
-    QT_FT_Vector*   vec     = outline->points;
-    QT_FT_Vector*   limit   = vec + outline->n_points;
+    LSCS_FT_Outline*  outline = &ras.outline;
+    LSCS_FT_Vector*   vec     = outline->points;
+    LSCS_FT_Vector*   limit   = vec + outline->n_points;
 
 
     if ( outline->n_points <= 0 )
@@ -401,7 +401,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     }
 
     if ( ras.num_cells >= ras.max_cells )
-      qt_ft_longjmp( ras.jump_buffer, 1 );
+      lscs_ft_longjmp( ras.jump_buffer, 1 );
 
     cell        = ras.cells + ras.num_cells++;
     cell->x     = x;
@@ -786,7 +786,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
 
   static void
-  gray_split_conic( QT_FT_Vector*  base )
+  gray_split_conic( LSCS_FT_Vector*  base )
   {
     TPos  a, b;
 
@@ -806,13 +806,13 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
 
   static void
-  gray_render_conic( RAS_ARG_ const QT_FT_Vector*  control,
-                              const QT_FT_Vector*  to )
+  gray_render_conic( RAS_ARG_ const LSCS_FT_Vector*  control,
+                              const LSCS_FT_Vector*  to )
   {
     TPos        dx, dy;
     int         top, level;
     int*        levels;
-    QT_FT_Vector*  arc;
+    LSCS_FT_Vector*  arc;
 
 
     dx = DOWNSCALE( ras.x ) + to->x - ( control->x << 1 );
@@ -915,7 +915,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
 
   static void
-  gray_split_cubic( QT_FT_Vector*  base )
+  gray_split_cubic( LSCS_FT_Vector*  base )
   {
     TPos  a, b, c, d;
 
@@ -943,14 +943,14 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
 
   static void
-  gray_render_cubic( RAS_ARG_ const QT_FT_Vector*  control1,
-                              const QT_FT_Vector*  control2,
-                              const QT_FT_Vector*  to )
+  gray_render_cubic( RAS_ARG_ const LSCS_FT_Vector*  control1,
+                              const LSCS_FT_Vector*  control2,
+                              const LSCS_FT_Vector*  to )
   {
     TPos        dx, dy, da, db;
     int         top, level;
     int*        levels;
-    QT_FT_Vector*  arc;
+    LSCS_FT_Vector*  arc;
 
 
     dx = DOWNSCALE( ras.x ) + to->x - ( control1->x << 1 );
@@ -1065,7 +1065,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
 
   static int
-  gray_move_to( const QT_FT_Vector*  to,
+  gray_move_to( const LSCS_FT_Vector*  to,
                 PWorker           worker )
   {
     TPos  x, y;
@@ -1087,11 +1087,11 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
   static void
   gray_render_span( int             count,
-                    const QT_FT_Span*  spans,
+                    const LSCS_FT_Span*  spans,
                     PWorker         worker )
   {
     unsigned char*  p;
-    QT_FT_Bitmap*      map = &worker->target;
+    LSCS_FT_Bitmap*      map = &worker->target;
 
     for ( ; count > 0; count--, spans++ )
     {
@@ -1110,7 +1110,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
          * function call.
          */
         if ( spans->len >= 8 )
-          QT_FT_MEM_SET( p + spans->x, (unsigned char)coverage, spans->len );
+          LSCS_FT_MEM_SET( p + spans->x, (unsigned char)coverage, spans->len );
         else
         {
           unsigned char*  q = p + spans->x;
@@ -1140,7 +1140,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
                        TPos    area,
                        int     acount )
   {
-    QT_FT_Span*  span;
+    LSCS_FT_Span*  span;
     int       coverage;
     int       skip;
 
@@ -1155,7 +1155,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     if ( coverage < 0 )
       coverage = -coverage;
 
-    if ( ras.outline.flags & QT_FT_OUTLINE_EVEN_ODD_FILL )
+    if ( ras.outline.flags & LSCS_FT_OUTLINE_EVEN_ODD_FILL )
     {
       coverage &= 511;
 
@@ -1174,7 +1174,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     y += (TCoord)ras.min_ey;
     x += (TCoord)ras.min_ex;
 
-    /* QT_FT_Span.x is a 16-bit short, so limit our coordinates appropriately */
+    /* LSCS_FT_Span.x is a 16-bit short, so limit our coordinates appropriately */
     if ( x >= 32768 )
       x = 32767;
 
@@ -1191,7 +1191,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
         return;
       }
 
-      if ( ras.num_gray_spans >= QT_FT_MAX_GRAY_SPANS )
+      if ( ras.num_gray_spans >= LSCS_FT_MAX_GRAY_SPANS )
       {
         if ( ras.render_span && ras.num_gray_spans > ras.skip_spans )
         {
@@ -1265,11 +1265,11 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
 
   static void
-  gray_sweep( RAS_ARG_ const QT_FT_Bitmap*  target )
+  gray_sweep( RAS_ARG_ const LSCS_FT_Bitmap*  target )
   {
     int  yindex;
 
-    QT_FT_UNUSED( target );
+    LSCS_FT_UNUSED( target );
 
 
     if ( ras.num_cells == 0 )
@@ -1316,7 +1316,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
   /*************************************************************************/
   /*                                                                       */
   /* <Function>                                                            */
-  /*    QT_FT_Outline_Decompose                                               */
+  /*    LSCS_FT_Outline_Decompose                                               */
   /*                                                                       */
   /* <Description>                                                         */
   /*    Walks over an outline's structure to decompose it into individual  */
@@ -1336,18 +1336,18 @@ typedef int   TPos;     /* sub-pixel coordinate              */
   /*    Error code.  0 means success.                                      */
   /*                                                                       */
   static
-  int  QT_FT_Outline_Decompose( const QT_FT_Outline*        outline,
+  int  LSCS_FT_Outline_Decompose( const LSCS_FT_Outline*        outline,
                              void*                    user )
   {
 #undef SCALED
 #define SCALED( x )  (x)
 
-    QT_FT_Vector   v_last;
-    QT_FT_Vector   v_control;
-    QT_FT_Vector   v_start;
+    LSCS_FT_Vector   v_last;
+    LSCS_FT_Vector   v_control;
+    LSCS_FT_Vector   v_start;
 
-    QT_FT_Vector*  point;
-    QT_FT_Vector*  limit;
+    LSCS_FT_Vector*  point;
+    LSCS_FT_Vector*  limit;
     char*       tags;
 
     int   n;         /* index of contour in outline     */
@@ -1378,17 +1378,17 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
       point = outline->points + first;
       tags  = outline->tags  + first;
-      tag   = QT_FT_CURVE_TAG( tags[0] );
+      tag   = LSCS_FT_CURVE_TAG( tags[0] );
 
       /* A contour cannot start with a cubic control point! */
-      if ( tag == QT_FT_CURVE_TAG_CUBIC )
+      if ( tag == LSCS_FT_CURVE_TAG_CUBIC )
         goto Invalid_Outline;
 
       /* check first point to determine origin */
-      if ( tag == QT_FT_CURVE_TAG_CONIC )
+      if ( tag == LSCS_FT_CURVE_TAG_CONIC )
       {
         /* first point is conic control.  Yes, this happens. */
-        if ( QT_FT_CURVE_TAG( outline->tags[last] ) == QT_FT_CURVE_TAG_ON )
+        if ( LSCS_FT_CURVE_TAG( outline->tags[last] ) == LSCS_FT_CURVE_TAG_ON )
         {
           /* start at last point if it is on the curve */
           v_start = v_last;
@@ -1417,12 +1417,12 @@ typedef int   TPos;     /* sub-pixel coordinate              */
         point++;
         tags++;
 
-        tag = QT_FT_CURVE_TAG( tags[0] );
+        tag = LSCS_FT_CURVE_TAG( tags[0] );
         switch ( tag )
         {
-        case QT_FT_CURVE_TAG_ON:  /* emit a single line_to */
+        case LSCS_FT_CURVE_TAG_ON:  /* emit a single line_to */
           {
-            QT_FT_Vector  vec;
+            LSCS_FT_Vector  vec;
 
 
             vec.x = SCALED( point->x );
@@ -1432,7 +1432,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
             continue;
           }
 
-        case QT_FT_CURVE_TAG_CONIC:  /* consume conic arcs */
+        case LSCS_FT_CURVE_TAG_CONIC:  /* consume conic arcs */
           {
             v_control.x = SCALED( point->x );
             v_control.y = SCALED( point->y );
@@ -1440,24 +1440,24 @@ typedef int   TPos;     /* sub-pixel coordinate              */
           Do_Conic:
             if ( point < limit )
             {
-              QT_FT_Vector  vec;
-              QT_FT_Vector  v_middle;
+              LSCS_FT_Vector  vec;
+              LSCS_FT_Vector  v_middle;
 
 
               point++;
               tags++;
-              tag = QT_FT_CURVE_TAG( tags[0] );
+              tag = LSCS_FT_CURVE_TAG( tags[0] );
 
               vec.x = SCALED( point->x );
               vec.y = SCALED( point->y );
 
-              if ( tag == QT_FT_CURVE_TAG_ON )
+              if ( tag == LSCS_FT_CURVE_TAG_ON )
               {
                 gray_render_conic(user, &v_control, &vec);
                 continue;
               }
 
-              if ( tag != QT_FT_CURVE_TAG_CONIC )
+              if ( tag != LSCS_FT_CURVE_TAG_CONIC )
                 goto Invalid_Outline;
 
               v_middle.x = ( v_control.x + vec.x ) / 2;
@@ -1473,13 +1473,13 @@ typedef int   TPos;     /* sub-pixel coordinate              */
             goto Close;
           }
 
-        default:  /* QT_FT_CURVE_TAG_CUBIC */
+        default:  /* LSCS_FT_CURVE_TAG_CUBIC */
           {
-            QT_FT_Vector  vec1, vec2;
+            LSCS_FT_Vector  vec1, vec2;
 
 
             if ( point + 1 > limit                             ||
-                 QT_FT_CURVE_TAG( tags[1] ) != QT_FT_CURVE_TAG_CUBIC )
+                 LSCS_FT_CURVE_TAG( tags[1] ) != LSCS_FT_CURVE_TAG_CUBIC )
               goto Invalid_Outline;
 
             point += 2;
@@ -1493,7 +1493,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
             if ( point <= limit )
             {
-              QT_FT_Vector  vec;
+              LSCS_FT_Vector  vec;
 
 
               vec.x = SCALED( point->x );
@@ -1537,9 +1537,9 @@ typedef int   TPos;     /* sub-pixel coordinate              */
   {
     volatile int  error = 0;
 
-    if ( qt_ft_setjmp( ras.jump_buffer ) == 0 )
+    if ( lscs_ft_setjmp( ras.jump_buffer ) == 0 )
     {
-      error = QT_FT_Outline_Decompose( &ras.outline, &ras );
+      error = LSCS_FT_Outline_Decompose( &ras.outline, &ras );
       gray_record_cell( RAS_VAR );
     }
     else
@@ -1558,7 +1558,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     TBand* volatile  band;
     int volatile     n, num_bands;
     TPos volatile    min, max, max_y;
-    QT_FT_BBox*      clip;
+    LSCS_FT_BBox*      clip;
     int              skip;
 
     ras.num_gray_spans = 0;
@@ -1718,11 +1718,11 @@ typedef int   TPos;     /* sub-pixel coordinate              */
 
 
   static int
-  gray_raster_render( QT_FT_Raster                  raster,
-                      const QT_FT_Raster_Params*  params )
+  gray_raster_render( LSCS_FT_Raster                  raster,
+                      const LSCS_FT_Raster_Params*  params )
   {
-    const QT_FT_Outline*  outline    = (const QT_FT_Outline*)params->source;
-    const QT_FT_Bitmap*   target_map = params->target;
+    const LSCS_FT_Outline*  outline    = (const LSCS_FT_Outline*)params->source;
+    const LSCS_FT_Bitmap*   target_map = params->target;
     PWorker            worker;
 
 
@@ -1752,7 +1752,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     worker = raster->worker;
 
     /* if direct mode is not set, we must have a target bitmap */
-    if ( ( params->flags & QT_FT_RASTER_FLAG_DIRECT ) == 0 )
+    if ( ( params->flags & LSCS_FT_RASTER_FLAG_DIRECT ) == 0 )
     {
       if ( !target_map )
         return ErrRaster_Invalid_Argument;
@@ -1766,11 +1766,11 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     }
 
     /* this version does not support monochrome rendering */
-    if ( !( params->flags & QT_FT_RASTER_FLAG_AA ) )
+    if ( !( params->flags & LSCS_FT_RASTER_FLAG_AA ) )
       return ErrRaster_Invalid_Mode;
 
     /* compute clipping box */
-    if ( ( params->flags & QT_FT_RASTER_FLAG_DIRECT ) == 0 )
+    if ( ( params->flags & LSCS_FT_RASTER_FLAG_DIRECT ) == 0 )
     {
       /* compute clip box from target pixmap */
       ras.clip_box.xMin = 0;
@@ -1778,7 +1778,7 @@ typedef int   TPos;     /* sub-pixel coordinate              */
       ras.clip_box.xMax = target_map->width;
       ras.clip_box.yMax = target_map->rows;
     }
-    else if ( params->flags & QT_FT_RASTER_FLAG_CLIP )
+    else if ( params->flags & LSCS_FT_RASTER_FLAG_CLIP )
     {
       ras.clip_box = params->clip_box;
     }
@@ -1800,12 +1800,12 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     if ( target_map )
       ras.target = *target_map;
 
-    ras.render_span      = (QT_FT_Raster_Span_Func)gray_render_span;
+    ras.render_span      = (LSCS_FT_Raster_Span_Func)gray_render_span;
     ras.render_span_data = &ras;
 
-    if ( params->flags & QT_FT_RASTER_FLAG_DIRECT )
+    if ( params->flags & LSCS_FT_RASTER_FLAG_DIRECT )
     {
-      ras.render_span      = (QT_FT_Raster_Span_Func)params->gray_spans;
+      ras.render_span      = (LSCS_FT_Raster_Span_Func)params->gray_spans;
       ras.render_span_data = params->user;
     }
 
@@ -1817,28 +1817,28 @@ typedef int   TPos;     /* sub-pixel coordinate              */
   /****                         a static object.                  *****/
 
   static int
-  gray_raster_new( QT_FT_Raster*  araster )
+  gray_raster_new( LSCS_FT_Raster*  araster )
   {
     *araster = malloc(sizeof(TRaster));
     if (!*araster) {
         *araster = 0;
         return ErrRaster_Memory_Overflow;
     }
-    QT_FT_MEM_ZERO(*araster, sizeof(TRaster));
+    LSCS_FT_MEM_ZERO(*araster, sizeof(TRaster));
 
     return 0;
   }
 
 
   static void
-  gray_raster_done( QT_FT_Raster  raster )
+  gray_raster_done( LSCS_FT_Raster  raster )
   {
     free(raster);
   }
 
 
   static void
-  gray_raster_reset( QT_FT_Raster  raster,
+  gray_raster_reset( LSCS_FT_Raster  raster,
                      char*      pool_base,
                      long       pool_size )
   {
@@ -1878,15 +1878,15 @@ typedef int   TPos;     /* sub-pixel coordinate              */
     }
   }
 
-  const QT_FT_Raster_Funcs  qt_ft_grays_raster =
+  const LSCS_FT_Raster_Funcs  lscs_ft_grays_raster =
   {
-    QT_FT_GLYPH_FORMAT_OUTLINE,
+    LSCS_FT_GLYPH_FORMAT_OUTLINE,
 
-    (QT_FT_Raster_New_Func)     gray_raster_new,
-    (QT_FT_Raster_Reset_Func)   gray_raster_reset,
-    (QT_FT_Raster_Set_Mode_Func)0,
-    (QT_FT_Raster_Render_Func)  gray_raster_render,
-    (QT_FT_Raster_Done_Func)    gray_raster_done
+    (LSCS_FT_Raster_New_Func)     gray_raster_new,
+    (LSCS_FT_Raster_Reset_Func)   gray_raster_reset,
+    (LSCS_FT_Raster_Set_Mode_Func)0,
+    (LSCS_FT_Raster_Render_Func)  gray_raster_render,
+    (LSCS_FT_Raster_Done_Func)    gray_raster_done
   };
 
 /* END */

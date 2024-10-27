@@ -27,7 +27,7 @@
 #include <qlist.h>
 #include <qstring.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 #include <qtcpsocket.h>
 #include <qsslerror.h>

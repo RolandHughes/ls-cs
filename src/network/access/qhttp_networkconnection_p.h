@@ -39,9 +39,9 @@
 #include <qhttp_networkreply_p.h>
 #include <qhttp_networkconnectionchannel_p.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
-#ifdef QT_OPENSSL
+#ifdef LSCS_OPENSSL
 #include <qsslcontext_openssl_p.h>
 #endif
 
@@ -74,7 +74,7 @@ public:
         ConnectionTypeSPDY
     };
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     explicit QHttpNetworkConnection( const QString &hostName, quint16 port = 80, bool encrypt = false,
                                      ConnectionType connectionType = ConnectionTypeHTTP, QObject *parent = nullptr,
                                      QSharedPointer<QNetworkSession> networkSession = QSharedPointer<QNetworkSession>() );
@@ -108,7 +108,7 @@ public:
     //add a new HTTP request through this connection
     QHttpNetworkReply *sendRequest( const QHttpNetworkRequest &request );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     //set the proxy for this connection
     void setCacheProxy( const QNetworkProxy &networkProxy );
     QNetworkProxy cacheProxy() const;
@@ -122,7 +122,7 @@ public:
     ConnectionType connectionType();
     void setConnectionType( ConnectionType type );
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     void setSslConfiguration( const QSslConfiguration &config );
     void ignoreSslErrors( int channel = -1 );
     void ignoreSslErrors( const QList<QSslError> &errors, int channel = -1 );
@@ -241,7 +241,7 @@ public:
     bool handleAuthenticateChallenge( QAbstractSocket *socket, QHttpNetworkReply *reply, bool isProxy, bool &resend );
     QUrl parseRedirectResponse( QAbstractSocket *socket, QHttpNetworkReply *reply );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy networkProxy;
     void emitProxyAuthenticationRequired( const QHttpNetworkConnectionChannel *chan, const QNetworkProxy &proxy,
                                           QAuthenticator *auth );
@@ -254,11 +254,11 @@ public:
     int preConnectRequests;
     QHttpNetworkConnection::ConnectionType connectionType;
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     QSharedPointer<QSslContext> sslContext;
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     QSharedPointer<QNetworkSession> networkSession;
 #endif
 

@@ -26,7 +26,7 @@
 
 #include <qmenu.h>
 
-#ifndef QT_NO_MENUBAR
+#ifndef LSCS_NO_MENUBAR
 
 class QMenuBarPrivate;
 class QStyleOptionMenuItem;
@@ -136,6 +136,6 @@ private:
     friend class QWindowsStyle;
 };
 
-#endif // QT_NO_MENUBAR
+#endif // LSCS_NO_MENUBAR
 
 #endif

@@ -642,7 +642,7 @@ QString QUtf32::convertToUnicode( const char *chars, int len, QTextCodec::Conver
     return retval;
 }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 QUtf8Codec::~QUtf8Codec()
 {

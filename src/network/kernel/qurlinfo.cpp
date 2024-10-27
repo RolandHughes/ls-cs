@@ -23,7 +23,7 @@
 
 #include <qurlinfo_p.h>
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
 
 #include <qdir.h>
 #include <qurl.h>
@@ -463,4 +463,4 @@ bool QUrlInfo::isValid() const
     return d != nullptr;
 }
 
-#endif // QT_NO_URLINFO
+#endif // LSCS_NO_URLINFO

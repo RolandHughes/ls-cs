@@ -5,8 +5,8 @@ set_target_properties(LsCsSql PROPERTIES OUTPUT_NAME LsCsSql${BUILD_ABI})
 
 target_compile_definitions(LsCsSql
    PRIVATE
-   -DQT_BUILD_SQL_LIB
-   -DQT_SQL_SQLITE
+   -DLSCS_BUILD_SQL_LIB
+   -DLSCS_SQL_SQLITE
 )
 
 set(EXTRA_SQL_CXXFLAGS)

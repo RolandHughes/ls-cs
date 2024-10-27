@@ -78,11 +78,11 @@ public:
     QString text() const;
     const QPixmap *pixmap() const;
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
     const QPicture *picture() const;
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
     QMovie *movie() const;
 #endif
 
@@ -106,7 +106,7 @@ public:
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
     void setBuddy( QWidget *buddy );
     QWidget *buddy() const;
 #endif
@@ -130,12 +130,12 @@ public:
     GUI_LSCS_SLOT_1( Public, void setPixmap( const QPixmap &pixmap ) )
     GUI_LSCS_SLOT_2( setPixmap )
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
     GUI_LSCS_SLOT_1( Public, void setPicture( const QPicture &picture ) )
     GUI_LSCS_SLOT_2( setPicture )
 #endif
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
     GUI_LSCS_SLOT_1( Public, void setMovie( QMovie *movie ) )
     GUI_LSCS_SLOT_2( setMovie )
 #endif
@@ -171,7 +171,7 @@ protected:
 private:
     Q_DECLARE_PRIVATE( QLabel )
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
     GUI_LSCS_SLOT_1( Private, void _q_movieUpdated( const QRect &rect ) )
     GUI_LSCS_SLOT_2( _q_movieUpdated )
 

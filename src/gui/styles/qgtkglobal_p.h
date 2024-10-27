@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if !defined(QT_NO_STYLE_GTK)
+#if !defined(LSCS_NO_STYLE_GTK)
 
 #undef signals // Collides with GTK symbols
 
@@ -41,20 +41,20 @@ typedef unsigned long XID;
 #define QLS(x) QLatin1String(x)
 
 #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-#   define QT_RED 3
-#   define QT_GREEN 2
-#   define QT_BLUE 1
-#   define QT_ALPHA 0
+#   define LSCS_RED 3
+#   define LSCS_GREEN 2
+#   define LSCS_BLUE 1
+#   define LSCS_ALPHA 0
 #else
-#   define QT_RED 0
-#   define QT_GREEN 1
-#   define QT_BLUE 2
-#   define QT_ALPHA 3
+#   define LSCS_RED 0
+#   define LSCS_GREEN 1
+#   define LSCS_BLUE 2
+#   define LSCS_ALPHA 3
 #endif
 #   define GTK_RED 2
 #   define GTK_GREEN 1
 #   define GTK_BLUE 0
 #   define GTK_ALPHA 3
 
-#endif // !QT_NO_STYLE_GTK
+#endif // !LSCS_NO_STYLE_GTK
 #endif

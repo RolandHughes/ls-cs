@@ -31,7 +31,7 @@
 #include <qdeclarativecontext_p.h>
 #include <qdeclarativeguard_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QScriptContext;
@@ -82,7 +82,7 @@ private:
     QScriptValue m_scope[2];
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEINCLUDE_P_H
 

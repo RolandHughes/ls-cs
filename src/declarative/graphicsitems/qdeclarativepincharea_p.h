@@ -26,7 +26,7 @@
 
 #include <qdeclarativeitem.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativePinch : public QObject
 {
@@ -472,7 +472,7 @@ private:
     Q_DECLARE_PRIVATE_D( QGraphicsItem::d_ptr.data(), QDeclarativePinchArea )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativePinch )
 QML_DECLARE_TYPE( QDeclarativePinchEvent )

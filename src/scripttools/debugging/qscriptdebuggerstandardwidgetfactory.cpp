@@ -32,7 +32,7 @@
 #include "qscriptdebugoutputwidget_p.h"
 #include "qscripterrorlogwidget_p.h"
 
-QT_BEGIN_NAMESPACE QScriptDebuggerStandardWidgetFactory::QScriptDebuggerStandardWidgetFactory( QObject *parent )
+LSCS_BEGIN_NAMESPACE QScriptDebuggerStandardWidgetFactory::QScriptDebuggerStandardWidgetFactory( QObject *parent )
     : QObject( parent )
 {
 }
@@ -86,4 +86,4 @@ QScriptBreakpointsWidgetInterface *QScriptDebuggerStandardWidgetFactory::createB
     return new QScriptBreakpointsWidget();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

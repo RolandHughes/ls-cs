@@ -21,7 +21,7 @@
 *
 ***********************************************************************/
 
-#ifndef QT_NO_QCOLUMNVIEW
+#ifndef LSCS_NO_QCOLUMNVIEW
 
 #include <qcolumnviewgrip_p.h>
 
@@ -34,7 +34,7 @@
 QColumnViewGrip::QColumnViewGrip( QWidget *parent )
     :  QWidget( *new QColumnViewGripPrivate, parent, Qt::EmptyFlag )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     setCursor( Qt::SplitHCursor );
 #endif
 }
@@ -137,4 +137,4 @@ QColumnViewGripPrivate::QColumnViewGripPrivate()
 {
 }
 
-#endif // QT_NO_QCOLUMNVIEW
+#endif // LSCS_NO_QCOLUMNVIEW

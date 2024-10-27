@@ -26,7 +26,7 @@
 #include <qtreewidget_p.h>
 #include <qwidgetitemdata_p.h>
 
-#ifndef QT_NO_TREEWIDGET
+#ifndef LSCS_NO_TREEWIDGET
 
 QTreeWidgetItemIterator::QTreeWidgetItemIterator( const QTreeWidgetItemIterator &it )
     :  d_ptr( new QTreeWidgetItemIteratorPrivate( *( it.d_ptr ) ) ),

@@ -28,7 +28,7 @@
 
 #include <qprinter_p.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 // awful implementation
 class QPrintDialogPrivate : public QAbstractPrintDialogPrivate

@@ -39,7 +39,7 @@
 #include "BridgeJSC.h"
 #include "DOMWindow.h"
 #include "PluginView.h"
-#include "qt_instance.h"
+#include "lscs_instance.h"
 #include "runtime_root.h"
 
 #include <QWidget>

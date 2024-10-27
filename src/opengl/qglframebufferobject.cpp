@@ -40,12 +40,12 @@ QImage lscs_glRead_frameBuffer( const QSize &, bool, bool );
 
 #if defined(LSCS_SHOW_DEBUG_OPENGL)
 
-#define QT_RESET_GLERROR()                                \
+#define LSCS_RESET_GLERROR()                                \
 {                                                         \
    while (QOpenGLContext::currentContext()->functions()->glGetError() != GL_NO_ERROR) { } \
 }
 
-#define QT_CHECK_GLERROR()                                \
+#define LSCS_CHECK_GLERROR()                                \
 {                                                         \
    GLenum err = QOpenGLContext::currentContext()->functions()->glGetError();  \
    if (err != GL_NO_ERROR) {                              \
@@ -55,8 +55,8 @@ QImage lscs_glRead_frameBuffer( const QSize &, bool, bool );
 
 #else
 
-#define QT_RESET_GLERROR() { }
-#define QT_CHECK_GLERROR() { }
+#define LSCS_RESET_GLERROR() { }
+#define LSCS_CHECK_GLERROR() { }
 
 #endif
 
@@ -397,7 +397,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
     target = texture_target;
     // texture dimensions
 
-    QT_RESET_GLERROR(); // reset error state
+    LSCS_RESET_GLERROR(); // reset error state
     GLuint fbo = 0;
 
     funcs.glGenFramebuffers( 1, &fbo );
@@ -408,7 +408,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
     GLuint depth_buffer   = 0;
     GLuint stencil_buffer = 0;
 
-    QT_CHECK_GLERROR();
+    LSCS_CHECK_GLERROR();
 
     // init texture
     if ( samples == 0 )
@@ -440,7 +440,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
         funcs.glTexParameteri( target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
         funcs.glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, target, texture, 0 );
 
-        QT_CHECK_GLERROR();
+        LSCS_CHECK_GLERROR();
 
         valid = checkFramebufferStatus();
         funcs.glBindTexture( target, 0 );
@@ -475,7 +475,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
         funcs.glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                                          GL_RENDERBUFFER, color_buffer );
 
-        QT_CHECK_GLERROR();
+        LSCS_CHECK_GLERROR();
 
         valid = checkFramebufferStatus();
 
@@ -529,7 +529,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
         if ( samples != 0 && funcs.hasOpenGLExtension( QOpenGLExtensions::FramebufferMultisample ) )
         {
 
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
 
             if ( funcs.hasOpenGLExtension( QOpenGLExtensions::Depth24 ) )
             {
@@ -563,7 +563,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
         }
         else
         {
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
 
             if ( funcs.hasOpenGLExtension( QOpenGLExtensions::Depth24 ) )
             {
@@ -615,7 +615,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
         funcs.glBindRenderbuffer( GL_RENDERBUFFER, stencil_buffer );
         Q_ASSERT( funcs.glIsRenderbuffer( stencil_buffer ) );
 
-#ifdef QT_OPENGL_ES
+#ifdef LSCS_OPENGL_ES
         GLenum storage = GL_STENCIL_INDEX8;
 #else
         GLenum storage = ctx->contextHandle()->isOpenGLES() ? GL_STENCIL_INDEX8 : GL_STENCIL_INDEX;
@@ -713,7 +713,7 @@ void QGLFramebufferObjectPrivate::init( QGLFramebufferObject *q, const QSize &sz
         funcs.glDeleteFramebuffers( 1, &fbo );
     }
 
-    QT_CHECK_GLERROR();
+    LSCS_CHECK_GLERROR();
 
     format.setTextureTarget( target );
     format.setSamples( int( samples ) );
@@ -729,7 +729,7 @@ QGLFramebufferObject::QGLFramebufferObject( const QSize &size, GLenum target )
     Q_D( QGLFramebufferObject );
 
     d->init( this, size, NoAttachment, target,
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
              QOpenGLContext::currentContext()->isOpenGLES() ? GL_RGBA : GL_RGBA8
 #else
              GL_RGBA
@@ -743,7 +743,7 @@ QGLFramebufferObject::QGLFramebufferObject( int width, int height, GLenum target
     Q_D( QGLFramebufferObject );
 
     d->init( this, QSize( width, height ), NoAttachment, target,
-#ifndef QT_OPENGL_ES_2
+#ifndef LSCS_OPENGL_ES_2
              QOpenGLContext::currentContext()->isOpenGLES() ? GL_RGBA : GL_RGBA8
 #else
              GL_RGBA
@@ -774,7 +774,7 @@ QGLFramebufferObject::QGLFramebufferObject( int width, int height, Attachment at
     Q_D( QGLFramebufferObject );
 
     if ( !internal_format )
-#ifdef QT_OPENGL_ES_2
+#ifdef LSCS_OPENGL_ES_2
         internal_format = GL_RGBA;
 
 #else
@@ -790,7 +790,7 @@ QGLFramebufferObject::QGLFramebufferObject( const QSize &size, Attachment attach
     Q_D( QGLFramebufferObject );
 
     if ( !internal_format )
-#ifdef QT_OPENGL_ES_2
+#ifdef LSCS_OPENGL_ES_2
         internal_format = GL_RGBA;
 
 #else
@@ -965,7 +965,7 @@ QImage QGLFramebufferObject::toImage() const
     return image;
 }
 
-static QGLEngineThreadStorage<QGL2PaintEngineEx> *qt_buffer_2_engine()
+static QGLEngineThreadStorage<QGL2PaintEngineEx> *lscs_buffer_2_engine()
 {
     static QGLEngineThreadStorage<QGL2PaintEngineEx> retval;
     return &retval;
@@ -980,7 +980,7 @@ QPaintEngine *QGLFramebufferObject::paintEngine() const
         return d->engine;
     }
 
-    QPaintEngine *engine = qt_buffer_2_engine()->engine();
+    QPaintEngine *engine = lscs_buffer_2_engine()->engine();
 
     if ( engine->isActive() && engine->paintDevice() != this )
     {
@@ -1038,8 +1038,8 @@ int QGLFramebufferObject::metric( PaintDeviceMetric metric ) const
 {
     Q_D( const QGLFramebufferObject );
 
-    float dpmx = qt_defaultDpiX() * 100. / 2.54;
-    float dpmy = qt_defaultDpiY() * 100. / 2.54;
+    float dpmx = lscs_defaultDpiX() * 100. / 2.54;
+    float dpmy = lscs_defaultDpiY() * 100. / 2.54;
     int w = d->size.width();
     int h = d->size.height();
 

@@ -30,7 +30,7 @@
 #include <xcb/xcb_keysyms.h>
 #include <xkbcommon/xkbcommon.h>
 
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
 #include <xkbcommon/xkbcommon-x11.h>
 #endif
 
@@ -58,7 +58,7 @@ public:
 #ifdef XCB_USE_XINPUT22
     void updateXKBStateFromXI( void *modInfo, void *groupInfo );
 #endif
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
     // when XKEYBOARD is present on the X server
     int coreDeviceId() const
     {
@@ -124,7 +124,7 @@ private:
         xkb_mod_index_t mod5;
     };
     _xkb_mods xkb_mods;
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
     // when XKEYBOARD is present on the X server
     _mod_masks vmod_masks;
     int core_device_id;

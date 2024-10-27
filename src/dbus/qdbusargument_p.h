@@ -28,14 +28,14 @@
 #include "qdbusunixfiledescriptor.h"
 #include "qdbus_symbols_p.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
 #ifndef DBUS_TYPE_UNIX_FD
 # define DBUS_TYPE_UNIX_FD int('h')
 # define DBUS_TYPE_UNIX_FD_AS_STRING "h"
 #endif
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDBusMarshaller;
 class QDBusDemarshaller;
@@ -204,7 +204,7 @@ inline QDBusDemarshaller *QDBusArgumentPrivate::demarshaller()
     return static_cast<QDBusDemarshaller *>( this );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

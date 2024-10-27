@@ -32,7 +32,7 @@ ASSERT_CLASS_FITS_IN_CELL( NativeErrorPrototype );
 
 NativeErrorPrototype::NativeErrorPrototype( ExecState *exec, NonNullPassRefPtr<Structure> structure, const UString &name,
         const UString &message )
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
     : ErrorInstance( structure )
 #else
     : JSObject( structure )

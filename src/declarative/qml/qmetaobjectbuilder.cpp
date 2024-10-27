@@ -24,7 +24,7 @@
 #include "private/qmetaobjectbuilder_p.h"
 #include <stdlib.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \class QMetaObjectBuilder
@@ -1779,7 +1779,7 @@ void QMetaObjectBuilder::setStaticMetacallFunction
     d->staticMetacallFunction = value;
 }
 
-#ifndef QT_NO_DATASTREAM
+#ifndef LSCS_NO_DATASTREAM
 
 /*!
     Serializes the contents of the meta object builder onto \a stream.
@@ -2102,7 +2102,7 @@ void QMetaObjectBuilder::deserialize
     stream >> name;
 }
 
-#endif // !QT_NO_DATASTREAM
+#endif // !LSCS_NO_DATASTREAM
 
 /*!
     \class QMetaMethodBuilder
@@ -3110,4 +3110,4 @@ void QMetaEnumBuilder::removeKey( int index )
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

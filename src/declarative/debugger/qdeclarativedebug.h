@@ -26,7 +26,7 @@
 
 #include <QtCore/qglobal.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 struct Q_DECLARATIVE_EXPORT QDeclarativeDebuggingEnabler
 {
@@ -34,10 +34,10 @@ struct Q_DECLARATIVE_EXPORT QDeclarativeDebuggingEnabler
 };
 
 // Execute code in constructor before first QDeclarativeEngine is instantiated
-#if defined(QT_DECLARATIVE_DEBUG)
+#if defined(LSCS_DECLARATIVE_DEBUG)
 static QDeclarativeDebuggingEnabler qmlEnableDebuggingHelper;
 #endif
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDEBUG_H

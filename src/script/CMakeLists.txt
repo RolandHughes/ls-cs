@@ -17,7 +17,7 @@ add_definitions(
     -Djscyyerror=qtjscyyerror
     -DWTF=QTWTF
     -DUSE_SYSTEM_MALLOC
-    -DQT_BUILD_SCRIPT_LIB
+    -DLSCS_BUILD_SCRIPT_LIB
 )
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

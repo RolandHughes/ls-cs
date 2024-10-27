@@ -40,7 +40,7 @@
     The opening and closing tags must be correctly nested.
 */
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeStyledTextPrivate
 {
@@ -464,4 +464,4 @@ QStringView QDeclarativeStyledTextPrivate::parseValue( const QChar *&ch, const Q
     return QStringView( &textIn, valStart, valLength );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

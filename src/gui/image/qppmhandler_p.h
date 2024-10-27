@@ -26,7 +26,7 @@
 
 #include <qimageiohandler.h>
 
-#ifndef QT_NO_IMAGEFORMAT_PPM
+#ifndef LSCS_NO_IMAGEFORMAT_PPM
 
 class QByteArray;
 
@@ -65,6 +65,6 @@ private:
     mutable QByteArray subType;
 };
 
-#endif // QT_NO_IMAGEFORMAT_PPM
+#endif // LSCS_NO_IMAGEFORMAT_PPM
 
 #endif

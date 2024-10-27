@@ -24,7 +24,7 @@
 #include <qdeclarativeanimatedimage_p.h>
 #include <qdeclarativeanimatedimage_p_p.h>
 
-#ifndef QT_NO_MOVIE
+#ifndef LSCS_NO_MOVIE
 
 #include <qdeclarativeinfo.h>
 #include <private/qdeclarativeengine_p.h>
@@ -33,7 +33,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
-QT_BEGIN_NAMESPACE QDeclarativeAnimatedImage::QDeclarativeAnimatedImage( QDeclarativeItem *parent )
+LSCS_BEGIN_NAMESPACE QDeclarativeAnimatedImage::QDeclarativeAnimatedImage( QDeclarativeItem *parent )
     : QDeclarativeImage( *( new QDeclarativeAnimatedImagePrivate ), parent )
 {
 }
@@ -226,7 +226,7 @@ void QDeclarativeAnimatedImage::load()
     }
     else
     {
-#ifndef QT_NO_LOCALFILE_OPTIMIZED_QML
+#ifndef LSCS_NO_LOCALFILE_OPTIMIZED_QML
         QString lf = QDeclarativeEnginePrivate::urlToLocalFileOrQrc( d->url );
 
         if ( !lf.isEmpty() )
@@ -404,6 +404,6 @@ void QDeclarativeAnimatedImage::componentComplete()
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_MOVIE
+#endif // LSCS_NO_MOVIE

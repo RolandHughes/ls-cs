@@ -25,7 +25,7 @@
 #include <qopenglfunctions_es2.h>
 #include <qopenglcontext.h>
 
-#if defined(QT_OPENGL_ES_2)
+#if defined(LSCS_OPENGL_ES_2)
 
 QOpenGLFunctions_ES2::QOpenGLFunctions_ES2()
     : QAbstractOpenGLFunctions()

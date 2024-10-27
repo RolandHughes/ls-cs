@@ -946,9 +946,9 @@ lupdate - це частина набору програм Qt Linguist. Вона 
         <translation type="obsolete">Неможливо відкрити %1: %2</translation>
     </message>
     <message>
-        <source>//% cannot be used with tr() / QT_TR_NOOP(). Ignoring
+        <source>//% cannot be used with tr() / LSCS_TR_NOOP(). Ignoring
 </source>
-        <translation type="obsolete">//% не може бути використаний разом з tr() / QT_TR_NOOP(). Ігнорую
+        <translation type="obsolete">//% не може бути використаний разом з tr() / LSCS_TR_NOOP(). Ігнорую
 </translation>
     </message>
     <message>
@@ -982,15 +982,15 @@ lupdate - це частина набору програм Qt Linguist. Вона 
 </translation>
     </message>
     <message>
-        <source>//% cannot be used with translate() / QT_TRANSLATE_NOOP(). Ignoring
+        <source>//% cannot be used with translate() / LSCS_TRANSLATE_NOOP(). Ignoring
 </source>
-        <translation type="obsolete">//% не може бути використаний разом з translate() / QT_TRANSLATE_NOOP(). Ігнорую
+        <translation type="obsolete">//% не може бути використаний разом з translate() / LSCS_TRANSLATE_NOOP(). Ігнорую
 </translation>
     </message>
     <message>
-        <source>//= cannot be used with qtTrId() / QT_TRID_NOOP(). Ignoring
+        <source>//= cannot be used with qtTrId() / LSCS_TRID_NOOP(). Ignoring
 </source>
-        <translation type="obsolete">//= не може бути використаний разом з qtTrId() / QT_TRID_NOOP(). Ігнорую
+        <translation type="obsolete">//= не може бути використаний разом з qtTrId() / LSCS_TRID_NOOP(). Ігнорую
 </translation>
     </message>
     <message>

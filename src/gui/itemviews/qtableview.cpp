@@ -24,7 +24,7 @@
 #include <qtableview.h>
 #include <qtableview_p.h>
 
-#ifndef QT_NO_TABLEVIEW
+#ifndef LSCS_NO_TABLEVIEW
 
 #include <qabstractbutton.h>
 #include <qapplication.h>
@@ -38,7 +38,7 @@
 
 #include <qheaderview_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 #include <qaccessible.h>
 #endif
 
@@ -1640,7 +1640,7 @@ void QTableView::paintEvent( QPaintEvent *event )
         }
     }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     // Paint the dropIndicator
     d->paintDropIndicator( &painter );
 #endif
@@ -1781,7 +1781,7 @@ QModelIndex QTableView::moveCursor( CursorAction cursorAction, Qt::KeyboardModif
         case MoveUp:
         {
             int originalRow = visualRow;
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             if ( QApplication::keypadNavigationEnabled() && visualRow == 0 )
             {
@@ -1833,7 +1833,7 @@ QModelIndex QTableView::moveCursor( CursorAction cursorAction, Qt::KeyboardModif
                 visualRow = d->visualRow( d->rowSpanEndLogical( span.top(), span.height() ) );
             }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
             if ( QApplication::keypadNavigationEnabled() && visualRow >= bottom )
             {
@@ -3670,7 +3670,7 @@ void QTableViewPrivate::selectColumn( int column, bool anchor )
 
 void QTableView::currentChanged( const QModelIndex &current, const QModelIndex &previous )
 {
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -3695,7 +3695,7 @@ void QTableView::selectionChanged( const QItemSelection &selected, const QItemSe
 {
     Q_D( QTableView );
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
     if ( QAccessible::isActive() )
     {
@@ -3771,4 +3771,4 @@ void QTableView::_q_updateSpanRemovedColumns( const QModelIndex &parent, int sta
     d->_q_updateSpanRemovedColumns( parent, start, end );
 }
 
-#endif // QT_NO_TABLEVIEW
+#endif // LSCS_NO_TABLEVIEW

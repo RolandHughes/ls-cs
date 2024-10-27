@@ -26,7 +26,7 @@
 
 #include <qcommonstyle.h>
 
-#if defined(Q_OS_DARWIN) && ! defined(QT_NO_STYLE_MAC)
+#if defined(Q_OS_DARWIN) && ! defined(LSCS_NO_STYLE_MAC)
 
 class QPalette;
 class QPushButton;
@@ -107,7 +107,7 @@ public:
 
 private:
     Q_DECLARE_PRIVATE( QMacStyle )
-    friend bool qt_mac_buttonIsRenderedFlat( const QPushButton *pushButton, const QStyleOptionButton *option );
+    friend bool lscs_mac_buttonIsRenderedFlat( const QPushButton *pushButton, const QStyleOptionButton *option );
 };
 
 #endif

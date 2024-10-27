@@ -26,7 +26,7 @@
 
 #include <qprintengine.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qmap.h>
 #include <qmatrix.h>
@@ -118,6 +118,6 @@ private:
     int fd;
 };
 
-#endif // QT_NO_PRINTER
+#endif // LSCS_NO_PRINTER
 
 #endif

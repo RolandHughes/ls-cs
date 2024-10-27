@@ -34,7 +34,7 @@ if (FALSE)
    target_compile_definitions(LsCsSqlIBase
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
 #   if(BUILDING_RPM OR BUILDING_DEBIAN)

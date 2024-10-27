@@ -47,7 +47,7 @@ static QPlatformPrinterSupport *printerSupport = nullptr;
 
 static void cleanupPrinterSupport()
 {
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
     delete printerSupport;
 #endif
 

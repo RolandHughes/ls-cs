@@ -41,7 +41,7 @@ static int volumeToDecibels( int volume )
     {
         return 0;
 
-#ifdef QT_USE_MATH_H_FLOATS
+#ifdef LSCS_USE_MATH_H_FLOATS
     }
     else if ( sizeof( qreal ) == sizeof( float ) )
     {

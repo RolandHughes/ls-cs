@@ -24,7 +24,7 @@
 #include <qwidgetaction.h>
 #include <qdebug.h>
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 
 #include <qwidgetaction_p.h>
 
@@ -179,4 +179,4 @@ void QWidgetAction::_q_widgetDestroyed( QObject *object )
     d->_q_widgetDestroyed( object );
 }
 
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION

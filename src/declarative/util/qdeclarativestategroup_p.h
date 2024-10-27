@@ -26,7 +26,7 @@
 
 #include <qdeclarativestate_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeStateGroupPrivate;
 
@@ -71,7 +71,7 @@ private:
     void removeState( QDeclarativeState *state );
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 QML_DECLARE_TYPE( QDeclarativeStateGroup )
 

@@ -76,7 +76,7 @@ public:
     NET_LSCS_SLOT_1( Private, void _q_bufferOutgoingDataFinished() )
     NET_LSCS_SLOT_2( _q_bufferOutgoingDataFinished )
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     NET_LSCS_SLOT_1( Private, void _q_networkSessionConnected() )
     NET_LSCS_SLOT_2( _q_networkSessionConnected )
 
@@ -90,7 +90,7 @@ public:
     NET_LSCS_SLOT_2( _q_networkSessionUsagePoliciesChanged )
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 protected:
     void ignoreSslErrors() override;
@@ -123,7 +123,7 @@ public:
     void _q_bufferOutgoingData();
     void _q_bufferOutgoingDataFinished();
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     void _q_networkSessionConnected();
     void _q_networkSessionFailed();
     void _q_networkSessionStateChanged( QNetworkSession::State );
@@ -179,7 +179,7 @@ public:
 
     QUrl urlForLastAuthentication;
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy lastProxyAuthentication;
     QList<QNetworkProxy> proxyList;
 #endif
@@ -207,7 +207,7 @@ public:
     Q_DECLARE_PUBLIC( QNetworkReplyImpl )
 };
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 class QDisabledNetworkReply : public QNetworkReply
 {
     NET_LSCS_OBJECT( QDisabledNetworkReply )

@@ -27,7 +27,7 @@
 #include <QtCore/qfileinfo.h>
 #include <QtCore/qcoreapplication.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptDebuggerStackModelPrivate
     : public QAbstractItemModelPrivate
@@ -195,4 +195,4 @@ QVariant QScriptDebuggerStackModel::headerData( int section, Qt::Orientation ori
     return QVariant();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

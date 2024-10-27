@@ -43,7 +43,7 @@
 #include <qgenericunix_services_p.h>
 #include <qplatform_theme_p.h>
 
-#if ! defined(QT_NO_DBUS) && ! defined(QT_NO_SYSTEMTRAYICON)
+#if ! defined(LSCS_NO_DBUS) && ! defined(LSCS_NO_SYSTEMTRAYICON)
 #include <qdbustrayicon_p.h>
 #include <qdbusplatformmenu_p.h>
 #endif
@@ -72,7 +72,7 @@ QString QGenericUnixTheme::m_name = "generic";
 static const QString defaultSystemFontNameC = "Sans Serif";
 constexpr int defaultSystemFontSize = 9;
 
-#if ! defined(QT_NO_DBUS) && ! defined(QT_NO_SYSTEMTRAYICON)
+#if ! defined(LSCS_NO_DBUS) && ! defined(LSCS_NO_SYSTEMTRAYICON)
 static bool isDBusTrayAvailable()
 {
     static bool dbusTrayAvailable = false;
@@ -169,7 +169,7 @@ QStringList QGenericUnixTheme::xdgIconThemePaths()
     return paths;
 }
 
-#if !defined(QT_NO_DBUS) && !defined(QT_NO_SYSTEMTRAYICON)
+#if !defined(LSCS_NO_DBUS) && !defined(LSCS_NO_SYSTEMTRAYICON)
 QPlatformSystemTrayIcon *QGenericUnixTheme::createPlatformSystemTrayIcon() const
 {
     if ( isDBusTrayAvailable() )
@@ -212,7 +212,7 @@ QVariant QGenericUnixTheme::themeHint( ThemeHint hint ) const
     return QPlatformTheme::themeHint( hint );
 }
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 class QKdeThemePrivate : public QPlatformThemePrivate
 {
 public:
@@ -455,7 +455,7 @@ void QKdeThemePrivate::readKdeSystemPalette( const QStringList &kdeDirs, int kde
 
     // The above code sets _all_ color roles to "normal" colors. In KDE, the disabled
     // color roles are calculated by applying various effects described in kdeglobals.
-    // We use a bit simpler approach here, similar logic than in qt_palette_from_color().
+    // We use a bit simpler approach here, similar logic than in lscs_palette_from_color().
     const QColor button = pal->color( QPalette::Button );
     int h, s, v;
     button.getHsv( &h, &s, &v );
@@ -691,7 +691,7 @@ QPlatformTheme *QKdeTheme::createKdeTheme()
     return new QKdeTheme( kdeDirs, kdeVersion );
 }
 
-#if !defined(QT_NO_DBUS) && !defined(QT_NO_SYSTEMTRAYICON)
+#if !defined(LSCS_NO_DBUS) && !defined(LSCS_NO_SYSTEMTRAYICON)
 QPlatformSystemTrayIcon *QKdeTheme::createPlatformSystemTrayIcon() const
 {
     if ( isDBusTrayAvailable() )
@@ -703,7 +703,7 @@ QPlatformSystemTrayIcon *QKdeTheme::createPlatformSystemTrayIcon() const
 }
 #endif
 
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS
 
 QString QGnomeTheme::m_name = "gnome";
 
@@ -808,7 +808,7 @@ QString QGnomeTheme::gtkFontName() const
     return QString( "%1 %2" ).formatArg( defaultSystemFontNameC ).formatArg( defaultSystemFontSize );
 }
 
-#if !defined(QT_NO_DBUS) && ! defined(QT_NO_SYSTEMTRAYICON)
+#if !defined(LSCS_NO_DBUS) && ! defined(LSCS_NO_SYSTEMTRAYICON)
 QPlatformSystemTrayIcon *QGnomeTheme::createPlatformSystemTrayIcon() const
 {
     if ( isDBusTrayAvailable() )
@@ -854,7 +854,7 @@ QPlatformTheme *QGenericUnixTheme::createUnixTheme( const QString &name )
         return new QGenericUnixTheme;
     }
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
 
     if ( name == QKdeTheme::m_name )
 
@@ -896,7 +896,7 @@ QStringList QGenericUnixTheme::themeNames()
             if ( desktopEnvironment == "KDE" )
             {
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
                 result.push_back( QKdeTheme::m_name );
 #endif
             }

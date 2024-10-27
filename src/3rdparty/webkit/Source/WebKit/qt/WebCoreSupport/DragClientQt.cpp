@@ -113,7 +113,7 @@ void DragClientQt::willPerformDragSourceAction( DragSourceAction, const IntPoint
 void DragClientQt::startDrag( DragImageRef dragImage, const IntPoint &, const IntPoint &, Clipboard *clipboard, Frame *frame,
                               bool )
 {
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     QMimeData *clipboardData = static_cast<ClipboardQt *>( clipboard )->clipboardData();
     static_cast<ClipboardQt *>( clipboard )->invalidateWritableData();
     QWidget *view = m_webPage->view();

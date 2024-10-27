@@ -26,14 +26,14 @@
 
 #include <qfilesystemwatcher_p.h>
 
-#ifndef QT_NO_FILESYSTEMWATCHER
+#ifndef LSCS_NO_FILESYSTEMWATCHER
 
 #include <qdatetime.h>
 #include <qfile.h>
 #include <qfileinfo.h>
 #include <qhash.h>
 #include <qmutex.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qvector.h>
 
 class QWindowsFileSystemWatcherEngineThread;
@@ -126,6 +126,6 @@ public:
     CORE_LSCS_SIGNAL_2( directoryChanged, path, removed )
 };
 
-#endif // QT_NO_FILESYSTEMWATCHER
+#endif // LSCS_NO_FILESYSTEMWATCHER
 
 #endif

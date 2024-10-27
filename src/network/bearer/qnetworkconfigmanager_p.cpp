@@ -33,7 +33,7 @@
 #include <qbearerplugin_p.h>
 #include <qfactoryloader_p.h>
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 
 static QFactoryLoader *loader()
 {
@@ -437,7 +437,7 @@ void QNetworkConfigurationManagerPrivate::updateConfigurations()
         updating    = false;
         bool envOK  = false;
 
-        const int skipGeneric  = qgetenv( "QT_EXCLUDE_GENERIC_BEARER" ).toInt( &envOK );
+        const int skipGeneric  = qgetenv( "LSCS_EXCLUDE_GENERIC_BEARER" ).toInt( &envOK );
         QBearerEngine *generic = nullptr;
 
         QFactoryLoader *pluginLoader = loader();
@@ -563,7 +563,7 @@ void QNetworkConfigurationManagerPrivate::startPolling()
         pollTimer = new QTimer( this );
 
         bool ok;
-        int interval = qgetenv( "QT_BEARER_POLL_TIMEOUT" ).toInt( &ok );
+        int interval = qgetenv( "LSCS_BEARER_POLL_TIMEOUT" ).toInt( &ok );
 
         if ( ! ok )
         {
@@ -625,4 +625,4 @@ void QNetworkConfigurationManagerPrivate::disablePolling()
     --forcedPolling;
 }
 
-#endif // QT_NO_BEARERMANAGEMENT
+#endif // LSCS_NO_BEARERMANAGEMENT

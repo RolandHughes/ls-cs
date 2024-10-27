@@ -29,7 +29,7 @@
 #include <qboxlayout.h>
 #include <qdockwidget.h>
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
 class QGridLayout;
 class QWidgetResizeHandler;
@@ -69,7 +69,7 @@ public:
     QDockWidget::DockWidgetFeatures features;
     Qt::DockWidgetAreas allowedAreas;
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
     QAction *toggleViewAction;
 #endif
 
@@ -185,6 +185,6 @@ inline QDockWidgetLayout *QDockWidgetItem::dockWidgetLayout() const
     return nullptr;
 }
 
-#endif // QT_NO_DOCKWIDGET
+#endif // LSCS_NO_DOCKWIDGET
 
 #endif // QDYNAMICDOCKWIDGET_P_H

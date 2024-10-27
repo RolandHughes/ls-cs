@@ -1705,7 +1705,7 @@ bool QObjectDelegate::getOwnPropertySlot( QScriptObject *object, JSC::ExecState 
 {
     // Note: this has to be kept in sync with getOwnPropertyDescriptor
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QString name = convertToString( propertyName.ustring() );
     QObject *qobject = data->value;
 
@@ -1850,9 +1850,9 @@ bool QObjectDelegate::getOwnPropertySlot( QScriptObject *object, JSC::ExecState 
     }
 
     return QScriptObjectDelegate::getOwnPropertySlot( object, exec, propertyName, slot );
-#else //QT_NO_PROPERTIES
+#else //LSCS_NO_PROPERTIES
     return false;
-#endif //QT_NO_PROPERTIES
+#endif //LSCS_NO_PROPERTIES
 }
 
 
@@ -1862,7 +1862,7 @@ bool QObjectDelegate::getOwnPropertyDescriptor( QScriptObject *object, JSC::Exec
 {
     // Note: this has to be kept in sync with getOwnPropertySlot
 
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QString name = convertToString( propertyName.ustring() );
     QObject *qobject = data->value;
 
@@ -2042,16 +2042,16 @@ bool QObjectDelegate::getOwnPropertyDescriptor( QScriptObject *object, JSC::Exec
     }
 
     return QScriptObjectDelegate::getOwnPropertyDescriptor( object, exec, propertyName, descriptor );
-#else //QT_NO_PROPERTIES
+#else //LSCS_NO_PROPERTIES
     return false;
 
-#endif //QT_NO_PROPERTIES
+#endif //LSCS_NO_PROPERTIES
 }
 
 void QObjectDelegate::put( QScriptObject *object, JSC::ExecState *exec,
                            const JSC::Identifier &propertyName, JSC::JSValue value, JSC::PutPropertySlot &slot )
 {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QString name = convertToString( propertyName.ustring() );
     QObject *qobject = data->value;
 
@@ -2175,13 +2175,13 @@ void QObjectDelegate::put( QScriptObject *object, JSC::ExecState *exec,
     }
 
     QScriptObjectDelegate::put( object, exec, propertyName, value, slot );
-#endif //QT_NO_PROPERTIES
+#endif //LSCS_NO_PROPERTIES
 }
 
 bool QObjectDelegate::deleteProperty( QScriptObject *object, JSC::ExecState *exec,
                                       const JSC::Identifier &propertyName )
 {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QString name = convertToString( propertyName.ustring() );
     QObject *qobject = data->value;
 
@@ -2232,15 +2232,15 @@ bool QObjectDelegate::deleteProperty( QScriptObject *object, JSC::ExecState *exe
 
     return QScriptObjectDelegate::deleteProperty( object, exec, propertyName );
 
-#else //QT_NO_PROPERTIES
+#else //LSCS_NO_PROPERTIES
     return false;
-#endif //QT_NO_PROPERTIES
+#endif //LSCS_NO_PROPERTIES
 }
 
 void QObjectDelegate::getOwnPropertyNames( QScriptObject *object, JSC::ExecState *exec,
         JSC::PropertyNameArray &propertyNames, JSC::EnumerationMode mode )
 {
-#ifndef QT_NO_PROPERTIES
+#ifndef LSCS_NO_PROPERTIES
     QObject *qobject = data->value;
 
     if ( !qobject )
@@ -2297,7 +2297,7 @@ void QObjectDelegate::getOwnPropertyNames( QScriptObject *object, JSC::ExecState
     }
 
     QScriptObjectDelegate::getOwnPropertyNames( object, exec, propertyNames, mode );
-#endif //QT_NO_PROPERTIES
+#endif //LSCS_NO_PROPERTIES
 }
 
 void QObjectDelegate::markChildren( QScriptObject *object, JSC::MarkStack &markStack )

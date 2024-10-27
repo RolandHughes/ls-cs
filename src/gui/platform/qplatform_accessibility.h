@@ -26,7 +26,7 @@
 
 #include <qobject.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 #include <qaccessible.h>
 
@@ -51,6 +51,6 @@ private:
     bool m_active;
 };
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 #endif

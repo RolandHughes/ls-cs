@@ -136,7 +136,7 @@ static inline bool launch( const QString &launcher, const QUrl &url )
     qDebug( "launch() Starting process %s", lscsPrintable( command ) );
 #endif
 
-#if defined(QT_NO_PROCESS)
+#if defined(LSCS_NO_PROCESS)
     const bool ok = ::system( lscsPrintable( command + " &" ) );
 #else
     const bool ok = QProcess::startDetached( command );

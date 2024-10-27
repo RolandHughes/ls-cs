@@ -31,9 +31,9 @@
 #include <QtDBus/qdbusmacros.h>
 #include <QtCore/qhash.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class Q_DBUS_EXPORT QDBusObjectPath
 {
@@ -207,7 +207,7 @@ inline bool operator==( const QDBusVariant &v1, const QDBusVariant &v2 )
     return v1.variant() == v2.variant();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 Q_DECLARE_METATYPE( QDBusVariant )
 Q_DECLARE_METATYPE( QDBusObjectPath )
@@ -215,5 +215,5 @@ Q_DECLARE_METATYPE( QList<QDBusObjectPath> )
 Q_DECLARE_METATYPE( QDBusSignature )
 Q_DECLARE_METATYPE( QList<QDBusSignature> )
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif

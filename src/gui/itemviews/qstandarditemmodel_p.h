@@ -26,7 +26,7 @@
 
 #include <qabstractitemmodel_p.h>
 
-#ifndef QT_NO_STANDARDITEMMODEL
+#ifndef LSCS_NO_STANDARDITEMMODEL
 
 #include <qlist.h>
 #include <qpair.h>
@@ -206,6 +206,6 @@ public:
 
 
 
-#endif // QT_NO_STANDARDITEMMODEL
+#endif // LSCS_NO_STANDARDITEMMODEL
 
 #endif // QSTANDARDITEMMODEL_P_H

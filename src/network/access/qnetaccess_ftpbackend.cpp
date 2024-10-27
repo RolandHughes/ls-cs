@@ -30,7 +30,7 @@
 #include <qnetaccess_manager_p.h>
 #include <qnoncontiguousbytedevice_p.h>
 
-#ifndef QT_NO_FTP
+#ifndef LSCS_NO_FTP
 
 static constexpr const int DefaultFtpPort = 21;
 
@@ -108,7 +108,7 @@ QNetworkAccessFtpBackend::~QNetworkAccessFtpBackend()
 
 void QNetworkAccessFtpBackend::open()
 {
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy proxy;
 
     for ( const QNetworkProxy &p : proxyList() )
@@ -157,12 +157,12 @@ void QNetworkAccessFtpBackend::open()
     {
         ftp = new QNetworkAccessCachedFtpConnection;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
         // copy network session down to the QFtp
         ftp->setProperty( "_q_networksession", property( "_q_networksession" ) );
 #endif
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
         if ( proxy.type() == QNetworkProxy::FtpCachingProxy )
         {
@@ -460,4 +460,4 @@ void QNetworkAccessFtpBackend::ftpRawCommandReply( int code, const QString &text
     }
 }
 
-#endif // QT_NO_FTP
+#endif // LSCS_NO_FTP

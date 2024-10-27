@@ -24,7 +24,7 @@
 #include <avfvideowidgetcontrol.h>
 #include <avfvideowidget.h>
 
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
 #include <QDebug>
 #endif
 
@@ -43,7 +43,7 @@ AVFVideoWidgetControl::AVFVideoWidgetControl(QObject *parent)
 
 AVFVideoWidgetControl::~AVFVideoWidgetControl()
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO;
 #endif
    delete m_videoWidget;
@@ -51,7 +51,7 @@ AVFVideoWidgetControl::~AVFVideoWidgetControl()
 
 void AVFVideoWidgetControl::setLayer(void *playerLayer)
 {
-#ifdef QT_DEBUG_AVF
+#ifdef LSCS_DEBUG_AVF
    qDebug() << Q_FUNC_INFO << playerLayer;
 #endif
 

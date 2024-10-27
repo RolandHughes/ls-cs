@@ -28,7 +28,7 @@
 #include <qfactoryinterface.h>
 #include <qstringfwd.h>
 
-#if ! defined(QT_NO_PICTURE)
+#if ! defined(LSCS_NO_PICTURE)
 
 class QPicture;
 class QImage;

@@ -23,7 +23,7 @@
 
 #include "qdeclarativetypenotavailable_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 int qmlRegisterTypeNotAvailable( const char *uri, int versionMajor, int versionMinor, const char *qmlName,
                                  const QString &message )
@@ -33,4 +33,4 @@ int qmlRegisterTypeNotAvailable( const char *uri, int versionMajor, int versionM
 
 QDeclarativeTypeNotAvailable::QDeclarativeTypeNotAvailable() { }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

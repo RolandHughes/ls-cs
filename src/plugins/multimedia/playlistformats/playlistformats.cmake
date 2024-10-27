@@ -21,7 +21,7 @@ target_link_libraries(LsCsMultimedia_m3u
 target_compile_definitions(LsCsMultimedia_m3u
    PRIVATE
    -DIN_TRUE
-   -DQT_PLUGIN
+   -DLSCS_PLUGIN
 )
 
 #if(BUILDING_RPM OR BUILDING_DEBIAN)

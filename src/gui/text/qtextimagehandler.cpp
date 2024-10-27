@@ -31,7 +31,7 @@
 
 #include <qtextengine_p.h>
 
-extern QString qt_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
+extern QString lscs_findAtNxFile( const QString &baseFileName, qreal targetDevicePixelRatio,
                                 qreal *sourceDevicePixelRatio );
 
 static QString resolveFileName( QString fileName, QUrl *url, qreal targetDevicePixelRatio,
@@ -59,7 +59,7 @@ static QString resolveFileName( QString fileName, QUrl *url, qreal targetDeviceP
     }
 
     // try to find a Nx version
-    return qt_findAtNxFile( fileName, targetDevicePixelRatio, sourceDevicePixelRatio );
+    return lscs_findAtNxFile( fileName, targetDevicePixelRatio, sourceDevicePixelRatio );
 }
 
 static QPixmap getPixmap( QTextDocument *doc, const QTextImageFormat &format, const qreal devicePixelRatio = 1.0 )
@@ -162,7 +162,7 @@ static QSize getPixmapSize( QTextDocument *doc, const QTextImageFormat &format )
 
         if ( !pm.isNull() )
         {
-            scale = qreal( pdev->logicalDpiY() ) / qreal( qt_defaultDpi() );
+            scale = qreal( pdev->logicalDpiY() ) / qreal( lscs_defaultDpi() );
         }
     }
 
@@ -256,7 +256,7 @@ static QSize getImageSize( QTextDocument *doc, const QTextImageFormat &format )
 
         if ( !image.isNull() )
         {
-            scale = qreal( pdev->logicalDpiY() ) / qreal( qt_defaultDpi() );
+            scale = qreal( pdev->logicalDpiY() ) / qreal( lscs_defaultDpi() );
         }
     }
 

@@ -54,7 +54,7 @@ public:
 
     QPlatformWindow *createPlatformWindow( QWindow *window ) const override;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     QPlatformOpenGLContext *createPlatformOpenGLContext( QOpenGLContext *context ) const override;
     QOpenGLContext::OpenGLModuleType openGLModuleType() override;
     static QWindowsStaticOpenGLContext *staticOpenGLContext();
@@ -63,16 +63,16 @@ public:
     QAbstractEventDispatcher *createEventDispatcher() const override;
     void initialize() override;
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QPlatformClipboard *clipboard() const override;
-#  ifndef QT_NO_DRAGANDDROP
+#  ifndef LSCS_NO_DRAGANDDROP
     QPlatformDrag *drag() const override;
 #  endif
 #endif
 
     QPlatformInputContext *inputContext() const override;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     QPlatformAccessibility *accessibility() const override;
 #endif
 
@@ -102,7 +102,7 @@ public:
 
     unsigned options() const;
 
-#if ! defined(QT_NO_SESSIONMANAGER)
+#if ! defined(LSCS_NO_SESSIONMANAGER)
     QPlatformSessionManager *createPlatformSessionManager( const QString &id, const QString &key ) const override;
 #endif
 

@@ -23,7 +23,7 @@
 
 #include <qclipboard.h>
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 
 #include <qpixmap.h>
 #include "qmimedata.h"
@@ -84,7 +84,7 @@ QString QClipboard::text( QString &subtype, Mode mode ) const
 
     const QByteArray rawData = data->data( QLatin1String( "text/" ) + subtype );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     QTextCodec *codec = QTextCodec::codecForMib( 106 ); // utf-8 is default
 
     if ( subtype == QLatin1String( "html" ) )
@@ -242,5 +242,5 @@ void QClipboard::emitChanged( Mode mode )
 }
 
 
-#endif // QT_NO_CLIPBOARD
+#endif // LSCS_NO_CLIPBOARD
 

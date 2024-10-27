@@ -39,11 +39,11 @@
 #include <QtCore/qglobal.h>
 #include <dbus/dbus.h>
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-#if !defined QT_LINKED_LIBDBUS
+#if !defined LSCS_LINKED_LIBDBUS
 
 void *qdbus_resolve_conditionally( const char *name ); // doesn't print a warning
 void *qdbus_resolve_me( const char *name ); // prints a warning
@@ -59,7 +59,7 @@ bool qdbus_loadLibDBus();
         funcret ptr argcall;                                    \
     }
 
-#else // defined QT_LINKED_LIBDBUS
+#else // defined LSCS_LINKED_LIBDBUS
 
 inline bool qdbus_loadLibDBus()
 {
@@ -69,7 +69,7 @@ inline bool qdbus_loadLibDBus()
 # define DEFINEFUNC(ret, func, args, argcall, funcret) \
     static inline ret q_##func args { funcret func argcall; }
 
-#endif // defined QT_LINKED_LIBDBUS
+#endif // defined LSCS_LINKED_LIBDBUS
 
 /* dbus-bus.h */
 DEFINEFUNC( void, dbus_bus_add_match, ( DBusConnection *connection,
@@ -344,7 +344,7 @@ DEFINEFUNC( void, dbus_server_unref, ( DBusServer     *server ),
 /* dbus-thread.h */
 DEFINEFUNC( dbus_bool_t, dbus_threads_init_default, (), (), return )
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS
 #endif // QDBUS_SYMBOLS_P_H

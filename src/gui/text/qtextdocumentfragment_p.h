@@ -95,7 +95,7 @@ public:
     uint importedFromPlainText : 1;
 };
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
 class QTextHtmlImporter : public QTextHtmlParser
 {
@@ -233,6 +233,6 @@ private:
     const QTextHtmlParserNode *currentNode;
 };
 
-#endif // QT_NO_TEXTHTMLPARSER
+#endif // LSCS_NO_TEXTHTMLPARSER
 
 #endif // QTEXTDOCUMENTFRAGMENT_P_H

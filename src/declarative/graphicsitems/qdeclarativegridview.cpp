@@ -33,7 +33,7 @@
 #include <math.h>
 #include <qplatformdefs.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 #ifndef QML_FLICK_SNAPONETHRESHOLD
 #define QML_FLICK_SNAPONETHRESHOLD 30
@@ -4409,4 +4409,4 @@ QDeclarativeGridViewAttached *QDeclarativeGridView::qmlAttachedProperties( QObje
     return new QDeclarativeGridViewAttached( obj );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

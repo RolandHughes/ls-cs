@@ -26,7 +26,7 @@
 
 #include "qdeclarativeparticles_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QParticlesQmlModule : public QDeclarativeExtensionPlugin
 {
@@ -43,7 +43,7 @@ public:
     }
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-Q_EXPORT_PLUGIN2( qmlparticlesplugin, QT_PREPEND_NAMESPACE( QParticlesQmlModule ) );
+Q_EXPORT_PLUGIN2( qmlparticlesplugin, LSCS_PREPEND_NAMESPACE( QParticlesQmlModule ) );
 

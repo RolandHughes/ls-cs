@@ -55,7 +55,7 @@ public:
     bool write( const QTextDocument *document );
     bool write( const QTextDocumentFragment &fragment );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
     void setCodec( QTextCodec *codec );
     QTextCodec *codec() const;
 #endif

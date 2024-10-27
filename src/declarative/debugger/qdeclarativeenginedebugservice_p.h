@@ -29,7 +29,7 @@
 #include <qvariant.h>
 #include <QWeakPointer>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeEngine;
 class QDeclarativeContext;
@@ -107,7 +107,7 @@ Q_DECLARATIVE_PRIVATE_EXPORT QDataStream &operator<<( QDataStream &,
 Q_DECLARATIVE_PRIVATE_EXPORT QDataStream &operator>>( QDataStream &,
         QDeclarativeEngineDebugService::QDeclarativeObjectProperty & );
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEENGINEDEBUGSERVICE_P_H
 

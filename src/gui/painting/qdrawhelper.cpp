@@ -37,7 +37,7 @@
 #include <qapplication_p.h>
 #include <qrgba64_p.h>
 
-#if defined(QT_COMPILER_SUPPORTS_MIPS_DSP) || defined(QT_COMPILER_SUPPORTS_MIPS_DSPR2)
+#if defined(LSCS_COMPILER_SUPPORTS_MIPS_DSP) || defined(LSCS_COMPILER_SUPPORTS_MIPS_DSPR2)
 #include <qdrawhelper_mips_dsp_p.h>
 #endif
 
@@ -804,7 +804,7 @@ static const uint *convertPassThrough( uint *, const uint *src, int,
 static const uint *convertARGB32ToARGB32PM( uint *buffer, const uint *src, int count,
         const QPixelLayout *, const QRgb * )
 {
-    return qt_convertARGB32ToARGB32PM( buffer, src, count );
+    return lscs_convertARGB32ToARGB32PM( buffer, src, count );
 }
 
 static const uint *convertRGBA8888PMToARGB32PM( uint *buffer, const uint *src, int count,
@@ -821,7 +821,7 @@ static const uint *convertRGBA8888PMToARGB32PM( uint *buffer, const uint *src, i
 static const uint *convertRGBA8888ToARGB32PM( uint *buffer, const uint *src, int count,
         const QPixelLayout *, const QRgb * )
 {
-    return qt_convertRGBA8888ToARGB32PM( buffer, src, count );
+    return lscs_convertRGBA8888ToARGB32PM( buffer, src, count );
 }
 
 static const uint *convertAlpha8ToRGB32( uint *buffer, const uint *src, int count,
@@ -1676,7 +1676,7 @@ static void destStoreMono( QRasterBuffer *rasterBuffer, int x, int y, const uint
     {
         for ( int i = 0; i < length; ++i )
         {
-            if ( qGray( buffer[i] ) < int( qt_bayer_matrix[y & 15][x & 15] ) )
+            if ( qGray( buffer[i] ) < int( lscs_bayer_matrix[y & 15][x & 15] ) )
             {
                 data[x >> 3] |= 0x80 >> ( x & 7 );
             }
@@ -1722,7 +1722,7 @@ static void destStoreMonoLsb( QRasterBuffer *rasterBuffer, int x, int y, const u
     {
         for ( int i = 0; i < length; ++i )
         {
-            if ( qGray( buffer[i] ) < int( qt_bayer_matrix[y & 15][x & 15] ) )
+            if ( qGray( buffer[i] ) < int( lscs_bayer_matrix[y & 15][x & 15] ) )
             {
                 data[x >> 3] |= 1 << ( x & 7 );
             }
@@ -2038,7 +2038,7 @@ static const uint *fetchUntransformedRGB16( uint *buffer, const Operator *,
 {
     const quint16 *scanLine = ( const quint16 * )data->texture.scanLine( y ) + x;
 
-#ifdef QT_COMPILER_SUPPORTS_MIPS_DSPR2
+#ifdef LSCS_COMPILER_SUPPORTS_MIPS_DSPR2
     qConvertRgb16To32_asm_mips_dspr2( buffer, scanLine, length );
 #else
 
@@ -4439,16 +4439,16 @@ static SourceFetchProc64 sourceFetch64[NBlendTypes][QImage::NImageFormats] =
 #define FIXPT_BITS 8
 #define FIXPT_SIZE (1<<FIXPT_BITS)
 
-static uint qt_gradient_pixel_fixed( const QGradientData *data, int fixed_pos )
+static uint lscs_gradient_pixel_fixed( const QGradientData *data, int fixed_pos )
 {
     int ipos = ( fixed_pos + ( FIXPT_SIZE / 2 ) ) >> FIXPT_BITS;
-    return data->colorTable32[qt_gradient_clamp( data, ipos )];
+    return data->colorTable32[lscs_gradient_clamp( data, ipos )];
 }
 
-static const QRgba64 &qt_gradient_pixel64_fixed( const QGradientData *data, int fixed_pos )
+static const QRgba64 &lscs_gradient_pixel64_fixed( const QGradientData *data, int fixed_pos )
 {
     int ipos = ( fixed_pos + ( FIXPT_SIZE / 2 ) ) >> FIXPT_BITS;
-    return data->colorTable64[qt_gradient_clamp( data, ipos )];
+    return data->colorTable64[lscs_gradient_clamp( data, ipos )];
 }
 
 static void getLinearGradientValues( LinearGradientValues *v, const QSpanData *data )
@@ -4476,15 +4476,15 @@ public:
     }
     static Type fetchSingle( const QGradientData &gradient, qreal v )
     {
-        return qt_gradient_pixel( &gradient, v );
+        return lscs_gradient_pixel( &gradient, v );
     }
     static Type fetchSingle( const QGradientData &gradient, int v )
     {
-        return qt_gradient_pixel_fixed( &gradient, v );
+        return lscs_gradient_pixel_fixed( &gradient, v );
     }
     static void memfill( Type *buffer, Type fill, int length )
     {
-        qt_memfill32( buffer, fill, length );
+        lscs_memfill32( buffer, fill, length );
     }
 };
 
@@ -4499,22 +4499,22 @@ public:
 
     static Type fetchSingle( const QGradientData &gradient, qreal v )
     {
-        return qt_gradient_pixel64( &gradient, v );
+        return lscs_gradient_pixel64( &gradient, v );
     }
 
     static Type fetchSingle( const QGradientData &gradient, int v )
     {
-        return qt_gradient_pixel64_fixed( &gradient, v );
+        return lscs_gradient_pixel64_fixed( &gradient, v );
     }
 
     static void memfill( Type *buffer, Type fill, int length )
     {
-        qt_memfill64( ( quint64 * )buffer, fill, length );
+        lscs_memfill64( ( quint64 * )buffer, fill, length );
     }
 };
 
 template <class GradientBase, typename BlendType>
-static inline const BlendType *qt_fetch_linear_gradient_template(
+static inline const BlendType *lscs_fetch_linear_gradient_template(
     BlendType *buffer, const Operator *op, const QSpanData *data,int y, int x, int length )
 {
     const BlendType *b = buffer;
@@ -4605,16 +4605,16 @@ static inline const BlendType *qt_fetch_linear_gradient_template(
     return b;
 }
 
-static const uint *qt_fetch_linear_gradient( uint *buffer, const Operator *op, const QSpanData *data,
+static const uint *lscs_fetch_linear_gradient( uint *buffer, const Operator *op, const QSpanData *data,
         int y, int x, int length )
 {
-    return qt_fetch_linear_gradient_template<GradientBase32, uint>( buffer, op, data, y, x, length );
+    return lscs_fetch_linear_gradient_template<GradientBase32, uint>( buffer, op, data, y, x, length );
 }
 
-static const QRgba64 *qt_fetch_linear_gradient_rgb64( QRgba64 *buffer, const Operator *op, const QSpanData *data,
+static const QRgba64 *lscs_fetch_linear_gradient_rgb64( QRgba64 *buffer, const Operator *op, const QSpanData *data,
         int y, int x, int length )
 {
-    return qt_fetch_linear_gradient_template<GradientBase64, QRgba64>( buffer, op, data, y, x, length );
+    return lscs_fetch_linear_gradient_template<GradientBase64, QRgba64>( buffer, op, data, y, x, length );
 }
 
 static void getRadialGradientValues( RadialGradientValues *v, const QSpanData *data )
@@ -4679,22 +4679,22 @@ public:
     }
 };
 
-const uint *qt_fetch_radial_gradient_plain( uint *buffer, const Operator *op, const QSpanData *data,
+const uint *lscs_fetch_radial_gradient_plain( uint *buffer, const Operator *op, const QSpanData *data,
         int y, int x, int length )
 {
-    return qt_fetch_radial_gradient_template<RadialFetchPlain<GradientBase32>, uint>( buffer, op, data, y, x, length );
+    return lscs_fetch_radial_gradient_template<RadialFetchPlain<GradientBase32>, uint>( buffer, op, data, y, x, length );
 }
 
-static SourceFetchProc qt_fetch_radial_gradient = qt_fetch_radial_gradient_plain;
+static SourceFetchProc lscs_fetch_radial_gradient = lscs_fetch_radial_gradient_plain;
 
-const QRgba64 *qt_fetch_radial_gradient_rgb64( QRgba64 *buffer, const Operator *op, const QSpanData *data,
+const QRgba64 *lscs_fetch_radial_gradient_rgb64( QRgba64 *buffer, const Operator *op, const QSpanData *data,
         int y, int x, int length )
 {
-    return qt_fetch_radial_gradient_template<RadialFetchPlain<GradientBase64>, QRgba64>( buffer, op, data, y, x, length );
+    return lscs_fetch_radial_gradient_template<RadialFetchPlain<GradientBase64>, QRgba64>( buffer, op, data, y, x, length );
 }
 
 template <class GradientBase, typename BlendType>
-static inline const BlendType *qt_fetch_conical_gradient_template(
+static inline const BlendType *lscs_fetch_conical_gradient_template(
     BlendType *buffer, const QSpanData *data, int y, int x, int length )
 {
     const BlendType *b = buffer;
@@ -4756,29 +4756,29 @@ static inline const BlendType *qt_fetch_conical_gradient_template(
     return b;
 }
 
-static const uint *qt_fetch_conical_gradient( uint *buffer, const Operator *, const QSpanData *data,
+static const uint *lscs_fetch_conical_gradient( uint *buffer, const Operator *, const QSpanData *data,
         int y, int x, int length )
 {
-    return qt_fetch_conical_gradient_template<GradientBase32, uint>( buffer, data, y, x, length );
+    return lscs_fetch_conical_gradient_template<GradientBase32, uint>( buffer, data, y, x, length );
 }
 
-static const QRgba64 *qt_fetch_conical_gradient_rgb64( QRgba64 *buffer, const Operator *, const QSpanData *data,
+static const QRgba64 *lscs_fetch_conical_gradient_rgb64( QRgba64 *buffer, const Operator *, const QSpanData *data,
         int y, int x, int length )
 {
-    return qt_fetch_conical_gradient_template<GradientBase64, QRgba64>( buffer, data, y, x, length );
+    return lscs_fetch_conical_gradient_template<GradientBase64, QRgba64>( buffer, data, y, x, length );
 }
 
-extern CompositionFunctionSolid qt_functionForModeSolid_C[];
-extern CompositionFunctionSolid64 qt_functionForModeSolid64_C[];
+extern CompositionFunctionSolid lscs_functionForModeSolid_C[];
+extern CompositionFunctionSolid64 lscs_functionForModeSolid64_C[];
 
-static const CompositionFunctionSolid *functionForModeSolid = qt_functionForModeSolid_C;
-static const CompositionFunctionSolid64 *functionForModeSolid64 = qt_functionForModeSolid64_C;
+static const CompositionFunctionSolid *functionForModeSolid = lscs_functionForModeSolid_C;
+static const CompositionFunctionSolid64 *functionForModeSolid64 = lscs_functionForModeSolid64_C;
 
-extern CompositionFunction qt_functionForMode_C[];
-extern CompositionFunction64 qt_functionForMode64_C[];
+extern CompositionFunction lscs_functionForMode_C[];
+extern CompositionFunction64 lscs_functionForMode64_C[];
 
-static const CompositionFunction *functionForMode = qt_functionForMode_C;
-static const CompositionFunction64 *functionForMode64 = qt_functionForMode64_C;
+static const CompositionFunction *functionForMode = lscs_functionForMode_C;
+static const CompositionFunction64 *functionForMode64 = lscs_functionForMode64_C;
 
 static TextureBlendType getBlendType( const QSpanData *data )
 {
@@ -4843,21 +4843,21 @@ static inline Operator getOperator( const QSpanData *data, const QSpan *spans, i
         case QSpanData::LinearGradient:
             solidSource = !data->gradient.alphaColor;
             getLinearGradientValues( &op.linear, data );
-            op.srcFetch = qt_fetch_linear_gradient;
-            op.srcFetch64 = qt_fetch_linear_gradient_rgb64;
+            op.srcFetch = lscs_fetch_linear_gradient;
+            op.srcFetch64 = lscs_fetch_linear_gradient_rgb64;
             break;
 
         case QSpanData::RadialGradient:
             solidSource = !data->gradient.alphaColor;
             getRadialGradientValues( &op.radial, data );
-            op.srcFetch = qt_fetch_radial_gradient;
-            op.srcFetch64 = qt_fetch_radial_gradient_rgb64;
+            op.srcFetch = lscs_fetch_radial_gradient;
+            op.srcFetch64 = lscs_fetch_radial_gradient_rgb64;
             break;
 
         case QSpanData::ConicalGradient:
             solidSource = !data->gradient.alphaColor;
-            op.srcFetch = qt_fetch_conical_gradient;
-            op.srcFetch64 = qt_fetch_conical_gradient_rgb64;
+            op.srcFetch = lscs_fetch_conical_gradient;
+            op.srcFetch64 = lscs_fetch_conical_gradient_rgb64;
             break;
 
         case QSpanData::Texture:
@@ -4980,7 +4980,7 @@ static void blend_color_argb( int count, const QSpan *spans, void *userData )
 
             if ( spans->coverage == 255 )
             {
-                qt_memfill<quint32>( target, color, spans->len );
+                lscs_memfill<quint32>( target, color, spans->len );
 
             }
             else
@@ -5052,7 +5052,7 @@ static void blend_color_rgb16( int count, const QSpan *spans, void *userData )
     /*
         We duplicate a little logic from getOperator() and calculate the
         composition mode directly.  This allows blend_color_rgb16 to be used
-        from qt_gradient_quint16 with minimal overhead.
+        from lscs_gradient_quint16 with minimal overhead.
      */
     QPainter::CompositionMode mode = data->rasterBuffer->compositionMode;
 
@@ -5072,7 +5072,7 @@ static void blend_color_rgb16( int count, const QSpan *spans, void *userData )
 
             if ( spans->coverage == 255 )
             {
-                qt_memfill<quint16>( target, c, spans->len );
+                lscs_memfill<quint16>( target, c, spans->len );
 
             }
             else
@@ -7054,7 +7054,7 @@ void qBlendTexture( int count, const QSpan *spans, void *userData )
 }
 
 template <class DST>
-static inline void qt_bitmapblit_template( QRasterBuffer *rasterBuffer,
+static inline void lscs_bitmapblit_template( QRasterBuffer *rasterBuffer,
         int x, int y, DST color,
         const uchar *map,
         int mapWidth, int mapHeight, int mapStride )
@@ -7083,7 +7083,7 @@ static inline void qt_bitmapblit_template( QRasterBuffer *rasterBuffer,
                     {
                         if ( n )
                         {
-                            qt_memfill( dest + x0, color, n );
+                            lscs_memfill( dest + x0, color, n );
                             x0 += n + 1;
                             n = 0;
                         }
@@ -7105,7 +7105,7 @@ static inline void qt_bitmapblit_template( QRasterBuffer *rasterBuffer,
 
             if ( n )
             {
-                qt_memfill( dest + x0, color, n );
+                lscs_memfill( dest + x0, color, n );
             }
 
             dest += destStride;
@@ -7127,7 +7127,7 @@ static inline void qt_bitmapblit_template( QRasterBuffer *rasterBuffer,
                 }
                 else if ( n )
                 {
-                    qt_memfill( dest + x0, color, n );
+                    lscs_memfill( dest + x0, color, n );
                     x0 += n + 1;
                     n = 0;
                 }
@@ -7139,7 +7139,7 @@ static inline void qt_bitmapblit_template( QRasterBuffer *rasterBuffer,
 
             if ( n )
             {
-                qt_memfill( dest + x0, color, n );
+                lscs_memfill( dest + x0, color, n );
             }
 
             dest += destStride;
@@ -7148,7 +7148,7 @@ static inline void qt_bitmapblit_template( QRasterBuffer *rasterBuffer,
     }
 }
 
-static void qt_gradient_argb32( int count, const QSpan *spans, void *userData )
+static void lscs_gradient_argb32( int count, const QSpan *spans, void *userData )
 {
     QSpanData *data = reinterpret_cast<QSpanData *>( userData );
 
@@ -7173,7 +7173,7 @@ static void qt_gradient_argb32( int count, const QSpan *spans, void *userData )
                 qreal t = linear.dy*ry + linear.off;
                 t *= (GRADIENT_STOPTABLE_SIZE - 1);
                 quint32 color =
-                    qt_gradient_pixel_fixed(&data->gradient,
+                    lscs_gradient_pixel_fixed(&data->gradient,
                                             int(t * FIXPT_SIZE));
 
             This has then been converted to fixed point to improve performance.
@@ -7189,7 +7189,7 @@ static void qt_gradient_argb32( int count, const QSpan *spans, void *userData )
 
             quint32 *dst = ( quint32 * )( data->rasterBuffer->scanLine( y ) ) + x;
             quint32 color =
-                qt_gradient_pixel_fixed( &data->gradient, yinc * y + off );
+                lscs_gradient_pixel_fixed( &data->gradient, yinc * y + off );
 
             funcSolid( dst, spans->len, color, spans->coverage );
             ++spans;
@@ -7202,7 +7202,7 @@ static void qt_gradient_argb32( int count, const QSpan *spans, void *userData )
     }
 }
 
-static void qt_gradient_quint16( int count, const QSpan *spans, void *userData )
+static void lscs_gradient_quint16( int count, const QSpan *spans, void *userData )
 {
     QSpanData *data = reinterpret_cast<QSpanData *>( userData );
 
@@ -7225,7 +7225,7 @@ static void qt_gradient_quint16( int count, const QSpan *spans, void *userData )
                 qreal t = linear.dy*ry + linear.off;
                 t *= (GRADIENT_STOPTABLE_SIZE - 1);
                 quint32 color =
-                    qt_gradient_pixel_fixed(&data->gradient,
+                    lscs_gradient_pixel_fixed(&data->gradient,
                                             int(t * FIXPT_SIZE));
 
             This has then been converted to fixed point to improve performance.
@@ -7241,7 +7241,7 @@ static void qt_gradient_quint16( int count, const QSpan *spans, void *userData )
         {
             int y = spans->y;
 
-            data->solid.color = QRgba64::fromArgb32( qt_gradient_pixel_fixed( &gradient, yinc * y + off ) );
+            data->solid.color = QRgba64::fromArgb32( lscs_gradient_pixel_fixed( &gradient, yinc * y + off ) );
             blend_color_rgb16( 1, spans, userData );
             ++spans;
         }
@@ -7255,38 +7255,38 @@ static void qt_gradient_quint16( int count, const QSpan *spans, void *userData )
     }
 }
 
-static inline void qt_bitmapblit_argb32( QRasterBuffer *rasterBuffer,
+static inline void lscs_bitmapblit_argb32( QRasterBuffer *rasterBuffer,
         int x, int y, const QRgba64 &color, const uchar *map, int mapWidth, int mapHeight, int mapStride )
 {
-    qt_bitmapblit_template<quint32>( rasterBuffer, x,  y, color.toArgb32(),
+    lscs_bitmapblit_template<quint32>( rasterBuffer, x,  y, color.toArgb32(),
                                      map, mapWidth, mapHeight, mapStride );
 }
 
-static inline void qt_bitmapblit_rgba8888( QRasterBuffer *rasterBuffer,
+static inline void lscs_bitmapblit_rgba8888( QRasterBuffer *rasterBuffer,
         int x, int y, const QRgba64 &color,
         const uchar *map,
         int mapWidth, int mapHeight, int mapStride )
 {
-    qt_bitmapblit_template<quint32>( rasterBuffer, x, y, ARGB2RGBA( color.toArgb32() ),
+    lscs_bitmapblit_template<quint32>( rasterBuffer, x, y, ARGB2RGBA( color.toArgb32() ),
                                      map, mapWidth, mapHeight, mapStride );
 }
 
 template <QtPixelOrder PixelOrder>
-static void qt_bitmapblit_rgb30( QRasterBuffer *rasterBuffer,
+static void lscs_bitmapblit_rgb30( QRasterBuffer *rasterBuffer,
                                  int x, int y, const QRgba64 &color, const uchar *map, int mapWidth, int mapHeight, int mapStride )
 {
-    qt_bitmapblit_template<quint32>( rasterBuffer, x, y, qConvertRgb64ToRgb30<PixelOrder>( color ),
+    lscs_bitmapblit_template<quint32>( rasterBuffer, x, y, qConvertRgb64ToRgb30<PixelOrder>( color ),
                                      map, mapWidth, mapHeight, mapStride );
 }
 
-static inline void qt_bitmapblit_quint16( QRasterBuffer *rasterBuffer,
+static inline void lscs_bitmapblit_quint16( QRasterBuffer *rasterBuffer,
         int x, int y, const QRgba64 &color, const uchar *map, int mapWidth, int mapHeight, int mapStride )
 {
-    qt_bitmapblit_template<quint16>( rasterBuffer, x,  y, color.toRgb16(),
+    lscs_bitmapblit_template<quint16>( rasterBuffer, x,  y, color.toRgb16(),
                                      map, mapWidth, mapHeight, mapStride );
 }
 
-static void qt_alphamapblit_quint16( QRasterBuffer *rasterBuffer,
+static void lscs_alphamapblit_quint16( QRasterBuffer *rasterBuffer,
                                      int x, int y, const QRgba64 &color, const uchar *map, int mapWidth,
                                      int mapHeight, int mapStride, const QClipData * )
 {
@@ -7335,16 +7335,16 @@ static inline void rgbBlendPixel( quint32 *dst, int coverage, int sr, int sg, in
     {
 
         int a = qGray( coverage );
-        sr = qt_div_255( invgamma[sr] * a );
-        sg = qt_div_255( invgamma[sg] * a );
-        sb = qt_div_255( invgamma[sb] * a );
+        sr = lscs_div_255( invgamma[sr] * a );
+        sg = lscs_div_255( invgamma[sg] * a );
+        sb = lscs_div_255( invgamma[sb] * a );
 
         int ia = 255 - a;
-        dr = qt_div_255( dr * ia );
-        dg = qt_div_255( dg * ia );
-        db = qt_div_255( db * ia );
+        dr = lscs_div_255( dr * ia );
+        dg = lscs_div_255( dg * ia );
+        db = lscs_div_255( db * ia );
 
-        *dst = ( ( a + qt_div_255( ( 255 - a ) * da ) ) << 24 )
+        *dst = ( ( a + lscs_div_255( ( 255 - a ) * da ) ) << 24 )
                |  ( ( sr + dr ) << 16 )
                |  ( ( sg + dg ) << 8 )
                |  ( ( sb + db ) );
@@ -7359,9 +7359,9 @@ static inline void rgbBlendPixel( quint32 *dst, int coverage, int sr, int sg, in
     dg = gamma[dg];
     db = gamma[db];
 
-    int nr = qt_div_255( sr * mr + dr * ( 255 - mr ) );
-    int ng = qt_div_255( sg * mg + dg * ( 255 - mg ) );
-    int nb = qt_div_255( sb * mb + db * ( 255 - mb ) );
+    int nr = lscs_div_255( sr * mr + dr * ( 255 - mr ) );
+    int ng = lscs_div_255( sg * mg + dg * ( 255 - mg ) );
+    int nb = lscs_div_255( sb * mb + db * ( 255 - mb ) );
 
     nr = invgamma[nr];
     ng = invgamma[ng];
@@ -7371,7 +7371,7 @@ static inline void rgbBlendPixel( quint32 *dst, int coverage, int sr, int sg, in
 }
 
 #if defined(Q_OS_WIN)
-Q_GUI_EXPORT bool qt_needs_a8_gamma_correction = false;
+Q_GUI_EXPORT bool lscs_needs_a8_gamma_correction = false;
 
 static inline void grayBlendPixel( quint32 *dst, int coverage, int sr, int sg, int sb,
                                    const uint *gamma, const uchar *invgamma )
@@ -7387,9 +7387,9 @@ static inline void grayBlendPixel( quint32 *dst, int coverage, int sr, int sg, i
 
     int alpha = coverage;
     int ialpha = 255 - alpha;
-    int nr = qt_div_255( sr * alpha + dr * ialpha );
-    int ng = qt_div_255( sg * alpha + dg * ialpha );
-    int nb = qt_div_255( sb * alpha + db * ialpha );
+    int nr = lscs_div_255( sr * alpha + dr * ialpha );
+    int ng = lscs_div_255( sg * alpha + dg * ialpha );
+    int nb = lscs_div_255( sb * alpha + db * ialpha );
 
     nr = invgamma[nr];
     ng = invgamma[ng];
@@ -7399,7 +7399,7 @@ static inline void grayBlendPixel( quint32 *dst, int coverage, int sr, int sg, i
 }
 #endif
 
-static void qt_alphamapblit_uint32( QRasterBuffer *rasterBuffer,
+static void lscs_alphamapblit_uint32( QRasterBuffer *rasterBuffer,
                                     int x, int y, quint32 color, const uchar *map, int mapWidth, int mapHeight, int mapStride,
                                     const QClipData *clip )
 {
@@ -7414,15 +7414,15 @@ static void qt_alphamapblit_uint32( QRasterBuffer *rasterBuffer,
         return;
     }
 
-    const uint *gamma = tables->qt_pow_gamma;
-    const uchar *invgamma = tables->qt_pow_invgamma;
+    const uint *gamma = tables->lscs_pow_gamma;
+    const uchar *invgamma = tables->lscs_pow_invgamma;
 
     int sr = gamma[qRed( color )];
     int sg = gamma[qGreen( color )];
     int sb = gamma[qBlue( color )];
 
     bool opaque_src = ( qAlpha( color ) == 255 );
-    bool doGrayBlendPixel = opaque_src && qt_needs_a8_gamma_correction;
+    bool doGrayBlendPixel = opaque_src && lscs_needs_a8_gamma_correction;
 #endif
 
     if ( !clip )
@@ -7530,27 +7530,27 @@ static void qt_alphamapblit_uint32( QRasterBuffer *rasterBuffer,
 }
 
 
-static void qt_alphamapblit_argb32( QRasterBuffer *rasterBuffer,
+static void lscs_alphamapblit_argb32( QRasterBuffer *rasterBuffer,
                                     int x, int y, const QRgba64 &color,
                                     const uchar *map,
                                     int mapWidth, int mapHeight, int mapStride,
                                     const QClipData *clip )
 {
-    qt_alphamapblit_uint32( rasterBuffer, x, y, color.toArgb32(), map, mapWidth, mapHeight, mapStride, clip );
+    lscs_alphamapblit_uint32( rasterBuffer, x, y, color.toArgb32(), map, mapWidth, mapHeight, mapStride, clip );
 }
 
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-static void qt_alphamapblit_rgba8888( QRasterBuffer *rasterBuffer,
+static void lscs_alphamapblit_rgba8888( QRasterBuffer *rasterBuffer,
                                       int x, int y, const QRgba64 &color,
                                       const uchar *map,
                                       int mapWidth, int mapHeight, int mapStride,
                                       const QClipData *clip )
 {
-    qt_alphamapblit_uint32( rasterBuffer, x, y, ARGB2RGBA( color.toArgb32() ), map, mapWidth, mapHeight, mapStride, clip );
+    lscs_alphamapblit_uint32( rasterBuffer, x, y, ARGB2RGBA( color.toArgb32() ), map, mapWidth, mapHeight, mapStride, clip );
 }
 #endif
 
-static void qt_alphargbblit_argb32( QRasterBuffer *rasterBuffer,
+static void lscs_alphargbblit_argb32( QRasterBuffer *rasterBuffer,
                                     int x, int y, const QRgba64 &color,
                                     const uint *src, int mapWidth, int mapHeight, int srcStride,
                                     const QClipData *clip )
@@ -7569,8 +7569,8 @@ static void qt_alphargbblit_argb32( QRasterBuffer *rasterBuffer,
         return;
     }
 
-    const uchar *gamma = tables->qt_pow_rgb_gamma;
-    const uchar *invgamma = tables->qt_pow_rgb_invgamma;
+    const uchar *gamma = tables->lscs_pow_rgb_gamma;
+    const uchar *invgamma = tables->lscs_pow_rgb_invgamma;
 
     sr = gamma[sr];
     sg = gamma[sg];
@@ -7649,68 +7649,68 @@ static void qt_alphargbblit_argb32( QRasterBuffer *rasterBuffer,
     }
 }
 
-static void qt_rectfill_argb32( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_argb32( QRasterBuffer *rasterBuffer,
                                 int x, int y, int width, int height,
                                 const QRgba64 &color )
 {
-    qt_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
                           color.toArgb32(), x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
-static void qt_rectfill_quint16( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_quint16( QRasterBuffer *rasterBuffer,
                                  int x, int y, int width, int height,
                                  const QRgba64 &color )
 {
-    qt_rectfill<quint16>( reinterpret_cast<quint16 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint16>( reinterpret_cast<quint16 *>( rasterBuffer->buffer() ),
                           color.toRgb16(), x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
-static void qt_rectfill_nonpremul_argb32( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_nonpremul_argb32( QRasterBuffer *rasterBuffer,
         int x, int y, int width, int height,
         const QRgba64 &color )
 {
-    qt_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
                           color.unpremultiplied().toArgb32(), x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
-static void qt_rectfill_rgba( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_rgba( QRasterBuffer *rasterBuffer,
                               int x, int y, int width, int height,
                               const QRgba64 &color )
 {
-    qt_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
                           ARGB2RGBA( color.toArgb32() ), x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
-static void qt_rectfill_nonpremul_rgba( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_nonpremul_rgba( QRasterBuffer *rasterBuffer,
                                         int x, int y, int width, int height,
                                         const QRgba64 &color )
 {
-    qt_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
                           ARGB2RGBA( color.unpremultiplied().toArgb32() ), x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
 template <QtPixelOrder PixelOrder>
-static void qt_rectfill_rgb30( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_rgb30( QRasterBuffer *rasterBuffer,
                                int x, int y, int width, int height,
                                const QRgba64 &color )
 {
-    qt_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint32>( reinterpret_cast<quint32 *>( rasterBuffer->buffer() ),
                           qConvertRgb64ToRgb30<PixelOrder>( color ), x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
-static void qt_rectfill_alpha( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_alpha( QRasterBuffer *rasterBuffer,
                                int x, int y, int width, int height,
                                const QRgba64 &color )
 {
-    qt_rectfill<quint8>( reinterpret_cast<quint8 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint8>( reinterpret_cast<quint8 *>( rasterBuffer->buffer() ),
                          color.alpha() >> 8, x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
-static void qt_rectfill_gray( QRasterBuffer *rasterBuffer,
+static void lscs_rectfill_gray( QRasterBuffer *rasterBuffer,
                               int x, int y, int width, int height,
                               const QRgba64 &color )
 {
-    qt_rectfill<quint8>( reinterpret_cast<quint8 *>( rasterBuffer->buffer() ),
+    lscs_rectfill<quint8>( reinterpret_cast<quint8 *>( rasterBuffer->buffer() ),
                          qGray( color.toArgb32() ), x, y, width, height, rasterBuffer->bytesPerLine() );
 }
 
@@ -7742,38 +7742,38 @@ DrawHelper qDrawHelper[QImage::NImageFormats] =
     // Format_RGB32,
     {
         blend_color_argb,
-        qt_gradient_argb32,
-        qt_bitmapblit_argb32,
-        qt_alphamapblit_argb32,
-        qt_alphargbblit_argb32,
-        qt_rectfill_argb32
+        lscs_gradient_argb32,
+        lscs_bitmapblit_argb32,
+        lscs_alphamapblit_argb32,
+        lscs_alphargbblit_argb32,
+        lscs_rectfill_argb32
     },
     // Format_ARGB32,
     {
         blend_color_generic,
-        qt_gradient_argb32,
-        qt_bitmapblit_argb32,
-        qt_alphamapblit_argb32,
-        qt_alphargbblit_argb32,
-        qt_rectfill_nonpremul_argb32
+        lscs_gradient_argb32,
+        lscs_bitmapblit_argb32,
+        lscs_alphamapblit_argb32,
+        lscs_alphargbblit_argb32,
+        lscs_rectfill_nonpremul_argb32
     },
     // Format_ARGB32_Premultiplied
     {
         blend_color_argb,
-        qt_gradient_argb32,
-        qt_bitmapblit_argb32,
-        qt_alphamapblit_argb32,
-        qt_alphargbblit_argb32,
-        qt_rectfill_argb32
+        lscs_gradient_argb32,
+        lscs_bitmapblit_argb32,
+        lscs_alphamapblit_argb32,
+        lscs_alphargbblit_argb32,
+        lscs_rectfill_argb32
     },
     // Format_RGB16
     {
         blend_color_rgb16,
-        qt_gradient_quint16,
-        qt_bitmapblit_quint16,
-        qt_alphamapblit_quint16,
+        lscs_gradient_quint16,
+        lscs_bitmapblit_quint16,
+        lscs_alphamapblit_quint16,
         nullptr,
-        qt_rectfill_quint16
+        lscs_rectfill_quint16
     },
     // Format_ARGB8565_Premultiplied
     {
@@ -7827,80 +7827,80 @@ DrawHelper qDrawHelper[QImage::NImageFormats] =
     {
         blend_color_generic,
         blend_src_generic,
-        qt_bitmapblit_rgba8888,
+        lscs_bitmapblit_rgba8888,
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-        qt_alphamapblit_rgba8888,
+        lscs_alphamapblit_rgba8888,
 #else
         nullptr,
 #endif
         nullptr,
-        qt_rectfill_rgba
+        lscs_rectfill_rgba
     },
     // Format_RGBA8888
     {
         blend_color_generic,
         blend_src_generic,
-        qt_bitmapblit_rgba8888,
+        lscs_bitmapblit_rgba8888,
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-        qt_alphamapblit_rgba8888,
+        lscs_alphamapblit_rgba8888,
 #else
         nullptr,
 #endif
         nullptr,
-        qt_rectfill_nonpremul_rgba
+        lscs_rectfill_nonpremul_rgba
     },
     // Format_RGB8888_Premultiplied
     {
         blend_color_generic,
         blend_src_generic,
-        qt_bitmapblit_rgba8888,
+        lscs_bitmapblit_rgba8888,
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-        qt_alphamapblit_rgba8888,
+        lscs_alphamapblit_rgba8888,
 #else
         nullptr,
 #endif
         nullptr,
-        qt_rectfill_rgba
+        lscs_rectfill_rgba
     },
 
     // Format_BGR30
     {
         blend_color_generic_rgb64,
         blend_src_generic_rgb64,
-        qt_bitmapblit_rgb30<PixelOrderBGR>,
+        lscs_bitmapblit_rgb30<PixelOrderBGR>,
         nullptr,
         nullptr,
-        qt_rectfill_rgb30<PixelOrderBGR>
+        lscs_rectfill_rgb30<PixelOrderBGR>
     },
 
     // Format_A2BGR30_Premultiplied
     {
         blend_color_generic_rgb64,
         blend_src_generic_rgb64,
-        qt_bitmapblit_rgb30<PixelOrderBGR>,
+        lscs_bitmapblit_rgb30<PixelOrderBGR>,
         nullptr,
         nullptr,
-        qt_rectfill_rgb30<PixelOrderBGR>
+        lscs_rectfill_rgb30<PixelOrderBGR>
     },
 
     // Format_RGB30
     {
         blend_color_generic_rgb64,
         blend_src_generic_rgb64,
-        qt_bitmapblit_rgb30<PixelOrderRGB>,
+        lscs_bitmapblit_rgb30<PixelOrderRGB>,
         nullptr,
         nullptr,
-        qt_rectfill_rgb30<PixelOrderRGB>
+        lscs_rectfill_rgb30<PixelOrderRGB>
     },
 
     // Format_A2RGB30_Premultiplied
     {
         blend_color_generic_rgb64,
         blend_src_generic_rgb64,
-        qt_bitmapblit_rgb30<PixelOrderRGB>,
+        lscs_bitmapblit_rgb30<PixelOrderRGB>,
         nullptr,
         nullptr,
-        qt_rectfill_rgb30<PixelOrderRGB>
+        lscs_rectfill_rgb30<PixelOrderRGB>
     },
 
     // Format_Alpha8
@@ -7908,7 +7908,7 @@ DrawHelper qDrawHelper[QImage::NImageFormats] =
         blend_color_generic,
         blend_src_generic,
         nullptr, nullptr, nullptr,
-        qt_rectfill_alpha
+        lscs_rectfill_alpha
     },
 
     // Format_Grayscale8
@@ -7916,13 +7916,13 @@ DrawHelper qDrawHelper[QImage::NImageFormats] =
         blend_color_generic,
         blend_src_generic,
         nullptr, nullptr, nullptr,
-        qt_rectfill_gray
+        lscs_rectfill_gray
     },
 };
 
 #if defined(Q_CC_MSVC) && !defined(_MIPS_)
 template <class T>
-inline void qt_memfill_template( T *dest, T color, int count )
+inline void lscs_memfill_template( T *dest, T color, int count )
 {
     while ( count-- )
     {
@@ -7933,7 +7933,7 @@ inline void qt_memfill_template( T *dest, T color, int count )
 #else
 
 template <class T>
-inline void qt_memfill_template( T *dest, T color, int count )
+inline void lscs_memfill_template( T *dest, T color, int count )
 {
     int n = ( count + 7 ) / 8;
 
@@ -7978,7 +7978,7 @@ inline void qt_memfill_template( T *dest, T color, int count )
 }
 
 template <>
-inline void qt_memfill_template( quint16 *dest, quint16 value, int count )
+inline void lscs_memfill_template( quint16 *dest, quint16 value, int count )
 {
     if ( count < 3 )
     {
@@ -8004,7 +8004,7 @@ inline void qt_memfill_template( quint16 *dest, quint16 value, int count )
     }
 
     const quint32 value32 = ( value << 16 ) | value;
-    qt_memfill( reinterpret_cast<quint32 *>( dest ), value32, count / 2 );
+    lscs_memfill( reinterpret_cast<quint32 *>( dest ), value32, count / 2 );
 
     if ( count & 0x1 )
     {
@@ -8013,29 +8013,29 @@ inline void qt_memfill_template( quint16 *dest, quint16 value, int count )
 }
 #endif
 
-void qt_memfill64( quint64 *dest, quint64 color, int count )
+void lscs_memfill64( quint64 *dest, quint64 color, int count )
 {
-    qt_memfill_template<quint64>( dest, color, count );
+    lscs_memfill_template<quint64>( dest, color, count );
 }
 
 #if ! defined(__SSE2__)
-void qt_memfill16( quint16 *dest, quint16 color, int count )
+void lscs_memfill16( quint16 *dest, quint16 color, int count )
 {
-    qt_memfill_template<quint16>( dest, color, count );
+    lscs_memfill_template<quint16>( dest, color, count );
 }
 #endif
 
 #if ! defined(__SSE2__) && !defined(__ARM_NEON__)
-#  ifdef QT_COMPILER_SUPPORTS_MIPS_DSP
-extern "C" void qt_memfill32_asm_mips_dsp( quint32 *, quint32, int );
+#  ifdef LSCS_COMPILER_SUPPORTS_MIPS_DSP
+extern "C" void lscs_memfill32_asm_mips_dsp( quint32 *, quint32, int );
 #  endif
 
-void qt_memfill32( quint32 *dest, quint32 color, int count )
+void lscs_memfill32( quint32 *dest, quint32 color, int count )
 {
-#  ifdef QT_COMPILER_SUPPORTS_MIPS_DSP
-    qt_memfill32_asm_mips_dsp( dest, color, count );
+#  ifdef LSCS_COMPILER_SUPPORTS_MIPS_DSP
+    lscs_memfill32_asm_mips_dsp( dest, color, count );
 #  else
-    qt_memfill_template<quint32>( dest, color, count );
+    lscs_memfill_template<quint32>( dest, color, count );
 #  endif
 }
 #endif
@@ -8064,60 +8064,60 @@ QDrawHelperFunctions::QDrawHelperFunctions()
     initMemRotate();
 
 #ifdef __SSE2__
-    drawHelper[QImage::Format_RGB32].bitmapBlit = qt_bitmapblit32_sse2;
-    drawHelper[QImage::Format_ARGB32].bitmapBlit = qt_bitmapblit32_sse2;
-    drawHelper[QImage::Format_ARGB32_Premultiplied].bitmapBlit = qt_bitmapblit32_sse2;
-    drawHelper[QImage::Format_RGB16].bitmapBlit = qt_bitmapblit16_sse2;
-    drawHelper[QImage::Format_RGBX8888].bitmapBlit = qt_bitmapblit8888_sse2;
-    drawHelper[QImage::Format_RGBA8888].bitmapBlit = qt_bitmapblit8888_sse2;
-    drawHelper[QImage::Format_RGBA8888_Premultiplied].bitmapBlit = qt_bitmapblit8888_sse2;
+    drawHelper[QImage::Format_RGB32].bitmapBlit = lscs_bitmapblit32_sse2;
+    drawHelper[QImage::Format_ARGB32].bitmapBlit = lscs_bitmapblit32_sse2;
+    drawHelper[QImage::Format_ARGB32_Premultiplied].bitmapBlit = lscs_bitmapblit32_sse2;
+    drawHelper[QImage::Format_RGB16].bitmapBlit = lscs_bitmapblit16_sse2;
+    drawHelper[QImage::Format_RGBX8888].bitmapBlit = lscs_bitmapblit8888_sse2;
+    drawHelper[QImage::Format_RGBA8888].bitmapBlit = lscs_bitmapblit8888_sse2;
+    drawHelper[QImage::Format_RGBA8888_Premultiplied].bitmapBlit = lscs_bitmapblit8888_sse2;
 
-    extern void qt_scale_image_argb32_on_argb32_sse2( uchar * destPixels, int dbpl,
+    extern void lscs_scale_image_argb32_on_argb32_sse2( uchar * destPixels, int dbpl,
             const uchar * srcPixels, int sbpl, int srch, const QRectF & targetRect,
             const QRectF & sourceRect, const QRect & clip, int const_alpha );
 
-    scaleFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = qt_scale_image_argb32_on_argb32_sse2;
-    scaleFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = qt_scale_image_argb32_on_argb32_sse2;
+    scaleFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = lscs_scale_image_argb32_on_argb32_sse2;
+    scaleFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = lscs_scale_image_argb32_on_argb32_sse2;
     scaleFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBA8888_Premultiplied] =
-        qt_scale_image_argb32_on_argb32_sse2;
-    scaleFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = qt_scale_image_argb32_on_argb32_sse2;
+        lscs_scale_image_argb32_on_argb32_sse2;
+    scaleFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = lscs_scale_image_argb32_on_argb32_sse2;
 
-    extern void qt_blend_rgb32_on_rgb32_sse2( uchar * destPixels, int dbpl,
+    extern void lscs_blend_rgb32_on_rgb32_sse2( uchar * destPixels, int dbpl,
             const uchar * srcPixels, int sbpl, int w, int h, int const_alpha );
 
-    extern void qt_blend_argb32_on_argb32_sse2( uchar * destPixels, int dbpl,
+    extern void lscs_blend_argb32_on_argb32_sse2( uchar * destPixels, int dbpl,
             const uchar * srcPixels, int sbpl, int w, int h, int const_alpha );
 
-    blendFunctions[QImage::Format_RGB32][QImage::Format_RGB32] = qt_blend_rgb32_on_rgb32_sse2;
-    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB32] = qt_blend_rgb32_on_rgb32_sse2;
-    blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_sse2;
-    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_sse2;
-    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBX8888] = qt_blend_rgb32_on_rgb32_sse2;
-    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBX8888] = qt_blend_rgb32_on_rgb32_sse2;
-    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = qt_blend_argb32_on_argb32_sse2;
-    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBA8888_Premultiplied] = qt_blend_argb32_on_argb32_sse2;
+    blendFunctions[QImage::Format_RGB32][QImage::Format_RGB32] = lscs_blend_rgb32_on_rgb32_sse2;
+    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB32] = lscs_blend_rgb32_on_rgb32_sse2;
+    blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_sse2;
+    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_sse2;
+    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBX8888] = lscs_blend_rgb32_on_rgb32_sse2;
+    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBX8888] = lscs_blend_rgb32_on_rgb32_sse2;
+    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = lscs_blend_argb32_on_argb32_sse2;
+    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBA8888_Premultiplied] = lscs_blend_argb32_on_argb32_sse2;
 
-    extern const uint *qt_fetch_radial_gradient_sse2( uint * buffer, const Operator * op, const QSpanData * data,
+    extern const uint *lscs_fetch_radial_gradient_sse2( uint * buffer, const Operator * op, const QSpanData * data,
             int y, int x, int length );
 
-    qt_fetch_radial_gradient = qt_fetch_radial_gradient_sse2;
+    lscs_fetch_radial_gradient = lscs_fetch_radial_gradient_sse2;
 
-#ifdef QT_COMPILER_SUPPORTS_SSSE3
+#ifdef LSCS_COMPILER_SUPPORTS_SSSE3
 
     if ( qCpuHasFeature( SSSE3 ) )
     {
-        extern void qt_blend_argb32_on_argb32_ssse3( uchar * destPixels, int dbpl, const uchar * srcPixels, int sbpl,
+        extern void lscs_blend_argb32_on_argb32_ssse3( uchar * destPixels, int dbpl, const uchar * srcPixels, int sbpl,
                 int w, int h, int const_alpha );
 
-        blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_ssse3;
-        blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_ssse3;
-        blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = qt_blend_argb32_on_argb32_ssse3;
-        blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBA8888_Premultiplied] = qt_blend_argb32_on_argb32_ssse3;
+        blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_ssse3;
+        blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_ssse3;
+        blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = lscs_blend_argb32_on_argb32_ssse3;
+        blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBA8888_Premultiplied] = lscs_blend_argb32_on_argb32_ssse3;
     }
 
 #endif
 
-#if defined(QT_COMPILER_SUPPORTS_SSE4_1)
+#if defined(LSCS_COMPILER_SUPPORTS_SSE4_1)
 
     if ( qCpuHasFeature( SSE4_1 ) )
     {
@@ -8148,7 +8148,7 @@ QDrawHelperFunctions::QDrawHelperFunctions()
 
 #endif
 
-#if defined(QT_COMPILER_SUPPORTS_AVX2) && ! defined(__AVX2__)
+#if defined(LSCS_COMPILER_SUPPORTS_AVX2) && ! defined(__AVX2__)
 
     if ( qCpuHasFeature( AVX2 ) )
     {
@@ -8167,115 +8167,115 @@ QDrawHelperFunctions::QDrawHelperFunctions()
     extern void comp_func_Source_sse2( uint * destPixels, const uint * srcPixels, int length, uint const_alpha );
     extern void comp_func_Plus_sse2( uint * destPixels, const uint * srcPixels, int length, uint const_alpha );
 
-    qt_functionForMode_C[QPainter::CompositionMode_SourceOver] = comp_func_SourceOver_sse2;
-    qt_functionForModeSolid_C[QPainter::CompositionMode_SourceOver] = comp_func_solid_SourceOver_sse2;
-    qt_functionForMode_C[QPainter::CompositionMode_Source] = comp_func_Source_sse2;
-    qt_functionForMode_C[QPainter::CompositionMode_Plus] = comp_func_Plus_sse2;
+    lscs_functionForMode_C[QPainter::CompositionMode_SourceOver] = comp_func_SourceOver_sse2;
+    lscs_functionForModeSolid_C[QPainter::CompositionMode_SourceOver] = comp_func_solid_SourceOver_sse2;
+    lscs_functionForMode_C[QPainter::CompositionMode_Source] = comp_func_Source_sse2;
+    lscs_functionForMode_C[QPainter::CompositionMode_Plus] = comp_func_Plus_sse2;
 
 #endif // SSE2
 
 #if defined(__ARM_NEON__)
-    blendFunctions[QImage::Format_RGB32][QImage::Format_RGB32] = qt_blend_rgb32_on_rgb32_neon;
-    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB32] = qt_blend_rgb32_on_rgb32_neon;
-    blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_neon;
-    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_neon;
+    blendFunctions[QImage::Format_RGB32][QImage::Format_RGB32] = lscs_blend_rgb32_on_rgb32_neon;
+    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB32] = lscs_blend_rgb32_on_rgb32_neon;
+    blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_neon;
+    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_neon;
 
 #if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBX8888] = qt_blend_rgb32_on_rgb32_neon;
-    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBX8888] = qt_blend_rgb32_on_rgb32_neon;
-    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = qt_blend_argb32_on_argb32_neon;
-    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBA8888_Premultiplied] = qt_blend_argb32_on_argb32_neon;
+    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBX8888] = lscs_blend_rgb32_on_rgb32_neon;
+    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBX8888] = lscs_blend_rgb32_on_rgb32_neon;
+    blendFunctions[QImage::Format_RGBX8888][QImage::Format_RGBA8888_Premultiplied] = lscs_blend_argb32_on_argb32_neon;
+    blendFunctions[QImage::Format_RGBA8888_Premultiplied][QImage::Format_RGBA8888_Premultiplied] = lscs_blend_argb32_on_argb32_neon;
 #endif
 
-    qt_functionForMode_C[QPainter::CompositionMode_SourceOver] = qt_blend_argb32_on_argb32_scanline_neon;
-    qt_functionForModeSolid_C[QPainter::CompositionMode_SourceOver] = comp_func_solid_SourceOver_neon;
-    qt_functionForMode_C[QPainter::CompositionMode_Plus] = comp_func_Plus_neon;
+    lscs_functionForMode_C[QPainter::CompositionMode_SourceOver] = lscs_blend_argb32_on_argb32_scanline_neon;
+    lscs_functionForModeSolid_C[QPainter::CompositionMode_SourceOver] = comp_func_solid_SourceOver_neon;
+    lscs_functionForMode_C[QPainter::CompositionMode_Plus] = comp_func_Plus_neon;
 
-    extern const uint *qt_fetch_radial_gradient_neon( uint * buffer, const Operator * op, const QSpanData * data,
+    extern const uint *lscs_fetch_radial_gradient_neon( uint * buffer, const Operator * op, const QSpanData * data,
             int y, int x, int length );
 
-    qt_fetch_radial_gradient = qt_fetch_radial_gradient_neon;
+    lscs_fetch_radial_gradient = lscs_fetch_radial_gradient_neon;
 
 #if defined(ENABLE_PIXMAN_DRAWHELPERS)
     // The RGB16 helpers are using Arm32 assemblythat has not been ported to AArch64
-    blendFunctions[QImage::Format_RGB16][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_rgb16_neon;
-    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB16] = qt_blend_rgb16_on_argb32_neon;
-    blendFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = qt_blend_rgb16_on_rgb16_neon;
+    blendFunctions[QImage::Format_RGB16][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_rgb16_neon;
+    blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB16] = lscs_blend_rgb16_on_argb32_neon;
+    blendFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = lscs_blend_rgb16_on_rgb16_neon;
 
-    scaleFunctions[QImage::Format_RGB16][QImage::Format_ARGB32_Premultiplied] = qt_scale_image_argb32_on_rgb16_neon;
-    scaleFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = qt_scale_image_rgb16_on_rgb16_neon;
+    scaleFunctions[QImage::Format_RGB16][QImage::Format_ARGB32_Premultiplied] = lscs_scale_image_argb32_on_rgb16_neon;
+    scaleFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = lscs_scale_image_rgb16_on_rgb16_neon;
 
-    transformFunctions[QImage::Format_RGB16][QImage::Format_ARGB32_Premultiplied] = qt_transform_image_argb32_on_rgb16_neon;
-    transformFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = qt_transform_image_rgb16_on_rgb16_neon;
+    transformFunctions[QImage::Format_RGB16][QImage::Format_ARGB32_Premultiplied] = lscs_transform_image_argb32_on_rgb16_neon;
+    transformFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = lscs_transform_image_rgb16_on_rgb16_neon;
 
-    drawHelper[QImage::Format_RGB16].alphamapBlit = qt_alphamapblit_quint16_neon;
+    drawHelper[QImage::Format_RGB16].alphamapBlit = lscs_alphamapblit_quint16_neon;
 
-    destFetchProc[QImage::Format_RGB16] = qt_destFetchRGB16_neon;
-    destStoreProc[QImage::Format_RGB16] = qt_destStoreRGB16_neon;
+    destFetchProc[QImage::Format_RGB16] = lscs_destFetchRGB16_neon;
+    destStoreProc[QImage::Format_RGB16] = lscs_destStoreRGB16_neon;
 
-    memRotateFunctions[QImage::Format_RGB16][0] = qt_memrotate90_16_neon;
-    memRotateFunctions[QImage::Format_RGB16][2] = qt_memrotate270_16_neon;
+    memRotateFunctions[QImage::Format_RGB16][0] = lscs_memrotate90_16_neon;
+    memRotateFunctions[QImage::Format_RGB16][2] = lscs_memrotate270_16_neon;
 #endif
 
 #endif
 
-#if defined(Q_PROCESSOR_MIPS_32) && defined(QT_COMPILER_SUPPORTS_MIPS_DSP)
-    qt_memfill32 = qt_memfill32_asm_mips_dsp;
+#if defined(Q_PROCESSOR_MIPS_32) && defined(LSCS_COMPILER_SUPPORTS_MIPS_DSP)
+    lscs_memfill32 = lscs_memfill32_asm_mips_dsp;
 #endif
 
-#if defined(QT_COMPILER_SUPPORTS_MIPS_DSP) || defined(QT_COMPILER_SUPPORTS_MIPS_DSPR2)
+#if defined(LSCS_COMPILER_SUPPORTS_MIPS_DSP) || defined(LSCS_COMPILER_SUPPORTS_MIPS_DSPR2)
 
     if ( qCpuHasFeature( DSP ) && qCpuHasFeature( DSPR2 ) )
     {
         // Composition functions are all DSP r1
 
-        qt_functionForMode_C[QPainter::CompositionMode_SourceOver] = comp_func_SourceOver_asm_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_Source] = comp_func_Source_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_DestinationOver] = comp_func_DestinationOver_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_SourceIn] = comp_func_SourceIn_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_DestinationIn] = comp_func_DestinationIn_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_DestinationOut] = comp_func_DestinationOut_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_SourceAtop] = comp_func_SourceAtop_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_DestinationAtop] = comp_func_DestinationAtop_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_Xor] = comp_func_XOR_mips_dsp;
-        qt_functionForMode_C[QPainter::CompositionMode_SourceOut] = comp_func_SourceOut_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_SourceOver] = comp_func_SourceOver_asm_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_Source] = comp_func_Source_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_DestinationOver] = comp_func_DestinationOver_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_SourceIn] = comp_func_SourceIn_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_DestinationIn] = comp_func_DestinationIn_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_DestinationOut] = comp_func_DestinationOut_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_SourceAtop] = comp_func_SourceAtop_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_DestinationAtop] = comp_func_DestinationAtop_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_Xor] = comp_func_XOR_mips_dsp;
+        lscs_functionForMode_C[QPainter::CompositionMode_SourceOut] = comp_func_SourceOut_mips_dsp;
 
-        qt_functionForModeSolid_C[QPainter::CompositionMode_SourceOver] = comp_func_solid_SourceOver_mips_dsp;
-        qt_functionForModeSolid_C[QPainter::CompositionMode_DestinationOver] = comp_func_solid_DestinationOver_mips_dsp;
-        qt_functionForModeSolid_C[QPainter::CompositionMode_SourceIn] = comp_func_solid_SourceIn_mips_dsp;
-        qt_functionForModeSolid_C[QPainter::CompositionMode_DestinationIn] = comp_func_solid_DestinationIn_mips_dsp;
-        qt_functionForModeSolid_C[QPainter::CompositionMode_SourceAtop] = comp_func_solid_SourceAtop_mips_dsp;
-        qt_functionForModeSolid_C[QPainter::CompositionMode_DestinationAtop] = comp_func_solid_DestinationAtop_mips_dsp;
-        qt_functionForModeSolid_C[QPainter::CompositionMode_Xor] = comp_func_solid_XOR_mips_dsp;
-        qt_functionForModeSolid_C[QPainter::CompositionMode_SourceOut] = comp_func_solid_SourceOut_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_SourceOver] = comp_func_solid_SourceOver_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_DestinationOver] = comp_func_solid_DestinationOver_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_SourceIn] = comp_func_solid_SourceIn_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_DestinationIn] = comp_func_solid_DestinationIn_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_SourceAtop] = comp_func_solid_SourceAtop_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_DestinationAtop] = comp_func_solid_DestinationAtop_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_Xor] = comp_func_solid_XOR_mips_dsp;
+        lscs_functionForModeSolid_C[QPainter::CompositionMode_SourceOut] = comp_func_solid_SourceOut_mips_dsp;
 
-        blendFunctions[QImage::Format_RGB32][QImage::Format_RGB32] = qt_blend_rgb32_on_rgb32_mips_dsp;
-        blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB32] = qt_blend_rgb32_on_rgb32_mips_dsp;
-        blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_mips_dsp;
-        blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = qt_blend_argb32_on_argb32_mips_dsp;
+        blendFunctions[QImage::Format_RGB32][QImage::Format_RGB32] = lscs_blend_rgb32_on_rgb32_mips_dsp;
+        blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_RGB32] = lscs_blend_rgb32_on_rgb32_mips_dsp;
+        blendFunctions[QImage::Format_RGB32][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_mips_dsp;
+        blendFunctions[QImage::Format_ARGB32_Premultiplied][QImage::Format_ARGB32_Premultiplied] = lscs_blend_argb32_on_argb32_mips_dsp;
 
-        destFetchProc[QImage::Format_ARGB32] = qt_destFetchARGB32_mips_dsp;
+        destFetchProc[QImage::Format_ARGB32] = lscs_destFetchARGB32_mips_dsp;
 
-        destStoreProc[QImage::Format_ARGB32] = qt_destStoreARGB32_mips_dsp;
+        destStoreProc[QImage::Format_ARGB32] = lscs_destStoreARGB32_mips_dsp;
 
-        sourceFetch[BlendUntransformed][QImage::Format_RGB888] = qt_fetchUntransformed_888_mips_dsp;
-        sourceFetch[BlendTiled][QImage::Format_RGB888] = qt_fetchUntransformed_888_mips_dsp;
+        sourceFetch[BlendUntransformed][QImage::Format_RGB888] = lscs_fetchUntransformed_888_mips_dsp;
+        sourceFetch[BlendTiled][QImage::Format_RGB888] = lscs_fetchUntransformed_888_mips_dsp;
 
-        sourceFetch[BlendUntransformed][QImage::Format_RGB444] = qt_fetchUntransformed_444_mips_dsp;
-        sourceFetch[BlendTiled][QImage::Format_RGB444] = qt_fetchUntransformed_444_mips_dsp;
+        sourceFetch[BlendUntransformed][QImage::Format_RGB444] = lscs_fetchUntransformed_444_mips_dsp;
+        sourceFetch[BlendTiled][QImage::Format_RGB444] = lscs_fetchUntransformed_444_mips_dsp;
 
-        sourceFetch[BlendUntransformed][QImage::Format_ARGB8565_Premultiplied] = qt_fetchUntransformed_argb8565_premultiplied_mips_dsp;
-        sourceFetch[BlendTiled][QImage::Format_ARGB8565_Premultiplied] = qt_fetchUntransformed_argb8565_premultiplied_mips_dsp;
+        sourceFetch[BlendUntransformed][QImage::Format_ARGB8565_Premultiplied] = lscs_fetchUntransformed_argb8565_premultiplied_mips_dsp;
+        sourceFetch[BlendTiled][QImage::Format_ARGB8565_Premultiplied] = lscs_fetchUntransformed_argb8565_premultiplied_mips_dsp;
 
-#if defined(QT_COMPILER_SUPPORTS_MIPS_DSPR2)
-        blendFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = qt_blend_rgb16_on_rgb16_mips_dspr2;
+#if defined(LSCS_COMPILER_SUPPORTS_MIPS_DSPR2)
+        blendFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = lscs_blend_rgb16_on_rgb16_mips_dspr2;
 #else
-        blendFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = qt_blend_rgb16_on_rgb16_mips_dsp;
+        blendFunctions[QImage::Format_RGB16][QImage::Format_RGB16] = lscs_blend_rgb16_on_rgb16_mips_dsp;
 #endif
 
     }
 
-#endif // QT_COMPILER_SUPPORTS_MIPS_DSP || QT_COMPILER_SUPPORTS_MIPS_DSPR2
+#endif // LSCS_COMPILER_SUPPORTS_MIPS_DSP || LSCS_COMPILER_SUPPORTS_MIPS_DSPR2
 
 }
 

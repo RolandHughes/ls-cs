@@ -24,13 +24,13 @@
 #include <qhttp_networkreply_p.h>
 #include <qhttp_networkconnection_p.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 #  include <qsslkey.h>
 #  include <qsslcipher.h>
 #  include <qsslconfiguration.h>
 #endif
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 #include <zlib.h>
 #endif
 
@@ -48,7 +48,7 @@ QHttpNetworkReply::~QHttpNetworkReply()
         d->connection->d_func()->removeReply( this );
     }
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     if ( d->autoDecompress && d->isCompressed() && d->inflateStrm )
     {
@@ -323,7 +323,7 @@ QHttpNetworkReplyPrivate::QHttpNetworkReplyPrivate( const QUrl &newUrl )
       totallyUploadedData( 0 ), connection( nullptr ),
       autoDecompress( false ), responseData(), requestIsPrepared( false ),
       pipeliningUsed( false ), spdyUsed( false ), downstreamLimited( false ), userProvidedDownloadBuffer( nullptr )
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
     , inflateStrm( nullptr )
 #endif
 {
@@ -337,7 +337,7 @@ QHttpNetworkReplyPrivate::QHttpNetworkReplyPrivate( const QUrl &newUrl )
 
 QHttpNetworkReplyPrivate::~QHttpNetworkReplyPrivate()
 {
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     if ( inflateStrm )
     {
@@ -360,7 +360,7 @@ void QHttpNetworkReplyPrivate::clearHttpLayerInformation()
     lastChunkRead          = false;
     connectionCloseEnabled = true;
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     if ( autoDecompress && inflateStrm )
     {
@@ -650,7 +650,7 @@ qint64 QHttpNetworkReplyPrivate::readHeader( QAbstractSocket *socket )
                                    headerField( "proxy-connection" ).toLower().contains( "close" ) ) ||
                                  ( majorVersion == 1 && minorVersion == 0 &&
                                    ( connectionHeaderField.isEmpty() && !headerField( "proxy-connection" ).toLower().contains( "keep-alive" ) ) );
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
         if ( autoDecompress && isCompressed() )
         {
@@ -806,7 +806,7 @@ qint64 QHttpNetworkReplyPrivate::readBodyFast( QAbstractSocket *socket, QByteDat
 qint64 QHttpNetworkReplyPrivate::readBody( QAbstractSocket *socket, QByteDataBuffer *out )
 {
     qint64 bytes = 0;
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
     QByteDataBuffer *tempOutDataBuffer = ( autoDecompress ? new QByteDataBuffer : out );
 #else
     QByteDataBuffer *tempOutDataBuffer = out;
@@ -834,7 +834,7 @@ qint64 QHttpNetworkReplyPrivate::readBody( QAbstractSocket *socket, QByteDataBuf
         bytes += readReplyBodyRaw( socket, tempOutDataBuffer, socket->bytesAvailable() );
     }
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 
     if ( autoDecompress )
     {
@@ -852,7 +852,7 @@ qint64 QHttpNetworkReplyPrivate::readBody( QAbstractSocket *socket, QByteDataBuf
     return bytes;
 }
 
-#ifndef QT_NO_COMPRESS
+#ifndef LSCS_NO_COMPRESS
 int QHttpNetworkReplyPrivate::initializeInflateStream()
 {
     inflateStrm->zalloc   = nullptr;
@@ -1173,7 +1173,7 @@ void QHttpNetworkReplyPrivate::eraseData()
 
 
 // SSL support below
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 
 QSslConfiguration QHttpNetworkReply::sslConfiguration() const
 {

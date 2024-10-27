@@ -39,7 +39,7 @@ using NSMenu = objc_object;
 
 #endif
 
-#ifndef QT_NO_MENU
+#ifndef LSCS_NO_MENU
 
 class QMenuPrivate;
 class QStyleOptionMenuItem;
@@ -93,7 +93,7 @@ public:
     {
         QAction *result = addAction( text );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         result->setShortcut( shortcut );
 #endif
         connect( result, &QAction::triggered, object, slot );
@@ -107,7 +107,7 @@ public:
     {
         QAction *result = addAction( text );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         result->setShortcut( shortcut );
 #endif
         connect( result, &QAction::triggered, slot );
@@ -123,7 +123,7 @@ public:
     {
         QAction *result = addAction( actionIcon, text );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
         result->setShortcut( shortcut );
 #endif
         connect( result, &QAction::triggered, object, slot );
@@ -136,7 +136,7 @@ public:
     {
         QAction *result = addAction( icon, text );
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
         result->setShortcut( shortcut );
 #endif
@@ -230,7 +230,7 @@ protected:
     void mousePressEvent( QMouseEvent *event ) override;
     void mouseMoveEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -269,10 +269,10 @@ private:
     friend class QAction;
     friend class QToolButtonPrivate;
 
-    friend void qt_mac_emit_menuSignals( QMenu *menu, bool show );
-    friend void qt_mac_menu_emit_hovered( QMenu *menu, QAction *action );
+    friend void lscs_mac_emit_menuSignals( QMenu *menu, bool show );
+    friend void lscs_mac_menu_emit_hovered( QMenu *menu, QAction *action );
 };
 
-#endif // QT_NO_MENU
+#endif // LSCS_NO_MENU
 
 #endif

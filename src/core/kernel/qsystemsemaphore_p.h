@@ -26,12 +26,12 @@
 
 #include <qsystemsemaphore.h>
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 #include <qsharedmemory_p.h>
 #include <sys/types.h>
 
-#ifdef QT_POSIX_IPC
+#ifdef LSCS_POSIX_IPC
 #  include <semaphore.h>
 #endif
 
@@ -49,7 +49,7 @@ public:
     HANDLE handle( QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open );
     void setErrorString( const QString &function );
 
-#elif defined(QT_POSIX_IPC)
+#elif defined(LSCS_POSIX_IPC)
     bool handle( QSystemSemaphore::AccessMode mode = QSystemSemaphore::Open );
     void setErrorString( const QString &function );
 
@@ -70,7 +70,7 @@ public:
     HANDLE semaphore;
     HANDLE semaphoreLock;
 
-#elif defined(QT_POSIX_IPC)
+#elif defined(LSCS_POSIX_IPC)
     sem_t *semaphore;
     bool createdSemaphore;
 
@@ -86,6 +86,6 @@ public:
     QSystemSemaphore::SystemSemaphoreError error;
 };
 
-#endif // QT_NO_SYSTEMSEMAPHORE
+#endif // LSCS_NO_SYSTEMSEMAPHORE
 
 #endif

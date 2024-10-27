@@ -27,7 +27,7 @@
 #include <qglobal.h>
 #include <qdeclarativeparser_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeDomDocumentPrivate : public QSharedData
 {
@@ -142,7 +142,7 @@ public:
     QString qualifier;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVEDOM_P_P_H
 

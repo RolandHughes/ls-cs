@@ -25,42 +25,42 @@
 #define QRasterDefs_P_H
 
 
-typedef struct QT_FT_Vector_
+typedef struct LSCS_FT_Vector_
 {
     int  x;
     int  y;
 
-} QT_FT_Vector;
+} LSCS_FT_Vector;
 
-typedef struct  QT_FT_BBox_
+typedef struct  LSCS_FT_BBox_
 {
     int  xMin, yMin;
     int  xMax, yMax;
 
-} QT_FT_BBox;
+} LSCS_FT_BBox;
 
-typedef enum  QT_FT_Pixel_Mode_
+typedef enum  LSCS_FT_Pixel_Mode_
 {
-    QT_FT_PIXEL_MODE_NONE = 0,
-    QT_FT_PIXEL_MODE_MONO,
-    QT_FT_PIXEL_MODE_GRAY,
-    QT_FT_PIXEL_MODE_GRAY2,
-    QT_FT_PIXEL_MODE_GRAY4,
-    QT_FT_PIXEL_MODE_LCD,
-    QT_FT_PIXEL_MODE_LCD_V,
+    LSCS_FT_PIXEL_MODE_NONE = 0,
+    LSCS_FT_PIXEL_MODE_MONO,
+    LSCS_FT_PIXEL_MODE_GRAY,
+    LSCS_FT_PIXEL_MODE_GRAY2,
+    LSCS_FT_PIXEL_MODE_GRAY4,
+    LSCS_FT_PIXEL_MODE_LCD,
+    LSCS_FT_PIXEL_MODE_LCD_V,
 
-    QT_FT_PIXEL_MODE_MAX      /* do not remove */
+    LSCS_FT_PIXEL_MODE_MAX      /* do not remove */
 
-} QT_FT_Pixel_Mode;
+} LSCS_FT_Pixel_Mode;
 
-#define qt_ft_pixel_mode_none   QT_FT_PIXEL_MODE_NONE
-#define qt_ft_pixel_mode_mono   QT_FT_PIXEL_MODE_MONO
-#define qt_ft_pixel_mode_grays  QT_FT_PIXEL_MODE_GRAY
-#define qt_ft_pixel_mode_pal2   QT_FT_PIXEL_MODE_GRAY2
-#define qt_ft_pixel_mode_pal4   QT_FT_PIXEL_MODE_GRAY4
+#define lscs_ft_pixel_mode_none   LSCS_FT_PIXEL_MODE_NONE
+#define lscs_ft_pixel_mode_mono   LSCS_FT_PIXEL_MODE_MONO
+#define lscs_ft_pixel_mode_grays  LSCS_FT_PIXEL_MODE_GRAY
+#define lscs_ft_pixel_mode_pal2   LSCS_FT_PIXEL_MODE_GRAY2
+#define lscs_ft_pixel_mode_pal4   LSCS_FT_PIXEL_MODE_GRAY4
 
 
-typedef struct  QT_FT_Bitmap_
+typedef struct  LSCS_FT_Bitmap_
 {
     int             rows;
     int             width;
@@ -71,99 +71,99 @@ typedef struct  QT_FT_Bitmap_
     char            palette_mode;
     void           *palette;
 
-} QT_FT_Bitmap;
+} LSCS_FT_Bitmap;
 
-typedef struct  QT_FT_Outline_
+typedef struct  LSCS_FT_Outline_
 {
     int      n_contours;       /* number of contours in glyph        */
     int      n_points;         /* number of points in the glyph      */
 
-    QT_FT_Vector  *points;     /* the outline's points               */
+    LSCS_FT_Vector  *points;     /* the outline's points               */
     char     *tags;            /* the points flags                   */
     int      *contours;        /* the contour end points             */
 
     int         flags;         /* outline masks                      */
 
-} QT_FT_Outline;
+} LSCS_FT_Outline;
 
 
-#define QT_FT_OUTLINE_NONE             0x0
-#define QT_FT_OUTLINE_OWNER            0x1
-#define QT_FT_OUTLINE_EVEN_ODD_FILL    0x2
-#define QT_FT_OUTLINE_REVERSE_FILL     0x4
-#define QT_FT_OUTLINE_IGNORE_DROPOUTS  0x8
+#define LSCS_FT_OUTLINE_NONE             0x0
+#define LSCS_FT_OUTLINE_OWNER            0x1
+#define LSCS_FT_OUTLINE_EVEN_ODD_FILL    0x2
+#define LSCS_FT_OUTLINE_REVERSE_FILL     0x4
+#define LSCS_FT_OUTLINE_IGNORE_DROPOUTS  0x8
 
-#define QT_FT_OUTLINE_HIGH_PRECISION   0x100
-#define QT_FT_OUTLINE_SINGLE_PASS      0x200
+#define LSCS_FT_OUTLINE_HIGH_PRECISION   0x100
+#define LSCS_FT_OUTLINE_SINGLE_PASS      0x200
 
-#define qt_ft_outline_none             QT_FT_OUTLINE_NONE
-#define qt_ft_outline_owner            QT_FT_OUTLINE_OWNER
-#define qt_ft_outline_even_odd_fill    QT_FT_OUTLINE_EVEN_ODD_FILL
-#define qt_ft_outline_reverse_fill     QT_FT_OUTLINE_REVERSE_FILL
-#define qt_ft_outline_ignore_dropouts  QT_FT_OUTLINE_IGNORE_DROPOUTS
-#define qt_ft_outline_high_precision   QT_FT_OUTLINE_HIGH_PRECISION
-#define qt_ft_outline_single_pass      QT_FT_OUTLINE_SINGLE_PASS
+#define lscs_ft_outline_none             LSCS_FT_OUTLINE_NONE
+#define lscs_ft_outline_owner            LSCS_FT_OUTLINE_OWNER
+#define lscs_ft_outline_even_odd_fill    LSCS_FT_OUTLINE_EVEN_ODD_FILL
+#define lscs_ft_outline_reverse_fill     LSCS_FT_OUTLINE_REVERSE_FILL
+#define lscs_ft_outline_ignore_dropouts  LSCS_FT_OUTLINE_IGNORE_DROPOUTS
+#define lscs_ft_outline_high_precision   LSCS_FT_OUTLINE_HIGH_PRECISION
+#define lscs_ft_outline_single_pass      LSCS_FT_OUTLINE_SINGLE_PASS
 
-#define QT_FT_CURVE_TAG( flag )  ( flag & 3 )
+#define LSCS_FT_CURVE_TAG( flag )  ( flag & 3 )
 
-#define QT_FT_CURVE_TAG_ON           1
-#define QT_FT_CURVE_TAG_CONIC        0
-#define QT_FT_CURVE_TAG_CUBIC        2
+#define LSCS_FT_CURVE_TAG_ON           1
+#define LSCS_FT_CURVE_TAG_CONIC        0
+#define LSCS_FT_CURVE_TAG_CUBIC        2
 
-#define QT_FT_CURVE_TAG_TOUCH_X      8  /* reserved for the TrueType hinter */
-#define QT_FT_CURVE_TAG_TOUCH_Y     16  /* reserved for the TrueType hinter */
+#define LSCS_FT_CURVE_TAG_TOUCH_X      8  /* reserved for the TrueType hinter */
+#define LSCS_FT_CURVE_TAG_TOUCH_Y     16  /* reserved for the TrueType hinter */
 
-#define QT_FT_CURVE_TAG_TOUCH_BOTH  ( QT_FT_CURVE_TAG_TOUCH_X | \
-                                   QT_FT_CURVE_TAG_TOUCH_Y )
+#define LSCS_FT_CURVE_TAG_TOUCH_BOTH  ( LSCS_FT_CURVE_TAG_TOUCH_X | \
+                                   LSCS_FT_CURVE_TAG_TOUCH_Y )
 
-#define  QT_FT_Curve_Tag_On       QT_FT_CURVE_TAG_ON
-#define  QT_FT_Curve_Tag_Conic    QT_FT_CURVE_TAG_CONIC
-#define  QT_FT_Curve_Tag_Cubic    QT_FT_CURVE_TAG_CUBIC
-#define  QT_FT_Curve_Tag_Touch_X  QT_FT_CURVE_TAG_TOUCH_X
-#define  QT_FT_Curve_Tag_Touch_Y  QT_FT_CURVE_TAG_TOUCH_Y
-
-
-typedef int
-( *QT_FT_Outline_MoveToFunc )( QT_FT_Vector  *to, void *user );
-
-#define QT_FT_Outline_MoveTo_Func  QT_FT_Outline_MoveToFunc
+#define  LSCS_FT_Curve_Tag_On       LSCS_FT_CURVE_TAG_ON
+#define  LSCS_FT_Curve_Tag_Conic    LSCS_FT_CURVE_TAG_CONIC
+#define  LSCS_FT_Curve_Tag_Cubic    LSCS_FT_CURVE_TAG_CUBIC
+#define  LSCS_FT_Curve_Tag_Touch_X  LSCS_FT_CURVE_TAG_TOUCH_X
+#define  LSCS_FT_Curve_Tag_Touch_Y  LSCS_FT_CURVE_TAG_TOUCH_Y
 
 
 typedef int
-( *QT_FT_Outline_LineToFunc )( QT_FT_Vector  *to, void *user );
+( *LSCS_FT_Outline_MoveToFunc )( LSCS_FT_Vector  *to, void *user );
 
-#define  QT_FT_Outline_LineTo_Func  QT_FT_Outline_LineToFunc
+#define LSCS_FT_Outline_MoveTo_Func  LSCS_FT_Outline_MoveToFunc
+
+
+typedef int
+( *LSCS_FT_Outline_LineToFunc )( LSCS_FT_Vector  *to, void *user );
+
+#define  LSCS_FT_Outline_LineTo_Func  LSCS_FT_Outline_LineToFunc
 
 
 typedef int
-( *QT_FT_Outline_ConicToFunc )( QT_FT_Vector *control, QT_FT_Vector *to, void *user );
+( *LSCS_FT_Outline_ConicToFunc )( LSCS_FT_Vector *control, LSCS_FT_Vector *to, void *user );
 
-#define  QT_FT_Outline_ConicTo_Func  QT_FT_Outline_ConicToFunc
+#define  LSCS_FT_Outline_ConicTo_Func  LSCS_FT_Outline_ConicToFunc
 
 typedef int
-( *QT_FT_Outline_CubicToFunc )( QT_FT_Vector  *control1,
-                                QT_FT_Vector  *control2,
-                                QT_FT_Vector  *to,
+( *LSCS_FT_Outline_CubicToFunc )( LSCS_FT_Vector  *control1,
+                                LSCS_FT_Vector  *control2,
+                                LSCS_FT_Vector  *to,
                                 void *user );
 
-#define  QT_FT_Outline_CubicTo_Func  QT_FT_Outline_CubicToFunc
+#define  LSCS_FT_Outline_CubicTo_Func  LSCS_FT_Outline_CubicToFunc
 
 
-typedef struct  QT_FT_Outline_Funcs_
+typedef struct  LSCS_FT_Outline_Funcs_
 {
-    QT_FT_Outline_MoveToFunc   move_to;
-    QT_FT_Outline_LineToFunc   line_to;
-    QT_FT_Outline_ConicToFunc  conic_to;
-    QT_FT_Outline_CubicToFunc  cubic_to;
+    LSCS_FT_Outline_MoveToFunc   move_to;
+    LSCS_FT_Outline_LineToFunc   line_to;
+    LSCS_FT_Outline_ConicToFunc  conic_to;
+    LSCS_FT_Outline_CubicToFunc  cubic_to;
 
     int  shift;
     int  delta;
 
-} QT_FT_Outline_Funcs;
+} LSCS_FT_Outline_Funcs;
 
 
-#ifndef QT_FT_IMAGE_TAG
-#define QT_FT_IMAGE_TAG( value, _x1, _x2, _x3, _x4 )  \
+#ifndef LSCS_FT_IMAGE_TAG
+#define LSCS_FT_IMAGE_TAG( value, _x1, _x2, _x3, _x4 )  \
           value = ( ( (unsigned long)_x1 << 24 ) | \
                     ( (unsigned long)_x2 << 16 ) | \
                     ( (unsigned long)_x3 << 8  ) | \
@@ -171,106 +171,106 @@ typedef struct  QT_FT_Outline_Funcs_
 #endif
 
 
-typedef enum  QT_FT_Glyph_Format_
+typedef enum  LSCS_FT_Glyph_Format_
 {
-    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_NONE, 0, 0, 0, 0 ),
+    LSCS_FT_IMAGE_TAG( LSCS_FT_GLYPH_FORMAT_NONE, 0, 0, 0, 0 ),
 
-    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_COMPOSITE, 'c', 'o', 'm', 'p' ),
-    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_BITMAP,    'b', 'i', 't', 's' ),
-    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_OUTLINE,   'o', 'u', 't', 'l' ),
-    QT_FT_IMAGE_TAG( QT_FT_GLYPH_FORMAT_PLOTTER,   'p', 'l', 'o', 't' )
+    LSCS_FT_IMAGE_TAG( LSCS_FT_GLYPH_FORMAT_COMPOSITE, 'c', 'o', 'm', 'p' ),
+    LSCS_FT_IMAGE_TAG( LSCS_FT_GLYPH_FORMAT_BITMAP,    'b', 'i', 't', 's' ),
+    LSCS_FT_IMAGE_TAG( LSCS_FT_GLYPH_FORMAT_OUTLINE,   'o', 'u', 't', 'l' ),
+    LSCS_FT_IMAGE_TAG( LSCS_FT_GLYPH_FORMAT_PLOTTER,   'p', 'l', 'o', 't' )
 
-} QT_FT_Glyph_Format;
+} LSCS_FT_Glyph_Format;
 
 
-#define qt_ft_glyph_format_none       QT_FT_GLYPH_FORMAT_NONE
-#define qt_ft_glyph_format_composite  QT_FT_GLYPH_FORMAT_COMPOSITE
-#define qt_ft_glyph_format_bitmap     QT_FT_GLYPH_FORMAT_BITMAP
-#define qt_ft_glyph_format_outline    QT_FT_GLYPH_FORMAT_OUTLINE
-#define qt_ft_glyph_format_plotter    QT_FT_GLYPH_FORMAT_PLOTTER
+#define lscs_ft_glyph_format_none       LSCS_FT_GLYPH_FORMAT_NONE
+#define lscs_ft_glyph_format_composite  LSCS_FT_GLYPH_FORMAT_COMPOSITE
+#define lscs_ft_glyph_format_bitmap     LSCS_FT_GLYPH_FORMAT_BITMAP
+#define lscs_ft_glyph_format_outline    LSCS_FT_GLYPH_FORMAT_OUTLINE
+#define lscs_ft_glyph_format_plotter    LSCS_FT_GLYPH_FORMAT_PLOTTER
 
-typedef struct TRaster_ *QT_FT_Raster;
+typedef struct TRaster_ *LSCS_FT_Raster;
 
-typedef struct  QT_FT_Span_
+typedef struct  LSCS_FT_Span_
 {
     short x;
     unsigned short len;
     short y;
     unsigned char coverage;
-} QT_FT_Span;
+} LSCS_FT_Span;
 
 
-typedef void ( *QT_FT_SpanFunc )( int count, const QT_FT_Span *spans, void *worker );
+typedef void ( *LSCS_FT_SpanFunc )( int count, const LSCS_FT_Span *spans, void *worker );
 
-#define QT_FT_Raster_Span_Func   QT_FT_SpanFunc
+#define LSCS_FT_Raster_Span_Func   LSCS_FT_SpanFunc
 
-typedef int ( *QT_FT_Raster_BitTest_Func )( int y, int x, void *user );
-typedef void ( *QT_FT_Raster_BitSet_Func )( int y, int x, void *user );
+typedef int ( *LSCS_FT_Raster_BitTest_Func )( int y, int x, void *user );
+typedef void ( *LSCS_FT_Raster_BitSet_Func )( int y, int x, void *user );
 
 
-#define QT_FT_RASTER_FLAG_DEFAULT  0x0
-#define QT_FT_RASTER_FLAG_AA       0x1
-#define QT_FT_RASTER_FLAG_DIRECT   0x2
-#define QT_FT_RASTER_FLAG_CLIP     0x4
+#define LSCS_FT_RASTER_FLAG_DEFAULT  0x0
+#define LSCS_FT_RASTER_FLAG_AA       0x1
+#define LSCS_FT_RASTER_FLAG_DIRECT   0x2
+#define LSCS_FT_RASTER_FLAG_CLIP     0x4
 
 /* deprecated */
-#define qt_ft_raster_flag_default  QT_FT_RASTER_FLAG_DEFAULT
-#define qt_ft_raster_flag_aa       QT_FT_RASTER_FLAG_AA
-#define qt_ft_raster_flag_direct   QT_FT_RASTER_FLAG_DIRECT
-#define qt_ft_raster_flag_clip     QT_FT_RASTER_FLAG_CLIP
+#define lscs_ft_raster_flag_default  LSCS_FT_RASTER_FLAG_DEFAULT
+#define lscs_ft_raster_flag_aa       LSCS_FT_RASTER_FLAG_AA
+#define lscs_ft_raster_flag_direct   LSCS_FT_RASTER_FLAG_DIRECT
+#define lscs_ft_raster_flag_clip     LSCS_FT_RASTER_FLAG_CLIP
 
 
-typedef struct  QT_FT_Raster_Params_
+typedef struct  LSCS_FT_Raster_Params_
 {
-    QT_FT_Bitmap  *target;
+    LSCS_FT_Bitmap  *target;
     void *source;
     int flags;
-    QT_FT_SpanFunc gray_spans;
-    QT_FT_SpanFunc black_spans;
-    QT_FT_Raster_BitTest_Func bit_test;     /* doesn't work! */
-    QT_FT_Raster_BitSet_Func  bit_set;      /* doesn't work! */
+    LSCS_FT_SpanFunc gray_spans;
+    LSCS_FT_SpanFunc black_spans;
+    LSCS_FT_Raster_BitTest_Func bit_test;     /* doesn't work! */
+    LSCS_FT_Raster_BitSet_Func  bit_set;      /* doesn't work! */
     void *user;
-    QT_FT_BBox clip_box;
+    LSCS_FT_BBox clip_box;
     int skip_spans;
 
-} QT_FT_Raster_Params;
+} LSCS_FT_Raster_Params;
 
 
 typedef int
-( *QT_FT_Raster_NewFunc )( QT_FT_Raster  *raster );
+( *LSCS_FT_Raster_NewFunc )( LSCS_FT_Raster  *raster );
 
-#define  QT_FT_Raster_New_Func    QT_FT_Raster_NewFunc
+#define  LSCS_FT_Raster_New_Func    LSCS_FT_Raster_NewFunc
 
 typedef void
-( *QT_FT_Raster_DoneFunc )( QT_FT_Raster  raster );
+( *LSCS_FT_Raster_DoneFunc )( LSCS_FT_Raster  raster );
 
-#define  QT_FT_Raster_Done_Func   QT_FT_Raster_DoneFunc
+#define  LSCS_FT_Raster_Done_Func   LSCS_FT_Raster_DoneFunc
 
 typedef void
-( *QT_FT_Raster_ResetFunc )( QT_FT_Raster raster, unsigned char *pool_base, unsigned long  pool_size );
+( *LSCS_FT_Raster_ResetFunc )( LSCS_FT_Raster raster, unsigned char *pool_base, unsigned long  pool_size );
 
-#define  QT_FT_Raster_Reset_Func   QT_FT_Raster_ResetFunc
-
-typedef int
-( *QT_FT_Raster_SetModeFunc )( QT_FT_Raster raster, unsigned long mode, void *args );
-
-#define  QT_FT_Raster_Set_Mode_Func  QT_FT_Raster_SetModeFunc
+#define  LSCS_FT_Raster_Reset_Func   LSCS_FT_Raster_ResetFunc
 
 typedef int
-( *QT_FT_Raster_RenderFunc )( QT_FT_Raster raster, QT_FT_Raster_Params  *params );
+( *LSCS_FT_Raster_SetModeFunc )( LSCS_FT_Raster raster, unsigned long mode, void *args );
 
-#define  QT_FT_Raster_Render_Func    QT_FT_Raster_RenderFunc
+#define  LSCS_FT_Raster_Set_Mode_Func  LSCS_FT_Raster_SetModeFunc
+
+typedef int
+( *LSCS_FT_Raster_RenderFunc )( LSCS_FT_Raster raster, LSCS_FT_Raster_Params  *params );
+
+#define  LSCS_FT_Raster_Render_Func    LSCS_FT_Raster_RenderFunc
 
 
-typedef struct  QT_FT_Raster_Funcs_
+typedef struct  LSCS_FT_Raster_Funcs_
 {
-    QT_FT_Glyph_Format         glyph_format;
-    QT_FT_Raster_NewFunc       raster_new;
-    QT_FT_Raster_ResetFunc     raster_reset;
-    QT_FT_Raster_SetModeFunc   raster_set_mode;
-    QT_FT_Raster_RenderFunc    raster_render;
-    QT_FT_Raster_DoneFunc      raster_done;
+    LSCS_FT_Glyph_Format         glyph_format;
+    LSCS_FT_Raster_NewFunc       raster_new;
+    LSCS_FT_Raster_ResetFunc     raster_reset;
+    LSCS_FT_Raster_SetModeFunc   raster_set_mode;
+    LSCS_FT_Raster_RenderFunc    raster_render;
+    LSCS_FT_Raster_DoneFunc      raster_done;
 
-} QT_FT_Raster_Funcs;
+} LSCS_FT_Raster_Funcs;
 
 #endif

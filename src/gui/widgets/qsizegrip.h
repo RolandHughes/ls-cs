@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_SIZEGRIP
+#ifndef LSCS_NO_SIZEGRIP
 
 class QSizeGripPrivate;
 
@@ -64,6 +64,6 @@ private:
     GUI_LSCS_SLOT_2( _q_showIfNotHidden )
 };
 
-#endif // QT_NO_SIZEGRIP
+#endif // LSCS_NO_SIZEGRIP
 
 #endif

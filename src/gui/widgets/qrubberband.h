@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_RUBBERBAND
+#ifndef LSCS_NO_RUBBERBAND
 
 class QRubberBandPrivate;
 class QStyleOptionRubberBand;
@@ -87,6 +87,6 @@ void QRubberBand::move( int x, int y )
     setGeometry( x, y, width(), height() );
 }
 
-#endif // QT_NO_RUBBERBAND
+#endif // LSCS_NO_RUBBERBAND
 
 #endif // QRUBBERBAND_H

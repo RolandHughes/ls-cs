@@ -26,7 +26,7 @@
 
 #include <qtextcodec.h>
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
 template <typename T>
 class QAtomicPointer;
@@ -51,6 +51,6 @@ private:
     mutable QAtomicPointer<QByteArray> reverseMap;
 };
 
-#endif // QT_NO_TEXTCODEC
+#endif // LSCS_NO_TEXTCODEC
 
 #endif // QSIMPLECODEC_P_H

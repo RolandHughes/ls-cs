@@ -40,13 +40,13 @@
 #include <qapplication_p.h>
 #include <qmultitouch_mac_p.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qcocoaglcontext.h>
 #endif
 
 #include <qcocoaintegration.h>
 
-#ifdef QT_COCOA_ENABLE_ACCESSIBILITY_INSPECTOR
+#ifdef LSCS_COCOA_ENABLE_ACCESSIBILITY_INSPECTOR
 #include <accessibilityinspector.h>
 #endif
 
@@ -110,7 +110,7 @@ static bool _q_dontOverrideCtrlLMB = false;
 
 + (void)initialize
 {
-   _q_dontOverrideCtrlLMB = qt_mac_resolveOption(false, "QT_MAC_DONT_OVERRIDE_CTRL_LMB");
+   _q_dontOverrideCtrlLMB = lscs_mac_resolveOption(false, "LSCS_MAC_DONT_OVERRIDE_CTRL_LMB");
 }
 
 - (id) init
@@ -127,7 +127,7 @@ static bool _q_dontOverrideCtrlLMB = false;
       m_sendKeyEvent      = false;
       m_subscribesForGlobalFrameNotifications = false;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
       m_glContext = nullptr;
       m_shouldSetGLContextinDrawRect = false;
 #endif
@@ -184,7 +184,7 @@ static bool _q_dontOverrideCtrlLMB = false;
    m_sendKeyEvent = false;
    m_trackingArea = nil;
 
-#ifdef QT_COCOA_ENABLE_ACCESSIBILITY_INSPECTOR
+#ifdef LSCS_COCOA_ENABLE_ACCESSIBILITY_INSPECTOR
    // prevent rift in space-time continuum, disable
    // accessibility for the accessibility inspector's windows.
    static bool skipAccessibilityForInspectorWindows = false;
@@ -220,7 +220,7 @@ static bool _q_dontOverrideCtrlLMB = false;
    m_platformWindow = nullptr;
 }
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 - (void) setQCocoaGLContext: (QCocoaGLContext *)context
 {
    m_glContext = context;
@@ -330,34 +330,34 @@ static bool _q_dontOverrideCtrlLMB = false;
       return;
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM_WINDOW)
-      // geometry = qt_mac_toQRect([self frame]);
+      // geometry = lscs_mac_toQRect([self frame]);
       qDebug() << "nsview updateGeometry" << m_platformWindow->window();
 
-      QRect screenRect = qt_mac_toQRect([m_platformWindow->m_nsWindow convertRectToScreen: [self frame]]);
+      QRect screenRect = lscs_mac_toQRect([m_platformWindow->m_nsWindow convertRectToScreen: [self frame]]);
       qDebug() << "screenRect" << screenRect;
 
-      screenRect.moveTop(qt_mac_flipYCoordinate(screenRect.y() + screenRect.height()));
+      screenRect.moveTop(lscs_mac_flipYCoordinate(screenRect.y() + screenRect.height()));
       geometry = QRect(m_platformWindow->window()->parent()->mapFromGlobal(screenRect.topLeft()), screenRect.size());
       qDebug() << "geometry" << geometry;
 #endif
 
-      // geometry = QRect(screenRect.origin.x, qt_mac_flipYCoordinate(screenRect.origin.y + screenRect.size.height),
+      // geometry = QRect(screenRect.origin.x, lscs_mac_flipYCoordinate(screenRect.origin.y + screenRect.size.height),
       // screenRect.size.width, screenRect.size.height);
 
    } else if (m_platformWindow->m_nsWindow) {
       // top level window, get window rect and flip y.
       NSRect rect = [self frame];
       NSRect windowRect = [[self window] frame];
-      geometry = QRect(windowRect.origin.x, qt_mac_flipYCoordinate(windowRect.origin.y + rect.size.height), rect.size.width,
+      geometry = QRect(windowRect.origin.x, lscs_mac_flipYCoordinate(windowRect.origin.y + rect.size.height), rect.size.width,
             rect.size.height);
 
    } else if (m_platformWindow->m_contentViewIsToBeEmbedded) {
       // embedded child window, use the frame rect ### merge with case below
-      geometry = qt_mac_toQRect([self bounds]);
+      geometry = lscs_mac_toQRect([self bounds]);
 
    } else {
       // child window, use the frame rect
-      geometry = qt_mac_toQRect([self frame]);
+      geometry = lscs_mac_toQRect([self frame]);
    }
 
    if (m_platformWindow->m_nsWindow && geometry == m_platformWindow->geometry()) {
@@ -581,7 +581,7 @@ static bool _q_dontOverrideCtrlLMB = false;
          dst[x] = src[x] & 0xff;
       }
    }
-   m_maskImage = qt_mac_toCGImageMask(maskImage);
+   m_maskImage = lscs_mac_toCGImageMask(maskImage);
 }
 
 - (void)invalidateWindowShadowIfNeeded
@@ -594,7 +594,7 @@ static bool _q_dontOverrideCtrlLMB = false;
 
 - (void) drawRect: (NSRect)dirtyRect
 {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
    if (m_glContext && m_shouldSetGLContextinDrawRect) {
       [m_glContext->nsOpenGLContext() setView: self];
       m_shouldSetGLContextinDrawRect = false;
@@ -644,7 +644,7 @@ static bool _q_dontOverrideCtrlLMB = false;
          dirtyBackingRect.size.width,
          dirtyBackingRect.size.height
       );
-   CGImageRef bsCGImage = qt_mac_toCGImage(m_backingStore->toImage());
+   CGImageRef bsCGImage = lscs_mac_toCGImage(m_backingStore->toImage());
    CGImageRef cleanImg = CGImageCreateWithImageInRect(bsCGImage, backingStoreRect);
 
    // Optimization: Copy frame buffer content instead of blending for
@@ -753,7 +753,7 @@ static bool _q_dontOverrideCtrlLMB = false;
    NSPoint nsViewPoint = [self convertPoint: nsWindowPoint fromView: nil];     // NSView/QWindow coordinates
    *qtWindowPoint = QPointF(nsViewPoint.x, nsViewPoint.y);                     // NSView/QWindow coordinates
 
-   *qtScreenPoint = QPointF(mouseLocation.x, qt_mac_flipYCoordinate(mouseLocation.y)); // CS screen coordinates
+   *qtScreenPoint = QPointF(mouseLocation.x, lscs_mac_flipYCoordinate(mouseLocation.y)); // CS screen coordinates
 }
 
 - (void)resetMouseButtons
@@ -861,7 +861,7 @@ static bool _q_dontOverrideCtrlLMB = false;
    NSPoint nsViewPoint = [self convertPoint: windowPoint fromView: nil];
    QPoint qtWindowPoint = QPoint(nsViewPoint.x, titleBarHeight + nsViewPoint.y);
    NSPoint screenPoint = [window convertRectToScreen: NSMakeRect(windowPoint.x, windowPoint.y, 0, 0)].origin;
-   QPoint qtScreenPoint = QPoint(screenPoint.x, qt_mac_flipYCoordinate(screenPoint.y));
+   QPoint qtScreenPoint = QPoint(screenPoint.x, lscs_mac_flipYCoordinate(screenPoint.y));
 
    ulong timestamp = [theEvent timestamp] * 1000;
    QWindowSystemInterface::handleFrameStrutMouseEvent(m_window, timestamp, qtWindowPoint, qtScreenPoint, m_frameStrutButtons);
@@ -885,7 +885,7 @@ static bool _q_dontOverrideCtrlLMB = false;
    if (!popups->isEmpty()) {
       // Check if the click is outside all popups.
       bool inside = false;
-      QPointF qtScreenPoint = qt_mac_flipPoint([self screenMousePoint: theEvent]);
+      QPointF qtScreenPoint = lscs_mac_flipPoint([self screenMousePoint: theEvent]);
       for (QList<QCocoaWindow *>::const_iterator it = popups->begin(); it != popups->end(); ++it) {
          if ((*it)->geometry().contains(qtScreenPoint.toPoint())) {
             inside = true;
@@ -1376,7 +1376,7 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
    QWindowSystemInterface::handleTouchEvent(m_window, timestamp * 1000, touchDevice, points);
 }
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 - (bool)handleGestureAsBeginEnd: (NSEvent *)event
 {
@@ -1503,9 +1503,9 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
    [self convertFromScreen: [NSEvent mouseLocation] toWindowPoint: &windowPoint andScreenPoint: &screenPoint];
    QWindowSystemInterface::handleGestureEvent(m_window, timestamp, Qt::EndNativeGesture, windowPoint, screenPoint);
 }
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 - (void)scrollWheel: (NSEvent *)theEvent
 {
    if (m_window && (m_window->flags() & Qt::WindowTransparentForInput) ) {
@@ -1545,11 +1545,11 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
       pixelDelta.setY([theEvent scrollingDeltaY] * lineWithEstimate);
    }
 
-   QPointF qt_windowPoint;
-   QPointF qt_screenPoint;
-   [self convertFromScreen: [NSEvent mouseLocation] toWindowPoint: &qt_windowPoint andScreenPoint: &qt_screenPoint];
+   QPointF lscs_windowPoint;
+   QPointF lscs_screenPoint;
+   [self convertFromScreen: [NSEvent mouseLocation] toWindowPoint: &lscs_windowPoint andScreenPoint: &lscs_screenPoint];
    NSTimeInterval timestamp = [theEvent timestamp];
-   ulong qt_timestamp = timestamp * 1000;
+   ulong lscs_timestamp = timestamp * 1000;
 
    // Prevent keyboard modifier state from changing during scroll event streams.
    // A two-finger trackpad flick generates a stream of scroll events. We want
@@ -1590,14 +1590,14 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
       }
    }
 
-   QWindowSystemInterface::handleWheelEvent(m_window, qt_timestamp, qt_windowPoint, qt_screenPoint, pixelDelta, angleDelta,
+   QWindowSystemInterface::handleWheelEvent(m_window, lscs_timestamp, lscs_windowPoint, lscs_screenPoint, pixelDelta, angleDelta,
       currentWheelModifiers, ph, source);
 }
-#endif //QT_NO_WHEELEVENT
+#endif //LSCS_NO_WHEELEVENT
 
 - (int) convertKeyCode: (QChar)keyChar
 {
-   return qt_mac_cocoaKey2QtKey(keyChar);
+   return lscs_mac_cocoaKey2QtKey(keyChar);
 }
 
 + (Qt::KeyboardModifiers) convertKeyModifiers: (ulong)modifierFlags
@@ -1765,12 +1765,12 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
    ulong delta = lastKnownModifiers ^ modifiers;
    m_lastKnownModifiers = modifiers;
 
-   struct qt_mac_enum_mapper {
+   struct lscs_mac_enum_mapper {
       ulong mac_mask;
-      Qt::Key qt_code;
+      Qt::Key lscs_code;
    };
 
-   static qt_mac_enum_mapper modifier_key_symbols[] = {
+   static lscs_mac_enum_mapper modifier_key_symbols[] = {
       { NSEventModifierFlagShift,    Qt::Key_Shift },
       { NSEventModifierFlagControl,  Qt::Key_Meta },
       { NSEventModifierFlagCommand,  Qt::Key_Control },
@@ -1788,7 +1788,7 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
 
       QWindowSystemInterface::handleKeyEvent(m_window, timestamp,
          (lastKnownModifiers & mac_mask) ? QEvent::KeyRelease : QEvent::KeyPress,
-         modifier_key_symbols[i].qt_code,
+         modifier_key_symbols[i].lscs_code,
          qmodifiers ^ [QNSView convertKeyModifiers: mac_mask]);
    }
 }
@@ -1863,7 +1863,7 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
             QColor clr (Qt::black);
             NSColor *color = [attributes objectForKey: NSUnderlineColorAttributeName];
             if (color) {
-               clr = qt_mac_toQColor(color);
+               clr = lscs_mac_toQColor(color);
             }
             QTextCharFormat format;
             format.setFontUnderline(true);
@@ -2021,7 +2021,7 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
 
    NSRect rect;
    rect.origin.x = mp.x();
-   rect.origin.y = qt_mac_flipYCoordinate(mp.y());
+   rect.origin.y = lscs_mac_flipYCoordinate(mp.y());
    rect.size.width = mr.width();
    rect.size.height = mr.height();
    return rect;
@@ -2061,7 +2061,7 @@ static QTabletEvent::TabletDevice wacomTabletDevice(NSEvent *theEvent)
 -(void)registerDragTypes
 {
    QMacAutoReleasePool pool;
-   QStringList customTypes = qt_mac_enabledDraggedTypes();
+   QStringList customTypes = lscs_mac_enabledDraggedTypes();
 
    if (currentCustomDragTypes == nullptr || *currentCustomDragTypes != customTypes) {
       if (currentCustomDragTypes == nullptr) {
@@ -2111,7 +2111,7 @@ static QPoint mapWindowCoordinates(QWindow *source, QWindow *target, QPoint poin
    (void) session;
    (void) context;
    QCocoaDrag *nativeDrag = QCocoaIntegration::instance()->drag();
-   return qt_mac_mapDropActions(nativeDrag->currentDrag()->supportedActions());
+   return lscs_mac_mapDropActions(nativeDrag->currentDrag()->supportedActions());
 }
 
 - (BOOL)ignoreModifierKeysForDraggingSession: (NSDraggingSession *)session
@@ -2164,7 +2164,7 @@ static QPoint mapWindowCoordinates(QWindow *source, QWindow *target, QPoint poin
             break;
       }
    } else {
-      NSImage *nsimage = qt_mac_create_nsimage(pixmapCursor);
+      NSImage *nsimage = lscs_mac_create_nsimage(pixmapCursor);
       nativeCursor = [[NSCursor alloc] initWithImage: nsimage hotSpot: NSZeroPoint];
       [nsimage release];
    }
@@ -2205,8 +2205,8 @@ static QPoint mapWindowCoordinates(QWindow *source, QWindow *target, QPoint poin
 - (NSDragOperation)handleDrag: (id <NSDraggingInfo>)sender
 {
    NSPoint windowPoint = [self convertPoint: [sender draggingLocation] fromView: nil];
-   QPoint qt_windowPoint(windowPoint.x, windowPoint.y);
-   Qt::DropActions qtAllowed = qt_mac_mapNSDragOperations([sender draggingSourceOperationMask]);
+   QPoint lscs_windowPoint(windowPoint.x, windowPoint.y);
+   Qt::DropActions qtAllowed = lscs_mac_mapNSDragOperations([sender draggingSourceOperationMask]);
 
    QWindow *target = findEventTargetWindow(m_window);
    if (! target) {
@@ -2221,15 +2221,15 @@ static QPoint mapWindowCoordinates(QWindow *source, QWindow *target, QPoint poin
    if (nativeDrag->currentDrag()) {
       // The drag was started from within the application
       response = QWindowSystemInterface::handleDrag(target, nativeDrag->platformDropData(), mapWindowCoordinates(m_window, target,
-               qt_windowPoint), qtAllowed);
+               lscs_windowPoint), qtAllowed);
       [self updateCursorFromDragResponse: response drag: nativeDrag];
 
    } else {
       QCocoaDropData mimeData([sender draggingPasteboard]);
-      response = QWindowSystemInterface::handleDrag(target, &mimeData, mapWindowCoordinates(m_window, target, qt_windowPoint), qtAllowed);
+      response = QWindowSystemInterface::handleDrag(target, &mimeData, mapWindowCoordinates(m_window, target, lscs_windowPoint), qtAllowed);
    }
 
-   return qt_mac_mapDropAction(response.acceptedAction());
+   return lscs_mac_mapDropAction(response.acceptedAction());
 }
 
 - (void)draggingExited: (id <NSDraggingInfo>)sender
@@ -2240,10 +2240,10 @@ static QPoint mapWindowCoordinates(QWindow *source, QWindow *target, QPoint poin
    }
 
    NSPoint windowPoint = [self convertPoint: [sender draggingLocation] fromView: nil];
-   QPoint qt_windowPoint(windowPoint.x, windowPoint.y);
+   QPoint lscs_windowPoint(windowPoint.x, windowPoint.y);
 
    // Send 0 mime data to indicate drag exit
-   QWindowSystemInterface::handleDrag(target, nullptr, mapWindowCoordinates(m_window, target, qt_windowPoint), Qt::IgnoreAction);
+   QWindowSystemInterface::handleDrag(target, nullptr, mapWindowCoordinates(m_window, target, lscs_windowPoint), Qt::IgnoreAction);
 }
 
 // called on drop, send the drop to CS and return if it was accepted.
@@ -2255,19 +2255,19 @@ static QPoint mapWindowCoordinates(QWindow *source, QWindow *target, QPoint poin
    }
 
    NSPoint windowPoint = [self convertPoint: [sender draggingLocation] fromView: nil];
-   QPoint qt_windowPoint(windowPoint.x, windowPoint.y);
-   Qt::DropActions qtAllowed = qt_mac_mapNSDragOperations([sender draggingSourceOperationMask]);
+   QPoint lscs_windowPoint(windowPoint.x, windowPoint.y);
+   Qt::DropActions qtAllowed = lscs_mac_mapNSDragOperations([sender draggingSourceOperationMask]);
 
    QPlatformDropQtResponse response(false, Qt::IgnoreAction);
    QCocoaDrag *nativeDrag = QCocoaIntegration::instance()->drag();
    if (nativeDrag->currentDrag()) {
       // The drag was started from within the application
       response = QWindowSystemInterface::handleDrop(target, nativeDrag->platformDropData(), mapWindowCoordinates(m_window, target,
-               qt_windowPoint), qtAllowed);
+               lscs_windowPoint), qtAllowed);
 
    } else {
       QCocoaDropData mimeData([sender draggingPasteboard]);
-      response = QWindowSystemInterface::handleDrop(target, &mimeData, mapWindowCoordinates(m_window, target, qt_windowPoint), qtAllowed);
+      response = QWindowSystemInterface::handleDrop(target, &mimeData, mapWindowCoordinates(m_window, target, lscs_windowPoint), qtAllowed);
    }
    if (response.isAccepted()) {
       QCocoaDrag *nativeDrag = QCocoaIntegration::instance()->drag();
@@ -2299,7 +2299,7 @@ static QPoint mapWindowCoordinates(QWindow *source, QWindow *target, QPoint poin
    NSPoint windowPoint = [self.window convertRectFromScreen: NSMakeRect(screenPoint.x, screenPoint.y, 1, 1)].origin;
    QPoint qtWindowPoint(windowPoint.x, windowPoint.y);
 
-   QPoint qtScreenPoint = QPoint(screenPoint.x, qt_mac_flipYCoordinate(screenPoint.y));
+   QPoint qtScreenPoint = QPoint(screenPoint.x, lscs_mac_flipYCoordinate(screenPoint.y));
 
    QWindowSystemInterface::handleMouseEvent(target, mapWindowCoordinates(m_window, target, qtWindowPoint), qtScreenPoint, m_buttons);
 }

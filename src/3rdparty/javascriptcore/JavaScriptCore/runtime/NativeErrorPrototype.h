@@ -22,7 +22,7 @@
 #define NativeErrorPrototype_h
 
 #include "JSObject.h"
-#ifdef QT_BUILD_SCRIPT_LIB
+#ifdef LSCS_BUILD_SCRIPT_LIB
 #include "ErrorInstance.h"
 #endif
 
@@ -30,7 +30,7 @@ namespace JSC
 {
 
 class NativeErrorPrototype :
-#ifdef QT_BUILD_SCRIPT_LIB    //According to ECMAScript Specification 15.11.7, errors must have the "Error" class
+#ifdef LSCS_BUILD_SCRIPT_LIB    //According to ECMAScript Specification 15.11.7, errors must have the "Error" class
     public ErrorInstance
 #else
     public JSObject

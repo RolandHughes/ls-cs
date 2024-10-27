@@ -28,18 +28,18 @@
 #include <QWindowSystemInterface>
 #include <qkbd_qws.h>
 #include <qplatformdefs.h>
-#include <qcore_unix_p.h> // overrides QT_OPEN
+#include <qcore_unix_p.h> // overrides LSCS_OPEN
 #include <errno.h>
 #include <termios.h>
 #include <linux/kd.h>
 #include <linux/input.h>
 #include <qdebug.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
-//#define QT_QPA_EXPERIMENTAL_TOUCHEVENT
+//#define LSCS_QPA_EXPERIMENTAL_TOUCHEVENT
 
-#ifdef QT_QPA_EXPERIMENTAL_TOUCHEVENT
+#ifdef LSCS_QPA_EXPERIMENTAL_TOUCHEVENT
 class QLinuxInputMouseHandlerData
 {
 public:
@@ -162,7 +162,7 @@ QLinuxInputMouseHandler::QLinuxInputMouseHandler( const QString &key,
 
     m_jitterLimitSquared = jitterLimit*jitterLimit;
 
-    m_fd = QT_OPEN( dev.toLocal8Bit().constData(), O_RDONLY | O_NDELAY, 0 );
+    m_fd = LSCS_OPEN( dev.toLocal8Bit().constData(), O_RDONLY | O_NDELAY, 0 );
 
     if ( m_fd >= 0 )
     {
@@ -175,7 +175,7 @@ QLinuxInputMouseHandler::QLinuxInputMouseHandler( const QString &key,
         return;
     }
 
-#ifdef QT_QPA_EXPERIMENTAL_TOUCHEVENT
+#ifdef LSCS_QPA_EXPERIMENTAL_TOUCHEVENT
     d = new QLinuxInputMouseHandlerData;
 #endif
 }
@@ -185,10 +185,10 @@ QLinuxInputMouseHandler::~QLinuxInputMouseHandler()
 {
     if ( m_fd >= 0 )
     {
-        QT_CLOSE( m_fd );
+        LSCS_CLOSE( m_fd );
     }
 
-#ifdef QT_QPA_EXPERIMENTAL_TOUCHEVENT
+#ifdef LSCS_QPA_EXPERIMENTAL_TOUCHEVENT
     delete d;
 #endif
 }
@@ -211,7 +211,7 @@ void QLinuxInputMouseHandler::readMouseData()
 
     while ( true )
     {
-        n = QT_READ( m_fd, reinterpret_cast<char *>( buffer ) + n, sizeof( buffer ) - n );
+        n = LSCS_READ( m_fd, reinterpret_cast<char *>( buffer ) + n, sizeof( buffer ) - n );
 
         if ( n == 0 )
         {
@@ -264,7 +264,7 @@ void QLinuxInputMouseHandler::readMouseData()
             else if ( data->code == ABS_HAT0Y )
             {
                 //ignore for now...
-#ifdef QT_QPA_EXPERIMENTAL_TOUCHEVENT
+#ifdef LSCS_QPA_EXPERIMENTAL_TOUCHEVENT
             }
             else if ( data->code == ABS_MT_POSITION_X )
             {
@@ -383,7 +383,7 @@ void QLinuxInputMouseHandler::readMouseData()
                 }
             }
 
-#ifdef QT_QPA_EXPERIMENTAL_TOUCHEVENT
+#ifdef LSCS_QPA_EXPERIMENTAL_TOUCHEVENT
 
             if ( d->state == QEvent::TouchBegin && !d->seenMT )
             {
@@ -551,7 +551,7 @@ QLinuxInputKeyboardHandler::QLinuxInputKeyboardHandler( const QString &key, cons
 
     m_handler = new QWSLinuxInputKeyboardHandler( dev ); //This is a hack to avoid copying all the QWS code
 
-    m_fd = QT_OPEN( dev.toLocal8Bit().constData(), O_RDWR, 0 );
+    m_fd = LSCS_OPEN( dev.toLocal8Bit().constData(), O_RDWR, 0 );
 
     if ( m_fd >= 0 )
     {
@@ -616,7 +616,7 @@ QLinuxInputKeyboardHandler::~QLinuxInputKeyboardHandler()
 
     if ( m_fd >= 0 )
     {
-        QT_CLOSE( m_fd );
+        LSCS_CLOSE( m_fd );
     }
 
     delete m_handler;
@@ -630,7 +630,7 @@ void QLinuxInputKeyboardHandler::switchLed( int led, bool state )
     led_ie.code = led;
     led_ie.value = state;
 
-    QT_WRITE( m_fd, &led_ie, sizeof( led_ie ) );
+    LSCS_WRITE( m_fd, &led_ie, sizeof( led_ie ) );
 }
 
 
@@ -642,7 +642,7 @@ void QLinuxInputKeyboardHandler::readKeycode()
 
     while ( true )
     {
-        n = QT_READ( m_fd, reinterpret_cast<char *>( buffer ) + n, sizeof( buffer ) - n );
+        n = LSCS_READ( m_fd, reinterpret_cast<char *>( buffer ) + n, sizeof( buffer ) - n );
 
         if ( n == 0 )
         {
@@ -708,5 +708,5 @@ void QLinuxInputKeyboardHandler::readKeycode()
 
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

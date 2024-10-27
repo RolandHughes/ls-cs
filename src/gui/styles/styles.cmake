@@ -133,7 +133,7 @@ if(GTK2_FOUND)
    add_definitions(${GTK2_DEFINITIONS})
 
 else()
-   add_definitions(-DQT_NO_STYLE_GTK)
+   add_definitions(-DLSCS_NO_STYLE_GTK)
 
 endif()
 
@@ -145,10 +145,10 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
       ${CMAKE_CURRENT_SOURCE_DIR}/styles/qmacstyle.mm
    )
 
-   add_definitions(-DQT_NO_STYLE_WINDOWSXP -DQT_NO_STYLE_GTK)
+   add_definitions(-DLSCS_NO_STYLE_WINDOWSXP -DLSCS_NO_STYLE_GTK)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
-   add_definitions(-DQT_NO_STYLE_MAC -DQT_NO_STYLE_WINDOWSXP)
+   add_definitions(-DLSCS_NO_STYLE_MAC -DLSCS_NO_STYLE_WINDOWSXP)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    target_sources(LsCsGui

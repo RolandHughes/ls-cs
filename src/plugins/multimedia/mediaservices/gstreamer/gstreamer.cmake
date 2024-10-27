@@ -131,7 +131,7 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    target_compile_definitions(LsCsMultimedia_gst_audiodecoder
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    # plugin 2
@@ -209,7 +209,7 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
 
    target_compile_definitions(LsCsMultimedia_gst_camerabin
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    # plugin 3
@@ -277,7 +277,7 @@ if(WITH_MULTIMEDIA AND GStreamer_FOUND)
    target_compile_definitions(LsCsMultimedia_gst_mediaplayer
       PRIVATE
       -DIN_TRUE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    set_target_properties(LsCsMultimedia_gst_audiodecoder PROPERTIES PREFIX "")

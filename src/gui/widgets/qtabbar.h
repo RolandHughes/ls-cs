@@ -26,7 +26,7 @@
 
 #include <qwidget.h>
 
-#ifndef QT_NO_TABBAR
+#ifndef LSCS_NO_TABBAR
 
 class QIcon;
 class QTabBarPrivate;
@@ -130,12 +130,12 @@ public:
     Qt::TextElideMode elideMode() const;
     void setElideMode( Qt::TextElideMode value );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     void setTabToolTip( int index, const QString &tip );
     QString tabToolTip( int index ) const;
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     void setTabWhatsThis( int index, const QString &text );
     QString tabWhatsThis( int index ) const;
 #endif
@@ -218,7 +218,7 @@ protected:
     void mouseMoveEvent ( QMouseEvent *event ) override;
     void mouseReleaseEvent ( QMouseEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -227,7 +227,7 @@ protected:
     void timerEvent( QTimerEvent *event ) override;
     void initStyleOption( QStyleOptionTab *option, int tabIndex ) const;
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
     friend class QAccessibleTabBar;
 #endif
 
@@ -241,6 +241,6 @@ private:
     GUI_LSCS_SLOT_2( _q_closeTab )
 };
 
-#endif // QT_NO_TABBAR
+#endif // LSCS_NO_TABBAR
 
 #endif

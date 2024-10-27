@@ -65,7 +65,7 @@ static inline LCID currentInputLanguageId()
     return languageIdFromLocaleId( reinterpret_cast<quintptr>( GetKeyboardLayout( 0 ) ) );
 }
 
-Q_CORE_EXPORT QLocale qt_localeFromLCID( LCID id ); // from qlocale_win.cpp
+Q_CORE_EXPORT QLocale lscs_localeFromLCID( LCID id ); // from qlocale_win.cpp
 
 HIMC QWindowsInputContext::m_defaultContext = nullptr;
 
@@ -76,7 +76,7 @@ QWindowsInputContext::CompositionContext::CompositionContext()
 
 QWindowsInputContext::QWindowsInputContext()
     : m_WM_MSIME_MOUSE( RegisterWindowMessage( L"MSIMEMouseOperation" ) ), m_endCompositionRecursionGuard( false ),
-      m_languageId( currentInputLanguageId() ), m_locale( qt_localeFromLCID( m_languageId ) )
+      m_languageId( currentInputLanguageId() ), m_locale( lscs_localeFromLCID( m_languageId ) )
 {
     connect( QApplication::inputMethod(), &QInputMethod::cursorRectangleChanged,
              this, &QWindowsInputContext::cursorRectChanged );
@@ -616,7 +616,7 @@ void QWindowsInputContext::handleInputLanguageChanged( WPARAM wparam, LPARAM lpa
 
     const LCID oldLanguageId = m_languageId;
     m_languageId = newLanguageId;
-    m_locale = qt_localeFromLCID( m_languageId );
+    m_locale = lscs_localeFromLCID( m_languageId );
     emitLocaleChanged();
 
 #if defined(LSCS_SHOW_DEBUG_PLATFORM)

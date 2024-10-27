@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 #include <qwidget.h>
 #include <qsurfaceformat.h>
@@ -97,6 +97,6 @@ private:
     Q_DECLARE_PRIVATE( QOpenGLWidget )
 };
 
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 #endif

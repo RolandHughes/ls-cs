@@ -42,9 +42,9 @@
 #include "qdbusutil_p.h"
 #include "qdbusvirtualobject.h"
 
-#ifndef QT_NO_DBUS
+#ifndef LSCS_NO_DBUS
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 // defined in qdbusxmlgenerator.cpp
 extern QString qDBusGenerateMetaObjectXml( QString interface, const QMetaObject *mo,
@@ -603,6 +603,6 @@ QDBusMessage qDBusPropertyGetAll( const QDBusConnectionPrivate::ObjectTreeNode &
     return msg.createReply( QVariant::fromValue( result ) );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
-#endif // QT_NO_DBUS
+#endif // LSCS_NO_DBUS

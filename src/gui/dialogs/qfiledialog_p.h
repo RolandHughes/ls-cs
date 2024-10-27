@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
 #include <qfiledialog.h>
 
@@ -196,7 +196,7 @@ public:
     void selectNameFilter_sys( const QString &filter );
     QString selectedNameFilter_sys() const;
 
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
     void saveSettings();
     bool restoreFromSettings();
 #endif
@@ -236,7 +236,7 @@ public:
     void _q_fileRenamed( const QString &path, const QString &oldName, const QString &newName );
 
     // layout
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
     QAbstractProxyModel *proxyModel;
 #endif
 
@@ -244,7 +244,7 @@ public:
     QStringList watching;
     QFileSystemModel *model;
 
-#ifndef QT_NO_FSCOMPLETER
+#ifndef LSCS_NO_FSCOMPLETER
     QFSCompleter *completer;
 #endif
 
@@ -357,7 +357,7 @@ private:
 
 inline QModelIndex QFileDialogPrivate::mapToSource( const QModelIndex &index ) const
 {
-#ifdef QT_NO_PROXYMODEL
+#ifdef LSCS_NO_PROXYMODEL
     return index;
 #else
     return proxyModel ? proxyModel->mapToSource( index ) : index;
@@ -366,7 +366,7 @@ inline QModelIndex QFileDialogPrivate::mapToSource( const QModelIndex &index ) c
 
 inline QModelIndex QFileDialogPrivate::mapFromSource( const QModelIndex &index ) const
 {
-#ifdef QT_NO_PROXYMODEL
+#ifdef LSCS_NO_PROXYMODEL
     return index;
 #else
     return proxyModel ? proxyModel->mapFromSource( index ) : index;
@@ -455,6 +455,6 @@ inline QString QFileDialogPrivate::selectedNameFilter_sys() const
     return QString();
 }
 
-#endif // QT_NO_FILEDIALOG
+#endif // LSCS_NO_FILEDIALOG
 
 #endif

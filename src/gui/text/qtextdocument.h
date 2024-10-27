@@ -58,7 +58,7 @@ namespace CsText
 Q_GUI_EXPORT bool mightBeRichText( const QString & );
 Q_GUI_EXPORT QString convertFromPlainText( const QString &plain, Qt::WhiteSpaceMode mode = Qt::WhiteSpacePre );
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 Q_GUI_EXPORT QTextCodec *codecForHtml( const QByteArray &ba );
 #endif
 
@@ -106,7 +106,7 @@ class Q_GUI_EXPORT QTextDocument : public QObject
     GUI_LSCS_PROPERTY_READ( indentWidth, indentWidth )
     GUI_LSCS_PROPERTY_WRITE( indentWidth, setIndentWidth )
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     GUI_LSCS_PROPERTY_READ( defaultStyleSheet, defaultStyleSheet )
     GUI_LSCS_PROPERTY_WRITE( defaultStyleSheet, setDefaultStyleSheet )
 #endif
@@ -157,7 +157,7 @@ public:
     void setMetaInformation( MetaInformation info, const QString &text );
     QString metaInformation( MetaInformation info ) const;
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
     QString toHtml( const QString &encoding = QString() ) const;
     void setHtml( const QString &html );
 #endif
@@ -247,7 +247,7 @@ public:
     int lineCount() const;
     int characterCount() const;
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     void setDefaultStyleSheet( const QString &sheet );
     QString defaultStyleSheet() const;
 #endif

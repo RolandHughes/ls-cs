@@ -24,7 +24,7 @@
 #include "private/qdeclarativenotifier_p.h"
 #include "private/qdeclarativeproperty_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 void QDeclarativeNotifier::emitNotify( QDeclarativeNotifierEndpoint *endpoint )
 {
@@ -127,5 +127,5 @@ void QDeclarativeNotifierEndpoint::copyAndClear( QDeclarativeNotifierEndpoint &o
 }
 
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 

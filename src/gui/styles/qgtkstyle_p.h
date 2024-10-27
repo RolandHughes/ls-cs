@@ -31,7 +31,7 @@
 #include <QFont>
 #include <QFileDialog>
 
-#if ! defined(QT_NO_STYLE_GTK)
+#if ! defined(LSCS_NO_STYLE_GTK)
 
 #include <qstring.h>
 #include <qcoreapplication.h>
@@ -518,5 +518,5 @@ public :
 };
 
 
-#endif // !QT_NO_STYLE_GTK
+#endif // !LSCS_NO_STYLE_GTK
 #endif // QGTKSTYLE_P_H

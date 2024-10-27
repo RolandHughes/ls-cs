@@ -55,7 +55,7 @@ struct Option
     QString postfix;
     QString translateFunction;
 
-#ifdef QT_UIC_JAVA_GENERATOR
+#ifdef LSCS_UIC_JAVA_GENERATOR
     QString javaPackage;
     QString javaOutputDirectory;
 #endif

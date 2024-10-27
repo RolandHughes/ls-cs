@@ -26,7 +26,7 @@
 #include "private/qdeclarativeitem_p.h"
 #include "private/qdeclarativeanchors_p_p.h"
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeGraphicsWidgetPrivate
 {
@@ -115,4 +115,4 @@ QDeclarativeAnchorLine QDeclarativeGraphicsWidget::verticalCenter() const
     return d->anchorLines()->vCenter;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

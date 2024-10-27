@@ -29,7 +29,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#if defined(QT_NO_CLOCK_MONOTONIC)
+#if defined(LSCS_NO_CLOCK_MONOTONIC)
 // turn off the monotonic clock
 # ifdef _POSIX_MONOTONIC_CLOCK
 #  undef _POSIX_MONOTONIC_CLOCK
@@ -107,7 +107,7 @@ static inline void do_gettime( qint64 *sec, qint64 *frac )
 }
 
 // used in qcore_unix.cpp and qeventdispatcher_unix.cpp
-struct timespec qt_gettime()
+struct timespec lscs_gettime()
 {
     qint64 sec, frac;
     do_gettime( &sec, &frac );
@@ -119,7 +119,7 @@ struct timespec qt_gettime()
     return tv;
 }
 
-void qt_nanosleep( timespec amount )
+void lscs_nanosleep( timespec amount )
 {
     // like to use clock_nanosleep.
     //

@@ -24,7 +24,7 @@
 #include <qdebug.h>
 #include <qvalidator.h>
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
 
 #include <qlocale_p.h>
 
@@ -237,7 +237,7 @@ void QIntValidator::setTop( int top )
     setRange( bottom(), top );
 }
 
-#ifndef QT_NO_REGEXP
+#ifndef LSCS_NO_REGEXP
 
 class QDoubleValidatorPrivate : public QValidatorPrivate
 {
@@ -485,6 +485,6 @@ void QRegularExpressionValidator::setRegularExpression( const QRegularExpression
     }
 }
 
-#endif // QT_NO_REGEXP
+#endif // LSCS_NO_REGEXP
 
-#endif // QT_NO_VALIDATOR
+#endif // LSCS_NO_VALIDATOR

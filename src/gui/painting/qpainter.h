@@ -354,7 +354,7 @@ public:
     inline void drawTiledPixmap( int x, int y, int width, int height, const QPixmap &pixmap, int sx = 0, int sy = 0 );
     inline void drawTiledPixmap( const QRect &rect, const QPixmap &pixmap, const QPoint &point = QPoint() );
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
     void drawPicture( const QPointF &point, const QPicture &picture );
     inline void drawPicture( int x, int y, const QPicture &picture );
     inline void drawPicture( const QPoint &point, const QPicture &picture );
@@ -915,7 +915,7 @@ inline void QPainter::setWindow( int x, int y, int width, int height )
     setWindow( QRect( x, y, width, height ) );
 }
 
-#ifndef QT_NO_PICTURE
+#ifndef LSCS_NO_PICTURE
 inline void QPainter::drawPicture( int x, int y, const QPicture &picture )
 {
     drawPicture( QPoint( x, y ), picture );

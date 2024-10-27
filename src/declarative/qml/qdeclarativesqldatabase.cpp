@@ -45,7 +45,7 @@
 Q_DECLARE_METATYPE( QSqlDatabase )
 Q_DECLARE_METATYPE( QSqlQuery )
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeSqlQueryScriptClass: public QScriptClass
 {
@@ -367,7 +367,7 @@ static QScriptValue qmlsqldatabase_change_version( QScriptContext *context, QScr
     if ( ok )
     {
         context->thisObject().setProperty( QLatin1String( "version" ), to_version, QScriptValue::ReadOnly );
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
         QSettings ini( qmlsqldatabase_databaseFile( db.connectionName(), engine ) + QLatin1String( ".ini" ), QSettings::IniFormat );
         ini.setValue( QLatin1String( "Version" ), to_version );
 #endif
@@ -423,7 +423,7 @@ static QScriptValue qmlsqldatabase_read_transaction( QScriptContext *context, QS
 
 static QScriptValue qmlsqldatabase_open_sync( QScriptContext *context, QScriptEngine *engine )
 {
-#ifndef QT_NO_SETTINGS
+#ifndef LSCS_NO_SETTINGS
     qmlsqldatabase_initDatabasesPath( engine );
 
     QSqlDatabase database;
@@ -510,10 +510,10 @@ static QScriptValue qmlsqldatabase_open_sync( QScriptContext *context, QScriptEn
     return result;
 #else
     return engine->undefinedValue();
-#endif // QT_NO_SETTINGS
+#endif // LSCS_NO_SETTINGS
 }
 
-void qt_add_qmlsqldatabase( QScriptEngine *engine )
+void lscs_add_qmlsqldatabase( QScriptEngine *engine )
 {
     QScriptValue openDatabase = engine->newFunction( qmlsqldatabase_open_sync, 4 );
     engine->globalObject().setProperty( QLatin1String( "openDatabaseSync" ), openDatabase );
@@ -533,4 +533,4 @@ We add a "forwardOnly" property that stops Qt caching results (code promises to 
 through the data.
 */
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -30,7 +30,7 @@
 #include <qstring.h>
 #include <qurl.h>
 
-#ifndef QT_NO_FILEDIALOG
+#ifndef LSCS_NO_FILEDIALOG
 
 class QAbstractItemDelegate;
 class QAbstractProxyModel;
@@ -170,7 +170,7 @@ public:
     void selectNameFilter( const QString &filter );
     QString selectedNameFilter() const;
 
-#ifndef QT_NO_MIMETYPE
+#ifndef LSCS_NO_MIMETYPE
     void setMimeTypeFilters( const QStringList &filters );
     QStringList mimeTypeFilters() const;
     void selectMimeTypeFilter( const QString &filter );
@@ -221,7 +221,7 @@ public:
     void setSupportedSchemes( const QStringList &schemes );
     QStringList supportedSchemes() const;
 
-#ifndef QT_NO_PROXYMODEL
+#ifndef LSCS_NO_PROXYMODEL
     void setProxyModel( QAbstractProxyModel *model );
     QAbstractProxyModel *proxyModel() const;
 #endif
@@ -396,6 +396,6 @@ inline void QFileDialog::setDirectory( const QDir &directory )
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( QFileDialog::FileDialogOptions )
 
-#endif // QT_NO_FILEDIALOG
+#endif // LSCS_NO_FILEDIALOG
 
 #endif

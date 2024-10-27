@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_STYLE_GTK)
+#if ! defined(LSCS_NO_STYLE_GTK)
 
 #include <qsize.h>
 #include <qrect.h>
@@ -128,6 +128,6 @@ protected:
 
 };
 
-#endif //!defined(QT_NO_STYLE_QGTK)
+#endif //!defined(LSCS_NO_STYLE_QGTK)
 
 #endif // QGTKPAINTER_H

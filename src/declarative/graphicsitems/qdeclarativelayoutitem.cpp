@@ -27,7 +27,7 @@
 
 #include <limits.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 /*!
     \qmlclass LayoutItem QDeclarativeLayoutItem
@@ -95,4 +95,4 @@ QSizeF QDeclarativeLayoutItem::sizeHint( Qt::SizeHint w, const QSizeF &constrain
     }
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

@@ -29,7 +29,7 @@
 #include <qwidget_p.h>
 #include <qkeysequence_p.h>
 
-#ifndef QT_NO_KEYSEQUENCEEDIT
+#ifndef LSCS_NO_KEYSEQUENCEEDIT
 
 class QLineEdit;
 
@@ -51,6 +51,6 @@ public:
     int releaseTimer;
 };
 
-#endif // QT_NO_KEYSEQUENCEEDIT
+#endif // LSCS_NO_KEYSEQUENCEEDIT
 
 #endif

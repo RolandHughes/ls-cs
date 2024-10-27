@@ -26,7 +26,7 @@
 #include <qpainter.h>
 #include <qmath.h>
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 
 using namespace QCss;
 
@@ -515,4 +515,4 @@ void qDrawBorder( QPainter *p, const QRect &rect, const QCss::BorderStyle *style
     }
 }
 
-#endif //QT_NO_CSSPARSER
+#endif //LSCS_NO_CSSPARSER

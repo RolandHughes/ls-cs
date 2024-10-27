@@ -56,7 +56,7 @@ static qint64 absoluteToMSecs( qint64 cpuTime )
     return absoluteToNSecs( cpuTime ) / 1000000;
 }
 
-timeval qt_gettime()
+timeval lscs_gettime()
 {
     timeval tv;
 

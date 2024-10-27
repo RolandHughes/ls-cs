@@ -27,7 +27,7 @@
 
 #include <qsystemsemaphore_p.h>
 
-#ifndef QT_NO_SYSTEMSEMAPHORE
+#ifndef LSCS_NO_SYSTEMSEMAPHORE
 
 QSystemSemaphore::QSystemSemaphore( const QString &key, int initialValue, AccessMode mode )
     : d( new QSystemSemaphorePrivate )
@@ -50,7 +50,7 @@ void QSystemSemaphore::setKey( const QString &key, int initialValue, AccessMode 
     d->error = NoError;
     d->errorString = QString();
 
-#if ! defined(Q_OS_WIN) && !defined(QT_POSIX_IPC)
+#if ! defined(Q_OS_WIN) && !defined(LSCS_POSIX_IPC)
 
     // optimization to not destroy/create the file & semaphore
     if ( key == d->key && mode == Create && d->createdSemaphore && d->createdFile )

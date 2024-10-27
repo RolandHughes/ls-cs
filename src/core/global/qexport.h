@@ -29,15 +29,15 @@
 #endif
 
 
-#if defined(QT_SHARED) && defined(QT_STATIC)
-#  error "Both QT_SHARED and QT_STATIC were defined, please choose only one"
+#if defined(LSCS_SHARED) && defined(LSCS_STATIC)
+#  error "Both LSCS_SHARED and LSCS_STATIC were defined, please choose only one"
 #endif
 
-#if ! defined(QT_SHARED) && ! defined(QT_STATIC)
-#  define QT_SHARED
+#if ! defined(LSCS_SHARED) && ! defined(LSCS_STATIC)
+#  define LSCS_SHARED
 #endif
 
-#ifdef QT_STATIC
+#ifdef LSCS_STATIC
 #  error "Currently unsupported"
 #endif
 
@@ -46,7 +46,7 @@
 #  if defined(Q_IS_WIN)
 #    define Q_DECL_EXPORT    __declspec(dllexport)
 
-#  elif defined(QT_VISIBILITY_AVAILABLE)
+#  elif defined(LSCS_VISIBILITY_AVAILABLE)
 #    define Q_DECL_EXPORT    __attribute__((visibility("default")))
 #    define Q_DECL_HIDDEN    __attribute__((visibility("hidden")))
 #  endif
@@ -77,93 +77,93 @@
 #  define Q_DECL_HIDDEN
 #endif
 
-#if defined(Q_IS_WIN) && ! defined(QT_STATIC)        // create a DLL library
+#if defined(Q_IS_WIN) && ! defined(LSCS_STATIC)        // create a DLL library
 
-#    if defined(QT_BUILD_CORE_LIB)
+#    if defined(LSCS_BUILD_CORE_LIB)
 #      define Q_CORE_EXPORT          Q_DECL_EXPORT
 #    else
 #      define Q_CORE_EXPORT          Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_DBUS_LIB)
+#    if defined(LSCS_BUILD_DBUS_LIB)
 #      define Q_DBUS_EXPORT          Q_DECL_EXPORT
 #    else
 #      define Q_DBUS_EXPORT          Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_GUI_LIB)
+#    if defined(LSCS_BUILD_GUI_LIB)
 #      define Q_GUI_EXPORT           Q_DECL_EXPORT
 #    else
 #      define Q_GUI_EXPORT           Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_MULTIMEDIA_LIB)
+#    if defined(LSCS_BUILD_MULTIMEDIA_LIB)
 #      define Q_MULTIMEDIA_EXPORT    Q_DECL_EXPORT
 #    else
 #      define Q_MULTIMEDIA_EXPORT    Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_NETWORK_LIB)
+#    if defined(LSCS_BUILD_NETWORK_LIB)
 #      define Q_NETWORK_EXPORT       Q_DECL_EXPORT
 #    else
 #      define Q_NETWORK_EXPORT       Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_OPENGL_LIB)
+#    if defined(LSCS_BUILD_OPENGL_LIB)
 #      define Q_OPENGL_EXPORT        Q_DECL_EXPORT
 #    else
 #      define Q_OPENGL_EXPORT        Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_SQL_LIB)
+#    if defined(LSCS_BUILD_SQL_LIB)
 #      define Q_SQL_EXPORT           Q_DECL_EXPORT
 #    else
 #      define Q_SQL_EXPORT           Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_SVG_LIB)
+#    if defined(LSCS_BUILD_SVG_LIB)
 #      define Q_SVG_EXPORT           Q_DECL_EXPORT
 #    else
 #      define Q_SVG_EXPORT           Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_SCRIPT_LIB)
+#    if defined(LSCS_BUILD_SCRIPT_LIB)
 #      define Q_SCRIPT_EXPORT        Q_DECL_EXPORT
 #    else
 #      define Q_SCRIPT_EXPORT        Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_SCRIPTTOOLS_LIB)
+#    if defined(LSCS_BUILD_SCRIPTTOOLS_LIB)
 #      define Q_SCRIPTTOOLS_EXPORT   Q_DECL_EXPORT
 #    else
 #      define Q_SCRIPTTOOLS_EXPORT   Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_VULKAN_LIB)
+#    if defined(LSCS_BUILD_VULKAN_LIB)
 #      define Q_VULKAN_EXPORT        Q_DECL_EXPORT
 #    else
 #      define Q_VULKAN_EXPORT        Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_XML_LIB)
+#    if defined(LSCS_BUILD_XML_LIB)
 #      define Q_XML_EXPORT           Q_DECL_EXPORT
 #    else
 #      define Q_XML_EXPORT           Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_XMLPATTERNS_LIB)
+#    if defined(LSCS_BUILD_XMLPATTERNS_LIB)
 #      define Q_XMLPATTERNS_EXPORT   Q_DECL_EXPORT
 #    else
 #      define Q_XMLPATTERNS_EXPORT   Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_DECLARATIVE_LIB)
+#    if defined(LSCS_BUILD_DECLARATIVE_LIB)
 #      define Q_DECLARATIVE_EXPORT   Q_DECL_EXPORT
 #    else
 #      define Q_DECLARATIVE_EXPORT   Q_DECL_IMPORT
 #    endif
 
-#    if defined(QT_BUILD_DBUS_LIB)
+#    if defined(LSCS_BUILD_DBUS_LIB)
 #      define Q_DBUS_EXPORT          Q_DECL_EXPORT
 #    else
 #      define Q_DBUS_EXPORT          Q_DECL_IMPORT
@@ -173,7 +173,7 @@
 
 #if ! defined(Q_CORE_EXPORT)
 
-#  if ! defined(QT_STATIC)
+#  if ! defined(LSCS_STATIC)
 #    define Q_CORE_EXPORT           Q_DECL_EXPORT
 #    define Q_DBUS_EXPORT           Q_DECL_EXPORT
 #    define Q_GUI_EXPORT            Q_DECL_EXPORT

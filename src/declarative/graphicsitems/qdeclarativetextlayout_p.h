@@ -26,7 +26,7 @@
 
 #include <QtGui/qtextlayout.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeTextLayoutPrivate;
 
@@ -47,6 +47,6 @@ private:
     QDeclarativeTextLayoutPrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVETEXTLAYOUT_P_H

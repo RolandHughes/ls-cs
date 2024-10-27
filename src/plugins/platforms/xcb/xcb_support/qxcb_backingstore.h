@@ -40,7 +40,7 @@ public:
     QPaintDevice *paintDevice() override;
     void flush( QWindow *window, const QRegion &region, const QPoint &offset ) override;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     void composeAndFlush( QWindow *window, const QRegion &region, const QPoint &offset,
                           QPlatformTextureList *textures, QOpenGLContext *context,
                           bool translucentBackground ) override;

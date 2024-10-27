@@ -224,8 +224,8 @@ public:
     uint ownerId( QAbstractFileEngine::FileOwner owner ) const;
 
 #ifdef Q_OS_UNIX
-    void fillFromStatBuf( const QT_STATBUF &statBuffer );
-    void fillFromDirEnt( const QT_DIRENT &statBuffer );
+    void fillFromStatBuf( const LSCS_STATBUF &statBuffer );
+    void fillFromDirEnt( const LSCS_DIRENT &statBuffer );
 #endif
 
 #if defined(Q_OS_WIN)

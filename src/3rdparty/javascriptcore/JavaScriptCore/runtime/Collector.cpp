@@ -1346,7 +1346,7 @@ void Heap::markRoots()
     // Mark explicitly registered roots.
     markProtectedObjects( markStack );
 
-#if QT_BUILD_SCRIPT_LIB
+#if LSCS_BUILD_SCRIPT_LIB
 
     if ( m_globalData->clientData )
     {

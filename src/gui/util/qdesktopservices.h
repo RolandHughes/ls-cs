@@ -27,7 +27,7 @@
 #include <qstring.h>
 #include <qstandardpaths.h>
 
-#ifndef QT_NO_DESKTOPSERVICES
+#ifndef LSCS_NO_DESKTOPSERVICES
 
 class QObject;
 class QStringList;
@@ -44,7 +44,7 @@ private:
     static QString storageLocationImpl( QStandardPaths::StandardLocation type );
 };
 
-#endif // QT_NO_DESKTOPSERVICES
+#endif // LSCS_NO_DESKTOPSERVICES
 
 #endif
 

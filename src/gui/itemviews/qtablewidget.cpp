@@ -23,7 +23,7 @@
 
 #include <qtablewidget.h>
 
-#ifndef QT_NO_TABLEWIDGET
+#ifndef LSCS_NO_TABLEWIDGET
 #include <qitemdelegate.h>
 #include <qpainter.h>
 #include <qtablewidget_p.h>
@@ -1994,7 +1994,7 @@ bool QTableWidget::dropMimeData( int row, int column, const QMimeData *data, Qt:
 {
     QModelIndex idx;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
     if ( dropIndicatorPosition() == QAbstractItemView::OnItem )
     {
@@ -2048,7 +2048,7 @@ bool QTableWidget::event( QEvent *e )
     return QTableView::event( e );
 }
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 void QTableWidget::dropEvent( QDropEvent *event )
 {
@@ -2153,4 +2153,4 @@ void QTableWidget::_q_dataChanged( const QModelIndex &topLeft, const QModelIndex
     d->_q_dataChanged( topLeft, bottomRight );
 }
 
-#endif // QT_NO_TABLEWIDGET
+#endif // LSCS_NO_TABLEWIDGET

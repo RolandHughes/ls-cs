@@ -33,7 +33,7 @@
 #include <qtextcursor.h>
 #include <qtextformat.h>
 
-#ifndef QT_NO_TEXTEDIT
+#ifndef LSCS_NO_TEXTEDIT
 
 class QStyleSheet;
 class QTextDocument;
@@ -171,7 +171,7 @@ public:
 
     virtual QVariant loadResource( int type, const QUrl &name );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QMenu *createStandardContextMenu();
     QMenu *createStandardContextMenu( const QPoint &position );
 #endif
@@ -206,7 +206,7 @@ public:
     GUI_LSCS_SLOT_1( Public, void setPlainText( const QString &text ) )
     GUI_LSCS_SLOT_2( setPlainText )
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     GUI_LSCS_SLOT_1( Public, void cut() )
     GUI_LSCS_SLOT_2( cut )
 
@@ -287,11 +287,11 @@ protected:
     void mouseDoubleClickEvent( QMouseEvent *event ) override;
     bool focusNextPrevChild( bool next ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *event ) override;
     void dragLeaveEvent( QDragLeaveEvent *event ) override;
     void dragMoveEvent( QDragMoveEvent *event ) override;
@@ -303,7 +303,7 @@ protected:
     void showEvent( QShowEvent *event ) override;
     void changeEvent( QEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -417,6 +417,6 @@ int QPlainTextEdit::maximumBlockCount() const
     return document()->maximumBlockCount();
 }
 
-#endif // QT_NO_TEXTEDIT
+#endif // LSCS_NO_TEXTEDIT
 
 #endif

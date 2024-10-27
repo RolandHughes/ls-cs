@@ -60,7 +60,7 @@ static inline int hex2int( char s )
     return ( h << 4 ) | h;
 }
 
-bool qt_get_hex_rgb( const char *name, QRgb *rgb )
+bool lscs_get_hex_rgb( const char *name, QRgb *rgb )
 {
     if ( name[0] != '#' )
     {
@@ -120,7 +120,7 @@ bool qt_get_hex_rgb( const char *name, QRgb *rgb )
     return true;
 }
 
-bool qt_get_hex_rgb( QStringView str, QRgb *rgb )
+bool lscs_get_hex_rgb( QStringView str, QRgb *rgb )
 {
     auto len = str.length();
 
@@ -138,10 +138,10 @@ bool qt_get_hex_rgb( QStringView str, QRgb *rgb )
 
     tmp[len] = 0;
 
-    return qt_get_hex_rgb( tmp, rgb );
+    return lscs_get_hex_rgb( tmp, rgb );
 }
 
-#ifndef QT_NO_COLORNAMES
+#ifndef LSCS_NO_COLORNAMES
 
 /*
   CSS color names = SVG 1.0 color names + transparent (rgba(0,0,0,0))
@@ -339,7 +339,7 @@ static bool get_named_rgb( const char *name_no_space, QRgb *rgb )
     return false;
 }
 
-bool qt_get_named_rgb( const char *name, QRgb *rgb )
+bool lscs_get_named_rgb( const char *name, QRgb *rgb )
 {
     int len = strlen( name );
 
@@ -364,7 +364,7 @@ bool qt_get_named_rgb( const char *name, QRgb *rgb )
     return get_named_rgb( name_no_space, rgb );
 }
 
-bool qt_get_named_rgb( const QStringView name, QRgb *rgb )
+bool lscs_get_named_rgb( const QStringView name, QRgb *rgb )
 {
     if ( name.length() > 255 )
     {
@@ -387,14 +387,14 @@ bool qt_get_named_rgb( const QStringView name, QRgb *rgb )
     return get_named_rgb( name_no_space, rgb );
 }
 
-uint qt_get_rgb_val( const char *name )
+uint lscs_get_rgb_val( const char *name )
 {
     QRgb r = 0;
-    qt_get_named_rgb( name, &r );
+    lscs_get_named_rgb( name, &r );
     return r;
 }
 
-QStringList qt_get_colornames()
+QStringList lscs_get_colornames()
 {
     int i = 0;
     QStringList lst;
@@ -409,25 +409,25 @@ QStringList qt_get_colornames()
 
 #else
 
-bool qt_get_named_rgb( const char *, QRgb * )
+bool lscs_get_named_rgb( const char *, QRgb * )
 {
     return false;
 }
 
-bool qt_get_named_rgb( QStringView name, QRgb * )
+bool lscs_get_named_rgb( QStringView name, QRgb * )
 {
     return false;
 }
 
-uint qt_get_rgb_val( const char * )
+uint lscs_get_rgb_val( const char * )
 {
     return 0;
 }
 
-QStringList qt_get_colornames()
+QStringList lscs_get_colornames()
 {
     return QStringList();
 }
 
-#endif // QT_NO_COLORNAMES
+#endif // LSCS_NO_COLORNAMES
 

@@ -26,7 +26,7 @@
 #include <qsocketnotifier.h>
 #include <qthread.h>
 
-void qt_mac_socket_callback( CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef,
+void lscs_mac_socket_callback( CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef,
                              const void *, void *info )
 {
     QCFSocketNotifier *cfSocketNotifier = static_cast<QCFSocketNotifier *>( info );
@@ -62,7 +62,7 @@ void qt_mac_socket_callback( CFSocketRef s, CFSocketCallBackType callbackType, C
     }
 }
 
-CFRunLoopSourceRef qt_mac_add_socket_to_runloop( const CFSocketRef socket )
+CFRunLoopSourceRef lscs_mac_add_socket_to_runloop( const CFSocketRef socket )
 {
     CFRunLoopSourceRef loopSource = CFSocketCreateRunLoopSource( kCFAllocatorDefault, socket, 0 );
 
@@ -75,7 +75,7 @@ CFRunLoopSourceRef qt_mac_add_socket_to_runloop( const CFSocketRef socket )
     return loopSource;
 }
 
-void qt_mac_remove_socket_from_runloop( const CFSocketRef socket, CFRunLoopSourceRef runloop )
+void lscs_mac_remove_socket_from_runloop( const CFSocketRef socket, CFRunLoopSourceRef runloop )
 {
     Q_ASSERT( runloop );
 
@@ -143,7 +143,7 @@ void QCFSocketNotifier::registerSocketNotifier( QSocketNotifier *notifier )
         // are enabled/disabled later on).
         const int callbackTypes = kCFSocketReadCallBack | kCFSocketWriteCallBack;
         CFSocketContext context = {0, this, nullptr, nullptr, nullptr};
-        socketInfo->socket = CFSocketCreateWithNative( kCFAllocatorDefault, nativeSocket, callbackTypes, qt_mac_socket_callback,
+        socketInfo->socket = CFSocketCreateWithNative( kCFAllocatorDefault, nativeSocket, callbackTypes, lscs_mac_socket_callback,
                              &context );
 
         if ( CFSocketIsValid( socketInfo->socket ) == false )
@@ -285,7 +285,7 @@ void QCFSocketNotifier::unregisterSocketInfo( MacSocketInfo *socketInfo )
     {
         if ( CFSocketIsValid( socketInfo->socket ) )
         {
-            qt_mac_remove_socket_from_runloop( socketInfo->socket, socketInfo->runloop );
+            lscs_mac_remove_socket_from_runloop( socketInfo->socket, socketInfo->runloop );
         }
 
         CFRunLoopSourceInvalidate( socketInfo->runloop );
@@ -310,7 +310,7 @@ void QCFSocketNotifier::enableSocketNotifiers( CFRunLoopObserverRef, CFRunLoopAc
         if ( ! socketInfo->runloop )
         {
             // Add CFSocket to runloop.
-            if ( ! ( socketInfo->runloop = qt_mac_add_socket_to_runloop( socketInfo->socket ) ) )
+            if ( ! ( socketInfo->runloop = lscs_mac_add_socket_to_runloop( socketInfo->socket ) ) )
             {
                 qWarning( "QEventDispatcher::registerSocketNotifier() Failed to add CFSocket to runloop" );
                 CFSocketInvalidate( socketInfo->socket );

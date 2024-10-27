@@ -30,7 +30,7 @@
 #include <qstringlist.h>
 #include <qwindowdefs.h>
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 
 class QApplication;
 class QSessionManagerPrivate;
@@ -83,6 +83,6 @@ private:
     friend class QApplicationPrivate;
 };
 
-#endif // QT_NO_SESSIONMANAGER
+#endif // LSCS_NO_SESSIONMANAGER
 
 #endif // QSESSIONMANAGER_H

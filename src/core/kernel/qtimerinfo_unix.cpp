@@ -33,7 +33,7 @@
 
 #include <sys/times.h>
 
-Q_CORE_EXPORT bool qt_disable_lowpriority_timers = false;
+Q_CORE_EXPORT bool lscs_disable_lowpriority_timers = false;
 
 /*
  * Internal functions for manipulating timer data structures.  The
@@ -47,7 +47,7 @@ QTimerInfoList::QTimerInfoList()
     if ( ! QElapsedTimer::isMonotonic() )
     {
         // not using monotonic timers, initialize the timeChanged() machinery
-        previousTime = qt_gettime();
+        previousTime = lscs_gettime();
 
         tms unused;
         previousTicks = times( &unused );
@@ -72,7 +72,7 @@ QTimerInfoList::QTimerInfoList()
 
 timespec QTimerInfoList::updateCurrentTime()
 {
-    return ( currentTime = qt_gettime() );
+    return ( currentTime = lscs_gettime() );
 }
 
 #if (_POSIX_MONOTONIC_CLOCK-0 <= 0) && ! defined(Q_OS_DARWIN)
@@ -737,7 +737,7 @@ QList<QTimerInfo> QTimerInfoList::registeredTimers( QObject *object ) const
 
 int QTimerInfoList::activateTimers()
 {
-    if ( qt_disable_lowpriority_timers || isEmpty() )
+    if ( lscs_disable_lowpriority_timers || isEmpty() )
     {
         return 0;   // nothing to do
     }

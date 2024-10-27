@@ -248,7 +248,7 @@ target_sources(LsCsGui
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-   add_definitions(-DQT_NO_DIRECTDRAW)
+   add_definitions(-DLSCS_NO_DIRECTDRAW)
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
    target_sources(LsCsGui

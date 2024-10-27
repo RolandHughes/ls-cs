@@ -26,7 +26,7 @@
 
 #include <qframe.h>
 
-#ifndef QT_NO_STACKEDWIDGET
+#ifndef LSCS_NO_STACKEDWIDGET
 
 class QStackedWidgetPrivate;
 
@@ -78,6 +78,6 @@ private:
     Q_DECLARE_PRIVATE( QStackedWidget )
 };
 
-#endif // QT_NO_STACKEDWIDGET
+#endif // LSCS_NO_STACKEDWIDGET
 
 #endif

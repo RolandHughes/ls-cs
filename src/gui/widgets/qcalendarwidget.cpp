@@ -23,7 +23,7 @@
 
 #include <qcalendarwidget.h>
 
-#ifndef QT_NO_CALENDARWIDGET
+#ifndef LSCS_NO_CALENDARWIDGET
 
 #include <qabstractitemmodel.h>
 #include <qitemdelegate.h>
@@ -1207,7 +1207,7 @@ protected:
     void mouseMoveEvent( QMouseEvent *event ) override;
     void mouseReleaseEvent( QMouseEvent *event ) override;
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
     void wheelEvent( QWheelEvent *event ) override;
 #endif
 
@@ -1222,7 +1222,7 @@ public:
 private:
     bool validDateClicked;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     QDate origDate;
 #endif
 
@@ -1827,7 +1827,7 @@ QModelIndex QCalendarView::moveCursor( CursorAction cursorAction, Qt::KeyboardMo
 
 void QCalendarView::keyPressEvent( QKeyEvent *event )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( event->key() == Qt::Key_Select )
     {
@@ -1874,7 +1874,7 @@ void QCalendarView::keyPressEvent( QKeyEvent *event )
     QTableView::keyPressEvent( event );
 }
 
-#ifndef QT_NO_WHEELEVENT
+#ifndef LSCS_NO_WHEELEVENT
 void QCalendarView::wheelEvent( QWheelEvent *event )
 {
     const int numDegrees = event->delta() / 8;
@@ -1890,7 +1890,7 @@ void QCalendarView::wheelEvent( QWheelEvent *event )
 
 bool QCalendarView::event( QEvent *event )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
     if ( event->type() == QEvent::FocusIn )
     {
@@ -2270,7 +2270,7 @@ void QCalendarWidgetPrivate::createNavigationBar( QWidget *widget )
 {
     Q_Q( QCalendarWidget );
     navBarBackground = new QWidget( widget );
-    navBarBackground->setObjectName( QLatin1String( "qt_calendar_navigationbar" ) );
+    navBarBackground->setObjectName( QLatin1String( "lscs_calendar_navigationbar" ) );
     navBarBackground->setAutoFillBackground( true );
     navBarBackground->setBackgroundRole( QPalette::Highlight );
 
@@ -2334,11 +2334,11 @@ void QCalendarWidgetPrivate::createNavigationBar( QWidget *widget )
     monthButton->setFocusPolicy( Qt::NoFocus );
 
     //set names for the header controls.
-    prevMonth->setObjectName( QLatin1String( "qt_calendar_prevmonth" ) );
-    nextMonth->setObjectName( QLatin1String( "qt_calendar_nextmonth" ) );
-    monthButton->setObjectName( QLatin1String( "qt_calendar_monthbutton" ) );
-    yearButton->setObjectName( QLatin1String( "qt_calendar_yearbutton" ) );
-    yearEdit->setObjectName( QLatin1String( "qt_calendar_yearedit" ) );
+    prevMonth->setObjectName( QLatin1String( "lscs_calendar_prevmonth" ) );
+    nextMonth->setObjectName( QLatin1String( "lscs_calendar_nextmonth" ) );
+    monthButton->setObjectName( QLatin1String( "lscs_calendar_monthbutton" ) );
+    yearButton->setObjectName( QLatin1String( "lscs_calendar_yearbutton" ) );
+    yearEdit->setObjectName( QLatin1String( "lscs_calendar_yearedit" ) );
 
     updateMonthMenu();
     showMonth( m_model->m_date.year(), m_model->m_date.month() );
@@ -2595,7 +2595,7 @@ QCalendarWidget::QCalendarWidget( QWidget *parent )
     d->m_model->m_dayFormats.insert( Qt::Saturday, fmt );
     d->m_model->m_dayFormats.insert( Qt::Sunday, fmt );
     d->m_view = new QCalendarView( this );
-    d->m_view->setObjectName( QLatin1String( "qt_calendar_calendarview" ) );
+    d->m_view->setObjectName( QLatin1String( "lscs_calendar_calendarview" ) );
     d->m_view->setModel( d->m_model );
     d->m_model->setView( d->m_view );
     d->m_view->setSelectionBehavior( QAbstractItemView::SelectItems );
@@ -3393,4 +3393,4 @@ void QCalendarWidget::_q_monthChanged( QAction *act )
     d->_q_monthChanged( act );
 }
 
-#endif //QT_NO_CALENDARWIDGET
+#endif //LSCS_NO_CALENDARWIDGET

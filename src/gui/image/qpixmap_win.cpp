@@ -27,7 +27,7 @@
 #include <qbitmap.h>
 #include <qplatform_pixmap.h>
 #include <qscopedarraypointer.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 
 #include <qpixmap_raster_p.h>
 
@@ -113,7 +113,7 @@ enum HBitmapFormat
     HBitmapAlpha
 };
 
-Q_GUI_EXPORT HBITMAP qt_createIconMask( const QBitmap &bitmap )
+Q_GUI_EXPORT HBITMAP lscs_createIconMask( const QBitmap &bitmap )
 {
     QImage bm = bitmap.toImage().convertToFormat( QImage::Format_Mono );
     const int w = bm.width();
@@ -133,7 +133,7 @@ Q_GUI_EXPORT HBITMAP qt_createIconMask( const QBitmap &bitmap )
     return hbm;
 }
 
-Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat = 0 )
+Q_GUI_EXPORT HBITMAP lscs_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat = 0 )
 {
     if ( p.isNull() )
     {
@@ -149,7 +149,7 @@ Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat 
                 QRasterPlatformPixmap::BitmapType : QRasterPlatformPixmap::PixmapType );
 
         data->fromImage( p.toImage(), Qt::AutoColor );
-        return qt_pixmapToWinHBITMAP( QPixmap( data ), hbitmapFormat );
+        return lscs_pixmapToWinHBITMAP( QPixmap( data ), hbitmapFormat );
     }
 
     QRasterPlatformPixmap *d = static_cast<QRasterPlatformPixmap *>( p.handle() );
@@ -204,7 +204,7 @@ Q_GUI_EXPORT HBITMAP qt_pixmapToWinHBITMAP( const QPixmap &p, int hbitmapFormat 
     return bitmap;
 }
 
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 )
+Q_GUI_EXPORT QPixmap lscs_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat = 0 )
 {
     // Verify size
     BITMAP bitmap_info;
@@ -241,7 +241,7 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat 
     {
         // failed to alloc?
         ReleaseDC( nullptr, display_dc );
-        qWarning( "QPixmap::qt_pixmapFromWinHBITMAP() Failed to create image of %d x %d", w, h );
+        qWarning( "QPixmap::lscs_pixmapFromWinHBITMAP() Failed to create image of %d x %d", w, h );
 
         return QPixmap();
     }
@@ -252,7 +252,7 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHBITMAP( HBITMAP bitmap, int hbitmapFormat 
     return QPixmap::fromImage( image );
 }
 
-Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap &p )
+Q_GUI_EXPORT HICON lscs_pixmapToWinHICON( const QPixmap &p )
 {
     if ( p.isNull() )
     {
@@ -269,8 +269,8 @@ Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap &p )
 
     ICONINFO ii;
     ii.fIcon    = true;
-    ii.hbmMask  = qt_createIconMask( maskBitmap );
-    ii.hbmColor = qt_pixmapToWinHBITMAP( p, HBitmapAlpha );
+    ii.hbmMask  = lscs_createIconMask( maskBitmap );
+    ii.hbmColor = lscs_pixmapToWinHBITMAP( p, HBitmapAlpha );
     ii.xHotspot = 0;
     ii.yHotspot = 0;
 
@@ -282,7 +282,7 @@ Q_GUI_EXPORT HICON qt_pixmapToWinHICON( const QPixmap &p )
     return hIcon;
 }
 
-Q_GUI_EXPORT QImage qt_imageFromWinHBITMAP( HDC hdc, HBITMAP bitmap, int w, int h )
+Q_GUI_EXPORT QImage lscs_imageFromWinHBITMAP( HDC hdc, HBITMAP bitmap, int w, int h )
 {
     QImage image( w, h, QImage::Format_ARGB32_Premultiplied );
 
@@ -303,7 +303,7 @@ Q_GUI_EXPORT QImage qt_imageFromWinHBITMAP( HDC hdc, HBITMAP bitmap, int w, int 
     return image;
 }
 
-static QImage qt_imageFromWinIconHBITMAP( HDC hdc, HBITMAP bitmap, int w, int h )
+static QImage lscs_imageFromWinIconHBITMAP( HDC hdc, HBITMAP bitmap, int w, int h )
 {
     QImage image( w, h, QImage::Format_ARGB32_Premultiplied );
 
@@ -345,7 +345,7 @@ static inline bool hasAlpha( const QImage &image )
     return false;
 }
 
-Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON( HICON icon )
+Q_GUI_EXPORT QPixmap lscs_pixmapFromWinHICON( HICON icon )
 {
     HDC screenDevice = GetDC( nullptr );
     HDC hdc = CreateCompatibleDC( screenDevice );
@@ -371,12 +371,12 @@ Q_GUI_EXPORT QPixmap qt_pixmapFromWinHICON( HICON icon )
     HBITMAP winBitmap = CreateDIBSection( hdc, ( BITMAPINFO * )&bitmapInfo, DIB_RGB_COLORS, ( VOID ** )&bits, nullptr, 0 );
     HGDIOBJ oldhdc = ( HBITMAP )SelectObject( hdc, winBitmap );
     DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, nullptr, DI_NORMAL );
-    QImage image = qt_imageFromWinIconHBITMAP( hdc, winBitmap, w, h );
+    QImage image = lscs_imageFromWinIconHBITMAP( hdc, winBitmap, w, h );
 
     if ( !image.isNull() && !hasAlpha( image ) ) //If no alpha was found, we use the mask to set alpha values
     {
         DrawIconEx( hdc, 0, 0, icon, w, h, 0, nullptr, DI_MASK );
-        const QImage mask = qt_imageFromWinIconHBITMAP( hdc, winBitmap, w, h );
+        const QImage mask = lscs_imageFromWinIconHBITMAP( hdc, winBitmap, w, h );
 
         for ( int y = 0 ; y < h ; y++ )
         {

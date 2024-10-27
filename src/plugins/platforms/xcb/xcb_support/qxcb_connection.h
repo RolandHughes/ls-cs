@@ -38,13 +38,13 @@
 #include <xcb/randr.h>
 
 // required since xkb.h is using a variable called 'explicit'
-#ifndef QT_NO_XKB
+#ifndef LSCS_NO_XKB
 #define explicit dont_use_cxx_explicit
 #include <xcb/xkb.h>
 #undef explicit
 #endif
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
 #include <QTabletEvent>
 #endif
 
@@ -117,20 +117,20 @@ enum Atom
     TIMESTAMP,
     SAVE_TARGETS,
     CLIP_TEMPORARY,
-    _QT_SELECTION,
-    _QT_CLIPBOARD_SENTINEL,
-    _QT_SELECTION_SENTINEL,
+    _LSCS_SELECTION,
+    _LSCS_CLIPBOARD_SENTINEL,
+    _LSCS_SELECTION_SENTINEL,
     CLIPBOARD_MANAGER,
 
     RESOURCE_MANAGER,
 
     _XSETROOT_ID,
 
-    _QT_SCROLL_DONE,
-    _QT_INPUT_ENCODING,
+    _LSCS_SCROLL_DONE,
+    _LSCS_INPUT_ENCODING,
 
     // Qt/XCB specific
-    _QT_CLOSE_CONNECTION,
+    _LSCS_CLOSE_CONNECTION,
 
     _MOTIF_WM_HINTS,
 
@@ -285,7 +285,7 @@ enum Atom
 
     NPredefinedAtoms,
 
-    _QT_SETTINGS_TIMESTAMP = NPredefinedAtoms,
+    _LSCS_SETTINGS_TIMESTAMP = NPredefinedAtoms,
     NAtoms
 };
 }  // namespace
@@ -437,14 +437,14 @@ public:
         return m_keyboard;
     }
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QXcbClipboard *clipboard() const
     {
         return m_clipboard;
     }
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     QXcbDrag *drag() const
     {
         return m_drag;
@@ -724,7 +724,7 @@ private:
     void xi2ProcessTouch( void *xiDevEvent, QXcbWindow *platformWindow );
 #endif
 
-#ifndef QT_NO_TABLETEVENT
+#ifndef LSCS_NO_TABLETEVENT
     struct TabletData
     {
         TabletData()
@@ -802,11 +802,11 @@ private:
 
     QXcbKeyboard *m_keyboard;
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     QXcbClipboard *m_clipboard;
 #endif
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     QXcbDrag *m_drag;
 #endif
 

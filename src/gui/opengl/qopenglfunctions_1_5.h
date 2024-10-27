@@ -27,7 +27,7 @@
 
 #include <qglobal.h>
 
-#if ! defined(QT_NO_OPENGL) && ! defined(QT_OPENGL_ES_2)
+#if ! defined(LSCS_NO_OPENGL) && ! defined(LSCS_OPENGL_ES_2)
 
 #include <qopengl_versionfunctions.h>
 #include <qopenglcontext.h>
@@ -3066,6 +3066,6 @@ inline void QOpenGLFunctions_1_5::glFogCoordf( GLfloat coord )
 
 // OpenGL 1.5 deprecated functions
 
-#endif // QT_NO_OPENGL && !QT_OPENGL_ES_2
+#endif // LSCS_NO_OPENGL && !LSCS_OPENGL_ES_2
 
 #endif

@@ -50,7 +50,7 @@
 #include <qabstractanimation_p.h>
 #include <qdeclarativeitemchangelistener_p.h>
 
-QT_BEGIN_NAMESPACE DEFINE_BOOL_CONFIG_OPTION( frameRateDebug, QML_SHOW_FRAMERATE )
+LSCS_BEGIN_NAMESPACE DEFINE_BOOL_CONFIG_OPTION( frameRateDebug, QML_SHOW_FRAMERATE )
 
 class QDeclarativeScene : public QGraphicsScene
 {
@@ -832,7 +832,7 @@ void QDeclarativeView::paintEvent( QPaintEvent *event )
         qDebug() << "paintEvent:" << d->frameTimer.elapsed() << "time since last frame:" << time;
     }
 
-#if QT_SHOW_DECLARATIVEVIEW_FPS
+#if LSCS_SHOW_DECLARATIVEVIEW_FPS
     static QTime timer;
     static int frames;
 
@@ -854,4 +854,4 @@ void QDeclarativeView::paintEvent( QPaintEvent *event )
 
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

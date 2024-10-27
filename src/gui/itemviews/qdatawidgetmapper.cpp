@@ -23,7 +23,7 @@
 
 #include <qdatawidgetmapper.h>
 
-#ifndef QT_NO_DATAWIDGETMAPPER
+#ifndef LSCS_NO_DATAWIDGETMAPPER
 
 #include <qabstractitemmodel.h>
 #include <qitemdelegate.h>

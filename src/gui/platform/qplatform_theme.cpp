@@ -234,12 +234,12 @@ QPlatformThemePrivate::~QPlatformThemePrivate()
     delete systemPalette;
 }
 
-Q_GUI_EXPORT QPalette qt_fusionPalette();
+Q_GUI_EXPORT QPalette lscs_fusionPalette();
 
 void QPlatformThemePrivate::initializeSystemPalette()
 {
     Q_ASSERT( !systemPalette );
-    systemPalette = new QPalette( qt_fusionPalette() );
+    systemPalette = new QPalette( lscs_fusionPalette() );
 }
 
 QPlatformTheme::QPlatformTheme()
@@ -454,7 +454,7 @@ QVariant QPlatformTheme::defaultThemeHint( ThemeHint hint )
         case MouseDoubleClickDistance:
         {
             bool ok = false;
-            const int dist = qgetenv( "QT_DBL_CLICK_DIST" ).toInt( &ok );
+            const int dist = qgetenv( "LSCS_DBL_CLICK_DIST" ).toInt( &ok );
             return QVariant( ok ? dist : 5 );
         }
 
@@ -480,7 +480,7 @@ QPlatformMenuBar *QPlatformTheme::createPlatformMenuBar() const
     return nullptr;
 }
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 QPlatformSystemTrayIcon *QPlatformTheme::createPlatformSystemTrayIcon() const
 {

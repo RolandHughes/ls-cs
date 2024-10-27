@@ -23,7 +23,7 @@
 
 #include <qcocoaprintersupport.h>
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 
 #include <qcocoaprintdevice.h>
 
@@ -85,4 +85,4 @@ QString QCocoaPrinterSupport::defaultPrintDeviceId() const
    return QString();
 }
 
-#endif  //QT_NO_PRINTER
+#endif  //LSCS_NO_PRINTER

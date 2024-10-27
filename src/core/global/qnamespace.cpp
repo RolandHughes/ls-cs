@@ -237,7 +237,7 @@ bool Qt::mightBeRichText( const QString &text )
                 }
             }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
             return lookupElement_X( tag.toLower() );
 #else
             return false;
@@ -338,7 +338,7 @@ QString Qt::convertFromPlainText( const QString &plain, Qt::WhiteSpaceMode mode 
     return rich;
 }
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 // internal
 QTextCodec *Qt::codecForHtml( const QByteArray &ba )
 {

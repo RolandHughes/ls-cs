@@ -28,7 +28,7 @@
 #include <qnetworksession.h>
 #include <qstringlist.h>
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
 #include <qsslconfiguration.h>
 #include <qsslpresharedkeyauthenticator.h>
 #endif
@@ -44,7 +44,7 @@ class QNetworkProxy;
 class QNetworkProxyFactory;
 class QSslError;
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
 class QNetworkConfiguration;
 #endif
 
@@ -61,7 +61,7 @@ class Q_NETWORK_EXPORT QNetworkAccessManager : public QObject
 {
     NET_LSCS_OBJECT( QNetworkAccessManager )
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     NET_LSCS_PROPERTY_READ( networkAccessible, networkAccessible )
     NET_LSCS_PROPERTY_WRITE( networkAccessible, setNetworkAccessible )
     NET_LSCS_PROPERTY_NOTIFY( networkAccessible, networkAccessibleChanged )
@@ -80,7 +80,7 @@ public:
         UnknownOperation = 0
     };
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     enum NetworkAccessibility
     {
         UnknownAccessibility = -1,
@@ -95,7 +95,7 @@ public:
     virtual QStringList supportedSchemes() const;
     void clearAccessCache();
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     QNetworkProxy proxy() const;
     void setProxy( const QNetworkProxy &proxy );
     QNetworkProxyFactory *proxyFactory() const;
@@ -119,7 +119,7 @@ public:
     QNetworkReply *deleteResource( const QNetworkRequest &request );
     QNetworkReply *sendCustomRequest( const QNetworkRequest &request, const QByteArray &verb, QIODevice *data = nullptr );
 
-#if ! defined(QT_NO_BEARERMANAGEMENT)
+#if ! defined(LSCS_NO_BEARERMANAGEMENT)
     void setConfiguration( const QNetworkConfiguration &config );
     QNetworkConfiguration configuration() const;
     QNetworkConfiguration activeConfiguration() const;
@@ -128,14 +128,14 @@ public:
     NetworkAccessibility networkAccessible() const;
 #endif
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     void connectToHostEncrypted( const QString &hostName, quint16 port = 443,
                                  const QSslConfiguration &sslConfiguration = QSslConfiguration::defaultConfiguration() );
 #endif
 
     void connectToHost( const QString &hostName, quint16 port = 80 );
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
     NET_LSCS_SIGNAL_1( Public, void proxyAuthenticationRequired( const QNetworkProxy &proxy, QAuthenticator *authenticator ) )
     NET_LSCS_SIGNAL_2( proxyAuthenticationRequired, proxy, authenticator )
 #endif
@@ -146,7 +146,7 @@ public:
     NET_LSCS_SIGNAL_1( Public, void finished( QNetworkReply *reply ) )
     NET_LSCS_SIGNAL_2( finished, reply )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     NET_LSCS_SIGNAL_1( Public,  void encrypted( QNetworkReply *reply ) )
     NET_LSCS_SIGNAL_2( encrypted, reply )
 
@@ -158,7 +158,7 @@ public:
     NET_LSCS_SIGNAL_2( preSharedKeyAuthenticationRequired, reply, authenticator )
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     NET_LSCS_SIGNAL_1( Public, void networkSessionConnected() )
     NET_LSCS_SIGNAL_2( networkSessionConnected )
 
@@ -183,7 +183,7 @@ private:
     NET_LSCS_SLOT_1( Private, void _q_replyEncrypted() )
     NET_LSCS_SLOT_2( _q_replyEncrypted )
 
-#ifdef QT_SSL
+#ifdef LSCS_SSL
     NET_LSCS_SLOT_1( Private, void _q_replySslErrors( const QList<QSslError> &errorList ) )
     NET_LSCS_SLOT_2( _q_replySslErrors )
 
@@ -191,7 +191,7 @@ private:
     NET_LSCS_SLOT_2( _q_replyPreSharedKeyAuthenticationRequired )
 #endif
 
-#ifndef QT_NO_BEARERMANAGEMENT
+#ifndef LSCS_NO_BEARERMANAGEMENT
     NET_LSCS_SLOT_1( Private, void _q_networkSessionClosed() )
     NET_LSCS_SLOT_2( _q_networkSessionClosed )
 

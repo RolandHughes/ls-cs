@@ -32,7 +32,7 @@
 #include <QtScript/qscriptengine.h>
 #include <QtScript/qscriptvalueiterator.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QJSDebuggerAgentPrivate
 {
@@ -707,4 +707,4 @@ void QJSDebuggerAgentPrivate::continueExec()
     loop.quit();
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

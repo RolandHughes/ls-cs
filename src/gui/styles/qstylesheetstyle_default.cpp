@@ -34,7 +34,7 @@
 #include <qcssparser_p.h>
 #include <qstylesheetstyle_p.h>
 
-#ifndef QT_NO_STYLE_STYLESHEET
+#ifndef LSCS_NO_STYLE_STYLESHEET
 
 using namespace QCss;
 
@@ -491,5 +491,5 @@ StyleSheet QStyleSheetStyle::getDefaultStyleSheet() const
     return sheet;
 }
 
-#endif // QT_NO_STYLE_STYLESHEET
+#endif // LSCS_NO_STYLE_STYLESHEET
 

@@ -25,7 +25,7 @@
 #include <qwin_context.h>
 #include <qwin_screen.h>
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
 #  include <qwin_clipboard.h>
 #endif
 
@@ -438,7 +438,7 @@ QWindowsOleDropSource::Release( void )
     \brief Check for cancel.
 */
 
-QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::QueryContinueDrag( BOOL fEscapePressed, DWORD grfKeyState )
+LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::QueryContinueDrag( BOOL fEscapePressed, DWORD grfKeyState )
 {
     HRESULT hr = S_OK;
 
@@ -484,7 +484,7 @@ QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::QueryContinu
     return hr;
 }
 
-QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::GiveFeedback( DWORD dwEffect )
+LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropSource::GiveFeedback( DWORD dwEffect )
 {
     const Qt::DropAction action = translateToQDragDropAction( dwEffect );
     m_drag->updateAction( action );
@@ -603,7 +603,7 @@ void QWindowsOleDropTarget::handleDrag( QWindow *window, DWORD grfKeyState,
     *pdwEffect = m_chosenEffect;
 }
 
-QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragEnter( LPDATAOBJECT pDataObj, DWORD grfKeyState,
+LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragEnter( LPDATAOBJECT pDataObj, DWORD grfKeyState,
         POINTL pt, LPDWORD pdwEffect )
 {
     if ( IDropTargetHelper *dh = QWindowsDrag::instance()->dropHelper() )
@@ -618,7 +618,7 @@ QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragEnter( L
     return NOERROR;
 }
 
-QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragOver( DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect )
+LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragOver( DWORD grfKeyState, POINTL pt, LPDWORD pdwEffect )
 {
     if ( IDropTargetHelper *dh = QWindowsDrag::instance()->dropHelper() )
     {
@@ -638,7 +638,7 @@ QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragOver( DW
     return NOERROR;
 }
 
-QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragLeave()
+LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragLeave()
 {
     if ( IDropTargetHelper *dh = QWindowsDrag::instance()->dropHelper() )
     {
@@ -653,7 +653,7 @@ QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::DragLeave()
 
 #define KEY_STATE_BUTTON_MASK (MK_LBUTTON | MK_MBUTTON | MK_RBUTTON)
 
-QT_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::Drop( LPDATAOBJECT pDataObj, DWORD grfKeyState,
+LSCS_ENSURE_STACK_ALIGNED_FOR_SSE STDMETHODIMP QWindowsOleDropTarget::Drop( LPDATAOBJECT pDataObj, DWORD grfKeyState,
         POINTL pt, LPDWORD pdwEffect )
 {
     if ( IDropTargetHelper *dh = QWindowsDrag::instance()->dropHelper() )

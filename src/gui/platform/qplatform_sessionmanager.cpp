@@ -24,7 +24,7 @@
 #include <qplatform_sessionmanager.h>
 #include <qguiapplication_p.h>
 
-#ifndef QT_NO_SESSIONMANAGER
+#ifndef LSCS_NO_SESSIONMANAGER
 
 QPlatformSessionManager::QPlatformSessionManager( const QString &id, const QString &key )
     : m_sessionId( id ), m_sessionKey( key ),

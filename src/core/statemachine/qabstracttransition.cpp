@@ -23,7 +23,7 @@
 
 #include <qabstracttransition.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 #include <qabstractstate.h>
 #include <qhistorystate.h>
@@ -250,7 +250,7 @@ QStateMachine *QAbstractTransition::machine() const
     return d->machine();
 }
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 void QAbstractTransition::addAnimation( QAbstractAnimation *animation )
 {
@@ -291,4 +291,4 @@ bool QAbstractTransition::event( QEvent *e )
     return QObject::event( e );
 }
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE

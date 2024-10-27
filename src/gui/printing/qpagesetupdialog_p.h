@@ -26,7 +26,7 @@
 
 #include <qdialog_p.h>
 
-#ifndef QT_NO_PRINTDIALOG
+#ifndef LSCS_NO_PRINTDIALOG
 
 #include <qbytearray.h>
 #include <qpagesetupdialog.h>
@@ -49,6 +49,6 @@ public:
     QString memberToDisconnectOnClose;
 };
 
-#endif // QT_NO_PRINTDIALOG
+#endif // LSCS_NO_PRINTDIALOG
 
 #endif

@@ -60,7 +60,7 @@ static const uchar bitflip[256] =
     15, 143, 79, 207, 47, 175, 111, 239, 31, 159, 95, 223, 63, 191, 127, 255
 };
 
-const uchar *qt_get_bitflip_array()
+const uchar *lscs_get_bitflip_array()
 {
     return bitflip;
 }
@@ -74,7 +74,7 @@ void qGamma_correct_back_to_linear_cs( QImage *image )
         return;
     }
 
-    const uchar *gamma = tables->qt_pow_rgb_gamma;
+    const uchar *gamma = tables->lscs_pow_rgb_gamma;
     // gamma correct the pixels back to linear color space...
     int h = image->height();
     int w = image->width();
@@ -121,7 +121,7 @@ static const uint *convertRGB32ToARGB32PM( uint *buffer, const uint *src, int co
     return buffer;
 }
 
-#ifdef QT_COMPILER_SUPPORTS_SSE4_1
+#ifdef LSCS_COMPILER_SUPPORTS_SSE4_1
 extern const uint *convertRGB32FromARGB32PM_sse4( uint *buffer, const uint *src, int count, const QPixelLayout *,
         const QRgb * );
 #endif
@@ -157,7 +157,7 @@ void convert_generic( QImageData *dest, const QImageData *src, Qt::ImageConversi
 
         if ( dest->format == QImage::Format_RGB32 )
         {
-#ifdef QT_COMPILER_SUPPORTS_SSE4_1
+#ifdef LSCS_COMPILER_SUPPORTS_SSE4_1
 
             if ( qCpuHasFeature( SSE4_1 ) )
             {
@@ -194,7 +194,7 @@ bool convert_generic_inplace( QImageData *data, QImage::Format dst_format, Qt::I
     Q_ASSERT( dst_format > QImage::Format_Indexed8 );
     Q_ASSERT( data->format > QImage::Format_Indexed8 );
 
-    if ( data->depth != qt_depthForFormat( dst_format ) )
+    if ( data->depth != lscs_depthForFormat( dst_format ) )
     {
         return false;
     }
@@ -224,7 +224,7 @@ bool convert_generic_inplace( QImageData *data, QImage::Format dst_format, Qt::I
 
         if ( dst_format == QImage::Format_RGB32 )
         {
-#ifdef QT_COMPILER_SUPPORTS_SSE4_1
+#ifdef LSCS_COMPILER_SUPPORTS_SSE4_1
 
             if ( qCpuHasFeature( SSE4_1 ) )
             {
@@ -324,7 +324,7 @@ static void convert_ARGB_to_ARGB_PM( QImageData *dest, const QImageData *src, Qt
     }
 }
 
-Q_GUI_EXPORT void qt_convert_rgb888_to_rgb32( quint32 *dest_data, const uchar *src_data, int len )
+Q_GUI_EXPORT void lscs_convert_rgb888_to_rgb32( quint32 *dest_data, const uchar *src_data, int len )
 {
     int pixel = 0;
 
@@ -363,7 +363,7 @@ Q_GUI_EXPORT void qt_convert_rgb888_to_rgb32( quint32 *dest_data, const uchar *s
     }
 }
 
-Q_GUI_EXPORT void qt_convert_rgb888_to_rgbx8888( quint32 *dest_data, const uchar *src_data, int len )
+Q_GUI_EXPORT void lscs_convert_rgb888_to_rgbx8888( quint32 *dest_data, const uchar *src_data, int len )
 {
     int pixel = 0;
 
@@ -433,7 +433,7 @@ static void convert_RGB888_to_RGB( QImageData *dest, const QImageData *src, Qt::
     const uchar *src_data = ( uchar * ) src->data;
     quint32 *dest_data = ( quint32 * ) dest->data;
 
-    Rgb888ToRgbConverter line_converter = rgbx ? qt_convert_rgb888_to_rgbx8888 : qt_convert_rgb888_to_rgb32;
+    Rgb888ToRgbConverter line_converter = rgbx ? lscs_convert_rgb888_to_rgbx8888 : lscs_convert_rgb888_to_rgb32;
 
     for ( int i = 0; i < src->height; ++i )
     {
@@ -1659,7 +1659,7 @@ void dither_to_Mono( QImageData *dst, const QImageData *src, Qt::ImageConversion
                     {
                         while ( p < end )
                         {
-                            if ( ( *p++ >> 24 ) >= qt_bayer_matrix[j++ & 15][i & 15] )
+                            if ( ( *p++ >> 24 ) >= lscs_bayer_matrix[j++ & 15][i & 15] )
                             {
                                 *m |= 1 << bit;
                             }
@@ -1679,7 +1679,7 @@ void dither_to_Mono( QImageData *dst, const QImageData *src, Qt::ImageConversion
                     {
                         while ( p < end )
                         {
-                            if ( ( uint )qGray( *p++ ) < qt_bayer_matrix[j++ & 15][i & 15] )
+                            if ( ( uint )qGray( *p++ ) < lscs_bayer_matrix[j++ & 15][i & 15] )
                             {
                                 *m |= 1 << bit;
                             }
@@ -1712,7 +1712,7 @@ void dither_to_Mono( QImageData *dst, const QImageData *src, Qt::ImageConversion
 
                     while ( p < end )
                     {
-                        if ( ( uint )gray[*p++] < qt_bayer_matrix[j++ & 15][i & 15] )
+                        if ( ( uint )gray[*p++] < lscs_bayer_matrix[j++ & 15][i & 15] )
                         {
                             *m |= 1 << bit;
                         }
@@ -2173,7 +2173,7 @@ static void convert_RGB_to_Indexed8( QImageData *dst, const QImageData *src, Qt:
 
                 while ( p < end )
                 {
-                    uint d = qt_bayer_matrix[y & 15][x & 15] << 8;
+                    uint d = lscs_bayer_matrix[y & 15][x & 15] << 8;
 
 #define DITHER(p, d, m) ((uchar) ((((256 * (m) + (m) + 1)) * (p) + (d)) >> 16))
                     *b++ =
@@ -3802,7 +3802,7 @@ QImageConversions::QImageConversions()
     memcpy( image_converter_map, qimage_converter_map, sizeof( image_converter_map ) );
     memcpy( image_inplace_converter_map, qimage_inplace_converter_map, sizeof( image_inplace_converter_map ) );
 
-#if defined(__SSE2__) && defined(QT_COMPILER_SUPPORTS_SSSE3)
+#if defined(__SSE2__) && defined(LSCS_COMPILER_SUPPORTS_SSSE3)
 
     if ( qCpuHasFeature( SSSE3 ) )
     {
@@ -3814,7 +3814,7 @@ QImageConversions::QImageConversions()
 
 #endif
 
-#if defined(QT_COMPILER_SUPPORTS_SSE4_1) && !defined(__SSE4_1__)
+#if defined(LSCS_COMPILER_SUPPORTS_SSE4_1) && !defined(__SSE4_1__)
 
     if ( qCpuHasFeature( SSE4_1 ) )
     {
@@ -3825,7 +3825,7 @@ QImageConversions::QImageConversions()
 
 #endif
 
-#if defined(QT_COMPILER_SUPPORTS_AVX2) && !defined(__AVX2__)
+#if defined(LSCS_COMPILER_SUPPORTS_AVX2) && !defined(__AVX2__)
 
     if ( qCpuHasFeature( AVX2 ) )
     {
@@ -3843,7 +3843,7 @@ QImageConversions::QImageConversions()
     image_converter_map[QImage::Format_RGB888][QImage::Format_ARGB32_Premultiplied] = convert_RGB888_to_RGB32_neon;
 #endif
 
-#ifdef QT_COMPILER_SUPPORTS_MIPS_DSPR2
+#ifdef LSCS_COMPILER_SUPPORTS_MIPS_DSPR2
 
     if ( qCpuHasFeature( DSPR2 ) )
     {

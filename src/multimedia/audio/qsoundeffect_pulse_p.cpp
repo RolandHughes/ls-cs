@@ -36,7 +36,7 @@
 #include <unistd.h>
 
 #ifndef QTM_PULSEAUDIO_DEFAULTBUFFER
-#define QT_PA_STREAM_BUFFER_SIZE_MAX (1024 * 64)  //64KB is a trade-off for balancing control latency and uploading overhead
+#define LSCS_PA_STREAM_BUFFER_SIZE_MAX (1024 * 64)  //64KB is a trade-off for balancing control latency and uploading overhead
 #endif
 
 namespace
@@ -846,11 +846,11 @@ void QSoundEffectPrivate::sampleReady()
 #else
         const pa_buffer_attr *bufferAttr = pa_stream_get_buffer_attr( m_pulseStream );
 
-        if ( bufferAttr->tlength < m_sample->data().size() && bufferAttr->tlength < QT_PA_STREAM_BUFFER_SIZE_MAX )
+        if ( bufferAttr->tlength < m_sample->data().size() && bufferAttr->tlength < LSCS_PA_STREAM_BUFFER_SIZE_MAX )
         {
             pa_buffer_attr newBufferAttr;
             newBufferAttr.maxlength = -1;
-            newBufferAttr.tlength = qMin( m_sample->data().size(), QT_PA_STREAM_BUFFER_SIZE_MAX );
+            newBufferAttr.tlength = qMin( m_sample->data().size(), LSCS_PA_STREAM_BUFFER_SIZE_MAX );
             newBufferAttr.minreq = bufferAttr->tlength / 2;
             newBufferAttr.prebuf = -1;
             newBufferAttr.fragsize = -1;
@@ -1224,7 +1224,7 @@ void QSoundEffectPrivate::createPulseStream()
 
 #ifndef QTM_PULSEAUDIO_DEFAULTBUFFER
     pa_buffer_attr bufferAttr;
-    bufferAttr.tlength = qMin( m_sample->data().size(), QT_PA_STREAM_BUFFER_SIZE_MAX );
+    bufferAttr.tlength = qMin( m_sample->data().size(), LSCS_PA_STREAM_BUFFER_SIZE_MAX );
     bufferAttr.maxlength = -1;
     bufferAttr.minreq = bufferAttr.tlength / 2;
     bufferAttr.prebuf = -1;

@@ -26,7 +26,7 @@
 
 #include <qglobal.h>
 
-#ifndef QT_NO_SYSTEMTRAYICON
+#ifndef LSCS_NO_SYSTEMTRAYICON
 
 #include <qstring.h>
 #include <qplatform_systemtrayicon.h>

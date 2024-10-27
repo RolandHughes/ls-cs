@@ -29,7 +29,7 @@
 #include <qvariant.h>
 #include <qvector.h>
 
-#ifndef QT_NO_TREEWIDGET
+#ifndef LSCS_NO_TREEWIDGET
 
 class QTreeWidget;
 class QTreeModel;
@@ -116,7 +116,7 @@ public:
     }
     inline void setStatusTip( int column, const QString &statusTip );
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
     inline QString toolTip( int column ) const
     {
         return data( column, Qt::ToolTipRole ).toString();
@@ -125,7 +125,7 @@ public:
     inline void setToolTip( int column, const QString &toolTip );
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
     inline QString whatsThis( int column ) const
     {
         return data( column, Qt::WhatsThisRole ).toString();
@@ -302,21 +302,21 @@ inline void QTreeWidgetItem::setIcon( int column, const QIcon &icon )
     setData( column, Qt::DecorationRole, icon );
 }
 
-#ifndef QT_NO_STATUSTIP
+#ifndef LSCS_NO_STATUSTIP
 inline void QTreeWidgetItem::setStatusTip( int column, const QString &statusTip )
 {
     setData( column, Qt::StatusTipRole, statusTip );
 }
 #endif
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 inline void QTreeWidgetItem::setToolTip( int column, const QString &toolTip )
 {
     setData( column, Qt::ToolTipRole, toolTip );
 }
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 inline void QTreeWidgetItem::setWhatsThis( int column, const QString &whatsThis )
 {
     setData( column, Qt::WhatsThisRole, whatsThis );
@@ -592,6 +592,6 @@ inline bool QTreeWidgetItem::isDisabled() const
     return ! ( flags() & Qt::ItemIsEnabled );
 }
 
-#endif // QT_NO_TREEWIDGET
+#endif // LSCS_NO_TREEWIDGET
 
 #endif // QTREEWIDGET_H

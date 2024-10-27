@@ -52,10 +52,10 @@
 
 #include <limits.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
-QString qt_accStripAmp( const QString &text );
-QString qt_accHotKey( const QString &text );
+QString lscs_accStripAmp( const QString &text );
+QString lscs_accHotKey( const QString &text );
 
 QList<QWidget *> childWidgets( const QWidget *widget )
 {
@@ -81,8 +81,8 @@ QList<QWidget *> childWidgets( const QWidget *widget )
         if ( !w->isWindow()
                 && !qobject_cast<QFocusFrame *>( w )
                 && !qobject_cast<QMenu *>( w )
-                && objectName != QLatin1String( "qt_rubberband" )
-                && objectName != QLatin1String( "qt_qmainwindow_extended_splitter" ) )
+                && objectName != QLatin1String( "lscs_rubberband" )
+                && objectName != QLatin1String( "lscs_qmainwindow_extended_splitter" ) )
         {
             widgets.append( w );
         }
@@ -91,7 +91,7 @@ QList<QWidget *> childWidgets( const QWidget *widget )
     return widgets;
 }
 
-#if !defined(QT_NO_TEXTEDIT) && !defined(QT_NO_CURSOR)
+#if !defined(LSCS_NO_TEXTEDIT) && !defined(LSCS_NO_CURSOR)
 
 QAccessiblePlainTextEdit::QAccessiblePlainTextEdit( QWidget *o )
     : QAccessibleTextWidget( o )
@@ -309,9 +309,9 @@ void QAccessibleTextEdit::scrollToSubstring( int startIndex, int endIndex )
     }
 }
 
-#endif // QT_NO_TEXTEDIT && QT_NO_CURSOR
+#endif // LSCS_NO_TEXTEDIT && LSCS_NO_CURSOR
 
-#ifndef QT_NO_STACKEDWIDGET
+#ifndef LSCS_NO_STACKEDWIDGET
 
 QAccessibleStackedWidget::QAccessibleStackedWidget( QWidget *widget )
     : QAccessibleWidget( widget, QAccessible::LayeredPane )
@@ -375,7 +375,7 @@ QStackedWidget *QAccessibleStackedWidget::stackedWidget() const
 }
 #endif
 
-#ifndef QT_NO_TOOLBOX
+#ifndef LSCS_NO_TOOLBOX
 QAccessibleToolBox::QAccessibleToolBox( QWidget *widget )
     : QAccessibleWidget( widget, QAccessible::LayeredPane )
 {
@@ -388,7 +388,7 @@ QToolBox *QAccessibleToolBox::toolBox() const
 }
 #endif
 
-#ifndef QT_NO_MDIAREA
+#ifndef LSCS_NO_MDIAREA
 QAccessibleMdiArea::QAccessibleMdiArea( QWidget *widget )
     : QAccessibleWidget( widget, QAccessible::LayeredPane )
 {
@@ -553,9 +553,9 @@ QMdiSubWindow *QAccessibleMdiSubWindow::mdiSubWindow() const
 {
     return static_cast<QMdiSubWindow *>( object() );
 }
-#endif // QT_NO_MDIAREA
+#endif // LSCS_NO_MDIAREA
 
-#ifndef QT_NO_DIALOGBUTTONBOX
+#ifndef LSCS_NO_DIALOGBUTTONBOX
 // ======================= QAccessibleDialogButtonBox ======================
 QAccessibleDialogButtonBox::QAccessibleDialogButtonBox( QWidget *widget )
     : QAccessibleWidget( widget, QAccessible::Grouping )
@@ -565,7 +565,7 @@ QAccessibleDialogButtonBox::QAccessibleDialogButtonBox( QWidget *widget )
 
 #endif
 
-#if ! defined(QT_NO_TEXTBROWSER) && ! defined(QT_NO_CURSOR)
+#if ! defined(LSCS_NO_TEXTBROWSER) && ! defined(LSCS_NO_CURSOR)
 QAccessibleTextBrowser::QAccessibleTextBrowser( QWidget *widget )
     : QAccessibleTextEdit( widget )
 {
@@ -578,7 +578,7 @@ QAccessible::Role QAccessibleTextBrowser::role() const
 }
 #endif
 
-#ifndef QT_NO_CALENDARWIDGET
+#ifndef LSCS_NO_CALENDARWIDGET
 
 QAccessibleCalendarWidget::QAccessibleCalendarWidget( QWidget *widget )
     : QAccessibleWidget( widget, QAccessible::Table )
@@ -630,7 +630,7 @@ QAbstractItemView *QAccessibleCalendarWidget::calendarView() const
 {
     for ( QObject *child : calendarWidget()->children() )
     {
-        if ( child->objectName() == QLatin1String( "qt_calendar_calendarview" ) )
+        if ( child->objectName() == QLatin1String( "lscs_calendar_calendarview" ) )
         {
             return static_cast<QAbstractItemView *>( child );
         }
@@ -643,7 +643,7 @@ QWidget *QAccessibleCalendarWidget::navigationBar() const
 {
     for ( QObject *child : calendarWidget()->children() )
     {
-        if ( child->objectName() == QLatin1String( "qt_calendar_navigationbar" ) )
+        if ( child->objectName() == QLatin1String( "lscs_calendar_navigationbar" ) )
         {
             return static_cast<QWidget *>( child );
         }
@@ -653,7 +653,7 @@ QWidget *QAccessibleCalendarWidget::navigationBar() const
 }
 #endif
 
-#ifndef QT_NO_DOCKWIDGET
+#ifndef LSCS_NO_DOCKWIDGET
 
 // Dock Widget - order of children:
 // - Content widget
@@ -749,18 +749,18 @@ QString QAccessibleDockWidget::text( QAccessible::Text t ) const
 {
     if ( t == QAccessible::Name )
     {
-        return qt_accStripAmp( dockWidget()->windowTitle() );
+        return lscs_accStripAmp( dockWidget()->windowTitle() );
     }
     else if ( t == QAccessible::Accelerator )
     {
-        return qt_accHotKey( dockWidget()->windowTitle() );
+        return lscs_accHotKey( dockWidget()->windowTitle() );
     }
 
     return QString();
 }
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 QAccessibleTextWidget::QAccessibleTextWidget( QWidget *o, QAccessible::Role r, const QString &name ):
     QAccessibleWidget( o, r, name )
 {
@@ -1239,7 +1239,7 @@ void QAccessibleTextWidget::replaceText( int startOffset, int endOffset, const Q
 }
 #endif
 
-#ifndef QT_NO_MAINWINDOW
+#ifndef LSCS_NO_MAINWINDOW
 QAccessibleMainWindow::QAccessibleMainWindow( QWidget *widget )
     : QAccessibleWidget( widget, QAccessible::Window ) { }
 
@@ -1304,6 +1304,6 @@ QMainWindow *QAccessibleMainWindow::mainWindow() const
     return qobject_cast<QMainWindow *>( object() );
 }
 
-#endif //QT_NO_MAINWINDOW
+#endif //LSCS_NO_MAINWINDOW
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY

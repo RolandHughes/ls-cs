@@ -26,7 +26,7 @@
 
 #include <qkeysequence.h>
 
-#ifndef QT_NO_SHORTCUT
+#ifndef LSCS_NO_SHORTCUT
 
 struct QKeyBinding
 {
@@ -69,7 +69,7 @@ public:
     static int decodeString( const QString &keyStr, QKeySequence::SequenceFormat format );
 };
 
-#endif // QT_NO_SHORTCUT
+#endif // LSCS_NO_SHORTCUT
 
 
 

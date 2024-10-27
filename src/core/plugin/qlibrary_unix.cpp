@@ -33,16 +33,16 @@
 #endif
 
 #if defined (Q_OS_NACL)
-#define QT_NO_DYNAMIC_LIBRARY
+#define LSCS_NO_DYNAMIC_LIBRARY
 #endif
 
-#if ! defined(QT_NO_DYNAMIC_LIBRARY)
+#if ! defined(LSCS_NO_DYNAMIC_LIBRARY)
 #include <dlfcn.h>
 #endif
 
 static QString qdlerror()
 {
-#if defined(QT_NO_DYNAMIC_LIBRARY)
+#if defined(LSCS_NO_DYNAMIC_LIBRARY)
     const char *err = "This platform does not support dynamic libraries.";
 
 #else
@@ -91,7 +91,7 @@ bool QLibraryHandle::load_sys()
 {
     QString attempt;
 
-#if ! defined(QT_NO_DYNAMIC_LIBRARY)
+#if ! defined(LSCS_NO_DYNAMIC_LIBRARY)
     QFileSystemEntry fsEntry( fileName );
 
     QString path = fsEntry.path();
@@ -249,7 +249,7 @@ bool QLibraryHandle::load_sys()
 
 #endif
 
-#endif // ! defined(QT_NO_DYNAMIC_LIBRARY)
+#endif // ! defined(LSCS_NO_DYNAMIC_LIBRARY)
 
     if ( pHnd )
     {
@@ -266,7 +266,7 @@ bool QLibraryHandle::load_sys()
 
 bool QLibraryHandle::unload_sys()
 {
-#if ! defined(QT_NO_DYNAMIC_LIBRARY)
+#if ! defined(LSCS_NO_DYNAMIC_LIBRARY)
 
     if ( dlclose( pHnd ) )
     {
@@ -279,15 +279,15 @@ bool QLibraryHandle::unload_sys()
     return true;
 }
 
-#if defined(Q_OS_LINUX) && ! defined(QT_NO_DYNAMIC_LIBRARY)
-Q_CORE_EXPORT void *qt_linux_find_symbol_sys( const char *symbol )
+#if defined(Q_OS_LINUX) && ! defined(LSCS_NO_DYNAMIC_LIBRARY)
+Q_CORE_EXPORT void *lscs_linux_find_symbol_sys( const char *symbol )
 {
     return dlsym( RTLD_DEFAULT, symbol );
 }
 #endif
 
 #ifdef Q_OS_DARWIN
-Q_CORE_EXPORT void *qt_mac_resolve_sys( void *handle, const char *symbol )
+Q_CORE_EXPORT void *lscs_mac_resolve_sys( void *handle, const char *symbol )
 {
     return dlsym( handle, symbol );
 }
@@ -296,7 +296,7 @@ Q_CORE_EXPORT void *qt_mac_resolve_sys( void *handle, const char *symbol )
 void *QLibraryHandle::resolve_sys( const QString &symbol )
 {
 
-#if defined (QT_NO_DYNAMIC_LIBRARY)
+#if defined (LSCS_NO_DYNAMIC_LIBRARY)
     void *address = nullptr;
 
 #else

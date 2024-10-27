@@ -54,7 +54,7 @@
 
 #include <limits.h>
 
-Q_CORE_EXPORT unsigned int qt_int_sqrt( unsigned int n );
+Q_CORE_EXPORT unsigned int lscs_int_sqrt( unsigned int n );
 
 QTextDocument::QTextDocument( QObject *parent )
     : QObject( parent ), d_ptr( new QTextDocumentPrivate )
@@ -107,7 +107,7 @@ QTextDocument *QTextDocument::clone( QObject *parent ) const
     priv->resources = d->resources;
     priv->cachedResources.clear();
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
     priv->defaultStyleSheet = d->defaultStyleSheet;
     priv->parsedDefaultStyleSheet = d->parsedDefaultStyleSheet;
 #endif
@@ -417,14 +417,14 @@ void QTextDocument::adjustSize()
 
     if ( size.width() != 0 )
     {
-        w = qt_int_sqrt( ( uint )( 5 * size.height() * size.width() / 3 ) );
+        w = lscs_int_sqrt( ( uint )( 5 * size.height() * size.width() / 3 ) );
         setTextWidth( qMin( w, mw ) );
 
         size = documentLayout()->documentSize();
 
         if ( w * 3 < 5 * size.height() )
         {
-            w = qt_int_sqrt( ( uint )( 2 * size.height() * size.width() ) );
+            w = lscs_int_sqrt( ( uint )( 2 * size.height() * size.width() ) );
             setTextWidth( qMin( w, mw ) );
         }
     }
@@ -473,7 +473,7 @@ QChar QTextDocument::characterAt( int pos ) const
     return d->text.at( frag->stringPosition + offsetInFragment );
 }
 
-#ifndef QT_NO_CSSPARSER
+#ifndef LSCS_NO_CSSPARSER
 void QTextDocument::setDefaultStyleSheet( const QString &sheet )
 {
     Q_D( QTextDocument );
@@ -489,7 +489,7 @@ QString QTextDocument::defaultStyleSheet() const
     Q_D( const QTextDocument );
     return d->defaultStyleSheet;
 }
-#endif // QT_NO_CSSPARSER
+#endif // LSCS_NO_CSSPARSER
 
 bool QTextDocument::isUndoAvailable() const
 {
@@ -625,7 +625,7 @@ void QTextDocument::setPlainText( const QString &text )
 }
 
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 
 void QTextDocument::setHtml( const QString &html )
 {
@@ -1031,7 +1031,7 @@ void QTextDocument::setModified( bool m )
     docHandle()->setModified( m );
 }
 
-#ifndef QT_NO_PRINTER
+#ifndef LSCS_NO_PRINTER
 static void printPage( int index, QPainter *painter, const QTextDocument *doc, const QRectF &body,
                        const QPointF &pageNumberPos )
 {
@@ -1109,7 +1109,7 @@ void QTextDocument::print( QPagedPaintDevice *printer ) const
 
     if ( documentPaginated )
     {
-        qreal sourceDpiX = qt_defaultDpi();
+        qreal sourceDpiX = lscs_defaultDpi();
         qreal sourceDpiY = sourceDpiX;
 
         QPaintDevice *dev = doc->documentLayout()->paintDevice();
@@ -2774,7 +2774,7 @@ void QTextHtmlExporter::emitFrameStyle( const QTextFrameFormat &format, FrameTyp
     }
 }
 
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
 QString QTextDocument::toHtml( const QString &encoding ) const
 {
     return QTextHtmlExporter( this ).toHtml( encoding );

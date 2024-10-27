@@ -38,11 +38,11 @@
 namespace
 {
 
-QString accessibilityDefineC = "QT_NO_ACCESSIBILITY";
-QString toolTipDefineC       = "QT_NO_TOOLTIP";
-QString whatsThisDefineC     = "QT_NO_WHATSTHIS";
-QString statusTipDefineC     = "QT_NO_STATUSTIP";
-QString shortcutDefineC      = "QT_NO_SHORTCUT";
+QString accessibilityDefineC = "LSCS_NO_ACCESSIBILITY";
+QString toolTipDefineC       = "LSCS_NO_TOOLTIP";
+QString whatsThisDefineC     = "LSCS_NO_WHATSTHIS";
+QString statusTipDefineC     = "LSCS_NO_STATUSTIP";
+QString shortcutDefineC      = "LSCS_NO_SHORTCUT";
 
 // fix an enumeration name, was "BottomToolBarArea" instead of "Qt::BottomToolBarArea"
 void fixQtEnumerationName( QString &name )
@@ -1031,7 +1031,7 @@ void WriteInitialization::acceptWidget( DomWidget *node )
         autoTrOutput( plabelString, pageDefaultString ) << m_indent << parentWidget << "->setItemText("
                 << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( plabelString, pageDefaultString ) << ");\n";
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         if ( DomProperty *ptoolTip = attributes.value( "toolTip" ) )
         {
@@ -1061,7 +1061,7 @@ void WriteInitialization::acceptWidget( DomWidget *node )
         autoTrOutput( ptitleString, pageDefaultString ) << m_indent << parentWidget << "->setTabText("
                 << parentWidget << "->indexOf(" << varName << "), " << autoTrCall( ptitleString, pageDefaultString ) << ");\n";
 
-#ifndef QT_NO_TOOLTIP
+#ifndef LSCS_NO_TOOLTIP
 
         if ( const DomProperty *ptoolTip = attributes.value( "toolTip" ) )
         {
@@ -1071,7 +1071,7 @@ void WriteInitialization::acceptWidget( DomWidget *node )
 
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
 
         if ( const DomProperty *pwhatsThis = attributes.value( "whatsThis" ) )
         {
@@ -2826,7 +2826,7 @@ void WriteInitialization::enableSorting( DomWidget *w, const QString &varName, c
  * Initializers are just strings containing the function call and need to be prepended
  * the line indentation and the object they are supposed to initialize.
  * String initializers come with a preprocessor conditional (ifdef), so the code
- * compiles with QT_NO_xxx. A null pointer means no conditional. String initializers
+ * compiles with LSCS_NO_xxx. A null pointer means no conditional. String initializers
  * are written to the retranslateUi() function, others to setupUi().
  */
 

@@ -26,7 +26,7 @@
 
 #include <qeventtransition.h>
 
-#ifndef QT_NO_STATEMACHINE
+#ifndef LSCS_NO_STATEMACHINE
 
 class QKeyEventTransitionPrivate;
 
@@ -62,6 +62,6 @@ private:
     Q_DECLARE_PRIVATE( QKeyEventTransition )
 };
 
-#endif //QT_NO_STATEMACHINE
+#endif //LSCS_NO_STATEMACHINE
 
 #endif

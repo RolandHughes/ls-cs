@@ -30,7 +30,7 @@
 #include <qmatrix4x4.h>
 #include <qscopedpointer.h>
 
-#ifndef QT_NO_GRAPHICSVIEW
+#ifndef LSCS_NO_GRAPHICSVIEW
 
 class QGraphicsItem;
 class QGraphicsTransformPrivate;
@@ -165,6 +165,6 @@ void QGraphicsRotation::lscs_setAxis( const QVector3D &axis )
 }
 
 
-#endif //QT_NO_GRAPHICSVIEW
+#endif //LSCS_NO_GRAPHICSVIEW
 
 #endif // QFXTRANSFORM_H

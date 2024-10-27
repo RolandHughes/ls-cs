@@ -30,14 +30,14 @@ extern "C" {
 
 #include <qrasterdefs_p.h>
 
-#ifndef QT_FT_EXPORT_VAR
-#define QT_FT_EXPORT_VAR( x )  extern  x
+#ifndef LSCS_FT_EXPORT_VAR
+#define LSCS_FT_EXPORT_VAR( x )  extern  x
 #endif
 
 /* Minimum buffer size for raster object, that accounts for TWorker and TCell sizes.*/
 #define MINIMUM_POOL_SIZE 8192
 
-QT_FT_EXPORT_VAR( const QT_FT_Raster_Funcs )  qt_ft_grays_raster;
+LSCS_FT_EXPORT_VAR( const LSCS_FT_Raster_Funcs )  lscs_ft_grays_raster;
 
 #ifdef __cplusplus
 }

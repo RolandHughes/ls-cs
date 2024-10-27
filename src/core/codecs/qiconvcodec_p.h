@@ -26,7 +26,7 @@
 
 #include <qtextcodec.h>
 
-#if defined(Q_OS_UNIX) && ! defined(QT_NO_ICONV)
+#if defined(Q_OS_UNIX) && ! defined(LSCS_NO_ICONV)
 
 #ifdef Q_OS_DARWIN
 using iconv_t = void *;
@@ -71,6 +71,6 @@ public:
     };
 };
 
-#endif // Q_OS_UNIX && !QT_NO_ICONV
+#endif // Q_OS_UNIX && !LSCS_NO_ICONV
 
 #endif // QICONVCODEC_P_H

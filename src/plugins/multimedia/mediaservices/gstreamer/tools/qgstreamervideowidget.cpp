@@ -82,7 +82,7 @@ protected:
 
 QGstreamerVideoWidgetControl::QGstreamerVideoWidgetControl( QObject *parent, const QByteArray &elementName )
     : QVideoWidgetControl( parent )
-    , m_videoOverlay( this, !elementName.isEmpty() ? elementName : qgetenv( "QT_GSTREAMER_WIDGET_VIDEOSINK" ) )
+    , m_videoOverlay( this, !elementName.isEmpty() ? elementName : qgetenv( "LSCS_GSTREAMER_WIDGET_VIDEOSINK" ) )
     , m_widget( nullptr )
     , m_stopped( false )
     , m_windowId( 0 )

@@ -6,10 +6,10 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
 
    target_compile_definitions(LsCsXcbSupport
       PRIVATE
-      -DQT_NO_ACCESSIBILITY_ATSPI_BRIDGE
-      -DQT_NO_DBUS
-      -DQT_FONTCONFIGDATABASE
-      -DQT_USE_FREETYPE
+      -DLSCS_NO_ACCESSIBILITY_ATSPI_BRIDGE
+      -DLSCS_NO_DBUS
+      -DLSCS_FONTCONFIGDATABASE
+      -DLSCS_USE_FREETYPE
       -DXCB_USE_RENDER
       -DXCB_USE_SM
       -DXCB_USE_XLIB
@@ -143,7 +143,7 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
    else()
       target_compile_definitions(LsCsXcbSupport
          PRIVATE
-         -DQT_NO_GLIB
+         -DLSCS_NO_GLIB
       )
    endif()
 

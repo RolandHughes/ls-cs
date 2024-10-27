@@ -22,7 +22,7 @@ if(WITH_SVG)
 
    target_compile_definitions(LsCsImageFormatsSvg
       PRIVATE
-      -DQT_PLUGIN
+      -DLSCS_PLUGIN
    )
 
    function_generate_resources(LsCsImageFormatsSvg)

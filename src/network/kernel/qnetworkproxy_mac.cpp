@@ -23,7 +23,7 @@
 
 #include <qnetworkproxy.h>
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 #include <qendian.h>
 #include <qregularexpression.h>

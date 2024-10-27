@@ -33,7 +33,7 @@
 #import <Cocoa/Cocoa.h>
 #import <IOKit/graphics/IOGraphicsLib.h>
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 #include <qfontengine_ft_p.h>
 #endif
 
@@ -92,7 +92,7 @@ static NSInteger languageMapSort(id obj1, id obj2, void *context)
 #endif
 
 QCoreTextFontDatabase::QCoreTextFontDatabase(bool useFreeType)
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
    : m_useFreeType(useFreeType)
 #endif
 {
@@ -377,7 +377,7 @@ void QCoreTextFontDatabase::releaseHandle(void *handle)
    CFRelease(CTFontDescriptorRef(handle));
 }
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 static QByteArray filenameForCFUrl(CFURLRef url)
 {
    // The on-stack buffer prevents that a QByteArray allocated for the worst case (MAXPATHLEN)
@@ -404,13 +404,13 @@ static QByteArray filenameForCFUrl(CFURLRef url)
 }
 #endif
 
-extern CGAffineTransform qt_transform_from_fontdef(const QFontDef &fontDef);
+extern CGAffineTransform lscs_transform_from_fontdef(const QFontDef &fontDef);
 
 QFontEngine *QCoreTextFontDatabase::fontEngine(const QFontDef &f, void *usrPtr)
 {
    CTFontDescriptorRef descriptor = static_cast<CTFontDescriptorRef>(usrPtr);
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
    if (m_useFreeType) {
       QCFType<CFURLRef> url(static_cast<CFURLRef>(CTFontDescriptorCopyAttribute(descriptor, kCTFontURLAttribute)));
 
@@ -432,7 +432,7 @@ QFontEngine *QCoreTextFontDatabase::fontEngine(const QFontDef &f, void *usrPtr)
    // DPI, and we can use that directly.
    qreal scaledPointSize = f.pixelSize;
 
-   CGAffineTransform matrix = qt_transform_from_fontdef(f);
+   CGAffineTransform matrix = lscs_transform_from_fontdef(f);
    CTFontRef font = CTFontCreateWithFontDescriptor(descriptor, scaledPointSize, &matrix);
 
    if (font) {
@@ -454,7 +454,7 @@ static void releaseFontData(void *info, const void *data, size_t size)
 
 QFontEngine *QCoreTextFontDatabase::fontEngine(const QByteArray &fontData, qreal pixelSize, QFont::HintingPreference hintingPreference)
 {
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
    if (m_useFreeType) {
       QByteArray *fontDataCopy = new QByteArray(fontData);
 
@@ -469,9 +469,9 @@ QFontEngine *QCoreTextFontDatabase::fontEngine(const QByteArray &fontData, qreal
 
       QFontDef fontDef;
       fontDef.pixelSize = pixelSize;
-      fontDef.pointSize = pixelSize * 72.0 / qt_defaultDpi();
+      fontDef.pointSize = pixelSize * 72.0 / lscs_defaultDpi();
       fontDef.hintingPreference = hintingPreference;
-      CGAffineTransform transform = qt_transform_from_fontdef(fontDef);
+      CGAffineTransform transform = lscs_transform_from_fontdef(fontDef);
       QCFType<CTFontRef> ctFont(CTFontCreateWithGraphicsFont(cgFont, fontDef.pixelSize, &transform, nullptr));
       QCFType<CFURLRef> url(static_cast<CFURLRef>(CTFontCopyAttribute(ctFont, kCTFontURLAttribute)));
       return freeTypeFontEngine(fontDef, filenameForCFUrl(url), fontData);
@@ -493,7 +493,7 @@ QFontEngine *QCoreTextFontDatabase::fontEngine(const QByteArray &fontData, qreal
    } else {
       QFontDef def;
       def.pixelSize = pixelSize;
-      def.pointSize = pixelSize * 72.0 / qt_defaultDpi();
+      def.pointSize = pixelSize * 72.0 / lscs_defaultDpi();
       fontEngine = new QCoreTextFontEngine(cgFont, def);
       CFRelease(cgFont);
    }
@@ -665,7 +665,7 @@ static CFArrayRef createDescriptorArrayForFont(CTFontRef font, const QString &fi
    CFMutableArrayRef array = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
    QCFType<CTFontDescriptorRef> descriptor = CTFontCopyFontDescriptor(font);
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
    // The physical font source URL (usually a local file or resource) is only required for
    // FreeType, when using non-system fonts, and needs some hackery to attach in a format agreeable to OSX.
 
@@ -715,7 +715,7 @@ QStringList QCoreTextFontDatabase::addApplicationFont(const QByteArray &fontData
                QCFType<CTFontRef> font = CTFontCreateWithGraphicsFont(cgFont, 0.0, nullptr, nullptr);
                fonts = createDescriptorArrayForFont(font
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
                      , m_useFreeType ? fileName : QString()
 #endif
                   );
@@ -941,7 +941,7 @@ void QCoreTextFontDatabase::removeApplicationFonts()
    m_applicationFonts.clear();
 }
 
-#if defined(QT_USE_FREETYPE)
+#if defined(LSCS_USE_FREETYPE)
 QFontEngine *QCoreTextFontDatabase::freeTypeFontEngine(const QFontDef &fontDef, const QString &filename, const QByteArray &fontData)
 {
    QFontEngine::FaceId faceId;

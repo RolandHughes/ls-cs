@@ -1070,7 +1070,7 @@ QString QIODevice::errorString() const
     return d->errorString;
 }
 
-int qt_subtract_from_timeout( int timeout, int elapsed )
+int lscs_subtract_from_timeout( int timeout, int elapsed )
 {
     if ( timeout == -1 )
     {

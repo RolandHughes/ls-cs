@@ -30,7 +30,7 @@
 
 #include <qgesture_p.h>
 
-#ifndef QT_NO_GESTURES
+#ifndef LSCS_NO_GESTURES
 
 QMacSwipeGestureRecognizer::QMacSwipeGestureRecognizer()
 {
@@ -308,4 +308,4 @@ void QMacPanGestureRecognizer::reset( QGesture *gesture )
     QGestureRecognizer::reset( gesture );
 }
 
-#endif // QT_NO_GESTURES
+#endif // LSCS_NO_GESTURES

@@ -31,7 +31,7 @@
 #include <qdeclarativeguard_p.h>
 #include <qdeclarativebinding_p.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QDeclarativeSimpleAction
 {
@@ -235,6 +235,6 @@ public:
     void complete();
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif // QDECLARATIVESTATE_P_H

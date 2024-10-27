@@ -33,7 +33,7 @@
 #undef XCB_ATOM_PIXMAP
 #undef XCB_ATOM_BITMAP
 
-#if ! (defined(QT_NO_DRAGANDDROP) && defined(QT_NO_CLIPBOARD))
+#if ! (defined(LSCS_NO_DRAGANDDROP) && defined(LSCS_NO_CLIPBOARD))
 
 QXcbMime::QXcbMime()
     : QInternalMimeData()
@@ -193,7 +193,7 @@ QVariant QXcbMime::mimeConvertToFormat( QXcbConnection *connection, xcb_atom_t a
     if ( !encoding.isEmpty() && atomName == format + ";charset=" + QString::fromLatin1( encoding ) )
     {
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
 
         if ( requestedType == QVariant::String )
         {
@@ -402,6 +402,6 @@ xcb_atom_t QXcbMime::mimeAtomForFormat( QXcbConnection *connection, const QStrin
     return 0;
 }
 
-#endif // !(defined(QT_NO_DRAGANDDROP) && defined(QT_NO_CLIPBOARD))
+#endif // !(defined(LSCS_NO_DRAGANDDROP) && defined(LSCS_NO_CLIPBOARD))
 
 

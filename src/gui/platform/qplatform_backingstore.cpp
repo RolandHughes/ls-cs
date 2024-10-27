@@ -36,7 +36,7 @@
 
 #include <qwindow_p.h>
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 #include <qopengl_textureblitter_p.h>
 #endif
 
@@ -65,7 +65,7 @@ class QPlatformBackingStorePrivate
 public:
     QPlatformBackingStorePrivate( QWindow *w )
         : window( w )
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
         , textureId( 0 ), blitter( nullptr )
 #endif
     {
@@ -73,7 +73,7 @@ public:
 
     ~QPlatformBackingStorePrivate()
     {
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
         QOpenGLContext *ctx = QOpenGLContext::currentContext();
 
         if ( ctx )
@@ -100,7 +100,7 @@ public:
 
     QWindow *window;
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
     mutable GLuint textureId;
     mutable QSize textureSize;
     mutable bool needsSwizzle;
@@ -109,7 +109,7 @@ public:
 #endif
 };
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 struct QBackingstoreTextureInfo
 {
@@ -212,9 +212,9 @@ void QPlatformTextureList::clear()
     Q_D( QPlatformTextureList );
     d->textures.clear();
 }
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
-#ifndef QT_NO_OPENGL
+#ifndef LSCS_NO_OPENGL
 
 static inline QRect deviceRect( const QRect &rect, QWindow *window )
 {
@@ -285,7 +285,7 @@ static void blitTextureForWidget( const QPlatformTextureList *textures, int idx,
 void QPlatformBackingStore::composeAndFlush( QWindow *window, const QRegion &region,
         const QPoint &offset, QPlatformTextureList *textures, QOpenGLContext *context, bool translucentBackground )
 {
-    if ( ! qt_window_private( window )->receivedExpose )
+    if ( ! lscs_window_private( window )->receivedExpose )
     {
         return;
     }
@@ -621,7 +621,7 @@ GLuint QPlatformBackingStore::toTexture( const QRegion &dirtyRegion, QSize *text
 
     return d_ptr->textureId;
 }
-#endif // QT_NO_OPENGL
+#endif // LSCS_NO_OPENGL
 
 
 QPlatformBackingStore::QPlatformBackingStore( QWindow *window )

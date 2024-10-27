@@ -6,7 +6,7 @@
 --
 -- This file is part of the Qt Linguist of the Qt Toolkit.
 --
--- $QT_BEGIN_LICENSE:LGPL$
+-- $LSCS_BEGIN_LICENSE:LGPL$
 -- GNU Lesser General Public License Usage
 -- This file may be used under the terms of the GNU Lesser General Public
 -- License version 2.1 as published by the Free Software Foundation and
@@ -35,7 +35,7 @@
 --
 --
 --
--- $QT_END_LICENSE$
+-- $LSCS_END_LICENSE$
 --
 ----------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@
 #include <stdio.h>
 #include <string.h>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class LU {
     Q_DECLARE_TR_FUNCTIONS(LUpdate)
@@ -1700,7 +1700,7 @@ CallExpression: MemberExpression Arguments ;
 /.
 case $rule_number: {
     QString name = sym(1).toString();
-    if ((name == QLatin1String("qsTranslate")) || (name == QLatin1String("QT_TRANSLATE_NOOP"))) {
+    if ((name == QLatin1String("qsTranslate")) || (name == QLatin1String("LSCS_TRANSLATE_NOOP"))) {
         if (!sourcetext.isEmpty())
             yyMsg(identLineNo) << qPrintable(LU::tr("//% cannot be used with %1(). Ignoring\n").arg(name));
         QVariantList args = sym(2).toList();
@@ -1723,7 +1723,7 @@ case $rule_number: {
         extracomment.clear();
         msgid.clear();
         extra.clear();
-    } else if ((name == QLatin1String("qsTr")) || (name == QLatin1String("QT_TR_NOOP"))) {
+    } else if ((name == QLatin1String("qsTr")) || (name == QLatin1String("LSCS_TR_NOOP"))) {
         if (!sourcetext.isEmpty())
             yyMsg(identLineNo) << qPrintable(LU::tr("//% cannot be used with %1(). Ignoring\n").arg(name));
         QVariantList args = sym(2).toList();
@@ -1744,7 +1744,7 @@ case $rule_number: {
         extracomment.clear();
         msgid.clear();
         extra.clear();
-    } else if ((name == QLatin1String("qsTrId")) || (name == QLatin1String("QT_TRID_NOOP"))) {
+    } else if ((name == QLatin1String("qsTrId")) || (name == QLatin1String("LSCS_TRID_NOOP"))) {
         if (!msgid.isEmpty())
             yyMsg(identLineNo) << qPrintable(LU::tr("//= cannot be used with %1(). Ignoring\n").arg(name));
         QVariantList args = sym(2).toList();
@@ -2257,5 +2257,5 @@ bool loadQScript(Translator &translator, const QString &filename, ConversionData
     return true;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 ./

@@ -205,7 +205,7 @@ void QGLPixelBuffer::updateDynamicTexture( GLuint texture_id ) const
 
     extensions.glBindTexture( GL_TEXTURE_2D, texture_id );
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
     GLenum format = ctx->contextHandle()->isOpenGLES() ? GL_RGBA : GL_RGBA8;
     extensions.glCopyTexImage2D( GL_TEXTURE_2D, 0, format, 0, 0, d->req_size.width(), d->req_size.height(), 0 );
 #else
@@ -261,7 +261,7 @@ bool QGLPixelBuffer::isValid() const
     return !d->invalid;
 }
 
-static QGLEngineThreadStorage<QGL2PaintEngineEx> *qt_buffer_2_engine()
+static QGLEngineThreadStorage<QGL2PaintEngineEx> *lscs_buffer_2_engine()
 {
     static QGLEngineThreadStorage<QGL2PaintEngineEx> retval;
     return &retval;
@@ -269,15 +269,15 @@ static QGLEngineThreadStorage<QGL2PaintEngineEx> *qt_buffer_2_engine()
 
 QPaintEngine *QGLPixelBuffer::paintEngine() const
 {
-    return qt_buffer_2_engine()->engine();
+    return lscs_buffer_2_engine()->engine();
 }
 
 int QGLPixelBuffer::metric( PaintDeviceMetric metric ) const
 {
     Q_D( const QGLPixelBuffer );
 
-    float dpmx = qt_defaultDpiX() * 100. / 2.54;
-    float dpmy = qt_defaultDpiY() * 100. / 2.54;
+    float dpmx = lscs_defaultDpiX() * 100. / 2.54;
+    float dpmy = lscs_defaultDpiY() * 100. / 2.54;
     int w = d->req_size.width();
     int h = d->req_size.height();
 
@@ -331,7 +331,7 @@ GLuint QGLPixelBuffer::bindTexture( const QImage &image, GLenum target )
 {
     Q_D( QGLPixelBuffer );
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
     GLenum format = QOpenGLContext::currentContext()->isOpenGLES() ? GL_RGBA : GL_RGBA8;
     return d->qctx->bindTexture( image, target, GLint( format ) );
 #else
@@ -343,7 +343,7 @@ GLuint QGLPixelBuffer::bindTexture( const QPixmap &pixmap, GLenum target )
 {
     Q_D( QGLPixelBuffer );
 
-#ifndef QT_OPENGL_ES
+#ifndef LSCS_OPENGL_ES
     GLenum format = QOpenGLContext::currentContext()->isOpenGLES() ? GL_RGBA : GL_RGBA8;
     return d->qctx->bindTexture( pixmap, target, GLint( format ) );
 #else

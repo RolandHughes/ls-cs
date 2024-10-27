@@ -24,8 +24,8 @@
 #include <qfontlaocodec_p.h>
 #include <qlist.h>
 
-#ifndef QT_NO_CODECS
-#ifndef QT_NO_BIG_CODECS
+#ifndef LSCS_NO_CODECS
+#ifndef LSCS_NO_BIG_CODECS
 
 static unsigned char const unicode_to_mulelao[256] =
 {
@@ -111,6 +111,6 @@ QByteArray QFontLaoCodec::convertFromUnicode( QStringView str, ConverterState * 
     return retval;
 }
 
-#endif // QT_NO_BIG_CODECS
+#endif // LSCS_NO_BIG_CODECS
 
-#endif // QT_NO_CODECS
+#endif // LSCS_NO_CODECS

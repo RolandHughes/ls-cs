@@ -75,7 +75,7 @@ QGstreamerVideoOverlay::QGstreamerVideoOverlay( QObject *parent, const QByteArra
 
     if ( m_videoSink )
     {
-        qt_gst_object_ref_sink( GST_OBJECT( m_videoSink ) ); // Take ownership
+        lscs_gst_object_ref_sink( GST_OBJECT( m_videoSink ) ); // Take ownership
 
         GstPad *pad = gst_element_get_static_pad( m_videoSink, "sink" );
         addProbeToPad( pad );
@@ -106,7 +106,7 @@ QGstreamerVideoOverlay::~QGstreamerVideoOverlay()
     }
 }
 
-static bool qt_gst_element_is_functioning( GstElement *element )
+static bool lscs_gst_element_is_functioning( GstElement *element )
 {
     GstStateChangeReturn ret = gst_element_set_state( element, GST_STATE_READY );
 
@@ -139,7 +139,7 @@ GstElement *QGstreamerVideoOverlay::findBestVideoSink() const
                 ( choice = gst_element_factory_make( elementMap[i].gstreamerElement, nullptr ) ) )
         {
 
-            if ( qt_gst_element_is_functioning( choice ) )
+            if ( lscs_gst_element_is_functioning( choice ) )
             {
                 return choice;
             }
@@ -151,20 +151,20 @@ GstElement *QGstreamerVideoOverlay::findBestVideoSink() const
 
     // If none of the known video sinks are available, try to find one that implements the
     // GstVideoOverlay interface and has autoplugging rank.
-    GList *list = qt_gst_video_sinks();
+    GList *list = lscs_gst_video_sinks();
 
     for ( GList *item = list; item != nullptr; item = item->next )
     {
         GstElementFactory *f = GST_ELEMENT_FACTORY( item->data );
 
-        if ( ! gst_element_factory_has_interface( f, QT_GSTREAMER_VIDEOOVERLAY_INTERFACE_NAME ) )
+        if ( ! gst_element_factory_has_interface( f, LSCS_GSTREAMER_VIDEOOVERLAY_INTERFACE_NAME ) )
         {
             continue;
         }
 
         if ( GstElement *el = gst_element_factory_create( f, nullptr ) )
         {
-            if ( qt_gst_element_is_functioning( el ) )
+            if ( lscs_gst_element_is_functioning( el ) )
             {
                 choice = el;
                 break;

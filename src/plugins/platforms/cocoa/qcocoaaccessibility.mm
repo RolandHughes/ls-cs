@@ -26,7 +26,7 @@
 #include <qaccessible.h>
 #include <qcore_mac_p.h>
 
-#ifndef QT_NO_ACCESSIBILITY
+#ifndef LSCS_NO_ACCESSIBILITY
 
 QCocoaAccessibility::QCocoaAccessibility()
 {
@@ -393,6 +393,6 @@ id getValueAttribute(QAccessibleInterface *interface)
 
 } // namespace QCocoaAccessible
 
-#endif // QT_NO_ACCESSIBILITY
+#endif // LSCS_NO_ACCESSIBILITY
 
 

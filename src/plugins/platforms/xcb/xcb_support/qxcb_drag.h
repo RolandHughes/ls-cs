@@ -40,7 +40,7 @@
 
 #include <xcb/xcb.h>
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
 
 class QWindow;
 class QPlatformWindow;
@@ -156,7 +156,7 @@ private:
     xcb_window_t findRealWindow( const QPoint &pos, xcb_window_t w, int md, bool ignoreNonXdndAwareWindows );
 };
 
-#endif // QT_NO_DRAGANDDROP
+#endif // LSCS_NO_DRAGANDDROP
 
 
 #endif

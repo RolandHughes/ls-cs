@@ -29,7 +29,7 @@
 #include <qstring.h>
 #include <qmargins.h>
 
-#ifndef QT_NO_LINEEDIT
+#ifndef LSCS_NO_LINEEDIT
 
 class QValidator;
 class QMenu;
@@ -147,12 +147,12 @@ public:
     bool isReadOnly() const;
     void setReadOnly( bool );
 
-#ifndef QT_NO_VALIDATOR
+#ifndef LSCS_NO_VALIDATOR
     void setValidator( const QValidator *validator );
     const QValidator *validator() const;
 #endif
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     void setCompleter( QCompleter *completer );
     QCompleter *completer() const;
 #endif
@@ -209,7 +209,7 @@ public:
     void deselect();
     void insert( const QString &newText );
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     QMenu *createStandardContextMenu();
 #endif
 
@@ -228,7 +228,7 @@ public:
     GUI_LSCS_SLOT_1( Public, void redo() )
     GUI_LSCS_SLOT_2( redo )
 
-#ifndef QT_NO_CLIPBOARD
+#ifndef LSCS_NO_CLIPBOARD
     GUI_LSCS_SLOT_1( Public, void cut() )
     GUI_LSCS_SLOT_2( cut )
 
@@ -270,7 +270,7 @@ protected:
     void focusOutEvent( QFocusEvent *event ) override;
     void paintEvent( QPaintEvent *event ) override;
 
-#ifndef QT_NO_DRAGANDDROP
+#ifndef LSCS_NO_DRAGANDDROP
     void dragEnterEvent( QDragEnterEvent *event ) override;
     void dragMoveEvent( QDragMoveEvent *event ) override;
     void dragLeaveEvent( QDragLeaveEvent *event ) override;
@@ -279,7 +279,7 @@ protected:
 
     void changeEvent( QEvent *event ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 
@@ -293,7 +293,7 @@ private:
     friend class QAbstractSpinBox;
     friend class QAccessibleLineEdit;
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     friend class QDateTimeEdit;
 #endif
 
@@ -308,13 +308,13 @@ private:
     GUI_LSCS_SLOT_1( Private, void _q_cursorPositionChanged( int oldValue, int newValue ) )
     GUI_LSCS_SLOT_2( _q_cursorPositionChanged )
 
-#ifndef QT_NO_COMPLETER
+#ifndef LSCS_NO_COMPLETER
     GUI_LSCS_SLOT_1( Private, void _q_completionHighlighted( const QString &text ) )
     GUI_LSCS_SLOT_2( _q_completionHighlighted )
 
 #endif
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     GUI_LSCS_SLOT_1( Private, void _q_editFocusChange( bool isFocusChanged ) )
     GUI_LSCS_SLOT_2( _q_editFocusChange )
 #endif
@@ -332,6 +332,6 @@ private:
     GUI_LSCS_SLOT_2( _q_clearButtonClicked )
 };
 
-#endif // QT_NO_LINEEDIT
+#endif // LSCS_NO_LINEEDIT
 
 #endif // QLINEEDIT_H

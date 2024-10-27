@@ -26,7 +26,7 @@
 
 #include <qscriptdebuggerconsolecommand_p.h."
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QScriptEngine;
 class QScriptValue;
@@ -73,6 +73,6 @@ private:
     Q_DISABLE_COPY( QScriptDebuggerScriptedConsoleCommand )
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

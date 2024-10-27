@@ -23,13 +23,13 @@
 
 #include <qnetworkproxy.h>
 
-#ifndef QT_NO_NETWORKPROXY
+#ifndef LSCS_NO_NETWORKPROXY
 
 #include <qmutex.h>
 #include <qnetworkinterface.h>
 #include <qregularexpression.h>
 #include <qstringlist.h>
-#include <qt_windows.h>
+#include <lscs_windows.h>
 #include <qurl.h>
 #include <qvarlengtharray.h>
 

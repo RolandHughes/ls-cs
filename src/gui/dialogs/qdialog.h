@@ -107,7 +107,7 @@ protected:
     void showEvent( QShowEvent *event ) override;
     void resizeEvent( QResizeEvent *event ) override;
 
-#ifndef QT_NO_CONTEXTMENU
+#ifndef LSCS_NO_CONTEXTMENU
     void contextMenuEvent( QContextMenuEvent *event ) override;
 #endif
 

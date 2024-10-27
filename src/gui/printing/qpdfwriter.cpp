@@ -23,7 +23,7 @@
 
 #include <qpdfwriter.h>
 
-#ifndef QT_NO_PDF
+#ifndef LSCS_NO_PDF
 
 #include <qfile.h>
 #include <qpagedpaintdevice.h>
@@ -161,4 +161,4 @@ bool QPdfWriter::setPageSize( const QPageSize &pageSize )
     return m_pageLayout.pageSize().isEquivalentTo( pageSize );
 }
 
-#endif // QT_NO_PDF
+#endif // LSCS_NO_PDF

@@ -28,7 +28,7 @@
 #include <qscopedpointer.h>
 #include <qshareddata.h>
 
-#ifndef QT_NO_NETWORKINTERFACE
+#ifndef LSCS_NO_NETWORKINTERFACE
 
 template <typename T>
 class QList;

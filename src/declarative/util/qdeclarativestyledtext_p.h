@@ -26,7 +26,7 @@
 
 #include <QSizeF>
 
-QT_BEGIN_NAMESPACE
+LSCS_BEGIN_NAMESPACE
 
 class QPainter;
 class QPointF;
@@ -46,6 +46,6 @@ private:
     QDeclarativeStyledTextPrivate *d;
 };
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE
 
 #endif

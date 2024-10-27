@@ -24,7 +24,7 @@
 #include <qtextbrowser.h>
 #include <qtextedit_p.h>
 
-#ifndef QT_NO_TEXTBROWSER
+#ifndef LSCS_NO_TEXTBROWSER
 
 #include <qstack.h>
 #include <qapplication.h>
@@ -49,7 +49,7 @@ public:
     inline QTextBrowserPrivate()
         : textOrSourceChanged( false ), forceLoadOnSourceChange( false ), openExternalLinks( false ),
           openLinks( true )
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         , lastKeypadScrollValue( -1 )
 #endif
     {}
@@ -114,7 +114,7 @@ public:
     bool openExternalLinks;
     bool openLinks;
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     QCursor oldCursor;
 #endif
 
@@ -139,7 +139,7 @@ public:
         return resolveUrl( QUrl::fromEncoded( url.toUtf8() ) );
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     void keypadMove( bool next );
     QTextCursor prevFocus;
     int lastKeypadScrollValue;
@@ -239,7 +239,7 @@ void QTextBrowserPrivate::_q_activateAnchor( const QString &anchor )
 
     Q_Q( QTextBrowser );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     viewport->setCursor( oldCursor );
 #endif
 
@@ -253,7 +253,7 @@ void QTextBrowserPrivate::_q_activateAnchor( const QString &anchor )
 
     textOrSourceChanged = false;
 
-#ifndef QT_NO_DESKTOPSERVICES
+#ifndef LSCS_NO_DESKTOPSERVICES
 
     bool isFileScheme = url.scheme() == "file" || url.scheme() == "qrc";
 
@@ -284,7 +284,7 @@ void QTextBrowserPrivate::_q_highlightLink( const QString &anchor )
     if ( anchor.isEmpty() )
     {
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
         if ( viewport->cursor().shape() != Qt::PointingHandCursor )
         {
@@ -300,7 +300,7 @@ void QTextBrowserPrivate::_q_highlightLink( const QString &anchor )
     }
     else
     {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
         viewport->setCursor( Qt::PointingHandCursor );
 #endif
 
@@ -316,7 +316,7 @@ void QTextBrowserPrivate::setSource( const QUrl &url )
 {
     Q_Q( QTextBrowser );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( q->isVisible() )
     {
@@ -348,7 +348,7 @@ void QTextBrowserPrivate::setSource( const QUrl &url )
         else if ( data.type() == QVariant::ByteArray )
         {
 
-#ifndef QT_NO_TEXTCODEC
+#ifndef LSCS_NO_TEXTCODEC
             QByteArray ba = data.toByteArray();
             QTextCodec *codec = Qt::codecForHtml( ba );
             txt = codec->toUnicode( ba );
@@ -368,11 +368,11 @@ void QTextBrowserPrivate::setSource( const QUrl &url )
 
             if ( firstTag.startsWith( "<qt" ) && firstTag.contains( "type" ) && firstTag.contains( "detail" ) )
             {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
                 QApplication::restoreOverrideCursor();
 #endif
 
-#ifndef QT_NO_WHATSTHIS
+#ifndef LSCS_NO_WHATSTHIS
                 QWhatsThis::showText( QCursor::pos(), txt, q );
 #endif
                 return;
@@ -390,14 +390,14 @@ void QTextBrowserPrivate::setSource( const QUrl &url )
 
     if ( doSetText )
     {
-#ifndef QT_NO_TEXTHTMLPARSER
+#ifndef LSCS_NO_TEXTHTMLPARSER
         q->QTextEdit::setHtml( txt );
         q->document()->setMetaInformation( QTextDocument::DocumentUrl, currentURL.toString() );
 #else
         q->QTextEdit::setPlainText( txt );
 #endif
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         prevFocus.movePosition( QTextCursor::Start );
 #endif
     }
@@ -414,13 +414,13 @@ void QTextBrowserPrivate::setSource( const QUrl &url )
         vbar->setValue( 0 );
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     lastKeypadScrollValue = vbar->value();
     emit q->highlighted( QUrl() );
     emit q->highlighted( QString() );
 #endif
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
 
     if ( q->isVisible() )
     {
@@ -431,7 +431,7 @@ void QTextBrowserPrivate::setSource( const QUrl &url )
     emit q->sourceChanged( url );
 }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 void QTextBrowserPrivate::keypadMove( bool next )
 {
     Q_Q( QTextBrowser );
@@ -704,7 +704,7 @@ void QTextBrowserPrivate::restoreHistoryEntry( const HistoryEntry entry )
         control->setCursorIsFocusIndicator( true );
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     lastKeypadScrollValue = vbar->value();
     prevFocus = control->textCursor();
 
@@ -723,7 +723,7 @@ void QTextBrowserPrivate::init()
     Q_Q( QTextBrowser );
     control->setTextInteractionFlags( Qt::TextBrowserInteraction );
 
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     viewport->setCursor( oldCursor );
 #endif
 
@@ -879,7 +879,7 @@ void QTextBrowser::home()
 
 void QTextBrowser::keyPressEvent( QKeyEvent *ev )
 {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     Q_D( QTextBrowser );
 
     switch ( ev->key() )
@@ -953,7 +953,7 @@ void QTextBrowser::keyPressEvent( QKeyEvent *ev )
         }
     }
 
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
     else
     {
         if ( ev->key() == Qt::Key_Up )
@@ -989,7 +989,7 @@ void QTextBrowser::mouseReleaseEvent( QMouseEvent *e )
 
 void QTextBrowser::focusOutEvent( QFocusEvent *ev )
 {
-#ifndef QT_NO_CURSOR
+#ifndef LSCS_NO_CURSOR
     Q_D( QTextBrowser );
     d->viewport->setCursor( ( !( d->control->textInteractionFlags() & Qt::TextEditable ) ) ? d->oldCursor : Qt::IBeamCursor );
 #endif
@@ -1002,7 +1002,7 @@ bool QTextBrowser::focusNextPrevChild( bool next )
 
     if ( d->control->setFocusToNextOrPreviousAnchor( next ) )
     {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
 
         // Might need to synthesize a highlight event.
         if ( d->prevFocus != d->control->textCursor() && d->control->textCursor().hasSelection() )
@@ -1021,7 +1021,7 @@ bool QTextBrowser::focusNextPrevChild( bool next )
     }
     else
     {
-#ifdef QT_KEYPAD_NAVIGATION
+#ifdef LSCS_KEYPAD_NAVIGATION
         // We assume we have no highlight now.
         emit highlighted( QUrl() );
         emit highlighted( QString() );
@@ -1165,4 +1165,4 @@ void QTextBrowser::_q_highlightLink( const QString &anchor )
     d->_q_highlightLink( anchor );
 }
 
-#endif // QT_NO_TEXTBROWSER
+#endif // LSCS_NO_TEXTBROWSER

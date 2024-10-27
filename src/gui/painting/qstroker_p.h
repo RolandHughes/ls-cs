@@ -32,10 +32,10 @@
 #if defined QFIXED_IS_26_6
 typedef int qfixed;
 
-#define qt_real_to_fixed(real) qfixed(real * 64)
-#define qt_int_to_fixed(real) qfixed(int(real) << 6)
-#define qt_fixed_to_real(fixed) qreal(fixed / qreal(64))
-#define qt_fixed_to_int(fixed) int(fixed >> 6)
+#define lscs_real_to_fixed(real) qfixed(real * 64)
+#define lscs_int_to_fixed(real) qfixed(int(real) << 6)
+#define lscs_fixed_to_real(fixed) qreal(fixed / qreal(64))
+#define lscs_fixed_to_int(fixed) int(fixed >> 6)
 
 struct qfixed2d
 {
@@ -51,8 +51,8 @@ struct qfixed2d
 #elif defined QFIXED_IS_32_32
 
 typedef qint64 qfixed;
-#define qt_real_to_fixed(real) qfixed(real * double(qint64(1) << 32))
-#define qt_fixed_to_real(fixed) qreal(fixed / double(qint64(1) << 32))
+#define lscs_real_to_fixed(real) qfixed(real * double(qint64(1) << 32))
+#define lscs_fixed_to_real(fixed) qreal(fixed / double(qint64(1) << 32))
 
 struct qfixed2d
 {
@@ -68,8 +68,8 @@ struct qfixed2d
 #elif defined QFIXED_IS_16_16
 
 typedef int qfixed;
-#define qt_real_to_fixed(real) qfixed(real * qreal(1 << 16))
-#define qt_fixed_to_real(fixed) qreal(fixed / qreal(1 << 16))
+#define lscs_real_to_fixed(real) qfixed(real * qreal(1 << 16))
+#define lscs_fixed_to_real(fixed) qreal(fixed / qreal(1 << 16))
 
 struct qfixed2d
 {
@@ -84,8 +84,8 @@ struct qfixed2d
 
 #else
 typedef qreal qfixed;
-#define qt_real_to_fixed(real) qfixed(real)
-#define qt_fixed_to_real(fixed) fixed
+#define lscs_real_to_fixed(real) qfixed(real)
+#define lscs_fixed_to_real(fixed) fixed
 
 struct qfixed2d
 {
@@ -99,19 +99,19 @@ struct qfixed2d
 };
 #endif
 
-#define QT_PATH_KAPPA 0.5522847498
+#define LSCS_PATH_KAPPA 0.5522847498
 
-QPointF qt_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLength,
+QPointF lscs_curves_for_arc( const QRectF &rect, qreal startAngle, qreal sweepLength,
                            QPointF *controlPoints, int *point_count );
 
-qreal qt_t_for_arc_angle( qreal angle );
+qreal lscs_t_for_arc_angle( qreal angle );
 
 typedef void ( *qStrokerMoveToHook )( qfixed x, qfixed y, void *data );
 typedef void ( *qStrokerLineToHook )( qfixed x, qfixed y, void *data );
 typedef void ( *qStrokerCubicToHook )( qfixed c1x, qfixed c1y, qfixed c2x, qfixed c2y, qfixed ex, qfixed ey, void *data );
 
 // qtransform.cpp
-Q_GUI_EXPORT bool qt_scaleForTransform( const QTransform &transform, qreal *scale );
+Q_GUI_EXPORT bool lscs_scaleForTransform( const QTransform &transform, qreal *scale );
 
 class Q_GUI_EXPORT QStrokerOps
 {
@@ -189,7 +189,7 @@ public:
     void setCurveThresholdFromTransform( const QTransform &transform )
     {
         qreal scale;
-        qt_scaleForTransform( transform, &scale );
+        lscs_scaleForTransform( transform, &scale );
         m_dashThreshold = scale == 0 ? qreal( 0.5 ) : ( qreal( 0.5 ) / scale );
     }
 

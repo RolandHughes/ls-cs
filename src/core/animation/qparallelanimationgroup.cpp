@@ -24,7 +24,7 @@
 #include <qparallelanimationgroup.h>
 #include <qparallelanimationgroup_p.h>
 
-#ifndef QT_NO_ANIMATION
+#ifndef LSCS_NO_ANIMATION
 
 QParallelAnimationGroup::QParallelAnimationGroup( QObject *parent )
     : QAnimationGroup( *new QParallelAnimationGroupPrivate, parent )
@@ -356,4 +356,4 @@ bool QParallelAnimationGroup::event( QEvent *event )
     return QAnimationGroup::event( event );
 }
 
-#endif //QT_NO_ANIMATION
+#endif //LSCS_NO_ANIMATION

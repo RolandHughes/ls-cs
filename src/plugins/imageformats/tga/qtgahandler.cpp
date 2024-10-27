@@ -28,7 +28,7 @@
 #include <QDebug>
 #include <QImage>
 
-QT_BEGIN_NAMESPACE QTgaHandler::QTgaHandler()
+LSCS_BEGIN_NAMESPACE QTgaHandler::QTgaHandler()
     : QImageIOHandler()
     , tga( 0 )
 {
@@ -114,4 +114,4 @@ bool QTgaHandler::supportsOption( ImageOption option ) const
            || option == ImageFormat;
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

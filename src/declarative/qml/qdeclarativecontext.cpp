@@ -38,7 +38,7 @@
 
 #include <private/qscriptdeclarativeclass_p.h>
 
-QT_BEGIN_NAMESPACE QDeclarativeContextPrivate::QDeclarativeContextPrivate()
+LSCS_BEGIN_NAMESPACE QDeclarativeContextPrivate::QDeclarativeContextPrivate()
     : data( 0 ), notifyIndex( -1 )
 {
 }
@@ -899,4 +899,4 @@ QDeclarativeContextPrivate *QDeclarativeContextData::asQDeclarativeContextPrivat
     return QDeclarativeContextPrivate::get( asQDeclarativeContext() );
 }
 
-QT_END_NAMESPACE
+LSCS_END_NAMESPACE

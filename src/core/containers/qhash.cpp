@@ -109,22 +109,22 @@ static uint lscs_create_seed()
     uint seed = 0;
 
 #if defined(Q_OS_UNIX)
-    int randomfd = qt_safe_open( "/dev/urandom", O_RDONLY );
+    int randomfd = lscs_safe_open( "/dev/urandom", O_RDONLY );
 
     if ( randomfd == -1 )
     {
-        randomfd = qt_safe_open( "/dev/random", O_RDONLY | O_NONBLOCK );
+        randomfd = lscs_safe_open( "/dev/random", O_RDONLY | O_NONBLOCK );
     }
 
     if ( randomfd != -1 )
     {
-        if ( qt_safe_read( randomfd, reinterpret_cast<char *>( &seed ), sizeof( seed ) ) == sizeof( seed ) )
+        if ( lscs_safe_read( randomfd, reinterpret_cast<char *>( &seed ), sizeof( seed ) ) == sizeof( seed ) )
         {
-            qt_safe_close( randomfd );
+            lscs_safe_close( randomfd );
             return seed;
         }
 
-        qt_safe_close( randomfd );
+        lscs_safe_close( randomfd );
     }
 
 #endif

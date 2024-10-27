@@ -42,7 +42,7 @@ public:
     int id;
 };
 
-#ifndef QT_NO_UNDOSTACK
+#ifndef LSCS_NO_UNDOSTACK
 
 class QUndoStackPrivate
 {
@@ -72,7 +72,7 @@ protected:
     QUndoStack *q_ptr;
 };
 
-#ifndef QT_NO_ACTION
+#ifndef LSCS_NO_ACTION
 class QUndoAction : public QAction
 {
     GUI_LSCS_OBJECT( QUndoAction )
@@ -89,7 +89,7 @@ private:
     QString m_defaultText;
 
 };
-#endif // QT_NO_ACTION
+#endif // LSCS_NO_ACTION
 
-#endif // QT_NO_UNDOSTACK
+#endif // LSCS_NO_UNDOSTACK
 #endif // QUNDOSTACK_P_H
