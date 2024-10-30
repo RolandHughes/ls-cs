@@ -38,7 +38,7 @@ public:
         Subdirectories = 0x2,
         NoDot          = 0x4,
         NoDotDot       = 0x8,
-        NoDotAndDotDot = 0x10,
+        NoDotAndDotDot = NoDot | NoDotDot,
     };
     using IteratorFlags = QFlags<IteratorFlag>;
 

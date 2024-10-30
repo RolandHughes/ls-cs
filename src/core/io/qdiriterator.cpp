@@ -38,6 +38,9 @@
 #include <qfilesystemengine_p.h>
 #include <qtextstream.h>
 
+static const QString CURRENT_DOT_DIR(".");
+static const QString PARENT_DOT_DIR("..");
+
 template <class Iterator>
 class QDirIteratorPrivateIteratorStack : public QStack<Iterator *>
 {
@@ -298,10 +301,15 @@ bool QDirIteratorPrivate::matchesFilters( const QString &fileName, const QFileIn
     // filter . and ..
 
     QString nameStr = fileName;
+    const bool dotDirToSkip = nameStr == CURRENT_DOT_DIR || nameStr == PARENT_DOT_DIR;
+
+    QTextStream out(stdout);
+
+    out << "matchesFilters checking : " << fileName << endl;
 
     if ( m_filters & QDir::NoDot )
     {
-        if ( nameStr == "." )
+        if ( nameStr == CURRENT_DOT_DIR )
         {
             return false;
         }
@@ -309,25 +317,20 @@ bool QDirIteratorPrivate::matchesFilters( const QString &fileName, const QFileIn
 
     if ( m_filters & QDir::NoDotDot )
     {
-        if ( nameStr == ".." )
+        if ( nameStr == PARENT_DOT_DIR )
         {
             return false;
         }
     }
 
-    if ( m_filters & QDir::NoDotAndDotDot )
-    {
-        if ( ( nameStr == "." ) || ( nameStr == ".." ) )
-        {
-            return false;
-        }
-    }
-
+    out << "    got past dot checks" << endl;
+    
     // name filter
     // Pass all entries through name filters, except dirs if the AllDirs
 
     if ( ! m_nameFilters.isEmpty() && ! ( ( m_filters & QDir::AllDirs ) && fi.isDir() ) )
     {
+        out << "    m_nameFilters not empty " << endl;
         bool matched = false;
 
         for ( const auto &regExp : m_nameRegExps )
@@ -361,7 +364,7 @@ bool QDirIteratorPrivate::matchesFilters( const QString &fileName, const QFileIn
     // filter hidden
     const bool includeHidden = ( m_filters & QDir::Hidden );
 
-    if ( ! includeHidden && ! fi.isHidden() )
+    if ( (! includeHidden) && (! dotDirToSkip) && (fi.isHidden() ))
     {
         return false;
     }
