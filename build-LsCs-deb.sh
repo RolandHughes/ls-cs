@@ -28,6 +28,7 @@ echo "DEBIAN directory to assemble all files needed for creation of a .deb."
 echo ""
 echo ""
 
+TIME_STARTED=$( date '+%F_%H:%M:%S' )
 
 #  Step 1 : Establish fresh clean directories
 #
@@ -75,11 +76,14 @@ function create_debian_tree()
     mkdir -p "$DEBIAN_DIR"/usr/"${LIB_DIR}"/LsCs/cmake
     mkdir -p "$DEBIAN_DIR"/usr/share/pkgconfig
     mkdir -p "$DEBIAN_DIR"/usr/share/doc/LsCs/license
+    mkdir -p "$DEBIAN_DIR"/usr/share/LsCs
+    mkdir -p "$DEBIAN_DIR"/etc/ld.so.conf.d
 
 }
 
 function build_from_source()
 {
+    BUILD_FROM_SOURCE_STARTED=$( date '+%F_%H:%M:%S' )
     #  nuke the directories we will use if they already exist
     #
     if [ -d "$BUILD_DIR" ]; then
@@ -120,11 +124,13 @@ function build_from_source()
         sed -i 's#${_IMPORT_PREFIX}/include;#${_IMPORT_PREFIX}/include/LsCs;#g' LsCsLibraryTargets.cmake
         sed -i 's#${_IMPORT_PREFIX}/include/Qt#${_IMPORT_PREFIX}/include/LsCs/Qt#g' LsCsLibraryTargets.cmake
     fi
-
+    
+    BUILD_FROM_SOURCE_COMPLETED=$( date '+%F_%H:%M:%S' )
 }
 
 function dev_deb()
 {
+    DEV_PACKAGE_STARTED=$( date '+%F_%H:%M:%S' )
     create_debian_tree
 
     #  Step 5 : Move files to the debian tree
@@ -139,12 +145,19 @@ function dev_deb()
     chmod +x "$DEBIAN_DIR"/DEBIAN/postrm
     chmod +x "$DEBIAN_DIR"/DEBIAN/postinst
 
+    #
+    # This file creates library search paths at install time
+    #
+    cp -f "$BUILD_DIR"/LsCs-library.conf  "${DEBIAN_DIR}"/etc/ld.so.conf.d/
+    chmod 0664 "${DEBIAN_DIR}"/etc/ld.so.conf.d/*
+
     #  Note: If you want changelog to actually have anything in it, you need to create one
     #        I put a placeholder in the project for now because I didn't want to
     #        saddle this build script with git-buildpackage dependencies
     #
     cp "$SCRIPT_DIR"/changelog "$DEBIAN_DIR"/usr/share/doc/LsCs/changelog.Debian
     cp -Prv "$SCRIPT_DIR"/license/* "$DEBIAN_DIR"/usr/share/doc/LsCs/license/
+    cp -Prv "$BUILD_DIR"/lscs.conf "$DEBIAN_DIR"/usr/share/LsCs/
 
     echo "*** rsync release_dir with debian"
     rsync -av "$RELEASE_DIR"/ "$DEBIAN_DIR"/usr/
@@ -162,7 +175,7 @@ function dev_deb()
     # don't currently have any pre files
     # DEBIAN/pre*
     #
-    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/doc usr/share/doc/LsCs
+    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/LsCs usr/share/doc usr/share/doc/LsCs
 
     # Step 7 : build .deb
     #
@@ -180,11 +193,13 @@ function dev_deb()
     echo "look for:  $DEB_NAME"
 
     mv lscs_debian.deb "$DEB_NAME"
+    DEV_PACKAGE_COMPLETED=$( date '+%F_%H:%M:%S' )
 
 }
 
 function runtime_deb()
 {
+    RUNTIME_PACKAGE_STARTED=$( date '+%F_%H:%M:%S' )
     create_debian_tree
 
     #  Step 5 : Move files to the debian tree
@@ -205,6 +220,7 @@ function runtime_deb()
     #
     cp "$SCRIPT_DIR"/changelog "$DEBIAN_DIR"/usr/share/doc/LsCs/changelog.Debian
     cp -Prv "$SCRIPT_DIR"/license/* "$DEBIAN_DIR"/usr/share/doc/LsCs/license/
+    cp -Prv "$BUILD_DIR"/lscs.conf "$DEBIAN_DIR"/usr/share/LsCs/
 
     rsync -av --exclude cmake/ "$RELEASE_DIR"/lib/  "$DEBIAN_DIR"/usr/lib/
 
@@ -220,7 +236,7 @@ function runtime_deb()
     # don't currently have any pre files
     # DEBIAN/pre*
     #
-    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/doc usr/share/doc/LsCs
+    chmod go-w DEBIAN/md5sums DEBIAN/post* usr usr/share usr/share/LsCs usr/share/doc usr/share/doc/LsCs
 
     # Step 7 : build .deb
     #
@@ -238,6 +254,7 @@ function runtime_deb()
     echo "look for:  $DEB_NAME"
 
     mv lscs_debian.deb "$DEB_NAME"
+    RUNTIME_PACKAGE_COMPLETED=$( date '+%F_%H:%M:%S' )
 
 }
 
@@ -292,5 +309,13 @@ if [ "$DEV_PKG" = "Y" ]; then
 fi
 
 set -e
-
+NOW=$( date '+%F_%H:%M:%S' )
+echo "Script started:   $TIME_STARTED"
+echo "     Source Build Started:      $BUILD_FROM_SOURCE_STARTED"
+echo "     Source Build Completed:    $BUILD_FROM_SOURCE_COMPLETED"
+echo "     Dev Package Started:       $DEV_PACKAGE_STARTED"
+echo "     Dev Package Completed:     $DEV_PACKAGE_COMPLETED"
+echo "     Runtime Package Started:   $RUNTIME_PACKAGE_STARTED"
+echo "     Runtime Package Completed: $RUNTIME_PACKAGE_COMPLETED"
+echo "Script completed: $NOW"
 exit 0

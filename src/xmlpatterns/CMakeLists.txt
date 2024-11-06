@@ -1,7 +1,11 @@
 add_library(LsCsXmlPatterns SHARED "")
 add_library(LsCs::LsCsXmlPatterns ALIAS LsCsXmlPatterns)
 
-set_target_properties(LsCsXmlPatterns PROPERTIES OUTPUT_NAME LsCsXmlPatterns${BUILD_ABI})
+set_target_properties(LsCsXmlPatterns PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
+
 
 add_definitions(
    -DLSCS_BUILD_XMLPATTERNS_LIB

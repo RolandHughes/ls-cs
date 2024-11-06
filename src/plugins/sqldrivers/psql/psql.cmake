@@ -14,7 +14,11 @@ if(WITH_PSQL_PLUGIN AND PostgreSQL_FOUND)
    add_library(LsCsSqlPsql MODULE "")
    add_library(LsCs::CsSqlPsql ALIAS LsCsSqlPsql)
 
-   set_target_properties(LsCsSqlPsql PROPERTIES OUTPUT_NAME LsCsSqlPsql${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlPsql PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    include_directories(${PostgreSQL_INCLUDE_DIRS})
 

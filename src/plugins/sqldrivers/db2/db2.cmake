@@ -15,7 +15,11 @@ if (FALSE)
    add_library(CsSqlDb2 MODULE "")
    add_library(LsCs::LsCsSqlDb2 ALIAS LsCsSqlDb2)
 
-   set_target_properties(LsCsSqlDb2 PROPERTIES OUTPUT_NAME LsCsSqlDb2${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlDb2 PROPERTIES
+      VERSION ${BUILD_ABI}
+      SOVERSION ${BUILD_MAJOR}
+   )
+     
 
    include_directories(${DB2_INCLUDE_DIRS})
 

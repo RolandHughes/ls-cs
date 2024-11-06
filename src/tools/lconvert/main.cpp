@@ -114,6 +114,10 @@ struct File
 
 int main( int argc, char *argv[] )
 {
+#if defined(LSCS_PACKAGE_BUILD)
+    QCoreApplication::setAttribute( Qt::AA_UseSystemConf, true);
+#endif
+    
     QCoreApplication app( argc, argv );
 
 #ifndef Q_OS_WIN

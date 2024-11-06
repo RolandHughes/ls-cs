@@ -2,7 +2,11 @@ if(BUILD_PLATFORMS_XCB_PLUGIN)
    add_library(LsCsXcbSupport SHARED "")
    add_library(LsCs::LsCsXcbSupport ALIAS LsCsXcbSupport)
 
-   set_target_properties(LsCsXcbSupport PROPERTIES OUTPUT_NAME LsCsXcbSupport${BUILD_ABI})
+   set_target_properties(LsCsXcbSupport PROPERTIES
+        VERSION ${BUILD_ABI}
+        SOVERSION ${BUILD_MAJOR}
+   )
+     
 
    target_compile_definitions(LsCsXcbSupport
       PRIVATE

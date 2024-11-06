@@ -1,7 +1,11 @@
 add_library(LsCsWebKit SHARED "")
 add_library(LsCs::LsCsWebKit ALIAS LsCsWebKit)
 
-set_target_properties(LsCsWebKit PROPERTIES OUTPUT_NAME LsCsWebKit${BUILD_ABI})
+set_target_properties(LsCsWebKit PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
+  
 
 add_definitions(
    -DWTF_CHANGES

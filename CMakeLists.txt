@@ -14,11 +14,12 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-project(LsCs)
-
 set(BUILD_MAJOR "0")
 set(BUILD_MINOR "1")
 set(BUILD_MICRO "1")
+
+project(LsCs VERSION ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO} DESCRIPTION "A C++ Cross Platform Application Framework" )
+
 
 # used to control cmake/pc variables when building
 # installation packages
@@ -26,13 +27,10 @@ set(BUILD_MICRO "1")
 option(BUILDING_RPM "Are we building RPM" OFF)
 option(BUILDING_DEBIAN "Are we building DEBIAN" OFF)
 
-set(BUILD_ABI ${BUILD_MAJOR}.${BUILD_MINOR})
+set(BUILD_ABI ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO})
 
 # We don't want to collide with Qt binary names
 set(TOOLS_SUFFIX "_ls")
-
-# enable catch2 unit tests in config
-option(BUILD_TESTS "Enables building the Catch2 Unit Tests" OFF)
 
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceCompiles)
@@ -56,7 +54,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    #file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
    #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
 
-   set(CMAKE_INSTALL_RPATH "@executable_path")
+   #set(CMAKE_INSTALL_RPATH "@executable_path")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
@@ -99,22 +97,27 @@ message( STATUS, "CMAKE_INSTALL_LIBDIR   ${CMAKE_INSTALL_LIBDIR} ")
 #
 if (BUILDING_DEBIAN)
     message(STATUS "** We are building Debian package ***")
+    add_compile_definitions(LSCS_PACKAGE_BUILD)
     set(LSCS_INST_PREFIX  "/usr")    
     set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
     set(CMAKE_INSTALL_FULL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" )
     set(LSCS_INST_BIN     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_BINDIR}")
+    set(LSCS_INST_SHARE   "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
 elseif (BUILDING_RPM)
     message(STATUS "** We are building RPM package ***")
+    add_compile_definitions(LSCS_PACKAGE_BUILD)
     set(LSCS_INST_PREFIX  "/usr")    
     set(LSCS_INST_LIB     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
     set(LSCS_INST_BIN     "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_BINDIR}")
+    set(LSCS_INST_SHARE   "${LSCS_INST_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
 else()
     set(LSCS_INST_PREFIX  "${CMAKE_INSTALL_PREFIX}")    
     set(LSCS_INST_LIB     "${CMAKE_INSTALL_FULL_LIBDIR}")
     set(LSCS_INST_INCLUDE "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
     set(LSCS_INST_BIN     "${CMAKE_INSTALL_FULL_BINDIR}")
+    set(LSCS_INST_SHARE   "${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}")
 endif()
 
 # Note: webkit2.pc.in also uses prefix
@@ -777,6 +780,19 @@ configure_file(
    @ONLY
 )
 
+configure_file(
+   ${CMAKE_SOURCE_DIR}/lscs.conf.in
+   ${CMAKE_BINARY_DIR}/lscs.conf
+   @ONLY
+)
+
+configure_file(
+   ${CMAKE_SOURCE_DIR}/tools.qrc.in
+   ${CMAKE_BINARY_DIR}/tools.qrc
+   @ONLY
+)
+
+
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    set(PKG_PREFIX "lscs.framework/Resources")
 
@@ -792,7 +808,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
     #  Update files needed for Debian
     #  Note: You need to update CPACK_PACKAGE_INSTALLED_SIZE to reflect current installed size
     #
-   set(CPACK_PACKAGE_INSTALLED_SIZE "173793313")
+   set(CPACK_PACKAGE_INSTALLED_SIZE "6291456")
 
 
 
@@ -802,12 +818,20 @@ if(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
     configure_file(
        ${CMAKE_SOURCE_DIR}/deb_build.etc/control.in
        deb_build.etc/control
+       @ONLY
     )
 
     configure_file(
        ${CMAKE_SOURCE_DIR}/LsCs.spec.in
        LsCs.spec
-    )
+       @ONLY
+     )
+
+     configure_file(
+       ${CMAKE_SOURCE_DIR}/LsCs-library.conf.in
+       LsCs-library.conf
+       @ONLY
+     )
 
     #  postrm has some heavy syntax - just copy
     configure_file(
@@ -850,6 +874,11 @@ install(
    DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake
 )
 
+install(
+  FILES
+     ${CMAKE_BINARY_DIR}/LsCs-library.conf
+     DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/ld.so.conf.d
+)     
 else()
 install(
    FILES
@@ -859,7 +888,7 @@ install(
       ${CMAKE_SOURCE_DIR}/cmake/LsCsDeploy.cmake
       ${CMAKE_SOURCE_DIR}/cmake/LsCsMacros.cmake
       ${CMAKE_SOURCE_DIR}/cmake/InstallMinGW.cmake
-   DESTINATION ${PKG_PREFIX}/${CMAKE_LISTALL_LIBDIR}/cmake
+      DESTINATION ${PKG_PREFIX}/${CMAKE_INSTALL_LIBDIR}/cmake
 )
 endif()
 
@@ -868,7 +897,13 @@ install(
        ${CMAKE_SOURCE_DIR}/license/LGPL_EXCEPTION.txt
        ${CMAKE_SOURCE_DIR}/license/LICENSE.FDL
        ${CMAKE_SOURCE_DIR}/license/LICENSE.LGPL
-    DESTINATION ${CMAKE_INSTALL_DOCDIR}/license
+       DESTINATION ${CMAKE_INSTALL_DOCDIR}/license
+)
+
+install(
+  FILES
+     ${CMAKE_BINARY_DIR}/lscs.conf
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}
 )
 
 install(
@@ -907,6 +942,7 @@ message("   LSCS_INST_PREFIX     ${LSCS_INST_PREFIX}")
 message("   LSCS_INST_LIB        ${LSCS_INST_LIB}")
 message("   LSCS_INST_INCLUDE    ${LSCS_INST_INCLUDE}")
 message("   LSCS_INST_BIN        ${LSCS_INST_BIN}")
+message("   LSCS_INST_SHARE      ${LSCS_INST_SHARE}")
 message( " ")
 message("CMAKE_INSTALL_RPATH            ${CMAKE_INSTALL_RPATH}" )
 message("CMAKE_INSTALL_BINDIR           ${CMAKE_INSTALL_BINDIR}" )

@@ -15,7 +15,11 @@ if (FALSE)
    add_library(LsCsSqlOci MODULE "")
    add_library(LsCs::LsCsSqlOci ALIAS LsCsSqlOci)
 
-   set_target_properties(LsCsSqlOci PROPERTIES OUTPUT_NAME LsCsSqlOci${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsSqlOci PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    include_directories(${OCI_INCLUDE_DIRS})
 

@@ -1,7 +1,10 @@
 add_library(LsCsCore SHARED "")
 add_library(LsCs::LsCsCore ALIAS LsCsCore)
 
-set_target_properties(LsCsCore PROPERTIES OUTPUT_NAME LsCsCore${BUILD_ABI})
+set_target_properties(LsCsCore PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsCore
    PRIVATE

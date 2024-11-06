@@ -1,7 +1,10 @@
 add_library(LsCsOpenGL SHARED "")
 add_library(LsCs::LsCsOpenGL ALIAS LsCsOpenGL)
 
-set_target_properties(LsCsOpenGL PROPERTIES OUTPUT_NAME LsCsOpenGL${BUILD_ABI})
+set_target_properties(LsCsOpenGL PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsOpenGL
    PRIVATE

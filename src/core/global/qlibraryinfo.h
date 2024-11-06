@@ -38,11 +38,13 @@ public:
     enum LibraryLocation
     {
         PrefixPath,
-        PluginsPath,
-        TranslationsPath,
-        SettingsPath,
+        HeadersPath,
         LibrariesPath,
         BinariesPath,
+        PluginsPath,
+        DataPath,
+        TranslationsPath,
+        SettingsPath,
     };
 
     static QString location( LibraryLocation location );

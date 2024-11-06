@@ -8,7 +8,11 @@ if(Cups_FOUND)
    add_library(LsCsPrinterDriverCups MODULE "")
    add_library(LsCs::LsCsPrinterDriverCups ALIAS LsCsPrinterDriverCups)
 
-   set_target_properties(LsCsPrinterDriverCups PROPERTIES OUTPUT_NAME LsCsPrinterDriverCups${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsPrinterDriverCups PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsPrinterDriverCups
       PRIVATE

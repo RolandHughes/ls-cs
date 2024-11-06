@@ -1,7 +1,10 @@
 add_library(LsCsGui SHARED "")
 add_library(LsCs::LsCsGui ALIAS LsCsGui)
 
-set_target_properties(LsCsGui PROPERTIES OUTPUT_NAME LsCsGui${BUILD_ABI})
+set_target_properties(LsCsGui PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsGui
    PRIVATE

@@ -38,3 +38,5 @@ set_target_properties(sharedtools
    COMPILE_FLAGS ${SHAREDTOOLS_EXTRA_CXXFLAGS}
    LINK_FLAGS ${SHAREDTOOLS_EXTRA_LDFLAGS}
 )
+
+ 

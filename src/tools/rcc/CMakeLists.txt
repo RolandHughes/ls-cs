@@ -33,7 +33,12 @@ if(CMAKE_SYSTEM_NAME MATCHES "(OpenBSD|FreeBSD|NetBSD)")
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   list(APPEND EXTRA_RCC_LDFLAGS '-Wl,-rpath,$ORIGIN/../lib')
+  message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}\n")
+  if(BUILDING_DEBIAN OR BUILDING_RPM)
+    # only use RPATH on local build
+  else()
+    list(APPEND EXTRA_RCC_LDFLAGS '-Wl,-rpath,$ORIGIN/../lib')
+  endif()
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")

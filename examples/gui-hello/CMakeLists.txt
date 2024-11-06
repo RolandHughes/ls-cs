@@ -37,7 +37,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
 
    # indicates where libraries are located relative to the executable
-   set(CMAKE_INSTALL_RPATH "@executable_path/../Resources")
+   #set(CMAKE_INSTALL_RPATH "@executable_path/../Resources")
 
 elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)

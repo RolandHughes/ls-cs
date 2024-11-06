@@ -26,19 +26,19 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
 
    # rpath used for rcc and uic when compiling a user application
-   file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
-                                   "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+   #file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+   #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
-   set(CMAKE_INSTALL_RPATH "@executable_path/${LSCS_BIN_RPATH}")
+   #set(CMAKE_INSTALL_RPATH "@executable_path/${LSCS_BIN_RPATH}")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
    # rpath used for rcc and uic when compiling a user application
-   file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
-                                   "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+   #file(RELATIVE_PATH LSCS_BIN_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+   #                                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
-   set(CMAKE_INSTALL_RPATH "$ORIGIN/${LSCS_BIN_RPATH}")
+   #set(CMAKE_INSTALL_RPATH "$ORIGIN/${LSCS_BIN_RPATH}")
 
 elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_BINDIR bin)

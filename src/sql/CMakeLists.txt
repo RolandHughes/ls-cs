@@ -1,7 +1,10 @@
 add_library(LsCsSql SHARED "")
 add_library(LsCs::LsCsSql ALIAS LsCsSql)
 
-set_target_properties(LsCsSql PROPERTIES OUTPUT_NAME LsCsSql${BUILD_ABI})
+set_target_properties(LsCsSql PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsSql
    PRIVATE

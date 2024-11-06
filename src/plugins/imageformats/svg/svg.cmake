@@ -6,7 +6,11 @@ if(WITH_SVG)
    add_library(LsCsImageFormatsSvg MODULE "")
    add_library(LsCs::LsCsImageFormatsSvg ALIAS LsCsImageFormatsSvg)
 
-   set_target_properties(LsCsImageFormatsSvg PROPERTIES OUTPUT_NAME LsCsImageFormatsSvg${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsImageFormatsSvg PROPERTIES
+     PREFIX ""
+     VERSION ${BUILD_ABI}
+     SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsImageFormatsSvg
       PRIVATE

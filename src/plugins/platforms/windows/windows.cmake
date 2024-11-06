@@ -46,7 +46,10 @@ if(BUILD_PLATFORMS_WINDOWS_PLUGIN)
    add_library(LsCsGuiWin MODULE "")
    add_library(LsCs::LsCsGuiWin ALIAS LsCsGuiWin)
 
-   set_target_properties(LsCsGuiWin PROPERTIES OUTPUT_NAME LsCsGuiWin${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsGuiWin PROPERTIES
+        VERSION ${BUILD_ABI}
+        SOVERSION ${BUILD_MAJOR}
+   )
 
    target_sources(LsCsGuiWin
       PRIVATE

@@ -36,7 +36,6 @@
 #include <qfilesystementry_p.h>
 #include <qfilesystemmetadata_p.h>
 #include <qfilesystemengine_p.h>
-#include <qtextstream.h>
 
 static const QString CURRENT_DOT_DIR(".");
 static const QString PARENT_DOT_DIR("..");
@@ -303,10 +302,6 @@ bool QDirIteratorPrivate::matchesFilters( const QString &fileName, const QFileIn
     QString nameStr = fileName;
     const bool dotDirToSkip = nameStr == CURRENT_DOT_DIR || nameStr == PARENT_DOT_DIR;
 
-    QTextStream out(stdout);
-
-    out << "matchesFilters checking : " << fileName << endl;
-
     if ( m_filters & QDir::NoDot )
     {
         if ( nameStr == CURRENT_DOT_DIR )
@@ -323,14 +318,11 @@ bool QDirIteratorPrivate::matchesFilters( const QString &fileName, const QFileIn
         }
     }
 
-    out << "    got past dot checks" << endl;
-    
     // name filter
     // Pass all entries through name filters, except dirs if the AllDirs
 
     if ( ! m_nameFilters.isEmpty() && ! ( ( m_filters & QDir::AllDirs ) && fi.isDir() ) )
     {
-        out << "    m_nameFilters not empty " << endl;
         bool matched = false;
 
         for ( const auto &regExp : m_nameRegExps )

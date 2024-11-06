@@ -1,7 +1,10 @@
 add_library(LsCsScript SHARED "")
 add_library(LsCs::LsCsScript ALIAS LsCsScript)
 
-set_target_properties(LsCsScript PROPERTIES OUTPUT_NAME LsCsScript${BUILD_ABI})
+set_target_properties(LsCsScript PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 add_definitions(
     -DQLALR_NO_SCRIPTGRAMMAR_DEBUG_INFO

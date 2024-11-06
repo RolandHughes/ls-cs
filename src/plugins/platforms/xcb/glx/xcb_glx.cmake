@@ -11,10 +11,30 @@ if(BUILD_PLATFORMS_XCB_PLUGIN AND XCB_GLX_LIB)
    add_library(LsCsGuiXcb_Glx MODULE "")
    add_library(LsCs::LsCsGuiXcb_Glx ALIAS LsCsGuiXcb_Glx)
 
-   set_target_properties(LsCsGuiXcb_Glx PROPERTIES
-      OUTPUT_NAME LsCsGuiXcb_Glx${BUILD_ABI} PREFIX ""
-      INSTALL_RPATH "$ORIGIN/.."
-   )
+   set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+   if (BUILDING_DEBIAN)
+      set_target_properties(LsCsGuiXcb_Glx PROPERTIES
+          VERSION ${BUILD_ABI}
+          SOVERSION ${BUILD_MAJOR}
+          PREFIX ""
+      )
+   elseif (BUILDING_RPM)
+      set_target_properties(LsCsGuiXcb_Glx PROPERTIES
+          VERSION ${BUILD_ABI}
+          SOVERSION ${BUILD_MAJOR}
+          PREFIX ""
+      )
+    else()
+      # ass-u-me local build for testing
+     set_target_properties(LsCsGuiXcb_Glx PROPERTIES
+          VERSION ${BUILD_ABI}
+          SOVERSION ${BUILD_MAJOR}
+          PREFIX ""
+          INSTALL_RPATH "$ORIGIN/.."
+    )
+  endif()
+  
 
    target_sources(LsCsGuiXcb_Glx
       PRIVATE

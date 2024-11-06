@@ -38,7 +38,9 @@
 
 #ifndef LSCS_NO_SETTINGS
 
-static const char platformsSection[] = "Platforms";
+static const char PLATFORMS_SECTION[] = "Platforms";
+static const char CONF_FILE_NAME[] = "lscs.conf";
+static const char CONF_RESOURCE_PATH[] = ":/lscs/etc/lscs.conf";
 
 struct QLibrarySettings
 {
@@ -107,7 +109,7 @@ void QLibrarySettings::load()
 
         // an existing but empty file claimed to contain the Paths section
         havePaths = ( ! haveDevicePaths && ! haveEffectivePaths
-                      && ! children.contains( platformsSection ) ) || children.contains( "Paths" );
+                      && ! children.contains( PLATFORMS_SECTION ) ) || children.contains( "Paths" );
 
         if ( ! havePaths )
         {
@@ -118,7 +120,13 @@ void QLibrarySettings::load()
 
 QSettings *QLibraryInfoPrivate::findConfiguration()
 {
-    QString qtconfig( ":/lscs/etc/lscs.conf" );
+    QString qtconfig( QString::fromUtf8(CONF_RESOURCE_PATH) );
+
+    if (QCoreApplication::testAttribute(Qt::AA_UseSystemConf))
+    {
+        QDir systemDataPath( QString::fromUtf8(LsCsLibraryInfo::lscsData ));
+        qtconfig = systemDataPath.filePath( QString::fromUtf8(CONF_FILE_NAME));
+    }
 
     if ( ! QFile::exists( qtconfig ) && QCoreApplication::instance() )
     {
@@ -129,7 +137,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
         if ( bundleRef )
         {
             // locates the lscs.conf file in foo.app/Contents/Resources
-            QCFType<CFURLRef> urlRef = CFBundleCopyResourceURL( bundleRef, QCFString( "lscs.conf" ).toCFStringRef(), nullptr, nullptr );
+            QCFType<CFURLRef> urlRef = CFBundleCopyResourceURL( bundleRef, QCFString( CONF_FILE_NAME ).toCFStringRef(), nullptr, nullptr );
 
             if ( urlRef )
             {
@@ -142,7 +150,7 @@ QSettings *QLibraryInfoPrivate::findConfiguration()
 #endif
         {
             QDir pwd( QCoreApplication::applicationDirPath() );
-            qtconfig = pwd.filePath( "lscs.conf" );
+            qtconfig = pwd.filePath( QString::fromUtf8(CONF_FILE_NAME ));
         }
     }
 
@@ -346,7 +354,7 @@ QStringList QLibraryInfo::platformPluginArguments( const QString &platformName )
 
     if ( ! settings.isNull() )
     {
-        QString key = QString( platformsSection ) + "/" + platformName + "Arguments";
+        QString key = QString( PLATFORMS_SECTION ) + "/" + platformName + "Arguments";
 
         return settings->value( key ).toStringList();
     }

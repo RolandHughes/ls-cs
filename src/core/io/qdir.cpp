@@ -832,9 +832,7 @@ QStringList QDir::entryList( const QStringList &nameFilters, Filters filters, So
         return d->files;
     }
 
-    QTextStream out(stdout);
     QFileInfoList list;
-    out << "d->dirEntry.filePath(): " << d->dirEntry.filePath() << endl;
     QDirIterator it( d->dirEntry.filePath(), nameFilters, filters );
 
     while ( it.hasNext() )

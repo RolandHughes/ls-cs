@@ -6,7 +6,6 @@
 #include <QRegularExpression>
 #include <QStringList>
 #include <QLibraryInfo>
-#include <QDir>
 #include "console-hello_build_info.h"
 
 class SomeClass
@@ -49,7 +48,7 @@ void Task::run()
 
     out << bold << "Hello World!" << endFormat << "\n\n";
     out << "Version:    " << versionString << endl;
-    out << "Build Date: " << "\n\n" << buildDate << endl;
+    out << "Build Date: " << buildDate << endl;
 
     out << bold << "Sizes on your machine:" << endFormat << "\n";
     out << "     unsigned char      " << sizeof( unsigned char ) << endl;
@@ -65,28 +64,6 @@ void Task::run()
     out << "     double             " << sizeof( double ) << endl;
     out << "     long double        " << sizeof( long double) << endl;
     
-    QString home = QString::fromUtf8(qgetenv( "HOME"));
-    QString path = home + "/platforms";
-    QDir f1( path);
-    out << "first dir: " << path << endl;
-    QFileInfoList list = f1.entryInfoList();
-    for (QFileInfo info : list )
-    {
-    	out << "Name: " << info.fileName() << "  readable: " << info.isReadable()
-    		<< "  writable: " << info.isWritable() 
-    		<< "  isFile: " << info.isFile() << endl;
-    }
-    
-    path += "/usr/lib/LsCs/plugins/platforms/";
-    QDir f2( path );
-    out << "second dir: " << path << endl;
-    list = f2.entryInfoList();
-    for (QFileInfo info : list )
-    {
-    	out << "Name: " << info.fileName() << "  readable: " << info.isReadable()
-    		<< "  writable: " << info.isWritable() 
-    		<< "  isFile: " << info.isFile() << endl;
-    }
     
     out << "\n\nNext we will do some regular expression matching.\n";
     out << "This section can be useful if you want to try out some\n";
@@ -122,7 +99,7 @@ void Task::run()
 
     if ( match2.hasMatch() )
     {
-        out << "str2 matches: " << endl;
+        out << "match2: " << endl;
         for ( QString txt : match2.capturedTexts())
         {
             out << "    " << txt << endl;
@@ -131,7 +108,7 @@ void Task::run()
 
     if ( match3.hasMatch() )
     {
-        out << "str3 matches:: " << endl;
+        out << "match3: " << endl;
         for ( QString txt : match3.capturedTexts())
         {
             out << "    " << txt << endl;
@@ -145,15 +122,6 @@ void Task::run()
 int main( int argc, char *argv[] )
 {
     QCoreApplication a( argc, argv );
-
-    qDebug() << "*************\n\nPaths:\n" << endl;
-    QString paths = QLibraryInfo::location(QLibraryInfo::PluginsPath);
-    qDebug() << "plugins paths: " << paths << endl;
-    paths = QLibraryInfo::location(QLibraryInfo::LibrariesPath);
-    qDebug() << "LibrariesPath: " << paths << endl;
-    paths = QLibraryInfo::location(QLibraryInfo::BinariesPath);
-    qDebug() << "BinariesPath: " << paths << endl;
-
 
     // parent task to application so it will be cleaned up
     //

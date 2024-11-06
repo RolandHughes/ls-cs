@@ -1,7 +1,10 @@
 add_library(LsCsSvg SHARED "")
 add_library(LsCs::LsCsSvg ALIAS LsCsSvg)
 
-set_target_properties(LsCsSvg PROPERTIES OUTPUT_NAME LsCsSvg${BUILD_ABI})
+set_target_properties(LsCsSvg PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 add_definitions(
    -DLSCS_BUILD_SVG_LIB

@@ -1,7 +1,10 @@
 add_library(LsCsNetwork SHARED "")
 add_library(LsCs::LsCsNetwork ALIAS LsCsNetwork)
 
-set_target_properties(LsCsNetwork PROPERTIES OUTPUT_NAME LsCsNetwork${BUILD_ABI})
+set_target_properties(LsCsNetwork PROPERTIES
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsNetwork
    PRIVATE

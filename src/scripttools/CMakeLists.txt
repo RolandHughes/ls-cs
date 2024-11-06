@@ -1,7 +1,10 @@
 add_library(LsCsScriptTools SHARED "")
 add_library(LsCs::LsCsScriptTools ALIAS LsCsScriptTools)
 
-set_target_properties(LsCsScriptTools PROPERTIES OUTPUT_NAME LsCsScriptTools${BUILD_ABI})
+set_target_properties(LsCsScriptTools PROPERTIES 
+  VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_add_definitions(LsCsScriptTools
    PRIVATE

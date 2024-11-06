@@ -55,7 +55,11 @@ if(BUILD_PLATFORMS_COCOA_PLUGIN)
    add_library(LsCsGuiCocoa MODULE "")
    add_library(LsCs::LsCsGuiCocoa ALIAS LsCsGuiCocoa )
 
-   set_target_properties(LsCsGuiCocoa PROPERTIES OUTPUT_NAME LsCsGuiCocoa${BUILD_ABI} PREFIX "")
+   set_target_properties(LsCsGuiCocoa PROPERTIES
+        VERSION ${BUILD_ABI}
+        SOVERSION ${BUILD_MAJOR}
+   )
+     
 
    target_sources(LsCsGuiCocoa
       PRIVATE

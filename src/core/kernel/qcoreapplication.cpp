@@ -1915,15 +1915,11 @@ QStringList QCoreApplication::libraryPaths()
             }
         }
 
-        QTextStream out( stdout );
-        out << "basePluginPath: " << basePluginPath << endl;
-
         QDirIterator it( basePluginPath, QDirIterator::Subdirectories | QDirIterator::NoDotAndDotDot );
 
         while ( it.hasNext() )
         {
             QString installPathPlugins = it.next();
-            out << "installPathPlugins: " << installPathPlugins << endl;
 
             if ( QFile::exists( installPathPlugins ) )
             {

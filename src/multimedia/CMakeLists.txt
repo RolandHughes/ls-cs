@@ -1,7 +1,10 @@
 add_library(LsCsMultimedia SHARED "")
 add_library(LsCs::LsCsMultimedia ALIAS LsCsMultimedia)
 
-set_target_properties(LsCsMultimedia PROPERTIES OUTPUT_NAME LsCsMultimedia${BUILD_ABI})
+set_target_properties(LsCsMultimedia PROPERTIES
+    VERSION ${BUILD_ABI}
+  SOVERSION ${BUILD_MAJOR}
+)
 
 target_compile_definitions(LsCsMultimedia
    PRIVATE
