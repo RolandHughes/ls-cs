@@ -17,6 +17,8 @@ MainWindow::MainWindow( QWidget *parent ) :
 
     m_textEdit->setMinimumHeight( 600);
     m_textEdit->setMinimumWidth( 450);
+    m_textEdit->setFontFamily( "Monospaced");
+    m_textEdit->setFontPointSize( 12 );
 
     m_layout->addWidget( m_hello );
     m_layout->addWidget( m_textEdit );

@@ -5,13 +5,14 @@ cmake_policy(VERSION 3.8..3.13)
 # support using rpath on Mac OS X
 cmake_policy(SET CMP0042 NEW)
 
-project(gui-hello)
+project(simple-text-editor)
 
 set(BUILD_MAJOR "1")
-set(BUILD_MINOR "3")
-set(BUILD_MICRO "4")
+set(BUILD_MINOR "0")
+# To more cleanly support RPM packaging BUILD_MICRO needs to be non-zero
+set(BUILD_MICRO "2")
 
-set(BUILD_COMPONENTS "gui-hello")
+set(BUILD_COMPONENTS "simple-text-editor")
 
 include(CheckCXXCompilerFlag)
 include(CheckCXXSourceCompiles)
@@ -21,8 +22,6 @@ include(CheckTypeSize)
 
 find_package(LsCs REQUIRED)
 
-
-
 # file locations for installing
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
    include(GNUInstallDirs)
@@ -31,7 +30,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "(Linux|OpenBSD|FreeBSD|NetBSD|DragonFly)")
    include(GNUInstallDirs)
 
    # lots of warnings and all warnings as errors
-   add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+   add_compile_options(-Wall -Wextra -Wuninitialized -pedantic -Werror)
 
 elseif(MSVC)
    # use defaults
@@ -39,7 +38,6 @@ elseif(MSVC)
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
    #MinGW should no longer be needed
-
 endif()
 
 set(PACKAGE           "${PROJECT_NAME}")
@@ -49,20 +47,19 @@ set(PACKAGE_STRING    "${PROJECT_NAME} ${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MIC
 set(PACKAGE_TARNAME   "${PROJECT_NAME}")
 
 set(CPACK_PACKAGE_NAME    ${PROJECT_NAME} )
-set(CPACK_PACKAGE_VENDOR  "LogikalSolutions")
+set(CPACK_PACKAGE_VENDOR  "Logikal Solutions")
 
 set(CPACK_PACKAGE_VERSION_MAJOR ${BUILD_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${BUILD_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${BUILD_MICRO})
 
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Cross platform Hello World GUI sample")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Simple text editor example program")
 
 set(CPACK_PACKAGE_INSTALL_DIRECTORY   ${CMAKE_INSTALL_PREFIX})
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY  OFF)
 
 # mac osx only
-set(CPACK_BUNDLE_NAME    ${PROJECT_NAME})
-#set(CPACK_BUNDLE_PLIST   "${CMAKE_SOURCE_DIR}/resources/Info.plist")
+set(CPACK_BUNDLE_NAME    "${PROJECT_NAME}")
 
 include(CPack)
 
@@ -84,10 +81,6 @@ endif()
 string(TIMESTAMP BUILD_DATE "%m/%d/%Y")
 add_definitions(-DBUILD_DATE="${BUILD_DATE}")
 
-configure_file(
-   ${CMAKE_SOURCE_DIR}/src/gui-hello_build_info.h.in
-   src/gui-hello_build_info.h
-)
 
 add_subdirectory(src)
 

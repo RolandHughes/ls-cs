@@ -5,6 +5,9 @@ LsCs (0.1.1) unstable; urgency=low
 	* Purged really nasty use of RPATH which isn't allowed in secure Linux
 	versions.
 	* Added lscs.conf to share directory so app developers can "just use it"
+	* Fixed architectural flaw where .conf file had to be resource compiled
+	into program. This mean it could never be compiled into tools. Added
+	AA_UseSystemConf to work around this design flaw.
 	* Converted tools so they can run from anywhere.
 	* Eliminated tilde expansion code duplication.
 LsCs (0.1.0) unstable; urgency=low
