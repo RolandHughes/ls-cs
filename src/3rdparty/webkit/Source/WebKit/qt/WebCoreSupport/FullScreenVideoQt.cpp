@@ -161,7 +161,8 @@ FullScreenVideoQt::FullScreenVideoQt( ChromeClientQt *chromeClient )
 
     if ( m_FullScreenVideoHandler )
     {
-        connect( m_FullScreenVideoHandler, SIGNAL( fullScreenClosed() ), this, SLOT( aboutToClose() ) );
+        // do not allow aboutToClose to be queued across threads
+        connect( m_FullScreenVideoHandler, SIGNAL( fullScreenClosed() ), this, SLOT( aboutToClose() ), Qt::DirectConnection );
     }
 
 #endif

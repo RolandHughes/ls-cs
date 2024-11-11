@@ -1154,7 +1154,8 @@ void QNetworkReplyHttpImplPrivate::initCacheSaveDevice()
 
     if ( cacheSaveDevice )
     {
-        q->connect( cacheSaveDevice, &QIODevice::aboutToClose, q, &QNetworkReplyHttpImpl::_q_cacheSaveDeviceAboutToClose );
+        // do not allow aboutToClose to be queued acrss threads
+        q->connect( cacheSaveDevice, &QIODevice::aboutToClose, q, &QNetworkReplyHttpImpl::_q_cacheSaveDeviceAboutToClose, Qt::DirectConnection );
     }
 
     if ( !cacheSaveDevice || ( cacheSaveDevice && !cacheSaveDevice->isOpen() ) )

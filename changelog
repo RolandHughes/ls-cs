@@ -1,3 +1,5 @@
+LsCs (0.1.2) unstable; urgency=low
+	* Fixed QTBUG-12055 where QTextStream disconnect was queued across threads.
 LsCs (0.1.1) unstable; urgency=low
 	* Deeper branding changes.
 	* Created LsCs-library.conf for library paths so now we have proper SONAME linking

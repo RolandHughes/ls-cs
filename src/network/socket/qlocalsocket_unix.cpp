@@ -53,7 +53,8 @@ void QLocalSocketPrivate::init()
 {
     Q_Q( QLocalSocket );
 
-    q->connect( &unixSocket, &QLocalUnixSocket::aboutToClose, q, &QLocalSocket::aboutToClose );
+    // do not allow aboutToClose to be queued across threads.
+    q->connect( &unixSocket, &QLocalUnixSocket::aboutToClose, q, &QLocalSocket::aboutToClose, Qt::DirectConnection );
     q->connect( &unixSocket, &QLocalUnixSocket::bytesWritten, q, &QLocalSocket::bytesWritten );
     q->connect( &unixSocket, &QLocalUnixSocket::readyRead,    q, &QLocalSocket::readyRead );
 

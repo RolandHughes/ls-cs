@@ -106,7 +106,8 @@ public:
         QObject::connect( this, SIGNAL( packetWritten() ), parent, SLOT( packetWritten() ) );
         QObject::connect( this, SIGNAL( invalidPacket() ), parent, SLOT( invalidPacket() ) );
         QObject::connect( dev,  SIGNAL( readyRead() ), this, SLOT( readyToRead() ) );
-        QObject::connect( dev,  SIGNAL( aboutToClose() ), this, SLOT( aboutToClose() ) );
+        // do not allow aboutToClose to be queued across threads
+        QObject::connect( dev,  SIGNAL( aboutToClose() ), this, SLOT( aboutToClose() ), Qt::DirectConnection );
         QObject::connect( dev,  SIGNAL( bytesWritten( qint64 ) ), this, SLOT( bytesWritten( qint64 ) ) );
     }
 

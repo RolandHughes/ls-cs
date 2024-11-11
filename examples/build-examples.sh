@@ -75,7 +75,8 @@ build_all(){
     build_one "console-hello"
     build_one "gui-hello"
     build_one "simple-text-editor"
-    build_one "serial-comm"
+    build_one "combo-box-example"
+    #build_one "serial-comm"
 }
 
 echo "SCRIPT_DIR               $SCRIPT_DIR"
@@ -102,7 +103,8 @@ while true; do
     echo "1   - console based Hello World program"
     echo "2   - gui based Hello World program"
     echo "3   - simple text editor"
-    echo "4   - serial communications"
+    echo "4   - combobox example"
+    echo "5   - serial communications"
     echo "999 - build all"
     echo " "
     echo "e to exit"
@@ -115,7 +117,8 @@ while true; do
         [1]* ) build_one "console-hello"; break;;
         [2]* ) build_one "gui-hello"; break;;
         [3]* ) build_one "simple-text-editor"; break;;
-        [4]* ) build_one "serial-comm"; break;;
+        [4]* ) build_one "combo-box-example"; break;;
+        [5]* ) build_one "serial-comm"; break;;
         [999]*) build_all; exit;;
         [Ee]* ) exit;;
 	* ) echo "Unknown response - please try again";;
